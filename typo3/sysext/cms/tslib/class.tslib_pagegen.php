@@ -318,11 +318,20 @@ function linkTo_UnCryptMailto(s)	{	//
 
 			// Reset the content variables:
 		$GLOBALS['TSFE']->content='';
+		$htmlTagAttributes = array();
+		$htmlLang = $GLOBALS['TSFE']->config['config']['htmlTag_langKey'] ? $GLOBALS['TSFE']->config['config']['htmlTag_langKey'] : 'en';
+
+			// Set content direction: (More info: http://www.tau.ac.il/~danon/Hebrew/HTML_and_Hebrew.html)
+		if ($GLOBALS['TSFE']->config['config']['htmlTag_dir'])	{
+			$htmlTagAttributes['dir'] = htmlspecialchars($GLOBALS['TSFE']->config['config']['htmlTag_dir']);
+		}
 
 			// Setting document type:
 		$docTypeParts = array();
 		$XMLprologue = $GLOBALS['TSFE']->config['config']['xmlprologue'] != 'none';
 		if ($GLOBALS['TSFE']->config['config']['doctype'])	{
+
+				// Setting doctypes:
 			switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
 				case 'xhtml_trans':
 		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
@@ -342,10 +351,37 @@ function linkTo_UnCryptMailto(s)	{	//
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
+				case 'xhtml_11':
+		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.1" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
+				break;
+				case 'xhtml_2':
+		 			if ($XMLprologue) $docTypeParts[]='<?xml version="2.0" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 2.0//EN"
+	"http://www.w3.org/TR/xhtml2/DTD/xhtml2.dtd">';
+				break;
 				case 'none':
 				break;
 				default:
-			$docTypeParts[]=$GLOBALS['TSFE']->config['config']['doctype'];
+					$docTypeParts[] = $GLOBALS['TSFE']->config['config']['doctype'];
+				break;
+			}
+				// Setting <html> tag attributes:
+			switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
+				case 'xhtml_trans':
+				case 'xhtml_strict':
+				case 'xhtml_frames':
+	 				$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
+					$htmlTagAttributes['xml:lang'] = $htmlLang;
+					$htmlTagAttributes['lang'] = $htmlLang;
+				break;
+				case 'xhtml_11':
+				case 'xhtml_2':
+	 				$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
+					$htmlTagAttributes['xml:lang'] = $htmlLang;
 				break;
 			}
 		} else {
@@ -361,7 +397,13 @@ function linkTo_UnCryptMailto(s)	{	//
 			// Adding doctype parts:
 		$GLOBALS['TSFE']->content.= count($docTypeParts) ? implode(chr(10),$docTypeParts).chr(10) : '';
 
-		$GLOBALS['TSFE']->content.='<html>
+			// Begin header section:
+		if (strcmp($GLOBALS['TSFE']->config['config']['htmlTag_setParams'],'none'))	{
+			$_attr = $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] ? $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] : t3lib_div::implodeParams($htmlTagAttributes);
+		} else {
+			$_attr = '';
+		}
+		$GLOBALS['TSFE']->content.='<html'.($_attr ? ' '.$_attr : '').'>
 <head>
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is brought to you by TYPO3 - get.content.right
@@ -375,13 +417,13 @@ function linkTo_UnCryptMailto(s)	{	//
 		if ($GLOBALS['TSFE']->config['config']['baseURL']) {
 			$ss = intval($GLOBALS['TSFE']->config['config']['baseURL']) ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : $GLOBALS['TSFE']->config['config']['baseURL'];
 			$GLOBALS['TSFE']->content.='
-<base href="'.htmlspecialchars($ss).'" />';
+	<base href="'.htmlspecialchars($ss).'" />';
 		}
 
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
 			$ss=$path.$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
 			$GLOBALS['TSFE']->content.='
-<link rel="SHORTCUT ICON" href="'.htmlspecialchars($ss).'" />';
+	<link rel="SHORTCUT ICON" href="'.htmlspecialchars($ss).'" />';
 		}
 
 		/** CSS STYLESHEET handling: */
@@ -394,14 +436,18 @@ function linkTo_UnCryptMailto(s)	{	//
 				}
 			}
 			if (count($temp_styleLines))	{
-				$GLOBALS['TSFE']->content.='
-<style type="text/css">
-	/*<![CDATA[*/
-<!--
-'.implode(chr(10),$temp_styleLines).'
--->
-	/*]]>*/
-</style>';
+				if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile'])	{
+					$GLOBALS['TSFE']->content.=TSpagegen::inline2TempFile(implode(chr(10),$temp_styleLines),'css');
+				} else {
+					$GLOBALS['TSFE']->content.='
+	<style type="text/css">
+		/*<![CDATA[*/
+	<!--
+	'.implode(chr(10),$temp_styleLines).'
+	-->
+		/*]]>*/
+	</style>';
+				}
 			}
 		}
 
@@ -461,52 +507,56 @@ function linkTo_UnCryptMailto(s)	{	//
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']) && $GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS'])	{
 			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
 			$style.='
-BODY {margin: '.$margins.'px '.$margins.'px '.$margins.'px '.$margins.'px;}';
+	BODY {margin: '.$margins.'px '.$margins.'px '.$margins.'px '.$margins.'px;}';
 		}
 
 		if ($GLOBALS['TSFE']->pSetup['noLinkUnderline'])	{
 			$style.='
-A:link {text-decoration: none}
-A:visited {text-decoration: none}
-A:active {text-decoration: none}';
+	A:link {text-decoration: none}
+	A:visited {text-decoration: none}
+	A:active {text-decoration: none}';
 		}
 		if (trim($GLOBALS['TSFE']->pSetup['hover']))	{
 			$style.='
-A:hover {color: '.trim($GLOBALS['TSFE']->pSetup['hover']).';}';
+	A:hover {color: '.trim($GLOBALS['TSFE']->pSetup['hover']).';}';
 		}
 		if (trim($GLOBALS['TSFE']->pSetup['hoverStyle']))	{
 			$style.='
-A:hover {'.trim($GLOBALS['TSFE']->pSetup['hoverStyle']).'}';
+	A:hover {'.trim($GLOBALS['TSFE']->pSetup['hoverStyle']).'}';
 		}
 		if ($GLOBALS['TSFE']->pSetup['smallFormFields'])	{
 			$style.='
-SELECT {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
-TEXTAREA  {  font-family: Verdana, Arial, Helvetica; font-size: 10px}
-INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
+	SELECT {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
+	TEXTAREA  {  font-family: Verdana, Arial, Helvetica; font-size: 10px}
+	INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
 		}
 		if ($GLOBALS['TSFE']->pSetup['adminPanelStyles'])	{
 			$style.='
 
-/* Default styles for the Admin Panel */
-TABLE.typo3-adminPanel { border: 1px solid black; background-color: #F6F2E6; }
-TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #9BA1A8; }
-TABLE.typo3-adminPanel TR.typo3-adminPanel-itemHRow TD { background-color: #ABBBB4; }
-TABLE.typo3-adminPanel TABLE, TABLE.typo3-adminPanel TD { border: 0px; }
-TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 10px; color: black; }
-TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }
-TABLE.typo3-editPanel { border: 1px solid black; background-color: #F6F2E6; }
-TABLE.typo3-editPanel TD { border: 0px; }
+	/* Default styles for the Admin Panel */
+	TABLE.typo3-adminPanel { border: 1px solid black; background-color: #F6F2E6; }
+	TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #9BA1A8; }
+	TABLE.typo3-adminPanel TR.typo3-adminPanel-itemHRow TD { background-color: #ABBBB4; }
+	TABLE.typo3-adminPanel TABLE, TABLE.typo3-adminPanel TD { border: 0px; }
+	TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 10px; color: black; }
+	TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }
+	TABLE.typo3-editPanel { border: 1px solid black; background-color: #F6F2E6; }
+	TABLE.typo3-editPanel TD { border: 0px; }
 			';
 		}
 
 		if (trim($style))	{
-		$GLOBALS['TSFE']->content.='
-<style type="text/css">
-	/*<![CDATA[*/
-<!--'.$style.'
--->
-	/*]]>*/
-</style>';
+			if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile'])	{
+				$GLOBALS['TSFE']->content.=TSpagegen::inline2TempFile($style, 'css');
+			} else {
+				$GLOBALS['TSFE']->content.='
+	<style type="text/css">
+		/*<![CDATA[*/
+	<!--'.$style.'
+	-->
+		/*]]>*/
+	</style>';
+			}
 		}
 
 
@@ -529,11 +579,11 @@ TABLE.typo3-editPanel TD { border: 0px; }
 		}
 
 		$GLOBALS['TSFE']->content.='
-<title>'.htmlspecialchars($titleTagContent).'</title>';
+	<title>'.htmlspecialchars($titleTagContent).'</title>';
 		$GLOBALS['TSFE']->content.='
-<meta http-equiv="Content-Type" content="text/html; charset='.$theCharset.'" />';
+	<meta http-equiv="Content-Type" content="text/html; charset='.$theCharset.'" />';
 		$GLOBALS['TSFE']->content.='
-<meta name="generator" content="TYPO3 3.6 CMS" />';
+	<meta name="generator" content="TYPO3 3.6 CMS" />';
 
 		$conf=$GLOBALS['TSFE']->pSetup['meta.'];
 		if (is_array($conf))	{
@@ -549,7 +599,7 @@ TABLE.typo3-editPanel TD { border: 0px; }
 						$a='name';
 						if (strtolower($key)=='refresh')	{$a='http-equiv';}
 						$GLOBALS['TSFE']->content.= '
-<meta '.$a.'="'.$key.'" content="'.htmlspecialchars(trim($val)).'" />';
+	<meta '.$a.'="'.$key.'" content="'.htmlspecialchars(trim($val)).'" />';
 					}
 				}
 			}
@@ -574,22 +624,28 @@ TABLE.typo3-editPanel TD { border: 0px; }
 		}
 		$JSef = TSpagegen::JSeventFunctions();
 
+			// Adding default Java Script:
+		$_scriptCode = '
+		browserName = navigator.appName;
+		browserVer = parseInt(navigator.appVersion);
+		var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
+		if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror") {version = "n3";} else {version = "n2";}
+			// Blurring links:
+		function blurLink(theObject)	{	//
+			if (msie4)	{theObject.blur();}
+		}
+		';
 		if (!$GLOBALS['TSFE']->config['config']['removeDefaultJS']) {
+				// NOTICE: The following code must be kept synchronized with "tslib/default.js"!!!
 			$GLOBALS['TSFE']->content.='
-<script type="text/javascript">
-	/*<![CDATA[*/
-<!--
-	browserName = navigator.appName;
-	browserVer = parseInt(navigator.appVersion);
-	var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
-	if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror") {version = "n3";} else {version = "n2";}
-		// Blurring links:
-	function blurLink(theObject)	{	//
-		if (msie4)	{theObject.blur();}
-	}
-// -->
-	/*]]>*/
-</script>';
+	<script type="text/javascript">
+		/*<![CDATA[*/
+	<!--'.$_scriptCode.'
+	// -->
+		/*]]>*/
+	</script>';
+		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS']==='external')	{
+			$GLOBALS['TSFE']->content.=TSpagegen::inline2TempFile($_scriptCode, 'js');
 		}
 
 		$GLOBALS['TSFE']->content.=implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
@@ -625,10 +681,10 @@ TABLE.typo3-editPanel TD { border: 0px; }
 		if (count($JSef[1]))	{	// Event functions:
 			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' '.trim(implode(' ',$JSef[1])).'>';
 		}
+		$GLOBALS['TSFE']->content.= chr(10).$bodyTag;
 
 
 		// Div-sections
-		$GLOBALS['TSFE']->content.= chr(10).$bodyTag;
 		if ($GLOBALS['TSFE']->divSection)	{
 			$GLOBALS['TSFE']->content.=	chr(10).$GLOBALS['TSFE']->divSection;
 		}
@@ -642,6 +698,59 @@ TABLE.typo3-editPanel TD { border: 0px; }
 			$GLOBALS['TSFE']->content.= chr(10).'</noframes>';
 		}
 		$GLOBALS['TSFE']->content.=chr(10).'</html>';
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*************************
+	 *
+	 * Helper functions
+	 * Remember: Calls internally must still be done on the non-instantiated class: TSpagegen::inline2TempFile()
+	 *
+	 *************************/
+
+	/**
+	 * Writes string to a temporary file named after the md5-hash of the string
+	 *
+	 * @param	string		CSS styles / JavaScript to write to file.
+	 * @param	string		Extension: "css" or "js"
+	 * @return	string		<script> or <link> tag for the file.
+	 */
+	function inline2TempFile($str,$ext)	{
+
+			// Create filename / tags:
+		$script = '';
+		switch($ext)	{
+			case 'js':
+				$script = 'typo3temp/javascript_'.substr(md5($str),0,10).'.js';
+				$output = '
+	<script type="text/javascript" src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$script).'"></script>';
+			break;
+			case 'css':
+				$script = 'typo3temp/stylesheet_'.substr(md5($str),0,10).'.css';
+				$output = '
+	<link rel="stylesheet" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$script).'" />';
+			break;
+		}
+
+			// Write file:
+		if ($script)	{
+			if (!@is_file(PATH_site.$script))	{
+				t3lib_div::writeFile(PATH_site.$script,$str);
+			}
+		}
+
+		return $output;
 	}
 }
 

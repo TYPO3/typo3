@@ -423,8 +423,8 @@ class t3lib_parsehtml {
 		list($components,$metaC) = $this->split_tag_attributes($tag);
 		$name = '';	 // attribute name is stored here
 		$valuemode = '';
-		$attributes=array();
-		$attributesMeta=array();
+		$attributes = array();
+		$attributesMeta = array();
 		if (is_array($components))	{
 			while (list($key,$val) = each ($components))	{
 				if ($val != '=')	{	// Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
@@ -435,7 +435,7 @@ class t3lib_parsehtml {
 							$name = '';
 						}
 					} else {
-						if ($namekey = ereg_replace('[^a-zA-Z0-9_-]','',$val))	{
+						if ($namekey = ereg_replace('[^a-zA-Z0-9_:-]','',$val))	{
 							$name = strtolower($namekey);
 							$attributesMeta[$name]=array();
 							$attributesMeta[$name]['origTag']=$namekey;
@@ -598,16 +598,16 @@ class t3lib_parsehtml {
 	function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())	{
 		$newContent = array();
 		$tokArr = explode('<',$content);
-		$newContent[]=$this->processContent(current($tokArr),$hSC,$addConfig);
+		$newContent[] = $this->processContent(current($tokArr),$hSC,$addConfig);
 		next($tokArr);
 
-		$c=1;
-		$tagRegister=array();
-		$tagStack=array();
+		$c = 1;
+		$tagRegister = array();
+		$tagStack = array();
 		while(list(,$tok)=each($tokArr))	{
 			$firstChar = substr($tok,0,1);
 #			if (strcmp(trim($firstChar),''))	{		// It is a tag...
-			if (ereg('[[:alnum:]\/]',$firstChar))	{		// It is a tag... (first char is a-z0-9 or /) (fixed 19/01 2004)
+			if (ereg('[[:alnum:]\/]',$firstChar))	{		// It is a tag... (first char is a-z0-9 or /) (fixed 19/01 2004). This also avoids triggering on <?xml..> and <!DOCTYPE..>
 				$tagEnd = strcspn($tok,'>');
 				if (strlen($tok)!=$tagEnd)	{	// If there is and end-bracket...
 					$endTag = $firstChar=='/' ? 1 : 0;
@@ -1216,7 +1216,6 @@ class t3lib_parsehtml {
 			0,			// All content is htmlspecialchar()'ed (or ??) - if we do, <script> content will break...
 			array('xhtml' => 1)
 		);
-
 		return $content;
 	}
 
@@ -1234,7 +1233,6 @@ class t3lib_parsehtml {
 	function processTag($value,$conf,$endTag,$protected=0)	{
 			// Return immediately if protected or no parameters
 		if ($protected || !count($conf))	return $value;
-
 			// OK then, begin processing for XHTML output:
 			// STILL VERY EXPERIMENTAL!!
 		if ($conf['xhtml'])	{

@@ -1,3 +1,7 @@
+2004-04-20  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Completed changes for XHTML compliance requests from the Accessibility group. Mainly adding support for more XHTML types, adding attributes like xml:lang to <html> tag, support for "dir" attributes in HTML tags, support for writing inline styles and JavaScript to a temporary file to keep a clean HTML <head> section...
+
 2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* "minItems", "maxItems" and "begin" has been added as properties to MENU objects (like TMENU, GMENU, IMGMENU etc) so you can set these values for the individual menus (as they probably should have been in the first place...).
