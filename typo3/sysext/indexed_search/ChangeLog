@@ -1,3 +1,8 @@
+2004-01-29  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed spelling mistake "Interne pages" => "Internal pages"
+	* Fixed bug #0000642: No translations for the word "page" printed by indexed_search when a PDF file matches
+
 2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Fixed spelling mistake.
