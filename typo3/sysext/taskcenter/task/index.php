@@ -92,9 +92,22 @@
 				</script>
 				';
 			$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
-			 
-			//DEV - remove before release;
-			$this->doc->parseTimeFlag = true;
+			$this->doc->JScode .= '  <script language="javascript" type="text/javascript">
+			function resizeIframe(frame,max) {
+	  		try {
+	     				innerDoc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
+							if(max==0) {
+	     					frame.height = innerDoc.body.scrollHeight + 30;
+							} else {
+	     					frame.height = Math.max(innerDoc.body.scrollHeight + 30,document.body.scrollHeight);
+							}
+	  		}
+	  		catch (e) {
+	     		window.status = e.message;
+	  		}
+
+			}
+ </script>';
 			 
 			/* call getMainContent first, because what happens here might affect leftContent */
 			$mainContent = $this->getMainContent();
@@ -102,7 +115,7 @@
 			/* content... */
 			$this->content = '';
 			$this->content .= $this->doc->startPage($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']]);
-			$this->content .= '<table style="width: 100%;"><tr>';
+			$this->content .= '<table style="width: 98%;"><tr>';
 			$this->content .= '<td valign="top" style="width: 20%;">'.$this->getleftHeader().$this->getDynTabMenu().'</td>';
 			$this->content .= '<td valign="top" style="height:100%">'.$mainContent.'</td>';
 			$this->content .= '</tr></table>';

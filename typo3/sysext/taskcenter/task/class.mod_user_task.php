@@ -165,11 +165,11 @@
 		/**
 		* Create configuration for entry in the left tab menu.
 		*
-		* @param string  $htmlContent: Content that does not get escaped, use this for icons links etc. (HTML)
-		* @param string  $label: Title of the tab, escaped for HTML, dispalyed after html content.
-		* @param string  $content: html content that gets displayed when the tab is activated. (HTML)
+		* @param string  $htmlContent: 			Content that does not get escaped, use this for icons links etc. (HTML)
+		* @param string  $label: 						bTitle of the tab, escaped for HTML, dispalyed after html content.
+		* @param string  $content: 					html content that gets displayed when the tab is activated. (HTML)
 		* @param string  $popUpDescription: alt-text for the tab text
-		* @return array		proper configuration for the tab menu.
+		* @return array											proper configuration for the tab menu.
 		*/
 		function mkMenuConfig($htmlContent, $label = "", $content = "", $popUpDescription = '') {
 			$configArr = Array();
@@ -186,8 +186,8 @@
 		* @param string  $url: url to display
 		* @return string	code that inserts the iframe (HTML)
 		*/
-		function urlInIframe($url) {
-			return '<iframe onLoad="this.height=this.contentDocument.height+30;" scrolling="auto" width="100%" src="'.$url.'" name="list_frame" style="border: none;" />';
+		function urlInIframe($url,$max=0) {
+			return '<iframe onload="resizeIframe(this,'.$max.');" scrolling="auto" width="100%" src="'.$url.'" name="list_frame" frameborder="no" style="border: none;"></iframe>';
 		}
 		 
 		 

@@ -41,13 +41,12 @@ class tx_sysaction extends mod_user_task {
 	var $xCol;
 	var $t3lib_TCEforms;
 
-	function overview_main(&$pObj)	{
+	function overview_main()	{
 		$mC = $this->renderActionList();
 		if ($mC)	{
 			$icon = '<img src="'.$this->backPath.t3lib_extMgm::extRelPath("sys_action").'ext_icon.gif" width=18 height=16 class="absmiddle">';
-			$content.=$pObj->doc->section($icon."&nbsp;".$this->headLink("tx_sysaction",1),$mC,1,1,0,1);
+			return $this->mkMenuConfig($icon.$this->headLink("tx_sysaction",1),'',$mC);
 		}
-		return $content;
 	}
 	function main() {
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -283,7 +282,7 @@ class tx_sysaction extends mod_user_task {
 		return $out;
 	}
 	function action_link($str,$id,$title="")	{
-		$str='<a href="index.php?SET[function]=tx_sysaction&sys_action_uid='.$id.'" target="list_frame" onClick="this.blur();" title="'.htmlspecialchars($title).'">'.$str.'</a>';
+		$str='<a href="index.php?SET[function]=tx_sysaction&sys_action_uid='.$id.'" onClick="this.blur();" title="'.htmlspecialchars($title).'">'.$str.'</a>';
 		return $str;
 	}
 	function action_linkUserName($str,$id,$bid)	{
