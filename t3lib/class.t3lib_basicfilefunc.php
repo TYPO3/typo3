@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,56 +24,57 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class with basic file management functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   79: class t3lib_basicFileFunctions	
+ *   80: class t3lib_basicFileFunctions
  *
  *              SECTION: Checking functions
- *  131:     function init($mounts, $f_ext)	
- *  148:     function getTotalFileInfo($wholePath)	
- *  168:     function is_allowed($iconkey,$type)	
- *  193:     function checkIfFullAccess($theDest)	
- *  207:     function is_webpath($path)	
- *  227:     function checkIfAllowed($ext, $theDest, $filename='')	
- *  237:     function checkFileNameLen($fileName)	
- *  247:     function is_directory($theDir)	
- *  264:     function isPathValid($theFile)	
- *  279:     function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)	
- *  322:     function checkPathAgainstMounts($thePath)	
- *  340:     function blindPath($thePath)	
- *  356:     function findTempFolder()	
+ *  132:     function init($mounts, $f_ext)
+ *  149:     function getTotalFileInfo($wholePath)
+ *  169:     function is_allowed($iconkey,$type)
+ *  194:     function checkIfFullAccess($theDest)
+ *  208:     function is_webpath($path)
+ *  228:     function checkIfAllowed($ext, $theDest, $filename='')
+ *  238:     function checkFileNameLen($fileName)
+ *  248:     function is_directory($theDir)
+ *  265:     function isPathValid($theFile)
+ *  280:     function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)
+ *  323:     function checkPathAgainstMounts($thePath)
+ *  341:     function blindPath($thePath)
+ *  357:     function findTempFolder()
  *
  *              SECTION: Cleaning functions
- *  385:     function cleanDirectoryName($theDir)	
- *  395:     function rmDoubleSlash($string)	
- *  405:     function slashPath($path)	
- *  418:     function cleanFileName($fileName)	
- *  429:     function formatSize($sizeInBytes)	
+ *  386:     function cleanDirectoryName($theDir)
+ *  396:     function rmDoubleSlash($string)
+ *  406:     function slashPath($path)
+ *  419:     function cleanFileName($fileName)
+ *  430:     function formatSize($sizeInBytes)
  *
  * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 
 /**
  * Contains functions for management, validation etc of files in TYPO3, using the concepts of web- and ftp-space. Please see the comment for the init() function
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see t3lib_basicFileFunctions::init()
  */
 class t3lib_basicFileFunctions	{
@@ -86,11 +87,11 @@ class t3lib_basicFileFunctions	{
 		// internal
 	var $f_ext = Array();			// See comment in header
 	var $mounts = Array();			// See comment in header
-	var $webPath ='';				// Set to DOCUMENT_ROOT. 
+	var $webPath ='';				// Set to DOCUMENT_ROOT.
 	var $isInit=0;					// Set to true after start();
 
-	
-	
+
+
 	/**********************************
 	 *
 	 * Checking functions
@@ -100,7 +101,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Constructor
 	 * This function should be called to initialise the internal arrays $this->mounts and $this->f_ext
-	 * 
+	 *
 	 *  A typical example of the array $mounts is this:
 	 * 		$mounts[xx][path] = (..a mounted path..)
 	 * 	the 'xx'-keys is just numerical from zero. There are also a [name] and [type] value that just denotes the mountname and type. Not used for athentication here.
@@ -108,7 +109,7 @@ class t3lib_basicFileFunctions	{
 	 * 	The mountpaths are with a trailing '/'. $thePath must be with a trailing '/' also!
 	 * 	As you can see, $this->mounts is very critical! This is the array that decides where the user will be allowed to copy files!!
 	 *  Typically the global var $WEBMOUNTS would be passed along as $mounts
-	 * 
+	 *
 	 * 	A typical example of the array $f_ext is this:
 	 * 		$f_ext['webspace']['allow']='';
 	 * 		$f_ext['webspace']['deny']='php3,php';
@@ -119,13 +120,13 @@ class t3lib_basicFileFunctions	{
 	 * 	You list extensions comma-separated. If the value is a '*' every extension is allowed
 	 * 	The list is case-insensitive when used in this class (see init())
 	 *  Typically TYPO3_CONF_VARS['BE']['fileExtensions'] would be passed along as $f_ext.
-	 * 
+	 *
 	 *  Example:
 	 * 	$basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
-	 * 
+	 *
 	 * @param	array		Contains the paths of the file mounts for the current BE user. Normally $GLOBALS['FILEMOUNTS'] is passed. This variable is set during backend user initialization; $FILEMOUNTS = $BE_USER->returnFilemounts(); (see typo3/init.php)
 	 * @param	array		Array with information about allowed and denied file extensions. Typically passed: $TYPO3_CONF_VARS['BE']['fileExtensions']
-	 * @return	void		
+	 * @return	void
 	 * @see typo3/init.php, t3lib_userAuthGroup::returnFilemounts()
 	 */
 	function init($mounts, $f_ext)	{
@@ -133,7 +134,7 @@ class t3lib_basicFileFunctions	{
 		$this->f_ext['webspace']['deny'] = t3lib_div::uniqueList(strtolower($f_ext['webspace']['deny']));
 		$this->f_ext['ftpspace']['allow'] = t3lib_div::uniqueList(strtolower($f_ext['ftpspace']['allow']));
 		$this->f_ext['ftpspace']['deny'] = t3lib_div::uniqueList(strtolower($f_ext['ftpspace']['deny']));
-		
+
 		$this->mounts = $mounts;
 		$this->webPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 		$this->isInit=1;
@@ -141,7 +142,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns an array with a whole lot of fileinformation.
-	 * 
+	 *
 	 * @param	string		Filepath to existing file. Should probably be absolute. Filefunctions are performed on this value.
 	 * @return	array		Information about the file in the filepath
 	 */
@@ -154,13 +155,13 @@ class t3lib_basicFileFunctions	{
 		$info['owner']=@fileowner($wholePath);
 		$info['perms']=@fileperms($wholePath);
 		$info['writeable'] = ($info['perms']&2 || ($theuser==$info['owner'] && $info['perms']&128));
-		$info['readable'] = ($info['perms']&4 || ($theuser==$info['owner'] && $info['perms']&256));	
+		$info['readable'] = ($info['perms']&4 || ($theuser==$info['owner'] && $info['perms']&256));
 		return $info;
 	}
 
 	/**
 	 * Checks if a $iconkey (fileextension) is allowed according to $this->f_ext.
-	 * 
+	 *
 	 * @param	string		The extension to check, eg. "php" or "html" etc.
 	 * @param	string		Either "webspage" or "ftpspace" - points to a key in $this->f_ext
 	 * @return	boolean		True if file extension is allowed.
@@ -186,9 +187,9 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns true if you can operate of ANY file ('*') in the space $theDest is in ('webspace' / 'ftpspace')
-	 * 
+	 *
 	 * @param	string		Absolute path
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function checkIfFullAccess($theDest)	{
 		$type = $this->is_webpath($theDest)?'webspace':'ftpspace';
@@ -200,11 +201,11 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Checks if $this->webPath (should be TYPO3_DOCUMENT_ROOT) is in the first part of $path
 	 * Returns true also if $this->init is not set or if $path is empty...
-	 * 
+	 *
 	 * @param	string		Absolute path to check
-	 * @return	boolean		
+	 * @return	boolean
 	 */
-	function is_webpath($path)	{		
+	function is_webpath($path)	{
 		if ($this->isInit)	{
 			$testPath = $this->slashPath($path);
 			$testPathWeb = $this->slashPath($this->webPath);
@@ -218,21 +219,21 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * If the filename is given, check it against the TYPO3_CONF_VARS[BE][fileDenyPattern] +
 	 * Checks if the $ext fileextension is allowed in the path $theDest (this is based on whether $theDest is below the $this->webPath)
-	 * 
+	 *
 	 * @param	string		File extension, eg. "php" or "html"
 	 * @param	string		Absolute path for which to test
 	 * @param	string		Filename to check against TYPO3_CONF_VARS[BE][fileDenyPattern]
 	 * @return	boolean		True if extension/filename is allowed
 	 */
 	function checkIfAllowed($ext, $theDest, $filename='')	{
-		return t3lib_div::verifyFilenameAgainstDenyPattern($filename) && $this->is_allowed($ext,($this->is_webpath($theDest)?'webspace':'ftpspace'));	
+		return t3lib_div::verifyFilenameAgainstDenyPattern($filename) && $this->is_allowed($ext,($this->is_webpath($theDest)?'webspace':'ftpspace'));
 	}
 
 	/**
 	 * Returns true if the input filename string is shorter than $this->maxInputNameLen.
-	 * 
+	 *
 	 * @param	string		Filename, eg "somefile.html"
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function checkFileNameLen($fileName)	{
 		return strlen($fileName) <= $this->maxInputNameLen;
@@ -240,7 +241,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Cleans $theDir for slashes in the end of the string and returns the new path, if it exists on the server.
-	 * 
+	 *
 	 * @param	string		Directory path to check
 	 * @return	string		Returns the cleaned up directory name if OK, otherwise false.
 	 */
@@ -256,7 +257,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Wrapper for t3lib_div::validPathStr()
-	 * 
+	 *
 	 * @param	string		Filepath to evaluate
 	 * @return	boolean		True, if no '//', '..' or '\' is in the $theFile
 	 * @see	t3lib_div::validPathStr()
@@ -269,7 +270,7 @@ class t3lib_basicFileFunctions	{
 	 * Returns the destination path/filename of a unique filename/foldername in that path.
 	 * If $theFile exists in $theDest (directory) the file have numbers appended up to $this->maxNumber. Hereafter a unique string will be appended.
 	 * This function is used by fx. TCEmain when files are attached to records and needs to be uniquely named in the uploads/* folders
-	 * 
+	 *
 	 * @param	string		The input filename to check
 	 * @param	string		The directory for which to return a unique filename for $theFile. $theDest MUST be a valid directory. Should be absolute.
 	 * @param	boolean		If set the filename is returned with the path prepended without checking whether it already existed!
@@ -314,7 +315,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Checks if $thePath is a path under one of the paths in $this->mounts
 	 * See comment in the header of this class.
-	 * 
+	 *
 	 * @param	string		$thePath MUST HAVE a trailing '/' in order to match correctly with the mounts
 	 * @return	string		The key to the first mount found, otherwise nothing is returned.
 	 * @see init()
@@ -333,7 +334,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Removes filemount part of a path, thus blinding the position.
 	 * Takes a path, $thePath, and removes the part of the path which equals the filemount.
-	 * 
+	 *
 	 * @param	string		$thePath is a path which MUST be found within one of the internally set filemounts, $this->mounts
 	 * @return	string		The processed input path
 	 */
@@ -350,7 +351,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Find temporary folder
 	 * Finds the first $this->tempFN ('_temp_' usually) -folder in the internal array of filemounts, $this->mounts
-	 * 
+	 *
 	 * @return	string		Returns the path if found, otherwise nothing if error.
 	 */
 	function findTempFolder()	{
@@ -378,7 +379,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Removes all dots, slashes and spaces after a path...
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @return	string		Output string
 	 */
@@ -388,7 +389,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Converts any double slashes (//) to a single slash (/)
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @return	string		Returns the converted string
 	 */
@@ -398,31 +399,31 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns a string which has a slash '/' appended if it doesn't already have that slash
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @return	string		Output string with a slash in the end (if not already there)
 	 */
 	function slashPath($path)	{
 		if (substr($path,-1)!='/')	{
 			return $path.'/';
-		} 
+		}
 		return $path;
-	}	
+	}
 
 	/**
 	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_'
-	 * 
+	 *
 	 * @param	string		Input string, typically the body of a filename
 	 * @return	string		Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_'
 	 */
 	function cleanFileName($fileName)	{
-		$theNewName = ereg_replace('[^\.[:alnum:]_-]','_',trim($fileName));
+		$theNewName = ereg_replace('[^.[:alnum:]_-]','_',trim($fileName));
 		return $theNewName;
 	}
 
 	/**
 	 * Formats an integer, $sizeInBytes, to Mb or Kb or just bytes
-	 * 
+	 *
 	 * @param	integer		Bytes to be formated
 	 * @return	string		Formatted with M,K or &nbsp;&nbsp; appended.
 	 */

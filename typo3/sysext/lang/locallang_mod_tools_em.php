@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -14,7 +15,7 @@ $LOCAL_LANG = Array (
 	'de' => Array (
 		'mlang_labels_tablabel' => 'TYPO3 Erweiterungs-Manager',
 		'mlang_labels_tabdescr' => 'Verwaltet TYPO3 Erweiterungen, wozu Plugins, Module, Konfiguationen und Übersetzngen zählen.',
-		'mlang_tabs_tab' => 'Erw.-Manager',
+		'mlang_tabs_tab' => 'Ext.-Manager',
 	),
 	'no' => Array (
 		'mlang_labels_tablabel' => 'TYPO3 Extension Manager',
@@ -39,9 +40,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ext Manager',
 	),
 	'cz' => Array (
-		'mlang_labels_tablabel' => 'TYPO3 Extension Manager',
-		'mlang_labels_tabdescr' => 'Obsluhuje extenze TYPO3, které zahrnují pluginy, moduly, rozšíøení tøíd, configuraèní kódy apod. z centrálního zdroje',
-		'mlang_tabs_tab' => 'Ext Manager',
+		'mlang_labels_tablabel' => 'Správce extenzí TYPO3',
+		'mlang_labels_tabdescr' => 'Spravuje extenze TYPO3, které zahrnují doplòky, moduly, rozšíøení tøíd, konfiguraèní kódy apod. z centrálního depozitáøe',
+		'mlang_tabs_tab' => 'Správce ext.',
 	),
 	'pl' => Array (
 		'mlang_labels_tablabel' => 'Menad¿er rozszerzeñ',
@@ -56,6 +57,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Lisäpalvelujen Hallinta',
 	),
 	'tr' => Array (
+		'mlang_labels_tablabel' => 'Typo3 Uzantý Yönetimi',
+		'mlang_labels_tabdescr' => 'TYPO3 Uzantý Yönetimi, Eklentileri, modülleri, uzanti birimlerini, konfigürasyon kodlarýný vs. merkezi repository den içerir.',
+		'mlang_tabs_tab' => 'Uzantý Yönetimi',
 	),
 	'se' => Array (
 		'mlang_labels_tablabel' => 'TYPO3:s verktyg för extra tjänster',
@@ -73,6 +77,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ìåíåäæåð ðàñø.',
 	),
 	'ro' => Array (
+		'mlang_labels_tablabel' => 'Administratorul de Extensii TYPO3',
+		'mlang_labels_tabdescr' => 'Administreaza extensiile TYPO3, care includ plugin-uri, module, extensii ale claselor, coduri de configurare, etc. dintr-un depozit central.',
+		'mlang_tabs_tab' => 'Administrator Ext',
 	),
 	'ch' => Array (
 		'mlang_labels_tablabel' => 'TYPO3À©Õ¹¹ÜÀíÆ÷',
@@ -88,6 +95,75 @@ $LOCAL_LANG = Array (
 		'mlang_labels_tablabel' => 'TYPO3 Plëtiniø Tvarkyklë',
 		'mlang_labels_tabdescr' => 'Tvarko TYPO3 plëtinius, kuriuos sudaro itarpai, moduliai, klasiø plëtiniai, konfiguraciniai kodai ir kt. ið centrinës saugyklos.',
 		'mlang_tabs_tab' => 'Plëtiniø Tvarkyklë',
+	),
+	'is' => Array (
+		'mlang_labels_tablabel' => 'Typo3 ViÃ°bÃ¦tur Umhverfi',
+		'mlang_labels_tabdescr' => 'StÃ½ringar Ã¡ viÃ°bÃ³tum fyrir Typo3. Which includes plugins, modules, class extensions, configuration code etc. from a central repository.',
+		'mlang_tabs_tab' => 'ViÃ°bÃ¦tur Umhverfi',
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Manager TYPO3  ekstenzija',
+		'mlang_labels_tabdescr' => 'Upravlja TYPO3 ekstenzijama, što ukljuèuje plugine, module, class ekstenzije, konfiguracijski kod i sl. iz centralnog repoztorija.',
+		'mlang_tabs_tab' => 'Ext Manager',
+	),
+	'hu' => Array (
+		'mlang_labels_tablabel' => 'Typo3 Bõvítménykezelõ',
+		'mlang_labels_tabdescr' => 'A Typo3 bõvítményeit, plugin-jeit, moduljait kezelheted, telepítheted és konfigurálhatod.',
+		'mlang_tabs_tab' => 'Bõvítménykezelõ',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'mlang_labels_tablabel' => 'Typo3 ¼Ùé¨Ñ´¡ÒÃÊèÇ¹à¾ÔèÁàµÔÁ (Extension)',
+		'mlang_labels_tabdescr' => '¨Ñ´¡ÒÃ ÊèÇ¹à¾ÔèÁàµÔÁ ¢Í§ Typo3 «Öè§»ÃÐ¡Íº´éÇÂ »Ñé¡ÍÔ¹ âÁ´ÙÅ ¤ÅÒÊ µé¹ÃÐËÑÊ»ÃÑºáµè§ áÅÐÍ×è¹æ ¨Ò¡·Õèà¡çºÊèÇ¹¡ÅÒ§',
+		'mlang_tabs_tab' => '¼Ùé¨Ñ´¡ÒÃ Ext',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'mlang_labels_tablabel' => 'Typo3©µ¦ù¤u¨ãºÞ²z­û',
+		'mlang_labels_tabdescr' => 'ºÞ²zTypo3ªº©µ¦ù¤u¨ã¡A¥]¬A¨Ó¦Û¤¤¥¡µ{¦¡®wªºÔX¤J¦¡¤¸¥ó¡B¼Ò²Õ¡B¤ÀÃþ©µ¦ù¤u¨ã¡B½Õ¸û½s½Xµ¥',
+		'mlang_tabs_tab' => '©µ¦ù¤u¨ãºÞ²z­û',
+	),
+	'eu' => Array (
+		'mlang_labels_tablabel' => 'Typo3 Extentsio Kudeatzailea',
+		'mlang_labels_tabdescr' => 'Typo3 extentsioak biltegi zentraletik kudeatzen ditu, plugin, modulu, klase extentsioak, konfigurazio kodea, eta abar barne.',
+		'mlang_tabs_tab' => 'Ext Kudeatzailea',
+	),
+	'bg' => Array (
+		'mlang_labels_tablabel' => 'Typo3 ìåíèäæúð íà ðàçøèðåíèÿòà',
+		'mlang_labels_tabdescr' => 'Óïðàâëåíèå íà Typo3 ðàçøèðåíèÿ, êîéòî âêëþ÷âàò plugins, ìîäóëè, class ðàçøèðåíèÿ, êîíôèãóðàöèîííè êîäîâå è äð. îò öåíòðàëíî õðàíèëèùå.',
+		'mlang_tabs_tab' => 'Ìåíèäæúð íà ðàçøèðåíèÿòà',
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Administrador de Extensões do Typo3',
+		'mlang_labels_tabdescr' => 'Administra as extensões do Typo3, que incluem pluins, módulos, classes, código de configuração, etc. a partir de um depósito central.',
+		'mlang_tabs_tab' => 'Adm. de Extensões',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Typo3 laiendite haldur',
+		'mlang_labels_tabdescr' => 'Haldab Typo3 laiendeid, mis sisaldavad pluginaid, mooduleid, klasside laiendeid, konfiguratsiooni koode jne, kesksest varamust.',
+		'mlang_tabs_tab' => 'Laiendite haldur',
+	),
+	'ar' => Array (
+		'mlang_labels_tablabel' => 'ÅÏÇÑÉ ÇäÅÖÇáÉ Åäé ÊêÈè 3',
+		'mlang_labels_tabdescr' => 'ÅÏÇÑÉ ÅÖÇáÇÊ ÊêÈè 3 ÇäÊê ÊÍÊèê Ùäé ÊÑãêÈÉ ÏÇÎäêÉ , Ñãæ åæ ÇäÃÑãÇæ , ÒêÇÏÉ  ÊèÕêáêÉ , ÔáÑÉ åÙÇêÑÉ åæ åÎÒæ ÇäÅÖÇáÇÊ',
+		'mlang_tabs_tab' => 'åÏêÑ ÇäÅÖÇáÉ',
+	),
+	'he' => Array (
+		'mlang_labels_tablabel' => '×ž× ×”×œ ×ª×•×¡×¤×•×ª TYPO3',
+		'mlang_labels_tabdescr' => '×ž× ×”×œ ×ª×•×¡×¤×•×ª TYPO3, ×©×ž×›×™×œ×•×ª ×”×ª×§× ×™-×ª×§×¢, ×ž×•×“×•×œ×™×, ×ª×•×¡×¤×•×ª ×ž×—×œ×§×” (class extensions), ×§×•×“ ×”×’×“×¨×•×ª ×•×›×•\' ×ž×ž××’×¨ ×ž×¨×›×–×™.',
+		'mlang_tabs_tab' => '×ž× ×”×œ ×ª×•×¡×¤×•×ª',
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+		'mlang_labels_tablabel' => 'TYPO3 PaplaÅ¡inÄjumu menedÅ¾eris',
+		'mlang_tabs_tab' => 'PaplaÅ¡inÄjumi',
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,56 +24,65 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
- * This class has functions which generates a difference output of a content string
+/**
+ * Contains class which has functions that generates a difference output of a content string
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ * XHTML Compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   67: class t3lib_diff
+ *   86:     function makeDiffDisplay($str1,$str2)
+ *  160:     function getDiff($str1,$str2)
+ *  187:     function addClearBuffer($clearBuffer,$last=0)
+ *  203:     function explodeStringIntoWords($str)
+ *  224:     function tagSpace($str,$rev=0)
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
+
+
+
+
+
+/**
+ * This class has functions which generates a difference output of a content string
+ * Currently works only with LINUX/UNIX
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
+ */
 class t3lib_diff {
-	var $stripTags = 0;
-	var $clearBufferIdx=0;
-	
-	function getDiff($str1,$str2)	{
-		if (TYPO3_OS!="WIN")	{
-				// Create file 1 and write string
-			$file1 = tempnam("","");
-			t3lib_div::writeFile($file1,$str1);
-				// Create file 2 and write string
-			$file2 = tempnam("","");
-			t3lib_div::writeFile($file2,$str2);
-				// Perform diff.
-			$cmd = $GLOBALS["TYPO3_CONF_VARS"]["BE"]["diff_path"]." ".$file1." ".$file2;
-			exec($cmd,$res);
-	
-			unlink($file1);
-			unlink($file2);
-			
-			return $res;
-		}
-	}
-	function explodeStringIntoWords($str)	{
-		$strArr = t3lib_div::trimExplode(chr(10),$str);
-		$outArray=array();
-		reset($strArr);
-		while(list(,$lineOfWords)=each($strArr))	{
-			$allWords = t3lib_div::trimExplode(" ",$lineOfWords,1);
-			$outArray = array_merge($outArray,$allWords);
-			$outArray[]="";
-			$outArray[]="";
-		}
-		return $outArray;
-	}
-	function tagSpace($str,$rev=0)	{
-		if ($rev)	{
-			return str_replace(" &lt;","&lt;",str_replace("&gt; ","&gt;",$str));
-		} else {
-			return str_replace("<"," <",str_replace(">","> ",$str));
-		}
-	}
+
+		// External, static:
+	var $stripTags = 0;			// If set, the HTML tags are stripped from the input strings first.
+	var $diffOptions = '';		// Diff options. eg "--unified=3"
+
+		// Internal, dynamic:
+	var $clearBufferIdx=0;		// This indicates the number of times the function addClearBuffer has been called - and used to detect the very first call...
+
+
+
+
+	/**
+	 * This will produce a color-marked-up diff output in HTML from the input strings.
+	 *
+	 * @param	string		String 1
+	 * @param	string		String 2
+	 * @return	string		Formatted output.
+	 */
 	function makeDiffDisplay($str1,$str2)	{
 		if ($this->stripTags)	{
 			$str1 = strip_tags($str1);
@@ -84,10 +93,9 @@ class t3lib_diff {
 		}
 		$str1Lines = $this->explodeStringIntoWords($str1);
 		$str2Lines = $this->explodeStringIntoWords($str2);
-//		debug($str1Lines);
-//		debug($str2Lines);
+
 		$diffRes = $this->getDiff(implode(chr(10),$str1Lines).chr(10),implode(chr(10),$str2Lines).chr(10));
-//debug($diffRes);
+
 		if (is_array($diffRes))	{
 			reset($diffRes);
 			$c=0;
@@ -95,66 +103,134 @@ class t3lib_diff {
 			while(list(,$lValue)=each($diffRes))	{
 				if (intval($lValue))	{
 					$c=intval($lValue);
-					$diffResArray[$c]["changeInfo"]=$lValue;
+					$diffResArray[$c]['changeInfo']=$lValue;
 				}
-				if (substr($lValue,0,1)=="<")	{
-					$diffResArray[$c]["old"][]=substr($lValue,2);
+				if (substr($lValue,0,1)=='<')	{
+					$diffResArray[$c]['old'][]=substr($lValue,2);
 				}
-				if (substr($lValue,0,1)==">")	{
-					$diffResArray[$c]["new"][]=substr($lValue,2);
+				if (substr($lValue,0,1)=='>')	{
+					$diffResArray[$c]['new'][]=substr($lValue,2);
 				}
 			}
-//			debug($str1Lines);
-//			debug($str2Lines);
-//			debug($diffResArray);
-			
-			$outString="";
-			$clearBuffer="";
+
+			$outString='';
+			$clearBuffer='';
 			for ($a=-1;$a<count($str1Lines);$a++)	{
 				if (is_array($diffResArray[$a+1]))	{
-					if (strstr($diffResArray[$a+1]["changeInfo"],"a"))	{	// a=Add, c=change, d=delete: If a, then the content is Added after the entry and we must insert the line content as well.
-						$clearBuffer.=htmlspecialchars($str1Lines[$a])." ";
+					if (strstr($diffResArray[$a+1]['changeInfo'],'a'))	{	// a=Add, c=change, d=delete: If a, then the content is Added after the entry and we must insert the line content as well.
+						$clearBuffer.=htmlspecialchars($str1Lines[$a]).' ';
 					}
 
 					$outString.=$this->addClearBuffer($clearBuffer);
-					$clearBuffer="";
-					if (is_array($diffResArray[$a+1]["old"]))	{
-						$outString.='<font color=red>'.htmlspecialchars(implode(" ",$diffResArray[$a+1]["old"])).'</font> ';
+					$clearBuffer='';
+					if (is_array($diffResArray[$a+1]['old']))	{
+						$outString.='<span class="diff-r">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['old'])).'</span> ';
 					}
-					if (is_array($diffResArray[$a+1]["new"]))	{
-						$outString.='<font color=green>'.htmlspecialchars(implode(" ",$diffResArray[$a+1]["new"])).'</font> ';
+					if (is_array($diffResArray[$a+1]['new']))	{
+						$outString.='<span class="diff-g">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['new'])).'</span> ';
 					}
-					$chInfParts = explode(",",$diffResArray[$a+1]["changeInfo"]);
+					$chInfParts = explode(',',$diffResArray[$a+1]['changeInfo']);
 					if (!strcmp($chInfParts[0],$a+1))	{
 						$newLine = intval($chInfParts[1])-1;
 						if ($newLine>$a)	$a=$newLine;	// Security that $a is not set lower than current for some reason...
 					}
 				} else {
-					$clearBuffer.=htmlspecialchars($str1Lines[$a])." ";
+					$clearBuffer.=htmlspecialchars($str1Lines[$a]).' ';
 				}
 			}
 			$outString.=$this->addClearBuffer($clearBuffer,1);
-			
-			$outString = str_replace("  ",chr(10),$outString);
+
+			$outString = str_replace('  ',chr(10),$outString);
 			if (!$this->stripTags)	{
 				$outString = $this->tagSpace($outString,1);
 			}
 			return $outString;
 		}
 	}
+
+	/**
+	 * Produce a diff (with the "diff" application on unix) between two strings
+	 * The function will write the two input strings to temporary files, then execute the diff program, delete the temp files and return the result.
+	 *
+	 * @param	string		String 1
+	 * @param	string		String 2
+	 * @return	array		The result from the exec() function call.
+	 * @access private
+	 */
+	function getDiff($str1,$str2)	{
+		if (TYPO3_OS!='WIN')	{
+				// Create file 1 and write string
+			$file1 = t3lib_div::tempnam('diff1_');
+			t3lib_div::writeFile($file1,$str1);
+				// Create file 2 and write string
+			$file2 = t3lib_div::tempnam('diff2_');
+			t3lib_div::writeFile($file2,$str2);
+				// Perform diff.
+			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$this->diffOptions.' '.$file1.' '.$file2;
+			exec($cmd,$res);
+
+			unlink($file1);
+			unlink($file2);
+
+			return $res;
+		}
+	}
+
+	/**
+	 * Will bring down the length of strings to < 150 chars if they were longer than 200 chars. This done by preserving the 70 first and last chars and concatenate those strings with "..." and a number indicating the string length
+	 *
+	 * @param	string		The input string.
+	 * @param	boolean		If set, it indicates that the string should just end with ... (thus no "complete" ending)
+	 * @return	string		Processed string.
+	 * @access private
+	 */
 	function addClearBuffer($clearBuffer,$last=0)	{
 		if (strlen($clearBuffer)>200)	{
-			$clearBuffer=($this->clearBufferIdx?t3lib_div::fixed_lgd($clearBuffer,70):"")."[".strlen($clearBuffer)."]".(!$last?t3lib_div::fixed_lgd_pre($clearBuffer,70):"");
+			$clearBuffer=($this->clearBufferIdx?t3lib_div::fixed_lgd($clearBuffer,70):'').'['.strlen($clearBuffer).']'.(!$last?t3lib_div::fixed_lgd_pre($clearBuffer,70):'');
 		}
 		$this->clearBufferIdx++;
 		return $clearBuffer;
 	}
+
+	/**
+	 * Explodes the input string into words.
+	 * This is done by splitting first by lines, then by space char. Each word will be in stored as a value in an array. Lines will be indicated by two subsequent empty values.
+	 *
+	 * @param	string		The string input
+	 * @return	array		Array with words.
+	 * @access private
+	 */
+	function explodeStringIntoWords($str)	{
+		$strArr = t3lib_div::trimExplode(chr(10),$str);
+		$outArray=array();
+		reset($strArr);
+		while(list(,$lineOfWords)=each($strArr))	{
+			$allWords = t3lib_div::trimExplode(' ',$lineOfWords,1);
+			$outArray = array_merge($outArray,$allWords);
+			$outArray[]='';
+			$outArray[]='';
+		}
+		return $outArray;
+	}
+
+	/**
+	 * Adds a space character before and after HTML tags (more precisely any found < or >)
+	 *
+	 * @param	string		String to process
+	 * @param	boolean		If set, the < > searched for will be &lt; and &gt;
+	 * @return	string		Processed string
+	 * @access private
+	 */
+	function tagSpace($str,$rev=0)	{
+		if ($rev)	{
+			return str_replace(' &lt;','&lt;',str_replace('&gt; ','&gt;',$str));
+		} else {
+			return str_replace('<',' <',str_replace('>','> ',$str));
+		}
+	}
 }
 
-
-
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_diff.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_diff.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_diff.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_diff.php']);
 }
-
 ?>

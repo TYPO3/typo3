@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -27,52 +27,55 @@
 /**
  * Class for TYPO3 backend user authentication in the TSFE frontend
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  100: class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth 
- *  130:     function extInitFeAdmin()	
- *  150:     function extPrintFeAdminDialog()	
- *  174:     function TSFEtypo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	
- *  186:     function TSFEtypo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)	
+ *  103: class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth
+ *  129:     function extInitFeAdmin()
+ *  154:     function extPrintFeAdminDialog()
  *
  *              SECTION: Creating sections of the Admin Panel
- *  230:     function extGetCategory_preview($out='')	
- *  261:     function extGetCategory_cache($out='')	
- *  299:     function extGetCategory_publish($out='')	
- *  334:     function extGetCategory_edit($out='')	
- *  360:     function extGetCategory_tsdebug($out='')	
- *  390:     function extGetCategory_info($out='')	
+ *  249:     function extGetCategory_preview($out='')
+ *  282:     function extGetCategory_cache($out='')
+ *  320:     function extGetCategory_publish($out='')
+ *  355:     function extGetCategory_edit($out='')
+ *  399:     function extGetCategory_tsdebug($out='')
+ *  429:     function extGetCategory_info($out='')
  *
  *              SECTION: Admin Panel Layout Helper functions
- *  463:     function extGetHead($pre)	
- *  480:     function extItemLink($pre,$str)	
- *  496:     function extGetItem($pre,$element)	
- *  512:     function extFw($str)	
- *  521:     function ext_makeToolBar()	
+ *  502:     function extGetHead($pre)
+ *  522:     function extItemLink($pre,$str)
+ *  538:     function extGetItem($pre,$element)
+ *  555:     function extFw($str)
+ *  564:     function ext_makeToolBar()
  *
  *              SECTION: TSFE BE user Access Functions
- *  576:     function extPageReadAccess($pageRec)	
- *  587:     function extAdmModuleEnabled($key)	
- *  603:     function extSaveFeAdminConfig()	
- *  635:     function extGetFeAdminValue($pre,$val='')	
+ *  622:     function checkBackendAccessSettingsFromInitPhp()
+ *  667:     function extPageReadAccess($pageRec)
+ *  678:     function extAdmModuleEnabled($key)
+ *  694:     function extSaveFeAdminConfig()
+ *  726:     function extGetFeAdminValue($pre,$val='')
+ *  759:     function extIsAdmMenuOpen($pre)
  *
  *              SECTION: TSFE BE user Access Functions
- *  693:     function extGetTreeList($id,$depth,$begin=0,$perms_clause)	
- *  722:     function extGetNumberOfCachedPages($page_id)	
+ *  794:     function extGetTreeList($id,$depth,$begin=0,$perms_clause)
+ *  825:     function extGetNumberOfCachedPages($page_id)
  *
  *              SECTION: Localization handling
- *  761:     function extGetLL($key)	
+ *  864:     function extGetLL($key)
  *
  *              SECTION: Frontend Editing
- *  794:     function extIsEditAction()	
- *  817:     function extIsFormShown()	
- *  834:     function extEditAction()	
+ *  907:     function extIsEditAction()
+ *  925:     function extIsFormShown()
+ *  941:     function extEditAction()
  *
  * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -83,7 +86,7 @@
 
 
 
- 
+
 
 
 
@@ -92,8 +95,8 @@
 /**
  * TYPO3 backend user authentication in the TSFE frontend.
  * This includes mainly functions related to the Admin Panel
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -112,7 +115,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	var $ext_forcePreview=0;
 	var $langSplitIndex=0;
 	var $extAdmEnabled = 0;	// General flag which is set if the adminpanel should be displayed at all..
-	
+
 
 
 
@@ -120,8 +123,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * Initialize the usage of Admin Panel.
 	 * Called from index_ts.php if a backend users is correctly logged in.
 	 * Sets $this->extAdminConfig to the "admPanel" config for the user and $this->extAdmEnabled = 1 IF access is enabled.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function extInitFeAdmin()	{
 		$this->extAdminConfig = $this->getTSConfigProp('admPanel');
@@ -129,7 +132,12 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			reset($this->extAdminConfig['enable.']);
 			while(list($k,$v)=each($this->extAdminConfig['enable.']))	{
 				if ($v)	{
+						// Enable panel
 					$this->extAdmEnabled=1;
+
+						// Init TSFE_EDIT variables:
+					$this->TSFE_EDIT = t3lib_div::_POST('TSFE_EDIT');
+
 					break;
 				}
 			}
@@ -139,11 +147,12 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Creates and returns the HTML code for the Admin Panel in the TSFE frontend.
 	 * Called from index_ts.php - in the end of the script
-	 * 
+	 *
 	 * @return	string		HTML for the Admin Panel
 	 * @see index_ts.php
 	 */
 	function extPrintFeAdminDialog()	{
+
 		if ($this->uc['TSFE_adminConfig']['display_top'])	{
 			if ($this->extAdmModuleEnabled('preview'))	$out.= $this->extGetCategory_preview();
 			if ($this->extAdmModuleEnabled('cache'))	$out.= $this->extGetCategory_cache();
@@ -153,13 +162,27 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			if ($this->extAdmModuleEnabled('info'))	$out.= $this->extGetCategory_info();
 		}
 
-		$header.='<tr><td bgcolor="#9BA1A8" colspan="2" nowrap="nowrap">';
-		$header.=$this->extItemLink('top','<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" />'.
-					$this->extFw('<strong>'.$this->extGetLL('adminOptions').'</strong>')).$this->extFw(': '.$this->user['username']).
-					'</td><td bgcolor="#9BA1A8"><img src="clear.gif" width="10" height="1" alt="" /></td><td bgcolor="#9BA1A8"><input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td></tr>';
+		$header.='
+			<tr class="typo3-adminPanel-hRow" bgcolor="#9BA1A8">
+				<td colspan="2" nowrap="nowrap">'.
+					$this->extItemLink('top','<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" /><strong>'.$this->extFw($this->extGetLL('adminOptions')).'</strong>').
+					$this->extFw(': '.$this->user['username']).
+					'</td>
+				<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+				<td><input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td>
+			</tr>';
 
-		$out='<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="post" style="margin: 0 0 0 0;"><table border="0" cellpadding="0" cellspacing="0" bgcolor="#F6F2E6">'.$header.$out.'</table></form>';
-		$out='<a name="TSFE_ADMIN"></a><table border="0" cellpadding="1" cellspacing="0" bgcolor="black"><tr><td>'.$out.'</td></tr></table>';
+		$out='
+<!--
+	ADMIN PANEL
+-->
+<a name="TSFE_ADMIN"></a>
+<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="post" style="margin: 0 0 0 0;">
+	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" bgcolor="#F6F2E6" border="1" bordercolor="black">'.
+		$header.$out.'
+	</table>
+</form>';
+
 		if ($this->uc['TSFE_adminConfig']['display_top'])	{
 			$out.='<script type="text/javascript" src="t3lib/jsfunc.evalfield.js"></script>';
 			$out.='
@@ -167,7 +190,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					/*<![CDATA[*/
 				var evalFunc = new evalFunc();
 					// TSFEtypo3FormFieldSet()
-				function TSFEtypo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{
+				function TSFEtypo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{	//
 					var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 					var theValue = document.TSFE_ADMIN_PANEL_FORM[theField].value;
 					if (checkbox && theValue==checkboxValue)	{
@@ -179,7 +202,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					}
 				}
 					// TSFEtypo3FormFieldGet()
-				function TSFEtypo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)	{
+				function TSFEtypo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)	{	//
 					var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 					if (checkbox_off)	{
 						document.TSFE_ADMIN_PANEL_FORM[theField].value=checkboxValue;
@@ -218,7 +241,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 
 	/**
 	 * Creates the content for the "preview" section ("module") of the Admin Panel
-	 * 
+	 *
 	 * @param	string		Optional start-value; The generated content is added to this variable.
 	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see extPrintFeAdminDialog()
@@ -226,30 +249,32 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	function extGetCategory_preview($out='')	{
 		$out.=$this->extGetHead('preview');
 		if ($this->uc['TSFE_adminConfig']['display_preview'])	{
-			$this->extNeedUpdate=1;
-			$out.=$this->extGetItem('preview_showHiddenPages', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="1"'.($this->uc['TSFE_adminConfig']['preview_showHiddenPages']?' checked="checked"':'').' />');
-			$out.=$this->extGetItem('preview_showHiddenRecords', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="1"'.($this->uc['TSFE_adminConfig']['preview_showHiddenRecords']?' checked="checked"':'').' />');
-	
+			$this->extNeedUpdate = 1;
+			$out.= $this->extGetItem('preview_showHiddenPages', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[preview_showHiddenPages]" value="1"'.($this->uc['TSFE_adminConfig']['preview_showHiddenPages']?' checked="checked"':'').' />');
+			$out.= $this->extGetItem('preview_showHiddenRecords', '<input type="hidden" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[preview_showHiddenRecords]" value="1"'.($this->uc['TSFE_adminConfig']['preview_showHiddenRecords']?' checked="checked"':'').' />');
+
 				// Simulate data
-			$out.=$this->extGetItem('preview_simulateDate', '<input type="checkbox" name="TSFE_ADMIN_PANEL[preview_simulateDate]_cb" onclick="TSFEtypo3FormFieldGet(\'TSFE_ADMIN_PANEL[preview_simulateDate]\', \'datetime\', \'\',1,0,1);" /><input type="text" name="TSFE_ADMIN_PANEL[preview_simulateDate]_hr" onchange="TSFEtypo3FormFieldGet(\'TSFE_ADMIN_PANEL[preview_simulateDate]\', \'datetime\', \'\', 1,0);" /><input type="hidden" name="TSFE_ADMIN_PANEL[preview_simulateDate]" value="'.$this->uc['TSFE_adminConfig']['preview_simulateDate'].'" />');
-			$this->extJSCODE.='TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 1,0);';
-	
+			$out.= $this->extGetItem('preview_simulateDate', '<input type="checkbox" name="TSFE_ADMIN_PANEL[preview_simulateDate]_cb" onclick="TSFEtypo3FormFieldGet(\'TSFE_ADMIN_PANEL[preview_simulateDate]\', \'datetime\', \'\',1,0,1);" /><input type="text" name="TSFE_ADMIN_PANEL[preview_simulateDate]_hr" onchange="TSFEtypo3FormFieldGet(\'TSFE_ADMIN_PANEL[preview_simulateDate]\', \'datetime\', \'\', 1,0);" /><input type="hidden" name="TSFE_ADMIN_PANEL[preview_simulateDate]" value="'.$this->uc['TSFE_adminConfig']['preview_simulateDate'].'" />');
+			$this->extJSCODE.= 'TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 1,0);';
+
 				// Simulate fe_user:
-			$query = 'SELECT fe_groups.uid, fe_groups.title FROM fe_groups,pages WHERE pages.uid=fe_groups.pid AND NOT pages.deleted '.t3lib_BEfunc::deleteClause('fe_groups').' AND '.$this->getPagePermsClause(1);
-			$res = mysql(TYPO3_db, $query);
-			echo mysql_error();
-			$options='<option value="0"></option>';
-			while($row=mysql_fetch_assoc($res))	{
-				$options.='<option value="'.$row['uid'].'"'.($this->uc['TSFE_adminConfig']['preview_simulateUserGroup']==$row['uid']?' selected="selected"':'').'>'.htmlspecialchars('['.$row['uid'].'] '.$row['title']).'</option>';
+			$options = '<option value="0"></option>';
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'fe_groups.uid, fe_groups.title',
+						'fe_groups,pages',
+						'pages.uid=fe_groups.pid AND NOT pages.deleted '.t3lib_BEfunc::deleteClause('fe_groups').' AND '.$this->getPagePermsClause(1)
+					);
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$options.= '<option value="'.$row['uid'].'"'.($this->uc['TSFE_adminConfig']['preview_simulateUserGroup']==$row['uid']?' selected="selected"':'').'>'.htmlspecialchars('['.$row['uid'].'] '.$row['title']).'</option>';
 			}
-			$out.=$this->extGetItem('preview_simulateUserGroup', '<select name="TSFE_ADMIN_PANEL[preview_simulateUserGroup]">'.$options.'</select>');
-		}	
+			$out.= $this->extGetItem('preview_simulateUserGroup', '<select name="TSFE_ADMIN_PANEL[preview_simulateUserGroup]">'.$options.'</select>');
+		}
 		return $out;
 	}
 
 	/**
 	 * Creates the content for the "cache" section ("module") of the Admin Panel
-	 * 
+	 *
 	 * @param	string		Optional start-value; The generated content is added to this variable.
 	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see extPrintFeAdminDialog()
@@ -259,7 +284,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		if ($this->uc['TSFE_adminConfig']['display_cache'])	{
 			$this->extNeedUpdate=1;
 			$out.=$this->extGetItem('cache_noCache', '<input type="hidden" name="TSFE_ADMIN_PANEL[cache_noCache]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[cache_noCache]" value="1"'.($this->uc['TSFE_adminConfig']['cache_noCache']?' checked="checked"':'').' />');
-	
+
 			$options='';
 			$options.='<option value="0"'.($this->uc['TSFE_adminConfig']['cache_clearCacheLevels']==0?' selected="selected"':'').'>'.$this->extGetLL('div_Levels_0').'</option>';
 			$options.='<option value="1"'.($this->uc['TSFE_adminConfig']['cache_clearCacheLevels']==1?' selected="selected"':'').'>'.$this->extGetLL('div_Levels_1').'</option>';
@@ -281,13 +306,13 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$outTable.='<input type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="'.$this->extGetLL('cache_doit').'" />';
 			$out.=$this->extGetItem('cache_cacheEntries', $outTable);
 
-		}		
+		}
 		return $out;
 	}
 
 	/**
 	 * Creates the content for the "publish" section ("module") of the Admin Panel
-	 * 
+	 *
 	 * @param	string		Optional start-value; The generated content is added to this variable.
 	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see extPrintFeAdminDialog()
@@ -302,7 +327,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$options.='<option value="2"'.($this->uc['TSFE_adminConfig']['publish_levels']==2?' selected="selected"':'').'>'.$this->extGetLL('div_Levels_2').'</option>';
 			$out.=$this->extGetItem('publish_levels', '<select name="TSFE_ADMIN_PANEL[publish_levels]">'.$options.'</select>'.
 					'<input type="hidden" name="TSFE_ADMIN_PANEL[publish_id]" value="'.$GLOBALS['TSFE']->id.'" /><input type="submit" value="'.$this->extGetLL('update').'" />');
-			
+
 				// Generating tree:
 			$depth=$this->extGetFeAdminValue('publish','levels');
 			$outTable='';
@@ -316,13 +341,13 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$outTable='<br /><table border="0" cellpadding="0" cellspacing="0">'.$outTable.'</table>';
 			$outTable.='<input type="submit" name="TSFE_ADMIN_PANEL[action][publish]" value="'.$this->extGetLL('publish_doit').'" />';
 			$out.=$this->extGetItem('publish_tree', $outTable);
-		}		
+		}
 		return $out;
 	}
 
 	/**
 	 * Creates the content for the "edit" section ("module") of the Admin Panel
-	 * 
+	 *
 	 * @param	string		Optional start-value; The generated content is added to this variable.
 	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see extPrintFeAdminDialog()
@@ -330,6 +355,11 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	function extGetCategory_edit($out='')	{
 		$out.=$this->extGetHead('edit');
 		if ($this->uc['TSFE_adminConfig']['display_edit'])	{
+
+				// If another page module was specified, replace the default Page module with the new one
+			$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
+			$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+
 			$this->extNeedUpdate=1;
 			$out.=$this->extGetItem('edit_displayFieldIcons', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_displayFieldIcons]" value="1"'.($this->uc['TSFE_adminConfig']['edit_displayFieldIcons']?' checked="checked"':'').' />');
 			$out.=$this->extGetItem('edit_displayIcons', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"'.($this->uc['TSFE_adminConfig']['edit_displayIcons']?' checked="checked"':'').' />');
@@ -337,18 +367,31 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$out.=$this->extGetItem('edit_editNoPopup', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_editNoPopup]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_editNoPopup]" value="1"'.($this->uc['TSFE_adminConfig']['edit_editNoPopup']?' checked="checked"':'').' />');
 
 			$out.=$this->extGetItem('', $this->ext_makeToolBar());
-			if (!t3lib_div::GPvar('ADMCMD_view'))	{
+			if (!t3lib_div::_GP('ADMCMD_view'))	{
 				$out.=$this->extGetItem('', '<a href="#" onclick="'.
-					htmlspecialchars('vHWin=window.open(\''.TYPO3_mainDir.'alt_main.php\',\''.md5('Typo3Backend-'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'\',\'status=1,menubar=1,scrollbars=1,resizable=1\');vHWin.focus();return false;').
+					htmlspecialchars('
+						if (parent.opener && parent.opener.top && parent.opener.top.TS)	{
+							parent.opener.top.fsMod.recentIds["web"]='.intval($GLOBALS['TSFE']->page['uid']).';
+							if (parent.opener.top.content && parent.opener.top.content.nav_frame && parent.opener.top.content.nav_frame.refresh_nav)	{
+								parent.opener.top.content.nav_frame.refresh_nav();
+							}
+							parent.opener.top.goToModule("'.$pageModule.'");
+							parent.opener.top.focus();
+						} else {
+							vHWin=window.open(\''.TYPO3_mainDir.'alt_main.php\',\''.md5('Typo3Backend-'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
+							vHWin.focus();
+						}
+						return false;
+						').
 					'">'.$this->extFw($this->extGetLL('edit_openAB')).'</a>');
 			}
-		}		
+		}
 		return $out;
 	}
 
 	/**
 	 * Creates the content for the "tsdebug" section ("module") of the Admin Panel
-	 * 
+	 *
 	 * @param	string		Optional start-value; The generated content is added to this variable.
 	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see extPrintFeAdminDialog()
@@ -365,20 +408,20 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$out.=$this->extGetItem('tsdebug_displayQueries', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_displayQueries']?' checked="checked"':'').' />');
 
 			$out.=$this->extGetItem('tsdebug_forceTemplateParsing', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="1"'.($this->uc['TSFE_adminConfig']['tsdebug_forceTemplateParsing']?' checked="checked"':'').' />');
-			
+
 			$GLOBALS['TT']->printConf['flag_tree'] = $this->extGetFeAdminValue('tsdebug','tree');
 			$GLOBALS['TT']->printConf['allTime'] = $this->extGetFeAdminValue('tsdebug','displayTimes');
 			$GLOBALS['TT']->printConf['flag_messages'] = $this->extGetFeAdminValue('tsdebug','displayMessages');
 			$GLOBALS['TT']->printConf['flag_content'] = $this->extGetFeAdminValue('tsdebug','displayContent');
 			$GLOBALS['TT']->printConf['flag_queries'] = $this->extGetFeAdminValue('tsdebug','displayQueries');
 			$out.='<tr><td><img src="clear.gif" width="50" height="1" alt="" /></td><td colspan="3">'.$GLOBALS['TT']->printTSlog().'</td></tr>';
-		}		
+		}
 		return $out;
 	}
 
 	/**
 	 * Creates the content for the "info" section ("module") of the Admin Panel
-	 * 
+	 *
 	 * @param	string		Optional start-value; The generated content is added to this variable.
 	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see extPrintFeAdminDialog()
@@ -419,7 +462,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$fileTable='<table border="0" cellpadding="0" cellspacing="0">'.$fileTable.'</table>';
 
 			$out.='<tr><td><img src="clear.gif" width="50" height="1" alt="" /></td><td colspan="3">'.$fileTable.'</td></tr>';
-		}		
+		}
 		return $out;
 	}
 
@@ -447,10 +490,10 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 ****************************************************/
 
 	/**
-	 * Returns a row (with colspan=4) which is a header for a section in the Admin Panel. 
+	 * Returns a row (with colspan=4) which is a header for a section in the Admin Panel.
 	 * It will have a plus/minus icon and a label which is linked so that it submits the form which surrounds the whole Admin Panel when clicked, alterting the TSFE_ADMIN_PANEL[display_'.$pre.'] value
 	 * See the functions extGetCategory_*
-	 * 
+	 *
 	 * @param	string		The suffix to the display_ label. Also selects the label from the LOCAL_LANG array.
 	 * @return	string		HTML table row.
 	 * @access private
@@ -461,12 +504,15 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$out.='<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_'.$pre]?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" />';
 		$out.=$this->extFw($this->extGetLL($pre));
 		$out=$this->extItemLink($pre,$out);
-		return '<tr><td bgcolor="#ABBBB4" colspan="4" nowrap="nowrap">'.$out.'<input type="hidden" name="TSFE_ADMIN_PANEL[display_'.$pre.']" value="'.$this->uc['TSFE_adminConfig']['display_'.$pre].'" /></td></tr>';
+		return '
+				<tr class="typo3-adminPanel-itemHRow" bgcolor="#ABBBB4">
+					<td colspan="4" nowrap="nowrap">'.$out.'<input type="hidden" name="TSFE_ADMIN_PANEL[display_'.$pre.']" value="'.$this->uc['TSFE_adminConfig']['display_'.$pre].'" /></td>
+				</tr>';
 	}
 
 	/**
 	 * Wraps a string in a link which will open/close a certain part of the Admin Panel
-	 * 
+	 *
 	 * @param	string		The code for the display_ label/key
 	 * @param	string		Input string
 	 * @return	string		Linked input string
@@ -482,7 +528,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Returns a row (with 4 columns) for content in a section of the Admin Panel.
 	 * It will take $pre as a key to a label to display and $element as the content to put into the forth cell.
-	 * 
+	 *
 	 * @param	string		Key to label
 	 * @param	string		The HTML content for the forth table cell.
 	 * @return	string		HTML table row.
@@ -490,48 +536,54 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see extGetHead()
 	 */
 	function extGetItem($pre,$element)	{
-		return '<tr>
-			<td><img src="clear.gif" width="50" height="1" alt="" /></td>
-			<td nowrap="nowrap">'.($pre ? $this->extFw($this->extGetLL($pre)) : '&nbsp;').'</td>
-			<td><img src="clear.gif" width="10" height="1" alt="" /></td>
-			<td>'.$element.'</td>
-		</tr>';
-		
+		return '
+					<tr class="typo3-adminPanel-itemRow">
+						<td><img src="clear.gif" width="50" height="1" alt="" /></td>
+						<td nowrap="nowrap">'.($pre ? $this->extFw($this->extGetLL($pre)) : '&nbsp;').'</td>
+						<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+						<td>'.$element.'</td>
+					</tr>';
+
 	}
 
 	/**
 	 * Wraps a string in a font-tag with verdana, size 1 and black
-	 * 
+	 *
 	 * @param	string		The string to wrap
-	 * @return	string		
+	 * @return	string
 	 */
 	function extFw($str)	{
-		return '<font face="Verdana" size="1" color="black"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="color:black;"':'').'>'.$str.'</font>';
+		return '<font face="verdana,arial" size="1" color="black">'.$str.'</font>';
 	}
 
 	/**
 	 * Creates the tool bar links for the "edit" section of the Admin Panel.
-	 * 
+	 *
 	 * @return	string		A string containing images wrapped in <a>-tags linking them to proper functions.
 	 */
 	function ext_makeToolBar()	{
-		$toolBar='';		
+			//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
+		$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
+		$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
+		$newContentWizScriptPath = t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : (TYPO3_mainDir.'sysext/cms/layout/db_new_content_el.php');
+
+		$toolBar='';
 		$id = $GLOBALS['TSFE']->id;
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'show_rechis.php?element='.rawurlencode('pages:'.$id).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'#latest">'.
-					'<img src="t3lib/gfx/history2.gif" width="13" height="12" hspace="2" border="0" align="top"'.t3lib_BEfunc::titleAttrib($this->extGetLL('edit_recordHistory'),1).' alt="" /></a>';
-		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_new_content_el.php?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/new_record.gif" width="16" height="12" hspace="1" border="0" align="top"'.t3lib_BEfunc::titleAttrib($this->extGetLL('edit_newContentElement'),1).' alt="" /></a>';
+					'<img src="t3lib/gfx/history2.gif" width="13" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_recordHistory').'" alt="" /></a>';
+		$toolBar.='<a href="'.htmlspecialchars($newContentWizScriptPath.'?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+					'<img src="t3lib/gfx/new_record.gif" width="16" height="12" hspace="1" border="0" align="top" title="'.$this->extGetLL('edit_newContentElement').'" alt="" /></a>';
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'move_el.php?table=pages&uid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/move_page.gif" width="11" height="12" hspace="2" border="0" align="top"'.t3lib_BEfunc::titleAttrib($this->extGetLL('edit_move_page'),1).' alt="" /></a>';
+					'<img src="t3lib/gfx/move_page.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_move_page').'" alt="" /></a>';
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_new.php?id='.$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/new_page.gif" width="13" height="12" hspace="0" border="0" align="top"'.t3lib_BEfunc::titleAttrib($this->extGetLL('edit_newPage'),1).' alt="" /></a>';
+					'<img src="t3lib/gfx/new_page.gif" width="13" height="12" hspace="0" border="0" align="top" title="'.$this->extGetLL('edit_newPage').'" alt="" /></a>';
 
 		$params='&edit[pages]['.$id.']=edit';
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'alt_doc.php?'.$params.'&noView=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" align="top"'.t3lib_BEfunc::titleAttrib($this->extGetLL('edit_editPageHeader'),1).' alt="" /></a>';
+					'<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_editPageHeader').'" alt="" /></a>';
 		if ($this->check('modules','web_list'))	{
 			$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'db_list.php?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
-					'<img src="t3lib/gfx/list.gif" width="11" height="11" hspace="2" border="0" align="top"'.t3lib_BEfunc::titleAttrib($this->extGetLL('edit_db_list'),1).' alt="" /></a>';
+					'<img src="t3lib/gfx/list.gif" width="11" height="11" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_db_list').'" alt="" /></a>';
 		}
 		return $toolBar;
 	}
@@ -561,11 +613,54 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 ****************************************************/
 
 	/**
-	 * Evaluates if the Backend User has read access to the input page record. 
+	 * Implementing the access checks that the typo3/init.php script does before a user is ever logged in.
+	 * Used in the frontend.
+	 *
+	 * @return	boolean		Returns true if access is OK
+	 * @see typo3/init.php, t3lib_beuserauth::backendCheckLogin()
+	 */
+	function checkBackendAccessSettingsFromInitPhp()	{
+		global $TYPO3_CONF_VARS;
+
+		// **********************
+		// Check Hardcoded lock on BE:
+		// **********************
+		if ($TYPO3_CONF_VARS['BE']['adminOnly'] < 0)	{
+			return FALSE;
+		}
+
+		// **********************
+		// Check IP
+		// **********************
+		if (trim($TYPO3_CONF_VARS['BE']['IPmaskList']))	{
+			if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['BE']['IPmaskList']))	{
+				return FALSE;
+			}
+		}
+
+
+		// **********************
+		// Check SSL (https)
+		// **********************
+		if (intval($TYPO3_CONF_VARS['BE']['lockSSL']))	{
+			if (!t3lib_div::getIndpEnv('TYPO3_SSL'))	{
+				return FALSE;
+			}
+		}
+
+			// Finally a check from t3lib_beuserauth::backendCheckLogin()
+		if (!$TYPO3_CONF_VARS['BE']['adminOnly'] || $this->isAdmin())	{
+			return TRUE;
+		} else return FALSE;
+	 }
+
+
+	/**
+	 * Evaluates if the Backend User has read access to the input page record.
 	 * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts. Only if both conditions are true will the function return true.
 	 * Read access means that previewing is allowed etc.
 	 * Used in index_ts.php
-	 * 
+	 *
 	 * @param	array		The page record to evaluate for
 	 * @return	boolean		True if read access
 	 */
@@ -575,9 +670,9 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 
 	/**
 	 * Checks if a Admin Panel section ("module") is available for the user. If so, true is returned.
-	 * 
+	 *
 	 * @param	string		The module key, eg. "edit", "preview", "info" etc.
-	 * @return	boolean		
+	 * @return	boolean
 	 * @see extPrintFeAdminDialog()
 	 */
 	function extAdmModuleEnabled($key)	{
@@ -591,18 +686,18 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	}
 
 	/**
-	 * Saves any change in settings made in the Admin Panel. 
+	 * Saves any change in settings made in the Admin Panel.
 	 * Called from index_ts.php right after access check for the Admin Panel
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function extSaveFeAdminConfig()	{
-		if (is_array($GLOBALS['HTTP_POST_VARS']['TSFE_ADMIN_PANEL']))	{
+		$input = t3lib_div::_POST('TSFE_ADMIN_PANEL');
+		if (is_array($input))	{
 				// Setting
-			$input = $GLOBALS['HTTP_POST_VARS']['TSFE_ADMIN_PANEL'];
 			$this->uc['TSFE_adminConfig'] = array_merge(!is_array($this->uc['TSFE_adminConfig'])?array():$this->uc['TSFE_adminConfig'], $input);			// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
 			unset($this->uc['TSFE_adminConfig']['action']);
-			
+
 				// Actions:
 			if ($input['action']['clearCache'] && $this->extAdmModuleEnabled('cache'))	{
 				$this->extPageInTreeInfo=array();
@@ -613,8 +708,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 				$theStartId = intval($input['publish_id']);
 				$this->extPublishList = $this->extGetTreeList($theStartId, $this->extGetFeAdminValue('publish','levels'),0,$this->getPagePermsClause(1)).$theStartId;
 			}
-		
-				// Saving		
+
+				// Saving
 			$this->writeUC();
 		}
 		$GLOBALS['TT']->LR = $this->extGetFeAdminValue('tsdebug','LR');
@@ -623,7 +718,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 
 	/**
 	 * Returns the value for a Admin Panel setting. You must specify both the module-key and the internal setting key.
-	 * 
+	 *
 	 * @param	string		Module key
 	 * @param	string		Setting key
 	 * @return	string		The setting value
@@ -647,12 +742,22 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					return $retVal;
 				}
 			}
-			
+
 				// regular check:
-			if ($this->uc['TSFE_adminConfig']['display_top'] && $this->uc['TSFE_adminConfig']['display_'.$pre])	{	// See if the menu is expanded!
+			if ($this->extIsAdmMenuOpen($pre))	{	// See if the menu is expanded!
 				return $retVal;
 			}
 		}
+	}
+
+	/**
+	 * Returns true if admin panel module is open
+	 *
+	 * @param	string		Module key
+	 * @return	boolean		True, if the admin panel is open for the specified admin panel module key.
+	 */
+	function extIsAdmMenuOpen($pre)	{
+		return $this->uc['TSFE_adminConfig']['display_top'] && $this->uc['TSFE_adminConfig']['display_'.$pre];
 	}
 
 
@@ -679,9 +784,9 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Generates a list of Page-uid's from $id. List does not include $id itself
 	 * The only pages excluded from the list are deleted pages.
-	 * 
+	 *
 	 * @param	integer		Start page id
-	 * @param	integer		Depth
+	 * @param	integer		Depth to traverse down the page tree.
 	 * @param	integer		$begin is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
 	 * @param	string		Perms clause
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
@@ -691,12 +796,14 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$begin=intval($begin);
 		$id=intval($id);
 		$theList='';
-		
+
 		if ($id && $depth>0)	{
-			$query = 'SELECT uid,title FROM pages WHERE pid='.$id.' AND doktype IN ('.$GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'].') AND NOT deleted AND '.$perms_clause;
-			$res = mysql(TYPO3_db, $query);
-			echo mysql_error();
-			while ($row = mysql_fetch_assoc($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'uid,title',
+						'pages',
+						'pid='.$id.' AND doktype IN ('.$GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'].') AND NOT deleted AND '.$perms_clause
+					);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				if ($begin<=0)	{
 					$theList.=$row['uid'].',';
 					$this->extPageInTreeInfo[]=array($row['uid'],$row['title'],$depth);
@@ -711,13 +818,13 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 
 	/**
 	 * Returns the number of cached pages for a page id.
-	 * 
+	 *
 	 * @param	integer		The page id.
 	 * @return	integer		The number of pages for this page in the table "cache_pages"
 	 */
 	function extGetNumberOfCachedPages($page_id)	{
-		$res = mysql (TYPO3_db, 'SELECT count(*) FROM cache_pages WHERE page_id='.intval($page_id));
-		list($num) = mysql_fetch_row($res);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_pages', 'page_id='.intval($page_id));
+		list($num) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $num;
 	}
 
@@ -750,7 +857,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Returns the label for key, $key. If a translation for the language set in $this->uc['lang'] is found that is returned, otherwise the default value.
 	 * IF the global variable $LOCAL_LANG is NOT an array (yet) then this function loads the global $LOCAL_LANG array with the content of "sysext/lang/locallang_tsfe.php" so that the values therein can be used for labels in the Admin Panel
-	 * 
+	 *
 	 * @param	string		Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.php"
 	 * @return	string		The value for the $key
 	 */
@@ -760,15 +867,15 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			include('./'.TYPO3_mainDir.'sysext/lang/locallang_tsfe.php');
 			if (!is_array($LOCAL_LANG))		$LOCAL_LANG=array();
 		}
-		
+
 		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));	// Label string in the default backend output charset.
-		
+
 			// Convert to utf-8, then to entities:
 		if ($GLOBALS['LANG']->charSet!='utf-8')	{
 			$labelStr = $GLOBALS['LANG']->csConvObj->utf8_encode($labelStr,$GLOBALS['LANG']->charSet);
 		}
 		$labelStr = $GLOBALS['LANG']->csConvObj->utf8_to_entities($labelStr);
-		
+
 			// Return the result:
 		return $labelStr;
 	}
@@ -793,20 +900,15 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 
 	/**
 	 * Returns true in an edit-action is sent from the Admin Panel
-	 * 
-	 * @return	boolean		
+	 *
+	 * @return	boolean
 	 * @see index_ts.php
 	 */
 	function extIsEditAction()	{
-		$TSFE_EDIT = $GLOBALS['HTTP_POST_VARS']['TSFE_EDIT'];
-		if (is_array($TSFE_EDIT))	{
-/*			$cmd=(string)$TSFE_EDIT['cmd'];
-			if ($cmd!="edit" && $cmd!='new')	{
-				return true;
-			}*/
-			if ($TSFE_EDIT['cancel'])	{
-				unset($TSFE_EDIT['cmd']);
-			} elseif (($cmd!='edit' || (is_array($TSFE_EDIT['data']) && ($TSFE_EDIT['update'] || $TSFE_EDIT['update_close']))) && $cmd!='new')	{
+		if (is_array($this->TSFE_EDIT))	{
+			if ($this->TSFE_EDIT['cancel'])	{
+				unset($this->TSFE_EDIT['cmd']);
+			} elseif (($cmd!='edit' || (is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']))) && $cmd!='new')	{
 					// $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sendt because of .keepGoing flag.
 				return true;
 			}
@@ -816,14 +918,13 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Returns true if an edit form is shown on the page.
 	 * Used from index_ts.php where a true return-value will result in classes etc. being included.
-	 * 
-	 * @return	boolean		
+	 *
+	 * @return	boolean
 	 * @see index_ts.php
 	 */
 	function extIsFormShown()	{
-		$TSFE_EDIT = $GLOBALS['HTTP_POST_VARS']['TSFE_EDIT'];
-		if (is_array($TSFE_EDIT))	{
-			$cmd=(string)$TSFE_EDIT['cmd'];
+		if (is_array($this->TSFE_EDIT))	{
+			$cmd=(string)$this->TSFE_EDIT['cmd'];
 			if ($cmd=='edit' || $cmd=='new')	{
 				return true;
 			}
@@ -833,21 +934,20 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Management of the on-page frontend editing forms and edit panels.
 	 * Basically taking in the data and commands and passes them on to the proper classes as they should be.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see index_ts.php
 	 */
 	function extEditAction()	{
 		global $TCA;
 			// Commands:
-		$TSFE_EDIT = $GLOBALS['HTTP_POST_VARS']['TSFE_EDIT'];
-
-		list($table,$uid) = explode(':',$TSFE_EDIT['record']);
-		if ($TSFE_EDIT['cmd'] && $table && $uid && isset($TCA[$table]))	{
+		list($table,$uid) = explode(':',$this->TSFE_EDIT['record']);
+		if ($this->TSFE_EDIT['cmd'] && $table && $uid && isset($TCA[$table]))	{
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			$tce->stripslashes_values=0;
 			$recData=array();
 			$cmdData=array();
-			$cmd=$TSFE_EDIT['cmd'];
+			$cmd=$this->TSFE_EDIT['cmd'];
 			switch($cmd)	{
 				case 'hide':
 				case 'unhide':
@@ -871,9 +971,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 						}
 							// Get self:
 						$fields = array_unique(t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['copyAfterDuplFields'].',uid,pid,'.$sortField,1));
-						$query='SELECT '.implode(',',$fields).' FROM '.$table.' WHERE uid='.$uid;
-						$res = mysql(TYPO3_db,$query);
-						if ($row=mysql_fetch_assoc($res))	{
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',',$fields), $table, 'uid='.$uid);
+						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								// record before or after
 							$preview = $this->extGetFeAdminValue('preview');
 							$copyAfterFieldsQuery = '';
@@ -884,19 +983,22 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 									$copyAfterFieldsQuery.=' AND '.$fN.'="'.$row[$fN].'"';
 								}
 							}
-							
-							$query='SELECT uid,pid FROM '.$table.' WHERE pid='.$row['pid'].
-								' AND '.$sortField.$op.intval($row[$sortField]).
-								$copyAfterFieldsQuery.
-								t3lib_pageSelect::enableFields($table,'',$ignore).
-								' ORDER BY '.$sortField.$desc.
-								' LIMIT 2';
-								
-							$res = mysql(TYPO3_db,$query);
-							if ($row2=mysql_fetch_assoc($res))	{
+
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+										'uid,pid',
+										$table,
+										'pid='.intval($row['pid']).
+											' AND '.$sortField.$op.intval($row[$sortField]).
+											$copyAfterFieldsQuery.
+											t3lib_pageSelect::enableFields($table,'',$ignore),
+										'',
+										$sortField.$desc,
+										'2'
+									);
+							if ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								if($cmd=='down')	{
 									$cmdData[$table][$uid]['move']= -$row2['uid'];
-								} elseif ($row3=mysql_fetch_assoc($res)) {	// Must take the second record above...
+								} elseif ($row3 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {	// Must take the second record above...
 									$cmdData[$table][$uid]['move']= -$row3['uid'];
 								} else {	// ... and if that does not exist, use pid
 									$cmdData[$table][$uid]['move']= $row['pid'];
@@ -921,10 +1023,10 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			}
 		}
 			// Data:
-		if (($TSFE_EDIT['doSave'] || $TSFE_EDIT['update'] || $TSFE_EDIT['update_close']) && is_array($TSFE_EDIT['data']))	{
+		if (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data']))	{
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-			#	$tce->stripslashes_values=0; // This line is NOT needed because $TSFE_EDIT['data'] is already slashed and needs slashes stripped.
-			$tce->start($TSFE_EDIT['data'],Array());
+			$tce->stripslashes_values=0;
+			$tce->start($this->TSFE_EDIT['data'],Array());
 			$tce->process_uploads($GLOBALS['HTTP_POST_FILES']);
 			$tce->process_datamap();
 		}

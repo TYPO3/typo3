@@ -1,9 +1,11 @@
 <?php
 /**
  * Core language labels (ch)
+ * TYPO3 CVS ID: $Id$
  */
 
-$LOCAL_LANG['ch'] = Array (
-
+$LOCAL_LANG = Array (
+	'ch' => Array (
+	),
 );
 ?>
