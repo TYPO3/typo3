@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -27,61 +27,62 @@
 /**
  * FE admin lib
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  129: class user_feAdmin	
- *  170:     function init($content,$conf)	
+ *  132: class user_feAdmin
+ *  179:     function init($content,$conf)
  *
  *              SECTION: Data processing
- *  394:     function parseValues()	
- *  489:     function processFiles($cmdParts,$theField)	
- *  588:     function overrideValues()	
- *  604:     function defaultValues()	
- *  623:     function evalValues()	
- *  745:     function userProcess($mConfKey,$passVar)	
- *  763:     function userProcess_alt($confVal,$confArr,$passVar)	
+ *  409:     function parseValues()
+ *  504:     function processFiles($cmdParts,$theField)
+ *  610:     function overrideValues()
+ *  626:     function defaultValues()
+ *  645:     function evalValues()
+ *  767:     function userProcess($mConfKey,$passVar)
+ *  785:     function userProcess_alt($confVal,$confArr,$passVar)
  *
  *              SECTION: Database manipulation functions
- *  805:     function save()	
- *  872:     function deleteRecord()	
- *  904:     function deleteFilesFromRecord($uid)	
+ *  827:     function save()
+ *  885:     function deleteRecord()
+ *  915:     function deleteFilesFromRecord($uid)
  *
  *              SECTION: Command "display" functions
- *  961:     function displayDeleteScreen()	
- *  989:     function displayCreateScreen()	
- * 1012:     function displayEditScreen()	
- * 1064:     function displayEditForm($origArr)	
- * 1092:     function procesSetFixed()	
+ *  972:     function displayDeleteScreen()
+ * 1000:     function displayCreateScreen()
+ * 1023:     function displayEditScreen()
+ * 1074:     function displayEditForm($origArr)
+ * 1102:     function procesSetFixed()
  *
  *              SECTION: Template processing functions
- * 1183:     function removeRequired($templateCode,$failure)	
- * 1201:     function getPlainTemplate($key,$r='')	
- * 1218:     function modifyDataArrForFormUpdate($inputArr)	
- * 1287:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')	
+ * 1189:     function removeRequired($templateCode,$failure)
+ * 1207:     function getPlainTemplate($key,$r='')
+ * 1224:     function modifyDataArrForFormUpdate($inputArr)
+ * 1293:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')
  *
  *              SECTION: Emailing
- * 1349:     function sendInfoMail()	
- * 1397:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())	
- * 1443:     function sendMail($recipient, $admin, $content='', $adminContent='')	
- * 1488:     function isHTMLContent($c)	
- * 1509:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')	
+ * 1355:     function sendInfoMail()
+ * 1403:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())
+ * 1449:     function sendMail($recipient, $admin, $content='', $adminContent='')
+ * 1494:     function isHTMLContent($c)
+ * 1515:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')
  *
  *              SECTION: Various helper functions
- * 1593:     function aCAuth($r)	
- * 1607:     function authCode($r,$extra='')	
- * 1633:     function setfixed($markerArray, $setfixed, $r)	
- * 1669:     function setfixedHash($recCopy,$fields='')	
- * 1690:     function isPreview()	
- * 1699:     function createFileFuncObj()	
- * 1710:     function clearCacheIfSet()	
- * 1725:     function getFailure($theField, $theCmd, $label)	
+ * 1599:     function aCAuth($r)
+ * 1613:     function authCode($r,$extra='')
+ * 1639:     function setfixed($markerArray, $setfixed, $r)
+ * 1675:     function setfixedHash($recCopy,$fields='')
+ * 1696:     function isPreview()
+ * 1705:     function createFileFuncObj()
+ * 1716:     function clearCacheIfSet()
+ * 1731:     function getFailure($theField, $theCmd, $label)
  *
  * TOTAL FUNCTIONS: 33
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -122,11 +123,17 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');		// For use with imag
  * Further the extensions "t3consultancies" and "t3references" also uses this library but contrary to the "direct_mail_subscription" and "feuser_admin" extensions which relies on external HTML templates which must be adapted these two extensions delivers the HTML template code from inside.
  * Generally the fe_adminLib appears to be hard to use. Personally I feel turned off by all the template-file work involved and since it is very feature rich (and for that sake pretty stable!) there are lots of things that can go wrong - you feel. Therefore I like the concept used by "t3consultancies"/"t3references" since those extensions uses the library by supplying the HTML-template code automatically.
  * Suggestions for improvement and streamlining is welcome so this powerful class could be used more and effectively.
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=396&cHash=d267c36546
  */
 class user_feAdmin	{
+
+		// External, static:
+	var $recInMarkersHSC = TRUE;		// If true, values from the record put into markers going out into HTML will be passed through htmlspecialchars()!
+
 	var $dataArr = array();
 	var $failureMsg = array();
 	var $theTable = '';
@@ -150,18 +157,20 @@ class user_feAdmin	{
 	var $emailMarkPrefix = 'EMAIL_TEMPLATE_';
 	var $codeLength;
 	var $cmdKey;
-	var $fileFunc='';	// Set to a basic_filefunc object 
+	var $fileFunc='';	// Set to a basic_filefunc object
 	var $filesStoredInUploadFolders=array();		// This array will hold the names of files transferred to the uploads/* folder if any. If the records are NOT saved, these files should be deleted!! Currently this is not working!
 
-	
+		// Internal vars, dynamic:
+	var $unlinkTempFiles = array();			// Is loaded with all temporary filenames used for upload which should be deleted before exit...
+
 	/**
 	 * Main function. Called from TypoScript.
-	 * This 
-	 * - initializes internal variables, 
+	 * This
+	 * - initializes internal variables,
 	 * - fills in the markerArray with default substitution string
 	 * - saves/emails if such commands are sent
 	 * - calls functions for display of the screen for editing/creation/deletion etc.
-	 * 
+	 *
 	 * @param	string		Empty string, ignore.
 	 * @param	array		TypoScript properties following the USER_INT object which uses this library
 	 * @return	string		HTML content
@@ -174,28 +183,28 @@ class user_feAdmin	{
 		$this->templateCode = $this->conf['templateContent'] ? $this->conf['templateContent'] : $this->cObj->fileResource($this->conf['templateFile']);
 
 			// Getting the cmd var
-		$this->cmd = (string)t3lib_div::GPvar('cmd');
+		$this->cmd = (string)t3lib_div::_GP('cmd');
 			// Getting the preview var
-		$this->preview = (string)t3lib_div::GPvar('preview');
+		$this->preview = (string)t3lib_div::_GP('preview');
 			// backURL is a given URL to return to when login is performed
-		$this->backURL = t3lib_div::GPvar('backURL');
+		$this->backURL = t3lib_div::_GP('backURL');
 			// Uid to edit:
-		$this->recUid = t3lib_div::GPvar('rU');
+		$this->recUid = t3lib_div::_GP('rU');
 			// Authentication code:
-		$this->authCode = t3lib_div::GPvar('aC');
+		$this->authCode = t3lib_div::_GP('aC');
 			// get table
 		$this->theTable = $this->conf['table'];
-		
+
 		$this->nc = $this->conf['no_cache'] ? '&no_cache=1' : $this->nc;
 			// pid
 		$this->thePid = intval($this->conf['pid']) ? intval($this->conf['pid']) : $GLOBALS['TSFE']->id;
-			// 
+			//
 		$this->codeLength = intval($this->conf['authcodeFields.']['codeLength']) ? intval($this->conf['authcodeFields.']['codeLength']) : 8;
-		
+
 			// Setting the hardcoded lists of fields allowed for editing and creation.
 		$this->fieldList=implode(',',t3lib_div::trimExplode(',',$GLOBALS['TCA'][$this->theTable]['feInterface']['fe_admin_fieldList'],1));
-		
-			// globally substituted markers, fonts and colors.	
+
+			// globally substituted markers, fonts and colors.
 		$splitMark = md5(microtime());
 		list($this->markerArray['###GW1B###'],$this->markerArray['###GW1E###']) = explode($splitMark,$this->cObj->stdWrap($splitMark,$this->conf['wrap1.']));
 		list($this->markerArray['###GW2B###'],$this->markerArray['###GW2E###']) = explode($splitMark,$this->cObj->stdWrap($splitMark,$this->conf['wrap2.']));
@@ -205,20 +214,24 @@ class user_feAdmin	{
 
 			// Initialize markerArray, setting FORM_URL and HIDDENFIELDS
 		$this->markerArray['###FORM_URL###'] = 'index.php?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type.$this->nc.$this->conf['addParams'];
-		$this->markerArray['###BACK_URL###']=$this->backURL;
-		$this->markerArray['###THE_PID###']=$this->thePid;
-		$this->markerArray['###BACK_URL_ENC###']=rawurlencode($this->markerArray['###BACK_URL###']);
-		$this->markerArray['###FORM_URL_ENC###']=rawurlencode($this->markerArray['###FORM_URL###']);
-		$this->markerArray['###REC_UID###']=$this->recUid;
-		$this->markerArray['###AUTH_CODE###']=$this->authCode;
-		$this->markerArray['###THIS_ID###']=$GLOBALS['TSFE']->id;
-		$this->markerArray['###THIS_URL###']=t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-		$this->markerArray['###HIDDENFIELDS###'] = 
+		$this->markerArray['###FORM_URL_ENC###'] = rawurlencode($this->markerArray['###FORM_URL###']);
+		$this->markerArray['###FORM_URL_HSC###'] = htmlspecialchars($this->markerArray['###FORM_URL###']);
+
+		$this->markerArray['###BACK_URL###'] = $this->backURL;
+		$this->markerArray['###BACK_URL_ENC###'] = rawurlencode($this->markerArray['###BACK_URL###']);
+		$this->markerArray['###BACK_URL_HSC###'] = htmlspecialchars($this->markerArray['###BACK_URL###']);
+
+		$this->markerArray['###THE_PID###'] = $this->thePid;
+		$this->markerArray['###REC_UID###'] = $this->recUid;
+		$this->markerArray['###AUTH_CODE###'] = $this->authCode;
+		$this->markerArray['###THIS_ID###'] = $GLOBALS['TSFE']->id;
+		$this->markerArray['###THIS_URL###'] = htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'));
+		$this->markerArray['###HIDDENFIELDS###'] =
 			($this->cmd?'<input type="hidden" name="cmd" value="'.htmlspecialchars($this->cmd).'" />':'').
 			($this->authCode?'<input type="hidden" name="aC" value="'.htmlspecialchars($this->authCode).'" />':'').
 			($this->backURL?'<input type="hidden" name="backURL" value="'.htmlspecialchars($this->backURL).'" />':'');
-		
-		
+
+
 			// Setting cmdKey which is either 'edit' or 'create'
 		switch($this->cmd)	{
 			case 'edit':
@@ -233,12 +246,12 @@ class user_feAdmin	{
 			t3lib_div::trimExplode(',',$this->conf[$this->cmdKey.'.']['required'],1),
 			t3lib_div::trimExplode(',',$this->conf[$this->cmdKey.'.']['fields'],1)
 		);
-		
+
 			// Setting incoming data. Non-stripped
-		$fe=t3lib_div::GPvar('FE');
+		$fe=t3lib_div::_GP('FE');
 		$this->dataArr = $fe[$this->theTable];	// Incoming data.
 
-		/*
+/*
 		debug($GLOBALS['HTTP_POST_VARS']);
 		debug($GLOBALS['HTTP_GET_VARS']);
 		debug($GLOBALS['HTTP_POST_FILES']);
@@ -257,11 +270,11 @@ class user_feAdmin	{
 		// *****************
 		// If data is submitted, we take care of it here.
 		// *******************
-		if ($this->cmd=='delete' && !$this->preview && !t3lib_div::GPvar('doNotSave'))	{	// Delete record if delete command is sent + the preview flag is NOT set.
+		if ($this->cmd=='delete' && !$this->preview && !t3lib_div::_GP('doNotSave'))	{	// Delete record if delete command is sent + the preview flag is NOT set.
 			$this->deleteRecord();
 		}
 			// If incoming data is seen...
-		if (is_array($this->dataArr))	{		
+		if (is_array($this->dataArr))	{
 				// Evaluation of data:
 			$this->parseValues();
 			$this->overrideValues();
@@ -276,7 +289,7 @@ class user_feAdmin	{
 		debug($this->preview);
 		*/
 				// if not preview and no failures, then set data...
-			if (!$this->failure && !$this->preview && !t3lib_div::GPvar('doNotSave'))	{	// doNotSave is a global var (eg a 'Cancel' submit button) that prevents the data from being processed
+			if (!$this->failure && !$this->preview && !t3lib_div::_GP('doNotSave'))	{	// doNotSave is a global var (eg a 'Cancel' submit button) that prevents the data from being processed
 				$this->save();
 			} else {
 				if ($this->conf['debug'])		debug($this->failure);
@@ -287,15 +300,15 @@ class user_feAdmin	{
 		}
 		if ($this->failure)	{$this->preview=0;}	// No preview flag if a evaluation failure has occured
 		$this->previewLabel = $this->preview ? '_PREVIEW' : '';	// Setting preview label prefix.
-			
-			
+
+
 			// *********************
 			// DISPLAY FORMS:
 			// ***********************
 		if ($this->saved) {
 				// Clear page cache
 			$this->clearCacheIfSet();
-		
+
 				// Displaying the page here that says, the record has been saved. You're able to include the saved values by markers.
 			switch($this->cmd)	{
 				case 'delete':
@@ -311,17 +324,17 @@ class user_feAdmin	{
 				// Output message
 			$templateCode = $this->cObj->getSubpart($this->templateCode, '###TEMPLATE_'.$key.'_SAVED###');
 			$this->setCObjects($templateCode,$this->currentArr);
-			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->currentArr);
+			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->currentArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 			$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);
-		
+
 				// email message:
 			$this->compileMail(
-				$key.'_SAVED', 
+				$key.'_SAVED',
 				array($this->currentArr),
 				$this->currentArr[$this->conf['email.']['field']],
 				$this->conf['setfixed.']
 			);
-			
+
 		} elseif ($this->error) {	// If there was an error, we return the template-subpart with the error message
 			$templateCode = $this->cObj->getSubpart($this->templateCode, $this->error);
 			$this->setCObjects($templateCode);
@@ -349,9 +362,15 @@ class user_feAdmin	{
 					$content = $this->displayCreateScreen();
 				break;
 			}
-		}	
-	
-		return $content;		
+		}
+
+			// Delete temp files:
+		foreach($this->unlinkTempFiles as $tempFileName)	{
+			t3lib_div::unlink_tempfile($tempFileName);
+		}
+
+			// Return content:
+		return $content;
 	}
 
 
@@ -377,9 +396,9 @@ class user_feAdmin	{
 
 
 	/*****************************************
-	 * 
+	 *
 	 * Data processing
-	 * 
+	 *
 	 *****************************************/
 
 	/**
@@ -387,8 +406,8 @@ class user_feAdmin	{
 	 * The processing is done according to configuration found in TypoScript
 	 * Examples of this could be to force a value to an integer, remove all non-alphanumeric characters, trimming a value, upper/lowercase it, or process it due to special types like files submitted etc.
 	 * Called from init() if the $this->dataArr is found to be an array
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see init()
 	 */
 	function parseValues()	{
@@ -412,13 +431,13 @@ class user_feAdmin	{
 						break;
 						case 'alpha':
 							$this->dataArr[$theField] = ereg_replace('[^a-zA-Z]','',$this->dataArr[$theField]);
-						break;	
+						break;
 						case 'num':
 							$this->dataArr[$theField] = ereg_replace('[^0-9]','',$this->dataArr[$theField]);
-						break;	
+						break;
 						case 'alphanum':
 							$this->dataArr[$theField] = ereg_replace('[^a-zA-Z0-9]','',$this->dataArr[$theField]);
-						break;	
+						break;
 						case 'alphanum_x':
 							$this->dataArr[$theField] = ereg_replace('[^a-zA-Z0-9_-]','',$this->dataArr[$theField]);
 						break;
@@ -429,7 +448,7 @@ class user_feAdmin	{
 							$this->dataArr[$theField] = substr(md5(uniqid(microtime(),1)),0,intval($cmdParts[1]));
 						break;
 						case 'files':
-							if ($this->cmdKey=='create' && !t3lib_div::GPvar('doNotSave'))	{
+							if ($this->cmdKey=='create' && !t3lib_div::_GP('doNotSave'))	{
 								$this->processFiles($cmdParts,$theField);
 							} else unset($this->dataArr[$theField]);	// Fields with files cannot be edited - only created.
 						break;
@@ -479,17 +498,18 @@ class user_feAdmin	{
 	/**
 	 * Processing of files.
 	 * NOTICE: for now files can be handled only on creation of records. But a more advanced feature is that PREVIEW of files is handled.
-	 * 
+	 *
 	 * @param	array		Array with cmd-parts (from parseValues()). This will for example contain information about allowed file extensions and max size of uploaded files.
 	 * @param	string		The fieldname with the files.
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see parseValues()
 	 */
 	function processFiles($cmdParts,$theField)	{
 //debug($GLOBALS['HTTP_POST_FILES']);
-			// First, make an array with the filename and file reference, whether the file is just uploaded or a preview 
-		$filesArr=array();
+			// First, make an array with the filename and file reference, whether the file is just uploaded or a preview
+		$filesArr = array();
+
 		if (is_string($this->dataArr[$theField]))	{		// files from preview.
 			$tmpArr = explode(',',$this->dataArr[$theField]);
 			reset($tmpArr);
@@ -504,22 +524,28 @@ class user_feAdmin	{
 			reset($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['name']);
 			while(list($kk,$vv)=each($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['name']))	{
 				if ($vv)	{
-					$tmpFile = $GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['tmp_name'][$kk];
-					$filesArr[] = array (
-						'name'=>$vv,
-						'tmp_name'=>$tmpFile
-					);
+					$tmpFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['tmp_name'][$kk]);
+					if ($tmpFile)	{
+						$this->unlinkTempFiles[]=$tmpFile;
+						$filesArr[] = array (
+							'name'=>$vv,
+							'tmp_name'=>$tmpFile
+						);
+					}
 				}
 			}
 		} elseif (is_array($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]))	{	// Files from upload
 			reset($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]);
 			while(list($kk,$vv)=each($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]))	{
 				if ($vv)	{
-					$tmpFile = $GLOBALS['HTTP_POST_FILES']['FE']['tmp_name'][$this->theTable][$theField][$kk];
-					$filesArr[] = array (
-						'name'=>$vv,
-						'tmp_name'=>$tmpFile
-					);
+					$tmpFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES']['FE']['tmp_name'][$this->theTable][$theField][$kk]);
+					if ($tmpFile)	{
+						$this->unlinkTempFiles[]=$tmpFile;
+						$filesArr[] = array (
+							'name'=>$vv,
+							'tmp_name'=>$tmpFile
+						);
+					}
 				}
 			}
 		}
@@ -528,7 +554,7 @@ class user_feAdmin	{
 		$this->dataArr[$theField]='';
 		$finalFilesArr=array();
 		if (count($filesArr))	{
-			$extArray=t3lib_div::trimExplode(';',strtolower($cmdParts[1]),1);
+			$extArray = t3lib_div::trimExplode(';',strtolower($cmdParts[1]),1);
 			$maxSize = intval($cmdParts[3]);
 			reset($filesArr);
 			while(list(,$infoArr)=each($filesArr))	{
@@ -551,38 +577,38 @@ class user_feAdmin	{
 		while(list(,$infoArr)=each($finalFilesArr))	{
 			if ($this->isPreview())	{		// If the form is a preview form (and data is therefore not going into the database...) do this.
 				$this->createFileFuncObj();
-				$fI=pathinfo($infoArr['name']);
+				$fI = pathinfo($infoArr['name']);
 				$tmpFilename = $this->theTable.'_'.t3lib_div::shortmd5(uniqid($infoArr['name'])).'.'.$fI['extension'];
 				$theDestFile = $this->fileFunc->getUniqueName($this->fileFunc->cleanFileName($tmpFilename), PATH_site.'typo3temp/');
 				t3lib_div::upload_copy_move($infoArr['tmp_name'],$theDestFile);
 					// Setting the filename in the list
-				$fI2=pathinfo($theDestFile);
-				$fileNameList[]=$fI2['basename'].'|'.$infoArr['name'];
+				$fI2 = pathinfo($theDestFile);
+				$fileNameList[] = $fI2['basename'].'|'.$infoArr['name'];
 			} else {
 				$this->createFileFuncObj();
 				$GLOBALS['TSFE']->includeTCA();
 				t3lib_div::loadTCA($this->theTable);
 				if (is_array($GLOBALS['TCA'][$this->theTable]['columns'][$theField]))	{
-					$uploadPath=$GLOBALS['TCA'][$this->theTable]['columns'][$theField]['config']['uploadfolder'];
+					$uploadPath = $GLOBALS['TCA'][$this->theTable]['columns'][$theField]['config']['uploadfolder'];
 				}
 				if ($uploadPath)	{
 					$theDestFile = $this->fileFunc->getUniqueName($this->fileFunc->cleanFileName($infoArr['name']), PATH_site.$uploadPath);
-					copy($infoArr['tmp_name'],$theDestFile);
+					t3lib_div::upload_copy_move($infoArr['tmp_name'],$theDestFile);
 						// Setting the filename in the list
-					$fI2=pathinfo($theDestFile);
-					$fileNameList[]=$fI2['basename'];
+					$fI2 = pathinfo($theDestFile);
+					$fileNameList[] = $fI2['basename'];
 					$this->filesStoredInUploadFolders[]=$theDestFile;
 				}
 			}
 				// Implode the list of filenames
-			$this->dataArr[$theField]=implode(',',$fileNameList);
+			$this->dataArr[$theField] = implode(',',$fileNameList);
 		}
 	}
 
 	/**
 	 * Overriding values in $this->dataArr if configured for that in TypoScript ([edit/create].overrideValues)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see init()
 	 */
 	function overrideValues()	{
@@ -597,8 +623,8 @@ class user_feAdmin	{
 
 	/**
 	 * Called if there is no input array in $this->dataArr. Then this function sets the default values configured in TypoScript
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see init()
 	 */
 	function defaultValues()	{
@@ -612,12 +638,12 @@ class user_feAdmin	{
 	}
 
 	/**
-	 * This will evaluate the input values from $this->dataArr to see if they conforms with the requirements configured in TypoScript per field. 
+	 * This will evaluate the input values from $this->dataArr to see if they conforms with the requirements configured in TypoScript per field.
 	 * For example this could be checking if a field contains a valid email address, a unique value, a value within a certain range etc.
 	 * It will populate arrays like $this->failure and $this->failureMsg with error messages (which can later be displayed in the template). Mostly it does NOT alter $this->dataArr (such parsing of values was done by parseValues())
 	 * Works based on configuration in TypoScript key [create/edit].evalValues
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see init(), parseValues()
 	 */
 	function evalValues()	{
@@ -656,7 +682,7 @@ class user_feAdmin	{
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'uniqueGlobal':
-							if ($DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,$theField,$this->dataArr[$theField],'LIMIT 1'))	{
+							if ($DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,$theField,$this->dataArr[$theField],'','','','1'))	{
 								if (!$recExist || $DBrows[0]['uid']!=$this->dataArr['uid'])	{	// Only issue an error if the record is not existing (if new...) and if the record with the false value selected was not our self.
 									$tempArr[]=$theField;
 									$this->failureMsg[$theField][] = $this->getFailure($theField, $theCmd, 'The value existed already. Enter a new value.');
@@ -664,7 +690,7 @@ class user_feAdmin	{
 							}
 						break;
 						case 'uniqueLocal':
-							if ($DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,$theField,$this->dataArr[$theField], 'AND pid IN ('.$recordTestPid.') LIMIT 1'))	{
+							if ($DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,$theField,$this->dataArr[$theField], 'AND pid IN ('.$recordTestPid.')','','','1'))	{
 								if (!$recExist || $DBrows[0]['uid']!=$this->dataArr['uid'])	{	// Only issue an error if the record is not existing (if new...) and if the record with the false value selected was not our self.
 									$tempArr[]=$theField;
 									$this->failureMsg[$theField][] = $this->getFailure($theField, $theCmd, 'The value existed already. Enter a new value.');
@@ -719,7 +745,7 @@ class user_feAdmin	{
 						break;
 						case 'unsetEmpty':
 							if (!$this->dataArr[$theField])	{
-								$hash = array_flip($tempArr); 
+								$hash = array_flip($tempArr);
 								unset($hash[$theField]);
 								$tempArr = array_keys($hash);
 								unset($this->failureMsg[$theField]);
@@ -736,7 +762,7 @@ class user_feAdmin	{
 
 	/**
 	 * Preforms user processing of input array - triggered right after the function call to evalValues() IF TypoScript property "evalFunc" was set.
-	 * 
+	 *
 	 * @param	string		Key pointing to the property in TypoScript holding the configuration for this processing (here: "evalFunc.*"). Well: at least its safe to say that "parentObj" in this array passed to the function is a reference back to this object.
 	 * @param	array		The $this->dataArr passed for processing
 	 * @return	array		The processed $passVar ($this->dataArr)
@@ -753,7 +779,7 @@ class user_feAdmin	{
 
 	/**
 	 * User processing of contnet
-	 * 
+	 *
 	 * @param	string		Value of the TypoScript object triggering the processing.
 	 * @param	array		Properties of the TypoScript object triggering the processing. The key "parentObj" in this array is passed to the function as a reference back to this object.
 	 * @param	mixed		Input variable to process
@@ -791,15 +817,15 @@ class user_feAdmin	{
 
 
 	/*****************************************
-	 * 
+	 *
 	 * Database manipulation functions
-	 * 
+	 *
 	 *****************************************/
 
 	/**
 	 * Performs the saving of records, either edited or created.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see init()
 	 */
 	function save()	{
@@ -810,10 +836,7 @@ class user_feAdmin	{
 				if ($this->conf['edit'] && ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr)))	{	// Must be logged in in order to edit  (OR be validated by email)
 					$newFieldList = implode(array_intersect(explode(',',$this->fieldList),t3lib_div::trimExplode(',',$this->conf['edit.']['fields'],1)),',');
 					if ($this->aCAuth($origArr) || $this->cObj->DBmayFEUserEdit($this->theTable,$origArr,$GLOBALS['TSFE']->fe_user->user,$this->conf['allowedGroups'],$this->conf['fe_userEditSelf']))	{
-						$query = $this->cObj->DBgetUpdate($this->theTable, $theUid, $this->dataArr, $newFieldList);
-						if ($this->conf['debug'])		debug('Edit query: '.$query,1);
-						mysql(TYPO3_db,$query);
-						echo mysql_error();
+						$this->cObj->DBgetUpdate($this->theTable, $theUid, $this->dataArr, $newFieldList, TRUE);
 						$this->currentArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,$theUid);
 						$this->userProcess_alt($this->conf['edit.']['userFunc_afterSave'],$this->conf['edit.']['userFunc_afterSave.'],array('rec'=>$this->currentArr, 'origRec'=>$origArr));
 						$this->saved=1;
@@ -825,34 +848,28 @@ class user_feAdmin	{
 			default:
 				if ($this->conf['create'])	{
 					$newFieldList = implode(array_intersect(explode(',',$this->fieldList),t3lib_div::trimExplode(',',$this->conf['create.']['fields'],1)),',');
-					$query = $this->cObj->DBgetInsert($this->theTable, $this->thePid, $this->dataArr, $newFieldList);
-					if ($this->conf['debug'])		debug('Create query: '.$query,1);
-					mysql(TYPO3_db,$query);
-					echo mysql_error();
-					$newId = mysql_insert_id();
+					$this->cObj->DBgetInsert($this->theTable, $this->thePid, $this->dataArr, $newFieldList, TRUE);
+					$newId = $GLOBALS['TYPO3_DB']->sql_insert_id();
 
 					if ($this->theTable=='fe_users' && $this->conf['fe_userOwnSelf'])	{		// enables users, creating logins, to own them self.
 						$extraList='';
 						$dataArr = array();
 						if ($GLOBALS['TCA'][$this->theTable]['ctrl']['fe_cruser_id'])		{
-							$field=$GLOBALS['TCA'][$this->theTable]['ctrl']['fe_cruser_id']; 	
+							$field=$GLOBALS['TCA'][$this->theTable]['ctrl']['fe_cruser_id'];
 							$dataArr[$field]=$newId;
 							$extraList.=','.$field;
 						}
 						if ($GLOBALS['TCA'][$this->theTable]['ctrl']['fe_crgroup_id'])	{
-							$field=$GLOBALS['TCA'][$this->theTable]['ctrl']['fe_crgroup_id']; 
-							list($dataArr[$field])=explode(',',$this->dataArr['usergroup']); 
-							$dataArr[$field]=intval($dataArr[$field]); 
+							$field=$GLOBALS['TCA'][$this->theTable]['ctrl']['fe_crgroup_id'];
+							list($dataArr[$field])=explode(',',$this->dataArr['usergroup']);
+							$dataArr[$field]=intval($dataArr[$field]);
 							$extraList.=','.$field;
 						}
 						if (count($dataArr))	{
-							$query = $this->cObj->DBgetUpdate($this->theTable, $newId, $dataArr, $extraList);
-							if ($this->conf['debug'])		debug('Own-self query: '.$query,1);
-							mysql(TYPO3_db,$query);
-							echo mysql_error();
+							$this->cObj->DBgetUpdate($this->theTable, $newId, $dataArr, $extraList, TRUE);
 						}
 					}
-					
+
 					$this->currentArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,$newId);
 					$this->userProcess_alt($this->conf['create.']['userFunc_afterSave'],$this->conf['create.']['userFunc_afterSave.'],array('rec'=>$this->currentArr));
 					$this->saved=1;
@@ -865,7 +882,7 @@ class user_feAdmin	{
 	 * Deletes the record from table/uid, $this->theTable/$this->recUid, IF the fe-user has permission to do so.
 	 * If the deleted flag should just be set, then it is done so. Otherwise the record truely is deleted along with any attached files.
 	 * Called from init() if "cmd" was set to "delete" (and some other conditions)
-	 * 
+	 *
 	 * @return	string		void
 	 * @see init()
 	 */
@@ -874,18 +891,16 @@ class user_feAdmin	{
 			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,  $this->recUid);
 			if ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr))	{	// Must be logged in OR be authenticated by the aC code in order to delete
 					// If the recUid selects a record.... (no check here)
-				if (is_array($origArr))	{	
+				if (is_array($origArr))	{
 					if ($this->aCAuth($origArr) || $this->cObj->DBmayFEUserEdit($this->theTable,$origArr, $GLOBALS['TSFE']->fe_user->user,$this->conf['allowedGroups'],$this->conf['fe_userEditSelf']))	{	// Display the form, if access granted.
 						if (!$GLOBALS['TCA'][$this->theTable]['ctrl']['delete'])	{	// If the record is fully deleted... then remove the image (or any file) attached.
 							$this->deleteFilesFromRecord($this->recUid);
 						}
-						$query = $this->cObj->DBgetDelete($this->theTable, $this->recUid);
-						mysql(TYPO3_db,$query);
-						echo mysql_error();
+						$this->cObj->DBgetDelete($this->theTable, $this->recUid, TRUE);
 						$this->currentArr = $origArr;
-						$this->saved=1;
+						$this->saved = 1;
 					} else {
-						$this->error='###TEMPLATE_NO_PERMISSIONS###';
+						$this->error = '###TEMPLATE_NO_PERMISSIONS###';
 					}
 				}
 			}
@@ -895,25 +910,25 @@ class user_feAdmin	{
 	/**
 	 * Deletes the files attached to a record and updates the record.
 	 * Table/uid is $this->theTable/$uid
-	 * 
+	 *
 	 * @param	integer		Uid number of the record to delete from $this->theTable
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see deleteRecord()
 	 */
 	function deleteFilesFromRecord($uid)	{
 		$table = $this->theTable;
 		$rec = $GLOBALS['TSFE']->sys_page->getRawRecord($table,$uid);
-		
+
 		$GLOBALS['TSFE']->includeTCA();
 		t3lib_div::loadTCA($table);
 		reset($GLOBALS['TCA'][$table]['columns']);
 		$iFields=array();
 		while(list($field,$conf)=each($GLOBALS['TCA'][$table]['columns']))	{
 			if ($conf['config']['type']=='group' && $conf['config']['internal_type']=='file')	{
-				$query='UPDATE '.$table.' SET '.$field.'="" WHERE uid='.$uid;
-				$res=mysql(TYPO3_db,$query);
-				echo mysql_error();
+
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), array($field => ''));
+
 				$delFileArr = explode(',',$rec[$field]);
 				reset($delFileArr);
 				while(list(,$n)=each($delFileArr))	{
@@ -947,14 +962,14 @@ class user_feAdmin	{
 
 
 	/*****************************************
-	 * 
+	 *
 	 * Command "display" functions
-	 * 
+	 *
 	 *****************************************/
 
 	/**
 	 * Creates the preview display of delete actions
-	 * 
+	 *
 	 * @return	string		HTML content
 	 * @see init()
 	 */
@@ -963,7 +978,7 @@ class user_feAdmin	{
 			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,  $this->recUid);
 			if ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr))	{	// Must be logged in OR be authenticated by the aC code in order to delete
 					// If the recUid selects a record.... (no check here)
-				if (is_array($origArr))	{	
+				if (is_array($origArr))	{
 					if ($this->aCAuth($origArr) || $this->cObj->DBmayFEUserEdit($this->theTable,$origArr, $GLOBALS['TSFE']->fe_user->user,$this->conf['allowedGroups'],$this->conf['fe_userEditSelf']))	{	// Display the form, if access granted.
 						$this->markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="rU" value="'.$this->recUid.'" />';
 						$content = $this->getPlainTemplate('###TEMPLATE_DELETE_PREVIEW###', $origArr);
@@ -982,20 +997,20 @@ class user_feAdmin	{
 
 	/**
 	 * Creates the "create" screen for records
-	 * 
+	 *
 	 * @return	string		HTML content
 	 * @see init()
 	 */
 	function displayCreateScreen()	{
 		if ($this->conf['create'])	{
 			$templateCode = $this->cObj->getSubpart($this->templateCode, ((!$GLOBALS['TSFE']->loginUser||$this->conf['create.']['noSpecialLoginForm'])?'###TEMPLATE_CREATE'.$this->previewLabel.'###':'###TEMPLATE_CREATE_LOGIN'.$this->previewLabel.'###'));
-			$failure = t3lib_div::GPvar('noWarnings')?'':$this->failure;
+			$failure = t3lib_div::_GP('noWarnings')?'':$this->failure;
 			if (!$failure)	$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELDS_WARNING###', '');
 
 			$templateCode = $this->removeRequired($templateCode,$failure);
 			$this->setCObjects($templateCode);
 
-			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->dataArr);
+			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->dataArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 			if ($this->conf['create.']['preview'] && !$this->previewLabel)	{$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="preview" value="1" />';}
 			$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);
 			$content.=$this->cObj->getUpdateJS($this->modifyDataArrForFormUpdate($this->dataArr), $this->theTable.'_form', 'FE['.$this->theTable.']', $this->fieldList.$this->additionalUpdateFields);
@@ -1005,7 +1020,7 @@ class user_feAdmin	{
 
 	/**
 	 * Creates the edit-screen for records
-	 * 
+	 *
 	 * @return	string		HTML content
 	 * @see init()
 	 */
@@ -1015,24 +1030,23 @@ class user_feAdmin	{
 
 			if ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr))	{	// Must be logged in OR be authenticated by the aC code in order to edit
 					// If the recUid selects a record.... (no check here)
-				if (is_array($origArr))	{	
+				if (is_array($origArr))	{
 					if ($this->aCAuth($origArr) || $this->cObj->DBmayFEUserEdit($this->theTable,$origArr, $GLOBALS['TSFE']->fe_user->user,$this->conf['allowedGroups'],$this->conf['fe_userEditSelf']))	{	// Display the form, if access granted.
 						$content=$this->displayEditForm($origArr);
 					} else {	// Else display error, that you could not edit that particular record...
 						$content = $this->getPlainTemplate('###TEMPLATE_NO_PERMISSIONS###');
 					}
 				} elseif ($GLOBALS['TSFE']->loginUser) { 	// If the recUid did not select a record, we display a menu of records. (eg. if no recUid)
-					$lockPid=$this->conf['edit.']['menuLockPid'] ? ' AND pid='.$this->thePid : '';
-					$query = 'SELECT * FROM '.$this->theTable.' WHERE 1=1'.$lockPid.$this->cObj->DBmayFEUserEditSelect($this->theTable,$GLOBALS['TSFE']->fe_user->user, $this->conf['allowedGroups'],$this->conf['fe_userEditSelf']).$GLOBALS['TSFE']->sys_page->deleteClause($this->theTable);
-					$res = mysql(TYPO3_db,$query);
-					echo mysql_error();
+					$lockPid = $this->conf['edit.']['menuLockPid'] ? ' AND pid='.intval($this->thePid) : '';
 
-					if (mysql_num_rows($res))	{	// If there are menu-items ...
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->theTable, '1 '.$lockPid.$this->cObj->DBmayFEUserEditSelect($this->theTable,$GLOBALS['TSFE']->fe_user->user, $this->conf['allowedGroups'],$this->conf['fe_userEditSelf']).$GLOBALS['TSFE']->sys_page->deleteClause($this->theTable));
+
+					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{	// If there are menu-items ...
 						$templateCode = $this->getPlainTemplate('###TEMPLATE_EDITMENU###');
 						$out='';
 						$itemCode = $this->cObj->getSubpart($templateCode, '###ITEM###');
-						while($menuRow=mysql_fetch_assoc($res))	{
-							$markerArray = $this->cObj->fillInMarkerArray(array(), $menuRow);
+						while($menuRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+							$markerArray = $this->cObj->fillInMarkerArray(array(), $menuRow, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 							$markerArray = $this->setCObjects($itemCode,$menuRow,$markerArray,'ITEM_');
 							$out.= $this->cObj->substituteMarkerArray($itemCode, $markerArray);
 						}
@@ -1055,7 +1069,7 @@ class user_feAdmin	{
 	/**
 	 * Subfunction for displayEditScreen(); Takes a record and creates an edit form based on the template code for it.
 	 * This function is called if the user is editing a record and permitted to do so. Checked in displayEditScreen()
-	 * 
+	 *
 	 * @param	array		The array with the record to edit
 	 * @return	string		HTML content
 	 * @access private
@@ -1066,14 +1080,14 @@ class user_feAdmin	{
 
 		if ($this->conf['debug'])	debug('displayEditForm(): '.'###TEMPLATE_EDIT'.$this->previewLabel.'###',1);
 		$templateCode = $this->cObj->getSubpart($this->templateCode, '###TEMPLATE_EDIT'.$this->previewLabel.'###');
-		$failure = t3lib_div::GPvar('noWarnings')?'':$this->failure;
+		$failure = t3lib_div::_GP('noWarnings')?'':$this->failure;
 		if (!$failure)	{$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELDS_WARNING###', '');}
 
 		$templateCode = $this->removeRequired($templateCode,$failure);
 
 		$this->setCObjects($templateCode,$currentArr);
-		
-		$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $currentArr);
+
+		$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $currentArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 
 		$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="FE['.$this->theTable.'][uid]" value="'.$currentArr['uid'].'" />';
 		if ($this->conf['edit.']['preview'] && !$this->previewLabel)	{$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="preview" value="1" />';}
@@ -1086,46 +1100,42 @@ class user_feAdmin	{
 	/**
 	 * Processes socalled "setfixed" commands. These are commands setting a certain field in a certain record to a certain value. Like a link you can click in an email which will unhide a record to enable something. Or likewise a link which can delete a record by a single click.
 	 * The idea is that only some allowed actions like this is allowed depending on the configured TypoScript.
-	 * 
+	 *
 	 * @return	string		HTML content displaying the status of the action
 	 */
 	function procesSetFixed()	{
 		if ($this->conf['setfixed'])	{
 			$theUid = intval($this->recUid);
 			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,  $theUid);
-			$fD = t3lib_div::GPvar('fD');
-			$sFK = t3lib_div::GPvar('sFK');
+			$fD = t3lib_div::_GP('fD');
+			$sFK = t3lib_div::_GP('sFK');
 
 			$fieldArr=array();
 			if (is_array($fD) || $sFK=='DELETE')	{
 				if (is_array($fD))	{
 					reset($fD);
 					while(list($field,$value)=each($fD))	{
-						$origArr[$field]=stripslashes($value);
+						$origArr[$field]=$value;
 						$fieldArr[]=$field;
 					}
 				}
 				$theCode = $this->setfixedHash($origArr,$origArr['_FIELDLIST']);
 				if (!strcmp($this->authCode,$theCode))	{
 					if ($sFK=='DELETE')	{
-						$query = $this->cObj->DBgetDelete($this->theTable, $theUid);
-						mysql(TYPO3_db,$query);
-						echo mysql_error();
+						$this->cObj->DBgetDelete($this->theTable, $theUid, TRUE);
 					} else {
 						$newFieldList = implode(array_intersect(t3lib_div::trimExplode(',',$this->fieldList),t3lib_div::trimExplode(',',implode($fieldArr,','),1)),',');
-						$query = $this->cObj->DBgetUpdate($this->theTable, $theUid, $fD, $newFieldList);
-						mysql(TYPO3_db,$query);
-						echo mysql_error();
+						$this->cObj->DBgetUpdate($this->theTable, $theUid, $fD, $newFieldList, TRUE);
 					}
 
 						// Outputting template
-					$this->markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $origArr);
+					$this->markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $origArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 					$content = $this->getPlainTemplate('###TEMPLATE_SETFIXED_OK_'.$sFK.'###');
 					if (!$content)	{$content = $this->getPlainTemplate('###TEMPLATE_SETFIXED_OK###');}
 
 						// Compiling email
 					$this->compileMail(
-						'SETFIXED_'.$sFK, 
+						'SETFIXED_'.$sFK,
 						array($origArr),
 						$origArr[$this->conf['email.']['field']],
 						$this->conf['setfixed.']
@@ -1161,21 +1171,21 @@ class user_feAdmin	{
 
 
 	/*****************************************
-	 * 
+	 *
 	 * Template processing functions
-	 * 
+	 *
 	 *****************************************/
 
 
 
 	/**
 	 * Remove required parts from template code string
-	 * 	 Works like this: 
+	 * 	 Works like this:
 	 * 		 - You insert subparts like this ###SUB_REQUIRED_FIELD_'.$theField.'### in the template that tells what is required for the field, if it's not correct filled in.
 	 * 		 - These subparts are all removed, except if the field is listed in $failure string!
-	 * 
+	 *
 	 * 		Only fields that are found in $this->requiredArr is processed.
-	 * 
+	 *
 	 * @param	string		The template HTML code
 	 * @param	string		Comma list of fields which has errors (and therefore should not be removed)
 	 * @return	string		The processed template HTML code
@@ -1192,25 +1202,25 @@ class user_feAdmin	{
 
 	/**
 	 * Returns template subpart HTML code for the key given
-	 * 
+	 *
 	 * @param	string		Subpart marker to return subpart for.
 	 * @param	array		Optional data record array. If set, then all fields herein will also be substituted if found as markers in the template
 	 * @return	string		The subpart with all markers found in current $this->markerArray substituted.
-	 * @see fillInMarkerArray()
+	 * @see tslib_cObj::fillInMarkerArray()
 	 */
 	function getPlainTemplate($key,$r='')	{
 		if ($this->conf['debug'])	debug('getPlainTemplate(): '.$key,1);
 		$templateCode = $this->cObj->getSubpart($this->templateCode, $key);
 		$this->setCObjects($templateCode,is_array($r)?$r:array());
 		return  $this->cObj->substituteMarkerArray(
-				$templateCode, 
-				is_array($r) ? $this->cObj->fillInMarkerArray($this->markerArray, $r) : $this->markerArray
+				$templateCode,
+				is_array($r) ? $this->cObj->fillInMarkerArray($this->markerArray, $r, '', TRUE, 'FIELD_', $this->recInMarkersHSC) : $this->markerArray
 			);
 	}
 
 	/**
 	 * Modifies input array for passing on to tslib_cObj::getUpdateJS() which produces some JavaScript for form evaluation or the like.
-	 * 
+	 *
 	 * @param	array		The data array
 	 * @return	array		The processed input array
 	 * @see displayCreateScreen(), displayEditForm(), tslib_cObj::getUpdateJS()
@@ -1258,7 +1268,7 @@ class user_feAdmin	{
 										$this->additionalUpdateFields.=','.$alt_theField;
 									}
 								}
-							} 
+							}
 						break;
 					}
 				}
@@ -1277,7 +1287,7 @@ class user_feAdmin	{
 
 	/**
 	 * Will render TypoScript cObjects (configured in $this->conf['cObjects.']) and add their content to keys in a markerArray, either the array passed to the function or the internal one ($this->markerArray) if the input $markerArray is not set.
-	 * 
+	 *
 	 * @param	string		The current template code string. Is used to check if the marker string is found and if not, the content object is not rendered!
 	 * @param	array		An alternative data record array (if empty then $this->dataArr is used)
 	 * @param	mixed		An alternative markerArray to fill in (instead of $this->markerArray). If you want to set the cobjects in the internal $this->markerArray, then just set this to non-array value.
@@ -1287,12 +1297,12 @@ class user_feAdmin	{
 	function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')	{
 		if (is_array($this->conf['cObjects.']))	{
 			reset($this->conf['cObjects.']);
-	
+
 			while(list($theKey,$theConf)=each($this->conf['cObjects.']))	{
 				if (!strstr($theKey,'.'))	{
 					if (strstr($templateCode,'###'.$specialPrefix.'CE_'.$theKey.'###'))	{
 						$cObjCode = $this->cObj->cObjGetSingle($this->conf['cObjects.'][$theKey], $this->conf['cObjects.'][$theKey.'.'], 'cObjects.'.$theKey);
-						
+
 						if (!is_array($markerArray))	{
 							$this->markerArray['###'.$specialPrefix.'CE_'.$theKey.'###'] = $cObjCode;
 						} else {
@@ -1314,7 +1324,7 @@ class user_feAdmin	{
 			}
 		}
 		return $markerArray;
-	}	
+	}
 
 
 
@@ -1335,23 +1345,23 @@ class user_feAdmin	{
 
 
 	/*****************************************
-	 * 
+	 *
 	 * Emailing
-	 * 
+	 *
 	 *****************************************/
 
 	/**
-	 * Sends info mail
-	 * 
+	 * Sends info mail to user
+	 *
 	 * @return	string		HTML content message
 	 * @see init(),compileMail(), sendMail()
 	 */
 	function sendInfoMail()	{
 		if ($this->conf['infomail'] && $this->conf['email.']['field'])	{
-			$fetch = t3lib_div::GPvar('fetch');
-			if (isset($fetch))	{
+			$fetch = t3lib_div::_GP('fetch');
+			if ($fetch)	{
 					// Getting infomail config.
-				$key= trim(t3lib_div::GPvar('key'));
+				$key= trim(t3lib_div::_GP('key'));
 				if (is_array($this->conf['infomail.'][$key.'.']))		{
 					$config = $this->conf['infomail.'][$key.'.'];
 				} else {
@@ -1364,9 +1374,9 @@ class user_feAdmin	{
 
 					// Getting records
 				if (t3lib_div::testInt($fetch))	{
-					$DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,'uid',$fetch,$pidLock.'LIMIT 1');
+					$DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,'uid',$fetch,$pidLock,'','','1');
 				} elseif ($fetch) {	// $this->conf['email.']['field'] must be a valid field in the table!
-					$DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,$this->conf['email.']['field'],$fetch,$pidLock.'LIMIT 100');
+					$DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable,$this->conf['email.']['field'],$fetch,$pidLock,'','','100');
 				}
 
 					// Processing records
@@ -1387,12 +1397,12 @@ class user_feAdmin	{
 
 	/**
 	 * Compiles and sends a mail based on input values + template parts. Looks for a normal and an "-admin" template and may send both kinds of emails. See documentation in TSref.
-	 * 
+	 *
 	 * @param	string		A key which together with $this->emailMarkPrefix will identify the part from the template code to use for the email.
 	 * @param	array		An array of records which fields are substituted in the templates
 	 * @param	mixed		Mail recipient. If string then its supposed to be an email address. If integer then its a uid of a fe_users record which is looked up and the email address from here is used for sending the mail.
 	 * @param	array		Additional fields to set in the markerArray used in the substitution process
-	 * @return	void		
+	 * @return	void
 	 */
 	function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())	{
 		$GLOBALS['TT']->push('compileMail');
@@ -1410,33 +1420,33 @@ class user_feAdmin	{
 			$markerArray = $this->setCObjects($userContent['rec'].$adminContent['rec'],$r,$markerArray,'ITEM_');
 			$markerArray['###SYS_AUTHCODE###'] = $this->authCode($r);
 			$markerArray = $this->setfixed($markerArray, $setFixedConfig, $r);
-			
+
 			if ($userContent['rec'])	$userContent['accum'] .=$this->cObj->substituteMarkerArray($userContent['rec'], $markerArray);
 			if ($adminContent['rec'])	$adminContent['accum'].=$this->cObj->substituteMarkerArray($adminContent['rec'], $markerArray);
 		}
 
 		if ($userContent['all'])	$userContent['final'] .=$this->cObj->substituteSubpart($userContent['all'], '###SUB_RECORD###', $userContent['accum']);
 		if ($adminContent['all'])	$adminContent['final'].=$this->cObj->substituteSubpart($adminContent['all'], '###SUB_RECORD###', $adminContent['accum']);
-		
+
 		if (t3lib_div::testInt($recipient))	{
 			$fe_userRec = $GLOBALS['TSFE']->sys_page->getRawRecord('fe_users',$recipient);
 			$recipient=$fe_userRec['email'];
 		}
 
 		$GLOBALS['TT']->setTSlogMessage('Template key: ###'.$key.'###, userContentLength: '.strlen($userContent['final']).', adminContentLength: '.strlen($adminContent['final']));
-		
+
 		$this->sendMail($recipient, $this->conf['email.']['admin'], $userContent['final'], $adminContent['final']);
 		$GLOBALS['TT']->pull();
 	}
 
 	/**
 	 * Actually sends the requested mails (through $this->cObj->sendNotifyEmail)
-	 * 
+	 *
 	 * @param	string		Recipient email address (or list)
 	 * @param	string		Possible "admin" email address. Will enable sending of admin emails if also $adminContent is provided
 	 * @param	string		Content for the regular email to user
 	 * @param	string		Content for the admin email to administrator
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see compileMail(), sendInfoMail()
 	 */
@@ -1444,18 +1454,18 @@ class user_feAdmin	{
 			// Admin mail:
 		if ($admin && $adminContent)	{
 			if (!$this->isHTMLContent($adminContent))	{
-				$admMail = $this->cObj->sendNotifyEmail($adminContent, 
-									$admin, 
-									'', 
-									$this->conf['email.']['from'], 
+				$admMail = $this->cObj->sendNotifyEmail($adminContent,
+									$admin,
+									'',
+									$this->conf['email.']['from'],
 									$this->conf['email.']['fromName'],
 									$recipient
 							);
 			} else {
-				$this->sendHTMLMail($adminContent, 
-									$admin, 
-									'', 
-									$this->conf['email.']['from'], 
+				$this->sendHTMLMail($adminContent,
+									$admin,
+									'',
+									$this->conf['email.']['from'],
 									$this->conf['email.']['fromName'],
 									$recipient
 							);
@@ -1463,17 +1473,17 @@ class user_feAdmin	{
 		}
 			// user mail:
 		if (!$this->isHTMLContent($content))	{
-			$this->cObj->sendNotifyEmail($content, 
-								$recipient, 
+			$this->cObj->sendNotifyEmail($content,
+								$recipient,
 								'',			// ($admMail ? '' : $admin), 		// If the special administration mail was not found and send, the regular is...
-								$this->conf['email.']['from'], 
+								$this->conf['email.']['from'],
 								$this->conf['email.']['fromName']
 						);
 		} else {
-			$this->sendHTMLMail($content, 
-								$recipient, 
+			$this->sendHTMLMail($content,
+								$recipient,
 								'',			// ($admMail ? '' : $admin), 		// If the special administration mail was not found and send, the regular is...
-								$this->conf['email.']['from'], 
+								$this->conf['email.']['from'],
 								$this->conf['email.']['fromName']
 						);
 		}
@@ -1481,7 +1491,7 @@ class user_feAdmin	{
 
 	/**
 	 * Detects if content is HTML (looking for <html> tag as first and last in string)
-	 * 
+	 *
 	 * @param	string		Content string to test
 	 * @return	boolean		Returns true if the content begins and ends with <html></html>-tags
 	 */
@@ -1495,14 +1505,14 @@ class user_feAdmin	{
 	/**
 	 * Sending HTML email, using same parameters as tslib_cObj::sendNotifyEmail()
 	 * NOTICE: "t3lib_htmlmail" library must be included for this to work, otherwise an error message is outputted.
-	 * 
+	 *
 	 * @param	string		The message content. If blank, no email is sent.
 	 * @param	string		Comma list of recipient email addresses
-	 * @param	string		IGNORE
+	 * @param	string		IGNORE this parameter
 	 * @param	string		"From" email address
 	 * @param	string		Optional "From" name
 	 * @param	string		Optional "Reply-To" header email address.
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see sendMail(), tslib_cObj::sendNotifyEmail()
 	 */
@@ -1512,11 +1522,11 @@ class user_feAdmin	{
 			if (class_exists($cls))	{	// If htmlmail lib is included, then generate a nice HTML-email
 				$parts = spliti('<title>|</title>',$content,3);
 				$subject = trim($parts[1]) ? trim($parts[1]) : 'TYPO3 FE Admin message';
-	
+
 				$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_htmlmail');
 				$Typo3_htmlmail->start();
 				$Typo3_htmlmail->useBase64();
-	
+
 				$Typo3_htmlmail->subject = $subject;
 				$Typo3_htmlmail->from_email = $fromEmail;
 				$Typo3_htmlmail->from_name = $fromName;
@@ -1524,7 +1534,7 @@ class user_feAdmin	{
 				$Typo3_htmlmail->replyto_name = $replyTo ? '' : $fromName;
 				$Typo3_htmlmail->organisation = '';
 				$Typo3_htmlmail->priority = 3;
-	
+
 					// HTML
 				$Typo3_htmlmail->theParts['html']['content'] = $content;	// Fetches the content of the page
 				$Typo3_htmlmail->theParts['html']['path'] = '';
@@ -1532,17 +1542,17 @@ class user_feAdmin	{
 				$Typo3_htmlmail->extractHyperLinks();
 				$Typo3_htmlmail->fetchHTMLMedia();
 				$Typo3_htmlmail->substMediaNamesInHTML(0);	// 0 = relative
-				$Typo3_htmlmail->substHREFsInHTML();	
+				$Typo3_htmlmail->substHREFsInHTML();
 				$Typo3_htmlmail->setHTML($Typo3_htmlmail->encodeMsg($Typo3_htmlmail->theParts['html']['content']));
-	
+
 					// PLAIN
 				$Typo3_htmlmail->addPlain('');
-		
+
 					// SET Headers and Content
 				$Typo3_htmlmail->setHeaders();
 				$Typo3_htmlmail->setContent();
 				$Typo3_htmlmail->setRecipient($recipient);
-	
+
 		//		debug($Typo3_htmlmail->theParts);
 				$Typo3_htmlmail->sendtheMail();
 			} else {
@@ -1575,17 +1585,17 @@ class user_feAdmin	{
 
 
 	/*****************************************
-	 * 
+	 *
 	 * Various helper functions
-	 * 
+	 *
 	 *****************************************/
 
 
 	/**
 	 * Returns true if authentication is OK based on the "aC" code which is a GET parameter set from outside with a hash string which must match some internal hash string.
 	 * This allows to authenticate editing without having a fe_users login
-	 * Uses $this->authCode which is set in init() by "t3lib_div::GPvar('aC');"
-	 * 
+	 * Uses $this->authCode which is set in init() by "t3lib_div::_GP('aC');"
+	 *
 	 * @param	array		The data array for which to evaluate authentication
 	 * @return	boolean		True if authenticated OK
 	 * @see authCode(), init()
@@ -1598,7 +1608,7 @@ class user_feAdmin	{
 
 	/**
 	 * Creating authentication hash string based on input record and the fields listed in TypoScript property "authcodeFields"
-	 * 
+	 *
 	 * @param	array		The data record
 	 * @param	string		Additional string to include in the hash
 	 * @return	string		Hash string of $this->codeLength (if TypoScript "authcodeFields" was set)
@@ -1623,7 +1633,7 @@ class user_feAdmin	{
 
 	/**
 	 * Adding keys to the marker array with "setfixed" GET parameters
-	 * 
+	 *
 	 * @param	array		Marker-array to modify/add a key to.
 	 * @param	array		TypoScript properties configuring "setfixed" for the plugin. Basically this is $this->conf['setfixed.'] passed along.
 	 * @param	array		The data record
@@ -1637,8 +1647,8 @@ class user_feAdmin	{
 				if (!strcmp($theKey,'DELETE'))	{
 					$recCopy = $r;
 					$string='&cmd=setfixed&sFK='.rawurlencode($theKey).'&rU='.$r['uid'];
-					$string.='&aC='.$this->setfixedHash($recCopy,$data['_FIELDLIST']); 
-					$markerArray['###SYS_SETFIXED_DELETE###'] = $string;
+					$string.='&aC='.$this->setfixedHash($recCopy,$data['_FIELDLIST']);
+					$markerArray['###SYS_SETFIXED_DELETE###'] = htmlspecialchars($string);
 				} elseif (strstr($theKey,'.'))	{
 					$theKey = substr($theKey,0,-1);
 					if (is_array($data))	{
@@ -1651,6 +1661,7 @@ class user_feAdmin	{
 						}
 						$string.='&aC='.$this->setfixedHash($recCopy,$data['_FIELDLIST']);
 						$markerArray['###SYS_SETFIXED_'.$theKey.'###'] = $string;
+						$markerArray['###SYS_SETFIXED_HSC_'.$theKey.'###'] = htmlspecialchars($string);
 					}
 				}
 			}
@@ -1660,7 +1671,7 @@ class user_feAdmin	{
 
 	/**
 	 * Creating hash string for setFixed. Much similar to authCode()
-	 * 
+	 *
 	 * @param	array		The data record
 	 * @param	string		List of fields to use
 	 * @return	string		Hash string of $this->codeLength (if TypoScript "authcodeFields" was set)
@@ -1680,12 +1691,12 @@ class user_feAdmin	{
 		$hash = substr(md5($encStr),0,$this->codeLength);
 		return $hash;
 	}
-	
+
 
 	/**
 	 * Returns true if preview display is on.
-	 * 
-	 * @return	boolean		
+	 *
+	 * @return	boolean
 	 */
 	function isPreview()	{
 		return ($this->conf[$this->cmdKey.'.']['preview'] && $this->preview);
@@ -1693,8 +1704,8 @@ class user_feAdmin	{
 
 	/**
 	 * Creates an instance of class "t3lib_basicFileFunctions" in $this->fileFunc (if not already done)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function createFileFuncObj()	{
 		if (!$this->fileFunc)	{
@@ -1704,19 +1715,19 @@ class user_feAdmin	{
 
 	/**
 	 * If TypoScript property clearCacheOfPages is set then all page ids in this value will have their cache cleared
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function clearCacheIfSet()	{
 		if ($this->conf['clearCacheOfPages'])	{
-			$cc_pidList = implode(',',t3lib_div::intExplode(',',$this->conf['clearCacheOfPages']));
+			$cc_pidList = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['clearCacheOfPages']);
 			$GLOBALS['TSFE']->clearPageCacheContent_pidList($cc_pidList);
 		}
-	}	
+	}
 
 	/**
 	 * Returns an error message for the field/command combination inputted. The error message is looked up in the TypoScript properties (evalErrors.[fieldname].[command]) and if empty then the $label value is returned
-	 * 
+	 *
 	 * @param	string		Field name
 	 * @param	string		Command identifier string
 	 * @param	string		Alternative label, shown if no other error string was found

@@ -1,8 +1,7 @@
 The "tslib".
 
-The "tslib" contains PHP4-classes that generates the
-standard TypoScript based frontend for TYPO3. 
-The library depends on t3lib and is a part of the "cms" extension.
+The "tslib" contains PHP4-classes that generates the standard TypoScript based frontend for TYPO3.
+The library depends on t3lib/ and is a part of the "cms" extension.
 
 This directory (cms/tslib/) should be symlinked (or moved to) the site root so it is available from there as "tslib/"
 
