@@ -572,6 +572,8 @@ class t3lib_parsehtml {
 	 * 		'allowedAttribs' =>   '0' (zero) = no attributes allowed, '[commalist of attributes]' = only allowed attributes. If blank, all attributes are allowed.
 	 * 		'fixAttrib' => Array(
 	 * 			'[attribute name]' => Array (
+	 *				'set' => Force the attribute value to this value.
+	 *				'unset' => Boolean: If set, the attribute is unset.
 	 * 				'default' => 	If no attribute exists by this name, this value is set as default value (if this value is not blank)
 	 * 				'always' => 	Boolean. If set, the attribute is always processed. Normally an attribute is processed only if it exists
 	 * 				'trim,intval,lower,upper' => 	All booleans. If any of these keys are set, the value is passed through the respective PHP-functions.
@@ -645,6 +647,8 @@ class t3lib_parsehtml {
 									$tagParts[1]='';
 									reset($tags[$tagName]['fixAttrib']);
 									while(list($attr,$params)=each($tags[$tagName]['fixAttrib']))	{
+										if (strlen($params['set']))	$tagAttrib[0][$attr] = $params['set'];
+										if (strlen($params['unset']))	unset($tagAttrib[0][$attr]);
 										if (strcmp($params['default'],'') && !isset($tagAttrib[0][$attr]))	$tagAttrib[0][$attr]=$params['default'];
 										if ($params['always'] || isset($tagAttrib[0][$attr]))	{
 											if ($params['trim'])	{$tagAttrib[0][$attr]=trim($tagAttrib[0][$attr]);}

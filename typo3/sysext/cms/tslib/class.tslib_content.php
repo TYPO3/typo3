@@ -672,7 +672,7 @@ class tslib_cObj {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=352&cHash=379c60f8bc
 	 */
 	function FILE($conf)	{
-		$theValue = $this->fileResource($this->stdWrap($conf['file'],$conf['file.']));
+		$theValue = $this->fileResource($this->stdWrap($conf['file'],$conf['file.']), trim($this->getAltParam($conf)));
 		if ($conf['linkWrap'])	{
 			$theValue = $this->linkWrap($theValue,$conf['linkWrap']);
 		}
@@ -903,7 +903,8 @@ class tslib_cObj {
 					}
 				}
 
-				if ($imgConf || $imgConf['file']) {
+					// Image Object supplied:
+				if (is_array($imgConf) || $imgConf['file']) {
 					if ($this->image_effects[$image_effects])	{
 						$imgConf['file.']['params'].= ' '.$this->image_effects[$image_effects];
 					}
@@ -925,12 +926,31 @@ class tslib_cObj {
 							unset($imgConf['file.']['ext.']);
 						}
 					}
-					if (!isset ($imgConf['alttext'])) $imgConf['alttext'] = $conf['alttext'];
-					if (!isset ($imgConf['titletext'])) $imgConf['titletext'] = $conf['titletext'];
-					$imgsTag[$imgKey] = $this->IMAGE($imgConf);
+
+						// "alt", "title" and "longdesc" attributes:
+					if (!strlen($imgConf['altText']) && !is_array($imgConf['altText.'])) {
+						$imgConf['altText'] = $conf['altText'];
+						$imgConf['altText.'] = $conf['altText.'];
+					}
+					if (!strlen($imgConf['titleText']) && !is_array($imgConf['titleText.'])) {
+						$imgConf['titleText'] = $conf['titleText'];
+						$imgConf['titleText.'] = $conf['titleText.'];
+					}
+					if (!strlen($imgConf['longdescURL']) && !is_array($imgConf['longdescURL.'])) {
+						$imgConf['longdescURL'] = $conf['longdescURL'];
+						$imgConf['longdescURL.'] = $conf['longdescURL.'];
+					}
 				} else {
-					$imgsTag[$imgKey] = $this->IMAGE(Array('alttext'=>$conf['alttext'], 'titletext'=>$conf['titletext'], 'file'=>$totalImagePath)); 	// currentValKey !!!
+					$imgConf = array(
+						'altText' => $conf['altText'],
+						'titleText' => $conf['titleText'],
+						'longdescURL' => $conf['longdescURL'],
+						'file' => $totalImagePath
+					);
 				}
+
+				$imgsTag[$imgKey] = $this->IMAGE($imgConf);
+
 					// Store the original filepath
 				$origImages[$imgKey]=$GLOBALS['TSFE']->lastImageInfo;
 
@@ -1523,6 +1543,7 @@ class tslib_cObj {
 		$cc = 0;
 
 		foreach($dataArr as $val)	{
+
 			$cc++;
 			$confData=Array();
 			if (is_array($formData)) {
@@ -1562,10 +1583,12 @@ class tslib_cObj {
 				}
 				$fieldCode='';
 
-
 				if ($conf['wrapFieldName'])	{
 					$confData['fieldname'] = $this->wrap($confData['fieldname'],$conf['wrapFieldName']);
 				}
+
+					// Set field name as current:
+				$this->setCurrentVal($confData['fieldname']);
 
 					// Additional parameters
 				if (trim($confData['type']))	{
@@ -1576,6 +1599,14 @@ class tslib_cObj {
 					if (strcmp('',$addParams))	$addParams=' '.$addParams;
 				} else $addParams='';
 
+					// Accessibility: Set id = fieldname attribute:
+				if ($conf['accessibility'])	{
+					$elementIdAttribute = ' id="'.$confData['fieldname'].'"';
+				} else {
+					$elementIdAttribute = '';
+				}
+
+					// Create form field based on configuration/type:
 				switch($confData['type'])	{
 					case 'textarea':
 						$cols=trim($fParts[1]) ? intval($fParts[1]) : 20;
@@ -1586,7 +1617,7 @@ class tslib_cObj {
 						$rows=trim($fParts[2]) ? t3lib_div::intInRange($fParts[2],1,30) : 5;
 						$wrap=trim($fParts[3]) ? ' wrap="'.trim($fParts[3]).'"' : ' wrap="virtual"';
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], trim($parts[2]));
-						$fieldCode=sprintf('<textarea name="%s" cols="%s" rows="%s"%s'.$addParams.'>%s</textarea>',
+						$fieldCode=sprintf('<textarea name="%s"'.$elementIdAttribute.' cols="%s" rows="%s"%s'.$addParams.'>%s</textarea>',
 							$confData['fieldname'], $cols, $rows, $wrap, t3lib_div::formatForTextarea($default));
 					break;
 					case 'input':
@@ -1603,19 +1634,19 @@ class tslib_cObj {
 						$max=trim($fParts[2]) ? ' maxlength="'.t3lib_div::intInRange($fParts[2],1,1000).'"' : "";
 						$theType = $confData['type']=='input' ? 'text' : 'password';
 
-						$fieldCode=sprintf('<input type="'.$theType.'" name="%s" size="%s"%s value="%s"'.$addParams.' />',
+						$fieldCode=sprintf('<input type="'.$theType.'" name="%s"'.$elementIdAttribute.' size="%s"%s value="%s"'.$addParams.' />',
 							$confData['fieldname'], $size, $max, htmlspecialchars($default));
 					break;
 					case 'file':
 						$size=trim($fParts[1]) ? t3lib_div::intInRange($fParts[1],1,60) : 20;
-						$fieldCode=sprintf('<input type="file" name="%s" size="%s"'.$addParams.' />',
+						$fieldCode=sprintf('<input type="file" name="%s"'.$elementIdAttribute.' size="%s"'.$addParams.' />',
 							$confData['fieldname'], $size);
 					break;
 					case 'check':
 							// alternative default value:
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], trim($parts[2]));
 						$checked = $default ? ' checked="checked"' : '';
-						$fieldCode=sprintf('<input type="checkbox" value="%s" name="%s"%s'.$addParams.' />',
+						$fieldCode=sprintf('<input type="checkbox" value="%s" name="%s"'.$elementIdAttribute.'%s'.$addParams.' />',
 							1, $confData['fieldname'], $checked);
 					break;
 					case 'select':
@@ -1653,7 +1684,7 @@ class tslib_cObj {
 						}
 
 						if ($multiple)	$confData['fieldname'].='[]';	// The fieldname must be prepended '[]' if multiple select. And the reason why it's prepended is, because the required-field list later must also have [] prepended.
-						$fieldCode=sprintf('<select name="%s" size="%s"%s'.$addParams.'>%s</select>',
+						$fieldCode=sprintf('<select name="%s"'.$elementIdAttribute.' size="%s"%s'.$addParams.'>%s</select>',
 							$confData['fieldname'], $size, $multiple, $option); //RTF
 					break;
 					case 'radio':
@@ -1677,7 +1708,7 @@ class tslib_cObj {
 						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], $default);
 							// Create the select-box:
 						for($a=0;$a<count($items);$a++)	{
-							$option.= '<input type="radio" name="'.$confData['fieldname'].'" value="'.$items[$a][1].'"'.(!strcmp($items[$a][1],$default)?' checked="checked"':'').''.$addParams.' />';
+							$option.= '<input type="radio" name="'.$confData['fieldname'].'"'.$elementIdAttribute.' value="'.$items[$a][1].'"'.(!strcmp($items[$a][1],$default)?' checked="checked"':'').''.$addParams.' />';
 							$option.= $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
 							$option.= '<br />';
 						}
@@ -1688,7 +1719,7 @@ class tslib_cObj {
 						if (strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']))	{
 							$value = $GLOBALS['TSFE']->codeString($value);
 						}
-						$hiddenfields.=sprintf('<input type="hidden" name="%s" value="%s" />',
+						$hiddenfields.=sprintf('<input type="hidden" name="%s"'.$elementIdAttribute.' value="%s" />',
 							$confData['fieldname'], htmlspecialchars($value));
 					break;
 					case 'property':
@@ -1707,7 +1738,7 @@ class tslib_cObj {
 						if($image)	{
 							$fieldCode = str_replace('<img','<input type="image"'.$addParams.' name="'.$confData['fieldname'].'"' ,$image);
 						} else {
-							$fieldCode=sprintf('<input type="submit" name="%s" value="%s"'.$addParams.' />',
+							$fieldCode=sprintf('<input type="submit" name="%s"'.$elementIdAttribute.' value="%s"'.$addParams.' />',
 								$confData['fieldname'], t3lib_div::deHSCentities(htmlspecialchars($value)));
 						}
 					break;
@@ -1752,16 +1783,22 @@ class tslib_cObj {
 						break;
 					}
 
+						// Field:
+					$fieldLabel = $confData['label'];
+					if ($conf['accessibility'])	{
+						$fieldLabel = '<label for="'.htmlspecialchars($confData['fieldname']).'">'.$fieldLabel.'</label>';
+					}
+
 						// Getting template code:
 					$fieldCode = $this->stdWrap($fieldCode, $conf['fieldWrap.']);
-					$labelCode = $this->stdWrap($confData['label'], $conf['labelWrap.']);
+					$labelCode = $this->stdWrap($fieldLabel, $conf['labelWrap.']);
 					$commentCode = $this->stdWrap($confData['label'], $conf['commentWrap.']); // RTF
 					$result = $conf['layout'];
 					if ($conf['REQ'] && $confData['required'])	{
 						if (is_array($conf['REQ.']['fieldWrap.']))
 							$fieldCode = $this->stdWrap($fieldCode, $conf['REQ.']['fieldWrap.']);
 						if (is_array($conf['REQ.']['labelWrap.']))
-							$labelCode = $this->stdWrap($confData['label'], $conf['REQ.']['labelWrap.']);
+							$labelCode = $this->stdWrap($fieldLabel, $conf['REQ.']['labelWrap.']);
 						if ($conf['REQ.']['layout'])	{
 							$result = $conf['REQ.']['layout'];
 						}
@@ -2393,7 +2430,13 @@ class tslib_cObj {
 		if (is_array($info))	{
 			$info[3] = t3lib_div::png_to_gif_by_imagemagick($info[3]);
 			$GLOBALS['TSFE']->imagesOnPage[]=$info[3];		// This array is used to collect the image-refs on the page...
+
+			if (!strlen($conf['altText']) && !is_array($conf['altText.']))	{	// Backwards compatible:
+				$conf['altText'] = $conf['alttext'];
+				$conf['altText.'] = $conf['alttext.'];
+			}
 			$altParam = $this->getAltParam($conf);
+
 			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.t3lib_div::rawUrlEncodeFP($info[3])).'" width="'.$info[0].'" height="'.$info[1].'"  border="'.intval($conf['border']).'"'.($conf['params']?' '.$conf['params']:'').($altParam).' />';
 			if ($conf['linkWrap'])	{
 				$theValue = $this->linkWrap($theValue,$conf['linkWrap']);
@@ -2472,20 +2515,21 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Returns content of a file. If its an image the content of the file is not returned but rather an image tag is.
+	 * Returns content of a file. If it's an image the content of the file is not returned but rather an image tag is.
 	 *
 	 * @param	string		The filename, being a TypoScript resource data type
+	 * @param	string		Additional parameters (attributes). Default is empty alt and title tags.
 	 * @return	string		If jpg,gif,jpeg,png: returns image_tag with picture in. If html,txt: returns content string
 	 * @see FILE()
 	 */
-	function fileResource($fName)	{
+	function fileResource($fName, $addParams='alt="" title=""')	{
 		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
 		if ($incFile)	{
 			$fileinfo = t3lib_div::split_fileref($incFile);
 			if (t3lib_div::inList('jpg,gif,jpeg,png',$fileinfo['fileext']))	{
 				$imgFile = $incFile;
 				$imgInfo = @getImageSize($imgFile);
-				return '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'" border="0" alt="" title="" />';
+				return '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'" border="0" '.$addParams.' />';
 			} elseif (filesize($incFile)<1024*1024) {
 				return $GLOBALS['TSFE']->tmpl->fileContent($incFile);
 			}
@@ -2530,21 +2574,32 @@ class tslib_cObj {
 
 	/**
 	 * An abstraction method which creates an alt or title parameter for an HTML img tag.
+	 * From the $conf array it implements the properties "altText", "titleText" and "longdescURL"
 	 *
 	 * @param	array		TypoScript configuration properties
 	 * @return	string		Parameter string containing alt and title parameters (if any)
 	 * @see IMGTEXT(), cImage()
 	 */
 	function getAltParam($conf)	{
-		$alttext = $this->stdWrap($conf['alttext'], $conf['alttext.']);
-		$altParam = ' alt="'.htmlspecialchars(strip_tags($alttext)).'"';
+		$altText = trim($this->stdWrap($conf['altText'], $conf['altText.']));
+		$titleText = trim($this->stdWrap($conf['titleText'],$conf['titleText.']));
+		$longDesc = trim($this->stdWrap($conf['longdescURL'],$conf['longdescURL.']));
 
-		$titletext = $this->stdWrap($conf['titletext'],$conf['titletext.']);
-		if ($titletext) {
-			$altParam .= ' title="'.htmlspecialchars(strip_tags($titletext)).'"';
+			// "alt":
+		$altParam = ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
+
+			// "title":
+		if ($titleText) {
+			$altParam.= ' title="'.htmlspecialchars(strip_tags($titleText)).'"';
 		} else {
-			$altParam .= ' title="'.htmlspecialchars(strip_tags($alttext)).'"';
+			$altParam.= ' title="'.htmlspecialchars(strip_tags($altText)).'"';
 		}
+
+			// "longDesc" URL
+		if ($longDesc)	{
+			$altParam.= ' longdesc="'.htmlspecialchars($longDesc).'"';
+		}
+
 		return $altParam;
 	}
 
@@ -3015,10 +3070,10 @@ class tslib_cObj {
 			if ($conf['debugFunc'])	{debug($conf['debugFunc']==2?array($content):$content);}
 			if ($conf['debugData'])	{
 				echo '<b>$cObj->data:</b>';
-				debug($this->data);
+				debug($this->data,'$cObj->data:');
 				if (is_array($this->alternativeData))	{
 					echo '<b>$cObj->alternativeData:</b>';
-					debug($this->alternativeData);
+					debug($this->alternativeData,'$this->alternativeData');
 				}
 			}
 		}
@@ -3542,10 +3597,10 @@ class tslib_cObj {
 						} else {
 							$icon = 't3lib/gfx/notfound_thumb.gif';
 						}
-						$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'" border="0" alt="" title="" />';
+						$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'" border="0"'.$this->getAltParam($conf).' />';
 					}
 				} else {
-					$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'" width="18" height="16" border="0" alt="" title="" />';
+					$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'" width="18" height="16" border="0"'.$this->getAltParam($conf).' />';
 				}
 				if ($conf['icon_link']) {$icon = $this->wrap($icon, $theLinkWrap);}
 				$icon = $this->stdWrap($icon,$conf['icon.']);
@@ -3757,10 +3812,14 @@ class tslib_cObj {
 					if ($cfg['callRecursive'])	{
 						$parts[$k]=$this->parseFunc($htmlParser->removeFirstAndLastTag($v), $conf);
 						if (!$cfg['callRecursive.']['dontWrapSelf'])	{
-							if (is_array($cfg['callRecursive.']['tagStdWrap.']))	{
-								$tag = $this->stdWrap($tag,$cfg['callRecursive.']['tagStdWrap.']);
+							if ($cfg['callRecursive.']['alternativeWrap'])	{
+								$parts[$k] = $this->wrap($parts[$k], $cfg['callRecursive.']['alternativeWrap']);
+							} else {
+								if (is_array($cfg['callRecursive.']['tagStdWrap.']))	{
+									$tag = $this->stdWrap($tag,$cfg['callRecursive.']['tagStdWrap.']);
+								}
+								$parts[$k]=$tag.$parts[$k].'</'.$tagName.'>';
 							}
-							$parts[$k]=$tag.$parts[$k].'</'.$tagName.'>';
 						}
 					} elseif($cfg['HTMLtableCells']) {
 						$rowParts = $htmlParser->splitIntoBlock('tr',$parts[$k]);

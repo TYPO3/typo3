@@ -1,5 +1,9 @@
 2004-04-20  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Changed a bunch of things, added a few new features to make TYPO3 accessible. One significant thing was the attributes "altText", "titleText" and "longdescURL" for IMAGE, IMGTEXT, FILE and ->filelink() in TypoScript. 
+
+2004-04-20  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Completed changes for XHTML compliance requests from the Accessibility group. Mainly adding support for more XHTML types, adding attributes like xml:lang to <html> tag, support for "dir" attributes in HTML tags, support for writing inline styles and JavaScript to a temporary file to keep a clean HTML <head> section...
 
 2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
