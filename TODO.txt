@@ -348,7 +348,7 @@ Cleaning for 3.6 involves:
 4: XHTML
 
 
-Status 27/10 (TYPO3 Core + extensions "cms" and "lang" in sysext/ (but without ext/)):
+Status 27/10 (TYPO3 Core + extensions "cms" and "lang" in sysext/ (but without global extensions in ext/ !)):
 - 2000 @param and @return tags in 800 functions still needs commenting (3800 tags in 1400 functions has already been done)
 - 50 scripts still needs cleaning for XHTML, comments and single-quotes
 

@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /** 
- * generate a page-tree. OBS: remember $clause
+ * Generate a page-tree. OBS: remember $clause
  *
  * $Id$
  * Revised for TYPO3 3.6 August/2003 by Kasper Skaarhoj
