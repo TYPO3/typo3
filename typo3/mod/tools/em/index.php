@@ -913,7 +913,7 @@ EXTENSION KEYS:
 
 				$uploadedTempFile = t3lib_div::upload_to_tempfile($GLOBALS["HTTP_POST_FILES"]["upload_ext_file"]["tmp_name"]);
 				$fileContent = t3lib_div::getUrl($uploadedTempFile);
-				t3lib_div::upload_unlink_tempfile($uploadedTempFile);
+				t3lib_div::unlink_tempfile($uploadedTempFile);
 
 				$fetchData=array($this->decodeExchangeData($fileContent),"");
 
@@ -948,8 +948,6 @@ EXTENSION KEYS:
 			if ($incManual)	{
 				$addParams.="&tx_extrep[inc_manual]=1";
 			}
-			
-			
 	
 			$content='<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($GLOBALS["BACK_PATH"],'gfx/goback.gif','width="14" height="14"').' alt="" /> Go back</a>';
 			$this->content.=$this->doc->section("",$content);

@@ -39,128 +39,131 @@
  *
  *
  *
- *  194: class t3lib_div 
+ *  198: class t3lib_div 
  *
  *              SECTION: BASIC FUNCTIONS
- *  216:     function milliseconds()	
- *  230:     function setGPvars($list,$strip=0)	
- *  248:     function GPvar($var,$strip=0)	
- *  264:     function GParrayMerged($var)	
- *  280:     function clientInfo($useragent='')	
+ *  220:     function milliseconds()	
+ *  234:     function setGPvars($list,$strip=0)	
+ *  252:     function GPvar($var,$strip=0)	
+ *  268:     function GParrayMerged($var)	
+ *  284:     function clientInfo($useragent='')	
  *
  *              SECTION: IMAGE FUNCTIONS
- *  367:     function gif_compress($theFile, $type)	
- *  395:     function png_to_gif_by_imagemagick($theFile)	
- *  419:     function read_png_gif($theFile,$output_png=0)	
+ *  371:     function gif_compress($theFile, $type)	
+ *  399:     function png_to_gif_by_imagemagick($theFile)	
+ *  423:     function read_png_gif($theFile,$output_png=0)	
  *
  *              SECTION: STRING FUNCTIONS
- *  468:     function fixed_lgd($string,$chars,$preStr='...')	
- *  490:     function fixed_lgd_pre($string,$chars)	
- *  504:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)	
- *  524:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)	
- *  560:     function cmpIP($baseIP, $list)	
- *  591:     function inList($in_list,$item)	
- *  604:     function rmFromList($element,$list)	
- *  623:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)	
- *  640:     function intval_positive($theInt)	
- *  654:     function int_from_ver($verNumberStr)	
- *  667:     function md5int($str)	
- *  679:     function uniqueList($in_list)	
- *  692:     function split_fileref($fileref)	
- *  729:     function dirname($path)	
- *  746:     function modifyHTMLColor($color,$R,$G,$B)	
- *  767:     function modifyHTMLColorAll($color,$all)	
- *  779:     function rm_endcomma($string)	
- *  792:     function danish_strtoupper($string)	
- *  807:     function convUmlauts($str)	
- *  822:     function shortMD5($input, $len=10)	
- *  834:     function testInt($var)	
- *  847:     function isFirstPartOfStr($str,$partStr)	
- *  863:     function formatSize($sizeInBytes)	
- *  885:     function convertMicrotime($microtime)	
- *  899:     function splitCalc($string,$operators)	
- *  921:     function calcPriority($string)	
- *  961:     function calcParenthesis($string)	
- *  988:     function htmlspecialchars_decode($value)	
- * 1002:     function deHSCentities($str)	
- * 1015:     function slashJS($string,$extended=0,$char="'")	
- * 1029:     function rawUrlEncodeJS($str)	
- * 1041:     function validEmail($email)	
- * 1056:     function formatForTextarea($content)	
+ *  472:     function fixed_lgd($string,$chars,$preStr='...')	
+ *  494:     function fixed_lgd_pre($string,$chars)	
+ *  508:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)	
+ *  528:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)	
+ *  564:     function cmpIP($baseIP, $list)	
+ *  611:     function inList($in_list,$item)	
+ *  624:     function rmFromList($element,$list)	
+ *  643:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)	
+ *  660:     function intval_positive($theInt)	
+ *  674:     function int_from_ver($verNumberStr)	
+ *  687:     function md5int($str)	
+ *  699:     function uniqueList($in_list)	
+ *  712:     function split_fileref($fileref)	
+ *  749:     function dirname($path)	
+ *  766:     function modifyHTMLColor($color,$R,$G,$B)	
+ *  787:     function modifyHTMLColorAll($color,$all)	
+ *  799:     function rm_endcomma($string)	
+ *  812:     function danish_strtoupper($string)	
+ *  827:     function convUmlauts($str)	
+ *  842:     function shortMD5($input, $len=10)	
+ *  854:     function testInt($var)	
+ *  867:     function isFirstPartOfStr($str,$partStr)	
+ *  884:     function formatSize($sizeInBytes,$labels='')	
+ *  920:     function convertMicrotime($microtime)	
+ *  934:     function splitCalc($string,$operators)	
+ *  956:     function calcPriority($string)	
+ *  996:     function calcParenthesis($string)	
+ * 1023:     function htmlspecialchars_decode($value)	
+ * 1037:     function deHSCentities($str)	
+ * 1050:     function slashJS($string,$extended=0,$char="'")	
+ * 1064:     function rawUrlEncodeJS($str)	
+ * 1075:     function rawUrlEncodeFP($str)	
+ * 1087:     function validEmail($email)	
+ * 1102:     function formatForTextarea($content)	
  *
  *              SECTION: ARRAY FUNCTIONS
- * 1088:     function inArray($in_array,$item)	
- * 1106:     function intExplode($delim, $string)	
- * 1126:     function revExplode($delim, $string, $count=0)	
- * 1147:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)	
- * 1172:     function uniqueArray($valueArray)	
- * 1195:     function removeArrayEntryByValue($array,$cmpValue)	
- * 1224:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	
- * 1252:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)	
- * 1276:     function addSlashesOnArray(&$theArray)	
- * 1301:     function stripSlashesOnArray(&$theArray)	
- * 1324:     function slashArray($arr,$cmd)	
- * 1341:     function array_merge_recursive_overrule ($arr0,$arr1,$notAddKeys=0) 
- * 1371:     function array_merge($arr1,$arr2)	
- * 1385:     function csvValues($row,$delim=',',$quote='"')	
+ * 1134:     function inArray($in_array,$item)	
+ * 1152:     function intExplode($delim, $string)	
+ * 1172:     function revExplode($delim, $string, $count=0)	
+ * 1193:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)	
+ * 1218:     function uniqueArray($valueArray)	
+ * 1241:     function removeArrayEntryByValue($array,$cmpValue)	
+ * 1270:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	
+ * 1298:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)	
+ * 1322:     function addSlashesOnArray(&$theArray)	
+ * 1347:     function stripSlashesOnArray(&$theArray)	
+ * 1370:     function slashArray($arr,$cmd)	
+ * 1387:     function array_merge_recursive_overrule ($arr0,$arr1,$notAddKeys=0) 
+ * 1417:     function array_merge($arr1,$arr2)	
+ * 1431:     function csvValues($row,$delim=',',$quote='"')	
  *
  *              SECTION: HTML/XML PROCESSING
- * 1428:     function get_tag_attributes($tag)	
- * 1466:     function split_tag_attributes($tag)	
- * 1500:     function implodeParams($arr,$xhtmlSafe=0)	
- * 1528:     function wrapJS($string, $linebreak=TRUE) 
- * 1557:     function xml2tree($string,$depth=999) 
- * 1640:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0)	
- * 1698:     function xml2array($string,$NSprefix='') 
- * 1757:     function xmlRecompileFromStructValArray($vals)	
- * 1800:     function xmlGetHeaderAttribs($xmlData)	
+ * 1474:     function get_tag_attributes($tag)	
+ * 1512:     function split_tag_attributes($tag)	
+ * 1547:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	
+ * 1575:     function wrapJS($string, $linebreak=TRUE) 
+ * 1604:     function xml2tree($string,$depth=999) 
+ * 1687:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0)	
+ * 1745:     function xml2array($string,$NSprefix='') 
+ * 1804:     function xmlRecompileFromStructValArray($vals)	
+ * 1847:     function xmlGetHeaderAttribs($xmlData)	
  *
  *              SECTION: FILES FUNCTIONS
- * 1832:     function getURL($url)	
- * 1875:     function writeFile($file,$content)	
- * 1893:     function get_dirs($path)	
- * 1919:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	
- * 1964:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	
- * 1986:     function removePrefixPathFromList($fileArr,$prefixToRemove)	
- * 2005:     function upload_copy_move($source,$destination)	
- * 2023:     function fixWindowsFilePath($theFile)	
- * 2033:     function resolveBackPath($pathStr)	
- * 2061:     function locationHeaderUrl($path)	
+ * 1880:     function getURL($url)	
+ * 1923:     function writeFile($file,$content)	
+ * 1944:     function get_dirs($path)	
+ * 1970:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	
+ * 2015:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	
+ * 2037:     function removePrefixPathFromList($fileArr,$prefixToRemove)	
+ * 2055:     function fixWindowsFilePath($theFile)	
+ * 2065:     function resolveBackPath($pathStr)	
+ * 2093:     function locationHeaderUrl($path)	
  *
  *              SECTION: DEBUG helper FUNCTIONS
- * 2101:     function debug_ordvalue($string,$characters=100)	
- * 2118:     function view_array($array_in)	
- * 2146:     function print_array($array_in)	
- * 2162:     function debug($var="",$brOrHeader=0)	
+ * 2133:     function debug_ordvalue($string,$characters=100)	
+ * 2150:     function view_array($array_in)	
+ * 2178:     function print_array($array_in)	
+ * 2194:     function debug($var="",$brOrHeader=0)	
  *
  *              SECTION: SYSTEM INFORMATION
- * 2231:     function getThisUrl()	
- * 2248:     function linkThisScript($getParams=array())	
- * 2270:     function linkThisUrl($url,$getParams=array())	
- * 2290:     function getIndpEnv($getEnvName)	
+ * 2263:     function getThisUrl()	
+ * 2280:     function linkThisScript($getParams=array())	
+ * 2302:     function linkThisUrl($url,$getParams=array())	
+ * 2322:     function getIndpEnv($getEnvName)	
  *
  *              SECTION: TYPO3 SPECIFIC FUNCTIONS
- * 2504:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)	
- * 2539:     function validPathStr($theFile)	
- * 2551:     function isAbsPath($path)	
- * 2563:     function isAllowedAbsPath($path)	
- * 2581:     function verifyFilenameAgainstDenyPattern($filename)	
- 
- * 2598:     function stdAuthCode($uid_or_record,$fields='')	
- * 2632:     function loadTCA($table)	
- * 2651:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	
- * 2679:     function resolveAllSheetsInDS($dataStructArray)	
- * 2708:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	
- * 2748:     function makeInstance($className)	
- * 2766:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	
- * 2801:     function makeInstanceClassName($className)	
- * 2821:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)	
- * 2868:     function quoted_printable($string,$maxlen=76)	
- * 2911:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	
- * 2946:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')	
- * 2969:     function freetypeDpiComp($font_size)	
+ * 2536:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)	
+ * 2571:     function validPathStr($theFile)	
+ * 2583:     function isAbsPath($path)	
+ * 2595:     function isAllowedAbsPath($path)	
+ * 2613:     function verifyFilenameAgainstDenyPattern($filename)	
+ * 2630:     function upload_copy_move($source,$destination)	
+ * 2655:     function upload_to_tempfile($uploadedFileName)	
+ * 2669:     function unlink_tempfile($uploadedTempFileName)	
+ * 2682:     function tempnam($filePrefix)	
+ * 2695:     function stdAuthCode($uid_or_record,$fields='')	
+ * 2729:     function loadTCA($table)	
+ * 2748:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	
+ * 2776:     function resolveAllSheetsInDS($dataStructArray)	
+ * 2805:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	
+ * 2845:     function makeInstance($className)	
+ * 2863:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	
+ * 2902:     function makeInstanceClassName($className)	
+ * 2922:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)	
+ * 2969:     function quoted_printable($string,$maxlen=76)	
+ * 3012:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	
+ * 3047:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')	
+ * 3070:     function freetypeDpiComp($font_size)	
  *
- * TOTAL FUNCTIONS: 100
+ * TOTAL FUNCTIONS: 104
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -2042,34 +2045,6 @@ class t3lib_div {
 	}
 
 	/**
-	 * Moves $source file to $destination if uploaded, otherwise try to make a copy
-	 * Usage: 3
-	 * 
-	 * @param	string		Source file, absolute path
-	 * @param	string		Destination file, absolute path
-	 * @return	boolean		Returns true if the file was moved.
-	 * @coauthor	Dennis Petersen <fessor@software.dk>
-	 */
-	function upload_copy_move($source,$destination)	{
-		if (is_uploaded_file($source))	{
-			$uploaded = TRUE;
-			// Return the value of move_uploaded_file, and if false the temporary $source is still around so the user can use unlink to delete it:
-			$uploadedResult = move_uploaded_file($source, $destination);
-		} else {
-			$uploaded = FALSE;
-			@copy($source,$destination);
-		}
-		
-			// Setting file system mode of file:
-		if (@is_file($destination) && TYPO3_OS!='WIN')	{ 
-			@chmod ($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])); 
-		}
-
-			// If here the file is copied and the temporary $source is still around, so when returning false the user can try unlink to delete the $source
-		return $uploaded ? $uploadedResult : FALSE;
-	}
-	
-	/**
 	 * Fixes a path for windows-backslashes and reduces double-slashes to single slashes
 	 * 
 	 * Usage: 2
@@ -2644,6 +2619,80 @@ class t3lib_div {
 	}
 	
 	/**
+	 * Moves $source file to $destination if uploaded, otherwise try to make a copy
+	 * Usage: 3
+	 * 
+	 * @param	string		Source file, absolute path
+	 * @param	string		Destination file, absolute path
+	 * @return	boolean		Returns true if the file was moved.
+	 * @coauthor	Dennis Petersen <fessor@software.dk>
+	 * @see upload_to_tempfile()
+	 */
+	function upload_copy_move($source,$destination)	{
+		if (is_uploaded_file($source))	{
+			$uploaded = TRUE;
+			// Return the value of move_uploaded_file, and if false the temporary $source is still around so the user can use unlink to delete it:
+			$uploadedResult = move_uploaded_file($source, $destination);
+		} else {
+			$uploaded = FALSE;
+			@copy($source,$destination);
+		}
+		
+			// Setting file system mode of file:
+		if (@is_file($destination) && TYPO3_OS!='WIN')	{ 
+			@chmod ($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])); 
+		}
+
+			// If here the file is copied and the temporary $source is still around, so when returning false the user can try unlink to delete the $source
+		return $uploaded ? $uploadedResult : FALSE;
+	}
+
+	/**
+	 * Will move an uploaded file (normally in "/tmp/xxxxx") to a temporary filename in PATH_site."typo3temp/" from where TYPO3 can use it under safe_mode.
+	 * Use this function to move uploaded files to where you can work on them.
+	 * REMEMBER to use t3lib_div::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in PATH_site."typo3temp/"!
+	 * 
+	 * @param	string		The temporary uploaded filename, eg. $GLOBALS['HTTP_POST_FILES']['[upload field name here]']['tmp_name']
+	 * @return	string		If a new file was successfully created, return its filename, otherwise blank string.
+	 * @see unlink_tempfile(), upload_copy_move()
+	 */
+	function upload_to_tempfile($uploadedFileName)	{
+		if (is_uploaded_file($uploadedFileName))	{
+			$tempFile = t3lib_div::tempnam('upload_temp_');
+			move_uploaded_file($uploadedFileName, $tempFile);
+			return @is_file($tempFile) ? $tempFile : '';
+		}
+	}
+
+	/**
+	 * Deletes (unlink) a temporary filename in 'PATH_site."typo3temp/"' given as input.
+	 * The function will check that the file exists, is in PATH_site."typo3temp/" and does not contain back-spaces ("../") so it should be pretty safe.
+	 * Use this after upload_to_tempfile() or tempnam() from this class!
+	 * 
+	 * @param	string		Filepath for a file in PATH_site."typo3temp/". Must be absolute.
+	 * @return	boolean		Returns true if the file was unlink()'ed
+	 * @see upload_to_tempfile(), tempnam()
+	 */
+	function unlink_tempfile($uploadedTempFileName)	{
+		if ($uploadedTempFileName && t3lib_div::validPathStr($uploadedTempFileName) && t3lib_div::isFirstPartOfStr($uploadedTempFileName,PATH_site.'typo3temp/') && @is_file($uploadedTempFileName))	{
+			if (unlink($uploadedTempFileName))	return TRUE;
+		}
+	}
+	
+	/**
+	 * Create temporary filename (Create file with unique file name)
+	 * This function should be used for getting temporary filenames - will make your applications safe for open_basedir = on
+	 * REMEMBER to delete the temporary files after use! This is done by t3lib_div::unlink_tempfile()
+	 * 
+	 * @param	string		Prefix to temp file (which will have no extension btw)
+	 * @return	string		result from PHP function tempnam() with PATH_site.'typo3temp/' set for temp path.
+	 * @see unlink_tempfile()
+	 */
+	function tempnam($filePrefix)	{
+		return tempnam(PATH_site.'typo3temp/',$filePrefix);	
+	}
+	
+	/**
 	 * standard authentication code - can't remember what it's used for.
 	 * Usage: 2
 	 * 
@@ -2673,17 +2722,6 @@ class t3lib_div {
 		$authCode = substr(md5($authCode),0,8);
 		return $authCode;
 	}	
-	
-	/**
-	 * Create temporary filename (Create file with unique file name)
-	 * This function should be used for getting temporary filenames - will make your applications safe for open_basedir = on
-	 *
-	 * @param	string	Prefix to temp file (which will have no extension btw)
-	 * @return	string	result from PHP function tempnam() with PATH_site.'typo3temp/' set for temp path.
-	 */
-	function tempnam($filePrefix)	{
-		return tempnam(PATH_site.'typo3temp/',$filePrefix);	
-	}
 
 	/**
 	 * Loads the $TCA (Table Configuration Array) for the $table

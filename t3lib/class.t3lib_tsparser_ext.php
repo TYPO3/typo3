@@ -1558,6 +1558,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)	{
+
 			// extensions
 		$extList = $typeDat["paramstr"];
 		if ($extList=="IMAGE_EXT")	{
@@ -1565,12 +1566,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		$fI=t3lib_div::split_fileref($theRealFileName);
 		if ($theRealFileName && (!$extList || t3lib_div::inList($extList,$fI["fileext"])))	{
+			$tmp_upload_name = t3lib_div::upload_to_tempfile($tmp_name);	// If there is an uploaded file, move it for the sake of safe_mode.
+		
 				// Saving resource
 			$alternativeFileName=array();
-			$alternativeFileName[$tmp_name] = $theRealFileName;
+			$alternativeFileName[$tmp_upload_name] = $theRealFileName;
 				// Making list of resources
 			$resList = $tplRow["resources"];
-			$resList = $tmp_name.",".$resList;
+			$resList = $tmp_upload_name.",".$resList;
 			$resList=implode(t3lib_div::trimExplode(",",$resList,1),",");
 				// Making data-array
 			$recData=array();
@@ -1581,6 +1584,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$tce->alternativeFileName = $alternativeFileName;
 			$tce->start($recData,Array());
 			$tce->process_datamap();
+			
+			t3lib_div::unlink_tempfile($tmp_upload_name);
 			
 			$tmpRow = t3lib_BEfunc::getRecord("sys_template",$tplRow["uid"],"resources");
 			$tplRow["resources"] = $tmpRow["resources"];

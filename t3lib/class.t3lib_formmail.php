@@ -138,15 +138,15 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 			for ($a=0;$a<10;$a++)	{
 				$varname = 'attachment'.(($a)?$a:'');
-				$theFile = $GLOBALS['HTTP_POST_FILES'][$varname]['tmp_name'];
+				$theFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES'][$varname]['tmp_name']);
 				$theName = $GLOBALS['HTTP_POST_FILES'][$varname]['name'];
 				
 				if ($theFile && @file_exists($theFile))	{
 					if (filesize($theFile) < 250000)	{
 						$this->addAttachment($theFile, $theName);
 					}
-//					unlink($theFile);
 				}
+				t3lib_div::unlink_tempfile($theFile);
 			}
 			
 			$this->setHeaders();

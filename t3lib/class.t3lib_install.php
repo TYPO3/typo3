@@ -1894,7 +1894,8 @@ Number of files at a time:
 						$newdbname=trim($this->INSTALL["localconf.php"]["NEW_DATABASE_NAME"]);
 						if (!ereg("[^[:alnum:]_]",$newdbname))	{
 							if ($result = @mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
-								if (mysql_create_db($newdbname))	{
+#								if (mysql_create_db($newdbname))	{	// Disabled because of safe_mode restrictions or something like that...
+								if (mysql_query('CREATE DATABASE '.$newdbname)) {
 									$this->INSTALL["localconf.php"]["typo_db"]=$newdbname;
 									$this->messages[]= "Database '".$newdbname."' created";
 								} else $this->messages[]= "Could not create database '".$newdbname."' (...not created)";
