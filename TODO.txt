@@ -43,6 +43,9 @@ TCEmain:
 	- Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". But copy/cut operations must understand this. And Web>List should reflect this as categorizing. 
 	- "child records" - records which MUST be related to another table - and will be moved along with the main record if moved.
 	- Implement *real* record locking?
+		- Configure on a per-table basis
+			- For instance, the TCEforms will render non-editable fields for ordinary users, while editable fields for "admin" users still
+			- Should the check be done only in TCEforms - or also in TCEmain?
 	- If an input value in the data array is NOT a string/integer but an array then just serialize this array and store (thus allowing customly build forms from PHP scripts to submit hierarchical information)
 		- Could be solved by PRE-processing of content in user functions!
 	- Implement "last_edited_by" field saving the BE-user UID just like tstamps are... (JH asked)
