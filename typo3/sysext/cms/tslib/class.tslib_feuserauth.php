@@ -142,6 +142,11 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		$this->TSdataArray = array();
 		$this->userTS = array();
 		$this->userTSUpdated = 0;
+		$this->groupData = Array(
+			'title' => Array(),
+			'uid' => Array(),
+			'pid' => Array()
+		);
 
 			// Setting default configuration:
 		$this->TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];

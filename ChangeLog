@@ -1,3 +1,10 @@
+2005-03-08  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* New feature for page records: Frontend Login Mode. Makes it possible to disable (and enable later) frontend logins for branches of the page tree. Disabling will make it look like no user is authenticated. This feature is very useful if you wish a highly performant website using cache control headers while specifying sections where user logins are accepted (for dynamic content)
+	* Implemented a bunch of hooks in tslib_fe
+	* Minor bug fixes and re-arrangements
+	* Support for "crawler" extension in indexed_search; Makes it possible to index pages in the page tree by starting a crawler from the backend of TYPO3 (The extension "crawler" is specifically supported) and thus preventing the process from happening during frontend users browsing.
+
 2005-03-07  Karsten Dambekalns  <karsten@typo3.org>
 
 	* Fixed the potential security issue with mailforms, allowing

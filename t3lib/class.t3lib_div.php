@@ -3017,6 +3017,31 @@ class t3lib_div {
 	}
 
 	/**
+	 * Splits the input query-parameters into an array with certain parameters filtered out.
+	 * Used to create the cHash value
+	 *
+	 * @param	string		Query-parameters: "&xxx=yyy&zzz=uuu"
+	 * @return	array		Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc) and WITH a variable, encryptionKey, specific for this server/installation
+	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink()
+	 */
+	function cHashParams($addQueryParams) {
+		$params = explode('&',substr($addQueryParams,1));	// Splitting parameters up
+
+			// Make array:
+		$pA = array();
+		foreach($params as $theP)	{
+			$pKV = explode('=', $theP);	// Splitting single param by '=' sign
+			if (!t3lib_div::inList('id,type,no_cache,cHash,MP,ftu',$pKV[0]))	{
+				$pA[$pKV[0]] = (string)rawurldecode($pKV[1]);
+			}
+		}
+		$pA['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+		ksort($pA);
+
+		return $pA;
+	}
+
+	/**
 	 * Loads the $TCA (Table Configuration Array) for the $table
 	 *
 	 * Requirements:

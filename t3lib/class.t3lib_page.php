@@ -454,7 +454,7 @@ class t3lib_pageSelect {
 				if ($row['prepend_params'])	{
 					$rURL = ereg_replace('\/$','',$rURL);
 					$prependStr = ereg_replace('^\/','',substr($request_uri,strlen($path)));
-					$rURL.='/'.$prependStr;
+					$rURL.= '/'.$prependStr;
 				}
 				Header('Location: '.t3lib_div::locationHeaderUrl($rURL));
 				exit;
@@ -479,7 +479,7 @@ class t3lib_pageSelect {
 	function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)	{
 
 			// Initialize:
-		$selFields = t3lib_div::uniqueList('pid,uid,t3ver_oid,title,alias,nav_title,media,layout,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,TSconfig,storage_pid,is_siteroot,mount_pid,mount_pid_ol,'.$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']);
+		$selFields = t3lib_div::uniqueList('pid,uid,t3ver_oid,title,alias,nav_title,media,layout,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,TSconfig,storage_pid,is_siteroot,mount_pid,mount_pid_ol,fe_login_mode,'.$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']);
 		$this->error_getRootLine = '';
 		$this->error_getRootLine_failPid = 0;
 

@@ -42,122 +42,130 @@
  *
  *
  *
- *  192: class tslib_fe
- *  356:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
- *  387:     function connectToMySQL()
- *  423:     function sendRedirect()
+ *  200: class tslib_fe
+ *  366:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
+ *  399:     function connectToMySQL()
+ *  409:     function connectToDB()
+ *  454:     function sendRedirect()
  *
  *              SECTION: Initializing, resolving page id
- *  461:     function initFEuser()
- *  501:     function initUserGroups()
- *  549:     function checkAlternativeIdMethods()
- *  601:     function clear_preview()
- *  614:     function determineId()
- *  720:     function fetch_the_id()
- *  812:     function getPageAndRootline()
- *  878:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
- *  928:     function checkRootlineForIncludeSection()
- *  961:     function checkEnableFields($row)
- *  979:     function checkPageGroupAccess($row, $groupList=NULL)
- *  998:     function checkPagerecordForIncludeSection($row)
- * 1010:     function setIDfromArgV()
- * 1026:     function getPageAndRootlineWithDomain($domainStartPage)
- * 1053:     function setSysPageWhereClause()
- * 1063:     function getPagesGroupClause()
- * 1074:     function findDomainRecord($recursive=0)
- * 1093:     function pageNotFoundAndExit($reason='')
- * 1107:     function pageNotFoundHandler($code, $header='', $reason='')
- * 1145:     function checkAndSetAlias()
- * 1160:     function idPartsAnalyze($str)
- * 1185:     function mergingWithGetVars($GET_VARS)
+ *  492:     function initFEuser()
+ *  542:     function initUserGroups()
+ *  589:     function checkAlternativeIdMethods()
+ *  641:     function clear_preview()
+ *  654:     function determineId()
+ *  772:     function fetch_the_id()
+ *  867:     function getPageAndRootline()
+ *  933:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
+ *  983:     function checkRootlineForIncludeSection()
+ * 1016:     function checkEnableFields($row)
+ * 1034:     function checkPageGroupAccess($row, $groupList=NULL)
+ * 1053:     function checkPagerecordForIncludeSection($row)
+ * 1062:     function checkIfLoginAllowedInBranch()
+ * 1090:     function setIDfromArgV()
+ * 1106:     function getPageAndRootlineWithDomain($domainStartPage)
+ * 1133:     function setSysPageWhereClause()
+ * 1143:     function getPagesGroupClause()
+ * 1154:     function findDomainRecord($recursive=0)
+ * 1173:     function pageNotFoundAndExit($reason='')
+ * 1187:     function pageNotFoundHandler($code, $header='', $reason='')
+ * 1225:     function checkAndSetAlias()
+ * 1240:     function idPartsAnalyze($str)
+ * 1265:     function mergingWithGetVars($GET_VARS)
  *
  *              SECTION: Template and caching related functions.
- * 1233:     function makeCacheHash()
- * 1256:     function cHashParams($addQueryParams)
- * 1277:     function initTemplate()
- * 1289:     function getFromCache()
- * 1347:     function getHash()
- * 1367:     function getConfigArray()
+ * 1313:     function makeCacheHash()
+ * 1336:     function cHashParams($addQueryParams)
+ * 1345:     function initTemplate()
+ * 1357:     function getFromCache()
+ * 1416:     function headerNoCache()
+ * 1443:     function getHash()
+ * 1463:     function getConfigArray()
  *
  *              SECTION: Further initialization and data processing
- * 1485:     function getCompressedTCarray()
- * 1539:     function includeTCA($TCAloaded=1)
- * 1566:     function settingLanguage()
- * 1656:     function settingLocale()
- * 1681:     function checkDataSubmission()
- * 1706:     function fe_tce()
- * 1720:     function locDataCheck($locationData)
- * 1736:     function sendFormmail()
- * 1779:     function checkJumpUrl()
- * 1861:     function jumpUrl()
- * 1904:     function setUrlIdToken()
+ * 1585:     function getCompressedTCarray()
+ * 1639:     function includeTCA($TCAloaded=1)
+ * 1666:     function settingLanguage()
+ * 1756:     function settingLocale()
+ * 1781:     function checkDataSubmission()
+ * 1806:     function fe_tce()
+ * 1820:     function locDataCheck($locationData)
+ * 1836:     function sendFormmail()
+ * 1879:     function checkJumpUrl()
+ * 1961:     function jumpUrl()
+ * 2004:     function setUrlIdToken()
  *
  *              SECTION: Page generation; cache handling
- * 1947:     function isGeneratePage()
- * 1957:     function tempPageCacheContent()
- * 1988:     function realPageCacheContent()
- * 2018:     function setPageCacheContent($c,$d,$t)
- * 2040:     function clearPageCacheContent()
- * 2050:     function clearPageCacheContent_pidList($pidList)
- * 2061:     function setSysLastChanged()
+ * 2047:     function isGeneratePage()
+ * 2057:     function tempPageCacheContent()
+ * 2089:     function realPageCacheContent()
+ * 2119:     function setPageCacheContent($c,$d,$t)
+ * 2144:     function clearPageCacheContent()
+ * 2154:     function clearPageCacheContent_pidList($pidList)
+ * 2165:     function setSysLastChanged()
  *
  *              SECTION: Page generation; rendering and inclusion
- * 2097:     function generatePage_preProcessing()
- * 2119:     function generatePage_whichScript()
- * 2131:     function generatePage_postProcessing()
- * 2223:     function INTincScript()
- * 2283:     function INTincScript_loadJSCode()
- * 2324:     function isINTincScript()
- * 2333:     function doXHTML_cleaning()
- * 2342:     function doLocalAnchorFix()
+ * 2201:     function generatePage_preProcessing()
+ * 2223:     function generatePage_whichScript()
+ * 2235:     function generatePage_postProcessing()
+ * 2327:     function INTincScript()
+ * 2387:     function INTincScript_loadJSCode()
+ * 2428:     function isINTincScript()
+ * 2437:     function doXHTML_cleaning()
+ * 2446:     function doLocalAnchorFix()
  *
  *              SECTION: Finished off; outputting, storing session data, statistics...
- * 2373:     function isOutputting()
- * 2384:     function processOutput()
- * 2450:     function isEXTincScript()
- * 2459:     function storeSessionData()
- * 2469:     function setParseTime()
- * 2481:     function statistics()
- * 2575:     function previewInfo()
- * 2596:     function beLoginLinkIPList()
+ * 2477:     function isOutputting()
+ * 2500:     function processOutput()
+ * 2572:     function sendCacheHeaders()
+ * 2633:     function isStaticCacheble()
+ * 2648:     function contentStrReplace()
+ * 2674:     function isEXTincScript()
+ * 2683:     function storeSessionData()
+ * 2693:     function setParseTime()
+ * 2705:     function statistics()
+ * 2804:     function previewInfo()
+ * 2825:     function hook_eofe()
+ * 2841:     function beLoginLinkIPList()
  *
  *              SECTION: Various internal API functions
- * 2651:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
- * 2698:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
- * 2727:     function getSimulFileName()
- * 2740:     function encryptEmail($string,$back=0)
- * 2759:     function codeString($string, $decode=FALSE)
- * 2785:     function roundTripCryptString($string)
- * 2805:     function checkFileInclude($incFile)
- * 2820:     function newCObj()
- * 2833:     function setAbsRefPrefix()
- * 2847:     function baseUrlWrap($url)
- * 2866:     function printError($label,$header='Error!')
- * 2877:     function updateMD5paramsRecord($hash)
- * 2888:     function tidyHTML($content)
- * 2914:     function prefixLocalAnchorsWithScript()
+ * 2896:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
+ * 2939:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
+ * 2968:     function getSimulFileName()
+ * 2982:     function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')
+ * 3000:     function encryptEmail($string,$back=0)
+ * 3019:     function codeString($string, $decode=FALSE)
+ * 3045:     function roundTripCryptString($string)
+ * 3065:     function checkFileInclude($incFile)
+ * 3080:     function newCObj()
+ * 3093:     function setAbsRefPrefix()
+ * 3107:     function baseUrlWrap($url)
+ * 3126:     function printError($label,$header='Error!')
+ * 3137:     function updateMD5paramsRecord($hash)
+ * 3148:     function tidyHTML($content)
+ * 3174:     function prefixLocalAnchorsWithScript()
  *
  *              SECTION: Various external API functions - for use in plugins etc.
- * 2958:     function getStorageSiterootPids()
- * 2973:     function getPagesTSconfig()
- * 3006:     function setJS($key,$content='')
- * 3044:     function setCSS($key,$content)
- * 3059:     function make_seed()
- * 3072:     function uniqueHash($str='')
- * 3081:     function set_no_cache()
- * 3091:     function set_cache_timeout_default($seconds)
- * 3107:     function plainMailEncoded($email,$subject,$message,$headers='')
+ * 3218:     function getStorageSiterootPids()
+ * 3233:     function getPagesTSconfig()
+ * 3266:     function setJS($key,$content='')
+ * 3304:     function setCSS($key,$content)
+ * 3319:     function make_seed()
+ * 3332:     function uniqueHash($str='')
+ * 3341:     function set_no_cache()
+ * 3351:     function set_cache_timeout_default($seconds)
+ * 3367:     function plainMailEncoded($email,$subject,$message,$headers='')
  *
  *              SECTION: Localization
- * 3148:     function sL($input)
- * 3177:     function readLLfile($fileRef)
- * 3192:     function getLLL($index,$LOCAL_LANG)
- * 3206:     function initLLvars()
- * 3240:     function csConv($str,$from='')
- * 3258:     function convOutputCharset($content,$label)
- * 3271:     function convPOSTCharset()
+ * 3408:     function sL($input)
+ * 3437:     function readLLfile($fileRef)
+ * 3452:     function getLLL($index,$LOCAL_LANG)
+ * 3466:     function initLLvars()
+ * 3500:     function csConv($str,$from='')
+ * 3518:     function convOutputCharset($content,$label)
+ * 3531:     function convPOSTCharset()
  *
- * TOTAL FUNCTIONS: 95
+ * TOTAL FUNCTIONS: 103
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -426,6 +434,15 @@
 			$this->printError('The current username, password or host was not accepted when the connection to the database was attempted to be established!','Database Error');
 			exit;
 		}
+
+
+			// Call post processing function for DB connection:
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB']))	{
+			$_params = array('pObj' => &$this);
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
 	}
 
 	/**
@@ -485,8 +502,8 @@
 		if (t3lib_div::_GP('FE_SESSION_KEY'))	{
 			$fe_sParts = explode('-',t3lib_div::_GP('FE_SESSION_KEY'));
 			if (!strcmp(md5($fe_sParts[0].'/'.$this->TYPO3_CONF_VARS['SYS']['encryptionKey']), $fe_sParts[1]))	{	// If the session key hash check is OK:
-				$_COOKIE[$this->fe_user->name]=$fe_sParts[0];
-				$this->fe_user->forceSetCookie=1;
+				$_COOKIE[$this->fe_user->name] = $fe_sParts[0];
+				$this->fe_user->forceSetCookie = 1;
 			}
 		}
 
@@ -502,22 +519,31 @@
 			$this->fe_user->record_registration($recs);
 		}
 
+			// Call hook for possible manipulation of frontend user object
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser']))	{
+			$_params = array('pObj' => &$this);
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
+
 			// For every 60 seconds the is_online timestamp is updated.
-		if (is_array($this->fe_user->user) && $this->fe_user->user['is_online']<($GLOBALS['EXEC_TIME']-60))	{
+		if (is_array($this->fe_user->user) && $this->fe_user->user['uid'] && $this->fe_user->user['is_online']<($GLOBALS['EXEC_TIME']-60))	{
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid='.intval($this->fe_user->user['uid']), array('is_online' => $GLOBALS['EXEC_TIME']));
 		}
 	}
 
 	/**
 	 * Initializes the front-end user groups.
+	 * Sets ->loginUser and ->gr_list based on front-end user status.
 	 *
 	 * @return	void
 	 */
 	function initUserGroups() {
-			// Sets ->loginUser and ->gr_list based on front-end user status.
+
 		$this->fe_user->showHiddenRecords = $this->showHiddenRecords;		// This affects the hidden-flag selecting the fe_groups for the user!
-		// if (is_array($this->fe_user->user) && $this->fe_user->fetchGroupData())	{
-		$this->fe_user->fetchGroupData(); 	// no matter if we have an active user we try to fetch matching groups which can be set without an user.
+		$this->fe_user->fetchGroupData(); 	// no matter if we have an active user we try to fetch matching groups which can be set without an user (simulation for instance!)
+
 		if (is_array($this->fe_user->user) && count($this->fe_user->groupData['uid']))	{
 			$this->loginUser=1;	// global flag!
 			$this->gr_list = '0,-2';	// group -2 is not an existing group, but denotes a 'default' group when a user IS logged in. This is used to let elements be shown for all logged in users!
@@ -527,7 +553,6 @@
 			$this->gr_list = '0,-1';	// group -1 is not an existing group, but denotes a 'default' group when not logged in. This is used to let elements be hidden, when a user is logged in!
 			$gr_array = $this->fe_user->groupData['uid'];
 		}
-
 		// TYPO3_CONF_VARS']['FE']['IPmaskMountGroups']	moved to sysext/sv/class.tx_sv_auth.php service
 
 			// Clean up.
@@ -540,13 +565,13 @@
 		if ($this->fe_user->writeDevLog) 	t3lib_div::devLog('Valid usergroups for TSFE: '.$this->gr_list, 'tslib_fe');
 	}
 
-
 	/**
 	 * Provides ways to bypass the '?id=[xxx]&type=[xx]' format, using either PATH_INFO or virtual HTML-documents (using Apache mod_rewrite)
 	 *
-	 * Two options:
-	 * 1) Apache mod_rewrite: Here a .htaccess file maps all .html-files to index.php and then we extract the id and type from the name of that HTML-file.
-	 * 2) Use PATH_INFO (also Apache) to extract id and type from that var. Does not require any special modules compiled with apache.
+	 * Three options:
+	 * 1) Apache mod_rewrite: Here a .htaccess file maps all .html-files to index.php and then we extract the id and type from the name of that HTML-file. (AKA "simulateStaticDocuments")
+	 * 2) Use PATH_INFO (also Apache) to extract id and type from that var. Does not require any special modules compiled with apache. (less typical)
+	 * 3) Using hook which enables features like those provided from "realurl" extension (AKA "Speaking URLs")
 	 *
 	 * Support for RewriteRule to generate   (simulateStaticDocuments)
 	 * With the mod_rewrite compiled into apache, put these lines into a .htaccess in this directory:
@@ -706,14 +731,26 @@
 					// Resetting
 				$this->clear_preview();
 				$this->fe_user->user['usergroup'] = $fe_user_OLD_USERGROUP;
+
 					// Fetching the id again, now with the preview settings reset.
 				$this->fetch_the_id();
 			}
 		}
+
+			// Checks if user logins are blocked for a certain branch and if so, will unset user login and re-fetch ID.
+		if (is_array($this->fe_user->user))	{	// Only if there is a login will we run this...
+			if (!$this->checkIfLoginAllowedInBranch())	{
+				unset($this->fe_user->user);
+
+					// Fetching the id again, now with the preview settings reset.
+				$this->fetch_the_id();
+			}
+		}
+
+
 			// Final cleaning.
 		$this->id = $this->contentPid = intval($this->id);	// Make sure it's an integer
 		$this->type = intval($this->type);	// Make sure it's an integer
-
 
 			// Call post processing function for id determination:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc']))	{
@@ -741,7 +778,6 @@
 		$this->sys_page->versioningPreview = $this->fePreview ? TRUE : FALSE;
 		if ($this->sys_page->versioningPreview)	{
 			$this->sys_page->versionPreviewMap = $this->versionPreviewMap;
-#debug($this->sys_page->versionPreviewMap);
 		}
 
 			// Set the valid usergroups for FE
@@ -1019,6 +1055,31 @@
 	}
 
 	/**
+	 * Checks if logins are allowed in the current branch of the page tree. Traverses the full root line and returns TRUE if logins are OK, otherwise false (and then the login user must be unset!)
+	 *
+	 * @return	boolean		returns TRUE if logins are OK, otherwise false (and then the login user must be unset!)
+	 */
+	function checkIfLoginAllowedInBranch()	{
+
+			// Initialize:
+		$c = count($this->rootLine);
+		$disable = FALSE;
+
+			// Traverse root line from root and outwards:
+		for ($a=0; $a<$c; $a++)	{
+
+				// If a value is set for login state:
+			if ($this->rootLine[$a]['fe_login_mode'] > 0)	{
+
+					// Determine state from value:
+				$disable = (int)$this->rootLine[$a]['fe_login_mode'] === 1 ? TRUE : FALSE;
+			}
+		}
+
+		return !$disable;
+	}
+
+	/**
 	 * This checks if there are ARGV-parameters in the QUERY_STRING and if so, those are used for the id
 	 * $this->id must be 'false' in order for any processing to happen in here
 	 * If an id/alias value is extracted from the QUERY_STRING it is set in $this->id
@@ -1252,13 +1313,12 @@
 	function makeCacheHash()	{
 		$GET = t3lib_div::_GET();
 		if ($this->cHash && is_array($GET))	{
-			$pA = $this->cHashParams(t3lib_div::implodeArrayForUrl('',$GET));
-			$this->cHash_array = $pA;
+			$this->cHash_array = t3lib_div::cHashParams(t3lib_div::implodeArrayForUrl('',$GET));
 			$cHash_calc = t3lib_div::shortMD5(serialize($this->cHash_array));
-#debug(array($cHash_calc,$this->cHash,$pA));
+
 			if ($cHash_calc!=$this->cHash)	{
 				$this->set_no_cache();
-				$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(',',array_keys($pA)).'"',2);
+				$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(',',array_keys($this->cHash_array)).'"',2);
 			}
 		}
 	}
@@ -1271,21 +1331,10 @@
 	 * @return	array		Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc) and WITH a variable, encryptionKey, specific for this server/installation
 	 * @access private
 	 * @see makeCacheHash(), tslib_cObj::typoLink()
+	 * @obsolete
 	 */
 	function cHashParams($addQueryParams) {
-		$params = explode('&',substr($addQueryParams,1));	// Splitting parameters up
-
-			// Make array:
-		$pA = array();
-		foreach($params as $theP)	{
-			$pKV = explode('=', $theP);	// SPlitting single param by '=' sign
-			if (!t3lib_div::inList('id,type,no_cache,cHash,MP,ftu',$pKV[0]))	{
-				$pA[$pKV[0]] = (string)rawurldecode($pKV[1]);
-			}
-		}
-		$pA['encryptionKey'] = $this->TYPO3_CONF_VARS['SYS']['encryptionKey'];
-		ksort($pA);
-		return $pA;
+		return t3lib_div::cHashParams($addQueryParams);
 	}
 
 	/**
@@ -1325,6 +1374,7 @@
 
 			// Look for page in cache only if caching is not disabled and if a shift-reload is not sent to the server.
 		if ($this->all && !$this->no_cache && !$this->headerNoCache())	{
+
 			$this->newHash = $this->getHash();
 
 			$GLOBALS['TT']->push('Cache Query','');
@@ -1358,14 +1408,27 @@
 	}
 
 	/**
-	 *	Detecting if shift-reload has been clicked
+	 * Detecting if shift-reload has been clicked
+	 * Will not be called if re-generation of page happens by other reasons (for instance that the page is not in cache yet!)
 	 *
 	 * @return	boolean		If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
 	 */
 	function headerNoCache()	{
+		$disableAcquireCacheData = FALSE;
+
 		if (strtolower($_SERVER['HTTP_CACHE_CONTROL'])==='no-cache' || strtolower($_SERVER['HTTP_PRAGMA'])==='no-cache')	{
-			return TRUE;
+			$disableAcquireCacheData = TRUE;
 		}
+
+			// Call hook for possible by-pass of requiring of page cache (for recaching purpose)
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache']))	{
+			$_params = array('pObj' => &$this, 'disableAcquireCacheData' => &$disableAcquireCacheData);
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
+
+		return $disableAcquireCacheData;
 	}
 
 	/**
@@ -1781,22 +1844,21 @@
 		$integrityCheck = $this->TYPO3_CONF_VARS['FE']['strictFormmail'];
 
 		if(!$this->TYPO3_CONF_VARS['FE']['secureFormmail']) {
-		  // Check recipient field:
-		  $encodedFields = explode(',','recipient,recipient_copy');	// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
-		  foreach($encodedFields as $fieldKey)	{
-		    if (strlen($EMAIL_VARS[$fieldKey]))	{
-		      if ($res = $this->codeString($EMAIL_VARS[$fieldKey], TRUE))	{	// Decode...
-		      $EMAIL_VARS[$fieldKey] = $res;	// Set value if OK
-		      } elseif ($integrityCheck)	{	// Otherwise abort:
-		      $GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. Sending formmail aborted due to security reasons!',3);
-		      return false;
-		      } else {
-		        $GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. The security level accepts this, but you should consider a correct coding though!',2);
-		      }
-		    }
-		  }
-		}
-		else {
+			// Check recipient field:
+			$encodedFields = explode(',','recipient,recipient_copy');	// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
+			foreach($encodedFields as $fieldKey)	{
+				if (strlen($EMAIL_VARS[$fieldKey]))	{
+					if ($res = $this->codeString($EMAIL_VARS[$fieldKey], TRUE))	{	// Decode...
+						$EMAIL_VARS[$fieldKey] = $res;	// Set value if OK
+					} elseif ($integrityCheck)	{	// Otherwise abort:
+						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. Sending formmail aborted due to security reasons!',3);
+						return false;
+					} else {
+						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. The security level accepts this, but you should consider a correct coding though!',2);
+					}
+				}
+			}
+		} else {
 		  $locData = explode(':',$locationData);
 		  $record = $this->sys_page->checkRecord($locData[1],$locData[2],1);
 		  $EMAIL_VARS['recipient'] = $record['subheader'];
@@ -1823,12 +1885,12 @@
 	 * @return string The value of the recipient_copy field, or an empty string
 	 */
 	function extractRecipientCopy($bodytext) {
-	  $recipient_copy = '';
-	  $fdef = array();
-	  //|recipient_copy=hidden|karsten@localhost.localdomain
-	  preg_match('/^[\s]*\|[\s]*recipient_copy[\s]*=[\s]*hidden[\s]*\|(.*)$/m', $bodytext, $fdef);
-	  $recipient_copy = (!empty($fdef[1])) ? $fdef[1] : '';
-	  return $recipient_copy;
+		$recipient_copy = '';
+		$fdef = array();
+		//|recipient_copy=hidden|karsten@localhost.localdomain
+		preg_match('/^[\s]*\|[\s]*recipient_copy[\s]*=[\s]*hidden[\s]*\|(.*)$/m', $bodytext, $fdef);
+		$recipient_copy = (!empty($fdef[1])) ? $fdef[1] : '';
+		return $recipient_copy;
 	}
 
 	/**
@@ -2436,7 +2498,19 @@ if (version == "n3") {
 	 * @return	boolean		Returns true if $this->jumpurl is not set.
 	 */
 	function isOutputting()	{
-		return (!$this->jumpurl);
+
+			// Initialize by status of jumpUrl:
+		$enableOutput = (!$this->jumpurl);
+
+			// Call hook for possible disabling of output:
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting']))	{
+			$_params = array('pObj' => &$this, 'enableOutput' => &$enableOutput);
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
+
+		return $enableOutput;
 	}
 
 	/**
@@ -2520,13 +2594,8 @@ if (version == "n3") {
 	 */
 	function sendCacheHeaders()	{
 
-			// no_cache cannot be set: If it is, the page might contain dynamic content and should never be cached.
-			// There can be no USER_INT objects on the page ("isINTincScript()") because they implicitly indicate dynamic content
-			// There can be no logged in user because user sessions are based on a cookie and thereby does not offer client caching a chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache headers in page sections where user logins change the page content.
-		$doCache = !$this->no_cache
-				&& !$this->isINTincScript()
-				&& !$this->isEXTincScript()
-				&& !is_array($this->fe_user->user);
+			// Getting status whether we can send cache control headers for proxy caching:
+		$doCache = $this->isStaticCacheble();
 
 			// Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
 		if ($doCache
@@ -2572,6 +2641,26 @@ if (version == "n3") {
 		foreach($headers as $hL)	{
 			header($hL);
 		}
+	}
+
+	/**
+	 * Reporting status whether we can send cache control headers for proxy caching or publishing to static files
+	 *
+	 * Rules are:
+	 * no_cache cannot be set: If it is, the page might contain dynamic content and should never be cached.
+	 * There can be no USER_INT objects on the page ("isINTincScript()" / "isEXTincScript()") because they implicitly indicate dynamic content
+	 * There can be no logged in user because user sessions are based on a cookie and thereby does not offer client caching a chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache headers in page sections where user logins change the page content. (unless using such as realurl to apply a prefix in case of login sections)
+	 *
+	 * @return	boolean
+	 */
+	function isStaticCacheble()	{
+
+		$doCache = !$this->no_cache
+				&& !$this->isINTincScript()
+				&& !$this->isEXTincScript()
+				&& !is_array($this->fe_user->user);
+
+		return $doCache;
 	}
 
 	/**
@@ -2748,6 +2837,22 @@ if (version == "n3") {
 				</div>';
 				$temp_content = $this->config['config']['message_preview'] ? $this->config['config']['message_preview'] : $stdMsg;
 				echo $temp_content;
+		}
+	}
+
+	/**
+	 * End-Of-Frontend hook
+	 *
+	 * @return	void
+	 */
+	function hook_eofe()	{
+
+			// Call hook for end-of-frontend processing:
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']))	{
+			$_params = array('pObj' => &$this);
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
 		}
 	}
 

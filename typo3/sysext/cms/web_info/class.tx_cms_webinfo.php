@@ -147,7 +147,6 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			);
 		} else {
 			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[pages]',$this->pObj->MOD_SETTINGS['pages'],$this->pObj->MOD_MENU['pages'],'index.php');
-
 			$dblist->start($this->pObj->id,'pages',0);
 			$dblist->generateList();
 

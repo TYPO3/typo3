@@ -75,7 +75,7 @@ $TT->push('','Script start');
 
 
 // *********************
-// DIV Library included
+// Mandatory libraries included
 // *********************
 $TT->push('Include class t3lib_db, t3lib_div, t3lib_extmgm','');
 	require(PATH_t3lib.'class.t3lib_div.php');
@@ -95,7 +95,7 @@ if (!t3lib_extMgm::isLoaded('cms'))	die('<strong>Error:</strong> The main fronte
 require(PATH_t3lib.'class.t3lib_db.php');
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
-$CLIENT=t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers
+$CLIENT = t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers
 $TT->pull();
 
 
@@ -131,7 +131,7 @@ if (!get_magic_quotes_gpc())	{
 // Create $TSFE object (TSFE = TypoScript Front End)
 // Connecting to database
 // ***********************************
-$temp_TSFEclassName=t3lib_div::makeInstanceClassName('tslib_fe');
+$temp_TSFEclassName = t3lib_div::makeInstanceClassName('tslib_fe');
 $TSFE = new $temp_TSFEclassName(
 		$TYPO3_CONF_VARS,
 		t3lib_div::_GP('id'),
@@ -482,6 +482,12 @@ if (is_object($BE_USER))	{
 		include_once(PATH_tslib.'publish.php');
 	}
 }
+
+
+// ******************
+// Hook for end-of-frontend
+// ******************
+$TSFE->hook_eofe();
 
 
 // ********************

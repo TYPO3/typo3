@@ -1365,8 +1365,6 @@ class t3lib_BEfunc	{
 	 *
 	 *******************************************/
 
-
-
 	/**
 	 * Returns the difference in days between input $tstamp and $EXEC_TIME
 	 * Usage: 2 (class t3lib_BEfunc)
@@ -1387,7 +1385,7 @@ class t3lib_BEfunc	{
 	 * @return	string		Formatted time
 	 */
 	function date($tstamp)	{
-		return Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp);
+		return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp);
 	}
 
 	/**
@@ -1398,7 +1396,7 @@ class t3lib_BEfunc	{
 	 * @return	string		Formatted time
 	 */
 	function datetime($value)	{
-		return Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$value);
+		return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $value);
 	}
 
 	/**

@@ -158,6 +158,9 @@ class tx_indexedsearch_indexer {
 	var $tstamp_minAge = 0;		// If set, this tells a minimum limit before a document can be indexed again. This is regardless of mtime.
 	var $maxExternalFiles = 0;	// Max number of external files to index.
 
+	var $forceIndexing = FALSE;		// If true, indexing is forced despite of hashes etc.
+	var $crawlerActive = FALSE;		// Set when crawler is detected (internal)
+
 		// INTERNALS:
 	var $defaultContentArray=array(
 		'title' => '',
@@ -200,11 +203,25 @@ class tx_indexedsearch_indexer {
 			// Indexer configuration from Extension Manager interface:
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 
+			// Crawler activation:
+			// Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
+		if (t3lib_extMgm::isLoaded('crawler')
+				&& $pObj->applicationData['tx_crawler']['running']
+				&& in_array('tx_indexedsearch_reindex', $pObj->applicationData['tx_crawler']['parameters']['procInstructions']))	{
+
+				// Setting simple log message:
+			$pObj->applicationData['tx_crawler']['log'][] = 'Forced Re-indexing enabled';
+
+				// Setting variables:
+			$this->crawlerActive = TRUE;	// Crawler active flag
+			$this->forceIndexing = TRUE;	// Force indexing despite timestamps etc.
+		}
+
 			// Determine if page should be indexed, and if so, configure and initialize indexer
 		if ($pObj->config['config']['index_enable'])	{
 			$this->log_push('Index page','');
 
-			if (!$indexerConfig['disableFrontendIndexing'])	{
+			if (!$indexerConfig['disableFrontendIndexing'] || $this->crawlerActive)	{
 				if (!$pObj->page['no_search'])	{
 					if (!$pObj->no_cache)	{
 
@@ -482,10 +499,12 @@ class tx_indexedsearch_indexer {
 		$check = $this->checkMtimeTstamp($this->conf['mtime'], $this->hash['phash']);
 		$is_grlist = $this->is_grlist_set($this->hash['phash']);
 
-		if ($check > 0 || !$is_grlist)	{
+		if ($check > 0 || !$is_grlist || $this->forceIndexing)	{
 
 				// Setting message:
-			if ($check > 0)	{
+			if ($this->forceIndexing)	{
+				$this->log_setTSlogMessage('Indexing needed, reason: Forced',1);
+			} elseif ($check > 0)	{
 				$this->log_setTSlogMessage('Indexing needed, reason: '.$this->reasons[$check],1);
 			} else {
 				$this->log_setTSlogMessage('Indexing needed, reason: Updates gr_list!',1);
@@ -1861,18 +1880,8 @@ class tx_indexedsearch_indexer {
 	 */
 	function makeCHash($paramArray)	{
 		$addQueryParams = t3lib_div::implodeArrayForUrl('', $paramArray);
-		$params = explode('&',substr($addQueryParams,1));	// Splitting parameters up
 
-			// Make array:
-		$pA = array();
-		foreach($params as $theP)	{
-			$pKV = explode('=', $theP);	// SPlitting single param by '=' sign
-			if (!t3lib_div::inList('id,type,no_cache,cHash,MP,ftu',$pKV[0]))	{
-				$pA[$pKV[0]] = (string)rawurldecode($pKV[1]);
-			}
-		}
-		$pA['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-		ksort($pA);
+		$pA = t3lib_div::cHashParams($addQueryParams);
 
 		return t3lib_div::shortMD5(serialize($pA));
 	}
@@ -1924,6 +1933,41 @@ class tx_indexedsearch_indexer {
 	function log_setTSlogMessage($msg, $errorNum=0)	{
 		if (is_object($GLOBALS['TT']))		$GLOBALS['TT']->setTSlogMessage($msg,$errorNum);
 		$this->internal_log[] = $msg;
+	}
+
+
+
+
+
+
+
+
+	/**************************
+	 *
+	 * tslib_fe hooks:
+	 *
+	 **************************/
+
+	/**
+	 * Frontend hook: If the page is not being re-generated this is our chance to force it to be (because re-generation of the page is required in order to have the indexer called!)
+	 *
+	 * @param	array		Parameters from frontend
+	 * @param	object		TSFE object (reference under PHP5)
+	 * @return	void
+	 */
+	function fe_headerNoCache(&$params, $ref)	{
+
+			// Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
+		if (t3lib_extMgm::isLoaded('crawler')
+				&& $params['pObj']->applicationData['tx_crawler']['running']
+				&& in_array('tx_indexedsearch_reindex', $params['pObj']->applicationData['tx_crawler']['parameters']['procInstructions']))	{
+
+				// Setting simple log entry:
+			$params['pObj']->applicationData['tx_crawler']['log'][] = 'RE_CACHE (indexed), old status: '.$params['disableAcquireCacheData'];
+
+				// Disables a look-up for cached page data - thus resulting in re-generation of the page even if cached.
+			$params['disableAcquireCacheData'] = TRUE;
+		}
 	}
 }
 

@@ -153,6 +153,7 @@ Element Browser:
 - Selecting files from other resource-fields of records (which the user can actually read) - maybe with the Element Browser, browsing for record, clicking it, seeing a list of files inside the record?)
 - Ability to insert images when their info page (larger thumbnail) is displayed. Maybe a small + (plus) icon would do. (Notify Patrick Roeder)
 - Some quick-lookup feature (like we have on TER)
+- Showing more than the title column for records listing and making it possible to sort by the columns.
 
 Wizards:
 - Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)

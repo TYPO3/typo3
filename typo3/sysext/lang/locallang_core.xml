@@ -55,6 +55,8 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.depth_1">1 level</label>
 			<label index="labels.depth_2">2 levels</label>
 			<label index="labels.depth_3">3 levels</label>
+			<label index="labels.depth_4">4 levels</label>
+			<label index="labels.depth_infi">Infinite</label>
 			<label index="labels.allow">Allow</label>
 			<label index="labels.deny">Deny</label>
 			<label index="labels.generalTab">General</label>

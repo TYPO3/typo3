@@ -266,10 +266,10 @@ class tx_cms_layout extends recordList {
 					$this->fieldArray = explode(',','title,uid,'.implode(',',array_keys($tableNames)));
 				break;
 				case 2:
-					$this->fieldArray = explode(',','title,uid,lastUpdated,newUntil,no_cache,cache_timeout,php_tree_stop,TSconfig,storage_pid,is_siteroot');
+					$this->fieldArray = explode(',','title,uid,lastUpdated,newUntil,no_cache,cache_timeout,php_tree_stop,TSconfig,storage_pid,is_siteroot,fe_login_mode');
 				break;
 				default:
-					$this->fieldArray = explode(',','title,uid,alias,starttime,endtime,fe_group,target,url,shortcut');
+					$this->fieldArray = explode(',','title,uid,alias,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode');
 				break;
 			}
 

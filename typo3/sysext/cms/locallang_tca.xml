@@ -80,6 +80,9 @@
 			<label index="pages_language_overlay">Alternative Page Language</label>
 			<label index="sys_template">Template</label>
 			<label index="static_template">Static templates</label>
+			<label index="pages.fe_login_mode">Login Mode:</label>
+			<label index="pages.fe_login_mode.disable">Disable</label>
+			<label index="pages.fe_login_mode.enable">Enable</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/cms/dk.locallang_tca.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/cms/de.locallang_tca.xml</languageKey>
