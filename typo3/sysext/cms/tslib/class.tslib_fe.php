@@ -2546,13 +2546,11 @@ if (version == "n3") {
 	}
 
 	/**
-	 * En/decodes strings with lightweight encryption and a hash containing the server encryptionKey (salt)
-	 * Can be used for authentication of information sent from server generated pages back to the server to establish that the server generated the page. (Like hidden fields with recipient mail addresses)
-	 * Encryption is mainly to avoid spam-bots to pick up information.
+	 * Encrypts a strings by XOR'ing all characters with the ASCII value of a character in $this->TYPO3_CONF_VARS['SYS']['encryptionKey']
+	 * If $this->TYPO3_CONF_VARS['SYS']['encryptionKey'] is empty, 255 is used for XOR'ing. Using XOR means that the string can be decrypted by simply calling the function again - just like rot-13 works (but in this case for ANY byte value).
 	 *
-	 * @param	string		Input string to en/decode
-	 * @param	boolean		If set, string is decoded, not encoded.
-	 * @return	string		encoded/decoded version of $string
+	 * @param	string		Input string
+	 * @return	string		Output string
 	 */
 	function roundTripCryptString($string)	{
 		$out = '';

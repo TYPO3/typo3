@@ -1674,11 +1674,11 @@ class tslib_cObj {
 							$option.= $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
 							$option.= '<br />';
 						}
-						$fieldCode=$option;
+						$fieldCode = $option;
 					break;
 					case 'hidden':
 						$value = trim($parts[2]);
-						if (strlen($value) && $confData['fieldname']=='recipient_copy')	{
+						if (strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']))	{
 							$value = $GLOBALS['TSFE']->codeString($value);
 						}
 						$hiddenfields.=sprintf('<input type="hidden" name="%s" value="%s" />',
@@ -1801,7 +1801,7 @@ class tslib_cObj {
 			while(list($hF_key,$hF_conf) = each($conf['hiddenFields.']))	{
 				if (substr($hF_key,-1)!='.')	{
 					$hF_value = $this->cObjGetSingle($hF_conf,$conf['hiddenFields.'][$hF_key.'.'],'hiddenfields');
-					if (strlen($value) && $hF_key=='recipient_copy')	{
+					if (strlen($hF_value) && t3lib_div::inList('recipient_copy,recipient',$hF_key))	{
 						$hF_value = $GLOBALS['TSFE']->codeString($hF_value);
 					}
 					$hiddenfields.='<input type="hidden" name="'.$hF_key.'" value="'.htmlspecialchars($hF_value).'" />';
