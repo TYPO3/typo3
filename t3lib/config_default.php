@@ -322,5 +322,5 @@ unset($LOCAL_LANG);
 	// Setting some global vars:
 $EXEC_TIME = time();					// $EXEC_TIME is set so that the rest of the script has a common value for the script execution time
 $SIM_EXEC_TIME = $EXEC_TIME;			// $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to simulate another execution-time when selecting from eg. a database
-$TYPO_VERSION = '3.6.0-dev';				// TYPO3 version
+$TYPO_VERSION = '3.6.0';				// TYPO3 version
 ?>
