@@ -800,6 +800,9 @@ class SC_alt_doc {
 					// Compile the selector box finally:
 				$onChange = 'if(this.options[this.selectedIndex].value && !TBE_EDITOR_isFormChanged()){document.location=(this.options[this.selectedIndex].value);}';
 				$docSel='<select name="_docSelector" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
+
+					// Add CSH:
+				$docSel.=t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_docSelector', $GLOBALS['BACK_PATH'],'');
 			}
 		} else $docSel='';
 		return $docSel;
@@ -817,6 +820,9 @@ class SC_alt_doc {
 			// Generate the menu if NOT disabled:
 		if (!$this->modTSconfig['properties']['disableCacheSelector'])	{
 			$cMenu = $this->doc->clearCacheMenu(intval($this->viewId),!$this->modTSconfig['properties']['disableDocSelector']);
+
+				// Add CSH:
+			$cMenu.=t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_cacheSelector', $GLOBALS['BACK_PATH'],'');
 		} else $cMenu ='';
 		return $cMenu;
 	}

@@ -3187,7 +3187,11 @@ class t3lib_TCEforms	{
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
 					'</a>';
-		} else return '&nbsp;';
+		} else {
+				// Detects fields with no CSH and outputs dummy line to insert into CSH locallang file:
+			#debug(array("'".$field.".description' => '[FILL IN] ".$table."->".$field."',"),$table);
+			return '&nbsp;';
+		}
 	}
 
 	/**

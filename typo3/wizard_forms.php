@@ -555,7 +555,9 @@ class SC_wizard_forms {
 			$tRows[]='
 				<tr>
 					<td colspan="2" class="bgColor2">&nbsp;</td>
-					<td colspan="2" class="bgColor2"><strong>'.$LANG->getLL('forms_special_eform',1).':</strong></td>
+					<td colspan="2" class="bgColor2"><strong>'.$LANG->getLL('forms_special_eform',1).':</strong>'.
+						t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_formmail_info', $GLOBALS['BACK_PATH'],'').
+						'</td>
 				</tr>';
 
 				// "FORM type":
@@ -609,8 +611,13 @@ class SC_wizard_forms {
 				</tr>';
 		}
 
+		$content = '';
+
+			// Add CSH:
+		$content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz', $GLOBALS['BACK_PATH'],'');
+
 			// Implode all table rows into a string, wrapped in table tags.
-		$content = '
+		$content.= '
 
 			<!--
 				Form wizard
@@ -631,7 +638,10 @@ class SC_wizard_forms {
 		$content.= '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($this->P['returnUrl']).'\')); return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
 					'</a>';
-		$content.= '<input type="image" class="c-inputButton" name="_refresh"'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','').' title="'.$LANG->getLL('forms_refresh',1).'" />
+		$content.= '<input type="image" class="c-inputButton" name="_refresh"'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','').' title="'.$LANG->getLL('forms_refresh',1).'" />';
+			// Add CSH:
+		$content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons', $GLOBALS['BACK_PATH'],'');
+		$content.= '
 			</div>
 		';
 

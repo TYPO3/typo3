@@ -376,8 +376,13 @@ class SC_wizard_table {
 				</tr>';
 		}
 
+		$content = '';
+
+			// Add CSH:
+		$content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_table_wiz', $GLOBALS['BACK_PATH'],'');
+
 			// Implode all table rows into a string, wrapped in table tags.
-		$content = '
+		$content.= '
 
 
 			<!--
@@ -399,7 +404,9 @@ class SC_wizard_table {
 		$content.= '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($this->P['returnUrl']).'\')); return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
 					'</a>';
-		$content.= '<input type="image" class="c-inputButton" name="_refresh"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/refresh_n.gif','').' title="'.$LANG->getLL('forms_refresh',1).'" />
+		$content.= '<input type="image" class="c-inputButton" name="_refresh"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/refresh_n.gif','').' title="'.$LANG->getLL('forms_refresh',1).'" />';
+		$content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons', $GLOBALS['BACK_PATH'],'');
+		$content.= '
 			</div>
 			';
 
