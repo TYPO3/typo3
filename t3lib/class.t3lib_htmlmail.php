@@ -597,23 +597,23 @@ class t3lib_htmlmail {
 	/**
 	 * Sends the mail by calling the mail() function in php. On Linux systems this will invoke the MTA
 	 * defined in sys.ini (sendmail -t -i by default), on Windows a SMTP must be specified in the sys.ini.
-	 * Most common MTA's on Linux has a sendmail interface, including Postfix and Exim. 
+	 * Most common MTA's on Linux has a sendmail interface, including Postfix and Exim.
 	 * For setting the return-path correctly, the parameter -f has to be added to the system call to sendmail.
 	 * This obviously does not have any effect on Windows, but on Sendmail compliant systems this works. If safe mode
-	 * is enabled, then extra parameters is not allowed, so a safe mode check is made before the mail() command is 
-	 * invoked. When using the -f parameter, some MTA's will put an X-AUTHENTICATION-WARING saying that 
-	 * the return path was modified manually with the -f flag. To disable this warning make sure that the user running 
+	 * is enabled, then extra parameters is not allowed, so a safe mode check is made before the mail() command is
+	 * invoked. When using the -f parameter, some MTA's will put an X-AUTHENTICATION-WARING saying that
+	 * the return path was modified manually with the -f flag. To disable this warning make sure that the user running
 	 * apahce is in the /etc/mail/trusted-users table.
 	 *
-	 * POSTFIX: With postfix version below 2.0 there is a problem that the -f parameter can not be used in conjunction 
+	 * POSTFIX: With postfix version below 2.0 there is a problem that the -f parameter can not be used in conjunction
 	 * with -t. Postfix will give an error in the maillog:
 	 *
 	 *  cannot handle command-line recipients with -t
-	 * 
+	 *
 	 * If you experience this problem, enable the parameter [SYS][disableExtraMailFlags] in the install tool of typo3.
 	 * Unfortunally this will mean that the return-path flag is set to the user running Apache!
 	 *
-	 * This whole problem of return-path turns out to be quite tricky. If you have a solution that works better, on all 
+	 * This whole problem of return-path turns out to be quite tricky. If you have a solution that works better, on all
 	 * standard MTA's then we are very open for suggestions.
 	 *
 	 * With time this function should be made such that several ways of sending the mail is possible (local MTA, smtp other).
@@ -622,13 +622,13 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function sendTheMail () {
-		global $TYPO3_CONF_VARS;		
-				// Sends the mail.
-				// Requires the recipient, message and headers to be set.
+		global $TYPO3_CONF_VARS;
 #debug(array($this->recipient,$this->subject,$this->message,$this->headers));
+
+				// Sends the mail. Requires the recipient, message and headers to be set.
 		if (trim($this->recipient) && trim($this->message))	{	//  && trim($this->headers)
 			$returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
-				//On windows the -f flag is not used (specific for sendmail and postfix), but instead the php.ini parameter sendmail_from is used.
+				//On Windows the -f flag is not used (specific for Sendmail and Postfix), but instead the php.ini parameter sendmail_from is used.
 			if($this->returnPath) {
 				ini_set(sendmail_from, $this->returnPath);
 			}
@@ -675,7 +675,7 @@ class t3lib_htmlmail {
 								$theParts[0],
 								$theParts[1],
 								"From: ".$this->recipient);
-				}			
+				}
 			}
 			if($this->returnPath) {
 				ini_restore(sendmail_from);
@@ -683,7 +683,7 @@ class t3lib_htmlmail {
 			return true;
 		} else {return false;}
 	}
-	
+
 	/**
 	 * [Describe function...]
 	 *

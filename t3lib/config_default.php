@@ -74,7 +74,7 @@ $TYPO3_CONF_VARS = Array(
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
-		'disableExtraMailFlags' => 0,			// Boolean, when sending mails, the -f parameter is used for setting the return_path correctly on Unix systems. This does however not work on Postfix version < 2.0. If you have problems sending mails. Enable this. Has no effect on windows system or when running safe mode is enabled.
+		'disableExtraMailFlags' => 0,			// Boolean, when sending mails, the -f parameter is used for setting the return_path correctly on Unix systems. This does however not work on Postfix version < 2.0. Only enable this option if you have problems with sending out emails. Has no effect on Windows systems or when running in safe mode.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
