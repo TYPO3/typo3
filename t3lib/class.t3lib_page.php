@@ -268,7 +268,7 @@ class t3lib_pageSelect {
 					$row['_PAGES_OVERLAY'] = TRUE;
 					$this->versionOL('pages_language_overlay',$row);
 
-						// Unset vital fields that are NOT allowed to be selected:
+						// Unset vital fields that are NOT allowed to be overlaid:
 					unset($row['uid']);
 					unset($row['pid']);
 				}

@@ -1598,7 +1598,7 @@
 		$this->sys_page->sys_language_uid = $this->sys_language_uid;
 
 			// If default translation is not available:
-		if (!$this->sys_language_uid && $this->page['l18n_cfg']&1)	{
+		if ((!$this->sys_language_uid || !$this->sys_language_content) && $this->page['l18n_cfg']&1)	{
 			$this->pageNotFoundAndExit('Page is not available in default language.');
 		}
 

@@ -270,6 +270,7 @@ if (TYPO3_extTableDef_script)	{
 */
 $BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');	// New backend user object
 $BE_USER->warningEmail = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
+$BE_USER->lockIP = $TYPO3_CONF_VARS['BE']['lockIP'];
 $BE_USER->OS = TYPO3_OS;
 $BE_USER->start();			// Object is initialized
 $BE_USER->checkCLIuser();

@@ -199,9 +199,9 @@ class tslib_menu {
 				$this->doktypeExcludeList = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['excludeDoktypes']);
 			}
 			if($this->conf['includeNotInMenu']) {
-				$exclDoktypeArr=t3lib_div::trimExplode(',',$this->doktypeExcludeList,1);
-				$exclDoktypeArr=t3lib_div::removeArrayEntryByValue($exclDoktypeArr,'5');
-				$this->doktypeExcludeList=implode(',',$exclDoktypeArr);
+				$exclDoktypeArr = t3lib_div::trimExplode(',',$this->doktypeExcludeList,1);
+				$exclDoktypeArr = t3lib_div::removeArrayEntryByValue($exclDoktypeArr,'5');
+				$this->doktypeExcludeList = implode(',',$exclDoktypeArr);
 			}
 
 				// EntryLevel
@@ -321,6 +321,40 @@ class tslib_menu {
 							''
 						);
 						if (!is_array($temp))	$temp=array();
+					break;
+					case 'language':
+						$temp = array();
+
+							// Getting current page record NOT overlaid by any translation:
+						$currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages',$GLOBALS['TSFE']->page['uid']);
+
+							// Traverse languages set up:
+						$languageItems = t3lib_div::intExplode(',',$value);
+						foreach($languageItems as $sUid)	{
+								// Find overlay record:
+							if ($sUid)	{
+								$lRecs = $this->sys_page->getPageOverlay($GLOBALS['TSFE']->page['uid'],$sUid);
+							} else $lRecs=array();
+								// Checking if the "disabled" state should be set.
+							if (
+										($GLOBALS['TSFE']->page['l18n_cfg']&2 && $sUid && !count($lRecs)) // Blocking for all translations?
+									|| ($GLOBALS['TSFE']->page['l18n_cfg']&1 && (!$sUid || !count($lRecs))) // Blocking default translation?
+									|| (!$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs))
+								)	{
+								$iState = $GLOBALS['TSFE']->sys_language_uid==$sUid ? 'USERDEF2' : 'USERDEF1';
+							} else {
+								$iState = $GLOBALS['TSFE']->sys_language_uid==$sUid ? 'ACT' : 'NO';
+							}
+								// Adding menu item:
+							$temp[] = array_merge(
+								array_merge($currentPageWithNoOverlay, $lRecs),
+								array(
+									'ITEM_STATE' => $iState,
+									'_ADD_GETVARS' => '&L='.$sUid,
+									'_SAFE' => TRUE
+								)
+							);
+						}
 					break;
 					case 'directory':
 						if ($value=='') {
@@ -724,7 +758,7 @@ class tslib_menu {
 				// Fill in the menuArr with elements that should go into the menu:
 			$this->menuArr = Array();
 			foreach($temp as $data)	{
-				$spacer = t3lib_div::inList($this->spacerIDList,$data['doktype']) ? 1 : 0;		// if item is a spacer, $spacer is set
+				$spacer = (t3lib_div::inList($this->spacerIDList,$data['doktype']) || !strcmp($data['ITEM_STATE'],'SPC')) ? 1 : 0;		// if item is a spacer, $spacer is set
 				if ($this->filterMenuPages($data, $banUidArray, $spacer))	{
 					$c_b++;
 					if ($begin<=$c_b)	{		// If the beginning item has been reached.
@@ -793,7 +827,10 @@ class tslib_menu {
 	 * @param	boolean	If set, then the page is a spacer.
 	 * @return	boolean	Returns true if the page can be safely included.
 	 */
-	function filterMenuPages($data,$banUidArray,$spacer)	{
+	function filterMenuPages(&$data,$banUidArray,$spacer)	{
+
+		if ($data['_SAFE'])	return TRUE;
+
 		$uid = $data['uid'];
 		if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
 			if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']))	{		// Page may not be 'not_in_menu' or 'Backend User Section'
@@ -808,14 +845,26 @@ class tslib_menu {
 								// Checking if a page should be shown in the menu depending on whether a translation exists:
 							$tok = TRUE;
 							if ($GLOBALS['TSFE']->sys_language_uid && $data['l18n_cfg']&2)	{	// There is an alternative language active AND the current page requires a translation:
-								$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $GLOBALS['TSFE']->sys_language_uid);
-								if (!count($olRec))	{
+								if (!$data['_PAGES_OVERLAY'])	{
 									$tok = FALSE;
 								}
 							}
 
 								// Continue if token is true:
 							if ($tok)	{
+
+									// Checking if "&L" should be modified so links to non-accessible pages will not happen.
+								if ($this->conf['protectLvar'])	{
+									$Lvar = intval(t3lib_div::_GP('L'));
+									if (($this->conf['protectLvar']=='all' || $data['l18n_cfg']&2) && $Lvar!=$GLOBALS['TSFE']->sys_language_uid)	{	// page cannot be access in locaization and Lvar is different than sys_language uid - this means we must check!
+										$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $Lvar);
+										if (!count($olRec))	{
+												// If no pages_language_overlay record then page can NOT be accessed in the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
+											$data['_ADD_GETVARS'].= '&L=0';
+										}
+									}
+								}
+
 								return TRUE;
 							}
 						}
@@ -1045,9 +1094,9 @@ class tslib_menu {
 			// Creating link:
 		if ($this->mconf['collapse'] && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)))	{
 			$thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
-			$LD = $this->tmpl->linkData($thePage,$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params, $typeOverride);
+			$LD = $this->tmpl->linkData($thePage,$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		} else {
-			$LD = $this->tmpl->linkData($this->menuArr[$key],$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params, $typeOverride);
+			$LD = $this->tmpl->linkData($this->menuArr[$key],$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		}
 
 			// Overriding URL / Target if set to do so:
@@ -1435,13 +1484,12 @@ class tslib_tmenu extends tslib_menu {
 				}
 
 
-
 					// Calling extra processing function
 				$this->extProc_beforeLinking($key);
 
 					// Compile link tag
 				if (!$this->I['val']['doNotLinkIt']) {$this->I['val']['doNotLinkIt']=0;}
-				if (!$this->I['val']['isSpacer'] && $this->I['val']['doNotLinkIt']!=1)	{
+				if (!$this->I['spacer'] && $this->I['val']['doNotLinkIt']!=1)	{
 					$this->setATagParts();
 				} else {
 					$this->I['A1'] = '';
@@ -1514,7 +1562,7 @@ class tslib_tmenu extends tslib_menu {
 		$res = '';
 		if ($imgInfo = $this->WMcObj->getImgResource($this->I['val'][$pref.'Img'],$this->I['val'][$pref.'Img.']))	{
 			$imgInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imgInfo[3]);
-			if ($this->I['val']['RO'] && $this->I['val'][$pref.'ROImg'] && !$this->I['val']['isSpacer'])	{
+			if ($this->I['val']['RO'] && $this->I['val'][$pref.'ROImg'] && !$this->I['spacer'])	{
 				$imgROInfo = $this->WMcObj->getImgResource($this->I['val'][$pref.'ROImg'],$this->I['val'][$pref.'ROImg.']);
 				$imgROInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imgROInfo[3]);
 				if ($imgROInfo)	{
