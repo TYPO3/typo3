@@ -1,5 +1,9 @@
 2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Removed "onblur" handler in "browser.php" - had no great significance apparently and bugged people on Mac.
+
+2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* In t3lib_div::linkThisUrl(), remove "?" if no parameters were found.
 
 2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * This is the frameset to the file/record browser window
  * 
  * $Id$
@@ -104,7 +104,7 @@ class SC_browser {
 			// Create the frameset for the window:
 		$this->content.='
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0" onunload="closing();">
-				<frame name="content" src="'.htmlspecialchars($url).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" onblur="closing();" />
+				<frame name="content" src="'.htmlspecialchars($url).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
 				<frame name="menu" src="dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		';
