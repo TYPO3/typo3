@@ -1276,7 +1276,7 @@ class t3lib_div {
 	 *
 	 * @param	string		Name prefix for entries. Set to blank if you wish none.
 	 * @param	array		The (multidim) array to implode
-	 * @param	boolean		If set, all values that are blank (='') will NOT be imploded
+	 * @param	string		(keep blank)
 	 * @param	boolean		If set, parameters which were blank strings would be removed.
 	 * @param	boolean		If set, the param name itselt (for example "param[key][key2]") would be rawurlencoded as well.
 	 * @return	string		Imploded result, fx. &param[key][key2]=value2&param[key][key3]=value3

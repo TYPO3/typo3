@@ -722,72 +722,20 @@ Two situations:
 - Publish static for FTP server. All *.html requests MUST exist. (Purely static, limitations acceptable.)
 
 _____________________________________
-Server sync. extension, PLAN:
-Create an extension which syncronizes a set of tables to another database, using DBAL extension to determine handler for the remote tables
-- Use "tstamp" for update, "crdate" for inserts; does not dump full tables, only pushes updated content!
-- "Complete Sync": Feature for MD5 checking whole tables, thereby pushing content not based on timestamps but Md5 sum of content. This is if the timestamps are not getting updated correctly.
-
-_______________________________________
-General Crawler ("crawler"):
-- Crawls pages on TYPO3 site by URLs (using PHP fetching)
-	Config:
-	- Preload queue
-		- with previous crawler session log
-		- page tree pages / single top page?
-			- For this; variable parameters, eg. "&lang=(dk|de)&cur=(Euro/DKK)&type=(0|1)" giving 3x2 combinations. Challenge; cHash?
-	- Set max-depth
-	- Adds GET parameter to identify operation (handler)?
-		- (re)index pages
-		- (re)cache pages
-		- Export as static HTML...
-	Session log:
-	- Identifies session by handler/id
-	- Can look up if a crawler has opened/closed/is-stalled etc.
-	- Multithreading crawlers (in IFRAMES or whatever)
-	- From session log we can read out the status-arrays of the threads and display in backend (handler shows as it likes.)
-	- Start / stop crawler session
-
-For indexing (and caching and publishing!) we basically need to configure traversal through configurable paramters like:
-	- id
-	- type
-	- L (sys_language)
-	- MP (?)
-	- Simulate user logins (eg. sending "no-login", "user:kasper, password=blabla", "user:homer, password=blabla2")
-	- Additional parameter ranges per page (eg. "tx_myext[var1] : 1-7   AND tx_myext[var1] : 0,1 ")
-	- Command parameter like "&DO_INDEX=1" or "&RECACHE=1" (or both!)
-
-	- Use CLI script for crawler?
-
-__________________________________________-
-CACHE MANAGEMENT EXTENSION
-
-- cache_pages -> API for adding key1/key2 custom content!
-- automatic clear-pages cache protection? (global flag)
-- OK - Configuration: Configure "cache_" tables to clear when "Clear all cache"
-- "clear-cache" might not DELETE records but rather mark them "update-cache" or something like that... (would require the URL to be around...)
-- protect-flag which will disable the *automatic* clearing of page cache for a single page (in page header; expiry set to never -> setting flag in "cache_pages" table and records with that flag set cannot be flushed!)
-- "key1" and "key2" for granularity in caching!
-	-> used in manual clear-cache situations (cache mgm)
-	-> used in configurable clear-cache situations (clearing cache for a single document on TYPO3.org!)
-- "registerElement" per page for cache clearing (frontend scripts; function puts record reference in internal array and writes to disk only when cache table is written to! Flushes table with cache table also! Just like cache_pagessection)
-	-> For TV: ->registerElement('tt_content','uid'); when elements are NOT on the physical page
-	-> For 3dsplm: ->registerElement('bfs_brand','catia')
-	-> For 3dsplm: ->registerElement('bfs_skills','')	[saying that ANY bfs_skill changed will clear cache of front-page where all are shown.]
-- &no_cache can be disabled (allows DoS attacks!)
-- cHash problems?
-
-cache-extension ("cachemgm")
-- in click menu, link to cache mgm
-- Web>Info "Cache overview":
-	- Overview of cached versions in tree (with stat like time, expiry, content size, parameter content, URL, key1/2) - standard categorizing, eg. [parameter1]:[param2]:[param3], page title!
-	- clear cache for page/section of page tree.
-- RE-generation of branches of this tree! (crawling the pages)
-- overview of cache_hash table.
-- overview of pages-section table.
-- tracking pages which are shown non-cached
+Server sync. extension ("dbsync"):
+Create an extension which syncronizes a set of tables to/from another TYPO3 installation
+- Using SOAP for information exchange
+	- Local machine (production) = Client
+	- Remote machine (live) = Server
+	- Must have the "dbsync" extension installed both places
+		- client has a set of table names configured, where each is marked with the *direction* (possibly bi-directional in future?)
+		- For each table, client asks for a "header" which contains list of uid/tstamp/crdata/possibly MD5 sum of content (if tstamp/crdate is not present)
+		- Client compares this with local table, finds records to add/remove/delete
+		- Client pushes / retrieves records
 
 _____________________________________
 Static publishing ("staticpub" extension)
+[2/2005: Today, a reverse proxy (using cache control) is a better solution than static publishing if you want to speed up a TYPO3 site. Therefore static publishing is a concept mostly interesting if you want to export a TYPO3 site as static files to an ordinary webhoster.]
 - Writes static file (automatically) IF simulateStaticDocument uses HTML / Speaking URLs and allows caching of page
 	- root of the publishing dir MUST be hardcoded in TYPO3_CONF_VARS etc.; The extension has full power inside of this dir!
 	- Support for both speaking URLs (hierarchy of directories) and regular simulate static document types (flat dir)
@@ -796,6 +744,7 @@ Static publishing ("staticpub" extension)
 		- Can bypass GET/QUERY string and POST requests!
 	- File location is tracked in a table tied to page-cache table uids - thus making a flush very easy
 	- File write should probably happen together with inserting cached version in database (system hook)
+		- Resource files on the page can optionally be written to a sub-dir of the publishing dir.
 - setting a "config.disableStaticCreation = 1" flag (in TS template) can disable it (for conditions situations)
 - Also registeres: a) resources on the page (images/stylesheets), b) GET parameters from M5/B6 encryption. (not used yet!)
 - Publishing can be done by remote-client requests (default) or using the general crawler (for re-caching pages)
@@ -890,7 +839,6 @@ APPENDIX: PATTERN-control
 - Will be hard to manage that records being a part of the pattern are not changed after having been added to the pattern. But at least this could be a beginning...?
 
 
-
 **************************************
 Rapport of "deleted"-check in typoscripts (190500)
 **************************************
@@ -934,8 +882,6 @@ Innovation, brainstorming for future
 - Drop tt_content for content rendering and let extensions be the sole source of new content element types?
 - Check sitecore ideas for adding new fields etc.
 - Backend for PDAs/Lynx
-
-
 
 
 *********************************
