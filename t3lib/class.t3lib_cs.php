@@ -1446,32 +1446,15 @@ class t3lib_cs {
 				return mb_strtoupper($str,'utf-8');
 			}
 		} elseif ($charset == 'utf-8')	{
-			return $this->utf8_conv_case($string,$case);
+			return $this->utf8_char_mapping($string,'case',$case);
 		} elseif (isset($this->eucBasedSets[$charset]))	{
-			return $this->euc_conv_case($string,$case,$charset);
+			return $this->euc_char_mapping($string,$charset,'case',$case);
+		} else {
+				// treat everything else as single-byte encoding
+			return $this->sb_char_mapping($string,'case',$case);
 		}
 
-		// treat everything else as single-byte encoding
-		if (!$this->initCaseFolding($charset))	return $string;	// do nothing
-		$out = '';
-		$caseConv =& $this->caseFolding[$charset][$case];
-
-		for($i=0; isset($string{$i}); $i++)	{
-			$c = $string{$i};
-			$cc = $caseConv[$c];
-			if ($cc)	{
-				$out .= $cc;
-			} else {
-				$out .= $c;
-			}
-		}
-
-		// is a simple strtr() faster or slower than the code above?
-		// perhaps faster for small single-byte tables but slower for large multi-byte tables?
-		//
-		// return strtr($string,$this->caseFolding[$charset][$case]);
-
-		return $out;
+		return $string;
 	}
 
 	/**
@@ -1483,20 +1466,65 @@ class t3lib_cs {
 	 */
 	function specCharsToASCII($charset,$string)	{
 		if ($charset == 'utf-8')	{
-			return $this->utf8_toASCII($string);
+			return $this->utf8_char_mapping($string,'ascii');
 		} elseif (isset($this->eucBasedSets[$charset]))	{
-			return $this->euc_toASCII($string,$charset);
+			return $this->euc_char_mapping($string,$charset,'ascii');
+		} else {
+				// treat everything else as single-byte encoding
+			return $this->sb_char_mapping($string,$charset,'ascii');
 		}
 
-		// treat everything else as single-byte encoding
-		if (!$this->initToASCII($charset))	return $string;	// do nothing
-		$out = '';
-		$ascii =& $this->toASCII[$charset];
+		return $string;
+	}
 
-		for($i=0; isset($string{$i}); $i++)	{
-			$c = $string{$i};
-			if (isset($ascii[$c]))	{
-				$out .= $ascii[$c];
+
+
+
+
+
+
+
+
+
+
+
+	/********************************************
+	 *
+	 * Internal string operation functions
+	 *
+	 ********************************************/
+
+	/**
+	 * Maps all characters of a string in a single byte charset.
+	 *
+	 * @param	string		the string
+	 * @param	string		the charset
+	 * @param	string		mode: 'case' (case folding) or 'ascii' (ASCII transliteration)
+	 * @param	string		'case': conversion 'toLower' or 'toUpper'
+	 * @return	string		the converted string
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function sb_char_mapping($str,$charset,$mode,$opt='')	{
+		switch($mode)	{
+			case 'case':
+				if (!$this->initCaseFolding($charset))	return $str;	// do nothing
+				$map =& $this->caseFolding[$charset][$opt];
+				break;
+
+			case 'ascii':
+				if (!$this->initToASCII($charset))	return $str;	// do nothing
+				$map =& $this->toASCII[$charset];
+				break;
+
+			default:
+				return $str;
+		}
+
+		$out = '';
+		for($i=0; isset($str{$i}); $i++)	{
+			$c = $str{$i};
+			if (isset($map[$c]))	{
+				$out .= $map[$c];
 			} else {
 				$out .= $c;
 			}
@@ -1504,8 +1532,6 @@ class t3lib_cs {
 
 		return $out;
 	}
-
-
 
 
 
@@ -1708,20 +1734,30 @@ class t3lib_cs {
 	}
 
 	/**
-	 * Translates all characters of an UTF-8 string into their respective case values.
-	 * Unit-tested by Kasper
+	 * Maps all characters of an UTF-8 string.
 	 *
 	 * @param	string		UTF-8 string
-	 * @param	string		conversion: 'toLower' or 'toUpper'
+	 * @param	string		mode: 'case' (case folding) or 'ascii' (ASCII transliteration)
+	 * @param	string		'case': conversion 'toLower' or 'toUpper'
 	 * @return	string		the converted string
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 * @see strtolower(), strtoupper(), mb_convert_case()
 	 */
-	function utf8_conv_case($str,$case)	{
-		if (!$this->initUnicodeData('case'))	return $str;	// do nothing
+	function utf8_char_mapping($str,$mode,$opt='')	{
+		if (!$this->initUnicodeData($mode))	return $str;	// do nothing
 
 		$out = '';
-		$caseConv =& $this->caseFolding['utf-8'][$case];
+		switch($mode)	{
+			case 'case':
+				$map =& $this->caseFolding['utf-8'][$opt];
+				break;
+
+			case 'ascii':
+				$map =& $this->toASCII['utf-8'];
+				break;
+
+			default:
+				return $str;
+		}
 
 		for($i=0; isset($str{$i}); $i++)	{
 			$c = ord($str{$i});
@@ -1733,8 +1769,8 @@ class t3lib_cs {
 				$i += $bc-1;
 			}
 
-			if (isset($caseConv[$mbc]))	{
-				$out .= $caseConv[$mbc];
+			if (isset($map[$mbc]))	{
+				$out .= $map[$mbc];
 			} else {
 				$out .= $mbc;
 			}
@@ -1743,38 +1779,6 @@ class t3lib_cs {
 		return $out;
 	}
 
-	/**
-	 * Converts chars with accents, umlauts or composed to ASCII equivalents.
-	 *
-	 * @param	string		Input string to convert
-	 * @return	string		The converted string
-	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */
-	function utf8_toASCII($str)	{
-		if (!$this->initUnicodeData('ascii'))	return $str;	// do nothing
-
-		$out = '';
-		$toASCII =& $this->toASCII['utf-8'];
-
-		for($i=0; isset($str{$i}); $i++)	{
-			$c = ord($str{$i});
-			if (!($c & 0x80))	// single-byte (0xxxxxx)
-				$mbc = $str{$i};
-			elseif (($c & 0xC0) == 0xC0)	{	// multi-byte starting byte (11xxxxxx)
-				for ($bc=0; $c & 0x80; $c = $c << 1) { $bc++; }	// calculate number of bytes
-				$mbc = substr($str,$i,$bc);
-				$i += $bc-1;
-			}
-
-			if (isset($toASCII[$mbc]))	{
-				$out .= $toASCII[$mbc];
-			} else {
-				$out .= $mbc;
-			}
-		}
-
-		return $out;
-	}
 
 
 
@@ -1927,66 +1931,37 @@ class t3lib_cs {
 	}
 
 	/**
-	 * Translates all characters of a string in the EUC charset family into their respective case values.
+	 * Maps all characters of a string in the EUC charset family.
 	 *
 	 * @param	string		EUC multibyte character string
-	 * @param	string		conversion: 'toLower' or 'toUpper'
 	 * @param	string		the charset
+	 * @param	string		mode: 'case' (case folding) or 'ascii' (ASCII transliteration)
+	 * @param	string		'case': conversion 'toLower' or 'toUpper'
 	 * @return	string		the converted string
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 * @see strtolower(), strtoupper(), mb_convert_case()
 	 */
-	function euc_conv_case($str,$case,$charset)	{
-		if (!$this->initCaseFolding($charset))	return $str;	// do nothing
+	function euc_char_mapping($str,$charset,$mode,$opt='')	{
+		switch($mode)	{
+			case 'case':
+				if (!$this->initCaseFolding($charset))	return $str;	// do nothing
+				$map =& $this->caseFolding[$charset][$opt];
+				break;
 
-		$sjis = ($charset == 'shift_jis');
-		$out = '';
-		$caseConv =& $this->caseFolding[$charset][$case];
-		for($i=0; isset($str{$i}); $i++)	{
-			$mbc = $str{$i};
-			$c = ord($mbc);
+			case 'ascii':
+				if (!$this->initToASCII($charset))	return $str;	// do nothing
+				$map =& $this->toASCII[$charset];
+				break;
 
-			if ($sjis)	{
-				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	{	// a double-byte char
-					$mbc = substr($str,$i,2);
-					$i++;
-				}
-			}
-			else	{
-				if ($c >= 0x80)	{	// a double-byte char
-					$mbc = substr($str,$i,2);
-					$i++;
-				}
-			}
-
-			if (isset($caseConv[$mbc]))	{
-				$out .= $caseConv[$mbc];
-			} else {
-				$out .= $mbc;
-			}
+			default:
+				return $str;
 		}
 
-		return $out;
-	}
-
-	/**
-	 * Converts chars with accents, umlauts or composed to ASCII equivalents.
-	 *
-	 * @param	string		Input string to convert
-	 * @param	string		The charset
-	 * @return	string		The converted string
-	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */
-	function euc_toASCII($str,$charset)	{
-		if (!$this->initToASCII($charset))	return $str;	// do nothing
-
 		$sjis = ($charset == 'shift_jis');
 		$out = '';
-		$toASCII =& $this->toASCII[$charset];
-
 		for($i=0; isset($str{$i}); $i++)	{
 			$mbc = $str{$i};
 			$c = ord($mbc);
+
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	{	// a double-byte char
 					$mbc = substr($str,$i,2);
@@ -2000,8 +1975,8 @@ class t3lib_cs {
 				}
 			}
 
-			if (isset($toASCII[$mbc]))	{
-				$out .= $toASCII[$mbc];
+			if (isset($map[$mbc]))	{
+				$out .= $map[$mbc];
 			} else {
 				$out .= $mbc;
 			}
