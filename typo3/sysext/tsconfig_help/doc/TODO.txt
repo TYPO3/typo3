@@ -1,0 +1,1 @@
+- TSconfig -window: Change Links to manuals
