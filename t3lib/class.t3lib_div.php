@@ -1510,6 +1510,24 @@ class t3lib_div {
 			return implode(' ',$list);
 		}
 	}
+	
+	/**
+	 * Wraps JavaScript code XHTML ready with <script>-tags
+	 *
+	 * @param    string        JavaScript code
+	 * @return    string        The wrapped JS code, ready to put into a XHTML page
+	 * @author	Ingmar Schlecht <ingmars@web.de>
+	 */
+	function wrapJS($JSCode) {
+		return '
+<script type="text/javascript">
+	/*<![CDATA[*/
+'.$JSCode.'
+	/*]]>*/
+</script>
+';
+	}
+
 
 	/**
 	 * Parses XML input into a PHP array with associative keys

@@ -251,7 +251,7 @@ class template {
 
 	/**
 	 * Makes click menu link (context sensitive menu)
-	 * Returns $str (possibly an <img> tag/icon) wrapped in a link which will activate the context sensitive menu for the record ($table/$uid) or file ($table = file)
+	 * Returns $str (possibly an <|img> tag/icon) wrapped in a link which will activate the context sensitive menu for the record ($table/$uid) or file ($table = file)
 	 * The link will load the top frame with the parameter "&item" which is the table,uid and listFr arguments imploded by "|": rawurlencode($table.'|'.$uid.'|'.$listFr)
 	 * 
 	 * @param	string		String to be wrapped in link, typ. image tag.
@@ -261,7 +261,7 @@ class template {
 	 * @return	string		The link-wrapped input string.
 	 */
 	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1)	{
-		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr).'\');'.$this->thisBlur().'return false;';
+		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr).($this->backPath?'&backPath='.rawurlencode($this->backPath.'|'.md5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])):'').'\');'.$this->thisBlur().'return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
 

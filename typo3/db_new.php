@@ -24,19 +24,43 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * New database item menu
  *
- * This script lets users choose a new database element to create. 
+ * This script lets users choose a new database element to create.
  * Includes a wizard mode for visually pointing out the position of new pages
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant (not with pages wizard yet... position map and other classes needs cleaning)
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   92: class localPageTree extends t3lib_pageTree 
+ *  101:     function wrapIcon($icon,$row)	
+ *  112:     function expandNext($id)	
+ *
+ *
+ *  125: class SC_db_new 
+ *  151:     function init()	
+ *  208:     function main()	
+ *  265:     function pagesOnly()	
+ *  281:     function regularNew()	
+ *  414:     function printContent()	
+ *  431:     function linkWrap($code,$table,$pid,$addContentTable=0)	
+ *  451:     function isTableAllowedForThisPage($pid_row, $checkTable)	
+ *  481:     function showNewRecLink($table,$allowedNewTables='')	
+ *
+ * TOTAL FUNCTIONS: 10
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+ 
 
  
 $BACK_PATH='';
@@ -60,11 +84,19 @@ require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
+ * 
+ * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 class localPageTree extends t3lib_pageTree {
 
 	/**
 	 * Inserting uid-information in title-text for an icon
+	 * 
+	 * @param	[type]		$icon: ...
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
 	 */
 	function wrapIcon($icon,$row)	{
 		return substr($icon,0,-1).' title="id='.htmlspecialchars($row['uid']).'">';
@@ -73,6 +105,9 @@ class localPageTree extends t3lib_pageTree {
 	/**
 	 * Determines whether to expand a branch or not.
 	 * Here the branch is expanded if the current id matches the global id for the listing/new
+	 * 
+	 * @param	[type]		$id: ...
+	 * @return	[type]		...
 	 */
 	function expandNext($id)	{
 		return $id==$GLOBALS['SOBE']->id ? 1 : 0;
@@ -81,7 +116,11 @@ class localPageTree extends t3lib_pageTree {
 
 
 /**
- * Script class for 'dn_new'
+ * Script class for 'db_new'
+ * 
+ * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 class SC_db_new {
 	var $pageinfo;
@@ -106,6 +145,8 @@ class SC_db_new {
 
 	/**
 	 * Constructor
+	 * 
+	 * @return	[type]		...
 	 */
 	function init()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
@@ -161,6 +202,8 @@ class SC_db_new {
 
 	/**
 	 * Main processing
+	 * 
+	 * @return	[type]		...
 	 */
 	function main()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
@@ -216,6 +259,8 @@ class SC_db_new {
 
 	/**
 	 * Creates the position map for pages wizard
+	 * 
+	 * @return	[type]		...
 	 */
 	function pagesOnly()	{
 		global $LANG;
@@ -230,6 +275,8 @@ class SC_db_new {
 
 	/**
 	 * Create a regular new element (pages and records)
+	 * 
+	 * @return	[type]		...
 	 */
 	function regularNew()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
@@ -361,6 +408,8 @@ class SC_db_new {
 
 	/**
 	 * Ending page output and echo'ing content to browser.
+	 * 
+	 * @return	[type]		...
 	 */
 	function printContent()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
@@ -372,6 +421,12 @@ class SC_db_new {
 	/**
 	 * Links the string $code to a create-new form for a record in $table created on page $pid
 	 * If $addContentTable is set, then a new contentTable record is created together with pages
+	 * 
+	 * @param	[type]		$code: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$pid: ...
+	 * @param	[type]		$addContentTable: ...
+	 * @return	[type]		...
 	 */
 	function linkWrap($code,$table,$pid,$addContentTable=0)	{
 		$params = '&edit['.$table.']['.$pid.']=new'.
@@ -388,54 +443,59 @@ class SC_db_new {
 
 	/**
 	 * Returns true if the tablename $checkTable is allowed to be created on the page with record $pid_row
+	 * 
+	 * @param	[type]		$pid_row: ...
+	 * @param	[type]		$checkTable: ...
+	 * @return	[type]		...
 	 */
 	function isTableAllowedForThisPage($pid_row, $checkTable)	{
 		global $TCA, $PAGES_TYPES;
 		if (!is_array($pid_row))	{
-			if ($GLOBALS["BE_USER"]->user["admin"])	{
+			if ($GLOBALS['BE_USER']->user['admin'])	{
 				return true;
 			} else {
 				return false;
 			}
 		}
 			// be_users and be_groups may not be created anywhere but in the root.
-		if ($checkTable=="be_users" || $checkTable=="be_groups")	{
+		if ($checkTable=='be_users' || $checkTable=='be_groups')	{
 			return false;
 		}
 			// Checking doktype:
-		$doktype = intval($pid_row["doktype"]);
-		if (!$allowedTableList = $PAGES_TYPES[$doktype]["allowedTables"])	{
-			$allowedTableList = $PAGES_TYPES["default"]["allowedTables"];
+		$doktype = intval($pid_row['doktype']);
+		if (!$allowedTableList = $PAGES_TYPES[$doktype]['allowedTables'])	{
+			$allowedTableList = $PAGES_TYPES['default']['allowedTables'];
 		}
-		if (strstr($allowedTableList,"*") || t3lib_div::inList($allowedTableList,$checkTable))	{		// If all tables or the table is listed as a allowed type, return true
+		if (strstr($allowedTableList,'*') || t3lib_div::inList($allowedTableList,$checkTable))	{		// If all tables or the table is listed as a allowed type, return true
 			return true;
 		}
 	}
 
 	/**
 	 * Returns true if the $table tablename is found in $allowedNewTables (or if $allowedNewTables is empty)
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$allowedNewTables: ...
+	 * @return	[type]		...
 	 */
-	function showNewRecLink($table,$allowedNewTables="")	{
+	function showNewRecLink($table,$allowedNewTables='')	{
 		$allowedNewTables = is_array($allowedNewTables) ? $allowedNewTables : $this->allowedNewTables;
 		return !count($allowedNewTables) || in_array($table,$allowedNewTables);
 	}
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/db_new.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/db_new.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/db_new.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/db_new.php']);
 }
 
 
 
 
 
-
-
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_db_new");
+$SOBE = t3lib_div::makeInstance('SC_db_new');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-
 ?>

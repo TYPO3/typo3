@@ -1164,6 +1164,12 @@ class SC_alt_clickmenu {
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
 		$clickMenu->dontDisplayTopFrameCM = $this->dontDisplayTopFrameCM;
+		
+			// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
+		$inputBP = explode('|',t3lib_div::GPvar('backPath'));
+		if (count($inputBP)==2 && $inputBP[1]==md5($inputBP[0].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+			$clickMenu->backPath = $inputBP[0];
+		}
 
 			// Start page 
 		$this->content.=$this->doc->startPage('Context Sensitive Menu');
