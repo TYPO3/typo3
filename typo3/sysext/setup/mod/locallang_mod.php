@@ -1,0 +1,145 @@
+<?php
+
+$LOCAL_LANG = Array (
+	'default' => Array (
+		'mlang_labels_tablabel' => 'Personal user setup',
+		'mlang_labels_tabdescr' => 'This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.',
+		'mlang_tabs_tab' => 'Setup',
+	),
+	'dk' => Array (
+		'mlang_labels_tablabel' => 'Personlig opsætning',
+		'mlang_labels_tabdescr' => 'Dette modul giver dig mulighed for at skræddersy indstillingerne i din brugerprofil. Du kan ændre det aktive systemsprog samt navn og email adresse. Du kan også indstille andre funktioner i systemet.',
+		'mlang_tabs_tab' => 'Indstillinger',
+	),
+	'de' => Array (
+		'mlang_labels_tablabel' => 'Einstellungen',
+		'mlang_labels_tabdescr' => 'Dieses Modul dient zur Einstellung Ihres Backend Benutzerprofils. Hier können Sie Ihren Namen, Ihre Email Adresse, die benutzte Backend Sprache und viele andere allgemeine Eigenschaften des Systems für Ihren Benutzer einstellen.',
+		'mlang_tabs_tab' => 'Einst.',
+	),
+	'no' => Array (
+		'mlang_labels_tablabel' => 'Personlig oppsett',
+		'mlang_labels_tabdescr' => 'Med denne modulen kan du skreddersy oppsettet for din brukerprofil. Du kan endre aktivt systemspråk samt navn og e-post adresse. Du kan også sette opp andre funksjoner i systemet. ',
+		'mlang_tabs_tab' => 'Oppsett',
+	),
+	'it' => Array (
+		'mlang_labels_tablabel' => 'Setup utente',
+		'mlang_labels_tabdescr' => 'Questo modulo vi consente di personalizzare il vostro profilo utente. Potete modificare la lingua di default, nome e indirizzo email. Potete anche configurare altre caratteristiche del sistema.',
+		'mlang_tabs_tab' => 'Setup',
+	),
+	'fr' => Array (
+		'mlang_labels_tablabel' => 'Personnalisation',
+		'mlang_labels_tabdescr' => 'Ce module vous permet de personnaliser votre profil. Vous pouvez changer ici, votre langue d\'interface par défaut, votre nom, votre adresse e-mail. Vous pouvez aussi modifier quelques options générales du système.',
+		'mlang_tabs_tab' => 'Configuration',
+	),
+	'es' => Array (
+		'mlang_labels_tablabel' => 'Personalización',
+		'mlang_labels_tabdescr' => 'Este módulo le permite el personalizar su perfil de usuario del backend. Aquí podrá cambiar el lenguaje activo, su nombre y dirección de email. También podrá configurar otras características generales en el sistema',
+		'mlang_tabs_tab' => 'Configuración',
+	),
+	'nl' => Array (
+		'mlang_labels_tablabel' => 'Persoonlijke setup (gebruiker)',
+		'mlang_labels_tabdescr' => 'Deze module biedt je de mogelijkheid je BeheerSitegebruikersprofiel aan te passen. Hier kan je je huidige systeemtaal, naam en emailadres wijzigen. Je kan hier ook algemene onderdelen van het systeem configureren.',
+		'mlang_tabs_tab' => 'Setup',
+	),
+	'cz' => Array (
+		'mlang_labels_tablabel' => 'Uživatelské nastavení',
+		'mlang_labels_tabdescr' => 'Tento modul umožòuje pøizpùsobit profil uživatele backendu. Zde mùžete zmìnit jazyk, jméno, emailovou adresu. Také zde mùžete konfigurovat další obecné vlastnosti systému.',
+		'mlang_tabs_tab' => 'Setup',
+	),
+	'pl' => Array (
+		'mlang_labels_tablabel' => 'Ustawienia osobiste u¿ytkownika',
+		'mlang_labels_tabdescr' => 'Centrum zadañ umo¿liwia dostêp do twoich zadañ, wiadomo¶ci, notesu, akcji, itp. Zawiera równie¿ skróty do dostêpnych dla ciebie modu³ów i ostatnio edytowanych przez ciebie stron. Centrum zadañ pozwala efektywnie zarz±dzaæ prac± w systemie.',
+		'mlang_tabs_tab' => 'Ustawienia',
+	),
+	'si' => Array (
+		'mlang_labels_tablabel' => 'Uporabniške nastavitve',
+		'mlang_labels_tabdescr' => 'Ta modul vam omogoèa urejanje vaših uporabniških nastavitev. Tu lahko spremenite jezik vmesnika, svoje ime in email naslov, kot tudi številne druge možnosti.',
+		'mlang_tabs_tab' => 'Nastavitve',
+	),
+	'fi' => Array (
+		'mlang_labels_tablabel' => 'Henkilökohtaiset perustiedot',
+		'mlang_labels_tabdescr' => 'Tällä modulilla voit muokata backend käyttäjän profiiliasi. Voit vaihtaa aktiivisen järjestelmän kieltä, nimeäsi ja sähköpostiosoitetta. Voit asentaa myös muita järjestelmän ominaisuuksia.',
+		'mlang_tabs_tab' => 'Asetukset',
+	),
+	'tr' => Array (
+		'mlang_labels_tablabel' => 'Kiþisel kullanýcý kurulumu',
+		'mlang_labels_tabdescr' => 'Bu modül sizin arkaplan kullanýcý profilini kiþiselleþtirmeyi saðlar. Buarada sizin aktif sistem dilini, isminizi ve email adresinizi deðiþtirebilirsiniz. Birde sistemde diðer genel özellikleri konfigüre edebilirsiniz.',
+		'mlang_tabs_tab' => 'Kurulum',
+	),
+	'se' => Array (
+		'mlang_labels_tablabel' => 'Personliga användarinställningar',
+		'mlang_labels_tabdescr' => 'Denna modul möjliggör en personifiering av backend användarprofilen. Här kan du ändra språket på ditt aktiva system, eller ange ditt namn och din epostadress. Du kan också ställa in andra grundinställningar i systemet.',
+		'mlang_tabs_tab' => 'Inställningar',
+	),
+	'pt' => Array (
+		'mlang_labels_tablabel' => 'Configuração pessoal',
+		'mlang_labels_tabdescr' => 'Este módulo permite-lhe configurar o seu perfil de gestão do sistema . Aqui você pode alterar o idioma activo do sistema, nome e endereço de email. Pode também configurar outras opções gerais do sistema.',
+		'mlang_tabs_tab' => 'Configurar',
+	),
+	'ru' => Array (
+		'mlang_labels_tablabel' => 'Ëè÷íûå íàñòðîéêè ïîëüçîâàòåëÿ',
+		'mlang_labels_tabdescr' => 'Ýòîò ìîäóëü ïîçâîëÿåò èçìåíÿòü ïðîôèëü âíóòðåííåãî ïîëüçîâàòåëÿ. Âû ìîæåòå èçìåíèòü ñèñòåìíûé ÿçûê, èìÿ èëè email-àäðåñ. Òàêæå âû ìîæåòå íàñòðîèòü äðóãèå îñíîâíûå ïàðàìåòðû ñèñòåìû.',
+		'mlang_tabs_tab' => 'Íàñòðîéêà',
+	),
+	'ro' => Array (
+		'mlang_labels_tablabel' => 'Setari personale ale utilizatorului',
+		'mlang_labels_tabdescr' => 'Acest modul va permite sa va personalizati profilul de utilizator backend. Aici puteti schimba limba activa, numele si adresa de email. Deasemeni puteti configura alte caracteristici generale ale sistemului.',
+		'mlang_tabs_tab' => 'Setari',
+	),
+	'ch' => Array (
+	),
+	'sk' => Array (
+		'mlang_labels_tablabel' => 'Užívate¾ské nastavenie',
+		'mlang_labels_tabdescr' => 'Tento modul umožòuje prispôsobi profil užívate¾a backendu. Môžeš tu zmeni jazyk, meno, emailovu adresu. Tiež  môžeš nakonfigurova ïalšie obecné vlastnosti systému.',
+		'mlang_tabs_tab' => 'Nastavenie',
+	),
+	'lt' => Array (
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Osobne korisnièke postavke',
+		'mlang_labels_tabdescr' => 'Ovaj modul moguæava prilagodbe vašeg korisnièkog profila za backend. Ovdje možete mijenjati aktivni jezik na sustavu, ime, email adresu. Isto tako možete konfigurirati druge opæenite postavke na sustavu.',
+		'mlang_tabs_tab' => 'Postavke',
+	),
+	'hu' => Array (
+		'mlang_labels_tablabel' => 'Személyes felhasználó beállítás',
+		'mlang_labels_tabdescr' => 'Ez a modul a backend profil testreszabását teszi lehetõvé. Meg lehet változtatni a nyelvet, nevet, email címet, és egyéb általános rendszerjellemzõket.',
+		'mlang_tabs_tab' => 'Beállítások',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Configuração pessoal',
+		'mlang_labels_tabdescr' => 'Este módulo lhe permite configurar seu perfil de administração do sistema. Aqui você pode alterar o idioma ativo do sistema, nome e endereço de e-mail. Pode também configurar outras opções gerais do sistema.',
+		'mlang_tabs_tab' => 'Configurar',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Kasutaja seaded',
+		'mlang_labels_tabdescr' => 'See moodul võimaldab teil seadistada oma kasutajaprofiili. Siin saate muuta oma keeleseadeid, nime ja emaili aadressi, samuti teisi üldisi süsteemi seadistusi.',
+		'mlang_tabs_tab' => 'Seaded',
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
+	),
+);
+?>
