@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (

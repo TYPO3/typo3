@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,45 +26,44 @@
 ***************************************************************/
 /**
  * Contains class with functions for parsing HTML code.
- * 
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   99: class t3lib_parsehtml 
- *  116:     function getSubpart($content, $marker)	
- *  144:     function substituteSubpart($content,$marker,$subpartContent,$recursive=1,$keepMarker=0)	
- *  209:     function splitIntoBlock($tag,$content,$eliminateExtraEndTags=0)	
- *  268:     function splitTags($tag,$content)	
- *  302:     function getAllParts($parts,$tag_parts=1,$include_tag=1)	
- *  321:     function removeFirstAndLastTag($str)	
- *  340:     function getFirstTag($str)	
- *  354:     function getFirstTagName($str)	
- *  372:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')	
- *  446:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())	
- *  617:     function get_tag_attributes($tag,$deHSC=0)	
- *  658:     function split_tag_attributes($tag)	
- *  695:     function bidir_htmlspecialchars($value,$dir)	
- *  715:     function prefixResourcePath($main_prefix,$content,$alternatives=array())	
- *  783:     function prefixRelPath($prefix,$srcVal)	
- *  801:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)	
- *  832:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')	
- *  849:     function unprotectTags($content,$tagList='')	
- *  882:     function stripTagsExcept($value,$tagList)	
- *  905:     function caseShift($str,$flag,$cacheKey='')	
- *  929:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)	
- *  958:     function get_tag_attributes_classic($tag,$deHSC=0)	
- *  971:     function HTMLparserConfig($TSconfig,$keepTags=array())	
- * 1084:     function XHTML_clean($content)	
- * 1106:     function processTag($value,$conf,$endTag,$protected=0)	
- * 1152:     function processContent($value,$dir,$conf)	
+ *  100: class t3lib_parsehtml 
+ *  117:     function getSubpart($content, $marker)	
+ *  145:     function substituteSubpart($content,$marker,$subpartContent,$recursive=1,$keepMarker=0)	
+ *  210:     function splitIntoBlock($tag,$content,$eliminateExtraEndTags=0)	
+ *  269:     function splitTags($tag,$content)	
+ *  303:     function getAllParts($parts,$tag_parts=1,$include_tag=1)	
+ *  322:     function removeFirstAndLastTag($str)	
+ *  341:     function getFirstTag($str)	
+ *  355:     function getFirstTagName($str)	
+ *  373:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')	
+ *  447:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())	
+ *  618:     function get_tag_attributes($tag,$deHSC=0)	
+ *  659:     function split_tag_attributes($tag)	
+ *  696:     function bidir_htmlspecialchars($value,$dir)	
+ *  716:     function prefixResourcePath($main_prefix,$content,$alternatives=array())	
+ *  784:     function prefixRelPath($prefix,$srcVal)	
+ *  802:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)	
+ *  833:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')	
+ *  850:     function unprotectTags($content,$tagList='')	
+ *  883:     function stripTagsExcept($value,$tagList)	
+ *  906:     function caseShift($str,$flag,$cacheKey='')	
+ *  930:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)	
+ *  959:     function get_tag_attributes_classic($tag,$deHSC=0)	
+ *  972:     function HTMLparserConfig($TSconfig,$keepTags=array())	
+ * 1085:     function XHTML_clean($content)	
+ * 1107:     function processTag($value,$conf,$endTag,$protected=0)	
+ * 1153:     function processContent($value,$dir,$conf)	
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,7 +93,9 @@
  * Functions for parsing HTML. 
  * You are encouraged to use this class in your own applications
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_parsehtml {
 	var $caseShift_cache=array();

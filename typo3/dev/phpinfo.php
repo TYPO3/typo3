@@ -27,7 +27,11 @@
 /** 
  * Dev-script: Update of TSoptions
  *
+ * $Id$
+ *
  * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 
  

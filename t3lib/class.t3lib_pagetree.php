@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,22 +27,23 @@
 /** 
  * generate a page-tree. OBS: remember $clause
  *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
- *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * $Id$
+ * Revised for TYPO3 3.6 August/2003 by Kasper Skaarhoj
  * Maintained by René Fritz
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   72: class t3lib_pageTree extends t3lib_treeView
- *   94:     function init($clause='')	
- *  109:     function expandNext($id)	
- *  120:     function wrapIcon($icon,$row)	
- *  134:     function PMicon($row,$a,$c,$nextCount,$exp)	
+ *   78: class t3lib_pageTree extends t3lib_treeView
+ *   91:     function init($clause='')	
+ *  106:     function expandNext($id)	
+ *  117:     function wrapIcon($icon,$row)	
+ *  131:     function PMicon($row,$a,$c,$nextCount,$exp)	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -67,7 +68,9 @@
 require_once (PATH_t3lib."class.t3lib_treeview.php");
 
 /**
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * Class for generating a page tree.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib

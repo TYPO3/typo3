@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,16 +26,142 @@
 ***************************************************************/
 /** 
  * Used to setup localconf.php and verify the TYPO3 installation
- *
  * This script should reduce the number of questions on the mailing with more than 50%... :-)
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *  165: class t3lib_install 
+ *  243:     function t3lib_install()	
+ *  320:     function checkPassword($uKey)	
+ *  380:     function init()	
+ *  540:     function stepOutput()	
+ *  791:     function checkTheConfig()	
+ *  822:     function typo3conf_edit()	
+ *  932:     function phpinformation()	
+ *
+ *              SECTION: typo3temp/ manager
+ * 1033:     function typo3TempManager()	
+ * 1134:     function getSelectorOptions($deleteType,$tt="")	
+ *
+ *              SECTION: CONFIGURATION FORM
+ * 1167:     function generateConfigForm($type="")	
+ * 1239:     function getDefaultConfigArrayComments($string,$mainArray=array(),$commentArray=array())	
+ *
+ *              SECTION: CHECK CONFIGURATION FUNCTIONS
+ * 1292:     function checkConfiguration()	
+ * 1481:     function check_mail($cmd="")	
+ * 1504:     function checkExtensions()	
+ * 1567:     function checkDirs()	
+ * 1636:     function checkImageMagick($paths)	
+ * 1697:     function _checkImageMagickGifCapability($file)	
+ * 1739:     function _checkImageMagick_getVersion($file)	
+ * 1752:     function checkDatabase()		
+ * 1814:     function setupGeneral($cmd="")	
+ * 1979:     function writeToLocalconf_control($lines="",$dontOutputContent=0)	
+ * 2027:     function outputExitBasedOnStep($content)	
+ * 2042:     function checkForBadString($string)	
+ * 2057:     function setValueInLocalconfFile(&$line_array, $variable, $value)	
+ * 2104:     function slashValueForSingleDashes($value)	
+ * 2115:     function setLabelValueArray($arr,$type)	
+ * 2143:     function getFormElement($labels,$values,$fieldName,$default,$msg="")	
+ * 2163:     function getDatabaseList()	
+ * 2192:     function setupGeneralCalculate()	
+ * 2261:     function getGDPartOfPhpinfo()	
+ * 2280:     function isTTF($phpinfo="")	
+ *
+ *              SECTION: ABOUT the isXXX functions.
+ * 2329:     function isGD()	
+ * 2340:     function isGIF()	
+ * 2352:     function isJPG()	
+ * 2363:     function isPNG()	
+ * 2375:     function ImageTypes()	
+ * 2386:     function getGDSoftwareInfo()	
+ * 2398:     function generallyAboutConfiguration()	
+ *
+ *              SECTION: IMAGE processing
+ * 2458:     function checkTheImageProcessing()	
+ * 2937:     function isExtensionEnabled($ext, $headCode, $short)	
+ * 2953:     function displayTwinImage ($imageFile, $IMcommands=array(), $note="")	
+ * 3024:     function getTwinImageMessage($message, $label_1="", $label_2="")	
+ * 3040:     function formatImCmds($arr)	
+ * 3061:     function imagemenu()	
+ *
+ *              SECTION: DATABASE analysing
+ * 3103:     function checkTheDatabase()	
+ * 3702:     function isBackendAdminUser() 
+ * 3714:     function isStaticTemplates()	
+ * 3727:     function isBasicComplete($tLabel)	
+ * 3763:     function getListOfTables()	
+ * 3783:     function generateUpdateDatabaseForm($type, $arr_update, $arr_remove, $action_type)	
+ * 3813:     function getUpdateDbFormWrap($action_type, $content, $label="Write to database")	
+ * 3829:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)	
+ * 3863:     function preformUpdateQueries($arr,$keyArr)	
+ * 3884:     function displayFields($arr, $pre=0, $label="")	
+ * 3909:     function displayFieldComp($arr, $arr_db)	
+ * 3951:     function displaySuggestions($arr, $excludeList="")	
+ * 3980:     function getCreateTables($statements, $insertCountFlag=0)	
+ * 4005:     function getTableInsertStatements($statements, $table)	
+ * 4031:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex="")	
+ * 4067:     function assembleFieldDefinition($row)	
+ * 4094:     function getFieldDefinitions_database($database)	
+ * 4132:     function getFieldDefinitions_sqlContent($sqlContent)	
+ * 4172:     function getDatabaseExtra($FDsrc, $FDcomp)	
+ * 4210:     function compareDatabaseAndTCA($FDsrc, $TCA, $onlyFields=0)	
+ * 4268:     function compareTCAandDatabase($TCA, $FDcomp)	
+ * 4303:     function getUpdateSuggestions($diffArr,$keyList="extra,diff")	
+ * 4405:     function suggestFieldDefinition($fieldInfo)	
+ * 4483:     function getItemArrayType($arr)	
+ * 4513:     function getItemBlobSize($len)	
+ * 4524:     function suggestTCAFieldDefinition($fieldName,$fieldInfo)	
+ * 4667:     function includeTCA()	
+ *
+ *              SECTION: GENERAL FUNCTIONS
+ * 4709:     function linkIt($url,$link="")	
+ * 4737:     function printSection($head, $short_string, $long_string, $type)	
+ * 4778:     function fw($str,$size=1)	
+ * 4791:     function fwheader($str)	
+ * 4802:     function wrapInCells($label,$content)	
+ * 4811:     function printAll()	
+ * 4830:     function outputWrapper($content)	
+ * 4883:     function menu()	
+ * 4905:     function stepHeader()	
+ * 4947:     function note123()	
+ * 4961:     function endNotes()	
+ * 4980:     function convertByteSize($bytes)	
+ * 4994:     function securityRisk()	
+ * 5012:     function alterPasswordForm()	
+ * 5028:     function messageBasicFinished()	
+ * 5050:     function setScriptName($type)	
+ * 5063:     function formWidth($size=48,$textarea=0,$styleOverride="") 
+ * 5084:     function formWidthText($size=48,$styleOverride="",$wrap="") 
+ *
+ * TOTAL FUNCTIONS: 89
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+
+
+
+
+
+
+
+
+/**
+ * Used to setup localconf.php and verify the TYPO3 installation
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
-
- 
-
 class t3lib_install {
 	var $getGD_start_string='<H2 align="center"><A NAME="module_gd">gd</A></H2>';	// Used to identify the GD section in the output from phpinfo()
 	var $getGD_end_string = '</TABLE>';	// Used to identify the end of the GD section (found with getGD_start_string) in the output from phpinfo()
@@ -104,8 +230,15 @@ class t3lib_install {
 	var $cookie_name = "Typo3InstallTool";
 	var $JSmessage = '';
 
+
+
+
+
+
 	/**
 	 * Constructor
+	 * 
+	 * @return	[type]		...
 	 */
 	function t3lib_install()	{
 		if (!$GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"])	die("Install Tool deactivated.<BR>You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be 'joh316':<BR><BR>\$TYPO3_CONF_VARS[\"BE\"][\"installToolPassword\"] = \"bacb98acf97e0b6112b1d1b650b84971\";<BR><BR>See the document 'installing_upgrading_32b1.pdf' for more info.");
@@ -178,9 +311,11 @@ On behalf of PHP we regret this inconvenience.
 		}
 	}
 
-
 	/**
 	 * Returns true if submitted password is ok. Else displays a form in which to enter password.
+	 * 
+	 * @param	[type]		$uKey: ...
+	 * @return	[type]		...
 	 */
 	function checkPassword($uKey)	{
 		$p = t3lib_div::GPvar("password");
@@ -237,9 +372,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		}
 	}
 	
-	
 	/**
 	 * Calling function that checks system, IM, GD, dirs, database and lets you alter localconf.php
+	 * 
+	 * @return	[type]		...
 	 */
 	function init()	{
 		if (!defined("PATH_typo3"))	exit;		// Must be called after inclusion of init.php (or from init.php)
@@ -398,6 +534,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 	
 	/**
 	 * Controls the step 1-2-3-go process
+	 * 
+	 * @return	[type]		...
 	 */
 	function stepOutput()	{
 		$this->checkTheConfig();
@@ -647,6 +785,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 
 	/**
 	 * Calling the functions that checks the system
+	 * 
+	 * @return	[type]		...
 	 */
 	function checkTheConfig()	{
 			// Order important:	
@@ -673,9 +813,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		if ($this->checkIM)	$this->checkImageMagick($paths);
 		$this->checkDatabase();
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function typo3conf_edit()	{
-		
 		$EDIT_path = PATH_typo3conf;	// default:
 		if ($this->allowFileEditOutsite_typo3conf_dir && $this->INSTALL["FILE"]["EDIT_path"])	{
 			if (t3lib_div::validPathStr($this->INSTALL["FILE"]["EDIT_path"]) && substr($this->INSTALL["FILE"]["EDIT_path"],-1)=="/")	{
@@ -779,6 +923,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 	
 		echo $this->outputWrapper($this->printAll());			
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function phpinformation()	{
 		$headCode = "PHP information";
 		
@@ -859,10 +1009,27 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 		echo $this->outputWrapper($this->printAll());			
 	}	
 	
-	// *******************************
-	// typo3temp/ manager
-	// *******************************
-	
+
+
+
+
+
+
+
+
+
+
+
+
+	/*******************************
+	 *
+	 * typo3temp/ manager
+	 *
+	 *******************************/
+
+	/**
+	 * @return	[type]		...
+	 */
 	function typo3TempManager()	{
 		$headCode = "typo3temp/ directory";
 		$this->message($headCode,"What is it?","
@@ -957,9 +1124,13 @@ Number of files at a time:
 		echo $this->outputWrapper($this->printAll());			
 	}
 
-
-
-
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$deleteType: ...
+	 * @param	[type]		$tt: ...
+	 * @return	[type]		...
+	 */
 	function getSelectorOptions($deleteType,$tt="")	{
 		$out="";
 		if (is_array($deleteType))	{
@@ -971,10 +1142,28 @@ Number of files at a time:
 		return $out;
 	}
 	
+
+
+
+
+
+
+
+
+
+
+
+
+	/*******************************
+	 *
+	 * CONFIGURATION FORM
+	 *
+	 ********************************/
 	
-	// *******************************
-	// CONFIGURATION FORM
-	// *******************************
+	/**
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
+	 */
 	function generateConfigForm($type="")	{
 		switch($type)	{
 			case "get_form":
@@ -1038,6 +1227,15 @@ Number of files at a time:
 			break;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$string: ...
+	 * @param	[type]		$mainArray: ...
+	 * @param	[type]		$commentArray: ...
+	 * @return	[type]		...
+	 */
 	function getDefaultConfigArrayComments($string,$mainArray=array(),$commentArray=array())	{
 		$lines = explode(chr(10),$string);
 		$in=0;
@@ -1068,14 +1266,28 @@ Number of files at a time:
 		return array($mainArray,$commentArray);
 	}
 	
-	// *******************************
-	// CHECK CONFIGURATION FUNCTIONS
-	// *******************************
 
-	
+
+
+
+
+
+
+
+
+
+
+
+	/*******************************
+	 *
+	 * CHECK CONFIGURATION FUNCTIONS
+	 *
+	 *******************************/
 	
 	/**
 	 * Checking php.ini configuration and set appropriate messages and flags.
+	 * 
+	 * @return	[type]		...
 	 */
 	function checkConfiguration()	{
 		$ext="php.ini configuration checked";
@@ -1262,8 +1474,9 @@ Number of files at a time:
 
 	/**
 	 * Check if php function mail() works
-	 *
-	 * @param	string	$cmd	If "get_form" then a formfield for the mail-address is shown. If not, it's checked if "check_mail" was in the INSTALL array and if so a test mail is sent to the recipient given.
+	 * 
+	 * @param	string		$cmd	If "get_form" then a formfield for the mail-address is shown. If not, it's checked if "check_mail" was in the INSTALL array and if so a test mail is sent to the recipient given.
+	 * @return	[type]		...
 	 */
 	function check_mail($cmd="")	{
 		switch($cmd)	{
@@ -1285,6 +1498,8 @@ Number of files at a time:
 
 	/**
 	 * Checking php extensions, specifically GDLib and Freetype
+	 * 
+	 * @return	[type]		...
 	 */
 	function checkExtensions()	{
 		$ext = "GDLib";
@@ -1346,6 +1561,8 @@ Number of files at a time:
 
 	/**
 	 * Checking and testing that the required writable directories are writable.
+	 * 
+	 * @return	[type]		...
 	 */
 	function checkDirs()	{
 		// Check typo3/temp/
@@ -1410,8 +1627,11 @@ Number of files at a time:
 
 	/**
 	 * Checking for existing ImageMagick installs.
-	 *
+	 * 
 	 * This tries to find available ImageMagick installations and tries to find the version numbers by executing "convert" without parameters. If the ->checkIMlzw is set, LZW capabilities of the IM installs are check also.
+	 * 
+	 * @param	[type]		$paths: ...
+	 * @return	[type]		...
 	 */
 	function checkImageMagick($paths)	{
 		$ext="Check Image Magick";
@@ -1470,6 +1690,9 @@ Number of files at a time:
 
 	/**
 	 * Checking GIF-compression capabilities of ImageMagick install
+	 * 
+	 * @param	[type]		$file: ...
+	 * @return	[type]		...
 	 */
 	function _checkImageMagickGifCapability($file)	{
 		if ($this->config_array["dir_typo3temp"])	{		//  && !$this->config_array["safemode"]
@@ -1509,8 +1732,9 @@ Number of files at a time:
 
 	/**
 	 * Extracts the version number for imagemagick
-	 *
-	 * @param	string	$file	This is the path to the convert-program to execute in order to find the version number
+	 * 
+	 * @param	string		$file	This is the path to the convert-program to execute in order to find the version number
+	 * @return	[type]		...
 	 */
 	function _checkImageMagick_getVersion($file)	{
 		exec($file, $retVal);
@@ -1522,6 +1746,8 @@ Number of files at a time:
 
 	/**
 	 * Checks database username/password/host/database
+	 * 
+	 * @return	[type]		...
 	 */
 	function checkDatabase()		{
 		$ext="Check database";
@@ -1581,8 +1807,9 @@ Number of files at a time:
 
 	/**
 	 * Prints form for updating localconf.php or updates localconf.php depending on $cmd
-	 *
-	 * @param	string	$cmd	If "get_form" it outputs the form. Default is to write "localconf.php" based on input in ->INSTALL[localconf.php] array and flag ->setLocalconf
+	 * 
+	 * @param	string		$cmd	If "get_form" it outputs the form. Default is to write "localconf.php" based on input in ->INSTALL[localconf.php] array and flag ->setLocalconf
+	 * @return	[type]		...
 	 */
 	function setupGeneral($cmd="")	{
 		switch($cmd)	{
@@ -1741,7 +1968,14 @@ Number of files at a time:
 		}
 		return $out;
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$lines: ...
+	 * @param	[type]		$dontOutputContent: ...
+	 * @return	[type]		...
+	 */
 	function writeToLocalconf_control($lines="",$dontOutputContent=0)	{
 		$this->writeToLocalconf_dat["file"] = PATH_typo3conf."localconf.php";
 		if (!$this->allowUpdateLocalConf)	{
@@ -1783,6 +2017,13 @@ Number of files at a time:
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function outputExitBasedOnStep($content)	{
 		if ($this->step)	{
 			Header("Location: ".t3lib_div::locationHeaderUrl($this->action));
@@ -1792,6 +2033,12 @@ Number of files at a time:
 		exit;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$string: ...
+	 * @return	[type]		...
+	 */
 	function checkForBadString($string)	{
 //		if (ereg("[".chr(10).chr(13)."\$\"\\]|//",$string)){
 		if (ereg("[".chr(10).chr(13)."]",$string)){
@@ -1801,10 +2048,11 @@ Number of files at a time:
 	
 	/**
 	 * This functions takes an array with lines from localconf.php, finds a variable and inserts the new value.
-	 *
-	 * @param	array	$lime_array	the localconf.php file exploded into an array by linebreaks.
-	 * @param	string	$variable	The variable name to find and substitute. This string must match the first part of a trimmed line in the line-array. Matching is done backwards so the last appearing line will be substituted.
-	 * @param	string	$value		Is the value to be insert for the variable
+	 * 
+	 * @param	array		$lime_array	the localconf.php file exploded into an array by linebreaks.
+	 * @param	string		$variable	The variable name to find and substitute. This string must match the first part of a trimmed line in the line-array. Matching is done backwards so the last appearing line will be substituted.
+	 * @param	string		$value		Is the value to be insert for the variable
+	 * @return	[type]		...
 	 */
 	function setValueInLocalconfFile(&$line_array, $variable, $value)	{
 		$value = stripslashes($value);
@@ -1846,13 +2094,23 @@ Number of files at a time:
 		$this->setLocalconf=1;
 //		debug($line_array);
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$value: ...
+	 * @return	[type]		...
+	 */
 	function slashValueForSingleDashes($value)	{
 		return str_replace("'","\'",str_replace('\\','\\\\',$value));
 	}
 
 	/**
 	 * This appends something to value in the input array based on $type. Private.
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
 	 */
 	function setLabelValueArray($arr,$type)	{
 		reset($arr);
@@ -1874,6 +2132,13 @@ Number of files at a time:
 
 	/**
 	 * Returns a form-element for the localconf.php update form
+	 * 
+	 * @param	[type]		$labels: ...
+	 * @param	[type]		$values: ...
+	 * @param	[type]		$fieldName: ...
+	 * @param	[type]		$default: ...
+	 * @param	[type]		$msg: ...
+	 * @return	[type]		...
 	 */
 	function getFormElement($labels,$values,$fieldName,$default,$msg="")	{
 		$out.='<strong>'.htmlspecialchars(current($labels)).'</strong><BR>current value is '.htmlspecialchars($default).($msg?"<BR>".$msg:"");
@@ -1892,6 +2157,8 @@ Number of files at a time:
 
 	/**
 	 * Returns the list of available databases (with access-check based on username/password)
+	 * 
+	 * @return	[type]		...
 	 */
 	function getDatabaseList()	{
 		$dbArr=array();
@@ -1908,21 +2175,21 @@ Number of files at a time:
 
 	/**
 	 * Calculates the suggested setup that should be written to localconf.php
+	 * 
+	 * If safe_mode
+	 * - disable_exec_function = 1
+	 * - im = 0
+	 * 
+	 * if PNG/GIF/GD
+	 * - disable gdlib if nothing
+	 * 	- select png/gif if only one of them is available, else PNG/GIF selector, defaulting to GIF
+	 * - (safe_mode is on)
+	 * 	- im_path (default to 4.2.9, preferable with LZW)		im_ver5-flag is set based on im_path being 4.2.9 or 5+
+	 * 	- im_path_lzw (default to LZW version, pref. 4.2.9)
+	 * 
+	 * @return	[type]		...
 	 */
 	function setupGeneralCalculate()	{
-	/*
-If safe_mode
-- disable_exec_function = 1
-- im = 0
-
-if PNG/GIF/GD
-- disable gdlib if nothing
-	- select png/gif if only one of them is available, else PNG/GIF selector, defaulting to GIF
-- (safe_mode is on)
-	- im_path (default to 4.2.9, preferable with LZW)		im_ver5-flag is set based on im_path being 4.2.9 or 5+
-	- im_path_lzw (default to LZW version, pref. 4.2.9)
-
-*/
 		$formArray["disable_exec_function"]=array(0);
 		$formArray["im_path"]=array("");
 		$formArray["im_path_lzw"]=array("");
@@ -1988,6 +2255,8 @@ if PNG/GIF/GD
 
 	/**
 	 * Returns the part of phpinfo() output that tells about GD library (HTML-code)
+	 * 
+	 * @return	[type]		...
 	 */
 	function getGDPartOfPhpinfo()	{
 		ob_start();
@@ -2004,6 +2273,9 @@ if PNG/GIF/GD
 
 	/**
 	 * Returns true if TTF lib is install according to phpinfo(). If $phpinfo supply as parameter that string is searched instead.
+	 * 
+	 * @param	[type]		$phpinfo: ...
+	 * @return	[type]		...
 	 */
 	function isTTF($phpinfo="")	{
 /*		$phpinfo = $phpinfo?$phpinfo:$this->getGDPartOfPhpinfo();
@@ -2032,33 +2304,74 @@ if PNG/GIF/GD
 		return is_array($test)?1:0;
 	}
 
-
-		// ABOUT the isXXX functions.
-		// I had a very real experience that these checks DID NOT fail eg PNG support if it didn't exist! 
-		// So first (1) we check if the functions are there. If they ARE we are going to make further investigations (2) by creating an actual image. 
-		// And if THAT succeeds also, then we can be certain of the support!
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*****************************************
+	 *
+	 * ABOUT the isXXX functions.
+	 *
+	 * I had a very real experience that these checks DID NOT fail eg PNG support if it didn't exist! 
+	 * So first (1) we check if the functions are there. If they ARE we are going to make further investigations (2) by creating an actual image. 
+	 * And if THAT succeeds also, then we can be certain of the support!
+	 */
+	
+	/**
+	 * @return	[type]		...
+	 */
 	function isGD()	{
 		if (function_exists("imagecreate"))	{
 			if (@imagecreate (50, 100))	return 1;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function isGIF()	{
 		if (function_exists("imagecreatefromgif") && function_exists("imagegif") && ($this->ImageTypes() & IMG_GIF))	{	// If GIF-functions exists, also do a real test of them:
 			$im = @imagecreatefromgif(t3lib_extMgm::extPath("install")."imgs/jesus.gif");
 			return $im?1:0;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function isJPG()	{
 		if (function_exists("imagecreatefromjpeg") && function_exists("imagejpeg") && ($this->ImageTypes() & IMG_JPG))	{
 			return 1;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function isPNG()	{
 		if (function_exists("imagecreatefrompng") && function_exists("imagepng") && ($this->ImageTypes() & IMG_PNG))	{	
 			$im = imagecreatefrompng(t3lib_extMgm::extPath("install")."imgs/jesus.png");
 			return $im?1:0;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function ImageTypes()	{
 		if (phpversion()!="4.1.2")	{
 			return imagetypes();
@@ -2067,6 +2380,8 @@ if PNG/GIF/GD
 
 	/**
 	 * Returns general information about GDlib
+	 * 
+	 * @return	[type]		...
 	 */
 	function getGDSoftwareInfo()	{
 		return trim("
@@ -2077,6 +2392,8 @@ if PNG/GIF/GD
 
 	/**
 	 * Returns general information about configuration of TYPO3.
+	 * 
+	 * @return	[type]		...
 	 */
 	function generallyAboutConfiguration()	{
 		$out='
@@ -2099,43 +2416,45 @@ if PNG/GIF/GD
 	
 	
 	
-	// **********************
-	// IMAGE processing
-	// **********************
-/*
+	/**********************
+	 *
+	 * IMAGE processing
+	 *
+	 **********************/
 
-jesus.TIF:	IBM/LZW
-jesus.GIF:	Save for web, 32 colors
-jesus.JPG:	Save for web, 30 quality
-jesus.PNG:	Save for web, PNG-24
-jesus.tga	24 bit TGA file
-jesus.pcx	
-jesus.bmp	24 bit BMP file
-jesus_ps6.PDF:	PDF w/layers and vector data
-typo3logo.ai:	Illustrator 8 file
-pdf_from_imagemagick.PDF	PDF-file made by Acrobat Distiller from InDesign PS-file
-
-
-Imagemagick
-- Read formats
-- Write png, gif, jpg
-
-Problems may arise from the use of safe_mode (eg. png)
-In safemode you will automatically execute the program convert in the safe_mode_exec_path no matter what other path you specify
-check fileexist before anything...
-
-- compare gif size
-- scaling (by stdgraphic)
-- combining (by stdgraphic)
-
-GDlib: 
-- create from:....
-- ttf text
-
-From TypoScript: (GD only, GD+IM, IM)
-
-*/
-	
+	/**
+	 * jesus.TIF:	IBM/LZW
+	 * jesus.GIF:	Save for web, 32 colors
+	 * jesus.JPG:	Save for web, 30 quality
+	 * jesus.PNG:	Save for web, PNG-24
+	 * jesus.tga	24 bit TGA file
+	 * jesus.pcx	
+	 * jesus.bmp	24 bit BMP file
+	 * jesus_ps6.PDF:	PDF w/layers and vector data
+	 * typo3logo.ai:	Illustrator 8 file
+	 * pdf_from_imagemagick.PDF	PDF-file made by Acrobat Distiller from InDesign PS-file
+	 * 
+	 * 
+	 * Imagemagick
+	 * - Read formats
+	 * - Write png, gif, jpg
+	 * 
+	 * Problems may arise from the use of safe_mode (eg. png)
+	 * In safemode you will automatically execute the program convert in the safe_mode_exec_path no matter what other path you specify
+	 * check fileexist before anything...
+	 * 
+	 * - compare gif size
+	 * - scaling (by stdgraphic)
+	 * - combining (by stdgraphic)
+	 * 
+	 * GDlib: 
+	 * - create from:....
+	 * - ttf text
+	 * 
+	 * From TypoScript: (GD only, GD+IM, IM)
+	 * 
+	 * @return	[type]		...
+	 */
 	function checkTheImageProcessing()	{
 		$this->message("Image Processing","What is it?","
 		TYPO3 is known for its ability to process images on the server.
@@ -2605,7 +2924,16 @@ From TypoScript: (GD only, GD+IM, IM)
 			$this->message("Info","Parsetime",$parseMS." ms");
 		}	
 		echo $this->outputWrapper($this->printAll());
-	}	
+	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$ext: ...
+	 * @param	[type]		$headCode: ...
+	 * @param	[type]		$short: ...
+	 * @return	[type]		...
+	 */
 	function isExtensionEnabled($ext, $headCode, $short)	{
 		if (!t3lib_div::inList($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["imagefile_ext"],$ext))	{
 			$this->message($headCode,$short,"Skipped - extension not in the list of allowed extensions ([GFX][imagefile_ext]).",1);
@@ -2613,6 +2941,15 @@ From TypoScript: (GD only, GD+IM, IM)
 			return 1;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$imageFile: ...
+	 * @param	[type]		$IMcommands: ...
+	 * @param	[type]		$note: ...
+	 * @return	[type]		...
+	 */
 	function displayTwinImage ($imageFile, $IMcommands=array(), $note="")	{
 		$ex_rows="";
 		$errorLevels=array(-1);
@@ -2675,6 +3012,15 @@ From TypoScript: (GD only, GD+IM, IM)
 		
 		return array($out,max($errorLevels));
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$message: ...
+	 * @param	[type]		$label_1: ...
+	 * @param	[type]		$label_2: ...
+	 * @return	[type]		...
+	 */
 	function getTwinImageMessage($message, $label_1="", $label_2="")	{
 		if ($message)	$out.='<tr><td colspan=3><strong>'.$this->fw($message).'</strong></td></tr>';
 		if ($label_1 && !$label_2)	{
@@ -2684,6 +3030,13 @@ From TypoScript: (GD only, GD+IM, IM)
 		}
 		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @return	[type]		...
+	 */
 	function formatImCmds($arr)	{
 		$out=array();
 		if (is_array($arr))	{
@@ -2699,6 +3052,12 @@ From TypoScript: (GD only, GD+IM, IM)
 			return "<form>".$outputStr."</form>";
 		};
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function imagemenu()	{
 		$menuitems = array(
 			"read" => "Reading image formats",
@@ -2732,10 +3091,15 @@ From TypoScript: (GD only, GD+IM, IM)
 	
 	
 	
-	// **********************
-	// DATABASE analysing
-	// **********************
-
+	/**********************
+	 *
+	 * DATABASE analysing
+	 *
+	 **********************/
+	
+	/**
+	 * @return	[type]		...
+	 */
 	function checkTheDatabase()	{
 		if (!$this->config_array["mysqlConnect"])	{
 			$this->message("Database Analyser","Your database connection failed","
@@ -3329,18 +3693,37 @@ From TypoScript: (GD only, GD+IM, IM)
 
 		echo $this->outputWrapper($this->printAll());			
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function isBackendAdminUser() {
 		$query="SELECT count(*) FROM be_users WHERE admin";
 		$res=mysql(TYPO3_db,$query);
 		$row = mysql_fetch_assoc($res);
 		return current($row);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function isStaticTemplates()	{
 		$query="SELECT count(*) FROM static_template";
 		$res=mysql(TYPO3_db,$query);
 		$row = mysql_fetch_assoc($res);
 		return current($row);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$tLabel: ...
+	 * @return	[type]		...
+	 */
 	function isBasicComplete($tLabel)	{
 		if ($this->mode=="123")	{
 			$tables = $this->getListOfTables();
@@ -3371,6 +3754,12 @@ From TypoScript: (GD only, GD+IM, IM)
 		}
 		return $mode123Imported;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function getListOfTables()	{
 		$whichTables=array();
 		$tables_result=mysql_list_tables(TYPO3_db); 
@@ -3381,6 +3770,16 @@ From TypoScript: (GD only, GD+IM, IM)
 		}
 		return $whichTables;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$type: ...
+	 * @param	[type]		$arr_update: ...
+	 * @param	[type]		$arr_remove: ...
+	 * @param	[type]		$action_type: ...
+	 * @return	[type]		...
+	 */
 	function generateUpdateDatabaseForm($type, $arr_update, $arr_remove, $action_type)	{
 		switch($type)	{
 			case "get_form":
@@ -3402,10 +3801,31 @@ From TypoScript: (GD only, GD+IM, IM)
 			break;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$action_type: ...
+	 * @param	[type]		$content: ...
+	 * @param	[type]		$label: ...
+	 * @return	[type]		...
+	 */
 	function getUpdateDbFormWrap($action_type, $content, $label="Write to database")	{
 		$form = '<form action="'.$this->action.'#bottom" method="POST"><input type="hidden" name="TYPO3_INSTALL[database_type]" value="'.htmlspecialchars($action_type).'">'.$content.'<BR><input type="submit" value="'.$label.'">';
 		return $form;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$label: ...
+	 * @param	[type]		$checked: ...
+	 * @param	[type]		$iconDis: ...
+	 * @param	[type]		$currentValue: ...
+	 * @param	[type]		$cVfullMsg: ...
+	 * @return	[type]		...
+	 */
 	function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)	{
 		$out="";
 		if (is_array($arr))	{
@@ -3432,6 +3852,14 @@ From TypoScript: (GD only, GD+IM, IM)
 		}
 		return $content;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$keyArr: ...
+	 * @return	[type]		...
+	 */
 	function preformUpdateQueries($arr,$keyArr)	{
 		if (is_array($arr))	{
 			reset($arr);
@@ -3444,6 +3872,15 @@ From TypoScript: (GD only, GD+IM, IM)
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$pre: ...
+	 * @param	[type]		$label: ...
+	 * @return	[type]		...
+	 */
 	function displayFields($arr, $pre=0, $label="")	{
 		$out="";
 		$out.='<tr><td bgcolor="#9BA1A8" align=center><strong>'.$this->fw("Field name:").'</strong></td><td bgcolor="#9BA1A8" align=center><strong>'.$this->fw($label?$label:"Info:").'</strong></td></tr>';
@@ -3460,7 +3897,15 @@ From TypoScript: (GD only, GD+IM, IM)
 		}
 		$out= '<table border=0 cellpadding=0 cellspacing=0>'.$out.'</table>';
 		return $out;
-	}	
+	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$arr_db: ...
+	 * @return	[type]		...
+	 */
 	function displayFieldComp($arr, $arr_db)	{
 		$out="";
 		$out.='<tr><td bgcolor="#9BA1A8" align=center><strong>'.$this->fw("Field name:").'</strong></td>
@@ -3494,7 +3939,15 @@ From TypoScript: (GD only, GD+IM, IM)
 		}
 		$out= '<table border=0 cellpadding=2 cellspacing=2>'.$out.'</table>';
 		return $out;
-	}	
+	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$excludeList: ...
+	 * @return	[type]		...
+	 */
 	function displaySuggestions($arr, $excludeList="")	{
 		$out="";
 		$out.='<tr><td bgcolor="#9BA1A8" align=center><strong>'.$this->fw("Field name:").'</strong></td><td bgcolor="#9BA1A8" align=center><strong>'.$this->fw("Info / Suggestion for the field:").'</strong></td></tr>';
@@ -3515,9 +3968,15 @@ From TypoScript: (GD only, GD+IM, IM)
 		}
 		$out= '<table border=0 cellpadding=2 cellspacing=2>'.$out.'</table>';
 		return array($out,$fC);
-	}	
+	}
 
-	
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$statements: ...
+	 * @param	[type]		$insertCountFlag: ...
+	 * @return	[type]		...
+	 */
 	function getCreateTables($statements, $insertCountFlag=0)	{
 		reset($statements);
 		$crTables=array();
@@ -3536,6 +3995,13 @@ From TypoScript: (GD only, GD+IM, IM)
 		return array($crTables,$insertCount);
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$statements: ...
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function getTableInsertStatements($statements, $table)	{
 		reset($statements);
 //		$str="INSERT INTO ".strtoupper($table);
@@ -3553,10 +4019,14 @@ From TypoScript: (GD only, GD+IM, IM)
 		}
 		return $outStatements;
 	}
+	
 	/**
 	 * Returns an array where every entry is a single sql-statement. Input must be formatted like an ordinary MySQL-dump files
-	 *
-	 * @param	string	$sqlcode	The sql-file content. Provided that 1) every query in the input is ended with ";" and that a line in the file contains only one query or a part of a query.
+	 * 
+	 * @param	string		$sqlcode	The sql-file content. Provided that 1) every query in the input is ended with ";" and that a line in the file contains only one query or a part of a query.
+	 * @param	[type]		$removeNonSQL: ...
+	 * @param	[type]		$query_regex: ...
+	 * @return	[type]		...
 	 */
 	function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex="")	{
 		$sqlcodeArr = explode(chr(10),$sqlcode);
@@ -3590,6 +4060,9 @@ From TypoScript: (GD only, GD+IM, IM)
 	
 	/**
 	 * Converts a result row with field information into the SQL field definition string
+	 * 
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
 	 */
 	function assembleFieldDefinition($row)	{
 		$field[] = $row["Type"];
@@ -3614,8 +4087,9 @@ From TypoScript: (GD only, GD+IM, IM)
 	
 	/**
 	 * Reads the field definitions for the current database
-	 *
-	 * @param	string	$database	database name to get content from.
+	 * 
+	 * @param	string		$database	database name to get content from.
+	 * @return	[type]		...
 	 */
 	function getFieldDefinitions_database($database)	{
 		$total=array();
@@ -3633,11 +4107,9 @@ From TypoScript: (GD only, GD+IM, IM)
 			while($keyRow=mysql_fetch_assoc($keyRes))	{
 				$tempKeys[current($tableRow)][$keyRow["Key_name"]][$keyRow["Seq_in_index"]] = $keyRow["Column_name"];
 				$tempKeysPrefix[current($tableRow)][$keyRow["Key_name"]]= ($keyRow["Key_name"]=="PRIMARY"?"PRIMARY KEY":($keyRow["Non_unique"]?"KEY":"UNIQUE")." ".$keyRow["Key_name"]);
-//				debug($keyRow);
 			}
 		}
 			// Compile information:
-//		debug($tempKeys);
 		if (is_array($tempKeys))	{
 			reset($tempKeys);
 			while(list($table,$keyInf)=each($tempKeys))	{
@@ -3648,14 +4120,14 @@ From TypoScript: (GD only, GD+IM, IM)
 				}
 			}
 		}
-//		debug($total["index_phash"]);
 		return $total;
 	}
 
 	/**
 	 * Reads the field definitions for the input sql-file string
-	 *
-	 * @param	string	$sqlContent		Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
+	 * 
+	 * @param	string		$sqlContent		Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
+	 * @return	[type]		...
 	 */
 	function getFieldDefinitions_sqlContent($sqlContent)	{
 		$lines = t3lib_div::trimExplode(chr(10), $sqlContent,1);
@@ -3685,8 +4157,6 @@ From TypoScript: (GD only, GD+IM, IM)
 				}
 			}
 		}
-//		debug("sql");
-//		debug($total["index_phash"]);
 		return $total;
 	}
 
@@ -3694,6 +4164,10 @@ From TypoScript: (GD only, GD+IM, IM)
 	 * Compares two arrays with field information
 	 * 
 	 * Returns an array with 1) all elements from $FSsrc that is not in $FDcomp (in key "extra") and 2) all elements from $FSsrc that is difference from the ones in $FDcomp
+	 * 
+	 * @param	[type]		$FDsrc: ...
+	 * @param	[type]		$FDcomp: ...
+	 * @return	[type]		...
 	 */
 	function getDatabaseExtra($FDsrc, $FDcomp)	{
 		$extraArr=array();
@@ -3727,6 +4201,11 @@ From TypoScript: (GD only, GD+IM, IM)
 
 	/**
 	 * Compares an array with field definitions with $TCA array
+	 * 
+	 * @param	[type]		$FDsrc: ...
+	 * @param	[type]		$TCA: ...
+	 * @param	[type]		$onlyFields: ...
+	 * @return	[type]		...
 	 */
 	function compareDatabaseAndTCA($FDsrc, $TCA, $onlyFields=0)	{
 		$extraArr=array();
@@ -3781,6 +4260,10 @@ From TypoScript: (GD only, GD+IM, IM)
 
 	/**
 	 * Compares the $TCA array with a field definition array
+	 * 
+	 * @param	[type]		$TCA: ...
+	 * @param	[type]		$FDcomp: ...
+	 * @return	[type]		...
 	 */
 	function compareTCAandDatabase($TCA, $FDcomp)	{
 		$extraArr=array();
@@ -3812,6 +4295,10 @@ From TypoScript: (GD only, GD+IM, IM)
 
 	/**
 	 * Returns an array with SQL-statements that is needed to update according to the diff-array
+	 * 
+	 * @param	[type]		$diffArr: ...
+	 * @param	[type]		$keyList: ...
+	 * @return	[type]		...
 	 */
 	function getUpdateSuggestions($diffArr,$keyList="extra,diff")	{
 		$statements=array();
@@ -3911,6 +4398,9 @@ From TypoScript: (GD only, GD+IM, IM)
 	
 	/**
 	 * Suggests a field definition for a TCA config array.
+	 * 
+	 * @param	[type]		$fieldInfo: ...
+	 * @return	[type]		...
 	 */
 	function suggestFieldDefinition($fieldInfo)	{
 		$out="";
@@ -3986,6 +4476,9 @@ From TypoScript: (GD only, GD+IM, IM)
 
 	/**
 	 * Private
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @return	[type]		...
 	 */
 	function getItemArrayType($arr)	{
 		if (is_array($arr))	{
@@ -4013,6 +4506,9 @@ From TypoScript: (GD only, GD+IM, IM)
 
 	/**
 	 * Private
+	 * 
+	 * @param	[type]		$len: ...
+	 * @return	[type]		...
 	 */
 	function getItemBlobSize($len)	{
 		return ($len>255 ? "tiny" : "")."blob NOT NULL";
@@ -4020,6 +4516,10 @@ From TypoScript: (GD only, GD+IM, IM)
 
 	/**
 	 * Should suggest a TCA configuration for a specific field.
+	 * 
+	 * @param	[type]		$fieldName: ...
+	 * @param	[type]		$fieldInfo: ...
+	 * @return	[type]		...
 	 */
 	function suggestTCAFieldDefinition($fieldName,$fieldInfo)	{
 		list($type,$len) = split(" |\(|\)",$fieldInfo,3);
@@ -4161,6 +4661,8 @@ $out='
 
 	/**
 	 * Includes TCA
+	 * 
+	 * @return	[type]		...
 	 */
 	function includeTCA()	{
 		global $TCA;
@@ -4191,13 +4693,18 @@ $out='
 	
 
 
-	// **********************
-	// GENERAL FUNCTIONS
-	// **********************
-
+	/**********************
+	 *
+	 * GENERAL FUNCTIONS
+	 *
+	 **********************/
 
 	/**
 	 * This creates a link to the given $url. If $link is set, that'll be the link-text
+	 * 
+	 * @param	[type]		$url: ...
+	 * @param	[type]		$link: ...
+	 * @return	[type]		...
 	 */
 	function linkIt($url,$link="")	{
 		return '<a href="'.$url.'" target="_blank">'.($link?$link:$url).'</a>';
@@ -4220,6 +4727,12 @@ $out='
 
 	/**
 	 * This "prints" a section with a message to the ->sections array
+	 * 
+	 * @param	[type]		$head: ...
+	 * @param	[type]		$short_string: ...
+	 * @param	[type]		$long_string: ...
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
 	 */
 	function printSection($head, $short_string, $long_string, $type)	{
 		$icon="";
@@ -4257,6 +4770,10 @@ $out='
 
 	/**
 	 * Wraps the str in a font-tag with verdana 1
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$size: ...
+	 * @return	[type]		...
 	 */
 	function fw($str,$size=1)	{
 		if ($GLOBALS["CLIENT"]["SYSTEM"]=="unix" && $GLOBALS["CLIENT"]["BROWSER"]=="konqu")	{
@@ -4267,6 +4784,9 @@ $out='
 
 	/**
 	 * Wraps the str in a font-tag with verdana 1
+	 * 
+	 * @param	[type]		$str: ...
+	 * @return	[type]		...
 	 */
 	function fwheader($str)	{
 		return '<div align=center><strong>'.$this->fw($str,3).'</strong></div>';
@@ -4274,6 +4794,10 @@ $out='
 
 	/**
 	 * Wrapping labal/content in a table-row.
+	 * 
+	 * @param	[type]		$label: ...
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
 	 */
 	function wrapInCells($label,$content)	{
 		return '<tr><td valign=top nowrap><strong>'.$this->fw($label).'</strong></td><td>&nbsp;</td><td valign=top>'.$this->fw($content).'<BR></td></tr>';
@@ -4281,6 +4805,8 @@ $out='
 
 	/**
 	 * This prints all the messages in the ->section array
+	 * 
+	 * @return	[type]		...
 	 */
 	function printAll()	{
 		reset($this->sections);
@@ -4297,6 +4823,9 @@ $out='
 
 	/**
 	 * This wraps and returns the main content of the page into proper html-code.
+	 * 
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
 	 */
 	function outputWrapper($content)	{
 		$out='
@@ -4343,9 +4872,14 @@ A:hover {color: #000066}
 		</div>
 	</body>
 </html>';
-	return $out;
-	
+		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function menu()	{
 		if (!$this->passwordOK)	return;
 		
@@ -4362,6 +4896,12 @@ A:hover {color: #000066}
 		$code = '<table border=0 cellpadding=0 cellspacing=0 bgColor="#ABBBB4"><tr><td>'.$code.'</td></tr></table>';
 		return '<div align="center">'.$code.'</div>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function stepHeader()	{
 		$msg1='Type in your database parameters here:';
 		$msg2='Database';
@@ -4398,6 +4938,12 @@ A:hover {color: #000066}
 		
 		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function note123()	{
 		if ($this->mode=="123")	{
 			$c='<table border=0 cellpadding=0 cellspacing=0 width=100%>
@@ -4406,6 +4952,12 @@ A:hover {color: #000066}
 			return $c;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function endNotes()	{
 		if ($this->mode!="123" && $this->passwordOK)	{
 			$c.="OS detected: <strong>".(TYPO3_OS=="WIN"?"WIN":"UNIX")."</strong><BR>";
@@ -4418,6 +4970,13 @@ A:hover {color: #000066}
 			return $this->fw($c);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$bytes: ...
+	 * @return	[type]		...
+	 */
 	function convertByteSize($bytes)	{
 		if (stristr($bytes,"m"))	{
 			$bytes=doubleval($bytes)*1024*1024;
@@ -4426,6 +4985,12 @@ A:hover {color: #000066}
 		}
 		return $bytes;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function securityRisk()	{
 		$c="This script is a <strong>great danger to the security of TYPO3</strong> if you don't secure it somehow. 
 			We suggest one of the following:
@@ -4438,6 +5003,12 @@ A:hover {color: #000066}
 		";	
 		return $c;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function alterPasswordForm()	{
 			$content = '<form action="'.$this->scriptSelf.'?TYPO3_INSTALL[type]=extConfig" method="POST">
 			Enter new password:
@@ -4448,6 +5019,12 @@ A:hover {color: #000066}
 			</form>';
 			return $content;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function messageBasicFinished()	{
 		$msg ="
 				Apparently you have completed the basic setup of the TYPO3 database. 
@@ -4463,13 +5040,26 @@ A:hover {color: #000066}
 				";
 		return $msg;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
+	 */
 	function setScriptName($type)	{
 		$value = $this->scriptSelf."?TYPO3_INSTALL[type]=".$type.($this->mode?"&mode=".rawurlencode($this->mode):"").($this->step?"&step=".rawurlencode($this->step):"");
 		return $value;
 	}
 
-
-
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$size: ...
+	 * @param	[type]		$textarea: ...
+	 * @param	[type]		$styleOverride: ...
+	 * @return	[type]		...
+	 */
 	function formWidth($size=48,$textarea=0,$styleOverride="") {
 			// Input or text-field attribute (size or cols)
 		$wAttrib = $textarea?"cols":"size";
@@ -4480,9 +5070,17 @@ A:hover {color: #000066}
 			$pixels = ceil($size*10);
 			$retVal = $styleOverride ? ' style="'.$styleOverride.'"' : ' style="width:'.$pixels.'px;"';
 		}
-//		debug($retVal);
 		return $retVal;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$size: ...
+	 * @param	[type]		$styleOverride: ...
+	 * @param	[type]		$wrap: ...
+	 * @return	[type]		...
+	 */
 	function formWidthText($size=48,$styleOverride="",$wrap="") {
 		$wTags = $this->formWidth($size,1,$styleOverride);
 			// Netscape 6+ seems to have this ODD problem where there WILL ALWAYS be wrapping with the cols-attribute set and NEVER without the col-attribute...
@@ -4493,12 +5091,7 @@ A:hover {color: #000066}
 	}
 }
 
-
-
-
-
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_install.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_install.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_install.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_install.php']);
 }
-
 ?>

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,93 +27,94 @@
 /** 
  * Contains class with layout/output function for TYPO3 Backend Scripts
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  143: function fw($str)	
+ *  144: function fw($str)	
  *
  *
- *  165: class template 
- *  209:     function template()	
+ *  168: class template 
+ *  214:     function template()	
  *
  *              SECTION: EVALUATION FUNCTIONS
- *  263:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1)	
- *  279:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')	
- *  304:     function issueCommand($params,$rUrl='')	
- *  319:     function isCMlayers()	
- *  329:     function thisBlur()	
- *  339:     function helpStyle()	
- *  356:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))	
- *  381:     function getFileheader($title,$path,$iconfile)	
- *  397:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")	
- *  430:     function makeShortcutUrl($gvList,$setList)	
- *  451:     function formWidth($size=48,$textarea=0,$styleOverride='') 
- *  476:     function formWidthText($size=48,$styleOverride='',$wrap='') 
- *  493:     function redirectUrls($thisLocation='')	
- *  517:     function formatTime($tstamp,$type)	
- *  530:     function parseTime()	
+ *  268:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1)	
+ *  284:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')	
+ *  309:     function issueCommand($params,$rUrl='')	
+ *  324:     function isCMlayers()	
+ *  334:     function thisBlur()	
+ *  344:     function helpStyle()	
+ *  361:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))	
+ *  386:     function getFileheader($title,$path,$iconfile)	
+ *  402:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")	
+ *  435:     function makeShortcutUrl($gvList,$setList)	
+ *  456:     function formWidth($size=48,$textarea=0,$styleOverride='') 
+ *  481:     function formWidthText($size=48,$styleOverride='',$wrap='') 
+ *  498:     function redirectUrls($thisLocation='')	
+ *  522:     function formatTime($tstamp,$type)	
+ *  535:     function parseTime()	
  *
  *              SECTION: PAGE BUILDING FUNCTIONS.
- *  563:     function startPage($title)	
- *  623:     function endPage()	
- *  648:     function header($text)	
- *  668:     function section($label,$text,$nostrtoupper=0,$sH=0,$type=0)	
- *  689:     function divider($dist)	
- *  705:     function spacer($dist)	
- *  723:     function sectionHeader($label,$sH=0)	
- *  740:     function sectionBegin()	
- *  761:     function sectionEnd()	
- *  781:     function middle()	
- *  790:     function endPageJS()	
- *  811:     function docBodyTagBegin()	
- *  822:     function docStyle()	
- *  846:     function getBackgroundImage($CSS=0)	
- *  859:     function initCharset()	
- *  869:     function generator()	
+ *  568:     function startPage($title)	
+ *  636:     function endPage()	
+ *  661:     function header($text)	
+ *  681:     function section($label,$text,$nostrtoupper=0,$sH=0,$type=0)	
+ *  702:     function divider($dist)	
+ *  718:     function spacer($dist)	
+ *  736:     function sectionHeader($label,$sH=0)	
+ *  753:     function sectionBegin()	
+ *  774:     function sectionEnd()	
+ *  794:     function middle()	
+ *  803:     function endPageJS()	
+ *  824:     function docBodyTagBegin()	
+ *  835:     function docStyle()	
+ *  866:     function insertStylesAndJS($content)	
+ *  885:     function getBackgroundImage($CSS=0)	
+ *  898:     function initCharset()	
+ *  910:     function generator()	
  *
  *              SECTION: OTHER ELEMENTS
- *  901:     function icons($type)	
- *  930:     function t3Button($onClick,$label)	
- *  941:     function dfw($string)	
- *  951:     function rfw($string)	
- *  961:     function wrapInCData($string)	
- *  975:     function wrapScriptTags($string)	
- * 1003:     function table($arr)	
- * 1043:     function menuTable($arr1,$arr2=array(), $arr3=array())	
- * 1076:     function funcMenu($content,$menu)	
- * 1090:     function clearCacheMenu($id,$addSaveOptions=0)	
- * 1124:     function getContextMenuCode()	
- * 1141:     function GL_checkBrowser()
- * 1156:     function GL_getObj(obj)
- * 1168:     function GL_getObjCss(obj)
- * 1172:     function GL_getMouse(event) 
- * 1186:     function outsideLayer(level)	
- * 1193:     function setLayerObj(html,level)	
- * 1211:     function hideEmpty()	
- * 1217:     function hideSpecific(level)	
- * 1223:     function debugObj(obj,name)	
- * 1229:     function initLayer()
+ *  942:     function icons($type)	
+ *  971:     function t3Button($onClick,$label)	
+ *  982:     function dfw($string)	
+ *  992:     function rfw($string)	
+ * 1002:     function wrapInCData($string)	
+ * 1019:     function wrapScriptTags($string, $linebreak=TRUE)	
+ * 1056:     function table($arr)	
+ * 1096:     function menuTable($arr1,$arr2=array(), $arr3=array())	
+ * 1129:     function funcMenu($content,$menu)	
+ * 1143:     function clearCacheMenu($id,$addSaveOptions=0)	
+ * 1177:     function getContextMenuCode()	
+ * 1194:     function GL_checkBrowser()
+ * 1210:     function GL_getObj(obj)
+ * 1222:     function GL_getObjCss(obj)
+ * 1226:     function GL_getMouse(event) 
+ * 1240:     function outsideLayer(level)	
+ * 1247:     function setLayerObj(html,level)	
+ * 1268:     function hideEmpty()	
+ * 1274:     function hideSpecific(level)	
+ * 1280:     function debugObj(obj,name)	
+ * 1286:     function initLayer()
+ * 1322:     function getTabMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	
  *
  *
- * 1262: class bigDoc extends template 
+ * 1431: class bigDoc extends template 
  *
  *
- * 1271: class noDoc extends template 
+ * 1440: class noDoc extends template 
  *
  *
- * 1280: class smallDoc extends template 
+ * 1449: class smallDoc extends template 
  *
  *
- * 1289: class mediumDoc extends template 
+ * 1458: class mediumDoc extends template 
  *
- * TOTAL FUNCTIONS: 54
+ * TOTAL FUNCTIONS: 56
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -160,7 +161,9 @@ function fw($str)	{
  * 
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 class template {
 
@@ -708,7 +711,7 @@ trim($this->form);
 
 	/**
 	 * Returns a blank <div>-section with a height
-	 *
+	 * 
 	 * @param	integer		Padding-top for the div-section (should be margin-top but konquorer (3.1) don't like it :-(
 	 * @return	string		HTML content
 	 */
@@ -826,7 +829,7 @@ trim($this->form);
 
 	/**
 	 * Outputting document style
-	 *
+	 * 
 	 * @return	string		HTML style section/link tags
 	 */
 	function docStyle()	{
@@ -855,8 +858,9 @@ trim($this->form);
 	}
 
 	/**
-	 * insert post rendering document style into already rendered content
-	 *
+	 * Insert post rendering document style into already rendered content
+	 * 
+	 * @param	string		style-content to insert.
 	 * @return	string		content with inserted styles
 	 */
 	function insertStylesAndJS($content)	{
@@ -1007,7 +1011,7 @@ trim($this->form);
 	 * Wraps the input string in script tags.
 	 * Automatic re-identing of the JS code is done by using the first line as ident reference.
 	 * This is nice for identing JS code with PHP code on the same level.
-	 *
+	 * 
 	 * @param	string		Input string
 	 * @param	boolean		Wrap script element in linebreaks? Default is TRUE.
 	 * @return	string		Output string
@@ -1302,11 +1306,10 @@ trim($this->form);
 
 	/**
 	 * creates a tab menu from an array definition
-	 *
+	 * 
 	 * Returns a tab menu for a module
 	 * Requires the JS function jumpToUrl() to be available
-	 *
-	 *
+	 * 
 	 * @param	string		$id is the "&id=" parameter value to be sent to the module
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,34 +27,37 @@
 /**
  * Contains class with time tracking functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   85: class t3lib_timeTrack 
+ *   88: class t3lib_timeTrack 
  *
  *              SECTION: Logging parsing times in the scripts
- *  141:     function start()	
- *  154:     function push($tslabel, $value='')	
- *  179:     function pull($content='')	
- *  197:     function setTSlogMessage($content,$num=0)	
- *  212:     function setTSselectQuery($query,$msg)	
- *  225:     function incStackPointer()	
- *  236:     function decStackPointer()	
- *  246:     function mtime()	
- *  256:     function convertMicrotime($microtime)	
+ *  144:     function start()	
+ *  157:     function push($tslabel, $value='')	
+ *  182:     function pull($content='')	
+ *  200:     function setTSlogMessage($content,$num=0)	
+ *  215:     function setTSselectQuery($query,$msg)	
+ *  228:     function incStackPointer()	
+ *  239:     function decStackPointer()	
+ *  249:     function mtime()	
+ *  259:     function convertMicrotime($microtime)	
  *
  *              SECTION: Printing the parsing time information (for Admin Panel)
- *  289:     function printTSlog()	
- *  434:     function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')	
- *  498:     function fixCLen($c,$v)	
- *  514:     function fw($str)	
- *  528:     function createHierarchyArray(&$arr,$pointer,$uniqueId)	
- *  547:     function debug_typo3PrintError($header,$text,$js)	
+ *  292:     function printTSlog()	
+ *  437:     function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')	
+ *  501:     function fixCLen($c,$v)	
+ *  517:     function fw($str)	
+ *  531:     function createHierarchyArray(&$arr,$pointer,$uniqueId)	
+ *  550:     function debug_typo3PrintError($header,$text,$js)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -77,7 +80,7 @@
  * Is used to register how much time is used with operations in TypoScript
  * Used by index_ts
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen

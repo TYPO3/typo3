@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,23 +27,22 @@
 /** 
  * Class for displaying an array as a tree
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   74: class t3lib_arrayBrowser	
- *   90:     function tree($arr, $depth_in, $depthData)	
- *  153:     function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray)		
- *  185:     function fixed_lgd($string,$chars)	
- *  202:     function depthKeys($arr,$settings)	
+ *   75: class t3lib_arrayBrowser	
+ *   91:     function tree($arr, $depth_in, $depthData)	
+ *  154:     function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray)		
+ *  186:     function fixed_lgd($string,$chars)	
+ *  203:     function depthKeys($arr,$settings)	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -68,7 +67,9 @@
  * Class for displaying an array as a tree
  * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see SC_mod_tools_config_index::main()
  */
 class t3lib_arrayBrowser	{

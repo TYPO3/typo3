@@ -1,6 +1,7 @@
 <?php
 /**
  * Default  TCA_DESCR for "_MOD_web_layout"
+ * TYPO3 CVS ID: $Id$
  */
 
 $LOCAL_LANG = Array (

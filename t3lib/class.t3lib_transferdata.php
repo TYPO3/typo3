@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,40 +27,43 @@
 /** 
  * Contains class for getting and transforming data for display in backend forms (TCEforms)
  *
- * Revised for TYPO3 3.6 September/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 September/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   94: class t3lib_transferData 
+ *   97: class t3lib_transferData 
  *
  *              SECTION: Getting record content, ready for display in TCEforms
- *  132:     function fetchRecord($table,$idList,$operation)	
- *  219:     function renderRecord($table, $id, $pid, $row)	
- *  286:     function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)	
- *  316:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
- *  367:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
- *  429:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
- *  458:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)	
+ *  135:     function fetchRecord($table,$idList,$operation)	
+ *  222:     function renderRecord($table, $id, $pid, $row)	
+ *  289:     function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)	
+ *  319:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
+ *  370:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
+ *  432:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
+ *  461:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)	
  *
  *              SECTION: FlexForm processing functions
- *  542:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)	
- *  571:     function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)		
+ *  545:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)	
+ *  574:     function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)		
  *
  *              SECTION: Selector box processing functions
- *  646:     function selectAddSpecial($dataAcc, $elements, $specialKey)	
- *  726:     function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)	
- *  783:     function getDataIdList($elements, $fieldConfig, $row)	
- *  806:     function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)	
- *  821:     function addItems($items,$iArray)	
- *  843:     function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)	
+ *  649:     function selectAddSpecial($dataAcc, $elements, $specialKey)	
+ *  729:     function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)	
+ *  786:     function getDataIdList($elements, $fieldConfig, $row)	
+ *  809:     function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)	
+ *  824:     function addItems($items,$iArray)	
+ *  846:     function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)	
  *
  *              SECTION: Helper functions
- *  878:     function lockRecord($table, $id, $pid=0)	
- *  895:     function regItem($table, $id, $field, $content)	
- *  905:     function sL($in)	
+ *  881:     function lockRecord($table, $id, $pid=0)	
+ *  898:     function regItem($table, $id, $field, $content)	
+ *  908:     function sL($in)	
  *
  * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -87,7 +90,7 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml_proc.php');
 /**
  * Class for getting and transforming data for display in backend forms (TCEforms)
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

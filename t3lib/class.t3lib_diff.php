@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -25,30 +25,62 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /** 
- * This class has functions which generates a difference output of a content string
+ * Contains class which has functions that generates a difference output of a content string
  *
  * $Id$
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   65: class t3lib_diff 
+ *   74:     function getDiff($str1,$str2)	
+ *   99:     function explodeStringIntoWords($str)	
+ *  119:     function tagSpace($str,$rev=0)	
+ *  134:     function makeDiffDisplay($str1,$str2)	
+ *  206:     function addClearBuffer($clearBuffer,$last=0)	
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
+
+
+
+
+
+/**
+ * This class has functions which generates a difference output of a content string
+ * Currently works only with LINUX/UNIX
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
+ */
 class t3lib_diff {
 	var $stripTags = 0;
 	var $clearBufferIdx=0;
 	
+	/**
+	 * @param	[type]		$str1: ...
+	 * @param	[type]		$str2: ...
+	 * @return	[type]		...
+	 */
 	function getDiff($str1,$str2)	{
-		if (TYPO3_OS!="WIN")	{
+		if (TYPO3_OS!='WIN')	{
 				// Create file 1 and write string
-			$file1 = tempnam("","");
+			$file1 = tempnam('','');
 			t3lib_div::writeFile($file1,$str1);
 				// Create file 2 and write string
-			$file2 = tempnam("","");
+			$file2 = tempnam('','');
 			t3lib_div::writeFile($file2,$str2);
 				// Perform diff.
-			$cmd = $GLOBALS["TYPO3_CONF_VARS"]["BE"]["diff_path"]." ".$file1." ".$file2;
+			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$file1.' '.$file2;
 			exec($cmd,$res);
 	
 			unlink($file1);
@@ -57,25 +89,48 @@ class t3lib_diff {
 			return $res;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @return	[type]		...
+	 */
 	function explodeStringIntoWords($str)	{
 		$strArr = t3lib_div::trimExplode(chr(10),$str);
 		$outArray=array();
 		reset($strArr);
 		while(list(,$lineOfWords)=each($strArr))	{
-			$allWords = t3lib_div::trimExplode(" ",$lineOfWords,1);
+			$allWords = t3lib_div::trimExplode(' ',$lineOfWords,1);
 			$outArray = array_merge($outArray,$allWords);
-			$outArray[]="";
-			$outArray[]="";
+			$outArray[]='';
+			$outArray[]='';
 		}
 		return $outArray;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$rev: ...
+	 * @return	[type]		...
+	 */
 	function tagSpace($str,$rev=0)	{
 		if ($rev)	{
-			return str_replace(" &lt;","&lt;",str_replace("&gt; ","&gt;",$str));
+			return str_replace(' &lt;','&lt;',str_replace('&gt; ','&gt;',$str));
 		} else {
-			return str_replace("<"," <",str_replace(">","> ",$str));
+			return str_replace('<',' <',str_replace('>','> ',$str));
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str1: ...
+	 * @param	[type]		$str2: ...
+	 * @return	[type]		...
+	 */
 	function makeDiffDisplay($str1,$str2)	{
 		if ($this->stripTags)	{
 			$str1 = strip_tags($str1);
@@ -86,10 +141,9 @@ class t3lib_diff {
 		}
 		$str1Lines = $this->explodeStringIntoWords($str1);
 		$str2Lines = $this->explodeStringIntoWords($str2);
-//		debug($str1Lines);
-//		debug($str2Lines);
+
 		$diffRes = $this->getDiff(implode(chr(10),$str1Lines).chr(10),implode(chr(10),$str2Lines).chr(10));
-//debug($diffRes);
+
 		if (is_array($diffRes))	{
 			reset($diffRes);
 			$c=0;
@@ -97,66 +151,68 @@ class t3lib_diff {
 			while(list(,$lValue)=each($diffRes))	{
 				if (intval($lValue))	{
 					$c=intval($lValue);
-					$diffResArray[$c]["changeInfo"]=$lValue;
+					$diffResArray[$c]['changeInfo']=$lValue;
 				}
-				if (substr($lValue,0,1)=="<")	{
-					$diffResArray[$c]["old"][]=substr($lValue,2);
+				if (substr($lValue,0,1)=='<')	{
+					$diffResArray[$c]['old'][]=substr($lValue,2);
 				}
-				if (substr($lValue,0,1)==">")	{
-					$diffResArray[$c]["new"][]=substr($lValue,2);
+				if (substr($lValue,0,1)=='>')	{
+					$diffResArray[$c]['new'][]=substr($lValue,2);
 				}
 			}
-//			debug($str1Lines);
-//			debug($str2Lines);
-//			debug($diffResArray);
 			
-			$outString="";
-			$clearBuffer="";
+			$outString='';
+			$clearBuffer='';
 			for ($a=-1;$a<count($str1Lines);$a++)	{
 				if (is_array($diffResArray[$a+1]))	{
-					if (strstr($diffResArray[$a+1]["changeInfo"],"a"))	{	// a=Add, c=change, d=delete: If a, then the content is Added after the entry and we must insert the line content as well.
-						$clearBuffer.=htmlspecialchars($str1Lines[$a])." ";
+					if (strstr($diffResArray[$a+1]['changeInfo'],'a'))	{	// a=Add, c=change, d=delete: If a, then the content is Added after the entry and we must insert the line content as well.
+						$clearBuffer.=htmlspecialchars($str1Lines[$a]).' ';
 					}
 
 					$outString.=$this->addClearBuffer($clearBuffer);
-					$clearBuffer="";
-					if (is_array($diffResArray[$a+1]["old"]))	{
-						$outString.='<font color=red>'.htmlspecialchars(implode(" ",$diffResArray[$a+1]["old"])).'</font> ';
+					$clearBuffer='';
+					if (is_array($diffResArray[$a+1]['old']))	{
+						$outString.='<font color="red">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['old'])).'</font> ';
 					}
-					if (is_array($diffResArray[$a+1]["new"]))	{
-						$outString.='<font color=green>'.htmlspecialchars(implode(" ",$diffResArray[$a+1]["new"])).'</font> ';
+					if (is_array($diffResArray[$a+1]['new']))	{
+						$outString.='<font color="green">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['new'])).'</font> ';
 					}
-					$chInfParts = explode(",",$diffResArray[$a+1]["changeInfo"]);
+					$chInfParts = explode(',',$diffResArray[$a+1]['changeInfo']);
 					if (!strcmp($chInfParts[0],$a+1))	{
 						$newLine = intval($chInfParts[1])-1;
 						if ($newLine>$a)	$a=$newLine;	// Security that $a is not set lower than current for some reason...
 					}
 				} else {
-					$clearBuffer.=htmlspecialchars($str1Lines[$a])." ";
+					$clearBuffer.=htmlspecialchars($str1Lines[$a]).' ';
 				}
 			}
 			$outString.=$this->addClearBuffer($clearBuffer,1);
 			
-			$outString = str_replace("  ",chr(10),$outString);
+			$outString = str_replace('  ',chr(10),$outString);
 			if (!$this->stripTags)	{
 				$outString = $this->tagSpace($outString,1);
 			}
 			return $outString;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$clearBuffer: ...
+	 * @param	[type]		$last: ...
+	 * @return	[type]		...
+	 */
 	function addClearBuffer($clearBuffer,$last=0)	{
 		if (strlen($clearBuffer)>200)	{
-			$clearBuffer=($this->clearBufferIdx?t3lib_div::fixed_lgd($clearBuffer,70):"")."[".strlen($clearBuffer)."]".(!$last?t3lib_div::fixed_lgd_pre($clearBuffer,70):"");
+			$clearBuffer=($this->clearBufferIdx?t3lib_div::fixed_lgd($clearBuffer,70):'').'['.strlen($clearBuffer).']'.(!$last?t3lib_div::fixed_lgd_pre($clearBuffer,70):'');
 		}
 		$this->clearBufferIdx++;
 		return $clearBuffer;
 	}
 }
 
-
-
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_diff.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_diff.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_diff.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_diff.php']);
 }
-
 ?>

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -25,35 +25,38 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /** 
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * Contains class for creating a position map.
+ *
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   76: class t3lib_positionMap 
- *   95:     function positionTree($id,$pageinfo,$perms_clause,$R_URI)	
- *  178:     function JSimgFunc($prefix='')	
- *  187:     function changeImg(name,d)	
- *  207:     function boldTitle($t_code,$dat,$id)	
- *  218:     function onClickEvent($pid)	
- *  226:     function insertlabel()	
- *  236:     function linkPageTitle($str,$rec)	
- *  244:     function checkNewPageInPid($pid)	
- *  258:     function insertQuadLines($codes,$allBlank=0)	
- *  288:     function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)	
- *  318:     function printRecordMap($lines,$colPosArray)	
- *  338:     function wrapColumnHeader($str,$vv)	
- *  350:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)	
- *  363:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
- *  381:     function wrapRecordHeader($str,$row)	
- *  389:     function getRecordHeader($row)	
- *  400:     function wrapRecordTitle($str,$row)	
+ *   79: class t3lib_positionMap 
+ *  101:     function positionTree($id,$pageinfo,$perms_clause,$R_URI)	
+ *  184:     function JSimgFunc($prefix='')	
+ *  193:     function changeImg(name,d)	
+ *  213:     function boldTitle($t_code,$dat,$id)	
+ *  225:     function onClickEvent($pid,$newPagePID)	
+ *  242:     function insertlabel()	
+ *  252:     function linkPageTitle($str,$rec)	
+ *  260:     function checkNewPageInPid($pid)	
+ *  273:     function getModConfig($pid)	
+ *  287:     function insertQuadLines($codes,$allBlank=0)	
+ *  317:     function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)	
+ *  347:     function printRecordMap($lines,$colPosArray)	
+ *  367:     function wrapColumnHeader($str,$vv)	
+ *  379:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)	
+ *  392:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
+ *  410:     function wrapRecordHeader($str,$row)	
+ *  418:     function getRecordHeader($row)	
+ *  429:     function wrapRecordTitle($str,$row)	
  *
- * TOTAL FUNCTIONS: 17
+ * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -69,7 +72,7 @@
 /**
  * Position map class.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -216,7 +219,7 @@ class t3lib_positionMap {
 
 	/**
 	 * @param	[type]		$pid: ...
-
+	 * @param	[type]		$newPagePID: ...
 	 * @return	[type]		...
 	 */
 	function onClickEvent($pid,$newPagePID)	{

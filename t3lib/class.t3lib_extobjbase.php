@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,11 +27,10 @@
 /** 
  * Contains the base class for 'Extension Objects' in backend modules.
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -50,6 +49,17 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+
+
+
+
+
+
+
+
+
+
+
 /**
  * EXAMPLE: One level.
  * 
@@ -121,17 +131,6 @@
  * The two level-2 sub-module "wizard_crpages" and "wizard_sortpages" are totally normal "submodules".
  */
 
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Parent class for 'Extension Objects' in backend modules.
  * Used for 'submodules' to other modules. Also called 'Function menu modules' in t3lib_extMgm. And now its even called 'Extension Objects'. Or 'Module functions'. Wish we had just one name. Or a name at all...(?) Thank God its not so advanced when it works...
@@ -140,9 +139,10 @@
  * For more information about this, please see the large example comment for the class t3lib_SCbase. This will show the principle of a 'level-1' connection.
  * The more advanced example - having two layers as it is done by the 'func_wizards' extension with the 'web_info' module - can be seen in the comment above.
  * 
- * @see t3lib_SCbase
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @see tx_funcwizards_webfunc::init(), tx_funcwizards_webfunc, tx_wizardsortpages_webfunc_2
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @see t3lib_SCbase,tx_funcwizards_webfunc::init(), tx_funcwizards_webfunc, tx_wizardsortpages_webfunc_2
  */
 class t3lib_extobjbase {
 	

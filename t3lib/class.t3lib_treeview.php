@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2002 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2002 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,49 +27,50 @@
 /** 
  * Base class for creating a page/folder tree in HTML
  *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
- *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * $Id$
+ * Revised for TYPO3 3.6 August/2003 by Kasper Skaarhoj
  * Maintained by René Fritz
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  104: class t3lib_treeView 
- *  251:     function init($clause='')	
- *  268:     function reset()	
- *  282:     function getBrowsableTree($addClause='')	
+ *  103: class t3lib_treeView 
+ *  250:     function init($clause='')	
+ *  267:     function reset()	
+ *  281:     function getBrowsableTree($addClause='')	
  *  356:     function printTree($treeArr='')	
- *  396:     function PMicon(&$row,$a,$c,$nextCount,$exp)
- *  418:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  436:     function wrapTitle($title,$v)
- *  449:     function wrapIcon($icon,&$row)
- *  474:     function wrapStop($str,&$row)	
- *  487:     function getCount($uid)
- *  508:     function addField($field,$noCheck=0)	
- *  524:     function expandNext($id)	
- *  534:     function savePosition()	
+ *  394:     function PMicon(&$row,$a,$c,$nextCount,$exp)	
+ *  416:     function PM_ATagWrap($icon,$cmd,$bMark='')	
+ *  434:     function wrapTitle($title,$v)	
+ *  447:     function wrapIcon($icon,&$row)	
+ *  472:     function wrapStop($str,&$row)	
+ *  486:     function getCount($uid)	
+ *  507:     function addField($field,$noCheck=0)	
+ *  523:     function expandNext($id)	
+ *  533:     function savePosition()	
  *
  *              SECTION: functions that might be overwritten by extended classes
- *  551:     function getRootRecord($uid)
- *  561:     function getRootIcon($rec) 
- *  571:     function getRecord($uid)
- *  585:     function getId($v) 
- *  595:     function getJumpToParm($v) 
- *  605:     function getIcon(&$row)
+ *  550:     function getRootRecord($uid) 
+ *  560:     function getRootIcon($rec) 
+ *  570:     function getRecord($uid) 
+ *  584:     function getId($v) 
+ *  594:     function getJumpToParm($v) 
+ *  604:     function getIcon(&$row) 
  *  619:     function getTitleStr(&$row)	
  *  630:     function getTitleAttrib(&$row) 
  *
  *              SECTION: data handling
- *  663:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='')
- *  737:     function getDataInit($uid)
- *  768:     function getDataCount($res) 
- *  783:     function getDataNext($res)
- *  798:     function getDataFree($res)
- *  816:     function setDataFromArray($dataArr,$recursive=0,$parent=0,$icount=1)	
+ *  663:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='')	
+ *  738:     function getDataInit($parentId) 
+ *  765:     function getDataCount($res) 
+ *  780:     function getDataNext($res)
+ *  799:     function getDataFree($res)
+ *  815:     function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)	
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -93,22 +94,20 @@ require_once (PATH_t3lib.'class.t3lib_div.php');
 /**
  * Base class for creating a page/folder tree in HTML
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
- * @see t3lib_browsetree
- * @see t3lib_pagetree
- * @see t3lib_foldertree
  * @package TYPO3
  * @subpackage t3lib
+ * @see t3lib_browsetree, t3lib_pagetree, t3lib_foldertree
  */
 class t3lib_treeView {
 
-	/*
+	/**
 	 * Needs to be initialized with $GLOBALS['BE_USER']
 	 */
 	var $BE_USER='';
 
-	/*
+	/**
 	 * Needs to be initialized with e.g. $GLOBALS['WEBMOUNTS']
 	 */
 	var $MOUNTS='';
@@ -120,18 +119,18 @@ class t3lib_treeView {
 	 */
 	var $domIdPrefix = 'row';
 
-	/*
+	/**
 	 * Database table to get the tree data from.
 	 * Leave blank if data comes from an array.
 	 */
 	var $table='';
 
-	/*
+	/**
 	 * Defines the field of $table which is the parent id field (like pid for table pages).
 	 */
 	var $parentField='pid';
 
-	/*
+	/**
 	 * Unique name for the tree.
 	 * Used as key for storing the tree into the BE users settings.
 	 * Used as key to pass parameters in links.
@@ -139,12 +138,12 @@ class t3lib_treeView {
 	 */
 	var $treeName = '';
 
-	/*
+	/**
 	 * Icon file name for item icons.
 	 */
 	var $iconName = 'default.gif';
 
-	/*
+	/**
 	 * Icon file path.
 	 */
 	var $iconPath = '';
@@ -350,7 +349,7 @@ class t3lib_treeView {
 	
 	/**
 	 * Compiles the HTML code for displaying the structure found inside the ->tree array
-	 *
+	 * 
 	 * @param	array		"tree-array" - if blank string, the internal ->tree array is used.
 	 * @return	string		The HTML code for the tree
 	 */
@@ -378,8 +377,6 @@ class t3lib_treeView {
 		$out .= '</table>';
 		return $out;
 	}
-
-
 
 	/**
 	 * Generate the plus/minus icon for the browsable tree.
@@ -441,7 +438,7 @@ class t3lib_treeView {
 
 	/**
 	 * Wrapping the image tag, $icon, for the row, $row
-	 *
+	 * 
 	 * @param	string		The image tag for the icon
 	 * @param	array		The row for the current element
 	 * @return	string		The processed icon input value.
@@ -478,6 +475,7 @@ class t3lib_treeView {
 		}
 		return $str;
 	}
+	
 	/**
 	 * Returns the number of records having the parent id, $uid
 	 * 
@@ -599,7 +597,7 @@ class t3lib_treeView {
 
 	/**
 	 * [Describe function...]
-	 *
+	 * 
 	 * @param	[type]		$$row: ...
 	 * @return	[type]		...
 	 */
@@ -731,10 +729,9 @@ class t3lib_treeView {
 		return $c;
 	}
 
-
 	/**
 	 * getting the tree data: init
-	 *
+	 * 
 	 * @param	integer		parent item id
 	 * @return	mixed		data handle
 	 */
@@ -761,7 +758,7 @@ class t3lib_treeView {
 
 	/**
 	 * getting the tree data: count
-	 *
+	 * 
 	 * @param	mixed		data handle
 	 * @return	integer		number of items
 	 */
@@ -776,7 +773,7 @@ class t3lib_treeView {
 
 	/**
 	 * getting the tree data: next entry
-	 *
+	 * 
 	 * @param	mixed		data handle
 	 * @return	array		item data array
 	 */
@@ -807,8 +804,14 @@ class t3lib_treeView {
 		}
 	}
 
-
-
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$$dataArr: ...
+	 * @param	[type]		$traverse: ...
+	 * @param	[type]		$pid: ...
+	 * @return	[type]		...
+	 */
 	function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)	{
 
 		if (!$traverse) {
@@ -869,9 +872,6 @@ class t3lib_treeView {
 			),
 		)
 */
-
-
-
 
 
 }

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,40 +27,39 @@
 /** 
  * Contains class with basic file management functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   79: class t3lib_basicFileFunctions	
+ *   80: class t3lib_basicFileFunctions	
  *
  *              SECTION: Checking functions
- *  131:     function init($mounts, $f_ext)	
- *  148:     function getTotalFileInfo($wholePath)	
- *  168:     function is_allowed($iconkey,$type)	
- *  193:     function checkIfFullAccess($theDest)	
- *  207:     function is_webpath($path)	
- *  227:     function checkIfAllowed($ext, $theDest, $filename='')	
- *  237:     function checkFileNameLen($fileName)	
- *  247:     function is_directory($theDir)	
- *  264:     function isPathValid($theFile)	
- *  279:     function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)	
- *  322:     function checkPathAgainstMounts($thePath)	
- *  340:     function blindPath($thePath)	
- *  356:     function findTempFolder()	
+ *  132:     function init($mounts, $f_ext)	
+ *  149:     function getTotalFileInfo($wholePath)	
+ *  169:     function is_allowed($iconkey,$type)	
+ *  194:     function checkIfFullAccess($theDest)	
+ *  208:     function is_webpath($path)	
+ *  228:     function checkIfAllowed($ext, $theDest, $filename='')	
+ *  238:     function checkFileNameLen($fileName)	
+ *  248:     function is_directory($theDir)	
+ *  265:     function isPathValid($theFile)	
+ *  280:     function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)	
+ *  323:     function checkPathAgainstMounts($thePath)	
+ *  341:     function blindPath($thePath)	
+ *  357:     function findTempFolder()	
  *
  *              SECTION: Cleaning functions
- *  385:     function cleanDirectoryName($theDir)	
- *  395:     function rmDoubleSlash($string)	
- *  405:     function slashPath($path)	
- *  418:     function cleanFileName($fileName)	
- *  429:     function formatSize($sizeInBytes)	
+ *  386:     function cleanDirectoryName($theDir)	
+ *  396:     function rmDoubleSlash($string)	
+ *  406:     function slashPath($path)	
+ *  419:     function cleanFileName($fileName)	
+ *  430:     function formatSize($sizeInBytes)	
  *
  * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -73,7 +72,9 @@
 /**
  * Contains functions for management, validation etc of files in TYPO3, using the concepts of web- and ftp-space. Please see the comment for the init() function
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see t3lib_basicFileFunctions::init()
  */
 class t3lib_basicFileFunctions	{

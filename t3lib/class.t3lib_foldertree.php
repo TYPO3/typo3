@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2002 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2002 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -25,29 +25,30 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * generate a folder tree
+ * Generate a folder tree
  *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
- *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * $Id$
+ * Revised for TYPO3 3.6 August/2003 by Kasper Skaarhoj
  * Maintained by René Fritz
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   74: class t3lib_folderTree extends t3lib_treeView  
- *   79:     function t3lib_folderTree()	
- *  100:     function wrapTitle($title,&$row)	
- *  111:     function wrapIcon($icon,&$row)	
- *  130:     function getId(&$v) 
- *  140:     function getJumpToParm(&$v) 
- *  150:     function getTitleStr(&$row)	
- *  159:     function getBrowsableTree()	
- *  241:     function getFolderTree($files_path, $depth=999, $depthData='')	
- *  310:     function getCount($files_path)	
+ *   82: class t3lib_folderTree extends t3lib_treeView  
+ *   87:     function t3lib_folderTree()	
+ *  107:     function wrapTitle($title,&$row)	
+ *  119:     function wrapIcon($icon,&$row)	
+ *  139:     function getId(&$v) 
+ *  149:     function getJumpToParm(&$v) 
+ *  159:     function getTitleStr(&$row)	
+ *  168:     function getBrowsableTree()	
+ *  249:     function getFolderTree($files_path, $depth=999, $depthData='')	
+ *  318:     function getCount($files_path)	
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -72,6 +73,10 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
 /**
  * Extension class for the t3lib_browsetree class, specially made for browsing folders in the File module
  * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see class t3lib_treeView
  */
 class t3lib_folderTree extends t3lib_treeView  {
@@ -90,7 +95,6 @@ class t3lib_folderTree extends t3lib_treeView  {
 		$this->domIdPrefix = 'folder';
 		// unsused $this->iconName = 'folder';
 	}
-
 
 	/**
 	 * Wrapping $title in a-tags.
@@ -221,7 +225,6 @@ class t3lib_folderTree extends t3lib_treeView  {
 				$row['path']=$val['path'];
 				$row['uid']=$specUID;
 				$row['title']=$val['name'];
-//				debug($val);
 			$this->tree[]=array('HTML'=>$firstHtml,'row'=>$row);
 
 			if ($isOpen)	{
@@ -321,8 +324,6 @@ class t3lib_folderTree extends t3lib_treeView  {
 		}
 		return $c;
 	}
-
-
 }
  
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_foldertree.php'])	{

@@ -1,7 +1,8 @@
 <?php
 /**
-* Default  TCA_DESCR for "sys_filemounts"
-*/
+ * Default  TCA_DESCR for "sys_filemounts"
+ * TYPO3 CVS ID: $Id$
+ */
 
 $LOCAL_LANG = Array (
 	'default' => Array (

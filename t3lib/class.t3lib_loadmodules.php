@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,12 +27,11 @@
 /** 
  * This document provides a class that loads the modules for the TYPO3 interface.
  *
+ * $Id$
  * Modifications by Rene Fritz, 2001
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @internal
  */
 /**
@@ -40,14 +39,14 @@
  *
  *
  *
- *   77: class t3lib_loadModules 
- *   96:     function load($modulesArray,$BE_USER='')	
- *  365:     function checkExtensionModule($name)	
- *  384:     function checkMod($name, $fullpath)	
- *  444:     function checkModAccess($name,$MCONF)	
- *  467:     function parseModulesArray ($arr)	
- *  497:     function cleanName ($str)	
- *  508:     function getRelativePath($baseDir,$destDir)
+ *   78: class t3lib_loadModules 
+ *   97:     function load($modulesArray,$BE_USER='')	
+ *  366:     function checkExtensionModule($name)	
+ *  385:     function checkMod($name, $fullpath)	
+ *  445:     function checkModAccess($name,$MCONF)	
+ *  468:     function parseModulesArray ($arr)	
+ *  498:     function cleanName ($str)	
+ *  509:     function getRelativePath($baseDir,$destDir)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -72,7 +71,9 @@
  * 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
  * 		$this->loadModules->load($TBE_MODULES);
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_loadModules {
 	var $modules = Array();		// After the init() function this array will contain the structure of available modules for the backend user.

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,19 +28,20 @@
  * Shows a picture from uploads/* in enlarged format in a separate window.
  * Picture file and settings is supplied by GET-parameters: file, width, height, sample, alternativeTempPath, effects, frame, bodyTag, title, wrap, md5
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
- * @author		Kasper Skårhøj	<kasper@typo3.com>
+ * @author		Kasper Skaarhoj	<kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   91: class SC_tslib_showpic 
- *  112:     function init()	
- *  160:     function main()	
- *  208:     function printContent()	
+ *   94: class SC_tslib_showpic 
+ *  115:     function init()	
+ *  163:     function main()	
+ *  211:     function printContent()	
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -86,7 +87,9 @@ require(PATH_t3lib.'class.t3lib_stdgraphic.php');
  * Script Class, generating the page output.
  * Instantiated in the bottom of this script.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  */
 class SC_tslib_showpic {
 	var $content;		// Page content accumulated here.

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,12 +28,9 @@
  * Contains class for TYPO3 backend user authentication
  *
  * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @internal
  */
 /**
@@ -41,15 +38,15 @@
  *
  *
  *
- *   74: class t3lib_beUserAuth extends t3lib_userAuthGroup 
- *  148:     function trackBeUser($flag)	
- *  161:     function checkLockToIP()	
- *  181:     function backendCheckLogin()	
- *  206:     function backendSetUC()	
- *  241:     function overrideUC()	
- *  251:     function resetUC()	
- *  264:     function emailAtLogin()	
- *  316:     function veriCode()	
+ *   75: class t3lib_beUserAuth extends t3lib_userAuthGroup 
+ *  149:     function trackBeUser($flag)	
+ *  162:     function checkLockToIP()	
+ *  182:     function backendCheckLogin()	
+ *  207:     function backendSetUC()	
+ *  242:     function overrideUC()	
+ *  252:     function resetUC()	
+ *  265:     function emailAtLogin()	
+ *  317:     function veriCode()	
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -71,7 +68,9 @@
  * t3lib_userauthgroup contains most of the functions used for checking permissions, authenticating users, setting up the user etc. This class is most interesting in terms of an API for user from outside.
  * This class contains the configuration of the database fields used plus some functions for the authentication process of backend users.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $session_table = 'be_sessions'; 		// Table to use for session data.

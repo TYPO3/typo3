@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,34 +27,33 @@
 /** 
  * Contains a base class for authentication of users in TYPO3, both frontend and backend.
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   84: class t3lib_userAuth 
- *  152:     function start() 
- *  245:     function check_authentication() 
- *  385:     function redirect() 
- *  398:     function logoff() 
- *  410:     function gc() 
- *  421:     function user_where_clause()	
- *  437:     function writeUC($variable='')	
- *  460:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)	
- *  469:     function checkLogFailures()	
- *  478:     function unpack_uc($theUC='') 
- *  494:     function pushModuleData($module,$data,$noSave=0)	
- *  507:     function getModuleData($module,$type='')	
- *  520:     function getSessionData($key)	
- *  533:     function setAndSaveSessionData($key,$data)	
- *  552:     function setBeUserByUid($uid)	
- *  566:     function setBeUserByName($name)	
+ *   85: class t3lib_userAuth 
+ *  153:     function start() 
+ *  246:     function check_authentication() 
+ *  386:     function redirect() 
+ *  399:     function logoff() 
+ *  411:     function gc() 
+ *  422:     function user_where_clause()	
+ *  438:     function writeUC($variable='')	
+ *  461:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)	
+ *  470:     function checkLogFailures()	
+ *  479:     function unpack_uc($theUC='') 
+ *  495:     function pushModuleData($module,$data,$noSave=0)	
+ *  508:     function getModuleData($module,$type='')	
+ *  521:     function getSessionData($key)	
+ *  534:     function setAndSaveSessionData($key,$data)	
+ *  553:     function setBeUserByUid($uid)	
+ *  567:     function setBeUserByName($name)	
  *
  * TOTAL FUNCTIONS: 16
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,7 +78,9 @@
  *  
  * See Inside TYPO3 for more information about the API of the class and internal variables.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_userAuth {
 	var $global_database = '';		// Which global database to connect to

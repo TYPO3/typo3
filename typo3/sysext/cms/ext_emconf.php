@@ -26,7 +26,7 @@ This should probably not be disabled. But the point is that TYPO3 is able to wor
 	'modify_tables' => 'pages',
 	'clearCacheOnLoad' => 1,
 	'lockType' => 'S',
-	'author' => 'Kasper Skårhøj',
+	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasper@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
 	'private' => 0,

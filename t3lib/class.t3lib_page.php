@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,45 +27,44 @@
 /** 
  * Contains a class with "Page functions" mainly for the frontend
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  100: class t3lib_pageSelect 
- *  116:     function init($show_hidden)	
+ *  101: class t3lib_pageSelect 
+ *  117:     function init($show_hidden)	
  *
  *              SECTION: Selecting page records
- *  155:     function getPage($uid)	
- *  171:     function getPage_noCheck($uid)	
- *  187:     function getFirstWebPage($uid)	
- *  203:     function getPageIdFromAlias($alias)	
- *  219:     function getPageOverlay($pageInput,$lUid=-1)	
+ *  156:     function getPage($uid)	
+ *  172:     function getPage_noCheck($uid)	
+ *  188:     function getFirstWebPage($uid)	
+ *  204:     function getPageIdFromAlias($alias)	
+ *  220:     function getPageOverlay($pageInput,$lUid=-1)	
  *
  *              SECTION: Page related: Menu, Domain record, Root line
- *  287:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')	
- *  307:     function getDomainStartPage($domain, $path='',$request_uri='')	
- *  349:     function getRootLine($uid,$MP='')	
- *  409:     function getPathFromRootline($rl,$len=20)	
- *  430:     function getExtURL($pagerow,$disable=0)	
+ *  288:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')	
+ *  308:     function getDomainStartPage($domain, $path='',$request_uri='')	
+ *  350:     function getRootLine($uid,$MP='')	
+ *  410:     function getPathFromRootline($rl,$len=20)	
+ *  431:     function getExtURL($pagerow,$disable=0)	
  *
  *              SECTION: Selecting records in general
- *  471:     function checkRecord($table,$uid,$checkPage=0)	
- *  503:     function getRawRecord($table,$uid,$fields='*')	
- *  524:     function getRecordsByField($theTable,$theField,$theValue,$endClause='')	
+ *  472:     function checkRecord($table,$uid,$checkPage=0)	
+ *  504:     function getRawRecord($table,$uid,$fields='*')	
+ *  525:     function getRecordsByField($theTable,$theField,$theValue,$endClause='')	
  *
  *              SECTION: Caching and standard clauses
- *  566:     function getHash($hash,$expTime=0)	
- *  588:     function storeHash($hash,$data,$ident)	
- *  600:     function deleteClause($table)	
- *  615:     function enableFields($table,$show_hidden=-1,$ignore_array=array())	
+ *  567:     function getHash($hash,$expTime=0)	
+ *  589:     function storeHash($hash,$data,$ident)	
+ *  601:     function deleteClause($table)	
+ *  616:     function enableFields($table,$show_hidden=-1,$ignore_array=array())	
  *
  * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,7 +93,9 @@
  * Mainly used in the frontend but also in some cases in the backend.
  * It's important to set the right $where_hid_del in the object so that the functions operate properly
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see tslib_fe::fetch_the_id()
  */
 class t3lib_pageSelect {

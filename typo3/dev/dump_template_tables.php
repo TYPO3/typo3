@@ -30,7 +30,11 @@
  * This script prints out all language-labels in TYPO3 and provides a way of checking for missing translations.
  * Must be logged in as admin.
  *
+ * $Id$
+ *
  * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 
 die("<strong>This script is for typo3 development and maintenance only. You'll probably find it useless for what you do.</strong><br><br>MUST remove this line in descriptions script before it'll work for you. This is a security precaution. Anyways, you must be logged in as admin as well.");

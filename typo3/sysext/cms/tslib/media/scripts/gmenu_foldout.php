@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,21 +27,22 @@
 /**
  * Contains the GMENU_FOLDOUT extension class, tslib_gmenu_foldout
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   77: class tslib_gmenu_foldout extends tslib_gmenu 
- *   93:     function extProc_init()	
- *  114:     function extProc_beforeLinking($key)	
- *  131:     function extProc_afterLinking($key)	
- *  157:     function extProc_finish()	
+ *   80: class tslib_gmenu_foldout extends tslib_gmenu 
+ *   96:     function extProc_init()	
+ *  117:     function extProc_beforeLinking($key)	
+ *  134:     function extProc_afterLinking($key)	
+ *  160:     function extProc_finish()	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -71,7 +72,9 @@
 /**
  * Class extension tslib_gmenu for the creation of DHTML foldout menus
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=386&cHash=f69ab462e2
  */
 class tslib_gmenu_foldout extends tslib_gmenu {

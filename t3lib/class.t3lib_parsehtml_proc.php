@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,50 +27,49 @@
 /**
  * Functions for parsing HTML, specially for TYPO3 processing in relation to TCEmain and Rich Text Editor (RTE)
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
- * @internal
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * Generally NOT XHTML compatible. Must be revised for XHTML compatibility later.
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @internal
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   97: class t3lib_parsehtml_proc extends t3lib_parsehtml 
- *  120:     function init($elRef='',$recPid=0)	
- *  131:     function setRelPath($path)	
- *  152:     function getURL($url)	
- *  170:     function evalWriteFile($pArr,$currentRecord)	
+ *   99: class t3lib_parsehtml_proc extends t3lib_parsehtml 
+ *  126:     function init($elRef='',$recPid=0)	
+ *  137:     function setRelPath($path)	
+ *  158:     function getURL($url)	
+ *  176:     function evalWriteFile($pArr,$currentRecord)	
  *
  *              SECTION: TRANSFORMATION functions for specific TYPO3 use
- *  235:     function HTMLcleaner_db($content,$tagList='')	
- *  257:     function divideIntoLines($value,$count=5,$returnArray=0)	
- *  341:     function internalizeFontTags($value)	
- *  378:     function setDivTags($value,$dT='P')	
- *  405:     function siteUrl()	
- *  416:     function removeTables($value,$breakChar='<BR>')	
- *  445:     function defaultTStagMapping($code,$direction='rte')	
- *  468:     function getWHFromAttribs($attribArray)	
- *  494:     function urlInfoForLinkTags($url)	
- *  551:     function TS_images_db($value)	
- *  644:     function TS_images_rte($value)	
- *  669:     function TS_reglinks($value,$direction)		
- *  701:     function TS_links_db($value)	
- *  742:     function TS_AtagToAbs($value,$dontSetRTEKEEP=0)	
- *  769:     function TS_links_rte($value)	
- *  842:     function TS_preserve_db($value)	
- *  866:     function TS_preserve_rte($value)	
- *  886:     function TS_strip_db($value)	
- *  896:     function getKeepTags($direction='rte',$tagList='')	
- *  976:     function TS_transform_db($value,$css=0)	
- * 1064:     function TS_transform_rte($value,$css=0)	
- * 1136:     function TS_tmplParts_rte($value)	
- * 1179:     function RTE_transform($value,$specConf,$direction='rte',$thisConfig='')	
- * 1291:     function rteImageStorageDir()	
+ *  241:     function HTMLcleaner_db($content,$tagList='')	
+ *  263:     function divideIntoLines($value,$count=5,$returnArray=0)	
+ *  347:     function internalizeFontTags($value)	
+ *  384:     function setDivTags($value,$dT='P')	
+ *  411:     function siteUrl()	
+ *  422:     function removeTables($value,$breakChar='<BR>')	
+ *  451:     function defaultTStagMapping($code,$direction='rte')	
+ *  474:     function getWHFromAttribs($attribArray)	
+ *  500:     function urlInfoForLinkTags($url)	
+ *  557:     function TS_images_db($value)	
+ *  653:     function TS_images_rte($value)	
+ *  679:     function TS_reglinks($value,$direction)		
+ *  711:     function TS_links_db($value)	
+ *  752:     function TS_AtagToAbs($value,$dontSetRTEKEEP=0)	
+ *  779:     function TS_links_rte($value)	
+ *  852:     function TS_preserve_db($value)	
+ *  876:     function TS_preserve_rte($value)	
+ *  896:     function TS_strip_db($value)	
+ *  906:     function getKeepTags($direction='rte',$tagList='')	
+ *  986:     function TS_transform_db($value,$css=0)	
+ * 1074:     function TS_transform_rte($value,$css=0)	
+ * 1146:     function TS_tmplParts_rte($value)	
+ * 1189:     function RTE_transform($value,$specConf,$direction='rte',$thisConfig='')	
+ * 1301:     function rteImageStorageDir()	
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -91,8 +90,11 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 
 
 /**
- * .
+ * Class for parsing HTML for the Rich Text Editor. (also called transformations)
  * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	var $recPid = 0;		// Set this to the pid of the record manipulated by the class.
@@ -109,6 +111,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		// Internal
 	var $TS_transform_db_safecounter=100;
 	var $rte_p='';
+
+
+
+
 
 	/**
 	 * Initialize, setting element reference and record PID

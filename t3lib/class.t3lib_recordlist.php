@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,30 +26,29 @@
 ***************************************************************/
 /** 
  * Library with a single function addElement that returns tablerows based on some input.
- * 
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ *
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   79: class t3lib_recordList 
- *  121:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	
- *  193:     function writeTop()	
- *  201:     function writeBottom()	
- *  214:     function fwd_rwd_nav($table='')	
- *  247:     function fwd_rwd_HTML($type,$pointer,$table='')	
- *  270:     function listURL()	
- *  279:     function CBfunctions()	
- *  282:     function checkOffCB(listOfCBnames)	
- *  311:     function cbValue(CBname)	
- *  316:     function setcbValue(CBname,flag)	
+ *   81: class t3lib_recordList 
+ *  123:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	
+ *  195:     function writeTop()	
+ *  203:     function writeBottom()	
+ *  216:     function fwd_rwd_nav($table='')	
+ *  249:     function fwd_rwd_HTML($type,$pointer,$table='')	
+ *  272:     function listURL()	
+ *  281:     function CBfunctions()	
+ *  284:     function checkOffCB(listOfCBnames)	
+ *  313:     function cbValue(CBname)	
+ *  318:     function setcbValue(CBname,flag)	
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -74,8 +73,10 @@
 /**
  * This class is the base for listing of database records and files in the modules Web>List and File>Filelist
  * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see typo3/db_list.php, typo3/file_list.php
- * @author	Kasper Skårhøj <kasper@typo3.com>
  */
 class t3lib_recordList {
 		// Used in this class:

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,59 +27,58 @@
 /**
  * Contains a class with Extension Management functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  111: class t3lib_extMgm 
+ *  113: class t3lib_extMgm 
  *
  *              SECTION: PATHS and other evaluation
- *  127:     function isLoaded($key,$exitOnError=0)	
- *  142:     function extPath($key,$script='')	
- *  156:     function extRelPath($key)	
- *  170:     function siteRelPath($key)	
- *  181:     function getCN($key)	
+ *  129:     function isLoaded($key,$exitOnError=0)	
+ *  144:     function extPath($key,$script='')	
+ *  158:     function extRelPath($key)	
+ *  172:     function siteRelPath($key)	
+ *  183:     function getCN($key)	
  *
  *              SECTION: Adding BACKEND features
- *  213:     function addTCAcolumns($table,$columnArray,$addTofeInterface=0)	
- *  235:     function addToAllTCAtypes($table,$str,$specificTypesList='')	
- *  253:     function allowTableOnStandardPages($table)	
- *  269:     function addModule($main,$sub='',$position='',$path='')	
- *  330:     function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function')	
- *  347:     function addPageTSConfig($content)	
- *  360:     function addUserTSConfig($content)	
- *  373:     function addLLrefForTCAdescr($tca_descr_key,$file_ref)	
+ *  215:     function addTCAcolumns($table,$columnArray,$addTofeInterface=0)	
+ *  237:     function addToAllTCAtypes($table,$str,$specificTypesList='')	
+ *  255:     function allowTableOnStandardPages($table)	
+ *  271:     function addModule($main,$sub='',$position='',$path='')	
+ *  332:     function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function')	
+ *  349:     function addPageTSConfig($content)	
+ *  362:     function addUserTSConfig($content)	
+ *  375:     function addLLrefForTCAdescr($tca_descr_key,$file_ref)	
  *
  *              SECTION: Adding SERVICES features
- *  416:     function addService($extKey, $serviceType, $serviceKey, $info)	
- *  483:     function findService($serviceType, $serviceSubType='', $excludeServiceKeys='') 
- *  528:     function deactivateService($serviceType, $serviceKey) 
+ *  418:     function addService($extKey, $serviceType, $serviceKey, $info)	
+ *  485:     function findService($serviceType, $serviceSubType='', $excludeServiceKeys='') 
+ *  549:     function deactivateService($serviceType, $serviceKey) 
  *
  *              SECTION: Adding FRONTEND features
- *  567:     function addPlugin($itemArray,$type='list_type')	
- *  591:     function addPiFlexFormValue($piKeyToMatch,$value)	
- *  607:     function addToInsertRecords($table)	
- *  637:     function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)	
- *  711:     function addStaticFile($extKey,$path,$title)	
- *  729:     function addTypoScriptSetup($content)	
- *  742:     function addTypoScriptConstants($content)	
- *  758:     function addTypoScript($key,$type,$content,$afterStaticUid=0)	
+ *  588:     function addPlugin($itemArray,$type='list_type')	
+ *  612:     function addPiFlexFormValue($piKeyToMatch,$value)	
+ *  630:     function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	
+ *  660:     function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)	
+ *  734:     function addStaticFile($extKey,$path,$title)	
+ *  752:     function addTypoScriptSetup($content)	
+ *  765:     function addTypoScriptConstants($content)	
+ *  781:     function addTypoScript($key,$type,$content,$afterStaticUid=0)	
  *
  *              SECTION: INTERNAL EXTENSION MANAGEMENT:
- *  820:     function typo3_loadExtensions()	
- *  899:     function _makeIncludeHeader($key,$file)	
- *  919:     function isCacheFilesAvailable($cacheFilePrefix)	
- *  931:     function isLocalconfWritable()	
- *  943:     function cannotCacheFilesWritable($cacheFilePrefix)	
- *  966:     function currentCacheFiles()	
- *  988:     function writeCacheFiles($extensions,$cacheFilePrefix)	
+ *  843:     function typo3_loadExtensions()	
+ *  922:     function _makeIncludeHeader($key,$file)	
+ *  942:     function isCacheFilesAvailable($cacheFilePrefix)	
+ *  954:     function isLocalconfWritable()	
+ *  966:     function cannotCacheFilesWritable($cacheFilePrefix)	
+ *  989:     function currentCacheFiles()	
+ * 1011:     function writeCacheFiles($extensions,$cacheFilePrefix)	
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -107,6 +106,9 @@
  * This class is never instantiated, rather the methods inside is called as functions like
  * 		t3lib_extMgm::isLoaded('my_extension');
  * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_extMgm {
 
@@ -621,6 +623,8 @@ class t3lib_extMgm {
 	 * FOR USE IN ext_tables.php FILES
 	 * 
 	 * @param	string		Table name
+	 * @param	[type]		$content_table: ...
+	 * @param	[type]		$content_field: ...
 	 * @return	void		
 	 */
 	function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	{

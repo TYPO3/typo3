@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,43 +27,46 @@
 /** 
  * Class with template object that is responsible for generating the template
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   99: class t3lib_TStemplate	
- *  197:     function init()	
- *  235:     function getCurrentPageData()	
- *  252:     function matching($cc)	
- *  276:     function start($theRootLine)	
+ *  102: class t3lib_TStemplate	
+ *  200:     function init()	
+ *  238:     function getCurrentPageData()	
+ *  255:     function matching($cc)	
+ *  279:     function start($theRootLine)	
  *
  *              SECTION: Fetching TypoScript code text for the Template Hierarchy
- *  385:     function runThroughTemplates($theRootLine,$start_template_uid=0)	
- *  427:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')	
- *  540:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)	
- *  600:     function addExtensionStatics($idList,$templateID,$pid,$row) 
- *  633:     function prependStaticExtra($subrow)	
+ *  388:     function runThroughTemplates($theRootLine,$start_template_uid=0)	
+ *  430:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')	
+ *  543:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)	
+ *  604:     function addExtensionStatics($idList,$templateID,$pid,$row) 
+ *  637:     function prependStaticExtra($subrow)	
  *
  *              SECTION: Parsing TypoScript code text from Template Records into PHP array
- *  669:     function generateConfig()	
- *  830:     function procesIncludes()	
- *  856:     function flattenSetup($setupArray, $prefix, $resourceFlag)	
- *  880:     function substituteConstants($all)	
+ *  673:     function generateConfig()	
+ *  834:     function procesIncludes()	
+ *  860:     function flattenSetup($setupArray, $prefix, $resourceFlag)	
+ *  884:     function substituteConstants($all)	
  *
  *              SECTION: Various API functions, used from elsewhere in the frontend classes
- *  930:     function splitConfArray($conf,$splitCount)	
- *  996:     function getFileName($fileFromSetup)	
- * 1053:     function extractFromResources($res,$file)	
- * 1081:     function checkFile($name,$menuArr)	
- * 1098:     function printTitle($title,$no_title=0,$titleFirst=0)	
- * 1121:     function fileContent($fName)	
- * 1141:     function wrap($content,$wrap)	
- * 1164:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')	
- * 1257:     function removeQueryString($url)	
- * 1273:     function sortedKeyList($setupArr)	
+ *  934:     function splitConfArray($conf,$splitCount)	
+ * 1000:     function getFileName($fileFromSetup)	
+ * 1057:     function extractFromResources($res,$file)	
+ * 1085:     function checkFile($name,$menuArr)	
+ * 1102:     function printTitle($title,$no_title=0,$titleFirst=0)	
+ * 1125:     function fileContent($fName)	
+ * 1145:     function wrap($content,$wrap)	
+ * 1168:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')	
+ * 1261:     function removeQueryString($url)	
+ * 1277:     function sortedKeyList($setupArr)	
  *
  * TOTAL FUNCTIONS: 23
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -91,7 +94,7 @@ require_once (PATH_t3lib.'class.t3lib_matchcondition.php');
 /**
  * Template object that is responsible for generating the TypoScript template based on template records.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see	t3lib_tsparser.php, t3lib_matchcondition.php

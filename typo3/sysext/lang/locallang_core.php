@@ -2,6 +2,7 @@
 /**
  * Core language labels. 
  * (Originally found in ->mainLang and ->php3Lang)
+ * TYPO3 CVS ID: $Id$
  */
 
 $LOCAL_LANG = Array (

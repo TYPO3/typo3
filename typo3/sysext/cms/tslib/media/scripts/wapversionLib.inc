@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,30 +27,31 @@
 /**
  * Contains class for creating WAP pages for TYPO3
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  126: class user_wapversion 
- *  138:     function main_wapversion($content,$conf)	
- *  197:     function contentAbstract()	
- *  214:     function contentAll($chunkLgd=850)	
- *  274:     function cHeader($str)	
- *  288:     function cBodytext($str,$start=0,$max=0)	
- *  300:     function nl2br($str)	
- *  311:     function getContentResult($table) 
- *  327:     function bold($str)	
- *  337:     function paragraph($str)	
- *  347:     function line($str)	
- *  358:     function navLink($str,$pointer)	
- *  368:     function menuCurrentLevel($indent)	
- *  403:     function link($str,$id,$deck='')	
- *  419:     function cleanMenuArray($menu)	
+ *  129: class user_wapversion 
+ *  141:     function main_wapversion($content,$conf)	
+ *  200:     function contentAbstract()	
+ *  217:     function contentAll($chunkLgd=850)	
+ *  277:     function cHeader($str)	
+ *  291:     function cBodytext($str,$start=0,$max=0)	
+ *  303:     function nl2br($str)	
+ *  314:     function getContentResult($table) 
+ *  330:     function bold($str)	
+ *  340:     function paragraph($str)	
+ *  350:     function line($str)	
+ *  361:     function navLink($str,$pointer)	
+ *  371:     function menuCurrentLevel($indent)	
+ *  406:     function link($str,$id,$deck='')	
+ *  422:     function cleanMenuArray($menu)	
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -121,7 +122,9 @@ require_once (PATH_t3lib.'class.t3lib_xml.php');
  * This means that IF the device coming to the URL is a WAP device they will get wap content even if they don't specify "&type=97" since the typeNum is changed to zero here!
  * In fact they CANNOT get any wap-content at "&type=97" anymore! This has been a source of error and confusion for many people
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 class user_wapversion {
 	var $cObj;		// The backReference to the mother cObj object set at call time

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,84 +27,87 @@
 /** 
  * Standard graphical functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  138: class t3lib_stdGraphic	
- *  213:     function init()	
+ *  141: class t3lib_stdGraphic	
+ *  216:     function init()	
  *
  *              SECTION: Layering images / "IMAGE" GIFBUILDER object
- *  312:     function maskImageOntoImage(&$im,$conf,$workArea)	
- *  372:     function copyImageOntoImage(&$im,$conf,$workArea)	
- *  394:     function copyGifOntoGif(&$im,$cpImg,$conf,$workArea)	
- *  473:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
+ *  315:     function maskImageOntoImage(&$im,$conf,$workArea)	
+ *  375:     function copyImageOntoImage(&$im,$conf,$workArea)	
+ *  397:     function copyGifOntoGif(&$im,$cpImg,$conf,$workArea)	
+ *  476:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
  *
  *              SECTION: Text / "TEXT" GIFBUILDER object
- *  522:     function makeText(&$im,$conf,$workArea)	
- *  638:     function txtPosition($conf,$workArea,$BB) 
- *  692:     function calcBBox($conf)	
- *  761:     function addToMap($cords,$conf)	
- *  776:     function calcTextCordsForMap($cords,$offset, $conf)	
- *  809:     function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing)	
- *  842:     function fontResize($conf) 
+ *  525:     function makeText(&$im,$conf,$workArea)	
+ *  641:     function txtPosition($conf,$workArea,$BB) 
+ *  695:     function calcBBox($conf)	
+ *  764:     function addToMap($cords,$conf)	
+ *  779:     function calcTextCordsForMap($cords,$offset, $conf)	
+ *  812:     function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing)	
+ *  845:     function fontResize($conf) 
  *
  *              SECTION: Other GIFBUILDER objects related to TEXT
- *  904:     function makeOutline(&$im,$conf,$workArea,$txtConf)	
- *  933:     function circleOffset($distance, $iterations)	
- *  957:     function makeEmboss(&$im,$conf,$workArea,$txtConf)	
- *  979:     function makeShadow(&$im,$conf,$workArea,$txtConf)	
+ *  907:     function makeOutline(&$im,$conf,$workArea,$txtConf)	
+ *  936:     function circleOffset($distance, $iterations)	
+ *  960:     function makeEmboss(&$im,$conf,$workArea,$txtConf)	
+ *  982:     function makeShadow(&$im,$conf,$workArea,$txtConf)	
  *
  *              SECTION: Other GIFBUILDER objects
- * 1109:     function makeBox(&$im,$conf,$workArea)	
- * 1128:     function makeEffect(&$im, $conf)	
- * 1143:     function IMparams($setup)	
- * 1226:     function adjust(&$im, $conf)	
- * 1258:     function crop(&$im,$conf)	
- * 1288:     function scale(&$im,$conf)	
- * 1320:     function setWorkArea($workArea)	
+ * 1112:     function makeBox(&$im,$conf,$workArea)	
+ * 1131:     function makeEffect(&$im, $conf)	
+ * 1146:     function IMparams($setup)	
+ * 1229:     function adjust(&$im, $conf)	
+ * 1261:     function crop(&$im,$conf)	
+ * 1291:     function scale(&$im,$conf)	
+ * 1323:     function setWorkArea($workArea)	
  *
  *              SECTION: Adjustment functions
- * 1361:     function autolevels(&$im)	
- * 1392:     function outputLevels(&$im,$low,$high,$swap='')	
- * 1424:     function inputLevels(&$im,$low,$high,$swap='')	
- * 1455:     function reduceColors(&$im,$limit, $cols)	
+ * 1364:     function autolevels(&$im)	
+ * 1395:     function outputLevels(&$im,$low,$high,$swap='')	
+ * 1427:     function inputLevels(&$im,$low,$high,$swap='')	
+ * 1458:     function reduceColors(&$im,$limit, $cols)	
  *
  *              SECTION: GIFBUILDER Helper functions
- * 1493:     function prependAbsolutePath($fontFile)	
- * 1507:     function v5_sharpen($factor)	
- * 1526:     function v5_blur($factor)	
- * 1543:     function randomName()	
- * 1555:     function applyOffset($cords,$OFFSET)	
- * 1568:     function convertColor($string)	
- * 1618:     function recodeString($string)	
- * 1639:     function singleChars($theText)	
- * 1662:     function objPosition($conf,$workArea,$BB) 
+ * 1496:     function prependAbsolutePath($fontFile)	
+ * 1510:     function v5_sharpen($factor)	
+ * 1529:     function v5_blur($factor)	
+ * 1546:     function randomName()	
+ * 1558:     function applyOffset($cords,$OFFSET)	
+ * 1571:     function convertColor($string)	
+ * 1621:     function recodeString($string)	
+ * 1642:     function singleChars($theText)	
+ * 1665:     function objPosition($conf,$workArea,$BB) 
  *
  *              SECTION: Scaling, Dimensions of images
- * 1741:     function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0)	
- * 1824:     function getImageDimensions($imagefile)	
- * 1846:     function getImageScale($info,$w,$h,$options) 
- * 1934:     function file_exists_typo3temp_file($output,$orig='')	
+ * 1744:     function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0)	
+ * 1827:     function getImageDimensions($imagefile)	
+ * 1849:     function getImageScale($info,$w,$h,$options) 
+ * 1937:     function file_exists_typo3temp_file($output,$orig='')	
  *
  *              SECTION: ImageMagick API functions
- * 1991:     function imageMagickIdentify($imagefile)	
- * 2024:     function imageMagickExec($input,$output,$params)	
- * 2042:     function combineExec($input,$overlay,$mask,$output)	
- * 2057:     function wrapFileName($inputName)	
+ * 1994:     function imageMagickIdentify($imagefile)	
+ * 2027:     function imageMagickExec($input,$output,$params)	
+ * 2045:     function combineExec($input,$overlay,$mask,$output)	
+ * 2060:     function wrapFileName($inputName)	
  *
  *              SECTION: Various IO functions
- * 2098:     function checkFile($file)	
- * 2113:     function applyImageMagickToPHPGif(&$im, $command)	
- * 2139:     function gif_or_jpg($type,$w,$h)	
- * 2156:     function output($file)	
- * 2200:     function destroy()	
- * 2210:     function imgTag ($imgInfo) 
- * 2222:     function ImageGif($destImg, $theImage)	
- * 2239:     function imageCreateFromGif($sourceImg)	
+ * 2101:     function checkFile($file)	
+ * 2116:     function applyImageMagickToPHPGif(&$im, $command)	
+ * 2142:     function gif_or_jpg($type,$w,$h)	
+ * 2159:     function output($file)	
+ * 2203:     function destroy()	
+ * 2213:     function imgTag ($imgInfo) 
+ * 2225:     function ImageGif($destImg, $theImage)	
+ * 2242:     function imageCreateFromGif($sourceImg)	
  *
  * TOTAL FUNCTIONS: 52
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -130,7 +133,7 @@
  * Class contains a bunch of cool functions for manipulating graphics with GDlib/Freetype and ImageMagick
  * VERY OFTEN used with gifbuilder that extends this class and provides a TypoScript API to using these functions
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see tslib_gifBuilder

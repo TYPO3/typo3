@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,61 +27,62 @@
 /**
  * FE admin lib
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  129: class user_feAdmin	
- *  170:     function init($content,$conf)	
+ *  132: class user_feAdmin	
+ *  173:     function init($content,$conf)	
  *
  *              SECTION: Data processing
- *  394:     function parseValues()	
- *  489:     function processFiles($cmdParts,$theField)	
- *  588:     function overrideValues()	
- *  604:     function defaultValues()	
- *  623:     function evalValues()	
- *  745:     function userProcess($mConfKey,$passVar)	
- *  763:     function userProcess_alt($confVal,$confArr,$passVar)	
+ *  397:     function parseValues()	
+ *  492:     function processFiles($cmdParts,$theField)	
+ *  591:     function overrideValues()	
+ *  607:     function defaultValues()	
+ *  626:     function evalValues()	
+ *  748:     function userProcess($mConfKey,$passVar)	
+ *  766:     function userProcess_alt($confVal,$confArr,$passVar)	
  *
  *              SECTION: Database manipulation functions
- *  805:     function save()	
- *  872:     function deleteRecord()	
- *  904:     function deleteFilesFromRecord($uid)	
+ *  808:     function save()	
+ *  875:     function deleteRecord()	
+ *  907:     function deleteFilesFromRecord($uid)	
  *
  *              SECTION: Command "display" functions
- *  961:     function displayDeleteScreen()	
- *  989:     function displayCreateScreen()	
- * 1012:     function displayEditScreen()	
- * 1064:     function displayEditForm($origArr)	
- * 1092:     function procesSetFixed()	
+ *  964:     function displayDeleteScreen()	
+ *  992:     function displayCreateScreen()	
+ * 1015:     function displayEditScreen()	
+ * 1067:     function displayEditForm($origArr)	
+ * 1095:     function procesSetFixed()	
  *
  *              SECTION: Template processing functions
- * 1183:     function removeRequired($templateCode,$failure)	
- * 1201:     function getPlainTemplate($key,$r='')	
- * 1218:     function modifyDataArrForFormUpdate($inputArr)	
- * 1287:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')	
+ * 1186:     function removeRequired($templateCode,$failure)	
+ * 1204:     function getPlainTemplate($key,$r='')	
+ * 1221:     function modifyDataArrForFormUpdate($inputArr)	
+ * 1290:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')	
  *
  *              SECTION: Emailing
- * 1349:     function sendInfoMail()	
- * 1397:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())	
- * 1443:     function sendMail($recipient, $admin, $content='', $adminContent='')	
- * 1488:     function isHTMLContent($c)	
- * 1509:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')	
+ * 1352:     function sendInfoMail()	
+ * 1400:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())	
+ * 1446:     function sendMail($recipient, $admin, $content='', $adminContent='')	
+ * 1491:     function isHTMLContent($c)	
+ * 1512:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')	
  *
  *              SECTION: Various helper functions
- * 1593:     function aCAuth($r)	
- * 1607:     function authCode($r,$extra='')	
- * 1633:     function setfixed($markerArray, $setfixed, $r)	
- * 1669:     function setfixedHash($recCopy,$fields='')	
- * 1690:     function isPreview()	
- * 1699:     function createFileFuncObj()	
- * 1710:     function clearCacheIfSet()	
- * 1725:     function getFailure($theField, $theCmd, $label)	
+ * 1596:     function aCAuth($r)	
+ * 1610:     function authCode($r,$extra='')	
+ * 1636:     function setfixed($markerArray, $setfixed, $r)	
+ * 1672:     function setfixedHash($recCopy,$fields='')	
+ * 1693:     function isPreview()	
+ * 1702:     function createFileFuncObj()	
+ * 1713:     function clearCacheIfSet()	
+ * 1728:     function getFailure($theField, $theCmd, $label)	
  *
  * TOTAL FUNCTIONS: 33
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -123,7 +124,9 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');		// For use with imag
  * Generally the fe_adminLib appears to be hard to use. Personally I feel turned off by all the template-file work involved and since it is very feature rich (and for that sake pretty stable!) there are lots of things that can go wrong - you feel. Therefore I like the concept used by "t3consultancies"/"t3references" since those extensions uses the library by supplying the HTML-template code automatically.
  * Suggestions for improvement and streamlining is welcome so this powerful class could be used more and effectively.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=396&cHash=d267c36546
  */
 class user_feAdmin	{

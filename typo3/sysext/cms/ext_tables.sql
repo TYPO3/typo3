@@ -2,6 +2,7 @@
 #
 # Host: TYPO3_host    Database: t3_testsite
 #--------------------------------------------------------
+# TYPO3 CVS ID: $Id$
 
 
 #

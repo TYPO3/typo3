@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,31 +27,46 @@
 /** 
  * Contains the parent class for 'ScriptClasses' in backend modules.
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  136: class t3lib_SCbase 
- *  252:     function init()	
- *  269:     function menuConfig()	
- *  289:     function mergeExternalItems($modName,$menuKey,$menuArr)
- *  308:     function handleExternalFunctionValue($MM_key='function')	
- *  325:     function getExternalItemConfig($modName,$menuKey,$value='')	
- *  339:     function checkExtObj()	
- *  353:     function checkSubExtObj()	
- *  362:     function extObjContent()
+ *  134: class t3lib_SCbase 
+ *  250:     function init()	
+ *  267:     function menuConfig()	
+ *  287:     function mergeExternalItems($modName,$menuKey,$menuArr)	
+ *  306:     function handleExternalFunctionValue($MM_key='function')	
+ *  323:     function getExternalItemConfig($modName,$menuKey,$value='')	
+ *  337:     function checkExtObj()	
+ *  351:     function checkSubExtObj()	
+ *  363:     function extObjHeader()	
+ *  372:     function extObjContent()	
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * EXAMPLE PROTOTYPE
  * 
@@ -107,30 +122,13 @@
  * 		$SOBE->printContent();
  */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Parent class for 'ScriptClasses' in backend modules.
  * See example comment above.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see t3lib_extobjbase
  */
 class t3lib_SCbase {
@@ -347,7 +345,7 @@ class t3lib_SCbase {
 
 	/**
 	 * Calls the checkExtObj function in sub module if present.
-	 *
+	 * 
 	 * @return	void		
 	 */
 	function checkSubExtObj()	{
@@ -359,8 +357,8 @@ class t3lib_SCbase {
 	 * A header function might be needed to add JavaScript or other stuff in the head. This can't be done in the main function because the head is already written.
 	 * example call in the header function:
 	 * $this->pObj->doc->JScode = $this->pObj->doc->wrapScriptTags(' ...
-	 *
-	 * @return	void
+	 * 
+	 * @return	void		
 	 */
 	function extObjHeader()	{
 		if (is_callable(array($this->extObj,'head')))	$this->extObj->head();
@@ -368,8 +366,8 @@ class t3lib_SCbase {
 
 	/**
 	 * Calls the 'main' function inside the "Function menu module" if present
-	 *
-	 * @return	void
+	 * 
+	 * @return	void		
 	 */
 	function extObjContent()	{
 		$this->extObj->pObj = &$this;

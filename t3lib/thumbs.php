@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,24 +27,23 @@
 /**
  * Generates a thumbnail and returns an image stream, either GIF/PNG or JPG
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author		Kasper Skårhøj	<kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author		Kasper Skaarhoj	<kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  109: class SC_t3lib_thumbs 
- *  127:     function init()	
- *  154:     function main()	
+ *  110: class SC_t3lib_thumbs 
+ *  128:     function init()	
+ *  155:     function main()	
  *
  *              SECTION: OTHER FUNCTIONS:
- *  257:     function errorGif($l1,$l2,$l3)	
- *  309:     function fontGif($font)	
+ *  258:     function errorGif($l1,$l2,$l3)	
+ *  310:     function fontGif($font)	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -104,7 +103,9 @@ if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disa
  * 
  * Relative paths MUST BE the first two characters ONLY: eg: '../dir/file.gif', otherwise it is expect to be absolute
  * 
- * @author		Kasper Skårhøj	<kasper@typo3.com>
+ * @author		Kasper Skaarhoj	<kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class SC_t3lib_thumbs {
 	var $include_once=array();

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -25,24 +25,23 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /** 
- * generate a page-tree. OBS: remember $clause
+ * Generate a page-tree. OBS: remember $clause
  *
  * $Id$
- *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
- *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * Revised for TYPO3 3.6 August/2003 by Kasper Skaarhoj
  * Maintained by René Fritz
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   70: class t3lib_browseTree extends t3lib_treeView 
- *   78:     function init($clause='')	
- *  104:     function getTitleAttrib(&$row) 
+ *   74: class t3lib_browseTree extends t3lib_treeView 
+ *   82:     function init($clause='')	
+ *  108:     function getTitleAttrib(&$row) 
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -66,7 +65,7 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
 /**
  * Extension class for the t3lib_treeView class, specially made for browsing pages
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  * @see class t3lib_treeView
  * @package TYPO3
@@ -110,7 +109,6 @@ class t3lib_browseTree extends t3lib_treeView {
 		return t3lib_BEfunc::titleAttribForPages($row,'1=1 '.$this->clause,0);
 	}
 }
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_browsetree.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_browsetree.php']);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -30,9 +30,9 @@
  * This script lets users choose a new database element to create.
  * Includes a wizard mode for visually pointing out the position of new pages
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant (not with pages wizard yet... position map and other classes needs cleaning)
  */
 /**
@@ -85,7 +85,7 @@ require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -118,7 +118,7 @@ class localPageTree extends t3lib_pageTree {
 /**
  * Script class for 'db_new'
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

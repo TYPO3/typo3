@@ -1,7 +1,8 @@
 <?php
 /**
-* Default  TCA_DESCR for "be_users"
-*/
+ * Default  TCA_DESCR for "be_users"
+ * TYPO3 CVS ID: $Id$
+ */
 
 $LOCAL_LANG = Array (
 	'default' => Array (

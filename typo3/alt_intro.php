@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -30,11 +30,11 @@
  * Will display the list of main- and sub-modules available to the user.
  * Each module will be show with description and a link to the module.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
  */
 
@@ -119,7 +119,7 @@ class SC_alt_intro {
 		$this->content.='<p><em>('.$LANG->getLL('endText').')</em></p>';
 		$this->content.='<hr />';
 
-			// Logged in user, eg: 'You're logged in as user: admin (Kasper Skårhøj, kasper@typo3.com)'
+			// Logged in user, eg: 'You're logged in as user: admin (Kasper Skaarhoj, kasper@typo3.com)'
 		$this->content.='<p>'.
 				htmlspecialchars($LANG->getLL('userInfo')).
 				sprintf(' <strong>%s</strong> (%s)',

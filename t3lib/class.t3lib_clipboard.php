@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,54 +28,51 @@
  * Contains class for TYPO3 clipboard for records and files
  *
  * $Id$
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   89: class t3lib_clipboard 
- *  125:     function initializeClipboard()	
- *  154:     function lockToNormal()	
- *  171:     function setCmd($cmd)	
- *  218:     function setCurrentPad($padIdent)	
- *  233:     function endClipboard()	
- *  246:     function cleanUpCBC($CBarr,$table,$removeDeselected=0)	
- *  264:     function isElements()	
- *  273:     function printClipboard()	
- *  351:     function printContentFromTab($pad)	
- *  422:     function padTitleWrap($str,$pad)	
- *  439:     function linkItemText($str,$rec,$table='')	
- *  464:     function isSelected($table,$uid)	
- *  478:     function getSelectedRecord($table='',$uid='')	
- *  501:     function selUrlDB($table,$uid,$copy=0,$deselect=0,$baseArray=array())	
- *  517:     function selUrlFile($path,$copy=0,$deselect=0,$baseArray=array())	
- *  534:     function pasteUrl($table,$uid,$setRedirect=1)	
- *  551:     function deleteUrl($setRedirect=1,$file=0)	
- *  568:     function editUrl()	
- *  589:     function removeUrl($table,$uid)	
- *  599:     function cleanCurrent()	
- *  626:     function elFromTable($matchTable='',$pad='')	
- *  658:     function confirmMsg($table,$rec,$type,$clElements)	
- *  700:     function removeElement($el)	
- *  712:     function saveClipboard()	
- *  722:     function currentMode()	
- *  733:     function clLabel($key,$Akey='labels')	
+ *   90: class t3lib_clipboard 
+ *  126:     function initializeClipboard()	
+ *  155:     function lockToNormal()	
+ *  172:     function setCmd($cmd)	
+ *  219:     function setCurrentPad($padIdent)	
+ *  234:     function endClipboard()	
+ *  247:     function cleanUpCBC($CBarr,$table,$removeDeselected=0)	
+ *  265:     function isElements()	
+ *  274:     function printClipboard()	
+ *  352:     function printContentFromTab($pad)	
+ *  423:     function padTitleWrap($str,$pad)	
+ *  440:     function linkItemText($str,$rec,$table='')	
+ *  465:     function isSelected($table,$uid)	
+ *  479:     function getSelectedRecord($table='',$uid='')	
+ *  502:     function selUrlDB($table,$uid,$copy=0,$deselect=0,$baseArray=array())	
+ *  518:     function selUrlFile($path,$copy=0,$deselect=0,$baseArray=array())	
+ *  535:     function pasteUrl($table,$uid,$setRedirect=1)	
+ *  552:     function deleteUrl($setRedirect=1,$file=0)	
+ *  569:     function editUrl()	
+ *  590:     function removeUrl($table,$uid)	
+ *  600:     function cleanCurrent()	
+ *  627:     function elFromTable($matchTable='',$pad='')	
+ *  659:     function confirmMsg($table,$rec,$type,$clElements)	
+ *  702:     function removeElement($el)	
+ *  714:     function saveClipboard()	
+ *  724:     function currentMode()	
+ *  735:     function clLabel($key,$Akey='labels')	
  *
  *              SECTION: FOR USE IN tce_db.php:
- *  774:     function makePasteCmdArray($ref,$CMD)	
- *  803:     function makeDeleteCmdArray($CMD)	
+ *  776:     function makePasteCmdArray($ref,$CMD)	
+ *  805:     function makeDeleteCmdArray($CMD)	
  *
  *              SECTION: FOR USE IN tce_file.php:
- *  846:     function makePasteCmdArray_file($ref,$FILE)	
- *  868:     function makeDeleteCmdArray_file($FILE)	
+ *  848:     function makePasteCmdArray_file($ref,$FILE)	
+ *  870:     function makeDeleteCmdArray_file($FILE)	
  *
  * TOTAL FUNCTIONS: 30
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -86,7 +83,9 @@
 /**
  * TYPO3 clipboard for records and files
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_clipboard {
 	var $numberTabs = 3;

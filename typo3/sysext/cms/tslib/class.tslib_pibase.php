@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,68 +27,69 @@
 /** 
  * This script contains the parent class, 'pibase', providing an API with the most basic methods for frontend plugins
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tslib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  125: class tslib_pibase 
+ *  128: class tslib_pibase 
  *
  *              SECTION: Init functions
- *  204:     function tslib_pibase()	
- *  218:     function pi_setPiVarDefaults()	
+ *  207:     function tslib_pibase()	
+ *  221:     function pi_setPiVarDefaults()	
  *
  *              SECTION: Link functions
- *  257:     function pi_getPageLink($id,$target='',$urlParameters=array())	
- *  273:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())	
- *  287:     function pi_linkTP($str,$urlParameters=array(),$cache=0)	
- *  309:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0)	
- *  332:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0)	
- *  348:     function pi_list_linkSingle($str,$uid,$cache=0,$mergeArr=array())	
- *  371:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')	
+ *  260:     function pi_getPageLink($id,$target='',$urlParameters=array())	
+ *  276:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())	
+ *  290:     function pi_linkTP($str,$urlParameters=array(),$cache=0)	
+ *  312:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0)	
+ *  335:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0)	
+ *  351:     function pi_list_linkSingle($str,$uid,$cache=0,$mergeArr=array())	
+ *  374:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')	
  *
  *              SECTION: Functions for listing, browsing, searching etc.
- *  411:     function pi_list_browseresults($showResultCount=1,$tableParams='')	
- *  464:     function pi_list_searchBox($tableParams='')	
- *  483:     function pi_list_modeSelector($items=array(),$tableParams='')	
- *  510:     function pi_list_makelist($res,$tableParams='')	
- *  535:     function pi_list_row($c)	
- *  547:     function pi_list_header()	
+ *  414:     function pi_list_browseresults($showResultCount=1,$tableParams='')	
+ *  467:     function pi_list_searchBox($tableParams='')	
+ *  486:     function pi_list_modeSelector($items=array(),$tableParams='')	
+ *  513:     function pi_list_makelist($res,$tableParams='')	
+ *  538:     function pi_list_row($c)	
+ *  550:     function pi_list_header()	
  *
  *              SECTION: Stylesheet, CSS
- *  578:     function pi_getClassName($class)	
- *  590:     function pi_classParam($class)	
- *  604:     function pi_setClassStyle($class,$data,$selector='')	
- *  615:     function pi_wrapInBaseClass($str)	
+ *  581:     function pi_getClassName($class)	
+ *  593:     function pi_classParam($class)	
+ *  607:     function pi_setClassStyle($class,$data,$selector='')	
+ *  618:     function pi_wrapInBaseClass($str)	
  *
  *              SECTION: Frontend editing: Edit panel, edit icons
- *  651:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())	
- *  692:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='')	
+ *  654:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())	
+ *  695:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='')	
  *
  *              SECTION: Localization, locallang functions
- *  738:     function pi_getLL($key,$alt='')	
- *  754:     function pi_loadLL()	
+ *  741:     function pi_getLL($key,$alt='')	
+ *  757:     function pi_loadLL()	
  *
  *              SECTION: Database, queries
- *  816:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	
- *  877:     function pi_getRecord($table,$uid,$checkPage=0)	
- *  888:     function pi_getPidList($pid_list,$recursive=0)	
- *  909:     function pi_prependFieldsWithTable($table,$fieldList)	
- *  926:     function pi_getCategoryTableContents($table,$pid,$addWhere='')	
+ *  819:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	
+ *  880:     function pi_getRecord($table,$uid,$checkPage=0)	
+ *  891:     function pi_getPidList($pid_list,$recursive=0)	
+ *  912:     function pi_prependFieldsWithTable($table,$fieldList)	
+ *  929:     function pi_getCategoryTableContents($table,$pid,$addWhere='')	
  *
  *              SECTION: Various
- *  962:     function pi_isOnlyFields($fList,$lowerThan=-1)	
- *  982:     function pi_autoCache($inArray)	
- * 1013:     function pi_RTEcssText($str)	
+ *  965:     function pi_isOnlyFields($fList,$lowerThan=-1)	
+ *  985:     function pi_autoCache($inArray)	
+ * 1016:     function pi_RTEcssText($str)	
+ * 1030:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	
+ * 1045:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	
  *
- * TOTAL FUNCTIONS: 31
+ * TOTAL FUNCTIONS: 33
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -120,7 +121,9 @@
  * This class contains functions which assists these plugins in creating lists, searching, displaying menus, page-browsing (next/previous/1/2/3) and handling links.
  * Functions are all prefixed "pi_" which is reserved for this class. Those functions can of course be overridden in the extension classes (that is the point...)
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  */
 class tslib_pibase {
 
@@ -1017,7 +1020,12 @@ class tslib_pibase {
 	}
 	
 	/**
-	 *
+	 * @param	[type]		$T3FlexForm_array: ...
+	 * @param	[type]		$fieldName: ...
+	 * @param	[type]		$sheet: ...
+	 * @param	[type]		$lang: ...
+	 * @param	[type]		$value: ...
+	 * @return	[type]		...
 	 */
 	function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	{
 		$sheetArray = $T3FlexForm_array['data'][$sheet][$lang];
@@ -1025,6 +1033,15 @@ class tslib_pibase {
 			return $this->pi_getFFvalueFromSheetArray($sheetArray,explode('/',$fieldName),$value);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$sheetArray: ...
+	 * @param	[type]		$fieldNameArr: ...
+	 * @param	[type]		$value: ...
+	 * @return	[type]		...
+	 */
 	function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	{
 		return $sheetArray[$fieldNameArr[0]][$value];
 	}

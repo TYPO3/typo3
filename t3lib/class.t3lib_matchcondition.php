@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,25 +27,24 @@
 /** 
  * Contains class for Matching TypoScript conditions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   75: class t3lib_matchCondition 
- *   89:     function match($string)	
- *  300:     function testNumber($test,$value) 
- *  322:     function matchWild($haystack,$needle)	
- *  352:     function whichDevice($useragent)	
- *  402:     function browserInfo($useragent)	
- *  501:     function getGlobal($var,$inArr='') 
- *  526:     function getGP_ENV_TSFE($var) 
+ *   76: class t3lib_matchCondition 
+ *   90:     function match($string)	
+ *  301:     function testNumber($test,$value) 
+ *  323:     function matchWild($haystack,$needle)	
+ *  353:     function whichDevice($useragent)	
+ *  403:     function browserInfo($useragent)	
+ *  502:     function getGlobal($var,$inArr='') 
+ *  527:     function getGP_ENV_TSFE($var) 
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -69,7 +68,9 @@
  * Used with the TypoScript parser.
  * Matches browserinfo, IPnumbers for use with templates
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see t3lib_TStemplate::matching(), t3lib_TStemplate::generateConfig()
  */
 class t3lib_matchCondition {

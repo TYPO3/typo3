@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,26 +26,25 @@
 ***************************************************************/
 /** 
  * Contains class for icon generation in the backend
- * 
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ *
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   81: class t3lib_iconWorks	
- *   95:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=0)	
- *  112:     function getIcon($table,$row=array(),$shaded=0)	
- *  194:     function makeIcon($iconfile,$mode, $user, $protectSection=0,$absFile='')	
- *  297:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
- *  330:     function imagecreatefrom($file)	
- *  347:     function imagemake($im, $path)	
+ *   82: class t3lib_iconWorks	
+ *   96:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=0)	
+ *  113:     function getIcon($table,$row=array(),$shaded=0)	
+ *  195:     function makeIcon($iconfile,$mode, $user, $protectSection=0,$absFile='')	
+ *  298:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
+ *  331:     function imagecreatefrom($file)	
+ *  348:     function imagemake($im, $path)	
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -76,7 +75,9 @@
  * The class is included in eg. init.php
  * ALL functions called without making a class instance, eg. "t3lib_iconWorks::getIconImage()"
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_iconWorks	{
 	

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,52 +27,55 @@
 /**
  * Class for TYPO3 backend user authentication in the TSFE frontend
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  100: class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth 
- *  130:     function extInitFeAdmin()	
- *  150:     function extPrintFeAdminDialog()	
- *  174:     function TSFEtypo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	
- *  186:     function TSFEtypo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)	
+ *  103: class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth 
+ *  129:     function extInitFeAdmin()	
+ *  149:     function extPrintFeAdminDialog()	
+ *  173:     function TSFEtypo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	
+ *  185:     function TSFEtypo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)	
  *
  *              SECTION: Creating sections of the Admin Panel
- *  230:     function extGetCategory_preview($out='')	
- *  261:     function extGetCategory_cache($out='')	
- *  299:     function extGetCategory_publish($out='')	
- *  334:     function extGetCategory_edit($out='')	
- *  360:     function extGetCategory_tsdebug($out='')	
- *  390:     function extGetCategory_info($out='')	
+ *  229:     function extGetCategory_preview($out='')	
+ *  260:     function extGetCategory_cache($out='')	
+ *  298:     function extGetCategory_publish($out='')	
+ *  333:     function extGetCategory_edit($out='')	
+ *  359:     function extGetCategory_tsdebug($out='')	
+ *  389:     function extGetCategory_info($out='')	
  *
  *              SECTION: Admin Panel Layout Helper functions
- *  463:     function extGetHead($pre)	
- *  480:     function extItemLink($pre,$str)	
- *  496:     function extGetItem($pre,$element)	
- *  512:     function extFw($str)	
- *  521:     function ext_makeToolBar()	
+ *  462:     function extGetHead($pre)	
+ *  479:     function extItemLink($pre,$str)	
+ *  495:     function extGetItem($pre,$element)	
+ *  511:     function extFw($str)	
+ *  520:     function ext_makeToolBar()	
  *
  *              SECTION: TSFE BE user Access Functions
- *  576:     function extPageReadAccess($pageRec)	
- *  587:     function extAdmModuleEnabled($key)	
- *  603:     function extSaveFeAdminConfig()	
- *  635:     function extGetFeAdminValue($pre,$val='')	
+ *  575:     function extPageReadAccess($pageRec)	
+ *  586:     function extAdmModuleEnabled($key)	
+ *  602:     function extSaveFeAdminConfig()	
+ *  634:     function extGetFeAdminValue($pre,$val='')	
  *
  *              SECTION: TSFE BE user Access Functions
- *  693:     function extGetTreeList($id,$depth,$begin=0,$perms_clause)	
- *  722:     function extGetNumberOfCachedPages($page_id)	
+ *  692:     function extGetTreeList($id,$depth,$begin=0,$perms_clause)	
+ *  721:     function extGetNumberOfCachedPages($page_id)	
  *
  *              SECTION: Localization handling
- *  761:     function extGetLL($key)	
+ *  760:     function extGetLL($key)	
  *
  *              SECTION: Frontend Editing
- *  794:     function extIsEditAction()	
- *  817:     function extIsFormShown()	
- *  834:     function extEditAction()	
+ *  803:     function extIsEditAction()	
+ *  826:     function extIsFormShown()	
+ *  843:     function extEditAction()	
  *
  * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -93,7 +96,7 @@
  * TYPO3 backend user authentication in the TSFE frontend.
  * This includes mainly functions related to the Admin Panel
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

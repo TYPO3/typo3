@@ -103,3 +103,9 @@ typolink:
 - BUG: get content from and typolinkCheckRootline gives bad result across domains. [We had that problem sharing pages between TYPO3.org and TYPO3.com]
 - Add feature so that typolink/sitemaps detect sys_domain records in the root line of links and automatically prepend the right URL. (Julle asked for this) + check this "bug-report": Message-Id: <20030401211300.082fe299.julle@diku.dk>
 
+
+
+
+
+----------------------
+TYPO3 CVS ID: $Id$

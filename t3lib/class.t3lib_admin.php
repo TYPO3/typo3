@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,31 +27,30 @@
 /** 
  * Contains a class for evaluation of database integrity according to $TCA
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   89: class t3lib_admin 
- *  115:     function genTree($theID, $depthData)	
- *  149:     function lostRecords($pid_list)	
- *  178:     function fixLostRecord($table,$uid)	
- *  196:     function countRecords($pid_list)	
- *  226:     function getGroupFields($mode)	
- *  260:     function getFileFields($uploadfolder)	
- *  283:     function getDBFields($theSearchTable)	
- *  311:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)	
- *  386:     function testFileRefs ()	
- *  437:     function testDBRefs($theArray)	
- *  476:     function whereIsRecordReferenced($searchTable,$id)	
- *  510:     function whereIsFileReferenced($uploadfolder,$filename)	
+ *   90: class t3lib_admin 
+ *  116:     function genTree($theID, $depthData)	
+ *  150:     function lostRecords($pid_list)	
+ *  179:     function fixLostRecord($table,$uid)	
+ *  197:     function countRecords($pid_list)	
+ *  227:     function getGroupFields($mode)	
+ *  261:     function getFileFields($uploadfolder)	
+ *  284:     function getDBFields($theSearchTable)	
+ *  312:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)	
+ *  387:     function testFileRefs ()	
+ *  438:     function testDBRefs($theArray)	
+ *  477:     function whereIsRecordReferenced($searchTable,$id)	
+ *  511:     function whereIsFileReferenced($uploadfolder,$filename)	
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -84,7 +83,9 @@
  * 
  * @todo	Need to really extend this class when the tcemain library has been updated and the whole API is better defined. There are some known bugs in this library. Further it would be nice with a facility to not only analyze but also clean up!
  * @see SC_mod_tools_dbint_index::func_relations(), SC_mod_tools_dbint_index::func_records()
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_admin {
 	var $genTree_includeDeleted = 1;	// if set, genTree() includes deleted pages. This is default.

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -24,65 +24,169 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * HTML mail class
+ * 
+ * $Id$
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
  *
-
-htmlmail.php
-
-
-
-
-
-
-
-
-
-
-Plain + HTML
-	multipart/alternative	(text, html)
-	multipart/alternative	(text, html)
-	
-
-Plain + HTML + billede
-	multipart/related (m/a, cids)
-		multipart/alternative (text, html)
-
-	multipart/related  (m/a, cids)
-		multipart/alternative	(text, html)
-
-
-plain + attachment
-	multipart/mixed 
-	
-
-HTML + Attachment:
-	multipart/mixed		(text/html , attachments)
-
-	
-Plain + HTML + Attachments:
-	multipart/mixed		(m/a, attachments)
-		multipart/alternative	(text, html)
-
-
-		
-
-
-Plain + HTML + billede + attachment
-
-		Calypso and outlook ex.
-	multipart/mixed (m/r, attachments)
-		multipart/related  (m/a, cids)
-			multipart/alternative	(text, html)
-
-
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ *
+ *  190: class t3lib_htmlmail 
+ *  253:     function start ()	
+ *  263:     function useBase64()	
+ *  275:     function encodeMsg($content)	
+ *  285:     function addPlain ($content)	
+ *  297:     function addAttachment($file)	
+ *  315:     function addHTML ($file)	
+ *  338:     function extractHtmlInit($html,$url)	
+ *  349:     function send($recipient)	
+ *
+ *              SECTION: Main functions
+ *  378:     function setHeaders ()	
+ *  432:     function setRecipient ($recip)	
+ *  450:     function getHTMLContentType()	
+ *  459:     function setContent()	
+ *  486:     function constructMixed ($boundary)	
+ *  525:     function constructHTML ($boundary)	
+ *  549:     function constructAlternative($boundary)	
+ *  570:     function constructHTML_media ($boundary)	
+ *  603:     function sendTheMail () 
+ *  637:     function getBoundary()	
+ *  649:     function setPlain ($content)	
+ *  660:     function setHtml ($content)	
+ *  671:     function add_header ($header)	
+ *  682:     function add_message ($string)	
+ *  693:     function getContent($type)	
+ *  702:     function preview()	
+ *
+ *              SECTION: Functions for acquiring attachments, HTML, analyzing and so on  **
+ *  730:     function fetchHTML($file)	
+ *  748:     function fetchHTMLMedia()	
+ *  769:     function extractMediaLinks()	
+ *  845:     function extractHyperLinks()	
+ *  894:     function extractFramesInfo()	
+ *  920:     function substMediaNamesInHTML($absolute)	
+ *  947:     function substHREFsInHTML()	
+ *  975:     function substHTTPurlsInPlainText($content)	
+ * 1015:     function fixRollOvers()	
+ *
+ *              SECTION: File and URL-functions
+ * 1062:     function makeBase64($inputstr)	
+ * 1073:     function getExtendedURL($url)	
+ * 1093:     function addUserPass($url)	
+ * 1108:     function getURL($url)	
+ * 1129:     function getStrippedURL($url)	
+ * 1150:     function getMimeType($url)	
+ * 1179:     function absRef($ref)	
+ * 1199:     function split_fileref($fileref)	
+ * 1226:     function extParseUrl($path)	
+ * 1241:     function tag_regex($tagArray)	
+ * 1263:     function get_tag_attributes($tag)	
+ * 1303:     function quoted_printable($string)	
+ * 1341:     function convertName($name)	
+ *
+ * TOTAL FUNCTIONS: 46
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
+
+
+
+
+
+
+
+/**
+ * NOTES on MIME mail structures:
+ *
+ * Plain + HTML
+ * 	multipart/alternative	(text, html)
+ * 	multipart/alternative	(text, html)
+ * 	
+ * Plain + HTML + image
+ * 	multipart/related (m/a, cids)
+ * 		multipart/alternative (text, html)
+ * 
+ * 	multipart/related  (m/a, cids)
+ * 		multipart/alternative	(text, html)
+ * 
+ * plain + attachment
+ * 	multipart/mixed 
+ * 	
+ * HTML + Attachment:
+ * 	multipart/mixed		(text/html , attachments)
+ * 
+ * Plain + HTML + Attachments:
+ * 	multipart/mixed		(m/a, attachments)
+ * 		multipart/alternative	(text, html)
+ * 
+ * Plain + HTML + image + attachment
+ * 
+ * 		Outlook expr.
+ * 	multipart/mixed (m/r, attachments)
+ * 		multipart/related  (m/a, cids)
+ * 			multipart/alternative	(text, html)
+ *
+ *
+ *
+ * FROM RFC 1521:
+ * 
+ * 5.1 Quoted-Printable Content-Transfer-Encoding
+ * The Quoted-Printable encoding is intended to represent data that largely consists of octets that correspond to printable characters in the ASCII character set. It encodes the data in such a way that the resulting octets are unlikely to be modified by mail transport. If the data being encoded are mostly ASCII text, the encoded form of the data remains largely recognizable by humans. A body which is entirely ASCII may also be encoded in Quoted-Printable to ensure the integrity of the data should the message pass through a character- translating, and/or line-wrapping gateway. 
+ * 
+ * In this encoding, octets are to be represented as determined by the following rules: 
+ * Rule #1: (General 8-bit representation) Any octet, except those indicating a line break according to the newline convention of the canonical (standard) form of the data being encoded, may be represented by an "=" followed by a two digit hexadecimal representation of the octet's value. The digits of the hexadecimal alphabet, for this purpose, are "0123456789ABCDEF". Uppercase letters must be used when sending hexadecimal data, though a robust implementation may choose to recognize lowercase letters on receipt. Thus, for example, the value 12 (ASCII form feed) can be represented by "=0C", and the value 61 (ASCII EQUAL SIGN) can be represented by "=3D". Except when the following rules allow an alternative encoding, this rule is mandatory. 
+ * Rule #2: (Literal representation) Octets with decimal values of 33 through 60 inclusive, and 62 through 126, inclusive, MAY be represented as the ASCII characters which correspond to those octets (EXCLAMATION POINT through LESS THAN, and GREATER THAN through TILDE, respectively). 
+ * Rule #3: (White Space): Octets with values of 9 and 32 MAY be represented as ASCII TAB (HT) and SPACE characters, respectively, but MUST NOT be so represented at the end of an encoded line. Any TAB (HT) or SPACE characters on an encoded line MUST thus be followed on that line by a printable character. In particular, an 
+ * "=" at the end of an encoded line, indicating a soft line break (see rule #5) may follow one or more TAB (HT) or SPACE characters. It follows that an octet with value 9 or 32 appearing at the end of an encoded line must be represented according to Rule #1. This rule is necessary because some MTAs (Message Transport Agents, programs which transport messages from one user to another, or perform a part of such transfers) are known to pad lines of text with SPACEs, and others are known to remove "white space" characters from the end of a line. Therefore, when decoding a Quoted-Printable body, any trailing white space on a line must be deleted, as it will necessarily have been added by intermediate transport agents. 
+ * Rule #4 (Line Breaks): A line break in a text body, independent of what its representation is following the canonical representation of the data being encoded, must be represented by a (RFC 822) line break, which is a CRLF sequence, in the Quoted-Printable encoding. Since the canonical representation of types other than text do not generally include the representation of line breaks, no hard line breaks (i.e. line breaks that are intended to be meaningful and to be displayed to the user) should occur in the quoted-printable encoding of such types. Of course, occurrences of "=0D", "=0A", "0A=0D" and "=0D=0A" will eventually be encountered. In general, however, base64 is preferred over quoted-printable for binary data. 
+ * Note that many implementations may elect to encode the local representation of various content types directly, as described in Appendix G. In particular, this may apply to plain text material on systems that use newline conventions other than CRLF delimiters. Such an implementation is permissible, but the generation of line breaks must be generalized to account for the case where alternate representations of newline sequences are used. 
+ * Rule #5 (Soft Line Breaks): The Quoted-Printable encoding REQUIRES that encoded lines be no more than 76 characters long. If longer lines are to be encoded with the Quoted-Printable encoding, 'soft' line breaks must be used. An equal sign as the last character on a encoded line indicates such a non-significant ('soft') line break in the encoded text. Thus if the "raw" form of the line is a single unencoded line that says: 
+ * Now's the time for all folk to come to the aid of their country. 
+ * 
+ * This can be represented, in the Quoted-Printable encoding, as 
+ * 
+ * Now's the time = 
+ * for all folk to come= 
+ * to the aid of their country. 
+ * 
+ * This provides a mechanism with which long lines are encoded in such a way as to be restored by the user agent. The 76 character limit does not count the trailing CRLF, but counts all other characters, including any equal signs. 
+ * Since the hyphen character ("-") is represented as itself in the Quoted-Printable encoding, care must be taken, when encapsulating a quoted-printable encoded body in a multipart entity, to ensure that the encapsulation boundary does not appear anywhere in the encoded body. (A good strategy is to choose a boundary that includes a character sequence such as "=_" which can never appear in a quoted- printable body. See the definition of multipart messages later in this document.) 
+ * NOTE: The quoted-printable encoding represents something of a compromise between readability and reliability in transport. Bodies encoded with the quoted-printable encoding will work reliably over most mail gateways, but may not work perfectly over a few gateways, notably those involving translation into EBCDIC. (In theory, an EBCDIC gateway could decode a quoted-printable body and re-encode it using base64, but such gateways do not yet exist.) A higher level of confidence is offered by the base64 Content-Transfer-Encoding. A way to get reasonably reliable transport through EBCDIC gateways is to also quote the ASCII characters 
+ * !"#$@[\]^`{|}~ 
+ * according to rule #1. See Appendix B for more information. 
+ * Because quoted-printable data is generally assumed to be line- oriented, it is to be expected that the representation of the breaks between the lines of quoted printable data may be altered in transport, in the same manner that plain text mail has always been altered in Internet mail when passing between systems with differing newline conventions. If such alterations are likely to constitute a corruption of the data, it is probably more sensible to use the base64 encoding rather than the quoted-printable encoding. 
+ * WARNING TO IMPLEMENTORS: If binary data are encoded in quoted- printable, care must be taken to encode CR and LF characters as "=0D" and "=0A", respectively. In particular, a CRLF sequence in binary data should be encoded as "=0D=0A". Otherwise, if CRLF were represented as a hard line break, it might be incorrectly decoded on 
+ * platforms with different line break conventions. 
+ * For formalists, the syntax of quoted-printable data is described by the following grammar: 
+ * 
+ *    quoted-printable := ([*(ptext / SPACE / TAB) ptext] ["="] CRLF)
+ *         ; Maximum line length of 76 characters excluding CRLF
+ * 
+ *    ptext := octet /<any ASCII character except "=", SPACE, or TAB>
+ *         ; characters not listed as "mail-safe" in Appendix B
+ *         ; are also not recommended.
+ * 
+ *    octet := "=" 2(DIGIT / "A" / "B" / "C" / "D" / "E" / "F")
+ *         ; octet must be used for characters > 127, =, SPACE, or TAB,
+ *         ; and is recommended for any characters not listed in
+ *         ; Appendix B as "mail-safe". 
+ */
+
+/**
+ * HTML mail class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
+ */
 class t3lib_htmlmail {
 		// Headerinfo:
 	var $recipient = "recipient@whatever.com";
@@ -134,23 +238,62 @@ class t3lib_htmlmail {
 	var $plain_text_header = "Content-Type: text/plain; charset=iso-8859-1\nContent-Transfer-Encoding: quoted-printable";
 	var $html_text_header = "Content-Type: text/html; charset=iso-8859-1\nContent-Transfer-Encoding: quoted-printable";
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * @return	[type]		...
+	 */
 	function start ()	{
 			// Sets the message id
 		$this->messageid = '<'.md5(microtime()).'@domain.tld>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function useBase64()	{
 		$this->plain_text_header = 'Content-Type: text/plain; charset=iso-8859-1'.chr(10).'Content-Transfer-Encoding: base64';
 		$this->html_text_header = 'Content-Type: text/html; charset=iso-8859-1'.chr(10).'Content-Transfer-Encoding: base64';
 		$this->alt_base64=1;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function encodeMsg($content)	{
 		return $this->alt_base64 ? $this->makeBase64($content) : $this->quoted_printable($content);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function addPlain ($content)	{
 			// Adds plain-text and qp-encodes it
 		$content=$this->substHTTPurlsInPlainText($content);
 		$this->setPlain($this->encodeMsg($content));
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$file: ...
+	 * @return	[type]		...
+	 */
 	function addAttachment($file)	{
 			// Adds an attachment to the mail
 		$theArr = $this->getExtendedURL($file);		// We fetch the content and the mime-type
@@ -162,6 +305,13 @@ class t3lib_htmlmail {
 			return true;
 		} else { return false;}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$file: ...
+	 * @return	[type]		...
+	 */
 	function addHTML ($file)	{
 			// Adds HTML and media, encodes it from a URL or file
 		$status = $this->fetchHTML($file);
@@ -180,12 +330,22 @@ class t3lib_htmlmail {
 
 	/**
 	 * External used to extract HTML-parts
+	 * 
+	 * @param	[type]		$html: ...
+	 * @param	[type]		$url: ...
+	 * @return	[type]		...
 	 */
 	function extractHtmlInit($html,$url)	{
 		$this->theParts["html"]["content"]=$html;
 		$this->theParts["html"]["path"]=$url;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$recipient: ...
+	 * @return	[type]		...
+	 */
 	function send($recipient)	{
 			// This function sends the mail to one $recipient
 		if ($recipient) {$this->recipient = $recipient;}
@@ -195,9 +355,26 @@ class t3lib_htmlmail {
 	}
 
 
-// *****************
-// Main functions 
-// *****************
+
+
+
+
+
+
+
+
+
+
+
+	/*****************************************
+	 *
+	 * Main functions 
+	 *
+	 *****************************************/
+	 
+	/**
+	 * @return	[type]		...
+	 */
 	function setHeaders ()	{
 			// Clears the header-string and sets the headers based on object-vars.
 		$this->headers = "";
@@ -245,6 +422,13 @@ class t3lib_htmlmail {
 		}
 		$this->add_header("Mime-Version: 1.0");
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$recip: ...
+	 * @return	[type]		...
+	 */
 	function setRecipient ($recip)	{
 		// Sets the recipient(s). If you supply a string, you set one recipient. If you supply an array, every value is added as a recipient.
 		if (is_array($recip))	{
@@ -257,9 +441,21 @@ class t3lib_htmlmail {
 			$this->recipient = $recip;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function getHTMLContentType()	{
 		return count($this->theParts["html"]["media"]) ? 'multipart/related;' : 'multipart/alternative;';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function setContent()	{
 			// Begins building the message-body
 		$this->message = "";
@@ -280,6 +476,13 @@ class t3lib_htmlmail {
 			$this->add_message($this->getContent("plain"));	// Generate plain only
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$boundary: ...
+	 * @return	[type]		...
+	 */
 	function constructMixed ($boundary)	{
 			// Here (plain/HTML) is combined with the attachments
 		$this->add_message("--".$boundary);
@@ -312,6 +515,13 @@ class t3lib_htmlmail {
 		}
 		$this->add_message("--".$boundary."--\n");
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$boundary: ...
+	 * @return	[type]		...
+	 */
 	function constructHTML ($boundary)	{
 		if (count($this->theParts["html"]["media"]))	{	// If media, then we know, the multipart/related content-type has been set before this function call...
 			$this->add_message("--".$boundary);
@@ -329,6 +539,13 @@ class t3lib_htmlmail {
 			$this->constructAlternative($boundary);	// Adding the plaintext/html mix, and if no media, then use $boundary instead of $newBoundary
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$boundary: ...
+	 * @return	[type]		...
+	 */
 	function constructAlternative($boundary)	{
 			// Here plain is combined with HTML
 		$this->add_message("--".$boundary);
@@ -343,6 +560,13 @@ class t3lib_htmlmail {
 		$this->add_message($this->getContent("html"));
 		$this->add_message("--".$boundary."--\n");
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$boundary: ...
+	 * @return	[type]		...
+	 */
 	function constructHTML_media ($boundary)	{
 /*			// Constructs the HTML-part of message if the HTML contains media
 		$this->add_message("--".$boundary);
@@ -370,6 +594,12 @@ class t3lib_htmlmail {
 		}
 		$this->add_message("--".$boundary."--\n");
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function sendTheMail () {
 			// Sends the mail. 
 			// Requires the recipient, message and headers to be set.
@@ -398,30 +628,77 @@ class t3lib_htmlmail {
 			return true;
 		} else {return false;}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function getBoundary()	{
 			// Returns boundaries
 		$this->part++;
 		return 	"----------".uniqid("part_".$this->part."_");
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function setPlain ($content)	{
 			// Sets the plain-text part. No processing done.
 		$this->theParts["plain"]["content"] = $content;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function setHtml ($content)	{
 			// Sets the HTML-part. No processing done.
 		$this->theParts["html"]["content"] = $content;
-	}	
+	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$header: ...
+	 * @return	[type]		...
+	 */
 	function add_header ($header)	{
 		// Adds a header to the mail. Use this AFTER the setHeaders()-function
 		$this->headers.=$header."\n";
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$string: ...
+	 * @return	[type]		...
+	 */
 	function add_message ($string)	{
 		// Adds a line of text to the mail-body. Is normally use internally
 		$this->message.=$string."\n";
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
+	 */
 	function getContent($type)	{
 		return $this->theParts[$type]["content"];
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function preview()	{
 		echo nl2br(HTMLSpecialChars($this->headers));
 		echo "<BR>";
@@ -429,9 +706,27 @@ class t3lib_htmlmail {
 	}
 	
 
-// *********************************************************************
-// ** Functions for acquiring attachments, HTML, analyzing and so on  **
-// *********************************************************************
+
+
+
+
+
+
+
+
+
+
+
+	/****************************************************
+	 *
+	 * Functions for acquiring attachments, HTML, analyzing and so on  **
+	 *
+	 ***************************************************/
+	 
+	/**
+	 * @param	[type]		$file: ...
+	 * @return	[type]		...
+	 */
 	function fetchHTML($file)	{
 		// Fetches the HTML-content from either url og local serverfile
 		$this->theParts["html"]["content"] = $this->getURL($file);	// Fetches the content of the page
@@ -444,6 +739,12 @@ class t3lib_htmlmail {
 			return false;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function fetchHTMLMedia()	{
 		// Fetches the mediafiles which are found by extractMediaLinks()
 		if (is_array($this->theParts["html"]["media"]))	{
@@ -459,6 +760,12 @@ class t3lib_htmlmail {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function extractMediaLinks()	{
 			// extracts all media-links from $this->theParts["html"]["content"]
 		$html_code = $this->theParts["html"]["content"];
@@ -529,6 +836,12 @@ class t3lib_htmlmail {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function extractHyperLinks()	{
 		// extracts all hyper-links from $this->theParts["html"]["content"]
 		$html_code = $this->theParts["html"]["content"];
@@ -572,6 +885,12 @@ class t3lib_htmlmail {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function extractFramesInfo()	{
 		// extracts all media-links from $this->theParts["html"]["content"]
 		$html_code = $this->theParts["html"]["content"];
@@ -591,6 +910,13 @@ class t3lib_htmlmail {
 			return $theInfo;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$absolute: ...
+	 * @return	[type]		...
+	 */
 	function substMediaNamesInHTML($absolute)	{
 		// This substitutes the media-references in $this->theParts["html"]["content"]
 		// If $absolute is true, then the refs are substituted with http:// ref's indstead of Content-ID's (cid).
@@ -612,6 +938,12 @@ class t3lib_htmlmail {
 			$this->fixRollOvers();
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function substHREFsInHTML()	{
 		// This substitutes the hrefs in $this->theParts["html"]["content"]
 		if (is_array($this->theParts["html"]["hrefs"]))	{
@@ -633,6 +965,13 @@ class t3lib_htmlmail {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function substHTTPurlsInPlainText($content)	{
 		// This substitutes the http:// urls in plain text with links 
 		if ($this->jumperURL_prefix)	{
@@ -668,6 +1007,11 @@ class t3lib_htmlmail {
 		return $content;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function fixRollOvers()	{
 		// JavaScript rollOvers cannot support graphics inside of mail. If these exists we must let them refer to the absolute url. By the way: Roll-overs seems to work only on some mail-readers and so far I've seen it work on Netscape 4 message-center (but not 4.5!!)
 		$theNewContent = "";
@@ -691,13 +1035,41 @@ class t3lib_htmlmail {
 	}
 
 	
-// ************************
-// File and URL-functions
-// ************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*******************************************
+	 *
+	 * File and URL-functions
+	 *
+	 *******************************************/
+	 
+	/**
+	 * @param	[type]		$inputstr: ...
+	 * @return	[type]		...
+	 */
 	function makeBase64($inputstr)	{
 		// Returns base64-encoded content, which is broken every 76 character
 		return chunk_split(base64_encode($inputstr));
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$url: ...
+	 * @return	[type]		...
+	 */
 	function getExtendedURL($url)	{
 		// reads the URL or file and determines the Content-type by either guessing or opening a connection to the host
 		$res["content"] = $this->getURL($url);
@@ -711,6 +1083,13 @@ class t3lib_htmlmail {
 		if (!$res["content_type"])	{$res["content_type"] = $this->getMimeType($url);}
 		return $res;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$url: ...
+	 * @return	[type]		...
+	 */
 	function addUserPass($url)	{
 		$user=$this->http_username;
 		$pass=$this->http_password;
@@ -719,6 +1098,13 @@ class t3lib_htmlmail {
 		}
 		return $url;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$url: ...
+	 * @return	[type]		...
+	 */
 	function getURL($url)	{
 		$url = $this->addUserPass($url);
 			// reads a url or file
@@ -733,6 +1119,13 @@ class t3lib_htmlmail {
 			return false;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$url: ...
+	 * @return	[type]		...
+	 */
 	function getStrippedURL($url)	{
 			// reads a url or file and strips the HTML-tags AND removes all empty lines. This is used to read plain-text out of a HTML-page
 		if($fd = fopen($url,"rb"))	{
@@ -747,6 +1140,13 @@ class t3lib_htmlmail {
 			return $content;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$url: ...
+	 * @return	[type]		...
+	 */
 	function getMimeType($url)	{
 			// Opens a connection to the server and returns the mime-type of the file
 			// takes url only
@@ -769,6 +1169,13 @@ class t3lib_htmlmail {
 		}	
 		return $res;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$ref: ...
+	 * @return	[type]		...
+	 */
 	function absRef($ref)	{
 			// Returns the absolute address of a link. This is based on $this->theParts["html"]["path"] being the root-address
 		$ref = trim($ref);
@@ -782,6 +1189,13 @@ class t3lib_htmlmail {
 			return $this->theParts["html"]["path"].$ref;	// If the reference is relative, the path is added, in order for us to fetch the content
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$fileref: ...
+	 * @return	[type]		...
+	 */
 	function split_fileref($fileref)	{
 			// Returns an array with path, filename, filebody, fileext.
 		if (	ereg("(.*/)(.*)$",$fileref,$reg)	)	{
@@ -802,6 +1216,13 @@ class t3lib_htmlmail {
 		}
 		return $info;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$path: ...
+	 * @return	[type]		...
+	 */
 	function extParseUrl($path)	{
 			// Returns an array with file or url-information
 		$res = parse_url($path);
@@ -810,6 +1231,13 @@ class t3lib_htmlmail {
 		$res["filename"]=$reg[2];
 		return $res;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$tagArray: ...
+	 * @return	[type]		...
+	 */
 	function tag_regex($tagArray)	{
 		if (!is_array($tagArray))	{
 			$tagArray=Array($tagArray);
@@ -822,11 +1250,17 @@ class t3lib_htmlmail {
 		}
 		return $theRegex;
 	}
+
+	/**
+	 * analyses a HTML-tag
+	 * $tag is either like this "<TAG OPTION ATTRIB=VALUE>" or this " OPTION ATTRIB=VALUE>" which means you can omit the tag-name
+	 * returns an array with the attributes as keys in lower-case		
+	 * If an attribute is empty (like OPTION) the value of that key is just empty. Check it with is_set();
+	 * 
+	 * @param	[type]		$tag: ...
+	 * @return	[type]		...
+	 */
 	function get_tag_attributes($tag)	{
-		// analyses a HTML-tag
-		// $tag is either like this "<TAG OPTION ATTRIB=VALUE>" or this " OPTION ATTRIB=VALUE>" which means you can omit the tag-name
-		// returns an array with the attributes as keys in lower-case		
-		// If an attribute is empty (like OPTION) the value of that key is just empty. Check it with is_set();
 		$attributes = Array();
 		$tag = ltrim(eregi_replace ("^<[^ ]*","",trim($tag)));
 		$tagLen = strlen($tag);
@@ -859,6 +1293,13 @@ class t3lib_htmlmail {
 		}
 		return $attributes;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$string: ...
+	 * @return	[type]		...
+	 */
 	function quoted_printable($string)	{
 			// This functions is buggy. It seems that in the part where the lines are breaked every 76th character, that it fails if the break happens right in a quoted_printable encode character!
 		$newString = "";
@@ -890,6 +1331,13 @@ class t3lib_htmlmail {
 		}
 		return $newString;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$name: ...
+	 * @return	[type]		...
+	 */
 	function convertName($name)	{
 		if (ereg("[^".chr(32)."-".chr(60).chr(62)."-".chr(127)."]",$name))	{
 			return '=?iso-8859-1?B?'.base64_encode($name).'?=';
@@ -899,95 +1347,7 @@ class t3lib_htmlmail {
 	}
 }
 
-
-
-
-
-
-/*
-
-
-FROM RFC 1521:
-
-
-5.1 Quoted-Printable Content-Transfer-Encoding
-The Quoted-Printable encoding is intended to represent data that largely consists of octets that correspond to printable characters in the ASCII character set. It encodes the data in such a way that the resulting octets are unlikely to be modified by mail transport. If the data being encoded are mostly ASCII text, the encoded form of the data remains largely recognizable by humans. A body which is entirely ASCII may also be encoded in Quoted-Printable to ensure the integrity of the data should the message pass through a character- translating, and/or line-wrapping gateway. 
-
-In this encoding, octets are to be represented as determined by the following rules: 
-
-Rule #1: (General 8-bit representation) Any octet, except those indicating a line break according to the newline convention of the canonical (standard) form of the data being encoded, may be represented by an "=" followed by a two digit hexadecimal representation of the octet's value. The digits of the hexadecimal alphabet, for this purpose, are "0123456789ABCDEF". Uppercase letters must be used when sending hexadecimal data, though a robust implementation may choose to recognize lowercase letters on receipt. Thus, for example, the value 12 (ASCII form feed) can be represented by "=0C", and the value 61 (ASCII EQUAL SIGN) can be represented by "=3D". Except when the following rules allow an alternative encoding, this rule is mandatory. 
-
-Rule #2: (Literal representation) Octets with decimal values of 33 through 60 inclusive, and 62 through 126, inclusive, MAY be represented as the ASCII characters which correspond to those octets (EXCLAMATION POINT through LESS THAN, and GREATER THAN through TILDE, respectively). 
-
-Rule #3: (White Space): Octets with values of 9 and 32 MAY be represented as ASCII TAB (HT) and SPACE characters, respectively, but MUST NOT be so represented at the end of an encoded line. Any TAB (HT) or SPACE characters on an encoded line MUST thus be followed on that line by a printable character. In particular, an 
-
-"=" at the end of an encoded line, indicating a soft line break (see rule #5) may follow one or more TAB (HT) or SPACE characters. It follows that an octet with value 9 or 32 appearing at the end of an encoded line must be represented according to Rule #1. This rule is necessary because some MTAs (Message Transport Agents, programs which transport messages from one user to another, or perform a part of such transfers) are known to pad lines of text with SPACEs, and others are known to remove "white space" characters from the end of a line. Therefore, when decoding a Quoted-Printable body, any trailing white space on a line must be deleted, as it will necessarily have been added by intermediate transport agents. 
-
-Rule #4 (Line Breaks): A line break in a text body, independent of what its representation is following the canonical representation of the data being encoded, must be represented by a (RFC 822) line break, which is a CRLF sequence, in the Quoted-Printable encoding. Since the canonical representation of types other than text do not generally include the representation of line breaks, no hard line breaks (i.e. line breaks that are intended to be meaningful and to be displayed to the user) should occur in the quoted-printable encoding of such types. Of course, occurrences of "=0D", "=0A", "0A=0D" and "=0D=0A" will eventually be encountered. In general, however, base64 is preferred over quoted-printable for binary data. 
-
-Note that many implementations may elect to encode the local representation of various content types directly, as described in Appendix G. In particular, this may apply to plain text material on systems that use newline conventions other than CRLF delimiters. Such an implementation is permissible, but the generation of line breaks must be generalized to account for the case where alternate representations of newline sequences are used. 
-
-Rule #5 (Soft Line Breaks): The Quoted-Printable encoding REQUIRES that encoded lines be no more than 76 characters long. If longer lines are to be encoded with the Quoted-Printable encoding, 'soft' line breaks must be used. An equal sign as the last character on a encoded line indicates such a non-significant ('soft') line break in the encoded text. Thus if the "raw" form of the line is a single unencoded line that says: 
-
-Now's the time for all folk to come to the aid of 
-their country. 
-
-This can be represented, in the Quoted-Printable encoding, as 
-
-
-Now's the time = 
-for all folk to come= 
-to the aid of their country. 
-
-This provides a mechanism with which long lines are encoded in such a way as to be restored by the user agent. The 76 character limit does not count the trailing CRLF, but counts all other characters, including any equal signs. 
-
-Since the hyphen character ("-") is represented as itself in the Quoted-Printable encoding, care must be taken, when encapsulating a quoted-printable encoded body in a multipart entity, to ensure that the encapsulation boundary does not appear anywhere in the encoded body. (A good strategy is to choose a boundary that includes a character sequence such as "=_" which can never appear in a quoted- printable body. See the definition of multipart messages later in this document.) 
-
-NOTE: The quoted-printable encoding represents something of a compromise between readability and reliability in transport. Bodies encoded with the quoted-printable encoding will work reliably over most mail gateways, but may not work perfectly over a few gateways, notably those involving translation into EBCDIC. (In theory, an EBCDIC gateway could decode a quoted-printable body and re-encode it using base64, but such gateways do not yet exist.) A higher level of confidence is offered by the base64 Content-Transfer-Encoding. A way to get reasonably reliable transport through EBCDIC gateways is to also quote the ASCII characters 
-
-!"#$@[\]^`{|}~ 
-
-according to rule #1. See Appendix B for more information. 
-
-Because quoted-printable data is generally assumed to be line- oriented, it is to be expected that the representation of the breaks between the lines of quoted printable data may be altered in transport, in the same manner that plain text mail has always been altered in Internet mail when passing between systems with differing newline conventions. If such alterations are likely to constitute a corruption of the data, it is probably more sensible to use the base64 encoding rather than the quoted-printable encoding. 
-
-WARNING TO IMPLEMENTORS: If binary data are encoded in quoted- printable, care must be taken to encode CR and LF characters as "=0D" and "=0A", respectively. In particular, a CRLF sequence in binary data should be encoded as "=0D=0A". Otherwise, if CRLF were represented as a hard line break, it might be incorrectly decoded on 
-
-platforms with different line break conventions. 
-
-For formalists, the syntax of quoted-printable data is described by the following grammar: 
-
-
-   quoted-printable := ([*(ptext / SPACE / TAB) ptext] ["="] CRLF)
-        ; Maximum line length of 76 characters excluding CRLF
-
-   ptext := octet /<any ASCII character except "=", SPACE, or TAB>
-        ; characters not listed as "mail-safe" in Appendix B
-        ; are also not recommended.
-
-   octet := "=" 2(DIGIT / "A" / "B" / "C" / "D" / "E" / "F")
-        ; octet must be used for characters > 127, =, SPACE, or TAB,
-        ; and is recommended for any characters not listed in
-        ; Appendix B as "mail-safe".
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
-
-
-
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_htmlmail.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_htmlmail.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_htmlmail.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_htmlmail.php']);
 }
-
 ?>

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,7 +28,7 @@
  * Displays the page/file tree for browsing database records or files.
  * Used from TCEFORMS an other elements
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  */
 /**
@@ -157,7 +157,7 @@ require_once ('class.db_list_extra.inc');
 
 
 /**
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -238,7 +238,7 @@ class TBE_browser_recordList extends localRecordList {
 /**
  * Class which generates the page tree
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -339,7 +339,7 @@ class localPageTree extends t3lib_browseTree {
 /**
  * For RTE
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -353,7 +353,7 @@ class rtePageTree extends localPageTree {
 /**
  * For TBE record browser
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -395,7 +395,7 @@ class TBE_PageTree extends localPageTree {
 /**
  * Class which generates the folder tree
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -500,7 +500,7 @@ class localFolderTree extends t3lib_folderTree {
 /**
  * For RTE
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -512,7 +512,7 @@ class rteFolderTree extends localFolderTree {
 /**
  * For TBE File Browser
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -552,7 +552,7 @@ class TBE_FolderTree extends localFolderTree {
 /**
  * Script class
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

@@ -1,6 +1,7 @@
 <?php
 /**
  * Core language labels (dk)
+ * TYPO3 CVS ID: $Id$
  */
 
 $LOCAL_LANG['dk'] = Array (

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,15 +29,13 @@
  *
  * This class has a lot of functions and internal variable which are use from index_ts.php.
  * The class is instantiated as $GLOBALS['TSFE'] in index_ts.php.
- *
  * The use of this class should be inspired by the order of function calls as found in index_ts.php. 
  * 
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tslib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -45,105 +43,105 @@
  *
  *
  *  178: class tslib_fe	
- *  322:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')	
- *  342:     function connectToMySQL()	
- *  378:     function sendRedirect()	
+ *  326:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')	
+ *  348:     function connectToMySQL()	
+ *  384:     function sendRedirect()	
  *
  *              SECTION: Initializing, resolving page id
- *  418:     function initFEuser()	
- *  473:     function checkAlternativeIdMethods()	
- *  519:     function clear_preview()	
- *  532:     function determineId()	
- *  604:     function fetch_the_id()	
- *  710:     function getPageAndRootline() 
- *  772:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())	
- *  817:     function checkRootlineForIncludeSection()	
- *  851:     function checkEnableFields($row)	
- *  869:     function checkPagerecordForIncludeSection($row)	
- *  881:     function setIDfromArgV()	
- *  897:     function getPageAndRootlineWithDomain($domainStartPage)	
- *  925:     function findDomainRecord($recursive=0)	
- *  946:     function pageNotFoundHandler($code,$header='')	
- *  968:     function checkAndSetAlias()	
- *  983:     function idPartsAnalyze($str)	
+ *  424:     function initFEuser()	
+ *  479:     function checkAlternativeIdMethods()	
+ *  525:     function clear_preview()	
+ *  538:     function determineId()	
+ *  610:     function fetch_the_id()	
+ *  716:     function getPageAndRootline() 
+ *  778:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())	
+ *  823:     function checkRootlineForIncludeSection()	
+ *  857:     function checkEnableFields($row)	
+ *  875:     function checkPagerecordForIncludeSection($row)	
+ *  887:     function setIDfromArgV()	
+ *  903:     function getPageAndRootlineWithDomain($domainStartPage)	
+ *  931:     function findDomainRecord($recursive=0)	
+ *  952:     function pageNotFoundHandler($code,$header='')	
+ *  974:     function checkAndSetAlias()	
+ *  989:     function idPartsAnalyze($str)	
  *
  *              SECTION: Template and caching related functions.
- * 1038:     function makeCacheHash()	
- * 1059:     function cHashParams($addQueryParams) 
- * 1078:     function initTemplate()	
- * 1090:     function getFromCache()	
- * 1145:     function getHash()	
- * 1164:     function getConfigArray()	
+ * 1044:     function makeCacheHash()	
+ * 1065:     function cHashParams($addQueryParams) 
+ * 1084:     function initTemplate()	
+ * 1096:     function getFromCache()	
+ * 1151:     function getHash()	
+ * 1170:     function getConfigArray()	
  *
  *              SECTION: Further initialization and data processing
- * 1274:     function getCompressedTCarray()	
- * 1311:     function includeTCA($TCAloaded=1)	
- * 1338:     function settingLanguage()	
- * 1368:     function checkDataSubmission()	
- * 1393:     function fe_tce()	
- * 1407:     function locDataCheck($locationData)	
- * 1423:     function sendFormmail()	
- * 1441:     function checkJumpUrl()	
- * 1513:     function jumpUrl()	
- * 1556:     function setUrlIdToken()	
+ * 1280:     function getCompressedTCarray()	
+ * 1317:     function includeTCA($TCAloaded=1)	
+ * 1344:     function settingLanguage()	
+ * 1384:     function checkDataSubmission()	
+ * 1409:     function fe_tce()	
+ * 1423:     function locDataCheck($locationData)	
+ * 1439:     function sendFormmail()	
+ * 1457:     function checkJumpUrl()	
+ * 1529:     function jumpUrl()	
+ * 1572:     function setUrlIdToken()	
  *
  *              SECTION: Page generation; cache handling
- * 1599:     function isGeneratePage()	
- * 1609:     function tempPageCacheContent()	
- * 1640:     function realPageCacheContent()	
- * 1662:     function setPageCacheContent($c,$d,$t)	
- * 1674:     function clearPageCacheContent()	
- * 1684:     function clearPageCacheContent_pidList($pidList)	
- * 1695:     function setSysLastChanged()	
+ * 1615:     function isGeneratePage()	
+ * 1625:     function tempPageCacheContent()	
+ * 1656:     function realPageCacheContent()	
+ * 1678:     function setPageCacheContent($c,$d,$t)	
+ * 1690:     function clearPageCacheContent()	
+ * 1700:     function clearPageCacheContent_pidList($pidList)	
+ * 1711:     function setSysLastChanged()	
  *
  *              SECTION: Page generation; rendering and inclusion
- * 1732:     function generatePage_preProcessing()	
- * 1768:     function generatePage_whichScript()	
- * 1780:     function generatePage_postProcessing()	
- * 1838:     function INTincScript()	
- * 1896:     function INTincScript_loadJSCode()	
- * 1937:     function isINTincScript()	
- * 1946:     function isSearchIndexPage()	
- * 1955:     function doXHTML_cleaning()	
+ * 1748:     function generatePage_preProcessing()	
+ * 1784:     function generatePage_whichScript()	
+ * 1796:     function generatePage_postProcessing()	
+ * 1854:     function INTincScript()	
+ * 1912:     function INTincScript_loadJSCode()	
+ * 1953:     function isINTincScript()	
+ * 1962:     function isSearchIndexPage()	
+ * 1971:     function doXHTML_cleaning()	
  *
  *              SECTION: Finished off; outputting, storing session data, statistics...
- * 1987:     function isOutputting()	
- * 1998:     function processOutput()	
- * 2044:     function isEXTincScript()	
- * 2053:     function storeSessionData()	
- * 2063:     function setParseTime()	
- * 2075:     function statistics()	
- * 2152:     function previewInfo()	
- * 2173:     function beLoginLinkIPList()	
+ * 2003:     function isOutputting()	
+ * 2014:     function processOutput()	
+ * 2066:     function isEXTincScript()	
+ * 2075:     function storeSessionData()	
+ * 2085:     function setParseTime()	
+ * 2097:     function statistics()	
+ * 2174:     function previewInfo()	
+ * 2195:     function beLoginLinkIPList()	
  *
  *              SECTION: Various internal API functions
- * 2228:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	
- * 2267:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	
- * 2295:     function getSimulFileName()	
- * 2308:     function encryptEmail($string,$back=0)	
- * 2325:     function checkFileInclude($incFile)	
- * 2340:     function newCObj()	
- * 2353:     function setAbsRefPrefix()	
- * 2369:     function printError($label,$header='Error!')	
- * 2380:     function updateMD5paramsRecord($hash)	
- * 2392:     function tidyHTML($content)		
+ * 2250:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	
+ * 2292:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	
+ * 2320:     function getSimulFileName()	
+ * 2333:     function encryptEmail($string,$back=0)	
+ * 2350:     function checkFileInclude($incFile)	
+ * 2365:     function newCObj()	
+ * 2378:     function setAbsRefPrefix()	
+ * 2394:     function printError($label,$header='Error!')	
+ * 2405:     function updateMD5paramsRecord($hash)	
+ * 2417:     function tidyHTML($content)		
  *
  *              SECTION: Various external API functions - for use in plugins etc.
- * 2453:     function getStorageSiterootPids()	
- * 2468:     function getPagesTSconfig()	
- * 2501:     function setJS($key,$content='')	
- * 2507:     function over(name,imgObj)	
- * 2512:     function out(name,imgObj)	
- * 2539:     function setCSS($key,$content)	
- * 2554:     function make_seed() 
- * 2567:     function uniqueHash($str='')	
- * 2576:     function set_no_cache()	
- * 2586:     function set_cache_timeout_default($seconds)	
- * 2602:     function plainMailEncoded($email,$subject,$message,$headers='')	
- * 2625:     function sL($input)	
- * 2656:     function readLLfile($fileRef)	
- * 2671:     function getLLL($index,$LOCAL_LANG)	
- * 2685:     function initLLvars()	
+ * 2478:     function getStorageSiterootPids()	
+ * 2493:     function getPagesTSconfig()	
+ * 2526:     function setJS($key,$content='')	
+ * 2532:     function over(name,imgObj)	
+ * 2537:     function out(name,imgObj)	
+ * 2564:     function setCSS($key,$content)	
+ * 2579:     function make_seed() 
+ * 2592:     function uniqueHash($str='')	
+ * 2601:     function set_no_cache()	
+ * 2611:     function set_cache_timeout_default($seconds)	
+ * 2627:     function plainMailEncoded($email,$subject,$message,$headers='')	
+ * 2650:     function sL($input)	
+ * 2681:     function readLLfile($fileRef)	
+ * 2696:     function getLLL($index,$LOCAL_LANG)	
+ * 2710:     function initLLvars()	
  *
  * TOTAL FUNCTIONS: 83
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -173,7 +171,9 @@
 /**
  * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  */
  class tslib_fe	{
 

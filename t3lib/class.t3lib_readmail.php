@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,36 +27,35 @@
 /**
  * Contains a class with functions used to read email content
  *
- * Revised for TYPO3 3.6 May 2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 May 2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   88: class t3lib_readmail 
+ *   87: class t3lib_readmail 
  *
  *              SECTION: FUNCTIONS for the Dmailer
- *  123:     function find_MIDfromReturnPath($to)	
- *  143:     function find_XTypo3MID($content)	
+ *  122:     function find_MIDfromReturnPath($to)	
+ *  142:     function find_XTypo3MID($content)	
  *
  *              SECTION: General
- *  189:     function getMessage($mailParts)	
- *  214:     function getTextContent($content)	
- *  229:     function getMailBoundaryParts($boundary,$content)	
- *  249:     function getCType($str)	
- *  272:     function analyseReturnError($c)	
- *  327:     function decodeHeaderString($str)	
- *  355:     function extractNameEmail($str)	
- *  384:     function getContentTypeData($contentTypeStr)	
- *  407:     function makeUnixDate($dateStr)	
- *  430:     function getGMToffset($GMT)	
- *  444:     function extractMailHeader($content,$limit=0)	
- *  475:     function fullParse($content)	
+ *  188:     function getMessage($mailParts)	
+ *  213:     function getTextContent($content)	
+ *  228:     function getMailBoundaryParts($boundary,$content)	
+ *  248:     function getCType($str)	
+ *  271:     function analyseReturnError($c)	
+ *  326:     function decodeHeaderString($str)	
+ *  354:     function extractNameEmail($str)	
+ *  383:     function getContentTypeData($contentTypeStr)	
+ *  406:     function makeUnixDate($dateStr)	
+ *  429:     function getGMToffset($GMT)	
+ *  443:     function extractMailHeader($content,$limit=0)	
+ *  474:     function fullParse($content)	
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,11 +78,11 @@
 
 /**
  * Functions used to read email content
+ * The class is still just a bunch of miscellaneous functions used to read content out of emails
  * 
- * The class is still just a bunch of miscellaneous functions used to 
- * read content out of emails
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_readmail {
 	var $dateAbbrevs = array(

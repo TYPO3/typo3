@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is 
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
  */
 /**
@@ -34,22 +34,22 @@
  *
  *
  *
- *  102: class t3lib_cs 
- *  194:     function parse_charset($charset)	
- *  211:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
- *  245:     function utf8_encode($str,$charset)	
- *  286:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
- *  341:     function utf8_to_entities($str)	
- *  374:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
- *  405:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
- *  446:     function initCharset($charset)	
- *  517:     function UnumberToChar($cbyte)	
- *  561:     function utf8CharToUnumber($str,$hex=0)	
- *  590:     function utf8_strtrunc($str,$len)	
- *  612:     function utf_strlen($str)	
- *  625:     function utf_substr($str,$start,$len=0)	
- *  639:     function utf_strpos($haystack,$needle,$offset=0)	
- *  652:     function utf_strrpos($haystack,$needle,$offset=0)	
+ *  104: class t3lib_cs 
+ *  196:     function parse_charset($charset)	
+ *  213:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
+ *  247:     function utf8_encode($str,$charset)	
+ *  288:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
+ *  336:     function utf8_to_entities($str)	
+ *  369:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
+ *  400:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
+ *  441:     function initCharset($charset)	
+ *  512:     function UnumberToChar($cbyte)	
+ *  556:     function utf8CharToUnumber($str,$hex=0)	
+ *  585:     function utf8_strtrunc($str,$len)	
+ *  624:     function utf_strlen($str)	
+ *  637:     function utf_substr($str,$start,$len=0)	
+ *  651:     function utf_strpos($haystack,$needle,$offset=0)	
+ *  664:     function utf_strrpos($haystack,$needle,$offset=0)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -96,7 +96,7 @@
 /**
  * Class for conversion between charsets.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
  * @package TYPO3
  * @subpackage t3lib
@@ -596,6 +596,23 @@ class t3lib_cs {
 		}
 		return substr($str,$len);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// a few stubs of possibly useful functions, which may be impmeneted in PHP
 

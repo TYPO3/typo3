@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,30 +28,29 @@
  * Libraries for pagegen.php
  * The script "pagegen.php" is included by "index_ts.php" when a page is not cached but needs to be rendered.
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tslib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   87: class TSpagegen 
- *   94:     function pagegenInit()	
- *  133:     function UnCryptMailto(s) 
- *  144:     function linkTo_UnCryptMailto(s)	
- *  217:     function getIncFiles()	
- *  250:     function JSeventFunctions()	
- *  284:     function renderContent()	
- *  311:     function renderContentWithHeader($pageContent)	
- *  534:     function blurLink(theObject)	
+ *   88: class TSpagegen 
+ *   95:     function pagegenInit()	
+ *  134:     function UnCryptMailto(s) 
+ *  145:     function linkTo_UnCryptMailto(s)	
+ *  218:     function getIncFiles()	
+ *  251:     function JSeventFunctions()	
+ *  285:     function renderContent()	
+ *  312:     function renderContentWithHeader($pageContent)	
+ *  535:     function blurLink(theObject)	
  *
  *
- *  603: class FE_loadDBGroup extends t3lib_loadDBGroup	
+ *  604: class FE_loadDBGroup extends t3lib_loadDBGroup	
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -82,7 +81,9 @@
  * The class is not instantiated as an objects but called directly with the "::" operator.
  * eg: TSpagegen::pagegenInit()
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  */
 class TSpagegen {
 

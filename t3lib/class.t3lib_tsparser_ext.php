@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,15 +27,79 @@
 /** 
  * TSParser extension class to t3lib_TStemplate
  *
+ * $Id$
  * Contains functions for the TS module in TYPO3 backend
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *  103: class t3lib_tsparser_ext extends t3lib_TStemplate	
+ *  191:     function flattenSetup($setupArray, $prefix, $resourceFlag)	
+ *  218:     function substituteConstants($all)	
+ *  247:     function substituteCMarkers($all)	
+ *  269:     function generateConfig_constants()	
+ *  317:     function ext_getSetup($theSetup,$theKey)	
+ *  348:     function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")	
+ *  437:     function makeHtmlspecialchars($theValue)
+ *  450:     function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)		
+ *  490:     function ext_getRootlineNumber($pid)	
+ *  508:     function ext_getTemplateHierarchyArr($arr,$depthData, $keyArray,$first=0)	
+ *  567:     function ext_process_hierarchyInfo($depthDataArr,&$pointer)	
+ *  598:     function ext_outputTS($config, $lineNumbers=0, $comments=0, $crop=0, $syntaxHL=0, $syntaxHLBlockmode=0)	
+ *  625:     function ext_fixed_lgd($string,$chars)	
+ *  641:     function ext_lnBreakPointWrap($ln,$str)	
+ *  654:     function ext_formatTS($input, $ln, $comments=1, $crop=0)	
+ *  702:     function ext_getFirstTemplate($id,$template_uid=0)		
+ *  722:     function ext_getAllTemplates($id)		
+ *  743:     function ext_compareFlatSetups($default)	
+ *  809:     function ext_categorizeEditableConstants($editConstArray)	
+ *  832:     function ext_getCategoryLabelArray()	
+ *  849:     function ext_getTypeData($type)	
+ *  890:     function ext_getTSCE_config($category)	
+ *  929:     function ext_getKeyImage($key)	
+ *  939:     function ext_getTSCE_config_image($imgConf)	
+ *  963:     function ext_resourceDims()	
+ *  993:     function ext_readDirResources($path)	
+ * 1008:     function readDirectory($path,$type="file")	
+ * 1033:     function ext_fNandV($params)	
+ * 1051:     function ext_printFields($theConstants,$category)	
+ *
+ *              SECTION: Processing input values
+ * 1308:     function ext_regObjectPositions($constants)	
+ * 1323:     function ext_regObjects($pre)	
+ * 1368:     function ext_putValueInConf($key, $var)	
+ * 1391:     function ext_removeValueInConf($key)	
+ * 1407:     function ext_depthKeys($arr,$settings)	
+ * 1442:     function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)	
+ * 1569:     function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)	
+ * 1610:     function ext_prevPageWithTemplate($id,$perms_clause)	
+ * 1626:     function ext_setStar($val)	
+ * 1638:     function ext_detectAndFixExtensionPrefix($value)	
+ *
+ * TOTAL FUNCTIONS: 39
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+require_once(PATH_t3lib."class.t3lib_tstemplate.php");
+
+
+
+
+
+
+
+/**
+ * TSParser extension class to t3lib_TStemplate
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
-
-require_once(PATH_t3lib."class.t3lib_tstemplate.php");
-
 class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 	var $edit_divider = "###MOD_TS:EDITABLE_CONSTANTS###";		// This string is used to indicate the point in a template from where the editable constants are listed. Any vars before this point (if it exists though) is regarded as default values.
@@ -114,10 +178,17 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		// ts analyzer
 	var $templateTitles=array();
 	
-	function flattenSetup($setupArray, $prefix, $resourceFlag)	{
-		// This flattens a hierarchical setuparray to $this->flatSetup
-		// The original function fetched the resource-file if any ("file."). This functions doesn't.
 	
+	/**
+	 * This flattens a hierarchical setuparray to $this->flatSetup
+	 * The original function fetched the resource-file if any ("file."). This functions doesn't.
+	 * 
+	 * @param	[type]		$setupArray: ...
+	 * @param	[type]		$prefix: ...
+	 * @param	[type]		$resourceFlag: ...
+	 * @return	[type]		...
+	 */
+	function flattenSetup($setupArray, $prefix, $resourceFlag)	{
 		if (is_array($setupArray))	{
 			$this->getFileName_backPath=PATH_site;		// Setting absolute prefixed path for relative resources.
 			reset($setupArray);
@@ -126,13 +197,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 					if (is_array($val))	{
 						$this->flattenSetup($val,$prefix.$key, ($key=="file."));
 					} elseif ($resourceFlag && $this->resourceCheck) {
-//						debug($prefix.$key."-".$val);
-//						debug($this->getFileName($val),1);
 						$this->flatSetup[$prefix.$key] = $this->getFileName($val);
-#debug(array($prefix.$key,$this->flatSetup[$prefix.$key],$val,$this->getFileName($val)));
 						if ($this->removeFromGetFilePath && substr($this->flatSetup[$prefix.$key],0,strlen($this->removeFromGetFilePath))==$this->removeFromGetFilePath)	{
 							$this->flatSetup[$prefix.$key] = substr($this->flatSetup[$prefix.$key],strlen($this->removeFromGetFilePath));
-//							debug($this->flatSetup[$prefix.$key],1);
 						}
 					} else {
 						$this->flatSetup[$prefix.$key] = $val;
@@ -141,6 +208,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$all: ...
+	 * @return	[type]		...
+	 */
 	function substituteConstants($all)	{
 		$this->Cmarker=substr(md5(uniqid("")),0,6);
 		reset($this->flatSetup);
@@ -163,6 +237,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $all;	
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$all: ...
+	 * @return	[type]		...
+	 */
 	function substituteCMarkers($all)	{
 		switch($this->constantMode)	{
 			case "const":
@@ -179,6 +260,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $all;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function generateConfig_constants()	{
 			// Parses the constants in $this->const with respect to the constant-editor in this module.
 			// In particular comments in the code are registered and the edit_divider is taken into account.
@@ -219,6 +306,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		
 		return $this->ext_compareFlatSetups($defaultConstants);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$theSetup: ...
+	 * @param	[type]		$theKey: ...
+	 * @return	[type]		...
+	 */
 	function ext_getSetup($theSetup,$theKey)	{
 		$parts = explode(".",$theKey,2);
 //		debug("-----------",1);
@@ -239,6 +334,17 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$depth_in: ...
+	 * @param	[type]		$depthData: ...
+	 * @param	[type]		$parentType: ...
+	 * @param	[type]		$parentValue: ...
+	 * @return	[type]		...
+	 */
 	function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")	{
 		$HTML="";
 		$a=0;
@@ -321,9 +427,26 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $HTML;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$theValue: ...
+	 * @return	[type]		...
+	 */
 	function makeHtmlspecialchars($theValue){
 		return $this->ext_noSpecialCharsOnLabels ? $theValue : htmlspecialchars($theValue);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$depth_in: ...
+	 * @param	[type]		$searchString: ...
+	 * @param	[type]		$keyArray: ...
+	 * @return	[type]		...
+	 */
 	function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)		{
 		reset($arr);
 		$keyArr=array();
@@ -357,6 +480,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}	
 		return $keyArray;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$pid: ...
+	 * @return	[type]		...
+	 */
 	function ext_getRootlineNumber($pid)	{
 		if ($pid && is_array($GLOBALS["rootLine"]))	{
 			reset($GLOBALS["rootLine"]);
@@ -365,6 +495,16 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$depthData: ...
+	 * @param	[type]		$keyArray: ...
+	 * @param	[type]		$first: ...
+	 * @return	[type]		...
+	 */
 	function ext_getTemplateHierarchyArr($arr,$depthData, $keyArray,$first=0)	{
 		reset($arr);
 		$keyArr=array();
@@ -416,6 +556,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}	
 		return $keyArray;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$depthDataArr: ...
+	 * @param	[type]		$pointer: ...
+	 * @return	[type]		...
+	 */
 	function ext_process_hierarchyInfo($depthDataArr,&$pointer)	{
 		$parent = $this->hierarchyInfo[$pointer-1]['templateParent'];
 		while ($pointer>0 && $this->hierarchyInfo[$pointer-1]['templateParent']==$parent)	{
@@ -435,6 +583,18 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $depthDataArr;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$config: ...
+	 * @param	[type]		$lineNumbers: ...
+	 * @param	[type]		$comments: ...
+	 * @param	[type]		$crop: ...
+	 * @param	[type]		$syntaxHL: ...
+	 * @param	[type]		$syntaxHLBlockmode: ...
+	 * @return	[type]		...
+	 */
 	function ext_outputTS($config, $lineNumbers=0, $comments=0, $crop=0, $syntaxHL=0, $syntaxHLBlockmode=0)	{
 		$all="";
 		reset($config);
@@ -452,10 +612,17 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			return $this->ext_formatTS($all,$lineNumbers,$comments,$crop);
 		}
 	}
+	
+	/**
+	 * Returns a new string of max. $chars lenght
+	 * If the string is longer, it will be truncated and prepended with "..."
+	 * $chars must be an integer of at least 4
+	 * 
+	 * @param	[type]		$string: ...
+	 * @param	[type]		$chars: ...
+	 * @return	[type]		...
+	 */
 	function ext_fixed_lgd($string,$chars)	{
-		// Returns a new string of max. $chars lenght
-		// If the string is longer, it will be truncated and prepended with "..."
-		// $chars must be an integer of at least 4
 		if ($chars >= 4)	{
 			if(strlen($string)>$chars)  {
 				return substr($string, 0, $chars-3)."...";
@@ -463,9 +630,27 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $string;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$ln: ...
+	 * @param	[type]		$str: ...
+	 * @return	[type]		...
+	 */
 	function ext_lnBreakPointWrap($ln,$str)	{
 		return '<A href="#" onClick="return brPoint('.$ln.','.($this->ext_lineNumberOffset_mode=="setup"?1:0).');">'.$str.'</a>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$input: ...
+	 * @param	[type]		$ln: ...
+	 * @param	[type]		$comments: ...
+	 * @param	[type]		$crop: ...
+	 * @return	[type]		...
+	 */
 	function ext_formatTS($input, $ln, $comments=1, $crop=0)	{
 		$input = ereg_replace("^[^".chr(10)."]*.","",$input);
 		$input = chop($input);
@@ -506,6 +691,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 //		$output = '<font face=verdana size=1 color=maroon>'.$output.'</font>';
 		return $output;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$template_uid: ...
+	 * @return	[type]		...
+	 */
 	function ext_getFirstTemplate($id,$template_uid=0)		{
 			// Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
 		if (intval($id))	{
@@ -519,6 +712,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			return $row;	// Returns the template row if found.
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$id: ...
+	 * @return	[type]		...
+	 */
 	function ext_getAllTemplates($id)		{
 			// Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
 		if (intval($id))	{
@@ -532,10 +732,15 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			return $outRes;	// Returns the template rows in an array.
 		}
 	}
-	function ext_compareFlatSetups($default)	{
-		// This function compares the flattened constants (default and all).
-		// Returns an array with the constants from the whole template which may be edited by the module. 
 	
+	/**
+	 * This function compares the flattened constants (default and all).
+	 * Returns an array with the constants from the whole template which may be edited by the module.
+	 * 
+	 * @param	[type]		$default: ...
+	 * @return	[type]		...
+	 */
+	function ext_compareFlatSetups($default)	{
 		$editableComments=array();
 		reset($this->flatSetup);
 		while(list($const,$value)=each($this->flatSetup))	{
@@ -594,6 +799,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $editableComments;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$editConstArray: ...
+	 * @return	[type]		...
+	 */
 	function ext_categorizeEditableConstants($editConstArray)	{
 		// Runs through the available constants and fills the $this->categories array with pointers and priority-info
 		reset($editConstArray);
@@ -611,6 +823,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 //		debug($this->categories);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function ext_getCategoryLabelArray()	{
 		// Returns array used for labels in the menu.
 		$retArr = array();
@@ -621,6 +839,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $retArr;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
+	 */
 	function ext_getTypeData($type)	{
 		$retArr = array();
 		$type=trim($type);
@@ -655,6 +880,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 //		debug($retArr);
 		return $retArr;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$category: ...
+	 * @return	[type]		...
+	 */
 	function ext_getTSCE_config($category)	{
 		$catConf=$this->setup["constants"]["TSConstantEditor."][$category."."];
 		$out=array();
@@ -687,9 +919,23 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		$this->helpConfig=$out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$key: ...
+	 * @return	[type]		...
+	 */
 	function ext_getKeyImage($key)	{
 		return '<img src="'.$this->ext_localWebGfxPrefix.'gfx/'.$key.'.gif" align="top" hspace=2>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$imgConf: ...
+	 * @return	[type]		...
+	 */
 	function ext_getTSCE_config_image($imgConf)	{
 		if (substr($imgConf,0,4)=="gfx/")	{
 			$iFile=$this->ext_localGfxPrefix.$imgConf;
@@ -708,6 +954,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$imageInfo=@getImagesize($iFile);
 		return '<img src="'.$tFile.'" '.$imageInfo[3].'>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function ext_resourceDims()	{
 		if ($this->setup["resources"])	{
 			$rArr=explode(",",$this->setup["resources"]);
@@ -731,6 +983,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$path: ...
+	 * @return	[type]		...
+	 */
 	function ext_readDirResources($path)	{
 		$path=trim($path);
 		if ($path && substr($path,0,10)=="fileadmin/")	{
@@ -738,6 +997,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$this->readDirectory(PATH_site.$path);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$path: ...
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
+	 */
 	function readDirectory($path,$type="file")	{
 		if(@is_dir($path))	{
 			$d = @dir($path);
@@ -756,6 +1023,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$params: ...
+	 * @return	[type]		...
+	 */
 	function ext_fNandV($params)	{
 		$fN='data['.$params["name"].']';
 		$fV=$params["value"];
@@ -766,6 +1040,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 		return array($fN,$fV,$params);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$theConstants: ...
+	 * @param	[type]		$category: ...
+	 * @return	[type]		...
+	 */
 	function ext_printFields($theConstants,$category)	{
 			// This functions returns the HTML-code that creates the editor-layout of the module.
 		reset($theConstants);
@@ -1002,9 +1284,27 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		return $output;
 	}
 
-		// ***************************
-		// Processing input values
-		// ***************************
+
+
+
+
+
+
+
+
+
+
+
+	/***************************
+	 *
+	 * Processing input values
+	 *
+	 ***************************/
+
+	/**
+	 * @param	[type]		$constants: ...
+	 * @return	[type]		...
+	 */
 	function ext_regObjectPositions($constants)	{
 			// This runs through the lines of the constants-field of the active template and registers the constants-names and linepositions in an array, $this->objReg
 		$this->raw = explode(chr(10),$constants);
@@ -1013,6 +1313,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$this->objReg=array();		// resetting the objReg if the divider is found!!
 		$this->ext_regObjects("");
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$pre: ...
+	 * @return	[type]		...
+	 */
 	function ext_regObjects($pre)	{
 			// works with regObjectPositions. "expands" the names of the TypoScript objects
 		while (isset($this->raw[$this->rawP]))	{
@@ -1050,6 +1357,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$key: ...
+	 * @param	[type]		$var: ...
+	 * @return	[type]		...
+	 */
 	function ext_putValueInConf($key, $var)	{
 			// Puts the value $var to the TypoScript value $key in the current lines of the templates. 
 			// If the $key is not found in the template constants field, a new line is inserted in the bottom.
@@ -1066,6 +1381,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		$this->changed=1;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$key: ...
+	 * @return	[type]		...
+	 */
 	function ext_removeValueInConf($key)	{
 			// Removes the value in the configuration
 		if (isset($this->objReg[$key]))	{
@@ -1074,6 +1396,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		$this->changed=1;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @param	[type]		$settings: ...
+	 * @return	[type]		...
+	 */
 	function ext_depthKeys($arr,$settings)	{
 		reset($arr);
 		$tsbrArray=array();
@@ -1099,6 +1429,16 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $settings;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$http_post_vars: ...
+	 * @param	[type]		$http_post_files: ...
+	 * @param	[type]		$theConstants: ...
+	 * @param	[type]		$tplRow: ...
+	 * @return	[type]		...
+	 */
 	function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)	{
 		$data=$http_post_vars["data"];
 		$check=$http_post_vars["check"];
@@ -1216,6 +1556,16 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 //		debug($this->objReg);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$typeDat: ...
+	 * @param	[type]		$tplRow: ...
+	 * @param	[type]		$theRealFileName: ...
+	 * @param	[type]		$tmp_name: ...
+	 * @return	[type]		...
+	 */
 	function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)	{
 			// extensions
 		$extList = $typeDat["paramstr"];
@@ -1249,6 +1599,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		return $var;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$perms_clause: ...
+	 * @return	[type]		...
+	 */
 	function ext_prevPageWithTemplate($id,$perms_clause)	{
 		$rootLine = t3lib_BEfunc::BEgetRootLine($id,$perms_clause?" AND ".$perms_clause:"");
 		reset($rootLine);
@@ -1258,11 +1616,25 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$val: ...
+	 * @return	[type]		...
+	 */
 	function ext_setStar($val)	{
 		$fParts = explode(".",strrev($val),2);
 		$val=ereg_replace("_[0-9][0-9]$","",strrev($fParts[1]))."*.".strrev($fParts[0]);
 		return $val;	
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$value: ...
+	 * @return	[type]		...
+	 */
 	function ext_detectAndFixExtensionPrefix($value)	{
 		if (substr($value,0,4)=="EXT:")	{
 			$parts = explode("/",substr($value,4),2);
@@ -1277,7 +1649,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 }
 
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_tsparser_ext.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_tsparser_ext.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tsparser_ext.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tsparser_ext.php']);
 }
 ?>
