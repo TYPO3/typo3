@@ -24,12 +24,37 @@
 ***************************************************************/
 
 
-function validateForm(theFormname,theFieldlist,goodMess,badMess)	{
+function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 	if (document[theFormname] && theFieldlist)	{
 		var index=1;
 		var theField = split(theFieldlist, ",", index);
 		var msg="";
+		var theEreg = '';
+		var theEregMsg = '';
+		var specialMode = '';
+
 		while (theField) {
+			theEreg = '';
+			specialMode = '';
+
+				// Check special modes:
+			if (theField == '_EREG')	{	// EREG mode: _EREG,[error msg],[JS ereg],[fieldname],[field Label]
+				specialMode = theField;
+
+				index++;
+				theEregMsg = unescape(split(theFieldlist, ",", index));
+				index++;
+				theEreg = unescape(split(theFieldlist, ",", index));
+			} else if (theField == '_EMAIL')	{
+				specialMode = theField;
+			}
+
+				// Get real field name if special mode has been set:
+			if (specialMode)	{
+				index++;
+				theField = split(theFieldlist, ",", index);
+			}
+
 			index++;
 			theLabel = unescape(split(theFieldlist, ",", index));
 			theField = unescape(theField);
@@ -69,8 +94,25 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess)	{
 					default:
 						value=1;
 				}
-				if (!value)	{
-					msg+="\n"+theLabel;
+
+				switch(specialMode)	{
+					case "_EMAIL":
+						var theRegEx_notValid = new RegExp("(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)", "gi");
+						var theRegEx_isValid = new RegExp("^.+\@[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,4}|[0-9]{1,3})$","");
+						if (!theRegEx_isValid.test(value))	{	// This part was supposed to be a part of the condition: " || theRegEx_notValid.test(value)" - but I couldn't make it work (Mozilla Firefox, linux) - Anyone knows why?
+							msg+="\n"+theLabel+' ('+(emailMess ? unescape(emailMess) : 'Email address not valid!')+')';
+						}
+					break;
+					case "_EREG":
+						var theRegEx_isValid = new RegExp(theEreg,"");
+						if (!theRegEx_isValid.test(value))	{
+							msg+="\n"+theLabel+' ('+theEregMsg+')';
+						}
+					break;
+					default:
+						if (!value)	{
+							msg+="\n"+theLabel;
+						}
 				}
 			}
 			index++;

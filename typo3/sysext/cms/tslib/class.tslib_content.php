@@ -1505,27 +1505,30 @@ class tslib_cObj {
 							}
 							$temp[2] = implode(',',$temp_accum);
 						}
+						list($temp[3])= explode('|',$dAA['specialEval.'] ? $this->stdWrap($dAA['specialEval'],$dAA['specialEval.']) : $dAA['specialEval']);
+
 							// adding the form entry to the dataArray
 						$dataArr[] = implode('|',$temp);
 					}
 				}
 			}
 		}
-		$attachmentCounter='';
-		$hiddenfields='';
-		$fieldlist=Array();
+
+		$attachmentCounter = '';
+		$hiddenfields = '';
+		$fieldlist = Array();
 		$propertyOverride = Array();
 		$fieldname_hashArray = Array();
-		$cc=0;
-		reset($dataArr);
-		while(list(,$val)=each($dataArr)) {
+		$cc = 0;
+
+		foreach($dataArr as $val)	{
 			$cc++;
 			$confData=Array();
 			if (is_array($formData)) {
 				$parts = $val;
-				$val=1;    // true...
+				$val = 1;    // true...
 			} else {
-				$val=trim($val);
+				$val = trim($val);
 				$parts = explode('|',$val);
 			}
 			if ($val && strcspn($val,'#/')) {
@@ -1688,7 +1691,7 @@ class tslib_cObj {
 							$confData['fieldname'], htmlspecialchars($value));
 					break;
 					case 'property':
-						if (t3lib_div::inList('type,locationData,goodMess,badMess',$confData['fieldname']))	{
+						if (t3lib_div::inList('type,locationData,goodMess,badMess,emailMess',$confData['fieldname']))	{
 							$value=trim($parts[2]);
 							$propertyOverride[$confData['fieldname']] = $value;
 							$conf[$confData['fieldname']] = $value;
@@ -1713,6 +1716,39 @@ class tslib_cObj {
 					break;
 				}
 				if ($fieldCode)	{
+
+						// Checking for special evaluation modes:
+					if (t3lib_div::inList('textarea,input,password',$confData['type']) && strlen(trim($parts[3])))	{
+						$modeParameters = t3lib_div::trimExplode(':',$parts[3]);
+					} else {
+						$modeParameters = array();
+					}
+
+						// Adding evaluation based on settings:
+					switch((string)$modeParameters[0])	{
+						case 'EREG':
+							$fieldlist[] = '_EREG';
+							$fieldlist[] = rawurlencode($modeParameters[1]);
+							$fieldlist[] = rawurlencode($modeParameters[2]);
+							$fieldlist[] = rawurlencode($confData['fieldname']);
+							$fieldlist[] = rawurlencode($confData['label']);
+							$confData['required'] = 1;	// Setting this so "required" layout is used.
+						break;
+						case 'EMAIL':
+							$fieldlist[] = '_EMAIL';
+							$fieldlist[] = rawurlencode($confData['fieldname']);
+							$fieldlist[] = rawurlencode($confData['label']);
+							$confData['required'] = 1;	// Setting this so "required" layout is used.
+						break;
+						default:
+							if ($confData['required'] && $confData['type']!='check')	{
+								$fieldlist[] = rawurlencode($confData['fieldname']);
+								$fieldlist[] = rawurlencode($confData['label']);
+							}
+						break;
+					}
+
+						// Getting template code:
 					$fieldCode = $this->stdWrap($fieldCode, $conf['fieldWrap.']);
 					$labelCode = $this->stdWrap($confData['label'], $conf['labelWrap.']);
 					$commentCode = $this->stdWrap($confData['label'], $conf['commentWrap.']); // RTF
@@ -1738,12 +1774,7 @@ class tslib_cObj {
 					$result = str_replace('###FIELD###',$fieldCode,$result);
 					$result = str_replace('###LABEL###',$labelCode,$result);
 					$result = str_replace('###COMMENT###',$commentCode,$result); //RTF
-					$content.=$result;
-						// Required:
-					if ($confData['required'] && $confData['type']!='check')	{
-						$fieldlist[]=rawurlencode($confData['fieldname']);
-						$fieldlist[]=rawurlencode($confData['label']);
-					}
+					$content.= $result;
 				}
 			}
 		}
@@ -1815,7 +1846,7 @@ class tslib_cObj {
 			// Formname;
 		$formname = $GLOBALS['TSFE']->uniqueHash();
 		if ($conf['REQ'])	{
-			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode($fieldlist,',').'\',\''.rawurlencode($conf['goodMess']).'\',\''.rawurlencode($conf['badMess']).'\')"';
+			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode($fieldlist,',').'\',\''.rawurlencode($conf['goodMess']).'\',\''.rawurlencode($conf['badMess']).'\',\''.rawurlencode($conf['emailMess']).'\')"';
 			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.validateform.js"></script>';
 		} else $validateForm='';
 

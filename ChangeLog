@@ -1,5 +1,9 @@
 2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added support for JavaScript regular expression evaluation in FORM cObject. Means that fields in formmails can now be checked for a pattern and not only for "required".
+
+2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added possibility to copy database/file elements attached to records; You can now click the icon of these elements in the editing forms and get a (limited) context menu for these elements.
 	* Fixed some other bugs around.
 

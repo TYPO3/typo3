@@ -424,7 +424,7 @@ class SC_wizard_forms {
 						// Field type selector:
 					$opt=array();
 					$opt[]='<option value=""></option>';
-					$types = explode(',','input,textarea,select,check,radio,password,file,hidden,submit');
+					$types = explode(',','input,textarea,select,check,radio,password,file,hidden,submit,property');
 					foreach($types as $t)	{
 						$opt[]='
 								<option value="'.$t.'"'.($confData['type']==$t?' selected="selected"':'').'>'.$LANG->getLL('forms_type_'.$t,1).'</option>';
@@ -441,7 +441,7 @@ class SC_wizard_forms {
 					}
 
 						// Required checkbox:
-					if (!t3lib_div::inList(',hidden,submit',$confData['type']))		{
+					if (!t3lib_div::inList('check,hidden,submit',$confData['type']))		{
 						$temp_cells[$LANG->getLL('forms_required')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][required]" value="1"'.($confData['required']?' checked="checked"':'').' title="'.$LANG->getLL('forms_required',1).'" />';
 					}
 
@@ -477,6 +477,17 @@ class SC_wizard_forms {
 							$temp_cells[$LANG->getLL('forms_size')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][size]" value="'.htmlspecialchars($confData['size']).'" title="'.$LANG->getLL('forms_size',1).'" />';
 							$temp_cells[$LANG->getLL('forms_autosize')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][autosize]" value="1"'.($confData['autosize']?' checked="checked"':'').' title="'.$LANG->getLL('forms_autosize',1).'" />';
 							$temp_cells[$LANG->getLL('forms_multiple')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][multiple]" value="1"'.($confData['multiple']?' checked="checked"':'').' title="'.$LANG->getLL('forms_multiple',1).'" />';
+						break;
+					}
+
+						// Field configuration depending on the fields type:
+					switch((string)$confData['type'])	{
+						case 'textarea':
+						case 'input':
+						case 'password':
+							if (strlen(trim($confData['specialEval'])))	{
+								$hiddenFields[] = '<input type="hidden" name="FORMCFG[c]['.(($k+1)*2).'][specialEval]" value="'.htmlspecialchars($confData['specialEval']).'" />';
+							}
 						break;
 					}
 
@@ -722,11 +733,19 @@ class SC_wizard_forms {
 							if (intval($vv['cols']))	$tArr[0]=intval($vv['cols']);
 							if (intval($vv['rows']))	$tArr[1]=intval($vv['rows']);
 							if (trim($vv['extra']))		$tArr[2]=trim($vv['extra']);
+							if (strlen($vv['specialEval']))	{
+								$thisLine[2] = '';	// Preset blank default value so position 3 can get a value...
+								$thisLine[3] = $vv['specialEval'];
+							}
 						break;
 						case 'input':
 						case 'password':
 							if (intval($vv['size']))	$tArr[0]=intval($vv['size']);
 							if (intval($vv['max']))		$tArr[1]=intval($vv['max']);
+							if (strlen($vv['specialEval']))	{
+								$thisLine[2] = '';	// Preset blank default value so position 3 can get a value...
+								$thisLine[3] = $vv['specialEval'];
+							}
 						break;
 						case 'file':
 							if (intval($vv['size']))	$tArr[0]=intval($vv['size']);
@@ -757,7 +776,6 @@ class SC_wizard_forms {
 				$inLines[]=ereg_replace("[\n\r]*",'',implode(' | ',$thisLine));
 			}
 		}
-
 			// Finally, implode the lines into a string, and return it:
 		return implode(chr(10),$inLines);
 	}
@@ -828,11 +846,13 @@ class SC_wizard_forms {
 							$confData['cols'] = $fParts[1];
 							$confData['rows'] = $fParts[2];
 							$confData['extra'] = strtoupper($fParts[3])=='OFF' ? 'OFF' : '';
+							$confData['specialEval'] = trim($parts[3]);
 						break;
 						case 'input':
 						case 'password':
 							$confData['size'] = $fParts[1];
 							$confData['max'] = $fParts[2];
+							$confData['specialEval'] = trim($parts[3]);
 						break;
 						case 'file':
 							$confData['size'] = $fParts[1];
