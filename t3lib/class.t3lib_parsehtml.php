@@ -43,7 +43,7 @@
  *
  *              SECTION: Parsing HTML code
  *  223:     function splitIntoBlock($tag,$content,$eliminateExtraEndTags=0)	
- *  284:     function splitIntoBlockRecursiveProc($tag,$content,&$procObj,$callBackContent,$callBackTags,$level=0)	
+ *  284:     function splitIntoBlockRecursiveProc($tag,$content,&$procObj,$callBackContent,$callBackTags,$level=0)
  *  319:     function splitTags($tag,$content)	
  *  353:     function getAllParts($parts,$tag_parts=1,$include_tag=1)	
  *  372:     function removeFirstAndLastTag($str)	
@@ -51,7 +51,7 @@
  *  406:     function getFirstTagName($str,$preserveCase=FALSE)	
  *  421:     function get_tag_attributes($tag,$deHSC=0)	
  *  463:     function split_tag_attributes($tag)	
- *  506:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')	
+ *  506:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')
  *
  *              SECTION: Clean HTML code
  *  597:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())	
@@ -291,12 +291,13 @@ class t3lib_parsehtml {
 				$tagsArray['tag_end'] = '</'.$firstTagName.'>';
 				$tagsArray['tag_name'] = strtolower($firstTagName);
 				$tagsArray['add_level'] = 1;
+				$tagsArray['content'] = $this->splitIntoBlockRecursiveProc($tag,$this->removeFirstAndLastTag($v),$procObj,$callBackContent,$callBackTags,$level+$tagsArray['add_level']);
 
 				if ($callBackTags)	$tagsArray = $procObj->$callBackTags($tagsArray,$level);
 
 				$parts[$k] =
 					$tagsArray['tag_start'].
-					$this->splitIntoBlockRecursiveProc($tag,$this->removeFirstAndLastTag($v),$procObj,$callBackContent,$callBackTags,$level+$tagsArray['add_level']).
+					$tagsArray['content'].
 					$tagsArray['tag_end'];
 			} else {
 				if ($callBackContent)	$parts[$k] = $procObj->$callBackContent($parts[$k],$level);
