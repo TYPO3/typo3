@@ -495,7 +495,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 	
 					<strong>4: All Configuration</strong>
 					This gives you access to any of the configuration options in the TYPO3_CONF_VARS array. Every option is also presented with a comment explaining what it does.
-	
+
 					<strong>5: typo3temp/</strong>
 					Here you can manage the files in typo3temp/ folder in a simple manner. typo3temp/ contains temporary files, which may still be used by the website, but some may not. By searching for files with old access-dates, you can possibly manage to delete unused files rather than files still used. However if you delete a temporary file still in use, it's just regenerated as long as you make sure to clear the cache tables afterwards.
 					");
@@ -795,7 +795,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		$this->checkExtensions();
 
 		if (TYPO3_OS=="WIN")	{
-			$paths=array($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_path_lzw"], $GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_path"], "c:\\php\\imagemagick\\");
+			$paths=array($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_path_lzw"], $GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_path"], "c:\\php\\imagemagick\\", 'c:\\apache\\ImageMagick\\');
 		} else {
 			$paths=array($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_path_lzw"], $GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_path"], "/usr/local/bin/","/usr/bin/","/usr/X11R6/bin/");
 		}
