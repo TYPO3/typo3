@@ -39,10 +39,10 @@
 			<label index="userInfo">Hai avuto accesso come utente:</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="introtext">Système de gestion de contenu Web</label>
+			<label index="introtext">Système de Gestion de Contenu Web</label>
 			<label index="introtext2">Voici une brève description des modules disponibles:</label>
 			<label index="endText">Les fonctions peuvent varier selon votre site web et selon vos droits d'accès.</label>
-			<label index="userInfo">Vous avez ouvert votre session en tant que:</label>
+			<label index="userInfo">Vous êtes connecté sous:</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="introtext">Web Content Management System&lt;br /&gt;Sistema de Administración de Contenido</label>
@@ -195,8 +195,8 @@
 		<languageKey index="he" type="array">
 			<label index="introtext">מערכת ניהול תוכן ברשת</label>
 			<label index="introtext2">להלן תקציר של מודולים זמינים:</label>
-			<label index="endText">תכונות יכולות להשתנות תלוי באתר אינטרנט שלכם והרשאות</label>
-			<label index="userInfo">&lt;font size=1&gt;משתמש: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+			<label index="endText">תכונות יכולות להשתנות תלוי באתר אינטרנט והרשאות</label>
+			<label index="userInfo">נכנסת למערכת בתור:</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 			<label index="introtext">Система керування веб-контентом</label>

@@ -404,7 +404,7 @@
 			<label index="newPassword_failed">La password NON è stata aggiornata perché non hai immesso la stessa password in entrambi i campi.</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="UserSettings">Paramètres utilisateur</label>
+			<label index="UserSettings">Paramètres Utilisateur</label>
 			<label index="language">Langue</label>
 			<label index="lang_default">English (Anglais)</label>
 			<label index="lang_dk">Danois</label>
@@ -435,7 +435,7 @@
 			<label index="lang_hk">Chinois (Traditionnel)</label>
 			<label index="lang_eu">Basque</label>
 			<label index="lang_bg">Bulgare</label>
-			<label index="lang_br">Portugais (Brésil)</label>
+			<label index="lang_br">Portugais Brésilien</label>
 			<label index="lang_et">Estonien</label>
 			<label index="lang_ar">Arabe</label>
 			<label index="lang_he">Hébreux</label>
@@ -446,41 +446,41 @@
 			<label index="lang_ca">Catalan</label>
 			<label index="lang_ba">Bosniaque</label>
 			<label index="lang_kr">Koréen</label>
-			<label index="default">Par défaut</label>
-			<label index="simulate">Simuler un utilisateur Backend</label>
+			<label index="default">Défaut</label>
+			<label index="simulate">Simuler un utilisateur backend</label>
 			<label index="opening">Lancement</label>
 			<label index="personal_data">Données personnelles</label>
-			<label index="showThumbs">Afficher le catalogue par défaut</label>
-			<label index="condensedMode">Utiliser le mode condesé dans l'interface d'administration&lt;br /&gt;(pour les petits écrans)</label>
+			<label index="showThumbs">Afficher les vignettes par défaut</label>
+			<label index="condensedMode">Utiliser le mode condensé dans l'interface d'administration&lt;br /&gt;(pour les petits écrans)</label>
 			<label index="noMenuMode">Choisir le mode de navigation</label>
-			<label index="noMenuMode_def">Le menu dans la frame de gauche (défaut)</label>
+			<label index="noMenuMode_def">Menu dans la frame de gauche (défaut)</label>
 			<label index="noMenuMode_sel">Boite de séléction dans la frame du haut</label>
 			<label index="noMenuMode_icons">Icônes dans la frame du haut</label>
-			<label index="startInTaskCenter">Démarrer dans le module 'Centre de tâches'</label>
+			<label index="startInTaskCenter">Démarrer dans le module 'Centre de Tâches'</label>
 			<label index="emailMeAtLogin">M'avertir par e-mail en cas de connexion avec&lt;br /&gt;mon compte utilisateur</label>
 			<label index="helpText">Afficher l'aide textuelle lorsqu'elle existe</label>
 			<label index="maxTitleLen">Longueur max. de titre</label>
-			<label index="edit_showFieldHelp">Mode d'aide des champs</label>
-			<label index="edit_showFieldHelp_icon">Afficher seulement l'icône</label>
-			<label index="edit_showFieldHelp_message">Afficher des messages complets</label>
-			<label index="edit_wideDocument">Fond du docuement large</label>
-			<label index="edit_RTE">Activer l'éditeur Rich Text (MSIE uniquement)</label>
+			<label index="edit_showFieldHelp">Mode d'Aide Contextuelle (CSH)</label>
+			<label index="edit_showFieldHelp_icon">Afficher l'icône d'aide uniquement</label>
+			<label index="edit_showFieldHelp_message">Afficher les messages complets</label>
+			<label index="edit_wideDocument">Fond du document large</label>
+			<label index="edit_RTE">Activer (si possible) l'éditeur de texte avancé (RTE)</label>
 			<label index="edit_docModuleUpload">Uploader des fichier directement dans le module Doc</label>
 			<label index="edit_functions">Editer</label>
-			<label index="disableCMlayers">Afficher les menus de contenu (popup)</label>
-			<label index="setToStandard">Retour valeurs par défaut</label>
+			<label index="disableCMlayers">Neutraliser les menus de contexte volants (popup)</label>
+			<label index="setToStandard">Retour des valeurs par défaut</label>
 			<label index="functions">Fonctions avancées</label>
-			<label index="copyLevels">&lt;b&gt;Copie recursive:&lt;/b&gt; Entrer le nombre de sous-page&lt;br /&gt; inclu lors de la copie d'une page.</label>
-			<label index="recursiveDelete">&lt;b&gt;Supprimer recursif&lt;/b&gt; Permettre de supprimer TOUTES&lt;br /&gt; les sous-pages lors de la suppression d'une page</label>
-			<label index="activateChanges">Note! Pour activer les changements, veuillez recharger l'interface. (ex. logout et login une nouvelle fois).</label>
+			<label index="copyLevels">&lt;b&gt;Copie recursive:&lt;/b&gt; Entrer le nombre de sous-page&lt;br /&gt; à inclure, lorsqu'une page est copiée</label>
+			<label index="recursiveDelete">&lt;b&gt;Supprimer recursif(!):&lt;/b&gt; Autorise la suppression de TOUTES&lt;br /&gt; les sous-pages lorsqu'une page est effacée</label>
+			<label index="activateChanges">Note! Pour activer la plupart des changements, veuillez recharger l'interface d'administration (ex. déconnexion et connexion à nouveau).</label>
 			<label index="levels">niveaux</label>
 			<label index="beUser_realName">Votre nom</label>
 			<label index="beUser_email">Votre adresse e-mail</label>
-			<label index="save">Enregistrer configuration</label>
+			<label index="save">Enregistrer la configuration</label>
 			<label index="newPassword">Nouveau mot de passe</label>
 			<label index="newPasswordAgain">Nouveau mot de passe, encore</label>
-			<label index="newPassword_ok">Le mot de passe est mis à jour</label>
-			<label index="newPassword_failed">Le mot de passe n'est PAS mis à jour car vous n'avez pas entrer deux fois la même valeur.</label>
+			<label index="newPassword_ok">Le mot de passe a été mis-à-jour</label>
+			<label index="newPassword_failed">Le mot de passe n'a PAS été mis-à-jour car vous n'avez pas entré deux fois la même mot de passe.</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="UserSettings">Configuración del usuario</label>
@@ -1049,6 +1049,12 @@
 			<label index="lang_ar">Arabiska</label>
 			<label index="lang_he">Hebreiska</label>
 			<label index="lang_ua">Ukrainiska</label>
+			<label index="lang_lv">Latviska</label>
+			<label index="lang_jp">Japanska</label>
+			<label index="lang_vn">Vietnamesiska</label>
+			<label index="lang_ca">Kataloniska</label>
+			<label index="lang_ba">Bosniska</label>
+			<label index="lang_kr">Koreanska</label>
 			<label index="default">Standard</label>
 			<label index="simulate">Simulera backend användare</label>
 			<label index="opening">Starta upp</label>
@@ -1175,8 +1181,14 @@
 			<label index="lang_ar">Арабский</label>
 			<label index="lang_he">Иврит</label>
 			<label index="lang_ua">Украинский</label>
-			<label index="default">По умолчанию</label>
-			<label index="simulate">Симулировать внутреннего пользователя</label>
+			<label index="lang_lv">Латышский</label>
+			<label index="lang_jp">Японский</label>
+			<label index="lang_vn">Вьетнамский</label>
+			<label index="lang_ca">Каталанский</label>
+			<label index="lang_ba">Боснийский</label>
+			<label index="lang_kr">Корейский</label>
+			<label index="default">Стандартный</label>
+			<label index="simulate">Имитировать внутреннего пользователя</label>
 			<label index="opening">Старт системы</label>
 			<label index="personal_data">Личные данные</label>
 			<label index="showThumbs">Показывать миниатюры картинок по умолчанию</label>
@@ -1745,6 +1757,55 @@
 		<languageKey index="gr" type="array">
 		</languageKey>
 		<languageKey index="hk" type="array">
+			<label index="UserSettings">使用者設定</label>
+			<label index="language">語言</label>
+			<label index="lang_default">英文</label>
+			<label index="lang_dk">丹麥文</label>
+			<label index="lang_de">德文</label>
+			<label index="lang_no">挪威文</label>
+			<label index="lang_it">意大利文</label>
+			<label index="lang_fr">法文</label>
+			<label index="lang_es">西班牙文</label>
+			<label index="lang_nl">荷蘭文</label>
+			<label index="lang_cz">捷克文</label>
+			<label index="lang_pl">波蘭文</label>
+			<label index="lang_si">斯洛文尼亞文</label>
+			<label index="lang_fi">芬蘭文</label>
+			<label index="lang_tr">土耳其文</label>
+			<label index="lang_se">瑞典文</label>
+			<label index="lang_pt">葡萄牙文</label>
+			<label index="lang_ru">俄羅斯文</label>
+			<label index="lang_ro">羅馬尼亞文</label>
+			<label index="lang_ch">中文（簡體）</label>
+			<label index="lang_sk">斯洛伐克文</label>
+			<label index="lang_lt">立陶宛文</label>
+			<label index="lang_is">冰島文</label>
+			<label index="lang_hr">克羅地亞文</label>
+			<label index="lang_hu">匈牙利文</label>
+			<label index="lang_gl">格陵蘭文</label>
+			<label index="lang_th">泰文</label>
+			<label index="lang_gr">希臘文</label>
+			<label index="lang_hk">中文（繁體）</label>
+			<label index="lang_eu">巴斯克文</label>
+			<label index="lang_bg">保加利亞文</label>
+			<label index="lang_br">巴西葡萄牙文</label>
+			<label index="lang_et">愛沙尼亞文</label>
+			<label index="lang_ar">亞拉伯文</label>
+			<label index="lang_he">希伯來文</label>
+			<label index="lang_ua">鳥克蘭文</label>
+			<label index="lang_lv">拉脱維亞文</label>
+			<label index="lang_jp">日文</label>
+			<label index="lang_vn">越南文</label>
+			<label index="lang_ca">西班牙文</label>
+			<label index="lang_ba">波斯尼亞文</label>
+			<label index="lang_kr">韓文</label>
+			<label index="default">預設</label>
+			<label index="simulate">模擬後勤使用者</label>
+			<label index="opening">開始</label>
+			<label index="personal_data">個人資料</label>
+			<label index="showThumbs">預設顯示小圖示</label>
+			<label index="condensedMode">在後勤中使用密集模式&lt;br /&gt;（給小瑩幕用）</label>
+			<label index="noMenuMode">選取溜模式</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -1790,6 +1851,9 @@
 			<label index="lang_lv">Letoniano</label>
 			<label index="lang_jp">Japonês</label>
 			<label index="lang_vn">Vietnamita</label>
+			<label index="lang_ca">Catalão</label>
+			<label index="lang_ba">Bósnio</label>
+			<label index="lang_kr">Coreano</label>
 			<label index="default">Padrão</label>
 			<label index="simulate">Simular usuário de administração</label>
 			<label index="opening">Iniciar</label>
@@ -1808,7 +1872,7 @@
 			<label index="edit_showFieldHelp_icon">Exibir somente ícone de ajuda</label>
 			<label index="edit_showFieldHelp_message">Exibir mensagem de texto completo</label>
 			<label index="edit_wideDocument">Fundo de documento amplo</label>
-			<label index="edit_RTE">Ativar Rich Text Editor (Somente MSIE)</label>
+			<label index="edit_RTE">Ativar Rich Text Editor (se disponível)</label>
 			<label index="edit_docModuleUpload">Subir arquivos diretamente no Doc-module</label>
 			<label index="edit_functions">Editar</label>
 			<label index="disableCMlayers">Desativar Menus Contextuais Popup</label>
@@ -1887,6 +1951,82 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="UserSettings">הגדרות משתמש</label>
+			<label index="language">שפה</label>
+			<label index="lang_default">אנגלית</label>
+			<label index="lang_dk">דנית</label>
+			<label index="lang_de">גרמנית</label>
+			<label index="lang_no">נורווגית</label>
+			<label index="lang_it">איטלקית</label>
+			<label index="lang_fr">צרפתית</label>
+			<label index="lang_es">ספרדית</label>
+			<label index="lang_nl">הולנדית</label>
+			<label index="lang_cz">צ'כית</label>
+			<label index="lang_pl">פולית</label>
+			<label index="lang_si">סלובנית</label>
+			<label index="lang_fi">פינית</label>
+			<label index="lang_tr">טורקית</label>
+			<label index="lang_se">שוודית</label>
+			<label index="lang_pt">פורטוגזית</label>
+			<label index="lang_ru">רוסית</label>
+			<label index="lang_ro">רומנית</label>
+			<label index="lang_ch">סינית (פשוטה)</label>
+			<label index="lang_sk">סלובקית</label>
+			<label index="lang_lt">ליטאית</label>
+			<label index="lang_is">איסלנדית</label>
+			<label index="lang_hr">קרואטית</label>
+			<label index="lang_hu">הונגרית</label>
+			<label index="lang_gl">גרינלנדית</label>
+			<label index="lang_th">תאילנדית</label>
+			<label index="lang_gr">יוונית</label>
+			<label index="lang_hk">סינית</label>
+			<label index="lang_eu">בסקית</label>
+			<label index="lang_bg">בולגרית</label>
+			<label index="lang_br">פורטוגזית ברזילאית</label>
+			<label index="lang_et">אסתונית</label>
+			<label index="lang_ar">ערבית</label>
+			<label index="lang_he">עברית</label>
+			<label index="lang_ua">אוקראינית</label>
+			<label index="lang_lv">לטווית</label>
+			<label index="lang_jp">יפנית</label>
+			<label index="lang_vn">וויאטנמית</label>
+			<label index="lang_ca">קטלונית</label>
+			<label index="lang_ba">בוסנית</label>
+			<label index="lang_kr">קוראנית</label>
+			<label index="default">ברירת מחדל</label>
+			<label index="simulate">לחקות משתמש ממשק אחורי</label>
+			<label index="opening">התחל</label>
+			<label index="personal_data">מידע אישי</label>
+			<label index="showThumbs">הצג תמונות קטנות כברירת מחדל</label>
+			<label index="condensedMode">השתמש במצב מרוכז בממשק אחורי</label>
+			<label index="noMenuMode">בחירת אופן ניווט</label>
+			<label index="noMenuMode_def">תפריט במסגרת צדדית (ברירת מחדל)</label>
+			<label index="noMenuMode_sel">קופסת בחירה במסגרת עליונה</label>
+			<label index="noMenuMode_icons">סמלים במסגרת עליונה</label>
+			<label index="startInTaskCenter">התחל במודול &quot;מרכז משימות&quot;</label>
+			<label index="emailMeAtLogin">להודיע לי בדוא''ל כאשר מישהוא נכנס תחת שם המשתמש שלי</label>
+			<label index="helpText">הצג עזרה כאשר היא זמינה</label>
+			<label index="maxTitleLen">אורך כותרת מירבי</label>
+			<label index="edit_showFieldHelp">מצב עזרה תלוית הקשר, מסך עזרה שמתאים את תוכנו למצב בו נמצא המשתמש</label>
+			<label index="edit_showFieldHelp_icon">הצג סמל עזרה בלבד</label>
+			<label index="edit_showFieldHelp_message">הצג הודעת טקסט שלמה</label>
+			<label index="edit_wideDocument">רקע רחב של מסמך</label>
+			<label index="edit_docModuleUpload">העלת קבצים ישר ממודול &quot;מסמך&quot;</label>
+			<label index="edit_functions">עריכה</label>
+			<label index="disableCMlayers">נטרל חלונות קופצות של תפריטי קונטקסט</label>
+			<label index="setToStandard">אפס כל ערכים לברירת מחדל</label>
+			<label index="functions">מתקדם</label>
+			<label index="copyLevels">&lt;b&gt;העתקה רקורסיבית:&lt;/b&gt; הכנס מספר של תת-רמות של דף שצריך לכלול כאשר הדף מועתק</label>
+			<label index="recursiveDelete">&lt;b&gt;מחיקה רקורסיבית (!)&lt;/b&gt; אפשר מחיקה של כל תת-דפים בעט מחיקה של דף</label>
+			<label index="activateChanges">הערה! בכדי להפעיל רוב השינויים, נא לטעון ממשק אחורי מחדש (כגון לצאת ולהכנס שוב)</label>
+			<label index="levels">רמות</label>
+			<label index="beUser_realName">שם</label>
+			<label index="beUser_email">דוא''ל</label>
+			<label index="save">שמור הגדרות</label>
+			<label index="newPassword">סיסמה חדשה</label>
+			<label index="newPasswordAgain">סיסמה חדשה, שוב</label>
+			<label index="newPassword_ok">סיסמה עודכנה</label>
+			<label index="newPassword_failed">סיסמה לא עודכנה משום שלא הקלדת אותה סיסמה פעמיים.</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -2925,11 +3065,11 @@
 			<label index="emailMeAtLogin" type="integer">242513283</label>
 			<label index="helpText" type="integer">40561585</label>
 			<label index="maxTitleLen" type="integer">197742795</label>
-			<label index="edit_showFieldHelp" type="integer">208596502</label>
+			<label index="edit_showFieldHelp" type="integer">156260410</label>
 			<label index="edit_showFieldHelp_icon" type="integer">174937206</label>
 			<label index="edit_showFieldHelp_message" type="integer">92057802</label>
 			<label index="edit_wideDocument" type="integer">47472072</label>
-			<label index="edit_RTE" type="integer">175965839</label>
+			<label index="edit_RTE" type="integer">16864569</label>
 			<label index="edit_docModuleUpload" type="integer">172878204</label>
 			<label index="edit_functions" type="integer">131916066</label>
 			<label index="disableCMlayers" type="integer">256285755</label>
@@ -2946,6 +3086,12 @@
 			<label index="newPasswordAgain" type="integer">985181</label>
 			<label index="newPassword_ok" type="integer">249160755</label>
 			<label index="newPassword_failed" type="integer">202693756</label>
+			<label index="lang_lv" type="integer">124440629</label>
+			<label index="lang_jp" type="integer">254987990</label>
+			<label index="lang_vn" type="integer">129503150</label>
+			<label index="lang_ca" type="integer">151036235</label>
+			<label index="lang_ba" type="integer">165586767</label>
+			<label index="lang_kr" type="integer">218880828</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="UserSettings" type="integer">46681867</label>
@@ -3051,11 +3197,11 @@
 			<label index="emailMeAtLogin" type="integer">242513283</label>
 			<label index="helpText" type="integer">40561585</label>
 			<label index="maxTitleLen" type="integer">197742795</label>
-			<label index="edit_showFieldHelp" type="integer">208596502</label>
+			<label index="edit_showFieldHelp" type="integer">156260410</label>
 			<label index="edit_showFieldHelp_icon" type="integer">174937206</label>
 			<label index="edit_showFieldHelp_message" type="integer">92057802</label>
 			<label index="edit_wideDocument" type="integer">47472072</label>
-			<label index="edit_RTE" type="integer">175965839</label>
+			<label index="edit_RTE" type="integer">16864569</label>
 			<label index="edit_docModuleUpload" type="integer">172878204</label>
 			<label index="edit_functions" type="integer">131916066</label>
 			<label index="disableCMlayers" type="integer">256285755</label>
@@ -3072,6 +3218,12 @@
 			<label index="newPasswordAgain" type="integer">985181</label>
 			<label index="newPassword_ok" type="integer">249160755</label>
 			<label index="newPassword_failed" type="integer">202693756</label>
+			<label index="lang_lv" type="integer">124440629</label>
+			<label index="lang_jp" type="integer">254987990</label>
+			<label index="lang_vn" type="integer">129503150</label>
+			<label index="lang_ca" type="integer">151036235</label>
+			<label index="lang_ba" type="integer">165586767</label>
+			<label index="lang_kr" type="integer">218880828</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="UserSettings" type="integer">46681867</label>
@@ -3607,6 +3759,55 @@
 		<languageKey index="gr" type="array">
 		</languageKey>
 		<languageKey index="hk" type="array">
+			<label index="UserSettings" type="integer">46681867</label>
+			<label index="language" type="integer">77154959</label>
+			<label index="lang_default" type="integer">126116771</label>
+			<label index="lang_dk" type="integer">129789717</label>
+			<label index="lang_de" type="integer">141280017</label>
+			<label index="lang_no" type="integer">228937930</label>
+			<label index="lang_it" type="integer">79597062</label>
+			<label index="lang_fr" type="integer">181544439</label>
+			<label index="lang_es" type="integer">213207052</label>
+			<label index="lang_nl" type="integer">109835111</label>
+			<label index="lang_cz" type="integer">138409032</label>
+			<label index="lang_pl" type="integer">208864137</label>
+			<label index="lang_si" type="integer">115971854</label>
+			<label index="lang_fi" type="integer">162400671</label>
+			<label index="lang_tr" type="integer">202773179</label>
+			<label index="lang_se" type="integer">68252064</label>
+			<label index="lang_pt" type="integer">51262151</label>
+			<label index="lang_ru" type="integer">233547410</label>
+			<label index="lang_ro" type="integer">251294612</label>
+			<label index="lang_ch" type="integer">206546547</label>
+			<label index="lang_sk" type="integer">162319430</label>
+			<label index="lang_lt" type="double">5202008</label>
+			<label index="lang_is" type="integer">80037322</label>
+			<label index="lang_hr" type="double">12697097</label>
+			<label index="lang_hu" type="integer">129523986</label>
+			<label index="lang_gl" type="integer">24211126</label>
+			<label index="lang_th" type="integer">71163000</label>
+			<label index="lang_gr" type="double">11205193</label>
+			<label index="lang_hk" type="integer">31063215</label>
+			<label index="lang_eu" type="integer">176851207</label>
+			<label index="lang_bg" type="integer">101430204</label>
+			<label index="lang_br" type="integer">102669697</label>
+			<label index="lang_et" type="integer">42538748</label>
+			<label index="lang_ar" type="integer">41077944</label>
+			<label index="lang_he" type="integer">208412545</label>
+			<label index="lang_ua" type="integer">242788092</label>
+			<label index="lang_lv" type="integer">124440629</label>
+			<label index="lang_jp" type="integer">254987990</label>
+			<label index="lang_vn" type="integer">129503150</label>
+			<label index="lang_ca" type="integer">151036235</label>
+			<label index="lang_ba" type="integer">165586767</label>
+			<label index="lang_kr" type="integer">218880828</label>
+			<label index="default" type="integer">128029197</label>
+			<label index="simulate" type="integer">213794209</label>
+			<label index="opening" type="integer">20867161</label>
+			<label index="personal_data" type="integer">104270938</label>
+			<label index="showThumbs" type="integer">111890184</label>
+			<label index="condensedMode" type="integer">240508039</label>
+			<label index="noMenuMode" type="integer">20667488</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -3666,11 +3867,11 @@
 			<label index="emailMeAtLogin" type="integer">242513283</label>
 			<label index="helpText" type="integer">40561585</label>
 			<label index="maxTitleLen" type="integer">197742795</label>
-			<label index="edit_showFieldHelp" type="integer">208596502</label>
+			<label index="edit_showFieldHelp" type="integer">156260410</label>
 			<label index="edit_showFieldHelp_icon" type="integer">174937206</label>
 			<label index="edit_showFieldHelp_message" type="integer">92057802</label>
 			<label index="edit_wideDocument" type="integer">47472072</label>
-			<label index="edit_RTE" type="integer">175965839</label>
+			<label index="edit_RTE" type="integer">16864569</label>
 			<label index="edit_docModuleUpload" type="integer">172878204</label>
 			<label index="edit_functions" type="integer">131916066</label>
 			<label index="disableCMlayers" type="integer">256285755</label>
@@ -3687,6 +3888,9 @@
 			<label index="newPasswordAgain" type="integer">985181</label>
 			<label index="newPassword_ok" type="integer">249160755</label>
 			<label index="newPassword_failed" type="integer">202693756</label>
+			<label index="lang_ca" type="integer">151036235</label>
+			<label index="lang_ba" type="integer">165586767</label>
+			<label index="lang_kr" type="integer">218880828</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="UserSettings" type="integer">46681867</label>
@@ -3749,6 +3953,82 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="UserSettings" type="integer">46681867</label>
+			<label index="language" type="integer">77154959</label>
+			<label index="lang_default" type="integer">126116771</label>
+			<label index="lang_dk" type="integer">129789717</label>
+			<label index="lang_de" type="integer">141280017</label>
+			<label index="lang_no" type="integer">228937930</label>
+			<label index="lang_it" type="integer">79597062</label>
+			<label index="lang_fr" type="integer">181544439</label>
+			<label index="lang_es" type="integer">213207052</label>
+			<label index="lang_nl" type="integer">109835111</label>
+			<label index="lang_cz" type="integer">138409032</label>
+			<label index="lang_pl" type="integer">208864137</label>
+			<label index="lang_si" type="integer">115971854</label>
+			<label index="lang_fi" type="integer">162400671</label>
+			<label index="lang_tr" type="integer">202773179</label>
+			<label index="lang_se" type="integer">68252064</label>
+			<label index="lang_pt" type="integer">51262151</label>
+			<label index="lang_ru" type="integer">233547410</label>
+			<label index="lang_ro" type="integer">251294612</label>
+			<label index="lang_ch" type="integer">206546547</label>
+			<label index="lang_sk" type="integer">162319430</label>
+			<label index="lang_lt" type="double">5202008</label>
+			<label index="lang_is" type="integer">80037322</label>
+			<label index="lang_hr" type="double">12697097</label>
+			<label index="lang_hu" type="integer">129523986</label>
+			<label index="lang_gl" type="integer">24211126</label>
+			<label index="lang_th" type="integer">71163000</label>
+			<label index="lang_gr" type="double">11205193</label>
+			<label index="lang_hk" type="integer">31063215</label>
+			<label index="lang_eu" type="integer">176851207</label>
+			<label index="lang_bg" type="integer">101430204</label>
+			<label index="lang_br" type="integer">102669697</label>
+			<label index="lang_et" type="integer">42538748</label>
+			<label index="lang_ar" type="integer">41077944</label>
+			<label index="lang_he" type="integer">208412545</label>
+			<label index="lang_ua" type="integer">242788092</label>
+			<label index="lang_lv" type="integer">124440629</label>
+			<label index="lang_jp" type="integer">254987990</label>
+			<label index="lang_vn" type="integer">129503150</label>
+			<label index="lang_ca" type="integer">151036235</label>
+			<label index="lang_ba" type="integer">165586767</label>
+			<label index="lang_kr" type="integer">218880828</label>
+			<label index="default" type="integer">128029197</label>
+			<label index="simulate" type="integer">213794209</label>
+			<label index="opening" type="integer">20867161</label>
+			<label index="personal_data" type="integer">104270938</label>
+			<label index="showThumbs" type="integer">111890184</label>
+			<label index="condensedMode" type="integer">240508039</label>
+			<label index="noMenuMode" type="integer">20667488</label>
+			<label index="noMenuMode_def" type="integer">125128652</label>
+			<label index="noMenuMode_sel" type="integer">257410868</label>
+			<label index="noMenuMode_icons" type="integer">250425196</label>
+			<label index="startInTaskCenter" type="integer">63015246</label>
+			<label index="emailMeAtLogin" type="integer">242513283</label>
+			<label index="helpText" type="integer">40561585</label>
+			<label index="maxTitleLen" type="integer">197742795</label>
+			<label index="edit_showFieldHelp" type="integer">156260410</label>
+			<label index="edit_showFieldHelp_icon" type="integer">174937206</label>
+			<label index="edit_showFieldHelp_message" type="integer">92057802</label>
+			<label index="edit_wideDocument" type="integer">47472072</label>
+			<label index="edit_docModuleUpload" type="integer">172878204</label>
+			<label index="edit_functions" type="integer">131916066</label>
+			<label index="disableCMlayers" type="integer">256285755</label>
+			<label index="setToStandard" type="integer">243973144</label>
+			<label index="functions" type="integer">155530193</label>
+			<label index="copyLevels" type="integer">158680187</label>
+			<label index="recursiveDelete" type="integer">241746651</label>
+			<label index="activateChanges" type="integer">247658693</label>
+			<label index="levels" type="integer">137816926</label>
+			<label index="beUser_realName" type="integer">35776261</label>
+			<label index="beUser_email" type="integer">26761284</label>
+			<label index="save" type="double">8749289</label>
+			<label index="newPassword" type="integer">55855176</label>
+			<label index="newPasswordAgain" type="double">985181</label>
+			<label index="newPassword_ok" type="integer">249160755</label>
+			<label index="newPassword_failed" type="integer">202693756</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

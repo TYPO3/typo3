@@ -32,12 +32,12 @@
 			<label index="mod_wizards">Wizard</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="wiz_lWizards">Séléctionnez un assistant</label>
+			<label index="wiz_lWizards">Sélection d'Assistant</label>
 			<label index="mod_wizards">Assistants</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="wiz_lWizards">Seleccionar Experto</label>
-			<label index="mod_wizards">Èarovniki</label>
+			<label index="mod_wizards">Expertos</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="wiz_lWizards">Selecteer Assistent</label>
@@ -114,12 +114,16 @@
 		<languageKey index="bg" type="array">
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="wiz_lWizards">Selecionar Assistente</label>
+			<label index="mod_wizards">Assistentes</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 		</languageKey>
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="wiz_lWizards">בחירת אשף</label>
+			<label index="mod_wizards">אשפים</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -228,12 +232,16 @@
 		<languageKey index="bg" type="array">
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="wiz_lWizards" type="integer">90660162</label>
+			<label index="mod_wizards" type="integer">252927306</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 		</languageKey>
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="wiz_lWizards" type="integer">90660162</label>
+			<label index="mod_wizards" type="integer">252927306</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

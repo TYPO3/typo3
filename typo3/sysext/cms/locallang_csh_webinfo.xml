@@ -126,11 +126,16 @@ Hier sehen Sie die &quot;TSconfig&quot; Spalte. Die Übersicht zeigt, dass diese
 			<label index="stat.alttitle">Statistik der Seitenzugriffe</label>
 			<label index="stat.description">Zeigt eine Zugriffsstatistik für einen bestimmten Teilbereich des Seitenbaumes. Basiert auf einer einfachen, internen Statistik Tabelle, die jediglich Seitenaufrufe und Sitzungen protokolliert.</label>
 			<label index="stat.details">&lt;b&gt;Hinweis:&lt;/b&gt; Diese Funktion benötigt die Erweiterung &quot;Simple hit statistics&quot; (sys_stat). Sie müssen ausserdem über TypoScript das Protokollieren der Seitenaufrufe aktivieren.</label>
+			<label index="lang.alttitle">Lokalisierungs-Übersicht</label>
+			<label index="lang.description">Zeigt eine Übersicht der Seiten, welche in die installierten Systemsprachen übersetzt wurden.</label>
 			<label index="func_hits.alttitle">Statistik Ansichten</label>
 		</languageKey>
 		<languageKey index="fr">EXT:csh_fr/cms/fr.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="es">EXT:csh_es/cms/es.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="nl">EXT:csh_nl/cms/nl.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="fi">EXT:csh_fi/cms/fi.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/cms/hu.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/cms/no.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/cms/he.locallang_csh_webinfo.xml</languageKey>
 	</data>
 </T3locallang>

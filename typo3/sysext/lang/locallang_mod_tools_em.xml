@@ -25,18 +25,18 @@
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mlang_labels_tablabel">TYPO3 Extension Manager</label>
-			<label index="mlang_labels_tabdescr">Håndterer TYPO3 utvidelser, slik som  plugins, moduler, class extensions, konfigurasjonskode mm fra et sentralt lager.</label>
+			<label index="mlang_labels_tabdescr">Håndterer TYPO3-utvidelser, slik som plugins, moduler, class extensions, konfigurasjonskode mm, fra et sentralt lager.</label>
 			<label index="mlang_tabs_tab">Ext Manager</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mlang_labels_tablabel">TYPO3 Extension Manager</label>
-			<label index="mlang_labels_tabdescr">Consente di gestire le &quot;estensioni&quot; di TYPO3 (plugin, moduli aggiuntivi, etc) attraverso un repository centrale</label>
+			<label index="mlang_labels_tabdescr">Consente di gestire le &quot;estensioni&quot; di TYPO3 attraverso un repository centrale che contiene plugin, moduli aggiuntivi, estensioni alle classi esistenti, codice di configurazione, ecc.</label>
 			<label index="mlang_tabs_tab">Ext Manager</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel">Gestion des extensions TYPO3</label>
+			<label index="mlang_labels_tablabel">Gestionnaire d'Extensions TYPO3</label>
 			<label index="mlang_labels_tabdescr">Cet outil permet de gérer dans un référentiel central les extensions TYPO3, y inclus les plugins, les modules, les extensions de classe, les codes de configuration, etc.</label>
-			<label index="mlang_tabs_tab">Gestion des extensions</label>
+			<label index="mlang_tabs_tab">Gest d'Extensions</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="mlang_labels_tablabel">Administrador de extensiones TYPO3</label>
@@ -45,7 +45,7 @@
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel">TYPO3 Extensie Manager</label>
-			<label index="mlang_labels_tabdescr">Beheer van TYPO3 extensies, waaronder plugins, modules, class extensies, configuratie code enz. vanuit een centraal depot.</label>
+			<label index="mlang_labels_tabdescr">Beheer van TYPO3 extensies vanuit een centrale repository, waaronder plugins, modules, class extensies, configuratie code enz. vanuit een centraal depot.</label>
 			<label index="mlang_tabs_tab">Ext Manager</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -55,7 +55,7 @@
 		</languageKey>
 		<languageKey index="pl" type="array">
 			<label index="mlang_labels_tablabel">Menadżer rozszerzeń</label>
-			<label index="mlang_labels_tabdescr">Zarządznie rozszeżeniami do TYPO3, wliczając wtyczki, moduły, rozszeżone klasy, skrypty konfiguracyjne itd. z jednego, centralnego repozytorium.</label>
+			<label index="mlang_labels_tabdescr">Zarządznie rozszeżeniami do TYPO3, wliczając wtyczki, moduły, rozszeżone klasy, skrypty konfiguracyjne itd.</label>
 			<label index="mlang_tabs_tab">Menadżer Ext</label>
 		</languageKey>
 		<languageKey index="si" type="array">
@@ -120,7 +120,7 @@
 		</languageKey>
 		<languageKey index="hu" type="array">
 			<label index="mlang_labels_tablabel">Typo3 Bővítménykezelő</label>
-			<label index="mlang_labels_tabdescr">A Typo3 bővítményeit, plugin-jeit, moduljait kezelheted, telepítheted és konfigurálhatod.</label>
+			<label index="mlang_labels_tabdescr">A Typo3 bővítményeit, moduljait kezelheted, telepítheted és konfigurálhatod.</label>
 			<label index="mlang_tabs_tab">Bővítménykezelő</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -134,7 +134,7 @@
 		</languageKey>
 		<languageKey index="hk" type="array">
 			<label index="mlang_labels_tablabel">Typo3延伸工具管理員</label>
-			<label index="mlang_labels_tabdescr">管理Typo3的延伸工具，包括來自中央程式庫的偛入式元件、模組、分類延伸工具、調較編碼等</label>
+			<label index="mlang_labels_tabdescr">管理Typo3的延伸工具，包括來自中央程式庫的偛入式元件、模組、分類延伸工具、設定編碼等</label>
 			<label index="mlang_tabs_tab">延伸工具管理員</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
@@ -149,7 +149,7 @@
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="mlang_labels_tablabel">Administrador de Extensões do Typo3</label>
-			<label index="mlang_labels_tabdescr">Administra as extensões do Typo3, que incluem pluins, módulos, classes, código de configuração, etc. a partir de um depósito central.</label>
+			<label index="mlang_labels_tabdescr">Administra as extensões do Typo3, que incluem plugins, módulos, classes, código de configuração, etc. a partir de um depósito central.</label>
 			<label index="mlang_tabs_tab">Adm. de Extensões</label>
 		</languageKey>
 		<languageKey index="et" type="array">
@@ -181,22 +181,22 @@
 	<orig_hash type="array">
 		<languageKey index="dk" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
@@ -206,12 +206,12 @@
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -221,7 +221,7 @@
 		</languageKey>
 		<languageKey index="pl" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="si" type="array">
@@ -231,17 +231,17 @@
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
@@ -251,7 +251,7 @@
 		</languageKey>
 		<languageKey index="ru" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
@@ -271,7 +271,7 @@
 		</languageKey>
 		<languageKey index="lt" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="is" type="array">
@@ -286,7 +286,7 @@
 		</languageKey>
 		<languageKey index="hu" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -300,7 +300,7 @@
 		</languageKey>
 		<languageKey index="hk" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
@@ -315,7 +315,7 @@
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="et" type="array">
@@ -330,7 +330,7 @@
 		</languageKey>
 		<languageKey index="he" type="array">
 			<label index="mlang_labels_tablabel" type="integer">107630623</label>
-			<label index="mlang_labels_tabdescr" type="integer">130260296</label>
+			<label index="mlang_labels_tabdescr" type="integer">182827319</label>
 			<label index="mlang_tabs_tab" type="integer">199372037</label>
 		</languageKey>
 		<languageKey index="ua" type="array">

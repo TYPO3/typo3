@@ -117,6 +117,7 @@
 			<label index="hiddenCE">Vis skjulte indholdselementer</label>
 			<label index="new_language">Opret ny oversættelse af denne side</label>
 			<label index="newLabel">NY</label>
+			<label index="defaultLanguage">Standard sprog</label>
 			<label index="editLanguageHeader">Redigér sprog titel</label>
 			<label index="editPageHeader">Redigér side titel</label>
 			<label index="newRecordGeneral">Opret nyt element</label>
@@ -193,6 +194,7 @@
 			<label index="hiddenCE">Zeige verborgene Inhalte an</label>
 			<label index="new_language">Neue Übersetzung dieser Seite anlegen</label>
 			<label index="newLabel">NEU</label>
+			<label index="defaultLanguage">Standard</label>
 			<label index="editLanguageHeader">Bearbeite Sprach-Header</label>
 			<label index="editPageHeader">Bearbeite Seiten-Header</label>
 			<label index="newRecordGeneral">Neuen Datensatz anlegen</label>
@@ -255,6 +257,7 @@
 			<label index="deleteWarning">Er du sikker på at du vil slette dette elementet?</label>
 			<label index="editColumn">Rediger denne kolonnen</label>
 			<label index="editPageTitle">Rediger sidetittel</label>
+			<label index="editPageTitle_curLang">Endre oversettingstittel</label>
 			<label index="editInRTE">Rediger i tekstbehandler</label>
 			<label index="newPageContent">Opprett sideinnhold</label>
 			<label index="newPageContent_copyForLang">Kopier standard innholdselementer.</label>
@@ -268,8 +271,9 @@
 			<label index="hiddenCE">Vis skjulte innholdselementer</label>
 			<label index="new_language">Opprett en ny oversettelse av denne siden</label>
 			<label index="newLabel">NY</label>
-			<label index="editLanguageHeader">Rediger språk tittel</label>
-			<label index="editPageHeader">Rediger side tittel</label>
+			<label index="defaultLanguage">Standardspråk</label>
+			<label index="editLanguageHeader">Rediger språktittel</label>
+			<label index="editPageHeader">Rediger sidetittel</label>
 			<label index="newRecordGeneral">Opprett nytt element</label>
 			<label index="newContentElement">Opprett nytt innholdselement</label>
 			<label index="CEonThisPage">Innholdselementer på denne siden:</label>
@@ -301,7 +305,7 @@
 			<label index="m_tt_calender_ext">Utvidet</label>
 			<label index="m_tt_products_ext">Utvidet</label>
 			<label index="m_default">Standard</label>
-			<label index="clickAPage_header">Web&gt;Side modulen</label>
+			<label index="clickAPage_header">Web&gt;Side-modulen</label>
 			<label index="clickAPage_content">Dersom du ønsker å redigere innholdet på en side klikker du på sidens tittel i sidetreet til venstre.</label>
 			<label index="pI_crUser">Opprettet av</label>
 			<label index="pI_crDate">Opprettelsesdato</label>
@@ -344,6 +348,7 @@
 			<label index="hiddenCE">Mostra gli elementi di contenuto nascosti</label>
 			<label index="new_language">Prepara una nuova traduzione di questa pagina</label>
 			<label index="newLabel">NUOVO</label>
+			<label index="defaultLanguage">Default</label>
 			<label index="editLanguageHeader">Modifica intestazione lingua</label>
 			<label index="editPageHeader">Intestazione pagina</label>
 			<label index="newRecordGeneral">Crea nuovo record</label>
@@ -378,7 +383,7 @@
 			<label index="m_tt_products_ext">Esteso</label>
 			<label index="m_default">Default</label>
 			<label index="clickAPage_header">Modulo Web&gt;Pagina</label>
-			<label index="clickAPage_content">Se vuoi modificare il contenuto della pagina, clicca sul titolo della pagina nell'albero delle pagina a sinistra (o clicca sull'icona per ulteriori funzionalità)</label>
+			<label index="clickAPage_content">Clicca il titolo della pagina nell'albero delle pagina a sinistra se vuoi modificare il contenuto della pagina.</label>
 			<label index="pI_crUser">Creato da</label>
 			<label index="pI_crDate">Data creazione</label>
 			<label index="pI_lastChange">Ultimo cambiamento</label>
@@ -405,10 +410,10 @@
 			<label index="deleteItem">Supprimer</label>
 			<label index="deleteWarning">Etes-vous sûre de vouloir supprimer cet élément?</label>
 			<label index="editColumn">Editer cette colonne</label>
-			<label index="editPageTitle">Editer les en-tête de la page</label>
-			<label index="editPageTitle_curLang">Editer les en-tête de la traduction</label>
+			<label index="editPageTitle">Editer les en-tête de page</label>
+			<label index="editPageTitle_curLang">Editer les en-tête de traduction</label>
 			<label index="editInRTE">Editer dans l'Editeur de texte avancé</label>
-			<label index="newPageContent">Créer un contenu dans la page</label>
+			<label index="newPageContent">Créer du contenu de page</label>
 			<label index="newPageContent_copyForLang">Copier les éléments de contenu par défaut</label>
 			<label index="newPageContent2">Nouveau contenu</label>
 			<label index="newInColumn">Créer un nouvel élément au sommet de cette colonne</label>
@@ -420,6 +425,7 @@
 			<label index="hiddenCE">Afficher les éléments masqués</label>
 			<label index="new_language">Faire une nouvelle traduction de cette page</label>
 			<label index="newLabel">NOUVEAU</label>
+			<label index="defaultLanguage">Défaut</label>
 			<label index="editLanguageHeader">Editer les en-têtes de langue</label>
 			<label index="editPageHeader">Editer les en-têtes de page</label>
 			<label index="newRecordGeneral">Créer un nouvel élément</label>
@@ -496,6 +502,7 @@
 			<label index="hiddenCE">Mostar elementos de contenido ocultos</label>
 			<label index="new_language">Hacer una traducción de esta página</label>
 			<label index="newLabel">NUEVO</label>
+			<label index="defaultLanguage">Por defecto</label>
 			<label index="editLanguageHeader">Editar encabezado del lenguaje</label>
 			<label index="editPageHeader">Edidar encabezado de la página</label>
 			<label index="newRecordGeneral">Crear nuevo registro</label>
@@ -572,6 +579,7 @@
 			<label index="hiddenCE">Toon verborgen inhoudselementen</label>
 			<label index="new_language">Maak nieuwe vertaling van deze pagina</label>
 			<label index="newLabel">NIEUW</label>
+			<label index="defaultLanguage">Standaard</label>
 			<label index="editLanguageHeader">Bewerk taalinfo</label>
 			<label index="editPageHeader">Bewerk pagina-info</label>
 			<label index="newRecordGeneral">Maak nieuw record</label>
@@ -588,7 +596,7 @@
 			<label index="tt_board_date">Datum</label>
 			<label index="tt_board_age">Leeftijd</label>
 			<label index="tt_board_RE">Betreft</label>
-			<label index="m_function_0">SnelBewerken</label>
+			<label index="m_function_0">QuickEdit</label>
 			<label index="m_function_1">Kolommen</label>
 			<label index="m_function_2">Talen</label>
 			<label index="m_tt_board_0">Laat onderwerpen zien</label>
@@ -722,6 +730,7 @@
 			<label index="hiddenCE">Pokaż ukrytą treść</label>
 			<label index="new_language">Stwórz nową wersję językową dla tej strony</label>
 			<label index="newLabel">NOWY</label>
+			<label index="defaultLanguage">Domyślnie</label>
 			<label index="editLanguageHeader">Edytuj nagłówek wersji językowej</label>
 			<label index="editPageHeader">Edytuj nagłówek strony</label>
 			<label index="newRecordGeneral">Stwórz nowy rekord</label>
@@ -756,7 +765,7 @@
 			<label index="m_tt_products_ext">Rozszerzone</label>
 			<label index="m_default">Domyślnie</label>
 			<label index="clickAPage_header">Moduł Web&gt;Strona</label>
-			<label index="clickAPage_content">Aby edytować zawartość strony, kliknij na tytule strony w drzewie stron po lewej.</label>
+			<label index="clickAPage_content">Kliknij na tytuł strony w drzewie stron po lewej stronie edytowanej treści.</label>
 			<label index="pI_crUser">Utworzone przez</label>
 			<label index="pI_crDate">Data utworzenia</label>
 			<label index="pI_lastChange">Ostatnia zmiana</label>
@@ -874,6 +883,7 @@
 			<label index="hiddenCE">Näytä piilotettu sivun sisältö</label>
 			<label index="new_language">Tee uusi käännös tästä sivusta</label>
 			<label index="newLabel">UUSI</label>
+			<label index="defaultLanguage">Oletus</label>
 			<label index="editLanguageHeader">Muokkaa kielen otsikkotietoja</label>
 			<label index="editPageHeader">Muokkaa sivun otsikkotietoja</label>
 			<label index="newRecordGeneral">Luo uusi tietue</label>
@@ -908,7 +918,7 @@
 			<label index="m_tt_products_ext">Laajennettu</label>
 			<label index="m_default">Oletusarvo</label>
 			<label index="clickAPage_header">WWW&gt;Sivu-moduli</label>
-			<label index="clickAPage_content">Halutessasi muotoilla sivun sisältöä, napsauta sivun otsikkoa sivujen rakennepuussa vasemmalla</label>
+			<label index="clickAPage_content">Ole hyvä ja napsauta sivun otsikkoa rakennepuussa vasemmalla muokataksesi sen sisältöä.</label>
 			<label index="pI_crUser">Luonut</label>
 			<label index="pI_crDate">Luontipäiväys</label>
 			<label index="pI_lastChange">Viimeinen muutos</label>
@@ -950,6 +960,7 @@
 			<label index="hiddenCE">Saklı içerik elemanlarını göster</label>
 			<label index="new_language">Bu sayfanın yeni çevirisini yap</label>
 			<label index="newLabel">YENİ</label>
+			<label index="defaultLanguage">Standart</label>
 			<label index="editLanguageHeader">Dil başlığını düzenle</label>
 			<label index="editPageHeader">Sayfa başlığını düzenle</label>
 			<label index="newRecordGeneral">Yeni kayıt yarat</label>
@@ -984,7 +995,7 @@
 			<label index="m_tt_products_ext">Genişletildi</label>
 			<label index="m_default">Standart</label>
 			<label index="clickAPage_header">Web&gt;Sayfa modülü</label>
-			<label index="clickAPage_content">Eğer bir sayfa içeriğini düzeltmek istiyorsanız, lütfen soldaki sayfa ağacında sayfa başlığına tıklayınız.</label>
+			<label index="clickAPage_content">Eğer bir sayfa içeriğini düzeltmek istiyorsanız, lütfen soldaki sayfa ağacında sayfa başlığına tıklayınız.sayfa içeriğini düzeltmek için sola.</label>
 			<label index="pI_crUser">Tarafından yaratıldı</label>
 			<label index="pI_crDate">Yaratılan tarih</label>
 			<label index="pI_lastChange">Son değişiklik</label>
@@ -1012,8 +1023,10 @@
 			<label index="deleteWarning">Är du säker på att du vill ta bort detta element?</label>
 			<label index="editColumn">Ändra denna kolumn</label>
 			<label index="editPageTitle">Ändra sidans rubrik</label>
+			<label index="editPageTitle_curLang">Ändra översättningsrubrik</label>
 			<label index="editInRTE">Editera i Rich Text Editor</label>
 			<label index="newPageContent">Skapa sidinnehåll</label>
+			<label index="newPageContent_copyForLang">Kopiera standard innehållselement</label>
 			<label index="newPageContent2">Nytt innehåll</label>
 			<label index="newInColumn">Skapa nytt elemnt högst upp i denna kolumn</label>
 			<label index="records">element</label>
@@ -1024,6 +1037,7 @@
 			<label index="hiddenCE">Visa gömda innehållselement</label>
 			<label index="new_language">Gör ny översättning av denna sida</label>
 			<label index="newLabel">NY</label>
+			<label index="defaultLanguage">Standard</label>
 			<label index="editLanguageHeader">Ändra språkrubrik</label>
 			<label index="editPageHeader">Ändra sidans rubrik</label>
 			<label index="newRecordGeneral">Skapa nytt element</label>
@@ -1167,13 +1181,14 @@
 			<label index="newPageContent2">Новый контент</label>
 			<label index="newInColumn">Создайте новую запись в верху этого столбца</label>
 			<label index="records">записи</label>
-			<label index="pageInformation">Информация страницы</label>
+			<label index="pageInformation">Информация о странице</label>
 			<label index="goToTable">Перейти к таблице</label>
 			<label index="internalNotes">Внутренние примечания</label>
 			<label index="clearCache">Нажмите здесь, чтобы очистить кэш для этой страницы.</label>
 			<label index="hiddenCE">Показать спрятанные элементы содержимого</label>
 			<label index="new_language">Сделать новый перевод этой страницы</label>
 			<label index="newLabel">НОВЫЙ</label>
+			<label index="defaultLanguage">Основной</label>
 			<label index="editLanguageHeader">Редактировать заголовок языка</label>
 			<label index="editPageHeader">Редактировать заголовок страницы</label>
 			<label index="newRecordGeneral">Создать новую запись</label>
@@ -1474,6 +1489,7 @@
 			<label index="hiddenCE">Parodyti paslėptus turinio elementus</label>
 			<label index="new_language">Kurti naują šio puslapio vertimą</label>
 			<label index="newLabel">NAUJAS</label>
+			<label index="defaultLanguage">Nustatytasis</label>
 			<label index="editLanguageHeader">Redaguoti kalbos antraštę</label>
 			<label index="editPageHeader">Redaguoti puslapio antraštę</label>
 			<label index="newRecordGeneral">Sukurti naują įrašą</label>
@@ -1698,6 +1714,7 @@
 			<label index="hiddenCE">A rejtett tartalmi elemek megjelenítése</label>
 			<label index="new_language">Új fordítás létrehozása az oldalhoz</label>
 			<label index="newLabel">ÚJ</label>
+			<label index="defaultLanguage">Alapértelmezett</label>
 			<label index="editLanguageHeader">Nyelvi fejléc szerkesztése</label>
 			<label index="editPageHeader">Oldal fejléc szerkesztése</label>
 			<label index="newRecordGeneral">Új rekord létrehozása</label>
@@ -1992,8 +2009,10 @@
 			<label index="deleteWarning">Você tem certeza de que quer apagar este registro?</label>
 			<label index="editColumn">Editar esta coluna</label>
 			<label index="editPageTitle">Editar cabeçalho da página</label>
+			<label index="editPageTitle_curLang">Editar cabeçalho de tradução</label>
 			<label index="editInRTE">Editar no Rich Text Editor</label>
 			<label index="newPageContent">Criar conteúdo de página</label>
+			<label index="newPageContent_copyForLang">Copiar elementos-padrão de conteúdo</label>
 			<label index="newPageContent2">Novo conteúdo</label>
 			<label index="newInColumn">Criar novo registro no topo desta coluna</label>
 			<label index="records">registros</label>
@@ -2004,6 +2023,7 @@
 			<label index="hiddenCE">Mostrar elementos ocultos de conteúdo</label>
 			<label index="new_language">Fazer nova tradução desta página</label>
 			<label index="newLabel">NOVO</label>
+			<label index="defaultLanguage">Padrão</label>
 			<label index="editLanguageHeader">Editar cabeçalho de idioma</label>
 			<label index="editPageHeader">Editar cabeçalho da página</label>
 			<label index="newRecordGeneral">Criar novo registro</label>
@@ -2142,8 +2162,10 @@
 			<label index="deleteWarning">האם הנך בטוח כי ברצונך למחוק דף זה?</label>
 			<label index="editColumn">ערוך עמודה זו</label>
 			<label index="editPageTitle">ערוך כותרת דף</label>
+			<label index="editPageTitle_curLang">עריכת כותרת תרגום</label>
 			<label index="editInRTE">ערוך בעורך טקסט עשיר</label>
 			<label index="newPageContent">צור פריט תוכן</label>
+			<label index="newPageContent_copyForLang">העתק פרטי תוכן של ברירת מחדל</label>
 			<label index="newPageContent2">פריט תוכן חדש</label>
 			<label index="newInColumn">צור רשומה חדשה מעל עמודה זו</label>
 			<label index="records">רשומות</label>
@@ -2154,6 +2176,7 @@
 			<label index="hiddenCE">הצג פרטי תוכן סמויים</label>
 			<label index="new_language">צור תרגום חדש של דף זה</label>
 			<label index="newLabel">חדש</label>
+			<label index="defaultLanguage">ברירת מחדל</label>
 			<label index="editLanguageHeader">ערוך כותרת שפה</label>
 			<label index="editPageHeader">ערוך כותרת דף</label>
 			<label index="newRecordGeneral">צור רשומה חדשה</label>
@@ -2384,6 +2407,7 @@
 			<label index="hiddenCE">Prikaži skrivene elemente sadržaja</label>
 			<label index="new_language">Napravi novi prijevod stranice</label>
 			<label index="newLabel">NOVO</label>
+			<label index="defaultLanguage">Početno</label>
 			<label index="editLanguageHeader">Editovanje zaglavlja jezika</label>
 			<label index="editPageHeader">Edituj zaglavlje stranice</label>
 			<label index="newRecordGeneral">Kreiraj novi zapis</label>
@@ -2494,7 +2518,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -2505,6 +2529,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="integer">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -2570,7 +2595,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -2581,6 +2606,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -2646,7 +2672,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -2656,6 +2682,8 @@
 			<label index="pI_hits24hours" type="integer">104044646</label>
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="editPageTitle_curLang" type="double">5915630</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -2721,7 +2749,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -2732,6 +2760,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -2797,7 +2826,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -2808,6 +2837,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -2873,7 +2903,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -2884,6 +2914,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -2949,7 +2980,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -2960,6 +2991,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -3099,7 +3131,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -3110,6 +3142,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -3251,7 +3284,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -3262,6 +3295,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -3327,7 +3361,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -3338,6 +3372,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -3403,7 +3438,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -3412,6 +3447,9 @@
 			<label index="pI_hitsPeriod" type="integer">248983029</label>
 			<label index="pI_hits24hours" type="integer">104044646</label>
 			<label index="pI_hits10days" type="integer">192341173</label>
+			<label index="editPageTitle_curLang" type="double">5915630</label>
+			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -3551,7 +3589,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -3562,6 +3600,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -3853,7 +3892,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -3862,6 +3901,7 @@
 			<label index="pI_hitsPeriod" type="integer">248983029</label>
 			<label index="pI_hits24hours" type="integer">104044646</label>
 			<label index="pI_hits10days" type="integer">192341173</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -4075,7 +4115,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -4086,6 +4126,7 @@
 			<label index="pI_hits10days" type="integer">192341173</label>
 			<label index="editPageTitle_curLang" type="double">5915630</label>
 			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -4383,7 +4424,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -4392,6 +4433,9 @@
 			<label index="pI_hitsPeriod" type="integer">248983029</label>
 			<label index="pI_hits24hours" type="integer">104044646</label>
 			<label index="pI_hits10days" type="integer">192341173</label>
+			<label index="editPageTitle_curLang" type="double">5915630</label>
+			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -4533,7 +4577,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -4542,6 +4586,9 @@
 			<label index="pI_hitsPeriod" type="integer">248983029</label>
 			<label index="pI_hits24hours" type="integer">104044646</label>
 			<label index="pI_hits10days" type="integer">192341173</label>
+			<label index="editPageTitle_curLang" type="double">5915630</label>
+			<label index="newPageContent_copyForLang" type="integer">166684005</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 			<label index="title" type="integer">73079758</label>
@@ -4763,7 +4810,7 @@
 			<label index="m_tt_products_ext" type="integer">253974415</label>
 			<label index="m_default" type="integer">128029197</label>
 			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
+			<label index="clickAPage_content" type="integer">255012126</label>
 			<label index="pI_crUser" type="integer">210659966</label>
 			<label index="pI_crDate" type="integer">188440759</label>
 			<label index="pI_lastChange" type="integer">48593502</label>
@@ -4772,6 +4819,7 @@
 			<label index="pI_hitsPeriod" type="integer">248983029</label>
 			<label index="pI_hits24hours" type="integer">104044646</label>
 			<label index="pI_hits10days" type="integer">192341173</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
 		</languageKey>
 	</orig_hash>
 </T3locallang>

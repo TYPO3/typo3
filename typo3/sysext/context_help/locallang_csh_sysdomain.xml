@@ -50,5 +50,6 @@ If you're using TYPO3 on a unix computer you can make 'virtual subdirectories' t
 		<languageKey index="fi">EXT:csh_fi/context_help/fi.locallang_csh_sysdomain.xml</languageKey>
 		<languageKey index="nl">EXT:csh_nl/context_help/nl.locallang_csh_sysdomain.xml</languageKey>
 		<languageKey index="hr">EXT:csh_hr/context_help/hr.locallang_csh_sysdomain.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/context_help/no.locallang_csh_sysdomain.xml</languageKey>
 	</data>
 </T3locallang>

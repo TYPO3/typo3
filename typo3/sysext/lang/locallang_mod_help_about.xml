@@ -44,8 +44,8 @@
 			<label index="mlang_tabs_tab">Notizie</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="welcome">TYPO3 Système de gestion de contenu Web.</label>
-			<label index="minor">TYPO3 est un &quot;logiciel libre&quot; flexible et professionnel de gestion de contenu web basé sur PHP4 et mySQL. TYPO3 est &lt;b&gt;librement disponible&lt;/b&gt; selon les termes de la &lt;A HREF=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;licence TYPO3 (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
+			<label index="welcome">TYPO3 Système de Gestion de Contenu Web Professionnel</label>
+			<label index="minor">TYPO3 est un &quot;logiciel libre&quot; flexible et professionnel de gestion de contenu web basé sur PHP4 et mySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 est &lt;b&gt;disponible gratuitement&lt;/b&gt; selon les termes de la &lt;A HREF=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;licence TYPO3 (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
 			<label index="mlang_labels_tablabel">A propos de TYPO3</label>
 			<label index="mlang_labels_tabdescr">Affiche les informations de base à propos de TYPO3, sa version, et les termes de sa licence.</label>
 			<label index="mlang_tabs_tab">A propos de ...</label>
@@ -114,7 +114,7 @@
 			<label index="mlang_tabs_tab">Acerca</label>
 		</languageKey>
 		<languageKey index="ru" type="array">
-			<label index="welcome">Профессиональная система управления веб-сайтами TYPO3</label>
+			<label index="welcome">Профессиональная система управления веб-контентом TYPO3</label>
 			<label index="minor">TYPO3 - это гибкая и профессиональная открытая система управления контентом на базе PHP4 и МySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 &lt;b&gt;свободно доступна &lt;/b&gt; на условиях &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-лицензии (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
 			<label index="mlang_labels_tablabel">О TYPO3</label>
 			<label index="mlang_labels_tabdescr">Содержит основные факты о системе Тypo3, номер версии и условия лицензирования</label>

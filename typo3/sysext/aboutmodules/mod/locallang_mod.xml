@@ -89,7 +89,7 @@
 		</languageKey>
 		<languageKey index="ru" type="array">
 			<label index="mlang_labels_tablabel">Информация о модулях</label>
-			<label index="mlang_labels_tabdescr">Показывает страницу с описанием имеющихся модулей.</label>
+			<label index="mlang_labels_tabdescr">Описание имеющихся модулей.</label>
 			<label index="mlang_tabs_tab">О модулях</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
@@ -152,6 +152,9 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="mlang_labels_tablabel">מידע אודות מודולים</label>
+			<label index="mlang_labels_tabdescr">דף זה מציג מידע אודות מודולים זמינים.</label>
+			<label index="mlang_tabs_tab">אודות מודולים</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -297,6 +300,9 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="mlang_labels_tablabel" type="integer">175887609</label>
+			<label index="mlang_tabs_tab" type="integer">191277313</label>
+			<label index="mlang_labels_tabdescr" type="integer">84694866</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

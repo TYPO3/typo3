@@ -444,5 +444,8 @@ You can name shortcuts, you can even group them and share them. If you want to e
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_corebe.xml</languageKey>
 		<languageKey index="it">EXT:csh_it/lang/it.locallang_csh_corebe.xml</languageKey>
 		<languageKey index="fr">EXT:csh_fr/lang/fr.locallang_csh_corebe.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/lang/hu.locallang_csh_corebe.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/lang/de.locallang_csh_corebe.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/lang/fi.locallang_csh_corebe.xml</languageKey>
 	</data>
 </T3locallang>

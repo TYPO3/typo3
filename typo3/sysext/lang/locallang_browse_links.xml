@@ -128,7 +128,7 @@
 			<label index="selectRecords">Velg elementer</label>
 			<label index="addToList">Legg til liste....</label>
 			<label index="info">Info</label>
-			<label index="emailAddress">E-post adresse</label>
+			<label index="emailAddress">Epost-adresse</label>
 			<label index="setLink">Sett link</label>
 			<label index="clickToRedrawFullSize">Bildet er større enn vist her! Klikk for å lese inn på nytt i full størrelse.</label>
 			<label index="findDragDrop">Finn ditt bilde, klikk på bildet og trekk det inn i redigeringsområdet i hovedvinduet!</label>
@@ -163,7 +163,7 @@
 			<label index="emailAddress">Indirizzo email</label>
 			<label index="setLink">Imposta link</label>
 			<label index="clickToRedrawFullSize">L'immagine è più grande di quella mostrata qui! Clicca per rivedere la pagina con le immagini a dimensioni naturali..</label>
-			<label index="findDragDrop">Trova l'immagine, cliccaci sopra e trascinala nell'editor della finestra principale.</label>
+			<label index="findDragDrop">Trova l'immagine, cliccaci sopra e trascinala nell'editor della finestra principale!</label>
 			<label index="noWebFolder">Non puoi trascinare le immagini di questa cartella (yellow) perché è una cartella riservata del server.</label>
 			<label index="currentLink">Link corrente</label>
 			<label index="invalidChar">ERRORE: Caratteri non validi (%s).</label>
@@ -198,7 +198,7 @@
 			<label index="findDragDrop">Trouvez votre image, puis cliquez dessus et faites-la glisser dans l'éditeur dans la fenêtre principale!</label>
 			<label index="noWebFolder">Vous ne pouvez pas faire glisser des images depuis ce dossier (jaune) car il est interne au serveur.</label>
 			<label index="currentLink">Lien courant</label>
-			<label index="invalidChar">ERREUR: Caractère invalide dans le chemin au fichier (%s). Le fichier ne peut pas être ajouté.</label>
+			<label index="invalidChar">ERREUR: Caractère invalide dans le chemin au fichier (%s). Le fichier ne peut pas être ajouté!</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="removeLink">Eliminar liga</label>
@@ -259,7 +259,7 @@
 			<label index="emailAddress">Emailadres</label>
 			<label index="setLink">Bepaal link</label>
 			<label index="clickToRedrawFullSize">Afbeelding is groter dan hier getoond! Klik om te herladen tot de ware grootte.</label>
-			<label index="findDragDrop">Zoek de benodigde afbeelding en klik dan op de afbeelding en sleep naar de editor in het hoofdvenster!</label>
+			<label index="findDragDrop">Zoek en klik op de afbeelding en sleep deze naar de editor in het hoofdvenster!</label>
 			<label index="noWebFolder">Het is niet mogelijk afbeeldingen te slepen, omdat het intern op de server staat.</label>
 			<label index="currentLink">Huidige link</label>
 			<label index="invalidChar">FOUTMELDING: Ongeldig karakter in bestandspad (%s). Kan niet aan bestand toegevoegd worden.</label>
@@ -320,7 +320,7 @@
 			<label index="emailAddress">Adresy email</label>
 			<label index="setLink">Ustaw odnośnik</label>
 			<label index="clickToRedrawFullSize">Obrazek jest większy niż widzisz! Kliknij aby odświeżyć stronę z obrazkami w pełnych wymiarach.</label>
-			<label index="findDragDrop">Znajdź plik obrazka, kliknij na niego i przeciągnij do edytora w głównym okienku.</label>
+			<label index="findDragDrop">Odnajdź, kliknij na obrazek i przeciągnij do edytora w głównym okienku.</label>
 			<label index="noWebFolder">Nie możesz przecišgnšć obrazków z tego foldera (żółtego), ponieważ jest to wewnętrzny folder serwera.</label>
 			<label index="currentLink">Bieżący odnośnik</label>
 			<label index="invalidChar">BŁĄD: W ścieżce (%s) znaleziono niedozwolony znak. Nie mogę dodać pliku!</label>
@@ -626,7 +626,7 @@
 			<label index="emailAddress">Email adresas</label>
 			<label index="setLink">Priskirti nuorodą</label>
 			<label index="clickToRedrawFullSize">Paveikslėlis yra didesnis negu rodoma čia! Spustelkit kad būtų parodytas visas.</label>
-			<label index="findDragDrop">Suraskite paveikslėlį, spustelkit ant jo ir nuneškite į redaktorių pagrindiniame lange!</label>
+			<label index="findDragDrop">Suraskite ir spustelkit ant paveikslėlio ir nuneškite į redaktorių pagrindiniame lange!</label>
 			<label index="noWebFolder">Negalima nešti paveikslėlio iš šio katalogo (geltono) kadangi jis yra serverio, vidinis.</label>
 			<label index="currentLink">Esama nuoroda</label>
 			<label index="invalidChar">KLAIDA: Rasti negalimi simboliai kelyje (%s). Negaliu pridėti bylos!</label>
@@ -718,7 +718,7 @@
 			<label index="emailAddress">Email cím</label>
 			<label index="setLink">Linket beállít</label>
 			<label index="clickToRedrawFullSize">A kép nagyobb az itt láthatónál. Kattints ide az oldal újrarajzolásához teljes méretű képekkel.</label>
-			<label index="findDragDrop">Keresd meg a képet, kattints rá és húzd a szövegszerkesztőbe.</label>
+			<label index="findDragDrop">Keresd meg a képet, kattints rá és húzd a főablakban lévő szövegszerkesztőbe.</label>
 			<label index="noWebFolder">Nem húzhatod a képeket ebből a könyvtárból (sárga), mivel a könyvtár nem elérhető a weben.</label>
 			<label index="currentLink">Aktuális Link</label>
 			<label index="invalidChar">HIBA: érvénytelen karakter a file elérési útban (%s). Nem lehet hozzáadni a file-t!</label>
@@ -785,8 +785,8 @@
 			<label index="info">資料</label>
 			<label index="emailAddress">電郵地址</label>
 			<label index="setLink">設定連結</label>
-			<label index="clickToRedrawFullSize">在此顯示的圖片較大！點擊以用原大小重畫</label>
-			<label index="findDragDrop">尋找你的圖片，然後點擊影像再拉到主視窗的編輯器中！</label>
+			<label index="clickToRedrawFullSize">在此顯示的圖片較大！點擊以用原大小圖片重設網頁</label>
+			<label index="findDragDrop">尋找並點擊你的圖片，然後再拉到圖片到主視窗的編輯器中！</label>
 			<label index="noWebFolder">你不能從這個資料夾（黃色）拉出圖片，因為這是伺服器的內部資料夾</label>
 			<label index="currentLink">目前的連結</label>
 			<label index="invalidChar">錯誤：在檔案路徑(%s)中發現無效的的字元。不能加入檔案！</label>
@@ -1070,7 +1070,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="integer">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1099,7 +1099,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1134,7 +1134,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1166,7 +1166,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1230,7 +1230,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1259,7 +1259,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1320,7 +1320,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="target_popUpWindow" type="integer">21986240</label>
@@ -1383,7 +1383,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1415,7 +1415,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1446,8 +1446,8 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1506,8 +1506,8 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1629,7 +1629,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1721,7 +1721,7 @@
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
 			<label index="clickToRedrawFullSize" type="double">14459647</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1788,8 +1788,8 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1877,8 +1877,8 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
@@ -1973,8 +1973,8 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
-			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
+			<label index="findDragDrop" type="integer">220992020</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>

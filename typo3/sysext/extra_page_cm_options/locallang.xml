@@ -93,6 +93,7 @@
 			<label index="label">още опции...</label>
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="label">Mais opções...</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="label">Veel valikuid...</label>
@@ -100,6 +101,7 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="label">אפשרויות נוספות...</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -188,6 +190,7 @@
 			<label index="label" type="integer">220835237</label>
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="label" type="integer">220835237</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="label" type="integer">220835237</label>
@@ -195,6 +198,7 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="label" type="integer">220835237</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

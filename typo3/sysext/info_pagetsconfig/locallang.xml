@@ -120,16 +120,16 @@
 			<label index="tsconf_parts_0">Tout</label>
 			<label index="tsconf_parts_1">Module ('mod') droit prioritaire sur les paramètres utilisateurs</label>
 			<label index="tsconf_parts_1a">Module: Web&gt;Page</label>
-			<label index="tsconf_parts_1b">Module: Web&gt;View</label>
+			<label index="tsconf_parts_1b">Module: Web&gt;Vue</label>
 			<label index="tsconf_parts_1c">Module: Web&gt;Modules</label>
-			<label index="tsconf_parts_1d">Module: Web&gt;List</label>
+			<label index="tsconf_parts_1d">Module: Web&gt;Liste</label>
 			<label index="tsconf_parts_1e">Module: Web&gt;Info</label>
-			<label index="tsconf_parts_1f">Module: Web&gt;Func</label>
-			<label index="tsconf_parts_1g">Module: Web&gt;Template</label>
+			<label index="tsconf_parts_1f">Module: Web&gt;Fonctions</label>
+			<label index="tsconf_parts_1g">Module: Web&gt;Gabarit</label>
 			<label index="tsconf_configFields">Afficher les configurations TS</label>
 			<label index="editThisColumn">Editer le fichier '%s' pour toutes les pages listées</label>
-			<label index="editTSconfig">Editer la configuration  TS</label>
-			<label index="editTSconfig_all">Editer les configurations  TS des pages séléctionnées</label>
+			<label index="editTSconfig">Editer la configuration TS</label>
+			<label index="editTSconfig_all">Editer les configurations TS des pages séléctionnées</label>
 			<label index="editTSconfig_default">Configuration par défaut depuis TYPO3_CONF_VARS</label>
 			<label index="mod_pagetsconfig">Configuration TS de la page</label>
 		</languageKey>
@@ -421,12 +421,40 @@
 		<languageKey index="bg" type="array">
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="tsconf_title">Página TSconfig</label>
+			<label index="tsconf_parts_0">Todas</label>
+			<label index="tsconf_parts_1">Módulo-chave ('mod') com sobreposição de definições do usuário</label>
+			<label index="tsconf_parts_1a">Módulo: Web&gt;Página</label>
+			<label index="tsconf_parts_1b">Módulo: Web&gt;Visualizar</label>
+			<label index="tsconf_parts_1c">Módulo: Web&gt;Módulos</label>
+			<label index="tsconf_parts_1d">Módulo: Web&gt;Lista</label>
+			<label index="tsconf_parts_1e">Módulo: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Módulo: Web&gt;Func</label>
+			<label index="tsconf_parts_1g">Módulo: Web&gt;Modelo</label>
+			<label index="tsconf_configFields">Ver conteúdo dos campos TSconfig</label>
+			<label index="editThisColumn">Editar o campo '%s' para todas as páginas listadas</label>
+			<label index="editTSconfig">Editar TSconfig para esta página</label>
+			<label index="editTSconfig_all">Editar TSconfig para todas as páginas exibidas</label>
+			<label index="editTSconfig_default">Configuração Padrão de TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Página TSconfig</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 		</languageKey>
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="tsconf_title">TSconfig של דף</label>
+			<label index="tsconf_parts_0">הכל</label>
+			<label index="tsconf_parts_1">מפתח המודול (&quot;mod&quot;) עם דחייה של הגדרות משתמש</label>
+			<label index="tsconf_parts_1a">מודול: אינטרנט&gt;דפים</label>
+			<label index="tsconf_parts_1b">מודול: אינטרנט&gt;תצוגה</label>
+			<label index="tsconf_parts_1c">מודול: אינטרנט&gt;מודולים</label>
+			<label index="tsconf_parts_1d">מודול: אינטרנט&gt;רשימה</label>
+			<label index="tsconf_parts_1e">מודול: אינטרנט&gt;מידע</label>
+			<label index="tsconf_parts_1f">מודול: אינטרנט&gt;פעולות</label>
+			<label index="tsconf_parts_1g">מודול: אינטרנט&gt;תבנית</label>
+			<label index="tsconf_configFields">הצג תוכן שדות של TSconfig</label>
+			<label index="mod_pagetsconfig">TSconfig של דף</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -828,12 +856,40 @@
 		<languageKey index="bg" type="array">
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 		</languageKey>
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
