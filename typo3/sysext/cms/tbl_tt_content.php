@@ -67,7 +67,7 @@ $TCA['tt_content'] = Array (
 					Array('LLL:EXT:cms/locallang_ttc.php:CType.I.17', 'html')
 				),
 				'default' => 'text',
-				'authMode' => 'explicitDeny',
+				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
 				'authMode_enforce' => 'strict',
 			)
 		),
@@ -187,6 +187,7 @@ $TCA['tt_content'] = Array (
 			)
 		),
 		'header' => Array (
+			'l10n_mode' => 'prefixLangTitle',
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:header',
 			'config' => Array (
 				'type' => 'input',
@@ -253,6 +254,7 @@ $TCA['tt_content'] = Array (
 			)
 		),
 		'bodytext' => Array (
+			'l10n_mode' => 'prefixLangTitle',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.text',
 			'config' => Array (
 				'type' => 'text',
@@ -664,7 +666,7 @@ $TCA['tt_content'] = Array (
 					Array('','')
 				),
 				'default' => '',
-				'authMode' => 'explicitAllow',
+				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
 			)
 		),
 		'select_key' => Array (
@@ -910,6 +912,7 @@ $TCA['tt_content'] = Array (
 			)
 		),
 		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
+		'l18n_diffsource' => Array('config'=>array('type'=>'passthrough')),
 	),
 	'types' => Array (
 		'1' => 	Array('showitem' => 'CType'),

@@ -184,6 +184,23 @@ TABLE#typo3-tabmenu TD A { color:grey; text-decoration:none; display: block; wid
 TABLE#typo3-tabmenu TD.tabact A { color:#000; padding-left:10px; padding-right:10px; }
 TABLE#typo3-tabmenu TD A:hover { color:#000; background: #f6eab7; text-decoration:none; }
 
+/* Dynamic Tab menu (template.php) */
+DIV.typo3-dyntabmenu-tabs { margin-top: 5px; padding-right: 20px; }
+DIV.typo3-dyntabmenu-divs P.c-descr { font-style : italic; padding: 3px 10px 5px 10px; background: #e7dba8;  }
+TABLE.typo3-dyntabmenu TD.tabact { color: #000; border: solid black 1px; background: #e7dba8; }
+TABLE.typo3-dyntabmenu TD.tab { color:grey; border: solid #555 1px;  background: #c4d4cd; }
+TABLE.typo3-dyntabmenu TD.disabled { color:#999999; border: solid #555 1px;  background: #cccccc; padding-left: 5px; }
+TABLE.typo3-dyntabmenu TD.tab, TABLE.typo3-dyntabmenu TD.tabact, TABLE.typo3-dyntabmenu TD.disabled { border-radius: 3px; -moz-border-radius: 3px; border-bottom: 0px; }
+TABLE.typo3-dyntabmenu TD A { color:grey; text-decoration:none; display: block; width:100%; padding:2px; padding-left:5px; padding-right:5px; }
+TABLE.typo3-dyntabmenu TD.tabact A { color:#000; padding-left:10px; padding-right:10px; }
+TABLE.typo3-dyntabmenu TD A:hover { color:#000; background: #f6eab7; text-decoration:none; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.c-tablayer {margin-left: 20px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab { background: #c4d4cd;  background-image: url(gfx/ol/plusonly.gif); background-repeat: no-repeat; border: solid black 1px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.tabact {  background: #e7dba8; background-image: url(gfx/ol/minusonly.gif); background-repeat: no-repeat; border: solid black 1px;  margin-top: 5px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.disabled { color:#999999; border: solid black 1px; background: #cccccc;  padding: 2px 2px 2px 22px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab A, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact A { text-decoration:none; display: block; padding: 2px 2px 2px 22px; }
+
+
 /* Logo frame (alt_toplogo.php) */
 BODY#typo3-alt-toplogo-php {margin: 0px 0px 0px 0px;}
 
@@ -237,6 +254,9 @@ TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD.c-labelCell P.c-
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-header TD { font-weight: bold; padding-top: 10px; border-bottom: none; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox { margin-top: 4px; margin-bottom: 10px; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-singlebox { margin-top: 4px; margin-bottom: 10px; }
+TABLE.typo3-TCEforms DIV.typo3-TCEforms-originalLanguageValue { background-color: #bbccbb; }
+TABLE.typo3-TCEforms DIV.typo3-TCEforms-diffBox { background-color: white; border: 1px solid black; }
+TABLE.typo3-TCEforms DIV.typo3-TCEforms-diffBox-header { background-color: red; font-weight: bold; }
 
 /* Element Browser / RTE link selection: */
 TABLE#typo3-curUrl { font-weight: bold; width: 100%; margin-bottom: 2px;}
@@ -447,6 +467,8 @@ TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
 IMG.absmiddle { vertical-align: middle; }
 .smallCheckboxes { width:12px; height:12px; margin:0 0 0 0; }
 .uppercase { text-transform : uppercase; }
+.tableheader TD { font-weight: bold; padding-left: 2px; padding-right: 2px; }
+.lrPadding TD { padding-left: 2px; padding-right: 2px; }
 
 /* Permissions, green and red */
 .perm-allowed {color: green; font-weight: bold;}

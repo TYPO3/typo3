@@ -240,7 +240,7 @@ if ($GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_d
 // *******************************
 // Checks for proper browser
 // *******************************
-if (!$CLIENT['BROWSER'])	{
+if (!$CLIENT['BROWSER'] && !(defined('TYPO3_cliMode') && TYPO3_cliMode))	{
 	t3lib_BEfunc::typo3PrintError ('Browser error','You must use 4+ browsers with TYPO3!',0);
 	exit;
 }
@@ -272,12 +272,29 @@ $BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');	// New backend user obje
 $BE_USER->warningEmail = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
 $BE_USER->OS = TYPO3_OS;
 $BE_USER->start();			// Object is initialized
+$BE_USER->checkCLIuser();
 $BE_USER->backendCheckLogin();	// Checking if there's a user logged in
 $BE_USER->trackBeUser($TYPO3_CONF_VARS['BE']['trackBeUser']);	// Tracking backend user script hits
 
 	// Setting the web- and filemount global vars:
 $WEBMOUNTS = $BE_USER->returnWebmounts();		// ! WILL INCLUDE deleted mount pages as well!
 $FILEMOUNTS = $BE_USER->returnFilemounts();
+
+
+// ****************
+// CLI processing
+// ****************
+if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
+		// Status output:
+	if (!strcmp($_SERVER['argv'][1],'status'))	{
+		echo "Status of TYPO3 CLI script:\n\n";
+		echo "Username [uid]: ".$BE_USER->user['username']." [".$BE_USER->user['uid']."]\n";
+		echo "Database: ".TYPO3_db."\n";
+		echo "PATH_site: ".PATH_site."\n";
+		echo "\n";
+		exit;
+	}
+}
 
 // ****************
 // compression

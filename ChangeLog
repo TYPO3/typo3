@@ -1,3 +1,21 @@
+2004-08-21  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added support for backend initialization in PHP shell scripts. Interesting for deamons, cronjobs etc where you want a PHP script to run from shell but with a full backend environment. Documented in next version of Inside TYPO3.
+	* Configurable multiplication of DB field size (useful for resizing database for UTf-8 support)
+	* Fixed bug in show_item.php script / stdGraphic with abs/rel path prefix and typo3temp/ folder.
+	* TCEforms/TCEmain support for localization; You can exclude certain fields in localized versions, see diff. view if original changed, see the original records content with the localized version.
+	* TCEforms support for dynamic TAB menus (use the --div-- in types configuration and enable in [ctrl] section
+	* All TCEforms changes for localization and tab menus are documented in TYPO3 Core API
+	* Added support for localization-copies in Web>Page module; Now you can create copies of default language elements with a click on a button. There is even a new mode where all localizations must follow the default language 100% - but this still lacks frontend support. Enabled by "web.layout.defLangBinding=1" in Page TSconfig.
+	* Finally implemented dynamic (DHTML based) tab menus for flexforms using sheets!
+	* Added "select all" link for "checkbox" renderMode of "select" types in TCEforms
+	* New tcemain "cmd": "localize". Will make a localization-copy of a record, eg. content elements.
+	* Made "explicitDeny" mode for backend users configurable in TYPo3_CONF_VARS as requested on the dev-list.
+	* Added "sleep(5)" when a false login was detected in the login-screen. This makes trying lots of username/passwords in the login screen boooooring...
+	* Added new GUI type: Dynamic TAB menu which can switch between a number of sheets of content dynamically with tabs. Used in flexforms and also in TemplaVoila.
+	* Set-locale issue for USER_INT objects should be fixed. Please test this someone!!!
+	
+
 2004-08-20  Ingmar Schlecht  <ingmars@web.de>
 
  * Marginally changed the error message in t3lib_userauth appearing when the HTTP_REFERER mismatched.

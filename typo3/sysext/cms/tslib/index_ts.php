@@ -293,9 +293,10 @@ $TSFE->getCompressedTCarray();
 
 
 // *******************************************
-// Setting the internal var, sys_language_uid
+// Setting the internal var, sys_language_uid + locale settings
 // *******************************************
 $TSFE->settingLanguage();
+$TSFE->settingLocale();
 
 
 // ********************************

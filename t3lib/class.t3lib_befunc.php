@@ -1376,18 +1376,18 @@ class t3lib_BEfunc	{
 	 * @param	string		$labels should be something like ' min| hrs| days| yrs'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears")
 	 * @return	string		Formatted time
 	 */
-	function calcAge($seconds,$labels)	{
+	function calcAge($seconds,$labels = 'min|hrs|days|yrs')	{
 		$labelArr = explode('|',$labels);
 		$prefix='';
 		if ($seconds<0)	{$prefix='-'; $seconds=abs($seconds);}
 		if ($seconds<3600)	{
-			$seconds = round ($seconds/60).$labelArr[0];
+			$seconds = round ($seconds/60).' '.trim($labelArr[0]);
 		} elseif ($seconds<24*3600)	{
-			$seconds = round ($seconds/3600).$labelArr[1];
+			$seconds = round ($seconds/3600).' '.trim($labelArr[1]);
 		} elseif ($seconds<365*24*3600)	{
-			$seconds = round ($seconds/(24*3600)).$labelArr[2];
+			$seconds = round ($seconds/(24*3600)).' '.trim($labelArr[2]);
 		} else {
-			$seconds = round ($seconds/(365*24*3600)).$labelArr[3];
+			$seconds = round ($seconds/(365*24*3600)).' '.trim($labelArr[3]);
 		}
 		return $prefix.$seconds;
 	}
@@ -2076,6 +2076,7 @@ class t3lib_BEfunc	{
 	 * @param	string		$backPath must point back to the TYPO3_mainDir directory (where alt_doc.php is)
 	 * @param	string		$requestUri is an optional returnUrl you can set - automatically set to REQUEST_URI.
 	 * @return	string
+	 * @see template::issueCommand()
 	 */
 	function editOnClick($params,$backPath='',$requestUri='')	{
 		$retUrl = 'returnUrl='.($requestUri==-1?"'+T3_THIS_LOCATION+'":rawurlencode($requestUri?$requestUri:t3lib_div::getIndpEnv('REQUEST_URI')));

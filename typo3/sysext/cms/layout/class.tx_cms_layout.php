@@ -126,6 +126,7 @@ class tx_cms_layout extends recordList {
 	var $agePrefixes = ' min| hrs| days| yrs';	// Age prefixes for displaying times. May be set externally to localized values.
 	var $externalTables = array();			// Array of tables which is configured to be listed by the Web > Page module in addition to the default tables.
 	var $descrTable;						// "Pseudo" Description -table name
+	var $defLangBinding=FALSE;				// If set true, the language mode of tt_content elements will be rendered with hard binding between default language content elements and their translations!
 
 		// External, static: Configuration of tt_content element display:
 	var $tt_contentConfig = Array (
@@ -400,10 +401,11 @@ class tx_cms_layout extends recordList {
 				} else {
 					$langList=implode(',',array_keys($this->tt_contentConfig['languageCols']));
 				}
-				$languageColumn=array();
+				$languageColumn = array();
 			}
 			$langListArr = explode(',',$langList);
-
+			$defLanguageCount = array();
+			$defLangBinding = array();
 
 				// For EACH languages... :
 			foreach($langListArr as $lP)	{	// If NOT languageMode, then we'll only be through this once.
@@ -414,6 +416,7 @@ class tx_cms_layout extends recordList {
 
 					// For EACH column, render the content into a variable:
 				foreach($cList as $key)	{
+					if (!$lP) $defLanguageCount[$key] = array();
 
 						// Select content elements from this column/language:
 					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos='.intval($key).$showHidden.$showLanguage);
@@ -424,21 +427,26 @@ class tx_cms_layout extends recordList {
 						$onClick = "document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
 						$content[$key].= '<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
-
-							// Copy for language:
-					#	$onClick = "alert(123);";
-					#	$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent_copyForLang'));
-					#	$content[$key].= '<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
 					}
 
 						// Traverse any selected elements and render their display code:
 					$rowArr = $this->getResult($result);
+
 					foreach($rowArr as $row)	{
+						$singleElementHTML = '';
+						if (!$lP) $defLanguageCount[$key][] = $row['uid'];
+
 						$editUidList.= $row['uid'].',';
-						$content[$key].= $this->tt_content_drawHeader($row,$this->tt_contentConfig['showInfo']?15:5);
+						$singleElementHTML.= $this->tt_content_drawHeader($row,$this->tt_contentConfig['showInfo']?15:5);
 
 						$isRTE = $RTE && $this->isRTEforField('tt_content',$row,'bodytext');
-						$content[$key].= $this->tt_content_drawItem($row,$isRTE);
+						$singleElementHTML.= $this->tt_content_drawItem($row,$isRTE);
+
+						if ($this->defLangBinding && $this->tt_contentConfig['languageMode'])	{
+							$defLangBinding[$key][$lP][$row[($lP ? 'l18n_parent' : 'uid')]] = $singleElementHTML;
+						} else {
+							$content[$key].= $singleElementHTML;
+						}
 					}
 
 						// Add new-icon link, header:
@@ -446,7 +454,6 @@ class tx_cms_layout extends recordList {
 					$head[$key].= $this->tt_content_drawColHeader(t3lib_BEfunc::getProcessedValue('tt_content','colPos',$key), ($this->doEdit&&count($rowArr)?'&edit[tt_content]['.$editUidList.']=edit'.$pageTitleParamForAltDoc:''), $newP);
 					$editUidList = '';
 				}
-
 
 					// For EACH column, fit the rendered content into a table cell:
 				$out='';
@@ -465,7 +472,10 @@ class tx_cms_layout extends recordList {
 
 						// Storing content for use if languageMode is set:
 					if ($this->tt_contentConfig['languageMode'])	{
-						$languageColumn[$key][$lP] = $head[$key].$content[$key].'<br /><br />';
+						$languageColumn[$key][$lP] = $head[$key].$content[$key];
+						if (!$this->defLangBinding)	{
+							$languageColumn[$key][$lP].='<br /><br />'.$this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key],$id,$lP),$lP);
+						}
 					}
 				}
 
@@ -536,6 +546,33 @@ class tx_cms_layout extends recordList {
 						<td valign="top">'.implode('</td>'.$midSep.'
 						<td valign="top">',$cCont).'</td>
 					</tr>';
+
+					if ($this->defLangBinding)	{
+							// "defLangBinding" mode
+						foreach($defLanguageCount[$cKey] as $defUid)	{
+							$cCont=array();
+							foreach($langListArr as $lP)	{
+								$cCont[] = $defLangBinding[$cKey][$lP][$defUid].
+										'<br/>'.$this->newLanguageButton($this->getNonTranslatedTTcontentUids(array($defUid),$id,$lP),$lP);
+							}
+							$out.='
+							<tr>
+								<td valign="top">'.implode('</td>'.$midSep.'
+								<td valign="top">',$cCont).'</td>
+							</tr>';
+						}
+
+							// Create spacer:
+						$cCont=array();
+						foreach($langListArr as $lP)	{
+							$cCont[] = '&nbsp;';
+						}
+						$out.='
+						<tr>
+							<td valign="top">'.implode('</td>'.$midSep.'
+							<td valign="top">',$cCont).'</td>
+						</tr>';
+					}
 				}
 
 					// Finally, wrap it all in a table and add the language selector on top of it:
@@ -1703,6 +1740,60 @@ class tx_cms_layout extends recordList {
 			return $GLOBALS['TBE_TEMPLATE']->dfw($out);
 		} else {
 			return $out;
+		}
+	}
+
+	/**
+	 * Filters out all tt_content uids which are already translated so only non-translated uids is left.
+	 * Selects across columns, but within in the same PID. Columns are expect to be the same for translations and original but this may be a conceptual error (?)
+	 *
+	 * @param	array		Numeric array with uids of tt_content elements in the default language
+	 * @param	integer		Page pid
+	 * @param	integer		Sys language UID
+	 * @return	array		Modified $defLanguageCount
+	 */
+	function getNonTranslatedTTcontentUids($defLanguageCount,$id,$lP)	{
+		if ($lP && count($defLanguageCount))	{
+
+				// Select all translations here:
+			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid='.intval($lP).' AND l18n_parent IN ('.implode(',',$defLanguageCount).')');
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+
+				// Flip uids:
+			$defLanguageCount = array_flip($defLanguageCount);
+
+				// Traverse any selected elements and unset original UID if any:
+			$rowArr = $this->getResult($result);
+			foreach($rowArr as $row)	{
+				unset($defLanguageCount[$row['l18n_parent']]);
+			}
+
+				// Flip again:
+			$defLanguageCount = array_keys($defLanguageCount);
+		}
+
+		return $defLanguageCount;
+	}
+
+	/**
+	 * Creates button which is used to create copies of records..
+	 *
+	 * @param	array		Numeric array with uids of tt_content elements in the default language
+	 * @param	integer		Sys language UID
+	 * @return	string		"Copy languages" button, if available.
+	 */
+	function newLanguageButton($defLanguageCount,$lP)	{
+		if (count($defLanguageCount) && $lP)	{
+
+			$params = '';
+			foreach($defLanguageCount as $uidVal)	{
+				$params.='&cmd[tt_content]['.$uidVal.'][localize]='.$lP;
+			}
+
+				// Copy for language:
+			$onClick = "document.location='".$GLOBALS['SOBE']->doc->issueCommand($params)."'; return false;";
+			$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent_copyForLang').' ['.count($defLanguageCount).']');
+			return $theNewButton;
 		}
 	}
 

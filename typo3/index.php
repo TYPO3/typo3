@@ -440,6 +440,8 @@ class SC_index {
 					}
 				');
 			}
+		} elseif(!$BE_USER->user['uid'] && $this->commandLI) {
+			sleep(5);
 		}
 	}
 

@@ -500,6 +500,7 @@ $TCA['tt_content'] = Array (
 		'copyAfterDuplFields' => 'colPos,sys_language_uid',
 		'useColumnsForDefaultValues' => 'colPos,sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
+		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'languageField' => 'sys_language_uid',
 		'enablecolumns' => Array (
 			'disabled' => 'hidden',
@@ -609,6 +610,9 @@ $TCA['pages_language_overlay'] = Array (
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
+		'transOrigPointerField' => 'pid',
+		'transOrigPointerTable' => 'pages',
+		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'languageField' => 'sys_language_uid',
 		'mainpalette' => 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'

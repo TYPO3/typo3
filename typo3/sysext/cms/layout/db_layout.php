@@ -883,6 +883,7 @@ class SC_db_layout {
 		$dblist->nextThree = t3lib_div::intInRange($this->modTSconfig['properties']['editFieldsAtATime'],0,10);
 		$dblist->option_showBigButtons = $this->modTSconfig['properties']['disableBigButtons'] ? 0 : 1;
 		$dblist->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
+		$dblist->defLangBinding = $this->modTSconfig['properties']['defLangBinding'] ? 1 : 0;
 		if (!$dblist->nextThree)	$dblist->nextThree = 1;
 
 		$dblist->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];

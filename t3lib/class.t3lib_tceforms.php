@@ -162,6 +162,8 @@
 
 
 
+require_once(PATH_t3lib.'class.t3lib_diff.php');
+
 
 
 /**
@@ -191,6 +193,8 @@ class t3lib_TCEforms	{
 	var $prevBorderStyle='[nothing here...]';	// Something unique...
 	var $allowUpload=0; 				// If set direct upload fields will be shown
 	var $titleLen=15; 					// $BE_USER->uc['titleLen'] but what is default??
+	var $defaultLanguageData = array();	// Array where records in the default language is stored. (processed by transferdata)
+	var $defaultLanguageData_diff = array();	// Array where records in the default language is stored (raw without any processing. used for making diff)
 
 
 		// EXTERNAL, static
@@ -204,6 +208,7 @@ class t3lib_TCEforms	{
 	var $doPrintPalette=1;				// If set to false, palettes will NEVER be rendered.
 	var $clipObj=FALSE;					// Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
 	var $enableClickMenu=FALSE;			// Enable click menu on reference icons.
+	var $enableTabMenu = FALSE;			// Enable Tab Menus. If set to true, the JavaScript content from template::getDynTabMenuJScode() must be included in the document.
 
 	var $form_rowsToStylewidth = 9.58;	// Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $CLIENT[FORMSTYLE] value set)
 	var $form_largeComp = 1.33;			// Form field width compensation: Compensation for large documents, doc-tab (editing)
@@ -396,8 +401,13 @@ class t3lib_TCEforms	{
 		$this->renderDepth=$depth;
 
 			// Init vars:
-		$out_array=array();
+		$out_array = array(array());
+		$out_array_meta = array(array(
+			'title' => $this->getLL('l_generalTab')
+		));
+
 		$out_pointer=0;
+		$out_sheet=0;
 		$this->palettesRendered=array();
 		$this->palettesRendered[$this->renderDepth][$table]=array();
 
@@ -429,8 +439,8 @@ class t3lib_TCEforms	{
 					$fields = $this->mergeFieldsWithAddedFields($fields,$this->getFieldsToAdd($table,$row,$typeNum));
 
 						// Traverse the fields to render:
-					reset($fields);
-					while(list(,$fieldInfo)=each($fields))	{
+					$cc=0;
+					foreach($fields as $fieldInfo)	{
 							// Exploding subparts of the field configuration:
 						$parts = explode(';',$fieldInfo);
 
@@ -444,7 +454,7 @@ class t3lib_TCEforms	{
 							if (!isset($this->fieldStyle))	$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][0];
 						}
 						if (strcmp($color_style_parts[2],''))	{
-							$this->wrapBorder($out_array,$out_pointer);
+							$this->wrapBorder($out_array[$out_sheet],$out_pointer);
 							$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][intval($color_style_parts[2])];
 							if (!isset($this->borderStyle))	$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][0];
 						}
@@ -462,28 +472,41 @@ class t3lib_TCEforms	{
 								$sField = $this->getSingleField($table,$theField,$row,$parts[1],0,$parts[3],$parts[2]);
 								if ($sField)	$sField.=$sFieldPal;
 
-								$out_array[$out_pointer].= $sField;
+								$out_array[$out_sheet][$out_pointer].= $sField;
 							} elseif($theField=='--div--')	{
-								$out_array[$out_pointer].=$this->getDivider();
+								if ($cc>0) {
+									$out_array[$out_sheet][$out_pointer].=$this->getDivider();
+
+									if ($this->enableTabMenu && $TCA[$table]['ctrl']['dividers2tabs'])	{
+										$this->wrapBorder($out_array[$out_sheet],$out_pointer);
+										$out_sheet++;
+										$out_array[$out_sheet] = array();
+										$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
+									}
+								} else {	// Setting alternative title for "General" tab if "--div--" is the very first element.
+									$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
+								}
 							} elseif($theField=='--palette--')	{
 								if ($parts[2] && !isset($this->palettesRendered[$this->renderDepth][$table][$parts[2]]))	{
 										// render a 'header' if not collapsed
 									if ($TCA[$table]['palettes'][$parts[2]]['canNotCollapse'] AND $parts[1]) {
-										$out_array[$out_pointer].=$this->getPaletteFields($table,$row,$parts[2],$this->sL($parts[1]));
+										$out_array[$out_sheet][$out_pointer].=$this->getPaletteFields($table,$row,$parts[2],$this->sL($parts[1]));
 									} else {
-										$out_array[$out_pointer].=$this->getPaletteFields($table,$row,$parts[2],'','',$this->sL($parts[1]));
+										$out_array[$out_sheet][$out_pointer].=$this->getPaletteFields($table,$row,$parts[2],'','',$this->sL($parts[1]));
 									}
 									$this->palettesRendered[$this->renderDepth][$table][$parts[2]] = 1;
 								}
 							}
 						}
+
+						$cc++;
 					}
 				}
 			}
 		}
 
 			// Wrapping a border around it all:
-		$this->wrapBorder($out_array,$out_pointer);
+		$this->wrapBorder($out_array[$out_sheet],$out_pointer);
 
 			// Resetting styles:
 		$this->resetSchemes();
@@ -493,18 +516,40 @@ class t3lib_TCEforms	{
 		if ($mP && !isset($this->palettesRendered[$this->renderDepth][$table][$mP]))	{
 			$temp_palettesCollapsed=$this->palettesCollapsed;
 			$this->palettesCollapsed=0;
-			$out_array[$out_pointer].=$this->getPaletteFields($table,$row,$mP,$this->getLL('l_generalOptions'));
+			$out_array[$out_sheet][$out_pointer].=$this->getPaletteFields($table,$row,$mP,$this->getLL('l_generalOptions'));
 			$this->palettesCollapsed=$temp_palettesCollapsed;
 			$this->palettesRendered[$this->renderDepth][$table][$mP] = 1;
 		}
-		$this->wrapBorder($out_array,$out_pointer);
+		$this->wrapBorder($out_array[$out_sheet],$out_pointer);
 
 		if ($this->renderDepth)	{
 			$this->renderDepth--;
 		}
 
+
 			// Return the imploded $out_array:
-		return implode('',$out_array);
+		if ($out_sheet>0)	{	// There were --div-- dividers around...
+
+				// Create parts array for the tab menu:
+			$parts = array();
+			foreach($out_array as $idx => $sheetContent)	{
+				$parts[] = array(
+					'label' => $out_array_meta[$idx]['title'],
+					'content' => '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
+							implode('',$sheetContent).
+						'</table>'
+				);
+			}
+
+			return '
+				<tr>
+					<td colspan="2">
+					'.$this->getDynTabMenu($parts, 'TCEforms:'.$table.':'.$row['uid']).'
+					</td>
+				</tr>';
+		} else {	// Only one, so just implode:
+			return implode('',$out_array[$out_sheet]);
+		}
 	}
 
 	/**
@@ -656,7 +701,8 @@ class t3lib_TCEforms	{
 				(!$PA['fieldConf']['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$field)) &&
 				$PA['fieldConf']['config']['form_type']!='passthrough' &&
 				($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE']) &&
-				(!$PA['fieldConf']['displayCond'] || $this->isDisplayCondition($PA['fieldConf']['displayCond'],$row))
+				(!$PA['fieldConf']['displayCond'] || $this->isDisplayCondition($PA['fieldConf']['displayCond'],$row)) &&
+				(!$TCA[$table]['ctrl']['languageField'] || strcmp($PA['fieldConf']['l10n_mode'],'exclude') || $row[$TCA[$table]['ctrl']['languageField']]<=0)
 			)	{
 
 				// Fetching the TSconfig for the current table/field. This includes the $row which means that
@@ -706,6 +752,10 @@ class t3lib_TCEforms	{
 
 						// Based on the type of the item, call a render function:
 					$item = $this->getSingleField_SW($table,$field,$row,$PA);
+
+						// Add language + diff
+					$item = $this->renderDefaultLanguageContent($table,$field,$row,$item);
+					$item = $this->renderDefaultLanguageDiff($table,$field,$row,$item);
 
 						// If the record has been saved and the "linkTitleToSelf" is set, we make the field name into a link, which will load ONLY this field in alt_doc.php
 					$PA['label'] = t3lib_div::deHSCentities(htmlspecialchars($PA['label']));
@@ -1265,9 +1315,21 @@ class t3lib_TCEforms	{
 		$tRows = array();
 		$sOnChange = implode('',$PA['fieldChangeFunc']);
 		$c=0;
+		$setAll = array();	// Used to accumulate the JS needed to restore the original selection.
 		foreach($selItems as $p)	{
 				// Non-selectable element:
 			if (!strcmp($p[1],'--div--'))	{
+				if (count($setAll))	{
+						$tRows[] = '
+							<tr>
+								<td colspan="2">'.
+								'<a href="#" onclick="'.htmlspecialchars(implode('',$setAll).' return false;').'">'.
+								htmlspecialchars($this->getLL('l_setAllCheckboxes')).
+								'</a></td>
+							</tr>';
+						$setAll = array();
+				}
+
 				$tRows[] = '
 					<tr class="c-header">
 						<td colspan="2">'.htmlspecialchars($p[0]).'</td>
@@ -1289,6 +1351,7 @@ class t3lib_TCEforms	{
 					// Compile row:
 				$onClickCell = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=!'.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked;';
 				$onClick = 'this.attributes.getNamedItem("class").nodeValue = '.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked ? "c-selectedItem" : "";';
+				$setAll[] = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=1;';
 				$tRows[] = '
 					<tr class="'.($sM ? 'c-selectedItem' : '').'" onclick="'.htmlspecialchars($onClick).'" style="cursor: pointer;">
 						<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
@@ -1300,6 +1363,17 @@ class t3lib_TCEforms	{
 					</tr>';
 				$c++;
 			}
+		}
+
+			// Remaining checkboxes will get their set-all link:
+		if (count($setAll))	{
+				$tRows[] = '
+					<tr>
+						<td colspan="2">'.
+						'<a href="#" onclick="'.htmlspecialchars(implode('',$setAll).' return false;').'">'.
+						htmlspecialchars($this->getLL('l_setAllCheckboxes')).
+						'</a></td>
+					</tr>';
 		}
 
 			// Remaining values (invalid):
@@ -1324,7 +1398,8 @@ class t3lib_TCEforms	{
 		$item.= '
 			<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-select-checkbox">'.
 				implode('',$tRows).'
-			</table>';
+			</table>
+			';
 
 		return $item;
 	}
@@ -1790,11 +1865,11 @@ class t3lib_TCEforms	{
 
 				// Find the data structure if sheets are found:
 			$sheet = $editData['meta']['currentSheetId'] ? $editData['meta']['currentSheetId'] : 'sDEF';	// Sheet to display
-			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'[meta][currentSheetId]" value="'.$sheet.'">';
+#			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'[meta][currentSheetId]" value="'.$sheet.'">';
 
 				// Create sheet menu:
 			if (is_array($dataStructArray['sheets']))	{
-				$item.=$this->getSingleField_typeFlex_sheetMenu($dataStructArray['sheets'], $PA['itemFormElName'].'[meta][currentSheetId]', $sheet).'<br />';
+				#$item.=$this->getSingleField_typeFlex_sheetMenu($dataStructArray['sheets'], $PA['itemFormElName'].'[meta][currentSheetId]', $sheet).'<br />';
 			}
 #debug($editData);
 
@@ -1819,13 +1894,22 @@ class t3lib_TCEforms	{
 				$rotateLang = $editData['meta']['currentLangId'];
 			}
 
+				// Tabs sheets
+			if (is_array($dataStructArray['sheets']))	{
+				$tabsToTraverse = array_keys($dataStructArray['sheets']);
+			} else {
+				$tabsToTraverse = array($sheet);
+			}
+
 			foreach($rotateLang as $lKey)	{
 				if (!$langChildren && !$langDisabled)	{
 					$item.= '<b>'.$lKey.':</b>';
 				}
-	#			foreach($dataStructArray['sheets'] as $sheet => $_blabla)	{
+
+				$tabParts = array();
+				foreach($tabsToTraverse as $sheet)	{
+					$sheetCfg = $dataStructArray['sheets'][$sheet];
 					list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray,$sheet);
-		#debug(array($dataStruct, $sheet));
 
 						// Render sheet:
 					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el']))		{
@@ -1844,12 +1928,26 @@ class t3lib_TCEforms	{
 									$PA,
 									'[data]['.$sheet.']['.$lang.']'
 								);
-						$item.= '<table border="0" cellpadding="1" cellspacing="1" class="typo3-TCEforms-flexForm">'.implode('',$tRows).'</table>';
+						$sheetContent= '<table border="0" cellpadding="1" cellspacing="1" class="typo3-TCEforms-flexForm">'.implode('',$tRows).'</table>';
 
 			#			$item = '<div style=" position:absolute;">'.$item.'</div>';
 						//visibility:hidden;
-					} else $item.='Data Structure ERROR: No ROOT element found for sheet "'.$sheet.'".';
-	#			}
+					} else $sheetContent='Data Structure ERROR: No ROOT element found for sheet "'.$sheet.'".';
+
+						// Add to tab:
+					$tabParts[] = array(
+						'label' => ($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sKey),
+						'description' => ($sheetCfg['ROOT']['TCEforms']['sheetDescription'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetDescription']) : ''),
+						'linkTitle' => ($sheetCfg['ROOT']['TCEforms']['sheetShortDescr'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetShortDescr']) : ''),
+						'content' => $sheetContent
+					);
+				}
+
+				if (is_array($dataStructArray['sheets']))	{
+					$item.= $this->getDynTabMenu($tabParts,'TCEFORMS:flexform:'.$PA['itemFormElName']);
+				} else {
+					$item.= $sheetContent;
+				}
 			}
 		} else $item='Data Structure ERROR: '.$dataStructArray;
 
@@ -1886,7 +1984,7 @@ class t3lib_TCEforms	{
 	 */
 	function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)	{
 
-		$tCells=array();
+		$tCells =array();
 		$pct = round(100/count($sArr));
 		foreach($sArr as $sKey => $sheetCfg)	{
 			$onClick = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){'.$this->elName($elName).".value='".$sKey."'; TBE_EDITOR_submitForm()};";
@@ -2320,6 +2418,113 @@ class t3lib_TCEforms	{
 	}
 
 
+
+
+
+
+
+
+
+
+	/************************************************************
+	 *
+	 * Display of localized content etc.
+	 *
+	 ************************************************************/
+
+	/**
+	 * Will register data from original language records if the current record is a translation of another.
+	 * The original data is shown with the edited record in the form. The information also includes possibly diff-views of what changed in the original record.
+	 * Function called from outside (see alt_doc.php + quick edit) before rendering a form for a record
+	 *
+	 * @param	string		Table name of the record being edited
+	 * @param	array		Record array of the record being edited
+	 * @return	void
+	 */
+	function registerDefaultLanguageData($table,$rec)	{
+		global $TCA;
+
+			// Add default language:
+		if ($TCA[$table]['ctrl']['languageField']
+				&& $rec[$TCA[$table]['ctrl']['languageField']] > 0
+				&& $TCA[$table]['ctrl']['transOrigPointerField']
+				&& intval($rec[$TCA[$table]['ctrl']['transOrigPointerField']]) > 0)	{
+
+			$lookUpTable = $TCA[$table]['ctrl']['transOrigPointerTable'] ? $TCA[$table]['ctrl']['transOrigPointerTable'] : $table;
+
+				// Get data formatted:
+			$this->defaultLanguageData[$table.':'.$rec['uid']] = t3lib_BEfunc::getRecord($lookUpTable, intval($rec[$TCA[$table]['ctrl']['transOrigPointerField']]));
+
+				// Get data for diff:
+			if ($TCA[$table]['ctrl']['transOrigDiffSourceField'])	{
+				$this->defaultLanguageData_diff[$table.':'.$rec['uid']] = unserialize($rec[$TCA[$table]['ctrl']['transOrigDiffSourceField']]);
+			}
+		}
+	}
+
+	/**
+	 * Renders the display of default language record content around current field.
+	 * Will render content if any is found in the internal array, $this->defaultLanguageData, depending on registerDefaultLanguageData() being called prior to this.
+	 *
+	 * @param	string		Table name of the record being edited
+	 * @param	string		Field name represented by $item
+	 * @param	array		Record array of the record being edited
+	 * @param	string		HTML of the form field. This is what we add the content to.
+	 * @return	string		Item string returned again, possibly with the original value added to.
+	 * @see getSingleField(), registerDefaultLanguageData()
+	 */
+	function renderDefaultLanguageContent($table,$field,$row,$item)	{
+		if (is_array($this->defaultLanguageData[$table.':'.$row['uid']]))	{
+			$dLVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->defaultLanguageData[$table.':'.$row['uid']][$field],0,1);
+
+			if (strcmp($dLVal,''))	{
+				$item.='<div class="typo3-TCEforms-originalLanguageValue">'.nl2br(htmlspecialchars($dLVal)).'&nbsp;</div>';
+			}
+		}
+
+		return $item;
+	}
+
+	/**
+	 * Renders the diff-view of default language record content compared with what the record was originally translated from.
+	 * Will render content if any is found in the internal array, $this->defaultLanguageData, depending on registerDefaultLanguageData() being called prior to this.
+	 *
+	 * @param	string		Table name of the record being edited
+	 * @param	string		Field name represented by $item
+	 * @param	array		Record array of the record being edited
+	 * @param	string		HTML of the form field. This is what we add the content to.
+	 * @return	string		Item string returned again, possibly with the original value added to.
+	 * @see getSingleField(), registerDefaultLanguageData()
+	 */
+	function renderDefaultLanguageDiff($table,$field,$row,$item)	{
+		if (is_array($this->defaultLanguageData_diff[$table.':'.$row['uid']]))	{
+
+				// Initialize:
+			$dLVal = array(
+				'old' => $this->defaultLanguageData_diff[$table.':'.$row['uid']],
+				'new' => $this->defaultLanguageData[$table.':'.$row['uid']],
+			);
+
+			if (isset($dLVal['old'][$field]))	{	// There must be diff-data:
+			 	if (strcmp($dLVal['old'][$field],$dLVal['new'][$field]))	{
+
+						// Create diff-result:
+					$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
+					$diffres = $t3lib_diff_Obj->makeDiffDisplay(
+						t3lib_BEfunc::getProcessedValue($table,$field,$dLVal['old'][$field],0,1),
+						t3lib_BEfunc::getProcessedValue($table,$field,$dLVal['new'][$field],0,1)
+					);
+
+					$item.='<div class="typo3-TCEforms-diffBox">'.
+						'<div class="typo3-TCEforms-diffBox-header">'.htmlspecialchars($this->getLL('l_changeInOrig')).':</div>'.
+						$diffres.
+					'</div>';
+				}
+			}
+		}
+
+		return $item;
+	}
 
 
 
@@ -3019,6 +3224,28 @@ class t3lib_TCEforms	{
 		return $out;
 	}
 
+	/**
+	 * Create tab menu
+	 *
+	 * @param	array	Parts for the tab menu, fed to template::getDynTabMenu()
+	 * @param	string	ID string for the tab menu
+	 * @return	string	HTML for the menu
+	 */
+	function getDynTabMenu($parts, $idString) {
+		if (is_object($GLOBALS['TBE_TEMPLATE']))	{
+			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString);
+		} else {
+			$output = '';
+			foreach($parts as $singlePad)	{
+				$output.='
+				<h3>'.htmlspecialchars($singlePad['label']).'</h3>
+				'.($singlePad['description'] ? '<p class="c-descr">'.nl2br(htmlspecialchars($singlePad['description'])).'</p>' : '').'
+				'.$singlePad['content'];
+			}
+
+			return '<div class="typo3-dyntabmenu-divs">'.$output.'</div>';
+		}
+	}
 
 
 

@@ -101,6 +101,15 @@ class t3lib_install {
 
 
 
+	/**
+	 * Constructor
+	 */
+	function t3lib_install()	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize']>= 1 && $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize']<=5)	{
+			$this->multiplySize = (double)$GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'];
+		}
+	}
+
 
 
 	/**************************************

@@ -178,7 +178,8 @@ class t3lib_stdGraphic	{
 	var $workArea = Array();
 
 		// Constants:
-	var $tempPath = 'typo3temp/';						// The temp-directory where to store the files. Relative to PATH_site.
+	var $tempPath = 'typo3temp/';						// The temp-directory where to store the files. Relative to PATH_site. MUST NOT be absolute!
+	var $absPrefix = '';								// Prefix for relative paths. Used on "show_item.php" script
 	var $scalecmd = '-geometry';						// ImageMagick scaling command; "-geometry" eller "-sample". Used in makeText() and imageMagickConvert()
 	var $im5fx_blurSteps='1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';			// Used by v5_blur() to simulate 10 continuous steps of blurring
 	var $im5fx_sharpenSteps='1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';		// Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
@@ -1812,7 +1813,7 @@ class t3lib_stdGraphic	{
 
 					// Making the temporary filename:
 				$this->createTempSubDir('pics/');
-				$output = $this->tempPath.'pics/'.$this->filenamePrefix.$theOutputName.'.'.$newExt;
+				$output = $this->absPrefix.$this->tempPath.'pics/'.$this->filenamePrefix.$theOutputName.'.'.$newExt;
 
 					// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
@@ -2082,7 +2083,7 @@ class t3lib_stdGraphic	{
 	 * Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
 	 * Using ImageMagick
 	 *
-	 * @param	string		The absolute image filepath
+	 * @param	string		The relative (to PATH_site) image filepath
 	 * @return	array
 	 */
 	function imageMagickIdentify($imagefile)	{
@@ -2114,8 +2115,8 @@ class t3lib_stdGraphic	{
 	 * Executes a ImageMagick "convert" on two filenames, $input and $output using $params before them.
 	 * Can be used for many things, mostly scaling and effects.
 	 *
-	 * @param	string		The absolute image filepath, input file (read from)
-	 * @param	string		The absolute image filepath, output filename (written to)
+	 * @param	string		The relative (to PATH_site) image filepath, input file (read from)
+	 * @param	string		The relative (to PATH_site) image filepath, output filename (written to)
 	 * @param	string		ImageMagick parameters
 	 * @return	string		The result of a call to PHP function "exec()"
 	 */
@@ -2131,10 +2132,10 @@ class t3lib_stdGraphic	{
 	 * Executes a ImageMagick "combine" (or composite in newer times) on four filenames - $input, $overlay and $mask as input files and $output as the output filename (written to)
 	 * Can be used for many things, mostly scaling and effects.
 	 *
-	 * @param	string		The absolute image filepath, bottom file
-	 * @param	string		The absolute image filepath, overlay file (top)
-	 * @param	string		The absolute image filepath, the mask file (grayscale)
-	 * @param	string		The absolute image filepath, output filename (written to)
+	 * @param	string		The relative (to PATH_site) image filepath, bottom file
+	 * @param	string		The relative (to PATH_site) image filepath, overlay file (top)
+	 * @param	string		The relative (to PATH_site) image filepath, the mask file (grayscale)
+	 * @param	string		The relative (to PATH_site) image filepath, output filename (written to)
 	 * @return	void
 	 */
 	function combineExec($input,$overlay,$mask,$output)	{

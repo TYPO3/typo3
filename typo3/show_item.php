@@ -305,7 +305,7 @@ class SC_show_item {
 		$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
 		$imgObj->init();
 		$imgObj->mayScaleUp = 0;
-		$imgObj->tempPath = PATH_site.$imgObj->tempPath;
+		$imgObj->absPrefix = PATH_site;
 
 			// Read Image Dimensions (returns false if file was not an image type, otherwise dimensions in an array)
 		$imgInfo = '';
@@ -336,6 +336,7 @@ class SC_show_item {
 
 			// If the file was an image...:
 		if (is_array($imgInfo))	{
+
 			$imgInfo = $imgObj->imageMagickConvert($this->file,'web','346','200m','','','',1);
 			$imgInfo[3] = '../'.substr($imgInfo[3],strlen(PATH_site));
 			$code = '<br />

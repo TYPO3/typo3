@@ -351,6 +351,9 @@ class SC_alt_main {
 	var condensedMode = '.($BE_USER->uc['condensedMode']?1:0).';
 	var currentSubScript = "";
 	var currentSubNavScript = "";
+
+		// Used for tab-panels:
+	var DTM_currentTabs = new Array();
 		';
 
 			// Check editing of page:

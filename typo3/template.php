@@ -324,6 +324,7 @@ class template {
 	 * @param	string		$params is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World"
 	 * @param	string		Redirect URL if any other that t3lib_div::getIndpEnv('REQUEST_URI') is wished
 	 * @return	string		URL to tce_db.php + parameters (backpath is taken from $this->backPath)
+	 * @see t3lib_BEfunc::editOnClick()
 	 */
 	function issueCommand($params,$rUrl='')	{
 		$rUrl = $rUrl ? $rUrl : t3lib_div::getIndpEnv('REQUEST_URI');
@@ -966,9 +967,10 @@ $str.=$this->docBodyTagBegin().
 	 * 3:	Fatal error (Red stop sign)
 	 *
 	 * @param	integer		See description
+	 * @param	string		Value for style attribute
 	 * @return	string		HTML image tag (if applicable)
 	 */
-	function icons($type)	{
+	function icons($type, $styleAttribValue='')	{
 		switch($type)	{
 			case '3':
 				$icon = 'gfx/icon_fatalerror.gif';
@@ -986,7 +988,7 @@ $str.=$this->docBodyTagBegin().
 			break;
 		}
 		if ($icon)	{
-			return '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' class="absmiddle" alt="" />';
+			return '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' class="absmiddle"'.($styleAttribValue ? ' style="'.htmlspecialchars($styleAttribValue).'"' : '').' alt="" />';
 		}
 	}
 
@@ -1383,11 +1385,8 @@ $str.=$this->docBodyTagBegin().
 		} else return array('','','');
 	}
 
-
-
-
 	/**
-	 * creates a tab menu from an array definition
+	 * Creates a tab menu from an array definition
 	 *
 	 * Returns a tab menu for a module
 	 * Requires the JS function jumpToUrl() to be available
@@ -1447,8 +1446,9 @@ $str.=$this->docBodyTagBegin().
 				$class = $isActive ? 'tabact' : 'tab';
 				$width = $isActive ? $widthAct : $widthNo;
 
+					// @rene: Here you should probably wrap $label and $url in htmlspecialchars() in order to make sure its XHTML compatible! I did it for $url already since that is VERY likely to break.
 				$label = $def['label'];
-				$url = $def['url'];
+				$url = htmlspecialchars($def['url']);
 				$params = $def['addParams'];
 
 				if($first) {
@@ -1478,6 +1478,182 @@ $str.=$this->docBodyTagBegin().
 		return $content;
 	}
 
+	/**
+	 * Creates a DYNAMIC tab-menu where the tabs are switched between with DHTML.
+	 *
+	 * @param	array	Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
+	 * @param	string	Identification string. This should be unique for every instance of a dynamic menu!
+	 * @param	boolean		If set, then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option
+	 * @param	boolean		If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
+	 * @param	integer		Character limit for a new row.
+	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
+	 * @return	string	JavaScript section for the HTML header.
+	 */
+	function getDynTabMenu($menuItems,$identString,$toggle=FALSE,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1)	{
+		$content = '';
+
+		if (is_array($menuItems))	{
+
+				// Init:
+			$options = array(array());
+			$divs = array();
+			$JSinit = array();
+			$id = 'DTM-'.t3lib_div::shortMD5($identString);
+			$noWrap = $noWrap ? ' nowrap="nowrap"' : '';
+
+				// Traverse menu items
+			$c=0;
+			$tabRows=0;
+			$titleLenCount = 0;
+			foreach($menuItems as $index => $def) {
+					// Switch to next tab row if needed
+				if (!$foldout && $titleLenCount>$newRowCharLimit)	{	// 50 characters is probably a reasonable count of characters before switching to next row of tabs.
+					$titleLenCount=0;
+					$tabRows++;
+					$options[$tabRows] = array();
+				}
+
+				if ($toggle)	{
+					$onclick = 'this.blur(); DTM_toggle("'.$id.'","'.$index.'"); return false;';
+				} else {
+					$onclick = 'this.blur(); DTM_activate("'.$id.'","'.$index.'"); return false;';
+				}
+
+				$isActive = strcmp($def['content'],'');
+
+				if (!$foldout)	{
+						// Create TAB cell:
+					$options[$tabRows][] = '
+							<td class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.'>'.
+							($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+							$def['icon'].
+							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
+							$this->icons($def['stateIcon'],'margin-left: 10px;').
+							($isActive ? '</a>' :'').
+							'</td>';
+					$titleLenCount+= strlen($def['label']);
+				} else {
+						// Create DIV layer for content:
+					$divs[] = '
+						<div class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU">'.
+							($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
+							($isActive ? '</a>' : '').
+							'</div>';
+				}
+
+				if ($isActive)	{
+						// Create DIV layer for content:
+					$divs[] = '
+							<div style="display: none;" id="'.$id.'-'.$index.'-DIV" class="c-tablayer">'.
+								($def['description'] ? '<p class="c-descr">'.nl2br(htmlspecialchars($def['description'])).'</p>' : '').
+								$def['content'].
+								'</div>';
+						// Create initialization string:
+					$JSinit[] = '
+							DTM_array["'.$id.'"]['.$c.'] = "'.$id.'-'.$index.'";
+					';
+					if ($toggle)	{
+						$JSinit[] = '
+							if (top.DTM_currentTabs["'.$id.'-'.$index.'"]) { DTM_toggle("'.$id.'","'.$index.'"); }
+						';
+					}
+
+					$c++;
+				}
+			}
+
+				// Render menu:
+			if (count($options))	{
+
+					// Tab menu is compiled:
+				if (!$foldout)	{
+					$tabContent = '';
+					for($a=0;$a<=$tabRows;$a++)	{
+						$tabContent.= '
+
+					<!-- Tab menu -->
+					<table cellpadding="0" cellspacing="0" border="0" width="100%" class="typo3-dyntabmenu">
+						<tr>
+								'.implode('',$options[$a]).'
+						</tr>
+					</table>';
+					}
+					$content.= '<div class="typo3-dyntabmenu-tabs">'.$tabContent.'</div>';
+				}
+
+					// Div layers are added:
+				$content.= '
+				<!-- Div layers for tab menu: -->
+				<div class="typo3-dyntabmenu-divs'.($foldout?'-foldout':'').'">
+				'.implode('',$divs).'</div>';
+
+					// Java Script section added:
+				$content.= '
+				<!-- Initialization JavaScript for the menu -->
+				<script type="text/javascript">
+					DTM_array["'.$id.'"] = new Array();
+					'.implode('',$JSinit).'
+
+					'.(!$toggle ? 'DTM_activate("'.$id.'",top.DTM_currentTabs["'.$id.'"]?top.DTM_currentTabs["'.$id.'"]:0);' : '').'
+				</script>
+
+				';
+			}
+
+		}
+		return $content;
+	}
+
+	/**
+	 * Returns dynamic tab menu header JS code.
+	 *
+	 * @return	string	JavaScript section for the HTML header.
+	 */
+	function getDynTabMenuJScode()	{
+		return '
+			<script type="text/javascript">
+			/*<![CDATA[*/
+				var DTM_array = new Array();
+
+				function DTM_activate(idBase,index)	{	//
+						// Hiding all:
+					if (DTM_array[idBase])	{
+						for(cnt = 0; cnt < DTM_array[idBase].length ; cnt++)	{
+							if (DTM_array[idBase][cnt] != idBase+"-"+index)	{
+								document.getElementById(DTM_array[idBase][cnt]+"-DIV").style.display = "none";
+								document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+							}
+						}
+					}
+
+						// Showing one:
+					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
+						document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
+						document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+
+							// Setting current tab index in top of browser.
+						top.DTM_currentTabs[idBase] = index;
+					}
+				}
+				function DTM_toggle(idBase,index)	{	//
+						// Showing one:
+					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
+						if (document.getElementById(idBase+"-"+index+"-DIV").style.display == "block")	{
+							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
+							document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+							top.DTM_currentTabs[idBase+"-"+index] = 0;
+						} else {
+							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
+							document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+							top.DTM_currentTabs[idBase+"-"+index] = 1;
+						}
+					}
+				}
+			/*]]>*/
+			</script>
+		';
+	}
 }
 
 

@@ -414,7 +414,7 @@ class SC_alt_doc {
 				return false;
 			}
 		'.(isset($HTTP_POST_VARS['_savedokview_x']) && $this->popViewId ? t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl) : '')
-		);
+		).$this->doc->getDynTabMenuJScode();
 
 			// Setting up the context sensitive menu:
 		$CMparts = $this->doc->getContextMenuCode();
@@ -446,6 +446,7 @@ class SC_alt_doc {
 			$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 			$this->tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
 			$this->tceforms->enableClickMenu = TRUE;
+			$this->tceforms->enableTabMenu = TRUE;
 
 				// Clipboard is initialized:
 			$this->tceforms->clipObj = t3lib_div::makeInstance('t3lib_clipboard');		// Start clipboard
@@ -647,6 +648,9 @@ class SC_alt_doc {
 									if (is_array($this->overrideVals[$table]))	{
 										$this->tceforms->hiddenFieldListArr = array_keys($this->overrideVals[$table]);
 									}
+
+										// Register default language labels, if any:
+									$this->tceforms->registerDefaultLanguageData($table,$rec);
 
 										// Create form for the record (either specific list of fields or the whole record):
 									$panel = '';

@@ -209,6 +209,28 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	}
 
 	/**
+	 * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
+	 *
+	 * @return	boolean		Returns true if a CLI user was loaded, otherwise false!
+	 */
+	function checkCLIuser()	{
+			// First, check if cliMode is enabled:
+		if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
+			if (!$this->user['uid'])	{
+				if (substr($GLOBALS['MCONF']['name'],0,5)=='_CLI_')	{
+					$userName = strtolower($GLOBALS['MCONF']['name']);
+					$this->setBeUserByName($userName);
+					if ($this->user['uid'])	{
+						if (!$this->isAdmin())	{
+							return TRUE;
+						} else die('ERROR: CLI backend user "'.$userName.'" was ADMIN which is not allowed!'.chr(10).chr(10));
+					} else die('ERROR: No backend user named "'.$userName.'" was found!'.chr(10).chr(10));
+				} else die('ERROR: Module name, "'.$GLOBALS['MCONF']['name'].'", was not prefixed with "_CLI_"'.chr(10).chr(10));
+			} else die('ERROR: Another user was already loaded which is impossible in CLI mode!'.chr(10).chr(10));
+		}
+	}
+
+	/**
 	 * Initialize the internal ->uc array for the backend user
 	 * Will make the overrides if necessary, and write the UC back to the be_users record if changes has happend
 	 *

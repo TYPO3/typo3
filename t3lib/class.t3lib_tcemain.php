@@ -615,7 +615,11 @@ class t3lib_TCEmain	{
 	function fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$realPid,$status,$tscPID)	{
 		global $TCA;
 
+			// Initialize:
 		t3lib_div::loadTCA($table);
+		unset($originalLanguageRecord);
+		unset($originalLanguage_diffStorage);
+		$diffStorageFlag = FALSE;
 
 			// Setting 'currentRecord' and 'checkValueRecord':
 		if (strstr($id,'NEW'))	{
@@ -628,6 +632,19 @@ class t3lib_TCEmain	{
 			}
 		} else {
 			$currentRecord = $checkValueRecord = $this->recordInfo($table,$id,'*');	// We must use the current values as basis for this!
+
+				// Get original language record if available:
+			if (is_array($currentRecord)
+					&& $TCA[$table]['ctrl']['transOrigDiffSourceField']
+					&& $TCA[$table]['ctrl']['languageField']
+					&& $currentRecord[$TCA[$table]['ctrl']['languageField']] > 0
+					&& $TCA[$table]['ctrl']['transOrigPointerField']
+					&& intval($currentRecord[$TCA[$table]['ctrl']['transOrigPointerField']]) > 0)	{
+
+				$lookUpTable = $TCA[$table]['ctrl']['transOrigPointerTable'] ? $TCA[$table]['ctrl']['transOrigPointerTable'] : $table;
+				$originalLanguageRecord = $this->recordInfo($lookUpTable,$currentRecord[$TCA[$table]['ctrl']['transOrigPointerField']],'*');
+				$originalLanguage_diffStorage = unserialize($currentRecord[$TCA[$table]['ctrl']['transOrigDiffSourceField']]);
+			}
 		}
 		$this->checkValue_currentRecord = $checkValueRecord;
 
@@ -688,12 +705,25 @@ class t3lib_TCEmain	{
 								$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid,$tscPID);
 								if (isset($res['value']))	{
 									$fieldArray[$field]=$res['value'];
+
+										// Add the value of the original record to the diff-storage content:
+									if ($TCA[$table]['ctrl']['transOrigDiffSourceField'])	{
+										$originalLanguage_diffStorage[$field] = $originalLanguageRecord[$field];
+										$diffStorageFlag = TRUE;
+									}
 								}
 							}
+
+
 						break;
 					}
 				}	// Checking language.
 			}	// Check exclude fields / disabled fields...
+		}
+
+			// Add diff-storage information:
+		if ($diffStorageFlag && !isset($fieldArray[$TCA[$table]['ctrl']['transOrigDiffSourceField']]))	{	// If the field is set it would probably be because of an undo-operation - in which case we should not update the field of course...
+			 $fieldArray[$TCA[$table]['ctrl']['transOrigDiffSourceField']] = serialize($originalLanguage_diffStorage);
 		}
 
 			// Checking for RTE-transformations of fields:
@@ -2509,10 +2539,9 @@ class t3lib_TCEmain	{
 				$this->log($table,$id,2,0,1,"Attempt to modify table '%s' without permission",1,array($table));
 			}
 			if (isset($TCA[$table]) && !$this->tableReadOnly($table) && is_array($this->cmdmap[$table]) && $modifyAccessList)	{	    		// Is table from $TCA and
-#debug();
-				reset ($this->cmdmap[$table]);
-				while (list($id,$incomingCmdArray) = each($this->cmdmap[$table]))	{			// Har fundet en tabel
-					if (is_array($incomingCmdArray))	{	// Har fundet et ID-nummer
+
+				foreach($this->cmdmap[$table] as $id => $incomingCmdArray)	{
+					if (is_array($incomingCmdArray))	{	// have found a command.
 						reset($incomingCmdArray);
 						$command = key($incomingCmdArray);
  						$value = current($incomingCmdArray);
@@ -2526,10 +2555,13 @@ class t3lib_TCEmain	{
 									$this->copyPages($id,$value);
 								} else {
 									$this->copyRecord($table,$id,$value,1);
-#debug(array($table,$id,$value));
 								}
 									// Merging the copy-array info together for remapping purposes.
 								$this->copyMappingArray_merged= t3lib_div::array_merge_recursive_overrule($this->copyMappingArray_merged,$this->copyMappingArray);
+							break;
+							case 'localize':
+								$this->copyMappingArray = Array();
+								$this->copyRecord_localize($table,$id,$value);
 							break;
 							case 'delete':
 								if ($table == 'pages')	{
@@ -2685,23 +2717,23 @@ class t3lib_TCEmain	{
 	/**
 	 * Copying records
 	 *
-	 * $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * $first is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
-	 *
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$uid: ...
-	 * @param	[type]		$destPid: ...
-	 * @param	[type]		$first: ...
-	 * @return	[type]		...
+	 * @param	string		Element table
+	 * @param	integer		Element UID
+	 * @param	integer		$destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param	boolean		$first is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
+	 * @param	array		Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
+	 * @param	string		Commalist of fields to exclude from the copy process (might get default values)
+	 * @return	void
 	 */
-	function copyRecord($table,$uid,$destPid,$first=0)	{
+	function copyRecord($table,$uid,$destPid,$first=0,$overrideValues=array(),$excludeFields='')	{
 		global $TCA;
+
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
 			t3lib_div::loadTCA($table);
 			if ($this->doesRecordExist($table,$uid,'show'))	{
 				$data = Array();
-				$nonFields = explode(',','uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody');
+				$nonFields = array_unique(t3lib_div::trimExplode(',','uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,'.$excludeFields,1));
 				$row = $this->recordInfo($table,$uid,'*');
 				if (is_array($row))	{
 					$theNewID = uniqid('NEW');
@@ -2710,21 +2742,21 @@ class t3lib_TCEmain	{
 					$headerField = $TCA[$table]['ctrl']['label'];
 					$defaultData = $this->newFieldArray($table);
 
-					$tscPID=t3lib_BEfunc::getTSconfig_pidValue($table,$uid,$destPid);	// NOT using t3lib_BEfunc::getTSCpid() because we need the real pid - not the id of a page, if the input is a page...
+					$tscPID = t3lib_BEfunc::getTSconfig_pidValue($table,$uid,$destPid);	// NOT using t3lib_BEfunc::getTSCpid() because we need the real pid - not the id of a page, if the input is a page...
 					$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 					$tE = $this->getTableEntries($table,$TSConfig);
 //debug(array($table,$destPid,$TSConfig));
 
-					reset($row);
-					while (list($field,$value)=each($row))	{
+					foreach($row as $field => $value)	{
 						if (!in_array($field,$nonFields))	{
 							$conf = $TCA[$table]['columns'][$field]['config'];
 
 							if ($field=='pid')	{
 								$value = $destPid;
 							}
-
-							if ($TCA[$table]['ctrl']['setToDefaultOnCopy'] && t3lib_div::inList($TCA[$table]['ctrl']['setToDefaultOnCopy'],$field))	{
+							if (isset($overrideValues[$field]))	{
+								$value = $overrideValues[$field];
+							} elseif ($TCA[$table]['ctrl']['setToDefaultOnCopy'] && t3lib_div::inList($TCA[$table]['ctrl']['setToDefaultOnCopy'],$field))	{
 								$value = $defaultData[$field];
 							} else {
 								if ($first && $field==$enableField && $TCA[$table]['ctrl']['hideAtCopy'] && !$this->neverHideAtCopy && !$tE['disableHideAtCopy'])	{
@@ -2782,6 +2814,14 @@ class t3lib_TCEmain	{
 						// Added 02-05-02 to set the fields correctly for copied records...
 					if ($destPid<0 && is_array($data[$table][$theNewID]))	{
 						$copyAfterFields = $this->fixCopyAfterDuplFields($table,$uid,abs($destPid),0);
+
+							// Remove all copy-after fields that should be overridden or simply excluded (important for the "localize" action:
+						foreach($copyAfterFields as $cAFN => $cAFV)	{
+							if (in_array($cAFN,$nonFields) || isset($overrideValues[$cAFN]))	{
+								unset($copyAfterFields[$cAFN]);
+							}
+						}
+
 						$data[$table][$theNewID] = array_merge($data[$table][$theNewID],$copyAfterFields);
 //debug($data[$table][$theNewID]);
 					}	// origDestPid is retrieve before it may possibly be converted to resolvePid if the table is not sorted anyway. In this way, copying records to after another records which are not sorted still lets you use this function in order to copy fields from the one before.
@@ -2806,12 +2846,64 @@ class t3lib_TCEmain	{
 					}
 					$this->cachedTSconfig = $copyTCE->cachedTSconfig;	// Copy back the cached TSconfig
 					unset($copyTCE);
-				} else {
-					$this->log($table,$uid,3,0,1,'Attempt to copy record that did not exist!');
-				}
-			} else {
-				$this->log($table,$uid,3,0,1,'Attempt to copy record without permission');
-			}
+				} else $this->log($table,$uid,3,0,1,'Attempt to copy record that did not exist!');
+			} else $this->log($table,$uid,3,0,1,'Attempt to copy record without permission');
+		}
+	}
+
+	/**
+	 * Localizes a record to another system language
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record uid (to be localized)
+	 * @param	integer		Language ID (from sys_language table)
+	 * @return
+	 */
+	function copyRecord_localize($table,$uid,$language)	{
+		global $TCA;
+
+		$uid = intval($uid);
+
+		if ($TCA[$table] && $uid)	{
+			t3lib_div::loadTCA($table);
+
+			if ($TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
+				if ($langRec = t3lib_BEfunc::getRecord('sys_language',intval($language),'uid,title'))	{
+					if ($this->doesRecordExist($table,$uid,'show'))	{
+
+						$row = $this->recordInfo($table,$uid,'*');
+						if (is_array($row))	{
+							if ($row[$TCA[$table]['ctrl']['languageField']] == 0)	{
+								if ($row[$TCA[$table]['ctrl']['transOrigPointerField']] == 0)	{
+									if (!t3lib_BEfunc::getRecordsByField($table,$TCA[$table]['ctrl']['transOrigPointerField'],$uid,'AND pid='.intval($row['pid']).' AND '.$TCA[$table]['ctrl']['languageField'].'='.$langRec['uid']))	{
+
+											// Initialize:
+										$overrideValues = array();
+										$excludeFields = array();
+
+											// Set override values:
+										$overrideValues[$TCA[$table]['ctrl']['languageField']] = $langRec['uid'];
+										$overrideValues[$TCA[$table]['ctrl']['transOrigPointerField']] = $uid;
+
+											// Set exclude Fields:
+										foreach($TCA[$table]['columns'] as $fN => $fCfg)	{
+											if ($fCfg['l10n_mode']=='prefixLangTitle')	{	// Check if we are just prefixing:
+												if ($fCfg['config']['type']=='text' || $fCfg['config']['type']=='input')	{
+													$overrideValues[$fN] = '[Translate to '.$langRec['title'].':] '.$row[$fN];
+												}
+											} elseif (t3lib_div::inList('exclude,noCopy,mergeIfNotBlank',$fCfg['l10n_mode']) && $fN!=$TCA[$table]['ctrl']['languageField'] && $fN!=$TCA[$table]['ctrl']['transOrigPointerField']) {	 // Otherwise, do not copy field (unless it is the language field or pointer to the original language)
+												$excludeFields[] = $fN;
+											}
+										}
+											// Execute the copy:
+										$this->copyRecord($table,$uid,-$uid,1,$overrideValues,implode(',',$excludeFields));
+									} else $this->log($table,$uid,3,0,1,'Localization failed; There already was a localization for this language of the record!');
+								} else $this->log($table,$uid,3,0,1,'Localization failed; Source record contained a reference to an original default record (which is strange)!');
+							} else $this->log($table,$uid,3,0,1,'Localization failed; Source record had another language than "default" defined!');
+						} else $this->log($table,$uid,3,0,1,'Attempt to localize record that did not exist!');
+					} else $this->log($table,$uid,3,0,1,'Attempt to localize record without permission');
+				} else $this->log($table,$uid,3,0,1,'Sys language UID "'.$language.'" not found valid!');
+			} else $this->log($table,$uid,3,0,1,'Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!');
 		}
 	}
 

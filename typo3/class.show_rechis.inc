@@ -704,7 +704,7 @@ class recordHistory {
 	 * @access private
 	 */
 	function renderEntry($entry,$table)	{
-		global $SOBE, $LANG;
+		global $SOBE, $LANG, $TCA;
 
 		$lines=array();
  		if (is_array($entry['newRecord']))	{
@@ -713,42 +713,44 @@ class recordHistory {
 
 			$fieldsToDisplay = array_keys($entry['newRecord']);
 			foreach($fieldsToDisplay as $fN)	{
+				if (is_array($TCA[$table]['columns'][$fN]) && $TCA[$table]['columns'][$fN]['config']['type']!='passthrough')	{
 
-					// Create diff-result:
-				$diffres = $t3lib_diff_Obj->makeDiffDisplay(
-					t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN],0,1),
-					t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN],0,1)
-				);
+						// Create diff-result:
+					$diffres = $t3lib_diff_Obj->makeDiffDisplay(
+						t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN],0,1),
+						t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN],0,1)
+					);
 
-					// Depending on list type, we make the row:
-				switch($this->listType)	{
-					case 1:
-						$lines[]='
-							<tr class="bgColor4">
-								<td><em>'.$LANG->sl(t3lib_BEfunc::getItemLabel($table,$fN),1).'</em></td>
-								<td>'.nl2br($diffres).'</td>
-								<td>&nbsp;</td>
-							</tr>';
-					break;
-					case 2:
-						$lines[]='
-							<tr class="bgColor4">
-								<td><em>'.$LANG->sl(t3lib_BEfunc::getItemLabel($table,$fN)).'</em></td>
-								<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN])).'</td>
-								<td>'.$this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/history.gif','width="13" height="12"').' title="'.$LANG->getLL('revertField',1).'" alt="" />', array('revert'=>'field:'.$fN)).'</td>
-								<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN])).'</td>
-								<td>'.nl2br($diffres).'</td>
-							</tr>';
-					break;
-					default:
-						$lines[]='
-							<tr class="bgColor4">
-								<td><em>'.$LANG->sl(t3lib_BEfunc::getItemLabel($table,$fN)).'</em></td>
-								<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN])).'</td>
-								<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN])).'</td>
-								<td>'.nl2br($diffres).'</td>
-							</tr>';
-					break;
+						// Depending on list type, we make the row:
+					switch($this->listType)	{
+						case 1:
+							$lines[]='
+								<tr class="bgColor4">
+									<td><em>'.$LANG->sl(t3lib_BEfunc::getItemLabel($table,$fN),1).'</em></td>
+									<td>'.nl2br($diffres).'</td>
+									<td>&nbsp;</td>
+								</tr>';
+						break;
+						case 2:
+							$lines[]='
+								<tr class="bgColor4">
+									<td><em>'.$LANG->sl(t3lib_BEfunc::getItemLabel($table,$fN)).'</em></td>
+									<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN])).'</td>
+									<td>'.$this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/history.gif','width="13" height="12"').' title="'.$LANG->getLL('revertField',1).'" alt="" />', array('revert'=>'field:'.$fN)).'</td>
+									<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN])).'</td>
+									<td>'.nl2br($diffres).'</td>
+								</tr>';
+						break;
+						default:
+							$lines[]='
+								<tr class="bgColor4">
+									<td><em>'.$LANG->sl(t3lib_BEfunc::getItemLabel($table,$fN)).'</em></td>
+									<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN])).'</td>
+									<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN])).'</td>
+									<td>'.nl2br($diffres).'</td>
+								</tr>';
+						break;
+					}
 				}
 			}
 		}

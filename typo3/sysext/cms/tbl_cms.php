@@ -561,6 +561,7 @@ $TCA['pages_language_overlay'] = Array (
 			)
 		),
 		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
+		'l18n_diffsource' => Array('config'=>array('type'=>'passthrough')),
 	),
 	'types' => Array (
 		'0' => Array('showitem' => 'hidden;;;;1-1-1, sys_language_uid, title;;;;2-2-2, subtitle, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4')

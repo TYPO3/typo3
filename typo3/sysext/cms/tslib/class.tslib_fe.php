@@ -1570,6 +1570,31 @@
 	}
 
 	/**
+	 * Setting locale
+	 *
+	 * @return	void
+	 */
+	function settingLocale()	{
+
+			// Setting locale
+		if ($this->config['config']['locale_all'])	{
+			# Change by Rene Fritz, 22/10 2002
+			# there`s the problem that PHP parses float values in scripts wrong if the locale LC_NUMERIC is set to something with a komma as decimal point
+			# this does not work in php 4.2.3
+			#setlocale('LC_ALL',$this->config['config']['locale_all']);
+			#setlocale('LC_NUMERIC','en_US');
+
+			# so we set all except LC_NUMERIC
+			setlocale(LC_COLLATE,$this->config['config']['locale_all']);
+			setlocale(LC_CTYPE,$this->config['config']['locale_all']);
+			setlocale(LC_MONETARY,$this->config['config']['locale_all']);
+			setlocale(LC_TIME,$this->config['config']['locale_all']);
+
+			$this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
+		}
+	}
+
+	/**
 	 * Checks if any email-submissions or submission via the fe_tce
 	 *
 	 * @return	string		'email' if a formmail has been send, 'fe_tce' if front-end data submission (like forums, guestbooks) is send. '' if none.
@@ -1992,22 +2017,6 @@
 			// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
 		$this->tempPageCacheContent();
 
-			// Setting locale
-		if ($this->config['config']['locale_all'])	{
-			# Change by Rene Fritz, 22/10 2002
-			# there`s the problem that PHP parses float values in scripts wrong if the locale LC_NUMERIC is set to something with a komma as decimal point
-			# this does not work in php 4.2.3
-			#setlocale('LC_ALL',$this->config['config']['locale_all']);
-			#setlocale('LC_NUMERIC','en_US');
-
-			# so we set all except LC_NUMERIC
-			setlocale(LC_COLLATE,$this->config['config']['locale_all']);
-			setlocale(LC_CTYPE,$this->config['config']['locale_all']);
-			setlocale(LC_MONETARY,$this->config['config']['locale_all']);
-			setlocale(LC_TIME,$this->config['config']['locale_all']);
-
-			$this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
-		}
 
 			// Setting cache_timeout_default. May be overridden by PHP include scritps.
 		$this->cacheTimeOutDefault = intval($this->config['config']['cache_period']);

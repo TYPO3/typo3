@@ -225,6 +225,8 @@ class tx_install extends t3lib_install {
 	 * @return	[type]		...
 	 */
 	function tx_install()	{
+		parent::t3lib_install();
+
 		if (!$GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"])	die("Install Tool deactivated.<BR>You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be 'joh316':<BR><BR>\$TYPO3_CONF_VARS[\"BE\"][\"installToolPassword\"] = \"bacb98acf97e0b6112b1d1b650b84971\";<BR><BR>See the document 'installing_upgrading_32b1.pdf' for more info.");
 
 		if ($this->sendNoCacheHeaders)	{

@@ -184,6 +184,8 @@ CREATE TABLE pages_language_overlay (
   author tinytext NOT NULL,
   author_email varchar(80) DEFAULT '' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
+  l18n_diffsource mediumblob NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -330,6 +332,7 @@ CREATE TABLE tt_content (
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   pi_flexform mediumtext NOT NULL,
   l18n_parent int(11) DEFAULT '0' NOT NULL,
+  l18n_diffsource mediumblob NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)

@@ -237,6 +237,11 @@ class t3lib_transferData {
 			if ($table == 'pages')	{$this->prevPageID = $id;}
 
 			$this->regTableItems_data[$uniqueItemRef] = $this->renderRecordRaw($table, $id, $pid, $row, $TSconfig, $tscPID);
+
+				// Merges the processed array on-top of the raw one - this is done because some things in TCEforms may need access to other fields than those in the columns configuration!
+			if (is_array($row) && is_array($this->regTableItems_data[$uniqueItemRef]))	{
+				$this->regTableItems_data[$uniqueItemRef] = array_merge($row, $this->regTableItems_data[$uniqueItemRef]);
+			}
 		}
 	}
 
@@ -282,7 +287,7 @@ class t3lib_transferData {
 			$data = $this->renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field);
 
 				// Set the field in the accumulation array IF the $data variabel is set:
-			$totalRecordContent[$field]=isset($data)?$data:'';
+			$totalRecordContent[$field] = isset($data) ? $data : '';
 		}
 
 			// Further processing may apply for each field in the record depending on the settings in the "types" configuration (the list of fields to currently display for a record in TCEforms).
