@@ -43,166 +43,167 @@
  *
  *
  *
- *  245: class tslib_cObj
- *  343:     function start($data,$table='')
- *  358:     function setParent($data,$currentRecord)
+ *  246: class tslib_cObj
+ *  344:     function start($data,$table='')
+ *  359:     function setParent($data,$currentRecord)
  *
  *              SECTION: CONTENT_OBJ:
- *  383:     function getCurrentVal()
- *  394:     function setCurrentVal($value)
- *  407:     function cObjGet($setup,$addKey='')
- *  431:     function cObjGetSingle($name,$conf,$TSkey='__')
+ *  384:     function getCurrentVal()
+ *  395:     function setCurrentVal($value)
+ *  408:     function cObjGet($setup,$addKey='')
+ *  432:     function cObjGetSingle($name,$conf,$TSkey='__')
  *
  *              SECTION: Functions rendering content objects (cObjects)
- *  570:     function HTML($conf)
- *  581:     function TEXT($conf)
- *  592:     function CLEARGIF($conf)
- *  611:     function COBJ_ARRAY($conf,$ext='')
- *  647:     function USER($conf,$ext='')
- *  674:     function FILE($conf)
- *  690:     function IMAGE($conf)
- *  709:     function IMG_RESOURCE($conf)
- *  721:     function IMGTEXT($conf)
- * 1099:     function CONTENT($conf)
- * 1151:     function RECORDS($conf)
- * 1218:     function HMENU($conf)
- * 1250:     function CTABLE ($conf)
- * 1288:     function OTABLE ($conf)
- * 1303:     function COLUMNS ($conf)
- * 1382:     function HRULER ($conf)
- * 1407:     function CASEFUNC ($conf)
- * 1432:     function LOAD_REGISTER($conf,$name)
- * 1472:     function FORM($conf,$formData='')
- * 1854:     function SEARCHRESULT($conf)
- * 2019:     function PHP_SCRIPT($conf,$ext='')
- * 2062:     function TEMPLATE($conf)
- * 2206:     function MULTIMEDIA($conf)
+ *  571:     function HTML($conf)
+ *  582:     function TEXT($conf)
+ *  593:     function CLEARGIF($conf)
+ *  612:     function COBJ_ARRAY($conf,$ext='')
+ *  648:     function USER($conf,$ext='')
+ *  675:     function FILE($conf)
+ *  691:     function IMAGE($conf)
+ *  710:     function IMG_RESOURCE($conf)
+ *  722:     function IMGTEXT($conf)
+ * 1118:     function CONTENT($conf)
+ * 1170:     function RECORDS($conf)
+ * 1237:     function HMENU($conf)
+ * 1269:     function CTABLE ($conf)
+ * 1307:     function OTABLE ($conf)
+ * 1322:     function COLUMNS ($conf)
+ * 1401:     function HRULER ($conf)
+ * 1426:     function CASEFUNC ($conf)
+ * 1451:     function LOAD_REGISTER($conf,$name)
+ * 1491:     function FORM($conf,$formData='')
+ * 1928:     function SEARCHRESULT($conf)
+ * 2093:     function PHP_SCRIPT($conf,$ext='')
+ * 2136:     function TEMPLATE($conf)
+ * 2280:     function MULTIMEDIA($conf)
  *
  *              SECTION: Various helper functions for content objects:
- * 2295:     function netprintApplication_offsiteLinkWrap($str,$imgConf,$conf)
- * 2336:     function getFieldDefaultValue($noValueInsert, $fieldName, $defaultVal)
- * 2354:     function cImage($file,$conf)
- * 2381:     function imageLinkWrap($string,$imageFile,$conf)
- * 2445:     function fileResource($fName)
- * 2468:     function lastChanged($tstamp)
- * 2485:     function linkWrap($content,$wrap)
- * 2502:     function getAltParam($conf)
+ * 2369:     function netprintApplication_offsiteLinkWrap($str,$imgConf,$conf)
+ * 2410:     function getFieldDefaultValue($noValueInsert, $fieldName, $defaultVal)
+ * 2428:     function cImage($file,$conf)
+ * 2461:     function imageLinkWrap($string,$imageFile,$conf)
+ * 2526:     function fileResource($fName, $addParams='alt="" title=""')
+ * 2549:     function lastChanged($tstamp)
+ * 2566:     function linkWrap($content,$wrap)
+ * 2584:     function getAltParam($conf)
  *
  *              SECTION: HTML template processing functions
- * 2549:     function getSubpart($content, $marker)
- * 2578:     function substituteSubpart($content,$marker,$subpartContent,$recursive=1)
- * 2620:     function substituteMarker($content,$marker,$markContent)
- * 2640:     function substituteMarkerArrayCached($content,$markContentArray=array(),$subpartContentArray=array(),$wrappedSubpartContentArray=array())
- * 2738:     function substituteMarkerArray($content,$markContentArray,$wrap='',$uppercase=0)
- * 2759:     function substituteMarkerInObject(&$tree, $markContentArray)
- * 2782:     function fillInMarkerArray($markContentArray, $row, $fieldList='', $nl2br=TRUE, $prefix='FIELD_', $HSC=FALSE)
+ * 2641:     function getSubpart($content, $marker)
+ * 2670:     function substituteSubpart($content,$marker,$subpartContent,$recursive=1)
+ * 2712:     function substituteMarker($content,$marker,$markContent)
+ * 2732:     function substituteMarkerArrayCached($content,$markContentArray=array(),$subpartContentArray=array(),$wrappedSubpartContentArray=array())
+ * 2830:     function substituteMarkerArray($content,$markContentArray,$wrap='',$uppercase=0)
+ * 2851:     function substituteMarkerInObject(&$tree, $markContentArray)
+ * 2874:     function fillInMarkerArray($markContentArray, $row, $fieldList='', $nl2br=TRUE, $prefix='FIELD_', $HSC=FALSE)
  *
  *              SECTION: "stdWrap" + sub functions
- * 2845:     function stdWrap($content,$conf)
- * 3003:     function numRows($conf)
- * 3024:     function listNum($content,$listNum,$char)
- * 3044:     function checkIf($conf)
- * 3107:     function filelist($data)
- * 3186:     function clean_directory($theDir)
- * 3204:     function HTMLparser_TSbridge($theValue, $conf)
- * 3218:     function dataWrap($content,$wrap)
- * 3231:     function insertData($str)
- * 3261:     function prefixComment($str,$conf,$content)
- * 3285:     function substring($content,$options)
- * 3303:     function crop($content,$options)
- * 3329:     function textStyle($theValue, $conf)
- * 3396:     function tableStyle($theValue, $conf)
- * 3437:     function addParams($content,$conf)
- * 3480:     function filelink($theValue, $conf)
- * 3547:     function locDataJU($jumpUrl,$conf)
- * 3578:     function calc($val)
- * 3607:     function calcIntExplode($delim, $string)
- * 3627:     function splitObj($value, $conf)
- * 3683:     function parseFunc($theValue, $conf, $ref='')
- * 3789:     function _parseFunc ($theValue, $conf)
- * 3991:     function encaps_lineSplit($theValue, $conf)
- * 4074:     function http_makelinks($data,$conf)
- * 4141:     function mailto_makelinks($data,$conf)
- * 4193:     function getImgResource($file,$fileArray)
+ * 2937:     function stdWrap($content,$conf)
+ * 3096:     function numRows($conf)
+ * 3117:     function listNum($content,$listNum,$char)
+ * 3137:     function checkIf($conf)
+ * 3200:     function filelist($data)
+ * 3279:     function clean_directory($theDir)
+ * 3297:     function HTMLparser_TSbridge($theValue, $conf)
+ * 3311:     function dataWrap($content,$wrap)
+ * 3324:     function insertData($str)
+ * 3354:     function prefixComment($str,$conf,$content)
+ * 3378:     function substring($content,$options)
+ * 3396:     function crop($content,$options)
+ * 3423:     function removeBadHTML($text, $conf)
+ * 3467:     function textStyle($theValue, $conf)
+ * 3534:     function tableStyle($theValue, $conf)
+ * 3575:     function addParams($content,$conf)
+ * 3618:     function filelink($theValue, $conf)
+ * 3685:     function locDataJU($jumpUrl,$conf)
+ * 3716:     function calc($val)
+ * 3745:     function calcIntExplode($delim, $string)
+ * 3765:     function splitObj($value, $conf)
+ * 3821:     function parseFunc($theValue, $conf, $ref='')
+ * 3931:     function _parseFunc ($theValue, $conf)
+ * 4133:     function encaps_lineSplit($theValue, $conf)
+ * 4216:     function http_makelinks($data,$conf)
+ * 4283:     function mailto_makelinks($data,$conf)
+ * 4335:     function getImgResource($file,$fileArray)
  *
  *              SECTION: Data retrieval etc.
- * 4365:     function getFieldVal($field)
- * 4385:     function getData($string,$fieldArray)
- * 4503:     function rootLineValue($key,$field,$slideBack=0,$altRootLine='')
- * 4524:     function getGlobal($var)
- * 4549:     function getKey($key,$arr)
+ * 4507:     function getFieldVal($field)
+ * 4527:     function getData($string,$fieldArray)
+ * 4654:     function rootLineValue($key,$field,$slideBack=0,$altRootLine='')
+ * 4676:     function getGlobal($var, $source=NULL)
+ * 4701:     function getKey($key,$arr)
  *
  *              SECTION: Link functions (typolink)
- * 4601:     function typoLink($linktxt, $conf)
- * 4862:     function typoLink_URL($conf)
- * 4880:     function getTypoLink($label,$params,$urlParameters=array(),$target='')
- * 4910:     function getTypoLink_URL($params,$urlParameters=array(),$target='')
- * 4922:     function typolinkWrap($conf)
- * 4935:     function currentPageUrl($urlParameters=array(),$id=0)
- * 4948:     function getClosestMPvalueForPage($pageId, $raw=FALSE)
+ * 4753:     function typoLink($linktxt, $conf)
+ * 5017:     function typoLink_URL($conf)
+ * 5035:     function getTypoLink($label,$params,$urlParameters=array(),$target='')
+ * 5065:     function getTypoLink_URL($params,$urlParameters=array(),$target='')
+ * 5077:     function typolinkWrap($conf)
+ * 5090:     function currentPageUrl($urlParameters=array(),$id=0)
+ * 5103:     function getClosestMPvalueForPage($pageId, $raw=FALSE)
  *
  *              SECTION: Miscellaneous functions, stand alone
- * 5024:     function wrap($content,$wrap,$char='|')
- * 5040:     function noTrimWrap($content,$wrap)
- * 5054:     function wrapSpace($content, $wrap)
- * 5080:     function callUserFunction($funcName,$conf,$content)
- * 5121:     function processParams($params)
- * 5139:     function keywords($content)
- * 5156:     function caseshift($theValue, $case)
- * 5179:     function HTMLcaseshift($theValue, $case)
- * 5208:     function bytes($sizeInBytes,$labels)
- * 5219:     function calcAge($seconds,$labels)
- * 5250:     function sendNotifyEmail($msg, $recipients, $cc, $email_from, $email_fromName='', $replyTo='')
- * 5277:     function URLqMark($url,$params)
- * 5293:     function checkEmail($email)
- * 5305:     function clearTSProperties($TSArr,$propList)
- * 5324:     function mergeTSRef($confArr,$prop)
- * 5347:     function joinTSarrays($conf,$old_conf)
- * 5370:     function gifBuilderTextBox($gifbuilderConf, $conf, $text)
- * 5426:     function linebreaks($string,$chars,$maxLines=0)
- * 5457:     function getUpdateJS($dataArray, $formName, $arrPrefix, $fieldList)
+ * 5179:     function wrap($content,$wrap,$char='|')
+ * 5195:     function noTrimWrap($content,$wrap)
+ * 5209:     function wrapSpace($content, $wrap)
+ * 5235:     function callUserFunction($funcName,$conf,$content)
+ * 5276:     function processParams($params)
+ * 5294:     function keywords($content)
+ * 5311:     function caseshift($theValue, $case)
+ * 5334:     function HTMLcaseshift($theValue, $case)
+ * 5363:     function bytes($sizeInBytes,$labels)
+ * 5374:     function calcAge($seconds,$labels)
+ * 5405:     function sendNotifyEmail($msg, $recipients, $cc, $email_from, $email_fromName='', $replyTo='')
+ * 5432:     function URLqMark($url,$params)
+ * 5448:     function checkEmail($email)
+ * 5460:     function clearTSProperties($TSArr,$propList)
+ * 5479:     function mergeTSRef($confArr,$prop)
+ * 5502:     function joinTSarrays($conf,$old_conf)
+ * 5525:     function gifBuilderTextBox($gifbuilderConf, $conf, $text)
+ * 5581:     function linebreaks($string,$chars,$maxLines=0)
+ * 5612:     function getUpdateJS($dataArray, $formName, $arrPrefix, $fieldList)
  *
  *              SECTION: Database functions, making of queries
- * 5526:     function DBgetDelete($table, $uid, $doExec=FALSE)
- * 5558:     function DBgetUpdate($table, $uid, $dataArr, $fieldList, $doExec=FALSE)
- * 5600:     function DBgetInsert($table, $pid, $dataArr, $fieldList, $doExec=FALSE)
- * 5637:     function DBmayFEUserEdit($table,$row, $feUserRow, $allowedGroups='',$feEditSelf=0)
- * 5677:     function DBmayFEUserEditSelect($table,$feUserRow,$allowedGroups='',$feEditSelf=0)
- * 5717:     function enableFields($table,$show_hidden=0)
- * 5741:     function getTreeList($id,$depth,$begin=0,$dontCheckEnableFields=FALSE,$addSelectFields='',$moreWhereClauses='', $prevId_array=array(), $recursionLevel=0)
- * 5838:     function whereSelectFromList($field,$value)
- * 5856:     function exec_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
- * 5883:     function exec_mm_query_uidList($select,$local_table_uidlist,$mm_table,$foreign_table='',$whereClause='',$groupBy='',$orderBy='',$limit='')
- * 5904:     function searchWhere($sw,$searchFieldList,$searchTable='')
- * 5937:     function exec_getQuery($table, $conf)
- * 5955:     function getQuery($table, $conf, $returnQueryArray=FALSE)
- * 6034:     function getWhere($table,$conf, $returnQueryArray=FALSE)
- * 6120:     function checkPidArray($listArr)
- * 6143:     function checkPid($uid)
+ * 5681:     function DBgetDelete($table, $uid, $doExec=FALSE)
+ * 5713:     function DBgetUpdate($table, $uid, $dataArr, $fieldList, $doExec=FALSE)
+ * 5755:     function DBgetInsert($table, $pid, $dataArr, $fieldList, $doExec=FALSE)
+ * 5792:     function DBmayFEUserEdit($table,$row, $feUserRow, $allowedGroups='',$feEditSelf=0)
+ * 5832:     function DBmayFEUserEditSelect($table,$feUserRow,$allowedGroups='',$feEditSelf=0)
+ * 5872:     function enableFields($table,$show_hidden=0)
+ * 5896:     function getTreeList($id,$depth,$begin=0,$dontCheckEnableFields=FALSE,$addSelectFields='',$moreWhereClauses='', $prevId_array=array(), $recursionLevel=0)
+ * 5993:     function whereSelectFromList($field,$value)
+ * 6011:     function exec_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ * 6038:     function exec_mm_query_uidList($select,$local_table_uidlist,$mm_table,$foreign_table='',$whereClause='',$groupBy='',$orderBy='',$limit='')
+ * 6059:     function searchWhere($sw,$searchFieldList,$searchTable='')
+ * 6092:     function exec_getQuery($table, $conf)
+ * 6110:     function getQuery($table, $conf, $returnQueryArray=FALSE)
+ * 6189:     function getWhere($table,$conf, $returnQueryArray=FALSE)
+ * 6275:     function checkPidArray($listArr)
+ * 6298:     function checkPid($uid)
  *
  *              SECTION: Frontend editing functions
- * 6199:     function editPanel($content, $conf, $currentRecord='', $dataArr=array())
- * 6363:     function editIcons($content,$params, $conf=array(), $currentRecord='', $dataArr=array(),$addUrlParamStr='')
- * 6427:     function editPanelLinkWrap($string,$formName,$cmd,$currentRecord='',$confirm='')
- * 6465:     function editPanelLinkWrap_doWrap($string,$url,$currentRecord)
- * 6492:     function editPanelPreviewBorder($table,$row,$content,$thick)
- * 6509:     function isDisabled($table,$row)
+ * 6354:     function editPanel($content, $conf, $currentRecord='', $dataArr=array())
+ * 6518:     function editIcons($content,$params, $conf=array(), $currentRecord='', $dataArr=array(),$addUrlParamStr='')
+ * 6582:     function editPanelLinkWrap($string,$formName,$cmd,$currentRecord='',$confirm='')
+ * 6620:     function editPanelLinkWrap_doWrap($string,$url,$currentRecord)
+ * 6647:     function editPanelPreviewBorder($table,$row,$content,$thick)
+ * 6664:     function isDisabled($table,$row)
  *
  *
- * 6540: class tslib_frameset
- * 6550:     function make($setup)
- * 6587:     function frameParams($setup, $typeNum)
- * 6630:     function framesetParams($setup)
+ * 6695: class tslib_frameset
+ * 6705:     function make($setup)
+ * 6742:     function frameParams($setup, $typeNum)
+ * 6785:     function framesetParams($setup)
  *
  *
- * 6663: class tslib_tableOffset
- * 6675:     function start($content,$offset)
+ * 6818: class tslib_tableOffset
+ * 6830:     function start($content,$offset)
  *
  *
- * 6753: class tslib_controlTable
- * 6788:     function start($offset,$cMargins)
+ * 6908: class tslib_controlTable
+ * 6943:     function start($offset,$cMargins)
  *
- * TOTAL FUNCTIONS: 128
+ * TOTAL FUNCTIONS: 129
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -2991,6 +2992,7 @@ class tslib_cObj {
 				if ($conf['bytes']){$content=$this->bytes($content,$conf['bytes.']['labels']);}
 				if ($conf['substring']){$content=$this->substring($content,$conf['substring']);}
 				if ($conf['crop']){$content=$this->crop($content, $conf['crop']);}
+				if ($conf['removeBadHTML'])	{$content = $this->removeBadHTML($content, $conf['removeBadHTML.']);}
 				if ($conf['stripHtml']){$content = strip_tags($content);}
 				if ($conf['rawUrlEncode']){$content = rawurlencode($content);}
 				if ($conf['htmlSpecialChars']){
@@ -3405,6 +3407,51 @@ class tslib_cObj {
 			}
 		}
 		return $content;
+	}
+
+	/**
+	 * Function for removing malicious HTML code when you want to provide some HTML code user-editable.
+	 * The purpose is to avoid XSS attacks and the code will be continously modified to remove such code.
+	 * For a complete reference with javascript-on-events, see http://www.wdvl.com/Authoring/JavaScript/Events/events_target.html
+	 *
+	 * @param	string		Input string to be cleaned.
+	 * @param	array		TypoScript configuration.
+	 * @return	string		Return string
+	 * @author	Thomas Bley (all from moregroupware cvs code / readmessage.inc.php, published under gpl by Thomas)
+	 * @author	Kasper Skårhøj
+	 */
+	function removeBadHTML($text, $conf)	{
+
+			// Copyright 2002-2003 Thomas Bley
+		$text = preg_replace(
+			array(
+				"'<script[^>]*?>.*?</script[^>]*?>'si",
+				"'<applet[^>]*?>.*?</applet[^>]*?>'si",
+				"'<object[^>]*?>.*?</object[^>]*?>'si",
+				"'<iframe[^>]*?>.*?</iframe[^>]*?>'si",
+				"'<frameset[^>]*?>.*?</frameset[^>]*?>'si",
+				"'<style[^>]*?>.*?</style[^>]*?>'si",
+				"'<marquee[^>]*?>.*?</marquee[^>]*?>'si",
+				"'<script[^>]*?>'si",
+				"'<meta[^>]*?>'si",
+				"'<base[^>]*?>'si",
+				"'<applet[^>]*?>'si",
+				"'<object[^>]*?>'si",
+				"'<link[^>]*?>'si",
+				"'<iframe[^>]*?>'si",
+				"'<frame[^>]*?>'si",
+				"'<frameset[^>]*?>'si",
+				"'<input[^>]*?>'si",
+				"'<form[^>]*?>'si",
+				"'<embed[^>]*?>'si",
+				"'background-image:url'si",
+				"'<\w+.*?(onabort|onbeforeunload|onblur|onchange|onclick|ondblclick|ondragdrop|onerror|onfilterchange|onfocus|onhelp|onkeydown|onkeypress|onkeyup|onload|onmousedown|onmousemove|onmouseout|onmouseover|onmouseup|onmove|onreadystatechange|onreset|onresize|onscroll|onselect|onselectstart|onsubmit|onunload).*?>'si",
+			), '', $text);
+
+			$text = eregi_replace('<a[^>]*href[[:space:]]*=[[:space:]]*["\']?[[:space:]]*javascript[^>]*','',$text);
+
+			// Return clean content
+		return $text;
 	}
 
 	/**

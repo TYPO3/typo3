@@ -1,5 +1,9 @@
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added "removeBadHTML" option to stdWrap - this can help to avoid XSS dangerous HTML.
+
+2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added feature in TYpoScript data type "getText" to get values from GET arrays via "GPvar" key word. Now you can specify ".date = GPvar : tx_myext|mode|index" to get value of &tx_myext[mode][index]
 
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
