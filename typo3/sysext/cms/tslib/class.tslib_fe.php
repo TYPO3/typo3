@@ -2927,11 +2927,12 @@ if (version == "n3") {
 			$out = $this->fileNameASCIIPrefix($inTitle, $titleChars);
 		}
 		$enc = '';
+
 		if (strcmp($addParams,'') && !$no_cache)	{
 			switch ((string)$this->config['config']['simulateStaticDocuments_pEnc'])	{
 				case 'md5':
-					$md5=substr(md5($addParams),0,10);
-					$enc='+M5'.$md5;
+					$md5 = substr(md5($addParams),0,10);
+					$enc = '+M5'.$md5;
 
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('md5hash', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($md5, 'cache_md5params'));
 					if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
@@ -2946,7 +2947,7 @@ if (version == "n3") {
 					}
 				break;
 				case 'base64':
-					$enc='+B6'.str_replace('=','_',str_replace('/','-',base64_encode($addParams)));
+					$enc = '+B6'.str_replace('=','_',str_replace('/','-',base64_encode($addParams)));
 				break;
 			}
 		}
