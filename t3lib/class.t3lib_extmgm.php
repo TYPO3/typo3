@@ -798,7 +798,7 @@ tt_content.'.$key.$prefix.' {
 	 * Usage: 3
 	 *
 	 * @param	string		$extKey is of course the extension key
-	 * @param	string		$path is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt and editorcfg.txt is found (relative to extPath, eg. 'static/')
+	 * @param	string		$path is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, editorcfg.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a commaseperated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
 	 * @param	string		$title is the title in the selector box.
 	 * @return	void
 	 * @see addTypoScript()
