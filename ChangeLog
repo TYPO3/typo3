@@ -1,5 +1,9 @@
 2004-05-19  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed stylesheet issues in Extension Manager.
+
+2004-05-19  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Finally fixed typo3/show_item.php and typo3/wizard_colorpicker.php scripts for TYPO3 3.6.0 compliance. Now only extensions and some t3lib/ are missing clean-up.
 
 2004-05-18  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -107,7 +107,6 @@ IMG {
 
 
 
-
 /*********************************************
  * Various body tags:
  *********************************************/
@@ -384,6 +383,16 @@ BODY#typo3-db-new-php A IMG { margin-right: 5px; }
 BODY#typo3-db-new-php A { text-decoration: none; }
 BODY#typo3-db-new-php IMG.c-helpImg { margin-left: 20px; text-align: right; }
 BODY#typo3-db-new-php DIV#typo3-newPageLink { margin-top: 20px; }
+
+/* Extension Manager */
+BODY#typo3-mod-tools-em-index-php .em-private {background-color: #F6CA96;}
+BODY#typo3-mod-tools-em-index-php .em-listbg1 {background-color: #D9D5C9;}
+BODY#typo3-mod-tools-em-index-php .em-listbg2 {background-color: #e9e5e9;}
+BODY#typo3-mod-tools-em-index-php .em-listbg3 {background-color: #efefef;}
+BODY#typo3-mod-tools-em-index-php TR.bgColor5 TD {font-weight: bold;}
+
+
+
 
 /*********************************************
  * VARIOUS STAND-ALONE classes:

@@ -651,12 +651,11 @@ class SC_mod_tools_em_index {
 						if (in_array($extKey,$this->requiredExt))	$loadUnloadLink='<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('Rq').'</strong>';
 
 						if ($list[$extKey]['EM_CONF']['private'])	{
-							$theBgColor = '#F6CA96';
+							$theRowClass = 'em-private';
 						} else {
-							$theBgColor = t3lib_extMgm::isLoaded($extKey)?$this->doc->bgColor4:t3lib_div::modifyHTMLcolor($this->doc->bgColor4,20,20,20);
+							$theRowClass = t3lib_extMgm::isLoaded($extKey)? 'em-listbg1' : 'em-listbg2';
 						}
-						$lines[]=$this->extensionListRow($extKey,$list[$extKey],array('<td class="bgColor">'.$loadUnloadLink.'</td>'),
-										$theBgColor);
+						$lines[]=$this->extensionListRow($extKey,$list[$extKey],array('<td class="bgColor">'.$loadUnloadLink.'</td>'),$theRowClass);
 					}
 				}
 			}
@@ -748,14 +747,13 @@ EXTENSION KEYS:
 									}
 
 									if ($list[$extKey]['_MEMBERS_ONLY'])	{
-										$theBgColor = '#F6CA96';
+										$theRowClass = 'em-private';
 									} elseif (isset($inst_list[$extKey]))	{
-										$theBgColor = t3lib_extMgm::isLoaded($extKey)?$this->doc->bgColor4:t3lib_div::modifyHTMLcolor($this->doc->bgColor4,20,20,20);
+										$theRowClass = t3lib_extMgm::isLoaded($extKey) ? 'em-listbg1' : 'em-listbg2';
 									} else {
-										$theBgColor = t3lib_div::modifyHTMLcolor($this->doc->bgColor2,30,30,30);
+										$theRowClass = 'em-listbg3';
 									}
-									$lines[]=$this->extensionListRow($extKey,$list[$extKey],array('<td class="bgColor">'.$loadUnloadLink.'</td>'),
-													$theBgColor,$inst_list,1,'index.php?CMD[importExtInfo]='.$list[$extKey]['extRepUid']);
+									$lines[]=$this->extensionListRow($extKey,$list[$extKey],array('<td class="bgColor">'.$loadUnloadLink.'</td>'),$theRowClass,$inst_list,1,'index.php?CMD[importExtInfo]='.$list[$extKey]['extRepUid']);
 								}
 							}
 						}
@@ -786,8 +784,7 @@ EXTENSION KEYS:
 										'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().'</a>':
 										'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->installButton().'</a>';
 									if (in_array($extKey,$this->requiredExt))	$loadUnloadLink='<strong>'.$GLOBALS['TBE_TEMPLATE']->rfw('Rq').'</strong>';
-									$lines[]=$this->extensionListRow($extKey,$inst_list[$extKey],array('<td class="bgColor">'.$loadUnloadLink.'</td>'),
-													t3lib_extMgm::isLoaded($extKey)?$this->doc->bgColor4:t3lib_div::modifyHTMLcolor($this->doc->bgColor4,20,20,20));
+									$lines[]=$this->extensionListRow($extKey,$inst_list[$extKey],array('<td class="bgColor">'.$loadUnloadLink.'</td>'),t3lib_extMgm::isLoaded($extKey)?'em-listbg1':'em-listbg2');
 								}
 							}
 						}
