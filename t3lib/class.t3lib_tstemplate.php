@@ -169,6 +169,8 @@ class t3lib_TStemplate	{
 	var $nextLevel=0;					// Next-level flag (see runThroughTemplates())
 	var $rootId;						// The Page UID of the root page
 	var $rootLine;						// The rootline from current page to the root page 
+	var $absoluteRootLine;				// Rootline all the way to the root. Set but runThroughTemplates
+	var $outermostRootlineIndexWithTemplate=0;	// A pointer to the last entry in the rootline where a template was found.
 	var $rowSum;						// Array of arrays with title/uid of templates in hierarchy
 	var $resources='';					// Resources for the template hierarchy in a comma list
 	var $sitetitle='';					// The current site title field.
@@ -390,28 +392,31 @@ class t3lib_TStemplate	{
 		$this->config = Array();
 		$this->editorcfg = Array();
 		$this->rowSum = Array();
-
-		reset ($theRootLine);
-		$c=count($theRootLine);
+		$this->absoluteRootLine=$theRootLine;	// Is the TOTAL rootline
+		
+		reset ($this->absoluteRootLine);
+		$c=count($this->absoluteRootLine);
 		for ($a=0;$a<$c;$a++)	{
 			if ($this->nextLevel)	{	// If some template loaded before has set a template-id for the next level, then load this template first!
 				$res = mysql(TYPO3_db, 'SELECT * FROM sys_template WHERE uid='.intval($this->nextLevel).' '.$this->whereClause);
 				$this->nextLevel = 0;
 				if ($row = mysql_fetch_assoc($res))	{
-					$this->processTemplate($row,'sys_'.$row['uid'],$theRootLine[$a]['uid'],'sys_'.$row['uid']);
+					$this->processTemplate($row,'sys_'.$row['uid'],$this->absoluteRootLine[$a]['uid'],'sys_'.$row['uid']);
+					$this->outermostRootlineIndexWithTemplate=$a;
 				}
 			}
 			$addC='';
 			if ($a==($c-1) && $start_template_uid)	{	// If first loop AND there is set an alternative template uid, use that
 				$addC=' AND uid='.intval($start_template_uid);
 			}
-			$query = 'SELECT * FROM sys_template WHERE pid='.$theRootLine[$a]['uid'].$addC.' '.$this->whereClause.' ORDER BY sorting LIMIT 1';
+			$query = 'SELECT * FROM sys_template WHERE pid='.$this->absoluteRootLine[$a]['uid'].$addC.' '.$this->whereClause.' ORDER BY sorting LIMIT 1';
 
 			$res = mysql(TYPO3_db, $query);
 			if ($row = mysql_fetch_assoc($res))	{
-				$this->processTemplate($row,'sys_'.$row['uid'],$theRootLine[$a]['uid'],'sys_'.$row['uid']);
+				$this->processTemplate($row,'sys_'.$row['uid'],$this->absoluteRootLine[$a]['uid'],'sys_'.$row['uid']);
+				$this->outermostRootlineIndexWithTemplate=$a;
 			}
-			$this->rootLine[] = $theRootLine[$a];
+			$this->rootLine[] = $this->absoluteRootLine[$a];
 		}
 	}
 
@@ -675,6 +680,7 @@ class t3lib_TStemplate	{
 		array_unshift($this->constants,''.$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']);	// Adding default TS/constants
 		array_unshift($this->config,''.$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);	// Adding default TS/setup
 		array_unshift($this->editorcfg,''.$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_editorcfg']);	// Adding default TS/editorcfg
+
 			// Parse the TypoScript code text for include-instructions!
 		$this->procesIncludes();
 			
@@ -692,6 +698,7 @@ class t3lib_TStemplate	{
 		$constants = t3lib_div::makeInstance('t3lib_TSparser');
 		$constants->breakPointLN=intval($this->ext_constants_BRP);
 		$constants->setup = $this->const;
+		$constants->setup = $this->mergeConstantsFromPageTSconfig($constants->setup);
 		$matchObj = t3lib_div::makeInstance('t3lib_matchCondition');
 		$matchObj->matchAlternative = $this->matchAlternative;
 		$matchObj->matchAll = $this->matchAll;		// Matches ALL conditions in TypoScript
@@ -846,6 +853,33 @@ class t3lib_TStemplate	{
 		while(list($k)=each($this->editorcfg))	{
 			$this->editorcfg[$k]=t3lib_TSparser::checkIncludeLines($this->editorcfg[$k]);
 		}
+	}
+	
+	/**
+	 * Loads Page TSconfig until the outermost template record and parses the configuration - if TSFE.constants object path is found it is merged with the default data in here!
+	 * 
+	 * @todo	Apply caching to the parsed Page TSconfig. This is done in the other similar functions for both frontend and backend. However, since this functions works for BOTH frontend and backend we will have to either write our own local caching function or (more likely) detect if we are in FE or BE and use caching functions accordingly. Not having caching affects mostly the backend modules inside the "Template" module since the overhead in the frontend is only seen when TypoScript templates are parsed anyways (after which point they are cached anyways...)
+	 * @param	array		Constants array, default input.
+	 * @return	array		Constants array, modified
+	 */
+	function mergeConstantsFromPageTSconfig($constArray)	{
+		$TSdataArray = array();
+		$TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];	// Setting default configuration:
+		
+		for ($a=0;$a<=$this->outermostRootlineIndexWithTemplate;$a++)	{
+			$TSdataArray[]=$this->absoluteRootLine[$a]['TSconfig'];
+		}
+			// Parsing the user TS (or getting from cache)
+		$TSdataArray = t3lib_TSparser::checkIncludeLines_array($TSdataArray);
+		$userTS = implode($TSdataArray,chr(10).'[GLOBAL]'.chr(10));
+		
+		$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
+		$parseObj->parse($userTS);
+
+		if (is_array($parseObj->setup['TSFE.']['constants.']))	{
+			$constArray = t3lib_div::array_merge_recursive_overrule($constArray,$parseObj->setup['TSFE.']['constants.']);
+		}
+		return $constArray;
 	}
 
 	/**

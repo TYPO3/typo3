@@ -1170,7 +1170,11 @@
 	function getConfigArray()	{
 		if (!is_array($this->config) || is_array($this->config['INTincScript']) || $this->forceTemplateParsing)	{	// If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it 
 				$GLOBALS['TT']->push('Parse template','');
+
+				// Force parsing, if set?:
 			$this->tmpl->forceTemplateParsing = $this->forceTemplateParsing;
+			
+				// Start parsing the TS template. Might return cached version.
 			$this->tmpl->start($this->rootLine);
 				$GLOBALS['TT']->pull();
 				

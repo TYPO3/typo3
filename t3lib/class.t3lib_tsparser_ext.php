@@ -277,6 +277,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$constants = t3lib_div::makeInstance("t3lib_TSparser");
 		$constants->regComments=1;		// Register comments!
 		$constants->setup = $this->const;
+		$constants->setup = $this->mergeConstantsFromPageTSconfig($constants->setup);
 
 		$matchObj = t3lib_div::makeInstance("t3lib_matchCondition");
 //		$matchObj->matchAlternative = array("[globalString =  page | title = *test*]");
