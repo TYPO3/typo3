@@ -27,6 +27,8 @@
 /** 
  * generate a page-tree. OBS: remember $clause
  *
+ * $Id$
+ *
  * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>

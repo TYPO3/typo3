@@ -27,6 +27,8 @@
 /** 
  * This class has functions which generates a difference output of a content string
  *
+ * $Id$
+ *
  * @author	Kasper Skårhøj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib

@@ -27,6 +27,8 @@
 /** 
  * Contains class for TYPO3 backend user authentication
  *
+ * $Id$
+ *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
