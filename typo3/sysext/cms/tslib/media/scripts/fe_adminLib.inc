@@ -1648,7 +1648,8 @@ class user_feAdmin	{
 					$recCopy = $r;
 					$string='&cmd=setfixed&sFK='.rawurlencode($theKey).'&rU='.$r['uid'];
 					$string.='&aC='.$this->setfixedHash($recCopy,$data['_FIELDLIST']);
-					$markerArray['###SYS_SETFIXED_DELETE###'] = htmlspecialchars($string);
+					$markerArray['###SYS_SETFIXED_DELETE###'] = $string;
+					$markerArray['###SYS_SETFIXED_HSC_DELETE###'] = htmlspecialchars($string);
 				} elseif (strstr($theKey,'.'))	{
 					$theKey = substr($theKey,0,-1);
 					if (is_array($data))	{

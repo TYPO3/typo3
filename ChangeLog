@@ -1,3 +1,7 @@
+2004-06-21  Michael Stucki  <mundaun@gmx.ch>
+
+	* Fixed bug #119: One more fe_adminLib.inc issue
+
 2004-05-19  Ingmar Schlecht  <ingmars@web.de>
 
 	* Fixed bug #83: On non open_basedir'ed systems check if IM executables exist before trying to execut them.
