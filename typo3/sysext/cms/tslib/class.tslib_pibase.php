@@ -757,19 +757,20 @@ class tslib_pibase {
 	 * @param	string		Title for the edit icon.
 	 * @param	array		Table record row
 	 * @param	string		Table name
+	 * @param	array		Conf array
 	 * @return	string		The processed content
 	 * @see tslib_cObj::editIcons()
 	 */
-	function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='')	{
+	function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array())	{
 		if ($GLOBALS['TSFE']->beUserLogin){
 			if (!$row || !$tablename)	{
 				$row = $this->internal['currentRow'];
 				$tablename = $this->internal['currentTable'];
 			}
-			$conf=array(
+			$conf=array_merge(array(
 				'beforeLastTag'=>1,
 				'iconTitle' => $title
-			);
+			),$oConf);
 			$content=$this->cObj->editIcons($content,$tablename.':'.$fields,$conf,$tablename.':'.$row['uid'],$row,'&viewUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')));
 		}	
 		return $content;

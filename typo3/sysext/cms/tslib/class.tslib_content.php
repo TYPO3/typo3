@@ -6151,7 +6151,7 @@ class tslib_cObj {
 				$content=$icon.$content;
 			} elseif ($conf['beforeLastTag']>0)	{
 				$cBuf = rtrim($content);
-				$securCount=10;
+				$securCount=30;
 				while($securCount && substr($cBuf,-1)=='>' && substr($cBuf,-4)!='</a>')	{
 					$cBuf = rtrim(ereg_replace('<[^<]*>$','',$cBuf));
 					$securCount--;

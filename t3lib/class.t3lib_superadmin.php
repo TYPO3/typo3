@@ -510,7 +510,7 @@ class t3lib_superadmin {
 						// Set background color if mtime matches
 					if ($maxMtime==$eInfo["mtime"])	{
 						$this->extensionInfoArray["site"][$k][$extKey]["_highlight"]=1;
-						$bgCol = ' bgcolor="#eeeeee""';
+						$bgCol = $eInfo["dirtype"]=='link' ? ' bgcolor="#ffcccc"' : ' bgcolor="#eeeeee"';
 					} else {
 						$bgCol = ' style="color: #999999; font-style: italic;"';
 					}
@@ -554,7 +554,7 @@ class t3lib_superadmin {
 				while(list($extKey,$eInfo)=each($extensions))	{
 						// Set background color if mtime matches
 					if ($eInfo["_highlight"])	{
-						$bgCol = ' bgcolor="#eeeeee""';
+						$bgCol = $eInfo["dirtype"]=='link' ? ' bgcolor="#ffcccc"' : ' bgcolor="#eeeeee"';
 					} else {
 						$bgCol = ' style="color: #999999; font-style: italic;"';
 					}
@@ -612,6 +612,7 @@ class t3lib_superadmin {
 
 					// Number of files:
 				$eInfo["numberfiles"]=count($fileArr);
+				$eInfo["dirtype"]= filetype($path.$extKey);			
 
 					// Most recent modification:
 				$eInfo["mtime_files"]=$this->findMostRecent($fileArr,$extPath);
