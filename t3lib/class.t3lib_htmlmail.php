@@ -252,7 +252,7 @@ class t3lib_htmlmail {
 	 */
 	function start ()	{
 			// Sets the message id
-		$this->messageid = '<'.md5(microtime()).'@domain.tld>';
+	  $this->messageid = md5(microtime()).'@domain.tld';
 	}
 
 	/**
@@ -379,7 +379,7 @@ class t3lib_htmlmail {
 			// Clears the header-string and sets the headers based on object-vars.
 		$this->headers = "";
 			// Message_id
-		$this->add_header("Message-ID: ".$this->messageid);
+		$this->add_header("Message-ID: <".$this->messageid.">");
 			// Return path
 		if ($this->returnPath)	{
 			$this->add_header("Return-Path: ".$this->returnPath);
