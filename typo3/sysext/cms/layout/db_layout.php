@@ -339,6 +339,7 @@ class SC_db_layout {
 		}
 
 			// page/be_user TSconfig settings and blinding of menu-items
+		$this->modSharedTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 		if ($this->modTSconfig['properties']['QEisDefault'])	ksort($this->MOD_MENU['function']);
 		$this->MOD_MENU['function'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['function'],'menu.function');
@@ -349,8 +350,8 @@ class SC_db_layout {
 		}
 
 			// Setting alternative default label:
-		if ($this->modTSconfig['properties']['defaultLanguageLabel'] && isset($this->MOD_MENU['language'][0]))	{
-			$this->MOD_MENU['language'][0] = $this->modTSconfig['properties']['defaultLanguageLabel'];
+		if (($this->modSharedTSconfig['properties']['defaultLanguageLabel'] || $this->modTSconfig['properties']['defaultLanguageLabel']) && isset($this->MOD_MENU['language'][0]))	{
+			$this->MOD_MENU['language'][0] = $this->modTSconfig['properties']['defaultLanguageLabel'] ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $this->modSharedTSconfig['properties']['defaultLanguageLabel'];
 		}
 
 			// Clean up settings

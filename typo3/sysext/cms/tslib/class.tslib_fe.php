@@ -276,7 +276,7 @@
 	var $sys_language_mode='';			// Site language mode
 	var $sys_language_content=0;		// Site content selection uid
 	var $sys_language_contentOL=0;		// Site content overlay flag; If set - and sys_language_content is > 0 - , records selected will try to look for a translation pointing to their uid. (If configured in [ctrl][languageField] / [ctrl][transOrigP...]
-	var $sys_language_isocode = '';		// Is set to the iso code of the sys_language if that is properly defined by the sys_language record representing the sys_language_uid. (Requires the extension "static_info_tables")
+	var $sys_language_isocode = '';		// Is set to the iso code of the sys_language_content if that is properly defined by the sys_language record representing the sys_language_uid. (Requires the extension "static_info_tables")
 
 		// RENDERING data
 	var $applicationData=Array();		//	 'Global' Storage for various applications. Keys should be 'tx_'.extKey for extensions.
@@ -1573,7 +1573,7 @@
 								$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
 							break;
 							case 'content_fallback':
-								$fallBackOrder = t3lib_div::trimExplode(',', $sys_language_content,1);
+								$fallBackOrder = t3lib_div::intExplode(',', $sys_language_content);
 								foreach($fallBackOrder as $orderValue)	{
 									if (!strcmp($orderValue,'0') || count($this->sys_page->getPageOverlay($this->id, $orderValue)))	{
 										$this->sys_language_content = $orderValue;	// Setting content uid (but leaving the sys_language_uid)
@@ -1617,11 +1617,11 @@
 		}
 
 			// Finding the ISO code:
-		if (t3lib_extMgm::isLoaded('static_info_tables') && $this->sys_language_uid)	{
-			$sys_language_row = $this->sys_page->getRawRecord('sys_language',$this->sys_language_uid,'static_lang_isocode');
+		if (t3lib_extMgm::isLoaded('static_info_tables') && $this->sys_language_content)	{	// using sys_language_content because the ISO code only (currently) affect content selection from FlexForms - which should follow "sys_language_content"
+			$sys_language_row = $this->sys_page->getRawRecord('sys_language',$this->sys_language_content,'static_lang_isocode');
 			if (is_array($sys_language_row) && $sys_language_row['static_lang_isocode'])	{
 				$stLrow = $this->sys_page->getRawRecord('static_languages',$sys_language_row['static_lang_isocode'],'lg_iso_2');
-				$this->sys_language_isocode=$stLrow['lg_iso_2'];
+				$this->sys_language_isocode = $stLrow['lg_iso_2'];
 			}
 		}
 

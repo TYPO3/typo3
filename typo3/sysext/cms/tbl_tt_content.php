@@ -143,7 +143,7 @@ $TCA['tt_content'] = Array (
 					Array('', 0),
 				),
 				'foreign_table' => 'tt_content',
-				'foreign_table_where' => 'AND tt_content.pid=###CURRENT_PID### AND tt_content.sys_language_uid=0',
+				'foreign_table_where' => 'AND tt_content.pid=###CURRENT_PID### AND tt_content.sys_language_uid IN (-1,0)',
 			)
 		),
 		'layout' => Array (

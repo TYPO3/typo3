@@ -3059,7 +3059,7 @@ class t3lib_TCEmain	{
 
 						$row = $this->recordInfo($table,$uid,'*');
 						if (is_array($row))	{
-							if ($row[$TCA[$table]['ctrl']['languageField']] == 0)	{
+							if ($row[$TCA[$table]['ctrl']['languageField']] <= 0)	{
 								if ($row[$TCA[$table]['ctrl']['transOrigPointerField']] == 0)	{
 									if (!t3lib_BEfunc::getRecordsByField($table,$TCA[$table]['ctrl']['transOrigPointerField'],$uid,'AND pid='.intval($row['pid']).' AND '.$TCA[$table]['ctrl']['languageField'].'='.$langRec['uid']))	{
 
@@ -3085,7 +3085,7 @@ class t3lib_TCEmain	{
 										$this->copyRecord($table,$uid,-$uid,1,$overrideValues,implode(',',$excludeFields));
 									} else $this->log($table,$uid,3,0,1,'Localization failed; There already was a localization for this language of the record!');
 								} else $this->log($table,$uid,3,0,1,'Localization failed; Source record contained a reference to an original default record (which is strange)!');
-							} else $this->log($table,$uid,3,0,1,'Localization failed; Source record had another language than "default" defined!');
+							} else $this->log($table,$uid,3,0,1,'Localization failed; Source record had another language than "Default" or "All" defined!');
 						} else $this->log($table,$uid,3,0,1,'Attempt to localize record that did not exist!');
 					} else $this->log($table,$uid,3,0,1,'Attempt to localize record without permission');
 				} else $this->log($table,$uid,3,0,1,'Sys language UID "'.$language.'" not found valid!');

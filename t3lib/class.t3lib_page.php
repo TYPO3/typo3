@@ -295,39 +295,54 @@ class t3lib_pageSelect {
 	function getRecordOverlay($table,$row,$sys_language_content,$OLmode)	{
 		global $TCA;
 
-		if ($sys_language_content>0 && $row['uid']>0 && $row['pid']>0)	{
+		if ($row['uid']>0 && $row['pid']>0)	{
 			if ($TCA[$table] && $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
 				if (!$TCA[$table]['ctrl']['transOrigPointerTable'])	{	// Will not be able to work with other tables (Just didn't implement it yet; Requires a scan over all tables [ctrl] part for first FIND the table that carries localization information for this table (which could even be more than a single table) and then use that. Could be implemented, but obviously takes a little more....)
-					if ($row[$TCA[$table]['ctrl']['languageField']]==0)	{	// Must be default language, otherwise no deal...
 
-							// Select overlay record:
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-									'*',
-									$table,
-									'pid='.intval($row['pid']).
-										' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sys_language_content).
-										' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
-										$this->enableFields($table),
-									'',
-									'',
-									'1'
-								);
-						$olrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-						$this->versionOL($table,$olrow);
-#debug($row);
-#debug($olrow);
-							// Merge record content by traversing all fields:
-						if (is_array($olrow))	{
-							foreach($row as $fN => $fV)	{
-								if ($fN!='uid' && $fN!='pid' && isset($olrow[$fN]))	{
+						// Will try to overlay a record only if the sys_language_content value is larger that zero.
+					if ($sys_language_content>0)	{
 
-									if ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN]!='exclude'
-											&& ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN]!='mergeIfNotBlank' || strcmp(trim($olrow[$fN]),'')))	{
-										$row[$fN] = $olrow[$fN];
+							// Must be default language or [All], otherwise no overlaying:
+						if ($row[$TCA[$table]['ctrl']['languageField']]<=0)	{
+
+								// Select overlay record:
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+										'*',
+										$table,
+										'pid='.intval($row['pid']).
+											' AND '.$TCA[$table]['ctrl']['languageField'].'='.intval($sys_language_content).
+											' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
+											$this->enableFields($table),
+										'',
+										'',
+										'1'
+									);
+							$olrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+							$this->versionOL($table,$olrow);
+	#debug($row);
+	#debug($olrow);
+								// Merge record content by traversing all fields:
+							if (is_array($olrow))	{
+								foreach($row as $fN => $fV)	{
+									if ($fN!='uid' && $fN!='pid' && isset($olrow[$fN]))	{
+
+										if ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN]!='exclude'
+												&& ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN]!='mergeIfNotBlank' || strcmp(trim($olrow[$fN]),'')))	{
+											$row[$fN] = $olrow[$fN];
+										}
 									}
 								}
+							} elseif ($OLmode=='hideNonTranslated' && $row[$TCA[$table]['ctrl']['languageField']]==0)	{	// Unset, if non-translated records should be hidden. ONLY done if the source record really is default language and not [All] in which case it is allowed.
+								unset($row);
 							}
-						} elseif ($OLmode=='hideNonTranslated')	{
+
+							// Otherwise, check if sys_language_content is different from the value of the record - that means a japanese site might try to display french content.
+						} elseif ($sys_language_content!=$row[$TCA[$table]['ctrl']['languageField']])	{
+							unset($row);
+						}
+					} else {
+							// When default language is displayed, we never want to return a record carrying another language!:
+						if ($row[$TCA[$table]['ctrl']['languageField']]>0)	{
 							unset($row);
 						}
 					}

@@ -2011,7 +2011,7 @@ class tslib_cObj {
 				$this->enableFields('pages');
 
 			if ($conf['languageField.'][$search->fTable])	{
-				$endClause.= ' AND '.$search->fTable.'.'.	$conf['languageField.'][$search->fTable].' = '.intval($GLOBALS['TSFE']->sys_language_uid);	// (using sys_language_uid which is the ACTUAL language of the page. sys_language_content is only for selecting DISPLAY content!)
+				$endClause.= ' AND '.$search->fTable.'.'.$conf['languageField.'][$search->fTable].' = '.intval($GLOBALS['TSFE']->sys_language_uid);	// (using sys_language_uid which is the ACTUAL language of the page. sys_language_content is only for selecting DISPLAY content!)
 			}
 
 				// build query
