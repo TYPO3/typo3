@@ -259,7 +259,7 @@ class clickMenu {
 				// Info:
 			if(!in_array('info',$this->disabledItems) && !$root)	$menuItems['info']=$this->DB_info($table,$uid);
 
-			$menuItems[]='spacer';
+			$menuItems['spacer1']='spacer';
 
 				// Copy:
 			if(!in_array('copy',$this->disabledItems) && !$root)	$menuItems['copy']=$this->DB_copycut($table,$uid,'copy');
@@ -286,7 +286,7 @@ class clickMenu {
 				// Delete:
 			$elInfo=array(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen']));
 			if(!in_array('delete',$this->disabledItems) && !$root && $BE_USER->isPSet($lCP,$table,'delete'))	{
-				$menuItems[]='spacer';
+				$menuItems['spacer2']='spacer';
 				$menuItems['delete']=$this->DB_delete($table,$uid,$elInfo);
 			}
 		}
@@ -659,30 +659,6 @@ class clickMenu {
 	}
 
 	/**
-	 * Adding CM element for hide/unhide of the input record
-	 *
-	 * @param	string		Table name
-	 * @param	array		Record array
-	 * @param	string		Name of the hide field
-	 * @return	array		Item array, element in $menuItems
-	 * @internal
-	 */
-	function DB_hideUnhide($table,$rec,$hideField)	{
-		$uid=$rec['uid'];
-		$editOnClick='';
-		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
-		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
-			"&data[".$table.']['.$uid.']['.$hideField.']='.($rec[$hideField]?0:1).'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
-
-		return $this->linkItem(
-			$this->label(($rec[$hideField]?'un':'').'hide'),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/button_'.($rec[$hideField]?'un':'').'hide.gif','width="11" height="10"').' alt="" />'),
-			$editOnClick.'return false;',
-			1
-		);
-	}
-
-	/**
 	 * Adding CM element for Delete
 	 *
 	 * @param	string		Table name
@@ -736,7 +712,44 @@ class clickMenu {
 		);
 	}
 
+	/**
+	 * Adding CM element for hide/unhide of the input record
+	 *
+	 * @param	string		Table name
+	 * @param	array		Record array
+	 * @param	string		Name of the hide field
+	 * @return	array		Item array, element in $menuItems
+	 * @internal
+	 */
+	function DB_hideUnhide($table,$rec,$hideField)	{
+		return $this->DB_changeFlag($table, $rec, $hideField, $this->label(($rec[$hideField]?'un':'').'hide'), 'hide');
+	}
 
+	/**
+	 * Adding CM element for a flag field of the input record
+	 * 
+	 * @param	string		Table name
+	 * @param	array		Record array
+	 * @param	string		Name of the flag field
+	 * @param	string		Menu item Title
+	 * @param	string		Name of the item used for icons and labels
+	 * @param	string		Icon path relative to typo3/ folder
+	 * @return	array		Item array, element in $menuItems
+	 */
+	function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')    {
+	    $uid=$rec['uid'];
+	    $editOnClick='';
+	    $loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
+	    $editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
+	        "&data[".$table.']['.$uid.']['.$flagField.']='.($rec[$flagField]?0:1).'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
+	
+	    return $this->linkItem(
+	        $title,
+	        $this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,$iconRelPath.'button_'.($rec[$flagField]?'un':'').$name.'.gif','width="11" height="10"').' alt="" />'),
+	        $editOnClick.'return false;',
+	        1
+	    );
+	}
 
 
 
@@ -836,7 +849,7 @@ class clickMenu {
 	 * @internal
 	 */
 	function FILE_launch($path,$script,$type,$image)	{
-		$loc = 'top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
+		$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
 
 		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'".$script.'?target='.rawurlencode($path)."&returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').");}";
 
@@ -1097,7 +1110,82 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		}
 		return $out;
 	}
-
+	
+	/**
+	 * Adds or inserts a menu item
+	 * Can be used to set the position of new menu entries within the list of existing menu entries. Has this syntax: [cmd]:[menu entry key],[cmd].... cmd can be "after", "before" or "top" (or blank/"bottom" which is default). If "after"/"before" then menu items will be inserted after/before the existing entry with [menu entry key] if found. "after-spacer" and "before-spacer" do the same, but inserts before or after an item and a spacer. If not found, the bottom of list. If "top" the items are inserted in the top of the list.
+	 *
+	 * @param	array		Menu items array
+	 * @param	array		Menu items array to insert
+	 * @param	string		Position command string. Has this syntax: [cmd]:[menu entry key],[cmd].... cmd can be "after", "before" or "top" (or blank/"bottom" which is default). If "after"/"before" then menu items will be inserted after/before the existing entry with [menu entry key] if found. "after-spacer" and "before-spacer" do the same, but inserts before or after an item and a spacer. If not found, the bottom of list. If "top" the items are inserted in the top of the list.
+	 * @return	array		Menu items array, processed.
+	 */
+	function addMenuItems($menuItems,$newMenuItems,$position='')	{
+		if (is_array($newMenuItems))	{
+			
+			if($position) {
+			
+				$posArr = t3lib_div::trimExplode(',', $position, 1);
+				foreach($posArr as $pos) {
+					list($place,$menuEntry) = t3lib_div::trimExplode(':', $pos, 1);
+					list($place,$placeExtra) = t3lib_div::trimExplode('-', $place, 1);	
+		
+						// bottom
+					$pointer = count($menuItems);
+					
+					$found=FALSE;
+						
+					if ($place) {
+						switch(strtolower($place))	{
+							case 'after':
+							case 'before':
+								if ($menuEntry) {
+									$p=1;
+									reset ($menuItems);
+									while (true) {
+										if (!strcmp(key($menuItems), $menuEntry))	{
+											$pointer = $p;
+											$found=TRUE;
+											break;
+										}
+										if (!next($menuItems)) break;
+										$p++;
+									}
+									if (!$found) break;
+									
+									if ($place=='before') {
+										$pointer--;
+										if ($placeExtra=='spacer' AND prev($menuItems)=='spacer') {
+											$pointer--;
+										}
+									} elseif ($place=='after') {
+										if ($placeExtra=='spacer' AND next($menuItems)=='spacer') {
+											$pointer++;
+										}
+									}
+								}
+							break;
+							default:
+								if (strtolower($place)=='top')	{
+									$pointer = 0;
+								} else {
+									$pointer = count($menuItems);
+								}
+								$found=TRUE;
+							break;
+						}
+					}
+					if($found) break;
+				}
+			}
+			$pointer=max(0,$pointer);
+			$menuItemsBefore = array_slice($menuItems, 0, ($pointer?$pointer:0));
+			$menuItemsAfter = array_slice($menuItems, $pointer);
+			$menuItems = $menuItemsBefore + $newMenuItems + $menuItemsAfter;
+		} 
+		return $menuItems;
+	}
+	
 	/**
 	 * Creating an array with various elements for the clickmenu entry
 	 *
