@@ -24,7 +24,7 @@ General:
 - Option: Turn of "onBlur" in backend (Message-ID: <001801c2a28c$bb020c70$963afea9@bla8kdvxpl8glk>)
 - Option: Frameset modules without the "border" frame and therefore adjustable freely.
 - Feature: "admin" can click a button which wipes out all record-lockings. (Message-Id: <200301281752.23246.mundaun@gmx.ch>)
-- Feature: Controlling access to function menu modules as well (thus we could have a user-module inside “Template” which could edit the constants field)
+- Feature: Controlling access to function menu modules as well (thus we could have a user-module inside ?Template? which could edit the constants field)
 - Feature: Web >plugins -> to be a main module where people can place cmodules for their extension.
 
 TCEmain:
@@ -181,7 +181,7 @@ Element Browser:
 Wizards:
 - Finish the colorpicker! Some other person can be in charge of this (See "APPENDIX: Colorpicker")
 - Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)
-- wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter Kühn). 
+- wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter K?hn). 
 
 Interface:
 - Icons (see Bugs/Additions folder)
@@ -257,6 +257,7 @@ EM:
 - Feature: Specify preferred order of certain extensions.
 - Feature: Change order of loaded extensions
 - Feature: Dependencies includes minimum/max-version (Typo3, PHP, PHP-extensions, T3extensions)
+- Feature: [suggested by robert] resolving of dependencies like in apt-get (Debian package manager). Necessary extensions can be downloaded and installed automatically (idea: create dummy extension which depends on several extensions and acts like a package of extensions)
 - Feature: EM suggest clear-cache af scripts?
 - Feature: New category, "templates"
 - Feature: New review state: security-screened (light review, not quality oriented)
@@ -277,7 +278,7 @@ EM:
 - CHECK: Are single quotes accepted when writing the "conf.php" files?
 - CHECK: Better failure-tolerance when "fatal errors" occur in ext_localconf/ext_tables.php files!?
 - CHECK: Can Install Tool bypass including ext_localconf/ext_tables if there are errors in them?
-- BUG: EM-extMgm: caching af localconf + extTables configuration in ARRAY? Plus ændringer til API specs. (problem when those files includes classes etc... probably not possible)
+- BUG: EM-extMgm: caching af localconf + extTables configuration in ARRAY? Plus ?ndringer til API specs. (problem when those files includes classes etc... probably not possible)
 - BUG: Fix memory consumption problem.
 - BUG: backend shortcut links to EM pages does not carry the edit-file information. They should.
 - BUG: Clear cache files should remove ALL "temp_CACHED_*" files in typo3conf/ (not just the current two)
@@ -640,8 +641,8 @@ Here are a few notes:
 ******************
 APPENDIX: LDAP
 ******************
-- hash of base-dn skal være cleaned op. Måske prefixe usernames med 10-char hash af base-dn.
-- Moduler som "User Admin" og andre steder, hvor "usergroups" feltet benyttes skal slå det op i LDAP uden authentication. -> Faktisk er det IKKE kun usergroups men ALLE felter, som kan mappes!!!
+- hash of base-dn skal v?re cleaned op. M?ske prefixe usernames med 10-char hash af base-dn.
+- Moduler som "User Admin" og andre steder, hvor "usergroups" feltet benyttes skal sl? det op i LDAP uden authentication. -> Faktisk er det IKKE kun usergroups men ALLE felter, som kan mappes!!!
 - Ved record creation: LDAP default group.
 
 ? Getting info like usergroups, email, name?
