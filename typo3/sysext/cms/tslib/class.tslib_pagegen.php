@@ -462,9 +462,12 @@ function linkTo_UnCryptMailto(s)	{	//
 			reset($GLOBALS['TSFE']->pSetup['includeCSS.']);
 			while(list($k2,$iCSSfile)=each($GLOBALS['TSFE']->pSetup['includeCSS.']))	{
 				if (!is_array($iCSSfile))	{
-					$ss=$GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
+					$ss = $GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
 					if ($ss) {
 						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['import'])	{
+							if (substr($ss,0,1)!='/')	{	// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
+								$ss = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/'.$ss;
+							}
 							$GLOBALS['TSFE']->content.='
 	<style type="text/css">
 	<!--

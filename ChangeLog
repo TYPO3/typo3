@@ -1,5 +1,9 @@
 2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added prefix to relative file reference in @import style sheet 
+
+2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Fixed bug where DB mounts for a user which has been deleted would still show up in the page tree.
 
 2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
