@@ -98,6 +98,19 @@ CREATE TABLE cache_hash (
 );
 
 #
+# Table structure for table 'cache_imagesizes'
+#
+CREATE TABLE cache_imagesizes (
+  md5hash varchar(32) DEFAULT '' NOT NULL,
+  md5filename varchar(32) DEFAULT '' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  filename tinytext NOT NULL,
+  imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
+  imageheight mediumint(11) unsigned DEFAULT '0' NOT NULL,
+  PRIMARY KEY (md5filename)
+);
+
+#
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
