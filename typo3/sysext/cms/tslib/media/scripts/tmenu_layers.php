@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -38,38 +38,38 @@
  *
  *
  *
- *   84: class tslib_tmenu_layers extends tslib_tmenu 
- *  117:     function extProc_init()	
- *  135:     function extProc_RO($key)	
- *  151:     function extProc_beforeLinking($key)	
- *  202:     function extProc_afterLinking($key)	
- *  237:     function extProc_beforeAllWrap($item,$key)	
- *  250:     function isSetIntval($in)	
- *  259:     function extProc_finish ()	
- *  435:     function extCalcBorderWithin($kind,$integer)	
+ *   84: class tslib_tmenu_layers extends tslib_tmenu
+ *  117:     function extProc_init()
+ *  135:     function extProc_RO($key)
+ *  151:     function extProc_beforeLinking($key)
+ *  202:     function extProc_afterLinking($key)
+ *  237:     function extProc_beforeAllWrap($item,$key)
+ *  250:     function isSetIntval($in)
+ *  259:     function extProc_finish ()
+ *  435:     function extCalcBorderWithin($kind,$integer)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Class extending tslib_tmenu for the creation of text based DHTML menus
@@ -88,7 +88,7 @@ class tslib_tmenu_layers extends tslib_tmenu {
 
 	var $GMENU_fixKey='layers';
 	var $divLayers=Array();
-	
+
 	var $WMx=0;
 	var $WMy=0;
 	var $WMxyArray=array();
@@ -121,7 +121,7 @@ class tslib_tmenu_layers extends tslib_tmenu {
 		$this->WMtempStore = $GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'];
 		$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']=array();
 
-			// Save:		
+			// Save:
 		$this->WMonlyOnLoad = ($this->mconf['displayActiveOnLoad'] && !$this->mconf['displayActiveOnLoad.']['onlyOnLoad']);
 		$this->WMbordersWithin = t3lib_div::intExplode(',',$this->mconf['bordersWithin'].',0,0,0,0,0');
 	}
@@ -152,19 +152,19 @@ class tslib_tmenu_layers extends tslib_tmenu {
 		if ($this->I['uid'])	{
 
 			array_push($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId'],$this->WMid);
-			$this->WMtheSubMenu = $this->subMenu($this->I['uid'],$this->I['mount_pid']);
+			$this->WMtheSubMenu = $this->subMenu($this->I['uid']);
 			array_pop($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId']);
 			$this->WMisSub = trim($this->WMtheSubMenu) ? 1 : 0;
-	
+
 			if ($this->mconf['lockPosition_addSelf'])		{
 				$this->WMy+=(strcmp($this->mconf['setFixedHeight'],'')?$this->mconf['setFixedHeight']:$this->I['val']['output_h'])+intval($this->mconf['lockPosition_adjust']);
 				$this->WMx+=(strcmp($this->mconf['setFixedWidth'],'')?$this->mconf['setFixedWidth']:$this->I['val']['output_w'])+intval($this->mconf['lockPosition_adjust']);
 			}
-			
-			if ($this->isActive($this->I['uid']) && $this->mconf['displayActiveOnLoad'])	{	// orig: && $this->WMisSub, changed 210901
+
+			if ($this->isActive($this->I['uid'], $this->getMPvar($key)) && $this->mconf['displayActiveOnLoad'])	{	// orig: && $this->WMisSub, changed 210901
 				$this->WMactiveHasSubMenu = $this->WMisSub;
 				$this->WMactiveKey = 'Menu'.$this->WMid.$key;
-	
+
 
 				$this->WMrestoreVars=trim('
 GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
@@ -173,14 +173,14 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	GL'.$this->WMid.'_over(GLV_restoreMenu["'.$this->WMid.'"]);
 ':'');
 			}
-	
+
 			if ($this->WMisSub)	{
 				$event="GL_stopMove('".$this->WMid."');";
 				$this->I['linkHREF']['onMouseover']='GL_doTop(\''.$this->WMid.'\', \'Menu'.$this->WMid.$key.'\');'.$this->I['linkHREF']['onMouseover'];
 					// Added 120802; This means that everytime leaving a menuitem the layer should be shut down (and if the layer is hit in the meantime it is not though).
 					// This should happen only for items that are auto-hidden when not over and possibly only when a hide-timer is set. Problem is if the hide-timer is not set and we leave the main element, then the layer will be hidden unless we reach the layer before the timeout will happen and the menu hidden.
 				if (t3lib_div::intInRange($this->mconf['hideMenuWhenNotOver'],0,600) && $this->mconf['hideMenuTimer'])	{
-					$event.='GL_resetAll("'.$this->WMid.'");';	
+					$event.='GL_resetAll("'.$this->WMid.'");';
 				}
 				$this->I['linkHREF']['onMouseout'].=$event;
 			} else {
@@ -188,7 +188,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 				$event='GL_resetAll("'.$this->WMid.'");';
 				$this->I['linkHREF']['onMouseout'].=$event;
 			}
-			
+
 			$this->WMxyArray[] = 'GLV_menuXY["'.$this->WMid.'"]["Menu'.$this->WMid.$key.'"] = new Array('.$this->WMx.','.$this->WMy.',"itemID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'","anchorID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'");';
 		}
 	}
@@ -211,14 +211,14 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 #				$zIndex = (($key+2)*$this->menuNumber*100);
 				$divStart = '<div id="Menu'.$this->WMid.$key.'" style="z-index:'.$zIndex.';'.$exStyle.'">';
 				$divStop = '</div>';
-				
+
 				$this->divLayers[]= $divStart.$this->WMtheSubMenu.$divStop;
 
-				$this->WMhideCode.='	
+				$this->WMhideCode.='
 	GL_getObjCss("Menu'.$this->WMid.$key.'").visibility = "hidden";';
 				$this->WMlastKey = 'Menu'.$this->WMid.$key;
 			}
-	
+
 			if (!$this->mconf['lockPosition_addSelf'])		{
 				$this->WMy+=(strcmp($this->mconf['setFixedHeight'],'')?$this->mconf['setFixedHeight']:$this->I['val']['output_h'])+intval($this->mconf['lockPosition_adjust']);
 				$this->WMx+=(strcmp($this->mconf['setFixedWidth'],'')?$this->mconf['setFixedWidth']:$this->I['val']['output_w'])+intval($this->mconf['lockPosition_adjust']);
@@ -283,7 +283,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 			';
 			$relCode['X'].='TI_x+';
 			$relCode['Y'].='TI_y+';
-			
+
 			if ($this->mconf['relativeToTriggerItem.']['addWidth'])	{	$relCode['X'].='TI_width+';	}
 			if ($this->mconf['relativeToTriggerItem.']['addHeight'])	{	$relCode['Y'].='TI_height+';	}
 			$relFlag=1;
@@ -325,7 +325,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 		$DoTop[]=$this->extCalcBorderWithin('bottom',$this->WMbordersWithin[3]);
 		$DoTop[]=$this->extCalcBorderWithin('left',$this->WMbordersWithin[4]);
 		$DoTop[]=$this->extCalcBorderWithin('top',$this->WMbordersWithin[5]);
-		
+
 
 		if ($this->mconf['freezeMouseover'] && !$this->mconf['freezeMouseover.']['alwaysKeep'])	{
 			$this->WMhideCode.='
@@ -346,7 +346,7 @@ if (!GLV_doReset["'.$mIdStr.'"] && GLV_currentLayer["'.$mIdStr.'"]!=null)	resetS
 		}
 		$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']=array_merge($this->WMtempStore,$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']);
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared']='<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'media/scripts/jsfunc.layermenu.js"></script>';
-		$GLOBALS['TSFE']->JSCode.= '			
+		$GLOBALS['TSFE']->JSCode.= '
 
 GLV_curLayerWidth["'.$this->WMid.'"]=0;
 GLV_curLayerHeight["'.$this->WMid.'"]=0;
@@ -370,22 +370,22 @@ GLV_menuXY["'.$this->WMid.'"] = new Array();
 '.$this->WMrestoreVars;
 
 		if ($this->mconf['freezeMouseover'])	{
-			$GLOBALS['TSFE']->JSCode.= '			
+			$GLOBALS['TSFE']->JSCode.= '
 // Alternative rollover/out functions for use with GMENU_LAYER
 function GL'.$this->WMid.'_over(mitm_id)	{
 	GL'.$this->WMid.'_out("");	// removes any old roll over state of an item. Needed for alwaysKeep and Opera browsers.
 	switch(mitm_id)	{
-'.implode(chr(10),$this->VMmouseoverActions).'	
+'.implode(chr(10),$this->VMmouseoverActions).'
 	}
 	GLV_currentROitem["'.$this->WMid.'"]=mitm_id;
 }
 function GL'.$this->WMid.'_out(mitm_id)	{
 	if (!mitm_id)	mitm_id=GLV_currentROitem["'.$this->WMid.'"];
 	switch(mitm_id)	{
-'.implode(chr(10),$this->VMmouseoutActions).'	
+'.implode(chr(10),$this->VMmouseoutActions).'
 	}
 }
-';	
+';
 		}
 		$GLOBALS["TSFE"]->JSCode.= '
 function GL'.$this->WMid.'_getMouse(e) {
@@ -397,7 +397,7 @@ function GL'.$this->WMid.'_getMouse(e) {
 function GL'.$this->WMid.'_hideCode() {
 '.$this->WMhideCode.'
 }
-function GL'.$this->WMid.'_doTop(WMid,id) { 
+function GL'.$this->WMid.'_doTop(WMid,id) {
 '.trim(implode(chr(10),$DoTop)).'
 }
 function GL'.$this->WMid.'_restoreMenu() {
@@ -418,7 +418,7 @@ GLV_timeout_count++;
 		$GLOBALS['TSFE']->JSeventFuncCalls['onmousemove']['GL_getMouse(e)']= 'GL_getMouse(e);';	// Should be called BEFORE any of the 'local' getMouse functions!
 		$GLOBALS['TSFE']->JSeventFuncCalls['onmousemove'][$this->WMid]= 'GL'.$this->WMid.'_getMouse(e);';
 		$GLOBALS['TSFE']->JSeventFuncCalls['onmouseup'][$this->WMid]= 'GL_mouseUp(\''.$this->WMid.'\',e);';
-		
+
 		$GLOBALS['TSFE']->divSection.=implode($this->divLayers,chr(10)).chr(10);
 
 		return parent::extProc_finish();

@@ -37,7 +37,7 @@ $TYPO3_CONF_VARS = Array(
 		'im_negate_mask' => 0,					// Boolean. Indicates if the mask images should be inverted first. This depends of the ImageMagick version. Below ver. 5.1 this should be false. Above ImageMagick version 5.2+ it should be true. Just set the flag if the masks works opposite the intension!
 		'im_imvMaskState' => 0,					// Boolean. If set, the 'im_negate_mask' state is inverted. This is very useful with newer versions of IM5 (at least 5.4.3+) where the 'im_version_5' setting will set 'im_negate_mask' which will eventually be wrong... Halleluja for ImageMagick - have I ever regreted using that package...
 		'im_no_effects' => 0,					// Boolean. This is necessary if using ImageMagick 5+. Approved version for using effects is version 4.2.9. Effects in Imagemagick 5+ tends to render very slowly! Therefore this must be disabled in order not to perform sharpen, blurring and such. (However lately IM5 is allowed for effects again, but syntax has changed!)
-		'im_v5effects' => 0,					// Integer -1,0,1. 0=disabled. -1=Do not sharpen images by default. 1=All; blur and sharpening is allowed in ImageMagick again and the 'im_no_effects' flag is cancelled. Blurring and sharpening has new syntaxes though. See class.t3lib_stdgraphic.php for details. 
+		'im_v5effects' => 0,					// Integer -1,0,1. 0=disabled. -1=Do not sharpen images by default. 1=All; blur and sharpening is allowed in ImageMagick again and the 'im_no_effects' flag is cancelled. Blurring and sharpening has new syntaxes though. See class.t3lib_stdgraphic.php for details.
 		'im_mask_temp_ext_gif' => 0,			// Boolean. This should be set if ImageMagick is version 5+. This is used in class tslib_cObj.php for masking images and the extension png is normally used because it's faster than gif for temporary files. But png seems not to work with some IM 5+ versions, so...
 		'im_mask_temp_ext_noloss' => 'miff',	// String.	Loss-less ImageMagick extension to use for mask processing in temporary filenames. Normally 'miff' (ImageMagick's OWN format) will do fine. However at least IM 5.4.9 has proved not to be able to write to its own file format which forced me to add this option. You can try and set this to tif/png/jpg if some masking doesn't work the way it should.
 		'im_noScaleUp' => 0,					// Boolean. If set, images are not being scaled up if told so (in t3lib/stdgraphics.php)
@@ -175,7 +175,7 @@ $TYPO3_CONF_VARS = Array(
 //		'IPmaskMountGroups' => array(array('IPmaskList_1','fe_group uid'), array('IPmaskList_2','fe_group uid')),	// This allows you to specify an array of IPmaskLists/fe_group-uids. If the REMOTE_ADDR of the user matches an IPmaskList, then the given fe_group is add to the gr_list. So this is an automatic mounting of a user-group. But no fe_user is logged in though!
 		'get_url_id_token' => '#get_URL_ID_TOK#',	// This is the token, which is substituted in the output code in order to keep a GET-based session going. Normally the GET-session-id is 5 chars ('&ftu=') + hash_length (norm. 10)
 		'content_doktypes' => '1,2,5,7',			// List of pages.doktype values which can contain content (so shortcut pages and external url pages are excluded, but all pages below doktype 199 should be included. doktype=6 is not either (backend users only...). For doktypes going into menus see class.tslib_menu.php, line 494 (search for 'doktype'))
-		'enable_mount_pids' => 1,					// If set, the mount_pid feature allowing 'symlinks' in the page tree (for frontend operation) is allowed.
+		'enable_mount_pids' => 1,					// If set to "1", the mount_pid feature allowing 'symlinks' in the page tree (for frontend operation) is allowed.
 		'pageOverlayFields' => 'title,subtitle,nav_title,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
@@ -211,7 +211,7 @@ define('TYPO3_tables_script', $typo_db_tables_script);
 define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 
 	// Defining backend system languages
-	// Remember to 
+	// Remember to
 	//		- update 'setup' extension labels (ext/setup/mod/locallang.php)
 	//		- pages.lang item array (t3lib/stddb/tbl_be.php)
 	// 		- Kickstarter wizard (ext/extrep_wizard/pi/class.tx_extrepwizard.php)
@@ -321,6 +321,6 @@ unset($LOCAL_LANG);
 
 	// Setting some global vars:
 $EXEC_TIME = time();					// $EXEC_TIME is set so that the rest of the script has a common value for the script execution time
-$SIM_EXEC_TIME = $EXEC_TIME;			// $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to simulate another execution-time when selecting from eg. a database 
+$SIM_EXEC_TIME = $EXEC_TIME;			// $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to simulate another execution-time when selecting from eg. a database
 $TYPO_VERSION = '3.6.0RC2';				// TYPO3 version
 ?>

@@ -1,3 +1,26 @@
+2004-04-14  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Mount Points (Mount pages) reworking:
+Changelog:
+Fixed bugs in Mount Points / Status:
+- Added protection against forging the MP variable value; The exact number of MP var parts must exist, mountpoints cannot exist in rootline (must be resolved) etc.
+- Fixed false detection of CUR, ACT etc. states in HMENU (including x_LAYERS menus)
+- Added support for typolink linking to closest page in rootline (thus detecting Mounts)
+- Fixed support for correct MP-vars for any entryLevel number for HMENU
+- Added option to overlay the mount point with the mounted page; This means the mount point gets substituted with the mounted page and not only the subpages of the mounted page. This is called "Overlay" mode. Can be set on a per-mount level (checkbox in the pages record). Only doktypes < 200 can be mounted in overlay mode.
+- Checked consistency of exclude pages/hidden/starttime/endtime and found it to be ok.
+- HMENU special types supported: 
+	rootline : full support
+	list,directory : Supported, but only if the ID values supplied are in the main rootline of the site. The pages in the menus are allowed to be mount points of course. If the supplied IDs are outside the rootline they will loose their connection to the rootline unless "config.MP_mapRootPoints" is configured to supply some mapping.
+	browse : Not supported: Didn't have time to do it, but should be possible to implement technically.
+	keyword/updated : Supported.
+- Support for chained mount points; A mount point can mount another mount point. "Substitute Mount Point (this page) with Mounted page:" (overlay mode) is evaluated based on the LAST mountpoint in chain. In overlay mode enableFields are evaluated for the Mounted page while in normal mode it is evaluated for the mount point.
+- Fixed problem with caching of the same page id with various MP vars; The page in the "cache_pageSection" table had to be identified by a combination of page id and MPvar.
+- No support for Page "shortcut" mode: You cannot successfully make a shortcut to a mounted page. Support is currently not planned.
+- Support added for search in mount pages; basically this is done since tslib_cObj::getTreeList() is now including MountPages as well! Since getTreeList() does not return any information about MPvars for an ID (its only a list of ids!) then you should enable "config.MP_mapRootPoints = root" or so - otherwise the mounted page ids will not obtain the necessary "MP" var.
+- links to mount points re-maps themselves to right title/uid
+
+
 2004-04-05  Robert Lemke  <rl@robertlemke.de>
 
 	* Modified typo3/sysext/cms/tslib/class.tslib_content.php:

@@ -56,8 +56,8 @@
  *  885:     function alterSettings()	
  *
  *              SECTION: Command Applications (triggered by GET var)
- *  931:     function importExtInfo($extRepUid)	
- * 1032:     function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0)	
+ *  931:     function importExtInfo($extRepUid)
+ * 1032:     function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0)
  * 1192:     function showExtDetails($extKey)	
  *
  *              SECTION: Application Sub-functions (HTML parts)
@@ -90,7 +90,7 @@
  *              SECTION: Read information about all available extensions
  * 2309:     function getInstalledExtensions()	
  * 2336:     function getInstExtList($path,&$list,&$cat,$type)	
- * 2370:     function getImportExtList($listArr)	
+ * 2370:     function getImportExtList($listArr)
  * 2422:     function setCat(&$cat,$listArrayPart,$extKey)	
  *
  *              SECTION: Extension analyzing (detailed information)
@@ -140,7 +140,7 @@
  * 3925:     function getTableAndFieldStructure($parts)	
  *
  *              SECTION: TER Communication functions
- * 3973:     function fetchServerData($repositoryUrl)	
+ * 3973:     function fetchServerData($repositoryUrl)
  * 4002:     function decodeServerData($externalData,$stat=array())	
  * 4028:     function decodeExchangeData($str)	
  * 4050:     function makeUploadDataFromArray($uploadArray,$local_gzcompress=-1)	
@@ -387,8 +387,9 @@ class SC_mod_tools_em_index {
 			// Setting GPvars:
 		$this->CMD = t3lib_div::_GP('CMD');
 		$this->listRemote = t3lib_div::_GP('ter_connect');
+		$this->listRemote_search = t3lib_div::_GP('ter_search');
 
-		
+
 			// Configure menu
 		$this->menuConfig();
 		
@@ -701,7 +702,7 @@ EXTENSION KEYS:
 						So if you want to use an extension in TYPO3, you should simply click the "plus" button '.$this->installButton().' . <br />
 						Installed extensions can also be removed again - just click the remove button '.$this->removeButton().' .<br /><br />';
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
-			
+
 			$this->content.=$this->doc->section('Available Extensions - Order by: '.$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']],$content,0,1);
 		}
 	}
@@ -718,14 +719,16 @@ EXTENSION KEYS:
 		if ($this->listRemote)	{
 			list($inst_list,$inst_cat) = $this->getInstalledExtensions();
 			$this->inst_keys = array_flip(array_keys($inst_list));
-	
+
 			$this->detailCols[1]+=6;
-	
+
 				// Getting data from repository:
 			$repositoryUrl=$this->repositoryUrl.
 				$this->repTransferParams().
 				'&tx_extrep[cmd]=currentListing'.
-				($this->MOD_SETTINGS['own_member_only']?'&tx_extrep[listmode]=1':'');
+				($this->MOD_SETTINGS['own_member_only']?'&tx_extrep[listmode]=1':'').
+				($this->listRemote_search ? '&tx_extrep[search]='.rawurlencode($this->listRemote_search) : '');
+
 			$fetchData = $this->fetchServerData($repositoryUrl);
 
 			if (is_array($fetchData))	{
@@ -737,62 +740,64 @@ EXTENSION KEYS:
 					$content='';
 					$lines=array();
 					$lines[]=$this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>'),1);
-					
+
 					foreach($cat[$this->MOD_SETTINGS['listOrder']] as $catName => $extEkeys)	{
-						$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
-						$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/i/sysf.gif" width="18" height="16" align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
-		
-						asort($extEkeys);
-						reset($extEkeys);
-						while(list($extKey)=each($extEkeys))	{
-							if ($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy'])	{
-								$loadUnloadLink='';
-								if ($inst_list[$extKey]['type']!='S' && (!isset($inst_list[$extKey]) || $this->versionDifference($list[$extKey]['EM_CONF']['version'],$inst_list[$extKey]['EM_CONF']['version'],$this->versionDiffFactor)))	{
-									if (isset($inst_list[$extKey]))	{
-											// update
-										$loc= ($inst_list[$extKey]['type']=='G'?'G':'L');
-										$aUrl = 'index.php?CMD[importExt]='.$list[$extKey]['extRepUid'].'&CMD[loc]='.$loc.($this->getDocManual($extKey,$loc)?'&CMD[inc_manual]=1':'');
-										$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import_update.gif" width="12" height="12" title="Update the extension in \''.($loc=='G'?'global':'local').'\' from online repository to server" alt="" /></a>';
+						if (count($extEkeys))	{
+							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
+							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/i/sysf.gif" width="18" height="16" align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
+
+							asort($extEkeys);
+							reset($extEkeys);
+							while(list($extKey)=each($extEkeys))	{
+								if ($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy'])	{
+									$loadUnloadLink='';
+									if ($inst_list[$extKey]['type']!='S' && (!isset($inst_list[$extKey]) || $this->versionDifference($list[$extKey]['EM_CONF']['version'],$inst_list[$extKey]['EM_CONF']['version'],$this->versionDiffFactor)))	{
+										if (isset($inst_list[$extKey]))	{
+												// update
+											$loc= ($inst_list[$extKey]['type']=='G'?'G':'L');
+											$aUrl = 'index.php?CMD[importExt]='.$list[$extKey]['extRepUid'].'&CMD[loc]='.$loc.($this->getDocManual($extKey,$loc)?'&CMD[inc_manual]=1':'');
+											$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import_update.gif" width="12" height="12" title="Update the extension in \''.($loc=='G'?'global':'local').'\' from online repository to server" alt="" /></a>';
+										} else {
+												// import
+											$aUrl = 'index.php?CMD[importExt]='.$list[$extKey]['extRepUid'].'&CMD[loc]=L'.($this->getDocManual($extKey)?'&CMD[inc_manual]=1':'');
+											$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" /></a>';
+										}
 									} else {
-											// import
-										$aUrl = 'index.php?CMD[importExt]='.$list[$extKey]['extRepUid'].'&CMD[loc]=L'.($this->getDocManual($extKey)?'&CMD[inc_manual]=1':'');
-										$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" /></a>';
+										$loadUnloadLink = '&nbsp;';
 									}
-								} else {
-									$loadUnloadLink = '&nbsp;';
+
+									if ($list[$extKey]['_MEMBERS_ONLY'])	{
+										$theBgColor = '#F6CA96';
+									} elseif (isset($inst_list[$extKey]))	{
+										$theBgColor = t3lib_extMgm::isLoaded($extKey)?$this->doc->bgColor4:t3lib_div::modifyHTMLcolor($this->doc->bgColor4,20,20,20);
+									} else {
+										$theBgColor = t3lib_div::modifyHTMLcolor($this->doc->bgColor2,30,30,30);
+									}
+									$lines[]=$this->extensionListRow($extKey,$list[$extKey],array('<td class="bgColor">'.$loadUnloadLink.'</td>'),
+													$theBgColor,$inst_list,1,'index.php?CMD[importExtInfo]='.$list[$extKey]['extRepUid']);
 								}
-								
-								if ($list[$extKey]['_MEMBERS_ONLY'])	{
-									$theBgColor = '#F6CA96';
-								} elseif (isset($inst_list[$extKey]))	{
-									$theBgColor = t3lib_extMgm::isLoaded($extKey)?$this->doc->bgColor4:t3lib_div::modifyHTMLcolor($this->doc->bgColor4,20,20,20);
-								} else {
-									$theBgColor = t3lib_div::modifyHTMLcolor($this->doc->bgColor2,30,30,30);
-								}
-								$lines[]=$this->extensionListRow($extKey,$list[$extKey],array('<td class="bgColor">'.$loadUnloadLink.'</td>'),
-												$theBgColor,$inst_list,1,'index.php?CMD[importExtInfo]='.$list[$extKey]['extRepUid']);
 							}
 						}
 					}
-	
+
 					$content.= 'Extensions in this list are online for immediate download from the TYPO3 Extension Repository.<br />
 								Extensions with dark background are those already on your server - the others must be imported from the repository to your server before you can use them.<br />
 								So if you want to use an extension from the repository, you should simply click the "import" button.<br /><br />';
-	
+
 					$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
-	
+
 					$content.= '<br />Data fetched: ['.implode('][',$fetchData[1]).']';
 					$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br /> '.$this->privacyNotice;
-	
+
 					$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository (online) - Order by: '.$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']],$content,0,1);
-	
-					if (!$this->MOD_SETTINGS['own_member_only'])	{
+
+					if (!$this->MOD_SETTINGS['own_member_only'] && !$this->listRemote_search)	{
 							// Plugins which are NOT uploaded to repository but present on this server.
 						$content='';
 						$lines=array();
 						if (count($this->inst_keys))	{
 							$lines[]=$this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>'));
-			
+
 							reset($this->inst_keys);
 							while(list($extKey)=each($this->inst_keys))	{
 								if ($this->MOD_SETTINGS['display_shy'] || !$inst_list[$extKey]['EM_CONF']['shy'])	{
@@ -805,7 +810,7 @@ EXTENSION KEYS:
 								}
 							}
 						}
-						
+
 						$content.= 'This is the list of extensions which are either user-defined (should be prepended user_ then) or which are private (and does not show up in the public list above).<br /><br />';
 						$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 						$this->content.=$this->doc->spacer(20);
@@ -822,8 +827,10 @@ EXTENSION KEYS:
 				$content.= '<br /><img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning2.gif" width="18" height="16" align="top" alt="" />You have not configured a repository username/password yet. Please <a href="index.php?SET[function]=3">go to "Settings"</a> and do that.<br />';
 			}
 
-			$onCLick = "document.location='index.php?ter_connect=1';return false;";
-			$content.= '<br /><input type="submit" value="Connect to online repository" onclick="'.htmlspecialchars($onCLick).'" />';
+			$onCLick = "document.location='index.php?ter_connect=1&ter_search='+escape(this.form['_lookUp'].value);return false;";
+			$content.= '<br />
+			Look up: <input type="text" name="_lookUp" value="" />
+			<input type="submit" value="Connect to online repository" onclick="'.htmlspecialchars($onCLick).'" />';
 
 			$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository',$content,0,1);
 		}
@@ -1072,17 +1079,17 @@ EXTENSION KEYS:
 				$addParams='&tx_extrep[pKey]='.rawurlencode(trim($uidParts[1]))
 							.'&tx_extrep[pPass]='.rawurlencode(trim($this->CMD['download_password']));
 			} else $addParams='';
-			
+
 				// If most recent translation should be delivered, send this:
 			if ($recentTranslations)	{
 				$addParams.='&tx_extrep[transl]=1';
 			}
-			
+
 				// If manual should be included, send this:
 			if ($incManual)	{
 				$addParams.='&tx_extrep[inc_manual]=1';
 			}
-	
+
 			$repositoryUrl=$this->repositoryUrl.
 				$this->repTransferParams().
 				$addParams.
@@ -1091,11 +1098,11 @@ EXTENSION KEYS:
 
 				// Fetch extension from TER:
 			$fetchData = $this->fetchServerData($repositoryUrl);
-		}		
-		
+		}
+
 			// At this point the extension data should be present; so we want to write it to disc:
 		if ($this->importAsType($loc))	{
-			if (is_array($fetchData))	{	// There was some data successfully transferred	
+			if (is_array($fetchData))	{	// There was some data successfully transferred
 				if ($fetchData[0]['extKey'] && is_array($fetchData[0]['FILES']))	{
 					$extKey = $fetchData[0]['extKey'];
 					$EM_CONF = $fetchData[0]['EM_CONF'];
@@ -1107,13 +1114,13 @@ EXTENSION KEYS:
 
 								$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
 								$dirs = $this->extractDirsFromFileList(array_keys($fetchData[0]['FILES']));
-								
+
 								$res = $this->createDirsInPath($dirs,$extDirPath);
 								if (!$res)	{
 									$writeFiles = $fetchData[0]['FILES'];
 									$writeFiles['ext_emconf.php']['content'] = $emConfFile;
 									$writeFiles['ext_emconf.php']['content_md5'] = md5($emConfFile);
-		
+
 										// Write files:
 									foreach($writeFiles as $theFile => $fileData)	{
 										t3lib_div::writeFile($extDirPath.$theFile,$fileData['content']);
@@ -1129,7 +1136,7 @@ EXTENSION KEYS:
 										// No content, no errors. Create success output here:
 									if (!$content)	{
 										$content='SUCCESS: '.$extDirPath.'<br />';
-					
+
 											// Fix TYPO3_MOD_PATH for backend modules in extension:
 										$modules = t3lib_div::trimExplode(',',$EM_CONF['module'],1);
 										if (count($modules))	{
@@ -1140,9 +1147,9 @@ EXTENSION KEYS:
 												} else $content.='Error: Couldn\'t find "'.$confFileName.'"<br />';
 											}
 										}
-		// NOTICE: I used two hours trying to find out why a script, ext_emconf.php, written twice and in between included by PHP did not update correct the second time. Probably something with PHP-A cache and mtime-stamps. 
+		// NOTICE: I used two hours trying to find out why a script, ext_emconf.php, written twice and in between included by PHP did not update correct the second time. Probably something with PHP-A cache and mtime-stamps.
 		// But this order of the code works.... (using the empty Array with type, EMCONF and files hereunder).
-										
+
 											// Writing to ext_emconf.php:
 										$sEMD5A = $this->serverExtensionMD5Array($extKey,array(
 											'type' => $loc,
@@ -1155,21 +1162,29 @@ EXTENSION KEYS:
 
 										$content.='ext_emconf.php: '.$extDirPath.'ext_emconf.php<br />';
 										$content.='Type: '.$loc.'<br />';
-										
+
 											// Remove cache files:
 										if (t3lib_extMgm::isLoaded($extKey))	{
 											if ($this->removeCacheFiles())	{
 												$content.='Cache-files are removed and will be re-written upon next hit<br />';
 											}
-											
+
 											list($new_list)=$this->getInstalledExtensions();
 											$content.=$this->updatesForm($extKey,$new_list[$extKey],1,'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info');
 										}
-		
+
 											// Show any messages:
 										if (is_array($fetchData[0]['_MESSAGES']))	{
 											$content.='<hr /><strong>Messages from repository:</strong><br /><br />'.implode('<br />',$fetchData[0]['_MESSAGES']);
 										}
+
+											// Install / Uninstall:
+										$content.='<h3>Install / Uninstall Extension:</h3>';
+										$content.=
+											$new_list[$extKey] ?
+											'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().' Uninstall extension</a>' :
+											'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->installButton().' Install extension</a>';
+
 									}
 								} else $content = $res;
 							} else $content = 'Error: The extension path "'.$extDirPath.'" was different than expected...';
@@ -1230,7 +1245,7 @@ EXTENSION KEYS:
 					} else {
 						$newExtList = $this->addExtToList($extKey,$list);
 					}
-					
+
 						// Success-installation:
 					if ($newExtList!=-1)	{
 						$updates = '';
@@ -3971,12 +3986,13 @@ EXTENSION KEYS:
 	 * @see importExtFromRep(), extensionList_import(), importExtInfo()
 	 */
 	function fetchServerData($repositoryUrl)	{
-			
+
 			// Request data from remote:
 		$ps1 = t3lib_div::milliseconds();
 		$externalData = t3lib_div::getUrl($repositoryUrl);
 		$ps2 = t3lib_div::milliseconds()+1;
-
+#echo $externalData; exit;
+#debug(array($externalData));exit;
 			// Compile statistics array:
 		$stat = Array(
 			($ps2-$ps1),
@@ -3989,7 +4005,7 @@ EXTENSION KEYS:
 			// Decode result and return:
 		return $this->decodeServerData($externalData,$stat);
 	}
-	
+
 	/**
 	 * Decode server data
 	 * This is information like the extension list, extension information etc., return data after uploads (new em_conf)
@@ -4074,6 +4090,8 @@ EXTENSION KEYS:
 	 */
 	function repTransferParams()	{
 		return '&tx_extrep[T3instID]='.rawurlencode($this->T3instID()).
+			'&tx_extrep[TYPO3_ver]='.rawurlencode($GLOBALS['TYPO_VERSION']).
+			'&tx_extrep[PHP_ver]='.rawurlencode(phpversion()).
 			'&tx_extrep[returnUrl]='.rawurlencode($this->makeReturnUrl()).
 			'&tx_extrep[gzcompress]='.$this->gzcompress.
 			'&tx_extrep[user][fe_u]='.$this->fe_user['username'].

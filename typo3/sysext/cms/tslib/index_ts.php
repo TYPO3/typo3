@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * This is the MAIN DOCUMENT of the TypoScript driven standard front-end (from the "cms" extension)
  * Basically put this is the "index.php" script which all requests for TYPO3 delivered pages goes to in the frontend (the website)
  * The script configures constants, includes libraries and does a little logic here and there in order to instantiate the right classes to create the webpage.
@@ -42,11 +42,11 @@
  * @package TYPO3
  * @subpackage tslib
  */
- 
+
 // *******************************
-// Set error reporting 
+// Set error reporting
 // *******************************
-error_reporting (E_ALL ^ E_NOTICE); 
+error_reporting (E_ALL ^ E_NOTICE);
 
 
 // ******************
@@ -61,7 +61,7 @@ define('PATH_site', dirname(PATH_thisScript).'/');
 define('PATH_t3lib', PATH_site.'t3lib/');
 define('PATH_tslib', PATH_site.'tslib/');
 define('PATH_typo3conf', PATH_site.'typo3conf/');
-define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation. 
+define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
 
 if (!@is_dir(PATH_typo3conf))	die('Cannot find configuration. This file is probably executed from the wrong location.');
 
@@ -133,11 +133,11 @@ if (!get_magic_quotes_gpc())	{
 // ***********************************
 $temp_TSFEclassName=t3lib_div::makeInstanceClassName('tslib_fe');
 $TSFE = new $temp_TSFEclassName(
-		$TYPO3_CONF_VARS, 
-		t3lib_div::_GP('id'), 
-		t3lib_div::_GP('type'), 
-		t3lib_div::_GP('no_cache'), 
-		t3lib_div::_GP('cHash'), 
+		$TYPO3_CONF_VARS,
+		t3lib_div::_GP('id'),
+		t3lib_div::_GP('type'),
+		t3lib_div::_GP('no_cache'),
+		t3lib_div::_GP('cHash'),
 		t3lib_div::_GP('jumpurl'),
 		t3lib_div::_GP('MP'),
 		t3lib_div::_GP('RDCT')
@@ -172,7 +172,7 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 		require_once (PATH_t3lib.'class.t3lib_userauthgroup.php');
 		require_once (PATH_t3lib.'class.t3lib_beuserauth.php');
 		require_once (PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
-	
+
 			// the value this->formfield_status is set to empty in order to disable login-attempts to the backend account through this script
 		$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');	// New backend user object
 		$BE_USER->OS = TYPO3_OS;
@@ -194,7 +194,7 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 				$TSFE->forceTemplateParsing = $BE_USER->extGetFeAdminValue('tsdebug', 'forceTemplateParsing');
 				$TSFE->displayEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayIcons');
 				$TSFE->displayFieldEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayFieldIcons');
-	
+
 				if (t3lib_div::_GP('ADMCMD_editIcons'))	{
 					$TSFE->displayFieldEditIcons=1;
 					$BE_USER->uc['TSFE_adminConfig']['edit_editNoPopup']=1;
@@ -207,7 +207,7 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 					$BE_USER->uc['TSFE_adminConfig']['preview_simulateDate']=intval(t3lib_div::_GP('ADMCMD_simTime'));
 					$BE_USER->ext_forcePreview=1;
 				}
-	
+
 					// Include classes for editing IF editing module in Admin Panel is open (it is assumed that $TSFE->displayEditIcons is set only if the Edit module is open in the Admin Panel)
 				if ($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit'))	{
 					$TSFE->includeTCA();
@@ -222,10 +222,10 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 						require_once(PATH_t3lib.'class.t3lib_transferdata.php');
 					}
 				}
-	
+
 				if ($TSFE->forceTemplateParsing || $TSFE->displayEditIcons || $TSFE->displayFieldEditIcons)	{ $TSFE->set_no_cache(); }
 			}
-	
+
 	//		$WEBMOUNTS = (string)($BE_USER->groupData['webmounts'])!='' ? explode(',',$BE_USER->groupData['webmounts']) : Array();
 	//		$FILEMOUNTS = $BE_USER->groupData['filemounts'];
 		} else {	// Unset the user initialization.
@@ -293,13 +293,13 @@ $TSFE->getCompressedTCarray();
 
 
 // *******************************************
-// Setting the internal var, sys_language_uid 
+// Setting the internal var, sys_language_uid
 // *******************************************
 $TSFE->settingLanguage();
 
 
 // ********************************
-// Check Submission of data. 
+// Check Submission of data.
 // This is done at this point, because we need the config values
 // *******************************
 switch($TSFE->checkDataSubmission())	{
@@ -348,18 +348,18 @@ if ($TSFE->isGeneratePage())	{
 		$TSFE->generatePage_postProcessing();
 } elseif ($TSFE->isINTincScript())	{
 	require_once(PATH_tslib.'class.tslib_pagegen.php');
-	include(PATH_tslib.'pagegen.php');	
+	include(PATH_tslib.'pagegen.php');
 }
 $TT->pull();
 
 
 // ********************************
-// $GLOBALS['TSFE']->config['INTincScript'] 
+// $GLOBALS['TSFE']->config['INTincScript']
 // *******************************
 if ($TSFE->isINTincScript())		{
 	$TT->push('Non-cached objects','');
 		$INTiS_config = $GLOBALS['TSFE']->config['INTincScript'];
-			
+
 			// Special feature: Include libraries
 		$TT->push('Include libraries');
 		reset($INTiS_config);
@@ -381,7 +381,7 @@ if ($TSFE->isINTincScript())		{
 		$TT->pull();
 		$TSFE->INTincScript();
 	$TT->pull();
-}  
+}
 
 // ***************
 // Output content
@@ -497,10 +497,10 @@ echo $GLOBALS['TSFE']->beLoginLinkIPList();
 // *************
 // Admin panel
 // *************
-if (is_object($BE_USER) 
-	&& $GLOBALS['TSFE']->beUserLogin 
-	&& $GLOBALS['TSFE']->config['config']['admPanel'] 
-	&& $BE_USER->extAdmEnabled 
+if (is_object($BE_USER)
+	&& $GLOBALS['TSFE']->beUserLogin
+	&& $GLOBALS['TSFE']->config['config']['admPanel']
+	&& $BE_USER->extAdmEnabled
 //	&& $BE_USER->extPageReadAccess($GLOBALS['TSFE']->page)	// This is already done, if there is a BE_USER object at this point!
 	&& !$BE_USER->extAdminConfig['hide'])	{
 		echo $BE_USER->extPrintFeAdminDialog();

@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
@@ -29,7 +29,7 @@
  * This class is instantiated globally as $TYPO3_DB in TYPO3 scripts.
  *
  * $Id$
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -37,62 +37,62 @@
  *
  *
  *
- *  131: class t3lib_DB 
+ *  131: class t3lib_DB
  *
  *              SECTION: Query execution
- *  166:     function exec_INSERTquery($table,$fields_values)	
- *  182:     function exec_UPDATEquery($table,$where,$fields_values)	
- *  196:     function exec_DELETEquery($table,$where)	
- *  215:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	
- *  240:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')	
- *  261:     function exec_SELECT_queryArray($queryParts)	
+ *  166:     function exec_INSERTquery($table,$fields_values)
+ *  182:     function exec_UPDATEquery($table,$where,$fields_values)
+ *  196:     function exec_DELETEquery($table,$where)
+ *  215:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  240:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  261:     function exec_SELECT_queryArray($queryParts)
  *
  *              SECTION: Query building
- *  298:     function INSERTquery($table,$fields_values)	
- *  334:     function UPDATEquery($table,$where,$fields_values)	
- *  373:     function DELETEquery($table,$where)	
- *  402:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	
- *  443:     function listQuery($field, $value, $table)	
- *  457:     function searchQuery($searchWords,$fields,$table)	
+ *  298:     function INSERTquery($table,$fields_values)
+ *  334:     function UPDATEquery($table,$where,$fields_values)
+ *  373:     function DELETEquery($table,$where)
+ *  402:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  443:     function listQuery($field, $value, $table)
+ *  457:     function searchQuery($searchWords,$fields,$table)
  *
  *              SECTION: Various helper functions
- *  503:     function quoteStr($str, $table)	
- *  516:     function cleanIntArray($arr)	
- *  532:     function cleanIntList($list)	
- *  546:     function stripOrderBy($str)	
- *  560:     function stripGroupBy($str)	
- *  572:     function splitGroupOrderLimit($str)	
+ *  503:     function quoteStr($str, $table)
+ *  516:     function cleanIntArray($arr)
+ *  532:     function cleanIntList($list)
+ *  546:     function stripOrderBy($str)
+ *  560:     function stripGroupBy($str)
+ *  572:     function splitGroupOrderLimit($str)
  *
  *              SECTION: MySQL wrapper functions
- *  637:     function sql($db,$query)	
- *  651:     function sql_query($query)	
- *  664:     function sql_error()	
- *  676:     function sql_num_rows($res)	
- *  688:     function sql_fetch_assoc($res)	
- *  701:     function sql_fetch_row($res)	
- *  713:     function sql_free_result($res)	
- *  724:     function sql_insert_id()	
- *  735:     function sql_affected_rows()	
- *  748:     function sql_data_seek($res,$seek)	
- *  761:     function sql_field_type($res,$pointer)	
- *  775:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)	
- *  788:     function sql_select_db($TYPO3_db)	
+ *  637:     function sql($db,$query)
+ *  651:     function sql_query($query)
+ *  664:     function sql_error()
+ *  676:     function sql_num_rows($res)
+ *  688:     function sql_fetch_assoc($res)
+ *  701:     function sql_fetch_row($res)
+ *  713:     function sql_free_result($res)
+ *  724:     function sql_insert_id()
+ *  735:     function sql_affected_rows()
+ *  748:     function sql_data_seek($res,$seek)
+ *  761:     function sql_field_type($res,$pointer)
+ *  775:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
+ *  788:     function sql_select_db($TYPO3_db)
  *
  *              SECTION: SQL admin functions
- *  816:     function admin_get_dbs()	
- *  834:     function admin_get_tables()	
- *  853:     function admin_get_fields($tableName)	
- *  871:     function admin_get_keys($tableName)	
- *  889:     function admin_query($query)	
+ *  816:     function admin_get_dbs()
+ *  834:     function admin_get_tables()
+ *  853:     function admin_get_fields($tableName)
+ *  871:     function admin_get_keys($tableName)
+ *  889:     function admin_query($query)
  *
  *              SECTION: Debugging
- *  916:     function debug($func)	
+ *  916:     function debug($func)
  *
  * TOTAL FUNCTIONS: 37
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 
@@ -260,11 +260,11 @@ class t3lib_DB {
 	 */
 	function exec_SELECT_queryArray($queryParts)	{
 		return $this->exec_SELECTquery(
-					$queryParts['SELECT'], 
-					$queryParts['FROM'], 
-					$queryParts['WHERE'], 
-					$queryParts['GROUPBY'], 
-					$queryParts['ORDERBY'], 
+					$queryParts['SELECT'],
+					$queryParts['FROM'],
+					$queryParts['WHERE'],
+					$queryParts['GROUPBY'],
+					$queryParts['ORDERBY'],
 					$queryParts['LIMIT']
 				);
 	}
@@ -299,14 +299,14 @@ class t3lib_DB {
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_array($fields_values) && count($fields_values))	{
-		
+
 				// Add slashes old-school:
 			foreach($fields_values as $k => $v)	{
 				$fields_values[$k] = $this->quoteStr($fields_values[$k], $table);
 			}
-			
+
 				// Build query:
-			$query = 'INSERT INTO '.$table.' 
+			$query = 'INSERT INTO '.$table.'
 				(
 					'.implode(',
 					',array_keys($fields_values)).'
@@ -444,7 +444,7 @@ class t3lib_DB {
 		$command = $this->quoteStr($value, $table);
 		$where = '('.$field.' LIKE "%,'.$command.',%" OR '.$field.' LIKE "'.$command.',%" OR '.$field.' LIKE "%,'.$command.'" OR '.$field.'="'.$command.'")';
 		return $where;
-	}	
+	}
 
 	/**
 	 * Returns a WHERE clause which will make an AND search for the words in the $searchWords array in any of the fields in array $fields.
@@ -456,23 +456,23 @@ class t3lib_DB {
 	 */
 	function searchQuery($searchWords,$fields,$table)	{
 		$queryParts = array();
-		
+
 		foreach($searchWords as $sw)	{
 			$like=' LIKE "%'.$this->quoteStr($sw, $table).'%"';
-			$queryParts[] = implode($like.' OR ',$fields).$like;
+			$queryParts[] = $table.'.'.implode($like.' OR '.$table.'.',$fields).$like;
 		}
 		$query = '('.implode(') AND (',$queryParts).')';
 		return $query ;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 
 
 
@@ -484,9 +484,9 @@ class t3lib_DB {
 	 *
 	 * Various helper functions
 	 *
-	 * Functions recommended to be used for 
-	 * - escaping values, 
-	 * - cleaning lists of values, 
+	 * Functions recommended to be used for
+	 * - escaping values,
+	 * - cleaning lists of values,
 	 * - stripping of excess ORDER BY/GROUP BY keywords
 	 *
 	 **************************************/
@@ -571,26 +571,26 @@ class t3lib_DB {
 	 */
 	function splitGroupOrderLimit($str)	{
 		$str = ' '.$str;	// Prepending a space to make sure "[[:space:]]+" will find a space there for the first element.
-			// Init output array:	
+			// Init output array:
 		$wgolParts = array(
 			'WHERE' => '',
 			'GROUPBY' => '',
 			'ORDERBY' => '',
 			'LIMIT' => ''
 		);
-		
+
 			// Find LIMIT:
 		if (eregi('^(.*)[[:space:]]+LIMIT[[:space:]]+([[:alnum:][:space:],._]+)$',$str,$reg))	{
 			$wgolParts['LIMIT'] = trim($reg[2]);
 			$str = $reg[1];
 		}
-		
+
 			// Find ORDER BY:
 		if (eregi('^(.*)[[:space:]]+ORDER[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$',$str,$reg))	{
 			$wgolParts['ORDERBY'] = trim($reg[2]);
 			$str = $reg[1];
 		}
-		
+
 			// Find GROUP BY:
 		if (eregi('^(.*)[[:space:]]+GROUP[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$',$str,$reg))	{
 			$wgolParts['GROUPBY'] = trim($reg[2]);
@@ -614,9 +614,9 @@ class t3lib_DB {
 
 
 
-	
-	
-	
+
+
+
 	/**************************************
 	 *
 	 * MySQL wrapper functions
@@ -761,7 +761,7 @@ class t3lib_DB {
 	function sql_field_type($res,$pointer)	{
 		return mysql_field_type($res,$pointer);
 	}
-	
+
 	/**
 	 * Open a (persistent) connection to a MySQL server
 	 * mysql_pconnect() wrapper function
@@ -833,7 +833,7 @@ class t3lib_DB {
 	 */
 	function admin_get_tables()	{
 		$whichTables = array();
-		$tables_result = mysql_list_tables(TYPO3_db, $this->link); 
+		$tables_result = mysql_list_tables(TYPO3_db, $this->link);
 		if (!mysql_error())	{
 			while ($theTable = mysql_fetch_assoc($tables_result)) {
 				$whichTables[current($theTable)] = current($theTable);
@@ -852,7 +852,7 @@ class t3lib_DB {
 	 */
 	function admin_get_fields($tableName)	{
 		$output = array();
-		
+
 		$columns_res = mysql_query('SHOW columns FROM '.$tableName, $this->link);
 		while($fieldRow = mysql_fetch_assoc($columns_res))	{
 			$output[$fieldRow["Field"]] = $fieldRow;
@@ -877,7 +877,7 @@ class t3lib_DB {
 		}
 
 		return $output;
-	}		
+	}
 
 	/**
 	 * mysql() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!

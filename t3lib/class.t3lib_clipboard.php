@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class for TYPO3 clipboard for records and files
  *
  * $Id$
@@ -38,41 +38,41 @@
  *
  *
  *
- *   90: class t3lib_clipboard 
- *  126:     function initializeClipboard()	
- *  155:     function lockToNormal()	
- *  172:     function setCmd($cmd)	
- *  219:     function setCurrentPad($padIdent)	
- *  234:     function endClipboard()	
- *  247:     function cleanUpCBC($CBarr,$table,$removeDeselected=0)	
- *  265:     function isElements()	
- *  274:     function printClipboard()	
- *  363:     function printContentFromTab($pad)	
- *  437:     function padTitleWrap($str,$pad)	
- *  454:     function linkItemText($str,$rec,$table='')	
- *  479:     function isSelected($table,$uid)	
- *  493:     function getSelectedRecord($table='',$uid='')	
- *  516:     function selUrlDB($table,$uid,$copy=0,$deselect=0,$baseArray=array())	
- *  532:     function selUrlFile($path,$copy=0,$deselect=0,$baseArray=array())	
- *  549:     function pasteUrl($table,$uid,$setRedirect=1)	
- *  566:     function deleteUrl($setRedirect=1,$file=0)	
- *  583:     function editUrl()	
- *  604:     function removeUrl($table,$uid)	
- *  614:     function cleanCurrent()	
- *  641:     function elFromTable($matchTable='',$pad='')	
- *  673:     function confirmMsg($table,$rec,$type,$clElements)	
- *  716:     function removeElement($el)	
- *  728:     function saveClipboard()	
- *  738:     function currentMode()	
- *  749:     function clLabel($key,$Akey='labels')	
+ *   90: class t3lib_clipboard
+ *  126:     function initializeClipboard()
+ *  155:     function lockToNormal()
+ *  172:     function setCmd($cmd)
+ *  219:     function setCurrentPad($padIdent)
+ *  234:     function endClipboard()
+ *  247:     function cleanUpCBC($CBarr,$table,$removeDeselected=0)
+ *  265:     function isElements()
+ *  274:     function printClipboard()
+ *  363:     function printContentFromTab($pad)
+ *  437:     function padTitleWrap($str,$pad)
+ *  454:     function linkItemText($str,$rec,$table='')
+ *  479:     function isSelected($table,$uid)
+ *  493:     function getSelectedRecord($table='',$uid='')
+ *  516:     function selUrlDB($table,$uid,$copy=0,$deselect=0,$baseArray=array())
+ *  532:     function selUrlFile($path,$copy=0,$deselect=0,$baseArray=array())
+ *  549:     function pasteUrl($table,$uid,$setRedirect=1)
+ *  566:     function deleteUrl($setRedirect=1,$file=0)
+ *  583:     function editUrl()
+ *  604:     function removeUrl($table,$uid)
+ *  614:     function cleanCurrent()
+ *  641:     function elFromTable($matchTable='',$pad='')
+ *  673:     function confirmMsg($table,$rec,$type,$clElements)
+ *  716:     function removeElement($el)
+ *  728:     function saveClipboard()
+ *  738:     function currentMode()
+ *  749:     function clLabel($key,$Akey='labels')
  *
  *              SECTION: FOR USE IN tce_db.php:
- *  790:     function makePasteCmdArray($ref,$CMD)	
- *  819:     function makeDeleteCmdArray($CMD)	
+ *  790:     function makePasteCmdArray($ref,$CMD)
+ *  819:     function makeDeleteCmdArray($CMD)
  *
  *              SECTION: FOR USE IN tce_file.php:
- *  862:     function makePasteCmdArray_file($ref,$FILE)	
- *  884:     function makeDeleteCmdArray_file($FILE)	
+ *  862:     function makePasteCmdArray_file($ref,$FILE)
+ *  884:     function makeDeleteCmdArray_file($FILE)
  *
  * TOTAL FUNCTIONS: 30
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -90,7 +90,7 @@
 class t3lib_clipboard {
 	var $numberTabs = 3;
 
-	/** 
+	/**
 	 * Clipboard data kept here
 	 *
 	 * Keys:
@@ -98,19 +98,19 @@ class t3lib_clipboard {
 	 * 			'tab_[x]' where x is >=1 and denotes the pad-number
 	 * 				\	'mode'	:	'copy' means copy-mode, default = moving ('cut')
 	 * 				\	'el'	:	Array of elements:
-	 * 								DB: keys = '[tablename]|[uid]'	eg. 'tt_content:123' 
+	 * 								DB: keys = '[tablename]|[uid]'	eg. 'tt_content:123'
 	 * 								DB: values = 1 (basically insignificant)
 	 * 								FILE: keys = '_FILE|[shortmd5 of path]'	eg. '_FILE|9ebc7e5c74'
 	 * 								FILE: values = The full filepath, eg. '/www/htdocs/typo3/32/dummy/fileadmin/sem1_3_examples/alternative_index.php' or 'C:/www/htdocs/typo3/32/dummy/fileadmin/sem1_3_examples/alternative_index.php'
-	 * 
+	 *
 	 * 			'current' pointer to current tab (among the above...)
 	 * 			'_setThumb'	boolean: If set, file thumbnails are shown.
-	 * 			
+	 *
 	 * 		The virtual tablename '_FILE' will always indicate files/folders. When checking for elements from eg. 'all tables' (by using an empty string) '_FILE' entries are excluded (so in effect only DB elements are counted)
-	 * 
+	 *
 	 */
 	var $clipData=array();
-	
+
 	var $changed=0;
 	var $current='';
 	var $backPath='';
@@ -134,18 +134,18 @@ class t3lib_clipboard {
 		if (t3lib_div::testInt($clNP) && $clNP>=0)	{
 			$this->numberTabs = t3lib_div::intInRange($clNP,0,20);
 		}
-		
+
 			// Resets/reinstates the clipboard pads
 		$this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal'] : array();
 		for ($a=1;$a<=$this->numberTabs;$a++)	{
 			$this->clipData['tab_'.$a] = is_array($clipData['tab_'.$a]) ? $clipData['tab_'.$a] : array();
 		}
-		
+
 			// Setting the current pad pointer ($this->current) and _setThumb (which determines whether or not do show file thumbnails)
 		$this->clipData['current'] = $this->current = isset($this->clipData[$clipData['current']]) ? $clipData['current'] : 'normal';
 		$this->clipData['_setThumb'] = $clipData['_setThumb'];
 	}
-	
+
 	/**
 	 * Call this method after initialization if you want to lock the clipboard to operate on the normal pad only. Trying to switch pad through ->setCmd will not work
 	 * This is used by the clickmenu since it only allows operation on single elements at a time (that is the "normal" pad)
@@ -209,7 +209,7 @@ class t3lib_clipboard {
 			$this->changed=1;
 		}
 	}
-	
+
 	/**
 	 * Setting the current pad on clipboard
 	 *
@@ -234,7 +234,7 @@ class t3lib_clipboard {
 	function endClipboard()	{
 		if ($this->changed)	$this->saveClipboard();
 		$this->changed=0;
-	}	
+	}
 
 	/**
 	 * Cleans up an incoming element array $CBarr (Array selecting/deselecting elements)
@@ -246,7 +246,7 @@ class t3lib_clipboard {
 	 */
 	function cleanUpCBC($CBarr,$table,$removeDeselected=0)	{
 		if (is_array($CBarr))	{
-			reset($CBarr);	
+			reset($CBarr);
 			while(list($k,$v)=each($CBarr))	{
 				$p=explode('|',$k);
 				if ((string)$p[0]!=(string)$table || ($removeDeselected && !$v))	{
@@ -273,10 +273,10 @@ class t3lib_clipboard {
 	 */
 	function printClipboard()	{
 		global $TBE_TEMPLATE,$LANG;
-		
+
 		$out=array();
 		$elCount = count($this->elFromTable($this->fileMode?'_FILE':''));
-		
+
 			// Upper header
 		$out[]='
 			<tr class="bgColor2">
@@ -287,7 +287,7 @@ class t3lib_clipboard {
 		$thumb_url = t3lib_div::linkThisScript(array('CB'=>array('setThumb'=>$this->clipData['_setThumb']?0:1)));
 		$copymode_url = t3lib_div::linkThisScript(array('CB'=>array('setCopyMode'=>($this->currentMode()=='copy'?'':'copy'))));
 		$rmall_url = t3lib_div::linkThisScript(array('CB'=>array('removeAll'=>$this->current)));
-		
+
 			// Selector menu + clear button
 		$opt=array();
 		$opt[]='<option value="" selected="selected">'.$this->clLabel('menu','rm').'</option>';
@@ -298,7 +298,7 @@ class t3lib_clipboard {
 			}
 			").'">'.$this->clLabel('delete','rm').'</option>';
 		$selector_menu = '<select name="_clipMenu" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">'.implode('',$opt).'</select>';
-			
+
 		$out[]='
 			<tr class="typo3-clipboard-head">
 				<td>'.
@@ -323,7 +323,7 @@ class t3lib_clipboard {
 					'</a></td>
 			</tr>';
 		if ($this->current=='normal')	$out=array_merge($out,$this->printContentFromTab('normal'));
-		
+
 			// Print header and content for the NUMERIC tabs:
 		for ($a=1;$a<=$this->numberTabs;$a++)	{
 			$out[]='
@@ -335,7 +335,7 @@ class t3lib_clipboard {
 				</tr>';
 			if ($this->current=='tab_'.$a)	$out=array_merge($out,$this->printContentFromTab('tab_'.$a));
 		}
-		
+
 			// Wrap accumulated rows in a table:
 		$output = '<a name="clip_head"></a>
 
@@ -345,7 +345,7 @@ class t3lib_clipboard {
 			<table cellpadding="0" cellspacing="1" border="0" width="290" id="typo3-clipboard">
 				'.implode('',$out).'
 			</table>';
-		
+
 			// Wrap in form tag:
 		$output = '<form action="">'.$output.'</form>';
 
@@ -362,7 +362,7 @@ class t3lib_clipboard {
 	 */
 	function printContentFromTab($pad)	{
 		global $TBE_TEMPLATE;
-		
+
 		$lines=array();
 		if (is_array($this->clipData[$pad]['el']))	{
 			reset($this->clipData[$pad]['el']);
@@ -422,7 +422,7 @@ class t3lib_clipboard {
 									<td colspan="2" class="bgColor4" nowrap="nowrap" width="95%">&nbsp;<em>('.$this->clLabel('clipNoEl').')</em>&nbsp;</td>
 								</tr>';
 		}
-		
+
 		$this->endClipboard();
 		return $lines;
 	}
@@ -452,7 +452,7 @@ class t3lib_clipboard {
 	 * @return	string
 	 */
 	function linkItemText($str,$rec,$table='')	{
-		if (is_array($rec) && $table)	{	
+		if (is_array($rec) && $table)	{
 			if ($this->fileMode)	{
 				$str=$GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
@@ -514,9 +514,9 @@ class t3lib_clipboard {
 	 * @return	string		URL linking to the current script but with the CB array set to select the element with table/uid
 	 */
 	function selUrlDB($table,$uid,$copy=0,$deselect=0,$baseArray=array())	{
-		$CB=array('el'=>array(rawurlencode($table.'|'.$uid)=>$deselect?0:1));
-		if ($copy)	$CB['setCopyMode']=1;
-		$baseArray['CB']=$CB;
+		$CB = array('el'=>array(rawurlencode($table.'|'.$uid)=>$deselect?0:1));
+		if ($copy)	$CB['setCopyMode'] = 1;
+		$baseArray['CB'] = $CB;
 		return t3lib_div::linkThisScript($baseArray);
 	}
 
@@ -555,7 +555,7 @@ class t3lib_clipboard {
 			'&CB[pad]='.$this->current;
 		return $rU;
 	}
-	
+
 	/**
 	 * deleteUrl for current pad
 	 *
@@ -572,7 +572,7 @@ class t3lib_clipboard {
 			'&CB[pad]='.$this->current;
 		return $rU;
 	}
-	
+
 	/**
 	 * editUrl of all current elements
 	 * ONLY database
@@ -588,11 +588,11 @@ class t3lib_clipboard {
 			list($table,$uid) = explode('|',$tP);
 			$editCMDArray[] = '&edit['.$table.']['.$uid.']=edit';
 		}
-	
+
 		$rU = $this->backPath.'alt_doc.php?'.implode('',$editCMDArray);
 		return $rU;
 	}
-	
+
 	/**
 	 * Returns the remove-url (file and db)
 	 * for file $table='_FILE' and $uid = shortmd5 hash of path
@@ -660,7 +660,7 @@ class t3lib_clipboard {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Returns confirm JavaScript message
 	 *
@@ -685,11 +685,11 @@ class t3lib_clipboard {
 			}
 		} else {
 			$thisRecTitle = (
-				$table=='pages' && !is_array($rec) ? 
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] : 
+				$table=='pages' && !is_array($rec) ?
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] :
 				t3lib_BEfunc::getRecordTitle($table,$rec)
 			);
-				
+
 			if ($this->current=='normal')	{
 				$selItem = $this->getSelectedRecord();
 				$selRecTitle=$selItem['_RECORD_TITLE'];
@@ -698,7 +698,7 @@ class t3lib_clipboard {
 			}
 		}
 
-			// Message:		
+			// Message:
 		$conf='confirm('.$GLOBALS['LANG']->JScharCode(sprintf(
 			$msg,
 			t3lib_div::fixed_lgd($selRecTitle,30),
@@ -752,24 +752,24 @@ class t3lib_clipboard {
 
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 
 	/*****************************************
 	 *
 	 * FOR USE IN tce_db.php:
 	 *
 	 ****************************************/
-	 
+
 	/**
 	 * Applies the proper paste configuration in the $cmd array send to tce_db.php.
 	 * $ref is the target, see description below.
@@ -809,7 +809,7 @@ class t3lib_clipboard {
 		}
 		return $CMD;
 	}
-	
+
 	/**
 	 * Delete record entries in CMD array
 	 *
@@ -828,29 +828,29 @@ class t3lib_clipboard {
 		$this->endClipboard();
 		return $CMD;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/*****************************************
 	 *
 	 * FOR USE IN tce_file.php:
 	 *
 	 ****************************************/
-	 
+
 	/**
 	 * Applies the proper paste configuration in the $file array send to tce_file.php.
 	 * The current pad is pasted
@@ -874,7 +874,7 @@ class t3lib_clipboard {
 
 		return $FILE;
 	}
-	
+
 	/**
 	 * Delete files in CMD array
 	 *
@@ -892,7 +892,7 @@ class t3lib_clipboard {
 		$this->endClipboard();
 
 		return $FILE;
-	}	
+	}
 }
 
 

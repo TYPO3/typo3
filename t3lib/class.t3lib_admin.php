@@ -117,7 +117,7 @@ class t3lib_admin {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid,title,doktype,deleted'.(t3lib_extMgm::isLoaded('cms')?',hidden':''), 
 					'pages', 
-					'pid='.intval($theID).' '.((!$this->genTree_includeDeleted)?'AND NOT deleted':'').$this->perms_clause, 
+					'pid='.intval($theID).' '.((!$this->genTree_includeDeleted)?'AND deleted=0':'').$this->perms_clause, 
 					'', 
 					'sorting'
 				);

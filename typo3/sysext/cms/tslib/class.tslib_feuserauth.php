@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Front End session user. Login and session data
  * Included from index_ts.php
  *
@@ -38,35 +38,35 @@
  *
  *
  *
- *   77: class tslib_feUserAuth extends t3lib_userAuth 
- *  141:     function fetchGroupData()	
- *  189:     function getUserTSconf()	
+ *   77: class tslib_feUserAuth extends t3lib_userAuth
+ *  141:     function fetchGroupData()
+ *  189:     function getUserTSconf()
  *
  *              SECTION: Session data management functions
- *  234:     function fetchSessionData()	
- *  256:     function storeSessionData()	
- *  282:     function getKey($type,$key) 
- *  307:     function setKey($type,$key,$data)	
- *  332:     function record_registration($recs)	
+ *  234:     function fetchSessionData()
+ *  256:     function storeSessionData()
+ *  282:     function getKey($type,$key)
+ *  307:     function setKey($type,$key,$data)
+ *  332:     function record_registration($recs)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Extension class for Front End User Authentication.
  *
@@ -98,9 +98,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	var $security_level = '';					// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
 	var $auth_include = '';						// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
-	
+
 	var $auth_timeout_field = 6000;				// if > 0 : session-timeout in seconds. if false/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
-	
+
 	var $lifetime = 0;                  		// 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
 	var $sendNoCacheHeaders = 0;
 	var $getFallBack = 1;						// If this is set, authentication is also accepted by the _GET. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
@@ -116,14 +116,14 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	);
 	var $TSdataArray=array();		// Used to accumulate the TSconfig data of the user
 	var $userTS = array();
-	var $userTSUpdated=0;	
+	var $userTSUpdated=0;
 	var $showHiddenRecords=0;
 
 		// Session and user data:
 		/*
 			There are two types of data that can be stored: UserData and Session-Data. Userdata is for the login-user, and session-data for anyone viewing the pages.
 			'Keys' are keys in the internal dataarray of the data. When you get or set a key in one of the data-spaces (user or session) you decide the type of the variable (not object though)
-			'Reserved' keys are: 
+			'Reserved' keys are:
 				- 'recs': Array: Used to 'register' records, eg in a shopping basket. Structure: [recs][tablename][record_uid]=number
 				- sys: Reserved for TypoScript standard code.
 		*/
@@ -141,17 +141,17 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	function fetchGroupData()	{
 		$this->TSdataArray = array();
 		$this->userTS = array();
-		$this->userTSUpdated = 0;	
+		$this->userTSUpdated = 0;
 
 			// Setting default configuration:
 		$this->TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
-		
+
 		if (is_array($this->user) && $this->user['usergroup'])	{
 			$groups = t3lib_div::intExplode(',',$this->user['usergroup']);
 			$list = implode($groups,',');
 			$lockToDomain_SQL = ' AND (lockToDomain="" OR lockToDomain="'.t3lib_div::getIndpEnv('HTTP_HOST').'")';
 			if (!$this->showHiddenRecords)	$hiddenP = 'AND NOT hidden ';
-			
+
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, 'NOT deleted '.$hiddenP.'AND uid IN ('.$list.')'.$lockToDomain_SQL);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$this->groupData['title'][$row['uid']] = $row['title'];
@@ -159,7 +159,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				$this->groupData['pid'][$row['uid']] = $row['pid'];
 				$this->groupData['TSconfig'][$row['uid']] = $row['TSconfig'];
 			}
-			
+
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				// TSconfig:
@@ -168,7 +168,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 					$this->TSdataArray[]=$this->groupData['TSconfig'][$TSuid];
 				}
 				$this->TSdataArray[]=$this->user['TSconfig'];
-				
+
 				// Sort information
 				ksort($this->groupData['title']);
 				ksort($this->groupData['uid']);
@@ -200,22 +200,22 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		return $this->userTS;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/*****************************************
 	 *
 	 * Session data management functions
@@ -261,8 +261,8 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		if ($this->sesData_change)	{
 			if ($this->id)	{
 				$insertFields = array (
-					'hash' => $this->id, 
-					'content' => serialize($this->sesData), 
+					'hash' => $this->id,
+					'content' => serialize($this->sesData),
 					'tstamp' => time()
 				);
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, 'fe_session_data').'"');

@@ -46,7 +46,7 @@ if (TYPO3_MODE=='BE')	{
 		'7' => Array(
 			'icon' => 'pages_mountpoint.gif'
 		),
-		'6' => Array(	
+		'6' => Array(
 			'type' => 'web',
 			'icon' => 'be_users_section.gif',
 			'allowedTables' => '*'
@@ -76,7 +76,7 @@ if (TYPO3_MODE=='BE')	{
 			Array('LLL:EXT:cms/locallang_tca.php:pages.doktype.I.7', '199')
 		)
 	);
-	
+
 	// Setting enablecolumns:
 	$TCA['pages']['ctrl']['enablecolumns'] = Array (
 		'disabled' => 'hidden',
@@ -91,7 +91,7 @@ if (TYPO3_MODE=='BE')	{
 	// Adding new columns:
 	$TCA['pages']['columns'] = array_merge($TCA['pages']['columns'],Array(
 		'hidden' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.hidden',
 			'config' => Array (
 				'type' => 'check',
@@ -99,7 +99,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'starttime' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
 			'config' => Array (
 				'type' => 'input',
@@ -111,7 +111,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'endtime' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
 			'config' => Array (
 				'type' => 'input',
@@ -130,8 +130,8 @@ if (TYPO3_MODE=='BE')	{
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.layout',
 			'config' => Array (
-				'type' => 'select',		
-				'items' => Array (	
+				'type' => 'select',
+				'items' => Array (
 					Array('LLL:EXT:lang/locallang_general.php:LGL.normal', '0'),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.layout.I.1', '1'),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.layout.I.2', '2'),
@@ -141,10 +141,10 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'fe_group' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
 			'config' => Array (
-				'type' => 'select',	
+				'type' => 'select',
 				'items' => Array (
 					Array('', 0),
 					Array('LLL:EXT:lang/locallang_general.php:LGL.hide_at_login', -1),
@@ -155,17 +155,17 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'extendToSubpages' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.extendToSubpages',
 			'config' => Array (
 				'type' => 'check'
 			)
 		),
 		'nav_title' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.nav_title',
 			'config' => Array (
-				'type' => 'input',	
+				'type' => 'input',
 				'size' => '30',
 				'max' => '256',
 				'checkbox' => '',
@@ -173,20 +173,20 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'subtitle' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.subtitle',
 			'config' => Array (
-				'type' => 'input',	
+				'type' => 'input',
 				'size' => '30',
 				'max' => '256',
 				'eval' => ''
 			)
 		),
 		'target' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.target',
 			'config' => Array (
-				'type' => 'input',	
+				'type' => 'input',
 				'size' => '7',
 				'max' => '20',
 				'eval' => 'trim',
@@ -196,7 +196,7 @@ if (TYPO3_MODE=='BE')	{
 		'alias' => Array (
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.alias',
 			'config' => Array (
-				'type' => 'input',	
+				'type' => 'input',
 				'size' => '10',
 				'max' => '20',
 				'eval' => 'nospace,alphanum_x,lower,unique'
@@ -205,7 +205,7 @@ if (TYPO3_MODE=='BE')	{
 		'url' => Array (
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.url',
 			'config' => Array (
-				'type' => 'input',		
+				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
 				'eval' => 'trim'
@@ -214,8 +214,8 @@ if (TYPO3_MODE=='BE')	{
 		'urltype' => Array (
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.type',
 			'config' => Array (
-				'type' => 'select',		
-				'items' => Array (	
+				'type' => 'select',
+				'items' => Array (
 					Array('', '0'),
 					Array('http://', '1'),
 					Array('ftp://', '2'),
@@ -225,7 +225,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'lastUpdated' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.lastUpdated',
 			'config' => Array (
 				'type' => 'input',
@@ -237,7 +237,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'newUntil' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.newUntil',
 			'config' => Array (
 				'type' => 'input',
@@ -249,11 +249,11 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'cache_timeout' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.cache_timeout',
 			'config' => Array (
 				'type' => 'select',
-				'items' => Array (	
+				'items' => Array (
 					Array('LLL:EXT:lang/locallang_general.php:LGL.default_value', 0),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.cache_timeout.I.1', 60),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.cache_timeout.I.2', 5*60),
@@ -270,14 +270,14 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'no_cache' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.no_cache',
 			'config' => Array (
 				'type' => 'check'
 			)
 		),
 		'no_search' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.no_search',
 			'config' => Array (
 				'type' => 'check'
@@ -296,11 +296,11 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'shortcut_mode' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.shortcut_mode',
 			'config' => Array (
 				'type' => 'select',
-				'items' => Array (	
+				'items' => Array (
 					Array('', 0),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.shortcut_mode.I.1', 1),
 					Array('LLL:EXT:cms/locallang_tca.php:pages.shortcut_mode.I.2', 2),
@@ -333,7 +333,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'keywords' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.keywords',
 			'config' => Array (
 				'type' => 'text',
@@ -342,16 +342,16 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'description' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.description',
 			'config' => Array (
-				'type' => 'input',		
+				'type' => 'input',
 				'size' => '40',
 				'eval' => 'trim'
 			)
 		),
 		'abstract' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.abstract',
 			'config' => Array (
 				'type' => 'text',
@@ -360,7 +360,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'author' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.author',
 			'config' => Array (
 				'type' => 'input',
@@ -370,7 +370,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'author_email' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.email',
 			'config' => Array (
 				'type' => 'input',
@@ -380,7 +380,7 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'media' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.media',
 			'config' => Array (
 				'type' => 'group',
@@ -395,14 +395,21 @@ if (TYPO3_MODE=='BE')	{
 			)
 		),
 		'is_siteroot' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.is_siteroot',
 			'config' => Array (
 				'type' => 'check'
 			)
 		),
+		'mount_pid_ol' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.mount_pid_ol',
+			'config' => Array (
+				'type' => 'check'
+			)
+		),
 		'module' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.module',
 			'config' => Array (
 				'type' => 'select',
@@ -423,7 +430,7 @@ if (TYPO3_MODE=='BE')	{
 		// Add columns to info-display list.
 	$TCA['pages']['interface']['showRecordFieldList'].=',alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout';
 
-		// Setting main palette	
+		// Setting main palette
 	$TCA['pages']['ctrl']['mainpalette']='1';
 
 		// Totally overriding all type-settings:
@@ -431,9 +438,9 @@ if (TYPO3_MODE=='BE')	{
 		'1' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
 		'2' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
 		'3' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, url;;4;;3-3-3, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
-		'4' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, shortcut;;6;;3-3-3, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
+		'4' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, shortcut;;9;;3-3-3, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
 		'5' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, --div--, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
-		'7' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, --div--, mount_pid;;;;3-3-3, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
+		'7' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, --div--, mount_pid;;8;;3-3-3, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
 		'199' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
 		'254' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;LLL:EXT:lang/locallang_general.php:LGL.title;;;2-2-2, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module'),
 		'255' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2, TSconfig;;6;nowrap;5-5-5, storage_pid;;7')
@@ -446,14 +453,15 @@ if (TYPO3_MODE=='BE')	{
 		'3' => Array('showitem' => 'alias, target, no_cache, cache_timeout'),
 		'4' => Array('showitem' => 'urltype'),
 		'5' => Array('showitem' => 'author,author_email'),
-		'6' => Array('showitem' => 'shortcut_mode')
+		'8' => Array('showitem' => 'mount_pid_ol'),
+		'9' => Array('showitem' => 'shortcut_mode'),
 	));
 
-	
-	
-	
-	
-	
+
+
+
+
+
 // ******************************************************************
 // This is the standard TypoScript content table, tt_content
 // ******************************************************************

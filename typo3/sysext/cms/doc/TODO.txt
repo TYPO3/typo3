@@ -51,7 +51,7 @@ FE editing:
 - Offer alternative to the "edit-icon", probably in <div>-layers which does not spoil the page layout. we could simulate "RedDot"... :-)
 
 Admin Panel:
-- Improve Text color/style in Admin Panel. Possibly with a wrapping class you can control in the stylesheet. Plus the options of hardcoded formatting in style="" attributes? (Notify Ben/JH)	
+- Improve Text color/style in Admin Panel. Possibly with a wrapping class you can control in the stylesheet. Plus the options of hardcoded formatting in style="" attributes? (Notify Ben/JH)
 - Improve display of Admin Panel in case of pages made by <div> tags (like typo3.org) (See what Ingmar has done?)
 
 cObject HMENU:

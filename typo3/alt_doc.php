@@ -75,6 +75,7 @@ require ('init.php');
 require ('template.php');
 include ('sysext/lang/locallang_alt_doc.php');
 require_once (PATH_t3lib.'class.t3lib_tceforms.php');
+require_once (PATH_t3lib.'class.t3lib_clipboard.php');
 
 
 t3lib_BEfunc::lockRecords();
@@ -105,19 +106,19 @@ class SC_alt_doc {
 	var $mirror;			// GPvar (for processing only) : ?
 	var $cacheCmd;			// GPvar (for processing only) : Clear-cache cmd.
 	var $redirect;			// GPvar (for processing only) : Redirect (not used???)
-	var $disableRTE;		// GPvar (for processing only) : If set, the rich text editor is disabled in the forms. 
+	var $disableRTE;		// GPvar (for processing only) : If set, the rich text editor is disabled in the forms.
 	var $returnNewPageId;	// GPvar (for processing only) : Boolean: If set, then the GET var "&id=" will be added to the retUrl string so that the NEW id of something is returned to the script calling the form.
 	var $vC;				// GPvar (for processing only) : Verification code, internal stuff.
-	
+
 	var $popViewId;			// GPvar (module) : ID for displaying the page in the frontend (used for SAVE/VIEW operations)
 	var $viewUrl;			// GPvar (module) : Alternative URL for viewing the frontend pages.
 	var $editRegularContentFromId;		// If this is pointing to a page id it will automatically load all content elements (NORMAL column/default language) from that page into the form!
 	var $recTitle;				// Alternative title for the document handler.
 	var $disHelp;				// Disable help... ?
-	var $noView;				// If set, then no SAVE/VIEW button is printed 
+	var $noView;				// If set, then no SAVE/VIEW button is printed
 	var $returnEditConf;		// If set, the $this->editconf array is returned to the calling script (used by wizard_add.php for instance)
 
-	
+
 		// Internal, static:
 	var $doc;				// Document template object
 	var $content;			// Content accumulation
@@ -438,6 +439,10 @@ class SC_alt_doc {
 			$this->tceforms->returnUrl = $this->R_URI;
 			$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 			$this->tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
+
+				// Clipboard is initialized:
+			$this->tceforms->clipObj = t3lib_div::makeInstance('t3lib_clipboard');		// Start clipboard
+			$this->tceforms->clipObj->initializeClipboard();	// Initialize - reads the clipboard content from the user session
 
 				// Setting external variables:
 			if ($BE_USER->uc['edit_showFieldHelp']!='text' && $this->MOD_SETTINGS['showDescriptions'])	$this->tceforms->edit_showFieldHelp='text';

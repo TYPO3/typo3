@@ -262,9 +262,10 @@ class SC_db_layout {
 			// Include scripts: QuickEdit
 		if ($this->MOD_SETTINGS['function']==0)	{
 			$this->include_once[]=PATH_t3lib.'class.t3lib_tceforms.php';
+			$this->include_once[]=PATH_t3lib.'class.t3lib_clipboard.php';
 			$this->include_once[]=PATH_t3lib.'class.t3lib_loaddbgroup.php';
 			$this->include_once[]=PATH_t3lib.'class.t3lib_transferdata.php';
-		}		
+		}
 
 			// Include scripts: Clear-cache cmd.
 		if ($this->clear_cache)	{
@@ -715,13 +716,19 @@ class SC_db_layout {
 				$tceforms->fieldOrder = $this->modTSconfig['properties']['tt_content.']['fieldOrder'];
 				$tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 				$tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
+
+					// Clipboard is initialized:
+				$tceforms->clipObj = t3lib_div::makeInstance('t3lib_clipboard');		// Start clipboard
+				$tceforms->clipObj->initializeClipboard();	// Initialize - reads the clipboard content from the user session
+
+
 				if ($BE_USER->uc['edit_showFieldHelp']!='text' && $this->MOD_SETTINGS['showDescriptions'])	$tceforms->edit_showFieldHelp='text';
 
-					// Render form, wrap it:	
+					// Render form, wrap it:
 				$panel='';
 				$panel.=$tceforms->getMainFields($eRParts[0],$rec);
 				$panel=$tceforms->wrapTotal($panel,$rec,$eRParts[0]);
-	
+
 					// Add hidden fields:
 				$theCode=$panel;
 				if ($uidVal=='new')	{

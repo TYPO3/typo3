@@ -28,9 +28,10 @@ CREATE TABLE cache_pages (
 #
 CREATE TABLE cache_pagesection (
   page_id int(11) unsigned DEFAULT '0' NOT NULL,
+  mpvar_hash int(11) unsigned DEFAULT '0' NOT NULL,
   content blob NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  PRIMARY KEY (page_id)
+  PRIMARY KEY (page_id,mpvar_hash)
 );
 
 
@@ -181,7 +182,7 @@ CREATE TABLE pages_language_overlay (
   abstract text NOT NULL,
   author tinytext NOT NULL,
   author_email varchar(80) DEFAULT '' NOT NULL,
-  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,  
+  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -218,7 +219,7 @@ CREATE TABLE sys_domain (
   redirectTo varchar(120) DEFAULT '' NOT NULL,
   sorting int(10) unsigned DEFAULT '0' NOT NULL,
   prepend_params int(10) DEFAULT '0' NOT NULL,
-  
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -268,7 +269,7 @@ CREATE TABLE sys_template (
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
   includeStaticAfterBasedOn tinyint(4) unsigned DEFAULT '0' NOT NULL,
   static_file_mode tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,  
+  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -339,9 +340,9 @@ CREATE TABLE tt_content (
   module_sys_dmail_category int(10) unsigned DEFAULT '0' NOT NULL,
   rte_enabled tinyint(4) DEFAULT '0' NOT NULL,
   sys_language_uid int(11) DEFAULT '0' NOT NULL,
-  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,  
+  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   pi_flexform mediumtext NOT NULL,
-    
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -379,6 +380,7 @@ CREATE TABLE pages (
   nav_title tinytext NOT NULL,
   content_from_pid int(10) unsigned DEFAULT '0' NOT NULL,
   mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
+  mount_pid_ol tinyint(4) DEFAULT '0' NOT NULL,
   alias varchar(20) DEFAULT '' NOT NULL,
   KEY alias (alias)
 );

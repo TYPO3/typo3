@@ -1,11 +1,11 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
@@ -13,10 +13,10 @@
 *
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,11 +24,11 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Standard functions available for the TYPO3 backend.
  * You are encouraged to use this class in your own applications (Backend Modules)
  *
- * Call ALL methods without making an object! 
+ * Call ALL methods without making an object!
  * Eg. to get a page-record 51 do this: 't3lib_BEfunc::getRecord('pages',51)'
  *
  * $Id$
@@ -43,105 +43,105 @@
  *
  *
  *
- *  160: class t3lib_BEfunc	
+ *  160: class t3lib_BEfunc
  *
  *              SECTION: SQL-related, selecting records, searching
- *  181:     function deleteClause($table)	
- *  205:     function getRecord($table,$uid,$fields='*',$where='')	
- *  228:     function getRecordRaw($table,$where='',$fields='*')	
- *  251:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')	
- *  284:     function searchQuery($searchWords,$fields,$table='')	
- *  300:     function listQuery($field,$value)	
- *  313:     function splitTable_Uid($str)	
- *  329:     function getSQLselectableList ($in_list,$tablename,$default_tablename)	
- *  358:     function BEenableFields($table,$inv=0)	
+ *  181:     function deleteClause($table)
+ *  205:     function getRecord($table,$uid,$fields='*',$where='')
+ *  228:     function getRecordRaw($table,$where='',$fields='*')
+ *  251:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  284:     function searchQuery($searchWords,$fields,$table='')
+ *  300:     function listQuery($field,$value)
+ *  313:     function splitTable_Uid($str)
+ *  329:     function getSQLselectableList ($in_list,$tablename,$default_tablename)
+ *  358:     function BEenableFields($table,$inv=0)
  *
  *              SECTION: SQL-related, DEPRECIATED functions
- *  422:     function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')	
- *  444:     function DBcompileInsert($table,$fields_values)	
- *  458:     function DBcompileUpdate($table,$where,$fields_values)	
+ *  422:     function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  444:     function DBcompileInsert($table,$fields_values)
+ *  458:     function DBcompileUpdate($table,$where,$fields_values)
  *
  *              SECTION: Page tree, TCA related
- *  488:     function BEgetRootLine ($uid,$clause='')	
+ *  488:     function BEgetRootLine ($uid,$clause='')
  *  539:     function getRecordPath($uid,$clause,$titleLimit)
- *  564:     function getExcludeFields()	
- *  599:     function readPageAccess($id,$perms_clause)	
+ *  564:     function getExcludeFields()
+ *  599:     function readPageAccess($id,$perms_clause)
  *  629:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)
- *  675:     function getTCAtypeValue($table,$rec)	
- *  698:     function getSpecConfParts($str)	
- *  723:     function getSpecConfParametersFromArray($pArr)	
- *  748:     function getFlexFormDS($conf,$row,$table)	
+ *  675:     function getTCAtypeValue($table,$rec)
+ *  698:     function getSpecConfParts($str)
+ *  723:     function getSpecConfParametersFromArray($pArr)
+ *  748:     function getFlexFormDS($conf,$row,$table)
  *
  *              SECTION: Caching related
- *  853:     function storeHash($hash,$data,$ident)	
- *  874:     function getHash($hash,$expTime)	
+ *  853:     function storeHash($hash,$data,$ident)
+ *  874:     function getHash($hash,$expTime)
  *
  *              SECTION: TypoScript related
- *  911:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)	
- *  962:     function updatePagesTSconfig($id,$pageTS,$TSconfPrefix,$impParams='')	
- * 1018:     function implodeTSParams($p,$k='')	
+ *  911:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)
+ *  962:     function updatePagesTSconfig($id,$pageTS,$TSconfPrefix,$impParams='')
+ * 1018:     function implodeTSParams($p,$k='')
  *
  *              SECTION: Users / Groups related
- * 1056:     function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')	
- * 1075:     function getGroupNames($fields='title,uid', $where='')	
- * 1093:     function getListGroupNames($fields='title,uid')	
- * 1113:     function blindUserNames($usernames,$groupArray,$excludeBlindedFlag=0)	
- * 1147:     function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)	
+ * 1056:     function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')
+ * 1075:     function getGroupNames($fields='title,uid', $where='')
+ * 1093:     function getListGroupNames($fields='title,uid')
+ * 1113:     function blindUserNames($usernames,$groupArray,$excludeBlindedFlag=0)
+ * 1147:     function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)
  *
  *              SECTION: Output related
- * 1191:     function daysUntil($tstamp)	
- * 1204:     function date($tstamp)	
- * 1216:     function datetime($value)	
- * 1229:     function time($value)	
- * 1246:     function calcAge ($seconds,$labels)	
- * 1273:     function dateTimeAge($tstamp,$prefix=1,$date='')	
- * 1292:     function titleAttrib($content='',$hsc=0)	
- * 1304:     function titleAltAttrib($content)	
- * 1329:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir='',$abs=0,$tparams='',$size='')	
- * 1398:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')	
- * 1416:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)	
- * 1471:     function getRecordIconAltText($row,$table='pages')	
- * 1506:     function getLabelFromItemlist($table,$col,$key)	
- * 1533:     function getItemLabel($table,$col,$printAllWrap='')	
- * 1559:     function getRecordTitle($table,$row,$prep=0)	
- * 1596:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)	
- * 1691:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)	
- * 1716:     function getFileIcon($ext)	
- * 1731:     function getCommonSelectFields($table,$prefix)	
- * 1758:     function makeConfigForm($configArray,$defaults,$dataPrefix)	
+ * 1191:     function daysUntil($tstamp)
+ * 1204:     function date($tstamp)
+ * 1216:     function datetime($value)
+ * 1229:     function time($value)
+ * 1246:     function calcAge ($seconds,$labels)
+ * 1273:     function dateTimeAge($tstamp,$prefix=1,$date='')
+ * 1292:     function titleAttrib($content='',$hsc=0)
+ * 1304:     function titleAltAttrib($content)
+ * 1329:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir='',$abs=0,$tparams='',$size='')
+ * 1398:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')
+ * 1416:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)
+ * 1471:     function getRecordIconAltText($row,$table='pages')
+ * 1506:     function getLabelFromItemlist($table,$col,$key)
+ * 1533:     function getItemLabel($table,$col,$printAllWrap='')
+ * 1559:     function getRecordTitle($table,$row,$prep=0)
+ * 1596:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)
+ * 1691:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)
+ * 1716:     function getFileIcon($ext)
+ * 1731:     function getCommonSelectFields($table,$prefix)
+ * 1758:     function makeConfigForm($configArray,$defaults,$dataPrefix)
  *
  *              SECTION: Backend Modules API functions
- * 1835:     function helpTextIcon($table,$field,$BACK_PATH,$force=0)	
- * 1857:     function helpText($table,$field,$BACK_PATH)	
- * 1878:     function editOnClick($params,$backPath='',$requestUri='')	
- * 1895:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='')	
- * 1922:     function getModTSconfig($id,$TSref)	
- * 1944:     function getFuncMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	
- * 1974:     function getFuncCheck($id,$elementName,$currentValue,$script='',$addparams='',$tagParams='')	
- * 1995:     function getFuncInput($id,$elementName,$currentValue,$size=10,$script="",$addparams="")	
- * 2012:     function unsetMenuItems($modTSconfig,$itemArray,$TSref)	
- * 2036:     function getSetUpdateSignal($set='')	
- * 2087:     function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type='', $dontValidateList='', $setDefaultList='')	
+ * 1835:     function helpTextIcon($table,$field,$BACK_PATH,$force=0)
+ * 1857:     function helpText($table,$field,$BACK_PATH)
+ * 1878:     function editOnClick($params,$backPath='',$requestUri='')
+ * 1895:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='')
+ * 1922:     function getModTSconfig($id,$TSref)
+ * 1944:     function getFuncMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')
+ * 1974:     function getFuncCheck($id,$elementName,$currentValue,$script='',$addparams='',$tagParams='')
+ * 1995:     function getFuncInput($id,$elementName,$currentValue,$size=10,$script="",$addparams="")
+ * 2012:     function unsetMenuItems($modTSconfig,$itemArray,$TSref)
+ * 2036:     function getSetUpdateSignal($set='')
+ * 2087:     function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type='', $dontValidateList='', $setDefaultList='')
  *
  *              SECTION: Core
- * 2164:     function lockRecords($table='',$uid=0,$pid=0)	
- * 2194:     function isRecordLocked($table,$uid)	
- * 2235:     function exec_foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')	
- * 2317:     function getTCEFORM_TSconfig($table,$row) 
- * 2365:     function getTSconfig_pidValue($table,$uid,$pid)	
- * 2394:     function getPidForModTSconfig($table,$uid,$pid)	
+ * 2164:     function lockRecords($table='',$uid=0,$pid=0)
+ * 2194:     function isRecordLocked($table,$uid)
+ * 2235:     function exec_foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')
+ * 2317:     function getTCEFORM_TSconfig($table,$row)
+ * 2365:     function getTSconfig_pidValue($table,$uid,$pid)
+ * 2394:     function getPidForModTSconfig($table,$uid,$pid)
  * 2411:     function getTSCpid($table,$uid,$pid)
- * 2428:     function firstDomainRecord($rootLine)	
- * 2451:     function getDomainStartPage($domain, $path='')	
+ * 2428:     function firstDomainRecord($rootLine)
+ * 2451:     function getDomainStartPage($domain, $path='')
  * 2482:     function RTEsetup($RTEprop,$table,$field,$type='')
- * 2503:     function isModuleSetInTBE_MODULES($modName)	
+ * 2503:     function isModuleSetInTBE_MODULES($modName)
  *
  *              SECTION: Miscellaneous
- * 2553:     function typo3PrintError ($header,$text,$js='',$head=1)	
- * 2600:     function getPathType_web_nonweb($path)	
- * 2613:     function ADMCMD_previewCmds($pageinfo)	
- * 2636:     function processParams($params)	
- * 2663:     function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')	
+ * 2553:     function typo3PrintError ($header,$text,$js='',$head=1)
+ * 2600:     function getPathType_web_nonweb($path)
+ * 2613:     function ADMCMD_previewCmds($pageinfo)
+ * 2636:     function processParams($params)
+ * 2663:     function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')
  *
  * TOTAL FUNCTIONS: 78
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -252,8 +252,8 @@ class t3lib_BEfunc	{
 		global $TCA;
 		if (is_array($TCA[$theTable])) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'*', 
-						$theTable, 
+						'*',
+						$theTable,
 						$theField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($theValue, $theTable).'"'.
 							t3lib_BEfunc::deleteClause($theTable).' '.
 							$whereClause,	// whereClauseMightContainGroupOrderBy
@@ -299,7 +299,7 @@ class t3lib_BEfunc	{
 	 */
 	function listQuery($field,$value)	{
 		return $GLOBALS['TYPO3_DB']->listQuery($field,$value,'');
-	}	
+	}
 
 	/**
 	 * Makes an backwards explode on the $str and returns an array with ($table,$uid).
@@ -383,7 +383,7 @@ class t3lib_BEfunc	{
 		return $outQ;
 	}
 
-	
+
 
 
 
@@ -399,7 +399,7 @@ class t3lib_BEfunc	{
 	 *
 	 *******************************************/
 
-	
+
 	/**
 	 * Returns a SELECT query, selecting fields ($select) from two/three tables joined
 	 * $local_table and $mm_table is mandatory. $foreign_table is optional.
@@ -421,8 +421,8 @@ class t3lib_BEfunc	{
 	 */
 	function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
 		$query = $GLOBALS['TYPO3_DB']->SELECTquery(
-					$select, 
-					$local_table.','.$mm_table.($foreign_table?','.$foreign_table:''), 
+					$select,
+					$local_table.','.$mm_table.($foreign_table?','.$foreign_table:''),
 					$local_table.'.uid='.$mm_table.'.uid_local'.($foreign_table?' AND '.$foreign_table.'.uid='.$mm_table.'.uid_foreign':'').' '.
 						$whereClause,	// whereClauseMightContainGroupOrderBy
 					$groupBy,
@@ -460,17 +460,17 @@ class t3lib_BEfunc	{
 	}
 
 
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 
 	/*******************************************
 	 *
-	 * Page tree, TCA related 
+	 * Page tree, TCA related
 	 *
 	 *******************************************/
 
@@ -485,18 +485,18 @@ class t3lib_BEfunc	{
 	 * @param	string		$clause can be used to select other criteria. It would typically be where-clauses that stops the proces if we meet a page, the user has no reading access to.
 	 * @return	array		Root line array, all the way to the page tree root (or as far as $clause allows!)
 	 */
-	function BEgetRootLine ($uid,$clause='')	{		
+	function BEgetRootLine ($uid,$clause='')	{
 		$loopCheck = 100;
 		$theRowArray = Array();
 		$output=Array();
 		while ($uid!=0 && $loopCheck>0)	{
 			$loopCheck--;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'pid,uid,title,TSconfig,is_siteroot,storage_pid', 
-							'pages', 
+							'pid,uid,title,TSconfig,is_siteroot,storage_pid',
+							'pages',
 							'uid='.intval($uid).' '.
 								t3lib_BEfunc::deleteClause('pages').' '.
-								$clause		// whereClauseMightContainGroupOrderBy 
+								$clause		// whereClauseMightContainGroupOrderBy
 						);
 			if ($GLOBALS['TYPO3_DB']->sql_error())	{
 				debug($GLOBALS['TYPO3_DB']->sql_error(),1);
@@ -598,7 +598,7 @@ class t3lib_BEfunc	{
 		}
 		return $theExcludeArray;
 	}
-	
+
 	/**
 	 * Returns a page record (of page with $id) with an extra field "_thePath" set to the record path IF the WHERE clause, $perms_clause, selects the record.
 	 * If $id is zero a pseudo root-page with "_thePath" set is returned IF the current BE_USER is admin.
@@ -775,14 +775,14 @@ class t3lib_BEfunc	{
 	 * @see t3lib_TCEforms::getSingleField_typeFlex()
 	 */
 	function getFlexFormDS($conf,$row,$table)	{
-	
+
 			// Get pointer field etc from TCA-config:
 		$ds_pointerField = 	$conf['ds_pointerField'];
 		$ds_array = 		$conf['ds'];
 		$ds_tableField = 	$conf['ds_tableField'];
 		$ds_searchParentField = 	$conf['ds_pointerField_searchParent'];
-		
-		
+
+
 			// Find source value:
 		$dataStructArray='';
 		if (is_array($ds_array))	{	// If there is a data source array, that takes precedence
@@ -791,7 +791,7 @@ class t3lib_BEfunc	{
 				$srcPointer = $row[$ds_pointerField];
 				$srcPointer = isset($ds_array[$srcPointer]) ? $srcPointer : 'default';
 			} else $srcPointer='default';
-			
+
 				// Get Data Source: Detect if it's a file reference and in that case read the file and parse as XML. Otherwise the value is expected to be XML.
 			if (substr($ds_array[$srcPointer],0,5)=='FILE:')	{
 				$file = t3lib_div::getFileAbsFileName(substr($ds_array[$srcPointer],5));
@@ -805,7 +805,7 @@ class t3lib_BEfunc	{
 		} elseif ($ds_pointerField) {	// If pointer field AND possibly a table/field is set:
 				// Value of field pointed to:
 			$srcPointer = $row[$ds_pointerField];
-			
+
 				// Searching recursively back if 'ds_pointerField_searchParent' is defined (typ. a page rootline, or maybe a tree-table):
 			if ($ds_searchParentField && !$srcPointer)	{
 				$rr = t3lib_BEfunc::getRecord($table,$row['uid'],$ds_searchParentField);	// Get the "pid" field - we cannot know that it is in the input record!
@@ -813,18 +813,18 @@ class t3lib_BEfunc	{
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
 				while(!$srcPointer)		{
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-									'uid,'.$ds_pointerField.','.$ds_searchParentField.($subFieldPointer?','.$subFieldPointer:''), 
-									$table, 
+									'uid,'.$ds_pointerField.','.$ds_searchParentField.($subFieldPointer?','.$subFieldPointer:''),
+									$table,
 									'uid='.intval($rr[$ds_searchParentField]).t3lib_BEfunc::deleteClause($table)
 								);
 					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 					if (!is_array($rr) || isset($uidAcc[$rr['uid']]))	break;	// break if no result from SQL db or if looping...
 					$uidAcc[$rr['uid']]=1;
-					
+
 					$srcPointer = ($subFieldPointer && $rr[$subFieldPointer]) ? $rr[$subFieldPointer] : $rr[$ds_pointerField];
 				}
 			}
-			
+
 				// If there is a srcPointer value:
 			if ($srcPointer)	{
 				if (t3lib_div::testInt($srcPointer))	{	// If integer, then its a record we will look up:
@@ -841,15 +841,15 @@ class t3lib_BEfunc	{
 				}
 			} else $dataStructArray='No source value in fieldname "'.$ds_pointerField.'"';	// Error message.
 		} else $dataStructArray='No proper configuration!';
-		
+
 		return $dataStructArray;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 
 
 
@@ -864,7 +864,7 @@ class t3lib_BEfunc	{
 
 	/*******************************************
 	 *
-	 * Caching related 
+	 * Caching related
 	 *
 	 *******************************************/
 
@@ -881,9 +881,9 @@ class t3lib_BEfunc	{
 	 */
 	function storeHash($hash,$data,$ident)	{
 		$insertFields = array(
-			'hash' => $hash, 
-			'content' => $data, 
-			'ident' => $ident, 
+			'hash' => $hash,
+			'content' => $data,
+			'ident' => $ident,
 			'tstamp' => time()
 		);
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($hash, 'cache_hash').'"');
@@ -911,8 +911,8 @@ class t3lib_BEfunc	{
 			return $row['content'];
 		}
 	}
-	
-	
+
+
 
 
 
@@ -921,7 +921,7 @@ class t3lib_BEfunc	{
 
 	/*******************************************
 	 *
-	 * TypoScript related 
+	 * TypoScript related
 	 *
 	 *******************************************/
 
@@ -953,7 +953,7 @@ class t3lib_BEfunc	{
 		if ($returnPartArray)	{
 			return $TSdataArray;
 		}
-		
+
 			// Parsing the user TS (or getting from cache)
 		$userTS = implode($TSdataArray,chr(10).'[GLOBAL]'.chr(10));
 		$hash = md5('pageTS:'.$userTS);
@@ -1029,7 +1029,7 @@ class t3lib_BEfunc	{
 
 					// store those changes
 				$TSconf = implode(chr(10),$TSlines);
-				
+
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'uid='.intval($id), array('TSconfig' => $TSconf));
 			}
 		}
@@ -1059,8 +1059,8 @@ class t3lib_BEfunc	{
 		return $implodeParams;
 	}
 
-	
-	
+
+
 
 
 
@@ -1068,7 +1068,7 @@ class t3lib_BEfunc	{
 
 	/*******************************************
 	 *
-	 * Users / Groups related 
+	 * Users / Groups related
 	 *
 	 *******************************************/
 
@@ -1085,7 +1085,7 @@ class t3lib_BEfunc	{
 	function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')	{
 		$be_user_Array=Array();
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_users', 'pid=0 '.$where.t3lib_BEfunc::deleteClause('be_users'), '', 'username'); 
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_users', 'pid=0 '.$where.t3lib_BEfunc::deleteClause('be_users'), '', 'username');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$be_user_Array[$row['uid']]=$row;
 		}
@@ -1103,7 +1103,7 @@ class t3lib_BEfunc	{
 	 */
 	function getGroupNames($fields='title,uid', $where='')	{
 		$be_group_Array = Array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_groups', 'pid=0 '.$where.t3lib_BEfunc::deleteClause('be_groups'), '', 'title'); 
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_groups', 'pid=0 '.$where.t3lib_BEfunc::deleteClause('be_groups'), '', 'title');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$be_group_Array[$row['uid']] = $row;
 		}
@@ -1188,8 +1188,8 @@ class t3lib_BEfunc	{
 		}
 		return $groups;
 	}
-		
-	
+
+
 
 
 
@@ -1203,12 +1203,12 @@ class t3lib_BEfunc	{
 
 	/*******************************************
 	 *
-	 * Output related 
+	 * Output related
 	 *
 	 *******************************************/
 
-	 
-	 
+
+
 	/**
 	 * Returns the difference in days between input $tstamp and $EXEC_TIME
 	 *
@@ -1261,7 +1261,7 @@ class t3lib_BEfunc	{
 		$sec = $value-$hh*3600-$min*60;
 		$l = sprintf('%02d',$hh).':'.sprintf('%02d',$min).':'.sprintf('%02d',$sec);
 		return $l;
-	}	
+	}
 
 	/**
 	 * Returns the "age" of the number of $seconds inputted.
@@ -1300,7 +1300,7 @@ class t3lib_BEfunc	{
 	 * @return	string
 	 */
 	function dateTimeAge($tstamp,$prefix=1,$date='')	{
-		return $tstamp ? 
+		return $tstamp ?
 				($date=='date' ? t3lib_BEfunc::date($tstamp) : t3lib_BEfunc::datetime($tstamp)).
 				' ('.t3lib_BEfunc::calcAge($prefix*(time()-$tstamp),$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')).')' : '';
 	}
@@ -1431,7 +1431,7 @@ class t3lib_BEfunc	{
 		$th='<img src="'.htmlspecialchars($url).'" title="'.trim(basename($theFile)).'"'.($tparams?" ".$tparams:"").' alt="" />';
 		return $th;
 	}
-	
+
 	/**
 	 * Returns title-attribute information for a page-record informing about id, alias, doktype, hidden, starttime, endtime, fe_group etc.
 	 *
@@ -1469,6 +1469,9 @@ class t3lib_BEfunc	{
 				$label = $lRec['title'];
 			}
 			$parts[]=$LANG->sL($TCA['pages']['columns']['mount_pid']['label']).' '.$label;
+			if ($row['mount_pid_ol'])	{
+				$parts[] = $LANG->sL($TCA['pages']['columns']['mount_pid_ol']['label']);
+			}
 		}
 		if ($row['hidden'])	$parts[]=$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.hidden');
 		if ($row['starttime'])	$parts[]=$LANG->sL($TCA['pages']['columns']['starttime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['starttime'],-1,'date');
@@ -1480,7 +1483,7 @@ class t3lib_BEfunc	{
 				$lRec = t3lib_BEfunc::getRecord('fe_groups',$row['fe_group'],'title');
 				$label = $lRec['title'];
 			}
-			$parts[]=$LANG->sL($TCA['pages']['columns']['fe_group']['label']).' '.$label;
+			$parts[] = $LANG->sL($TCA['pages']['columns']['fe_group']['label']).' '.$label;
 		}
 		$out = htmlspecialchars(implode(' - ',$parts));
 		return $includeAttrib ? 'title="'.$out.'"' : $out;
@@ -1502,7 +1505,7 @@ class t3lib_BEfunc	{
 			$out = t3lib_BEfunc::titleAttribForPages($row,'',0);
 		} else {
 			$ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
-	
+
 			$out='id='.$row['uid'];	// Uid is added
 			if ($table=='pages' && $row['alias'])	{
 				$out.=' / '.$row['alias'];
@@ -1730,7 +1733,7 @@ class t3lib_BEfunc	{
 					$fVnew = $fV;
 				}
 			}
-		} 
+		}
 		return $fVnew;
 	}
 
@@ -1745,7 +1748,7 @@ class t3lib_BEfunc	{
 	function getFileIcon($ext)	{
 		return $GLOBALS['FILEICONS'][$ext] ? $GLOBALS['FILEICONS'][$ext] : $GLOBALS['FILEICONS']['default'];
 	}
-	
+
 	/**
 	 * Returns fields for a table, $table, which would typically be interesting to select
 	 * This includes uid, the fields defined for title, icon-field.
@@ -1830,7 +1833,7 @@ class t3lib_BEfunc	{
 		return $out;
 	}
 
-	
+
 
 
 
@@ -1928,16 +1931,16 @@ class t3lib_BEfunc	{
 			if ($rootLine)	{
 				$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 				if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path']))	{
-					$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);	
+					$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
 				}
 			}
 			$preUrl = $preUrl_temp ? 'http://'.$preUrl_temp : $backPath.'..';
 			$url = $preUrl.'/index.php?id='.$id.$anchor;
-		}		
-		
+		}
+
 		return "previewWin=window.open('".$url."','newTypo3FrontendWindow','status=1,menubar=1,resizable=1,location=1,scrollbars=1,toolbar=1');previewWin.focus();";
 	}
-		
+
 	/**
 	 * Returns the merged User/Page TSconfig for page id, $id.
 	 * Please read details about module programming elsewhere!
@@ -2084,7 +2087,7 @@ class t3lib_BEfunc	{
 							if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
 								top.content.nav_frame.refresh_nav();
 							}
-					/*]]>*/	
+					/*]]>*/
 					</script>';
 						break;
 					}
@@ -2118,7 +2121,7 @@ class t3lib_BEfunc	{
 		if ($modName && is_string($modName))	{
 					// GETTING stored user-data from this module:
 			$settings = $GLOBALS['BE_USER']->getModuleData($modName,$type);
-	
+
 			$changed=0;
 			if (!is_array($settings))	{
 				$changed=1;
@@ -2128,7 +2131,7 @@ class t3lib_BEfunc	{
 				reset($MOD_MENU);
 				while(list($key,$var)=each($MOD_MENU))	{
 						// If a global var is set before entering here. eg if submitted, then it's substituting the current value the array.
-					if (is_array($CHANGED_SETTINGS) && isset($CHANGED_SETTINGS[$key]) && strcmp($settings[$key],$CHANGED_SETTINGS[$key]))	{		
+					if (is_array($CHANGED_SETTINGS) && isset($CHANGED_SETTINGS[$key]) && strcmp($settings[$key],$CHANGED_SETTINGS[$key]))	{
 						$settings[$key] = (string)$CHANGED_SETTINGS[$key];
 						$changed=1;
 					}
@@ -2147,11 +2150,11 @@ class t3lib_BEfunc	{
 					}
 				}
 			} else {die ('No menu!');}
-	
+
 			if ($changed)	{
 				$GLOBALS['BE_USER']->pushModuleData($modName,$settings);
 			}
-			
+
 			return  $settings;
 		} else {die ('Wrong module name: "'.$modName.'"');}
 	}
@@ -2165,7 +2168,7 @@ class t3lib_BEfunc	{
 
 
 
-	
+
 
 
 	/*******************************************
@@ -2200,7 +2203,7 @@ class t3lib_BEfunc	{
 				'username' => $GLOBALS['BE_USER']->user['username'],
 				'record_pid' => $pid
 			);
-			
+
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_lockedrecords', $fields_values);
 		} else {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_lockedrecords', 'userid='.intval($user_id));
@@ -2223,9 +2226,9 @@ class t3lib_BEfunc	{
 		global $LOCKED_RECORDS;
 		if (!is_array($LOCKED_RECORDS))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'*', 
-							'sys_lockedrecords', 
-							'sys_lockedrecords.userid!='.intval($GLOBALS['BE_USER']->user['uid']).' 
+							'*',
+							'sys_lockedrecords',
+							'sys_lockedrecords.userid!='.intval($GLOBALS['BE_USER']->user['uid']).'
 								AND sys_lockedrecords.tstamp > '.($GLOBALS['EXEC_TIME']-2*3600)
 						);
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
@@ -2276,7 +2279,7 @@ class t3lib_BEfunc	{
 			}
 			$fTWHERE = implode('',$fTWHERE_parts);
 		}
-		
+
 		$fTWHERE = str_replace('###CURRENT_PID###',intval($TSconfig['_CURRENT_PID']),$fTWHERE);
 		$fTWHERE = str_replace('###THIS_UID###',intval($TSconfig['_THIS_UID']),$fTWHERE);
 		$fTWHERE = str_replace('###THIS_CID###',intval($TSconfig['_THIS_CID']),$fTWHERE);
@@ -2285,13 +2288,13 @@ class t3lib_BEfunc	{
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_ID###',intval($TSconfig[$field]['PAGE_TSCONFIG_ID']),$fTWHERE);
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_IDLIST###',$GLOBALS['TYPO3_DB']->cleanIntList($TSconfig[$field]['PAGE_TSCONFIG_IDLIST']),$fTWHERE);
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_STR###',$GLOBALS['TYPO3_DB']->quoteStr($TSconfig[$field]['PAGE_TSCONFIG_STR'], $foreign_table),$fTWHERE);
-		
+
 			// rootLevel = -1 is not handled 'properly' here - it goes as if it was rootLevel = 1 (that is pid=0)
 		$wgolParts = $GLOBALS['TYPO3_DB']->splitGroupOrderLimit($fTWHERE);
 		if ($rootLevel)	{
 			$queryParts = array(
-				'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'), 
-				'FROM' => $foreign_table, 
+				'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
+				'FROM' => $foreign_table,
 				'WHERE' => $foreign_table.'.pid=0 '.
 							t3lib_BEfunc::deleteClause($foreign_table).' '.
 							$wgolParts['WHERE'],
@@ -2303,9 +2306,9 @@ class t3lib_BEfunc	{
 			$pageClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 			if ($foreign_table!='pages')	{
 				$queryParts = array(
-					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'), 
-					'FROM' => $foreign_table.',pages', 
-					'WHERE' => 'pages.uid='.$foreign_table.'.pid 
+					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
+					'FROM' => $foreign_table.',pages',
+					'WHERE' => 'pages.uid='.$foreign_table.'.pid
 								AND NOT pages.deleted '.
 								t3lib_BEfunc::deleteClause($foreign_table).
 								' AND '.$pageClause.' '.
@@ -2316,9 +2319,9 @@ class t3lib_BEfunc	{
 				);
 			} else {
 				$queryParts = array(
-					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'), 
-					'FROM' => 'pages', 
-					'WHERE' => 'NOT pages.deleted 
+					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
+					'FROM' => 'pages',
+					'WHERE' => 'NOT pages.deleted
 								AND '.$pageClause.' '.
 								$wgolParts['WHERE'],
 					'GROUPBY' => $wgolParts['GROUPBY'],
@@ -2348,7 +2351,7 @@ class t3lib_BEfunc	{
 
 			// Get main config for the table
 		list($TScID,$cPid) = t3lib_BEfunc::getTSCpid($table,$row['uid'],$row['pid']);
-		
+
 		$rootLine = t3lib_BEfunc::BEgetRootLine($TScID,'');
 		if ($TScID>=0)	{
 			$tempConf = $GLOBALS['BE_USER']->getTSConfig('TCEFORM.'.$table,t3lib_BEfunc::getPagesTSconfig($TScID,$rootLine));
@@ -2484,10 +2487,10 @@ class t3lib_BEfunc	{
 			$path = trim(ereg_replace('\/[^\/]*$','',$path));
 				// stuff:
 			$domain.=$path;
-			
+
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
-				pages.uid=sys_domain.pid 
-				AND NOT sys_domain.hidden 
+				pages.uid=sys_domain.pid
+				AND NOT sys_domain.hidden
 				AND (sys_domain.domainName="'.$GLOBALS['TYPO3_DB']->quoteStr($domain, 'sys_domain').'" or sys_domain.domainName="'.$GLOBALS['TYPO3_DB']->quoteStr($domain.'/', 'sys_domain').'")'.
 				t3lib_BEfunc::deleteClause('pages'),
 				'', '', '1');
@@ -2585,7 +2588,7 @@ class t3lib_BEfunc	{
 
 
 
-	
+
 
 
 
@@ -2687,7 +2690,7 @@ class t3lib_BEfunc	{
 		}
 		return $simUser.$simTime;
 	}
-	
+
 	/**
 	 * Returns an array with key=>values based on input text $params
 	 * $params is exploded by line-breaks and each line is supposed to be on the syntax [key] = [some value]
@@ -2709,7 +2712,7 @@ class t3lib_BEfunc	{
 			}
 		}
 		return $paramArr;
-	}	
+	}
 
 	/**
 	 * Returns "list of backend modules". Most likely this will be obsolete soon / removed. Don't use.
@@ -2739,6 +2742,6 @@ class t3lib_BEfunc	{
 					'</a></span><br />';
 		}
 		return array('rows'=>$theRows,'list'=>$out);
-	}	
+	}
 }
 ?>

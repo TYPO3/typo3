@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -38,37 +38,37 @@
  *
  *
  *
- *   80: class tslib_gmenu_foldout extends tslib_gmenu 
- *   96:     function extProc_init()	
- *  117:     function extProc_beforeLinking($key)	
- *  134:     function extProc_afterLinking($key)	
- *  160:     function extProc_finish()	
+ *   80: class tslib_gmenu_foldout extends tslib_gmenu
+ *   96:     function extProc_init()
+ *  117:     function extProc_beforeLinking($key)
+ *  134:     function extProc_afterLinking($key)
+ *  160:     function extProc_finish()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Class extension tslib_gmenu for the creation of DHTML foldout menus
  *
@@ -79,7 +79,7 @@
  */
 class tslib_gmenu_foldout extends tslib_gmenu {
 	var $GMENU_fixKey='foldout';
-	
+
 	var $WMarrowNO;
 	var $WMarrowACT;
 	var $WMimagesFlag;
@@ -116,10 +116,10 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 */
 	function extProc_beforeLinking($key)	{
 		$this->I['addATagParams']='';
-		$this->WMsubmenu = $this->subMenu($this->I['uid'],$this->I['mount_pid']);
+		$this->WMsubmenu = $this->subMenu($this->I['uid']);
 		if (trim($this->WMsubmenu))	{
 			$this->I['addATagParams']=' onclick="GF_menu('.$key.');'.($this->mconf['dontLinkIfSubmenu'] ? ' return false;' : '').'"';
-			if ($this->isActive($this->I['uid']) && $this->mconf['displayActiveOnLoad'])	{	// orig: && $this->WMisSub, changed 210901
+			if ($this->isActive($this->I['uid'], $this->getMPvar($key)) && $this->mconf['displayActiveOnLoad'])	{	// orig: && $this->WMisSub, changed 210901
 				$this->WM_activeOnLoad='GF_menu('.$key.');';
 			}
 		}
@@ -135,7 +135,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$this->WMtableWrap = $this->mconf['dontWrapInTable'] ? '' : '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>|</td></tr></table>';
 
 		if ($this->WMimagesFlag)	{
-			$this->WMimageHTML='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowNO[3].'" width="'.$this->WMarrowNO[0].'" height="'.$this->WMarrowNO[1].'" border="0" name="imgA'.$key.'"'.($this->mconf['arrowImgParams']?' '.$this->mconf['arrowImgParams']:'').' alt="" />';		
+			$this->WMimageHTML='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowNO[3].'" width="'.$this->WMarrowNO[0].'" height="'.$this->WMarrowNO[1].'" border="0" name="imgA'.$key.'"'.($this->mconf['arrowImgParams']?' '.$this->mconf['arrowImgParams']:'').' alt="" />';
 		} else {$this->WMimageHTML="";}
 
 		if (strstr($this->I['theItem'], '###ARROW_IMAGE###'))	{
@@ -206,7 +206,7 @@ GFV_active=false;	 //Don\'t change this one.
 GFV_adjustTopHeights = '.$adjustTopHeights.';
 GFV_adjustSubHeights = '.$adjustSubHeights.';
 if (bw.opera)	{
-	GFV_scrX= innerWidth; 
+	GFV_scrX= innerWidth;
 	GFV_scrY= innerHeight;
 }
 

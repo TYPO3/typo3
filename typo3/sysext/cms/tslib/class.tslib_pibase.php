@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * This script contains the parent class, 'pibase', providing an API with the most basic methods for frontend plugins
  *
  * $Id$
@@ -38,60 +38,60 @@
  *
  *
  *
- *  132: class tslib_pibase 
+ *  132: class tslib_pibase
  *
  *              SECTION: Init functions
- *  211:     function tslib_pibase()	
- *  225:     function pi_setPiVarDefaults()	
+ *  211:     function tslib_pibase()
+ *  225:     function pi_setPiVarDefaults()
  *
  *              SECTION: Link functions
- *  264:     function pi_getPageLink($id,$target='',$urlParameters=array())	
- *  280:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())	
- *  295:     function pi_linkTP($str,$urlParameters=array(),$cache=0,$altPageId=0)	
- *  318:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)	
- *  342:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)	
- *  360:     function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE,$altPageId=0)	
- *  388:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')	
+ *  264:     function pi_getPageLink($id,$target='',$urlParameters=array())
+ *  280:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())
+ *  295:     function pi_linkTP($str,$urlParameters=array(),$cache=0,$altPageId=0)
+ *  318:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)
+ *  342:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)
+ *  360:     function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE,$altPageId=0)
+ *  388:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')
  *
  *              SECTION: Functions for listing, browsing, searching etc.
- *  428:     function pi_list_browseresults($showResultCount=1,$tableParams='')	
- *  497:     function pi_list_searchBox($tableParams='')	
- *  525:     function pi_list_modeSelector($items=array(),$tableParams='')	
- *  563:     function pi_list_makelist($res,$tableParams='')	
- *  598:     function pi_list_row($c)	
- *  610:     function pi_list_header()	
+ *  428:     function pi_list_browseresults($showResultCount=1,$tableParams='')
+ *  500:     function pi_list_searchBox($tableParams='')
+ *  528:     function pi_list_modeSelector($items=array(),$tableParams='')
+ *  566:     function pi_list_makelist($res,$tableParams='')
+ *  601:     function pi_list_row($c)
+ *  613:     function pi_list_header()
  *
  *              SECTION: Stylesheet, CSS
- *  641:     function pi_getClassName($class)	
- *  653:     function pi_classParam($class)	
- *  667:     function pi_setClassStyle($class,$data,$selector='')	
- *  678:     function pi_wrapInBaseClass($str)	
+ *  644:     function pi_getClassName($class)
+ *  656:     function pi_classParam($class)
+ *  670:     function pi_setClassStyle($class,$data,$selector='')
+ *  681:     function pi_wrapInBaseClass($str)
  *
  *              SECTION: Frontend editing: Edit panel, edit icons
- *  727:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())	
- *  769:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array())	
+ *  730:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())
+ *  772:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array())
  *
  *              SECTION: Localization, locallang functions
- *  816:     function pi_getLL($key,$alt='',$hsc=FALSE)	
- *  837:     function pi_loadLL()	
+ *  819:     function pi_getLL($key,$alt='',$hsc=FALSE)
+ *  840:     function pi_loadLL()
  *
  *              SECTION: Database, queries
- *  902:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)	
- *  994:     function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	
- * 1009:     function pi_getRecord($table,$uid,$checkPage=0)	
- * 1020:     function pi_getPidList($pid_list,$recursive=0)	
- * 1041:     function pi_prependFieldsWithTable($table,$fieldList)	
- * 1061:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')	
+ *  905:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)
+ *  997:     function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')
+ * 1012:     function pi_getRecord($table,$uid,$checkPage=0)
+ * 1023:     function pi_getPidList($pid_list,$recursive=0)
+ * 1047:     function pi_prependFieldsWithTable($table,$fieldList)
+ * 1067:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Various
- * 1105:     function pi_isOnlyFields($fList,$lowerThan=-1)	
- * 1125:     function pi_autoCache($inArray)	
- * 1156:     function pi_RTEcssText($str)	
+ * 1111:     function pi_isOnlyFields($fList,$lowerThan=-1)
+ * 1131:     function pi_autoCache($inArray)
+ * 1162:     function pi_RTEcssText($str)
  *
  *              SECTION: FlexForms related functions
- * 1177:     function pi_initPIflexForm()	
- * 1195:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	
- * 1212:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	
+ * 1183:     function pi_initPIflexForm()
+ * 1201:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')
+ * 1218:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)
  *
  * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -161,26 +161,26 @@ class tslib_pibase {
 	var $pi_lowerThan = 5;
 	var $pi_moreParams='';
 	var $pi_listFields='*';
-	
+
 	var $pi_autoCacheFields=array();
 	var $pi_autoCacheEn=0;
-	
+
 	var $pi_USER_INT_obj = 0;	// If set, then links are 1) not using cHash and 2) allowing pages to be cached.
-	
+
 	/**
 	 * Should normally be set in the main function with the TypoScript content passed to the method.
-	 * 
+	 *
 	 * $conf[LOCAL_LANG][_key_] is reserved for Local Language overrides.
 	 * $conf[userFunc] / $conf[includeLibs]  reserved for setting up the USER / USER_INT object. See TSref
-	 */ 
-	var $conf = Array();	
-	
+	 */
+	var $conf = Array();
+
 	// internal, don't mess with...
-	var $pi_EPtemp_cObj;	
+	var $pi_EPtemp_cObj;
 	var $pi_tmpPageId=0;
 
-	
-	
+
+
 
 
 
@@ -196,7 +196,7 @@ class tslib_pibase {
 
 
 	/***************************
-	 * 
+	 *
 	 * Init functions
 	 *
 	 **************************/
@@ -229,7 +229,7 @@ class tslib_pibase {
 	}
 
 
-	
+
 
 
 
@@ -243,7 +243,7 @@ class tslib_pibase {
 
 
 	/***************************
-	 * 
+	 *
 	 * Link functions
 	 *
 	 **************************/
@@ -298,7 +298,7 @@ class tslib_pibase {
 		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
 		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id);
 		$conf['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',$urlParameters,'',1).$this->pi_moreParams;
-		
+
 		return $this->cObj->typoLink($str, $conf);
 	}
 
@@ -368,7 +368,7 @@ class tslib_pibase {
 				$overrulePIvars=array_merge($overrulePIvars,$mergeArr);
 				$str = $this->pi_linkTP_keepPIvars($str,$overrulePIvars,$cache,0,$altPageId);
 			}
-			
+
 				// If urlOnly flag, return only URL as it has recently be generated.
 			if ($urlOnly)	{
 				$str = $this->cObj->lastTypoLinkUrl;
@@ -411,7 +411,7 @@ class tslib_pibase {
 
 
 	/***************************
-	 * 
+	 *
 	 * Functions for listing, browsing, searching etc.
 	 *
 	 **************************/
@@ -426,7 +426,7 @@ class tslib_pibase {
 	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
 	 */
 	function pi_list_browseresults($showResultCount=1,$tableParams='')	{
-			
+
 			// Initializing variables:
 		$pointer=$this->piVars['pointer'];
 		$count=$this->internal['res_count'];
@@ -436,7 +436,7 @@ class tslib_pibase {
 		$pointer=intval($pointer);
 		$links=array();
 
-			// Make browse-table/links:	
+			// Make browse-table/links:
 		if ($this->pi_alwaysPrev>=0)	{
 			if ($pointer>0)	{
 				$links[]='
@@ -458,14 +458,14 @@ class tslib_pibase {
 				$this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_next','Next >',TRUE),array('pointer'=>$pointer+1)).
 				'</p></td>';
 		}
-		
+
 		$pR1 = $pointer*$results_at_a_time+1;
 		$pR2 = $pointer*$results_at_a_time+$results_at_a_time;
 		$sTables = '
-		
+
 		<!--
 			List browsing box:
-		-->	
+		-->
 		<div'.$this->pi_classParam('browsebox').'>'.
 			($showResultCount ? '
 			<p>'.
@@ -479,14 +479,14 @@ class tslib_pibase {
 				$this->pi_getLL('pi_list_browseresults_noResults','Sorry, no items were found.')).'</p>':''
 			).
 		'
-		
+
 			<'.trim('table '.$tableParams).'>
 				<tr>
 					'.implode('',$links).'
 				</tr>
 			</table>
 		</div>';
-		
+
 		return $sTables;
 	}
 
@@ -500,10 +500,10 @@ class tslib_pibase {
 	function pi_list_searchBox($tableParams='')	{
 			// Search box design:
 		$sTables = '
-		
+
 		<!--
 			List search box:
-		-->	
+		-->
 		<div'.$this->pi_classParam('searchbox').'>
 			<form action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post" style="margin: 0 0 0 0;">
 			<'.trim('table '.$tableParams).'>
@@ -514,7 +514,7 @@ class tslib_pibase {
 			</table>
 			</form>
 		</div>';
-		
+
 		return $sTables;
 	}
 
@@ -534,12 +534,12 @@ class tslib_pibase {
 				$this->pi_linkTP_keepPIvars(htmlspecialchars($v),array('mode'=>$k),$this->pi_isOnlyFields($this->pi_isOnlyFields)).
 				'</p></td>';
 		}
-		
+
 		$sTables = '
-		
+
 		<!--
 			Mode selector (menu for list):
-		-->	
+		-->
 		<div'.$this->pi_classParam('modeSelector').'>
 			<'.trim('table '.$tableParams).'>
 				<tr>
@@ -547,7 +547,7 @@ class tslib_pibase {
 				</tr>
 			</table>
 		</div>';
-		
+
 		return $sTables;
 	}
 
@@ -577,16 +577,16 @@ class tslib_pibase {
 		}
 
 		$out = '
-		
+
 		<!--
 			Record list:
-		-->	
+		-->
 		<div'.$this->pi_classParam('listrow').'>
 			<'.trim('table '.$tableParams).'>
 				'.implode('',$tRows).'
 			</table>
 		</div>';
-		
+
 		return $out;
 	}
 
@@ -629,7 +629,7 @@ class tslib_pibase {
 
 
 	/***************************
-	 * 
+	 *
 	 * Stylesheet, CSS
 	 *
 	 **************************/
@@ -680,13 +680,13 @@ class tslib_pibase {
 	 */
 	function pi_wrapInBaseClass($str)	{
 		return '
-				
+
 
 	<!--
-	
+
 		BEGIN: Content of extension "'.$this->extKey.'", plugin "'.$this->prefixId.'"
-	
-	-->	
+
+	-->
 	<div class="'.str_replace('_','-',$this->prefixId).'">
 		'.$str.'
 	</div>
@@ -712,7 +712,7 @@ class tslib_pibase {
 
 
 	/***************************
-	 * 
+	 *
 	 * Frontend editing: Edit panel, edit icons
 	 *
 	 **************************/
@@ -733,22 +733,22 @@ class tslib_pibase {
 			$row = $this->internal['currentRow'];
 			$tablename = $this->internal['currentTable'];
 		}
-		
+
 		if ($GLOBALS['TSFE']->beUserLogin)	{
 				// Create local cObj if not set:
 			if (!is_object($this->pi_EPtemp_cObj))	{
 				$this->pi_EPtemp_cObj = t3lib_div::makeInstance('tslib_cObj');
 				$this->pi_EPtemp_cObj->setParent($this->cObj->data,$this->cObj->currentRecord);
 			}
-			
+
 				// Initialize the cObj object with current row
 			$this->pi_EPtemp_cObj->start($row,$tablename);
-			
+
 				// Setting TypoScript values in the $conf array. See documentation in TSref for the EDITPANEL cObject.
 			$conf['allow'] = 'edit,new,delete,move,hide';
 			$panel = $this->pi_EPtemp_cObj->cObjGetSingle('EDITPANEL',$conf,'editpanel');
 		}
-		
+
 		if ($panel)	{
 			if ($label)	{
 				return '<!-- BEGIN: EDIT PANEL --><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top">'.$label.'</td><td valign="top" align="right">'.$panel.'</td></tr></table><!-- END: EDIT PANEL -->';
@@ -780,7 +780,7 @@ class tslib_pibase {
 				'iconTitle' => $title
 			),$oConf);
 			$content=$this->cObj->editIcons($content,$tablename.':'.$fields,$conf,$tablename.':'.$row['uid'],$row,'&viewUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')));
-		}	
+		}
 		return $content;
 	}
 
@@ -801,7 +801,7 @@ class tslib_pibase {
 
 
 	/***************************
-	 * 
+	 *
 	 * Localization, locallang functions
 	 *
 	 **************************/
@@ -830,7 +830,7 @@ class tslib_pibase {
 
 		return $output;
 	}
-	
+
 	/**
 	 * Loads local-language values by looking for a "locallang.php" file in the plugin class directory ($this->scriptRelPath) and if found includes it.
 	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
@@ -856,7 +856,7 @@ class tslib_pibase {
 		}
 		$this->LOCAL_LANG_loaded = 1;
 	}
-	
+
 
 
 
@@ -880,7 +880,7 @@ class tslib_pibase {
 
 
 	/***************************
-	 * 
+	 *
 	 * Database, queries
 	 *
 	 **************************/
@@ -906,7 +906,7 @@ class tslib_pibase {
 
 			// Begin Query:
 		if (!$query)	{
-				// Fetches the list of PIDs to select from. 
+				// Fetches the list of PIDs to select from.
 				// TypoScript property .pidList is a comma list of pids. If blank, current page id is used.
 				// TypoScript property .recursive is a int+ which determines how many levels down from the pids in the pid-list subpages should be included in the select.
 			$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
@@ -930,7 +930,7 @@ class tslib_pibase {
 			// Add '$addWhere'
 		if ($addWhere)	{$WHERE.=' '.$addWhere.chr(10);}
 
-			// Search word:				
+			// Search word:
 		if ($this->piVars['sword'] && $this->internal['searchFieldList'])	{
 			$WHERE.=$this->cObj->searchWhere($this->piVars['sword'],$this->internal['searchFieldList'],$table).chr(10);
 		}
@@ -951,7 +951,7 @@ class tslib_pibase {
 					$orderBy = 'ORDER BY '.$table.'.'.$this->internal['orderBy'].($this->internal['descFlag']?' DESC':'');
 				}
 			}
-			
+
 				// Limit data:
 			$pointer = $this->piVars['pointer'];
 			$pointer = intval($pointer);
@@ -960,8 +960,8 @@ class tslib_pibase {
 
 				// Add 'SELECT'
 			$queryParts = array(
-				'SELECT' => $this->pi_prependFieldsWithTable($table,$this->pi_listFields), 
-				'FROM' => $TABLENAMES, 
+				'SELECT' => $this->pi_prependFieldsWithTable($table,$this->pi_listFields),
+				'FROM' => $TABLENAMES,
 				'WHERE' => $WHERE,
 				'GROUPBY' => $GLOBALS['TYPO3_DB']->stripGroupBy($groupBy),
 				'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
@@ -970,11 +970,11 @@ class tslib_pibase {
 		}
 
 		$query = $GLOBALS['TYPO3_DB']->SELECTquery (
-					$queryParts['SELECT'], 
-					$queryParts['FROM'], 
-					$queryParts['WHERE'], 
-					$queryParts['GROUPBY'], 
-					$queryParts['ORDERBY'], 
+					$queryParts['SELECT'],
+					$queryParts['FROM'],
+					$queryParts['WHERE'],
+					$queryParts['GROUPBY'],
+					$queryParts['ORDERBY'],
 					$queryParts['LIMIT']
 				);
 		return $returnQueryArray ? $queryParts : $query;
@@ -999,7 +999,7 @@ class tslib_pibase {
 
 		return $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 	}
-	
+
 	/**
 	 * Returns the row $uid from $table
 	 * (Simply calling $GLOBALS['TSFE']->sys_page->checkRecord())
@@ -1010,9 +1010,9 @@ class tslib_pibase {
 	 * @return	array		If record is found, an array. Otherwise false.
 	 */
 	function pi_getRecord($table,$uid,$checkPage=0)	{
-		return $GLOBALS['TSFE']->sys_page->checkRecord($table,$uid,$checkPage);	
+		return $GLOBALS['TSFE']->sys_page->checkRecord($table,$uid,$checkPage);
 	}
-	
+
 	/**
 	 * Returns a commalist of page ids for a query (eg. 'WHERE pid IN (...)')
 	 *
@@ -1023,17 +1023,21 @@ class tslib_pibase {
 	function pi_getPidList($pid_list,$recursive=0)	{
 		if (!strcmp($pid_list,''))	$pid_list = $GLOBALS['TSFE']->id;
 		$recursive = t3lib_div::intInRange($recursive,0);
-		
+
 		$pid_list_arr = array_unique(t3lib_div::trimExplode(',',$pid_list,1));
-		$pid_list='';
-		reset($pid_list_arr);
-		while(list(,$val)=each($pid_list_arr))	{	
+		$pid_list = array();
+
+		foreach($pid_list_arr as $val)	{
 			$val = t3lib_div::intInRange($val,0);
-			if ($val)	$pid_list.=$val.','.$this->cObj->getTreeList($val,$recursive);
+			if ($val)	{
+				$_list = $this->cObj->getTreeList(-1*$val, $recursive);
+				if ($_list)		$pid_list[] = $_list;
+			}
 		}
-		return ereg_replace(',$','',$pid_list);
+
+		return implode(',', $pid_list);
 	}
-	
+
 	/**
 	 * Having a comma list of fields ($fieldList) this is prepended with the $table.'.' name
 	 *
@@ -1063,8 +1067,8 @@ class tslib_pibase {
 	 */
 	function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*', 
-					$table, 
+					'*',
+					$table,
 					'pid='.intval($pid).
 						$this->cObj->enableFields($table).' '.
 						$whereClause,	// whereClauseMightContainGroupOrderBy
@@ -1086,17 +1090,17 @@ class tslib_pibase {
 
 
 
-	
+
 
 
 
 
 	/***************************
-	 * 
+	 *
 	 * Various
 	 *
 	 **************************/
-	
+
 	/**
 	 * Returns true if the piVars array has ONLY those fields entered that is set in the $fList (commalist) AND if none of those fields value is greater than $lowerThan field if they are integers.
 	 * Notice that this function will only work as long as values are integers.
@@ -1115,7 +1119,7 @@ class tslib_pibase {
 		}
 		if (!count($tempPiVars))	return 1;
 	}
-	
+
 	/**
 	 * Returns true if the array $inArray contains only values allowed to be cached based on the configuration in $this->pi_autoCacheFields
 	 * Used by ->pi_linkTP_keepPIvars
@@ -1133,7 +1137,7 @@ class tslib_pibase {
 					unset($inArray[$fN]);
 				} elseif (is_array($this->pi_autoCacheFields[$fN]))	{
 					if (is_array($this->pi_autoCacheFields[$fN]['range'])
-							 && intval($inArray[$fN])>=intval($this->pi_autoCacheFields[$fN]['range'][0]) 
+							 && intval($inArray[$fN])>=intval($this->pi_autoCacheFields[$fN]['range'][0])
 							 && intval($inArray[$fN])<=intval($this->pi_autoCacheFields[$fN]['range'][1]))	{
 								unset($inArray[$fN]);
 					}
@@ -1161,7 +1165,7 @@ class tslib_pibase {
 		if (is_array($parseFunc))	$str = $this->cObj->parseFunc($str, $parseFunc);
 		return $str;
 	}
-	
+
 
 
 
@@ -1184,7 +1188,7 @@ class tslib_pibase {
 			if (!is_array($this->cObj->data['pi_flexform']))	$this->cObj->data['pi_flexform']=array();
 		}
 	}
-	
+
 	/**
 	 * Return value from somewhere inside a FlexForm structure
 	 *
@@ -1213,7 +1217,7 @@ class tslib_pibase {
 	 * @see pi_getFFvalue()
 	 */
 	function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	{
-	
+
 		$tempArr=$sheetArray;
 		foreach($fieldNameArr as $k => $v)	{
 			if (t3lib_div::testInt($v))	{
@@ -1221,7 +1225,7 @@ class tslib_pibase {
 					$c=0;
 					foreach($tempArr as $values)	{
 						if ($c==$v)	{
-							debug($values);
+							#debug($values);
 							$tempArr=$values;
 							break;
 						}
