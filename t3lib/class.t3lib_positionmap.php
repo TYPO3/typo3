@@ -204,7 +204,7 @@ class t3lib_positionMap {
 				// The line with the icon and title:
 			$t_code='<span class="nobr">'.
 				$dat['HTML'].
-				$this->linkPageTitle($this->boldTitle(htmlspecialchars(t3lib_div::fixed_lgd($dat['row']['title'],$BE_USER->uc['titleLen'])),$dat,$id),$dat['row']).
+				$this->linkPageTitle($this->boldTitle(htmlspecialchars(t3lib_div::fixed_lgd_cs($dat['row']['title'],$BE_USER->uc['titleLen'])),$dat,$id),$dat['row']).
 				'</span><br />';
 			$code.=$t_code;
 		}

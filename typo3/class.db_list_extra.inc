@@ -236,7 +236,7 @@ class localRecordList extends recordList {
 		if ($this->id)	{	// If there IS a real page...:
 
 				// Setting title of page + the "Go up" link:
-			$theData[$titleCol].='<br /><span title="'.htmlspecialchars($row['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($row['_thePath'],$this->fixedL)).'</span>';
+			$theData[$titleCol].='<br /><span title="'.htmlspecialchars($row['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($row['_thePath'],-$this->fixedL)).'</span>';
 			$theData['up'][]='<a href="'.htmlspecialchars($this->listURL($row['pid'])).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/pages_up.gif','width="18" height="16"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" />'.
 							'</a>';
@@ -246,7 +246,7 @@ class localRecordList extends recordList {
 		} else {	// On root-level of page tree:
 
 				// Setting title of root (sitename):
-			$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_pre($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],$this->fixedL));
+			$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_cs($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],-$this->fixedL));
 
 				// Make Icon:
 			$theIcon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' alt="" />';

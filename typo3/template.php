@@ -391,7 +391,7 @@ class template {
 
 		return '<span class="typo3-moduleHeader">'.$this->wrapClickMenuOnIcon($iconImgTag,$table,$row['uid']).
 				$viewPage.
-				$tWrap[0].htmlspecialchars(t3lib_div::fixed_lgd($title,45)).$tWrap[1].'</span>';
+				$tWrap[0].htmlspecialchars(t3lib_div::fixed_lgd_cs($title,45)).$tWrap[1].'</span>';
 	}
 
 	/**
@@ -405,7 +405,7 @@ class template {
 	 */
 	function getFileheader($title,$path,$iconfile)	{
 		$fileInfo = t3lib_div::split_fileref($title);
-		$title = htmlspecialchars(t3lib_div::fixed_lgd_pre($fileInfo['path'],35)).'<b>'.htmlspecialchars($fileInfo['file']).'</b>';
+		$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($fileInfo['path'],-35)).'<b>'.htmlspecialchars($fileInfo['file']).'</b>';
 		return '<span class="typo3-moduleHeader"><img'.t3lib_iconWorks::skinImg($this->backPath,$iconfile,'width="18" height="16"').' title="'.htmlspecialchars($path).'" alt="" />'.$title.'</span>';
 	}
 

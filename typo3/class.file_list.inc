@@ -170,12 +170,12 @@ class fileList extends t3lib_recordList {
 				$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
 				if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$path);
 
-				$theData[$titleCol].='<br />'.t3lib_div::fixed_lgd_pre($title,$this->fixedL+20);	// No HTML specialchars here - HTML like <b> </b> is allowed
+				$theData[$titleCol].='<br />'.t3lib_div::fixed_lgd_cs($title,-($this->fixedL+20));	// No HTML specialchars here - HTML like <b> </b> is allowed
 				$theData['up'].=$this->linkWrapDir('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/folder_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" />',$theFile['path']);
 			} else {
 					// root:0
 				$theIcon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_ftp.gif','width="18" height="16"').' alt="" />';
-				$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_pre($title,$this->fixedL+20));
+				$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_cs($title,-($this->fixedL+20)));
 			}
 
 				// Adding top element

@@ -563,7 +563,7 @@ class SC_db_layout {
 			}
 			$inValue = 'tt_content:'.$cRow['uid'];
 			$is_selected+=intval($edit_record==$inValue);
-			$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>'.htmlspecialchars(t3lib_div::fixed_lgd($cRow['header']?$cRow['header']:'['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').'] '.strip_tags($cRow['bodytext']),$BE_USER->uc['titleLen'])).'</option>';
+			$opt[]='<option value="'.$inValue.'"'.($edit_record==$inValue?' selected="selected"':'').'>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($cRow['header']?$cRow['header']:'['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').'] '.strip_tags($cRow['bodytext']),$BE_USER->uc['titleLen'])).'</option>';
 			$prev=-$cRow['uid'];
 		}
 
@@ -995,7 +995,7 @@ class SC_db_layout {
 			// Draw the page header.
 		$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
 						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.
-						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50)).'</span>';
+						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50)).'</span>';
 
 
 			// Create icon "toolbar" for common operations like creating/moving elements/pages etc.

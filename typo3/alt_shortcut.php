@@ -287,7 +287,7 @@ class SC_alt_shortcut {
 			$this->lines[]='<td class="'.$bgColorClass.'"><a href="#" onclick="'.htmlspecialchars($onC).'"><img src="'.$this->getIcon($row['module_name']).'" title="'.htmlspecialchars($titleA).'" alt="" /></a></td>';
 			if (trim($row['description']))	{
 				$kkey = strtolower(substr($row['description'],0,20)).'_'.$row['uid'];
-				$this->selOpt[$kkey]='<option value="'.htmlspecialchars($jumpSC).'">'.htmlspecialchars(t3lib_div::fixed_lgd($row['description'],50)).'</option>';
+				$this->selOpt[$kkey]='<option value="'.htmlspecialchars($jumpSC).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($row['description'],50)).'</option>';
 			}
 			$formerGr=$row['sc_group'];
 		}

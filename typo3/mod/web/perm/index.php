@@ -246,7 +246,7 @@ class SC_mod_web_perm_index {
 				$this->doc->funcMenu(
 					$this->doc->getHeader('pages',$this->pageinfo,htmlspecialchars($this->pageinfo['_thePath'])).'<br />'.
 						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.
-						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50)).'</span>',
+						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50)).'</span>',
 					t3lib_BEfunc::getFuncMenu($this->id,'SET[mode]',$this->MOD_SETTINGS['mode'],$this->MOD_MENU['mode'])
 				));
 			$this->content.=$this->doc->divider(5);
@@ -514,7 +514,7 @@ class SC_mod_web_perm_index {
 				// User/Group names:
 			$userN = $be_user_Array[$data['row']['perms_userid']] ? $be_user_Array[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ? '<i>['.$data['row']['perms_userid'].']!</i>' : '');
 			$groupN = $be_group_Array[$data['row']['perms_groupid']] ? $be_group_Array[$data['row']['perms_groupid']]['title']  : ($data['row']['perms_groupid'] ? '<i>['.$data['row']['perms_groupid'].']!</i>' : '');
-			$groupN=t3lib_div::fixed_lgd($groupN,20);
+			$groupN=t3lib_div::fixed_lgd_cs($groupN,20);
 
 				// Seeing if editing of permissions are allowed for that page:
 			$editPermsAllowed=($data['row']['perms_userid']==$BE_USER->user['uid'] || $BE_USER->isAdmin());

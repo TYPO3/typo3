@@ -120,7 +120,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 
 			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
 				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.
-				'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50)).'</span>';
+				'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'],-50)).'</span>';
 
 				// Draw the header.
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));

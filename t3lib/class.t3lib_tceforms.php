@@ -1624,7 +1624,7 @@ class t3lib_TCEforms	{
 					$rowCells=array();
 
 						// Icon:
-					$rowCells['title'] = '<img src="clear.gif" width="'.($level*16).'" height="1" alt="" /><strong>'.htmlspecialchars(t3lib_div::fixed_lgd($this->sL($value['tx_templavoila']['title']),30)).'</strong>';;
+					$rowCells['title'] = '<img src="clear.gif" width="'.($level*16).'" height="1" alt="" /><strong>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($value['tx_templavoila']['title']),30)).'</strong>';;
 
 					$rowCells['formEl']='';
 					if ($value['type']=='array')	{
@@ -2063,7 +2063,7 @@ class t3lib_TCEforms	{
 					while(list(,$pp)=each($itemArray))	{
 						$pRec = t3lib_BEfunc::getRecord($pp['table'],$pp['id']);
 						if (is_array($pRec))	{
-							$pTitle = t3lib_div::fixed_lgd($this->noTitle($pRec[$GLOBALS['TCA'][$pp['table']]['ctrl']['label']]),$this->titleLen);
+							$pTitle = t3lib_div::fixed_lgd_cs($this->noTitle($pRec[$GLOBALS['TCA'][$pp['table']]['ctrl']['label']]),$this->titleLen);
 							$pUid = $pp['table'].'_'.$pp['id'];
 							$uidList[]=$pUid;
 							$opt[]='<option value="'.htmlspecialchars($pUid).'">'.htmlspecialchars($pTitle).'</option>';
@@ -2841,7 +2841,7 @@ class t3lib_TCEforms	{
 			} else $icon='';
 				// Add the item:
 			$items[] = array(
-				t3lib_div::fixed_lgd($lPrefix.strip_tags(t3lib_BEfunc::getRecordTitle($f_table,$row)),$this->titleLen),
+				t3lib_div::fixed_lgd_cs($lPrefix.strip_tags(t3lib_BEfunc::getRecordTitle($f_table,$row)),$this->titleLen),
 				$uidPre.$row['uid'],
 				$icon
 			);
@@ -3032,7 +3032,7 @@ class t3lib_TCEforms	{
 		reset($arr);
 		while(list($k,$v)=each($arr))	{
 			$arr[$k]=str_replace('###ID_NEW_INDICATOR###',(strstr($rec['uid'],'NEW')?' <font color="red"><b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new',1).'</b></font>':' ['.$rec['uid'].']'),$arr[$k]);
-			$rLabel = trim(t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$rec),40));
+			$rLabel = trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$rec),40));
 			$arr[$k]=str_replace('###RECORD_LABEL###',htmlspecialchars($rLabel),$arr[$k]);
 			$arr[$k]=str_replace('###TABLE_TITLE###',htmlspecialchars($this->sL($TCA[$table]['ctrl']['title'])),$arr[$k]);
 

@@ -1,3 +1,7 @@
+2004-05-18  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Created new function, t3lib_div::fixed_lgd_cs(), which should be used in the backend wherever a string is shortend for visual display. This function will truncate the string according to the backend charset (which should of course be set by forceCharset to a fixed value). This new function has also been substituted numerous places in the source of course (hence all the script updates).
+
 2004-05-17  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Moved "install" extension to be a sys extension in sysext/
@@ -40,7 +44,7 @@
 
 2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 
-	* Added prefix to relative file reference in @import style sheet 
+	* Added prefix to relative file reference in @import style sheet
 
 2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 

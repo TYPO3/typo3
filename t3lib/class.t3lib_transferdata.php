@@ -244,10 +244,10 @@ class t3lib_transferData {
 
 	/**
 	 * This function performs processing on the input $row array and stores internally a corresponding array which contains processed values, ready to pass on to the TCEforms rendering in the frontend!
-	 * The objective with this function is to prepare the content for handling in TCEforms. 
-	 * In opposite to renderRecord() this function do not prepare things like fetching TSconfig and others. 
+	 * The objective with this function is to prepare the content for handling in TCEforms.
+	 * In opposite to renderRecord() this function do not prepare things like fetching TSconfig and others.
 	 * The resulting, processed row will be returned.
-	 * 
+	 *
 	 * @param	string		The table name
 	 * @param	string		The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
 	 * @param	integer		The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
@@ -298,9 +298,9 @@ class t3lib_transferData {
 
 			// Finally, store the result:
 		reset($totalRecordContent);
-		
+
 		return $totalRecordContent;
-		
+
 	}
 
 	/**
@@ -791,11 +791,11 @@ class t3lib_transferData {
 			if (isset($recordList[$theId]))	{
 				$lPrefix = $this->sL($fieldConfig['config'][($theId>0?'':'neg_').'foreign_table_prefix']);
 				if ($fieldConfig['config']['MM'])	{
-					$dataAcc[]=rawurlencode($theId).'|'.rawurlencode(t3lib_div::fixed_lgd($lPrefix.strip_tags($recordList[$theId]),$GLOBALS['BE_USER']->uc['titleLen']));
+					$dataAcc[]=rawurlencode($theId).'|'.rawurlencode(t3lib_div::fixed_lgd_cs($lPrefix.strip_tags($recordList[$theId]),$GLOBALS['BE_USER']->uc['titleLen']));
 				} else {
 					foreach($elements as $eKey => $value)	{
 						if (!strcmp($theId,$value))	{
-							$dataAcc[$eKey]=rawurlencode($theId).'|'.rawurlencode(t3lib_div::fixed_lgd($lPrefix.strip_tags($recordList[$theId]),$GLOBALS['BE_USER']->uc['titleLen']));
+							$dataAcc[$eKey]=rawurlencode($theId).'|'.rawurlencode(t3lib_div::fixed_lgd_cs($lPrefix.strip_tags($recordList[$theId]),$GLOBALS['BE_USER']->uc['titleLen']));
 						}
 					}
 				}

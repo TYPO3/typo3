@@ -573,7 +573,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$A_B="";
 				$A_E="";
 			}
-			$HTML.=($first?'':'<IMG src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>').'<IMG src="'.$GLOBALS["BACK_PATH"].$icon.'" width="18" height="16" align="top" title="'.$alttext.'">'.$A_B.t3lib_div::fixed_lgd($row['title'],$GLOBALS["BE_USER"]->uc["titleLen"]).$A_E."&nbsp;&nbsp;";
+			$HTML.=($first?'':'<IMG src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>').'<IMG src="'.$GLOBALS["BACK_PATH"].$icon.'" width="18" height="16" align="top" title="'.$alttext.'">'.$A_B.t3lib_div::fixed_lgd_cs($row['title'],$GLOBALS["BE_USER"]->uc["titleLen"]).$A_E."&nbsp;&nbsp;";
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr>
 							<td nowrap>'.$HTML.'</td>
@@ -1104,7 +1104,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						}
 						if (strlen($head)>35)	{
 							if (!$body) {$body=$head;}
-							$head=t3lib_div::fixed_lgd($head,35);
+							$head=t3lib_div::fixed_lgd_cs($head,35);
 						}
 						$typeDat=$this->ext_getTypeData($params["type"]);
 						$checked="";

@@ -511,7 +511,7 @@ class recordList extends t3lib_recordList {
 		if (!strcmp($code,'')) {
 			$code = '<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i> - '.htmlspecialchars(t3lib_BEfunc::getRecordTitle($table,$row));
 		} else {
-			$code = htmlspecialchars(t3lib_div::fixed_lgd($code,$this->fixedL));
+			$code = htmlspecialchars(t3lib_div::fixed_lgd_cs($code,$this->fixedL));
 		}
 
 		switch((string)$this->clickTitleMode)	{

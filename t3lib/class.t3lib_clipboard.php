@@ -382,7 +382,7 @@ class t3lib_clipboard {
 							$lines[]='
 								<tr>
 									<td class="'.$bgColClass.'">'.$icon.'</td>
-									<td class="'.$bgColClass.'" nowrap="nowrap" width="95%">&nbsp;'.$this->linkItemText(htmlspecialchars(t3lib_div::fixed_lgd(basename($v),$GLOBALS['BE_USER']->uc['titleLen'])),$v).
+									<td class="'.$bgColClass.'" nowrap="nowrap" width="95%">&nbsp;'.$this->linkItemText(htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($v),$GLOBALS['BE_USER']->uc['titleLen'])),$v).
 										($pad=='normal'?(' <strong>('.($this->clipData['normal']['mode']=='copy'?$this->clLabel('copy','cm'):$this->clLabel('cut','cm')).')</strong>'):'').'&nbsp;'.($thumb?'<br />'.$thumb:'').'</td>
 									<td class="'.$bgColClass.'" align="center">'.
 									'<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$v.'\', \'\'); return false;').'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' hspace="2" border="0" title="'.$this->clLabel('info','cm').'" alt="" /></a>'.
@@ -400,7 +400,7 @@ class t3lib_clipboard {
 							$lines[]='
 								<tr>
 									<td class="'.$bgColClass.'">'.$this->linkItemText(t3lib_iconWorks::getIconImage($table,$rec,$this->backPath,'hspace="20" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($rec,$table)).'"'),$rec,$table).'</td>
-									<td class="'.$bgColClass.'" nowrap="nowrap" width="95%">&nbsp;'.$this->linkItemText(htmlspecialchars(t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$rec),$GLOBALS['BE_USER']->uc['titleLen'])),$rec,$table).
+									<td class="'.$bgColClass.'" nowrap="nowrap" width="95%">&nbsp;'.$this->linkItemText(htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$rec),$GLOBALS['BE_USER']->uc['titleLen'])),$rec,$table).
 										($pad=='normal'?(' <strong>('.($this->clipData['normal']['mode']=='copy'?$this->clLabel('copy','cm'):$this->clLabel('cut','cm')).')</strong>'):'').'&nbsp;</td>
 									<td class="'.$bgColClass.'" align="center">'.
 									'<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.intval($uid).'\'); return false;').'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' hspace="2" border="0" title="'.$this->clLabel('info','cm').'" alt="" /></a>'.
@@ -701,8 +701,8 @@ class t3lib_clipboard {
 			// Message:
 		$conf='confirm('.$GLOBALS['LANG']->JScharCode(sprintf(
 			$msg,
-			t3lib_div::fixed_lgd($selRecTitle,30),
-			t3lib_div::fixed_lgd($thisRecTitle,30)
+			t3lib_div::fixed_lgd_cs($selRecTitle,30),
+			t3lib_div::fixed_lgd_cs($thisRecTitle,30)
 			)).')';
 		return $conf;
 	}

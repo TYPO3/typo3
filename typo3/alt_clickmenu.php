@@ -272,7 +272,7 @@ class clickMenu {
 				$selItem = $this->clipObj->getSelectedRecord();
 				$elInfo=array(
 					$selItem['_RECORD_TITLE'],
-					($root?$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']:t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen'])),
+					($root?$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']:t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen'])),
 					$this->clipObj->currentMode()
 				);
 				if ($table=='pages' && ($lCP & 8))	{
@@ -284,7 +284,7 @@ class clickMenu {
 			}
 
 				// Delete:
-			$elInfo=array(t3lib_div::fixed_lgd(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen']));
+			$elInfo=array(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$this->rec),$BE_USER->uc['titleLen']));
 			if(!in_array('delete',$this->disabledItems) && !$root && $BE_USER->isPSet($lCP,$table,'delete'))	{
 				$menuItems[]='spacer';
 				$menuItems['delete']=$this->DB_delete($table,$uid,$elInfo);

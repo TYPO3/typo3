@@ -501,7 +501,7 @@ class tx_cms_layout extends recordList {
 							'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('edit',1).'" class="absmiddle" alt="" />'.
 							'</a>'.
-							htmlspecialchars(t3lib_div::fixed_lgd($lpRecord['title'],20)).
+							htmlspecialchars(t3lib_div::fixed_lgd_cs($lpRecord['title'],20)).
 							'</span>';
 					} else {
 						$lPLabel='';
@@ -1132,7 +1132,7 @@ class tx_cms_layout extends recordList {
 					if ($fieldName==$thumbsCol)	{	// If the column is a thumbnail column:
 						$out[$fieldName] = $this->thumbCode($row,$table,$fieldName);
 					} else {	// ... otherwise just render the output:
-						$out[$fieldName] = nl2br(htmlspecialchars(trim(t3lib_div::fixed_lgd(t3lib_BEfunc::getProcessedValue($table,$fieldName,$row[$fieldName]),250))));
+						$out[$fieldName] = nl2br(htmlspecialchars(trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table,$fieldName,$row[$fieldName]),250))));
 					}
 				} else {	// Each field is separated by <br /> and shown in the same cell (If not a TCA field, then explode the field name with ";" and check each value there as a TCA configured field)
 					$theFields = explode(';',$fieldName);
@@ -1142,7 +1142,7 @@ class tx_cms_layout extends recordList {
 						if ($TCA[$table]['columns'][$fName2])	{
 							 $out[$fieldName].= '<b>'.$GLOBALS['LANG']->sL($TCA[$table]['columns'][$fName2]['label'],1).'</b>'.
 							 					'&nbsp;&nbsp;'.
-												htmlspecialchars(t3lib_div::fixed_lgd(t3lib_BEfunc::getProcessedValue($table,$fName2,$row[$fName2]),25)).
+												htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table,$fName2,$row[$fName2]),25)).
 												'<br />';
 						}
 					}
@@ -1905,9 +1905,9 @@ class tx_cms_layout extends recordList {
 
 			// Building data-arary with content:
 		$theData = Array();
-		$theData['subject'] = t3lib_div::fixed_lgd(htmlspecialchars($row['subject']),25).'&nbsp; &nbsp;';
-		$theData['author'] = t3lib_div::fixed_lgd(htmlspecialchars($row['author']),15).'&nbsp; &nbsp;';
-		$theData['date'] = t3lib_div::fixed_lgd(t3lib_BEfunc::datetime($row['crdate']),20).'&nbsp; &nbsp;';
+		$theData['subject'] = t3lib_div::fixed_lgd_cs(htmlspecialchars($row['subject']),25).'&nbsp; &nbsp;';
+		$theData['author'] = t3lib_div::fixed_lgd_cs(htmlspecialchars($row['author']),15).'&nbsp; &nbsp;';
+		$theData['date'] = t3lib_div::fixed_lgd_cs(t3lib_BEfunc::datetime($row['crdate']),20).'&nbsp; &nbsp;';
 		$theData['age'] = t3lib_BEfunc::calcAge(time()-$row['crdate'], $this->agePrefixes).'&nbsp; &nbsp;';
 		if ($re)	{
 			$theData['replys'] = $re;
@@ -1969,7 +1969,7 @@ class tx_cms_layout extends recordList {
 	 */
 	function renderText($input)	{
 		$input = strip_tags($input);
-		$input = t3lib_div::fixed_lgd($input,1500);
+		$input = t3lib_div::fixed_lgd_cs($input,1500);
 		return nl2br(htmlspecialchars(trim($this->wordWrapper($input))));
 	}
 

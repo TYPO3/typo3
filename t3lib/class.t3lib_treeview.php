@@ -324,7 +324,7 @@ class t3lib_treeView {
 		$this->recs = array();
 		$this->ids = array();
 		$this->ids_hierarchy = array();
-	
+
 			// setting this to false disables the use of array-trees by default
 		$this->data = false;
 		$this->dataLookup = false;
@@ -664,7 +664,7 @@ class t3lib_treeView {
 	 * @return	string		The title.
 	 */
 	function getTitleStr($row,$titleLen=30)	{
-		$title = (!strcmp(trim($row['title']),'')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : htmlspecialchars(t3lib_div::fixed_lgd($row['title'],$titleLen));
+		$title = (!strcmp(trim($row['title']),'')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],$titleLen));
 		return $title;
 	}
 
@@ -1064,7 +1064,7 @@ class t3lib_TCEforms_SelectTreeView extends t3lib_treeview {
 
 	var $TCEforms_itemFormElName='';
 	var $TCEforms_nonSelectableItemsArray=array();
-	
+
 	function wrapTitle($title,$v)	{
 		if($v['uid']>0) {
 			if (in_array($v['uid'],$this->TCEforms_nonSelectableItemsArray)) {
@@ -1078,9 +1078,9 @@ class t3lib_TCEforms_SelectTreeView extends t3lib_treeview {
 		}
 	}
 }
-			
-			
-			
+
+
+
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_treeview.php'])	{

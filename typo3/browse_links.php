@@ -206,7 +206,7 @@ class TBE_browser_recordList extends localRecordList {
 		if (!$code) {
 			$code = '<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i>';
 		} else {
-			$code = htmlspecialchars(t3lib_div::fixed_lgd($code,$this->fixedL));
+			$code = htmlspecialchars(t3lib_div::fixed_lgd_cs($code,$this->fixedL));
 		}
 
 		$titleCol = $TCA[$table]['ctrl']['label'];
@@ -543,7 +543,7 @@ class localFolderTree extends t3lib_folderTree {
 				// Put table row with folder together:
 			$out.='
 				<tr class="'.$bgColorClass.'">
-					<td nowrap="nowrap">'.$v['HTML'].$this->wrapTitle(t3lib_div::fixed_lgd($v['row']['title'],$titleLen),$v['row']).'</td>
+					<td nowrap="nowrap">'.$v['HTML'].$this->wrapTitle(t3lib_div::fixed_lgd_cs($v['row']['title'],$titleLen),$v['row']).'</td>
 					'.$arrCol.'
 					<td>'.$cEbullet.'</td>
 				</tr>';
@@ -1492,7 +1492,7 @@ class SC_browse_links {
 			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$mainPageRec = t3lib_BEfunc::getRecord('pages',$expPageId);
 			$picon = t3lib_iconWorks::getIconImage('pages',$mainPageRec,'','');
-			$picon.= htmlspecialchars(t3lib_div::fixed_lgd($mainPageRec['title'],$titleLen));
+			$picon.= htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
 			$out.= $picon.'<br />';
 
 				// Look up tt_content elements from the expanded page:
@@ -1520,7 +1520,7 @@ class SC_browse_links {
 						$arrCol.
 						'<a href="#" onclick="return link_typo3Page(\''.$expPageId.'\',\'#'.$row['uid'].'\');">'.
 						$icon.
-						htmlspecialchars(t3lib_div::fixed_lgd($row['header'],$titleLen)).
+						htmlspecialchars(t3lib_div::fixed_lgd_cs($row['header'],$titleLen)).
 						'</a><br />';
 
 					// Finding internal anchor points:
@@ -1582,7 +1582,7 @@ class SC_browse_links {
 			}
 			$picon=t3lib_iconWorks::getIconImage('pages',$mainPageRec,'','');
 			$pBicon=$ATag2?'<img'.t3lib_iconWorks::skinImg('','gfx/plusbullet2.gif','width="18" height="16"').' alt="" />':'';
-			$pText=htmlspecialchars(t3lib_div::fixed_lgd($mainPageRec['title'],$titleLen));
+			$pText=htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
 			$out.=$picon.$ATag2.$pBicon.$ATag_e.$ATag.$pText.$ATag_e.'<br />';
 
 				// Initialize the record listing:
@@ -1662,7 +1662,7 @@ class SC_browse_links {
 				// Create header element; The folder from which files are listed.
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$picon='<img'.t3lib_iconWorks::skinImg('','gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
-			$picon.=htmlspecialchars(t3lib_div::fixed_lgd(basename($expandFolder),$titleLen));
+			$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
 			$picon='<a href="#" onclick="return link_folder(\''.t3lib_div::rawUrlEncodeFP(substr($expandFolder,strlen(PATH_site))).'\');">'.$picon.'</a>';
 			$out.=$picon.'<br />';
 
@@ -1695,7 +1695,7 @@ class SC_browse_links {
 							$arrCol.
 							'<a href="#" onclick="return link_folder(\''.t3lib_div::rawUrlEncodeFP(substr($filepath,strlen(PATH_site))).'\');">'.
 							$icon.
-							htmlspecialchars(t3lib_div::fixed_lgd(basename($filepath),$titleLen)).
+							htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen)).
 							'</a><br />';
 				}
 			}
@@ -1728,7 +1728,7 @@ class SC_browse_links {
 					// Create the header of current folder:
 				$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 				$picon='<img'.t3lib_iconWorks::skinImg('','gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
-				$picon.=htmlspecialchars(t3lib_div::fixed_lgd(basename($expandFolder),$titleLen));
+				$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
 				$out.=$picon.'<br />';
 
 					// Init graphic object for reading file dimensions:
@@ -1773,7 +1773,7 @@ class SC_browse_links {
 					$ATag2_e='</a>';
 
 						// Combine the stuff:
-					$filenameAndIcon=$ATag_alt.$icon.htmlspecialchars(t3lib_div::fixed_lgd(basename($filepath),$titleLen)).$ATag_e;
+					$filenameAndIcon=$ATag_alt.$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen)).$ATag_e;
 
 						// Show element:
 					if ($pDim)	{		// Image...
@@ -1843,7 +1843,7 @@ class SC_browse_links {
 
 					$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 					$picon='<img'.t3lib_iconWorks::skinImg('','gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
-					$picon.=htmlspecialchars(t3lib_div::fixed_lgd(basename($expandFolder),$titleLen));
+					$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
 					$out.=$picon.'<br />';
 
 						// Init row-array:
@@ -1870,7 +1870,7 @@ class SC_browse_links {
 							$ficon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 							$size=' ('.t3lib_div::formatSize(filesize($filepath)).'bytes'.($pDim?', '.$pDim:'').')';
 							$icon = '<img'.t3lib_iconWorks::skinImg('','gfx/fileicons/'.$ficon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
-							$filenameAndIcon=$icon.htmlspecialchars(t3lib_div::fixed_lgd(basename($filepath),$titleLen));
+							$filenameAndIcon=$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen));
 
 							if (t3lib_div::_GP('noLimit'))	{
 								$maxW=10000;
@@ -2071,7 +2071,7 @@ class SC_browse_links {
 
 							$pageRow = t3lib_BEfunc::getRecord('pages',$id);
 							$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
-							$info['value']=$GLOBALS['LANG']->getLL('page',1)." '".htmlspecialchars(t3lib_div::fixed_lgd($pageRow['title'],$titleLen))."' (ID:".$id.($uP['fragment']?', #'.$uP['fragment']:'').')';
+							$info['value']=$GLOBALS['LANG']->getLL('page',1)." '".htmlspecialchars(t3lib_div::fixed_lgd_cs($pageRow['title'],$titleLen))."' (ID:".$id.($uP['fragment']?', #'.$uP['fragment']:'').')';
 							$info['pageid']=$id;
 							$info['cElement']=$uP['fragment'];
 							$info['act']='page';

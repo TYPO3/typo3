@@ -1,21 +1,21 @@
 <?php
 /***************************************************************
 *  Copyright notice
-* 
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
-* 
+*
 *  This script is part of the TYPO3 project. TYPO3 is free software;
-*  You can redistribute it and/or modify it under the terms of the 
+*  You can redistribute it and/or modify it under the terms of the
 *  TYPO3 License as published from the www.typo3.com website.
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-* 
+*
 *  This copyright notice MUST APPEAR in all copies of this script
 ***************************************************************/
-/** 
+/**
  * Contains the TYPO3 Backend Language class
  *
  * $Id$
@@ -28,26 +28,26 @@
  *
  *
  *
- *   79: class language 
- *  127:     function init($lang,$altPath='')	
- *  172:     function addModuleLabels($arr,$prefix)	
- *  198:     function hscAndCharConv($lStr,$hsc)	
- *  213:     function makeEntities($str)	
- *  230:     function JScharCode($str)	
- *  249:     function getLL($index,$hsc=0)	
- *  266:     function getLLL($index,$LOCAL_LANG,$hsc=0)	
- *  286:     function sL($input,$hsc=0)	
- *  330:     function loadSingleTableDescription($table)	
- *  382:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)	
- *  427:     function readLLfile($fileRef)	
- *  441:     function localizedFileRef($fileRef)	
+ *   79: class language
+ *  127:     function init($lang,$altPath='')
+ *  172:     function addModuleLabels($arr,$prefix)
+ *  198:     function hscAndCharConv($lStr,$hsc)
+ *  213:     function makeEntities($str)
+ *  230:     function JScharCode($str)
+ *  249:     function getLL($index,$hsc=0)
+ *  266:     function getLLL($index,$LOCAL_LANG,$hsc=0)
+ *  286:     function sL($input,$hsc=0)
+ *  330:     function loadSingleTableDescription($table)
+ *  382:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)
+ *  427:     function readLLfile($fileRef)
+ *  441:     function localizedFileRef($fileRef)
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 
 
@@ -82,10 +82,10 @@ class language {
 
 		// Default charset in backend
 	var $charSet = 'iso-8859-1';
-	
+
 		// Array with alternative charsets for other languages. (Moved to t3lib_cs, Set from csConvObj!)
 	var $charSetArray = array();
-	
+
 		// This is the url to the TYPO3 manual
 	var $typo3_help_url= 'http://www.typo3.com/man_uk/';
 		// Array with alternative URLs based on language.
@@ -104,7 +104,7 @@ class language {
 		// Internal charset conversion:
 	var $origCharSet='';		// If set, then it means that the this->charSet is set to a forced, common value for the WHOLE backend regardless of user language. And THIS variable will contain the original charset for the language labels. With ->csConvObj we must then convert the original charset to the charset used in the backend from now on.
 	var $csConvObj;				// An instance of the "t3lib_cs" class. May be used by any application.
-	
+
 
 
 
@@ -124,7 +124,7 @@ class language {
 	 * @param	string		IGNORE. Not used.
 	 * @return	void
 	 */
-	function init($lang,$altPath='')	{	
+	function init($lang,$altPath='')	{
 
 			// Initialize the conversion object:
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
@@ -133,7 +133,7 @@ class language {
 			// Internally setting the list of TYPO3 backend languages.
 		$this->langSplit=TYPO3_languages;
 
-			// Finding the requested language in this list based on the $lang key being inputted to this function.			
+			// Finding the requested language in this list based on the $lang key being inputted to this function.
 		$ls = explode('|',$this->langSplit);
 		while(list($i,$v)=each($ls))	{
 			if ($v==$lang)	{	// Language is found. Configure it:
@@ -149,7 +149,7 @@ class language {
 				// Set the forced charset:
 			$this->origCharSet = $this->charSet;
 			$this->charSet = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-			
+
 			if ($this->charSet!='utf-8' && !$this->csConvObj->initCharset($this->charSet))		{
 				t3lib_BEfunc::typo3PrintError ('The forced character set "'.$this->charSet.'" was not found in t3lib/csconvtbl/','Forced charset not found');
 				exit;
@@ -185,7 +185,7 @@ class language {
 			}
 		}
 	}
-	
+
 	/**
 	 * Will htmlspecialchar() the input string and before that any charset conversion will also have taken place if needed (see init())
 	 * Used to pipe language labels through just before they are returned.
@@ -195,14 +195,14 @@ class language {
 	 * @return	string		The processed string
 	 * @see init()
 	 */
-	function hscAndCharConv($lStr,$hsc)	{	
+	function hscAndCharConv($lStr,$hsc)	{
 		$lStr = $hsc ? htmlspecialchars($lStr) : $lStr;
 		if ($this->origCharSet)	{
 			$lStr = $this->csConvObj->conv($lStr,$this->origCharSet,$this->charSet,1);
 		}
 		return $lStr;
 	}
-	
+
 	/**
 	 * Will convert the input strings special chars (all above 127) to entities. The string is expected to be encoded in the charset, $this->charSet
 	 * This function is used to create strings that can be used in the Click Menu (Context Sensitive Menus). The reason is that the values that are dynamically written into the <div> layer is decoded as iso-8859-1 no matter what charset is used in the document otherwise (only MSIE, Mozilla is OK). So by converting we by-pass this problem.
@@ -213,7 +213,7 @@ class language {
 	function makeEntities($str)	{
 			// Convert string to UTF-8:
 		if ($this->charSet!='utf-8')	$str = $this->csConvObj->utf8_encode($str,$this->charSet);
-		
+
 			// Convert string back again, but using the full entity conversion:
 		$str = $this->csConvObj->utf8_to_entities($str);
 		return $str;
@@ -228,7 +228,7 @@ class language {
 	 * @return	string		Output string, a JavaScript function: "String.fromCharCode(......)"
 	 */
 	function JScharCode($str)	{
-	
+
 			// Convert string to UTF-8:
 		if ($this->charSet!='utf-8')	$str = $this->csConvObj->utf8_encode($str,$this->charSet);
 
@@ -254,7 +254,7 @@ class language {
 			return $this->hscAndCharConv($GLOBALS['LOCAL_LANG']['default'][$index], $hsc);	// Returns default label
 		}
 	}
-	
+
 	/**
 	 * Works like ->getLL() but takes the $LOCAL_LANG array used as the second argument instead of using the global array.
 	 *
@@ -271,7 +271,7 @@ class language {
 			return $this->hscAndCharConv($LOCAL_LANG['default'][$index], $hsc);		// Returns default label
 		}
 	}
-	
+
 	/**
 	 * splitLabel function
 	 * Historically labels were exploded by '|' and each part would correspond to the translation of the language found at the same 'index' in the TYPO3_languages constant.
@@ -307,19 +307,19 @@ class language {
 						$tempLL = $this->readLLfile($lFileRef);
 						$this->LL_files_cache[$parts[0]][$this->lang] = $tempLL[$this->lang];
 					}
-					
+
 						// Overriding file?
 					if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$parts[0]]))	{
 						$ORarray = $this->readLLfile($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$parts[0]]);
 						$this->LL_files_cache[$parts[0]] = t3lib_div::array_merge_recursive_overrule($this->LL_files_cache[$parts[0]],$ORarray);
-					}					
+					}
 				}
 				$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]);
 			}
 			return $hsc ? t3lib_div::deHSCentities(htmlspecialchars($this->LL_labels_cache[$this->lang][$input])) : $this->LL_labels_cache[$this->lang][$input]; // For the cached output charset conversion has already happend! So perform HSC right here.
 		}
 	}
-	
+
 	/**
 	 * Loading $TCA_DESCR[$table]['columns'] with content from locallang files as defined in $TCA_DESCR[$table]['refs']
 	 * $TCA_DESCR is a global var
@@ -330,8 +330,8 @@ class language {
 	function loadSingleTableDescription($table)	{
 		global $TCA_DESCR;
 
-		if (is_array($TCA_DESCR[$table]) 
-				&& !isset($TCA_DESCR[$table]['columns']) 
+		if (is_array($TCA_DESCR[$table])
+				&& !isset($TCA_DESCR[$table]['columns'])
 				&& is_array($TCA_DESCR[$table]['refs']))	 {	// First the 'table' cannot already be loaded in [columns] and secondly there must be a references to locallang files available in [refs]
 
 				// Init $TCA_DESCR for $table-key
@@ -344,17 +344,17 @@ class language {
 					// Traverse all keys
 				if (is_array($LOCAL_LANG['default']))	{
 					foreach($LOCAL_LANG['default'] as $lkey => $lVal)	{
-	
+
 							// exploding by '.':
-							// 0 => fieldname, 
-							// 1 => type from (alttitle,description,details,syntax,image_descr,image,seeAlso), 
+							// 0 => fieldname,
+							// 1 => type from (alttitle,description,details,syntax,image_descr,image,seeAlso),
 							// 2 => special instruction, see switch construct
 						$kParts = explode('.',$lkey);
-	
+
 							// Detecting 'hidden' labels, converting to normal fieldname
 						if ($kParts[0]=='_')	$kParts[0]='';
 						if (substr($kParts[0],0,1)=='_')	{ $kParts[0] = substr($kParts[0],1); }
-	
+
 							// Add label:
 						switch((string)$kParts[2])	{
 							case '+':	// adding
@@ -387,18 +387,18 @@ class language {
 
 			// Get default file:
 		$llang = $this->readLLfile($fileRef);
-		
+
 		if (count($llang))	{
 
 			$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$llang);
-			
+
 				// Localized addition?
 			$lFileRef = $this->localizedFileRef($fileRef);
 			if ($lFileRef && (string)$LOCAL_LANG[$this->lang]=='EXT')	{
 				$llang = $this->readLLfile($lFileRef);
 				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$llang);
 			}
-			
+
 				// Overriding file?
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$fileRef]))	{
 				$ORarray = $this->readLLfile($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$fileRef]);
@@ -411,13 +411,13 @@ class language {
 				unset($LOCAL_LANG[$this->lang]);
 			}
 		}
-		
+
 			// Return value if not global is set.
 		if (!$setGlobal)	{
 			return $LOCAL_LANG;
 		}
 	}
-	
+
 	/**
 	 * Includes a locallang file and returns the $LOCAL_LANG array found inside.
 	 *
@@ -431,7 +431,7 @@ class language {
 		}
 		return is_array($LOCAL_LANG)?$LOCAL_LANG:array();
 	}
-	
+
 	/**
 	 * Returns localized fileRef (.[langkey].php)
 	 *

@@ -467,19 +467,23 @@ class t3lib_div {
 	 * Truncate string
 	 * Returns a new string of max. $chars length.
 	 * If the string is longer, it will be truncated and appended with '...'.
+	 * DEPRECIATED. Works ONLY for single-byte charsets! USE t3lib_div::fixed_lgd_cs() instead
 	 *
 	 * Usage: 119
 	 *
 	 * @param	string		$string 	string to truncate
-	 * @param	integer		$chars 	must be an integer of at least 4
+	 * @param	integer		$chars 	must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @param	string		String to append to the the output if it is truncated, default is '...'
 	 * @return	string		new string
 	 * @see fixed_lgd_pre()
 	 */
-	function fixed_lgd($string,$chars,$preStr='...')	{
+	function fixed_lgd($string,$origChars,$preStr='...')	{
+		$chars = abs($origChars);
 		if ($chars >= 4)	{
 			if(strlen($string)>$chars)  {
-				return trim(substr($string, 0, $chars-3)).$preStr;
+				return $origChars < 0 ?
+					$preStr.trim(substr($string, -($chars-3))) :
+					trim(substr($string, 0, $chars-3)).$preStr;
 			}
 		}
 		return $string;
@@ -490,6 +494,7 @@ class t3lib_div {
 	 * Returns a new string of max. $chars length.
 	 * If the string is longer, it will be truncated and prepended with '...'.
 	 * This works like fixed_lgd, but is truncated in the start of the string instead of the end
+	 * DEPRECIATED. Use either fixed_lgd() or fixed_lgd_cs() (with negative input value for $chars)
 	 *
 	 * Usage: 19
 	 *
@@ -500,6 +505,23 @@ class t3lib_div {
 	 */
 	function fixed_lgd_pre($string,$chars)	{
 		return strrev(t3lib_div::fixed_lgd(strrev($string),$chars));
+	}
+
+	/**
+	 * Truncates a string with appended/prepended "..." and takes backend character set into consideration
+	 * Use only from backend!
+	 *
+	 * @param	string		$string 	string to truncate
+	 * @param	integer		$chars 	must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
+	 * @return	string		New string
+	 * @see fixed_lgd()
+	 */
+	function fixed_lgd_cs($string,$chars)	{
+		if (is_object($GLOBALS['LANG']))	{
+			return $GLOBALS['LANG']->csConvObj->crop($this->charSet,$string,$chars,'...');
+		} else {
+			return t3lib_div::fixed_lgd($string, $chars);
+		}
 	}
 
 	/**
@@ -732,7 +754,7 @@ class t3lib_div {
 	 */
 	function uniqueList()	{
 		$listArray = array();
-		
+
 		$arg_list = func_get_args();
 		foreach ($arg_list as $in_list)	{
 			if (!is_array($in_list))	{
@@ -844,8 +866,8 @@ class t3lib_div {
 
 	/**
 	 * strtoupper which converts danish (and other characters) characters as well
-	 * (Depreciated, use PHP function with locale settings instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
-	 * Usage: 4
+	 * (DEPRECIATED, use t3lib_cs::conv_case() instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
+	 * Usage: 0
 	 *
 	 * @param	string		String to process
 	 * @return	string

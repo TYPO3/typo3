@@ -131,7 +131,7 @@ class t3lib_admin {
 				$PM = 'join';
 				$LN = ($a==$c)?'blank':'line';
 				$BTM = ($a==$c)?'bottom':'';
-				$this->genTree_HTML.= $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" alt="" />'.t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'align="top"').htmlspecialchars($row['uid'].': '.t3lib_div::fixed_lgd(strip_tags($row['title']),50)).'</span></div>';
+				$this->genTree_HTML.= $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" alt="" />'.t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'align="top"').htmlspecialchars($row['uid'].': '.t3lib_div::fixed_lgd_cs(strip_tags($row['title']),50)).'</span></div>';
 			}
 
 			if (isset($page_idlist[$newID]))	{

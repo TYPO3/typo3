@@ -498,7 +498,7 @@ class t3lib_pageSelect {
 			$path = '';
 			for ($a=0;$a<$c;$a++)	{
 				if ($rl[$a]['uid'])	{
-					$path.='/'.t3lib_div::fixed_lgd(strip_tags($rl[$a]['title']),$len);
+					$path.='/'.t3lib_div::fixed_lgd_cs(strip_tags($rl[$a]['title']),$len);
 				}
 			}
 			return $path;

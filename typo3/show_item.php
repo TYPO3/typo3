@@ -245,7 +245,7 @@ class SC_show_item {
 				$this->content.=$this->doc->divider(2);
 
 				$code="";
-				$code.='Path: '.t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],48).'<br />';
+				$code.='Path: '.t3lib_div::fixed_lgd_cs($this->pageinfo["_thePath"],-48).'<br />';
 				$code.='Table: '.$LANG->sL($TCA[$this->table]["ctrl"]["title"]).' ('.$this->table.') - UID: '.$this->uid.'<br />';
 				$this->content.=$this->doc->section('',$code);
 			}

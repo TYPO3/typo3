@@ -186,7 +186,7 @@ class t3lib_diff {
 	 */
 	function addClearBuffer($clearBuffer,$last=0)	{
 		if (strlen($clearBuffer)>200)	{
-			$clearBuffer=($this->clearBufferIdx?t3lib_div::fixed_lgd($clearBuffer,70):'').'['.strlen($clearBuffer).']'.(!$last?t3lib_div::fixed_lgd_pre($clearBuffer,70):'');
+			$clearBuffer=($this->clearBufferIdx?t3lib_div::fixed_lgd_cs($clearBuffer,70):'').'['.strlen($clearBuffer).']'.(!$last?t3lib_div::fixed_lgd_cs($clearBuffer,-70):'');
 		}
 		$this->clearBufferIdx++;
 		return $clearBuffer;

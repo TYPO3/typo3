@@ -342,7 +342,7 @@ class t3lib_loadDBGroup	{
 		foreach($this->itemArray as $key => $val)	{
 			$theRow = $this->results[$val['table']][$val['id']];
 			if ($theRow && is_array($TCA[$val['table']]))	{
-				$label = t3lib_div::fixed_lgd(strip_tags($theRow[$TCA[$val['table']]['ctrl']['label']]),$titleLen);
+				$label = t3lib_div::fixed_lgd_cs(strip_tags($theRow[$TCA[$val['table']]['ctrl']['label']]),$titleLen);
 				$label = ($label)?$label:'[...]';
 				$output[]=str_replace(',','',$val['table'].'_'.$val['id'].'|'.rawurlencode($label));
 			}

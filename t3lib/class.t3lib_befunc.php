@@ -593,8 +593,8 @@ class t3lib_BEfunc	{
 					);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$uid = $row['pid'];
-				$output = '/'.t3lib_div::fixed_lgd(strip_tags($row['title']),$titleLimit).$output;
-				if ($fullTitleLimit)	$fullOutput = '/'.t3lib_div::fixed_lgd(strip_tags($row['title']),$fullTitleLimit).$fullOutput;
+				$output = '/'.t3lib_div::fixed_lgd_cs(strip_tags($row['title']),$titleLimit).$output;
+				if ($fullTitleLimit)	$fullOutput = '/'.t3lib_div::fixed_lgd_cs(strip_tags($row['title']),$fullTitleLimit).$fullOutput;
 			} else {
 				break;
 			}
@@ -1644,7 +1644,7 @@ class t3lib_BEfunc	{
 				if ($TCA[$table]['ctrl']['label_alt_force'])	$t=implode(', ',$tA);
 			}
 			if ($prep) 	{
-				$t = htmlspecialchars(t3lib_div::fixed_lgd($t,$GLOBALS['BE_USER']->uc['titleLen']));
+				$t = htmlspecialchars(t3lib_div::fixed_lgd_cs($t,$GLOBALS['BE_USER']->uc['titleLen']));
 				if (!strcmp(trim($t),''))	$t='<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>';
 			}
 			return $t;
@@ -1737,12 +1737,12 @@ class t3lib_BEfunc	{
 					} elseif ($theColConf['MM'])	{
 						$l='N/A';
 					} elseif ($value)	{
-						$l=t3lib_div::fixed_lgd(strip_tags($value),200);
+						$l=t3lib_div::fixed_lgd_cs(strip_tags($value),200);
 					}
 				break;
 			}
 			if ($fixed_lgd_chars)	{
-				return t3lib_div::fixed_lgd($l,$fixed_lgd_chars);
+				return t3lib_div::fixed_lgd_cs($l,$fixed_lgd_chars);
 			} else {
 				return $l;
 			}
