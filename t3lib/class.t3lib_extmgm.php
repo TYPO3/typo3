@@ -239,21 +239,23 @@ class t3lib_extMgm {
 	 * @param	string		Table name
 	 * @param	string		Field list to add.
 	 * @param	string		List of specific types to add the field list to. (If empty, all type entries are affected)
-	 * @param	string		Insert fields before one of this fields (commalist). Example: "keywords,--palette--;;4,description". Palettes must be passed like in the example no matter how the palette definition looks like in TCA.
+	 * @param	string		Insert fields before (default) or after one of this fields (commalist with "before:" or "after:" commands). Example: "before:keywords,--palette--;;4,after:description". Palettes must be passed like in the example no matter how the palette definition looks like in TCA.
 	 * @return	void
 	 */
-	function addToAllTCAtypes($table,$str,$specificTypesList='',$beforeList='')	{
+	function addToAllTCAtypes($table,$str,$specificTypesList='',$position='')	{
 		global $TCA;
 
-		$beforeFields=t3lib_div::trimExplode(',',$beforeList,1);
-		$before=count($beforeFields);
+		$positionArr=t3lib_div::trimExplode(',',$position,1);
+		$insert=count($position);
 
 		t3lib_div::loadTCA($table);
 		if (trim($str) && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
 			foreach($TCA[$table]['types'] as $k => $v)	{
 				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
 
-					if ($before) {
+					
+
+					if ($insert) {
 						$append=true;
 						$showItem = t3lib_div::trimExplode(',',$TCA[$table]['types'][$k]['showitem'],1);
 						foreach($showItem as $key => $fieldInfo) {
@@ -261,9 +263,17 @@ class t3lib_extMgm {
 							$parts = explode(';',$fieldInfo);
 							$theField = trim($parts[0]);
 							$palette = trim($parts[0]).';;'.trim($parts[2]);
-								// find exact field name or palette with number
-							if (in_array($theField,$beforeFields) OR in_array($palette,$beforeFields))	{
+							
+								// insert before: find exact field name or palette with number
+							if (in_array($theField, $positionArr) OR in_array($palette, $positionArr) OR
+								in_array('before:'.$theField, $positionArr) OR in_array('before:'.$palette, $positionArr))	{
 								$showItem[$key]=trim($str).', '.$fieldInfo;
+								$append=false;
+								break;
+							}
+								// insert after
+							if (in_array('after:'.$theField, $positionArr) OR in_array('after:'.$palette, $positionArr))	{
+								$showItem[$key]=$fieldInfo.', '.trim($str);
 								$append=false;
 								break;
 							}
