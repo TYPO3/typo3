@@ -767,7 +767,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 
 				// Processing filemounts
-			$this->dataLists['filemount_list']=t3lib_div::uniqueList($this->dataLists['filemount_list']);
+			$this->dataLists['filemount_list'] = t3lib_div::uniqueList($this->dataLists['filemount_list']);
 			if ($this->dataLists['filemount_list'])	{
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'NOT deleted AND NOT hidden AND pid=0 AND uid IN ('.$this->dataLists['filemount_list'].')');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
