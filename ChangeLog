@@ -1,3 +1,8 @@
+2004-07-12  Ingmar Schlecht  <ingmars@web.de>
+
+	* Fixed bug #79: Extension manager: Removing extensions containing empty folders did not work
+	* Fixed bug: When removing an extension, typo3 tried to remove the extension directory twice
+
 2004-07-05  Ingmar Schlecht  <ingmars@web.de>
 
 	* Backported Robert's fix to bug #70 to the 3.6 branch.

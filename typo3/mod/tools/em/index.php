@@ -1650,7 +1650,6 @@ EXTENSION KEYS:
 					return 'ERROR: Could not remove extension directory "'.$absPath.'". Had the following errors:<br /><br />'.
 								nl2br($res);
 				} else {
-					rmdir($absPath);
 					return 'Removed extension in path "'.$absPath.'"!';
 				}
 			} else {
@@ -2868,7 +2867,7 @@ EXTENSION KEYS:
 			) {
 
 				// All files in extension directory:
-			$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),$removePath);
+			$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),$removePath,'',1);
 			if (is_array($fileArr))	{
 
 					// Remove files in dirs:
