@@ -247,10 +247,12 @@ BODY#typo3-alt-doc-nodoc-php { margin-left: 5px; }
 	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
 
 	 RC1 color: #F2AC56
+	 RC2 color: #8E9D3F / #62731A
+	 Final color: #E09500 / #A34F00
 */
 BODY#typo3-index-php { background-color: white; margin: 0px 0px 0px 0px; }
 BODY#typo3-index-php TABLE#wrapper { width: 100%; height: 80%; margin-top: 30px; }
-BODY#typo3-index-php TABLE#loginwrapper { width: 100%; background-color: #8E9D3F; text-align: left; }
+BODY#typo3-index-php TABLE#loginwrapper { width: 100%; background-color: #E09500; text-align: left; }
 BODY#typo3-index-php DIV#copyrightnotice { width: 70%; text-align: left; margin-top: 10px; }
 BODY#typo3-index-php DIV#copyrightnotice IMG { margin-right:5px; margin-bottom:5px; }
 BODY#typo3-index-php DIV#loginimage {text-align: right; padding-right: 30px; margin-bottom: 5px;}
@@ -259,9 +261,9 @@ TABLE#logintable TR TD { padding: 1px 1px 1px 1px;}
 TABLE#logintable H2 { background-color: transparent; font-size: 14px; color: white; text-align: left; }
 TABLE#logintable P { font-size: 12px; color: white; font-weight: bold; }
 TABLE#logintable P.c-info { font-size: 10px; font-weight: normal; }
-TABLE#logintable P.c-wrong { font-size: 10px; width: 300px; border: #62731A solid 1px; margin: 5px 0px 5px 0px; padding: 5px 15px 5px 15px; }
+TABLE#logintable P.c-wrong { font-size: 10px; width: 300px; border: #A34F00 solid 1px; margin: 5px 0px 5px 0px; padding: 5px 15px 5px 15px; }
 TABLE#logintable INPUT.c-username, TABLE#logintable INPUT.c-password, TABLE#logintable SELECT.c-interfaceselector { width: 150px; }
-TABLE#logintable INPUT { border: #62731A solid 1px; background-color: white; }
+TABLE#logintable INPUT { border: #A34F00 solid 1px; background-color: white; }
 
 DIV#loginNews { width: 70%; margin-top: 30px; }
 DIV#loginNews H2 { background-color: #E26816; color: white; font-size: 12px; }
