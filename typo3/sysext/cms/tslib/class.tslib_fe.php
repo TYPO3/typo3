@@ -81,7 +81,7 @@
  * 1437:     function checkDataSubmission()	
  * 1464:     function fe_tce()	
  * 1478:     function locDataCheck($locationData)
- * 1494:     function sendFormmail()	
+ * 1494:     function sendFormmail()
  * 1512:     function checkJumpUrl()	
  * 1594:     function jumpUrl()
  * 1637:     function setUrlIdToken()	
@@ -1484,7 +1484,7 @@
 			} else $GLOBALS['TT']->setTSlogMessage('LocationData Error: The page pointed to by location data ('.$locationData.') was not accessible.',2);
 		} else $GLOBALS['TT']->setTSlogMessage('LocationData Error: Location data ('.$locationData.') record pointed to was not accessible.',2);
 	}
-	
+
 	/**
 	 * Sends the emails from the formmail content object.
 	 *
@@ -1493,11 +1493,21 @@
 	 * @see checkDataSubmission()
 	 */
 	function sendFormmail()	{
+		global $TYPO3_CONF_VARS;
+
 		$formmail = t3lib_div::makeInstance('t3lib_formmail');
 
 		$EMAIL_VARS = t3lib_div::_POST();
 		unset($EMAIL_VARS['locationData']);
 		unset($EMAIL_VARS['formtype_mail']);
+
+			// Hook for preprocessing of the content for formmails:
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass']))	{
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'] as $_classRef)	{
+				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$EMAIL_VARS = $_procObj->sendFormmail_preProcessVariables($EMAIL_VARS,$this);
+			}
+		}
 
 		$formmail->start($EMAIL_VARS);
 		$formmail->sendtheMail();
