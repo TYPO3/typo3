@@ -259,6 +259,7 @@ TABLE#logintable TR TD { padding: 1px 1px 1px 1px;}
 TABLE#logintable H2 { background-color: transparent; font-size: 14px; color: white; text-align: left; }
 TABLE#logintable P { font-size: 12px; color: white; font-weight: bold; }
 TABLE#logintable P.c-info { font-size: 10px; font-weight: normal; }
+TABLE#logintable P.c-wrong { font-size: 10px; width: 300px; border: #62731A solid 1px; margin: 5px 0px 5px 0px; padding: 5px 15px 5px 15px; }
 TABLE#logintable INPUT.c-username, TABLE#logintable INPUT.c-password, TABLE#logintable SELECT.c-interfaceselector { width: 150px; }
 TABLE#logintable INPUT { border: #62731A solid 1px; background-color: white; }
 

@@ -267,7 +267,10 @@ class SC_index {
 							<table cellspacing="0" cellpadding="0" border="0" id="logintable">
 									<tr>
 										<td colspan="2"><h2>'.htmlspecialchars($this->L_vars[6]).'</h2></td>
-									</tr>
+									</tr>'.($this->commandLI ? '
+									<tr class="c-wrong">
+										<td colspan="2"><p class="c-wrong">'.htmlspecialchars($this->L_vars[9]).'</p></td>
+									</tr>' : '').'
 									<tr class="c-username">
 										<td><p class="c-username">'.htmlspecialchars($this->L_vars[0]).':</p></td>
 										<td><input type="text" name="username" value="'.htmlspecialchars($this->u).'" class="c-username" /></td>
