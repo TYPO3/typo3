@@ -210,10 +210,12 @@
 	var $showHiddenPage='';				// Flag indicating that hidden pages should be shown, selected and so on. This goes for almost all selection of pages!
 	var $showHiddenRecords='';			// Flag indicating that hidden records should be shown. This includes sys_template, pages_language_overlay and even fe_groups in addition to all other regular content. So in effect, this includes everything except pages.
 	var $simUserGroup='0';				// Value that contains the simulated usergroup if any
+	var $versionPreviewMap=array();		// Versioning Preview record map (temporary, for sys_page)
 
 		// CONFIGURATION
 	var $TYPO3_CONF_VARS=array();		// The configuration array as set up in t3lib/config_default.php. Should be an EXACT copy of the global array.
 	var $config='';						// 'CONFIG' object from TypoScript. Array generated based on the TypoScript configuration of the current page. Saved with the cached pages.
+	var $TCAcachedExtras=array();		// Array of cached information from TCA. This is NOT TCA itself!
 
 		// TEMPLATE / CACHE
 	var $tmpl='';						// The TypoScript template object. Used to parse the TypoScript template
@@ -272,7 +274,8 @@
 	var $displayFieldEditIcons='';		// If set, edit icons are rendered aside individual fields of content. Must be set only if the ->beUserLogin flag is set and set_no_cache() must be called as well.
 	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record. Should reflect which language it DOES actually display!
 	var $sys_language_mode='';			// Site language mode
-	var $sys_language_content=0;		// Site language selection uid
+	var $sys_language_content=0;		// Site content selection uid
+	var $sys_language_contentOL=0;		// Site content overlay flag; If set - and sys_language_content is > 0 - , records selected will try to look for a translation pointing to their uid. (If configured in [ctrl][languageField] / [ctrl][transOrigP...]
 	var $sys_language_isocode = '';		// Is set to the iso code of the sys_language if that is properly defined by the sys_language record representing the sys_language_uid. (Requires the extension "static_info_tables")
 
 		// RENDERING data
@@ -635,6 +638,32 @@
 					$this->fePreview = 1;	// The preview flag is set only if the current page turns out to actually be hidden!
 					$this->showHiddenPage = 1;
 				}
+
+					// Check root line for proper connection to tree root (done because of possible preview of page / branch versions)
+				if (!$this->fePreview)	{
+
+						// Initialize the page-select functions to check rootline:
+					$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+					$temp_sys_page->init($this->showHiddenPage);
+
+						// If root line contained NO records and ->error_getRootLine_failPid tells us that it was because of a pid=-1 (indicating a "version" record)...:
+					if (!count($temp_sys_page->getRootLine($this->id,$this->MP)) && $temp_sys_page->error_getRootLine_failPid==-1)	{
+
+							// Setting versioningPreview flag and try again:
+						$temp_sys_page->versioningPreview = TRUE;
+						if (count($temp_sys_page->getRootLine($this->id,$this->MP)))	{
+								// Finally, we got a root line (meaning that it WAS due to versioning preview of a page somewhere) and we set the fePreview flag which in itself will allow sys_page class to display previews of versionized records.
+							$this->fePreview = 1;
+#debug('version in rootline...');
+						}
+					}
+				}
+			}
+
+				// Checking for specific version preview of records:
+			if (is_array(t3lib_div::_GP('ADMCMD_vPrev')))	{
+				$this->fePreview = 1;
+				$this->versionPreviewMap = t3lib_div::_GP('ADMCMD_vPrev');
 			}
 
 			if ($this->fePreview)	{	// If the front-end is showing a preview, caching MUST be disabled.
@@ -657,8 +686,8 @@
 			}
 		}
 			// Final cleaning.
-		$this->id=$this->contentPid=intval($this->id);	// Make sure it's an integer
-		$this->type=intval($this->type);	// Make sure it's an integer
+		$this->id = $this->contentPid = intval($this->id);	// Make sure it's an integer
+		$this->type = intval($this->type);	// Make sure it's an integer
 
 
 			// Call post processing function for id determination:
@@ -684,6 +713,11 @@
 			// Initialize the page-select functions.
 		$this->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$this->sys_page->init($this->showHiddenPage);
+		$this->sys_page->versioningPreview = $this->fePreview ? TRUE : FALSE;
+		if ($this->sys_page->versioningPreview)	{
+			$this->sys_page->versionPreviewMap = $this->versionPreviewMap;
+#debug($this->sys_page->versionPreviewMap);
+		}
 
 			// Set the valid usergroups for FE
 		$this->initUserGroups();
@@ -1438,22 +1472,39 @@
 
 		$GLOBALS['TT']->push('Get Compressed TC array');
 		if (!$this->TCAloaded)	{
+				// Create hash string for storage / retrieval of cached content:
 			$tempHash = md5('tables.php:'.
 				filemtime(TYPO3_extTableDef_script ? PATH_typo3conf.TYPO3_extTableDef_script : PATH_t3lib.'stddb/tables.php').
 				(TYPO3_extTableDef_script?filemtime(PATH_typo3conf.TYPO3_extTableDef_script):'').
 				($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] ? filemtime(PATH_typo3conf.$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'].'_ext_tables.php') : '')
 			);
-			$TCA = unserialize($this->sys_page->getHash($tempHash, 0));
-			if (!$TCA)	{
+				// Try to fetch if:
+			list($TCA,$this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash, 0));
+				// If no result, create it:
+			if (!is_array($TCA))	{
 				$this->includeTCA(0);
-				reset($TCA);
-				$newTc=Array();
-				while(list($key,$val)=each($TCA))		{
+				$newTc = Array();
+				$this->TCAcachedExtras = array();	// Collects other information
+
+				foreach($TCA as $key => $val)		{
 					$newTc[$key]['ctrl'] = $val['ctrl'];
-					$newTc[$key]['feInterface']=$val['feInterface'];
+					$newTc[$key]['feInterface'] = $val['feInterface'];
+
+						// Collect information about localization exclusion of fields:
+					t3lib_div::loadTCA($key);
+					if (is_array($TCA[$key]['columns']))	{
+						$this->TCAcachedExtras[$key]['l10n_mode'] = array();
+						foreach($TCA[$key]['columns'] as $fN => $fV)	{
+							if ($fV['l10n_mode'])	{
+								$this->TCAcachedExtras[$key]['l10n_mode'][$fN] = $fV['l10n_mode'];
+							}
+						}
+					}
 				}
-				$TCA=$newTc;
-				$this->sys_page->storeHash($tempHash, serialize($newTc), 'SHORT TC');
+
+					// Store it in cache:
+				$TCA = $newTc;
+				$this->sys_page->storeHash($tempHash, serialize(array($newTc,$this->TCAcachedExtras)), 'SHORT TC');
 			}
 		}
 		$GLOBALS['TT']->pull();
@@ -1461,7 +1512,7 @@
 
 	/**
 	 * Includes full TCA.
-	 * Normally in the frontend only a part of the global $TCA array is loaded, for instance the "ctrL" part. Thus it doesn't take up too much memory.
+	 * Normally in the frontend only a part of the global $TCA array is loaded, for instance the "ctrl" part. Thus it doesn't take up too much memory.
 	 * If you need the FULL TCA available for some reason (like plugins using it) you should call this function which will include the FULL TCA.
 	 * Global vars $TCA, $PAGES_TYPES, $LANG_GENERAL_LABELS can/will be affected.
 	 * The flag $this->TCAloaded will make sure that such an inclusion happens only once since; If $this->TCAloaded is set, nothing is included.
@@ -1485,6 +1536,7 @@
 			if (TYPO3_extTableDef_script)	{
 				include (PATH_typo3conf.TYPO3_extTableDef_script);
 			}
+
 			$this->TCAloaded = $TCAloaded;
 		}
 	}
@@ -1501,43 +1553,48 @@
 			// Get values from TypoScript:
 		$this->sys_language_uid = $this->sys_language_content = intval($this->config['config']['sys_language_uid']);
 		list($this->sys_language_mode,$sys_language_content) = t3lib_div::trimExplode(';', $this->config['config']['sys_language_mode']);
+		$this->sys_language_contentOL = $this->config['config']['sys_language_overlay'];
 
-			// Request the overlay record for the sys_language_uid:
-		$olRec = $this->sys_page->getPageOverlay($this->id, $this->sys_language_uid);
+			// If sys_language_uid is set to another language than default:
+		if ($this->sys_language_uid>0)	{
+				// Request the overlay record for the sys_language_uid:
+			$olRec = $this->sys_page->getPageOverlay($this->id, $this->sys_language_uid);
+			if (!count($olRec))	{
 
-			// Setting sys_language if an overlay record was found (which it is only if a language is used)
-		if (!count($olRec))	{
+					// If no OL record exists and a foreign language is asked for...
+				if ($this->sys_language_uid)	{
 
-				// If no OL record exists and a foreign language is asked for...
-			if ($this->sys_language_uid)	{
-
-					// If requested translation is not available:
-				if ($this->page['l18n_cfg']&2)	{
-					$this->pageNotFoundAndExit('Page is not available in the requested language.');
-				} else {
-					switch((string)$this->sys_language_mode)	{
-						case 'strict':
-							$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
-						break;
-						case 'content_fallback':
-							$fallBackOrder = t3lib_div::trimExplode(',', $sys_language_content,1);
-							foreach($fallBackOrder as $orderValue)	{
-								if (!strcmp($orderValue,'0') || count($this->sys_page->getPageOverlay($this->id, $orderValue)))	{
-									$this->sys_language_content = $orderValue;	// Setting content uid (but leaving the sys_language_uid)
-									break;
+						// If requested translation is not available:
+					if ($this->page['l18n_cfg']&2)	{
+						$this->pageNotFoundAndExit('Page is not available in the requested language.');
+					} else {
+						switch((string)$this->sys_language_mode)	{
+							case 'strict':
+								$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
+							break;
+							case 'content_fallback':
+								$fallBackOrder = t3lib_div::trimExplode(',', $sys_language_content,1);
+								foreach($fallBackOrder as $orderValue)	{
+									if (!strcmp($orderValue,'0') || count($this->sys_page->getPageOverlay($this->id, $orderValue)))	{
+										$this->sys_language_content = $orderValue;	// Setting content uid (but leaving the sys_language_uid)
+										break;
+									}
 								}
-							}
-						break;
-						default:
-								// Default is that everything defaults to the default language...
-							$this->sys_language_uid = $this->sys_language_content = 0;
-						break;
+							break;
+							default:
+									// Default is that everything defaults to the default language...
+								$this->sys_language_uid = $this->sys_language_content = 0;
+							break;
+						}
 					}
 				}
+			} else {
+					// Setting sys_language if an overlay record was found (which it is only if a language is used)
+				$this->page = $this->sys_page->getPageOverlay($this->page, $this->sys_language_uid);
 			}
-		} else {
-			$this->page = $this->sys_page->getPageOverlay($this->page, $this->sys_language_uid);
 		}
+
+			// Setting sys_language_uid inside sys-page:
 		$this->sys_page->sys_language_uid = $this->sys_language_uid;
 
 			// If default translation is not available:
@@ -1566,6 +1623,13 @@
 				$stLrow = $this->sys_page->getRawRecord('static_languages',$sys_language_row['static_lang_isocode'],'lg_iso_2');
 				$this->sys_language_isocode=$stLrow['lg_iso_2'];
 			}
+		}
+
+			// Setting softMergeIfNotBlank:
+		$table_fields = t3lib_div::trimExplode(',', $this->config['config']['sys_language_softMergeIfNotBlank'],1);
+		foreach($table_fields as $TF)	{
+			list($tN,$fN) = explode(':',$TF);
+			$this->TCAcachedExtras[$tN]['l10n_mode'][$fN] = 'mergeIfNotBlank';
 		}
 	}
 
@@ -2077,7 +2141,7 @@
 			}
 		}
 
-			// Storing page
+			// Processing if caching is enabled:
 		if (!$this->no_cache)	{
 					// Tidy up the code, if flag...
 			if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'cached')		{
@@ -2106,12 +2170,9 @@
 					t3lib_div::callUserFunction($_funcRef,$_params,$this);
 				}
 			}
-
-			$this->realPageCacheContent();
-		} elseif ($this->tempContent)	{		// If there happens to be temporary content in the cache and the cache was not cleared due to new content put in it... ($this->no_cache=0)
-			$this->clearPageCacheContent();
 		}
 
+			// Indexing the page?
 		if ($this->isSearchIndexPage())	{
 			$GLOBALS['TT']->push('Index page','');
 				$indexer = t3lib_div::makeInstance('tx_indexedsearch_indexer');
@@ -2123,6 +2184,18 @@
 			$GLOBALS['TT']->setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');
 			$GLOBALS['TT']->pull();
 		}
+
+			// Convert char-set for output:
+		$this->content = $this->convOutputCharset($this->content,'mainpage');
+
+			// Storing for cache:
+		if (!$this->no_cache)	{
+			$this->realPageCacheContent();
+		} elseif ($this->tempContent)	{		// If there happens to be temporary content in the cache and the cache was not cleared due to new content put in it... ($this->no_cache=0)
+			$this->clearPageCacheContent();
+		}
+
+			// Sets sys-last-change:
 		$this->setSysLastChanged();
 	}
 
@@ -2147,8 +2220,7 @@
 		$this->divSection='';
 
 		$INTiS_config = $GLOBALS['TSFE']->config['INTincScript'];
-		reset($INTiS_splitC);
-		while(list($INTiS_c,$INTiS_cPart)=each($INTiS_splitC))	{
+		foreach($INTiS_splitC as $INTiS_c => $INTiS_cPart)	{
 			if (substr($INTiS_cPart,32,3)=='-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
 				$GLOBALS['TT']->push('Include '.$INTiS_config[$INTiS_key]['file'],'');
 				$INTiS_key = 'INT_SCRIPT.'.substr($INTiS_cPart,0,32);
@@ -2171,17 +2243,17 @@
 						break;
 					}
 				}
-				$this->content.= $incContent;
+				$this->content.= $this->convOutputCharset($incContent,'INC-'.$INTiS_c);
 				$this->content.= substr($INTiS_cPart,35);
 				$GLOBALS['TT']->pull($incContent);
 			} else {
-				$this->content.= ($c?'<!--INT_SCRIPT.':'').$INTiS_cPart;
+				$this->content.= ($INTiS_c?'<!--INT_SCRIPT.':'').$INTiS_cPart;
 			}
 		}
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
-		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', implode(chr(10),$this->additionalHeaderData), $this->content);
-		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->divSection, $this->content);
+		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(chr(10),$this->additionalHeaderData),'HD'), $this->content);
+		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset($this->divSection,'TDS'), $this->content);
 		$this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
 	}
@@ -3149,6 +3221,32 @@ if (version == "n3") {
 			return $this->csConvObj->conv($str,$this->convCharsetToFrom['from'],$this->convCharsetToFrom['to'],1);
 		} else {
 			return $str;
+		}
+	}
+
+	/**
+	 * Converts input string from renderCharset to metaCharset IF the two charsets are different.
+	 *
+	 * @param	string	Content to be converted.
+	 * @param	string	Label (just for fun, no function)
+	 * @return	string	Converted content string.
+	 */
+	function convOutputCharset($content,$label)	{
+		if ($this->renderCharset != $this->metaCharset)	{
+			$content = $this->csConvObj->conv($content,$this->renderCharset,$this->metaCharset,TRUE);
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Converts the $_POST array from metaCharset (page HTML charset from input form) to renderCharset (internal processing) IF the two charsets are different.
+	 *
+	 * @return	void
+	 */
+	function convPOSTCharset()	{
+		if ($this->renderCharset != $this->metaCharset && is_array($_POST) && count($_POST))	{
+			$this->csConvObj->convArray($_POST,$this->metaCharset,$this->renderCharset);
 		}
 	}
 }

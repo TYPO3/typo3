@@ -799,7 +799,11 @@ class tslib_menu {
 			if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']))	{		// Page may not be 'not_in_menu' or 'Backend User Section'
 				if (!$data['nav_hide'])	{	// Not hidden in navigation
 					if (!t3lib_div::inArray($banUidArray,$uid))	{	// not in banned uid's
-						if (!(!$GLOBALS['TSFE']->sys_language_uid && $data['l18n_cfg']&1))	{	// Checks if the default language version can be shown:
+
+							// Checks if the default language version can be shown:
+							// Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
+						$blockPage = $data['l18n_cfg']&1 && (!$GLOBALS['TSFE']->sys_language_uid || ($GLOBALS['TSFE']->sys_language_uid && !$data['_PAGES_OVERLAY']));
+						if (!$blockPage)	{
 
 								// Checking if a page should be shown in the menu depending on whether a translation exists:
 							$tok = TRUE;

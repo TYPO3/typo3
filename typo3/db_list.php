@@ -277,6 +277,9 @@ class SC_db_list {
 				// Render the page header:
 			$dblist->writeTop($this->pageinfo);
 
+				// Render versioning selector:
+			$dblist->HTMLcode.= $this->doc->getVersionSelector($this->id);
+
 				// Render the list of tables:
 			$dblist->generateList($this->id,$this->table);
 

@@ -1655,6 +1655,73 @@ $str.=$this->docBodyTagBegin().
 			</script>
 		';
 	}
+
+	/**
+	 * Creates the version selector for the page id inputted.
+	 * Requires the core version management extension, "version" to be loaded.
+	 *
+	 * @param	integer		Page id to create selector for.
+	 * @param	boolean		If set, there will be no button for swapping page.
+	 * @return	void
+	 */
+	function getVersionSelector($id,$noAction=FALSE)	{
+
+		if ($id>0 && t3lib_extMgm::isLoaded('version'))	{
+
+				// Get Current page record:
+			$curPage = t3lib_BEfunc::getRecord('pages',$id);
+				// If the selected page is not online, find the right ID
+			$onlineId = ($curPage['pid']==-1 ? $curPage['t3ver_oid'] : $id);
+				// Select all versions of online version:
+			$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_id');
+
+				// If more than one was found...:
+			if (count($versions)>1)	{
+
+					// Create selector box entries:
+				$opt = array();
+				foreach($versions as $vRow)	{
+					$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$vRow['uid']))).'"'.($id==$vRow['uid']?' selected="selected"':'').'>'.
+							htmlspecialchars($vRow['t3ver_label'].' [v#'.$vRow['t3ver_id'].']'.($vRow['uid']==$onlineId ? ' =>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online').'<=':'')).
+							'</option>';
+				}
+
+					// Add management link:
+				$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$id))).'">---</option>';
+				$opt[] = '<option value="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?table=pages&uid='.$onlineId).'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm',1).'</option>';
+
+					// Create onchange handler:
+				$onChange = "document.location=this.options[this.selectedIndex].value;";
+
+					// Controls:
+				if ($id==$onlineId)	{
+					$controls = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="absmiddle" alt="" /> <b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online',1).'</b>';
+				} elseif (!$noAction) {
+					$controls = '<a href="'.$this->issueCommand('&cmd[pages]['.$onlineId.'][version][swapWith]='.$id.'&cmd[pages]['.$onlineId.'][version][action]=swap&cmd[pages]['.$onlineId.'][version][swapContent]=1',t3lib_div::linkThisScript(array('id'=>$onlineId))).'">'.
+							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert2.gif','width="14" height="14"').' style="margin-right: 2px;" class="absmiddle" alt="" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage',1).'" />'.
+							'<b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap',1).'</b></a>';
+				}
+
+					// Write out HTML code:
+				return '
+
+					<!--
+						Version selector:
+					-->
+					<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
+						<tr>
+							<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.selVer',1).'</td>
+							<td>
+								<select onchange="'.htmlspecialchars($onChange).'">
+									'.implode('',$opt).'
+								</select></td>
+							<td>'.$controls.'</td>
+						</tr>
+					</table>
+				';
+			}
+		}
+	}
 }
 
 

@@ -82,6 +82,11 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.revertSelection">Revert selection</label>
 			<label index="labels.setAllCheckboxes">Select All Checkboxes</label>
 			<label index="labels.changeInOrig">Change in original</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Version Management</label>
+			<label index="ver.selVer">Select version:</label>
+			<label index="ver.swap">Swap/Publish</label>
+			<label index="ver.swapPage">Publish this version of the page including content</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Browser</label>
 			<label index="show_item.php.viewItem">View Item</label>
 			<label index="show_item.php.file">File</label>

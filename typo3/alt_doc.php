@@ -111,6 +111,7 @@ class SC_alt_doc {
 	var $vC;				// GPvar (for processing only) : Verification code, internal stuff.
 
 	var $popViewId;			// GPvar (module) : ID for displaying the page in the frontend (used for SAVE/VIEW operations)
+	var $popViewId_addParams;	// GPvar (module) : Additional GET vars for the link, eg. "&L=xxx"
 	var $viewUrl;			// GPvar (module) : Alternative URL for viewing the frontend pages.
 	var $editRegularContentFromId;		// If this is pointing to a page id it will automatically load all content elements (NORMAL column/default language) from that page into the form!
 	var $recTitle;				// Alternative title for the document handler.
@@ -142,7 +143,8 @@ class SC_alt_doc {
 	var $firstEl;			// Pointer to the first element in $elementsData
 	var $errorC;			// Counter, used to count the number of errors (when users do not have edit permissions)
 	var $newC;				// Counter, used to count the number of new record forms displayed
-	var $viewId;			// Is set the the pid value of the last shown record - thus indicating which page to show when clicking the SAVE/VIEW button
+	var $viewId;			// Is set to the pid value of the last shown record - thus indicating which page to show when clicking the SAVE/VIEW button
+	var $viewId_addParams;	// Is set to additional parameters (like "&L=xxx") if the record supports it.
 	var $modTSconfig;		// Module TSconfig, loaded from main() based on the page id value of viewId
 	var $tceforms;			// Contains the instance of TCEforms class.
 	var $generalPathOfForm;	// Contains the root-line path of the currently edited record(s) - for display.
@@ -348,6 +350,7 @@ class SC_alt_doc {
 
 			// Setting more GPvars:
 		$this->popViewId = t3lib_div::_GP('popViewId');
+		$this->popViewId_addParams = t3lib_div::_GP('popViewId_addParams');
 		$this->viewUrl = t3lib_div::_GP('viewUrl');
 		$this->editRegularContentFromId = t3lib_div::_GP('editRegularContentFromId');
 		$this->recTitle = t3lib_div::_GP('recTitle');
@@ -413,7 +416,7 @@ class SC_alt_doc {
 				}
 				return false;
 			}
-		'.(isset($HTTP_POST_VARS['_savedokview_x']) && $this->popViewId ? t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl) : '')
+		'.(isset($HTTP_POST_VARS['_savedokview_x']) && $this->popViewId ? t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl,$this->popViewId_addParams) : '')
 		).$this->doc->getDynTabMenuJScode();
 
 			// Setting up the context sensitive menu:
@@ -601,6 +604,11 @@ class SC_alt_doc {
 										$hasAccess = $CALC_PERMS&16 ? 1 : 0;
 										$deleteAccess = $CALC_PERMS&16 ? 1 : 0;
 										$this->viewId = $calcPRec['pid'];
+
+											// Adding "&L=xx" if the record being edited has a languageField with a value larger than zero!
+										if ($TCA[$table]['ctrl']['languageField'] && $calcPRec[$TCA[$table]['ctrl']['languageField']]>0)	{
+											$this->viewId_addParams = '&L='.$calcPRec[$TCA[$table]['ctrl']['languageField']];
+										}
 									}
 
 										// Check internals regarding access:
@@ -895,6 +903,9 @@ class SC_alt_doc {
 			$formContent.='<input type="hidden" name="returnNewPageId" value="1" />';
 		}
 		$formContent.='<input type="hidden" name="popViewId" value="'.htmlspecialchars($this->viewId).'" />';
+		if ($this->viewId_addParams) {
+			$formContent.='<input type="hidden" name="popViewId_addParams" value="'.htmlspecialchars($this->viewId_addParams).'" />';
+		}
 		$formContent.='<input type="hidden" name="closeDoc" value="0" />';
 		$formContent.='<input type="hidden" name="doSave" value="0" />';
 		$formContent.='<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
@@ -948,7 +959,7 @@ class SC_alt_doc {
 
 				// Shortcut:
 			if ($BE_USER->mayMakeShortcut())	{
-				$content.=$this->doc->makeShortcutIcon('returnUrl,edit,defVals,overrideVals,columnsOnly,popViewId,returnNewPageId,editRegularContentFromId,disHelp,noView',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name'],1);
+				$content.=$this->doc->makeShortcutIcon('returnUrl,edit,defVals,overrideVals,columnsOnly,returnNewPageId,editRegularContentFromId,disHelp,noView',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name'],1);
 			}
 
 				// Open in new window:

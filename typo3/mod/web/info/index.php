@@ -139,7 +139,10 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->content.=$this->doc->divider(5);
 
 
-
+			$vContent = $this->doc->getVersionSelector($this->id,1);
+			if ($vContent)	{
+				$this->content.=$this->doc->section('',$vContent);
+			}
 
 			$this->extObjContent();
 

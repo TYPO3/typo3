@@ -877,7 +877,9 @@ class SC_db_layout {
 		$dblist->script = 'db_layout.php';
 		$dblist->showIcon = 0;
 		$dblist->setLMargin=0;
-		$dblist->doEdit = $this->CALC_PERMS&16 ? 1 : 0;
+		$dblist->doEdit = $this->EDIT_CONTENT;
+		$dblist->ext_CALC_PERMS = $this->CALC_PERMS;
+
 		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
 		$dblist->id = $this->id;
 		$dblist->nextThree = t3lib_div::intInRange($this->modTSconfig['properties']['editFieldsAtATime'],0,10);
@@ -976,6 +978,9 @@ class SC_db_layout {
 			$dblist->start($this->id,$table,$this->pointer,$this->search_field,$this->search_levels,$this->showLimit);
 			$dblist->counter = $CMcounter;
 			$dblist->ext_function = $this->MOD_SETTINGS['function'];
+
+				// Render versioning selector:
+			$dblist->HTMLcode.= $this->doc->getVersionSelector($this->id);
 
 				// Generate the list of elements here:
 			$dblist->generateList();

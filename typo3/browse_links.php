@@ -1613,6 +1613,7 @@ class SC_browse_links {
 			$dblist->thumbs = 0;
 			$dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageinfo);
 			$dblist->noControlPanels=1;
+			$dblist->clickMenuEnabled=0;
 			$dblist->tableList=implode(',',$tablesArr);
 
 			$dblist->start($id,t3lib_div::_GP('table'),$pointer,

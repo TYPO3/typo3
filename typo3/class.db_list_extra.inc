@@ -96,6 +96,7 @@ class localRecordList extends recordList {
 	var $dontShowClipControlPanels=FALSE;	// If true, will disable the rendering of clipboard + control panels.
 	var $showClipboard=FALSE;				// If true, will show the clipboard in the field list.
  	var $noControlPanels = FALSE;			// If true, will DISABLE all control panels in lists. (Takes precedence)
+	var $clickMenuEnabled = TRUE;			// If true, clickmenus will be rendered
 
 
 
@@ -124,7 +125,7 @@ class localRecordList extends recordList {
 		$this->pageRow = $row;
 		$this->counter++;
 		$alttext = t3lib_BEfunc::getRecordIconAltText($row,'pages');
-		$iconImg = t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"');
+		$iconImg = t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'class="absmiddle" title="'.htmlspecialchars($alttext).'"');
 		$titleCol = 'test';	// pseudo title column name
 		$this->fieldArray = Array($titleCol,'up');		// Setting the fields to display in the list (this is of course "pseudo fields" since this is the top!)
 
@@ -242,7 +243,7 @@ class localRecordList extends recordList {
 							'</a>';
 
 				// Make Icon:
-			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,'pages',$this->id);
+			$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,'pages',$this->id) : $iconImg;
 		} else {	// On root-level of page tree:
 
 				// Setting title of root (sitename):
@@ -269,7 +270,7 @@ class localRecordList extends recordList {
 			</table>';
 
 			// ... and the element row is created:
-		$out.=$this->addelement(1,'',$theData,'',$this->leftMargin, $theIcon);
+		$out.=$this->addelement(1,$theIcon,$theData,'',$this->leftMargin);
 
 			// ... and wrapped into a table and added to the internal ->HTMLcode variable:
 		$this->HTMLcode.='
@@ -522,7 +523,7 @@ class localRecordList extends recordList {
 
 			// The icon with link
 		$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"');
-		$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,$table,$row['uid']);
+		$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,$table,$row['uid']) : $iconImg;
 
 			// Preparing and getting the data-array
 		$theData = Array();
@@ -761,6 +762,24 @@ class localRecordList extends recordList {
 				$cells[]='<a href="#" onclick="'.htmlspecialchars('return jumpExt(\'show_rechis.php?element='.rawurlencode($table.':'.$row['uid']).'\',\'#latest\');').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/history2.gif','width="13" height="12"').' title="'.$LANG->getLL('history',1).'" alt="" />'.
 						'</a>';
+
+					// Versioning:
+				if (t3lib_extMgm::isLoaded('version'))	{
+					$vers = t3lib_BEfunc::selectVersionsOfRecord($table, $row['uid'], $fields='uid');
+					if (is_array($vers))	{	// If table can be versionized.
+						if (count($vers)>1)	{
+							$st = 'background-color: #FFFF00; font-weight: bold;';
+							$lab = count($vers)-1;
+						} else {
+							$st = 'background-color: #9999cc; font-weight: bold;';
+							$lab = 'V';
+						}
+
+						$cells[]='<a href="'.htmlspecialchars(t3lib_extMgm::extRelPath('version')).'cm1/index.php?table='.rawurlencode($table).'&uid='.rawurlencode($row['uid']).'" style="'.htmlspecialchars($st).'">'.
+								$lab.
+								'</a>';
+					}
+				}
 
 					// "Edit Perms" link:
 				if ($table=='pages' && $GLOBALS['BE_USER']->check('modules','web_perm'))	{

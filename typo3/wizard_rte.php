@@ -123,7 +123,7 @@ class SC_wizard_rte {
 		global $BE_USER,$LANG;
 
 			// If all parameters are available:
-		if ($this->P['table'] && $this->P['field'] && $this->P['uid'])	{
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid']))	{
 
 				// Getting the raw record (we need only the pid-value from here...)
 			$rawRec = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
@@ -277,6 +277,36 @@ class SC_wizard_rte {
 	 */
 	function printContent()	{
 		echo $this->content;
+	}
+
+	/**
+	 * Checks access for element
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Record uid
+	 * @return	void
+	 */
+	function checkEditAccess($table,$uid)	{
+		global $BE_USER;
+
+		$calcPRec = t3lib_BEfunc::getRecord($table,$uid);
+		t3lib_BEfunc::fixVersioningPid($table,$uid);
+		if (is_array($calcPRec))	{
+			if ($table=='pages')	{	// If pages:
+				$CALC_PERMS = $BE_USER->calcPerms($calcPRec);
+				$hasAccess = $CALC_PERMS&2 ? TRUE : FALSE;
+			} else {
+				$CALC_PERMS = $BE_USER->calcPerms(t3lib_BEfunc::getRecord('pages',$calcPRec['pid']));	// Fetching pid-record first.
+				$hasAccess = $CALC_PERMS&16 ? TRUE : FALSE;
+			}
+
+				// Check internals regarding access:
+			if ($hasAccess)	{
+				$hasAccess = $BE_USER->recordEditAccessInternals($table, $calcPRec);
+			}
+		} else $hasAccess = FALSE;
+
+		return $hasAccess;
 	}
 }
 

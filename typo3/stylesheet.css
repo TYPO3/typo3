@@ -393,6 +393,8 @@ TABLE.typo3-dblist TR TD DIV.typo3-clipCtrl IMG, TABLE.typo3-dblist TR TD DIV.ty
 TABLE.typo3-dblist-overview { width: 410px; margin-top: 10px; margin-left:1px;}
 TABLE.typo3-dblist-overview TD.c-tableDescription {padding-left: 10px; font-style: italic; color: #333333;}
 TABLE.typo3-dblist-overview TD.c-tableDescription IMG { margin-right: 10px; }
+TABLE#typo3-versionSelector { background-color: #ABBBB4; margin-top: 5px; margin-bottom: 5px; }
+TABLE#typo3-versionSelector TD { padding-left: 2px; padding-right: 2px; }
 
 DIV#typo3-newRecordLink { margin: 5px 0px 5px 0px; font-weight: bold;}
 DIV#typo3-newRecordLink IMG { margin-right: 5px; vertical-align: middle; }

@@ -202,6 +202,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 				// Put into cell:
 			$tCells[] = '<td class="'.$status.' c-leftLine">'.$info.'</td>';
+			$tCells[] = '<td class="'.$status.'" title="'.$LANG->getLL('lang_renderl10n_CEcount','1').'" align="center">'.$this->getContentElementCount($data['row']['uid'],0).'</td>';
 
 				// Traverse system languages:
 			foreach($languages as $langRow)	{
@@ -238,7 +239,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 					$info.= str_replace('###LANG_UID###',$langRow['uid'],$viewPageLink);
 
 					$tCells[] = '<td class="'.$status.'">'.$info.'</td>';
-					$tCells[] = '<td class="'.$status.'">&nbsp;</td>';
+					$tCells[] = '<td class="'.$status.'" title="'.$LANG->getLL('lang_renderl10n_CEcount','1').'" align="center">'.$this->getContentElementCount($data['row']['uid'],$langRow['uid']).'</td>';
 				} else {
 					$status = $data['row']['l18n_cfg']&2 || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback';
 					$tCells[] = '<td class="'.$status.' c-leftLine">&nbsp;</td>';
@@ -270,7 +271,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 				<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editPageHeaders','1').'" border="0" alt="" />
 				</a>';
 		} else $editIco = '';
-		$tCells[] = '<td class="c-leftLine">'.
+		$tCells[] = '<td class="c-leftLine" colspan="2">'.
 					$LANG->getLL('lang_renderl10n_default','1').':'.
 					$editIco.
 					'</td>';
@@ -353,6 +354,26 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		}
 
 		return $row;
+	}
+
+	/**
+	 * Counting content elements for a single language on a page.
+	 *
+	 * @param	integer		Page id to select for.
+	 * @param	integer		Sys language uid
+	 * @return	integer		Number of content elements from the PID where the language is set to a certain value.
+	 */
+	function getContentElementCount($pageId,$sysLang)	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'count(*)',
+			'tt_content',
+			'pid='.intval($pageId).
+				' AND sys_language_uid='.intval($sysLang).
+				t3lib_BEfunc::deleteClause('tt_content')
+		);
+
+		list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+		return $count ? $count : '-';
 	}
 }
 

@@ -379,6 +379,7 @@ $TCA['tt_content'] = Array (
 			)
 		),
 		'image' => Array (
+#			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.images',
 			'config' => Array (
 				'type' => 'group',

@@ -35,6 +35,7 @@
 			<label index="lang_renderl10n_page">Page</label>
 			<label index="lang_renderl10n_default">Default</label>
 			<label index="lang_getlangsta_createNewTranslationHeaders">Create new translation headers</label>
+			<label index="lang_renderl10n_CEcount">Content Element Count</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="page_title">Overblik over sidetræ</label>

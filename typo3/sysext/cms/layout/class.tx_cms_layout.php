@@ -423,7 +423,7 @@ class tx_cms_layout extends recordList {
 					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 
 						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
-					if ($this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
+					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
 						$onClick = "document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
 						$content[$key].= '<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
@@ -514,22 +514,27 @@ class tx_cms_layout extends recordList {
 					$cCont[$lP]='
 						<td valign="top" align="center" class="bgColor6"><strong>'.htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]).'</strong></td>';
 
+						// "View page" icon is added:
+					$viewLink = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($this->id,$this->backPath,t3lib_BEfunc::BEgetRootLine($this->id),'','','&L='.$lP)).'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom.gif','width="12" height="12"').' class="absmiddle" title="" alt="" />'.
+						'</a>';
+
 						// Language overlay page header:
 					if ($lP)	{
+
 						list($lpRecord) = t3lib_BEfunc::getRecordsByField('pages_language_overlay','pid',$id,'AND sys_language_uid='.intval($lP));
 						$params='&edit[pages_language_overlay]['.$lpRecord['uid'].']=edit&overrideVals[pages_language_overlay][sys_language_uid]='.$lP;
-						$lPLabel = '<span class="nobr">'.
-							t3lib_iconWorks::getIconImage('pages_language_overlay',$lpRecord,$this->backPath,'  class="absmiddle"').
-							'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'">'.
+						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage('pages_language_overlay',$lpRecord,$this->backPath,'  class="absmiddle"'),'pages_language_overlay',$lpRecord['uid']).
+							$viewLink.
+							($GLOBALS['BE_USER']->check('tables_modify','pages_language_overlay') ? '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('edit',1).'" class="absmiddle" alt="" />'.
-							'</a>'.
-							htmlspecialchars(t3lib_div::fixed_lgd_cs($lpRecord['title'],20)).
-							'</span>';
+							'</a>' : '').
+							htmlspecialchars(t3lib_div::fixed_lgd_cs($lpRecord['title'],20));
 					} else {
-						$lPLabel='';
+						$lPLabel = $viewLink;
 					}
 					$sCont[$lP]='
-						<td>'.$lPLabel.'</td>';
+						<td nowrap="nowrap">'.$lPLabel.'</td>';
 				}
 					// Add headers:
 				$out.='
@@ -612,7 +617,7 @@ class tx_cms_layout extends recordList {
 				$rowOut = '';
 
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
-				if ($this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
+				if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result))	{
 					$onClick="document.location='db_new_content_el.php?id=".$id.'&colPos='.intval($key).'&sys_language_uid='.$lP.'&uid_pid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';";
 					$theNewButton=$GLOBALS['SOBE']->doc->t3Button($onClick,$GLOBALS['LANG']->getLL('newPageContent'));
 					$theNewButton='<img src="clear.gif" width="1" height="5" alt="" /><br />'.$theNewButton;
@@ -683,14 +688,18 @@ class tx_cms_layout extends recordList {
 			// Add the big buttons to page:
 		if ($this->option_showBigButtons)	{
 			$bArray=array();
+
 			if (!$GLOBALS['SOBE']->current_sys_language)	{
-				$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages]['.$id."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle'));
+				if ($this->ext_CALC_PERMS&2)	$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages]['.$id."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle'));
 			} else {
-				$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages_language_overlay]['.$GLOBALS['SOBE']->current_sys_language."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle_curLang'));
+				if ($this->doEdit && $GLOBALS['BE_USER']->check('tables_modify','pages_language_overlay'))	{
+					list($languageOverlayRecord) = t3lib_BEfunc::getRecordsByField('pages_language_overlay','pid',$id,'AND sys_language_uid='.intval($GLOBALS['SOBE']->current_sys_language));
+					$bArray[0]=$GLOBALS['SOBE']->doc->t3Button(t3lib_BEfunc::editOnClick('&edit[pages_language_overlay]['.$languageOverlayRecord['uid']."]=edit",$this->backPath,''),$GLOBALS['LANG']->getLL('editPageTitle_curLang'));
+				}
 			}
-			$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
-			$bArray[2]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."db_new.php?id=".$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPage2'));
-			if ($this->ext_function==1) $bArray[3]=$GLOBALS['SOBE']->doc->t3Button("document.location='db_new_content_el.php?id=".$id.'&sys_language_uid='.$GLOBALS['SOBE']->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPageContent2'));
+			if ($this->ext_CALC_PERMS&4 || $this->ext_CALC_PERMS&2)	$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
+			if ($this->ext_CALC_PERMS&8)	$bArray[2]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."db_new.php?id=".$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPage2'));
+			if ($this->doEdit && $this->ext_function==1) $bArray[3]=$GLOBALS['SOBE']->doc->t3Button("document.location='db_new_content_el.php?id=".$id.'&sys_language_uid='.$GLOBALS['SOBE']->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPageContent2'));
 			$out = '
 				<table border="0" cellpadding="4" cellspacing="0" class="typo3-page-buttons">
 					<tr>
@@ -1783,7 +1792,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		"Copy languages" button, if available.
 	 */
 	function newLanguageButton($defLanguageCount,$lP)	{
-		if (count($defLanguageCount) && $lP)	{
+		if ($this->doEdit && count($defLanguageCount) && $lP)	{
 
 			$params = '';
 			foreach($defLanguageCount as $uidVal)	{
@@ -1863,7 +1872,7 @@ class tx_cms_layout extends recordList {
 		$params['field'] = 'bodytext';
 		$params['returnUrl'] = t3lib_div::linkThisScript();
 		$RTEonClick = "document.location='".$this->backPath."wizard_rte.php?".t3lib_div::implodeArrayForUrl('',array('P'=>$params))."';return false;";
-		$addButton = $this->option_showBigButtons ? $GLOBALS['SOBE']->doc->t3Button($RTEonClick,$GLOBALS['LANG']->getLL('editInRTE')) : '';
+		$addButton = $this->option_showBigButtons && $this->doEdit ? $GLOBALS['SOBE']->doc->t3Button($RTEonClick,$GLOBALS['LANG']->getLL('editInRTE')) : '';
 
 		return $addButton;
 	}
@@ -1877,7 +1886,7 @@ class tx_cms_layout extends recordList {
 	 * @see getTable_tt_content()
 	 */
 	function languageSelector($id)	{
-		if ($GLOBALS['BE_USER']->check('tables_select','pages_language_overlay'))	{
+		if ($GLOBALS['BE_USER']->check('tables_modify','pages_language_overlay'))	{
 
 				// First, select all
 			$res = $GLOBALS['SOBE']->exec_languageQuery(0);

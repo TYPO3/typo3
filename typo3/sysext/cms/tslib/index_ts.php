@@ -262,6 +262,13 @@ $TT->push('Process ID','');
 $TT->pull();
 
 
+// *******************************************
+// Get compressed $TCA-Array();
+// After this, we should now have a valid $TCA, though minimized
+// *******************************************
+$TSFE->getCompressedTCarray();
+
+
 // ********************************
 // Starts the template
 // *******************************
@@ -285,11 +292,10 @@ $TT->pull();
 $TSFE->getConfigArray();
 
 
-// *******************************************
-// Get compressed $TCA-Array();
-// After this, we should now have a valid $TCA, though minimized
-// *******************************************
-$TSFE->getCompressedTCarray();
+// ********************************
+// Convert POST data to internal "renderCharset" if different from the metaCharset:
+// *******************************
+$TSFE->convPOSTCharset();
 
 
 // *******************************************
@@ -363,14 +369,13 @@ if ($TSFE->isINTincScript())		{
 
 			// Special feature: Include libraries
 		$TT->push('Include libraries');
-		reset($INTiS_config);
-		while(list(,$INTiS_cPart)=each($INTiS_config))	{
+		foreach($INTiS_config as $INTiS_cPart)	{
 			if ($INTiS_cPart['conf']['includeLibs'])	{
 				$INTiS_resourceList = t3lib_div::trimExplode(',',$INTiS_cPart['conf']['includeLibs'],1);
 				$GLOBALS['TT']->setTSlogMessage('Files for inclusion: "'.implode(', ',$INTiS_resourceList).'"');
-				reset($INTiS_resourceList);
-				while(list(,$INTiS_theLib)=each($INTiS_resourceList))	{
-					$INTiS_incFile=$GLOBALS['TSFE']->tmpl->getFileName($INTiS_theLib);
+
+				foreach($INTiS_resourceList as $INTiS_theLib)	{
+					$INTiS_incFile = $GLOBALS['TSFE']->tmpl->getFileName($INTiS_theLib);
 					if ($INTiS_incFile)	{
 						require_once('./'.$INTiS_incFile);
 					} else {

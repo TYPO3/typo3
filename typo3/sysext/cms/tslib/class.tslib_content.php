@@ -1139,15 +1139,26 @@ class tslib_cObj {
 				$cObj->setParent($this->data,$this->currentRecord);
 				$this->currentRecordNumber=0;
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']])	{
-						$this->currentRecordNumber++;
-						$cObj->parentRecordNumber = $this->currentRecordNumber;
-						$GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
-						$this->lastChanged($row['tstamp']);
-						$cObj->start($row,$conf['table']);
-						if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
-						$theValue.= $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-					}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
+
+						// Versioning preview:
+					$GLOBALS['TSFE']->sys_page->versionOL($conf['table'],$row);
+
+						// Language Overlay:
+					if ($GLOBALS['TSFE']->sys_language_contentOL)	{
+						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
+					}
+
+					if (is_array($row))	{	// Might be unset in the sys_language_contentOL
+						if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']])	{
+							$this->currentRecordNumber++;
+							$cObj->parentRecordNumber = $this->currentRecordNumber;
+							$GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
+							$this->lastChanged($row['tstamp']);
+							$cObj->start($row,$conf['table']);
+							if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
+							$theValue.= $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+						}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
+					}
 				}
 				if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $theValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
 			}
@@ -1205,22 +1216,33 @@ class tslib_cObj {
 			reset($loadDB->itemArray);
 			while(list(,$val)=each($loadDB->itemArray))	{
 				$row = $data[$val['table']][$val['id']];
-				if (!$conf['dontCheckPid'])	{
-					$row = $this->checkPid($row['pid']) ? $row : '';
+
+					// Versioning preview:
+				$GLOBALS['TSFE']->sys_page->versionOL($val['table'],$row);
+
+					// Language Overlay:
+				if ($GLOBALS['TSFE']->sys_language_contentOL)	{
+					$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($val['table'],$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
 				}
-				if ($row && !$GLOBALS['TSFE']->recordRegister[$val['table'].':'.$val['id']])	{
-					$renderObjName = $conf['conf.'][$val['table']] ? $conf['conf.'][$val['table']] : '<'.$val['table'];
-					$renderObjKey = $conf['conf.'][$val['table']] ? 'conf.'.$val['table'] : '';
-					$renderObjConf = $conf['conf.'][$val['table'].'.'];
-					$this->currentRecordNumber++;
-					$cObj->parentRecordNumber=$this->currentRecordNumber;
-					$GLOBALS['TSFE']->currentRecord = $val['table'].':'.$val['id'];
-					$this->lastChanged($row['tstamp']);
-					$cObj->start($row,$val['table']);
-					if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->';}
-					$theValue.=$cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-					if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_END-->';}
-				}# else debug($GLOBALS['TSFE']->recordRegister,'RECORDS');
+
+				if (is_array($row))	{	// Might be unset in the content overlay things...
+					if (!$conf['dontCheckPid'])	{
+						$row = $this->checkPid($row['pid']) ? $row : '';
+					}
+					if ($row && !$GLOBALS['TSFE']->recordRegister[$val['table'].':'.$val['id']])	{
+						$renderObjName = $conf['conf.'][$val['table']] ? $conf['conf.'][$val['table']] : '<'.$val['table'];
+						$renderObjKey = $conf['conf.'][$val['table']] ? 'conf.'.$val['table'] : '';
+						$renderObjConf = $conf['conf.'][$val['table'].'.'];
+						$this->currentRecordNumber++;
+						$cObj->parentRecordNumber=$this->currentRecordNumber;
+						$GLOBALS['TSFE']->currentRecord = $val['table'].':'.$val['id'];
+						$this->lastChanged($row['tstamp']);
+						$cObj->start($row,$val['table']);
+						if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->';}
+						$theValue.=$cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+						if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_END-->';}
+					}# else debug($GLOBALS['TSFE']->recordRegister,'RECORDS');
+				}
 			}
 		}
 		$GLOBALS['TSFE']->currentRecord = $originalRec;	// Restore
@@ -5950,6 +5972,8 @@ class tslib_cObj {
 			if ($depth>0)	{
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid='.intval($id).' AND NOT deleted AND doktype!=255 AND doktype!=6'.$moreWhereClauses, '' ,'sorting');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+#??				$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
+
 						// Find mount point if any:
 					$next_id = $row['uid'];
 					$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($next_id, $row);
@@ -5958,6 +5982,7 @@ class tslib_cObj {
 						$next_id = $mount_info['mount_pid'];
 						$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND NOT deleted AND doktype!=255 AND doktype!=6'.$moreWhereClauses, '' ,'sorting');
 						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
+#??						$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 					}
 						// Add record:
 					if (is_array($row) && $dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row))	{
@@ -6202,6 +6227,7 @@ class tslib_cObj {
 	 * @see getQuery()
 	 */
 	function getWhere($table,$conf, $returnQueryArray=FALSE)	{
+		global $TCA;
 
 			// Init:
 		$query = '';
@@ -6241,8 +6267,15 @@ class tslib_cObj {
 		if ($where = trim($conf['where']))	{
 			$query.=' AND '.$where;
 		}
+
 		if ($conf['languageField'])	{
-			$query.=' AND '.$conf['languageField'].'='.intval($GLOBALS['TSFE']->sys_language_content);
+			if ($GLOBALS['TSFE']->sys_language_contentOL && $TCA[$table] && $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'])	{
+					// Sys language content is set to zero - and it is expected that whatever routine processes the output will OVERLAY the records with localized version!
+				$sys_language_content = 0;
+			} else {
+				$sys_language_content = $GLOBALS['TSFE']->sys_language_content;
+			}
+			$query.=' AND '.$conf['languageField'].'='.intval($sys_language_content);
 		}
 
 		$andWhere = trim($this->stdWrap($conf['andWhere'],$conf['andWhere.']));
