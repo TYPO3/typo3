@@ -536,7 +536,7 @@ class t3lib_extMgm {
 				}
 
 					// this matches empty subtype too
-				if( $info['available'] AND ($info['subtype']==$serviceSubType XOR $info['serviceSubTypes'][$serviceSubType]) AND $info['priority']>=$priority ) {
+				if( $info['available'] AND ($info['subtype']==$serviceSubType OR $info['serviceSubTypes'][$serviceSubType]) AND $info['priority']>=$priority ) {
 
 						// has a lower quality than the already found, therefore we skip this service
 					if($info['priority']==$priority AND $info['quality']<$quality) {
