@@ -1,10 +1,14 @@
+2004-09-19  Ingmar Schlecht  <ingmars@web.de>
+
+	* Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>
+
 2004-09-17  Ingmar Schlecht  <ingmars@web.de>
 
 	* Fixed bug #0000181: Added the word "JavaScript" to the note on the BE login page. It's now: "(Note: Cookies and JavaScript must be enabled!)"
 
 2004-09-15  Ingmar Schlecht  <ingmars@web.de>
 
-	* Fixed bug #0000353: In typo3\wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.
+	* Fixed bug #0000353: In typo3/wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.
 
 2004-09-14  Michael Stucki  <mundaun@gmx.ch>
 

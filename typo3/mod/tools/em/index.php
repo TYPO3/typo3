@@ -3978,7 +3978,8 @@ EXTENSION KEYS:
 	function decodeServerData($externalData,$stat=array())	{
 		$parts = explode(':',$externalData,4);
 		$dat = base64_decode($parts[2]);
-		if ($parts[0]==md5($dat))	{
+			// compare hashes ignoring any leading whitespace (This makes it work for some broken .t3x files that have leading white space. See bug #0000365. Thanks to Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>)
+		if (ereg_replace("^[\n\r\t ]+",'',$parts[0])==md5($dat))	{
 			if ($parts[1]=='gzcompress')	{
 				if ($this->gzcompress)	{
 					$dat = gzuncompress($dat);
