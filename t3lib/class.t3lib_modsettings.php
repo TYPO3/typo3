@@ -184,7 +184,7 @@ class t3lib_modSettings {
 		$this->type = 'perm';
 
 			// enable dev logging if set
-		if ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_modSettings.php']['writeDevLog']) $this->writeDevLog = TRUE;
+		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_modSettings.php']['writeDevLog']) $this->writeDevLog = TRUE;
 		if (TYPO3_DLOG) $this->writeDevLog = TRUE;
 	}
 

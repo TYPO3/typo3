@@ -1,3 +1,7 @@
+2004-02-02  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #0000728: "Enabling DevLog in t3lib_modsettings via SC_OPTIONS does not work." Reason: t3lib_modsettings::init() used $TYPO3_CONF_VARS although the global var was not available there. Changed it to $GLOBALS['TYPO3_CONF_VARS'].
+
 2004-02-01  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Committed patches by Peter Klein <peter at umloud.dk> implementing the IESelectFix for xmenu_layers.php: A fix that makes the layer menus display correctly on IE when over a <SELECT> box.
