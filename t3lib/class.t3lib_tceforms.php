@@ -2620,8 +2620,8 @@ class t3lib_TCEforms	{
 		}
 
 			// Create selector box of the options
+		$sSize = $params['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC+1,t3lib_div::intInRange($params['size'],1),$params['autoSizeMax']) : $params['size'];
 		if (!$selector)	{
-			$sSize = $params['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC+1,t3lib_div::intInRange($params['size'],1),$params['autoSizeMax']) : $params['size'];
 			$selector = '<select size="'.$sSize.'"'.$this->insertDefStyle('group').' multiple="multiple" name="'.$fName.'_list" '.$onFocus.$params['style'].'>'.implode('',$opt).'</select>';
 		}
 
@@ -2637,9 +2637,22 @@ class t3lib_TCEforms	{
 					'</a>';
 		}
 		if (!$params['dontShowMoveIcons'])	{
+			if ($sSize>=5)	{
+				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Top\'); return false;">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_totop.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_top')).' />'.
+						'</a>';
+			}
 			$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Up\'); return false;">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_totop.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_top')).' />'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/up.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_up')).' />'.
 					'</a>';
+			$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Down\'); return false;">'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/down.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_down')).' />'.
+					'</a>';
+			if ($sSize>=5)	{
+				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Bottom\'); return false;">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_tobottom.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_bottom')).' />'.
+						'</a>';
+			}
 		}
 
 		$clipElements = $this->getClipboardElements($allowed,$mode);
@@ -4472,18 +4485,18 @@ class t3lib_TCEforms	{
 				if (formObj)	{
 					var localArray_V = new Array();
 					var localArray_L = new Array();
+					var localArray_S = new Array();
 					var fObjSel = formObj[fName+"_list"];
 					var l=fObjSel.length;
 					var c=0;
-					var cS=0;
-					if (type=="Remove" || type=="Up")	{
-						if (type=="Up")	{
+					if (type=="Remove" || type=="Top" || type=="Bottom")	{
+						if (type=="Top")	{
 							for (a=0;a<l;a++)	{
 								if (fObjSel.options[a].selected==1)	{
 									localArray_V[c]=fObjSel.options[a].value;
 									localArray_L[c]=fObjSel.options[a].text;
+									localArray_S[c]=1;
 									c++;
-									cS++;
 								}
 							}
 						}
@@ -4491,15 +4504,109 @@ class t3lib_TCEforms	{
 							if (fObjSel.options[a].selected!=1)	{
 								localArray_V[c]=fObjSel.options[a].value;
 								localArray_L[c]=fObjSel.options[a].text;
+								localArray_S[c]=0;
+								c++;
+							}
+						}
+						if (type=="Bottom")	{
+							for (a=0;a<l;a++)	{
+								if (fObjSel.options[a].selected==1)	{
+									localArray_V[c]=fObjSel.options[a].value;
+									localArray_L[c]=fObjSel.options[a].text;
+									localArray_S[c]=1;
+									c++;
+								}
+							}
+						}
+					}
+					if (type=="Down")	{
+						var tC = 0;
+						var tA = new Array();
+
+						for (a=0;a<l;a++)	{
+							if (fObjSel.options[a].selected!=1)	{
+									// Add non-selected element:
+								localArray_V[c]=fObjSel.options[a].value;
+								localArray_L[c]=fObjSel.options[a].text;
+								localArray_S[c]=0;
+								c++;
+
+									// Transfer any accumulated and reset:
+								if (tA.length > 0)	{
+									for (aa=0;aa<tA.length;aa++)	{
+										localArray_V[c]=fObjSel.options[tA[aa]].value;
+										localArray_L[c]=fObjSel.options[tA[aa]].text;
+										localArray_S[c]=1;
+										c++;
+									}
+
+									var tC = 0;
+									var tA = new Array();
+								}
+							} else {
+								tA[tC] = a;
+								tC++;
+							}
+						}
+							// Transfer any remaining:
+						if (tA.length > 0)	{
+							for (aa=0;aa<tA.length;aa++)	{
+								localArray_V[c]=fObjSel.options[tA[aa]].value;
+								localArray_L[c]=fObjSel.options[tA[aa]].text;
+								localArray_S[c]=1;
 								c++;
 							}
 						}
 					}
+					if (type=="Up")	{
+						var tC = 0;
+						var tA = new Array();
+						var c = l-1;
+
+						for (a=l-1;a>=0;a--)	{
+							if (fObjSel.options[a].selected!=1)	{
+
+									// Add non-selected element:
+								localArray_V[c]=fObjSel.options[a].value;
+								localArray_L[c]=fObjSel.options[a].text;
+								localArray_S[c]=0;
+								c--;
+
+									// Transfer any accumulated and reset:
+								if (tA.length > 0)	{
+									for (aa=0;aa<tA.length;aa++)	{
+										localArray_V[c]=fObjSel.options[tA[aa]].value;
+										localArray_L[c]=fObjSel.options[tA[aa]].text;
+										localArray_S[c]=1;
+										c--;
+									}
+
+									var tC = 0;
+									var tA = new Array();
+								}
+							} else {
+								tA[tC] = a;
+								tC++;
+							}
+						}
+							// Transfer any remaining:
+						if (tA.length > 0)	{
+							for (aa=0;aa<tA.length;aa++)	{
+								localArray_V[c]=fObjSel.options[tA[aa]].value;
+								localArray_L[c]=fObjSel.options[tA[aa]].text;
+								localArray_S[c]=1;
+								c--;
+							}
+						}
+						c=l;	// Restore length value in "c"
+					}
+
+						// Transfer items in temporary storage to list object:
 					fObjSel.length = c;
 					for (a=0;a<c;a++)	{
 						fObjSel.options[a].value = localArray_V[a];
 						fObjSel.options[a].text = localArray_L[a];
-						fObjSel.options[a].selected=(a<cS)?1:0;
+						fObjSel.options[a].selected = localArray_S[a];
 					}
 					setHiddenFromList(fObjSel,formObj[fName]);
 

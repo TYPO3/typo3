@@ -68,7 +68,10 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.selected">Selected</label>
 			<label index="labels.items">Items</label>
 			<label index="labels.remove_selected">Remove selected items</label>
-			<label index="labels.move_to_top">Move selected item upwards</label>
+			<label index="labels.move_to_top">Move selected items to top</label>
+			<label index="labels.move_up">Move selected items upwards</label>
+			<label index="labels.move_down">Move selected items downwards</label>
+			<label index="labels.move_to_bottom">Move selected items to bottom</label>
 			<label index="labels.browse_file">Browse for files</label>
 			<label index="labels.browse_db">Browse for records</label>
 			<label index="labels.clipInsert_file">Insert %s file(s) from the clipboard</label>

@@ -109,7 +109,7 @@ class SC_alt_menu {
 
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='vertical-menu';
-		$TBE_TEMPLATE->bodyTagAdditions = 'onLoad="top.restoreHighlightedModuleMenuItem()"';
+		$TBE_TEMPLATE->bodyTagAdditions = 'onload="top.restoreHighlightedModuleMenuItem()"';
 		$this->content.=$TBE_TEMPLATE->startPage('Vertical Backend Menu');
 		$backPath = $GLOBALS['BACK_PATH'];
 
