@@ -1,3 +1,8 @@
+2004-06-11  Robert Lemke  <rl@robertlemke.de>
+
+	* Created new hook in class.t3lib_tcemain.php in process_datamap. Search for $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
+	(other hooks in that class will follow by René, as I know from a trusted source ... ;-)
+
 2004-06-09  Robert Lemke  <rl@robertlemke.de>
 
 	* Fixed bug #0000123:

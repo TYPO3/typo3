@@ -420,7 +420,7 @@ class t3lib_TCEmain	{
 	 * @return	[type]		...
 	 */
 	function process_datamap() {
-		global $TCA;
+		global $TCA, $TYPO3_CONF_VARS;
 		reset ($this->datamap);
 
 			// Organize tables so that the pages-table are always processed first. This is required if you want to make sure that content pointing to a new page will be created.
@@ -553,12 +553,22 @@ class t3lib_TCEmain	{
 								$fieldArray[$TCA[$table]['ctrl']['tstamp']]=time();
 							}
 
-								// Performing insert/update
-							if ($status=='new')	{
-//								if ($pid_value<0)	{$fieldArray = $this->fixCopyAfterDuplFields($table,$id,abs($pid_value),0,$fieldArray);}	// Out-commented 02-05-02: I couldn't understand WHY this is needed for NEW records. Obviously to proces records being copied? Problem is that the fields are not set anyways and the copying function should basically take care of this!
-								$this->insertDB($table,$id,$fieldArray);
-							} else {
-								$this->updateDB($table,$id,$fieldArray);
+								// Hook: processDatamapClass
+							if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
+								foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $_classRef) {
+									$_procObj = &t3lib_div::getUserObj ($_classRef);
+									$_procObj->processDatamap_preProcessFieldArray ($status, $table, $id, &$fieldArray, &$this);
+								}
+							}
+
+								// Performing insert/update. If fieldArray has been unset by some userfunction (see hook above), don't do anything
+							if (is_array ($fieldArray)) {
+								if ($status=='new')	{
+	//								if ($pid_value<0)	{$fieldArray = $this->fixCopyAfterDuplFields($table,$id,abs($pid_value),0,$fieldArray);}	// Out-commented 02-05-02: I couldn't understand WHY this is needed for NEW records. Obviously to proces records being copied? Problem is that the fields are not set anyways and the copying function should basically take care of this!
+									$this->insertDB($table,$id,$fieldArray);
+								} else {
+									$this->updateDB($table,$id,$fieldArray);
+								}
 							}
 						}	// if ($recordAccess)	{
 					}	// if (is_array($incomingFieldArray))	{
