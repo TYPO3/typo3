@@ -1146,6 +1146,9 @@ class t3lib_TCEforms	{
 			// Field configuration from TCA:
 		$config = $PA['fieldConf']['config'];
 
+			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. See http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/.
+		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
+
 			// Getting the selector box items from the system
 		$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($PA['fieldConf']),$PA['fieldConf'],$this->setTSconfig($table,$row),$field);
 		$selItems = $this->addItems($selItems,$PA['fieldTSConfig']['addItems.']);
@@ -1639,6 +1642,9 @@ class t3lib_TCEforms	{
 		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_mul" value="'.($config['multiple']?1:0).'" />';
 		$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
 		$info='';
+
+			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. See http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/.
+		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
 
 			// Acting according to either "file" or "db" type:
 		switch((string)$config['internal_type'])	{
