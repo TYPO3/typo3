@@ -60,7 +60,7 @@
  *  904:     function checkPagerecordForIncludeSection($row)	
  *  916:     function setIDfromArgV()	
  *  932:     function getPageAndRootlineWithDomain($domainStartPage)	
- *  960:     function findDomainRecord($recursive=0)	
+ *  960:     function findDomainRecord($recursive=0)
  *  981:     function pageNotFoundHandler($code,$header='')	
  * 1003:     function checkAndSetAlias()	
  * 1018:     function idPartsAnalyze($str)	
@@ -961,7 +961,7 @@
 		if ($recursive)	{
 			$host = explode('.',t3lib_div::getIndpEnv('HTTP_HOST'));
 			while(count($host))	{
-				$pageUid = $this->sys_page->getDomainStartPage(implode('.',$host),t3lib_div::getIndpEnv('SCRIPT_NAME'),t3lib_div::getIndpEnv('REQUEST_URI'));	
+				$pageUid = $this->sys_page->getDomainStartPage(implode('.',$host),t3lib_div::getIndpEnv('SCRIPT_NAME'),t3lib_div::getIndpEnv('REQUEST_URI'));
 				if ($pageUid)	return $pageUid; else array_shift($host);
 			}
 			return $pageUid;

@@ -1,5 +1,9 @@
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed problem with domain look-up when an extra "/" was added to eg. "typo3.com//" -> showing "typo3.org" instead
+
+2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Fixed some browser detection bugs in t3lib_matchcondition and t3lib_div. Not necessarily exhaustive! For instance a report on Netscape 7.2 being wrongly detected may not be resolved (need teh value of HTTP_USER_AGENT to solve it since I do not have netscape 7.2!)
 
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -50,7 +50,7 @@
  *
  *              SECTION: Page related: Menu, Domain record, Root line
  *  296:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')	
- *  315:     function getDomainStartPage($domain, $path='',$request_uri='')	
+ *  315:     function getDomainStartPage($domain, $path='',$request_uri='')
  *  361:     function getRootLine($uid, $MP='')	
  *  421:     function getPathFromRootline($rl,$len=20)	
  *  442:     function getExtURL($pagerow,$disable=0)
@@ -318,8 +318,9 @@ class t3lib_pageSelect {
 			// Removing extra trailing slashes
 		$path = trim(ereg_replace('\/[^\/]*$','',$path));
 			// Appending to domain string
-		$domain.=$path;
-		
+		$domain.= $path;
+		$domain = ereg_replace('\/*$','',$domain);
+
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'pages.uid,sys_domain.redirectTo,sys_domain.prepend_params', 
 					'pages,sys_domain', 
