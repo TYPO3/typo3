@@ -1,5 +1,9 @@
 2004-09-02  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed a few basic PHP5 problems (aiming at PHP5 support in 3.7.0)
+
+2004-09-02  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* BTW; Just created a hook for page indexing which "indexed_search" will also be using in near future - BUT at the time of this writing it will require a new version of indexed_search for you and that is NOT ready yet - so indexed_search will NOT work for you anymore before you get the new version of this extension!
 
 2004-09-02  Kasper Skårhøj,,,  <kasper@typo3.com>

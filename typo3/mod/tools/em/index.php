@@ -413,7 +413,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 */
 	function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)	{
 		$MS_value = is_null($MS_value) ? $this->MOD_SETTINGS[$MM_key] : $MS_value;
-		$this->extClassConf = array_merge($this->getExternalItemConfig($this->MCONF['name'],$MM_key,$MS_value),$this->extClassConf);
+		$externalItems = $this->getExternalItemConfig($this->MCONF['name'],$MM_key,$MS_value);
+		if (is_array($externalItems))	$this->extClassConf = array_merge($externalItems,$this->extClassConf);
 		if (is_array($this->extClassConf) && $this->extClassConf['path'])	{
 			$this->include_once[]=$this->extClassConf['path'];
 		}
@@ -466,9 +467,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			'fe_p' => '',
 			'fe_up' => '',
 		);
-		
+
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'],'singleDetails',$this->MOD_MENU['singleDetails']);
-		
+
 			// page/be_user TSconfig settings and blinding of menu-items
 		if (!$BE_USER->getTSConfigVal('mod.'.$this->MCONF['name'].'.allowTVlisting'))	{
 			unset($this->MOD_MENU['display_details'][3]);
@@ -4335,7 +4336,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/t
 $SOBE = t3lib_div::makeInstance('SC_mod_tools_em_index');
 $SOBE->init();
 foreach($SOBE->include_once as $INC_FILE) {
-    include_once($INC_FILE);    
+    include_once($INC_FILE);
 }
 $SOBE->checkExtObj();
 $SOBE->main();
