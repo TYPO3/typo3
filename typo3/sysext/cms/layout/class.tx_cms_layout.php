@@ -2544,9 +2544,9 @@ class tx_cms_layout extends recordList {
 	 * @param	boolean		If true, empty tags will be filled with the first attribute of the tag before.
 	 * @return	string		Input string with all HTML and PHP tags stripped
 	 */
-	function strip_tags($input, $fillEmptyContent=false)	{
-		if($fillEmptyContent && ereg('><', $input))	{
-			$matches = explode('</', $input);
+	function strip_tags($content, $fillEmptyContent=false)	{
+		if($fillEmptyContent && ereg('><', $content))	{
+			$matches = explode('</', $content);
 			foreach($matches as $key=>$val)	{
 				if($key==count($matches)-1)	{ continue; }	// skip the last match
 
@@ -2555,9 +2555,9 @@ class tx_cms_layout extends recordList {
 					$matches[$key] .= $tagContent;
 				}
 			}
-			$output = implode('</', $matches);
+			$content = implode('</', $matches);
 		}
-		return strip_tags($output);
+		return strip_tags($content);
 	}
 }
 

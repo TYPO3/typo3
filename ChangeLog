@@ -1,3 +1,7 @@
+2005-04-03  Michael Stucki  <michael@typo3.org>
+
+	* Fixed a stupid error in the display-empty-tags function
+
 2005-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Updated all years from 2004 to 2005
