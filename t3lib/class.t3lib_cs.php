@@ -828,6 +828,8 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function strtrunc($charset,$string,$len)	{
+		if ($len <= 0)	return '';
+
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strcut($string,0,$len,$charset);
 		} elseif ($charset == 'utf-8')	{
@@ -849,15 +851,12 @@ class t3lib_cs {
 	/**
 	 * Returns a part of a string.
 	 *
-	 *
-	 * Negative values for @arg $start and @arg $len are currently not supported.
-	 *
 	 * @param	string		the character set
 	 * @param	string		character string
-	 * @param	int		$start	start position (character position)
+	 * @param	int		start position (character position)
 	 * @param	int		length (in characters)
 	 * @return	string		the substring
-	 * @see substr()
+	 * @see substr(), mb_substr()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 * @bug
 	 */
@@ -927,7 +926,7 @@ class t3lib_cs {
 	 * @param	string		string
 	 * @return	string		the converted string
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 * @see strtolower(), strtoupper(), mb_convert_case()
+	 * @see strtolower(), strtoupper()
 	 */
 	function conv_case($charset,$string,$case)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring' &&
@@ -982,7 +981,7 @@ class t3lib_cs {
 
 	/********************************************
 	 *
-	 * UTF-8 string operation functions
+	 * Internal UTF-8 string operation functions
 	 *
 	 ********************************************/
 
@@ -996,8 +995,6 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function utf8_strtrunc($str,$len)	{
-		if ($len <= 0)	return '';
-
 		$i = $len-1;
 		if (ord($str{$i}) & 0x80) { // part of a multibyte sequence
 			for (; $i>0 && !(ord($str{$i}) & 0x40); $i--)	;	// find the first byte
@@ -1012,9 +1009,6 @@ class t3lib_cs {
 	/**
 	 * Returns a part of a UTF-8 string.
 	 *
-	 *
-	 * Negative values for @arg $start and @arg $len are currently not supported.
-	 *
 	 * @param	string		$str	UTF-8 string
 	 * @param	int		$start	start position (character position)
 	 * @param	int		$len	length (in characters)
@@ -1023,8 +1017,6 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function utf8_substr($str,$start,$len=null)	{
-		if ($len===0)	return '';
-
 		$byte_start = $this->utf8_char2byte_pos($str,$start);
 		if ($byte_start === false)	return false;	// $start outside string length
 
@@ -1108,13 +1100,23 @@ class t3lib_cs {
 	 * Translates a character position into an 'absolute' byte position.
 	 *
 	 * @param	string		UTF-8 string
-	 * @param	int		character position
+	 * @param	int		character position (negative values start from the end)
 	 * @return	int		byte position
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function utf8_char2byte_pos($str,$pos)	{
-		$n = 0; // number of characters
-		for($i=0; $str{$i} && $n<$pos; $i++)	{
+		$n = 0;		// number of characters found
+		$p = abs($pos);	// number of characters wanted
+
+		if ($pos >= 0)	{
+			$i = 0;
+			$d = 1;
+		} else {
+			$i = strlen($str)-1;
+			$d = -1;
+		}
+
+		for( ; $str{$i} && $n<$p; $i+=d)	{
 			$c = (int)ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$n++;
@@ -1123,8 +1125,13 @@ class t3lib_cs {
 		}
 		if (!$str{$i})	return false; // offset beyond string length
 
-			// skip trailing multi-byte data bytes
-		while ((ord($str{$i}) & 0x80) && !(ord($str{$i}) & 0x40)) { $i++; }
+		if ($pos >= 0)	{
+				// skip trailing multi-byte data bytes
+			while ((ord($str{$i}) & 0x80) && !(ord($str{$i}) & 0x40)) { $i++; }
+		} else {
+				// correct offset
+			$i++;
+		}
 
 		return $i;
 	}
@@ -1205,7 +1212,7 @@ class t3lib_cs {
 
 	/********************************************
 	 *
-	 * EUC string operation functions
+	 * Internal EUC string operation functions
 	 *
 	 * Extended Unix Code:
 	 *  ASCII compatible 7bit single bytes chars
@@ -1226,8 +1233,6 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function euc_strtrunc($str,$len,$charset)	 {
-		if ($len <= 0)	return '';
-
 		$sjis = ($charset == 'shift_jis');
 		for ($i=0; $str{$i} && $i<$len; $i++) {
 			$c = ord($str{$i});
@@ -1249,9 +1254,6 @@ class t3lib_cs {
 	/**
 	 * Returns a part of a string in the EUC charset family.
 	 *
-	 *
-	 * Negative values for @arg $start and @arg $len are currently not supported.
-	 *
 	 * @param	string		EUC multibyte character string
 	 * @param	int		start position (character position)
 	 * @param	string		the charset
@@ -1260,8 +1262,6 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function euc_substr($str,$start,$charset,$len=null)	{
-		if ($len===0)	return '';
-
 		$byte_start = $this->euc_char2byte_pos($str,$start,$charset);
 		if ($byte_start === false)	return false;	// $start outside string length
 
@@ -1308,7 +1308,7 @@ class t3lib_cs {
 	 * Translates a character position into an 'absolute' byte position.
 	 *
 	 * @param	string		EUC multibyte character string
-	 * @param	int		character position
+	 * @param	int		character position (negative values start from the end)
 	 * @param	string		the charset
 	 * @return	int		byte position
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
@@ -1316,18 +1316,30 @@ class t3lib_cs {
 	function euc_char2byte_pos($str,$pos,$charset)	{
 		$sjis = ($charset == 'shift_jis');
 		$n = 0; // number of characters seen
-		for ($i=0; $str{$i} && $n<$pos; $i++) {
+		$p = abs($pos);	// number of characters wanted
+
+		if ($pos >= 0)	{
+			$i = 0;
+			$d = 1;
+		} else {
+			$i = strlen($str)-1;
+			$d = -1;
+		}
+
+		for ( ; $str{$i} && $n<$p; $i+=$d) {
 			$c = ord($str{$i});
 			if ($sjis)	{
-				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
+				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i+=$d;	// advance a double-byte char
 			}
 			else	{
-				if ($c >= 0x80)	$i++;	// advance a double-byte char
+				if ($c >= 0x80)	$i+=$d;	// advance a double-byte char
 			}
 
 			$n++;
 		}
 		if (!$str{$i})	return false; // offset beyond string length
+
+		if ($pos < 0)	$i++;	// correct offset
 
 		return $i;
 	}
