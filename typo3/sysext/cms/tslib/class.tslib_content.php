@@ -924,11 +924,11 @@ class tslib_cObj {
 							unset($imgConf['file.']['ext.']);
 						}
 					}
-					if (!isset ($imgConf['altText'])) $imgConf['altText'] = $conf['altText'];
-					if (!isset ($imgConf['titleText'])) $imgConf['titleText'] = $conf['titleText'];
+					if (!isset ($imgConf['alttext'])) $imgConf['alttext'] = $conf['alttext'];
+					if (!isset ($imgConf['titletext'])) $imgConf['titletext'] = $conf['titletext'];
 					$imgsTag[$imgKey] = $this->IMAGE($imgConf);
 				} else {
-					$imgsTag[$imgKey] = $this->IMAGE(Array('altText'=>$conf['altText'], 'titleText'=>$conf['titleText'], 'file'=>$totalImagePath)); 	// currentValKey !!!
+					$imgsTag[$imgKey] = $this->IMAGE(Array('alttext'=>$conf['alttext'], 'titletext'=>$conf['titletext'], 'file'=>$totalImagePath)); 	// currentValKey !!!
 				}
 					// Store the original filepath
 				$origImages[$imgKey]=$GLOBALS['TSFE']->lastImageInfo;
@@ -2497,14 +2497,14 @@ class tslib_cObj {
 	 * @see IMGTEXT(), cImage()
 	 */
 	function getAltParam($conf)	{
-		$altText = $this->stdWrap($conf['altText'], $conf['altText.']);
-		$altParam = ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
+		$alttext = $this->stdWrap($conf['alttext'], $conf['alttext.']);
+		$altParam = ' alt="'.htmlspecialchars(strip_tags($alttext)).'"';
 
-		$titleText = $this->stdWrap($conf['titleText'],$conf['titleText.']);
-		if ($titleText) {
-			$altParam .= ' title="'.htmlspecialchars(strip_tags($titleText)).'"';
+		$titletext = $this->stdWrap($conf['titletext'],$conf['titletext.']);
+		if ($titletext) {
+			$altParam .= ' title="'.htmlspecialchars(strip_tags($titletext)).'"';
 		} else {
-			$altParam .= ' title="'.htmlspecialchars(strip_tags($altText)).'"';
+			$altParam .= ' title="'.htmlspecialchars(strip_tags($alttext)).'"';
 		}
 		return $altParam;
 	}
