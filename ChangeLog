@@ -1,3 +1,7 @@
+2004-06-08  Robert Lemke  <rl@robertlemke.de>
+
+	* Changed one line in media/scripts/plaintextLib.inc which caused a "page not found" in some e-mail clients.
+
 2004-06-06  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Changed all locallang files from "lang" system extension into the new locallang-XML format instead. Includes changes to a bunch of core scripts which had to include the new files with an API function from the $LANG object.
