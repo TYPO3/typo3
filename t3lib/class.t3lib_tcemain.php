@@ -265,8 +265,8 @@ class t3lib_TCEmain	{
 	var $isRecordInWebMount_Cache=array();
 	var $isInWebMount_Cache=array();
 	var $pageCache = Array();					// Used for caching page records in pageInfo()
-	var $copyMappingArray = Array();		// Use by the copy action to track the ids of new pages so subpages are correctly inserted!
-	var $copyMappingArray_merged = Array();		// This array is the sum of all copying operations in this class
+	var $copyMappingArray = Array();			// Use by the copy action to track the ids of new pages so subpages are correctly inserted!
+	var $copyMappingArray_merged = Array();		// This array is the sum of all copying operations in this class. May be READ from outside, thus partly public. 
 	var $registerDBList=array();
 	var $dbAnalysisStore=array();
 	var $removeFilesStore=array();
