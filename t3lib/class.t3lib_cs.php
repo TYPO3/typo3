@@ -181,6 +181,8 @@ class t3lib_cs {
 		'ms-greek' => 'windows-1253',
 		'ms-turk' => 'windows-1254',
 		'winbaltrim' => 'windows-1257',
+		'koi-8ru' => 'koi-8r',
+		'koi8r' => 'koi-8r',
 		'mac' => 'macRoman',
 		'macintosh' => 'macRoman',
 		'euc-cn' => 'gb2312',
