@@ -871,9 +871,11 @@ class SC_db_layout {
 		$dblist->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
 		if (!$dblist->nextThree)	$dblist->nextThree = 1;
 
+		$dblist->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];
+
 
 			// Create menu for selecting a table to jump to (this is, if more than just pages/tt_content elements are found on the page!)
-		$h_menu=$dblist->getTableMenu($this->id);
+		$h_menu = $dblist->getTableMenu($this->id);
 
 			// Initialize other variables:
 		$h_func='';
@@ -889,66 +891,70 @@ class SC_db_layout {
 				// Load full table definitions:
 			t3lib_div::loadTCA($table);
 
-				// Creating special conditions for each table:
-			switch($table)	{
-				case 'tt_board':
-					$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_board]',$this->MOD_SETTINGS['tt_board'],$this->MOD_MENU['tt_board'],'db_layout.php','');
-				break;
-				case 'tt_address':
-					$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_address]',$this->MOD_SETTINGS['tt_address'],$this->MOD_MENU['tt_address'],'db_layout.php','');
-				break;
-				case 'tt_links':
-					$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_links]',$this->MOD_SETTINGS['tt_links'],$this->MOD_MENU['tt_links'],'db_layout.php','');
-				break;
-				case 'tt_calender':
-					$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_calender]',$this->MOD_SETTINGS['tt_calender'],$this->MOD_MENU['tt_calender'],'db_layout.php','');
-				break;
-				case 'tt_products':
-					$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_products]',$this->MOD_SETTINGS['tt_products'],$this->MOD_MENU['tt_products'],'db_layout.php','');
-				break;
-				case 'tt_guest':
-				case 'tt_news':
-				case 'fe_users':
-					// Nothing
-				break;
-				case 'tt_content':
-					$q_count = $this->getNumberOfHiddenElements();
-					$h_func_b= t3lib_BEfunc::getFuncCheck($this->id,'SET[tt_content_showHidden]',$this->MOD_SETTINGS['tt_content_showHidden'],'db_layout.php','').(!$q_count?$GLOBALS['TBE_TEMPLATE']->dfw($LANG->getLL('hiddenCE')):$LANG->getLL('hiddenCE').' ('.$q_count.')');
+			if (!isset($dblist->externalTables[$table]))	{
+					// Creating special conditions for each table:
+				switch($table)	{
+					case 'tt_board':
+						$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_board]',$this->MOD_SETTINGS['tt_board'],$this->MOD_MENU['tt_board'],'db_layout.php','');
+					break;
+					case 'tt_address':
+						$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_address]',$this->MOD_SETTINGS['tt_address'],$this->MOD_MENU['tt_address'],'db_layout.php','');
+					break;
+					case 'tt_links':
+						$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_links]',$this->MOD_SETTINGS['tt_links'],$this->MOD_MENU['tt_links'],'db_layout.php','');
+					break;
+					case 'tt_calender':
+						$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_calender]',$this->MOD_SETTINGS['tt_calender'],$this->MOD_MENU['tt_calender'],'db_layout.php','');
+					break;
+					case 'tt_products':
+						$h_func = t3lib_BEfunc::getFuncMenu($this->id,'SET[tt_products]',$this->MOD_SETTINGS['tt_products'],$this->MOD_MENU['tt_products'],'db_layout.php','');
+					break;
+					case 'tt_guest':
+					case 'tt_news':
+					case 'fe_users':
+						// Nothing
+					break;
+					case 'tt_content':
+						$q_count = $this->getNumberOfHiddenElements();
+						$h_func_b= t3lib_BEfunc::getFuncCheck($this->id,'SET[tt_content_showHidden]',$this->MOD_SETTINGS['tt_content_showHidden'],'db_layout.php','').(!$q_count?$GLOBALS['TBE_TEMPLATE']->dfw($LANG->getLL('hiddenCE')):$LANG->getLL('hiddenCE').' ('.$q_count.')');
 
-					$dblist->tt_contentConfig['showCommands'] = 1;	// Boolean: Display up/down arrows and edit icons for tt_content records
-					$dblist->tt_contentConfig['showInfo'] = 1;		// Boolean: Display info-marks or not
-					$dblist->tt_contentConfig['single'] =0; 		// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
+						$dblist->tt_contentConfig['showCommands'] = 1;	// Boolean: Display up/down arrows and edit icons for tt_content records
+						$dblist->tt_contentConfig['showInfo'] = 1;		// Boolean: Display info-marks or not
+						$dblist->tt_contentConfig['single'] = 0; 		// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
 
-						// Setting up the tt_content columns to show:
-					if (is_array($TCA['tt_content']['columns']['colPos']['config']['items']))	{
-						$colList=array();
-						foreach($TCA['tt_content']['columns']['colPos']['config']['items'] as $temp)	{
-							$colList[]=$temp[1];
+							// Setting up the tt_content columns to show:
+						if (is_array($TCA['tt_content']['columns']['colPos']['config']['items']))	{
+							$colList = array();
+							foreach($TCA['tt_content']['columns']['colPos']['config']['items'] as $temp)	{
+								$colList[] = $temp[1];
+							}
+						} else {	// ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
+							$colList = array('1','0','2','3');
 						}
-					} else {	// ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
-						$colList=array('1','0','2','3');
-					}
-					if (strcmp($this->colPosList,''))	{
-						$colList=array_intersect(t3lib_div::intExplode(',',$this->colPosList),$colList);
-					}
+						if (strcmp($this->colPosList,''))	{
+							$colList = array_intersect(t3lib_div::intExplode(',',$this->colPosList),$colList);
+						}
 
-						// If only one column found, display the single-column view.
-					if (count($colList)==1)	{
-						$dblist->tt_contentConfig['single'] =1;	// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
-						$dblist->tt_contentConfig['showSingleCol']=current($colList);	// The column(s) to show if single mode (under each other)
-					}
-					$dblist->tt_contentConfig['cols'] = implode(',',$colList);		// The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
-					$dblist->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
-					$dblist->tt_contentConfig['sys_language_uid'] = intval($this->current_sys_language);
+							// If only one column found, display the single-column view.
+						if (count($colList)==1)	{
+							$dblist->tt_contentConfig['single'] = 1;	// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
+							$dblist->tt_contentConfig['showSingleCol'] = current($colList);	// The column(s) to show if single mode (under each other)
+						}
+						$dblist->tt_contentConfig['cols'] = implode(',',$colList);		// The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
+						$dblist->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
+						$dblist->tt_contentConfig['sys_language_uid'] = intval($this->current_sys_language);
 
-						// If the function menu is set to "Language":
-					if ($this->MOD_SETTINGS['function']==2)	{
-						$dblist->tt_contentConfig['single'] = 0;
-						$dblist->tt_contentConfig['languageMode'] = 1;
-						$dblist->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
-						$dblist->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
-					}
-				break;
+							// If the function menu is set to "Language":
+						if ($this->MOD_SETTINGS['function']==2)	{
+							$dblist->tt_contentConfig['single'] = 0;
+							$dblist->tt_contentConfig['languageMode'] = 1;
+							$dblist->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
+							$dblist->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
+						}
+					break;
+				}
+			} else {
+				$h_func = '';
 			}
 
 				// Start the dblist object:

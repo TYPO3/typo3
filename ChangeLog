@@ -1,5 +1,9 @@
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added API for configuring extra tables/fields for listing in Web > Page
+
+2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added option "mod.web_list.clickTitleMode = edit/info/show" to determine alternative behaviours of title links in the Web > List module.
 
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -124,6 +124,7 @@ class tx_cms_layout extends recordList {
 	var $ext_function=0;					// If set to "1", will link a big button to content element wizard.
 	var $doEdit=1;							// If true, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
 	var $agePrefixes = ' min| hrs| days| yrs';	// Age prefixes for displaying times. May be set externally to localized values.
+	var $externalTables = array();			// Array of tables which is configured to be listed by the Web > Page module in addition to the default tables.
 
 		// External, static: Configuration of tt_content element display:
 	var $tt_contentConfig = Array (
@@ -175,42 +176,51 @@ class tx_cms_layout extends recordList {
 			// Load full table definition:
 		t3lib_div::loadTCA($table);
 
-			// Branch out based on table name:
-			// Notice: Most of these tables belongs to other extensions than 'cms'. Each of these tables can be rendered only if the extensions they belong to is loaded.
-		switch($table)	{
-			case 'pages':
-				return $this->getTable_pages($id);
-			break;
-			case 'tt_content':
-				return $this->getTable_tt_content($id);
-			break;
-			case 'fe_users':
-				return $this->getTable_fe_users($id);
-			break;
-			case 'sys_note':
-				return $this->getTable_sys_note($id);
-			break;
-			case 'tt_board':
-				return $this->getTable_tt_board($id);
-			break;
-			case 'tt_address':
-				return $this->getTable_tt_address($id);
-			break;
-			case 'tt_links':
-				return $this->getTable_tt_links($id);
-			break;
-			case 'tt_guest':
-				return $this->getTable_tt_guest($id);
-			break;
-			case 'tt_news':
-				return $this->getTable_tt_news($id);
-			break;
-			case 'tt_calender':
-				return $this->getTable_tt_calender($id);
-			break;
-			case 'tt_products':
-				return $this->getTable_tt_products($id);
-			break;
+		if (isset($this->externalTables[$table]))	{
+			$fList = $this->externalTables[$table][0]['fList'];	// eg. "name;title;email;company,image"
+			$icon = $this->externalTables[$table][0]['icon'];	// Boolean,
+
+				// Create listing
+			$out = $this->makeOrdinaryList($table, $id, $fList, $icon);
+			return $out;
+		} else {
+				// Branch out based on table name:
+				// Notice: Most of these tables belongs to other extensions than 'cms'. Each of these tables can be rendered only if the extensions they belong to is loaded.
+			switch($table)	{
+				case 'pages':
+					return $this->getTable_pages($id);
+				break;
+				case 'tt_content':
+					return $this->getTable_tt_content($id);
+				break;
+				case 'fe_users':
+					return $this->getTable_fe_users($id);
+				break;
+				case 'sys_note':
+					return $this->getTable_sys_note($id);
+				break;
+				case 'tt_board':
+					return $this->getTable_tt_board($id);
+				break;
+				case 'tt_address':
+					return $this->getTable_tt_address($id);
+				break;
+				case 'tt_links':
+					return $this->getTable_tt_links($id);
+				break;
+				case 'tt_guest':
+					return $this->getTable_tt_guest($id);
+				break;
+				case 'tt_news':
+					return $this->getTable_tt_news($id);
+				break;
+				case 'tt_calender':
+					return $this->getTable_tt_calender($id);
+				break;
+				case 'tt_products':
+					return $this->getTable_tt_products($id);
+				break;
+			}
 		}
 	}
 
@@ -2334,13 +2344,18 @@ class tx_cms_layout extends recordList {
 
 			// Initialize:
 		$this->activeTables=array();
-		$theTables=explode(',','tt_content,fe_users,tt_address,tt_links,tt_board,tt_guest,tt_calender,tt_products,tt_news');		// NOTICE: This serves double function: Both being tables names (all) and for most others also being extension keys for the extensions they are related to!
+		$theTables = explode(',','tt_content,fe_users,tt_address,tt_links,tt_board,tt_guest,tt_calender,tt_products,tt_news');		// NOTICE: This serves double function: Both being tables names (all) and for most others also being extension keys for the extensions they are related to!
+
+			// External tables:
+		if (is_array($this->externalTables))	{
+			$theTables = array_unique(array_merge($theTables, array_keys($this->externalTables)));
+		}
 
 			// Traverse tables to check:
 		foreach($theTables as $tName)	{
 
 				// Check access and whether the proper extensions are loaded:
-			if ($GLOBALS['BE_USER']->check('tables_select',$tName) && (t3lib_extMgm::isLoaded($tName)||t3lib_div::inList('fe_users,tt_content',$tName)))	{
+			if ($GLOBALS['BE_USER']->check('tables_select',$tName) && (t3lib_extMgm::isLoaded($tName)||t3lib_div::inList('fe_users,tt_content',$tName) || isset($this->externalTables[$tName])))	{
 
 					// Make query to count records from page:
 				$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $tName, 'pid='.intval($id).t3lib_BEfunc::deleteClause($tName));

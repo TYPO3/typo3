@@ -293,7 +293,7 @@ function linkTo_UnCryptMailto(s)	{	//
 
 			// if 'disableAllHeaderCode' is set, all the header-code is discarded!
 		if ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'])	{
-			$GLOBALS['TSFE']->content=$pageContent;
+			$GLOBALS['TSFE']->content = $pageContent;
 		} else {
 			TSpagegen::renderContentWithHeader($pageContent);
 		}
