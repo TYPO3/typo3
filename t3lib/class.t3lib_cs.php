@@ -303,18 +303,24 @@ class t3lib_cs {
 			$strLen = strlen($str);
 			$outStr='';
 
-			for ($a=0,$i;$a<$strLen;$a++,$i++)	{	// Traverse each char in string.
+			for ($a=0;$a<$strLen;$a++)	{	// Traverse each char in string.
 				$chr=substr($str,$a,1);
 				$ord=ord($chr);
 				if ($this->twoByteSets[$charset])	{	// If the charset has two bytes per char
-					$ord2 = ord($str[$i+1]);
+					$ord2 = ord($str{$a+1});
 					$ord = $ord<<8 & $ord2; // assume big endian
 
 					if (isset($this->parsedCharsets[$charset]['local'][$ord]))	{	// If the local char-number was found in parsed conv. table then we use that, otherwise 127 (no char?)
 						$outStr.=$this->parsedCharsets[$charset]['local'][$ord];
 					} else $outStr.=chr($this->noCharByteVal);	// No char exists
+					$a++;
 				} elseif ($ord>127)	{	// If char has value over 127 it's a multibyte char in UTF-8
 					if ($this->eucBasedSets[$charset])	{	// EUC uses two-bytes above 127; we get both and advance pointer and make $ord a 16bit int.
+						$a++;
+						$ord2=ord(substr($str,$a,1));
+						$ord = $ord*256+$ord2;
+					}
+					elseif ($charset == 'shift_jis' && ($ord <160 || $ord>223))	{	// Shift-JIS is like EUC, but chars between 160 and 223 are single byte
 						$a++;
 						$ord2=ord(substr($str,$a,1));
 						$ord = $ord*256+$ord2;
