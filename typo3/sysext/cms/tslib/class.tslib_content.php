@@ -2881,7 +2881,8 @@ class tslib_cObj {
 				if ($conf['bytes']){$content=$this->bytes($content,$conf['bytes.']['labels']);}
 				if ($conf['substring']){$content=$this->substring($content,$conf['substring']);}
 				if ($conf['crop']){$content=$this->crop($content, $conf['crop']);}
-				if ($conf['stripHtml']){$content=strip_tags($content);}
+				if ($conf['stripHtml']){$content = strip_tags($content);}
+				if ($conf['rawUrlEncode']){$content = rawurlencode($content);}
 				if ($conf['htmlSpecialChars']){
 					$content=htmlSpecialChars($content);
 					if ($conf['htmlSpecialChars.']['preserveEntities'])	$content = t3lib_div::deHSCentities($content);
