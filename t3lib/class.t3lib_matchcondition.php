@@ -411,7 +411,9 @@ class t3lib_matchCondition {
 		$browserInfo['useragent']=$useragent;
 		if ($useragent)	{
 			// browser
-			if(strstr($useragent,'Opera'))	{
+			if (strstr($useragent,'MSIE'))	{
+				$browserInfo['browser']='msie';
+			} elseif(strstr($useragent,'Opera'))	{
 				$browserInfo['browser']='opera';
 			} elseif(strstr($useragent,'Lynx'))	{
 				$browserInfo['browser']='lynx';
@@ -427,8 +429,6 @@ class t3lib_matchCondition {
 				$browserInfo['browser']='teleport';
 			} elseif(strstr($useragent,'Mozilla'))	{
 				$browserInfo['browser']='netscape';
-			} elseif (strstr($useragent,'MSIE'))	{
-				$browserInfo['browser']='msie';
 			} else {
 				$browserInfo['browser']='unknown';
 			}

@@ -1,3 +1,7 @@
+2004-05-11  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Rolled back browser detection in matchcondition class.
+
 2004-05-07  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added "relPathprefix" to TEMPLATE cObject and also added support for relative path substitution of references in url() wrappers in <style> tags. This will also fix THAT problem reported for automaketemplate.
