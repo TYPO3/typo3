@@ -2180,17 +2180,12 @@
 			}
 		}
 
-			// Indexing the page?
-		if ($this->isSearchIndexPage())	{
-			$GLOBALS['TT']->push('Index page','');
-				$indexer = t3lib_div::makeInstance('tx_indexedsearch_indexer');
-				$indexer->init($this->content,$this->config['config'],$this->id,$this->type,$this->gr_list,$this->cHash_array,$this->register['SYS_LASTCHANGED'],$this->config['rootLine']);
-				$indexer->indexTypo3PageContent();
-			$GLOBALS['TT']->pull();
-		} elseif ($this->config['config']['index_enable'] && $this->no_cache) {
-			$GLOBALS['TT']->push('Index page','');
-			$GLOBALS['TT']->setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');
-			$GLOBALS['TT']->pull();
+			// Hook for indexing pages
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing']))	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $_classRef)	{
+				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj->hook_indexContent($this);
+			}
 		}
 
 			// Convert char-set for output:
@@ -2315,15 +2310,6 @@ if (version == "n3") {
 	 */
 	function isINTincScript()	{
 		return	(is_array($this->config['INTincScript']) && !$this->jumpurl);
-	}
-
-	/**
-	 * Returns true if page should be indexed.
-	 *
-	 * @return	boolean
-	 */
-	function isSearchIndexPage()	{
-		return t3lib_extMgm::isLoaded('indexed_search') && $this->config['config']['index_enable'] && !$this->no_cache;
 	}
 
 	/**

@@ -628,7 +628,7 @@ class t3lib_pageSelect {
 	 * Does a recursive search if the mounted page should be a mount page itself. It has a run-away break so it can't go into infinite loops.
 	 *
 	 * @param	integer		Page id for which to look for a mount pid. Will be returned only if mount pages are enabled, the correct doktype (7) is set for page and there IS a mount_pid (which has a valid record that is not deleted...)
-	 * @param	array		Optional page record for the page id. If not supplied it will be looked up by the system.
+	 * @param	array		Optional page record for the page id. If not supplied it will be looked up by the system. Must contain at least uid,pid,doktype,mount_pid,mount_pid_ol
 	 * @param	array		Array accumulating formerly tested page ids for mount points. Used for recursivity brake.
 	 * @param	integer		The first page id.
 	 * @return	mixed		Returns FALSE if no mount point was found, "-1" if there should have been one, but no connection to it, otherwise an array with information about mount pid and modes.

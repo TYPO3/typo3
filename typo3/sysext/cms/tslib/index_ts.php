@@ -348,10 +348,6 @@ if ($TSFE->isGeneratePage())	{
 			require_once(PATH_tslib.'class.tslib_pagegen.php');
 			include(PATH_tslib.'pagegen.php');
 		}
-		if ($TSFE->isSearchIndexPage())	{
-			if ($TSFE->config['config']['index_externals'])	{require_once(PATH_t3lib.'class.t3lib_htmlmail.php');}
-			require_once(t3lib_extMgm::extPath('indexed_search','class.indexer.php'));
-		}
 		$TSFE->generatePage_postProcessing();
 } elseif ($TSFE->isINTincScript())	{
 	require_once(PATH_tslib.'class.tslib_pagegen.php');

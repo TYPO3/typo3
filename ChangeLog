@@ -1,3 +1,7 @@
+2004-09-02  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added Catalan, Bosnian and Korean languages.
+
 2004-08-29  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added a wildcard like option for values in the "language" condition in frontend (matchcondition class). Can now match any language found in the HTTP_ACCEPT_LANGUAGE value.

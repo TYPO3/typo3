@@ -48,6 +48,9 @@
 			<label index="lang_lv">Latvian</label>
 			<label index="lang_jp">Japanese</label>
 			<label index="lang_vn">Vietnamese</label>
+			<label index="lang_ca">Catalan</label>
+			<label index="lang_ba">Bosnian</label>
+			<label index="lang_kr">Korean</label>
 			<label index="default">Default</label>
 			<label index="simulate">Simulate backend user</label>
 			<label index="opening">Startup</label>

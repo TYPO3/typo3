@@ -433,6 +433,9 @@ class t3lib_cs {
 		'jp' => 'shift_jis',
 		'lv' => 'utf-8',
 		'vn' => 'utf-8',
+		'ca' => 'iso-8859-15',
+		'ba' => 'iso-8859-2',
+		'kr' => 'euc-kr',
 	);
 
 	/**

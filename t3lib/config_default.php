@@ -225,12 +225,11 @@ define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 
 	// Defining backend system languages
 	// Remember to
-	//		- update 'setup' extension labels (ext/setup/mod/locallang.php)
+	//		- update 'setup' extension labels (sysext/setup/mod/locallang.xml)
 	//		- pages.lang item array (t3lib/stddb/tbl_be.php)
-	// 		- Kickstarter wizard (ext/extrep_wizard/pi/class.tx_extrepwizard.php)
-	//		- Add new file: sysext/lang/locallang_core.[lang_key].php
+	// 		- Kickstarter wizard (ext/kickstarter/modfunc1/class.tx_kickstarter_wizard.php)
 	//		- Add character encoding for lang key in t3lib/class.t3lib_cs.php
-define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn');
+define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr');
 
 	// Unsetting the configured values. Use of these are depreciated.
 unset($typo_db);
