@@ -406,6 +406,17 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'pages' => 'Lapa',
+		'doktype.I.0' => 'Standarta',
+		'doktype.I.1' => 'Sistēmas folderis',
+		'doktype.I.2' => 'Miskaste',
+		'title' => 'Lapas virsraksts:',
+		'php_tree_stop' => 'Lapu koka beigas:',
+		'is_siteroot' => 'Ir websaita sākums:',
+		'storage_pid' => 'Vispārīgā ierakstu glabāšanas lapa:',
+		'be_users' => 'Administrācijas lietotājs',
+		'be_groups' => 'Administrācijas lietotāju grupa',
+		'sys_filemounts' => 'Failsistēmas sākumpunkts',
 	),
 	'jp' => Array (
 	),

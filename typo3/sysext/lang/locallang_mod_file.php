@@ -135,6 +135,8 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'mlang_labels_tablabel' => 'Failu administrēšana',
+		'mlang_tabs_tab' => 'Fails',
 	),
 	'jp' => Array (
 	),

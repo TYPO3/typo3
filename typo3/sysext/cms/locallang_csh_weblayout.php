@@ -69,6 +69,7 @@ $LOCAL_LANG = Array (
 		'columns.description' => 'Sarake näkymässä voit hallita websivun sisältöä kuten se on muotoiltu sarakkeisiin.',
 	),
 	'tr' => Array (
+		'quickEdit.description' => 'Hızlı Düzenleyici size sayfa içeriğine doğrudan erişimi sağlar.',
 	),
 	'se' => Array (
 		'quickEdit.description' => 'Med Snabbediteraren kan du direkt ändra formulärfälten i sidinnehållet.',
@@ -79,6 +80,10 @@ $LOCAL_LANG = Array (
 	'pt' => Array (
 	),
 	'ru' => Array (
+		'quickEdit.description' => 'Áûñòğûé Ğåäàêòîğ äàåò Âàì ïğÿìîé äîñòóï ê ñîäåğæàíèå ñòğàíèöû.',
+		'quickEdit.details' => 'Áûñòğûé Ğåäàêòîğ ğàçğàáîòàí, ÷òîáû ñîêğàòèòü ÷èñëî ùåë÷êîâ, íåîáõîäèìûõ äëÿ ğåäàêòèğîâàòü ñîäåğæàíèå ñòğàíèöû. Ïğîñòî ùåëêàÿ íà íàçâàíèå ñòğàíèöû â äåğåâå Âû ïîëó÷àåòå îòêğûòóş ïåğâóş çàïèñü ñîäåğæèìîãî. Â âåğõíåé ïàíåëè èíñòğóìåíòîâ Âû ìîæåòå âûáğàòü äğóãèå çàïèñè èç ñïèñêà.',
+		'quickEdit_selElement.description' => 'İòî - êğàòêèé îáçîğ çàïèñåé íà ıòîé ñòğàíèöå. Âûáåğèòå äğóãîé ıëåìåíò äëÿ ğåäàêòèğîâàíèÿ èëè ùåëêíèòå íà êíîïêó "Íîâ.", ÷òîáû ñîçäàòü íîâóş çàïèñü.',
+		'columns.description' => 'Â ğåæèìå "Êîëîíêè" Âû ìîæåòå óïğàâëÿòü ñîäåğæàíèåì âåá-ñòğàíèöû, ğàçìåùåííûì â êîëîíêàõ.',
 	),
 	'ro' => Array (
 	),
@@ -129,6 +134,10 @@ $LOCAL_LANG = Array (
 		'columns.description' => 'Através da visualização em "Colunas", você pode controlar o conteúdo da página segundo seu posicionamento em colunas.',
 	),
 	'et' => Array (
+		'quickEdit.description' => 'Quick Editor annab otsese ligipääsu lehel olevatele vormielementidele.',
+		'quickEdit.details' => 'Quick Editor on loodud lehe redigeerimisek vajamineva aja kokkuhoiuks. Klikkide lihtsalt lehekülje pealkirjale sisupuul, laetakse esimene sisuelement esimesse veergu. Tööriistaribalt saate rippmenüüst valida võimaluse redigeerida teisi sisuelemente.',
+		'quickEdit_selElement.description' => 'See on kõigi sellel lehel paiknevate sisuelementide ülevaade. Valige mõni element, mida soovite redigeerida, või klikkige "Uus" ikoonil, loomaks uut sisuelementi.',
+		'columns.description' => 'Vaatega "Veerud", saate kontrollida lehekülgede sisu kui see on paigutatud veergudesse.',
 	),
 	'ar' => Array (
 		'quickEdit.description' => 'çĞÇ ÇäåÙÏä ÇäÓÑêÙ êÙ×êã ÇäÏÎèä ÇäåÈÇÔÑ Ùäé åÍÊèêÇÊ ÎÇæÇÊ ÇäÅÓÊåÇÑÉ',
@@ -146,6 +155,10 @@ $LOCAL_LANG = Array (
 		'quickEdit.description' => 'Quick Editor äàº âàì áåçïîñåğåäí³é äîñòóï äî âì³ñòó ñòîğ³íêè',
 	),
 	'lv' => Array (
+		'quickEdit.description' => 'Ä€trais Redaktors dod jums tieÅ¡u pieeju lapas satura formas laukiem.',
+		'quickEdit.details' => 'Ä€trais Redaktors ir radÄ«ts, lai jÅ«s ÄtrÄk varÄ“tu tikt pie lapas satura laboÅ¡anas. VienkÄrÅ¡i klikÅ¡Ä·inot uz lapas virsraksta lapu kokÄ, jÅ«s iegÅ«stat pirmo satura elementu no centrÄlÄs kolonnas atvÄ“rtu redaktorÄ. IzvÄ“lnÄ“, kas atrodas rÄ«ku joslÄ augÅ¡Ä, jÅ«s varat izvÄ“lÄ“ties citus satura elementus.',
+		'quickEdit_selElement.description' => 'Tas ir satura elementu pÄrskats Å¡ajÄ lapÄ. JÅ«s varat izvÄ“lÄ“ties citu elementu laboÅ¡anai, vai uzklikÅ¡Ä·inÄt uz ikonas "Jauns", lai izveidotu jaunu satura elementu.',
+		'columns.description' => 'Ar skatu "Kolonnas" jÅ«s varat kontrolÄ“t lapas saturu, kÄ tas ir izvietots kolonnÄs.',
 	),
 	'jp' => Array (
 	),

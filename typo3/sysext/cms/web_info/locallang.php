@@ -459,6 +459,21 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'page_title' => 'Lapu koka pārskats',
+		'page_sysnote' => 'Iekšējās piezīmes',
+		'pageInformation' => 'Lapas informācija',
+		'pages_0' => 'Pamatkonfigurācija',
+		'pages_2' => 'Kešs un vecums',
+		'pages_1' => 'Ierakstu pārskats',
+		'stat_type_0' => 'Lapas apmeklējumi',
+		'stat_type_1' => 'Kopā apmeklējumi',
+		'stat_type_2' => 'Pamatsekciju apmeklējumi',
+		'stat_period' => 'Statistika periodā %s atpakaļ līdz %s',
+		'pI_crUser' => 'Izveidoja',
+		'pI_crDate' => 'Izveidošanas datums',
+		'pI_lastChange' => 'Pēdējie labojumi',
+		'pI_lastChangeContent' => 'Pēdējie labojumi saturā',
+		'hits_title' => 'Apmeklējuma statistika',
 	),
 	'jp' => Array (
 	),

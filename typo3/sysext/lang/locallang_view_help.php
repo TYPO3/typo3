@@ -114,6 +114,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Geri git',
 		'fullDescription' => 'Tablonun tüm tanıtımını gör',
 		'close' => 'Kapat',
+		'title' => 'TYPO3 online yardım',
 	),
 	'se' => Array (
 		'details' => 'Detaljer',
@@ -271,6 +272,13 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'details' => 'SÄ«kÄk',
+		'syntax' => 'Sintakse',
+		'seeAlso' => 'SkatÄ«t arÄ«',
+		'goBack' => 'Atgriezties',
+		'fullDescription' => 'SkatÄ«t tabulas pilnu aprakstu',
+		'close' => 'AizvÄ“rt',
+		'title' => 'TYPO3 palÄ«dzÄ«ba',
 	),
 	'jp' => Array (
 	),

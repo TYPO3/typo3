@@ -156,6 +156,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ñòîğ³íêà',
 	),
 	'lv' => Array (
+		'mlang_labels_tablabel' => 'Lapu saturs',
+		'mlang_labels_tabdescr' => 'Å is modulis Ä¼auj jums veidot un labot web lapas. It provides a Quick-Editor for instant access to the primary page content. In addition you can manage different languages and columns of content per page. Finally you may access special page content like guestbook, board and shopping items. The module also presents pagehit statistics for the individual pages.',
+		'mlang_tabs_tab' => 'Lapas',
 	),
 	'jp' => Array (
 	),

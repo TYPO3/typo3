@@ -58,6 +58,7 @@ $LOCAL_LANG = Array (
 	),
 	'tr' => Array (
 		'mlang_labels_tablabel' => 'Typo3 Uzantı Yönetimi',
+		'mlang_labels_tabdescr' => 'TYPO3 Uzantı Yönetimi, Eklentileri, modülleri, uzanti birimlerini, konfigürasyon kodlarını vs. merkezi repository den içerir.',
 		'mlang_tabs_tab' => 'Uzantı Yönetimi',
 	),
 	'se' => Array (
@@ -157,6 +158,8 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'mlang_labels_tablabel' => 'TYPO3 PaplaÅ¡inÄjumu menedÅ¾eris',
+		'mlang_tabs_tab' => 'PaplaÅ¡inÄjumi',
 	),
 	'jp' => Array (
 	),

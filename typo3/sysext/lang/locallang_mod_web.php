@@ -135,6 +135,8 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'mlang_labels_tablabel' => 'Web lapas un datubāzes saturs',
+		'mlang_tabs_tab' => 'Web',
 	),
 	'jp' => Array (
 	),

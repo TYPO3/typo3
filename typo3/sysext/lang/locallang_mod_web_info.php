@@ -318,6 +318,13 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'title' => 'Lapas informācija',
+		'depth_0' => 'Šī lapa',
+		'depth_1' => '1 līmenis',
+		'depth_2' => '2 līmeņi',
+		'depth_3' => '3 līmeņi',
+		'mlang_labels_tablabel' => 'Informācija ar lapām - apmeklējumu statistika, labojumu vēsture, ierakstu skaits',
+		'mlang_tabs_tab' => 'Info',
 	),
 	'jp' => Array (
 	),
