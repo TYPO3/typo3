@@ -285,7 +285,7 @@ class t3lib_DB {
 	 * @return	array		Array of rows.
 	 */
 	function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')	{
-		$res = mysql_query($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit), $this->link);
+		$res = $this->exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
 		if ($this->debugOutput)	$this->debug('exec_SELECTquery');
 
 		unset($output);
