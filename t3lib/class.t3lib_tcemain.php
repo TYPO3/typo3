@@ -407,12 +407,51 @@ class t3lib_TCEmain	{
 
 
 
+	/**
+	 * Init the userProcFuncs registered by $GLOBALS['TBE_MODULES_EXT']['TCEmain']['addProcFunc']
+	 * 
+	 * @return	void
+	 */
+	function initUserProcFunc() {
+		if (is_array($this->userProcFunc) AND count($this->userProcFunc)) {
+				// init already done
+			return;
+		}
+		$this->userProcFunc=array();
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['TCEmain']['addProcFuncClasses']))	{
+			foreach($GLOBALS['TBE_MODULES_EXT']['TCEmain']['addProcFuncClasses'] as $className => $classFile)	{
+
+				if (@is_file($classFile))	{
+					require_once($classFile);
+
+					$this->userProcFunc[$key]['obj'] = t3lib_div::makeInstance($className);
+					$this->userProcFunc[$key]['obj']->pObj = &$this;
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param	string		name of the user function
+	 * @param	mixed		first parameter for the user function (will be passed as reference)
+	 * @return	void
+	 * @see initUserProcFunc()
+	 */
+	function callUserProcFunc($func, &$refArg) {
+		// func_get_args() does not support pass as reference so the first param is defined that way
+		foreach($this->userProcFunc as $key => $userProcFuncObj)	{
+			if (@is_callable(array($this->userProcFunc[$key]['obj'],$func)))	{
+				$arg_list = func_get_args();
+				unset($arg_list[0]); //$func
+				$arg_list[1]=&$refArg;
+				call_user_func_array(array($this->userProcFunc[$key]['obj'], $func),$arg_list);
 
 
 
-
-
-
+			}
+		}
+	}
 
 	/*********************************************
 	 *
@@ -428,6 +467,11 @@ class t3lib_TCEmain	{
 	 */
 	function process_datamap() {
 		global $TCA;
+		
+			// calling user functions before the datamap will be processed
+		$this->initUserProcFunc();	
+		$this->callUserProcFunc('processDatamap',$this->datamap);
+		
 		reset ($this->datamap);
 
 			// Organize tables so that the pages-table are always processed first. This is required if you want to make sure that content pointing to a new page will be created.
@@ -468,6 +512,12 @@ class t3lib_TCEmain	{
 							debug("INCOMING RECORD: ".$table.":".$id);
 							debug($incomingFieldArray);
 						}
+						
+						
+								// call user functions before processing and check
+						$this->callUserProcFunc('processIncomingFieldArray',$incomingFieldArray,$table,$id);
+						
+						
 							// ******************************
 							// Checking access to the record
 							// ******************************
@@ -563,6 +613,10 @@ class t3lib_TCEmain	{
 							if ($TCA[$table]["ctrl"]["tstamp"])	{
 								$fieldArray[$TCA[$table]["ctrl"]["tstamp"]]=time();
 							}
+
+
+								// call user functions right before writing to DB
+							$this->callUserProcFunc('processFieldArray',$fieldArray,$table,$id,$status);
 
 								// Performing insert/update
 							if ($status=="new")	{
