@@ -1,0 +1,95 @@
+*******************************************************
+Rules and Conditions for contributions to Core CVS
+(Core + System Extensions)
+*******************************************************
+
+[A] Development Principle: A bazaar of small cathedrals.
+- Each part of the system (System extensions, scripts, functions) has a person responsible and in charge of the development of that part.
+- All or nothing; If a part of the system is not maintained according to the "General Rules of Core Development" (see below) and we need to release the core, we will revert to previous stable version of that part of the system.
+- The Core Team Leader (Kasper) is ultimately in charge.
+Note: This makes it possible for many to work together while maintaining control and tracking responsibility more easily. Also it offers boths modes of development: Group and solo.
+
+[B] Committing changes to Core CVS
+- As long as changes follow the "General Rules of core development" (see below), the mode of commits is determined by the person responsible for that particular part.
+- Examples:
+	- A developer of a certain class might want to maintain it all alone and not accept any commits by others.
+	- A developer of an extension might want to collaborate in a larger group quite anarchical.
+
+
+[C] General Rules of Core Development:
+- 1: CGL Adherance.
+	Code in the core must follow the Coding Guidelines for TYPO3 to appear as a unity and good examples. This includes (but is not limited to) code formatting, XHTML compliance and full inline code documentation.
+- 2: Pursue Stability.
+	"Rather a stable bug than an unstable system". TYPO3 is known for being stable (even in beta versions and CVS) and we want it to stay that way. Give priority to stability, organize quality assurance, create unit-tests for mission critical parts of your code.
+- 3: Backwards Compatibility
+	We aim at being very backwards compatible so even old websites can easily upgrade to most recent TYPO3 core source. Contrary to general extensions where people can easily choose to keep running an old version, all system extensions in the core (and the core code itself) has to respect that they are not (easily) downgradable. Hence they must respect backwards compatibility for the larger parts.
+- 4: No loose ends
+	Do NOT implement things half-way. Begin, go through it, round it up, complete it - because you will never get back to it again!
+- 5: Document instantly!
+	There are two extremes of documentation: References (list of options, eg. TSref) and tutorials (walk-throughs). Tutorials are nice but not mission critical as references are! *Always* maintain reference documentation along the work! You have forgotten tomorrow!
+- 6: Branches?
+	Do not create branches/tags without getting permission from Kasper. By default he is the only one doing it unless expressly allowed.
+- 7: Adding / Removing files?
+	You may NOT add or remove scripts to the core without asking Kasper first (unless inside a directory totally controlled by you, like for instance a system extension of course).
+
+
+[D] Rules of CVS Commits to Kaspers Core parts:
+Now, here comes the rules for commits to my parts of the core (which is everything you are not sure belongs to someone else.)
+These rules take offset in the presupposition that I'm the bottleneck and we all want to cut down my administration time as much as possible. Effectively it may mean that the "command-chain" for you as a contributer is getting longer and more cumbersome. If you disagree with this presupposition, just tell me why.
+
+Secret #1: I *will* check everything!
+	- I require to be 100% in control of all commits to my parts of the core. This means you can easily step very hard on my toes if you break the rules below. So read them and commit with care!
+
+Rule #1: Ask me first!
+	- 1) Always contact me by email first and present a summary of what you want to do. If it sounds reasonable I will probably say "Yes, just commit" and then I will study the details. The point is that I get a chance to reject things which will just be a mess to clean up.
+	- 2) Exception: If you are justified in thinking it wouldn't be necessary (for instance doing a second commit to something we have already discussed).
+	- 3) If you ask first, we can prevent these past (bad) experiences:
+		- a) My code overview is typically larger and I may see implications that were not clear to you. This prevents bugs and bad implementations.
+		- b) Maybe another similar concept is planned. In that case we should wait for that.
+	- 4) Balance is important. Juggling with a big project like TYPO3 is an act of balance and some changes/fixes will (potentially) disturb the balance. If I judge that to be the case, I will reject the suggestion with reference to my 6th sense... :-)
+	- 5) I'm itchy; With CVS I have already experienced that commits meant that I was forced into bugfixing others code for a long time... This is very bad experience! I will do anything to avoid that.
+
+Rule #2: Reference Documentation instantly!
+	- This is General Rules #5 emphasized! I'm very, very serious about this point. I really hate to preview some code and see that a new feature was added but not called to my notice! I'm not talking about writing 5 pages, I'm talking about making a small bulletlist with [option] - [description] and sending it to me so we don't forget it!
+	- Specific Examples:
+		- You add "inverseMenuItemOrder" property somewhere in TypoScript. Instantly you note down 5 things: a) property name, b) TS data type, c) Description, d) optional default value and e) Which table in TSref (or elsewhere) to put it!
+		- You add new key in some global PHP array. Instantly you note down 3 things: a) variable name + new key, b) Description of what it does in an understanable way, c) pointer to where in the TYPO3 documents it should go. If you don't know where it belongs then still send it and just say so!!!
+		- You add a new hook in the system. Since there is currently no place where hooks are documented you cannot really do anything. If it deserves a comment then send one for any future documentation. In any case, send me a notice about the situation.
+
+Rule #3: No loose ends
+	- This is General Rules #4 emphasized! Before you begin core work, make sure you have allocated the time to finish it to an acceptable standard (by the measures given in this text)
+
+
+[E] Rules of CVS Commits for parts of the core NOT maintained by Kasper
+... (yet to be filled in from other contributers, like Rene Fritz who is in charge of eg. Services)
+
+
+[F] Version number scheme
+Versioning scheme:
+ - major.minor.patch[A/B/RC][-dev]
+	- major and minor: Incremented based on the extend of new features (in HEAD branch)
+	- patch: incremented only for important bugfixes in a release branch.
+	- dev is always used for intermediate CVS stuff.
+	- [A/B/RC] is used only for major releases where this procedure is necessary.
+ - HEAD branch is the continuous development of TYPO3. We use only this branch for new development of the Core.
+ - Each time we have a Release Candidate which is so stable we believe it to be the final release (typ. RC2) we will make a "release branch" tagged "TYPO3_[major]-[minor]". The Quality Ensurance team / Package team represented by Ingmar Schlecht and Michael Stucki are in charge of managing the release branches and make new patch releases. Kasper is still in charge of a) tagging and b) merging bugfixes in the release branches.
+ - In the release branches tagging is used for each release on the form "TYPO3_[major]-[minor]-[patch]"
+
+Examples of BRANCHES (major/minor releases):
+- Major releases where we feature-freeze before release and backport fixes to.
+TYPO3_3-6
+TYPO3_3-7
+TYPO3_4-0
+
+Examples of TAGS (patch releases):
+- Indicates release points in time.
+TYPO3_3-7-0RC2 (RC2 for main release)
+TYPO3_3-7-0 (main release)
+TYPO3_3-7-1 (patch release)
+TYPO3_3-7-2 (patch release)
+
+Example:
+For the 3.7.0 launch the RC2 event will be a feature freeze. Therefore the branch "TYPO3_3-7" is created there meaning:
+- Final fixes (and future hotfixes) is done in that branch
+- Development for 3.8.0 could go on in HEAD
+At the same time the tag "TYPO3_3-7-0RC2" was applied basically because the branch-point coincided with the RC2. If an RC3 would come that would be tagged in the "TYPO3_3-7-0RC3" branch. Maybe the final release gets the tag "TYPO3_3-7-0" to indicate the point of release.

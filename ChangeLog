@@ -1,3 +1,7 @@
+2004-07-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added the Core CVS rules to repository at "misc/core_cvs_rules.txt". ALL Contributers to the CORE CVS SHOULD READ AND FOLLOW THIS!
+
 2004-07-15  Robert Lemke  <rl@robertlemke.de>
 
 	* Added new language flag icons (see t3lib/gfx/flags/). Will be used by templavoila and maybe sys_language
