@@ -217,7 +217,7 @@ define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 	// 		- Kickstarter wizard (ext/extrep_wizard/pi/class.tx_extrepwizard.php)
 	//		- Add new file: sysext/lang/locallang_core.[lang_key].php
 	//		- Add character encoding for lang key in t3lib/class.t3lib_cs.php
-define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua');
+define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn');
 
 	// Unsetting the configured values. Use of these are depreciated.
 unset($typo_db);

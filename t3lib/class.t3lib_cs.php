@@ -254,6 +254,9 @@ class t3lib_cs {
 		'ar' => 'iso-8859-6',
 		'he' => 'utf-8',
 		'ua' => 'windows-1251',
+		'lv' => 'utf-8',
+		'jp' => 'shift-jis',
+		'vn' => 'utf-8',
 	);
 
 	/**
@@ -897,14 +900,14 @@ class t3lib_cs {
 	 * @return	string		the shortened string
 	 * @see substr(), mb_strimwidth()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */	
+	 */
 	function crop($charset,$string,$len,$crop='')	{
 		if ($len == 0)	return $crop;
 
 		if ($charset == 'utf-8')	{
 			$i = $this->utf8_char2byte_pos($string,$len);
 		} elseif ($this->eucBasedSets[$charset])	{
-			$i = $this->euc_char2byte_pos($string,$len,$charset);           
+			$i = $this->euc_char2byte_pos($string,$len,$charset);
 		} else {
 			if ($len > 0)	{
 				$i = $len;
