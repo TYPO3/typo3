@@ -649,11 +649,12 @@ class t3lib_TCEforms	{
 
 			// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $TCA[$table]['columns'][$field];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
 
 			// Now, check if this field is configured and editable (according to excludefields + other configuration)
 		if (	is_array($PA['fieldConf']) &&
 				(!$PA['fieldConf']['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$field)) &&
-				$PA['fieldConf']['config']['type']!='passthrough' &&
+				$PA['fieldConf']['config']['form_type']!='passthrough' &&
 				($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE']) &&
 				(!$PA['fieldConf']['displayCond'] || $this->isDisplayCondition($PA['fieldConf']['displayCond'],$row))
 			)	{
@@ -715,7 +716,7 @@ class t3lib_TCEforms	{
 					}
 
 						// Create output value:
-					if ($PA['fieldConf']['config']['type']=='user' && $PA['fieldConf']['config']['noTableWrapping'])	{
+					if ($PA['fieldConf']['config']['form_type']=='user' && $PA['fieldConf']['config']['noTableWrapping'])	{
 						$out = $item;
 					} elseif ($PA['palette'])	{
 							// Array:
@@ -763,7 +764,9 @@ class t3lib_TCEforms	{
 	 * @see getSingleField(), getSingleField_typeFlex_draw()
 	 */
 	function getSingleField_SW($table,$field,$row,&$PA)	{
-		switch($PA['fieldConf']['config']['type'])	{
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		
+		switch($PA['fieldConf']['config']['form_type'])	{
 			case 'input':
 				$item = $this->getSingleField_typeInput($table,$field,$row,$PA);
 			break;
@@ -1417,7 +1420,9 @@ class t3lib_TCEforms	{
 	 */
 	function getSingleField_typeNone_render($config,$itemValue)	{
 
-		$divStyle = 'border:solid 1px '.t3lib_div::modifyHTMLColorAll($this->colorScheme[0],-30).';'.$this->defStyle.$this->formElStyle('none').' background-color: '.$this->colorScheme[0].'; overflow:auto;padding-left:1px;color:#555;';
+				// is colorScheme[0] the right value?
+		$divStyle = 'border:solid 1px '.t3lib_div::modifyHTMLColorAll($this->colorScheme[0],-30).';'.$this->defStyle.$this->formElStyle('none').' background-color: '.$this->colorScheme[0].'; padding-left:1px;color:#555;';
+
 		if ($config['rows']>1) {
 			if(!$config['pass_content']) {
 				$itemValue = nl2br(htmlspecialchars($itemValue));
@@ -1439,9 +1444,9 @@ class t3lib_TCEforms	{
 			$width = ceil($cols*$this->form_rowsToStylewidth);
 				// hardcoded: 12 is the height of the font
 			$height=$rows*12;
-				// is colorScheme[0] the right value?
+
 			$item='
-				<div style="'.htmlspecialchars($divStyle.'height:'.$height.'px;width:'.$width.'px;').'" class="'.htmlspecialchars($this->formElClass('none')).'">'.
+				<div style="'.htmlspecialchars($divStyle.' overflow:auto; height:'.$height.'px; width:'.$width.'px;').'" class="'.htmlspecialchars($this->formElClass('none')).'">'.
 				$itemValue.
 				'</div>';
 		} else {
@@ -1449,14 +1454,14 @@ class t3lib_TCEforms	{
 				$itemValue = htmlspecialchars($itemValue);
 			}
 
-			// how to handle cropping for too long lines?
-			#$item=htmlspecialchars($itemValue);
 			$cols = $config['cols']?$config['cols']:($config['size']?$config['size']:$this->maxInputWidth);
 			if ($this->docLarge)	$cols = round($cols*$this->form_largeComp);
 			$width = ceil($cols*$this->form_rowsToStylewidth);
+			
+				// overflow:auto crashes mozilla here. Title tag is usefull when text is longer than the div box (overflow:hidden).
 			$item = '
-				<div style="'.htmlspecialchars($divStyle.'width:'.$width.'px;').'" class="'.htmlspecialchars($this->formElClass('none')).'">'.	// Had to remove "nobreak" since Mozilla crashed...!
-				(strcmp($itemValue,'') ? $itemValue : '&nbsp;').
+				<div style="'.htmlspecialchars($divStyle.' overflow:hidden; width:'.$width.'px;').'" class="'.htmlspecialchars($this->formElClass('none')).'" title="'.$itemValue.'">'.
+				'<span class="nobr">'.(strcmp($itemValue,'')?$itemValue:'&nbsp;').'</span>'.
 				'</div>';
 		}
 
@@ -1775,7 +1780,7 @@ class t3lib_TCEforms	{
 	 * @return	string		The HTML code for the TCEform field
 	 */
 	function getSingleField_typeUnknown($table,$field,$row,&$PA)	{
-		$item='Unknown type: '.$PA['fieldConf']['config']['type'].'<br />';
+		$item='Unknown type: '.$PA['fieldConf']['config']['form_type'].'<br />';
 
 		return $item;
 	}
