@@ -1,3 +1,7 @@
+2004-01-22  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #0000668: Removed spurious comma (,) from pages table definition in t3lib/stddb/tables.sql
+
 2004-01-21  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000703: Added missing ';' to '&nbsp' in t3lib\class.t3lib_formmail.php
