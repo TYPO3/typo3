@@ -228,6 +228,7 @@ $T3_VAR = array();	// Initialize.
 	// TYPO3 version
 $TYPO_VERSION = '3.8.0-dev';
 define('TYPO3_version', $TYPO_VERSION);
+define('TYPO3_branch', '3.8');
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name

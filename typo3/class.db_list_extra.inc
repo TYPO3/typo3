@@ -568,6 +568,7 @@ class localRecordList extends recordList {
 		$theData = Array();
 		foreach($this->fieldArray as $fCol)	{
 			if ($fCol==$titleCol)	{
+				$recTitle = t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],$GLOBALS['BE_USER']->uc['titleLen'],$row['uid']);
 				$theData[$fCol] = $this->linkWrapItems($table,$row['uid'],$recTitle,$row);
 			} elseif ($fCol=='pid') {
 				$theData[$fCol]=$row[$fCol];
@@ -584,7 +585,7 @@ class localRecordList extends recordList {
 			} elseif ($fCol=='_LOCALIZATION_b') {
 				// Do nothing, has been done above.
 			} else {
-				$theData[$fCol]=htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100));
+				$theData[$fCol]=htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100,$row['uid']));
 			}
 		}
 

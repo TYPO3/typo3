@@ -1212,7 +1212,7 @@ class tx_cms_layout extends recordList {
 					if ($fieldName==$thumbsCol)	{	// If the column is a thumbnail column:
 						$out[$fieldName] = $this->thumbCode($row,$table,$fieldName);
 					} else {	// ... otherwise just render the output:
-						$out[$fieldName] = nl2br(htmlspecialchars(trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table,$fieldName,$row[$fieldName]),250))));
+						$out[$fieldName] = nl2br(htmlspecialchars(trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table,$fieldName,$row[$fieldName],0,0,0,$row['uid']),250))));
 					}
 				} else {	// Each field is separated by <br /> and shown in the same cell (If not a TCA field, then explode the field name with ";" and check each value there as a TCA configured field)
 					$theFields = explode(';',$fieldName);
@@ -1222,7 +1222,7 @@ class tx_cms_layout extends recordList {
 						if ($TCA[$table]['columns'][$fName2])	{
 							 $out[$fieldName].= '<b>'.$GLOBALS['LANG']->sL($TCA[$table]['columns'][$fName2]['label'],1).'</b>'.
 							 					'&nbsp;&nbsp;'.
-												htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table,$fName2,$row[$fName2]),25)).
+												htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table,$fName2,$row[$fName2],0,0,0,$row['uid']),25)).
 												'<br />';
 						}
 					}

@@ -346,7 +346,7 @@ class template {
 	 * @return	boolean
 	 */
 	function isCMlayers()	{
-		return !$GLOBALS['BE_USER']->uc['disableCMlayers'] && $GLOBALS['CLIENT']['FORMSTYLE'] && $GLOBALS['CLIENT']['SYSTEM']!='mac';
+		return !$GLOBALS['BE_USER']->uc['disableCMlayers'] && $GLOBALS['CLIENT']['FORMSTYLE'] && !($GLOBALS['CLIENT']['SYSTEM']=='mac' && $GLOBALS['CLIENT']['BROWSER']=='Opera');
 	}
 
 	/**
@@ -942,7 +942,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		<meta> tag with name "GENERATOR"
 	 */
 	function generator()	{
-		$str = 'TYPO3 '.$GLOBALS['TYPO_VERSION'].', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2004, extensions are copyright of their respective owners.';
+		$str = 'TYPO3 '.TYPO3_branch.', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2005, extensions are copyright of their respective owners.';
 		return '<meta name="GENERATOR" content="'.$str .'" />';
 	}
 
@@ -1675,7 +1675,7 @@ $str.=$this->docBodyTagBegin().
 							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
 							if(isInit) {
 								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
-							} else { 
+							} else {
 								DTM_origClass = "tab";
 							}
 							top.DTM_currentTabs[idBase+"-"+index] = 0;
@@ -1683,7 +1683,7 @@ $str.=$this->docBodyTagBegin().
 							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
 							if(isInit) {
 								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
-							} else { 
+							} else {
 								DTM_origClass = "tabact";
 							}
 							top.DTM_currentTabs[idBase+"-"+index] = 1;

@@ -1,3 +1,14 @@
+2005-02-04  Michael Stucki  <michael@typo3.org>
+
+	* Corrected some typos
+	* Fix permissions after ImageMagick has created a new file. Introduced new function t3lib_div::fixPermissions. Closes bug #0000677.
+	* Fixed bug #0000422: "Fatal error at 3: Image Processing -> 5: GD library functions"
+	* Added a new constant TYPO3_branch which includes only the major and the minor numbers of the version (not the patchlevel). This is used in the "generator" meta tag and will finally close bug number #0000318.
+	* ContextMenu is no longer disabled by default on Macintosh systems (except Opera, might have to do with bug #0000675). Closes bugs #0000542 and #0000486.
+	* XHTML 1.1 compliancy fixes (thanks to Ernesto Baschny)
+	* List view now resolves values of MM tables (thanks to Rupert Germann)
+	* Use t3lib_div::isAbsPath() to check if the logfile path is absolute (doesn't work on Windows otherwise)
+
 2005-02-02  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000728: "Enabling DevLog in t3lib_modsettings via SC_OPTIONS does not work." Reason: t3lib_modsettings::init() used $TYPO3_CONF_VARS although the global var was not available there. Changed it to $GLOBALS['TYPO3_CONF_VARS'].
@@ -8,7 +19,7 @@
 
 2005-01-24  Jan-Erik Revsbech	<jer@moccompany.com>
 
-	* The check to see if Postfix version 1.XX is used requires that the executable /usr/sbin/postconf exists. If it does not exists, some php configurations will die with an error. Now htmlmail makes a check to see if the files exists before calling it.
+	* The check to see if Postfix version 1.x is used requires that the executable /usr/sbin/postconf exists. If it does not exist, some PHP installations will die with an error. Now htmlmail makes a check to see if the files exist before calling it.
 
 2005-01-22  Ingmar Schlecht  <ingmar@typo3.org>
 
@@ -16,10 +27,10 @@
 
 2005-01-21  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000703: Added missing ';' to '&nbsp' in t3lib\class.t3lib_formmail.php
+	* Fixed bug #0000703: Added missing ';' to '&nbsp' in t3lib/class.t3lib_formmail.php
 
 2005-01-21  Jan-Erik Revsbech	<jer@moccompany.com>
-	
+
 	* Added a check to class t3lib_htmlmail to check if postfix version 1.XX is used. If this is the case the -f parameter is not used for call to mail(). This should fix the problem with mails not being sent when using Postfix as MTA..
 
 2005-01-21  Kasper Skårhøj,,,  <kasper@typo3.com>
@@ -37,14 +48,10 @@
 2004-12-20  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Changed "config.disableContentLengthHeader" over to "enableContentLengthHeader" because a default content-length header might introduce some weird and hard-to-debug situation for people.
-
-2004-12-20  Kasper Skårhøj,,,  <kasper@typo3.com>
 	* Added possibility to enable cache-control headers on frontend output; This allows a site to be cached by client browsers and proxies. See TSref for configuration ("config.sendCacheHeaders")
 	* Added that a cache-control header sent from client can regenerate an otherwise cached page. In reality this means that a shift-reload click in the browser will always circumvent TYPO3s page-cache, regenerate the page and store a new version in cache if applicable. If anyone has objections agains this default feature (eg. fear of DoS attacks), please bring up a discussion on dev-list.
 	* Added "Content-Length" header on frontend output (can be disabled)
 	* Fixed bug that gave inconsistent SYS_LASTCHANGED values whether a page was gotten from cache or generated.
-
-2004-12-20  Kasper Skårhøj,,,  <kasper@typo3.com>
 	* Added check for explicitAllow/Deny in the content element wizard (during a trainride from Allerød in S-Tog line A to Nørreport - thats all it took).
 
 2004-12-17  Kasper Skårhøj,,,  <kasper@typo3.com>

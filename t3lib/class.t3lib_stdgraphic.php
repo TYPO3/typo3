@@ -284,8 +284,10 @@ class t3lib_stdGraphic	{
 
 		if (TYPO3_MODE=='FE')	{
 			$this->csConvObj = &$GLOBALS['TSFE']->csConvObj;
-		} else {	// BE assumed:
+		} elseif(is_object($GLOBALS['LANG']))	{	// BE assumed:
 			$this->csConvObj = &$GLOBALS['LANG']->csConvObj;
+		} else	{	// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
+			$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 		}
 		$this->nativeCharset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 	}
@@ -2373,7 +2375,11 @@ class t3lib_stdGraphic	{
 		if (!$this->NO_IMAGE_MAGICK)	{
 			$cmd = $this->imageMagickPath.'convert '.$params.' '.$this->wrapFileName($input).' '.$this->wrapFileName($output);
 			$this->IM_commands[] = Array ($output,$cmd);
-			return exec($cmd);
+
+			$ret = exec($cmd);
+			t3lib_div::fixPermissions($this->wrapFileName($output));	// Change the permissions of the file
+
+			return $ret;
 		}
 	}
 
@@ -2391,7 +2397,11 @@ class t3lib_stdGraphic	{
 		if (!$this->NO_IMAGE_MAGICK)	{
 			$cmd = $this->imageMagickPath.$this->combineScript.' -compose over '.$this->wrapFileName($input).' '.$this->wrapFileName($overlay).' '.$this->wrapFileName($mask).' '.$this->wrapFileName($output);
 			$this->IM_commands[] = Array ($output,$cmd);
-			exec($cmd);
+
+			$ret = exec($cmd);
+			t3lib_div::fixPermissions($this->wrapFileName($output));	// Change the permissions of the file
+
+			return $ret;
 		}
 	}
 
@@ -2629,7 +2639,6 @@ class t3lib_stdGraphic	{
 		return $im;
 	}
 }
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_stdgraphic.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_stdgraphic.php']);

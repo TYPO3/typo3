@@ -1442,7 +1442,7 @@
 						// STAT:
 					$theLogFile = $this->TYPO3_CONF_VARS['FE']['logfile_dir'].$this->config['config']['stat_apache_logfile'];
 						// Add PATH_site left to $theLogFile if the path is not absolute yet
-					if(!ereg("^/", $theLogFile)) $theLogFile = PATH_site.$theLogFile;
+					if(!t3lib_div::isAbsPath($theLogFile)) $theLogFile = PATH_site.$theLogFile;
 
 					if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'],'/'))	{
 						if(t3lib_div::isAllowedAbsPath($theLogFile) && @is_file($theLogFile) && @is_writable($theLogFile))	{

@@ -246,7 +246,7 @@ class t3lib_htmlmail {
 
 
 	/**
-	 * Constructor for the class. Make a check to see if Postfix version below 2.XX is used. 
+	 * Constructor for the class. Make a check to see if Postfix version below 2.0 is used.
 	 * If this is the case all calls to mail() must not be called with the -f parameter to correctly set
 	 * the Return-Path header.
 	 * @return	[type]		...
@@ -569,7 +569,7 @@ class t3lib_htmlmail {
 	function constructAlternative($boundary)	{
 			// Here plain is combined with HTML
 		$this->add_message("--".$boundary);
-			// 	plain is added
+			// plain is added
 		$this->add_message($this->plain_text_header);
 		$this->add_message('');
 		$this->add_message($this->getContent("plain"));
@@ -617,7 +617,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * Sends the mail by calling the mail() function in php. On Linux systems this will invoke the MTA
-	 * defined in sys.ini (sendmail -t -i by default), on Windows a SMTP must be specified in the sys.ini.
+	 * defined in php.ini (sendmail -t -i by default), on Windows a SMTP must be specified in the sys.ini.
 	 * Most common MTA's on Linux has a Sendmail interface, including Postfix and Exim.
 	 * For setting the return-path correctly, the parameter -f has to be added to the system call to sendmail.
 	 * This obviously does not have any effect on Windows, but on Sendmail compliant systems this works. If safe mode

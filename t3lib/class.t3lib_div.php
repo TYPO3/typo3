@@ -1384,7 +1384,7 @@ class t3lib_div {
 	}
 
 	/**
-	 * Merges two arrays recursively and "binary safe" (integer keys are overridden as well), overruling similar the values in the first array ($arr0) with the values of the second array ($arr1)
+	 * Merges two arrays recursively and "binary safe" (integer keys are overridden as well), overruling similar values in the first array ($arr0) with the values of the second array ($arr1)
 	 * In case of identical keys, ie. keeping the values of the second.
 	 * Usage: 0
 	 *
@@ -2058,15 +2058,23 @@ class t3lib_div {
 			fwrite( $fd, $content);
 			fclose( $fd );
 
-				// Setting file system mode & group ownership of file:
-			if (@is_file($file) && TYPO3_OS!='WIN')	{
-				@chmod($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));		// "@" is there because file is not necessarily OWNED by the user
-				if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
-					@chgrp($file, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);		// "@" is there because file is not necessarily OWNED by the user
-				}
-			}
+			t3lib_div::fixPermissions($file);	// Change the permissions of the file
 
 			return true;
+		}
+	}
+
+	/**
+	 * Setting file system mode & group ownership of file
+	 *
+	 * @param	string		Filepath of newly created file
+	 */
+	function fixPermissions($file)	{
+		if (@is_file($file) && TYPO3_OS!='WIN')	{
+			@chmod($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));		// "@" is there because file is not necessarily OWNED by the user
+			if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
+				@chgrp($file, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);		// "@" is there because file is not necessarily OWNED by the user
+			}
 		}
 	}
 
@@ -2923,13 +2931,7 @@ class t3lib_div {
 			@copy($source,$destination);
 		}
 
-			// Setting file system mode & group ownership of file:
-		if (@is_file($destination) && TYPO3_OS!='WIN')	{
-			chmod($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
-			if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
-				chgrp($destination, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
-			}
-		}
+		t3lib_div::fixPermissions($destination);	// Change the permissions of the file
 
 			// If here the file is copied and the temporary $source is still around, so when returning false the user can try unlink to delete the $source
 		return $uploaded ? $uploadedResult : FALSE;

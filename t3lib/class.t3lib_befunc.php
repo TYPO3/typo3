@@ -108,7 +108,7 @@
  * 1691:     function getLabelFromItemlist($table,$col,$key)
  * 1717:     function getItemLabel($table,$col,$printAllWrap='')
  * 1742:     function getRecordTitle($table,$row,$prep=0)
- * 1778:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)
+ * 1778:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE,$uid=0)
  * 1872:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)
  * 1896:     function getFileIcon($ext)
  * 1910:     function getCommonSelectFields($table,$prefix)
@@ -1774,9 +1774,10 @@ class t3lib_BEfunc	{
 	 * @param	integer		$fixed_lgd_chars is the max amount of characters the value may occupy
 	 * @param	boolean		$defaultPassthrough flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
 	 * @param	boolean		If set, no records will be looked up, UIDs are just shown.
+	 * @param	integer		uid of the current record
 	 * @return	string
 	 */
-	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE)	{
+	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE,$uid=0)	{
 		global $TCA;
 			// Load full TCA for $table
 		t3lib_div::loadTCA($table);
@@ -1791,7 +1792,26 @@ class t3lib_BEfunc	{
 				break;
 				case 'select':
 					if ($theColConf['MM'])	{
-						$l='N/A';
+							// Display the title of MM related records in lists
+						$MMres = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+								$theColConf['foreign_table'].'.'.$TCA[$theColConf['foreign_table']]['ctrl']['label'],
+								$table,
+								$theColConf['MM'],
+								$theColConf['foreign_table'],
+								'AND '.$table.'.uid ='.intval($uid).t3lib_BEfunc::deleteClause($theColConf['foreign_table'])
+							);
+						if ($MMres) {
+							while($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres))	{
+								$mmlA[] = $MMrow[$TCA[$theColConf['foreign_table']]['ctrl']['label']];
+							}
+							if (is_array($mmlA)) {
+								$l=implode(', ',$mmlA);
+							} else {
+								$l = '';
+							}
+						} else {
+							$l = 'n/A';
+						}
 					} else {
 						$l = t3lib_BEfunc::getLabelFromItemlist($table,$col,$value);
 						$l = $GLOBALS['LANG']->sL($l);
@@ -1871,12 +1891,13 @@ class t3lib_BEfunc	{
 	 * @param	string		Field name
 	 * @param	string		Field value
 	 * @param	integer		$fixed_lgd_chars is the max amount of characters the value may occupy
+	 * @param	integer		uid of the current record
 	 * @return	string
 	 * @see getProcessedValue()
 	 */
-	function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)	{
+	function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0,$uid=0)	{
 		global $TCA;
-		$fVnew = t3lib_BEfunc::getProcessedValue($table,$fN,$fV,$fixed_lgd_chars);
+		$fVnew = t3lib_BEfunc::getProcessedValue($table,$fN,$fV,$fixed_lgd_chars,0,0,$uid);
 		if (!isset($fVnew))	{
 			if (is_array($TCA[$table]))	{
 				if ($fN==$TCA[$table]['ctrl']['tstamp'] || $fN==$TCA[$table]['ctrl']['crdate'])	{

@@ -1084,10 +1084,10 @@ class tslib_cObj {
 			$spaceBelowAbove = intval($this->stdWrap($conf['spaceBelowAbove'],$conf['spaceBelowAbove.']));
 			switch ($contentPosition)	{
 				case '0':	// above
-					$output= '<div align="'.$align.'">'.$tablecode.'</div>'.$this->wrapSpace($content, $spaceBelowAbove.'|0');
+					$output= '<div style="text-align:'.$align.';">'.$tablecode.'</div>'.$this->wrapSpace($content, $spaceBelowAbove.'|0');
 				break;
 				case '8':	// below
-					$output= $this->wrapSpace($content, '0|'.$spaceBelowAbove).'<div align="'.$align.'">'.$tablecode.'</div>';
+					$output= $this->wrapSpace($content, '0|'.$spaceBelowAbove).'<div style="text-align:'.$align.';">'.$tablecode.'</div>';
 				break;
 				case '16':	// in text
 					$output= $tablecode.$content;
@@ -3063,7 +3063,7 @@ class tslib_cObj {
 
 				if ($conf['wrapAlign'] || $conf['wrapAlign.']){
 					$wrapAlign = trim($this->stdWrap($conf['wrapAlign'], $conf['wrapAlign.']));
-					if ($wrapAlign)	{$content=$this->wrap($content, '<div align="'.$wrapAlign.'">|</div>');}
+					if ($wrapAlign)	{$content=$this->wrap($content, '<div style="text-align:'.$wrapAlign.';">|</div>');}
 				}
 				if ($conf['typolink.']){$content=$this->typolink($content, $conf['typolink.']);}
 
@@ -3565,7 +3565,7 @@ class tslib_cObj {
 			$theValue=$this->wrap($theValue, $fontWrap);
 		}
 			// align
-		if ($align)	{$theValue=$this->wrap($theValue, '<div align="'.$align.'">|</div>');}
+		if ($align)	{$theValue=$this->wrap($theValue, '<div style="text-align:'.$align.';">|</div>');}
 			// return
 		return $theValue;
 	}
