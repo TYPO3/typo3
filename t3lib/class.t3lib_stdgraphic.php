@@ -146,6 +146,7 @@ class t3lib_stdGraphic	{
 	var $combineScript = 'combine';				// The ImageMagick filename used for combining two images. This name changed during the versions.
 	var $noFramePrepended=0;					// If set, there is no frame pointer prepended to the filenames.
 	var $GD2=0;									// Set, if the GDlib used is version 2.
+	var $imagecopyresized_fix=0;				// If set, imagecopyresized will not be called directly. For GD2 (some PHP installs?)
 	var $gifExtension = 'gif';					// This should be changed to 'png' if you want this class to read/make PNG-files instead!
 	var $TTFLocaleConv = '';					// Used to recode input to TTF-functions for other charsets.
 	var $enable_typo3temp_db_tracking = 0;		// If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
@@ -222,7 +223,8 @@ class t3lib_stdGraphic	{
 		if ($gfxConf['im_noFramePrepended'])	$this->noFramePrepended=1;
 
 		if ($gfxConf['gdlib_2'])	{
-			$this->GD2=1;
+			$this->GD2 = 1;
+			$this->imagecopyresized_fix = $gfxConf['gdlib_2']==='no_imagecopyresized_fix' ? 0 : 1;
 		}
 		if ($gfxConf['gdlib_png'])	{
 			$this->gifExtension='png';
@@ -444,7 +446,7 @@ class t3lib_stdGraphic	{
 	}
 
 	/**
-	 * Alternative function for using the similat PHP function imagecopyresized(). Used for GD2 only.
+	 * Alternative function for using the similar PHP function imagecopyresized(). Used for GD2 only.
 	 *
 	 * OK, the reason for this stupid fix is the following story:
 	 * GD1.x was capable of copying two images together and combining their palettes! GD2 is apparently not.
@@ -476,7 +478,7 @@ class t3lib_stdGraphic	{
 	 * @see t3lib_iconWorks::imagecopyresized()
 	 */
 	function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	{
-		if ($this->GD2)	{
+		if ($this->imagecopyresized_fix)	{
 			$im_base = imagecreatetruecolor(imagesx($im), imagesy($im));	// Make true color image
 			imagecopyresized($im_base, $im, 0,0,0,0, imagesx($im),imagesy($im),imagesx($im),imagesy($im));	// Copy the source image onto that
 			imagecopyresized($im_base, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);	// Then copy the $cpImg onto that (the actual operation!)
@@ -1908,7 +1910,7 @@ class t3lib_stdGraphic	{
 			if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
 				if ($row['md5hash']!=$md5Hash) {
 						// file has changed, delete the row
-					$TYPO3_DB->exec_DELETEquery ('cache_imagesizes', 'md5hash="'.$TYPO3_DB->quoteStr($row['md5hash']).'"');
+					$TYPO3_DB->exec_DELETEquery ('cache_imagesizes', 'md5hash="'.$TYPO3_DB->quoteStr($row['md5hash'], 'cache_imagesizes').'"');
 				} else {
 					return (array($row['imagewidth'], $row['imageheight'], strtolower($reg[0]), $imageFile));
 				}

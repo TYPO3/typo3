@@ -1,5 +1,9 @@
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added option "$TYPO3_CONF_VARS["GFX"]["gdlib_2"] = 'no_imagecopyresized_fix';" to avoid using the imagecopyresized workaround in stdgraphic class which has failed for some. Whether the workaround is needed anymore is not certain. Some people say it works fine without.
+
+2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added TypoScript condition "hostname" for matching hostnames for IP addresses.
 
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>

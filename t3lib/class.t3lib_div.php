@@ -3172,11 +3172,20 @@ class t3lib_div {
 	 * @return	object		The object
 	 */
 	function &makeInstance($className)	{
-		if (class_exists('ux_'.$className)) {
-			return t3lib_div::makeInstance('ux_'.$className);
-		} else {
-			return new $className;
-		}
+		return class_exists('ux_'.$className) ? t3lib_div::makeInstance('ux_'.$className) : new $className;
+	}
+
+	/**
+	 * Return classname for new instance
+	 * Takes the class-extensions API of TYPO3 into account
+	 *
+	 * Usage: 18
+	 *
+	 * @param	string		Base Class name to evaluate
+	 * @return	string		Final class name to instantiate with "new [classname]"
+	 */
+	function makeInstanceClassName($className)	{
+		return class_exists('ux_'.$className) ? t3lib_div::makeInstanceClassName('ux_'.$className) : $className;
 	}
 
 	/**
@@ -3217,19 +3226,6 @@ class t3lib_div {
 			t3lib_extMgm::deactivateService($info['serviceType'],$info['serviceKey']);
 		}
 		return $error;
-	}
-
-	/**
-	 * Return classname for new instance
-	 * Takes the class-extensions API of TYPO3 into account
-	 *
-	 * Usage: 18
-	 *
-	 * @param	string		Base Class name to evaluate
-	 * @return	string		Final class name to instantiate with "new [classname]"
-	 */
-	function makeInstanceClassName($className)	{
-		return class_exists('ux_'.$className)?t3lib_div::makeInstanceClassName('ux_'.$className):$className;
 	}
 
 	/**
