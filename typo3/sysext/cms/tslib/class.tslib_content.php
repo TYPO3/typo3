@@ -2482,7 +2482,7 @@ class tslib_cObj {
 	 */
 	function getAltParam($conf)	{
 		$altText = $this->stdWrap($conf['altText'],$conf['altText.']);
-		$altParam .= ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
+		$altParam = ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
 
 		$titleText = $this->stdWrap($conf['titleText'],$conf['titleText.']);
 		if ($titleText) {
