@@ -125,7 +125,7 @@ class t3lib_cs {
 		// This tells the converter which charsets use a scheme like the Extended Unix Code:
 	var $eucBasedSets=array(
 		'gb2312'=>1,	// Chinese, simplified.
-		'big'=>1,	// Chinese, traditional.
+		'big5'=>1,	// Chinese, traditional.
 	);
 
 		// see	http://developer.apple.com/documentation/macos8/TextIntlSvcs/TextEncodingConversionManager/TEC1.5/TEC.b0.html
@@ -656,22 +656,22 @@ class t3lib_cs {
 	/**
 	 * Cuts a string short at a given byte length.
 	 *
+	 * @param	string		the character set
 	 * @param	string		character string
 	 * @param	integer		the byte length
-	 * @param	string		the character set
 	 * @return	string		the shortened string
 	 * @see mb_strcut()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */	
-	function strtrunc($string,$len,$charset)	{
+	function strtrunc($charset,$string,$len)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strcut($string,0,$len,$charset);
 		} elseif ($charset == 'utf-8')	{
-			return utf8_strtrunc($string);
+			return $this->utf8_strtrunc($string);
 		} elseif ($charset == 'shift_jis')	{
-			return euc_strtrunc($string,'shift_jis');
+			return $this->euc_strtrunc($string,'shift_jis');
 		} elseif ($this->eucBasedSets[$charset])	{
-			return euc_strtrunc($string,$charset);
+			return $this->euc_strtrunc($string,$charset);
 		} elseif ($this->twoByteSets[$charset])	{
 			if ($len % 2)	$len--;		// don't cut at odd positions
 		} elseif ($this->fourByteSets[$charset])	{
@@ -683,23 +683,68 @@ class t3lib_cs {
 	}
 
 	/**
+	 * Returns a part of a string.
+	 *
+	 *
+	 * Negative values for @arg $start and @arg $len are currently not supported.
+	 *
+	 * @param	string		the character set
+	 * @param	string		character string
+	 * @param	int		$start	start position (character position)
+	 * @param	int		length (in characters)
+	 * @return	string		the substring
+	 * @see substr()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 * @bug
+	 */
+	function substr($charset,$str,$start,$len=null)	{
+		if ($len===0)	return '';
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
+				// cannot omit $len, when specifying charset
+			if ($len==null)	{
+				$enc = mb_internal_encoding();	// save internal encoding
+				mb_internal_encoding('utf-8');
+				$str = mb_substr($str,$start);
+				mb_internal_encoding($enc);	// restore internal encoding
+
+				return $str;
+			}
+			else	return mb_substr($str,$start,$len,'utf-8');
+		} elseif ($charset == 'utf-8')	{
+			return $this->utf8_substr($string,$start,$len);
+		} elseif ($charset == 'shift_jis')	{
+			return $this->euc_substr($string,$start,$len,'shift_jis');
+		} elseif ($this->eucBasedSets[$charset])	{
+			return $this->euc_substr($string,$start,$len);		
+		} elseif ($this->twoByteSets[$charset])	{
+			return substr($string,$start*2,$len*2);
+		} elseif ($this->fourByteSets[$charset])	{
+			return substr($string,$start*4,$len*4);
+		}
+
+		// treat everything else as single-byte encoding
+		return substr($string,$start,$len);
+	}
+
+	/**
 	 *  Counts the number of characters.
 	 *
-	 * @param	string		character string
 	 * @param	string		the character set
+	 * @param	string		character string
 	 * @return	integer		the number of characters
 	 * @see strlen()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */	
-	function strlen($string,$charset)	{
+	function strlen($charset,$string)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strlen($string,$charset);
 		} elseif ($charset == 'utf-8')	{
-			return utf8_strlen($string);
+			return $this->utf8_strlen($string);
 		} elseif ($charset == 'shift_jis')	{
-			return euc_strlen($string,'shift_jis');
+			return $this->euc_strlen($string,'shift_jis');
 		} elseif ($this->eucBasedSets[$charset])	{
-			return euc_strlen($string,$charset);
+			return $this->euc_strlen($string,$charset);
 		} elseif ($this->twoByteSets[$charset])	{
 			return strlen($string)/2;
 		} elseif ($this->fourByteSets[$charset])	{
@@ -708,6 +753,7 @@ class t3lib_cs {
 		// treat everything else as single-byte encoding
 		return strlen($string);
 	}
+
 
 
 
@@ -741,10 +787,6 @@ class t3lib_cs {
 	function utf8_strtrunc($str,$len)	{
 		if ($len <= 0)	return '';
 
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-			return mb_strcut($str,0,$len,'utf-8');
-		}
-
 		$i = $len-1;
 		if (ord($str{$i}) & 0x80) { // part of a multibyte sequence
 			for (; $i>0 && !(ord($str{$i}) & 0x40); $i--)	;	// find the first byte
@@ -773,26 +815,13 @@ class t3lib_cs {
 	function utf8_substr($str,$start,$len=null)	{
 		if ($len===0)	return '';
 
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-				// cannot omit $len, when specifying charset
-			if ($len==null)	{
-				$enc = mb_internal_encoding();	// save internal encoding
-				mb_internal_encoding('utf-8');
-				$str = mb_substr($str,$start);
-				mb_internal_encoding($enc);	// restore internal encoding
-
-				return $len;
-			}
-			else	return mb_substr($str,$start,$len,'utf-8');
-		}
-
-		$byte_start = utf8_char2byte_pos($str,$start);
+		$byte_start = $this->utf8_char2byte_pos($str,$start);
 		if ($byte_start === false)	return false;	// $start outside string length
 
 		$str = substr($str,$byte_start);
 
 		if ($len!=null)	{
-			$byte_end = utf8_char2byte_pos($str,$len+1);
+			$byte_end = $this->utf8_char2byte_pos($str,$len);
 			if ($byte_end === false)	// $len outside actual string length
 				return $str;
 			else
@@ -810,10 +839,6 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function utf8_strlen($str)	{
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-			return mb_strlen($str,'utf-8');
-		}
-
 		$n=0;
 		for($i=0; $str{$i}; $i++)	{
 			$c = ord($str{$i});
@@ -936,7 +961,7 @@ class t3lib_cs {
 	 *  ASCII compatible 7bit single bytes chars
 	 *  8bit two byte chars
 	 *
-	 * Shift-JIS is handled as a special case
+	 * Shift-JIS is treated as a special case.
 	 *
 	 ********************************************/
 
@@ -952,10 +977,6 @@ class t3lib_cs {
 	 */	
 	function euc_strtrunc($str,$len,$charset)	 {
 		if ($len <= 0)	return '';
-
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-			return mb_strcut($str,0,$len,$charset);
-		}
 
 		$sjis = ($charset == 'shift_jis');
 		for ($i=0; $str{$i} && $i<$len; $i++) {
@@ -976,6 +997,37 @@ class t3lib_cs {
         }
 
 	/**
+	 * Returns a part of a string in the EUC charset family.
+	 *
+	 *
+	 * Negative values for @arg $start and @arg $len are currently not supported.
+	 *
+	 * @param	string		EUC multibyte character string
+	 * @param	int		start position (character position)
+	 * @param	int		length (in characters)
+	 * @return	string		the substring
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 *
+	 */
+	function euc_substr($str,$start,$charset,$len=null)	{
+		if ($len===0)	return '';
+
+		$byte_start = $this->euc_char2byte_pos($str,$start,$charset);
+		if ($byte_start === false)	return false;	// $start outside string length
+
+		$str = substr($str,$byte_start);
+
+		if ($len!=null)	{
+			$byte_end = $this->euc_char2byte_pos($str,$len,$charset);
+			if ($byte_end === false)	// $len outside actual string length
+				return $str;
+			else
+				return substr($str,0,$byte_end);
+		}
+		else	return $str;
+	}
+
+	/**
 	 * Counts the number of characters of a string in the EUC charset family.
 	 *
 	 * @param	string		EUC multibyte character string
@@ -985,10 +1037,6 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function euc_strlen($str,$charset)	 {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-			return mb_strlen($str,$charset);
-		}
-
 		$sjis = ($charset == 'shift_jis');
 		$n=0;
 		for ($i=0; $str{$i}; $i++) {
@@ -1005,6 +1053,34 @@ class t3lib_cs {
 
 		return $n;
         }
+
+	/**
+	 * Translates a character position into an 'absolute' byte position.
+	 *
+	 * @param	string		EUC multibyte character string
+	 * @param	int		character position
+	 * @param	string		the charset
+	 * @return	int		byte position
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function euc_char2byte_pos($str,$pos,$charset)	{
+		$sjis = ($charset == 'shift_jis');
+		$n = 0; // number of characters seen
+		for ($i=0; $str{$i} && $n<$pos; $i++) {
+			$c = ord($str{$i});
+			if ($sjis)	{
+				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
+			}
+			else	{
+				if ($c >= 0x80)	$i++;	// advance a double-byte char
+			}
+
+			$n++;
+		}
+		if (!$str{$i})	return false; // offset beyond string length
+
+		return $i;
+	}
 
 }
 
