@@ -12,7 +12,7 @@
 		<languageKey index="default" type="array">
 			<label index="tx_wizardsortpages.description">Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</label>
 			<label index="tx_wizardsortpages.alttitle">Sort Pages wizard</label>
-			<label index="tx_wizardsortpages.details">Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. and this behaviour cannot really be changed on a system level. But this wizard gives you a quick way to change the order of sub-pages of another page.
+			<label index="tx_wizardsortpages.details">Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. and this behaviour cannot really be changed on a system level. But this wizard gives you a quick way to change the manual order of sub-pages.
 
 Simply click one of the links in the bottom of the wizard screen:
 

@@ -10,22 +10,22 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index=".alttitle">Web&gt;Page Module</label>
+			<label index=".alttitle">Web &gt; Page Module</label>
 			<label index=".description">The page module is the primary module for all basic CMS operations you need to perform when you maintain the content on a website.</label>
 			<label index="quickEdit.alttitle">Quick Edit</label>
 			<label index="quickEdit.description">The Quick Editor gives you direct access to the form fields of the page content.</label>
 			<label index="quickEdit.details">The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</label>
 			<label index="quickEdit_selElement.alttitle">Content Elements</label>
-			<label index="quickEdit_selElement.description">This is an overview of the content elements on this page. Select another element to edit or click a &quot;New&quot; icon to create a new content element.</label>
+			<label index="quickEdit_selElement.description">This is an overview of the content elements on this page in QuickEdit mode. Select another element to edit or click a &quot;New&quot; icon to create a new content element.</label>
 			<label index="columns_1.alttitle">Listing by Column</label>
 			<label index="columns_1.description">In the &quot;Columns&quot; view you can control the content of the web page as it is positioned in columns.</label>
 			<label index="columns_2.alttitle">Listing by Language</label>
 			<label index="columns_2.description">In the &quot;Languages&quot; view you can control the content of the web page as it is divided into languages and columns.</label>
 			<label index="columns_3.alttitle">Page Information</label>
 			<label index="columns_3.description">In the &quot;Page Information&quot; view you can see various statistics about a page.</label>
-			<label index="language_list.description">This view will display the available translations of the page content side-by-side allow users to create a new translation of a page.</label>
-			<label index="columns_single.description">The single column view will show the page content elements that defines the content on this page of your website. Click an edit icon or element text to edit an element.</label>
-			<label index="columns_multi.description">The multiple column view will show the content of your website arranged in multiple columns. This is the case because your website supports more than one content zone and the content elements from each zone is arranged in a column above.</label>
+			<label index="language_list.description">This view will display the available translations of the page content side-by-side. It enables users to create a new translation of a page.</label>
+			<label index="columns_single.description">The single column view will show the page content elements that define the content on this page of your website. Click an edit icon or element text to edit an element.</label>
+			<label index="columns_multi.description">The multiple column view will show the content of your website arranged in multiple columns. This is the case if your website supports more than one content zone and the content elements from each zone is arranged in &quot;columns&quot;.</label>
 			<label index="button_panel.description">These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page header (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</label>
 			<label index="_.image">EXT:cms/cshimages/pagemodule_13.png,
 EXT:cms/cshimages/pagemodule_14.png,
@@ -39,13 +39,13 @@ EXT:cms/cshimages/pagemodule_15.png</label>
 			<label index="_button_panel.image">EXT:cms/cshimages/pagemodule_2.png</label>
 			<label index=".details">The Web&gt;Page module is activated from the backend menu. After selecting the module you will see the page tree and to edit content on a page you simply click the title of that page and in the right frame you will see the content of the page displayed by the Page module.
 
-The page module has various modes of display of content.
+The page module has various modes of display of content;
 
 &lt;b&gt;Columns&lt;/b&gt;
 The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
 
 &lt;b&gt;QuickEdit&lt;/b&gt;
-In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as you general preferences if you like this mode more than the columns view.
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
 
 &lt;b&gt;Languages&lt;/b&gt;
 If your site supports multiple languages and uses the &quot;one-tree-fits-all&quot; concept for localization you will need this mode to control the translations of the content elements on a page.
@@ -60,7 +60,7 @@ In the top of the Page module you will find a row of icons that will bring you r
 &lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
 Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path &quot;mod.web_layout.tt_content.colPos_list&quot;.
 For instance &quot;mod.web_layout.tt_content.colPos_list = 0,3&quot; will set the display of the &quot;Normal&quot; and &quot;Border&quot; columns only.
-There are many other options for customization of the Page module in the object path &quot;mod.web_layout&quot; and Adminstrators should refer to the &quot;TSconfig&quot; reference linked to below.</label>
+There are many other options for customization of the Page module in the object path &quot;mod.web_layout&quot; and Administrators should refer to the &quot;TSconfig&quot; reference linked to below.</label>
 			<label index="_.seeAlso">Configuring the Page module [Technical] | http://typo3.org/documentation/document-library/doc_core_tsconfig/TSFE/,
 xMOD_csh_corebe:history_log,
 xMOD_csh_corebe:new_ce,
@@ -92,8 +92,8 @@ EXT:cms/cshimages/pagemodule_7.png,
 EXT:cms/cshimages/pagemodule_11.png,
 EXT:cms/cshimages/pagemodule_10.png,</label>
 			<label index="columns_single.alttitle">Page content elements in a single column</label>
-			<label index="columns_single.details">You can also hide, delete and move elements by using the control panel.
-Clicking the &quot;New content element&quot; icon you will be able to create new content elements inbetween the existing elements on the page.
+			<label index="columns_single.details">You can also hide, delete and move elements by using the control panels.
+Clicking the &quot;New content element&quot; icon you will be able to create new content elements in between the existing elements on the page.
 Click the icon of a content element if you wish to access the context menu of the element.</label>
 			<label index="_columns_single.seeAlso">_MOD_web_layout:columns_multi</label>
 			<label index="columns_single.image_descr">Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</label>
@@ -103,7 +103,7 @@ Click the icon of a content element if you wish to access the context menu of th
 			<label index="_columns_2.seeAlso">Article about localization | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/</label>
 			<label index="_language_list.seeAlso">sys_language</label>
 			<label index="language_list.image_descr">In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
-This example shows how page content for three languages are shown side-by-side in the Page module.
+This example shows how page content for three languages is shown side-by-side in the Page module.
 In the top of the Page module you can also select between the available translations...
 ... and if you select any of the additional languages (here &quot;Danish&quot; and &quot;German&quot;) you will see the default language displayed side-by-side with the selected language</label>
 		</languageKey>

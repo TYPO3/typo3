@@ -10,27 +10,49 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index=".alttitle">Tools &gt; Extension Manager (EM)</label>
+			<label index=".description">The Extension Manager controls import, installation and upgrading of Extensions in TYPO3.</label>
+			<label index="loaded.description">&quot;Loaded extensions&quot; are currently running on the system. This list shows you which extensions are loaded and in which order. 
+&quot;Shy&quot; extensions are also loaded but &quot;hidden&quot; in this list because they are system related and generally you should just leave them alone unless you know what you are doing.</label>
+			<label index="avail.description">Available extensions are extensions which are present in the extension folders. You can install any of the available extensions in this list. When you install an extension it will be loaded by TYPO3 from that moment.
+In this list the extensions with dark background are installed (loaded) - the others just available (not loaded), ready to be installed on your request.</label>
+			<label index="import.description">This is the process of bringing the files of an extension to the servers filesystem. You can do this either by importing from a repository at a URL (usually from TER; TYPO3 Extension Repository at typo3.org) or by uploading a &quot;t3x&quot; file which someone else created from the Extension Manager on another server.</label>
+			<label index="import_ter.description">Extensions in this list are online for immediate download from the TYPO3 Extension Repository (TER).
+Extensions with dark background are those already on your server - the others must be imported from the repository to your server before you can use them.
+If you want to use an extension from the repository, you should simply click the &quot;import&quot; button with the red arrow left to the extension.</label>
+			<label index="info.description">Shows details about the extension.</label>
+			<label index="backup_delete.description">Click the &quot;Download&quot; link here and you will download the extension as a file containing a serialized PHP array, a hash and everything possibly compressed if the server supports it. Save the file with a filename ending on &quot;t3x&quot;.</label>
+			<label index="upload.description">Here you can upload an extension to TER. In order to do so you must enter your TYPO3.org username and password in the form. In addition each extension has an upload password you need to add as well. You should also make sure you registered / own the extension key!</label>
+			<label index="editfiles.description">The Extension Manager can be used for editing scripts in extensions. This feature is mostly for emergencies since a webbrowser is not the ideal tool for programming.</label>
+			<label index="settings.description">Enter settings for the Extension Manager. The username and password is for connections to the repository (usually TYPO3.org) and the upload password is that you would normally use for upload of your extensions.</label>
+			<label index="makenew.description">The &quot;Kickstarter&quot; is an application which allows you to start up new extension work very quickly. Through an interface you can create a basic framework for your extension where all the boring stuff is configured from the beginning and you can concentrate directly on coding your application.</label>
 			<label index="emconf_shy.alttitle">Shy</label>
 			<label index="emconf_shy.description">If set, the extension will normally be hidden in the EM because it might be a default extension or otherwise something which is not so important.</label>
-			<label index="emconf_shy.details">Use this flag if an extension is of ?rare interest? (which is not the same as un-important - just an extension not sought for very often...)
+			<label index="emconf_shy.details">Use this flag if an extension is of &quot;rare interest&quot; (which is not the same as un-important - just an extension not sought for very often...)
 It does not affect whether or not it's enabled. Only display in EM.
-Normally ?shy? is set for all extensions loaded by default according to TYPO3_CONF_VARS.</label>
+Normally &quot;shy&quot; is set for all extensions loaded by default according to TYPO3_CONF_VARS.</label>
 			<label index="emconf_category.alttitle">Category</label>
 			<label index="emconf_category.description">Which category the extension belongs to.</label>
 			<label index="emconf_category.details">&lt;b&gt;be:&lt;/b&gt; Backend (Generally backend oriented, but not a module)
 
 &lt;b&gt;module:&lt;/b&gt; Backend modules (When something is a module or connects with one)
 
-&lt;b&gt;fe:&lt;/b&gt; Frontend (Generally frontend oriented, but not a ?true? plugin)
+&lt;b&gt;fe:&lt;/b&gt; Frontend (Generally frontend oriented, but not a &quot;true&quot; plugin)
 
-&lt;b&gt;plugin:&lt;/b&gt; Frontend plugins (Plugins inserted as a ?Insert Plugin? content element)
+&lt;b&gt;plugin:&lt;/b&gt; Frontend plugins (Plugins inserted as a &quot;Insert Plugin&quot; content element)
 
 &lt;b&gt;misc:&lt;/b&gt; Miscellaneous stuff (Where not easily placed elsewhere)
+
+&lt;b&gt;services:&lt;/b&gt; Contains TYPO3 services.
+
+&lt;b&gt;templates:&lt;/b&gt; Contains website templates
+
+&lt;b&gt;doc:&lt;/b&gt; Documentation (Eg. tutorials, FAQ's etc.)
 
 &lt;b&gt;example:&lt;/b&gt; Example extension (Which serves as examples etc.)</label>
 			<label index="emconf_dependencies.alttitle">Dependencies of other extensions?</label>
 			<label index="emconf_dependencies.description">This is a list of other extension keys which this extension depends on being loaded BEFORE it self.</label>
-			<label index="emconf_dependencies.details">The EM will manage that dependency while writing the extension list  to localconf.php</label>
+			<label index="emconf_dependencies.details">The EM will manage that dependency while writing the extension list  to localconf.php. You cannot install an extension unless its dependencies has been installed already.</label>
 			<label index="emconf_conflicts.alttitle">Conflicts with other extensions?</label>
 			<label index="emconf_conflicts.description">List of extension keys of extensions with which this extension does not work (and so cannot be enabled before those other extensions are un-installed)</label>
 			<label index="emconf_priority.alttitle">Requested Loading priority</label>
@@ -56,7 +78,7 @@ Nobody knows if this is going anywhere yet... Maybe still just an idea.
 Test extension, demonstrates concepts etc.</label>
 			<label index="emconf_internal.alttitle">Internally supported in core</label>
 			<label index="emconf_internal.description">This flag indicates that the core source code is specifically aware of the extension.</label>
-			<label index="emconf_internal.details">In order words this flag should convey the message that ?this extension could not be written without some core source code modifications?.
+			<label index="emconf_internal.details">In other words this flag should convey the message that &quot;this extension could not be written without some core source code modifications&quot;.
 
 An extension is not internal just because it uses TYPO3 general classes eg. those from t3lib/.
 True non-internal extensions are characterized by the fact that they could be written without making core source code changes, but relies only on existing classes  in TYPO3 and/or other extensions, plus its own scripts in the extension folder.</label>
@@ -65,13 +87,11 @@ True non-internal extensions are characterized by the fact that they could be wr
 			<label index="emconf_modify_tables.alttitle">Existing tables modified</label>
 			<label index="emconf_modify_tables.description">List of tablenames which are only modified - not fully created - by this extension.</label>
 			<label index="emconf_modify_tables.details">Tables from this list found in the ext_tables.sql file of the extension</label>
-			<label index=".alttitle">EM</label>
-			<label index=".description">The Extension Manager (EM)</label>
 			<label index=".details">TYPO3 can be extended in nearly any direction without loosing backwards compatibility. The Extension API provides a powerful framework for easily adding, removing, installing and developing such extensions to TYPO3. This is in particular powered by the Extension Manager (EM) inside TYPO3.
 
-?Extensions? is a term in TYPO3 which covers two other terms, plugins and modules.
+&quot;Extensions&quot; is a term in TYPO3 which covers two other terms, plugins and modules.
 
-A plugin is something that plays a role on the website itself. Eg. a board, guestbook, shop etc. It is normally enclosed in a PHP class and invoked through a USER or USER_INT cObject from TypoScript. A plugin is an extension in the frontend.
+A plugin is something that plays a role on the website itself. For example a board, guestbook, shop etc. It is normally enclosed in a PHP class and invoked through a USER or USER_INT cObject from TypoScript. A plugin is an extension in the frontend.
 
 A module is a backend application which has it's own position in the administration menu. It requires backend login and works inside the framework of the backend. We might also call something a module if it exploits any connectivity of an existing module, that is if it simply adds itself to the function menu of existing modules. A module is an extension in the backend.</label>
 			<label index="emconf_private.alttitle">Private</label>
@@ -86,20 +106,20 @@ You can set and clear the private flag every time you upload your extension.</la
 			<label index="_emconf_download_password.seeAlso">_MOD_tools_em:emconf_private</label>
 			<label index="emconf_type.alttitle">Installation type</label>
 			<label index="emconf_type.description">The type of the installation</label>
-			<label index="emconf_type.details">The files for an extension are located in a folder named by the extension key. The location of this folder can be either inside typo3/sysext/,  typo3/ext/ or  typo3conf/ext/. The extension must be programmed so that it does automatically detect where it is located and can work from all three locations.
+			<label index="emconf_type.details">The files for an extension are located in a folder named by the extension key. The location of this folder can be either inside typo3conf/ext/,  typo3/ext/ or typo3/sysext/. The extension must be programmed so that it automatically detects where it is located and can work from all three locations.
 
-&lt;b&gt;Local location ?typo3conf/ext/?:&lt;/b&gt; This is where to put extensions which are local for a particular TYPO3 installation. The typo3conf/ dir is always local, containing local configuration (eg. localconf.php), local modules etc. If you put an extension here it will be available for this TYPO3 installation only. This is a ?per-database? way to install an extension.
+&lt;b&gt;Local location &quot;typo3conf/ext/&quot;:&lt;/b&gt; This is where to put extensions which are local for a particular TYPO3 installation. The typo3conf/ directory is always local, containing local configuration (eg. localconf.php), local modules etc. If you put an extension here it will be available for this TYPO3 installation only. This is a &quot;per-database&quot; way to install an extension.
 
-&lt;b&gt;Global location ?typo3/ext/?:&lt;/b&gt; This is where to put extensions which are global for the TYPO3 source code on the web server. These extensions will be available for any TYPO3 installation sharing the source code.
+&lt;b&gt;Global location &quot;typo3/ext/&quot;:&lt;/b&gt; This is where to put extensions which are global for the TYPO3 source code on the web server. These extensions will be available for any TYPO3 installation sharing the source code.
 When you upgrade your TYPO3 source code you probably want to copy the typo3/ext/ directory from the former source to the new source, overriding the default directory. In this way all global extension you use will be installed inside the new sourcecode. After that you can always enter TYPO3 and upgrade the versions if needed.
-This is a ?per-server? way to install an extension.
+This is a &quot;per-server&quot; way to install an extension.
 
-&lt;b&gt;System location ?typo3/sysext/?:&lt;/b&gt; This is system default extensions which cannot and should not be updated by the EM.
+&lt;b&gt;System location &quot;typo3/sysext/&quot;:&lt;/b&gt; This is system default extensions which cannot and should not be updated by the EM. They are distributed with the TYPO3 core.
 
 
 &lt;b&gt;Loading precedence&lt;/b&gt;
 Local extensions take precedence which means that if an extension exists both in typo3conf/ext/ and typo3/ext/ the one in typo3conf/ext/ is loaded. Likewise global extension takes predence over system extensions. This means that extensions are loaded in the order of priority local-global-system.
-In effect you can therefore have - say - a ?stable? version of an extension installed in the global dir (typo3/ext/) which is used by all your projects on a server sharing source code, but on a single experimental project you can import the same extension in a newer ?experimental? version and for that particular project the locally available extension will be used instead.</label>
+In effect you can therefore have, say, a &quot;stable&quot; version of an extension installed in the global dir (typo3/ext/) which is used by all your projects on a server sharing source code, but on a single experimental project you can import the same extension in a newer &quot;experimental&quot; version and for that particular project the locally available extension will be used instead.</label>
 			<label index="emconf_doubleInstall.alttitle">Installed twice or more?</label>
 			<label index="emconf_doubleInstall.description">Tells you if the extensions is installed in more than one of the System, Global or Local locations.</label>
 			<label index="emconf_doubleInstall.details">Because an extension can reside at three locations, System, Global and Local, this indicates if the extension is found in other locations than the current. In that case you should be aware which one of the extensions is loaded!</label>
@@ -137,18 +157,99 @@ In effect you can therefore have - say - a ?stable? version of an extension inst
 			<label index="emconf_conf.description">Shows if the extension has a template for further lowlevel configuration.</label>
 			<label index="emconf_TSfiles.alttitle">Static TypoScript files</label>
 			<label index="emconf_TSfiles.description">Shows which TypoScript static files may be present</label>
-			<label index="emconf_TSfiles.details">If the files ext_typoscript_constants.txt and/or ext_typoscript_setup.txt is found in the extension folder their are included in the hierarchy of all TypoScript templates in TYPO3 right after the inclusion of other static templates.</label>
+			<label index="emconf_TSfiles.details">If the files ext_typoscript_constants.txt and/or ext_typoscript_setup.txt is found in the extension folder they are included in the hierarchy of all TypoScript templates in TYPO3 right after the inclusion of other static templates.</label>
 			<label index="emconf_locallang.alttitle">locallang-files</label>
 			<label index="emconf_locallang.description">Shows which files named &quot;locallang.php&quot; are present in the extension folder (recursive search). Such files are usually used to present an array $LOCAL_LANG with labels for the application in the system languages.</label>
 			<label index="emconf_moduleNames.alttitle">Backend Module names</label>
-			<label index="emconf_moduleNames.description">Shows which module names was found inside the extension.</label>
+			<label index="emconf_moduleNames.description">Shows which module names were found inside the extension.</label>
 			<label index="emconf_classNames.alttitle">PHP Class names</label>
 			<label index="emconf_classNames.description">Shows which PHP-classes were found in .php and .inc files.</label>
 			<label index="emconf_errors.alttitle">Errors</label>
-			<label index="emconf_errors.description">Displays if any serious errors with the extension was discovered.</label>
+			<label index="emconf_errors.description">Displays if any errors with the extension were discovered.</label>
 			<label index="emconf_NSerrors.alttitle">Namespace errors</label>
 			<label index="emconf_NSerrors.description">Certain naming convensions apply to extensions. This displays any violations found.</label>
 			<label index="emconf_NSerrors.details">The naming convensions are defined in the &quot;Inside TYPO3&quot; document. To make naming as simple as possible, try to avoid underscores in your extension keys.</label>
+			<label index="_.seeAlso">xMOD_csh_corebe, 
+Core / Extension Architecture | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/
+Managing Extensions | http://typo3.org/documentation/document-library/doc_core_inside/Backend_user_setup/</label>
+			<label index="_loaded.image">EXT:lang/cshimages/em_1.png</label>
+			<label index="_avail.image">EXT:lang/cshimages/em_2.png,
+EXT:lang/cshimages/em_12.png</label>
+			<label index="_import.image">EXT:lang/cshimages/em_3.png</label>
+			<label index="_info.image">EXT:lang/cshimages/em_4.png</label>
+			<label index="_backup_delete.image">EXT:lang/cshimages/em_5.png</label>
+			<label index="_upload.image">EXT:lang/cshimages/em_6.png</label>
+			<label index="_editfiles.image">EXT:lang/cshimages/em_7.png</label>
+			<label index="_settings.image">EXT:lang/cshimages/em_8.png</label>
+			<label index="_makenew.image">EXT:lang/cshimages/em_9.png</label>
+			<label index="loaded.alttitle">Loaded Extensions</label>
+			<label index="avail.alttitle">Available Extensions</label>
+			<label index="import.alttitle">Importing Extensions</label>
+			<label index="_import.seeAlso">_MOD_tools_em:backup_delete, 
+_MOD_tools_em:settings</label>
+			<label index="info.alttitle">Extension Details</label>
+			<label index="backup_delete.alttitle">Backup Extension as a file</label>
+			<label index="upload.alttitle">Upload an Extension to the repository (TER)</label>
+			<label index="editfiles.alttitle">Editing scripts in an extension</label>
+			<label index="settings.alttitle">Extension Manager Settings</label>
+			<label index="makenew.alttitle">Kickstarting new extensions</label>
+			<label index="import_ter.alttitle">Extensions in TER</label>
+			<label index="_import_ter.image">EXT:lang/cshimages/em_10.png,
+EXT:lang/cshimages/em_11.png</label>
+			<label index="loaded.details">The extensions in this list are shown in the order they are found in $TYPO3_CONF_VARS[EXT][extList]. 
+To de-install an extension you simply click the green &quot;-&quot; icon. If there are no dependencies requiring the extension it will be removed from the list of installed extensions.
+The &quot;Rq&quot; extensions in the loaded extensions list are &quot;required extensions&quot;. These are related so deeply to the system that you cannot disable them from the Extension Manager.</label>
+			<label index="loaded.image_descr">The list of loaded extensions shown in the loading order.</label>
+			<label index="avail.details">You can install an extension by clicking the gray &quot;+&quot; icon in this list. If you want to de-install an extension you click the green &quot;-&quot; icon.
+When you click the install button (&quot;+&quot;) you will most often end in a dialog where you have to confirm the creation of database tables and fields or maybe you will be asked to &quot;clear all cache&quot;. The Extension Manager automatically handles these requirements for you which makes it extremely easy to install new extensions.</label>
+			<label index="avail.image_descr">The list of available extension on the server. The list is compiled from extensions found in the &quot;local&quot;, &quot;global&quot; and &quot;system&quot; extension folders.
+If you click the install icon (&quot;+&quot;) of an extension you might end in a dialog like this. In this case a new database table is required. The Extension Manager will automatically detect that it does not exist yet and suggest that you create it. The creation automatically takes place as well, simply by accepting the changes when pressing &quot;Make updates&quot;.</label>
+			<label index="import.details">&lt;b&gt;Import from TER&lt;/b&gt;
+To connect to the TER you simply click the button &quot;Connect to online repository&quot;. This will request the URL shown in the text above the button and the URL should return a list of available extension you can import. 
+If you know what you are looking for then enter a search word in the look-up box. In particular this helps you to look up a specific extension key. The connection to TER will be much faster if you use this since less data is sent over the wire!
+
+&lt;b&gt;Upload from file&lt;/b&gt;
+For private projects the exchange of extensions is easily done by sending &quot;t3x&quot; files from system to system. In one TYPO3 installation you simply go to the menu &quot;Backup/Delete&quot; of an extension and download a &quot;Backup&quot; of the extension. The fileformat is a serialized PHP array, compressed if possible. This file can then be uploaded in the Extension Manager of another TYPO3 system where you want to import it.</label>
+			<label index="import.image_descr">The &quot;Import&quot; screen. Before you connect to the online repository you might like to configure typo3.org username and password since that will be used to also select &quot;Member&quot; extensions in TER, if any. You can also enable &quot;Get own/member/selected extensions only&quot; if you want to limit the list further.</label>
+			<label index="import_ter.details">&lt;b&gt;Import Extensions&lt;/b&gt;
+If an extension does not yet exist on your server you will see the icon with the red arrow next to that extension. A single click and the extension will be downloaded and the files extracted on your server. The download directory is seen if you move the mouse over the icon (in the tool-tip text).
+
+&lt;b&gt;Update Extensions&lt;/b&gt;
+You can update extensions that are always on your system by clicking the icon with the green arrows. The update icon will appear if the &quot;minor&quot; version number (middle digit) has been incremented. This means that extensions updated on the dev-version number (the third digit) will not be shown as &quot;ready for update&quot;. (You can configure TYPO3 to do that though!).
+
+&lt;b&gt;Seeing details about an extension in TER&lt;/b&gt;
+You can also click the title of an extension to see details about it. That will also allow you to perform a more detailed update operation where you can select version number and download location (local/global/system).
+You can also ask to have the most recent translations downloaded.</label>
+			<label index="import_ter.image_descr">List of extensions from TER. The red arrow icon is the &quot;Import&quot; link (for new extensions), the green arrow icon is the &quot;Update&quot; link (for an extension that is already on your server). If an extension is already available in the most recent version you will not see any icon at all to the left of the extension.
+If you clicked the title of an extension you will request the repository for details about the extension. This also allows you to select a specific version for import. You can also select the install location (global/local) and you can request to have the most recent translations merged into the extension upon retrieval.</label>
+			<label index="info.details">In this view some of the details are simply a display of the information from the &quot;ext_emconf.php&quot; file in the extension. The &quot;emconf&quot; file contains meta data for the Extension Manager.
+
+The Extension Manager will also go a bit further and perform some analysis of the scripts in the extension. The list will include the findings of this analysis and if any errors were found they will be displayed. Usually these errors will not prevent the extension from working but more likely point out some theoretical problems that the extension developer should address.</label>
+			<label index="info.image_descr">The details view of an extension displays live statistics from analysis as well as static data from the &quot;ext_emconf.php&quot; file.</label>
+			<label index="_backup_delete.seeAlso">_MOD_tools_em:import</label>
+			<label index="backup_delete.image_descr">&quot;Backup&quot; of extensions - also very useful for exchange of extensions between members of a workgroup.</label>
+			<label index="upload.details">&lt;b&gt;Changelog&lt;/b&gt;
+In the changelog field you enter the changes made or the reason for the upload. This will be displayed in the list of new extensions.
+
+&lt;b&gt;Version numbers&lt;/b&gt;
+Select a method for incrementation of the version number. For new &quot;versions&quot; of your extension you should select &quot;sub&quot; or &quot;main&quot; which will display your extension in the list of new extensions. For maintenance uploads you select &quot;dev&quot;.</label>
+			<label index="_upload.seeAlso">_MOD_tools_em:settings, 
+Register Extension Keys | http://typo3.org/extensions/register-extension-keys/</label>
+			<label index="upload.image_descr">The upload form for extensions. The extension is submitted to the selected repository, usually TYPO3.org (default).</label>
+			<label index="editfiles.details">&lt;b&gt;Notice:&lt;/b&gt;
+Before editing of extension scripts can be performed you have to disable the configuration option &quot;TYPO3_CONF_VARS[EXT][noEdit]&quot; in &quot;localconf.php&quot;.</label>
+			<label index="editfiles.image_descr">Some file types - like PHP scripts - can be edited by a textarea field inside the Extension Manager.</label>
+			<label index="settings.details">&lt;b&gt;Notice:&lt;/b&gt;
+This information is not very well protected! It is send and stored in clear-text!</label>
+			<label index="settings.image_descr">Settings for TER connections.</label>
+			<label index="makenew.details">The Extension Repository Kickstarter is a separate extension, &quot;extrep_wizard&quot;. Please see more information about the kickstarter otherwise.
+
+&lt;b&gt;Notice:&lt;/b&gt;
+The Kickstarter is NOT an editor! When a new extension is started you cannot - as a rule of thumb - go back an edit it with the kickstarter! It will just overwrite any custom changes you did in the meantime!</label>
+			<label index="_makenew.seeAlso">Register Extension Keys | http://typo3.org/extensions/register-extension-keys/
+Extension API | http://typo3.org/documentation/document-library/doc_core_api/Introduction-f289e83016/
+Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/</label>
+			<label index="makenew.image_descr">When the &quot;Extension Repository Kickstarter&quot; is enabled it adds itself in the menu of the Extension Manager. From here you will be able to start your new extensions. Before you do so you should register an extension key and enter a title and description as base data. From that point it is just clicking the &quot;+&quot; icons to add the various types of functionality you want. Finally you click &quot;View result&quot; to write the extension to the server.</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="emconf_shy.alttitle">Sky</label>
@@ -1341,190 +1442,6 @@ Uma extensão não é interna só porque usa as classes gerais do TYPO3, por exe
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="emconf_shy.alttitle" type="integer">217108965</label>
-			<label index="emconf_shy.description" type="integer">196807582</label>
-			<label index="emconf_shy.details" type="integer">206691994</label>
-			<label index="emconf_category.alttitle" type="integer">61717939</label>
-			<label index="emconf_category.description" type="integer">204987594</label>
-			<label index="emconf_category.details" type="integer">246335601</label>
-			<label index="emconf_dependencies.alttitle" type="integer">6158334</label>
-			<label index="emconf_dependencies.description" type="integer">262753637</label>
-			<label index="emconf_dependencies.details" type="integer">54343024</label>
-			<label index="emconf_conflicts.alttitle" type="integer">174778315</label>
-			<label index="emconf_conflicts.description" type="integer">14159431</label>
-			<label index="emconf_priority.alttitle" type="integer">208790249</label>
-			<label index="emconf_priority.description" type="integer">261230598</label>
-			<label index="emconf_module.alttitle" type="integer">222311525</label>
-			<label index="emconf_module.description" type="integer">131352939</label>
-			<label index="emconf_module.details" type="integer">16797237</label>
-			<label index="emconf_state.alttitle" type="integer">8968835</label>
-			<label index="emconf_state.description" type="integer">48322308</label>
-			<label index="emconf_state.details" type="integer">80752734</label>
-			<label index="emconf_internal.alttitle" type="integer">252258090</label>
-			<label index="emconf_internal.description" type="integer">130243565</label>
-			<label index="emconf_internal.details" type="integer">242835609</label>
-			<label index="emconf_clearCacheOnLoad.alttitle" type="integer">26668595</label>
-			<label index="emconf_clearCacheOnLoad.description" type="integer">149991239</label>
-			<label index="emconf_modify_tables.alttitle" type="integer">211801845</label>
-			<label index="emconf_modify_tables.description" type="integer">225814359</label>
-			<label index="emconf_modify_tables.details" type="integer">250561664</label>
-			<label index=".alttitle" type="integer">194364373</label>
-			<label index=".description" type="integer">17437649</label>
-			<label index=".details" type="integer">238023326</label>
-			<label index="emconf_private.alttitle" type="integer">75468930</label>
-			<label index="emconf_private.description" type="integer">8590515</label>
-			<label index="emconf_private.details" type="integer">183041250</label>
-			<label index="_emconf_private.seeAlso" type="integer">246806958</label>
-			<label index="emconf_download_password.alttitle" type="integer">102196861</label>
-			<label index="emconf_download_password.description" type="integer">120757501</label>
-			<label index="emconf_download_password.details" type="integer">92160698</label>
-			<label index="_emconf_download_password.seeAlso" type="integer">211543191</label>
-			<label index="emconf_type.alttitle" type="integer">121209022</label>
-			<label index="emconf_type.description" type="integer">113056504</label>
-			<label index="emconf_type.details" type="integer">147333350</label>
-			<label index="emconf_doubleInstall.alttitle" type="integer">262159324</label>
-			<label index="emconf_doubleInstall.description" type="integer">60133779</label>
-			<label index="emconf_doubleInstall.details" type="integer">201896892</label>
-			<label index="emconf_rootfiles.alttitle" type="integer">234183730</label>
-			<label index="emconf_rootfiles.description" type="integer">157844662</label>
-			<label index="emconf_dbReq.alttitle" type="integer">28332369</label>
-			<label index="emconf_dbReq.description" type="integer">93463627</label>
-			<label index="emconf_dbReq.details" type="integer">199359275</label>
-			<label index="emconf_dbStatus.alttitle" type="integer">204171626</label>
-			<label index="emconf_dbStatus.description" type="integer">166393559</label>
-			<label index="emconf_dbStatus.details" type="integer">198198907</label>
-			<label index="emconf_flags.alttitle" type="integer">82475009</label>
-			<label index="emconf_flags.description" type="integer">42715313</label>
-			<label index="emconf_flags.details" type="integer">209778452</label>
-			<label index="emconf_conf.description" type="integer">49196456</label>
-			<label index="emconf_TSfiles.alttitle" type="integer">43118947</label>
-			<label index="emconf_TSfiles.description" type="integer">196469558</label>
-			<label index="emconf_TSfiles.details" type="integer">238768833</label>
-			<label index="emconf_locallang.alttitle" type="integer">182381040</label>
-			<label index="emconf_locallang.description" type="integer">112585123</label>
-			<label index="emconf_moduleNames.alttitle" type="integer">70637876</label>
-			<label index="emconf_moduleNames.description" type="integer">207879145</label>
-			<label index="emconf_classNames.alttitle" type="integer">155053783</label>
-			<label index="emconf_classNames.description" type="integer">83027952</label>
-			<label index="emconf_errors.alttitle" type="integer">99552371</label>
-			<label index="emconf_errors.description" type="integer">88544755</label>
-			<label index="emconf_NSerrors.alttitle" type="integer">190879862</label>
-			<label index="emconf_NSerrors.description" type="integer">168628900</label>
-			<label index="emconf_NSerrors.details" type="integer">76599956</label>
-			<label index="emconf_shy.syntax" type="integer">222419149</label>
-			<label index="_emconf_shy.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_shy.image" type="integer">222419149</label>
-			<label index="emconf_shy.image_descr" type="integer">222419149</label>
-			<label index="emconf_category.syntax" type="integer">222419149</label>
-			<label index="_emconf_category.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_category.image" type="integer">222419149</label>
-			<label index="emconf_category.image_descr" type="integer">222419149</label>
-			<label index="emconf_dependencies.syntax" type="integer">222419149</label>
-			<label index="_emconf_dependencies.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_dependencies.image" type="integer">222419149</label>
-			<label index="emconf_dependencies.image_descr" type="integer">222419149</label>
-			<label index="emconf_conflicts.details" type="integer">222419149</label>
-			<label index="emconf_conflicts.syntax" type="integer">222419149</label>
-			<label index="_emconf_conflicts.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_conflicts.image" type="integer">222419149</label>
-			<label index="emconf_conflicts.image_descr" type="integer">222419149</label>
-			<label index="emconf_priority.details" type="integer">222419149</label>
-			<label index="emconf_priority.syntax" type="integer">222419149</label>
-			<label index="_emconf_priority.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_priority.image" type="integer">222419149</label>
-			<label index="emconf_priority.image_descr" type="integer">222419149</label>
-			<label index="emconf_module.syntax" type="integer">222419149</label>
-			<label index="_emconf_module.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_module.image" type="integer">222419149</label>
-			<label index="emconf_module.image_descr" type="integer">222419149</label>
-			<label index="emconf_state.syntax" type="integer">222419149</label>
-			<label index="_emconf_state.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_state.image" type="integer">222419149</label>
-			<label index="emconf_state.image_descr" type="integer">222419149</label>
-			<label index="emconf_internal.syntax" type="integer">222419149</label>
-			<label index="_emconf_internal.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_internal.image" type="integer">222419149</label>
-			<label index="emconf_internal.image_descr" type="integer">222419149</label>
-			<label index="emconf_clearCacheOnLoad.details" type="integer">222419149</label>
-			<label index="emconf_clearCacheOnLoad.syntax" type="integer">222419149</label>
-			<label index="_emconf_clearCacheOnLoad.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_clearCacheOnLoad.image" type="integer">222419149</label>
-			<label index="emconf_clearCacheOnLoad.image_descr" type="integer">222419149</label>
-			<label index="emconf_modify_tables.syntax" type="integer">222419149</label>
-			<label index="_emconf_modify_tables.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_modify_tables.image" type="integer">222419149</label>
-			<label index="emconf_modify_tables.image_descr" type="integer">222419149</label>
-			<label index=".syntax" type="integer">222419149</label>
-			<label index="_.seeAlso" type="integer">222419149</label>
-			<label index="_.image" type="integer">222419149</label>
-			<label index=".image_descr" type="integer">222419149</label>
-			<label index="emconf_private.syntax" type="integer">222419149</label>
-			<label index="_emconf_private.image" type="integer">222419149</label>
-			<label index="emconf_private.image_descr" type="integer">222419149</label>
-			<label index="emconf_download_password.syntax" type="integer">222419149</label>
-			<label index="_emconf_download_password.image" type="integer">222419149</label>
-			<label index="emconf_download_password.image_descr" type="integer">222419149</label>
-			<label index="emconf_type.syntax" type="integer">222419149</label>
-			<label index="_emconf_type.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_type.image" type="integer">222419149</label>
-			<label index="emconf_type.image_descr" type="integer">222419149</label>
-			<label index="emconf_doubleInstall.syntax" type="integer">222419149</label>
-			<label index="_emconf_doubleInstall.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_doubleInstall.image" type="integer">222419149</label>
-			<label index="emconf_doubleInstall.image_descr" type="integer">222419149</label>
-			<label index="emconf_rootfiles.details" type="integer">222419149</label>
-			<label index="emconf_rootfiles.syntax" type="integer">222419149</label>
-			<label index="_emconf_rootfiles.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_rootfiles.image" type="integer">222419149</label>
-			<label index="emconf_rootfiles.image_descr" type="integer">222419149</label>
-			<label index="emconf_dbReq.syntax" type="integer">222419149</label>
-			<label index="_emconf_dbReq.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_dbReq.image" type="integer">222419149</label>
-			<label index="emconf_dbReq.image_descr" type="integer">222419149</label>
-			<label index="emconf_dbStatus.syntax" type="integer">222419149</label>
-			<label index="_emconf_dbStatus.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_dbStatus.image" type="integer">222419149</label>
-			<label index="emconf_dbStatus.image_descr" type="integer">222419149</label>
-			<label index="emconf_flags.syntax" type="integer">222419149</label>
-			<label index="_emconf_flags.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_flags.image" type="integer">222419149</label>
-			<label index="emconf_flags.image_descr" type="integer">222419149</label>
-			<label index="emconf_conf.alttitle" type="integer">222419149</label>
-			<label index="emconf_conf.details" type="integer">222419149</label>
-			<label index="emconf_conf.syntax" type="integer">222419149</label>
-			<label index="_emconf_conf.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_conf.image" type="integer">222419149</label>
-			<label index="emconf_conf.image_descr" type="integer">222419149</label>
-			<label index="emconf_TSfiles.syntax" type="integer">222419149</label>
-			<label index="_emconf_TSfiles.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_TSfiles.image" type="integer">222419149</label>
-			<label index="emconf_TSfiles.image_descr" type="integer">222419149</label>
-			<label index="emconf_locallang.details" type="integer">222419149</label>
-			<label index="emconf_locallang.syntax" type="integer">222419149</label>
-			<label index="_emconf_locallang.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_locallang.image" type="integer">222419149</label>
-			<label index="emconf_locallang.image_descr" type="integer">222419149</label>
-			<label index="emconf_moduleNames.details" type="integer">222419149</label>
-			<label index="emconf_moduleNames.syntax" type="integer">222419149</label>
-			<label index="_emconf_moduleNames.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_moduleNames.image" type="integer">222419149</label>
-			<label index="emconf_moduleNames.image_descr" type="integer">222419149</label>
-			<label index="emconf_classNames.details" type="integer">222419149</label>
-			<label index="emconf_classNames.syntax" type="integer">222419149</label>
-			<label index="_emconf_classNames.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_classNames.image" type="integer">222419149</label>
-			<label index="emconf_classNames.image_descr" type="integer">222419149</label>
-			<label index="emconf_errors.details" type="integer">222419149</label>
-			<label index="emconf_errors.syntax" type="integer">222419149</label>
-			<label index="_emconf_errors.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_errors.image" type="integer">222419149</label>
-			<label index="emconf_errors.image_descr" type="integer">222419149</label>
-			<label index="emconf_NSerrors.syntax" type="integer">222419149</label>
-			<label index="_emconf_NSerrors.seeAlso" type="integer">222419149</label>
-			<label index="_emconf_NSerrors.image" type="integer">222419149</label>
-			<label index="emconf_NSerrors.image_descr" type="integer">222419149</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="emconf_shy.alttitle" type="integer">217108965</label>
 			<label index="emconf_shy.description" type="integer">196807582</label>

@@ -10,7 +10,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index=".alttitle">User Setup module</label>
+			<label index=".alttitle">User &gt; Setup module</label>
 			<label index=".description">The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</label>
 			<label index="language.description">Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</label>
 			<label index="option_condensedMode.description">If set, the backend will not load the Web-submodules and File-submodules in a frameset but allow the page and folder trees to load the submodule in the main content frame. This allows for a better display on small screens.</label>

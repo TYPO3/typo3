@@ -10,15 +10,24 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index=".description">This is the table of backend administration users.</label>
-			<label index="_.seeAlso">be_groups</label>
+			<label index=".description">This is the table of backend administration users. Backend users can login in the backend of TYPO3 and are typically producers of content on a website.</label>
+			<label index="_.seeAlso">be_groups, 
+About backend users | http://typo3.org/documentation/document-library/doc_tut_quickstart/Backend_users/
+Setting up a new user and group | http://typo3.org/documentation/document-library/doc_core_inside/Setting_up_a_new_use/
+Users and Groups [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Users_and_groups/</label>
 			<label index="username.description">Enter the login name of the backend user.</label>
-			<label index="username.details">A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be prepended automatically.</label>
+			<label index="username.details">A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be appended automatically.</label>
 			<label index="_username.seeAlso">be_users:password</label>
 			<label index="password.description">Enter the password for the backend username above (Notice the value you enter &lt;i&gt;will&lt;/i&gt; be readable in the field!).</label>
-			<label index="password.details">The password is required. Before the password is sent to the server it's md5-hashed, so the password value itself is not transferred over the internet. This is true both when editing the password and when the user logs in.
+			<label index="password.details">The password is required. Before the password is sent to the server it's md5-hashed, so the password value itself is not transferred over the Internet. This is true both when editing the password and when the user logs in.
 While this principle does not reveal the raw password it is &lt;i&gt;not&lt;/i&gt; the same as real encryption. If you need the highest degree of security you should install the TYPO3 backend on a secure server.
-The password is stored in the database as an md5-hash and thus it's not possible to extract the original password from the database either. This means that 'lost passwords' must be substituted with a new password for the user.</label>
+The password is stored in the database as an md5-hash and thus it's not possible to extract the original password from the database either. This means that 'lost passwords' must be substituted with a new password for the user.
+
+&lt;b&gt;Notice&lt;/b&gt;
+When you enter the password in the password field it is initially visible in clear text! First when the password field focus is lost will the password become a &quot;list of dots&quot;.
+
+&lt;b&gt;User changing password&lt;/b&gt;
+Users can change their password from the User &gt; Setup module</label>
 			<label index="usergroup.description">Assign backend user groups to the user.</label>
 			<label index="usergroup.details">The backend user groups defines the permissions which the backend user will inherit. So unless the backend user is an 'Admin' user, he needs to be a member of one or more user groups in order to have practically any permissions assigned. The properties set in the user groups are mostly added together.
 The first (top) group in the list is the group which will, by default, be the owner of pages the user creates.</label>
@@ -37,26 +46,33 @@ fe_groups:lockToDomain</label>
 &lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also has DB mounts which can be inherited by the user. So if you want a group of users to share a page tree, you should probably mount the page tree in the backend user group which they share instead.</label>
 			<label index="_db_mountpoints.seeAlso">be_groups:db_mountpoints,
 be_users:file_mountpoints,
-be_users:options</label>
+be_users:options, 
+xMOD_csh_corebe:perm_module,
+xMOD_csh_corebe:pagetree</label>
 			<label index="file_mountpoints.description">Assign startpoints for the file folder tree.</label>
-			<label index="file_mountpoints.details">The file folder tree is used by all File-submodules to navigate between the file folders on the webserver. In order to be able to upload &lt;em&gt;any&lt;/em&gt; files the user &lt;em&gt;must&lt;/em&gt; have a file folder mounted with a folder named '_temp_' in it (which is where uploads go by default).
-Notice as with 'DB mounts' the file folder mounts may be inherited from the member groups of the user.</label>
+			<label index="file_mountpoints.details">The file folder tree is used by all File-submodules to navigate between the file folders on the webserver. 
+Notice as with 'DB mounts' the file folder mounts may be inherited from the member groups of the user.
+See Backend Groups for details</label>
 			<label index="_file_mountpoints.seeAlso">be_groups:file_mountpoints,
 be_users:db_mountpoints,
-be_users:options</label>
+be_users:options,
+xMOD_csh_corebe:filetree, 
+sys_filemounts</label>
 			<label index="email.description">Enter the email address of the user.</label>
 			<label index="email.details">This address is rather important to enter because this is where messages from the system is sent.
 &lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</label>
-			<label index="_email.seeAlso">be_users:realName</label>
+			<label index="_email.seeAlso">be_users:realName,
+_MOD_user_setup:option_newPassword</label>
 			<label index="realName.description">Enter the ordinary name of the user, eg. John Doe.</label>
 			<label index="realName.details">&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</label>
-			<label index="_realName.seeAlso">be_users:email</label>
+			<label index="_realName.seeAlso">be_users:email,
+_MOD_user_setup:option_newPassword</label>
 			<label index="disable.description">This option will temporarily disable the user from logging in.</label>
 			<label index="_disable.seeAlso">be_users:starttime,
 be_users:endtime</label>
-			<label index="admin.description">'Admin' users has TOTAL access to the system!</label>
+			<label index="admin.description">'Admin' users have TOTAL access to the system!</label>
 			<label index="admin.details">'Admin' can do anything TYPO3 allows and this kind of user should be used only for administrative purposes. All daily handling should be done with regular users.
-'Admin' users don't need to be members or any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the 'Admin' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
+'Admin' users don't need to be members of any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the 'Admin' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
 'Admin' users are easily recognized as they appear with a red icon instead of the ordinary blue user-icon.
 
 You should probably not assign any other users than yourself as an 'Admin' user.</label>
@@ -82,18 +98,41 @@ pages:starttime</label>
 
 &lt;b&gt;Notice&lt;/b&gt; this is only the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module.</label>
 			<label index="userMods.description">Select available backend modules for the user.</label>
-			<label index="userMods.details">This determines which 'menu items' are available for the user.
+			<label index="userMods.details">This determines which 'menu items' are available for the user in the backend.
 
 Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It's highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he's a member of. However this list provides a great way to add a single module for specific users.</label>
 			<label index="_userMods.seeAlso">be_groups:groupMods</label>
 			<label index="TSconfig.description">Enter additional TSconfig for the user (advanced).</label>
-			<label index="TSconfig.details">This field allows you to extend the configuration of the user in severe details. A brief summary of the options include a more detailed configuration of the backend modules, setting of user specific default table field values, setting of Rich Text Editor options etc. The list will be growing by time and is fully documented in the adminstration documentation, in particular 'admin_guide.pdf' (see link below).</label>
+			<label index="TSconfig.details">This field allows you to extend the configuration of the user in severe details. A brief summary of the options include a more detailed configuration of the backend modules, setting of user specific default table field values, setting of Rich Text Editor options etc.</label>
 			<label index="_TSconfig.seeAlso">pages:TSconfig,
 fe_users:TSconfig,
-be_groups:TSconfig
-admin_guide.pdf|http://www.typo3.com/doclink.php?key=admin_guide.pdf</label>
-			<label index="_.image"></label>
-			<label index=".image_descr"></label>
+be_groups:TSconfig,
+User TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/</label>
+			<label index="_.image">EXT:lang/cshimages/beuser_2.png,
+EXT:lang/cshimages/beuser_1.png,
+EXT:lang/cshimages/beuser_3.png</label>
+			<label index=".image_descr">Backend users are found in the root of the page tree. &quot;Admin&quot; backend users can always be recognized on their icon being red while normal users have a blue icon.
+The editing form of a backend users record.
+The &quot;Tools &gt; User Admin&quot; module where you can get an overview of the users on the system and what permissions they have. Click the &quot;SU&quot; button to switch to a users account.</label>
+			<label index=".details">The main settings for a backend user is a username, password and group memberships. The username and password authenticates the user to the system. The group memberships enables the user to perform actions in TYPO3 since groups are the main source of permission settings for a backend user.
+Backend usergroups can also be understood as &quot;roles&quot;. A usergroup can contain a configuration of permissions which allows the user to play a certain role in the system.
+
+&lt;b&gt;The &quot;Admin&quot; user&lt;/b&gt;
+There is a special kind of user, the &quot;Admin&quot; user. This user has access to everything in TYPO3. There are no limits for Admin-users at all. You should normally have only a single or two admin-users in your system.
+Admin-users are the only users who can create other backend users. Alternatively you can create an &quot;Action&quot; which enables other normal users to do it as well (with certain restrictions of course).
+
+&lt;b&gt;Location&lt;/b&gt;
+Backend users are always created in the root of the page tree (like Backend groups are).
+
+&lt;b&gt;Comparing Users&lt;/b&gt;
+To manage and compare users, getting an overview of their access credentials etc. you can use the Tools &gt; User Admin module (extension: beuser). It allows you to group users by various categories of permissions. You can also switch to another users account by a single click of a button.</label>
+			<label index="_password.seeAlso">_MOD_user_setup:option_newPassword</label>
+			<label index="_db_mountpoints.image">EXT:lang/cshimages/be_groups_3.png, 
+EXT:lang/cshimages/be_groups_4.png</label>
+			<label index="db_mountpoints.image_descr">A DB mount is assigned to the user. Users can only operate on pages and records which are inside their DB mounts! 
+When a page is mounted for a user it will become the root of their page tree. The user must have access to the page through the regular page permissions set in the Web &gt; Access module.</label>
+			<label index="_admin.image">EXT:lang/cshimages/beuser_4.png</label>
+			<label index="_lang.seeAlso">_MOD_user_setup:language</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
@@ -1113,78 +1152,4 @@ Note que a mesma lista de módulos pode ser configurada para os grupos de usuár
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

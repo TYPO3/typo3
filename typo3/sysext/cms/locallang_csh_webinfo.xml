@@ -50,7 +50,7 @@ EXT:cms/cshimages/pagetree_overview_7.png</label>
 
 &lt;b&gt;Batch editing page fields&lt;/b&gt;
 You will find multiple edit-icons around the interface. All edit icons in head lines will bring you to an editing dialog where you can change exactly that field for all listed tables! Very useful for batch-editing of say all &quot;Start&quot; times. 
-If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a page header.</label>
+If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a whole page record.</label>
 			<label index="_func_0.seeAlso">xMOD_csh_corebe:list_module, 
 _MOD_web_info:func_2, 
 _MOD_web_info:pagetree_overview</label>
@@ -61,7 +61,7 @@ _MOD_web_info:stat</label>
 			<label index="func_0.image_descr">The Basic Settings view. Notice how this offers a very convenient overview of page aliases, start times and access restriction settings in the tree branch.
 If you click an edit-icon in the header you will be able to edit that field (here the &quot;Access&quot; field) for all listed pages.
 This is how batch-editing looks like; Only one field per record!</label>
-			<label index="func_1.details">&lt;b&gt;Notice:&lt;/b&gt;Be careful with the level-setting. Setting for instance &quot;3 levels&quot; might make the module respond very slowly if there are many pages and many records in the database as well!
+			<label index="func_1.details">&lt;b&gt;Notice:&lt;/b&gt; Be careful with the level-setting. Setting for instance &quot;3 levels&quot; might make the module respond very slowly if there are many pages and many records in the database as well!
 
 &lt;b&gt;Tree stop?&lt;/b&gt;
 Notice the red &quot;+&quot; next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.</label>
@@ -72,7 +72,7 @@ pages:php_tree_stop</label>
 _MOD_web_info:pagetree_overview, 
 pages:TSconfig</label>
 			<label index="func_2.image_descr">The &quot;Cache and Age&quot; view.
-Here you see the &quot;TSconfig&quot; column. The overview exposes that these two pages includes some Page TSconfig code!</label>
+Here you see the &quot;TSconfig&quot; column. The overview exposes that these two pages include some Page TSconfig code!</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index=".alttitle"></label>

@@ -16,10 +16,14 @@ Just enter the titles for the pages you need. Only filled in fields will be crea
 			<label index="tx_wizardcrpages.details">The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is &quot;/Intro/Startpage/&quot;.
 
 &lt;b&gt;&quot;Place new pages after the existing subpages&quot;&lt;/b&gt;
-If you select this option the the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
+If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
 
 &lt;b&gt;&quot;Hide new pages&quot;&lt;/b&gt;
-Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.</label>
+Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.
+
+
+&lt;b&gt;Lorem Ipsum...&lt;/b&gt;
+The Create new page wizard supports the Lorem Ipsum extension providing dummy content for the fields.</label>
 			<label index="_tx_wizardcrpages.seeAlso">xEXT_loremipsum</label>
 			<label index="_tx_wizardcrpages.image">EXT:wizard_crpages/cshimages/wizards_1.png, 
 EXT:wizard_crpages/cshimages/wizards_2.png</label>

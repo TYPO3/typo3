@@ -460,7 +460,8 @@ class SC_view_help {
 	 * @return	string		See-also links HTML
 	 */
 	function make_seeAlso($value,$anchorTable='')	{
-		global $TCA,$BE_USER;
+		global $TCA,$BE_USER,$TCA_DESCR;
+
 			// Split references by comma, vert.line or linebreak
 		$items = split(',|'.chr(10),$value);
 		$lines = array();
@@ -485,10 +486,14 @@ class SC_view_help {
 
 					if (!isset($TCA[$iP[0]]) || ((!$iP[1] || is_array($TCA[$iP[0]]['columns'][$iP[1]])) && (!$this->limitAccess || ($BE_USER->check('tables_select',$iP[0]) && (!$iP[1] || !$TCA[$iP[0]]['columns'][$iP[1]]['exclude'] || $BE_USER->check('non_exclude_fields',$iP[0].':'.$iP[1]))))))	{	// Checking read access:
 
-							// Make see-also link:
-						$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);
-						$label = $this->getTableFieldLabel($iP[0],$iP[1],' / ');
-						$lines[] = '<a href="'.htmlspecialchars($href).'">'.htmlspecialchars($label).'</a>';
+							// Load table descriptions:
+						#$LANG->loadSingleTableDescription($iP[0]);
+						if (isset($TCA_DESCR[$iP[0]]))	{
+								// Make see-also link:
+							$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);
+							$label = $this->getTableFieldLabel($iP[0],$iP[1],' / ');
+							$lines[] = '<a href="'.htmlspecialchars($href).'">'.htmlspecialchars($label).'</a>';
+						}
 					}
 				}
 			}

@@ -610,8 +610,11 @@ class SC_mod_tools_em_index {
 			}
 		}
 
-		$content.= '"Loaded extensions" are currently running on the system. This list shows you which extensions are loaded and in which order.<br />"Shy" extensions are also loaded but "hidden" in this list because they are system related and generally you should just leave them alone unless you know what you are doing.<br /><br />';
-		$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
+		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'loaded', $GLOBALS['BACK_PATH'],'');
+		$content.= '
+
+			<!-- Loaded Extensions List -->
+			<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
 		$this->content.=$this->doc->section('Loaded Extensions',$content,0,1);
 	}
@@ -677,9 +680,8 @@ EXTENSION KEYS:
 ';
 
 #debug($this->MOD_SETTINGS['listOrder']);
-			$content.= 'Available extensions are extensions which are present in the extension folders. You can install any of the available extensions in this list. When you install an extension it will be loaded by TYPO3 from that moment.<br />
-						In this list the extensions with dark background are installed (loaded) - the others just available (not loaded), ready to be installed on your request.<br />
-						So if you want to use an extension in TYPO3, you should simply click the "plus" button '.$this->installButton().' . <br />
+			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'avail', $GLOBALS['BACK_PATH'],'|<br/>');
+			$content.= 'If you want to use an extension in TYPO3, you should simply click the "plus" button '.$this->installButton().' . <br />
 						Installed extensions can also be removed again - just click the remove button '.$this->removeButton().' .<br /><br />';
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
@@ -759,11 +761,13 @@ EXTENSION KEYS:
 						}
 					}
 
-					$content.= 'Extensions in this list are online for immediate download from the TYPO3 Extension Repository.<br />
-								Extensions with dark background are those already on your server - the others must be imported from the repository to your server before you can use them.<br />
-								So if you want to use an extension from the repository, you should simply click the "import" button.<br /><br />';
+						// CSH:
+					$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'],'|<br/>');
 
-					$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
+					$content.= '
+
+					<!-- TER Extensions list -->
+					<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
 					$content.= '<br />Data fetched: ['.implode('][',$fetchData[1]).']';
 					$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br /> '.$this->privacyNotice;
@@ -797,7 +801,9 @@ EXTENSION KEYS:
 				}
 			}
 		} else {
-			$content = 'Click here to connect to "'.$this->repositoryUrl.'" and retrieve the list of publicly available plugins from the TYPO3 Extension Repository.<br />';
+				// CSH
+			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import', $GLOBALS['BACK_PATH'],'|<br/>');
+			$content.= 'Click here to connect to "'.$this->repositoryUrl.'" and retrieve the list of publicly available plugins from the TYPO3 Extension Repository.<br />';
 
 			if ($this->fe_user['username'])	{
 				$content.= '<br /><img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_note.gif" width="18" height="16" align="top" alt="" />Repository username "'.$this->fe_user['username'].'" will be sent as authentication.<br />';
@@ -858,7 +864,9 @@ EXTENSION KEYS:
 		$kickstarter->EMmode = 1;
 
 		$content = $kickstarter->mgm_wizard();
-		$this->content.='</form>'.$this->doc->section('Kickstarter wizard',$content,0,1).'<form>';
+		$this->content.='</form>'.
+			t3lib_BEfunc::cshItem('_MOD_tools_em', 'makenew', $GLOBALS['BACK_PATH'],'|<br/>').
+			$this->doc->section('Kickstarter wizard',$content,0,1).'<form>';
 	}
 
 	/**
@@ -867,7 +875,8 @@ EXTENSION KEYS:
 	 * @return	void
 	 */
 	function alterSettings()	{
-		$content = '
+		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'settings', $GLOBALS['BACK_PATH'],'|<br/>');
+		$content.= '
 		<table border="0" cellpadding="2" cellspacing="2">
 			<tr class="bgColor4">
 				<td>Enter repository username:</td>
@@ -1382,7 +1391,9 @@ EXTENSION KEYS:
 						}
 
 							// Show details:
-						$content = $this->extInformationArray($extKey,$list[$extKey]);
+						$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'info', $GLOBALS['BACK_PATH'],'|<br/>');
+						$content.= $this->extInformationArray($extKey,$list[$extKey]);
+
 						$this->content.=$this->doc->spacer(10);
 						$this->content.=$this->doc->section('Details:',$content,0,1);
 					break;
@@ -1397,12 +1408,15 @@ EXTENSION KEYS:
 								// Must reload this, because EM_CONF information has been updated!
 							list($list,$cat)=$this->getInstalledExtensions();
 						} else {
+								// CSH:
+							$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'upload', $GLOBALS['BACK_PATH'],'|<br/>');
+
 								// Upload:
 							if (substr($extKey,0,5)!='user_')	{
-								$content = $this->getRepositoryUploadForm($extKey,$list[$extKey]);
+								$content.= $this->getRepositoryUploadForm($extKey,$list[$extKey]);
 								$eC=0;
 							} else {
-								$content='The extensions has an extension key prefixed "user_" which indicates that it is a user-defined extension with no official unique identification. Therefore it cannot be uploaded.<br />
+								$content.='The extensions has an extension key prefixed "user_" which indicates that it is a user-defined extension with no official unique identification. Therefore it cannot be uploaded.<br />
 								You are encouraged to register a unique extension key for all your TYPO3 extensions - even if the project is current not official.';
 								$eC=2;
 							}
@@ -1412,7 +1426,8 @@ EXTENSION KEYS:
 					case 'download':
 					break;
 					case 'backup':
-						$content = $this->extBackup($extKey,$list[$extKey]);
+						$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'backup_delete', $GLOBALS['BACK_PATH'],'|<br/>');
+						$content.= $this->extBackup($extKey,$list[$extKey]);
 						$this->content.=$this->doc->section('Backup',$content,0,1);
 
 						$content = $this->extDelete($extKey,$list[$extKey]);
@@ -1429,7 +1444,9 @@ EXTENSION KEYS:
 					break;
 					case 'edit':
 							// Files:
-						$content = $this->getFileListOfExtension($extKey,$list[$extKey]);
+						$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'editfiles', $GLOBALS['BACK_PATH'],'|<br/>');
+						$content.= $this->getFileListOfExtension($extKey,$list[$extKey]);
+
 						$this->content.=$this->doc->section('Extension files',$content,0,1);
 					break;
 					case 'updateModule':
@@ -1976,7 +1993,7 @@ EXTENSION KEYS:
 					<td><input type="submit" name="submit" value="Upload extension" /><br />
 					'.t3lib_div::formatSize(strlen($b64data)).($this->gzcompress?", compressed":"").', base64<br />
 					<br />
-					Clicking "Save as file" will allow you to save the extension as a file. This provides you with a backup copy of your extension which can be imported later if needed. "Save as file" ignores the information entered in this form!
+
 					</td>
 				</tr>
 			</table>

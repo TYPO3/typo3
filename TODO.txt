@@ -488,13 +488,15 @@ XQRC:	wizard_sortpages/
 XQCR:	extra_page_cm_options/
 OK		aboutmodules/
 OK		install/							+ class.t3lib_install.php / class.t3lib_superadmin.php
+XQCR	info_pagetsconfig/
+OK		context_help/
+
 
 typo3/ext/_____________________________________:
 		belog/		(2 / 500)
 		beuser/		(1 / 1300)
 		cms_plaintext_import/	(1/200)
 OK		conf_userts/
-OK		context_help/
 		css_styled_content/		(1/200)		[H]
 		direct_mail/		(3/2500)		[Jan-Erik] + class.t3lib_htmlmail.php
 OK		direct_mail_subscription/
@@ -504,7 +506,6 @@ OK		direct_mail_subscription/
 		imagelist/			(1/250)
 		impexp/				(2/2000)		[H]
 		indexed_search/		(4/3500)		[H] [testsite...]
-		info_pagetsconfig/	(1/200)
 		lowlevel/			(2/800)			[H]
 XQ-R:	metatags/
 		phpmyadmin/			(1/130)
