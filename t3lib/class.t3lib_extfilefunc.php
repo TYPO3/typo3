@@ -356,10 +356,11 @@ top.goToModule("file_list");
 		$id = $cmds['data'];
 		if ($GLOBALS['HTTP_POST_FILES']['upload_'.$id]['name'])	{
 			$theFile = $GLOBALS['HTTP_POST_FILES']['upload_'.$id]['tmp_name'];				// filename of the uploaded file
+			$theFileSize = $GLOBALS['HTTP_POST_FILES']['upload_'.$id]['size'];				// filesize of the uploaded file
 			$theName = $this->cleanFileName(stripslashes($GLOBALS['HTTP_POST_FILES']['upload_'.$id]['name']));	// The original filename
-			if (@is_file($theFile) && $theName)	{	// Check the file
+			if (is_uploaded_file($theFile) && $theName)	{	// Check the file
 				if ($this->actionPerms['uploadFile'])	{
-					if (filesize($theFile)<($this->maxUploadFileSize*1024))	{
+					if ($theFileSize<($this->maxUploadFileSize*1024))	{
 						$fI = t3lib_div::split_fileref($theName);
 						$theTarget = $this->is_directory($cmds['target']);	// Check the target dir
 						if ($theTarget && $this->checkPathAgainstMounts($theTarget.'/'))	{

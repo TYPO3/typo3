@@ -1966,11 +1966,11 @@ EXTENSION KEYS:
 				reset($allDirs);
 				$root="";
 				while(list(,$dirParts)=each($allDirs))	{
-					$root.=$dirParts."/";
+					$root.=$dirParts;
 					if (!is_dir($extDirPath.$root))	{
 						@mkdir($extDirPath.$root, 0777);
 						if (!@is_dir($extDirPath.$root))	{
-							return "Error: The directory '".$extDirPath.$root."' could not be created...";
+							return "Error: The directory '".$extDirPath.$root."/' could not be created...";
 						}
 					}
 				}
@@ -2080,7 +2080,7 @@ EXTENSION KEYS:
 				$path=PATH_site.$this->typePaths[$type];
 				$suffix="";
 				if ((string)$type=="L" && !@is_dir($path))	{
-					@mkdir($path, 0777);
+					@mkdir(ereg_replace('\/$','',$path), 0777);
 				}
 			break;
 			default:
@@ -2094,17 +2094,17 @@ EXTENSION KEYS:
 			break;
 		}
 		if ($path && @is_dir($path))	{
-			$extDirPath = $path.$importedData["extKey"].$suffix."/";
+			$extDirPath = $path.$importedData["extKey"].$suffix;
 			if (@is_dir($extDirPath))	{
 				// Install dir was found
-				$res = $this->removeExtDirectory($extDirPath);
-				if ($res) return "ERROR: Could not remove extension directory '".$extDirPath."'";
+				$res = $this->removeExtDirectory($extDirPath.'/');
+				if ($res) return "ERROR: Could not remove extension directory '".$extDirPath."/'";
 			}
 #die("stop here...");
 			// we go create...
 			@mkdir($extDirPath, 0777);
-			if (!is_dir($extDirPath))	return "ERROR: Could not create extension directory '".$extDirPath."'";
-			return array($extDirPath);
+			if (!is_dir($extDirPath))	return "ERROR: Could not create extension directory '".$extDirPath."/'";
+			return array($extDirPath.'/');
 		} else return "ERROR: The extension install path '".$path."' was not a directory.";
 	}
 
@@ -2810,7 +2810,7 @@ EXTENSION KEYS:
 		$uploadFolder = PATH_site.$this->ulFolder($eKey);
 		if ($info["EM_CONF"]["uploadfolder"] && !@is_dir($uploadFolder))	{
 			if (t3lib_div::GPvar("_uploadfolder"))	{
-				mkdir($uploadFolder, 0777);
+				mkdir(ereg_replace('\/$','',$uploadFolder), 0777);
 				$indexContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <HTML>
 <HEAD>
@@ -2837,11 +2837,11 @@ EXTENSION KEYS:
 						$dirs_in_path=explode("/",ereg_replace("/$","",$crDir));
 						while(list(,$dirP)=each($dirs_in_path))	{
 							if (strcmp($dirP,""))	{
-								$crDirStart.=$dirP."/";
+								$crDirStart.=$dirP;
 								if (!@is_dir(PATH_site.$crDirStart))	{
 									mkdir(PATH_site.$crDirStart, 0777);
 #debug(array(PATH_site.$crDirStart));
-									$finalDir=PATH_site.$crDirStart;
+									$finalDir=PATH_site.$crDirStart.'/';
 								}
 							} else die("ERROR: The path '".PATH_site.$crDir."' could not be created.");
 						}

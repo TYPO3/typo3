@@ -489,6 +489,8 @@
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4
 	 */
 	function checkAlternativeIdMethods()	{
+		global $TYPO3_CONF_VARS;
+		
 #		IF (TYPO3_OS=='WIN')	return;		# Commenting out this line will make it work for windows Apache mod_rewrite as well.
 
 			// Redirect by mod_rewrite:
@@ -501,30 +503,27 @@
 				if ($parts[$pCount-1]='html')	{
 					if ($pCount>2)	{
 						$this->type = intval($parts[$pCount-2]);
-						$this->id= $parts[$pCount-3];
+						$this->id = $parts[$pCount-3];
 					} else {
 						$this->type = 0;
-						$this->id= $parts[0];
+						$this->id = $parts[0];
 					}
 				}
 			}
 		}
 			// If PATH_INFO
 		if (t3lib_div::getIndpEnv('PATH_INFO'))	{		// If pathinfo contains stuff...
-			# line below is NOT needed (anymore), because getIndpEnv already filters this out if needed. Only true PATH_INFO gets through.
-#			if (t3lib_div::getIndpEnv('PATH_INFO')!=t3lib_div::getIndpEnv('SCRIPT_NAME') && count(explode('/',t3lib_div::getIndpEnv('PATH_INFO')))>1)	{	// There must be at least one '/' in the path - else the PATH_INFO value does not make sense., ALSO t3lib_div::getIndpEnv('PATH_INFO')!=t3lib_div::getIndpEnv('SCRIPT_NAME') is necessary because some servers are seen to set pathinfo equal to script_name
-				$parts=t3lib_div::trimExplode('/',t3lib_div::getIndpEnv('PATH_INFO'),1);
-				$parts[]='html';
-				$pCount = count($parts);
-				if ($pCount>2)	{
-					$this->type = intval($parts[$pCount-2]);
-					$this->id= $parts[$pCount-3];
-				} else {
-					$this->type = 0;
-					$this->id= $parts[0];
-				}
-				$this->absRefPrefix_force=1;
-#			}
+			$parts=t3lib_div::trimExplode('/',t3lib_div::getIndpEnv('PATH_INFO'),1);
+			$parts[]='html';
+			$pCount = count($parts);
+			if ($pCount>2)	{
+				$this->type = intval($parts[$pCount-2]);
+				$this->id = $parts[$pCount-3];
+			} else {
+				$this->type = 0;
+				$this->id = $parts[0];
+			}
+			$this->absRefPrefix_force=1;
 		}
 		
 			// Call post processing function for custom URL methods.
@@ -556,6 +555,8 @@
 	 * @return	void		
 	 */
 	function determineId()	{
+		global $TYPO3_CONF_VARS;
+		
 			// Getting ARG-v values if some
 		$this->setIDfromArgV();	
 			
@@ -1023,25 +1024,31 @@
 				parse_str($addParams,$GET_VARS);
 			break;
 			case 'M5':
-				$query='SELECT params FROM cache_md5params WHERE md5hash="'.addslashes(substr($str,2)).'"';
-				$res=mysql(TYPO3_db,$query);
-				$row=mysql_fetch_assoc($res);
+				$query = 'SELECT params FROM cache_md5params WHERE md5hash="'.addslashes(substr($str,2)).'"';
+				$res = mysql(TYPO3_db,$query);
+				$row = mysql_fetch_assoc($res);
 				$this->updateMD5paramsRecord(substr($str,2));
 				parse_str($row['params'],$GET_VARS);
 			break;
 		}
-		if (is_array($GET_VARS))	{
-			if (!is_array($GLOBALS['HTTP_GET_VARS']))	$GLOBALS['HTTP_GET_VARS']=array();
-			$GLOBALS['HTTP_GET_VARS']=t3lib_div::array_merge_recursive_overrule($GLOBALS['HTTP_GET_VARS'],$GET_VARS);
-				// Setting these specifically (like in the init-function):
-			if (isset($GET_VARS['cHash']))		$this->cHash=$GET_VARS['cHash'];
-			if (isset($GET_VARS['no_cache']))	$this->no_cache=$GET_VARS['no_cache'] ? 1 : 0;
-			if (isset($GET_VARS['jumpurl']))	$this->jumpurl=$GET_VARS['jumpurl'];
-			if (isset($GET_VARS['MP']))			$this->MP=$this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? $GET_VARS['MP'] : '';
-		}
+		
+		$this->mergingWithGetVars($GET_VARS);
 	}
 	
-	
+	function mergingWithGetVars($GET_VARS)	{
+		if (is_array($GET_VARS))	{
+			t3lib_div::addSlashesOnArray($GET_VARS);		// Since TYPO3 expects input in GETVARS to be escaped we will have to do so with the merging parameters.
+			if (!is_array($GLOBALS['HTTP_GET_VARS']))	$GLOBALS['HTTP_GET_VARS'] = array();
+			$GLOBALS['HTTP_GET_VARS'] = $_GET = t3lib_div::array_merge_recursive_overrule($GLOBALS['HTTP_GET_VARS'],$GET_VARS);
+
+				// Setting these specifically (like in the init-function):
+			if (isset($GET_VARS['type']))		$this->type = $GET_VARS['type'];
+			if (isset($GET_VARS['cHash']))		$this->cHash = $GET_VARS['cHash'];
+			if (isset($GET_VARS['no_cache']))	$this->no_cache = $GET_VARS['no_cache'] ? 1 : 0;
+			if (isset($GET_VARS['jumpurl']))	$this->jumpurl = $GET_VARS['jumpurl'];
+			if (isset($GET_VARS['MP']))			$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? $GET_VARS['MP'] : '';
+		}
+	}	
 	
 	
 	
@@ -2187,10 +2194,23 @@ if (version == "n3") {
 						if (!$this->config['config']['stat_apache_notExtended'])	{
 							$LogLine.= ' "'.t3lib_div::getIndpEnv('HTTP_REFERER').'" "'.t3lib_div::getIndpEnv('HTTP_USER_AGENT').'"';
 						}
-						$execCmd = 'echo "'.addslashes($LogLine).'" >> '.$this->config['stat_vars']['logFile'];
-						$GLOBALS['TT']->push('Write to log file');
-							exec($execCmd);
-						$GLOBALS['TT']->pull();
+
+						switch($GLOBALS['TYPO3_CONF_VARS']['FE']['logfile_write'])	{
+							case 'fputs':
+								$GLOBALS['TT']->push('Write to log file (fputs)');
+									$logfilehandle = fopen(PATH_site.$this->config['stat_vars']['logFile'], 'a');
+									fputs($logfilehandle, $LogLine."\n");
+									@fclose($logfilehandle);
+								$GLOBALS['TT']->pull();
+							break;
+							default:
+								$GLOBALS['TT']->push('Write to log file (echo)');
+									$execCmd = 'echo "'.addslashes($LogLine).'" >> '.PATH_site.$this->config['stat_vars']['logFile'];
+									exec($execCmd);
+								$GLOBALS['TT']->pull();
+							break;
+						}
+
 						$GLOBALS['TT']->setTSlogMessage('Writing to logfile: OK',0);
 					} else {
 						$GLOBALS['TT']->setTSlogMessage('Writing to logfile: Error - logFile did not exist or OS is Windows!',3);
@@ -2451,7 +2471,7 @@ if (version == "n3") {
 	function tidyHTML($content)		{
 		if ($this->TYPO3_CONF_VARS['FE']['tidy'] && $this->TYPO3_CONF_VARS['FE']['tidy_path'])	{
 			$oldContent = $content;
-			$fname = tempnam('','Typo3_Tidydoc_');		// Create temporary name
+			$fname = t3lib_div::tempnam('Typo3_Tidydoc_');		// Create temporary name
 			@unlink ($fname);	// Delete if exists, just to be safe.
 			$fp = fopen ($fname,'wb');	// Open for writing
 			fputs ($fp, $content);	// Put $content

@@ -1650,7 +1650,8 @@ Number of files at a time:
 		while(list($k,$v)=each($paths))	{
 			reset($programs);
 			while(list(,$filename)=each($programs))	{
-				if (@file_exists($v) && @is_file($v.$filename.$isExt))    {       // file_exists was necessary on windows, because is_file issued a warning if the path was not correct.
+#				if (@file_exists($v) && @is_file($v.$filename.$isExt))    {       // file_exists was necessary on windows, because is_file issued a warning if the path was not correct.
+				if($this->_checkImageMagick_getVersion($v.$filename.$isExt) > 0 ) {
 					$index[$v][$filename]=$this->_checkImageMagick_getVersion($v.$filename.$isExt);
 				}
 			}

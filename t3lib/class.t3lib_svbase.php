@@ -427,7 +427,7 @@ function available()	{
 		$ret = TRUE;
 
 		if (!$absFile) {
-			$absFile = tempnam ('', $this->prefixId);
+			$absFile = t3lib_div::tempnam($this->prefixId);
 			if(!$absFile) {
 				$this->errorPush(T3_ERR_SV_FILE_WRITE, 'Can not create temp file.');
 				$ret = FALSE;

@@ -145,6 +145,7 @@
  * 2551:     function isAbsPath($path)	
  * 2563:     function isAllowedAbsPath($path)	
  * 2581:     function verifyFilenameAgainstDenyPattern($filename)	
+ 
  * 2598:     function stdAuthCode($uid_or_record,$fields='')	
  * 2632:     function loadTCA($table)	
  * 2651:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	
@@ -2051,15 +2052,21 @@ class t3lib_div {
 	 */
 	function upload_copy_move($source,$destination)	{
 		if (is_uploaded_file($source))	{
+			$uploaded = TRUE;
 			// Return the value of move_uploaded_file, and if false the temporary $source is still around so the user can use unlink to delete it:
-			return move_uploaded_file($source, $destination);
-		} else @copy($source,$destination);
+			$uploadedResult = move_uploaded_file($source, $destination);
+		} else {
+			$uploaded = FALSE;
+			@copy($source,$destination);
+		}
 		
 			// Setting file system mode of file:
-		if (@is_file($destination) && TYPO3_OS!='WIN')	{ @chmod ($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])); }
+		if (@is_file($destination) && TYPO3_OS!='WIN')	{ 
+			@chmod ($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])); 
+		}
 
 			// If here the file is copied and the temporary $source is still around, so when returning false the user can try unlink to delete the $source
-		return false;
+		return $uploaded ? $uploadedResult : FALSE;
 	}
 	
 	/**
@@ -2666,6 +2673,17 @@ class t3lib_div {
 		$authCode = substr(md5($authCode),0,8);
 		return $authCode;
 	}	
+	
+	/**
+	 * Create temporary filename (Create file with unique file name)
+	 * This function should be used for getting temporary filenames - will make your applications safe for open_basedir = on
+	 *
+	 * @param	string	Prefix to temp file (which will have no extension btw)
+	 * @return	string	result from PHP function tempnam() with PATH_site.'typo3temp/' set for temp path.
+	 */
+	function tempnam($filePrefix)	{
+		return tempnam(PATH_site.'typo3temp/',$filePrefix);	
+	}
 
 	/**
 	 * Loads the $TCA (Table Configuration Array) for the $table

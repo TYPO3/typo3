@@ -159,15 +159,15 @@ class t3lib_diff {
 	function getDiff($str1,$str2)	{
 		if (TYPO3_OS!='WIN')	{
 				// Create file 1 and write string
-			$file1 = tempnam('','');
+			$file1 = t3lib_div::tempnam('diff1_');
 			t3lib_div::writeFile($file1,$str1);
 				// Create file 2 and write string
-			$file2 = tempnam('','');
+			$file2 = t3lib_div::tempnam('diff2_');
 			t3lib_div::writeFile($file2,$str2);
 				// Perform diff.
 			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$file1.' '.$file2;
 			exec($cmd,$res);
-	
+
 			unlink($file1);
 			unlink($file2);
 			
