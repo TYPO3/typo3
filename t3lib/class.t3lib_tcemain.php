@@ -2379,7 +2379,7 @@ class t3lib_TCEmain	{
 		if (is_array($TCA[$table]) && $id)	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($id));
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					// Traverse arrow of values that was inserted into the database and compare with the actually stored value:
+					// Traverse array of values that was inserted into the database and compare with the actually stored value:
 				$errorString = array();
 				foreach($fieldArray as $key => $value)	{
 					if ($this->checkStoredRecords_loose && !$value && !$row[$key])	{

@@ -672,9 +672,9 @@ $str.=$this->docBodyTagBegin().
 				$this->parseTime().
 				($this->form?'
 </form>':'');
-		
+
 		if ($this->docType!='xhtml_frames') {
-		
+
 			$str .= ($this->divClass?'
 
 <!-- Wrapping DIV-section for whole page END -->

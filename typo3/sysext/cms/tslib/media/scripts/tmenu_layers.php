@@ -39,14 +39,14 @@
  *
  *
  *   84: class tslib_tmenu_layers extends tslib_tmenu
- *  117:     function extProc_init()
- *  135:     function extProc_RO($key)
- *  151:     function extProc_beforeLinking($key)
- *  202:     function extProc_afterLinking($key)
- *  237:     function extProc_beforeAllWrap($item,$key)
- *  250:     function isSetIntval($in)
- *  259:     function extProc_finish ()
- *  435:     function extCalcBorderWithin($kind,$integer)
+ *  116:     function extProc_init()
+ *  134:     function extProc_RO($key)
+ *  150:     function extProc_beforeLinking($key)
+ *  205:     function extProc_afterLinking($key)
+ *  240:     function extProc_beforeAllWrap($item,$key)
+ *  253:     function isSetIntval($in)
+ *  262:     function extProc_finish ()
+ *  444:     function extCalcBorderWithin($kind,$integer)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -73,7 +73,7 @@
 
 /**
  * Class extending tslib_tmenu for the creation of text based DHTML menus
- * NOTICE: The contents of this class is copied EXACTLY AS IS from gmenu_layers class! See noties in class (for BEGIN/END) and also 'diff.xmenu_layers.txt'
+ * NOTICE: The contents of this class is copied EXACTLY AS IS from gmenu_layers class! See notes in class (for BEGIN/END) and also 'diff.xmenu_layers.txt'
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -82,7 +82,6 @@
  * @see diff.xmenu_layers.txt
  */
 class tslib_tmenu_layers extends tslib_tmenu {
-
 
 // FULL DUPLICATE FROM gmenu_layers BEGIN:
 
@@ -186,7 +185,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 				}
 				$this->I['linkHREF']['onMouseout'].=$event;
 			} else {
-				$this->I['linkHREF']['onMouseover']='GL_hideAll("'.$this->WMid.'");'.$this->I['linkHREF']['onMouseover'];
+				$this->I['linkHREF']['onMouseover'] = 'GL_hideAll("'.$this->WMid.'");'.$this->I['linkHREF']['onMouseover'];
 					// IESelectFix - Hides IFRAME layer below menu
 				if ($this->mconf['ieSelectFix']) $this->I['linkHREF']['onMouseover'] = $this->I['linkHREF']['onMouseover'].'GL_iframer(\''.$this->WMid.'\',\'\',false);';
 				$event='GL_resetAll("'.$this->WMid.'");';

@@ -1,3 +1,14 @@
+2005-04-01  Michael Stucki  <michael@typo3.org>
+
+	* Display empty tag contents in the backend (e.g. <link email@hostname.com></link>)
+	* Fixed bug #0000750: Resolve relative links in the backend (caused problems with some firewalls)
+	* Install tool now shows which image is the reference when doing image tests (thanks to Dimitri Tarassenko)
+	* Small changes in t3lib_div::quoted_printable()
+	* !!! t3lib_htmlmail::quoted_printable() is now obsolete. Please call t3lib_div::quoted_printable() instead.
+	* simulateStaticDocuments_addTitle is now set to 30 if the value is 1 (cause 1 doesn't make sense, does it?)
+	* Display a warning message if this installation is obviously insecure!! These warnings are only displayed to admin users.
+	* Added a link to re-login if the session has timed out
+
 2005-03-29  Michael Stucki  <michael@typo3.org>
 
 	* Added a Russian flag (thanks to Michael Shigorin)

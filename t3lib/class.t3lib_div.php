@@ -3413,7 +3413,7 @@ class t3lib_div {
 	/**
 	 * Implementation of quoted-printable encode.
 	 * This functions is buggy. It seems that in the part where the lines are breaked every 76th character, that it fails if the break happens right in a quoted_printable encode character!
-	 * (Originally taken from class.t3lib_htmlmail.php - which may be updated if this function should ever be improved!
+	 * Important: For the ease of use, this function internally uses Unix linebreaks ("\n") for breaking lines, but the output must use "\r\n" instead!
 	 * See RFC 1521, section 5.1 Quoted-Printable Content-Transfer-Encoding
 	 * Usage: 2
 	 *
@@ -3422,31 +3422,33 @@ class t3lib_div {
 	 * @return	string		The QP encoded string
 	 */
 	function quoted_printable($string,$maxlen=76)	{
-		$newString = '';
-		$theLines = explode(chr(10),$string);	// Break lines. Doesn't work with mac eol's which seems to be 13. But 13-10 or 10 will work
-		while (list(,$val)=each($theLines))	{
-			$val = ereg_replace(chr(13).'$','',$val);		// removes possible character 13 at the end of line
+			// Make sure the string contains only Unix linebreaks
+		$string = str_replace(chr(13).chr(10), chr(10), $string);	// Replace Windows breaks (\r\n)
+		$string = str_replace(chr(13), chr(10), $string);		// Replace Mac breaks (\r)
 
+		$newString = '';
+		$theLines = explode(chr(10),$string);	// Split lines
+		foreach($theLines as $val)	{
 			$newVal = '';
 			$theValLen = strlen($val);
 			$len = 0;
-			for ($index=0;$index<$theValLen;$index++)	{
+			for ($index=0; $index < $theValLen; $index++)	{	// Walk through each character of this line
 				$char = substr($val,$index,1);
-				$ordVal =Ord($char);
+				$ordVal = ord($char);
 				if ($len>($maxlen-4) || ($len>(($maxlen-10)-4)&&$ordVal==32))	{
-					$len=0;
-					$newVal.='='.chr(13).chr(10);
+					$newVal.='='.chr(13).chr(10);	// Add a line break
+					$len=0;			// Reset the length counter
 				}
 				if (($ordVal>=33 && $ordVal<=60) || ($ordVal>=62 && $ordVal<=126) || $ordVal==9 || $ordVal==32)	{
-					$newVal.=$char;
+					$newVal.=$char;		// This character is ok, add it to the message
 					$len++;
 				} else {
-					$newVal.=sprintf('=%02X',$ordVal);
+					$newVal.=sprintf('=%02X',$ordVal);	// Special character, needs to be encoded
 					$len+=3;
 				}
 			}
-			$newVal = ereg_replace(chr(32).'$','=20',$newVal);		// replaces a possible SPACE-character at the end of a line
-			$newVal = ereg_replace(chr(9).'$','=09',$newVal);		// replaces a possible TAB-character at the end of a line
+			$newVal = ereg_replace(chr(32).'$','=20',$newVal);		// Replaces a possible SPACE-character at the end of a line
+			$newVal = ereg_replace(chr(9).'$','=09',$newVal);		// Replaces a possible TAB-character at the end of a line
 			$newString.=$newVal.chr(13).chr(10);
 		}
 		return ereg_replace(chr(13).chr(10).'$','',$newString);

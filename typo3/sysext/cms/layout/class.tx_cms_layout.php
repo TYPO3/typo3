@@ -1646,7 +1646,7 @@ class tx_cms_layout extends recordList {
 				if ($row['CType']=='text' || $row['CType']=='textpic')	{
 					if ($row['bodytext'])	{
 						$this->getProcessedValue('tt_content','text_align,text_face,text_size,text_color,text_properties',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
+						$out.= $this->infoGif($infoArr).
 								$this->linkEditContent($this->renderText($row['bodytext']),$row).'<br />';
 					}
 				}
@@ -2107,7 +2107,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		Output string
 	 */
 	function renderText($input)	{
-		$input = strip_tags($input);
+		$input = $this->strip_tags($input, true);
 		$input = t3lib_div::fixed_lgd_cs($input,1500);
 		return nl2br(htmlspecialchars(trim($this->wordWrapper($input))));
 	}
@@ -2533,6 +2533,30 @@ class tx_cms_layout extends recordList {
 
 			// Return the content:
 		return $out;
+	}
+
+	/**
+	 * Enhancement for the strip_tags function that provides the feature to fill in empty tags.
+	 * Example <link email@hostname.com></link> is accepted by TYPO3 but would not displayed in the Backend otherwise.
+	 *
+	 * @param	string		Input string
+	 * @param	boolean		If true, empty tags will be filled with the first attribute of the tag before.
+	 * @return	string		Input string with all HTML and PHP tags stripped
+	 */
+	function strip_tags($input, $fillEmptyContent=false)	{
+		if($fillEmptyContent && ereg('><', $input))	{
+			$matches = explode('</', $input);
+			foreach($matches as $key=>$val)	{
+				if($key==count($matches)-1)	{ continue; }	// skip the last match
+
+				if(ereg('>$', $val))	{
+					$tagContent = ereg_replace('.*<[^ ]* ([^ ]*).*>', '\1', $val);	// Returns the first attribut of a given tag
+					$matches[$key] .= $tagContent;
+				}
+			}
+			$output = implode('</', $matches);
+		}
+		return strip_tags($output);
 	}
 }
 

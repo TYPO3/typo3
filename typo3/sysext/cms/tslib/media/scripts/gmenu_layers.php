@@ -42,11 +42,11 @@
  *  116:     function extProc_init()
  *  134:     function extProc_RO($key)
  *  150:     function extProc_beforeLinking($key)
- *  201:     function extProc_afterLinking($key)
- *  236:     function extProc_beforeAllWrap($item,$key)
- *  249:     function isSetIntval($in)
- *  258:     function extProc_finish ()
- *  434:     function extCalcBorderWithin($kind,$integer)
+ *  205:     function extProc_afterLinking($key)
+ *  240:     function extProc_beforeAllWrap($item,$key)
+ *  253:     function isSetIntval($in)
+ *  262:     function extProc_finish ()
+ *  444:     function extCalcBorderWithin($kind,$integer)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -73,7 +73,7 @@
 
 /**
  * Class extending tslib_gmenu for the creation of DHTML menus
- * NOTICE: The contents of this class is made so that it can be copied EXACTLY AS IS to the tmenu_layers class! See noties in class (for BEGIN/END) and also "diff.xmenu_layers.txt"
+ * NOTICE: The contents of this class is made so that it can be copied EXACTLY AS IS to the tmenu_layers class! See notes in class (for BEGIN/END) and also "diff.xmenu_layers.txt"
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -221,6 +221,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	GL_getObjCss("Menu'.$this->WMid.$key.'").visibility = "hidden";';
 				$this->WMlastKey = 'Menu'.$this->WMid.$key;
 			}
+
 			if (!$this->mconf['lockPosition_addSelf'])		{
 				$this->WMy+=(strcmp($this->mconf['setFixedHeight'],'')?$this->mconf['setFixedHeight']:$this->I['val']['output_h'])+intval($this->mconf['lockPosition_adjust']);
 				$this->WMx+=(strcmp($this->mconf['setFixedWidth'],'')?$this->mconf['setFixedWidth']:$this->I['val']['output_w'])+intval($this->mconf['lockPosition_adjust']);
@@ -459,8 +460,8 @@ GLV_timeout_count++;
 	}
 }
 
-
 // FULL DUPLICATE TO tmenu_layers END:
+
 
 $GLOBALS['TSFE']->tmpl->menuclasses.=',gmenu_layers';
 

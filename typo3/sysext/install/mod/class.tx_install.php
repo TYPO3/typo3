@@ -2996,7 +2996,8 @@ From sub-directory:
 			$ex_rows.='<td>'.$verifyImgCode.'</td>';
 			$ex_rows.='</tr>';
 
-			$ex_rows.=$this->getTwinImageMessage("", t3lib_div::formatSize($destImg["filesize"]).", ".$destImg[0]."x".$destImg[1]." pixels", t3lib_div::formatSize($verifyImg["filesize"]).", ".$verifyImg[0]."x".$verifyImg[1]." pixels");
+			$ex_rows.=$this->getTwinImageMessage('', 'Your server:', 'Reference:');
+			$ex_rows.=$this->getTwinImageMessage('', t3lib_div::formatSize($destImg['filesize']).', '.$destImg[0].'x'.$destImg[1].' pixels', t3lib_div::formatSize($verifyImg['filesize']).', '.$verifyImg[0].'x'.$verifyImg[1].' pixels');
 
 			if ($destImg["filesize"]!=$verifyImg["filesize"])	{
 				if (intval($destImg["filesize"]) && abs(($verifyImg["filesize"]/$destImg["filesize"])-1) < 0.05)	{

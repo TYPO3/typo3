@@ -89,12 +89,12 @@ class recordHistory {
 	var $listType = 0;		// This value determines the kind of list build. The variable is used as a parameter from some functions.
 
 		// Internal, static. GPvars:
-	var $sh_uid;			//	sh_uid is the id-number of the sys_history log item to SHOW
+	var $sh_uid;			// sh_uid is the id-number of the sys_history log item to SHOW
 	var $element;			// Element reference, syntax [tablename]:[uid]
 	var $saveState;			// Saving states: Points to a sys_history UID which should be saved.
 	var $returnUrl;			// Return URL - kept in links, used to link back to calling module.
 	var $revert;			// String identifying mode of reverting: Either all fields or only a single field to revert. See function revertToPreviousValues()
-	var $sumUp;				// Generally used as a pointer to a sys_history uid as a state.
+	var $sumUp;			// Generally used as a pointer to a sys_history uid as a state.
 	var $doReturn;			// If set, function revertToPreviousValues() will perform a redirect to returnUrl
 
 

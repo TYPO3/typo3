@@ -139,6 +139,8 @@ class alt_menu_functions {
 				$link_sub = 0;
 			}
 
+			$link = t3lib_div::resolveBackPath($link);
+
 			$moduleKey = $moduleName.'_tab';
 			$moduleCSSId = 'ID_'.t3lib_div::md5int($moduleName);
 
@@ -203,7 +205,7 @@ class alt_menu_functions {
 								</tr>';
 					}
 
-					$link = $subInfo['script'];
+					$link = t3lib_div::resolveBackPath($subInfo['script']);
 					$prefix=$this->getNavFramePrefix ($moduleInfo, $subInfo);
 
 					$subKey = $moduleName.'_'.$subName.'_tab';
@@ -247,7 +249,8 @@ class alt_menu_functions {
 						if (!$BE_USER->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
 
 								// use special nav script from sub module, otherwise from the main module
-							$subNavFrameScript = $subInfo['navFrameScript'] ? $subInfo['navFrameScript'] : $moduleInfo['navFrameScript'] ;
+							$subNavFrameScript = $subInfo['navFrameScript'] ? $subInfo['navFrameScript'] : $moduleInfo['navFrameScript'];
+							$subNavFrameScript = t3lib_div::resolveBackPath($subNavFrameScript);
 
 								// add GET params for sub module to the nav script
 							$subNavFrameScript = $this->wrapLinkWithAB($subNavFrameScript).$subInfo['navFrameScriptParam'];
@@ -405,12 +408,15 @@ class alt_menu_functions {
 		$prefix = '';
 		$navFrameScriptParam = $subModuleInfo['navFrameScriptParam'] ? $subModuleInfo['navFrameScriptParam'] : $moduleInfo['navFrameScriptParam'];
 		if ($moduleInfo['navFrameScript'])	{
+			$navFrameScript = t3lib_div::resolveBackPath($moduleInfo['navFrameScript']);
+			$navFrameScript = $this->wrapLinkWithAB($navFrameScript);
+
 			if ($BE_USER->uc['condensedMode'])	{
-				$prefix=$this->wrapLinkWithAB($moduleInfo['navFrameScript']).$navFrameScriptParam.'&currentSubScript=';
+				$prefix=$navFrameScript.$navFrameScriptParam.'&currentSubScript=';
 			} else {
 				$prefix='alt_mod_frameset.php?'.
 					'fW="+top.TS.navFrameWidth+"'.
-					'&nav="+top.TS.PATH_typo3+"'.rawurlencode($this->wrapLinkWithAB($moduleInfo['navFrameScript']).$navFrameScriptParam).
+					'&nav="+top.TS.PATH_typo3+"'.rawurlencode($navFrameScript.$navFrameScriptParam).
 					'&script=';
 			}
 		}

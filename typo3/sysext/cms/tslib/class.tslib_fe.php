@@ -2931,6 +2931,9 @@ if (version == "n3") {
 	 */
 	function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	{
 		$titleChars = intval($this->config['config']['simulateStaticDocuments_addTitle']);
+			// Default value is 30 but values > 1 will be override this
+		if($titleChars==1)	{ $titleChars = 30; }
+
 		$out = '';
 		if ($titleChars)	{
 			$out = $this->fileNameASCIIPrefix($inTitle, $titleChars);

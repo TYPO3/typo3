@@ -294,7 +294,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function encodeMsg($content)	{
-		return $this->alt_base64 ? $this->makeBase64($content) : $this->quoted_printable($content);
+		return $this->alt_base64 ? $this->makeBase64($content) : t3lib_div::quoted_printable($content, 76);
 	}
 
 	/**
@@ -1369,41 +1369,15 @@ class t3lib_htmlmail {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Implementation of quoted-printable encode.
+	 * This function was a duplicate of t3lib_div::quoted_printable, thus it's going to be removed.
 	 *
-	 * @param	[type]		$string: ...
-	 * @return	[type]		...
+	 * @param	string		Content to encode
+	 * @return	string		The QP encoded string
+	 * @obsolete
 	 */
 	function quoted_printable($string)	{
-			// This functions is buggy. It seems that in the part where the lines are breaked every 76th character, that it fails if the break happens right in a quoted_printable encode character!
-		$newString = "";
-		$theLines = explode(chr(10),$string);	// Break lines. Doesn't work with mac eol's which seems to be 13. But 13-10 or 10 will work
-		while (list(,$val)=each($theLines))	{
-			$val = ereg_replace(chr(13)."$","",$val);		// removes possible character 13 at the end of line
-
-			$newVal = "";
-			$theValLen = strlen($val);
-			$len = 0;
-			for ($index=0;$index<$theValLen;$index++)	{
-				$char = substr($val,$index,1);
-				$ordVal =Ord($char);
-				if ($len>(76-4) || ($len>(66-4)&&$ordVal==32))	{
-					$len=0;
-					$newVal.="=".chr(13).chr(10);
-				}
-				if (($ordVal>=33 && $ordVal<=60) || ($ordVal>=62 && $ordVal<=126) || $ordVal==9 || $ordVal==32)	{
-					$newVal.=$char;
-					$len++;
-				} else {
-					$newVal.=sprintf("=%02X",$ordVal);
-					$len+=3;
-				}
-			}
-			$newVal = ereg_replace(chr(32)."$","=20",$newVal);		// replaces a possible SPACE-character at the end of a line
-			$newVal = ereg_replace(chr(9)."$","=09",$newVal);		// replaces a possible TAB-character at the end of a line
-			$newString.=$newVal.chr(13).chr(10);
-		}
-		return $newString;
+		return t3lib_div::quoted_printable($string, 76);
 	}
 
 	/**

@@ -912,7 +912,7 @@ class tslib_cObj {
 				}
 
 					// Image Object supplied:
-				if (is_array($imgConf) || $imgConf['file']) {
+				if (is_array($imgConf)) {
 					if ($this->image_effects[$image_effects])	{
 						$imgConf['file.']['params'].= ' '.$this->image_effects[$image_effects];
 					}

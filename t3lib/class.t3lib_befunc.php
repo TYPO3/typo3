@@ -3047,6 +3047,41 @@ class t3lib_BEfunc	{
 	}
 
 	/**
+	 * Display some warning messages if this installation is obviously insecure!!
+	 * These warnings are only displayed to admin users
+	 *
+	 * @return	void
+	 */
+	function displayWarningMessages()	{
+		if($GLOBALS['BE_USER']->isAdmin())	{
+			$warnings = array();
+
+				// Check if the Install Tool Password is still default: joh316
+			if($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']==md5('joh316'))	{
+				$warnings[] = 'The password of your Install Tool is still using the default value "joh316"';
+			}
+
+				// Check if there is still a default user 'admin' with password 'password' (MD5sum = 5f4dcc3b5aa765d61d8327deb882cf99)
+			$where_clause = 'username="admin" AND password="5f4dcc3b5aa765d61d8327deb882cf99"'.t3lib_BEfunc::deleteClause('be_users');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('username, password', 'be_users', $where_clause);
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+				$warnings[] = 'The backend user "admin" with password "password" is still existing';
+			}
+
+			if(count($warnings))	{
+				$content = '<br />'.
+					'<p class="typo3-red" style="font-weight: bold;">Security warning:<br />'.
+					'- '.implode('<br />- ', $warnings).'<br /><br />'.
+					'It is highly recommended that you change this immediately.<br />&nbsp;</p>';
+
+				unset($warnings);
+				return $content;
+			}
+		}
+		return '<p>&nbsp;</p>';
+	}
+
+	/**
 	 * Returns "web" if the $path (absolute) is within the DOCUMENT ROOT - and thereby qualifies as a "web" folder.
 	 * Usage: 4
 	 *

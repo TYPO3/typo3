@@ -5,32 +5,67 @@ these differences:
 
 
 
+--- gmenu_layers.php	2005-03-27 23:23:20.000000000 +0200
++++ tmenu_layers.php	2005-03-27 23:23:13.000000000 +0200
+@@ -25,9 +25,9 @@
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+ /**
+- * Contains the GMENU_LAYERS extension class, tslib_gmenu_layers
++ * Contains the TMENU_LAYERS extension class, tslib_tmenu_layers
+  *
+- * $Id$
++ * $Id$
+  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
+  * XHTML compliant
+  *
+@@ -38,7 +38,7 @@
+  *
+  *
+  *
+- *   84: class tslib_gmenu_layers extends tslib_gmenu
++ *   84: class tslib_tmenu_layers extends tslib_tmenu
+  *  116:     function extProc_init()
+  *  134:     function extProc_RO($key)
+  *  150:     function extProc_beforeLinking($key)
+@@ -72,8 +72,8 @@
 
-28c28
-<  * GMENU_LAYERS extension classs
----
->  * TMENU_LAYERS extension classs
-37c37,40
-< class tslib_gmenu_layers extends tslib_gmenu {
----
-> class tslib_tmenu_layers extends tslib_tmenu {
-> 
-> 
-> // FULL DUPLICATE FROM gmenu_layers BEGIN:
-39d41
-< // FULL DUPLICATE TO tmenu_layers BEGIN:
-411d412
-< // FULL DUPLICATE TO tmenu_layers END:
-413c414,417
-< $GLOBALS["TSFE"]->tmpl->menuclasses.=",gmenu_layers";
----
-> // FULL DUPLICATE FROM gmenu_layers END:
-> 
-> 
-> $GLOBALS["TSFE"]->tmpl->menuclasses.=",tmenu_layers";
-415,416c419,420
-< if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["media/scripts/gmenu_layers.php"])	{
-< 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["media/scripts/gmenu_layers.php"]);
----
-> if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["media/scripts/tmenu_layers.php"])	{
-> 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["media/scripts/tmenu_layers.php"]);
+
+ /**
+- * Class extending tslib_gmenu for the creation of DHTML menus
+- * NOTICE: The contents of this class is made so that it can be copied EXACTLY AS IS to the tmenu_layers class! See notes in class (for BEGIN/END) and also "diff.xmenu_layers.txt"
++ * Class extending tslib_tmenu for the creation of text based DHTML menus
++ * NOTICE: The contents of this class is copied EXACTLY AS IS from gmenu_layers class! See notes in class (for BEGIN/END) and also 'diff.xmenu_layers.txt'
+  *
+  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+  * @package TYPO3
+@@ -81,9 +81,9 @@
+  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=385&cHash=648519dd66
+  * @see diff.xmenu_layers.txt
+  */
+-class tslib_gmenu_layers extends tslib_gmenu {
++class tslib_tmenu_layers extends tslib_tmenu {
+
+-// FULL DUPLICATE TO tmenu_layers BEGIN:
++// FULL DUPLICATE FROM gmenu_layers BEGIN:
+
+ 	var $GMENU_fixKey='layers';
+ 	var $divLayers=Array();
+@@ -460,13 +460,13 @@
+ 	}
+ }
+
+-// FULL DUPLICATE TO tmenu_layers END:
++// FULL DUPLICATE FROM gmenu_layers END:
+
+
+-$GLOBALS['TSFE']->tmpl->menuclasses.=',gmenu_layers';
++$GLOBALS['TSFE']->tmpl->menuclasses.=',tmenu_layers';
+
+-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/gmenu_layers.php'])	{
+-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/gmenu_layers.php']);
++if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/tmenu_layers.php'])	{
++	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['media/scripts/tmenu_layers.php']);
+ }
+
+ ?>
