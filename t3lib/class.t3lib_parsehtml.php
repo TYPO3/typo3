@@ -1271,7 +1271,7 @@ class t3lib_parsehtml {
 				reset($tagAttrib[0]);
 				while(list($attrib_name,$attrib_value)=each($tagAttrib[0]))	{
 						// Set attributes: lowercase, always in quotes, with htmlspecialchars converted.
-					$outA[]=$attrib_name.'="'.htmlspecialchars($this->bidir_htmlspecialchars($attrib_value,-1)).'"';
+					$outA[]=$attrib_name.'="'.$this->bidir_htmlspecialchars($attrib_value,2).'"';
 				}
 				$newTag='<'.trim($tagName.' '.implode(' ',$outA));
 					// All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'

@@ -1,3 +1,7 @@
+2005-04-05  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Changed the way htmlspecialchars() is applied to tag attributes on xhtmlCleaning
+
 2005-04-04  Michael Stucki  <michael@typo3.org>
 
 	* Unfortunately the resolve-path patch was overwritten, so here it is again
