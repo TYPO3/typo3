@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -25,22 +25,22 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /** 
- * generate a page-tree. OBS: remember $clause
+ * Generate a page-tree, browsable.
  *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
- * Maintained by René Fritz
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   70: class t3lib_browseTree extends t3lib_treeView 
- *   78:     function init($clause='')	
- *  104:     function getTitleAttrib(&$row) 
+ *   73: class t3lib_browseTree extends t3lib_treeView 
+ *   82:     function init($clause='')	
+ *  105:     function getTitleAttrib($row) 
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,27 +64,24 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
 /**
  * Extension class for the t3lib_treeView class, specially made for browsing pages
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
- * @see class t3lib_treeView
+ * @see t3lib_treeView, t3lib_pageTree
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_browseTree extends t3lib_treeView {
 
 	/**
-	 * Initialize
+	 * Initialize, setting what is necessary for browsing pages.
+	 * Using the current user.
 	 * 
 	 * @param	string		Additional clause for selecting pages.
 	 * @return	void		
 	 */
 	function init($clause='')	{
+			// This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
 		parent::init(' AND NOT deleted AND '.$GLOBALS['BE_USER']->getPagePermsClause(1).' '.$clause.' ORDER BY sorting');
-
-
-		$this->BE_USER = $GLOBALS['BE_USER'];
-		$this->titleAttrib = t3lib_BEfunc::titleAttrib();
-		$this->backPath = $GLOBALS['BACK_PATH'];
 
 		$this->table='pages';
 		$this->treeName='browsePages';
@@ -99,16 +96,38 @@ class t3lib_browseTree extends t3lib_treeView {
 	}
 
 	/**
-	 * Creates title attribute for pages.
+	 * Creates title attribute content for pages.
+	 * Uses API function in t3lib_BEfunc which will retrieve lots of useful information for pages.
 	 * 
 	 * @param	array		The table row.
 	 * @return	string		
 	 */
-	function getTitleAttrib(&$row) {
+	function getTitleAttrib($row) {
 		return t3lib_BEfunc::titleAttribForPages($row,'1=1 '.$this->clause,0);
 	}
-}
+	
+	/**
+	 * Wrapping the image tag, $icon, for the row, $row (except for mount points)
+	 * 
+	 * @param	string		The image tag for the icon
+	 * @param	array		The row for the current element
+	 * @return	string		The processed icon input value.
+	 * @access private
+	 */
+	function wrapIcon($icon,$row)	{
+			// Add title attribute to input icon tag
+		$theIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.$this->getTitleAttrib($row).'"' : ''));
 
+			// Wrap icon in click-menu link.
+		if (!$this->ext_IconMode)	{
+			$theIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theIcon,$this->treeName,$this->getId($row),0);
+		} elseif (!strcmp($this->ext_IconMode,'titlelink'))	{
+			$aOnClick = 'return jumpTo('.$this->getJumpToParm($row).',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$this->bank.'\');';
+			$theIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$theIcon.'</a>';
+		}
+		return $theIcon;
+	}
+}
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_browsetree.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_browsetree.php']);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,24 +27,23 @@
 /**
  * Generates a thumbnail and returns an image stream, either GIF/PNG or JPG
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author		Kasper Skårhøj	<kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author		Kasper Skaarhoj	<kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  109: class SC_t3lib_thumbs 
- *  127:     function init()	
- *  154:     function main()	
+ *  110: class SC_t3lib_thumbs 
+ *  131:     function init()	
+ *  161:     function main()	
  *
  *              SECTION: OTHER FUNCTIONS:
- *  257:     function errorGif($l1,$l2,$l3)	
- *  309:     function fontGif($font)	
+ *  264:     function errorGif($l1,$l2,$l3)	
+ *  316:     function fontGif($font)	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -104,7 +103,9 @@ if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disa
  * 
  * Relative paths MUST BE the first two characters ONLY: eg: '../dir/file.gif', otherwise it is expect to be absolute
  * 
- * @author		Kasper Skårhøj	<kasper@typo3.com>
+ * @author		Kasper Skaarhoj	<kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class SC_t3lib_thumbs {
 	var $include_once=array();
@@ -113,11 +114,14 @@ class SC_t3lib_thumbs {
 	var $output = '';
 	var $sizeDefault='56x56';
 
-	var $file;		// Holds the input filename (GET: file)
-	var $size;		// Holds the input size (GET: size)
 	var $imageList;	// Coming from $TYPO3_CONF_VARS['GFX']['imagefile_ext']
 	var $input;		// Contains the absolute path to the file for which to make a thumbnail (after init())
 
+		// Internal, static: GPvar:
+	var $file;		// Holds the input filename (GET: file)
+	var $size;		// Holds the input size (GET: size)
+	
+	
 	/**
 	 * Initialize; reading parameters with GPvar and checking file path
 	 * Results in internal var, $this->input, being set to the absolute path of the file for which to make the thumbnail.
@@ -125,13 +129,16 @@ class SC_t3lib_thumbs {
 	 * @return	void		
 	 */
 	function init()	{
-		global $TYPO3_CONF_VARS,$HTTP_GET_VARS;
+		global $TYPO3_CONF_VARS;
 
-		$this->imageList = $TYPO3_CONF_VARS['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
+			// Setting GPvars:
 		$this->file = t3lib_div::GPvar('file');
 		$this->size = t3lib_div::GPvar('size');
+
+			// Image extension list is set:
+		$this->imageList = $TYPO3_CONF_VARS['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
 		
-		// if the filereference $this->file is relative, we correct the path
+			// if the filereference $this->file is relative, we correct the path
 		if (substr($this->file,0,3)=='../')	{
 			$this->input = PATH_site.ereg_replace('^\.\./','',$this->file);
 		} else {

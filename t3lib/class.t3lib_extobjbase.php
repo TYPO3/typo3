@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,11 +27,10 @@
 /** 
  * Contains the base class for 'Extension Objects' in backend modules.
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -50,6 +49,17 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+
+
+
+
+
+
+
+
+
+
+
 /**
  * EXAMPLE: One level.
  * 
@@ -85,13 +95,11 @@
  * 	$SOBE->init();
  * 	
  * 	// Include files?
- * 	reset($SOBE->include_once);	
- * 	while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+ * 	foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
  * 	$SOBE->checkExtObj();	// Checking for first level external objects
  * 	
  * 	// Repeat Include files! - if any files has been added by second-level extensions
- * 	reset($SOBE->include_once);	
- * 	while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+ * 	foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
  * 	$SOBE->checkSubExtObj();	// Checking second level external objects
  * 	
  * 	$SOBE->main();
@@ -121,17 +129,6 @@
  * The two level-2 sub-module "wizard_crpages" and "wizard_sortpages" are totally normal "submodules".
  */
 
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Parent class for 'Extension Objects' in backend modules.
  * Used for 'submodules' to other modules. Also called 'Function menu modules' in t3lib_extMgm. And now its even called 'Extension Objects'. Or 'Module functions'. Wish we had just one name. Or a name at all...(?) Thank God its not so advanced when it works...
@@ -140,9 +137,10 @@
  * For more information about this, please see the large example comment for the class t3lib_SCbase. This will show the principle of a 'level-1' connection.
  * The more advanced example - having two layers as it is done by the 'func_wizards' extension with the 'web_info' module - can be seen in the comment above.
  * 
- * @see t3lib_SCbase
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @see tx_funcwizards_webfunc::init(), tx_funcwizards_webfunc, tx_wizardsortpages_webfunc_2
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @see t3lib_SCbase,tx_funcwizards_webfunc::init(), tx_funcwizards_webfunc, tx_wizardsortpages_webfunc_2
  */
 class t3lib_extobjbase {
 	
@@ -189,7 +187,7 @@ class t3lib_extobjbase {
 
 
 	/**
-	 * Initialize
+	 * Initialize the object
 	 * 
 	 * @param	object		A reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
 	 * @param	array		The configuration set for this module - from global array TBE_MODULES_EXT
@@ -222,7 +220,7 @@ class t3lib_extobjbase {
 	 */
 	function handleExternalFunctionValue()	{
 			// Must clean first to make sure the correct key is set...
-		$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::GPvar('SET'), $this->pObj->MCONF['name']);
+		$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::GPvar('SET',1), $this->pObj->MCONF['name']);
 		if ($this->function_key)	{
 			$this->extClassConf = $this->pObj->getExternalItemConfig($this->pObj->MCONF['name'],$this->function_key,$this->pObj->MOD_SETTINGS[$this->function_key]);
 			if (is_array($this->extClassConf) && $this->extClassConf['path'])	{
@@ -255,7 +253,7 @@ class t3lib_extobjbase {
 			$this->extObj->init($this->pObj,$this->extClassConf);
 
 				// Re-write:
-			$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::GPvar('SET'), $this->pObj->MCONF['name']);
+			$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::GPvar('SET',1), $this->pObj->MCONF['name']);
 		}
 	}
 

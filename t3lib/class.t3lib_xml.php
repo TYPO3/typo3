@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,35 +27,34 @@
 /** 
  * Contains class for creating XML output from records
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   75: class t3lib_xml 
- *   91:     function t3lib_xml($topLevelName)	
- *  102:     function setRecFields($table,$list)	
- *  111:     function getResult()	
- *  121:     function WAPHeader()	
- *  133:     function renderHeader()	
- *  144:     function renderFooter()	
- *  156:     function newLevel($name,$beginEndFlag=0,$params=array())	
- *  181:     function output($content)	
- *  197:     function indent($b)	
- *  213:     function renderRecords($table,$res) 
- *  226:     function addRecord($table,$row)	
- *  244:     function getRowInXML($table,$row)	
- *  260:     function utf8($content)	
- *  270:     function substNewline($string)	
- *  281:     function fieldWrap($field,$value)	
- *  290:     function WAPback()	
- *  304:     function addLine($str)	
+ *   86: class t3lib_xml 
+ *  102:     function t3lib_xml($topLevelName)	
+ *  113:     function setRecFields($table,$list)	
+ *  122:     function getResult()	
+ *  132:     function WAPHeader()	
+ *  144:     function renderHeader()	
+ *  155:     function renderFooter()	
+ *  167:     function newLevel($name,$beginEndFlag=0,$params=array())	
+ *  192:     function output($content)	
+ *  208:     function indent($b)	
+ *  224:     function renderRecords($table,$res) 
+ *  237:     function addRecord($table,$row)	
+ *  255:     function getRowInXML($table,$row)	
+ *  271:     function utf8($content)	
+ *  281:     function substNewline($string)	
+ *  292:     function fieldWrap($field,$value)	
+ *  301:     function WAPback()	
+ *  315:     function addLine($str)	
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,12 +63,24 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 /**
  * XML class, Used to create XML output from input rows.
  * Doesn't contain a lot of advanced features - pretty straight forward, practical stuff
  * You are encouraged to use this class in your own applications.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see user_xmlversion, user_wapversion
  */
 class t3lib_xml {
@@ -207,7 +218,7 @@ class t3lib_xml {
 	 * Takes a MySQL result for $table and traverses it, adding rows
 	 * 
 	 * @param	string		Tablename
-	 * @param	resource		MySQL resource pointer, should be reset
+	 * @param	pointer		MySQL resource pointer, should be reset
 	 * @return	void		
 	 */
 	function renderRecords($table,$res) {

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,18 +26,30 @@
 ***************************************************************/
 /** 
  * Alternative top menu
- *
  * Displays a horizontal menu with the same items as the default left vertical menu
  * in the backend frameset. Only the icons are displayed and linked.
  * Will appear as the default document in the top frame if configured to appear.
  * This is the default menu used during "condensed mode"
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant content
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   74: class SC_alt_topmenu_dummy 
+ *   82:     function main()	
+ *  126:     function dummyContent()	
+ *  142:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -48,21 +60,31 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
 
 
-// ***************************
-// Script Class
-// ***************************
+
+
+
+/**
+ * Script Class for rendering the topframe dummy view.
+ * In the case where TYPO3 backend is configured to show the menu in the top frame this class will render the horizontal line of module icons in the top frame.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_topmenu_dummy {
 	var $content;
 	
 	/**
 	 * Main function - making the menu happen.
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
-		global $TBE_MODULES,$TBE_TEMPLATE;
+		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES,$TBE_TEMPLATE;
 		
 			// IF noMenuMode is set to 'icons', then display menu instead of nothingness
 		if (!strcmp($BE_USER->uc['noMenuMode'],'icons'))	{
+		
 				// Loading the modules for this backend user:
 			$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 			$loadModules->load($TBE_MODULES);
@@ -72,41 +94,50 @@ class SC_alt_topmenu_dummy {
 
 				// Start page
 			$TBE_TEMPLATE->docType = 'xhtml_trans';
-			$TBE_TEMPLATE->inDocStyles = 'BODY {background-color: '.$TBE_TEMPLATE->bgColor2.'; background-image: url(gfx/alt_topmenu_back_full.gif)}';
+			$TBE_TEMPLATE->bodyTagId.= '-iconmenu';
 			$this->content.=$TBE_TEMPLATE->startPage('Top frame icon menu');
 	
 				// Make menu and add it:
-			$this->content.='<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="clear.gif" width="6" height="10" alt="" /></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>'.$alt_menuObj->topMenu($loadModules->modules,0,'',3).'</td>
-					<td><img src="clear.gif" width="20" height="1" alt="" /></td>
-					<td>'.$alt_menuObj->topButtons().'</td>
-				</tr>
-			</table>';
+			$this->content.='
+
+				<!--
+				  Alternative module menu made of icons, displayed in top frame:
+				-->
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-topMenu">
+					<tr>
+						<td class="c-menu">'.$alt_menuObj->topMenu($loadModules->modules,0,'',3).'</td>
+						<td class="c-logout">'.$alt_menuObj->topButtons().'</td>
+					</tr>
+				</table>';
 
 				// End page:
 			$this->content.=$TBE_TEMPLATE->endPage();
 		} else {
-
-				// Start page
-			$TBE_TEMPLATE->docType = 'xhtml_trans';
-			$TBE_TEMPLATE->inDocStyles = 'BODY {background-color: '.$TBE_TEMPLATE->bgColor2.'; background-image: url(gfx/alt_topmenu_back_dummy.gif)}';
-			$this->content.=$TBE_TEMPLATE->startPage('Top frame icon menu');
-
-				// End page:
-			$this->content.=$TBE_TEMPLATE->endPage();
+				// Make dummy content:
+			$this->dummyContent();
 		}
 	}
 	
 	/**
-	 * Print output
+	 * Creates the dummy content of the top frame if no menu - which is a blank page.
+	 * 
+	 * @return	void		
+	 */
+	function dummyContent()	{
+		global $TBE_TEMPLATE;
+		
+			// Start page
+		$TBE_TEMPLATE->docType = 'xhtml_trans';
+		$this->content.=$TBE_TEMPLATE->startPage('Top frame dummy display');
+
+			// End page:
+		$this->content.=$TBE_TEMPLATE->endPage();
+	}
+	
+	/**
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;

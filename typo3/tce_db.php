@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,12 +26,31 @@
 ***************************************************************/
 /** 
  * TCE gateway (TYPO3 Core Engine) for database handling
- *
  * This script is a gateway for POST forms to class.t3lib_TCEmain that manipulates all information in the database!!
  * For syntax and API information, see the document 'TYPO3 Core APIs' 
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   80: class SC_tce_db 
+ *  107:     function init()	
+ *  160:     function initClipboard()	
+ *  180:     function main()	
+ *  216:     function finish()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+ 
 require ('init.php');
 require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');
@@ -50,38 +69,56 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 
 /**
  * Script Class, creating object of t3lib_TCEmain and sending the posted data to the object.
+ * Used by many smaller forms/links in TYPO3, including the QuickEdit module.
+ * Is not used by alt_doc.php though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
+ * For all other cases than alt_doc.php it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to alt_doc.php, that will give you easy form-rendering as well.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_tce_db {
-	var $include_once=array();
-	var $tce;
-	var $CB;
 	
+		// Internal, static: GPvar
 	var $flags;
 	var $data;
 	var $cmd;
 	var $mirror;
 	var $cacheCmd;
 	var $redirect;
-	
+	var $prErr;
+	var $_disableRTE;
+	var $CB;
+	var $vC;
+	var $uPT;
+
+		// Internal, dynamic:	
+	var $include_once=array();		// Files to include after init() function is called:
+	var $tce;						// TCEmain object
+
+
+
+
 	/**
-	 * Initialization.
+	 * Initialization of the class
 	 * 
 	 * @return	void		
 	 */
 	function init()	{
 		global $BE_USER;
 
-			// Registering Incoming data
+			// GPvars:
 		$this->flags = t3lib_div::GPvar('flags');
 		$this->data = t3lib_div::GPvar('data');
 		$this->cmd = t3lib_div::GPvar('cmd');
 		$this->mirror = t3lib_div::GPvar('mirror');
 		$this->cacheCmd = t3lib_div::GPvar('cacheCmd');
 		$this->redirect = t3lib_div::GPvar('redirect');
+		$this->prErr = t3lib_div::GPvar('prErr');
+		$this->_disableRTE = t3lib_div::GPvar('_disableRTE');
+		$this->CB = t3lib_div::GPvar('CB');
+		$this->vC = t3lib_div::GPvar('vC');
+		$this->uPT = t3lib_div::GPvar('uPT');
 		
 			// Creating TCEmain object
 		$this->tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -107,10 +144,9 @@ class SC_tce_db {
 			$this->tce->reverseOrder=1;
 		}
 		
-		$this->tce->disableRTE = t3lib_div::GPvar('_disableRTE');
+		$this->tce->disableRTE = $this->_disableRTE;
 
 			// Clipboard?
-		$this->CB = t3lib_div::GPvar('CB');
 		if (is_array($this->CB))	{
 			$this->include_once[]=PATH_t3lib.'class.t3lib_clipboard.php';
 		}
@@ -142,7 +178,7 @@ class SC_tce_db {
 	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$TYPO3_CONF_VARS;
 
 			// LOAD TCEmain with data and cmd arrays:
 		$this->tce->start($this->data,$this->cmd);
@@ -151,7 +187,7 @@ class SC_tce_db {
 			// Checking referer / executing
 		$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost!=$refInfo['host'] && t3lib_div::GPvar('vC')!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
+		if ($httpHost!=$refInfo['host'] && $this->vC!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 			$this->tce->log('',0,0,0,1,'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!',1,array($refInfo['host'],$httpHost));
 		} else {
 				// Register uploaded files
@@ -165,37 +201,26 @@ class SC_tce_db {
 			$this->tce->clear_cacheCmd($this->cacheCmd);
 			
 				// Update page tree?
-			if (t3lib_div::GPvar('uPT') && (isset($this->data['pages'])||isset($this->cmd['pages'])))	{
+			if ($this->uPT && (isset($this->data['pages'])||isset($this->cmd['pages'])))	{
 				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 			}
 		}
 	}
 
 	/**
-	 * Redirecting...
+	 * Redirecting the user after the processing has been done.
+	 * Might also display error messages directly, if any.
 	 * 
 	 * @return	void		
 	 */
 	function finish()	{
 			// Prints errors, if...
-		if (t3lib_div::GPvar('prErr'))	{
+		if ($this->prErr)	{
 			$this->tce->printLogErrorMessages($this->redirect);
 		}
 		
-			// Redirecting
-		if (!$this->redirect)	{
-			$this->redirect = 'status.php';
-		}
-		if (!$this->tce->debug) {
+		if ($this->redirect && !$this->tce->debug) {
 			Header('Location: '.t3lib_div::locationHeaderUrl($this->redirect));
-		
-			echo '
-				<script type="text/javascript">
-					if (confirm(\'System Error:\n\n Some error happend in tce_db.php. Continue?\'))	{
-						document.location = \''.$this->redirect.'\';
-					}
-				</script>
-			';
 		}
 	}	
 }
@@ -216,8 +241,7 @@ $SOBE = t3lib_div::makeInstance('SC_tce_db');
 $SOBE->init();
 
 // Include files?
-reset($SOBE->include_once);	
-while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->initClipboard();
 $SOBE->main();

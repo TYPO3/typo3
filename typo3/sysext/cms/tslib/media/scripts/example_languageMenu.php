@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -29,11 +29,12 @@
  *
  * THIS IS AN EXAMPLE designed to work with the official TYPO3 testsite, section "Another site in the ..."
  * You will have to program a similar menu for your own case.
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * 
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 
  

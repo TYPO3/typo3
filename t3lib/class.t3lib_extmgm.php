@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,59 +27,58 @@
 /**
  * Contains a class with Extension Management functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  111: class t3lib_extMgm 
+ *  113: class t3lib_extMgm 
  *
  *              SECTION: PATHS and other evaluation
- *  127:     function isLoaded($key,$exitOnError=0)	
- *  142:     function extPath($key,$script='')	
- *  156:     function extRelPath($key)	
- *  170:     function siteRelPath($key)	
- *  181:     function getCN($key)	
+ *  129:     function isLoaded($key,$exitOnError=0)	
+ *  144:     function extPath($key,$script='')	
+ *  158:     function extRelPath($key)	
+ *  172:     function siteRelPath($key)	
+ *  183:     function getCN($key)	
  *
  *              SECTION: Adding BACKEND features
- *  213:     function addTCAcolumns($table,$columnArray,$addTofeInterface=0)	
- *  235:     function addToAllTCAtypes($table,$str,$specificTypesList='')	
- *  253:     function allowTableOnStandardPages($table)	
- *  269:     function addModule($main,$sub='',$position='',$path='')	
- *  330:     function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function')	
- *  347:     function addPageTSConfig($content)	
- *  360:     function addUserTSConfig($content)	
- *  373:     function addLLrefForTCAdescr($tca_descr_key,$file_ref)	
+ *  215:     function addTCAcolumns($table,$columnArray,$addTofeInterface=0)	
+ *  237:     function addToAllTCAtypes($table,$str,$specificTypesList='')	
+ *  255:     function allowTableOnStandardPages($table)	
+ *  271:     function addModule($main,$sub='',$position='',$path='')	
+ *  332:     function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function')	
+ *  349:     function addPageTSConfig($content)	
+ *  362:     function addUserTSConfig($content)	
+ *  376:     function addLLrefForTCAdescr($tca_descr_key,$file_ref)	
  *
  *              SECTION: Adding SERVICES features
- *  416:     function addService($extKey, $serviceType, $serviceKey, $info)	
- *  483:     function findService($serviceType, $serviceSubType='', $excludeServiceKeys='') 
- *  528:     function deactivateService($serviceType, $serviceKey) 
+ *  418:     function addService($extKey, $serviceType, $serviceKey, $info)	
+ *  485:     function findService($serviceType, $serviceSubType='', $excludeServiceKeys='') 
+ *  549:     function deactivateService($serviceType, $serviceKey) 
  *
  *              SECTION: Adding FRONTEND features
- *  567:     function addPlugin($itemArray,$type='list_type')	
- *  591:     function addPiFlexFormValue($piKeyToMatch,$value)	
- *  607:     function addToInsertRecords($table)	
- *  637:     function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)	
- *  711:     function addStaticFile($extKey,$path,$title)	
- *  729:     function addTypoScriptSetup($content)	
- *  742:     function addTypoScriptConstants($content)	
- *  758:     function addTypoScript($key,$type,$content,$afterStaticUid=0)	
+ *  588:     function addPlugin($itemArray,$type='list_type')	
+ *  612:     function addPiFlexFormValue($piKeyToMatch,$value)	
+ *  631:     function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	
+ *  661:     function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)	
+ *  735:     function addStaticFile($extKey,$path,$title)	
+ *  753:     function addTypoScriptSetup($content)	
+ *  766:     function addTypoScriptConstants($content)	
+ *  782:     function addTypoScript($key,$type,$content,$afterStaticUid=0)	
  *
  *              SECTION: INTERNAL EXTENSION MANAGEMENT:
- *  820:     function typo3_loadExtensions()	
- *  899:     function _makeIncludeHeader($key,$file)	
- *  919:     function isCacheFilesAvailable($cacheFilePrefix)	
- *  931:     function isLocalconfWritable()	
- *  943:     function cannotCacheFilesWritable($cacheFilePrefix)	
- *  966:     function currentCacheFiles()	
- *  988:     function writeCacheFiles($extensions,$cacheFilePrefix)	
+ *  844:     function typo3_loadExtensions()	
+ *  923:     function _makeIncludeHeader($key,$file)	
+ *  943:     function isCacheFilesAvailable($cacheFilePrefix)	
+ *  955:     function isLocalconfWritable()	
+ *  967:     function cannotCacheFilesWritable($cacheFilePrefix)	
+ *  990:     function currentCacheFiles()	
+ * 1012:     function writeCacheFiles($extensions,$cacheFilePrefix)	
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -107,6 +106,9 @@
  * This class is never instantiated, rather the methods inside is called as functions like
  * 		t3lib_extMgm::isLoaded('my_extension');
  * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_extMgm {
 
@@ -230,18 +232,52 @@ class t3lib_extMgm {
 	 * @param	string		Table name
 	 * @param	string		Field list to add.
 	 * @param	string		List of specific types to add the field list to. (If empty, all type entries are affected)
-	 * @return	void		
+	 * @param	string		Insert fields before one of this fields (commalist). Example: "keywords,--palette--;;4,description". Palettes must be passed like in the example no matter how the palette definition looks like in TCA.
+	 * @return	void
 	 */
-	function addToAllTCAtypes($table,$str,$specificTypesList='')	{
+	function addToAllTCAtypes($table,$str,$specificTypesList='',$beforeList='')	{
 		global $TCA;
+
+		$beforeFields=t3lib_div::trimExplode(',',$beforeList,1);
+		$before=count($beforeFields);
+
 		t3lib_div::loadTCA($table);	
 		if (trim($str) && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
 			foreach($TCA[$table]['types'] as $k => $v)	{
-				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	$TCA[$table]['types'][$k]['showitem'].=', '.trim($str);
+				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
+
+					if ($before) {
+						$append=true;
+						$showItem = t3lib_div::trimExplode(',',$TCA[$table]['types'][$k]['showitem'],1);
+						foreach($showItem as $key => $fieldInfo) {
+
+							$parts = explode(';',$fieldInfo);
+							$theField = trim($parts[0]);
+							$palette = trim($parts[0]).';;'.trim($parts[2]);
+								// find exact field name or palette with number
+							if (in_array($theField,$beforeFields) OR in_array($palette,$beforeFields))	{
+								$showItem[$key]=trim($str).', '.$fieldInfo;
+								$append=false;
+								break;
+							}
+						}
+
+							// Not found? Then append.
+						if($append) {
+							$showItem[]=trim($str);
+						}
+
+						$TCA[$table]['types'][$k]['showitem']=implode(', ', $showItem);
+
+					} else {
+						$TCA[$table]['types'][$k]['showitem'].=', '.trim($str);
+					}
+				}
 			}
 		}
 	}
-	
+
+
 	/**
 	 * Add tablename to default list of allowed tables on pages.
 	 * Will add the $table to the list of tables allowed by default on pages as setup by $PAGES_TYPES['default']['allowedTables']
@@ -322,8 +358,8 @@ class t3lib_extMgm {
 	 * @param	string		Module name
 	 * @param	string		Class name
 	 * @param	string		Class path
-	 * @param	string		Title
-	 * @param	string		
+	 * @param	string		Title of module
+	 * @param	string		Menu array key - default is "function"
 	 * @return	void		
 	 * @see t3lib_SCbase::mergeExternalItems()
 	 */
@@ -341,7 +377,7 @@ class t3lib_extMgm {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_locallang.php FILES
 	 * 
-	 * @param	string		
+	 * @param	string		Page TSconfig content
 	 * @return	void		
 	 */
 	function addPageTSConfig($content)	{
@@ -354,7 +390,7 @@ class t3lib_extMgm {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_locallang.php FILES
 	 * 
-	 * @param	string		
+	 * @param	string		User TSconfig content
 	 * @return	void		
 	 */
 	function addUserTSConfig($content)	{
@@ -365,9 +401,10 @@ class t3lib_extMgm {
 	/**
 	 * Adds a reference to a locallang file with TCA_DESCR labels
 	 * FOR USE IN ext_tables.php FILES
+	 * eg. t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:lang/locallang_csh_pages.php'); for the pages table or t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout','EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
 	 * 
-	 * @param	string		
-	 * @param	string		
+	 * @param	string		Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
+	 * @param	string		File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.php"
 	 * @return	void		
 	 */
 	function addLLrefForTCAdescr($tca_descr_key,$file_ref)	{
@@ -383,7 +420,6 @@ class t3lib_extMgm {
 		}
 	}
 
-	
 	
 	
 	
@@ -418,11 +454,9 @@ class t3lib_extMgm {
 
 		// even not available services will be included to make it possible to give the admin a feedback of non-available services.
 		// but maybe it's better to move non-available services to a different array??
-#debug($serviceType);
-#debug($serviceKey);
-#debug($info);
+
 		if ($serviceType AND substr($serviceType,0,3)!='tx_' AND substr($serviceKey,0,3)=='tx_' AND is_array($info))	{
-#debug($extKey);
+
 			$info['priority'] = max(0,min(100,$info['priority']));
 
 			$T3_SERVICES[$serviceType][$serviceKey]=$info;
@@ -490,6 +524,7 @@ class t3lib_extMgm {
 
 		if (is_array($T3_SERVICES[$serviceType]))	{
 			foreach($T3_SERVICES[$serviceType] as $key => $info)	{
+
 				if (t3lib_div::inList($excludeServiceKeys,$key)) {
 					continue;
 				}
@@ -500,13 +535,34 @@ class t3lib_extMgm {
 					$serviceSubType = key($info['serviceSubTypes']);
 				}
 
-				if( $info['available'] AND ($info['subtype']=='' XOR $info['serviceSubTypes'][$serviceSubType]) AND $info['priority']>=$priority ) {
+					// this matches empty subtype too
+				if( $info['available'] AND ($info['subtype']==$serviceSubType XOR $info['serviceSubTypes'][$serviceSubType]) AND $info['priority']>=$priority ) {
+
+						// has a lower quality than the already found, therefore we skip this service
 					if($info['priority']==$priority AND $info['quality']<$quality) {
 						continue;
 					}
-					$serviceKey = $key;
-					$priority = $info['priority'];
-					$quality = $info['quality'];
+
+						// service depends on external programs - check if they exists
+					if(trim($info['exec'])) {
+						require_once(PATH_t3lib.'class.t3lib_exec.php');
+
+						$executables = t3lib_div::trimExplode(',', $info['exec'],1);
+						foreach($executables as $executable)	{
+							if(!t3lib_exec::checkCommand($executable)) {
+								t3lib_extMgm::deactivateService($serviceType, $key);
+								$info['available']=FALSE;
+								break;
+							}
+						}
+					}
+
+						// still available after exec check?
+					if($info['available']) {
+						$serviceKey = $key;
+						$priority = $info['priority'];
+						$quality = $info['quality'];
+					}
 				}
 			}
 		}
@@ -561,7 +617,7 @@ class t3lib_extMgm {
 	 * FOR USE IN ext_tables.php FILES
 	 * 
 	 * @param	array		Item Array
-	 * @param	string		Type
+	 * @param	string		Type (eg. "list_type") - basically a field from "tt_content" table
 	 * @return	void		
 	 */
 	function addPlugin($itemArray,$type='list_type')	{
@@ -599,16 +655,19 @@ class t3lib_extMgm {
 
 	/**
 	 * Adds the $table tablename to the list of tables allowed to be includes by content element type "Insert records"
+	 * By using $content_table and $content_field you can also use the function for other tables.
 	 * FOR USE IN ext_tables.php FILES
 	 * 
-	 * @param	string		Table name
+	 * @param	string		Table name to allow for "insert record"
+	 * @param	string		Table name TO WHICH the $table name is applied. See $content_field as well.
+	 * @param	string		Field name in the database $content_table in which $table is allowed to be added as a reference ("Insert Record")
 	 * @return	void		
 	 */
-	function addToInsertRecords($table)	{
+	function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	{
 		global $TCA;
-		t3lib_div::loadTCA('tt_content');
-		if (is_array($TCA['tt_content']['columns']) && isset($TCA['tt_content']['columns']['records']['config']['allowed']))	{
-			$TCA['tt_content']['columns']['records']['config']['allowed'].=','.$table;
+		t3lib_div::loadTCA($content_table);
+		if (is_array($TCA[$content_table]['columns']) && isset($TCA[$content_table]['columns'][$content_field]['config']['allowed']))	{
+			$TCA[$content_table]['columns'][$content_field]['config']['allowed'].=','.$table;
 		}
 	}
 
@@ -723,7 +782,7 @@ tt_content.'.$key.$prefix.' {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_locallang.php FILES
 	 * 
-	 * @param	string		TypoScript
+	 * @param	string		TypoScript Setup string
 	 * @return	void		
 	 */
 	function addTypoScriptSetup($content)	{
@@ -736,7 +795,7 @@ tt_content.'.$key.$prefix.' {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_locallang.php FILES
 	 * 
-	 * @param	string		
+	 * @param	string		TypoScript Constants string
 	 * @return	void		
 	 */
 	function addTypoScriptConstants($content)	{
@@ -912,7 +971,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	/**
 	 * Returns true if both the localconf and tables cache file exists (with $cacheFilePrefix)
 	 * 
-	 * @param	string		
+	 * @param	string		Prefix of the cache file to check
 	 * @return	boolean		
 	 * @internal
 	 */
@@ -936,7 +995,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * Returns an error string if typo3conf/ or cache-files with $cacheFilePrefix are NOT writable
 	 * Returns false if no problem.
 	 * 
-	 * @param	string		
+	 * @param	string		Prefix of the cache file to check
 	 * @return	string		
 	 * @internal
 	 */
@@ -980,8 +1039,8 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * Compiles/Creates the two cache-files in typo3conf/ based on $cacheFilePrefix
 	 * Returns a array with the key "_CACHEFILE" set to the $cacheFilePrefix value
 	 * 
-	 * @param	array		
-	 * @param	string		
+	 * @param	array		Extension information array
+	 * @param	string		Prefix for the cache files
 	 * @return	array		
 	 * @internal
 	 */

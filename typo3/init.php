@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -49,11 +49,12 @@
  * For a detailed description of this script, the scope of constants and variables in it, 
  * please refer to the document "Inside TYPO3"
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  */
 
 
@@ -95,13 +96,13 @@ if (substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{
 
 // OUTPUT error message and exit if there are problems with the path. Otherwise define constants and continue.
 if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	// This must be the case in order to proceed
-	echo ('Error in init.php: Path to TYPO3 main dir could not be resolved correctly. <BR><BR>
-		This happens if the last '.strlen(TYPO3_mainDir).' characters of this path, '.$temp_path.', (\$temp_path) is NOT "'.TYPO3_mainDir.'" for some reason. <BR> 
+	echo ('Error in init.php: Path to TYPO3 main dir could not be resolved correctly. <br /><br />
+		This happens if the last '.strlen(TYPO3_mainDir).' characters of this path, '.$temp_path.', (\$temp_path) is NOT "'.TYPO3_mainDir.'" for some reason. <br /> 
 		You may have a strange server configuration. 
 		Or maybe you didn\'t set constant TYPO3_MOD_PATH in your module?');
-	echo '<BR><strong>If you expect any help from anybody on this issue, you should save this page as an html document and send it along with your request for help!</strong>';
+	echo '<br /><strong>If you expect any help from anybody on this issue, you should save this page as an html document and send it along with your request for help!</strong>';
 	if (strstr($temp_path,'typo3_src'))	{
-		echo '<BR><font color="red"><strong> It seems you are trying to run the TYPO3 source libraries DIRECTLY! You cannot do that. Please read the installation documents for more information.<BR>
+		echo '<br /><font color="red"><strong> It seems you are trying to run the TYPO3 source libraries DIRECTLY! You cannot do that. Please read the installation documents for more information.<br />
 		However here is a little tip for now: Download one of the zip-file "packages", eg the "testsite" or "dummy" package.</strong></font>';
 	}
 	echo '<HR><pre>';
@@ -270,5 +271,4 @@ if ($TYPO3_CONF_VARS['BE']['compressionLevel'])	{
 	ob_start();
 	require_once (PATH_t3lib.'class.gzip_encode.php');
 }
-
 ?>

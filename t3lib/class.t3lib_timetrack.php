@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,34 +27,37 @@
 /**
  * Contains class with time tracking functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   85: class t3lib_timeTrack 
+ *   88: class t3lib_timeTrack 
  *
  *              SECTION: Logging parsing times in the scripts
- *  141:     function start()	
- *  154:     function push($tslabel, $value='')	
- *  179:     function pull($content='')	
- *  197:     function setTSlogMessage($content,$num=0)	
- *  212:     function setTSselectQuery($query,$msg)	
- *  225:     function incStackPointer()	
- *  236:     function decStackPointer()	
- *  246:     function mtime()	
- *  256:     function convertMicrotime($microtime)	
+ *  144:     function start()	
+ *  157:     function push($tslabel, $value='')	
+ *  182:     function pull($content='')	
+ *  200:     function setTSlogMessage($content,$num=0)	
+ *  214:     function setTSselectQuery($query,$msg)	
+ *  227:     function incStackPointer()	
+ *  238:     function decStackPointer()	
+ *  248:     function mtime()	
+ *  258:     function convertMicrotime($microtime)	
  *
  *              SECTION: Printing the parsing time information (for Admin Panel)
- *  289:     function printTSlog()	
- *  434:     function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')	
- *  498:     function fixCLen($c,$v)	
- *  514:     function fw($str)	
- *  528:     function createHierarchyArray(&$arr,$pointer,$uniqueId)	
- *  547:     function debug_typo3PrintError($header,$text,$js)	
+ *  291:     function printTSlog()	
+ *  436:     function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')	
+ *  500:     function fixCLen($c,$v)	
+ *  516:     function fw($str)	
+ *  530:     function createHierarchyArray(&$arr,$pointer,$uniqueId)	
+ *  549:     function debug_typo3PrintError($header,$text,$js)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -77,7 +80,7 @@
  * Is used to register how much time is used with operations in TypoScript
  * Used by index_ts
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen
@@ -198,15 +201,14 @@ class t3lib_timeTrack {
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 
-		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num].$this->wrapError[$num][0].$content.$this->wrapError[$num][1];
+		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num].$this->wrapError[$num][0].htmlspecialchars($content).$this->wrapError[$num][1];
 	}
 
 	/**
-	 * Set TSselectQuery.
-	 * Apparently not used anywhere?
+	 * Set TSselectQuery - for messages in TypoScript debugger.
 	 * 
-	 * @param	string		Query
-	 * @param	string		Message
+	 * @param	string		Query string
+	 * @param	string		Message/Label to attach
 	 * @return	void		
 	 */
 	function setTSselectQuery($query,$msg)	{
@@ -281,7 +283,7 @@ class t3lib_timeTrack {
 	 *******************************************/
 
 	/**
-	 * Print TSlog
+	 * Print TypoScript parsing log
 	 * 
 	 * @return	string		HTML table with the information about parsing times.
 	 * @see t3lib_tsfeBeUserAuth::extGetCategory_tsdebug()
@@ -391,7 +393,7 @@ class t3lib_timeTrack {
 			if ($flag_messages && is_array($data['message']))	{
 				reset($data['message']);
 				while(list(,$v)=each($data['message']))	{
-					$msgArr[]=nl2br(htmlspecialchars($v));
+					$msgArr[]=nl2br($v);
 				}
 			}
 			if ($flag_queries && is_array($data['selectQuery']))	{
@@ -519,8 +521,8 @@ class t3lib_timeTrack {
 	 * Helper function for internal data manipulation
 	 * 
 	 * @param	array		Array (passed by reference) and modified
-	 * @param	integer		
-	 * @param	string		
+	 * @param	integer		Pointer value
+	 * @param	string		Unique ID string
 	 * @return	void		
 	 * @access private
 	 * @see printTSlog()
@@ -553,7 +555,7 @@ class t3lib_timeTrack {
 					<head>
 						<title>Error!</title>
 					</head>
-					<body bgcolor="#cccccc">
+					<body bgcolor="white">
 						<div align="center">
 							<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#cccccc">
 								<tr>

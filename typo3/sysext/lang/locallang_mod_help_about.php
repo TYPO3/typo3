@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -114,6 +115,11 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Î ñèñòåìå',
 	),
 	'ro' => Array (
+		'welcome' => 'Sistemul Profesional de Administrare a Continutului TYPO3',
+		'minor' => 'TYPO3 este un CMS flexibil si profesional, bazat pe PHP4 si MySQL. Typo3 este sub licenta Open Source.<br><br>TYPO3 este <B> disponibil gratuit </b> sub <A HREF="http://typo3.com/1244.0.html" target="_blank"> licenta TYPO3 (GNU/GPL)</a>.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => 'Despre TYPO3',
+		'mlang_labels_tabdescr' => 'Afiseaza datele primare despre aplicatia TYPO3, versiunea si termenii licentei.',
+		'mlang_tabs_tab' => 'Despre',
 	),
 	'ch' => Array (
 		'welcome' => 'TYPO3×¨ÒµÍøÕ¾ÄÚÈİ¹ÜÀíÏµÍ³',
@@ -135,6 +141,79 @@ $LOCAL_LANG = Array (
 		'mlang_labels_tablabel' => 'Apie TYPO3',
 		'mlang_labels_tabdescr' => 'Parodo pagrindinius faktus apie TYPO3 programa, versija ir licenzijavima.',
 		'mlang_tabs_tab' => 'Apie',
+	),
+	'is' => Array (
+		'welcome' => 'TYPO3 Faglegur VefumsjÃ³narkerfi',
+		'minor' => 'TYPO3 er frjÃ¡lslegur og faglegur Open Source VefumsjÃ³nskerfi byggd Ãºt frÃ¡ PHP4 og MySQL.<br><br>TYPO3 er fÃ¡anlegur undir <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-license (GNU/GPL)</a>.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => 'Um TYPO3',
+		'mlang_labels_tabdescr' => 'SÃ½nir Ã­ aÃ°alatriÃ°um staÃ°reyndirnar um TYPO3 kerfiÃ°, ÃºtgÃ¡fu og leyfisskilmÃ¡lana',
+		'mlang_tabs_tab' => 'Um',
+	),
+	'hr' => Array (
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'welcome' => 'TYPO3 ÃĞººàÇç»¨Ñ´¡ÒÃà¹×éÍËÒ',
+		'minor' => 'TYPO3 is a flexible and professional Open Source Web-CMS based on PHP4 and MySQL.<br><br>TYPO3 is <B>freely available</b> under the <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-license (GNU/GPL)</a>.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => 'à¡ÕèÂÇ¡Ñº TYPO3',
+		'mlang_labels_tabdescr' => 'áÊ´§¢éÍà·ç¨¨ÃÔ§à¡ÕèÂÇ¡Ñºâ»Ãá¡ÃÁ TYPO3 ÃØè¹ áÅĞÅÔ¢ÊÔ·¸Ôì',
+		'mlang_tabs_tab' => 'à¡ÕèÂÇ¡Ñº',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'welcome' => 'Typo3±M·~ºô¯¸¤º®eºŞ²z¨t²Î',
+		'minor' => 'Typo3¬O¤@­Ó´I¼u©Ê©M±M·~ªº¶}©ñ·½µ{¦¡½Xºô¯¸¤º®eºŞ²z¨t²Î¡A¦¹¨t²Î«Ø°ò©óPHP4©MMySql.<br><br>Typo3¦b¿í¦u<A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3¨Ï¥ÎÃÒ(GNU/GPL)</a>.<br>%s%s<br><B>§K¶O¦Û¥Ñ¨Ï¥Î</b>',
+		'mlang_labels_tablabel' => 'Ãö©óTYPO3',
+		'mlang_labels_tabdescr' => 'Åã¥Ü¦³ÃöTYPO3ªºÀ³¥Î¡Bª©¥»©M¨Ï¥ÎÃÒ±ø´Úªº°ò¥»¨Æ¹ê',
+		'mlang_tabs_tab' => 'Ãö©ó',
+	),
+	'eu' => Array (
+		'welcome' => 'TYPO3 Web Eduki Kudeatzaile Profesionala',
+		'minor' => 'TYPO3 kode irekiko Web-CMS (edukia kudeatzeko sistema) malgu eta profesionala da. PHP4 eta MySQLn oinarritutakoa <br><br>TYPO3 <b>dohainik eskuragarri</b> dago <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-Lizentziapean (GNU/GPL)</a>.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => 'TYPO3ri buruz',
+		'mlang_labels_tabdescr' => 'TYPO3 aplikazioen oinarrizko informazioa erakusten du, bertsioak eta lizentzia terminoak',
+		'mlang_tabs_tab' => 'Buruz',
+	),
+	'bg' => Array (
+		'welcome' => 'TYPO3 Ïğîôåñèîíàëíà óåá ñèñòåìà çà óïğàâëåíèå íà ñúäúğæàíèåòî',
+		'minor' => 'TYPO3 å ãúâêàâà è ïğîôåñèîíàëíà Open Source Óåá-ÑÓÑ, áàçèğàíà íà PHP4 è MySQL. .<br><br>TYPO3 å <B>ñâîáîäíà íà ğàçïîëîæåíèå</b> ïîä <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-ëèöåíç (GNU/GPL)</a>.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => 'Îòíîñíî TYPO3',
+		'mlang_labels_tabdescr' => 'Ïîêàæè îñíîâíèòå ôàêòè çà TYPO3 ïğîëîæåíèÿ, âåğñèÿ è ëèöåíçèîííè óñëîâèÿ.',
+		'mlang_tabs_tab' => 'Îòíîñíî',
+	),
+	'br' => Array (
+		'welcome' => 'Typo3 Administrador de Conteúdo Web Profissional',
+		'minor' => 'Typo3 é um Web-CMS de Código Aberto flexível e profissional baseado em PHP4 e MySQL.<br><br>Typo3 é <B>disponível gratuitamente</b> sob a licença <A HREF="http://www.typo3.com/?price_uk" target="_blank">Typo3-license (GNU/GPL)</a>.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => 'Sobre o TYPO3',
+		'mlang_labels_tabdescr' => 'Mostra as informações básicas sobre a aplicação, versão e termos de licenciamento do Typo3.',
+		'mlang_tabs_tab' => 'Sobre',
+	),
+	'et' => Array (
+		'welcome' => 'TYPO3 Professionaalne sisuhaldus tarkvara',
+		'minor' => 'TYPO3 on paindlik ja professionaalne Open Source sisuhaldus tarkvara, mis toetub PHP4-le ja MySQL-ile.<br><br>TYPO3 on <B>vabalt kättesaadav</b> <A HREF="http://typo3.com/1244.0.html" target="_blank">GNU/GPL litsentsi all</a>.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => 'TYPO3 tiitelandmed',
+		'mlang_labels_tabdescr' => 'Näitab peamisi fakte TYPO3 rakendusest, versioonist ja litsentsitingimustest.',
+		'mlang_tabs_tab' => 'Tiitelandmed',
+	),
+	'ar' => Array (
+		'welcome' => 'ÊêÈè3 æØÇå ÅÏÇÑÉ ÇäÊÙÏêä áê åÍÊèêààÇÊ ÇäèêÈ',
+		'minor' => 'ÊêÈè 3 ÙÈÇÑÉ Ùæ Ê×Èêâ ÈÓê× åáÊèÍ ÇäÔáÑÉ äæØÇå ÇäÕáÍÇÊ ÇäåÈæêÉ ÈÇÓÊÎÏÇå ÇäÊê ÊÙÊåÏ Ùäé æÒÇå ÇäÓê Åå ÅíÓ',
+		'mlang_labels_tablabel' => 'ÊÙÑêá ÈÊêÈè3',
+		'mlang_labels_tabdescr' => 'ÙÑÖ ÇäâèÇÙÏ ÇäÃÓÇÓêÉ Ùæ ÊêÈè3 Ê×Èêâ èÍâèâ è Ñâå ÇäÅÕÏÇÑ',
+		'mlang_tabs_tab' => 'ÊÙÑêá',
+	),
+	'he' => Array (
+		'welcome' => 'TYPO3 - ××¢×¨×›×ª × ×™×”×•×œ ×ª×•×›×Ÿ ×‘×¨×©×ª',
+		'minor' => 'TYPO3 ×”×™× ×” ××¢×¨×›×ª ×’××™×©×” ×•××§×¦×•×¢×™×ª ×¢× ××§×•×¨ ×¤×ª×•×— (Open Source) ×”××ª×‘×¡×¡×ª ×¢×œ PHP4 ×•- MySQL.<br><br>TYPO3 <B>×–××™× ×” ×‘×—×™× ×</b> ×ª×—×ª <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-license (GNU/GPL)</a>.<br><br>%s %s<br>',
+		'mlang_labels_tablabel' => '××•×“×•×ª TYPO3',
+		'mlang_labels_tabdescr' => '××¦×™×’ ×¢×•×‘×“×•×ª ×‘×¡×™×¡×™×•×ª ××•×“×•×ª ×ª×•×›× ×ª TYPO3, ×’×™×¨×¡×” ×•×ª× ××™ ×©×™××•×©.',
+		'mlang_tabs_tab' => '××•×“×•×ª',
+	),
+	'ua' => Array (
 	),
 );
 ?>

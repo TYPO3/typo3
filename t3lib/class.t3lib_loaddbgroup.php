@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,22 +27,25 @@
 /** 
  * Contains class for loading database groups
  *
- * Revised for TYPO3 3.6 September/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 September/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   69: class t3lib_loadDBGroup	
- *   96:     function start ($itemlist,$tablelist, $MMtable='',$MMuid=0)	
- *  137:     function readList($itemlist)	
- *  183:     function readMM($tableName,$uid)	
- *  213:     function writeMM($tableName,$uid,$prependTableName=0)	
- *  242:     function getValueArray($prependTableName='')	
- *  270:     function convertPosNeg($valueArray,$fTable,$nfTable)	
- *  292:     function getFromDB()	
- *  325:     function readyForInterface()	
+ *   72: class t3lib_loadDBGroup	
+ *   99:     function start ($itemlist,$tablelist, $MMtable='',$MMuid=0)	
+ *  140:     function readList($itemlist)	
+ *  186:     function readMM($tableName,$uid)	
+ *  216:     function writeMM($tableName,$uid,$prependTableName=0)	
+ *  245:     function getValueArray($prependTableName='')	
+ *  273:     function convertPosNeg($valueArray,$fTable,$nfTable)	
+ *  295:     function getFromDB()	
+ *  328:     function readyForInterface()	
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -62,7 +65,7 @@
  * Load database groups (relations)
  * Used to process the relations created by the TCA element types "group" and "select" for database records. Manages MM-relations as well.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

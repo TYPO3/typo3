@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,26 +26,52 @@
 ***************************************************************/
 /** 
  * Dummy document - displays nothing but background color.
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$ 
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant content
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   68: class SC_dummy 
+ *   76:     function main()	
+ *   92:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
 require ('init.php');
 require ('template.php');
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+/**
+ * Script Class, creating the content for the dummy script - which is just blank output.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_dummy {
 	var $content;
 	
 	/**
-	 * Create content
+	 * Create content for the dummy script - outputting a blank page.
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $TBE_TEMPLATE;
@@ -59,7 +85,9 @@ class SC_dummy {
 	}
 	
 	/**
-	 * Print output
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -78,5 +106,4 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/dummy
 $SOBE = t3lib_div::makeInstance('SC_dummy');
 $SOBE->main();
 $SOBE->printContent();
-
 ?>

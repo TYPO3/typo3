@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,111 +27,115 @@
 /** 
  * Contains the TYPO3 Core Engine
  *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 August/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  178: class t3lib_TCEmain	
- *  265:     function start($data,$cmd,$altUserObject='')	
- *  310:     function setMirror($mirror)	
- *  335:     function setDefaultsFromUserTS($userTS)	
- *  359:     function process_uploads($postFiles)	
- *  389:     function process_uploads_traverseArray(&$outputArr,$inputArr,$keyToSet)	
+ *  182: class t3lib_TCEmain	
+ *  269:     function start($data,$cmd,$altUserObject='')	
+ *  314:     function setMirror($mirror)	
+ *  339:     function setDefaultsFromUserTS($userTS)	
+ *  363:     function process_uploads($postFiles)	
+ *  393:     function process_uploads_traverseArray(&$outputArr,$inputArr,$keyToSet)	
  *
  *              SECTION: PROCESSING DATA
- *  425:     function process_datamap() 
- *  596:     function fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$realPid,$status,$tscPID)	
- *  752:     function checkModifyAccessList($table)	
- *  764:     function isRecordInWebMount($table,$id)	
- *  778:     function isInWebMount($pid)	
- *  795:     function checkRecordUpdateAccess($table,$id)	
- *  820:     function checkRecordInsertAccess($insertTable,$pid,$action=1)	
- *  856:     function isTableAllowedForThisPage($page_uid, $checkTable)	
- *  891:     function doesRecordExist($table,$id,$perms)	
- *  954:     function doesBranchExist($inList,$pid,$perms, $recurse)	
- *  983:     function pageInfo($id,$field)	
- * 1003:     function recordInfo($table,$id,$fieldList)	
- * 1020:     function getRecordProperties($table,$id)	
- * 1032:     function getRecordPropertiesFromRow($table,$row)	
- * 1051:     function setTSconfigPermissions($fieldArray,$TSConfig_p)	
- * 1067:     function newFieldArray($table)	
- * 1098:     function overrideFieldArray($table,$data)	
- * 1111:     function assemblePermissions($string)	
+ *  429:     function process_datamap() 
+ *  600:     function fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$realPid,$status,$tscPID)	
+ *  756:     function checkModifyAccessList($table)	
+ *  768:     function isRecordInWebMount($table,$id)	
+ *  782:     function isInWebMount($pid)	
+ *  799:     function checkRecordUpdateAccess($table,$id)	
+ *  824:     function checkRecordInsertAccess($insertTable,$pid,$action=1)	
+ *  860:     function isTableAllowedForThisPage($page_uid, $checkTable)	
+ *  895:     function doesRecordExist($table,$id,$perms)	
+ *  958:     function doesBranchExist($inList,$pid,$perms, $recurse)	
+ *  987:     function pageInfo($id,$field)	
+ * 1007:     function recordInfo($table,$id,$fieldList)	
+ * 1024:     function getRecordProperties($table,$id)	
+ * 1036:     function getRecordPropertiesFromRow($table,$row)	
+ * 1055:     function setTSconfigPermissions($fieldArray,$TSConfig_p)	
+ * 1071:     function newFieldArray($table)	
+ * 1102:     function overrideFieldArray($table,$data)	
+ * 1115:     function assemblePermissions($string)	
  *
  *              SECTION: Evaluation of input values
- * 1160:     function checkValue($table,$field,$value,$id,$status,$realPid)	
- * 1216:     function checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$uploadedFiles)	
- * 1255:     function checkValue_input($res,$value,$tcaFieldConf,$PP,$field='')	
- * 1293:     function checkValue_check($res,$value,$tcaFieldConf,$PP)	
- * 1316:     function checkValue_radio($res,$value,$tcaFieldConf,$PP)	
- * 1341:     function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles)	
- * 1419:     function checkValue_group_select_file($valueArray,$tcaFieldConf,$curValue,$uploadedFileArray,$status,$table,$id,$recFID)	
- * 1563:     function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$curRecordArr)	
+ * 1164:     function checkValue($table,$field,$value,$id,$status,$realPid)	
+ * 1220:     function checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$uploadedFiles)	
+ * 1259:     function checkValue_input($res,$value,$tcaFieldConf,$PP,$field='')	
+ * 1297:     function checkValue_check($res,$value,$tcaFieldConf,$PP)	
+ * 1320:     function checkValue_radio($res,$value,$tcaFieldConf,$PP)	
+ * 1345:     function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles)	
+ * 1423:     function checkValue_group_select_file($valueArray,$tcaFieldConf,$curValue,$uploadedFileArray,$status,$table,$id,$recFID)	
+ * 1568:     function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$curRecordArr,$field)	
+ * 1627:     function _DELETE_FLEX_FORMdata(&$valueArrayToRemoveFrom,$deleteCMDS)	
  *
  *              SECTION: Helper functions for evaluation functions.
- * 1641:     function getUnique($table,$field,$value,$id,$newPid=0)	
- * 1674:     function checkValue_input_Eval($value,$evalArray,$is_in)	
- * 1762:     function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)	
- * 1795:     function checkValue_group_select_explodeSelectGroupValue($value)	
- * 1816:     function checkValue_flex_procInData($dataPart,$dataPart_current,$uploadedFiles,$dataStructArray,$pParams)	
- * 1850:     function checkValue_flex_procInData_travDS(&$dataValues,$dataValues_current,$uploadedFiles,$DSelements,$pParams)	
+ * 1675:     function getUnique($table,$field,$value,$id,$newPid=0)	
+ * 1708:     function checkValue_input_Eval($value,$evalArray,$is_in)	
+ * 1796:     function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)	
+ * 1829:     function checkValue_group_select_explodeSelectGroupValue($value)	
+ * 1850:     function checkValue_flex_procInData($dataPart,$dataPart_current,$uploadedFiles,$dataStructArray,$pParams)	
+ * 1884:     function checkValue_flex_procInData_travDS(&$dataValues,$dataValues_current,$uploadedFiles,$DSelements,$pParams)	
  *
  *              SECTION: ...
- * 1950:     function updateDB($table,$id,$fieldArray)	
- * 1989:     function compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray)	
- * 2035:     function insertDB($table,$id,$fieldArray)	
- * 2086:     function checkStoredRecord($table,$id,$fieldArray,$action)	
- * 2112:     function dbAnalysisStoreExec()	
- * 2128:     function removeRegisteredFiles()	
- * 2146:     function clear_cache($table,$uid) 
- * 2203:     function getPID($table,$uid)	
+ * 1984:     function updateDB($table,$id,$fieldArray)	
+ * 2023:     function compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray)	
+ * 2069:     function insertDB($table,$id,$fieldArray)	
+ * 2120:     function checkStoredRecord($table,$id,$fieldArray,$action)	
+ * 2146:     function dbAnalysisStoreExec()	
+ * 2162:     function removeRegisteredFiles()	
+ * 2180:     function clear_cache($table,$uid) 
+ * 2261:     function getPID($table,$uid)	
  *
  *              SECTION: PROCESSING COMMANDS
- * 2245:     function process_cmdmap() 
- * 2302:     function moveRecord($table,$uid,$destPid)	
- * 2435:     function copyRecord($table,$uid,$destPid,$first=0)	
- * 2572:     function copyPages($uid,$destPid)	
- * 2622:     function copySpecificPage($uid,$destPid,$copyTablesArray,$first=0)	
- * 2650:     function int_pageTreeInfo($CPtable,$pid,$counter, $rootID)	
- * 2672:     function compileAdminTables()	
- * 2689:     function fixUniqueInPid($table,$uid)	
- * 2725:     function fixCopyAfterDuplFields($table,$uid,$prevUid,$update, $newData=array())	
- * 2750:     function extFileFields ($table)	
- * 2776:     function getCopyHeader ($table,$pid,$field,$value,$count,$prevTitle="")	
- * 2802:     function resolvePid ($table,$pid)	
- * 2820:     function prependLabel ($table)	
- * 2837:     function clearPrefixFromValue($table,$value)	
- * 2848:     function remapListedDBRecords()	
- * 2911:     function extFileFunctions($table,$field,$filelist,$func)	
- * 2943:     function deleteRecord($table,$uid, $noRecordCheck)	
- * 2999:     function deletePages($uid)	
- * 3041:     function deleteSpecificPage($uid)	
- * 3066:     function noRecordsFromUnallowedTables($inList)	
+ * 2303:     function process_cmdmap() 
+ * 2360:     function moveRecord($table,$uid,$destPid)	
+ * 2493:     function copyRecord($table,$uid,$destPid,$first=0)	
+ * 2630:     function copyPages($uid,$destPid)	
+ * 2680:     function copySpecificPage($uid,$destPid,$copyTablesArray,$first=0)	
+ * 2708:     function int_pageTreeInfo($CPtable,$pid,$counter, $rootID)	
+ * 2730:     function compileAdminTables()	
+ * 2747:     function fixUniqueInPid($table,$uid)	
+ * 2783:     function fixCopyAfterDuplFields($table,$uid,$prevUid,$update, $newData=array())	
+ * 2808:     function extFileFields ($table)	
+ * 2834:     function getCopyHeader ($table,$pid,$field,$value,$count,$prevTitle="")	
+ * 2860:     function resolvePid ($table,$pid)	
+ * 2878:     function prependLabel ($table)	
+ * 2895:     function clearPrefixFromValue($table,$value)	
+ * 2906:     function remapListedDBRecords()	
+ * 2969:     function extFileFunctions($table,$field,$filelist,$func)	
+ * 3001:     function deleteRecord($table,$uid, $noRecordCheck)	
+ * 3057:     function deletePages($uid)	
+ * 3099:     function deleteSpecificPage($uid)	
+ * 3124:     function noRecordsFromUnallowedTables($inList)	
  *
  *              SECTION: MISC FUNCTIONS
- * 3128:     function getSortNumber($table,$uid,$pid)	
- * 3189:     function resorting($table,$pid,$sortRow, $return_SortNumber_After_This_Uid) 
- * 3218:     function rmComma ($input)	
- * 3228:     function destPathFromUploadFolder ($folder)	
- * 3239:     function destNotInsideSelf ($dest,$id)	
- * 3268:     function getExcludeListArray()	
- * 3292:     function doesPageHaveUnallowedTables($page_uid,$doktype)	
- * 3322:     function deleteClause($table)	
- * 3338:     function tableReadOnly($table)	
- * 3350:     function tableAdminOnly($table)	
- * 3364:     function getInterfacePagePositionID($uid)	
- * 3393:     function getTCEMAIN_TSconfig($tscPID)	
- * 3407:     function getTableEntries($table,$TSconfig)	
- * 3421:     function setHistory($table,$id,$logId)		
- * 3458:     function clearHistory($table,$id,$keepEntries=10,$maxAgeSeconds=604800)		
- * 3507:     function log($table,$recuid,$action,$recpid,$error,$details,$details_nr=0,$data=array(),$event_pid=-1,$NEWid="") 
- * 3521:     function printLogErrorMessages($redirect)	
- * 3565:     function clear_cacheCmd($cacheCmd)	
+ * 3186:     function getSortNumber($table,$uid,$pid)	
+ * 3247:     function resorting($table,$pid,$sortRow, $return_SortNumber_After_This_Uid) 
+ * 3276:     function rmComma ($input)	
+ * 3286:     function destPathFromUploadFolder ($folder)	
+ * 3297:     function destNotInsideSelf ($dest,$id)	
+ * 3326:     function getExcludeListArray()	
+ * 3350:     function doesPageHaveUnallowedTables($page_uid,$doktype)	
+ * 3380:     function deleteClause($table)	
+ * 3396:     function tableReadOnly($table)	
+ * 3408:     function tableAdminOnly($table)	
+ * 3422:     function getInterfacePagePositionID($uid)	
+ * 3451:     function getTCEMAIN_TSconfig($tscPID)	
+ * 3465:     function getTableEntries($table,$TSconfig)	
+ * 3479:     function setHistory($table,$id,$logId)		
+ * 3516:     function clearHistory($table,$id,$keepEntries=10,$maxAgeSeconds=604800)		
+ * 3565:     function log($table,$recuid,$action,$recpid,$error,$details,$details_nr=0,$data=array(),$event_pid=-1,$NEWid="") 
+ * 3579:     function printLogErrorMessages($redirect)	
+ * 3625:     function clear_cacheCmd($cacheCmd)	
  *
- * TOTAL FUNCTIONS: 83
+ * TOTAL FUNCTIONS: 84
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -171,7 +175,7 @@ require_once (PATH_t3lib."class.t3lib_basicfilefunc.php");
  * 
  * tce_db.php for further comments and SYNTAX! Also see document "Inside TYPO3" for details.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -403,12 +407,51 @@ class t3lib_TCEmain	{
 
 
 
+	/**
+	 * Init the userProcFuncs registered by $GLOBALS['TBE_MODULES_EXT']['TCEmain']['addProcFunc']
+	 * 
+	 * @return	void
+	 */
+	function initUserProcFunc() {
+		if (is_array($this->userProcFunc) AND count($this->userProcFunc)) {
+				// init already done
+			return;
+		}
+		$this->userProcFunc=array();
+		if (is_array($GLOBALS['TBE_MODULES_EXT']['TCEmain']['addProcFuncClasses']))	{
+			foreach($GLOBALS['TBE_MODULES_EXT']['TCEmain']['addProcFuncClasses'] as $className => $classFile)	{
+
+				if (@is_file($classFile))	{
+					require_once($classFile);
+
+					$this->userProcFunc[$key]['obj'] = t3lib_div::makeInstance($className);
+					$this->userProcFunc[$key]['obj']->pObj = &$this;
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param	string		name of the user function
+	 * @param	mixed		first parameter for the user function (will be passed as reference)
+	 * @return	void
+	 * @see initUserProcFunc()
+	 */
+	function callUserProcFunc($func, &$refArg) {
+		// func_get_args() does not support pass as reference so the first param is defined that way
+		foreach($this->userProcFunc as $key => $userProcFuncObj)	{
+			if (@is_callable(array($this->userProcFunc[$key]['obj'],$func)))	{
+				$arg_list = func_get_args();
+				unset($arg_list[0]); //$func
+				$arg_list[1]=&$refArg;
+				call_user_func_array(array($this->userProcFunc[$key]['obj'], $func),$arg_list);
 
 
 
-
-
-
+			}
+		}
+	}
 
 	/*********************************************
 	 *
@@ -424,6 +467,11 @@ class t3lib_TCEmain	{
 	 */
 	function process_datamap() {
 		global $TCA;
+		
+			// calling user functions before the datamap will be processed
+		$this->initUserProcFunc();	
+		$this->callUserProcFunc('processDatamap',$this->datamap);
+		
 		reset ($this->datamap);
 
 			// Organize tables so that the pages-table are always processed first. This is required if you want to make sure that content pointing to a new page will be created.
@@ -464,6 +512,12 @@ class t3lib_TCEmain	{
 							debug("INCOMING RECORD: ".$table.":".$id);
 							debug($incomingFieldArray);
 						}
+						
+						
+								// call user functions before processing and check
+						$this->callUserProcFunc('processIncomingFieldArray',$incomingFieldArray,$table,$id);
+						
+						
 							// ******************************
 							// Checking access to the record
 							// ******************************
@@ -559,6 +613,10 @@ class t3lib_TCEmain	{
 							if ($TCA[$table]["ctrl"]["tstamp"])	{
 								$fieldArray[$TCA[$table]["ctrl"]["tstamp"]]=time();
 							}
+
+
+								// call user functions right before writing to DB
+							$this->callUserProcFunc('processFieldArray',$fieldArray,$table,$id,$status);
 
 								// Performing insert/update
 							if ($status=="new")	{
@@ -1558,6 +1616,7 @@ class t3lib_TCEmain	{
 	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param	array		Uploaded files for the field
 	 * @param	array		Current record array.
+	 * @param	[type]		$field: ...
 	 * @return	array		Modified $res array
 	 */
 	function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$curRecordArr,$field)	{
@@ -1611,6 +1670,14 @@ class t3lib_TCEmain	{
 		
 		return $res;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$$valueArrayToRemoveFrom: ...
+	 * @param	[type]		$deleteCMDS: ...
+	 * @return	[type]		...
+	 */
 	function _DELETE_FLEX_FORMdata(&$valueArrayToRemoveFrom,$deleteCMDS)	{	
 		if (is_array($valueArrayToRemoveFrom) && is_array($deleteCMDS))	{
 			foreach($deleteCMDS as $key => $value)	{
@@ -2222,6 +2289,19 @@ class t3lib_TCEmain	{
 					$this->clear_cacheCmd($cmdPart);	
 				}
 			}
+
+				// Call post processing function for clear-cache:
+			global $TYPO3_CONF_VARS;
+			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
+				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $funcRef)	{
+					$a = array(
+						'table' => $table,
+						'uid' => $uid,
+						'uid_page' => $uid_page
+					);
+					t3lib_div::callUserFunction($funcRef,$a,$this);
+				}
+			}		
 		}
 	}
 
@@ -3570,10 +3650,10 @@ class t3lib_TCEmain	{
 
 			$content.=$error_doc->startPage("tce_db.php Error output");
 			
-			$lines[]='<tr bgColor="'.$error_doc->bgColor5.'"><td colspan=2 align=center><strong>Errors:</strong></td></tr>';
+			$lines[]='<tr class="bgColor5"><td colspan=2 align=center><strong>Errors:</strong></td></tr>';
 			reset($errorJS);
 			while(list(,$line)=each($errorJS))	{
-				$lines[]='<tr bgColor="'.$error_doc->bgColor4.'"><td valign=top><img src="gfx/icon_fatalerror.gif" width="18" height="16"></td><td>'.$line.'</td></tr>';
+				$lines[]='<tr class="bgColor4"><td valign=top><img'.t3lib_iconWorks::skinImg('','gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td><td>'.$line.'</td></tr>';
 			}
 			
 			$lines[]='<tr><td colspan=2 align=center><BR><form action=""><input type="submit" value="Continue" onClick="document.location=\''.$redirect.'\';return false;"></form></td></tr>';
@@ -3591,10 +3671,15 @@ class t3lib_TCEmain	{
 	 * $cacheCmd='all':		Clears all cache_tables. This is necessary if templates are updated. Requires admin-flag to be set for BE_USER
 	 * $cacheCmd=[integer]:		Clears cache for the page pointed to by $cacheCmd (an integer).
 	 * 
-	 * @param	[type]		$cacheCmd: ...
-	 * @return	[type]		...
+	 * Can call a list of post processing functions as defined in $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] (num array with values being the function references, called by t3lib_div::callUserFunction())
+	 * 
+	 * @param	string		The cache comment, see above description.
+	 * @return	void		
 	 */
 	function clear_cacheCmd($cacheCmd)	{
+		global $TYPO3_CONF_VARS;
+		
+			// Clear cache for either ALL pages or ALL tables!
 		switch($cacheCmd)	{
 			case "pages":
 				if ($this->admin || $this->BE_USER->getTSConfigVal("options.clearCache.pages"))	{
@@ -3613,11 +3698,20 @@ class t3lib_TCEmain	{
 				}
 			break;
 		}
+			// Clear cache for a page ID!
 		if (t3lib_div::testInt($cacheCmd))	{
 			if (t3lib_extMgm::isLoaded("cms"))	{
 				$res = mysql(TYPO3_db,"DELETE FROM cache_pages WHERE page_id=".intval($cacheCmd));
 			}
 		}
+		
+			// Call post processing function for clear-cache:
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $funcRef)	{
+				$a =array('cacheCmd'=>$cacheCmd);
+				t3lib_div::callUserFunction($funcRef,$a,$this);
+			}
+		}		
 	}
 }
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,16 +26,27 @@
 ***************************************************************/
 /** 
  * Creates the selector-box menu.
- *
  * The selector-box menu is an alternative to the vertical default menu. 
  * If configured to appear it will be displayed in the top-frame.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   73: class SC_alt_menu_sel 
+ *   81:     function main()	
+ *  107:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -46,15 +57,27 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
 
 
-// ***************************
-// Script Class
-// ***************************
+
+
+
+
+
+
+/**
+ * Script Class for rendering the selector box menu
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_menu_sel {
 	var $content;
 	
 	/**
 	 * Main function, making the selector box menu
-	 */ 
+	 * 
+	 * @return	void		
+	 */
 	function main()	{
 		global $TBE_MODULES,$TBE_TEMPLATE;
 		
@@ -65,12 +88,8 @@ class SC_alt_menu_sel {
 			// Start page
 		$TBE_TEMPLATE->form = '<form action="">';
 		$TBE_TEMPLATE->docType = 'xhtml_trans';
-		$TBE_TEMPLATE->inDocStyles = 'BODY {background-color: '.$TBE_TEMPLATE->bgColor2.';}';
 
 		$this->content.=$TBE_TEMPLATE->startPage('Selector box menu');
-
-			// Space down
-		$this->content.='<img src="clear.gif" width="1" height="5" alt="" /><br />';
 
 			// Make menu and add it:
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
@@ -81,8 +100,10 @@ class SC_alt_menu_sel {
 	}
 	
 	/**
-	 * Print output
-	 */ 
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
+	 */
 	function printContent()	{
 		echo $this->content;
 	}

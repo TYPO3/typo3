@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,14 +28,32 @@
  * Document for viewing the online help texts, also known as TCA_DESCR.
  * See Inside TYPO3 for details.
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   78: class SC_view_help 
+ *   97:     function init()	
+ *  119:     function main()	
+ *  173:     function printContent()	
+ *  184:     function make_seeAlso($value,$anchorTable='')	
+ *  222:     function printImage($image,$descr)	
+ *  244:     function headerLine($str,$type=0)	
+ *  265:     function prepareContent($str)	
+ *  280:     function printItem($table,$field,$anchors=0)	
+ *  316:     function getTableFieldNames($table,$field)	
+ *
+ * TOTAL FUNCTIONS: 9
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 require ('init.php');
 require ('template.php');
@@ -43,9 +61,20 @@ include ('sysext/lang/locallang_view_help.php');
 
 
 
-// ***************************
-// Script Class
-// ***************************
+
+
+
+
+
+
+
+/**
+ * Script Class for rendering the Context Sensitive Help documents, either the single display in the small pop-up window or the full-table view in the larger window.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_view_help {
 	var $allowedHTML = '<strong><em><b><i>';
 
@@ -56,14 +85,24 @@ class SC_view_help {
 	var $table;			// The "table" key
 	var $field;			// The "field" key
 	
+		// Internal, static: GPvar:
+	var $tfID;			// Table/FIeld id.
+	var $back;			// Back (previous tfID)
+	
 	/**
-	 * Initialize
+	 * Initialize the class for various input etc.
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $LANG;
+		
+			// Setting GPvars:
+		$this->tfID = t3lib_div::GPvar('tfID');
+		$this->back = t3lib_div::GPvar('back');
 
 			// Set internal table/field to the parts of "tfID" incoming var.
-		list($this->table,$this->field)=explode('.',t3lib_div::GPvar('tfID'));
+		list($this->table,$this->field)=explode('.',$this->tfID);
 
 			// Load descriptions for table $this->table
 		$LANG->loadSingleTableDescription($this->table);
@@ -73,11 +112,12 @@ class SC_view_help {
 	}
 	
 	/**
-	 * Main 
+	 * Main function, rendering the display
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
-		global $TBE_TEMPLATE;
+		global $BE_USER,$LANG,$TCA_DESCR,$TCA,$TBE_TEMPLATE;
 		
 			// Start HTML output accumulation:
 		$TBE_TEMPLATE->docType='xhtml_trans';
@@ -126,7 +166,9 @@ class SC_view_help {
 	}
 	
 	/**
-	 * Print output
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -134,7 +176,10 @@ class SC_view_help {
 	
 	/**
 	 * Make seeAlso links from $value
-	 * If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
+	 * 
+	 * @param	string		See-also input codes
+	 * @param	string		If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
+	 * @return	string		See-also links HTML
 	 */
 	function make_seeAlso($value,$anchorTable='')	{
 		global $TCA,$BE_USER;
@@ -157,7 +202,7 @@ class SC_view_help {
 						list($tableName,$fieldName) = $this->getTableFieldNames($iP[0],$iP[1]);
 
 							// Make see-also link:
-						$href = ($anchorTable&&$iP[0]==$anchorTable ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.t3lib_div::GPvar('tfID'));
+						$href = ($anchorTable&&$iP[0]==$anchorTable ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);
 						$label = $GLOBALS['LANG']->sL($tableName).($iP[1]?' / '.ereg_replace(':$','',$GLOBALS['LANG']->sL($fieldName)):'');
 						$lines[]='<a href="'.htmlspecialchars($href).'">'.htmlspecialchars($label).'</a>';
 					}
@@ -169,6 +214,10 @@ class SC_view_help {
 	
 	/**
 	 * Will return an image tag with description in italics.
+	 * 
+	 * @param	string		Image file reference
+	 * @param	string		Description string
+	 * @return	string		Image HTML codes
 	 */
 	function printImage($image,$descr)	{
 		$absImagePath = t3lib_div::getFileAbsFileName($image,1,1);
@@ -186,7 +235,11 @@ class SC_view_help {
 	}
 
 	/**
-	 * Returns header
+	 * Returns header HTML content
+	 * 
+	 * @param	string		Header text
+	 * @param	string		Header type (1, 0)
+	 * @return	string		The HTML for the header.
 	 */
 	function headerLine($str,$type=0)	{
 		switch($type)	{
@@ -195,7 +248,7 @@ class SC_view_help {
 				';
 			break;
 			case 0:
-				$str='<h4>'.htmlspecialchars(t3lib_div::danish_strtoupper($str)).'</h4>
+				$str='<h4 class="uppercase">'.htmlspecialchars($str).'</h4>
 				';
 			break;
 		}
@@ -205,6 +258,9 @@ class SC_view_help {
 	
 	/**
 	 * Returns prepared content
+	 * 
+	 * @param	string		Content to format.
+	 * @return	string		Formatted content.
 	 */
 	function prepareContent($str)	{
 		$str = $GLOBALS['LANG']->hscAndCharConv($str,0);
@@ -215,6 +271,11 @@ class SC_view_help {
 	/**
 	 * Prints a single $table/$field information piece
 	 * If $anchors is set, then seeAlso references to the same table will be page-anchors, not links.
+	 * 
+	 * @param	string		Table name
+	 * @param	string		Field name
+	 * @param	boolean		If anchors is to be shown.
+	 * @return	string		HTML content
 	 */
 	function printItem($table,$field,$anchors=0)	{
 		global $TCA_DESCR, $LANG, $TCA, $BE_USER;
@@ -238,7 +299,7 @@ class SC_view_help {
 					($TCA_DESCR[$table]['columns'][$field]['syntax'] ? $this->headerLine($LANG->getLL('syntax').':').$this->prepareContent($TCA_DESCR[$table]['columns'][$field]['syntax']) : '').
 					($TCA_DESCR[$table]['columns'][$field]['image'] ? $this->printImage($TCA_DESCR[$table]['columns'][$field]['image'],$TCA_DESCR[$table]['columns'][$field]['image_descr']) : '').
 					($TCA_DESCR[$table]['columns'][$field]['seeAlso'] && $seeAlsoRes ? $this->headerLine($LANG->getLL('seeAlso').':').'<p>'.$seeAlsoRes.'</p>' : '').
-					(t3lib_div::GPvar('back') ? '<br /><p><a href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode(t3lib_div::GPvar('back'))).'" class="typo3-goBack">'.htmlspecialchars($LANG->getLL('goBack')).'</a></p>' : '').
+					($this->back ? '<br /><p><a href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode($this->back)).'" class="typo3-goBack">'.htmlspecialchars($LANG->getLL('goBack')).'</a></p>' : '').
 			'<br />';
 		}
 		return $out;
@@ -247,6 +308,10 @@ class SC_view_help {
 	/**
 	 * Returns labels for $table and $field.
 	 * If $table is "_MOD_" prefixed, the part after "_MOD_" is returned (non-tables, fx. modules)
+	 * 
+	 * @param	string		Table name
+	 * @param	string		Field name
+	 * @return	array		Table and field labels in a numeric array
 	 */
 	function getTableFieldNames($table,$field)	{
 		global $TCA, $TCA_DESCR;

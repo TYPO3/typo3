@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,50 +28,88 @@
  * Manage storing and restoring of $GLOBALS['SOBE']->MOD_SETTINGS settings.
  * Provides a presets box for BE modules.
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *  104: class t3lib_modSettings 
+ *  114:     function init($prefix='',$storeList='')	
+ *  123:     function setStoreList($storeList)	
+ *  132:     function addToStoreList($storeList)	
+ *  144:     function addToStoreListFromPrefix ($prefix='') 
+ *  167:     function initStoreArray()	
+ *  187:     function cleanStoreConfigs($storeConfigs,$storeArray)	
+ *  204:     function addToStoreConfigs($storeConfigs,$index)	
+ *  222:     function loadStoreConfigs($storeConfigs,$storeIndex,$writeArray)	
+ *  238:     function getStoreControl($show='load,remove,save')	
+ *  295:     function procesStoreControl($mconfName='')	
+ *  376:     function saveQueryInAction($uid)	
+ *
+ * TOTAL FUNCTIONS: 11
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
-/* usage inside of scbase class
 
-....
 
-$this->MOD_MENU = array(
-	'function' => array(
-		'xxx ...
-	),
-	'tx_dam_selectStoreArray' => '',
-	'tx_dam_selectStoreConfigs' => '',
 
-....
 
-function main()	{
 
-	// reStore settings
-$store = t3lib_div::makeInstance('t3lib_modSettings');
-$store->init('tx_dam_select');
-$store->addToStoreListFromPrefix('tx_dam_select');
-$storeMsg=$store->procesStoreControl();
 
-	// show control panel
-$this->content.= $this->doc->section('store',$store->makeStoreControl(),0,1);
-if ($storeMsg)	{
-	$this->content.= $this->doc->section('','<strong>'.$storeMsg.'</strong>');
-}
 
-*/
-
+/**
+ * usage inside of scbase class
+ * 
+ * ....
+ * 
+ * $this->MOD_MENU = array(
+ * 	'function' => array(
+ * 		'xxx ...
+ * 	),
+ * 	'tx_dam_selectStoreArray' => '',
+ * 	'tx_dam_selectStoreConfigs' => '',
+ * 
+ * ....
+ * 
+ * 
+ * function main()	{
+ * 	// reStore settings
+ * $store = t3lib_div::makeInstance('t3lib_modSettings');
+ * $store->init('tx_dam_select');
+ * $store->addToStoreListFromPrefix('tx_dam_select');
+ * $storeMsg=$store->procesStoreControl();
+ * 
+ * 	// show control panel
+ * $this->content.= $this->doc->section('store',$store->makeStoreControl(),0,1);
+ * if ($storeMsg)	{
+ * 	$this->content.= $this->doc->section('','<strong>'.$storeMsg.'</strong>');
+ * }
+ */
+ 
+/**
+ * Manage storing and restoring of $GLOBALS['SOBE']->MOD_SETTINGS settings.
+ * Provides a presets box for BE modules.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @package TYPO3
+ * @subpackage t3lib
+ */
 class t3lib_modSettings {
 
 	var $prefix='';
-
 	var $storeList=array();
 
 	/**
-	 *
-	 *
-	 * @param	string 	prefix of MOD_SETTING array keys that should be stored
-	 * @param	array 	additional names of keys of the MOD_SETTING array which should be stored
+	 * @param	string		prefix of MOD_SETTING array keys that should be stored
+	 * @param	array		additional names of keys of the MOD_SETTING array which should be stored
+	 * @return	[type]		...
 	 */
 	function init($prefix='',$storeList='')	{
 		$this->prefix = $prefix;
@@ -79,7 +117,8 @@ class t3lib_modSettings {
 	}
 
 	/**
-	 * @param	mixed 	array or string (,) - set additional names of keys of the MOD_SETTING array which should be stored
+	 * @param	mixed		array or string (,) - set additional names of keys of the MOD_SETTING array which should be stored
+	 * @return	[type]		...
 	 */
 	function setStoreList($storeList)	{
 		$this->storeList = is_array($storeList) ? $storeList : t3lib_div::trimExplode(',',$storeList,1);
@@ -87,7 +126,8 @@ class t3lib_modSettings {
 	}
 
 	/**
-	 * @param	mixed 	array or string (,) - add names of keys of the MOD_SETTING array which should be stored
+	 * @param	mixed		array or string (,) - add names of keys of the MOD_SETTING array which should be stored
+	 * @return	[type]		...
 	 */
 	function addToStoreList($storeList)	{
 		$storeList = is_array($storeList) ? $storeList : t3lib_div::trimExplode(',',$storeList,1);
@@ -97,8 +137,9 @@ class t3lib_modSettings {
 
 	/**
 	 * add names of keys of the MOD_SETTING array which should be stored by a prefix
-	 *
-	 * @param	string 	prefix of MOD_SETTING array keys that should be stored
+	 * 
+	 * @param	string		prefix of MOD_SETTING array keys that should be stored
+	 * @return	[type]		...
 	 */
 	function addToStoreListFromPrefix ($prefix='') {
 		$prefix = $prefix ? $prefix : $this->prefix;
@@ -118,12 +159,11 @@ class t3lib_modSettings {
 #debug($this->storeList, '$this->storeList', __LINE__, __FILE__);
 	}
 
-
-
-
-	/*
-	* get and init the stored settings
-	*/
+	/**
+	 * get and init the stored settings
+	 * 
+	 * @return	[type]		...
+	 */
 	function initStoreArray()	{
 		$storeArray=array(
 			'0' => ' '
@@ -137,6 +177,13 @@ class t3lib_modSettings {
 		return $storeArray;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$storeConfigs: ...
+	 * @param	[type]		$storeArray: ...
+	 * @return	[type]		...
+	 */
 	function cleanStoreConfigs($storeConfigs,$storeArray)	{
 		if (is_array($storeConfigs))	{
 			reset($storeConfigs);
@@ -147,6 +194,13 @@ class t3lib_modSettings {
 		return $storeConfigs;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$storeConfigs: ...
+	 * @param	[type]		$index: ...
+	 * @return	[type]		...
+	 */
 	function addToStoreConfigs($storeConfigs,$index)	{
 		reset($this->storeList);
 		$storeConfigs[$index]=array();
@@ -157,6 +211,14 @@ class t3lib_modSettings {
 		return $storeConfigs;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$storeConfigs: ...
+	 * @param	[type]		$storeIndex: ...
+	 * @param	[type]		$writeArray: ...
+	 * @return	[type]		...
+	 */
 	function loadStoreConfigs($storeConfigs,$storeIndex,$writeArray)	{
 		if ($storeConfigs[$storeIndex])	{
 			foreach($this->storeList as $k)	{
@@ -167,12 +229,13 @@ class t3lib_modSettings {
 		return $writeArray;
 	}
 
-
-
-
-
-
-	function makeStoreControl($show='load,remove,save')	{
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$show: ...
+	 * @return	[type]		...
+	 */
+	function getStoreControl($show='load,remove,save')	{
 			// Load/Save
 		$show = t3lib_div::trimexplode(',',$show,1);
 		$storeArray = $this->initStoreArray();
@@ -197,7 +260,7 @@ class t3lib_modSettings {
 			}
 		}
 
-		$TDparams=' nowrap bgcolor="'.$GLOBALS['TBE_TEMPLATE']->bgColor4.'"';
+		$TDparams=' nowrap="nowrap" class="bgColor4"';
 		$tmpCode='
 		<table border=0 cellpadding=3 cellspacing=1 width="100%">
 		<tr'.$TDparams.'>
@@ -223,6 +286,12 @@ class t3lib_modSettings {
 		return $tmpCode;
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$mconfName: ...
+	 * @return	[type]		...
+	 */
 	function procesStoreControl($mconfName='')	{
 		$storeArray = $this->initStoreArray();
 		$storeConfigs = unserialize($GLOBALS['SOBE']->MOD_SETTINGS[$this->prefix.'StoreConfigs']);
@@ -298,10 +367,12 @@ class t3lib_modSettings {
 		return $msg;
 	}
 
-
-
-
-
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$uid: ...
+	 * @return	[type]		...
+	 */
 	function saveQueryInAction($uid)	{
 		if (t3lib_extMgm::isLoaded('sys_action'))	{
 		}

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,7 +27,9 @@
 /** 
  * Dynamic configuation of the system-related tables, typ. sys_* series
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 
 
@@ -474,6 +476,17 @@ $TCA['pages_language_overlay'] = Array (
 				'eval' => ''
 			)
 		),
+		'nav_title' => Array (
+			'exclude' => 1,
+			'label' => $TCA['pages']['columns']['nav_title']['label'],
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'max' => '256',
+				'checkbox' => '',
+				'eval' => 'trim'
+			)
+		),
 		'keywords' => Array (
 			'exclude' => 1,	
 			'label' => $TCA['pages']['columns']['keywords']['label'],
@@ -550,7 +563,7 @@ $TCA['pages_language_overlay'] = Array (
 		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
 	),
 	'types' => Array (					
-		'0' => Array('showitem' => 'hidden;;;;1-1-1, sys_language_uid, title;;;;2-2-2, subtitle, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4')
+		'0' => Array('showitem' => 'hidden;;;;1-1-1, sys_language_uid, title;;;;2-2-2, subtitle, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4')
 	),
 	'palettes' => Array (
 		'1' => Array('showitem' => 'starttime,endtime'),
@@ -724,7 +737,7 @@ $TCA['sys_template'] = Array (
 				'internal_type' => 'db',
 				'allowed' => 'sys_template',
 				'show_thumbs' => '1',
-				'size' => '1',
+				'size' => '3',
 				'maxitems' => '1',
 				'minitems' => '0',
 				'default' => ''
@@ -758,8 +771,9 @@ $TCA['sys_template'] = Array (
 				'internal_type' => 'db',
 				'allowed' => 'sys_template',
 				'show_thumbs' => '1',
-				'size' => '1',
+				'size' => '3',
 				'maxitems' => '50',
+				'autoSizeMax' => 10,
 				'minitems' => '0',
 				'default' => '',
 				'wizards' => Array(

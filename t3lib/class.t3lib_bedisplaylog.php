@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,29 +27,28 @@
 /** 
  * Contains class for display of backend log
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   80: class t3lib_BEDisplayLog 
- *   99:     function initArray()	
- *  116:     function getTimeLabel($code)	
- *  131:     function getUserLabel($code)	
- *  145:     function getTypeLabel($code)	
- *  159:     function getActionLabel($code)	
- *  177:     function getDetails($code,$text,$data,$sys_log_uid=0)	
- *  210:     function reset()	
- *  224:     function getErrorFormatting($sign)	
- *  234:     function formatDetailsForList($row)	
- *  251:     function stripPath($inArr)	
+ *   81: class t3lib_BEDisplayLog 
+ *  100:     function initArray()	
+ *  117:     function getTimeLabel($code)	
+ *  132:     function getUserLabel($code)	
+ *  146:     function getTypeLabel($code)	
+ *  160:     function getActionLabel($code)	
+ *  178:     function getDetails($code,$text,$data,$sys_log_uid=0)	
+ *  211:     function reset()	
+ *  225:     function getErrorFormatting($sign)	
+ *  235:     function formatDetailsForList($row)	
+ *  252:     function stripPath($inArr)	
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -74,7 +73,9 @@
  * This class holds some functions used to display the sys_log table-content.
  * Used in the status-scripts and the log-module.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see tx_belog_webinfo, SC_mod_tools_log_index
  */
 class t3lib_BEDisplayLog {
@@ -108,7 +109,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get time label
+	 * Get time label for log listing
 	 * 
 	 * @param	integer		Timestamp to display
 	 * @return	string		If the timestamp was also shown last time, then "." is returned. Otherwise the new timestamp formatted with ->doc->formatTime()
@@ -123,7 +124,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get user name label
+	 * Get user name label for log listing
 	 * 
 	 * @param	integer		be_user uid
 	 * @return	string		If username is different from last username then the username, otherwise "."
@@ -137,7 +138,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get type label
+	 * Get type label for log listing
 	 * 
 	 * @param	string		Key for the type label in locallang
 	 * @return	string		If labe is different from last type label then the label is returned, otherwise "."
@@ -151,7 +152,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get action label
+	 * Get action label for log listing
 	 * 
 	 * @param	string		Key for the action label in locallang
 	 * @return	string		If labe is different from last action label then the label is returned, otherwise "."
@@ -203,7 +204,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Reset
+	 * Reset all internal "last..." variables to blank string.
 	 * 
 	 * @return	void		
 	 */
@@ -244,7 +245,7 @@ class t3lib_BEDisplayLog {
 	 * For all entries in the $inArray (expected to be filepaths) the basename is extracted and set as value (if $this->stripPath is set)
 	 * This is done for log-entries from the FILE modules
 	 * 
-	 * @param	array		
+	 * @param	array		Array of file paths
 	 * @return	array		
 	 * @see formatDetailsForList()
 	 */

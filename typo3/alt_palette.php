@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,97 +26,254 @@
 ***************************************************************/
 /** 
  * Displays the secondary-options palette for the TCEFORMs wherever they are shown.
+ *
+ * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ * XHTML compliant
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   81: class formRender extends t3lib_TCEforms 
+ *   91:     function printPalette($palArr)	
+ *
+ *
+ *  154: class formRender_vert extends t3lib_TCEforms 
+ *  163:     function printPalette($palArr)	
+ *
+ *
+ *  223: class SC_alt_palette 
+ *  247:     function init()	
+ *  299:     function main()	
+ *  339:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
 
 
-require ("init.php");
-require ("template.php");
-require_once (PATH_t3lib."class.t3lib_tceforms.php");
-require_once (PATH_t3lib."class.t3lib_transferdata.php");
-require_once (PATH_t3lib."class.t3lib_loaddbgroup.php");
-include ("sysext/lang/locallang_alt_doc.php");
+require ('init.php');
+require ('template.php');
+require_once (PATH_t3lib.'class.t3lib_tceforms.php');
+require_once (PATH_t3lib.'class.t3lib_transferdata.php');
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+include ('sysext/lang/locallang_alt_doc.php');
 
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+/**
+ * Class for rendering the form fields.
+ * Extending the TCEforms class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class formRender extends t3lib_TCEforms {
-	function printPalette($palArr)	{
-		$out="";
-		reset($palArr);
-		while(list(,$content)=each($palArr))	{
-			$iRow[]='<td valign=top nowrap><img name="req_'.$content["TABLE"].'_'.$content["ID"].'_'.$content["FIELD"].'" src="clear.gif" width=10 height=10 vspace=4><img name="cm_'.$content["TABLE"].'_'.$content["ID"].'_'.$content["FIELD"].'" src="clear.gif" width=7 height=10 vspace=4></td>
-			<td valign=top nowrap><img src=clear.gif width=1 height=3><BR>'.$content["NAME"].'&nbsp;</td>
-			<td nowrap valign=top>'.$content["ITEM"].$content["HELP_ICON"].'</td>';
-		}
-		$out='<table border=0 cellpadding=0 cellspacing=0 width=1>
-		<tr>
-			<td nowrap valign=top><img src=clear.gif width=5 height=1><a href="#" onClick="closePal();return false;"><img src="gfx/close_12h.gif" width="11" height="12" vspace=4 border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.close")).'></a></td>'.
-//			'<td><img src=clear.gif width='.intval($this->paletteMargin).' height=1></td>'.
-			implode("",$iRow).'
-		</tr>
-		</table>';
-		return $out;
-	}
-}
-class formRender_vert extends t3lib_TCEforms {
-	function printPalette($palArr)	{
-		$out="";
-		reset($palArr);
-		$bgColor=' bgColor="'.$this->colorScheme[2].'"';
-		while(list(,$content)=each($palArr))	{
-			$iRow[]='<tr><td><img src=clear.gif width='.intval($this->paletteMargin).' height=1></td><td'.$bgColor.'>&nbsp;</td><td nowrap'.$bgColor.'><font color="'.$this->colorScheme[4].'">'.$content["NAME"].'</font></td></tr>';
-			$iRow[]='<tr><td></td><td valign=top><img name="req_'.$content["TABLE"].'_'.$content["ID"].'_'.$content["FIELD"].'" src="clear.gif" width=10 height=10 vspace=4><img name="cm_'.$content["TABLE"].'_'.$content["ID"].'_'.$content["FIELD"].'" src="clear.gif" width=7 height=10 vspace=4></td><td nowrap valign=top>'.$content["ITEM"].$content["HELP_ICON"].'</td></tr>';
-		}
 
-		$iRow[]='<tr><td></td><td valign=top></td><td nowrap valign=top>
-		<BR>
-		<input type="submit" value="'.$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.close").'" onClick="closePal();return false;">
-		</td></tr>';
-
-		$out='<table border=0 cellpadding=0 cellspacing=0>
-		'.implode("",$iRow).'
-		</table>';
+	/**
+	 * Creates the HTML content for the palette
+	 * (Horizontally, for display in the top frame)
+	 * (Used if GET var "backRef" IS set)
+	 * 
+	 * @param	array		Array of information from which the fields are built.
+	 * @return	string		HTML output
+	 */
+	function printPalette($palArr)	{
+		$out='';
 		
+			// For each element on the palette, write a few table cells with the field name, content and control images:
+		foreach($palArr as $content)	{
+			$iRow[]='
+				<td>'.
+					'<img name="req_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" class="c-reqIcon" src="clear.gif" width="10" height="10" alt="" />'.
+					'<img name="cm_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" class="c-cmIcon" src="clear.gif" width="7" height="10" alt="" />'.
+				'</td>
+				<td class="c-label">'.
+					$content['NAME'].'&nbsp;'.
+				'</td>
+				<td class="c-csh">'.
+					$content['ITEM'].$content['HELP_ICON'].
+				'</td>';
+		}
+		
+			// Finally, wrap it all in a table:
+		$out='
+		
+		
+		
+			<!--
+				TCEforms palette, rendered in top frame.
+			-->
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-TCEforms-palette">
+				<tr>
+					<td class="c-close">'.
+					'<a href="#" onclick="closePal();return false;"><img'.t3lib_iconWorks::skinImg('','gfx/close_12h.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close',1).'" alt="" /></a>'.
+					'</td>'.
+				implode('',$iRow).'
+				</tr>
+			</table>
+			
+			';
+		
+			// Return the result:
 		return $out;
 	}
 }
-class alt_palette_CMtemplate extends template {
-	function docBodyTagBegin()	{
-		return '<BODY bgColor="'.$this->bgColor2.'" LINK="#000000" ALINK="#000000" VLINK="#000000" marginwidth="0" marginheight="8" topmargin=8 leftmargin=0 background="gfx/alt_topmenu_back_full.gif">'.$this->form;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Child class for alternative rendering of form fields (when the secondary fields are shown in a little window rather than the top bar).
+ * (Used if GET var "backRef" is not set, presuming a window is opened instead.)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
+class formRender_vert extends t3lib_TCEforms {
+
+	/**
+	 * Creates the HTML content for the palette.
+	 * (Vertically, for display in a browser window, not top frame)
+	 * 
+	 * @param	array		Array of information from which the fields are built.
+	 * @return	string		HTML output
+	 */
+	function printPalette($palArr)	{
+		$out='';
+		$bgColor=' bgcolor="'.$this->colorScheme[2].'"';
+
+			// For each element on the palette, write a few table cells with the field name, content and control images:
+		foreach($palArr as $content)	{
+			$iRow[]='
+				<tr>
+					<td><img src="clear.gif" width="'.intval($this->paletteMargin).'" height="1" alt="" /></td>
+					<td'.$bgColor.'>&nbsp;</td>
+					<td nowrap="nowrap"'.$bgColor.'><font color="'.$this->colorScheme[4].'">'.$content['NAME'].'</font></td>
+				</tr>';
+			$iRow[]='
+				<tr>
+					<td></td>
+					<td valign="top"><img name="req_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" width="10" height="10" vspace="4" alt="" /><img name="cm_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" width="7" height="10" vspace="4" alt="" /></td>
+					<td nowrap="nowrap" valign="top">'.$content['ITEM'].$content['HELP_ICON'].'</td>
+				</tr>';
+		}
+		
+			// Adding the close button:
+		$iRow[]='
+			<tr>
+				<td></td>
+				<td></td>
+				<td nowrap="nowrap" valign="top">
+					<br />
+					<input type="submit" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close',1).'" onclick="closePal(); return false;" />
+				</td>
+			</tr>';
+		
+			// Finally, wrap it all in a table:
+		$out='
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-TCEforms-palette-vert">
+				'.implode('',$iRow).'
+			</table>';
+		
+			// Return content:
+		return $out;
 	}
 }
-class SC_alt_palette {
-	var $content;
-	var $backRef;
-	var $formName;
-	var $formRef;
-	var $doc;	
-	
-		// Constructor:
-	function init()	{
-		global $SOBE;
 
-		$this->doc = t3lib_div::makeInstance(t3lib_div::GPvar("backRef")?"alt_palette_CMtemplate":"template");
-		$this->doc->bodyTagMargins["x"]=0;
-		$this->doc->bodyTagMargins["y"]=0;
-		$this->doc->form='<form action="#" method="POST" name="'.t3lib_div::GPvar("formName").'" onSubmit="return false;" autocomplete="off">';
-		$this->doc->backPath = '';
-		$this->backRef = t3lib_div::GPvar("backRef") ? t3lib_div::GPvar("backRef") : "window.opener";
-		$this->formName = t3lib_div::GPvar("formName");
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class for rendering the palette form for TCEforms in some other frame (in top frame, horizontally)
+ * It can also be called in a pop-up window in which case a vertically oriented set of form fields are rendered instead.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
+class SC_alt_palette {
+
+		// Internal:
+	var $content;		// Content accumulation
+	var $backRef;		// String, which is the reference back to the window which opened this one.
+	var $formRef;		// String, which is the reference to the form.
+	var $doc;			// Template object.
+
+		// Internal, static: GPvar:	
+	var $formName;			// Form name
+	var $GPbackref;			// The value of the original backRef GPvar (not necessarily the same as $this->backRef)
+	var $inData;			// Contains tablename, uid and palette number
+	var $prependFormFieldNames;		// Prefix for form fields.
+	var $rec;				// The "record" with the data to display in the form fields.
+
+
+
+
+
+	/**
+	 * Constructor for the class
+	 * 
+	 * @return	void		
+	 */
+	function init()	{
+
+			// Setting GPvars, etc.
+		$this->formName = t3lib_div::GPvar('formName');
+		$this->GPbackref = t3lib_div::GPvar('backRef');
+		$this->inData = t3lib_div::GPvar('inData');
+		$this->prependFormFieldNames = t3lib_div::GPvar('prependFormFieldNames');
+		$this->rec = t3lib_div::GPvar('rec',1);
+		
+			// Making references:
+		$this->backRef = $this->GPbackref ? $this->GPbackref : 'window.opener';
+#		$this->backRef = 'top.content.list_frame.view_frame';
+
 		$this->formRef = $this->backRef.'.document.'.$this->formName;
-		$this->doc->JScode = '
-		<script language="javascript" type="text/javascript">
+
+			// Start template object:
+		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc->bodyTagMargins['x']=0;
+		$this->doc->bodyTagMargins['y']=0;
+		$this->doc->form='<form action="#" method="post" name="'.htmlspecialchars($this->formName).'" onsubmit="return false;">';
+		$this->doc->docType = 'xhtml_trans';
+		$this->doc->backPath = '';
+		
+			// In case the palette is opened in a SEPARATE window (as the case is with frontend editing) then another body-tag id should be used (so we don't get the background image for the palette shown!)
+		if (!$this->GPbackref)	$this->doc->bodyTagId.= '-vert';
+
+			// Setting JavaScript functions for the header:
+		$this->doc->JScode = $this->doc->wrapScriptTags('
 			var serialNumber = "";
-			function timeout_func()	{
+			function timeout_func()	{	//
 				if ('.$this->backRef.' && '.$this->backRef.'.document && '.$this->formRef.')	{
 					if ('.$this->formRef.'["_serialNumber"])	{
 						if (serialNumber) {
@@ -128,56 +285,67 @@ class SC_alt_palette {
 					window.setTimeout("timeout_func();",1*1000);
 				} else closePal();
 			}
-			function closePal()	{
-				'.(t3lib_div::GPvar("backRef")?'document.location="alt_topmenu_dummy.php";':'close();').'
+			function closePal()	{	//
+				'.($this->GPbackref?'document.location="alt_topmenu_dummy.php";':'close();').'
 			}
 			timeout_func();
 			onBlur="alert();";
-		</script>
-		';		
+		');		
 	}
-	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->content="";
-		$this->content.=$this->doc->startPage("TYPO3 Edit Palette");
+	/**
+	 * Main function, rendering the palette form
+	 * 
+	 * @return	void		
+	 */
+	function main()	{
+
+		$this->content='';
+		$this->content.=$this->doc->startPage('TYPO3 Edit Palette');
 		
-		$inData = explode(":",t3lib_div::GPvar("inData"));
+		$inData = explode(':',$this->inData);
 		
-		// Begin edit:
+			// Begin edit:
 		if (is_array($inData) && count($inData)==3)	{
-			$tceforms = t3lib_div::GPvar("backRef") ? new formRender() : new formRender_vert();
+			
+				// Create the TCEforms object:
+			$tceforms = $this->GPbackref ? new formRender() : new formRender_vert();
 			$tceforms->initDefaultBEMode();
 			$tceforms->palFieldTemplate='###FIELD_PALETTE###';
 			$tceforms->palettesCollapsed=0;
 			$tceforms->isPalettedoc=$this->backRef;
 		
 			$tceforms->formName = $this->formName;
-			$tceforms->prependFormFieldNames = t3lib_div::GPvar("prependFormFieldNames");
+			$tceforms->prependFormFieldNames = $this->prependFormFieldNames;
 			
+				// Initialize other data:
 			$table=$inData[0];
 			$theUid=$inData[1];
 			$thePalNum = $inData[2];
-			$rec = t3lib_div::GPvar("rec",1);
-			$rec["uid"]=$theUid;
+			$this->rec['uid']=$theUid;
 			
-		//debug($HTTP_GET_VARS);
+				// Getting the palette fields rendered:
+			$panel.=$tceforms->getPaletteFields($table,$this->rec,$thePalNum,'',implode(',',array_keys($this->rec)));
+			$formContent=$panel;
 		
-			$panel.=$tceforms->getPaletteFields($table,$rec,$thePalNum,"",implode(",",array_keys($rec)));
-			$formContent='<table border=0 cellpadding=0 cellspacing=0>'.$panel.'</table>';
-		
+				// Add all the content, including JavaScript as needed.
 			$this->content.=$tceforms->printNeededJSFunctions_top().$formContent.$tceforms->printNeededJSFunctions();
 		}
 	}
+
+	/**
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
+	 */
 	function printContent()	{
-		global $SOBE;
 		echo $this->content.$this->doc->endPage();
 	}
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_palette.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_palette.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_palette.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_palette.php']);
 }
 
 
@@ -192,7 +360,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_p
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_alt_palette");
+$SOBE = t3lib_div::makeInstance('SC_alt_palette');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,12 +27,50 @@
 /** 
  * Include file extending t3lib_recordList
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   74: class fileList extends t3lib_recordList 
+ *  111:     function start($path,$pointer,$sort,$sortRev,$clipBoard=0)	
+ *  132:     function generateList()	
+ *  145:     function writeTop($path)	
+ *  204:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')	
+ *  218:     function getTable($files,$dirs,$rowlist)	
+ *  306:     function formatDirList($items)	
+ *  369:     function linkWrapDir($code,$path)	
+ *  381:     function linkWrapFile($code,$path)	
+ *  394:     function listURL()	
+ *  404:     function dirData($theFile)	
+ *  429:     function formatFileList($items)	
+ *  503:     function isImage($ext)	
+ *  515:     function linkWrapSort($code,$path,$col)	
+ *  533:     function readDirectory($path,$type,$extList='')	
+ *  587:     function makeClip($theData)	
+ *
+ * TOTAL FUNCTIONS: 15
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
+
+
+
+
+
+/**
+ * Class for rendering of File>Filelist
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class fileList extends t3lib_recordList {
 	var $iLimit = 40;					// default Max items shown 
 	var $thumbs = 0;					// Boolean. Thumbnails on records containing files (pictures)
@@ -61,15 +99,15 @@ class fileList extends t3lib_recordList {
 
 
 	/**
-	 * Initialization
-	 *
-	 * @param	string	The path to list
-	 * @param	integer	Pointer
-	 * @param	boolean	Sorting column
-	 * @param	boolean	Sorting direction
-	 * @param	boolean	Show clipboard flag
-	 * @return	void
-	 */	
+	 * Initialization of class
+	 * 
+	 * @param	string		The path to list
+	 * @param	integer		Pointer
+	 * @param	boolean		Sorting column
+	 * @param	boolean		Sorting direction
+	 * @param	boolean		Show clipboard flag
+	 * @return	void		
+	 */
 	function start($path,$pointer,$sort,$sortRev,$clipBoard=0)	{
 		$this->counter=0;
 		$this->totalbytes=0;
@@ -88,9 +126,9 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Reading files and directories, counting elements and generating the list in ->HTMLcode
-	 *
-	 * @return void
-	 */	
+	 * 
+	 * @return	void		
+	 */
 	function generateList()	{
 		$this->dirs = $this->readDirectory($this->path,'dir');
 		$this->files = $this->readDirectory($this->path,'file');
@@ -100,10 +138,10 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Make the top of the list
-	 *
-	 * @param	string	The path to list.
-	 * @return	void
-	 */	
+	 * 
+	 * @param	string		The path to list.
+	 * @return	void		
+	 */
 	function writeTop($path)	{
 			// Makes the code for the foldericon in the top
 		$path = $GLOBALS['SOBE']->basicFF->is_directory($path);	// Cleaning name...
@@ -119,46 +157,50 @@ class fileList extends t3lib_recordList {
 			list($title,$icon,$path) =  $this->dirData($theFile);
 	
 				// Start compiling the HTML
-			$out='<table border="0" cellpadding="0" cellspacing="0">';
-	
 			$theData = Array();
 			$theData[$titleCol] = $this->widthGif;
 	
 			$title = $GLOBALS['SOBE']->basicFF->blindPath($path);
 			$theData['up']='<a href="'.htmlspecialchars($this->listURL()).'">'.
-					'<img src="'.$this->backPath.'gfx/refresh_n.gif" width="14" hspace="2" height="14" vspace="1" border="0" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload',1).'" align="top" alt="" />'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload',1).'" alt="" />'.
 					'</a>';
 				
 			if ($root)	{
 					// The icon with link	
-				$theIcon = '<img src="'.$this->backPath.$icon.'" width="18" height="16" border="0" title="'.htmlspecialchars($theFile['file']).'" align="top" alt="" />';
+				$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
 				if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$path);
 
-				$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_pre($title,$this->fixedL+20));
-				$theData['up'].=$this->linkWrapDir('<img src="'.$this->backPath.'gfx/i/folder_up.gif" width="18" height="16" border="0" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" align="top" alt="" />',$theFile['path']);
+				$theData[$titleCol].='<br />'.t3lib_div::fixed_lgd_pre($title,$this->fixedL+20);	// No HTML specialchars here - HTML like <b> </b> is allowed
+				$theData['up'].=$this->linkWrapDir('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/folder_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" />',$theFile['path']);
 			} else {	
 					// root:0
-				$theIcon='<img src="'.$this->backPath.'gfx/i/_icon_ftp.gif" width="18" height="16" border="0" align="top" alt="" />';
+				$theIcon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_ftp.gif','width="18" height="16"').' alt="" />';
 				$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_pre($title,$this->fixedL+20));
 			}
 	
 				// Adding top element
 			$out.=$this->addelement(1,'',$theData,'',$this->leftMargin,$theIcon);
 	
-			$out.='</table>';
-			$this->HTMLcode.=$out;
+			$this->HTMLcode.='
+
+		<!--
+			Page header for file list
+		-->
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-filelist-top">
+					'.$out.'
+				</table>';
 		}
 	}
 
 	/**
 	 * Wrapping input string in a link with clipboard command.
-	 *
-	 * @param	string	String to be linked - must be htmlspecialchar'ed / prepared before.
-	 * @param	string	table - NOT USED
-	 * @param	string	"cmd" value
-	 * @param	string	Warning for JS confirm message
-	 * @return	string	Linked string
-	 */	
+	 * 
+	 * @param	string		String to be linked - must be htmlspecialchar'ed / prepared before.
+	 * @param	string		table - NOT USED
+	 * @param	string		"cmd" value
+	 * @param	string		Warning for JS confirm message
+	 * @return	string		Linked string
+	 */
 	function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')	{
 		$onClickEvent = 'document.dblistForm.cmd.value=\''.$cmd.'\';document.dblistForm.submit();';
 		if ($warning)	$onClickEvent = 'if (confirm('.$GLOBALS['LANG']->JScharCode($warning).')){'.$onClickEvent.'}';
@@ -167,12 +209,12 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Returns a table with directories and files listed.
-	 *
-	 * @param	array	Files
-	 * @param	array	Directories
-	 * @param	string	List of rows to display horizontallyh
-	 * @return	string	HTML-table
-	 */	
+	 * 
+	 * @param	array		Array of files from path
+	 * @param	array		Array of directories from path
+	 * @param	string		List of rows to display horizontallyh
+	 * @return	string		HTML-table
+	 */
 	function getTable($files,$dirs,$rowlist)	{
 			// Adds the code of files/dirs
 		$out='';
@@ -185,10 +227,6 @@ class fileList extends t3lib_recordList {
 		if ($this->clipBoard)	$rowlist.=',_CLIPBOARD_';
 		$this->fieldArray = explode(',',$rowlist);
 		
-			// Start table:
-		$out.='
-		<table border="0" cellpadding="0" cellspacing="0">';
-
 			// half line is drawn
 		$theData = Array();
 		$theData[$titleCol] = $this->widthGif;
@@ -222,30 +260,24 @@ class fileList extends t3lib_recordList {
 				$elFromTable = $this->clipObj->elFromTable($table);
 				if (count($elFromTable))	{
 					$cells[]='<a href="'.htmlspecialchars($this->clipObj->pasteUrl('_FILE',$this->path)).'" onclick="return '.htmlspecialchars($this->clipObj->confirmMsg('_FILE',$this->path,'into',$elFromTable)).'">'.
-						'<img src="gfx/clip_pasteafter.gif" width="12" height="12" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->getLL('clip_paste'),1).' alt="" /></a>'.
-						'<img src="clear.gif" width="2" height="1" alt="" />';
+						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_pasteafter.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_paste',1).'" alt="" /></a>';
 				}
 				if ($this->clipObj->current!='normal' && $iOut)	{
-					$cells[]=$this->linkClipboardHeaderIcon('<img src="gfx/clip_copy.gif" width="12" height="12" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->getLL('clip_selectMarked'),1).' alt="" />',$table,'setCB');
-					$cells[]=$this->linkClipboardHeaderIcon('<img src="gfx/garbage.gif" width="11" height="12" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->getLL('clip_deleteMarked'),1).' alt="" />',$table,'delete',$GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'));
-					$cells[]='<img src="clear.gif" width="6" height="1" alt="" />';
+					$cells[]=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg('','gfx/clip_copy.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_selectMarked',1).'" alt="" />',$table,'setCB');
+					$cells[]=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg('','gfx/garbage.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_deleteMarked',1).'" alt="" />',$table,'delete',$GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'));
 					$onClick = 'checkOffCB(\''.implode(',',$this->CBnames).'\'); return false;';
 					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-							'<img src="gfx/clip_select.gif" width="12" height="12" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->getLL('clip_markRecords'),1).' alt="" />'.
+							'<img'.t3lib_iconWorks::skinImg('','gfx/clip_select.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_markRecords',1).'" alt="" />'.
 							'</a>';
 				}
 
-				$theData[$v] = implode('',$cells).'&nbsp;';
+				$theData[$v] = implode('',$cells);
 			} else {	// Normal row:
 				$theT = $this->linkWrapSort($GLOBALS['LANG']->getLL('c_'.$v,1), $this->path,$v);
-				if ($v==$titleCol)	{
-					$theData[$v] = '&nbsp;<b>'.$theT.'</b>&nbsp;<br /><img src="clear.gif" width="180" height="1" alt="" />';
-				} else {
-					$theData[$v] = '&nbsp;<b>'.$theT.'</b>&nbsp;';
-				}
+				$theData[$v] = $theT;
 			}
 		}
-		$out.=$this->addelement(1,'',$theData,' bgcolor="'.$this->headLineCol.'"','');
+		$out.=$this->addelement(1,'',$theData,' class="c-headLine"','');
 		$out.=$iOut;
 		
 			// half line is drawn
@@ -254,17 +286,23 @@ class fileList extends t3lib_recordList {
 		$out.=$this->addelement(1,'',$theData);
 		
 			// finish
-		$out.='
-		</table>';	
-		return $out;
+		return '
+
+
+		<!--
+			File list table:
+		-->
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-filelist">
+				'.$out.'
+			</table>';
 	}
 
 	/**
-	 * This returns tablerows for the directories in the array $items['sorting']. 
-	 *
-	 * @param	array	Items
-	 * @return	string	HTML table rows.
-	 */	
+	 * This returns tablerows for the directories in the array $items['sorting'].
+	 * 
+	 * @param	array		Directory items
+	 * @return	string		HTML table rows.
+	 */
 	function formatDirList($items)	{
 		$out='';
 
@@ -282,7 +320,7 @@ class fileList extends t3lib_recordList {
 					list($title,$icon,$path) =  $this->dirData($theFile);
 	
 						// The icon with link	
-					$theIcon = '<img src="'.$this->backPath.$icon.'" width="18" height="16" border="0" title="'.htmlspecialchars($theFile['file']).'">';
+					$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
 					if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$path);
 	
 						// 	Preparing and getting the data-array
@@ -303,7 +341,7 @@ class fileList extends t3lib_recordList {
 								$theData[$field]=Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $theFile['tstamp']);
 							break;
 							case 'file':
-								$theData[$field]= $this->linkWrapDir(htmlspecialchars(t3lib_div::fixed_lgd($title,$this->fixedL)),$path);
+								$theData[$field]= $this->linkWrapDir(t3lib_div::fixed_lgd($title,$this->fixedL),$path);
 							break;
 							case '_CLIPBOARD_':
 								$theData[$field]=$this->makeClip($theFile);
@@ -312,7 +350,6 @@ class fileList extends t3lib_recordList {
 								$theData[$field]=t3lib_div::fixed_lgd($theFile[$field],$this->fixedL);
 							break;
 						}
-						if ($field!='_CLIPBOARD_')	$theData[$field]='&nbsp;'.$theData[$field].'&nbsp;';
 					}
 					$out.=$this->addelement(1,$theIcon,$theData);
 				}
@@ -324,31 +361,47 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Wraps the directory-titles
-	 *
-	 * @param	string	String to be wrapped in links
-	 * @param	string	ID (path)
-	 * @return	string	HTML
-	 */	
+	 * 
+	 * @param	string		String to be wrapped in links
+	 * @param	string		ID (path)
+	 * @return	string		HTML
+	 */
 	function linkWrapDir($code,$path)	{
 		$href = $this->script.'?id='.rawurlencode($path);
 		return '<a href="'.htmlspecialchars($href).'">'.$code.'</a>';
 	}
 
 	/**
-	 * Returns list URL
-	 *
-	 * @return	string	URL
-	 */	
+	 * Wraps filenames in links which opens them in a window IF they are in web-path.
+	 * 
+	 * @param	string		String to be wrapped in links
+	 * @param	string		ID (path)
+	 * @return	string		HTML
+	 */
+	function linkWrapFile($code,$path)	{
+		if (t3lib_div::isFirstPartOfStr($path,t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')))	{
+			$href = substr($path,strlen(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')));
+			$aOnClick = "return top.openUrlInWindow('".$href."','WebFile');";
+			$code = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$code.'</a>';
+		} 
+		return $code;
+	}
+
+	/**
+	 * Returns list URL; This is the URL of the current script with id and imagemode parameters, thats all.
+	 * 
+	 * @return	string		URL
+	 */
 	function listURL()	{
 		return $this->script.'?id='.rawurlencode($this->path).'&imagemode='.$this->thumbs;
 	}
 
 	/**
 	 * Returns some data specific for the directories...
-	 *
-	 * @param	array	File information array
-	 * @return	array	(title, icon, path)
-	 */	
+	 * 
+	 * @param	array		File information array
+	 * @return	array		(title, icon, path)
+	 */
 	function dirData($theFile)	{
 		$path = $theFile['path'].$theFile['file'].'/';
 		$webpath=t3lib_BEfunc::getPathType_web_nonweb($path);
@@ -369,11 +422,11 @@ class fileList extends t3lib_recordList {
 	}
 
 	/**
-	 * This returns tablerows for the files in the array $items['sorting']. 
-	 *
-	 * @param	array	Items
-	 * @return	string	HTML table rows.
-	 */	
+	 * This returns tablerows for the files in the array $items['sorting'].
+	 * 
+	 * @param	array		File items
+	 * @return	string		HTML table rows.
+	 */
 	function formatFileList($items)	{
 		$out='';
 
@@ -393,7 +446,7 @@ class fileList extends t3lib_recordList {
 					$icon = t3lib_BEfunc::getFileIcon($ext);
 
 						// The icon with link	
-					$theIcon = '<img src="'.$this->backPath.'gfx/fileicons/'.$icon.'" width="18" height="16" border="0" title="'.htmlspecialchars($theFile['file']).'" alt="" />';
+					$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
 					if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$theFile['path'].$theFile['file']);
 	
 						// 	Preparing and getting the data-array
@@ -416,11 +469,13 @@ class fileList extends t3lib_recordList {
 							case '_CLIPBOARD_':
 								$theData[$field]=$this->makeClip($theFile);
 							break;
+							case 'file':
+								$theData[$field] = $this->linkWrapFile(t3lib_div::fixed_lgd($theFile[$field],$this->fixedL),$theFile['path'].$theFile['file']);
+							break;							
 							default:
 								$theData[$field]=t3lib_div::fixed_lgd($theFile[$field],$this->fixedL);
 							break;
 						}
-						if ($field!='_CLIPBOARD_')	$theData[$field]='&nbsp;'.$theData[$field].'&nbsp;';
 					}
 					$out.=$this->addelement(1,$theIcon,$theData);
 					
@@ -430,7 +485,7 @@ class fileList extends t3lib_recordList {
 						$theFile_R = rawurlencode($theFile['path'].$theFile['file']);
 						$titleCol=$this->fieldArray[0];
 						$href = $this->backPath.$this->thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].'&file='.$theFile_R;
-						$thumbData[$titleCol]='<img src="'.htmlspecialchars($href).'" hspace="2" border="0" title="'.htmlspecialchars(trim($theFile['file'])).'">';
+						$thumbData[$titleCol]='<img src="'.htmlspecialchars($href).'" hspace="2" title="'.htmlspecialchars(trim($theFile['file'])).'" alt="" />';
 						$out.=$this->addelement(4,'',$thumbData);
 					}
 				}
@@ -442,22 +497,22 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Returns true if $ext is an image-extension according to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-	 *
-	 * @param	string	file extension 
-	 * @return	boolean	
-	 */	
+	 * 
+	 * @param	string		file extension
+	 * @return	boolean		
+	 */
 	function isImage($ext)	{
 		return t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],strtolower($ext));
 	}
 
 	/**
 	 * Wraps the directory-titles ($code) in a link to file_list.php (id=$path) and sorting commands...
-	 *
-	 * @param	string	String to be wrapped
-	 * @param	string	ID (path)
-	 * @param	string	Sorting column
-	 * @return	string	HTML
-	 */	
+	 * 
+	 * @param	string		String to be wrapped
+	 * @param	string		ID (path)
+	 * @param	string		Sorting column
+	 * @return	string		HTML
+	 */
 	function linkWrapSort($code,$path,$col)	{
 		if ($this->sort==$col && !$this->sortRev)	{		// reverse sorting
 			$params='&SET[sort]='.$col.'&SET[reverse]=1';
@@ -469,13 +524,13 @@ class fileList extends t3lib_recordList {
 	}
 
 	/**
-	 * Returns an array with file/dir items + a array with the sorted items
-	 *
-	 * @param	string	Path
-	 * @param	string	$type is the technical type; file,dir,link. empty is all kinds of stuff.
-	 * @param	string	$extList: List of fileextensions to select. If empty, all are selected.
-	 * @return	array	Array('files'=>array(), 'sorting'=>array());
-	 */	
+	 * Returns an array with file/dir items + an array with the sorted items
+	 * 
+	 * @param	string		Path (absolute) to read
+	 * @param	string		$type is the technical type; file,dir,link. empty is all kinds of stuff.
+	 * @param	string		$extList: List of fileextensions to select. If empty, all are selected.
+	 * @return	array		Array('files'=>array(), 'sorting'=>array());
+	 */
 	function readDirectory($path,$type,$extList='')	{
 		$items = Array('files'=>array(), 'sorting'=>array());
 		$path = $GLOBALS['SOBE']->basicFF->is_directory($path);	// Cleaning name...
@@ -486,7 +541,7 @@ class fileList extends t3lib_recordList {
 			if (is_object($d))	{
 				while($entry=$d->read()) {
 					if ($entry!='.' && $entry!='..')	{
-						$wholePath = $path.'/'.$entry;		// Because of odd PHP-error where  <BR>-tag is sometimes placed after a filename!!
+						$wholePath = $path.'/'.$entry;		// Because of odd PHP-error where  <br />-tag is sometimes placed after a filename!!
 						if (@file_exists($wholePath) && (!$type || filetype($wholePath)==$type))	{
 							if ($extList)	{
 								$fI = t3lib_div::split_fileref($entry);
@@ -526,10 +581,10 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Creates the clipboard control pad
-	 *
-	 * @param	array
-	 * @return	string	HTML-table
-	 */	
+	 * 
+	 * @param	array		Array with information about the file/directory for which to make the clipboard panel for the listing.
+	 * @return	string		HTML-table
+	 */
 	function makeClip($theData)	{
 		$cells=array();
 		$fullIdent = $theData['path'].$theData['file'];
@@ -539,42 +594,34 @@ class fileList extends t3lib_recordList {
 		if ($this->clipObj->current=='normal')	{
 			$isSel = $this->clipObj->isSelected('_FILE',$md5);
 			$cells[]='<a href="'.htmlspecialchars($this->clipObj->selUrlFile($fullIdent,1,($isSel=='copy'))).'">'.
-						'<img src="gfx/clip_copy'.($isSel=='copy'?'_h':'').'.gif" width="12" height="12" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.copy'),1).' alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_copy'.($isSel=='copy'?'_h':'').'.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.copy',1).'" alt="" />'.
 						'</a>';
 			$cells[]='<a href="'.htmlspecialchars($this->clipObj->selUrlFile($fullIdent,0,($isSel=='cut'))).'">'.
-						'<img src="gfx/clip_cut'.($isSel=='cut'?'_h':'').'.gif" width="12" height="12" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.cut'),1).' alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_cut'.($isSel=='cut'?'_h':'').'.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.cut',1).'" alt="" />'.
 						'</a>';
 		} else {	// For numeric pads, add select checkboxes:
 			$n='_FILE|'.$md5;
 			$this->CBnames[]=$n;
 
-			$checked = ($this->clipObj->isSelected('_FILE',$md5)?' checked':'');
-			$cells[]='<input type="hidden" name="CBH['.$n.']" value="0">'.
-					'<input type="checkbox" name="CBC['.$n.']" value="'.htmlspecialchars($fullIdent).'" style="width:12;height:12;margin:0 0 0 0;"'.$checked.'>';	// NN 6.1
+			$checked = ($this->clipObj->isSelected('_FILE',$md5)?' checked="checked"':'');
+			$cells[]='<input type="hidden" name="CBH['.$n.']" value="0" />'.
+					'<input type="checkbox" name="CBC['.$n.']" value="'.htmlspecialchars($fullIdent).'" class="smallCheckboxes"'.$checked.' />';
 		}
 
 			// Display PASTE button, if directory:
 		$elFromTable = $this->clipObj->elFromTable('_FILE');
 		if (@is_dir($fullIdent) && count($elFromTable))	{
 			$cells[]='<a href="'.htmlspecialchars($this->clipObj->pasteUrl('_FILE',$fullIdent)).'" onclick="return '.htmlspecialchars($this->clipObj->confirmMsg('_FILE',$fullIdent,'into',$elFromTable)).'">'.
-						'<img src="gfx/clip_pasteinto.gif" width="12" height="12" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->getLL('clip_pasteInto'),1).' alt="" />'.
+						'<img'.t3lib_iconWorks::skinImg('','gfx/clip_pasteinto.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_pasteInto',1).'" alt="" />'.
 						'</a>';
 		}
 
-		if ($GLOBALS['CLIENT']['BROWSER']=='net' && $GLOBALS['CLIENT']['VERSION']<5)	{
-			$w100 = '';
-			$w40 = '';
-		} else {
-			$w100 = ' width="100%"';
-			$w40 = ' width="40%"';
-		}
-		return '<table border="0" cellpadding="1" cellspacing="0" bgcolor="'.$GLOBALS['SOBE']->doc->bgColor5.'"'.$w100.'>
-			<tr>
-			<td'.$w40.'></td>
-			<td align="center">'.implode('</td><td>',$cells).'</td>
-			<td'.$w40.'></td>
-			</tr>
-		</table>';
+			// Compile items into a DIV-element:
+		return '							<!-- CLIPBOARD PANEL: -->
+											<div class="typo3-clipCtrl">
+												'.implode('
+												',$cells).'
+											</div>';
 	}
 }
 
@@ -583,5 +630,4 @@ class fileList extends t3lib_recordList {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.file_list.inc'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.file_list.inc']);
 }
-
 ?>

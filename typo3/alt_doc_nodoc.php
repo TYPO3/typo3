@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,79 +26,153 @@
 ***************************************************************/
 /** 
  * No-document script
+ * This is used by eg. the Doc module if no documents is registered as "open" (a concept which is better known from the "classic backend"...)
  *
+ * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ * XHTML compliant
  *  
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   72: class SC_alt_doc_nodoc 
+ *   84:     function init()	
+ *  108:     function main()	
+ *  164:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_alt_doc.php");
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_alt_doc.php');
+require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 
 
-if (t3lib_extMgm::isLoaded("taskcenter") && t3lib_extMgm::isLoaded("taskcenter_recent"))	{
-	require_once(t3lib_extMgm::extPath("taskcenter")."task/class.mod_user_task.php");
-	require_once(t3lib_extMgm::extPath("taskcenter_recent")."class.tx_taskcenterrecent.php");
+if (t3lib_extMgm::isLoaded('taskcenter') && t3lib_extMgm::isLoaded('taskcenter_recent'))	{
+	require_once(t3lib_extMgm::extPath('taskcenter').'task/class.mod_user_task.php');
+	require_once(t3lib_extMgm::extPath('taskcenter_recent').'class.tx_taskcenterrecent.php');
 }
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+/**
+ * Script Class for the "No-doc" display; This shows most recently edited records.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_doc_nodoc {
-	var $content;
 	
+		// Internal:
+	var $doc;			// Document template object
+	var $content;		// Content accumulation
+	var $loadModules;	// Object for backend modules.
+	
+	/**
+	 * Constructor, initialize.
+	 * 
+	 * @return	void		
+	 */
 	function init()	{
 		global $BACK_PATH;
 
-		$this->doc = t3lib_div::makeInstance("mediumDoc");
-		$this->doc->bodyTagMargins["x"]=5;
-		$this->doc->bodyTagMargins["y"]=5;
+			// Start the template object:
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc->docType = 'xhtml_trans';
+		$this->doc->bodyTagMargins['x']=5;
+		$this->doc->bodyTagMargins['y']=5;
 		$this->doc->backPath = $BACK_PATH;
 		
-		$this->content="";
-		$this->content.=$this->doc->startPage("TYPO3 Edit Document");
+			// Start the page:
+		$this->content='';
+		$this->content.=$this->doc->startPage('TYPO3 Edit Document');
+
+			// Loads the backend modules available for the logged in user.
+		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 	}
+
+	/**
+	 * Rendering the content.
+	 * 
+	 * @return	void		
+	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH;
 
 		$msg=array();
-		$msg[]=$LANG->getLL("noDocuments_msg");
-		$a_wl = $BE_USER->check("modules","web_list");
-		$a_wp = t3lib_extMgm::isLoaded("cms") && $BE_USER->check("modules","web_layout");
+		
+			// Add a message, telling that no documents were open...
+		$msg[]='<p>'.$LANG->getLL('noDocuments_msg',1).'</p><br />';
+
+			// If another page module was specified, replace the default Page module with the new one
+		$newPageModule = trim($BE_USER->getTSConfigVal('options.overridePageModule'));
+		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+		
+			// Perform some acccess checks:
+		$a_wl = $BE_USER->check('modules','web_list');
+		$a_wp = t3lib_extMgm::isLoaded('cms') && $BE_USER->check('modules',$pageModule);
+		
+
+			// Finding module images: PAGE
+		$imgFile = $LANG->moduleLabels['tabs_images']['web_layout_tab'];
+		$imgInfo = @getimagesize($imgFile);
+		$img_web_layout = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$image[3].' alt="" />' : '';
+
+			// Finding module images: LIST
+		$imgFile = $LANG->moduleLabels['tabs_images']['web_list_tab'];
+		$imgInfo = @getimagesize($imgFile);
+		$img_web_list = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$image[3].' alt="" />' : '';
+
+		
+			// If either the Web>List OR Web>Page module are active, show the little message with links to those modules:
 		if ($a_wl || $a_wp)	{
 			$msg_2 = array();
-			if ($a_wp)	{
-				$msg_2[]='<strong><a href="#" onClick="top.goToModule(\'web_layout\'); return false;">'.$LANG->getLL("noDocuments_pagemodule").' <img src="'.t3lib_extMgm::extRelPath("cms").'/layout/layout.gif" width="14" height="12" border="0" align="top"></a></strong>';
-				if ($a_wl)	$msg_2[]=$LANG->getLL("noDocuments_OR");
+			if ($a_wp)	{	// Web>Page:
+				$msg_2[]='<strong><a href="#" onclick="top.goToModule(\''.$pageModule.'\'); return false;">'.$LANG->getLL('noDocuments_pagemodule',1).$img_web_layout.'</a></strong>';
+				if ($a_wl)	$msg_2[]=$LANG->getLL('noDocuments_OR');
 			}
-			if ($a_wl)	{
-				$msg_2[]='<strong><a href="#" onClick="top.goToModule(\'web_list\'); return false;">'.$LANG->getLL("noDocuments_listmodule").' <img src="mod/web/list/list.gif" width="14" height="12" border="0" align="top"></a></strong>';
+			if ($a_wl)	{	// Web>List
+				$msg_2[]='<strong><a href="#" onclick="top.goToModule(\'web_list\'); return false;">'.$LANG->getLL('noDocuments_listmodule',1).$img_web_list.'</a></strong>';
 			}
-			$msg[]="<BR><BR>".sprintf($LANG->getLL("noDocuments_msg2"),implode(" ",$msg_2));
+			$msg[]='<p>'.sprintf($LANG->getLL('noDocuments_msg2',1),implode(' ',$msg_2)).'</p><br />';
 		}
 		
-		if ($BE_USER->check("modules","user_task") && t3lib_extMgm::isLoaded("taskcenter_recent"))	{
-			$modObj = t3lib_div::makeInstance("tx_taskcenterrecent");
+			// If the task center is loaded and the module of recent documents is, then display the list of the most recently edited documents:
+		if ($BE_USER->check('modules','user_task') && t3lib_extMgm::isLoaded('taskcenter_recent'))	{
+			$modObj = t3lib_div::makeInstance('tx_taskcenterrecent');
 			$modObj->backPath = $BACK_PATH;
 			$modObj->BE_USER = $BE_USER;
 			$modObj->perms_clause = $BE_USER->getPagePermsClause(1);
 
-			$msg[]="<BR><BR>".$LANG->getLL("noDocuments_msg3")."<BR><BR>".$modObj->_renderRecent();
+			$msg[]='<p>'.$LANG->getLL('noDocuments_msg3',1).'</p><br />'.$modObj->_renderRecent();
 		}
 		
-		$this->content.=$this->doc->section($LANG->getLL("noDocuments"),implode(" ",$msg),0,1);
+			// Adding the content:
+		$this->content.=$this->doc->section($LANG->getLL('noDocuments'),implode(' ',$msg),0,1);
 	}
+
+	/**
+	 * Printing the content.
+	 * 
+	 * @return	void		
+	 */
 	function printContent()	{
 		echo $this->content.$this->doc->endPage();
 	}
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_doc_nodoc.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_doc_nodoc.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc_nodoc.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc_nodoc.php']);
 }
 
 
@@ -112,7 +186,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_d
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_alt_doc_nodoc");
+$SOBE = t3lib_div::makeInstance('SC_alt_doc_nodoc');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,16 +27,19 @@
 /**
  * Contains a class for formmail
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   66: class t3lib_formmail extends t3lib_htmlmail 
- *   92:     function start($V,$base64=1)	
- *  166:     function addAttachment($file, $filename)	
+ *   69: class t3lib_formmail extends t3lib_htmlmail 
+ *   95:     function start($V,$base64=1)	
+ *  169:     function addAttachment($file, $filename)	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -56,9 +59,9 @@
 
 
 /**
- * Formmail class
+ * Formmail class, used by the TYPO3 "cms" extension (default frontend) to send email forms.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see tslib_fe::sendFormmail(), t3lib/formmail.php

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,32 +28,28 @@
  * Libraries for pagegen.php
  * The script "pagegen.php" is included by "index_ts.php" when a page is not cached but needs to be rendered.
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tslib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   87: class TSpagegen 
- *   94:     function pagegenInit()	
- *  133:     function UnCryptMailto(s) 
- *  144:     function linkTo_UnCryptMailto(s)	
- *  217:     function getIncFiles()	
- *  250:     function JSeventFunctions()	
- *  284:     function renderContent()	
- *  311:     function renderContentWithHeader($pageContent)	
- *  534:     function blurLink(theObject)	
+ *   85: class TSpagegen 
+ *   92:     function pagegenInit()	
+ *  215:     function getIncFiles()	
+ *  248:     function JSeventFunctions()	
+ *  282:     function renderContent()	
+ *  309:     function renderContentWithHeader($pageContent)	
  *
  *
- *  603: class FE_loadDBGroup extends t3lib_loadDBGroup	
+ *  610: class FE_loadDBGroup extends t3lib_loadDBGroup	
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -82,7 +78,9 @@
  * The class is not instantiated as an objects but called directly with the "::" operator.
  * eg: TSpagegen::pagegenInit()
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  */
 class TSpagegen {
 
@@ -130,7 +128,7 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->spamProtectEmailAddresses)	{
 			$GLOBALS['TSFE']->additionalJavaScript['UnCryptMailto()']='
   // JS function for uncrypting spam-protected emails:
-function UnCryptMailto(s) {
+function UnCryptMailto(s) {	//
 	var n=0;
 	var r="";
 	for(var i=0; i < s.length; i++) { 
@@ -141,7 +139,7 @@ function UnCryptMailto(s) {
 	return r;
 }
   // JS function for uncrypting spam-protected emails:
-function linkTo_UnCryptMailto(s)	{
+function linkTo_UnCryptMailto(s)	{	//
 	location.href=UnCryptMailto(s);
 }
 		';
@@ -323,10 +321,11 @@ function linkTo_UnCryptMailto(s)	{
 			// Setting document type:
 		switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
 			case 'xhtml_trans':
-				$GLOBALS['TSFE']->content.='<?xml version="1.0" encoding="'.$theCharset.'"?>
-<!DOCTYPE html 
+				$GLOBALS['TSFE']->content.='<!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="'.$theCharset.'"?>
+';
 			break;
 			default:
 				$GLOBALS['TSFE']->content.='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
@@ -381,7 +380,7 @@ function linkTo_UnCryptMailto(s)	{
 			$ss=$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
 			if ($ss) {
 				$GLOBALS['TSFE']->content.='
-<link rel="stylesheet" href="'.$ss.'" />';
+	<link rel="stylesheet" href="'.htmlspecialchars($ss).'" />';
 			}
 		}
 		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.'])) {
@@ -391,7 +390,10 @@ function linkTo_UnCryptMailto(s)	{
 					$ss=$GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
 					if ($ss) {
 						$GLOBALS['TSFE']->content.='
-<link rel="stylesheet" href="'.$ss.'" />';
+	<link rel="stylesheet" href="'.htmlspecialchars($ss).'"'.
+			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title'] ? ' title="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title']).'"' : '').
+			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media'] ? ' media="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media']).'"' : '').
+			' />';
 					}
 				}
 			}
@@ -531,7 +533,7 @@ INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
 	var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
 	if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror") {version = "n3";} else {version = "n2";}
 		// Blurring links:
-	function blurLink(theObject)	{
+	function blurLink(theObject)	{	//
 		if (msie4)	{theObject.blur();}
 	}
 // -->
@@ -600,6 +602,15 @@ if (t3lib_div::GPvar('sword') && t3lib_div::GPvar('scols'))	{
 // LoadDBGroup
 // ************
 require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+
+/**
+ * Class for fetching record relations for the frontend.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
+ * @see tslib_cObj::RECORDS()
+ */
 class FE_loadDBGroup extends t3lib_loadDBGroup	{
 	var $fromTC = 0;		// Means the not only uid and label-field is returned, but everything
 }

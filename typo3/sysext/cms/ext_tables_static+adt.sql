@@ -2,6 +2,7 @@
 #
 # Host: localhost    Database: t3_typo3site_dev
 #--------------------------------------------------------
+# TYPO3 CVS ID: $Id$
 
 
 #

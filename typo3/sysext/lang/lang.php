@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 * 
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 * 
 *  This script is part of the TYPO3 project. TYPO3 is free software;
@@ -18,25 +18,31 @@
 /** 
  * Contains the TYPO3 Backend Language class
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ * Revised for TYPO3 3.6.0
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   71: class language 
- *  146:     function init($lang,$altPath='')	
- *  170:     function addModuleLabels($arr,$prefix)	
- *  195:     function getLL($index,$hsc=0)	
- *  212:     function getLLL($index,$LOCAL_LANG,$hsc=0)	
- *  232:     function sL($input,$hsc=0)	
- *  276:     function loadSingleTableDescription($table)	
- *  327:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)	
- *  374:     function readLLfile($fileRef)	
- *  388:     function localizedFileRef($fileRef)	
+ *   79: class language 
+ *  158:     function init($lang,$altPath='')	
+ *  201:     function addModuleLabels($arr,$prefix)	
+ *  227:     function hscAndCharConv($lStr,$hsc)	
+ *  242:     function makeEntities($str)	
+ *  259:     function JScharCode($str)	
+ *  278:     function getLL($index,$hsc=0)	
+ *  295:     function getLLL($index,$LOCAL_LANG,$hsc=0)	
+ *  315:     function sL($input,$hsc=0)	
+ *  359:     function loadSingleTableDescription($table)	
+ *  410:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)	
+ *  457:     function readLLfile($fileRef)	
+ *  471:     function localizedFileRef($fileRef)	
  *
- * TOTAL FUNCTIONS: 9
+ * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -65,7 +71,9 @@
  * This class is normally instantiated as the global variable $LANG in typo3/template.php
  * It's only available in the backend and under certain circumstances in the frontend
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  * @see typo3/template.php, template
  */
 class language {
@@ -106,7 +114,10 @@ class language {
 		'eu' => '',
 		'bg' => 'windows-1251',
 		'br' => '',
-		'et' => 'iso-8859-4'
+		'et' => 'iso-8859-4',
+		'ar' => 'iso-8859-6',
+		'he' => 'utf-8',
+		'ua' => 'windows-1251',
 	);
 	
 		// This is the url to the TYPO3 manual
@@ -210,7 +221,7 @@ class language {
 	/**
 	 * Will htmlspecialchar() the input string and before that any charset conversion will also have taken place if needed (see init())
 	 * Used to pipe language labels through just before they are returned.
-	 *
+	 * 
 	 * @param	string		The string to process
 	 * @param	boolean		If set, then the string is htmlspecialchars()'ed
 	 * @return	string		The processed string
@@ -227,9 +238,9 @@ class language {
 	/**
 	 * Will convert the input strings special chars (all above 127) to entities. The string is expected to be encoded in the charset, $this->charSet
 	 * This function is used to create strings that can be used in the Click Menu (Context Sensitive Menus). The reason is that the values that are dynamically written into the <div> layer is decoded as iso-8859-1 no matter what charset is used in the document otherwise (only MSIE, Mozilla is OK). So by converting we by-pass this problem.
-	 *
-	 * @param	string	Input string	
-	 * @return	string	Output string
+	 * 
+	 * @param	string		Input string
+	 * @return	string		Output string
 	 */
 	function makeEntities($str)	{
 			// Convert string to UTF-8:
@@ -244,10 +255,10 @@ class language {
 	 * Converts the input string to a JavaScript function returning the same string, but charset-safe.
 	 * Used for confirm and alert boxes where we must make sure that any string content does not break the script AND want to make sure the charset is preserved.
 	 * Originally I used the JS function unescape() in combination with PHP function rawurlencode() in order to pass strings in a safe way. This could still be done for iso-8859-1 charsets but now I have applied the same method here for all charsets.
-	 *
-	 * @param	string	Input string, encoded with $this->charSet	
-	 * @return	string	Output string, a JavaScript function: "String.fromCharCode(......)"
-	 */	
+	 * 
+	 * @param	string		Input string, encoded with $this->charSet
+	 * @return	string		Output string, a JavaScript function: "String.fromCharCode(......)"
+	 */
 	function JScharCode($str)	{
 	
 			// Convert string to UTF-8:
@@ -393,6 +404,7 @@ class language {
 
 	/**
 	 * Includes locallang file (and possibly additional localized version if configured for)
+	 * Read language labels will be merged with $LOCAL_LANG (if $setGlobal=1).
 	 * 
 	 * @param	string		$fileRef is a file-reference (see t3lib_div::getFileAbsFileName)
 	 * @param	boolean		Setting in global variable $LOCAL_LANG (or returning the variable)
@@ -406,19 +418,17 @@ class language {
 		}
 
 			// Get default file:
-		$file = t3lib_div::getFileAbsFileName($fileRef);
-		if (@is_file($file))	{
-				// Include main locallang file:
-			include($file);
+		$llang = $this->readLLfile($fileRef);
+		
+		if (count($llang))	{
 
+			$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$llang);
+			
 				// Localized addition?
 			$lFileRef = $this->localizedFileRef($fileRef);
 			if ($lFileRef && (string)$LOCAL_LANG[$this->lang]=='EXT')	{
-				$lfile = t3lib_div::getFileAbsFileName($lFileRef);
-				if (@is_file($lfile))	{
-						// Include subfile:
-					include($lfile);
-				}
+				$llang = $this->readLLfile($fileRef);
+				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$llang);
 			}
 			
 				// Overriding file?

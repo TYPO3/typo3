@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -23,7 +24,7 @@ $LOCAL_LANG = Array (
 	),
 	'it' => Array (
 		'mlang_labels_tablabel' => 'Contenuto della pagina',
-		'mlang_labels_tabdescr' => 'Questo modulo permette di creare e editare le pagine. Fornisce un Quick-Editor per modificare velocemente il contenuto. Potete gestire i paragrafi in multilingua, su differenti colonne, e potete accedere a pagine di tipo speciale, come guestbook, forum di discussione, shopping. Attraverso questo modulo potete, infine, vedere alcune statistiche sulla pagina.',
+		'mlang_labels_tabdescr' => 'Questo modulo permette di creare e modificare le pagine. Fornisce un Quick-Editor per modificare velocemente il contenuto. Potete gestire i paragrafi in multilingua, su differenti colonne, e potete accedere a pagine di tipo speciale, come guestbook, forum di discussione, shopping. Attraverso questo modulo potete, infine, vedere alcune statistiche sulla pagina.',
 		'mlang_tabs_tab' => 'Pagina',
 	),
 	'fr' => Array (
@@ -94,6 +95,58 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Stránka',
 	),
 	'lt' => Array (
+	),
+	'is' => Array (
+		'mlang_labels_tablabel' => 'SiÃ°a innihald',
+		'mlang_labels_tabdescr' => 'Ãžessi viÃ°bÃ¦tur leyfir Ã¾Ã©r aÃ° breyta vefsiÃ°ur Ã¡ fljÃ³t og einfaldan hÃ¡tt.',
+		'mlang_tabs_tab' => 'SiÃ°a',
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Sadržaj stranice',
+		'mlang_labels_tabdescr' => 'Ovaj modul omugaæava kreiranje i ureðivanje web stranica. Ovdje se nalazi Quick-Editor za trenutni pristup osnovnom sadržaju stranice. Uz to ovdje se može upravljati raznim jezicima ili kolonama sadržaja po stranici. Konaèno odavdje se može pristupiti posebnim sadržajima stranice poput uestbookam, foruma ili shopping cart-a. Modul isto tako prikazuje statistiku posjeta stranicama za pojedinu stranicu.',
+		'mlang_tabs_tab' => 'Stranica',
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'mlang_labels_tablabel' => 'ºô­¶¤º®e',
+		'mlang_labels_tabdescr' => '³o­Ó¼Ò²Õ®e³\\§A«Ø¥ß©M­×§ïºô­¶¡C¥¦´£¨Ñ¤@­Ó§Ö³tªº½s¿è¾¹¥i¥H§Y«Y¦s¨ú°ò¥»ªººô­¶¤º®e¡C¦¹¥~¡A§A¥i¥H³B²z¨C¤@­Óºô­¶¤£¦Pªº»y¨¥©M¤º®e¡C³Ì«á¡A§A¥i¥H¦s¨ú¯S§Oªººô­¶¤º®e¡A¨Ò¦p¡G³X«È¯d¨¥ªO¡N°Q½×°Ï©MÁÊª«¶µ¥Øµ¥¡C³o­Ó¼Ò²Õ¦P®É¦C¥X¨C­Óºô­¶ºô­¶ªº·ÈÄý¦¸¼Æ¡C',
+		'mlang_tabs_tab' => 'ºô­¶',
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+		'mlang_labels_tablabel' => 'Ñúäúðæàíèå íà ñòðàíèöàòà',
+		'mlang_labels_tabdescr' => 'Òîçè ìîäóë òè ïîçâîëÿâà äà ñúçäàâàø è ðåäàêòèðàø óåá ñòðàíèöè.',
+		'mlang_tabs_tab' => 'Ñòðàíèöà',
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Conteúdo da página',
+		'mlang_labels_tabdescr' => 'Este módulo permite criar e editar páginas da internet. Ele oferece um Editor-Rápido para acesso instantâneo ao conteúdo primário da página. Além disso, você pode administrar diferentes idiomas e colunas de conteúdo por página. Finalmente, você pode acessar conteúdos especiais de páginas como livros de visitas, fórum e ítens de loja. O módulo também apresenta estatísticas de visualização para páginas individuais.',
+		'mlang_tabs_tab' => 'Página',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Lehekülje sisu',
+		'mlang_labels_tabdescr' => 'See moodul võimaldab teil luua ja muuta veebilehti, andes teie käsutusse Kiir-Redaktori lehekülje sisu muutmiseks. Lisaks saata hallata erinevaid keelemooduleid ja sisuveerge igal leheküljel. Samuti võimaldab see moodul ligipääsu sellistele spetsiaalsetele lehekülje elementidele nagu külalisteraamat, tahvel ja pood. Moodul kuvab ka individuaalsete lehekülgede külastusstatistikat.',
+		'mlang_tabs_tab' => 'Lehekülg',
+	),
+	'ar' => Array (
+		'mlang_labels_tablabel' => 'åÙäèåÇÊ è åÍÊèé ÇäÕáÍÉ',
+		'mlang_labels_tabdescr' => 'ÈÇÓÎÏÇå çÐç ÇäåèÏêèä êåãæã ÅæÔÇÁ è ÅÙÏÇÏ ÕáÍÇÊ ÇäèêÈ. êåãæã Ùæ ×Ñêâç ÇäèÕèä ÇäÓÑêÙ ääåÍÊèé ÇäÃÓÇÓê ääÕáÍÉ. ÈÇäÅÖÇáÉ Åäé Ãæã ÊÓÊ×êÙ ÅÏÇÑÉ åÓÃäÉ äÚÉ ÇäÕáÍÉ è åÍÊèêÇÊçÇè äè ãÇæÊ ÎÇÕÉ  ÓèÇÁ ãÇæÊ ÙÈÇÑÉ Ùæ ÓÌä ÇäÒèÇÑ Ãè åÑãÒ ÇäÈêÙ Ãè åäÊâé ÇäÃÓÆäÉ. çæÇ êåãæã ÃêÖÇ ÇäÅ×äÇÙ Ùäé ÇäÍÇäÉ ÇäÅÓÊÇÊêãêÉ ääÕáÍÉ è ãå ÙÏÏ ÇäÒèÇÑ ÇäÐêæ ÒÇÑèÇ ÇäÕáÍÉ.',
+		'mlang_tabs_tab' => 'ÇäÕáÍÉ',
+	),
+	'he' => Array (
+		'mlang_labels_tablabel' => '×ª×•×›×Ÿ ×“×£',
+		'mlang_labels_tabdescr' => '×ž×•×“×•×œ ×–×” ×ž××¤×©×¨ ×œ×š ×œ×¢×¨×•×š ×•×œ×™×¦×•×¨ ×“×¤×™ ××™× ×˜×¨× ×˜. ×”×•× ×ž×¢× ×™×§ ×¢×•×¨×š ×ž×”×™×¨ ×œ×’×™×©×” ×ž×™×™×“×™×ª ×œ×ª×•×›×Ÿ ×”×¢×™×§×¨×™ ×©×œ ×“×£. ×‘× ×•×¡×£ ×”× ×š ×™×›×•×œ ×œ× ×”×œ ×©×¤×•×ª ×©×•× ×•×ª ×•×¢×ž×•×“×•×ª ×©×œ ×ª×•×›×Ÿ ×‘×›×œ ×“×£. ×œ×‘×¡×•×£ ×”× ×š ×™×›×•×œ ×œ×’×©×ª ×œ×ª×•×›×Ÿ ×ž×™×•×—×“ ×›×’×•×Ÿ: ×¡×¤×¨ ×ž×‘×§×¨×™×, ×œ×•×— ×•×¤×¨×™×˜×™ ×—× ×•×ª. ×”×ž×•×“×•×œ ×ž××¤×©×¨ ×’× ×¡×¤×™×¨×ª ×‘×™×§×•×¨×™× ×œ×“×¤×™× × ×¤×¨×“×™×.',
+		'mlang_tabs_tab' => '×“×£',
+	),
+	'ua' => Array (
 	),
 );
 ?>

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,54 +27,109 @@
 /** 
  * Shows information about a database or file item
  *
- * HTTP_GET_VARS:
- * $table	:		Record table (or filename)
- * $uid	:		Record uid  (or "" when filename)
+ * $Id$
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   79: class transferData extends t3lib_transferData	
+ *   95:     function regItem($table, $id, $field, $content)	
+ *
+ *
+ *  133: class SC_show_item 
+ *  151:     function init()	
+ *  220:     function main()	
+ *  348:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-
  
  
-$BACK_PATH="";
-require ($BACK_PATH."init.php");
-require ($BACK_PATH."template.php");
-require_once (PATH_t3lib."class.t3lib_page.php");
-require_once (PATH_t3lib."class.t3lib_loaddbgroup.php");
-require_once (PATH_t3lib."class.t3lib_transferdata.php");
+$BACK_PATH='';
+require ($BACK_PATH.'init.php');
+require ($BACK_PATH.'template.php');
+require_once (PATH_t3lib.'class.t3lib_page.php');
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+
+
+/**
+ * Extension of transfer data class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class transferData extends t3lib_transferData	{
-	var $formname = "loadform";
+	var $formname = 'loadform';
 	var $loading = 1;
 	
-
 		// Extra for show_item.php:
 	var $theRecord = Array();
 
+	/**
+	 * Register item function.
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$field: ...
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function regItem($table, $id, $field, $content)	{
 		t3lib_div::loadTCA($table);
-		$config = $GLOBALS["TCA"][$table]["columns"][$field]["config"];
-		switch($config["type"])	{
-			case "input":
-				if (isset($config["checkbox"]) && $content==$config["checkbox"])	{$content=""; break;}
-				if (t3lib_div::inList($config["eval"],"date"))	{$content = Date($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["ddmmyy"],$content); }
+		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+		switch($config['type'])	{
+			case 'input':
+				if (isset($config['checkbox']) && $content==$config['checkbox'])	{$content=''; break;}
+				if (t3lib_div::inList($config['eval'],'date'))	{$content = Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$content); }
 			break;
-			case "group":
+			case 'group':
 			break;
-			case "select":
-				
+			case 'select':
 			break;
 		}
 		$this->theRecord[$field]=$content;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * HTTP_GET_VARS:
+ * $table	:		Record table (or filename)
+ * $uid	:		Record uid  (or '' when filename)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_show_item {
 	var $include_once=array();
 	var $content;
@@ -90,11 +145,14 @@ class SC_show_item {
 	var $uid;
 	var $doc;	
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 		
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
-		$this->table = t3lib_div::GPvar("table");
+		$this->table = t3lib_div::GPvar('table');
 		$this->uid = t3lib_div::GPvar("uid");
 		
 		$this->access=0;
@@ -153,6 +211,12 @@ class SC_show_item {
 		$this->content.=$this->doc->header($LANG->sL("LLL:EXT:lang/locallang_core.php:show_item.php.viewItem"));
 		$this->content.=$this->doc->spacer(5);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 		
@@ -160,7 +224,7 @@ class SC_show_item {
 			$returnLinkTag = t3lib_div::GPvar("returnUrl") ? '<a href="'.t3lib_div::GPvar("returnUrl").'" class="typo3-goBack">' : '<a href="#" onClick="window.close();">';
 			
 			if ($this->type=="db")	{
-				$code=$this->doc->getHeader($this->table,$this->row,$this->pageinfo["_thePath"],1).'<BR>';
+				$code=$this->doc->getHeader($this->table,$this->row,$this->pageinfo["_thePath"],1).'<br />';
 				$this->content.=$this->doc->section('',$code);
 		
 				$codeArr=Array();
@@ -181,8 +245,8 @@ class SC_show_item {
 				$this->content.=$this->doc->divider(2);
 				
 				$code="";
-				$code.='Path: '.t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],48).'<BR>';
-				$code.='Table: '.$LANG->sL($TCA[$this->table]["ctrl"]["title"]).' ('.$this->table.') - UID: '.$this->uid.'<BR>';
+				$code.='Path: '.t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],48).'<br />';
+				$code.='Table: '.$LANG->sL($TCA[$this->table]["ctrl"]["title"]).' ('.$this->table.') - UID: '.$this->uid.'<br />';
 				$this->content.=$this->doc->section('',$code);
 			}
 			if ($this->type=="file")	{
@@ -206,7 +270,7 @@ class SC_show_item {
 						$code.='<b>'.$LANG->sL("LLL:EXT:lang/locallang_core.php:show_item.php.file").':</b> '.$fI["file"];
 					}
 					$code.=' &nbsp;&nbsp;<b>'.$LANG->sL("LLL:EXT:lang/locallang_core.php:show_item.php.filesize").':</b> '.t3lib_div::formatSize(@filesize($this->file));
-					$code.='<BR>';
+					$code.='<br />';
 					$code.='<b>'.$LANG->sL("LLL:EXT:lang/locallang_core.php:show_item.php.dimensions").':</b> '.$imgInfo[0].'x'.$imgInfo[1].' pixels';
 					$this->content.=$this->doc->section('',$code);
 		
@@ -214,13 +278,13 @@ class SC_show_item {
 			
 					$imgInfo = $imgObj->imageMagickConvert($this->file,"web","346","200m","","","",1);
 					$imgInfo[3] = "../".substr($imgInfo[3],strlen(PATH_site));
-					$code= '<BR><div align="center">'.$returnLinkTag.$imgObj->imgTag($imgInfo).'</a></div>';
+					$code= '<br /><div align="center">'.$returnLinkTag.$imgObj->imgTag($imgInfo).'</a></div>';
 					$this->content.=$this->doc->section('',$code);
 				} else {
 					$code="";
 					$icon = t3lib_BEfunc::getFileIcon($ext);	
 					$url = 'gfx/fileicons/'.$icon;
-					$code.='<a href="../'.substr($this->file,strlen(PATH_site)).'" target="_blank"><img src="'.$url.'" width=18 height=16 align="top" border=0> <b>File:</b> '.$fI["file"].'</a> &nbsp;&nbsp;<b>Size:</b> '.t3lib_div::formatSize(@filesize($this->file)).'<BR>';
+					$code.='<a href="../'.substr($this->file,strlen(PATH_site)).'" target="_blank"><img src="'.$url.'" width=18 height=16 align="top" border=0> <b>File:</b> '.$fI["file"].'</a> &nbsp;&nbsp;<b>Size:</b> '.t3lib_div::formatSize(@filesize($this->file)).'<br />';
 					$this->content.=$this->doc->section('',$code);
 		
 					$lowerFilename = strtolower($this->file);
@@ -236,9 +300,9 @@ class SC_show_item {
 								next($t);
 								while(list(,$val)=each($t))	{
 									$parts = explode(" ",trim($val),7);
-									$code.=$parts[6]."<BR>";
+									$code.=$parts[6]."<br />";
 								}
-								$code="<nobr>".$code."</nobr>";
+								$code='<span class="nobr">'.$code.'</span>';
 							}
 							$this->content.=$this->doc->section('',$code);
 						} elseif($ext=="tar" || $ext=="tgz" || substr($lowerFilename,-6)=="tar.gz" || substr($lowerFilename,-5)=="tar.z")	{
@@ -253,9 +317,9 @@ class SC_show_item {
 							if (is_array($t))	{
 								reset($t);
 								while(list(,$val)=each($t))	{
-									$code.=$val."<BR>";
+									$code.=$val."<br />";
 								}
-								$code="<nobr>".$code."</nobr>";
+								$code='<span class="nobr">'.$code.'</span>';
 							}
 							$this->content.=$this->doc->section('',$code);
 						}
@@ -263,36 +327,34 @@ class SC_show_item {
 					if ($ext=="ttf")	{
 						$thumbScript="thumbs.php";
 						$params = "&file=".rawurlencode($this->file);
-						$url = $thumbScript.'?&dummy='.$GLOBALS["EXEC_TIME"].$params;
-						$thumb='<BR><img src="'.$url.'" hspace=40 border=0 title="'.trim($this->file).'">';
-		//				$thumb = t3lib_BEfunc::thumbCode(array("resources"=>$fI["file"]),"sys_template","resources","","",$fI["path"],1);
+						$url = $thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
+						$thumb='<br /><img src="'.$url.'" hspace=40 border=0 title="'.trim($this->file).'">';
 						$this->content.=$this->doc->section('',$thumb);
 					}
 				}
 			}
 		
 			if (t3lib_div::GPvar("returnUrl"))	{
-				$this->content.=$this->doc->section('','<BR>'.$returnLinkTag.'<strong>&lt; '.$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.goBack").'</strong></a>');
+				$this->content.=$this->doc->section('','<br />'.$returnLinkTag.'<strong>&lt; '.$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.goBack").'</strong></a>');
 			}
 		}		
 	}
-	function printContent()	{
-		global $SOBE;
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
+	function printContent()	{
 		$this->content.=$this->doc->spacer(8);
-		$this->content.=$this->doc->middle();
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
-	
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/show_item.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/show_item.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/show_item.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/show_item.php']);
 }
 
 
@@ -307,12 +369,11 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/show_
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_show_item");
+$SOBE = t3lib_div::makeInstance('SC_show_item');
 $SOBE->init();
 
 // Include files?
-reset($SOBE->include_once);	
-while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();

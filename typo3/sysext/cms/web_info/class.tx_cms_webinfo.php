@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,21 +27,41 @@
 /** 
  * Contains a class with functions for page related statistics added to the backend Info module
  *
- * Revised for TYPO3 3.6 5/2003 by Kasper Skårhøj
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ * Revised for TYPO3 3.6 5/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   66: class tx_cms_webinfo_page extends t3lib_extobjbase 
+ *   73:     function modMenu()	
+ *  100:     function main()	
+ *
+ *
+ *  191: class tx_cms_webinfo_hits extends tx_cms_webinfo_page 
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 require_once(PATH_t3lib.'class.t3lib_pagetree.php');
 require_once(PATH_t3lib.'class.t3lib_recordlist.php');
 require_once(PATH_typo3.'class.db_list.inc');
-require_once(PATH_typo3.'class.db_layout.inc');
+require_once(t3lib_extMgm::extPath('cms').'layout/class.tx_cms_layout.php');
 require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 
 
 /**
  * Class for displaying page information (records, page record properties)
  * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_cms
  */
 class tx_cms_webinfo_page extends t3lib_extobjbase {
 
@@ -80,10 +100,9 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 	function main()	{
 		global $BACK_PATH,$LANG,$SOBE;
 	
-		$dblist = t3lib_div::makeInstance('recordList_layout');
+		$dblist = t3lib_div::makeInstance('tx_cms_layout');
 		$dblist->backPath = $BACK_PATH;
 		$dblist->thumbs = 0;
-		$dblist->headLineCol = $this->pObj->doc->bgColor2;
 		$dblist->script = 'index.php';
 		$dblist->showIcon = 0;
 		$dblist->setLMargin=0;
@@ -165,6 +184,9 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
  * IMPORTANT: This class is used by the extension "sys_stat" and will be added to the Info module only when "sys_stat" is installed.
  * The display of statistics goes on in "tx_cms_webinfo_page" though
  * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_cms
  */
 class tx_cms_webinfo_hits extends tx_cms_webinfo_page {
 }

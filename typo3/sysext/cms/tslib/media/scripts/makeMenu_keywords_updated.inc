@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -42,10 +42,11 @@
  * }
  *  
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
  * @author	Stephan Niebrügge <stephan.niebruegge@gmx.de>
- * Adapted by Kasper Skårhøj
+ * Adapted by Kasper Skaarhoj
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=358&cHash=5400c1c06a
  */
  

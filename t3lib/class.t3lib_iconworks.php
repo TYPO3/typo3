@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,28 +26,30 @@
 ***************************************************************/
 /** 
  * Contains class for icon generation in the backend
- * 
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ *
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   81: class t3lib_iconWorks	
- *   95:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=0)	
- *  112:     function getIcon($table,$row=array(),$shaded=0)	
- *  194:     function makeIcon($iconfile,$mode, $user, $protectSection=0,$absFile='')	
- *  297:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
- *  330:     function imagecreatefrom($file)	
- *  347:     function imagemake($im, $path)	
+ *   85: class t3lib_iconWorks	
+ *   99:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=0)	
+ *  116:     function getIcon($table,$row=array(),$shaded=0)	
+ *  198:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)	
  *
- * TOTAL FUNCTIONS: 6
+ *              SECTION: Other functions
+ *  267:     function makeIcon($iconfile,$mode, $user, $protectSection=0,$absFile='')	
+ *  370:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
+ *  403:     function imagecreatefrom($file)	
+ *  420:     function imagemake($im, $path)	
+ *
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -76,7 +78,9 @@
  * The class is included in eg. init.php
  * ALL functions called without making a class instance, eg. "t3lib_iconWorks::getIconImage()"
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_iconWorks	{
 	
@@ -93,7 +97,7 @@ class t3lib_iconWorks	{
 	 * @see getIcon()
 	 */
 	function getIconImage($table,$row=array(),$backPath,$params='',$shaded=0)	{
-		$str='<img src="'.$backPath.t3lib_iconWorks::getIcon($table,$row,$shaded).'" width="18" height="16" border="0"'.(trim($params)?' '.trim($params):'');
+		$str='<img'.t3lib_iconWorks::skinImg($backPath,t3lib_iconWorks::getIcon($table,$row,$shaded),'width="18" height="16"').(trim($params)?' '.trim($params):'');
 		if (!stristr($str,'alt="'))	$str.=' alt=""';
 		$str.=' />';
 		return $str;
@@ -128,6 +132,7 @@ class t3lib_iconWorks	{
 		if (!strstr($iconfile,'/'))	{
 			$iconfile = 'gfx/i/'.$iconfile;
 		}
+		
 		if (substr($iconfile,0,3)=='../')	{
 			$absfile=PATH_site.substr($iconfile,3);
 		} else {
@@ -179,6 +184,75 @@ class t3lib_iconWorks	{
 			return $iconfile;
 		}
 	}
+	
+	/**
+	 * Returns the src=... for the input $src value OR any alternative found in $TBE_STYLES['skinImg']
+	 * Used for skinning the TYPO3 backend with an alternative set of icons
+	 * 
+	 * @param	string		Current backpath to PATH_typo3 folder
+	 * @param	string		Icon file name relative to PATH_typo3 folder
+	 * @param	string		Default width/height, defined like 'width="12" height="14"'
+	 * @param	integer		Mode: 0 (zero) is default and returns src/width/height. 1 returns value of src+backpath, 2 returns value of w/h.
+	 * @return	string		Returns ' src="[backPath][src]" [wHattribs]'
+	 * @see skinImgFile()
+	 */
+	function skinImg($backPath,$src,$wHattribs='',$outputMode=0)	{
+		
+			// LOOKING for alternative icons:
+		if ($GLOBALS['TBE_STYLES']['skinImg'][$src])	{	// Slower or faster with is_array()? Could be used.
+			list($src,$wHattribs) = $GLOBALS['TBE_STYLES']['skinImg'][$src];
+		} elseif ($GLOBALS['TBE_STYLES']['skinImgAutoCfg'])	{	// Otherwise, test if auto-detection is enabled:
+		
+				// Search for alternative icon automatically:
+			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
+			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;	// Scaling factor
+			$lookUpName = $fExt ? ereg_replace('\.[[:alnum:]]+$','',$src).'.'.$fExt : $src;	// Set filename to look for
+			
+				// If file is found:
+			if (@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName))	{	// If there is a file...
+				$iInfo = @getimagesize($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName);	// Get width/height:
+				
+					// Set $src and $wHattribs:
+				$src = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'].$lookUpName;
+				$wHattribs = 'width="'.round($iInfo[0]*$scaleFactor).'" height="'.round($iInfo[1]*$scaleFactor).'"';
+			}
+			
+				// In anycase, set currect src / wHattrib - this way we make sure that an entry IS found next time we hit the function, regardless of whether it points to a alternative icon or just the current.
+			$GLOBALS['TBE_STYLES']['skinImg'][$src] = array($src,$wHattribs);		// Set default...
+		}
+	
+			// DEBUG: This doubles the size of all icons - for testing/debugging:	
+#		if (ereg('^width="([0-9]+)" height="([0-9]+)"$',$wHattribs,$reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
+
+			// Return icon source/wHattributes:
+		switch($outputMode)	{
+			case 0:
+				return ' src="'.$backPath.$src.'" '.$wHattribs;
+			break;
+			case 1:
+				return $backPath.$src;
+			break;
+			case 2:
+				return $wHattribs;
+			break;
+		}
+	}
+	
+	
+
+
+
+
+
+
+
+
+
+	/***********************************
+	 *
+	 * Other functions
+	 *
+	 ***********************************/
 
 	/**
 	 * Creates the icon file for the function getIcon()
@@ -281,16 +355,16 @@ class t3lib_iconWorks	{
 	 * 
 	 * For parameters, see PHP function "imagecopyresized()"
 	 * 
-	 * @param	pointer		
-	 * @param	pointer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
+	 * @param	pointer		see PHP function "imagecopyresized()"
+	 * @param	pointer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
 	 * @return	void		
 	 * @access private
 	 */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,51 +27,51 @@
 /** 
  * Contains an extension class specifically for authentication/initialization of backend users in TYPO3
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  110: class t3lib_userAuthGroup extends t3lib_userAuth 
+ *  112: class t3lib_userAuthGroup extends t3lib_userAuth 
  *
  *              SECTION: Permission checking functions:
- *  166:     function isAdmin()	
- *  178:     function isMemberOfGroup($groupId)	
- *  200:     function doesUserHaveAccess($row,$perms)	
- *  217:     function isInWebMount($id,$readPerms='',$exitOnError=0)	
- *  244:     function modAccess($conf,$exitOnError)	
- *  280:     function getPagePermsClause($perms)	
- *  306:     function calcPerms($row)	
- *  328:     function isRTE()	
- *  354:     function check ($type,$value)	
- *  371:     function isPSet($lCP,$table,$type='')	
- *  388:     function mayMakeShortcut()	
+ *  170:     function isAdmin()	
+ *  182:     function isMemberOfGroup($groupId)	
+ *  204:     function doesUserHaveAccess($row,$perms)	
+ *  221:     function isInWebMount($id,$readPerms='',$exitOnError=0)	
+ *  248:     function modAccess($conf,$exitOnError)	
+ *  284:     function getPagePermsClause($perms)	
+ *  310:     function calcPerms($row)	
+ *  332:     function isRTE()	
+ *  358:     function check ($type,$value)	
+ *  375:     function isPSet($lCP,$table,$type='')	
+ *  392:     function mayMakeShortcut()	
  *
  *              SECTION: Miscellaneous functions
- *  416:     function getTSConfig($objectString,$config='')	
- *  442:     function getTSConfigVal($objectString)	
- *  454:     function getTSConfigProp($objectString)	
- *  466:     function inList($in_list,$item)	
- *  476:     function returnWebmounts()	
- *  486:     function returnFilemounts()	
+ *  420:     function getTSConfig($objectString,$config='')	
+ *  446:     function getTSConfigVal($objectString)	
+ *  458:     function getTSConfigProp($objectString)	
+ *  470:     function inList($in_list,$item)	
+ *  480:     function returnWebmounts()	
+ *  490:     function returnFilemounts()	
  *
  *              SECTION: Authentication methods
- *  515:     function fetchGroupData()	
- *  639:     function fetchGroups($grList,$idList='')	
- *  713:     function setCachedList($cList)	
- *  734:     function addFileMount($title, $altTitle, $path, $webspace, $type)	
+ *  520:     function fetchGroupData()	
+ *  645:     function fetchGroups($grList,$idList='')	
+ *  719:     function setCachedList($cList)	
+ *  740:     function addFileMount($title, $altTitle, $path, $webspace, $type)	
+ *  787:     function addTScomment($str)	
  *
  *              SECTION: Logging
- *  810:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='') 
- *  847:     function checkLogFailures($email, $secondsBack=3600, $max=3)	
+ *  834:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='') 
+ *  871:     function checkLogFailures($email, $secondsBack=3600, $max=3)	
  *
- * TOTAL FUNCTIONS: 23
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -105,7 +105,9 @@ require_once (PATH_t3lib.'class.t3lib_tsparser.php');
  * Actually this class is extended again by t3lib_beuserauth which is the actual backend user class that will be instantiated.
  * In fact the two classes t3lib_beuserauth and this class could just as well be one, single class since t3lib_userauthgroup is not - to my knowledge - used separately elsewhere. But for historical reasons they are two separate classes.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_userAuthGroup extends t3lib_userAuth {
 	var $usergroup_column = 'usergroup';		// Should be set to the usergroup-column (id-list) in the user-record
@@ -512,8 +514,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * This method is called by ->backendCheckLogin() (from extending class t3lib_beuserauth) if the backend user login has verified OK.
 	 * 
 	 * @return	void		
-	 * @see t3lib_TSparser
 	 * @access private
+	 * @see t3lib_TSparser
 	 */
 	function fetchGroupData()	{
 		if ($this->user['uid'])	{
@@ -555,14 +557,14 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			if ($this->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])	{	
 				$this->addFileMount($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '', PATH_site.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], 0, '');
 			}
-
+			
 				// If userHomePath is set, we attempt to mount it
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'])	{
 					// First try and mount with [uid]_[username]
-				$didMount=$this->addFileMount($this->user['username'], '', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].$this->user['uid'].'_'.$this->user['username'], 0, 'user');
+				$didMount=$this->addFileMount($this->user['username'], '',$GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].$this->user['uid'].'_'.$this->user['username'].$GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'], 0, 'user');
 				if (!$didMount)	{
 						// If that failed, try and mount with only [uid]
-					$this->addFileMount($this->user['username'], '', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].$this->user['uid'], 0, 'user');
+					$this->addFileMount($this->user['username'], '', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].$this->user['uid'].$GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'], 0, 'user');
 				}
 			}
 
@@ -731,7 +733,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		$altTitle will be the (root)name of the filemount IF $title is not true (blank or zero)
 	 * @param	string		$path is the path which should be mounted. Will accept backslash in paths on windows servers (will substituted with forward slash). The path should be 1) relative to TYPO3_CONF_VARS[BE][fileadminDir] if $webspace is set, otherwise absolute.
 	 * @param	boolean		If $webspace is set, the $path is relative to 'fileadminDir' in TYPO3_CONF_VARS, otherwise $path is absolute. 'fileadminDir' must be set to allow mounting of relative paths.
-	 * @param	string		
+	 * @param	string		Type of filemount; Can be blank (regular) or "user" / "group" (for user and group filemounts presumably). Probably sets the icon first and foremost.
 	 * @return	boolean		Returns "1" if the requested filemount was mounted, otherwise no return value.
 	 * @access private
 	 */
@@ -778,9 +780,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	
 	/**
 	 * Creates a TypoScript comment with the string text inside.
-	 *
-	 * @param	string	The text to wrap in comment prefixes and delimiters.
-	 * @return string	TypoScript comment with the string text inside.
+	 * 
+	 * @param	string		The text to wrap in comment prefixes and delimiters.
+	 * @return	string		TypoScript comment with the string text inside.
 	 */
 	function addTScomment($str)	{
 		$delimiter = '# ***********************************************';
@@ -822,9 +824,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	integer		$details_nr: The message number. Specific for each $type and $action. in the future this will make it possible to translate errormessages to other languages
 	 * @param	string		$details: Default text that follows the message
 	 * @param	array		$data: Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed the details-text...
-	 * @param	string		$tablename: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. Used in status.php to update the interface.
-	 * @param	integer		$recuid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. Used in status.php to update the interface.
-	 * @param	integer		$recpid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. Used in status.php to update the interface.
+	 * @param	string		$tablename: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @param	integer		$recuid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @param	integer		$recpid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @param	integer		$event_pid: The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param	string		$NEWid: NEWid string
 	 * @return	void		
@@ -901,7 +903,7 @@ This is a dump of the failures:
 ';
 				while($testRows=mysql_fetch_assoc($res))	{
 					$theData = unserialize($testRows['log_data']);
-					$email_body.=date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' H:i',$testRows['tstamp']).':  '.sprintf($testRows['details'],''.$theData[0],''.$theData[1],''.$theData[2]);
+					$email_body.=date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' H:i',$testRows['tstamp']).':  '.@sprintf($testRows['details'],''.$theData[0],''.$theData[1],''.$theData[2]);
 					$email_body.=chr(10);
 				}
 				mail(	$email,

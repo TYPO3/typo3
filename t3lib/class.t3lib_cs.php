@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is 
@@ -24,7 +24,9 @@
 /** 
  * Class for conversion between charsets. 
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
  */
 /**
@@ -32,22 +34,22 @@
  *
  *
  *
- *  102: class t3lib_cs 
- *  194:     function parse_charset($charset)	
- *  211:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
- *  245:     function utf8_encode($str,$charset)	
- *  286:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
- *  341:     function utf8_to_entities($str)	
- *  374:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
- *  405:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
- *  446:     function initCharset($charset)	
- *  517:     function UnumberToChar($cbyte)	
- *  561:     function utf8CharToUnumber($str,$hex=0)	
- *  590:     function utf8_strtrunc($str,$len)	
- *  612:     function utf_strlen($str)	
- *  625:     function utf_substr($str,$start,$len=0)	
- *  639:     function utf_strpos($haystack,$needle,$offset=0)	
- *  652:     function utf_strrpos($haystack,$needle,$offset=0)	
+ *  104: class t3lib_cs 
+ *  196:     function parse_charset($charset)	
+ *  213:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
+ *  247:     function utf8_encode($str,$charset)	
+ *  288:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
+ *  336:     function utf8_to_entities($str)	
+ *  369:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
+ *  400:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
+ *  441:     function initCharset($charset)	
+ *  512:     function UnumberToChar($cbyte)	
+ *  556:     function utf8CharToUnumber($str,$hex=0)	
+ *  585:     function utf8_strtrunc($str,$len)	
+ *  625:     function utf_strlen($str)	
+ *  638:     function utf_substr($str,$start,$len=0)	
+ *  652:     function utf_strpos($haystack,$needle,$offset=0)	
+ *  665:     function utf_strrpos($haystack,$needle,$offset=0)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,7 +96,7 @@
 /**
  * Class for conversion between charsets.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
  * @package TYPO3
  * @subpackage t3lib
@@ -185,7 +187,7 @@ class t3lib_cs {
 
 
 	/**
-	 * Normalize
+	 * Normalize - changes input character set to lowercase letters.
 	 * 
 	 * @param	string		Input charset
 	 * @return	string		Normalized charset
@@ -296,12 +298,6 @@ class t3lib_cs {
 				if ($ord>127)	{	// This means multibyte! (first byte!)
 					if ($ord & 64)	{	// Since the first byte must have the 7th bit set we check that. Otherwise we might be in the middle of a byte sequence.
 
-
-/*
- *
- *
- *	alternative code which fewers substrs and concatenations: see below
- *
 						$buf=$chr;	// Add first byte
 						for ($b=0;$b<8;$b++)	{	// for each byte in multibyte string...
 							$ord = $ord << 1;	// Shift it left and ...
@@ -310,12 +306,11 @@ class t3lib_cs {
 								$buf.=substr($str,$a,1);	// ... and add the next char.
 							} else break;
 						}
-*
-*/
 
-						for ($bc=0; $ord & 0x80; $ord = $ord << 1) { $bc++; }	// calculate number of bytes
-						$buf.=substr($str,$i,$bc);
-						$i+=$bc-1;
+# Martin Kutschker...! this does not work! With russian UTF-8 converted back to windows-1251 it failed... So the old code is re-inserted.
+#						for ($bc=0; $ord & 0x80; $ord = $ord << 1) { $bc++; }	// calculate number of bytes
+#						$buf.=substr($str,$i,$bc);
+#						$i+=$bc-1;
 
 						if (isset($this->parsedCharsets[$charset]['utf8'][$buf]))	{	// If the UTF-8 char-sequence is found then...
 							$mByte = $this->parsedCharsets[$charset]['utf8'][$buf];	// The local number
@@ -602,7 +597,25 @@ class t3lib_cs {
 		return substr($str,$len);
 	}
 
-	// a few stubs of possibly useful functions, which may be impmeneted in PHP
+
+
+
+
+
+
+
+
+
+
+
+
+	/********************************************
+	 *
+	 * String operation functions
+	 *
+	 ********************************************/
+
+	// a few stubs of possibly useful functions, which may be implemented in PHP
 
 	/**
 	 * @param	[type]		$str: ...

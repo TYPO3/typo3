@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,14 +27,26 @@
 /** 
  * Web>File: Editing documents
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant (except textarea field)
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   74: class SC_file_edit 
+ *   92:     function init()	
+ *  141:     function main()	
+ *  201:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 $BACK_PATH='';
 require ('init.php');
@@ -42,26 +54,46 @@ require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class for rendering the file editing screen
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_file_edit {
-	var $content;
-	var $basicff;
+	var $content;		// Module content accumulated.
+	var $basicff;		// File processing object loaded here.
 	var $shortPath;
 	var $title;
 	var $icon;
-	var $target;
-	var $doc;	
+	var $doc;			// Document template object
 
+		// Internal, static: GPvar
+	var $origTarget;		// Original input target
+	var $target;			// The original target, but validated.
+	
+	
 	/**
-	 * Initialize
+	 * Initialize script class
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BACK_PATH,$TYPO3_CONF_VARS;
 		
 			// Setting target, which must be a file reference to a file within the mounts.
-		$this->target = t3lib_div::GPvar('target');
+		$this->target = $this->origTarget = t3lib_div::GPvar('target');
 
 			// Creating file management object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
@@ -93,9 +125,8 @@ class SC_file_edit {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->inDocStyles.= 'DIV.typo3-def {width:98%; height:100%}';
 		$this->doc->JScode=$this->doc->wrapScriptTags('
-			function backToList()	{
+			function backToList()	{	//
 				top.goToModule("file_list");
 			}
 		');
@@ -103,7 +134,9 @@ class SC_file_edit {
 	}
 
 	/**
-	 * Main
+	 * Main function, redering the actual content of the editing page
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER, $LANG, $TYPO3_CONF_VARS;
@@ -123,19 +156,25 @@ class SC_file_edit {
 			$fileContent = t3lib_div::getUrl($this->target);
 			
 				// making the formfields
-			$hValue = 'file_edit.php?target='.rawurlencode(t3lib_div::GPvar("target"));
+			$hValue = 'file_edit.php?target='.rawurlencode($this->origTarget);
 			$code='';
-			$code.='<input type="hidden" name="redirect" value="'.htmlspecialchars($hValue).'" />'.
-					'<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.submit',1).'" />&nbsp;&nbsp;'.
-					'<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose',1).'" onclick="document.editform.redirect.value=\'\';" />&nbsp;&nbsp;'.
-					'<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />';
+			$code.='
+				<div id="c-submit">
+					<input type="hidden" name="redirect" value="'.htmlspecialchars($hValue).'" />
+					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.submit',1).'" />
+					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose',1).'" onclick="document.editform.redirect.value=\'\';" />
+					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
+				</div>	
+				';
 
 				// Edit textarea:
-			$code.='<br />
-				<textarea rows="30" name="file[editfile][0][data]" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:80%','off').'>'.
-				t3lib_div::formatForTextarea($fileContent).
-				'</textarea>
-				<input type="hidden" name="file[editfile][0][target]" value="'.$this->target.'" />
+			$code.='
+				<div id="c-edit">
+					<textarea rows="30" name="file[editfile][0][data]" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:80%','off').'>'.
+					t3lib_div::formatForTextarea($fileContent).
+					'</textarea>
+					<input type="hidden" name="file[editfile][0][target]" value="'.$this->target.'" />
+				</div>
 				<br />';
 
 				// Make shortcut:
@@ -150,15 +189,16 @@ class SC_file_edit {
 			// Ending of section and outputting editing form:
 		$this->content.= $this->doc->sectionEnd();
 		$this->content.=$code;
+
+		$this->content.=$this->doc->endPage();
 	}
 
 	/**
-	 * Ends page and outputs content
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
-		global $SOBE;
-
-		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
 }

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,25 +27,26 @@
 /**
  * Contains the TMENU_LAYERS extension class, tslib_tmenu_layers
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   81: class tslib_tmenu_layers extends tslib_tmenu 
- *  114:     function extProc_init()	
- *  132:     function extProc_RO($key)	
- *  148:     function extProc_beforeLinking($key)	
- *  199:     function extProc_afterLinking($key)	
- *  234:     function extProc_beforeAllWrap($item,$key)	
- *  247:     function isSetIntval($in)	
- *  256:     function extProc_finish ()	
- *  432:     function extCalcBorderWithin($kind,$integer)	
+ *   84: class tslib_tmenu_layers extends tslib_tmenu 
+ *  117:     function extProc_init()	
+ *  135:     function extProc_RO($key)	
+ *  151:     function extProc_beforeLinking($key)	
+ *  202:     function extProc_afterLinking($key)	
+ *  237:     function extProc_beforeAllWrap($item,$key)	
+ *  250:     function isSetIntval($in)	
+ *  259:     function extProc_finish ()	
+ *  435:     function extCalcBorderWithin($kind,$integer)	
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -74,7 +75,9 @@
  * Class extending tslib_tmenu for the creation of text based DHTML menus
  * NOTICE: The contents of this class is copied EXACTLY AS IS from gmenu_layers class! See noties in class (for BEGIN/END) and also 'diff.xmenu_layers.txt'
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=385&cHash=648519dd66
  * @see diff.xmenu_layers.txt
  */

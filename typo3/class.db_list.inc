@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,349 +26,598 @@
 ***************************************************************/
 /** 
  * Include file extending t3lib_recordList
+ * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ * $Id$
+ * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
+ * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   84: class recordList extends t3lib_recordList 
+ *  141:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	
+ *  187:     function generateList()	
+ *  234:     function getSearchBox($formFields=1)	
+ *  277:     function showSysNotesForPage()	
+ *
+ *              SECTION: Various helper functions
+ *  357:     function setDispFields()	
+ *  382:     function thumbCode($row,$table,$field)	
+ *  395:     function makeQuery($table, $id, $addWhere="",$fieldList='*')	
+ *  434:     function setTotalItems()	
+ *  453:     function makeSearchString($table)	
+ *  492:     function linkWrapTable($table,$code)	
+ *  509:     function linkWrapItems($table,$uid,$code,$row)	
+ *  536:     function listURL($altId='',$table=-1,$exclList='')	
+ *  555:     function requestUri()	
+ *  566:     function makeFieldList($table,$dontCheckUser=0)	
+ *  605:     function getTreeObject($id,$depth,$perms_clause)	
+ *
+ * TOTAL FUNCTIONS: 15
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
+
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+/**
+ * Child class for rendering of Web > List (not the final class. see class.db_list_extra)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ * @see localRecordList
+ */
 class recordList extends t3lib_recordList {
+
+		// External, static:
+	var $tableList='';						// Specify a list of tables which are the only ones allowed to be displayed.
+	var $returnUrl='';						// Return URL 
 	var $thumbs = 0;						// Boolean. Thumbnails on records containing files (pictures)
 	var $itemsLimitPerTable = 20;			// default Max items shown per table in "multi-table mode", may be overridden by tables.php
 	var $itemsLimitSingleTable = 100;		// default Max items shown per table in "single-table mode", may be overridden by tables.php
-	var $widthGif = '<img src="clear.gif" width=1 height=4 hspace=160>';
-	var $script = "db_list.php";
-	var $spaceSearchBoxFromLeft = 5;
-	var $allFields=0;
+	var $widthGif = '<img src="clear.gif" width="1" height="4" hspace="160" alt="" />';
+	var $script = 'db_list.php';			// Current script name
+	var $allFields=0;						// Indicates if all available fields for a user should be selected or not.
 	
-		// internal
-	var $JScode = "";	
-	var $HTMLcode = "";
-	var $table="";		// set to the tablename if single-table mode
-	var $tableList="";	// Specify a list of tables which are the only ones allowed to be displayed.
-	var $searchString="";
-	var $searchLevels="";
-	var $returnUrl="";
-	var $showLimit=0;
-	var $pidSelect="";
-	var $iLimit=0;		// "LIMIT " in SQL...
-	var $firstElementNumber=0;
+		// Internal, static: GPvar:
+	var $csvOutput=FALSE;			// If set, csvList is outputted.
+	var $sortField;					// Field, to sort list by
+	var $sortRev;					// Field, indicating to sort in reverse order.
+	var $displayFields;				// Array, containing which fields to display in extended mode
+	var $duplicateField;			// String, can contain the field name from a table which must have duplicate values marked.
+	
+		// Internal, static:
+	var $id;						// Page id
+	var $table='';					// Tablename if single-table mode
+	var $firstElementNumber=0;		// Pointer for browsing list
+	var $searchString='';			// Search string
+	var $searchLevels='';			// Levels to search down.
+	var $showLimit=0;				// Number of records to show
+	var $pidSelect='';				// List of ids from which to select/search etc. (when search-levels are set high). See start()
+	var $perms_clause='';			// Page select permissions
+	var $calcPerms=0;				// Some permissions...
 
-	var $eCounter=0;		// Counting the elements no matter what...
-	var $totalItems="";
-	var $recPath_cache=array();
-	var $csvLines=array();
-	var $perms_clause="";
-	var $csvOutput=0;
-	var $setFields=array();
-	var $calcPerms=0;
-	var $currentTable = array();
-
-	var $temp_countQ="";
-	var $duplicateStack=array();
+		// Internal, dynamic:
+	var $JScode = '';				// JavaScript code accumulation
+	var $HTMLcode = '';				// HTML output 
+	var $iLimit=0;					// "LIMIT " in SQL...
+	var $eCounter=0;				// Counting the elements no matter what...
+	var $totalItems='';				// Set to the total number of items for a table when selecting.
+	var $recPath_cache=array();		// Cache for record path
+	var $setFields=array();			// Fields to display for the current table
+	var $currentTable = array();	// Used for tracking next/prev uids
+	var $temp_countQ='';			// Stores temporary count(*) query
+	var $duplicateStack=array();	// Used for tracking duplicate values of fields
 	
 
+
+
+
+	/**
+	 * Initializes the list generation
+	 * 
+	 * @param	integer		Page id for which the list is rendered. Must be >= 0
+	 * @param	string		Tablename - if extended mode where only one table is listed at a time.
+	 * @param	integer		Browsing pointer.
+	 * @param	string		Search word, if any
+	 * @param	integer		Number of levels to search down the page tree
+	 * @param	integer		Limit of records to be listed.
+	 * @return	void		
+	 */
 	function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	{
-			// Starts the list-generation.
-			// $id is the parent-id from which we generate the list
-			// $table is the tablename - if single-table mode
 		global $TCA;
-		if ($TCA[$table])	{		// single-table mode
-			$this->table=$table;	
-		}
-		$this->id=intval($id);	// sets the parent id
-
-		$this->counter=0;	
-		$this->JScode="";
-		$this->HTMLcode="";
+		
+			// Setting internal variables:			
+		$this->id=intval($id);					// sets the parent id
+		if ($TCA[$table])	$this->table=$table;		// Setting single table mode, if table exists:
 		$this->firstElementNumber=$pointer;
 		$this->searchString=trim($search);
 		$this->searchLevels=trim($levels);
 		$this->showLimit=t3lib_div::intInRange($showLimit,0,10000);
-		$this->csvOutput = t3lib_div::GPvar("csv") ? 1 : 0;
-		$this->sortField = t3lib_div::GPvar("sortField");
-		$this->sortRev = t3lib_div::GPvar("sortRev");
 		
-		if (!$GLOBALS["TYPO3_CONF_VARS"]["GFX"]["thumbnails"])	{
+			// Setting GPvars:
+		$this->csvOutput = t3lib_div::GPvar('csv') ? TRUE : FALSE;
+		$this->sortField = t3lib_div::GPvar('sortField');
+		$this->sortRev = t3lib_div::GPvar('sortRev');
+		$this->displayFields = t3lib_div::GPvar('displayFields');
+		$this->duplicateField = t3lib_div::GPvar('duplicateField');
+		
+			// If thumbnails are disabled, set the "notfound" icon as default:
+		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
 			$this->thumbScript='gfx/notfound_thumb.gif';
 		}
+
+			// Init dynamic vars:
+		$this->counter=0;	
+		$this->JScode='';
+		$this->HTMLcode='';
 		
 			// Set select levels:
 		$sL=intval($this->searchLevels);
-		$this->perms_clause = $GLOBALS["BE_USER"]->getPagePermsClause(1);
+		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		if ($sL>0)	{
 			$tree = $this->getTreeObject($id,$sL,$this->perms_clause);
-			$this->pidSelect = "pid IN (".implode($tree->ids,",").")";
+			$this->pidSelect = 'pid IN ('.implode($tree->ids,',').')';
 		} else {
-			$this->pidSelect = "pid=".intval($id);
+			$this->pidSelect = 'pid='.intval($id);
 		}
 	}
-	function setDispFields()	{
-			// Display fields:
-		$dispFields = $GLOBALS["BE_USER"]->getModuleData("db_list.php/displayFields");
-		$dispFields_in = t3lib_div::GPvar("displayFields");
-		if (is_array($dispFields_in))	{
-			reset($dispFields_in);
-			$tKey = key($dispFields_in);
-			$dispFields[$tKey]=$dispFields_in[$tKey];
-			$GLOBALS["BE_USER"]->pushModuleData("db_list.php/displayFields",$dispFields);
-		}
-		$this->setFields=$dispFields;
-	}
+
+	/**
+	 * Traverses the table(s) to be listed and renders the output code for each:
+	 * The HTML is accumulated in $this->HTMLcode
+	 * Finishes off with a stopper-gif
+	 * 
+	 * @return	void		
+	 */
 	function generateList()	{
-			// For each table we wish to show, this->getTable is called.
-			// Finishes off with a stopper-gif
 		global $TCA;
+
+			// Traverse the TCA table array:
 		reset($TCA);
-		$tableCount = 0;
-		while (list($key)=each($TCA))	{
-			t3lib_div::loadTCA($key);
-			$val=$TCA[$key];
-			if ((!$this->table || $key==$this->table) && (!$this->tableList || t3lib_div::inList($this->tableList,$key)) && $GLOBALS["BE_USER"]->check("tables_select",$key))	{		// Checks that we see only permitted/requested tables:
-				if ($this->table)	{		// iLimit is set depending on whether we're in single- or multi-table mode
-					$this->iLimit=(isset($val["interface"]["maxSingleDBListItems"])?intval($val["interface"]["maxSingleDBListItems"]):$this->itemsLimitSingleTable);
+		while (list($tableName)=each($TCA))	{
+			
+				// Checking if the table should be rendered:
+			if ((!$this->table || $tableName==$this->table) && (!$this->tableList || t3lib_div::inList($this->tableList,$tableName)) && $GLOBALS['BE_USER']->check('tables_select',$tableName))	{		// Checks that we see only permitted/requested tables:
+		
+					// Load full table definitions:
+				t3lib_div::loadTCA($tableName);
+
+					// iLimit is set depending on whether we're in single- or multi-table mode
+				if ($this->table)	{
+					$this->iLimit=(isset($TCA[$tableName]['interface']['maxSingleDBListItems'])?intval($TCA[$tableName]['interface']['maxSingleDBListItems']):$this->itemsLimitSingleTable);
 				} else {
-					$this->iLimit=(isset($val["interface"]["maxDBListItems"])?intval($val["interface"]["maxDBListItems"]):$this->itemsLimitPerTable);
+					$this->iLimit=(isset($TCA[$tableName]['interface']['maxDBListItems'])?intval($TCA[$tableName]['interface']['maxDBListItems']):$this->itemsLimitPerTable);
 				}
 				if ($this->showLimit)	$this->iLimit = $this->showLimit;
-//				$this->iLimit=3;
-				$tableCount++;
 
+					// Setting fields to select:
 				if ($this->allFields)	{
-					$fields = $this->makeFieldList($key);
-					$fields[]="_PATH_";
-					$fields[]="_CONTROL_";
-					if (is_array($this->setFields[$key]))	{
-						$fields = array_intersect($fields,$this->setFields[$key]);
+					$fields = $this->makeFieldList($tableName);
+					$fields[]='_PATH_';
+					$fields[]='_CONTROL_';
+					if (is_array($this->setFields[$tableName]))	{
+						$fields = array_intersect($fields,$this->setFields[$tableName]);
 					} else {
 						$fields = array();
 					}
 				} else {
 					$fields = array();
 				}
-				$this->HTMLcode.=$this->getTable($key, $this->id,implode(",",$fields));
+				
+					// Finally, render the list:
+				$this->HTMLcode.=$this->getTable($tableName, $this->id,implode(',',$fields));
 			}
 		}
 	}
+
+	/**
+	 * Creates the search box
+	 * 
+	 * @param	boolean		If true, the search box is wrapped in its own form-tags
+	 * @return	string		HTML for the search box
+	 */
+	function getSearchBox($formFields=1)	{
+		
+			// Setting form-elements, if applicable:
+		$formElements=array('','');
+		if ($formFields)	{
+			$formElements=array('<form action="'.htmlspecialchars($this->listURL()).'" method="post">','</form>');
+		}
+
+			// Make level selector:
+		$opt=array();
+		$parts = explode('|',$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchLevels'));
+		while(list($kv,$label)=each($parts))	{
+			$opt[] = '<option value="'.$kv.'"'.($kv==intval($this->searchLevels)?' selected="selected"':'').'>'.htmlspecialchars($label).'</option>';
+		}
+		$lMenu = '<select name="search_levels">'.implode('',$opt).'</select>';
+		
+			// Table with the search box:
+		$content.= '
+			'.$formElements[0].'
+			
+				<!--
+					Search box:
+				-->
+				<table border="0" cellpadding="0" cellspacing="0" class="bgColor4" id="typo3-dblist-search">
+					<tr>
+						<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchString',1).'<input type="text" name="search_field" value="'.htmlspecialchars($this->searchString).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(10).' /></td>
+						<td>'.$lMenu.'</td>
+						<td><input type="submit" name="search" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.search',1).'" /></td>
+					</tr>
+					<tr>
+						<td colspan="3">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showRecords',1).':<input type="text" name="showLimit" value="'.htmlspecialchars($this->showLimit?$this->showLimit:'').'"'.$GLOBALS['SOBE']->doc->formWidth(4).' /></td>
+					</tr>
+				</table>			
+			'.$formElements[1];
+		return $content;
+	}
+
+	/**
+	 * Creates the display of sys_notes for the page.
+	 * Relies on the "sys_note" extension to be loaded.
+	 * 
+	 * @return	string		HTML for the sys-notes (if any)
+	 */
+	function showSysNotesForPage()	{
+		global $TCA;
+		
+		$out='';
+
+			// Checking if extension is loaded:
+		if (!t3lib_extMgm::isLoaded('sys_note'))	return '';
+
+			// Create query for selecting the notes:
+		$delClause = t3lib_BEfunc::deleteClause('sys_note');
+		$query = 'SELECT * FROM sys_note where pid in ('.$this->id.') AND (!personal OR cruser="'.$GLOBALS['BE_USER']->user['uid'].'")'.$delClause;
+		
+			// Executing query:
+		$result = mysql(TYPO3_db,$query);
+		if (mysql_error()) {echo mysql_error(); debug($query);}
+		$dbCount = mysql_num_rows($result);
+		
+			// If some notes were found, render them:
+		if ($dbCount)	{
+			$cat = array();
+			
+				// Load full table description:
+			t3lib_div::loadTCA('sys_note');
+			
+				// Traverse note-types and get labels:
+			if ($TCA['sys_note'] && $TCA['sys_note']['columns']['category'] && is_array($TCA['sys_note']['columns']['category']['config']['items']))	{
+				foreach($TCA['sys_note']['columns']['category']['config']['items'] as $el)	{
+					$cat[$el[1]]=$GLOBALS['LANG']->sL($el[0]);
+				}
+			}
+			
+				// For each note found, make rendering:
+			while($row=mysql_fetch_assoc($result))	{
+			
+					// Create content:
+				$iconImg = t3lib_iconWorks::getIconImage('sys_note',$row,$this->backPath,'');
+				$subject = htmlspecialchars($row['subject']);
+				$fields = array();
+				$fields['Author:'] = htmlspecialchars($row['author'].($row['email'] && $row['author'] ? ', ':'').$row['email']);
+				$fields['Category:'] = htmlspecialchars($cat[$row['category']]);
+				$fields['Note:'] = nl2br(htmlspecialchars($row['message']));
+				
+					// Compile content:
+				$out.='
+
+			
+				<!--
+					Sys-notes for the db_list.php:
+				-->
+					<table border="0" cellpadding="1" cellspacing="1" id="typo3-dblist-sysnotes">
+						<tr><td colspan="2" class="bgColor2">'.$iconImg.'<strong>'.$subject.'</strong></td></tr>
+						<tr><td class="bgColor4">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.category',1).'</td><td class="bgColor4">'.$fields['Category:'].'</td></tr>
+						<tr><td class="bgColor4">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.author',1).'</td><td class="bgColor4">'.$fields['Author:'].'</td></tr>
+						<tr><td class="bgColor4">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.note',1).'</td><td class="bgColor4">'.$fields['Note:'].'</td></tr>
+					</table>
+				';
+			}
+		}
+		return $out;
+	}
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Various helper functions
+	 *
+	 ******************************/
+
+	/**
+	 * Setting the field names to display in extended list.
+	 * Sets the internal variable $this->setFields
+	 * 
+	 * @return	void		
+	 */
+	function setDispFields()	{
+
+			// Getting from session:
+		$dispFields = $GLOBALS['BE_USER']->getModuleData('db_list.php/displayFields');
+
+			// If fields has been inputted, then set those as the value and push it to session variable:
+		if (is_array($this->displayFields))	{
+			reset($this->displayFields);
+			$tKey = key($this->displayFields);
+			$dispFields[$tKey]=$this->displayFields[$tKey];
+			$GLOBALS['BE_USER']->pushModuleData('db_list.php/displayFields',$dispFields);
+		}
+			
+			// Setting result:
+		$this->setFields=$dispFields;
+	}
+
+	/**
+	 * Create thumbnail code for record/field
+	 * 
+	 * @param	array		Record array
+	 * @param	string		Table (record is from)
+	 * @param	string		Field name for which thumbsnail are to be rendered.
+	 * @return	string		HTML for thumbnails, if any.
+	 */
 	function thumbCode($row,$table,$field)	{
 		return t3lib_BEfunc::thumbCode($row,$table,$field,$this->backPath,$this->thumbScript);
 	}
-	function makeQuery($table, $id, $addWhere="",$fieldList="*")	{
-			// returns the SQL-query to select the records from a table $table with pid = $id
-			// Depends on the global var $perms_clause to exist!!
-		global $TCA,$perms_clause;
-		$orderBy = ($TCA[$table]["ctrl"]["sortby"]) ? "ORDER BY ".$TCA[$table]["ctrl"]["sortby"] : $TCA[$table]["ctrl"]["default_sortby"];
+
+	/**
+	 * Returns the SQL-query to select the records from a table $table with pid = $id
+	 * 
+	 * @param	string		Table name
+	 * @param	integer		Page id (NOT USED! $this->pidSelect is used instead)
+	 * @param	string		Additional part for where clause
+	 * @param	string		Field list to select, * for all (for "SELECT [fieldlist] FROM ...")
+	 * @return	string		Returns query.
+	 */
+	function makeQuery($table, $id, $addWhere="",$fieldList='*')	{
+		global $TCA;
+
+			// Set ORDER BY:
+		$orderBy = ($TCA[$table]['ctrl']['sortby']) ? 'ORDER BY '.$TCA[$table]['ctrl']['sortby'] : $TCA[$table]['ctrl']['default_sortby'];
 		if ($this->sortField)	{
 			if (in_array($this->sortField,$this->makeFieldList($table,1)))	{
-				$orderBy = "ORDER BY ".$this->sortField;
-				if ($this->sortRev)	$orderBy.=" DESC";
+				$orderBy = 'ORDER BY '.$this->sortField;
+				if ($this->sortRev)	$orderBy.=' DESC';
 			}
 		}
 		
-		$limit = ($this->iLimit) ? "LIMIT ".($this->firstElementNumber ? ($this->firstElementNumber)."," : "" ).($this->iLimit+1) : "";
-		$pC = ($table=="pages" && $perms_clause)?" AND ".$perms_clause:"";
+			// Set LIMIT:
+		$limit = ($this->iLimit) ? 'LIMIT '.($this->firstElementNumber ? ($this->firstElementNumber).',' : '' ).($this->iLimit+1) : '';
+		
+			// Filtering on displayable pages (permissions):
+		$pC = ($table=='pages' && $this->perms_clause)?' AND '.$this->perms_clause:'';
+		
+			// Adding search constraints:
 		$search = $this->makeSearchString($table);
 
-		$query = sprintf("SELECT ".$fieldList." FROM %s WHERE ".$this->pidSelect." %s %s %s %s %s %s",
+			// Compiling query:
+		$query = sprintf('SELECT '.$fieldList.' FROM %s WHERE '.$this->pidSelect.' %s %s %s %s %s %s',
 				$table, $pC, t3lib_BEfunc::deleteClause($table), $addWhere, $search, $orderBy, $limit);
-		$this->temp_countQ = sprintf("SELECT count(*) FROM %s WHERE ".$this->pidSelect." %s %s %s %s",
+				
+			// Make same query, but for counting records:
+		$this->temp_countQ = sprintf('SELECT count(*) FROM %s WHERE '.$this->pidSelect.' %s %s %s %s',
 				$table, $pC, t3lib_BEfunc::deleteClause($table), $addWhere, $search);
-//		debug($query,1);
+
+			// Return query:
 		return $query;
 	}
+
+	/**
+	 * Based on $this->temp_countQ (query for selecting count(*) from a table) it will select the number of records and set the value in $this->totalItems
+	 * 
+	 * @return	void		
+	 * @see makeQuery()
+	 */
 	function setTotalItems()	{
 		$result = mysql(TYPO3_db,$this->temp_countQ);
 		if (mysql_error())	{
-			echo "<HR>
-			<strong>MySQL error:</strong> ".mysql_error()."<BR>
-			<strong>Query:</strong> ".$this->temp_countQ."<BR>
-			<HR>
-			";
+			echo '<hr />
+			<strong>MySQL error:</strong> '.mysql_error().'<br />
+			<strong>Query:</strong> '.$this->temp_countQ.'<br />
+			<hr />
+			';
 		}
 		list($rCount) = mysql_fetch_row($result);
 		$this->totalItems = $rCount;
 	}
+
+	/**
+	 * Creates part of query for searching after a word ($this->searchString) fields in input table
+	 * 
+	 * @param	string		Table, in which the fields are being searched.
+	 * @return	string		Returns part of WHERE-clause for searching, if applicable.
+	 */
 	function makeSearchString($table)	{
 		global $TCA;
+		
+			// Make query, only if table is valid and a search string is actually defined:
 		if ($TCA[$table] && $this->searchString)	{
+		
+				// Loading full table description - we need to traverse fields:
 			t3lib_div::loadTCA($table);
 
+				// Initialize field array:
 			$sfields=array();
-			$sfields[]="uid";
+			$sfields[]='uid';	// Adding "uid" by default.
 
-			$columns = $TCA[$table]["columns"];
-			reset($columns);
-			while(list($fieldName,$info)=each($columns))	{
-				$type = $info["config"]["type"];
-				if ($type=="text" || ($type=="input" && !ereg("date|time|int",$info["config"]["eval"])))	{
+				// Traverse the configured columns and add all columns that can be searched:
+			foreach($TCA[$table]['columns'] as $fieldName => $info)	{
+				if ($info['config']['type']=='text' || ($info['config']['type']=='input' && !ereg('date|time|int',$info['config']['eval'])))	{
 					$sfields[]=$fieldName;
 				}
 			}
-			$like=" LIKE '%".addslashes($this->searchString)."%'";
+			
+				// If search-fields were defined (and there always are) we create the query:
 			if (count($sfields))	{
-				$queryPart = " AND (".implode($like." OR ",$sfields).$like.")";
+				$like=' LIKE "%'.addslashes($this->searchString).'%"';		// Free-text searching...
+				$queryPart = ' AND ('.implode($like.' OR ',$sfields).$like.')';
+				
+					// Return query:
 				return $queryPart;
 			}
 		}
 	}
+
+	/**
+	 * Returns the title (based on $code) of a table ($table) with the proper link around. For headers over tables.
+	 * The link will cause the display of all extended mode or not for the table.
+	 * 
+	 * @param	string		Table name
+	 * @param	string		Table label
+	 * @return	string		The linked table label
+	 */
 	function linkWrapTable($table,$code)	{
-			// Returns the title (based on $code) of a table ($table) with the proper link around
 		if ($this->table!=$table)	{
-			return '<A HREF="'.$this->listURL("",$table).'">'.$code.'</a>';
+			return '<a href="'.htmlspecialchars($this->listURL('',$table)).'">'.$code.'</a>';
 		} else {
-			return '<A HREF="'.$this->listURL("","","sortField,sortRev,table").'">'.$code.'</a>';
+			return '<a href="'.htmlspecialchars($this->listURL('','','sortField,sortRev,table')).'">'.$code.'</a>';
 		}
 	}
+
+	/**
+	 * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for 'pages'-records a link to the level of that record...)
+	 * 
+	 * @param	string		Table name
+	 * @param	integer		Item uid
+	 * @param	string		Item title (not htmlspecialchars()'ed yet)
+	 * @param	array		Item row
+	 * @return	string		The item title. Ready for HTML output (is htmlspecialchars()'ed)
+	 */
 	function linkWrapItems($table,$uid,$code,$row)	{
-			// Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for "pages"-records a link to the level of that record...)
-		if (!strcmp($code,"")) {$code="<i>[".$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.no_title")."]</i> - ".t3lib_BEfunc::getRecordTitle($table,$row);}
-		$code=t3lib_div::fixed_lgd("&nbsp;".$code,$this->fixedL);
-		if ($table=="pages")	{
-			return '<A HREF="'.$this->listURL($uid).'">'.$code.'</a>';
+
+			// If the title is blank, make a "no title" label:
+		if (!strcmp($code,'')) {
+			$code='<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i> - '.htmlspecialchars(t3lib_BEfunc::getRecordTitle($table,$row));
+		} else {
+			$code=htmlspecialchars(t3lib_div::fixed_lgd($code,$this->fixedL));
+		}
+		
+			// Output the label now:
+		if ($table=='pages')	{
+			return '<a href="'.htmlspecialchars($this->listURL($uid)).'">'.$code.'</a>';
 		} else {
 			return $code;
 		}
 	}
-	function listURL($altId="",$table=-1,$exclList="")	{
+
+	/**
+	 * Creates the URL to this script, including all relevant GPvars
+	 * Fixed GPvars are id, table, imagemode, returlUrl, search_field, search_levels and showLimit
+	 * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
+	 * 
+	 * @param	string		Alternative id value. Enter blank string for the current id ($this->id)
+	 * @param	string		Tablename to display. Enter "-1" for the current table.
+	 * @param	string		Commalist of fields NOT to include ("sortField" or "sortRev")
+	 * @return	string		URL
+	 */
+	function listURL($altId='',$table=-1,$exclList='')	{
 		return $this->script.
-			'?id='.(strcmp($altId,"")?$altId:$this->id).
+			'?id='.(strcmp($altId,'')?$altId:$this->id).
 			'&table='.rawurlencode($table==-1?$this->table:$table).
 			($this->thumbs?'&imagemode='.$this->thumbs:'').
-			($this->returnUrl?"&returnUrl=".rawurlencode($this->returnUrl):"").
-			($this->searchString?"&search_field=".rawurlencode($this->searchString):"").
-			($this->searchLevels?"&search_levels=".rawurlencode($this->searchLevels):"").
-			($this->showLimit?"&showLimit=".rawurlencode($this->showLimit):"").
-			((!$exclList || !t3lib_div::inList($exclList,"sortField")) && $this->sortField?"&sortField=".rawurlencode($this->sortField):"").
-			((!$exclList || !t3lib_div::inList($exclList,"sortRev")) && $this->sortRev?"&sortRev=".rawurlencode($this->sortRev):"")
+			($this->returnUrl?'&returnUrl='.rawurlencode($this->returnUrl):'').
+			($this->searchString?'&search_field='.rawurlencode($this->searchString):'').
+			($this->searchLevels?'&search_levels='.rawurlencode($this->searchLevels):'').
+			($this->showLimit?'&showLimit='.rawurlencode($this->showLimit):'').
+			((!$exclList || !t3lib_div::inList($exclList,'sortField')) && $this->sortField?'&sortField='.rawurlencode($this->sortField):'').
+			((!$exclList || !t3lib_div::inList($exclList,'sortRev')) && $this->sortRev?'&sortRev='.rawurlencode($this->sortRev):'')
 			;
 	}
+
+	/**
+	 * Returns "requestUri" - which is basically listURL
+	 * 
+	 * @return	string		Content of ->listURL()
+	 */
 	function requestUri()	{
 		return $this->listURL();
 	}
-	function getSearchBox($formFields=1)	{
-		if ($GLOBALS["CLIENT"]["BROWSER"]=="net")	{
-//			$content.= '<img src=clear.gif width=1 height=100><BR>';
-		}
-		$formElements=array("","");
-		if ($formFields)	{
-			$formElements=array('<form action="'.$this->listURL().'" method="POST">','</form>');
-		}
-			// Make level selector:
-		$opt=array();
-		$parts = explode("|",$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.enterSearchLevels"));
-		while(list($kv,$label)=each($parts))	{
-			$opt[] = '<option value="'.$kv.'"'.($kv==intval($this->searchLevels)?" selected":"").'>'.htmlspecialchars($label).'</option>';
-		}
-		$lMenu = '<select name="search_levels">'.implode("",$opt).'</select>';
-		
-			// Table with the search box:
-		$content.= '
-		<table border=0 cellpadding=1 cellspacing=0>
-		'.$formElements[0].'
-			<tr>
-				<td><img src=clear.gif width='.$this->spaceSearchBoxFromLeft.' height=1></td>
-				<td bgcolor="#9BA1A8">
-					<table border=0 cellpadding=0 cellspacing=0 bgcolor="'.$GLOBALS["TBE_TEMPLATE"]->bgColor4.'">
-					<tr>
-						<td nowrap>&nbsp;'.$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.enterSearchString").'&nbsp;&nbsp;<input type="Text" name="search_field" value="'.htmlspecialchars($this->searchString).'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(10).'></td>
-						<td>'.$lMenu.'</td>
-						<td><input type="Submit" name="search" value="'.$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.search").'"></td>
-					</tr>
-					<tr>
-						<td nowrap colspan=3>&nbsp;'.$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.showRecords").':&nbsp;&nbsp;<input type="text" name="showLimit" value="'.($this->showLimit?$this->showLimit:"").'"'.$GLOBALS["SOBE"]->doc->formWidth(4).'></td>
-					</tr>
-					</table>			
-				</td>
-			</tr>'.$formElements[1].'
-		</table>
-		';
-		return $content;
-	}
+
+	/**
+	 * Makes the list of fields to select for a table
+	 * 
+	 * @param	string		Table name
+	 * @param	boolean		If set, users access to the field (non-exclude-fields) is NOT checked.
+	 * @return	array		Array, where values are fieldnames to include in query
+	 */
 	function makeFieldList($table,$dontCheckUser=0)	{
 		global $TCA,$BE_USER;
+		
+			// Init fieldlist array:
 		$fieldListArr = array();
+
+			// Check table:		
 		if (is_array($TCA[$table]))	{
 			t3lib_div::loadTCA($table);
-			reset($TCA[$table]["columns"]);
-			while(list($fN,$fieldValue)=each($TCA[$table]["columns"]))	{
+
+				// Traverse configured columns and add them to field array, if available for user.
+			foreach($TCA[$table]['columns'] as $fN => $fieldValue)	{
 				if ($dontCheckUser || 
-					((!$fieldValue["exclude"] || $BE_USER->check("non_exclude_fields",$table.":".$fN)) && $fieldValue["config"]["type"]!="passthrough"))	{
+					((!$fieldValue['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$fN)) && $fieldValue['config']['type']!='passthrough'))	{
 					$fieldListArr[]=$fN;
 				}
 			}
+			
+				// Add special fields:
 			if ($dontCheckUser || $BE_USER->isAdmin())	{
-				$fieldListArr[]="uid";
-				$fieldListArr[]="pid";
-				if ($TCA[$table]["ctrl"]["tstamp"])	$fieldListArr[]=$TCA[$table]["ctrl"]["tstamp"];
-				if ($TCA[$table]["ctrl"]["crdate"])	$fieldListArr[]=$TCA[$table]["ctrl"]["crdate"];
-				if ($TCA[$table]["ctrl"]["cruser_id"])	$fieldListArr[]=$TCA[$table]["ctrl"]["cruser_id"];
-				if ($TCA[$table]["ctrl"]["sortby"])	$fieldListArr[]=$TCA[$table]["ctrl"]["sortby"];
+				$fieldListArr[]='uid';
+				$fieldListArr[]='pid';
+				if ($TCA[$table]['ctrl']['tstamp'])	$fieldListArr[]=$TCA[$table]['ctrl']['tstamp'];
+				if ($TCA[$table]['ctrl']['crdate'])	$fieldListArr[]=$TCA[$table]['ctrl']['crdate'];
+				if ($TCA[$table]['ctrl']['cruser_id'])	$fieldListArr[]=$TCA[$table]['ctrl']['cruser_id'];
+				if ($TCA[$table]['ctrl']['sortby'])	$fieldListArr[]=$TCA[$table]['ctrl']['sortby'];
 			}
 		}
 		return $fieldListArr;
 	}
+
+	/**
+	 * Creates an instance of t3lib_pageTree which will select a page tree to $depth and return the object. In that object we will find the ids of the tree.
+	 * 
+	 * @param	integer		Page id.
+	 * @param	integer		Depth to go down.
+	 * @param	string		Select clause
+	 * @return	object		t3lib_pageTree instance with created list of ids.
+	 */
 	function getTreeObject($id,$depth,$perms_clause)	{
-		$tree = t3lib_div::makeInstance("t3lib_pageTree");
-		$tree->init("AND ".$perms_clause);
+		$tree = t3lib_div::makeInstance('t3lib_pageTree');
+		$tree->init('AND '.$perms_clause);
 		$tree->makeHTML=0;
-		$tree->fieldArray = Array("uid","php_tree_stop");
+		$tree->fieldArray = Array('uid','php_tree_stop');
 		if ($depth)	{
-			$tree->getTree($id, $depth, "");
+			$tree->getTree($id, $depth, '');
 		}
 		$tree->ids[]=$id;
-//		debug($tree->ids);
 		return $tree;
 	}
-	function showSysNotesForPage()	{
-		global $TCA;
 
-		if (!t3lib_extMgm::isLoaded("sys_note"))	return "";
-
-		$delClause = t3lib_BEfunc::deleteClause("sys_note");
-		$query = "SELECT * FROM sys_note where pid in (".$this->id.") AND (!personal OR cruser='".$GLOBALS["BE_USER"]->user["uid"]."')".$delClause;
-		$result = mysql(TYPO3_db,$query);
-		if (mysql_error()) {echo mysql_error(); debug($query);}
-		$dbCount = mysql_num_rows($result);
-		if ($dbCount)	{
-			$cat = array();
-			t3lib_div::loadTCA("sys_note");
-			if ($TCA["sys_note"] && $TCA["sys_note"]["columns"]["category"] && is_array($TCA["sys_note"]["columns"]["category"]["config"]["items"]))	{
-				reset($TCA["sys_note"]["columns"]["category"]["config"]["items"]);
-				while(list(,$el)=each($TCA["sys_note"]["columns"]["category"]["config"]["items"]))	{
-					$cat[$el[1]]=$GLOBALS["LANG"]->sL($el[0]);
-				}
-			}
-			while($row=mysql_fetch_assoc($result))	{
-				$icon= t3lib_iconWorks::getIcon("sys_note",$row);
-				$fields=array();
-				$subject=$row["subject"];
-
-				$fields["Author:"]=$row["author"].($row["email"] && $row["author"] ? ", ":"").$row["email"];
-				$fields["Category:"]=$cat[$row["category"]];
-				$fields["Note:"]=nl2br($row[message]);
-				$bgcol=' bgcolor="'.$GLOBALS["SOBE"]->doc->bgColor2.'"';
-				$bgcol2=' bgcolor="'.$GLOBALS["SOBE"]->doc->bgColor4.'"';
-				
-				$out.='
-				<table border=0 cellpadding=1 cellspacing=1 width=1>
-					<tr><td colspan=2'.$bgcol.'><img src="'.$icon.'" width=18 height=16 align=top><strong>'.$subject.'</strong></td></tr>
-					<tr><td'.$bgcol2.'>'.$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.category").'</td><td'.$bgcol2.'>'.$fields["Category:"].'</td></tr>
-					<tr><td'.$bgcol2.'>'.$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.author").'</td><td'.$bgcol2.'>'.$fields["Author:"].'</td></tr>
-					<tr><td'.$bgcol2.'>'.$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.note").'</td><td'.$bgcol2.'>'.$fields["Note:"].'</td></tr>
-					<tr><td colspan=2><img src=clear.gif width=380 height=1></td></tr>
-				</table>
-				';
-//				debug($fields);
-			}
-		}
-		return $out ? "".$out : "";
-	}
 }
 
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/class.db_list.inc"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/class.db_list.inc"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list.inc'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list.inc']);
 }
-
 ?>

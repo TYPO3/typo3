@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -30,23 +30,27 @@
  * This script prints out all language-labels in TYPO3 and provides a way of checking for missing translations.
  * Must be logged in as admin.
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 
 die("<strong>This script is for typo3 development and maintenance only. You'll probably find it useless for what you do.</strong><br><br>MUST remove this line in descriptions script before it'll work for you. This is a security precaution. Anyways, you must be logged in as admin as well.");
  
  
-$BACK_PATH="../";
-define("TYPO3_MOD_PATH", "dev/");
-require ($BACK_PATH."init.php");
+$BACK_PATH='../';
+define('TYPO3_MOD_PATH', 'dev/');
+require ($BACK_PATH.'init.php');
 
-if (!$BE_USER->user["admin"])	die("You must be logged in as admin user!");
+if (!$BE_USER->user['admin'])	die('You must be logged in as admin user!');
 
 
 // ***************************
 // Registering Incoming data
 // ***************************
-t3lib_div::setGPvars("table,uid,hide");
+t3lib_div::setGPvars('table,uid,hide');
 //debug($HTTP_POST_VARS);
 
 
@@ -54,8 +58,8 @@ t3lib_div::setGPvars("table,uid,hide");
 // Functions
 // ***************************
 function getTemplateOutput($row)	{
-	$title = "TITLE: ".$row["title"]."                                                                      ";
-	$info = "PID: ".$row["pid"]."  UID: ".$row["uid"]."                                                                    ";
+	$title = 'TITLE: '.$row['title'].'                                                                      ';
+	$info = 'PID: '.$row['pid'].'  UID: '.$row['uid'].'                                                                    ';
 	
 	$out="";
 	$out.="[*******************************************************************]\n";
@@ -72,7 +76,7 @@ function getTemplateOutput($row)	{
 	$out.="[***                           SETUP                             ***]\n";
 	$out.="[*******************************************************************]\n";
 
-	$out.=htmlspecialchars($row["config"]);
+	$out.=htmlspecialchars($row['config']);
 	$out.="\n\n";
 	
 	return $out;
@@ -100,8 +104,8 @@ if (!$hide)	{
 Table:
 <br>
 <select name="table">
-	<option value="static_template"<?php if($table=="static_template") echo" selected";?>>static_template</option>
-	<option value="sys_template"<?php if($table=="sys_template") echo" selected";?>>sys_template</option>
+	<option value="static_template"<?php if($table=='static_template') echo' selected';?>>static_template</option>
+	<option value="sys_template"<?php if($table=='sys_template') echo' selected';?>>sys_template</option>
 </select><br>
 Specific Uid: <br>
 <input type="text" name="uid" size="5"><br>
@@ -114,18 +118,18 @@ Hide this control:<br>
 <?php 
 }
 
-if ($table=="sys_template" || $table=="static_template")	{
-	$out="";
-	$where = ($table=="sys_template") ? "NOT deleted" : "1=1";
-	if (intval($uid))	$where.=" AND uid=".intval($uid);
-	$query = "SELECT uid,pid,constants,config,title FROM ".$table." WHERE ".$where." ORDER BY title";
+if ($table=='sys_template' || $table=='static_template')	{
+	$out='';
+	$where = ($table=='sys_template') ? 'NOT deleted' : '1=1';
+	if (intval($uid))	$where.=' AND uid='.intval($uid);
+	$query = 'SELECT uid,pid,constants,config,title FROM '.$table.' WHERE '.$where.' ORDER BY title';
 	$res = mysql(TYPO3_db,$query);
 	while($row=mysql_fetch_assoc($res))	{
 		$out.= getTemplateOutput($row);
 	}
-	echo (!$hide?"MD5: ".md5($out):"")."<PRE>
-".$out."
-</PRE>";
+	echo (!$hide?'MD5: '.md5($out):'').'<PRE>
+'.$out.'
+</PRE>';
 
 }
 

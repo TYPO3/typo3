@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,8 +26,25 @@
 ***************************************************************/
 /** 
  * This is the frameset to the file/record browser window
+ * 
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * XHTML-frames compatible.
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   66: class SC_browser 
+ *   77:     function main()	
+ *  121:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 require ('init.php');
 require ('template.php');
@@ -42,11 +59,13 @@ require ('template.php');
 /**
  * Script Class, putting the frameset together.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_browser {
+
+		// Internal, dynamic
 	var $content;
 
 	/**
@@ -56,55 +75,36 @@ class SC_browser {
 	 * @return	void		
 	 */
 	function main()	{
+		
+			// Setting GPvars:
 		$mode =t3lib_div::GPvar('mode');
+		$bparams = t3lib_div::GPvar('bparams');
+		
 
 			// Set doktype:
-		$GLOBALS["TBE_TEMPLATE"]->docType="xhtml_frames";
-		$GLOBALS["TBE_TEMPLATE"]->JScode= '
-			<script type="text/javascript">
-				  /*<![CDATA[*/
-				  	//
-				function closing()	{
-					if (parent.typoWin)	{
-						if (parent.typoWin.clipBrd) {
-							parent.typoWin.focus();
-							parent.typoWin.clipBrd.detachBrowser();
-						} else {
-							parent.typoWin.browserWin="";
-						}
-					}
+		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
+		$GLOBALS['TBE_TEMPLATE']->JScode=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+				function closing()	{	//
 					close();
 				}
-					//
-				function setParams(mode,params)	{
+				function setParams(mode,params)	{	//
 					parent.content.document.location = "browse_links.php?mode="+mode+"&bparams="+params;
 				}
-			
-				if (!parent.typoWin)	{
-					if (window.opener)	{
-						parent.typoWin=window.opener;
-					} else {
-						alert("ERROR: Sorry, no link to main window... Closing");	// clipboard is opened
-						close();
-					}
+				if (!window.opener)	{
+					alert("ERROR: Sorry, no link to main window... Closing");
+					close();
 				}
-				//alert(parent.typoWin);
-			
-				if (parent.typoWin)	{
-					window.typoWin = parent.typoWin;
-					theBrowser = parent.typoWin.theBrowser;
-				}
-
-				/*]]>*/
-			</script>
-		';
+		');
 		
-		$this->content.=$GLOBALS["TBE_TEMPLATE"]->startPage('TYPO3 Element Browser');
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
+
+			// URL for the inner main frame:
+		$url = 'browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode($bparams);
 
 			// Create the frameset for the window:
 		$this->content.='
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0" onunload="closing();">
-				<frame name="content" src="'.htmlspecialchars('browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode(t3lib_div::GPvar('bparams'))).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" onblur="closing();" />
+				<frame name="content" src="'.htmlspecialchars($url).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" onblur="closing();" />
 				<frame name="menu" src="dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		';

@@ -1,7 +1,8 @@
 <?php
 /**
-* Default  TCA_DESCR for "sys_filemounts"
-*/
+ * Default  TCA_DESCR for "sys_filemounts"
+ * TYPO3 CVS ID: $Id$
+ */
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -25,6 +26,72 @@ Your PHP-configuration may also impose other restrictions on you if safe-mode li
 		'hidden.details' => 'All backend users using the mount will not have access anymore. This includes \'Admin\'-users.',
 		'base.description' => 'Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.',
 		'_base.seeAlso' => 'sys_filemounts:path',
+	),
+	'dk' => Array (
+	),
+	'de' => Array (
+	),
+	'no' => Array (
+	),
+	'it' => Array (
+	),
+	'fr' => Array (
+	),
+	'es' => Array (
+	),
+	'nl' => Array (
+	),
+	'cz' => Array (
+	),
+	'pl' => Array (
+	),
+	'si' => Array (
+	),
+	'fi' => Array (
+	),
+	'tr' => Array (
+	),
+	'se' => Array (
+	),
+	'pt' => Array (
+	),
+	'ru' => Array (
+	),
+	'ro' => Array (
+	),
+	'ch' => Array (
+	),
+	'sk' => Array (
+	),
+	'lt' => Array (
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+	),
+	'br' => Array (
+	),
+	'et' => Array (
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
 	),
 );
 ?>

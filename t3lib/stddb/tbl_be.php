@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,9 +27,10 @@
 /** 
  * Contains the dynamic configuation of the fields in the core tables of TYPO3: be_users, be_groups and sys_filemounts
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @see tables.php, tables.sql
  */
 
@@ -133,9 +134,12 @@ $TCA['be_users'] = Array (
 		'file_mountpoints' => Array (
 			'label' => 'File Mounts:',
 			'config' => Array (
-				'type' => 'group',
-				'internal_type' => 'db',
-					'allowed' => 'sys_filemounts',
+				'type' => 'select',
+				'foreign_table' => 'sys_filemounts',
+				'foreign_table_where' => 'ORDER BY sys_filemounts.title',
+#				'type' => 'group',
+#				'internal_type' => 'db',
+#					'allowed' => 'sys_filemounts',
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
@@ -293,6 +297,9 @@ $TCA['be_users'] = Array (
 					Array('Bulgarian', 'bg'),
 					Array('Brazilian Portuguese', 'br'),
 					Array('Estonian', 'et'),
+					Array('Arabic', 'ar'),
+					Array('Hebrew', 'he'),
+					Array('Ukrainian', 'ua'),
 				)
 			)
 		),

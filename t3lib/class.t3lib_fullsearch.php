@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,26 +28,87 @@
  * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
  * However the class has a general principle in it which may be used in the web/export module.
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   83: class t3lib_fullsearch 
+ *   98:     function form()	
+ *  112:     function makeStoreControl()	
+ *  151:     function initStoreArray()	
+ *  171:     function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)	
+ *  188:     function addToStoreQueryConfigs($storeQueryConfigs,$index)	
+ *  204:     function saveQueryInAction($uid)	
+ *  254:     function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)	
+ *  270:     function procesStoreControl()	
+ *  343:     function queryMaker()	
+ *  407:     function getQueryResultCode($mQ,$res,$table)	
+ *  514:     function csvValues($row,$delim=",",$quote='"')	
+ *  524:     function tableWrap($str)	
+ *  533:     function search()	
+ *  591:     function resultRowDisplay($row,$conf,$table)	
+ *  614:     function resultRowTitles($row,$conf,$table)	
+ *
+ * TOTAL FUNCTIONS: 15
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
+ * However the class has a general principle in it which may be used in the web/export module.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
+ */
 class t3lib_fullsearch {
 	var $storeList = "search_query_smallparts,queryConfig,queryTable,queryFields,queryLimit,queryOrder,queryOrderDesc,queryOrder2,queryOrder2Desc,queryGroup,search_query_makeQuery";
 	var $downloadScript = "index.php";
 	var $formW=48;
 	var $noDownloadB=0;
 	
+
+
+
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function form()	{
 		$out='
 		Search Word:<BR>
-		<input type="text" name="SET[sword]" value="'.$GLOBALS["SOBE"]->MOD_SETTINGS["sword"].'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(20).'><input type="submit" name="submit" value="Search All Records">
+		<input type="text" name="SET[sword]" value="'.htmlspecialchars($GLOBALS["SOBE"]->MOD_SETTINGS["sword"]).'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(20).'><input type="submit" name="submit" value="Search All Records">
 		';
 		
 		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function makeStoreControl()	{
 			// Load/Save
 		$storeArray = $this->initStoreArray();
@@ -72,7 +133,7 @@ class t3lib_fullsearch {
 			}
 		}
 
-		$TDparams=' nowrap bgcolor="'.$GLOBALS["TBE_TEMPLATE"]->bgColor4.'"';
+		$TDparams=' nowrap="nowrap" class="bgColor4"';
 		$tmpCode='
 		<table border=0 cellpadding=3 cellspacing=1>
 		<tr'.$TDparams.'><td><select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">'.implode(chr(10),$opt).'</select><input type="submit" name="storeControl[LOAD]" value="Load"></td></tr>		
@@ -81,6 +142,12 @@ class t3lib_fullsearch {
 		';
 		return $tmpCode;	
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function initStoreArray()	{
 		$storeArray=array(
 			"0" => "[New]"
@@ -93,6 +160,14 @@ class t3lib_fullsearch {
 		}
 		return $storeArray;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$storeQueryConfigs: ...
+	 * @param	[type]		$storeArray: ...
+	 * @return	[type]		...
+	 */
 	function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)	{
 		if (is_array($storeQueryConfigs))	{
 			reset($storeQueryConfigs);
@@ -102,6 +177,14 @@ class t3lib_fullsearch {
 		}
 		return $storeQueryConfigs;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$storeQueryConfigs: ...
+	 * @param	[type]		$index: ...
+	 * @return	[type]		...
+	 */
 	function addToStoreQueryConfigs($storeQueryConfigs,$index)	{
 		$keyArr = explode(",",$this->storeList);
 		reset($keyArr);
@@ -111,6 +194,13 @@ class t3lib_fullsearch {
 		}
 		return $storeQueryConfigs;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$uid: ...
+	 * @return	[type]		...
+	 */
 	function saveQueryInAction($uid)	{
 		if (t3lib_extMgm::isLoaded("sys_action"))	{
 			$keyArr = explode(",",$this->storeList);
@@ -152,6 +242,15 @@ class t3lib_fullsearch {
 			return $qOK;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$storeQueryConfigs: ...
+	 * @param	[type]		$storeIndex: ...
+	 * @param	[type]		$writeArray: ...
+	 * @return	[type]		...
+	 */
 	function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)	{
 		if ($storeQueryConfigs[$storeIndex])	{
 			$keyArr = explode(",",$this->storeList);
@@ -162,6 +261,12 @@ class t3lib_fullsearch {
 		}
 		return $writeArray;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function procesStoreControl()	{
 		$storeArray = $this->initStoreArray();
 		$storeQueryConfigs = unserialize($GLOBALS["SOBE"]->MOD_SETTINGS["storeQueryConfigs"]);
@@ -229,6 +334,12 @@ class t3lib_fullsearch {
 		}
 		return $msg;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function queryMaker()	{
 		global $TCA;
 
@@ -284,6 +395,15 @@ class t3lib_fullsearch {
 		}		
 		return $output;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$mQ: ...
+	 * @param	[type]		$res: ...
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function getQueryResultCode($mQ,$res,$table)	{
 		global $TCA;
 		$output="";
@@ -382,15 +502,37 @@ class t3lib_fullsearch {
 		}
 		return $cPR;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$row: ...
+	 * @param	[type]		$delim: ...
+	 * @param	[type]		$quote: ...
+	 * @return	[type]		...
+	 */
 	function csvValues($row,$delim=",",$quote='"')	{
 		return t3lib_div::csvValues($row,$delim,$quote);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @return	[type]		...
+	 */
 	function tableWrap($str)	{
-		return '<table border=0 cellpadding=10 cellspacing=0 bgcolor="'.$GLOBALS["TBE_TEMPLATE"]->bgColor4.'"><tr><td nowrap><pre>'.$str.'</pre></td></tr></table>';
+		return '<table border=0 cellpadding=10 cellspacing=0 class="bgColor4"><tr><td nowrap><pre>'.$str.'</pre></td></tr></table>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function search()	{
 		global $TCA;
-		$SET = t3lib_div::GPvar("SET");
+		$SET = t3lib_div::GPvar("SET",1);
 		$swords = $SET["sword"];
 		// $GLOBALS["HTTP_POST_VARS"]["SET"]["sword"]
 		$limit=200;
@@ -437,9 +579,17 @@ class t3lib_fullsearch {
 		}
 		return $out;
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$row: ...
+	 * @param	[type]		$conf: ...
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function resultRowDisplay($row,$conf,$table)	{
-		$out='<tr bgcolor="'.$GLOBALS["SOBE"]->doc->bgColor4.'">';
+		$out='<tr class="bgColor4">';
 		reset($row);
 		while(list($fN,$fV)=each($row))	{
 			$TDparams = " nowrap";
@@ -447,13 +597,22 @@ class t3lib_fullsearch {
 			$out.='<td'.$TDparams.'>'.htmlspecialchars($fVnew).'</td>';
 		}
 		$params = '&edit['.$table.']['.$row["uid"].']=edit';
-		$out.='<td nowrap><A HREF="#" onClick="top.launchView(\''.$table.'\','.$row["uid"].',\''.$GLOBALS["BACK_PATH"].'\');return false;"><img src="'.$GLOBALS["BACK_PATH"].'gfx/zoom2.gif" width="12" height="12" border="0" alt=""></a><A HREF="#" onClick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS["BACK_PATH"],t3lib_div::getIndpEnv("REQUEST_URI").t3lib_div::implodeArrayForUrl("SET",$GLOBALS["HTTP_POST_VARS"]["SET"])).'"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a></td>
+		$out.='<td nowrap><A HREF="#" onClick="top.launchView(\''.$table.'\','.$row["uid"].',\''.$GLOBALS["BACK_PATH"].'\');return false;"><img src="'.$GLOBALS["BACK_PATH"].'gfx/zoom2.gif" width="12" height="12" alt="" /></a><A HREF="#" onClick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS["BACK_PATH"],t3lib_div::getIndpEnv("REQUEST_URI").t3lib_div::implodeArrayForUrl("SET",$GLOBALS["HTTP_POST_VARS"]["SET"])).'"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a></td>
 		</tr>
 		';
 		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$row: ...
+	 * @param	[type]		$conf: ...
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function resultRowTitles($row,$conf,$table)	{
-		$out='<tr bgcolor="'.$GLOBALS["SOBE"]->doc->bgColor5.'">';
+		$out='<tr class="bgColor5">';
 		reset($row);
 		while(list($fN,$fV)=each($row))	{
 			if (strlen($fV)<50)		{$TDparams = " nowrap";} else {$TDparams = "";}
@@ -466,9 +625,7 @@ class t3lib_fullsearch {
 	}
 }
 
-
 if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_fullsearch.php"])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class.t3lib_fullsearch.php"]);
 }
-
 ?>

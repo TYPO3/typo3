@@ -8,8 +8,10 @@
  * 'IM' is short for 'ImageMagick', which is an external image manipulation package available from www.imagemagick.org. Version is ABSOLUTELY preferred to be 4.2.9, but may be 5+. See the install notes for TYPO3!!
  * 'GD' is short for 'GDLib/FreeType', which are libraries that should be compiled into PHP4. GDLib <=1.3 supports GIF, while the latest version 1.8.x and 2.x supports only PNG. GDLib is available from www.boutell.com/gd/. Freetype has a link from there.
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 
 if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
@@ -53,8 +55,8 @@ $TYPO3_CONF_VARS = Array(
 		'encryptionKey' => '',					// Insert some unique string here! Used in eg. direct mail module to generate a md5 hash in combination with uid. This string should be kept secret although it's not as critical as a password.
 		'doNotCheckReferer' => 0,				// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => 0,			// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
-		'report_error_html' => chr(10).'Please report this error to the <a href="mailto:kasper@typo3.com">Typo Development Team</a>',
-		'T3instID' => 'N/A',
+		'report_error_html' => chr(10).'Please report this error to the <a href="mailto:kasper@typo3.com">TYPO3 Development Team</a>',
+		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
 		'devIPmask' => '192.168.*,127.0.0.1',	// Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function t3lib_div::cmpIP() for details on syntax. Setting this to blank value will deny all. Setting to '*' will allow all.
 		'curlUse' => 0,							// Boolean: If set, try to use Curl to fetch external URLs (implemented by Arco <arco@appeltaart.mine.nu>)
 		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/.
@@ -93,9 +95,13 @@ $TYPO3_CONF_VARS = Array(
 		'lockRootPath' => '',					// First part of the userHomePath/groupHomePath. Observe that the first part of 'userHomePath' and 'groupHomePath' must be the value of 'lockRootPath'. Eg. '/home/typo3/'. This path is also used to evaluate if paths outside the PATH_site should be allowed.
 		'userHomePath' => '',					// Path to the directory where TYPO3 backend-users have their home-dirs.  Eg. '/home/typo3/users/'. A home for backend user 2 would be: '/home/typo3/users/2/'.
 		'groupHomePath' => '',					// Path to the directory where TYPO3 backend-groups have their home-dirs. Remember that the first part of this path must be 'lockRootPath'. Eg. '/home/typo3/groups/'. A home for backend group 1 would be: '/home/typo3/groups/1/'.
+		'userUploadDir' => '',					// Suffix to the user home dir which is what gets mounted in TYPO3. Eg. if the user dir is "../123_user/" and this value is "/upload" then "../123_user/upload" gets mounted.
+		'fileCreateMask' => '0644',				// File mode mask for unix file systems (when files are uploaded/created)
+		'folderCreateMask' => '0755',			// As above, but for folders.
 		'warning_email_addr' => '',				// Email-address that will receive a warning if there has been failed logins 4 times within an hour (all users).
 		'warning_mode' => '',					// Bit 1: If set, warning_email_addr gets a mail everytime a user logs in. Bit 2: If set, a mail is sent if an ADMIN user logs in! Other bits reserved for future options.
 		'IPmaskList' => '',						// String. Lets you define a list of IP-numbers (with *-wildcards) that are the ONLY ones allowed access to ANY backend activity. On error an error header is sent and the script exits. Works like IP masking for users configurable through TSconfig. See syntax for that (or look up syntax for the function t3lib_div::cmpIP())
+		'adminOnly' => 0,						// Boolean. If set, the only "admin" users can log in to the backend. For maintenance purposes.
 		'lockBeUserToDBmounts' => 1,			// Boolean. If set, the backend user is allowed to work only within his page-mount. It's advisable to leave this on because it makes security easy to manage.
 		'lockSSL' => 0,							// Int. 0,1,2: If set (1+2), the backend can only be operated from an ssl-encrypted connection (https). Set to 2 you will be redirected to the https admin-url supposed to be the http-url, but with https scheme instead.
 		'disable_exec_function' => 0,			// Boolean. Don't use exec() function (except for ImageMagick which is disabled by [GFX][im]=0). If set, all fileoperations are done by the default PHP-functions. This is nescessary under windows! On UNIX the system commands by exec() can be used, unless this is disabled.
@@ -126,9 +132,10 @@ $TYPO3_CONF_VARS = Array(
 			'webspace' => array('allow'=>'', 'deny'=>'php3,php'),
 			'ftpspace' => array('allow'=>'*', 'deny'=>'')
 		),
-		'fileDenyPattern' => '\.php\.|\.php3\.',		// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. Matching with eregi() (case-insensitive).
-		'interfaces' => 'backend',		// ,backend,frontend     // This determines which interface options is available in the login prompt and in which order
-		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login|(Note: Cookies must be enabled!)',		// Language labels of the login prompt.
+		'fileDenyPattern' => '\.php\.|\.php3\.',	// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. Matching with eregi() (case-insensitive).
+		'interfaces' => 'backend',					// This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")
+		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login|(Note: Cookies must be enabled!)|Important Messages:',		// Language labels of the login prompt.
+		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'XLLfile' => Array(),					// For extension/overriding of the arrays in 'locallang' files in the backend. See 'Inside TYPO3' for more information.
 		'notificationPrefix' => '[TYPO3 Note]'
@@ -165,11 +172,13 @@ $TYPO3_CONF_VARS = Array(
 		'get_url_id_token' => '#get_URL_ID_TOK#',	// This is the token, which is substituted in the output code in order to keep a GET-based session going. Normally the GET-session-id is 5 chars ('&ftu=') + hash_length (norm. 10)
 		'content_doktypes' => '1,2,5,7',			// List of pages.doktype values which can contain content (so shortcut pages and external url pages are excluded, but all pages below doktype 199 should be included. doktype=6 is not either (backend users only...). For doktypes going into menus see class.tslib_menu.php, line 494 (search for 'doktype'))
 		'enable_mount_pids' => 1,					// If set, the mount_pid feature allowing 'symlinks' in the page tree (for frontend operation) is allowed.
-		'pageOverlayFields' => 'title,subtitle,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
+		'pageOverlayFields' => 'title,subtitle,nav_title,media,keywords,description,abstract,author,author_email',				// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 	),
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
 	'USER' => Array(		// Here you may define your own setup-vars for use in your include-scripts. (obsolete, make extension instead)
+	),
+	'SC_OPTIONS' => Array(		// Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself.
 	)
 );
 
@@ -200,7 +209,7 @@ define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 	// 		- Kickstarter wizard (ext/extrep_wizard/pi/class.tx_extrepwizard.php)
 	//		- Add new file: sysext/lang/locallang_core.[lang_key].php
 	//		- Add character encoding for lang key in sysext/lang/lang.php class
-define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et');
+define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua');
 
 	// Unsetting the configured values. Use of these are depreciated.
 unset($typo_db);
@@ -230,14 +239,14 @@ if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']=$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']?0:1;
 }
 
-// simple debug function which prints output immediately
-function xdebug($var="",$br=0)	{
+	// simple debug function which prints output immediately
+function xdebug($var='',$br=0)	{
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;
 	t3lib_div::debug($var,$br);
 }
-// Debug function which calls $GLOBALS['error'] error handler if available
-function debug($variable, $name='*variable*', $line='*line*', $file='*file*', $recursiveDepth=3, $debugLevel=E_DEBUG)	{
+	// Debug function which calls $GLOBALS['error'] error handler if available
+function debug($variable='', $name='*variable*', $line='*line*', $file='*file*', $recursiveDepth=3, $debugLevel=E_DEBUG)	{
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;
 
@@ -304,5 +313,5 @@ unset($LOCAL_LANG);
 	// Setting some global vars:
 $EXEC_TIME = time();					// $EXEC_TIME is set so that the rest of the script has a common value for the script execution time
 $SIM_EXEC_TIME = $EXEC_TIME;			// $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to simulate another execution-time when selecting from eg. a database 
-$TYPO_VERSION = '3.6.0-dev';			// TYPO3 version
+$TYPO_VERSION = '3.6.0RC1';			// TYPO3 version
 ?>

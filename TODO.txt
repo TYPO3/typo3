@@ -1,4 +1,4 @@
-*****************
+******************
 TODO LIST
 *****************
 
@@ -24,8 +24,9 @@ General:
 - Option: Turn of "onBlur" in backend (Message-ID: <001801c2a28c$bb020c70$963afea9@bla8kdvxpl8glk>)
 - Option: Frameset modules without the "border" frame and therefore adjustable freely.
 - Feature: "admin" can click a button which wipes out all record-lockings. (Message-Id: <200301281752.23246.mundaun@gmx.ch>)
-- Feature: Controlling access to function menu modules as well (thus we could have a user-module inside “Template” which could edit the constants field)
+- Feature: Controlling access to function menu modules as well (thus we could have a user-module inside ?Template? which could edit the constants field)
 - Feature: Web >plugins -> to be a main module where people can place cmodules for their extension.
+
 
 TCEmain:
 - Commenting of the class.
@@ -43,6 +44,9 @@ TCEmain:
 	- Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". But copy/cut operations must understand this. And Web>List should reflect this as categorizing. 
 	- "child records" - records which MUST be related to another table - and will be moved along with the main record if moved.
 	- Implement *real* record locking?
+		- Configure on a per-table basis
+			- For instance, the TCEforms will render non-editable fields for ordinary users, while editable fields for "admin" users still
+			- Should the check be done only in TCEforms - or also in TCEmain?
 	- If an input value in the data array is NOT a string/integer but an array then just serialize this array and store (thus allowing customly build forms from PHP scripts to submit hierarchical information)
 		- Could be solved by PRE-processing of content in user functions!
 	- Implement "last_edited_by" field saving the BE-user UID just like tstamps are... (JH asked)
@@ -178,7 +182,8 @@ Element Browser:
 Wizards:
 - Finish the colorpicker! Some other person can be in charge of this (See "APPENDIX: Colorpicker")
 - Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)
-- wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter Kühn). 
+- wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter K?hn). 
+- forms and table wizards should be configurable for making XML structures alternatively to the currently formatting.
 
 Interface:
 - Icons (see Bugs/Additions folder)
@@ -254,9 +259,11 @@ EM:
 - Feature: Specify preferred order of certain extensions.
 - Feature: Change order of loaded extensions
 - Feature: Dependencies includes minimum/max-version (Typo3, PHP, PHP-extensions, T3extensions)
+- Feature: [suggested by robert] resolving of dependencies like in apt-get (Debian package manager). Necessary extensions can be downloaded and installed automatically (idea: create dummy extension which depends on several extensions and acts like a package of extensions)
 - Feature: EM suggest clear-cache af scripts?
 - Feature: New category, "templates"
 - Feature: New review state: security-screened (light review, not quality oriented)
+- Feature: em_conf: "depreciated flag: Beskrivelse af, hvorfor den er depreciated"
 - Install: Select other repository URLS in selector box?
 - Install: Extensions which can point the import/export to a directory with import-files.
 - Install: Updates of plugin checks if there is a local manual.sxw file. If there is the manual is also downloaded. Maybe people can set a flag in the configuration that manuals should always be fetched. (Some of this is already implemented)
@@ -274,12 +281,13 @@ EM:
 - CHECK: Are single quotes accepted when writing the "conf.php" files?
 - CHECK: Better failure-tolerance when "fatal errors" occur in ext_localconf/ext_tables.php files!?
 - CHECK: Can Install Tool bypass including ext_localconf/ext_tables if there are errors in them?
-- BUG: EM-extMgm: caching af localconf + extTables configuration in ARRAY? Plus ændringer til API specs. (problem when those files includes classes etc... probably not possible)
+- BUG: EM-extMgm: caching af localconf + extTables configuration in ARRAY? Plus ?ndringer til API specs. (problem when those files includes classes etc... probably not possible)
 - BUG: Fix memory consumption problem.
 - BUG: backend shortcut links to EM pages does not carry the edit-file information. They should.
 - BUG: Clear cache files should remove ALL "temp_CACHED_*" files in typo3conf/ (not just the current two)
 - BUG: detection of single quotes in XCLASS and CONF.PHP file cases (and wherever a regex searches for code snippets!). 
 - BUG: MSIE4: Cannot make backup of extensions (and probably not export them either) because the header-mime-typen is not registered as it should be.
+- BUG: Download of extensions (compressed...) will sometimes NOT get the same MD5 key after being saved (with any browser it seems) as shown at the download link. Origin of error not know. Please help if you encounter the problem.
 - DOC: "Extension API" manual.sxw!
 - Check mailbox for more... ?
 - Related: The KickStarter Wizard, in particular a) cleaner code output, b) merging updates.
@@ -329,12 +337,301 @@ NOTES
 
 
   
+******************************************
+APPENDIX 1: CLEANING UP FOR TYPO3 3.6.0
+******************************************
+Cleaning for 3.6 involves:
+- XHTML transitional compliance
+- " to '
+- Commented functions
+
+1: Add comments
+ * NOTICE: This will also detect JavaScript functions, but if you place a comment line like "// ..." in the end of the function definition line they will not have the JavaDoc style comment added. Eg. "	function blabla()	{	//    "
+2: Write comments, organize them, add sections etc. (search [type])
+2a: Set "@access private"
+3: double to single quote (check for "\n")
+4: XHTML
+5: $Id$ CVS keyword expansion
+6: @package tags
+7: Function Index in scripts
+8: Depreciated use of t3lib_BEfunc::titleAttrib
+9: Generally, try to read all GPvars in init() functions and set them as internal variables - gives a nice, natural overview of what is used from the outsite
+
+
+Status 27/10 (TYPO3 Core + extensions "cms" and "lang" in sysext/ (but without global extensions in ext/ !)):
+- 2000 @param and @return tags in 800 functions still needs commenting (3800 tags in 1400 functions has already been done)
+- 50 scripts still needs cleaning for XHTML, comments and single-quotes
+
+Note on XHTML compliance:
+- We strive for XHTML transitional / frames
+- Certain incompatibilities has been allowed for practical reasons (for now). These include:
+	- align="absmiddle" for images
+	- width/height properties for input tags when images are used
+	- missing "cols" attribute for textarea tags.
+	- Some attributes for framesets.
+	[The reason for allowing this is probably that I do not know any workaround to achieve the same effect. The problem of non-allowed attributes/values also rate very low in my understanding of XHTML compliancy - it is far more important with nesting integrity, char case of tags/attributes, etc.]
+
+
+---------------------------------------------------------------
+NOTES ABOUT WHICH SCRIPTS HAS BEEN CLEANED AND WHICH REMAINS:
+---------------------------------------------------------------
+Finished (XHTML, quotes, comments, revised-note), XQCR:
+(Indented scripts are still missing clean-up)
+
+t3lib/________________________________________:
+XQCR: t3lib/class.t3lib_admin.php
+XQCR: t3lib/class.t3lib_arraybrowser.php
+-QCR: t3lib/class.t3lib_basicfilefunc.php
+XQCR: t3lib/class.t3lib_bedisplaylog.php
+XQCR: t3lib/class.t3lib_befunc.php
+XQCR: t3lib/class.t3lib_beuserauth.php
+XQCR: t3lib/class.t3lib_browsetree.php
+XQCR: t3lib/class.t3lib_clipboard.php
+-QC-: t3lib/class.t3lib_cs.php
+XQCR: t3lib/class.t3lib_diff.php
+XQCR: t3lib/class.t3lib_div.php
+		t3lib/class.t3lib_dmailer.php	[Pekue?]
+		t3lib/class.t3lib_exec.php		[Rene]
+		t3lib/class.t3lib_extfilefunc.php
+-QCR: t3lib/class.t3lib_extmgm.php
+-QCR: t3lib/class.t3lib_extobjbase.php
+XQCR: t3lib/class.t3lib_foldertree.php
+-QCR: t3lib/class.t3lib_formmail.php
+		t3lib/class.t3lib_fullsearch.php
+		t3lib/class.t3lib_htmlmail.php	[Pekue?]
+XQCR: t3lib/class.t3lib_iconworks.php
+		t3lib/class.t3lib_install.php
+-QCR: t3lib/class.t3lib_loaddbgroup.php
+-QCR: t3lib/class.t3lib_loadmodules.php
+-QCR: t3lib/class.t3lib_matchcondition.php
+		t3lib/class.t3lib_modsettings.php	[Rene]
+XQCR: t3lib/class.t3lib_page.php
+XQCR: t3lib/class.t3lib_pagetree.php
+XQCR: t3lib/class.t3lib_parsehtml.php
+		a.Q..: t3lib/class.t3lib_parsehtml_proc.php (45)
+XQCR: t3lib/class.t3lib_positionmap.php
+		t3lib/class.t3lib_querygenerator.php
+-QCR: t3lib/class.t3lib_readmail.php
+XQCR: t3lib/class.t3lib_recordlist.php
+-QCR: t3lib/class.t3lib_scbase.php
+-QCR: t3lib/class.t3lib_stdgraphic.php
+		t3lib/class.t3lib_superadmin.php
+		t3lib/class.t3lib_svbase.php		[Rene]
+-QCR: t3lib/class.t3lib_tceforms.php
+		t3lib/class.t3lib_tcemain.php
+XQCR: t3lib/class.t3lib_timetrack.php
+-QCR: t3lib/class.t3lib_transferdata.php
+XQCR: t3lib/class.t3lib_treeview.php
+XQCR: t3lib/class.t3lib_tsfebeuserauth.php
+-QCR: t3lib/class.t3lib_tsparser.php
+		t3lib/class.t3lib_tsparser_ext.php
+		t3lib/class.t3lib_tsstyleconfig.php
+-QCR: t3lib/class.t3lib_tstemplate.php
+XQCR: t3lib/class.t3lib_userauth.php
+XQCR: t3lib/class.t3lib_userauthgroup.php
+-QCR: t3lib/class.t3lib_xml.php
+
+-QCR: t3lib/config_default.php
+-QCR: t3lib/thumbs.php
+XQCR: template.php
+-QCR: t3lib/stddb/load_ext_tables.php
+-QCR: t3lib/stddb/tables.php
+-QCR: t3lib/stddb/tbl_be.php
+
+
+sysext/lang/___________________________________________:
+XQCR: lang.php
+
+sysext/cms/___________________________________________:
+XQCR: tslib/class.tslib_content.php
+XQCR: tslib/class.tslib_fe.php
+-QCR: tslib/class.tslib_fetce.php
+-QCR: tslib/class.tslib_feuserauth.php
+-QCR: tslib/class.tslib_gifbuilder.php
+XQCR: tslib/class.tslib_menu.php
+XQCR: tslib/class.tslib_pagegen.php
+XQCR: tslib/class.tslib_pibase.php
+XQC-: tslib/class.tslib_search.php
+XQCR: tslib/media/scripts/example_callfunction.php
+XQCR: tslib/media/scripts/example_itemArrayProcFunc.php
+XQCR: tslib/media/scripts/example_keepRollover.php
+XQ-R: tslib/media/scripts/example_languageMenu.php
+XQCR: tslib/media/scripts/example_typolinkpop.php
+XQCR: tslib/media/scripts/fe_adminLib.inc
+XQ-R: tslib/media/scripts/freesite_dummy_page_menu.php
+XQCR: tslib/media/scripts/gmenu_foldout.php
+XQCR: tslib/media/scripts/gmenu_layers.php
+-QCR: tslib/media/scripts/makeMenu_datedirectory.inc
+-QCR: tslib/media/scripts/makeMenu_keywords_updated.inc
+XQCR: tslib/media/scripts/plaintextLib.inc
+XQCR: tslib/media/scripts/postit.inc
+----: tslib/media/scripts/testscript.inc
+----: tslib/media/scripts/testscript_EXT.php
+----: tslib/media/scripts/testscript_INT.php
+XQCR: tslib/media/scripts/tmenu_layers.php
+XQCR: tslib/media/scripts/wapversionLib.inc
+XQCR: tslib/media/scripts/xmlversionLib.inc
+-Q-R: tslib/index_ts.php
+-Q-R: tslib/pagegen.php
+-Q-.: tslib/publish.php
+.QCR: tslib/showpic.php
+XQCR: web_info/class.tx_cms_webinfo.php
+XQCR: layout/db_layout.php
+XQCR: layout/class.tx_cms_layout.php
+XQCR: layout/db_new_content_el.php
+
+typo3/___________________________________________:
+XQCR: alt_clickmenu.php
+XQCR: alt_db_navframe.php
+XQCR: alt_doc.php		TODO: Check "redirect" GPvar for XSS hole!?
+XQCR: alt_doc_nodoc.php
+XQCR: alt_file_navframe.php
+XQCR: alt_intro.php
+XQCR: alt_main.php
+XQCR: alt_menu.php
+XQCR: alt_menu_sel.php
+XQCR: alt_mod_frameset.php
+XQCR: alt_palette.php
+XQCR: alt_shortcut.php
+XQCR: alt_toplogo.php
+XQCR: alt_topmenu_dummy.php
+XQCR: browse_links.php
+XQCR: browser.php
+XQCR: class.alt_menu_functions.inc
+XQCR: class.db_list.inc
+XQCR: class.db_list_extra.inc
+XQCR: class.file_list.inc
+XQCR: class.show_rechis.inc
+XQCR: db_list.php
+XQCR: db_new.php
+XQCR: db_new_content_el.php
+default.htm
+default.html
+XQCR: dummy.php
+XQCR: file_edit.php
+XQCR: file_list.php
+XQCR: file_newfolder.php
+XQCR: file_rename.php
+XQCR: file_upload.php
+XQCR: index.php		TODO: Check "redirect" GPvar for XSS hole!?
+-QC-: index_re.php
+-Q-R: init.php
+XQCR: listframe_loader.php
+XQCR: login_frameset.php
+-QC-: logout.php		TODO: Check "redirect" GPvar for XSS hole!?
+XQCR: move_el.php
+		show_item.php				[Peter Kuehn]
+XQCR: show_rechis.php
+-QCR: tce_db.php
+-QCR: tce_file.php
+XQCR: template.php
+XQCR: view_help.php
+XQCR: wizard_add.php
+		wizard_colorpicker.php		[Matthias]
+XQCR: wizard_edit.php
+XQCR: wizard_forms.php
+XQCR: wizard_list.php
+XQCR: wizard_rte.php
+XQCR: wizard_table.php
+XQCR: wizard_tsconfig.php
+
+XQCR: mod/help/about/index.php:		TODO: Modernize content
+		mod/tools/em/index.php
+XQCR: mod/web/info/index.php
+XQCR: mod/web/func/index.php
+XQCR: mod/web/perm/index.php
+
+
+typo3/ext/_____________________________________:
+OK		aboutmodules/
+		belog/		(2 / 500)
+		beuser/		(1 / 1300)
+OK		beuser_tracking/					-> move
+		classic_welcome/	(1/262) 		-> move
+		cms_plaintext_import/	(1/200)
+OK		conf_userts/
+OK		context_help/
+		css_styled_content/		(1/200)		[H]
+OK		design_components/		->move
+		direct_mail/		(3/2500)	[Peter Kuehn] + class.t3lib_htmlmail.php
+OK		direct_mail_subscription/
+XQCR:	extra_page_cm_options/
+-QCR:	extrep/
+		extrep_wizard/		(2/4500)		[H]
+OK		feuser_admin/
+		freesite/			(2/1600)
+XQCR:	func_wizards/
+		imagelist/			(1/250)
+		impexp/				(2/2000)		[H]
+		indexed_search/		(4/3500)		
+		info_pagetsconfig/	(1/200)
+OK		install/					+ class.t3lib_install.php / class.t3lib_superadmin.php
+		lowlevel/			(2/800)			[H]
+XQ-R:	metatags/
+		phpmyadmin/			(1/130)
+		plugin_mgm/			(1/300) ->move? remove?
+		quickhelp/			(1/80)
+		rte/				(5/1900)		[H]
+OK		rte_conf/
+OK		setoldpluginlist/
+		setup/				(1/400)
+OK		skin1/
+OK		static_file_edit/
+		sys_action/			(1/400)
+		sys_messages/		(1/450)
+OK		sys_note/		
+		sys_notepad/		(1/130)
+OK		sys_stat/
+		sys_todos/			(1/1100)		
+OK		sys_workflows/		
+		taskcenter/			(4/400)			
+		taskcenter_modules/		(1/100)
+		taskcenter_recent/		(1/150)
+		taskcenter_rootlist/	(1/50)
+		tipafriend/				(1/260)
+OK		tsconfig_help/
+OK		ts_language_de/
+OK		ts_language_dk/
+OK		ts_language_fr/
+OK		ts_language_nl/
+OK		ts_language_no/
+		tstemplate/				(1/450)		+ class.t3lib_tsparser_ext.php (1700)
+		tstemplate_analyzer/	(1/250)
+		tstemplate_ceditor/		(1/250)
+		tstemplate_info/		(1/450)
+		tstemplate_objbrowser/	(1/500)
+		tstemplate_styler/		(1/1700)
+OK		tt_address/
+		tt_board/				(3/1200)
+		tt_calender/			(1/170)
+		tt_guest/				(2/350)
+		tt_links/							->move / depreciated!
+		tt_news/				(1/750)
+		tt_poll/				(2/400)		[Rene F]
+		tt_products/			(5/2000)	[? Peter Kuehn]
+		tt_rating/				(3/550)		[Rene F]
+		viewpage/				(2/200)
+XQRC:	wizard_crpages/			
+XQRC:	wizard_sortpages/
+
+32,5 K Codes lines....
+
+For all extensions (even those approved):
+- Remember to add package tags to all classes!
+- Write documentation for each
+- Check HTML source / CSS usage / XHTML compliancy / That icons are skinnable (add to "skin360")
+- $LANG->getLL() are htmlspecialchars()'ed
+
+
+
+
+
 *******************
 APPENDIX 2: XHTML
 *******************
 Overview of implications before implementation:
 - UTF-8 encoding is in fact expected by XML! So the real charset must be set
-- Wellformedness: Nesting ok. All img tags must be ended with />
+- Wellformedness: Nesting ok. All img tags must be ended with /> (frame,base,meta,link,img,br,hr,area,input)
 - Lowercase for elements and attributes (and everything else...) + stylesheet element and attribute names.
 - All attributes in quotes
 - Minimized values not allowed: Must do this: selected="selected"
@@ -352,12 +649,74 @@ Practical steps for creating XHTML compliance:
 
 - lowercase: <(td|tr|p|div|table|b|i|u|a)
 - attributes in lowercase and ""; TYP: bgColor, border=0 cellspacing=0 cellpadding=0, valign=top, onClick, onChange, onSubmit, method="POST", type="Submit"
-- Ending tags: <br>, <hr>, <input>, <img>
+- Ending tags: <br>, <hr>, <input>, <img> (Longer list: frame,base,meta,link,img,br,hr,area,input)
 - shorthand: checked, selected, multiple, nowrap
 - href="", action="", src="", onclick= tags: htmlspecialchars() of URLS
-- <img -> ' alt="" />'    REGEX: <img[^>]*>
+- <img -> ' alt="" />'    REGEX: <img[^>]*[^-]>
 - FINDING attributes with no quotes:
 ([[:space:]]+)(class|face|hspace|vspace|rowspan|bgcolor|src|colspan|align|color|valign|border|width|height|cellpadding|cellspacing)=([^[:space:]>"']+)
+... and replace with: \1\2="\3"
+
+
+
+
+
+*****************
+APPENDIX: Versioning thoughts:
+Authors: Julle and Kasper.
+*****************
+- Versions can be done on page level or element level
+- In any case a pure copy of the element is produced
+- For pages only configured tables will be copied, eg:
+	- Page
+	  - tt_content
+	  - pages_lang_overlay
+
+- Versioning (for single elements including single "pages" record) is based on 
+	- ONE element having an official position in the TYPO3 page tree, thus holding the official "uid" of the element! (If this element was deleted from the system, so are all versions of that element!)
+	- All versions of this one element being a) at pid "-1" and b) a field "real_id" pointing to the official UID
+	- Pages-versioninig: For all elements belonging to a version of a page; They are just copied and has no official new version or binding back to whatever element they came from. They just came along. And in fact, they could even have their own version history for them selves!
+	- Backend user access to elements is based on the access restrictions for the official element. THis must be implemented on core level.
+- Tables supporting versioning will have these fields:
+  - real_id	- Pointing back to official in-tree version
+  - ver_id	- Incremental integer (version number)
+  - ver_label	- Version label, eg. "1.1.1" or "Christmas edition"
+  - editlock	- Flag (core support independant of versioning) which IF SET makes it impossible for anyone to edit the record. The flag must be unset before editing can occur. (Is a feature which can be used to write-protect a version)
+  - pid/uid should have "signed" attributes in MySQL (pid = -1, uid =-xxxx for swapping).
+
+- Preview in fronend
+  - At page level, done with a simple selector in the AdminPanel. Just like date/user/hidden is done.
+  - For other element, time will show.
+
+- Backend module for versioning:
+  - Diff-ing between versions.
+
+- Version-swapping log?
+
+- ID-swapping for versioned elements
+  - Version from archive (future/past) will get the uid of the "real_id", the official element with "real_id" will get the new versions old uid.
+  - For pages-records: We will have to swap the "pid" values of all (versioning-included) elements on the pages.
+  - Swapping three-step process:
+	uid		uid	real_id
+  PUB:	13	-->	-13	247
+	247	-->	13	-
+	-13	-->	247	13
+  - Pages-versioning and the impact of NOT swapping tt_content element uids:
+	- Loose anchor-points, manually made (could be hack-fixed by some intelligent copying tracking)
+	- TemplaVoila references to elements from other pages (will break, however bad practice to reference elements not in some sort of central library which will NEVER be page-versioned anyways)
+	- Insert-records could potentially do the same
+	- Impact assesment: Low.
+	- Clean-up module (in templavoila?) could also track such things
+	- Problems for non-templavoila sites would be low.
+	
+- Backend:
+  - For single-editing of records we will show a version list from which to choose a version to edit (just like the delete button is also hidden at multi-edit)
+  - In list-module we might display a) an icon to a version selector (where diff-ing could be done, swapping performed etc.), b) show archive versions as children in the listing.
+  - In Page module + TemplaVoila page module: There will be a version selector implemented so users can switch around between versions.
+
+
+
+
 
 
 
@@ -380,8 +739,8 @@ Here are a few notes:
 ******************
 APPENDIX: LDAP
 ******************
-- hash of base-dn skal være cleaned op. Måske prefixe usernames med 10-char hash af base-dn.
-- Moduler som "User Admin" og andre steder, hvor "usergroups" feltet benyttes skal slå det op i LDAP uden authentication. -> Faktisk er det IKKE kun usergroups men ALLE felter, som kan mappes!!!
+- hash of base-dn skal v?re cleaned op. M?ske prefixe usernames med 10-char hash af base-dn.
+- Moduler som "User Admin" og andre steder, hvor "usergroups" feltet benyttes skal sl? det op i LDAP uden authentication. -> Faktisk er det IKKE kun usergroups men ALLE felter, som kan mappes!!!
 - Ved record creation: LDAP default group.
 
 ? Getting info like usergroups, email, name?
@@ -656,7 +1015,7 @@ Bugs, considerations, notes
 - JavaScript: escape() doesn't rawurlencode the "+"-character. This can be a problem, eg. when trying to rename files with a plus in the name. I have made an alternative escape-function. 
 - PDF-files over 600 k are not rendered by ImageMagick. Less than 270 is! How come and is this true. Number of pages? 
 - When GDlib is disabled it can be very confusing that record icons does not change their look according to hidden/starttime/endtime etc...
-
+- many files in typo3temp/ slows down processing. Eg. a image resize with 33.000 files in typo3temp/ took 3 seconds where it would take 40 ms when the folder is clean. (on linux)
 
 
 **************************************

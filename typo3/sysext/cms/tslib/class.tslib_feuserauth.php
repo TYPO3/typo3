@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,27 +28,26 @@
  * Front End session user. Login and session data
  * Included from index_ts.php
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tslib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   76: class tslib_feUserAuth extends t3lib_userAuth 
- *  140:     function fetchGroupData()	
- *  186:     function getUserTSconf()	
+ *   77: class tslib_feUserAuth extends t3lib_userAuth 
+ *  141:     function fetchGroupData()	
+ *  187:     function getUserTSconf()	
  *
  *              SECTION: Session data management functions
- *  231:     function fetchSessionData()	
- *  257:     function storeSessionData()	
- *  282:     function getKey($type,$key) 
- *  307:     function setKey($type,$key,$data)	
- *  332:     function record_registration($recs)	
+ *  232:     function fetchSessionData()	
+ *  258:     function storeSessionData()	
+ *  283:     function getKey($type,$key) 
+ *  308:     function setKey($type,$key,$data)	
+ *  333:     function record_registration($recs)	
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -71,7 +70,9 @@
 /**
  * Extension class for Front End User Authentication.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  */
 class tslib_feUserAuth extends t3lib_userAuth {
 	var $session_table = 'fe_sessions'; 		// Table to use for session data.

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,11 +27,10 @@
 /** 
  * Contains class for TYPO3 backend user authentication
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @internal
  */
 /**
@@ -39,15 +38,15 @@
  *
  *
  *
- *   74: class t3lib_beUserAuth extends t3lib_userAuthGroup 
- *  148:     function trackBeUser($flag)	
- *  161:     function checkLockToIP()	
- *  181:     function backendCheckLogin()	
- *  206:     function backendSetUC()	
- *  241:     function overrideUC()	
- *  251:     function resetUC()	
- *  264:     function emailAtLogin()	
- *  316:     function veriCode()	
+ *   75: class t3lib_beUserAuth extends t3lib_userAuthGroup 
+ *  150:     function trackBeUser($flag)	
+ *  163:     function checkLockToIP()	
+ *  183:     function backendCheckLogin()	
+ *  208:     function backendSetUC()	
+ *  243:     function overrideUC()	
+ *  253:     function resetUC()	
+ *  266:     function emailAtLogin()	
+ *  318:     function veriCode()	
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -69,7 +68,9 @@
  * t3lib_userauthgroup contains most of the functions used for checking permissions, authenticating users, setting up the user etc. This class is most interesting in terms of an API for user from outside.
  * This class contains the configuration of the database fields used plus some functions for the authentication process of backend users.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $session_table = 'be_sessions'; 		// Table to use for session data.
@@ -135,13 +136,15 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'edit_docModuleUpload' => '1',
 		'disableCMlayers' => 0,
 		'navFrameWidth' => '',	// Default is 245 pixels
+		'navFrameResizable' => 0,
 	);
 
 	
 	/**
 	 * If flag is set and the extensions 'beuser_tracking' is loaded, this will insert a table row with the REQUEST_URI of current script - thus tracking the scripts the backend users uses...
+	 * This function works ONLY with the "beuser_tracking" extension and is depreciated since it does nothing useful.
 	 * 
-	 * @param	boolean		
+	 * @param	boolean		Activate insertion of the URL.
 	 * @return	void		
 	 * @access private
 	 */
@@ -187,8 +190,13 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		} else {	// ...and if that's the case, call these functions
 			$this->fetchGroupData();	//	The groups are fetched and ready for permission checking in this initialization.	Tables.php must be read before this because stuff like the modules has impact in this 
 			if ($this->checkLockToIP())	{
-				$this->backendSetUC();		// Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
-				$this->emailAtLogin();		// email at login - if option set.
+				if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] || $this->isAdmin())	{
+					$this->backendSetUC();		// Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
+					$this->emailAtLogin();		// email at login - if option set.
+				} else {
+					t3lib_BEfunc::typo3PrintError ('Login-error','TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.',0);
+					exit;
+				}
 			} else {
 				t3lib_BEfunc::typo3PrintError ('Login-error','IP locking prevented you from being authorized. Can\'t proceed, sorry.',0);
 				exit;

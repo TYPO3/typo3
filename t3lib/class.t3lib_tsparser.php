@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,32 +27,31 @@
 /** 
  * Contains the TypoScript parser class
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   79: class t3lib_TSparser 
- *  129:     function parse($string,$matchObj='')	
- *  165:     function nextDivider()	
- *  181:     function parseSub(&$setup)	
- *  327:     function rollParseSub($string,&$setup)	
- *  351:     function getVal($string,$setup)	
- *  377:     function setVal($string,&$setup,$value,$wipeOut=0)	
- *  412:     function error($err,$num=2)	
- *  424:     function checkIncludeLines($string)	
- *  468:     function checkIncludeLines_array($array)	
+ *   80: class t3lib_TSparser 
+ *  132:     function parse($string,$matchObj='')	
+ *  169:     function nextDivider()	
+ *  185:     function parseSub(&$setup)	
+ *  331:     function rollParseSub($string,&$setup)	
+ *  355:     function getVal($string,$setup)	
+ *  381:     function setVal($string,&$setup,$value,$wipeOut=0)	
+ *  416:     function error($err,$num=2)	
+ *  428:     function checkIncludeLines($string)	
+ *  472:     function checkIncludeLines_array($array)	
  *
  *              SECTION: Syntax highlighting
- *  511:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)	
- *  532:     function regHighLight($code,$pointer,$strlen=-1)	
- *  550:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)	
+ *  515:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)	
+ *  536:     function regHighLight($code,$pointer,$strlen=-1)	
+ *  554:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)	
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -73,7 +72,9 @@
 /**
  * The TypoScript parser
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see t3lib_tstemplate, t3lib_matchcondition, t3lib_BEfunc::getPagesTSconfig(), t3lib_userAuthGroup::fetchGroupData(), t3lib_TStemplate::generateConfig()
  */
 class t3lib_TSparser {
@@ -578,8 +579,6 @@ class t3lib_TSparser {
 			if (strlen(substr($value,$start)))	$lineC.=$this->highLightStyles['ignored'][0].htmlspecialchars(substr($value,$start)).$this->highLightStyles['ignored'][1];
 
 			if ($errA[$rawP])	{
-#				$lineC.=$this->highLightStyles['error'][0].htmlspecialchars(trim(substr($value,$start))).$this->highLightStyles['error'][1].
-#				$start=strlen($value);
 				$lineC.=$this->highLightStyles['error'][0].'<strong> - ERROR:</strong> '.htmlspecialchars(implode(';',$errA[$rawP])).$this->highLightStyles['error'][1];
 			}
 			
@@ -598,16 +597,6 @@ class t3lib_TSparser {
 		
 		return '<pre class="ts-hl">'.implode(chr(10),$lines).'</pre>';
 	}
-	
-	
-/*	
-	function xmlToTypoScriptStruct($xmlInput)	{
-		$res = t3lib_div::xml2tree($xmlInput);
-		if (is_array($res))	{
-			$this->xmlToTypoScriptSetup($res);
-		} else return 'XML parser error: '.$res;
-	}
-*/
 }
 
 

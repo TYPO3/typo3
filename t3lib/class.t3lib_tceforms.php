@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,143 +27,121 @@
 /** 
  * Contains TYPO3 Core Form generator - AKA "TCEforms"
  *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 August/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  193: class t3lib_TCEforms	
- *  286:     function t3lib_TCEforms()	
- *  323:     function initDefaultBEmode()	
+ *  171: class t3lib_TCEforms	
+ *  266:     function t3lib_TCEforms()	
+ *  303:     function initDefaultBEmode()	
  *
  *              SECTION: Rendering the forms, fields etc
- *  366:     function getSoloField($table,$row,$theFieldToReturn)	
- *  405:     function getMainFields($table,$row,$depth=0)	
- *  532:     function getListedFields($table,$row,$list)	
- *  574:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	
- *  650:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	
- *  777:     function getSingleField_SW($table,$field,$row,&$PA)	
+ *  349:     function getSoloField($table,$row,$theFieldToReturn)	
+ *  388:     function getMainFields($table,$row,$depth=0)	
+ *  515:     function getListedFields($table,$row,$list)	
+ *  556:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	
+ *  632:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	
+ *  760:     function getSingleField_SW($table,$field,$row,&$PA)	
  *
  *              SECTION: Rendering of each TCEform field type
- *  848:     function getSingleField_typeInput($table,$field,$row,&$PA)	
- *  900:     function getSingleField_typeText($table,$field,$row,&$PA)	
- *  969:     function getSingleField_typeCheck($table,$field,$row,&$PA)	
- * 1028:     function getSingleField_typeRadio($table,$field,$row,&$PA)	
- * 1058:     function getSingleField_typeSelect($table,$field,$row,&$PA)	
- * 1217:     function getSingleField_typeGroup($table,$field,$row,&$PA)	
- * 1359:     function getSingleField_typeNone($table,$field,$row,&$PA)	
- * 1413:     function getSingleField_typeFlex($table,$field,$row,&$PA)	
- * 1514:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)	
- * 1533:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)	
- * 1563:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())	
- * 1712:     function getSingleField_typeUnknown($table,$field,$row,&$PA)	
- * 1727:     function getSingleField_typeUser($table,$field,$row,&$PA)	
+ *  831:     function getSingleField_typeInput($table,$field,$row,&$PA)	
+ *  883:     function getSingleField_typeText($table,$field,$row,&$PA)	
+ *  952:     function getSingleField_typeCheck($table,$field,$row,&$PA)	
+ * 1011:     function getSingleField_typeRadio($table,$field,$row,&$PA)	
+ * 1041:     function getSingleField_typeSelect($table,$field,$row,&$PA)	
+ * 1199:     function getSingleField_typeGroup($table,$field,$row,&$PA)	
+ * 1341:     function getSingleField_typeNone($table,$field,$row,&$PA)	
+ * 1395:     function getSingleField_typeFlex($table,$field,$row,&$PA)	
+ * 1496:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)	
+ * 1515:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)	
+ * 1545:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())	
+ * 1696:     function getSingleField_typeUnknown($table,$field,$row,&$PA)	
+ * 1711:     function getSingleField_typeUser($table,$field,$row,&$PA)	
  *
  *              SECTION: "Configuration" fetching/processing functions
- * 1759:     function getRTypeNum($table,$row)	
- * 1785:     function rearrange($fields)	
- * 1811:     function getExcludeElements($table,$row,$typeNum)	
- * 1859:     function getFieldsToAdd($table,$row,$typeNum)	
- * 1884:     function mergeFieldsWithAddedFields($fields,$fieldsToAdd)	
- * 1916:     function setTSconfig($table,$row,$field='')	
- * 1938:     function getSpecConfForField($table,$row,$field)	
- * 1958:     function getSpecConfFromString($extraString)    
+ * 1743:     function getRTypeNum($table,$row)	
+ * 1769:     function rearrange($fields)	
+ * 1795:     function getExcludeElements($table,$row,$typeNum)	
+ * 1843:     function getFieldsToAdd($table,$row,$typeNum)	
+ * 1868:     function mergeFieldsWithAddedFields($fields,$fieldsToAdd)	
+ * 1900:     function setTSconfig($table,$row,$field='')	
+ * 1922:     function getSpecConfForField($table,$row,$field)	
+ * 1942:     function getSpecConfFromString($extraString)    
  *
  *              SECTION: Form element helper functions
- * 1990:     function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')	
- * 2099:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)	
- * 2262:     function getIcon($icon)	
- * 2293:     function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)	
- * 2317:     function checkBoxParams($itemName,$thisValue,$c,$iCount,$addFunc='')	
- * 2331:     function elName($itemName)	
- * 2342:     function noTitle($str,$wrapParts=array())	
- * 2351:     function blur()	
- * 2364:     function getSingleHiddenField($table,$field,$row)	
- * 2386:     function formWidth($size=48,$textarea=0) 
- * 2408:     function formWidthText($size=48,$wrap='') 
- * 2423:     function formElStyle($type)	
- * 2441:     function insertDefStyle($type)	
+ * 1974:     function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')	
+ * 2083:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)	
+ * 2246:     function getIcon($icon)	
+ * 2277:     function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)	
+ * 2301:     function checkBoxParams($itemName,$thisValue,$c,$iCount,$addFunc='')	
+ * 2315:     function elName($itemName)	
+ * 2326:     function noTitle($str,$wrapParts=array())	
+ * 2335:     function blur()	
+ * 2348:     function getSingleHiddenField($table,$field,$row)	
+ * 2370:     function formWidth($size=48,$textarea=0) 
+ * 2392:     function formWidthText($size=48,$wrap='') 
+ * 2407:     function formElStyle($type)	
+ * 2425:     function insertDefStyle($type)	
  *
  *              SECTION: Item-array manipulation functions (check/select/radio)
- * 2472:     function initItemArray($fieldValue)	
- * 2490:     function addItems($items,$iArray)	
- * 2512:     function procItems($items,$iArray,$config,$table,$row,$field)	
- * 2536:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)	
- * 2614:     function addSelectOptionsToItemArray_makeModuleData($value)	
- * 2636:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)	
+ * 2456:     function initItemArray($fieldValue)	
+ * 2474:     function addItems($items,$iArray)	
+ * 2496:     function procItems($items,$iArray,$config,$table,$row,$field)	
+ * 2520:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)	
+ * 2598:     function addSelectOptionsToItemArray_makeModuleData($value)	
+ * 2620:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)	
  *
  *              SECTION: Template functions
- * 2714:     function setFancyDesign()	
- * 2741:     function setNewBEDesign()	
- * 2795:     function intoTemplate($inArr,$altTemplate='')	
- * 2815:     function wrapLabels($str)	
- * 2829:     function wrapTotal($c,$rec,$table)	
- * 2842:     function replaceTableWrap($arr,$rec,$table)	
- * 2864:     function wrapBorder(&$out_array,&$out_pointer)	
- * 2885:     function rplColorScheme($inTemplate)	
- * 2898:     function getDivider()	
- * 2908:     function printPalette($palArr)	
- * 2950:     function helpTextIcon($table,$field,$force=0)	
- * 2966:     function helpText($table,$field)	
- * 2988:     function setColorScheme($scheme)	
- * 3002:     function resetSchemes()	
- * 3013:     function storeSchemes()	
- * 3024:     function restoreSchemes()	
+ * 2698:     function setFancyDesign()	
+ * 2725:     function setNewBEDesign()	
+ * 2779:     function intoTemplate($inArr,$altTemplate='')	
+ * 2803:     function addUserTemplateMarkers($marker,$table,$field,$row,&$PA)	
+ * 2814:     function wrapLabels($str)	
+ * 2827:     function wrapTotal($c,$rec,$table)	
+ * 2840:     function replaceTableWrap($arr,$rec,$table)	
+ * 2862:     function wrapBorder(&$out_array,&$out_pointer)	
+ * 2883:     function rplColorScheme($inTemplate)	
+ * 2896:     function getDivider()	
+ * 2906:     function printPalette($palArr)	
+ * 2948:     function helpTextIcon($table,$field,$force=0)	
+ * 2964:     function helpText($table,$field)	
+ * 2986:     function setColorScheme($scheme)	
+ * 3000:     function resetSchemes()	
+ * 3011:     function storeSchemes()	
+ * 3022:     function restoreSchemes()	
  *
  *              SECTION: JavaScript related functions
- * 3054:     function JStop($formname='forms[0]')	
- * 3087:     function JSbottom($formname='forms[0]')	
- * 3151:     function TBE_EDITOR_loginRefreshed()	
- * 3157:     function TBE_EDITOR_checkLoginTimeout()	
- * 3165:     function TBE_EDITOR_setHiddenContent(RTEcontent,theField)	
- * 3170:     function TBE_EDITOR_fieldChanged_fName(fName,el)	
- * 3182:     function TBE_EDITOR_fieldChanged(table,uid,field,el)	
- * 3220:     function TBE_EDITOR_setOriginalFormFieldValue(theField)	
- * 3227:     function TBE_EDITOR_isFormChanged(noAlert)	
- * 3234:     function TBE_EDITOR_checkAndDoSubmit(sendAlert)	
- * 3240:     function TBE_EDITOR_checkSubmit(sendAlert)	
- * 3264:     function TBE_EDITOR_checkRange(el,lower,upper)	
- * 3272:     function TBE_EDITOR_initRequired()	
- * 3277:     function TBE_EDITOR_setImage(name,imgName)	
- * 3281:     function TBE_EDITOR_submitForm()	
- * 3286:     function typoSetup	()	
- * 3293:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	
- * 3307:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off, checkSetValue)	
- * 3323:     function TBE_EDITOR_split(theStr1, delim, index) 
- * 3337:     function TBE_EDITOR_palUrl(inData,fieldList,fieldNum,table,uid,isOnFocus) 
- * 3354:     function TBE_EDITOR_curSelected(theField)	
- * 3368:     function TBE_EDITOR_rawurlencode(str,maxlen)	
- * 3379:     function TBE_EDITOR_str_replace(match,replace,string)	
- * 3414:     function dbFileCon($formObj='document.forms[0]')	
- * 3423:     function setFormValueOpenBrowser (mode,params) 
- * 3436:     function setFormValueFromBrowseWin(fName,value,label)	
- * 3462:     function setHiddenFromList(fObjSel,fObjHid)	
- * 3470:     function setFormValueManipulate(fName,type)	
- * 3510:     function setFormValue_getFObj(fName)	
- * 3532:     function printNeededJSFunctions()	
- * 3551:     function printNeededJSFunctions_top()	
+ * 3052:     function JStop($formname='forms[0]')	
+ * 3091:     function JSbottom($formname='forms[0]')	
+ * 3398:     function dbFileCon($formObj='document.forms[0]')	
+ * 3506:     function printNeededJSFunctions()	
+ * 3533:     function printNeededJSFunctions_top()	
  *
  *              SECTION: Various helper functions
- * 3599:     function getDefaultRecord($table,$pid=0)	
- * 3636:     function getRecordPath($table,$rec)	
- * 3649:     function readPerms()	
- * 3663:     function sL($str)	
- * 3676:     function getLL($str)	
- * 3694:     function isPalettesCollapsed($table,$palette)	
- * 3709:     function isDisplayCondition($displayCond,$row)	
- * 3760:     function getTSCpid($table,$uid,$pid)	
- * 3774:     function doLoadTableDescr($table)	
- * 3786:     function getAvailableLanguages($onlyIsoCoded=1,$setDefault=1)	
+ * 3581:     function getDefaultRecord($table,$pid=0)	
+ * 3619:     function getRecordPath($table,$rec)	
+ * 3632:     function readPerms()	
+ * 3646:     function sL($str)	
+ * 3659:     function getLL($str)	
+ * 3677:     function isPalettesCollapsed($table,$palette)	
+ * 3692:     function isDisplayCondition($displayCond,$row)	
+ * 3745:     function getTSCpid($table,$uid,$pid)	
+ * 3759:     function doLoadTableDescr($table)	
+ * 3771:     function getAvailableLanguages($onlyIsoCoded=1,$setDefault=1)	
  *
  *
- * 3829: class t3lib_TCEforms_FE extends t3lib_TCEforms 
- * 3837:     function wrapLabels($str)	
- * 3847:     function printPalette($palArr)	
+ * 3814: class t3lib_TCEforms_FE extends t3lib_TCEforms 
+ * 3822:     function wrapLabels($str)	
+ * 3832:     function printPalette($palArr)	
  *
- * TOTAL FUNCTIONS: 107
+ * TOTAL FUNCTIONS: 82
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -185,7 +163,7 @@
 /**
  * 'TCEforms' - Class for creating the backend editing forms.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	Rene Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
@@ -194,7 +172,7 @@ class t3lib_TCEforms	{
 
 		// variables not commented yet.... (do so...)
 	var $helpTextFontTag='<font color="#333333">';
-	var $RTEpath = 'ext/rte/';
+	var $RTEpath = 'ext/rte/app/';
 	var $tceFormsEditor=1;
 	var $palFieldArr=array();
 	var $disableWizards=0;
@@ -403,7 +381,7 @@ class t3lib_TCEforms	{
 	 * 
 	 * @param	string		The table name
 	 * @param	array		The record from the table for which to render a field.
-	 * @param	[type]		$depth: ...
+	 * @param	integer		Depth level
 	 * @return	string		HTML output
 	 * @see getSoloField()
 	 */
@@ -544,16 +522,15 @@ class t3lib_TCEforms	{
 
 		$out='';
 		$types_fieldConfig=t3lib_BEfunc::getTCAtypes($table,$row,1);
-		
+
 		$editFieldList=array_unique(t3lib_div::trimExplode(',',$list,1));
-		reset($editFieldList);
-		while(list(,$theFieldC)=each($editFieldList))	{
+		foreach($editFieldList as $theFieldC)	{
 			list($theField,$palFields) = split('\[|\]',$theFieldC);
 			$theField = trim($theField);
 			$palFields = trim($palFields);
 			if ($TCA[$table]['columns'][$theField])	{
 				$parts = t3lib_div::trimExplode(';',$types_fieldConfig[$theField]['origString']);
-				$sField= $this->getSingleField($table,$theField,$row,$parts[1],0,$parts[3],$parts[2]);
+				$sField= $this->getSingleField($table,$theField,$row,$parts[1],0,$parts[3],0);	// Don't sent palette pointer - there are no options anyways for a field-list.
 				$out.= $sField;
 			} elseif($theField=='--div--')	{
 				$out.=$this->getDivider();
@@ -631,7 +608,7 @@ class t3lib_TCEforms	{
 			// If a palette is collapsed (not shown in form, but in top frame instead) AND a collapse header string is given, then make that string a link to activate the palette.
 		if ($this->isPalettesCollapsed($table,$palette) && $collapsedHeader)	{
 			$pC=	$this->intoTemplate(array(
-							'PALETTE' => $this->wrapOpenPalette('<img src="'.$this->backPath.'gfx/options.gif" width="18" height="16" border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" align="top" alt="" /><strong>'.$collapsedHeader.'</strong>',$table,$row,$palette),
+							'PALETTE' => $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" align="top" alt="" /><strong>'.$collapsedHeader.'</strong>',$table,$row,$palette),
 						),
 						$this->palFieldTemplate
 					);
@@ -668,7 +645,6 @@ class t3lib_TCEforms	{
 			// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $TCA[$table]['columns'][$field];
 
-		
 			// Now, check if this field is configured and editable (according to excludefields + other configuration)
 		if (	is_array($PA['fieldConf']) &&
 				(!$PA['fieldConf']['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$field)) && 
@@ -693,7 +669,7 @@ class t3lib_TCEforms	{
 						(($TCA[$table]['ctrl']['type'] && !strcmp($field,$TCA[$table]['ctrl']['type'])) ||
 						($TCA[$table]['ctrl']['requestUpdate'] && t3lib_div::inList($TCA[$table]['ctrl']['requestUpdate'],$field)))
 						&& !$BE_USER->uc['noOnChangeAlertInTypeFields'])	{
-					$alertMsgOnChange="if (confirm(".$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).") && TBE_EDITOR_checkSubmit(-1)){TBE_EDITOR_submitForm()};";
+					$alertMsgOnChange='if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){TBE_EDITOR_submitForm()};';
 				} else {$alertMsgOnChange='';}
 				
 					// Render as a hidden field?
@@ -704,7 +680,7 @@ class t3lib_TCEforms	{
 						// If the field is NOT a palette field, then we might create an icon which links to a palette for the field, if one exists.
 					if (!$PA['palette'])	{
 						if ($PA['pal'] && $this->isPalettesCollapsed($table,$PA['pal']))	{
-							list($thePalIcon,$palJSfunc) = $this->wrapOpenPalette('<img src="'.$this->backPath.'gfx/options.gif" width="18" height="16" border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" alt="" />',$table,$row,$PA['pal'],1);
+							list($thePalIcon,$palJSfunc) = $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" alt="" />',$table,$row,$PA['pal'],1);
 						} else {
 							$thePalIcon = '';
 							$palJSfunc = '';
@@ -721,7 +697,7 @@ class t3lib_TCEforms	{
 					$PA['fieldChangeFunc']=array();
 					$PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = "TBE_EDITOR_fieldChanged('".$table."','".$row['uid']."','".$field."','".$PA['itemFormElName']."');";
 					$PA['fieldChangeFunc']['alert']=$alertMsgOnChange;
-					
+
 						// Based on the type of the item, call a render function:
 					$item = $this->getSingleField_SW($table,$field,$row,$PA);
 
@@ -871,7 +847,7 @@ class t3lib_TCEforms	{
 				// Setting default "click-checkbox" values for eval types "date" and "datetime":
 			$nextMidNight = mktime(0,0,0)+1*3600*24;
 			$checkSetValue = in_array('date',$evalList) ? $nextMidNight : '';
-			$checkSetValue = in_array('datetime',$evalList) ? $nextMidNight+12*3600 : $checkSetValue;
+			$checkSetValue = in_array('datetime',$evalList) ? time() : $checkSetValue;
 
 			$cOnClick = 'typo3FormFieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);
 			$item.='<input type="checkbox" name="'.$PA['itemFormElName'].'_cb" onclick="'.htmlspecialchars($cOnClick).'" />';
@@ -930,11 +906,11 @@ class t3lib_TCEforms	{
 					$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$table,$field,$RTEtypeVal);
 					if (!$thisConfig['disabled'])	{
 						if (!$this->disableRTE)	{
-							$RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:380; width:'.$RTEWidth.';border:solid 0px;';
+							$RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:380px; width:'.$RTEWidth.'px;border:solid 0px;';
 							$rteURL = $this->backPath.$this->RTEpath.'rte.php?elementId='.$PA['itemFormElName'].'&pid='.$row['pid'].'&typeVal='.rawurlencode($RTEtypeVal).'&bgColor='.rawurlencode($this->colorScheme[0]).'&sC='.rawurlencode($PA['extra']).($this->tceFormsEditor?'&TCEformsEdit=1':'').'&formName='.rawurlencode($this->formName);
 							$item.='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
 							$item.='<div id="cdiv'.count($this->RTEwindows).'" style="'.htmlspecialchars($RTEdivStyle).'">';
-							$item.='<iframe src="'.htmlspecialchars($rteURL).'" id="'.$PA['itemFormElName'].'_RTE" style="visibility: visible; position: absolute; left: 0px; top: 0px; height:100%; width:100%"></iframe>';
+							$item.='<iframe src="'.htmlspecialchars($rteURL).'" id="'.$PA['itemFormElName'].'_RTE" style="visibility: visible; position: absolute; left: 0px; top: 0px; height:100%; width:100%;"></iframe>';
 							$item.='</div>';
 
 							$altItem='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
@@ -1044,7 +1020,7 @@ class t3lib_TCEforms	{
 			$p = $selItems[$c];
 			$rOnClick = implode('',$PA['fieldChangeFunc']);
 			$rChecked = (!strcmp($p[1],$PA['itemFormElValue'])?' checked="checked"':'');
-			$item.= '<input type="radio"'.$this->insertDefStyle('radio').' name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($p[1]).'" onclick="'.$rOnClick.'"'.$rChecked.$PA['onFocus'].' />'.
+			$item.= '<input type="radio"'.$this->insertDefStyle('radio').' name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($p[1]).'" onclick="'.htmlspecialchars($rOnClick).'"'.$rChecked.$PA['onFocus'].' />'.
 					htmlspecialchars($p[0]).
 					'<br />';
 		}
@@ -1074,15 +1050,14 @@ class t3lib_TCEforms	{
 
 			// Possibly remove some items:		
 		$removeItems=t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
-		reset($selItems);
-		while(list($tk,$p)=each($selItems))	{
+		foreach($selItems as $tk => $p)	{
 			if (in_array($p[1],$removeItems))	{
 				unset($selItems[$tk]);
 			} else if (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
 				$selItems[$tk][0]=$this->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]);
 			}
 		}
-		
+
 			// Creating the label for the "No Matching Value" entry.
 		$nMV_label = isset($PA['fieldTSConfig']['noMatchingValue_label']) ? $this->sL($PA['fieldTSConfig']['noMatchingValue_label']) : '[ '.sprintf($this->getLL('l_noMatchingValue'),$PA['itemFormElValue']).' ]';
 		
@@ -1134,7 +1109,7 @@ class t3lib_TCEforms	{
 			}
 			$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex='.$sI.';} '.implode('',$PA['fieldChangeFunc']);
 			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
-			$item.= '<select name="'.$PA['itemFormElName'].'"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.$sOnChange.'"'.$PA['onFocus'].'>';
+			$item.= '<select name="'.$PA['itemFormElName'].'"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].'>';
 			$item.= implode('',$opt);
 			$item.= '</select>';
 
@@ -1168,6 +1143,41 @@ class t3lib_TCEforms	{
 				// Register the required number of elements:
 			$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
 
+
+			if($config['treeView'] AND $config['foreign_table']) {
+				global $TCA, $LANG;
+
+				require_once(PATH_t3lib.'class.t3lib_treeview.php');
+				$treeViewObj = t3lib_div::makeInstance('t3lib_TCEforms_SelectTreeView');
+	
+				$treeViewObj->table = $config['foreign_table'];
+				$treeViewObj->init();
+				$treeViewObj->backPath = $this->backPath;
+				$treeViewObj->parentField = $TCA[$config['foreign_table']]['ctrl']['treeParentField'];
+				$treeViewObj->expandAll=1;
+				$treeViewObj->expandFirst=1;
+				$treeViewObj->ext_IconMode = '1'; // no context menu on icons
+				$treeViewObj->title = $LANG->sL($TCA[$config['foreign_table']]['ctrl']['title']);
+				$treeViewObj->TCEforms_itemFormElName = $PA['itemFormElName'];
+							
+				$treeContent=$treeViewObj->getBrowsableTree();
+				
+				#if ($this->docLarge)	$cols = round($cols*$this->form_largeComp);
+				#$width = ceil($cols*$this->form_rowsToStylewidth);
+				$width=240;
+				
+				$config['autoSizeMax'] = t3lib_div::intInRange($config['autoSizeMax'],0);
+				$height = $config['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;;
+					// hardcoded: 12 is the height of the font
+				$height=$height*13;	
+						
+				$divStyle = 'position:relative; left:0px; top:0px; height:'.$height.'px; width:'.$width.'px;border:solid 1px;overflow:auto;background:#fff;';			
+				$thumbnails='<div  name="'.$PA['itemFormElName'].'_selTree" style="'.htmlspecialchars($divStyle).'">';
+				$thumbnails.=$treeContent;
+				$thumbnails.='</div>';	
+							
+			} else {
+
 			$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
 
 				// Put together the select form with selected elements:
@@ -1176,6 +1186,15 @@ class t3lib_TCEforms	{
 				$thumbnails.= '<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
 			}
 			$thumbnails.= '</select>';
+				$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
+	
+					// Put together the select form with selected elements:
+				$thumbnails='<select style="width:200 px;" name="'.$PA['itemFormElName'].'_sel"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].'>';
+				foreach($selItems as $p)	{
+					$thumbnails.= '<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
+				}
+				$thumbnails.= '</select>';
+			}
 
 				// Perform modification of the selected items array:
 			$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
@@ -1272,7 +1291,7 @@ class t3lib_TCEforms	{
 
 					$rowCopy=array();
 					$rowCopy[$field] = $imgP[0];
-					$imgs[]= '<nobr>'.t3lib_BEfunc::thumbCode($rowCopy,$table,$field,$this->backPath,'thumbs.php',$config['uploadfolder'],0,' align="middle"').$imgP[0].'</nobr>';
+					$imgs[]= '<span class="nobr">'.t3lib_BEfunc::thumbCode($rowCopy,$table,$field,$this->backPath,'thumbs.php',$config['uploadfolder'],0,' align="middle"').$imgP[0].'</span>';
 				}
 				$thumbsnail = implode('<br />',$imgs);
 			}
@@ -1297,16 +1316,16 @@ class t3lib_TCEforms	{
 				// Creating string showing allowed types:
 			$tempFT = t3lib_div::trimExplode(',',$allowed,1);
 			if (!strcmp(trim($tempFT[0]),'*'))	{
-				$info.='<nobr>&nbsp;&nbsp;&nbsp;&nbsp;'.
+				$info.='<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;'.
 						htmlspecialchars($this->getLL('l_allTables')).
-						'</nobr><br />';
+						'</span><br />';
 			} else {
 				while(list(,$theT)=each($tempFT))	{
 					if ($theT)	{
-						$info.='<nobr>&nbsp;&nbsp;&nbsp;&nbsp;'.
-								'<img src="'.$this->backPath.t3lib_iconWorks::getIcon($theT).'" width="18" height="16" align="top" alt="" /> '.
+						$info.='<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;'.
+								t3lib_iconWorks::getIconImage($theT,array(),$this->backPath,'align="top"').
 								htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])).
-								'</nobr><br />';
+								'</span><br />';
 					}
 				}
 			}
@@ -1323,11 +1342,11 @@ class t3lib_TCEforms	{
 				$itemArray[] = array('table'=>$this_table, 'id'=>$this_uid);
 				if ($show_thumbs)	{
 					$rr = t3lib_BEfunc::getRecord($this_table,$this_uid);
-					$imgs[]='<nobr>'.
+					$imgs[]='<span class="nobr">'.
 							t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).'"').
 							'&nbsp;'.
 							$this->noTitle($rr[$GLOBALS['TCA'][$this_table]['ctrl']['label']],array('<em>','</em>')).
-							'</nobr>';
+							'</span>';
 				}
 			}
 			$thumbsnail='';
@@ -1402,7 +1421,7 @@ class t3lib_TCEforms	{
 			$cols = $config['cols']?$config['cols']:($config['size']?$config['size']:$this->maxInputWidth);
 			if ($this->docLarge)	$cols = round($cols*$this->form_largeComp);
 			$width = ceil($cols*$this->form_rowsToStylewidth);
-			$item='<div style="'.htmlspecialchars($divStyle.'width:'.$width.'px;').'"><nobr>'.(strcmp($itemValue,'')?$itemValue:"&nbsp;").'<nobr></div>';
+			$item='<div style="'.htmlspecialchars($divStyle.'width:'.$width.'px;').'"><span class="nobr">'.(strcmp($itemValue,'')?$itemValue:'&nbsp;').'</span></div>';
 		}
 
 		return $item;
@@ -1542,7 +1561,7 @@ class t3lib_TCEforms	{
 		$tCells=array();
 		$pct = round(100/count($sArr));
 		foreach($sArr as $sKey => $sheetCfg)	{
-			$onClick="if (confirm(".$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).") && TBE_EDITOR_checkSubmit(-1)){".$this->elName($elName).".value='".$sKey."'; TBE_EDITOR_submitForm()};";
+			$onClick='if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){'.$this->elName($elName).".value='".$sKey."'; TBE_EDITOR_submitForm()};";
 
 			$tCells[]='<td width="'.$pct.'%" style="'.($sKey==$sheetKey ? 'background-color: #9999cc; font-weight: bold;' : 'background-color: #aaaaaa;').' cursor: hand;" onclick="'.htmlspecialchars($onClick).'" align="center">'.
 					($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sKey).
@@ -1649,7 +1668,7 @@ class t3lib_TCEforms	{
 								// Put row together
 							$tRows[]='<tr bgcolor="'.$bgColor.'">
 								<td nowrap="nowrap" valign="top">'.
-								'<input name="_DELETE_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" type="checkbox" value="1" /><img src="'.$this->backPath.'gfx/garbage.gif" border="0">'.
+								'<input name="_DELETE_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" type="checkbox" value="1" /><img src="'.$this->backPath.'gfx/garbage.gif" border="0" alt="" />'.
 								$rowCells['title'].'</td>
 								<td>'.$rowCells['formEl'].'</td>
 							</tr>';
@@ -1725,7 +1744,7 @@ class t3lib_TCEforms	{
 	}
 
 	/**
-	 * User defined type
+	 * User defined field type
 	 * 
 	 * @param	string		The table name of the record
 	 * @param	string		The field name which this element is supposed to edit
@@ -1738,7 +1757,7 @@ class t3lib_TCEforms	{
 		$PA['field']=$field;
 		$PA['row']=$row;
 
-		return t3lib_div::callUserFunction($PA['fieldConf']['config']["userFunc"],$PA,$this);
+		return t3lib_div::callUserFunction($PA['fieldConf']['config']['userFunc'],$PA,$this);
 	}
 
 
@@ -2051,19 +2070,19 @@ class t3lib_TCEforms	{
 		if (!$params['noBrowser'])	{
 			$aOnClick='setFormValueOpenBrowser(\''.$mode.'\',\''.($fName.'|||'.$allowed.'|').'\'); return false;';
 			$icons[]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-					'<img src="'.$this->backPath.'gfx/insert3.gif" width="14" height="14" border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL("l_browse_".($mode=="file"?"file":"db"))).' />'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert3.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_browse_'.($mode=='file'?'file':'db'))).' />'.
 					'</a>';
 		}
 		if (!$params['dontShowMoveIcons'])	{
 			$icons[]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Up\'); return false;">'.
-					'<img src="'.$this->backPath.'gfx/group_totop.gif" width="14" height="14" border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL("l_move_to_top")).' />'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_totop.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_top')).' />'.
 					'</a>';
 		}
 		$icons[]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false;">'.
-				'<img src="'.$this->backPath.'gfx/group_clear.gif" width="14" height="14" border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL("l_remove_selected")).' />'.
+				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_clear.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_remove_selected')).' />'.
 				'</a>';
-		$str='<table border=0 cellpadding=0 cellspacing=0 width=1>
-			'.($params["headers"]?'
+		$str='<table border="0" cellpadding="0" cellspacing="0" width="1">
+			'.($params['headers']?'
 				<tr>
 					<td>'.$this->wrapLabels($params['headers']['selector']).'</td>
 					<td></td>
@@ -2111,7 +2130,7 @@ class t3lib_TCEforms	{
 		$fieldChangeFunc = $PA['fieldChangeFunc'];
 		$item = $itemKinds[0];
 		$outArr=array();
-		$fName='['.$table.']['.$row["uid"].']['.$field.']';
+		$fName='['.$table.']['.$row['uid'].']['.$field.']';
 		$md5ID = t3lib_div::shortmd5($itemName);
 
 			// traverse wizards:
@@ -2241,7 +2260,7 @@ class t3lib_TCEforms	{
 						$dist=$dist?'<td><img src="clear.gif" height="1" width="'.$dist.'" alt="" /></td>':'';
 						$outStr='<tr><td'.$vAlign.'>'.implode('</td>'.$dist.'<td'.$vAlign.'>',$outArr).'</td></tr>';
 					}
-					$outStr='<table border="0" cellpadding="'.intval($wizConf["_PADDING"]).'" cellspacing="0">'.$outStr.'</table>';
+					$outStr='<table border="0" cellpadding="'.intval($wizConf['_PADDING']).'" cellspacing="0">'.$outStr.'</table>';
 				} else {
 					$outStr=implode('',$outArr);
 				}
@@ -2263,7 +2282,7 @@ class t3lib_TCEforms	{
 	}
 
 	/**
-	 * Get icon
+	 * Get icon (for example for selector boxes)
 	 * 
 	 * @param	string		Icon reference
 	 * @return	array		Array with two values; the icon file reference, the icon file information array (getimagesize())
@@ -2307,7 +2326,7 @@ class t3lib_TCEforms	{
 
 		$aOnClick = $this->blur().substr($palJSFunc,0,-3).'0);return false;';
 
-		$iconCode = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.t3lib_BEfunc::titleAttrib($table).'>'.
+		$iconCode = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'" title="'.htmlspecialchars($table).'">'.
 					$header.
 					'</a>';
 		return $retFunc ? array($iconCode,$palJSFunc) : $iconCode;
@@ -2534,7 +2553,7 @@ class t3lib_TCEforms	{
 	}
 	
 	/**
-	 * addSelect options
+	 * Add selector box items of more exotic kinds.
 	 * 
 	 * @param	array		The array of items (label,value,icon)
 	 * @param	array		The "columns" array for the field (from TCA)
@@ -2544,7 +2563,7 @@ class t3lib_TCEforms	{
 	 */
 	function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)	{
 		global $TCA;
-			
+
 			// Values from foreign tables:
 		if ($fieldValue['config']['foreign_table'])	{
 			$items = $this->foreignTable($items,$fieldValue,$TSconfig,$field);
@@ -2656,10 +2675,10 @@ class t3lib_TCEforms	{
 			// Perform lookup
 		$res = @mysql (TYPO3_db, $query);
 		if (mysql_error())	{ 
-			debug(array(mysql_error()."\n\nQuery:\n ".$query."\n\nThis may indicate a table defined in tables.php is not existing in the database!"));
-			exit;
+			echo(mysql_error()."\n\nQuery:\n ".$query."\n\nThis may indicate a table defined in tables.php is not existing in the database!");
+			return array();
 		}
-		
+
 			// Get label prefix.
 		$lPrefix = $this->sL($fieldValue['config'][$pF.'foreign_table_prefix']);
 
@@ -2752,7 +2771,7 @@ class t3lib_TCEforms	{
 		
 		$this->totalWrap='
 		<table border="0" cellspacing="0" cellpadding="0" width="'.($this->docLarge?440+150:440).'">'.
-			'<tr bgcolor="'.t3lib_div::modifyHTMLColorAll($GLOBALS["SOBE"]->doc->bgColor2,$light).'">	
+			'<tr bgcolor="'.t3lib_div::modifyHTMLColorAll($GLOBALS['SOBE']->doc->bgColor2,$light).'">	
 				<td>&nbsp;</td>
 				<td>###RECORD_ICON### <font color="#333366"><b>###TABLE_TITLE###</b></font> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
 			</tr>'.
@@ -2816,13 +2835,13 @@ class t3lib_TCEforms	{
 
 	/**
 	 * Overwrite this function in own extended class to add own markers for output
-	 *
+	 * 
 	 * @param	array		Array with key/value pairs to insert in the template.
 	 * @param	string		The table name of the record
 	 * @param	string		The field name which this element is supposed to edit
 	 * @param	array		The record data array where the value(s) for the field can be found
 	 * @param	array		An array with additional configuration options.
-	 * @return array 	marker array for template output
+	 * @return	array		marker array for template output
 	 * @see function intoTemplate()
 	 */
 	function addUserTemplateMarkers($marker,$table,$field,$row,&$PA)	{
@@ -2872,7 +2891,7 @@ class t3lib_TCEforms	{
 			$arr[$k]=str_replace('###TABLE_TITLE###',htmlspecialchars($this->sL($TCA[$table]['ctrl']['title'])),$arr[$k]);
 
 			$titleA=t3lib_BEfunc::titleAltAttrib($this->getRecordPath($table,$rec));
-			$arr[$k]=str_replace('###RECORD_ICON###',t3lib_iconWorks::getIconImage($table,$rec,$this->backPath,'align="absmiddle"'.$titleA),$arr[$k]);
+			$arr[$k]=str_replace('###RECORD_ICON###',t3lib_iconWorks::getIconImage($table,$rec,$this->backPath,'class="absmiddle"'.$titleA),$arr[$k]);
 		}
 		return $arr;
 	}
@@ -2919,7 +2938,7 @@ class t3lib_TCEforms	{
 	 * @return	string		
 	 */
 	function getDivider()	{
-		//return "<HR>";
+		//return "<hr />";
 	}
 
 	/**
@@ -2929,7 +2948,7 @@ class t3lib_TCEforms	{
 	 * @return	string		HTML output
 	 */
 	function printPalette($palArr)	{
-		$out="";
+		$out='';
 		reset($palArr);
 		$bgColor=' bgcolor="'.$this->colorScheme[2].'"';
 		while(list(,$content)=each($palArr))	{
@@ -2951,11 +2970,11 @@ class t3lib_TCEforms	{
 		$out='<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td><img src="clear.gif" width="'.intval($this->paletteMargin).'" height="1" alt="" /></td>'.
-					implode("",$hRow).'
+					implode('',$hRow).'
 			</tr>
 			<tr>
 				<td></td>'.
-				implode("",$iRow).'
+				implode('',$iRow).'
 			</tr>
 		</table>';
 
@@ -2974,7 +2993,7 @@ class t3lib_TCEforms	{
 		if ($this->globalShowHelp && $GLOBALS['TCA_DESCR'][$table]['columns'][$field] && (($this->edit_showFieldHelp=='icon'&&!$this->doLoadTableDescr($table)) || $force))	{
 			$aOnClick = 'vHWin=window.open(\''.$this->backPath.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-					'<img src="'.$this->backPath.'gfx/helpbubble.gif" width="14" height="14" hspace="2" border="0" align="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
 					'</a>';
 		} else return '&nbsp;';
 	}
@@ -3077,6 +3096,12 @@ class t3lib_TCEforms	{
 	function JStop($formname='forms[0]')	{
 		if (count($this->RTEwindows))	{
 			$out.='
+
+
+				<!--
+				 	JavaScript in top of page (before form):
+				-->
+
 				<script type="text/javascript">
 					/*<![CDATA[*/
 						var TBE_RTE_WINDOWS=new Array();
@@ -3153,9 +3178,9 @@ class t3lib_TCEforms	{
 			<script type="text/javascript">
 				/*<![CDATA[*/
 				
-				var TBE_EDITOR_req=new Image(); 	TBE_EDITOR_req.src = "'.$this->backPath.'gfx/required_h.gif"; 
-				var TBE_EDITOR_cm=new Image(); 		TBE_EDITOR_cm.src = "'.$this->backPath.'gfx/content_client.gif"; 
-				var TBE_EDITOR_sel=new Image(); 	TBE_EDITOR_sel.src = "'.$this->backPath.'gfx/content_selected.gif"; 
+				var TBE_EDITOR_req=new Image(); 	TBE_EDITOR_req.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/required_h.gif','',1).'"; 
+				var TBE_EDITOR_cm=new Image(); 		TBE_EDITOR_cm.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/content_client.gif','',1).'"; 
+				var TBE_EDITOR_sel=new Image(); 	TBE_EDITOR_sel.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/content_selected.gif','',1).'"; 
 				var TBE_EDITOR_clear=new Image(); 	TBE_EDITOR_clear.src = "'.$this->backPath.'clear.gif"; 
 				var TBE_REQUIRED=new Array();
 '.implode(chr(10),$reqLines).'
@@ -3170,27 +3195,23 @@ class t3lib_TCEforms	{
 				var TBE_EDITOR_loadTime = 0;
 				var TBE_EDITOR_isChanged = 0;
 
-					//
-				function TBE_EDITOR_loginRefreshed()	{
+				function TBE_EDITOR_loginRefreshed()	{	//
 					var date = new Date();
 					TBE_EDITOR_loadTime = Math.floor(date.getTime()/1000);
 					if (top.busy && top.busy.loginRefreshed)	{top.busy.loginRefreshed();}
 				}
-					//
-				function TBE_EDITOR_checkLoginTimeout()	{
+				function TBE_EDITOR_checkLoginTimeout()	{	//
 					var date = new Date();
 					var theTime = Math.floor(date.getTime()/1000);
 					if (theTime > TBE_EDITOR_loadTime+'.intval($GLOBALS['BE_USER']->auth_timeout_field).'-10)	{
 						return true;
 					}
 				}
-					//
-				function TBE_EDITOR_setHiddenContent(RTEcontent,theField)	{
+				function TBE_EDITOR_setHiddenContent(RTEcontent,theField)	{	//
 					document.'.$formname.'[theField].value = RTEcontent;
 					alert(document.'.$formname.'[theField].value);
 				}
-					//
-				function TBE_EDITOR_fieldChanged_fName(fName,el)	{
+				function TBE_EDITOR_fieldChanged_fName(fName,el)	{	//
 					var idx='.(2+substr_count($this->prependFormFieldNames,'[')).';
 					var table = TBE_EDITOR_split(fName, "[", idx);
 					var uid = TBE_EDITOR_split(fName, "[", idx+1);
@@ -3201,8 +3222,7 @@ class t3lib_TCEforms	{
 					field = field.substr(0,field.length-1);
 					TBE_EDITOR_fieldChanged(table,uid,field,el);
 				}
-					//
-				function TBE_EDITOR_fieldChanged(table,uid,field,el)	{
+				function TBE_EDITOR_fieldChanged(table,uid,field,el)	{	//
 					var theField = "'.$this->prependFormFieldNames.'["+table+"]["+uid+"]["+field+"]";
 					TBE_EDITOR_isChanged = 1;
 
@@ -3239,28 +3259,24 @@ class t3lib_TCEforms	{
 					').'
 				}
 				'.($this->isPalettedoc?'
-					//
-				function TBE_EDITOR_setOriginalFormFieldValue(theField)	{
-					if ('.$this->isPalettedoc.' && '.$this->isPalettedoc.'.'.$formname.' && '.$this->isPalettedoc.'.'.$formname.'[theField]) {
-						'.$this->isPalettedoc.'.'.$formname.'[theField].value = document.'.$formname.'[theField].value;
+				function TBE_EDITOR_setOriginalFormFieldValue(theField)	{	//
+					if ('.$this->isPalettedoc.' && '.$this->isPalettedoc.'.document.'.$formname.' && '.$this->isPalettedoc.'.document.'.$formname.'[theField]) {
+						'.$this->isPalettedoc.'.document.'.$formname.'[theField].value = document.'.$formname.'[theField].value;
 					}
 				}
 				':'').'
-					//
-				function TBE_EDITOR_isFormChanged(noAlert)	{
+				function TBE_EDITOR_isFormChanged(noAlert)	{	//
 					if (TBE_EDITOR_isChanged && !noAlert && confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.fieldsChanged')).'))	{
 						return 0;
 					}
 					return TBE_EDITOR_isChanged;
 				}
-					//
-				function TBE_EDITOR_checkAndDoSubmit(sendAlert)	{
+				function TBE_EDITOR_checkAndDoSubmit(sendAlert)	{	//
 					if (TBE_EDITOR_checkSubmit(sendAlert))	{
 						TBE_EDITOR_submitForm();
 					}
 				}
-					//
-				function TBE_EDITOR_checkSubmit(sendAlert)	{
+				function TBE_EDITOR_checkSubmit(sendAlert)	{	//
 					if (TBE_EDITOR_checkLoginTimeout() && confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_refresh_login')).'))	{
 						vHWin=window.open(\''.$this->backPath.'login_frameset.php?\',\'relogin\',\'height=300,width=400,status=0,menubar=0\');
 						vHWin.focus();
@@ -3283,37 +3299,32 @@ class t3lib_TCEforms	{
 						return false;
 					}
 				}
-					//
-				function TBE_EDITOR_checkRange(el,lower,upper)	{
+				function TBE_EDITOR_checkRange(el,lower,upper)	{	//
 					if (el && el.length>=lower && el.length<=upper) {
 						return true;
 					} else {
 						return false;
 					}
 				}
-					//
-				function TBE_EDITOR_initRequired()	{
+				function TBE_EDITOR_initRequired()	{	//
 '.implode(chr(10),$reqLinesSet).'
 '.implode(chr(10),$reqRangeSet).'
 				}
-					//
-				function TBE_EDITOR_setImage(name,imgName)	{
+				function TBE_EDITOR_setImage(name,imgName)	{	//
 					if (document[name]) {document[name].src = eval(imgName+".src");}
 				}
-					//
-				function TBE_EDITOR_submitForm()	{
+				function TBE_EDITOR_submitForm()	{	//
 					'.($this->doSaveFieldName?'document.'.$this->formName."['".$this->doSaveFieldName."'].value=1;":'').'
 					document.'.$this->formName.'.submit();
 				}
-					//
-				function typoSetup	()	{
+				function typoSetup	()	{	//
 					this.passwordDummy = "********";
 					this.decimalSign = ".";
 				}
 				var TS = new typoSetup();
 				var evalFunc = new evalFunc();
-					//
-				function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{
+
+				function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{	//
 					if (document.'.$formname.'[theField])	{
 						var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 						var theValue = document.'.$formname.'[theField].value;
@@ -3326,8 +3337,7 @@ class t3lib_TCEforms	{
 						}
 					}
 				}
-					//
-				function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off, checkSetValue)	{
+				function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off, checkSetValue)	{	//
 					if (document.'.$formname.'[theField])	{
 						var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 						if (checkbox_off)	{
@@ -3342,8 +3352,7 @@ class t3lib_TCEforms	{
 						typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue);
 					}
 				}
-					//
-				function TBE_EDITOR_split(theStr1, delim, index) {	
+				function TBE_EDITOR_split(theStr1, delim, index) {		//
 					var theStr = ""+theStr1;
 					var lengthOfDelim = delim.length;
 					sPos = -lengthOfDelim;
@@ -3356,8 +3365,7 @@ class t3lib_TCEforms	{
 					if(ePos == -1)	{ePos = theStr.length;}	
 					return (theStr.substring(sPos+lengthOfDelim,ePos));
 				}
-					//
-				function TBE_EDITOR_palUrl(inData,fieldList,fieldNum,table,uid,isOnFocus) {	
+				function TBE_EDITOR_palUrl(inData,fieldList,fieldNum,table,uid,isOnFocus) {		//
 					var url = "'.$this->backPath.'alt_palette.php?inData="+inData+"&formName='.rawurlencode($this->formName).'"+"&prependFormFieldNames='.rawurlencode($this->prependFormFieldNames).'";
 					var field = "";
 					var theField="";
@@ -3367,14 +3375,13 @@ class t3lib_TCEforms	{
 						if (document.'.$formname.'[theField])		url+="&rec["+field+"]="+TBE_EDITOR_rawurlencode(document.'.$formname.'[theField].value);
 					}
 					if (top.topmenuFrame)	{
-						top.topmenuFrame.document.location = url+"&backRef="+(top.content.list_frame?"top.content.list_frame":"top.content");
+						top.topmenuFrame.document.location = url+"&backRef="+(top.content.list_frame ? (top.content.list_frame.view_frame ? "top.content.list_frame.view_frame" : "top.content.list_frame") : "top.content");
 					} else if (!isOnFocus) {
 						var vHWin=window.open(url,"palette","height=300,width=200,status=0,menubar=0,scrollbars=1");
 						vHWin.focus();
 					}
 				}
-					//
-				function TBE_EDITOR_curSelected(theField)	{
+				function TBE_EDITOR_curSelected(theField)	{	//
 					var fObjSel = document.'.$formname.'[theField];
 					var retVal="";
 					if (fObjSel && fObjSel.type=="select-multiple")	{
@@ -3387,8 +3394,7 @@ class t3lib_TCEforms	{
 					}
 					return retVal;
 				}
-					//
-				function TBE_EDITOR_rawurlencode(str,maxlen)	{
+				function TBE_EDITOR_rawurlencode(str,maxlen)	{	//
 					var output = str;
 					if (maxlen)	output = output.substr(0,200);
 					output = escape(output);
@@ -3398,8 +3404,7 @@ class t3lib_TCEforms	{
 					output = TBE_EDITOR_str_replace("@","%40", output);
 					return output;
 				}
-					//
-				function TBE_EDITOR_str_replace(match,replace,string)	{
+				function TBE_EDITOR_str_replace(match,replace,string)	{	//
 					var input = ""+string;
 					var matchStr = ""+match;
 					if (!matchStr)	{return string;}
@@ -3442,21 +3447,14 @@ class t3lib_TCEforms	{
 			// ***************
 		
 			var browserWin="";
-				//
-			function setFormValueOpenBrowser (mode,params) {
+
+			function setFormValueOpenBrowser(mode,params) {	//
 				var url = "'.$this->backPath.'browser.php?mode="+mode+"&bparams="+params;
-				if (!browserWin)	{
-					browserWin = window.open(url,"Typo3WinBrowser","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
-					browserWin.typoWin = self;
-					browserWin.focus();
-				} else {
-					browserWin.content.document.location=url;
-					browserWin.typoWin = self;
-					browserWin.focus();
-				}
+
+				browserWin = window.open(url,"Typo3WinBrowser","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
+				browserWin.focus();
 			}
-				//
-			function setFormValueFromBrowseWin(fName,value,label)	{
+			function setFormValueFromBrowseWin(fName,value,label)	{	//
 				var formObj = setFormValue_getFObj(fName)
 				if (formObj)	{
 					fObj = formObj[fName+"_list"];
@@ -3481,16 +3479,14 @@ class t3lib_TCEforms	{
 					}
 				}
 			}
-				//
-			function setHiddenFromList(fObjSel,fObjHid)	{
+			function setHiddenFromList(fObjSel,fObjHid)	{	//
 				l=fObjSel.length;
 				fObjHid.value="";
 				for (a=0;a<l;a++)	{
 					fObjHid.value+=fObjSel.options[a].value+",";
 				}
 			}
-				//
-			function setFormValueManipulate(fName,type)	{
+			function setFormValueManipulate(fName,type)	{	//
 				var formObj = setFormValue_getFObj(fName)
 				if (formObj)	{
 					var localArray_V = new Array();
@@ -3529,8 +3525,7 @@ class t3lib_TCEforms	{
 					'.$this->TBE_EDITOR_fieldChanged_func.'
 				}
 			}
-				//
-			function setFormValue_getFObj(fName)	{
+			function setFormValue_getFObj(fName)	{	//
 				var formObj = '.$formObj.';
 				if (formObj)	{
 					if (formObj[fName] && formObj[fName+"_list"] && formObj[fName+"_list"].type=="select-multiple")	{
@@ -3548,7 +3543,7 @@ class t3lib_TCEforms	{
 	}
 
 	/**
-	 * Prints necessary JS
+	 * Prints necessary JavaScript for TCEforms (after the form HTML).
 	 * 
 	 * @return	void		
 	 */
@@ -3556,10 +3551,18 @@ class t3lib_TCEforms	{
 			// JS evaluation:
 		$out = $this->JSbottom($this->formName);
 			// 
-		if ($this->printNeededJS["dbFileIcons"])	{
-			$out.= '<script type="text/javascript">
+		if ($this->printNeededJS['dbFileIcons'])	{
+			$out.= '
+								
+
+
+			<!--
+			 	JavaScript after the form has been drawn:
+			-->
+								
+			<script type="text/javascript">
 				/*<![CDATA[*/
-			'.$this->dbFileCon("document.".$this->formName).'
+			'.$this->dbFileCon('document.'.$this->formName).'
 				/*]]>*/
 			</script>';
 		}
@@ -3567,7 +3570,7 @@ class t3lib_TCEforms	{
 	}
 
 	/**
-	 * Returns for the top
+	 * Returns necessary JavaScript for the top
 	 * 
 	 * @return	void		
 	 */
@@ -3615,8 +3618,8 @@ class t3lib_TCEforms	{
 	/**
 	 * Gets default record. Maybe not used anymore. FE-editor?
 	 * 
-	 * @param	string		Table
-	 * @param	integer		PID
+	 * @param	string		Database Tablename
+	 * @param	integer		PID value (positive / negative)
 	 * @return	array		"default" row.
 	 */
 	function getDefaultRecord($table,$pid=0)	{
@@ -3650,11 +3653,12 @@ class t3lib_TCEforms	{
 	}
 
 	/**
-	 * Return record path
+	 * Return record path (visually formatted, using t3lib_BEfunc::getRecordPath() )
 	 * 
 	 * @param	string		Table name
 	 * @param	array		Record array
 	 * @return	string		The record path.
+	 * @see t3lib_BEfunc::getRecordPath()
 	 */
 	function getRecordPath($table,$rec)	{
 		list($tscPID,$thePidValue)=$this->getTSCpid($table,$rec['uid'],$rec['pid']);
@@ -3774,11 +3778,13 @@ class t3lib_TCEforms	{
 
 	/**
 	 * Return TSCpid (cached)
+	 * Using t3lib_BEfunc::getTSCpid()
 	 * 
-	 * @param	string		Table
-	 * @param	string		UID
-	 * @param	string		PID
-	 * @return	Return		TSCpid
+	 * @param	string		Tablename
+	 * @param	string		UID value
+	 * @param	string		PID value
+	 * @return	integer		Returns the REAL pid of the record, if possible. If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
+	 * @see t3lib_BEfunc::getTSCpid()
 	 */
 	function getTSCpid($table,$uid,$pid)	{
 		$key = $table.':'.$uid.':'.$pid;
@@ -3847,7 +3853,7 @@ class t3lib_TCEforms	{
 /**
  * Extension class for the rendering of TCEforms in the frontend
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 class t3lib_TCEforms_FE extends t3lib_TCEforms {
 
@@ -3862,7 +3868,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	}
 
 	/**
-	 * Prints the palette
+	 * Prints the palette in the frontend editing (forms-on-page?)
 	 * 
 	 * @param	array		The palette array to print
 	 * @return	string		HTML output

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,7 +27,7 @@
 /** 
  * Color picker wizard
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  *
@@ -52,7 +52,7 @@ class SC_wizard_colorpicker {
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->P = t3lib_div::GPvar("P",1);
+		$this->P = t3lib_div::GPvar('P',1);
 		
 		unset($this->P["fieldChangeFunc"]["alert"]);
 		reset($this->P["fieldChangeFunc"]);

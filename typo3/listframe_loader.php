@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,25 +27,50 @@
 /** 
  * Redirects to real module if shortcut pressed
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   68: class SC_listframe_loader 
+ *   75:     function main()	
+ *
+ * TOTAL FUNCTIONS: 1
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
 require ('init.php');
 require ('template.php');
 
 
-// ***************************
-// Script Class
-// ***************************
+
+
+
+
+
+
+
+
+/**
+ * Script Class for redirecting shortcut actions to the correct script
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_listframe_loader {
 
 	/**
 	 * Main content generated
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $TBE_TEMPLATE;
@@ -53,16 +78,10 @@ class SC_listframe_loader {
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='';
 		$this->content.=$TBE_TEMPLATE->startPage('List Frame Loader');
-		$this->content.='
-		
-	<script type="text/javascript">
-		  /*<![CDATA[*/
-		var theUrl = top.getModuleUrl("");
-		if (theUrl)	document.location=theUrl;
-		 /*]]>*/
-	</script>
-	
-		';
+		$this->content.=$TBE_TEMPLATE->wrapScriptTags('
+			var theUrl = top.getModuleUrl("");
+			if (theUrl)	document.location=theUrl;
+		');
 			// End page:
 		$this->content.=$TBE_TEMPLATE->endPage();
 		

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -28,10 +28,11 @@
  * This is an example of how to manipulate menu item arrays.
  * Used in the "testsite" package
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 
 
@@ -57,13 +58,13 @@
  * page.10.1 = TMENU
  * page.10.1.expAll = 1
  * page.10.1.NO {
- *   allWrap = | <BR>
+ *   allWrap = | <br />
  *   linkWrap = <b>|</b>
  * }
  * page.10.2 = TMENU
  * page.10.2.itemArrayProcFunc = user_itemArrayProcFuncTest
  * page.10.2.NO {
- *   allWrap = | <BR>
+ *   allWrap = | <br />
  *   linkWrap = <b> - |</b>
  * }
  * 

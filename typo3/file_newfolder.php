@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,130 +27,233 @@
 /** 
  * Web>File: Create new folders in the filemounts
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   76: class SC_file_newfolder 
+ *  102:     function init()	
+ *  161:     function main()	
+ *  248:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+ 
 
 
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-require_once (PATH_t3lib."class.t3lib_basicfilefunc.php");
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_file_newfolder {
-	var $content;
-	var $number;
-	var $basicff;
-	var $shortPath;
-	var $title;
-	var $icon;
+	
+		// External, static:
 	var $folderNumber=10;
-	var $target;
-	var $doc;	
 
-		// Constructor:
+		// Internal, static:
+	var $doc;			// Template object.
+	var $basicff;		// Instance of "t3lib_basicFileFunctions"
+	var $icon;			// Will be set to the proper icon for the $target value.
+	var $shortPath;		// Relative path to current found filemount
+	var $title;			// Name of the filemount
+
+		// Internal, static (GPVar):
+	var $number;		
+	var $target;		// Set with the target path inputted in &target
+
+		// Internal, dynamic:	
+	var $content;		// Accumulating content
+	
+	
+
+	/**
+	 * Constructor function for class
+	 * 
+	 * @return	void		
+	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 
-		$this->number = t3lib_div::GPvar("number");
-		$this->target = t3lib_div::GPvar("target");
-		$this->basicff = t3lib_div::makeInstance("t3lib_basicFileFunctions");
-		$this->basicff->init($GLOBALS["FILEMOUNTS"],$TYPO3_CONF_VARS["BE"]["fileExtensions"]);
+			// Initialize GPvars:
+		$this->number = t3lib_div::GPvar('number');
+		$this->target = t3lib_div::GPvar('target');
+			
+			// Init basic-file-functions object:
+		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
 		
-		$this->target=$this->basicff->is_directory($this->target);		// Cleaning and checking target
-		$key=$this->basicff->checkPathAgainstMounts($this->target."/");
+			// Cleaning and checking target
+		$this->target=$this->basicff->is_directory($this->target);		
+		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
 		if (!$this->target || !$key)	{
-			t3lib_BEfunc::typo3PrintError ("Parameter Error","Target was not a directory!","");
+			t3lib_BEfunc::typo3PrintError ('Parameter Error','Target was not a directory!','');
 			exit;
 		}
-			// Finding the icon
-		switch($GLOBALS["FILEMOUNTS"][$key]["type"])	{
-			case "user":	$this->icon = "gfx/i/_icon_ftp_user.gif";	break;
-			case "group":	$this->icon = "gfx/i/_icon_ftp_group.gif";	break;
-			default:		$this->icon = "gfx/i/_icon_ftp.gif";	break;
-		}
-		$this->shortPath = substr($this->target,strlen($GLOBALS["FILEMOUNTS"][$key]["path"]));
-		$this->title = $GLOBALS["FILEMOUNTS"][$key]["name"].": ".$this->shortPath;
 		
-		// ***************************
-		// Setting template object
-		// ***************************
-		$this->doc = t3lib_div::makeInstance("smallDoc");
+			// Finding the icon
+		switch($GLOBALS['FILEMOUNTS'][$key]['type'])	{
+			case 'user':	$this->icon = 'gfx/i/_icon_ftp_user.gif';	break;
+			case 'group':	$this->icon = 'gfx/i/_icon_ftp_group.gif';	break;
+			default:		$this->icon = 'gfx/i/_icon_ftp.gif';	break;
+		}
+		
+			// Relative path to filemount, $key:
+		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
+		
+			// Setting title:
+		$this->title = $GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
+		
+			// Setting template object
+		$this->doc = t3lib_div::makeInstance('smallDoc');
+		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->JScode='
-		<script language="javascript" type="text/javascript">
+		$this->doc->form='<form action="tce_file.php" method="post" name="editform">';
+		$this->doc->JScode=$this->doc->wrapScriptTags('
 			var path = "'.$this->target.'";
 		
-			function reload(a)	{
-				if (!changed || (changed && confirm("'.$LANG->sL("LLL:EXT:lang/locallang_core.php:mess.redraw").'")))	{
+			function reload(a)	{	//
+				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
 					var params = "&target="+escape(path)+"&number="+a; 
 					document.location = "file_newfolder.php?"+params;
 				}
 			}
-			function backToList()	{
+			function backToList()	{	//
 				top.goToModule("file_list");
 			}
 			
 			var changed = 0;
-			
-		</script>
-		';
-		$this->doc->form='<form action="tce_file.php" method="POST" name="editform">';
+		');
 	}
-	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->content="";
-		$this->content.=$this->doc->startPage($LANG->sL("LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle"));
-		$this->content.=$this->doc->header($LANG->sL("LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle"));
+	/**
+	 * Main function, rendering the main module content
+	 * 
+	 * @return	void		
+	 */
+	function main()	{
+		global $LANG;
+
+			// Make page header:
+		$this->content='';
+		$this->content.=$this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle'));
+		$this->content.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle'));
 		$this->content.=$this->doc->spacer(5);
 		$this->content.=$this->doc->section('',$this->doc->getFileheader($this->title,$this->shortPath,$this->icon));
 		$this->content.=$this->doc->divider(5);
 		
-		
-			// making the selector box
+
+			// Making the selector box for the number of concurrent folder-creations
 		$this->number = t3lib_div::intInRange($this->number,1,10);
-		$code='<select name="number" onChange="reload(this.options[this.selectedIndex].value);">';
+		$code='
+			<div id="c-select">
+				<select name="number" onchange="reload(this.options[this.selectedIndex].value);">';
 		for ($a=1;$a<=$this->folderNumber;$a++)	{
-			$code.='<option value="'.$a.'"'.($this->number==$a?' selected':'').'>'.$a.' '.$LANG->sL("LLL:EXT:lang/locallang_core.php:file_newfolder.php.folders").'</option>';
+			$code.='
+					<option value="'.$a.'"'.($this->number==$a?' selected="selected"':'').'>'.$a.' '.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.folders',1).'</option>';
 		}
-		$code.='</select><BR><BR>';
+		$code.='
+				</select>
+			</div>
+			';
 		
+			// Making the number of new-folder boxes needed:
+		$code.='
+			<div id="c-createFolders">
+		';
 		for ($a=0;$a<$this->number;$a++)	{
-			$code.='<input'.$GLOBALS["TBE_TEMPLATE"]->formWidth(20).' type="Text" name="file[newfolder]['.$a.'][data]" onChange="changed=true;"><input type="Hidden" name="file[newfolder]['.$a.'][target]" value="'.$this->target.'"><BR>';
+			$code.='
+					<input'.$this->doc->formWidth(20).' type="text" name="file[newfolder]['.$a.'][data]" onchange="changed=true;" />
+					<input type="hidden" name="file[newfolder]['.$a.'][target]" value="'.htmlspecialchars($this->target).'" />
+				';
 		}
-		$code.='<BR><input type="Submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:file_newfolder.php.submit").'">&nbsp;&nbsp;<input type="Submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.cancel").'" onClick="backToList(); return false;">';
-		$this->content.= $this->doc->section("",$code);
+		$code.='
+			</div>
+		';
 		
+			// Making submit button for folder creation:
+		$code.='
+			<div id="c-submitFolders">
+				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.submit',1).'" />
+				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
+			</div>				
+			';
+		$this->content.= $this->doc->section('',$code);
 		
+
+
+			// Add spacer:
 		$this->content.= $this->doc->spacer(10);
-		$this->content.= $this->doc->middle();
 
-		// new file:
-		$code='</form><form action="tce_file.php" method="POST" name="editform2">';
-		$code.='<input'.$GLOBALS["TBE_TEMPLATE"]->formWidth(20).' type="Text" name="file[newfile][0][data]" onChange="changed=true;"><input type="Hidden" name="file[newfile][0][target]" value="'.$this->target.'"><BR>';
-		$code.='<BR><input type="Submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile_submit").'">&nbsp;&nbsp;<input type="Submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.cancel").'" onClick="backToList(); return false;">';
-		$this->content.= $this->doc->section($LANG->sL("LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile"),$code);
-	}
-	function printContent()	{
-		global $SOBE;
+			// Switching form tags:
+		$this->content.= $this->doc->sectionEnd();
+		$this->content.= '</form><form action="tce_file.php" method="post" name="editform2">';
 
-		$this->content.= $this->doc->middle();
+			// Add form fields for creation of a new, blank text file:
+		$code='
+			<div id="c-newFile">
+				<p>['.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext']).']</p>
+				<input'.$this->doc->formWidth(20).' type="text" name="file[newfile][0][data]" onchange="changed=true;" />
+				<input type="hidden" name="file[newfile][0][target]" value="'.htmlspecialchars($this->target).'" />
+			</div>	
+			';
+				
+			// Submit button for creation of a new file:
+		$code.='
+			<div id="c-submitFiles">
+				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile_submit',1).'" />
+				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
+			</div>
+			';
+				
+			// Add the HTML as a section:
+		$this->content.= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile'),$code);
+
+			// Ending page
 		$this->content.= $this->doc->endPage();
+	}
+
+	/**
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
+	 */
+	function printContent()	{
+
 		echo $this->content;
 	}
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/file_newfolder.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/file_newfolder.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_newfolder.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/file_newfolder.php']);
 }
 
 
@@ -165,7 +268,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/file_
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_file_newfolder");
+$SOBE = t3lib_div::makeInstance('SC_file_newfolder');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -31,74 +31,72 @@
  * The main class, tslib_menu, is also extended by other external PHP scripts such as the GMENU_LAYERS and GMENU_FOLDOUT scripts which creates pop-up menus.
  * Notice that extension classes (like "tslib_tmenu") must have their suffix (here "tmenu") listed in $this->tmpl->menuclasses - otherwise they cannot be instantiated.
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tslib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  141: class tslib_menu 
- *  183:     function start($tmpl,$sys_page,$id,$conf,$menuNumber)	
- *  232:     function makeMenu()	
- *  665:     function includeMakeMenu($conf,$altSortField)	
- *  682:     function procesItemStates($splitCount)	
- *  865:     function subMenu($uid,$mount_point=0)	
- *  896:     function link($key,$altTarget='',$typeOverride='') 
- *  944:     function isActive($uid)	
- *  955:     function isCurrent($uid)	
- *  968:     function isSubMenu($uid,$mount_point=0)	
- *  992:     function isItemState($kind,$key)	
- * 1028:     function accessKey($title)	
- * 1054:     function userProcess($mConfKey,$passVar)	
- * 1069:     function setATagParts()	
- * 1082:     function getPageTitle($title,$nav_title)	
+ *  139: class tslib_menu 
+ *  182:     function start($tmpl,$sys_page,$id,$conf,$menuNumber)	
+ *  231:     function makeMenu()	
+ *  663:     function includeMakeMenu($conf,$altSortField)	
+ *  680:     function procesItemStates($splitCount)	
+ *  863:     function subMenu($uid,$mount_point=0)	
+ *  905:     function link($key,$altTarget='',$typeOverride='') 
+ *  961:     function isActive($uid)	
+ *  972:     function isCurrent($uid)	
+ *  985:     function isSubMenu($uid,$mount_point=0)	
+ * 1009:     function isItemState($kind,$key)	
+ * 1046:     function accessKey($title)	
+ * 1072:     function userProcess($mConfKey,$passVar)	
+ * 1087:     function setATagParts()	
+ * 1100:     function getPageTitle($title,$nav_title)	
  *
  *
- * 1113: class tslib_tmenu extends tslib_menu 
- * 1122:     function generate()	
- * 1138:     function writeMenu()	
- * 1268:     function getBeforeAfter($pref)	
- * 1298:     function addJScolorShiftFunction()	
- * 1300:     function changeBGcolor(id,color) 
- * 1320:     function extProc_init()	
- * 1331:     function extProc_RO($key)	
- * 1342:     function extProc_beforeLinking($key)	
- * 1354:     function extProc_afterLinking($key)	
- * 1371:     function extProc_beforeAllWrap($item,$key)	
- * 1382:     function extProc_finish()	
+ * 1131: class tslib_tmenu extends tslib_menu 
+ * 1140:     function generate()	
+ * 1156:     function writeMenu()	
+ * 1286:     function getBeforeAfter($pref)	
+ * 1316:     function addJScolorShiftFunction()	
+ * 1338:     function extProc_init()	
+ * 1349:     function extProc_RO($key)	
+ * 1360:     function extProc_beforeLinking($key)	
+ * 1372:     function extProc_afterLinking($key)	
+ * 1389:     function extProc_beforeAllWrap($item,$key)	
+ * 1400:     function extProc_finish()	
  *
  *
- * 1418: class tslib_gmenu extends tslib_menu 
- * 1427:     function generate()	
- * 1465:     function makeGifs($conf, $resKey)	
- * 1636:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	
- * 1704:     function writeMenu()	
- * 1802:     function extProc_init()	
- * 1813:     function extProc_RO($key)	
- * 1824:     function extProc_beforeLinking($key)	
- * 1837:     function extProc_afterLinking($key)	
- * 1854:     function extProc_beforeAllWrap($item,$key)	
- * 1865:     function extProc_finish()	
+ * 1436: class tslib_gmenu extends tslib_menu 
+ * 1445:     function generate()	
+ * 1483:     function makeGifs($conf, $resKey)	
+ * 1680:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	
+ * 1752:     function writeMenu()	
+ * 1850:     function extProc_init()	
+ * 1861:     function extProc_RO($key)	
+ * 1872:     function extProc_beforeLinking($key)	
+ * 1885:     function extProc_afterLinking($key)	
+ * 1902:     function extProc_beforeAllWrap($item,$key)	
+ * 1913:     function extProc_finish()	
  *
  *
- * 1899: class tslib_imgmenu extends tslib_menu 
- * 1908:     function generate()	
- * 1926:     function makeImageMap($conf)	
- * 2087:     function writeMenu()	
+ * 1947: class tslib_imgmenu extends tslib_menu 
+ * 1956:     function generate()	
+ * 1974:     function makeImageMap($conf)	
+ * 2143:     function writeMenu()	
  *
  *
- * 2130: class tslib_jsmenu extends tslib_menu 
- * 2137:     function generate()	
- * 2145:     function writeMenu()	
- * 2205:     function generate_level($levels,$count,$pid,$menuItemArray='')	
+ * 2186: class tslib_jsmenu extends tslib_menu 
+ * 2193:     function generate()	
+ * 2201:     function writeMenu()	
+ * 2261:     function generate_level($levels,$count,$pid,$menuItemArray='')	
  *
- * TOTAL FUNCTIONS: 41
+ * TOTAL FUNCTIONS: 40
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -133,7 +131,7 @@
  * $menu->makeMenu();
  * $content.=$menu->writeMenu();
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @see tslib_cObj::HMENU()
@@ -176,7 +174,7 @@ class tslib_menu {
 	 * @param	object		The $GLOBALS['TSFE']->tmpl object
 	 * @param	object		The $GLOBALS['TSFE']->sys_page object
 	 * @param	integer		A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
-	 * @param	Array		The TypoScript configuration for the HMENU cObject
+	 * @param	array		The TypoScript configuration for the HMENU cObject
 	 * @param	integer		Menu number; 1,2,3. Should probably be '1'
 	 * @return	boolean		Returns true on success
 	 * @see tslib_cObj::HMENU()
@@ -1125,7 +1123,7 @@ class tslib_menu {
 /**
  * Extension class creating text based menus
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=387&cHash=73a3116ab8
@@ -1136,7 +1134,7 @@ class tslib_tmenu extends tslib_menu {
 	 * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
 	 * Sets the result for the new "normal state" in $this->result
 	 * 
-	 * @return	Void		
+	 * @return	void		
 	 * @see tslib_menu::procesItemStates()
 	 */
 	function generate()	{
@@ -1317,7 +1315,7 @@ class tslib_tmenu extends tslib_menu {
 	 */
 	function addJScolorShiftFunction()	{
 		$GLOBALS['TSFE']->additionalJavaScript['TMENU:changeBGcolor()']='
-			function changeBGcolor(id,color) {
+			function changeBGcolor(id,color) {	//
 				if (document.getElementById && document.getElementById(id))	{
 					document.getElementById(id).style.background = color;
 					return true;
@@ -1430,7 +1428,7 @@ class tslib_tmenu extends tslib_menu {
 /**
  * Extension class creating graphic based menus (PNG or GIF files)
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=384&cHash=93a7644cba
@@ -1941,7 +1939,7 @@ class tslib_gmenu extends tslib_menu {
 /**
  * ImageMap based menus
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=389&cHash=fcf18c5d9f
@@ -2018,6 +2016,14 @@ class tslib_imgmenu extends tslib_menu {
 										// check links
 										
 									$LD = $this->tmpl->linkData($this->menuArr[$key],$this->mconf['target'],'','',array(),'',$this->mconf['forceTypeValue']);
+
+										// Overriding URL / Target if set to do so:
+									if ($this->menuArr[$key]['_OVERRIDE_HREF'])	{
+										$LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
+										if ($this->menuArr[$key]['_OVERRIDE_TARGET'])	$LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
+									}
+
+										// Setting target/url:
 									if ($theValArr['imgMap.']['url']=='')	{
 										$theValArr['imgMap.']['url'] = $LD['totalURL'];
 									}
@@ -2172,7 +2178,7 @@ class tslib_imgmenu extends tslib_menu {
 /**
  * JavaScript/Selectorbox based menus
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=391&cHash=563435abbc

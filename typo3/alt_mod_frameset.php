@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -26,13 +26,25 @@
 ***************************************************************/
 /** 
  * Creates the frameset for 'Frameset modules' like Web>* and File>*
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant content (with exception of a few attributes for the <frameset> tags)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   63: class SC_alt_mod_frameset 
+ *   82:     function main()	
+ *  119:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 require ('init.php');
@@ -41,22 +53,38 @@ require ('template.php');
 
 
 
-// ***************************
-// Script Class
-// ***************************
+/**
+ * Script Class for rendering the frameset which keeps the navigation and list frames together for socalled "Frameset modules"
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_mod_frameset {
-	var $content;
-	var $defaultWidth = 245;
+
+		// Internal, static:
+	var $defaultWidth = 245;		// Default width of the navigation frame. Can be overridden from $TBE_STYLES['dims']['navFrameWidth'] (alternative default value) AND from User TSconfig
 	
+		// Internal, dynamic:
+	var $content;					// Content accumulation.
+	
+
+
+
+
+
+
 	/**
 	 * Creates the header and frameset for the module/submodules
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$TBE_TEMPLATE;
+		global $BE_USER,$TBE_TEMPLATE,$TBE_STYLES;
 		
 			// Processing vars:
 		$width = $BE_USER->uc['navFrameWidth'];
-		$width = intval($width)?intval($width):$this->defaultWidth;
+		$width = intval($width)?intval($width):($TBE_STYLES['dims']['navFrameWidth'] ? intval($TBE_STYLES['dims']['navFrameWidth']) : $this->defaultWidth);
 		
 			// Navigation frame URL:
 		$script = t3lib_div::GPvar('script');
@@ -84,7 +112,9 @@ class SC_alt_mod_frameset {
 	}
 
 	/**
-	 * Outputs it all.
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;

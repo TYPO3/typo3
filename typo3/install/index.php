@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -24,11 +24,15 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/***************************************************************
-
-Starter-script for install screen
-
-****************************************************************/
+/**
+ * Starter-script for install screen
+ *
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 
 
 
@@ -37,7 +41,7 @@ Starter-script for install screen
 // **************************************************************************
 
 	// This checks for my own IP at home. You can just remove the if-statement.
-if (substr($HTTP_SERVER_VARS["REMOTE_ADDR"],0,12)!="192.168.1.18" && $HTTP_SERVER_VARS["REMOTE_ADDR"]!="213.237.20.63" && $HTTP_SERVER_VARS["REMOTE_ADDR"]!="127.0.0.1")		{
+if (1==1 || (substr($HTTP_SERVER_VARS['REMOTE_ADDR'],0,7)!='192.168' && $HTTP_SERVER_VARS['REMOTE_ADDR']!='127.0.0.1'))		{
 #	die("In the main source distribution of TYPO3, the install script is disabled by a die() function call.<BR>Open the file typo3/install/index.php and remove/out-comment the line that outputs this message!");
 }
 
@@ -52,5 +56,4 @@ $BACK_PATH='../';
 	// Defining this variable and setting it non-false will invoke the install-screen called from init.php
 define('TYPO3_enterInstallScript', '1');
 require ('../init.php');
-
 ?>

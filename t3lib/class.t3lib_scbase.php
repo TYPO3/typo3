@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,35 +27,50 @@
 /** 
  * Contains the parent class for 'ScriptClasses' in backend modules.
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  136: class t3lib_SCbase 
- *  252:     function init()	
- *  269:     function menuConfig()	
- *  289:     function mergeExternalItems($modName,$menuKey,$menuArr)	
- *  308:     function handleExternalFunctionValue($MM_key='function')	
- *  325:     function getExternalItemConfig($modName,$menuKey,$value='')	
- *  339:     function checkExtObj()	
- *  353:     function checkSubExtObj()	
- *  362:     function extObjContent()	
+ *  134: class t3lib_SCbase 
+ *  250:     function init()	
+ *  267:     function menuConfig()	
+ *  287:     function mergeExternalItems($modName,$menuKey,$menuArr)	
+ *  306:     function handleExternalFunctionValue($MM_key='function')	
+ *  323:     function getExternalItemConfig($modName,$menuKey,$value='')	
+ *  337:     function checkExtObj()	
+ *  351:     function checkSubExtObj()	
+ *  363:     function extObjHeader()	
+ *  372:     function extObjContent()	
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * EXAMPLE PROTOTYPE
  * 
- * As for examples there are lots of them if you search for classes which extends 't3lib_SCbase'. 
+ * As for examples there are lots of them if you search for classes which extends 't3lib_SCbase'.
  * However you can see a prototype example of how a module might use this class in an index.php file typically hosting a backend module.
  * NOTICE: This example only outlines the basic structure of how this class is used. You should consult the documentation and other real-world examples for some actual things to do when building modules.
  *  
@@ -95,8 +110,7 @@
  * 		$SOBE->init();
  * 		
  * 		  // AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE
- * 		reset($SOBE->include_once);	
- * 		while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+ * 		foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
  * 		
  * 		  // THEN WE WILL CHECK IF THERE IS A 'SUBMODULE' REGISTERED TO BE INITIALIZED AS WELL:
  * 		$SOBE->checkExtObj();
@@ -107,30 +121,13 @@
  * 		$SOBE->printContent();
  */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Parent class for 'ScriptClasses' in backend modules.
  * See example comment above.
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see t3lib_extobjbase
  */
 class t3lib_SCbase {
@@ -273,7 +270,7 @@ class t3lib_SCbase {
 		$this->MOD_MENU['function'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['function'],'menu.function');
 
 			// CLEANSE 'function' SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 	}
 
 	/**
@@ -341,7 +338,7 @@ class t3lib_SCbase {
 			$this->extObj = t3lib_div::makeInstance($this->extClassConf['name']);
 			$this->extObj->init($this,$this->extClassConf);
 				// Re-write:
-			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
+			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
 		}
 	}
 
@@ -355,12 +352,25 @@ class t3lib_SCbase {
 	}
 
 	/**
-	 * Calls the main function inside the "Function menu module" if present
+	 * Calls the 'header' function inside the "Function menu module" if present.
+	 * A header function might be needed to add JavaScript or other stuff in the head. This can't be done in the main function because the head is already written.
+	 * example call in the header function:
+	 * $this->pObj->doc->JScode = $this->pObj->doc->wrapScriptTags(' ...
+	 * 
+	 * @return	void		
+	 */
+	function extObjHeader()	{
+		if (is_callable(array($this->extObj,'head')))	$this->extObj->head();
+	}
+
+	/**
+	 * Calls the 'main' function inside the "Function menu module" if present
 	 * 
 	 * @return	void		
 	 */
 	function extObjContent()	{
-		if (is_object($this->extObj))	$this->content.=$this->extObj->main();
+		$this->extObj->pObj = &$this;
+		if (is_callable(array($this->extObj, 'main')))	$this->content.=$this->extObj->main();
 	}
 }
 ?>
