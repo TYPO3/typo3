@@ -189,16 +189,21 @@ DIV.typo3-dyntabmenu-tabs { margin-top: 5px; padding-right: 20px; }
 DIV.typo3-dyntabmenu-divs P.c-descr { font-style : italic; padding: 3px 10px 5px 10px; background: #e7dba8;  }
 TABLE.typo3-dyntabmenu TD.tabact { color: #000; border: solid black 1px; background: #e7dba8; }
 TABLE.typo3-dyntabmenu TD.tab { color:grey; border: solid #555 1px;  background: #c4d4cd; }
-TABLE.typo3-dyntabmenu TD.disabled { color:#999999; border: solid #555 1px;  background: #cccccc; padding-left: 5px; }
-TABLE.typo3-dyntabmenu TD.tab, TABLE.typo3-dyntabmenu TD.tabact, TABLE.typo3-dyntabmenu TD.disabled { border-radius: 3px; -moz-border-radius: 3px; border-bottom: 0px; }
+TABLE.typo3-dyntabmenu TD.tab_over, TABLE.typo3-dyntabmenu TD.tabact_over, TABLE.typo3-dyntabmenu TD.disabled_over { color:#000; border: solid #555 1px;  background: #f6eab7; }
+TABLE.typo3-dyntabmenu TD.disabled { color:#999999; border: solid #555 1px;  background: #cccccc; }
+TABLE.typo3-dyntabmenu TD.tab_over, TABLE.typo3-dyntabmenu TD.tabact_over, TABLE.typo3-dyntabmenu TD.disabled_over { color:#000; border: solid #555 1px;  background: #f6eab7; }
+TABLE.typo3-dyntabmenu TD.tab, TABLE.typo3-dyntabmenu TD.tabact, TABLE.typo3-dyntabmenu TD.disabled, TABLE.typo3-dyntabmenu TD.tab_over, TABLE.typo3-dyntabmenu TD.tabact_over, TABLE.typo3-dyntabmenu TD.disabled_over  { border-radius: 3px; -moz-border-radius: 3px; border-bottom: 0px; }
 TABLE.typo3-dyntabmenu TD A { color:grey; text-decoration:none; display: block; width:100%; padding:2px; padding-left:5px; padding-right:5px; }
-TABLE.typo3-dyntabmenu TD.tabact A { color:#000; padding-left:10px; padding-right:10px; }
-TABLE.typo3-dyntabmenu TD A:hover { color:#000; background: #f6eab7; text-decoration:none; }
+TABLE.typo3-dyntabmenu TD.tabact A, TABLE.typo3-dyntabmenu TD.tab_over A { color:#000;}
+
 DIV.typo3-dyntabmenu-divs-foldout DIV.c-tablayer {margin-left: 20px;}
-DIV.typo3-dyntabmenu-divs-foldout DIV.tab { background: #c4d4cd;  background-image: url(gfx/ol/plusbullet.gif); background-repeat: no-repeat; border: solid black 1px; }
-DIV.typo3-dyntabmenu-divs-foldout DIV.tabact {  background: #e7dba8; background-image: url(gfx/ol/minusbullet.gif); background-repeat: no-repeat; border: solid black 1px;  margin-top: 5px; }
-DIV.typo3-dyntabmenu-divs-foldout DIV.disabled { color:#999999; border: solid black 1px; background: #cccccc;  padding: 2px 2px 2px 18px; }
-DIV.typo3-dyntabmenu-divs-foldout DIV.tab A, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact A { text-decoration:none; display: block; padding: 2px 2px 2px 18px; }
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab { background: #c4d4cd;  background-image: url(gfx/ol/plusbullet.gif); background-repeat: no-repeat; border: solid black 1px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over {background: #f6eab7; background-image: url(gfx/ol/arrowbullet.gif); background-repeat: no-repeat; border: solid black 1px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.tabact {  background: #e7dba8; background-image: url(gfx/ol/minusbullet.gif); background-repeat: no-repeat; border: solid black 1px;  margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.tabact_over { background: #f6eab7; background-image: url(gfx/ol/arrowbullet.gif); background-repeat: no-repeat; border: solid black 1px;  margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.disabled { color:#999999; border: solid black 1px; background: #cccccc;  padding: 2px 2px 2px 18px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.disabled_over { color:#999999; border: solid black 1px; background: #f6eab7;  padding: 2px 2px 2px 18px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab A, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact A, DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over A,DIV.typo3-dyntabmenu-divs-foldout DIV.tabact_over A { text-decoration:none; display: block; padding: 2px 2px 2px 18px;border-radius: 3px; -moz-border-radius: 3px;}
 
 
 /* Logo frame (alt_toplogo.php) */

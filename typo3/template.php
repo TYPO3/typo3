@@ -1538,10 +1538,12 @@ $str.=$this->docBodyTagBegin().
 
 				$isActive = strcmp($def['content'],'');
 
+				$mouseOverOut = 'onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
+
 				if (!$foldout)	{
 						// Create TAB cell:
 					$options[$tabRows][] = '
-							<td class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.'>'.
+							<td class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.$mouseOverOut.'>'.
 							($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
 							$def['icon'].
 							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
@@ -1552,8 +1554,9 @@ $str.=$this->docBodyTagBegin().
 				} else {
 						// Create DIV layer for content:
 					$divs[] = '
-						<div class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU">'.
+						<div class="'.($isActive ? 'tab' : 'disabled').'" id="'.$id.'-'.$index.'-MENU"'.$mouseOverOut.'>'.
 							($isActive ? '<a href="#" onclick="'.htmlspecialchars($onclick).'"'.($def['linkTitle'] ? ' title="'.htmlspecialchars($def['linkTitle']).'"':'').'>' : '').
+							$def['icon'].
 							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
 							($isActive ? '</a>' : '').
 							'</div>';
@@ -1572,7 +1575,7 @@ $str.=$this->docBodyTagBegin().
 					';
 					if ($toggle==1)	{
 						$JSinit[] = '
-							if (top.DTM_currentTabs["'.$id.'-'.$index.'"]) { DTM_toggle("'.$id.'","'.$index.'"); }
+							if (top.DTM_currentTabs["'.$id.'-'.$index.'"]) { DTM_toggle("'.$id.'","'.$index.'",1); }
 						';
 					}
 
@@ -1611,7 +1614,6 @@ $str.=$this->docBodyTagBegin().
 				<script type="text/javascript">
 					DTM_array["'.$id.'"] = new Array();
 					'.implode('',$JSinit).'
-
 					'.($toggle<=0 ? 'DTM_activate("'.$id.'", top.DTM_currentTabs["'.$id.'"]?top.DTM_currentTabs["'.$id.'"]:'.intval($defaultTabIndex).', 0);' : '').'
 				</script>
 
@@ -1632,6 +1634,7 @@ $str.=$this->docBodyTagBegin().
 			<script type="text/javascript">
 			/*<![CDATA[*/
 				var DTM_array = new Array();
+				var DTM_origClass = new String();
 
 				function DTM_activate(idBase,index,doToogle)	{	//
 						// Hiding all:
@@ -1657,20 +1660,40 @@ $str.=$this->docBodyTagBegin().
 						}
 					}
 				}
-				function DTM_toggle(idBase,index)	{	//
+				function DTM_toggle(idBase,index,isInit)	{	//
 						// Showing one:
 					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
 						if (document.getElementById(idBase+"-"+index+"-DIV").style.display == "block")	{
 							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
-							document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+							if(isInit) {
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+							} else { 
+								DTM_origClass = "tab";
+							}
 							top.DTM_currentTabs[idBase+"-"+index] = 0;
 						} else {
 							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
-							document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+							if(isInit) {
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+							} else { 
+								DTM_origClass = "tabact";
+							}
 							top.DTM_currentTabs[idBase+"-"+index] = 1;
 						}
 					}
 				}
+
+				function DTM_mouseOver(obj) {
+						DTM_origClass = obj.attributes.getNamedItem(\'class\').nodeValue;
+						obj.attributes.getNamedItem(\'class\').nodeValue += "_over";
+				}
+
+				function DTM_mouseOut(obj) {
+						obj.attributes.getNamedItem(\'class\').nodeValue = DTM_origClass;
+						DTM_origClass = "";
+				}
+
+
 			/*]]>*/
 			</script>
 		';
