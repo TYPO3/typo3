@@ -1100,7 +1100,7 @@ $str.=$this->docBodyTagBegin().
 				if (is_array($val))	{
 					$cc=0;
 					while(list(,$content)=each($val))	{
-						$wrap= is_array($layoutRow[$cc]) ? $layoutRow[$cc] : (is_array($layout[$cc]) ? $layout[$cc] : $layout['defCol']);
+						$wrap= is_array($layoutRow[$cc]) ? $layoutRow[$cc] : (is_array($layoutRow['defCol']) ? $layoutRow['defCol'] : (is_array($layout[$cc]) ? $layout[$cc] : $layout['defCol']));
 						$code_td.=$wrap[0].$content.$wrap[1];
 						$cc++;
 					}
@@ -1392,7 +1392,7 @@ $str.=$this->docBodyTagBegin().
 	 * Returns a tab menu for a module
 	 * Requires the JS function jumpToUrl() to be available
 	 *
-	 * @param	string		$id is the "&id=" parameter value to be sent to the module
+	 * @param	string		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
 	 * @param	array		$menuItems is an array with the menu items for the selector box
@@ -1401,17 +1401,22 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		HTML code for tab menu
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
-	function getTabMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
+	function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
 		$content='';
 
 		if (is_array($menuItems))	{
+			if (!is_array($mainParams)) {
+				$mainParams = array('id' => $mainParams);
+			}
+			$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
+		
 			if (!$script) {$script=basename(PATH_thisScript);}
 
 			$menuDef = array();
 			foreach($menuItems as $value => $label) {
 				$menuDef[$value]['isActive'] = !strcmp($currentValue,$value);
 				$menuDef[$value]['label'] = t3lib_div::deHSCentities(htmlspecialchars($label));
-				$menuDef[$value]['url'] = htmlspecialchars($script.'?id='.rawurlencode($id).$addparams.'&'.$elementName.'='.$value);
+				$menuDef[$value]['url'] = htmlspecialchars($script.'?'.$mainParams.$addparams.'&'.$elementName.'='.$value);
 			}
 			$content = $this->getTabMenuRaw($menuDef);
 
