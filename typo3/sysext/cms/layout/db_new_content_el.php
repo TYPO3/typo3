@@ -489,6 +489,12 @@ Contact me: | tv=check | 1
 				'params'=>'&defVals[tt_content][CType]=login'
 			),
 			'plugins' => array('header'=>$LANG->getLL('plugins')),
+			'plugins_1' => array(
+				'icon'=>'gfx/c_wiz/user_defined.gif',
+				'title'=>$LANG->getLL('plugins_1_title'),
+				'description'=>$LANG->getLL('plugins_1_description'),
+				'params'=>'&defVals[tt_content][CType]=list'
+			),
 		);
 
 

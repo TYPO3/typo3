@@ -35,6 +35,8 @@ $LOCAL_LANG = Array (
 		'forms_3_title' => 'Login form',
 		'forms_3_description' => 'Login/logout form for website users. This is used to password protect pages. You must create website users and groups for this to work.',
 		'plugins' => 'Plugins',
+		'plugins_1_title' => 'General Plugin',
+		'plugins_1_description' => 'If you want to insert a plugin which cannot be found among the options below, just select this element type and you can select your specific plugin in a selector box afterward.',
 	),
 	'dk' => Array (
 		'sel1' => 'Vælg hvilken slags sideindhold du ønsker at oprette:',

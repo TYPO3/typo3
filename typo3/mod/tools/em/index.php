@@ -1381,17 +1381,17 @@ EXTENSION KEYS:
 							}
 						}
 
-							// Show details:
-						$content = $this->extInformationArray($extKey,$list[$extKey]);
-						$this->content.=$this->doc->spacer(10);
-						$this->content.=$this->doc->section('Details:',$content,0,1);
-
 								// Config:
 						if (@is_file($absPath.'ext_conf_template.txt'))	{
 							$this->content.=$this->doc->spacer(10);
 							$this->content.=$this->doc->section('Configuration:','(<em>Notice: You may need to clear the cache after configuration of the extension. This is required if the extension adds TypoScript depending on these settings.</em>)<br /><br />',0,1);
 							$this->tsStyleConfigForm($extKey,$list[$extKey]);
 						}
+						
+							// Show details:
+						$content = $this->extInformationArray($extKey,$list[$extKey]);
+						$this->content.=$this->doc->spacer(10);
+						$this->content.=$this->doc->section('Details:',$content,0,1);
 					break;
 					case 'upload':
 						$TER_CMD = t3lib_div::_GP('TER_CMD');

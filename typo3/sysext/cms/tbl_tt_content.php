@@ -643,9 +643,10 @@ $TCA['tt_content'] = Array (
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:list_type',
 			'config' => Array (
 				'type' => 'select',		
-				'items' => Array (	
+				'items' => Array (
+					Array('','')
 				),
-				'default' => '0'
+				'default' => ''
 			)
 		),
 		'select_key' => Array (
@@ -659,7 +660,7 @@ $TCA['tt_content'] = Array (
 			)
 		),
 		'table_bgColor' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:table_bgColor',
 			'config' => Array (
 				'type' => 'select',		
@@ -929,6 +930,7 @@ $TCA['tt_content'] = Array (
 							'showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, --div--, list_type;;;;5-5-5, layout, select_key, pages;;12',
 							'subtype_value_field' => 'list_type',
 							'subtypes_excludelist' => Array(
+								'' => 'layout,select_key,pages',	// When no plugin is selected.
 								'3' => 'layout',
 //								'4' => 'layout',	// List type forum
 								'2' => 'layout',
