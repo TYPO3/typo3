@@ -1422,9 +1422,10 @@ class t3lib_div {
 	 * @param	array		First array
 	 * @param	array		Second array, overruling the first array
 	 * @param	boolean		If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
+	 * @param	boolean		If set, values from $arr1 will overrule if they are empty. Default: true
 	 * @return	array		Resulting array where $arr1 values has overruled $arr0 values
 	 */
-	function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0) {
+	function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=true) {
 		reset($arr1);
 		while(list($key,$val) = each($arr1)) {
 			if(is_array($arr0[$key])) {
@@ -1434,10 +1435,14 @@ class t3lib_div {
 			} else {
 				if ($notAddKeys) {
 					if (isset($arr0[$key])) {
-						$arr0[$key] = $val;
+						if ($includeEmtpyValues OR $val) {
+							$arr0[$key] = $val;
+						}
 					}
 				} else {
-					$arr0[$key] = $val;
+					if ($includeEmtpyValues OR $val) {
+						$arr0[$key] = $val;
+					} 
 				}
 			}
 		}
@@ -1569,7 +1574,17 @@ class t3lib_div {
 		if (is_array($value))	reset($value);
 		return $value;
 	}
-
+	
+	/**
+	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
+	 *
+	 * @deprecated	Name was changed into implodeAttributes
+	 * @see implodeAttributes()
+	 */
+	function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	{
+		return t3lib_div::implodeAttributes($arr,$xhtmlSafe,$dontOmitBlankAttribs);
+	}
+	
 	/**
 	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
 	 * Usage: 14
@@ -1579,7 +1594,7 @@ class t3lib_div {
 	 * @param	boolean		If true, don't check if values are blank. Default is to omit attributes with blank values.
 	 * @return	string		Imploded attributes, eg. 'bgcolor="red" border="0"'
 	 */
-	function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	{
+	function implodeAttributes($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	{
 		if (is_array($arr))	{
 			if ($xhtmlSafe)	{
 				$newArr=array();
