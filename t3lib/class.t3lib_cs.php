@@ -609,101 +609,198 @@ class t3lib_cs {
 		return $hex ? 'x'.dechex($int) : $int;
 	}
 
+	/********************************************
+	 *
+	 * UTF-8 String operation functions
+	 *
+	 ********************************************/
 
 	/**
-	 * Truncates a string in UTF-8 short at a given byte length
-	 *
+	 * Truncates a string in UTF-8 short at a given byte length.
+	 * 
 	 * @param	string		UTF-8 multibyte character string
 	 * @param	integer		the byte length
 	 * @return	string		the shortened string
-	 * @see strcut()
+	 * @see mb_strcut()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function utf8_strtrunc($str,$len)	{
+		if ($len <= 0)	return '';
+
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strcut($str,0,$len,'utf-8');
 		}
 
 		$i = $len-1;
-		if (ord($str[$i]) & 0x80) { // part of a mulitbyte sequence
-			for (; !(ord($str[$i]) & 0x40); $i--)	;	// find the first byte
-			for ($bc=0, $mbs=ord($str[$i]); $mbs & 0x80; $mbs = $mbs << 1)	$bc++;	// calculate number of bytes
+		if (ord($str{$i}) & 0x80) { // part of a mulitbyte sequence
+			for (; $i>0 && !(ord($str{$i}) & 0x40); $i--)	;	// find the first byte
+			if ($i <= 0)	return ''; // sanity check
+			for ($bc=0, $mbs=ord($str{$i}); $mbs & 0x80; $mbs = $mbs << 1)	$bc++;	// calculate number of bytes
 			if ($bc+$i > $len)	return substr($str,0,$i);
                         // fallthru: multibyte char fits into length
 		}
 		return substr($str,$len);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-	/********************************************
+	/**
+	 * Returns a part of a UTF-8 string.
 	 *
-	 * String operation functions
+	 * @param	string		$str	UTF-8 string
+	 * @param	int		$start	start position (character position)
+	 * @param	int		$len	length (in characters)
+	 * @return	string			the substring
+	 * @see substr()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 *
-	 ********************************************/
+	 * @bug
+	 * Negative values for @arg $start and @arg $len are currently not supported.
+	 */
+	function utf8_substr($str,$start,$len=null)	{
+		if ($len===0)	return '';
 
-	// a few stubs of possibly useful functions, which may be implemented in PHP
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
+				// cannot omit $len, when specifying charset
+			if ($len==null)	{
+				$enc = mb_internal_encoding();	// save internal encoding
+				mb_internal_encoding('utf-8');
+				$str = mb_substr($str,$start);
+				mb_internal_encoding($enc);	// restore internal encoding
+
+				return $len;
+			}
+			else	return mb_substr($str,$start,$len,'utf-8');
+		}
+
+		$byte_start = utf8_char2byte_pos($str,$start);
+		if ($byte_start === false)	return false;	// $start outside string length
+
+		$str = substr($str,$byte_start);
+
+		if ($len!=null)	{
+			$byte_end = utf8_char2byte_pos($str,$len+1);
+			if ($byte_end === false)	// $len outside actual string length
+				return $str;
+			else
+				return substr($str,0,$byte_end);
+		}
+		else	return $str;
+	}
 
 	/**
-	 * @param	[type]		$str: ...
-	 * @return	[type]		...
+	 * Counts the number of characters of a string in UTF-8.
+	 *
+	 * @param	string		UTF-8 multibyte character string
+	 * @return	int		the number of characters
+	 * @see strlen()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
-	function utf_strlen($str)	{
+	function utf8_strlen($str)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strlen($str,'utf-8');
 		}
-	}
 
-	/**
-	 * @param	[type]		$str: ...
-	 * @param	[type]		$start: ...
-	 * @param	[type]		$len: ...
-	 * @return	[type]		...
-	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */
-	function utf_substr($str,$start,$len=0)	{
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-		// how to omit $len when you specify a charset?!?!
-			return mb_substr($str,$start,$len,'utf-8');
+		$n=0;
+		for($i=0; $str{$i}; $i++)	{
+			$c = ord($str{$i});
+			if (!($c & 0x80))	// single-byte (0xxxxxx)
+				$n++;
+			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
+				$n++;
 		}
+		return $n;
 	}
 
 	/**
-	 * @param	[type]		$haystack: ...
-	 * @param	[type]		$needle: ...
-	 * @param	[type]		$offset: ...
-	 * @return	[type]		...
+	 * Find position of first occurrence of a string, both arguments are in UTF-8.
+	 *
+	 * @param	string		UTF-8 string to search in
+	 * @param	string		UTF-8 string to search for
+	 * @param	int		positition to start the search
+	 * @return	int	the character position
+	 * @see strpos()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
-	function utf_strpos($haystack,$needle,$offset=0)	{
+	function utf8_strpos($haystack,$needle,$offset=0)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strpos($haystack,$needle,'utf-8');
 		}
+
+		$byte_offset = $this->utf8_char2byte_pos($haystack,$offset);
+		if ($byte_offset === false)	return false; // offset beyond string length
+
+		$byte_pos = strpos($haystack,$needle,$byte_offset);
+		if ($byte_pos === false)	return false; // needle not found
+
+		return $this->utf8_byte2char_pos($haystack,$byte_pos);
 	}
 
 	/**
-	 * @param	[type]		$haystack: ...
-	 * @param	[type]		$needle: ...
-	 * @param	[type]		$offset: ...
-	 * @return	[type]		...
+	 * Find position of last occurrence of a char in a string, both arguments are in UTF-8.
+	 *
+	 * @param	string		UTF-8 string to search in
+	 * @param	char		UTF-8 character to search for
+	 * @return	int	the character position
+	 * @see strrpos()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
-	function utf_strrpos($haystack,$needle,$offset=0)	{
+	function utf8_strrpos($haystack,$needle)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strrpos($haystack,$needle,'utf-8');
 		}
+
+		$byte_pos = strrpos($haystack,$needle);
+		if ($byte_pos === false)	return false; // needle not found
+
+		return $this->utf8_byte2char_pos($haystack,$byte_pos);
 	}
+
+	/**
+	 * Translates a character position into an 'absolute' byte position.
+	 *
+	 * @param	string		UTF-8 string
+	 * @param	int		character position
+	 * @return	int		byte position
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function utf8_char2byte_pos($str,$pos)	{
+		$n = 0; // number of characters
+		for($i=0; $str{$i} && $n<$pos; $i++)	{
+			$c = (int)ord($str{$i});
+			if (!($c & 0x80))	// single-byte (0xxxxxx)
+				$n++;
+			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
+				$n++;
+		}
+		if (!$str{$i})	return false; // offset beyond string length
+
+			// skip trailing multi-byte data bytes
+		while ((ord($str{$i}) & 0x80) && !(ord($str{$i}) & 0x40)) { $i++; }
+
+		return $i;
+	}
+
+	/**
+	 * Translates an 'absolute' byte position into a character position.
+	 *
+	 * @param	string		UTF-8 string
+	 * @param	int		byte position
+	 * @return	int		character position
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function utf8_byte2char_pos($str,$pos)	{
+		$n = 0;	// number of characters
+		for($i=$pos; $i>0; $i--)	{
+			$c = (int)ord($str{$i});
+			if (!($c & 0x80))	// single-byte (0xxxxxx)
+				$n++;
+			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
+				$n++;
+		}
+		if (!$str{$i})	return false; // offset beyond string length
+
+		return $n;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_cs.php'])	{
