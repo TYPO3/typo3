@@ -220,7 +220,7 @@ class t3lib_DB {
 
 	/**
 	 * Creates and executes a SELECT query, selecting fields ($select) from two/three tables joined
-	 * $local_table and $mm_table is mandatory. $foreign_table is optional.
+	 * Use $mm_table together with $local_table or $foreign_table to select over two tables. Or use all three tables to select the full MM-relation.
 	 * The JOIN is done with [$local_table].uid <--> [$mm_table].uid_local  / [$mm_table].uid_foreign <--> [$foreign_table].uid
 	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $TCA in Inside TYPO3 for more details.
 	 *
@@ -238,11 +238,13 @@ class t3lib_DB {
 	 * @see exec_SELECTquery()
 	 */
 	function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
-		return $this->exec_SELECTquery(
+		$mmWhere = $local_table ? $local_table.'.uid='.$mm_table.'.uid_local' : '';
+		$mmWhere.= ($local_table AND $foreign_table) ? ' AND ' : '';
+		$mmWhere.= $foreign_table ? $foreign_table.'.uid='.$mm_table.'.uid_foreign' : '';
+		return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					$select,
-					$local_table.','.$mm_table.($foreign_table?','.$foreign_table:''),
-					$local_table.'.uid='.$mm_table.'.uid_local'.($foreign_table?' AND '.$foreign_table.'.uid='.$mm_table.'.uid_foreign':'').' '.
-						$whereClause,		// whereClauseMightContainGroupOrderBy
+					($local_table ? $local_table.',' : '').$mm_table.($foreign_table ? ','.$foreign_table : ''),
+					$mmWhere.' '.$whereClause,		// whereClauseMightContainGroupOrderBy
 					$groupBy,
 					$orderBy,
 					$limit
