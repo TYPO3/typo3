@@ -594,7 +594,7 @@ class tslib_cObj {
 		$w = $w ? $w : 1;
 		$h = $h ? $h : 1;
 		$wrap = $conf['wrap'] ? $conf['wrap'] : '|<br />';
-		$theValue = $this->wrap('<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$w.'" height="'.$h.'" border="0" alt="" />', $wrap);
+		$theValue = $this->wrap('<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$w.'" height="'.$h.'" border="0" alt="" title="" k/>', $wrap);
 		
 		return $this->stdWrap($theValue,$conf['stdWrap.']);
 	}
@@ -839,10 +839,8 @@ class tslib_cObj {
 			$splitArr['imgObjNum']=$conf['imgObjNum'];
 			$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$imgCount);
 
-			$alttext = $this->stdWrap($conf['altText'],$conf['altText.']);
-			if ($alttext) {
-				$altP = ' alt="'.htmlspecialchars(strip_tags($alttext)).'"';
-			}
+			$altP = $this->getAltParam($conf);
+			
 				// EqualHeight
 			$equalHeight = intval($this->stdWrap($conf['equalH'],$conf['equalH.']));
 			if ($equalHeight)	{	// Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
@@ -979,13 +977,13 @@ class tslib_cObj {
 			if ($conf['noStretchAndMarginCells']!=1)	{
 				$tablecode.='<tr>';
 				if ($txtMarg && $align=='right')	{	// If right aligned, the textborder is added on the right side
-					$tablecode.='<td rowspan="'.($rowspan+1).'" valign="top"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$txtMarg.'" height="1" alt="" />'.($editIconsHTML?'<br />'.$editIconsHTML:'').'</td>';
+					$tablecode.='<td rowspan="'.($rowspan+1).'" valign="top"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$txtMarg.'" height="1" alt="" title="" />'.($editIconsHTML?'<br />'.$editIconsHTML:'').'</td>';
 					$editIconsHTML='';
 					$flag=1;
 				}
 				$tablecode.='<td colspan="'.$colspan.'"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$tableWidth.'" height="1" alt="" /></td>';
 				if ($txtMarg && $align=='left')	{	// If left aligned, the textborder is added on the left side
-					$tablecode.='<td rowspan="'.($rowspan+1).'" valign="top"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$txtMarg.'" height="1" alt="" />'.($editIconsHTML?'<br />'.$editIconsHTML:'').'</td>';
+					$tablecode.='<td rowspan="'.($rowspan+1).'" valign="top"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$txtMarg.'" height="1" alt="" title="" />'.($editIconsHTML?'<br />'.$editIconsHTML:'').'</td>';
 					$editIconsHTML='';
 					$flag=1;
 				}
@@ -997,15 +995,15 @@ class tslib_cObj {
 				// draw table
 			for ($c=0;$c<$rowCount;$c++) {	// Looping through rows. If 'noRows' is set, this is '1 time', but $rowCount_temp will hold the actual number of rows!
 				if ($c && $rowspacing)	{		// If this is NOT the first time in the loop AND if space is required, a row-spacer is added. In case of "noRows" rowspacing is done further down.
-					$tablecode.='<tr><td colspan="'.$colspan.'"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$rowspacing.'" border="0" alt="" /></td></tr>';
+					$tablecode.='<tr><td colspan="'.$colspan.'"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$rowspacing.'" border="0" alt="" title="" /></td></tr>';
 				}
 				$tablecode.='<tr>';	// starting row
 				for ($b=0; $b<$colCount_temp; $b++)	{	// Looping through the columns
 					if ($b && $colspacing)	{		// If this is NOT the first iteration AND if column space is required. In case of "noCols", the space is done without a separate cell.
 						if (!$noCols)	{
-							$tablecode.='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$colspacing.'" height="1" border="0" alt="" /></td>';
+							$tablecode.='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$colspacing.'" height="1" border="0" alt="" title="" /></td>';
 						} else {
-							$colSpacer='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.($border?$colspacing-6:$colspacing).'" height="'.($imageRowsMaxHeights[$c]+($border?$borderThickness*2:0)).'" border="0" align="'.($border?'left':'top').'" alt="" />';
+							$colSpacer='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.($border?$colspacing-6:$colspacing).'" height="'.($imageRowsMaxHeights[$c]+($border?$borderThickness*2:0)).'" border="0" align="'.($border?'left':'top').'" alt="" title="" />';
 							$colSpacer='<td valign="top">'.$colSpacer.'</td>';	// added 160301, needed for the new "noCols"-table...
 							$tablecode.=$colSpacer;
 						}
@@ -1018,7 +1016,7 @@ class tslib_cObj {
 						$imgIndex = $index+$a*$colCount_temp;
 						if ($imgsTag[$imgIndex])	{
 							if ($rowspacing && $noRows && $a) {		// Puts distance between the images IF "noRows" is set and this is the first iteration of the loop
-								$tablecode.= '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$rowspacing.'" alt="" /><br />';
+								$tablecode.= '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$rowspacing.'" alt="" title="" /><br />';
 							}
 
 							$imageHTML = $imgsTag[$imgIndex].'<br />';
@@ -1347,17 +1345,17 @@ class tslib_cObj {
 						if ($gapLine)	{
 							$gapSurround = t3lib_div::intInRange(($gapWidth-$gapLine)/2, 1, 1000);
 								// right gap
-							$content.='<td'.$tdPar.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$gapSurround.'" height="1" alt="" /></td>';
+							$content.='<td'.$tdPar.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$gapSurround.'" height="1" alt="" title="" /></td>';
 							$tdRowCount++;
 								// line:
 							$GtdPar = $gapConf['gapLineCol'] ? ' bgcolor="'.$gapConf['gapLineCol'].'"' : ' bgcolor="black"';
-							$content.='<td'.$GtdPar.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$gapLine.'" height="1" alt="" /></td>';
+							$content.='<td'.$GtdPar.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$gapLine.'" height="1" alt="" title="" /></td>';
 							$tdRowCount++;
 								// left gap
-							$content.='<td'.$tdPar.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$gapSurround.'" height="1" alt="" /></td>';
+							$content.='<td'.$tdPar.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$gapSurround.'" height="1" alt="" title="" /></td>';
 							$tdRowCount++;
 						} else {
-							$content.='<td'.$tdPar.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$gapWidth.'" height="1" alt="" /></td>';
+							$content.='<td'.$tdPar.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$gapWidth.'" height="1" alt="" title="" /></td>';
 							$tdRowCount++;
 						}
 					}
@@ -1388,9 +1386,9 @@ class tslib_cObj {
 		$content='';
 		
 		$content.='<table border="0" cellspacing="0" cellpadding="0" width="99%"><tr>';
-		if ($spaceBefore)	{$content.='<td width="1"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$spaceBefore.'" height="1" alt="" /></td>'; }
-		$content.='<td bgcolor="'.$lineColor.'"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$lineThickness.'" alt="" /></td>';
-		if ($spaceAfter)	{$content.='<td width="1"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$spaceAfter.'" height="1" alt="" /></td>'; }
+		if ($spaceBefore)	{$content.='<td width="1"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$spaceBefore.'" height="1" alt="" title="" /></td>'; }
+		$content.='<td bgcolor="'.$lineColor.'"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$lineThickness.'" alt="" title="" /></td>';
+		if ($spaceAfter)	{$content.='<td width="1"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$spaceAfter.'" height="1" alt="" title="" /></td>'; }
 		$content.='</tr></table>';
 
 		$content = $this->stdWrap($content, $conf['stdWrap.']);
@@ -2342,8 +2340,8 @@ class tslib_cObj {
 		if (is_array($info))	{
 			$info[3] = t3lib_div::png_to_gif_by_imagemagick($info[3]);
 			$GLOBALS['TSFE']->imagesOnPage[]=$info[3];		// This array is used to collect the image-refs on the page...
-			$alttext = strip_tags($this->stdWrap($conf['alttext'],$conf['alttext.']));
-			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.t3lib_div::rawUrlEncodeFP($info[3])).'" width="'.$info[0].'" height="'.$info[1].'"  border="'.intval($conf['border']).'"'.($conf['params']?' '.$conf['params']:'').($alttext?' alt="'.htmlspecialchars($alttext).'"':' alt=""').' />';
+			$altParam = $this->getAltParam($conf);
+			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.t3lib_div::rawUrlEncodeFP($info[3])).'" width="'.$info[0].'" height="'.$info[1].'"  border="'.intval($conf['border']).'"'.($conf['params']?' '.$conf['params']:'').($altParam).' />';
 			if ($conf['linkWrap'])	{
 				$theValue = $this->linkWrap($theValue,$conf['linkWrap']);
 			} elseif ($conf['imageLinkWrap']) {
@@ -2434,7 +2432,7 @@ class tslib_cObj {
 			if (t3lib_div::inList('jpg,gif,jpeg,png',$fileinfo['fileext']))	{
 				$imgFile = $incFile;
 				$imgInfo = @getImageSize($imgFile);
-				return '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'" border="0" alt="" />';
+				return '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'" border="0" alt="" title="" />';
 			} elseif (filesize($incFile)<1024*1024) {
 				return $GLOBALS['TSFE']->tmpl->fileContent($incFile);
 			}
@@ -2477,6 +2475,25 @@ class tslib_cObj {
 		return trim($wrapArr[0]).$content.trim($wrapArr[1]);
 	}
 
+	/**
+	 * An abstraction method which creates an alt or title parameter for an HTML img tag.
+	 * 
+	 * @param	array		TypoScript configuration properties
+	 * @return	string		Parameter string containing alt and title parameters (if any)
+	 * @see IMGTEXT(), cImage()
+	 */
+	function getAltParam($conf)	{
+		$altText = $this->stdWrap($conf['altText'],$conf['altText.']);
+		$altParam .= ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
+
+		$titleText = $this->stdWrap($conf['titleText'],$conf['titleText.']);
+		if ($titleText) {
+			$altParam .= ' title="'.htmlspecialchars(strip_tags($titleText)).'"';
+		} else {
+			$altParam .= ' title="'.htmlspecialchars(strip_tags($altText)).'"';
+		}
+		return $altParam;
+	}
 
 
 
@@ -3457,10 +3474,10 @@ class tslib_cObj {
 						} else {
 							$icon = 't3lib/gfx/notfound_thumb.gif';
 						}
-						$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'" border="0" alt="" />';
+						$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'" border="0" alt="" title="" />';
 					}
 				} else {
-					$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'" width="18" height="16" border="0" alt="" />';
+					$icon = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$icon).'" width="18" height="16" border="0" alt="" title="" />';
 				}
 				if ($conf['icon_link']) {$icon = $this->wrap($icon, $theLinkWrap);}
 				$icon = $this->stdWrap($icon,$conf['icon.']);
@@ -4940,10 +4957,10 @@ class tslib_cObj {
 			$wrapBefore = intval($wrapArray[0]);
 			$wrapAfter = intval($wrapArray[1]);
 			if ($wrapBefore)	{
-				$result = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapBefore.'" border="0" class="spacer-gif" alt="" /><br />'.$result;
+				$result = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapBefore.'" border="0" class="spacer-gif" alt="" title="" /><br />'.$result;
 			}
 			if ($wrapAfter)	{
-				$result.='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapAfter.'" border="0" class="spacer-gif" alt="" /><br />';
+				$result.='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$wrapAfter.'" border="0" class="spacer-gif" alt="" title="" /><br />';
 			}
 		}
 		return $result;
@@ -5997,7 +6014,7 @@ class tslib_cObj {
 			$sortField = $TCA[$table]['ctrl']['sortby'];
 			$labelField = $TCA[$table]['ctrl']['label'];
 			$hideField = $TCA[$table]['ctrl']['enablecolumns']['disabled'];
-			$blackLine = $conf['line']?'<img src="clear.gif" width="1" height="'.intval($conf['line']).'" alt="" /><br /><table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="black" style="border: 0px;"><tr style="border: 0px;"><td style="border: 0px;"><img src="clear.gif" width="1" height="1" alt="" /></td></tr></table><br />':'';
+			$blackLine = $conf['line']?'<img src="clear.gif" width="1" height="'.intval($conf['line']).'" alt="" title="" /><br /><table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="black" style="border: 0px;"><tr style="border: 0px;"><td style="border: 0px;"><img src="clear.gif" width="1" height="1" alt="" title="" /></td></tr></table><br />':'';
 
 			$theCmd='';
 			$TSFE_EDIT = t3lib_div::_POST('TSFE_EDIT');
@@ -6053,27 +6070,27 @@ class tslib_cObj {
 				break;
 				default:
 					$panel = '';
-					if (isset($allow['toolbar']))		$panel.=$GLOBALS['BE_USER']->ext_makeToolBar().'<img src="clear.gif" width="2" height="1" alt="" />';
-					if (isset($allow['edit']))		$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_editRecord').'" align="top" alt="" />',$formName,'edit',$currentRecord);
+					if (isset($allow['toolbar']))		$panel.=$GLOBALS['BE_USER']->ext_makeToolBar().'<img src="clear.gif" width="2" height="1" alt="" title="" />';
+					if (isset($allow['edit']))		$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/edit2.gif" width="11" height="12" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_editRecord').'" align="top" alt="" title="" />',$formName,'edit',$currentRecord);
 					if (isset($allow['move']) && $sortField)	{
-						$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_up.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveUp').'" align="top" alt="" />',$formName,'up');
-						$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_down.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveDown').'" align="top" alt="" />',$formName,'down');
+						$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_up.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveUp').'" align="top" alt="" title="" />',$formName,'up');
+						$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_down.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_moveDown').'" align="top" alt="" title="" />',$formName,'down');
 					}
 					if (isset($allow['hide']) && $hideField)	{
 						if ($dataArr[$hideField])	{
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_unhide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_unhide').'" align="top" alt="" />',$formName,'unhide');
+							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_unhide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_unhide').'" align="top" alt="" title="" />',$formName,'unhide');
 						} else {
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_hide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_hide').'" align="top" alt="" />',$formName,'hide','',$BE_USER->extGetLL('p_hideConfirm'));
+							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/button_hide.gif" width="11" height="10" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_hide').'" align="top" alt="" title="" />',$formName,'hide','',$BE_USER->extGetLL('p_hideConfirm'));
 						}
 					}
 					if (isset($allow['new']))	{
 						if ($table=='pages')	{
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_page.gif" width="13" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newSubpage').'" align="top" alt="" />',$formName,'new',$currentRecord);
+							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_page.gif" width="13" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newSubpage').'" align="top" alt="" title="" />',$formName,'new',$currentRecord);
 						} else {
-							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_record.gif" width="16" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newRecordAfter').'" align="top" alt="" />',$formName,'new',$currentRecord);
+							$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/new_record.gif" width="16" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_newRecordAfter').'" align="top" alt="" title="" />',$formName,'new',$currentRecord);
 						}
 					}
-					if (isset($allow['delete']))		{$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/delete_record.gif" width="12" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_delete').'" align="top" alt="" />',$formName,'delete','',$BE_USER->extGetLL('p_deleteConfirm'));	}
+					if (isset($allow['delete']))		{$panel.=$this->editPanelLinkWrap('<img src="t3lib/gfx/delete_record.gif" width="12" height="12" vspace="1" hspace="2" border="0" title="'.$BE_USER->extGetLL('p_delete').'" align="top" alt="" title="" />',$formName,'delete','',$BE_USER->extGetLL('p_deleteConfirm'));	}
 
 						//	Final				
 					$labelTxt = $this->stdWrap($conf['label'],$conf['label.']);
@@ -6146,7 +6163,7 @@ class tslib_cObj {
 			$GLOBALS['TSFE']->set_no_cache();		// Special content is about to be shown, so the cache must be disabled.
 			$style = $conf['styleAttribute'] ? ' style="'.htmlspecialchars($conf['styleAttribute']).'"' : '';
 			$iconTitle = $this->stdWrap($conf['iconTitle'],$conf['iconTitle.']);
-			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="t3lib/gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" />';
+			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="t3lib/gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" title="" />';
 			$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
 			$icon = $this->editPanelLinkWrap_doWrap($iconImg,TYPO3_mainDir.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&columnsOnly='.rawurlencode($fieldList).'&noView='.$nV.$addUrlParamStr,implode(':',$rParts));
 			if ($conf['beforeLastTag']<0)	{
@@ -6442,34 +6459,34 @@ class tslib_tableOffset	{
 				// If width is required, set so bottom column will display for sure			
 			if ($valPairs[4])	{
 				if (!$valPairs[3])	$valPairs[3]=1; 
-				$widthImg='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[4].'" height="1" alt="" />';
+				$widthImg='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[4].'" height="1" alt="" title="" />';
 			}
 				// If height is required, set so right column will display for sure
 			if ($valPairs[5])	{
 				if (!$valPairs[2])	$valPairs[2]=1;
-				$valPairs[2]=1; $heightImg='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$valPairs[5].'" alt="" />';
+				$valPairs[2]=1; $heightImg='<img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$valPairs[5].'" alt="" title="" />';
 			}
 			
 				// First row:
 			if ($valPairs[1])	{	// top
 				$rows[1].= '<tr>';
-				$rows[1].= '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.($valPairs[0]?$valPairs[0]:1).'" height="'.$valPairs[1].'" alt="" /></td>';
+				$rows[1].= '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.($valPairs[0]?$valPairs[0]:1).'" height="'.$valPairs[1].'" alt="" title="" /></td>';
 				if ($valPairs[0])	$rows[1].= '<td></td>';
 				if ($valPairs[2])	$rows[1].= '<td></td>';
 				$rows[1].= '</tr>';
 			}
 				// Middle row:
 			$rows[2].= '<tr>';
-			if ($valPairs[0])	{$rows[2].= $valPairs[1] ? '<td></td>' : '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[0].'" height="1" alt="" /></td>';}
+			if ($valPairs[0])	{$rows[2].= $valPairs[1] ? '<td></td>' : '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[0].'" height="1" alt="" title="" /></td>';}
 			$rows[2].= '<td'.$this->tdParams.'>'.$content.'</td>';
-			if ($valPairs[2])	{$rows[2].= $valPairs[3] ? '<td>'.$heightImg.'</td>' : '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[2].'" height="'.($valPairs[5]?$valPairs[5]:1).'" alt="" /></td>';}
+			if ($valPairs[2])	{$rows[2].= $valPairs[3] ? '<td>'.$heightImg.'</td>' : '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$valPairs[2].'" height="'.($valPairs[5]?$valPairs[5]:1).'" alt="" title="" /></td>';}
 			$rows[2].= '</tr>';
 				// Bottom row:
 			if ($valPairs[3])	{	// bottom
 				$rows[3].= '<tr>';
 				if ($valPairs[0])	$rows[3].= '<td></td>';
 				if ($valPairs[2])	$rows[3].= '<td>'.$widthImg.'</td>';
-				$rows[3].= '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.($valPairs[2]?$valPairs[2]:($valPairs[4]?$valPairs[4]:1)).'" height="'.$valPairs[3].'" alt="" /></td>';
+				$rows[3].= '<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.($valPairs[2]?$valPairs[2]:($valPairs[4]?$valPairs[4]:1)).'" height="'.$valPairs[3].'" alt="" title="" /></td>';
 				$rows[3].= '</tr>';
 			}
 			return $this->begin.implode('',$rows).$this->end;
@@ -6567,27 +6584,27 @@ class tslib_controlTable	{
 			if ($offArr[1])	{
 				$xoff = $offArr[0] ? 1 : 0;
 				if ($cols+$xoff > 1)	{$colspan =' colspan="'.($cols+$xoff).'"';}
-				$res.= '<tr><td'.$colspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$offArr[1].'" alt="" /></td></tr>';
+				$res.= '<tr><td'.$colspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$offArr[1].'" alt="" title="" /></td></tr>';
 			}
 				// The rows:
 			if ($rows>1)	{$rowspan =' rowspan="'.($rows).'"';}
 			$res.= '<tr>';
-			if ($offArr[0])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$offArr[0].'" alt="" /></td>';	}
+			if ($offArr[0])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$offArr[0].'" alt="" title="" /></td>';	}
 			if ($this->lm)	{	$res.='<td'.$rowspan.' '.$this->lmTDparams.'>'.$this->lm.'</td>';		}
-			if ($cMargArr[0])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$cMargArr[0].'" alt="" /></td>';		}
+			if ($cMargArr[0])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$cMargArr[0].'" alt="" title="" /></td>';		}
 				// content...
 				
 			$middle=Array();
 			if ($this->tm)	{	$middle[]='<td '.$this->tmTDparams.'>'.$this->tm.'</td>';}
-			if ($cMargArr[1])	{	$middle[]='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$cMargArr[1].'" alt="" /></td>';}
+			if ($cMargArr[1])	{	$middle[]='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$cMargArr[1].'" alt="" title="" /></td>';}
 			if ($this->content)	{	$middle[]='<td '.$this->contentTDparams.'>'.$this->content.'</td>';}
-			if ($cMargArr[3])	{	$middle[]='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$cMargArr[3].'" alt="" /></td>';}
+			if ($cMargArr[3])	{	$middle[]='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$cMargArr[3].'" alt="" title="" /></td>';}
 			if ($this->bm)	{	$middle[]='<td '.$this->bmTDparams.'>'.$this->bm.'</td>';}
-			if ($this->contentW)	{	$middle[]='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$this->contentW.'" alt="" /></td>';}
+			if ($this->contentW)	{	$middle[]='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$this->contentW.'" alt="" title="" /></td>';}
 			if (isset($middle[0]))	{$res.=$middle[0];}
 
 				// venstre for content
-			if ($cMargArr[2])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$cMargArr[2].'" alt="" /></td>';		}
+			if ($cMargArr[2])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$cMargArr[2].'" alt="" title="" /></td>';		}
 			if ($this->rm)	{	$res.='<td'.$rowspan.' '.$this->rmTDparams.'>'.$this->rm.'</td>';		}
 			$res.= '</tr>';
 
