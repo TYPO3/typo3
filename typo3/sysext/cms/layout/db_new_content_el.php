@@ -403,71 +403,95 @@ class SC_db_new_content_el {
 				'icon'=>'gfx/c_wiz/regular_text.gif',
 				'title'=>$LANG->getLL('common_1_title'),
 				'description'=>$LANG->getLL('common_1_description'),
-				'params'=>'&defVals[tt_content][CType]=text'
+				'tt_content_defValues' => array(
+					'CType' => 'text'
+				)
 			),
 			'common_2' => array(
 				'icon'=>'gfx/c_wiz/text_image_below.gif',
 				'title'=>$LANG->getLL('common_2_title'),
 				'description'=>$LANG->getLL('common_2_description'),
-				'params'=>'&defVals[tt_content][CType]=textpic&defVals[tt_content][imageorient]=8'
+				'tt_content_defValues' => array(
+					'CType' => 'textpic',
+					'imageorient' => 8
+				)
 			),
 			'common_3' => array(
 				'icon'=>'gfx/c_wiz/text_image_right.gif',
 				'title'=>$LANG->getLL('common_3_title'),
 				'description'=>$LANG->getLL('common_3_description'),
-				'params'=>'&defVals[tt_content][CType]=textpic&defVals[tt_content][imageorient]=17'
+				'tt_content_defValues' => array(
+					'CType' => 'textpic',
+					'imageorient' => 17
+				)
 			),
 			'common_4' => array(
 				'icon'=>'gfx/c_wiz/images_only.gif',
 				'title'=>$LANG->getLL('common_4_title'),
 				'description'=>$LANG->getLL('common_4_description'),
-				'params'=>'&defVals[tt_content][CType]=image&defVals[tt_content][imagecols]=2'
+				'tt_content_defValues' => array(
+					'CType' => 'image',
+					'imagecols' => 2
+				)
 			),
 			'common_5' => array(
 				'icon'=>'gfx/c_wiz/bullet_list.gif',
 				'title'=>$LANG->getLL('common_5_title'),
 				'description'=>$LANG->getLL('common_5_description'),
-				'params'=>'&defVals[tt_content][CType]=bullets'
+				'tt_content_defValues' => array(
+					'CType' => 'bullets',
+				)
 			),
 			'common_6' => array(
 				'icon'=>'gfx/c_wiz/table.gif',
 				'title'=>$LANG->getLL('common_6_title'),
 				'description'=>$LANG->getLL('common_6_description'),
-				'params'=>'&defVals[tt_content][CType]=table'
+				'tt_content_defValues' => array(
+					'CType' => 'table',
+				)
 			),
 			'special' => array('header'=>$LANG->getLL('special')),
 			'special_1' => array(
 				'icon'=>'gfx/c_wiz/filelinks.gif',
 				'title'=>$LANG->getLL('special_1_title'),
 				'description'=>$LANG->getLL('special_1_description'),
-				'params'=>'&defVals[tt_content][CType]=uploads'
+				'tt_content_defValues' => array(
+					'CType' => 'uploads',
+				)
 			),
 			'special_2' => array(
 				'icon'=>'gfx/c_wiz/multimedia.gif',
 				'title'=>$LANG->getLL('special_2_title'),
 				'description'=>$LANG->getLL('special_2_description'),
-				'params'=>'&defVals[tt_content][CType]=multimedia'
+				'tt_content_defValues' => array(
+					'CType' => 'multimedia',
+				)
 			),
 			'special_3' => array(
 				'icon'=>'gfx/c_wiz/sitemap2.gif',
 				'title'=>$LANG->getLL('special_3_title'),
 				'description'=>$LANG->getLL('special_3_description'),
-				'params'=>'&defVals[tt_content][CType]=menu&defVals[tt_content][menu_type]=2'
+				'tt_content_defValues' => array(
+					'CType' => 'menu',
+					'menu_type' => 2
+				)
 			),
 			'special_4' => array(
 				'icon'=>'gfx/c_wiz/html.gif',
 				'title'=>$LANG->getLL('special_4_title'),
 				'description'=>$LANG->getLL('special_4_description'),
-				'params'=>'&defVals[tt_content][CType]=html'
+				'tt_content_defValues' => array(
+					'CType' => 'html',
+				)
 			),
-
-
 			'forms' => array('header'=>$LANG->getLL('forms')),
 			'forms_1' => array(
 				'icon'=>'gfx/c_wiz/mailform.gif',
 				'title'=>$LANG->getLL('forms_1_title'),
 				'description'=>$LANG->getLL('forms_1_description'),
-				'params'=>'&defVals[tt_content][CType]=mailform&defVals[tt_content][bodytext]='.rawurlencode(trim('
+				'tt_content_defValues' => array(
+					'CType' => 'mailform',
+					'bodytext' => trim('
 # Example content:
 Name: | *name = input,40 | Enter your name here
 Email: | *email=input,40 |
@@ -477,26 +501,34 @@ Contact me: | tv=check | 1
 |formtype_mail = submit | Send form!
 |html_enabled=hidden | 1
 |subject=hidden| This is the subject
-				'))
+					')
+				)
 			),
 			'forms_2' => array(
 				'icon'=>'gfx/c_wiz/searchform.gif',
 				'title'=>$LANG->getLL('forms_2_title'),
 				'description'=>$LANG->getLL('forms_2_description'),
-				'params'=>'&defVals[tt_content][CType]=search'
+				'params'=>'&defVals[tt_content][CType]=search',
+				'tt_content_defValues' => array(
+					'CType' => 'search',
+				)
 			),
 			'forms_3' => array(
 				'icon'=>'gfx/c_wiz/login_form.gif',
 				'title'=>$LANG->getLL('forms_3_title'),
 				'description'=>$LANG->getLL('forms_3_description'),
-				'params'=>'&defVals[tt_content][CType]=login'
+				'tt_content_defValues' => array(
+					'CType' => 'login',
+				)
 			),
 			'plugins' => array('header'=>$LANG->getLL('plugins')),
 			'plugins_1' => array(
 				'icon'=>'gfx/c_wiz/user_defined.gif',
 				'title'=>$LANG->getLL('plugins_1_title'),
 				'description'=>$LANG->getLL('plugins_1_description'),
-				'params'=>'&defVals[tt_content][CType]=list'
+				'tt_content_defValues' => array(
+					'CType' => 'list',
+				)
 			),
 		);
 
@@ -510,7 +542,48 @@ Contact me: | tv=check | 1
 			}
 		}
 
+			// Remove elements where preset values are not allowed:
+		$this->removeInvalidElements($wizardItems);
+
 		return $wizardItems;
+	}
+
+	/**
+	 * Checks the array for elements which might contain unallowed default values and will unset them!
+	 * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname / value pairs and check. The values will be added to the "params" key of the array (which should probably be unset or empty by default).
+	 *
+	 * @param	array		Wizard items, passed by reference
+	 * @return	void
+	 */
+	function removeInvalidElements(&$wizardItems)	{
+		global $TCA;
+
+			// Load full table definition:
+		t3lib_div::loadTCA('tt_content');
+
+			// Traverse wizard items:
+		foreach($wizardItems as $key => $cfg)	{
+			if (is_array($cfg['tt_content_defValues']))	{
+
+					// Traverse field values:
+				foreach($cfg['tt_content_defValues'] as $fN => $fV)	{
+					if (is_array($TCA['tt_content']['columns'][$fN]))	{
+							// Get information about if the field value is OK:
+						$config = &$TCA['tt_content']['columns'][$fN]['config'];
+						$authModeDeny = $config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content',$fN,$fV,$config['authMode']);
+
+						if ($authModeDeny)	{
+								// Remove element all together:
+							unset($wizardItems[$key]);
+							break;
+						} else {
+								// Add the parameter:
+							$wizardItems[$key]['params'].= '&defVals[tt_content]['.$fN.']='.rawurlencode($fV);
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

@@ -1,3 +1,6 @@
+2004-12-20  Kasper Skårhøj,,,  <kasper@typo3.com>
+	* Added check for explicitAllow/Deny in the content element wizard (during a trainride from Allerød in S-Tog line A to Nørreport - thats all it took).
+
 2004-12-17  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Mainly: Did tons of improvements on the import/export module (system extension "impexp").

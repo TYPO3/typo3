@@ -213,7 +213,7 @@ class t3lib_install {
 				t3lib_div::writeFile($writeToLocalconf_dat['file'],implode(chr(10),$inlines));
 
 				if (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['file']), implode(chr(10),$inlines)))	{
-					die('typo3temp/localconf.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
+					die('typo3conf/localconf.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
 				}
 
 				$this->messages[]= 'Configuration written to typo3conf/localconf.php';
