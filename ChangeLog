@@ -6,7 +6,7 @@
 	* Added a new constant TYPO3_branch which includes only the major and the minor numbers of the version (not the patchlevel). This is used in the "generator" meta tag and will finally close bug number #0000318.
 	* ContextMenu is no longer disabled by default on Macintosh systems (except Opera, might have to do with bug #0000675). Closes bugs #0000542 and #0000486.
 	* XHTML 1.1 compliancy fixes (thanks to Ernesto Baschny)
-	* List view now resolves values of MM tables (thanks to Rupert Germann)
+	* List view now resolves values of MM tables (thanks to Rupert Germann). Closes #0000624.
 	* Use t3lib_div::isAbsPath() to check if the logfile path is absolute (doesn't work on Windows otherwise)
 
 2005-02-02  Ingmar Schlecht  <ingmar@typo3.org>
