@@ -4,6 +4,7 @@
 
 2004-09-19  Michael Stucki  <mundaun@gmx.ch>
 
+	* A new warning message is displayed if the install tool password is still the default: "joh316"
 	* Replaced all (comments AND code!) occurences of "writeable" with "writable"
 	* Fixed bug #0000171: Displaying wrong filepermissions in filelist module
 	* Fixed bug #0000261: fileDenyPattern default does not include ".php4"
