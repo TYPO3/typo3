@@ -350,18 +350,19 @@ function linkTo_UnCryptMailto(s)	{	//
 -->
 ';
 		
+
+		if ($GLOBALS['TSFE']->config['config']['baseURL']) {
+			$ss = intval($GLOBALS['TSFE']->config['config']['baseURL']) ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : $GLOBALS['TSFE']->config['config']['baseURL'];
+			$GLOBALS['TSFE']->content.='
+<base href="'.htmlspecialchars($ss).'" />';
+		}
 		
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
 			$ss=$path.$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
 			$GLOBALS['TSFE']->content.='
-<link rel="SHORTCUT ICON" href="'.$ss.'" />';
+<link rel="SHORTCUT ICON" href="'.htmlspecialchars($ss).'" />';
 		}
 		
-		
-
-
-
-
 		/** CSS STYLESHEET handling: */
 		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
 			$temp_styleLines=array();

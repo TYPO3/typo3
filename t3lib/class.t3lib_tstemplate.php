@@ -1292,7 +1292,7 @@ class t3lib_TStemplate	{
 			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
-		}		
+		}
 
 			// Return the LD-array	
 		return $LD;
