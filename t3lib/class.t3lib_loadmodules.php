@@ -438,9 +438,17 @@ class t3lib_loadModules {
 				if ($MCONF['defaultMod'])	{
 					$modconf['defaultMod']=$MCONF['defaultMod'];
 				}
-					// Navigation Frame Script:
-				if ($MCONF['navFrameScript'] && @file_exists($path.'/'.$MCONF['navFrameScript']))	{
-					$modconf['navFrameScript']= $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['navFrameScript']);
+					// Navigation Frame Script (GET params could be added)
+				if ($MCONF['navFrameScript']) {
+					$navFrameScript = explode('?', $MCONF['navFrameScript']);
+					$navFrameScript = $navFrameScript[0];
+					if (@file_exists($path.'/'.$navFrameScript))	{
+						$modconf['navFrameScript']= $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['navFrameScript']);
+					}
+				}
+					// additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
+				if ($MCONF['navFrameScriptParam']) {
+					$modconf['navFrameScriptParam']=$MCONF['navFrameScriptParam'];
 				}
 			} else return false;
 		} else $modconf='notFound';
