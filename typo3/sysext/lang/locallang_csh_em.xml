@@ -265,5 +265,7 @@ In effect you can therefore have, say, a &quot;stable&quot; version of an extens
 		<languageKey index="se">EXT:csh_se/lang/se.locallang_csh_em.xml</languageKey>
 		<languageKey index="fi">EXT:csh_fi/lang/fi.locallang_csh_em.xml</languageKey>
 		<languageKey index="nl">EXT:csh_nl/lang/nl.locallang_csh_em.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/lang/it.locallang_csh_em.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/lang/fr.locallang_csh_em.xml</languageKey>
 	</data>
 </T3locallang>

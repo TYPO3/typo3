@@ -25,24 +25,48 @@
 			<label index="mlang_tabs_tab">Handbuch</label>
 		</languageKey>
 		<languageKey index="no" type="array">
+			<label index="mlang_labels_tablabel">TYPO3 innebygd manual</label>
+			<label index="mlang_labels_tabdescr">Innebygd manual basert på informasjonskildene for kontekstsensitiv hjelp i systemet</label>
+			<label index="mlang_tabs_tab">Manual</label>
 		</languageKey>
 		<languageKey index="it" type="array">
+			<label index="mlang_labels_tablabel">TYPO3: Manuale Online</label>
+			<label index="mlang_labels_tabdescr">Manuale Online costituito raccogliendo tutti gli aiuti in linea del sistema.</label>
+			<label index="mlang_tabs_tab">Manuale</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
+			<label index="mlang_labels_tablabel">Manuel en ligne Typo3</label>
+			<label index="mlang_labels_tabdescr">Manuel intégré basé sur les émetteurs d'informations pour l'aide contextuelle dans le système.</label>
+			<label index="mlang_tabs_tab">Manuel</label>
 		</languageKey>
 		<languageKey index="es" type="array">
+			<label index="mlang_labels_tablabel">Manual en línea de TYPO3</label>
+			<label index="mlang_labels_tabdescr">El manual en línea se basa en las fuentes de información de la ayuda sensitiva al contexto del sistema.</label>
+			<label index="mlang_tabs_tab">Manual</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
+			<label index="mlang_labels_tablabel">TYPO3 inline handleiding</label>
+			<label index="mlang_labels_tabdescr">Inline handleiding gebaseerd op Contect Sensitive Help.</label>
+			<label index="mlang_tabs_tab">Handleiding</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 		</languageKey>
 		<languageKey index="pl" type="array">
+			<label index="mlang_labels_tablabel">Wewnętrzna Instrukcja TYPO3</label>
+			<label index="mlang_labels_tabdescr">Wewnętrzna Instrukcja bazująca na Pomocy Kontekstowej zawartej w systemie.</label>
+			<label index="mlang_tabs_tab">Instrukcja</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 		</languageKey>
 		<languageKey index="fi" type="array">
+			<label index="mlang_labels_tablabel">Typo3:n käytönaikaiset ohjeet</label>
+			<label index="mlang_labels_tabdescr">Käytönaikaiset käyttöohjeet, joka perustuu järjestelmän työkaluvihjeisiin.</label>
+			<label index="mlang_tabs_tab">Käyttöohjeet</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
+			<label index="mlang_labels_tablabel">İçerik: Module Başlığı (menu modulundeki alt-textler için)</label>
+			<label index="mlang_labels_tabdescr">Inline Manual sistem içinde Bilgi kaynağı tabanlı içerik sensitive için yardım.</label>
+			<label index="mlang_tabs_tab">manual</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 		</languageKey>
@@ -51,22 +75,34 @@
 		<languageKey index="ru" type="array">
 		</languageKey>
 		<languageKey index="ro" type="array">
+			<label index="mlang_labels_tablabel">Manual inclus TYPO3 &lt;hr&gt; Context: Titlu modul</label>
+			<label index="mlang_labels_tabdescr">Manual inline bazat pe sursele de informaţie pentru Context Sensitive Help din sistem.</label>
+			<label index="mlang_tabs_tab">Manual</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 		</languageKey>
 		<languageKey index="sk" type="array">
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel">TYPO3 vadovas</label>
+			<label index="mlang_labels_tabdescr">Vadovas sudarytas iš informacijos, kurios šaltinis yra kontekstinė sistemos pagalba.</label>
+			<label index="mlang_tabs_tab">Vadovas</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
 		<languageKey index="hr" type="array">
 		</languageKey>
 		<languageKey index="hu" type="array">
+			<label index="mlang_labels_tablabel">TYPO3 Belső Leírás&lt;br&gt;--------------------------------------------------------------------------------&lt;br&gt;Összefüggés: Modul cím</label>
+			<label index="mlang_labels_tabdescr">Belső Leírás, mely a rendszer Tartalomfüggő Segítségén alapul</label>
+			<label index="mlang_tabs_tab">Leírás</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel">คู่มือภายในของ TYPO3</label>
+			<label index="mlang_labels_tabdescr">คู่มือภายใน ขึ้นอยู่กับที่มาของข้อมูลข่าวสาร สำหรับเนื้อหาการช่วยเหลือที่รู้ฉับไวของระบบ</label>
+			<label index="mlang_tabs_tab">คู่มือ</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -75,6 +111,9 @@
 		<languageKey index="eu" type="array">
 		</languageKey>
 		<languageKey index="bg" type="array">
+			<label index="mlang_labels_tablabel">TYPO3 Вътрешно ръководство</label>
+			<label index="mlang_labels_tabdescr">Вътрешно ръководство базирано на информационните източници за Context Sensitive Help в системата.</label>
+			<label index="mlang_tabs_tab">Ръководство</label>
 		</languageKey>
 		<languageKey index="br" type="array">
 		</languageKey>
@@ -110,24 +149,48 @@
 			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="no" type="array">
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
 		</languageKey>
 		<languageKey index="it" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="es" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 		</languageKey>
 		<languageKey index="pl" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 		</languageKey>
 		<languageKey index="fi" type="array">
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 		</languageKey>
@@ -136,22 +199,34 @@
 		<languageKey index="ru" type="array">
 		</languageKey>
 		<languageKey index="ro" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 		</languageKey>
 		<languageKey index="sk" type="array">
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
 		<languageKey index="hr" type="array">
 		</languageKey>
 		<languageKey index="hu" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -160,6 +235,9 @@
 		<languageKey index="eu" type="array">
 		</languageKey>
 		<languageKey index="bg" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
 		</languageKey>
 		<languageKey index="br" type="array">
 		</languageKey>

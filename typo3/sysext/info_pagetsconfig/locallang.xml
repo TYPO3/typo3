@@ -1,723 +1,841 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Module labels for the TSconfig viewer in the Info module.</description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <fileId>EXT:info_pagetsconfig/locallang.xml</fileId>
-        <labelContext type="array">
-            <languageKey index="tsconf_title"></languageKey>
-            <languageKey index="tsconf_parts_0"></languageKey>
-            <languageKey index="tsconf_parts_1"></languageKey>
-            <languageKey index="tsconf_parts_1a"></languageKey>
-            <languageKey index="tsconf_parts_1b"></languageKey>
-            <languageKey index="tsconf_parts_1c"></languageKey>
-            <languageKey index="tsconf_parts_1d"></languageKey>
-            <languageKey index="tsconf_parts_1e"></languageKey>
-            <languageKey index="tsconf_parts_1f"></languageKey>
-            <languageKey index="tsconf_parts_1g"></languageKey>
-            <languageKey index="tsconf_configFields"></languageKey>
-            <languageKey index="editThisColumn"></languageKey>
-            <languageKey index="editTSconfig"></languageKey>
-            <languageKey index="editTSconfig_all"></languageKey>
-            <languageKey index="editTSconfig_default"></languageKey>
-            <languageKey index="mod_pagetsconfig"></languageKey>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="tsconf_title">Page TSconfig</label>
-            <label index="tsconf_parts_0">All</label>
-            <label index="tsconf_parts_1">Module key ('mod') with overruling user settings</label>
-            <label index="tsconf_parts_1a">Module: Web&gt;Page</label>
-            <label index="tsconf_parts_1b">Module: Web&gt;View</label>
-            <label index="tsconf_parts_1c">Module: Web&gt;Modules</label>
-            <label index="tsconf_parts_1d">Module: Web&gt;List</label>
-            <label index="tsconf_parts_1e">Module: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Module: Web&gt;Func</label>
-            <label index="tsconf_parts_1g">Module: Web&gt;Template</label>
-            <label index="tsconf_configFields">View TSconfig fields content</label>
-            <label index="editThisColumn">Edit the field '%s' for all listed pages</label>
-            <label index="editTSconfig">Edit TSconfig for this page</label>
-            <label index="editTSconfig_all">Edit TSconfig for all shown pages</label>
-            <label index="editTSconfig_default">Default Configuration from TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Page TSconfig</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="tsconf_title">TSconfig for siden</label>
-            <label index="tsconf_parts_0">Alle</label>
-            <label index="tsconf_parts_1">Modulnøgle ('mod') med overliggende brugerindstillinger</label>
-            <label index="tsconf_parts_1a">Modul: Web&gt;Side</label>
-            <label index="tsconf_parts_1b">Modul: Web&gt;Vis</label>
-            <label index="tsconf_parts_1c">Modul: Web&gt;Moduler</label>
-            <label index="tsconf_parts_1d">Modul: Web&gt;Elementer</label>
-            <label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modul: Web&gt;Funktioner</label>
-            <label index="tsconf_parts_1g">Modul: Web&gt;Skabelon</label>
-            <label index="tsconf_configFields">Vis TSconfig felternes indhold</label>
-            <label index="editThisColumn">Redigér feltet '%s' for alle viste sider</label>
-            <label index="editTSconfig">Redigér TSconfig for denne side</label>
-            <label index="editTSconfig_all">Redigér TSconfig for alle viste sider</label>
-            <label index="editTSconfig_default">Standard konfiguration fra TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Side TSconfig</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="tsconf_title">Seiten TSconfig</label>
-            <label index="tsconf_parts_0">Alles</label>
-            <label index="tsconf_parts_1">Modulschlüssel ('mod') mit Überschreibungen der Benutzereinstellungen</label>
-            <label index="tsconf_parts_1a">Modul: Web&gt;Seite</label>
-            <label index="tsconf_parts_1b">Modul: Web&gt;Anzeigen</label>
-            <label index="tsconf_parts_1c">Modul: Web&gt;Module</label>
-            <label index="tsconf_parts_1d">Modul: Web&gt;Liste</label>
-            <label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modul: Web&gt;Funktionen</label>
-            <label index="tsconf_parts_1g">Modul: Web&gt;Templates</label>
-            <label index="tsconf_configFields">Inhalt des TSconfig-Felds anzeigen</label>
-            <label index="editThisColumn">Bearbeite das Feld '%s' für alle aufgelisteten Seiten</label>
-            <label index="editTSconfig">Inhalt des TSconfig-Felds dieser Seite bearbeiten</label>
-            <label index="editTSconfig_all">Inhalt des TSconfig-Felds aller angezeigter Seiten bearbeiten</label>
-            <label index="editTSconfig_default">Standard-Konfiguration aus TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Seiten TSconfig</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="tsconf_title">TSconfig for siden</label>
-            <label index="tsconf_parts_0">Alle</label>
-            <label index="tsconf_parts_1">Modulnøkkel ('mod') med overliggende brukerinnstillinger</label>
-            <label index="tsconf_parts_1a">Modul: Web&gt;Side</label>
-            <label index="tsconf_parts_1b">Modul: Web&gt;Vis</label>
-            <label index="tsconf_parts_1c">Modul: Web&gt;Moduler</label>
-            <label index="tsconf_parts_1d">Modul: Web&gt;Elementer</label>
-            <label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modul: Web&gt;Funksjoner</label>
-            <label index="tsconf_parts_1g">Module: Web&gt;Mal</label>
-            <label index="tsconf_configFields">Vis TSconfig feltenes innhold</label>
-            <label index="editThisColumn">Rediger feltet '%s' for alle viste sider</label>
-            <label index="editTSconfig">Rediger TSconfig for denne siden</label>
-            <label index="editTSconfig_all">Rediger TSconfig for alle viste sider</label>
-            <label index="editTSconfig_default">Standard konfigurasjon fra TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Side TSconfig</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="tsconf_title">TSConfig della pagina</label>
-            <label index="tsconf_parts_0">Tutto</label>
-            <label index="tsconf_parts_1">Chiave ('mod') ma senza le impostazioni dell'utente</label>
-            <label index="tsconf_parts_1a">Modulo: Web&gt;Pagina</label>
-            <label index="tsconf_parts_1b">Modulo: Web&gt;Mostra</label>
-            <label index="tsconf_parts_1c">Modulo: Web&gt;Moduli</label>
-            <label index="tsconf_parts_1d">Modulo: Web&gt;Lista</label>
-            <label index="tsconf_parts_1e">Modulo: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modulo: Web&gt;Func</label>
-            <label index="tsconf_parts_1g">Modulo: Web&gt;Template</label>
-            <label index="tsconf_configFields">Mostra il contenuto dei campi TSconfig</label>
-            <label index="editThisColumn">Modifica il campo '%s' per tutte le pagine elencate</label>
-            <label index="editTSconfig">Modifica TSconfig per questa pagina</label>
-            <label index="editTSconfig_all">Modifica TSconfig per tutte le pagine visualizzate</label>
-            <label index="editTSconfig_default">Configurazione di default da TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">TSconfig della pagina</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="tsconf_title">Page TSconfig</label>
-            <label index="tsconf_parts_0">Tout</label>
-            <label index="tsconf_parts_1">Module ('mod') droit prioritaire sur les paramètres utilisateurs</label>
-            <label index="tsconf_parts_1a">Module: Web&gt;Page</label>
-            <label index="tsconf_parts_1b">Module: Web&gt;View</label>
-            <label index="tsconf_parts_1c">Module: Web&gt;Modules</label>
-            <label index="tsconf_parts_1d">Module: Web&gt;List</label>
-            <label index="tsconf_parts_1e">Module: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Module: Web&gt;Func</label>
-            <label index="tsconf_parts_1g">Module: Web&gt;Template</label>
-            <label index="tsconf_configFields">Afficher les configurations TS</label>
-            <label index="editThisColumn">Editer le fichier '%s' pour toutes les pages listées</label>
-            <label index="editTSconfig">Editer la configuration  TS</label>
-            <label index="editTSconfig_all">Editer les configurations  TS pour toutes les pages séléctionnées</label>
-            <label index="editTSconfig_default">Configuration par défaut depuis TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Configuration TS de la page</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="tsconf_title">Página TSconfig</label>
-            <label index="tsconf_parts_1">Módulo ('mod') con configuraciones de usuario</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="tsconf_title">TSconfiguratie voor deze pagina</label>
-            <label index="tsconf_parts_0">Alle</label>
-            <label index="tsconf_parts_1">Module key ('mod') (Gebruikers instellingen worden genegeerd)</label>
-            <label index="tsconf_parts_1a">Module: Web&gt;Pagina</label>
-            <label index="tsconf_parts_1b">Module: Web&gt;Toon</label>
-            <label index="tsconf_parts_1c">Module: Web&gt;Modules</label>
-            <label index="tsconf_parts_1d">Module: Web&gt;Records</label>
-            <label index="tsconf_parts_1e">Module: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Module: Web&gt;Func</label>
-            <label index="tsconf_parts_1g">Module: Web&gt;Sjabloon</label>
-            <label index="tsconf_configFields">Bekijk inhoud van de TSconfig velden</label>
-            <label index="editThisColumn">Bewerk velden '%s' voor deze pagina's</label>
-            <label index="editTSconfig">Bewerk TSconfig voor deze pagina</label>
-            <label index="editTSconfig_all">Bewerk TSconfig voor alle pagina's</label>
-            <label index="editTSconfig_default">Standaard configuratie van TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Pagina TSconfig</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="tsconf_title">TSConfig strany</label>
-            <label index="tsconf_parts_0">Vše</label>
-            <label index="tsconf_parts_1">Klíč modulu ('mod') s vyššími uživatelskými nastaveními</label>
-            <label index="tsconf_parts_1a">Modul: Web&gt;Strana</label>
-            <label index="tsconf_parts_1b">Modul: Web&gt;Zobrazit</label>
-            <label index="tsconf_parts_1c">Modul: Web&gt;Moduly</label>
-            <label index="tsconf_parts_1d">Modul: Web&gt;Seznam</label>
-            <label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modul: Web&gt;Funkce</label>
-            <label index="tsconf_parts_1g">Modul: Web&gt;Šablona</label>
-            <label index="tsconf_configFields">Zobrazit obsah polí TSconfig</label>
-            <label index="editThisColumn">Upravit pole '%s' pro všechny strany seznamu</label>
-            <label index="editTSconfig">Upravit TSconfig této strany</label>
-            <label index="editTSconfig_all">Upravit TSconfig všech zobrazených stran</label>
-            <label index="editTSconfig_default">Default konfigurace z TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">TSconfig strany</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="tsconf_title">Konfiguracja szablonu</label>
-            <label index="tsconf_parts_0">Wszystko</label>
-            <label index="tsconf_parts_1">Ustawienia modułu ('mod') przykryte opcjami użytkownika</label>
-            <label index="tsconf_parts_1a">Moduł: Web&gt;Strona</label>
-            <label index="tsconf_parts_1b">Moduł: Web&gt;Zobacz</label>
-            <label index="tsconf_parts_1c">Moduł: Web&gt;Moduły</label>
-            <label index="tsconf_parts_1d">Moduł: Web&gt;Lista</label>
-            <label index="tsconf_parts_1e">Moduł: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Moduł: Web&gt;Funkcje</label>
-            <label index="tsconf_parts_1g">Moduł: Web&gt;Szablon</label>
-            <label index="tsconf_configFields">Zobacz zawartość TSconfig</label>
-            <label index="editThisColumn">Edytuj pole '%s' na każdej wylistowanej stronie</label>
-            <label index="editTSconfig">Edytuj pole TSconfig na tej stronie</label>
-            <label index="editTSconfig_all">Edytuj pole TSconfig na każdej z pokazanych stron</label>
-            <label index="editTSconfig_default">Domyślna configuracja z TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Konfiguracja TS strony</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="tsconf_title">TSconfig strani</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="tsconf_title">Sivun TSConfig</label>
-            <label index="tsconf_parts_0">Kaikki</label>
-            <label index="tsconf_parts_1">Modulin avain ('mod') käyttäjän antamin asetuksin</label>
-            <label index="tsconf_parts_1a">Moduli: Web&amp;gt;Page</label>
-            <label index="tsconf_parts_1b">Moduli: Web&amp;gt;View</label>
-            <label index="tsconf_parts_1c">Moduli: Web&amp;gt;Modules</label>
-            <label index="tsconf_parts_1d">Moduli: Web&amp;gt;List</label>
-            <label index="tsconf_parts_1e">Moduli: Web&amp;gt;Info</label>
-            <label index="tsconf_parts_1f">Moduli: Web&amp;gt;Func</label>
-            <label index="tsconf_parts_1g">Moduli: Web&amp;gt;Template</label>
-            <label index="tsconf_configFields">Selaa TSconfig kenttien sisältöjä</label>
-            <label index="editThisColumn">Muotile kenttää '%s' kaikilla listatuilla sivuilla</label>
-            <label index="editTSconfig">Muotoile TSconfigia tälle sivulle</label>
-            <label index="editTSconfig_all">Muotoile TSconfigia kaikilla näytetyillä sivuilla</label>
-            <label index="editTSconfig_default">Oletus Konfiguratio käyttäen TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Sivun TSConfig</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="tsconf_title">Sayfa TSconfig</label>
-            <label index="tsconf_parts_0">Hepsi</label>
-            <label index="tsconf_parts_1">Modül anahtarı ('mod') ile kullanıcı ayarlarını geçersiz kılıyor</label>
-            <label index="tsconf_parts_1a">Modül: Web&gt;Sayfa</label>
-            <label index="tsconf_parts_1b">Modül: Web&gt;Görüntü</label>
-            <label index="tsconf_parts_1c">Modül: Web&gt;Modüller</label>
-            <label index="tsconf_parts_1d">Modül: Web&gt;Liste</label>
-            <label index="tsconf_parts_1e">Modül: Web&gt;Bilgi</label>
-            <label index="tsconf_parts_1f">Modül: Web&gt;Fonksiyonlar</label>
-            <label index="tsconf_parts_1g">Modül: Web&gt;Şablon</label>
-            <label index="tsconf_configFields">TSconfig alanlarının içeriğini göster</label>
-            <label index="editThisColumn">Tüm listelenmiş sayfaların '%s' lık alanını düzelt</label>
-            <label index="editTSconfig">Bu sayfa için TSconfigi düzelt</label>
-            <label index="editTSconfig_all">Tüm gösterilmiş sayfalar için TSconfigi düzelt</label>
-            <label index="editTSconfig_default">TYPO3_CONF_VARS dan standart konfigürasyon</label>
-            <label index="mod_pagetsconfig">Sayfa TSconfig</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="tsconf_title">Sidans TS-inställningar</label>
-            <label index="tsconf_parts_0">Alla</label>
-            <label index="tsconf_parts_1">Modulnyckel ('mod') som ändrar användarinställningar</label>
-            <label index="tsconf_parts_1a">Modul: Web&gt;Sida</label>
-            <label index="tsconf_parts_1b">Modul: Web&gt;Visa</label>
-            <label index="tsconf_parts_1c">Modul: Web&gt;Moduler</label>
-            <label index="tsconf_parts_1d">Modul: Web&gt;Lista</label>
-            <label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modul: Web&gt;Funktion</label>
-            <label index="tsconf_parts_1g">Modul: Web&gt;Template</label>
-            <label index="tsconf_configFields">Visa fältinnehåll i TS-inställningar</label>
-            <label index="editThisColumn">Ändra fältet '%sä' i alla sidor i listan</label>
-            <label index="editTSconfig">Ändra TS-inställningen för denna sida</label>
-            <label index="editTSconfig_all">Ändra TS-inställningen för alla visade sidor</label>
-            <label index="editTSconfig_default">Standardinställning från TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Sidans TS-inställning</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="tsconf_title">Página TSconfig</label>
-            <label index="tsconf_parts_0">Todas</label>
-            <label index="tsconf_parts_1">Modulo chave ('mod') com sobreposição de definições do utilizador</label>
-            <label index="tsconf_parts_1a">Modulo: Web&gt;Página</label>
-            <label index="tsconf_parts_1b">Modulo: Web&gt;Vêr</label>
-            <label index="tsconf_parts_1c">Modulo: Web&gt;Modulos</label>
-            <label index="tsconf_parts_1d">Modulo: Web&gt;Lista</label>
-            <label index="tsconf_parts_1e">Modulo: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modulo: Web&gt;Func</label>
-            <label index="tsconf_parts_1g">Modulo: Web&gt;Modelo</label>
-            <label index="tsconf_configFields">Vêr conteúdo dos campos TSconfig</label>
-            <label index="editThisColumn">Editar o campo '%s' para todas as páginas listadas</label>
-            <label index="editTSconfig">Editar TSconfig para esta página</label>
-            <label index="editTSconfig_all">Editar TSconfig para todas as páginas mostradas</label>
-            <label index="editTSconfig_default">Configuração Defeito a partir de TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">Página TSconfig</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="tsconf_title">TSConfig stránky</label>
-            <label index="tsconf_parts_0">Všetko</label>
-            <label index="tsconf_parts_1">Kľúč modulu ('mod') s vyššími užívateľskými nastaveniami</label>
-            <label index="tsconf_parts_1a">Modul: Web&gt;Stránka</label>
-            <label index="tsconf_parts_1b">Modul: Web&gt;Zobraziť</label>
-            <label index="tsconf_parts_1c">Modul: Web&gt;Moduly</label>
-            <label index="tsconf_parts_1d">Modul: Web&gt;Zoznam</label>
-            <label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modul: Web&gt;Funkcie</label>
-            <label index="tsconf_parts_1g">Modul: Web&gt;Šablona</label>
-            <label index="tsconf_configFields">Zobraziť obsah polí TSconfig</label>
-            <label index="editThisColumn">Upraviť pole '%s' pre všetky stránky zoznamu</label>
-            <label index="editTSconfig">Upraviť TSconfig tejto stránky</label>
-            <label index="editTSconfig_all">Upraviť TSconfig všetkých zobrazených stránok</label>
-            <label index="editTSconfig_default">Default konfigurácia z TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">TSconfig stránky</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="tsconf_title">TSconfig stranica</label>
-            <label index="tsconf_parts_0">Sve</label>
-            <label index="tsconf_parts_1">Ključ modula ('mod') s nadglašavanjem korisničkih postavki</label>
-            <label index="tsconf_parts_1a">Modul: Web&gt;Stranica</label>
-            <label index="tsconf_parts_1b">Modul: Web&gt;Prikaz</label>
-            <label index="tsconf_parts_1c">Modul: Web&gt;Moduli</label>
-            <label index="tsconf_parts_1d">Modul: Web&gt;Popis/Lista</label>
-            <label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
-            <label index="tsconf_parts_1f">Modul: Web&gt;Funkcije</label>
-            <label index="tsconf_parts_1g">Modul: Web&gt;Predložak</label>
-            <label index="tsconf_configFields">Prikaži sadržaj TSconfig polja</label>
-            <label index="editThisColumn">Uredi polje '%s' za sve popisane stranice</label>
-            <label index="editTSconfig">Uredi TSconfig za ovu stranicu</label>
-            <label index="editTSconfig_all">Uredi TSconfig za sve prikazane stranice</label>
-            <label index="editTSconfig_default">Osnovna konfiguracija iz TYPO3_CONF_VARS</label>
-            <label index="mod_pagetsconfig">TSconfig stranica</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="tsconf_title" type="integer">102716901</label>
-            <label index="tsconf_parts_0" type="integer">186422474</label>
-            <label index="tsconf_parts_1" type="integer">72569551</label>
-            <label index="tsconf_parts_1a" type="integer">52234483</label>
-            <label index="tsconf_parts_1b" type="integer">150910794</label>
-            <label index="tsconf_parts_1c" type="integer">94827801</label>
-            <label index="tsconf_parts_1d" type="integer">213817282</label>
-            <label index="tsconf_parts_1e" type="integer">162251880</label>
-            <label index="tsconf_parts_1f" type="integer">206456787</label>
-            <label index="tsconf_parts_1g" type="integer">242913604</label>
-            <label index="tsconf_configFields" type="integer">41802033</label>
-            <label index="editThisColumn" type="integer">35820296</label>
-            <label index="editTSconfig" type="integer">88216336</label>
-            <label index="editTSconfig_all" type="integer">218125815</label>
-            <label index="editTSconfig_default" type="integer">153424219</label>
-            <label index="mod_pagetsconfig" type="integer">102716901</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>Module labels for the TSconfig viewer in the Info module.</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:info_pagetsconfig/locallang.xml</fileId>
+		<labelContext type="array">
+			<label index="tsconf_title"></label>
+			<label index="tsconf_parts_0"></label>
+			<label index="tsconf_parts_1"></label>
+			<label index="tsconf_parts_1a"></label>
+			<label index="tsconf_parts_1b"></label>
+			<label index="tsconf_parts_1c"></label>
+			<label index="tsconf_parts_1d"></label>
+			<label index="tsconf_parts_1e"></label>
+			<label index="tsconf_parts_1f"></label>
+			<label index="tsconf_parts_1g"></label>
+			<label index="tsconf_configFields"></label>
+			<label index="editThisColumn"></label>
+			<label index="editTSconfig"></label>
+			<label index="editTSconfig_all"></label>
+			<label index="editTSconfig_default"></label>
+			<label index="mod_pagetsconfig"></label>
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tsconf_title">Page TSconfig</label>
+			<label index="tsconf_parts_0">All</label>
+			<label index="tsconf_parts_1">Module key ('mod') with overruling user settings</label>
+			<label index="tsconf_parts_1a">Module: Web&gt;Page</label>
+			<label index="tsconf_parts_1b">Module: Web&gt;View</label>
+			<label index="tsconf_parts_1c">Module: Web&gt;Modules</label>
+			<label index="tsconf_parts_1d">Module: Web&gt;List</label>
+			<label index="tsconf_parts_1e">Module: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Module: Web&gt;Func</label>
+			<label index="tsconf_parts_1g">Module: Web&gt;Template</label>
+			<label index="tsconf_configFields">View TSconfig fields content</label>
+			<label index="editThisColumn">Edit the field '%s' for all listed pages</label>
+			<label index="editTSconfig">Edit TSconfig for this page</label>
+			<label index="editTSconfig_all">Edit TSconfig for all shown pages</label>
+			<label index="editTSconfig_default">Default Configuration from TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Page TSconfig</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="tsconf_title">TSconfig for siden</label>
+			<label index="tsconf_parts_0">Alle</label>
+			<label index="tsconf_parts_1">Modulnøgle ('mod') med overliggende brugerindstillinger</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Side</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Vis</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Moduler</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Elementer</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Funktioner</label>
+			<label index="tsconf_parts_1g">Modul: Web&gt;Skabelon</label>
+			<label index="tsconf_configFields">Vis TSconfig felternes indhold</label>
+			<label index="editThisColumn">Redigér feltet '%s' for alle viste sider</label>
+			<label index="editTSconfig">Redigér TSconfig for denne side</label>
+			<label index="editTSconfig_all">Redigér TSconfig for alle viste sider</label>
+			<label index="editTSconfig_default">Standard konfiguration fra TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Side TSconfig</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tsconf_title">Seiten TSconfig</label>
+			<label index="tsconf_parts_0">Alles</label>
+			<label index="tsconf_parts_1">Modulschlüssel ('mod') mit Überschreibungen der Benutzereinstellungen</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Seite</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Anzeigen</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Module</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Liste</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Funktionen</label>
+			<label index="tsconf_parts_1g">Modul: Web&gt;Templates</label>
+			<label index="tsconf_configFields">Inhalt des TSconfig-Felds anzeigen</label>
+			<label index="editThisColumn">Bearbeite das Feld '%s' für alle aufgelisteten Seiten</label>
+			<label index="editTSconfig">Inhalt des TSconfig-Felds dieser Seite bearbeiten</label>
+			<label index="editTSconfig_all">Inhalt des TSconfig-Felds aller angezeigter Seiten bearbeiten</label>
+			<label index="editTSconfig_default">Standard-Konfiguration aus TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Seiten TSconfig</label>
+		</languageKey>
+		<languageKey index="no" type="array">
+			<label index="tsconf_title">TSconfig for siden</label>
+			<label index="tsconf_parts_0">Alle</label>
+			<label index="tsconf_parts_1">Modulnøkkel ('mod') med overliggende brukerinnstillinger</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Side</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Vis</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Moduler</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Elementer</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Funksjoner</label>
+			<label index="tsconf_parts_1g">Module: Web&gt;Mal</label>
+			<label index="tsconf_configFields">Vis TSconfig feltenes innhold</label>
+			<label index="editThisColumn">Rediger feltet '%s' for alle viste sider</label>
+			<label index="editTSconfig">Rediger TSconfig for denne siden</label>
+			<label index="editTSconfig_all">Rediger TSconfig for alle viste sider</label>
+			<label index="editTSconfig_default">Standard konfigurasjon fra TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Side TSconfig</label>
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="tsconf_title">TSConfig della pagina</label>
+			<label index="tsconf_parts_0">Tutto</label>
+			<label index="tsconf_parts_1">Chiave ('mod') ma senza le impostazioni dell'utente</label>
+			<label index="tsconf_parts_1a">Modulo: Web&gt;Pagina</label>
+			<label index="tsconf_parts_1b">Modulo: Web&gt;Mostra</label>
+			<label index="tsconf_parts_1c">Modulo: Web&gt;Moduli</label>
+			<label index="tsconf_parts_1d">Modulo: Web&gt;Lista</label>
+			<label index="tsconf_parts_1e">Modulo: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modulo: Web&gt;Func</label>
+			<label index="tsconf_parts_1g">Modulo: Web&gt;Template</label>
+			<label index="tsconf_configFields">Mostra il contenuto dei campi TSconfig</label>
+			<label index="editThisColumn">Modifica il campo '%s' per tutte le pagine elencate</label>
+			<label index="editTSconfig">Modifica TSconfig per questa pagina</label>
+			<label index="editTSconfig_all">Modifica TSconfig per tutte le pagine visualizzate</label>
+			<label index="editTSconfig_default">Configurazione di default da TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">TSconfig della pagina</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="tsconf_title">Page TSconfig</label>
+			<label index="tsconf_parts_0">Tout</label>
+			<label index="tsconf_parts_1">Module ('mod') droit prioritaire sur les paramètres utilisateurs</label>
+			<label index="tsconf_parts_1a">Module: Web&gt;Page</label>
+			<label index="tsconf_parts_1b">Module: Web&gt;View</label>
+			<label index="tsconf_parts_1c">Module: Web&gt;Modules</label>
+			<label index="tsconf_parts_1d">Module: Web&gt;List</label>
+			<label index="tsconf_parts_1e">Module: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Module: Web&gt;Func</label>
+			<label index="tsconf_parts_1g">Module: Web&gt;Template</label>
+			<label index="tsconf_configFields">Afficher les configurations TS</label>
+			<label index="editThisColumn">Editer le fichier '%s' pour toutes les pages listées</label>
+			<label index="editTSconfig">Editer la configuration  TS</label>
+			<label index="editTSconfig_all">Editer les configurations  TS des pages séléctionnées</label>
+			<label index="editTSconfig_default">Configuration par défaut depuis TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Configuration TS de la page</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+			<label index="tsconf_title">Página TSconfig</label>
+			<label index="tsconf_parts_0">Todo</label>
+			<label index="tsconf_parts_1">Módulo ('mod') con configuraciones de usuario</label>
+			<label index="tsconf_parts_1a">Módulo: Web&gt;Página</label>
+			<label index="tsconf_parts_1b">Módulo: Web&gt;Ver</label>
+			<label index="tsconf_parts_1c">Módulo: Web&gt;Módulos</label>
+			<label index="tsconf_parts_1d">Módulo: Web&gt;Lista</label>
+			<label index="tsconf_parts_1e">Módulo: Web&gt;Información</label>
+			<label index="tsconf_parts_1f">Módulo: Web&gt;Funciones</label>
+			<label index="tsconf_parts_1g">Módulo: Web&gt;Template</label>
+			<label index="tsconf_configFields">Ver el contenido de los campos del  TSconfig</label>
+			<label index="editThisColumn">Editar el campo '%s' paa todas las páginas listadas</label>
+			<label index="editTSconfig">Editar TSconfig para esta página</label>
+			<label index="editTSconfig_all">Editar TSconfig para todas las páginas mostradas</label>
+			<label index="editTSconfig_default">Configuración por defecto de TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">TSConfig de página</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="tsconf_title">TSconfiguratie voor deze pagina</label>
+			<label index="tsconf_parts_0">Alle</label>
+			<label index="tsconf_parts_1">Module key ('mod') (Gebruikers instellingen worden genegeerd)</label>
+			<label index="tsconf_parts_1a">Module: Web&gt;Pagina</label>
+			<label index="tsconf_parts_1b">Module: Web&gt;Toon</label>
+			<label index="tsconf_parts_1c">Module: Web&gt;Modules</label>
+			<label index="tsconf_parts_1d">Module: Web&gt;Records</label>
+			<label index="tsconf_parts_1e">Module: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Module: Web&gt;Func</label>
+			<label index="tsconf_parts_1g">Module: Web&gt;Sjabloon</label>
+			<label index="tsconf_configFields">Bekijk inhoud van de TSconfig velden</label>
+			<label index="editThisColumn">Bewerk velden '%s' voor deze pagina's</label>
+			<label index="editTSconfig">Bewerk TSconfig voor deze pagina</label>
+			<label index="editTSconfig_all">Bewerk TSconfig voor alle getoonde pagina's</label>
+			<label index="editTSconfig_default">Standaard configuratie van TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Pagina TSconfig</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+			<label index="tsconf_title">TSConfig strany</label>
+			<label index="tsconf_parts_0">Vše</label>
+			<label index="tsconf_parts_1">Klíč modulu ('mod') s vyššími uživatelskými nastaveními</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Strana</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Zobrazit</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Moduly</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Seznam</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Funkce</label>
+			<label index="tsconf_parts_1g">Modul: Web&gt;Šablona</label>
+			<label index="tsconf_configFields">Zobrazit obsah polí TSconfig</label>
+			<label index="editThisColumn">Upravit pole '%s' pro všechny strany seznamu</label>
+			<label index="editTSconfig">Upravit TSconfig této strany</label>
+			<label index="editTSconfig_all">Upravit TSconfig všech zobrazených stran</label>
+			<label index="editTSconfig_default">Default konfigurace z TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">TSconfig strany</label>
+		</languageKey>
+		<languageKey index="pl" type="array">
+			<label index="tsconf_title">Konfiguracja szablonu</label>
+			<label index="tsconf_parts_0">Wszystko</label>
+			<label index="tsconf_parts_1">Ustawienia modułu ('mod') przykryte opcjami użytkownika</label>
+			<label index="tsconf_parts_1a">Moduł: Web&gt;Strona</label>
+			<label index="tsconf_parts_1b">Moduł: Web&gt;Zobacz</label>
+			<label index="tsconf_parts_1c">Moduł: Web&gt;Moduły</label>
+			<label index="tsconf_parts_1d">Moduł: Web&gt;Lista</label>
+			<label index="tsconf_parts_1e">Moduł: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Moduł: Web&gt;Funkcje</label>
+			<label index="tsconf_parts_1g">Moduł: Web&gt;Szablon</label>
+			<label index="tsconf_configFields">Zobacz zawartość TSconfig</label>
+			<label index="editThisColumn">Edytuj pole '%s' na każdej wylistowanej stronie</label>
+			<label index="editTSconfig">Edytuj pole TSconfig na tej stronie</label>
+			<label index="editTSconfig_all">Edytuj pole TSconfig na każdej z pokazanych stron</label>
+			<label index="editTSconfig_default">Domyślna configuracja z TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Konfiguracja TS strony</label>
+		</languageKey>
+		<languageKey index="si" type="array">
+			<label index="tsconf_title">TSconfig strani</label>
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="tsconf_title">Sivun TSConfig</label>
+			<label index="tsconf_parts_0">Kaikki</label>
+			<label index="tsconf_parts_1">Modulin avain ('mod') käyttäjän antamin asetuksin</label>
+			<label index="tsconf_parts_1a">Moduli: WWW&gt;Sivu</label>
+			<label index="tsconf_parts_1b">Moduli: WWW&gt;Esikatselu</label>
+			<label index="tsconf_parts_1c">Moduli: WWW&gt;Modulit</label>
+			<label index="tsconf_parts_1d">Moduli: WWW&gt;Luettelo</label>
+			<label index="tsconf_parts_1e">Moduli: WWW&gt;Tiedot</label>
+			<label index="tsconf_parts_1f">Moduli: WWW&gt;Toiminnot</label>
+			<label index="tsconf_parts_1g">Moduli: WWW&gt;Mallit</label>
+			<label index="tsconf_configFields">Selaa TSconfig kenttien sisältöjä</label>
+			<label index="editThisColumn">Muokkaa kenttää '%s' kaikilla listatuilla sivuilla</label>
+			<label index="editTSconfig">Muotoile TSconfigia tälle sivulle</label>
+			<label index="editTSconfig_all">Muotoile TSconfigia kaikilla näytetyillä sivuilla</label>
+			<label index="editTSconfig_default">Oletus Konfiguratio käyttäen TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Sivun TSConfig</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+			<label index="tsconf_title">Sayfa TSconfig</label>
+			<label index="tsconf_parts_0">Hepsi</label>
+			<label index="tsconf_parts_1">Modül anahtarı ('mod') ile kullanıcı ayarlarını geçersiz kılıyor</label>
+			<label index="tsconf_parts_1a">Modül: Web&gt;Sayfa</label>
+			<label index="tsconf_parts_1b">Modül: Web&gt;Görüntü</label>
+			<label index="tsconf_parts_1c">Modül: Web&gt;Modüller</label>
+			<label index="tsconf_parts_1d">Modül: Web&gt;Liste</label>
+			<label index="tsconf_parts_1e">Modül: Web&gt;Bilgi</label>
+			<label index="tsconf_parts_1f">Modül: Web&gt;Fonksiyonlar</label>
+			<label index="tsconf_parts_1g">Modül: Web&gt;Şablon</label>
+			<label index="tsconf_configFields">TSconfig alanlarının içeriğini göster</label>
+			<label index="editThisColumn">Tüm listelenmiş sayfaların '%s' lık alanını düzelt</label>
+			<label index="editTSconfig">Bu sayfa için TSconfigi düzelt</label>
+			<label index="editTSconfig_all">Tüm gösterilmiş sayfalar için TSconfigi düzelt</label>
+			<label index="editTSconfig_default">TYPO3_CONF_VARS dan standart konfigürasyon</label>
+			<label index="mod_pagetsconfig">Sayfa TSconfig</label>
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="tsconf_title">Sidans TS-inställningar</label>
+			<label index="tsconf_parts_0">Alla</label>
+			<label index="tsconf_parts_1">Modulnyckel ('mod') som ändrar användarinställningar</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Sida</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Visa</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Moduler</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Lista</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Funktion</label>
+			<label index="tsconf_parts_1g">Modul: Web&gt;Template</label>
+			<label index="tsconf_configFields">Visa fältinnehåll i TS-inställningar</label>
+			<label index="editThisColumn">Ändra fältet '%sä' i alla sidor i listan</label>
+			<label index="editTSconfig">Ändra TS-inställningen för denna sida</label>
+			<label index="editTSconfig_all">Ändra TS-inställningen för alla visade sidor</label>
+			<label index="editTSconfig_default">Standardinställning från TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Sidans TS-inställning</label>
+		</languageKey>
+		<languageKey index="pt" type="array">
+			<label index="tsconf_title">Página TSconfig</label>
+			<label index="tsconf_parts_0">Todas</label>
+			<label index="tsconf_parts_1">Modulo chave ('mod') com sobreposição de definições do utilizador</label>
+			<label index="tsconf_parts_1a">Modulo: Web&gt;Página</label>
+			<label index="tsconf_parts_1b">Modulo: Web&gt;Vêr</label>
+			<label index="tsconf_parts_1c">Modulo: Web&gt;Modulos</label>
+			<label index="tsconf_parts_1d">Modulo: Web&gt;Lista</label>
+			<label index="tsconf_parts_1e">Modulo: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modulo: Web&gt;Func</label>
+			<label index="tsconf_parts_1g">Modulo: Web&gt;Modelo</label>
+			<label index="tsconf_configFields">Vêr conteúdo dos campos TSconfig</label>
+			<label index="editThisColumn">Editar o campo '%s' para todas as páginas listadas</label>
+			<label index="editTSconfig">Editar TSconfig para esta página</label>
+			<label index="editTSconfig_all">Editar TSconfig para todas as páginas mostradas</label>
+			<label index="editTSconfig_default">Configuração Defeito a partir de TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Página TSconfig</label>
+		</languageKey>
+		<languageKey index="ru" type="array">
+			<label index="tsconf_title">Страница TSconfig</label>
+			<label index="tsconf_parts_0">Все</label>
+			<label index="tsconf_parts_1">Ключь модуля ('mod') с переназначением пользовательских настроек</label>
+			<label index="tsconf_parts_1a">Модуль: Web&gt;Page</label>
+			<label index="tsconf_parts_1b">Модуль: Web&gt;View</label>
+			<label index="tsconf_parts_1c">Модуль: Web&gt;Modules</label>
+			<label index="tsconf_parts_1d">Модуль: Web&gt;List</label>
+			<label index="tsconf_parts_1e">Модуль: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Модуль: Web&gt;Func</label>
+			<label index="tsconf_parts_1g">Модуль: Web&gt;Template</label>
+			<label index="tsconf_configFields">Просмотреть значения полей TSconfig</label>
+			<label index="editThisColumn">Редактировать поле '%s' для всех страниц</label>
+			<label index="editTSconfig">Редактировать TSconfig для текущей страницы</label>
+			<label index="editTSconfig_all">Редактировать TSconfig для всех показанных страниц</label>
+			<label index="editTSconfig_default">Конфигурация по умолчанию из переменной TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Страница TSconfig</label>
+		</languageKey>
+		<languageKey index="ro" type="array">
+			<label index="tsconf_title">Pagina TSconfig</label>
+			<label index="tsconf_parts_0">Tot</label>
+			<label index="tsconf_parts_1">Modul ('mod') cu setări pentru utilizatori</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Pagini</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Vizualizare</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Module</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Listă</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Func</label>
+			<label index="tsconf_parts_1g">Modul: Web&gt;Şablon</label>
+			<label index="tsconf_configFields">Vezi conţinut câmpuri TSconfig</label>
+			<label index="editThisColumn">Editare câmp '%s'</label>
+			<label index="editTSconfig">Editare TSconfig pentru pagina curentă</label>
+			<label index="editTSconfig_all">Editare TSconfig pentru toate paginile</label>
+			<label index="editTSconfig_default">Cionfiguraţia implicită pentru TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">Pagina TSconfig</label>
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+			<label index="tsconf_title">TSConfig stránky</label>
+			<label index="tsconf_parts_0">Všetko</label>
+			<label index="tsconf_parts_1">Kľúč modulu ('mod') s vyššími užívateľskými nastaveniami</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Stránka</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Zobraziť</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Moduly</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Zoznam</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Funkcie</label>
+			<label index="tsconf_parts_1g">Modul: Web&gt;Šablona</label>
+			<label index="tsconf_configFields">Zobraziť obsah polí TSconfig</label>
+			<label index="editThisColumn">Upraviť pole '%s' pre všetky stránky zoznamu</label>
+			<label index="editTSconfig">Upraviť TSconfig tejto stránky</label>
+			<label index="editTSconfig_all">Upraviť TSconfig všetkých zobrazených stránok</label>
+			<label index="editTSconfig_default">Default konfigurácia z TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">TSconfig stránky</label>
+		</languageKey>
+		<languageKey index="lt" type="array">
+			<label index="tsconf_title">TSconfig puslapis</label>
+			<label index="tsconf_parts_0">Visi</label>
+			<label index="tsconf_parts_1">Modulio raktas ('mod') su viršyjančiais teises vartotojų nustatymais</label>
+			<label index="tsconf_parts_1a">Modulis: Web&gt;Puslapis</label>
+			<label index="tsconf_parts_1b">Modulis: Web&gt;Peržiūra</label>
+			<label index="tsconf_parts_1c">Modulis: Web&gt;Moduliai</label>
+			<label index="tsconf_parts_1d">Modulis: Web&gt;Sąrašas</label>
+			<label index="tsconf_parts_1e">Modulis: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modulis: Web&gt;Funkcijos</label>
+			<label index="tsconf_parts_1g">Mosulis: Web&gt;Šablonas</label>
+			<label index="tsconf_configFields">Žiūrėti TSconfig laukų turinį</label>
+			<label index="editThisColumn">Redaguoti laiką '%s' visiems išvardintiems puslapiams</label>
+			<label index="editTSconfig">Redaguoti TSconfig šiam puslapiui</label>
+			<label index="editTSconfig_all">Redaguoti TSconfig visiems parodytiems puslapiams</label>
+			<label index="editTSconfig_default">Numatytoji konfiguracija iš TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">TSconfig puslapis</label>
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="tsconf_title">TSconfig stranica</label>
+			<label index="tsconf_parts_0">Sve</label>
+			<label index="tsconf_parts_1">Ključ modula ('mod') s nadglašavanjem korisničkih postavki</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Stranica</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Prikaz</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Moduli</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Popis/Lista</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Funkcije</label>
+			<label index="tsconf_parts_1g">Modul: Web&gt;Predložak</label>
+			<label index="tsconf_configFields">Prikaži sadržaj TSconfig polja</label>
+			<label index="editThisColumn">Uredi polje '%s' za sve popisane stranice</label>
+			<label index="editTSconfig">Uredi TSconfig za ovu stranicu</label>
+			<label index="editTSconfig_all">Uredi TSconfig za sve prikazane stranice</label>
+			<label index="editTSconfig_default">Osnovna konfiguracija iz TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">TSconfig stranica</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+			<label index="tsconf_title">Oldal TSconfig</label>
+			<label index="tsconf_parts_0">Összes</label>
+			<label index="tsconf_parts_1">Modul kulcs ('mod') felülbíráló felhasználói beállításokkal</label>
+			<label index="tsconf_parts_1a">Modul: Web&gt;Oldal</label>
+			<label index="tsconf_parts_1b">Modul: Web&gt;Nézet</label>
+			<label index="tsconf_parts_1c">Modul: Web&gt;Modulok</label>
+			<label index="tsconf_parts_1d">Modul: Web&gt;Lista</label>
+			<label index="tsconf_parts_1e">Modul: Web&gt;Info</label>
+			<label index="tsconf_parts_1f">Modul: Web&gt;Műveletek</label>
+			<label index="tsconf_parts_1g">Modul: Web&gt;Template</label>
+			<label index="tsconf_configFields">TSconfig mezők tartalmának mutatása</label>
+			<label index="editThisColumn">'%s' mező szerkesztése az összes listázott oldalhoz</label>
+			<label index="editTSconfig">TSconfig szerkesztése ezen az oldalhoz</label>
+			<label index="editTSconfig_all">TSconfig szerkesztése az összes oldalhoz</label>
+			<label index="editTSconfig_default">Alapértelmezett beállítások a TYPO3_CONF_VARS-ból</label>
+			<label index="mod_pagetsconfig">Oldal TSconfig</label>
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+			<label index="tsconf_title">หน้า TSconfig</label>
+			<label index="tsconf_parts_0">ทั้งหมด</label>
+			<label index="tsconf_parts_1">คีย์โมดูล ('mod') กับการตั้งค่าของผู้ใช้ที่ลบล้างกฏได้</label>
+			<label index="tsconf_parts_1a">โมดูล: เว็บ &gt; หน้า</label>
+			<label index="tsconf_parts_1b">โมดูล: เว็บ &gt; แสดงผล</label>
+			<label index="tsconf_parts_1c">โมดูล: เว็บ &gt; โมดูล</label>
+			<label index="tsconf_parts_1d">โมดูล: เว็บ &gt; รายการ</label>
+			<label index="tsconf_parts_1e">โมดูล: เว็บ &gt; ข้อมูล</label>
+			<label index="tsconf_parts_1f">โมดูล: เว็บ &gt; ฟังก์ชั่น</label>
+			<label index="tsconf_parts_1g">โมดูล: เว็บ &gt; แม่แบบ</label>
+			<label index="tsconf_configFields">แสดงผลฟิลด์เนื้อหาของ TSconfig</label>
+			<label index="editThisColumn">แก้ไข ฟิลด์ '%s' สำหรับทุกหน้าที่ได้แสดง</label>
+			<label index="editTSconfig">แก้ไข TSconfig สำหรับหน้านี้</label>
+			<label index="editTSconfig_all">แก้ไข TSconfig สำหรับทุกหน้าที่แสดง</label>
+			<label index="editTSconfig_default">ค่าคอนฟืกที่ตั้งไว้สำหรับ TYPO3_CONF_VARS</label>
+			<label index="mod_pagetsconfig">หน้า TSconfig</label>
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="no" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="pl" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="si" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="pt" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="ru" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="ro" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="lt" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+			<label index="tsconf_title" type="integer">102716901</label>
+			<label index="tsconf_parts_0" type="integer">186422474</label>
+			<label index="tsconf_parts_1" type="integer">72569551</label>
+			<label index="tsconf_parts_1a" type="integer">52234483</label>
+			<label index="tsconf_parts_1b" type="integer">150910794</label>
+			<label index="tsconf_parts_1c" type="integer">94827801</label>
+			<label index="tsconf_parts_1d" type="integer">213817282</label>
+			<label index="tsconf_parts_1e" type="integer">162251880</label>
+			<label index="tsconf_parts_1f" type="integer">206456787</label>
+			<label index="tsconf_parts_1g" type="integer">242913604</label>
+			<label index="tsconf_configFields" type="integer">41802033</label>
+			<label index="editThisColumn" type="integer">35820296</label>
+			<label index="editTSconfig" type="integer">88216336</label>
+			<label index="editTSconfig_all" type="integer">218125815</label>
+			<label index="editTSconfig_default" type="integer">153424219</label>
+			<label index="mod_pagetsconfig" type="integer">102716901</label>
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+	</orig_hash>
 </T3locallang>

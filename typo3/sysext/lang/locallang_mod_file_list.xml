@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>File>Filelist module labels for both clickmenus and list-view.</description>
+		<description>File&gt;Filelist module labels for both clickmenus and list-view.</description>
 		<type>module</type>
 		<fileId>EXT:lang/locallang_mod_file_list.xml</fileId>
 		<labelContext type="array">
@@ -59,7 +59,7 @@
 			<label index="c_size">Grösse</label>
 			<label index="c_fileext">Typ</label>
 			<label index="c_tstamp">Datum</label>
-			<label index="c_rw">ANTW</label>
+			<label index="c_rw">RW</label>
 			<label index="files">Dateien</label>
 			<label index="mlang_labels_tablabel">Anzeige von Dateien im Ordner</label>
 			<label index="mlang_labels_tabdescr">Dies ist das Dateiverwaltungssystem von TYPO3. Es erlaubt den Zugriff auf die für Ihren Login gültigen Dateifreigaben. Mit diesem Modul können Sie Dateien auf dem Server hochladen, kopieren, verschieben und löschen.</label>
@@ -221,7 +221,7 @@
 			<label index="clipBoard">Näytä leikepöytä</label>
 			<label index="clip_paste">Liitä leikepöydän sisältö</label>
 			<label index="clip_pasteInto">Liitäminen: Leikepöydän sisältö lisätään tähän hakemistoon</label>
-			<label index="clip_markRecords">Merkitse kaikki/Poista merkintä</label>
+			<label index="clip_markRecords">Merkitse kaikki/Poista merkinnät</label>
 			<label index="clip_selectMarked">Siirrä valitut tiedostot leikepöydälle</label>
 			<label index="clip_deleteMarked">Poista merkityt</label>
 			<label index="clip_deleteMarkedWarning">Haluatko todella poistaa kaikki merkityt tiedostot hakemistosta?</label>
@@ -233,7 +233,7 @@
 			<label index="c_rw">RW</label>
 			<label index="files">tiedostot</label>
 			<label index="mlang_labels_tablabel">Hakemiston tiedostoluettelo</label>
-			<label index="mlang_labels_tabdescr">Tämä on TYPO3 tiedostonhallinta järjestelmä. Se antaa mahdollisuuden käytössäsi olevien tiedotojen hallinnan. Modulin kautta voit vie, kopioida, siirtää ja poistaa tiedostoja palvelimella.</label>
+			<label index="mlang_labels_tabdescr">Tämä on TYPO3:n tiedostonhallintajärjestelmä. Se antaa sinun hallita käytettävissäsi olevia tiedostoliitoksia (mount). Modulin kautta voit viedä, kopioida, siirtää ja poistaa tiedostoja palvelimella.</label>
 			<label index="mlang_tabs_tab">Tiedostolista</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
@@ -453,15 +453,15 @@
 			<label index="mlang_tabs_tab">Fiilit allattorsimaffii</label>
 		</languageKey>
 		<languageKey index="th" type="array">
-			<label index="clipBoard">แสดงคลิ๊ปบอร์ด</label>
-			<label index="clip_paste">วางในคลิ๊ปบอร์ดเก็บเนื้อหา</label>
-			<label index="clip_pasteInto">วาง: เนื้อหาในคลิ๊ปบอร์ดถูกแซกไปในแฟ้มข้อมูลแล้ว</label>
+			<label index="clipBoard">แสดงคลิปบอร์ด</label>
+			<label index="clip_paste">วางในคลิปบอร์ดเก็บเนื้อหา</label>
+			<label index="clip_pasteInto">วาง: เนื้อหาในคลิปบอร์ดถูกแซกไปในแฟ้มข้อมูลแล้ว</label>
 			<label index="clip_markRecords">เลือทั้งหมด/ไม่เลือกเลย</label>
 			<label index="clip_selectMarked">โอนแฟ้มข้อมูลที่เลือกไปยังคลิ๊ปบอร์ด</label>
-			<label index="clip_deleteMarked">ลบที่เลือก</label>
+			<label index="clip_deleteMarked">ลบที่ทำเครื่องหมายไว้</label>
 			<label index="clip_deleteMarkedWarning">ท่านแน่ใจที่จะลบแฟ้มข้อมูลที่เลือกจากแฟ้มเอกสารนี้?</label>
 			<label index="displayThumbs">แสดงแบบย่อ</label>
-			<label index="c_file">ชื่อเฟ้ม</label>
+			<label index="c_file">ชื่อไฟล์</label>
 			<label index="c_size">ขนาด</label>
 			<label index="c_fileext">ชนิด</label>
 			<label index="c_tstamp">วันที่</label>
@@ -1257,80 +1257,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

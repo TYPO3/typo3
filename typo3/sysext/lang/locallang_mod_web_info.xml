@@ -124,8 +124,8 @@
 			<label index="depth_1">1 taso</label>
 			<label index="depth_2">2 tasoa</label>
 			<label index="depth_3">3 tasoa</label>
-			<label index="mlang_labels_tablabel">Sivuihin liittyvää tietoa, esim. sattumien määrä, muutosloki, tietueiden määrä jne.</label>
-			<label index="mlang_labels_tabdescr">Web&gt;Info modulin tarkoituksena on antaa tilastotietoa sivuista. Tietoja ovat tilastot sattumista sivuille, muutosloki josta selviää sivujen muutoshistoria. Näet myös lukumäärätiedot tietueista, kuten myös sivujen asetukset perinteisestä sivustorakenteesta.</label>
+			<label index="mlang_labels_tablabel">Sivuihin liittyvää tietoa, esim. osumien määrä, muutosloki, tietueiden määrä jne.</label>
+			<label index="mlang_labels_tabdescr">WWW&gt;Info -modulin tarkoituksena on antaa tilastotietoa sivuista. Tietoja ovat tilastot osumista sivuille, muutosloki josta selviää sivujen muutoshistoria. Näet myös lukumäärätiedot tietueista, kuten myös sivujen asetukset perinteisestä sivustorakenteesta.</label>
 			<label index="mlang_tabs_tab">Tiedot</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
@@ -247,7 +247,7 @@
 			<label index="depth_2">2 ระดับ</label>
 			<label index="depth_3">3 ระดับ</label>
 			<label index="mlang_labels_tablabel">ข้อมูลที่สัมพันธ์กับ หน้า เช่นสถิติการเข้าชม บันทึกการเปลี่ยนแปลง นับจำนวนระเบียน</label>
-			<label index="mlang_labels_tabdescr">หน้า &gt; ข้อมูลโมดูลที่มุ่งเน้นในด้านข้อมูลสถิติเกี่ยวกับหน้า ประกอปด้วย สถิติการเข้าชม บันทึกการเปลี่ยนแปลง ซึ่งช่วยให้คุณดูประวัติการเปลี่ยนแปลงของหน้า คุณยังสามารถที่จะดูจำนวนระเบียนของแต่ละหน้ารวมทั้ง ค่าที่ตั้งต่างๆ แสดงในรูปแบบโครงสร้างต้นไม้</label>
+			<label index="mlang_labels_tabdescr">หน้า &gt; ข้อมูลโมดูล มุ่งเน้นในด้านข้อมูลสถิติเกี่ยวกับหน้า ประกอปด้วย สถิติการเข้าชม บันทึกการเปลี่ยนแปลง ซึ่งช่วยให้คุณดูประวัติการเปลี่ยนแปลงของหน้า คุณยังสามารถที่จะดูจำนวนระเบียนของแต่ละหน้ารวมทั้ง ค่าที่ตั้งต่างๆ แสดงในรูปแบบโครงสร้างต้นไม้</label>
 			<label index="mlang_tabs_tab">ข้อมูล</label>
 		</languageKey>
 		<languageKey index="gr" type="array">

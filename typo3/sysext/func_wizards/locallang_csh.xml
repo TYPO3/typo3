@@ -18,5 +18,8 @@
 _MOD_web_func:tx_wizardsortpages</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/func_wizards/dk.locallang_csh.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/func_wizards/nl.locallang_csh.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/func_wizards/fr.locallang_csh.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/func_wizards/hu.locallang_csh.xml</languageKey>
 	</data>
 </T3locallang>

@@ -51,10 +51,10 @@
 			<label index="userInfo">Está firmado como el usuario:</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-			<label index="introtext">Web Content Management Systeem</label>
+			<label index="introtext">Content Management Systeem</label>
 			<label index="introtext2">Dit is een korte omschrijving van de aanwezige modules:</label>
 			<label index="endText">De aanwezigheid van onderdelen hangt van de configuratie van de website en de rechten af.</label>
-			<label index="userInfo">&lt;font size=1&gt;Ingelogd als gebruiker: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+			<label index="userInfo">Ingelogd als gebruiker:</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="introtext">systém pro správu obsahu webu</label>
@@ -75,7 +75,7 @@
 			<label index="userInfo">Prijavljeni ste kot uporabnik:</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
-			<label index="introtext">Web-sisällönhallintajärjestelmä</label>
+			<label index="introtext">WWW-sisällönhallintajärjestelmä</label>
 			<label index="introtext2">Tässä lyhyt kuvaus käytettävistä moduleista:</label>
 			<label index="endText">Mahdollisuudet voivat olla riippuvaisia asennuksesta ja käyttöympäristöstä</label>
 			<label index="userInfo">Olet kirjautunut sisään käyttäjänä:</label>
@@ -149,10 +149,10 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
-			<label index="introtext">เว็ประบบการบริหารเนื้อหา</label>
-			<label index="introtext2">นี่คือคำอธิบายแบบย่อๆ ของโมดุลที่มีอยู่</label>
-			<label index="endText">ลูกเล่นต่างๆในเว็ปขี้นอยู่กลับระดับการอนุญาตที่ท่านมี</label>
-			<label index="userInfo">&lt;font size=1&gt;ท่านล๊อกอินด้วยชื่อผู้ใช้: &lt;strong&gt;%s&lt;/strong&gt; (%s) &lt;br&gt;&lt;/font&gt;</label>
+			<label index="introtext">เว็บระบบการบริหารเนื้อหา</label>
+			<label index="introtext2">นี่คือคำอธิบายแบบย่อๆ ของโมดูลที่มีอยู่:</label>
+			<label index="endText">ลูกเล่นต่างๆในเว็บขี้นอยู่กลับระดับการอนุญาตที่ท่านมี</label>
+			<label index="userInfo">ท่านเข้าสู่ระบบด้วยชื่อผู้ใช้ว่า:</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -199,6 +199,10 @@
 			<label index="userInfo">&lt;font size=1&gt;משתמש: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
+			<label index="introtext">Система керування веб-контентом</label>
+			<label index="introtext2">Стислий опис модулів:</label>
+			<label index="endText">Список модулів залежить від веб-сайту та прав доступу</label>
+			<label index="userInfo">Ви зареєстровані як:</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="introtext">Tīmekļa Satura Vadības Sistēma</label>
@@ -407,6 +411,10 @@
 			<label index="userInfo" type="integer">170934145</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
+			<label index="introtext" type="integer">194562478</label>
+			<label index="introtext2" type="integer">234766952</label>
+			<label index="endText" type="integer">206585252</label>
+			<label index="userInfo" type="integer">170934145</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="introtext" type="integer">194562478</label>
@@ -423,80 +431,4 @@
 			<label index="userInfo" type="integer">170934145</label>
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

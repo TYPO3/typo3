@@ -143,12 +143,12 @@ Vil du fortsætte?</label>
 			<label index="edit_editPageHeader">Seitenkopf bearbeiten</label>
 			<label index="edit_db_list">Web&gt;Listen Modul</label>
 			<label index="tsdebug">TypoScript</label>
-			<label index="tsdebug_tree">Baumanzeige:</label>
-			<label index="tsdebug_LR">Verfolge Inhaltsdarstellung:</label>
-			<label index="tsdebug_forceTemplateParsing">Erzwinge TS Darstelung:</label>
-			<label index="tsdebug_displayTimes">Immer anzeigen:</label>
+			<label index="tsdebug_tree">Baumdarstellung:</label>
+			<label index="tsdebug_LR">Verfolge Rendering der Inhalte:</label>
+			<label index="tsdebug_forceTemplateParsing">Erzwinge TS Rendering:</label>
+			<label index="tsdebug_displayTimes">Rendering-Zeiten anzeigen:</label>
 			<label index="tsdebug_displayMessages">Nachrichten anzeigen:</label>
-			<label index="tsdebug_displayContent">Inhalt anzeigen:</label>
+			<label index="tsdebug_displayContent">Inhalte anzeigen:</label>
 			<label index="tsdebug_displayQueries">Erkläre SELECT Anweisung:</label>
 			<label index="info">Info</label>
 			<label index="div_Levels_0">Diese Seite</label>
@@ -602,17 +602,17 @@ Pokračovat?</label>
 			<label index="publish_tree">Julkaise sivut:</label>
 			<label index="publish_doit">Julkaise nyt!</label>
 			<label index="edit">Muokkaus</label>
-			<label index="edit_displayIcons">Näytä Muokkaus paneeli:</label>
-			<label index="edit_displayFieldIcons">Näytä Muokkaus ikonit:</label>
-			<label index="edit_editFormsOnPage">Muokkaus lomake sivulla:</label>
+			<label index="edit_displayIcons">Näytä muokkauspaneeli:</label>
+			<label index="edit_displayFieldIcons">Näytä muokkausikonit:</label>
+			<label index="edit_editFormsOnPage">Muokkauslomake sivulla:</label>
 			<label index="edit_editNoPopup">Ei ponnahdusikkunoita:</label>
-			<label index="edit_openAB">Avaa TYPO3 Backend</label>
+			<label index="edit_openAB">Avaa TYPO3:n tausta</label>
 			<label index="edit_recordHistory">Näytä tietueiden muutoshistoria</label>
 			<label index="edit_newContentElement">Luo uusi sisältöelementti</label>
 			<label index="edit_move_page">Siirrä sivu</label>
 			<label index="edit_newPage">Luo uusi sivu</label>
-			<label index="edit_editPageHeader">Muotiole sivun otsikkoa</label>
-			<label index="edit_db_list">Web&gt;Luettelo moduli</label>
+			<label index="edit_editPageHeader">Muokkaa sivun otsikkotietoja</label>
+			<label index="edit_db_list">WWW&gt;Luettelo -moduli</label>
 			<label index="tsdebug">TypoScript</label>
 			<label index="tsdebug_tree">Rakennenäyttö:</label>
 			<label index="tsdebug_LR">Jäljitä sisällön muodostamista:</label>
@@ -620,7 +620,7 @@ Pokračovat?</label>
 			<label index="tsdebug_displayTimes">Näytä kaikki ajat:</label>
 			<label index="tsdebug_displayMessages">Näytä viestit:</label>
 			<label index="tsdebug_displayContent">Näytä sisältö:</label>
-			<label index="tsdebug_displayQueries">Pura SELECT-lauseet:</label>
+			<label index="tsdebug_displayQueries">Selitä SELECT-lauseet:</label>
 			<label index="info">Info</label>
 			<label index="div_Levels_0">Tämä sivu</label>
 			<label index="div_Levels_1">+ 1 alataso</label>
@@ -634,8 +634,8 @@ Pokračovat?</label>
 			<label index="p_newSubpage">Uusi alasivu</label>
 			<label index="p_newRecordAfter">Uusi tietue tämän jälkeen</label>
 			<label index="p_delete">Poista</label>
-			<label index="p_deleteConfirm">Oletko varma että haluat poistaa tämän tietueen?</label>
-			<label index="p_hideConfirm">Piilottamalla tietueen teet siitä web-sivulla näkymättömän. Sinun täytyy käydä backendissä tai mahdollistaa frontend esikatselu ennenkuin voit muotoilla sitä uudestaan. Jatkatko?</label>
+			<label index="p_deleteConfirm">Oletko varma, että haluat poistaa tämän tietueen?</label>
+			<label index="p_hideConfirm">Piilottamalla tietueen teet siitä web-sivulla näkymättömän. Sinun täytyy käydä taustassa tai mahdollistaa edustan esikatselu ennenkuin voit muokata sitä uudestaan. Jatkatko?</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="adminOptions">YÖNETİM PANELİ</label>
@@ -1009,15 +1009,15 @@ Continuati?</label>
 Pokračovať?</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
-			<label index="adminOptions">Admin. Panėlė</label>
+			<label index="adminOptions">Admin. panelė</label>
 			<label index="preview">Peržiūra</label>
-			<label index="preview_showHiddenPages">Rodyti Pasleptus  Puslapius:</label>
-			<label index="preview_showHiddenRecords">Rodyti Pasleptus Įrašus:</label>
-			<label index="preview_simulateDate">Imituoti Laika:</label>
-			<label index="preview_simulateUserGroup">Imituoti  Vartotojo Grupe:</label>
+			<label index="preview_showHiddenPages">Rodyti paslėptus puslapius:</label>
+			<label index="preview_showHiddenRecords">Rodyti paslėptus įrašus:</label>
+			<label index="preview_simulateDate">Imituoti laiką:</label>
+			<label index="preview_simulateUserGroup">Imituoti  vartotojo grupę:</label>
 			<label index="cache">Talpykla</label>
-			<label index="cache_noCache">Išjungti talpykla:</label>
-			<label index="cache_doit">Išvalyti Talpykla!</label>
+			<label index="cache_noCache">Išjungti talpyklą:</label>
+			<label index="cache_doit">Išvalyti Talpyklą!</label>
 			<label index="cache_clearLevels">Valyti lygius:</label>
 			<label index="cache_cacheEntries">Talpyklos įrašas:</label>
 			<label index="publish">Publikuoti</label>
@@ -1025,38 +1025,41 @@ Pokračovať?</label>
 			<label index="publish_tree">Pyblikuoti puslapiai:</label>
 			<label index="publish_doit">Publikuoti!</label>
 			<label index="edit">Redagavimas</label>
-			<label index="edit_displayIcons">Rodyti Redagavimo Penėlę:</label>
-			<label index="edit_displayFieldIcons">Rodyti Redagavimo Ikonas</label>
-			<label index="edit_editFormsOnPage">Redaguoti formas puslpayje:</label>
+			<label index="edit_displayIcons">Rodyti redagavimo penelę:</label>
+			<label index="edit_displayFieldIcons">Rodyti redagavimo ikonas</label>
+			<label index="edit_editFormsOnPage">Redaguoti formas puslpyje:</label>
 			<label index="edit_editNoPopup">Nerodyti kontekstinio meniu lango:</label>
 			<label index="edit_openAB">Open TYPO3 Backend</label>
-			<label index="edit_recordHistory">Žiūrėti įrašu keitimo istorija</label>
-			<label index="edit_newContentElement">Sukurti nauja turinio elementa</label>
-			<label index="edit_move_page">Perkelti puslapi</label>
-			<label index="edit_newPage">Sukurti nauja</label>
-			<label index="edit_editPageHeader">Redaguoti puslapio užgalvi</label>
+			<label index="edit_recordHistory">Žiūrėti įrašų keitimo istoriją</label>
+			<label index="edit_newContentElement">Sukurti naują turinio elementą</label>
+			<label index="edit_move_page">Perkelti puslapį</label>
+			<label index="edit_newPage">Sukurti naują puslapį</label>
+			<label index="edit_editPageHeader">Redaguoti puslapio antraštę</label>
 			<label index="edit_db_list">Web&gt;Sąrašų modulis</label>
 			<label index="tsdebug">TypoScript</label>
 			<label index="tsdebug_tree">Medžio atvaizdavimas:</label>
-			<label index="tsdebug_LR">Sekti turinio atvaizdavima:</label>
+			<label index="tsdebug_LR">Sekti turinio ganeravimą:</label>
+			<label index="tsdebug_forceTemplateParsing">Inicijuoti TS generavimą</label>
 			<label index="tsdebug_displayTimes">Rodyti visus laikus:</label>
 			<label index="tsdebug_displayMessages">Rodyti pranešimus:</label>
-			<label index="tsdebug_displayContent">Rodyti turini:</label>
+			<label index="tsdebug_displayContent">Rodyti turinį:</label>
 			<label index="tsdebug_displayQueries">Išaiškinti SELECT užklausas:</label>
 			<label index="info">Info</label>
 			<label index="div_Levels_0">Esamas Puslapis</label>
 			<label index="div_Levels_1">+ 1 sublygis</label>
 			<label index="div_Levels_2">+ 2 sublygis</label>
 			<label index="update">Atnaujinti</label>
-			<label index="p_editRecord">Redaguoti įraša</label>
-			<label index="p_moveUp">Į viršu</label>
-			<label index="p_moveDown">Į apačia</label>
+			<label index="p_editRecord">Redaguoti įrašą</label>
+			<label index="p_moveUp">Į viršų</label>
+			<label index="p_moveDown">Į apačią</label>
 			<label index="p_unhide">Parodyti</label>
 			<label index="p_hide">Slėpti</label>
 			<label index="p_newSubpage">Naujas subpuslapis</label>
 			<label index="p_newRecordAfter">Naujas įrašas po</label>
 			<label index="p_delete">Trinti</label>
-			<label index="p_deleteConfirm">Jus tikrai galite norite trinti įrašą?</label>
+			<label index="p_deleteConfirm">Jus tikrai norite trinti įrašą?</label>
+			<label index="p_hideConfirm">Paslėpus įrašą jis taps nematomas tinklapyje, todėl jei norėsite jį redaguoti, tai turėsite atlikti backend arba įjungti frontend peržiūrą.
+Ar norite tęsti?</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="adminOptions">ADMIN STJÓRN</label>
@@ -1216,37 +1219,37 @@ Folytatod?</label>
 			<label index="preview">ภาพก่อนพิมพ์</label>
 			<label index="preview_showHiddenPages">แสดงหน้าที่ซ่อน</label>
 			<label index="preview_showHiddenRecords">แสดงระเบียนที่ซ่อน</label>
-			<label index="preview_simulateDate">จำลองเวลา</label>
-			<label index="preview_simulateUserGroup">จำลองกลุ่มผู้ใช้</label>
-			<label index="cache">แค็ช</label>
-			<label index="cache_noCache">ไม่แค็ช</label>
-			<label index="cache_doit">ทำให้แค็ชว่าง เวลานี้</label>
-			<label index="cache_clearLevels">ทำให้ว่าง ระดับ</label>
-			<label index="cache_cacheEntries">แค็ช ทะเบียน</label>
-			<label index="publish">ผลิดใหม่</label>
-			<label index="publish_levels">ผลิดใหม่</label>
-			<label index="publish_tree">ผลิดใหม่ หน้า</label>
-			<label index="publish_doit">ผลิดใหม่ เวลานี้</label>
-			<label index="edit">แก้ไข</label>
-			<label index="edit_displayIcons">แสดงแผงแก้ไข</label>
-			<label index="edit_displayFieldIcons">แสดงไอคอนแก้ไข</label>
-			<label index="edit_editFormsOnPage">ฟอร์มแก้ไข บน-หน้า</label>
-			<label index="edit_editNoPopup">ไม่ให้มี หน้าต่าง ป๊อปอัฟ</label>
-			<label index="edit_openAB">เปิดส่วนหลัง Typo3</label>
-			<label index="edit_recordHistory">ดูระเบียน เปลี่ยนประวัติ</label>
+			<label index="preview_simulateDate">จำลองเวลา:</label>
+			<label index="preview_simulateUserGroup">จำลองกลุ่มผู้ใช้:</label>
+			<label index="cache">แคช</label>
+			<label index="cache_noCache">ไม่แคช:</label>
+			<label index="cache_doit">ทำให้แคชว่าง เวลานี้!</label>
+			<label index="cache_clearLevels">ทำให้ว่าง ระดับ:</label>
+			<label index="cache_cacheEntries">แค็ช ทะเบียนที่กรอก:</label>
+			<label index="publish">ลงพิมพ์</label>
+			<label index="publish_levels">ลงพิมพ์ ระดับ:</label>
+			<label index="publish_tree">ลงพิมพ์  หน้า:</label>
+			<label index="publish_doit">ลงพิมพ์  เวลานี้!</label>
+			<label index="edit">กำลังแก้ไข</label>
+			<label index="edit_displayIcons">แสดงแผงแก้ไข:</label>
+			<label index="edit_displayFieldIcons">แสดงไอคอนแก้ไข:</label>
+			<label index="edit_editFormsOnPage">แบบฟอร์มแก้ไข บน-หน้า:</label>
+			<label index="edit_editNoPopup">ไม่ให้มี หน้าต่าง ป๊อปอัฟ:</label>
+			<label index="edit_openAB">เปิดส่วนหลัง TYPO3</label>
+			<label index="edit_recordHistory">มุมมองระเบียน ประวัติการเปลี่ยนแปลง</label>
 			<label index="edit_newContentElement">สร้างองค์ประกอบเนื้อหาใหม่</label>
 			<label index="edit_move_page">ย้ายหน้า</label>
 			<label index="edit_newPage">สร้างหน้าใหม่</label>
 			<label index="edit_editPageHeader">แก้ไขส่วนหัวของหน้า</label>
-			<label index="edit_db_list">เว็ป &gt;แสดงโมดูล</label>
+			<label index="edit_db_list">เว็บ&gt; โมดูลแสดงรายการ</label>
 			<label index="tsdebug">TypoScript</label>
-			<label index="tsdebug_tree">แสดง ทรี</label>
-			<label index="tsdebug_LR">ติดตามการถอดความ แปล เนื้อหา</label>
-			<label index="tsdebug_forceTemplateParsing">บังคับการถอดความของ TS</label>
-			<label index="tsdebug_displayTimes">แสดงทุกแบบเวลา</label>
-			<label index="tsdebug_displayMessages">แสดงข้อความ</label>
-			<label index="tsdebug_displayContent">แสดงเนื้อหา</label>
-			<label index="tsdebug_displayQueries">อธิบายควิวรี SELECT</label>
+			<label index="tsdebug_tree">แสดง Tree:</label>
+			<label index="tsdebug_LR">ติดตามการถอดความ เนื้อหา:</label>
+			<label index="tsdebug_forceTemplateParsing">บังคับการถอดความของ TS:</label>
+			<label index="tsdebug_displayTimes">แสดงทุกแบบเวลา:</label>
+			<label index="tsdebug_displayMessages">แสดงข้อความ:</label>
+			<label index="tsdebug_displayContent">แสดงเนื้อหา:</label>
+			<label index="tsdebug_displayQueries">อธิบายควิวรี SELECT:</label>
 			<label index="info">ข้อมูล</label>
 			<label index="div_Levels_0">หน้านี้</label>
 			<label index="div_Levels_1">+ 1 ระดับย่อย</label>
@@ -1255,12 +1258,12 @@ Folytatod?</label>
 			<label index="p_editRecord">แก้ไขระเบียน</label>
 			<label index="p_moveUp">ย้ายขึ้น</label>
 			<label index="p_moveDown">ย้ายลง</label>
-			<label index="p_unhide">เลิกซ่อน</label>
+			<label index="p_unhide">ไม่ซ่อน</label>
 			<label index="p_hide">ซ่อน</label>
 			<label index="p_newSubpage">หน้าย่อยใหม่</label>
 			<label index="p_newRecordAfter">ระเบียนใหม่หลังจาก</label>
 			<label index="p_delete">ลบ</label>
-			<label index="p_deleteConfirm">คุณมั่นใจที่จะลบระเบียนนี้?</label>
+			<label index="p_deleteConfirm">คุณแน่ใจที่จะลบระเบียนนี้?</label>
 			<label index="p_hideConfirm">ซ่อนระเบียนทำให้มันมองไม่เห็นบนหน้าเว็ป และคุณต้องเข้ามาที่ส่วนหลัง หรืออนุญาต Preview ที่ส่วนหน้า ก่อนที่จะแก้ไขได้อีก
 ทำต่อไป?</label>
 		</languageKey>
@@ -2676,6 +2679,8 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
+			<label index="tsdebug_forceTemplateParsing" type="integer">28246343</label>
+			<label index="p_hideConfirm" type="integer">202576585</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="adminOptions" type="integer">147511050</label>

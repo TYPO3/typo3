@@ -147,14 +147,15 @@
 			<label index="sys_domain.redirectTo">Henvisning til:</label>
 			<label index="sys_domain.prepend_params">Overfør parametre til Redirect URL:</label>
 			<label index="pages_language_overlay">Alternativt sidesprog</label>
-			<label index="sys_language">Website sprog</label>
 			<label index="sys_template">Skabelon</label>
 			<label index="static_template">Faste skabeloner</label>
+			<label index="sys_language">Website sprog</label>
 			<label index="sys_language.isocode">Vælg officielt sprog (ISO code):</label>
 			<label index="sys_language.flag">Vælg flag-icon:</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mod_tx_cms_webinfo_page">Seitenbaum-Übersicht</label>
+			<label index="mod_tx_cms_webinfo_lang">Übersetzungs-Übersicht</label>
 			<label index="pages.doktype.I.0">Erweitert</label>
 			<label index="pages.doktype.I.2">Shortcut</label>
 			<label index="pages.doktype.I.3">Nicht im Menü</label>
@@ -203,6 +204,9 @@
 			<label index="pages.module.I.4">Website Benutzer</label>
 			<label index="pages.module.I.5">Direct Mail</label>
 			<label index="pages.module.I.6">Abstimmungen</label>
+			<label index="pages.l18n_cfg">Spracheinstellungen:</label>
+			<label index="pages.l18n_cfg.I.1">Standard-Übersetzung verstecken</label>
+			<label index="pages.l18n_cfg.I.2">Verstecke Seite wenn keine Übersetzung für die aktuelle Sprache existiert</label>
 			<label index="tt_content">Seiteninhalt</label>
 			<label index="fe_users">Website Benutzer</label>
 			<label index="fe_users.username">Benutzername:</label>
@@ -217,9 +221,9 @@
 			<label index="sys_domain.redirectTo">Umleiten zu:</label>
 			<label index="sys_domain.prepend_params">Parameter zur Umleitungs-URL übertragen:</label>
 			<label index="pages_language_overlay">Alternative Seiten Sprache</label>
-			<label index="sys_language">Website Sprache</label>
 			<label index="sys_template">Template</label>
 			<label index="static_template">Statisches Template</label>
+			<label index="sys_language">Website Sprache</label>
 			<label index="sys_language.isocode">Offizielle Sprache auswählen (ISO Code):</label>
 		</languageKey>
 		<languageKey index="no" type="array">
@@ -272,6 +276,8 @@
 			<label index="pages.module.I.4">Webområde brukere</label>
 			<label index="pages.module.I.5">Direct Mail</label>
 			<label index="pages.module.I.6">Godkjenninger</label>
+			<label index="pages.l18n_cfg.I.1">Skjul standard oversettelse av side</label>
+			<label index="pages.l18n_cfg.I.2">Skjul side dersom det ikke finnes en oversettelse til gjeldende språk</label>
 			<label index="tt_content">Sideinnhold</label>
 			<label index="fe_users">Webside bruker</label>
 			<label index="fe_users.username">Brukernavn:</label>
@@ -286,13 +292,14 @@
 			<label index="sys_domain.redirectTo">Henvisning til:</label>
 			<label index="sys_domain.prepend_params">Overfør parametrene til Redirect URL:</label>
 			<label index="pages_language_overlay">Alternativt sidespråk</label>
-			<label index="sys_language">Webområdespråk</label>
 			<label index="sys_template">Mal</label>
 			<label index="static_template">Faste maler</label>
+			<label index="sys_language">Webområdespråk</label>
 			<label index="sys_language.isocode">Velg offisielt språk (ISO kode):</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mod_tx_cms_webinfo_page">Albero delle pagine</label>
+			<label index="mod_tx_cms_webinfo_lang">Traduzioni:</label>
 			<label index="pages.doktype.I.0">Avanzato</label>
 			<label index="pages.doktype.I.2">Collegamento</label>
 			<label index="pages.doktype.I.3">Non presente nel menu</label>
@@ -341,6 +348,9 @@
 			<label index="pages.module.I.4">Utenti web</label>
 			<label index="pages.module.I.5">Direct Mail</label>
 			<label index="pages.module.I.6">Approvals</label>
+			<label index="pages.l18n_cfg">Configurazione traduzioni:</label>
+			<label index="pages.l18n_cfg.I.1">Nascondi la traduzione di default della pagina</label>
+			<label index="pages.l18n_cfg.I.2">nascondi la pagina se non esiste traduzione nella lingua corrente</label>
 			<label index="tt_content">Contenuto pagina</label>
 			<label index="fe_users">Utente Web</label>
 			<label index="fe_users.username">Nome Utente:</label>
@@ -355,32 +365,34 @@
 			<label index="sys_domain.redirectTo">Reindirizza a:</label>
 			<label index="sys_domain.prepend_params">Trasferisci i parametri all'URL:</label>
 			<label index="pages_language_overlay">Lingua alternativa</label>
-			<label index="sys_language">Lingua</label>
 			<label index="sys_template">Template</label>
 			<label index="static_template">Template statici</label>
+			<label index="sys_language">Lingua</label>
 			<label index="sys_language.isocode">Scegli la lingua ufficiale (codice ISO)</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="mod_tx_cms_webinfo_page">Arborescence (résumé)</label>
+			<label index="mod_tx_cms_webinfo_page">Arborescence (vue d'ensemble)</label>
+			<label index="mod_tx_cms_webinfo_lang">Localisation (vue d'ensemble)</label>
 			<label index="pages.doktype.I.0">Avancé</label>
 			<label index="pages.doktype.I.2">Raccourci</label>
 			<label index="pages.doktype.I.3">Absent du menu</label>
-			<label index="pages.doktype.I.4">Section utilisateur Backend</label>
-			<label index="pages.doktype.I.5">Mount Point</label>
+			<label index="pages.doktype.I.4">Section Utilisateur Backend</label>
+			<label index="pages.doktype.I.5">Point de Montage</label>
 			<label index="pages.doktype.I.7">Délimiteur</label>
-			<label index="pages.hidden">Cacher page:</label>
-			<label index="pages.layout.I.1">Préparation-type 1</label>
-			<label index="pages.layout.I.2">Préparation-type 2</label>
-			<label index="pages.layout.I.3">Préparation-type 3</label>
+			<label index="pages.hidden">Cacher la page:</label>
+			<label index="pages.layout.I.1">Disposition 1</label>
+			<label index="pages.layout.I.2">Disposition 2</label>
+			<label index="pages.layout.I.3">Disposition 3</label>
 			<label index="pages.extendToSubpages">Inclure les sous-pages:</label>
 			<label index="pages.nav_title">Titre de navigation:</label>
+			<label index="pages.nav_hide">Cacher dans le menu</label>
 			<label index="pages.subtitle">Sous-titre:</label>
 			<label index="pages.target">Cible:</label>
 			<label index="pages.alias">Alias:</label>
 			<label index="pages.url">URL:</label>
 			<label index="pages.lastUpdated">Dernière mise à jour:</label>
 			<label index="pages.newUntil">'Nouveau' jusqu'à:</label>
-			<label index="pages.cache_timeout">Renouvellement de la cache:</label>
+			<label index="pages.cache_timeout">Expiration du cache:</label>
 			<label index="pages.cache_timeout.I.1">1 min</label>
 			<label index="pages.cache_timeout.I.2">5 min</label>
 			<label index="pages.cache_timeout.I.3">15 min</label>
@@ -393,20 +405,25 @@
 			<label index="pages.cache_timeout.I.10">1 mois</label>
 			<label index="pages.no_cache">Pas de cache:</label>
 			<label index="pages.no_search">Pas de recherche:</label>
-			<label index="pages.shortcut_mode">Mode &quot;Raccourci&quot;:</label>
+			<label index="pages.shortcut_mode">Mode raccourci:</label>
 			<label index="pages.shortcut_mode.I.1">Première sous-page</label>
 			<label index="pages.shortcut_mode.I.2">Sous-page aléatoire</label>
-			<label index="pages.content_from_pid">Afficher le contenu de cette page au lieu de cela:</label>
-			<label index="pages.abstract">Abstract:</label>
+			<label index="pages.content_from_pid">Afficher le contenu de cette page à la place:</label>
+			<label index="pages.mount_pid">Point de montage (avancé):</label>
+			<label index="pages.mount_pid_ol">Substituer le Point de Montage (cette page) avec une page montée:</label>
+			<label index="pages.abstract">Résumé:</label>
 			<label index="pages.media">Fichiers:</label>
 			<label index="pages.is_siteroot">Est la racine du site:</label>
-			<label index="pages.module">Contient plugin:</label>
+			<label index="pages.module">Contient le plugin:</label>
 			<label index="pages.module.I.1">Magasin</label>
 			<label index="pages.module.I.2">Forum</label>
 			<label index="pages.module.I.3">Nouvelles</label>
 			<label index="pages.module.I.4">Utilisateurs web</label>
 			<label index="pages.module.I.5">Direct Mail</label>
-			<label index="pages.module.I.6">Acceptation</label>
+			<label index="pages.module.I.6">Approbations</label>
+			<label index="pages.l18n_cfg">Paramètres de localisation:</label>
+			<label index="pages.l18n_cfg.I.1">Cacher la traduction par défaut</label>
+			<label index="pages.l18n_cfg.I.2">Cacher la page si elle n'est pas traduite</label>
 			<label index="tt_content">Contenu de la page</label>
 			<label index="fe_users">Utilisateur website</label>
 			<label index="fe_users.username">Nom d'utilisateur:</label>
@@ -414,20 +431,21 @@
 			<label index="fe_users.usergroup">Groupes:</label>
 			<label index="fe_users.lockToDomain">Bloqué au domaine:</label>
 			<label index="fe_groups">Groupe d'utilisateur website</label>
-			<label index="fe_groups.title">Nom:</label>
+			<label index="fe_groups.title">Nom de groupe:</label>
 			<label index="fe_groups.lockToDomain">Bloqué au domaine:</label>
 			<label index="sys_domain">Domaine</label>
 			<label index="sys_domain.domainName">Domaine:</label>
 			<label index="sys_domain.redirectTo">Rediriger vers:</label>
-			<label index="sys_domain.prepend_params">Transférer les paramêtres dans l'URL:</label>
-			<label index="pages_language_overlay">Langue alternative de la page</label>
-			<label index="sys_language">Langue du site web</label>
+			<label index="sys_domain.prepend_params">Transférer les paramêtres vers l'URL:</label>
+			<label index="pages_language_overlay">Langue Alternative de la Page</label>
 			<label index="sys_template">Gabarit</label>
 			<label index="static_template">Gabarits statiques</label>
+			<label index="sys_language">Langue du site web</label>
 			<label index="sys_language.isocode">Séléctionnez la langue officiel (Code ISO):</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="mod_tx_cms_webinfo_page">Resumen del árbol de páginas</label>
+			<label index="mod_tx_cms_webinfo_lang">Resumen de la configuración de idiomas</label>
 			<label index="pages.doktype.I.0">Avanzado</label>
 			<label index="pages.doktype.I.2">Acceso directo</label>
 			<label index="pages.doktype.I.3">No presentar en el menú</label>
@@ -476,6 +494,9 @@
 			<label index="pages.module.I.4">Usuarios del website</label>
 			<label index="pages.module.I.5">Correo Directo</label>
 			<label index="pages.module.I.6">Aprobaciones</label>
+			<label index="pages.l18n_cfg">Parámetros de la configuración de idiomas</label>
+			<label index="pages.l18n_cfg.I.1">Ocultar la traducción por defecto de la página</label>
+			<label index="pages.l18n_cfg.I.2">Ocultar página si no existe traducción para el idioma actual</label>
 			<label index="tt_content">Contenido de página</label>
 			<label index="fe_users">Usuarios del Website</label>
 			<label index="fe_users.username">Nombre de usuario:</label>
@@ -490,18 +511,19 @@
 			<label index="sys_domain.redirectTo">Redirigir a:</label>
 			<label index="sys_domain.prepend_params">Transferir parámetros de URL de redirección:</label>
 			<label index="pages_language_overlay">Página Alternativa de Lenguaje</label>
-			<label index="sys_language">Lenguaje del Website</label>
 			<label index="sys_template">Plantilla</label>
 			<label index="static_template">Plantillas estáticas</label>
+			<label index="sys_language">Lenguaje del Website</label>
 			<label index="sys_language.isocode">Selecciona Idioma Oficial (Código ISO):</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-			<label index="mod_tx_cms_webinfo_page">Overzicht pagina (boomstructuur)</label>
+			<label index="mod_tx_cms_webinfo_page">Paginaboom (overzicht)</label>
+			<label index="mod_tx_cms_webinfo_lang">Localisatie overzicht</label>
 			<label index="pages.doktype.I.0">Uitgebreid</label>
 			<label index="pages.doktype.I.2">Snelkoppeling</label>
 			<label index="pages.doktype.I.3">Niet in het menu</label>
-			<label index="pages.doktype.I.4">Gebruikers Sectie BeheerSite</label>
-			<label index="pages.doktype.I.5">Koppel pagina</label>
+			<label index="pages.doktype.I.4">Backend Gebruikers Sectie</label>
+			<label index="pages.doktype.I.5">Koppelpunt</label>
 			<label index="pages.doktype.I.7">Tussenruimte</label>
 			<label index="pages.hidden">Verberg pagina:</label>
 			<label index="pages.layout.I.1">Layout 1</label>
@@ -509,6 +531,7 @@
 			<label index="pages.layout.I.3">Layout 3</label>
 			<label index="pages.extendToSubpages">Subpagina's opnemen:</label>
 			<label index="pages.nav_title">Navigatietitel:</label>
+			<label index="pages.nav_hide">Verberg in menu:</label>
 			<label index="pages.subtitle">Subtitel:</label>
 			<label index="pages.target">Doel:</label>
 			<label index="pages.alias">Alias:</label>
@@ -532,16 +555,21 @@
 			<label index="pages.shortcut_mode.I.1">Eerste subpagina</label>
 			<label index="pages.shortcut_mode.I.2">Willekeurige subpagina</label>
 			<label index="pages.content_from_pid">Toon inhoud van deze pagina:</label>
+			<label index="pages.mount_pid">Koppelpunt (geavanceerd)</label>
+			<label index="pages.mount_pid_ol">Vervang koppelpunt (deze pagina) met koppelpagina:</label>
 			<label index="pages.abstract">Samenvatting:</label>
 			<label index="pages.media">Bestanden:</label>
-			<label index="pages.is_siteroot">Is basis van website:</label>
+			<label index="pages.is_siteroot">Is root van website:</label>
 			<label index="pages.module">Bevat plugin:</label>
 			<label index="pages.module.I.1">Winkel</label>
 			<label index="pages.module.I.2">Forum</label>
 			<label index="pages.module.I.3">Nieuws</label>
 			<label index="pages.module.I.4">Website gebruikers</label>
 			<label index="pages.module.I.5">Direct Mail</label>
-			<label index="pages.module.I.6">Akkoord</label>
+			<label index="pages.module.I.6">Goedkeuringen</label>
+			<label index="pages.l18n_cfg">Localisatie instellingen:</label>
+			<label index="pages.l18n_cfg.I.1">Verberg standaard vertaling van pagina</label>
+			<label index="pages.l18n_cfg.I.2">Verberg pagina indien er geen vertaling voor de huidige taal aanwezig is</label>
 			<label index="tt_content">Pagina-inhoud</label>
 			<label index="fe_users">Website gebruiker</label>
 			<label index="fe_users.username">Gebruikersnaam:</label>
@@ -556,9 +584,9 @@
 			<label index="sys_domain.redirectTo">Doorsturen naar:</label>
 			<label index="sys_domain.prepend_params">Parameters meegeven aan redirect url:</label>
 			<label index="pages_language_overlay">Alternatieve Pagina Taal</label>
-			<label index="sys_language">Website Taal</label>
 			<label index="sys_template">Template</label>
 			<label index="static_template">Statische sjablonen</label>
+			<label index="sys_language">Website Taal</label>
 			<label index="sys_language.isocode">Selecteer Officiële Taal (ISO code):</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -630,6 +658,7 @@
 		</languageKey>
 		<languageKey index="pl" type="array">
 			<label index="mod_tx_cms_webinfo_page">Widok Drzewko</label>
+			<label index="mod_tx_cms_webinfo_lang">Widok Tłumaczeń</label>
 			<label index="pages.doktype.I.0">Rozszerzona</label>
 			<label index="pages.doktype.I.2">Skrót do strony</label>
 			<label index="pages.doktype.I.3">Nie w menu</label>
@@ -642,6 +671,7 @@
 			<label index="pages.layout.I.3">Układ 3</label>
 			<label index="pages.extendToSubpages">Dołącz podstrony:</label>
 			<label index="pages.nav_title">Tytuł nawigacyjny:</label>
+			<label index="pages.nav_hide">Nie pokazuj w menu:</label>
 			<label index="pages.subtitle">Podtytuł:</label>
 			<label index="pages.target">Target:</label>
 			<label index="pages.alias">Alias:</label>
@@ -665,6 +695,8 @@
 			<label index="pages.shortcut_mode.I.1">Pierwsza strona</label>
 			<label index="pages.shortcut_mode.I.2">Losowa strona</label>
 			<label index="pages.content_from_pid">Pokaż zawartość z tej strony:</label>
+			<label index="pages.mount_pid">Punkt montowania (zaawansowane):</label>
+			<label index="pages.mount_pid_ol">Zastąp punkt montowania (ta strona) zamontowaną stroną:</label>
 			<label index="pages.abstract">Skrót zawartości:</label>
 			<label index="pages.media">Pliki:</label>
 			<label index="pages.is_siteroot">Jest korzeniem witryny:</label>
@@ -675,6 +707,9 @@
 			<label index="pages.module.I.4">Użytkownicy zewnętrzni</label>
 			<label index="pages.module.I.5">Mailing bezpośredni</label>
 			<label index="pages.module.I.6">Potwierdzenia</label>
+			<label index="pages.l18n_cfg">Ustawienia tłumaczeń:</label>
+			<label index="pages.l18n_cfg.I.1">Ukryj domyślne tłumaczenie strony</label>
+			<label index="pages.l18n_cfg.I.2">Ukryj stronę, jeśli nie ma tłumaczenia dla bieżącego języka</label>
 			<label index="tt_content">Zawartość</label>
 			<label index="fe_users">Użytkownik zewnętrzny</label>
 			<label index="fe_users.username">Nazwa użytkownika:</label>
@@ -689,13 +724,14 @@
 			<label index="sys_domain.redirectTo">Przekieruj do:</label>
 			<label index="sys_domain.prepend_params">Przekaż parametry pod przekierowany URL:</label>
 			<label index="pages_language_overlay">Alternatywny język strony</label>
-			<label index="sys_language">Język witryny</label>
 			<label index="sys_template">Szablon</label>
 			<label index="static_template">Szablony statyczne</label>
+			<label index="sys_language">Język witryny</label>
 			<label index="sys_language.isocode">Wybierz Język Oficjalny (kod ISO):</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="mod_tx_cms_webinfo_page">Pregled drevesa strani</label>
+			<label index="mod_tx_cms_webinfo_lang">Pregled prevajanja</label>
 			<label index="pages.doktype.I.0">Napredno</label>
 			<label index="pages.doktype.I.2">Bližnjica</label>
 			<label index="pages.doktype.I.3">Ni v meniju</label>
@@ -708,6 +744,7 @@
 			<label index="pages.layout.I.3">Postavitev 3</label>
 			<label index="pages.extendToSubpages">Vključi podstrani:</label>
 			<label index="pages.nav_title">Naslov za navigacijo:</label>
+			<label index="pages.nav_hide">Skrij v meniju:</label>
 			<label index="pages.subtitle">Podnaslov:</label>
 			<label index="pages.target">Cilj:</label>
 			<label index="pages.alias">Vzdevek:</label>
@@ -742,6 +779,9 @@
 			<label index="pages.module.I.4">Uporabniki spletne strani</label>
 			<label index="pages.module.I.5">Direct Mail</label>
 			<label index="pages.module.I.6">Odobritve</label>
+			<label index="pages.l18n_cfg">Nastavitve za prevajanje:</label>
+			<label index="pages.l18n_cfg.I.1">Skrij privzeti prevod strani</label>
+			<label index="pages.l18n_cfg.I.2">Skrij stran, če ni prevoda za trenutni jezik</label>
 			<label index="tt_content">Vsebina strani</label>
 			<label index="fe_users">Uporabnik spletne strani</label>
 			<label index="fe_users.username">Uporabniško ime:</label>
@@ -756,25 +796,26 @@
 			<label index="sys_domain.redirectTo">Preusmeri na:</label>
 			<label index="sys_domain.prepend_params">Parametri za preusmeritev na URL:</label>
 			<label index="pages_language_overlay">Alternativni jezik strani</label>
-			<label index="sys_language">Jezik spletne strani</label>
 			<label index="sys_template">Predloga</label>
 			<label index="static_template">Statične predloge</label>
+			<label index="sys_language">Jezik spletne strani</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="mod_tx_cms_webinfo_page">Sivurakenteen yleiskuvaus</label>
+			<label index="mod_tx_cms_webinfo_lang">Lokalisoinnin yleiskuvaus</label>
 			<label index="pages.doktype.I.0">Laajennettu</label>
 			<label index="pages.doktype.I.2">Pikavalinta</label>
 			<label index="pages.doktype.I.3">Ei valikkoon</label>
-			<label index="pages.doktype.I.4">Backenc käyttäjä osa</label>
-			<label index="pages.doktype.I.5">Mount sivu</label>
-			<label index="pages.doktype.I.7">Spacer</label>
-			<label index="pages.hidden">Piillota sivu:</label>
+			<label index="pages.doktype.I.4">Taustakäyttäjän osuus</label>
+			<label index="pages.doktype.I.5">Mount-sivu</label>
+			<label index="pages.doktype.I.7">Erotin</label>
+			<label index="pages.hidden">Piilota sivu:</label>
 			<label index="pages.layout.I.1">Malli 1</label>
 			<label index="pages.layout.I.2">Malli 2</label>
 			<label index="pages.layout.I.3">Malli 3</label>
 			<label index="pages.extendToSubpages">Sisällytä alasivut:</label>
 			<label index="pages.nav_title">Valikon otsikko:</label>
-			<label index="pages.nav_hide">Piillota valikossa:</label>
+			<label index="pages.nav_hide">Piilota valikossa:</label>
 			<label index="pages.subtitle">Alaotsikko:</label>
 			<label index="pages.target">Kohde:</label>
 			<label index="pages.alias">Aliasnimi:</label>
@@ -794,43 +835,47 @@
 			<label index="pages.cache_timeout.I.10">1 kuukausi</label>
 			<label index="pages.no_cache">Ei välimuistia:</label>
 			<label index="pages.no_search">Ei hakua:</label>
-			<label index="pages.shortcut_mode">Pikavalinto moodi:</label>
+			<label index="pages.shortcut_mode">Pikavalinnan tyyppi:</label>
 			<label index="pages.shortcut_mode.I.1">Ensimmäinen alisivu</label>
 			<label index="pages.shortcut_mode.I.2">Satunnainen alisivu</label>
-			<label index="pages.content_from_pid">Näytä sisältö tästä sivusta sivun sijasta:</label>
-			<label index="pages.mount_pid">Latauspiste (edistynyt):</label>
-			<label index="pages.mount_pid_ol">Korvaava latauspiste (tälle sivulle) ladatulle sivulle:</label>
+			<label index="pages.content_from_pid">Näytä sisältö tältä sivulta sivun sijasta:</label>
+			<label index="pages.mount_pid">Liitospiste (edistynyt):</label>
+			<label index="pages.mount_pid_ol">Korvaa liitospiste (tälle sivulle) ladatulla sivulla:</label>
 			<label index="pages.abstract">Lyhennelmä:</label>
 			<label index="pages.media">Tiedostot:</label>
 			<label index="pages.is_siteroot">Tämä on websivujen juuri:</label>
-			<label index="pages.module">Sisältää plugin:</label>
+			<label index="pages.module">Sisältää pluginin:</label>
 			<label index="pages.module.I.1">Kauppa</label>
 			<label index="pages.module.I.2">Keskustelu</label>
 			<label index="pages.module.I.3">Uutiset</label>
 			<label index="pages.module.I.4">WWW-sivujen käyttäjät</label>
 			<label index="pages.module.I.5">Suora sähköposti</label>
 			<label index="pages.module.I.6">Hyväksyntä</label>
+			<label index="pages.l18n_cfg">Lokalisaatioasetukset</label>
+			<label index="pages.l18n_cfg.I.1">Piilota sivun oletuskäännös</label>
+			<label index="pages.l18n_cfg.I.2">Piilota sivu, jos valitulle kielelle ei ole käännöstä</label>
 			<label index="tt_content">Sivun sisältö</label>
-			<label index="fe_users">WWW-sivujen kättäjä</label>
+			<label index="fe_users">WWW-sivujen käyttäjä</label>
 			<label index="fe_users.username">Käyttäjänimi:</label>
 			<label index="fe_users.password">Salasana:</label>
-			<label index="fe_users.usergroup">Ryhmä:</label>
-			<label index="fe_users.lockToDomain">Lukkiudu domainiin:</label>
-			<label index="fe_groups">WWW-sivujen käyttäjä ryhmä</label>
+			<label index="fe_users.usergroup">Ryhmät:</label>
+			<label index="fe_users.lockToDomain">Rajaa domainiin:</label>
+			<label index="fe_groups">WWW-sivujen käyttäjäryhmä</label>
 			<label index="fe_groups.title">Ryhmän nimi:</label>
-			<label index="fe_groups.lockToDomain">Lukkiudu domainiin:</label>
-			<label index="sys_domain">Domain:</label>
+			<label index="fe_groups.lockToDomain">Rajaa domainiin:</label>
+			<label index="sys_domain">Domain</label>
 			<label index="sys_domain.domainName">Domain:</label>
-			<label index="sys_domain.redirectTo">Edelleen välitä</label>
-			<label index="sys_domain.prepend_params">Siirtoparametrit URL uudelleen ohjaamiseksi</label>
-			<label index="pages_language_overlay">Vaihtoehtoisen sivun kieli</label>
-			<label index="sys_language">WWW-sivuston kieli</label>
+			<label index="sys_domain.redirectTo">Jatko-ohjaa osoitteeseen:</label>
+			<label index="sys_domain.prepend_params">Siirrä myös parametrit uudelleenohjattuun osoitteeseen</label>
+			<label index="pages_language_overlay">Vaihtoehtoinen sivun kieli</label>
 			<label index="sys_template">Malli:</label>
 			<label index="static_template">Pysyvät mallit</label>
+			<label index="sys_language">WWW-sivuston kieli</label>
 			<label index="sys_language.isocode">Valitse Virallinen Kieli (ISO koodi) :</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mod_tx_cms_webinfo_page">Sayfa ağacı genel görüntüsü</label>
+			<label index="mod_tx_cms_webinfo_lang">Localization genel görününü</label>
 			<label index="pages.doktype.I.0">Gelişmiş</label>
 			<label index="pages.doktype.I.2">Kısayol</label>
 			<label index="pages.doktype.I.3">Menüde değil</label>
@@ -879,6 +924,9 @@
 			<label index="pages.module.I.4">Website kullanıcıları</label>
 			<label index="pages.module.I.5">Doğrudan mail</label>
 			<label index="pages.module.I.6">Onaylamalar</label>
+			<label index="pages.l18n_cfg">Localization ayarları:</label>
+			<label index="pages.l18n_cfg.I.1">Sayfanın standart Çevirisini sakla</label>
+			<label index="pages.l18n_cfg.I.2">Çeviri güncel sayfalarda mevcut değilse sayfayı sakla</label>
 			<label index="tt_content">Sayfa içeriği</label>
 			<label index="fe_users">Website kullanıcısı</label>
 			<label index="fe_users.username">Kullanıcı adı:</label>
@@ -893,9 +941,9 @@
 			<label index="sys_domain.redirectTo">Tekrar yönlendir:</label>
 			<label index="sys_domain.prepend_params">Parametreleri yönlendirilmiş URL ye transfer et:</label>
 			<label index="pages_language_overlay">Alternatif sayfa dili</label>
-			<label index="sys_language">Website dili</label>
 			<label index="sys_template">Şablon</label>
 			<label index="static_template">Statik şablonlar</label>
+			<label index="sys_language">Website dili</label>
 			<label index="sys_language.isocode">Resmi Dili Seçiniz (ISO Code olarak):</label>
 		</languageKey>
 		<languageKey index="se" type="array">
@@ -1034,6 +1082,7 @@
 		</languageKey>
 		<languageKey index="ru" type="array">
 			<label index="mod_tx_cms_webinfo_page">Обзор дерева страниц</label>
+			<label index="mod_tx_cms_webinfo_lang">Обзор локализации</label>
 			<label index="pages.doktype.I.0">Продвинутый</label>
 			<label index="pages.doktype.I.2">Ярлык</label>
 			<label index="pages.doktype.I.3">Не в меню</label>
@@ -1082,6 +1131,9 @@
 			<label index="pages.module.I.4">Пользователи сайта</label>
 			<label index="pages.module.I.5">Рассылка</label>
 			<label index="pages.module.I.6">Рейтинг</label>
+			<label index="pages.l18n_cfg">Настройка локализации</label>
+			<label index="pages.l18n_cfg.I.1">Спрятать стандартный перевод страницы</label>
+			<label index="pages.l18n_cfg.I.2">Спрятать страницу, если нет перевода данного языкового файла</label>
 			<label index="tt_content">Содержимое страницы</label>
 			<label index="fe_users">Пользователь сайта</label>
 			<label index="fe_users.username">Пользователь:</label>
@@ -1096,13 +1148,14 @@
 			<label index="sys_domain.redirectTo">Переадресовать:</label>
 			<label index="sys_domain.prepend_params">Параметры для переадресации:</label>
 			<label index="pages_language_overlay">Альтернативный язык страницы</label>
-			<label index="sys_language">Язык веб-сайта</label>
 			<label index="sys_template">Шаблон</label>
 			<label index="static_template">Статические шаблоны</label>
+			<label index="sys_language">Язык веб-сайта</label>
 			<label index="sys_language.isocode">Выберите главный язык:</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="mod_tx_cms_webinfo_page">Structura de pagini</label>
+			<label index="mod_tx_cms_webinfo_lang">Localizare</label>
 			<label index="pages.doktype.I.0">Avansat</label>
 			<label index="pages.doktype.I.2">Scurtatura</label>
 			<label index="pages.doktype.I.3">Nu apare în meniu</label>
@@ -1139,6 +1192,8 @@
 			<label index="pages.shortcut_mode.I.1">Prima subpagină</label>
 			<label index="pages.shortcut_mode.I.2">Subpagină aleatoare</label>
 			<label index="pages.content_from_pid">Introducere conţinut din această pagină:</label>
+			<label index="pages.mount_pid">Punct de mount (avansat):</label>
+			<label index="pages.mount_pid_ol">Înlocuire Punct de Mount (această pagină) cu pagina:</label>
 			<label index="pages.abstract">Abstract:</label>
 			<label index="pages.media">Fişiere:</label>
 			<label index="pages.is_siteroot">Este rădăcina site-ului:</label>
@@ -1149,6 +1204,9 @@
 			<label index="pages.module.I.4">Utilizatori site</label>
 			<label index="pages.module.I.5">Mail direct</label>
 			<label index="pages.module.I.6">Aprobări</label>
+			<label index="pages.l18n_cfg">Setări localizări:</label>
+			<label index="pages.l18n_cfg.I.1">Ascunde traducerea implicită a paginii</label>
+			<label index="pages.l18n_cfg.I.2">Ascunde pagina dacă nu există traducere pentru limbajul curent</label>
 			<label index="tt_content">Conţinutul paginii</label>
 			<label index="fe_users">Utilizator site</label>
 			<label index="fe_users.username">Utilizator:</label>
@@ -1163,9 +1221,9 @@
 			<label index="sys_domain.redirectTo">Redirectează către:</label>
 			<label index="sys_domain.prepend_params">Parametri transfer pentru redirectare URL</label>
 			<label index="pages_language_overlay">Pagină de limbaj alternativă</label>
-			<label index="sys_language">Limbajul site-ului</label>
 			<label index="sys_template">Şablon</label>
 			<label index="static_template">Şabloane statice</label>
+			<label index="sys_language">Limbajul site-ului</label>
 			<label index="sys_language.isocode">Selectaţi limba (codul ISO):</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
@@ -1302,6 +1360,75 @@
 			<label index="sys_language.isocode">Vybrať úradný jazyk (ISO code):</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mod_tx_cms_webinfo_page">Puslapių medžio apžvalga</label>
+			<label index="mod_tx_cms_webinfo_lang">Lokalizacijos apžvalga</label>
+			<label index="pages.doktype.I.0">Išsamiau</label>
+			<label index="pages.doktype.I.2">Santrumpa</label>
+			<label index="pages.doktype.I.3">Ne meniu</label>
+			<label index="pages.doktype.I.4">Backend vartotojo sekcija</label>
+			<label index="pages.doktype.I.5">Prijungimo taškas</label>
+			<label index="pages.doktype.I.7">Atskyriklis</label>
+			<label index="pages.hidden">Paslėpti puslapį:</label>
+			<label index="pages.layout.I.1">Išdėstymas 1</label>
+			<label index="pages.layout.I.2">Išdėstymas 2</label>
+			<label index="pages.layout.I.3">Išdėstymas 3</label>
+			<label index="pages.extendToSubpages">Įtraukti subpuslapius</label>
+			<label index="pages.nav_title">Navigacijos pavadinimas:</label>
+			<label index="pages.nav_hide">Paslėti meniu:</label>
+			<label index="pages.subtitle">Subantraštė:</label>
+			<label index="pages.target">Tikslas:</label>
+			<label index="pages.alias">Pseudonimas:</label>
+			<label index="pages.url">URL:</label>
+			<label index="pages.lastUpdated">Paskutinį kartą keista:</label>
+			<label index="pages.newUntil">'Naujas' iki:</label>
+			<label index="pages.cache_timeout">Kopija talpykloje pasensta per:</label>
+			<label index="pages.cache_timeout.I.1">1 min.</label>
+			<label index="pages.cache_timeout.I.2">5 min.</label>
+			<label index="pages.cache_timeout.I.3">15 min.</label>
+			<label index="pages.cache_timeout.I.4">30 min.</label>
+			<label index="pages.cache_timeout.I.5">1 val.</label>
+			<label index="pages.cache_timeout.I.6">4 val.</label>
+			<label index="pages.cache_timeout.I.7">1 diena</label>
+			<label index="pages.cache_timeout.I.8">2 dienas</label>
+			<label index="pages.cache_timeout.I.9">7 dienas</label>
+			<label index="pages.cache_timeout.I.10">1 mėnesį</label>
+			<label index="pages.no_cache">Netalpinti talpykloje:</label>
+			<label index="pages.no_search">Netraukti į paiešką:</label>
+			<label index="pages.shortcut_mode">Santrumpos režimas:</label>
+			<label index="pages.shortcut_mode.I.1">Pirmas subpuslapis</label>
+			<label index="pages.shortcut_mode.I.2">Atsitiktinis subpuslapis</label>
+			<label index="pages.content_from_pid">Rodyti šio puslapio turinį:</label>
+			<label index="pages.mount_pid">Prijungimo taškas (išsamiai):</label>
+			<label index="pages.mount_pid_ol">Pakeisti Prijungimo tašką (šio puslapio) į prijungtą puslapį.</label>
+			<label index="pages.abstract">Abstrakčiai:</label>
+			<label index="pages.media">Bylos:</label>
+			<label index="pages.is_siteroot">Tinklapio šaknis:</label>
+			<label index="pages.module">Turi priedą:</label>
+			<label index="pages.module.I.1">Parduotuvė</label>
+			<label index="pages.module.I.2">Lenta</label>
+			<label index="pages.module.I.3">Naujienos</label>
+			<label index="pages.module.I.4">Tinklapio vartotojai</label>
+			<label index="pages.module.I.5">Tiesioginis paštas</label>
+			<label index="pages.module.I.6">Patvirtinimai</label>
+			<label index="pages.l18n_cfg">Lokalizacijos nustatymai:</label>
+			<label index="pages.l18n_cfg.I.1">Slėpti numatytąjį puslapio vertimą</label>
+			<label index="pages.l18n_cfg.I.2">Slėpti puslpį jei nėra egzistuojančio vertimo nustatytai kalbai</label>
+			<label index="tt_content">Puslapio turinys</label>
+			<label index="fe_users">Tinklapio vartotojas</label>
+			<label index="fe_users.username">Vartotojo vardas:</label>
+			<label index="fe_users.password">Slaptažodis:</label>
+			<label index="fe_users.usergroup">Grupės:</label>
+			<label index="fe_users.lockToDomain">Priskirti domenui</label>
+			<label index="fe_groups">Tinklapio vartotojų grupė</label>
+			<label index="fe_groups.title">Grupės pavadinimas:</label>
+			<label index="fe_groups.lockToDomain">Priskirti domenui</label>
+			<label index="sys_domain">Domenas</label>
+			<label index="sys_domain.domainName">Domenas:</label>
+			<label index="sys_domain.redirectTo">Peradresuoti į:</label>
+			<label index="sys_domain.prepend_params">Parametrai URL peradresavimui:</label>
+			<label index="pages_language_overlay">Alternatyvi puslapio kalba</label>
+			<label index="sys_template">Šablonas</label>
+			<label index="static_template">Statiniai šablonai</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="mod_tx_cms_webinfo_page">Yfirlit yfir skipulagstré</label>
@@ -1439,13 +1566,14 @@
 		</languageKey>
 		<languageKey index="hu" type="array">
 			<label index="mod_tx_cms_webinfo_page">Oldalfa áttekintés</label>
+			<label index="mod_tx_cms_webinfo_lang">Nyelv áttekintés</label>
 			<label index="pages.doktype.I.0">Bővített</label>
 			<label index="pages.doktype.I.2">Parancsikon</label>
 			<label index="pages.doktype.I.3">Nincs a menüben</label>
-			<label index="pages.doktype.I.4">Backend Felhasználó Szekció</label>
-			<label index="pages.doktype.I.5">Mount oldal</label>
+			<label index="pages.doktype.I.4">Backend Felhasználói Rész</label>
+			<label index="pages.doktype.I.5">Mount pont</label>
 			<label index="pages.doktype.I.7">Térköz</label>
-			<label index="pages.hidden">Rejtett oldal:</label>
+			<label index="pages.hidden">Oldal rejtése:</label>
 			<label index="pages.layout.I.1">Elrendezés 1</label>
 			<label index="pages.layout.I.2">Elrendezés 2</label>
 			<label index="pages.layout.I.3">Elrendezés 3</label>
@@ -1475,8 +1603,8 @@
 			<label index="pages.shortcut_mode.I.1">Első aloldal</label>
 			<label index="pages.shortcut_mode.I.2">Véletlen aloldal</label>
 			<label index="pages.content_from_pid">Az oldal tartalmának mutatása ehelyett:</label>
-			<label index="pages.mount_pid">Mount oldal (bővített):</label>
-			<label index="pages.mount_pid_ol">Mount oldal (ez az oldal) helyettesítése a Mount-olt oldallal:</label>
+			<label index="pages.mount_pid">Mount pont (bővített):</label>
+			<label index="pages.mount_pid_ol">Mount pont (ez az oldal) helyettesítése a Mount-olt oldallal:</label>
 			<label index="pages.abstract">Absztrakt:</label>
 			<label index="pages.media">File-ok:</label>
 			<label index="pages.is_siteroot">Ez a weboldal gyökere:</label>
@@ -1487,10 +1615,13 @@
 			<label index="pages.module.I.4">Weboldal felhasználók</label>
 			<label index="pages.module.I.5">Direkt Levél</label>
 			<label index="pages.module.I.6">Jóváhagyás</label>
+			<label index="pages.l18n_cfg">Nyelvi beállítások</label>
+			<label index="pages.l18n_cfg.I.1">Az oldal alapértelmezett fordításának rejtése</label>
+			<label index="pages.l18n_cfg.I.2">Oldal rejtése, ha nincs fordítás az aktuális nyelvhez</label>
 			<label index="tt_content">Oldaltartalom</label>
 			<label index="fe_users">Weboldal felhasználó</label>
 			<label index="fe_users.username">Felhasználónév:</label>
-			<label index="fe_users.password">Jelsző:</label>
+			<label index="fe_users.password">Jelszó:</label>
 			<label index="fe_users.usergroup">Csoportok:</label>
 			<label index="fe_users.lockToDomain">Csak ezen a domain-en:</label>
 			<label index="fe_groups">Weboldal felhasználócsoport</label>
@@ -1499,11 +1630,11 @@
 			<label index="sys_domain">Domain:</label>
 			<label index="sys_domain.domainName">Domain:</label>
 			<label index="sys_domain.redirectTo">Átirányítás ide:</label>
-			<label index="sys_domain.prepend_params">Átviteli paraméterek az Átirányíátsi URL-hez:</label>
+			<label index="sys_domain.prepend_params">Paraméterek átvitele az Átirányítási URL-hez:</label>
 			<label index="pages_language_overlay">Alternatív Oldal Nyelv</label>
-			<label index="sys_language">Weboldal Nyelv</label>
 			<label index="sys_template">Template</label>
 			<label index="static_template">Statikus template-ek</label>
+			<label index="sys_language">Weboldal Nyelv</label>
 			<label index="sys_language.isocode">Hivatalos Nyelv kiválasztása (ISO kód)</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -1512,7 +1643,7 @@
 			<label index="pages.doktype.I.2">Iserasuaat</label>
 			<label index="pages.doktype.I.3">Periarfissani ilaanngilaq</label>
 			<label index="pages.doktype.I.5">Qupperneq ikkuguk</label>
-			<label index="pages.hidden">Qupperneq toqqoruk:</label>
+			<label index="pages.hidden">Qupperneq ersiunnaartiguk:</label>
 			<label index="pages.layout.I.1">Ilusilersuineq 1</label>
 			<label index="pages.layout.I.2">Ilusilersuineq 2</label>
 			<label index="pages.layout.I.3">Ilusilersuineq 3</label>
@@ -1551,11 +1682,81 @@
 			<label index="sys_language">Nittartakkap oqaasii</label>
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mod_tx_cms_webinfo_page">เกี่วยกับ Pagetree</label>
+			<label index="mod_tx_cms_webinfo_lang">เกี่ยวกับการตั้งค่าท้องถิ่น</label>
+			<label index="pages.doktype.I.0">แอ๊ดว้าน</label>
+			<label index="pages.doktype.I.2">ทางลัด</label>
+			<label index="pages.doktype.I.3">ไม่อยู่ในเมนู</label>
+			<label index="pages.doktype.I.4">ส่วน ของผู้ใช้ส่วนหลัง</label>
+			<label index="pages.doktype.I.5">จุดเม้าท์</label>
+			<label index="pages.doktype.I.7">ช่องว่าง</label>
+			<label index="pages.hidden">ซ่อนหน้า:</label>
+			<label index="pages.layout.I.1">รูปแบบที่ 1</label>
+			<label index="pages.layout.I.2">รูปแบบที่ 2</label>
+			<label index="pages.layout.I.3">รูปแบบที่ 3</label>
+			<label index="pages.extendToSubpages">รวม หน้าย่อยด้วย:</label>
+			<label index="pages.nav_title">ชื่อเรื่อง สำหรับการท่องเน็ต:</label>
+			<label index="pages.nav_hide">ซ่อนในเมนู:</label>
+			<label index="pages.subtitle">ชื่อเรื่องย่อย</label>
+			<label index="pages.target">จุดหมาย:</label>
+			<label index="pages.alias">นามแฝง:</label>
+			<label index="pages.url">URL:</label>
+			<label index="pages.lastUpdated">ครั้งสุดท้าย ที่ทำให้ทันสมัย:</label>
+			<label index="pages.newUntil">'ใหม่' จนถึง:</label>
+			<label index="pages.cache_timeout">แคช หมดอายุ:</label>
+			<label index="pages.cache_timeout.I.1">1 นาที</label>
+			<label index="pages.cache_timeout.I.2">5 นาที</label>
+			<label index="pages.cache_timeout.I.3">15 นาที</label>
+			<label index="pages.cache_timeout.I.4">30 นาที</label>
+			<label index="pages.cache_timeout.I.5">1 ชั่วโมง</label>
+			<label index="pages.cache_timeout.I.6">4 ชั่วโมง</label>
+			<label index="pages.cache_timeout.I.7">1 วัน</label>
+			<label index="pages.cache_timeout.I.8">2 วัน</label>
+			<label index="pages.cache_timeout.I.9">7 วัน</label>
+			<label index="pages.cache_timeout.I.10">1 เดือน</label>
+			<label index="pages.no_cache">ไม่มี แคช:</label>
+			<label index="pages.no_search">ไม่มี การค้นหา:</label>
+			<label index="pages.shortcut_mode">โหมด ทางลัด:</label>
+			<label index="pages.shortcut_mode.I.1">หน้าย่อย แรก</label>
+			<label index="pages.shortcut_mode.I.2">หน้าย่อย สุ่ม</label>
+			<label index="pages.content_from_pid">แสดงเนื้อหาจากหน้านี้แทน:</label>
+			<label index="pages.mount_pid">จุดเม้าท์ (แอ๊ดว้าน):</label>
+			<label index="pages.mount_pid_ol">แทนจุดเม้าท์ (หน้านี้) ด้วยหน้าที่เม้าท์แล้ว:</label>
+			<label index="pages.abstract">บทคัดย่อ:</label>
+			<label index="pages.media">แฟ้มข้อมูล:</label>
+			<label index="pages.is_siteroot">คือ รากของเว็บไซต์:</label>
+			<label index="pages.module">บรรจุ ปลั๊กอิน:</label>
+			<label index="pages.module.I.1">หยุด</label>
+			<label index="pages.module.I.2">กระดานเสวนา</label>
+			<label index="pages.module.I.3">ข่าว</label>
+			<label index="pages.module.I.4">ผู้ใช้ เว็บไซต์</label>
+			<label index="pages.module.I.5">เมล์ โดยตรง</label>
+			<label index="pages.module.I.6">การอนุมัติ</label>
+			<label index="pages.l18n_cfg">ตั้งค่าภาษาท้องถิ่น:</label>
+			<label index="pages.l18n_cfg.I.1">ซ่อน ค่าการแปลที่ตั้งไว้ ของหน้า</label>
+			<label index="pages.l18n_cfg.I.2">ซ่อนหน้า หากไม่มีการแปลไว้สำหรับภาษาปัจจุบัน</label>
+			<label index="tt_content">เนื้อหาของหน้า</label>
+			<label index="fe_users">ผู้ใช้ เว็บไซต์</label>
+			<label index="fe_users.username">ชื่อผู้ใช้:</label>
+			<label index="fe_users.password">ระหัสผ่าน:</label>
+			<label index="fe_users.usergroup">กลุ่ม:</label>
+			<label index="fe_users.lockToDomain">ล็อค ในโดเมน:</label>
+			<label index="fe_groups">กลุ่มผู้ใช้ เว็บไซต์</label>
+			<label index="fe_groups.title">ชื่อกลุ่ม:</label>
+			<label index="fe_groups.lockToDomain">ล็อค ในโดเมน:</label>
+			<label index="sys_domain">โดเมน</label>
+			<label index="sys_domain.domainName">โดเมน:</label>
+			<label index="sys_domain.redirectTo">ส่งต่อไปที่:</label>
+			<label index="sys_domain.prepend_params">ส่งค่าตัวแปรไปยัง URL ที่ส่งต่อ:</label>
+			<label index="pages_language_overlay">ภาษาทางเลือก ของหน้า</label>
+			<label index="sys_template">แม่แบบ</label>
+			<label index="static_template">แม่แบบคงที่</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
 		<languageKey index="hk" type="array">
 			<label index="mod_tx_cms_webinfo_page">網頁樹圖概覽</label>
+			<label index="mod_tx_cms_webinfo_lang">本地化概覽</label>
 			<label index="pages.doktype.I.0">進階</label>
 			<label index="pages.doktype.I.2">捷徑</label>
 			<label index="pages.doktype.I.3">不在選單中</label>
@@ -1604,6 +1805,9 @@
 			<label index="pages.module.I.4">網站使用者</label>
 			<label index="pages.module.I.5">直接電子郵件</label>
 			<label index="pages.module.I.6">批准</label>
+			<label index="pages.l18n_cfg">本地化設定:</label>
+			<label index="pages.l18n_cfg.I.1">隱藏預設網頁譒譯</label>
+			<label index="pages.l18n_cfg.I.2">假如沒有現存語言時隱藏網頁</label>
 			<label index="tt_content">網頁內容</label>
 			<label index="fe_users">網站使用者</label>
 			<label index="fe_users.username">使用者名稱：</label>
@@ -1618,9 +1822,9 @@
 			<label index="sys_domain.redirectTo">轉接至：</label>
 			<label index="sys_domain.prepend_params">傳送週邊參數至轉接網域：</label>
 			<label index="pages_language_overlay">附加網頁語言</label>
-			<label index="sys_language">網站語言</label>
 			<label index="sys_template">樣板</label>
 			<label index="static_template">靜態樣板</label>
+			<label index="sys_language">網站語言</label>
 			<label index="sys_language.isocode">選擇正式語言 (ISO CODE)</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
@@ -1966,7 +2170,9 @@
 		</languageKey>
 		<languageKey index="ua" type="array">
 			<label index="mod_tx_cms_webinfo_page">Перегляд дерева сторінок</label>
+			<label index="mod_tx_cms_webinfo_lang">Огляд локалізації</label>
 			<label index="pages.doktype.I.0">Розширений</label>
+			<label index="pages.doktype.I.2">Швидке посилання</label>
 			<label index="pages.doktype.I.3">Поза меню</label>
 			<label index="pages.doktype.I.4">Розділ користувачів Backend</label>
 			<label index="pages.doktype.I.5">Підключення сторінки</label>
@@ -1977,11 +2183,14 @@
 			<label index="pages.layout.I.3">Вигляд 3</label>
 			<label index="pages.extendToSubpages">З підсторінками:</label>
 			<label index="pages.nav_title">Загловок для навігації</label>
+			<label index="pages.nav_hide">Сховати у меню</label>
 			<label index="pages.subtitle">Підзаголовок</label>
 			<label index="pages.target">Ціль</label>
+			<label index="pages.alias">Псевдонім</label>
 			<label index="pages.url">URL:</label>
 			<label index="pages.lastUpdated">Дата останньго оновлення:</label>
 			<label index="pages.newUntil">&quot;Новий&quot; до:</label>
+			<label index="pages.cache_timeout">Кеш застаріє:</label>
 			<label index="pages.cache_timeout.I.1">1 хв</label>
 			<label index="pages.cache_timeout.I.2">5 хв</label>
 			<label index="pages.cache_timeout.I.3">15 хв</label>
@@ -1996,11 +2205,23 @@
 			<label index="pages.no_search">Без пошуку:</label>
 			<label index="pages.shortcut_mode">Режим</label>
 			<label index="pages.shortcut_mode.I.1">Перша підсторінка</label>
+			<label index="pages.shortcut_mode.I.2">Випадкова підсторінка</label>
+			<label index="pages.content_from_pid">Показати вміст цієї сторінки:</label>
+			<label index="pages.mount_pid">Точка монтування (експерт):</label>
+			<label index="pages.mount_pid_ol">Замінити тоску монтування (цю сторінку) із змонтованною сторінкою:</label>
+			<label index="pages.abstract">Резюме:</label>
+			<label index="pages.media">Файли:</label>
+			<label index="pages.is_siteroot">Є коренем сайту:</label>
+			<label index="pages.module">Містить додаток:</label>
 			<label index="pages.module.I.1">Магазин</label>
 			<label index="pages.module.I.2">Дошка</label>
 			<label index="pages.module.I.3">Новини</label>
 			<label index="pages.module.I.4">Користувачі сайту</label>
 			<label index="pages.module.I.5">Підписка</label>
+			<label index="pages.module.I.6">Затвердження (рейтинг)</label>
+			<label index="pages.l18n_cfg">Налаштування локалізації:</label>
+			<label index="pages.l18n_cfg.I.1">Сховати стандартний переклад сторінки</label>
+			<label index="pages.l18n_cfg.I.2">Сховати сторінку, якщо немає перекладу поточною мовою</label>
 			<label index="tt_content">Вміст сторінки</label>
 			<label index="fe_users">Користувач сайту</label>
 			<label index="fe_users.username">Ім'я користувача:</label>
@@ -2012,6 +2233,11 @@
 			<label index="fe_groups.lockToDomain">Прив'язано до домену:</label>
 			<label index="sys_domain">Домен</label>
 			<label index="sys_domain.domainName">Домен:</label>
+			<label index="sys_domain.redirectTo">Переадресувати до:</label>
+			<label index="sys_domain.prepend_params">Передати ці параметри при переадресуванні:</label>
+			<label index="pages_language_overlay">Альтернативна мова сторінки</label>
+			<label index="sys_template">Шаблон</label>
+			<label index="static_template">Статичні шаблони</label>
 			<label index="sys_language">Мова Веб-сторінки</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
@@ -2068,17 +2294,17 @@
 			<label index="fe_users.password">Parole:</label>
 			<label index="fe_users.usergroup">Lietotāju grupas:</label>
 			<label index="fe_users.lockToDomain">Piesaistīt domēnam:</label>
-			<label index="fe_groups">Website lietotāju grupa</label>
-			<label index="fe_groups.title">Grupas vārds:</label>
+			<label index="fe_groups">Saita lietotāju grupa</label>
+			<label index="fe_groups.title">Grupas nosaukums:</label>
 			<label index="fe_groups.lockToDomain">Piesaistīt domēnam:</label>
-			<label index="sys_domain">Domēna</label>
-			<label index="sys_domain.domainName">Domēna:</label>
+			<label index="sys_domain">Domēns</label>
+			<label index="sys_domain.domainName">Domēns:</label>
 			<label index="sys_domain.redirectTo">Pāradresācija uz:</label>
 			<label index="sys_domain.prepend_params">Pārnest parametrus uz pāradresācijas URL:</label>
 			<label index="pages_language_overlay">Alternatīvo lapu valoda</label>
-			<label index="sys_language">Website valoda</label>
-			<label index="sys_template">Template</label>
+			<label index="sys_template">Šablons</label>
 			<label index="static_template">Statiskie šabloni</label>
+			<label index="sys_language">Website valoda</label>
 			<label index="sys_language.isocode">Izvēlieties oficiālo valodu (ISO kods):</label>
 		</languageKey>
 		<languageKey index="jp" type="array">
@@ -2229,6 +2455,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2298,6 +2528,8 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2367,6 +2599,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2433,6 +2669,13 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="pages.nav_hide" type="integer">163349812</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.mount_pid" type="integer">258972787</label>
+			<label index="pages.mount_pid_ol" type="integer">72364821</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2502,6 +2745,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2568,6 +2815,13 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.nav_hide" type="integer">163349812</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="pages.mount_pid" type="integer">258972787</label>
+			<label index="pages.mount_pid_ol" type="integer">72364821</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2655,7 +2909,7 @@
 			<label index="pages.alias" type="integer">169830525</label>
 			<label index="pages.url" type="integer">62115936</label>
 			<label index="pages.lastUpdated" type="integer">68543275</label>
-			<label index="pages.newUntil" type="integer">15740872</label>
+			<label index="pages.newUntil" type="double">15740872</label>
 			<label index="pages.cache_timeout" type="integer">250768080</label>
 			<label index="pages.cache_timeout.I.1" type="integer">17751255</label>
 			<label index="pages.cache_timeout.I.2" type="integer">226471786</label>
@@ -2664,11 +2918,11 @@
 			<label index="pages.cache_timeout.I.5" type="integer">120240592</label>
 			<label index="pages.cache_timeout.I.6" type="integer">182216352</label>
 			<label index="pages.cache_timeout.I.7" type="integer">238766109</label>
-			<label index="pages.cache_timeout.I.8" type="integer">3514198</label>
+			<label index="pages.cache_timeout.I.8" type="double">3514198</label>
 			<label index="pages.cache_timeout.I.9" type="integer">213446991</label>
 			<label index="pages.cache_timeout.I.10" type="integer">23285350</label>
 			<label index="pages.no_cache" type="integer">221004140</label>
-			<label index="pages.no_search" type="integer">8650986</label>
+			<label index="pages.no_search" type="double">8650986</label>
 			<label index="pages.shortcut_mode" type="integer">49005128</label>
 			<label index="pages.shortcut_mode.I.1" type="integer">115282268</label>
 			<label index="pages.shortcut_mode.I.2" type="integer">93918891</label>
@@ -2701,6 +2955,13 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="pages.nav_hide" type="integer">163349812</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.mount_pid" type="integer">258972787</label>
+			<label index="pages.mount_pid_ol" type="integer">72364821</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2767,6 +3028,11 @@
 			<label index="sys_language" type="integer">144875845</label>
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.nav_hide" type="integer">163349812</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2788,7 +3054,7 @@
 			<label index="pages.alias" type="integer">169830525</label>
 			<label index="pages.url" type="integer">62115936</label>
 			<label index="pages.lastUpdated" type="integer">68543275</label>
-			<label index="pages.newUntil" type="integer">15740872</label>
+			<label index="pages.newUntil" type="double">15740872</label>
 			<label index="pages.cache_timeout" type="integer">250768080</label>
 			<label index="pages.cache_timeout.I.1" type="integer">17751255</label>
 			<label index="pages.cache_timeout.I.2" type="integer">226471786</label>
@@ -2797,11 +3063,11 @@
 			<label index="pages.cache_timeout.I.5" type="integer">120240592</label>
 			<label index="pages.cache_timeout.I.6" type="integer">182216352</label>
 			<label index="pages.cache_timeout.I.7" type="integer">238766109</label>
-			<label index="pages.cache_timeout.I.8" type="integer">3514198</label>
+			<label index="pages.cache_timeout.I.8" type="double">3514198</label>
 			<label index="pages.cache_timeout.I.9" type="integer">213446991</label>
 			<label index="pages.cache_timeout.I.10" type="integer">23285350</label>
 			<label index="pages.no_cache" type="integer">221004140</label>
-			<label index="pages.no_search" type="integer">8650986</label>
+			<label index="pages.no_search" type="double">8650986</label>
 			<label index="pages.shortcut_mode" type="integer">49005128</label>
 			<label index="pages.shortcut_mode.I.1" type="integer">115282268</label>
 			<label index="pages.shortcut_mode.I.2" type="integer">93918891</label>
@@ -2836,6 +3102,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -2857,7 +3127,7 @@
 			<label index="pages.alias" type="integer">169830525</label>
 			<label index="pages.url" type="integer">62115936</label>
 			<label index="pages.lastUpdated" type="integer">68543275</label>
-			<label index="pages.newUntil" type="integer">15740872</label>
+			<label index="pages.newUntil" type="double">15740872</label>
 			<label index="pages.cache_timeout" type="integer">250768080</label>
 			<label index="pages.cache_timeout.I.1" type="integer">17751255</label>
 			<label index="pages.cache_timeout.I.2" type="integer">226471786</label>
@@ -2866,11 +3136,11 @@
 			<label index="pages.cache_timeout.I.5" type="integer">120240592</label>
 			<label index="pages.cache_timeout.I.6" type="integer">182216352</label>
 			<label index="pages.cache_timeout.I.7" type="integer">238766109</label>
-			<label index="pages.cache_timeout.I.8" type="integer">3514198</label>
+			<label index="pages.cache_timeout.I.8" type="double">3514198</label>
 			<label index="pages.cache_timeout.I.9" type="integer">213446991</label>
 			<label index="pages.cache_timeout.I.10" type="integer">23285350</label>
 			<label index="pages.no_cache" type="integer">221004140</label>
-			<label index="pages.no_search" type="integer">8650986</label>
+			<label index="pages.no_search" type="double">8650986</label>
 			<label index="pages.shortcut_mode" type="integer">49005128</label>
 			<label index="pages.shortcut_mode.I.1" type="integer">115282268</label>
 			<label index="pages.shortcut_mode.I.2" type="integer">93918891</label>
@@ -2905,6 +3175,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -3108,6 +3382,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -3175,6 +3453,12 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.mount_pid" type="integer">258972787</label>
+			<label index="pages.mount_pid_ol" type="integer">72364821</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -3310,6 +3594,75 @@
 			<label index="sys_language.isocode" type="integer">49440593</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.doktype.I.0" type="integer">162944094</label>
+			<label index="pages.doktype.I.2" type="integer">123085069</label>
+			<label index="pages.doktype.I.3" type="integer">172261511</label>
+			<label index="pages.doktype.I.4" type="integer">213052016</label>
+			<label index="pages.doktype.I.5" type="integer">167908391</label>
+			<label index="pages.doktype.I.7" type="integer">111909417</label>
+			<label index="pages.hidden" type="integer">65518437</label>
+			<label index="pages.layout.I.1" type="integer">186159068</label>
+			<label index="pages.layout.I.2" type="integer">144093188</label>
+			<label index="pages.layout.I.3" type="integer">85298801</label>
+			<label index="pages.extendToSubpages" type="integer">113222983</label>
+			<label index="pages.nav_title" type="integer">213163145</label>
+			<label index="pages.nav_hide" type="integer">163349812</label>
+			<label index="pages.subtitle" type="integer">252742192</label>
+			<label index="pages.target" type="integer">253363033</label>
+			<label index="pages.alias" type="integer">169830525</label>
+			<label index="pages.url" type="integer">62115936</label>
+			<label index="pages.lastUpdated" type="integer">68543275</label>
+			<label index="pages.newUntil" type="double">15740872</label>
+			<label index="pages.cache_timeout" type="integer">250768080</label>
+			<label index="pages.cache_timeout.I.1" type="integer">17751255</label>
+			<label index="pages.cache_timeout.I.2" type="integer">226471786</label>
+			<label index="pages.cache_timeout.I.3" type="integer">25025547</label>
+			<label index="pages.cache_timeout.I.4" type="integer">63694871</label>
+			<label index="pages.cache_timeout.I.5" type="integer">120240592</label>
+			<label index="pages.cache_timeout.I.6" type="integer">182216352</label>
+			<label index="pages.cache_timeout.I.7" type="integer">238766109</label>
+			<label index="pages.cache_timeout.I.8" type="double">3514198</label>
+			<label index="pages.cache_timeout.I.9" type="integer">213446991</label>
+			<label index="pages.cache_timeout.I.10" type="integer">23285350</label>
+			<label index="pages.no_cache" type="integer">221004140</label>
+			<label index="pages.no_search" type="double">8650986</label>
+			<label index="pages.shortcut_mode" type="integer">49005128</label>
+			<label index="pages.shortcut_mode.I.1" type="integer">115282268</label>
+			<label index="pages.shortcut_mode.I.2" type="integer">93918891</label>
+			<label index="pages.content_from_pid" type="integer">151843742</label>
+			<label index="pages.mount_pid" type="integer">258972787</label>
+			<label index="pages.mount_pid_ol" type="integer">72364821</label>
+			<label index="pages.abstract" type="integer">268186811</label>
+			<label index="pages.media" type="integer">147226768</label>
+			<label index="pages.is_siteroot" type="integer">250187229</label>
+			<label index="pages.module" type="integer">136180287</label>
+			<label index="pages.module.I.1" type="integer">167257368</label>
+			<label index="pages.module.I.2" type="integer">100887818</label>
+			<label index="pages.module.I.3" type="integer">231848472</label>
+			<label index="pages.module.I.4" type="integer">164445273</label>
+			<label index="pages.module.I.5" type="integer">141759446</label>
+			<label index="pages.module.I.6" type="integer">19589821</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="tt_content" type="integer">102203127</label>
+			<label index="fe_users" type="integer">178974165</label>
+			<label index="fe_users.username" type="integer">212632006</label>
+			<label index="fe_users.password" type="integer">187963993</label>
+			<label index="fe_users.usergroup" type="integer">142097351</label>
+			<label index="fe_users.lockToDomain" type="integer">230344003</label>
+			<label index="fe_groups" type="integer">102868901</label>
+			<label index="fe_groups.title" type="integer">76352857</label>
+			<label index="fe_groups.lockToDomain" type="integer">230344003</label>
+			<label index="sys_domain" type="integer">246309786</label>
+			<label index="sys_domain.domainName" type="integer">198572531</label>
+			<label index="sys_domain.redirectTo" type="integer">31400985</label>
+			<label index="sys_domain.prepend_params" type="integer">103981266</label>
+			<label index="pages_language_overlay" type="integer">56559649</label>
+			<label index="sys_template" type="integer">41469073</label>
+			<label index="static_template" type="integer">141130377</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -3513,6 +3866,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -3559,6 +3916,75 @@
 			<label index="sys_language" type="integer">144875845</label>
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.doktype.I.0" type="integer">162944094</label>
+			<label index="pages.doktype.I.2" type="integer">123085069</label>
+			<label index="pages.doktype.I.3" type="integer">172261511</label>
+			<label index="pages.doktype.I.4" type="integer">213052016</label>
+			<label index="pages.doktype.I.5" type="integer">167908391</label>
+			<label index="pages.doktype.I.7" type="integer">111909417</label>
+			<label index="pages.hidden" type="integer">65518437</label>
+			<label index="pages.layout.I.1" type="integer">186159068</label>
+			<label index="pages.layout.I.2" type="integer">144093188</label>
+			<label index="pages.layout.I.3" type="integer">85298801</label>
+			<label index="pages.extendToSubpages" type="integer">113222983</label>
+			<label index="pages.nav_title" type="integer">213163145</label>
+			<label index="pages.nav_hide" type="integer">163349812</label>
+			<label index="pages.subtitle" type="integer">252742192</label>
+			<label index="pages.target" type="integer">253363033</label>
+			<label index="pages.alias" type="integer">169830525</label>
+			<label index="pages.url" type="integer">62115936</label>
+			<label index="pages.lastUpdated" type="integer">68543275</label>
+			<label index="pages.newUntil" type="double">15740872</label>
+			<label index="pages.cache_timeout" type="integer">250768080</label>
+			<label index="pages.cache_timeout.I.1" type="integer">17751255</label>
+			<label index="pages.cache_timeout.I.2" type="integer">226471786</label>
+			<label index="pages.cache_timeout.I.3" type="integer">25025547</label>
+			<label index="pages.cache_timeout.I.4" type="integer">63694871</label>
+			<label index="pages.cache_timeout.I.5" type="integer">120240592</label>
+			<label index="pages.cache_timeout.I.6" type="integer">182216352</label>
+			<label index="pages.cache_timeout.I.7" type="integer">238766109</label>
+			<label index="pages.cache_timeout.I.8" type="double">3514198</label>
+			<label index="pages.cache_timeout.I.9" type="integer">213446991</label>
+			<label index="pages.cache_timeout.I.10" type="integer">23285350</label>
+			<label index="pages.no_cache" type="integer">221004140</label>
+			<label index="pages.no_search" type="double">8650986</label>
+			<label index="pages.shortcut_mode" type="integer">49005128</label>
+			<label index="pages.shortcut_mode.I.1" type="integer">115282268</label>
+			<label index="pages.shortcut_mode.I.2" type="integer">93918891</label>
+			<label index="pages.content_from_pid" type="integer">151843742</label>
+			<label index="pages.mount_pid" type="integer">258972787</label>
+			<label index="pages.mount_pid_ol" type="integer">72364821</label>
+			<label index="pages.abstract" type="integer">268186811</label>
+			<label index="pages.media" type="integer">147226768</label>
+			<label index="pages.is_siteroot" type="integer">250187229</label>
+			<label index="pages.module" type="integer">136180287</label>
+			<label index="pages.module.I.1" type="integer">167257368</label>
+			<label index="pages.module.I.2" type="integer">100887818</label>
+			<label index="pages.module.I.3" type="integer">231848472</label>
+			<label index="pages.module.I.4" type="integer">164445273</label>
+			<label index="pages.module.I.5" type="integer">141759446</label>
+			<label index="pages.module.I.6" type="integer">19589821</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="tt_content" type="integer">102203127</label>
+			<label index="fe_users" type="integer">178974165</label>
+			<label index="fe_users.username" type="integer">212632006</label>
+			<label index="fe_users.password" type="integer">187963993</label>
+			<label index="fe_users.usergroup" type="integer">142097351</label>
+			<label index="fe_users.lockToDomain" type="integer">230344003</label>
+			<label index="fe_groups" type="integer">102868901</label>
+			<label index="fe_groups.title" type="integer">76352857</label>
+			<label index="fe_groups.lockToDomain" type="integer">230344003</label>
+			<label index="sys_domain" type="integer">246309786</label>
+			<label index="sys_domain.domainName" type="integer">198572531</label>
+			<label index="sys_domain.redirectTo" type="integer">31400985</label>
+			<label index="sys_domain.prepend_params" type="integer">103981266</label>
+			<label index="pages_language_overlay" type="integer">56559649</label>
+			<label index="sys_template" type="integer">41469073</label>
+			<label index="static_template" type="integer">141130377</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -3630,6 +4056,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -4021,6 +4451,28 @@
 			<label index="sys_domain" type="integer">246309786</label>
 			<label index="sys_domain.domainName" type="integer">198572531</label>
 			<label index="sys_language" type="integer">144875845</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.doktype.I.2" type="integer">123085069</label>
+			<label index="pages.nav_hide" type="integer">163349812</label>
+			<label index="pages.alias" type="integer">169830525</label>
+			<label index="pages.cache_timeout" type="integer">250768080</label>
+			<label index="pages.shortcut_mode.I.2" type="integer">93918891</label>
+			<label index="pages.content_from_pid" type="integer">151843742</label>
+			<label index="pages.mount_pid" type="integer">258972787</label>
+			<label index="pages.mount_pid_ol" type="integer">72364821</label>
+			<label index="pages.abstract" type="integer">268186811</label>
+			<label index="pages.media" type="integer">147226768</label>
+			<label index="pages.is_siteroot" type="integer">250187229</label>
+			<label index="pages.module" type="integer">136180287</label>
+			<label index="pages.module.I.6" type="integer">19589821</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="sys_domain.redirectTo" type="integer">31400985</label>
+			<label index="sys_domain.prepend_params" type="integer">103981266</label>
+			<label index="pages_language_overlay" type="integer">56559649</label>
+			<label index="sys_template" type="integer">41469073</label>
+			<label index="static_template" type="integer">141130377</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>

@@ -961,12 +961,12 @@
 		<languageKey index="fr" type="array">
 			<label index="CType.I.0">Titre</label>
 			<label index="CType.I.1">Texte</label>
-			<label index="CType.I.2">Texte w/image</label>
+			<label index="CType.I.2">Texte &amp; Image</label>
 			<label index="CType.I.3">Image</label>
 			<label index="CType.I.4">Liste à puces</label>
 			<label index="CType.I.5">Table</label>
 			<label index="CType.I.6">Lien vers fichier</label>
-			<label index="CType.I.7">Multimedia</label>
+			<label index="CType.I.7">Multimédia</label>
 			<label index="CType.I.8">Formulaire</label>
 			<label index="CType.I.9">Recherche</label>
 			<label index="CType.I.10">Identifiant</label>
@@ -977,9 +977,9 @@
 			<label index="CType.I.15">Scripts</label>
 			<label index="CType.I.16">Diviseur</label>
 			<label index="CType.I.17">HTML</label>
-			<label index="layout.I.1">Préparation-type 1</label>
-			<label index="layout.I.2">Préparation-type 2</label>
-			<label index="layout.I.3">Préparation-type 3</label>
+			<label index="layout.I.1">Disposition 1</label>
+			<label index="layout.I.2">Disposition 2</label>
+			<label index="layout.I.3">Disposition 3</label>
 			<label index="colPos">Colonnes:</label>
 			<label index="colPos.I.0">Gauche</label>
 			<label index="colPos.I.2">Droite</label>
@@ -991,97 +991,97 @@
 			<label index="header_position.I.2">Aligner à droite</label>
 			<label index="header_position.I.3">Aligner à gauche</label>
 			<label index="header_link">Lien:</label>
-			<label index="header_layout.I.1">Préparation-type 1</label>
-			<label index="header_layout.I.2">Préparation-type 2</label>
-			<label index="header_layout.I.3">Préparation-type 3</label>
-			<label index="header_layout.I.4">Préparation-type 4</label>
-			<label index="header_layout.I.5">Préparation-type 4</label>
+			<label index="header_layout.I.1">Disposition 1</label>
+			<label index="header_layout.I.2">Disposition 2</label>
+			<label index="header_layout.I.3">Disposition 3</label>
+			<label index="header_layout.I.4">Disposition 4</label>
+			<label index="header_layout.I.5">Disposition 5</label>
 			<label index="header_layout.I.6">Caché</label>
 			<label index="text_align">Alignement:</label>
 			<label index="text_align.I.1">Centré</label>
 			<label index="text_align.I.2">Aligner à droite</label>
 			<label index="text_align.I.3">Aligner à gauche</label>
-			<label index="text_face">Police de caractères:</label>
+			<label index="text_face">Police:</label>
 			<label index="text_size">Taille:</label>
 			<label index="text_size.I.1">1: Petite</label>
 			<label index="text_size.I.2">2: Moyenne</label>
 			<label index="text_size.I.3">3: Grande</label>
-			<label index="text_size.I.4">4: Titre 1</label>
-			<label index="text_size.I.5">5: Titre 2</label>
-			<label index="text_size.I.6">Valeur par défaut +1</label>
-			<label index="text_size.I.7">Valeur par défaut -1</label>
+			<label index="text_size.I.4">4: En-tête 1</label>
+			<label index="text_size.I.5">5: En-tête 2</label>
+			<label index="text_size.I.6">Défaut +1</label>
+			<label index="text_size.I.7">Défaut -1</label>
 			<label index="text_color">Couleur:</label>
 			<label index="text_color.I.1">Couleur 1</label>
 			<label index="text_color.I.2">Couleur 2</label>
 			<label index="text_color.I.3">Aucune</label>
 			<label index="text_color.I.5">Noir</label>
 			<label index="text_color.I.6">Blanc</label>
-			<label index="text_color.I.7">Gris sombre</label>
+			<label index="text_color.I.7">Gris foncé</label>
 			<label index="text_color.I.8">Gris clair</label>
 			<label index="text_color.I.9">Argent</label>
 			<label index="text_color.I.10">Rouge</label>
 			<label index="text_color.I.11">Bleu marine</label>
 			<label index="text_color.I.12">Jaune</label>
 			<label index="text_color.I.13">Vert</label>
-			<label index="text_color.I.14">Kaki</label>
+			<label index="text_color.I.14">Olive</label>
 			<label index="text_color.I.15">Maron</label>
 			<label index="text_properties">Propriétés:</label>
 			<label index="text_properties.I.0">Gras</label>
-			<label index="text_properties.I.1">Italiques</label>
+			<label index="text_properties.I.1">Italique</label>
 			<label index="text_properties.I.2">Souligné</label>
-			<label index="text_properties.I.3">Majuscules</label>
-			<label index="bodytext.W.RTE">Editeur de texte avancé en plein écran</label>
+			<label index="text_properties.I.3">Majuscule</label>
+			<label index="bodytext.W.RTE">Edition RTE plein écran</label>
 			<label index="imagewidth">Largeur (pixels):</label>
 			<label index="imageheight">Hauteur (pixels):</label>
 			<label index="imageorient">Position:</label>
-			<label index="imageorient.I.0">Au dessus, centré</label>
-			<label index="imageorient.I.1">Au dessus, à droite</label>
-			<label index="imageorient.I.2">Au dessus, à gauche</label>
-			<label index="imageorient.I.3">En dessous, centré</label>
-			<label index="imageorient.I.4">En dessous, à droite</label>
-			<label index="imageorient.I.5">En dessous, à gauche</label>
-			<label index="imageorient.I.6">Dans le texte, à droite</label>
-			<label index="imageorient.I.7">Dans le texte, à gauche</label>
-			<label index="imageorient.I.8">__Pas de retour à la ligne__</label>
-			<label index="imageorient.I.9">Dans le texte, à droite</label>
-			<label index="imageorient.I.10">Dans le texte, à gauche</label>
+			<label index="imageorient.I.0">Dessus, centre</label>
+			<label index="imageorient.I.1">Dessus, droite</label>
+			<label index="imageorient.I.2">Dessus, gauche</label>
+			<label index="imageorient.I.3">Dessous, centre</label>
+			<label index="imageorient.I.4">Dessous, droite</label>
+			<label index="imageorient.I.5">Dessous, gauche</label>
+			<label index="imageorient.I.6">Habillé, droite</label>
+			<label index="imageorient.I.7">Habillé, gauche</label>
+			<label index="imageorient.I.8">__Pas de retour à la ligne:__</label>
+			<label index="imageorient.I.9">Habillé, droite</label>
+			<label index="imageorient.I.10">Habillé, gauche</label>
 			<label index="imageborder">Bordure:</label>
 			<label index="image_noRows">Pas de ligne:</label>
 			<label index="image_link">Lien:</label>
 			<label index="image_zoom">Cliquer pour agrandir:</label>
 			<label index="image_effects">Effets:</label>
 			<label index="image_effects.I.0">(Aucun)</label>
-			<label index="image_effects.I.1">Rotation 90° (sens des aiguilles d'une montre)</label>
-			<label index="image_effects.I.2">Rotation -90° (sens contraire)</label>
-			<label index="image_effects.I.3">Rotation 180 ° (tour complet)</label>
+			<label index="image_effects.I.1">Rotation 90°</label>
+			<label index="image_effects.I.2">Rotation -90°</label>
+			<label index="image_effects.I.3">Rotation 180°</label>
 			<label index="image_effects.I.4">Nuances de gris</label>
-			<label index="image_effects.I.5">Plus précis</label>
+			<label index="image_effects.I.5">Aiguiser</label>
 			<label index="image_effects.I.6">Normaliser</label>
-			<label index="image_effects.I.7">Plus de contraste</label>
-			<label index="image_effects.I.8">Plus clair</label>
-			<label index="image_effects.I.9">Plus sombre</label>
+			<label index="image_effects.I.7">Contraster</label>
+			<label index="image_effects.I.8">Eclaircir</label>
+			<label index="image_effects.I.9">Obscurcir</label>
 			<label index="image_frames">Frames:</label>
 			<label index="image_frames.I.0">(Aucun)</label>
-			<label index="image_frames.I.1">Frame 1</label>
-			<label index="image_frames.I.2">Frame 2</label>
-			<label index="image_frames.I.3">Frame 3</label>
-			<label index="image_frames.I.4">Frame 4</label>
-			<label index="image_frames.I.5">Frame 5</label>
-			<label index="image_frames.I.6">Frame 6</label>
-			<label index="image_frames.I.7">Frame 7</label>
-			<label index="image_frames.I.8">Frame 8</label>
+			<label index="image_frames.I.1">Cadre 1</label>
+			<label index="image_frames.I.2">Cadre 2</label>
+			<label index="image_frames.I.3">Cadre 3</label>
+			<label index="image_frames.I.4">Cadre 4</label>
+			<label index="image_frames.I.5">Cadre 5</label>
+			<label index="image_frames.I.6">Cadre 6</label>
+			<label index="image_frames.I.7">Cadre 7</label>
+			<label index="image_frames.I.8">Cadre 8</label>
 			<label index="image_compression">Qualité:</label>
 			<label index="image_compression.I.1">Ne pas modifier!</label>
-			<label index="image_compression.I.15">JPG/Très haute résolution</label>
-			<label index="image_compression.I.16">JPG/Haute résolution</label>
-			<label index="image_compression.I.17">JPG/Résolution moyenne</label>
-			<label index="image_compression.I.18">JPG/Basse résolution</label>
-			<label index="image_compression.I.19">JPG/Très basse résolution</label>
+			<label index="image_compression.I.15">JPG/Très Haut</label>
+			<label index="image_compression.I.16">JPG/Haut</label>
+			<label index="image_compression.I.17">JPG/Moyen</label>
+			<label index="image_compression.I.18">JPG/Bas</label>
+			<label index="image_compression.I.19">JPG/Très Bas</label>
 			<label index="imagecols">Colonnes:</label>
 			<label index="imagecaption_position">Alignement:</label>
 			<label index="imagecaption_position.I.1">Centré</label>
-			<label index="imagecaption_position.I.2">Aligner à droite</label>
-			<label index="imagecaption_position.I.3">Aligner à gauche</label>
+			<label index="imagecaption_position.I.2">Droite</label>
+			<label index="imagecaption_position.I.3">Gauche</label>
 			<label index="cols">Colonnes du frame:</label>
 			<label index="cols.I.0">Auto</label>
 			<label index="recursive.I.1">1 niveau</label>
@@ -1090,14 +1090,14 @@
 			<label index="recursive.I.4">4 niveaux</label>
 			<label index="recursive.I.5">Illimité</label>
 			<label index="menu_type">Type de menu:</label>
-			<label index="menu_type.I.0">Menu des pages</label>
+			<label index="menu_type.I.0">Menu de ces pages</label>
 			<label index="menu_type.I.1">Menu des sous-pages</label>
-			<label index="menu_type.I.2">Menu des sous-pages (avec abstract)</label>
+			<label index="menu_type.I.2">Menu des sous-pages (avec résumé)</label>
 			<label index="menu_type.I.3">Menu des sous-pages (avec section)</label>
 			<label index="menu_type.I.4">Plan du site</label>
 			<label index="menu_type.I.5">Index des sections (Contenu w/Index coché)</label>
-			<label index="menu_type.I.6">Pages récemment mise à jour</label>
-			<label index="menu_type.I.7">Page en relation (basé sur les mots clés)</label>
+			<label index="menu_type.I.6">Pages récemment mises à jour</label>
+			<label index="menu_type.I.7">Page en relation (basé sur les mots-clés)</label>
 			<label index="list_type">Plugin:</label>
 			<label index="table_bgColor">Couleur de fond:</label>
 			<label index="table_bgColor.I.1">Couleur 1</label>
@@ -1105,7 +1105,7 @@
 			<label index="table_bgColor.I.3">Aucune</label>
 			<label index="table_bgColor.I.5">Noir</label>
 			<label index="table_bgColor.I.6">Blanc</label>
-			<label index="table_bgColor.I.7">Gris sombre</label>
+			<label index="table_bgColor.I.7">Gris foncé</label>
 			<label index="table_bgColor.I.8">Gris clair</label>
 			<label index="table_bgColor.I.9">Argent</label>
 			<label index="table_border">Bordure:</label>
@@ -1117,33 +1117,33 @@
 			<label index="records">Eléments:</label>
 			<label index="spaceBefore">Avant:</label>
 			<label index="spaceAfter">Après:</label>
-			<label index="section_frame">Frame:</label>
+			<label index="section_frame">Cadre:</label>
 			<label index="section_frame.I.1">Invisible</label>
 			<label index="section_frame.I.2">Règle avant</label>
 			<label index="section_frame.I.3">Règle après</label>
 			<label index="section_frame.I.4">Indenter</label>
-			<label index="section_frame.I.5">Identer, 33/66%</label>
-			<label index="section_frame.I.6">Identer, 66/33%</label>
-			<label index="section_frame.I.7">Frame 1</label>
-			<label index="section_frame.I.8">Frame 2</label>
+			<label index="section_frame.I.5">Indenter, 33/66%</label>
+			<label index="section_frame.I.6">Indenter, 66/33%</label>
+			<label index="section_frame.I.7">Cadre 1</label>
+			<label index="section_frame.I.8">Cadre 2</label>
 			<label index="splash_layout">Type de Textbox:</label>
 			<label index="splash_layout.I.1">Image ombrée</label>
-			<label index="splash_layout.I.2">Image frame 1</label>
-			<label index="splash_layout.I.3">Image frame 2</label>
-			<label index="splash_layout.I.4">___Graphique :___</label>
+			<label index="splash_layout.I.2">Image Cadre 1</label>
+			<label index="splash_layout.I.3">Image Cadre 2</label>
+			<label index="splash_layout.I.4">___Graphique:___</label>
 			<label index="splash_layout.I.5">Post-it 1</label>
 			<label index="sectionIndex">Index:</label>
 			<label index="linkToTop">Vers la haut:</label>
 			<label index="rte_enabled">Désactiver Rich Text Editor:</label>
 			<label index="pi_flexform">Options du plugin:</label>
-			<label index="ALT.imgOptions">Options d'image</label>
-			<label index="ALT.imgLinks">Liens de l'image</label>
+			<label index="ALT.imgOptions">Options d'Image</label>
+			<label index="ALT.imgLinks">Liens d'Image</label>
 			<label index="select_key.ALT.uploads">Lire depuis le chemin:</label>
-			<label index="imagecaption.ALT.uploads">Descriptions:</label>
+			<label index="imagecaption.ALT.uploads">Déscriptions:</label>
 			<label index="imagecaption.ALT.script">Commentaires:</label>
 			<label index="bodytext.ALT.mailform">Configuration:</label>
 			<label index="pages.ALT.mailform">Aller à la page:</label>
-			<label index="subheader.ALT.mailform">E-mail du destinataire:</label>
+			<label index="subheader.ALT.mailform">E-mail destinataire:</label>
 			<label index="pages.ALT.search">Envoyer à la page:</label>
 			<label index="pages.ALT.login">Envoyer à la page:</label>
 			<label index="bodytext.ALT.html">HTML:</label>
@@ -1355,7 +1355,7 @@
 			<label index="CType.I.13">Record invoegen</label>
 			<label index="CType.I.14">Plugin invoegen</label>
 			<label index="CType.I.15">Script</label>
-			<label index="CType.I.16">Scheidslijn</label>
+			<label index="CType.I.16">Scheidingslijn</label>
 			<label index="CType.I.17">HTML</label>
 			<label index="layout.I.1">Layout 1</label>
 			<label index="layout.I.2">Layout 2</label>
@@ -1499,8 +1499,8 @@
 			<label index="spaceAfter">Na:</label>
 			<label index="section_frame">Frame:</label>
 			<label index="section_frame.I.1">Onzichtbaar</label>
-			<label index="section_frame.I.2">Lijn (ruler) voor</label>
-			<label index="section_frame.I.3">Lijn (ruler) na</label>
+			<label index="section_frame.I.2">Lijn voor</label>
+			<label index="section_frame.I.3">Lijn na</label>
 			<label index="section_frame.I.4">Inspringen</label>
 			<label index="section_frame.I.5">Inspringen, 33/66%</label>
 			<label index="section_frame.I.6">Inspringen, 66/33%</label>
@@ -1516,8 +1516,8 @@
 			<label index="linkToTop">Naar boven:</label>
 			<label index="rte_enabled">Deactiveer Rich Text Editor:</label>
 			<label index="pi_flexform">Plugin opties:</label>
-			<label index="ALT.imgOptions">Afbeelding opties</label>
-			<label index="ALT.imgLinks">Afbeelding koppelingen</label>
+			<label index="ALT.imgOptions">Afbeelding Opties</label>
+			<label index="ALT.imgLinks">Afbeelding Links</label>
 			<label index="select_key.ALT.uploads">Lees vanuit pad:</label>
 			<label index="imagecaption.ALT.uploads">Omschrijvingen:</label>
 			<label index="imagecaption.ALT.script">Commentaar:</label>
@@ -2085,6 +2085,7 @@
 			<label index="sectionIndex">Kazalo:</label>
 			<label index="linkToTop">Na vrh:</label>
 			<label index="rte_enabled">Izklopi urejevalnik oblikovanega besedila:</label>
+			<label index="pi_flexform">Nastavitve vtičnika:</label>
 			<label index="ALT.imgOptions">Možnosti za slike</label>
 			<label index="ALT.imgLinks">Povezave na slike</label>
 			<label index="select_key.ALT.uploads">Beri s poti:</label>
@@ -2102,13 +2103,13 @@
 			<label index="CType.I.1">Teksti</label>
 			<label index="CType.I.2">Kuvallinen teksti</label>
 			<label index="CType.I.3">Kuva</label>
-			<label index="CType.I.4">Merkki lista</label>
+			<label index="CType.I.4">Luettelo</label>
 			<label index="CType.I.5">Taulukko</label>
-			<label index="CType.I.6">Tiedosto linkki</label>
+			<label index="CType.I.6">Tiedostolinkit</label>
 			<label index="CType.I.7">Multimedia</label>
 			<label index="CType.I.8">Lomake</label>
 			<label index="CType.I.9">Haku</label>
-			<label index="CType.I.10">Sisäänkirjoitus:</label>
+			<label index="CType.I.10">Sisäänkirjaus</label>
 			<label index="CType.I.11">Tekstiboxi</label>
 			<label index="CType.I.12">Valikko/Sivustorakenne</label>
 			<label index="CType.I.13">Lisää tietueita</label>
@@ -2135,27 +2136,27 @@
 			<label index="header_layout.I.3">Malli 3</label>
 			<label index="header_layout.I.4">Malli 4</label>
 			<label index="header_layout.I.5">Malli 5</label>
-			<label index="header_layout.I.6">Piiloitettu</label>
+			<label index="header_layout.I.6">Piilotettu</label>
 			<label index="text_align">Tasaus:</label>
 			<label index="text_align.I.1">Keskitä</label>
 			<label index="text_align.I.2">Oikealle</label>
 			<label index="text_align.I.3">Vasemmalle</label>
 			<label index="text_face">Kirjaisinlaji</label>
 			<label index="text_size">Koko:</label>
-			<label index="text_size.I.1">1:Pieni</label>
-			<label index="text_size.I.2">2.Keskikoko</label>
-			<label index="text_size.I.3">3:Suuri</label>
-			<label index="text_size.I.4">4:Otsikko 1</label>
-			<label index="text_size.I.5">5:Otsikko 2</label>
+			<label index="text_size.I.1">1: Pieni</label>
+			<label index="text_size.I.2">2: Keskikoko</label>
+			<label index="text_size.I.3">3: Suuri</label>
+			<label index="text_size.I.4">4: Otsikko 1</label>
+			<label index="text_size.I.5">5: Otsikko 2</label>
 			<label index="text_size.I.6">Oletus +1</label>
-			<label index="text_size.I.7">Oletus +2</label>
+			<label index="text_size.I.7">Oletus -1</label>
 			<label index="text_color">Väri:</label>
 			<label index="text_color.I.1">Väri 1</label>
 			<label index="text_color.I.2">Väri 2</label>
 			<label index="text_color.I.3">Ei mitään</label>
 			<label index="text_color.I.5">Musta</label>
 			<label index="text_color.I.6">Valkoinen</label>
-			<label index="text_color.I.7">Tumman harmaa</label>
+			<label index="text_color.I.7">Tummanharmaa</label>
 			<label index="text_color.I.8">Harmaa</label>
 			<label index="text_color.I.9">Hopea</label>
 			<label index="text_color.I.10">Punainen</label>
@@ -2163,15 +2164,15 @@
 			<label index="text_color.I.12">Keltainen</label>
 			<label index="text_color.I.13">Vihreä</label>
 			<label index="text_color.I.14">Oliivi</label>
-			<label index="text_color.I.15">Maroon</label>
+			<label index="text_color.I.15">Kastanjanruskea</label>
 			<label index="text_properties">Ominaisuudet:</label>
 			<label index="text_properties.I.0">Lihavoi</label>
-			<label index="text_properties.I.1">Kallista</label>
+			<label index="text_properties.I.1">Kursivoi</label>
 			<label index="text_properties.I.2">Alleviivaa</label>
 			<label index="text_properties.I.3">Isoin kirjaimin</label>
 			<label index="bodytext.W.RTE">Koko sivun Rich Text Editing</label>
-			<label index="imagewidth">Leveys, (pikselejä:</label>
-			<label index="imageheight">Korkeys, (pikselejä);</label>
+			<label index="imagewidth">Leveys (pikseleinä):</label>
+			<label index="imageheight">Korkeus (pikseleinä);</label>
 			<label index="imageorient">Paikka:</label>
 			<label index="imageorient.I.0">Ylös, keskelle</label>
 			<label index="imageorient.I.1">Ylös, oikealle</label>
@@ -2184,36 +2185,36 @@
 			<label index="imageorient.I.8">__Ei rivitystä:__</label>
 			<label index="imageorient.I.9">Tekstissä, oikealle</label>
 			<label index="imageorient.I.10">Tekstissä, vasemmalle</label>
-			<label index="imageborder">Rajat:</label>
+			<label index="imageborder">Kehys:</label>
 			<label index="image_noRows">Ei rivejä:</label>
 			<label index="image_link">Linkki:</label>
-			<label index="image_zoom">Näpsäytä-suurenna</label>
+			<label index="image_zoom">Napsauta-suurenna</label>
 			<label index="image_effects">Efektit:</label>
 			<label index="image_effects.I.0">(ei mitään)</label>
-			<label index="image_effects.I.1">Käännä 90 kellon suuntaan</label>
-			<label index="image_effects.I.2">Käännä 90 vasten kellon suuntaa</label>
+			<label index="image_effects.I.1">Käännä 90 myötäpäivään</label>
+			<label index="image_effects.I.2">Käännä 90 vastapäivään</label>
 			<label index="image_effects.I.3">Käännä 180</label>
 			<label index="image_effects.I.4">Harmaasävy</label>
 			<label index="image_effects.I.5">Terävöitä</label>
-			<label index="image_effects.I.6">Normaaliksi</label>
+			<label index="image_effects.I.6">Normaalisoi</label>
 			<label index="image_effects.I.7">Kontrasti</label>
 			<label index="image_effects.I.8">Kirkasta</label>
 			<label index="image_effects.I.9">Tummenna</label>
-			<label index="image_frames">Osasivut:</label>
-			<label index="image_frames.I.0">(eiosasivuja)</label>
-			<label index="image_frames.I.1">Raami 1</label>
-			<label index="image_frames.I.2">Raami 2</label>
-			<label index="image_frames.I.3">Raami 3</label>
-			<label index="image_frames.I.4">Raami 4</label>
-			<label index="image_frames.I.5">Raami 5</label>
-			<label index="image_frames.I.6">Raami 6</label>
-			<label index="image_frames.I.7">Raami 7</label>
-			<label index="image_frames.I.8">Raami 8</label>
+			<label index="image_frames">Kehykset:</label>
+			<label index="image_frames.I.0">(ei kehyksiä)</label>
+			<label index="image_frames.I.1">Kehys 1</label>
+			<label index="image_frames.I.2">Kehys 2</label>
+			<label index="image_frames.I.3">Kehys 3</label>
+			<label index="image_frames.I.4">Kehys 4</label>
+			<label index="image_frames.I.5">Kehys 5</label>
+			<label index="image_frames.I.6">Kehys 6</label>
+			<label index="image_frames.I.7">Kehys 7</label>
+			<label index="image_frames.I.8">Kehys 8</label>
 			<label index="image_compression">Laatu:</label>
 			<label index="image_compression.I.1">Älä muuta!</label>
 			<label index="image_compression.I.15">JPG/Korkein</label>
 			<label index="image_compression.I.16">JPG/Korkea</label>
-			<label index="image_compression.I.17">JPG/Keskimääräinen</label>
+			<label index="image_compression.I.17">JPG/Keskitasoinen</label>
 			<label index="image_compression.I.18">JPG/Matala</label>
 			<label index="image_compression.I.19">JPG/Matalin</label>
 			<label index="imagecols">Sarakkeet:</label>
@@ -2221,18 +2222,18 @@
 			<label index="imagecaption_position.I.1">Keskitä</label>
 			<label index="imagecaption_position.I.2">Oikealle</label>
 			<label index="imagecaption_position.I.3">Vasemmalle</label>
-			<label index="cols">Taulun sarakkeet_</label>
-			<label index="cols.I.0">Auto</label>
-			<label index="recursive.I.1">Taso 1</label>
-			<label index="recursive.I.2">Taso 2</label>
-			<label index="recursive.I.3">Taso 3</label>
-			<label index="recursive.I.4">Taso 4</label>
+			<label index="cols">Taulukon sarakkeet:</label>
+			<label index="cols.I.0">Automaattinen</label>
+			<label index="recursive.I.1">1 taso</label>
+			<label index="recursive.I.2">2 tasoa</label>
+			<label index="recursive.I.3">3 tasoa</label>
+			<label index="recursive.I.4">4 tasoa</label>
 			<label index="recursive.I.5">Määrittelemätön</label>
 			<label index="menu_type">Valikon tyyppi:</label>
-			<label index="menu_type.I.0">Näiden sivujen valikko</label>
-			<label index="menu_type.I.1">Näiden sivujen alasivujen valikko</label>
-			<label index="menu_type.I.2">Näiden sivujen alasivujen valikko (lyhennelmineen)</label>
-			<label index="menu_type.I.3">Näiden sivujen valikko + kappaleet</label>
+			<label index="menu_type.I.0">Valikko näistä sivuista</label>
+			<label index="menu_type.I.1">Valikko näiden sivujen alasivuista</label>
+			<label index="menu_type.I.2">Valikko näiden sivujen alasivuista (lyhennelmineen)</label>
+			<label index="menu_type.I.3">Valikko näiden sivujen alasivuista + kappaleista</label>
 			<label index="menu_type.I.4">Sivuston rakenne</label>
 			<label index="menu_type.I.5">Kappaleiden indeksi (sivusisältö indeksi tarkistettuna)</label>
 			<label index="menu_type.I.6">Hiljan päivitetyt sivut</label>
@@ -2248,12 +2249,12 @@
 			<label index="table_bgColor.I.8">Harmaa</label>
 			<label index="table_bgColor.I.9">Hopea</label>
 			<label index="table_border">Reunus:</label>
-			<label index="table_cellspacing">Solunvälistys:</label>
+			<label index="table_cellspacing">Solun välistys:</label>
 			<label index="table_cellpadding">Solun täyttö:</label>
 			<label index="media">Tiedostot:</label>
-			<label index="multimedia">Tiedsoto:</label>
-			<label index="filelink_size">Näytätiedoston koko:</label>
-			<label index="records">Kohteet</label>
+			<label index="multimedia">Tiedosto:</label>
+			<label index="filelink_size">Näytä tiedoston koko:</label>
+			<label index="records">Kohteet:</label>
 			<label index="spaceBefore">Ennen:</label>
 			<label index="spaceAfter">Jälkeen:</label>
 			<label index="section_frame">Osasivu:</label>
@@ -2266,17 +2267,17 @@
 			<label index="section_frame.I.7">Osasivu 1</label>
 			<label index="section_frame.I.8">Osasivu 2</label>
 			<label index="splash_layout">Tekstilaatikon tyyppi:</label>
-			<label index="splash_layout.I.1">Oletus</label>
-			<label index="splash_layout.I.2">Kuvaan reunat 1</label>
-			<label index="splash_layout.I.3">Kuvaan reunat 2</label>
+			<label index="splash_layout.I.1">Kuvaan varjo</label>
+			<label index="splash_layout.I.2">Kuvakehys 1</label>
+			<label index="splash_layout.I.3">Kuvakehys 2</label>
 			<label index="splash_layout.I.4">__Graafinen:__</label>
 			<label index="splash_layout.I.5">Postit 1</label>
 			<label index="sectionIndex">Indeksi:</label>
 			<label index="linkToTop">Alkuun:</label>
 			<label index="rte_enabled">Poista RTE käytöstä</label>
-			<label index="pi_flexform">Plugin ominaisuudet:</label>
+			<label index="pi_flexform">Pluginin ominaisuudet:</label>
 			<label index="ALT.imgOptions">Kuvan ominaisuudet</label>
-			<label index="ALT.imgLinks">Kuva linkit</label>
+			<label index="ALT.imgLinks">Kuvalinkit</label>
 			<label index="select_key.ALT.uploads">Luo polusta:</label>
 			<label index="imagecaption.ALT.uploads">Kuvaukset:</label>
 			<label index="imagecaption.ALT.script">Kommentit:</label>
@@ -3617,6 +3618,194 @@
 			<label index="bodytext.ALT.html">HTML:</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="CType.I.0">Antraštė</label>
+			<label index="CType.I.1">Tekstas</label>
+			<label index="CType.I.2">Tekstas su paveikslėliais</label>
+			<label index="CType.I.3">Paveikslėlis</label>
+			<label index="CType.I.4">Sąrašas</label>
+			<label index="CType.I.5">Lentelė</label>
+			<label index="CType.I.6">Bylų nuorodos</label>
+			<label index="CType.I.7">Multimedija</label>
+			<label index="CType.I.8">Forma</label>
+			<label index="CType.I.9">Paieška</label>
+			<label index="CType.I.10">Prisijungimas</label>
+			<label index="CType.I.11">Teksto laukas</label>
+			<label index="CType.I.12">Meniu/žemėlapis</label>
+			<label index="CType.I.13">Įterpti įrašus</label>
+			<label index="CType.I.14">Įterpti priedus</label>
+			<label index="CType.I.15">Skriptas</label>
+			<label index="CType.I.16">Atskyriklis</label>
+			<label index="CType.I.17">HTML</label>
+			<label index="layout.I.1">Išdėstymas 1</label>
+			<label index="layout.I.2">Išdėstymas 2</label>
+			<label index="layout.I.3">Išdėstymas 3</label>
+			<label index="colPos">Stulpeliai:</label>
+			<label index="colPos.I.0">Kairė</label>
+			<label index="colPos.I.2">Dešinė</label>
+			<label index="colPos.I.3">Rėmelis</label>
+			<label index="date">Data:</label>
+			<label index="header">Antraštė:</label>
+			<label index="header_position">Išlygiavimas:</label>
+			<label index="header_position.I.1">Centruotas</label>
+			<label index="header_position.I.2">Dešinė</label>
+			<label index="header_position.I.3">Kairė</label>
+			<label index="header_link">Nuoroda:</label>
+			<label index="header_layout.I.1">Išdėstymas 1</label>
+			<label index="header_layout.I.2">Išdėstymas 2</label>
+			<label index="header_layout.I.3">Išdėstymas 3</label>
+			<label index="header_layout.I.4">Išdėstymas 4</label>
+			<label index="header_layout.I.5">Išdėstymas 5</label>
+			<label index="header_layout.I.6">Paslėptas</label>
+			<label index="text_align">Išlygiavimas:</label>
+			<label index="text_align.I.1">Centuotas</label>
+			<label index="text_align.I.2">Dešinė</label>
+			<label index="text_align.I.3">Kairė</label>
+			<label index="text_face">Šriftas:</label>
+			<label index="text_size">Dydis:</label>
+			<label index="text_size.I.1">1: Mažas</label>
+			<label index="text_size.I.2">2: Vidutinis</label>
+			<label index="text_size.I.3">3: Didelis</label>
+			<label index="text_size.I.4">4: Antraštė 1</label>
+			<label index="text_size.I.5">5: Antraštė 2</label>
+			<label index="text_size.I.6">Numatytasis +1</label>
+			<label index="text_size.I.7">Numatytasis -1</label>
+			<label index="text_color">Spalva:</label>
+			<label index="text_color.I.1">Spalva 1</label>
+			<label index="text_color.I.2">Spalva 2</label>
+			<label index="text_color.I.3">Nėra</label>
+			<label index="text_color.I.5">Juoda</label>
+			<label index="text_color.I.6">Balta</label>
+			<label index="text_color.I.7">Tamsiai pilka</label>
+			<label index="text_color.I.8">Pilka</label>
+			<label index="text_color.I.9">Sidabrinė</label>
+			<label index="text_color.I.10">Raudona</label>
+			<label index="text_color.I.11">Jūros mėlyna</label>
+			<label index="text_color.I.12">Geltona</label>
+			<label index="text_color.I.13">Žalia</label>
+			<label index="text_color.I.14">Chaki</label>
+			<label index="text_color.I.15">Bordo</label>
+			<label index="text_properties">Savybės</label>
+			<label index="text_properties.I.0">Paryškintas</label>
+			<label index="text_properties.I.1">Pasviręs</label>
+			<label index="text_properties.I.2">Pabrauktas</label>
+			<label index="text_properties.I.3">Didžiosiomis raidėmis</label>
+			<label index="bodytext.W.RTE">Redagavimas ekrano redaktoriumi</label>
+			<label index="imagewidth">Plotis (taškais):</label>
+			<label index="imageheight">Aukštis (taškais):</label>
+			<label index="imageorient">Pozicija:</label>
+			<label index="imageorient.I.0">Viršuje, centre</label>
+			<label index="imageorient.I.1">Viršuje, dešinėje</label>
+			<label index="imageorient.I.2">Viršuje, kairėje</label>
+			<label index="imageorient.I.3">Apačioje, centre</label>
+			<label index="imageorient.I.4">Apačioje, dešinėje</label>
+			<label index="imageorient.I.5">Apačioje, kairėje</label>
+			<label index="imageorient.I.6">Tekste, dešinėje</label>
+			<label index="imageorient.I.7">Tekste, kairėje</label>
+			<label index="imageorient.I.8">__Nekeliant eilučių:__</label>
+			<label index="imageorient.I.9">Tekste, dešinėje</label>
+			<label index="imageorient.I.10">Tekste, kairėje</label>
+			<label index="imageborder">Rėmelis:</label>
+			<label index="image_noRows">Be eilučių:</label>
+			<label index="image_link">Nuoroda:</label>
+			<label index="image_zoom">Spustelkite, kad padidinti:</label>
+			<label index="image_effects">Efektai:</label>
+			<label index="image_effects.I.0">(Nėra)</label>
+			<label index="image_effects.I.1">Pasukti 90 pagal laikrodžio rodyklę</label>
+			<label index="image_effects.I.2">Pasukti -90 prieš laikrodžio rodyklę</label>
+			<label index="image_effects.I.3">Pasukti 180</label>
+			<label index="image_effects.I.4">Pilkų pustonių skalė</label>
+			<label index="image_effects.I.5">Paryškinti</label>
+			<label index="image_effects.I.6">Normalizuoti</label>
+			<label index="image_effects.I.7">Kontrastas</label>
+			<label index="image_effects.I.8">Paryškinti</label>
+			<label index="image_effects.I.9">Patamsinti</label>
+			<label index="image_frames">Rėmeliai:</label>
+			<label index="image_frames.I.0">(Nėra)</label>
+			<label index="image_frames.I.1">Rėmelis 1</label>
+			<label index="image_frames.I.2">Rėmelis 2</label>
+			<label index="image_frames.I.3">Rėmelis 3</label>
+			<label index="image_frames.I.4">Rėmelis 4</label>
+			<label index="image_frames.I.5">Rėmelis 5</label>
+			<label index="image_frames.I.6">Rėmelis 6</label>
+			<label index="image_frames.I.7">Rėmelis 7</label>
+			<label index="image_frames.I.8">Rėmelis 8</label>
+			<label index="image_compression">Kokybė:</label>
+			<label index="image_compression.I.1">Nekeisti!</label>
+			<label index="image_compression.I.15">JPG/Labai gera</label>
+			<label index="image_compression.I.16">JPG/Gera</label>
+			<label index="image_compression.I.17">JPG/Vidutinė</label>
+			<label index="image_compression.I.18">JPG/Prasta</label>
+			<label index="image_compression.I.19">JPG/Labai prasta</label>
+			<label index="imagecols">Stulpeliai:</label>
+			<label index="imagecaption_position">Išlygiavimas:</label>
+			<label index="imagecaption_position.I.1">Centruotas</label>
+			<label index="imagecaption_position.I.2">Dešinė</label>
+			<label index="imagecaption_position.I.3">Kairė</label>
+			<label index="cols">Lentelės sulpeliai:</label>
+			<label index="cols.I.0">Auto</label>
+			<label index="recursive.I.1">1 lygis</label>
+			<label index="recursive.I.2">2 lygis</label>
+			<label index="recursive.I.3">3 lygis</label>
+			<label index="recursive.I.4">4 lygis</label>
+			<label index="recursive.I.5">Begelinis</label>
+			<label index="menu_type">Meniu tipas:</label>
+			<label index="menu_type.I.0">Šių puslapių meniu</label>
+			<label index="menu_type.I.1">Šių puslapių subpuslapių meniu</label>
+			<label index="menu_type.I.2">Šių puslapių subpuslapių meniu (su santrauka)</label>
+			<label index="menu_type.I.3">Šių puslapių subpuslapių meniu + sekcijos</label>
+			<label index="menu_type.I.4">Žemėlapis</label>
+			<label index="menu_type.I.5">Sekcijos turinys (puslapio turinys su pažymėtu turiniu)</label>
+			<label index="menu_type.I.6">Dažniausiai atnaujinami puslapiai</label>
+			<label index="menu_type.I.7">Susiję puslapiai (pagal raktinius žodžius)</label>
+			<label index="list_type">Priedai:</label>
+			<label index="table_bgColor">Fono spalva:</label>
+			<label index="table_bgColor.I.1">Spalva 1</label>
+			<label index="table_bgColor.I.2">Spalva 2</label>
+			<label index="table_bgColor.I.3">Nėra</label>
+			<label index="table_bgColor.I.5">Juoda</label>
+			<label index="table_bgColor.I.6">Balta</label>
+			<label index="table_bgColor.I.7">Tamsiai pilka</label>
+			<label index="table_bgColor.I.8">Pilka</label>
+			<label index="table_bgColor.I.9">Sidabrinė</label>
+			<label index="table_border">Rėmelis:</label>
+			<label index="table_cellspacing">Tarpai tarp langelių</label>
+			<label index="table_cellpadding">Langelių atitraukimas</label>
+			<label index="media">Bylos:</label>
+			<label index="multimedia">Byla:</label>
+			<label index="filelink_size">Rodyti bylos dydį:</label>
+			<label index="records">Elementai:</label>
+			<label index="spaceBefore">Prieš:</label>
+			<label index="spaceAfter">Po:</label>
+			<label index="section_frame">Rėmelis:</label>
+			<label index="section_frame.I.1">Nematomas</label>
+			<label index="section_frame.I.2">Liniuotė prieš</label>
+			<label index="section_frame.I.3">Liniuotė po</label>
+			<label index="section_frame.I.4">Atitraukimas</label>
+			<label index="section_frame.I.5">Atitraukimas, 33/66%</label>
+			<label index="section_frame.I.6">Atitraukimas, 66/33%</label>
+			<label index="section_frame.I.7">Rėmelis 1</label>
+			<label index="section_frame.I.8">Rėmelis 2</label>
+			<label index="splash_layout">Teksto langelio tipas:</label>
+			<label index="splash_layout.I.1">Paveikslėlio šešėlis</label>
+			<label index="splash_layout.I.2">Paveikslėlio rėmelis 1</label>
+			<label index="splash_layout.I.3">Paveikslėlio rėmelis 2</label>
+			<label index="splash_layout.I.4">__Grafinis:__</label>
+			<label index="splash_layout.I.5">Postit 1</label>
+			<label index="sectionIndex">Indeksuoti:</label>
+			<label index="linkToTop">Į viršų:</label>
+			<label index="rte_enabled">Išjungti teksto redaktorių:</label>
+			<label index="pi_flexform">Priedų parametrai</label>
+			<label index="ALT.imgOptions">Paveisklėlių parametrai</label>
+			<label index="ALT.imgLinks">Paveikslėlių nuorodos</label>
+			<label index="select_key.ALT.uploads">Nuskaityti nuo kelio:</label>
+			<label index="imagecaption.ALT.uploads">Aprašymai:</label>
+			<label index="imagecaption.ALT.script">Komentarai:</label>
+			<label index="bodytext.ALT.mailform">Konfiguracija:</label>
+			<label index="pages.ALT.mailform">Peršokti į puslapį:</label>
+			<label index="subheader.ALT.mailform">Gavėjo-email:</label>
+			<label index="pages.ALT.search">Nukreipti į puslapį:</label>
+			<label index="pages.ALT.login">Nukreipti į puslapį:</label>
+			<label index="bodytext.ALT.html">HTML:</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="CType.I.0">Siðuhaus</label>
@@ -4273,6 +4462,194 @@
 			<label index="bodytext.ALT.html">HTML:</label>
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="CType.I.0">ส่วนหัวเรื่อง</label>
+			<label index="CType.I.1">ข้อความ</label>
+			<label index="CType.I.2">ข้อความกับรูปภาพ</label>
+			<label index="CType.I.3">รูปภาพ</label>
+			<label index="CType.I.4">รายการ Bullet</label>
+			<label index="CType.I.5">ตาราง</label>
+			<label index="CType.I.6">ลิ้งค์ไปไฟล์</label>
+			<label index="CType.I.7">มัลติมีเดีย</label>
+			<label index="CType.I.8">แบบฟอร์ม</label>
+			<label index="CType.I.9">ค้นหา</label>
+			<label index="CType.I.10">เข้าสู่ระบบ</label>
+			<label index="CType.I.11">กล่องข้อความ</label>
+			<label index="CType.I.12">เมนู/แผนที่เว็บไซต์</label>
+			<label index="CType.I.13">แทรกระเบียน</label>
+			<label index="CType.I.14">แทรกปลั้กอิน</label>
+			<label index="CType.I.15">สคริป</label>
+			<label index="CType.I.16">ตัวแบ่ง</label>
+			<label index="CType.I.17">HTML</label>
+			<label index="layout.I.1">รูปแบบที่ 1</label>
+			<label index="layout.I.2">รูปแบบที่ 2</label>
+			<label index="layout.I.3">รูปแบบที่ 3</label>
+			<label index="colPos">คอลัมน์:</label>
+			<label index="colPos.I.0">ซ้าย</label>
+			<label index="colPos.I.2">ขวา</label>
+			<label index="colPos.I.3">ขอบ</label>
+			<label index="date">วันที่:</label>
+			<label index="header">ส่วนหัวเรื่อง:</label>
+			<label index="header_position">จัดตำแหน่ง:</label>
+			<label index="header_position.I.1">กึ่งกลาง</label>
+			<label index="header_position.I.2">ชิดขวา</label>
+			<label index="header_position.I.3">ชิดซ้าย</label>
+			<label index="header_link">ลิ้งค์:</label>
+			<label index="header_layout.I.1">รูปแบบที่ 1</label>
+			<label index="header_layout.I.2">รูปแบบที่ 2</label>
+			<label index="header_layout.I.3">รูปแบบที่ 3</label>
+			<label index="header_layout.I.4">รูปแบบที่ 4</label>
+			<label index="header_layout.I.5">รูปแบบที่ 5</label>
+			<label index="header_layout.I.6">ซ่อน</label>
+			<label index="text_align">จัดตำแหน่ง:</label>
+			<label index="text_align.I.1">กึ่งกลาง</label>
+			<label index="text_align.I.2">ชิดขวา</label>
+			<label index="text_align.I.3">ชิดซ้าย</label>
+			<label index="text_face">หน้าตาฟอนท์:</label>
+			<label index="text_size">ขนาด:</label>
+			<label index="text_size.I.1">1: เล็ก</label>
+			<label index="text_size.I.2">2: กลาง</label>
+			<label index="text_size.I.3">3: ใหญ่</label>
+			<label index="text_size.I.4">4: ส่วนหัวเรื่อง 1</label>
+			<label index="text_size.I.5">5: ส่วนหัวเรื่อง 2</label>
+			<label index="text_size.I.6">ค่าที่ตั้งไว้ +1</label>
+			<label index="text_size.I.7">ค่าที่ตั้งไว้ -1</label>
+			<label index="text_color">สี:</label>
+			<label index="text_color.I.1">สี 1</label>
+			<label index="text_color.I.2">สี 2</label>
+			<label index="text_color.I.3">ไม่มี</label>
+			<label index="text_color.I.5">ดำ</label>
+			<label index="text_color.I.6">ขาว</label>
+			<label index="text_color.I.7">เทาเข้ม</label>
+			<label index="text_color.I.8">เทา</label>
+			<label index="text_color.I.9">เงิน</label>
+			<label index="text_color.I.10">แดง</label>
+			<label index="text_color.I.11">เขียวทหารเรือ</label>
+			<label index="text_color.I.12">เหลือง</label>
+			<label index="text_color.I.13">เขียว</label>
+			<label index="text_color.I.14">เขียวโอลีฟ</label>
+			<label index="text_color.I.15">แดงเข้มอมน้ำตาล</label>
+			<label index="text_properties">คุณสมบัติ:</label>
+			<label index="text_properties.I.0">ตัวหนา</label>
+			<label index="text_properties.I.1">ตัวเอียง</label>
+			<label index="text_properties.I.2">ขีดเส้นใต้</label>
+			<label index="text_properties.I.3">อักษรใหญ่</label>
+			<label index="bodytext.W.RTE">Rich Text Editing เต็มหน้าจอ</label>
+			<label index="imagewidth">ความกว้าง (พิกเซล)</label>
+			<label index="imageheight">ความสูง (พิกเซล)</label>
+			<label index="imageorient">ตำแหน่ง:</label>
+			<label index="imageorient.I.0">อยู้ด้านบน, กึ่งกลาง</label>
+			<label index="imageorient.I.1">อยู้ด้านบน, ขวา</label>
+			<label index="imageorient.I.2">อยู้ด้านบน, ซ้าย</label>
+			<label index="imageorient.I.3">อยู้ด้านล่าง, กึ่งกลาง</label>
+			<label index="imageorient.I.4">อยู้ด้านล่าง, ขวา</label>
+			<label index="imageorient.I.5">อยู้ด้านล่าง, ซ้าย</label>
+			<label index="imageorient.I.6">ในข้อความ, ขวา</label>
+			<label index="imageorient.I.7">ในข้อความ, ซ้าย</label>
+			<label index="imageorient.I.8">__ไม่ห่อหุ้ม:__</label>
+			<label index="imageorient.I.9">ในข้อความ, ขวา</label>
+			<label index="imageorient.I.10">ในข้อความ, ซ้าย</label>
+			<label index="imageborder">ขอบ:</label>
+			<label index="image_noRows">ไม่มีแถว:</label>
+			<label index="image_link">ลิ้งค์:</label>
+			<label index="image_zoom">คลิ๊ก-ขยายใหญ่</label>
+			<label index="image_effects">เอฟเฟ็คท์:</label>
+			<label index="image_effects.I.0">(ไม่มี)</label>
+			<label index="image_effects.I.1">หมุน 90 ตามเข็ม</label>
+			<label index="image_effects.I.2">หมุน -90 ทวนเข็ม</label>
+			<label index="image_effects.I.3">หมุน 180</label>
+			<label index="image_effects.I.4">โทนสีเทา</label>
+			<label index="image_effects.I.5">ชัดขึ้น</label>
+			<label index="image_effects.I.6">เหมือนปกติ</label>
+			<label index="image_effects.I.7">ความคมชัด</label>
+			<label index="image_effects.I.8">สว่างขึ้น</label>
+			<label index="image_effects.I.9">มืดขึ้น</label>
+			<label index="image_frames">เฟรม:</label>
+			<label index="image_frames.I.0">(ไม่มี)</label>
+			<label index="image_frames.I.1">กรอบ 1</label>
+			<label index="image_frames.I.2">กรอบ 2</label>
+			<label index="image_frames.I.3">กรอบ 3</label>
+			<label index="image_frames.I.4">กรอบ 4</label>
+			<label index="image_frames.I.5">กรอบ 5</label>
+			<label index="image_frames.I.6">กรอบ 6</label>
+			<label index="image_frames.I.7">กรอบ 7</label>
+			<label index="image_frames.I.8">กรอบ 8</label>
+			<label index="image_compression">คุณภาพ:</label>
+			<label index="image_compression.I.1">ไม่เปลี่ยน!</label>
+			<label index="image_compression.I.15">JPG/สูงมาก</label>
+			<label index="image_compression.I.16">JPG/สูง</label>
+			<label index="image_compression.I.17">JPG/ปานกลาง</label>
+			<label index="image_compression.I.18">JPG/ต่ำ</label>
+			<label index="image_compression.I.19">JPG/ต่ำมาก</label>
+			<label index="imagecols">คอลัมน์:</label>
+			<label index="imagecaption_position">การจัดวาง:</label>
+			<label index="imagecaption_position.I.1">กึ่งกลาง</label>
+			<label index="imagecaption_position.I.2">ขวา</label>
+			<label index="imagecaption_position.I.3">ซ้าย</label>
+			<label index="cols">คอลัมน์ตาราง:</label>
+			<label index="cols.I.0">อัตโนมัติ</label>
+			<label index="recursive.I.1">1 ระดับ</label>
+			<label index="recursive.I.2">2 ระดับ</label>
+			<label index="recursive.I.3">3 ระดับ</label>
+			<label index="recursive.I.4">4 ระดับ</label>
+			<label index="recursive.I.5">ไม่สิ้นสุด</label>
+			<label index="menu_type">ชนิด เมนู:</label>
+			<label index="menu_type.I.0">เมนู ของหน้าเหล่านี้</label>
+			<label index="menu_type.I.1">เมนู หน้าย่อย ของหน้าเหล่านี้</label>
+			<label index="menu_type.I.2">เมนู หน้าย่อย ของหน้าเหล่านี้ (พร้อม บทคัดย่อ)</label>
+			<label index="menu_type.I.3">เมนู หน้าย่อย ของหน้าเหล่านี้ + ส่วนย่อย</label>
+			<label index="menu_type.I.4">แผนที่เว็บไซต์</label>
+			<label index="menu_type.I.5">ดัชนีส่วนย่อย (เนื้อหาของหน้า พร้อมเลือกดัชนี)</label>
+			<label index="menu_type.I.6">หน้าที่พึ่งทำให้ทันสมัย</label>
+			<label index="menu_type.I.7">หน้าที่เกี่ยวข้อง (บนพื้นฐานของ คำหลัก)</label>
+			<label index="list_type">ปลั้กอิน</label>
+			<label index="table_bgColor">สีพื้นหลัง</label>
+			<label index="table_bgColor.I.1">สี 1</label>
+			<label index="table_bgColor.I.2">สี 2</label>
+			<label index="table_bgColor.I.3">ไม่มี</label>
+			<label index="table_bgColor.I.5">ดำ</label>
+			<label index="table_bgColor.I.6">ขาว</label>
+			<label index="table_bgColor.I.7">เทาเข้ม</label>
+			<label index="table_bgColor.I.8">เทา</label>
+			<label index="table_bgColor.I.9">เงิน</label>
+			<label index="table_border">ขอบ:</label>
+			<label index="table_cellspacing">Cellspacing:</label>
+			<label index="table_cellpadding">Cellpadding:</label>
+			<label index="media">ไฟล์:</label>
+			<label index="multimedia">ไฟล์:</label>
+			<label index="filelink_size">แสดง ขนาดไฟล์:</label>
+			<label index="records">สิ่งของ:</label>
+			<label index="spaceBefore">ก่อน:</label>
+			<label index="spaceAfter">หลัง:</label>
+			<label index="section_frame">กรอบ:</label>
+			<label index="section_frame.I.1">ล่องหน</label>
+			<label index="section_frame.I.2">บรรทัด อยู่ก่อน</label>
+			<label index="section_frame.I.3">บรรทัด ตามหลัง</label>
+			<label index="section_frame.I.4">ย่อหน้า</label>
+			<label index="section_frame.I.5">ย่อหน้า, 33/66%</label>
+			<label index="section_frame.I.6">ย่อหน้า, 66/33%</label>
+			<label index="section_frame.I.7">กรอบ 1</label>
+			<label index="section_frame.I.8">กรอบ 2</label>
+			<label index="splash_layout">ชนิด กล่องข้อความ:</label>
+			<label index="splash_layout.I.1">เงา รูปภาพ</label>
+			<label index="splash_layout.I.2">รูปภาพ กรอบ 1</label>
+			<label index="splash_layout.I.3">รูปภาพ กรอบ 2</label>
+			<label index="splash_layout.I.4">__เกี่ยวกับภาพ__</label>
+			<label index="splash_layout.I.5">บันทึกช่วยจำ 1</label>
+			<label index="sectionIndex">ดัชนี:</label>
+			<label index="linkToTop">ไป ด้านบน:</label>
+			<label index="rte_enabled">ไม่ใช้ Rich Text Editor:</label>
+			<label index="pi_flexform">ตัวเลือก ปลั้กอิน:</label>
+			<label index="ALT.imgOptions">ตัวเลือก รูปภาพ</label>
+			<label index="ALT.imgLinks">ลิ้งค์จาก รูปภาพ</label>
+			<label index="select_key.ALT.uploads">อ่านจาก path:</label>
+			<label index="imagecaption.ALT.uploads">การอธิบาย:</label>
+			<label index="imagecaption.ALT.script">วิจารณ์:</label>
+			<label index="bodytext.ALT.mailform">การตั้งค่าคอนฟิก:</label>
+			<label index="pages.ALT.mailform">กระโดดไปหน้า:</label>
+			<label index="subheader.ALT.mailform">อีเมล์ ผู้รับ:</label>
+			<label index="pages.ALT.search">ส่งไปหน้า:</label>
+			<label index="pages.ALT.login">ส่งไปหน้า:</label>
+			<label index="bodytext.ALT.html">HTML:</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -5296,47 +5673,187 @@
 			<label index="CType.I.3">Зображення</label>
 			<label index="CType.I.4">Ненумерований список</label>
 			<label index="CType.I.5">Таблиця</label>
+			<label index="CType.I.6">Файлові посилання</label>
 			<label index="CType.I.7">Мультимедія</label>
 			<label index="CType.I.8">Форма</label>
 			<label index="CType.I.9">Пошук</label>
 			<label index="CType.I.10">Логін</label>
+			<label index="CType.I.11">Текстове вікно</label>
 			<label index="CType.I.12">Меню/Карта сайту</label>
 			<label index="CType.I.13">Вставити запис</label>
 			<label index="CType.I.14">Вставити plugin</label>
 			<label index="CType.I.15">Скрипт</label>
+			<label index="CType.I.16">Роздільник</label>
 			<label index="CType.I.17">HTML</label>
 			<label index="layout.I.1">Вигляд 1</label>
 			<label index="layout.I.2">Вигляд 2</label>
+			<label index="layout.I.3">Вигляд 3</label>
+			<label index="colPos">Стовпці:</label>
+			<label index="colPos.I.0">Лівий</label>
+			<label index="colPos.I.2">Правий</label>
+			<label index="colPos.I.3">Межа</label>
+			<label index="date">Дата:</label>
+			<label index="header">Заголовок:</label>
+			<label index="header_position">Вирівнювання:</label>
 			<label index="header_position.I.1">По центру</label>
 			<label index="header_position.I.2">Праворуч</label>
 			<label index="header_position.I.3">Ліворуч</label>
+			<label index="header_link">Посилання:</label>
+			<label index="header_layout.I.1">Вигляд 1</label>
+			<label index="header_layout.I.2">Вигляд 2</label>
+			<label index="header_layout.I.3">Вигляд 3</label>
+			<label index="header_layout.I.4">Вигляд 4</label>
+			<label index="header_layout.I.5">Вигляд 5</label>
+			<label index="header_layout.I.6">Сховати</label>
+			<label index="text_align">Вирівнювання:</label>
+			<label index="text_align.I.1">По центру</label>
+			<label index="text_align.I.2">Праворуч</label>
+			<label index="text_align.I.3">Ліворуч</label>
+			<label index="text_face">Шрифт:</label>
+			<label index="text_size">Розмір:</label>
+			<label index="text_size.I.1">1: маленький</label>
+			<label index="text_size.I.2">2: середній</label>
+			<label index="text_size.I.3">3: великий</label>
+			<label index="text_size.I.4">4: заголовок 1</label>
+			<label index="text_size.I.5">5: заголовок 2</label>
+			<label index="text_size.I.6">Звичайний +1</label>
+			<label index="text_size.I.7">Звичайний -1</label>
 			<label index="text_color">Колір:</label>
 			<label index="text_color.I.1">Колір 1</label>
 			<label index="text_color.I.2">Колір 2</label>
+			<label index="text_color.I.3">Без</label>
 			<label index="text_color.I.5">Чорний</label>
 			<label index="text_color.I.6">Білий</label>
 			<label index="text_color.I.7">Темно-сірий</label>
 			<label index="text_color.I.8">Сірий</label>
 			<label index="text_color.I.9">Сріблястий</label>
 			<label index="text_color.I.10">Червоний</label>
+			<label index="text_color.I.11">Блакитний</label>
 			<label index="text_color.I.12">Жовтий</label>
 			<label index="text_color.I.13">Зелений</label>
 			<label index="text_color.I.14">Олівковий</label>
+			<label index="text_color.I.15">Бордовий</label>
 			<label index="text_properties">Властивості:</label>
 			<label index="text_properties.I.0">Жирний</label>
 			<label index="text_properties.I.1">З нахилом</label>
 			<label index="text_properties.I.2">З підкресленням</label>
 			<label index="text_properties.I.3">Великими літерами</label>
+			<label index="bodytext.W.RTE">Повноекранний редактор тексту</label>
+			<label index="imagewidth">Ширина у пікселях:</label>
+			<label index="imageheight">Висота у пікселях:</label>
+			<label index="imageorient">Позиція:</label>
+			<label index="imageorient.I.0">Вище, по центру</label>
+			<label index="imageorient.I.1">Вище, праворуч</label>
+			<label index="imageorient.I.2">Вище, ліворуч</label>
+			<label index="imageorient.I.3">Нижче, по центру</label>
+			<label index="imageorient.I.4">Нижче, праворуч</label>
+			<label index="imageorient.I.5">Нижче, ліворуч</label>
+			<label index="imageorient.I.6">У тексті, праворуч</label>
+			<label index="imageorient.I.7">У тексті, ліворуч</label>
+			<label index="imageorient.I.8">__Без обтікання__:</label>
+			<label index="imageorient.I.9">У тексті, праворуч</label>
+			<label index="imageorient.I.10">У тексті, ліворуч</label>
+			<label index="imageborder">Межа:</label>
+			<label index="image_noRows">Без рядків:</label>
+			<label index="image_link">Посилання:</label>
+			<label index="image_zoom">Збільшення при клацанні:</label>
+			<label index="image_effects">Ефекти:</label>
+			<label index="image_effects.I.0">(без)</label>
+			<label index="image_effects.I.1">Повернути на 90° за год.</label>
+			<label index="image_effects.I.2">Повернути на 90° проти год.</label>
+			<label index="image_effects.I.3">Повернути на 180°</label>
+			<label index="image_effects.I.4">Сіра шкала</label>
+			<label index="image_effects.I.5">Різкість</label>
+			<label index="image_effects.I.6">Нормалізувати</label>
+			<label index="image_effects.I.7">Контраст</label>
+			<label index="image_effects.I.8">Яскравіше</label>
+			<label index="image_effects.I.9">Темніше</label>
+			<label index="image_frames">Рамки:</label>
+			<label index="image_frames.I.0">(без)</label>
+			<label index="image_frames.I.1">Рамка 1</label>
+			<label index="image_frames.I.2">Рамка 2</label>
+			<label index="image_frames.I.3">Рамка 3</label>
+			<label index="image_frames.I.4">Рамка 4</label>
+			<label index="image_frames.I.5">Рамка 5</label>
+			<label index="image_frames.I.6">Рамка 6</label>
+			<label index="image_frames.I.7">Рамка 7</label>
+			<label index="image_frames.I.8">Рамка 8</label>
+			<label index="image_compression">Якість:</label>
+			<label index="image_compression.I.1">Не змінювати!</label>
+			<label index="image_compression.I.15">JPG/дуже висока</label>
+			<label index="image_compression.I.16">JPG/висока</label>
+			<label index="image_compression.I.17">JPG/середня</label>
+			<label index="image_compression.I.18">JPG/низька</label>
+			<label index="image_compression.I.19">JPG/дуже низька</label>
+			<label index="imagecols">Стовпці:</label>
+			<label index="imagecaption_position">Вирівнювання:</label>
+			<label index="imagecaption_position.I.1">По центру</label>
+			<label index="imagecaption_position.I.2">Праворуч</label>
+			<label index="imagecaption_position.I.3">Ліворуч</label>
+			<label index="cols">Стовпці таблиці:</label>
+			<label index="cols.I.0">Автоматично</label>
+			<label index="recursive.I.1">1 рівень</label>
+			<label index="recursive.I.2">2 рівня</label>
+			<label index="recursive.I.3">3 рівня</label>
+			<label index="recursive.I.4">4 рівня</label>
+			<label index="recursive.I.5">нескінченно</label>
+			<label index="menu_type">Тип меню:</label>
+			<label index="menu_type.I.0">Меню цих сторінок</label>
+			<label index="menu_type.I.1">Меню підсторінок цих сторінок</label>
+			<label index="menu_type.I.2">Меню підсторінок цих сторінок із резюме</label>
+			<label index="menu_type.I.3">Меню підсторінок цих сторінок + секції</label>
+			<label index="menu_type.I.4">Карта сайту</label>
+			<label index="menu_type.I.5">Меню секцій (записів із увімкнутим індексом)</label>
+			<label index="menu_type.I.6">Нещодавно поновлені сторінки</label>
+			<label index="menu_type.I.7">Пов'язані сторінки (по ключовим словам)</label>
+			<label index="list_type">Додаток:</label>
+			<label index="table_bgColor">Кольор тла:</label>
+			<label index="table_bgColor.I.1">Кольор 1</label>
+			<label index="table_bgColor.I.2">Кольор 2</label>
+			<label index="table_bgColor.I.3">без</label>
 			<label index="table_bgColor.I.5">Чорний</label>
 			<label index="table_bgColor.I.6">Білий</label>
 			<label index="table_bgColor.I.7">Темно сірий</label>
 			<label index="table_bgColor.I.8">Сірий</label>
 			<label index="table_bgColor.I.9">Сріблястий</label>
 			<label index="table_border">Рамка:</label>
+			<label index="table_cellspacing">Простір між комірками:</label>
+			<label index="table_cellpadding">Доповнювання між комірками:</label>
+			<label index="media">Файли:</label>
 			<label index="multimedia">Файл:</label>
+			<label index="filelink_size">Подивитись розмір файла:</label>
+			<label index="records">Записи:</label>
 			<label index="spaceBefore">До:</label>
 			<label index="spaceAfter">Після:</label>
 			<label index="section_frame">Фрейм:</label>
+			<label index="section_frame.I.1">Невидима</label>
+			<label index="section_frame.I.2">Лінія до</label>
+			<label index="section_frame.I.3">Лінія після</label>
+			<label index="section_frame.I.4">Відступ</label>
+			<label index="section_frame.I.5">Відступ, 33/66%</label>
+			<label index="section_frame.I.6">Відступ, 66/33%</label>
+			<label index="section_frame.I.7">Рамка 1</label>
+			<label index="section_frame.I.8">Рамка 2</label>
+			<label index="splash_layout">Тип тектового поля:</label>
+			<label index="splash_layout.I.1">Тінь зображення</label>
+			<label index="splash_layout.I.2">Зображення у рамці 1</label>
+			<label index="splash_layout.I.3">Зображення у рамці 2</label>
+			<label index="splash_layout.I.4">__Графічні:__</label>
+			<label index="splash_layout.I.5">Postit 1</label>
+			<label index="sectionIndex">Індексувати:</label>
+			<label index="linkToTop">Догори:</label>
+			<label index="rte_enabled">Вимкнути RTE:</label>
+			<label index="pi_flexform">Налаштування додатку:</label>
+			<label index="ALT.imgOptions">Властивості зображення</label>
+			<label index="ALT.imgLinks">Посилання зображення</label>
+			<label index="select_key.ALT.uploads">Отримати за адресою:</label>
+			<label index="imagecaption.ALT.uploads">Описи:</label>
+			<label index="imagecaption.ALT.script">Коментарі:</label>
+			<label index="bodytext.ALT.mailform">Конфіґурація</label>
+			<label index="pages.ALT.mailform">Перехід на сторінку:</label>
+			<label index="subheader.ALT.mailform">E-mail отримувача:</label>
+			<label index="pages.ALT.search">Відіслати на сторінку:</label>
+			<label index="pages.ALT.login">Відіслати на сторінку:</label>
 			<label index="bodytext.ALT.html">HTML:</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
@@ -5344,9 +5861,9 @@
 			<label index="CType.I.1">Teksts</label>
 			<label index="CType.I.2">Teksts ar bildi</label>
 			<label index="CType.I.3">Bilde</label>
-			<label index="CType.I.4">Marķets saraksts</label>
+			<label index="CType.I.4">Marķēts saraksts</label>
 			<label index="CType.I.5">Tabula</label>
-			<label index="CType.I.6">Lunki uz failiem</label>
+			<label index="CType.I.6">Linki uz failiem</label>
 			<label index="CType.I.7">Multimēdiji</label>
 			<label index="CType.I.8">Forma</label>
 			<label index="CType.I.9">Meklēšana</label>
@@ -5532,6 +6049,196 @@
 		<languageKey index="jp" type="array">
 		</languageKey>
 		<languageKey index="vn" type="array">
+		</languageKey>
+		<languageKey index="ba" type="array">
+			<label index="CType.I.0">Zaglavlje</label>
+			<label index="CType.I.1">Tekst</label>
+			<label index="CType.I.2">Tekst sa slikom</label>
+			<label index="CType.I.3">Slika</label>
+			<label index="CType.I.4">Nenumerisana lista</label>
+			<label index="CType.I.5">Tabela</label>
+			<label index="CType.I.6">Linkovi na datoteka</label>
+			<label index="CType.I.7">Multimedija</label>
+			<label index="CType.I.8">Formular</label>
+			<label index="CType.I.9">Pretraživanje</label>
+			<label index="CType.I.10">Login</label>
+			<label index="CType.I.11">Tekstbox</label>
+			<label index="CType.I.12">Meni/Mapa stranice</label>
+			<label index="CType.I.13">Ubaci zapise</label>
+			<label index="CType.I.14">Ubaci plugin</label>
+			<label index="CType.I.15">Skripta</label>
+			<label index="CType.I.16">Razmaknica</label>
+			<label index="CType.I.17">HTML</label>
+			<label index="layout.I.1">Izgled 1</label>
+			<label index="layout.I.2">Izgled 2</label>
+			<label index="layout.I.3">Izgled 3</label>
+			<label index="colPos">Kolone:</label>
+			<label index="colPos.I.0">Lijevo</label>
+			<label index="colPos.I.2">Desno</label>
+			<label index="colPos.I.3">Granica</label>
+			<label index="date">Datum:</label>
+			<label index="header">Zaglavlje:</label>
+			<label index="header_position">Poravnanje:</label>
+			<label index="header_position.I.1">Centar</label>
+			<label index="header_position.I.2">Desno</label>
+			<label index="header_position.I.3">Lijevo</label>
+			<label index="header_link">Link:</label>
+			<label index="header_layout.I.1">Izgled 1</label>
+			<label index="header_layout.I.2">Izgled 2</label>
+			<label index="header_layout.I.3">Izgled 3</label>
+			<label index="header_layout.I.4">Izgled 4</label>
+			<label index="header_layout.I.5">Izgled 5</label>
+			<label index="header_layout.I.6">Skriveno</label>
+			<label index="text_align">Poravnanje:</label>
+			<label index="text_align.I.1">Centar</label>
+			<label index="text_align.I.2">Desno</label>
+			<label index="text_align.I.3">Lijevo</label>
+			<label index="text_face">Font:</label>
+			<label index="text_size">Veličina:</label>
+			<label index="text_size.I.1">1: Mali</label>
+			<label index="text_size.I.2">2: Srednji</label>
+			<label index="text_size.I.3">3: Veliki</label>
+			<label index="text_size.I.4">4: Zaglavlje 1</label>
+			<label index="text_size.I.5">5: Zaglavlje 2</label>
+			<label index="text_size.I.6">Standardno +1</label>
+			<label index="text_size.I.7">Standardno -1</label>
+			<label index="text_color">Boja:</label>
+			<label index="text_color.I.1">Boja 1</label>
+			<label index="text_color.I.2">Boja 2</label>
+			<label index="text_color.I.3">Ništa</label>
+			<label index="text_color.I.5">Crno</label>
+			<label index="text_color.I.6">Bijelo</label>
+			<label index="text_color.I.7">Tamno sivo</label>
+			<label index="text_color.I.8">Sivo</label>
+			<label index="text_color.I.9">Srebreno</label>
+			<label index="text_color.I.10">Crveno</label>
+			<label index="text_color.I.11">Tamno plavo</label>
+			<label index="text_color.I.12">Žuto</label>
+			<label index="text_color.I.13">Zeleno</label>
+			<label index="text_color.I.14">Maslinasto zeleno</label>
+			<label index="text_color.I.15">Smeđe</label>
+			<label index="text_properties">Osobine:</label>
+			<label index="text_properties.I.0">Podebljano</label>
+			<label index="text_properties.I.1">Kurziv</label>
+			<label index="text_properties.I.2">Podcrtano</label>
+			<label index="text_properties.I.3">Velika slova</label>
+			<label index="bodytext.W.RTE">Editovanje na cijelom ekranu</label>
+			<label index="imagewidth">Širina (piksela)</label>
+			<label index="imageheight">Visina (piksela)</label>
+			<label index="imageorient">Pozicija:</label>
+			<label index="imageorient.I.0">Iznad, centar</label>
+			<label index="imageorient.I.1">Iznad, desno</label>
+			<label index="imageorient.I.2">Iznad, lijevo</label>
+			<label index="imageorient.I.3">Ispod, sredina</label>
+			<label index="imageorient.I.4">Ispod, desno</label>
+			<label index="imageorient.I.5">Ispod, lijevo</label>
+			<label index="imageorient.I.6">U tekstu, desno</label>
+			<label index="imageorient.I.7">U tekstu, lijevo</label>
+			<label index="imageorient.I.8">__Bez wrapa:__</label>
+			<label index="imageorient.I.9">U tekstu, desno</label>
+			<label index="imageorient.I.10">U tekstu, lijevo</label>
+			<label index="imageborder">Okvir</label>
+			<label index="image_noRows">Nema redova:</label>
+			<label index="image_link">Link:</label>
+			<label index="image_zoom">Klik-povećanje:</label>
+			<label index="image_effects">Efekti:</label>
+			<label index="image_effects.I.0">(Ništa)</label>
+			<label index="image_effects.I.1">Rotiraj 90 CW</label>
+			<label index="image_effects.I.2">Rotiraj -90 CW</label>
+			<label index="image_effects.I.3">Rotiraj 180</label>
+			<label index="image_effects.I.4">Crno-bijelo</label>
+			<label index="image_effects.I.5">Zaoštri</label>
+			<label index="image_effects.I.6">Normalizuj</label>
+			<label index="image_effects.I.7">Kontrast</label>
+			<label index="image_effects.I.8">Svjetlije</label>
+			<label index="image_effects.I.9">Tamnije</label>
+			<label index="image_frames">Okviri</label>
+			<label index="image_frames.I.0">(Ništa)</label>
+			<label index="image_frames.I.1">Okvir 1</label>
+			<label index="image_frames.I.2">Okvir 2</label>
+			<label index="image_frames.I.3">Okvir 3</label>
+			<label index="image_frames.I.4">Okvir 4</label>
+			<label index="image_frames.I.5">Okvir 5</label>
+			<label index="image_frames.I.6">Okvir 6</label>
+			<label index="image_frames.I.7">Okvir 7</label>
+			<label index="image_frames.I.8">Okvir 8</label>
+			<label index="image_compression">Kvalitet:</label>
+			<label index="image_compression.I.1">Bez promjene!</label>
+			<label index="image_compression.I.15">JPG/Jako visoki</label>
+			<label index="image_compression.I.16">JPG/Visoki</label>
+			<label index="image_compression.I.17">JPG/Srednji</label>
+			<label index="image_compression.I.18">JPG/Niski</label>
+			<label index="image_compression.I.19">JPG/Veoma niski</label>
+			<label index="imagecols">Kolone:</label>
+			<label index="imagecaption_position">Poravnanje:</label>
+			<label index="imagecaption_position.I.1">Centar</label>
+			<label index="imagecaption_position.I.2">Desno</label>
+			<label index="imagecaption_position.I.3">Lijevo</label>
+			<label index="cols">Kolone tabele:</label>
+			<label index="cols.I.0">Automatski</label>
+			<label index="recursive.I.1">1 nivo</label>
+			<label index="recursive.I.2">2 nivoa</label>
+			<label index="recursive.I.3">3 nivoa</label>
+			<label index="recursive.I.4">4 nivoa</label>
+			<label index="recursive.I.5">Beskonačno</label>
+			<label index="menu_type">Tip menija:</label>
+			<label index="menu_type.I.0">Meni ovih stranica</label>
+			<label index="menu_type.I.1">Meni podstranica ovih stranica</label>
+			<label index="menu_type.I.2">Meni podstranica ovih stranica (sa sažecima)</label>
+			<label index="menu_type.I.3">Meni podstranica ovih stranica + sekcije</label>
+			<label index="menu_type.I.4">Mapa stranice</label>
+			<label index="menu_type.I.5">Indeks sekcija (sadržaj sa indeksom uključenim)</label>
+			<label index="menu_type.I.6">Nedavno mijenjanje stranice</label>
+			<label index="menu_type.I.7">Vezane stranice (na osnovu ključnih riječi)</label>
+			<label index="list_type">Plugin:</label>
+			<label index="table_bgColor">Pozadinska boja:</label>
+			<label index="table_bgColor.I.1">Boja 1</label>
+			<label index="table_bgColor.I.2">Boja 2</label>
+			<label index="table_bgColor.I.3">Ništa</label>
+			<label index="table_bgColor.I.5">Crno</label>
+			<label index="table_bgColor.I.6">Bijelo</label>
+			<label index="table_bgColor.I.7">Tamno sivo</label>
+			<label index="table_bgColor.I.8">Sivo</label>
+			<label index="table_bgColor.I.9">Srebrno</label>
+			<label index="table_border">Okvir:</label>
+			<label index="table_cellspacing">Razmak ćelija:</label>
+			<label index="table_cellpadding">Ivica ćelija:</label>
+			<label index="media">Datoteke:</label>
+			<label index="multimedia">Datoteka:</label>
+			<label index="filelink_size">Pokaži veličinu datoteke:</label>
+			<label index="records">Elementi:</label>
+			<label index="spaceBefore">Prije:</label>
+			<label index="spaceAfter">Poslije:</label>
+			<label index="section_frame">Okvir:</label>
+			<label index="section_frame.I.1">Nevidljivo</label>
+			<label index="section_frame.I.2">Crta prije</label>
+			<label index="section_frame.I.3">Crta poslije</label>
+			<label index="section_frame.I.4">Indent</label>
+			<label index="section_frame.I.5">Indent, 33/66%</label>
+			<label index="section_frame.I.6">Indent, 66/33%</label>
+			<label index="section_frame.I.7">Okvir 1</label>
+			<label index="section_frame.I.8">Okvir 2</label>
+			<label index="splash_layout">Tip tekstboxa:</label>
+			<label index="splash_layout.I.1">Sjenka slike</label>
+			<label index="splash_layout.I.2">Okvir slike 1</label>
+			<label index="splash_layout.I.3">Okvir slike 2</label>
+			<label index="splash_layout.I.4">__Grafički:__</label>
+			<label index="splash_layout.I.5">Postit 1</label>
+			<label index="sectionIndex">Indeks:</label>
+			<label index="linkToTop">Na vrh</label>
+			<label index="rte_enabled">Onemogući RTE</label>
+			<label index="pi_flexform">Plugin opcije:</label>
+			<label index="ALT.imgOptions">Opcije slike</label>
+			<label index="ALT.imgLinks">Linkovi slike</label>
+			<label index="select_key.ALT.uploads">Čitaj sa puta:</label>
+			<label index="imagecaption.ALT.uploads">Opisi:</label>
+			<label index="imagecaption.ALT.script">Komentari:</label>
+			<label index="bodytext.ALT.mailform">Konfiguracija:</label>
+			<label index="pages.ALT.mailform">Skoči na stranicu:</label>
+			<label index="subheader.ALT.mailform">Primateljev email:</label>
+			<label index="pages.ALT.search">Pošalji na stranicu:</label>
+			<label index="pages.ALT.login">Pošalji na stranicu:</label>
+			<label index="bodytext.ALT.html">HTML:</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
@@ -7623,6 +8330,7 @@
 			<label index="pages.ALT.search" type="integer">76240327</label>
 			<label index="pages.ALT.login" type="integer">76240327</label>
 			<label index="bodytext.ALT.html" type="integer">166461268</label>
+			<label index="pi_flexform" type="integer">102839590</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="CType.I.0" type="integer">200609118</label>
@@ -7839,9 +8547,9 @@
 			<label index="colPos" type="integer">43343597</label>
 			<label index="colPos.I.0" type="integer">155571682</label>
 			<label index="colPos.I.2" type="integer">153815495</label>
-			<label index="colPos.I.3" type="integer">7361862</label>
-			<label index="date" type="integer">14210432</label>
-			<label index="header" type="integer">9618284</label>
+			<label index="colPos.I.3" type="double">7361862</label>
+			<label index="date" type="double">14210432</label>
+			<label index="header" type="double">9618284</label>
 			<label index="header_position" type="integer">22565275</label>
 			<label index="header_position.I.1" type="integer">82966017</label>
 			<label index="header_position.I.2" type="integer">153815495</label>
@@ -7860,7 +8568,7 @@
 			<label index="text_face" type="integer">107327980</label>
 			<label index="text_size" type="integer">183911828</label>
 			<label index="text_size.I.1" type="integer">207257027</label>
-			<label index="text_size.I.2" type="integer">14007055</label>
+			<label index="text_size.I.2" type="double">14007055</label>
 			<label index="text_size.I.3" type="integer">142680558</label>
 			<label index="text_size.I.4" type="integer">171265423</label>
 			<label index="text_size.I.5" type="integer">224048943</label>
@@ -7892,7 +8600,7 @@
 			<label index="imageorient" type="integer">247557776</label>
 			<label index="imageorient.I.0" type="integer">180880328</label>
 			<label index="imageorient.I.1" type="integer">63627043</label>
-			<label index="imageorient.I.2" type="integer">11587399</label>
+			<label index="imageorient.I.2" type="double">11587399</label>
 			<label index="imageorient.I.3" type="integer">99341821</label>
 			<label index="imageorient.I.4" type="integer">73933822</label>
 			<label index="imageorient.I.5" type="integer">230641044</label>
@@ -7924,7 +8632,7 @@
 			<label index="image_frames.I.4" type="integer">184906390</label>
 			<label index="image_frames.I.5" type="integer">134232842</label>
 			<label index="image_frames.I.6" type="integer">71651758</label>
-			<label index="image_frames.I.7" type="integer">16295765</label>
+			<label index="image_frames.I.7" type="double">16295765</label>
 			<label index="image_frames.I.8" type="integer">221268484</label>
 			<label index="image_compression" type="integer">64934065</label>
 			<label index="image_compression.I.1" type="integer">74345203</label>
@@ -7939,14 +8647,14 @@
 			<label index="imagecaption_position.I.2" type="integer">153815495</label>
 			<label index="imagecaption_position.I.3" type="integer">155571682</label>
 			<label index="cols" type="integer">19992958</label>
-			<label index="cols.I.0" type="integer">7049857</label>
+			<label index="cols.I.0" type="double">7049857</label>
 			<label index="recursive.I.1" type="integer">200641290</label>
 			<label index="recursive.I.2" type="integer">228799796</label>
 			<label index="recursive.I.3" type="integer">195275893</label>
 			<label index="recursive.I.4" type="integer">97262614</label>
 			<label index="recursive.I.5" type="integer">185655876</label>
 			<label index="menu_type" type="integer">196738597</label>
-			<label index="menu_type.I.0" type="integer">6002206</label>
+			<label index="menu_type.I.0" type="double">6002206</label>
 			<label index="menu_type.I.1" type="integer">210982296</label>
 			<label index="menu_type.I.2" type="integer">90643884</label>
 			<label index="menu_type.I.3" type="integer">85514641</label>
@@ -7971,7 +8679,7 @@
 			<label index="multimedia" type="integer">182590850</label>
 			<label index="filelink_size" type="integer">208718343</label>
 			<label index="records" type="integer">257467321</label>
-			<label index="spaceBefore" type="integer">5347956</label>
+			<label index="spaceBefore" type="double">5347956</label>
 			<label index="spaceAfter" type="integer">266069584</label>
 			<label index="section_frame" type="integer">198032235</label>
 			<label index="section_frame.I.1" type="integer">146594371</label>
@@ -9144,6 +9852,194 @@
 			<label index="bodytext.ALT.html" type="integer">166461268</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="CType.I.0" type="integer">200609118</label>
+			<label index="CType.I.1" type="integer">165673974</label>
+			<label index="CType.I.2" type="integer">221269813</label>
+			<label index="CType.I.3" type="integer">199571973</label>
+			<label index="CType.I.4" type="integer">88917113</label>
+			<label index="CType.I.5" type="integer">85738935</label>
+			<label index="CType.I.6" type="integer">23062602</label>
+			<label index="CType.I.7" type="integer">49638223</label>
+			<label index="CType.I.8" type="integer">221617261</label>
+			<label index="CType.I.9" type="integer">20138052</label>
+			<label index="CType.I.10" type="integer">161344120</label>
+			<label index="CType.I.11" type="integer">216714131</label>
+			<label index="CType.I.12" type="integer">20752218</label>
+			<label index="CType.I.13" type="integer">217553606</label>
+			<label index="CType.I.14" type="integer">62859843</label>
+			<label index="CType.I.15" type="integer">261127781</label>
+			<label index="CType.I.16" type="integer">43024464</label>
+			<label index="CType.I.17" type="integer">79998303</label>
+			<label index="layout.I.1" type="integer">186159068</label>
+			<label index="layout.I.2" type="integer">144093188</label>
+			<label index="layout.I.3" type="integer">85298801</label>
+			<label index="colPos" type="integer">43343597</label>
+			<label index="colPos.I.0" type="integer">155571682</label>
+			<label index="colPos.I.2" type="integer">153815495</label>
+			<label index="colPos.I.3" type="double">7361862</label>
+			<label index="date" type="double">14210432</label>
+			<label index="header" type="double">9618284</label>
+			<label index="header_position" type="integer">22565275</label>
+			<label index="header_position.I.1" type="integer">82966017</label>
+			<label index="header_position.I.2" type="integer">153815495</label>
+			<label index="header_position.I.3" type="integer">155571682</label>
+			<label index="header_link" type="integer">250803615</label>
+			<label index="header_layout.I.1" type="integer">186159068</label>
+			<label index="header_layout.I.2" type="integer">144093188</label>
+			<label index="header_layout.I.3" type="integer">85298801</label>
+			<label index="header_layout.I.4" type="integer">95470957</label>
+			<label index="header_layout.I.5" type="integer">76882202</label>
+			<label index="header_layout.I.6" type="integer">128769925</label>
+			<label index="text_align" type="integer">22565275</label>
+			<label index="text_align.I.1" type="integer">82966017</label>
+			<label index="text_align.I.2" type="integer">153815495</label>
+			<label index="text_align.I.3" type="integer">155571682</label>
+			<label index="text_face" type="integer">107327980</label>
+			<label index="text_size" type="integer">183911828</label>
+			<label index="text_size.I.1" type="integer">207257027</label>
+			<label index="text_size.I.2" type="double">14007055</label>
+			<label index="text_size.I.3" type="integer">142680558</label>
+			<label index="text_size.I.4" type="integer">171265423</label>
+			<label index="text_size.I.5" type="integer">224048943</label>
+			<label index="text_size.I.6" type="integer">170463143</label>
+			<label index="text_size.I.7" type="integer">39280322</label>
+			<label index="text_color" type="integer">263561448</label>
+			<label index="text_color.I.1" type="integer">197399456</label>
+			<label index="text_color.I.2" type="integer">92700243</label>
+			<label index="text_color.I.3" type="integer">112064895</label>
+			<label index="text_color.I.5" type="integer">244375480</label>
+			<label index="text_color.I.6" type="integer">39485808</label>
+			<label index="text_color.I.7" type="integer">69376808</label>
+			<label index="text_color.I.8" type="integer">160738845</label>
+			<label index="text_color.I.9" type="integer">261546821</label>
+			<label index="text_color.I.10" type="integer">249794125</label>
+			<label index="text_color.I.11" type="integer">206346802</label>
+			<label index="text_color.I.12" type="integer">85880025</label>
+			<label index="text_color.I.13" type="integer">221784086</label>
+			<label index="text_color.I.14" type="integer">45659012</label>
+			<label index="text_color.I.15" type="integer">227015290</label>
+			<label index="text_properties" type="integer">262778215</label>
+			<label index="text_properties.I.0" type="integer">18137861</label>
+			<label index="text_properties.I.1" type="integer">194723639</label>
+			<label index="text_properties.I.2" type="integer">139620890</label>
+			<label index="text_properties.I.3" type="integer">102885304</label>
+			<label index="bodytext.W.RTE" type="integer">223346550</label>
+			<label index="imagewidth" type="integer">104072789</label>
+			<label index="imageheight" type="integer">175719416</label>
+			<label index="imageorient" type="integer">247557776</label>
+			<label index="imageorient.I.0" type="integer">180880328</label>
+			<label index="imageorient.I.1" type="integer">63627043</label>
+			<label index="imageorient.I.2" type="double">11587399</label>
+			<label index="imageorient.I.3" type="integer">99341821</label>
+			<label index="imageorient.I.4" type="integer">73933822</label>
+			<label index="imageorient.I.5" type="integer">230641044</label>
+			<label index="imageorient.I.6" type="integer">68014666</label>
+			<label index="imageorient.I.7" type="integer">183617479</label>
+			<label index="imageorient.I.8" type="integer">162649505</label>
+			<label index="imageorient.I.9" type="integer">68014666</label>
+			<label index="imageorient.I.10" type="integer">183617479</label>
+			<label index="imageborder" type="integer">226841890</label>
+			<label index="image_noRows" type="integer">147285854</label>
+			<label index="image_link" type="integer">250803615</label>
+			<label index="image_zoom" type="integer">234954809</label>
+			<label index="image_effects" type="integer">70127431</label>
+			<label index="image_effects.I.0" type="integer">260530758</label>
+			<label index="image_effects.I.1" type="integer">154460239</label>
+			<label index="image_effects.I.2" type="integer">50831993</label>
+			<label index="image_effects.I.3" type="integer">117450906</label>
+			<label index="image_effects.I.4" type="integer">222259573</label>
+			<label index="image_effects.I.5" type="integer">89569123</label>
+			<label index="image_effects.I.6" type="integer">230325028</label>
+			<label index="image_effects.I.7" type="integer">207875281</label>
+			<label index="image_effects.I.8" type="integer">166320363</label>
+			<label index="image_effects.I.9" type="integer">35989143</label>
+			<label index="image_frames" type="integer">229165132</label>
+			<label index="image_frames.I.0" type="integer">260530758</label>
+			<label index="image_frames.I.1" type="integer">200590038</label>
+			<label index="image_frames.I.2" type="integer">194375053</label>
+			<label index="image_frames.I.3" type="integer">72819606</label>
+			<label index="image_frames.I.4" type="integer">184906390</label>
+			<label index="image_frames.I.5" type="integer">134232842</label>
+			<label index="image_frames.I.6" type="integer">71651758</label>
+			<label index="image_frames.I.7" type="double">16295765</label>
+			<label index="image_frames.I.8" type="integer">221268484</label>
+			<label index="image_compression" type="integer">64934065</label>
+			<label index="image_compression.I.1" type="integer">74345203</label>
+			<label index="image_compression.I.15" type="integer">237760472</label>
+			<label index="image_compression.I.16" type="integer">100158582</label>
+			<label index="image_compression.I.17" type="integer">267487914</label>
+			<label index="image_compression.I.18" type="integer">185427776</label>
+			<label index="image_compression.I.19" type="integer">116364772</label>
+			<label index="imagecols" type="integer">43343597</label>
+			<label index="imagecaption_position" type="integer">22565275</label>
+			<label index="imagecaption_position.I.1" type="integer">82966017</label>
+			<label index="imagecaption_position.I.2" type="integer">153815495</label>
+			<label index="imagecaption_position.I.3" type="integer">155571682</label>
+			<label index="cols" type="integer">19992958</label>
+			<label index="cols.I.0" type="double">7049857</label>
+			<label index="recursive.I.1" type="integer">200641290</label>
+			<label index="recursive.I.2" type="integer">228799796</label>
+			<label index="recursive.I.3" type="integer">195275893</label>
+			<label index="recursive.I.4" type="integer">97262614</label>
+			<label index="recursive.I.5" type="integer">185655876</label>
+			<label index="menu_type" type="integer">196738597</label>
+			<label index="menu_type.I.0" type="double">6002206</label>
+			<label index="menu_type.I.1" type="integer">210982296</label>
+			<label index="menu_type.I.2" type="integer">90643884</label>
+			<label index="menu_type.I.3" type="integer">85514641</label>
+			<label index="menu_type.I.4" type="integer">92355808</label>
+			<label index="menu_type.I.5" type="integer">32737031</label>
+			<label index="menu_type.I.6" type="integer">254334231</label>
+			<label index="menu_type.I.7" type="integer">28327610</label>
+			<label index="list_type" type="integer">81771247</label>
+			<label index="table_bgColor" type="integer">201224463</label>
+			<label index="table_bgColor.I.1" type="integer">197399456</label>
+			<label index="table_bgColor.I.2" type="integer">92700243</label>
+			<label index="table_bgColor.I.3" type="integer">112064895</label>
+			<label index="table_bgColor.I.5" type="integer">244375480</label>
+			<label index="table_bgColor.I.6" type="integer">39485808</label>
+			<label index="table_bgColor.I.7" type="integer">69376808</label>
+			<label index="table_bgColor.I.8" type="integer">160738845</label>
+			<label index="table_bgColor.I.9" type="integer">261546821</label>
+			<label index="table_border" type="integer">226841890</label>
+			<label index="table_cellspacing" type="integer">179062000</label>
+			<label index="table_cellpadding" type="integer">52213786</label>
+			<label index="media" type="integer">147226768</label>
+			<label index="multimedia" type="integer">182590850</label>
+			<label index="filelink_size" type="integer">208718343</label>
+			<label index="records" type="integer">257467321</label>
+			<label index="spaceBefore" type="double">5347956</label>
+			<label index="spaceAfter" type="integer">266069584</label>
+			<label index="section_frame" type="integer">198032235</label>
+			<label index="section_frame.I.1" type="integer">146594371</label>
+			<label index="section_frame.I.2" type="integer">262953086</label>
+			<label index="section_frame.I.3" type="integer">22752652</label>
+			<label index="section_frame.I.4" type="integer">77022990</label>
+			<label index="section_frame.I.5" type="integer">154022512</label>
+			<label index="section_frame.I.6" type="integer">228516194</label>
+			<label index="section_frame.I.7" type="integer">200590038</label>
+			<label index="section_frame.I.8" type="integer">194375053</label>
+			<label index="splash_layout" type="integer">266899885</label>
+			<label index="splash_layout.I.1" type="integer">112630223</label>
+			<label index="splash_layout.I.2" type="integer">220366553</label>
+			<label index="splash_layout.I.3" type="integer">29093773</label>
+			<label index="splash_layout.I.4" type="integer">108189181</label>
+			<label index="splash_layout.I.5" type="integer">113478725</label>
+			<label index="sectionIndex" type="integer">98236195</label>
+			<label index="linkToTop" type="integer">49403557</label>
+			<label index="rte_enabled" type="integer">146298503</label>
+			<label index="pi_flexform" type="integer">102839590</label>
+			<label index="ALT.imgOptions" type="integer">96225140</label>
+			<label index="ALT.imgLinks" type="integer">152064470</label>
+			<label index="select_key.ALT.uploads" type="integer">38295134</label>
+			<label index="imagecaption.ALT.uploads" type="integer">54904419</label>
+			<label index="imagecaption.ALT.script" type="integer">202678474</label>
+			<label index="bodytext.ALT.mailform" type="integer">69003025</label>
+			<label index="pages.ALT.mailform" type="integer">254779920</label>
+			<label index="subheader.ALT.mailform" type="integer">247102829</label>
+			<label index="pages.ALT.search" type="integer">76240327</label>
+			<label index="pages.ALT.login" type="integer">76240327</label>
+			<label index="bodytext.ALT.html" type="integer">166461268</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="CType.I.0" type="integer">200609118</label>
@@ -9800,6 +10696,194 @@
 			<label index="bodytext.ALT.html" type="integer">166461268</label>
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="CType.I.0" type="integer">200609118</label>
+			<label index="CType.I.1" type="integer">165673974</label>
+			<label index="CType.I.2" type="integer">221269813</label>
+			<label index="CType.I.3" type="integer">199571973</label>
+			<label index="CType.I.4" type="integer">88917113</label>
+			<label index="CType.I.5" type="integer">85738935</label>
+			<label index="CType.I.6" type="integer">23062602</label>
+			<label index="CType.I.7" type="integer">49638223</label>
+			<label index="CType.I.8" type="integer">221617261</label>
+			<label index="CType.I.9" type="integer">20138052</label>
+			<label index="CType.I.10" type="integer">161344120</label>
+			<label index="CType.I.11" type="integer">216714131</label>
+			<label index="CType.I.12" type="integer">20752218</label>
+			<label index="CType.I.13" type="integer">217553606</label>
+			<label index="CType.I.14" type="integer">62859843</label>
+			<label index="CType.I.15" type="integer">261127781</label>
+			<label index="CType.I.16" type="integer">43024464</label>
+			<label index="CType.I.17" type="integer">79998303</label>
+			<label index="layout.I.1" type="integer">186159068</label>
+			<label index="layout.I.2" type="integer">144093188</label>
+			<label index="layout.I.3" type="integer">85298801</label>
+			<label index="colPos" type="integer">43343597</label>
+			<label index="colPos.I.0" type="integer">155571682</label>
+			<label index="colPos.I.2" type="integer">153815495</label>
+			<label index="colPos.I.3" type="double">7361862</label>
+			<label index="date" type="double">14210432</label>
+			<label index="header" type="double">9618284</label>
+			<label index="header_position" type="integer">22565275</label>
+			<label index="header_position.I.1" type="integer">82966017</label>
+			<label index="header_position.I.2" type="integer">153815495</label>
+			<label index="header_position.I.3" type="integer">155571682</label>
+			<label index="header_link" type="integer">250803615</label>
+			<label index="header_layout.I.1" type="integer">186159068</label>
+			<label index="header_layout.I.2" type="integer">144093188</label>
+			<label index="header_layout.I.3" type="integer">85298801</label>
+			<label index="header_layout.I.4" type="integer">95470957</label>
+			<label index="header_layout.I.5" type="integer">76882202</label>
+			<label index="header_layout.I.6" type="integer">128769925</label>
+			<label index="text_align" type="integer">22565275</label>
+			<label index="text_align.I.1" type="integer">82966017</label>
+			<label index="text_align.I.2" type="integer">153815495</label>
+			<label index="text_align.I.3" type="integer">155571682</label>
+			<label index="text_face" type="integer">107327980</label>
+			<label index="text_size" type="integer">183911828</label>
+			<label index="text_size.I.1" type="integer">207257027</label>
+			<label index="text_size.I.2" type="double">14007055</label>
+			<label index="text_size.I.3" type="integer">142680558</label>
+			<label index="text_size.I.4" type="integer">171265423</label>
+			<label index="text_size.I.5" type="integer">224048943</label>
+			<label index="text_size.I.6" type="integer">170463143</label>
+			<label index="text_size.I.7" type="integer">39280322</label>
+			<label index="text_color" type="integer">263561448</label>
+			<label index="text_color.I.1" type="integer">197399456</label>
+			<label index="text_color.I.2" type="integer">92700243</label>
+			<label index="text_color.I.3" type="integer">112064895</label>
+			<label index="text_color.I.5" type="integer">244375480</label>
+			<label index="text_color.I.6" type="integer">39485808</label>
+			<label index="text_color.I.7" type="integer">69376808</label>
+			<label index="text_color.I.8" type="integer">160738845</label>
+			<label index="text_color.I.9" type="integer">261546821</label>
+			<label index="text_color.I.10" type="integer">249794125</label>
+			<label index="text_color.I.11" type="integer">206346802</label>
+			<label index="text_color.I.12" type="integer">85880025</label>
+			<label index="text_color.I.13" type="integer">221784086</label>
+			<label index="text_color.I.14" type="integer">45659012</label>
+			<label index="text_color.I.15" type="integer">227015290</label>
+			<label index="text_properties" type="integer">262778215</label>
+			<label index="text_properties.I.0" type="integer">18137861</label>
+			<label index="text_properties.I.1" type="integer">194723639</label>
+			<label index="text_properties.I.2" type="integer">139620890</label>
+			<label index="text_properties.I.3" type="integer">102885304</label>
+			<label index="bodytext.W.RTE" type="integer">223346550</label>
+			<label index="imagewidth" type="integer">104072789</label>
+			<label index="imageheight" type="integer">175719416</label>
+			<label index="imageorient" type="integer">247557776</label>
+			<label index="imageorient.I.0" type="integer">180880328</label>
+			<label index="imageorient.I.1" type="integer">63627043</label>
+			<label index="imageorient.I.2" type="double">11587399</label>
+			<label index="imageorient.I.3" type="integer">99341821</label>
+			<label index="imageorient.I.4" type="integer">73933822</label>
+			<label index="imageorient.I.5" type="integer">230641044</label>
+			<label index="imageorient.I.6" type="integer">68014666</label>
+			<label index="imageorient.I.7" type="integer">183617479</label>
+			<label index="imageorient.I.8" type="integer">162649505</label>
+			<label index="imageorient.I.9" type="integer">68014666</label>
+			<label index="imageorient.I.10" type="integer">183617479</label>
+			<label index="imageborder" type="integer">226841890</label>
+			<label index="image_noRows" type="integer">147285854</label>
+			<label index="image_link" type="integer">250803615</label>
+			<label index="image_zoom" type="integer">234954809</label>
+			<label index="image_effects" type="integer">70127431</label>
+			<label index="image_effects.I.0" type="integer">260530758</label>
+			<label index="image_effects.I.1" type="integer">154460239</label>
+			<label index="image_effects.I.2" type="integer">50831993</label>
+			<label index="image_effects.I.3" type="integer">117450906</label>
+			<label index="image_effects.I.4" type="integer">222259573</label>
+			<label index="image_effects.I.5" type="integer">89569123</label>
+			<label index="image_effects.I.6" type="integer">230325028</label>
+			<label index="image_effects.I.7" type="integer">207875281</label>
+			<label index="image_effects.I.8" type="integer">166320363</label>
+			<label index="image_effects.I.9" type="integer">35989143</label>
+			<label index="image_frames" type="integer">229165132</label>
+			<label index="image_frames.I.0" type="integer">260530758</label>
+			<label index="image_frames.I.1" type="integer">200590038</label>
+			<label index="image_frames.I.2" type="integer">194375053</label>
+			<label index="image_frames.I.3" type="integer">72819606</label>
+			<label index="image_frames.I.4" type="integer">184906390</label>
+			<label index="image_frames.I.5" type="integer">134232842</label>
+			<label index="image_frames.I.6" type="integer">71651758</label>
+			<label index="image_frames.I.7" type="double">16295765</label>
+			<label index="image_frames.I.8" type="integer">221268484</label>
+			<label index="image_compression" type="integer">64934065</label>
+			<label index="image_compression.I.1" type="integer">74345203</label>
+			<label index="image_compression.I.15" type="integer">237760472</label>
+			<label index="image_compression.I.16" type="integer">100158582</label>
+			<label index="image_compression.I.17" type="integer">267487914</label>
+			<label index="image_compression.I.18" type="integer">185427776</label>
+			<label index="image_compression.I.19" type="integer">116364772</label>
+			<label index="imagecols" type="integer">43343597</label>
+			<label index="imagecaption_position" type="integer">22565275</label>
+			<label index="imagecaption_position.I.1" type="integer">82966017</label>
+			<label index="imagecaption_position.I.2" type="integer">153815495</label>
+			<label index="imagecaption_position.I.3" type="integer">155571682</label>
+			<label index="cols" type="integer">19992958</label>
+			<label index="cols.I.0" type="double">7049857</label>
+			<label index="recursive.I.1" type="integer">200641290</label>
+			<label index="recursive.I.2" type="integer">228799796</label>
+			<label index="recursive.I.3" type="integer">195275893</label>
+			<label index="recursive.I.4" type="integer">97262614</label>
+			<label index="recursive.I.5" type="integer">185655876</label>
+			<label index="menu_type" type="integer">196738597</label>
+			<label index="menu_type.I.0" type="double">6002206</label>
+			<label index="menu_type.I.1" type="integer">210982296</label>
+			<label index="menu_type.I.2" type="integer">90643884</label>
+			<label index="menu_type.I.3" type="integer">85514641</label>
+			<label index="menu_type.I.4" type="integer">92355808</label>
+			<label index="menu_type.I.5" type="integer">32737031</label>
+			<label index="menu_type.I.6" type="integer">254334231</label>
+			<label index="menu_type.I.7" type="integer">28327610</label>
+			<label index="list_type" type="integer">81771247</label>
+			<label index="table_bgColor" type="integer">201224463</label>
+			<label index="table_bgColor.I.1" type="integer">197399456</label>
+			<label index="table_bgColor.I.2" type="integer">92700243</label>
+			<label index="table_bgColor.I.3" type="integer">112064895</label>
+			<label index="table_bgColor.I.5" type="integer">244375480</label>
+			<label index="table_bgColor.I.6" type="integer">39485808</label>
+			<label index="table_bgColor.I.7" type="integer">69376808</label>
+			<label index="table_bgColor.I.8" type="integer">160738845</label>
+			<label index="table_bgColor.I.9" type="integer">261546821</label>
+			<label index="table_border" type="integer">226841890</label>
+			<label index="table_cellspacing" type="integer">179062000</label>
+			<label index="table_cellpadding" type="integer">52213786</label>
+			<label index="media" type="integer">147226768</label>
+			<label index="multimedia" type="integer">182590850</label>
+			<label index="filelink_size" type="integer">208718343</label>
+			<label index="records" type="integer">257467321</label>
+			<label index="spaceBefore" type="double">5347956</label>
+			<label index="spaceAfter" type="integer">266069584</label>
+			<label index="section_frame" type="integer">198032235</label>
+			<label index="section_frame.I.1" type="integer">146594371</label>
+			<label index="section_frame.I.2" type="integer">262953086</label>
+			<label index="section_frame.I.3" type="integer">22752652</label>
+			<label index="section_frame.I.4" type="integer">77022990</label>
+			<label index="section_frame.I.5" type="integer">154022512</label>
+			<label index="section_frame.I.6" type="integer">228516194</label>
+			<label index="section_frame.I.7" type="integer">200590038</label>
+			<label index="section_frame.I.8" type="integer">194375053</label>
+			<label index="splash_layout" type="integer">266899885</label>
+			<label index="splash_layout.I.1" type="integer">112630223</label>
+			<label index="splash_layout.I.2" type="integer">220366553</label>
+			<label index="splash_layout.I.3" type="integer">29093773</label>
+			<label index="splash_layout.I.4" type="integer">108189181</label>
+			<label index="splash_layout.I.5" type="integer">113478725</label>
+			<label index="sectionIndex" type="integer">98236195</label>
+			<label index="linkToTop" type="integer">49403557</label>
+			<label index="rte_enabled" type="integer">146298503</label>
+			<label index="pi_flexform" type="integer">102839590</label>
+			<label index="ALT.imgOptions" type="integer">96225140</label>
+			<label index="ALT.imgLinks" type="integer">152064470</label>
+			<label index="select_key.ALT.uploads" type="integer">38295134</label>
+			<label index="imagecaption.ALT.uploads" type="integer">54904419</label>
+			<label index="imagecaption.ALT.script" type="integer">202678474</label>
+			<label index="bodytext.ALT.mailform" type="integer">69003025</label>
+			<label index="pages.ALT.mailform" type="integer">254779920</label>
+			<label index="subheader.ALT.mailform" type="integer">247102829</label>
+			<label index="pages.ALT.search" type="integer">76240327</label>
+			<label index="pages.ALT.login" type="integer">76240327</label>
+			<label index="bodytext.ALT.html" type="integer">166461268</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -10865,6 +11949,146 @@
 			<label index="spaceAfter" type="integer">266069584</label>
 			<label index="section_frame" type="integer">198032235</label>
 			<label index="bodytext.ALT.html" type="integer">166461268</label>
+			<label index="CType.I.6" type="integer">23062602</label>
+			<label index="CType.I.11" type="integer">216714131</label>
+			<label index="CType.I.16" type="integer">43024464</label>
+			<label index="layout.I.3" type="integer">85298801</label>
+			<label index="colPos" type="integer">43343597</label>
+			<label index="colPos.I.0" type="integer">155571682</label>
+			<label index="colPos.I.2" type="integer">153815495</label>
+			<label index="colPos.I.3" type="double">7361862</label>
+			<label index="date" type="double">14210432</label>
+			<label index="header" type="double">9618284</label>
+			<label index="header_position" type="integer">22565275</label>
+			<label index="header_link" type="integer">250803615</label>
+			<label index="header_layout.I.1" type="integer">186159068</label>
+			<label index="header_layout.I.2" type="integer">144093188</label>
+			<label index="header_layout.I.3" type="integer">85298801</label>
+			<label index="header_layout.I.4" type="integer">95470957</label>
+			<label index="header_layout.I.5" type="integer">76882202</label>
+			<label index="header_layout.I.6" type="integer">128769925</label>
+			<label index="text_align" type="integer">22565275</label>
+			<label index="text_align.I.1" type="integer">82966017</label>
+			<label index="text_align.I.2" type="integer">153815495</label>
+			<label index="text_align.I.3" type="integer">155571682</label>
+			<label index="text_face" type="integer">107327980</label>
+			<label index="text_size" type="integer">183911828</label>
+			<label index="text_size.I.1" type="integer">207257027</label>
+			<label index="text_size.I.2" type="double">14007055</label>
+			<label index="text_size.I.3" type="integer">142680558</label>
+			<label index="text_size.I.4" type="integer">171265423</label>
+			<label index="text_size.I.5" type="integer">224048943</label>
+			<label index="text_size.I.6" type="integer">170463143</label>
+			<label index="text_size.I.7" type="integer">39280322</label>
+			<label index="text_color.I.3" type="integer">112064895</label>
+			<label index="text_color.I.11" type="integer">206346802</label>
+			<label index="text_color.I.15" type="integer">227015290</label>
+			<label index="bodytext.W.RTE" type="integer">223346550</label>
+			<label index="imagewidth" type="integer">104072789</label>
+			<label index="imageheight" type="integer">175719416</label>
+			<label index="imageorient" type="integer">247557776</label>
+			<label index="imageorient.I.0" type="integer">180880328</label>
+			<label index="imageorient.I.1" type="integer">63627043</label>
+			<label index="imageorient.I.2" type="double">11587399</label>
+			<label index="imageorient.I.3" type="integer">99341821</label>
+			<label index="imageorient.I.4" type="integer">73933822</label>
+			<label index="imageorient.I.5" type="integer">230641044</label>
+			<label index="imageorient.I.6" type="integer">68014666</label>
+			<label index="imageorient.I.7" type="integer">183617479</label>
+			<label index="imageorient.I.8" type="integer">162649505</label>
+			<label index="imageorient.I.9" type="integer">68014666</label>
+			<label index="imageorient.I.10" type="integer">183617479</label>
+			<label index="imageborder" type="integer">226841890</label>
+			<label index="image_noRows" type="integer">147285854</label>
+			<label index="image_link" type="integer">250803615</label>
+			<label index="image_zoom" type="integer">234954809</label>
+			<label index="image_effects" type="integer">70127431</label>
+			<label index="image_effects.I.0" type="integer">260530758</label>
+			<label index="image_effects.I.1" type="integer">154460239</label>
+			<label index="image_effects.I.2" type="integer">50831993</label>
+			<label index="image_effects.I.3" type="integer">117450906</label>
+			<label index="image_effects.I.4" type="integer">222259573</label>
+			<label index="image_effects.I.5" type="integer">89569123</label>
+			<label index="image_effects.I.6" type="integer">230325028</label>
+			<label index="image_effects.I.7" type="integer">207875281</label>
+			<label index="image_effects.I.8" type="integer">166320363</label>
+			<label index="image_effects.I.9" type="integer">35989143</label>
+			<label index="image_frames" type="integer">229165132</label>
+			<label index="image_frames.I.0" type="integer">260530758</label>
+			<label index="image_frames.I.1" type="integer">200590038</label>
+			<label index="image_frames.I.2" type="integer">194375053</label>
+			<label index="image_frames.I.3" type="integer">72819606</label>
+			<label index="image_frames.I.4" type="integer">184906390</label>
+			<label index="image_frames.I.5" type="integer">134232842</label>
+			<label index="image_frames.I.6" type="integer">71651758</label>
+			<label index="image_frames.I.7" type="double">16295765</label>
+			<label index="image_frames.I.8" type="integer">221268484</label>
+			<label index="image_compression" type="integer">64934065</label>
+			<label index="image_compression.I.1" type="integer">74345203</label>
+			<label index="image_compression.I.15" type="integer">237760472</label>
+			<label index="image_compression.I.16" type="integer">100158582</label>
+			<label index="image_compression.I.17" type="integer">267487914</label>
+			<label index="image_compression.I.18" type="integer">185427776</label>
+			<label index="image_compression.I.19" type="integer">116364772</label>
+			<label index="imagecols" type="integer">43343597</label>
+			<label index="imagecaption_position" type="integer">22565275</label>
+			<label index="imagecaption_position.I.1" type="integer">82966017</label>
+			<label index="imagecaption_position.I.2" type="integer">153815495</label>
+			<label index="imagecaption_position.I.3" type="integer">155571682</label>
+			<label index="cols" type="integer">19992958</label>
+			<label index="cols.I.0" type="double">7049857</label>
+			<label index="recursive.I.1" type="integer">200641290</label>
+			<label index="recursive.I.2" type="integer">228799796</label>
+			<label index="recursive.I.3" type="integer">195275893</label>
+			<label index="recursive.I.4" type="integer">97262614</label>
+			<label index="recursive.I.5" type="integer">185655876</label>
+			<label index="menu_type" type="integer">196738597</label>
+			<label index="menu_type.I.0" type="double">6002206</label>
+			<label index="menu_type.I.1" type="integer">210982296</label>
+			<label index="menu_type.I.2" type="integer">90643884</label>
+			<label index="menu_type.I.3" type="integer">85514641</label>
+			<label index="menu_type.I.4" type="integer">92355808</label>
+			<label index="menu_type.I.5" type="integer">32737031</label>
+			<label index="menu_type.I.6" type="integer">254334231</label>
+			<label index="menu_type.I.7" type="integer">28327610</label>
+			<label index="list_type" type="integer">81771247</label>
+			<label index="table_bgColor" type="integer">201224463</label>
+			<label index="table_bgColor.I.1" type="integer">197399456</label>
+			<label index="table_bgColor.I.2" type="integer">92700243</label>
+			<label index="table_bgColor.I.3" type="integer">112064895</label>
+			<label index="table_cellspacing" type="integer">179062000</label>
+			<label index="table_cellpadding" type="integer">52213786</label>
+			<label index="media" type="integer">147226768</label>
+			<label index="filelink_size" type="integer">208718343</label>
+			<label index="records" type="integer">257467321</label>
+			<label index="section_frame.I.1" type="integer">146594371</label>
+			<label index="section_frame.I.2" type="integer">262953086</label>
+			<label index="section_frame.I.3" type="integer">22752652</label>
+			<label index="section_frame.I.4" type="integer">77022990</label>
+			<label index="section_frame.I.5" type="integer">154022512</label>
+			<label index="section_frame.I.6" type="integer">228516194</label>
+			<label index="section_frame.I.7" type="integer">200590038</label>
+			<label index="section_frame.I.8" type="integer">194375053</label>
+			<label index="splash_layout" type="integer">266899885</label>
+			<label index="splash_layout.I.1" type="integer">112630223</label>
+			<label index="splash_layout.I.2" type="integer">220366553</label>
+			<label index="splash_layout.I.3" type="integer">29093773</label>
+			<label index="splash_layout.I.4" type="integer">108189181</label>
+			<label index="splash_layout.I.5" type="integer">113478725</label>
+			<label index="sectionIndex" type="integer">98236195</label>
+			<label index="linkToTop" type="integer">49403557</label>
+			<label index="rte_enabled" type="integer">146298503</label>
+			<label index="pi_flexform" type="integer">102839590</label>
+			<label index="ALT.imgOptions" type="integer">96225140</label>
+			<label index="ALT.imgLinks" type="integer">152064470</label>
+			<label index="select_key.ALT.uploads" type="integer">38295134</label>
+			<label index="imagecaption.ALT.uploads" type="integer">54904419</label>
+			<label index="imagecaption.ALT.script" type="integer">202678474</label>
+			<label index="bodytext.ALT.mailform" type="integer">69003025</label>
+			<label index="pages.ALT.mailform" type="integer">254779920</label>
+			<label index="subheader.ALT.mailform" type="integer">247102829</label>
+			<label index="pages.ALT.search" type="integer">76240327</label>
+			<label index="pages.ALT.login" type="integer">76240327</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="CType.I.0" type="integer">200609118</label>
@@ -11059,82 +12283,196 @@
 		<languageKey index="jp" type="array">
 		</languageKey>
 		<languageKey index="vn" type="array">
+		</languageKey>
+		<languageKey index="ba" type="array">
+			<label index="CType.I.0" type="integer">200609118</label>
+			<label index="CType.I.1" type="integer">165673974</label>
+			<label index="CType.I.2" type="integer">221269813</label>
+			<label index="CType.I.3" type="integer">199571973</label>
+			<label index="CType.I.4" type="integer">88917113</label>
+			<label index="CType.I.5" type="integer">85738935</label>
+			<label index="CType.I.6" type="integer">23062602</label>
+			<label index="CType.I.7" type="integer">49638223</label>
+			<label index="CType.I.8" type="integer">221617261</label>
+			<label index="CType.I.9" type="integer">20138052</label>
+			<label index="CType.I.10" type="integer">161344120</label>
+			<label index="CType.I.11" type="integer">216714131</label>
+			<label index="CType.I.12" type="integer">20752218</label>
+			<label index="CType.I.13" type="integer">217553606</label>
+			<label index="CType.I.14" type="integer">62859843</label>
+			<label index="CType.I.15" type="integer">261127781</label>
+			<label index="CType.I.16" type="integer">43024464</label>
+			<label index="CType.I.17" type="integer">79998303</label>
+			<label index="layout.I.1" type="integer">186159068</label>
+			<label index="layout.I.2" type="integer">144093188</label>
+			<label index="layout.I.3" type="integer">85298801</label>
+			<label index="colPos" type="integer">43343597</label>
+			<label index="colPos.I.0" type="integer">155571682</label>
+			<label index="colPos.I.2" type="integer">153815495</label>
+			<label index="colPos.I.3" type="double">7361862</label>
+			<label index="date" type="double">14210432</label>
+			<label index="header" type="double">9618284</label>
+			<label index="header_position" type="integer">22565275</label>
+			<label index="header_position.I.1" type="integer">82966017</label>
+			<label index="header_position.I.2" type="integer">153815495</label>
+			<label index="header_position.I.3" type="integer">155571682</label>
+			<label index="header_link" type="integer">250803615</label>
+			<label index="header_layout.I.1" type="integer">186159068</label>
+			<label index="header_layout.I.2" type="integer">144093188</label>
+			<label index="header_layout.I.3" type="integer">85298801</label>
+			<label index="header_layout.I.4" type="integer">95470957</label>
+			<label index="header_layout.I.5" type="integer">76882202</label>
+			<label index="header_layout.I.6" type="integer">128769925</label>
+			<label index="text_align" type="integer">22565275</label>
+			<label index="text_align.I.1" type="integer">82966017</label>
+			<label index="text_align.I.2" type="integer">153815495</label>
+			<label index="text_align.I.3" type="integer">155571682</label>
+			<label index="text_face" type="integer">107327980</label>
+			<label index="text_size" type="integer">183911828</label>
+			<label index="text_size.I.1" type="integer">207257027</label>
+			<label index="text_size.I.2" type="double">14007055</label>
+			<label index="text_size.I.3" type="integer">142680558</label>
+			<label index="text_size.I.4" type="integer">171265423</label>
+			<label index="text_size.I.5" type="integer">224048943</label>
+			<label index="text_size.I.6" type="integer">170463143</label>
+			<label index="text_size.I.7" type="integer">39280322</label>
+			<label index="text_color" type="integer">263561448</label>
+			<label index="text_color.I.1" type="integer">197399456</label>
+			<label index="text_color.I.2" type="integer">92700243</label>
+			<label index="text_color.I.3" type="integer">112064895</label>
+			<label index="text_color.I.5" type="integer">244375480</label>
+			<label index="text_color.I.6" type="integer">39485808</label>
+			<label index="text_color.I.7" type="integer">69376808</label>
+			<label index="text_color.I.8" type="integer">160738845</label>
+			<label index="text_color.I.9" type="integer">261546821</label>
+			<label index="text_color.I.10" type="integer">249794125</label>
+			<label index="text_color.I.11" type="integer">206346802</label>
+			<label index="text_color.I.12" type="integer">85880025</label>
+			<label index="text_color.I.13" type="integer">221784086</label>
+			<label index="text_color.I.14" type="integer">45659012</label>
+			<label index="text_color.I.15" type="integer">227015290</label>
+			<label index="text_properties" type="integer">262778215</label>
+			<label index="text_properties.I.0" type="integer">18137861</label>
+			<label index="text_properties.I.1" type="integer">194723639</label>
+			<label index="text_properties.I.2" type="integer">139620890</label>
+			<label index="text_properties.I.3" type="integer">102885304</label>
+			<label index="bodytext.W.RTE" type="integer">223346550</label>
+			<label index="imagewidth" type="integer">104072789</label>
+			<label index="imageheight" type="integer">175719416</label>
+			<label index="imageorient" type="integer">247557776</label>
+			<label index="imageorient.I.0" type="integer">180880328</label>
+			<label index="imageorient.I.1" type="integer">63627043</label>
+			<label index="imageorient.I.2" type="double">11587399</label>
+			<label index="imageorient.I.3" type="integer">99341821</label>
+			<label index="imageorient.I.4" type="integer">73933822</label>
+			<label index="imageorient.I.5" type="integer">230641044</label>
+			<label index="imageorient.I.6" type="integer">68014666</label>
+			<label index="imageorient.I.7" type="integer">183617479</label>
+			<label index="imageorient.I.8" type="integer">162649505</label>
+			<label index="imageorient.I.9" type="integer">68014666</label>
+			<label index="imageorient.I.10" type="integer">183617479</label>
+			<label index="imageborder" type="integer">226841890</label>
+			<label index="image_noRows" type="integer">147285854</label>
+			<label index="image_link" type="integer">250803615</label>
+			<label index="image_zoom" type="integer">234954809</label>
+			<label index="image_effects" type="integer">70127431</label>
+			<label index="image_effects.I.0" type="integer">260530758</label>
+			<label index="image_effects.I.1" type="integer">154460239</label>
+			<label index="image_effects.I.2" type="integer">50831993</label>
+			<label index="image_effects.I.3" type="integer">117450906</label>
+			<label index="image_effects.I.4" type="integer">222259573</label>
+			<label index="image_effects.I.5" type="integer">89569123</label>
+			<label index="image_effects.I.6" type="integer">230325028</label>
+			<label index="image_effects.I.7" type="integer">207875281</label>
+			<label index="image_effects.I.8" type="integer">166320363</label>
+			<label index="image_effects.I.9" type="integer">35989143</label>
+			<label index="image_frames" type="integer">229165132</label>
+			<label index="image_frames.I.0" type="integer">260530758</label>
+			<label index="image_frames.I.1" type="integer">200590038</label>
+			<label index="image_frames.I.2" type="integer">194375053</label>
+			<label index="image_frames.I.3" type="integer">72819606</label>
+			<label index="image_frames.I.4" type="integer">184906390</label>
+			<label index="image_frames.I.5" type="integer">134232842</label>
+			<label index="image_frames.I.6" type="integer">71651758</label>
+			<label index="image_frames.I.7" type="double">16295765</label>
+			<label index="image_frames.I.8" type="integer">221268484</label>
+			<label index="image_compression" type="integer">64934065</label>
+			<label index="image_compression.I.1" type="integer">74345203</label>
+			<label index="image_compression.I.15" type="integer">237760472</label>
+			<label index="image_compression.I.16" type="integer">100158582</label>
+			<label index="image_compression.I.17" type="integer">267487914</label>
+			<label index="image_compression.I.18" type="integer">185427776</label>
+			<label index="image_compression.I.19" type="integer">116364772</label>
+			<label index="imagecols" type="integer">43343597</label>
+			<label index="imagecaption_position" type="integer">22565275</label>
+			<label index="imagecaption_position.I.1" type="integer">82966017</label>
+			<label index="imagecaption_position.I.2" type="integer">153815495</label>
+			<label index="imagecaption_position.I.3" type="integer">155571682</label>
+			<label index="cols" type="integer">19992958</label>
+			<label index="cols.I.0" type="double">7049857</label>
+			<label index="recursive.I.1" type="integer">200641290</label>
+			<label index="recursive.I.2" type="integer">228799796</label>
+			<label index="recursive.I.3" type="integer">195275893</label>
+			<label index="recursive.I.4" type="integer">97262614</label>
+			<label index="recursive.I.5" type="integer">185655876</label>
+			<label index="menu_type" type="integer">196738597</label>
+			<label index="menu_type.I.0" type="double">6002206</label>
+			<label index="menu_type.I.1" type="integer">210982296</label>
+			<label index="menu_type.I.2" type="integer">90643884</label>
+			<label index="menu_type.I.3" type="integer">85514641</label>
+			<label index="menu_type.I.4" type="integer">92355808</label>
+			<label index="menu_type.I.5" type="integer">32737031</label>
+			<label index="menu_type.I.6" type="integer">254334231</label>
+			<label index="menu_type.I.7" type="integer">28327610</label>
+			<label index="list_type" type="integer">81771247</label>
+			<label index="table_bgColor" type="integer">201224463</label>
+			<label index="table_bgColor.I.1" type="integer">197399456</label>
+			<label index="table_bgColor.I.2" type="integer">92700243</label>
+			<label index="table_bgColor.I.3" type="integer">112064895</label>
+			<label index="table_bgColor.I.5" type="integer">244375480</label>
+			<label index="table_bgColor.I.6" type="integer">39485808</label>
+			<label index="table_bgColor.I.7" type="integer">69376808</label>
+			<label index="table_bgColor.I.8" type="integer">160738845</label>
+			<label index="table_bgColor.I.9" type="integer">261546821</label>
+			<label index="table_border" type="integer">226841890</label>
+			<label index="table_cellspacing" type="integer">179062000</label>
+			<label index="table_cellpadding" type="integer">52213786</label>
+			<label index="media" type="integer">147226768</label>
+			<label index="multimedia" type="integer">182590850</label>
+			<label index="filelink_size" type="integer">208718343</label>
+			<label index="records" type="integer">257467321</label>
+			<label index="spaceBefore" type="double">5347956</label>
+			<label index="spaceAfter" type="integer">266069584</label>
+			<label index="section_frame" type="integer">198032235</label>
+			<label index="section_frame.I.1" type="integer">146594371</label>
+			<label index="section_frame.I.2" type="integer">262953086</label>
+			<label index="section_frame.I.3" type="integer">22752652</label>
+			<label index="section_frame.I.4" type="integer">77022990</label>
+			<label index="section_frame.I.5" type="integer">154022512</label>
+			<label index="section_frame.I.6" type="integer">228516194</label>
+			<label index="section_frame.I.7" type="integer">200590038</label>
+			<label index="section_frame.I.8" type="integer">194375053</label>
+			<label index="splash_layout" type="integer">266899885</label>
+			<label index="splash_layout.I.1" type="integer">112630223</label>
+			<label index="splash_layout.I.2" type="integer">220366553</label>
+			<label index="splash_layout.I.3" type="integer">29093773</label>
+			<label index="splash_layout.I.4" type="integer">108189181</label>
+			<label index="splash_layout.I.5" type="integer">113478725</label>
+			<label index="sectionIndex" type="integer">98236195</label>
+			<label index="linkToTop" type="integer">49403557</label>
+			<label index="rte_enabled" type="integer">146298503</label>
+			<label index="pi_flexform" type="integer">102839590</label>
+			<label index="ALT.imgOptions" type="integer">96225140</label>
+			<label index="ALT.imgLinks" type="integer">152064470</label>
+			<label index="select_key.ALT.uploads" type="integer">38295134</label>
+			<label index="imagecaption.ALT.uploads" type="integer">54904419</label>
+			<label index="imagecaption.ALT.script" type="integer">202678474</label>
+			<label index="bodytext.ALT.mailform" type="integer">69003025</label>
+			<label index="pages.ALT.mailform" type="integer">254779920</label>
+			<label index="subheader.ALT.mailform" type="integer">247102829</label>
+			<label index="pages.ALT.search" type="integer">76240327</label>
+			<label index="pages.ALT.login" type="integer">76240327</label>
+			<label index="bodytext.ALT.html" type="integer">166461268</label>
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

@@ -45,7 +45,7 @@
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel">Pagina-inhoud</label>
-			<label index="mlang_labels_tabdescr">Via deze module kan je webpagina's aanmaken en bewerken. Je vindt hier een Quick-Editor die je directe toegang geeft tot de primaire pagina-inhoud. Bovendien kan je de diverse talen en kolommen inhoud per pagina manipuleren. Tenslotte heb je toegang tot speciale pagina-inhoud zoals gastenboek, forum en winkelartikelen. Deze module introduceert ook statistieken van de pagina-treffers voor individuele pagina's.</label>
+			<label index="mlang_labels_tabdescr">Via deze module kunt U webpagina's aanmaken en bewerken. U vindt hier een Quick-Editor die direct toegang geeft tot de primaire pagina-inhoud. Bovendien kunt u de diverse talen en kolommen met inhoud per pagina manipuleren. Tenslotte heeft U toegang tot speciale pagina-inhoud zoals gastenboek, forum en winkelartikelen. Deze module introduceert ook statistieken van de pagina-treffers voor individuele pagina's.</label>
 			<label index="mlang_tabs_tab">Pagina</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -65,7 +65,7 @@
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="mlang_labels_tablabel">Sivun sisältö</label>
-			<label index="mlang_labels_tabdescr">Tällä modulilla luot, muotoilet ja ylläpidät www-sivujasi. QuichEdit teksturilla käsittelet sivujen sisältöä. Lisäksi voit hallita useita erikieliä ja sarakkeita sivuillasi. Lisäksi pääset spesiaali sisältöihin kuten esimerkiksi vieraskijaan, keskustelusivuille ja kauppasivuille. Moduli näyttää myös sivuittain käyttötilastot.</label>
+			<label index="mlang_labels_tabdescr">Tällä modulilla luot, muokkaat ja ylläpidät www-sivujasi. Pikamuokkauksella pääset suoraan käsiksi sivun ensimmäiseen sisältöelementtiin. Voit myös hallita useita eri kieliä ja sarakkeita sivuillasi. Lisäksi pääset erityisiin sisältöihin käsiksi, kuten esimerkiksi vieraskirjaan, keskustelusivuille ja kauppasivuille. Moduli näyttää myös käyttötilastot sivuittain.</label>
 			<label index="mlang_tabs_tab">Sivu</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
@@ -104,6 +104,9 @@
 			<label index="mlang_tabs_tab">Stránka</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel">Puslapio turinys</label>
+			<label index="mlang_labels_tabdescr">Šis modulis leidžia kurti ir redeguoti tinklapius. Jis suteikia redaktorių leidžiantį prieiti prie pagrindinių puslpaio turinio elementų. Be to galima valdyti ir puslapių turinį skirtingomis kalbomis. Galų gale jūs galite pasiekti specialų puslapio turinį: svečių knygą, skelbimų lentą ir parduotuvės prekes. modulis taip pat pateikia puslapių lankomumo statistiką kiekvienam puslapiui atskirai.</label>
+			<label index="mlang_tabs_tab">Puslapis</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="mlang_labels_tablabel">Siða innihald</label>
@@ -125,6 +128,9 @@
 			<label index="mlang_tabs_tab">Qupperneq</label>
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel">หน้าเนื้อหา</label>
+			<label index="mlang_labels_tabdescr">โมดูลนี้ อนุญาตให้ท่านสร้างและแก้ไขหน้าเว็บ โมดูลจะมี ตัวแก้ไขเร่งด่วน (Quick Editor) ในการที่จะเข้าถึงหน้าเว็บหลัก นอกจากนี้ท่านยังสามารถจัดการหลากหลายภาษาและคอลัมน์ของเนื้อหาที่ต่างกันต่อหน้าหนึ่งๆ และท้ายที่สุดท่านสามารถเข้าถึงเนื้อหาพิเศษของหน้า เช่น สมุดเยี่ยม กระดานเสวะนา และของช๊อปปิ้ง โมดูลยังสามรารถแสดงสถิติการชมของแต่ละหน้าอีกด้วย</label>
+			<label index="mlang_tabs_tab">หน้า</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -162,6 +168,7 @@
 		</languageKey>
 		<languageKey index="ua" type="array">
 			<label index="mlang_labels_tablabel">Вміст сторінки</label>
+			<label index="mlang_labels_tabdescr">Цей модуль дозволяє створювати та редагувати веб-сторінки.  ШвидкоРед надає миттєвий доступ до первісного вмісту сторінки. Також можливо керувати різними мовами та стовпцями сторінки. Нарешті, ви можете звертатися до спеціального вмісту, як-то записи у гостьовій, форумі чи магазині.  Модуль також надає статистику хітів за індивідуальними сторінками.</label>
 			<label index="mlang_tabs_tab">Сторінка</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
@@ -266,6 +273,9 @@
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel" type="integer">73079758</label>
+			<label index="mlang_tabs_tab" type="integer">26464201</label>
+			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
@@ -287,6 +297,9 @@
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel" type="integer">73079758</label>
+			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
+			<label index="mlang_tabs_tab" type="integer">26464201</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -325,6 +338,7 @@
 		<languageKey index="ua" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>
 			<label index="mlang_tabs_tab" type="integer">26464201</label>
+			<label index="mlang_labels_tabdescr" type="integer">229943848</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="mlang_labels_tablabel" type="integer">73079758</label>

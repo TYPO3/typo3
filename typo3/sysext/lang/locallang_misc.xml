@@ -106,7 +106,7 @@
 			<label index="overwriteExistingFiles">Überschreibe existierende Dateien</label>
 			<label index="selectPosition">Position für neue Seite auswählen</label>
 			<label index="goBack">Zurück</label>
-			<label index="createNewPage">Erzeuge neue Seite</label>
+			<label index="createNewPage">Erstelle neue Seite</label>
 			<label index="clickForWizard">Klicken Sie hier, um den Assistenten aufzurufen!</label>
 			<label index="insertNewPageHere">Neue Seite hier einfügen</label>
 			<label index="insertNewRecordHere">Neuen Datensatz hier einfügen</label>
@@ -246,6 +246,7 @@
 			<label index="CM_newWizard">Assistant 'Nouvel élément'</label>
 			<label index="CM_editPageHeader">Editer le titre de la page</label>
 			<label index="CM_db_list">Module Web&gt;Liste</label>
+			<label index="noEditPage">Vous avez demandez d'éditer la page &quot;%s&quot; mais vous ne pouvez pas. Maintenant chargement principal comme d'habitude.</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="shortcut_edit">Editar</label>
@@ -290,7 +291,7 @@
 		<languageKey index="nl" type="array">
 			<label index="shortcut_edit">Bewerk</label>
 			<label index="shortcut_editID">Bewerk Pagina ID</label>
-			<label index="shortcut_save">Snelkoppeling opslaan</label>
+			<label index="shortcut_save">Snelkoppeling actualiseren</label>
 			<label index="shortcut_saveClose">Actualiseer en sluit editor</label>
 			<label index="shortcut_close">Sluit editor</label>
 			<label index="shortcut_delete">Verwijder snelkoppeling</label>
@@ -304,7 +305,7 @@
 			<label index="shortcut_delAllInCat">Verwijder alle snelkoppelingen uit deze groep?</label>
 			<label index="overwriteExistingFiles">Bestaande bestanden overschrijven</label>
 			<label index="selectPosition">Kies een positie voor de nieuwe pagina</label>
-			<label index="goBack">Ga terug</label>
+			<label index="goBack">terug</label>
 			<label index="createNewPage">Nieuwe pagina aanmaken</label>
 			<label index="clickForWizard">Klik hier voor de assistent!</label>
 			<label index="insertNewPageHere">Voeg hier een nieuwe pagina in</label>
@@ -325,6 +326,7 @@
 			<label index="CM_newWizard">'NIEUW' assistent</label>
 			<label index="CM_editPageHeader">Pagina-info</label>
 			<label index="CM_db_list">Web&gt;Lijst</label>
+			<label index="noEditPage">U verzocht de pagina &quot;%s&quot; te bewerken. U kunt deze pagina echter niet bewerken. De backend wordt nu geladen zoals gebruikelijk.</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="shortcut_edit">Upravit</label>
@@ -367,7 +369,7 @@
 		</languageKey>
 		<languageKey index="pl" type="array">
 			<label index="shortcut_edit">Edytuj</label>
-			<label index="shortcut_editID">Edytuj stronę ID</label>
+			<label index="shortcut_editID">Edytuj stronę o ID</label>
 			<label index="shortcut_save">Aktualizuj tytuł skrótu</label>
 			<label index="shortcut_saveClose">Aktualizuj i zamknij edytor</label>
 			<label index="shortcut_close">Zamknij edytor skrótu</label>
@@ -403,6 +405,7 @@
 			<label index="CM_newWizard">Kreator 'Stwórz nowy'</label>
 			<label index="CM_editPageHeader">Edytuj nagłówek strony</label>
 			<label index="CM_db_list">Moduł Web&gt;Lista</label>
+			<label index="noEditPage">Wybrałeś edycję strony &quot;%s&quot;, choć jest to niemożliwe. Ładowanie backendu.</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="shortcut_edit">Uredi</label>
@@ -442,13 +445,14 @@
 			<label index="CM_newWizard">Čarovnik 'Ustvari novo'</label>
 			<label index="CM_editPageHeader">Uredi naslov strani</label>
 			<label index="CM_db_list">Modul Web&gt;Seznam</label>
+			<label index="noEditPage">Želeli ste urejati stran'%s', a to ni mogoče. Nalagam backend...</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="shortcut_edit">Muokkaa</label>
 			<label index="shortcut_editID">Muokkaa sivun ID</label>
-			<label index="shortcut_save">Päivitä pikavalinta otsikkoa</label>
+			<label index="shortcut_save">Päivitä pikavalinnan otsikko</label>
 			<label index="shortcut_saveClose">Päivitä ja sulje editori</label>
-			<label index="shortcut_close">Sulje pikavalinta editori</label>
+			<label index="shortcut_close">Sulje pikavalintaeditori</label>
 			<label index="shortcut_delete">Poista pikavalinta</label>
 			<label index="shortcut_loadEdit">Lataa sivua</label>
 			<label index="shortcut_notEditable">Muokattavaa sivua ei löytynyt</label>
@@ -462,7 +466,7 @@
 			<label index="selectPosition">Valitse uuden sivun paikka</label>
 			<label index="goBack">Takaisin</label>
 			<label index="createNewPage">Luo uusi sivu</label>
-			<label index="clickForWizard">Näpsäytä tästä aputoimintoihin!</label>
+			<label index="clickForWizard">Napsauta tästä päästäksesi ohjattuun toimintoon!</label>
 			<label index="insertNewPageHere">Aseta uusi sivu tänne</label>
 			<label index="insertNewRecordHere">Lisää uusi tietue tähän</label>
 			<label index="movePageToHere">Siirrä sivu tähän</label>
@@ -470,18 +474,18 @@
 			<label index="selectPositionOfElement">Valitse elementin paikka</label>
 			<label index="movingElement">Siirrä elementti</label>
 			<label index="makeCopy">Tee kopio siirron sijaan</label>
-			<label index="newContentElement">Uusi sisältö elementti</label>
-			<label index="1_selectType">1: Valitse sisältö elementin tyyppi:</label>
+			<label index="newContentElement">Uusi sisältöelementti</label>
+			<label index="1_selectType">1: Valitse sisältöelementin tyyppi:</label>
 			<label index="2_selectPosition">2: Valitse paikka:</label>
 			<label index="CM_editAccess">Ulkoasun asetukset</label>
 			<label index="CM_history">Historia/palauta</label>
 			<label index="CM_perms">Käyttöoikeudet</label>
-			<label index="CM_moveWizard">Siirrä elemttiä</label>
+			<label index="CM_moveWizard">Siirrä elementtiä</label>
 			<label index="CM_moveWizard_page">Siirrä sivua</label>
-			<label index="CM_newWizard">'Luo uusi' apuväline</label>
-			<label index="CM_editPageHeader">Muotoile sivun otsikkoa</label>
-			<label index="CM_db_list">Web&gt;list moduli</label>
-			<label index="noEditPage">Halusit muotoilla sivua &quot;%s&quot; mutta et voi muotoilla tätä sivua. Lataan taustatoiminnot kuten tavallisesti.</label>
+			<label index="CM_newWizard">'Luo uusi' -apuvelho</label>
+			<label index="CM_editPageHeader">Muokkaa sivun otsikkotietoja</label>
+			<label index="CM_db_list">WWW&gt;Lista -moduli</label>
+			<label index="noEditPage">Halusit muokata sivua &quot;%s&quot;, mutta et voi muokata tätä sivua. Lataan taustatoiminnot kuten tavallisesti.</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="shortcut_edit">Düzelt</label>
@@ -680,6 +684,7 @@
 			<label index="CM_newWizard">Procedura 'Creaza Nou'</label>
 			<label index="CM_editPageHeader">Editeaza header-ul paginii</label>
 			<label index="CM_db_list">Web&gt;Lista module</label>
+			<label index="noEditPage">Aţi cerut să editaţi pagina &quot;%s&quot;, dar acest lucru nu este posibil. Se încarcă Backend, ca de obicei.</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="shortcut_edit">编辑</label>
@@ -949,7 +954,7 @@
 			<label index="shortcut_save">ทำทางลัดชื่อเรื่องให้ทันสมัย</label>
 			<label index="shortcut_saveClose">ทำให้ทันสมัยและปิด editor</label>
 			<label index="shortcut_close">ปิด editor ทางลัด</label>
-			<label index="shortcut_delete">ย้ายทางลั้ด</label>
+			<label index="shortcut_delete">ลบทางลัดออก</label>
 			<label index="shortcut_loadEdit">ีบรรจุหน้า</label>
 			<label index="shortcut_notEditable">หาหน้าที่แก้ไขได้ไม่เจอ</label>
 			<label index="shortcut_group">กลุ่ม</label>
@@ -981,6 +986,7 @@
 			<label index="CM_newWizard">ผู้ช่วยวิเศษ 'สร้างใหม่'</label>
 			<label index="CM_editPageHeader">แก้ไขหัวข้อหน้า</label>
 			<label index="CM_db_list">เว็ป&gt;แสดงโมดุล</label>
+			<label index="noEditPage">ท่านขอที่จะแก้ไขหน้า &quot;%s&quot; แต่ท่านไม่สามารถที่จะแก้ไขหน้านี้ได้ ตอนนี้ก็โหลด ส่วนหลังเหมือนเดิม</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -1078,7 +1084,7 @@
 			<label index="shortcut_onlyAdmin">Не може да редактирате споделена препратка!</label>
 			<label index="shortcut_selSC">Изберете препратка</label>
 			<label index="shortcut_delAllInCat">Изтриване на всички препратки в тази група?</label>
-			<label index="overwriteExistingFiles">Overwrite на съществуващите файлове</label>
+			<label index="overwriteExistingFiles">Презапис на съществуващите файлове</label>
 			<label index="selectPosition">Изберете място за новата страница</label>
 			<label index="goBack">Върнете се обратно</label>
 			<label index="createNewPage">Създаване на нова страница</label>
@@ -1508,6 +1514,7 @@
 			<label index="CM_newWizard" type="integer">181792680</label>
 			<label index="CM_editPageHeader" type="integer">60384081</label>
 			<label index="CM_db_list" type="integer">182815575</label>
+			<label index="noEditPage" type="integer">249172510</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="shortcut_edit" type="integer">131916066</label>
@@ -1587,6 +1594,7 @@
 			<label index="CM_newWizard" type="integer">181792680</label>
 			<label index="CM_editPageHeader" type="integer">60384081</label>
 			<label index="CM_db_list" type="integer">182815575</label>
+			<label index="noEditPage" type="integer">249172510</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="shortcut_edit" type="integer">131916066</label>
@@ -1665,6 +1673,7 @@
 			<label index="CM_newWizard" type="integer">181792680</label>
 			<label index="CM_editPageHeader" type="integer">60384081</label>
 			<label index="CM_db_list" type="integer">182815575</label>
+			<label index="noEditPage" type="integer">249172510</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="shortcut_edit" type="integer">131916066</label>
@@ -1704,6 +1713,7 @@
 			<label index="CM_newWizard" type="integer">181792680</label>
 			<label index="CM_editPageHeader" type="integer">60384081</label>
 			<label index="CM_db_list" type="integer">182815575</label>
+			<label index="noEditPage" type="integer">249172510</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="shortcut_edit" type="integer">131916066</label>
@@ -1942,6 +1952,7 @@
 			<label index="CM_newWizard" type="integer">181792680</label>
 			<label index="CM_editPageHeader" type="integer">60384081</label>
 			<label index="CM_db_list" type="integer">182815575</label>
+			<label index="noEditPage" type="integer">249172510</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="shortcut_edit" type="integer">131916066</label>
@@ -2243,6 +2254,7 @@
 			<label index="CM_newWizard" type="integer">181792680</label>
 			<label index="CM_editPageHeader" type="integer">60384081</label>
 			<label index="CM_db_list" type="integer">182815575</label>
+			<label index="noEditPage" type="integer">249172510</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>

@@ -87,7 +87,7 @@
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="title">Laajennetut toiminnot</label>
-			<label index="clickAPage_content">Näpsäytä sivun otsikkoa sivujen rakennepuussa vasemmalla</label>
+			<label index="clickAPage_content">Napsauta sivun otsikkoa rakennepuussa vasemmalla.</label>
 			<label index="mlang_labels_tablabel">Laajennetut toiminnot</label>
 			<label index="mlang_labels_tabdescr">Täältä löydät yleiset tuonti- ja vientitoiminnot. Lisäksi moduli sisältää erikoistoimintoja - ohjattuja toimintoja - käyttökelpoisia tiettyihin tilanteisiin. Voit esimerkiksi kerralla luoda joukon sivuja tai lajitella sivujen järjestystä.</label>
 			<label index="mlang_tabs_tab">Toiminnot</label>
@@ -172,11 +172,11 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
-			<label index="title">ฟังชั่นชั้นสูง</label>
-			<label index="clickAPage_content">โปรดกดปุ่มชื่อหน้า ที่ต้นหน้า</label>
-			<label index="mlang_labels_tablabel">ฟังชั่นชั้นสูง</label>
-			<label index="mlang_labels_tabdescr">คุณจะเจอฟังชั่นส่งออกและนำเข้าที่นี่ นอกจากนี้โมดูลนี้ยังมี ฟังชั่นพิเศษ -ผู้ช่วยวิเศษ- มีประโยชน์ในสถานการณ์เฉพาะ เช่นคุณสามารสร้าง และการจัดลำดับหลายหน้าพร้อมกัน</label>
-			<label index="mlang_tabs_tab">ฟังชั่น</label>
+			<label index="title">ฟังก์ชั่นชั้นสูง</label>
+			<label index="clickAPage_content">โปรดกดปุ่มชื่อหน้า ที่ page tree</label>
+			<label index="mlang_labels_tablabel">ฟังก์ชั่นชั้นสูง</label>
+			<label index="mlang_labels_tabdescr">คุณจะเจอฟังก์ชั่นส่งออก (export) และนำเข้า (import) ที่นี่ นอกจากนี้โมดูลยังมี ฟังชั่นพิเศษ -ผู้ช่วยวิเศษ- มีประโยชน์ในสถานการณ์เฉพาะ เช่นคุณสามารสร้าง และการจัดลำดับหลายหน้าพร้อมกัน</label>
+			<label index="mlang_tabs_tab">ฟังก์ชั่น</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>

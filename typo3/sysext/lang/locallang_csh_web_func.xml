@@ -23,5 +23,7 @@ _MOD_web_func:tx_wizardsortpages</label>
 			<label index=".image_descr">The Web&gt;Functions module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Web&gt;Function module. This shows the Wizard extension (func_wizards) providing the main Function Menu item in upper right corner. The &quot;Select Wizard&quot; selectorbox allows the user to select another level of functionality (different wizards) which are provided by other extensions, here the &quot;wizard_sortpages&quot; extension.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_web_func.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/lang/it.locallang_csh_web_func.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/lang/nl.locallang_csh_web_func.xml</languageKey>
 	</data>
 </T3locallang>

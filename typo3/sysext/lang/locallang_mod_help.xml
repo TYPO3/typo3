@@ -53,8 +53,8 @@
 			<label index="mlang_tabs_tab">Pomoč</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
-			<label index="mlang_labels_tablabel">Help-toiminnot ja tuki</label>
-			<label index="mlang_tabs_tab">Help-toiminnot</label>
+			<label index="mlang_labels_tablabel">Ohjeet ja tuki</label>
+			<label index="mlang_tabs_tab">Ohjeet</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel">Yardım ve destek</label>
@@ -105,8 +105,8 @@
 			<label index="mlang_tabs_tab">Ikiuut</label>
 		</languageKey>
 		<languageKey index="th" type="array">
-			<label index="mlang_labels_tablabel">การใช้และการให้การสนับสนุน</label>
-			<label index="mlang_tabs_tab">การใช้</label>
+			<label index="mlang_labels_tablabel">การช่วยเลือและการให้การสนับสนุน</label>
+			<label index="mlang_tabs_tab">การช่วยเหลือ</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>

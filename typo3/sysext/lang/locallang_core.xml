@@ -193,7 +193,6 @@ Felterne er markeret med et gult udråbstegn.</label>
 			<label index="labels.disableRTE">Slå Formatteret Redigering fra (RTE)</label>
 			<label index="labels._CONTROL_">Kontrol</label>
 			<label index="labels._PATH_">Sti</label>
-			<label index="labels._LOCALIZATION_">Oversættelse</label>
 			<label index="labels.setFields">Sæt felter</label>
 			<label index="labels.search">Søg</label>
 			<label index="labels.author">Forfatter:</label>
@@ -342,12 +341,14 @@ Vil du forny det nu?</label>
 			<label index="labels.lockedRecord_content">Der Benutzer '%s' hat mit der Bearbeitung dieses Seite vor %s begonnen.</label>
 			<label index="labels.showRecords">Datensätze anzeigen</label>
 			<label index="labels.path">Pfad</label>
+			<label index="labels.table">Tabelle</label>
 			<label index="labels.upOneLevel">Eine Ebene höher gehen</label>
 			<label index="labels.enterSearchString">Suchbegriff:</label>
 			<label index="labels.enterSearchLevels">Diese Seite|Inkl. 1 Ebene|Inkl. 2 Ebenen|Inkl. 3 Ebenen|Inkl. 4 Ebenen</label>
 			<label index="labels.noEditPermission">Sie haben nicht die nötigen Rechte, um diese Änderung durchzuführen.</label>
 			<label index="labels.fieldsMissing">Einige Felder in diesem Formular wurden nicht korrekt ausgefüllt. Diese Felder sind mit einer gelben ... markiert.</label>
 			<label index="labels.fieldsChanged">Es existieren nicht gespeicherte Änderungen in diesem Formular! Wollen Sie fortfahren?</label>
+			<label index="labels.noRTEfound">Hinweis: Sie können dieses Feld nicht bearbeiten, weil es nur mit einem Rich Text Editor (RTE) bearbeitet werden kann. Ein solcher Editor ist jedoch nicht verfügbar oder der RTE wurde deaktiviert.</label>
 			<label index="labels.showPalettes">Zweite Optionspalette anzeigen</label>
 			<label index="labels.showDescriptions">Feldbeschreibung anzeigen</label>
 			<label index="labels.disableRTE">Schalte Rich Text Editor (RTE) ab</label>
@@ -366,7 +367,7 @@ Vil du forny det nu?</label>
 			<label index="labels.hidden">Versteckt</label>
 			<label index="labels.starttime">Start</label>
 			<label index="labels.endtime">Ende</label>
-			<label index="labels.minutesHoursDaysYears">Min | Std | Tage | Jahre</label>
+			<label index="labels.minutesHoursDaysYears">Min| Std| Tage| Jahre</label>
 			<label index="labels.menu">Menü:</label>
 			<label index="labels.showPage">Webseite anzeigen</label>
 			<label index="labels.showList">Datensatzliste anzeigen</label>
@@ -375,7 +376,12 @@ Vil du forny det nu?</label>
 			<label index="labels.depth_1">1 Ebene</label>
 			<label index="labels.depth_2">2 Ebenen</label>
 			<label index="labels.depth_3">3 Ebenen</label>
-			<label index="labels.refresh">Die Ansicht neu laden (Reload)</label>
+			<label index="labels.allow">Erlauben</label>
+			<label index="labels.deny">Verbieten</label>
+			<label index="labels.generalTab">Allgemein</label>
+			<label index="labels.refresh">Ansicht aktualisieren (Reload)</label>
+			<label index="labels.temporaryDBmount">Temporären Einstiegspunkt aufheben</label>
+			<label index="labels.refreshList">Liste neu laden</label>
 			<label index="labels.close">Schliessen</label>
 			<label index="labels.new">NEU</label>
 			<label index="labels.selected">Ausgewählt</label>
@@ -384,15 +390,26 @@ Vil du forny det nu?</label>
 			<label index="labels.move_to_top">Objekt zum Anfang verschieben</label>
 			<label index="labels.browse_file">Durch Dateien browsen</label>
 			<label index="labels.browse_db">Durch Datensätze browsen</label>
+			<label index="labels.clipInsert_file">%s Datei(en) aus dem Klemmbrett einfügen</label>
+			<label index="labels.clipInsert_db">%s Datensätze aus dem Klemmbrett einfügen</label>
 			<label index="labels.generalOptions">Allgemeine Optionen:</label>
 			<label index="labels.allTables">[Alle Tabellen]</label>
 			<label index="labels.moreOptions">Weitere Optionen...</label>
-			<label index="labels.noMatchingValue">AKTUELLER WERT IST NICHT VERFÜGBAR (%s)</label>
+			<label index="labels.noMatchingValue">AKTUELLER WERT IST NICHT ERLAUBT (%s)</label>
 			<label index="labels.thumbmode_clip">Zeige Vorschaubilder im Klemmbrett</label>
 			<label index="labels.copymode">Objekte kopieren statt zu verschieben</label>
 			<label index="labels.clipNoEl">Keine Elemente</label>
 			<label index="labels.cliptabs">Klemmbrett Nr.</label>
 			<label index="labels.removeItem">Objekt löschen</label>
+			<label index="labels.holdDownCTRL">Wichtig: bei Änderung innerhalb dieser Liste CTRL Taste gedrückt halten!</label>
+			<label index="labels.revertSelection">Auswahl umkehren</label>
+			<label index="labels.setAllCheckboxes">Alle Markierungsfelder auswählen</label>
+			<label index="labels.changeInOrig">Im Original ändern</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Versions Verwaltung</label>
+			<label index="ver.selVer">Version auswählen:</label>
+			<label index="ver.swap">Ändern/Veröffentlichen</label>
+			<label index="ver.swapPage">Diese Version der Seite inklusive Inhalt publizieren</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Browser</label>
 			<label index="show_item.php.viewItem">Element anzeigen</label>
 			<label index="show_item.php.file">Datei</label>
@@ -451,6 +468,7 @@ Wollen Sie gemachten Änderungen sichern und die Anzeige aktualisieren?</label>
 			<label index="rm.edit">Bearbeiten</label>
 			<label index="rm.delete">Löschen</label>
 			<label index="buttons.logout">Logout</label>
+			<label index="buttons.selMenu_modules">MODULE</label>
 			<label index="buttons.clear">Löschen</label>
 			<label index="buttons.clipboard">Klemmbrett</label>
 			<label index="cm.copy">Kopieren</label>
@@ -474,12 +492,6 @@ Wollen Sie gemachten Änderungen sichern und die Anzeige aktualisieren?</label>
 			<label index="cm.unzip">Entzippen</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Neu anlegen</label>
-			<label index="labels.table">Tabelle</label>
-			<label index="labels.noRTEfound">Hinweis: Sie können dieses Feld nicht bearbeiten, weil es nur mit einem Rich Text Editor (RTE) bearbeitet werden kann. Ein solcher Editor ist jedoch nicht verfügbar oder der RTE wurde deaktiviert.</label>
-			<label index="labels.temporaryDBmount">Temporären Einstiegspunkt aufheben</label>
-			<label index="labels.refreshList">Liste neu laden</label>
-			<label index="labels.clipInsert_file">%s Datei(en) aus dem Klemmbrett einfügen</label>
-			<label index="labels.clipInsert_db">%s Datensätze aus dem Klemmbrett einfügen</label>
 			<label index="cm.tempMountPoint">Als Startpunkt für den Seitenbaum festlegen</label>
 		</languageKey>
 		<languageKey index="no" type="array">
@@ -490,6 +502,7 @@ Wollen Sie gemachten Änderungen sichern und die Anzeige aktualisieren?</label>
 			<label index="labels.lockedRecord_content">Brukeren '%s' startet redigeringen av innholdet på denne side %s siden.</label>
 			<label index="labels.showRecords">Vis elementer</label>
 			<label index="labels.path">Sti</label>
+			<label index="labels.table">Tabell</label>
 			<label index="labels.upOneLevel">Et nivå opp</label>
 			<label index="labels.enterSearchString">Sett inn søkeord:</label>
 			<label index="labels.enterSearchLevels">Denne side|1 nivå ned|2 nivåer ned|3 nivåer ned|4 nivåer ned</label>
@@ -524,7 +537,11 @@ Wollen Sie gemachten Änderungen sichern und die Anzeige aktualisieren?</label>
 			<label index="labels.depth_1">1 nivå</label>
 			<label index="labels.depth_2">2 nivåer</label>
 			<label index="labels.depth_3">3 nivåer</label>
+			<label index="labels.allow">Tillatt</label>
+			<label index="labels.deny">Nekt</label>
+			<label index="labels.generalTab">Standard</label>
 			<label index="labels.refresh">Gjeninnles treet fra serveren</label>
+			<label index="labels.temporaryDBmount">Avbryt midlertidig DB mount</label>
 			<label index="labels.refreshList">Gjeninnles liste fra serveren</label>
 			<label index="labels.close">Lukk</label>
 			<label index="labels.new">NY</label>
@@ -545,6 +562,14 @@ Wollen Sie gemachten Änderungen sichern und die Anzeige aktualisieren?</label>
 			<label index="labels.clipNoEl">Ingen elementer</label>
 			<label index="labels.cliptabs">Klippebord #</label>
 			<label index="labels.removeItem">Fjern emne</label>
+			<label index="labels.holdDownCTRL">Viktig: Hold ned CTRL tast når bytter elementer i denne listen</label>
+			<label index="labels.revertSelection">Snu valgene</label>
+			<label index="labels.setAllCheckboxes">Velg alle avkryssningsbokser</label>
+			<label index="labels.changeInOrig">Endre i orginal</label>
+			<label index="ver.mgm">Vesjonsadministrasjon</label>
+			<label index="ver.selVer">Velg versjon</label>
+			<label index="ver.swap">Bytt/publiser</label>
+			<label index="ver.swapPage">Publiser denne versjonen av siden inklusive innhold</label>
 			<label index="TYPO3_Element_Browser">Typo3 Element utforsker</label>
 			<label index="show_item.php.viewItem">Vis emner</label>
 			<label index="show_item.php.file">Fil</label>
@@ -627,6 +652,7 @@ Vil du fornye den nå?</label>
 			<label index="cm.unzip">Pakk opp</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Opprett ny</label>
+			<label index="cm.tempMountPoint">Monter som rot</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="labels.openInNewWindow">Apri in una nuova finestra</label>
@@ -636,6 +662,7 @@ Vil du fornye den nå?</label>
 			<label index="labels.lockedRecord_content">L'utente '%s' ha iniziato a modificare il contenuto di questa pagina %s fa</label>
 			<label index="labels.showRecords">Mostra record</label>
 			<label index="labels.path">Percorso</label>
+			<label index="labels.table">Tabella</label>
 			<label index="labels.upOneLevel">Su un livello</label>
 			<label index="labels.enterSearchString">Cerca Stringa:</label>
 			<label index="labels.enterSearchLevels">Questa pagina |1 livello giu'|2 livelli giu'|3 livelli giu'|4 livelli giu'</label>
@@ -672,7 +699,11 @@ Vuoi continuare SENZA salvare?</label>
 			<label index="labels.depth_1">1 livello</label>
 			<label index="labels.depth_2">2 livelli</label>
 			<label index="labels.depth_3">3 livelli</label>
+			<label index="labels.allow">Consenti</label>
+			<label index="labels.deny">Nega</label>
+			<label index="labels.generalTab">Generale</label>
 			<label index="labels.refresh">Ricarica dal server</label>
+			<label index="labels.temporaryDBmount">Elimina DB mount temporaneo</label>
 			<label index="labels.refreshList">Ricarica lista dal server</label>
 			<label index="labels.close">Chiudi</label>
 			<label index="labels.new">NUOVO</label>
@@ -693,6 +724,15 @@ Vuoi continuare SENZA salvare?</label>
 			<label index="labels.clipNoEl">Nessun elemento</label>
 			<label index="labels.cliptabs">Clipboard #</label>
 			<label index="labels.removeItem">Rimuovi item</label>
+			<label index="labels.holdDownCTRL">Importante: tieni premuto il tanto CTRL mentre selezioni gli elementi di questa lista!</label>
+			<label index="labels.revertSelection">Ripristina selezione originaria</label>
+			<label index="labels.setAllCheckboxes">Seleziona Tutto</label>
+			<label index="labels.changeInOrig">Cambia nell'originale</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Gestione Versioni</label>
+			<label index="ver.selVer">Seleziona versione</label>
+			<label index="ver.swap">Scambia/Pubblica</label>
+			<label index="ver.swapPage">Pubblica questa versione della pagina e i suoi contenuti</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Browser</label>
 			<label index="show_item.php.viewItem">Vedi Item</label>
 			<label index="show_item.php.file">File</label>
@@ -775,6 +815,7 @@ Salvare ora il documento?</label>
 			<label index="cm.unzip">Unzip</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Crea Nuovo</label>
+			<label index="cm.tempMountPoint">Monta come radice dell'albero</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="labels.openInNewWindow">Ouvrir une nouvelle fenêtre</label>
@@ -784,6 +825,7 @@ Salvare ora il documento?</label>
 			<label index="labels.lockedRecord_content">L'utilisateur '%s' édite un élément de cette page depuis %s.</label>
 			<label index="labels.showRecords">Afficher les enregistrements</label>
 			<label index="labels.path">Chemin</label>
+			<label index="labels.table">Table</label>
 			<label index="labels.upOneLevel">Remonter d'un niveau dans l'aborescence</label>
 			<label index="labels.enterSearchString">Rechercher:</label>
 			<label index="labels.enterSearchLevels">Cette page|1 niveau inférieur|2 niveaux inférieurs|3 niveaux inférieurs|4 niveaux inférieurs</label>
@@ -791,6 +833,7 @@ Salvare ora il documento?</label>
 			<label index="labels.fieldsMissing">Certains champs ne sont pas correctement remplis. Ils sont marqués d'un point d'exclamation jaune.</label>
 			<label index="labels.fieldsChanged">Il y des informations non sauvegardées dans ce formulaire!
 Souhaitez-vous continuer sans sauver?</label>
+			<label index="labels.noRTEfound">Note: Vous ne pouvez éditer ce champ car il ne peut être édité qu'avec l'éditeur de texte avancé (RTE), cependant aucun éditeur n'est disponible ou l'édition avec le RTE a été dévalidée</label>
 			<label index="labels.showPalettes">Afficher les options secondaires (palettes)</label>
 			<label index="labels.showDescriptions">Afficher la description des champs</label>
 			<label index="labels.disableRTE">Désactiver l'éditeur de texte avancé (RTE)</label>
@@ -818,7 +861,12 @@ Souhaitez-vous continuer sans sauver?</label>
 			<label index="labels.depth_1">1 sous niveau</label>
 			<label index="labels.depth_2">2 sous niveaux</label>
 			<label index="labels.depth_3">3 sous niveaux</label>
+			<label index="labels.allow">Autorise</label>
+			<label index="labels.deny">Interdit</label>
+			<label index="labels.generalTab">Général</label>
 			<label index="labels.refresh">Recharger l'arborescence à partir du serveur</label>
+			<label index="labels.temporaryDBmount">Annuler le montage DB temporaire</label>
+			<label index="labels.refreshList">Recharger la liste depuis le serveur</label>
 			<label index="labels.close">Fermer</label>
 			<label index="labels.new">NOUVEAU</label>
 			<label index="labels.selected">Sélectionné(s)</label>
@@ -827,6 +875,8 @@ Souhaitez-vous continuer sans sauver?</label>
 			<label index="labels.move_to_top">Déplacer vers le haut les éléments sélectionnés</label>
 			<label index="labels.browse_file">Naviguer dans les fichiers</label>
 			<label index="labels.browse_db">Naviguer dans les enregistrements</label>
+			<label index="labels.clipInsert_file">Insérer %s fichier(s) depuis le tampon</label>
+			<label index="labels.clipInsert_db">Insérer %s enregistrement(s) depuis le tampon</label>
 			<label index="labels.generalOptions">Options générals</label>
 			<label index="labels.allTables">[Toutes les tables]</label>
 			<label index="labels.moreOptions">Plus d'options...</label>
@@ -836,6 +886,15 @@ Souhaitez-vous continuer sans sauver?</label>
 			<label index="labels.clipNoEl">Pas d'éléments</label>
 			<label index="labels.cliptabs">N° dans le presse-papiers</label>
 			<label index="labels.removeItem">Supprimer l'élément</label>
+			<label index="labels.holdDownCTRL">Important : Maintenez la touche CTRL tout en séléectionnant des éléments dans cette liste!</label>
+			<label index="labels.revertSelection">Inverser la sélection</label>
+			<label index="labels.setAllCheckboxes">Sélectionner toutes les cases à cocher</label>
+			<label index="labels.changeInOrig">Changer dans la version originale</label>
+			<label index="ver.online">EN LIGNE</label>
+			<label index="ver.mgm">Gestion de la Version</label>
+			<label index="ver.selVer">Choisir la version:</label>
+			<label index="ver.swap">Echanger/Editer</label>
+			<label index="ver.swapPage">Publier cette version de la page (incluant le contenu)</label>
 			<label index="TYPO3_Element_Browser">Navigateur d'éléments TYPO3</label>
 			<label index="show_item.php.viewItem">Visualiser l'élément</label>
 			<label index="show_item.php.file">Fichier</label>
@@ -894,6 +953,7 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="rm.edit">Editer</label>
 			<label index="rm.delete">Supprimer</label>
 			<label index="buttons.logout">Fermer la session</label>
+			<label index="buttons.selMenu_modules">MODULES</label>
 			<label index="buttons.clear">Effacer</label>
 			<label index="buttons.clipboard">Presse-papiers</label>
 			<label index="cm.copy">Copier</label>
@@ -917,6 +977,7 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="cm.unzip">Dézipper</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Créer nouveau</label>
+			<label index="cm.tempMountPoint">Monter comme racine de l'arbre</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="labels.openInNewWindow">Abrir en nueva ventana</label>
@@ -926,6 +987,7 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="labels.lockedRecord_content">El usuario '%s' comenzó a editar contenido en esta página hace %s.</label>
 			<label index="labels.showRecords">Mostrar registros</label>
 			<label index="labels.path">Ruta</label>
+			<label index="labels.table">Tabla</label>
 			<label index="labels.upOneLevel">Subir un nivel</label>
 			<label index="labels.enterSearchString">Buscar:</label>
 			<label index="labels.enterSearchLevels">Esta página|Bajar un nivel|Bajar 2 niveles|Bajar 3 niveles|Bajar 4 niveles</label>
@@ -960,7 +1022,11 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="labels.depth_1">1 nivel</label>
 			<label index="labels.depth_2">2 niveles</label>
 			<label index="labels.depth_3">3 niveles</label>
+			<label index="labels.allow">Permitir</label>
+			<label index="labels.deny">Denegar</label>
+			<label index="labels.generalTab">General</label>
 			<label index="labels.refresh">Refresca el árbol desde el servidor</label>
+			<label index="labels.temporaryDBmount">Cancelar montaje temporal de BD</label>
 			<label index="labels.refreshList">Refrescar lista desde el servidor</label>
 			<label index="labels.close">Cerrar</label>
 			<label index="labels.new">NUEVO</label>
@@ -981,6 +1047,15 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="labels.clipNoEl">Sin elementos</label>
 			<label index="labels.cliptabs">Portapapeles #</label>
 			<label index="labels.removeItem">Borrar elemento</label>
+			<label index="labels.holdDownCTRL">Importante: Mantén pulsada la tecla CONTROL mientras seleccionas los elementos de esta lista</label>
+			<label index="labels.revertSelection">Invertir selección</label>
+			<label index="labels.setAllCheckboxes">Seleccionar todas las opciones</label>
+			<label index="labels.changeInOrig">Cambiar en el original</label>
+			<label index="ver.online">EN LÍNEA</label>
+			<label index="ver.mgm">Administración de Versiones</label>
+			<label index="ver.selVer">Selecciona versión:</label>
+			<label index="ver.swap">Intercambiar/Publicar</label>
+			<label index="ver.swapPage">Publica esta versión de la página incluyendo el contenido</label>
 			<label index="TYPO3_Element_Browser">Navegador de elementos de TYPO3</label>
 			<label index="show_item.php.viewItem">Ver elemento</label>
 			<label index="show_item.php.file">Archivo</label>
@@ -1062,21 +1137,24 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="cm.unzip">Unzip</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Crear nuevo</label>
+			<label index="cm.tempMountPoint">Montar como raíz del árbol</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="labels.openInNewWindow">Open in nieuw venster</label>
-			<label index="labels.goBack">Ga terug</label>
+			<label index="labels.goBack">terug</label>
 			<label index="labels.makeShortcut">Maak een snelkoppeling naar deze pagina.</label>
 			<label index="labels.lockedRecord">De gebruiker '%s' begon %s geleden dit record te bewerken.</label>
 			<label index="labels.lockedRecord_content">De gebruiker '%s' begon %s geleden inhoud van deze pagina te bewerken.</label>
 			<label index="labels.showRecords">Toon records</label>
 			<label index="labels.path">Pad</label>
+			<label index="labels.table">Tabel</label>
 			<label index="labels.upOneLevel">Een niveau omhoog</label>
 			<label index="labels.enterSearchString">Zoekreeks:</label>
 			<label index="labels.enterSearchLevels">Deze pagina|1 niveau lager|2 niveau's lager|3 niveau's lager|4 niveau's lager|</label>
-			<label index="labels.noEditPermission">Helaas, dat gaat niet lukken. U heeft niet de juiste bevoegdheden om deze wijziging uit te voeren.</label>
+			<label index="labels.noEditPermission">Sorry, U heeft niet de juiste bevoegdheden om deze wijziging uit te voeren.</label>
 			<label index="labels.fieldsMissing">Er zijn velden in het formulier die nog niet correct zijn ingevuld. Deze velden zijn gemarkeerd met een geel uitroepteken.</label>
 			<label index="labels.fieldsChanged">Er zijn niet opgeslagen wijzigingen! Toch doorgaan?</label>
+			<label index="labels.noRTEfound">Opmerking: U kunt dit veld niet aanpassen aangezien het alleen aangepast kan worden met de Rich Text Editor en de Rich Text Editor uitgeschakeld of niet beschikbaar is.</label>
 			<label index="labels.showPalettes">Toon extra opties (paletten)</label>
 			<label index="labels.showDescriptions">Toon veld omschrijvingen</label>
 			<label index="labels.disableRTE">Deactiveer Rich Text Editor (RTE</label>
@@ -1098,13 +1176,18 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="labels.minutesHoursDaysYears">min| uren| dagen| jaren</label>
 			<label index="labels.menu">Menu:</label>
 			<label index="labels.showPage">Bekijk webpagina</label>
-			<label index="labels.showList">Toon records lijst</label>
+			<label index="labels.showList">Toon lijst van records</label>
 			<label index="labels.days">dagen</label>
 			<label index="labels.depth_0">Deze pagina</label>
 			<label index="labels.depth_1">1 niveau</label>
 			<label index="labels.depth_2">2 niveau's</label>
 			<label index="labels.depth_3">3 niveau's</label>
-			<label index="labels.refresh">Herlaad de mappenweergave vanaf de server</label>
+			<label index="labels.allow">Toestaan</label>
+			<label index="labels.deny">Niet toestaan</label>
+			<label index="labels.generalTab">Algemeen</label>
+			<label index="labels.refresh">Herlaad paginaboom vanaf de server</label>
+			<label index="labels.temporaryDBmount">Tijdelijke DB koppeling annuleren</label>
+			<label index="labels.refreshList">Herlaad lijst vanaf server</label>
 			<label index="labels.close">Sluiten</label>
 			<label index="labels.new">NIEUW</label>
 			<label index="labels.selected">Geselecteerde</label>
@@ -1113,6 +1196,8 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="labels.move_to_top">Verplaats geselecteerd item stap naar boven</label>
 			<label index="labels.browse_file">Zoeken naar bestanden</label>
 			<label index="labels.browse_db">Zoeken naar records</label>
+			<label index="labels.clipInsert_file">Invoegen %s bestanden vanuit klembord</label>
+			<label index="labels.clipInsert_db">Invoegen %s records vanuit klembord</label>
 			<label index="labels.generalOptions">Algemene opties:</label>
 			<label index="labels.allTables">[Alle tabellen]</label>
 			<label index="labels.moreOptions">Meer opties....</label>
@@ -1122,6 +1207,15 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="labels.clipNoEl">Geen elementen</label>
 			<label index="labels.cliptabs">Klembord #</label>
 			<label index="labels.removeItem">Verwijder item</label>
+			<label index="labels.holdDownCTRL">Belangrijk: Hou de CTRL toets ingedrukt tijdens het kiezen van elementen in deze lijst!</label>
+			<label index="labels.revertSelection">Selectie terugdraaien</label>
+			<label index="labels.setAllCheckboxes">Selecteer alle checkboxen</label>
+			<label index="labels.changeInOrig">Wijzig in origineel</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Versiebeheer</label>
+			<label index="ver.selVer">Selecteer versie:</label>
+			<label index="ver.swap">Wissel/Publiceer</label>
+			<label index="ver.swapPage">Publiceer deze versie van de pagina inclusief inhoud</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Verkenner</label>
 			<label index="show_item.php.viewItem">Bekijk item</label>
 			<label index="show_item.php.file">Bestand</label>
@@ -1134,8 +1228,8 @@ Voulez-vous sauver maintenant afin de pouvoir rafraichir l'écran?</label>
 			<label index="file_upload.php.pagetitle">Upload bestanden</label>
 			<label index="file_upload.php.submit">Upload bestanden</label>
 			<label index="file_upload.php.files">bestanden</label>
-			<label index="file_rename.php.pagetitle">Hernoemen</label>
-			<label index="file_rename.php.submit">Hernoemen</label>
+			<label index="file_rename.php.pagetitle">Naam wijzigen</label>
+			<label index="file_rename.php.submit">Naam wijzigen</label>
 			<label index="file_edit.php.pagetitle">Bewerk</label>
 			<label index="file_edit.php.submit">Opslaan</label>
 			<label index="file_edit.php.saveAndClose">Opslaan en Sluiten</label>
@@ -1180,6 +1274,7 @@ Wilt u nu opslaan om de bijbehorende velden te tonen?</label>
 			<label index="rm.edit">Bewerk</label>
 			<label index="rm.delete">Verwijderen</label>
 			<label index="buttons.logout">Log uit</label>
+			<label index="buttons.selMenu_modules">MODULES</label>
 			<label index="buttons.clear">Wis</label>
 			<label index="buttons.clipboard">Klembord</label>
 			<label index="cm.copy">Kopiëren</label>
@@ -1197,12 +1292,13 @@ Wilt u nu opslaan om de bijbehorende velden te tonen?</label>
 			<label index="cm.hide">Verberg</label>
 			<label index="cm.unhide">Toon</label>
 			<label index="cm.upload">Uploaden bestanden</label>
-			<label index="cm.rename">Hernoemen</label>
+			<label index="cm.rename">Naam wijzigen</label>
 			<label index="cm.open">Open</label>
 			<label index="cm.save">Opslaan</label>
 			<label index="cm.unzip">Uitpakken</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Maak nieuwe</label>
+			<label index="cm.tempMountPoint">Plaats als root</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="labels.openInNewWindow">Otevřít v novém okně</label>
@@ -1355,12 +1451,16 @@ Chcete nyní změnu uložit, abyste obnovili zobrazení?</label>
 			<label index="labels.lockedRecord_content">Użytkownik '%s' zaczął edytować zawartość tej strony %s temu</label>
 			<label index="labels.showRecords">Pokaż rekordy</label>
 			<label index="labels.path">Ścieżka</label>
+			<label index="labels.table">Tabela</label>
 			<label index="labels.upOneLevel">O jeden poziom w górę</label>
 			<label index="labels.enterSearchString">Wprowadź szukaną frazę:</label>
 			<label index="labels.enterSearchLevels">Ta strona|1 poziom w dół|2 poziomy w dół|3 poziomy w dół|4 poziomy w dół</label>
 			<label index="labels.noEditPermission">Przykro mi, ale nie masz uprawnień do wprowadzenia tej zmiany.</label>
-			<label index="labels.fieldsMissing">W formularzu niektóre pola zostały wypełnione niepoprawnie. Te pola oznaczono żółtym symbolem wykrzyknika.</label>
-			<label index="labels.fieldsChanged">Nie zapisano zawartości w formularzu! Czy nadal chcesz kontynuować?</label>
+			<label index="labels.fieldsMissing">W formularzu niektóre pola zostały wypełnione niepoprawnie. 
+Te pola oznaczono żółtym symbolem wykrzyknika.</label>
+			<label index="labels.fieldsChanged">Nie zapisano zawartości w formularzu!
+Czy nadal chcesz kontynuować?</label>
+			<label index="labels.noRTEfound">Uwaga: Nie możesz edytować tego pola, ponieważ jego edycja jest możliwa tylko w edytorze RTE. Edytor RTE jest niedostępny lub wyłączony.</label>
 			<label index="labels.showPalettes">Pokaż dodatkowe opcje (palety)</label>
 			<label index="labels.showDescriptions">Pokaż opisy pól</label>
 			<label index="labels.disableRTE">Wyłącz edytor RTE</label>
@@ -1388,7 +1488,12 @@ Chcete nyní změnu uložit, abyste obnovili zobrazení?</label>
 			<label index="labels.depth_1">1 poziom</label>
 			<label index="labels.depth_2">2 poziomy</label>
 			<label index="labels.depth_3">3 poziomy</label>
+			<label index="labels.allow">Zezwól</label>
+			<label index="labels.deny">Zabroń</label>
+			<label index="labels.generalTab">Ogólnie</label>
 			<label index="labels.refresh">Odświeżenie widoku</label>
+			<label index="labels.temporaryDBmount">Anuluj tymczasowy punkt montowania</label>
+			<label index="labels.refreshList">Odśwież listę z serwera</label>
 			<label index="labels.close">Zamknij</label>
 			<label index="labels.new">NOWY</label>
 			<label index="labels.selected">Zaznaczone</label>
@@ -1397,15 +1502,26 @@ Chcete nyní změnu uložit, abyste obnovili zobrazení?</label>
 			<label index="labels.move_to_top">Przesuń zaznaczone elementy w górę</label>
 			<label index="labels.browse_file">Szukaj plików</label>
 			<label index="labels.browse_db">Szukaj rekordów</label>
+			<label index="labels.clipInsert_file">Wstaw %s plik(i) ze schowka</label>
+			<label index="labels.clipInsert_db">Wstaw %s rekord(y) ze schowka</label>
 			<label index="labels.generalOptions">Opcje ogólne:</label>
 			<label index="labels.allTables">[Wszystkie tablice]</label>
 			<label index="labels.moreOptions">Więcej opcji...</label>
-			<label index="labels.noMatchingValue">BIEŻĄCA WARTOŚĆ JEST NIEDOSTĘPNA (%s)</label>
+			<label index="labels.noMatchingValue">NIEPOPRAWNA WARTOŚĆ (&quot;%s&quot;)</label>
 			<label index="labels.thumbmode_clip">Pokazuj miniatury w Schowku</label>
 			<label index="labels.copymode">Kopiowanie elementów zamiast przenoszenia</label>
 			<label index="labels.clipNoEl">Brak pozycji</label>
 			<label index="labels.cliptabs">Schowek #</label>
 			<label index="labels.removeItem">Usuń element</label>
+			<label index="labels.holdDownCTRL">Ważne: Aby zaznaczyć/odznaczyć elementy z listy przytrzymaj wciśnięty klawisz CTRL.</label>
+			<label index="labels.revertSelection">Cofnij wybór</label>
+			<label index="labels.setAllCheckboxes">Zaznacz wszystkie pola</label>
+			<label index="labels.changeInOrig">Zmień w oryginale</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Zarządzanie wersjami</label>
+			<label index="ver.selVer">Wybierz wersję:</label>
+			<label index="ver.swap">Zamień/Publikuj</label>
+			<label index="ver.swapPage">Publikuj tę wersję strony i treści</label>
 			<label index="TYPO3_Element_Browser">Przeglądarka elementów TYPO3</label>
 			<label index="show_item.php.viewItem">Podgląd elementu</label>
 			<label index="show_item.php.file">Plik</label>
@@ -1464,6 +1580,7 @@ Czy chcesz zapisać zmiany aby odświeżyć widok?</label>
 			<label index="rm.edit">Edytuj</label>
 			<label index="rm.delete">Usuń</label>
 			<label index="buttons.logout">Wyloguj</label>
+			<label index="buttons.selMenu_modules">MODUŁY</label>
 			<label index="buttons.clear">Opróżnij</label>
 			<label index="buttons.clipboard">Schowek</label>
 			<label index="cm.copy">Kopiuj</label>
@@ -1487,14 +1604,26 @@ Czy chcesz zapisać zmiany aby odświeżyć widok?</label>
 			<label index="cm.unzip">Rozpakuj</label>
 			<label index="cm.info">Informacja</label>
 			<label index="cm.createnew">Stwórz nowy</label>
+			<label index="cm.tempMountPoint">Zamontuj jako korzeń drzewa</label>
 		</languageKey>
 		<languageKey index="si" type="array">
+			<label index="labels.openInNewWindow">Odpri novo okno</label>
+			<label index="labels.goBack">Nazaj</label>
+			<label index="labels.makeShortcut">Ustvari bližnjico do te strani?</label>
+			<label index="labels.lockedRecord">Uporabnik '%s' je pričel spreminjati ta zapis pred %s</label>
+			<label index="labels.lockedRecord_content">Uporabnik '%s' je pričel spreminjati vsebino te strani pred %s</label>
+			<label index="labels.showRecords">Pokaži zapise</label>
 			<label index="labels.path">Pot</label>
+			<label index="labels.table">Tabela</label>
 			<label index="labels.upOneLevel">Nivo višje</label>
 			<label index="labels.enterSearchString">Vpišite iskalni niz:</label>
 			<label index="labels.enterSearchLevels">Ta stran je |1 nivo niľje|2 nivoja niľje|3 nivoje niľje|4 nivoje niľje</label>
 			<label index="labels.noEditPermission">Nimate privilegijev, potrebnih za vnos te spremembe.</label>
 			<label index="labels.fieldsMissing">V obrazcu so polja, ki jih ąe niste pravilno izpolnili. Označena so z rumenim klicajem.</label>
+			<label index="labels.fieldsChanged">Spremembe niso shranjene. 
+Želite nadaljevati BREZ shranjevanja?</label>
+			<label index="labels.showDescriptions">Prikaži opise polj</label>
+			<label index="labels.disableRTE">Izklopi RTE (rich text editor)</label>
 			<label index="labels._CONTROL_">Kontrola</label>
 			<label index="labels._PATH_">Pot</label>
 			<label index="labels.setFields">Nastavi polja</label>
@@ -1510,23 +1639,37 @@ Czy chcesz zapisać zmiany aby odświeżyć widok?</label>
 			<label index="labels.hidden">Skrito</label>
 			<label index="labels.starttime">Začetek</label>
 			<label index="labels.endtime">Konec</label>
-			<label index="labels.minutesHoursDaysYears"> min| ura| dan| leto</label>
+			<label index="labels.minutesHoursDaysYears">min| ura| dan| leto</label>
 			<label index="labels.menu">Menu:</label>
 			<label index="labels.showPage">Poglej stran</label>
+			<label index="labels.showList">Prikaži seznam zapisov</label>
 			<label index="labels.days">dnevi</label>
+			<label index="labels.depth_0">Ta stran</label>
+			<label index="labels.depth_1">1 nivo</label>
+			<label index="labels.depth_2">2 nivoja</label>
+			<label index="labels.depth_3">3 nivoji</label>
+			<label index="labels.allow">Dovoli</label>
+			<label index="labels.deny">Ne dovoli</label>
 			<label index="labels.refresh">Osveži drevo iz strežnika</label>
+			<label index="labels.refreshList">Osveži seznam</label>
 			<label index="labels.close">Zapri</label>
 			<label index="labels.new">NOVO</label>
 			<label index="labels.selected">Izbrano</label>
 			<label index="labels.items">Predmeti</label>
 			<label index="labels.remove_selected">Odstrani izbrane predmete</label>
 			<label index="labels.move_to_top">Premakni izbran predmet gor</label>
-			<label index="labels.browse_file">Raziąči datoteke</label>
-			<label index="labels.browse_db">Raziąči zapise</label>
+			<label index="labels.browse_file">Razišči datoteke</label>
+			<label index="labels.browse_db">Razišči zapise</label>
+			<label index="labels.clipInsert_file">Vstavi %s datotek iz odložišča</label>
+			<label index="labels.clipInsert_db">Vstavi %s zapisov iz odložišča</label>
+			<label index="labels.allTables">[Vse tabele]</label>
 			<label index="labels.thumbmode_clip">Prikaži ikone predmetov v odložišču</label>
 			<label index="labels.copymode">Kopiraj predmete namesto da jih premakneš</label>
+			<label index="labels.clipNoEl">Ni elementov</label>
 			<label index="labels.cliptabs">Odložišče #</label>
 			<label index="labels.removeItem">Odstrani predmet</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.selVer">Izberi verzijo:</label>
 			<label index="show_item.php.viewItem">Prikaži predmet</label>
 			<label index="show_item.php.file">Datoteka</label>
 			<label index="show_item.php.dimensions">Dimenzije</label>
@@ -1569,13 +1712,19 @@ Jo želite obnoviti?</label>
 			<label index="rm.saveDocShow">Shrani dokument in poglej stran</label>
 			<label index="rm.saveCloseDoc">Shrani in zapri dokument</label>
 			<label index="rm.saveCloseAllDocs">Shrani in zapri vse dokumente</label>
+			<label index="rm.saveNewDoc">Shrani dokument in ustvari novega</label>
 			<label index="rm.closeDoc">Zapri dokument</label>
 			<label index="rm.closeAllDocs">Zapri vse dokumente</label>
+			<label index="rm.clearCache_clearCache">Izprazni predpomnilnik</label>
+			<label index="rm.clearCache_thisPage">Ta stran</label>
 			<label index="rm.clearCache_pages">Izprazni strani iz predpomnilnika</label>
 			<label index="rm.clearCache_all">Izprazni celoten predpomnilnik</label>
+			<label index="rm.clearCache_allTypo3Conf">Izprazni temp_CACHED</label>
+			<label index="rm.adminFunctions">Admin funkcije</label>
 			<label index="rm.edit">Uredi</label>
 			<label index="rm.delete">Izbriši</label>
 			<label index="buttons.logout">Odjava</label>
+			<label index="buttons.selMenu_modules">MODULI</label>
 			<label index="buttons.clear">Razveljavi</label>
 			<label index="buttons.clipboard">Odložišče</label>
 			<label index="cm.copy">Kopiraj</label>
@@ -1590,6 +1739,8 @@ Jo želite obnoviti?</label>
 			<label index="cm.selectto">Izberi do</label>
 			<label index="cm.deselectto">Razveljavi izbor do</label>
 			<label index="cm.delete">Izbriši</label>
+			<label index="cm.hide">Skrij</label>
+			<label index="cm.unhide">Prikaži</label>
 			<label index="cm.upload">Prenesi datoteko</label>
 			<label index="cm.rename">Preimenuj</label>
 			<label index="cm.open">Odpri</label>
@@ -1602,19 +1753,20 @@ Jo želite obnoviti?</label>
 			<label index="labels.openInNewWindow">Avaa uudessa ikkunassa</label>
 			<label index="labels.goBack">Palaa takaisin</label>
 			<label index="labels.makeShortcut">Luo pikavalinta tälle sivulle?</label>
-			<label index="labels.lockedRecord">Käyttäjä &amp;quot;%s&amp;quot; perusti tämän tiedon %s .</label>
-			<label index="labels.lockedRecord_content">Käyttäjä &amp;quot;%s&amp;quot; muokkasi tätä tietoa %s .</label>
-			<label index="labels.showRecords">Näytä tiedot.</label>
+			<label index="labels.lockedRecord">Käyttäjä '%s' alkoi muokata tätä tietuetta %s sitten.</label>
+			<label index="labels.lockedRecord_content">Käyttäjä '%s' alkoi muokata tämän sivun sisältöä %s sitten.</label>
+			<label index="labels.showRecords">Näytä tietueet</label>
 			<label index="labels.path">Polku</label>
+			<label index="labels.table">Taulukko</label>
 			<label index="labels.upOneLevel">Ylös yksi taso</label>
 			<label index="labels.enterSearchString">Hakuehto:</label>
 			<label index="labels.enterSearchLevels">Tämä sivu|1 taso alas|2 tasoa alas|3 tasoa alas|4 tasoa alas</label>
-			<label index="labels.noEditPermission">Pahoittelen, Sinulla ei ollut oikeuksia tehdä tätä muutosta.</label>
-			<label index="labels.fieldsMissing">Lomakkeella on tietoja, joita ei ole täyttetty oikein. Nämä tiedot on merkitty keltaisella merkillä.</label>
-			<label index="labels.fieldsChanged">Lomakkeella on tallentamattomia tietoja. Haluatko jatkaa ILMAN tallennusta?</label>
-			<label index="labels.noRTEfound">Huomautus: Et voi muotoilla tätä tietoa, koska sitä voidaan muotoilla vain RTE-editorilla, mutta editoria ei ole käytettävissä tai sen käyttö on estetty.</label>
-			<label index="labels.showPalettes">Näytä toiset vaihtoehdot.[paletit]</label>
-			<label index="labels.showDescriptions">Näytä tiedon kuvaus.</label>
+			<label index="labels.noEditPermission">Pahoittelen, sinulla ei ollut oikeuksia tehdä tätä muutosta.</label>
+			<label index="labels.fieldsMissing">Lomakkeella on tietoja, joita ei ole täyttetty oikein. Nämä tiedot on merkitty keltaisella huutomerkillä.</label>
+			<label index="labels.fieldsChanged">Lomakkeella on tallentamattomia tietoja! Haluatko jatkaa ILMAN tallennusta?</label>
+			<label index="labels.noRTEfound">Huomautus: Et voi muotoilla tätä tietoa, koska sitä voidaan muotoilla vain RTE-editorilla, mutta editori ei ole käytettävissä tai sen käyttö on estetty.</label>
+			<label index="labels.showPalettes">Näytä toiset vaihtoehdot (paletit)</label>
+			<label index="labels.showDescriptions">Näytä kenttien selitteet</label>
 			<label index="labels.disableRTE">Poista Rich Text Editor (RTE) käytöstä</label>
 			<label index="labels._CONTROL_">Kontrolli</label>
 			<label index="labels._PATH_">Polku</label>
@@ -1629,18 +1781,22 @@ Jo želite obnoviti?</label>
 			<label index="labels.no_title">Ei otsikkoa</label>
 			<label index="labels.cancel">Peruuta</label>
 			<label index="labels.hidden">Piilotettu</label>
-			<label index="labels.starttime">Aloita</label>
-			<label index="labels.endtime">Loppu</label>
-			<label index="labels.minutesHoursDaysYears">min| tunnit| päivät| vuodet</label>
+			<label index="labels.starttime">Aloitusaika</label>
+			<label index="labels.endtime">Lopetusaika</label>
+			<label index="labels.minutesHoursDaysYears">min| tuntia| päivää| vuotta</label>
 			<label index="labels.menu">Valikko:</label>
-			<label index="labels.showPage">Katso websivua</label>
+			<label index="labels.showPage">Näytä websivu</label>
 			<label index="labels.showList">Näytä tietuelista</label>
-			<label index="labels.days">päivät</label>
+			<label index="labels.days">päivää</label>
 			<label index="labels.depth_0">Tämä sivu</label>
 			<label index="labels.depth_1">1 taso</label>
 			<label index="labels.depth_2">2 tasoa</label>
 			<label index="labels.depth_3">3 tasoa</label>
+			<label index="labels.allow">Salli</label>
+			<label index="labels.deny">Estä</label>
+			<label index="labels.generalTab">Yleinen</label>
 			<label index="labels.refresh">Lataa sivusto uudelleen palvelimelta</label>
+			<label index="labels.temporaryDBmount">Peruuta tilapäinen tietokantaliitos</label>
 			<label index="labels.refreshList">Lataa lista palvelimelta</label>
 			<label index="labels.close">Sulje</label>
 			<label index="labels.new">UUSI</label>
@@ -1651,7 +1807,7 @@ Jo želite obnoviti?</label>
 			<label index="labels.browse_file">Selaile tiedostoja</label>
 			<label index="labels.browse_db">Selaile tietueita</label>
 			<label index="labels.clipInsert_file">Lisää %s tiedosto(t) leikepöydältä</label>
-			<label index="labels.clipInsert_db">Lisää %s tieto(tiedot) leikepöydältä</label>
+			<label index="labels.clipInsert_db">Lisää %s tiedot leikepöydältä</label>
 			<label index="labels.generalOptions">Yleiset valinnat:</label>
 			<label index="labels.allTables">[Kaikki taulut]</label>
 			<label index="labels.moreOptions">Lisää vaihtoehtoja...</label>
@@ -1661,10 +1817,19 @@ Jo želite obnoviti?</label>
 			<label index="labels.clipNoEl">Ei elementtejä</label>
 			<label index="labels.cliptabs">Leikepöytä numero #</label>
 			<label index="labels.removeItem">Poista kohde</label>
-			<label index="TYPO3_Element_Browser">TYPO3 Elementti Selain</label>
-			<label index="show_item.php.viewItem">Katso kohdetta</label>
+			<label index="labels.holdDownCTRL">Tärkeää: Pidä CTRL-näppäin alaspainettuna, kun valitset listan kohteita!</label>
+			<label index="labels.revertSelection">Palauta valinta</label>
+			<label index="labels.setAllCheckboxes">Valitse kaikki valintaruudut</label>
+			<label index="labels.changeInOrig">Muutos alkuperäisessä</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Versionhallinta</label>
+			<label index="ver.selVer">Valitse versio:</label>
+			<label index="ver.swap">Vaihda/Julkaise</label>
+			<label index="ver.swapPage">Julkaise tämä versio sivusta sisältöineen</label>
+			<label index="TYPO3_Element_Browser">TYPO3:n elementtiselain</label>
+			<label index="show_item.php.viewItem">Näytä kohde</label>
 			<label index="show_item.php.file">Tiedosto</label>
-			<label index="show_item.php.dimensions">Ulottuvuudet</label>
+			<label index="show_item.php.dimensions">Mitat</label>
 			<label index="show_item.php.filesize">Koko</label>
 			<label index="show_item.php.ftp_area">FTP-alue</label>
 			<label index="db_new.php.pagetitle">Uusi tietue</label>
@@ -1675,21 +1840,21 @@ Jo želite obnoviti?</label>
 			<label index="file_upload.php.files">tiedostot</label>
 			<label index="file_rename.php.pagetitle">Nimeä uudelleen</label>
 			<label index="file_rename.php.submit">Nimeä uudelleen</label>
-			<label index="file_edit.php.pagetitle">Muotoile</label>
+			<label index="file_edit.php.pagetitle">Muokkaa</label>
 			<label index="file_edit.php.submit">Tallenna</label>
-			<label index="file_edit.php.saveAndClose">Tallenna ja Sulje</label>
-			<label index="file_edit.php.coundNot">Tätä tiedostotyyppiä ei voi muotoilla.\Tiedostomuodon tulee olla esim.:%s</label>
-			<label index="file_newfolder.php.pagetitle">Uusi hakemisto</label>
-			<label index="file_newfolder.php.submit">Luo uusi hakemisto</label>
+			<label index="file_edit.php.saveAndClose">Tallenna ja sulje</label>
+			<label index="file_edit.php.coundNot">Tätä tiedostotyyppiä ei voi muokata.&lt;br /&gt;Tiedostomuodon tulee olla esim.:&lt;br /&gt;&lt;b&gt;%s&lt;/b&gt;</label>
+			<label index="file_newfolder.php.pagetitle">Uusi tiedosto tai hakemisto</label>
+			<label index="file_newfolder.php.submit">Luo hakemistoja</label>
 			<label index="file_newfolder.php.folders">hakemistot</label>
 			<label index="file_newfolder.php.newfile_submit">Luo uusi tiedosto</label>
 			<label index="file_newfolder.php.newfile">Luo uusi tekstitiedosto</label>
-			<label index="file_clipupload.php.warning_head">Vastaanotossa polkuvirhe</label>
-			<label index="file_clipupload.php.warning">Vastaanottavaa hakemistoa ei löydy. Sinun tulee luoda TEMP-hakemisto (&quot;_temp_&quot;) oletusasemasi juureen.</label>
+			<label index="file_clipupload.php.warning_head">Polkuvirhe vastaanotossa</label>
+			<label index="file_clipupload.php.warning">Vastaanottavaa hakemistoa ei löydy. Sinun tulee luoda TEMP-hakemisto (&quot;_temp_&quot;) ensin.</label>
 			<label index="mess.redraw">Sivun uudelleen lataaminen hävittää nykyiset tiedot. Haluatko jatkaa?</label>
 			<label index="mess.delete">Haluatko todella poistaa &quot;%s&quot;?</label>
 			<label index="mess.deleteClip">Oletko varma että haluat poistaa KAIKKI valitsemasi kohteet (%s) leikepöydältä?</label>
-			<label index="mess.refresh_login">Sisäänkirjottautumisesi on vanhentunut.
+			<label index="mess.refresh_login">Sisäänkirjautumisesi on vanhentunut.
 Haluatko uudistaa sen nyt?</label>
 			<label index="mess.noSelItemForEdit">Ole ystävällinen ja valitse listalta yksi tai useampia kohteita ennen muotoilua.</label>
 			<label index="mess.onChangeAlert">Tämä muutos vaikuttaa lomakkeella käytettäviin tietoihin.
@@ -1707,16 +1872,16 @@ Haluatko tallentaa nyt saadaksesi näytölle päivitetyn sivun?</label>
 			<label index="rm.saveDocShow">Tallenna asiakirja ja katso sivua</label>
 			<label index="rm.saveCloseDoc">Tallenna ja sulje asiakirja</label>
 			<label index="rm.saveCloseAllDocs">Tallenna ja sulje kaikki asiakirjat</label>
-			<label index="rm.saveNewDoc">Tallenna dokumentti ja luo uusi.</label>
+			<label index="rm.saveNewDoc">Tallenna dokumentti ja luo uusi</label>
 			<label index="rm.closeDoc">Sulje asiakirja</label>
 			<label index="rm.closeAllDocs">Sulje kaikki asiakirjat</label>
-			<label index="rm.clearCache_clearCache">Puhdista välimuisti</label>
+			<label index="rm.clearCache_clearCache">Tyhjennä välimuisti</label>
 			<label index="rm.clearCache_thisPage">Tämä sivu</label>
 			<label index="rm.clearCache_pages">Tyhjää sivun välimuisti</label>
 			<label index="rm.clearCache_all">Tyhjää kaikki välimuistit</label>
 			<label index="rm.clearCache_allTypo3Conf">Poista välimuistitiedostot typo3conf/ hakemistosta</label>
 			<label index="rm.adminFunctions">Ylläpitäjän toiminnot</label>
-			<label index="rm.edit">Muotoile</label>
+			<label index="rm.edit">Muokkaa</label>
 			<label index="rm.delete">Poista</label>
 			<label index="buttons.logout">Poistu</label>
 			<label index="buttons.selMenu_modules">ALIOHJELMAT</label>
@@ -1725,7 +1890,7 @@ Haluatko tallentaa nyt saadaksesi näytölle päivitetyn sivun?</label>
 			<label index="cm.copy">Kopioi</label>
 			<label index="cm.cut">Leikkaa</label>
 			<label index="cm.view">Näytä</label>
-			<label index="cm.edit">Muotoile</label>
+			<label index="cm.edit">Muokkaa</label>
 			<label index="cm.new">Uusi</label>
 			<label index="cm.pasteinto">Liitä paikalle</label>
 			<label index="cm.pasteafter">Liitä jälkeen</label>
@@ -1735,7 +1900,7 @@ Haluatko tallentaa nyt saadaksesi näytölle päivitetyn sivun?</label>
 			<label index="cm.deselectto">Poista valinta</label>
 			<label index="cm.delete">Poista</label>
 			<label index="cm.hide">Piilota</label>
-			<label index="cm.unhide">Avaa piilosta</label>
+			<label index="cm.unhide">Näytä</label>
 			<label index="cm.upload">Vie tiedostot</label>
 			<label index="cm.rename">Nimeä uudelleen</label>
 			<label index="cm.open">Avaa</label>
@@ -1743,6 +1908,7 @@ Haluatko tallentaa nyt saadaksesi näytölle päivitetyn sivun?</label>
 			<label index="cm.unzip">Pura</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Luo uusi</label>
+			<label index="cm.tempMountPoint">Liitä web-sivujen juurena</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="labels.openInNewWindow">Yeni pencere aç</label>
@@ -1752,6 +1918,7 @@ Haluatko tallentaa nyt saadaksesi näytölle päivitetyn sivun?</label>
 			<label index="labels.lockedRecord_content">Kullanıcı '%s' bu sayfa içeriğini %s önce düzenlemeye başladı.</label>
 			<label index="labels.showRecords">Kayıtları göster</label>
 			<label index="labels.path">Menü</label>
+			<label index="labels.table">Tablo</label>
 			<label index="labels.upOneLevel">Bir üst seviye</label>
 			<label index="labels.enterSearchString">Dizgi arama:</label>
 			<label index="labels.enterSearchLevels">Bu sayfa|alt seviye 1 |alt seviye 2|alt seviye 3|alt seviye 4</label>
@@ -1786,7 +1953,11 @@ Haluatko tallentaa nyt saadaksesi näytölle päivitetyn sivun?</label>
 			<label index="labels.depth_1">1.seviye</label>
 			<label index="labels.depth_2">2.seviye</label>
 			<label index="labels.depth_3">3.seviye</label>
+			<label index="labels.allow">İzin</label>
+			<label index="labels.deny">Red</label>
+			<label index="labels.generalTab">Genel</label>
 			<label index="labels.refresh">Dizin ağacını yeniden yükle</label>
+			<label index="labels.temporaryDBmount">Geçici DB mountunun iptali</label>
 			<label index="labels.refreshList">Server dan listeyi tekrar yükleyin</label>
 			<label index="labels.close">Kapat</label>
 			<label index="labels.new">YENİ</label>
@@ -1807,6 +1978,14 @@ Haluatko tallentaa nyt saadaksesi näytölle päivitetyn sivun?</label>
 			<label index="labels.clipNoEl">Elementler yok</label>
 			<label index="labels.cliptabs">Pano #</label>
 			<label index="labels.removeItem">Nesneleri kaldır</label>
+			<label index="labels.revertSelection">Seçili olanı ters çevir</label>
+			<label index="labels.setAllCheckboxes">Tüm işaretli kutuları seç</label>
+			<label index="labels.changeInOrig">Orjinaline çevir</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Version yönetimi</label>
+			<label index="ver.selVer">Versionu seç:</label>
+			<label index="ver.swap">Swap/yayınla</label>
+			<label index="ver.swapPage">Yayınlanan bu sayfanın versionu içerik içermektedir</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Browser</label>
 			<label index="show_item.php.viewItem">Nesne göster</label>
 			<label index="show_item.php.file">Dosya</label>
@@ -1889,6 +2068,7 @@ Görüntüyü yenilemek için kaydetmek istiyormusunuz?</label>
 			<label index="cm.unzip">Sıkıştırılmış dosyayı aç</label>
 			<label index="cm.info">Bilgi</label>
 			<label index="cm.createnew">Yarat</label>
+			<label index="cm.tempMountPoint">Mount treeroot gibi</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="labels.openInNewWindow">Öppna i nytt fönster</label>
@@ -2184,6 +2364,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="labels.lockedRecord_content">Пользователь '%s' начал редактирование этой страницы %s назад.</label>
 			<label index="labels.showRecords">Просмотр записей</label>
 			<label index="labels.path">Путь</label>
+			<label index="labels.table">Таблица</label>
 			<label index="labels.upOneLevel">Подняться на уровень выше</label>
 			<label index="labels.enterSearchString">Найти текст:</label>
 			<label index="labels.enterSearchLevels">На этой странице | Включая 1 подуровень | Включая 2 подуровня | Включая 3 подуровня | Включая 4 подуровня</label>
@@ -2218,7 +2399,11 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="labels.depth_1">1 подуровень</label>
 			<label index="labels.depth_2">2 подуровня</label>
 			<label index="labels.depth_3">3 подуровня</label>
+			<label index="labels.allow">Разрешить</label>
+			<label index="labels.deny">Отказать</label>
+			<label index="labels.generalTab">Общее</label>
 			<label index="labels.refresh">Обновить дерево</label>
+			<label index="labels.temporaryDBmount">Отменить временное монтирование БД</label>
 			<label index="labels.refreshList">Обновить список</label>
 			<label index="labels.close">Закрыть</label>
 			<label index="labels.new">СОЗДАТЬ</label>
@@ -2233,12 +2418,21 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="labels.generalOptions">Общие настройки:</label>
 			<label index="labels.allTables">[Все таблицы]</label>
 			<label index="labels.moreOptions">Дополнительные настройки...</label>
-			<label index="labels.noMatchingValue">ТЕКУЩЕЕ ЗНАЧЕНИЕ НЕДОСТУПНО (%s)</label>
+			<label index="labels.noMatchingValue">НЕВЕРНОЕ ЗНАЧЕНИЕ (%s)</label>
 			<label index="labels.thumbmode_clip">Миниатюры изображений в буфере обмена</label>
 			<label index="labels.copymode">Копировать записи, не удаляя исходные</label>
 			<label index="labels.clipNoEl">Записей нет</label>
 			<label index="labels.cliptabs">Буфер обмена №</label>
 			<label index="labels.removeItem">Удалить запись</label>
+			<label index="labels.holdDownCTRL">Важно: держите клавишу Ctrl, выбирая элементы этого списка!</label>
+			<label index="labels.revertSelection">Обратить изменение</label>
+			<label index="labels.setAllCheckboxes">Выбрать все</label>
+			<label index="labels.changeInOrig">Изменить в оригинале</label>
+			<label index="ver.online">ОНЛАЙН</label>
+			<label index="ver.mgm">Управление версиями</label>
+			<label index="ver.selVer">Выберите версию:</label>
+			<label index="ver.swap">Обменять/публиковать</label>
+			<label index="ver.swapPage">Опубликовать эту версию страницы, включая контент</label>
 			<label index="TYPO3_Element_Browser">Обозреватель записей TYPO3</label>
 			<label index="show_item.php.viewItem">Показать запись</label>
 			<label index="show_item.php.file">Файл</label>
@@ -2321,6 +2515,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="cm.unzip">Разархивировать ZIP</label>
 			<label index="cm.info">Информация</label>
 			<label index="cm.createnew">Создать заново</label>
+			<label index="cm.tempMountPoint">Монтировать как корень дерева</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="labels.openInNewWindow">Deschide într-o fereastră nouă</label>
@@ -2330,13 +2525,17 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="labels.lockedRecord_content">Utilizatorul '%s' a început să editeze conţinutul acestei pagini în urmă cu %s.</label>
 			<label index="labels.showRecords">Arată înregistrările</label>
 			<label index="labels.path">Cale</label>
+			<label index="labels.table">Tabelă</label>
 			<label index="labels.upOneLevel">Un nivel mai sus</label>
 			<label index="labels.enterSearchString">Căutare:</label>
 			<label index="labels.enterSearchLevels">Această pagină|1 nivel jos|2 nivele jos|3 nivele jos|4 nivele jos</label>
 			<label index="labels.noEditPermission">Nu puteţi efectua modificările! Nu aveţi acces!</label>
 			<label index="labels.fieldsMissing">Cîmpurile marcate cu un semn de exclamare nu sunt completate corect!</label>
+			<label index="labels.fieldsChanged">Unele modifcări nu au fost salvate! Continuaţi FĂRĂ a salva?</label>
+			<label index="labels.noRTEfound">Notă: Nu puteţi edita acest câmp, deoarece poate fi editat doar cu RTE, dar nici un astfel de editor nu este disponibil sau a fost dezactivat.</label>
 			<label index="labels.showPalettes">Arată opţiuni secundare</label>
 			<label index="labels.showDescriptions">Arată descrierea câmpurilor</label>
+			<label index="labels.disableRTE">Dezactivare Rich Text Editor (RTE)</label>
 			<label index="labels._CONTROL_">Control</label>
 			<label index="labels._PATH_">Cale</label>
 			<label index="labels.setFields">Setare cîmp</label>
@@ -2361,7 +2560,12 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="labels.depth_1">Nivel 1</label>
 			<label index="labels.depth_2">Nivel 2</label>
 			<label index="labels.depth_3">Nivel 3</label>
+			<label index="labels.allow">Permis</label>
+			<label index="labels.deny">Interzis</label>
+			<label index="labels.generalTab">General</label>
 			<label index="labels.refresh">Reîncarcă structura de la server.</label>
+			<label index="labels.temporaryDBmount">Renunţă la montarea DB temporară</label>
+			<label index="labels.refreshList">Reîncarcă lista de pe server</label>
 			<label index="labels.close">Închidere</label>
 			<label index="labels.new">NOU</label>
 			<label index="labels.selected">Selectat</label>
@@ -2370,15 +2574,27 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="labels.move_to_top">Mută elementul selectat în sus</label>
 			<label index="labels.browse_file">Răsfoire fişiere</label>
 			<label index="labels.browse_db">Răsfoire înregistrări</label>
+			<label index="labels.clipInsert_file">Inserare %s fişier(e) din clipboard</label>
+			<label index="labels.clipInsert_db">Inserare %s înregistrări din clipboard</label>
 			<label index="labels.generalOptions">Opţiuni generale:</label>
 			<label index="labels.allTables">[Toate tabelele]</label>
 			<label index="labels.moreOptions">Mai multe opţiuni...</label>
-			<label index="labels.noMatchingValue">VALOAREA CURENTĂ NU ESTE DISPONIBILĂ (%s)</label>
+			<label index="labels.noMatchingValue">VALOAREA CURENTĂ NU ESTE DISPONIBILĂ (&quot;%s&quot;)</label>
 			<label index="labels.thumbmode_clip">Previzualizare imagini în clipboard.</label>
 			<label index="labels.copymode">Copiere elemente fără a le muta.</label>
 			<label index="labels.clipNoEl">Nu există elemente</label>
 			<label index="labels.cliptabs">Clipboard nr</label>
 			<label index="labels.removeItem">Şterge elemente</label>
+			<label index="labels.holdDownCTRL">Important: Ţineţi apăsată tasta CTRL pentru a modifica selecţia!</label>
+			<label index="labels.revertSelection">Revenire selectare</label>
+			<label index="labels.setAllCheckboxes">Selectează tot</label>
+			<label index="labels.changeInOrig">Modifică original</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Management Versiune</label>
+			<label index="ver.selVer">Selectare versiune:</label>
+			<label index="ver.swap">Schimb/Publicare</label>
+			<label index="ver.swapPage">Publică această versiune a paginii, inclusiv conţinutul</label>
+			<label index="TYPO3_Element_Browser">Browser elemente TYPO3</label>
 			<label index="show_item.php.viewItem">Vizualizare element</label>
 			<label index="show_item.php.file">Fişier</label>
 			<label index="show_item.php.dimensions">Dimensiuni</label>
@@ -2427,13 +2643,16 @@ Doriţi să salvaţi pentru a putea reîmprospăta ecranul?</label>
 			<label index="rm.saveNewDoc">Salvare document şi creare document nou</label>
 			<label index="rm.closeDoc">Închidere document</label>
 			<label index="rm.closeAllDocs">Închidere toate documentele</label>
+			<label index="rm.clearCache_clearCache">Şterge cache</label>
 			<label index="rm.clearCache_thisPage">Această pagină</label>
 			<label index="rm.clearCache_pages">Şterge pagina cache</label>
 			<label index="rm.clearCache_all">Şterge toate paginile cache</label>
+			<label index="rm.clearCache_allTypo3Conf">Şterge temp_CACHED</label>
 			<label index="rm.adminFunctions">Funcţii administrative</label>
 			<label index="rm.edit">Editare</label>
 			<label index="rm.delete">Ştergere</label>
 			<label index="buttons.logout">Deconectare</label>
+			<label index="buttons.selMenu_modules">MODULE</label>
 			<label index="buttons.clear">Golire</label>
 			<label index="buttons.clipboard">Clipboard</label>
 			<label index="cm.copy">Copiere</label>
@@ -2457,6 +2676,7 @@ Doriţi să salvaţi pentru a putea reîmprospăta ecranul?</label>
 			<label index="cm.unzip">Dezarhivare</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Creează nou</label>
+			<label index="cm.tempMountPoint">Mount ca director rădăcină</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="labels.openInNewWindow">在新窗口中打开</label>
@@ -2513,7 +2733,7 @@ Doriţi să salvaţi pentru a putea reîmprospăta ecranul?</label>
 			<label index="labels.generalOptions">常规选项:</label>
 			<label index="labels.allTables">[全部表格]</label>
 			<label index="labels.moreOptions">更多选项...</label>
-			<label index="labels.noMatchingValue">当前值不可用(%s)</label>
+			<label index="labels.noMatchingValue">当前值不可用(&quot;%s&quot;)</label>
 			<label index="labels.thumbmode_clip">在剪贴板上显示缩略图</label>
 			<label index="labels.copymode">复制条目代替移动条目</label>
 			<label index="labels.clipNoEl">无元素</label>
@@ -2741,6 +2961,166 @@ Chceš ho obnoviť?</label>
 			<label index="cm.createnew">Vytvoriť novy</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="labels.openInNewWindow">Atidaryti naujame lange</label>
+			<label index="labels.goBack">Atgal</label>
+			<label index="labels.makeShortcut">Sukurti santrumpą į šį puslapį?</label>
+			<label index="labels.lockedRecord">Vartotojas '%s' pradėjo redaguoti šį įrašą prieš %s.</label>
+			<label index="labels.lockedRecord_content">Vartotojas '%s' pradėjo redaguoti šio puslapio turinį prieš %s.</label>
+			<label index="labels.showRecords">Rodyti įrašus</label>
+			<label index="labels.path">Kelias</label>
+			<label index="labels.table">Lentelė</label>
+			<label index="labels.upOneLevel">Į viršų vienu lygiu</label>
+			<label index="labels.enterSearchString">Rasti tekstą:</label>
+			<label index="labels.enterSearchLevels">Šį puslapį|1 lygiu žemyn|2 lygiais žemyn|3 lygiais žemyn|4 lygiais žemyn</label>
+			<label index="labels.noEditPermission">Deja Jūs neturite teisių šiam pakeitimui atlikti.</label>
+			<label index="labels.fieldsMissing">Formoje yra laukų, kurie dar nėra iki galo užpildyti.
+Šie laukai pažymėti geltonu šauktuku.</label>
+			<label index="labels.fieldsChanged">Formoje yra neišsaugotų pakeitimų!
+Ar norite tęsti BE išsaugojimo?</label>
+			<label index="labels.noRTEfound">Dėmesio: Jūs negalite redaguoti šio lauko, nes jis gali būti redaguojamas tik teksto redaktoriumi, tačiau jo nepavyko rasti arba RTE yra išjungtas.</label>
+			<label index="labels.showPalettes">Rodyti papildomus nustatymus (paletes)</label>
+			<label index="labels.showDescriptions">Rodyti laukų aprašymus</label>
+			<label index="labels.disableRTE">Išjungti teksto redaktorių (RTE)</label>
+			<label index="labels._CONTROL_">Mygtukas</label>
+			<label index="labels._PATH_">Kelias</label>
+			<label index="labels.setFields">Nustatyti laukus</label>
+			<label index="labels.search">Paieška</label>
+			<label index="labels.author">Autorius:</label>
+			<label index="labels.note">Pastaba:</label>
+			<label index="labels.category">Kategorija:</label>
+			<label index="labels.reload">Perkrauti</label>
+			<label index="labels.csv">Parsisiūsti CSV bylą</label>
+			<label index="labels.clear_cache">Ištrinti šį puslapį talpykloje</label>
+			<label index="labels.no_title">Be antraštės</label>
+			<label index="labels.cancel">Atšaukti</label>
+			<label index="labels.hidden">Paslėptas</label>
+			<label index="labels.starttime">Pradžia</label>
+			<label index="labels.endtime">Pabaiga</label>
+			<label index="labels.minutesHoursDaysYears">min.| val.| dienos(-ų)| metai(-ų)</label>
+			<label index="labels.menu">Meniu:</label>
+			<label index="labels.showPage">Tinklapio peržiūra</label>
+			<label index="labels.showList">Rodyti įrašų sąrašą</label>
+			<label index="labels.days">dienos(-ų)</label>
+			<label index="labels.depth_0">Šis puslapis</label>
+			<label index="labels.depth_1">1 lygis</label>
+			<label index="labels.depth_2">2 lygis</label>
+			<label index="labels.depth_3">3 lygis</label>
+			<label index="labels.allow">Leisti</label>
+			<label index="labels.deny">Uždrausti</label>
+			<label index="labels.generalTab">Pagrindinis</label>
+			<label index="labels.refresh">Perkrauti medį iš serverio</label>
+			<label index="labels.temporaryDBmount">Atšaukti laikiną DB prijungimą</label>
+			<label index="labels.refreshList">Perkrauti sąrašą iš serverio</label>
+			<label index="labels.close">Uždaryti</label>
+			<label index="labels.new">NAUJAS</label>
+			<label index="labels.selected">Pažymėtas</label>
+			<label index="labels.items">Elementai</label>
+			<label index="labels.remove_selected">Ištrinti pažymėtus elementus</label>
+			<label index="labels.move_to_top">Perkelti išrinktus elementus aukštyn</label>
+			<label index="labels.browse_file">Naršyti bylas</label>
+			<label index="labels.browse_db">Naršyti įrašus</label>
+			<label index="labels.clipInsert_file">Įterpti %s bylą(-as) iš iškarpinės</label>
+			<label index="labels.clipInsert_db">Įterpti %s įrašą(-us) iš iškarpinės</label>
+			<label index="labels.generalOptions">Pagrindiniai nustatymai:</label>
+			<label index="labels.allTables">[Visos lentelės]</label>
+			<label index="labels.moreOptions">Daugiau nustatymų...</label>
+			<label index="labels.noMatchingValue">NETEISINGA REIKŠMĖ (&quot;%s&quot;)</label>
+			<label index="labels.thumbmode_clip">Rodyti miniatiūras iškarpinėje</label>
+			<label index="labels.copymode">Kopijuoti elementus vietoj to kad juos perkelti</label>
+			<label index="labels.clipNoEl">Nėra elementų</label>
+			<label index="labels.cliptabs">Iškarpinė #</label>
+			<label index="labels.removeItem">Išmesti elementą</label>
+			<label index="labels.holdDownCTRL">Svarbu: Laikykite CTRL klavišą kol žymite šio sąrašo elementus!</label>
+			<label index="labels.revertSelection">Atvirkščias pažymėjimas</label>
+			<label index="labels.setAllCheckboxes">Pažymėti visus paukščiukus</label>
+			<label index="labels.changeInOrig">Pakeisti originale</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Versijų kontrolė</label>
+			<label index="ver.selVer">Pasirinkti versiją:</label>
+			<label index="ver.swap">Mainų byla/Publikuoti</label>
+			<label index="ver.swapPage">Publiuoti šią puslapio versiją su visu jo turiniu</label>
+			<label index="TYPO3_Element_Browser">TYPO3 elementų naršyklė</label>
+			<label index="show_item.php.viewItem">Peržiūrėti elementą</label>
+			<label index="show_item.php.file">Byla</label>
+			<label index="show_item.php.dimensions">Dimensija</label>
+			<label index="show_item.php.filesize">Dydis</label>
+			<label index="show_item.php.ftp_area">FTP SRITIS</label>
+			<label index="db_new.php.pagetitle">Naujas įrašas</label>
+			<label index="db_new.php.after">po</label>
+			<label index="db_new.php.inside">viduje</label>
+			<label index="file_upload.php.pagetitle">Užkrauti bylas</label>
+			<label index="file_upload.php.submit">Užkrauti bylas</label>
+			<label index="file_upload.php.files">bylos</label>
+			<label index="file_rename.php.pagetitle">Pervadinti</label>
+			<label index="file_rename.php.submit">Pervadinti</label>
+			<label index="file_edit.php.pagetitle">Redaguoti</label>
+			<label index="file_edit.php.submit">Išsaugoti</label>
+			<label index="file_edit.php.saveAndClose">Išsaugti ir uždaryti</label>
+			<label index="file_edit.php.coundNot">Šis bylų tipas negali būti redaguojamas.&lt;br /&gt;Byla turi turėti išplėtimą kaip:&lt;br /&gt;&lt;br /&gt;&lt;b&gt;%s&lt;/b&gt;</label>
+			<label index="file_newfolder.php.pagetitle">Nauja byla arba aplankas</label>
+			<label index="file_newfolder.php.submit">Kurti aplankus</label>
+			<label index="file_newfolder.php.folders">aplankai</label>
+			<label index="file_newfolder.php.newfile_submit">Sukurti bylą</label>
+			<label index="file_newfolder.php.newfile">Sukurti naują tekstinę bylą</label>
+			<label index="file_clipupload.php.warning_head">Klaida: neteisingas užkrovimokelias</label>
+			<label index="file_clipupload.php.warning">Nepavyko rasti užkrovimo aplanko. Reikia sukurti TEMP aplanką (&quot;__temp__&quot;) vieno iš prijungimų šaknyje!</label>
+			<label index="mess.redraw">Puslapio perpiešimas anuliuos dabartinius duomenis. Ar norite tęsti?</label>
+			<label index="mess.delete">Ar tikrai norite trinti &quot;%s&quot;?</label>
+			<label index="mess.deleteClip">Ar tikrai norite trinti VISUS pažymėtus elementus (%s) iškarpinėje?</label>
+			<label index="mess.refresh_login">Jūsų prisijungimo laikas tikriausiai baigėsi. Ar norite atnaujinti?</label>
+			<label index="mess.noSelItemForEdit">Prieš redaguojant pasirinkite vieną ar daugiau elementų sąraše.</label>
+			<label index="mess.onChangeAlert">Šis pakeitimas įtakos visus laukus kurie yra formoje.
+Ar norite išsaugoti prieš atnaujinant ekraną?</label>
+			<label index="mess.move_into">Perkelti &quot;%s&quot; į &quot;%s&quot;?</label>
+			<label index="mess.move_after">Perkelti &quot;%s&quot; žemiau &quot;%s&quot;?</label>
+			<label index="mess.copy_into">Kopijuoti &quot;%s&quot; į &quot;%s&quot;?</label>
+			<label index="mess.copy_after">Kopijuoti &quot;%s&quot; žemiau &quot;%s&quot;?</label>
+			<label index="mess.copycb_into">Kopijuoti visus elementus &quot;%s&quot; iš iškarpinės į &quot;%s&quot;?</label>
+			<label index="mess.copycb_after">Kopijuoti visus elementus &quot;%s&quot; iš iškarpinės žemiau &quot;%s&quot;?</label>
+			<label index="mess.movecb_into">Perkelti visus elementus &quot;%s&quot; iš iškarpinės į &quot;%s&quot;?</label>
+			<label index="mess.movecb_after">Perkelti visus elementus &quot;%s&quot; iš iškarpinės žemiau &quot;%s&quot;?</label>
+			<label index="rm.menu">[meniu]</label>
+			<label index="rm.saveDoc">Išsaugoti dokumentą</label>
+			<label index="rm.saveDocShow">Išsaugoti dokumentą ir peržiūrėti puslapį</label>
+			<label index="rm.saveCloseDoc">Išsaugoti ir uždaryti dokumentą</label>
+			<label index="rm.saveCloseAllDocs">Išsaugoti ir uždaryti visus dokumentus</label>
+			<label index="rm.saveNewDoc">Išsaugoti dokumentą ir sukurti naują</label>
+			<label index="rm.closeDoc">Uždaryti dokumentą</label>
+			<label index="rm.closeAllDocs">Uždaryti visus dokumentus</label>
+			<label index="rm.clearCache_clearCache">Ižtrinti talpyklą</label>
+			<label index="rm.clearCache_thisPage">Šis puslapis</label>
+			<label index="rm.clearCache_pages">Ištrinti puslapių talpyklą</label>
+			<label index="rm.clearCache_all">Ištrinti visą talpyklą</label>
+			<label index="rm.clearCache_allTypo3Conf">Ištrinti talpyklą (typo3conf/)</label>
+			<label index="rm.adminFunctions">Admin funkcijos</label>
+			<label index="rm.edit">Redaguoti</label>
+			<label index="rm.delete">Trinti</label>
+			<label index="buttons.logout">Atsijungti</label>
+			<label index="buttons.selMenu_modules">MODULIAI</label>
+			<label index="buttons.clear">Ištrinti</label>
+			<label index="buttons.clipboard">Iškarpinė</label>
+			<label index="cm.copy">Kopijuoti</label>
+			<label index="cm.cut">Iškirpti</label>
+			<label index="cm.view">Rodyti</label>
+			<label index="cm.edit">Redaguoti</label>
+			<label index="cm.new">Naujas</label>
+			<label index="cm.pasteinto">Iterpti į vidų</label>
+			<label index="cm.pasteafter">Įterpti žemiau</label>
+			<label index="cm.select">Pažymėti</label>
+			<label index="cm.deselect">Atžymėti</label>
+			<label index="cm.selectto">Pažymėti iki</label>
+			<label index="cm.deselectto">Atžymėti iki</label>
+			<label index="cm.delete">Trinti</label>
+			<label index="cm.hide">Paslėpti</label>
+			<label index="cm.unhide">Rodyti</label>
+			<label index="cm.upload">Užkrauti bylas</label>
+			<label index="cm.rename">Pervardinti</label>
+			<label index="cm.open">Atidaryti</label>
+			<label index="cm.save">Išsaugoti</label>
+			<label index="cm.unzip">Išpakuoti</label>
+			<label index="cm.info">Info</label>
+			<label index="cm.createnew">Sukurit naują</label>
+			<label index="cm.tempMountPoint">Prijungti kaip medžio šaknį</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -2900,6 +3280,7 @@ Polja su označena žutim uskličnikom.</label>
 			<label index="labels.lockedRecord_content">Egy másik felhasználó ('%s') szerkeszti ezt a tartalmat ezen az oldalon %s óta.</label>
 			<label index="labels.showRecords">Rekordok megjelenítése</label>
 			<label index="labels.path">Útvonal</label>
+			<label index="labels.table">Táblázat</label>
 			<label index="labels.upOneLevel">Vissza egy szintet</label>
 			<label index="labels.enterSearchString">Keresett szöveg:</label>
 			<label index="labels.enterSearchLevels">Ezen az oldalon|1 szint le|2 szint le|3 szint le|4 szint le</label>
@@ -2927,7 +3308,7 @@ Folytatod mentés NÉLKÜL?</label>
 			<label index="labels.hidden">Rejtett</label>
 			<label index="labels.starttime">Start</label>
 			<label index="labels.endtime">Vége</label>
-			<label index="labels.minutesHoursDaysYears">perc|óra|nap|év</label>
+			<label index="labels.minutesHoursDaysYears">perc| óra| nap| év</label>
 			<label index="labels.menu">Menü:</label>
 			<label index="labels.showPage">Weboldal megjelenítése</label>
 			<label index="labels.showList">Rekord lista megjelenítése</label>
@@ -2936,7 +3317,11 @@ Folytatod mentés NÉLKÜL?</label>
 			<label index="labels.depth_1">1 szint</label>
 			<label index="labels.depth_2">2 szint</label>
 			<label index="labels.depth_3">3 szint</label>
+			<label index="labels.allow">Engedélyez</label>
+			<label index="labels.deny">Tilt</label>
+			<label index="labels.generalTab">Általános</label>
 			<label index="labels.refresh">Fa újratöltése a szerverről</label>
+			<label index="labels.temporaryDBmount">Ideiglenes DB mount befejezése</label>
 			<label index="labels.refreshList">Lista újratöltése a szerverről</label>
 			<label index="labels.close">Bezárás</label>
 			<label index="labels.new">ÚJ</label>
@@ -2951,12 +3336,21 @@ Folytatod mentés NÉLKÜL?</label>
 			<label index="labels.generalOptions">Általános beállítások:</label>
 			<label index="labels.allTables">[Összes tábla]</label>
 			<label index="labels.moreOptions">Egyéb beállítások...</label>
-			<label index="labels.noMatchingValue">A AKTUÁLIS ÉRTÉK NEM ELÉRHETŐ (%s)</label>
+			<label index="labels.noMatchingValue">ÉRVÉNYTELEN ÉRTÉK (&quot;%s&quot;)</label>
 			<label index="labels.thumbmode_clip">Gyorsnézet megjelenítése a Vágólapon</label>
 			<label index="labels.copymode">Másold az elemeket átmozgatás helyett</label>
 			<label index="labels.clipNoEl">Nem szerepelnek elemek</label>
 			<label index="labels.cliptabs">Vágólap #</label>
 			<label index="labels.removeItem">Elem eltávolítása</label>
+			<label index="labels.holdDownCTRL">Fontos: nyomjuk meg a CTRL gombot, miközben elemeket választunk a listából</label>
+			<label index="labels.revertSelection">Kijelölés megfordítása</label>
+			<label index="labels.setAllCheckboxes">Összes kijelölése</label>
+			<label index="labels.changeInOrig">Változtatás az eredetiben</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Verziókezelés</label>
+			<label index="ver.selVer">Válaszd ki a verziót:</label>
+			<label index="ver.swap">Csere/közzététel</label>
+			<label index="ver.swapPage">Az oldal ezen verziójának közzététele a tartalmi elemekkel</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Elem Böngésző</label>
 			<label index="show_item.php.viewItem">Elem megjelenítése</label>
 			<label index="show_item.php.file">File</label>
@@ -3039,6 +3433,7 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="cm.unzip">Kitömörítés</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Újat létrehoz</label>
+			<label index="cm.tempMountPoint">Mount gyökérként</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -3050,7 +3445,7 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="labels.starttime">เริ่ม</label>
 			<label index="labels.endtime">สิ้นสุด</label>
 			<label index="labels.close">ปิด</label>
-			<label index="labels.generalOptions">คุณสมบัติทั่วไป</label>
+			<label index="labels.generalOptions">ตัวเลือกทั่วไป:</label>
 			<label index="show_item.php.filesize">ขนาด</label>
 			<label index="file_rename.php.pagetitle">เปลี่ยนชื่อ</label>
 			<label index="file_rename.php.submit">เปลี่ยนชื่อ</label>
@@ -3074,6 +3469,132 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="cm.rename">เปลี่ยนชื่อ</label>
 			<label index="cm.open">เปิด</label>
 			<label index="cm.save">บันทึก</label>
+			<label index="labels.openInNewWindow">เปิดในหน้าต่างใหม่</label>
+			<label index="labels.goBack">กลับไป</label>
+			<label index="labels.makeShortcut">สร้างทางลัดไปหน้านี้?</label>
+			<label index="labels.showRecords">แสดงระเบียน</label>
+			<label index="labels.path">Path</label>
+			<label index="labels.table">ตาราง</label>
+			<label index="labels.upOneLevel">ขึ้นไป 1 ระดับ</label>
+			<label index="labels.enterSearchString">ค้นหา อักษร:</label>
+			<label index="labels.showPalettes">แสดงตัวเลือกรอง (palettes)</label>
+			<label index="labels.showDescriptions">แสดงคำอธิบายฟิลด์</label>
+			<label index="labels.disableRTE">ไม่ใช้ Rich Text Editor (RTE)</label>
+			<label index="labels._CONTROL_">ควบคุม</label>
+			<label index="labels._PATH_">Path</label>
+			<label index="labels.setFields">ตั้งฟิลด์</label>
+			<label index="labels.author">ผู้แต่ง:</label>
+			<label index="labels.note">บันทึก:</label>
+			<label index="labels.category">ประเภท:</label>
+			<label index="labels.reload">โหลดใหม่</label>
+			<label index="labels.csv">ดาน์วโหลดไฟล์จาก CVS</label>
+			<label index="labels.clear_cache">เคลียร์ แคช สำหรับหน้านี้</label>
+			<label index="labels.minutesHoursDaysYears">นาที|ชม.|วัน|ปี</label>
+			<label index="labels.menu">เมนู:</label>
+			<label index="labels.showPage">ดู หน้าเว็บ</label>
+			<label index="labels.showList">แสดงรายการระเบียน</label>
+			<label index="labels.days">วัน</label>
+			<label index="labels.depth_0">หน้านี้</label>
+			<label index="labels.depth_1">1 ระดับ</label>
+			<label index="labels.depth_2">2 ระดับ</label>
+			<label index="labels.depth_3">3 ระดับ</label>
+			<label index="labels.allow">อนุญาต</label>
+			<label index="labels.deny">เพิกเฉย</label>
+			<label index="labels.generalTab">ทั่วไป</label>
+			<label index="labels.refresh">โหลด tree จากเซิร์ฟเวอร์ใหม่</label>
+			<label index="labels.temporaryDBmount">ยกเลิกการเม้าท์ ฐานข้อมูลชั่วคราว</label>
+			<label index="labels.refreshList">โหลดรายการจากเซิร์ฟเวอร์ใหม่</label>
+			<label index="labels.new">ใหม่</label>
+			<label index="labels.selected">เลือกแล้ว</label>
+			<label index="labels.items">รายการ</label>
+			<label index="labels.allTables">[ตารางทั้งหมด]</label>
+			<label index="show_item.php.file">ไฟล์</label>
+			<label index="show_item.php.dimensions">มิติ</label>
+			<label index="show_item.php.ftp_area">พื้นที่ FTP</label>
+			<label index="db_new.php.pagetitle">ระเบียนใหม่</label>
+			<label index="db_new.php.after">หลัง</label>
+			<label index="db_new.php.inside">ภายใน</label>
+			<label index="file_upload.php.pagetitle">อัพโหลดไฟล์</label>
+			<label index="file_upload.php.submit">อัพโหลดไฟล์</label>
+			<label index="file_upload.php.files">ไฟล์</label>
+			<label index="file_newfolder.php.pagetitle">สร้างโฟลเดอร์ใหม่</label>
+			<label index="file_newfolder.php.submit">สร้างโฟลเดอร์</label>
+			<label index="file_newfolder.php.folders">โฟลเดอร์</label>
+			<label index="file_newfolder.php.newfile_submit">สร้างไฟล์</label>
+			<label index="file_newfolder.php.newfile">สร้างไฟข้อความใหม่</label>
+			<label index="file_clipupload.php.warning_head">path อัพโหลดผิดพลาด</label>
+			<label index="rm.menu">[เมนู]</label>
+			<label index="rm.saveDocShow">บันทึกเอกสารและแสดงหน้า</label>
+			<label index="rm.saveCloseDoc">บันทึกและปิดเอกสาร</label>
+			<label index="rm.saveCloseAllDocs">บันทึกและปิดเอกสารทั้งหมด</label>
+			<label index="rm.saveNewDoc">บันทึกเอกสารและสร้างอันใหม่</label>
+			<label index="rm.closeDoc">ปิดเอกสาร</label>
+			<label index="rm.closeAllDocs">ปิดเอกสารทั้งหมด</label>
+			<label index="rm.clearCache_clearCache">เคลียร์ แคช</label>
+			<label index="rm.clearCache_thisPage">หน้านี้</label>
+			<label index="rm.clearCache_pages">เคลียร์ แคช หน้า</label>
+			<label index="rm.clearCache_all">เคลียร์  แคช ทั้งหมด</label>
+			<label index="rm.clearCache_allTypo3Conf">เคลียร์ temp_CACHED</label>
+			<label index="rm.adminFunctions">ฟังก์ชั่นผู้ดูแลระบบ</label>
+			<label index="buttons.selMenu_modules">โมดูล</label>
+			<label index="buttons.clipboard">คลิปบอร์ด</label>
+			<label index="cm.new">ใหม่</label>
+			<label index="cm.pasteinto">วางข้างใน</label>
+			<label index="cm.pasteafter">วางหลังจาก</label>
+			<label index="cm.selectto">เลือกสู่</label>
+			<label index="cm.deselectto">เลิกเลือกสู่</label>
+			<label index="cm.upload">อัพโหลดไฟล์</label>
+			<label index="cm.unzip">unzip</label>
+			<label index="cm.info">ข้อมูล</label>
+			<label index="cm.createnew">สร้างใหม่</label>
+			<label index="cm.tempMountPoint">เม้าท์แบบ treeroot</label>
+			<label index="labels.lockedRecord">ผู้ใช้ '%s' เริ่มแก้ไขระเบียนนี้ %s ที่ผ่านมา</label>
+			<label index="labels.lockedRecord_content">ผู้ใช้ '%s' เริ่มแก้ไขเนื้อหาของหน้านี้ %s ที่ผ่านมา</label>
+			<label index="labels.enterSearchLevels">หน้านี้|ลงไป 1 ระดับ|ลงไป 2 ระดับ|ลงไป 3 ระดับ|ลงไป 4 ระดับ</label>
+			<label index="labels.noEditPermission">เสียใจด้วย ท่านไม่ได้รับอนุญาตให้ทำการเปลี่ยนแปลงนี้</label>
+			<label index="labels.fieldsMissing">มีฟิลด์ที่อยู่ในแบบฟอร์มซึ่งกรอกไม่ถูกต้อง ฟิลด์จะถูกทำเครื่องหมายด้วยเครื่องหมายตกใจสีเหลือง</label>
+			<label index="labels.fieldsChanged">มีการเปลี่ยนแปลงในแบบฟอร์มที่ยังไม่ได้บันทึก! ท่านต้องการทำต่อไป โดยที่ไม่ได้บันทึก?</label>
+			<label index="labels.noRTEfound">สังเกตุ: ท่านไม่สามารถแก้ไขฟิลด์นี้ได้เพราะมันจะสามารถถูกแก้ไขเฉพาะโดย Rich Text Editor หรืออาจจะเพราะการแก้ไขด้วย RTE ถูกห้ามใช้ไว้</label>
+			<label index="labels.remove_selected">ลบสิ่งที่เลือกออก</label>
+			<label index="labels.move_to_top">ย้ายสิ่งที่เลือก ขึ้นบน</label>
+			<label index="labels.browse_file">เปิดหาไฟล์</label>
+			<label index="labels.browse_db">เปิดหาระเบียน</label>
+			<label index="labels.clipInsert_file">แทรก %s ไฟล์  จากคลิปบอร์ด</label>
+			<label index="labels.clipInsert_db">แทรก %s ระเบียน  จากคลิปบอร์ด</label>
+			<label index="labels.moreOptions">ตัวเลือก เพิ่มเติม...</label>
+			<label index="labels.noMatchingValue">ค่าไม่ถูกต้อง (&quot;%s&quot;)</label>
+			<label index="labels.thumbmode_clip">แสดงภาพ Thumbnails บนคลิปบอร์ด</label>
+			<label index="labels.copymode">คัดลอก แทนที่จะเคลื่อนย้าย</label>
+			<label index="labels.clipNoEl">ไม่มีองค์ประกอบย่อย</label>
+			<label index="labels.cliptabs">คลิปบอร์ดที่ #</label>
+			<label index="labels.removeItem">ลบสิ่งนี้ออก</label>
+			<label index="labels.holdDownCTRL">สำคัญ: กดปุ่ม CTRL เมื่อเลือกองค์ประกอบในรายการนี้</label>
+			<label index="labels.revertSelection">การเลือกกลับด้าน</label>
+			<label index="labels.setAllCheckboxes">เลือก กล่องตรวจสอบ ทั้งหมด</label>
+			<label index="labels.changeInOrig">เปลี่ยนแปลงจากของเดิม</label>
+			<label index="ver.online">ออนไลน์</label>
+			<label index="ver.mgm">การจัดการเรื่องเวอร์ชั่น</label>
+			<label index="ver.selVer">เลือกเวอร์ชั่น:</label>
+			<label index="ver.swap">แลกเปลียน(สวอป)/ลงพิมพ์</label>
+			<label index="ver.swapPage">ลงพิมพ์หน้าและเนื้อหาด้วยเวอร์ชั่นนี้</label>
+			<label index="TYPO3_Element_Browser">TYPO3 Element Browser</label>
+			<label index="show_item.php.viewItem">มุมมอง</label>
+			<label index="file_edit.php.coundNot">ชนิดไฟล์ ไม่สามารถจะแก้ไขได้&lt;br /&gt;ไฟล์จะต้องมีนามสกุล เช่น:&lt;br /&gt;&lt;br /&gt; &lt;b&gt;%s&lt;/b&gt;</label>
+			<label index="file_clipupload.php.warning">ไม่เจอ upload-folder ท่านต้องสร้างโฟลเดอร์ชั่วคราว (&quot;_temp_&quot;) ในรากของหนึ่งในจุดเม้าท์ของท่านก่อน</label>
+			<label index="mess.redraw">วาดหน้าใหม่จะทำให้ข้อมูลปัจจุบันหายไป ท่านต้องการจะทำต่อไปหรือไม่?</label>
+			<label index="mess.delete">ท่านแน่ใจที่จะลบ &quot;%s&quot;?</label>
+			<label index="mess.deleteClip">ท่านแน่ใจที่จะลบองค์ประกอบที่เลือกไว้แล้วทั้งหมด (%s) ที่อยู่ในคลิปบอร์ด?</label>
+			<label index="mess.refresh_login">การเข้าสู่ระบบของท่านหมดเวลาแล้ว ท่านต้องการจะเริ่มใหม่เดี๋ยวนี้หรือไม่?</label>
+			<label index="mess.noSelItemForEdit">กรุณาเลือก หนึ่งสิ่งหรือมากว่าในรายการ ก่อนที่ท่านจะสามารถแก้ไขได้</label>
+			<label index="mess.onChangeAlert">การเปลี่ยนแปลงนี้จะกระทบฟิล์ที่มีอยู่ในแบบฟอร์ม ท่านจะบันทึกตอนนี้หรือไม่ เพื่อจะได้แสดงผลหน้าจออีกครั้ง?</label>
+			<label index="mess.move_into">ย้าย &quot;%s&quot; ไปใน &quot;%s&quot;?</label>
+			<label index="mess.move_after">ย้าย &quot;%s&quot; ไปหลัง &quot;%s&quot;?</label>
+			<label index="mess.copy_into">ทำสำเนา &quot;%s&quot; ไปใน &quot;%s&quot;?</label>
+			<label index="mess.copy_after">ทำสำเนา &quot;%s&quot; ไปหลัง &quot;%s&quot;?</label>
+			<label index="mess.copycb_into">ทำสำเนาองค์ประกอบทั้งหมด (%s) จากคลิปบอร์ดไปใน &quot;%s&quot; หรือไม่?</label>
+			<label index="mess.copycb_after">ทำสำเนาองค์ประกอบทั้งหมด (%s) จากคลิปบอร์ดไปหลัง &quot;%s&quot; หรือไม่?</label>
+			<label index="mess.movecb_into">ย้ายองค์ประกอบทั้งหมด (%s) จากคลิปบอร์ดไปใน &quot;%s&quot; หรือไม่?</label>
+			<label index="mess.movecb_after">ย้ายองค์ประกอบทั้งหมด (%s) จากคลิปบอร์ดไปหลัง &quot;%s&quot; หรือไม่?</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -3234,6 +3755,7 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="labels.lockedRecord_content">Потребителя '%s' започна да редактира съдържанието на страницата преди %s.</label>
 			<label index="labels.showRecords">Покажи записите</label>
 			<label index="labels.path">Път</label>
+			<label index="labels.table">Таблица</label>
 			<label index="labels.upOneLevel">Едно ниво нагоре</label>
 			<label index="labels.enterSearchString">Настройка на търсенето:</label>
 			<label index="labels.enterSearchLevels">Тази страница|1 ниво долу|2 ниво долу|3 ниво долу|4 ниво долу</label>
@@ -3269,7 +3791,11 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="labels.depth_1">1 ниво</label>
 			<label index="labels.depth_2">2 ниво</label>
 			<label index="labels.depth_3">3 ниво</label>
+			<label index="labels.allow">Разреши</label>
+			<label index="labels.deny">Забрани</label>
+			<label index="labels.generalTab">Генерално</label>
 			<label index="labels.refresh">Презареждане на дървото от сървера</label>
+			<label index="labels.refreshList">Презареди листа от сървъра</label>
 			<label index="labels.close">Затвори</label>
 			<label index="labels.new">НОВ</label>
 			<label index="labels.selected">Селектиран</label>
@@ -3287,6 +3813,9 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="labels.clipNoEl">Няма елементи</label>
 			<label index="labels.cliptabs">Clipboard #</label>
 			<label index="labels.removeItem">Махни артикул</label>
+			<label index="ver.online">ОНЛАЙН</label>
+			<label index="ver.mgm">Версия на Управлението</label>
+			<label index="ver.selVer">Изберете версия:</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Елементен броузър</label>
 			<label index="show_item.php.viewItem">Виж артикул</label>
 			<label index="show_item.php.file">Файл</label>
@@ -3344,7 +3873,8 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="rm.adminFunctions">Админ функции</label>
 			<label index="rm.edit">Редакция</label>
 			<label index="rm.delete">Изтрий</label>
-			<label index="buttons.logout">Изход от системата (Logout)</label>
+			<label index="buttons.logout">Изход</label>
+			<label index="buttons.selMenu_modules">MOДУЛИ</label>
 			<label index="buttons.clear">Изчисти</label>
 			<label index="buttons.clipboard">Междинно съхранение (Clipboard)</label>
 			<label index="cm.copy">Копирай</label>
@@ -3368,6 +3898,7 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="cm.unzip">Разтвори (Unzip)</label>
 			<label index="cm.info">Инфо</label>
 			<label index="cm.createnew">Създай Нов</label>
+			<label index="cm.tempMountPoint">Закачи като основа на дървото</label>
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="labels.openInNewWindow">Abrir em nova janela</label>
@@ -4161,7 +4692,6 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="ver.selVer" type="integer">141725286</label>
 			<label index="ver.swap" type="integer">60665691</label>
 			<label index="ver.swapPage" type="integer">206706262</label>
-			<label index="labels._LOCALIZATION_" type="integer">57239651</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -4195,7 +4725,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -4216,7 +4746,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -4308,6 +4838,19 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.clipInsert_file" type="integer">72963835</label>
 			<label index="labels.clipInsert_db" type="integer">123875466</label>
 			<label index="cm.tempMountPoint" type="integer">10294929</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.swap" type="integer">60665691</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -4342,7 +4885,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -4366,7 +4909,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -4452,6 +4995,20 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -4486,7 +5043,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -4510,7 +5067,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -4596,6 +5153,21 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -4629,7 +5201,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -4650,7 +5222,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -4735,6 +5307,26 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.noRTEfound" type="integer">160772255</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="labels.clipInsert_file" type="integer">72963835</label>
+			<label index="labels.clipInsert_db" type="integer">123875466</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -4769,7 +5361,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -4793,7 +5385,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -4879,6 +5471,21 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -4912,7 +5519,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -4933,7 +5540,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -5018,6 +5625,26 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="labels.clipInsert_file" type="integer">72963835</label>
+			<label index="labels.clipInsert_db" type="integer">123875466</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
+			<label index="labels.noRTEfound" type="integer">160772255</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -5190,7 +5817,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -5211,7 +5838,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -5296,6 +5923,26 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.noRTEfound" type="integer">160772255</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="labels.clipInsert_file" type="integer">72963835</label>
+			<label index="labels.clipInsert_db" type="integer">123875466</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="labels.path" type="integer">180814866</label>
@@ -5319,7 +5966,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.days" type="integer">72343236</label>
@@ -5405,6 +6052,38 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.openInNewWindow" type="integer">43359464</label>
+			<label index="labels.goBack" type="integer">36398395</label>
+			<label index="labels.makeShortcut" type="integer">172171229</label>
+			<label index="labels.lockedRecord" type="integer">198827351</label>
+			<label index="labels.lockedRecord_content" type="integer">187177677</label>
+			<label index="labels.showRecords" type="integer">159375536</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.fieldsChanged" type="integer">196203045</label>
+			<label index="labels.showDescriptions" type="integer">52412881</label>
+			<label index="labels.disableRTE" type="integer">236608630</label>
+			<label index="labels.showList" type="integer">112377765</label>
+			<label index="labels.depth_0" type="integer">98872550</label>
+			<label index="labels.depth_1" type="integer">200641290</label>
+			<label index="labels.depth_2" type="integer">228799796</label>
+			<label index="labels.depth_3" type="integer">195275893</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="labels.clipInsert_file" type="integer">72963835</label>
+			<label index="labels.clipInsert_db" type="integer">123875466</label>
+			<label index="labels.allTables" type="integer">64435182</label>
+			<label index="labels.clipNoEl" type="integer">213419996</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="rm.saveNewDoc" type="integer">35091769</label>
+			<label index="rm.clearCache_clearCache" type="integer">127667564</label>
+			<label index="rm.clearCache_thisPage" type="integer">98872550</label>
+			<label index="rm.clearCache_allTypo3Conf" type="integer">79469728</label>
+			<label index="rm.adminFunctions" type="integer">190550998</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="cm.hide" type="integer">103439945</label>
+			<label index="cm.unhide" type="integer">205596222</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -5439,7 +6118,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -5463,7 +6142,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -5549,6 +6228,21 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -5583,7 +6277,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -5601,13 +6295,13 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.remove_selected" type="integer">174131744</label>
 			<label index="labels.move_to_top" type="integer">179915530</label>
 			<label index="labels.browse_file" type="integer">252183313</label>
-			<label index="labels.browse_db" type="integer">3203407</label>
+			<label index="labels.browse_db" type="double">3203407</label>
 			<label index="labels.clipInsert_file" type="integer">72963835</label>
 			<label index="labels.clipInsert_db" type="integer">123875466</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -5615,7 +6309,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.removeItem" type="integer">61210410</label>
 			<label index="TYPO3_Element_Browser" type="integer">97099900</label>
 			<label index="show_item.php.viewItem" type="integer">31794211</label>
-			<label index="show_item.php.file" type="integer">11696408</label>
+			<label index="show_item.php.file" type="double">11696408</label>
 			<label index="show_item.php.dimensions" type="integer">256394177</label>
 			<label index="show_item.php.filesize" type="integer">116837234</label>
 			<label index="show_item.php.ftp_area" type="integer">213910632</label>
@@ -5639,7 +6333,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="file_clipupload.php.warning_head" type="integer">159379252</label>
 			<label index="file_clipupload.php.warning" type="integer">223829658</label>
 			<label index="mess.redraw" type="integer">39712654</label>
-			<label index="mess.delete" type="integer">11983227</label>
+			<label index="mess.delete" type="double">11983227</label>
 			<label index="mess.deleteClip" type="integer">86922765</label>
 			<label index="mess.refresh_login" type="integer">16856853</label>
 			<label index="mess.noSelItemForEdit" type="integer">260947711</label>
@@ -5668,7 +6362,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="rm.adminFunctions" type="integer">190550998</label>
 			<label index="rm.edit" type="integer">131916066</label>
 			<label index="rm.delete" type="integer">254438473</label>
-			<label index="buttons.logout" type="integer">3292644</label>
+			<label index="buttons.logout" type="double">3292644</label>
 			<label index="buttons.selMenu_modules" type="integer">23513772</label>
 			<label index="buttons.clear" type="integer">230886336</label>
 			<label index="buttons.clipboard" type="integer">37640827</label>
@@ -5676,7 +6370,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.cut" type="integer">246625500</label>
 			<label index="cm.view" type="integer">77133724</label>
 			<label index="cm.edit" type="integer">131916066</label>
-			<label index="cm.new" type="integer">3944062</label>
+			<label index="cm.new" type="double">3944062</label>
 			<label index="cm.pasteinto" type="integer">46910930</label>
 			<label index="cm.pasteafter" type="integer">48443221</label>
 			<label index="cm.select" type="integer">235284002</label>
@@ -5693,6 +6387,20 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -6007,7 +6715,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -6031,7 +6739,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -6117,6 +6825,21 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -6148,7 +6871,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -6169,7 +6892,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -6251,6 +6974,31 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.fieldsChanged" type="integer">196203045</label>
+			<label index="labels.noRTEfound" type="integer">160772255</label>
+			<label index="labels.disableRTE" type="integer">236608630</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="labels.clipInsert_file" type="integer">72963835</label>
+			<label index="labels.clipInsert_db" type="integer">123875466</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="TYPO3_Element_Browser" type="integer">97099900</label>
+			<label index="rm.clearCache_clearCache" type="integer">127667564</label>
+			<label index="rm.clearCache_allTypo3Conf" type="integer">79469728</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
@@ -6284,7 +7032,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -6305,7 +7053,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -6531,6 +7279,163 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.createnew" type="integer">260012217</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="labels.openInNewWindow" type="integer">43359464</label>
+			<label index="labels.goBack" type="integer">36398395</label>
+			<label index="labels.makeShortcut" type="integer">172171229</label>
+			<label index="labels.lockedRecord" type="integer">198827351</label>
+			<label index="labels.lockedRecord_content" type="integer">187177677</label>
+			<label index="labels.showRecords" type="integer">159375536</label>
+			<label index="labels.path" type="integer">180814866</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.upOneLevel" type="integer">206589180</label>
+			<label index="labels.enterSearchString" type="integer">109099181</label>
+			<label index="labels.enterSearchLevels" type="integer">93282459</label>
+			<label index="labels.noEditPermission" type="integer">199778334</label>
+			<label index="labels.fieldsMissing" type="integer">79275306</label>
+			<label index="labels.fieldsChanged" type="integer">196203045</label>
+			<label index="labels.noRTEfound" type="integer">160772255</label>
+			<label index="labels.showPalettes" type="integer">29229235</label>
+			<label index="labels.showDescriptions" type="integer">52412881</label>
+			<label index="labels.disableRTE" type="integer">236608630</label>
+			<label index="labels._CONTROL_" type="integer">169186731</label>
+			<label index="labels._PATH_" type="integer">180814866</label>
+			<label index="labels.setFields" type="integer">263441433</label>
+			<label index="labels.search" type="integer">20138052</label>
+			<label index="labels.author" type="integer">152306160</label>
+			<label index="labels.note" type="integer">264885215</label>
+			<label index="labels.category" type="integer">90868382</label>
+			<label index="labels.reload" type="integer">80857126</label>
+			<label index="labels.csv" type="integer">27365093</label>
+			<label index="labels.clear_cache" type="integer">256573092</label>
+			<label index="labels.no_title" type="integer">184697729</label>
+			<label index="labels.cancel" type="integer">245659783</label>
+			<label index="labels.hidden" type="integer">128769925</label>
+			<label index="labels.starttime" type="integer">174138022</label>
+			<label index="labels.endtime" type="integer">141907953</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
+			<label index="labels.menu" type="integer">260506399</label>
+			<label index="labels.showPage" type="integer">150194952</label>
+			<label index="labels.showList" type="integer">112377765</label>
+			<label index="labels.days" type="integer">72343236</label>
+			<label index="labels.depth_0" type="integer">98872550</label>
+			<label index="labels.depth_1" type="integer">200641290</label>
+			<label index="labels.depth_2" type="integer">228799796</label>
+			<label index="labels.depth_3" type="integer">195275893</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.refresh" type="integer">218889859</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="labels.close" type="integer">222113377</label>
+			<label index="labels.new" type="integer">38618522</label>
+			<label index="labels.selected" type="integer">152781869</label>
+			<label index="labels.items" type="integer">165585921</label>
+			<label index="labels.remove_selected" type="integer">174131744</label>
+			<label index="labels.move_to_top" type="integer">179915530</label>
+			<label index="labels.browse_file" type="integer">252183313</label>
+			<label index="labels.browse_db" type="double">3203407</label>
+			<label index="labels.clipInsert_file" type="integer">72963835</label>
+			<label index="labels.clipInsert_db" type="integer">123875466</label>
+			<label index="labels.generalOptions" type="integer">70509926</label>
+			<label index="labels.allTables" type="integer">64435182</label>
+			<label index="labels.moreOptions" type="integer">220835237</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
+			<label index="labels.thumbmode_clip" type="integer">251068306</label>
+			<label index="labels.copymode" type="integer">24481846</label>
+			<label index="labels.clipNoEl" type="integer">213419996</label>
+			<label index="labels.cliptabs" type="integer">219248137</label>
+			<label index="labels.removeItem" type="integer">61210410</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="TYPO3_Element_Browser" type="integer">97099900</label>
+			<label index="show_item.php.viewItem" type="integer">31794211</label>
+			<label index="show_item.php.file" type="double">11696408</label>
+			<label index="show_item.php.dimensions" type="integer">256394177</label>
+			<label index="show_item.php.filesize" type="integer">116837234</label>
+			<label index="show_item.php.ftp_area" type="integer">213910632</label>
+			<label index="db_new.php.pagetitle" type="integer">153049580</label>
+			<label index="db_new.php.after" type="integer">103981632</label>
+			<label index="db_new.php.inside" type="integer">53858117</label>
+			<label index="file_upload.php.pagetitle" type="integer">209578095</label>
+			<label index="file_upload.php.submit" type="integer">209578095</label>
+			<label index="file_upload.php.files" type="integer">73111091</label>
+			<label index="file_rename.php.pagetitle" type="integer">151300144</label>
+			<label index="file_rename.php.submit" type="integer">151300144</label>
+			<label index="file_edit.php.pagetitle" type="integer">131916066</label>
+			<label index="file_edit.php.submit" type="integer">211601612</label>
+			<label index="file_edit.php.saveAndClose" type="integer">253538544</label>
+			<label index="file_edit.php.coundNot" type="integer">155023303</label>
+			<label index="file_newfolder.php.pagetitle" type="integer">37247196</label>
+			<label index="file_newfolder.php.submit" type="integer">50275779</label>
+			<label index="file_newfolder.php.folders" type="integer">130756931</label>
+			<label index="file_newfolder.php.newfile_submit" type="integer">25278735</label>
+			<label index="file_newfolder.php.newfile" type="integer">77930857</label>
+			<label index="file_clipupload.php.warning_head" type="integer">159379252</label>
+			<label index="file_clipupload.php.warning" type="integer">223829658</label>
+			<label index="mess.redraw" type="integer">39712654</label>
+			<label index="mess.delete" type="double">11983227</label>
+			<label index="mess.deleteClip" type="integer">86922765</label>
+			<label index="mess.refresh_login" type="integer">16856853</label>
+			<label index="mess.noSelItemForEdit" type="integer">260947711</label>
+			<label index="mess.onChangeAlert" type="integer">215006725</label>
+			<label index="mess.move_into" type="integer">267594206</label>
+			<label index="mess.move_after" type="integer">160860895</label>
+			<label index="mess.copy_into" type="integer">231649592</label>
+			<label index="mess.copy_after" type="integer">190775159</label>
+			<label index="mess.copycb_into" type="integer">233579989</label>
+			<label index="mess.copycb_after" type="integer">233968527</label>
+			<label index="mess.movecb_into" type="integer">206869075</label>
+			<label index="mess.movecb_after" type="integer">184153362</label>
+			<label index="rm.menu" type="integer">41019420</label>
+			<label index="rm.saveDoc" type="integer">34922005</label>
+			<label index="rm.saveDocShow" type="integer">266586540</label>
+			<label index="rm.saveCloseDoc" type="integer">43846535</label>
+			<label index="rm.saveCloseAllDocs" type="integer">105962057</label>
+			<label index="rm.saveNewDoc" type="integer">35091769</label>
+			<label index="rm.closeDoc" type="integer">64132522</label>
+			<label index="rm.closeAllDocs" type="integer">55835955</label>
+			<label index="rm.clearCache_clearCache" type="integer">127667564</label>
+			<label index="rm.clearCache_thisPage" type="integer">98872550</label>
+			<label index="rm.clearCache_pages" type="integer">110711253</label>
+			<label index="rm.clearCache_all" type="integer">51462420</label>
+			<label index="rm.clearCache_allTypo3Conf" type="integer">79469728</label>
+			<label index="rm.adminFunctions" type="integer">190550998</label>
+			<label index="rm.edit" type="integer">131916066</label>
+			<label index="rm.delete" type="integer">254438473</label>
+			<label index="buttons.logout" type="double">3292644</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="buttons.clear" type="integer">230886336</label>
+			<label index="buttons.clipboard" type="integer">37640827</label>
+			<label index="cm.copy" type="integer">100361047</label>
+			<label index="cm.cut" type="integer">246625500</label>
+			<label index="cm.view" type="integer">77133724</label>
+			<label index="cm.edit" type="integer">131916066</label>
+			<label index="cm.new" type="double">3944062</label>
+			<label index="cm.pasteinto" type="integer">46910930</label>
+			<label index="cm.pasteafter" type="integer">48443221</label>
+			<label index="cm.select" type="integer">235284002</label>
+			<label index="cm.deselect" type="integer">155289095</label>
+			<label index="cm.selectto" type="integer">188624416</label>
+			<label index="cm.deselectto" type="integer">198679702</label>
+			<label index="cm.delete" type="integer">254438473</label>
+			<label index="cm.hide" type="integer">103439945</label>
+			<label index="cm.unhide" type="integer">205596222</label>
+			<label index="cm.upload" type="integer">194920219</label>
+			<label index="cm.rename" type="integer">151300144</label>
+			<label index="cm.open" type="integer">205255751</label>
+			<label index="cm.save" type="integer">211601612</label>
+			<label index="cm.unzip" type="integer">31401173</label>
+			<label index="cm.info" type="integer">67476226</label>
+			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -6711,7 +7616,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -6735,7 +7640,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -6821,6 +7726,21 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -6856,6 +7776,132 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.rename" type="integer">151300144</label>
 			<label index="cm.open" type="integer">205255751</label>
 			<label index="cm.save" type="integer">211601612</label>
+			<label index="labels.openInNewWindow" type="integer">43359464</label>
+			<label index="labels.goBack" type="integer">36398395</label>
+			<label index="labels.makeShortcut" type="integer">172171229</label>
+			<label index="labels.showRecords" type="integer">159375536</label>
+			<label index="labels.path" type="integer">180814866</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.upOneLevel" type="integer">206589180</label>
+			<label index="labels.enterSearchString" type="integer">109099181</label>
+			<label index="labels.showPalettes" type="integer">29229235</label>
+			<label index="labels.showDescriptions" type="integer">52412881</label>
+			<label index="labels.disableRTE" type="integer">236608630</label>
+			<label index="labels._CONTROL_" type="integer">169186731</label>
+			<label index="labels._PATH_" type="integer">180814866</label>
+			<label index="labels.setFields" type="integer">263441433</label>
+			<label index="labels.author" type="integer">152306160</label>
+			<label index="labels.note" type="integer">264885215</label>
+			<label index="labels.category" type="integer">90868382</label>
+			<label index="labels.reload" type="integer">80857126</label>
+			<label index="labels.csv" type="integer">27365093</label>
+			<label index="labels.clear_cache" type="integer">256573092</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
+			<label index="labels.menu" type="integer">260506399</label>
+			<label index="labels.showPage" type="integer">150194952</label>
+			<label index="labels.showList" type="integer">112377765</label>
+			<label index="labels.days" type="integer">72343236</label>
+			<label index="labels.depth_0" type="integer">98872550</label>
+			<label index="labels.depth_1" type="integer">200641290</label>
+			<label index="labels.depth_2" type="integer">228799796</label>
+			<label index="labels.depth_3" type="integer">195275893</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.refresh" type="integer">218889859</label>
+			<label index="labels.temporaryDBmount" type="integer">54643159</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="labels.new" type="integer">38618522</label>
+			<label index="labels.selected" type="integer">152781869</label>
+			<label index="labels.items" type="integer">165585921</label>
+			<label index="labels.allTables" type="integer">64435182</label>
+			<label index="show_item.php.file" type="double">11696408</label>
+			<label index="show_item.php.dimensions" type="integer">256394177</label>
+			<label index="show_item.php.ftp_area" type="integer">213910632</label>
+			<label index="db_new.php.pagetitle" type="integer">153049580</label>
+			<label index="db_new.php.after" type="integer">103981632</label>
+			<label index="db_new.php.inside" type="integer">53858117</label>
+			<label index="file_upload.php.pagetitle" type="integer">209578095</label>
+			<label index="file_upload.php.submit" type="integer">209578095</label>
+			<label index="file_upload.php.files" type="integer">73111091</label>
+			<label index="file_newfolder.php.pagetitle" type="integer">37247196</label>
+			<label index="file_newfolder.php.submit" type="integer">50275779</label>
+			<label index="file_newfolder.php.folders" type="integer">130756931</label>
+			<label index="file_newfolder.php.newfile_submit" type="integer">25278735</label>
+			<label index="file_newfolder.php.newfile" type="integer">77930857</label>
+			<label index="file_clipupload.php.warning_head" type="integer">159379252</label>
+			<label index="rm.menu" type="integer">41019420</label>
+			<label index="rm.saveDocShow" type="integer">266586540</label>
+			<label index="rm.saveCloseDoc" type="integer">43846535</label>
+			<label index="rm.saveCloseAllDocs" type="integer">105962057</label>
+			<label index="rm.saveNewDoc" type="integer">35091769</label>
+			<label index="rm.closeDoc" type="integer">64132522</label>
+			<label index="rm.closeAllDocs" type="integer">55835955</label>
+			<label index="rm.clearCache_clearCache" type="integer">127667564</label>
+			<label index="rm.clearCache_thisPage" type="integer">98872550</label>
+			<label index="rm.clearCache_pages" type="integer">110711253</label>
+			<label index="rm.clearCache_all" type="integer">51462420</label>
+			<label index="rm.clearCache_allTypo3Conf" type="integer">79469728</label>
+			<label index="rm.adminFunctions" type="integer">190550998</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="buttons.clipboard" type="integer">37640827</label>
+			<label index="cm.new" type="double">3944062</label>
+			<label index="cm.pasteinto" type="integer">46910930</label>
+			<label index="cm.pasteafter" type="integer">48443221</label>
+			<label index="cm.selectto" type="integer">188624416</label>
+			<label index="cm.deselectto" type="integer">198679702</label>
+			<label index="cm.upload" type="integer">194920219</label>
+			<label index="cm.unzip" type="integer">31401173</label>
+			<label index="cm.info" type="integer">67476226</label>
+			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
+			<label index="labels.lockedRecord" type="integer">198827351</label>
+			<label index="labels.lockedRecord_content" type="integer">187177677</label>
+			<label index="labels.enterSearchLevels" type="integer">93282459</label>
+			<label index="labels.noEditPermission" type="integer">199778334</label>
+			<label index="labels.fieldsMissing" type="integer">79275306</label>
+			<label index="labels.fieldsChanged" type="integer">196203045</label>
+			<label index="labels.noRTEfound" type="integer">160772255</label>
+			<label index="labels.remove_selected" type="integer">174131744</label>
+			<label index="labels.move_to_top" type="integer">179915530</label>
+			<label index="labels.browse_file" type="integer">252183313</label>
+			<label index="labels.browse_db" type="double">3203407</label>
+			<label index="labels.clipInsert_file" type="integer">72963835</label>
+			<label index="labels.clipInsert_db" type="integer">123875466</label>
+			<label index="labels.moreOptions" type="integer">220835237</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
+			<label index="labels.thumbmode_clip" type="integer">251068306</label>
+			<label index="labels.copymode" type="integer">24481846</label>
+			<label index="labels.clipNoEl" type="integer">213419996</label>
+			<label index="labels.cliptabs" type="integer">219248137</label>
+			<label index="labels.removeItem" type="integer">61210410</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="TYPO3_Element_Browser" type="integer">97099900</label>
+			<label index="show_item.php.viewItem" type="integer">31794211</label>
+			<label index="file_edit.php.coundNot" type="integer">155023303</label>
+			<label index="file_clipupload.php.warning" type="integer">223829658</label>
+			<label index="mess.redraw" type="integer">39712654</label>
+			<label index="mess.delete" type="double">11983227</label>
+			<label index="mess.deleteClip" type="integer">86922765</label>
+			<label index="mess.refresh_login" type="integer">16856853</label>
+			<label index="mess.noSelItemForEdit" type="integer">260947711</label>
+			<label index="mess.onChangeAlert" type="integer">215006725</label>
+			<label index="mess.move_into" type="integer">267594206</label>
+			<label index="mess.move_after" type="integer">160860895</label>
+			<label index="mess.copy_into" type="integer">231649592</label>
+			<label index="mess.copy_after" type="integer">190775159</label>
+			<label index="mess.copycb_into" type="integer">233579989</label>
+			<label index="mess.copycb_after" type="integer">233968527</label>
+			<label index="mess.movecb_into" type="integer">206869075</label>
+			<label index="mess.movecb_after" type="integer">184153362</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -7037,7 +8083,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.hidden" type="integer">128769925</label>
 			<label index="labels.starttime" type="integer">174138022</label>
 			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">176271034</label>
+			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
 			<label index="labels.menu" type="integer">260506399</label>
 			<label index="labels.showPage" type="integer">150194952</label>
 			<label index="labels.showList" type="integer">112377765</label>
@@ -7058,7 +8104,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -7143,6 +8189,16 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="cm.unzip" type="integer">31401173</label>
 			<label index="cm.info" type="integer">67476226</label>
 			<label index="cm.createnew" type="integer">260012217</label>
+			<label index="labels.table" type="integer">85738935</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.generalTab" type="double">14366585</label>
+			<label index="labels.refreshList" type="integer">267625353</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="buttons.selMenu_modules" type="integer">23513772</label>
+			<label index="cm.tempMountPoint" type="double">10294929</label>
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>

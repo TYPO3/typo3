@@ -85,6 +85,9 @@
 			<label index="folderTree">Verzeichnisbaum</label>
 			<label index="files">Dateien</label>
 			<label index="target">Ziel</label>
+			<label index="target_popUpWindow">In einem neuen Fenster öffnen</label>
+			<label index="target_popUpWindow_width">Breite</label>
+			<label index="target_popUpWindow_height">Höhe</label>
 			<label index="newWindow">Neues Fenster</label>
 			<label index="top">Oben</label>
 			<label index="none">Kein - neuer Link!</label>
@@ -100,9 +103,6 @@
 			<label index="noWebFolder">Sie können Bilder aus diesem Verzeichnis nicht herüberziehen, da sie im internen Bereich des Servers liegen.</label>
 			<label index="currentLink">Aktueller Link</label>
 			<label index="invalidChar">FEHLER: Ungültiges Zeichen im Dateipfad gefunden (%s). Datei kann nicht hinzugefügt werden!</label>
-			<label index="target_popUpWindow">In einem neuen Fenster öffnen</label>
-			<label index="target_popUpWindow_width">Breite</label>
-			<label index="target_popUpWindow_height">Höhe</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="removeLink">Fjern link</label>
@@ -162,7 +162,7 @@
 			<label index="info">Informazioni</label>
 			<label index="emailAddress">Indirizzo email</label>
 			<label index="setLink">Imposta link</label>
-			<label index="clickToRedrawFullSize">L'immagine è più grande di quella mostrata qui! Clicca per vederla a dimensioni naturali.</label>
+			<label index="clickToRedrawFullSize">L'immagine è più grande di quella mostrata qui! Clicca per rivedere la pagina con le immagini a dimensioni naturali..</label>
 			<label index="findDragDrop">Trova l'immagine, cliccaci sopra e trascinala nell'editor della finestra principale.</label>
 			<label index="noWebFolder">Non puoi trascinare le immagini di questa cartella (yellow) perché è una cartella riservata del server.</label>
 			<label index="currentLink">Link corrente</label>
@@ -181,6 +181,9 @@
 			<label index="folderTree">Arborescence de dossiers</label>
 			<label index="files">Fichiers</label>
 			<label index="target">Cible</label>
+			<label index="target_popUpWindow">Ouvrir dans une fenêtre</label>
+			<label index="target_popUpWindow_width">Largeur</label>
+			<label index="target_popUpWindow_height">Hauteur</label>
 			<label index="newWindow">Nouvelle fenêtre</label>
 			<label index="top">Haut</label>
 			<label index="none">Vide - nouveau lien!</label>
@@ -223,7 +226,7 @@
 			<label index="info">Info</label>
 			<label index="emailAddress">Dirección de email</label>
 			<label index="setLink">Elegir liga</label>
-			<label index="clickToRedrawFullSize">La imágen es más grande que la visualizada! Haga click para redibujarla al tamaño original.</label>
+			<label index="clickToRedrawFullSize">¡La imágen es más grande que la visualizada! Haga click para redibujarla al tamaño original.</label>
 			<label index="findDragDrop">Encuentre su imágen, luego haga click en la imágen y arrastrela en la ventana principal del editor.</label>
 			<label index="noWebFolder">Usted no puede arrastrar imágenes desde esta carpeta(amarillo) porque es interno del servidor.</label>
 			<label index="currentLink">Liga actual</label>
@@ -239,20 +242,23 @@
 			<label index="extUrl">Externe URL</label>
 			<label index="email">Email</label>
 			<label index="special">Speciaal</label>
-			<label index="folderTree">Map Structuur (boom)</label>
+			<label index="folderTree">Mappen Structuur</label>
 			<label index="files">Bestanden</label>
 			<label index="target">Doel</label>
+			<label index="target_popUpWindow">Open in venster</label>
+			<label index="target_popUpWindow_width">Breedte</label>
+			<label index="target_popUpWindow_height">Hoogte</label>
 			<label index="newWindow">Nieuw venster</label>
 			<label index="top">Top</label>
 			<label index="none">Geen - nieuwe link!</label>
-			<label index="pageTree">Paginastructuur (boom)</label>
+			<label index="pageTree">Paginaboom</label>
 			<label index="contentElements">Inhoudselementen</label>
 			<label index="selectRecords">Selecteer records</label>
 			<label index="addToList">Toevoegen aan lijst</label>
 			<label index="info">Info</label>
 			<label index="emailAddress">Emailadres</label>
 			<label index="setLink">Bepaal link</label>
-			<label index="clickToRedrawFullSize">Afbeelding is groter dan hier getoond! Klik om te hertekenen tot de ware grootte.</label>
+			<label index="clickToRedrawFullSize">Afbeelding is groter dan hier getoond! Klik om te herladen tot de ware grootte.</label>
 			<label index="findDragDrop">Zoek de benodigde afbeelding en klik dan op de afbeelding en sleep naar de editor in het hoofdvenster!</label>
 			<label index="noWebFolder">Het is niet mogelijk afbeeldingen te slepen, omdat het intern op de server staat.</label>
 			<label index="currentLink">Huidige link</label>
@@ -300,6 +306,9 @@
 			<label index="folderTree">Drzewko katalogów</label>
 			<label index="files">Pliki</label>
 			<label index="target">Target</label>
+			<label index="target_popUpWindow">Otwórz w oknie</label>
+			<label index="target_popUpWindow_width">Szerokość</label>
+			<label index="target_popUpWindow_height">Wysokość</label>
 			<label index="newWindow">Nowe okienko</label>
 			<label index="top">Najwyższe</label>
 			<label index="none">Brak - nowy odnośnik!</label>
@@ -310,10 +319,11 @@
 			<label index="info">Info</label>
 			<label index="emailAddress">Adresy email</label>
 			<label index="setLink">Ustaw odnośnik</label>
-			<label index="clickToRedrawFullSize">Obrazek jest większy niż widzisz! Kliknij aby zobaczyć oryginalny rozmiar.</label>
+			<label index="clickToRedrawFullSize">Obrazek jest większy niż widzisz! Kliknij aby odświeżyć stronę z obrazkami w pełnych wymiarach.</label>
 			<label index="findDragDrop">Znajdź plik obrazka, kliknij na niego i przeciągnij do edytora w głównym okienku.</label>
 			<label index="noWebFolder">Nie możesz przecišgnšć obrazków z tego foldera (żółtego), ponieważ jest to wewnętrzny folder serwera.</label>
 			<label index="currentLink">Bieżący odnośnik</label>
+			<label index="invalidChar">BŁĄD: W ścieżce (%s) znaleziono niedozwolony znak. Nie mogę dodać pliku!</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="removeLink">Odstrani povezavo</label>
@@ -363,17 +373,17 @@
 			<label index="top">Alkuun</label>
 			<label index="none">Ei mitään - uusi linkki!</label>
 			<label index="pageTree">Sivuston rakenne</label>
-			<label index="contentElements">Sisällön elementit</label>
+			<label index="contentElements">Sisältöelementit</label>
 			<label index="selectRecords">Valitse tietueet</label>
 			<label index="addToList">Lisää listalle...</label>
 			<label index="info">Info</label>
 			<label index="emailAddress">Sähköpostiosoite</label>
 			<label index="setLink">Tee linkki</label>
-			<label index="clickToRedrawFullSize">Kuva on suurempi kuin näytetty! Näpsäytä kuvaa nähdäksesi suurena.</label>
-			<label index="findDragDrop">Etsi kuva, näpsäytä kuvaa ja vedä se pääsivun muotoilun päälle!</label>
-			<label index="noWebFolder">Et voi vetää kuvia tästä hakemistosta (keltainen) koska se on sisäinen palvelin.</label>
+			<label index="clickToRedrawFullSize">Kuva on suurempi kuin tässä näytetty! Napsauta kuvaa nähdäksesi sivun täysikokoisilla kuvilla.</label>
+			<label index="findDragDrop">Etsi haluamasi kuva, napsauta sitä ja vedä se pääsivun editorin päälle!</label>
+			<label index="noWebFolder">Et voi vetää kuvia tästä hakemistosta (keltainen), koska se on palvelimen sisäinen.</label>
 			<label index="currentLink">Nykyinen linkki</label>
-			<label index="invalidChar">VIRHE: Virheellinen merkki löytyi tiedostopolusta (%s). Tiedostoa ei voidä lisätä!</label>
+			<label index="invalidChar">VIRHE: Virheellinen merkki löytyi tiedostopolusta (%s). Tiedostoa ei voida lisätä!</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="removeLink">Linki kaldır</label>
@@ -525,7 +535,7 @@
 			<label index="info">Info</label>
 			<label index="emailAddress">Adresă email</label>
 			<label index="setLink">Setare legătură</label>
-			<label index="clickToRedrawFullSize">Imaginea este mai mare decît apare aici! Click pentru a o vedea la mărimea reală.</label>
+			<label index="clickToRedrawFullSize">Imagine micşorată! Click pentru a o vedea la mărime reală.</label>
 			<label index="findDragDrop">Găseşte imaginea, apoi click pe ea şi eliberează în editorul din pagina principală!</label>
 			<label index="noWebFolder">Nu puteţi muta imagini din acest director (galben), deoarece aparţine structurii interne a server-ului.</label>
 			<label index="currentLink">Legătură curentă</label>
@@ -590,8 +600,8 @@
 			<label index="invalidChar">CHYBA: Bol nájdený nesprávny znak na súborovej ceste (%s). Nie je možné pridať súbor!</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
-			<label index="removeLink">Pašalinti nuoroda</label>
-			<label index="uploadImage">Siūsti Piešinį</label>
+			<label index="removeLink">Pašalinti nuorodą</label>
+			<label index="uploadImage">Siūsti paveikslėlį</label>
 			<label index="update">Atnaujinti</label>
 			<label index="path">Kelias</label>
 			<label index="page">Puslapis</label>
@@ -599,27 +609,27 @@
 			<label index="extUrl">Išorinis URL</label>
 			<label index="email">Email</label>
 			<label index="special">Specialus</label>
-			<label index="folderTree">Aplankų Medis</label>
+			<label index="folderTree">Katalogų medis</label>
 			<label index="files">Bylos</label>
-			<label index="target">Taikinys</label>
+			<label index="target">Tikslas</label>
 			<label index="target_popUpWindow">Atydaryti lange</label>
 			<label index="target_popUpWindow_width">Plotis</label>
 			<label index="target_popUpWindow_height">Aukštis</label>
 			<label index="newWindow">Naujas langas</label>
 			<label index="top">Viršus</label>
-			<label index="none">Nėra - naujos nuorodos!</label>
+			<label index="none">Nėra - nauja nuoroda!</label>
 			<label index="pageTree">Puslapių medis</label>
 			<label index="contentElements">Turinio elementai</label>
-			<label index="selectRecords">Pažymėti Įrašus</label>
+			<label index="selectRecords">Pažymėti įrašus</label>
 			<label index="addToList">Įterpti į sąrašą...</label>
 			<label index="info">Informacija</label>
 			<label index="emailAddress">Email adresas</label>
-			<label index="setLink">Priskirti Nuorodą</label>
-			<label index="clickToRedrawFullSize">Piešinys didesnis negu rodoma! Spustelkit kad parodytu visa.</label>
-			<label index="findDragDrop">Suraskite piešinuka, spustelkit ant jo ir meskite į redaktorių pagrindiniame lange!</label>
-			<label index="noWebFolder">Negalima mesti piešinuko iš šio aplanko (geltono) kadangi jis yra serverio, vidinis.</label>
-			<label index="currentLink">Esama Nuoroda</label>
-			<label index="invalidChar">KLAIDA: Rasti blogi simboliai kelyje (%s). Negaliu pridėti bylos!</label>
+			<label index="setLink">Priskirti nuorodą</label>
+			<label index="clickToRedrawFullSize">Paveikslėlis yra didesnis negu rodoma čia! Spustelkit kad būtų parodytas visas.</label>
+			<label index="findDragDrop">Suraskite paveikslėlį, spustelkit ant jo ir nuneškite į redaktorių pagrindiniame lange!</label>
+			<label index="noWebFolder">Negalima nešti paveikslėlio iš šio katalogo (geltono) kadangi jis yra serverio, vidinis.</label>
+			<label index="currentLink">Esama nuoroda</label>
+			<label index="invalidChar">KLAIDA: Rasti negalimi simboliai kelyje (%s). Negaliu pridėti bylos!</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="removeLink">Eyða tengli</label>
@@ -707,7 +717,7 @@
 			<label index="info">Info</label>
 			<label index="emailAddress">Email cím</label>
 			<label index="setLink">Linket beállít</label>
-			<label index="clickToRedrawFullSize">A kép nagyobb az itt láthatónál. Kattints ide a teljes méretű nézethez.</label>
+			<label index="clickToRedrawFullSize">A kép nagyobb az itt láthatónál. Kattints ide az oldal újrarajzolásához teljes méretű képekkel.</label>
 			<label index="findDragDrop">Keresd meg a képet, kattints rá és húzd a szövegszerkesztőbe.</label>
 			<label index="noWebFolder">Nem húzhatod a képeket ebből a könyvtárból (sárga), mivel a könyvtár nem elérhető a weben.</label>
 			<label index="currentLink">Aktuális Link</label>
@@ -718,15 +728,15 @@
 		<languageKey index="th" type="array">
 			<label index="removeLink">ลบลิ้งค์</label>
 			<label index="uploadImage">อัปโหลด ภาพ</label>
-			<label index="update">บันทีก</label>
-			<label index="path">ืที่ไป</label>
+			<label index="update">บันทึก</label>
+			<label index="path">path</label>
 			<label index="page">หน้า</label>
-			<label index="file">แฟ้มข้อมูล</label>
+			<label index="file">ไฟล์</label>
 			<label index="extUrl">URL ภายนอก</label>
 			<label index="email">อีเมล์</label>
 			<label index="special">พิเศษ</label>
 			<label index="folderTree">โครงสร้างแฟ้ม</label>
-			<label index="files">แฟ้มข้อมูล</label>
+			<label index="files">ไฟล์</label>
 			<label index="target">ที่หมาย</label>
 			<label index="newWindow">หน้าต่างใหม่</label>
 			<label index="top">ด้านบน</label>
@@ -734,7 +744,7 @@
 			<label index="pageTree">โครงสร้าง หน้า</label>
 			<label index="contentElements">องค์ประกอบของเนื้อหา</label>
 			<label index="selectRecords">เลือกบันทีกข้อมูล</label>
-			<label index="addToList">เพิ่มเข้ารายการ</label>
+			<label index="addToList">เพิ่มเข้ารายการ....</label>
 			<label index="info">ข้อมูล</label>
 			<label index="emailAddress">ที่อยู่อีเมล์</label>
 			<label index="setLink">กำหนดลิ้งค์</label>
@@ -742,7 +752,10 @@
 			<label index="findDragDrop">ค้นหาภาพของคุณ แล้วกดปุ่มที่ภาพและลากไปใส่หน้าต่างหลักของโปรเแกรมแก้ไข</label>
 			<label index="noWebFolder">คุณไม่สามารถลากภาพจากแฟ้มสีเหลืองนี้ได้ เพราะมันอยู่ภายในตัวเซืร์ฟเวอร์</label>
 			<label index="currentLink">ลิ้งค์ปัจจุบัน</label>
-			<label index="invalidChar">ผิดพลาด! พบตัวอักษรที่ไม่ถูกต้องใน Path ไปยังไฟล์ ไม่สามารถเพิ่มไฟล์ได้!!!</label>
+			<label index="invalidChar">ผิดพลาด! พบตัวอักษรที่ไม่ถูกต้องใน Path (%s) ไปยังไฟล์ ไม่สามารถเพิ่มไฟล์ได้!!!</label>
+			<label index="target_popUpWindow">เปิดใน วินโดว์</label>
+			<label index="target_popUpWindow_width">กว้าง</label>
+			<label index="target_popUpWindow_height">สูง</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -964,6 +977,36 @@
 			<label index="invalidChar">שגיאה: תו לא חוקי נמצא בנתיב/שם הקובץ (%s). לא ניתן להוסיף קובץ זה!</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
+			<label index="removeLink">Видалити посилання</label>
+			<label index="uploadImage">Додати зображення</label>
+			<label index="update">Поновити</label>
+			<label index="path">Путь</label>
+			<label index="page">Сторінка</label>
+			<label index="file">Файл</label>
+			<label index="extUrl">Зовнішній URL</label>
+			<label index="email">Email</label>
+			<label index="special">Спеціальний</label>
+			<label index="folderTree">Дерево тек</label>
+			<label index="files">Файли</label>
+			<label index="target">Ціль</label>
+			<label index="target_popUpWindow">Відкрити у вікні</label>
+			<label index="target_popUpWindow_width">Ширина</label>
+			<label index="target_popUpWindow_height">Висота</label>
+			<label index="newWindow">Нове вікно</label>
+			<label index="top">Угорі</label>
+			<label index="none">Без - нове посилання!</label>
+			<label index="pageTree">Дерево сторінок</label>
+			<label index="contentElements">Елементи вмісту</label>
+			<label index="selectRecords">Обрати записи</label>
+			<label index="addToList">Додати до списку...</label>
+			<label index="info">Інформація</label>
+			<label index="emailAddress">Адреса e-mail</label>
+			<label index="setLink">Встановити посилання</label>
+			<label index="clickToRedrawFullSize">Зображення більше, ніж показано тут!  Клацніть, щоб перемалювати сторінку із зображеннями повного розміру.</label>
+			<label index="findDragDrop">Клацніть по потрібному зображенні й перетягніть її до редактора у головному вікні!</label>
+			<label index="noWebFolder">Ви не можете перетягнути зображення із цієї (жовтої) теки, тому що вона є внутрішньою для серверу.</label>
+			<label index="currentLink">Поточне посилання</label>
+			<label index="invalidChar">ПОМИЛКА: у путі файлу знайдено невірний символ (%s).  Неможливо додати файл!</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="removeLink">Noņemt linku</label>
@@ -1055,7 +1098,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1090,7 +1133,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1122,7 +1165,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1151,11 +1194,14 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
+			<label index="target_popUpWindow" type="integer">21986240</label>
+			<label index="target_popUpWindow_width" type="integer">53040229</label>
+			<label index="target_popUpWindow_height" type="integer">250375243</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="removeLink" type="integer">127410368</label>
@@ -1183,7 +1229,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1212,11 +1258,14 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
+			<label index="target_popUpWindow" type="integer">21986240</label>
+			<label index="target_popUpWindow_width" type="integer">53040229</label>
+			<label index="target_popUpWindow_height" type="integer">250375243</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="removeLink" type="integer">127410368</label>
@@ -1270,10 +1319,14 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
+			<label index="target_popUpWindow" type="integer">21986240</label>
+			<label index="target_popUpWindow_width" type="integer">53040229</label>
+			<label index="target_popUpWindow_height" type="integer">250375243</label>
+			<label index="invalidChar" type="integer">103011900</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="removeLink" type="integer">127410368</label>
@@ -1329,7 +1382,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1338,10 +1391,10 @@
 		<languageKey index="tr" type="array">
 			<label index="removeLink" type="integer">127410368</label>
 			<label index="uploadImage" type="integer">33130562</label>
-			<label index="update" type="integer">6894342</label>
+			<label index="update" type="double">6894342</label>
 			<label index="path" type="integer">180814866</label>
 			<label index="page" type="integer">26464201</label>
-			<label index="file" type="integer">11696408</label>
+			<label index="file" type="double">11696408</label>
 			<label index="extUrl" type="integer">76246465</label>
 			<label index="email" type="integer">216575645</label>
 			<label index="special" type="integer">189541205</label>
@@ -1353,7 +1406,7 @@
 			<label index="target_popUpWindow_height" type="integer">250375243</label>
 			<label index="newWindow" type="integer">241027301</label>
 			<label index="top" type="integer">173014479</label>
-			<label index="none" type="integer">11678269</label>
+			<label index="none" type="double">11678269</label>
 			<label index="pageTree" type="integer">151051780</label>
 			<label index="contentElements" type="integer">221138583</label>
 			<label index="selectRecords" type="integer">189568969</label>
@@ -1361,7 +1414,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1485,7 +1538,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1575,7 +1628,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1667,7 +1720,7 @@
 			<label index="info" type="integer">67476226</label>
 			<label index="emailAddress" type="integer">188054354</label>
 			<label index="setLink" type="integer">126500206</label>
-			<label index="clickToRedrawFullSize" type="integer">38116243</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
 			<label index="findDragDrop" type="integer">164239036</label>
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
@@ -1703,6 +1756,9 @@
 			<label index="noWebFolder" type="integer">213382956</label>
 			<label index="currentLink" type="integer">220492962</label>
 			<label index="invalidChar" type="integer">103011900</label>
+			<label index="target_popUpWindow" type="integer">21986240</label>
+			<label index="target_popUpWindow_width" type="integer">53040229</label>
+			<label index="target_popUpWindow_height" type="integer">250375243</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -1924,6 +1980,36 @@
 			<label index="invalidChar" type="integer">103011900</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
+			<label index="removeLink" type="integer">127410368</label>
+			<label index="uploadImage" type="integer">33130562</label>
+			<label index="update" type="double">6894342</label>
+			<label index="path" type="integer">180814866</label>
+			<label index="page" type="integer">26464201</label>
+			<label index="file" type="double">11696408</label>
+			<label index="extUrl" type="integer">76246465</label>
+			<label index="email" type="integer">216575645</label>
+			<label index="special" type="integer">189541205</label>
+			<label index="folderTree" type="integer">64613660</label>
+			<label index="files" type="integer">153041452</label>
+			<label index="target" type="integer">205628184</label>
+			<label index="target_popUpWindow" type="integer">21986240</label>
+			<label index="target_popUpWindow_width" type="integer">53040229</label>
+			<label index="target_popUpWindow_height" type="integer">250375243</label>
+			<label index="newWindow" type="integer">241027301</label>
+			<label index="top" type="integer">173014479</label>
+			<label index="none" type="double">11678269</label>
+			<label index="pageTree" type="integer">151051780</label>
+			<label index="contentElements" type="integer">221138583</label>
+			<label index="selectRecords" type="integer">189568969</label>
+			<label index="addToList" type="integer">135970903</label>
+			<label index="info" type="integer">67476226</label>
+			<label index="emailAddress" type="integer">188054354</label>
+			<label index="setLink" type="integer">126500206</label>
+			<label index="clickToRedrawFullSize" type="double">14459647</label>
+			<label index="findDragDrop" type="integer">164239036</label>
+			<label index="noWebFolder" type="integer">213382956</label>
+			<label index="currentLink" type="integer">220492962</label>
+			<label index="invalidChar" type="integer">103011900</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="removeLink" type="integer">127410368</label>

@@ -42,13 +42,13 @@
 			<label index="history">Display change history / Un-do</label>
 			<label index="permissions">Set permissions for page</label>
 			<label index="largeControl">Extended view</label>
-			<label index="localization">Localization view</label>
 			<label index="contractView">List all tables</label>
 			<label index="expandView">List only this table</label>
 			<label index="showClipBoard">Show clipboard</label>
 			<label index="editShownColumns">Edit all shown fields of the listed records</label>
 			<label index="editThisColumn">Edit the '%s' field of the listed records</label>
 			<label index="deleteWarning">Are you sure you want to delete this record?</label>
+			<label index="localization">Localization view</label>
 			<label index="defaultLanguage">Default</label>
 			<label index="multipleLanguages">All languages</label>
 			<label index="Localize">Localize</label>
@@ -87,16 +87,12 @@
 			<label index="history">Vis ændringsforløbet / Fortryd</label>
 			<label index="permissions">Sæt rettigheder for siden</label>
 			<label index="largeControl">Udvidet visning</label>
-			<label index="localization">Oversættelsesvisning</label>
 			<label index="contractView">Vis alle tabeller</label>
 			<label index="expandView">Vis kun denne tabel</label>
 			<label index="showClipBoard">Vis klippebord</label>
 			<label index="editShownColumns">Redigér alle viste felter i de oplistede elementer</label>
 			<label index="editThisColumn">Redigér feltet '%s' i de oplistede elementer</label>
 			<label index="deleteWarning">Er du sikker på, at du ønsker at slette dette element?</label>
-			<label index="defaultLanguage">Standard</label>
-			<label index="multipleLanguages">Alle sprog</label>
-			<label index="Localize">Oversæt</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_labels_tablabel">Liste der Datensätze</label>
@@ -469,20 +465,20 @@
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="mlang_labels_tablabel">Luettelo tietokannan tietueista</label>
-			<label index="mlang_labels_tabdescr">Web&gt;Luettelo-moduli mahdollistaa alemman tason käsittelun sivun tietueille. Kun muut modilit pääsääntöisesti ovat erikoistuneet tiettyihin toimenpiteisiin tietyissä tietokannan tauluissa, on tällä modulilla mahdollisuus äärimmäisiin toimiin pelkillä tietueilla.</label>
+			<label index="mlang_labels_tabdescr">WWW&gt;Luettelo -moduli mahdollistaa alemman tason käsittelyn sivun tietueille. Kun muut modulit ovat pääsääntöisesti erikoistuneet tiettyihin toimenpiteisiin tietyissä tietokannan tauluissa, on tällä modulilla mahdollisuus äärimmäisiin toimiin pelkillä tietueilla.</label>
 			<label index="mlang_tabs_tab">Luettelo</label>
-			<label index="clip_pasteAfter">Liitä: Leikepöydän sisältö lisätään tämän tietueen jälkeen</label>
-			<label index="clip_pasteInto">Liitä: Leikepöydän sisältö lisätään tälle sivulle</label>
+			<label index="clip_pasteAfter">Liitä jälkeen: Leikepöydän sisältö lisätään tämän tietueen jälkeen</label>
+			<label index="clip_pasteInto">Liitä sisään: Leikepöydän sisältö lisätään tälle sivulle</label>
 			<label index="clip_paste">Liitä leikepöydälle</label>
-			<label index="clip_markRecords">Merkitse kaikki/Poista merkintä</label>
-			<label index="clip_selectMarked">Siirrä valitut tiedostot leikepöydälle</label>
-			<label index="clip_duplicates">Merkitse kopiot (duplikaatit)</label>
+			<label index="clip_markRecords">Merkitse kaikki/Poista merkinnät</label>
+			<label index="clip_selectMarked">Siirrä valitut tietueet leikepöydälle</label>
+			<label index="clip_duplicates">Merkitse kaksoiskappaleet</label>
 			<label index="clip_editMarked">Muokkaa merkittyjä</label>
 			<label index="clip_deleteMarked">Poista merkityt</label>
 			<label index="clip_deleteMarkedWarning">Haluatko todella poistaa kaikki merkityt tietueet taulusta '%s'?</label>
 			<label index="showInfo">Näytä tiedot</label>
-			<label index="edit">Muotoile tietuetta</label>
-			<label index="editPage">Muotoile sivua</label>
+			<label index="edit">Muokkaa tietuetta</label>
+			<label index="editPage">Muokkaa sivua</label>
 			<label index="new">Uusi tietue</label>
 			<label index="newPage">Luo uusi sivu tämän sivun jälkeen</label>
 			<label index="newRecord">Luo uusi tietue tämän tietueen jälkeen</label>
@@ -498,15 +494,15 @@
 			<label index="prevLevel">Siirrä sivu nykyisen ylemmän tason jälkeiseksi</label>
 			<label index="nextLevel">Siirrä sivu edellisen sivun alapuolelle</label>
 			<label index="delete">Poista tietue (!)</label>
-			<label index="history">Näytä muutos historia / Palauta</label>
+			<label index="history">Näytä muutoshistoria / Palauta</label>
 			<label index="permissions">Aseta sivun käyttöoikeudet</label>
 			<label index="largeControl">Laajennettu näyttö</label>
 			<label index="contractView">Listaa kaikki taulut</label>
 			<label index="expandView">Listaa ainoastaan tämä taulu</label>
 			<label index="showClipBoard">Näytä leikepöytä</label>
-			<label index="editShownColumns">Muotoile kaikki näytetyt kentät listatuista tietueista</label>
+			<label index="editShownColumns">Muokkaa kaikkia näytettyjä kenttiä listatuista tietueista</label>
 			<label index="editThisColumn">Muotoile '%s' tietoa listatuista tietueista</label>
-			<label index="deleteWarning">Oletko varma että haluat poistaa tämän tietueen ?</label>
+			<label index="deleteWarning">Oletko varma, että haluat poistaa tämän tietueen?</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel">Veritabanı kayıtlarının listelenmesi</label>
@@ -796,6 +792,45 @@
 			<label index="deleteWarning">Si si istý, že chceš zmazať tento záznam?</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel">Duomenų bazės įrašų sąrašas</label>
+			<label index="mlang_labels_tabdescr">Web&gt;Sąrašo modulis suteikia tiesioginį priėjimą prie visų puslpio įrašų. Tuo tarpu kiti moduliai daugiau skirti specializuotoms operacijoms konkrečiose duomenų lentelėse. O šis modulis užtikrina maksimalią įrašų prieigą vartotojui.</label>
+			<label index="mlang_tabs_tab">Sąrašas</label>
+			<label index="clip_pasteAfter">Įdėti po: Iškarpų krepšelio turinys įterptas po šio įrašo</label>
+			<label index="clip_pasteInto">Įdėti į: Iškarpų krepšelio turinys įterptas į šį puslapį</label>
+			<label index="clip_paste">Įdėti į iškarpų krepšelio turinį</label>
+			<label index="clip_markRecords">Žymėti Visus/Nužymėti</label>
+			<label index="clip_selectMarked">Perkelti pažymėtus įrašus į iškarpų krepšelį</label>
+			<label index="clip_duplicates">Žymėti dublikuotus</label>
+			<label index="clip_editMarked">Redaguoti pažymėtus</label>
+			<label index="clip_deleteMarked">Trinti pažymėtus</label>
+			<label index="clip_deleteMarkedWarning">Ar jūs tikrai norite ištrinti visus pažymėtus įrašus iš lentelės '%s'?</label>
+			<label index="showInfo">Rodyti informacija</label>
+			<label index="edit">Redaguoti įrašą</label>
+			<label index="editPage">Redaguoti puslapį</label>
+			<label index="new">Naujas įrašas</label>
+			<label index="newPage">Sukūrti nauja puslapį po šio puslapio</label>
+			<label index="newRecord">Sukūrti nauja įrašą po šio įrašo</label>
+			<label index="newRecordGeneral">Sukurti nauja įrašą</label>
+			<label index="moveUp">Kilstelėti sąraše</label>
+			<label index="moveDown">Nuleisti sąraše</label>
+			<label index="move_record">Pakeisti turinio elemento pozicija</label>
+			<label index="move_page">Perkelti puslapį</label>
+			<label index="hide">Paslėpti įrašą</label>
+			<label index="unHide">Parodyti įrašą</label>
+			<label index="hidePage">Paslėpti puslapį</label>
+			<label index="unHidePage">Parodyti puslapį</label>
+			<label index="prevLevel">Perkelti puslapi į pozicija po pagrindinio puslapio (Vidun)</label>
+			<label index="nextLevel">Perkelti puslapį į subpuslapi auksčiau esančio puslapio (Išorėn)</label>
+			<label index="delete">Trinti įrašą (!)</label>
+			<label index="history">Rodyti pakeitimų istorija / Atstatyti</label>
+			<label index="permissions">Nustatyti teises puslapiui</label>
+			<label index="largeControl">Išlėstinis vaizdas</label>
+			<label index="contractView">Rodyti visas lenteles</label>
+			<label index="expandView">Rodyti tik šia lentelę</label>
+			<label index="showClipBoard">Rodyti iškarpų krepšelį</label>
+			<label index="editShownColumns">Redaguoti visus parodytus įrašo laukus</label>
+			<label index="editThisColumn">Redaguoti '%s' parodyt`o įrašo lauką</label>
+			<label index="deleteWarning">Jūs tikrai norite ištrinti šį įrašą?</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="mlang_labels_tablabel">Útskift á gagnasafns-skjölum</label>
@@ -900,19 +935,19 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
-			<label index="mlang_labels_tablabel">แสดงระเบียนฐานข้อมูล</label>
-			<label index="mlang_labels_tabdescr">เว็ป &gt; โหมดแสดงรายการ จัดให้มีการเข้าถึงระดับต่ำระเบียนที่อยู่บนหน้า ในขณะที่โมดูลอื่นๆส่วนใหญ่จะทำงานเฉพาะด้านต่อเฉพาะฐานข้อมูล แต่โมดูลตัวนี้ให้การเข้าถึงสูงสุดแสดงระเบียนที่ทีอยู่ต่อผู้ใช้</label>
+			<label index="mlang_labels_tablabel">แสดงรายการระเบียน-ฐานข้อมูล</label>
+			<label index="mlang_labels_tabdescr">เว็บ &gt; โมดูลแสดงรายการ จัดให้มีการเข้าถึงระดับต่ำระเบียนที่อยู่บนหน้า ในขณะที่โมดูลอื่นๆส่วนใหญ่จะทำงานเฉพาะด้านต่อเฉพาะฐานข้อมูล แต่โมดูลตัวนี้ให้การเข้าถึงสูงสุดแสดงระเบียนที่ทีอยู่ต่อผู้ใช้</label>
 			<label index="mlang_tabs_tab">รายการ</label>
 			<label index="clip_pasteAfter">วางหลังจาก: คลิปบอร์ดเนื้อหาถูกแทรกหลังระเบียนนี้</label>
 			<label index="clip_pasteInto">วางใน: คลิปบอร์ดเนื้อหาถูกแทรกลงในระเบียนนี้</label>
 			<label index="clip_paste">วางในคลิปบอร์ดเนื้อหา</label>
-			<label index="clip_markRecords">ทำหมาย ทั้งหมด/ เอาหมายออกหมด</label>
-			<label index="clip_selectMarked">โอนส่วนที่เลือกของระเบียนไปที่คลิปบอร์ด</label>
-			<label index="clip_duplicates">ทำหมายซ้ำ</label>
-			<label index="clip_editMarked">แก้ไขหมาย</label>
-			<label index="clip_deleteMarked">ลบหมาย</label>
-			<label index="clip_deleteMarkedWarning">คุณแน่ใจว่าต้องการลบระเบียนที่หมายทั้งหมดจากตาราง '%s'?</label>
-			<label index="showInfo">แสดงข้อมูล</label>
+			<label index="clip_markRecords">ทำเครื่องหมาย ทั้งหมด/ ไม่มีการทำเครื่องหมาย</label>
+			<label index="clip_selectMarked">โอนส่วนระเบียนที่เลือกแล้วไปที่คลิปบอร์ด</label>
+			<label index="clip_duplicates">ทำเครื่องหมายว่าซ้ำ</label>
+			<label index="clip_editMarked">แก้ไขที่ทำเครื่องหมายไว้</label>
+			<label index="clip_deleteMarked">ลบที่ทำเครื่องหมายไว้</label>
+			<label index="clip_deleteMarkedWarning">คุณแน่ใจว่าต้องการลบระเบียนที่ทำเครื่องหมายไว้แล้ว ทั้งหมดจากตาราง '%s'?</label>
+			<label index="showInfo">แสดงข่าวสาร</label>
 			<label index="edit">แก้ไขระเบียน</label>
 			<label index="editPage">แก้ไขหน้า</label>
 			<label index="new">ระเบียนใหม่</label>
@@ -926,7 +961,7 @@
 			<label index="hide">ซ่อน ระเบียน</label>
 			<label index="unHide">เลิกซ่อน ระเบียน</label>
 			<label index="hidePage">ซ่อนหน้า</label>
-			<label index="unHidePage">เลิกซ่อนหน้า</label>
+			<label index="unHidePage">ไม่ซ่อนหน้า</label>
 			<label index="prevLevel">ย้ายหน้านี้ไปที่ตำแหน่งหลังจากหน้าแม่ปัจจุบัน (เข้าใน)</label>
 			<label index="nextLevel">ย้ายหน้านี้ไปเป็นหน้ย่อยของหน้าด้านบน(ออกนอก)</label>
 			<label index="delete">ลบระเบียน (!)</label>
@@ -1317,10 +1352,6 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
-			<label index="localization" type="integer">248902375</label>
-			<label index="defaultLanguage" type="integer">128029197</label>
-			<label index="multipleLanguages" type="integer">180223936</label>
-			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -2020,6 +2051,45 @@
 			<label index="deleteWarning" type="integer">75838368</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel" type="integer">234857507</label>
+			<label index="mlang_tabs_tab" type="integer">82717130</label>
+			<label index="clip_pasteAfter" type="double">12147320</label>
+			<label index="clip_pasteInto" type="integer">179341666</label>
+			<label index="clip_paste" type="integer">25920339</label>
+			<label index="clip_markRecords" type="integer">58652945</label>
+			<label index="clip_selectMarked" type="integer">73984189</label>
+			<label index="clip_duplicates" type="integer">54279918</label>
+			<label index="clip_editMarked" type="integer">193825665</label>
+			<label index="clip_deleteMarked" type="integer">126346891</label>
+			<label index="clip_deleteMarkedWarning" type="integer">50666174</label>
+			<label index="showInfo" type="integer">18178327</label>
+			<label index="edit" type="integer">148343509</label>
+			<label index="editPage" type="integer">66732081</label>
+			<label index="new" type="integer">153049580</label>
+			<label index="newPage" type="integer">101902723</label>
+			<label index="newRecord" type="integer">217661453</label>
+			<label index="newRecordGeneral" type="integer">54021068</label>
+			<label index="moveUp" type="integer">263415460</label>
+			<label index="moveDown" type="integer">53528924</label>
+			<label index="move_record" type="integer">167081647</label>
+			<label index="move_page" type="integer">32081372</label>
+			<label index="hide" type="integer">36165326</label>
+			<label index="unHide" type="integer">141242332</label>
+			<label index="hidePage" type="integer">262097628</label>
+			<label index="unHidePage" type="integer">260510626</label>
+			<label index="prevLevel" type="integer">24123263</label>
+			<label index="nextLevel" type="integer">42130533</label>
+			<label index="delete" type="integer">257712260</label>
+			<label index="history" type="integer">106067206</label>
+			<label index="permissions" type="integer">57344679</label>
+			<label index="largeControl" type="integer">97098220</label>
+			<label index="contractView" type="integer">204145058</label>
+			<label index="expandView" type="integer">80203533</label>
+			<label index="showClipBoard" type="integer">249278403</label>
+			<label index="editShownColumns" type="integer">18795941</label>
+			<label index="editThisColumn" type="integer">118469315</label>
+			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>

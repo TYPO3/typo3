@@ -87,10 +87,10 @@
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="welcome">TYPO3 Professional Web Content Management System</label>
-			<label index="minor">TYPO3 on joustava ja ammattimaisesti tehty avoin www-sivujen hallinta ohjelmisto.joka perustuu PHP4 ja MySQL ohjelmistoihin. &lt;br /&gt;&lt;br /&gt;TYPO3 on &lt;b&gt;vapaasti saatavissa&lt;/b&gt;, www-sivuilta &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-lisenssin mukaisesti (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
-			<label index="mlang_labels_tablabel">Tietoa TYPO3sta</label>
-			<label index="mlang_labels_tabdescr">Näyttää yleisiä tietoja TYPO3sta</label>
-			<label index="mlang_tabs_tab">Tietoa TYPO3sta</label>
+			<label index="minor">TYPO3 on joustava ja ammattimainen vapaan lähdekoodin www-sivujen hallintajärjestelmä (CMS). Se perustuu PHP4 ja MySQL-ohjelmistoihin.&lt;br /&gt;&lt;br /&gt;TYPO3 on &lt;b&gt;vapaasti saatavissa&lt;/b&gt; www-sivuilta &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-lisenssin (GNU/GPL)&lt;/a&gt; mukaisesti.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
+			<label index="mlang_labels_tablabel">Tietoja TYPO3:sta</label>
+			<label index="mlang_labels_tabdescr">Näyttää yleisiä tietoja TYPO3:sta</label>
+			<label index="mlang_tabs_tab">Tietoja TYPO3:sta</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="welcome">TYPO3 Profesyonel Web İçerik Yönetim Sistemi±</label>
@@ -172,10 +172,10 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
-			<label index="welcome">TYPO3 ระบบเว็ปจัดการเนื้อหา</label>
-			<label index="minor">TYPO3 is a flexible and professional Open Source Web-CMS based on PHP4 and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
+			<label index="welcome">TYPO3 ระบบเว็บการจัดการเนื้อหา</label>
+			<label index="minor">TYPO3 คือ ระบบการจัดการเนื้อหาบนเว็บระดับมืออาชีพ และมีความอ่อนตัว เป็นแบบเปิดระหัส ที่ใช้ PHP4 และ MySQL&lt;br /&gt;&lt;br /&gt;TYPO3 &lt;b&gt;สามารถหาได้ฟรี&lt;/b&gt; ภายใต้ &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
 			<label index="mlang_labels_tablabel">เกี่ยวกับ TYPO3</label>
-			<label index="mlang_labels_tabdescr">แสดงข้อเท็จจริงเกี่ยวกับโปรแกรม TYPO3 รุ่น และลิขสิทธิ์</label>
+			<label index="mlang_labels_tabdescr">แสดงข้อเท็จจริงเกี่ยวกับโปรแกรมประยุกต์ TYPO3, เวอร์ชั่น และลิขสิทธิ์การใช้</label>
 			<label index="mlang_tabs_tab">เกี่ยวกับ</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
@@ -195,8 +195,8 @@
 			<label index="mlang_tabs_tab">Buruz</label>
 		</languageKey>
 		<languageKey index="bg" type="array">
-			<label index="welcome">TYPO3 Професионална уеб система за управление на съдържанието</label>
-			<label index="minor">TYPO3 е гъвкава и професионална Open Source Уеб-СУС, базирана на PHP4 и MySQL. .&lt;br /&gt;&lt;br /&gt;TYPO3 е &lt;b&gt;свободна на разположение&lt;/b&gt; под &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-лиценз (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
+			<label index="welcome">TYPO3 Професионална редакционна уеб система за управление на съдържанието</label>
+			<label index="minor">TYPO3 е гъвкава и професионална Open Source Уеб-СУС, базирана на PHP4 и MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 е &lt;b&gt;свободна на разположение&lt;/b&gt; под &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-лиценз (GNU/GPL).&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;Превод на български език: Десислав Милатинов.&lt;br /&gt;&lt;br /&gt; Този превод го посвещавам на моя братовчед &lt;b&gt;Павел&lt;/b&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</label>
 			<label index="mlang_labels_tablabel">Относно TYPO3</label>
 			<label index="mlang_labels_tabdescr">Покажи основните факти за TYPO3 проложения, версия и лицензионни условия.</label>
 			<label index="mlang_tabs_tab">Относно</label>
@@ -479,80 +479,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

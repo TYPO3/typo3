@@ -115,15 +115,15 @@
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="deleteItem">Verwijder</label>
-			<label index="deleteWarning">Weet u zeker dat u dit record wilt verwijderen?</label>
+			<label index="deleteWarning">Weet U zeker dat U dit record wilt verwijderen?</label>
 			<label index="undoLastChange">Ongedaan maken/Opnieuw doen wijzigingen (%s geleden)</label>
 			<label index="recordHistory">Bekijk wijzigingen in de records</label>
 			<label index="editWholeRecord">Bewerk hele record</label>
 			<label index="openDocs">OPEN DOCUMENTEN</label>
 			<label index="noDocuments">Geen open documenten</label>
 			<label index="noDocuments_msg">Er zijn geen open documenten beschikbaar om te bewerken.</label>
-			<label index="noDocuments_msg2">U kan naar %s gaan om de pagina of het record te bewerken.</label>
-			<label index="noDocuments_msg3">U kan een van de laatst bewerkte records kiezen uit de lijst:</label>
+			<label index="noDocuments_msg2">U kunt naar %s gaan om de pagina of het record te bewerken.</label>
+			<label index="noDocuments_msg3">U kunt een van de laatst bewerkte records kiezen uit de lijst:</label>
 			<label index="noDocuments_pagemodule">de Web&gt;Pagina module</label>
 			<label index="noDocuments_OR">of</label>
 			<label index="noDocuments_listmodule">de Web&gt;Lijst module</label>
@@ -176,17 +176,17 @@
 		<languageKey index="fi" type="array">
 			<label index="deleteItem">Poista</label>
 			<label index="deleteWarning">Haluatko varmasti poistaa tämän tietueen?</label>
-			<label index="undoLastChange">Palauta/Tee uudestaan viimeinen muutos (%s kertaa)</label>
+			<label index="undoLastChange">Kumoa/tee uudestaan viimeinen muutos (%s kertaa)</label>
 			<label index="recordHistory">Katsele tietueen muutoshistoriaa</label>
 			<label index="editWholeRecord">Muokkaa koko tietuetta</label>
 			<label index="openDocs">AVOIMET DOKUMENTIT</label>
 			<label index="noDocuments">Ei avoimia dokumentteja</label>
-			<label index="noDocuments_msg">Ei avoimia dokumentteja muotoiltavaksi.</label>
+			<label index="noDocuments_msg">Ei avoimia dokumentteja muokattavaksi.</label>
 			<label index="noDocuments_msg2">Voit siirtyä %s löytääksesi sivun tai tietueen jota haluat muotoilla.</label>
 			<label index="noDocuments_msg3">Voit valita yhden viimeksi muotoilluista tietueista tältä listalta:</label>
-			<label index="noDocuments_pagemodule">Web-Sivu -moduli</label>
+			<label index="noDocuments_pagemodule">WWW&gt;Sivu -moduli</label>
 			<label index="noDocuments_OR">tai</label>
-			<label index="noDocuments_listmodule">Web-Lista -moduli</label>
+			<label index="noDocuments_listmodule">WWW&gt;Lista -moduli</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="deleteItem">Sil</label>
@@ -362,18 +362,18 @@
 		</languageKey>
 		<languageKey index="th" type="array">
 			<label index="deleteItem">ลบ</label>
-			<label index="deleteWarning">ีคุณแน่ใจว่าจะลบข้อมูลนี้</label>
+			<label index="deleteWarning">ีคุณแน่ใจว่าจะลบระเบียนนี้</label>
 			<label index="undoLastChange">ย้อนกลับ/ทำซ้ำ การเปลี่ยนแปลง (%s ที่ผ่านมา)</label>
-			<label index="recordHistory">ดูประวัติข้อมูลที่มีการเบลี่ยนแปลง</label>
-			<label index="editWholeRecord">แก้ไขข้อมูลทั้งหมด</label>
+			<label index="recordHistory">ดูประวัติระเบียนที่มีการเบลี่ยนแปลง</label>
+			<label index="editWholeRecord">แก้ไขระเบียนทั้งหมด</label>
 			<label index="openDocs">เปิดเอกสาร</label>
 			<label index="noDocuments">ไม่มีเอกสารที่เปิดอยู่</label>
-			<label index="noDocuments_msg">ไม่มีเอกสารที่จะแก้ไข</label>
+			<label index="noDocuments_msg">ไม่มีเอกสารที่เปิดเพื่อการแก้ไข</label>
 			<label index="noDocuments_msg2">ท่านสามารถไป %s เพื่อหาหน้าหรือข้อมูลที่ต้องการจะแก้ไข</label>
 			<label index="noDocuments_msg3">ท่านสามารถเลือกหนึ่งในข้อมูลที่พึ่งถูกแก้ไขได้จากปุ่มแสดงนี้</label>
-			<label index="noDocuments_pagemodule">เว็ป &gt; โมดุล หน้า</label>
-			<label index="noDocuments_OR">หรีอ</label>
-			<label index="noDocuments_listmodule">เว็ป &gt; โมดุล แสดง</label>
+			<label index="noDocuments_pagemodule">เว็ป &gt; โมดูล หน้า</label>
+			<label index="noDocuments_OR">หรือ</label>
+			<label index="noDocuments_listmodule">เว็ป &gt; โมดูล รายการ</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -483,6 +483,19 @@
 			<label index="noDocuments_listmodule">מודול אינטרנט &gt; רשימה</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
+			<label index="deleteItem">Видалити</label>
+			<label index="deleteWarning">Ви впевнені, що бажаєте видалити цей запис?</label>
+			<label index="undoLastChange">Відмінити/Відновити останню зміну (%s тому)</label>
+			<label index="recordHistory">Переглянути історію зміни запису</label>
+			<label index="editWholeRecord">Редагувати увесь запис</label>
+			<label index="openDocs">ВІДКРИТІ ДОКУМЕНТИ</label>
+			<label index="noDocuments">Немає відкритих документів</label>
+			<label index="noDocuments_msg">Нема доступних для редагування відкритих документів.</label>
+			<label index="noDocuments_msg2">Ви можете знайти цю сторінку чи запис в %s, щоб відредагувати.</label>
+			<label index="noDocuments_msg3">Ви можете обрати нещодавно редагований запис із цього списку:</label>
+			<label index="noDocuments_pagemodule">модуль Веб&gt;Сторінка</label>
+			<label index="noDocuments_OR">чи</label>
+			<label index="noDocuments_listmodule">модуль Веб&gt;Список</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="deleteItem">Dzēst</label>
@@ -707,7 +720,7 @@
 			<label index="openDocs" type="integer">260671662</label>
 			<label index="noDocuments" type="integer">118569122</label>
 			<label index="noDocuments_msg" type="integer">264542935</label>
-			<label index="noDocuments_msg2" type="integer">15726238</label>
+			<label index="noDocuments_msg2" type="double">15726238</label>
 			<label index="noDocuments_msg3" type="integer">187019899</label>
 			<label index="noDocuments_pagemodule" type="integer">126847616</label>
 			<label index="noDocuments_OR" type="integer">243385572</label>
@@ -993,6 +1006,19 @@
 			<label index="noDocuments_listmodule" type="integer">97512249</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
+			<label index="deleteItem" type="integer">254438473</label>
+			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="undoLastChange" type="integer">109787245</label>
+			<label index="recordHistory" type="integer">38913415</label>
+			<label index="editWholeRecord" type="integer">195506325</label>
+			<label index="openDocs" type="integer">260671662</label>
+			<label index="noDocuments" type="integer">118569122</label>
+			<label index="noDocuments_msg" type="integer">264542935</label>
+			<label index="noDocuments_msg2" type="double">15726238</label>
+			<label index="noDocuments_msg3" type="integer">187019899</label>
+			<label index="noDocuments_pagemodule" type="integer">126847616</label>
+			<label index="noDocuments_OR" type="integer">243385572</label>
+			<label index="noDocuments_listmodule" type="integer">97512249</label>
 		</languageKey>
 		<languageKey index="lv" type="array">
 			<label index="deleteItem" type="integer">254438473</label>

@@ -45,7 +45,7 @@
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel">Persoonlijke setup (gebruiker)</label>
-			<label index="mlang_labels_tabdescr">Deze module biedt je de mogelijkheid je BeheerSitegebruikersprofiel aan te passen. Hier kan je je huidige systeemtaal, naam en emailadres wijzigen. Je kan hier ook algemene onderdelen van het systeem configureren.</label>
+			<label index="mlang_labels_tabdescr">Deze module biedt U de mogelijkheid uw backendgebruikersprofiel aan te passen. Hier kunt u uw huidige systeemtaal, naam en emailadres wijzigen. U kunt hier ook algemene onderdelen van het systeem configureren.</label>
 			<label index="mlang_tabs_tab">Setup</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -65,7 +65,7 @@
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="mlang_labels_tablabel">Henkilökohtaiset perustiedot</label>
-			<label index="mlang_labels_tabdescr">Tällä modulilla voit muokata backend käyttäjän profiiliasi. Voit vaihtaa aktiivisen järjestelmän kieltä, nimeäsi ja sähköpostiosoitetta. Voit asentaa myös muita järjestelmän ominaisuuksia.</label>
+			<label index="mlang_labels_tabdescr">Tällä modulilla voit muokata taustakäyttäjän profiiliasi. Voit vaihtaa käytettävän kielen, nimesi ja sähköpostiosoitteesi. Voit asettaa myös muita järjestelmän ominaisuuksia.</label>
 			<label index="mlang_tabs_tab">Asetukset</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
@@ -104,6 +104,9 @@
 			<label index="mlang_tabs_tab">Nastavenie</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel">Asmeninių vartotojo parametrų nustatymas</label>
+			<label index="mlang_labels_tabdescr">Šis modulis leidžia keisti jūsų backend vartotojo profilį. Čia jūs galite pakeistį aktyvios sisteminės kalbos nustatymą, vardą ir elektroninio pašto adresą. Jūs taip pat galite keisti pagrindinių sistemos funkcijų nustatymus.</label>
+			<label index="mlang_tabs_tab">Nustatymai</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -120,6 +123,9 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel">การตั้งค่าส่วนบุคคล</label>
+			<label index="mlang_labels_tabdescr">โมดูลนี้ อนุญาตให้ท่านปรับแต่งโพรไฟล์ของผู้ใช้ ณ ที่นี่ท่านสามารถเปลี่ยนภาษาทำงานของระบบ ชื่อ และ อีเมล์ ท่านยังสามารถค่าฟีเจอร์ทั่วๆไปของระบบได้อีกด้วย</label>
+			<label index="mlang_tabs_tab">การตั้งค่า</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -251,6 +257,9 @@
 			<label index="mlang_tabs_tab" type="integer">181548907</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39109629</label>
+			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
+			<label index="mlang_tabs_tab" type="integer">181548907</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -267,6 +276,9 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39109629</label>
+			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
+			<label index="mlang_tabs_tab" type="integer">181548907</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -301,80 +313,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

@@ -196,9 +196,9 @@
 			<label index="time">Tijd</label>
 			<label index="user">Gebruiker</label>
 			<label index="changeCount">Wijzigingen sinds tijd</label>
-			<label index="changes">Wijzigingen aan het record</label>
+			<label index="changes">Wijzigingen aan record</label>
 			<label index="return">Terug</label>
-			<label index="returnLink">Klik hier om terug te gaan</label>
+			<label index="returnLink">Terug</label>
 			<label index="revertField">Herstel voorgaande waarde van dit veld</label>
 			<label index="revertAllFields">Herstel voorgaande waardes van onderstaande velden</label>
 			<label index="externalChange">Tussentijdse externe wijziging</label>
@@ -295,25 +295,25 @@
 			<label index="difference">Razlika</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
-			<label index="title">Näytä tietue historia</label>
+			<label index="title">Näytä tietuehistoria</label>
 			<label index="tableUid">Taulu/UID</label>
 			<label index="time">Aika</label>
 			<label index="user">Käyttäjä</label>
 			<label index="changeCount">Muutosta ajankohdan jälkeen</label>
 			<label index="changes">Muutoksia tietueelle</label>
 			<label index="return">Paluu</label>
-			<label index="returnLink">Näpsäytä paluuksi</label>
+			<label index="returnLink">Napsauta palataksesi</label>
 			<label index="revertField">Palauta tämän tiedon edellinen arvo</label>
 			<label index="revertAllFields">Palauta kaikkiin allaoleviin tietoihin vanhat arvot</label>
 			<label index="externalChange">Selvitä ulkoinen muutos!</label>
 			<label index="sumUpChanges">Kerää muutokset tähän asti</label>
-			<label index="historyList">Näytä historia lista</label>
+			<label index="historyList">Näytä historialista</label>
 			<label index="users">Käyttäjät</label>
 			<label index="similar">Tämä tila on samakaltainen tietueeseen verrattuna!</label>
 			<label index="prev">Edellinen tila</label>
 			<label index="next">Seuraava tila</label>
 			<label index="saveState">Suojaa tämä tila poistamiselta</label>
-			<label index="fieldName">Tiedonnimi</label>
+			<label index="fieldName">Tiedon nimi</label>
 			<label index="oldValue">Vanha arvo</label>
 			<label index="newValue">Uusi arvo</label>
 			<label index="currentValue">Nykyinen arvo</label>
@@ -590,7 +590,7 @@
 		</languageKey>
 		<languageKey index="th" type="array">
 			<label index="title">แสดงระเบียนประวัติ</label>
-			<label index="tableUid">ตาราง/หมายเลขผู้ใช้</label>
+			<label index="tableUid">ตาราง/หมายเลขผู้ใช้ (Uid)</label>
 			<label index="time">เวลา</label>
 			<label index="user">ผู้ใช้</label>
 			<label index="changeCount">เปลี่ยนตั้งแต่เวลา</label>

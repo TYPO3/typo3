@@ -19,9 +19,9 @@
 			<label index="mlang_tabs_tab">Ext. Manager</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="mlang_labels_tablabel">TYPO3 Erweiterungs-Manager</label>
-			<label index="mlang_labels_tabdescr">Verwaltet TYPO3 Erweiterungen, wozu Plugins, Module, Konfiguationen und Übersetzngen zählen.</label>
-			<label index="mlang_tabs_tab">Ext.-Manager</label>
+			<label index="mlang_labels_tablabel">TYPO3 Extension Manager</label>
+			<label index="mlang_labels_tabdescr">Verwaltet TYPO3 Erweiterungen (Extensions), wozu Plugins, Module, Konfiguationen und Übersetzngen zählen.</label>
+			<label index="mlang_tabs_tab">Ext Manager</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mlang_labels_tablabel">TYPO3 Extension Manager</label>
@@ -64,9 +64,9 @@
 			<label index="mlang_tabs_tab">Upravitelj razš.</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
-			<label index="mlang_labels_tablabel">TYPO3 Lisäpalvelujen Hallinta</label>
-			<label index="mlang_labels_tabdescr">TYPO3 lisäpalvelujen hallinta, joka sisältää plugin, moduli, luokka lisäykset, konfiguraatio koodeja jne. jotka saadaan keskitetystä kirjastosta.</label>
-			<label index="mlang_tabs_tab">Lisäpalvelujen Hallinta</label>
+			<label index="mlang_labels_tablabel">TYPO3:n Lisäpalvelujen Hallinta</label>
+			<label index="mlang_labels_tabdescr">TYPO3:n lisäpalvelujen hallinta, joka sisältää plugineja, moduleja, luokkien lisäyksiä, konfigurointikoodeja ym., jotka saadaan keskitetystä säilytyspaikasta.</label>
+			<label index="mlang_tabs_tab">Lisäpalvelujen hallinta</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel">Typo3 Uzantı Yönetimi</label>
@@ -127,7 +127,7 @@
 		</languageKey>
 		<languageKey index="th" type="array">
 			<label index="mlang_labels_tablabel">Typo3 ผู้จัดการส่วนเพิ่มเติม (Extension)</label>
-			<label index="mlang_labels_tabdescr">จัดการ ส่วนเพิ่มเติม ของ Typo3 ซึ่งประกอบด้วย ปั้กอิน โมดูล คลาส ต้นระหัสปรับแต่ง และอื่นๆ จากที่เก็บส่วนกลาง</label>
+			<label index="mlang_labels_tabdescr">จัดการ ส่วนเพิ่มเติม ของ Typo3 ซึ่งประกอบด้วย ปลั้กอิน โมดูล คลาส โค๊ดการปรับแต่ง และอื่นๆ จากที่เก็บส่วนกลางแบบออนไล</label>
 			<label index="mlang_tabs_tab">ผู้จัดการ Ext</label>
 		</languageKey>
 		<languageKey index="gr" type="array">

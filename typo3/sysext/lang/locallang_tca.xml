@@ -54,6 +54,10 @@
 			<label index="be_users">Backend Benutzer</label>
 			<label index="be_groups">Backend Benutzergruppe</label>
 			<label index="sys_filemounts">Dateifreigaben</label>
+			<label index="sys_language">Website Sprache</label>
+			<label index="sys_language.isocode">Wähle Sprache (ISO Code):</label>
+			<label index="sys_language.flag">Wähle Flaggen-Symbol:</label>
+			<label index="editlock">Bearbeitung erfordert Admin-Rechte:</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="pages">Side</label>
@@ -67,6 +71,10 @@
 			<label index="be_users">Oppdater bruker</label>
 			<label index="be_groups">Oppdater brukergruppe</label>
 			<label index="sys_filemounts">Filmount</label>
+			<label index="sys_language">Webområde språk</label>
+			<label index="sys_language.isocode">Velg offisielt språk (ISO kode):</label>
+			<label index="sys_language.flag">Velg flagg ikon:</label>
+			<label index="editlock">Kun administratorer kan redigere siden.</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="pages">Pagina</label>
@@ -80,6 +88,10 @@
 			<label index="be_users">Utente backend</label>
 			<label index="be_groups">Gruppo di utenti backend</label>
 			<label index="sys_filemounts">Filemount</label>
+			<label index="sys_language">Lingua del sito web:</label>
+			<label index="sys_language.isocode">Seleziona Lingua Ufficiale (codice ISO):</label>
+			<label index="sys_language.flag">Seleziona icona lingua:</label>
+			<label index="editlock">Impedisci l'editing ai non-Admin:</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="pages">Page</label>
@@ -93,6 +105,10 @@
 			<label index="be_users">Utilisateur de l'arrière-plan</label>
 			<label index="be_groups">Groupe utilisateur de l'arrière-plan</label>
 			<label index="sys_filemounts">Point de montage</label>
+			<label index="sys_language">Langue du site web</label>
+			<label index="sys_language.isocode">Séléctionner la langue officielle (ISO Code):</label>
+			<label index="sys_language.flag">Séléctionner le drapeau:</label>
+			<label index="editlock">Restreindre l'édition par les non-admins.</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="pages">Página</label>
@@ -106,6 +122,10 @@
 			<label index="be_users">Operadores</label>
 			<label index="be_groups">Grupos de operadores</label>
 			<label index="sys_filemounts">Punto de montaje de archivos</label>
+			<label index="sys_language">Idioma del sitio web</label>
+			<label index="sys_language.isocode">Selecciona idioma oficial (código ISO):</label>
+			<label index="sys_language.flag">Selecciona el icono bandera:</label>
+			<label index="editlock">Restringir la edición para no administradores:</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="pages">Pagina</label>
@@ -113,12 +133,16 @@
 			<label index="doktype.I.1">SysMap</label>
 			<label index="doktype.I.2">Prullenbak</label>
 			<label index="title">Paginatitel:</label>
-			<label index="php_tree_stop">Stop mappenweergave:</label>
+			<label index="php_tree_stop">Stop paginaboom:</label>
 			<label index="is_siteroot">Is basis van website:</label>
 			<label index="storage_pid">Algemene recordopslag:</label>
 			<label index="be_users">Backendgebruiker</label>
 			<label index="be_groups">Backendgebruikersgroep</label>
 			<label index="sys_filemounts">Bestandkoppeling</label>
+			<label index="sys_language">Website taal</label>
+			<label index="sys_language.isocode">Selecteer Officiële Taal (ISO code):</label>
+			<label index="sys_language.flag">Selecteer vlag icoon:</label>
+			<label index="editlock">Alleen te bewerken door Admins:</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="pages">Stránka</label>
@@ -145,6 +169,10 @@
 			<label index="be_users">Użytkownik</label>
 			<label index="be_groups">Grupa</label>
 			<label index="sys_filemounts">Podłączenie</label>
+			<label index="sys_language">Języj witryny</label>
+			<label index="sys_language.isocode">Wybierz Język oficjalny (kod ISO):</label>
+			<label index="sys_language.flag">Wybierz ikonę flagi:</label>
+			<label index="editlock">Ogranicz edycję nie-administratorów:</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="pages">Stran</label>
@@ -158,6 +186,10 @@
 			<label index="be_users">Administrativni uporabnik</label>
 			<label index="be_groups">Administrativna skupina</label>
 			<label index="sys_filemounts">Shramba datotek</label>
+			<label index="sys_language">Jezik spletišča</label>
+			<label index="sys_language.isocode">Izberi uradni jezik (ISO koda):</label>
+			<label index="sys_language.flag">Izberi ikono zastave:</label>
+			<label index="editlock">Dovoli urejanje samo administratorjem:</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="pages">Sivu</label>
@@ -167,10 +199,14 @@
 			<label index="title">Sivun otsikko:</label>
 			<label index="php_tree_stop">Ei sivujen puurakennetta:</label>
 			<label index="is_siteroot">Tämä on websivujen juuri:</label>
-			<label index="storage_pid">Yleinen tietovarasto sivu:</label>
-			<label index="be_users">Backend käyttäjä</label>
-			<label index="be_groups">Backend käyttäjäryhmä</label>
-			<label index="sys_filemounts">Filemount</label>
+			<label index="storage_pid">Yleinen tietovarastosivu:</label>
+			<label index="be_users">Taustakäyttäjä</label>
+			<label index="be_groups">Taustan käyttäjäryhmä</label>
+			<label index="sys_filemounts">Tiedostoliitos (mount)</label>
+			<label index="sys_language">WWW-sivuston kieli</label>
+			<label index="sys_language.isocode">Valitse virallinen kieli (ISO-koodi):</label>
+			<label index="sys_language.flag">Valitse lippu:</label>
+			<label index="editlock">Rajoita muokkaus ei-administraattoreilta:</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="pages">Sayfa</label>
@@ -184,6 +220,10 @@
 			<label index="be_users">Arka plan kullanıcısı</label>
 			<label index="be_groups">Arka plan kullanıcı grubu</label>
 			<label index="sys_filemounts">Dosya mountı</label>
+			<label index="sys_language">Websitesi dilleri</label>
+			<label index="sys_language.isocode">Resmi dilinizi seçiniz (ISO code):</label>
+			<label index="sys_language.flag">Bayrak ikonunu seçiniz:</label>
+			<label index="editlock">sınırlı düzenleme yönetici olmayanlar için:</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="pages">Sida</label>
@@ -236,6 +276,10 @@
 			<label index="be_users">Utilizator backend</label>
 			<label index="be_groups">Grup de utilizatori backend</label>
 			<label index="sys_filemounts">Suport Fisere</label>
+			<label index="sys_language">Limbaj Website</label>
+			<label index="sys_language.isocode">Selectare Limbaj Oficial (cod ISO):</label>
+			<label index="sys_language.flag">Selectare imagine:</label>
+			<label index="editlock">Editare restrictionată pentru utilizatorii normali:</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="pages">页面</label>
@@ -275,6 +319,10 @@
 			<label index="be_users">Administravimo pusės vartotojas</label>
 			<label index="be_groups">Administravimo pusės vartotojo grupė</label>
 			<label index="sys_filemounts">Bylų junginys</label>
+			<label index="sys_language">Tinklapio kalba</label>
+			<label index="sys_language.isocode">Pažymėkite oficialią kalbą (ISO kodą):</label>
+			<label index="sys_language.flag">Pažymėkite vėlevėlės ikoną:</label>
+			<label index="editlock">Uždrausti redagavimą ne-Admin grupės vartotojams:</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="pages">Síða</label>
@@ -314,6 +362,10 @@
 			<label index="be_users">Backend felhasználó</label>
 			<label index="be_groups">Backend felhasználócsoport</label>
 			<label index="sys_filemounts">Filemount</label>
+			<label index="sys_language">Weboldal nyelv</label>
+			<label index="sys_language.isocode">Válaszd ki a hivatalos nyelvet (ISO kód):</label>
+			<label index="sys_language.flag">Válaszd ki a zászló ikont:</label>
+			<label index="editlock">Szerkesztés tiltása nem-Adminoknak:</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 			<label index="pages">Qupperneq</label>
@@ -324,12 +376,16 @@
 			<label index="doktype.I.1">แฟ้มระบบ</label>
 			<label index="doktype.I.2">นำกลับมาใช้ใหม่</label>
 			<label index="title">ชื่อหน้า:</label>
-			<label index="php_tree_stop">หยุด หน้า ทรี:</label>
-			<label index="is_siteroot">ใช่หน้าแรกของเว็ปไซต์?:</label>
+			<label index="php_tree_stop">หยุด page tree:</label>
+			<label index="is_siteroot">ใช่ รากของเว็บไซต์:</label>
 			<label index="storage_pid">หน้าเก็บระเบียนทั่วไป:</label>
 			<label index="be_users">ผู้ใช้ส่วนหลัง</label>
 			<label index="be_groups">กลุ่มผู้ใช้ส่วนหลัง</label>
 			<label index="sys_filemounts">Filemount</label>
+			<label index="sys_language">ภาษาของเว็บไซต์</label>
+			<label index="sys_language.isocode">เลือกภาษาทางการ (โค้ด ISO)</label>
+			<label index="sys_language.flag">เลือก ไอคอนธงชาติ:</label>
+			<label index="editlock">จำกัดการแก้ไข โดยผู้ที่ไม่ใช่ ผู้ดูแลระบบ:</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -371,6 +427,10 @@
 			<label index="be_users">Backend потребител</label>
 			<label index="be_groups">Backend потребителска група</label>
 			<label index="sys_filemounts">Закачване на файл (Filemount)</label>
+			<label index="sys_language">Език на уеб страницата</label>
+			<label index="sys_language.isocode">Избор на официален език (ISO code):</label>
+			<label index="sys_language.flag">Избор на flag icon:</label>
+			<label index="editlock">Ограничаване на редактирането от потребители нямащи Администраторски права:</label>
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="pages">Página</label>
@@ -487,6 +547,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -500,6 +564,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -513,6 +581,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -526,6 +598,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -539,6 +615,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -552,6 +632,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -578,6 +662,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -591,6 +679,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -604,6 +696,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -617,6 +713,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -669,6 +769,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -708,6 +812,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -747,6 +855,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -763,6 +875,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -804,6 +920,10 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="pages" type="integer">26464201</label>

@@ -37,7 +37,7 @@
 			<label index="mlang_tabs_tab">Archivos</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-			<label index="mlang_labels_tablabel">Bestandenbeheer op de server</label>
+			<label index="mlang_labels_tablabel">Bestandsbeheer op de server</label>
 			<label index="mlang_tabs_tab">Bestand</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -53,8 +53,8 @@
 			<label index="mlang_tabs_tab">Datoteke</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
-			<label index="mlang_labels_tablabel">Tiedosto hallinta palvelimella</label>
-			<label index="mlang_tabs_tab">Tiedosto</label>
+			<label index="mlang_labels_tablabel">Tiedostojen hallinta palvelimella</label>
+			<label index="mlang_tabs_tab">Tiedostot</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="mlang_labels_tablabel">Sunucuda dosya yönetimi</label>
@@ -105,7 +105,7 @@
 			<label index="mlang_tabs_tab">Fiili</label>
 		</languageKey>
 		<languageKey index="th" type="array">
-			<label index="mlang_labels_tablabel">การจัดการแฟ้มข้อมูลบนเครื่องเซิร์ฟเว่อ</label>
+			<label index="mlang_labels_tablabel">การจัดการแฟ้มข้อมูลบนเครื่องเซิร์ฟเวอร์</label>
 			<label index="mlang_tabs_tab">แฟ้มข้อมูล</label>
 		</languageKey>
 		<languageKey index="gr" type="array">

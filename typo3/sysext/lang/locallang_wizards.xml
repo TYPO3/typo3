@@ -283,6 +283,14 @@
 			<label index="forms_eform_html_enabled">HTML-format aktivert</label>
 			<label index="forms_eform_formtype_mail">Send knapp tekst</label>
 			<label index="forms_special_eform">Spesiell konfigurasjon for e-post skjemaer</label>
+			<label index="colorpicker_title">Farge velger</label>
+			<label index="colorpicker_setClose">Lagre og lukk</label>
+			<label index="colorpicker_colorValue">Velg farge:</label>
+			<label index="colorpicker_fromImage">Farge fra bilde (klikk på bildet):</label>
+			<label index="colorpicker_fromMatrix">Velg farge fra matrise (websikre farger):</label>
+			<label index="colorpicker_fromList">Velg HTML farge navn:</label>
+			<label index="colorpicker_black">SORT</label>
+			<label index="colorpicker_white">HVIT</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="rte_undoLastChange">Annulla/Ripeti ultimo cambiamento (%s fa)</label>
@@ -346,6 +354,14 @@
 			<label index="forms_eform_html_enabled">Invia in HTML</label>
 			<label index="forms_eform_formtype_mail">Etichetta del bottone di invio</label>
 			<label index="forms_special_eform">Configurazione speciale per moduli da inviare via email</label>
+			<label index="colorpicker_title">Seleziona Colore</label>
+			<label index="colorpicker_setClose">Salva e Chiudi</label>
+			<label index="colorpicker_colorValue">Colore selezionato:</label>
+			<label index="colorpicker_fromImage">Scegli un colore dall'immagine (clicca sull'immagine):</label>
+			<label index="colorpicker_fromMatrix">Seleziona colore dalla tabella (colori websafe):</label>
+			<label index="colorpicker_fromList">Seleziona colore dalla lista (colori HTML):</label>
+			<label index="colorpicker_black">NERO</label>
+			<label index="colorpicker_white">BIANCO</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="rte_undoLastChange">Annuler/Rétablir le dernier changement (%s ago)</label>
@@ -387,6 +403,8 @@
 			<label index="forms_type_radio">Boutons 'radio'</label>
 			<label index="forms_type_hidden">Valeur cachée</label>
 			<label index="forms_type_submit">Bouton d'envoi</label>
+			<label index="forms_type_property">Propriété</label>
+			<label index="forms_type_label">Etiquette</label>
 			<label index="forms_required">Obligatoire</label>
 			<label index="forms_fieldName">Champ</label>
 			<label index="forms_cols">Colonnes</label>
@@ -407,6 +425,14 @@
 			<label index="forms_eform_html_enabled">Mode HTML actif</label>
 			<label index="forms_eform_formtype_mail">Etiquette du bouton d'envoi</label>
 			<label index="forms_special_eform">Configuration spéciale de courrier électronique</label>
+			<label index="colorpicker_title">Palette de couleurs</label>
+			<label index="colorpicker_setClose">Enregistrer et Fermer</label>
+			<label index="colorpicker_colorValue">Couleurs sélectionnées</label>
+			<label index="colorpicker_fromImage">Capturer la couleur depuis une image (cliquer sur l'image):</label>
+			<label index="colorpicker_fromMatrix">Choisir une couleur depuis une matrice (couleurs websafe):</label>
+			<label index="colorpicker_fromList">Choisir le nom de la couleur HTML:</label>
+			<label index="colorpicker_black">NOIR</label>
+			<label index="colorpicker_white">BLANC</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="rte_undoLastChange">Deshacer/Rehacer último cambio (%s veces)</label>
@@ -470,9 +496,17 @@
 			<label index="forms_eform_html_enabled">Modo HTML habilitado</label>
 			<label index="forms_eform_formtype_mail">Etiqueta del botón de envío</label>
 			<label index="forms_special_eform">Configuración especial para formularios de correo</label>
+			<label index="colorpicker_title">Selector de color</label>
+			<label index="colorpicker_setClose">Guardar y Cerrar</label>
+			<label index="colorpicker_colorValue">Seleccionar color:</label>
+			<label index="colorpicker_fromImage">Capturar color desde imagen (click en la imagen):</label>
+			<label index="colorpicker_fromMatrix">Seleccionar color desde la matriz (colores seguros para la web):</label>
+			<label index="colorpicker_fromList">Seleccionar nombre de color HTML:</label>
+			<label index="colorpicker_black">NEGRO</label>
+			<label index="colorpicker_white">BLANCO</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-			<label index="rte_undoLastChange">Laatste wijziging ongedaan maken/opnieuw (%s ago)</label>
+			<label index="rte_undoLastChange">Laatste wijziging ongedaan maken/opnieuw (%s geleden)</label>
 			<label index="tsprop">TypoScript eigenschappen (naslag)</label>
 			<label index="tsprop_TSref">TSref online</label>
 			<label index="tsprop_tsconfig">TSconfig online</label>
@@ -511,6 +545,8 @@
 			<label index="forms_type_radio">Radioknoppen</label>
 			<label index="forms_type_hidden">Verborgen waarde</label>
 			<label index="forms_type_submit">Submit knop</label>
+			<label index="forms_type_property">Eigenschap</label>
+			<label index="forms_type_label">Label</label>
 			<label index="forms_required">Verplicht</label>
 			<label index="forms_fieldName">Veld</label>
 			<label index="forms_cols">Kolommen</label>
@@ -531,6 +567,14 @@
 			<label index="forms_eform_html_enabled">HTML-Modus geactiveerd</label>
 			<label index="forms_eform_formtype_mail">Verstuurknop label</label>
 			<label index="forms_special_eform">Speciale configuratie voor emailformulieren</label>
+			<label index="colorpicker_title">Kleur kiezer</label>
+			<label index="colorpicker_setClose">Opslaan en Sluiten</label>
+			<label index="colorpicker_colorValue">Geselecteerde Kleur:</label>
+			<label index="colorpicker_fromImage">Kies kleur uit afbeelding (klik op afbeelding):</label>
+			<label index="colorpicker_fromMatrix">Select kleur uit de matrix (web-veilige kleuren):</label>
+			<label index="colorpicker_fromList">Selecteer HTML kleur naam:</label>
+			<label index="colorpicker_black">ZWART</label>
+			<label index="colorpicker_white">WIT</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="rte_undoLastChange">Zpět/Znovu poslední změnu (%s nazpět)</label>
@@ -633,6 +677,8 @@
 			<label index="forms_type_radio">Przycisk Radio</label>
 			<label index="forms_type_hidden">Ukryta wartość</label>
 			<label index="forms_type_submit">Przycisk wyślij</label>
+			<label index="forms_type_property">Atrybut</label>
+			<label index="forms_type_label">Etykieta</label>
 			<label index="forms_required">Wymagane</label>
 			<label index="forms_fieldName">Pole</label>
 			<label index="forms_cols">Kolumny</label>
@@ -653,6 +699,14 @@
 			<label index="forms_eform_html_enabled">Tryb HTML włączony</label>
 			<label index="forms_eform_formtype_mail">Wyślij etykietę przycisku</label>
 			<label index="forms_special_eform">Konfiguracja specjalna formularzy mailowych</label>
+			<label index="colorpicker_title">Próbnik koloru:</label>
+			<label index="colorpicker_setClose">Zapisz i Zamknij</label>
+			<label index="colorpicker_colorValue">Wybrany kolor:</label>
+			<label index="colorpicker_fromImage">Pobierz kolor z obrazka (kliknij na obrazek):</label>
+			<label index="colorpicker_fromMatrix">Wybierz kolor z matrycy (kolory zoptymalizowane dla WWW):</label>
+			<label index="colorpicker_fromList">Wybierz HTMLową nazwę koloru:</label>
+			<label index="colorpicker_black">CZARNY</label>
+			<label index="colorpicker_white">BIAŁY</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="rte_undoLastChange">Razveljavi/uveljavi zadnjo spremembo (pred %s)</label>
@@ -717,8 +771,8 @@
 			<label index="tsprop_title">Objektin otsikko</label>
 			<label index="tsprop_prefix">Objektin etuliite</label>
 			<label index="tsprop_mixer_indent">Sisennys +2</label>
-			<label index="tsprop_mixer_outdent">Ulkonema +2</label>
-			<label index="tsprop_mixer_wrap">Sanajako</label>
+			<label index="tsprop_mixer_outdent">Ulkonema -2</label>
+			<label index="tsprop_mixer_wrap">Rivitys</label>
 			<label index="tsprop_mixer_transfer">Siirrä &amp; Sulje</label>
 			<label index="tsprop_addToList">Lisää listalle...</label>
 			<label index="table_title">Taulun aputoiminto</label>
@@ -733,7 +787,7 @@
 			<label index="table_down">Siirrä alas</label>
 			<label index="table_top">Siirrä ylimmäksi</label>
 			<label index="table_bottom">Siirrä alimmaksi</label>
-			<label index="table_start">Siirrä ensi sarakkeeseen</label>
+			<label index="table_start">Siirrä ensimmäiseen sarakkeeseen</label>
 			<label index="table_end">Siirrä viimeiseen sarakkeeseen</label>
 			<label index="table_noData">Taulua, kenttää tai uid:tä ei ole annettu</label>
 			<label index="forms_title">Lomakkeen aputoiminnot</label>
@@ -744,9 +798,9 @@
 			<label index="forms_type_input">Syöttökenttä</label>
 			<label index="forms_type_password">Salasanakenttä</label>
 			<label index="forms_type_file">Tiedoston vienti</label>
-			<label index="forms_type_check">Check laatikko</label>
-			<label index="forms_type_select">Valinta laatikko</label>
-			<label index="forms_type_radio">Radio näppäin</label>
+			<label index="forms_type_check">Valintaruutu</label>
+			<label index="forms_type_select">Valintalaatikko</label>
+			<label index="forms_type_radio">Radionäppäin</label>
 			<label index="forms_type_hidden">Piilotettu arvo</label>
 			<label index="forms_type_submit">Lähetys-nappi</label>
 			<label index="forms_type_property">Ominaisuus</label>
@@ -763,14 +817,22 @@
 			<label index="forms_multiple">Usea</label>
 			<label index="forms_options">Listan vaihtoehdot</label>
 			<label index="forms_checked">Merkitty</label>
-			<label index="forms_preview">Elementin ennakkokatselu</label>
+			<label index="forms_preview">Elementin esikatselu</label>
 			<label index="forms_element">Elementin tyyppi</label>
 			<label index="forms_config">Yksityiskohtainen konfiguraatio</label>
 			<label index="forms_eform_subject">Aihe</label>
 			<label index="forms_eform_recipient">Vastaanottajan email</label>
-			<label index="forms_eform_html_enabled">HTML-moodi asetettu</label>
-			<label index="forms_eform_formtype_mail">Lähetysnäppäimen teksti</label>
+			<label index="forms_eform_html_enabled">HTML-moodi päällä</label>
+			<label index="forms_eform_formtype_mail">Lähetysnapin teksti</label>
 			<label index="forms_special_eform">Sähköpostilomakkeen erityiskonfiguraatio</label>
+			<label index="colorpicker_title">Värivalitsin</label>
+			<label index="colorpicker_setClose">Tallenna ja sulje</label>
+			<label index="colorpicker_colorValue">Valittu väri:</label>
+			<label index="colorpicker_fromImage">Valitse väri kuvatiedostosta (napsauta kuvaa):</label>
+			<label index="colorpicker_fromMatrix">Valitse väri matriisista (web-yhteensopivat värit):</label>
+			<label index="colorpicker_fromList">Valitse HTML-värin nimi:</label>
+			<label index="colorpicker_black">MUSTA</label>
+			<label index="colorpicker_white">VALKOINEN</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="rte_undoLastChange">Geri al/Yenile son değişikliği (%s önce)</label>
@@ -834,6 +896,14 @@
 			<label index="forms_eform_html_enabled">HTML modu etkinleşti</label>
 			<label index="forms_eform_formtype_mail">Gönder butonu etiketi</label>
 			<label index="forms_special_eform">Mail formları için özel konfigürasyon</label>
+			<label index="colorpicker_title">Renk Seçici</label>
+			<label index="colorpicker_setClose">Kaydet ve kapat</label>
+			<label index="colorpicker_colorValue">Seçili renk:</label>
+			<label index="colorpicker_fromImage">Resimden renk seç (Resime tıklayınız) :</label>
+			<label index="colorpicker_fromMatrix">Matrix ten renk seç (websafe renkleri) :</label>
+			<label index="colorpicker_fromList">HTML renk adı seç:</label>
+			<label index="colorpicker_black">SIYAH</label>
+			<label index="colorpicker_white">BEYAZ</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="rte_undoLastChange">Ångra/Gör om senaste ändringar (sedan %s)</label>
@@ -1017,11 +1087,17 @@
 			<label index="forms_special_eform">Специальные настройки для почтовй формы</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
-			<label index="rte_undoLastChange">Anuleaza/Refa ultimile schimbari (%s ago)</label>
+			<label index="rte_undoLastChange">Anuleaza/Refa ultimele schimbari (%s ago)</label>
 			<label index="tsprop">Vizualizare propietati TypoScript</label>
 			<label index="tsprop_TSref">TSref online</label>
+			<label index="tsprop_tsconfig">TSconfig online</label>
 			<label index="tsprop_title">Titlul obiectului</label>
 			<label index="tsprop_prefix">Prefixul obiectului</label>
+			<label index="tsprop_mixer_indent">Indent +2</label>
+			<label index="tsprop_mixer_outdent">Outdent -2</label>
+			<label index="tsprop_mixer_wrap">Wrap</label>
+			<label index="tsprop_mixer_transfer">Transferă &amp; Închide</label>
+			<label index="tsprop_addToList">Adaugă la listă...</label>
 			<label index="table_title">Procedura creere tabel</label>
 			<label index="table_smallFields">Campuri mici</label>
 			<label index="table_addColumn">Adauga coloana la dreapta</label>
@@ -1050,6 +1126,8 @@
 			<label index="forms_type_radio">Butoane radio</label>
 			<label index="forms_type_hidden">Valoare ascunsa</label>
 			<label index="forms_type_submit">Buton trimitere date formular</label>
+			<label index="forms_type_property">Proprietate</label>
+			<label index="forms_type_label">Etichetă</label>
 			<label index="forms_required">Necesar</label>
 			<label index="forms_fieldName">Camp</label>
 			<label index="forms_cols">Coloane</label>
@@ -1070,6 +1148,14 @@
 			<label index="forms_eform_html_enabled">Modul HTML activat</label>
 			<label index="forms_eform_formtype_mail">Trimite eticheta butonului</label>
 			<label index="forms_special_eform">Configuratie speciala pentru formular email</label>
+			<label index="colorpicker_title">Alegere culori</label>
+			<label index="colorpicker_setClose">Salvează şi închide</label>
+			<label index="colorpicker_colorValue">Culori selectate:</label>
+			<label index="colorpicker_fromImage">Preia culoare din imagine (click pe imagine):</label>
+			<label index="colorpicker_fromMatrix">Alege culoare din matrice (culori pentru web):</label>
+			<label index="colorpicker_fromList">Alege nume culoare HTML:</label>
+			<label index="colorpicker_black">NEGRU</label>
+			<label index="colorpicker_white">ALB</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="rte_undoLastChange">恢复/重做上次更改(%s之前)</label>
@@ -1194,6 +1280,75 @@
 			<label index="forms_special_eform">Špeciálna konfigurácia pre mailové formuláre</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="rte_undoLastChange">Atšaukti/Atstatyti (%s) paskutinius pakeitimus</label>
+			<label index="tsprop">TypoScript savybių peržiūra</label>
+			<label index="tsprop_TSref">TSref online</label>
+			<label index="tsprop_tsconfig">TSconfig online</label>
+			<label index="tsprop_title">Objekto pavadinimas</label>
+			<label index="tsprop_prefix">Objekto prefiksas</label>
+			<label index="tsprop_mixer_indent">Atitiraukimas +2</label>
+			<label index="tsprop_mixer_outdent">Atitiraukimas -2</label>
+			<label index="tsprop_mixer_wrap">Kėlimas</label>
+			<label index="tsprop_mixer_transfer">Perkelti &amp; Uždaryti</label>
+			<label index="tsprop_addToList">Pridėti prie sąrašo...</label>
+			<label index="table_title">Lentelės vedlys</label>
+			<label index="table_smallFields">Maži laukai</label>
+			<label index="table_addColumn">Pridėti stulpelius dešinėje</label>
+			<label index="table_removeColumn">Išmesti stulpelį</label>
+			<label index="table_addRow">Pridėti eilutę apačioje</label>
+			<label index="table_removeRow">Išmesti eilutę</label>
+			<label index="table_left">Perstumti kairėn</label>
+			<label index="table_right">Perstumti dešinėn</label>
+			<label index="table_up">Perstumti viršun</label>
+			<label index="table_down">Perstumti apačion</label>
+			<label index="table_top">Perstumti į viršų</label>
+			<label index="table_bottom">Perstumti į apačią</label>
+			<label index="table_start">Perstumti prie pirmo stulpelio</label>
+			<label index="table_end">Perstumti prie paskutinio stulpelio</label>
+			<label index="table_noData">Nepateikta lentelė, laukas arba uid</label>
+			<label index="forms_title">Formos vedlys</label>
+			<label index="forms_refresh">Atnaujinti nesaugant</label>
+			<label index="forms_label">Antraštė</label>
+			<label index="forms_type">Tipas</label>
+			<label index="forms_type_textarea">Teksto laukas</label>
+			<label index="forms_type_input">Įvedimo laukas</label>
+			<label index="forms_type_password">Slaptažodžio laukas</label>
+			<label index="forms_type_file">Bylos užkrovimas</label>
+			<label index="forms_type_check">Paukščiuoko laukas</label>
+			<label index="forms_type_select">Išrinkimo laukas</label>
+			<label index="forms_type_radio">Radio- mygtukai</label>
+			<label index="forms_type_hidden">Paslėptos reikšmės</label>
+			<label index="forms_type_submit">Išsiuntimo mygtukas</label>
+			<label index="forms_type_property">Savybė</label>
+			<label index="forms_type_label">Antraštė</label>
+			<label index="forms_required">Būtinas</label>
+			<label index="forms_fieldName">Laukas</label>
+			<label index="forms_cols">Stulpeliai</label>
+			<label index="forms_rows">Eilutės</label>
+			<label index="forms_size">Dydis</label>
+			<label index="forms_max">Maks.</label>
+			<label index="forms_autosize">Auto dydžio nustatymas</label>
+			<label index="forms_extra">Nekelti</label>
+			<label index="forms_default">Reikšmė</label>
+			<label index="forms_multiple">Įvairus</label>
+			<label index="forms_options">Sąrašo savybės</label>
+			<label index="forms_checked">Pažymėtas</label>
+			<label index="forms_preview">Elemento peržiūra</label>
+			<label index="forms_element">Elemento tipas</label>
+			<label index="forms_config">Detali konfiguracija</label>
+			<label index="forms_eform_subject">Tema</label>
+			<label index="forms_eform_recipient">Gavėjo el. pašto adresas</label>
+			<label index="forms_eform_html_enabled">HTML režimas įjungtas</label>
+			<label index="forms_eform_formtype_mail">Siūsti mygtuko tekstas</label>
+			<label index="forms_special_eform">Speciali pašto formų konfiguracija</label>
+			<label index="colorpicker_title">Spalvų pasirinkimas</label>
+			<label index="colorpicker_setClose">Išsaugoti ir uždaryti</label>
+			<label index="colorpicker_colorValue">Išrinlta spalva:</label>
+			<label index="colorpicker_fromImage">Imti spalvą iį paveikslėlio (paspauskite ant paveikslėlio):</label>
+			<label index="colorpicker_fromMatrix">Išrinkti spalvą matricoje (websafe spalvos):</label>
+			<label index="colorpicker_fromList">Išrinkti HTML spalvos vardą:</label>
+			<label index="colorpicker_black">JUODA</label>
+			<label index="colorpicker_white">BALTA</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="rte_undoLastChange">Afturkalla/Endurtaka síðustu breytingar (%s ago)</label>
@@ -1374,17 +1529,25 @@
 			<label index="forms_eform_recipient">Fogadó email</label>
 			<label index="forms_eform_html_enabled">HTML mód engedélyezve</label>
 			<label index="forms_eform_formtype_mail">Küldés gomb cimke</label>
-			<label index="forms_special_eform">Speciális beállítások a levélfüldési űrlapokhoz</label>
+			<label index="forms_special_eform">Speciális beállítások a levélküldési űrlapokhoz</label>
+			<label index="colorpicker_title">Szín választó</label>
+			<label index="colorpicker_setClose">Mentés és Bezárás</label>
+			<label index="colorpicker_colorValue">Választott szín:</label>
+			<label index="colorpicker_fromImage">Szín kiválasztása képből (kattints a képre):</label>
+			<label index="colorpicker_fromMatrix">Szín kiválasztása mátrixból (webbiztos színek):</label>
+			<label index="colorpicker_fromList">Válaszd ki a HTML szín nevét:</label>
+			<label index="colorpicker_black">FEKETE</label>
+			<label index="colorpicker_white">FEHÉR</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
 			<label index="rte_undoLastChange">เลิกทำ/ทำซ้ำ การแก้ไขครั้งสุดท้าย (%s ที่ผ่านมา)</label>
-			<label index="tsprop">ค้นดู ปร๊อปเพอร์ตี้ ของ TypoScript</label>
+			<label index="tsprop">ค้นดู คุณสมบัติ ของ TypoScript</label>
 			<label index="tsprop_TSref">TSref ออนไลน์</label>
 			<label index="tsprop_title">ชื่อเรื่องของอ๊อปเจ็ค</label>
 			<label index="tsprop_prefix">ชื่อนำของอ๊อปเจ็ค</label>
-			<label index="table_title">ผู้ช่วยเหลือพิเศษ ตาราง</label>
+			<label index="table_title">ผู้ช่วยเหลือวิเศษด้านตาราง</label>
 			<label index="table_smallFields">ฟิลด์ขนาดเล็ก</label>
 			<label index="table_addColumn">เพิ่มคอลัมน์ทางขวา</label>
 			<label index="table_removeColumn">ลบคอลัมน์</label>
@@ -1399,16 +1562,16 @@
 			<label index="table_start">ย้ายไปคอลัมน์แรก</label>
 			<label index="table_end">ย้ายไปคอลัมน์สุดท้าย</label>
 			<label index="table_noData">ไม่มีตาราง ฟิลด์ หรือ uid ที่ให้มา</label>
-			<label index="forms_title">ผู้ช่วยเหลือพิเศษ ฟอร์ม</label>
-			<label index="forms_refresh">รีเฟรส โดยไม่บันทึก</label>
-			<label index="forms_label">ชื่อ</label>
+			<label index="forms_title">พ่อมดแบบฟอร์ม</label>
+			<label index="forms_refresh">แสดงหน้าจอใหม่ โดยไม่บันทึก</label>
+			<label index="forms_label">ป้ายชื่อ</label>
 			<label index="forms_type">ชนิด</label>
 			<label index="forms_type_textarea">พื้นที่ข้อความ</label>
 			<label index="forms_type_input">ฟิลด์ป้อนข้อมูล</label>
 			<label index="forms_type_password">ฟิลด์ใส่รหัส</label>
 			<label index="forms_type_file">บรรจุไฟล์ขึ้น</label>
-			<label index="forms_type_check">Check box</label>
-			<label index="forms_type_select">Selector box</label>
+			<label index="forms_type_check">กล่องตรวจสอบ</label>
+			<label index="forms_type_select">กล่องเลือก</label>
 			<label index="forms_type_radio">ปุ่ม Radio</label>
 			<label index="forms_type_hidden">ค่าซ่อน</label>
 			<label index="forms_type_submit">ปุ่มส่ง</label>
@@ -1422,16 +1585,32 @@
 			<label index="forms_extra">ไม่ห่อ</label>
 			<label index="forms_default">ค่า</label>
 			<label index="forms_multiple">หลาย</label>
-			<label index="forms_options">ตัวเลือกแบบ List</label>
+			<label index="forms_options">ตัวเลือกแบบแสดงรายการ</label>
 			<label index="forms_checked">เลือกแล้ว</label>
 			<label index="forms_preview">ภาพก่อนพิมพ์ขององค์ประกอบ</label>
 			<label index="forms_element">ชนิดขององค์ประกอบ</label>
 			<label index="forms_config">การติดตั้งอย่างละเอียด</label>
-			<label index="forms_eform_subject">เรื่อง</label>
+			<label index="forms_eform_subject">ชื่อเรื่อง</label>
 			<label index="forms_eform_recipient">อีเมล์ผู้รับ</label>
 			<label index="forms_eform_html_enabled">ใช้โหมด HTML</label>
 			<label index="forms_eform_formtype_mail">ใส่ชื่อปุ่มส่ง</label>
 			<label index="forms_special_eform">การติดตั้งพิเศษสำหรับแบบฟอร์มจดหมาย</label>
+			<label index="tsprop_tsconfig">TSconfig ออนไลน์</label>
+			<label index="tsprop_mixer_indent">ย่อหน้า +2</label>
+			<label index="tsprop_mixer_outdent">ออกมา -2</label>
+			<label index="tsprop_mixer_wrap">ห่อ</label>
+			<label index="tsprop_mixer_transfer">ส่ง &amp; ปิด</label>
+			<label index="tsprop_addToList">เพิ่มในรายการ...</label>
+			<label index="forms_type_property">คุณสมบัติ</label>
+			<label index="forms_type_label">ป้ายแสดง</label>
+			<label index="colorpicker_title">ตัวเลือกสี</label>
+			<label index="colorpicker_setClose">บันทึกและปิด</label>
+			<label index="colorpicker_colorValue">สีที่เลือก:</label>
+			<label index="colorpicker_fromImage">ดึงเอาสีมาจากรูปภาพ (คลิ้กที่รูปภาพ)</label>
+			<label index="colorpicker_fromMatrix">เลือกสีจากตารางสี (สีที่ปลอดภัยสำหรับเว็บ)</label>
+			<label index="colorpicker_fromList">เลือกชื่อสี HTML:</label>
+			<label index="colorpicker_black">ดำ</label>
+			<label index="colorpicker_white">ขาว</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -2155,6 +2334,14 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -2218,6 +2405,14 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -2279,6 +2474,16 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="forms_type_property" type="integer">95232844</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
+			<label index="forms_type_label" type="integer">184688118</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -2342,6 +2547,14 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -2403,6 +2616,16 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="forms_type_property" type="integer">95232844</label>
+			<label index="forms_type_label" type="integer">184688118</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -2525,6 +2748,16 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="forms_type_property" type="integer">95232844</label>
+			<label index="forms_type_label" type="integer">184688118</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -2643,6 +2876,14 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -2658,8 +2899,8 @@
 			<label index="tsprop_addToList" type="integer">135970903</label>
 			<label index="table_title" type="integer">252535019</label>
 			<label index="table_smallFields" type="integer">116673870</label>
-			<label index="table_addColumn" type="integer">4457870</label>
-			<label index="table_removeColumn" type="integer">5198593</label>
+			<label index="table_addColumn" type="double">4457870</label>
+			<label index="table_removeColumn" type="double">5198593</label>
 			<label index="table_addRow" type="integer">240730244</label>
 			<label index="table_removeRow" type="integer">253938706</label>
 			<label index="table_left" type="integer">234587254</label>
@@ -2702,10 +2943,18 @@
 			<label index="forms_element" type="integer">144583413</label>
 			<label index="forms_config" type="integer">46269441</label>
 			<label index="forms_eform_subject" type="integer">209228523</label>
-			<label index="forms_eform_recipient" type="integer">9763756</label>
-			<label index="forms_eform_html_enabled" type="integer">15828015</label>
+			<label index="forms_eform_recipient" type="double">9763756</label>
+			<label index="forms_eform_html_enabled" type="double">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -2942,6 +3191,22 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="tsprop_tsconfig" type="integer">243384557</label>
+			<label index="tsprop_mixer_indent" type="integer">48148976</label>
+			<label index="tsprop_mixer_outdent" type="integer">36140827</label>
+			<label index="tsprop_mixer_wrap" type="integer">169945881</label>
+			<label index="tsprop_mixer_transfer" type="integer">47301371</label>
+			<label index="tsprop_addToList" type="integer">135970903</label>
+			<label index="forms_type_property" type="integer">95232844</label>
+			<label index="forms_type_label" type="integer">184688118</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -3066,6 +3331,75 @@
 			<label index="forms_special_eform" type="integer">236376464</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="rte_undoLastChange" type="integer">109787245</label>
+			<label index="tsprop" type="integer">45073770</label>
+			<label index="tsprop_TSref" type="integer">119834162</label>
+			<label index="tsprop_tsconfig" type="integer">243384557</label>
+			<label index="tsprop_title" type="integer">172299654</label>
+			<label index="tsprop_prefix" type="integer">35102440</label>
+			<label index="tsprop_mixer_indent" type="integer">48148976</label>
+			<label index="tsprop_mixer_outdent" type="integer">36140827</label>
+			<label index="tsprop_mixer_wrap" type="integer">169945881</label>
+			<label index="tsprop_mixer_transfer" type="integer">47301371</label>
+			<label index="tsprop_addToList" type="integer">135970903</label>
+			<label index="table_title" type="integer">252535019</label>
+			<label index="table_smallFields" type="integer">116673870</label>
+			<label index="table_addColumn" type="double">4457870</label>
+			<label index="table_removeColumn" type="double">5198593</label>
+			<label index="table_addRow" type="integer">240730244</label>
+			<label index="table_removeRow" type="integer">253938706</label>
+			<label index="table_left" type="integer">234587254</label>
+			<label index="table_right" type="integer">195367589</label>
+			<label index="table_up" type="integer">259501942</label>
+			<label index="table_down" type="integer">232386759</label>
+			<label index="table_top" type="integer">120043265</label>
+			<label index="table_bottom" type="integer">181578777</label>
+			<label index="table_start" type="integer">192358879</label>
+			<label index="table_end" type="integer">140964884</label>
+			<label index="table_noData" type="integer">166317379</label>
+			<label index="forms_title" type="integer">202256935</label>
+			<label index="forms_refresh" type="integer">17773422</label>
+			<label index="forms_label" type="integer">184688118</label>
+			<label index="forms_type" type="integer">169845367</label>
+			<label index="forms_type_textarea" type="integer">135041913</label>
+			<label index="forms_type_input" type="integer">163951494</label>
+			<label index="forms_type_password" type="integer">185890512</label>
+			<label index="forms_type_file" type="integer">205677908</label>
+			<label index="forms_type_check" type="integer">35664037</label>
+			<label index="forms_type_select" type="integer">189682630</label>
+			<label index="forms_type_radio" type="integer">146641062</label>
+			<label index="forms_type_hidden" type="integer">122270803</label>
+			<label index="forms_type_submit" type="integer">71911650</label>
+			<label index="forms_type_property" type="integer">95232844</label>
+			<label index="forms_type_label" type="integer">184688118</label>
+			<label index="forms_required" type="integer">191176445</label>
+			<label index="forms_fieldName" type="integer">116484703</label>
+			<label index="forms_cols" type="integer">23640109</label>
+			<label index="forms_rows" type="integer">87094408</label>
+			<label index="forms_size" type="integer">116837234</label>
+			<label index="forms_max" type="integer">111173937</label>
+			<label index="forms_autosize" type="integer">219459941</label>
+			<label index="forms_extra" type="integer">60246377</label>
+			<label index="forms_default" type="integer">109649956</label>
+			<label index="forms_multiple" type="integer">168554857</label>
+			<label index="forms_options" type="integer">117958823</label>
+			<label index="forms_checked" type="integer">40007223</label>
+			<label index="forms_preview" type="integer">17911285</label>
+			<label index="forms_element" type="integer">144583413</label>
+			<label index="forms_config" type="integer">46269441</label>
+			<label index="forms_eform_subject" type="integer">209228523</label>
+			<label index="forms_eform_recipient" type="double">9763756</label>
+			<label index="forms_eform_html_enabled" type="double">15828015</label>
+			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
+			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 			<label index="rte_undoLastChange" type="integer">109787245</label>
@@ -3247,6 +3581,14 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -3304,6 +3646,22 @@
 			<label index="forms_eform_html_enabled" type="integer">15828015</label>
 			<label index="forms_eform_formtype_mail" type="integer">113492555</label>
 			<label index="forms_special_eform" type="integer">236376464</label>
+			<label index="tsprop_tsconfig" type="integer">243384557</label>
+			<label index="tsprop_mixer_indent" type="integer">48148976</label>
+			<label index="tsprop_mixer_outdent" type="integer">36140827</label>
+			<label index="tsprop_mixer_wrap" type="integer">169945881</label>
+			<label index="tsprop_mixer_transfer" type="integer">47301371</label>
+			<label index="tsprop_addToList" type="integer">135970903</label>
+			<label index="forms_type_property" type="integer">95232844</label>
+			<label index="forms_type_label" type="integer">184688118</label>
+			<label index="colorpicker_title" type="integer">90157489</label>
+			<label index="colorpicker_setClose" type="integer">253538544</label>
+			<label index="colorpicker_colorValue" type="integer">54418585</label>
+			<label index="colorpicker_fromImage" type="integer">45057637</label>
+			<label index="colorpicker_fromMatrix" type="integer">40876189</label>
+			<label index="colorpicker_fromList" type="integer">120567904</label>
+			<label index="colorpicker_black" type="double">9240594</label>
+			<label index="colorpicker_white" type="integer">190576167</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>

@@ -442,5 +442,7 @@ When you answer &quot;OK&quot; you should immediately see the shortcut frame rel
 You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the &quot;Edit&quot; checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a &quot;group&quot; - here, just click the &quot;0&quot; (zero) to the left of the icons and you will remove all shortcuts in the group.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_corebe.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/lang/it.locallang_csh_corebe.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/lang/fr.locallang_csh_corebe.xml</languageKey>
 	</data>
 </T3locallang>

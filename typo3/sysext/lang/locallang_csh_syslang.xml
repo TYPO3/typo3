@@ -24,5 +24,6 @@ For a webpage to be available in another language an &quot;Alternative Page Lang
 		<languageKey index="fi">EXT:csh_fi/lang/fi.locallang_csh_syslang.xml</languageKey>
 		<languageKey index="hr">EXT:csh_hr/lang/hr.locallang_csh_syslang.xml</languageKey>
 		<languageKey index="it">EXT:csh_it/lang/it.locallang_csh_syslang.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/lang/fr.locallang_csh_syslang.xml</languageKey>
 	</data>
 </T3locallang>

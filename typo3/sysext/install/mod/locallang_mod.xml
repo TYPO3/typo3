@@ -45,7 +45,7 @@
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="mlang_labels_tablabel">Installatie Werkset</label>
-			<label index="mlang_labels_tabdescr">Biedt een link naar de Installatie Werkset. Denk er aan dat het Install Gereedschap (in/typo3/install/) geactiveerd dient te zijn.&lt;br /&gt;&lt;em&gt;Alleen toegang voor 'admin' gebruikers!&lt;/em&gt;</label>
+			<label index="mlang_labels_tabdescr">Biedt een link naar de Installatie Werkset. Denk er aan dat de Installatie Werkset (in/typo3/install/) geactiveerd dient te zijn.&lt;br /&gt;&lt;em&gt;Alleen toegang voor 'admin' gebruikers!&lt;/em&gt;</label>
 			<label index="mlang_tabs_tab">Installatie</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -64,8 +64,8 @@
 			<label index="mlang_tabs_tab">Inštalacija</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
-			<label index="mlang_labels_tablabel">Asennus työkalu</label>
-			<label index="mlang_labels_tabdescr">Tarkoituksen mukainen linkki TYPO3 asennukselle. Huomattavaa on että työkalu on asennettu ja käytettävissä.  &lt;br /&gt;&lt;em&gt;Sallittu vain 'Admin'  käyttäjille.&lt;/em&gt; </label>
+			<label index="mlang_labels_tablabel">Asennustyökalu</label>
+			<label index="mlang_labels_tabdescr">Linkki asennustyökaluun. Huomaa, että työkalun on oltava asennettuna ja käytettävissä.&lt;br /&gt;&lt;em&gt;Sallittu vain pääkäyttäjille.&lt;/em&gt;</label>
 			<label index="mlang_tabs_tab">Asenna</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
@@ -86,6 +86,9 @@
 		<languageKey index="ru" type="array">
 		</languageKey>
 		<languageKey index="ro" type="array">
+			<label index="mlang_labels_tablabel">Unealtă de instalare</label>
+			<label index="mlang_labels_tabdescr">Oferă o scurtătură către Unealta de instalare. De reţinut ca aceasta trebuie activată in /typo3/install. &lt;em&gt;Acces doar pentru administratori&lt;/em&gt;.</label>
+			<label index="mlang_tabs_tab">Instalare</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 		</languageKey>
@@ -95,6 +98,9 @@
 			<label index="mlang_tabs_tab">Inštalácia</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel">Instaliavimo įrankis</label>
+			<label index="mlang_labels_tabdescr">Leidžia paprastai pasiekti Instaliavimo įrankį. Dėmesio: Instaliavimo įrankis (typo3/install/) turi būti įjungtas. &lt;br/&gt;&lt;em&gt;Priėjimas tik 'admin' vartotojams!&lt;/em&gt;</label>
+			<label index="mlang_tabs_tab">Instaliuoti</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -111,6 +117,9 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel">เครื่องมือ การติดตั้ง</label>
+			<label index="mlang_labels_tabdescr">จัดให้มีลิ้งค์ง่ายๆ ไปที่เครื่องมือ การติดตั้ง  สังเกตุว่าเครื่องมือ การติดตั้ง (ใน typo3/install/) จะต้องเลือกให้ใช้ได้ &lt;br/&gt;&lt;em&gt;เข้าถึงได้เฉพาะผู้ดูแลระบบ 'admin' เท่านั้น! &lt;/em&gt;</label>
+			<label index="mlang_tabs_tab">การติดตั้ง</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -219,6 +228,9 @@
 		<languageKey index="ru" type="array">
 		</languageKey>
 		<languageKey index="ro" type="array">
+			<label index="mlang_labels_tablabel" type="integer">91233822</label>
+			<label index="mlang_labels_tabdescr" type="integer">184150281</label>
+			<label index="mlang_tabs_tab" type="integer">55149455</label>
 		</languageKey>
 		<languageKey index="ch" type="array">
 		</languageKey>
@@ -228,6 +240,9 @@
 			<label index="mlang_tabs_tab" type="integer">55149455</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel" type="integer">91233822</label>
+			<label index="mlang_labels_tabdescr" type="integer">184150281</label>
+			<label index="mlang_tabs_tab" type="integer">55149455</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -244,6 +259,9 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel" type="integer">91233822</label>
+			<label index="mlang_labels_tabdescr" type="integer">184150281</label>
+			<label index="mlang_tabs_tab" type="integer">55149455</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -273,80 +291,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

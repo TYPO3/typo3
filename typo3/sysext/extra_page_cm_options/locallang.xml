@@ -6,7 +6,7 @@
 		<csh_table></csh_table>
 		<fileId>EXT:extra_page_cm_options/locallang.xml</fileId>
 		<labelContext type="array">
-			<languageKey index="label"></languageKey>
+			<label index="label"></label>
 		</labelContext>
 	</meta>
 	<data type="array">
@@ -67,6 +67,7 @@
 			<label index="label">Viac možností...</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="label">Daugiau parinkčių...</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -79,6 +80,7 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="label">ตัวเลือก อีก...</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>
@@ -160,6 +162,7 @@
 			<label index="label" type="integer">220835237</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
+			<label index="label" type="integer">220835237</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -172,6 +175,7 @@
 		<languageKey index="gl" type="array">
 		</languageKey>
 		<languageKey index="th" type="array">
+			<label index="label" type="integer">220835237</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
 		</languageKey>

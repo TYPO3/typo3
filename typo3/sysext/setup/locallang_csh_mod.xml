@@ -104,5 +104,7 @@ When &quot;Display full text message&quot; is selected you will see a short desc
 			<label index="simuser.description">This option allows &quot;admin&quot;-users to change settings for another backend user in the system.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/setup/dk.locallang_csh_mod.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/setup/it.locallang_csh_mod.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/setup/fr.locallang_csh_mod.xml</languageKey>
 	</data>
 </T3locallang>

@@ -403,5 +403,6 @@ tt_content:spaceBefore</label>
 		<languageKey index="dk">EXT:csh_dk/context_help/dk.locallang_csh_ttcontent.xml</languageKey>
 		<languageKey index="nl">EXT:csh_nl/context_help/nl.locallang_csh_ttcontent.xml</languageKey>
 		<languageKey index="fi">EXT:csh_fi/context_help/fi.locallang_csh_ttcontent.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/context_help/fr.locallang_csh_ttcontent.xml</languageKey>
 	</data>
 </T3locallang>
