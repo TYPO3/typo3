@@ -1,0 +1,122 @@
+HOW TO TEST PEAR DB
+
+$Id$
+
+
+INTRODUCTION
+============
+
+These are instructions for testing PEAR DB on a Windows machine using a
+Cygwin Bash shell.  Adjust the paths and commands to match your system.
+This configuration is used because these precise steps are known to work.
+
+NOTE:  You must log on as a user which has permissions to modify the
+contents of your PHP executable's directory.  This is necessary for both
+configuring AND running the test system.
+
+
+INSTALLATION
+============
+
+Obtain PHP's Test Framework
+---------------------------
+If you don't have PHP's test framework, you need to obtain it.  These
+steps include changing the working directory, downloading run-tests.php
+via CVS and copying the file into place.  Change the revision flag in the
+CVS command as appropriate for your present version of PHP.
+
+ cd c:/progra~1/php
+ cvs -d :pserver:cvsread@cvs.php.net:/repository login   # password is phpfi
+ cvs -d :pserver:cvsread@cvs.php.net:/repository co -r PHP_4_3 \
+     -d test php-src/run-tests.php
+ cp test/run-tests.php .
+
+Obtain DB's Test Framework
+--------------------------
+Create a location to store the test scripts and your notes.  A location
+separate from your CVS working directory for DB is desirable because
+you don't want to inadvertently commit a file with your passwords in it.
+Then obtain the test suite via CVS.
+
+ mkdir c:/dbtests
+ cd c:/dbtests
+ cvs -d :pserver:cvsread@cvs.php.net:/repository co -d tests pear/DB/tests
+
+Copy and Edit DSN's
+-------------------
+setup.inc contains the DSN's for connecting to your test databases.
+Creating a copy of it is helpful in case you download an updated version
+of the test suite.  Make sure only one line is uncommented at a time.
+
+ cp tests/driver/setup.inc .
+ vi setup.inc &
+ cp setup.inc tests/driver
+
+
+RUN THE TESTS
+=============
+
+Set the Environment Variable
+----------------------------
+Set the path and file name of your PHP CLI executable.
+
+ TEST_PHP_EXECUTABLE=c:/progra~1/php/cli/php.exe
+ export TEST_PHP_EXECUTABLE
+
+Execute Tests
+-------------
+Use complete paths to ensure the correct files are being accessed.  Use
+the CLI version of PHP.  To run all of the tests in the directory:
+
+ cd tests/driver
+ c:/progra~1/php/cli/php.exe c:/progra~1/php/run-tests.php \
+     c:/dbtests/tests/driver
+
+To run one test, name the .phpt file specifically:
+
+ c:/progra~1/php/cli/php.exe c:/progra~1/php/run-tests.php \
+     c:/dbtests/tests/driver/02fetch.phpt
+
+Test Types and Locations
+------------------------
+tests             Common PEAR DB tests
+tests/driver      Common tests for all the drivers
+tests/<backend>   Specific backend tests (old tests, don't used them)
+
+Results and What To Do With Them
+--------------------------------
+Each test that fails generates a .php (which you can execute), a .exp
+(the expected output), a .out (the test output) and a .diff (a diff -u
+from the .exp and .out files).
+
+If you run the tests, please report or fill the TEST CONFORMANCE table
+in the STATUS document.  Before any commit to CVS be sure to run the
+tests and nothing got broken with the change.
+
+If you get the message "SKIP", means that the test it's not executed.
+Look at the DB/tests/driver/skipif.inc to see what's the problem
+(probably a connection problem).
+
+
+DB TESTER MATRIX
+================
+                            fbsql    ifx    mssql   mysql4   odbc   sybase
+TESTER                        | ibase |  msql | mysql | oci8  | pgsql | sqlite
+John Horton                   -   -   X   -   -   -   -   -   -   -   -   -
+Tim Zickus                    -   -   -   -   -   -   -   X   -   -   -   -
+Tim Parkin                    -   -   -   -   -   -   -   X   -   -   -   -
+Paul Gardiner                 -   -   X   -   -   -   -   -   -   -   -   -
+Daniel, Adam                  -   -   -   -   -   -   -   X   -   -   -   -
+szii@sziisoft.com             -   -   -   -   -   -   -   -   X¹  -   -   -
+jmh3@linuxfreak.com           -   -   -   -   -   -   -   -   -   X   -   -
+Kevin Henrikson               -   -   -   -   -   -   -   X   -   -   -   -
+Stig Bakken                   -   -   -   -   -   X   -   -   -   X   -   -
+Chuck Hagenbuch               -   -   -   -   X   -   -   -   -   -   -   -
+Ludovico Magnocavallo         -   X   -   -   -   -   -   -   -   -   -   -
+Daniel Convissor              -   X   -   -   X   X   -   X   X¹  X   X   X
+
+MISSING TESTERS               X   -   -   X   -   -   X   -   -   -   -   -
+
+Comments:
+
+[1]: ODBC using IBM DB2
