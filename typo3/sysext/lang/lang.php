@@ -114,7 +114,10 @@ class language {
 		'eu' => '',
 		'bg' => 'windows-1251',
 		'br' => '',
-		'et' => 'iso-8859-4'
+		'et' => 'iso-8859-4',
+		'ar' => 'iso-8859-6',
+		'he' => 'utf-8',
+		'ua' => 'windows-1251',
 	);
 	
 		// This is the url to the TYPO3 manual
