@@ -38,7 +38,7 @@ require ($BACK_PATH."template.php");
 $BE_USER->modAccess($MCONF,1);
 
 t3lib_extMgm::isLoaded("indexed_search",1);
-
+require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
 
 
 // ***************************
@@ -77,6 +77,11 @@ class SC_mod_tools_isearch_index {
 				"defCol" => Array('<TD><img src="'.$this->doc->backPath.'clear.gif" width=10 height=1></td><td valign="top" nowrap>','</td>')
 			)
 		);
+
+		$indexer = t3lib_div::makeInstance('tx_indexedsearch_indexer');
+		$indexer->initializeExternalParsers();
+		debug(array_keys($indexer->external_parsers));
+		debug($indexer->internal_log);
 	}
 	function menuConfig()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;

@@ -2,9 +2,9 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "indexed_search"
-# 
+#
 # Auto generated 17-11-2004 17:48
-# 
+#
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
 ########################################################################
@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = Array (
 	'loadOrder' => '',
 	'TYPO3_version' => '3.7.0-',
 	'PHP_version' => '0.0.1-0.0.1',
-	'module' => 'mod',
+	'module' => 'mod,cli',
 	'state' => 'stable',
 	'internal' => 1,
 	'uploadfolder' => 0,

@@ -1,9 +1,50 @@
   # cat=basic; type=string; label=Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. You must install these applications in this path. Otherwise leave the field empty.
 pdftools = /usr/local/bin/
 
-  # cat=basic; type=string; label=Path to WORD parsers: The indexer uses the application 'catdoc' for extracting content from WORD files. You must install this application in this path. Otherwise leave the field empty.
+  # cat=basic; type=int; label=PDF parsing mode: Zero=whole file is indexed in one. Positive value: Indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.
+pdf_mode = 20
+
+  # cat=basic; type=boolean; label = Native OpenOffice support: Use the extension "libunzipped" to extract Open Office files instead of the external program "ruby" / "ooo_extract.rb"
+nativeOOMethod = 0
+
+  # cat=basic; type=string; label=Path to OOo parser: The indexer uses the application 'ooo_extract' for extracting content from OpenOffice files (unless "[nativeOOMethod]" above is set). You must install ooo_extract in this path. Otherwise leave the field empty.
+OOoExtract = /usr/local/bin/
+
+  # cat=basic; type=string; label=Path to RUBY: The indexer uses the application 'ruby' for extracting content from OpenOffice files (unless "[nativeOOMethod]" above is set). You must install this application in this path. Otherwise leave the field empty.
+ruby = /usr/local/bin/
+
+  # cat=basic; type=string; label=Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. You must install this application in this path. Otherwise leave the field empty.
 catdoc = /usr/local/bin/
 
-  # cat=basic; type=int; label=PDF parsing mode: Zero=whole file is indexed in one. Positive value: Indicates number of pages at a time, eg. "5" would means 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.
-pdf_mode = -20
+  # cat=basic; type=string; label=Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. You must install this application in this path. Otherwise leave the field empty.
+xlhtml = /usr/local/bin/
 
+  # cat=basic; type=string; label=Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. You must install this application in this path. Otherwise leave the field empty.
+ppthtml = /usr/local/bin/
+
+  # cat=basic; type=string; label=Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. You must install this application in this path. Otherwise leave the field empty.
+unrtf = /usr/local/bin/
+
+   # cat=basic; type=boolean; label=Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.
+debugMode = 0
+
+  # cat=basic; type=boolean; label=Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.
+disableFrontendIndexing = 0
+
+  # cat=basic; type=int; label=Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.
+minAge = 24
+
+  # cat=basic; type=int; label=Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again.
+maxAge = 168
+
+  # cat=basic; type=int; label=Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.
+maxExternalFiles = 5
+
+  # cat=basic; type=int; label=Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of <title> (128), <keywords> (64) and <description> (32) content from HTML documents. By default none of these will have any importance over the other. Setting the value to eg. 196 means that title-tag content and meta-keywords will be flagged (and rate higher in search results)
+flagBitMask = 196
+
+  # cat=basic; type=string; label=Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.
+ignoreExtensions =
+
+  # cat=basic; type=boolean; label=Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".
+indexExternalURLs = 0

@@ -1680,7 +1680,7 @@ class t3lib_cs {
 			if ($bc+$i > $len)	return substr($str,0,$i);
                         // fallthru: multibyte char fits into length
 		}
-		return substr($str,$len);
+		return substr($str,0,$len);
 	}
 
 	/**

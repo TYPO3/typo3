@@ -135,6 +135,7 @@ TCEforms:
 		- "readonly" flag, or user group dependant. See "Message-Id: <200210241441.50295.r.fritz@colorcube.de>"
 	- ? type:
 		- "Inverse relations"/"Foreign relations": A "Pseudo field", which lists records REFERING TO this record (foreign relations, eg. many small price-records belonging to ONE shop-article). Possibly this could also EDIT those references (attaching/adding new, removing old, no manual ordering though! - This is what RENE is doing (Message-Id: <E17LO4D-0002hj-00@cube.colorcube>)
+	- Concealed password fields, support for two fields with the same password being submitted... (JavaScript evaluated?)
 - BUGS:
 	- Ask to save record when you want to add a category with the "Plus" icon.
 	- CHECK: ###STORAGE_PID### incorrectly calculated?
@@ -746,6 +747,17 @@ General Crawler ("crawler"):
 	- Multithreading crawlers (in IFRAMES or whatever)
 	- From session log we can read out the status-arrays of the threads and display in backend (handler shows as it likes.)
 	- Start / stop crawler session
+
+For indexing (and caching and publishing!) we basically need to configure traversal through configurable paramters like:
+	- id
+	- type
+	- L (sys_language)
+	- MP (?)
+	- Simulate user logins (eg. sending "no-login", "user:kasper, password=blabla", "user:homer, password=blabla2")
+	- Additional parameter ranges per page (eg. "tx_myext[var1] : 1-7   AND tx_myext[var1] : 0,1 ")
+	- Command parameter like "&DO_INDEX=1" or "&RECACHE=1" (or both!)
+
+	- Use CLI script for crawler?
 
 __________________________________________-
 CACHE MANAGEMENT EXTENSION

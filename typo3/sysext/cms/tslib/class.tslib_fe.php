@@ -362,7 +362,7 @@
 		$this->no_cache = $no_cache ? 1 : 0;
 		$this->cHash = $cHash;
 		$this->jumpurl = $jumpurl;
-		$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? $MP : '';
+		$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? (string)$MP : '';
 		$this->RDCT = $RDCT;
 		$this->clientInfo = t3lib_div::clientInfo();
 		$this->uniqueString=md5(microtime());
@@ -1322,7 +1322,7 @@
 			$GLOBALS['TT']->pull();
 			$GLOBALS['TT']->push('Cache Row','');
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					$this->config = unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
+					$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
 					$this->content = $row['HTML'];	// Getting the content
 					$this->cacheContentFlag=1;	// Setting flag, so we know, that some cached content is gotten.
 
@@ -1351,8 +1351,8 @@
 				'all' => $this->all,
 				'id' => intval($this->id),
 				'type' => intval($this->type),
-				'gr_list' => $this->gr_list,
-				'MP' => $this->MP,
+				'gr_list' => (string)$this->gr_list,
+				'MP' => (string)$this->MP,
 				'cHash' => $this->cHash_array
 			)
 		);
@@ -2389,8 +2389,16 @@ if (version == "n3") {
 	function processOutput()	{
 			// Substitutes username mark with the username
 		if ($this->fe_user->user['uid'])	{
+
+				// User name:
 			$token = trim($this->config['config']['USERNAME_substToken']);
 			$this->content = str_replace($token ? $token : '<!--###USERNAME###-->',$this->fe_user->user['username'],$this->content);
+
+				// User uid (if configured):
+			$token = trim($this->config['config']['USERUID_substToken']);
+			if ($token)	{
+				$this->content = str_replace($token, $this->fe_user->user['uid'], $this->content);
+			}
 		}
 			// Substitutes get_URL_ID in case of GET-fallback
 		if ($this->getMethodUrlIdToken)	{

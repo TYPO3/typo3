@@ -290,7 +290,7 @@ class template {
 	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)	{
 		$backPath = '&backPath='.rawurlencode($this->backPath).'|'.t3lib_div::shortMD5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr.'|'.$enDisItems).$backPath.$addParams.'\');'.$this->thisBlur().'return false;';
-		return $returnOnClick ? $onClick : '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
+		return $returnOnClick ? $onClick : '<a href="#" onclick="'.htmlspecialchars($onClick).'"'.($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'] ? ' oncontextmenu="'.htmlspecialchars($onClick).'"' : '').'>'.$str.'</a>';
 	}
 
 	/**

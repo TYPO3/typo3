@@ -519,7 +519,7 @@ class t3lib_BEfunc	{
 	function BEgetRootLine($uid,$clause='')	{
 		$loopCheck = 100;
 		$theRowArray = Array();
-		$output=Array();
+		$output = Array();
 		while ($uid!=0 && $loopCheck>0)	{
 			$loopCheck--;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -540,7 +540,7 @@ class t3lib_BEfunc	{
 				break;
 			}
 		}
-		if ($uid==0) {$theRowArray[]=Array('uid'=>0,'title'=>'');}
+		if ($uid==0) {$theRowArray[] = Array('uid'=>0,'title'=>'');}
 		if (is_array($theRowArray))	{
 			reset($theRowArray);
 			$c=count($theRowArray);

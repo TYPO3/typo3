@@ -1,33 +1,55 @@
-- add searching in additional individual tables - non-indexed though (just comfortably "all-in-one" search)
-- add API for indexing a string which is passed by an extension (eg. the bodytext of a news-plugin). 
-  - Attached to this string might be information of which link could display it. For instance, it could be the page id + which parameter string to append.
-  - API for searching in this indexed content ONLY -> in other words an advanced search engine for records.
-- add possibility of cron-job based crawler-indexing of any external site (based on configuration record in the page tree. Access to that page will determin whether external URL is part of result. Just like the external media is.)
-- add possibility of indexing off non-cached page content which is re-indexed based on a time-interval.
-- flags i pages tabel: set_for_indexing (reset when indexed), do not index, ...
+- Improve lexer:
+	- See BASIC_LEXER from Oracle
+	- CJK hack from Zope.
+	- Test
+	- Implement in search query analysis.
+- TESTING with russian, danish, chinese, japanese etc...
+- CVS
+
+**************'
+
+- Index Configurations / CLI indexer
+- Proper skinning? / getLL? / XHTML
+-------------------------------
+
+CRAWLER:
+&L=[_TABLE:sys_language;_PID:0:_tx_indexedsearch_fields:bodytext,header]
+&[_LOGIN]=[,kasper,francis;_PID:]
+&myext[uid]=[1-34,35,36-10]&another=1?
+(cache mgm / crawler / publishing)
+-> parameters "_TABLE" can instruct indexed_Search which table to index records from!
+-> default is flush, INHERIT can
+-> crawler gets result back?
+	- cached?
+	- parsetime?
+	- strlen?
+
+
+
+
+************************************************************
+
+Templating / Display in plugin:
 - Localization, configuration of search-options, stylesheet formatting of result content (with new CSS Stylesheet Editor)
-- Templating with Template Voila TOs?
-- Metaphone algorithm which works with foreign languages (Double-metaphone function? Rene suggested...)
-- More helperapps for RTF, SXW, Excel, ?
-- Faster linkPage() function
+- Templating
+	- with Template Voila TOs?
+	- other approaches? (markers seem straight forward)
+- linkPage() function
+	- Link correctly to MP links / external documents?
+	- Link correctly to external documents / URLs?
 - CHECK: Which keys are necessary??? There are four keys on typo3.com. Are they all used by the indexer or what?
-- Add support for windows versions of PDF/CATdoc (Message-ID: <6B9653C74CC1D41199CF00508BFCA65D90A7E0@nt-server4.tab.lan>). Notice: Catdoc only takes 8.3 filenames.
-- Indexing content from other charsets (probably this is about splitting the local chars, currently only danish/german) Message-ID: <006f01c325ca$b39eb4d0$0100a8c0@FORTRESS>
 - Is result links working for frames? (&type=1) See Message-ID: <3DA762A0.84BDA4F1@kuehn.com>
+- Implement Stop-words in search
 
+Clean up backend modules:
+	- getLL()
+	- skinning()
+	- XHTML()
+
+Misc:
 - DOC: Tutorial on setting it up, getting it to run, trouble shoot it.
+- add possibility of cron-job based crawler-indexing of any external site (based on configuration record in the page tree. Access to that page will determine whether external URL is part of result. Just like the external media is.)
+- flags i pages tabel: set_for_indexing (reset when indexed), do not index, ...
+- The Tools>Indexing module could need some shining up and more useful features (Someone else does this?)
+- CLI til removal of old indexes: First set flag, then 14 days later remove the records.
 
-Also see:
-- [Kasper] "EXT:indexed_search" folder in Mailbox 
-
-
-__OLD list:
-- OK, Metaphone value > integer, signed
-- OK, strtolower of content does not proces eg. ÆØÅ correctly. What to do?
-- OK splitting i ord tager ikke hensyn til så som email-adresser, danske bogstaver!
-- OK Teste mtime før indexering
-- OK if mtime/contentHash return ok, update tstamp!
-- OK(?) - sections
-- OK- pdf-files subpages.
-- OK - sections - hvad sker der, når sider flyttes rundt.
-- OK - Jumpurl for indexering af links.

@@ -9,4 +9,27 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'editorcfg','
 
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'][] = 'EXT:indexed_search/class.indexer.php:tx_indexedsearch_indexer';
+
+
+	// Configure default document parsers:
+$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] = array(
+	'pdf' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'doc' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'pps' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'ppt' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'xls' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'sxc' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'sxi' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'sxw' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'rtf' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'txt' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'html' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'htm' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'csv' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'xml' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'jpg' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'jpeg' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+	'tif' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
+);
+
 ?>

@@ -1,3 +1,13 @@
+2004-11-28  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Main feature: Lots of updates on Indexed Search extension. The changes are mainly in the indexer, not the search plugin. The work is NOT FINISHED yet and don't update a production site with this work! One main thing to be aware of is that all indexing is done internally as utf-8. You should flush your old index tables before running the new one.
+	* Fixed bug in t3lib_cs::utf8_strtrunc() (or so)... do'h Martin!
+	* Fixed bug (spelling mistake) in the hook "processDatamap_preProcessFieldArray"
+	* Fixed order of configuration forms in Extension Manager
+	* Added timezone option in TYPO3_CONF_VARS array
+	* Added right-click feature on context menus. Can be disabled with TYPO3_CONF_VARS if you don't like it. And a rightclick on the page/folder _title_ will also activate the menu! Theoretically it is not valid XHTML. Works in Mozilla and MSIE. Thanks Wolfgang!
+	* Added TS option "USERUID_substToken" 
+
 2004-11-26  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #0000527: Title tag is added even if the page title was empty. Thanks to Hannes Schmid.

@@ -139,6 +139,24 @@ class localPageTree extends t3lib_browseTree {
 		}
 		return $str;
 	}
+
+	/**
+	 * Wrapping $title in a-tags.
+	 *
+	 * @param	string		Title string
+	 * @param	string		Item record
+	 * @param	integer		Bank pointer (which mount point number)
+	 * @return	string
+	 * @access private
+	 */
+	function wrapTitle($title,$row,$bank=0)	{
+		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$bank.'\');';
+		$CSM = '';
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
+			$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('','pages',$row['uid'],0,'&bank='.$this->bank,'',TRUE)).'"';
+		}
+		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
+	}
 }
 
 

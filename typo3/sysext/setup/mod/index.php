@@ -283,10 +283,7 @@ class SC_mod_user_setup_index {
 			// traverse the number of languages:
 		foreach($theLanguages as $val)	{
 			if ($val!='default')	{
-				if ($BE_USER->uc['lang']!='default')	{
-					$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
-				} else $localLabel='';
-
+				$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
 				$unavailable = $val!='default' && !t3lib_extMgm::isLoaded('csh_'.$val) ? '1' : '';
 				$opt[$GLOBALS['LOCAL_LANG']['default']['lang_'.$val].'--'.$val]='
 					<option value="'.$val.'"'.($BE_USER->uc['lang']==$val?' selected="selected"':'').($unavailable ? ' class="c-na"' : '').'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
@@ -298,8 +295,7 @@ class SC_mod_user_setup_index {
 					implode('',$opt).'
 				</select>'.
 				t3lib_BEfunc::cshItem('_MOD_user_setup', 'language', $GLOBALS['BACK_PATH'],'|');
-
-				if ($BE_USER->uc['lang']!='default' && !t3lib_extMgm::isLoaded('csh_'.$BE_USER->uc['lang']))	{
+				if ($BE_USER->uc['lang'] && !t3lib_extMgm::isLoaded('csh_'.$BE_USER->uc['lang']))	{
 					$code.= '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
 								$this->doc->icons(3).
 								sprintf(nl2br('The selected language is not fully available before the associated language pack extension, "%s", is installed on the system.

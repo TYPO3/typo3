@@ -395,6 +395,10 @@ class tx_indexedsearch extends tslib_pibase {
 	 */
 	function getSearchWords($defOp)	{
 		$inSW = substr($this->piVars["sword"],0,200);
+
+			// Convert to UTF-8:
+		$inSW = $GLOBALS['TSFE']->csConvObj->utf8_encode($inSW, $GLOBALS['TSFE']->metaCharset);
+
 		if ($this->piVars["type"]==20)	{
 			return array(array("sword"=>trim($inSW),"oper"=>"AND"));
 		} else {
@@ -421,7 +425,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 		reset($sWArr);
 		while(list($k,$v)=each($sWArr))	{
-			$sWord = $this->indexerObj->strtolower_all($v["sword"]);	// lower-case all of them...
+			$sWord = strtolower($v["sword"]);	// lower-case all of them...
 
 			$GLOBALS["TT"]->push("SearchWord ".$sWord);
 
@@ -803,7 +807,7 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($newId)	{
 			foreach($sWArr as $val)	{
 				$insertFields = array(
-					'word' => $this->indexerObj->strtolower_all($val['sword']),
+					'word' => strtolower($val['sword']),
 					'index_stat_search_id' => $newId,
 					'tstamp' => $GLOBALS['EXEC_TIME']		// Time stamp
 				);
@@ -981,7 +985,7 @@ class tx_indexedsearch extends tslib_pibase {
 				}
 
 			} else {
-				$searchingFor=$this->pi_getLL("searchFor")." ".$this->wrapSW($v["sword"]);
+				$searchingFor=$this->pi_getLL("searchFor")." ".$this->utf8_to_currentCharset($this->wrapSW($v["sword"]));
 			}
 			$c++;
 		}
@@ -1294,7 +1298,7 @@ class tx_indexedsearch extends tslib_pibase {
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 
-			return htmlspecialchars(t3lib_div::fixed_lgd(str_replace("&nbsp;"," ",$row["item_description"]),$lgd)).(trim($markedSW)?" ... ".$markedSW:"").'
+			return $this->utf8_to_currentCharset(htmlspecialchars(t3lib_div::fixed_lgd(str_replace("&nbsp;"," ",$row["item_description"]),$lgd)).(trim($markedSW)?" ... ".$markedSW:"")).'
 				<BR><img src=clear.gif width=1 height=5>';
 		} else {
 			return '<font color="#666666">'.$this->pi_getLL("res_noResume").'
@@ -1382,7 +1386,7 @@ class tx_indexedsearch extends tslib_pibase {
 				$add=", pages ".$dat["key"];
 			} else $add=", page ".$pp[0];
 		}
-		return htmlspecialchars(t3lib_div::fixed_lgd($row["item_title"],50)).$add;
+		return $this->utf8_to_currentCharset(htmlspecialchars(t3lib_div::fixed_lgd($row["item_title"],50))).$add;
 	}
 
 	/**
@@ -1618,6 +1622,18 @@ class tx_indexedsearch extends tslib_pibase {
 			return $GLOBALS["TSFE"]->sys_page->getMenu($id);
 		}
 	}
+
+
+	/**
+	 * Converts the input string from utf-8 to the backend charset.
+	 *
+	 * @param	string		String to convert (utf-8)
+	 * @return	string		Converted string (backend charset if different from utf-8)
+	 */
+	function utf8_to_currentCharset($str)	{
+		return $GLOBALS['TSFE']->csConv($str,'utf-8');
+	}
+
 }
 
 if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/indexed_search/pi/class.tx_indexedsearch.php"])	{

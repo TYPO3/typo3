@@ -175,6 +175,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	var $ext_printAll=0;
 	var $ext_CEformName="forms[0]";
 	var $ext_defaultOnlineResourceFlag=0;
+	var $doNotSortCategoriesBeforeMakingForm = FALSE;
 
 		// ts analyzer
 	var $templateTitles=array();
@@ -1086,7 +1087,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$help=$this->helpConfig;
 			$this->rArr=explode(",",$this->setup["resources"].",".implode($this->dirResources,","));
 
-			asort($this->categories[$category]);
+			if (!$this->doNotSortCategoriesBeforeMakingForm) asort($this->categories[$category]);
 			while(list($name,$type)=each($this->categories[$category]))	{
 				$params = $theConstants[$name];
 				if (is_array($params))	{

@@ -4,30 +4,6 @@
 #--------------------------------------------------------
 
 
-#
-# Table structure for table 'index_fulltext'
-#
-CREATE TABLE index_fulltext (
-  phash int(11) DEFAULT '0' NOT NULL,
-  fulltextdata mediumtext NOT NULL,
-  PRIMARY KEY (phash)
-);
-
-
-#
-# Table structure for table 'index_grlist'
-#
-CREATE TABLE index_grlist (
-  phash int(11) DEFAULT '0' NOT NULL,
-  phash_x int(11) DEFAULT '0' NOT NULL,
-  hash_gr_list int(11) DEFAULT '0' NOT NULL,
-  gr_list tinytext NOT NULL,
-  uniqid int(11) DEFAULT '0' NOT NULL auto_increment,
-  PRIMARY KEY (uniqid),
-  KEY joinkey (phash,hash_gr_list),
-  KEY phash_grouping (phash_x,hash_gr_list)
-);
-
 
 #
 # Table structure for table 'index_phash'
@@ -42,7 +18,7 @@ CREATE TABLE index_phash (
   data_page_type tinyint(3) unsigned DEFAULT '0' NOT NULL,
   data_page_mp tinytext NOT NULL,
   gr_list tinytext NOT NULL,
-  item_type tinyint(4) DEFAULT '0' NOT NULL,
+  item_type varchar(5) DEFAULT '' NOT NULL,
   item_title tinytext NOT NULL,
   item_description tinytext NOT NULL,
   item_mtime int(11) DEFAULT '0' NOT NULL,
@@ -53,10 +29,21 @@ CREATE TABLE index_phash (
   parsetime int(11) DEFAULT '0' NOT NULL,
   sys_language_uid int(11) DEFAULT '0' NOT NULL,
   item_crdate int(11) DEFAULT '0' NOT NULL,
+  externalUrl tinyint(3) DEFAULT '0' NOT NULL,
+  recordUid int(11) DEFAULT '0' NOT NULL,
+  freeIndexUid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (phash),
   KEY phash_grouping (phash_grouping)
 );
 
+#
+# Table structure for table 'index_fulltext'
+#
+CREATE TABLE index_fulltext (
+  phash int(11) DEFAULT '0' NOT NULL,
+  fulltextdata mediumtext NOT NULL,
+  PRIMARY KEY (phash)
+);
 
 #
 # Table structure for table 'index_rel'
@@ -72,6 +59,18 @@ CREATE TABLE index_rel (
   KEY wid (wid,phash)
 );
 
+#
+# Table structure for table 'index_words'
+#
+CREATE TABLE index_words (
+  wid int(11) DEFAULT '0' NOT NULL,
+  baseword varchar(60) DEFAULT '' NOT NULL,
+  metaphone int(11) DEFAULT '0' NOT NULL,
+  is_stopword tinyint(3) DEFAULT '0' NOT NULL,
+  PRIMARY KEY (wid),
+  KEY baseword (baseword,wid),
+  KEY metaphone (metaphone,wid)
+);
 
 #
 # Table structure for table 'index_section'
@@ -91,6 +90,19 @@ CREATE TABLE index_section (
   KEY rl0_2 (rl0,phash)
 );
 
+#
+# Table structure for table 'index_grlist'
+#
+CREATE TABLE index_grlist (
+  phash int(11) DEFAULT '0' NOT NULL,
+  phash_x int(11) DEFAULT '0' NOT NULL,
+  hash_gr_list int(11) DEFAULT '0' NOT NULL,
+  gr_list tinytext NOT NULL,
+  uniqid int(11) DEFAULT '0' NOT NULL auto_increment,
+  PRIMARY KEY (uniqid),
+  KEY joinkey (phash,hash_gr_list),
+  KEY phash_grouping (phash_x,hash_gr_list)
+);
 
 #
 # Table structure for table 'index_stat_search'
@@ -120,15 +132,39 @@ CREATE TABLE index_stat_word (
   KEY tstamp (tstamp,word)
 );
 
+#
+# Table structure for table 'index_fulltext'
+#
+CREATE TABLE index_debug (
+  phash int(11) DEFAULT '0' NOT NULL,
+  debuginfo mediumtext NOT NULL,
+  PRIMARY KEY (phash)
+);
 
 #
-# Table structure for table 'index_words'
+# Table structure for table 'index_config'
 #
-CREATE TABLE index_words (
-  wid int(11) DEFAULT '0' NOT NULL,
-  baseword varchar(30) DEFAULT '' NOT NULL,
-  metaphone int(11) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (wid),
-  KEY baseword (baseword,wid),
-  KEY metaphone (metaphone,wid)
+CREATE TABLE index_config (
+    uid int(11) DEFAULT '0' NOT NULL auto_increment,
+    pid int(11) DEFAULT '0' NOT NULL,
+    tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+    crdate int(11) unsigned DEFAULT '0' NOT NULL,
+    cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
+    hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
+    starttime int(11) unsigned DEFAULT '0' NOT NULL,
+    title tinytext NOT NULL,
+    description text NOT NULL,
+    type int(11) unsigned DEFAULT '0' NOT NULL,
+    depth int(11) unsigned DEFAULT '0' NOT NULL,
+    table2index tinytext NOT NULL,
+    alternative_source_pid blob NOT NULL,
+    get_params tinytext NOT NULL,
+    fieldlist tinytext NOT NULL,
+	externalUrl tinytext NOT NULL,
+    chashcalc tinyint(3) unsigned DEFAULT '0' NOT NULL,
+    filepath tinytext NOT NULL,
+    extensions tinytext NOT NULL,
+
+    PRIMARY KEY (uid),
+    KEY parent (pid)
 );

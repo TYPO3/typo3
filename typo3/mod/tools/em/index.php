@@ -3670,6 +3670,7 @@ EXTENSION KEYS:
 
 				// Load tsStyleConfig class and parse configuration template:
 			$tsStyleConfig = t3lib_div::makeInstance('t3lib_tsStyleConfig');
+			$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
 			$theConstants = $tsStyleConfig->ext_initTSstyleConfig(
 				t3lib_div::getUrl($absPath.'ext_conf_template.txt'),
 				$relPath,
