@@ -253,16 +253,6 @@ class t3lib_div {
 	 * @see _POST(), _GP(), _GETset()
 	 */
 	function _GET($var='HTTP_GET_VARS')	{
-		
-# I found it dangerous to use an empty $var to get all HTTP_GET_VARS back
-# An empty var can easily passed by accident which was really the case in t3lib_userauth
-# getting back an array with HTTP_GET_VARS might cause errors, or more bad, strange things can be happen
-
-# The change is some kind of backwards compatible, because t3lib_div::_GET() do the same as before
-
-# I changed also the code a bit to speed it up.
-# stripSlashesOnArray() was called always on the whole HTTP_GET_VARS array
-
 		if(empty($var)) return;
 		$value = ($var=='HTTP_GET_VARS') ? $GLOBALS['HTTP_GET_VARS'] : $GLOBALS['HTTP_GET_VARS'][$var];
 		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
