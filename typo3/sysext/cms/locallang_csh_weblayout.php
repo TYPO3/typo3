@@ -6,24 +6,23 @@
 
 $LOCAL_LANG = Array (
 	'default' => Array (
-		'.alttitle' => "Page Module",
-		'.description' => "[FILL IN] page_module",
-		'quickEdit.alttitle' => "Quick Edit",
+		'.alttitle' => 'Page Module',
+		'.description' => '[FILL IN] page_module',
+		'quickEdit.alttitle' => 'Quick Edit',
 		'quickEdit.description' => 'The Quick Editor gives you direct access to the form fields of the page content.',
 		'quickEdit.details' => 'The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you\'ve got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.',
-		'quickEdit_selElement.alttitle' => "Content Elements",
+		'quickEdit_selElement.alttitle' => 'Content Elements',
 		'quickEdit_selElement.description' => 'This is an overview of the content elements on this page. Select another element to edit or click an "New" icon to create a new content element.',
-		'columns_1.alttitle' => "Listing by Column",
+		'columns_1.alttitle' => 'Listing by Column',
 		'columns_1.description' => 'In the "Columns" view you can control the content of the web page as it is positioned in columns.',
-		'columns_2.alttitle' => "Listing by Language",
+		'columns_2.alttitle' => 'Listing by Language',
 		'columns_2.description' => 'In the "Languages" view you can control the content of the web page as it is divided into languages and columns.',
-		'columns_3.alttitle' => "Page Information",
+		'columns_3.alttitle' => 'Page Information',
 		'columns_3.description' => 'In the "Page Information" view you can see various statistics about a page',
-
-		'language_list.description' => "[FILL IN] language_list",
-		'columns_single.description' => "[FILL IN] columns_single",
-		'columns_multi.description' => "[FILL IN] columns_multi",
-		'button_panel.description' => "[FILL IN] button_panel",
+		'language_list.description' => '[FILL IN] language_list',
+		'columns_single.description' => '[FILL IN] columns_single',
+		'columns_multi.description' => '[FILL IN] columns_multi',
+		'button_panel.description' => '[FILL IN] button_panel',
 	),
 	'dk' => Array (
 		'quickEdit.description' => 'KvikRedigering giver dig direkte adgang til formfelterne for sidens indhold.',
@@ -100,10 +99,17 @@ $LOCAL_LANG = Array (
 		'columns_1.description' => '¬ режиме " олонки" ¬ы можете управл€ть содержанием веб-страницы, размещенным в колонках.',
 	),
 	'ro' => Array (
+		'quickEdit.description' => 'Editorul Rapid vг permite accesul direct la cвmpurile formularului de conюinut al paginii.',
+		'quickEdit.details' => 'Editorul Rapid este proiectat sг reducг numгrul de clickuri necesare pentru editarea conюinutului unei pagini. Dвnd un click pe titlul paginii оn arborele paginilor se va оncгrca primul element de conюinut din coloana principalг. Din bara de instrumente se sus puteюi selecta alte elemente de conюinut de pe paginг utilizвnd cгsuюa de selecюie.',
+		'quickEdit_selElement.description' => 'Acesta este un rezumat al elementelor de conюinut de pe aceastг paginг. Selectaюi un element pentru a-l edita sau daюi un click pe iconiюa "Nou" pentru a crea un nou element de conюinut.',
 	),
 	'ch' => Array (
+		'quickEdit.description' => 'њмЋў±аЉ≠»√ƒъ÷±љ”Ј√ќ “≥√жƒЏ»Ё”тµƒ±нЄс.',
+		'quickEdit.details' => 'њмЋў±аЉ≠∆ч «…иЉ∆јі…ЊЉх”лїсµ√±аЉ≠“≥√жƒЏ»Ё”–єЎµƒµгїчіќ эµƒ. ‘Џ“≥√ж чљбєє÷–Љтµ•µƒµгїч“≥√ж±кћвƒъЊЌ‘Џ∆’Ќ®µƒЅ–÷–µ√µљ∞≤„∞‘ЏЅ–±нљбєє÷–”≈ѕ»µƒƒЏ»Ё‘™ЋЎ. ‘Џє§Њяй≠÷–ƒъњ…“‘‘Џ“≥√ж—°‘с∆чє§ЊяЇ–јп—°‘с∆дЋьƒЏ»Ё‘™ЋЎ.',
+		'quickEdit_selElement.description' => '’в «іЋ“≥√жƒЏ»Ё‘™ЋЎµƒ“їЄц„№јј.—°‘сЅнЌв“їЄц‘™ЋЎјі±аЉ≠їтµгїч“їЄц"–¬µƒ"ЌЉ±кјіііљ®“їЄц–¬µƒƒЏ»Ё‘™ЋЎ .',
 	),
 	'sk' => Array (
+		'quickEdit.description' => 'Quick Editor umoЮтuje priamo upravovaЭ polia obsahu strбnky.',
 	),
 	'lt' => Array (
 	),
@@ -160,8 +166,8 @@ $LOCAL_LANG = Array (
 		'columns_1.description' => 'е‘«зѕ… «д√ўеѕ…  ” „кў е—«ћў… еЌ ик«  «д’бЌ…',
 	),
 	'he' => Array (
-		'quickEdit.description' => '„Ф„Ґ„Х„®„Ъ „Ф„Ю„Ф„Щ„® „†„Х„™„Я „Ь„Ъ „Т„Щ„©„Ф „Ь„©„У„Х„™ „Ф„Ш„Х„§„° „©„Ь „™„Х„Ы„Я „Ф„У„£',
-		'quickEdit.details' => '„Ф„Ґ„Х„®„Ъ „Ф„Ю„Ф„Щ„® „Ю„Щ„Х„Ґ„У „Ь„Ф„§„Ч„Щ„™ „Ю„°„§„® „Ь„Ч„Щ„¶„Х„™ „Ы„У„Щ „Ь„Ґ„®„Х„Ъ „™„Х„Ы„Я „У„£. „§„©„Х„Ш „У„®„Ъ „Ь„Ч„Щ„¶„Ф „Ґ„Ь „©„Э „Ф„У„£ „С„Ґ„• „Ф„У„§„Щ„Э, „Ф„†„Ъ „Ю„І„С„Ь „§„®„Щ„Ш „™„Х„Ы„Я „®„Р„©„Х„Я „С„Ґ„Ю„Х„У„Ф „Ф„®„Т„Щ„Ь„Ф „Ш„Ґ„Х„Я „С„Ю„°„Т„®„™ „®„©„Щ„Ю„Ф. „Ґ„Ь „°„®„Т„Ь „Ы„Ь„Щ„Э „Ь„Ю„Ґ„Ь„Ф „Ф„†„Ъ „Щ„Ы„Х„Ь „Ь„С„Ч„Х„® „§„®„Щ„Ш „™„Х„Ы„Я „Р„Ч„® „Ґ„Ь „Ф„У„£.',
+		'quickEdit.description' => '„Ф„Ґ„Х„®„Ъ „Ф„Ю„Ф„Щ„® „†„Х„™„Я „Ь„Ъ „Т„Щ„©„Ф „Щ„©„Щ„®„Ф „Ь„©„У„Х„™ „©„Ь „§„®„Щ„Ш „™„Х„Ы„Я.',
+		'quickEdit.details' => '„Ф„Ґ„Х„®„Ъ „Ф„Ю„Ф„Щ„® „Ю„Щ„Х„Ґ„У „Ь„Ф„§„Ч„Щ„™ „Ю„°„§„® „Ь„Ч„Щ„¶„Х„™ „Ы„У„Щ „Ь„Ґ„®„Х„Ъ „™„Х„Ы„Я „У„£.„Ґ„Ь „Щ„У„Щ „Ь„Ч„Щ„¶„Ф „Ґ„Ь „©„Э „Ф„У„£ „С„Ґ„• „Ф„У„§„Щ„Э, „Ф„†„Ъ „Ю„І„С„Ь „§„®„Щ„Ш „™„Х„Ы„Я „®„Р„©„Х„Я „С„Ґ„Ю„Х„У„Ф „Ф„®„Т„Щ„Ь„Ф „Ш„Ґ„Х„Я „С„Ю„°„Т„®„™ „®„©„Щ„Ю„Ф. „Ґ„Ь „°„®„Т„Ь „Ы„Ь„Щ„Э „Ь„Ю„Ґ„Ь„Ф „Р„™„Ф „Щ„Ы„Х„Ь „Ь„С„Ч„Х„® „§„®„Щ„Ш „™„Х„Ы„Я „Р„Ч„® „©„†„Ю„¶„Р „С„У„£ „Х„Ь„Ґ„®„Х„Ъ „Р„Х„™„Х.',
 		'quickEdit_selElement.description' => '„Ц„Х„Ф„Щ „°„І„Щ„®„Ф „Ы„Ь„Ь„Щ„™ „©„Ь „§„®„Щ„Ш„Щ „™„Х„Ы„Я „Ґ„Ь „У„£ „Ц„Ф. „†„Р „Ь„С„Ч„Х„® „§„®„Щ„Ш „™„Х„Ы„Я „Р„Ч„® „Ы„У„Щ „Ь„Ґ„®„Х„Ъ „Р„Х „Ь„Ч„• „Ґ„Ь "„Ч„У„©" „Ы„У„Щ „Ь„Щ„¶„Х„® „§„®„Щ„Ш „™„Х„Ы„Я „Ч„У„©.',
 		'columns_1.description' => '„С„Р„Ю„¶„Ґ„Х„™ „™„¶„Х„Т„™ "„Ґ„Ю„Х„У„Х„™" „Ф„†„Ъ „Щ„Ы„Х„Ь „Ь„©„Ь„Х„Ш „Ґ„Ь „™„Х„Ы„Я „©„Ь „Ф„У„£ „Ы„Ю„Х „©„Ц„Ф „Ю„Ю„Х„І„Э „С„Ґ„Ю„Х„У„Х„™.',
 	),

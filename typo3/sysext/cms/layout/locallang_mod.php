@@ -88,6 +88,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Paginã',
 	),
 	'ch' => Array (
+		'mlang_labels_tablabel' => 'Ò³ÃæÄÚÈİ',
+		'mlang_labels_tabdescr' => '´ËÄ£¿éÔÊĞíÄú´´½¨²¢±à¼­ÍøÒ³.ËüÌá¹©Ò»¸ö¿ìËÙ-±à¼­Æ÷À´Á¢¼´·ÃÎÊÖ÷ÒªÒ³ÃæµÄÄÚÈİ. ÁíÍâÄú¿ÉÒÔ¹ÜÀí²»Í¬µÄÓïÑÔºÍÃ¿¸öÒ³ÃæµÄÁĞ.×îºóÄú¿ÉÒÔ·ÃÎÊÌØ±ğµÄÒ³ÃæÄÚÈİÈç¿Í»§²¾,°åºÍ¹ºÎïÏîÄ¿µÈ.´ËÄ£¿éÒ²Îª¸öÈËÍøÒ³Ñ°ÕÒÒ³ÃæÌá¹©Í³¼Æ.',
+		'mlang_tabs_tab' => 'Ò³Ãæ',
 	),
 	'sk' => Array (
 		'mlang_labels_tablabel' => 'Obsah stránky',
@@ -107,7 +110,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Stranica',
 	),
 	'hu' => Array (
-		'mlang_labels_tablabel' => 'Oldal tartalom',
+		'mlang_labels_tablabel' => 'Oldaltartalom',
 		'mlang_labels_tabdescr' => 'Ez a modul segít létrehozni és szerkeszteni a weboldalakat.',
 		'mlang_tabs_tab' => 'Oldal',
 	),
