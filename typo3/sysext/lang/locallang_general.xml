@@ -104,7 +104,7 @@
 			<label index="LGL.starttime">Start:</label>
 			<label index="LGL.fe_group">Zugriff:</label>
 			<label index="LGL.hide_at_login">Beim Login verstecken</label>
-			<label index="LGL.any_login">Bei jeden Login anzeigen</label>
+			<label index="LGL.any_login">Bei jedem Login anzeigen</label>
 			<label index="LGL.usergroups">__Benutzergruppen:__</label>
 			<label index="LGL.type">Typ:</label>
 			<label index="LGL.description">Beschreibung:</label>

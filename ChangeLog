@@ -1,3 +1,7 @@
+2004-07-02  Michael Stucki  <mundaun@gmx.ch>
+
+	* Fixed bug #0000191: Small typo in German translation
+
 2004-06-21  Michael Stucki  <mundaun@gmx.ch>
 
 	* Fixed bug #0000119: Another fe_adminLib htmlspecialchars() issue
