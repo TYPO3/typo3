@@ -43,9 +43,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Pagina',
 	),
 	'cz' => Array (
-		'mlang_labels_tablabel' => 'Obsah strany',
-		'mlang_labels_tabdescr' => 'Tento modul umo��uje vytv��et a editovat webov� str�nky. Poskytuje Quick-Editor pro okam�it� p��stup k z�kladn�mu obsahu strany. Nav�c m��ete spravovat r�zn� jazyky a sloupce obsahu na stran�. Nav�c m�te p��stupn� i speci�ln� obsah stran jako je n�v�t�vn� kniha, n�st�nka nebo zbo�� obchodu. Modul tak� ukazuje statistiku p��stup� pro jednotliv� str�nky.',
-		'mlang_tabs_tab' => 'Strana',
+		'mlang_labels_tablabel' => 'Obsah str�nky',
+		'mlang_labels_tabdescr' => 'Tento modul umo��uje vytv��et a editovat webov� str�nky. Je vybaven re�imem rychl�ch �prav pro okam�it� p��stup k z�kladn�mu obsahu str�nky. D�le m��ete spravovat r�zn� jazyky a sloupce obsahu na str�nce. Nav�c m�te p��stupn� i speci�ln� obsah str�nek, jako je n�v�t�vn� kniha, diskusn� f�rum nebo polo�ky zbo�� v obchodu. Modul tak� ukazuje statistiku p��stup� pro jednotliv� str�nky.',
+		'mlang_tabs_tab' => 'Str�nka',
 	),
 	'pl' => Array (
 		'mlang_labels_tablabel' => 'Zawarto�� strony',
@@ -107,8 +107,13 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Stranica',
 	),
 	'hu' => Array (
+		'mlang_labels_tablabel' => 'Oldal tartalom',
+		'mlang_labels_tabdescr' => 'Ez a modul seg�t l�trehozni �s szerkeszteni a weboldalakat.',
+		'mlang_tabs_tab' => 'Oldal',
 	),
 	'gl' => Array (
+		'mlang_labels_tablabel' => 'Quppernerup imai',
+		'mlang_tabs_tab' => 'Qupperneq',
 	),
 	'th' => Array (
 	),
@@ -144,9 +149,17 @@ $LOCAL_LANG = Array (
 	'he' => Array (
 		'mlang_labels_tablabel' => 'תוכן דף',
 		'mlang_labels_tabdescr' => 'מודול זה מאפשר לך לערוך וליצור דפי אינטרנט. הוא מעניק עורך מהיר לגישה מיידית לתוכן העיקרי של דף. בנוסף הנך יכול לנהל שפות שונות ועמודות של תוכן בכל דף. לבסוף הנך יכול לגשת לתוכן מיוחד כגון: ספר מבקרים, לוח ופריטי חנות. המודול מאפשר גם ספירת ביקורים לדפים נפרדים.',
-		'mlang_tabs_tab' => 'דף',
+		'mlang_tabs_tab' => 'דפים',
 	),
 	'ua' => Array (
+		'mlang_labels_tablabel' => '���� �������',
+		'mlang_tabs_tab' => '�������',
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

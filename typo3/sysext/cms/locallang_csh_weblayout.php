@@ -26,10 +26,22 @@ $LOCAL_LANG = Array (
 		'columns.description' => 'Via "Kolonne" visningen kan du kontrollere innholdet på siden i henhold til hvordan det er plassert i kolonner.',
 	),
 	'it' => Array (
+		'quickEdit.description' => 'Attraverso il Quick Editor puoi accesso diretto al contenuto della pagina.',
+		'quickEdit.details' => 'Il Quick Editor è stato concepito per poter accedere con pochi click al contenuto della pagina. Cliccando il titolo della pagina nell\'albero delle pagine viene aperto il primo blocco di contenuto della pagina. Attraverso la toolbar puoi accedere agli altri blocchi di contenuto presenti nella pagina.',
+		'quickEdit_selElement.description' => 'Visione d\'insieme del contenuto della pagina. Seleziona un altro blocco da modificare o clicca sull\'icona "Nuovo"per crearne uno di nuovo.',
+		'columns.description' => 'Attraverso la vista a colonne puoi visualizzare il contenuto della pagina secondo la sua reale disposizione su più colonne.',
 	),
 	'fr' => Array (
+		'quickEdit.description' => 'L\'éditeur rapide vous donne un accès rapide aux champs de formulaire du contenu de la page.',
+		'quickEdit.details' => 'L\'éditeur rapide a pour but de réduire le nombre de clic nécessaire pour éditer le contenu d\'une page. Simplement en cliquant sur le titre d\'une page, vous aurez le premier élément de la colonne normal chargé. Dans la barre d\'outil en haut, vous pouvez séléctionner les autres éléments dans le menu déroulant.',
+		'quickEdit_selElement.description' => 'C\'est un aperçu des éléments dans cette page. Séléctionnez un autre élément pour l\'éditer ou cliquez sur l\'icône "Nouveau" pour créer un nouvel élément.',
+		'columns.description' => 'Avec la vue "Colonnes", vous pouvez contrôler la position de vos éléments dans la page.',
 	),
 	'es' => Array (
+		'quickEdit.description' => 'El Editor Rápido te ofrece acceso directo a los campos del formulario del contenido de la página.',
+		'quickEdit.details' => 'El Editor Rápido está diseñado para reducir el número de clicks que conlleva editar el contenido de la página. Simplemente haciendo click en el título de la página en el árbol de páginas tendrás el primer elemento de contenido de la columna “normal” cargado en el marco de lista. En la barra de herramientas situada en la parte superior puedes seleccionar los elementos de contenido restantes de la página con el selector.',
+		'quickEdit_selElement.description' => 'Este es un resumen de los elementos de contenido en esta página. Selecciona otro elemento para editar o haz click en el icono “Nuevo” para crear un elemento de contenido nuevo.',
+		'columns.description' => 'Desde la vista “Columnas” puedes controlar el contenido de la web tal y como está colocado en columnas.',
 	),
 	'nl' => Array (
 		'quickEdit.description' => 'SnelBewerken geeft directe toegang tot de formulier velden van de pagina-inhoud.',
@@ -38,6 +50,10 @@ $LOCAL_LANG = Array (
 		'columns.description' => 'Middels het "Kolommen" aanzicht kan de positie van de inhoud worden gemanipuleerd in de aanwezige kolommen.',
 	),
 	'cz' => Array (
+		'quickEdit.description' => 'Režim rychlých úprav vám dává pøímý pøístup k polím formuláøe obsahu stránky.',
+		'quickEdit.details' => 'Režim rychlých úprav je navržen, aby omezil poèet kliknutí potøebných pro úpravu obsahu stránky. Kliknutím na název stránky ve stromu dostanete jednoduše první prvek obsahu v normálním sloupci do editaèního rámce. V selektoru lišty s nástroji nahoøe mùžete vybrat další prvky obsahu na stránce.',
+		'quickEdit_selElement.description' => 'Toto je pøehled prvkù obsahu na této stránce. Pro úpravy si vyberte další prvek nebo kliknìte na ikonu "Nový" pro vytvoøení nového prvku obsahu.',
+		'columns.description' => 'Pohledem "Sloupce" mùžete ovládat obsah webové stránky tak, jak je rozložena ve sloupcích.',
 	),
 	'pl' => Array (
 		'quickEdit.description' => 'Szybki Edytor umo¿liwia bezpo¶redni± edycjê pól formatki dla elementów tre¶ci.',
@@ -55,6 +71,10 @@ $LOCAL_LANG = Array (
 	'tr' => Array (
 	),
 	'se' => Array (
+		'quickEdit.description' => 'Med Snabbediteraren kan du direkt ändra formulärfälten i sidinnehållet.',
+		'quickEdit.details' => 'Snabbediteraren är gjord för att minska antalet klickningar man behöver göra för att ändra innehållet på en sida. Genom att helt enkelt klicka på sidans titel i sidträdet laddas det första innehållselementet i normalkolumnen i ditt fönster. I verktygslådan högst upp kan du välja de andra elementen på sidan.',
+		'quickEdit_selElement.description' => 'Detta är en översikt av innehållselementen på denna sida. Välj ett annat element, som du vill redigera eller klicka på ikonen "Ny" för att skapa ett nytt element.',
+		'columns.description' => 'Med "Visa kolumn" kan du kontrollera sidans innehåll och hur det är placerat i kolumner.',
 	),
 	'pt' => Array (
 	),
@@ -77,6 +97,10 @@ $LOCAL_LANG = Array (
 		'columns.description' => 'Pogledom "Kolone" možete upravljati sadržajem web stranice kao da je posložen u kolonama.',
 	),
 	'hu' => Array (
+		'quickEdit.description' => 'A GyorsSzerkesztõ közvetlen elérést tesz lehetõvé az ûrlapmezõkhöz.',
+		'quickEdit.details' => 'A GyorsSzerkesztõ egy tartalmi elem szerkesztése közben végzett kattintások számának lecsökkentése érdekében született. Egyszerûen az oldalfejlécre kattintva az elsõ tartalmi elem töltõdik be.',
+		'quickEdit_selElement.description' => 'Ez egy áttekintés az oldal tartalmi elemei között. Válassz ki egy elemet a szerkesztéshez vagy kattints az "Új" ikonra egy új elem létrehozásához.',
+		'columns.description' => 'Az "Oszlopok" nézettel egy listában kezelhetõek az oldal tartalmi elemei.',
 	),
 	'gl' => Array (
 	),
@@ -85,20 +109,47 @@ $LOCAL_LANG = Array (
 	'gr' => Array (
 	),
 	'hk' => Array (
+		'quickEdit.description' => '§Ö³t½s¿è¾¹¨Ï§A¥i¥Hª½±µ¦s¨úºô­¶¤º®e¤¤ªºªí®æ¤º®e',
+		'quickEdit.details' => '§Ö³t½s¿è¾¹³]­p¥H´î¤Ö­×§ïºô­¶¤º®e®É»Ý­nªºÂIÀ»ªº¦¸¼Æ¡C³æ³æÂIÀ»ºô­¶¾ð¹Ï¤¤ªººô­¶¦WºÙ§A´N·|±o¨ì¥¿±`Äæ¤¤²Ä¤@­Ó¤º®e¤¸¥óÅã¥Ü¦bµøµ¡¤¤¡C¦b¤u¨ã¦C¤¤ªº³»³¡§A¥i¥H¥Î¿ï¶µ²°¤l¿ï¾Ü¨ä¥Lºô­¶¤Wªº¤º®e¤¸¥ó¡C',
+		'quickEdit_selElement.description' => '³o¬O³oºô­¶¤Wªº¤º®e¤¸¥ó·§Äý¡C¿ï¾Ü¥t¤@­Ó¤¸¥ó¨Ó­×§ï©ÎÂIÀ»¡u«Ø¥ß¡v¹Ï¥Ü¨Ó«Ø¥ß¤@­Ó·sªº¤º®e¤¸¥ó¡C',
+		'columns.description' => '³z¹L¡uÄæ¡v¹wÄý§A¥i¥H±±¨îºô­¶ªº¤º®e¡A¦p¦bÄæ¤¤©ñ¸mªº¤@¼Ë¡C',
 	),
 	'eu' => Array (
 	),
 	'bg' => Array (
+		'quickEdit.description' => 'Áúðçèÿ ðåäàêòîð (Quick Editor) âè äàâà äèðåêòåí äîñòúï äî ïîëåòàòà íà ôîðìàòà âúðõó ñúäúðæàíèåòî íà ñòðàíèöàòà.',
+		'quickEdit.details' => 'Áúðçèÿ ðåäàêòîð (Quick Editor) å ñúçäàäåí çà äà íàìàëè áðîÿ íà êëèêâàíèÿòà, íåîáõîäèìè çà ðåäàêòèðàíåòî íà ñúäúðæàíèåòî íà ñòðàíèöàòà. Ïðîñòî ïðè êëèêâàíå íà çàãëàâèåòî íà ñòðàíèöàòà â äúðâîòî, Âèå ùå ïîëó÷èòå ïúðâèÿ åëåìåíò â íîðìàëíà êîëîíà, çàðåäåí â ëèñòîâèÿ ôðåéì. Â èíñòðóìåíòèòå îòãîðå ìîæåòå äà èçáåðåòå äðóã åëåìåíò çà ñòðàíèöàòà.',
+		'quickEdit_selElement.description' => 'Òîâà å ïðåãëåä íà åëåìåíòèòå íà òàçè ñòðàíèöà. Èçáåðåòå äðóã åëåìåíò çà ðåäàêöèÿ èëè êëèêíåòå íà èêîíàòà "Íîâ", çà äà ñúçäàäåòå íîâ åëåìåíò.',
+		'columns.description' => 'Â ïðåãëåäà "Êîëîíè" ìîæåòå äà êîíòðîëèðàòå ñúäúðæàíèåòî íà ñòðàíèöàòà, êàòî ÷å å â êîëîíè.',
 	),
 	'br' => Array (
+		'quickEdit.description' => 'O Editor Rápido lhe dá acesso direto aos campos de formulário do conteúdo da página.',
+		'quickEdit.details' => 'O Editor Rápido foi desenhado para diminuir a quantidade de cliques envolvidos na edição do conteúdo da página. Ao clicar no título da página na árvore de páginas, o primeiro elemento de conteúdo da coluna normal é carregado no quadro de listagem. Na barra de ferramentas no topo você pode selecionar os outros elementos de conteúdo da página através de uma caixa de seleção.',
+		'quickEdit_selElement.description' => 'Esta é uma visão geral dos elementos de conteúdo desta página. Selecione um outro elemento para editar ou clique num ícone "Novo" para criar um novo elemento de conteúdo.',
+		'columns.description' => 'Através da visualização em "Colunas", você pode controlar o conteúdo da página segundo seu posicionamento em colunas.',
 	),
 	'et' => Array (
 	),
 	'ar' => Array (
+		'quickEdit.description' => 'çÐÇ ÇäåÙÏä ÇäÓÑêÙ êÙ×êã ÇäÏÎèä ÇäåÈÇÔÑ Ùäé åÍÊèêÇÊ ÎÇæÇÊ ÇäÅÓÊåÇÑÉ',
+		'quickEdit.details' => 'çÐÇ ÇäåÙÏä ÇäÓÑêÙ åÕåå ÎÕêÕÇ äÊÙÌêä ÇäÏÎèä Ùäé åãèæÇÊ ÇäÕáÍÉ ÇäÊê ÊÑêÏ ÊÙÏêäçÇ. ÈÈÓÇ×É ÅÖÚ× ÈÇäåÇèÓ Ùäé ÙæèÇæ ÇäÕáÍÉ áê âÇÆåÉ ÇäÕáÍÇÊ è Óèá ÊÏÎä åÈÇÔÑÉ Ùäé ÙåèÏ ÇäåÍÊèêÇÊ ÇäåÓåé ÈÇäæèÑåÇä è êåãæã ÅÎÊêÇÑ åÍÊèêÇÊ ÃÎÑé ÈèÇÓ×É ÕæÏèâ ÇäÅÎÊêÇÑ',
+		'quickEdit_selElement.description' => 'çÐÇ çè ÇäÔãä ÇäÙÇå äÙæÇÕÑ ÇäåÍÊèêÇÊ Ùäé çÐç ÇäÕáÍÉ. êåãæã ÅÎÊêÇÑ ÙæÕÑ ÂÎÑ äÊÙÏêäç Ãè ÊÖÚ× Ùäé ÑåÒ "ÌÏêÏ" äÅæÔÇÁ ÙæÕÑ åÍÊèé ÌÏêÏ',
+		'columns.description' => 'åÔÇçÏÉ ÇäÃÙåÏÉ ÊÓÊ×êÙ åÑÇÌÙÉ åÍÊèêÇÊ ÇäÕáÍÉ',
 	),
 	'he' => Array (
+		'quickEdit.description' => '×”×¢×•×¨×š ×”×ž×”×™×¨ × ×•×ª×Ÿ ×œ×š ×’×™×©×” ×œ×©×“×•×ª ×”×˜×•×¤×¡ ×©×œ ×ª×•×›×Ÿ ×”×“×£',
+		'quickEdit.details' => '×”×¢×•×¨×š ×”×ž×”×™×¨ ×ž×™×•×¢×“ ×œ×”×¤×—×™×ª ×ž×¡×¤×¨ ×œ×—×™×¦×•×ª ×›×“×™ ×œ×¢×¨×•×š ×ª×•×›×Ÿ ×“×£. ×¤×©×•×˜ ×“×¨×š ×œ×—×™×¦×” ×¢×œ ×©× ×”×“×£ ×‘×¢×¥ ×”×“×¤×™×, ×”× ×š ×ž×§×‘×œ ×¤×¨×™×˜ ×ª×•×›×Ÿ ×¨××©×•×Ÿ ×‘×¢×ž×•×“×” ×”×¨×’×™×œ×” ×˜×¢×•×Ÿ ×‘×ž×¡×’×¨×ª ×¨×©×™×ž×”. ×¢×œ ×¡×¨×’×œ ×›×œ×™× ×œ×ž×¢×œ×” ×”× ×š ×™×›×•×œ ×œ×‘×—×•×¨ ×¤×¨×™×˜ ×ª×•×›×Ÿ ××—×¨ ×¢×œ ×”×“×£.',
+		'quickEdit_selElement.description' => '×–×•×”×™ ×¡×§×™×¨×” ×›×œ×œ×™×ª ×©×œ ×¤×¨×™×˜×™ ×ª×•×›×Ÿ ×¢×œ ×“×£ ×–×”. × × ×œ×‘×—×•×¨ ×¤×¨×™×˜ ×ª×•×›×Ÿ ××—×¨ ×›×“×™ ×œ×¢×¨×•×š ××• ×œ×—×¥ ×¢×œ "×—×“×©" ×›×“×™ ×œ×™×¦×•×¨ ×¤×¨×™×˜ ×ª×•×›×Ÿ ×—×“×©.',
+		'columns.description' => '×‘××ž×¦×¢×•×ª ×ª×¦×•×’×ª "×¢×ž×•×“×•×ª" ×”× ×š ×™×›×•×œ ×œ×©×œ×•×˜ ×¢×œ ×ª×•×›×Ÿ ×©×œ ×”×“×£ ×›×ž×• ×©×–×” ×ž×ž×•×§× ×‘×¢×ž×•×“×•×ª.',
 	),
 	'ua' => Array (
+		'quickEdit.description' => 'Quick Editor äàº âàì áåçïîñåðåäí³é äîñòóï äî âì³ñòó ñòîð³íêè',
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

@@ -71,7 +71,7 @@ $LOCAL_LANG = Array (
 		'hits_title' => 'Sidevisningsstatistikk',
 	),
 	'it' => Array (
-		'page_title' => 'Vista dell\'albero delle pagine',
+		'page_title' => 'Albero delle pagine',
 		'page_sysnote' => 'Note interne',
 		'pageInformation' => 'Informazioni sulla pagina',
 		'pages_0' => 'Impostazioni di base',
@@ -139,13 +139,13 @@ $LOCAL_LANG = Array (
 		'hits_title' => 'Statistieken van hits',
 	),
 	'cz' => Array (
-		'page_title' => 'Pøehled stromu stran',
-		'page_sysnote' => 'Vnitøní poznámky',
-		'pageInformation' => 'Informace o stranì',
+		'page_title' => 'Pøehled stromu stránek',
+		'page_sysnote' => 'Interní poznámky',
+		'pageInformation' => 'Informace o stránce',
 		'pages_0' => 'Základní nastavení',
-		'pages_2' => 'Cache a vìk',
+		'pages_2' => 'Mezipamì a stáøí',
 		'pages_1' => 'Pøehled záznamù',
-		'stat_type_0' => 'Poèet shlédnutí strany:',
+		'stat_type_0' => 'Poèet shlédnutí stránky:',
 		'stat_type_1' => 'Celkový poèet shlédnutí:',
 		'stat_type_2' => 'Poèet shlédnutí v hlavních oddílech',
 		'stat_period' => 'Statistika v období %s zpìt k %s',
@@ -345,6 +345,21 @@ $LOCAL_LANG = Array (
 		'hits_title' => 'Statistika posjeæenosti',
 	),
 	'hu' => Array (
+		'page_title' => 'Oldalfa áttekintés',
+		'page_sysnote' => 'Belsõ megjegyzések',
+		'pageInformation' => 'Oldal információ',
+		'pages_0' => 'Alap beállítások',
+		'pages_2' => 'Cache és Kor',
+		'pages_1' => 'rekord áttekintés',
+		'stat_type_0' => 'Oldal találatok',
+		'stat_type_1' => 'Összes találat',
+		'stat_type_2' => 'Találatok a fõrészben',
+		'stat_period' => 'Statisztikák %s-tól visszamenõleg %s-ig',
+		'pI_crUser' => 'Készítette',
+		'pI_crDate' => 'Létrehozási dátum',
+		'pI_lastChange' => 'Utolsó változtatás',
+		'pI_lastChangeContent' => 'Utolsó változtatás, tartalma',
+		'hits_title' => 'Találati Statisztikák',
 	),
 	'gl' => Array (
 	),
@@ -442,6 +457,12 @@ $LOCAL_LANG = Array (
 		'hits_title' => '×¡×˜×˜×™×¡×˜×™×§×ª ×”×•×¨×“×•×ª (hits)',
 	),
 	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>
