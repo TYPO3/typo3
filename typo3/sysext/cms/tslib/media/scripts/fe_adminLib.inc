@@ -1660,7 +1660,8 @@ class user_feAdmin	{
 							$recCopy[$fieldName]=$fieldValue;
 						}
 						$string.='&aC='.$this->setfixedHash($recCopy,$data['_FIELDLIST']);
-						$markerArray['###SYS_SETFIXED_'.$theKey.'###'] = htmlspecialchars($string);
+						$markerArray['###SYS_SETFIXED_'.$theKey.'###'] = $string;
+						$markerArray['###SYS_SETFIXED_HSC_'.$theKey.'###'] = htmlspecialchars($string);
 					}
 				}
 			}

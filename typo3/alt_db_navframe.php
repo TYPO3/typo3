@@ -1,19 +1,19 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
 *
@@ -38,13 +38,13 @@
  *
  *
  *
- *   72: class localPageTree extends t3lib_browseTree 
- *   79:     function localPageTree() 
- *   90:     function wrapIcon($icon,&$row)	
+ *   72: class localPageTree extends t3lib_browseTree
+ *   79:     function localPageTree()
+ *   90:     function wrapIcon($icon,&$row)
  *
  *
- *  131: class SC_alt_db_navframe 
- *  147:     function init()	
+ *  131: class SC_alt_db_navframe
+ *  147:     function init()
  *  235:     function main()
  *  263:     function printContent()
  *
@@ -63,7 +63,7 @@ require_once (PATH_t3lib.'class.t3lib_browsetree.php');
 
 /**
  * Extension class for the t3lib_browsetree class, specially made for browsing pages in the Web module
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -76,8 +76,8 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Calls init functions
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function localPageTree() {
 		$this->init();
@@ -85,7 +85,7 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Wrapping icon in browse tree
-	 * 
+	 *
 	 * @param	string		Icon IMG code
 	 * @param	array		Data row for element.
 	 * @return	string		Page icon
@@ -134,7 +134,7 @@ class localPageTree extends t3lib_browseTree {
 
 /**
  * Main script class for the page tree navigation frame
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -144,16 +144,16 @@ class SC_alt_db_navframe {
 		// Internal:
 	var $content;
 	var $pagetree;
-	var $doc;	
-	
+	var $doc;
+
 		// Internal, static: GPvar:
 	var $currentSubScript;
 	var $cMR;
 
 	/**
 	 * Initialiation of the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH;
@@ -161,7 +161,7 @@ class SC_alt_db_navframe {
 			// Setting GPvars:
 		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
 		$this->cMR = t3lib_div::_GP('cMR');
-		
+
 			// Create page tree object:
 		$this->pagetree = t3lib_div::makeInstance('localPageTree');
 		$this->pagetree->ext_IconMode = $BE_USER->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
@@ -188,7 +188,7 @@ class SC_alt_db_navframe {
 			// Setting JavaScript for menu.
 		$this->doc->JScode=$this->doc->wrapScriptTags(
 	($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
-	
+
 		// Function, loading the list frame from navigation tree:
 	function jumpTo(id,linkObj,highLightID)	{	//
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
@@ -198,13 +198,13 @@ class SC_alt_db_navframe {
 		} else {
 			parent.list_frame.document.location=theUrl;
 		}
-		
+
 		'.($this->doHighlight?'hilight_row("web",highLightID);':'').'
-		
+
 		'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
 		return false;
 	}
-	
+
 		// Call this function, refresh_nav(), from another script in the backend if you want to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
 		// See t3lib_BEfunc::getSetUpdateSignal()
 	function refresh_nav()	{	//
@@ -213,7 +213,7 @@ class SC_alt_db_navframe {
 	function _refresh_nav()	{	//
 		document.location="'.$this->pagetree->thisScript.'?unique='.time().'";
 	}
-	
+
 		// Highlighting rows in the page tree:
 	function hilight_row(frameSetModule,highLightID) {	//
 
@@ -222,7 +222,7 @@ class SC_alt_db_navframe {
 		if (theObj)	{
 			theObj.style.backgroundColor="";
 		}
-		
+
 			// Set new:
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highLightID;
 		theObj = document.getElementById(highLightID);
@@ -230,7 +230,7 @@ class SC_alt_db_navframe {
 			theObj.style.backgroundColor="'.t3lib_div::modifyHTMLColorAll($this->doc->bgColor,-20).'";
 		}
 	}
-	
+
 	'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').';
 		');
 
@@ -243,8 +243,8 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Main function, rendering the browsable page tree
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG,$CLIENT;
@@ -271,8 +271,8 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();

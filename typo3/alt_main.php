@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Main frameset of the TYPO3 backend
  * Sending the GET var "alt_main.php?edit=[page id]" will load the page id in the editing module configured.
  *
@@ -39,9 +39,9 @@
  *
  *
  *
- *   67: class SC_alt_main 
- *   86:     function init()	
- *  108:     function generateJScode()	
+ *   67: class SC_alt_main
+ *   86:     function init()
+ *  108:     function generateJScode()
  *  305:     function main()
  *  379:     function printContent()
  *
@@ -61,7 +61,7 @@ include ('sysext/lang/locallang_misc.php');
 
 /**
  * Script Class for rendering of the main frameset for the TYPO3 backend.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -73,17 +73,17 @@ class SC_alt_main {
 	var $mainJScode;
 	var $loadModules;		// Load modules-object
 	var $alt_menuObj;		// Menu functions object.
-	
+
 		// Internal, static:
 	var $leftMenuFrameW = 130;
 	var $selMenuFrame = 130;
 	var $topFrameH = 32;
 	var $shortcutFrameH = 30;
-	
+
 	/**
 	 * Initialization of the script class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $TBE_MODULES,$TBE_STYLES;
@@ -94,18 +94,18 @@ class SC_alt_main {
 
 			// Instantiates thee menu object which will generate some JavaScript for the goToModule() JS function in this frameset.
 		$this->alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
-		
+
 			// Check for distances defined in the styles array:
 		if ($TBE_STYLES['dims']['leftMenuFrameW'])		$this->leftMenuFrameW = $TBE_STYLES['dims']['leftMenuFrameW'];
 		if ($TBE_STYLES['dims']['topFrameH'])		$this->topFrameH = $TBE_STYLES['dims']['topFrameH'];
 		if ($TBE_STYLES['dims']['shortcutFrameH'])		$this->shortcutFrameH = $TBE_STYLES['dims']['shortcutFrameH'];
 		if ($TBE_STYLES['dims']['selMenuFrame'])		$this->selMenuFrame = $TBE_STYLES['dims']['selMenuFrame'];
 	}
-	
+
 	/**
 	 * Generates the JavaScript code for the frameset.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function generateJScode()	{
 		global $BE_USER,$LANG;
@@ -113,7 +113,7 @@ class SC_alt_main {
 		$pt3=t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 		$goToModule_switch = $this->alt_menuObj->topMenu($this->loadModules->modules,0,"",4);
 		$fsMod = implode(chr(10),$this->alt_menuObj->fsMod);
-		
+
 			// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
@@ -202,7 +202,7 @@ class SC_alt_main {
 			TS.navFrameWidth = (top.content.nav_frame.document.documentElement && top.content.nav_frame.document.documentElement.clientWidth) ? top.content.nav_frame.document.documentElement.clientWidth : top.content.nav_frame.document.body.clientWidth;
 		}
 	}
-	
+
 	/**
 	 * Launcing information window for records/files (fileref as "table" argument)
 	 */
@@ -230,7 +230,7 @@ class SC_alt_main {
 	function loadTopMenu(url)	{	//
 		top.topmenuFrame.location = url;
 	}
-	
+
 	/**
 	 * Loads a page id for editing in the page edit module:
 	 */
@@ -270,14 +270,14 @@ class SC_alt_main {
 			if (obj[i])	{
 				acc+=i+":  "+obj[i]+"\n";
 			}
-		}			  
+		}
 		alert("Object: "+name+"\n\n"+acc);
 	}
 
 	/**
 	 * Initialize login expiration warning object
 	 */
-	var busy = new busy();	
+	var busy = new busy();
 	busy.loginRefreshed();
 	busy_checkLoginTimeout_timer();
 
@@ -288,9 +288,9 @@ class SC_alt_main {
 	function goToModule(modName,cMR_flag)	{	//
 		var cMR = 0;
 		if (cMR_flag)	cMR=1;
-	
+
 		currentModuleLoaded=modName;
-		
+
 		switch(modName)	{'.$goToModule_switch.'
 		}
 	}
@@ -304,7 +304,7 @@ class SC_alt_main {
 	 * 		if (top.fsMod) top.fsMod.recentIds["file"] = "...(file reference/string)...";
 	 */
 	function fsModules()	{	//
-		this.recentIds=new Array();					// used by frameset modules to track the most recent used id for list frame. 
+		this.recentIds=new Array();					// used by frameset modules to track the most recent used id for list frame.
 		this.navFrameHighlightedID=new Array();		// used by navigation frames to track which row id was highlighted last time
 		this.currentMainLoaded="";
 	}
@@ -313,14 +313,14 @@ class SC_alt_main {
 
 		// Used by Frameset Modules
 	var condensedMode = '.($BE_USER->uc['condensedMode']?1:0).';
-	var currentSubScript = "";	
-	var currentSubNavScript = "";	
+	var currentSubScript = "";
+	var currentSubNavScript = "";
 		';
 
 			// Check editing of page:
 		$this->editPageHandling();
 	}
-	
+
 	/**
 	 * Checking if the "&edit" variable was sent so we can open for editing the page.
 	 * Code based on code from "alt_shortcut.php"
@@ -374,15 +374,15 @@ class SC_alt_main {
 
 	/**
 	 * Creates the header and frameset of the backend interface
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$TYPO3_CONF_VARS,$TYPO_VERSION;
-		
+
 			// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
-			
+
 			// Make JS:
 		$this->generateJScode();
 		$GLOBALS['TBE_TEMPLATE']->JScode= '
@@ -390,7 +390,7 @@ class SC_alt_main {
 			<script type="text/javascript" src="t3lib/jsfunc.evalfield.js"></script>
 			';
 		$GLOBALS['TBE_TEMPLATE']->JScode.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->mainJScode);
-		
+
 			// Title:
 		$title = $TYPO3_CONF_VARS['SYS']['sitename'] ? $TYPO3_CONF_VARS['SYS']['sitename'].' [TYPO3 '.$TYPO_VERSION.']' : 'TYPO3 '.$TYPO_VERSION;
 
@@ -407,7 +407,7 @@ class SC_alt_main {
 			$shortcutFrame['rowH']=','.$this->shortcutFrameH;
 			$shortcutFrame['frameDef']='<frame name="shortcutFrame" src="alt_shortcut.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />';
 		}
-		
+
 			// XHTML notice: ' framespacing="0" frameborder="0" border="0"' in FRAMESET elements breaks compatibility with XHTML-frames, but HOW ELSE can I control the visual appearance?
 		if ($GLOBALS['BE_USER']->uc['noMenuMode'])	{
 			$this->content.= '
@@ -448,8 +448,8 @@ class SC_alt_main {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
