@@ -1,6 +1,11 @@
+2005-02-24  Michael Stucki  <michael@typo3.org>
+
+	* Mailer problem: Postfix < 2.0 is now automatically detected (see below)
+	* The install option (see below) has been removed again
+
 2004-11-25  Jan-Erik Revsbech <jer@moccompany.com>
 
-	* Fixed bug #0000464: TYPO3 not sending mail when using Postfix version < 2.00. The problem is when trying to set the return-path correctly, the -f flag is used. This is not supported in the sendmail wrapper for Postfix. See the function sendTheMail in class.t3lib_htmlmail.php for further informaion. A new install option to disable the -f flag is inserted.
+	* Fixed bug #0000464: TYPO3 not sending mail when using Postfix version < 2.0. The problem is when trying to set the return-path correctly, the -f flag is used. This is not supported in the sendmail wrapper for Postfix. See the function sendTheMail in class.t3lib_htmlmail.php for further informaion. A new install option to disable the -f flag is inserted.
 
 2004-11-15  Michael Stucki  <michael@typo3.org>
 

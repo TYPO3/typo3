@@ -205,6 +205,7 @@ class t3lib_htmlmail {
 	var $mediaList="";				// If set, this is a list of the media-files (index-keys to the array) that should be represented in the html-mail
 	var $http_password="";
 	var $http_username="";
+	var $postfix_version1=false;
 
 
 	// Internal
@@ -245,7 +246,36 @@ class t3lib_htmlmail {
 
 
 
+	/**
+	 * Constructor for the class. Make a check to see if Postfix version below 2.0 is used.
+	 * If this is the case all calls to mail() must not be called with the -f parameter to correctly set
+	 * the Return-Path header.
+	 * @return	[type]		...
+	 */
+	function t3lib_htmlmail () {
+		if(!ini_get('safe_mode')) {
+			$res = Array();
 
+			$postconfPathList = '/usr/sbin,/sbin,/usr/local/sbin,'. $TYPO3_CONF_VARS['SYS']['binPath'];
+			foreach(t3lib_div::trimExplode(',',$postconfPathList,1) as $path)	{
+				if(@is_file($path.'/postconf'))	{
+					$postconfPath = $path;
+					break;
+				}
+			}
+
+			if(strlen($postconfPath))	{
+				@exec('/usr/sbin/postconf mail_version',$res);
+				if(!empty($res[0]))	{
+					$temp = explode("=",$res[0]);
+					list($major,$minor,$micro) = explode(".",trim($temp[1]));
+					if($major == 1)	{
+						$this->postfix_version1 = true;
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * @return	[type]		...
@@ -253,6 +283,7 @@ class t3lib_htmlmail {
 	function start ()	{
 			// Sets the message id
 		$this->messageid = md5(microtime()).'@domain.tld';
+
 	}
 
 	/**
@@ -548,12 +579,12 @@ class t3lib_htmlmail {
 	function constructAlternative($boundary)	{
 			// Here plain is combined with HTML
 		$this->add_message("--".$boundary);
-		// 	plain is added
+			// plain is added
 		$this->add_message($this->plain_text_header);
 		$this->add_message('');
 		$this->add_message($this->getContent("plain"));
 		$this->add_message("--".$boundary);
-		// htm	l is added
+			// html is added
 		$this->add_message($this->html_text_header);
 		$this->add_message('');
 		$this->add_message($this->getContent("html"));
@@ -569,7 +600,7 @@ class t3lib_htmlmail {
 	function constructHTML_media ($boundary)	{
 /*			// Constructs the HTML-part of message if the HTML contains media
 		$this->add_message("--".$boundary);
-		// htmlcode is added
+			// htmlcode is added
 		$this->add_message($this->html_text_header);
 		$this->add_message('');
 		$this->add_message($this->getContent("html"));
@@ -596,22 +627,22 @@ class t3lib_htmlmail {
 
 	/**
 	 * Sends the mail by calling the mail() function in php. On Linux systems this will invoke the MTA
-	 * defined in sys.ini (sendmail -t -i by default), on Windows a SMTP must be specified in the sys.ini.
-	 * Most common MTA's on Linux has a sendmail interface, including Postfix and Exim.
+	 * defined in php.ini (sendmail -t -i by default), on Windows a SMTP must be specified in the sys.ini.
+	 * Most common MTA's on Linux has a Sendmail interface, including Postfix and Exim.
 	 * For setting the return-path correctly, the parameter -f has to be added to the system call to sendmail.
 	 * This obviously does not have any effect on Windows, but on Sendmail compliant systems this works. If safe mode
 	 * is enabled, then extra parameters is not allowed, so a safe mode check is made before the mail() command is
 	 * invoked. When using the -f parameter, some MTA's will put an X-AUTHENTICATION-WARING saying that
 	 * the return path was modified manually with the -f flag. To disable this warning make sure that the user running
-	 * apahce is in the /etc/mail/trusted-users table.
+	 * Apache is in the /etc/mail/trusted-users table.
 	 *
 	 * POSTFIX: With postfix version below 2.0 there is a problem that the -f parameter can not be used in conjunction
 	 * with -t. Postfix will give an error in the maillog:
 	 *
 	 *  cannot handle command-line recipients with -t
 	 *
-	 * If you experience this problem, enable the parameter [SYS][disableExtraMailFlags] in the install tool of typo3.
-	 * Unfortunally this will mean that the return-path flag is set to the user running Apache!
+	 * This problem is solved by making a call to /usr/sbin/postconf mail_version and checking if the postfix is version
+	 * 1.XX.YY If this is the case, the -f parameter is not used in the call to mail().
 	 *
 	 * This whole problem of return-path turns out to be quite tricky. If you have a solution that works better, on all
 	 * standard MTA's then we are very open for suggestions.
@@ -622,18 +653,16 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function sendTheMail () {
-		global $TYPO3_CONF_VARS;
 #debug(array($this->recipient,$this->subject,$this->message,$this->headers));
-
-				// Sends the mail. Requires the recipient, message and headers to be set.
+			// Sends the mail, requires the recipient, message and headers to be set.
 		if (trim($this->recipient) && trim($this->message))	{	//  && trim($this->headers)
 			$returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
-				//On Windows the -f flag is not used (specific for Sendmail and Postfix), but instead the php.ini parameter sendmail_from is used.
+				//On windows the -f flag is not used (specific for Sendmail and Postfix), but instead the php.ini parameter sendmail_from is used.
 			if($this->returnPath) {
 				ini_set(sendmail_from, $this->returnPath);
 			}
 				//If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
-			if(!ini_get('safe_mode') && !$TYPO3_CONF_VARS['SYS']['disableExtraMailFlags']) {
+			if(!ini_get('safe_mode') && !$this->postfix_version1) {
 				mail($this->recipient,
 					  $this->subject,
 					  $this->message,
@@ -647,7 +676,7 @@ class t3lib_htmlmail {
 			}
 				// Sending copy:
 			if ($this->recipient_copy)	{
-				if(!ini_get('safe_mode') && !$TYPO3_CONF_VARS['SYS']['disableExtraMailFlags']) {
+				if(!ini_get('safe_mode') && !$this->postfix_version1) {
 					mail( 	$this->recipient_copy,
 								$this->subject,
 								$this->message,
@@ -664,7 +693,7 @@ class t3lib_htmlmail {
 			if ($this->auto_respond_msg)	{
 				$theParts = explode('/',$this->auto_respond_msg,2);
 				$theParts[1] = str_replace("/",chr(10),$theParts[1]);
-				if(!ini_get('safe_mode') && !$TYPO3_CONF_VARS['SYS']['disableExtraMailFlags']) {
+				if(!ini_get('safe_mode') && !$this->postfix_version1) {
 					mail( 	$this->from_email,
 								$theParts[0],
 								$theParts[1],
@@ -735,7 +764,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function add_message ($string)	{
-		// Adds a line of text to the mail-body. Is normally use internally
+			// Adds a line of text to the mail-body. Is normally use internally
 		$this->message.=$string."\n";
 	}
 
