@@ -73,6 +73,7 @@ $TYPO3_CONF_VARS = Array(
 		't3lib_cs_utils' => '',					// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
+		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -297,6 +298,13 @@ function debugEnd() {
 
 	// Init services array:
 $T3_SERVICES = array();
+
+
+	// Set PHP memory limit depending on value of $TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]
+if(intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"])>16) {
+	@ini_set('memory_limit',intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]).'m');
+}
+
 
 
 // Load extensions:

@@ -1,3 +1,7 @@
+2004-09-19  Ingmar Schlecht  <ingmars@web.de>
+
+	* Added option to set the PHP memory_limit with the install tool.
+
 2004-09-19  Michael Stucki  <mundaun@gmx.ch>
 
 	* Replaced all (comments AND code!) occurences of "writeable" with "writable"
