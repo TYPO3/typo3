@@ -746,17 +746,11 @@ class t3lib_div {
 	 * @param	string		Accept multiple parameters wich can be comma-separated lists of values and arrays.
 	 * @return	string		Returns the list without any duplicates of values, space around values are trimmed
 	 */
-	function uniqueList()	{
-		$listArray = array();
+	function uniqueList($in_list, $secondParameter=NULL)	{
+		if (is_array($in_list))	die('t3lib_div::uniqueList() does NOT support array arguments anymore! Only string comma lists!');
+		if (isset($secondParameter))	die('t3lib_div::uniqueList() does NOT support more than a single argument value anymore. You have specified more than one.');
 
-		$arg_list = func_get_args();
-		foreach ($arg_list as $in_list)	{
-			if (!is_array($in_list))	{
-				$in_list = t3lib_div::trimExplode(',',$in_list,1);
-			}
-			$listArray = array_merge($listArray,$in_list);
-		}
-		return implode(',',array_unique($listArray));
+		return implode(',',array_unique(t3lib_div::trimExplode(',',$in_list,1)));
 	}
 
 	/**
