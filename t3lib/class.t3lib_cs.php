@@ -134,6 +134,9 @@ class t3lib_cs {
 		// An array where case folding data will be stored (cached)
 	var $caseFolding=array();
 
+		// An array where charset-to-ASCII mappings are stored (cached)
+	var $toASCII=array();
+
 		// This tells the converter which charsets has two bytes per char:
 	var $twoByteSets=array(
 		'ucs-2'=>1,	// 2-byte Unicode
@@ -148,7 +151,7 @@ class t3lib_cs {
 		// This tells the converter which charsets use a scheme like the Extended Unix Code:
 	var $eucBasedSets=array(
 		'gb2312'=>1,		// Chinese, simplified.
-		'big5'=>1,			// Chinese, traditional.
+		'big5'=>1,		// Chinese, traditional.
 		'shift_jis'=>1,		// Japanese - WARNING: Shift-JIS includes half-width katakana single-bytes characters above 0x80!
 	);
 
@@ -550,7 +553,7 @@ class t3lib_cs {
 			for ($a=0;$a<$strLen;$a++)	{	// Traverse each char in string.
 				$chr=substr($str,$a,1);
 				$ord=ord($chr);
-				if ($this->twoByteSets[$charset])	{	// If the charset has two bytes per char
+				if (isset($this->twoByteSets[$charset]))	{	// If the charset has two bytes per char
 					$ord2 = ord($str{$a+1});
 					$ord = $ord<<8 & $ord2; // assume big endian
 
@@ -559,7 +562,7 @@ class t3lib_cs {
 					} else $outStr.=chr($this->noCharByteVal);	// No char exists
 					$a++;
 				} elseif ($ord>127)	{	// If char has value over 127 it's a multibyte char in UTF-8
-					if ($this->eucBasedSets[$charset])	{	// EUC uses two-bytes above 127; we get both and advance pointer and make $ord a 16bit int.
+					if (isset($this->eucBasedSets[$charset]))	{	// EUC uses two-bytes above 127; we get both and advance pointer and make $ord a 16bit int.
 						$a++;
 						$ord2=ord(substr($str,$a,1));
 						$ord = $ord*256+$ord2;
@@ -889,22 +892,40 @@ class t3lib_cs {
 	}
 
 	/**
-	 * This function initializes the UTF-8 case folding table.
+	 * This function initializes all UTF-8 character data tables.
 	 *
 	 * PLEASE SEE: http://www.unicode.org/Public/UNIDATA/
 	 *
+	 * @param	string		???
 	 * @return	integer		Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
 	 * @access private
 	 */
-	function initCaseFoldingUTF8()	{
-			// Only process if the case table is not yet loaded:
-		if (is_array($this->caseFolding['utf-8']))	return 1;
+	function initUnicodeData($mode=null)	{
+			// cache files
+		$cacheFileCase = t3lib_div::getFileAbsFileName('typo3temp/cscase_utf-8.tbl');
+		$cacheFileASCII = t3lib_div::getFileAbsFileName('typo3temp/csascii_utf-8.tbl');
 
-			// Use cached version if possible
-		$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/cscase_utf-8.tbl');
-		if ($cacheFile && @is_file($cacheFile))	{
-			$this->caseFolding['utf-8'] = unserialize(t3lib_div::getUrl($cacheFile));
-			return 2;
+			// Only process if the tables are not yet loaded
+		switch($mode)	{
+			case 'case':
+				if (is_array($this->caseFolding['utf-8']))	return 1;
+
+					// Use cached version if possible
+				if ($cacheFileCase && @is_file($cacheFileCase))	{
+					$this->caseFolding['utf-8'] = unserialize(t3lib_div::getUrl($cacheFile));
+					return 2;
+				}
+				break;
+
+			case 'ascii':
+				if (is_array($this->toASCII['utf-8']))	return 1;
+
+					// Use cached version if possible
+				if ($cacheFileASCII && @is_file($cacheFileASCII))	{
+					$this->toASCII['utf-8'] = unserialize(t3lib_div::getUrl($cacheFileASCII));
+					return 2;
+				}
+				break;
 		}
 
 			// process main Unicode data file
@@ -922,15 +943,59 @@ class t3lib_cs {
 		$utf8CaseFolding['toLower'] = array();
 		$utf8CaseFolding['toTitle'] = array();
 
+		$decomposition = array();	// array of temp. decompositions
+		$mark = array();		// array of chars that are marks (eg. composing accents)
+		$number = array();		// array of chars that are numbers (eg. digits)
+
 		while (!feof($fh))	{
 			$line = fgets($fh);
-				// has also other info like character class (digit, white space, etc.) and more
-			list($char,,,,,,,,,,,,$upper,$lower,$title,) = split(';', rtrim($line));
-			$char = $this->UnumberToChar(hexdec($char));
-			if ($upper)	$utf8CaseFolding['toUpper'][$char] = $this->UnumberToChar(hexdec($upper));
-			if ($lower)	$utf8CaseFolding['toLower'][$char] = $this->UnumberToChar(hexdec($lower));
+				// has a lot of info
+			list($char,,$cat,,,$decomp,,,$num,,,,$upper,$lower,$title,) = split(';', rtrim($line));
+
+			$ord = hexdec($char);
+			if ($ord > 0xFFFF)	break;	// only process the BMP
+
+			$utf8_char = $this->UnumberToChar($ord);
+
+			if ($upper)	$utf8CaseFolding['toUpper'][$utf8_char] = $this->UnumberToChar(hexdec($upper));
+			if ($lower)	$utf8CaseFolding['toLower'][$utf8_char] = $this->UnumberToChar(hexdec($lower));
 				// store "title" only when different from "upper" (only a few)
-			if ($title && $title != $upper)	$utf8CaseFolding['toTitle'][$char] = $this->UnumberToChar(hexdec($title));
+			if ($title && $title != $upper)	$utf8CaseFolding['toTitle'][$utf8_char] = $this->UnumberToChar(hexdec($title));
+
+			switch ($cat{0})	{
+				case 'M':	// mark (accent, umlaut, ...)
+					$mark["U+$char"] = 1;
+					break;
+
+				case 'N':	// numeric value
+					if ($ord > 0x80 && $num != '')	$number["U+$char"] = $num;
+			}
+
+			$match = array();
+			if (ereg('(<.*>)? *(.+)',$decomp,$match))	{
+				switch($match[1])	{
+					case '<circle>':	// add parenthesis as circle replacement, eg (1)
+						$match[2] = '0028 '.$match[2].' 0029';
+						break;
+
+					case '<square>':	// add square brackets as square replacement, eg [1]
+						$match[2] = '005B '.$match[2].' 005D';
+						break;
+
+					case '<compat>':	// ignore multi char decompositions that start with a space
+						if (ereg('^0020 ',$match[2]))	continue 2;
+						break;
+
+						// ignore Arabic and vertical layout presentation decomposition
+					case '<initial>':
+					case '<medial>':
+					case '<final>':
+					case '<isolated>':
+					case '<vertical>':
+						continue 2;
+				}
+				$decomposition["U+$char"] = split(' ',$match[2]);
+			}
 		}
 		fclose($fh);
 
@@ -969,8 +1034,83 @@ class t3lib_cs {
 			}
 		}
 
-		if ($cacheFile)	{
-				t3lib_div::writeFile($cacheFile,serialize($utf8CaseFolding));
+			// custom decompositions
+		$decomposition['U+00A5'] = array('0079','0065','006E');	// YEN SIGN => yen
+		$decomposition['U+00A9'] = array('0028','0063','0029');	// COPYRIGHT SIGN => (c)
+		$decomposition['U+00AE'] = array('0028','0072','0029');	// REGISTERED SIGN => (R)
+		$decomposition['U+00B1'] = array('002B','002F','002D');	// PLUS-MINUS SIGN => +/-
+		$decomposition['U+00B5'] = array('0075');		// MICRO SIGN => u
+		$decomposition['U+00C4'] = array('0041','0045');	// LATIN CAPITAL LETTER A WITH DIAERESIS => AE
+		$decomposition['U+00C5'] = array('0041','0041');	// LATIN CAPITAL LETTER A WITH RING ABOVE => AA (Danish)
+		$decomposition['U+00C6'] = array('0041','0045');	// LATIN CAPITAL LETTER AE => AE
+		$decomposition['U+00D6'] = array('004F','0045');	// LATIN CAPITAL LETTER O WITH DIAERESIS => OE
+		$decomposition['U+00D8'] = array('004F','0045');	// LATIN CAPITAL LETTER O WITH STROKE => OE (Danish)
+		$decomposition['U+00DC'] = array('0055','0045');	// LATIN CAPITAL LETTER U WITH DIAERESIS => UE
+		$decomposition['U+00E4'] = array('0061','0065');	// LATIN SMALL LETTER A WITH DIAERESIS => ae
+		$decomposition['U+00E5'] = array('0061','0061');	// LATIN SMALL LETTER A WITH RING ABOVE => aa
+		$decomposition['U+00DF'] = array('0073','0073');	// LATIN SMALL LETTER SHARP S => ss (German)
+		$decomposition['U+00E6'] = array('0061','0065');	// LATIN SMALL LETTER AE => ae
+		$decomposition['U+00F6'] = array('006F','0065');	// LATIN SMALL LETTER O WITH DIAERESIS => oe
+		$decomposition['U+00F8'] = array('006F','0065');	// LATIN SMALL LETTER O WITH STROKE => oe (Danish)
+		$decomposition['U+00FC'] = array('0075','0065');	// LATIN SMALL LETTER U WITH DIAERESIS => ue
+		$decomposition['U+0152'] = array('004F','0045');	// LATIN CAPITAL LETTER OE => OE
+		$decomposition['U+0153'] = array('006F','0065');	// LATIN SMALL LETTER OE => oe
+		$decomposition['U+02BC'] = array('0027');		// MODIFIER LETTER APOSTROPHE => '
+		$decomposition['U+02CA'] = array('0027');		// MODIFIER LETTER ACUTE ACCENT => '
+		$decomposition['U+2044'] = array('002F');		// FRACTION SLASH => /
+		$decomposition['U+20A0'] = array('0045','0055','0052');	// EURO-CURRENCY SIGN => EUR
+		$decomposition['U+20AC'] = array('0045','0055','0052');	// EURO-CURRENCY SIGN => EUR
+
+			// decompose and remove marks; inspired by unac (Loic Dachary <loic@senga.org>)
+		foreach($decomposition as $from => $to)	{
+			$code_decomp = array();
+
+			while ($code_value = array_shift($to))	{
+				if (isset($decomposition["U+$code_value"]))	{	// do recursive decomposition
+					foreach(array_reverse($decomposition["U+$code_value"]) as $cv)	{
+						array_unshift($to, $cv);
+					}
+				} elseif (!isset($mark["U+$code_value"])) {	// remove mark
+					array_push($code_decomp, $code_value);
+				}
+			}
+			if (count($code_decomp)) {
+				$decomposition[$from] = $code_decomp;
+			} else {
+				unset($decomposition[$from]);
+			}
+		}
+
+			// create ascii only mapping
+		$this->toASCII['utf-8'] = array();
+		$ascii =& $this->toASCII['utf-8'];
+
+		foreach($decomposition as $from => $to)	{
+			$code_decomp = array();
+			while ($code_value = array_shift($to))	{
+				$ord = hexdec($code_value);
+				if ($ord > 127)
+					continue 2;	// skip decompositions containing non-ASCII chars
+				else
+					array_push($code_decomp,chr($ord));
+			}
+			$ascii[$this->UnumberToChar(hexdec($from))] = join('',$code_decomp);
+		}
+
+			// add numeric decompositions
+		foreach($number as $from => $to)	{
+			$utf8_char = $this->UnumberToChar(hexdec($from));
+			if (!isset($ascii[$utf8_char]))	{
+				$ascii[$utf8_char] = $to;
+			}
+		}
+
+		if ($cacheFileCase)	{
+				t3lib_div::writeFile($cacheFileCase,serialize($utf8CaseFolding));
+		}
+
+		if ($cacheFileASCII)	{
+				t3lib_div::writeFile($cacheFileASCII,serialize($ascii));
 		}
 
 		return 3;
@@ -1001,7 +1141,7 @@ class t3lib_cs {
 		}
 
 			// UTF-8 case folding is used as the base conversion table
-		if (!$this->initCaseFoldingUTF8())	{
+		if (!$this->initUnicodeData())	{
 			return false;
 		}
 
@@ -1260,7 +1400,7 @@ class t3lib_cs {
 
 	/**
 	 * Converts special chars (like ÆØÅæøå, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
-	 * CURRENTLY IT IS NOT FULLY IMPLEMENTED!!!
+	 * CURRENTLY IT IS  FULLY IMPLEMENTED ONLY FOR UTF-8!!!
 	 *
 	 * @param	string		Character set of string
 	 * @param	string		Input string to convert
@@ -1268,16 +1408,7 @@ class t3lib_cs {
 	 */
 	function specCharsToASCII($charset,$string)	{
 		if ($charset == 'utf-8')	{
-			$pat  = array (
-				'/'.$this->utf8_encode('æ', 'iso-8859-1').'/',
-				'/'.$this->utf8_encode('ø', 'iso-8859-1').'/',
-				'/'.$this->utf8_encode('å', 'iso-8859-1').'/',
-				'/'.$this->utf8_encode('Æ', 'iso-8859-1').'/',
-				'/'.$this->utf8_encode('Ø', 'iso-8859-1').'/',
-				'/'.$this->utf8_encode('Å', 'iso-8859-1').'/',
-			);
-			$repl = array (	'ae',	'oe',	'aa', 'AE',     'OE',    'AA');
-			$string = preg_replace($pat,$repl,$string);
+			return $this->utf8_toASCII($string);
 		} else {
 			$string = t3lib_div::convUmlauts($string);
 		}
@@ -1498,7 +1629,7 @@ class t3lib_cs {
 	 * @see strtolower(), strtoupper(), mb_convert_case()
 	 */
 	function utf8_conv_case($str,$case)	{
-		if (!$this->initCaseFoldingUTF8())	return $str;	// do nothing
+		if (!$this->initUnicodeData())	return $str;	// do nothing
 
 		$out = '';
 		$caseConv =& $this->caseFolding['utf-8'][$case];
@@ -1513,9 +1644,8 @@ class t3lib_cs {
 				$i += $bc-1;
 			}
 
-			$cc = $caseConv[$mbc];
-			if ($cc)	{
-				$out .= $cc;
+			if (isset($caseConv[$mbc]))	{
+				$out .= $caseConv[$mbc];
 			} else {
 				$out .= $mbc;
 			}
@@ -1524,6 +1654,37 @@ class t3lib_cs {
 		return $out;
 	}
 
+	/**
+	 * Converts chars with accents, umlauts or composed to ASCII equivalents.
+	 *
+	 * @param	string		Input string to convert
+	 * @return	string		The converted string
+	 */
+	function utf8_toASCII(&$str)	{
+		if (!$this->initUnicodeData('ascii'))	return $str;	// do nothing
+
+		$out = '';
+		$toASCII =& $this->toASCII['utf-8'];
+
+		for($i=0; isset($str{$i}); $i++)	{
+			$c = ord($str{$i});
+			if (!($c & 0x80))	// single-byte (0xxxxxx)
+				$mbc = $str{$i};
+			elseif (($c & 0xC0) == 0xC0)	{	// multi-byte starting byte (11xxxxxx)
+				for ($bc=0; $c & 0x80; $c = $c << 1) { $bc++; }	// calculate number of bytes
+				$mbc = substr($str,$i,$bc);
+				$i += $bc-1;
+			}
+
+			if (isset($toASCII[$mbc]))	{
+				$out .= $toASCII[$mbc];
+			} else {
+				$out .= $mbc;
+			}
+		}
+
+		return $out;
+	}
 
 
 
