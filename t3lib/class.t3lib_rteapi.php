@@ -150,7 +150,7 @@ class t3lib_rteapi {
 	 */
 	function transformContent($dirRTE,$value,$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$pid)	{
 
-#debug(array($dirRTE,$value,$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$pid));
+#debug(array($dirRTE,$value,$table,$field,array(),$specConf,$thisConfig,$RTErelPath,$pid));
 
 		if ($specConf['rte_transform'])	{
 			$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);

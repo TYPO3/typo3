@@ -52,7 +52,7 @@
  *  517:     function TS_images_rte($value)	
  *  551:     function TS_reglinks($value,$direction)		
  *  585:     function TS_links_db($value)	
- *  629:     function TS_links_rte($value)	
+ *  629:     function TS_links_rte($value)
  *  704:     function TS_preserve_db($value)	
  *  728:     function TS_preserve_rte($value)	
  *  749:     function TS_transform_db($value,$css=FALSE)	
@@ -71,8 +71,8 @@
  * 1313:     function removeTables($value,$breakChar='<br />')	
  * 1345:     function defaultTStagMapping($code,$direction='rte')	
  * 1368:     function getWHFromAttribs($attribArray)	
- * 1394:     function urlInfoForLinkTags($url)	
- * 1453:     function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)	
+ * 1394:     function urlInfoForLinkTags($url)
+ * 1453:     function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -383,7 +383,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			if ($k%2)	{	// image found, do processing:
 			
 					// Init
-				$attribArray=$this->get_tag_attributes_classic($v,1);
+				$attribArray = $this->get_tag_attributes_classic($v,1);
 				$siteUrl = $this->siteUrl();
 				$absRef = trim($attribArray['src']);		// It's always a absolute URL coming from the RTE into the Database.
 
@@ -406,7 +406,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						
 							$attribArray['src']=$absRef;
 							$params = t3lib_div::implodeParams($attribArray,1);
-							$imgSplit[$k]='<img '.$params.' />';
+							$imgSplit[$k] = '<img '.$params.' />';
 						}
 					}
 				}
@@ -462,7 +462,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							
 								// Forcing values for style and border:
 							unset($attribArray['style']);
-							if (!$attribArray['border'])	$attribArray['border']=0;
+							if (!$attribArray['border'])	$attribArray['border'] = 0;
 							
 								// Finding dimensions of image file:
 							$fI = @getimagesize($filepath);
@@ -487,7 +487,9 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							$imgSplit[$k]='<img '.$params.' />';
 						}
 					} else {	// Remove image if it was not found in a proper position on the server!
-						$imgSplit[$k]='';
+
+							// Commented out; removing the image tag might not be that logical...
+						#$imgSplit[$k]='';
 					}
 				}
 
@@ -588,14 +590,18 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		$blockSplit = $this->splitIntoBlock('A',$value);
 		foreach($blockSplit as $k => $v)	{
 			if ($k%2)	{	// If an A-tag was found:
-				$attribArray=$this->get_tag_attributes_classic($this->getFirstTag($v),1);
+				$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v),1);
 				$info = $this->urlInfoForLinkTags($attribArray['href']);
-				
+
 					// Check options:
 				$attribArray_copy = $attribArray;
 				unset($attribArray_copy['href']);
 				unset($attribArray_copy['target']);
 				unset($attribArray_copy['class']);
+				if ($attribArray_copy['rteerror'])	{	// Unset "rteerror" and "style" attributes if "rteerror" is set!
+					unset($attribArray_copy['style']);
+					unset($attribArray_copy['rteerror']);
+				}
 				if (!count($attribArray_copy))	{	// Only if href, target and class are the only attributes, we can alter the link!
 						// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
 					$bTag='<LINK '.$info['url'].($attribArray['target']?' '.$attribArray['target']:($attribArray['class']?' -':'')).($attribArray['class']?' '.$attribArray['class']:'').'>';
@@ -634,8 +640,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		foreach($blockSplit as $k => $v)	{
 			if ($k%2)	{	// block:
 				$tagCode = t3lib_div::trimExplode(' ',trim(substr($this->getFirstTag($v),0,-1)),1);
-				$link_param=$tagCode[1];
-				$href='';
+				$link_param = $tagCode[1];
+				$href = '';
 				$siteUrl = $this->siteUrl();
 					// Parsing the typolink data. This parsing is roughly done like in tslib_content->typolink()
 				if(strstr($link_param,'@'))	{		// mailadr
@@ -657,11 +663,11 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					} elseif($fileChar)	{	// file (internal)
 						$href = $siteUrl.$link_param;
 					} else {	// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
-						$link_params_parts=explode('#',$link_param);
+						$link_params_parts = explode('#',$link_param);
 						$idPart = trim($link_params_parts[0]);		// Link-data del
-						if (!strcmp($idPart,''))	{$idPart=$this->recPid;}	// If no id or alias is given, set it to class record pid
+						if (!strcmp($idPart,''))	{ $idPart=$this->recPid; }	// If no id or alias is given, set it to class record pid
 						if ($link_params_parts[1] && !$sectionMark)	{
-							$sectionMark='#'.trim($link_params_parts[1]);
+							$sectionMark = '#'.trim($link_params_parts[1]);
 						}
 							// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
 						$pairParts = t3lib_div::trimExplode(',',$idPart);
@@ -672,21 +678,26 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							// Checking if the id-parameter is an alias.
 						if (!t3lib_div::testInt($idPart))	{
 							list($idPartR) = t3lib_BEfunc::getRecordsByField('pages','alias',$idPart);
-							$idPart=intval($idPartR['uid']);
+							$idPart = intval($idPartR['uid']);
 						}
-						$page = t3lib_BEfunc::getRecord('pages',$idPart);
+						$page = t3lib_BEfunc::getRecord('pages', $idPart);
 						if (is_array($page))	{	// Page must exist...
 							$href = $siteUrl.'?id='.$link_param;
 						} else {
-							$href='';
-							$error='no page: '.$idPart;
+							#$href = '';
+							$href = $siteUrl.'?id='.$link_param;
+							$error = 'No page found: '.$idPart;
 						}
-					}		
+					}
 				}
 
 				// Setting the A-tag:
-				$bTag='<a href="'.htmlspecialchars($href).'"'.($tagCode[2]&&$tagCode[2]!='-'?' target="'.htmlspecialchars($tagCode[2]).'"':'').($tagCode[3]?' class="'.htmlspecialchars($tagCode[3]).'"':'').'>';
-				$eTag='</a>';
+				$bTag = '<a href="'.htmlspecialchars($href).'"'.
+							($tagCode[2]&&$tagCode[2]!='-' ? ' target="'.htmlspecialchars($tagCode[2]).'"' : '').
+							($tagCode[3] ? ' class="'.htmlspecialchars($tagCode[3]).'"' : '').
+							($error ? ' rteerror="'.htmlspecialchars($error).'" style="background-color: red; border:2px yellow solid; color: black;"' : '').	// Should be OK to add the style; the transformation back to databsae will remove it...
+							'>';
+				$eTag = '</a>';
 				$blockSplit[$k] = $bTag.$this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
 			}			
 		}
@@ -1404,7 +1415,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					break;
 				}
 			}
-			
+
 			$info['relScriptPath']=substr($curURL,$a);
 			$info['relUrl']=substr($url,$a);
 			$info['url']=$url;
@@ -1412,7 +1423,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 			$siteUrl_parts = parse_url($url);
 			$curUrl_parts = parse_url($curURL);
-			
+
 			if ($siteUrl_parts['host']==$curUrl_parts['host'] 	// Hosts should match
 				&& (!$info['relScriptPath']	|| (defined('TYPO3_mainDir') && substr($info['relScriptPath'],0,strlen(TYPO3_mainDir))==TYPO3_mainDir)))	{	// If the script path seems to match or is empty (FE-EDIT)
 
