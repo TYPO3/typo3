@@ -178,3 +178,20 @@ function GL_hideAll(WMid)	{
 	GLV_hasBeenOver[WMid]=0;
 }
 
+function GL_iframer(WMid,id,state)	{
+	if (bw.ie4||bw.ie5) {
+		ifrmObj = bw.ie4?document.all["Iframe"+WMid]:document.getElementById("Iframe"+WMid);
+		if (state) {
+			parentObj = bw.ie4?document.all[id]:document.getElementById(id);
+			ifrmObj.style.filter='Alpha(opacity=0)';
+			ifrmObj.style.width = parentObj.offsetWidth + "px";
+			ifrmObj.style.height = parentObj.offsetHeight + "px";
+			ifrmObj.style.left = parentObj.offsetLeft + "px";
+			ifrmObj.style.top = parentObj.offsetTop + "px";
+			ifrmObj.style.zIndex = parentObj.style.zIndex-1;
+			ifrmObj.style.display = "";
+		}
+		else ifrmObj.style.display = "none";
+	}
+}
+

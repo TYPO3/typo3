@@ -176,6 +176,8 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 			if ($this->WMisSub)	{
 				$event="GL_stopMove('".$this->WMid."');";
 				$this->I['linkHREF']['onMouseover']='GL_doTop(\''.$this->WMid.'\', \'Menu'.$this->WMid.$key.'\');'.$this->I['linkHREF']['onMouseover'];
+					// IESelectFix - Activates IFRAME layer below menu
+				if ($this->mconf['ieSelectFix']) $this->I['linkHREF']['onMouseover']=$this->I['linkHREF']['onMouseover'].'GL_iframer(\''.$this->WMid.'\',\'Menu'.$this->WMid.$key.'\',true);';
 					// Added 120802; This means that everytime leaving a menuitem the layer should be shut down (and if the layer is hit in the meantime it is not though).
 					// This should happen only for items that are auto-hidden when not over and possibly only when a hide-timer is set. Problem is if the hide-timer is not set and we leave the main element, then the layer will be hidden unless we reach the layer before the timeout will happen and the menu hidden.
 				if (t3lib_div::intInRange($this->mconf['hideMenuWhenNotOver'],0,600) && $this->mconf['hideMenuTimer'])	{
@@ -183,7 +185,9 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 				}
 				$this->I['linkHREF']['onMouseout'].=$event;
 			} else {
-				$this->I['linkHREF']['onMouseover']='GL_hideAll("'.$this->WMid.'");'.$this->I['linkHREF']['onMouseover'];
+				$this->I['linkHREF']['onMouseover'] = 'GL_hideAll("'.$this->WMid.'");'.$this->I['linkHREF']['onMouseover'];
+					// IESelectFix - Hides IFRAME layer below menu
+				if ($this->mconf['ieSelectFix']) $this->I['linkHREF']['onMouseover'] = $this->I['linkHREF']['onMouseover'].'GL_iframer(\''.$this->WMid.'\',\'\',false);';
 				$event='GL_resetAll("'.$this->WMid.'");';
 				$this->I['linkHREF']['onMouseout'].=$event;
 			}
@@ -217,7 +221,6 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	GL_getObjCss("Menu'.$this->WMid.$key.'").visibility = "hidden";';
 				$this->WMlastKey = 'Menu'.$this->WMid.$key;
 			}
-
 			if (!$this->mconf['lockPosition_addSelf'])		{
 				$this->WMy+=(strcmp($this->mconf['setFixedHeight'],'')?$this->mconf['setFixedHeight']:$this->I['val']['output_h'])+intval($this->mconf['lockPosition_adjust']);
 				$this->WMx+=(strcmp($this->mconf['setFixedWidth'],'')?$this->mconf['setFixedWidth']:$this->I['val']['output_w'])+intval($this->mconf['lockPosition_adjust']);
@@ -342,6 +345,12 @@ GL_restoreMenu("'.$mIdStr.'");';
 				$this->WMresetSubMenus.='
 if (!GLV_doReset["'.$mIdStr.'"] && GLV_currentLayer["'.$mIdStr.'"]!=null)	resetSubMenu=0;';
 			}
+		}
+			// IESelectFix - Adds IFRAME tag to HTML, Hides IFRAME layer below menu
+		if ($this->mconf['ieSelectFix']) {
+			$this->WMhideCode.= '
+	GL_iframer(\''.$this->WMid.'\',\'\',false);';
+			$this->divLayers['iframe'] = '<iframe id="Iframe'.$this->WMid.'" scrolling="no" frameborder="0" style="position:absolute; top:0px; left:0px; background-color:transparent; layer-background-color:transparent; display:none;"></iframe>';
 		}
 		$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']=array_merge($this->WMtempStore,$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']);
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared']='<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'media/scripts/jsfunc.layermenu.js"></script>';
