@@ -1863,12 +1863,12 @@ class t3lib_stdGraphic	{
 	function cacheImageDimensions($identifyResult)	{
 		global $TYPO3_DB;
 			// Create a md5 hash of the filename
-		if(function_exists('md5_file')) {
+		if (function_exists('md5_file')) {
 			$md5Hash = md5_file($identifyResult[3]);
 		} else {
-			$md5Hash = md5 (implode('', file($fileName)));
+			$md5Hash = md5 (t3lib_div::getURL($identifyResult[3]));
 		}
-		if($md5Hash) {
+		if ($md5Hash) {
 			$fieldArr = array (
 				'md5hash' => $md5Hash,
 				'md5filename' => md5($identifyResult[3]),
@@ -1898,13 +1898,12 @@ class t3lib_stdGraphic	{
 		if(function_exists('md5_file')) {
 			$md5Hash = md5_file($imageFile);
 		} else {
-			$md5Hash = md5(implode('', file($imag)));
+			$md5Hash = md5(t3lib_div::getURL ($imageFile));
 		}
-
 		ereg('([^\.]*)$',$imageFile,$reg);
 		$res = $TYPO3_DB->exec_SELECTquery ('md5hash, imagewidth, imageheight', 'cache_imagesizes', 'md5filename="'.md5($imageFile).'"');
 		if ($res) {
-			if ($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+			if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
 				if ($row['md5hash']!=$md5Hash) {
 						// file has changed, delete the row
 					$TYPO3_DB->exec_DELETEquery ('cache_imagesizes', 'md5hash="'.$TYPO3_DB->quoteStr($row['md5hash']).'"');
