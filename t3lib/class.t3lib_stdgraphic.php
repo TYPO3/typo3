@@ -2081,7 +2081,8 @@ class t3lib_stdGraphic	{
 	 */
 	function imageMagickIdentify($imagefile)	{
 		if (!$this->NO_IMAGE_MAGICK)	{
-			$cmd = $this->imageMagickPath.'identify '.$this->wrapFileName($imagefile);
+			$frame = $this->noFramePrepended?'':'[0]';
+			$cmd = $this->imageMagickPath.'identify '.$this->wrapFileName($imagefile).$frame;
 			exec($cmd, $returnVal);
 			$splitstring=$returnVal[0];
 			$this->IM_commands[] = Array ('identify',$cmd,$returnVal[0]);

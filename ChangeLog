@@ -1,3 +1,7 @@
+2004-06-18  Michael Stucki  <mundaun@gmx.ch>
+
+	* Fixed bug #0000032: ImageMagick will convert only the first page of a multi-page PDF file
+
 2004-06-11  Robert Lemke  <rl@robertlemke.de>
 
 	* Created new hook in class.t3lib_tcemain.php in process_datamap. Search for $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
