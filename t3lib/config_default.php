@@ -118,7 +118,7 @@ $TYPO3_CONF_VARS = Array(
 		'defaultUserTSconfig' => '',			// Enter lines of default backend user/group TSconfig.
 		'defaultPageTSconfig' => '',			// Enter lines of default Page TSconfig.
 		'defaultPermissions' => array (			// Default permissions set for new pages in t3lib/tce_main.php. Keys are 'show,edit,delete,new,editcontent'. Enter as comma-list
-//			'user' => '',							// default in tce_main is 'show,edit,delete,new,editcontent'. If this is set (uncomment), this value is used instead.
+//			'user' => '',				READFILE:			// default in tce_main is 'show,edit,delete,new,editcontent'. If this is set (uncomment), this value is used instead.
 //			'group' => '',							// default in tce_main is 'show,edit,new,editcontent'. If this is set (uncomment), this value is used instead.
 //			'everybody' => ''						// default in tce_main is ''. If this is set (uncomment), this value is used instead.
 		),
@@ -157,7 +157,7 @@ $TYPO3_CONF_VARS = Array(
 		'strictFormmail' => TRUE,				// Boolean. If set, the internal "formmail" feature in TYPO3 will send mail ONLY to recipients which has been encoded by the system itself. This protects against spammers misusing the formmailer.
 		'compressionLevel' => 0,				// Determines output compression. Requires zlib in your php4 install. Range 1-9, where 1 is least compression (approx. 50%) and 9 is greatest compression (approx 33%). 'true' as value will set the compression based on system load (works with Linux, freebsd). Good default value is 3. For more info, see class in t3lib/class.gzip_encode.php written by Sandy McArthur, Jr. <Leknor@Leknor.com>
 		'compressionDebugInfo' => 0,			// Boolean. If set, then in the end of the pages, the sizes of the compressed and non-compressed document is output. This should be used ONLY as a test, because the content is compressed twice in order to output this statistics!
-		'pageNotFound_handling' => '',			// How TYPO3 should handle requests for non-existing/accessible pages. false (default): The 'nearest' page is shown. TRUE or '1': An TYPO3 error box is displayed. Integer > 1: Not used yet. Strings: redirect URL, eg. 'notfound.html' or 'http://www.domain.org/errors/notfound.html'.
+	'pageNotFound_handling' => '',			// How TYPO3 should handle requests for non-existing/accessible pages. false (default): The 'nearest' page is shown. TRUE or '1': An TYPO3 error box is displayed. Integer > 1: Not used yet (outputs "ERROR: ###"). Strings: redirect URL, eg. 'notfound.html' or 'http://www.domain.org/errors/notfound.html'. If prefixed with "READFILE:" then it will expect the remaining string to be a HTML file which will be read and outputted directly after having the marker "###CURRENT_URL###" substituted with REQUEST_URI and ###REASON### with reason text, for example: "READFILE:fileadmin/notfound.html"
 		'pageNotFound_handling_statheader' => 'Status: 404 Not Found',			// If 'pageNotFound_handling' is enabled, this string will always be sent as header before the actual handling.
 		'userFuncClassPrefix' => 'user_',		// This prefix must be the first part of any function or class name called from TypoScript, for instance in the stdWrap function.
 		'addRootLineFields' => '',				// Comma-list of fields from the 'pages'-table. These fields are added to the select query for fields in the rootline.

@@ -1,3 +1,10 @@
+2004-06-03  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added base url to typo3 error dialog in frontend. Means it shows logo when using realurls now.
+	* Added "READFILE:" prefix for pageNotFound handler in frontend; This will read the contents of an html file and output with substitution of a few marker strings.
+	* Added feature in page tree; Temporary mounting a point in the users page tree as root. (available in the "More options..." - needs upgrade of that extension as well...).
+	* Fixed frontend edit icons under real-url conditions. They didn't work in MSIE. Had to prefix them with base url.
+
 2004-05-29  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Fixed bug; All page types (doktype) was shown to uses even if they were not all in their list of possible type values.

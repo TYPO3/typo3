@@ -720,6 +720,22 @@ class clickMenu {
 		);
 	}
 
+	/**
+	 * Adding element for setting temporary mount point.
+	 *
+	 * @param	integer		Page uid (PID)
+	 * @return	array		Item array, element in $menuItems
+	 * @internal
+	 */
+	function DB_tempMountPoint($page_id)	{
+		return $this->linkItem(
+			$this->label('tempMountPoint'),
+			#$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/___.gif','width="12" height="12"').' alt="" />'),
+			'',
+			"if (top.content.nav_frame) { top.content.nav_frame.document.location = 'alt_db_navframe.php?setTempDBmount=".intval($page_id)."'; } return hideCM();"
+		);
+	}
+
 
 
 

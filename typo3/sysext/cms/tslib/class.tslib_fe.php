@@ -288,6 +288,7 @@
 	var $indexedDocTitle='';			// This value will be used as the title for the page in the indexer (if indexing happens)
 	var $altPageTitle='';				// Alternative page title (normally the title of the page record). Can be set from applications you make.
 	var $pEncAllowedParamNames=array();	// An array that holds parameter names (keys) of GET parameters which MAY be MD5/base64 encoded with simulate_static_documents method.
+	var $baseUrl='';					// The Base url set for the page header.
 
 		// Page content render object
 	var $cObj ='';						// is instantiated object of tslib_cObj
@@ -721,7 +722,7 @@
 		$GLOBALS['TT']->pull();
 
 		if ($this->pageNotFound && $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
-			$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'],$this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader']);
+			$this->pageNotFoundHandler();
 		}
 
 			// set no_cache if set
@@ -763,7 +764,7 @@
 				// If still no page...
 			if (!count($this->page))	{
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
-					$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'],$this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader']);
+					$this->pageNotFoundHandler();
 				} else {
 					$this->printError('The requested page does not exist!');
 					exit;
@@ -982,24 +983,52 @@
 	}
 
 	/**
+	 * Page-not-found handler for use in frontend plugins from extensions.
+	 *
+	 * @param	string		Reason text
+	 * @return	void		Function exits.
+	 */
+	function pageNotFoundAndExit($reason='')	{
+		$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'], $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'], $reason);
+		exit;
+	}
+
+	/**
 	 * Page not found handler.
 	 * Exits.
 	 *
 	 * @param	mixed		Which type of handling; If a true PHP-boolean and TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param	string		If set, this is passed directly to the PHP function, header()
+	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return	void		(The function exists!)
 	 */
-	function pageNotFoundHandler($code,$header='')	{
-		if ($header)	{header($header);}
+	function pageNotFoundHandler($code, $header='', $reason='')	{
+			// Issue header in any case:
+		if ($header)	{ header($header); }
 
+			// Create response:
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{
-			$this->printError('The page did not exist or was inaccessible.');
+			$this->printError('The page did not exist or was inaccessible.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
 			exit;
-		} else if (t3lib_div::testInt($code))	{
-			$this->printError('Error '.$code);
+		} elseif (t3lib_div::testInt($code))	{
+			$this->printError('Error '.$code.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
+			exit;
+		} elseif (t3lib_div::isFirstPartOfStr($code,'READFILE:')) {
+			$readFile = t3lib_div::getFileAbsFileName(trim(substr($code,9)));
+			if (@is_file($readFile))	{
+				$fileContent = t3lib_div::getUrl($readFile);
+				$fileContent = str_replace('###CURRENT_URL###', t3lib_div::getIndpEnv('REQUEST_URI'), $fileContent);
+				$fileContent = str_replace('###REASON###', htmlspecialchars($reason), $fileContent);
+				echo $fileContent;
+			} else {
+				$this->printError('Configuration Error: 404 page "'.$readFile.'" could not be found.');
+			}
+			exit;
+		} elseif (strlen($code)) {
+			header('Location: '.t3lib_div::locationHeaderUrl($code));
 			exit;
 		} else {
-			header('Location: '.t3lib_div::locationHeaderUrl($code));
+			$this->printError('Error.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
 			exit;
 		}
 	}
@@ -2639,7 +2668,7 @@ if (version == "n3") {
 	 * @see t3lib_timeTrack::debug_typo3PrintError()
 	 */
 	function printError($label,$header='Error!')	{
-		t3lib_timeTrack::debug_typo3PrintError($header,$label,0);
+		t3lib_timeTrack::debug_typo3PrintError($header,$label,0,t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 	}
 
 	/**

@@ -169,15 +169,17 @@ class SC_alt_file_navframe {
 		global $LANG,$CLIENT;
 
 			// Produce browse-tree:
-		$tree=$this->foldertree->getBrowsableTree();
+		$tree = $this->foldertree->getBrowsableTree();
 
 		$this->content = '';
 		$this->content.= $this->doc->startPage('Folder tree');
 		$this->content.= $tree;
+		$refreshUrl = t3lib_div::getIndpEnv('REQUEST_URI');
 		$this->content.= '
 			<p class="c-refresh">
-				<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'">'.
+				<a href="'.htmlspecialchars($refreshUrl).'">'.
 				'<img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.
+				'</a><a href="'.htmlspecialchars($refreshUrl).'">'.
 				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a>
 			</p>
 			<br />';

@@ -84,8 +84,8 @@ class t3lib_browseTree extends t3lib_treeView {
 			// This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
 		parent::init(' AND '.$GLOBALS['BE_USER']->getPagePermsClause(1).' '.$clause, 'sorting');
 
-		$this->table='pages';
-		$this->treeName='browsePages';
+		$this->table = 'pages';
+		$this->setTreeName('browsePages');
 		$this->domIdPrefix = 'pages';
 		$this->iconName = '';
 		$this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];

@@ -55,9 +55,9 @@
 
 
 $BACK_PATH='';
-require ('init.php');
-require ('template.php');
-require_once (PATH_t3lib.'class.t3lib_browsetree.php');
+require('init.php');
+require('template.php');
+require_once(PATH_t3lib.'class.t3lib_browsetree.php');
 
 
 
@@ -97,7 +97,7 @@ class localPageTree extends t3lib_browseTree {
 			$lockIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 				'<img'.t3lib_iconWorks::skinImg('','gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
 				'</a>';
-		} else $lockIcon="";
+		} else $lockIcon = '';
 
 			// Add title attribute to input icon tag
 		$thePageIcon = $this->addTagAttributes($icon, $this->titleAttrib.'="'.$this->getTitleAttrib($row).'"');
@@ -145,10 +145,12 @@ class SC_alt_db_navframe {
 	var $content;
 	var $pagetree;
 	var $doc;
+	var $active_tempMountPoint = 0;		// Temporary mount point (record), if any
 
 		// Internal, static: GPvar:
 	var $currentSubScript;
 	var $cMR;
+	var $setTempDBmount;			// If not '' (blank) then it will clear (0) or set (>0) Temporary DB mount.
 
 	/**
 	 * Initialiation of the class
@@ -161,6 +163,7 @@ class SC_alt_db_navframe {
 			// Setting GPvars:
 		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
 		$this->cMR = t3lib_div::_GP('cMR');
+		$this->setTempDBmount = t3lib_div::_GP('setTempDBmount');
 
 			// Create page tree object:
 		$this->pagetree = t3lib_div::makeInstance('localPageTree');
@@ -174,6 +177,10 @@ class SC_alt_db_navframe {
 		$this->pagetree->addField('mount_pid_ol');
 		$this->pagetree->addField('nav_hide');
 		$this->pagetree->addField('url');
+
+#		$this->settingTemporaryMountPoint(11);
+			// Temporary DB mounts:
+		$this->initializeTemporaryDBmount();
 
 			// Setting highlight mode:
 		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
@@ -237,7 +244,7 @@ class SC_alt_db_navframe {
 			// Click menu code is added:
 		$CMparts=$this->doc->getContextMenuCode();
 		$this->doc->bodyTagAdditions = $CMparts[1];
-		$this->doc->JScode.=$CMparts[0];
+		$this->doc->JScode.= $CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
 	}
 
@@ -252,16 +259,38 @@ class SC_alt_db_navframe {
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
 
+			// Start page:
 		$this->content = '';
 		$this->content.= $this->doc->startPage('Page tree');
+
+			// Outputting Temporary DB mount notice:
+		if ($this->active_tempMountPoint)	{
+			$this->content.= '
+				<div class="bgColor4 c-notice">
+					<img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.
+					'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))).'">'.
+					$LANG->sl('LLL:EXT:lang/locallang_core.php:labels.temporaryDBmount',1).
+					'</a><br/>
+					'.$LANG->sl('LLL:EXT:lang/locallang_core.php:labels.path',1).': <span title="'.htmlspecialchars($this->active_tempMountPoint['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).'</span>
+				</div>
+			';
+		}
+
+			// Outputting page tree:
 		$this->content.= $tree;
+
+			// Outputting refresh-link
+		$refreshUrl = t3lib_div::getIndpEnv('REQUEST_URI');
 		$this->content.= '
 			<p class="c-refresh">
-				<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'">'.
+				<a href="'.htmlspecialchars($refreshUrl).'">'.
 				'<img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.
+				'</a><a href="'.htmlspecialchars($refreshUrl).'">'.
 				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a>
 			</p>
 			<br />';
+
+			// CSH icon:
 		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']);
 
 			// Adding highlight - JavaScript
@@ -278,6 +307,59 @@ class SC_alt_db_navframe {
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	/**********************************
+	 *
+	 * Temporary DB mounts
+	 *
+	 **********************************/
+
+	/**
+	 * Getting temporary DB mount
+	 */
+	function initializeTemporaryDBmount(){
+		global $BE_USER;
+
+			// Set/Cancel Temporary DB Mount:
+		if (strlen($this->setTempDBmount))	{
+			$set = t3lib_div::intInRange($this->setTempDBmount,0);
+			if ($set>0 && $BE_USER->isInWebMount($set))	{	// Setting...:
+				$this->settingTemporaryMountPoint($set);
+			} else {	// Clear:
+				$this->settingTemporaryMountPoint(0);
+			}
+		}
+
+			// Getting temporary mount point ID:
+		$temporaryMountPoint = intval($BE_USER->getSessionData('pageTree_temporaryMountPoint'));
+
+			// If mount point ID existed and is within users real mount points, then set it temporarily:
+		if ($temporaryMountPoint > 0 && $BE_USER->isInWebMount($temporaryMountPoint))	{
+			$this->pagetree->MOUNTS = array($temporaryMountPoint);
+			$this->active_tempMountPoint = t3lib_BEfunc::readPageAccess($temporaryMountPoint, $BE_USER->getPagePermsClause(1));
+		}
+	}
+
+	/**
+	 * Setting temporary page id as DB mount
+	 */
+	function settingTemporaryMountPoint($pageId)	{
+		global $BE_USER;
+
+			// Setting temporary mount point ID:
+		$BE_USER->setAndSaveSessionData('pageTree_temporaryMountPoint',intval($pageId));
 	}
 }
 

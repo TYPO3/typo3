@@ -545,13 +545,14 @@ class t3lib_timeTrack {
 	 * @param	boolean		If set, then this will produce a alert() line for inclusion in JavaScript.
 	 * @return	string
 	 */
-	function debug_typo3PrintError($header,$text,$js)	{
+	function debug_typo3PrintError($header,$text,$js,$baseUrl='')	{
 		if ($js)	{
 			echo"alert('".t3lib_div::slashJS($header."\n".$text)."');";
 		} else {
 			echo '
 				<html>
 					<head>
+						'.($baseUrl ? '<base href="'.htmlspecialchars($baseUrl).'" />' : '').'
 						<title>Error!</title>
 					</head>
 					<body bgcolor="white">

@@ -121,11 +121,11 @@ class localRecordList extends recordList {
 		global $LANG;
 
 			// Makes the code for the pageicon in the top
-		$this->pageRow=$row;
+		$this->pageRow = $row;
 		$this->counter++;
 		$alttext = t3lib_BEfunc::getRecordIconAltText($row,'pages');
 		$iconImg = t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"');
-		$titleCol='test';	// pseudo title column name
+		$titleCol = 'test';	// pseudo title column name
 		$this->fieldArray = Array($titleCol,'up');		// Setting the fields to display in the list (this is of course "pseudo fields" since this is the top!)
 
 
@@ -249,7 +249,7 @@ class localRecordList extends recordList {
 			$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_cs($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],-$this->fixedL));
 
 				// Make Icon:
-			$theIcon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' alt="" />';
+			$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' alt="" />';
 		}
 
 			// If there is a returnUrl given, add a back-link:
@@ -269,7 +269,7 @@ class localRecordList extends recordList {
 			</table>';
 
 			// ... and the element row is created:
-		$out.=$this->addelement(1,'',$theData,'',$this->leftMargin,$theIcon);
+		$out.=$this->addelement(1,'',$theData,'',$this->leftMargin, $theIcon);
 
 			// ... and wrapped into a table and added to the internal ->HTMLcode variable:
 		$this->HTMLcode.='

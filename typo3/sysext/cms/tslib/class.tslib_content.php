@@ -6563,7 +6563,8 @@ class tslib_cObj {
 			$iconTitle = $this->stdWrap($conf['iconTitle'],$conf['iconTitle.']);
 			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="t3lib/gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" title="" />';
 			$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
-			$icon = $this->editPanelLinkWrap_doWrap($iconImg,TYPO3_mainDir.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&columnsOnly='.rawurlencode($fieldList).'&noView='.$nV.$addUrlParamStr,implode(':',$rParts));
+			$adminURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir;
+			$icon = $this->editPanelLinkWrap_doWrap($iconImg, $adminURL.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&columnsOnly='.rawurlencode($fieldList).'&noView='.$nV.$addUrlParamStr,implode(':',$rParts));
 			if ($conf['beforeLastTag']<0)	{
 				$content=$icon.$content;
 			} elseif ($conf['beforeLastTag']>0)	{
@@ -6597,16 +6598,18 @@ class tslib_cObj {
 	function editPanelLinkWrap($string,$formName,$cmd,$currentRecord='',$confirm='')	{
 		$eFONPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'];
 		$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
+		$adminURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir;
+
 		if ($cmd=='edit' && !$eFONPage)	{
 			$rParts = explode(':',$currentRecord);
-			$out=$this->editPanelLinkWrap_doWrap($string,TYPO3_mainDir.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&noView='.$nV,$currentRecord);
+			$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&noView='.$nV,$currentRecord);
 		} elseif ($cmd=='new' && !$eFONPage)	{
 			$rParts = explode(':',$currentRecord);
 			if ($rParts[0]=='pages')	{
-				$out=$this->editPanelLinkWrap_doWrap($string,TYPO3_mainDir.'db_new.php?id='.$rParts[1].'&pagesOnly=1',$currentRecord);
+				$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'db_new.php?id='.$rParts[1].'&pagesOnly=1',$currentRecord);
 			} else {
 				$nPid = t3lib_div::testInt($rParts[1]) ? -$rParts[1] : $GLOBALS['TSFE']->id;
-				$out=$this->editPanelLinkWrap_doWrap($string,TYPO3_mainDir.'alt_doc.php?edit['.$rParts[0].']['.$nPid.']=new&noView='.$nV,$currentRecord);
+				$out=$this->editPanelLinkWrap_doWrap($string,$adminURL.'alt_doc.php?edit['.$rParts[0].']['.$nPid.']=new&noView='.$nV,$currentRecord);
 			}
 		} else {
 			if ($confirm)	{
@@ -6626,7 +6629,7 @@ class tslib_cObj {
 	 * Creates a link to a script (eg. typo3/alt_doc.php or typo3/db_new.php) which either opens in the current frame OR in a pop-up window.
 	 *
 	 * @param	string		The string to wrap in a link, typ. and image used as button in the edit panel.
-	 * @param	string		The URL of the link
+	 * @param	string		The URL of the link. Should be absolute if supposed to work with <base> path set.
 	 * @param	string		The "table:uid" of the record being processed by the panel.
 	 * @return	string		A <a> tag wrapped string.
 	 * @access private

@@ -2482,7 +2482,7 @@ class t3lib_div {
 				TYPO3_REQUEST_URL =		[scheme]://[host][:[port]][path]?[query]	(sheme will by default be 'http' until we can detect if it's https -
 				TYPO3_REQUEST_SCRIPT =  [scheme]://[host][:[port]][path_script]
 				TYPO3_REQUEST_DIR =		[scheme]://[host][:[port]][path_dir]
-				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website
+				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website frontend
 				TYPO3_SITE_SCRIPT = 	[script / Speaking URL] of the TYPO3 website
 				TYPO3_DOCUMENT_ROOT	=	Absolute path of root of documents:	TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
 

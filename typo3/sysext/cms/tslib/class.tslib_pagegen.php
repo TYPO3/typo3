@@ -121,6 +121,11 @@ class TSpagegen {
 		$GLOBALS['TSFE']->indexedDocTitle = $GLOBALS['TSFE']->page['title'];
 		$GLOBALS['TSFE']->debug = ''.$GLOBALS['TSFE']->config['config']['debug'];
 
+			// Base url:
+		if ($GLOBALS['TSFE']->config['config']['baseURL']) {
+			$GLOBALS['TSFE']->baseUrl = (intval($GLOBALS['TSFE']->config['config']['baseURL']) ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : $GLOBALS['TSFE']->config['config']['baseURL']);
+		}
+
 			// Internal and External target defaults
 		$GLOBALS['TSFE']->intTarget = ''.$GLOBALS['TSFE']->config['config']['intTarget'];
 		$GLOBALS['TSFE']->extTarget = ''.$GLOBALS['TSFE']->config['config']['extTarget'];
@@ -414,10 +419,9 @@ function linkTo_UnCryptMailto(s)	{	//
 ';
 
 
-		if ($GLOBALS['TSFE']->config['config']['baseURL']) {
-			$ss = intval($GLOBALS['TSFE']->config['config']['baseURL']) ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : $GLOBALS['TSFE']->config['config']['baseURL'];
+		if ($GLOBALS['TSFE']->baseUrl) {
 			$GLOBALS['TSFE']->content.='
-	<base href="'.htmlspecialchars($ss).'" />';
+	<base href="'.htmlspecialchars($GLOBALS['TSFE']->baseUrl).'" />';
 		}
 
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
