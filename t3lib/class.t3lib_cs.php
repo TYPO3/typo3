@@ -122,6 +122,9 @@ class t3lib_cs {
 		// This is the array where parsed conversion tables are stored (cached)
 	var $parsedCharsets=array();
 
+		// An array where case folding data will be stored (cached)
+	var $caseFolding=array();
+
 		// This tells the converter which charsets has two bytes per char:
 	var $twoByteSets=array(
 		'ucs-2'=>1,	// 2-byte Unicode
@@ -646,6 +649,151 @@ class t3lib_cs {
 		return $hex ? 'x'.dechex($int) : $int;
 	}
 
+	/**
+	 * This function initializes the UTF-8 case folding table.
+	 *
+	 * PLEASE SEE: http://www.unicode.org/Public/UNIDATA/
+	 *
+	 * @return	integer		Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
+	 * @access private
+	 */
+	function initCaseFoldingUTF8()	{
+			// Only process if the case table is not yet loaded:
+		if (is_array($this->caseFolding['utf-8']))	return 1;
+
+			// Use cached version if possible
+		$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/cscase_utf-8.tbl');
+		if ($cacheFile && @is_file($cacheFile))	{
+			$this->caseFolding['utf-8'] = unserialize(t3lib_div::getUrl($cacheFile));
+			return 2;
+		}
+
+			// process main Unicode data file
+		$unicodeDataFile = PATH_t3lib.'unidata/UnicodeData.txt';
+		if (!(t3lib_div::validPathStr($unicodeDataFile) && @is_file($unicodeDataFile)))	return false;
+
+		$fh = fopen($unicodeDataFile,'r');
+		if (!$fh)	return false;
+
+			// key = utf8 char (single codepoint), value = utf8 string (codepoint sequence)
+			// note: we use the UTF-8 characters here and not the Unicode numbers to avoid conversion roundtrip in utf8_strtolower/-upper)
+		$this->caseFolding['utf-8'] = array();
+		$utf8CaseFolding =& $this->caseFolding['utf-8']; // a shorthand
+		$utf8CaseFolding['toUpper'] = array();
+		$utf8CaseFolding['toLower'] = array();
+		$utf8CaseFolding['toTitle'] = array();
+
+		while (!feof($fh))	{
+			$line = fgets($fh);
+				// has also other info like character class (digit, white space, etc.) and more
+			list($char,,,,,,,,,,,,$upper,$lower,$title,) = split(';', rtrim($line));
+			$char = $this->UnumberToChar(hexdec($char));
+			if ($upper)	$utf8CaseFolding['toUpper'][$char] = $this->UnumberToChar(hexdec($upper));
+			if ($lower)	$utf8CaseFolding['toLower'][$char] = $this->UnumberToChar(hexdec($lower));
+				// store "title" only when different from "upper" (only a few)
+			if ($title && $title != $upper)	$utf8CaseFolding['toTitle'][$char] = $this->UnumberToChar(hexdec($title));
+		}
+		fclose($fh);
+
+			// process additional Unicode data for casing (allow folded characters to expand into a sequence)
+		$specialCasingFile = PATH_t3lib.'unidata/SpecialCasing.txt';
+		if (t3lib_div::validPathStr($specialCasingFile) && @is_file($specialCasingFile))	{
+
+			$fh = fopen($specialCasingFile,'r');
+			if ($fh)	{
+				while (!feof($fh))	{
+					$line = fgets($fh);
+					if ($line{0} != '#' && trim($line) != '')	{
+
+						list($char,$lower,$title,$upper,$cond) = t3lib_div::trimExplode(';', $line);
+						if ($cond == '' || $cond{0} == '#')	{
+							$utf8_char = $this->UnumberToChar(hexdec($char));
+							if ($char != $lower)	{
+								$arr = split(' ',$lower);
+								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								$utf8CaseFolding['toLower'][$utf8_char] = implode($arr);
+							}
+							if ($char != $title && $title != $upper)	{
+								$arr = split(' ',$title);
+								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								$utf8CaseFolding['toTitle'][$utf8_char] = implode($arr);
+							}
+							if ($char != $upper)	{
+									$arr = split(' ',$upper);
+								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
+								$utf8CaseFolding['toUpper'][$utf8_char] = implode($arr);
+							}
+						}
+					}
+				}
+				fclose($fh);
+			}
+		}
+
+		if ($cacheFile)	{
+				t3lib_div::writeFile($cacheFile,serialize($utf8CaseFolding));
+		}
+
+		return 3;
+	}
+
+	/**
+	 * This function initializes the folding table for a charset other than UTF-8.
+	 * This function is automatically called by the case folding functions.
+	 *
+	 * @return	integer		Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
+	 * @access private
+	 */
+	function initCaseFolding($charset)	{
+			// Only process if the case table is not yet loaded:
+		if (is_array($this->caseFolding[$charset]))	return 1;
+
+			// Use cached version if possible
+		$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/cscase_'.$charset.'.tbl');
+		if ($cacheFile && @is_file($cacheFile))	{
+			$this->caseFolding[$charset] = unserialize(t3lib_div::getUrl($cacheFile));
+			return 2;
+		}
+
+			// init UTF-8 conversion for this charset
+		if (!$this->initCharset($charset))	{
+			return false;
+		}
+
+			// UTF-8 case folding is used as the base conversion table
+		if (!$this->initCaseFoldingUTF8())	{
+			return false;
+		}
+
+		$nochar = chr($this->noCharByteVal);
+		foreach ($this->parsedCharsets[$charset]['local'] as $ci => $utf8)	{
+				// reconvert to charset (don't use chr() of numeric value, might be muli-byte)
+			$c = $this->conv($utf8, 'utf-8', $charset);
+
+			$cc = $this->conv($this->caseFolding['utf-8']['toUpper'][$utf8], 'utf-8', $charset);
+			if ($cc && $cc != $nochar)	$this->caseFolding[$charset]['toUpper'][$c] = $cc;
+
+			$cc = $this->conv($this->caseFolding['utf-8']['toLower'][$utf8], 'utf-8', $charset);
+			if ($cc && $cc != $nochar)	$this->caseFolding[$charset]['toLower'][$c] = $cc;
+
+			$cc = $this->conv($this->caseFolding['utf-8']['toTitle'][$utf8], 'utf-8', $charset);
+			if ($cc && $cc != $nochar)	$this->caseFolding[$charset]['toTitle'][$c] = $cc;
+		}
+
+			// add the ASCII case table
+		for ($i=ord('a'); $i<=ord('z'); $i++)	{
+			$this->caseFolding[$charset]['toUpper'][chr($i)] = chr($i-32);
+		}
+		for ($i=ord('A'); $i<=ord('Z'); $i++)	{
+			$this->caseFolding[$charset]['toLower'][chr($i)] = chr($i+32);
+		}
+
+		if ($cacheFile)	{
+				t3lib_div::writeFile($cacheFile,serialize($this->caseFolding[$charset]));
+		}
+
+		return 3;
+	}
 
 
 
@@ -713,7 +861,7 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 * @bug
 	 */
-	function substr($charset,$str,$start,$len=null)	{
+	function substr($charset,$string,$start,$len=null)	{
 		if ($len===0)	return '';
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
@@ -721,18 +869,18 @@ class t3lib_cs {
 			if ($len==null)	{
 				$enc = mb_internal_encoding();	// save internal encoding
 				mb_internal_encoding('utf-8');
-				$str = mb_substr($str,$start);
+				$str = mb_substr($string,$start);
 				mb_internal_encoding($enc);	// restore internal encoding
 
 				return $str;
 			}
-			else	return mb_substr($str,$start,$len,'utf-8');
+			else	return mb_substr($string,$start,$len,'utf-8');
 		} elseif ($charset == 'utf-8')	{
 			return $this->utf8_substr($string,$start,$len);
 		} elseif ($charset == 'shift_jis')	{
-			return $this->euc_substr($string,$start,$len,'shift_jis');
+			return $this->euc_substr($string,$start,'shift_jis',$len);
 		} elseif ($this->eucBasedSets[$charset])	{
-			return $this->euc_substr($string,$start,$len);
+			return $this->euc_substr($string,$start,$charset,$len);
 		} elseif ($this->twoByteSets[$charset])	{
 			return substr($string,$start*2,$len*2);
 		} elseif ($this->fourByteSets[$charset])	{
@@ -770,7 +918,57 @@ class t3lib_cs {
 		return strlen($string);
 	}
 
+	/**
+	 * Translates all characters of a string into their respective case values.
+	 * Unlike strtolower() and strtoupper() this method is locale independent.
+	 *
+	 * Real case folding is language dependent, this method ignores this fact.
+	 *
+	 * @param	string		string
+	 * @return	string		the converted string
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 * @see strtolower(), strtoupper(), mb_convert_case()
+	 */
+	function conv_case($charset,$string,$case)	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring' &&
+			float(phpversion()) >= 4.3)	{
+			if ($case == 'toLower')	{
+				return mb_strtolower($str,'utf-8');
+			} else {
+				return mb_strtoupper($str,'utf-8');
+			}
+		} elseif ($charset == 'utf-8')	{
+			return $this->utf8_conv_case($string,$case);
+		}
+/*
+		} elseif ($charset == 'shift_jis')	{
+			return $this->euc_conv_case($string,$case,'shift_jis');
+		} elseif ($this->eucBasedSets[$charset])	{
+			return $this->euc_conv_case($string,$case,$charset);
+		}
+*/
 
+		// treat everything else as single-byte encoding
+		if (!$this->initCaseFolding($charset))	return $string;	// do nothing
+
+		$out = '';
+		$caseConv =& $this->caseFolding[$charset][$case];
+		for($i=0; $c=$string{$i}; $i++)	{
+			$cc = $caseConv[$c];
+			if ($cc)	{
+				$out .= $cc;
+			} else {
+				$out .= $c;
+			}
+		}
+
+		// is a simple strtr() faster or slower than the code above?
+		// perhaps faster for small single-byte tables but slower for large multi-byte tables?
+		//
+		// return strtr($string,$this->caseFolding[$charset][$case]);
+
+		return $out;
+	}
 
 
 
@@ -787,7 +985,7 @@ class t3lib_cs {
 
 	/********************************************
 	 *
-	 * UTF-8 String operation functions
+	 * UTF-8 string operation functions
 	 *
 	 ********************************************/
 
@@ -826,7 +1024,6 @@ class t3lib_cs {
 	 * @return	string		the substring
 	 * @see substr()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 * @bug
 	 */
 	function utf8_substr($str,$start,$len=null)	{
 		if ($len===0)	return '';
@@ -957,6 +1154,46 @@ class t3lib_cs {
 		return $n;
 	}
 
+	/**
+	 * Translates all characters of an UTF-8 string into their respective case values.
+	 *
+	 * @param	string		UTF-8 string
+	 * @param	string		conversion: 'toLower' or 'toUpper'
+	 * @return	string		the converted string
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 * @see strtolower()
+	 */
+	function utf8_conv_case($str,$case)	{
+		if (!$this->initCaseFoldingUTF8())	return $str;	// do nothing
+
+		$out = '';
+		$caseConv =& $this->caseFolding['utf-8'][$case];
+		for($i=0; $str{$i}; $i++)	{
+			$c = ord($str{$i});
+			if (!($c & 0x80))	// single-byte (0xxxxxx)
+				$mbc = $str{$i};
+			elseif (($c & 0xC0) == 0xC0)	{	// multi-byte starting byte (11xxxxxx)
+				for ($bc=0; $c & 0x80; $c = $c << 1) { $bc++; }	// calculate number of bytes
+				$mbc = substr($str,$i,$bc);
+				$i += $bc-1;
+			}
+
+			$cc = $caseConv[$mbc];
+			if ($cc)	{
+				$out .= $cc;
+			} else {
+				$out .= $mbc;
+			}
+		}
+
+		return $out;
+	}
+
+
+
+
+
+
 
 
 
@@ -971,7 +1208,7 @@ class t3lib_cs {
 
 	/********************************************
 	 *
-	 * EUC String operation functions
+	 * EUC string operation functions
 	 *
 	 * Extended Unix Code:
 	 *  ASCII compatible 7bit single bytes chars
@@ -1020,8 +1257,8 @@ class t3lib_cs {
 	 *
 	 * @param	string		EUC multibyte character string
 	 * @param	int		start position (character position)
+	 * @param	string		the charset
 	 * @param	int		length (in characters)
-	 * @param	[type]		$len: ...
 	 * @return	string		the substring
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
