@@ -198,6 +198,16 @@ class tslib_menu {
 
 				// ID
 			$this->id = $id ? $id : $this->tmpl->rootLine[$this->entryLevel]['uid'];		// If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
+
+
+			//added by Julle: Check if page is a mount point, and set id and MP_array.
+			$idPage = $GLOBALS['TSFE']->sys_page->getRawRecord('pages',$this->id);
+			if (is_array($idPage) && $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $idPage['mount_pid']>0)	{
+			  $this->MP_array[] =$idPage['mount_pid'].'-'.$idPage['uid'];
+			  $this->id=$idPage['mount_pid'];
+			};
+			//end addition.
+
 			$this->menuNumber = $menuNumber;
 			$this->nextActive = $this->tmpl->rootLine[$this->entryLevel+$this->menuNumber]['uid'];	
 
@@ -864,6 +874,8 @@ class tslib_menu {
 	 */
 	function subMenu($uid,$mount_point=0)	{
 			// starts a submenu...
+	  // Added by Julle: keep original uid in order to unfold submenus at the right point
+	        $orig_uid = $uid;
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $mount_point>0)	{
 			$MP=$mount_point.'-'.$uid;
 			$uid=$mount_point;
@@ -874,8 +886,8 @@ class tslib_menu {
 		if (is_array($this->menuArr[$this->I['key']]['_SUB_MENU']) && count($this->menuArr[$this->I['key']]['_SUB_MENU']))	{
 			$altArray = $this->menuArr[$this->I['key']]['_SUB_MENU'];
 		}
-
-		if ($this->subLevelClass && ($this->mconf['expAll'] || ($uid && $uid==$this->nextActive) || is_array($altArray)) && !$this->mconf['sectionIndex'])	{
+		//Modified by Julle: Make submenu if the original page, and not the mount point, is the next active.
+		if ($this->subLevelClass && ($this->mconf['expAll'] || ($uid && $orig_uid==$this->nextActive) || is_array($altArray)) && !$this->mconf['sectionIndex'])	{
 			$submenu = t3lib_div::makeInstance('tslib_'.$this->subLevelClass);
 			$submenu->entryLevel = $this->entryLevel+1;
 			$submenu->MP_array = $this->MP_array;
