@@ -203,6 +203,12 @@ $TCA['be_users'] = Array (
 				'type' => 'check'
 			)
 		),
+		'disableIPlock' => Array (
+			'label' => 'Disable IP lock for user:',
+			'config' => Array (
+				'type' => 'check'
+			)
+		),
 		'admin' => Array (
 			'label' => 'Admin(!):',
 			'config' => Array (
@@ -334,8 +340,8 @@ $TCA['be_users'] = Array (
 		'createdByAction' => Array('config'=>array('type'=>'passthrough'))
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
-		'1' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, options;;;;4-4-4, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5')
+		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
+		'1' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, options;;;;4-4-4, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5')
 	),
 	'palettes' => Array (
 		'1' => Array('showitem' => 'disable, starttime, endtime')

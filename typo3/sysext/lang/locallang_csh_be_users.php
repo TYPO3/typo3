@@ -25,6 +25,8 @@ be_groups',
 		'_lockToDomain.seeAlso' => 'be_groups:lockToDomain,
 fe_users:lockToDomain,
 fe_groups:lockToDomain',
+		'disableIPlock.description' => 'Disable the lock of the backend users session to the remote IP number.',
+		'disableIPlock.details' => 'You will have to disable this lock if backend users are accessing TYPO3 from ISDN or modem connections which may shutdown and reconnect with a new IP. The same would be true for DHCP assignment of IP numbers where new IP numbers are frequently assigned.',
 		'db_mountpoints.description' => 'Assign startpoints for the users page tree.',
 		'db_mountpoints.details' => 'The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a \'Database mount\'.
 

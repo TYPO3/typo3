@@ -1,3 +1,7 @@
+2004-03-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added a checkbox for be-users to disable IP locking. This is useful if you have backend users complaining about being thrown off sessions.
+
 [RC2 note:
 As usual the changelog is not at all "complete" in terms of what has been changed. I regret this, but the tradeoff would be slower development if all details had to go in here which is why they don't.
 However all IMPORTANT changes that might break compatibility somewhere is always entered in the log with "!!!" prefixed.

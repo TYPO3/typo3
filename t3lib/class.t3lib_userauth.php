@@ -44,7 +44,7 @@
  *  419:     function logoff() 
  *  434:     function gc() 
  *  448:     function user_where_clause()	
- *  462:     function ipLockClause()	
+ *  462:     function ipLockClause()
  *  478:     function writeUC($variable='')	
  *  501:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)	
  *  510:     function checkLogFailures()	
@@ -202,7 +202,7 @@ class t3lib_userAuth {
 						$this->session_table.'.ses_id = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'" 
 							AND '.$this->session_table.'.ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'" 
 							AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.' 
-							'.$this->ipLockClause().' 
+							'.$this->ipLockClause().'
 							'.$this->user_where_clause()
 					);
 		if ($this->user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
@@ -217,7 +217,8 @@ class t3lib_userAuth {
 			if ($timeout>0 && ($GLOBALS['EXEC_TIME'] < ($this->user['ses_tstamp']+$timeout)))	{
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 											$this->session_table, 
-											'ses_id="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'" AND ses_name="'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"', 
+											'ses_id="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'"
+												AND ses_name="'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"',
 											array('ses_tstamp' => $GLOBALS['EXEC_TIME'])
 										);
 					$this->user['ses_tstamp'] = $GLOBALS['EXEC_TIME'];	// Make sure that the timestamp is also updated in the array
@@ -330,12 +331,12 @@ class t3lib_userAuth {
 							} else {	
 									// The loginsession is started.
 								$this->loginSessionStarted = 1;
-	
+
 									// Inserting session record:
 								$insertFields = array(
 									'ses_id' => $this->id,
-									'ses_name' => $this->name, 
-									'ses_iplock' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
+									'ses_name' => $this->name,
+									'ses_iplock' => $this->user['disableIPlock'] ? '[DISABLED]' : t3lib_div::getIndpEnv('REMOTE_ADDR'),
 									'ses_userid' => $tempuser[$this->userid_column],
 									'ses_tstamp' => $GLOBALS['EXEC_TIME']
 								);
@@ -461,8 +462,10 @@ class t3lib_userAuth {
 	 */
 	function ipLockClause()	{
 		if ($this->lockIP)	{
-			$wherePart = 'AND '.$this->session_table.'.ses_iplock="'.$GLOBALS['TYPO3_DB']->quoteStr(t3lib_div::getIndpEnv('REMOTE_ADDR'),$this->session_table).'"';
-			
+			$wherePart = 'AND (
+				'.$this->session_table.'.ses_iplock="'.$GLOBALS['TYPO3_DB']->quoteStr(t3lib_div::getIndpEnv('REMOTE_ADDR'),$this->session_table).'"
+				OR '.$this->session_table.'.ses_iplock="[DISABLED]"
+				)';
 			return $wherePart;
 		}
 	}

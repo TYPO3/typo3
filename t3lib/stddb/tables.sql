@@ -74,6 +74,7 @@ CREATE TABLE be_users (
   file_mountpoints varchar(40) DEFAULT '' NOT NULL,
   fileoper_perms tinyint(4) DEFAULT '0' NOT NULL,
   lockToDomain varchar(50) DEFAULT '' NOT NULL,
+  disableIPlock tinyint(3) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
   TSconfig blob NOT NULL,
   lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
