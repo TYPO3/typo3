@@ -2350,15 +2350,19 @@ class t3lib_TCEmain	{
 		$uid = intval($uid);
 		if (is_array($TCA[$table]) && $uid > 0)	{
 
+				// Get Page TSconfig relavant:
+			list($tscPID) = t3lib_BEfunc::getTSCpid($table,$uid,'');
+			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+
 				// If table is "pages":
 			if (t3lib_extMgm::isLoaded('cms'))	{
 				if ($table=='pages')	{
 
-						// Builds list of pages on the SAME level as this page:
+						// Builds list of pages on the SAME level as this page (siblings)
 					$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-									'A.pid AS pid, B.uid AS uid, B.title AS title',
-									$table.' AS A, '.$table.' AS  B',
-									'A.uid='.intval($uid).' AND B.pid=A.pid'
+									'A.pid AS pid, B.uid AS uid',
+									'pages AS A, pages AS  B',
+									'A.uid='.intval($uid).' AND B.pid=A.pid AND B.deleted=0'
 								);
 
 					$list_cache = array();
@@ -2366,8 +2370,34 @@ class t3lib_TCEmain	{
 					while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
 						$list_cache[] = $row_tmp['uid'];
 						$pid_tmp = $row_tmp['pid'];
+
+							// Add children as well:
+						if ($TSConfig['clearCache_pageSiblingChildren'])	{
+							$res_tmp2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+											'uid',
+											'pages',
+											'pid='.intval($row_tmp['uid']).' AND deleted=0'
+										);
+							while ($row_tmp2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp2))	{
+								$list_cache[] = $row_tmp2['uid'];
+							}
+						}
 					}
+
+						// Finally, add the parent page as well:
 					$list_cache[] = $pid_tmp;
+
+						// Add grand-parent as well:
+					if ($TSConfig['clearCache_pageGrandParent'])	{
+						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+										'pid',
+										'pages',
+										'uid='.intval($pid_tmp)
+									);
+						if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp))	{
+							$list_cache[] = $row_tmp['pid'];
+						}
+					}
 
 						// Delete cache for selected pages:
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
@@ -2382,8 +2412,6 @@ class t3lib_TCEmain	{
 			}
 
 				// Clear cache for pages entered in TSconfig:
-			list($tscPID) = t3lib_BEfunc::getTSCpid($table,$uid,'');
-			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 			if ($TSConfig['clearCacheCmd'])	{
 				$Commands = t3lib_div::trimExplode(',',strtolower($TSConfig['clearCacheCmd']),1);
 				$Commands = array_unique($Commands);

@@ -1,3 +1,7 @@
+2004-04-22  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added configuration options for what level of pages cache is cleared when you edit a page header. You can not get children and grand-parents cleared as well. (TCEMAIN.clear..... in Page TSconfig)
+
 2004-04-21  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added "altText" and "titleText" attributes to the IMGMAP object (used for IMGMENU: Now you can add values to the alt and title attributes of image maps).
