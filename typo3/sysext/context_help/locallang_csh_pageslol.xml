@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for Pages Language Overlay table</description>
+		<type>CSH</type>
+		<fileId>EXT:context_help/locallang_csh_pageslol.php</fileId>
+		<csh_table>pages_language_overlay</csh_table>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">Represents an alternative language for the page.</label>
+			<label index=".details">These records contains fields very similar to the Page records, exactly those fields which should be translated to another language in case you want a localized version of the page.
+Create only ONE Alternative Page Language record of a specific language in each page. Having more than one record will leave it uncertain which of them is used when the page is displayed.
+
+Before you can create Alternative Page Language records you should create a 'master' language to be available in the root of the website (&quot;Website Language&quot;)
+The TypoScript template must be configured to allow other languages as well.
+
+Technically when an alternative language is being viewed, the content of the Alternative Page Language record is simply overlaid on the actual page records thus substituting the content of the fields in the default language.</label>
+			<label index="_.seeAlso">sys_language, 
+_MOD_web_layout:language_list</label>
+			<label index="hidden.description">Use this to temporarily disable the alternative language overlay for this page.</label>
+			<label index="hidden.details">Setting this option is practical in the phase of adding the extra language. When it is set, the alternative content will not be displayed unless you - as an logged in backend user - enableds the Admin Panel&gt;Preview&gt;Show hidden records option.</label>
+			<label index="_hidden.seeAlso">pages_language_overlay:starttime,
+pages_language_overlay:endtime</label>
+			<label index="starttime.description">The 'Start' time determines the date from which the alternative language will be available online.</label>
+			<label index="_starttime.seeAlso">pages_language_overlay:endtime,
+pages_language_overlay:hidden,
+pages:starttime</label>
+			<label index="endtime.description">The 'End' time determines the date from which the alternative language will be available online.</label>
+			<label index="_endtime.seeAlso">pages_language_overlay:starttime,
+pages_language_overlay:hidden,
+pages:endtime</label>
+			<label index="title.description">Enter the title of the alternative language.</label>
+			<label index="_title.seeAlso">pages:title</label>
+			<label index="subtitle.description">Enter the subtitle of the alternative language.</label>
+			<label index="_subtitle.seeAlso">pages:subtitle</label>
+			<label index="keywords.description">Enter the keywords of the alternative language.</label>
+			<label index="_keywords.seeAlso">pages:keywords</label>
+			<label index="description.description">Enter the description of the alternative language.</label>
+			<label index="_description.seeAlso">pages:description</label>
+			<label index="abstract.description">Enter the abstract of the alternative language.</label>
+			<label index="_abstract.seeAlso">pages:abstract</label>
+			<label index="author.description">Enter the author of the alternative language.</label>
+			<label index="_author.seeAlso">pages:author</label>
+			<label index="author_email.description">Enter the author email address of the alternative language.</label>
+			<label index="_author_email.seeAlso">pages:author_email</label>
+			<label index="media.description">Enter the media files of the alternative language.</label>
+			<label index="_media.seeAlso">pages:media</label>
+			<label index="sys_language_uid.description">Select the Alternative Language represented by this record.</label>
+			<label index="_sys_language_uid.seeAlso">sys_language,
+sys_language:title</label>
+			<label index="nav_title.description">Enter optional navigation title of the alternative language.</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index=".description">Representeert een alternatieve taal voor de pagina.</label>
+			<label index=".details">Deze records bevatten velden die overeenkomen met de pagina records, om precies te zijn die velden die nodig zijn om een vertaalde versie van je pagina beschikbaar te maken.
+Creëer slecht ÉÉN Alternative Page Language record voor een specifieke taal voor elke pagina. Wanneer er meerdere records zijn is het onzeker welke wordt gebruikt als de pagina wordt weergegeven.
+
+Voordat je een Alternative Page Language record aan kunt maken, moet je een 'hoofd' taal beschikbaar stellen in de root van de website (&quot;Website Language&quot;).
+Het TypoScript template moet ook geconfigureerd worden voor het gebruik van andere talen.
+
+Technisch is het zo dat wanneer een alternatieve taal wordt bekeken, de inhoud van het Alternative Page Language record over de actuele page records wordt heen gelegd en daarmee de inhoud van de pagina in de standaard taal vervangt.</label>
+			<label index="_.seeAlso">sys_language</label>
+			<label index="hidden.description">Gebruik deze optie om de alternatieve taal voor deze pagina tijdelijk uit te schakelen.</label>
+			<label index="hidden.details">Het gebruik van deze optie is praktisch in de fase waarin een extra taal wordt toegevoegd. Wanneer ingeschakeld, wordt de alternatieve inhoud niet weergegeven, tenzij je - als ingelogde backend gebruiker - dit mogelijk maakt via de optie Admin Panel&gt;Preview&gt;Show hidden records</label>
+			<label index="_hidden.seeAlso">pages_language_overlay:starttime,
+pages_language_overlay:endtime</label>
+			<label index="starttime.description">De 'Start' tijd bepaalt de datum wanneer de alternatieve taal beschikbaar komt.</label>
+			<label index="_starttime.seeAlso">pages_language_overlay:endtime,
+pages_language_overlay:hidden,
+pages:starttime</label>
+			<label index="endtime.description">De 'Stop' tijd bepaald de datum wanneer de alternatieve taal niet meer beschikbaar is.</label>
+			<label index="_endtime.seeAlso">pages_language_overlay:starttime,
+pages_language_overlay:hidden,
+pages:endtime</label>
+			<label index="title.description">Voer de titel van de alternatieve taal in.</label>
+			<label index="_title.seeAlso">pages:title</label>
+			<label index="subtitle.description">Voor een ondertitel in voor de alternatieve taal.</label>
+			<label index="_subtitle.seeAlso">pages:subtitle</label>
+			<label index="keywords.description">Voer enkele sleutelwoorden in voor de alternatieve taal.</label>
+			<label index="_keywords.seeAlso">pages:keywords</label>
+			<label index="description.description">Voer een beschrijving in voor de alternatieve taal.</label>
+			<label index="_description.seeAlso">pages:description</label>
+			<label index="abstract.description">Voer een samenvatting in van de alternatieve taal</label>
+			<label index="_abstract.seeAlso">pages:abstract</label>
+			<label index="author.description">Voer de auteur van de alternatieve taal in</label>
+			<label index="_author.seeAlso">pages:author</label>
+			<label index="author_email.description">Voer het email adres in van de auteur van de alternatieve taal.</label>
+			<label index="_author_email.seeAlso">pages:author_email</label>
+			<label index="media.description">Voer de media files in van de alternatieve taal</label>
+			<label index="_media.seeAlso">pages:media</label>
+			<label index="sys_language_uid.description">Selecteer de alternatieve taal die door dit record wordt gerepresenteerd.</label>
+			<label index="_sys_language_uid.seeAlso">sys_language,
+sys_language:title</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index=".description">Esittää sivun vaihtoehtoista kieltä.</label>
+			<label index=".details">Näiden tietueiden tiedot ovat hyvin samankaltaisia Sivu (Page) tietueiden kanssa, siksi vastaavat tiedot on käännettävä toiselle kielelle halutessasi lokalisoida sivun.
+Luo ainaoastaan YKSI Vaihtoehtoinen Sivun Kieli (Alternative Page Language) tietue haluamallesi kielelle kullekin sivulle
+Jos niitä on useampia järjestelmä jää epätietoiseksi mitä olisi käytettävä.
+
+Ennenkuin voit luoda Vaihtoehtoinen Sivun Kieli (Alternative Page Language) tietueita on Sinun luota 'master' kieli käytettäväksi websivuston juuressa (&quot;Website Language&quot;).
+TypoScript mallissa (template) täytyy myösmääritellä sallimaan muita kieliä.
+
+Teknisesti, kun vaihtoehtoinen kieli näytetään, sisältö Vaihtoehtoinen Sivun Kieli (Alternative Page Language) tietueesta asetetaan alkuperäisen päälle ja siten korvataan oletus kielellä tehty sisältö/kentät.</label>
+			<label index="hidden.description">Käytä tätä vaihtoehtoa, jotta vaihtoehtoisen kielen osuus ei enää ole voimassa sivulla (on piilotettuna).</label>
+			<label index="hidden.details">Tämän vaihtoehdon valinta on käytännöllistä kun olet lisäämässä uutta kieltä. Kun vaihtoehto on asetettu, uudella kielellä tehty sisältö ei näy ellet sinä - niin kauan kuin olet sisäänkirjoitettuna taustakäyttäjänä (BR user) sitä mahdollista käyttäen komentoja Admin Panle&gt;Preview&gt;Show hidden vaihtoehdolla.</label>
+			<label index="starttime.description">Anna aloituspäivä mistä alkaen vaihtoehtoinen kieli on voimassa.</label>
+			<label index="endtime.description">Anna lopetuspäivä mistä alkaen vaihtoehtoinen kieli ei enää ole voimassa.</label>
+			<label index="title.description">Anna otsikko vaihtoehtoiselle kielelle.</label>
+			<label index="subtitle.description">Anna alaotsikko vaihtoehtoiselle kielelle.</label>
+			<label index="keywords.description">Anna avainsanat vaihtoehtoiselle kielelle.</label>
+			<label index="description.description">Anna kuvaus vaihtoehtoiselle kielelle.</label>
+			<label index="abstract.description">Anna abstrakti vaihtoehtoiselle kielelle.</label>
+			<label index="author.description">Anna kirjoittaja vaihtoehtoiselle kielelle.</label>
+			<label index="author_email.description">Anna kirjoittajan sähköpostiosoite vaihtoehtoiselle kielelle.</label>
+			<label index="media.description">Anna media tiedostot vaihtoehtoiselle kielelle.</label>
+			<label index="sys_language_uid.description">Valitse Vaihtoehtoinen Kieli jota tämä tietue edustaa.</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index=".description">Predstavlja alternativni jezik za stranicu.</label>
+			<label index="title.description">Unesite naslov alternativnog jezika.</label>
+			<label index="subtitle.description">Unesite podnaslov alternativnog jezika.</label>
+			<label index="keywords.description">Unesite ključne riječi alternativnog jezika.</label>
+			<label index="description.description">Unesite opis alternativnog jezika.</label>
+			<label index="author.description">Unesite autora alternativnog jezika.</label>
+			<label index="author_email.description">Unesite email adresu autora alternativnog jezika.</label>
+			<label index="media.description">Unesite medijske datoteke alternativnog jezika.</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="dk" type="array">
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index=".description" type="integer">230200392</label>
+			<label index=".details" type="integer">27958106</label>
+			<label index="_.seeAlso" type="integer">85038517</label>
+			<label index="hidden.description" type="integer">148737156</label>
+			<label index="hidden.details" type="integer">56904419</label>
+			<label index="_hidden.seeAlso" type="integer">134776947</label>
+			<label index="starttime.description" type="integer">162646530</label>
+			<label index="_starttime.seeAlso" type="integer">250778776</label>
+			<label index="endtime.description" type="integer">213075354</label>
+			<label index="_endtime.seeAlso" type="integer">82858426</label>
+			<label index="title.description" type="integer">168754082</label>
+			<label index="_title.seeAlso" type="integer">267363775</label>
+			<label index="subtitle.description" type="integer">249795538</label>
+			<label index="_subtitle.seeAlso" type="integer">204654384</label>
+			<label index="keywords.description" type="integer">81696492</label>
+			<label index="_keywords.seeAlso" type="integer">27554533</label>
+			<label index="description.description" type="integer">137311270</label>
+			<label index="_description.seeAlso" type="integer">131292060</label>
+			<label index="abstract.description" type="integer">114774738</label>
+			<label index="_abstract.seeAlso" type="integer">152647465</label>
+			<label index="author.description" type="integer">135693417</label>
+			<label index="_author.seeAlso" type="integer">55062789</label>
+			<label index="author_email.description" type="integer">230171675</label>
+			<label index="_author_email.seeAlso" type="integer">44492422</label>
+			<label index="media.description" type="integer">117106707</label>
+			<label index="_media.seeAlso" type="integer">259282464</label>
+			<label index="sys_language_uid.description" type="integer">76275608</label>
+			<label index="_sys_language_uid.seeAlso" type="integer">163684535</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index=".description" type="integer">230200392</label>
+			<label index=".details" type="integer">27958106</label>
+			<label index="hidden.description" type="integer">148737156</label>
+			<label index="hidden.details" type="integer">56904419</label>
+			<label index="starttime.description" type="integer">162646530</label>
+			<label index="endtime.description" type="integer">213075354</label>
+			<label index="title.description" type="integer">168754082</label>
+			<label index="subtitle.description" type="integer">249795538</label>
+			<label index="keywords.description" type="integer">81696492</label>
+			<label index="description.description" type="integer">137311270</label>
+			<label index="abstract.description" type="integer">114774738</label>
+			<label index="author.description" type="integer">135693417</label>
+			<label index="author_email.description" type="integer">230171675</label>
+			<label index="media.description" type="integer">117106707</label>
+			<label index="sys_language_uid.description" type="integer">76275608</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index=".description" type="integer">230200392</label>
+			<label index="title.description" type="integer">168754082</label>
+			<label index="subtitle.description" type="integer">249795538</label>
+			<label index="keywords.description" type="integer">81696492</label>
+			<label index="description.description" type="integer">137311270</label>
+			<label index="author.description" type="integer">135693417</label>
+			<label index="author_email.description" type="integer">230171675</label>
+			<label index="media.description" type="integer">117106707</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_hash>
+</T3locallang>

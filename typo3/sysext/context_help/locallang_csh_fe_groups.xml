@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for Frontend Usergroups</description>
+		<type>CSH</type>
+		<fileId>EXT:context_help/locallang_csh_fe_groups.php</fileId>
+		<csh_table>fe_groups</csh_table>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="hidden.description">This option disables the user group.</label>
+			<label index="hidden.details">If you disable a user group all user which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</label>
+			<label index="_hidden.seeAlso">fe_users:disable</label>
+			<label index="title.description">Name of the group.</label>
+			<label index="title.details">This title will appear as the group name in the 'Access'-list in other records.</label>
+			<label index="lockToDomain.description">Enter the host name from which the group will be available only.</label>
+			<label index="lockToDomain.details">This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</label>
+			<label index="_lockToDomain.seeAlso">fe_users:lockToDomain</label>
+			<label index="description.description">Enter a description of the group.</label>
+			<label index="description.details">This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</label>
+			<label index="TSconfig.description">TSconfig for the group (advanced).</label>
+			<label index="TSconfig.details">This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</label>
+			<label index="TSconfig.syntax">TypoScript syntax, without conditions and constants.</label>
+			<label index="_TSconfig.seeAlso">fe_users:TSconfig</label>
+			<label index=".description">Usergroups for Website users.</label>
+			<label index=".details">The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members or that group will be able to view the element on the website.</label>
+			<label index="_.seeAlso">fe_users, 
+About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/</label>
+			<label index="_.image">EXT:context_help/cshimages/fegroups_3.png,
+EXT:context_help/cshimages/fegroups_4.png</label>
+			<label index=".image_descr">The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="hidden.description">Dette valg slår brugergruppen fra.</label>
+			<label index="description.description">Indtast en beskrivelse af gruppen.</label>
+			<label index="description.details">Dette er kun til internt brug og er blot en måde hvorpå du kan notere hvad gruppen er til, hvorfor du har oprettet den og hvem der bør være medlem.
+Brug det hvis du vil.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="hidden.description">Questa opzione disabilita il gruppo utenti.</label>
+			<label index="hidden.details">Se un gruppo utenti viene disabilitato, tutti gli utenti che appartengono a tal gruppo non erediteranno alcuna proprietà del gruppo.
+Per esempio se una pagina o un contenuto erano accessibili solo a questo gruppo, che viene disabilitato, nessuno poi potrà avere accesso alla pagina o al contenuto.</label>
+			<label index="title.description">Nome del gruppo.</label>
+			<label index="title.details">Questo titolo apparirà come il nome del gruppo nella &quot;Access-list&quot; negli altri records.</label>
+			<label index="lockToDomain.description">Inserire l'hostname da cui il gruppo sarà disponibile.</label>
+			<label index="lockToDomain.details">Questa opzione è importante se ha siti web distinti nello stesso database TYPO3 ma con ancora una sola pagina principale di immagazzinamento per tutti gli utenti.
+In questo modo gli utenti dovranno loggarsi in ciascuno degli indirizzi del sito web. Questo può essere considerato una caratteristica positiva (avendo un login globale come un utente) o un problema (nel caso ci dovessero essere differenti cartelle utente).
+
+Si può voler limitare l'uso di un usergroup ad un determinato sito web, e non permettere il login da url differenti. Inserendo l'host name del sito, si fa in modo che lo usergroup  sia usato solo da questo dominio.
+
+&lt;b&gt;Nota:&lt;/b&gt; L'uso di questa opzione non è critica se hai Website user storages multipli, ovvero uno per ciascun sito.</label>
+			<label index="description.description">Inserisci la descrizione del gruppo.</label>
+			<label index="description.details">Questo è per uso interno ed è solo un modo per inserire una nota sul gruppo, perchè è stato creato e quali potrebbero essere i membri.
+Da usare a piacere.</label>
+			<label index="TSconfig.description">TSconfig per il gruppo (avanzato).</label>
+			<label index="TSconfig.details">Questo è il TSconfig per il gruppo. I valori sono ereditati da ciascun utente membro di questo gruppo.
+La configurazione può venire sovrascritta da altri gruppi e dal TSconfig dell'utente stesso.</label>
+			<label index="TSconfig.syntax">Sintassi TypoScript, senza condizioni e costanti.</label>
+			<label index=".description">Usergroup per i Website users.</label>
+			<label index=".details">La restrizione di accesso in TYPO3 è assegnata a questi Usergroup. Quando una pagina o un altro elemento ha una restrizione d'accesso per un gruppo, solo i Website users che sono membri di questo gruppo potranno vedere l'elemento del sito web.</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="hidden.description">Cette option désactive le groupe d'utilisateurs</label>
+			<label index="hidden.details">Si vous désactivez un groupe d'utilisateurs, tous les membres de ce groupe n'hériteront plus d'aucune propriétés que ce groupe leur attribuait.
+Par exemple, si l'accès à une page ou un contenu était restreint à ce groupe et que vous le désactivez, aucun membre du groupe n'aura accès à cette page ou à ce contenu</label>
+			<label index="title.description">Nom du groupe</label>
+			<label index="title.details">Ce titre apaaraitra comme le nom du groupe dans la 'liste d'accès' dans les autres enregistrements</label>
+			<label index="lockToDomain.description">Entrez le nom de machine depuis laquelle l'accès à ce groupe restreint.</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="hidden.description">Deze optie schakelt de gebruikersgroep uit.</label>
+			<label index="hidden.details">Wanneer een gebruikersgroep uitgeschakeld wordt, dan zullen alle gebruikers die lid van deze groep zijn, geen eigenschappen van deze gebruikersgroep erven.
+&lt;strong&gt;Voorbeeld:&lt;/strong&gt; Als een bladzijde of inhoudselement alleen toegankelijk was met deze specifieke groep en de groep is uitschakeld dan zal niemand van deze groep meer toegang tot de pagina of het inhoudselement hebben.</label>
+			<label index="title.description">Naam van de groep.</label>
+			<label index="title.details">Deze titel verschijnt als de groepsnaam in de &quot;Toegang&quot;-lijst in andere records.</label>
+			<label index="lockToDomain.description">Voer de hostnaam in van waaruit de groep beschikbaar is.</label>
+			<label index="lockToDomain.details">Deze optie kan van belang zijn wanneer er meerdere websites in één zelfde TYPO3 database zijn ondergebracht met slechts één enkele opslag pagina voor alle website gebruikers. De gebruikers kunnen dan inloggen op elke website url. Dit kan beschouwd worden als een feature (een globale login voor een gebruiker) of een probleem (in welk geval je in ieder geval aparte opslag pagina's voor gebruikers zou moeten hebben). In elk geval kan het zijn dat het gebruik van een bepaalde website beperkt dient te worden tot een bepaalde gebruikersgroep. U wilt niet dat een groep ingeschakeld wordt voor een gebruiker die inlogd op een andere url (nog steeds binnen dezelfde database). Door de hostnaam van de website hier in te voeren wordt de groep beperkt tot gebruik binnen dit domein.
+
+&lt;strong&gt;N.B.&lt;/strong&gt; Het gebruik van deze optie is niet kritisch wanneer er meerdere opslag pagina's zijn voor gebruikers, namelijk één voor elke site.</label>
+			<label index="description.description">Voer een beschrijving van de groep in.</label>
+			<label index="description.details">Dit is voor intern gebruik, en slechts om een notitie toe te voegen over het doel van de groep, waarom u de groep heeft aangemaakt en wie de leden zouden moeten zijn.
+Gebruik het naar eigen inzicht.</label>
+			<label index="TSconfig.description">TSconfig voor de groep (geavanceerd)</label>
+			<label index="TSconfig.details">Dit is de gebruikers TSconfig voor de groep. De waarden worden geërfd door elke gebruiker die lid is van deze groep.
+De configuratie kan worden overschreven in andere groepen en door de TSconfig van de gebruiker zelf.</label>
+			<label index="TSconfig.syntax">TypoScript syntaxis, zonder condities en constanten</label>
+			<label index=".description">Gebruikersgroepen voor website gebruikers</label>
+			<label index=".details">De toegangsbeperkingen in TYPO3 worden aan deze groepen toegekend. Wanneer de toegang tot een pagina of inhoudselement is beperkt tot een groep, dan kunnen alleen de websitegebruikers die lid van deze groep zijn dit element op de website zien.</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="hidden.description">Tämä vaihtoehto poistaa voimassa-olon käyttäjäryhmältä</label>
+			<label index="hidden.details">Jos poistat käytöstä käyttäjäryhmän, menettävätkaikki käyttäjät, jotka ovat kuuluneet tähän ryhmään, tälle ryhmälle kuuluneet oikeudet.
+Esimerkiksi, jos sivun tai sisällölle oli määritelty oikeudet vain tälle ryhmälle, ei kenelläkään tähän ryhmään kuuluneella ole enää oikeuksia näille sivuille tai sivujen sisältöihin.</label>
+			<label index="title.description">Ryhmän nimi</label>
+			<label index="title.details">Tämä otsikko esiintyy ryhmän nimenä 'Oikeudet' ('Access') listalla muissa tietueissa.</label>
+			<label index="lockToDomain.description">Anna domainin nimi joka (ainoastaan) on käytettävissä käyttäjäryhmälle.</label>
+			<label index="lockToDomain.details">Tämä vaihtoehto voi olla tärkeä jos Sinulla on useita web-sivustoja samassa TYPO3 tietokannassa mutta vain yksi sivu jonne kaikki sivuston käyttäjien tiedot on talletettu.
+Näin käyttäjät voivat sisäänkirjoittautua mille sivustolle tahansa. Tätä ominaisuutta voi käyttää esimerkiksi mahdollisuutena (siten että on vain yksi globaali käyttäjätunnus) tai ongelmana (jolloin sinun on joka tapuksesssa luota useiden käyttäjien tietovasto).
+Voit kuitenkin haluata rajoittaa sivuston käyttäjäryhmät tietylle sivustolle, vaikka käyttäjä pääseekin toiselle sivustolle ilman tätä ryhmää (kaikki tässä samassaTYPO3 tietokannassa).
+Antamalla domainin (host) nimen rajoitat ryhmän pääsevän vain tähän domainiin.
+
+&lt;b&gt;Huomautus:&lt;/b&gt;Tämän vaihtoehdon käyttäminen ei ole kriittistä jos sinuallaon useita käyttäjien tietovarstoja (sivuja jonne käyttäjät on tallennettu), tee näin ; yksi käyttäjäsivu per domain.</label>
+			<label index="description.description">Anna ryhmän kuvaus</label>
+			<label index="description.details">Tämä on vain sisäiseen käyttöön ja on vain muistutuksena mitä varten käyttäjäryhmä on olemassa, miksi olet luonut sen ja keitä sen jäseninä tulisi olla.
+Käyttö on Sinusta itsestäsi kiinni.</label>
+			<label index="TSconfig.description">TSconfig tiedot ryhmälle (laajennettu)</label>
+			<label index="TSconfig.details">Tämä on käyttäjän TSconfig tiedot ryhmälle. Nämä arvot periytyvät kaikille tämän ryhmän jäsenille.
+Tämä konfiguraatio voidaan ylittää toisen käyttäjänryhmän tai käyttäjän omilla TSconfig tiedoilla.</label>
+			<label index="TSconfig.syntax">TypoScript syntaksi, ilman ehtoja ja vakioita.</label>
+			<label index=".description">Käyttäjäryhmät www-sivujen käyttäjille.</label>
+			<label index=".details">Käyttörajoitukset TYPO#ssa on asetettu näille käyttäjäryhmille. Kun sivulle tai jollekin muulle elementille on asetetturajoituksekset vain tälle ryhmälle, ainoastaan WebSivuston (Website) käyttäjät tai tämän ryhmän jäsenet voivat nähdä sivun tai elementin www-sivustolla.</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="hidden.description">Denna option stänger användargruppen.</label>
+			<label index="title.description">Gruppens namn</label>
+			<label index="description.description">Gruppens förklaring</label>
+			<label index="TSconfig.description">Gruppens TSconfig (advancerad)</label>
+			<label index="TSconfig.syntax">TypoScript syntax, utan villkor och konstanter.</label>
+			<label index=".description">Användargrupper för Website-användare.</label>
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="hidden.description">Ova opcija onemogućava korisničke grupe.</label>
+			<label index="hidden.details">Onemogućite li grupe korisnika svi korisnici koji su članovi grupe neće naslijediti niti jedno svojstvo ove grupe.
+Na primjer ako je stranici ili dijelu njezina sadržaja pridružene dozvole pristupa samo ovoj grupi i ukoliko onemogućite grupe korisnika nitko neće moći pristupati stranici ili dijelu njezina sadržaja.</label>
+			<label index="title.description">Ime grupe.</label>
+			<label index="title.details">Ovaj naslov će se pojavljivati kao ime grupe u listi dozvola drugih zapisa.</label>
+			<label index="lockToDomain.description">Unesite naziv računala s koga će grupa biti jedino dostupna.</label>
+			<label index="lockToDomain.details">Ova opcija je značajna ukoliko imate više web sjedišta u jednoj TYPO3 bazi podataka i samo jedan repozitorij (stranicu) korisnika za sva web sjedišta. Na taj način korisnici se mogu prijaviti putem URLa bilo kojeg web sjedišta. Ovo može biti željeno svojstvo  (globalna prijava za korisnike) ili problem (u tom slučaju možete koristiti više repozitorija korisnika).
+Također možete ograničiti korištenje određenog web sjedišta grupama tako da onemogućite korisniku članstvo u grupi web sjedišta ukoliko se prijavio putem drugog URLa (korisnici su i dalje u istoj bazi). Unošenjem naziva računala web sjedišta ograničavate korištenje grupe samo na određenu domenu.
+
+&lt;b&gt;Napomena:&lt;/b&gt; Korištenje ove opcije nije kritično ukoliko imate posebne repozitorije korisnika za svako web sjedište.</label>
+			<label index="description.description">Unesite opis grupe.</label>
+			<label index="description.details">Ovo je samo za intenu upotrebu tako da možete unjeti podatke kao što su: namjena grupe, tko je je kreirao i tko može biti njezin član.
+Koristite prema svojim potrebama.</label>
+			<label index="TSconfig.description">TSconfig za grupe (napredna opcija).</label>
+			<label index="TSconfig.details">Ovdje se mogu postaviti konfiguracijske postavke grupe. Vrijednosti će naslijediti bilo koji korisnik web sjedišta koji je član grupe.
+Konfiguracija može biti nadjačana postavkama drugih grupa ili TSconfig postavkama samog korisnika.</label>
+			<label index="TSconfig.syntax">TypoScript sintaksa, bez uvjeta i konstanti.</label>
+			<label index=".description">Grupe korisnika weba.</label>
+			<label index=".details">Restrikcija pristupa pridružena je ovim grupama. Kada stranica ili drugi njezini elementi imaju postavljenu restrikciju pristupa samo određenih grupa, samo korisnici web sjedišta koji su ujedno i članovi određene grupe mogu vidjeti te elemente.</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="dk" type="array">
+			<label index="hidden.description" type="integer">168238848</label>
+			<label index="description.description" type="integer">159132670</label>
+			<label index="description.details" type="integer">40579879</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="hidden.description" type="integer">168238848</label>
+			<label index="hidden.details" type="integer">188562478</label>
+			<label index="title.description" type="integer">200720346</label>
+			<label index="title.details" type="integer">203471735</label>
+			<label index="lockToDomain.description" type="integer">178950964</label>
+			<label index="lockToDomain.details" type="integer">134951756</label>
+			<label index="description.description" type="integer">159132670</label>
+			<label index="description.details" type="integer">40579879</label>
+			<label index="TSconfig.description" type="integer">256600387</label>
+			<label index="TSconfig.details" type="integer">13102818</label>
+			<label index="TSconfig.syntax" type="integer">117035971</label>
+			<label index=".description" type="integer">181980664</label>
+			<label index=".details" type="integer">225347704</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="hidden.description" type="integer">168238848</label>
+			<label index="hidden.details" type="integer">188562478</label>
+			<label index="title.description" type="integer">200720346</label>
+			<label index="title.details" type="integer">203471735</label>
+			<label index="lockToDomain.description" type="integer">178950964</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="hidden.description" type="integer">168238848</label>
+			<label index="hidden.details" type="integer">188562478</label>
+			<label index="title.description" type="integer">200720346</label>
+			<label index="title.details" type="integer">203471735</label>
+			<label index="lockToDomain.description" type="integer">178950964</label>
+			<label index="lockToDomain.details" type="integer">134951756</label>
+			<label index="description.description" type="integer">159132670</label>
+			<label index="description.details" type="integer">40579879</label>
+			<label index="TSconfig.description" type="integer">256600387</label>
+			<label index="TSconfig.details" type="integer">13102818</label>
+			<label index="TSconfig.syntax" type="integer">117035971</label>
+			<label index=".description" type="integer">181980664</label>
+			<label index=".details" type="integer">225347704</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="hidden.description" type="integer">168238848</label>
+			<label index="hidden.details" type="integer">188562478</label>
+			<label index="title.description" type="integer">200720346</label>
+			<label index="title.details" type="integer">203471735</label>
+			<label index="lockToDomain.description" type="integer">178950964</label>
+			<label index="lockToDomain.details" type="integer">134951756</label>
+			<label index="description.description" type="integer">159132670</label>
+			<label index="description.details" type="integer">40579879</label>
+			<label index="TSconfig.description" type="integer">256600387</label>
+			<label index="TSconfig.details" type="integer">13102818</label>
+			<label index="TSconfig.syntax" type="integer">117035971</label>
+			<label index=".description" type="integer">181980664</label>
+			<label index=".details" type="integer">225347704</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="hidden.description" type="integer">168238848</label>
+			<label index="title.description" type="integer">200720346</label>
+			<label index="description.description" type="integer">159132670</label>
+			<label index="TSconfig.description" type="integer">256600387</label>
+			<label index="TSconfig.syntax" type="integer">117035971</label>
+			<label index=".description" type="integer">181980664</label>
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="hidden.description" type="integer">168238848</label>
+			<label index="hidden.details" type="integer">188562478</label>
+			<label index="title.description" type="integer">200720346</label>
+			<label index="title.details" type="integer">203471735</label>
+			<label index="lockToDomain.description" type="integer">178950964</label>
+			<label index="lockToDomain.details" type="integer">134951756</label>
+			<label index="description.description" type="integer">159132670</label>
+			<label index="description.details" type="integer">40579879</label>
+			<label index="TSconfig.description" type="integer">256600387</label>
+			<label index="TSconfig.details" type="integer">13102818</label>
+			<label index="TSconfig.syntax" type="integer">117035971</label>
+			<label index=".description" type="integer">181980664</label>
+			<label index=".details" type="integer">225347704</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_hash>
+</T3locallang>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for System Languages table.</description>
+		<type>CSH</type>
+		<fileId>EXT:context_help/locallang_csh_syslang.php</fileId>
+		<csh_table>sys_language</csh_table>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title.description">Enter the name of this additional system language.</label>
+			<label index="hidden.description">This option will hide the system language from being available in the backend.</label>
+			<label index=".description">Defines which languages are alternatively available on each webpage.</label>
+			<label index=".details">The Web&gt;Page module has a feature which allows users to edit page content divided into not only columns but also languages. The languages available for translation are determined by the number of Website Language record created.
+For a webpage to be available in another language an &quot;Alternative Page Language&quot; record must be created on the page.</label>
+			<label index="_.seeAlso">pages_language_overlay</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="title.description">Inserire il nome della lingua di sistema addizionale.</label>
+			<label index="hidden.description">Questa opzione nasconderà la lingua di sistema nel backend.</label>
+			<label index=".description">Definisce quale lingue sono disponibili in ogni pagina web.</label>
+			<label index=".details">Il modulo della pagina web ha una opzione che consente agli utenti di modificare il contenuto delle pagine dividendolo non solo in colonne ma anche in lingue. Le lingue possibili per la traduzione sono determinate dal numero di record &quot;Website Language&quot; creati.
+Per poter visualizzare una pagina in un'altra lingua deve essere creato un record &quot;Alternative Page Language&quot;.</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="title.description">Voer de naam in van deze additionele systeem taal</label>
+			<label index="hidden.description">Deze optie verbergt de systeem taal, zodat deze niet beschibaar is in de backend.</label>
+			<label index=".description">Definieert welke talen als alternatief beschibaar zijn op de webpagina.</label>
+			<label index=".details">De Web&gt;Pagina module heeft een feature die het gebruikers mogelijk maakt pagina inhoud niet alleen te bewerken in verschillende kolommen, maar ook in verschillende talen. De talen die voor vertaling beschikbaar zijn worden bepaald door het aantal Website Language records dat is aangemaakt.
+Om een webpagina in een andere taal beschikbaar te maken, moet een &quot;'Alternatvie Page Language&quot; record worden aangemaakt op die pagina.</label>
+			<label index="_.seeAlso">pages_language_overlay</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="title.description">Anna nimi tälle lisättävälle järjestelmän kielelle.</label>
+			<label index="hidden.description">Tämä vaihtoehto poistaa mahdollisuuden käyttää tätä järjestelmän kieltä taustatoiminnoissa (BE).</label>
+			<label index=".description">Määrittelee mitkä kielet ovat vaihtoehtoisesti käytettävissä websivuilla.</label>
+			<label index=".details">Web&gt;Page aliohjelmassa on ominaisuus joka mahdollistaa käytäjien ei ainoastaan jakaa sisältöä sarakkeisiin  vaan myös eri kielille. Mahdolliset eri kielten käännökset päätellään Websivu kielen tietueen numerosta.
+Jotta web sivu olisi käytettävissä vaihtoehtoiselle kielelle tulee luoda 'Vaihtoehtoinen Sivun Kieli&quot; (&quot;Alternative Page Language&quot;) tietue sivulle.</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="title.description">Unesite ime ovog dodatnog sistemskog jezika.</label>
+			<label index="hidden.description">Ova opcija će sakriti sistemski jezik da nije dostupan iz backend-a.</label>
+			<label index=".description">Definira koji jezici su alternativno dostupni na svakoj web stranici.</label>
+			<label index=".details">Web&gt;Stanica modul ima opciju koja omogućuje korisnicima da uređuju
+sadržaj stranice podjeljen ne samo na kolone nego i na jezike. Jezici
+dostupni za prijevod se određuju sa brojem kreiranih zapisa jezika website-a.
+Da bi stranica bila dostupna na drugom jeziku &quot;Alternativni jezik stranice&quot;
+mora biti kreiran na stranici.</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="dk" type="array">
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="title.description" type="integer">111675524</label>
+			<label index="hidden.description" type="integer">199895530</label>
+			<label index=".description" type="integer">1687697</label>
+			<label index=".details" type="integer">28146563</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="title.description" type="integer">111675524</label>
+			<label index="hidden.description" type="integer">199895530</label>
+			<label index=".description" type="integer">1687697</label>
+			<label index=".details" type="integer">28146563</label>
+			<label index="_.seeAlso" type="integer">108055646</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="title.description" type="integer">111675524</label>
+			<label index="hidden.description" type="integer">199895530</label>
+			<label index=".description" type="integer">1687697</label>
+			<label index=".details" type="integer">28146563</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="title.description" type="integer">111675524</label>
+			<label index="hidden.description" type="integer">199895530</label>
+			<label index=".description" type="integer">1687697</label>
+			<label index=".details" type="integer">28146563</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_hash>
+</T3locallang>
