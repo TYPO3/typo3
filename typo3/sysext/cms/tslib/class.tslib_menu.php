@@ -45,56 +45,56 @@
  *  139: class tslib_menu 
  *  181:     function start($tmpl,$sys_page,$id,$conf,$menuNumber)	
  *  230:     function makeMenu()	
- *  662:     function includeMakeMenu($conf,$altSortField)	
- *  679:     function procesItemStates($splitCount)	
- *  862:     function subMenu($uid,$mount_point=0)	
- *  904:     function link($key,$altTarget='',$typeOverride='') 
- *  960:     function isActive($uid)	
- *  971:     function isCurrent($uid)	
- *  984:     function isSubMenu($uid,$mount_point=0)	
- * 1008:     function isItemState($kind,$key)	
- * 1045:     function accessKey($title)	
- * 1071:     function userProcess($mConfKey,$passVar)	
- * 1086:     function setATagParts()	
- * 1099:     function getPageTitle($title,$nav_title)	
+ *  657:     function includeMakeMenu($conf,$altSortField)	
+ *  674:     function procesItemStates($splitCount)	
+ *  860:     function subMenu($uid,$mount_point=0)	
+ *  902:     function link($key,$altTarget='',$typeOverride='') 
+ *  958:     function isActive($uid)	
+ *  969:     function isCurrent($uid)	
+ *  982:     function isSubMenu($uid,$mount_point=0)	
+ * 1006:     function isItemState($kind,$key)	
+ * 1043:     function accessKey($title)	
+ * 1069:     function userProcess($mConfKey,$passVar)	
+ * 1084:     function setATagParts()	
+ * 1097:     function getPageTitle($title,$nav_title)	
  *
  *
- * 1130: class tslib_tmenu extends tslib_menu 
- * 1139:     function generate()	
- * 1155:     function writeMenu()	
- * 1285:     function getBeforeAfter($pref)	
- * 1315:     function addJScolorShiftFunction()	
- * 1337:     function extProc_init()	
- * 1348:     function extProc_RO($key)	
- * 1359:     function extProc_beforeLinking($key)	
- * 1371:     function extProc_afterLinking($key)	
- * 1388:     function extProc_beforeAllWrap($item,$key)	
- * 1399:     function extProc_finish()	
+ * 1128: class tslib_tmenu extends tslib_menu 
+ * 1137:     function generate()	
+ * 1153:     function writeMenu()	
+ * 1283:     function getBeforeAfter($pref)	
+ * 1313:     function addJScolorShiftFunction()	
+ * 1335:     function extProc_init()	
+ * 1346:     function extProc_RO($key)	
+ * 1357:     function extProc_beforeLinking($key)	
+ * 1369:     function extProc_afterLinking($key)	
+ * 1386:     function extProc_beforeAllWrap($item,$key)	
+ * 1397:     function extProc_finish()	
  *
  *
- * 1435: class tslib_gmenu extends tslib_menu 
- * 1444:     function generate()	
- * 1482:     function makeGifs($conf, $resKey)	
- * 1679:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	
- * 1751:     function writeMenu()	
- * 1849:     function extProc_init()	
- * 1860:     function extProc_RO($key)	
- * 1871:     function extProc_beforeLinking($key)	
- * 1884:     function extProc_afterLinking($key)	
- * 1901:     function extProc_beforeAllWrap($item,$key)	
- * 1912:     function extProc_finish()	
+ * 1433: class tslib_gmenu extends tslib_menu 
+ * 1442:     function generate()	
+ * 1480:     function makeGifs($conf, $resKey)	
+ * 1677:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	
+ * 1749:     function writeMenu()	
+ * 1847:     function extProc_init()	
+ * 1858:     function extProc_RO($key)	
+ * 1869:     function extProc_beforeLinking($key)	
+ * 1882:     function extProc_afterLinking($key)	
+ * 1899:     function extProc_beforeAllWrap($item,$key)	
+ * 1910:     function extProc_finish()	
  *
  *
- * 1946: class tslib_imgmenu extends tslib_menu 
- * 1955:     function generate()	
- * 1973:     function makeImageMap($conf)	
- * 2142:     function writeMenu()	
+ * 1944: class tslib_imgmenu extends tslib_menu 
+ * 1953:     function generate()	
+ * 1971:     function makeImageMap($conf)	
+ * 2140:     function writeMenu()	
  *
  *
- * 2185: class tslib_jsmenu extends tslib_menu 
- * 2192:     function generate()	
- * 2200:     function writeMenu()	
- * 2260:     function generate_level($levels,$count,$pid,$menuItemArray='')	
+ * 2183: class tslib_jsmenu extends tslib_menu 
+ * 2190:     function generate()	
+ * 2198:     function writeMenu()	
+ * 2258:     function generate_level($levels,$count,$pid,$menuItemArray='')	
  *
  * TOTAL FUNCTIONS: 40
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -122,15 +122,15 @@
  * Base class. The HMENU content object uses this (or more precisely one of the extension classes).
  * Amoung others the class generates an array of menuitems. Thereafter functions from the subclasses are called.
  * The class is ALWAYS used through extension classes (like tslib_gmenu or tslib_tmenu which are classics) and
- * 
+ *
  * Example of usage (from tslib_cObj):
- * 
+ *
  * $menu = t3lib_div::makeInstance('tslib_'.$cls);
  * $menu->parent_cObj = $this;
  * $menu->start($GLOBALS['TSFE']->tmpl,$GLOBALS['TSFE']->sys_page,'',$conf,1);
  * $menu->makeMenu();
  * $content.=$menu->writeMenu();
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -169,7 +169,7 @@ class tslib_menu {
 
 	/**
 	 * The initialization of the object. This just sets some internal variables.
-	 * 
+	 *
 	 * @param	object		The $GLOBALS['TSFE']->tmpl object
 	 * @param	object		The $GLOBALS['TSFE']->sys_page object
 	 * @param	integer		A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
@@ -234,8 +234,8 @@ class tslib_menu {
 	 * Creates the menu in the internal variables, ready for output.
 	 * Basically this will read the page records needed and fill in the internal $this->menuArr
 	 * Based on a hash of this array and some other variables the $this->result variable will be loaded either from cache OR by calling the generate() method of the class to create the menu for real.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function makeMenu()	{
 		if ($this->id)	{
@@ -270,9 +270,8 @@ class tslib_menu {
 								$id=$idPage['mount_pid'];
 							} else $MP=0;
 							
-							$query = $GLOBALS['TSFE']->cObj->getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
-							$res = mysql(TYPO3_db, $query);
-							while ($row = mysql_fetch_assoc($res))	{
+							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								$temp[$row['uid']]=$GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 								$temp[$row['uid']]['_MP_PARAM']=$MP;
 							}
@@ -348,9 +347,8 @@ class tslib_menu {
 							$extraWhere.=' AND '.$sortField.'>'.($GLOBALS['SIM_EXEC_TIME']-$maxAge);
 						}
 	
-						$query = $GLOBALS['TSFE']->cObj->getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
-						$res = mysql(TYPO3_db, $query);
-						while ($row = mysql_fetch_assoc($res))	{
+						$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
+						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 							$temp[$row['uid']]=$GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 						}
 					break;
@@ -415,16 +413,14 @@ class tslib_menu {
 							$id_list=tslib_cObj::getTreeList($startUid,$depth-1+$bA,$bA-1).($bA?0:$startUid);
 
 							$kwArr = explode(',',$kw);
-							reset($kwArr);
-							while(list(,$word)=each($kwArr))	{
+							foreach($kwArr as $word)	{
 								$word = trim($word);
 								if ($word)	{
-									$keyWordsWhereArr[]=$kfield.' LIKE "%'.addslashes($word).'%"';
+									$keyWordsWhereArr[] = $kfield.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($word, 'pages').'%"';
 								}
 							}
-							$query = $GLOBALS['TSFE']->cObj->getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode($keyWordsWhereArr,' OR ').')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
-							$res = mysql(TYPO3_db, $query);
-							while ($row = mysql_fetch_assoc($res))	{
+							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode($keyWordsWhereArr,' OR ').')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								$temp[$row['uid']]=$GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 							}
 						}
@@ -578,9 +574,8 @@ class tslib_menu {
 				}
 				$basePageRow=$this->sys_page->getPage($this->id);
 				if (is_array($basePageRow))	{
-					$query = $GLOBALS['TSFE']->cObj->getQuery('tt_content',	$selectSetup);
-					$res = mysql(TYPO3_db, $query);
-					while ($row = mysql_fetch_assoc($res))	{
+					$res = $GLOBALS['TSFE']->cObj->exec_getQuery('tt_content',	$selectSetup);
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 						$temp[$row['uid']]=$basePageRow;
 						$temp[$row['uid']]['title']=$row['header'];
 						$temp[$row['uid']]['subtitle']=$row['subheader'];
@@ -663,7 +658,7 @@ class tslib_menu {
 	 * Includes the PHP script defined for the HMENU special type "userdefined".
 	 * This script is supposed to populate the array $menuItemsArray with a set of page records comprising the menu.
 	 * The "userdefined" type is depreciated since "userfunction" has arrived since and is a better choice for many reasons (like using classes/functions for rendering the menu)
-	 * 
+	 *
 	 * @param	array		TypoScript parameters for "special.". In particular the property "file" is reserved and specifies the file to include. Seems like any other property can be used freely by the script.
 	 * @param	string		The sorting field. Can be used from the script in the $incFile.
 	 * @return	array		An array with the menu items
@@ -681,7 +676,7 @@ class tslib_menu {
 	 * Generating the per-menu-item configuration arrays based on the settings for item states (NO, RO, ACT, CUR etc) set in ->mconf (config for the current menu object)
 	 * Basically it will produce an individual array for each menu item based on the item states. BUT in addition the "optionSplit" syntax for the values is ALSO evaluated here so that all property-values are "option-splitted" and the output will thus be resolved.
 	 * Is called from the "generate" functions in the extension classes. The function is processor intensive due to the option split feature in particular. But since the generate function is not always called (since the ->result array may be cached, see makeMenu) it doesn't hurt so badly.
-	 * 
+	 *
 	 * @param	integer		Number of menu items in the menu
 	 * @return	array		An array with two keys: array($NOconf,$ROconf) - where $NOconf contains the resolved configuration for each item when NOT rolled-over and $ROconf contains the ditto for the mouseover state (if any)
 	 * @access private
@@ -866,7 +861,7 @@ class tslib_menu {
 
 	/**
 	 * Creates a submenu level to the current level - if configured for.
-	 * 
+	 *
 	 * @param	integer		Page id of the current page for which a submenu MAY be produced (if conditions are met)
 	 * @param	integer		Mount-point UID (basically the mount_pid field of the page record is passed along)
 	 * @return	string		HTML content of the submenu
@@ -909,7 +904,7 @@ class tslib_menu {
 
 	/**
 	 * Creates the URL, target and onclick values for the menu item link. Returns them in an array as key/value pairs for <A>-tag attributes
-	 * 
+	 *
 	 * @param	integer		Pointer to a key in the $this->menuArr array where the value for that key represents the menu item we are linking to (page record)
 	 * @param	string		Alternative target
 	 * @param	integer		Alternative type
@@ -967,7 +962,7 @@ class tslib_menu {
 
 	/**
 	 * Returns true if the page with UID $uid is active (in the current rootline)
-	 * 
+	 *
 	 * @param	integer		Page uid to evaluate.
 	 * @return	boolean		True if page with $uid is active
 	 * @access private
@@ -978,7 +973,7 @@ class tslib_menu {
 
 	/**
 	 * Returns true if the page with UID $uid is the CURRENT page (equals $GLOBALS['TSFE']->id)
-	 * 
+	 *
 	 * @param	integer		Page uid to evaluate.
 	 * @return	boolean		True if page $uid = $GLOBALS['TSFE']->id
 	 * @access private
@@ -990,7 +985,7 @@ class tslib_menu {
 	/**
 	 * Returns true if there is a submenu with items for the page id, $uid
 	 * Used by the item states "IFSUB" and "ACTIFSUB" to check if there is a submenu
-	 * 
+	 *
 	 * @param	integer		Page uid for which to search for a submenu
 	 * @param	integer		"mount_pid" field for the page record which is evaluated (this may affect whether a submenu is found!)
 	 * @return	boolean		Returns true if there was a submenu with items found
@@ -1013,7 +1008,7 @@ class tslib_menu {
 
 	/**
 	 * Used by procesItemStates() to evaluate if a menu item (identified by $key) is in a certain state.
-	 * 
+	 *
 	 * @param	string		The item state to evaluate (SPC, IFSUB, ACT etc... but no xxxRO states of course)
 	 * @param	integer		Key pointing to menu item from ->menuArr
 	 * @return	boolean		True (integer!=0) if match, otherwise false (=0, zero)
@@ -1052,7 +1047,7 @@ class tslib_menu {
 
 	/**
 	 * Creates an access-key for a GMENU menu item based on the menu item titles first letter
-	 * 
+	 *
 	 * @param	string		Menu item title.
 	 * @return	array		Returns an array with keys "code" ("accesskey" attribute for the img-tag) and "alt" (text-addition to the "alt" attribute) if an access key was defined. Otherwise array was empty
 	 * @access private
@@ -1077,7 +1072,7 @@ class tslib_menu {
 	/**
 	 * Calls a user function for processing of internal data.
 	 * Used for the properties "IProcFunc" and "itemArrayProcFunc"
-	 * 
+	 *
 	 * @param	string		Key pointing for the property in the current ->mconf array holding possibly parameters to pass along to the function/method. Currently the keys used are "IProcFunc" and "itemArrayProcFunc".
 	 * @param	mixed		A variable to pass to the user function and which should be returned again from the user function. The idea is that the user function modifies this variable according to what you want to achieve and then returns it. For "itemArrayProcFunc" this variable is $this->menuArr, for "IProcFunc" it is $this->I
 	 * @return	mixed		The processed $passVar
@@ -1094,8 +1089,8 @@ class tslib_menu {
 
 	/**
 	 * Creates the <A> tag parts for the current item (in $this->I, [A1] and [A2]) based on other information in this array (like $this->I['linkHREF'])
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 */
 	function setATagParts()	{
@@ -1105,7 +1100,7 @@ class tslib_menu {
 
 	/**
 	 * Returns the title for the navigation
-	 * 
+	 *
 	 * @param	string		The current page title
 	 * @param	string		The current value of the naviation title
 	 * @return	string		Returns the navigation title if it is NOT blank, otherwise the page title.
@@ -1136,7 +1131,7 @@ class tslib_menu {
 
 /**
  * Extension class creating text based menus
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -1147,8 +1142,8 @@ class tslib_tmenu extends tslib_menu {
 	/**
 	 * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
 	 * Sets the result for the new "normal state" in $this->result
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see tslib_menu::procesItemStates()
 	 */
 	function generate()	{
@@ -1164,7 +1159,7 @@ class tslib_tmenu extends tslib_menu {
 	 * Traverses the ->result array of menu items configuration (made by ->generate()) and renders each item.
 	 * During the execution of this function many internal methods prefixed "extProc_" from this class is called and many of these are for now dummy functions. But they can be used for processing as they are used by the TMENU_LAYERS
 	 * An instance of tslib_cObj is also made and for each menu item rendered it is loaded with the record for that page so that any stdWrap properties that applies will have the current menu items record available.
-	 * 
+	 *
 	 * @return	string		The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
 	function writeMenu()	{
@@ -1292,7 +1287,7 @@ class tslib_tmenu extends tslib_menu {
 
 	/**
 	 * Generates the before* and after* images for TMENUs
-	 * 
+	 *
 	 * @param	string		Can be "before" or "after" and determines which kind of image to create (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
 	 * @return	string		The resulting HTML of the image, if any.
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=388&cHash=a7486044cd
@@ -1322,8 +1317,8 @@ class tslib_tmenu extends tslib_menu {
 
 	/**
 	 * Adds a JavaScript function to the $GLOBALS['TSFE']->additionalJavaScript array
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 * @see writeMenu()
 	 */
@@ -1344,8 +1339,8 @@ class tslib_tmenu extends tslib_menu {
 	/**
 	 * Called right before the traversing of $this->result begins.
 	 * Can be used for various initialization
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_init()
 	 */
@@ -1354,9 +1349,9 @@ class tslib_tmenu extends tslib_menu {
 
 	/**
 	 * Called after all processing for RollOver of an element has been done.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_RO()
 	 */
@@ -1365,9 +1360,9 @@ class tslib_tmenu extends tslib_menu {
 
 	/**
 	 * Called right before the creation of the link for the menu item
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_beforeLinking()
 	 */
@@ -1377,9 +1372,9 @@ class tslib_tmenu extends tslib_menu {
 	/**
 	 * Called right after the creation of links for the menu item. This is also the last function call before the while-loop traversing menu items goes to the next item.
 	 * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_afterLinking()
 	 */
@@ -1393,7 +1388,7 @@ class tslib_tmenu extends tslib_menu {
 
 	/**
 	 * Called before the "allWrap" happens on the menu item.
-	 * 
+	 *
 	 * @param	string		The current content of the menu item, $this->I['theItem'], passed along.
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	string		The modified version of $item, going back into $this->I['theItem']
@@ -1406,7 +1401,7 @@ class tslib_tmenu extends tslib_menu {
 
 	/**
 	 * Called before the writeMenu() function returns (only if a menu was generated)
-	 * 
+	 *
 	 * @return	string		The total menu content should be returned by this function
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_finish()
@@ -1441,7 +1436,7 @@ class tslib_tmenu extends tslib_menu {
 
 /**
  * Extension class creating graphic based menus (PNG or GIF files)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -1452,8 +1447,8 @@ class tslib_gmenu extends tslib_menu {
 	/**
 	 * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
 	 * Calls makeGifs() for all "normal" items and if configured for, also the "rollover" items.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see tslib_menu::procesItemStates(), makeGifs()
 	 */
 	function generate()	{
@@ -1487,10 +1482,10 @@ class tslib_gmenu extends tslib_menu {
 	/**
 	 * Will traverse input array with configuratoin per-item and create corresponding GIF files for the menu.
 	 * The data of the files are stored in $this->result
-	 * 
+	 *
 	 * @param	array		Array with configuration for each item.
 	 * @param	string		Type of images: normal ("NO") or rollover ("RO"). Valid values are "NO" and "RO"
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see generate()
 	 */
@@ -1680,7 +1675,7 @@ class tslib_gmenu extends tslib_menu {
 	 * Function searching for the largest width and height of the menu items to be generated.
 	 * Uses some of the same code as makeGifs and even instantiates some gifbuilder objects BUT does not render the images - only reading out which width they would have.
 	 * Remember to upgrade the code in here if the makeGifs function is updated.
-	 * 
+	 *
 	 * @param	array		Same configuration array as passed to makeGifs()
 	 * @param	integer		The number of menu items
 	 * @param	array		Array with "applyTotalH" numbers
@@ -1760,7 +1755,7 @@ class tslib_gmenu extends tslib_menu {
 	/**
 	 * Traverses the ->result['NO'] array of menu items configuration (made by ->generate()) and renders the HTML of each item (the images themselves was made with makeGifs() before this. See ->generate())
 	 * During the execution of this function many internal methods prefixed "extProc_" from this class is called and many of these are for now dummy functions. But they can be used for processing as they are used by the GMENU_LAYERS
-	 * 
+	 *
 	 * @return	string		The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
 	function writeMenu()	{
@@ -1856,8 +1851,8 @@ class tslib_gmenu extends tslib_menu {
 	/**
 	 * Called right before the traversing of $this->result begins.
 	 * Can be used for various initialization
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_init()
 	 */
@@ -1866,9 +1861,9 @@ class tslib_gmenu extends tslib_menu {
 
 	/**
 	 * Called after all processing for RollOver of an element has been done.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found!
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_RO()
 	 */
@@ -1877,9 +1872,9 @@ class tslib_gmenu extends tslib_menu {
 
 	/**
 	 * Called right before the creation of the link for the menu item
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_beforeLinking()
 	 */
@@ -1890,9 +1885,9 @@ class tslib_gmenu extends tslib_menu {
 	 * Called right after the creation of links for the menu item. This is also the last function call before the for-loop traversing menu items goes to the next item.
 	 * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
 	 * Further this calls the subMenu function in the parent class to create any submenu there might be.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_afterLinking(), tslib_menu::subMenu()
 	 */
@@ -1906,7 +1901,7 @@ class tslib_gmenu extends tslib_menu {
 
 	/**
 	 * Called before the "wrap" happens on the menu item.
-	 * 
+	 *
 	 * @param	string		The current content of the menu item, $this->I['theItem'], passed along.
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	string		The modified version of $item, going back into $this->I['theItem']
@@ -1919,7 +1914,7 @@ class tslib_gmenu extends tslib_menu {
 
 	/**
 	 * Called before the writeMenu() function returns (only if a menu was generated)
-	 * 
+	 *
 	 * @return	string		The total menu content should be returned by this function
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_finish()
@@ -1952,7 +1947,7 @@ class tslib_gmenu extends tslib_menu {
 
 /**
  * ImageMap based menus
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -1963,8 +1958,8 @@ class tslib_imgmenu extends tslib_menu {
 	/**
 	 * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
 	 * Calls makeImageMap() to generate the image map image-file
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see tslib_menu::procesItemStates(), makeImageMap()
 	 */
 	function generate()	{
@@ -1979,9 +1974,9 @@ class tslib_imgmenu extends tslib_menu {
 	/**
 	 * Will traverse input array with configuratoin per-item and create corresponding GIF files for the menu.
 	 * The data of the files are stored in $this->result
-	 * 
+	 *
 	 * @param	array		Array with configuration for each item.
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see generate()
 	 */
@@ -2151,7 +2146,7 @@ class tslib_imgmenu extends tslib_menu {
 	/**
 	 * Returns the HTML for the image map menu.
 	 * If ->result is true it will create the HTML for the image map menu.
-	 * 
+	 *
 	 * @return	string		The HTML for the menu
 	 */
 	function writeMenu()	{
@@ -2191,7 +2186,7 @@ class tslib_imgmenu extends tslib_menu {
 
 /**
  * JavaScript/Selectorbox based menus
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -2201,15 +2196,15 @@ class tslib_jsmenu extends tslib_menu {
 
 	/**
 	 * Dummy. Should do nothing, because we don't use the result-array here!
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function generate()	{
 	}
 
 	/**
 	 * Creates the HTML (mixture of a <form> and a JavaScript section) for the JavaScript menu (basically an array of selector boxes with onchange handlers)
-	 * 
+	 *
 	 * @return	string		The HTML code for the menu
 	 */
 	function writeMenu()	{
@@ -2264,7 +2259,7 @@ class tslib_jsmenu extends tslib_menu {
 	/**
 	 * Generates a number of lines of JavaScript code for a menu level.
 	 * Calls itself recursively for additional levels.
-	 * 
+	 *
 	 * @param	integer		Number of levels to generate
 	 * @param	integer		Current level being generated - and if this number is less than $levels it will call itself recursively with $count incremented
 	 * @param	integer		Page id of the starting point.
