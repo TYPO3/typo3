@@ -949,7 +949,7 @@ class tslib_pibase {
 			);
 		} else {
 				// Order by data:
-			if (!$orderBy)	{
+			if (!$orderBy && $this->internal['orderBy'])	{
 				if (t3lib_div::inList($this->internal['orderByList'],$this->internal['orderBy']))	{
 					$orderBy = 'ORDER BY '.$table.'.'.$this->internal['orderBy'].($this->internal['descFlag']?' DESC':'');
 				}
