@@ -623,11 +623,11 @@ class t3lib_extMgm {
 	 * @param	string		Table name
 	 * @return	void		
 	 */
-	function addToInsertRecords($table)	{
+	function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	{
 		global $TCA;
-		t3lib_div::loadTCA('tt_content');
-		if (is_array($TCA['tt_content']['columns']) && isset($TCA['tt_content']['columns']['records']['config']['allowed']))	{
-			$TCA['tt_content']['columns']['records']['config']['allowed'].=','.$table;
+		t3lib_div::loadTCA($content_table);
+		if (is_array($TCA[$content_table]['columns']) && isset($TCA[$content_table]['columns'][$content_field]['config']['allowed']))	{
+			$TCA[$content_table]['columns'][$content_field]['config']['allowed'].=','.$table;
 		}
 	}
 
