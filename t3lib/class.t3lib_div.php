@@ -2529,7 +2529,7 @@ class t3lib_div {
 				return $p[1];
 			break;
 			case 'TYPO3_REQUEST_HOST':
-				return 'http'.($HTTP_SERVER_VARS['SSL_SESSION_ID']?'s':'').'://'.	// I hope this: ($HTTP_SERVER_VARS['SSL_SESSION_ID']?'s':'') - is sufficient to detect https...
+				return (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').
 					$HTTP_SERVER_VARS['HTTP_HOST'];
 			break;
 			case 'TYPO3_REQUEST_URL':
@@ -2553,6 +2553,9 @@ class t3lib_div {
 			case 'TYPO3_SITE_SCRIPT':
 				return substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 			break;
+			case 'TYPO3_SSL':
+				return ($HTTP_SERVER_VARS['SSL_SESSION_ID'] || $HTTP_SERVER_VARS['HTTPS']) ? TRUE : FALSE;
+			break;
 			case '_ARRAY':
 				$out = array();
 					// Here, list ALL possible keys to this function for debug display.
@@ -2570,6 +2573,7 @@ class t3lib_div {
 					TYPO3_REQUEST_DIR,
 					TYPO3_SITE_URL,
 					TYPO3_SITE_SCRIPT,
+					TYPO3_SSL,
 					SCRIPT_NAME,
 					TYPO3_DOCUMENT_ROOT,
 					SCRIPT_FILENAME,

@@ -69,7 +69,7 @@
  * 1247:     function CTABLE ($conf)	
  * 1285:     function OTABLE ($conf)	
  * 1300:     function COLUMNS ($conf)	
- * 1379:     function HRULER ($conf)	
+ * 1379:     function HRULER ($conf)
  * 1403:     function CASEFUNC ($conf)
  * 1428:     function LOAD_REGISTER($conf,$name)	
  * 1468:     function FORM($conf,$formData='')    
@@ -1379,9 +1379,10 @@ class tslib_cObj {
 		$lineColor = $conf['lineColor'] ? $conf['lineColor'] : 'black';
 		$spaceBefore = intval($conf['spaceLeft']);
 		$spaceAfter = intval($conf['spaceRight']);
+		$tableWidth = $conf['tableWidth'] ? $conf['tableWidth'] : '99%';
 		$content='';
-		
-		$content.='<table border="0" cellspacing="0" cellpadding="0" width="99%"><tr>';
+
+		$content.='<table border="0" cellspacing="0" cellpadding="0" width="'.htmlspecialchars($tableWidth).'"><tr>';
 		if ($spaceBefore)	{$content.='<td width="1"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$spaceBefore.'" height="1" alt="" title="" /></td>'; }
 		$content.='<td bgcolor="'.$lineColor.'"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="1" height="'.$lineThickness.'" alt="" title="" /></td>';
 		if ($spaceAfter)	{$content.='<td width="1"><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" width="'.$spaceAfter.'" height="1" alt="" title="" /></td>'; }
@@ -1893,12 +1894,18 @@ class tslib_cObj {
 				// generate page-tree
 			$search->pageIdList.=$this->getTreeList($theStartId,$depth);
 			
-			$endClause = 'pages.uid IN ('.$search->pageIdList.$theStartId.') AND pages.doktype in ('.$GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'].($conf['addExtUrlsAndShortCuts']?',3,4':'').') AND pages.no_search=0';
-			$endClause.=$this->enableFields($search->fTable).$this->enableFields('pages');
+			$endClause = 'pages.uid IN ('.$search->pageIdList.$theStartId.')
+				AND pages.doktype in ('.$GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'].($conf['addExtUrlsAndShortCuts']?',3,4':'').')
+				AND pages.no_search=0'.
+				$this->enableFields($search->fTable).
+				$this->enableFields('pages');
+
+			if ($conf['languageField.'][$search->fTable])	{
+				$endClause.= ' AND '.$search->fTable.'.'.	$conf['languageField.'][$search->fTable].' = '.intval($GLOBALS['TSFE']->sys_language_uid);
+			}
 
 				// build query
 			$search->build_search_query($endClause);
-#debug($search->queryParts);
 
 				// count...
 			if (t3lib_div::testInt(t3lib_div::_GP('scount')))	{
@@ -5917,7 +5924,7 @@ class tslib_cObj {
 		if ($conf['languageField'])	{
 			$query.=' AND '.$conf['languageField'].'='.intval($GLOBALS['TSFE']->sys_language_uid);
 		}
-		
+
 		$andWhere = trim($this->stdWrap($conf['andWhere'],$conf['andWhere.']));
 		if ($andWhere)	{
 			$query.=' AND '.$andWhere;

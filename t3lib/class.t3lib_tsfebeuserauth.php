@@ -612,23 +612,23 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 *
 	 ****************************************************/
 
-	 /**
- * Implementing the access checks that the typo3/init.php script does before a user is ever logged in.
- * Used in the frontend.
- *
- * @return	boolean		Returns true if access is OK
- * @see typo3/init.php, t3lib_beuserauth::backendCheckLogin()
- */
+	/**
+	 * Implementing the access checks that the typo3/init.php script does before a user is ever logged in.
+	 * Used in the frontend.
+	 *
+	 * @return	boolean		Returns true if access is OK
+	 * @see typo3/init.php, t3lib_beuserauth::backendCheckLogin()
+	 */
 	function checkBackendAccessSettingsFromInitPhp()	{
 		global $TYPO3_CONF_VARS;
-	
+
 		// **********************
 		// Check Hardcoded lock on BE:
 		// **********************
 		if ($TYPO3_CONF_VARS['BE']['adminOnly'] < 0)	{
 			return FALSE;
 		}
-		
+
 		// **********************
 		// Check IP
 		// **********************
@@ -637,24 +637,24 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 				return FALSE;
 			}
 		}
-		
-		
+
+
 		// **********************
 		// Check SSL (https)
 		// **********************
 		if (intval($TYPO3_CONF_VARS['BE']['lockSSL']))	{
-			if (!$HTTP_SERVER_VARS['SSL_SESSION_ID'])	{
+			if (!t3lib_div::getIndpEnv('TYPO3_SSL'))	{
 				return FALSE;
 			}
 		}
-		
+
 			// Finally a check from t3lib_beuserauth::backendCheckLogin()
 		if (!$TYPO3_CONF_VARS['BE']['adminOnly'] || $this->isAdmin())	{
 			return TRUE;
 		} else return FALSE;
 	 }
-	 
-	 
+
+
 	/**
 	 * Evaluates if the Backend User has read access to the input page record.
 	 * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts. Only if both conditions are true will the function return true.

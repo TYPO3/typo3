@@ -166,9 +166,8 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
- 
+
+
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');

@@ -38,8 +38,8 @@
  *
  *
  *   72: class t3lib_loadDBGroup	
- *   99:     function start ($itemlist,$tablelist, $MMtable='',$MMuid=0)	
- *  140:     function readList($itemlist)	
+ *   99:     function start ($itemlist,$tablelist, $MMtable='',$MMuid=0)
+ *  140:     function readList($itemlist)
  *  186:     function readMM($tableName,$uid)	
  *  215:     function writeMM($tableName,$uid,$prependTableName=0)	
  *  251:     function getValueArray($prependTableName='')	
@@ -96,7 +96,7 @@ class t3lib_loadDBGroup	{
 	 * @param	integer		Local UID for MM lookup
 	 * @return	void
 	 */
-	function start ($itemlist,$tablelist, $MMtable='',$MMuid=0)	{
+	function start($itemlist,$tablelist, $MMtable='',$MMuid=0)	{
 			// If the table list is "*" then all tables are used in the list:
 		if (!strcmp(trim($tablelist),'*'))	{
 			$tablelist = implode(',',array_keys($GLOBALS['TCA']));
@@ -139,8 +139,8 @@ class t3lib_loadDBGroup	{
 	 */
 	function readList($itemlist)	{
 		if ((string)trim($itemlist)!='')	{
-			$tempItemArray = explode(',',$itemlist);
-			while(list($key,$val)=each($tempItemArray))	{
+			$tempItemArray = t3lib_div::trimExplode(',', $itemlist);	// Changed to trimExplode 31/3 04; HMENU special type "list" didn't work if there were spaces in the list... I suppose this is better overall...
+			foreach($tempItemArray as $key => $val)	{
 				$isSet = 0;	// Will be set to "1" if the entry was a real table/id:
 
 					// Extract table name and id. This is un the formular [tablename]_[id] where table name MIGHT contain "_", hence the reversion of the string!					
@@ -159,7 +159,7 @@ class t3lib_loadDBGroup	{
 							// Register ID/table name in internal arrays:
 						$this->itemArray[$key]['id'] = $theID;
 						$this->itemArray[$key]['table'] = $theTable;
-						$this->tableArray[$theTable][]=$theID;
+						$this->tableArray[$theTable][] = $theID;
 							// Set update-flag:
 						$isSet=1;
 					}

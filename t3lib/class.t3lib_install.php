@@ -288,23 +288,25 @@ class t3lib_install {
 			SetCookie($this->cookie_name."_key", $uKey, 0, "/");		// Cookie is set
 
 			$this->JSmessage='SECURITY:
-Make sure to protect the Install Tool with another password than "joh316". 
+Make sure to protect the Install Tool with another password than "joh316".
 Better yet you can add a die() function call to typo3/install/index.php after usage.
 
 IF THE INSTALL TOOL CRASHES...
 The Install Tool is checking PHPs support for image formats. However certain versions of PHP (fx. 4.3.0 with bundled GD) will crash when trying to read the PNG test file. If this happens you will see a blank screen or error message.
-Workaround: Open the file typo3/t3lib/class.t3lib_install.php, go to line 2042, make the function isPNG() return "0" hardcoded. PNG is not checked anymore and the rest of the Install Tool will work as expected. The same has been known with the other image formats as well. You can use a similar method to bypass the testing if that is also a problem.
+Workaround: Open the file typo3/t3lib/class.t3lib_install.php, go to the line where the function "isPNG()" is defined and make it return "0" hardcoded. PNG is not checked anymore and the rest of the Install Tool will work as expected. The same has been known with the other image formats as well. You can use a similar method to bypass the testing if that is also a problem.
 On behalf of PHP we regret this inconvenience.
+
+BTW: This Install Tool will only work if cookies are accepted by your web browser. If this dialog pops up over and over again you didn\'t enable cookies.
 ';
-			
+
 		}
 			// Check if the password from TYPO3_CONF_VARS combined with uKey matches the sKey cookie. If not, ask for password.
 		$sKey = $GLOBALS["HTTP_COOKIE_VARS"][$this->cookie_name];
-		
+
 		if (md5($GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"]."|".$uKey) == $sKey || $this->checkPassword($uKey))	{
 			$this->passwordOK=1;
 		}
-		
+
 		if ($GLOBALS["CLIENT"]["SYSTEM"]=="unix" && $GLOBALS["CLIENT"]["BROWSER"]=="konqu")	{
 			$this->fontTag2='<font face="verdana,sans-serif" size=4 color=black>';
 			$this->fontTag1='<font face="verdana,sans-serif" size=3 color=black>';
@@ -1377,11 +1379,11 @@ Number of files at a time:
 			// Memory and functions
 			// *****************
 		$memory_limit_value = $this->convertByteSize(get_cfg_var("memory_limit"));
-		if ($memory_limit_value<8*1024*1024)	{
-			$this->message($ext, "Memory Limit below default 8 MB","
+		if ($memory_limit_value<16*1024*1024)	{
+			$this->message($ext, "Memory Limit below 16 MB","
 				<i>memory_limit=".get_cfg_var("memory_limit")."</i>
-				May impose problems if too low.
-			",1);
+				Your system is configured to enforce a memory limit of PHP scripts lower than 16 MB. The Extension Manager needs to include more PHP-classes than will fit into this memory space. There is nothing else to do than raise the limit. To be safe, ask the system administrator of the webserver to raise the limit to over 25 MB.
+			",3);
 		} else $this->message($ext, "Memory Limit","<i>memory_limit=".get_cfg_var("memory_limit")."</i>",-1);
 		if (ini_get("max_execution_time")<30)	{
 			$this->message($ext, "Max Execution Time below default 30 seconds","
@@ -1601,8 +1603,8 @@ Number of files at a time:
 					$this->message($ext, $relpath." directory does not exist","
 					<em>Full path: ".PATH_site.$relpath."</em>
 					".$general_message."
-					
-					This error should not occur as ".$relpath." must always be accessible in the root of a TYPO3 website. 
+
+					This error should not occur as ".$relpath." must always be accessible in the root of a TYPO3 website.
 					",3);
 				} else {
 					$this->message($ext, $relpath." directory does not exist","
@@ -1623,7 +1625,7 @@ Number of files at a time:
 					$this->message($ext, $relpath." directory not writeable","
 					<em>Full path: ".$file."</em>
 					".$general_message."
-					
+
 					Tried to write this file (with touch()) but didn't succeed.
 					The directory ".$relpath." must be writable!
 					",3);
@@ -1652,7 +1654,7 @@ Number of files at a time:
 		reset($paths);
 		while(list($k,$v)=each($paths))	{
 			reset($programs);
-			if (!ereg('\/$',$v)) $v.='/';
+			if (!ereg('[\\\/]$',$v)) $v.='/';
 			while(list(,$filename)=each($programs))	{
 #				if (@file_exists($v) && @is_file($v.$filename.$isExt))    {       // file_exists was necessary on windows, because is_file issued a warning if the path was not correct.
 				if($this->_checkImageMagick_getVersion($v.$filename.$isExt) > 0 ) {
@@ -1660,7 +1662,7 @@ Number of files at a time:
 				}
 			}
 			if (count($index[$v])>=3)	{$this->config_array["im"]=1;}
-			
+
 			if ($index[$v]["composite"] && !$index[$v]["combine"])  {
 				$this->config_array["im_combine_filename"]="composite";
 			} elseif (!$index[$v]["composite"] && $index[$v]["combine"]) {
@@ -4834,7 +4836,7 @@ A:hover {color: #000066}
 	<head>
  		<title>TYPO3 Install Tool</title>
 		'.($this->JSmessage?'
-<script language="javascript" type="text/javascript">alert(unescape(\''.rawurlencode($this->JSmessage).'\'));</script>		
+<script language="javascript" type="text/javascript">alert(unescape(\''.rawurlencode($this->JSmessage).'\'));</script>
 		
 		':'').'
 	</head>

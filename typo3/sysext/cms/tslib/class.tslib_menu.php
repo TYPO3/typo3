@@ -259,17 +259,17 @@ class tslib_menu {
 					break;
 					case 'directory':
 						if ($value=='') {
-							$value=$GLOBALS['TSFE']->page['uid'];
+							$value = $GLOBALS['TSFE']->page['uid'];
 						}
-						$items=t3lib_div::intExplode(',',$value);
-						reset($items);
-						while(list(,$id)=each($items))	{
+						$items = t3lib_div::intExplode(',',$value);
+
+						foreach($items as $id)	{
 							$idPage = $GLOBALS['TSFE']->sys_page->getRawRecord('pages',$id);
 							if (is_array($idPage) && $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $idPage['mount_pid']>0)	{
 								$MP=$idPage['mount_pid'].'-'.$idPage['uid'];
 								$id=$idPage['mount_pid'];
 							} else $MP=0;
-							
+
 							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								$temp[$row['uid']]=$GLOBALS['TSFE']->sys_page->getPageOverlay($row);
@@ -279,28 +279,28 @@ class tslib_menu {
 					break;
 					case 'list':
 						if ($value=='') {
-							$value=$this->id;
+							$value = $this->id;
 						}
 						$loadDB = t3lib_div::makeInstance('FE_loadDBGroup');
 						$loadDB->start($value, 'pages');
-						$loadDB->additionalWhere['pages']=tslib_cObj::enableFields('pages');
+						$loadDB->additionalWhere['pages'] = tslib_cObj::enableFields('pages');
 						$loadDB->getFromDB();
-	
+
 						reset($loadDB->itemArray);
 						$data = $loadDB->results;
-	
-						while(list(,$val)=each($loadDB->itemArray))	{
+
+						foreach($loadDB->itemArray as $val)	{
 							$row = $data[$val['table']][$val['id']];
 							if ($row)	{
-								$temp[]=$GLOBALS['TSFE']->sys_page->getPageOverlay($row);
+								$temp[] = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 							}
 						}
 					break;
 					case 'updated':
 						if ($value=='') {
-							$value=$GLOBALS['TSFE']->page['uid'];
+							$value = $GLOBALS['TSFE']->page['uid'];
 						}
-						$items=t3lib_div::intExplode(',',$value);
+						$items = t3lib_div::intExplode(',',$value);
 						if (t3lib_div::testInt($this->conf['special.']['depth']))	{
 							$depth = t3lib_div::intInRange($this->conf['special.']['depth'],1,20);		// Tree depth
 						} else {

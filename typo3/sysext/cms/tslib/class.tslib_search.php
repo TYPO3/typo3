@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Searching in database tables, typ. "pages" and "tt_content"
  * Used to generate search queries for TypoScript.
  * The class is included from "class.tslib_pagegen.php" based on whether there has been detected content in the GPvar "sword"
@@ -219,16 +219,17 @@ class tslib_search {
 
 	/**
 	 * Used to split a search-word line up into elements to search for. This function will detect boolean words like AND and OR, + and -, and even find sentences encapsulated in ""
-	 * This function also has the charm of still containing some of the original comments - in danish!
 	 * This function could be re-written to be more clean and effective - yet it's not that important.
 	 *
 	 * @param	string		The raw sword string from outside
 	 * @param	string		Special chars which are used as operators (+- is default)
+	 * @param	string		Special chars which are deleted if the append the searchword (+-., is default)
 	 * @return	mixed		Returns an ARRAY if there were search words, othervise the return value may be unset.
 	 */
-	function split($origSword, $specchars='+-')	{
+	function split($origSword, $specchars='+-', $delchars='+-.,')	{
 		$sword = $origSword;
 		$specs = '['.$this->quotemeta($specchars).']';
+		$delchars = '['.$this->quotemeta($delchars).']';
 
 			// As long as $sword is true (that means $sword MUST be reduced little by little until its empty inside the loop!)
 		while ($sword)	{
@@ -241,24 +242,37 @@ class tslib_search {
 			} elseif (ereg('^'.$specs,$sword,$reg)) {
 				$value[] = $reg[0];
 				$sword = trim(ereg_replace('^'.$specs,'',$sword));		// Removes = sign
+			} elseif (ereg('[\+\-]',$sword)) {	// Check if $sword contains + or -
+					// + and - shall only be interpreted as $specchars when there's whitespace before it
+					// otherwise it's included in the searchword (e.g. "know-how")
+				$a_sword = explode(' ',$sword);	// explode $sword to single words
+				$word = array_shift($a_sword);	// get first word
+				$word = ereg_replace($delchars.'$','',$word);		// Delete $delchars at end of string
+				$value[] = $word;	// add searchword to values
+				$sword = implode(' ',$a_sword);	// re-build $sword
 			} else {
-					// There are no double-quotes around the value. Looking for next (space) ' ' or '>'
+					// There are no double-quotes around the value. Looking for next (space) or special char.
 				ereg('^[^ '.$this->quotemeta($specchars).']*',$sword,$reg);
-				$value[] = trim($reg[0]);
+				$word = ereg_replace($delchars.'$','',trim($reg[0]));		// Delete $delchars at end of string
+				$value[] = $word;
 				$sword = trim(ereg_replace('^'.$this->quotemeta($reg[0]),'',$sword));
 			}
 		}
+
 		return $value;
 	}
 
 	/**
-	 * Local version of quotemeta. This is the same as the PHP function but the vertical line, |, is also escaped with a slash.
+	 * Local version of quotemeta. This is the same as the PHP function
+	 * but the vertical line, |, and minus, -, is also escaped with a slash.
 	 *
 	 * @param	string		String to pass through quotemeta()
 	 * @return	string		Return value
 	 */
 	function quotemeta($str)	{
-		return str_replace('|','\|',quotemeta($str));
+		$str = str_replace('|','\|',quotemeta($str));
+		#$str = str_replace('-','\-',$str);		// Breaks "-" which should NOT have a slash before it inside of [ ] in a regex.
+		return $str;
 	}
 
 	/**
@@ -313,11 +327,11 @@ class tslib_search {
 				$whereArray = array();
 				
 				$primary_table_and_key = $primary_table.'.'.$tables[$primary_table]['primary_key'];
-				$primKeys=Array();
+				$primKeys = Array();
 				foreach($tables as $key => $val)	{
 					$fkey = $tables[$key]['fkey'];
 					if ($fkey)	{
-						 $primKeys[]=$key.'.'.$fkey.'='.$primary_table_and_key;
+						 $primKeys[] = $key.'.'.$fkey.'='.$primary_table_and_key;
 					}
 				}
 				if (count($primKeys))	{
@@ -332,10 +346,10 @@ class tslib_search {
 					// Add search word where clause:
 				$query_part = $this->build_search_query_for_searchwords();
 				if (!$query_part)	{
-					$query_part='(0!=0)';
+					$query_part = '(0!=0)';
 				}
 				$whereArray[] = '('.$query_part.')';
-				
+
 					// Implode where clauses:
 				$this->queryParts['WHERE'] = implode(' AND ',$whereArray);
 				

@@ -63,7 +63,7 @@
  *  957:     function findDomainRecord($recursive=0)	
  *  978:     function pageNotFoundHandler($code,$header='')	
  * 1000:     function checkAndSetAlias()	
- * 1015:     function idPartsAnalyze($str)	
+ * 1015:     function idPartsAnalyze($str)
  * 1040:     function mergingWithGetVars($GET_VARS)	
  *
  *              SECTION: Template and caching related functions.
@@ -331,24 +331,25 @@
 	 * @see index_ts.php
 	 */
 	function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')	{
+
 			// Setting some variables:
+		$this->TYPO3_CONF_VARS = $TYPO3_CONF_VARS;
 		$this->id = $id;
 		$this->type = $type;
 		$this->no_cache = $no_cache ? 1 : 0;
 		$this->cHash = $cHash;
 		$this->jumpurl = $jumpurl;
-		$this->MP = $TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? $MP : '';
+		$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? $MP : '';
 		$this->RDCT = $RDCT;
-		$this->TYPO3_CONF_VARS = $TYPO3_CONF_VARS;
 		$this->clientInfo = t3lib_div::clientInfo();
 		$this->uniqueString=md5(microtime());
 		
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 		
 			// Call post processing function for constructor:
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc']))	{
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc']))	{
 			$_params = array('pObj' => &$this);
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'] as $_funcRef)	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 		}		
@@ -489,9 +490,7 @@
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4
 	 */
 	function checkAlternativeIdMethods()	{
-		global $TYPO3_CONF_VARS;
-		
-#		IF (TYPO3_OS=='WIN')	return;		# Commenting out this line will make it work for windows Apache mod_rewrite as well.
+
 		$this->siteScript = t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT');
 
 			// Resolving of "simulateStaticDocuments" URLs:
@@ -528,9 +527,9 @@
 		}
 
 			// Call post processing function for custom URL methods.
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc']))	{
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc']))	{
 			$_params = array('pObj' => &$this);
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] as $_funcRef)	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 		}
@@ -545,7 +544,7 @@
 	function clear_preview()	{
 		$this->showHiddenPage = 0;
 		$this->showHiddenRecords = 0;
-		$GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];	
+		$GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
 		$this->fePreview = 0;
 	}
 
@@ -556,8 +555,7 @@
 	 * @return	void
 	 */
 	function determineId()	{
-		global $TYPO3_CONF_VARS;
-		
+
 			// Getting ARG-v values if some
 		$this->setIDfromArgV();	
 			
@@ -620,12 +618,12 @@
 
 		
 			// Call post processing function for id determination:
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc']))	{
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc']))	{
 			$_params = array('pObj' => &$this);
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] as $_funcRef)	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
-		}			
+		}
 	}
 
 	/**
@@ -656,9 +654,8 @@
 		}
 
 			// ADD group-numbers if the IPmask matches.
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups']))	{
-			reset($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups']);
-			while(list(,$IPel)=each($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups']))	{
+		if (is_array($this->TYPO3_CONF_VARS['FE']['IPmaskMountGroups']))	{
+			foreach($this->TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel)	{
 				if (t3lib_div::getIndpEnv('REMOTE_ADDR') && $IPel[0] && t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'),$IPel[0]))	{$gr_array[]=intval($IPel[1]);}
 			}
 		}
@@ -696,7 +693,7 @@
 
 			// We find the first page belonging to the current domain
 		$GLOBALS['TT']->push('fetch_the_id domain/','');
-		$this->domainStartPage = $this->findDomainRecord($GLOBALS['TYPO3_CONF_VARS']['SYS']['recursiveDomainSearch']);	// the page_id of the current domain 
+		$this->domainStartPage = $this->findDomainRecord($this->TYPO3_CONF_VARS['SYS']['recursiveDomainSearch']);	// the page_id of the current domain
 		if (!$this->id)	{
 			if ($this->domainStartPage)	{
 				$this->id = $this->domainStartPage;	// If the id was not previously set, set it to the id of the domain.
@@ -1495,8 +1492,6 @@
 	 * @see checkDataSubmission()
 	 */
 	function sendFormmail()	{
-		global $TYPO3_CONF_VARS;
-
 		$formmail = t3lib_div::makeInstance('t3lib_formmail');
 
 		$EMAIL_VARS = t3lib_div::_POST();
@@ -1504,8 +1499,8 @@
 		unset($EMAIL_VARS['formtype_mail']);
 
 			// Hook for preprocessing of the content for formmails:
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass']))	{
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'] as $_classRef)	{
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass']))	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'] as $_classRef)	{
 				$_procObj = &t3lib_div::getUserObj($_classRef);
 				$EMAIL_VARS = $_procObj->sendFormmail_preProcessVariables($EMAIL_VARS,$this);
 			}
@@ -1883,8 +1878,8 @@
 	 */
 	function generatePage_postProcessing()	{
 			// This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated. This is a safety precaution, as it could have been unset by some script.
-		if ($this->no_cacheBeforePageGen) $this->set_no_cache();	
-	
+		if ($this->no_cacheBeforePageGen) $this->set_no_cache();
+
 			// Tidy up the code, if flag...
 		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'all')		{
 			$GLOBALS['TT']->push('Tidy, all','');
@@ -1907,6 +1902,14 @@
 			$GLOBALS['TT']->pull();
 		}
 
+			// Hook for post-processing of page content cached/non-cached:
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all']))	{
+			$_params = array('pObj' => &$this);
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
+
 			// Storing page
 		if (!$this->no_cache)	{
 					// Tidy up the code, if flag...
@@ -1927,6 +1930,14 @@
 				$GLOBALS['TT']->push('Local anchor fix, cached','');
 					$this->prefixLocalAnchorsWithScript();
 				$GLOBALS['TT']->pull();
+			}
+
+				// Hook for post-processing of page content before being cached:
+			if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached']))	{
+				$_params = array('pObj' => &$this);
+				foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached'] as $_funcRef)	{
+					t3lib_div::callUserFunction($_funcRef,$_params,$this);
+				}
 			}
 
 			$this->realPageCacheContent();
@@ -2167,6 +2178,14 @@ if (version == "n3") {
 			$GLOBALS['TT']->pull();
 		}
 
+			// Hook for post-processing of page content before output:
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']))	{
+			$_params = array('pObj' => &$this);
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}
+
 /*		if ($this->beUserLogin && t3lib_div::_GP('ADMCMD_view'))	{		// This is a try to change target=_top to target=_self if pages are shown in the Web>View module...
 			$this->content = str_replace('target="_top"','target="_self"',$this->content);
 			$this->content = str_replace('target=_top','target="_self"',$this->content);
@@ -2274,7 +2293,7 @@ if (version == "n3") {
 							$LogLine.= ' "'.t3lib_div::getIndpEnv('HTTP_REFERER').'" "'.t3lib_div::getIndpEnv('HTTP_USER_AGENT').'"';
 						}
 
-						switch($GLOBALS['TYPO3_CONF_VARS']['FE']['logfile_write'])	{
+						switch($this->TYPO3_CONF_VARS['FE']['logfile_write'])	{
 							case 'fputs':
 								$GLOBALS['TT']->push('Write to log file (fputs)');
 									$logfilehandle = fopen(PATH_site.$this->config['stat_vars']['logFile'], 'a');
@@ -2486,13 +2505,13 @@ if (version == "n3") {
 	 * @see tslib_cObj::PHP_SCRIPT(), tslib_feTCE::includeScripts(), tslib_menu::includeMakeMenu()
 	 */
 	function checkFileInclude($incFile)	{
-		return !$GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude']
+		return !$this->TYPO3_CONF_VARS['FE']['noPHPscriptInclude']
 			|| substr($incFile,0,14)=='media/scripts/'
 			|| substr($incFile,0,4+strlen(TYPO3_mainDir))==TYPO3_mainDir.'ext/'
 			|| substr($incFile,0,7+strlen(TYPO3_mainDir))==TYPO3_mainDir.'sysext/'
 			|| substr($incFile,0,14)=='typo3conf/ext/';
 	}
-	
+
 	/**
 	 * Creates an instance of tslib_cObj in $this->cObj
 	 * This instance is used to start the rendering of the TypoScript template structure
@@ -2640,7 +2659,7 @@ if (version == "n3") {
 		if (!is_array($this->pagesTSconfig))	{
 			reset($this->rootLine);
 			$TSdataArray = array();
-			$TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];	// Setting default configuration:
+			$TSdataArray[] = $this->TYPO3_CONF_VARS['BE']['defaultPageTSconfig'];	// Setting default configuration:
 			while(list($k,$v)=each($this->rootLine))	{
 				$TSdataArray[]=$v['TSconfig'];
 			}
