@@ -87,8 +87,9 @@ class tx_indexedsearch_lexer {
 			0x5f,	// "_"
 			0x3a,	// ":"
 			0x2f,	// "/"
-			0x2d,	// "-"
+			0x2d,	// "-" DUPE
 			0x27,	// "'"
+	// 0x615 ARABIC SMALL HIGH TAH
 		),
 		'casesensitive' => FALSE,	// Set, if case sensitive indexing is wanted.
 		'removeChars' => array(		// List of unicode numbers of chars that will be removed before words are returned (eg. "-")
@@ -329,20 +330,28 @@ class tx_indexedsearch_lexer {
 	function charType($cp)	{
 
 			// Numeric?
-		if ($cp >= 0x30 && $cp <= 0x39)	{
+		if (
+				($cp >= 0x30 && $cp <= 0x39)		// Arabic
+/*
+				($cp >= 0x660 && $cp <= 0x669) ||	// Arabic-Indic
+				($cp >= 0x6F0 && $cp <= 0x6F9) ||	// Arabic-Indic (Iran, Pakistan, and India)
+				($cp >= 0x3021 && $cp <= 0x3029) ||	// Hangzhou
+*/
+			)	{
 			return array('num');
 		}
 
-			// LOOKING for Alpha chars:
+			// LOOKING for Alpha chars (Latin, Cyrillic, Greek, Hebrew and Arabic):
 		if (
 				($cp >= 0x41 && $cp <= 0x5A) ||		// Basic Latin: capital letters
-				($cp >= 0x61 && $cp <= 0x7A) ||		// small letters
-				($cp >= 0xC0 && $cp <= 0xFF && $cp != 0xD7 && $cp != 0xF7)	|| // Latin-1 Supplement (0x80-0xFF) excluding multiplication and division sign
+				($cp >= 0x61 && $cp <= 0x7A) ||		// Basic Latin: small letters
+				($cp >= 0xC0 && $cp <= 0xFF && $cp != 0xD7 && $cp != 0xF7) || 			// Latin-1 Supplement (0x80-0xFF) excluding multiplication and division sign
 				($cp >= 0x100 && $cp < 0x280) ||	// Latin Extended-A and -B
-				($cp >= 0x370 && $cp < 0x400) ||	// Greek and Coptic
-				($cp >= 0x400 && $cp < 0x530) ||	// Cyrillic and Cyrillic Supplement
-				($cp >= 0x590 && $cp < 0x600) ||	// Hebrew
-				($cp >= 0x600 && $cp < 0x700) 		// Arabic
+				($cp == 0x386 || ($cp >= 0x388 && $cp < 0x400)) // Greek and Coptic excluding non-letters
+				(($cp >= 0x400 && $cp < 0x482) || ($cp >= 0x48A && $cp < 0x530)) ||		// Cyrillic and Cyrillic Supplement excluding historic miscellaneous
+				(($cp >= 0x590 && $cp < 0x5B0) || ($cp >= 0x5D0 && $cp < 0x5F3)) || 	// Hebrew: only accents and letters
+				(($cp >= 0x621 && $cp <= 0x658) || ($cp >= 0x66E &&  $cp <= 0x6D3)) || 	// Arabic: only letters (there are more letters in the range, we can add them if there is a demand)
+				($cp >= 0x1E00 && $cp < 0x2000)		// Latin Extended Additional and Greek Extended
 			)	{
 			return array('alpha');
 		}
