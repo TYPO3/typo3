@@ -2,6 +2,12 @@
 
 	* Merged fix to matchcondition browser detection from HEAD
 
+2004-05-11  Ingmar Schlecht  <ingmars@web.de>
+
+	* Fixed bug #62: SSL detection
+	* Fixed bug #18: PATH_TRANSLATED issues
+	* Fixed bug #23: cgi-fcgi issues
+
 2004-04-30  Robert Lemke  <rl@robertlemke.de>
 
 	* Changed warning message for typo3/ext in the install tool for the directories. Now directories have the following requirements, where the values mean. See Changelog of t3lib_install.php for more details.
