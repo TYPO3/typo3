@@ -162,7 +162,7 @@ class template {
 	var $JScode='';					// Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
 	var $JScodeArray=array();		// Similar to $JScode but for use as array with assioziative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
 	var $postCode='';				// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
-	var $docType='';				// Doc-type used in the header. Default is HTML 3.2. You can also set it to 'xhtml_strict', 'xhtml_trans', or 'xhtml_frames'.
+	var $docType='';				// Doc-type used in the header. Default is HTML 3.2. You can also set it to 'strict', 'xhtml_trans', or 'xhtml_frames'.
 
 		// Other vars you can change, but less frequently used:
 	var $scriptID='';				// Script ID.

@@ -2422,7 +2422,7 @@ EXTENSION KEYS:
 									$out["NSerrors"]["classfilename"][]=$baseName;
 								} else {
 									$out["NSok"]["classfilename"][]=$baseName;
-									if (is_array($out["files"][$fileName]["classes"]) && $this->first_in_array($testName,$out["files"][$fileName]["classes"]))	{
+									if (is_array($out["files"][$fileName]["classes"]) && $this->first_in_array($testName,$out["files"][$fileName]["classes"],1))	{
 										$out["msg"][]="Class filename '".$fileName."' did contain the class '".$testName."' just as it should.";
 									} else $out["errors"][]="Class filename '".$fileName."' did NOT contain the class '".$testName."'!";
 								}
@@ -2456,10 +2456,12 @@ EXTENSION KEYS:
 	 * @param	[type]		$array: ...
 	 * @return	[type]		...
 	 */
-	function first_in_array($str,$array)	{
+	function first_in_array($str,$array,$caseInsensitive=FALSE)	{
+		if ($caseInsensitive)	$str = strtolower($str);
 		if (is_array($array))	{
 			reset($array);
 			while(list(,$cl)=each($array))	{
+				if ($caseInsensitive)	$cl = strtolower($cl);
 				if (t3lib_div::isFirstPartOfStr($cl,$str))	return 1;
 			}
 		}

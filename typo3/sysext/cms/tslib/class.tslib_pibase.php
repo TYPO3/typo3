@@ -345,10 +345,11 @@ class tslib_pibase {
 	 * @param	integer		UID of the record for which to display details (basically this will become the value of [showUid]
 	 * @param	boolean		See pi_linkTP_keepPIvars
 	 * @param	array		Array of values to override in the current piVars. Same as $overrulePIvars in pi_linkTP_keepPIvars
+	 * @param	boolean		If true, only the URL is returned, not a full link
 	 * @return	string		The input string wrapped in <a> tags
 	 * @see pi_linkTP(), pi_linkTP_keepPIvars()
 	 */
-	function pi_list_linkSingle($str,$uid,$cache=0,$mergeArr=array())	{
+	function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE)	{
 		if ($this->prefixId)	{
 			if ($cache)	{
 				$overrulePIvars=$uid?array('showUid'=>$uid):Array();
@@ -358,6 +359,11 @@ class tslib_pibase {
 				$overrulePIvars=array('showUid'=>$uid?$uid:'');
 				$overrulePIvars=array_merge($overrulePIvars,$mergeArr);
 				$str = $this->pi_linkTP_keepPIvars($str,$overrulePIvars,$cache);
+			}
+			
+				// If urlOnly flag, return only URL as it has recently be generated.
+			if ($urlOnly)	{
+				$str = $this->cObj->lastTypoLinkUrl;
 			}
 		}
 		return $str;
@@ -425,35 +431,51 @@ class tslib_pibase {
 			// Make browse-table/links:	
 		if ($this->pi_alwaysPrev>=0)	{
 			if ($pointer>0)	{
-				$links[]='<td nowrap="nowrap"><p>'.$this->pi_linkTP_keepPIvars(htmlspecialchars($this->pi_getLL('pi_list_browseresults_prev','< Previous')),array('pointer'=>($pointer-1?$pointer-1:'')),0).'</p></td>';
+				$links[]='
+					<td nowrap="nowrap"><p>'.$this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev','< Previous',TRUE),array('pointer'=>($pointer-1?$pointer-1:'')),0).'</p></td>';
 			} elseif ($this->pi_alwaysPrev)	{
-				$links[]='<td nowrap="nowrap"><p>'.htmlspecialchars($this->pi_getLL('pi_list_browseresults_prev','< Previous')).'</p></td>';
+				$links[]='
+					<td nowrap="nowrap"><p>'.$this->pi_getLL('pi_list_browseresults_prev','< Previous',TRUE).'</p></td>';
 			}
 		}
 		for($a=0;$a<$max;$a++)	{
-			$links[]='<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').' nowrap="nowrap"><p>'.
-				$this->pi_linkTP_keepPIvars(htmlspecialchars(trim($this->pi_getLL('pi_list_browseresults_page','Page').' '.($a+1))),array('pointer'=>($a?$a:'')),$this->pi_isOnlyFields($this->pi_isOnlyFields)).
+			$links[]='
+					<td'.($pointer==$a?$this->pi_classParam('browsebox-SCell'):'').' nowrap="nowrap"><p>'.
+				$this->pi_linkTP_keepPIvars(trim($this->pi_getLL('pi_list_browseresults_page','Page',TRUE).' '.($a+1)),array('pointer'=>($a?$a:'')),$this->pi_isOnlyFields($this->pi_isOnlyFields)).
 				'</p></td>';
 		}
 		if ($pointer<ceil($count/$results_at_a_time)-1)	{
-			$links[]='<td nowrap="nowrap"><p>'.
-				$this->pi_linkTP_keepPIvars(htmlspecialchars($this->pi_getLL('pi_list_browseresults_next','Next >')),array('pointer'=>$pointer+1)).
+			$links[]='
+					<td nowrap="nowrap"><p>'.
+				$this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_next','Next >',TRUE),array('pointer'=>$pointer+1)).
 				'</p></td>';
 		}
 		
 		$pR1 = $pointer*$results_at_a_time+1;
 		$pR2 = $pointer*$results_at_a_time+$results_at_a_time;
-		$sTables = '<div'.$this->pi_classParam('browsebox').'>'.
-			($showResultCount ? '<p>'.sprintf(
+		$sTables = '
+		
+		<!--
+			List browsing box:
+		-->	
+		<div'.$this->pi_classParam('browsebox').'>'.
+			($showResultCount ? '
+			<p>'.sprintf(
 				str_replace('###SPAN_BEGIN###','<span'.$this->pi_classParam('browsebox-strong').'>',$this->pi_getLL('pi_list_browseresults_displays','Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
 				$pR1,
 				min(array($this->internal['res_count'],$pR2)),
 				$this->internal['res_count']
 				).'</p>':''
 			).
-		'<'.trim('table '.$tableParams).'>
-			<tr>'.implode('',$links).'</tr>
-		</table></div>';
+		'
+		
+			<'.trim('table '.$tableParams).'>
+				<tr>
+					'.implode('',$links).'
+				</tr>
+			</table>
+		</div>';
+		
 		return $sTables;
 	}
 
@@ -466,13 +488,22 @@ class tslib_pibase {
 	 */
 	function pi_list_searchBox($tableParams='')	{
 			// Search box design:
-		$sTables = '<div'.$this->pi_classParam('searchbox').'><'.trim('table '.$tableParams).'>
-		<form action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post">
-		<tr>
-			<td><input type="text" name="'.$this->prefixId.'[sword]" value="'.htmlspecialchars($this->piVars['sword']).'"'.$this->pi_classParam('searchbox-sword').' /></td>
-			<td><input type="submit" value="'.htmlspecialchars($this->pi_getLL('pi_list_searchBox_search','Search')).'"'.$this->pi_classParam('searchbox-button').' /><input type="hidden" name="no_cache" value="1" /></td>
-		</tr></form>
-		</table></div>';
+		$sTables = '
+		
+		<!--
+			List search box:
+		-->	
+		<div'.$this->pi_classParam('searchbox').'>
+			<form action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" method="post" style="margin: 0 0 0 0;">
+			<'.trim('table '.$tableParams).'>
+				<tr>
+					<td><input type="text" name="'.$this->prefixId.'[sword]" value="'.htmlspecialchars($this->piVars['sword']).'"'.$this->pi_classParam('searchbox-sword').' /></td>
+					<td><input type="submit" value="'.$this->pi_getLL('pi_list_searchBox_search','Search',TRUE).'"'.$this->pi_classParam('searchbox-button').' /><input type="hidden" name="no_cache" value="1" /></td>
+				</tr>
+			</table>
+			</form>
+		</div>';
+		
 		return $sTables;
 	}
 
@@ -487,14 +518,25 @@ class tslib_pibase {
 		$cells=array();
 		reset($items);
 		while(list($k,$v)=each($items))	{
-			$cells[]='<td'.($this->piVars['mode']==$k?$this->pi_classParam('modeSelector-SCell'):'').'><p>'.
+			$cells[]='
+					<td'.($this->piVars['mode']==$k?$this->pi_classParam('modeSelector-SCell'):'').'><p>'.
 				$this->pi_linkTP_keepPIvars(htmlspecialchars($v),array('mode'=>$k),$this->pi_isOnlyFields($this->pi_isOnlyFields)).
 				'</p></td>';
 		}
 		
-		$sTables = '<div'.$this->pi_classParam('modeSelector').'><'.trim('table '.$tableParams).'>
-			<tr>'.implode('',$cells).'</tr>
-		</table></div>';
+		$sTables = '
+		
+		<!--
+			Mode selector (menu for list):
+		-->	
+		<div'.$this->pi_classParam('modeSelector').'>
+			<'.trim('table '.$tableParams).'>
+				<tr>
+					'.implode('',$cells).'
+				</tr>
+			</table>
+		</div>';
+		
 		return $sTables;
 	}
 
@@ -523,7 +565,17 @@ class tslib_pibase {
 			$c++;
 		}
 
-		$out = '<div'.$this->pi_classParam('listrow').'><'.trim('table '.$tableParams).'>'.implode('',$tRows).'</table></div>';
+		$out = '
+		
+		<!--
+			Record list:
+		-->	
+		<div'.$this->pi_classParam('listrow').'>
+			<'.trim('table '.$tableParams).'>
+				'.implode('',$tRows).'
+			</table>
+		</div>';
+		
 		return $out;
 	}
 
@@ -616,7 +668,20 @@ class tslib_pibase {
 	 * @return	string		HTML content wrapped, ready to return to the parent object.
 	 */
 	function pi_wrapInBaseClass($str)	{
-		return '<div class="'.str_replace('_','-',$this->prefixId).'">'.$str.'</div>';
+		return '
+				
+
+	<!--
+	
+		BEGIN: Content of extension "'.$this->extKey.'", plugin "'.$this->prefixId.'"
+	
+	-->	
+	<div class="'.str_replace('_','-',$this->prefixId).'">
+		'.$str.'
+	</div>
+	<!-- END: Content of extension "'.$this->extKey.'", plugin "'.$this->prefixId.'" -->
+
+	';
 	}
 
 
@@ -675,8 +740,8 @@ class tslib_pibase {
 		
 		if ($panel)	{
 			if ($label)	{
-				return '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top">'.$label.'</td><td valign="top" align="right">'.$panel.'</td></tr></table>';
-			} else return $panel;
+				return '<!-- BEGIN: EDIT PANEL --><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top">'.$label.'</td><td valign="top" align="right">'.$panel.'</td></tr></table><!-- END: EDIT PANEL -->';
+			} else return '<!-- BEGIN: EDIT PANEL -->'.$panel.'<!-- END: EDIT PANEL -->';
 		} else return $label;
 	}
 
@@ -736,16 +801,22 @@ class tslib_pibase {
 	 * 
 	 * @param	string		The key from the LOCAL_LANG array for which to return the value.
 	 * @param	string		Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
+	 * @param	boolean		If true, the output label is passed through htmlspecialchars()
 	 * @return	string		The value from LOCAL_LANG.
 	 */
-	function pi_getLL($key,$alt='')	{
+	function pi_getLL($key,$alt='',$hsc=FALSE)	{
 		if (isset($this->LOCAL_LANG[$this->LLkey][$key]))	{
 			$word = $this->LOCAL_LANG[$this->LLkey][$key];
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))	{
 			$word = $this->LOCAL_LANG['default'][$key];
-		} else $word = $this->LLtestPrefixAlt.$alt;
+		} else {
+			$word = $this->LLtestPrefixAlt.$alt;
+		}
 
-		return $this->LLtestPrefix.$word;
+		$output = $this->LLtestPrefix.$word;
+		if ($hsc)	$output = htmlspecialchars($output);
+
+		return $output;
 	}
 	
 	/**
@@ -1019,13 +1090,38 @@ class tslib_pibase {
 		return $str;
 	}
 	
+
+
+
+
+	/*******************************
+	 *
+	 * FlexForms related functions
+	 *
+	 *******************************/
+
 	/**
-	 * @param	[type]		$T3FlexForm_array: ...
-	 * @param	[type]		$fieldName: ...
-	 * @param	[type]		$sheet: ...
-	 * @param	[type]		$lang: ...
-	 * @param	[type]		$value: ...
-	 * @return	[type]		...
+	 * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
+	 * 
+	 * @return	void
+	 */
+	function pi_initPIflexForm()	{
+			// Converting flexform data into array:
+		if (!is_array($this->cObj->data['pi_flexform']) && $this->cObj->data['pi_flexform'])	{
+			$this->cObj->data['pi_flexform'] = t3lib_div::xml2array($this->cObj->data['pi_flexform']);
+			if (!is_array($this->cObj->data['pi_flexform']))	$this->cObj->data['pi_flexform']=array();
+		}
+	}
+	
+	/**
+	 * Return value from somewhere inside a FlexForm structure
+	 * 
+	 * @param	array		FlexForm data
+	 * @param	string		Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
+	 * @param	string		Sheet pointer, eg. "sDEF"
+	 * @param	string		Language pointer, eg. "lDEF"
+	 * @param	string		Value pointer, eg. "vDEF"
+	 * @return	string		The content.
 	 */
 	function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	{
 		$sheetArray = $T3FlexForm_array['data'][$sheet][$lang];
@@ -1035,15 +1131,36 @@ class tslib_pibase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Returns part of $sheetArray pointed to by the keys in $fieldNameArray
 	 * 
-	 * @param	[type]		$sheetArray: ...
-	 * @param	[type]		$fieldNameArr: ...
-	 * @param	[type]		$value: ...
-	 * @return	[type]		...
+	 * @param	array		Multidimensiona array, typically FlexForm contents
+	 * @param	array		Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array an return element number X (whether this is right behavior is not settled yet...)
+	 * @param	string		Value for outermost key, typ. "vDEF" depending on language.
+	 * @return	mixed		The value, typ. string.
+	 * @see pi_getFFvalue()
+	 * @access private
 	 */
 	function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	{
-		return $sheetArray[$fieldNameArr[0]][$value];
+	
+		$tempArr=$sheetArray;
+		foreach($fieldNameArr as $k => $v)	{
+			if (t3lib_div::testInt($v))	{
+				if (is_array($tempArr))	{
+					$c=0;
+					foreach($tempArr as $values)	{
+						if ($c==$v)	{
+							debug($values);
+							$tempArr=$values;
+							break;
+						}
+						$c++;
+					}
+				}
+			} else {
+				$tempArr = $tempArr[$v];
+			}
+		}
+		return $tempArr[$value];
 	}
 }
 

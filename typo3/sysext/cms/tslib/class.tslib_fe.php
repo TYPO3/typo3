@@ -233,6 +233,7 @@
 			JSCode : reserved
 			JSImgCode : reserved
 	*/
+	var $defaultBodyTag='<body bgcolor="#FFFFFF">';		// Default bodytag, if nothing else is set. This can be overridden by applications like TemplaVoila.
 	var $additionalHeaderData=array();	// used to accumulate additional HTML-code for the header-section, <head>...</head>. Insert either associative keys (like additionalHeaderData['myStyleSheet'], see reserved keys above) or num-keys (like additionalHeaderData[] = '...')
 	var $additionalJavaScript=array();	// used to accumulate additional JavaScript-code. Works like additionalHeaderData. Reserved keys at 'openPic' and 'mouseOver'
 	var $additionalCSS=array();			// used to accumulate additional Style code. Works like additionalHeaderData.
