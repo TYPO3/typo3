@@ -1,3 +1,6 @@
+2004-11-25  Jan-Erik Revsbech <jer@moccompany.com>
+	* Fixed bug #0000464: Typo3 not sending mail when using Postfix version < 2.00. The problem is when trying to set the return-path correctly, the -f flag is used. This is not supported in the sendmail wrapper for postfix. See the function sendTheMail in class.t3lib_htmlmail.php for further informaion. A new install option to disable the -f flag is inserted.	
+
 2004-11-15  Michael Stucki  <michael@typo3.org>
 
  * Fixed bug #0000459: undefined function: float() in class.t3lib_cs.php

@@ -252,7 +252,7 @@ class t3lib_htmlmail {
 	 */
 	function start ()	{
 			// Sets the message id
-	  $this->messageid = md5(microtime()).'@domain.tld';
+		$this->messageid = md5(microtime()).'@domain.tld';
 	}
 
 	/**
@@ -486,7 +486,7 @@ class t3lib_htmlmail {
 	function constructMixed ($boundary)	{
 			// Here (plain/HTML) is combined with the attachments
 		$this->add_message("--".$boundary);
-		// (plain/HTML) is added
+			// (plain/HTML) is added
 		if ($this->theParts["html"]["content"])	{
 				// HTML and plain
 			$newBoundary = $this->getBoundary();
@@ -499,7 +499,7 @@ class t3lib_htmlmail {
 			$this->add_message('');
 			$this->add_message($this->getContent("plain"));
 		}
-		// attachments are added
+			// attachments are added
 		if (is_array($this->theParts["attach"]))	{
 			reset($this->theParts["attach"]);
 			while(list(,$media)=each($this->theParts["attach"]))	{
@@ -525,7 +525,7 @@ class t3lib_htmlmail {
 	function constructHTML ($boundary)	{
 		if (count($this->theParts["html"]["media"]))	{	// If media, then we know, the multipart/related content-type has been set before this function call...
 			$this->add_message("--".$boundary);
-			// HTML has media
+				// HTML has media
 			$newBoundary = $this->getBoundary();
 			$this->add_message("Content-Type: multipart/alternative;");
 			$this->add_message(' boundary="'.$newBoundary.'"');
@@ -548,12 +548,12 @@ class t3lib_htmlmail {
 	function constructAlternative($boundary)	{
 			// Here plain is combined with HTML
 		$this->add_message("--".$boundary);
-		// plain is added
+		// 	plain is added
 		$this->add_message($this->plain_text_header);
 		$this->add_message('');
 		$this->add_message($this->getContent("plain"));
 		$this->add_message("--".$boundary);
-		// html is added
+		// htm	l is added
 		$this->add_message($this->html_text_header);
 		$this->add_message('');
 		$this->add_message($this->getContent("html"));
@@ -577,7 +577,7 @@ class t3lib_htmlmail {
 		OLD stuf...
 
 		*/
-		// media is added
+			// media is added
 		if (is_array($this->theParts["html"]["media"]))	{
 			reset($this->theParts["html"]["media"]);
 			while(list($key,$media)=each($this->theParts["html"]["media"]))	{
@@ -595,75 +595,95 @@ class t3lib_htmlmail {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Sends the mail by calling the mail() function in php. On Linux systems this will invoke the MTA
+	 * defined in sys.ini (sendmail -t -i by default), on Windows a SMTP must be specified in the sys.ini.
+	 * Most common MTA's on Linux has a sendmail interface, including Postfix and Exim. 
+	 * For setting the return-path correctly, the parameter -f has to be added to the system call to sendmail.
+	 * This obviously does not have any effect on Windows, but on Sendmail compliant systems this works. If safe mode
+	 * is enabled, then extra parameters is not allowed, so a safe mode check is made before the mail() command is 
+	 * invoked. When using the -f parameter, some MTA's will put an X-AUTHENTICATION-WARING saying that 
+	 * the return path was modified manually with the -f flag. To disable this warning make sure that the user running 
+	 * apahce is in the /etc/mail/trusted-users table.
+	 *
+	 * POSTFIX: With postfix version below 2.0 there is a problem that the -f parameter can not be used in conjunction 
+	 * with -t. Postfix will give an error in the maillog:
+	 *
+	 *  cannot handle command-line recipients with -t
+	 * 
+	 * If you experience this problem, enable the parameter [SYS][disableExtraMailFlags] in the install tool of typo3.
+	 * Unfortunally this will mean that the return-path flag is set to the user running Apache!
+	 *
+	 * This whole problem of return-path turns out to be quite tricky. If you have a solution that works better, on all 
+	 * standard MTA's then we are very open for suggestions.
+	 *
+	 * With time this function should be made such that several ways of sending the mail is possible (local MTA, smtp other).
+	 *
 	 *
 	 * @return	[type]		...
 	 */
 	function sendTheMail () {
-			// Sends the mail.
-			// Requires the recipient, message and headers to be set.
+		global $TYPO3_CONF_VARS;		
+				// Sends the mail.
+				// Requires the recipient, message and headers to be set.
 #debug(array($this->recipient,$this->subject,$this->message,$this->headers));
 		if (trim($this->recipient) && trim($this->message))	{	//  && trim($this->headers)
-		        $returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
-			//On windows the -f flag is not used (specific for sendmail and postfix), but instead the php.ini parameter sendmail_from is used.
-                        if($this->returnPath) {
-			  ini_set(sendmail_from, $this->returnPath);
+			$returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
+				//On windows the -f flag is not used (specific for sendmail and postfix), but instead the php.ini parameter sendmail_from is used.
+			if($this->returnPath) {
+				ini_set(sendmail_from, $this->returnPath);
 			}
-			//If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
-			if(!ini_get('safe_mode')) {
-			        mail(   $this->recipient,
-					$this->subject,
-					$this->message,
-					$this->headers,
-				        $returnPath);
-			}
-			else {
-			        mail(   $this->recipient,
-					$this->subject,
-					$this->message,
-					$this->headers);
+				//If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
+			if(!ini_get('safe_mode') && !$TYPO3_CONF_VARS['SYS']['disableExtraMailFlags']) {
+				mail($this->recipient,
+					  $this->subject,
+					  $this->message,
+					  $this->headers,
+					  $returnPath);
+			} else {
+				mail($this->recipient,
+					  $this->subject,
+					  $this->message,
+					  $this->headers);
 			}
 				// Sending copy:
 			if ($this->recipient_copy)	{
-			  if(!ini_get('safe_mode')) {
-				mail( 	$this->recipient_copy,
-						$this->subject,
-						$this->message,
-						$this->headers,
-					        $returnPath);
-			  }
-			  else {
-			    mail( 	$this->recipient_copy,
-						$this->subject,
-						$this->message,
-						$this->headers	);
-			  }
+				if(!ini_get('safe_mode') && !$TYPO3_CONF_VARS['SYS']['disableExtraMailFlags']) {
+					mail( 	$this->recipient_copy,
+								$this->subject,
+								$this->message,
+								$this->headers,
+								$returnPath);
+				} else {
+					mail( 	$this->recipient_copy,
+								$this->subject,
+								$this->message,
+								$this->headers	);
+				}
 			}
 				// Auto response
 			if ($this->auto_respond_msg)	{
-				$theParts = explode("/",$this->auto_respond_msg,2);
+				$theParts = explode('/',$this->auto_respond_msg,2);
 				$theParts[1] = str_replace("/",chr(10),$theParts[1]);
-				if(!ini_get('safe_mode')) {
-				  mail( 	$this->from_email,
-						$theParts[0],
-						$theParts[1],
-						"From: ".$this->recipient,
-					        $returnPath);
-				}
-				else {
-				  mail( 	$this->from_email,
-						$theParts[0],
-						$theParts[1],
-						"From: ".$this->recipient);
+				if(!ini_get('safe_mode') && !$TYPO3_CONF_VARS['SYS']['disableExtraMailFlags']) {
+					mail( 	$this->from_email,
+								$theParts[0],
+								$theParts[1],
+								"From: ".$this->recipient,
+								$returnPath);
+				} else {
+					mail( 	$this->from_email,
+								$theParts[0],
+								$theParts[1],
+								"From: ".$this->recipient);
 				}			
 			}
 			if($this->returnPath) {
-			  ini_restore(sendmail_from);
+				ini_restore(sendmail_from);
 			}
 			return true;
 		} else {return false;}
 	}
-
+	
 	/**
 	 * [Describe function...]
 	 *
@@ -704,7 +724,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function add_header ($header)	{
-		// Adds a header to the mail. Use this AFTER the setHeaders()-function
+			// Adds a header to the mail. Use this AFTER the setHeaders()-function
 		$this->headers.=$header."\n";
 	}
 
@@ -763,7 +783,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function fetchHTML($file)	{
-		// Fetches the HTML-content from either url og local serverfile
+			// Fetches the HTML-content from either url og local serverfile
 		$this->theParts["html"]["content"] = $this->getURL($file);	// Fetches the content of the page
 		if ($this->theParts["html"]["content"])	{
 			$addr = $this->extParseUrl($file);
@@ -781,7 +801,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function fetchHTMLMedia()	{
-		// Fetches the mediafiles which are found by extractMediaLinks()
+			// Fetches the mediafiles which are found by extractMediaLinks()
 		if (is_array($this->theParts["html"]["media"]))	{
 			reset ($this->theParts["html"]["media"]);
 			if (count($this->theParts["html"]["media"]) > 0)	{
@@ -878,7 +898,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function extractHyperLinks()	{
-		// extracts all hyper-links from $this->theParts["html"]["content"]
+			// extracts all hyper-links from $this->theParts["html"]["content"]
 		$html_code = $this->theParts["html"]["content"];
 		$attribRegex = $this->tag_regex(Array("a","form","area"));
 		$codepieces = split($attribRegex, $html_code);	// Splits the document by the beginning of the above tags
@@ -927,7 +947,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function extractFramesInfo()	{
-		// extracts all media-links from $this->theParts["html"]["content"]
+			// extracts all media-links from $this->theParts["html"]["content"]
 		$html_code = $this->theParts["html"]["content"];
 		if (strpos(" ".$html_code,"<frame "))	{
 			$attribRegex = $this->tag_regex("frame");
@@ -953,8 +973,8 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function substMediaNamesInHTML($absolute)	{
-		// This substitutes the media-references in $this->theParts["html"]["content"]
-		// If $absolute is true, then the refs are substituted with http:// ref's indstead of Content-ID's (cid).
+			// This substitutes the media-references in $this->theParts["html"]["content"]
+			// If $absolute is true, then the refs are substituted with http:// ref's indstead of Content-ID's (cid).
 		if (is_array($this->theParts["html"]["media"]))	{
 			reset ($this->theParts["html"]["media"]);
 			while (list($key,$val) = each ($this->theParts["html"]["media"]))	{
@@ -980,7 +1000,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function substHREFsInHTML()	{
-		// This substitutes the hrefs in $this->theParts["html"]["content"]
+			// This substitutes the hrefs in $this->theParts["html"]["content"]
 		if (is_array($this->theParts["html"]["hrefs"]))	{
 			reset ($this->theParts["html"]["hrefs"]);
 			while (list($key,$val) = each ($this->theParts["html"]["hrefs"]))	{
@@ -1008,7 +1028,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function substHTTPurlsInPlainText($content)	{
-		// This substitutes the http:// urls in plain text with links
+			// This substitutes the http:// urls in plain text with links
 		if ($this->jumperURL_prefix)	{
 			$textpieces = explode("http://", $content);
 			$pieces = count($textpieces);
@@ -1048,7 +1068,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function fixRollOvers()	{
-		// JavaScript rollOvers cannot support graphics inside of mail. If these exists we must let them refer to the absolute url. By the way: Roll-overs seems to work only on some mail-readers and so far I've seen it work on Netscape 4 message-center (but not 4.5!!)
+			// JavaScript rollOvers cannot support graphics inside of mail. If these exists we must let them refer to the absolute url. By the way: Roll-overs seems to work only on some mail-readers and so far I've seen it work on Netscape 4 message-center (but not 4.5!!)
 		$theNewContent = "";
 		$theSplit = explode(".src",$this->theParts["html"]["content"]);
 		if (count($theSplit)>1)	{
@@ -1095,7 +1115,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function makeBase64($inputstr)	{
-		// Returns base64-encoded content, which is broken every 76 character
+			// Returns base64-encoded content, which is broken every 76 character
 		return chunk_split(base64_encode($inputstr));
 	}
 
@@ -1106,7 +1126,7 @@ class t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function getExtendedURL($url)	{
-		// reads the URL or file and determines the Content-type by either guessing or opening a connection to the host
+			// reads the URL or file and determines the Content-type by either guessing or opening a connection to the host
 		$res["content"] = $this->getURL($url);
 		if (!$res["content"])	{return false;}
 		$pathInfo = parse_url($url);
@@ -1300,7 +1320,7 @@ class t3lib_htmlmail {
 		$tag = ltrim(eregi_replace ("^<[^ ]*","",trim($tag)));
 		$tagLen = strlen($tag);
 		$safetyCounter = 100;
-		// Find attribute
+			// Find attribute
 		while ($tag)	{
 			$value = "";
 			$reg = split("[[:space:]=>]",$tag,2);
