@@ -561,6 +561,68 @@ Practical steps for creating XHTML compliance:
 
 
 
+
+*****************
+APPENDIX: Versioning thoughts:
+Authors: Julle and Kasper.
+*****************
+- Versions can be done on page level or element level
+- In any case a pure copy of the element is produced
+- For pages only configured tables will be copied, eg:
+	- Page
+	  - tt_content
+	  - pages_lang_overlay
+
+- Versioning (for single elements including single "pages" record) is based on 
+	- ONE element having an official position in the TYPO3 page tree, thus holding the official "uid" of the element! (If this element was deleted from the system, so are all versions of that element!)
+	- All versions of this one element being a) at pid "-1" and b) a field "real_id" pointing to the official UID
+	- Pages-versioninig: For all elements belonging to a version of a page; They are just copied and has no official new version or binding back to whatever element they came from. They just came along. And in fact, they could even have their own version history for them selves!
+	- Backend user access to elements is based on the access restrictions for the official element. THis must be implemented on core level.
+- Tables supporting versioning will have these fields:
+  - real_id	- Pointing back to official in-tree version
+  - ver_id	- Incremental integer (version number)
+  - ver_label	- Version label, eg. "1.1.1" or "Christmas edition"
+  - editlock	- Flag (core support independant of versioning) which IF SET makes it impossible for anyone to edit the record. The flag must be unset before editing can occur. (Is a feature which can be used to write-protect a version)
+  - pid/uid should have "signed" attributes in MySQL (pid = -1, uid =-xxxx for swapping).
+
+- Preview in fronend
+  - At page level, done with a simple selector in the AdminPanel. Just like date/user/hidden is done.
+  - For other element, time will show.
+
+- Backend module for versioning:
+  - Diff-ing between versions.
+
+- Version-swapping log?
+
+- ID-swapping for versioned elements
+  - Version from archive (future/past) will get the uid of the "real_id", the official element with "real_id" will get the new versions old uid.
+  - For pages-records: We will have to swap the "pid" values of all (versioning-included) elements on the pages.
+  - Swapping three-step process:
+	uid		uid	real_id
+  PUB:	13	-->	-13	247
+	247	-->	13	-
+	-13	-->	247	13
+  - Pages-versioning and the impact of NOT swapping tt_content element uids:
+	- Loose anchor-points, manually made (could be hack-fixed by some intelligent copying tracking)
+	- TemplaVoila references to elements from other pages (will break, however bad practice to reference elements not in some sort of central library which will NEVER be page-versioned anyways)
+	- Insert-records could potentially do the same
+	- Impact assesment: Low.
+	- Clean-up module (in templavoila?) could also track such things
+	- Problems for non-templavoila sites would be low.
+	
+- Backend:
+  - For single-editing of records we will show a version list from which to choose a version to edit (just like the delete button is also hidden at multi-edit)
+  - In list-module we might display a) an icon to a version selector (where diff-ing could be done, swapping performed etc.), b) show archive versions as children in the listing.
+  - In Page module + TemplaVoila page module: There will be a version selector implemented so users can switch around between versions.
+
+
+
+
+
+
+
+
+
 ******************
 APPENDIX: Charsets
 ******************
