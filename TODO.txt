@@ -1000,3 +1000,31 @@ Numbers in format: (New / Changed)
 - ba [Bosnian]		861/1
 - kr [Korean]		1123/0
 
+
+
+Same password:
+
+ 	no  	 	 	f4e72bc32f2c636059d5f3ba44323921  	Norwegian
+	pt 			f4e72bc32f2c636059d5f3ba44323921 	Portuguese
+	gr 			f4e72bc32f2c636059d5f3ba44323921 	Greek
+	jp 			f4e72bc32f2c636059d5f3ba44323921 	Japanese
+	vn 			f4e72bc32f2c636059d5f3ba44323921 	Vietnamese
+	ba 			f4e72bc32f2c636059d5f3ba44323921 	Bosnian
+	kr 			f4e72bc32f2c636059d5f3ba44323921 	Korean
+	it 			f4e72bc32f2c636059d5f3ba44323921 	Italian
+	fr 			f4e72bc32f2c636059d5f3ba44323921 	French
+	cz 			f4e72bc32f2c636059d5f3ba44323921 	Czech
+	tr 			f4e72bc32f2c636059d5f3ba44323921 	Turkish
+	se 			f4e72bc32f2c636059d5f3ba44323921 	Swedish
+	ro 			f4e72bc32f2c636059d5f3ba44323921 	Romanian
+	ch 			f4e72bc32f2c636059d5f3ba44323921 	Chinese (Simpl)
+	sk 			f4e72bc32f2c636059d5f3ba44323921 	Slovak
+	is 			f4e72bc32f2c636059d5f3ba44323921 	Icelandic
+	hr 			f4e72bc32f2c636059d5f3ba44323921 	Croatian
+	eu 			f4e72bc32f2c636059d5f3ba44323921 	Basque
+	bg 			f4e72bc32f2c636059d5f3ba44323921 	Bulgarian
+	br 			f4e72bc32f2c636059d5f3ba44323921 	Brazilian Portuguese
+	et 			f4e72bc32f2c636059d5f3ba44323921 	Estonian
+	he 			f4e72bc32f2c636059d5f3ba44323921 	Hebrew
+	ua 			f4e72bc32f2c636059d5f3ba44323921 	Ukrainian
+
