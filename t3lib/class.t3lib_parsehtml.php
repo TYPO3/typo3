@@ -882,7 +882,6 @@ class t3lib_parsehtml {
 					$parts[$k] = eregi_replace('(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))','\1'.$prefix.'\2\3',$parts[$k]);
 				}
 			}
-			debug($parts);
 			$content = implode('',$parts);
 		}
 

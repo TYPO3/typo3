@@ -109,7 +109,7 @@
  *
  */
 /**
- * Class for conversion between charsets.
+ * Class for conversion between charsets
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
