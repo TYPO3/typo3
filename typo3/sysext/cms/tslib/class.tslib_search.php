@@ -90,18 +90,15 @@ class tslib_search {
 
 	var $group_by = 'PRIMARY_KEY';							// Alternatively 'PRIMARY_KEY'; sorting by primary key
 	var $default_operator = 'AND';							// Standard SQL-operator between words
-	var $operator_translate_table_caseinsensitive = '1';
+	var $operator_translate_table_caseinsensitive = TRUE;
 	var $operator_translate_table = Array (					// case-sensitiv. Defineres the words, which will be operators between words
 		Array ('+' , 'AND'),
+		Array ('|' , 'AND'),
 		Array ('-' , 'AND NOT'),
 			// english
-		Array ('AND' , 'AND'),
-		Array ('OR' , 'OR'),
-		Array ('NOT' , 'AND NOT'),
-			// danish
-		Array ('OG' , 'AND'),
-		Array ('ELLER' , 'OR'),
-		Array ('UDEN' , 'AND NOT')
+		Array ('and' , 'AND'),
+		Array ('or' , 'OR'),
+		Array ('not' , 'AND NOT'),
 	);
 
 	// Internal
@@ -418,12 +415,12 @@ class tslib_search {
 		$op_array = $this->operator_translate_table;
 		reset ($op_array);
 		if ($this->operator_translate_table_caseinsensitive)	{
-			$operator = strtoupper($operator);
+			$operator = strtolower($operator);	// case-conversion is charset insensitive, but it doesn't spoil anything if input string AND operator table is already converted
 		}
 		while (list($key,$val) = each($op_array))	{
 			$item = $op_array[$key][0];
 			if ($this->operator_translate_table_caseinsensitive)	{
-				$item = strtoupper($item);
+				$item = strtolower($item);	// See note above.
 			}
 			if ($operator==$item)	{
 				return $op_array[$key][1];
@@ -463,10 +460,10 @@ class tslib_search {
 	 * @return	string		URL-parameters with the searchwords
 	 */
 	function get_searchwords()	{
-		$SWORD_PARAMS='';
+		$SWORD_PARAMS = '';
 		if (is_array($this->sword_array))	{
 			foreach($this->sword_array as $key => $val)	{
-				$SWORD_PARAMS.='&sword_list[]='.rawurlencode($val['sword']);
+				$SWORD_PARAMS.= '&sword_list[]='.rawurlencode($val['sword']);
 			}
 		}
 		return $SWORD_PARAMS;
@@ -480,7 +477,7 @@ class tslib_search {
 	function get_searchwordsArray()	{
 		if (is_array($this->sword_array))	{
 			foreach($this->sword_array as $key => $val)	{
-				$swords[]=$val['sword'];
+				$swords[] = $val['sword'];
 			}
 		}
 		return $swords;

@@ -6007,7 +6007,7 @@ class tslib_cObj {
 #??						$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 					}
 						// Add record:
-					if (is_array($row) && $dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row))	{
+					if (is_array($row) && ($dontCheckEnableFields || $GLOBALS['TSFE']->checkPagerecordForIncludeSection($row)))	{
 							// Add ID to list:
 						if ($begin<=0)	{
 							if ($dontCheckEnableFields || $GLOBALS['TSFE']->checkEnableFields($row))	{

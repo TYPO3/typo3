@@ -823,7 +823,7 @@ class tslib_pibase {
 		if (isset($this->LOCAL_LANG[$this->LLkey][$key]))	{
 			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key]);
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))	{
-			$word = $this->LOCAL_LANG['default'][$key];
+			$word = $this->LOCAL_LANG['default'][$key];	// No charset conversion because default is english and thereby ASCII
 		} else {
 			$word = $this->LLtestPrefixAlt.$alt;
 		}

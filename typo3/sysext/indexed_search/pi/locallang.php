@@ -23,9 +23,6 @@ $LOCAL_LANG = Array (
 		'opt_media_-1' => 'All media',
 		'opt_media_0' => 'Internal pages',
 		'opt_media_-2' => 'All External',
-		'opt_media_1' => 'HTML',
-		'opt_media_2' => 'PDF',
-		'opt_media_3' => 'MS Word',
 		'opt_order_rank_flag' => 'Weight/Frequency',
 		'opt_order_rank_freq' => 'Frequency',
 		'opt_order_rank_first' => 'Close to top',
@@ -88,6 +85,8 @@ $LOCAL_LANG = Array (
 		'local_operator_AND' => 'AND',
 		'local_operator_OR' => 'OR',
 		'local_operator_NOT' => 'NOT',
+		'makerating_addToCurrentSearch' => 'Add to current search words',
+		'maketitle_matches' => 'matches',
 	),
 	'dk' => Array (
 		'submit_button_label' => 'Søg',
@@ -380,7 +379,7 @@ OG, ELLER og IKKE er kommandoord som overskriver standard søketypen
 		'rules_header' => 'Regole:',
 		'rules_text' => 'Sono accettate solo parole con due o più caratteri, per un massimo di 200 caratteri totali.
 Lo spazio è usato per separare le parole, "" può essere usato per cercare un\'intera stringa.
-AND, OR e NOT possono essere usati prefissi alle parole da cercare. 
+AND, OR e NOT possono essere usati prefissi alle parole da cercare.
 +/|/- corrispondono agli operatori AND, OR e NOT.
 Tutte le parole sono convertite in caratteri minuscoli.',
 		'searchFor' => 'Cerca',
@@ -1336,7 +1335,7 @@ Sve tražene rijeèi se pretvaraju u mala slova (lowercase).',
 		'form_match' => 'Illeszkedés:',
 		'form_style' => 'Stílus:',
 		'rules_header' => 'Szabályok:',
-		'rules_text' => 'Csak 2 vagy több karakterbõl álló szavak elfogadottak. 
+		'rules_text' => 'Csak 2 vagy több karakterbõl álló szavak elfogadottak.
 Max 200 karakter összesen.
 A szóköz a szavak elválasztására szolgál, "" használható egész szöveg keresésre (nem indexelt keresés ekkor)
 ÉS, VAGY és NEM prefix szavak, felülírják az alapértelmezett operátorokat

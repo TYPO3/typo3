@@ -85,6 +85,7 @@ CREATE TABLE index_section (
   uniqid int(11) DEFAULT '0' NOT NULL auto_increment,
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,rl0),
+#  KEY phash_pid (phash,page_id),
   KEY page_id (page_id),
   KEY rl0 (rl0,rl1,phash),
   KEY rl0_2 (rl0,phash)

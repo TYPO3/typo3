@@ -177,7 +177,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$this->external_parsers[$extension] = &t3lib_div::getUserObj($_objRef);
 
 					// Init parser and if it returns false, unset its entry again:
-				if (!$this->external_parsers[$extension]->initBackend($extension))	{
+				if (!$this->external_parsers[$extension]->softInit($extension))	{
 					unset($this->external_parsers[$extension]);
 				}
 			}
@@ -1133,10 +1133,10 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			if ($fullPath)	{
 				$info = @getimagesize($fullPath);
 				$iconPath = $GLOBALS['BACK_PATH'].'../'.substr($fullPath,strlen(PATH_site));
-				$this->iconFileNameCache[$it] = is_array($info) ? '<img src="'.$iconPath.'" '.$info[3].' title="'.htmlspecialchars($alt).'" alt="" />' : '';
+				$this->iconFileNameCache[$it] = is_array($info) ? '<img src="'.$iconPath.'" '.$info[3].' title="###TITLE_ATTRIBUTE###" alt="" />' : '';
 			}
 		}
-		return $this->iconFileNameCache[$it];
+		return str_replace('###TITLE_ATTRIBUTE###',htmlspecialchars($it.': '.$alt),$this->iconFileNameCache[$it]);
 	}
 
 	/**
@@ -1310,6 +1310,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 							$indexerObj->backend_initIndexer($this->pObj->id, 0, 0, '', $rl, $GETparams, $cfgRow['chashcalc'] ? TRUE : FALSE);
 							$indexerObj->backend_setFreeIndexUid($cfgRow['uid']);
 
+							$theContent = '';
 							foreach($fieldList as $k => $v)	{
 								if (!$k)	{
 									$theTitle = $r[$v];
@@ -1317,6 +1318,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 									$theContent.= $r[$v].' ';
 								}
 							}
+debug($theContent,$theTitle);
 							$indexerObj->backend_indexAsTYPO3Page(
 									$theTitle,
 									'',

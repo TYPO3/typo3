@@ -32,4 +32,18 @@ $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] = array(
 	'tif' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
 );
 
+
+	// EXAMPLE configuration of hooks:
+/*
+$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['pi1_hooks'] = array (
+	'initialize_postProc' => 'EXT:indexed_search/example/class.pihook.php:&tx_indexedsearch_pihook',
+	'getResultRows' => 'EXT:indexed_search/example/class.pihook.php:&tx_indexedsearch_pihook',
+	'printResultRow' => 'EXT:indexed_search/example/class.pihook.php:&tx_indexedsearch_pihook',
+	'prepareResultRowTemplateData_postProc' => 'EXT:indexed_search/example/class.pihook.php:&tx_indexedsearch_pihook',
+);
+*/
+
+	// EXAMPLE of adding fields to root line:
+#$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['addRootLineFields']['level3'] = 3;
+
 ?>

@@ -920,7 +920,7 @@ class tx_indexedsearch_indexer {
 					$this->internal_log = array();
 					$this->log_push('Index: '.str_replace('.','_',basename($file)).($cPKey?'#'.$cPKey:''),'');
 					$Pstart = t3lib_div::milliseconds();
-					$subinfo = array('key' => $cPKey);
+					$subinfo = array('key' => $cPKey);	// Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
 					$phash_arr = $this->file_phash_arr = $this->setExtHashes($file,$subinfo);
 					$check = $this->checkMtimeTstamp($mtime, $phash_arr['phash']);
 					if ($check > 0 || $force)	{
@@ -1386,6 +1386,10 @@ class tx_indexedsearch_indexer {
 	 */
 	function submitFilePage($hash,$file,$subinfo,$ext,$mtime,$ctime,$size,$content_md5h,$contentParts)	{
 
+			// Find item Type:
+		$storeItemType = $this->external_parsers[$ext]->ext2itemtype_map[$ext];
+		$storeItemType = $storeItemType ? $storeItemType : $ext;
+
 			// Remove any current data for this phash:
 		$this->removeOldIndexedFiles($hash['phash']);
 
@@ -1399,7 +1403,7 @@ class tx_indexedsearch_indexer {
 			'cHashParams' => serialize($subinfo),
 			'contentHash' => $content_md5h,
 			'data_filename' => $file,
-			'item_type' => $ext,
+			'item_type' => $storeItemType,
 			'item_title' => trim($contentParts['title']) ? $contentParts['title'] : basename($file),
 			'item_description' => $this->bodyDescription($contentParts),
 			'item_mtime' => $mtime,

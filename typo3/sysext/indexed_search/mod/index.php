@@ -29,6 +29,9 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ */
 
 
 unset($MCONF);
@@ -41,9 +44,14 @@ t3lib_extMgm::isLoaded("indexed_search",1);
 require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+/**
+ * Backend module providing boring statistics of the index-tables.
+ *
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_indexedsearch
+ */
 class SC_mod_tools_isearch_index {
 	var $MCONF=array();
 	var $MOD_MENU=array();
@@ -53,6 +61,9 @@ class SC_mod_tools_isearch_index {
 	var $include_once=array();
 	var $content;
 
+	/**
+	 * Initialization
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		$this->MCONF = $GLOBALS["MCONF"];
@@ -138,9 +149,23 @@ class SC_mod_tools_isearch_index {
 	}
 
 
-	// ***************************
-	// OTHER FUNCTIONS:
-	// ***************************
+
+
+
+
+
+
+
+
+	/***************************
+	 *
+	 * OTHER FUNCTIONS:
+	 *
+	 ***************************/
+
+	/**
+	 *
+	 */
 	function getRecordsNumbers()	{
 		$tables=explode(",","index_phash,index_words,index_rel,index_grlist,index_section,index_fulltext");
 		$recList=array();

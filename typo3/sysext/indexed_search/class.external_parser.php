@@ -77,6 +77,8 @@ class tx_indexed_search_extparse {
 
 		// This array is configured in initialization:
 	var $app = array();
+	var $ext2itemtype_map = array();
+	var $supportedExtensions = array();
 
 	var $pObj;		// Reference to parent object (indexer class)
 
@@ -95,6 +97,7 @@ class tx_indexed_search_extparse {
 			// If windows, apply extension to tool name:
 		$exe = (TYPO3_OS == 'WIN') ? '.exe' : ''; // lg
 		$extOK = FALSE;
+		$mainExtension = '';
 
 			// Ignore extensions
 		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']),1);
@@ -187,32 +190,39 @@ class tx_indexed_search_extparse {
 				} else $this->pObj->log_setTSlogMessage('unrtf tool (RTF-files) disabled',1);
 			break;
 			case 'txt':		// Raw text
-			case 'html':	// PHP strip-tags()
-			case 'htm':		// PHP strip-tags()
 			case 'csv':		// Raw text
 			case 'xml':		// PHP strip-tags()
-			case 'jpg':		// PHP EXIF
-			case 'jpeg':	// PHP EXIF
 			case 'tif':		// PHP EXIF
 				$extOK = TRUE;
+			break;
+			case 'html':	// PHP strip-tags()
+			case 'htm':		// PHP strip-tags()
+				$extOK = TRUE;
+				$mainExtension = 'html';	// making "html" the common "item_type"
+			break;
+			case 'jpg':		// PHP EXIF
+			case 'jpeg':	// PHP EXIF
+				$extOK = TRUE;
+				$mainExtension = 'jpeg';	// making "jpeg" the common item_type
 			break;
 		}
 
 			// If extension was OK:
 		if ($extOK)	{
 			$this->supportedExtensions[$extension] = TRUE;
+			$this->ext2itemtype_map[$extension] = $mainExtension ? $mainExtension : $extension;
 			return TRUE;
 		}
 	}
 
 	/**
 	 * Initialize external parser for backend modules
-	 * Doesn't evaluate if parser is configured right - more like returning POSSIBLE supported extensions (for showing icons etc).
+	 * Doesn't evaluate if parser is configured right - more like returning POSSIBLE supported extensions (for showing icons etc) in backend and frontend plugin
 	 *
 	 * @param	string		File extension to initialize for.
 	 * @return	boolean		Returns true if the extension is supported and enabled, otherwise false.
 	 */
-	function initBackend($extension)	{
+	function softInit($extension)	{
 		switch($extension)	{
 			case 'pdf':		// PDF
 			case 'doc':		// MS Word files
@@ -231,6 +241,94 @@ class tx_indexed_search_extparse {
 			case 'jpg':		// Jpeg images (EXIF comment)
 			case 'jpeg':	// Jpeg images (EXIF comment)
 			case 'tif':		// TIf images (EXIT comment)
+				return TRUE;
+			break;
+		}
+	}
+
+	/**
+	 * Return title of entry in media type selector box.
+	 *
+	 * @param	string		File extension
+	 * @return	string		String with label value of entry in media type search selector box (frontend plugin).
+	 */
+	function searchTypeMediaTitle($extension)	{
+
+			// Read indexer-config
+		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
+
+			// Ignore extensions
+		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']),1);
+		if (in_array($extension, $ignoreExtensions))	{
+			return FALSE;
+		}
+
+			// Switch on file extension:
+		switch($extension)	{
+			case 'pdf':
+					// PDF
+				if ($indexerConfig['pdftools'])	{
+					return 'PDF';
+				}
+			break;
+			case 'doc':
+					// Catdoc
+				if ($indexerConfig['catdoc'])	{
+					return 'MS Word';
+				}
+			break;
+			case 'pps':		// MS PowerPoint(?)
+			case 'ppt':		// MS PowerPoint
+					// ppthtml
+				if ($indexerConfig['ppthtml'])	{
+					return 'MS Powerpoint';
+				}
+			break;
+			case 'xls':		// MS Excel
+					// Xlhtml
+				if ($indexerConfig['xlhtml'])	{
+					return 'MS Excel';
+				}
+			break;
+			case 'sxc':		// Open Office Calc.
+			case 'sxi':		// Open Office Impress
+			case 'sxw':		// Open Office Writer
+				if ($indexerConfig['nativeOOMethod'] || $indexerConfig['ruby'])	{
+					return 'Open Office';
+				}
+			break;
+			case 'rtf':
+					// Catdoc
+				if ($indexerConfig['unrtf'])	{
+					return 'RTF';
+				}
+			break;
+			case 'html':	// PHP strip-tags()
+			case 'jpeg':	// PHP EXIF
+			case 'txt':		// Raw text
+			case 'csv':		// Raw text
+			case 'xml':		// PHP strip-tags()
+			case 'tif':		// PHP EXIF
+				return strtoupper($extension);
+			break;
+				// NO entry (duplicates or blank):
+			case 'htm':		// PHP strip-tags()
+			case 'jpg':		// PHP EXIF
+			default:
+			break;
+		}
+	}
+
+	/**
+	 * Returns true if the input extension (item_type) is a potentially a multi-page extension
+	 *
+	 * @param	string		Extension / item_type string
+	 * @return	boolean		Return true if multi-page
+	 */
+	function isMultiplePageExtension($extension)	{
+			// Switch on file extension:
+		switch((string)$extension)	{
+			case 'pdf':
 				return TRUE;
 			break;
 		}

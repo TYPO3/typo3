@@ -20,7 +20,7 @@ plugin.tx_indexedsearch {
 	lang=0
 	desc=0
 	results=0
-	
+
 #	defOp.1=1
 #	extResume=1
   }
@@ -31,19 +31,37 @@ plugin.tx_indexedsearch {
   path_stdWrap {
   }
   search {
-    rootPidList = 
+    rootPidList =
     page_links = 10
   }
 
   result_link_target =
-
-  
+/*
+  flagRendering = CASE
+  flagRendering {
+  	key.current = 1
+  	2 = TEXT
+	2.value = German
+  	default = TEXT
+	default.value = English
+  }
+*/
+/*
+  iconRendering = CASE
+  iconRendering {
+  	key.current = 1
+  	html = TEXT
+	html.value = HtmL
+  	default = TEXT
+	default.value = TYPO3 pages
+  }
+*/
   tableParams {
     secHead = border=0 cellpadding=0 cellspacing=0 width="100%"
     searchBox =  border=0 cellpadding=0 cellspacing=0
 	searchRes =  border=0 cellpadding=0 cellspacing=0 width="100%"
   }
-  
+
    # Setting default values for piVars (please see the source code for the form-field names which you can preset values for here)
   _DEFAULT_PI_VARS.extResume=1
   _CSS_DEFAULT_STYLE (
@@ -61,7 +79,8 @@ plugin.tx_indexedsearch {
 	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead { margin-top:20px; margin-bottom:5px; }
 	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead H2 { margin-top:0px; margin-bottom:0px; }
 	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TABLE { background:#cccccc; }
-	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TD { vertical-align:absmiddle; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TD { vertical-align:middle; }
+	.tx-indexedsearch .tx-indexedsearch-res .noResume { color : #666666; }
   )
   _LOCAL_LANG {
   }

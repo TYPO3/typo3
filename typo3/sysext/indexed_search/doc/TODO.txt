@@ -1,3 +1,4 @@
+TIRSDAG:
 - Improve lexer:
 	- See BASIC_LEXER from Oracle
 	- CJK hack from Zope.
@@ -5,14 +6,52 @@
 	- Implement in search query analysis.
 - TESTING with russian, danish, chinese, japanese etc...
 - CVS
+- split search words by new lexer function! (getSearchWords)
 
-**************'
+ONSDAG:
+- Crawler
 
-- Index Configurations / CLI indexer
+
+TORSDAG / FREDAG:
+- Test / Koordinering.
+
+<diverse>
+Search test:
+- "message appears" - viste external media som IKKE var indekseret!?
+- external media respect privacy of pages?
+- external media on multiple pages with DIFFERENT languages?
+- checkResume: Should it also check for gr_list "0,-1"?
+
+Example på alternativ søgning!
+XHTML i frontend?
+
+Backend modules:
 - Proper skinning? / getLL? / XHTML
--------------------------------
+</diverse>
+
+
+
+Test kaniner (indexed search / caching?):
+	- 3DS
+	- Metropol
+	- FI
+	- Link Factory
+	- Brunata
+	- TYPO3.org copy
+
+**************
+getLL with XML-support?
+
 
 CRAWLER:
+Purpose: To request URLs
+Special instructions:
+	- Re-cache
+	- Publish
+	- Index
+	(combinations?)
+	(status data can be stored back in URL-record)
+
 &L=[_TABLE:sys_language;_PID:0:_tx_indexedsearch_fields:bodytext,header]
 &[_LOGIN]=[,kasper,francis;_PID:]
 &myext[uid]=[1-34,35,36-10]&another=1?
@@ -25,31 +64,27 @@ CRAWLER:
 	- strlen?
 
 
+***************
+TODO / projects:
+*****************
 
+Documentation:
+- Configuration possibilities (piVars, TypoScript, Hooks etc)
+- How to setup up, analyse and debug indexed search (manual)
+- Technical:
+	- utf-8 internally.
+	- Updates on tables structure
 
-************************************************************
+Statistics module:
+- Someone write a statistics display module for the search operation! (Displaying content from index_stat_search and index_stat_word)
+	Olivier Dobberkau / dkd is on this.
+
+Various:
+- The checkbox "No Search" in the page header is only respected by indexed_search during indexing! (A page will not be indexed when "No Search" is set). However when searching results are not filtered based on this flag - so if a page is indexed before the no search flag is set it will be found in search results. To change this is hard because the getTreeList() function that fetches all page ids cannot take a where-clause to filter it out but must have hardcoded support. Alternatively the pages table must be joined into the search result so we can select on the field. A solution is still not agreed upon.
+- The Tools>Indexing module could need some shining up and more useful features (Someone else does this?)
+- CLI script for removal of old indexes: First set flag, then 14 days later remove the records.
 
 Templating / Display in plugin:
-- Localization, configuration of search-options, stylesheet formatting of result content (with new CSS Stylesheet Editor)
 - Templating
-	- with Template Voila TOs?
-	- other approaches? (markers seem straight forward)
-- linkPage() function
-	- Link correctly to MP links / external documents?
-	- Link correctly to external documents / URLs?
-- CHECK: Which keys are necessary??? There are four keys on typo3.com. Are they all used by the indexer or what?
-- Is result links working for frames? (&type=1) See Message-ID: <3DA762A0.84BDA4F1@kuehn.com>
-- Implement Stop-words in search
-
-Clean up backend modules:
-	- getLL()
-	- skinning()
-	- XHTML()
-
-Misc:
-- DOC: Tutorial on setting it up, getting it to run, trouble shoot it.
-- add possibility of cron-job based crawler-indexing of any external site (based on configuration record in the page tree. Access to that page will determine whether external URL is part of result. Just like the external media is.)
-- flags i pages tabel: set_for_indexing (reset when indexed), do not index, ...
-- The Tools>Indexing module could need some shining up and more useful features (Someone else does this?)
-- CLI til removal of old indexes: First set flag, then 14 days later remove the records.
-
+	- with new Template API?
+	- Still need to put a group together.
