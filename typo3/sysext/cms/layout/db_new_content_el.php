@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,10 +24,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * New content elements wizard
  * (Part of the 'cms' extension)
- * 
+ *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compatible.
@@ -39,26 +39,26 @@
  *
  *
  *
- *  100: class ext_posMap extends t3lib_positionMap 
- *  110:     function wrapRecordTitle($str,$row)	
- *  124:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
+ *  100: class ext_posMap extends t3lib_positionMap
+ *  110:     function wrapRecordTitle($str,$row)
+ *  124:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
  *
  *
- *  152: class SC_db_new_content_el 
- *  175:     function init()	
- *  211:     function main()	
- *  355:     function printContent()	
+ *  152: class SC_db_new_content_el
+ *  175:     function init()
+ *  211:     function main()
+ *  355:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  384:     function getWizardItems()	
- *  394:     function wizardArray()	
+ *  384:     function getWizardItems()
+ *  394:     function wizardArray()
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
+
+
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
@@ -99,7 +99,7 @@ require_once (PATH_t3lib.'class.t3lib_positionmap.php');
  */
 class ext_posMap extends t3lib_positionMap {
 	var $dontPrintPageInsertIcons = 1;
-	
+
 	/**
 	 * Wrapping the title of the record - here we just return it.
 	 *
@@ -123,7 +123,7 @@ class ext_posMap extends t3lib_positionMap {
 	 */
 	function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) {
 		$table='tt_content';
-		
+
 		$location=$this->backPath.'alt_doc.php?edit[tt_content]['.(is_array($row)?-$row['uid']:$pid).']=new&defVals[tt_content][colPos]='.$vv.'&defVals[tt_content][sys_language_uid]='.$sys_lang.'&returnUrl='.rawurlencode($GLOBALS['SOBE']->R_URI);
 
 		return 'document.location=\''.$location.'\'+document.editForm.defValues.value; return false;';
@@ -150,13 +150,13 @@ class ext_posMap extends t3lib_positionMap {
  * @subpackage core
  */
 class SC_db_new_content_el {
-	
+
 		// Internal, static (from GPvars):
 	var $id;					// Page id
 	var $sys_language=0;		// Sys language
 	var $R_URI='';				// Return URL.
 	var $colPos;				// If set, the content is destined for a specific column.
-	var $uid_pid;				// 
+	var $uid_pid;				//
 
 		// Internal, static:
 	var $modTSconfig=array();	// Module TSconfig.
@@ -166,7 +166,7 @@ class SC_db_new_content_el {
 	var $include_once = array();	// Includes a list of files to include between init() and main() - see init()
 	var $content;					// Used to accumulate the content of the module.
 	var $access;				// Access boolean.
-	
+
 	/**
 	 * Constructor, initializing internal variables.
 	 *
@@ -174,12 +174,12 @@ class SC_db_new_content_el {
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH,$TBE_MODULES_EXT;
-		
+
 			// Setting class files to include:
 		if (is_array($TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']))	{
 			$this->include_once = array_merge($this->include_once,$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']);
 		}
-		
+
 			// Setting internal vars:
 		$this->id = intval(t3lib_div::_GP('id'));
 		$this->sys_language = intval(t3lib_div::_GP('sys_language_uid'));
@@ -190,13 +190,13 @@ class SC_db_new_content_el {
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 
-			// Starting the document template object:		
+			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
 		$this->doc->form='<form action="" name="editForm"><input type="hidden" name="defValues" value="" />';
-		
+
 			// Getting the current page and receiving access information (used in main())
 		$perms_clause = $BE_USER->getPagePermsClause(1);
 		$pageinfo = t3lib_BEfunc::readPageAccess($this->id,$perms_clause);
@@ -212,12 +212,12 @@ class SC_db_new_content_el {
 		global $LANG,$BACK_PATH;
 
 		if ($this->id && $this->access)	{
-			
+
 				// Init position map object:
 			$posMap = t3lib_div::makeInstance('ext_posMap');
 			$posMap->cur_sys_language = $this->sys_language;
 			$posMap->backPath = $BACK_PATH;
-		
+
 			if ((string)$this->colPos!='')	{	// If a column is pre-set:
 				if ($this->uid_pid<0)	{
 					$row=array();
@@ -229,14 +229,14 @@ class SC_db_new_content_el {
 			} else {
 				$onClickEvent='';
 			}
-		
+
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 				function goToalt_doc()	{	//
 					'.$onClickEvent.'
-				}	
+				}
 			');
-		
-		
+
+
 			// ***************************
 			// Creating content
 			// ***************************
@@ -244,21 +244,21 @@ class SC_db_new_content_el {
 			$this->content.=$this->doc->startPage($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->header($LANG->getLL('newContentElement'));
 			$this->content.=$this->doc->spacer(5);
-		
+
 			$elRow = t3lib_BEfunc::getRecord('pages',$this->id);
 			$hline = t3lib_iconWorks::getIconImage('pages',$elRow,$BACK_PATH,' title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,'pages')).'" align="top"');
 			$hline.= t3lib_BEfunc::getRecordTitle('pages',$elRow,1);
 			$this->content.=$this->doc->section('',$hline,0,1);
 			$this->content.=$this->doc->spacer(10);
-		
-		
+
+
 				// Wizard
 			$code='';
 			$lines=array();
 			$wizardItems = $this->getWizardItems();
 
 				// Traverse items for the wizard.
-				// An item is either a header or an item rendered with a radio button and title/description and icon:			
+				// An item is either a header or an item rendered with a radio button and title/description and icon:
 			$cc=0;
 			foreach($wizardItems as $k => $wInfo)	{
 				if ($wInfo['header'])	{
@@ -272,21 +272,21 @@ class SC_db_new_content_el {
 						</tr>';
 				} else {
 					$tL=array();
-					
+
 						// Radio button:
 					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$onClickEvent?"document.location='#sel2';":'');
 					$tL[]='<input type="radio" name="tempB" value="'.htmlspecialchars($k).'" onclick="'.htmlspecialchars($this->doc->thisBlur().$oC).'" />';
 
-						// Onclick action for icon/title:			
+						// Onclick action for icon/title:
 					$aOnClick = 'document.editForm.tempB['.$cc.'].checked=1;'.$this->doc->thisBlur().$oC.'return false;';
 
 						// Icon:
 					$iInfo = @getimagesize($wInfo['icon']);
 					$tL[]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,$wInfo['icon'],'').' alt="" /></a>';
 
-						// Title + description:					
+						// Title + description:
 					$tL[]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><strong>'.htmlspecialchars($wInfo['title']).'</strong><br />'.nl2br(htmlspecialchars(trim($wInfo['description']))).'</a>';
-			
+
 						// Finally, put it together in a table row:
 					$lines[]='
 						<tr>
@@ -299,7 +299,7 @@ class SC_db_new_content_el {
 				// Add the wizard table to the content:
 			$code.=$LANG->getLL('sel1',1).'<br /><br />
 
-		
+
 			<!--
 				Content Element wizard table:
 			-->
@@ -307,8 +307,8 @@ class SC_db_new_content_el {
 					'.implode('',$lines).'
 				</table>';
 			$this->content.=$this->doc->section(!$onClickEvent?$LANG->getLL('1_selectType'):'',$code,0,1);
-		
-				
+
+
 
 				// If the user must also select a column:
 			if (!$onClickEvent)	{
@@ -319,23 +319,23 @@ class SC_db_new_content_el {
 
 					// Select position
 				$code=$LANG->getLL('sel2',1).'<br /><br />';
-			
+
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-				$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id,'mod.SHARED');	
+				$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id,'mod.SHARED');
 				$colPosList = strcmp(trim($modTSconfig_SHARED['properties']['colPos_list']),'') ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
 				$colPosList = implode(',',array_unique(t3lib_div::intExplode(',',$colPosList)));		// Removing duplicates, if any
-			
+
 					// Finally, add the content of the column selector to the content:
 				$code.=$posMap->printContentElementColumns($this->id,0,$colPosList,1,$this->R_URI);
 				$this->content.=$this->doc->section($LANG->getLL('2_selectPosition'),$code,0,1);
 			}
 
-				// IF there is a return-url set, then print a go-back link:		
+				// IF there is a return-url set, then print a go-back link:
 			if ($this->R_URI)	{
 				$code='<br /><br /><a href="'.htmlspecialchars($this->R_URI).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.$LANG->getLL('goBack',1).'</a>';
 				$this->content.=$this->doc->section('',$code,0,1);
 			}
-		
+
 				// Add a very high clear-gif, 700 px (so that the link to the anchor "sel2" shows this part in top for sure...)
 			$this->content.=$this->doc->section('','<img src="clear.gif" width="1" height="700" alt="" />',0,1);
 
@@ -358,7 +358,7 @@ class SC_db_new_content_el {
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}
-	
+
 
 
 
@@ -371,7 +371,7 @@ class SC_db_new_content_el {
 
 	/***************************
 	 *
-	 * OTHER FUNCTIONS:	
+	 * OTHER FUNCTIONS:
 	 *
 	 ***************************/
 
@@ -393,7 +393,7 @@ class SC_db_new_content_el {
 	 */
 	function wizardArray()	{
 		global $LANG,$TBE_MODULES_EXT;
-		
+
 		$wizardItems = array(
 			'common' => array('header'=>$LANG->getLL('common')),
 			'common_1' => array(
@@ -457,8 +457,8 @@ class SC_db_new_content_el {
 				'description'=>$LANG->getLL('special_4_description'),
 				'params'=>'&defVals[tt_content][CType]=html'
 			),
-		
-		
+
+
 			'forms' => array('header'=>$LANG->getLL('forms')),
 			'forms_1' => array(
 				'icon'=>'gfx/c_wiz/mailform.gif',
