@@ -259,14 +259,17 @@ $TCA['tt_content'] = Array (
 						'title' => 'Table wizard',
 						'icon' => 'wizard_table.gif',
 						'script' => 'wizard_table.php',
+						'params' => array('xmlOutput' => 0)
 					),
 					'forms' => Array(
 						'notNewRecords' => 1,
 						'enableByTypeConfig' => 1,
 						'type' => 'script',
+#						'hideParent' => array('rows' => 4),
 						'title' => 'Forms wizard',
 						'icon' => 'wizard_forms.gif',
 						'script' => 'wizard_forms.php?special=formtype_mail',
+						'params' => array('xmlOutput' => 0)
 					)
 				)
 			)
@@ -914,7 +917,7 @@ $TCA['tt_content'] = Array (
 			imagecaption;LLL:EXT:cms/locallang_ttc.php:imagecaption.ALT.script'),
 		'menu' => 		Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, menu_type;;;;5-5-5, pages'),
 		'mailform' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, 
-			bodytext;LLL:EXT:cms/locallang_ttc.php:bodytext.ALT.mailform;;nowrap:wizards[forms];5-5-5, 
+			bodytext;LLL:EXT:cms/locallang_ttc.php:bodytext.ALT.mailform;;nowrap:wizards[forms];5-5-5,
 			pages;LLL:EXT:cms/locallang_ttc.php:pages.ALT.mailform, 
 			subheader;LLL:EXT:cms/locallang_ttc.php:subheader.ALT.mailform'),
 		'search' => 	Array('showitem' => 'CType;;4;button;1-1-1, header;;3;;2-2-2, 

@@ -207,6 +207,9 @@ class SC_wizard_forms {
 		$this->special = t3lib_div::_GP('special');
 		$this->FORMCFG = t3lib_div::_GP('FORMCFG');
 
+			// Setting options:
+		$this->xmlStorage = $this->P['params']['xmlOutput'];
+
 			// Document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->docType = 'xhtml_trans';

@@ -116,6 +116,9 @@ class SC_wizard_table {
 		$this->P = t3lib_div::_GP('P');
 		$this->TABLECFG = t3lib_div::_GP('TABLE');
 
+			// Setting options:
+		$this->xmlStorage = $this->P['params']['xmlOutput'];
+
 			// Textareas or input fields:
 		$this->inputStyle=isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;
 

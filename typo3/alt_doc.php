@@ -56,7 +56,7 @@
  *  816:     function compileForm($panel,$docSel,$cMenu,$editForm)	
  *  875:     function functionMenus()	
  *  906:     function shortCutLink()	
- *  937:     function tceformMessages()	
+ *  937:     function tceformMessages()
  *
  *              SECTION: Other functions
  *  975:     function editRegularContentFromId()	
@@ -434,7 +434,8 @@ class SC_alt_doc {
 				// Initialize TCEforms (rendering the forms)
 			$this->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 			$this->tceforms->initDefaultBEMode();
-			$this->tceforms->doSaveFieldName='doSave';
+			$this->tceforms->doSaveFieldName = 'doSave';
+			$this->tceforms->returnUrl = $this->R_URI;
 			$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 			$this->tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
 
@@ -444,18 +445,18 @@ class SC_alt_doc {
 			if ($this->editRegularContentFromId)	{
 				$this->editRegularContentFromId();
 			}
-			
+
 				// Creating the editing form, wrap it with buttons, document selector etc.
 			$editForm = $this->makeEditForm();
 			if ($editForm)	{
 				reset($this->elementsData);
 				$this->firstEl = current($this->elementsData);
-		
+
 				if ($this->viewId)	{
 						// Module configuration:
 					$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->viewId,'mod.xMOD_alt_doc');
 				} else $this->modTSconfig=array();
-		
+
 				$panel = $this->makeButtonPanel();
 				$docSel = $this->makeDocSel();
 				$cMenu = $this->makeCmenu();

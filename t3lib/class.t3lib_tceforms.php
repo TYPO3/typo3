@@ -43,10 +43,10 @@
  *  303:     function initDefaultBEmode()	
  *
  *              SECTION: Rendering the forms, fields etc
- *  349:     function getSoloField($table,$row,$theFieldToReturn)	
+ *  349:     function getSoloField($table,$row,$theFieldToReturn)
  *  388:     function getMainFields($table,$row,$depth=0)	
  *  515:     function getListedFields($table,$row,$list)	
- *  556:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	
+ *  556:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')
  *  632:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)
  *  760:     function getSingleField_SW($table,$field,$row,&$PA)
  *
@@ -192,6 +192,7 @@ class t3lib_TCEforms	{
 
 		// EXTERNAL, static
 	var $backPath='';					// Set this to the 'backPath' pointing back to the typo3 admin directory from the script where this form is displayed.
+	var $returnUrl='';					// Alternative return URL path (default is t3lib_div::linkThisScript())
 	var $doSaveFieldName='';			// Can be set to point to a field name in the form which will be set to '1' when the form is submitted with a *save* button. This way the recipient script can determine that the form was submitted for save and not "close" for example.
 	var $palettesCollapsed=0;			// Can be set true/false to whether palettes (secondary options) are in the topframe or in form. True means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
 	var $disableRTE=0;					// If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
@@ -700,7 +701,7 @@ class t3lib_TCEforms	{
 					$PA['label'] = t3lib_div::deHSCentities(htmlspecialchars($PA['label']));
 					if (t3lib_div::testInt($row['uid']) && $PA['fieldTSConfig']['linkTitleToSelf'])	{
 						$lTTS_url = $this->backPath.'alt_doc.php?edit['.$table.']['.$row['uid'].']=edit&columnsOnly='.$field.
-									($PA['fieldTSConfig']['linkTitleToSelf.']['returnUrl']?'&returnUrl='.rawurlencode(t3lib_div::linkThisScript()):'');
+									($PA['fieldTSConfig']['linkTitleToSelf.']['returnUrl']?'&returnUrl='.rawurlencode($this->thisReturnUrl()):'');
 						$PA['label'] = '<a href="'.htmlspecialchars($lTTS_url).'">'.$PA['label'].'</a>';
 					}
 
@@ -1372,16 +1373,29 @@ class t3lib_TCEforms	{
 			// Init:
 		$config = $PA['fieldConf']['config'];
 		$itemValue = $PA['itemFormElValue'];
-		
+
+		return $this->getSingleField_typeNone_render($config,$itemValue);
+	}
+
+	/**
+	 * HTML rendering of a value which is not editable.
+	 *
+	 * @param	array		Configuration for the display
+	 * @param	string		The value to display
+	 * @return	string		The HTML code for the display
+	 * @see getSingleField_typeNone();
+	 */
+	function getSingleField_typeNone_render($config,$itemValue)	{
+
 		$divStyle = 'border:solid 1px '.t3lib_div::modifyHTMLColorAll($this->colorScheme[0],-30).';'.$this->defStyle.$this->formElStyle('text').' background-color: '.$this->colorScheme[0].'; overflow:auto;padding-left:1px;color:#555;';
 		if ($config['rows']>1) {
 			if(!$config['pass_content']) {
-				$itemValue=nl2br(htmlspecialchars($itemValue));
+				$itemValue = nl2br(htmlspecialchars($itemValue));
 			}
 				// like textarea
-			$cols = t3lib_div::intInRange($config['cols']?$config['cols']:30,5,$this->maxTextareaWidth);
+			$cols = t3lib_div::intInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
 			if (!$config['fixedRows']) {
-				$origRows = $rows = t3lib_div::intInRange($config['rows']?$config['rows']:5,1,20);
+				$origRows = $rows = t3lib_div::intInRange($config['rows'] ? $config['rows'] : 5, 1, 20);
 				if (strlen($itemValue)>$this->charsPerRow*2)	{
 					$cols = $this->maxTextareaWidth;
 					$rows = t3lib_div::intInRange(round(strlen($itemValue)/$this->charsPerRow),count(explode(chr(10),$itemValue)),20);
@@ -1396,10 +1410,13 @@ class t3lib_TCEforms	{
 				// hardcoded: 12 is the height of the font
 			$height=$rows*12;
 				// is colorScheme[0] the right value?
-			$item='<div style="'.htmlspecialchars($divStyle.'height:'.$height.'px;width:'.$width.'px;').'">'.$itemValue.'</div>';
+			$item='
+				<div style="'.htmlspecialchars($divStyle.'height:'.$height.'px;width:'.$width.'px;').'">'.
+				$itemValue.
+				'</div>';
 		} else {
 			if(!$config['pass_content']) {
-				$itemValue=htmlspecialchars($itemValue);
+				$itemValue = htmlspecialchars($itemValue);
 			}
 
 			// how to handle cropping for too long lines?
@@ -1407,12 +1424,15 @@ class t3lib_TCEforms	{
 			$cols = $config['cols']?$config['cols']:($config['size']?$config['size']:$this->maxInputWidth);
 			if ($this->docLarge)	$cols = round($cols*$this->form_largeComp);
 			$width = ceil($cols*$this->form_rowsToStylewidth);
-			$item='<div style="'.htmlspecialchars($divStyle.'width:'.$width.'px;').'"><span class="nobr">'.(strcmp($itemValue,'')?$itemValue:'&nbsp;').'</span></div>';
+			$item = '
+				<div style="'.htmlspecialchars($divStyle.'width:'.$width.'px;').'">'.	// Had to remove "nobreak" since Mozilla crashed...!
+				(strcmp($itemValue,'') ? $itemValue : '&nbsp;').
+				'</div>';
 		}
 
 		return $item;
 	}
-	
+
 	/**
 	 * Handler for Flex Forms
 	 *
@@ -2115,12 +2135,12 @@ class t3lib_TCEforms	{
 	 * @return	string		The new item value.
 	 */
 	function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)	{
-	
+
 			// Init:
 		$fieldChangeFunc = $PA['fieldChangeFunc'];
 		$item = $itemKinds[0];
-		$outArr=array();
-		$fName='['.$table.']['.$row['uid'].']['.$field.']';
+		$outArr = array();
+		$fName = '['.$table.']['.$row['uid'].']['.$field.']';
 		$md5ID = t3lib_div::shortmd5($itemName);
 
 			// traverse wizards:
@@ -2131,14 +2151,14 @@ class t3lib_TCEforms	{
 						&& (!$wConf['enableByTypeConfig'] || @in_array($wid,$specConf['wizards']['parameters']))
 						&& ($RTE || !$wConf['RTEonly'])
 					)	{
-				
+
 						// Title / icon:
 					$iTitle = htmlspecialchars($this->sL($wConf['title']));
 					if ($wConf['icon'])	{
 						$iDat = $this->getIcon($wConf['icon']);		// THIS is very ODD!!! Check it....
 						$icon = '<img src="'.$iDat[0].'" '.$iDat[1][3].' border="0"'.t3lib_BEfunc::titleAltAttrib($iTitle).' />';
-					} else $icon=$iTitle;
-					
+					} else $icon = $iTitle;
+
 					$colorBoxLinks=array();
 					switch((string)$wConf['type'])	{
 						case 'userFunc':
@@ -2153,9 +2173,8 @@ class t3lib_TCEforms	{
 								$params['pid'] = $row['pid'];
 								$params['field'] = $field;
 								$params['md5ID'] = $md5ID;
-								$params['returnUrl'] = t3lib_div::linkThisScript();
+								$params['returnUrl'] = $this->thisReturnUrl();
 								$url = $this->backPath.$wConf['script'].(strstr($wConf['script'],'?') ? '' : '?');
-
 
 								if ((string)$wConf['type']=='colorbox' && !$wConf['script'])	{
 									break;
@@ -2167,9 +2186,9 @@ class t3lib_TCEforms	{
 												'</a>';
 								}
 
-								$params['formName']=$this->formName;
-								$params['itemName']=$itemName;
-								$params['fieldChangeFunc']=$fieldChangeFunc;
+								$params['formName'] = $this->formName;
+								$params['itemName'] = $itemName;
+								$params['fieldChangeFunc'] = $fieldChangeFunc;
 								if ((string)$wConf['type']=='popup' || (string)$wConf['type']=='colorbox')	{
 										// Current form value is passed as P[currentValue]!
 									$addJS = $wConf['popup_onlyOpenIfSelected']?'if (!TBE_EDITOR_curSelected(\''.$itemName.'_list\')){alert('.$GLOBALS['LANG']->JScharCode($this->getLL('m_noSelItemForEdit')).'); return false;}':'';
@@ -2178,17 +2197,25 @@ class t3lib_TCEforms	{
 												$addJS.
 												'vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('',array('P'=>$params)).'\'+\'&P[currentValue]=\'+TBE_EDITOR_rawurlencode('.$this->elName($itemName).'.value,200)'.$curSelectedValues.',\'popUp'.$md5ID.'\',\''.$wConf['JSopenParams'].'\');'.
 												'vHWin.focus();return false;';
-									$colorBoxLinks=Array('<a href="#" onclick="'.htmlspecialchars($aOnClick).'">','</a>');
+									$colorBoxLinks = Array('<a href="#" onclick="'.htmlspecialchars($aOnClick).'">','</a>');
 									if ((string)$wConf['type']=='popup')	{
 										$outArr[] = $colorBoxLinks[0].$icon.$colorBoxLinks[1];
 									}
 								} elseif ((string)$wConf['type']=='userFunc')	{
-									$params['item']=&$item;
-									$params['icon']=$icon;
-									$params['iTitle']=$iTitle;
-									$params['wConf']=$wConf;
-									$params['row']=$row;
-									$outArr[]=t3lib_div::callUserFunction($wConf['userFunc'],$params,$this);
+									$params['item'] = &$item;
+									$params['icon'] = $icon;
+									$params['iTitle'] = $iTitle;
+									$params['wConf'] = $wConf;
+									$params['row'] = $row;
+									$outArr[] = t3lib_div::callUserFunction($wConf['userFunc'],$params,$this);
+								}
+
+									// Hide?
+								if (is_array($wConf['hideParent']) || $wConf['hideParent'])	{
+									$item = $itemKinds[1];
+									if (is_array($wConf['hideParent']))	{
+										$item.= $this->getSingleField_typeNone_render($wConf['hideParent'], $PA['itemFormElValue']);
+									}
 								}
 							}
 						break;
@@ -2238,7 +2265,7 @@ class t3lib_TCEforms	{
 				// For each rendered wizard, put them together around the item.
 			if (count($outArr))	{
 				if ($wizConf['_HIDDENFIELD'])	$item = $itemKinds[1];
-			
+
 				$outStr='';
 				$vAlign = $wizConf['_VALIGN'] ? ' valign="'.$wizConf['_VALIGN'].'"' : '';
 				if (count($outArr)>1 || $wizConf['_PADDING'])	{
@@ -2368,6 +2395,15 @@ class t3lib_TCEforms	{
 	 */
 	function blur()	{
 		return $GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();':'';
+	}
+
+	/**
+	 * Returns the "returnUrl" of the form. Can be set externally or will be taken from "t3lib_div::linkThisScript()"
+	 *
+	 * @return	string		Return URL of current script
+	 */
+	function thisReturnUrl()	{
+		return $this->returnUrl ? $this->returnUrl : t3lib_div::linkThisScript();
 	}
 
 	/**
