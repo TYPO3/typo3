@@ -331,7 +331,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 					} else {
 						$idList = implode(',',$listArr);
 						if ($idList)	{
-							$query='SELECT '.$table.'.* FROM $table WHERE uid IN ('.$idList.') AND uid NOT IN ('.($sendIds?$sendIds:0).') AND '.($enableFields[$table]?$enableFields[$table]:'1=1').' LIMIT '.($this->sendPerCycle+1);
+							$query='SELECT '.$table.'.* FROM '.$table.' WHERE uid IN ('.$idList.') AND uid NOT IN ('.($sendIds?$sendIds:0).') AND '.($enableFields[$table]?$enableFields[$table]:'1=1').' LIMIT '.($this->sendPerCycle+1);
 							$res=mysql(TYPO3_db,$query);
 							if (mysql_error())	{die (mysql_error());}
 							while($recipRow=mysql_fetch_assoc($res))	{
