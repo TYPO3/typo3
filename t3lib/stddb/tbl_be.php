@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,12 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains the dynamic configuation of the fields in the core tables of TYPO3: be_users, be_groups and sys_filemounts
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @see tables.php, tables.sql
  */
 
@@ -46,7 +47,7 @@ $TCA['be_users'] = Array (
 	'interface' => Array (
 		'showRecordFieldList' => 'username,usergroup,db_mountpoints,file_mountpoints,admin,options,fileoper_perms,userMods,lockToDomain,realName,email,disable,starttime,endtime'
 	),
-	'columns' => Array (	
+	'columns' => Array (
 		'username' => Array (
 			'label' => 'Username:',
 			'config' => Array (
@@ -105,7 +106,7 @@ $TCA['be_users'] = Array (
 						),
 						'script' => 'wizard_list.php',
 					)
-				)				
+				)
 			)
 		),
 		'lockToDomain' => Array (
@@ -116,7 +117,7 @@ $TCA['be_users'] = Array (
 				'eval' => 'trim',
 				'max' => '50',
 				'checkbox' => ''
-			)	
+			)
 		),
 		'db_mountpoints' => Array (
 			'label' => 'DB Mounts:',
@@ -133,9 +134,12 @@ $TCA['be_users'] = Array (
 		'file_mountpoints' => Array (
 			'label' => 'File Mounts:',
 			'config' => Array (
-				'type' => 'group',
-				'internal_type' => 'db',
-					'allowed' => 'sys_filemounts',
+				'type' => 'select',
+				'foreign_table' => 'sys_filemounts',
+				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
+#				'type' => 'group',
+#				'internal_type' => 'db',
+#					'allowed' => 'sys_filemounts',
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
@@ -172,7 +176,7 @@ $TCA['be_users'] = Array (
 						),
 						'script' => 'wizard_list.php',
 					)
-				)				
+				)
 			)
 		),
 		'email' => Array (
@@ -195,6 +199,12 @@ $TCA['be_users'] = Array (
 		),
 		'disable' => Array (
 			'label' => 'Disable:',
+			'config' => Array (
+				'type' => 'check'
+			)
+		),
+		'disableIPlock' => Array (
+			'label' => 'Disable IP lock for user:',
 			'config' => Array (
 				'type' => 'check'
 			)
@@ -293,10 +303,16 @@ $TCA['be_users'] = Array (
 					Array('Bulgarian', 'bg'),
 					Array('Brazilian Portuguese', 'br'),
 					Array('Estonian', 'et'),
+					Array('Arabic', 'ar'),
+					Array('Hebrew', 'he'),
+					Array('Ukrainian', 'ua'),
+					Array('Latvian', 'lv'),
+					Array('Japanese', 'jp'),
+					Array('Vietnamese', 'vn'),
 				)
 			)
 		),
-		'userMods' => Array (	
+		'userMods' => Array (
 			'label' => 'Modules:',
 			'config' => Array (
 				'type' => 'select',
@@ -327,8 +343,8 @@ $TCA['be_users'] = Array (
 		'createdByAction' => Array('config'=>array('type'=>'passthrough'))
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
-		'1' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, options;;;;4-4-4, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5')
+		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
+		'1' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, options;;;;4-4-4, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5')
 	),
 	'palettes' => Array (
 		'1' => Array('showitem' => 'disable, starttime, endtime')
@@ -345,7 +361,7 @@ $TCA['be_groups'] = Array (
 	'interface' => Array (
 		'showRecordFieldList' => 'title,db_mountpoints,file_mountpoints,inc_access_lists,tables_select,tables_modify,pagetypes_select,non_exclude_fields,groupMods,lockToDomain,description'
 	),
-	'columns' => Array (	
+	'columns' => Array (
 		'title' => Array (
 			'label' => 'Grouptitle:',
 			'config' => Array (
@@ -354,7 +370,7 @@ $TCA['be_groups'] = Array (
 				'max' => '20',
 				'eval' => 'trim,required'
 			)
-		),	
+		),
 		'db_mountpoints' => Array (
 			'label' => 'DB Mounts:',
 			'config' => Array (
@@ -370,9 +386,12 @@ $TCA['be_groups'] = Array (
 		'file_mountpoints' => Array (
 			'label' => 'File Mounts:',
 			'config' => Array (
-				'type' => 'group',
-				'internal_type' => 'db',
-					'allowed' => 'sys_filemounts',
+				'type' => 'select',
+				'foreign_table' => 'sys_filemounts',
+				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
+#				'type' => 'group',
+#				'internal_type' => 'db',
+#					'allowed' => 'sys_filemounts',
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
@@ -409,7 +428,7 @@ $TCA['be_groups'] = Array (
 						),
 						'script' => 'wizard_list.php',
 					)
-				)				
+				)
 			)
 		),
 		'pagetypes_select' => Array (
@@ -432,7 +451,7 @@ $TCA['be_groups'] = Array (
 				'maxitems' => '20'
 			)
 		),
-		'tables_select' => Array (	
+		'tables_select' => Array (
 			'label' => 'Tables (listing):',
 			'config' => Array (
 				'type' => 'select',
@@ -442,7 +461,7 @@ $TCA['be_groups'] = Array (
 				'maxitems' => '20'
 			)
 		),
-		'non_exclude_fields' => Array (	
+		'non_exclude_fields' => Array (
 			'label' => 'Allowed excludefields:',
 			'config' => Array (
 				'type' => 'select',
@@ -469,7 +488,7 @@ $TCA['be_groups'] = Array (
 				'checkbox' => ''
 			)
 		),
-		'groupMods' => Array (	
+		'groupMods' => Array (
 			'label' => 'Modules:',
 			'config' => Array (
 				'type' => 'select',
@@ -547,7 +566,7 @@ $TCA['sys_filemounts'] = Array (
 	'interface' => Array (
 		'showRecordFieldList' => 'title,hidden,path,base'
 	),
-	'columns' => Array (	
+	'columns' => Array (
 		'title' => Array (
 			'label' => 'LABEL:',
 			'config' => Array (
@@ -584,7 +603,7 @@ $TCA['sys_filemounts'] = Array (
 			)
 		)
 	),
-	'types' => Array (	
+	'types' => Array (
 		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;3-3-3,path,base')
 	)
 );

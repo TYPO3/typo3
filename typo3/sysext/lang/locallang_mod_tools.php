@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -18,7 +19,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Verktøy',
 	),
 	'it' => Array (
-		'mlang_labels_tablabel' => 'Tools per il mantenimento e amministrazione',
+		'mlang_labels_tablabel' => 'Tools per la manutenzione e l\'amministrazione',
 		'mlang_tabs_tab' => 'Tools',
 	),
 	'fr' => Array (
@@ -66,6 +67,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Èíñòðóìåíòû',
 	),
 	'ro' => Array (
+		'mlang_labels_tablabel' => 'Instrumente pentru administrare si intretinere',
+		'mlang_tabs_tab' => 'Instrumente',
 	),
 	'ch' => Array (
 		'mlang_labels_tablabel' => '¹ÜÀíÓëÎ¬»¤¹¤¾ß',
@@ -78,6 +81,66 @@ $LOCAL_LANG = Array (
 	'lt' => Array (
 		'mlang_labels_tablabel' => 'Administravimo ir prieþiûros árankiai',
 		'mlang_tabs_tab' => 'Árankiai',
+	),
+	'is' => Array (
+		'mlang_labels_tablabel' => 'StjÃ³rnun og umsjÃ³nar verkfÃ¦ri',
+		'mlang_tabs_tab' => 'VerkfÃ¦ri',
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Alati za administraciju i održavanje',
+		'mlang_tabs_tab' => 'Alati',
+	),
+	'hu' => Array (
+		'mlang_labels_tablabel' => 'Adminisztrációs és karbantartó eszközök',
+		'mlang_tabs_tab' => 'Eszközök',
+	),
+	'gl' => Array (
+		'mlang_labels_tablabel' => 'Aaqqissuinermut aserfallanneqarnermullu sakkussaq',
+		'mlang_tabs_tab' => 'Sakkussat',
+	),
+	'th' => Array (
+		'mlang_labels_tablabel' => 'àµÃ×èÍ§Á×ÍÊÓËÃÑººÃÔËÒÃáÅÐ»ÃÑº»ÃØ§',
+		'mlang_tabs_tab' => 'à¤Ã×èÍ§Á×Í',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'mlang_labels_tablabel' => 'ºÞ²z¤ÎºûÅ@¤u¨ã',
+		'mlang_tabs_tab' => '¤u¨ã',
+	),
+	'eu' => Array (
+		'mlang_labels_tablabel' => 'Administrazio eta mantentze tresnak',
+		'mlang_tabs_tab' => 'Tresnak',
+	),
+	'bg' => Array (
+		'mlang_labels_tablabel' => 'Àäìèíèñòðàöèÿ è èíñòðóìåíòè çà ïîääðúæêà',
+		'mlang_tabs_tab' => 'Èíñòðóìåíòè',
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Ferramentas de administração e manutenção',
+		'mlang_tabs_tab' => 'Ferramentas',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Administreerimise ja hoolduse tööristad',
+		'mlang_tabs_tab' => 'Tööriistad',
+	),
+	'ar' => Array (
+		'mlang_labels_tablabel' => 'èÓÇÆä ÇäÕêÇæÉ è ÇäåÑÇâÈÉ',
+		'mlang_tabs_tab' => 'ÇäèÓÇÆä',
+	),
+	'he' => Array (
+		'mlang_labels_tablabel' => '×›×œ×™× ×œ× ×™×”×•×œ ×•×ª×—×–×•×§×”',
+		'mlang_tabs_tab' => '×›×œ×™×',
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+		'mlang_labels_tablabel' => 'AdministrÄcijas un apkalpoÅ¡anas rÄ«ki',
+		'mlang_tabs_tab' => 'RÄ«ki',
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

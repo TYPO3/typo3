@@ -3,6 +3,7 @@ General:
 - Add a data type getting value from t3lib_div::getIndpVar() to "data" in TS
 - Add a condition, "PIDInFullRootline"
 - Add a data type "level" (general version of eg. "leveltitle") which defines the fieldname as second parameter (see Carlos suggestion in Message-ID: <mailman.1054748584.21635.typo3-features@lists.netfielders.de>)
+- Add "doctype" setting from TS
 - The feature "Get content from page" -> should that be active with "Standard" page type?
 - Some way to show the previous content element in a column ONLY when default display is on (useful for plugins where the default listing normally uses the previous content element, but doesn't want it when showing some details etc.) - probably this is not possible to do well. FlexForms will probably be the long-term answer for many plugins.
 - error-messages in TYPO3 (like "no template found") -> linking (config option)
@@ -50,7 +51,7 @@ FE editing:
 - Offer alternative to the "edit-icon", probably in <div>-layers which does not spoil the page layout. we could simulate "RedDot"... :-)
 
 Admin Panel:
-- Improve Text color/style in Admin Panel. Possibly with a wrapping class you can control in the stylesheet. Plus the options of hardcoded formatting in style="" attributes? (Notify Ben/JH)	
+- Improve Text color/style in Admin Panel. Possibly with a wrapping class you can control in the stylesheet. Plus the options of hardcoded formatting in style="" attributes? (Notify Ben/JH)
 - Improve display of Admin Panel in case of pages made by <div> tags (like typo3.org) (See what Ingmar has done?)
 
 cObject HMENU:
@@ -103,3 +104,28 @@ typolink:
 - BUG: get content from and typolinkCheckRootline gives bad result across domains. [We had that problem sharing pages between TYPO3.org and TYPO3.com]
 - Add feature so that typolink/sitemaps detect sys_domain records in the root line of links and automatically prepend the right URL. (Julle asked for this) + check this "bug-report": Message-Id: <20030401211300.082fe299.julle@diku.dk>
 
+
+
+
+
+
+********************************
+APPENDIX: Note on caching / cHash:
+********************************
+
+Scenario: A page has a plugin which delivers output based on a GET variable. Since pages are cached based on the id the plugin has various options:
+1: Either disable caching for the page so any parameter is passed through to the plugin
+2: Use a "USER_INT" object which allows a dynamic content area on the page.
+3: Use "cHash" to validate GET parameters that can be cached.
+The problem is solution 3, because here the plugin accepts its content based on GET parameters to be cached and there is a possibility that wrong content may be cached for the page id.
+Examples
+- "?id=12" -> plugin delivers "frontpage" content - no problem
+- "?id=12&showuid=1&cHash=abcefd87" -> plugin shows a single id; 1) If cHash MATCHES the calculated hash from _GET, page is cached. 2) If cHash does NOT match, the page cache is disabled. In both cases the correct content is delivered, cache integrity is maintained but there might be delivery of non-cached pages if things fail.
+- "?id=12&showuid=1" -> THIS IS THE PROBLEM: If "id 12" is already cached, no problem. The "showuid" parameter is just ignored. But if "id 12" is NOT cached the plugin will generate its content and the plugin does NOT know that the cHash parameter has been left out; result: A page with content based on "showuid=1" is made BUT cached under "id 12" only.
+Possible solution:
+- The burden is on the plugin which generates content based on GET parameters; If the plugin calls itself with caching enabled (cHash is made) then the plugin should also generate parameter based content ONLY if 1) $GLOBALS['TSFE']->cHash is set (meaning that cHash processing has taken place and all is safe) or 2) if $GLOBALS['TSFE']->no_cache is true (caching disabled) or 3) if the plugin itself disables caching.
+
+
+
+----------------------
+TYPO3 CVS ID: $Id$

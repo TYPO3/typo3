@@ -1,8 +1,8 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,47 +26,52 @@
 ***************************************************************/
 /**
  * Contains class with functions for parsing HTML code.
- * 
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   99: class t3lib_parsehtml 
- *  116:     function getSubpart($content, $marker)	
- *  144:     function substituteSubpart($content,$marker,$subpartContent,$recursive=1,$keepMarker=0)	
- *  209:     function splitIntoBlock($tag,$content,$eliminateExtraEndTags=0)	
- *  268:     function splitTags($tag,$content)	
- *  302:     function getAllParts($parts,$tag_parts=1,$include_tag=1)	
- *  321:     function removeFirstAndLastTag($str)	
- *  340:     function getFirstTag($str)	
- *  354:     function getFirstTagName($str)	
- *  372:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')	
- *  446:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())	
- *  617:     function get_tag_attributes($tag,$deHSC=0)	
- *  658:     function split_tag_attributes($tag)	
- *  695:     function bidir_htmlspecialchars($value,$dir)	
- *  715:     function prefixResourcePath($main_prefix,$content,$alternatives=array())	
- *  783:     function prefixRelPath($prefix,$srcVal)	
- *  801:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)	
- *  832:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')	
- *  849:     function unprotectTags($content,$tagList='')	
- *  882:     function stripTagsExcept($value,$tagList)	
- *  905:     function caseShift($str,$flag,$cacheKey='')	
- *  929:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)	
- *  958:     function get_tag_attributes_classic($tag,$deHSC=0)	
- *  971:     function HTMLparserConfig($TSconfig,$keepTags=array())	
- * 1084:     function XHTML_clean($content)	
- * 1106:     function processTag($value,$conf,$endTag,$protected=0)	
- * 1152:     function processContent($value,$dir,$conf)	
+ *  106: class t3lib_parsehtml
+ *  123:     function getSubpart($content, $marker)
+ *  151:     function substituteSubpart($content,$marker,$subpartContent,$recursive=1,$keepMarker=0)
  *
- * TOTAL FUNCTIONS: 26
+ *              SECTION: Parsing HTML code
+ *  223:     function splitIntoBlock($tag,$content,$eliminateExtraEndTags=0)
+ *  284:     function splitIntoBlockRecursiveProc($tag,$content,&$procObj,$callBackContent,$callBackTags,$level=0)
+ *  320:     function splitTags($tag,$content)
+ *  354:     function getAllParts($parts,$tag_parts=1,$include_tag=1)
+ *  373:     function removeFirstAndLastTag($str)
+ *  392:     function getFirstTag($str)
+ *  407:     function getFirstTagName($str,$preserveCase=FALSE)
+ *  422:     function get_tag_attributes($tag,$deHSC=0)
+ *  464:     function split_tag_attributes($tag)
+ *  507:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')
+ *
+ *              SECTION: Clean HTML code
+ *  598:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())
+ *  792:     function bidir_htmlspecialchars($value,$dir)
+ *  814:     function prefixResourcePath($main_prefix,$content,$alternatives=array())
+ *  882:     function prefixRelPath($prefix,$srcVal)
+ *  900:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)
+ *  931:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')
+ *  948:     function unprotectTags($content,$tagList='')
+ *  981:     function stripTagsExcept($value,$tagList)
+ * 1004:     function caseShift($str,$flag,$cacheKey='')
+ * 1028:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)
+ * 1057:     function get_tag_attributes_classic($tag,$deHSC=0)
+ * 1070:     function indentLines($content, $number=1, $indentChar="\t")
+ * 1087:     function HTMLparserConfig($TSconfig,$keepTags=array())
+ * 1211:     function XHTML_clean($content)
+ * 1234:     function processTag($value,$conf,$endTag,$protected=0)
+ * 1281:     function processContent($value,$dir,$conf)
+ *
+ * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -91,10 +96,12 @@
 
 
 /**
- * Functions for parsing HTML. 
+ * Functions for parsing HTML.
  * You are encouraged to use this class in your own applications
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_parsehtml {
 	var $caseShift_cache=array();
@@ -102,38 +109,38 @@ class t3lib_parsehtml {
 
 	// *******************************************'
 	// COPY FROM class.tslib_content.php: / BEGIN
-	// substituteSubpart 
+	// substituteSubpart
 	// Cleaned locally 2/2003 !!!! (so different from tslib_content version)
 	// *******************************************'
 
 	/**
 	 * Returns the first subpart encapsulated in the marker, $marker (possibly present in $content as a HTML comment)
-	 * 
+	 *
 	 * @param	string		Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
 	 * @param	string		Marker string, eg. "###CONTENT_PART###"
-	 * @return	string		
+	 * @return	string
 	 */
 	function getSubpart($content, $marker)	{
 		if ($marker && strstr($content,$marker))	{
 			$start = strpos($content, $marker)+strlen($marker);
 			$stop = @strpos($content, $marker, $start+1);
 			$sub = substr($content, $start, $stop-$start);
-	
-			$reg=Array();		
+
+			$reg=Array();
 			ereg('^[^<]*-->',$sub,$reg);
 			$start+=strlen($reg[0]);
-			
-			$reg=Array();		
+
+			$reg=Array();
 			ereg('<!--[^>]*$',$sub,$reg);
 			$stop-=strlen($reg[0]);
-			
+
 			return substr($content, $start, $stop-$start);
 		}
 	}
 
 	/**
 	 * Substitutes a subpart in $content with the content of $subpartContent.
-	 * 
+	 *
 	 * @param	string		Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
 	 * @param	string		Marker string, eg. "###CONTENT_PART###"
 	 * @param	array		If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the content of the subpart (fetched by getSubpart())
@@ -147,7 +154,7 @@ class t3lib_parsehtml {
 		if ($start && $stop>$start)	{
 			// code before
 			$before = substr($content, 0, $start);
-			$reg=Array();		
+			$reg=Array();
 			ereg('<!--[^>]*$',$before,$reg);
 			$start-=strlen($reg[0]);
 			if ($keepMarker)	{
@@ -158,7 +165,7 @@ class t3lib_parsehtml {
 			$before = substr($content, 0, $start);
 				// code after
 			$after = substr($content, $stop);
-			$reg=Array();		
+			$reg=Array();
 			ereg('^[^<]*-->',$after,$reg);
 			$stop+=strlen($reg[0]);
 			if ($keepMarker)	{
@@ -169,7 +176,7 @@ class t3lib_parsehtml {
 			}
 			$after = substr($content, $stop);
 
-			
+
 				// replace?
 			if (is_array($subpartContent))	{
 				$substContent=$subpartContent[0].$this->getSubpart($content,$marker).$subpartContent[1];
@@ -195,11 +202,18 @@ class t3lib_parsehtml {
 
 
 
+
+	/************************************
+	 *
+	 * Parsing HTML code
+	 *
+	 ************************************/
+
 	/**
 	 * Returns an array with the $content divided by tag-blocks specified with the list of tags, $tag
-	 * Even numbers in the array are outside the blocks, Odd numbers are block-content. 
+	 * Even numbers in the array are outside the blocks, Odd numbers are block-content.
 	 * Use ->getAllParts() and ->removeFirstAndLastTag() to process the content if needed.
-	 * 
+	 *
 	 * @param	string		List of tags, comma separated.
 	 * @param	string		HTML-content
 	 * @param	boolean		If set, excessive end tags are ignored - you should probably set this in most cases.
@@ -211,7 +225,7 @@ class t3lib_parsehtml {
 		$regexStr = '</?('.implode('|',$tags).')(>|[[:space:]][^>]*>)';
 
 		$parts = spliti($regexStr,$content);
-		
+
 		$newParts=array();
 		$pointer=strlen($parts[0]);
 		$buffer=$parts[0];
@@ -249,17 +263,55 @@ class t3lib_parsehtml {
 				$pointer+=strlen($mbuffer);
 				$buffer.=$mbuffer;
 			}
-			
+
 		}
 		$newParts[]=$buffer;
 		return $newParts;
 	}
 
 	/**
+	 * Splitting content into blocks *recursively* and processing tags/content with call back functions.
+	 *
+	 * @param	string		Tag list, see splitIntoBlock()
+	 * @param	string		Content, see splitIntoBlock()
+	 * @param	object		Object where call back methods are.
+	 * @param	string		Name of call back method for content; "function callBackContent($str,$level)"
+	 * @param	string		Name of call back method for tags; "function callBackTags($tags,$level)"
+	 * @param	integer		Indent level
+	 * @return	string		Processed content
+	 * @see splitIntoBlock()
+	 */
+	function splitIntoBlockRecursiveProc($tag,$content,&$procObj,$callBackContent,$callBackTags,$level=0)	{
+		$parts = $this->splitIntoBlock($tag,$content,TRUE);
+		foreach($parts as $k => $v)	{
+			if ($k%2)	{
+				$firstTagName = $this->getFirstTagName($v, TRUE);
+				$tagsArray = array();
+				$tagsArray['tag_start'] = $this->getFirstTag($v);
+				$tagsArray['tag_end'] = '</'.$firstTagName.'>';
+				$tagsArray['tag_name'] = strtolower($firstTagName);
+				$tagsArray['add_level'] = 1;
+				$tagsArray['content'] = $this->splitIntoBlockRecursiveProc($tag,$this->removeFirstAndLastTag($v),$procObj,$callBackContent,$callBackTags,$level+$tagsArray['add_level']);
+
+				if ($callBackTags)	$tagsArray = $procObj->$callBackTags($tagsArray,$level);
+
+				$parts[$k] =
+					$tagsArray['tag_start'].
+					$tagsArray['content'].
+					$tagsArray['tag_end'];
+			} else {
+				if ($callBackContent)	$parts[$k] = $procObj->$callBackContent($parts[$k],$level);
+			}
+		}
+
+		return implode('',$parts);
+	}
+
+	/**
 	 * Returns an array with the $content divided by tag-blocks specified with the list of tags, $tag
-	 * Even numbers in the array are outside the blocks, Odd numbers are block-content. 
+	 * Even numbers in the array are outside the blocks, Odd numbers are block-content.
 	 * Use ->getAllParts() and ->removeFirstAndLastTag() to process the content if needed.
-	 * 
+	 *
 	 * @param	string		List of tags
 	 * @param	string		HTML-content
 	 * @return	array		Even numbers in the array are outside the blocks, Odd numbers are block-content.
@@ -269,7 +321,7 @@ class t3lib_parsehtml {
 		$tags=t3lib_div::trimExplode(',',$tag,1);
 		$regexStr = '<('.implode('|',$tags).')(>|[[:space:]][^>]*>)';
 		$parts = spliti($regexStr,$content);
-		
+
 		$pointer=strlen($parts[0]);
 		$newParts=array();
 		$newParts[]=$parts[0];
@@ -292,7 +344,7 @@ class t3lib_parsehtml {
 
 	/**
 	 * Returns an array with either tag or non-tag content of the result from ->splitIntoBlock()/->splitTags()
-	 * 
+	 *
 	 * @param	array		Parts generated by ->splitIntoBlock() or >splitTags()
 	 * @param	boolean		Whether to return the tag-parts (default,true) or what was outside the tags.
 	 * @param	boolean		Whether to include the tags in the tag-parts (most useful for input made by ->splitIntoBlock())
@@ -314,9 +366,9 @@ class t3lib_parsehtml {
 	/**
 	 * Removes the first and last tag in the string
 	 * Anything before and after the first and last tags respectively is also removed
-	 * 
-	 * @param	string		
-	 * @return	string		
+	 *
+	 * @param	string		String to process
+	 * @return	string
 	 */
 	function removeFirstAndLastTag($str)	{
 			// First:
@@ -333,9 +385,9 @@ class t3lib_parsehtml {
 	/**
 	 * Returns the first tag in $str
 	 * Actually everything from the begining of the $str is returned, so you better make sure the tag is the first thing...
-	 * 
-	 * @param	string		
-	 * @return	string		
+	 *
+	 * @param	string		HTML string with tags
+	 * @return	string
 	 */
 	function getFirstTag($str)	{
 			// First:
@@ -346,16 +398,99 @@ class t3lib_parsehtml {
 
 	/**
 	 * Returns the NAME of the first tag in $str
-	 * 
+	 *
 	 * @param	string		HTML tag (The element name MUST be separated from the attributes by a space character! Just *whitespace* will not do)
+	 * @param	boolean		If set, then the tag is NOT converted to uppercase by case is preserved.
 	 * @return	string		Tag name in upper case
 	 * @see getFirstTag()
 	 */
-	function getFirstTagName($str)	{
-		list($tag) = split('[[:space:]]',substr(strtoupper(trim($this->getFirstTag($str))),1,-1), 2);
+	function getFirstTagName($str,$preserveCase=FALSE)	{
+		list($tag) = split('[[:space:]]',substr(trim($this->getFirstTag($str)),1,-1), 2);
+		if (!$preserveCase)	$tag = strtoupper($tag);
+
 		return trim($tag);
 	}
-	
+
+	/**
+	 * Returns an array with all attributes as keys. Attributes are only lowercase a-z
+	 * If a attribute is empty (shorthand), then the value for the key is empty. You can check if it existed with isset()
+	 *
+	 * @param	string		Tag: $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
+	 * @param	boolean		If set, the attribute values are de-htmlspecialchar'ed. Should actually always be set!
+	 * @return	array		array(Tag attributes,Attribute meta-data)
+	 */
+	function get_tag_attributes($tag,$deHSC=0)	{
+		list($components,$metaC) = $this->split_tag_attributes($tag);
+		$name = '';	 // attribute name is stored here
+		$valuemode = '';
+		$attributes = array();
+		$attributesMeta = array();
+		if (is_array($components))	{
+			while (list($key,$val) = each ($components))	{
+				if ($val != '=')	{	// Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
+					if ($valuemode)	{
+						if ($name)	{
+							$attributes[$name] = $deHSC?t3lib_div::htmlspecialchars_decode($val):$val;
+							$attributesMeta[$name]['dashType']=$metaC[$key];
+							$name = '';
+						}
+					} else {
+						if ($namekey = ereg_replace('[^a-zA-Z0-9_:-]','',$val))	{
+							$name = strtolower($namekey);
+							$attributesMeta[$name]=array();
+							$attributesMeta[$name]['origTag']=$namekey;
+							$attributes[$name] = '';
+						}
+					}
+					$valuemode = '';
+				} else {
+					$valuemode = 'on';
+				}
+			}
+			if (is_array($attributes))	reset($attributes);
+			return array($attributes,$attributesMeta);
+		}
+	}
+
+	/**
+	 * Returns an array with the 'components' from an attribute list. The result is normally analyzed by get_tag_attributes
+	 * Removes tag-name if found
+	 *
+	 * @param	string		The tag or attributes
+	 * @return	array
+	 * @access private
+	 * @see t3lib_div::split_tag_attributes()
+	 */
+	function split_tag_attributes($tag)	{
+		$tag_tmp = trim(eregi_replace ('^<[^[:space:]]*','',trim($tag)));
+			// Removes any > in the end of the string
+		$tag_tmp = trim(eregi_replace ('>$','',$tag_tmp));
+
+		$metaValue = array();
+		$value = array();
+		while (strcmp($tag_tmp,''))	{	// Compared with empty string instead , 030102
+			$firstChar=substr($tag_tmp,0,1);
+			if (!strcmp($firstChar,'"') || !strcmp($firstChar,"'"))	{
+				$reg=explode($firstChar,$tag_tmp,3);
+				$value[]=$reg[1];
+				$metaValue[]=$firstChar;
+				$tag_tmp=trim($reg[2]);
+			} elseif (!strcmp($firstChar,'=')) {
+				$value[] = '=';
+				$metaValue[]='';
+				$tag_tmp = trim(substr($tag_tmp,1));		// Removes = chars.
+			} else {
+					// There are '' around the value. We look for the next ' ' or '>'
+				$reg = split('[[:space:]=]',$tag_tmp,2);
+				$value[] = trim($reg[0]);
+				$metaValue[]='';
+				$tag_tmp = trim(substr($tag_tmp,strlen($reg[0]),1).$reg[1]);
+			}
+		}
+		if (is_array($value))	reset($value);
+		return array($value,$metaValue);
+	}
+
 	/**
 	 * Checks whether block/solo tags are found in the correct amounts in HTML content
 	 * Block tags are tags which are required to have an equal amount of start and end tags, eg. "<table>...</table>"
@@ -363,7 +498,7 @@ class t3lib_parsehtml {
 	 * NOTICE: Correct XHTML might actually fail since "<br></br>" is allowed as well as "<br/>". However only the LATTER is accepted by this function (with "br" in the "solo-tag" list), the first example will result in a warning.
 	 * NOTICE: Correct XHTML might actually fail since "<p/>" is allowed as well as "<p></p>". However only the LATTER is accepted by this function (with "p" in the "block-tag" list), the first example will result in an ERROR!
 	 * NOTICE: Correct HTML version "something" allows eg. <p> and <li> to be NON-ended (implicitly ended by other tags). However this is NOT accepted by this function (with "p" and "li" in the block-tag list) and it will result in an ERROR!
-	 * 
+	 *
 	 * @param	string		HTML content to analyze
 	 * @param	string		Tag names for block tags (eg. table or div or p) in lowercase, commalist (eg. "table,div,p")
 	 * @param	string		Tag names for solo tags (eg. img, br or input) in lowercase, commalist ("img,br,input")
@@ -377,7 +512,7 @@ class t3lib_parsehtml {
 		$analyzedOutput['warnings']=array();	// Lists warnings.
 		$analyzedOutput['blocks']=array();	// Lists stats for block-tags
 		$analyzedOutput['solo']=array();	// Lists stats for solo-tags
-		
+
 			// Block tags, must have endings...
 		$blockTags = explode(',',$blockTags);
 		foreach($blockTags as $tagName)	{
@@ -393,7 +528,7 @@ class t3lib_parsehtml {
 				}
 			}
 		}
-		
+
 			// Solo tags, must NOT have endings...
 		$soloTags = explode(',',$soloTags);
 		foreach($soloTags as $tagName)	{
@@ -405,25 +540,44 @@ class t3lib_parsehtml {
 				$analyzedOutput['warnings'][$tagName]='There were end-tags found ('.$countEnd.') for the element "'.$tagName.'". This was not expected (although XHTML technically allows it).';
 			}
 		}
-		
+
 		return $analyzedOutput;
-	}	
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	/*********************************
+	 *
+	 * Clean HTML code
+	 *
+	 *********************************/
 
 	/**
 	 * Function that can clean up HTML content according to configuration given in the $tags array.
-	 * 
-	 * Initializing the $tags array to allow a list of tags (in this case <B>,<I>,<U> and <A>), set it like this:		 $tags = array_flip(explode(',','b,a,i,u'))	
+	 *
+	 * Initializing the $tags array to allow a list of tags (in this case <B>,<I>,<U> and <A>), set it like this:		 $tags = array_flip(explode(',','b,a,i,u'))
 	 * If the value of the $tags[$tagname] entry is an array, advanced processing of the tags is initialized. These are the options:
-	 * 	   
+	 *
 	 * 	$tags[$tagname] = Array(
 	 * 		'overrideAttribs' => ''		If set, this string is preset as the attributes of the tag
 	 * 		'allowedAttribs' =>   '0' (zero) = no attributes allowed, '[commalist of attributes]' = only allowed attributes. If blank, all attributes are allowed.
 	 * 		'fixAttrib' => Array(
 	 * 			'[attribute name]' => Array (
+	 *				'set' => Force the attribute value to this value.
+	 *				'unset' => Boolean: If set, the attribute is unset.
 	 * 				'default' => 	If no attribute exists by this name, this value is set as default value (if this value is not blank)
 	 * 				'always' => 	Boolean. If set, the attribute is always processed. Normally an attribute is processed only if it exists
 	 * 				'trim,intval,lower,upper' => 	All booleans. If any of these keys are set, the value is passed through the respective PHP-functions.
-	 * 				'range' => Array ('[low limit]','[high limit, optional]')		Setting integer range. 
+	 * 				'range' => Array ('[low limit]','[high limit, optional]')		Setting integer range.
 	 * 				'list' => Array ('[value1/default]','[value2]','[value3]')		Attribute must be in this list. If not, the value is set to the first element.
 	 * 				'removeIfFalse' => 	Boolean/'blank'.	If set, then the attribute is removed if it is 'false'. If this value is set to 'blank' then the value must be a blank string (that means a 'zero' value will not be removed)
 	 * 				'removeIfEquals' => 	[value]	If the attribute value matches the value set here, then it is removed.
@@ -435,26 +589,27 @@ class t3lib_parsehtml {
 	 * 		'rmTagIfNoAttrib' => '',	Boolean. If set, then the tag is removed if no attributes happend to be there.
 	 * 		'nesting' => '',	Boolean/'global'. If set true, then this tag must have starting and ending tags in the correct order. Any tags not in this order will be discarded. Thus '</B><B><I></B></I></B>' will be converted to '<B><I></B></I>'. Is the value 'global' then true nesting in relation to other tags marked for 'global' nesting control is preserved. This means that if <B> and <I> are set for global nesting then this string '</B><B><I></B></I></B>' is converted to '<B></B>'
 	 * 	)
-	 * 
+	 *
 	 * @param	string		$content; is the HTML-content being processed. This is also the result being returned.
 	 * @param	array		$tags; is an array where each key is a tagname in lowercase. Only tags present as keys in this array are preserved. The value of the key can be an array with a vast number of options to configure.
 	 * @param	string		$keepAll; boolean/'protect', if set, then all tags are kept regardless of tags present as keys in $tags-array. If 'protect' then the preserved tags have their <> converted to &lt; and &gt;
-	 * @param	integer		$hSC; Values -1,0,1: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed.
+	 * @param	integer		$hSC; Values -1,0,1,2: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed, set to -1 its the opposite and set to 2 the content will be HSC'ed BUT with preservation for real entities (eg. "&amp;" or "&#234;")
 	 * @param	array		Configuration array send along as $conf to the internal functions ->processContent() and ->processTag()
 	 * @return	string		Processed HTML content
 	 */
 	function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())	{
 		$newContent = array();
 		$tokArr = explode('<',$content);
-		$newContent[]=$this->processContent(current($tokArr),$hSC,$addConfig);
+		$newContent[] = $this->processContent(current($tokArr),$hSC,$addConfig);
 		next($tokArr);
 
-		$c=1;
-		$tagRegister=array();
-		$tagStack=array();
+		$c = 1;
+		$tagRegister = array();
+		$tagStack = array();
 		while(list(,$tok)=each($tokArr))	{
 			$firstChar = substr($tok,0,1);
-			if (strcmp(trim($firstChar),''))	{		// It is a tag...
+#			if (strcmp(trim($firstChar),''))	{		// It is a tag...
+			if (ereg('[[:alnum:]\/]',$firstChar))	{		// It is a tag... (first char is a-z0-9 or /) (fixed 19/01 2004). This also avoids triggering on <?xml..> and <!DOCTYPE..>
 				$tagEnd = strcspn($tok,'>');
 				if (strlen($tok)!=$tagEnd)	{	// If there is and end-bracket...
 					$endTag = $firstChar=='/' ? 1 : 0;
@@ -463,58 +618,83 @@ class t3lib_parsehtml {
 					$tagName = strtolower($tagParts[0]);
 					if (isset($tags[$tagName]))	{
 						if (is_array($tags[$tagName]))	{	// If there is processing to do for the tag:
-								// Override attributes
-							if (strcmp($tags[$tagName]['overrideAttribs'],''))	{
-								$tagParts[1]=$tags[$tagName]['overrideAttribs'];
-							}
-						
-								// Allowed tags
-							if (strcmp($tags[$tagName]['allowedAttribs'],''))	{
-								if (!strcmp($tags[$tagName]['allowedAttribs'],'0'))	{	// No attribs allowed
-									$tagParts[1]='';
-								} elseif (trim($tagParts[1])) {
+
+							if (!$endTag)	{	// If NOT an endtag, do attribute processing (added dec. 2003)
+									// Override attributes
+								if (strcmp($tags[$tagName]['overrideAttribs'],''))	{
+									$tagParts[1]=$tags[$tagName]['overrideAttribs'];
+								}
+
+									// Allowed tags
+								if (strcmp($tags[$tagName]['allowedAttribs'],''))	{
+									if (!strcmp($tags[$tagName]['allowedAttribs'],'0'))	{	// No attribs allowed
+										$tagParts[1]='';
+									} elseif (trim($tagParts[1])) {
+										$tagAttrib = $this->get_tag_attributes($tagParts[1]);
+										$tagParts[1]='';
+										$newTagAttrib = array();
+										$tList = t3lib_div::trimExplode(',',strtolower($tags[$tagName]['allowedAttribs']),1);
+										while(list(,$allowTag)=each($tList))	{
+											if (isset($tagAttrib[0][$allowTag]))	$newTagAttrib[$allowTag]=$tagAttrib[0][$allowTag];
+										}
+										$tagParts[1]=$this->compileTagAttribs($newTagAttrib,$tagAttrib[1]);
+									}
+								}
+
+									// Fixed attrib values
+								if (is_array($tags[$tagName]['fixAttrib']))	{
 									$tagAttrib = $this->get_tag_attributes($tagParts[1]);
 									$tagParts[1]='';
-									$newTagAttrib = array();
-									$tList = t3lib_div::trimExplode(',',strtolower($tags[$tagName]['allowedAttribs']),1);
-									while(list(,$allowTag)=each($tList))	{
-										if (isset($tagAttrib[0][$allowTag]))	$newTagAttrib[$allowTag]=$tagAttrib[0][$allowTag];
-									}
-									$tagParts[1]=$this->compileTagAttribs($newTagAttrib,$tagAttrib[1]);
-								}
-							}
-								
-								// Fixed attrib values
-							if (is_array($tags[$tagName]['fixAttrib']))	{
-								$tagAttrib = $this->get_tag_attributes($tagParts[1]);
-								$tagParts[1]='';
-								reset($tags[$tagName]['fixAttrib']);
-								while(list($attr,$params)=each($tags[$tagName]['fixAttrib']))	{
-									if (strcmp($params['default'],'') && !isset($tagAttrib[0][$attr]))	$tagAttrib[0][$attr]=$params['default'];
-									if ($params['always'] || isset($tagAttrib[0][$attr]))	{
-										if ($params['trim'])	{$tagAttrib[0][$attr]=trim($tagAttrib[0][$attr]);}
-										if ($params['intval'])	{$tagAttrib[0][$attr]=intval($tagAttrib[0][$attr]);}
-										if ($params['lower'])	{$tagAttrib[0][$attr]=strtolower($tagAttrib[0][$attr]);}
-										if ($params['upper'])	{$tagAttrib[0][$attr]=strtoupper($tagAttrib[0][$attr]);}
-										if ($params['range'])	{
-											if (isset($params['range'][1]))	{
-												$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]),intval($params['range'][1]));
-											} else {
-												$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]));
+									reset($tags[$tagName]['fixAttrib']);
+									while(list($attr,$params)=each($tags[$tagName]['fixAttrib']))	{
+										if (strlen($params['set']))	$tagAttrib[0][$attr] = $params['set'];
+										if (strlen($params['unset']))	unset($tagAttrib[0][$attr]);
+										if (strcmp($params['default'],'') && !isset($tagAttrib[0][$attr]))	$tagAttrib[0][$attr]=$params['default'];
+										if ($params['always'] || isset($tagAttrib[0][$attr]))	{
+											if ($params['trim'])	{$tagAttrib[0][$attr]=trim($tagAttrib[0][$attr]);}
+											if ($params['intval'])	{$tagAttrib[0][$attr]=intval($tagAttrib[0][$attr]);}
+											if ($params['lower'])	{$tagAttrib[0][$attr]=strtolower($tagAttrib[0][$attr]);}
+											if ($params['upper'])	{$tagAttrib[0][$attr]=strtoupper($tagAttrib[0][$attr]);}
+											if ($params['range'])	{
+												if (isset($params['range'][1]))	{
+													$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]),intval($params['range'][1]));
+												} else {
+													$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]));
+												}
+											}
+											if (is_array($params['list']))	{
+												if (!in_array($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['list'],$params['casesensitiveComp'],$tagName)))	$tagAttrib[0][$attr]=$params['list'][0];
+											}
+											if (($params['removeIfFalse'] && $params['removeIfFalse']!='blank' && !$tagAttrib[0][$attr]) || ($params['removeIfFalse']=='blank' && !strcmp($tagAttrib[0][$attr],'')))	{
+												unset($tagAttrib[0][$attr]);
+											}
+											if (strcmp($params['removeIfEquals'],'') && !strcmp($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['removeIfEquals'],$params['casesensitiveComp'])))	{
+												unset($tagAttrib[0][$attr]);
+											}
+											if ($params['prefixLocalAnchors'])	{
+												if (substr($tagAttrib[0][$attr],0,1)=='#')	{
+													$prefix = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+													$tagAttrib[0][$attr] = $prefix.$tagAttrib[0][$attr];
+													if ($params['prefixLocalAnchors']==2 && t3lib_div::isFirstPartOfStr($prefix,t3lib_div::getIndpEnv('TYPO3_SITE_URL')))		{
+														$tagAttrib[0][$attr] = substr($tagAttrib[0][$attr],strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+													}
+												}
+											}
+											if ($params['prefixRelPathWith'])	{
+												$urlParts = parse_url($tagAttrib[0][$attr]);
+												if (!$urlParts['scheme'] && substr($urlParts['path'],0,1)!='/')	{	// If it is NOT an absolute URL (by http: or starting "/")
+													$tagAttrib[0][$attr] = $params['prefixRelPathWith'].$tagAttrib[0][$attr];
+												}
+											}
+											if ($params['userFunc'])	{
+												$tagAttrib[0][$attr] = t3lib_div::callUserFunction($params['userFunc'],$tagAttrib[0][$attr],$this);
 											}
 										}
-										if (is_array($params['list']))	{
-											if (!in_array($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['list'],$params['casesensitiveComp'],$tagName)))	$tagAttrib[0][$attr]=$params['list'][0];
-										}
-										if (($params['removeIfFalse'] && $params['removeIfFalse']!='blank' && !$tagAttrib[0][$attr]) || ($params['removeIfFalse']=='blank' && !strcmp($tagAttrib[0][$attr],'')))	{
-											unset($tagAttrib[0][$attr]);
-										}
-										if (strcmp($params['removeIfEquals'],'') && !strcmp($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['removeIfEquals'],$params['casesensitiveComp'])))	{
-											unset($tagAttrib[0][$attr]);
-										}
 									}
+									$tagParts[1]=$this->compileTagAttribs($tagAttrib[0],$tagAttrib[1]);
 								}
-								$tagParts[1]=$this->compileTagAttribs($tagAttrib[0],$tagAttrib[1]);
+							} else {	// If endTag, remove any possible attributes:
+								$tagParts[1]='';
 							}
 
 								// Protecting the tag by converting < and > to &lt; and &gt; ??
@@ -529,7 +709,7 @@ class t3lib_parsehtml {
 								// rmTagIfNoAttrib
 							if ($endTag || trim($tagParts[1]) || !$tags[$tagName]['rmTagIfNoAttrib'])	{
 								$setTag=1;
-								
+
 								if ($tags[$tagName]['nesting'])	{
 									if (!is_array($tagRegister[$tagName]))	$tagRegister[$tagName]=array();
 
@@ -538,7 +718,7 @@ class t3lib_parsehtml {
 											$lastEl = end($tagStack);
 											$correctTag = !strcmp($tagName,$lastEl);
 										} else $correctTag=1;
-	*/									
+	*/
 										$correctTag=1;
 										if ($tags[$tagName]['nesting']=='global')	{
 											$lastEl = end($tagStack);
@@ -547,13 +727,13 @@ class t3lib_parsehtml {
 													while(count($tagStack) && strcmp($tagName,$lastEl))	{
 														$elPos = end($tagRegister[$lastEl]);
 														unset($newContent[$elPos]);
-														
+
 														array_pop($tagRegister[$lastEl]);
 														array_pop($tagStack);
 														$lastEl = end($tagStack);
 													}
 												} else {
-													$correctTag=0;	// In this case the 
+													$correctTag=0;	// In this case the
 												}
 											}
 										}
@@ -568,7 +748,7 @@ class t3lib_parsehtml {
 										if ($tags[$tagName]['nesting']=='global')	{array_push($tagStack,$tagName);}
 									}
 								}
-								
+
 								if ($setTag)	{
 										// Setting the tag
 									$newContent[$c++]=$this->processTag($lt.($endTag?'/':'').trim($tagParts[0].' '.$tagParts[1]).$gt,$addConfig,$endTag,$lt=='&lt;');
@@ -593,7 +773,7 @@ class t3lib_parsehtml {
 				$newContent[$c++]=$this->processContent('<'.$tok,$hSC,$addConfig);	// It was not a tag anyways
 			}
 		}
-		
+
 			// Unsetting tags:
 		reset($tagRegister);
 		while(list($tag,$positions)=each($tagRegister))	{
@@ -607,95 +787,18 @@ class t3lib_parsehtml {
 	}
 
 	/**
-	 * Returns an array with all attributes as keys. Attributes are only lowercase a-z
-	 * If a attribute is empty (shorthand), then the value for the key is empty. You can check if it existed with isset()
-	 * 
-	 * @param	string		Tag: $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
-	 * @param	boolean		If set, the attribute values are de-htmlspecialchar'ed. Should actually always be set!
-	 * @return	array		array(Tag attributes,Attribute meta-data)
-	 */
-	function get_tag_attributes($tag,$deHSC=0)	{
-		list($components,$metaC) = $this->split_tag_attributes($tag);
-		$name = '';	 // attribute name is stored here
-		$valuemode = '';
-		$attributes=array();
-		$attributesMeta=array();
-		if (is_array($components))	{
-			while (list($key,$val) = each ($components))	{
-				if ($val != '=')	{	// Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
-					if ($valuemode)	{
-						if ($name)	{
-							$attributes[$name] = $deHSC?t3lib_div::htmlspecialchars_decode($val):$val;
-							$attributesMeta[$name]['dashType']=$metaC[$key];
-							$name = '';
-						}
-					} else {
-						if ($namekey = ereg_replace('[^a-zA-Z0-9_-]','',$val))	{
-							$name = strtolower($namekey);
-							$attributesMeta[$name]=array();
-							$attributesMeta[$name]['origTag']=$namekey;
-							$attributes[$name] = '';
-						}
-					}
-					$valuemode = '';
-				} else {
-					$valuemode = 'on';
-				}
-			}
-			if (is_array($attributes))	reset($attributes);
-			return array($attributes,$attributesMeta);
-		}
-	}
-	
-	/**
-	 * Returns an array with the 'components' from an attribute list. The result is normally analyzed by get_tag_attributes
-	 * Removes tag-name if found
-	 * 
-	 * @param	string		The tag or attributes
-	 * @return	array		
-	 * @access private
-	 */
-	function split_tag_attributes($tag)	{
-		$tag_tmp = trim(eregi_replace ('^[ ]*<[^ ]*','',$tag));
-			// Removes any > in the end of the string
-		$tag_tmp = trim(eregi_replace ('>$','',$tag_tmp));
-
-		$metaValue = array();
-		$value = array();
-		while (strcmp($tag_tmp,''))	{	// Compared with empty string instead , 030102
-			$firstChar=substr($tag_tmp,0,1);
-			if (!strcmp($firstChar,'"') || !strcmp($firstChar,"'"))	{
-				$reg=explode($firstChar,$tag_tmp,3);
-				$value[]=$reg[1];
-				$metaValue[]=$firstChar;
-				$tag_tmp=trim($reg[2]);
-			} elseif (!strcmp($firstChar,'=')) {
-				$value[] = '=';
-				$metaValue[]='';
-				$tag_tmp = trim(substr($tag_tmp,1));		// Removes = chars.
-			} else {
-				// There are '' around the value. We look for the next ' ' or '>'
-				$reg = split('[[:space:]=]',$tag_tmp,2);
-				$value[] = trim($reg[0]);
-				$metaValue[]='';
-				$tag_tmp = trim(substr($tag_tmp,strlen($reg[0]),1).$reg[1]);
-			}
-		}
-		if (is_array($value))	reset($value);
-		return array($value,$metaValue);
-	}
-	
-	/**
-	 * Converts htmlspecialchars forth ($dir=1) AND back ($dir=0)
-	 * 
+	 * Converts htmlspecialchars forth ($dir=1) AND back ($dir=-1)
+	 *
 	 * @param	string		Input value
-	 * @param	integer		Direction: forth ($dir=1) AND back ($dir=0)
+	 * @param	integer		Direction: forth ($dir=1, dir=2 for preserving entities) AND back ($dir=-1)
 	 * @return	string		Output value
 	 */
 	function bidir_htmlspecialchars($value,$dir)	{
-		if ($dir>0)	{
+		if ($dir==1)	{
 			$value = htmlspecialchars($value);
-		} elseif ($dir<0) {
+		} elseif ($dir==2)	{
+			$value = t3lib_div::deHSCentities(htmlspecialchars($value));
+		} elseif ($dir==-1) {
 			$value = str_replace('&gt;','>',$value);
 			$value = str_replace('&lt;','<',$value);
 			$value = str_replace('&quot;','"',$value);
@@ -706,8 +809,8 @@ class t3lib_parsehtml {
 
 	/**
 	 * Prefixes the relative paths of hrefs/src/action in the tags [td,table,body,img,input,form,link,script,a] in the $content with the $main_prefix or and alternative given by $alternatives
-	 * 
-	 * @param	string		Prefix
+	 *
+	 * @param	string		Prefix string
 	 * @param	string		HTML content
 	 * @param	array		Array with alternative prefixes for certain of the tags. key=>value pairs where the keys are the tag element names in uppercase
 	 * @return	string		Processed HTML content
@@ -768,14 +871,14 @@ class t3lib_parsehtml {
 				}
 			}
 		}
-		
+
 		return implode('',$parts);
-	}		
-	
+	}
+
 	/**
 	 * Internal sub-function for ->prefixResourcePath()
-	 * 
-	 * @param	string		Prefix
+	 *
+	 * @param	string		Prefix string
 	 * @param	string		Relative path/URL
 	 * @return	string		Output path, prefixed if no scheme in input string
 	 * @access private
@@ -789,9 +892,9 @@ class t3lib_parsehtml {
 	}
 
 	/**
-	 * Cleans up the input $value for fonttags. 
+	 * Cleans up the input $value for fonttags.
 	 * If keepFace,-Size and -Color is set then font-tags with an allowed property is kept. Else deleted.
-	 * 
+	 *
 	 * @param	string		HTML content with font-tags inside to clean up.
 	 * @param	boolean		If set, keep "face" attribute
 	 * @param	boolean		If set, keep "size" attribute
@@ -808,7 +911,7 @@ class t3lib_parsehtml {
 				if ($keepFace && $attribArray['face'])	$newAttribs[]='face="'.$attribArray['face'].'"';
 				if ($keepSize && $attribArray['size'])	$newAttribs[]='size="'.$attribArray['size'].'"';
 				if ($keepColor && $attribArray['color'])	$newAttribs[]='color="'.$attribArray['color'].'"';
-					
+
 				$innerContent = $this->cleanFontTags($this->removeFirstAndLastTag($v),$keepFace,$keepSize,$keepColor);
 				if (count($newAttribs))	{
 					$fontSplit[$k]='<font '.implode(' ',$newAttribs).'>'.$innerContent.'</font>';
@@ -819,10 +922,10 @@ class t3lib_parsehtml {
 		}
 		return implode('',$fontSplit);
 	}
-	
+
 	/**
 	 * This is used to map certain tag-names into other names.
-	 * 
+	 *
 	 * @param	string		HTML content
 	 * @param	array		Array with tag key=>value pairs where key is from-tag and value is to-tag
 	 * @param	string		Alternative less-than char to search for (search regex string)
@@ -830,8 +933,8 @@ class t3lib_parsehtml {
 	 * @return	string		Processed HTML content
 	 */
 	function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')	{
-		reset($tags);
-		while(list($from,$to)=each($tags))	{
+
+		foreach($tags as $from => $to)	{
 			$value = eregi_replace($ltChar.$from.'>',$ltChar2.$to.'>',$value);
 			$value = eregi_replace($ltChar.$from.'[[:space:]]([^>]*)>',$ltChar2.$to.' \\1>',$value);
 			$value = eregi_replace($ltChar.'\/'.$from.'[^>]*>',$ltChar2.'/'.$to.'>',$value);
@@ -841,7 +944,7 @@ class t3lib_parsehtml {
 
 	/**
 	 * This converts htmlspecialchar()'ed tags (from $tagList) back to real tags. Eg. '&lt;strong&gt' would be converted back to '<strong>' if found in $tagList
-	 * 
+	 *
 	 * @param	string		HTML content
 	 * @param	string		Tag list, separated by comma. Lowercase!
 	 * @return	string		Processed HTML content
@@ -866,14 +969,14 @@ class t3lib_parsehtml {
 				} else $contentParts[$k] = '&lt;'.$tok;
 			} else $contentParts[$k] = '&lt;'.$tok;
 		}
-		
+
 		return implode('',$contentParts);
 	}
-	
+
 	/**
 	 * Strips tags except the tags in the list, $tagList
 	 * OBSOLETE - use PHP function strip_tags()
-	 * 
+	 *
 	 * @param	string		Value to process
 	 * @param	string		List of tags
 	 * @return	string		Output value
@@ -892,13 +995,13 @@ class t3lib_parsehtml {
 			$value = $this->mapTags($value,$backArr,'_','<');
 		return $value;
 	}
-	
+
 	/**
-	 * Internal function
-	 * 
-	 * @param	string		Input string
-	 * @param	boolean		
-	 * @param	string		
+	 * Internal function for case shifting of a string or whole array
+	 *
+	 * @param	mixed		Input string/array
+	 * @param	boolean		If $str is a string AND this boolean is true, the string is returned in uppercase
+	 * @param	string		Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
 	 * @return	string		Output string, processed
 	 * @access private
 	 */
@@ -916,10 +1019,10 @@ class t3lib_parsehtml {
 		} elseif (!$flag)	$str = strtoupper($str);
 		return $str;
 	}
-	
+
 	/**
 	 * Compiling an array with tag attributes into a string
-	 * 
+	 *
 	 * @param	array		Tag attributes
 	 * @param	array		Meta information about these attributes (like if they were quoted)
 	 * @param	boolean		If set, then the attribute names will be set in lower case, value quotes in double-quotes and the value will be htmlspecialchar()'ed
@@ -946,13 +1049,13 @@ class t3lib_parsehtml {
 		}
 		return implode(' ',$accu);
 	}
-	
+
 	/**
 	 * Get tag attributes, the classic version (which had some limitations?)
-	 * 
+	 *
 	 * @param	string		The tag
 	 * @param	boolean		De-htmlspecialchar flag.
-	 * @return	array		
+	 * @return	array
 	 * @access private
 	 */
 	function get_tag_attributes_classic($tag,$deHSC=0)	{
@@ -961,17 +1064,34 @@ class t3lib_parsehtml {
 	}
 
 	/**
+	 * Indents input content with $number instances of $indentChar
+	 *
+	 * @param	string		Content string, multiple lines.
+	 * @param	integer		Number of indents
+	 * @param	string		Indent character/string
+	 * @return	string		Indented code (typ. HTML)
+	 */
+	function indentLines($content, $number=1, $indentChar="\t")	{
+		$preTab = str_pad('', $number*strlen($indentChar), $indentChar);
+		$lines = explode(chr(10),str_replace(chr(13),'',$content));
+		while(list($k,$v) = each($lines))	{
+			$lines[$k] = $preTab.$v;
+		}
+		return implode(chr(10), $lines);
+	}
+
+	/**
 	 * Converts TSconfig into an array for the HTMLcleaner function.
-	 * 
+	 *
 	 * @param	array		TSconfig for HTMLcleaner
-	 * @param	array		?
-	 * @return	array		
+	 * @param	array		Array of tags to keep (?)
+	 * @return	array
 	 * @access private
 	 */
 	function HTMLparserConfig($TSconfig,$keepTags=array())	{
 			// Allow tags (base list, merged with incoming array)
 		$alTags = array_flip(t3lib_div::trimExplode(',',strtolower($TSconfig['allowTags']),1));
-		$keepTags = array_merge($alTags,$keepTags);		// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+		$keepTags = array_merge($alTags,$keepTags);
 
 			// Set config properties.
 		if (is_array($TSconfig['tags.']))	{
@@ -1052,14 +1172,25 @@ class t3lib_parsehtml {
 				$keepTags[$tn]['rmTagIfNoAttrib']=1;
 			}
 		}
-		
-		return array($keepTags, ''.$TSconfig['keepNonMatchedTags'], intval($TSconfig['htmlSpecialChars']));
+
+			// Create additional configuration:
+		$addConfig=array();
+		if ($TSconfig['xhtml_cleaning'])	{
+			$addConfig['xhtml']=1;
+		}
+
+		return array(
+			$keepTags,
+			''.$TSconfig['keepNonMatchedTags'],
+			intval($TSconfig['htmlSpecialChars']),
+			$addConfig
+		);
 	}
-	
+
 	/**
 	 * Tries to convert the content to be XHTML compliant and other stuff like that.
 	 * STILL EXPERIMENTAL. See comments below.
-	 * 
+	 *
 	 * 			What it does NOT do (yet) according to XHTML specs.:
 	 * 			- Wellformedness: Nesting is NOT checked
 	 * 			- name/id attribute issue is not observed at this point.
@@ -1070,13 +1201,13 @@ class t3lib_parsehtml {
 	 * 			- stylesheet element and attribute names are NOT converted to lowercase
 	 * 			- ampersands (and entities in general I think) MUST be converted to an entity reference! (&amps;). This may mean further conversion of non-tag content before output to page. May be related to the charset issue as a whole.
 	 * 			- Minimized values not allowed: Must do this: selected="selected"
-	 * 			
+	 *
 	 * 			What it does at this point:
-	 * 			- All tags (img,br,hr) is ended with "/>" - others?
+	 * 			- All tags (frame,base,meta,link + img,br,hr,area,input) is ended with "/>" - others?
 	 * 			- Lowercase for elements and attributes
 	 * 			- All attributes in quotes
 	 * 			- Add "alt" attribute to img-tags if it's not there already.
-	 * 
+	 *
 	 * @param	string		Content to clean up
 	 * @return	string		Cleaned up content returned.
 	 * @access private
@@ -1089,24 +1220,23 @@ class t3lib_parsehtml {
 			0,			// All content is htmlspecialchar()'ed (or ??) - if we do, <script> content will break...
 			array('xhtml' => 1)
 		);
-
 		return $content;
 	}
 
 	/**
 	 * Processing all tags themselves
-	 * 
-	 * @param	string		TAG
+	 * (Some additions by Sacha Vorbeck)
+	 *
+	 * @param	string		Tag to process
 	 * @param	array		Configuration array passing instructions for processing. If count()==0, function will return value unprocessed. See source code for details
 	 * @param	boolean		Is endtag, then set this.
 	 * @param	boolean		If set, just return value straight away
-	 * @return	strin		Processed value.
+	 * @return	string		Processed value.
 	 * @access private
 	 */
 	function processTag($value,$conf,$endTag,$protected=0)	{
 			// Return immediately if protected or no parameters
 		if ($protected || !count($conf))	return $value;
-
 			// OK then, begin processing for XHTML output:
 			// STILL VERY EXPERIMENTAL!!
 		if ($conf['xhtml'])	{
@@ -1116,10 +1246,11 @@ class t3lib_parsehtml {
 				$inValue = substr($value,1,(substr($value,-2)=='/>'?-2:-1));	// Finding inner value with out < >
 				list($tagName,$tagP)=split('[[:space:]]',$inValue,2);	// Separate attributes and tagname
 				$tagName = strtolower($tagName);
-				
+
 					// Process attributes
 				$tagAttrib = $this->get_tag_attributes($tagP);
 				if (!strcmp($tagName,'img') && !isset($tagAttrib[0]['alt']))		$tagAttrib[0]['alt']='';	// Set alt attribute for all images (not XHTML though...)
+				if (!strcmp($tagName,'script') && !isset($tagAttrib[0]['type']))	$tagAttrib[0]['type']='text/javascript';	// Set type attribute for all script-tags
 				$outA=array();
 				reset($tagAttrib[0]);
 				while(list($attrib_name,$attrib_value)=each($tagAttrib[0]))	{
@@ -1128,7 +1259,7 @@ class t3lib_parsehtml {
 				}
 				$newTag='<'.trim($tagName.' '.implode(' ',$outA));
 					// All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'
-				if (t3lib_div::inList('img,br,hr',$tagName) || substr($value,-2)=='/>')	{
+				if (t3lib_div::inList('img,br,hr,meta,link,base,area,input',$tagName) || substr($value,-2)=='/>')	{
 					$newTag.=' />';
 				} else {
 					$newTag.='>';
@@ -1136,13 +1267,13 @@ class t3lib_parsehtml {
 				$value = $newTag;
 			}
 		}
+
 		return $value;
-		
 	}
-	
+
 	/**
 	 * Processing content between tags for HTML_cleaner
-	 * 
+	 *
 	 * @param	string		The value
 	 * @param	integer		Direction, either -1 or +1. 0 (zero) means no change to input value.
 	 * @param	mixed		Not used, ignore.

@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -28,7 +29,7 @@ $LOCAL_LANG = Array (
 	'it' => Array (
 		'introtext' => 'Web Content Management System',
 		'introtext2' => 'Breve descrizione dei moduli disponibili:',
-		'endText' => 'Le caratteristiche possono variare a seconda del sito web e dei permessi',
+		'endText' => 'Le caratteristiche possono variare a seconda del sito web e dei permessi utente',
 		'userInfo' => 'Hai avuto accesso come utente:',
 	),
 	'fr' => Array (
@@ -46,13 +47,13 @@ $LOCAL_LANG = Array (
 	'nl' => Array (
 		'introtext' => 'Web Content Management Systeem',
 		'introtext2' => 'Dit is een korte omschrijving van de aanwezige modules:',
-		'endText' => 'De aanwezigheid van onderdelen hangt van je website en de rechten af.',
-		'userInfo' => 'Je bent ingelogd als gebruiker:',
+		'endText' => 'De aanwezigheid van onderdelen hangt van de configuratie van de website en de rechten af.',
+		'userInfo' => '<font size=1>Ingelogd als gebruiker: <strong>%s</strong> (%s)<br></font>',
 	),
 	'cz' => Array (
 		'introtext' => 'systém pro správu obsahu webu',
 		'introtext2' => 'Toto jsou krátké popisy dostupnıch modulù:',
-		'endText' => 'Vlastnosti se mohou mìnit podle vašeho website a pøístupovıch práv',
+		'endText' => 'Vlastnosti se mohou mìnit podle vašeho webu a pøístupovıch práv',
 		'userInfo' => 'Jste zalogován jako uivatel:',
 	),
 	'pl' => Array (
@@ -68,10 +69,10 @@ $LOCAL_LANG = Array (
 		'userInfo' => 'Prijavljeni ste kot uporabnik:',
 	),
 	'fi' => Array (
-		'introtext' => 'Web Content Management System',
-		'introtext2' => 'Tämä on lyhyt kuvaus käyttävistä moduleista',
+		'introtext' => 'Web-sisällönhallintajärjestelmä',
+		'introtext2' => 'Tässä lyhyt kuvaus käytettävistä moduleista:',
 		'endText' => 'Mahdollisuudet voivat olla riippuvaisia asennuksesta ja käyttöympäristöstä',
-		'userInfo' => 'Olet sisäänkirjoittautunut käyttäjänä:',
+		'userInfo' => 'Olet kirjautunut sisään käyttäjänä:',
 	),
 	'tr' => Array (
 		'introtext' => 'Web İçeriği Yönetim Sistemi',
@@ -92,10 +93,10 @@ $LOCAL_LANG = Array (
 		'userInfo' => 'Você está conectado como utilizador:',
 	),
 	'ru' => Array (
-		'introtext' => 'Ñèñòåìà óïğàâëåíèÿ âåá-ñàéòîì',
+		'introtext' => 'Ñèñòåìà óïğàâëåíèÿ âåá-êîíòåíòîì',
 		'introtext2' => 'Êğàòêîå îïèñàíèå ìîäóëåé:',
-		'endText' => 'Ñïèñîê ìîäóëåé ìîæåò ìåíÿòüñÿ â çàâèñèìîñòè îò ñàéòà è âàøèõ ïğàâ äîñòóïà',
-		'userInfo' => 'Âû çàğåãèñòğîğîâàëèñü êàê ïîëüçîâàòåëü:',
+		'endText' => 'Ñïèñîê ìîäóëåé ìîæåò ìåíÿòüñÿ â çàâèñèìîñòè îò âàøèõ ïğàâ äîñòóïà',
+		'userInfo' => 'Âû çàğåãèñòğèğîâàëèñü êàê ïîëüçîâàòåëü:',
 	),
 	'ro' => Array (
 		'introtext' => 'Sistem de Management a Conşinutului Site-urilor',
@@ -120,6 +121,88 @@ $LOCAL_LANG = Array (
 		'introtext2' => 'Trumpas aprağymas prieinamø moduliø:',
 		'endText' => 'Savybës gali keistis priklauso nuo svetainës ir leidimø',
 		'userInfo' => 'Seansà pradëjote kaip vartotojas:',
+	),
+	'is' => Array (
+		'introtext' => 'VefumsjÃ³narkerfi',
+		'introtext2' => 'Ãetta er stutt lÃ½sing Ã¡ Ã¾vÃ­ sem hÃ¦gt er aÃ° velja um Ã­ kerfinu:',
+		'endText' => 'ValmÃ¶guleikar eru hÃ¡Ã°ir vefsÃ­Ã°u og Ã¾eim heimildum sem notandi hefur',
+		'userInfo' => '<font size=1>ÃÃº er skrÃ¡Ã°(ur) inn sem notandi: <strong>%s</strong> (%s)<br></font>',
+	),
+	'hr' => Array (
+		'introtext' => 'Sustav za upravljanje web sadrajima',
+		'introtext2' => 'Ovo je kratki opis rapoloivih modula',
+		'endText' => 'Moguænosti se mogu ralikovati ovisno o vašem web sjedišu i dozvolama',
+		'userInfo' => 'Prijavljeni ste kao korisnik:',
+	),
+	'hu' => Array (
+		'introtext' => 'Web Tartalomkezelõ Rendszer',
+		'introtext2' => 'Rövid leírás a modulokról',
+		'endText' => 'A tulajdonságok függenek a jogosultságoktól',
+		'userInfo' => 'Bejelentkeztél mint:',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'introtext' => 'àÇç»ÃĞºº¡ÒÃºÃÔËÒÃà¹×éÍËÒ',
+		'introtext2' => '¹Õè¤×Í¤ÓÍ¸ÔºÒÂáººÂèÍæ ¢Í§âÁ´ØÅ·ÕèÁÕÍÂÙè',
+		'endText' => 'ÅÙ¡àÅè¹µèÒ§æã¹àÇç»¢Õé¹ÍÂÙè¡ÅÑºÃĞ´Ñº¡ÒÃÍ¹Ø­Òµ·Õè·èÒ¹ÁÕ',
+		'userInfo' => '<font size=1>·èÒ¹ÅêÍ¡ÍÔ¹´éÇÂª×èÍ¼Ùéãªé: <strong>%s</strong> (%s) <br></font>',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'introtext' => 'ºô¯¸¤º®eºŞ²z¨t²Î',
+		'introtext2' => '³o¬O¥i¨Ñ¨Ï¥Î¼Ò²ÕªºÂ²¤¶',
+		'endText' => '¥\\¯à·|¦]À³§Aªººô¯¸©MÅv­­¦Ó¦³©Ò¤£¦P',
+		'userInfo' => '<font size=1>µn¤Jªº¨Ï¥ÎªÌ¡G<strong>%s</strong>(%s)<br></font>',
+	),
+	'eu' => Array (
+		'introtext' => 'Web Edukia Kudeatzeko Sistema',
+		'introtext2' => 'Hau da eskuragarri dauden moduluen azalpen txiki bat',
+		'endText' => 'Ezaugarriak zure webgunearen eta baimenen arabera aldatu daitezke',
+		'userInfo' => '<font size=1>Izen honekin hasi duzu saioa: <strong>%s</strong> (%s)<br></font>',
+	),
+	'bg' => Array (
+		'introtext' => 'Óåá ñèñòåìà çà óïğàâëåíèå íà ñúäúğæàíèåòî',
+		'introtext2' => 'Òîâà å êğàòêà èñòîğèÿ íà íàëè÷íèòå ìîäóëè:',
+		'endText' => 'Ñâîéñòâàòà ìîãàò äà âàğèğàò, â çàâèñèìîñò îò âàøàòà óåá ñòğàíèöà è ïîçâîëåíèÿ',
+		'userInfo' => '<font size=1>Âèå ñòå âëåçëè êàòî ïîòğåáèòåë: <strong>%s</strong> (%s)<br></font>',
+	),
+	'br' => Array (
+		'introtext' => 'Typo%s<br>Sistema de Administração de Conteúdo',
+		'introtext2' => 'Esta é uma breve descrição dos módulos disponíveis:',
+		'endText' => 'Opções podem variar dependendo do seu website e permissões',
+		'userInfo' => '<font size=1>Você está conectado como usuário: <strong>%s</strong> (%s)<br></font>',
+	),
+	'et' => Array (
+		'introtext' => 'Veebi sisuhalduse süsteem',
+		'introtext2' => 'Kasutatavate moodulite lühikirjeldus:',
+		'endText' => 'Funktsioonid võivad varieeruda olenevalt teie veebilehest ja õigustest',
+		'userInfo' => '<font size=1>Olete sisse loginud kasutajana: <strong>%s</strong> (%s)<br></font>',
+	),
+	'ar' => Array (
+		'introtext' => 'æØÇå ÅÏÇÑÉ åÍÊèêÇÊ ÇäèêÈ',
+		'introtext2' => 'çÏÇ èÕá äÃÏèÇÊ ÇäåÌÇäÇÊ',
+		'endText' => 'ÇäÎèÇÕ ÇäÊê êåãæ äçÇ Ãæ ÊÊÚêÑ ÈÊÚêêÑ ÇäÕäÇÍêÇÊ ÇäåÓåèÍ ÈçÇ Ùäé ÕáÍÇÊã',
+		'userInfo' => '<font size=1>äâÏ ÏÎäÊ ÊÍÊ ÅÓå :  <strong>%s</strong> (%s)<br></font>',
+	),
+	'he' => Array (
+		'introtext' => '××¢×¨×›×ª × ×™×”×•×œ ×ª×•×›×Ÿ ×‘×¨×©×ª',
+		'introtext2' => '×œ×”×œ×Ÿ ×ª×§×¦×™×¨ ×©×œ ××•×“×•×œ×™× ×–××™× ×™×:',
+		'endText' => '×ª×›×•× ×•×ª ×™×›×•×œ×•×ª ×œ×”×©×ª× ×•×ª ×ª×œ×•×™ ×‘××ª×¨ ××™× ×˜×¨× ×˜ ×©×œ×›× ×•×”×¨×©××•×ª',
+		'userInfo' => '<font size=1>××©×ª××©: <strong>%s</strong> (%s)<br></font>',
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+		'introtext' => 'TÄ«mekÄ¼a Satura VadÄ«bas SistÄ“ma',
+		'introtext2' => 'Å is ir pieejamo moduÄ¼u Ä«ss apraksts:',
+		'endText' => 'PieejamÄs iespÄ“jas var atÅ¡Ä·irties, atkarÄ«bÄ no sistÄ“mas konfigurÄcijas un jÅ«su tiesÄ«bÄm.',
+		'userInfo' => 'Tu esi ielogojies kÄ lietotÄjs:',
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

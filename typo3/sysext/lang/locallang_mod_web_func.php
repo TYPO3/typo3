@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -33,7 +34,7 @@ $LOCAL_LANG = Array (
 		'title' => 'Funzioni avanzate',
 		'clickAPage_content' => 'Clicca sul titolo di una pagina dell\'albero delle pagine',
 		'mlang_labels_tablabel' => 'Funzioni avanzate',
-		'mlang_labels_tabdescr' => 'Nel modulo sono presenti funzioni per importare / esportare pagine e record in diversi formati. Sono anche presenti degli assistenti (wizard) molto utili in alcune situazioni, ad esempio quando è necessario creare velocemente un certo numero di pagine, o quando bisogna riordinarle.',
+		'mlang_labels_tabdescr' => 'Nel modulo sono presenti funzioni per importare/esportare pagine e record in diversi formati. Sono anche presenti degli assistenti (wizard) molto utili in alcune situazioni, ad esempio quando è necessario creare velocemente un certo numero di pagine, o quando bisogna riordinarle.',
 		'mlang_tabs_tab' => 'Funzioni',
 	),
 	'fr' => Array (
@@ -53,14 +54,14 @@ $LOCAL_LANG = Array (
 		'title' => 'Bijzondere functies',
 		'clickAPage_content' => 'Klik op een paginatitel in de paginastructuur.',
 		'mlang_labels_tablabel' => 'Bijzondere functies',
-		'mlang_labels_tabdescr' => 'Hier vind je algemene export en import functies. Bovendien bevat deze module gespecialiseerde functies - wizards - die nuttig kunnen zijn in bepaalde situaties. Je kan hier bijvoorbeeld in een keer meerdere pagina\'s aanmaken en pagina\'s op verschillende manieren sorteren.',
+		'mlang_labels_tabdescr' => 'Algemene export en import functies. Bovendien bevat deze module gespecialiseerde functies - wizards - die nuttig kunnen zijn in bepaalde situaties. Het is hier bijvoorbeeld mogelijk in een keer meerdere pagina\'s aan te maken en pagina\'s op verschillende manieren te sorteren.',
 		'mlang_tabs_tab' => 'Functies',
 	),
 	'cz' => Array (
 		'title' => 'Pokroèilé funkce',
-		'clickAPage_content' => 'Prosím kliknìte na název strany ve stromu stránek.',
+		'clickAPage_content' => 'Prosím kliknìte na název stránky ve stromu stránek.',
 		'mlang_labels_tablabel' => 'Pokroèilé funkce',
-		'mlang_labels_tabdescr' => 'Zde najdete obecné funkce pro import a export. Navíc obsahuje tento modul specializované funkce - pomocníky - užiteèné pøi specifických situacích',
+		'mlang_labels_tabdescr' => 'Zde najdete obecné funkce pro import a export. Navíc obsahuje tento modul specializované funkce - prùvodce - užiteèné pøi specifických situacích',
 		'mlang_tabs_tab' => 'Funkce',
 	),
 	'pl' => Array (
@@ -80,8 +81,8 @@ $LOCAL_LANG = Array (
 	'fi' => Array (
 		'title' => 'Laajennetut toiminnot',
 		'clickAPage_content' => 'Näpsäytä sivun otsikkoa sivujen rakennepuussa vasemmalla',
-		'mlang_labels_tablabel' => 'Laajennetut toiminnat',
-		'mlang_labels_tabdescr' => 'Täältä löydät yleisiä ulos ja sisäänvienti toimintoja. Lisäksi moduli sisältää erkoistoimintoja - ohjeistuksia - käyttökelpoisia tiettuihin tilanteisiin. Voit esimerkiksi kerralla luoda joukon sivuja tai lajitella sivujen järjestystä.',
+		'mlang_labels_tablabel' => 'Laajennetut toiminnot',
+		'mlang_labels_tabdescr' => 'Täältä löydät yleiset tuonti- ja vientitoiminnot. Lisäksi moduli sisältää erikoistoimintoja - ohjattuja toimintoja - käyttökelpoisia tiettyihin tilanteisiin. Voit esimerkiksi kerralla luoda joukon sivuja tai lajitella sivujen järjestystä.',
 		'mlang_tabs_tab' => 'Toiminnot',
 	),
 	'tr' => Array (
@@ -113,6 +114,11 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ôóíêöèè',
 	),
 	'ro' => Array (
+		'title' => 'Functii avansate',
+		'clickAPage_content' => 'Va rugam apasati pe una din paginile din arbore.',
+		'mlang_labels_tablabel' => 'Functii avansate',
+		'mlang_labels_tabdescr' => 'Aici veti gasi functii pentru export si import. In plus, acest modul contine functii specializate - magicieni - utile in situatii specifice. De exemplu puteti crea un set de pagini si le puteti sorta.',
+		'mlang_tabs_tab' => 'Functii',
 	),
 	'ch' => Array (
 		'title' => '¸ß¼¶¹¦ÄÜ',
@@ -123,6 +129,7 @@ $LOCAL_LANG = Array (
 	),
 	'sk' => Array (
 		'title' => 'Pokroèilé funkcie',
+		'clickAPage_content' => 'Klikni, prosím, na názov stránky v strome stránok.',
 		'mlang_labels_tablabel' => 'Pokroèilé funkcie',
 		'mlang_labels_tabdescr' => 'Tu nájdeš základné funkcie na import a export. Tento modul obsahuje naviac špeciálne funkcie - sprievodcov -, užitoèné v špecifických situáciach. Na okamžik môžeš preruši tvorbu stránok a môžeš usporiada stránky.',
 		'mlang_tabs_tab' => 'Funkcie',
@@ -133,6 +140,99 @@ $LOCAL_LANG = Array (
 		'mlang_labels_tablabel' => 'Papildomos funkcijos',
 		'mlang_labels_tabdescr' => 'Èia jus rasite bendras importo ir eksporto funkcijas. Papildomi moduliai turi specializuotas funkcijas - burtininkus - kurie naudingi specifinëse situacijose. Pvz. jus galite sukurti krûva puslapiø ir/ar vykdyti jø ruðiavima.',
 		'mlang_tabs_tab' => 'Funkcijos',
+	),
+	'is' => Array (
+		'title' => 'HÃ¡Ã¾rÃ³uÃ° aÃ°gerÃ°',
+		'clickAPage_content' => 'Vinsamlegast smeltu Ã¡ sÃ­Ã°utitil Ã­ sÃ­Ã°utrÃ©nu',
+		'mlang_labels_tablabel' => 'HÃ¡Ã¾rÃ³uÃ° aÃ°gerÃ°',
+		'mlang_labels_tabdescr' => 'HÃ©rna munt Ã¾Ãº finna almennar Ãºt- og innflutnings aÃ°gerÃ°ir. Ãžessar viÃ°bÃ¦tur eru lÃ­ka meÃ° sÃ©rhÃ¦fÃ°a aÃ°gerÃ° - Ã¡fur -  nytsamur viÃ° Ã¡kveÃ°nar aÃ°stÃ¦Ã°ur. Til dÃ¦mis getur Ã¾Ãº bÃºiÃ° til margar nÃ½jar sÃ­Ã°ur og framkvÃ¦mt flokkun Ã¡ sÃ­Ã°unum.',
+		'mlang_tabs_tab' => 'AÃ°gerÃ°ir',
+	),
+	'hr' => Array (
+		'title' => 'Napredne funkcije',
+		'clickAPage_content' => 'Molim kliknite na naslov stranice u stablu.',
+		'mlang_labels_tablabel' => 'Napredne funkcije',
+		'mlang_labels_tabdescr' => 'Ovdje æete naæi osnovne eksport i import funkcije. Stoviše, ovaj modul sadrži specijalizirane funkcije - èarobnjake korisne u specifiènim situacijama. Na primjer, možete napraviti stranice u "batch-u" ili sortirati stranice.',
+		'mlang_tabs_tab' => 'Funkcije',
+	),
+	'hu' => Array (
+		'title' => 'Egyéb mûveletek',
+		'clickAPage_content' => 'Kérlek kattints az oldal címére az oldalfában.',
+		'mlang_labels_tablabel' => 'Egyéb mûveletek',
+		'mlang_labels_tabdescr' => 'Itt találod az általános export és import funkciókat, és az egyéb speciális varázslókat.',
+		'mlang_tabs_tab' => 'Mûveletek',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'title' => '¿Ñ§ªÑè¹ªÑé¹ÊÙ§',
+		'clickAPage_content' => 'â»Ã´¡´»ØèÁª×èÍË¹éÒ ·Õèµé¹Ë¹éÒ',
+		'mlang_labels_tablabel' => '¿Ñ§ªÑè¹ªÑé¹ÊÙ§',
+		'mlang_labels_tabdescr' => '¤Ø³¨Ðà¨Í¿Ñ§ªÑè¹Êè§ÍÍ¡áÅÐ¹Óà¢éÒ·Õè¹Õè ¹Í¡¨Ò¡¹ÕéâÁ´ÙÅ¹ÕéÂÑ§ÁÕ ¿Ñ§ªÑè¹¾ÔàÈÉ -¼ÙéªèÇÂÇÔàÈÉ- ÁÕ»ÃÐâÂª¹ìã¹Ê¶Ò¹¡ÒÃ³ìà©¾ÒÐ àªè¹¤Ø³ÊÒÁÒÃÊÃéÒ§ áÅÐ¡ÒÃ¨Ñ´ÅÓ´ÑºËÅÒÂË¹éÒ¾ÃéÍÁ¡Ñ¹',
+		'mlang_tabs_tab' => '¿Ñ§ªÑè¹',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'title' => '¶i¶¥¥\\¯à',
+		'clickAPage_content' => '½ÐÂIÀ»¦bºô­¶¾ð¹Ï¤¤ªº¤@­Óºô­¶¦WºÙ',
+		'mlang_labels_tablabel' => '¶i¶¥¥\\¯à',
+		'mlang_labels_tabdescr' => '¦b³o¸Ì§A·|µo²{±`¨£ªº¿é¤J©M¶×¤J¥\\¯à¡C¦¹¥~¡A³o­Ó¼Ò²Õ¥]§t¿W¯Sªº¥\\¯à¡@¡Ð¡@ºëÆF¡@¡Ð¡@¦b¬Y¨Ç±¡ªp¤U«D±`¦³¥Î¡C¨Ò¦p§A¥i¥H¤j¶q«Ø¥ßºô­¶©M¶i¦æºô­¶¤ÀÃþ¡C',
+		'mlang_tabs_tab' => '¥\\¯à',
+	),
+	'eu' => Array (
+		'title' => 'Funtzio aurreratuak',
+		'clickAPage_content' => 'Egin klik orri zuhaitzeko orri izenburu batean',
+		'mlang_labels_tablabel' => 'Funtzio aurreratuak',
+		'mlang_labels_tabdescr' => 'Esportazio eta inportazio funtzio orokorrak aurkituko dituzu hemen. Gainera modulu honek baditu funtzio espezializatuak - Morroiak - egoera berezietan erabiltzeko. Adibidez orriak errenkadan sortu ditzazkezu eta orriak ordenatu.',
+		'mlang_tabs_tab' => 'Funtzioak',
+	),
+	'bg' => Array (
+		'title' => 'Ðàçøèðåíè ôóíêöèè',
+		'clickAPage_content' => 'Ìîëÿ, íàòèñíåòå çàãëàâèåòî íà ñòðàíèöàòà â äúðâîòî .',
+		'mlang_labels_tablabel' => 'Ðàçøèðåíè ôóíêöèè',
+		'mlang_labels_tabdescr' => 'Òóê ùå íàìåðèòå îñíîâíè åêñïîðò è èìïîðò ôóíêöèè. Â äîáàâêà òîçè ìîäóë ñúäúðæà ñïåúèàëèçèðàíè ôóíêöèè - âúâåäåíèÿ - ïîëåçíè â ñïåöèôè÷íè ñèòóàöèè. Íàïðèìåð ìîæåòå ãðóïîâî äà ñúçäàäåòå ñòðàíèöè è äà ãè ñîðòèðàòå.',
+		'mlang_tabs_tab' => 'Ôóíêöèè',
+	),
+	'br' => Array (
+		'title' => 'Funções avançadas',
+		'clickAPage_content' => 'Por favor, clique em um título de página na árvore de páginas.',
+		'mlang_labels_tablabel' => 'Funções avançadas',
+		'mlang_labels_tabdescr' => 'Você encontrará funções para importação e exportação aqui. Além disso, este módulo contém funções especializadas - assistentes - úteis em situações específicas. Por exemplo, você pode criar páginas em lote e ordenar páginas.',
+		'mlang_tabs_tab' => 'Funções',
+	),
+	'et' => Array (
+		'title' => 'Advanced funktsioonid',
+		'clickAPage_content' => 'Palun klikkige lehekülje pealkirjale sisupuul.',
+		'mlang_labels_tablabel' => 'Advanced funktsioonid',
+		'mlang_labels_tabdescr' => 'Siit leiate peamised eksport ja import funktsioonid. Lisaks sisaldab see moodul erifunktsioone - viisardeid - mis on kasulikud kindlate olukordade puhul. Näiteks saate luua lehekülgi partii kaupa ja toestada lehekülgede sorteerimist.',
+		'mlang_tabs_tab' => 'Funktsioonid',
+	),
+	'ar' => Array (
+		'title' => 'èØÇÆá åÊ×èÑÉ',
+		'clickAPage_content' => 'åæ áÖäã ÅÖÚã Ùäé ÙæèÇæ ÇäÕáÍÉ áê âÇÆåÉ ÇäÕáÍÇÊ',
+		'mlang_labels_tablabel' => 'èØÇÆá åÊ×èÑÉ',
+		'mlang_labels_tabdescr' => 'çæÇ ÓÊÌÏ ÈÕáÉ ÙÇåÉ èØààÇÆá ääÊÕÏêÑ è ÇäÅÓÊêÑÇÏ ÈÇäÅÖÇáÉ  Åäé Ãæ çÐÇ ÇäåÑãÈ êÍÊèê Ùäé èØààÇÆá ÎÇÕÉ è åÓÇÙÏ åáêÏÇæ ÌÏÇ áê åèÇâá åÙêæÉ. Ùäé áãÑÉ êåãæã ÅæÔÇÁ ÕáÍÇÊ è Ùåä ÊÑÊêÈ äçààÇ',
+		'mlang_tabs_tab' => 'èØÇÆá',
+	),
+	'he' => Array (
+		'title' => '×¤×¢×•×œ×•×ª ×ž×ª×§×“×ž×•×ª',
+		'clickAPage_content' => '× × ×”×§×œ×§ ×¢×œ ×›×•×ª×¨×ª ×“×£ ×‘×¨×©×™×ž×ª ×“×¤×™×',
+		'mlang_labels_tablabel' => '×¤×¢×•×œ×•×ª ×ž×ª×§×“×ž×•×ª',
+		'mlang_labels_tabdescr' => '×›××Ÿ ×ª×ž×¦× ×¤×¢×•×œ×•×ª ×™×™×¦×•× ×•×™×™×‘×•× ×›×œ×œ×™×•×ª. ×‘× ×•×¡×£ ×ž×•×“×•×œ ×–×” ×ž×›×™×œ ×¤×¢×•×œ×•×ª ×ž×™×•×—×“×•×ª - ×¢×–×¨×™× - ×©×™×ž×•×©×™×™× ×‘×ž×¦×‘×™× ×ž×¡×•×™×ž×™×. ×œ×ž×©××œ ×”× ×š ×™×›×•×œ ×œ×¦×•×¨ ×§×‘×•×¦×” ×©×œ ×“×¤×™× ×•×œ×ž×™×™×Ÿ ×“×¤×™×.',
+		'mlang_tabs_tab' => '×¤×¢×•×œ×•×ª',
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+		'title' => 'AdvancÄ“tas funkcijas',
+		'clickAPage_content' => 'LÅ«dzu uzklikÅ¡Ä·iniet uz lapas virsraksta lapu kokÄ.',
+		'mlang_labels_tablabel' => 'AdvancÄ“tas funkcijas',
+		'mlang_tabs_tab' => 'Funkcijas',
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,30 +24,30 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class for Matching TypoScript conditions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   75: class t3lib_matchCondition 
- *   89:     function match($string)	
- *  300:     function testNumber($test,$value) 
- *  322:     function matchWild($haystack,$needle)	
- *  352:     function whichDevice($useragent)	
- *  402:     function browserInfo($useragent)	
- *  501:     function getGlobal($var,$inArr='') 
- *  526:     function getGP_ENV_TSFE($var) 
+ *   77: class t3lib_matchCondition
+ *   91:     function match($string)
+ *  303:     function testNumber($test,$value)
+ *  325:     function matchWild($haystack,$needle)
+ *  355:     function whichDevice($useragent)
+ *  405:     function browserInfo($useragent)
+ *  503:     function browserInfo_version($tmp)
+ *  515:     function getGlobal($var,$inArr='')
+ *  540:     function getGP_ENV_TSFE($var)
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -65,11 +65,13 @@
 
 /**
  * Matching TypoScript conditions
- * 
+ *
  * Used with the TypoScript parser.
  * Matches browserinfo, IPnumbers for use with templates
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see t3lib_TStemplate::matching(), t3lib_TStemplate::generateConfig()
  */
 class t3lib_matchCondition {
@@ -77,21 +79,22 @@ class t3lib_matchCondition {
 	var $matchAll=0;					// If set all is matched!
 
 	var $altRootLine=array();
-		
+
 	/**
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
-	 * 
+	 *
 	 * @param	string		The condition to match against its criterias.
 	 * @return	boolean		Returns true or false based on the evaluation.
 	 * @see t3lib_tsparser::parse()
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=292&cHash=c6c7d43d2f
 	 */
 	function match($string)	{
+
 		if ($this->matchAll)	return true;
 		if (count($this->matchAlternative))	{
 			return in_array($string,$this->matchAlternative);
 		}
-	
+
 		if (!$this->browserInfoArray)	{
 			$this->browserInfoArray = $this->browserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
 		}
@@ -174,6 +177,9 @@ class t3lib_matchCondition {
 				case 'IP':
 					if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $pcs[1]))	{return true;}
 				break;
+				case 'hostname':
+					if (t3lib_div::cmpFQDN(t3lib_div::getIndpEnv('REMOTE_ADDR'), $pcs[1]))  {return true;}
+				break;
 					// hour, minute, dayofweek, dayofmonth, month
 				case 'hour':
 				case 'minute':
@@ -253,7 +259,7 @@ class t3lib_matchCondition {
 					while(list(,$test)=each($values))	{
 						$test = trim($test);
 						if ($test==$theRLC)	{	return true;	}
-					}					
+					}
 				break;
 				case 'PIDupinRootline':
 				case 'PIDinRootline':
@@ -275,7 +281,7 @@ class t3lib_matchCondition {
 					$funcName=trim($values[0]);
 					$funcValue = t3lib_div::trimExplode(',',$values[1]);
 					$pre = $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['userFuncClassPrefix'];
-					if ($pre && 
+					if ($pre &&
 						!t3lib_div::isFirstPartOfStr(trim($funcName),$pre) &&
 						!t3lib_div::isFirstPartOfStr(trim($funcName),'tx_')
 						)	{
@@ -292,7 +298,7 @@ class t3lib_matchCondition {
 
 	/**
 	 * Will evaluate a $value based on an operator: "<", ">" or "=" (default)
-	 * 
+	 *
 	 * @param	string		The value to compare with on the form [operator][number]. Eg. "< 123"
 	 * @param	integer		The number
 	 * @return	boolean		If $value is "50" and $test is "< 123" then it will return true.
@@ -306,7 +312,7 @@ class t3lib_matchCondition {
 			case '>':
 				if (doubleval(substr($test,1))<$value)	return true;
 			break;
-			default:		
+			default:
 				if (trim(substr($test,1))==$value)	return true;
 			break;
 		}
@@ -314,7 +320,7 @@ class t3lib_matchCondition {
 
 	/**
 	 * Matching two strings against each other, supporting a "*" wildcard in either end of the $needle
-	 * 
+	 *
 	 * @param	string		The string in which to find $needle.
 	 * @param	string		The string to find in $haystack
 	 * @return	boolean		Returns true if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Netscape*" then it returns true.
@@ -343,31 +349,31 @@ class t3lib_matchCondition {
 
 	/**
 	 * Returns a code for a browsing device based on the input useragent string
-	 * 
+	 *
 	 * @param	string		User agent string from browser, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
 	 * @return	string		A code. See link.
 	 * @access private
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=296&cHash=a8ae66c7d6
 	 */
 	function whichDevice($useragent)	{
-		$agent=strtolower(trim($useragent)); 
+		$agent=strtolower(trim($useragent));
 			// pda
-		if(	strstr($agent, 'avantgo'))	{ 
+		if(	strstr($agent, 'avantgo'))	{
 			return 'pda';
 		}
 
 			// wap
-		$browser=substr($agent,0,4); 
-		$wapviwer=substr(stristr($agent,'wap'),0,3); 
-		if(	$wapviwer=='wap' || 
-			$browser=='noki' || 
-			$browser== 'eric' || 
-			$browser== 'r380' || 
-			$browser== 'up.b' || 
-			$browser== 'winw' || 
+		$browser=substr($agent,0,4);
+		$wapviwer=substr(stristr($agent,'wap'),0,3);
+		if(	$wapviwer=='wap' ||
+			$browser=='noki' ||
+			$browser== 'eric' ||
+			$browser== 'r380' ||
+			$browser== 'up.b' ||
+			$browser== 'winw' ||
 			$browser== 'wapa')	{
 				return 'wap';
-		} 
+		}
 
 			// grabber
 		if(	strstr($agent, 'g.r.a.b.') ||
@@ -376,8 +382,8 @@ class t3lib_matchCondition {
 			strstr($agent, 'teleport') ||
 			strstr($agent, 'webcopier'))	{
 			return 'grabber';
-		} 
-		
+		}
+
 			// robots
 		if(	strstr($agent, 'crawler') ||
 			strstr($agent, 'spider') ||
@@ -387,13 +393,13 @@ class t3lib_matchCondition {
 			strstr($agent, 'altavista') ||
 			strstr($agent, 'diibot'))	{
 			return 'robot';
-		} 
+		}
 	}
 
 	/**
 	 * Generates an array with abstracted browser information
 	 * In the function match() this method is called and the result stored in $this->browserInfoArray
-	 * 
+	 *
 	 * @param	string		The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
 	 * @return	array		Contains keys "browser", "version", "system"
 	 * @access private
@@ -405,9 +411,7 @@ class t3lib_matchCondition {
 		$browserInfo['useragent']=$useragent;
 		if ($useragent)	{
 			// browser
-			if (strstr($useragent,'MSIE'))	{
-				$browserInfo['browser']='msie';
-			} elseif(strstr($useragent,'Opera'))	{
+			if(strstr($useragent,'Opera'))	{
 				$browserInfo['browser']='opera';
 			} elseif(strstr($useragent,'Lynx'))	{
 				$browserInfo['browser']='lynx';
@@ -423,42 +427,44 @@ class t3lib_matchCondition {
 				$browserInfo['browser']='teleport';
 			} elseif(strstr($useragent,'Mozilla'))	{
 				$browserInfo['browser']='netscape';
+			} elseif (strstr($useragent,'MSIE'))	{
+				$browserInfo['browser']='msie';
 			} else {
 				$browserInfo['browser']='unknown';
 			}
 			// version
 			switch($browserInfo['browser'])	{
 				case 'netscape':
-					$browserInfo['version'] = doubleval(substr($useragent,8));
+					$browserInfo['version'] = $this->browserInfo_version(substr($useragent,8));
 					if (strstr($useragent,'Netscape6')) {$browserInfo['version']=6;}
 				break;
 				case 'msie':
 					$tmp = strstr($useragent,'MSIE');
-					$browserInfo['version'] = doubleval(substr($tmp,4));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,4));
 				break;
 				case 'opera':
 					$tmp = strstr($useragent,'Opera');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 				case 'lynx':
 					$tmp = strstr($useragent,'Lynx/');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 				case 'php':
 					$tmp = strstr($useragent,'PHP/');
-					$browserInfo['version'] = doubleval(substr($tmp,4));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,4));
 				break;
 				case 'avantgo':
 					$tmp = strstr($useragent,'AvantGo');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 				case 'acrobat':
 					$tmp = strstr($useragent,'WebCapture');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 				case 'ibrowse':
 					$tmp = strstr($useragent,'IBrowse/');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 			}
 			// system
@@ -473,7 +479,7 @@ class t3lib_matchCondition {
 					$browserInfo['system']='winNT';
 				} elseif (strstr($useragent,'Win16') || strstr($useragent,'Windows 311'))	{
 					$browserInfo['system']='win311';
-				}			
+				}
 			} elseif (strstr($useragent,'Mac'))	{
 				$browserInfo['system']='mac';
 				// unixes
@@ -487,12 +493,23 @@ class t3lib_matchCondition {
 				$browserInfo['system']='unix_hp';
 			}
 		}
+
 		return $browserInfo;
 	}
 
 	/**
+	 * Returns the version of a browser; Basically getting doubleval() of the input string, stripping of any non-numeric values in the beginning of the string first.
+	 *
+	 * @param	string		A string with version number, eg. "/7.32 blablabla"
+	 * @return	double		Returns double value, eg. "7.32"
+	 */
+	function browserInfo_version($tmp)	{
+		return doubleval(ereg_replace('^[^0-9]*','',$tmp));
+	}
+
+	/**
 	 * Return global variable where the input string $var defines array keys separated by "|"
-	 * 
+	 *
 	 * @param	string		Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the id GET parameter back.
 	 * @param	array		Alternative array than $GLOBAL to get variables from.
 	 * @return	mixed		Whatever value. If none, then blank string.
@@ -503,7 +520,7 @@ class t3lib_matchCondition {
 		$c = count($vars);
 		$k = trim($vars[0]);
 		$theVar = is_array($inArr) ? $inArr[$k] : $GLOBALS[$k];
-		
+
 		for ($a=1;$a<$c;$a++) {
 			if (!isset($theVar))	{break;}
 			$theVar = $theVar[trim($vars[$a])];
@@ -517,7 +534,7 @@ class t3lib_matchCondition {
 
 	/**
 	 * Returns GP / ENV / TSFE vars
-	 * 
+	 *
 	 * @param	string		Identifier
 	 * @return	mixed		The value of the variable pointed to.
 	 * @access private
@@ -533,7 +550,7 @@ class t3lib_matchCondition {
 			if ($k)	{
 				switch((string)trim($vars[0]))	{
 					case 'GP':
-						$val = t3lib_div::GPvar($k);
+						$val = t3lib_div::_GP($k);
 					break;
 					case 'TSFE':
 						$val = $GLOBALS['TSFE']->$k;
@@ -559,7 +576,7 @@ class t3lib_matchCondition {
 			}
 		}
 		return $val;
-	}		
+	}
 }
 
 
