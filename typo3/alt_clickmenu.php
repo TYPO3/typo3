@@ -720,7 +720,7 @@ class clickMenu {
 			$fI = pathinfo($path);
 			$icon = is_dir($path) ? 'folder.gif' : t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 			$size=' ('.t3lib_div::formatSize(filesize($path)).'bytes)';
-			$icon = '<img src="gfx/fileicons/'.$icon.'" width="18" height="16" border="0" hspace="5"'.t3lib_BEfunc::titleAttrib($fI['basename'].$size,1).' align="absmiddle" alt="" />';
+			$icon = '<img src="'.$this->backPath.'gfx/fileicons/'.$icon.'" width="18" height="16" border="0" hspace="5"'.t3lib_BEfunc::titleAttrib($fI['basename'].$size,1).' align="absmiddle" alt="" />';
 
 				// edit
 			if (!in_array('edit',$this->disabledItems) && is_file($path) && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],$fI['extension'])) $menuItems['edit']=$this->FILE_launch($path,'file_edit.php','edit','edit_file.gif');
@@ -905,10 +905,10 @@ class clickMenu {
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td nowrap="nowrap" valign="top">'.
-						implode('</td><td valign="top"><img src="gfx/acm_spacer2.gif" width="8" height="12" alt="" /></td><td nowrap="nowrap" valign="top">',$this->menuItemsForTopFrame($menuItems)).
+						implode('</td><td valign="top"><img src="'.$this->backPath.'gfx/acm_spacer2.gif" width="8" height="12" alt="" /></td><td nowrap="nowrap" valign="top">',$this->menuItemsForTopFrame($menuItems)).
 					'</td>
 					<td><img src="clear.gif" width="10" height="1" alt="" /></td>
-					<td nowrap="nowrap" valign="top"><a href="#" onclick="hideCM();return false;"><img src="gfx/close_12h.gif" width="11" height="12" vspace="2" hspace="5" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close'),1).' alt="" /></a></td>
+					<td nowrap="nowrap" valign="top"><a href="#" onclick="hideCM();return false;"><img src="'.$this->backPath.'gfx/close_12h.gif" width="11" height="12" vspace="2" hspace="5" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close'),1).' alt="" /></a></td>
 					<td>'.$item.'</td>
 				</tr>
 			</table>
@@ -1126,9 +1126,10 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 class SC_alt_clickmenu {
 	var $content='';				// Content accumulation
 	var $doc;						// Template object 
-	var $include_once=array();		// Files to include_once() - set in init() function
+	var $includeOnce=array();		// Files to include_once() - set in init() function
 	var $extClassArray=array();		// Internal array of classes for extending the clickmenu
 	var $dontDisplayTopFrameCM=0;	// If set, then the clickmenu will NOT display in the top frame.
+	var $backPath='';
 
 	/**
 	 * Constructor:
@@ -1140,7 +1141,15 @@ class SC_alt_clickmenu {
 
 			// Setting pseudo module name
 		$this->MCONF['name']='xMOD_alt_clickmenu.php';
-		
+
+			// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
+		$inputBP = explode('|',t3lib_div::GPvar('backPath'));
+		if (count($inputBP)==2 && $inputBP[1]==md5($inputBP[0].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+			$this->backPath = $inputBP[0];
+		} else {
+			$this->backPath = $BACK_PATH;
+		}
+
 			// Setting internal array of classes for extending the clickmenu:
 		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
 
@@ -1148,7 +1157,7 @@ class SC_alt_clickmenu {
 		if (is_array($this->extClassArray))	{
 			reset($this->extClassArray);
 			while(list(,$extClassConf)=each($this->extClassArray))	{
-				if ($extClassConf['path'])	$this->include_once[]=$extClassConf['path'];
+				if ($extClassConf['path'])	$this->includeOnce[]=$extClassConf['path'];
 			}
 		}
 
@@ -1156,7 +1165,7 @@ class SC_alt_clickmenu {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType='xhtml_trans';
 		$this->doc->inDocStyles = 'BODY {background-color: '.$this->doc->bgColor2.'; background-image: url(gfx/alt_topmenu_back_full.gif)}';
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $this->backPath;
 		
 			// Setting mode for display and background image in the top frame
 		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
@@ -1237,12 +1246,8 @@ class SC_alt_clickmenu {
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
 		$clickMenu->dontDisplayTopFrameCM = $this->dontDisplayTopFrameCM;
+		$clickMenu->backPath = $this->backPath;
 		
-			// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
-		$inputBP = explode('|',t3lib_div::GPvar('backPath'));
-		if (count($inputBP)==2 && $inputBP[1]==md5($inputBP[0].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-			$clickMenu->backPath = $inputBP[0];
-		}
 
 			// Start page 
 		$this->content.=$this->doc->startPage('Context Sensitive Menu');
@@ -1281,8 +1286,8 @@ $SOBE = t3lib_div::makeInstance('SC_alt_clickmenu');
 $SOBE->init();
 
 // Include files?
-reset($SOBE->include_once);	
-while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+reset($SOBE->includeOnce);	
+while(list(,$INC_FILE)=each($SOBE->includeOnce))	{include_once($INC_FILE);}
 
 $SOBE->main();
 $SOBE->printContent();
