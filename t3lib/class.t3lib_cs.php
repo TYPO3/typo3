@@ -932,7 +932,7 @@ class t3lib_cs {
 		$unicodeDataFile = PATH_t3lib.'unidata/UnicodeData.txt';
 		if (!(t3lib_div::validPathStr($unicodeDataFile) && @is_file($unicodeDataFile)))	return false;
 
-		$fh = fopen($unicodeDataFile,'r');
+		$fh = fopen($unicodeDataFile,'rb');
 		if (!$fh)	return false;
 
 			// key = utf8 char (single codepoint), value = utf8 string (codepoint sequence)
@@ -948,7 +948,7 @@ class t3lib_cs {
 		$number = array();		// array of chars that are numbers (eg. digits)
 
 		while (!feof($fh))	{
-			$line = fgets($fh);
+			$line = fgets($fh,4096);
 				// has a lot of info
 			list($char,$name,$cat,,,$decomp,,,$num,,,,$upper,$lower,$title,) = split(';', rtrim($line));
 
@@ -1012,10 +1012,10 @@ class t3lib_cs {
 			// process additional Unicode data for casing (allow folded characters to expand into a sequence)
 		$specialCasingFile = PATH_t3lib.'unidata/SpecialCasing.txt';
 		if (t3lib_div::validPathStr($specialCasingFile) && @is_file($specialCasingFile))	{
-			$fh = fopen($specialCasingFile,'r');
+			$fh = fopen($specialCasingFile,'rb');
 			if ($fh)	{
 				while (!feof($fh))	{
-					$line = fgets($fh);
+					$line = fgets($fh,4096);
 					if ($line{0} != '#' && trim($line) != '')	{
 
 						list($char,$lower,$title,$upper,$cond) = t3lib_div::trimExplode(';', $line);
@@ -1024,17 +1024,17 @@ class t3lib_cs {
 							if ($char != $lower)	{
 								$arr = split(' ',$lower);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
-								$utf8CaseFolding['toLower'][$utf8_char] = implode($arr);
+								$utf8CaseFolding['toLower'][$utf8_char] = implode('',$arr);
 							}
 							if ($char != $title && $title != $upper)	{
 								$arr = split(' ',$title);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
-								$utf8CaseFolding['toTitle'][$utf8_char] = implode($arr);
+								$utf8CaseFolding['toTitle'][$utf8_char] = implode('',$arr);
 							}
 							if ($char != $upper)	{
 									$arr = split(' ',$upper);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
-								$utf8CaseFolding['toUpper'][$utf8_char] = implode($arr);
+								$utf8CaseFolding['toUpper'][$utf8_char] = implode('',$arr);
 							}
 						}
 					}
@@ -1046,10 +1046,10 @@ class t3lib_cs {
 			// process custom decompositions
 		$customTranslitFile = PATH_t3lib.'unidata/Translit.txt';
 		if (t3lib_div::validPathStr($customTranslitFile) && @is_file($customTranslitFile))	{
-			$fh = fopen($customTranslitFile,'r');
+			$fh = fopen($customTranslitFile,'rb');
 			if ($fh)	{
 				while (!feof($fh))	{
-					$line = fgets($fh);
+					$line = fgets($fh,4096);
 					if ($line{0} != '#' && trim($line) != '')	{
 						list($char,$translit) = t3lib_div::trimExplode(';', $line);
 						$decomposition["U+$char"] = split(' ', $translit);
