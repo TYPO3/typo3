@@ -80,7 +80,7 @@ $TYPO3_CONF_VARS = Array(
 		'em_systemInstall' => 0,				// If set, you can install extensions in the sysext/ dir. Use this to upgrade the 'cms' and 'lang' extensions.
 		'em_TERurls' => array('http://ter.typo3.com/?id=t3_extrep'),
 
-		'requiredExt' => 'cms,lang',			// String list: List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
+		'requiredExt' => 'cms,lang,sv',			// String list: List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
 		'extCache' => 1,						// Int. 0,1,2: 0: ext-scripts (ext_localconf.php and ext_tables.php) are NOT cached, but included every time. 1: scripts cached to typo3conf/temp_CACHED_[sitePathHash]* (saves some milliseconds even with PHP-A), 2: scripts cached and prefix includes a hash based on the 'extList' string, 3: scripts cached to typo3conf/temp_CACHED_* (no hash included at all...)
 		'extList' => 'tsconfig_help,context_help,extra_page_cm_options,rte,impexp,sys_note,tstemplate,tstemplate_ceditor,tstemplate_info,tstemplate_objbrowser,tstemplate_analyzer,tstemplate_styler,func_wizards,wizard_crpages,wizard_sortpages,lowlevel,install,belog,beuser,phpmyadmin,aboutmodules,imagelist,setup,taskcenter,sys_notepad,taskcenter_recent,taskcenter_rootlist,info_pagetsconfig,viewpage',						// String list: List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
 		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
@@ -187,6 +187,11 @@ $TYPO3_CONF_VARS = Array(
 	),
 	'EXTCONF' => Array (		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
 //		'--key--' => array()
+	),
+	'SVCONF' => Array (		// Here you may add manually set configuration options for services.
+//		Eg.  ...['service_type']['setup']['my_option'] = 'my_value'; Setup options how to handle the service (call it or not and how when)
+//		Eg.  ...['service_type']['default']['my_option'] = 'my_value';
+//		Eg.  ...['service_type']['service_key']['my_option'] = 'my_value';
 	)
 );
 $T3_VAR = array();	// Initialize.
