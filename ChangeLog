@@ -1,3 +1,7 @@
+2004-06-06  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added "groupChangeMask" option in TYPO3_CONF_VARS - makes it possible to set which group newly created files and folders will get. (Thanks to Stucki)
+
 2004-06-03  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added API for configuring tables (ending on "cache") that are flushed together with "Clear All Cache".

@@ -849,7 +849,7 @@ class t3lib_cs {
 			if ($charset && t3lib_div::validPathStr($charsetConvTableFile) && @is_file($charsetConvTableFile))	{
 					// Cache file for charsets:
 					// Caching brought parsing time for gb2312 down from 2400 ms to 150 ms. For other charsets we are talking 11 ms down to zero.
-				$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/charset_'.$charset.'.tbl');
+				$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/cs/charset_'.$charset.'.tbl');
 				if ($cacheFile && @is_file($cacheFile))	{
 					$this->parsedCharsets[$charset]=unserialize(t3lib_div::getUrl($cacheFile));
 				} else {
@@ -883,7 +883,7 @@ class t3lib_cs {
 						}
 					}
 					if ($cacheFile)	{
-						t3lib_div::writeFile($cacheFile,serialize($this->parsedCharsets[$charset]));
+						t3lib_div::writeFileToTypo3tempDir($cacheFile,serialize($this->parsedCharsets[$charset]));
 					}
 				}
 				return 2;
@@ -902,8 +902,8 @@ class t3lib_cs {
 	 */
 	function initUnicodeData($mode=null)	{
 			// cache files
-		$cacheFileCase = t3lib_div::getFileAbsFileName('typo3temp/cscase_utf-8.tbl');
-		$cacheFileASCII = t3lib_div::getFileAbsFileName('typo3temp/csascii_utf-8.tbl');
+		$cacheFileCase = t3lib_div::getFileAbsFileName('typo3temp/cs/cscase_utf-8.tbl');
+		$cacheFileASCII = t3lib_div::getFileAbsFileName('typo3temp/cs/csascii_utf-8.tbl');
 
 			// Only process if the tables are not yet loaded
 		switch($mode)	{
@@ -1134,11 +1134,11 @@ class t3lib_cs {
 		}
 
 		if ($cacheFileCase)	{
-				t3lib_div::writeFile($cacheFileCase,serialize($utf8CaseFolding));
+				t3lib_div::writeFileToTypo3tempDir($cacheFileCase,serialize($utf8CaseFolding));
 		}
 
 		if ($cacheFileASCII)	{
-				t3lib_div::writeFile($cacheFileASCII,serialize($ascii));
+				t3lib_div::writeFileToTypo3tempDir($cacheFileASCII,serialize($ascii));
 		}
 
 		return 3;
@@ -1157,7 +1157,7 @@ class t3lib_cs {
 		if (is_array($this->caseFolding[$charset]))	return 1;
 
 			// Use cached version if possible
-		$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/cscase_'.$charset.'.tbl');
+		$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/cs/cscase_'.$charset.'.tbl');
 		if ($cacheFile && @is_file($cacheFile))	{
 			$this->caseFolding[$charset] = unserialize(t3lib_div::getUrl($cacheFile));
 			return 2;
@@ -1200,7 +1200,7 @@ class t3lib_cs {
 		}
 
 		if ($cacheFile)	{
-				t3lib_div::writeFile($cacheFile,serialize($this->caseFolding[$charset]));
+				t3lib_div::writeFileToTypo3tempDir($cacheFile,serialize($this->caseFolding[$charset]));
 		}
 
 		return 3;
@@ -1219,7 +1219,7 @@ class t3lib_cs {
 		if (is_array($this->toASCII[$charset]))	return 1;
 
 			// Use cached version if possible
-		$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/csascii_'.$charset.'.tbl');
+		$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/cs/csascii_'.$charset.'.tbl');
 		if ($cacheFile && @is_file($cacheFile))	{
 			$this->toASCII[$charset] = unserialize(t3lib_div::getUrl($cacheFile));
 			return 2;
@@ -1246,7 +1246,7 @@ class t3lib_cs {
 		}
 
 		if ($cacheFile)	{
-				t3lib_div::writeFile($cacheFile,serialize($this->toASCII[$charset]));
+				t3lib_div::writeFileToTypo3tempDir($cacheFile,serialize($this->toASCII[$charset]));
 		}
 
 		return 3;
