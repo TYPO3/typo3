@@ -767,7 +767,7 @@ class t3lib_TStemplate	{
 				$constLen=t3lib_div::intInRange(strcspn($constVal,'}'),0,50);
 				$theConstList[]='{$'.substr($constVal,0,$constLen+1);
 			}
-			if ($this->tt_track)	$GLOBALS['TT']->setTSlogMessage(implode($theConstList,',').': Constants may remain un-substituted!!',2);
+			if ($this->tt_track)	$GLOBALS['TT']->setTSlogMessage(implode(',',$theConstList).': Constants may remain un-substituted!!',2);
 		}
 
 			// Logging the textual size of the TypoScript Setup field text with all constants substituted:
@@ -889,7 +889,7 @@ class t3lib_TStemplate	{
 		}
 			// Parsing the user TS (or getting from cache)
 		$TSdataArray = t3lib_TSparser::checkIncludeLines_array($TSdataArray);
-		$userTS = implode($TSdataArray,chr(10).'[GLOBAL]'.chr(10));
+		$userTS = implode(chr(10).'[GLOBAL]'.chr(10),$TSdataArray);
 
 		$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 		$parseObj->parse($userTS);
@@ -1083,7 +1083,7 @@ class t3lib_TStemplate	{
 				if ($OK)	{
 					$this->fileCache[$hash]=$outFile;
 					return $outFile;
-				} elseif ($this->tt_track) $GLOBALS['TT']->setTSlogMessage('"'.$file.'" was not located in the allowed paths: ('.implode($this->allowedPaths,',').')',3);
+				} elseif ($this->tt_track) $GLOBALS['TT']->setTSlogMessage('"'.$file.'" was not located in the allowed paths: ('.implode(',',$this->allowedPaths).')',3);
 			} elseif ($this->tt_track) $GLOBALS['TT']->setTSlogMessage('"'.$this->getFileName_backPath.$file.'" is not a file (non-uploads/.. resource, did not exist).',3);
 		} else {		// Here it is uploaded media:
 			$outFile = $this->extractFromResources($this->setup['resources'],$file);

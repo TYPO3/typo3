@@ -741,7 +741,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
 
 				// Parsing the user TSconfig (or getting from cache)
-			$this->userTS_text = implode($this->TSdataArray,chr(10).'[GLOBAL]'.chr(10));	// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
+			$this->userTS_text = implode(chr(10).'[GLOBAL]'.chr(10),$this->TSdataArray);	// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
 			$hash = md5('userTS:'.$this->userTS_text);
 			$cachedContent = t3lib_BEfunc::getHash($hash,0);
 			if (isset($cachedContent) && !$this->userTS_dontGetCached)	{
@@ -820,7 +820,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 					// Include sub groups
 				if (trim($row['subgroup']))	{
-					$theList = implode(t3lib_div::intExplode(',',$row['subgroup']),',');	// Make integer list
+					$theList = implode(',',t3lib_div::intExplode(',',$row['subgroup']));	// Make integer list
 					$this->fetchGroups($theList, $idList.','.$uid);		// Call recursively, pass along list of already processed groups so they are not recursed again.
 				}
 					// Add the group uid, current list, TSconfig to the internal arrays.

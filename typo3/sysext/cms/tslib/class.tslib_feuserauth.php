@@ -148,7 +148,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 		if (is_array($this->user) && $this->user['usergroup'])	{
 			$groups = t3lib_div::intExplode(',',$this->user['usergroup']);
-			$list = implode($groups,',');
+			$list = implode(',',$groups);
 			$lockToDomain_SQL = ' AND (lockToDomain="" OR lockToDomain="'.t3lib_div::getIndpEnv('HTTP_HOST').'")';
 			if (!$this->showHiddenRecords)	$hiddenP = 'AND NOT hidden ';
 
@@ -190,7 +190,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		if (!$this->userTSUpdated) {
 				// Parsing the user TS (or getting from cache)
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
-			$userTS = implode($this->TSdataArray,chr(10).'[GLOBAL]'.chr(10));
+			$userTS = implode(chr(10).'[GLOBAL]'.chr(10),$this->TSdataArray);
 			$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 			$parseObj->parse($userTS);
 			$this->userTS = $parseObj->setup;

@@ -423,7 +423,7 @@ class tslib_menu {
 							$bA = t3lib_div::intInRange($this->conf['special.']['beginAtLevel'],0,100);
 							$id_list_arr[] = tslib_cObj::getTreeList(-1*$id,$depth-1+$bA,$bA-1);
 						}
-						$id_list = implode($id_list_arr, ',');
+						$id_list = implode(',',$id_list_arr);
 							// Get sortField (mode)
 						switch($mode)	{
 							case 'starttime':
@@ -525,7 +525,7 @@ class tslib_menu {
 									$keyWordsWhereArr[] = $kfield.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($word, 'pages').'%"';
 								}
 							}
-							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode($keyWordsWhereArr,' OR ').')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
+							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode(' OR ',$keyWordsWhereArr).')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								$temp[$row['uid']]=$this->sys_page->getPageOverlay($row);
 							}
@@ -1760,7 +1760,7 @@ class tslib_gmenu extends tslib_menu {
 				$tempXY = explode(',',$val['XY']);
 				if ($Wcounter<$minDim[0])	{$tempXY[0]=$minDim[0]-$Wcounter; $flag=1;}
 				if ($Hcounter<$minDim[1])	{$tempXY[1]=$minDim[1]-$Hcounter; $flag=1;}
-				$val['XY'] = implode($tempXY,',');
+				$val['XY'] = implode(',',$tempXY);
 				if (!$flag){break;}
 			}
 			$c++;
@@ -1778,7 +1778,7 @@ class tslib_gmenu extends tslib_menu {
 					if ($this->mconf['useLargestItemX'])	{$tempXY[0] = max($totalWH['W']);}
 					if ($this->mconf['useLargestItemY'])	{$tempXY[1] = max($totalWH['H']);}
 						// regenerate the new values...
-					$val['XY'] = implode($tempXY,',');
+					$val['XY'] = implode(',',$tempXY);
 					$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 					$gifCreator->init();
 					$gifCreator->start($val,$this->menuArr[$key]);
@@ -1801,7 +1801,7 @@ class tslib_gmenu extends tslib_menu {
 						$tempXY[1] = $totalWH['H'][$key]+$compensate;
 					}
 						// regenerate the new values...
-					$val['XY'] = implode($tempXY,',');
+					$val['XY'] = implode(',',$tempXY);
 					$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 					$gifCreator->init();
 					$gifCreator->start($val,$this->menuArr[$key]);
@@ -1813,7 +1813,7 @@ class tslib_gmenu extends tslib_menu {
 					if ($maxDim[0] && $Wcounter+$gifCreator->XY[0]>=$maxDim[0])	{$tempXY[0]==$maxDim[0]-$Wcounter; $maxFlag=1;}
 					if ($maxDim[1] && $Hcounter+$gifCreator->XY[1]>=$maxDim[1])	{$tempXY[1]=$maxDim[1]-$Hcounter; $maxFlag=1;}
 					if ($maxFlag)	{
-						$val['XY'] = implode($tempXY,',');
+						$val['XY'] = implode(',',$tempXY);
 						$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 						$gifCreator->init();
 						$gifCreator->start($val,$this->menuArr[$key]);
@@ -1829,7 +1829,7 @@ class tslib_gmenu extends tslib_menu {
 					while(list(,$index)=each($Hobjs))	{
 						if ($gifCreator->setup[$index] && $gifCreator->setup[$index.'.'])	{
 							$oldOffset = explode(',',$gifCreator->setup[$index.'.']['offset']);
-							$gifCreator->setup[$index.'.']['offset'] = implode($gifCreator->applyOffset($oldOffset,Array(0,-$Hcounter)), ',');
+							$gifCreator->setup[$index.'.']['offset'] = implode(',',$gifCreator->applyOffset($oldOffset,Array(0,-$Hcounter)));
 						}
 					}
 				}
@@ -1839,7 +1839,7 @@ class tslib_gmenu extends tslib_menu {
 					while(list(,$index)=each($Wobjs))	{
 						if ($gifCreator->setup[$index] && $gifCreator->setup[$index.'.'])	{
 							$oldOffset = explode(',',$gifCreator->setup[$index.'.']['offset']);
-							$gifCreator->setup[$index.'.']['offset'] = implode($gifCreator->applyOffset($oldOffset,Array(-$Wcounter,0)), ',');
+							$gifCreator->setup[$index.'.']['offset'] = implode(',',$gifCreator->applyOffset($oldOffset,Array(-$Wcounter,0)));
 						}
 					}
 				}
@@ -1938,7 +1938,7 @@ class tslib_gmenu extends tslib_menu {
 				$tempXY = explode(',',$val['XY']);
 				if ($Wcounter<$minDim[0])	{$tempXY[0]=$minDim[0]-$Wcounter; $flag=1;}
 				if ($Hcounter<$minDim[1])	{$tempXY[1]=$minDim[1]-$Hcounter; $flag=1;}
-				$val['XY'] = implode($tempXY,',');
+				$val['XY'] = implode(',',$tempXY);
 				if (!$flag){break;}
 			}
 			$c++;
@@ -1951,7 +1951,7 @@ class tslib_gmenu extends tslib_menu {
 				if ($maxDim[0] && $Wcounter+$gifCreator->XY[0]>=$maxDim[0])	{$tempXY[0]==$maxDim[0]-$Wcounter; $maxFlag=1;}
 				if ($maxDim[1] && $Hcounter+$gifCreator->XY[1]>=$maxDim[1])	{$tempXY[1]=$maxDim[1]-$Hcounter; $maxFlag=1;}
 				if ($maxFlag)	{
-					$val['XY'] = implode($tempXY,',');
+					$val['XY'] = implode(',',$tempXY);
 					$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 					$gifCreator->init();
 					$gifCreator->start($val,$this->menuArr[$key]);
@@ -2363,7 +2363,7 @@ class tslib_imgmenu extends tslib_menu {
 					$workArea[2] = $dConf[$key][2] ? $dConf[$key][2] : $dConf[$key][0];
 					$workArea[3] = $dConf[$key][3] ? $dConf[$key][3] : $dConf[$key][1];
 
-					$gifCreator->setup[$index.'.']['set'] = implode($workArea,',');
+					$gifCreator->setup[$index.'.']['set'] = implode(',',$workArea);
 					$workArea[0]+=$dConf[$key][0];
 					$workArea[1]+=$dConf[$key][1];
 				}

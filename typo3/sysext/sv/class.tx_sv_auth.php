@@ -159,7 +159,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 			$groups = array_unique($groups);
 
 			if (count($groups))	{
-				$list = implode($groups,',');
+				$list = implode(',',$groups);
 				
 				if ($this->writeDevLog) 	t3lib_div::devLog('Get usergroups with id: '.$list, 'tx_sv_auth');
 

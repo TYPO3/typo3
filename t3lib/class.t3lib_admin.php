@@ -171,7 +171,7 @@ class t3lib_admin {
 					$lostIdList[]=$row['uid'];
 				}
 				if ($table=='pages')	{
-					$this->lostPagesList=implode($lostIdList,',');
+					$this->lostPagesList=implode(',',$lostIdList);
 				}
 			}
 		}
@@ -451,7 +451,7 @@ class t3lib_admin {
 				while(list($id,)=each($dbArr))	{
 					$idlist[]=$id;
 				}
-				$theList = implode($idlist,',');
+				$theList = implode(',',$idlist);
 				if ($theList)	{
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN ('.$theList.')'.t3lib_BEfunc::deleteClause($table));
 					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{

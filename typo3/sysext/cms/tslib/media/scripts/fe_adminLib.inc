@@ -754,10 +754,10 @@ class user_feAdmin	{
 						break;
 					}
 				}
-				$this->markerArray['###EVAL_ERROR_FIELD_'.$theField.'###'] = is_array($this->failureMsg[$theField]) ? implode($this->failureMsg[$theField],'<br />') : '';
+				$this->markerArray['###EVAL_ERROR_FIELD_'.$theField.'###'] = is_array($this->failureMsg[$theField]) ? implode('<br />',$this->failureMsg[$theField]) : '';
 			}
 		}
-		$this->failure=implode($tempArr,',');	 //$failure will show which fields were not OK
+		$this->failure=implode(',',$tempArr);	 //$failure will show which fields were not OK
 	}
 
 	/**
@@ -834,7 +834,7 @@ class user_feAdmin	{
 				$theUid = $this->dataArr['uid'];
 				$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,$theUid);		// Fetches the original record to check permissions
 				if ($this->conf['edit'] && ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr)))	{	// Must be logged in in order to edit  (OR be validated by email)
-					$newFieldList = implode(array_intersect(explode(',',$this->fieldList),t3lib_div::trimExplode(',',$this->conf['edit.']['fields'],1)),',');
+					$newFieldList = implode(',',array_intersect(explode(',',$this->fieldList),t3lib_div::trimExplode(',',$this->conf['edit.']['fields'],1)));
 					if ($this->aCAuth($origArr) || $this->cObj->DBmayFEUserEdit($this->theTable,$origArr,$GLOBALS['TSFE']->fe_user->user,$this->conf['allowedGroups'],$this->conf['fe_userEditSelf']))	{
 						$this->cObj->DBgetUpdate($this->theTable, $theUid, $this->dataArr, $newFieldList, TRUE);
 						$this->currentArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,$theUid);
@@ -847,7 +847,7 @@ class user_feAdmin	{
 			break;
 			default:
 				if ($this->conf['create'])	{
-					$newFieldList = implode(array_intersect(explode(',',$this->fieldList),t3lib_div::trimExplode(',',$this->conf['create.']['fields'],1)),',');
+					$newFieldList = implode(',',array_intersect(explode(',',$this->fieldList),t3lib_div::trimExplode(',',$this->conf['create.']['fields'],1)));
 					$this->cObj->DBgetInsert($this->theTable, $this->thePid, $this->dataArr, $newFieldList, TRUE);
 					$newId = $GLOBALS['TYPO3_DB']->sql_insert_id();
 
@@ -1124,7 +1124,7 @@ class user_feAdmin	{
 					if ($sFK=='DELETE')	{
 						$this->cObj->DBgetDelete($this->theTable, $theUid, TRUE);
 					} else {
-						$newFieldList = implode(array_intersect(t3lib_div::trimExplode(',',$this->fieldList),t3lib_div::trimExplode(',',implode($fieldArr,','),1)),',');
+						$newFieldList = implode(',',array_intersect(t3lib_div::trimExplode(',',$this->fieldList),t3lib_div::trimExplode(',',implode($fieldArr,','),1)));
 						$this->cObj->DBgetUpdate($this->theTable, $theUid, $fD, $newFieldList, TRUE);
 					}
 

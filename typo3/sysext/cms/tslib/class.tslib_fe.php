@@ -1190,7 +1190,7 @@
 #debug(array($cHash_calc,$this->cHash,$pA));
 			if ($cHash_calc!=$this->cHash)	{
 				$this->set_no_cache();
-				$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(array_keys($pA),',').'"',2);
+				$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(',',array_keys($pA)).'"',2);
 			}
 		}
 	}
@@ -2171,7 +2171,7 @@
 		}
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
-		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', implode($this->additionalHeaderData,chr(10)), $this->content);
+		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', implode(chr(10),$this->additionalHeaderData), $this->content);
 		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->divSection, $this->content);
 		$this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
@@ -2201,7 +2201,7 @@ if (version == "n3") {
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
-'.implode($this->additionalJavaScript,chr(10)).'
+'.implode(chr(10),$this->additionalJavaScript).'
 '.trim($this->JSCode).'
 // -->
 	/*]]>*/
@@ -2212,7 +2212,7 @@ if (version == "n3") {
 <style type="text/css">
 	/*<![CDATA[*/
 <!--
-'.implode($this->additionalCSS,chr(10)).'
+'.implode(chr(10),$this->additionalCSS).'
 // -->
 	/*]]>*/
 </style>';
@@ -2791,7 +2791,7 @@ if (version == "n3") {
 
 			exec ($this->TYPO3_CONF_VARS['FE']['tidy_path'].' '.$fname, $output);			// run the $content through 'tidy', which formats the HTML to nice code.
 			@unlink ($fname);	// Delete the tempfile again
-			$content = implode($output,chr(10));
+			$content = implode(chr(10),$output);
 			if (!trim($content))	{
 				$content = $oldContent;	// Restore old content due empty return value.
 				$GLOBALS['TT']->setTSlogMessage('"tidy" returned an empty value!',2);
@@ -2875,7 +2875,7 @@ if (version == "n3") {
 			}
 				// Parsing the user TS (or getting from cache)
 			$TSdataArray = t3lib_TSparser::checkIncludeLines_array($TSdataArray);
-			$userTS = implode($TSdataArray,chr(10).'[GLOBAL]'.chr(10));
+			$userTS = implode(chr(10).'[GLOBAL]'.chr(10),$TSdataArray);
 			$hash = md5('pageTS:'.$userTS);
 			$cachedContent = $this->sys_page->getHash($hash,0);
 			if (isset($cachedContent))	{

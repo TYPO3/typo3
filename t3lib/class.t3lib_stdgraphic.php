@@ -770,7 +770,7 @@ class t3lib_stdGraphic	{
 
 		$this->map.='<area'.
 				' shape="poly"'.
-				' coords="'.implode($cords,',').'"'.
+				' coords="'.implode(',',$cords).'"'.
 				' href="'.htmlspecialchars($conf['url']).'"'.
 				($conf['target'] ? ' target="'.htmlspecialchars($conf['target']).'"' : '').
 				$JS.
@@ -975,7 +975,7 @@ class t3lib_stdGraphic	{
 		$newOffset = t3lib_div::intExplode(',',$conf['offset']);
 		$newOffset[0]*=-1;
 		$newOffset[1]*=-1;
-		$conf['offset']=implode($newOffset,',');
+		$conf['offset']=implode(',',$newOffset);
 		$conf['color']=$conf['lowColor'];
 		$this->makeShadow($im,$conf,$workArea,$txtConf);
 	}

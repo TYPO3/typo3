@@ -520,7 +520,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				$value[$key]=intval($value[$key]);
 			}
 		}
-		$string = implode($value,',');
+		$string = implode(',',$value);
 		return $string;
 	}
 

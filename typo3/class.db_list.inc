@@ -172,7 +172,7 @@ class recordList extends t3lib_recordList {
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		if ($sL>0)	{
 			$tree = $this->getTreeObject($id,$sL,$this->perms_clause);
-			$this->pidSelect = 'pid IN ('.implode($tree->ids,',').')';
+			$this->pidSelect = 'pid IN ('.implode(',',$tree->ids).')';
 		} else {
 			$this->pidSelect = 'pid='.intval($id);
 		}

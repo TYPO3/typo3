@@ -1,3 +1,7 @@
+2004-08-15  Michael Stucki  <mundaun@gmx.ch>
+
+	* Corrected wrong parameter order for some implode function calls.
+
 2004-08-07  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added three new permission modes for backend users: 1) Localization access control, 2) Access control on value level (for instance allow/deny individual selectorbox values), 3) API for custom permission options.

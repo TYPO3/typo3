@@ -683,7 +683,7 @@ class t3lib_div {
 		while(list($k,$v)=each($items))	{
 			if ($v==$element)	{unset($items[$k]);}
 		}
-		return implode($items,',');
+		return implode(',',$items);
 	}
 
 	/**
@@ -771,7 +771,7 @@ class t3lib_div {
 			}
 			$listArray = array_merge($listArray,$in_list);
 		}
-		return implode(t3lib_div::uniqueArray($listArray),',');
+		return implode(',',t3lib_div::uniqueArray($listArray));
 	}
 
 	/**

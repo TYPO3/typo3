@@ -302,7 +302,7 @@ class t3lib_loadDBGroup	{
 			// Traverses the tables listed:
 		foreach($this->tableArray as $key => $val)	{
 			if (is_array($val))	{
-				$itemList = implode($val,',');
+				$itemList = implode(',',$val);
 				if ($itemList)	{
 					$from = '*';
 					if ($this->fromTC)	{

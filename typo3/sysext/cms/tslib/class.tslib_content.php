@@ -1891,7 +1891,7 @@ class tslib_cObj {
 			// Formname;
 		$formname = $GLOBALS['TSFE']->uniqueHash();
 		if ($conf['REQ'])	{
-			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode($fieldlist,',').'\',\''.rawurlencode($conf['goodMess']).'\',\''.rawurlencode($conf['badMess']).'\',\''.rawurlencode($conf['emailMess']).'\')"';
+			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode(',',$fieldlist).'\',\''.rawurlencode($conf['goodMess']).'\',\''.rawurlencode($conf['badMess']).'\',\''.rawurlencode($conf['emailMess']).'\')"';
 			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.validateform.js"></script>';
 		} else $validateForm='';
 
@@ -2327,9 +2327,9 @@ class tslib_cObj {
 					unset($parArray['src']);
 					$parArray['code'] = 'code="'.htmlspecialchars($fileinfo['file']).'"';
 					$parArray['codebase'] = 'codebase="'.htmlspecialchars($fileinfo['path']).'"';
-					$content='<applet '.implode($parArray,' ').'></applet>';
+					$content='<applet '.implode(' ',$parArray).'></applet>';
 				} else {
-					$content='<embed '.implode($parArray,' ').'></embed>';
+					$content='<embed '.implode(' ',$parArray).'></embed>';
 				}
 			}
 		}
@@ -3275,7 +3275,7 @@ class tslib_cObj {
 					while(list($key,)=each($items['sorting']))	{
 						$list_arr[]=  $fullPath ? $path.'/'.$items['files'][$key] : $items['files'][$key];
 					}
-					return implode($list_arr,',');
+					return implode(',',$list_arr);
 				}
 			}
 		}
@@ -3570,7 +3570,7 @@ class tslib_cObj {
 			$tableTagArray[] = $conf['params'];
 		}
 
-		$tableWrap = implode($tableTagArray,' ').'> | </table>';
+		$tableWrap = implode(' ',$tableTagArray).'> | </table>';
 		$theValue=$this->wrap($theValue, $tableWrap);
 			// return
 		return $theValue;
@@ -5310,7 +5310,7 @@ class tslib_cObj {
 		while(list($k,$v)=each($listArr))	{
 			$listArr[$k]=trim($v);
 		}
-		return implode($listArr,',');
+		return implode(',',$listArr);
 	}
 
 	/**
@@ -5423,7 +5423,7 @@ class tslib_cObj {
 		if ($email_from)	{$headers[]='From: '.$email_fromName.' <'.$email_from.'>';}
 		if ($replyTo)		{$headers[]='Reply-To: '.$replyTo;}
 
-		$recipients=implode(t3lib_div::trimExplode(',',$recipients,1),',');
+		$recipients=implode(',',t3lib_div::trimExplode(',',$recipients,1));
 
 		$emailContent = trim($msg);
 		if ($emailContent)	{
@@ -5431,8 +5431,8 @@ class tslib_cObj {
 			$subject=trim($parts[0]);
 			$plain_message=trim($parts[1]);
 
-			if ($recipients)	$GLOBALS['TSFE']->plainMailEncoded($recipients, $subject, $plain_message, implode($headers,chr(10)));
-			if ($cc)	$GLOBALS['TSFE']->plainMailEncoded($cc, $subject, $plain_message, implode($headers,chr(10)));
+			if ($recipients)	$GLOBALS['TSFE']->plainMailEncoded($recipients, $subject, $plain_message, implode(chr(10),$headers));
+			if ($cc)	$GLOBALS['TSFE']->plainMailEncoded($cc, $subject, $plain_message, implode(chr(10),$headers));
 			return true;
 		}
 	}
@@ -5730,7 +5730,7 @@ class tslib_cObj {
 		$uid=intval($uid);
 
 		if ($uid)	{
-			$fieldList = implode(t3lib_div::trimExplode(',',$fieldList,1),',');
+			$fieldList = implode(',',t3lib_div::trimExplode(',',$fieldList,1));
 			$updateFields=array();
 
 			foreach($dataArr as $f => $v)	{
@@ -5777,7 +5777,7 @@ class tslib_cObj {
 
 		unset($dataArr['uid']);	// uid can never be set
 		if ($pid>=0)	{ $dataArr['pid'] = $pid; }		// Set pid < 0 and the dataarr-pid will be used!
-		$fieldList = implode(t3lib_div::trimExplode(',',$fieldList.','.$extraList,1),',');
+		$fieldList = implode(',',t3lib_div::trimExplode(',',$fieldList.','.$extraList,1));
 
 		$insertFields = array();
 		foreach($dataArr as $f => $v)	{
@@ -5805,7 +5805,7 @@ class tslib_cObj {
 	 * @see user_feAdmin
 	 */
 	function DBmayFEUserEdit($table,$row, $feUserRow, $allowedGroups='',$feEditSelf=0)	{
-		$groupList = $allowedGroups ? implode(array_intersect(t3lib_div::trimExplode(',',$feUserRow['usergroup'],1),t3lib_div::trimExplode(',',$allowedGroups,1)),',') : $feUserRow['usergroup'];
+		$groupList = $allowedGroups ? implode(',',array_intersect(t3lib_div::trimExplode(',',$feUserRow['usergroup'],1),t3lib_div::trimExplode(',',$allowedGroups,1))) : $feUserRow['usergroup'];
 		$ok=0;
 			// points to the field that allows further editing from frontend if not set. If set the record is locked.
 		if (!$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'] || !$row[$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock']])	{
@@ -5846,7 +5846,7 @@ class tslib_cObj {
 	 */
 	function DBmayFEUserEditSelect($table,$feUserRow,$allowedGroups='',$feEditSelf=0)	{
 			// Returns where-definition that selects user-editable records.
-		$groupList = $allowedGroups ? implode(array_intersect(t3lib_div::trimExplode(',',$feUserRow['usergroup'],1),t3lib_div::trimExplode(',',$allowedGroups,1)),',') : $feUserRow['usergroup'];
+		$groupList = $allowedGroups ? implode(',',array_intersect(t3lib_div::trimExplode(',',$feUserRow['usergroup'],1),t3lib_div::trimExplode(',',$allowedGroups,1))) : $feUserRow['usergroup'];
 		$OR_arr=array();
 			// points to the field (integer) that holds the fe_users-id of the creator fe_user
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id'])	{
@@ -5866,7 +5866,7 @@ class tslib_cObj {
 
 		$whereDef=' AND 1=0';
 		if (count($OR_arr))	{
-			$whereDef=' AND ('.implode($OR_arr,' OR ').')';
+			$whereDef=' AND ('.implode(' OR ',$OR_arr).')';
 			if ($GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'])	{
 				$whereDef.=' AND NOT '.$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'];
 			}
@@ -6088,7 +6088,7 @@ class tslib_cObj {
 					}
 				}
 				if (count($where_p))	{
-					$where.=' AND ('.implode($where_p,' OR ').')';
+					$where.=' AND ('.implode(' OR ',$where_p).')';
 				}
 			}
 		}
@@ -6290,7 +6290,7 @@ class tslib_cObj {
 	function checkPidArray($listArr)	{
 		$outArr = Array();
 		if (is_array($listArr) && count($listArr))	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid IN ('.implode($listArr,',').')'.$this->enableFields('pages').' AND doktype NOT IN ('.$this->checkPid_badDoktypeList.')');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid IN ('.implode(',',$listArr).')'.$this->enableFields('pages').' AND doktype NOT IN ('.$this->checkPid_badDoktypeList.')');
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error())	{
 				$GLOBALS['TT']->setTSlogMessage($error.': '.$query,3);
 			} else {

@@ -1917,7 +1917,7 @@ class t3lib_TCEmain	{
 
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->registerNonTableValues=$tcaFieldConf['allowNonIdValues'] ? 1 : 0;
-		$dbAnalysis->start(implode($valueArray,','),$tables);
+		$dbAnalysis->start(implode(',',$valueArray),$tables);
 
 		if ($tcaFieldConf['MM'])	{
 			if ($status=='update')	{
@@ -3770,7 +3770,7 @@ class t3lib_TCEmain	{
 				}
 			}
 		}
-		return implode($tableList,',');
+		return implode(',',$tableList);
 	}
 
 	/**

@@ -197,9 +197,9 @@ class t3lib_install {
 			array_push($inlines,$writeToLocalconf_dat['endLine']);
 
 			if ($this->setLocalconf)	{
-				t3lib_div::writeFile($writeToLocalconf_dat['file'],implode($inlines,chr(10)));
+				t3lib_div::writeFile($writeToLocalconf_dat['file'],implode(chr(10),$inlines));
 
-				if (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['file']), implode($inlines,chr(10))))	{
+				if (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['file']), implode(chr(10),$inlines)))	{
 					die('typo3temp/localconf.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?');
 				}
 
@@ -376,7 +376,7 @@ class t3lib_install {
 			foreach($tempKeys as $table => $keyInf) {
 				foreach($keyInf as $kName => $index) {
 					ksort($index);
-					$total[$table]['keys'][$kName] = $tempKeysPrefix[$table][$kName].' ('.implode($index,',').')';
+					$total[$table]['keys'][$kName] = $tempKeysPrefix[$table][$kName].' ('.implode(',',$index).')';
 				}
 			}
 		}
@@ -517,7 +517,7 @@ class t3lib_install {
 							list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 							$statements['tables_count'][md5($statement)] = $count?'Records in table: '.$count:'';
 						} else {
-							$statement = 'CREATE TABLE '.$table." (\n".implode($whole_table,",\n")."\n) TYPE=MyISAM;";
+							$statement = 'CREATE TABLE '.$table." (\n".implode(",\n",$whole_table)."\n) TYPE=MyISAM;";
 							$statements['create_table'][md5($statement)]=$statement;
 						}
 					}
@@ -552,7 +552,7 @@ class t3lib_install {
 		if ($row['Extra'])	{
 			$field[] = $row['Extra'];
 		}
-		return implode($field,' ');
+		return implode(' ',$field);
 	}
 
 	/**

@@ -892,7 +892,7 @@ class t3lib_treeView {
 			return $parentId;
 		} else {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						implode($this->fieldArray,','),
+						implode(',',$this->fieldArray),
 						$this->table,
 						$this->parentField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($parentId, $this->table).'"'.
 							t3lib_BEfunc::deleteClause($this->table).
