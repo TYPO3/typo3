@@ -588,7 +588,7 @@ class t3lib_softrefproc {
 	function fileadminReferences($content, &$elements)	{
 
 			// Fileadmin files are found
-		$parts = preg_split("/([^[:alnum:]]+)(".$this->fileAdminDir."\/[^[:space:]\"']*)/", ' '.$content.' ',10000, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split("/([^[:alnum:]]+)(".$this->fileAdminDir."\/[^[:space:]\"'<>]*)/", ' '.$content.' ',10000, PREG_SPLIT_DELIM_CAPTURE);
 
 			// Traverse files:
 		foreach($parts as $idx => $value)	{

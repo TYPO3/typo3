@@ -239,6 +239,7 @@ class tx_impexp {
 	var $import_data = array();			// Internal data accumulation for writing records during import
 	var $errorLog = array();			// Error log.
 	var $cache_getRecordPath = array();	// Cache for record paths
+	var $checkPID_cache = array();		// Cache of checkPID values.
 
 	var $compress = 0;					// Set internally if the gzcompress function exists
 	var $dat = array();					// Internal import/export memory
@@ -486,40 +487,42 @@ class tx_impexp {
 	 */
 	function export_addRecord($table,$row,$relationLevel=0)	{
 		if (strcmp($table,'') && is_array($row) && $row['uid']>0 && !$this->excludeMap[$table.':'.$row['uid']])	{
-			if (!isset($this->dat['records'][$table.':'.$row['uid']]))	{
+			if ($this->checkPID($table==='pages' ? $row['uid'] : $row['pid']))	{
+				if (!isset($this->dat['records'][$table.':'.$row['uid']]))	{
 
-					// Prepare header info:
-				$headerInfo = array();
-				$headerInfo['uid'] = $row['uid'];
-				$headerInfo['pid'] = $row['pid'];
-				$headerInfo['title'] = t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$row),40);
-				$headerInfo['size'] = strlen(serialize($row));
-				if ($relationLevel)	{
-					$headerInfo['relationLevel'] = $relationLevel;
-				}
+						// Prepare header info:
+					$headerInfo = array();
+					$headerInfo['uid'] = $row['uid'];
+					$headerInfo['pid'] = $row['pid'];
+					$headerInfo['title'] = t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$row),40);
+					$headerInfo['size'] = strlen(serialize($row));
+					if ($relationLevel)	{
+						$headerInfo['relationLevel'] = $relationLevel;
+					}
 
-					// If record content is not too large in size, set the header content and add the rest:
-				if ($headerInfo['size']<$this->maxRecordSize)	{
+						// If record content is not too large in size, set the header content and add the rest:
+					if ($headerInfo['size']<$this->maxRecordSize)	{
 
-						// Set the header summary:
-					$this->dat['header']['records'][$table][$row['uid']] = $headerInfo;
+							// Set the header summary:
+						$this->dat['header']['records'][$table][$row['uid']] = $headerInfo;
 
-						// Create entry in the PID lookup:
-					$this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']]=1;
+							// Create entry in the PID lookup:
+						$this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']]=1;
 
-						// Data:
-					$this->dat['records'][$table.':'.$row['uid']] = array();
-					$this->dat['records'][$table.':'.$row['uid']]['data'] = $row;
-					$this->dat['records'][$table.':'.$row['uid']]['rels'] = $this->getRelations($table,$row);
+							// Data:
+						$this->dat['records'][$table.':'.$row['uid']] = array();
+						$this->dat['records'][$table.':'.$row['uid']]['data'] = $row;
+						$this->dat['records'][$table.':'.$row['uid']]['rels'] = $this->getRelations($table,$row);
 
-						// Add information about the relations in the record in the header:
-					$this->dat['header']['records'][$table][$row['uid']]['rels'] = $this->flatDBrels($this->dat['records'][$table.':'.$row['uid']]['rels']);
+							// Add information about the relations in the record in the header:
+						$this->dat['header']['records'][$table][$row['uid']]['rels'] = $this->flatDBrels($this->dat['records'][$table.':'.$row['uid']]['rels']);
 
-						// Add information about the softrefs to header:
-					$this->dat['header']['records'][$table][$row['uid']]['softrefs'] = $this->flatSoftRefs($this->dat['records'][$table.':'.$row['uid']]['rels']);
+							// Add information about the softrefs to header:
+						$this->dat['header']['records'][$table][$row['uid']]['softrefs'] = $this->flatSoftRefs($this->dat['records'][$table.':'.$row['uid']]['rels']);
 
-				} else $this->error('Record '.$table.':'.$row['uid'].' was larger than maxRecordSize ('.t3lib_div::formatSize($this->maxRecordSize).')');
-			} else $this->error('Record '.$table.':'.$row['uid'].' already added.');
+					} else $this->error('Record '.$table.':'.$row['uid'].' was larger than maxRecordSize ('.t3lib_div::formatSize($this->maxRecordSize).')');
+				} else $this->error('Record '.$table.':'.$row['uid'].' already added.');
+			} else $this->error('Record '.$table.':'.$row['uid'].' was outside your DB mounts!');
 		}
 	}
 
@@ -1624,8 +1627,23 @@ class tx_impexp {
 				$this->import_newId[$table.':'.$ID] = array('table' => $table, 'uid' => $uid);
 				if ($table=='pages')	$this->import_newId_pids[$uid] = $ID;
 
+					// Set main record data:
 				$this->import_data[$table][$ID] = $record;
 				$this->import_data[$table][$ID]['tx_impexp_origuid'] = $this->import_data[$table][$ID]['uid'];
+
+					// Reset permission data:
+				if ($table==='pages')	{
+						// Have to reset the user/group IDs so pages are owned by importing user. Otherwise strange things may happen for non-admins!
+					unset($this->import_data[$table][$ID]['perms_userid']);
+					unset($this->import_data[$table][$ID]['perms_groupid']);
+
+						// user/group/everybody settings is kept - but these might still conflict with possibilities for writing the content!"
+					#unset($this->import_data[$table][$ID]['perms_user']);
+					#unset($this->import_data[$table][$ID]['perms_group']);
+					#unset($this->import_data[$table][$ID]['perms_everybody']);
+				}
+
+					// PID and UID:
 				unset($this->import_data[$table][$ID]['uid']);
 				if (t3lib_div::testInt($ID))	{	// Updates:
 					unset($this->import_data[$table][$ID]['pid']);
@@ -1639,6 +1657,7 @@ class tx_impexp {
 					}
 				}
 
+					// Setting db/file blank:
 				reset($this->dat['records'][$table.':'.$uid]['rels']);
 				while(list($field,$config) = each($this->dat['records'][$table.':'.$uid]['rels']))	{
 					switch((string)$config['type'])	{
@@ -1650,8 +1669,8 @@ class tx_impexp {
 						break;
 						case 'flex':
 								// Fixed later in setFlexFormRelations()
-								// In the meantime we set NO value for flexforms:
-						#	$this->import_data[$table][$ID][$field] = '';
+								// In the meantime we set NO value for flexforms - this is mainly because file references inside will not be processed properly; In fact references will point to no file or existing files (in which case there will be double-references which is a big problem of course!)
+							$this->import_data[$table][$ID][$field] = '';
 						break;
 					}
 				}
@@ -1802,7 +1821,7 @@ class tx_impexp {
 
 				#debug('FOUND: '.$relDat['table'].':'.$relDat['id'],1);
 				$valArray[] = $relDat['table'].'_'.$this->import_mapId[$relDat['table']][$relDat['id']];
-			} elseif ($this->isTableStatic($relDat['table']) || $this->isExcluded($relDat['table'], $relDat['id'])) {
+			} elseif ($this->isTableStatic($relDat['table']) || $this->isExcluded($relDat['table'], $relDat['id']) || $relDat['id']<0) {	// Checking for less than zero because some select types could contain negative values, eg. fe_groups (-1, -2) and sys_language (-1 = ALL languages). This must be handled on both export and import.
 
 				#debug('STATIC: '.$relDat['table'].':'.$relDat['id'],1);
 				$valArray[] = $relDat['table'].'_'.$relDat['id'];
@@ -2425,7 +2444,6 @@ class tx_impexp {
 	 */
 	function loadFile($filename,$all=0)	{
 		if (@is_file($filename))	{
-
 			$fI = pathinfo($filename);
 			if (strtolower($fI['extension'])=='xml')	{
 					// XML:
@@ -2837,7 +2855,9 @@ class tx_impexp {
 				if ($TCA[$table]['ctrl']['is_static'])	{$pInfo['msg'].="TABLE '".$table."' is a STATIC TABLE! ";}
 				if ($TCA[$table]['ctrl']['rootLevel'])	{$pInfo['msg'].="TABLE '".$table."' will be inserted on ROOT LEVEL! ";}
 
+				$diffInverse = FALSE;
 				if ($this->update)	{
+					$diffInverse = TRUE;	// In case of update-PREVIEW we swap the diff-sources.
 					$recInf = $this->doesRecordExist($table, $uid, $this->showDiff ? '*' : '');
 					$pInfo['updatePath']= $recInf ? htmlspecialchars($this->getRecordPath($recInf['pid'])) : '<b>NEW!</b>';
 
@@ -2862,10 +2882,11 @@ class tx_impexp {
 				if ($this->showDiff)	{
 						// For IMPORTS, get new id:
 					if ($newUid = $this->import_mapId[$table][$uid])	{
+						$diffInverse = FALSE;
 						$recInf = $this->doesRecordExist($table, $newUid, '*');
 					}
 					if (is_array($recInf))	{
-						$pInfo['showDiffContent'] = $this->compareRecords($this->dat['records'][$table.':'.$uid]['data'], $recInf, $table);
+						$pInfo['showDiffContent'] = $this->compareRecords($recInf, $this->dat['records'][$table.':'.$uid]['data'], $table, $diffInverse);
 					}
 				}
 			}
@@ -3313,6 +3334,22 @@ class tx_impexp {
 	}
 
 	/**
+	 * Checking if a PID is in the webmounts of the user
+	 *
+	 * @param	integer		Page ID to check
+	 * @return	boolean		True if OK
+	 */
+	function checkPID($pid)	{
+		global $BE_USER;
+
+		if (!isset($this->checkPID_cache[$pid]))	{
+			$this->checkPID_cache[$pid] = (boolean)$BE_USER->isInWebMount($pid);
+		}
+
+		return $this->checkPID_cache[$pid];
+	}
+
+	/**
 	 * Checks if the position of an updated record is configured to be corrected. This can be disabled globally and changed for elements individually.
 	 *
 	 * @param	string		Table name
@@ -3377,12 +3414,13 @@ class tx_impexp {
 	/**
 	 * Compares two records, the current database record and the one from the import memory. Will return HTML code to show any differences between them!
 	 *
-	 * @param	array		Database record, all fields
-	 * @param	array		Import memorys record for the same table/uid, all fields
+	 * @param	array		Database record, all fields (new values)
+	 * @param	array		Import memorys record for the same table/uid, all fields (old values)
 	 * @param	string		The table name of the record
+	 * @param	boolean		Inverse the diff view (switch red/green, needed for pre-update difference view)
 	 * @return	string		HTML
 	 */
-	function compareRecords($databaseRecord, $importRecord, $table)	{
+	function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff=FALSE)	{
 		global $TCA, $LANG;
 
 			// Initialize:
@@ -3400,13 +3438,14 @@ class tx_impexp {
 
 								// Create diff-result:
 							$output[$fN] = $t3lib_diff_Obj->makeDiffDisplay(
-								t3lib_BEfunc::getProcessedValue($table,$fN,$databaseRecord[$fN],0,1),
-								t3lib_BEfunc::getProcessedValue($table,$fN,$importRecord[$fN],0,1)
+								t3lib_BEfunc::getProcessedValue($table,$fN,!$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN] ,0,1,1),
+								t3lib_BEfunc::getProcessedValue($table,$fN,!$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN] ,0,1,1)
 							);
 						}
 						unset($importRecord[$fN]);
 					} else {
-						$output[$fN] = '<b>Field missing</b> in import file';
+							// This will tell us if the field is not in the import file, but who cares? It is totally ok that the database contains fields that are not in the import, isn't it (extensions could be installed that added these fields!)?
+						#$output[$fN] = '<b>Field missing</b> in import file';
 					}
 				}
 			}
@@ -3435,7 +3474,7 @@ class tx_impexp {
 				$output = 'Match';
 			}
 
-			return '<b class="nobr">['.htmlspecialchars($table.':'.$databaseRecord['uid'].' => '.$importRecord['uid']).']:</b> '.$output;
+			return '<b class="nobr">['.htmlspecialchars($table.':'.$importRecord['uid'].' => '.$databaseRecord['uid']).']:</b> '.$output;
 		}
 
 

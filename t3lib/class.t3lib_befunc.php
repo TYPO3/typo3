@@ -1773,9 +1773,10 @@ class t3lib_BEfunc	{
 	 * @param	string		$value is the value of that field from a selected record
 	 * @param	integer		$fixed_lgd_chars is the max amount of characters the value may occupy
 	 * @param	boolean		$defaultPassthrough flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
+	 * @param	boolean		If set, no records will be looked up, UIDs are just shown.
 	 * @return	string
 	 */
-	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)	{
+	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0,$noRecordLookup=FALSE)	{
 		global $TCA;
 			// Load full TCA for $table
 		t3lib_div::loadTCA($table);
@@ -1792,26 +1793,30 @@ class t3lib_BEfunc	{
 					if ($theColConf['MM'])	{
 						$l='N/A';
 					} else {
-						$l=t3lib_BEfunc::getLabelFromItemlist($table,$col,$value);
-						$l=$GLOBALS['LANG']->sL($l);
+						$l = t3lib_BEfunc::getLabelFromItemlist($table,$col,$value);
+						$l = $GLOBALS['LANG']->sL($l);
 						if ($theColConf['foreign_table'] && !$l && $TCA[$theColConf['foreign_table']])	{
-							$rParts = t3lib_div::trimExplode(',',$value,1);
-							reset($rParts);
-							$lA=array();
-							while(list(,$rVal)=each($rParts))	{
-								$rVal = intval($rVal);
-								if ($rVal>0) {
-									$r=t3lib_BEfunc::getRecord($theColConf['foreign_table'],$rVal);
-								} else {
-									$r=t3lib_BEfunc::getRecord($theColConf['neg_foreign_table'],-$rVal);
+							if ($noRecordLookup)	{
+								$l = $value;
+							} else {
+								$rParts = t3lib_div::trimExplode(',',$value,1);
+								reset($rParts);
+								$lA = array();
+								while(list(,$rVal)=each($rParts))	{
+									$rVal = intval($rVal);
+									if ($rVal>0) {
+										$r=t3lib_BEfunc::getRecord($theColConf['foreign_table'],$rVal);
+									} else {
+										$r=t3lib_BEfunc::getRecord($theColConf['neg_foreign_table'],-$rVal);
+									}
+									if (is_array($r))	{
+										$lA[]=$GLOBALS['LANG']->sL($rVal>0?$theColConf['foreign_table_prefix']:$theColConf['neg_foreign_table_prefix']).t3lib_BEfunc::getRecordTitle($rVal>0?$theColConf['foreign_table']:$theColConf['neg_foreign_table'],$r);
+									} else {
+										$lA[]=$rVal?'['.$rVal.'!]':'';
+									}
 								}
-								if (is_array($r))	{
-									$lA[]=$GLOBALS['LANG']->sL($rVal>0?$theColConf['foreign_table_prefix']:$theColConf['neg_foreign_table_prefix']).t3lib_BEfunc::getRecordTitle($rVal>0?$theColConf['foreign_table']:$theColConf['neg_foreign_table'],$r);
-								} else {
-									$lA[]=$rVal?'['.$rVal.'!]':'';
-								}
+								$l = implode(',',$lA);
 							}
-							$l=implode(',',$lA);
 						}
 					}
 				break;

@@ -36,3 +36,6 @@ Input Charset conversion NOTE:
 	- XML/PHP5: May be converted automatically without we can do anything.
 		- May break encapsulated text files which are not base64 encoded
 		- May break serialized strings
+
+Size limit:
+- The import/export module may die (without warnings!) if the amounts of data becomes too large. For instance a file of 12Mb could not be handled with 32 MB ram configured for PHP. Of course the max_exec_time may also expire during a large import/export.

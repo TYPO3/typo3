@@ -26,7 +26,9 @@
 
 The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
 
-Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page</label>
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</label>
 			<label index="_export.seeAlso">xMOD_tx_impexp:import</label>
 			<label index="_export.image">EXT:impexp/cshimages/export.png, 
 EXT:impexp/cshimages/export1.png, 
@@ -125,6 +127,10 @@ Entering a file name to save to makes it possible to write your export directly 
 			<label index="_fileFormat.image">EXT:impexp/cshimages/fileformat.png</label>
 			<label index="import.alttitle">Importing TYPO3 records</label>
 			<label index="import.description">To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select &quot;More options&quot; (requires the extensions &quot;extra_page_cm_options&quot; to be installed) and then &quot;Import from .t3d&quot;. This will bring up the import interface where you can select a file to import or upload a new one.</label>
+			<label index="import.details">&lt;b&gt;Tip: Import into a Sys Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a SysFolder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a SysFolder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</label>
 			<label index="_import.seeAlso">xMOD_tx_impexp:export</label>
 			<label index="_import.image">EXT:impexp/cshimages/import.png</label>
 			<label index="importFile.alttitle">Select file to import</label>
