@@ -1825,20 +1825,93 @@ class t3lib_stdGraphic	{
 
 	/**
 	 * Gets the input image dimensions.
-	 *
+	 * 
 	 * @param	string		The image filepath
 	 * @return	array		Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
 	 * @see imageMagickConvert(), tslib_cObj::getImgResource()
 	 */
-	function getImageDimensions($imagefile)	{
-		ereg('([^\.]*)$',$imagefile,$reg);
-		if (@file_exists($imagefile) && t3lib_div::inList($this->imageFileExt,strtolower($reg[0])))	{
-			if ($temp = @getImageSize($imagefile))	{
-				return Array($temp[0], $temp[1], strtolower($reg[0]), $imagefile);
+	function getImageDimensions($imageFile)	{
+		ereg('([^\.]*)$',$imageFile,$reg);
+		if (@file_exists($imageFile) && t3lib_div::inList($this->imageFileExt,strtolower($reg[0])))	{
+			if ($returnArr = $this->getCachedImageDimensions($imageFile))	{
+				return $returnArr;
 			} else {
-				return $this->imageMagickIdentify($imagefile);
+				if ($temp = @getImageSize($imageFile))	{
+					$returnArr = Array($temp[0], $temp[1], strtolower($reg[0]), $imageFile);
+				} else {
+					$returnArr = $this->imageMagickIdentify($imageFile);
+				}
+				if($returnArr) {
+					$this->cacheImageDimensions($returnArr);
+					return $returnArr;
+				}
 			}
 		}
+		return false;
+	}
+
+	/**
+	 * Cache the result of the getImageDimensions function into the database. Does not check if the
+	 * file exists!
+	 * 
+	 * @param	array		$identifyResult: Result of the getImageDimensions function
+	 * @return	boolean		True if operation was successful
+	 * @author	Michael Stucki <mundaun@gmx.ch> / Robert Lemke <rl@robertlemke.de>
+	 */
+	function cacheImageDimensions($identifyResult)	{
+		global $TYPO3_DB;
+			// Create a md5 hash of the filename
+		if(function_exists('md5_file')) {
+			$md5Hash = md5_file($identifyResult[3]);
+		} else {
+			$md5Hash = md5 (implode('', file($fileName)));
+		}		
+		if($md5Hash) {
+			$fieldArr = array (
+				'md5hash' => $md5Hash,
+				'md5filename' => md5($identifyResult[3]),
+				'tstamp' => time(),
+				'filename' => $identifyResult[3],
+				'imagewidth' => $identifyResult[0],
+				'imageheight' => $identifyResult[1],
+			);
+			$TYPO3_DB->exec_INSERTquery('cache_imagesizes', $fieldArr);
+			if (!$err = $TYPO3_DB->sql_error())	{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Fetch the cached imageDimensions from the MySQL database. Does not check if the image file exists!
+	 * 
+	 * @param	string		The image filepath
+	 * @return	array		Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
+	 * @author	Michael Stucki <mundaun@gmx.ch> / Robert Lemke <rl@robertlemke.de>
+	 */
+	function getCachedImageDimensions($imageFile)	{
+		global $TYPO3_DB;
+			// Create a md5 hash of the filename
+		if(function_exists('md5_file')) {
+			$md5Hash = md5_file($imageFile);
+		} else {
+			$md5Hash = md5(implode('', file($imag)));
+		}
+		
+		ereg('([^\.]*)$',$imageFile,$reg);
+		$res = $TYPO3_DB->exec_SELECTquery ('md5hash, imagewidth, imageheight', 'cache_imagesizes', 'md5filename="'.md5($imageFile).'"');
+		if ($res) {
+			if ($row = $TYPO3_DB->sql_fetch_assoc($res))	{
+				if ($row['md5hash']!=$md5Hash) {
+						// file has changed, delete the row
+					$TYPO3_DB->exec_DELETEquery ('cache_imagesizes', 'md5hash="'.$TYPO3_DB->quoteStr($row['md5hash']).'"');
+				} else {
+					return (array($row['imagewidth'], $row['imageheight'], strtolower($reg[0]), $imageFile));
+				}
+			}
+		}
+		return false;
 	}
 
 	/**

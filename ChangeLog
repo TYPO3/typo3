@@ -1,3 +1,13 @@
+2004-04-05  Robert Lemke  <rl@robertlemke.de>
+
+	* Modified typo3/sysext/cms/tslib/class.tslib_content.php:
+		* fixed bug: When providing an imgList for the IMGTEXT TLO, no spaces were accepted in the comma separated list. Now using t3lib_div::trimExplode for splitting.
+		* fixed bug: The alt and title parameters have not been set correctly when using IMGTEXT with the imgList property. Now everything works as expected: You may specify alt/title texts for the whole IMGTEXT, or for each imgObj independently
+
+	* Added support for automatically caching image dimensions instead of executing IM identify.  Original extension provided by Michael Stucki.
+		* Affected files: t3lib/class.t3lib_stdgraphic.php, typo3/sysext/cms/ext_tables.sql
+		* Tested by Ingmar, Michael and Robert
+
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Fixed problem with domain look-up when an extra "/" was added to eg. "typo3.com//" -> showing "typo3.org" instead

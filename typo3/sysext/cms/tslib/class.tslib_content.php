@@ -724,7 +724,7 @@ class tslib_cObj {
 		}
 		$imgList=trim($this->stdWrap($conf['imgList'],$conf['imgList.']));	// gets images
 		if ($imgList)	{
-			$imgs = explode(',',$imgList);
+			$imgs = t3lib_div::trimExplode(',',$imgList);
 			$imgStart = intval($this->stdWrap($conf['imgStart'],$conf['imgStart.']));
 	
 			$imgCount= count($imgs)-$imgStart;
@@ -839,8 +839,6 @@ class tslib_cObj {
 			$splitArr['imgObjNum']=$conf['imgObjNum'];
 			$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$imgCount);
 
-			$altP = $this->getAltParam($conf);
-			
 				// EqualHeight
 			$equalHeight = intval($this->stdWrap($conf['equalH'],$conf['equalH.']));
 			if ($equalHeight)	{	// Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
@@ -905,7 +903,6 @@ class tslib_cObj {
 				}
 				
 				if ($imgConf || $imgConf['file']) {
-					$imgConf['params'].=$altP;
 					if ($this->image_effects[$image_effects])	{
 						$imgConf['file.']['params'].= ' '.$this->image_effects[$image_effects];
 					}
@@ -927,9 +924,11 @@ class tslib_cObj {
 							unset($imgConf['file.']['ext.']);
 						}
 					}
+					if (!isset ($imgConf['altText'])) $imgConf['altText'] = $conf['altText'];
+					if (!isset ($imgConf['titleText'])) $imgConf['titleText'] = $conf['titleText'];
 					$imgsTag[$imgKey] = $this->IMAGE($imgConf);
 				} else {
-					$imgsTag[$imgKey] = $this->IMAGE(Array('params'=>$altP, 'file'=>$totalImagePath)); 	// currentValKey !!!
+					$imgsTag[$imgKey] = $this->IMAGE(Array('altText'=>$conf['altText'], 'titleText'=>$conf['titleText'], 'file'=>$totalImagePath)); 	// currentValKey !!!
 				}
 					// Store the original filepath
 				$origImages[$imgKey]=$GLOBALS['TSFE']->lastImageInfo;
@@ -2498,7 +2497,7 @@ class tslib_cObj {
 	 * @see IMGTEXT(), cImage()
 	 */
 	function getAltParam($conf)	{
-		$altText = $this->stdWrap($conf['altText'],$conf['altText.']);
+		$altText = $this->stdWrap($conf['altText'], $conf['altText.']);
 		$altParam = ' alt="'.htmlspecialchars(strip_tags($altText)).'"';
 
 		$titleText = $this->stdWrap($conf['titleText'],$conf['titleText.']);
