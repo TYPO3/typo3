@@ -1,17 +1,68 @@
+2004-11-15  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Merged all changes from "TYPO3_3-7" branch
+	* Changed to version 3.8.0-dev
+
+2004-10-25  Jan-Erik Revsbech <jer@moccompany.com>
+	*Fixed problem in htmlmail when running ith safe mode enabled.
+	
+2004-09-24  Michael Stucki  <mundaun@gmx.ch>
+
+ * Release of TYPO3 3.7.0
+ * Increased version number to 3.7.0
+
+2004-09-24  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+ * Updated backend localizations for 3.7.0 Release
+ * Tagging the release with "TYPO3_3-7-0"
+
+2004-09-19  Michael Stucki  <mundaun@gmx.ch>
+
+ * Release of TYPO3 3.7.0RC2
+
+2004-09-19  Ingmar Schlecht  <ingmars@web.de>
+
+ * Added option to set the PHP memory_limit with the install tool.
+ * Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
+ * Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
+ * Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>
+ * Increasing version number to 3.7.0RC2
+
+2004-09-19  Michael Stucki  <mundaun@gmx.ch>
+
+ * A new warning message is displayed if the install tool password is still the default: "joh316"
+ * Replaced all (comments AND code!) occurences of "writeable" with "writable"
+ * Fixed bug #0000171: Displaying wrong filepermissions in filelist module
+ * Fixed bug #0000261: fileDenyPattern default does not include ".php4"
+ * Fixed bug #0000298: Browser client Konqueror not recognized
+ * Fixed bug #0000362: Changed field length of sys_log[IP] to 39 (IPv6 related, patch by Sven Wilhelm)
+
+2004-09-17  Ingmar Schlecht  <ingmars@web.de>
+
+ * Fixed bug #0000181: Added the word "JavaScript" to the note on the BE login page. It's now: "(Note: Cookies and JavaScript must be enabled!)"
+
+2004-09-15  Ingmar Schlecht  <ingmars@web.de>
+
+ * Fixed bug #0000353: In typo3/wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.
+
 2004-09-14  Michael Stucki  <mundaun@gmx.ch>
 
-	* Fixed bug #0000159: Logging did not work with absolute logfile_dir specified. However this will still work only if the specified path is within either PATH_site or lockRootPath.
-	* The BE login screen now shows the sitename by default
-	* Fixed a typo in config_default.php
-	* Changed description for lockRootPath
+ * Release of TYPO3 3.7.0RC1
+
+2004-09-14  Michael Stucki  <mundaun@gmx.ch>
+
+ * Fixed bug #0000159: Logging did not work with absolute logfile_dir specified. However this will still work only if the specified path is within either PATH_site or lockRootPath.
+ * The BE login screen now shows the sitename by default
+ * Fixed a typo in config_default.php
+ * Changed description for lockRootPath
 
 2004-09-14  Ingmar Schlecht  <ingmars@web.de>
 
-	* Fixed bug #0000111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
+ * Fixed bug #0000111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
 
 2004-09-14  Kasper Skårhøj,,,  <kasper@typo3.com>
 
-	* Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...
+ * Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...
 	* Updated all JavaDoc comments and function/class indexes in files, preparing for 3.7.0RC
 
 2004-09-13  Kasper Skårhøj,,,  <kasper@typo3.com>

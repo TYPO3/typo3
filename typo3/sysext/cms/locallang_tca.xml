@@ -228,11 +228,12 @@
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="mod_tx_cms_webinfo_page">Oversikt over sidetre</label>
+			<label index="mod_tx_cms_webinfo_lang">Oversikt over lokalisering</label>
 			<label index="pages.doktype.I.0">Avansert</label>
 			<label index="pages.doktype.I.2">Snarvei</label>
 			<label index="pages.doktype.I.3">Ikke I Meny</label>
-			<label index="pages.doktype.I.4">Oppdateringsbruker seksjon</label>
-			<label index="pages.doktype.I.5">'Mount' side</label>
+			<label index="pages.doktype.I.4">Oppdateringsbruker-seksjon</label>
+			<label index="pages.doktype.I.5">'Mount'-side</label>
 			<label index="pages.doktype.I.7">Mellomrom</label>
 			<label index="pages.hidden">Skjul side:</label>
 			<label index="pages.layout.I.1">Layout 1</label>
@@ -247,7 +248,7 @@
 			<label index="pages.url">URL:</label>
 			<label index="pages.lastUpdated">Sist oppdatert:</label>
 			<label index="pages.newUntil">'Ny' inntil:</label>
-			<label index="pages.cache_timeout">Cachen utløper:</label>
+			<label index="pages.cache_timeout">Cache utløper:</label>
 			<label index="pages.cache_timeout.I.1">1 min</label>
 			<label index="pages.cache_timeout.I.2">5 min</label>
 			<label index="pages.cache_timeout.I.3">15 min</label>
@@ -265,32 +266,33 @@
 			<label index="pages.shortcut_mode.I.2">Tilfeldig underside</label>
 			<label index="pages.content_from_pid">Vis innhold fra denne siden istedenfor:</label>
 			<label index="pages.mount_pid">Mount Point (avansert):</label>
-			<label index="pages.mount_pid_ol">Erstatt Mount Point (denne side) med den monterte side:</label>
+			<label index="pages.mount_pid_ol">Erstatt Mount Point (denne side) med den monterte siden:</label>
 			<label index="pages.abstract">Sammendrag:</label>
 			<label index="pages.media">Filer:</label>
-			<label index="pages.is_siteroot">Siden er webområdets rot:</label>
+			<label index="pages.is_siteroot">Siden er webstedets rot:</label>
 			<label index="pages.module">Inneholder plugin:</label>
 			<label index="pages.module.I.1">Webshop</label>
 			<label index="pages.module.I.2">Forum</label>
 			<label index="pages.module.I.3">Nyheter</label>
-			<label index="pages.module.I.4">Webområde brukere</label>
-			<label index="pages.module.I.5">Direct Mail</label>
+			<label index="pages.module.I.4">Websted-brukere</label>
+			<label index="pages.module.I.5">Masseutsendelse (DM)</label>
 			<label index="pages.module.I.6">Godkjenninger</label>
+			<label index="pages.l18n_cfg">Språklig oppsett</label>
 			<label index="pages.l18n_cfg.I.1">Skjul standard oversettelse av side</label>
 			<label index="pages.l18n_cfg.I.2">Skjul side dersom det ikke finnes en oversettelse til gjeldende språk</label>
 			<label index="tt_content">Sideinnhold</label>
-			<label index="fe_users">Webside bruker</label>
+			<label index="fe_users">Websted-bruker</label>
 			<label index="fe_users.username">Brukernavn:</label>
 			<label index="fe_users.password">Passord:</label>
 			<label index="fe_users.usergroup">Grupper:</label>
 			<label index="fe_users.lockToDomain">Lås til domene:</label>
-			<label index="fe_groups">Webside brukergruppe</label>
+			<label index="fe_groups">Websted-brukergruppe</label>
 			<label index="fe_groups.title">Gruppetittel:</label>
 			<label index="fe_groups.lockToDomain">Lås til domene:</label>
 			<label index="sys_domain">Domene</label>
 			<label index="sys_domain.domainName">Domene:</label>
-			<label index="sys_domain.redirectTo">Henvisning til:</label>
-			<label index="sys_domain.prepend_params">Overfør parametrene til Redirect URL:</label>
+			<label index="sys_domain.redirectTo">Videresend til:</label>
+			<label index="sys_domain.prepend_params">Overfør parametre til Viderendings-URL:</label>
 			<label index="pages_language_overlay">Alternativt sidespråk</label>
 			<label index="sys_template">Mal</label>
 			<label index="static_template">Faste maler</label>
@@ -948,6 +950,7 @@
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="mod_tx_cms_webinfo_page">Sidöversikt</label>
+			<label index="mod_tx_cms_webinfo_lang">Lokaliseringsöversikt</label>
 			<label index="pages.doktype.I.0">Avancerad</label>
 			<label index="pages.doktype.I.2">Genväg</label>
 			<label index="pages.doktype.I.3">Ej i meny</label>
@@ -996,6 +999,9 @@
 			<label index="pages.module.I.4">Website-användare</label>
 			<label index="pages.module.I.5">Direktpostning</label>
 			<label index="pages.module.I.6">Godkännanden</label>
+			<label index="pages.l18n_cfg">Lokalisationsinställningar:</label>
+			<label index="pages.l18n_cfg.I.1">Göm sidans standardöversättning</label>
+			<label index="pages.l18n_cfg.I.2">Göm sidan om ingen översättning till nuvarande språk finns att tillgå</label>
 			<label index="tt_content">Sidinnehåll</label>
 			<label index="fe_users">Website-användare</label>
 			<label index="fe_users.username">Användarnamn:</label>
@@ -1010,9 +1016,9 @@
 			<label index="sys_domain.redirectTo">Vidare till:</label>
 			<label index="sys_domain.prepend_params">Flytta parametrarna till Redirect URL-adressen:</label>
 			<label index="pages_language_overlay">Sidans alternativa språk</label>
-			<label index="sys_language">Websitens språk</label>
 			<label index="sys_template">Modell</label>
 			<label index="static_template">Statisk modell</label>
+			<label index="sys_language">Websitens språk</label>
 			<label index="sys_language.isocode">Välj officiellt språk (ISO kod):</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
@@ -1132,8 +1138,8 @@
 			<label index="pages.module.I.5">Рассылка</label>
 			<label index="pages.module.I.6">Рейтинг</label>
 			<label index="pages.l18n_cfg">Настройка локализации</label>
-			<label index="pages.l18n_cfg.I.1">Спрятать стандартный перевод страницы</label>
-			<label index="pages.l18n_cfg.I.2">Спрятать страницу, если нет перевода данного языкового файла</label>
+			<label index="pages.l18n_cfg.I.1">Спрятать стандартный язык страницы</label>
+			<label index="pages.l18n_cfg.I.2">Спрятать страницу, если нет перевода данного языка</label>
 			<label index="tt_content">Содержимое страницы</label>
 			<label index="fe_users">Пользователь сайта</label>
 			<label index="fe_users.username">Пользователь:</label>
@@ -1897,6 +1903,7 @@
 		</languageKey>
 		<languageKey index="br" type="array">
 			<label index="mod_tx_cms_webinfo_page">Visualização da Árvore</label>
+			<label index="mod_tx_cms_webinfo_lang">Visão-geral da Localização</label>
 			<label index="pages.doktype.I.0">Avançado</label>
 			<label index="pages.doktype.I.2">Atalho</label>
 			<label index="pages.doktype.I.3">Não no menu</label>
@@ -1945,6 +1952,9 @@
 			<label index="pages.module.I.4">Usuários do Site</label>
 			<label index="pages.module.I.5">DirectMail</label>
 			<label index="pages.module.I.6">Aprovações</label>
+			<label index="pages.l18n_cfg">Configurações da localização:</label>
+			<label index="pages.l18n_cfg.I.1">Ocultar tradução padrão da página</label>
+			<label index="pages.l18n_cfg.I.2">Ocultar página se não houver tradução para a página atual</label>
 			<label index="tt_content">Conteúdo</label>
 			<label index="fe_users">Usuário do Site</label>
 			<label index="fe_users.username">Nome de usuário:</label>
@@ -1959,9 +1969,9 @@
 			<label index="sys_domain.redirectTo">Redirecionar para:</label>
 			<label index="sys_domain.prepend_params">Transferir parâmetros para URL de Redirecionamento:</label>
 			<label index="pages_language_overlay">Página de Idioma Alternativo</label>
-			<label index="sys_language">Idioma do Site</label>
 			<label index="sys_template">Modelo</label>
 			<label index="static_template">Modelos estáticos</label>
+			<label index="sys_language">Idioma do Site</label>
 			<label index="sys_language.isocode">Selecionar Idioma Oficial (código ISO):</label>
 		</languageKey>
 		<languageKey index="et" type="array">
@@ -2101,6 +2111,7 @@
 		</languageKey>
 		<languageKey index="he" type="array">
 			<label index="mod_tx_cms_webinfo_page">תצוגת דפים בצורת אץ</label>
+			<label index="mod_tx_cms_webinfo_lang">סקירה כללית של לוקליזציה</label>
 			<label index="pages.doktype.I.0">דף מתקדם</label>
 			<label index="pages.doktype.I.2">קיצור דרך</label>
 			<label index="pages.doktype.I.3">לא בתפריט</label>
@@ -2149,6 +2160,9 @@
 			<label index="pages.module.I.4">משתמשי האתר</label>
 			<label index="pages.module.I.5">דוור ישיר</label>
 			<label index="pages.module.I.6">אישורים</label>
+			<label index="pages.l18n_cfg">הגדרות לוקליזציה:</label>
+			<label index="pages.l18n_cfg.I.1">הסתר תרגום דף בשפת ברירת מחדל</label>
+			<label index="pages.l18n_cfg.I.2">הסתר דף אם תרגום בשפה הנוכחית אינו קיים</label>
 			<label index="tt_content">תוכן דף</label>
 			<label index="fe_users">משתמש האתר</label>
 			<label index="fe_users.username">שם משתמש:</label>
@@ -2163,9 +2177,9 @@
 			<label index="sys_domain.redirectTo">הפניה ל-:</label>
 			<label index="sys_domain.prepend_params">העברת פרמטרים ל-URL הפנייה</label>
 			<label index="pages_language_overlay">שפה נוספת של דף</label>
-			<label index="sys_language">שפה של האתר</label>
 			<label index="sys_template">תבנית</label>
 			<label index="static_template">תבניות סטטיות</label>
+			<label index="sys_language">שפה של האתר</label>
 			<label index="sys_language.isocode">נא לבחור שפה רשמית (ISO code)</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
@@ -2310,6 +2324,77 @@
 		<languageKey index="jp" type="array">
 		</languageKey>
 		<languageKey index="vn" type="array">
+		</languageKey>
+		<languageKey index="ba" type="array">
+			<label index="mod_tx_cms_webinfo_page">Pregled stabla stranica</label>
+			<label index="mod_tx_cms_webinfo_lang">Pregled lokalizacije</label>
+			<label index="pages.doktype.I.0">Napredno</label>
+			<label index="pages.doktype.I.2">Napredno</label>
+			<label index="pages.doktype.I.3">Nije u izborniku</label>
+			<label index="pages.doktype.I.4">Sekcija za backend korisnike</label>
+			<label index="pages.doktype.I.5">Postavi stranicu</label>
+			<label index="pages.doktype.I.7">Razmak</label>
+			<label index="pages.hidden">Sakrij stranicu</label>
+			<label index="pages.layout.I.1">Izgled 1</label>
+			<label index="pages.layout.I.2">Izgled 2</label>
+			<label index="pages.layout.I.3">Izgled 3</label>
+			<label index="pages.extendToSubpages">Uključujući podstranice:</label>
+			<label index="pages.nav_title">Navigacijski naziv:</label>
+			<label index="pages.nav_hide">Sakrij u izborniku</label>
+			<label index="pages.subtitle">Podnaslov:</label>
+			<label index="pages.target">Odredište:</label>
+			<label index="pages.alias">Alias:</label>
+			<label index="pages.url">URL</label>
+			<label index="pages.lastUpdated">Posljednja promjena:</label>
+			<label index="pages.newUntil">Novo do:</label>
+			<label index="pages.cache_timeout">Međuspremik &quot;cache&quot; ističe:</label>
+			<label index="pages.cache_timeout.I.1">1 min</label>
+			<label index="pages.cache_timeout.I.2">5 min</label>
+			<label index="pages.cache_timeout.I.3">15 min</label>
+			<label index="pages.cache_timeout.I.4">30 min</label>
+			<label index="pages.cache_timeout.I.5">1 sat</label>
+			<label index="pages.cache_timeout.I.6">4 sata</label>
+			<label index="pages.cache_timeout.I.7">1 dan</label>
+			<label index="pages.cache_timeout.I.8">2 dana</label>
+			<label index="pages.cache_timeout.I.9">7 dana</label>
+			<label index="pages.cache_timeout.I.10">1 mj</label>
+			<label index="pages.no_cache">Bez međuspremika:</label>
+			<label index="pages.no_search">Bez pretraživanja:</label>
+			<label index="pages.shortcut_mode">Mod kratice:</label>
+			<label index="pages.shortcut_mode.I.1">Prva podstranica</label>
+			<label index="pages.shortcut_mode.I.2">Slučajna podstranica</label>
+			<label index="pages.content_from_pid">Prikaži sadržaj ove stranice umjesto:</label>
+			<label index="pages.mount_pid">Postavi stranicu (napredno)</label>
+			<label index="pages.mount_pid_ol">Zamijeni postavljenu stranicu (ovu) sa drugom postavljenom stranicom:</label>
+			<label index="pages.abstract">Sažetak:</label>
+			<label index="pages.media">Datoteke:</label>
+			<label index="pages.is_siteroot">Je &quot;root&quot; web mjesta:</label>
+			<label index="pages.module">Je &quot;root&quot; web mjesta:</label>
+			<label index="pages.module.I.1">Prodavnica</label>
+			<label index="pages.module.I.2">Forum</label>
+			<label index="pages.module.I.3">Novosti</label>
+			<label index="pages.module.I.4">Korisnici web stranice</label>
+			<label index="pages.module.I.5">Direktna pošta</label>
+			<label index="pages.module.I.6">Dopuštenje</label>
+			<label index="pages.l18n_cfg">Postavke lokalizacije:</label>
+			<label index="pages.l18n_cfg.I.1">Sakri početni prevod stranice:</label>
+			<label index="pages.l18n_cfg.I.2">Sakri stranicu ako ne postoji prevod za trenutno aktivni jezik</label>
+			<label index="tt_content">Sadržaj stranice</label>
+			<label index="fe_users">Korisnik web stranice</label>
+			<label index="fe_users.username">Korisničko ime:</label>
+			<label index="fe_users.password">Lozinka:</label>
+			<label index="fe_users.usergroup">Grupe:</label>
+			<label index="fe_users.lockToDomain">Zaključaj na domenu:</label>
+			<label index="fe_groups">Korisnička grupa web stranice</label>
+			<label index="fe_groups.title">Naziv grupe:</label>
+			<label index="fe_groups.lockToDomain">Zaključaj na domenu:</label>
+			<label index="sys_domain">Domena</label>
+			<label index="sys_domain.domainName">Domena:</label>
+			<label index="sys_domain.redirectTo">Preusmjeri na:</label>
+			<label index="sys_domain.prepend_params">Prenesi parametre na preusmjereni URL:</label>
+			<label index="pages_language_overlay">Alternativni jezik stranice</label>
+			<label index="sys_template">Predložak</label>
+			<label index="static_template">Statični predlošci</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
@@ -2530,6 +2615,8 @@
 			<label index="sys_language.isocode" type="integer">49440593</label>
 			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -3248,6 +3335,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -4197,6 +4288,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -4401,6 +4496,10 @@
 			<label index="sys_template" type="integer">41469073</label>
 			<label index="static_template" type="integer">141130377</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
@@ -4544,6 +4643,77 @@
 		<languageKey index="jp" type="array">
 		</languageKey>
 		<languageKey index="vn" type="array">
+		</languageKey>
+		<languageKey index="ba" type="array">
+			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
+			<label index="mod_tx_cms_webinfo_lang" type="integer">255687278</label>
+			<label index="pages.doktype.I.0" type="integer">162944094</label>
+			<label index="pages.doktype.I.2" type="integer">123085069</label>
+			<label index="pages.doktype.I.3" type="integer">172261511</label>
+			<label index="pages.doktype.I.4" type="integer">213052016</label>
+			<label index="pages.doktype.I.5" type="integer">167908391</label>
+			<label index="pages.doktype.I.7" type="integer">111909417</label>
+			<label index="pages.hidden" type="integer">65518437</label>
+			<label index="pages.layout.I.1" type="integer">186159068</label>
+			<label index="pages.layout.I.2" type="integer">144093188</label>
+			<label index="pages.layout.I.3" type="integer">85298801</label>
+			<label index="pages.extendToSubpages" type="integer">113222983</label>
+			<label index="pages.nav_title" type="integer">213163145</label>
+			<label index="pages.nav_hide" type="integer">163349812</label>
+			<label index="pages.subtitle" type="integer">252742192</label>
+			<label index="pages.target" type="integer">253363033</label>
+			<label index="pages.alias" type="integer">169830525</label>
+			<label index="pages.url" type="integer">62115936</label>
+			<label index="pages.lastUpdated" type="integer">68543275</label>
+			<label index="pages.newUntil" type="double">15740872</label>
+			<label index="pages.cache_timeout" type="integer">250768080</label>
+			<label index="pages.cache_timeout.I.1" type="integer">17751255</label>
+			<label index="pages.cache_timeout.I.2" type="integer">226471786</label>
+			<label index="pages.cache_timeout.I.3" type="integer">25025547</label>
+			<label index="pages.cache_timeout.I.4" type="integer">63694871</label>
+			<label index="pages.cache_timeout.I.5" type="integer">120240592</label>
+			<label index="pages.cache_timeout.I.6" type="integer">182216352</label>
+			<label index="pages.cache_timeout.I.7" type="integer">238766109</label>
+			<label index="pages.cache_timeout.I.8" type="double">3514198</label>
+			<label index="pages.cache_timeout.I.9" type="integer">213446991</label>
+			<label index="pages.cache_timeout.I.10" type="integer">23285350</label>
+			<label index="pages.no_cache" type="integer">221004140</label>
+			<label index="pages.no_search" type="double">8650986</label>
+			<label index="pages.shortcut_mode" type="integer">49005128</label>
+			<label index="pages.shortcut_mode.I.1" type="integer">115282268</label>
+			<label index="pages.shortcut_mode.I.2" type="integer">93918891</label>
+			<label index="pages.content_from_pid" type="integer">151843742</label>
+			<label index="pages.mount_pid" type="integer">258972787</label>
+			<label index="pages.mount_pid_ol" type="integer">72364821</label>
+			<label index="pages.abstract" type="integer">268186811</label>
+			<label index="pages.media" type="integer">147226768</label>
+			<label index="pages.is_siteroot" type="integer">250187229</label>
+			<label index="pages.module" type="integer">136180287</label>
+			<label index="pages.module.I.1" type="integer">167257368</label>
+			<label index="pages.module.I.2" type="integer">100887818</label>
+			<label index="pages.module.I.3" type="integer">231848472</label>
+			<label index="pages.module.I.4" type="integer">164445273</label>
+			<label index="pages.module.I.5" type="integer">141759446</label>
+			<label index="pages.module.I.6" type="integer">19589821</label>
+			<label index="pages.l18n_cfg" type="double">4046046</label>
+			<label index="pages.l18n_cfg.I.1" type="integer">248921960</label>
+			<label index="pages.l18n_cfg.I.2" type="integer">219008572</label>
+			<label index="tt_content" type="integer">102203127</label>
+			<label index="fe_users" type="integer">178974165</label>
+			<label index="fe_users.username" type="integer">212632006</label>
+			<label index="fe_users.password" type="integer">187963993</label>
+			<label index="fe_users.usergroup" type="integer">142097351</label>
+			<label index="fe_users.lockToDomain" type="integer">230344003</label>
+			<label index="fe_groups" type="integer">102868901</label>
+			<label index="fe_groups.title" type="integer">76352857</label>
+			<label index="fe_groups.lockToDomain" type="integer">230344003</label>
+			<label index="sys_domain" type="integer">246309786</label>
+			<label index="sys_domain.domainName" type="integer">198572531</label>
+			<label index="sys_domain.redirectTo" type="integer">31400985</label>
+			<label index="sys_domain.prepend_params" type="integer">103981266</label>
+			<label index="pages_language_overlay" type="integer">56559649</label>
+			<label index="sys_template" type="integer">41469073</label>
+			<label index="static_template" type="integer">141130377</label>
 		</languageKey>
 	</orig_hash>
 </T3locallang>

@@ -608,7 +608,7 @@ $GLOBALS['TSFE']->content.='
 		$GLOBALS['TSFE']->content.='
 	<title>'.htmlspecialchars($titleTagContent).'</title>';
 		$GLOBALS['TSFE']->content.='
-	<meta name="generator" content="TYPO3 3.6 CMS" />';
+	<meta name="generator" content="TYPO3 3.8 CMS" />';
 
 		$conf=$GLOBALS['TSFE']->pSetup['meta.'];
 		if (is_array($conf))	{

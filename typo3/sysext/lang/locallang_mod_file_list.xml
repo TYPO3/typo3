@@ -602,8 +602,8 @@
 			<label index="c_tstamp">תאריך</label>
 			<label index="c_rw">RW</label>
 			<label index="files">קבצים</label>
-			<label index="mlang_labels_tablabel">רשימת הקבצים בתיקייה זו</label>
-			<label index="mlang_labels_tabdescr">זוהי מערכת ניהול קבצים ב-TYPO3. היא מאפרת לך גישה לרכיבי קבצים של כניסתך למערכת. דרך מודול זה הנך יכול להעלות, להעתיק, להזיז ולמחוק קבצים על השרת.</label>
+			<label index="mlang_labels_tablabel">רשימת קבצים</label>
+			<label index="mlang_labels_tabdescr">זוהי מערכת ניהול קבצים ב-TYPO3. היא מאפשרת גישה למוצבי קבצים שלך. דרך מודול זה הנך יכול להעלות, להעתיק, להזיז ולמחוק קבצים על השרת.</label>
 			<label index="mlang_tabs_tab">רשימת קבצים</label>
 		</languageKey>
 		<languageKey index="ua" type="array">

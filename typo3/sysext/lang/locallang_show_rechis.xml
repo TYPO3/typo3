@@ -140,7 +140,7 @@
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="title">Afficher l'historique de l'enregistrement</label>
-			<label index="tableUid">Table/uid</label>
+			<label index="tableUid">Table/Uid</label>
 			<label index="time">Date et heure</label>
 			<label index="user">Utilisateur</label>
 			<label index="changeCount">Changements depuis la date et l'heure</label>
@@ -153,14 +153,14 @@
 			<label index="sumUpChanges">Accumulation des changements depuis ce point</label>
 			<label index="historyList">Afficher l'historique</label>
 			<label index="users">Utilisateurs</label>
-			<label index="similar">Cet état est similaire à la valeur courante!</label>
+			<label index="similar">Cet état est similaire à la valeur actuelle!</label>
 			<label index="prev">Etat précédent</label>
 			<label index="next">Prochain état</label>
 			<label index="saveState">Protéger cet état de la suppression</label>
 			<label index="fieldName">Nom du champ</label>
 			<label index="oldValue">Ancienne valeur</label>
 			<label index="newValue">Nouvelle valeur</label>
-			<label index="currentValue">Valeur courante</label>
+			<label index="currentValue">Valeur actuelle</label>
 			<label index="differenceMsg">Dans les différentes colonnes &lt;span class=&quot;diff-g&quot;&gt;les textes en vert&lt;/span&gt; représente les nouveau changement et les &lt;span class=&quot;diff-r&quot;&gt;textes en rouge&lt;/span&gt; les anciennes valeurs supprimées</label>
 			<label index="difference">Différence</label>
 		</languageKey>
@@ -795,7 +795,7 @@
 			<label index="oldValue">ערך ישן</label>
 			<label index="newValue">ערך חדש</label>
 			<label index="currentValue">ערך נוכחי</label>
-			<label index="differenceMsg">בעמודת ההבדלים  &lt;font color=green&gt;הטקסט בירוק&lt;/font&gt; הוא שינויים חדשים &lt;font color=red&gt;והטקסט באדום&lt;/font&gt; הוא ערכים ישנים שהוסרו.</label>
+			<label index="differenceMsg">בעמודת ההבדלים  &lt;span class=&quot;diff-g&quot;&gt;הטקסט בירוק&lt;/span&gt; הוא שינויים חדשים &lt;span class=&quot;diff-r&quot;&gt;והטקסט באדום&lt;/span&gt; הוא ערכים ישנים שהוסרו.</label>
 			<label index="difference">הבדלים</label>
 		</languageKey>
 		<languageKey index="ua" type="array">

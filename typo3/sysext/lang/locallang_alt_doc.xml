@@ -92,8 +92,8 @@
 			<label index="openDocs">DOCUMENTS OUVERTS</label>
 			<label index="noDocuments">Aucun document ouvert</label>
 			<label index="noDocuments_msg">Il n'y a aucun document ouvert disponible pour édition.</label>
-			<label index="noDocuments_msg2">Vous pouvez aller à %s pour trouver l'enregistrement que vous souhaitez éditer.</label>
-			<label index="noDocuments_msg3">Vous pouvez sélectionner dans cette liste vos documents les plus récemment édités:</label>
+			<label index="noDocuments_msg2">Vous pouvez aller à %s pour trouver la page ou l'enregistrement que vous souhaitez éditer.</label>
+			<label index="noDocuments_msg3">Vous pouvez choisir un de vos derniers enregistrements édités depuis cette liste:</label>
 			<label index="noDocuments_pagemodule">le module Web&gt;Page</label>
 			<label index="noDocuments_OR">ou</label>
 			<label index="noDocuments_listmodule">le module Web&gt;Liste</label>

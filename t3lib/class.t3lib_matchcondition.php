@@ -418,6 +418,8 @@ class t3lib_matchCondition {
 			// browser
 			if (strstr($useragent,'MSIE'))	{
 				$browserInfo['browser']='msie';
+			} elseif(strstr($useragent,'Konqueror'))	{
+				$browserInfo['browser']='konqueror';
 			} elseif(strstr($useragent,'Opera'))	{
 				$browserInfo['browser']='opera';
 			} elseif(strstr($useragent,'Lynx'))	{
@@ -461,15 +463,19 @@ class t3lib_matchCondition {
 				break;
 				case 'avantgo':
 					$tmp = strstr($useragent,'AvantGo');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,7));
 				break;
 				case 'acrobat':
 					$tmp = strstr($useragent,'WebCapture');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,10));
 				break;
 				case 'ibrowse':
 					$tmp = strstr($useragent,'IBrowse/');
-					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,8));
+				break;
+				case 'konqueror':
+					$tmp = strstr($useragent,'Konqueror/');
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,10));
 				break;
 			}
 			// system

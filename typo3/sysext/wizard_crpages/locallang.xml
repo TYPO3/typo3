@@ -97,13 +97,13 @@
 			<label index="wiz_newPages_noCreate">Nessuna pagina creata!</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="wiz_crMany">Créer des pages multiples</label>
+			<label index="wiz_crMany">Créer plusieurs pages multiples</label>
 			<label index="wiz_W">W!</label>
 			<label index="wiz_newPages">Créer des nouvelles pages</label>
 			<label index="wiz_newPages_page">Page</label>
-			<label index="wiz_newPages_currentMenu">Nouvelle strucuture de page</label>
+			<label index="wiz_newPages_currentMenu">Nouvelle structure de page</label>
 			<label index="wiz_newPages_helpText">Ici vous pouvez créer automatiquement des nouvelles pages vides. C'est très utile si vous souhaitez générer une structure de site ou de rubrique.</label>
-			<label index="wiz_newPages_errorMsg1">Vous n'êtes pas authorisé à créer de nouvelles sous-page!</label>
+			<label index="wiz_newPages_errorMsg1">Vous n'êtes pas authorisé à créer de nouvelles sous-page ici!</label>
 			<label index="wiz_newPages_lCreate">Créer les pages</label>
 			<label index="wiz_newPages_listEnd">Placer les nouvelles pages à la suite</label>
 			<label index="wiz_newPages_hidePages">Masquer les nouvelles pages</label>
@@ -222,7 +222,6 @@
 			<label index="wiz_newPages">Skapa nya sidor</label>
 			<label index="wiz_newPages_page">Sida</label>
 			<label index="wiz_newPages_currentMenu">Ny sidstruktur</label>
-			<label index="wiz_newPages_helpText">Här kan du skapa nya tomma sidor i mängd. Här skapar du snabbt en sidstruktur för en ny website eller del av den.&lt;BR&gt;Du behöver bara skriva in titlar på de sidor du behöver. Endast sidor där fälten är fyllda kommer att skapas.</label>
 			<label index="wiz_newPages_errorMsg1">Du får inte skapa nya undersidor till denna sida!</label>
 			<label index="wiz_newPages_lCreate">Skapa sidor</label>
 			<label index="wiz_newPages_listEnd">Placera de nya sidorna efter nuvarande undersidor</label>
@@ -230,6 +229,7 @@
 			<label index="wiz_newPages_lCreate_msg1">Du håller på att skapa många nya sidor. Är du säker på att du vill fortsätta?</label>
 			<label index="wiz_newPages_lReset">Töm fälten</label>
 			<label index="wiz_newPages_noCreate">Inga nya sidor skapades!</label>
+			<label index="wiz_newPages_helpText">Här kan du skapa nya tomma sidor i mängd. Här skapar du snabbt en sidstruktur för en ny website eller del av den.&lt;BR&gt;Du behöver bara skriva in titlar på de sidor du behöver. Endast sidor där fälten är fyllda kommer att skapas.</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="wiz_crMany">Criar multiplas páginas</label>
@@ -252,14 +252,14 @@
 			<label index="wiz_newPages">Создать новые страницы</label>
 			<label index="wiz_newPages_page">Страница</label>
 			<label index="wiz_newPages_currentMenu">Новая структура страниц</label>
-			<label index="wiz_newPages_helpText">Здесь вы можете создавать сразу несколько новых, пустых страниц. Это очень удобно, если вы хотите быстро заложить структуру нового сайта или отдела.&lt;br /&gt;Просто введите нужные названия страниц. Страницы создадуться только на основе заполненных полей.</label>
-			<label index="wiz_newPages_errorMsg1">Вы не имеете права создавать новые подстраницы к этой странице!</label>
+			<label index="wiz_newPages_errorMsg1">Вы не имеете права создавать новые подстраницы этой страницы!</label>
 			<label index="wiz_newPages_lCreate">Создать страницы</label>
 			<label index="wiz_newPages_listEnd">Поместить новые страницы после существующих</label>
 			<label index="wiz_newPages_hidePages">Скрыть новые страницы</label>
-			<label index="wiz_newPages_lCreate_msg1">Вы хотите создать несколько новых страниц. Вы уверены, что хотите продолжать?</label>
+			<label index="wiz_newPages_lCreate_msg1">Вы создаете большое количество новых страниц. Вы уверены, что хотите продолжать?</label>
 			<label index="wiz_newPages_lReset">Очистить поля</label>
 			<label index="wiz_newPages_noCreate">Страницы не созданы!</label>
+			<label index="wiz_newPages_helpText">Здесь вы можете создавать сразу несколько новых, пустых страниц. Это очень удобно, если вы хотите быстро заложить структуру нового сайта или отдела.&lt;br /&gt;Просто введите нужные названия страниц. Страницы создадуться только на основе заполненных полей.</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="wiz_crMany">Creează pagini multiple</label>
@@ -362,12 +362,35 @@
 		<languageKey index="bg" type="array">
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="wiz_crMany">Criar múltiplas páginas</label>
+			<label index="wiz_W">W!</label>
+			<label index="wiz_newPages">Criar páginas novas</label>
+			<label index="wiz_newPages_page">Páginas</label>
+			<label index="wiz_newPages_currentMenu">Nova estrutura</label>
+			<label index="wiz_newPages_errorMsg1">Você não tem autorização para criar novas sub-páginas para esta página!</label>
+			<label index="wiz_newPages_lCreate">Criar páginas</label>
+			<label index="wiz_newPages_listEnd">Colocar as novas páginas depois de sub-páginas existentes</label>
+			<label index="wiz_newPages_hidePages">Ocultar novas páginas</label>
+			<label index="wiz_newPages_lCreate_msg1">Você está prestes a criar muitas páginas novas. Tem certeza de que quer continuar?</label>
+			<label index="wiz_newPages_lReset">Limpar campos</label>
+			<label index="wiz_newPages_noCreate">Nenhuma página foi criada!</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 		</languageKey>
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="wiz_crMany">צור דפים מרובים</label>
+			<label index="wiz_newPages">צור דפים חדשים</label>
+			<label index="wiz_newPages_page">דף</label>
+			<label index="wiz_newPages_currentMenu">מבנה דפים חדש</label>
+			<label index="wiz_newPages_errorMsg1">אינך רשאי לצור תת-דפים חדשים לדף זה!</label>
+			<label index="wiz_newPages_lCreate">צור דפים</label>
+			<label index="wiz_newPages_listEnd">מקם דפים חדשים אחרי דפים קיימים</label>
+			<label index="wiz_newPages_hidePages">הסתר דפים חדשים</label>
+			<label index="wiz_newPages_lCreate_msg1">הנך עומד לצור הרבה דפים חדשים. האם הנך בטוח כי ברצונך להמשיך?</label>
+			<label index="wiz_newPages_lReset">נקה שדות</label>
+			<label index="wiz_newPages_noCreate">לא נוצרו דפים!</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>
@@ -714,12 +737,35 @@
 		<languageKey index="bg" type="array">
 		</languageKey>
 		<languageKey index="br" type="array">
+			<label index="wiz_crMany" type="integer">69436019</label>
+			<label index="wiz_W" type="integer">247242126</label>
+			<label index="wiz_newPages" type="integer">203564147</label>
+			<label index="wiz_newPages_page" type="integer">26464201</label>
+			<label index="wiz_newPages_currentMenu" type="double">1353175</label>
+			<label index="wiz_newPages_errorMsg1" type="integer">252016009</label>
+			<label index="wiz_newPages_lCreate" type="integer">246594352</label>
+			<label index="wiz_newPages_listEnd" type="integer">58585614</label>
+			<label index="wiz_newPages_hidePages" type="integer">71614542</label>
+			<label index="wiz_newPages_lCreate_msg1" type="integer">197760570</label>
+			<label index="wiz_newPages_lReset" type="double">3106134</label>
+			<label index="wiz_newPages_noCreate" type="integer">151121547</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 		</languageKey>
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
+			<label index="wiz_crMany" type="integer">69436019</label>
+			<label index="wiz_newPages" type="integer">203564147</label>
+			<label index="wiz_newPages_page" type="integer">26464201</label>
+			<label index="wiz_newPages_currentMenu" type="double">1353175</label>
+			<label index="wiz_newPages_errorMsg1" type="integer">252016009</label>
+			<label index="wiz_newPages_lCreate" type="integer">246594352</label>
+			<label index="wiz_newPages_listEnd" type="integer">58585614</label>
+			<label index="wiz_newPages_hidePages" type="integer">71614542</label>
+			<label index="wiz_newPages_lCreate_msg1" type="integer">197760570</label>
+			<label index="wiz_newPages_lReset" type="double">3106134</label>
+			<label index="wiz_newPages_noCreate" type="integer">151121547</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

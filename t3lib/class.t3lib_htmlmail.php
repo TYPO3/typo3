@@ -643,11 +643,19 @@ class t3lib_htmlmail {
 			if ($this->auto_respond_msg)	{
 				$theParts = explode("/",$this->auto_respond_msg,2);
 				$theParts[1] = str_replace("/",chr(10),$theParts[1]);
-				mail( 	$this->from_email,
+				if(!ini_get('safe_mode')) {
+				  mail( 	$this->from_email,
 						$theParts[0],
 						$theParts[1],
 						"From: ".$this->recipient,
 					        $returnPath);
+				}
+				else {
+				  mail( 	$this->from_email,
+						$theParts[0],
+						$theParts[1],
+						"From: ".$this->recipient);
+				}			
 			}
 			if($this->returnPath) {
 			  ini_restore(sendmail_from);

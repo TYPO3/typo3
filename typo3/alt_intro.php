@@ -108,11 +108,12 @@ class SC_alt_intro {
 			<h1>%s<br />%s</h1>
 
 			<p>%s</p>
-			<p>&nbsp;</p>
+			<p>&nbsp;%s</p>
 			<p>%s</p>',
 			'TYPO3 '.TYPO3_version,
 			$LANG->getLL('introtext'),
 			t3lib_BEfunc::TYPO3_copyRightNotice(),
+			$this->displayWarningIfPasswordIsDefault(),
 			$LANG->getLL('introtext2')
 			);
 
@@ -149,6 +150,23 @@ class SC_alt_intro {
 	 */
 	function printContent()	{
 		echo $this->content;
+	}
+
+	/**
+	 * Display a warning message if the Install Tool Password is still the default: joh316
+	 * The warning is only displayed to admin users
+	 *
+	 * @return	void
+	 */
+	function displayWarningIfPasswordIsDefault()	{
+		if($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']==md5('joh316')) {
+			return '&nbsp;</p>
+			<p class="typo3-red" style="font-weight: bold;">Security warning: The password of your install tool is still "joh316" which is the default.<br />
+			It is highly recommended to change this immediately.<br />
+			&nbsp;';
+		} else {
+			return '';
+		}
 	}
 }
 

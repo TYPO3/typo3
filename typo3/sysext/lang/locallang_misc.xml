@@ -210,13 +210,13 @@
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="shortcut_edit">Editer</label>
-			<label index="shortcut_editID">Editer la page (ID):</label>
+			<label index="shortcut_editID">Editer la page (ID)</label>
 			<label index="shortcut_save">Mettre à jour le nom du raccourci</label>
 			<label index="shortcut_saveClose">Mettre à jour et fermer l'éditeur</label>
 			<label index="shortcut_close">Fermer l'éditeur de raccourci</label>
 			<label index="shortcut_delete">Supprimer le raccourci</label>
 			<label index="shortcut_loadEdit">Page en cours de chargement</label>
-			<label index="shortcut_notEditable">Aucune page éditable n'a été trouvée</label>
+			<label index="shortcut_notEditable">Aucune page éditable trouvée!</label>
 			<label index="shortcut_group">Groupe</label>
 			<label index="shortcut_GLOBAL">GLOBAL</label>
 			<label index="shortcut_ALL">TOUT</label>
@@ -225,26 +225,26 @@
 			<label index="shortcut_delAllInCat">Supprimer tous les raccourcis de ce groupe?</label>
 			<label index="overwriteExistingFiles">Ecraser les fichiers existants</label>
 			<label index="selectPosition">Sélectionnez une position pour la nouvelle page</label>
-			<label index="goBack">Page précédente</label>
+			<label index="goBack">Retour</label>
 			<label index="createNewPage">Créer une nouvelle page</label>
 			<label index="clickForWizard">Cliquez ici pour l'assistant!</label>
 			<label index="insertNewPageHere">Insérer la nouvelle page ici</label>
 			<label index="insertNewRecordHere">Insérer le nouvel enregistrement ici</label>
-			<label index="movePageToHere">Déplacer la page vers cette position</label>
+			<label index="movePageToHere">Déplacer la page ici</label>
 			<label index="moveElement">Déplacer l'élément</label>
 			<label index="selectPositionOfElement">Sélectionnez la position de l'élément</label>
 			<label index="movingElement">Déplacer l'élément</label>
 			<label index="makeCopy">Copier plutôt que déplacer l'élément</label>
 			<label index="newContentElement">Nouvel élément de contenu</label>
-			<label index="1_selectType">1:Sélectionnez le type de l'élément de contenu:</label>
-			<label index="2_selectPosition">2:Sélectionnez sa position:</label>
+			<label index="1_selectType">1: Sélectionnez le type d'élément de contenu:</label>
+			<label index="2_selectPosition">2: Sélectionnez sa position:</label>
 			<label index="CM_editAccess">Options de visibilité</label>
 			<label index="CM_history">Historique/Annuler</label>
 			<label index="CM_perms">Accès</label>
 			<label index="CM_moveWizard">Déplacer l'élément</label>
 			<label index="CM_moveWizard_page">Déplacer la page</label>
 			<label index="CM_newWizard">Assistant 'Nouvel élément'</label>
-			<label index="CM_editPageHeader">Editer le titre de la page</label>
+			<label index="CM_editPageHeader">Editer l'en-tête de page</label>
 			<label index="CM_db_list">Module Web&gt;Liste</label>
 			<label index="noEditPage">Vous avez demandez d'éditer la page &quot;%s&quot; mais vous ne pouvez pas. Maintenant chargement principal comme d'habitude.</label>
 		</languageKey>

@@ -1112,7 +1112,7 @@
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{
 			$this->printError('The page did not exist or was inaccessible.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
 			exit;
-		} else if (t3lib_div::testInt($code))	{
+		} elseif (t3lib_div::testInt($code))	{
 			$this->printError('Error '.$code.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
 			exit;
 		} elseif (t3lib_div::isFirstPartOfStr($code,'READFILE:')) {
@@ -1122,7 +1122,7 @@
 				$fileContent = str_replace('###CURRENT_URL###', t3lib_div::getIndpEnv('REQUEST_URI'), $fileContent);
 				$fileContent = str_replace('###REASON###', htmlspecialchars($reason), $fileContent);
 				echo $fileContent;
-		} else {
+			} else {
 				$this->printError('Configuration Error: 404 page "'.$readFile.'" could not be found.');
 			}
 			exit;
@@ -1412,7 +1412,7 @@
 					if(!ereg("^/", $theLogFile)) $theLogFile = PATH_site.$theLogFile;
 
 					if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'],'/'))	{
-						if(t3lib_div::isAllowedAbsPath($theLogFile) && @is_file($theLogFile) && @is_writeable($theLogFile))	{
+						if(t3lib_div::isAllowedAbsPath($theLogFile) && @is_file($theLogFile) && @is_writable($theLogFile))	{
 							$this->config['stat_vars']['logFile'] = $theLogFile;
 							$shortTitle = substr(ereg_replace('[^\.[:alnum:]_-]','_',$this->page['title']),0,30);
 							$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';

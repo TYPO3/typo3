@@ -192,8 +192,8 @@ Vil du fortsætte?</label>
 			<label index="edit_newContentElement">Opprett nytt innholdselement</label>
 			<label index="edit_move_page">Flytt side</label>
 			<label index="edit_newPage">Opprett ny side</label>
-			<label index="edit_editPageHeader">Rediger side tittel</label>
-			<label index="edit_db_list">Web&gt;Liste modulen</label>
+			<label index="edit_editPageHeader">Rediger sidetittel</label>
+			<label index="edit_db_list">Web&gt;Liste-modulen</label>
 			<label index="tsdebug">TypoScript</label>
 			<label index="tsdebug_tree">Trevisning:</label>
 			<label index="tsdebug_LR">Følg innholdsgenerering:</label>
@@ -216,7 +216,7 @@ Vil du fortsætte?</label>
 			<label index="p_newRecordAfter">Nytt element etter</label>
 			<label index="p_delete">Slett</label>
 			<label index="p_deleteConfirm">Er du sikker på at du vil slette dette elementet?</label>
-			<label index="p_hideConfirm">Å skjule et element gjør at det ikke lenger blir synlig på websiden og du blir nødt til å gå inn i ?backend? eller aktivere ?Front End Preview? for å kunne redigere det igjen. Vil du fortsette?</label>
+			<label index="p_hideConfirm">Å skjule et element gjør at det ikke lenger blir synlig på websiden og du blir nødt til å gå inn i Backend eller aktivere Frontsidevisning for å kunne redigere det igjen. Vil du fortsette?</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="adminOptions">ADMIN PANEL</label>
@@ -268,13 +268,13 @@ Vil du fortsætte?</label>
 			<label index="p_newRecordAfter">Nuovo record dopo</label>
 			<label index="p_delete">Elimina</label>
 			<label index="p_deleteConfirm">Sei sicuro di voler eliminare questo record?</label>
-			<label index="p_hideConfirm">Se nascondi un record questo diventa invisibile, e devi usare l'interfaccia Backend o selezionare 'preview'  per poterlo modificare di nuovo. Sei sicuro di volerlo nascondere?</label>
+			<label index="p_hideConfirm">Un record nascosto non è più visibile sul sito web. Per modificare i record nascosti è necessario abilitare &quot;frontend preview&quot; dall'interfaccia di amministrazione. Continuare?</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="adminOptions">PANNEAU D'ADMINISTRATION</label>
 			<label index="preview">Prévisualer</label>
-			<label index="preview_showHiddenPages">Montrer les pages cachées:</label>
-			<label index="preview_showHiddenRecords">Montrer les enregistrements cachés:</label>
+			<label index="preview_showHiddenPages">Afficher les pages cachées:</label>
+			<label index="preview_showHiddenRecords">Afficher les enregistrements cachés:</label>
 			<label index="preview_simulateDate">Simuler la date et l'heure:</label>
 			<label index="preview_simulateUserGroup">Simuler le groupe d'utilisateurs:</label>
 			<label index="cache">Cache</label>
@@ -289,10 +289,10 @@ Vil du fortsætte?</label>
 			<label index="edit">Editer</label>
 			<label index="edit_displayIcons">Afficher les panneaux d'édition:</label>
 			<label index="edit_displayFieldIcons">Afficher les icônes d'édition:</label>
-			<label index="edit_editFormsOnPage">Formulaires d'édition inclus dans la page:</label>
-			<label index="edit_editNoPopup">Pas de fenêtre 'popup':</label>
-			<label index="edit_openAB">Ouvrir l'arrière-plan Typo3</label>
-			<label index="edit_recordHistory">Visualiser l'historique des changements</label>
+			<label index="edit_editFormsOnPage">Formulaires d'édition sur la page:</label>
+			<label index="edit_editNoPopup">Pas de fenêtre volante:</label>
+			<label index="edit_openAB">Ouvrir le backend TYPO3</label>
+			<label index="edit_recordHistory">Visualiser l'historique des modifications</label>
 			<label index="edit_newContentElement">Créer un nouvel élément</label>
 			<label index="edit_move_page">Déplacer la page</label>
 			<label index="edit_newPage">Créer une nouvelle page</label>
@@ -312,15 +312,15 @@ Vil du fortsætte?</label>
 			<label index="div_Levels_2">+ 2 sous-niveaux</label>
 			<label index="update">Mettre à jour</label>
 			<label index="p_editRecord">Editer l'enregistrement</label>
-			<label index="p_moveUp">Déplacer vers le haut</label>
-			<label index="p_moveDown">Déplacer vers le bas</label>
+			<label index="p_moveUp">Monter</label>
+			<label index="p_moveDown">Descendre</label>
 			<label index="p_unhide">Montrer</label>
 			<label index="p_hide">Cacher</label>
-			<label index="p_newSubpage">Créer une nouvelle sous-page</label>
-			<label index="p_newRecordAfter">Créer un nouvel enregistrement après</label>
+			<label index="p_newSubpage">Nouvelle sous-page</label>
+			<label index="p_newRecordAfter">Nouvel enregistrement après</label>
 			<label index="p_delete">Supprimer</label>
 			<label index="p_deleteConfirm">Etes-vous sûr de vouloir supprimer cet enregistrement?</label>
-			<label index="p_hideConfirm">Cacher un enregistrement va le rendre invisible dans la partie publique du site. Vous devrez aller à l'arrière-plan ou activer la fonction de prévisualisation de l'avant-plan pour être en mesure de l'éditer de nouveau.
+			<label index="p_hideConfirm">Cacher un enregistrement va le rendre invisible sur site. Pour éditer l'enregistrement masqué, rentrez dans le backend ou activez la prévisualisation frontend.
 Poursuivre?</label>
 		</languageKey>
 		<languageKey index="es" type="array">
@@ -531,7 +531,7 @@ Pokračovat?</label>
 			<label index="p_newRecordAfter">Nowy rekord po</label>
 			<label index="p_delete">Usuń</label>
 			<label index="p_deleteConfirm">Czy jesteś pewien, że chcesz usunąć ten rekord?</label>
-			<label index="p_hideConfirm">Ukrycie rekordu spowoduje, że będzie on niewidoczny na stronie. Jeśli będziesz chciał go edytować ponownie, musisz zalogować się przez część administracyjną lub włączyć &quot;podgląd&quot;. Kontynuować?</label>
+			<label index="p_hideConfirm">Ukrycie rekordu spowoduje, że będzie on niewidoczny na stronie. Aby edytować ukrytą zawartość, musisz zalogować się do backendu lub włączyć &quot;podgląd&quot; we frontendzie. Kontynuować?</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="adminOptions">ADMINISTRACIJSKI PULT</label>
@@ -687,7 +687,7 @@ Pokračovat?</label>
 			<label index="p_newRecordAfter">Yeni kayıt sonrası</label>
 			<label index="p_delete">Sil</label>
 			<label index="p_deleteConfirm">Bu kayıtı silmek istediğinizden emin misiniz?</label>
-			<label index="p_hideConfirm">Gizlenen kayıt websayfasında görünür hale gelecektir ve arkaplana giriş yapmak üzeresiniz veya tekrar düzeltme yapdan önce önplanı öngörünüşünü etkinleştirmeniz gerekir.
+			<label index="p_hideConfirm">Gizlenen kayıt websayfasında görünür hale gelecektir ve arkaplana giriş yapmak üzeresiniz veya tekrar düzeltme yapmadan önce önplanı öngörünüşünü etkinleştirmeniz gerekir.
 Devam etmek istiyor musunuz?</label>
 		</languageKey>
 		<languageKey index="se" type="array">
@@ -1209,7 +1209,7 @@ Nastaviti?</label>
 			<label index="p_newRecordAfter">Új rekord emögé</label>
 			<label index="p_delete">Törlés</label>
 			<label index="p_deleteConfirm">Biztosan törölni akarod ezt a rekordot?</label>
-			<label index="p_hideConfirm">Egy rekord elrejtése láthatatlanná teszi azt az adott oldalon, és csak ismételt szerkesztés előtt be kell lépni vagy a backend, vagy a frontend felületbe.
+			<label index="p_hideConfirm">Egy rekord elrejtése láthatatlanná teszi azt az adott oldalon. Rejtett rekord szerkesztéséhez be kell lépni a backend-re, vagy engedélyezni a frontend előnézetet.
 Folytatod?</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -1475,7 +1475,7 @@ Folytatod?</label>
 			<label index="p_newRecordAfter">Novo registro após</label>
 			<label index="p_delete">Apagar</label>
 			<label index="p_deleteConfirm">Você tem certeza de que deseja apagar este registro?</label>
-			<label index="p_hideConfirm">Esconder um registro irá torná-lo invisível na página e você terá de entrar no Administrador ou habilitar a pré-visualização so site público antes de poder editá-lo novamente.
+			<label index="p_hideConfirm">Esconder um registro irá torná-lo invisível na página e você terá de entrar no Administrador ou habilitar a pré-visualização do site público antes de poder editá-lo novamente.
 Continuar?</label>
 		</languageKey>
 		<languageKey index="et" type="array">
@@ -1744,7 +1744,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -1796,7 +1796,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="no" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -1848,7 +1848,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -1900,7 +1900,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -1952,7 +1952,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="es" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -2056,7 +2056,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -2160,7 +2160,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -2264,7 +2264,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -2316,7 +2316,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="se" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -2368,7 +2368,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -2472,7 +2472,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -2826,7 +2826,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -2934,7 +2934,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -3085,7 +3085,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
@@ -3241,7 +3241,7 @@ Soovite jätkata?</label>
 			<label index="p_newRecordAfter" type="integer">264860337</label>
 			<label index="p_delete" type="integer">254438473</label>
 			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
+			<label index="p_hideConfirm" type="double">8301973</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 		</languageKey>

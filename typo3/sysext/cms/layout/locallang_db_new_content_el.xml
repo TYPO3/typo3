@@ -117,7 +117,7 @@
 			<label index="plugins_1_description">Wenn Sie ein Plugin einfügen wollen, welches nicht in den unten stehenden Optionen aufgelistet ist, dann wählen Sie diesen Element-Typ und selektieren das gewünschte Plugin später in der Auswahlbox.</label>
 		</languageKey>
 		<languageKey index="no" type="array">
-			<label index="sel1">Velg hva slags sideinnhold du ønsker å opprette:</label>
+			<label index="sel1">Velg hva slags type sideinnhold du ønsker å opprette:</label>
 			<label index="sel2">Klikk deretter på den posisjonen hvor du ønsker å sette inn elementet på siden:</label>
 			<label index="common">Typisk sideinnhold</label>
 			<label index="common_1_title">Alminnelig tekstelement</label>
@@ -129,11 +129,11 @@
 			<label index="common_4_title">Kun bilder</label>
 			<label index="common_4_description">Et vilkårlig antall bilder satt opp i kolonner og rekker med billedtekst. På samme måte som ovenfor, men uten tekstfelt.</label>
 			<label index="common_5_title">Punktliste</label>
-			<label index="common_5_description">En enkelt punktliste.</label>
+			<label index="common_5_description">En enkel punktliste.</label>
 			<label index="common_6_title">Tabell</label>
-			<label index="common_6_description">En enkel tabell med opptil 8 kolonner.</label>
+			<label index="common_6_description">Enkel tabell med opptil 8 kolonner.</label>
 			<label index="special">Spesielle elementer</label>
-			<label index="special_1_title">Fil linker</label>
+			<label index="special_1_title">Fil-lenker</label>
 			<label index="special_1_description">Oppretter en liste av filer som kan lastes ned.</label>
 			<label index="special_2_title">Multimedia</label>
 			<label index="special_2_description">Setter inn et medieelement som f.eks. Flash animasjon, lydfil eller videoklipp.</label>
@@ -142,28 +142,28 @@
 			<label index="special_4_title">Ren HTML</label>
 			<label index="special_4_description">Med dette elementet kan du sette inn ren HTML kode på siden.</label>
 			<label index="forms">Skjemaer</label>
-			<label index="forms_1_title">E-post skjema</label>
+			<label index="forms_1_title">Epost-skjema</label>
 			<label index="forms_1_description">Et svarskjema hvor brukerne av webområdet kan gi tilbakemeldinger.</label>
-			<label index="forms_2_title">Søk funksjon</label>
+			<label index="forms_2_title">Søkefunksjon</label>
 			<label index="forms_2_description">Viser et søkefelt samt søkeresultatet når en søking er utført.</label>
 			<label index="forms_3_title">Logg inn</label>
-			<label index="forms_3_description">Logg inn/ Logg ut skjema for webområdets brukere. Benyttes til passordbeskyttelse av sider. Du må opprette webområdebrukere og grupper for at ?logg inn skjemaet? skal virke.</label>
+			<label index="forms_3_description">Innloggings-/Utloggingsskjema for webstedets brukere. Benyttes til passordbeskyttelse av sider. Du må opprette webområdebrukere og grupper for at ?logg inn skjemaet? skal virke.</label>
 			<label index="plugins">Plugins</label>
 			<label index="plugins_1_title">Generell Plugin</label>
-			<label index="plugins_1_description">Hvis du ønsker å sette inn en plugin som ikke finnes blant valgene under kan du velge denne typen og så kan du endre til den spesifikke plugin i en valgboks etterpå.</label>
+			<label index="plugins_1_description">Hvis du ønsker å sette inn en plugin som ikke finnes blant valgene under kan du velge denne typen, og så kan du endre til den spesifikke plugin i en meny etterpå.</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="sel1">Seleziona il tipo di contenuto che vuoi creare:</label>
-			<label index="sel2">Clicca nella posizione della pagina in cui vuoi inserire l'elemento</label>
+			<label index="sel2">Clicca nella posizione della pagina in cui vuoi inserire l'elemento:</label>
 			<label index="common">Contenuti tipici</label>
 			<label index="common_1_title">Paragrafo di testo</label>
 			<label index="common_1_description">Paragrafo di testo con titolo e corpo</label>
 			<label index="common_2_title">Testo con immagine sotto</label>
-			<label index="common_2_description">Paragrafo di testo con un numero qualunque di immagini, posizionate sotto il testo</label>
+			<label index="common_2_description">Paragrafo di testo con un numero qualunque di immagini posizionate sotto il testo</label>
 			<label index="common_3_title">Testo con immagine sulla destra</label>
 			<label index="common_3_description">Come sopra, ma con il testo che &quot;avvolge&quot; le immagini</label>
 			<label index="common_4_title">Solo immagini</label>
-			<label index="common_4_description">Un numero qualunque di immagini organizzate in una tabella, con didascalia. Stesse opzioni dei tipi di contenuto precendenti, ma senza il testo.</label>
+			<label index="common_4_description">Un numero qualunque di immagini organizzate in una tabella, con didascalia.</label>
 			<label index="common_5_title">Elenco puntato</label>
 			<label index="common_5_description">Elenco puntato.</label>
 			<label index="common_6_title">Tabella</label>
@@ -183,10 +183,10 @@
 			<label index="forms_2_title">Modulo ricerca</label>
 			<label index="forms_2_description">Modulo per effettuare ricerche all'interno del sito web</label>
 			<label index="forms_3_title">Modulo login</label>
-			<label index="forms_3_description">Modulo per login/logout degli utenti web. E' usato per proteggere le pagine. Affinché funzioni, è necessario creare &quot;gruppi di utenti web&quot; e &quot;utenti web&quot;</label>
+			<label index="forms_3_description">Modulo per login/logout degli utenti web, usato per consentire l'accesso alle pagine solo a determinati gruppi di utenti.</label>
 			<label index="plugins">Plugins</label>
 			<label index="plugins_1_title">Plugin generico</label>
-			<label index="plugins_1_description">Se vuoi inserire un plugin che non trovi fra quelli elencati seleziona questo tipo di contenuto e specifica in seguito (attraverso la selector  box) quale plugin vuoi inserire.</label>
+			<label index="plugins_1_description">Seleziona questo tipo di contenuto se vuoi inserire un plugin che non trovi fra quelli elencati.</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
 			<label index="sel1">Veuillez séléctionner le type de contenu de page vous souhaitez créer:</label>
@@ -197,7 +197,7 @@
 			<label index="common_2_title">Texte avec image en dessous</label>
 			<label index="common_2_description">Un élément texte régulier avec un champs qui peut contenir un certain nombre d'images positionées en dessous.</label>
 			<label index="common_3_title">Texte avec une image à droite.</label>
-			<label index="common_3_description">Idem que le précédent mais l'image est habillée de texte et se trouve sur la droite.</label>
+			<label index="common_3_description">Comme le précédent mais l'image est habillée de texte et se trouve sur la droite.</label>
 			<label index="common_4_title">Images uniquement</label>
 			<label index="common_4_description">Liste d'images aligné en colonnes et en lignes avec titre.</label>
 			<label index="common_5_title">Liste à puces</label>
@@ -261,8 +261,8 @@
 			<label index="plugins_1_description">Si deseas insertar un plugin que no se encuentre entre las opciones de más abajo, selecciona este tipo de elemento y podrás seleccionar el plugin que buscas más tarde.</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-			<label index="sel1">Kies het aan te maken soort pagina-inhoud:</label>
-			<label index="sel2">Selecteer nu de positie waar het element geplaatst wordt in de pagina:</label>
+			<label index="sel1">Kies aub het type pagina-inhoud dat U wilt aanmaken:</label>
+			<label index="sel2">Selecteer nu de positie waar U het element wilt plaatsen::</label>
 			<label index="common">Specifieke pagina-inhoud</label>
 			<label index="common_1_title">Gewone pagina-inhoud</label>
 			<label index="common_1_description">Een gewoon tekstelement met een kop en tekstvelden.</label>
@@ -337,11 +337,11 @@
 			<label index="common_1_title">Zwykły element tekstowy</label>
 			<label index="common_1_description">Zwykły element tekstowy z nagłówkiem i polem treści.</label>
 			<label index="common_2_title">Tekst z obrazkiem poniżej</label>
-			<label index="common_2_description">Zwykły element tekstowy z dowolną liczbą obrazków, umiejscowionych pod tekstem.</label>
+			<label index="common_2_description">Zwykły element tekstowy z dowolną liczbą obrazków, umiejscowionych pod tekstem</label>
 			<label index="common_3_title">Tekst z obrazkiem po prawej</label>
-			<label index="common_3_description">Jak powyżej, ale obrazki są umiejscowione po prawej i są oblewane przez tekst.</label>
+			<label index="common_3_description">Jak powyżej, ale tekst oblewa obrazek dosunięty do prawej.</label>
 			<label index="common_4_title">Tylko obrazki</label>
-			<label index="common_4_description">Dowolna liczba obrazków rozłożona w wierszach i kolumnach z podpisem. Podobnie jak powyżej, tyle że bez tekstu.</label>
+			<label index="common_4_description">Dowolna liczba obrazków z podpisami, rozłożona w wierszach i kolumnach.</label>
 			<label index="common_5_title">Wypunktowana lista</label>
 			<label index="common_5_description">Pojedyncza, wypunktowana lista.</label>
 			<label index="common_6_title">Tabelka</label>
@@ -357,14 +357,14 @@
 			<label index="special_4_description">Dzięki temu elementowi możesz wstawić na stronę kod HTML.</label>
 			<label index="forms">Formularze</label>
 			<label index="forms_1_title">Formularz mailowy</label>
-			<label index="forms_1_description">Formularz wypełniany przez użytkownika na stronie, którego wynik jest wysyłany na podany adres emailowy.</label>
+			<label index="forms_1_description">Formularz możliwiający użytkownikom wypełnianie i wysyłanie odpowiedzi.</label>
 			<label index="forms_2_title">Formularz wyszukiwania</label>
 			<label index="forms_2_description">Wstawia formularz dzięki któremu można przeszukiwać strony.</label>
 			<label index="forms_3_title">Formularz logowania</label>
-			<label index="forms_3_description">Formularz logowania/wylogowania dla zarejestrowanych użytkowników. Używane do udostępniania zawartości stron określonym grupom użytkowników. Wcześniej należy stworzyć użytkowników i grupy.</label>
+			<label index="forms_3_description">Formularz logowania/wylogowania używany do udostępniania zawartości stron określonym grupom użytkowników.</label>
 			<label index="plugins">Wtyczki</label>
 			<label index="plugins_1_title">Dowolna wtyczka</label>
-			<label index="plugins_1_description">Jeśli chcesz wstawić wtyczkę, której nie ma wśród opcji poniżej, użyj tegoelementu. Będziesz mógł wybrać konkretną wtyczkę w następnym kroku.</label>
+			<label index="plugins_1_description">Wybierz ten element aby wstawić wtyczkę, której nie znalazłeś wśród opcji poniżej.</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="sel1">Izberite, kakšno vsebino želite ustvariti:</label>
@@ -440,11 +440,11 @@
 			<label index="common_1_title">Düzgün metin elementi</label>
 			<label index="common_1_description">Bir düzgün metin elementi ile başlığı ve bodytext alanları.</label>
 			<label index="common_2_title">Aşağıdaki resim ile metin</label>
-			<label index="common_2_description">Düzgün metin elementi ile bazı resimlerin sayısını içeren aşağıda duran metin alanı.</label>
+			<label index="common_2_description">Bir Düzgün metin elementi alanıyla bazı resimlerin sayısını içeren aşağıda duran metin alanı.</label>
 			<label index="common_3_title">Sağ kısma metin ile resim</label>
-			<label index="common_3_description">Yukarıdaki gibi fakat resimler ile sağ metine yerleştirilen ve resimler etrafında paketlenendir.</label>
+			<label index="common_3_description">Yukarıdaki gibi fakat resimler ile sağ metine yerleştirilen ve resimler etrafında paketlenendir.sağa hizalanmış resim.</label>
 			<label index="common_4_title">Sadece resimler</label>
-			<label index="common_4_description">Bazı resimlerin sayısı sütunların içinde ve sıraların başlıklarıyla hizalanmıştır. Yukarıdaki resim seçenekleri gibi fakat metin olmaksızın.</label>
+			<label index="common_4_description">Bazı resimlerin sayısı sütunların içinde ve sıraların başlıklarıyla hizalanmıştır.</label>
 			<label index="common_5_title">Madde işaretleri listesi</label>
 			<label index="common_5_description">Bir tek madde işareti listesi</label>
 			<label index="common_6_title">Tablo</label>
@@ -754,15 +754,15 @@
 			<label index="plugins_1_description">Ako želite ubaciti plugin koji dolje nije naveden, samo odaberite ovaj element pa ćete moći odabrati željeni plugin naknadno u izborniku.</label>
 		</languageKey>
 		<languageKey index="hu" type="array">
-			<label index="sel1">Válaszd ki, hogy milyen tartalmi elemet akarsz készíteni:</label>
+			<label index="sel1">Válaszd ki, hogy milyen típusú tartalmi elemet akarsz készíteni:</label>
 			<label index="sel2">És most, kattints arra a pozícióra, ahova az elemet az oldalon el akarod helyezni:</label>
 			<label index="common">Általános oldal tartalom</label>
 			<label index="common_1_title">Általános szöveg elem</label>
 			<label index="common_1_description">Egy szabályos szöveg elem fejléc és szövegtörzs mezőkkel</label>
 			<label index="common_2_title">Szöveg alatta képpel</label>
-			<label index="common_2_description">Szabályos szöveg elem több képpel alatta</label>
+			<label index="common_2_description">Szabályos szöveg elem, mely korlátlan számú képet tartalmazhat a szöveg alatt</label>
 			<label index="common_3_title">Szöveg jobbra mellette képpel</label>
-			<label index="common_3_description">Ugyanaz, mint az előbb, csak a képek a jobb oldalon beékelődnek a szövegbe</label>
+			<label index="common_3_description">Ugyanaz, mint az előbb, csak a jobb oldali kép beékelődik a szövegbe</label>
 			<label index="common_4_title">Csak képek</label>
 			<label index="common_4_description">Több kép táblázatban, fejlécekkel</label>
 			<label index="common_5_title">Felsorolás</label>
@@ -780,14 +780,14 @@
 			<label index="special_4_description">Nyers HTML kód beillesztése</label>
 			<label index="forms">Űrlap elemek</label>
 			<label index="forms_1_title">Levélküldés</label>
-			<label index="forms_1_description">Egy válaszlevél űrlap, amivel a weboldal felhasználói a válaszokat kezelhetik</label>
+			<label index="forms_1_description">Egy levél űrlap, amivel a weboldal felhasználói a visszajelzéseket elküldhetik</label>
 			<label index="forms_2_title">Keresés</label>
 			<label index="forms_2_description">Egy keresési űrlap és egy eredményoldal, ha a keresést végrehajtotta</label>
 			<label index="forms_3_title">Bejelentkezés</label>
-			<label index="forms_3_description">Be/Kijelentkezési űrlap a felhasználók számára. Ez a jelszóvédett oldalakhoz szükséges. A működéshez felhasználókat és csoportokat kell létrehoznod.</label>
+			<label index="forms_3_description">Be-/kijelentkezési űrlap a jelszóvédett oldalak eléréséhez, melyek csak bizonyos felhasználók és csoportok számára elérhető.</label>
 			<label index="plugins">Bővítmények</label>
 			<label index="plugins_1_title">Általános bővítmény</label>
-			<label index="plugins_1_description">Ha olyan bővítményt akarsz beszúrni, ami nem szerepel az alábbiak között, válaszd ezt az elemtípust és utána kiválaszthatod a megfelelő bővítményt  egy új listából.</label>
+			<label index="plugins_1_description">Akkor válaszd ezt a típust, ha olyan bővítményt akarsz beszúrni, ami nem szerepel az eddigiek között.</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -1089,17 +1089,17 @@
 	</data>
 	<orig_hash type="array">
 		<languageKey index="dk" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1115,27 +1115,27 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1151,27 +1151,27 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="no" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1187,27 +1187,27 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="it" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1223,27 +1223,27 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1259,27 +1259,27 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="double">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="es" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1295,27 +1295,27 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1331,14 +1331,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="double">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
 			<label index="sel1" type="integer">257792844</label>
@@ -1375,17 +1375,17 @@
 			<label index="plugins" type="integer">196313238</label>
 		</languageKey>
 		<languageKey index="pl" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1401,14 +1401,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="double">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="si" type="array">
 			<label index="sel1" type="integer">257792844</label>
@@ -1442,17 +1442,17 @@
 			<label index="forms_3_description" type="integer">64416876</label>
 		</languageKey>
 		<languageKey index="fi" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1468,27 +1468,27 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="double">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="double">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1504,27 +1504,27 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="double">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="double">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="se" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1540,14 +1540,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
 			<label index="sel1" type="integer">257792844</label>
@@ -1584,17 +1584,17 @@
 			<label index="plugins" type="integer">196313238</label>
 		</languageKey>
 		<languageKey index="ru" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1610,14 +1610,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
 			<label index="sel1" type="integer">257792844</label>
@@ -1724,17 +1724,17 @@
 			<label index="plugins" type="integer">196313238</label>
 		</languageKey>
 		<languageKey index="lt" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="double">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="double">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1750,14 +1750,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="double">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="double">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="is" type="array">
 		</languageKey>
@@ -1798,17 +1798,17 @@
 			<label index="plugins_1_description" type="integer">4113831</label>
 		</languageKey>
 		<languageKey index="hu" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1824,14 +1824,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
 		</languageKey>
@@ -1874,17 +1874,17 @@
 		<languageKey index="gr" type="array">
 		</languageKey>
 		<languageKey index="hk" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1900,14 +1900,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
 		</languageKey>
@@ -1946,17 +1946,17 @@
 			<label index="plugins" type="integer">196313238</label>
 		</languageKey>
 		<languageKey index="br" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -1972,14 +1972,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="et" type="array">
 			<label index="sel1" type="integer">257792844</label>
@@ -2020,17 +2020,17 @@
 		<languageKey index="ar" type="array">
 		</languageKey>
 		<languageKey index="he" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
+			<label index="sel1" type="integer">125258284</label>
+			<label index="sel2" type="integer">142688057</label>
 			<label index="common" type="integer">57063941</label>
 			<label index="common_1_title" type="integer">134955826</label>
 			<label index="common_1_description" type="integer">29135748</label>
 			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
+			<label index="common_2_description" type="integer">57288467</label>
 			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
+			<label index="common_3_description" type="integer">49907931</label>
 			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
+			<label index="common_4_description" type="integer">232160004</label>
 			<label index="common_5_title" type="integer">88917113</label>
 			<label index="common_5_description" type="integer">136121208</label>
 			<label index="common_6_title" type="integer">85738935</label>
@@ -2046,14 +2046,14 @@
 			<label index="special_4_description" type="integer">92097111</label>
 			<label index="forms" type="integer">14172094</label>
 			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
+			<label index="forms_1_description" type="integer">194025956</label>
 			<label index="forms_2_title" type="integer">184654558</label>
 			<label index="forms_2_description" type="integer">71325784</label>
 			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
+			<label index="forms_3_description" type="integer">191931555</label>
 			<label index="plugins" type="integer">196313238</label>
 			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
+			<label index="plugins_1_description" type="integer">104752280</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
 			<label index="sel1" type="integer">257792844</label>

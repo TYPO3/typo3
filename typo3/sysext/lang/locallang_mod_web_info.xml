@@ -45,7 +45,7 @@
 			<label index="depth_2">2 nivåer</label>
 			<label index="depth_3">3 nivåer</label>
 			<label index="mlang_labels_tablabel">Siderelatert informasjon, for eksempel visningsstatistikk, endringslogg, antall elementer.</label>
-			<label index="mlang_labels_tabdescr">Modulen Web&gt;Info omhandler statistisk informasjon omsider. Dette omfatter sidevisningsstatistikk samt en oppdateringslogg hvor du kan bla gjennom endringsforløpet for en side. Du kan også få en oversikt over antall elementer på hver side samt sidenes innstillinger alt dette presentert i den klassiske trestrukturen.</label>
+			<label index="mlang_labels_tabdescr">Modulen Web&gt;Info omhandler statistisk informasjon om sider. Dette omfatter sidevisningsstatistikk samt en oppdateringslogg hvor du kan bla gjennom endringsforløpet for en side. Du kan også få en oversikt over antall elementer på hver side samt sidenes innstillinger alt dette presentert i den klassiske trestrukturen.</label>
 			<label index="mlang_tabs_tab">Info</label>
 		</languageKey>
 		<languageKey index="it" type="array">
@@ -55,7 +55,7 @@
 			<label index="depth_2">2 livelli</label>
 			<label index="depth_3">3 livelli</label>
 			<label index="mlang_labels_tablabel">Informazioni correlate alla pagina, quali log dei cambiamenti e statistiche sulla pagina e sui record</label>
-			<label index="mlang_labels_tabdescr">Il modulo Web&gt;Info si occupa di informazioni di tipo statistico sulle pagine. Fra queste informazioni troviamo il 'pagehit' ed il log dei cambiamenti che permette di scorrere la storia delle modifiche alla pagina. C'è anche una vista d'insieme sul numero dei record, sul loro tipo e su altri parametri, presentati nella classica struttura ad albero.</label>
+			<label index="mlang_labels_tabdescr">Il modulo Web&gt;Info si occupa di informazioni di tipo statistico sulle pagine. Fra queste informazioni si trovano il numero di hit ed il log dei cambiamenti della pagina, che permette di scorrere la storia delle modifiche. E' possibile inoltre avere una vista d'insieme sul numero e tipo dei record presenti. Tali informazioni sono presentate nella classica struttura ad albero.</label>
 			<label index="mlang_tabs_tab">Informazioni</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
@@ -85,7 +85,7 @@
 			<label index="depth_2">2 niveau's</label>
 			<label index="depth_3">3 niveau's</label>
 			<label index="mlang_labels_tablabel">Pagina gerelateerde informatie, zoals statistieken van hits, logwijzigingen, aantal records</label>
-			<label index="mlang_labels_tabdescr">De Web&gt;Infomodule richt zich op statistische informatie over pagina's. Dit omvat statistieken van paginahits en een log van wijzigingen met de mogelijkheid te zoeken door voorgaande paginawijzigingen. Er is ook een overzicht beschikbaar van het aantal records op elke pagina alsmede de pagina-instellingen gepresenteerd in de klassieke boomstructuur.</label>
+			<label index="mlang_labels_tabdescr">De Web&gt;Info module richt zich op statistische informatie over pagina's. Dit omvat statistieken van paginahits en een log van wijzigingen met de mogelijkheid te zoeken door voorgaande pagina-wijzigingen. U kan ook een overzicht krijgen van het aantal records op elke pagina alsmede de pagina-instellingen gepresenteerd in de klassieke boomstructuur.</label>
 			<label index="mlang_tabs_tab">Info</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -105,7 +105,7 @@
 			<label index="depth_2">2 poziomy</label>
 			<label index="depth_3">3 poziomy</label>
 			<label index="mlang_labels_tablabel">Informacje dotyczące strony, np. ilość odsłon, log zmian, liczba rekordów</label>
-			<label index="mlang_labels_tabdescr">Moduł Web&gt;Informacje skupia się na statystykach odsłon i historii zmian na stronie. Podawana jest tu również liczba rekordów na stronie i ustawienia strony w klasycznym ujęciu typu drzewko.</label>
+			<label index="mlang_labels_tabdescr">Moduł Web&gt;Informacje dostarcza statystyk odsłon i historię zmian na stronie. Podawana jest tu również liczba rekordów na stronie i ustawienia strony w klasycznym ujęciu typu drzewko.</label>
 			<label index="mlang_tabs_tab">Informacje</label>
 		</languageKey>
 		<languageKey index="si" type="array">
@@ -235,7 +235,7 @@
 			<label index="depth_2">2. szint</label>
 			<label index="depth_3">3. szint</label>
 			<label index="mlang_labels_tablabel">Általános oldalinformációk, például statisztika, változtatások naplója stb..</label>
-			<label index="mlang_labels_tabdescr">A Web&gt;Info az általános, statikus oldalinformációkat jeleníti meg.</label>
+			<label index="mlang_labels_tabdescr">A Web&gt;Info az általános, statikus oldalinformációkat jeleníti meg, beleértve az oldaltalálati statisztikákat, oldaltörténetet. Tartalmaz egy kimutatást az oldalakon található rekordok számáról és az oldalbeállításokról.</label>
 			<label index="mlang_tabs_tab">Info</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -259,7 +259,7 @@
 			<label index="depth_2">２層</label>
 			<label index="depth_3">３層</label>
 			<label index="mlang_labels_tablabel">與網頁有關的資料，例如：到訪統計、更改日誌、記錄計數</label>
-			<label index="mlang_labels_tabdescr">網站＞資訊模組重點在於有關網頁的統計數字。這個模組包括網頁到訪次數統計和更改人誌，使你可以溜覽網頁改變的歷史。你也可以概覽每一頁的記錄數目和以典型的樹狀結構來檢視頁的設定。</label>
+			<label index="mlang_labels_tabdescr">網站＞資訊模組重點在於有關網頁的統計數字。這個模組包括網頁到訪次數統計和更改日誌，使你可以溜覽網頁改變的歷史。你也可以概覽每一頁的記錄數目和以典型的樹狀結構來檢視頁的設定。</label>
 			<label index="mlang_tabs_tab">資訊</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
@@ -319,7 +319,7 @@
 			<label index="depth_2">2 רמות</label>
 			<label index="depth_3">3 רמות</label>
 			<label index="mlang_labels_tablabel">מידע מיוחסת לדף, כגון סטטיסטיקת ביקורים, שינוי יומן, ספירת רשומות</label>
-			<label index="mlang_labels_tabdescr">מודול רשת&gt;מידע מתמקד במידע סטטיסטי אודות דפים. הוא מכיל סטטיסטיקה על ביקורים בדפים ושינוי יומן שמאפשר לך לדפדף בהיסטורית שינויים של דף. בנוסף הנך יכול לראות כמות רשומות על כל דף והגדרות דף המוצגים בצורה קלאסית של אץ.</label>
+			<label index="mlang_labels_tabdescr">מודול אינטרנט&gt;מידע מתמקד במידע סטטיסטי אודות דפים. הוא מכיל סטטיסטיקה על ביקורים בדפים ושינוי יומן שמאפשר לך לדפדף בהיסטורית שינויים של דף. בנוסף הנך יכול לראות כמות רשומות על כל דף והגדרות דף המוצגים בצורה קלאסית של אץ.</label>
 			<label index="mlang_tabs_tab">מידע</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
@@ -346,7 +346,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -356,7 +356,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="no" type="array">
@@ -366,7 +366,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="it" type="array">
@@ -376,7 +376,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="fr" type="array">
@@ -396,7 +396,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
@@ -406,7 +406,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="cz" type="array">
@@ -426,7 +426,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="si" type="array">
@@ -446,7 +446,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="tr" type="array">
@@ -456,7 +456,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="se" type="array">
@@ -466,7 +466,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="pt" type="array">
@@ -486,7 +486,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="ro" type="array">
@@ -526,7 +526,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="is" type="array">
@@ -556,7 +556,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -580,7 +580,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="eu" type="array">
@@ -610,7 +610,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="et" type="array">
@@ -640,7 +640,7 @@
 			<label index="depth_2" type="integer">228799796</label>
 			<label index="depth_3" type="integer">195275893</label>
 			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
+			<label index="mlang_labels_tabdescr" type="integer">207029193</label>
 			<label index="mlang_tabs_tab" type="integer">67476226</label>
 		</languageKey>
 		<languageKey index="ua" type="array">
