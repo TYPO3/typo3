@@ -1384,8 +1384,8 @@ class tx_indexedsearch extends tslib_pibase {
 			$dat = unserialize($row["cHashParams"]);
 			$pp=explode("-",$dat["key"]);
 			if ($pp[0]!=$pp[1])	{
-				$add=", pages ".$dat["key"];
-			} else $add=", page ".$pp[0];
+				$add=", ".$this->pi_getLL("word_pages")." ".$dat["key"];
+			} else $add=", ".$this->pi_getLL("word_page")." ".$pp[0];
 		}
 		return $this->utf8_to_currentCharset(htmlspecialchars(t3lib_div::fixed_lgd($row["item_title"],50))).$add;
 	}
