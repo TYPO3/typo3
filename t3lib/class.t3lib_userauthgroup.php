@@ -483,6 +483,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Returns an array with the webmounts.
 	 * If no webmounts, and empty array is returned.
+	 * NOTICE: Deleted pages WILL NOT be filtered out! So if a mounted page has been deleted it is STILL coming out as a webmount. This is not checked due to performance.
 	 *
 	 * @return	array
 	 */

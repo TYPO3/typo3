@@ -371,27 +371,29 @@ class t3lib_treeView {
 
 				// Preparing rootRec for the mount
 			if ($uid)	{
-				$rootRec=$this->getRecord($uid);
+				$rootRec = $this->getRecord($uid);
 				$firstHtml.=$this->getIcon($rootRec);
 			} else {
 					// Artificial record for the tree root, id=0
-				$rootRec=$this->getRootRecord($uid);
+				$rootRec = $this->getRootRecord($uid);
 				$firstHtml.=$this->getRootIcon($rootRec);
 			}
 
-				// Add the root of the mount to ->tree
-			$this->tree[]=array('HTML'=>$firstHtml,'row'=>$rootRec,'bank'=>$this->bank);
+			if (is_array($rootRec))	{
+					// Add the root of the mount to ->tree
+				$this->tree[]=array('HTML'=>$firstHtml,'row'=>$rootRec,'bank'=>$this->bank);
 
-				// If the mount is expanded, go down:
-			if ($isOpen)	{
-					// Set depth:
-				$depthD='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/blank.gif','width="18" height="16"').' alt="" />';
-				if ($this->addSelfId)	$this->ids[] = $uid;
-				$this->getTree($uid,999,$depthD);
+					// If the mount is expanded, go down:
+				if ($isOpen)	{
+						// Set depth:
+					$depthD='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/blank.gif','width="18" height="16"').' alt="" />';
+					if ($this->addSelfId)	$this->ids[] = $uid;
+					$this->getTree($uid,999,$depthD);
+				}
+
+					// Add tree:
+				$treeArr=array_merge($treeArr,$this->tree);
 			}
-
-				// Add tree:
-			$treeArr=array_merge($treeArr,$this->tree);
 		}
 		return $this->printTree($treeArr);
 	}

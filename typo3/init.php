@@ -275,7 +275,7 @@ $BE_USER->backendCheckLogin();	// Checking if there's a user logged in
 $BE_USER->trackBeUser($TYPO3_CONF_VARS['BE']['trackBeUser']);	// Tracking backend user script hits
 
 	// Setting the web- and filemount global vars:
-$WEBMOUNTS = $BE_USER->returnWebmounts();
+$WEBMOUNTS = $BE_USER->returnWebmounts();		// ! WILL INCLUDE deleted mount pages as well!
 $FILEMOUNTS = $BE_USER->returnFilemounts();
 
 // ****************
