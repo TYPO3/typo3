@@ -9,7 +9,7 @@ General:
 - Feature: "admin" can click a button which wipes out all record-lockings. (Message-Id: <200301281752.23246.mundaun@gmx.ch>)
 - Feature: Controlling access to function menu modules as well (thus we could have a user-module inside ?Template? which could edit the constants field)
 - Feature: Web >plugins -> to be a main module where people can place modules for their extension.
-
+- Substitute "->include_once[] = ...." with "require_once()" directly in classes - BUT the problem might be that class files accesses $TYPO3_CONF_VARS (for XCLASS inclusion) and if that is not accessible from the function including the script THEN all XCLASSes of that class will break!!!
 
 TCEmain:
 - Commenting of the class.

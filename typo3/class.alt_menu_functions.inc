@@ -133,17 +133,17 @@ class alt_menu_functions {
 			if (is_array($moduleInfo['sub']))	{
 					// Finding the default module to display
 				if ($moduleInfo['defaultMod'])	{
-					$link=$moduleInfo['sub'][$moduleInfo['defaultMod']]['script'];
+					$link = $moduleInfo['sub'][$moduleInfo['defaultMod']]['script'];
 				} else {
 					reset($moduleInfo['sub']);
 					$subTemp = current($moduleInfo['sub']);
-					$link=$subTemp['script'];
+					$link = $subTemp['script'];
 				}
-				$link_sub=1;	// Tells that the main modules links to a submodule
-				$link='';	// Does not link to submodules...
+				$link_sub = 1;	// Tells that the main modules links to a submodule
+				$link = '';	// Does not link to submodules...
 			} else {
-				$link=$moduleInfo['script'];
-				$link_sub=0;
+				$link = $moduleInfo['script'];
+				$link_sub = 0;
 			}
 
 			$moduleKey = $moduleName.'_tab';

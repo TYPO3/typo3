@@ -108,7 +108,7 @@
  * Notice that the first part is as usual: Include classes and call $SOBE->checkExtObj() to initialize any level-1 sub-modules
  * But then again ->include_once is traversed IF the initialization of the level-1 modules might have added more files!!
  * And after that $SOBE->checkSubExtObj() is called to initialize the second level.
- * In this way even a third level could be supported - but most likely that is a too layered module to be practical.
+ * In this way even a third level could be supported - but most likely that is a too layered model to be practical.
  *
  * Anyways, the final interesting thing is to see what the framework "func_wizard" actually does:
  *
@@ -176,7 +176,7 @@ class t3lib_extobjbase {
 	 *
 	 * @see handleExternalFunctionValue(), tx_funcwizards_webfunc
 	 */
-	var $function_key='';
+	var $function_key = '';
 
 
 
@@ -224,7 +224,7 @@ class t3lib_extobjbase {
 		if ($this->function_key)	{
 			$this->extClassConf = $this->pObj->getExternalItemConfig($this->pObj->MCONF['name'],$this->function_key,$this->pObj->MOD_SETTINGS[$this->function_key]);
 			if (is_array($this->extClassConf) && $this->extClassConf['path'])	{
-				$this->pObj->include_once[]=$this->extClassConf['path'];
+				$this->pObj->include_once[] = $this->extClassConf['path'];
 			}
 		}
 	}
@@ -237,7 +237,7 @@ class t3lib_extobjbase {
 	function incLocalLang()	{
 		if ($this->localLangFile && @is_file($this->thisPath.'/'.$this->localLangFile))	{
 			include($this->thisPath.'/'.$this->localLangFile);
-			$GLOBALS['LOCAL_LANG']=t3lib_div::array_merge_recursive_overrule($GLOBALS['LOCAL_LANG'],$LOCAL_LANG);
+			$GLOBALS['LOCAL_LANG'] = t3lib_div::array_merge_recursive_overrule($GLOBALS['LOCAL_LANG'],$LOCAL_LANG);
 		}
 	}
 

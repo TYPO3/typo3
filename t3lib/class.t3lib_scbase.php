@@ -136,10 +136,10 @@ class t3lib_SCbase {
 	 * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
 	 * @see init()
 	 */
-	var $MCONF=array();
+	var $MCONF = array();
 
 	/**
-	 * The integer value of the GET/POST var, 'id'. Used for submodules to the 'Web' module.
+	 * The integer value of the GET/POST var, 'id'. Used for submodules to the 'Web' module (page id)
 	 * @see init()
 	 */
 	var $id;
@@ -162,7 +162,7 @@ class t3lib_SCbase {
 	 * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
 	 * @see init()
 	 */
-	var $MOD_MENU= Array (
+	var $MOD_MENU = Array (
 			'function' => array()
 		);
 
@@ -170,7 +170,7 @@ class t3lib_SCbase {
 	 * Current settings for the keys of the MOD_MENU array
 	 * @see $MOD_MENU
 	 */
-	var $MOD_SETTINGS=array();
+	var $MOD_SETTINGS = array();
 
 	/**
 	 * Module TSconfig based on PAGE TSconfig / USER TSconfig
@@ -214,12 +214,12 @@ class t3lib_SCbase {
 	 *
 	 * @see handleExternalFunctionValue()
 	 */
-	var $include_once=array();
+	var $include_once = array();
 
 	/**
 	 * Generally used for accumulating the output content of backend modules
 	 */
-	var $content='';
+	var $content = '';
 
 	/**
 	 * Generally used to hold an instance of the 'template' class from typo3/template.php

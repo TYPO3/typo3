@@ -341,12 +341,21 @@ class SC_db_list {
 		$this->content.=$this->doc->startPage('DB list');
 		$this->content.= '<form action="'.htmlspecialchars($dblist->listURL()).'" method="post" name="dblistForm">';
 
+			// List Module CSH:
+		if (!strlen($this->id))	{
+			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module_noId', $GLOBALS['BACK_PATH'],'<br/>|');
+		} elseif (!$this->id)	{	// zero...:
+			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module_root', $GLOBALS['BACK_PATH'],'<br/>|');
+		}
+
 			// Add listing HTML code:
 		$this->content.= $dblist->HTMLcode;
 		$this->content.= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
 
 			// List Module CSH:
-		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module', $GLOBALS['BACK_PATH'],'<br/>|');
+		if ($this->id)	{
+			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module', $GLOBALS['BACK_PATH'],'<br/>|');
+		}
 
 
 			// If a listing was produced, create the page footer with search form etc:

@@ -77,12 +77,12 @@
  */
 class t3lib_loadModules {
 	var $modules = Array();		// After the init() function this array will contain the structure of available modules for the backend user.
-	var $absPathArray=array();	// Array with paths pointing to the location of modules from extensions
+	var $absPathArray = array();	// Array with paths pointing to the location of modules from extensions
 
-	var $modListGroup= Array();		// this array will hold the elements that should go into the select-list of modules for groups...
-	var $modListUser= Array();		// this array will hold the elements that should go into the select-list of modules for users...
+	var $modListGroup = Array();		// this array will hold the elements that should go into the select-list of modules for groups...
+	var $modListUser = Array();		// this array will hold the elements that should go into the select-list of modules for users...
 
-	var $BE_USER='';	// The backend user for use internally
+	var $BE_USER = '';	// The backend user for use internally
 
 
 	/**
@@ -97,7 +97,7 @@ class t3lib_loadModules {
 	function load($modulesArray,$BE_USER='')	{
 			// Setting the backend user for use internally
 		if (is_object($BE_USER))	{
-			$this->BE_USER=$BE_USER;
+			$this->BE_USER = $BE_USER;
 		} else {
 			$this->BE_USER = $GLOBALS['BE_USER'];
 		}
@@ -171,12 +171,12 @@ class t3lib_loadModules {
 				Today almost all modules reside in extensions and they are found by the _PATHS array of the incoming $TBE_MODULES array
 			*/
 			// Setting paths for 1) core modules (old concept from mod/) and 2) user-defined modules (from ../typo3conf)
-		$paths=array();
+		$paths = array();
 		$paths['defMods'] = PATH_typo3.'mod/';	// Path of static modules
 		$paths['userMods'] = PATH_typo3.'../typo3conf/';  // local modules (maybe frontend specific)
 
 			// Traverses the module setup and creates the internal array $this->modules
-		while(list($mods,$subMod)=each($theMods))	{
+		foreach($theMods as $mods => $subMod)	{
 			unset ($path);
 
 			$extModRelPath = $this->checkExtensionModule($mods);
@@ -201,26 +201,26 @@ class t3lib_loadModules {
 
 				// if $theMainMod is not set (false) there is no access to the module !(?)
 			if ($theMainMod && isset($path))	{
-				$this->modules[$mods]=$theMainMod;
+				$this->modules[$mods] = $theMainMod;
 
 					// SUBMODULES - if any - are loaded (The 'doc' module cannot have submodules...)
 				if ($mods!='doc' && is_array($subMod))	{
-					while(list(,$valsub)=each($subMod))	{
+					foreach($subMod as $valsub)	{
 						$extModRelPath = $this->checkExtensionModule($mods.'_'.$valsub);
 						if ($extModRelPath)	{	// EXTENSION submodule:
-							$theTempSubMod=$this->checkMod($mods.'_'.$valsub,PATH_site.$extModRelPath);
+							$theTempSubMod = $this->checkMod($mods.'_'.$valsub,PATH_site.$extModRelPath);
 							if (is_array($theTempSubMod))	{	// default sub-module in either main-module-path, be it the default or the userdefined.
-								$this->modules[$mods]['sub'][$valsub]=$theTempSubMod;
+								$this->modules[$mods]['sub'][$valsub] = $theTempSubMod;
 							}
 						} else {	// 'CLASSIC' submodule
 								// Checking for typo3/mod/xxx/ module existence...
-							$theTempSubMod=$this->checkMod($mods.'_'.$valsub,$path.$mods.'/'.$valsub);
+							$theTempSubMod = $this->checkMod($mods.'_'.$valsub,$path.$mods.'/'.$valsub);
 							if (is_array($theTempSubMod))	{	// default sub-module in either main-module-path, be it the default or the userdefined.
-								$this->modules[$mods]['sub'][$valsub]=$theTempSubMod;
+								$this->modules[$mods]['sub'][$valsub] = $theTempSubMod;
 							} elseif ($path == $paths['defMods'])	{		// If the submodule did not exist in the default module path, then check if there is a submodule in the submodule path!
-								$theTempSubMod=$this->checkMod($mods.'_'.$valsub,$paths['userMods'].$mods.'/'.$valsub);
+								$theTempSubMod = $this->checkMod($mods.'_'.$valsub,$paths['userMods'].$mods.'/'.$valsub);
 								if (is_array($theTempSubMod))	{
-									$this->modules[$mods]['sub'][$valsub]=$theTempSubMod;
+									$this->modules[$mods]['sub'][$valsub] = $theTempSubMod;
 								}
 							}
 						}
@@ -228,7 +228,7 @@ class t3lib_loadModules {
 				}
 			} else {	// This must be done in order to fill out the select-lists for modules correctly!!
 				if ($mods!='doc' && is_array($subMod))	{
-					while(list(,$valsub)=each($subMod))	{
+					foreach($subMod as $valsub)	{
 						$this->checkMod($mods.'_'.$valsub,$path.$mods.'/'.$valsub);
 					}
 				}
@@ -372,10 +372,10 @@ class t3lib_loadModules {
 	}
 
 	/**
-	 * Here we check for the module. If not a conf-file is set then it's regarded to be a spacer
+	 * Here we check for the module.
 	 * Return values:
-	 * 	'notFound':	If the module was not found in the path
-	 * 	false:		If no access to the module
+	 * 	'notFound':	If the module was not found in the path (no "conf.php" file)
+	 * 	false:		If no access to the module (access check failed)
 	 * 	array():	Configuration array, in case a valid module where access IS granted exists.
 	 *
 	 * @param	string		Module name
@@ -430,29 +430,28 @@ class t3lib_loadModules {
 
 					// Default script setup
 				if ($MCONF['script'] && @file_exists($path.'/'.$MCONF['script']))	{
-					$modconf['script']= $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['script']);
+					$modconf['script'] = $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['script']);
 				} else {
-					$modconf['script']='dummy.php';
+					$modconf['script'] = 'dummy.php';
 				}
 					// Default tab setting
 				if ($MCONF['defaultMod'])	{
-					$modconf['defaultMod']=$MCONF['defaultMod'];
+					$modconf['defaultMod'] = $MCONF['defaultMod'];
 				}
 					// Navigation Frame Script (GET params could be added)
 				if ($MCONF['navFrameScript']) {
 					$navFrameScript = explode('?', $MCONF['navFrameScript']);
 					$navFrameScript = $navFrameScript[0];
 					if (@file_exists($path.'/'.$navFrameScript))	{
-						$modconf['navFrameScript']= $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['navFrameScript']);
+						$modconf['navFrameScript'] = $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['navFrameScript']);
 					}
 				}
 					// additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
 				if ($MCONF['navFrameScriptParam']) {
-					$modconf['navFrameScriptParam']=$MCONF['navFrameScriptParam'];
+					$modconf['navFrameScriptParam'] = $MCONF['navFrameScriptParam'];
 				}
 			} else return false;
-		} else $modconf='notFound';
-
+		} else $modconf = 'notFound';
 		return $modconf;
 	}
 
@@ -486,23 +485,22 @@ class t3lib_loadModules {
 	 * @param	array		moduleArray ($TBE_MODULES)
 	 * @return	array		Output structure with available modules
 	 */
-	function parseModulesArray ($arr)	{
+	function parseModulesArray($arr)	{
 		$theMods = Array();
 		if (is_array($arr))	{
-			reset($arr);
-			while(list($mod,$subs)=each($arr))	{
-				$mod=$this->cleanName($mod);		// clean module name to alphanum
+			foreach($arr as $mod => $subs)	{
+				$mod = $this->cleanName($mod);		// clean module name to alphanum
 				if ($mod)	{
 					if ($subs)	{
-						$temp=explode(',',$subs);
-						while(list(,$subMod)=each($temp))	{
-							$subMod=$this->cleanName($subMod);
+						$subsArr = t3lib_div::trimExplode(',', $subs);
+						foreach($subsArr as $subMod)	{
+							$subMod = $this->cleanName($subMod);
 							if ($subMod)	{
-								$theMods[$mod][]=$subMod;
+								$theMods[$mod][] = $subMod;
 							}
 						}
 					} else {
-						$theMods[$mod]=1;
+						$theMods[$mod] = 1;
 					}
 				}
 			}

@@ -389,7 +389,7 @@ class localRecordList extends recordList {
 			}
 
 				// CSH:
-			$theData[$titleCol].= t3lib_BEfunc::cshItem($table,'',$this->backPath);
+			$theData[$titleCol].= t3lib_BEfunc::cshItem($table,'',$this->backPath,'',FALSE,'margin-bottom:0px; white-space: normal;');
 
 			if ($LOISmode)	{
 				$out.='
