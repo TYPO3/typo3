@@ -1,3 +1,7 @@
+2004-07-15  Robert Lemke  <rl@robertlemke.de>
+
+	* Added new language flag icons (see t3lib/gfx/flags/). Will be used by templavoila and maybe sys_language
+
 2004-07-12  Ingmar Schlecht  <ingmars@web.de>
 
 	* Fixed bug #194: wizard_table.php, missing parameter 'backPath'
