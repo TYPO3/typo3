@@ -383,8 +383,8 @@ class SC_db_new {
 			$t='pages';
 			$v=$TCA[$t];
 			$this->code.=$this->linkWrap(
-					t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,''),
-					$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1).')',
+					t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
+						$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1).')',
 					'pages',
 					-$this->id
 				);

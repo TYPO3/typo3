@@ -150,7 +150,7 @@ class SC_alt_menu {
 
 				// clear all page cache
 			$href = htmlspecialchars($this->backPath.'tce_db.php?vC='.$BE_USER->veriCode().
-						'&redirect='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
+						'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).
 						'&cacheCmd=all'
 					);
 			$this->content.='
