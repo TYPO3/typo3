@@ -96,7 +96,6 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 */
 	function dmailer_prepare($row)	{
 		$sys_dmail_uid = $row['uid'];
-		print "TEST: ".$row["encoding"]."<br />";
 		if($row["encoding"] == "base64") {			  
 		  $this->useBase64();
 		}
