@@ -232,18 +232,52 @@ class t3lib_extMgm {
 	 * @param	string		Table name
 	 * @param	string		Field list to add.
 	 * @param	string		List of specific types to add the field list to. (If empty, all type entries are affected)
-	 * @return	void		
+	 * @param	string		Insert fields before one of this fields (commalist). Example: "keywords,--palette--;;4,description". Palettes must be passed like in the example no matter how the palette definition looks like in TCA.
+	 * @return	void
 	 */
-	function addToAllTCAtypes($table,$str,$specificTypesList='')	{
+	function addToAllTCAtypes($table,$str,$specificTypesList='',$beforeList='')	{
 		global $TCA;
+
+		$beforeFields=t3lib_div::trimExplode(',',$beforeList,1);
+		$before=count($beforeFields);
+
 		t3lib_div::loadTCA($table);	
 		if (trim($str) && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
 			foreach($TCA[$table]['types'] as $k => $v)	{
-				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	$TCA[$table]['types'][$k]['showitem'].=', '.trim($str);
+				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
+
+					if ($before) {
+						$append=true;
+						$showItem = t3lib_div::trimExplode(',',$TCA[$table]['types'][$k]['showitem'],1);
+						foreach($showItem as $key => $fieldInfo) {
+
+							$parts = explode(';',$fieldInfo);
+							$theField = trim($parts[0]);
+							$palette = trim($parts[0]).';;'.trim($parts[2]);
+								// find exact field name or palette with number
+							if (in_array($theField,$beforeFields) OR in_array($palette,$beforeFields))	{
+								$showItem[$key]=trim($str).', '.$fieldInfo;
+								$append=false;
+								break;
+							}
+						}
+
+							// Not found? Then append.
+						if($append) {
+							$showItem[]=trim($str);
+						}
+
+						$TCA[$table]['types'][$k]['showitem']=implode(', ', $showItem);
+
+					} else {
+						$TCA[$table]['types'][$k]['showitem'].=', '.trim($str);
+					}
+				}
 			}
 		}
 	}
-	
+
+
 	/**
 	 * Add tablename to default list of allowed tables on pages.
 	 * Will add the $table to the list of tables allowed by default on pages as setup by $PAGES_TYPES['default']['allowedTables']
@@ -420,11 +454,9 @@ class t3lib_extMgm {
 
 		// even not available services will be included to make it possible to give the admin a feedback of non-available services.
 		// but maybe it's better to move non-available services to a different array??
-#debug($serviceType);
-#debug($serviceKey);
-#debug($info);
+
 		if ($serviceType AND substr($serviceType,0,3)!='tx_' AND substr($serviceKey,0,3)=='tx_' AND is_array($info))	{
-#debug($extKey);
+
 			$info['priority'] = max(0,min(100,$info['priority']));
 
 			$T3_SERVICES[$serviceType][$serviceKey]=$info;
@@ -492,6 +524,7 @@ class t3lib_extMgm {
 
 		if (is_array($T3_SERVICES[$serviceType]))	{
 			foreach($T3_SERVICES[$serviceType] as $key => $info)	{
+
 				if (t3lib_div::inList($excludeServiceKeys,$key)) {
 					continue;
 				}
@@ -502,7 +535,9 @@ class t3lib_extMgm {
 					$serviceSubType = key($info['serviceSubTypes']);
 				}
 
-				if( $info['available'] AND ($info['subtype']=='' XOR $info['serviceSubTypes'][$serviceSubType]) AND $info['priority']>=$priority ) {
+					// this matches empty subtype too
+				if( $info['available'] AND ($info['subtype']==$serviceSubType XOR $info['serviceSubTypes'][$serviceSubType]) AND $info['priority']>=$priority ) {
+
 						// has a lower quality than the already found, therefore we skip this service
 					if($info['priority']==$priority AND $info['quality']<$quality) {
 						continue;
