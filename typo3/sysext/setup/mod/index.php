@@ -29,8 +29,8 @@
  *
  * This module lets users viev and change their individual settings
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * Revised for TYPO3 3.7 6/2004 by Kasper Skårhøj
+ * @author	Kasper Skï¿½hj <kasperYYYY@typo3.com>
+ * Revised for TYPO3 3.7 6/2004 by Kasper Skï¿½hj
  * XHTML compatible.
  */
 /**
@@ -287,8 +287,9 @@ class SC_mod_user_setup_index {
 					$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
 				} else $localLabel='';
 
+				$unavailable = $val!='default' && !t3lib_extMgm::isLoaded('csh_'.$val) ? '1' : '';
 				$opt[$GLOBALS['LOCAL_LANG']['default']['lang_'.$val].'--'.$val]='
-					<option value="'.$val.'"'.($BE_USER->uc['lang']==$val?' selected="selected"':'').'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
+					<option value="'.$val.'"'.($BE_USER->uc['lang']==$val?' selected="selected"':'').($unavailable ? ' class="c-na"' : '').'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
 			}
 		}
 		ksort($opt);
@@ -297,6 +298,14 @@ class SC_mod_user_setup_index {
 					implode('',$opt).'
 				</select>'.
 				t3lib_BEfunc::cshItem('_MOD_user_setup', 'language', $GLOBALS['BACK_PATH'],'|');
+
+				if ($BE_USER->uc['lang']!='default' && !t3lib_extMgm::isLoaded('csh_'.$BE_USER->uc['lang']))	{
+					$code.= '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
+								$this->doc->icons(3).
+								sprintf(nl2br('The selected language is not fully available before the associated language pack extension, "%s", is installed on the system.
+								Please ask your system administrator for this.'), 'csh_'.$BE_USER->uc['lang']).
+							'</td></tr></table>';
+				}
 		$this->content.=$this->doc->section($LANG->getLL('language').':',$code,0,1);
 
 

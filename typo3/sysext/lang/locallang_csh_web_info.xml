@@ -21,9 +21,43 @@ More about Web&gt;Info module framework | http://typo3.org/documentation/documen
 			<label index=".image_descr">The Web&gt;Info module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Info module. Here you see the &quot;Page TSconfig&quot; overview from the extension &quot;info_pagetsconfig&quot;.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_web_info.xml</languageKey>
-		<languageKey index="hu">EXT:csh_hu/lang/hu.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/lang/it.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/lang/fr.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/lang/es.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/lang/nl.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/lang/cz.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/lang/se.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/lang/ru.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/lang/ch.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/lang/hr.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/lang/gl.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/lang/hk.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/lang/bg.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/lang/br.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/lang/ar.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/lang/he.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/lang/lv.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/lang/pl.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/lang/si.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/lang/tr.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/lang/pt.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/lang/ro.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/lang/sk.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/lang/lt.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/lang/is.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/lang/th.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/lang/gr.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/lang/eu.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/lang/et.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/lang/ua.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/lang/jp.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/lang/vn.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/lang/ca.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/lang/ba.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/lang/kr.locallang_csh_web_info.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/lang/de.locallang_csh_web_info.xml</languageKey>
 		<languageKey index="no">EXT:csh_no/lang/no.locallang_csh_web_info.xml</languageKey>
 		<languageKey index="fi">EXT:csh_fi/lang/fi.locallang_csh_web_info.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/lang/hu.locallang_csh_web_info.xml</languageKey>
 	</data>
 </T3locallang>

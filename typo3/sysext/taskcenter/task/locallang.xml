@@ -1,842 +1,103 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Module labels</description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <fileId>EXT:taskcenter/task/locallang.xml</fileId>
-        <labelContext type="array">
-            <label index="title"></label>
-            <label index="lReplyAddress"></label>
-            <label index="lSelf"></label>
-            <label index="lSendNew"></label>
-            <label index="lSendReply"></label>
-            <label index="listSeparator_Groups"></label>
-            <label index="lHomedir"></label>
-            <label index="lNone"></label>
-            <label index="lCreate"></label>
-            <label index="lCancel"></label>
-            <label index="lDelete_warning"></label>
-            <label index="lDelete"></label>
-            <label index="lUpdate"></label>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="title">Task overview</label>
-            <label index="lReplyAddress">Reply address is your email</label>
-            <label index="lSelf">Self</label>
-            <label index="lSendNew">Send message</label>
-            <label index="lSendReply">Reply to message</label>
-            <label index="listSeparator_Groups">__Groups:__</label>
-            <label index="lHomedir">Home dir</label>
-            <label index="lNone">[none]</label>
-            <label index="lCreate">Create</label>
-            <label index="lCancel">Cancel</label>
-            <label index="lDelete_warning">Are you sure you want to delete this user?</label>
-            <label index="lDelete">Delete</label>
-            <label index="lUpdate">Update</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="title">Overblik over opgaver</label>
-            <label index="lReplyAddress">Retur-adressen er din email</label>
-            <label index="lSelf">Selv</label>
-            <label index="lSendNew">Send besked</label>
-            <label index="lSendReply">Svar på besked</label>
-            <label index="listSeparator_Groups">__Grupper:__</label>
-            <label index="lHomedir">Hjemme-mappe</label>
-            <label index="lNone">[ingen]</label>
-            <label index="lCreate">Opret</label>
-            <label index="lCancel">Annullér</label>
-            <label index="lDelete_warning">Er du sikker på, at du ønsker at slette denne bruger?</label>
-            <label index="lDelete">Slet</label>
-            <label index="lUpdate">Opdatér</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="title">Tasks Übersicht</label>
-            <label index="lReplyAddress">Antwortadresse ist Ihre Email Adresse</label>
-            <label index="lSelf">Selbst</label>
-            <label index="lSendNew">Nachricht senden</label>
-            <label index="lSendReply">Nachricht beantworten</label>
-            <label index="listSeparator_Groups">__Gruppen:__</label>
-            <label index="lHomedir">Home Verzeichnis</label>
-            <label index="lNone">[kein]</label>
-            <label index="lCreate">Anlegen</label>
-            <label index="lCancel">Abbrechen</label>
-            <label index="lDelete_warning">Soll dieser Benutzer wirklich gelöscht werden?</label>
-            <label index="lDelete">Löschen</label>
-            <label index="lUpdate">Aktualisieren</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="title">Oversikt over oppgaver</label>
-            <label index="lReplyAddress">Returadressen er din e-post adresse</label>
-            <label index="lSelf">Selv</label>
-            <label index="lSendNew">Send melding</label>
-            <label index="lSendReply">Svar på melding</label>
-            <label index="listSeparator_Groups">__Grupper:__</label>
-            <label index="lHomedir">Hjemme-mappe</label>
-            <label index="lNone">[ingen]</label>
-            <label index="lCreate">Opprett</label>
-            <label index="lCancel">Avbryt</label>
-            <label index="lDelete_warning">Er du sikker på at du ønsker å slette denne brukeren?</label>
-            <label index="lDelete">Slett</label>
-            <label index="lUpdate">Oppdater</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="title">Visione d'insieme dei task</label>
-            <label index="lReplyAddress">L'indirizzo di risposta è la tua e-mail</label>
-            <label index="lSelf">Self</label>
-            <label index="lSendNew">Invia messaggio</label>
-            <label index="lSendReply">Rispondi al messaggio</label>
-            <label index="listSeparator_Groups">__Gruppi:__</label>
-            <label index="lHomedir">Home dir</label>
-            <label index="lNone">[none]</label>
-            <label index="lCreate">Crea</label>
-            <label index="lCancel">Cancella</label>
-            <label index="lDelete_warning">Sei sicuro di voler eliminare questo utente?</label>
-            <label index="lDelete">Elimina</label>
-            <label index="lUpdate">Aggiorna</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="title">Tâche (résumé)</label>
-            <label index="lReplyAddress">L'adresse de réponse est votre adresse</label>
-            <label index="lSelf">Personnel</label>
-            <label index="lSendNew">Envoyer le message</label>
-            <label index="lSendReply">Répondre au message</label>
-            <label index="listSeparator_Groups">_Groups:_</label>
-            <label index="lHomedir">Mes documents</label>
-            <label index="lNone">[vide]</label>
-            <label index="lCreate">Créer</label>
-            <label index="lCancel">Annuler</label>
-            <label index="lDelete_warning">Etes-vous sûre de vouloir supprimer cet utilisateur ?</label>
-            <label index="lDelete">Effacer</label>
-            <label index="lUpdate">Mettre à jour</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="title">Resúmen de tareas</label>
-            <label index="lReplyAddress">La dirección de remitente es la de su email</label>
-            <label index="lSelf">Yo mismo</label>
-            <label index="lSendNew">Enviar mensaje</label>
-            <label index="lSendReply">Contestar mensaje</label>
-            <label index="listSeparator_Groups">__Grupos:__</label>
-            <label index="lHomedir">Directorio Home</label>
-            <label index="lNone">[ninguno]</label>
-            <label index="lCreate">Crear</label>
-            <label index="lCancel">Cancelar</label>
-            <label index="lDelete_warning">¿Seguro que desea borrar este usuario?</label>
-            <label index="lDelete">Borrar</label>
-            <label index="lUpdate">Actualizar</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="title">Taakoverzicht</label>
-            <label index="lReplyAddress">De afzender is uw emailadres</label>
-            <label index="lSelf">Zelf</label>
-            <label index="lSendNew">Verstuur bericht</label>
-            <label index="lSendReply">Bericht beantwoorden</label>
-            <label index="listSeparator_Groups">__Groepen:__</label>
-            <label index="lHomedir">Home map</label>
-            <label index="lNone">[geen]</label>
-            <label index="lCreate">Aanmaken</label>
-            <label index="lCancel">Annuleren</label>
-            <label index="lDelete_warning">Deze gebruiker verwijderen?</label>
-            <label index="lDelete">Verwijder</label>
-            <label index="lUpdate">Actualiseren</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="title">Přehled úkolů</label>
-            <label index="lReplyAddress">Adresa pro odpověď je váš email</label>
-            <label index="lSelf">Vlastní</label>
-            <label index="lSendNew">Odeslat zprávu</label>
-            <label index="lSendReply">Odpovědět na zprávu</label>
-            <label index="listSeparator_Groups">__Skupiny:__</label>
-            <label index="lHomedir">Domácí složka</label>
-            <label index="lNone">[žádné]</label>
-            <label index="lCreate">Vytvořit</label>
-            <label index="lCancel">Zrušit</label>
-            <label index="lDelete_warning">Jste si jisti, že chcete odstranit tohoto uživatele?</label>
-            <label index="lDelete">Odstranit</label>
-            <label index="lUpdate">Aktualizovat</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="title">Przegląd zadań</label>
-            <label index="lReplyAddress">Adres zwrotny jest twoim adresem email</label>
-            <label index="lSelf">Własne</label>
-            <label index="lSendNew">Wyślij wiadomość</label>
-            <label index="lSendReply">Odpowiedz</label>
-            <label index="listSeparator_Groups">__Grupy:__</label>
-            <label index="lHomedir">Katalog domowy</label>
-            <label index="lNone">[nic]</label>
-            <label index="lCreate">Utwórz</label>
-            <label index="lCancel">Anuluj</label>
-            <label index="lDelete_warning">Czy na pewno chcesz usunąć tego użytkownika?</label>
-            <label index="lDelete">Usuń</label>
-            <label index="lUpdate">Aktualizuj</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="title">Pregled nalog</label>
-            <label index="lReplyAddress">Povratni naslov je vaš e-naslov</label>
-            <label index="lSelf">Jaz</label>
-            <label index="lSendNew">Pošlji novo sporočilo</label>
-            <label index="lSendReply">Pošlji odgovor</label>
-            <label index="listSeparator_Groups">__Skupine:__</label>
-            <label index="lHomedir">Domača mapa</label>
-            <label index="lNone">[brez]</label>
-            <label index="lCreate">Ustvari</label>
-            <label index="lCancel">Prekliči</label>
-            <label index="lDelete_warning">Ste prepričani, da želite odstraniti tega uporabnika?</label>
-            <label index="lDelete">Izbriši</label>
-            <label index="lUpdate">Osveži</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="title">Toimintojen yleispiirteet</label>
-            <label index="lReplyAddress">Vastausosoite on Sinun sähköpostiosoitteesi</label>
-            <label index="lSelf">Itse</label>
-            <label index="lSendNew">Lähet sähköpostiviesti</label>
-            <label index="lSendReply">Vastaa sähköpostiviestiin</label>
-            <label index="listSeparator_Groups">__Ryhmät:__</label>
-            <label index="lHomedir">Kotihakemisto</label>
-            <label index="lNone">[none]</label>
-            <label index="lCreate">Luo</label>
-            <label index="lCancel">Peruuta</label>
-            <label index="lDelete_warning">Oletko varma halutessasi poistaa tämän käyttäjän?</label>
-            <label index="lDelete">Poista</label>
-            <label index="lUpdate">Päivitä</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="title">Görev genel görüntüsü</label>
-            <label index="lReplyAddress">Cevap verecek adres emailinizdir</label>
-            <label index="lSelf">Kendi</label>
-            <label index="lSendNew">Mesaj göndermek</label>
-            <label index="lSendReply">Mesajı cevaplamak</label>
-            <label index="listSeparator_Groups">__Gruplar:__</label>
-            <label index="lHomedir">Giriş dizini</label>
-            <label index="lNone">[hiçbiri]</label>
-            <label index="lCreate">Yarat</label>
-            <label index="lCancel">İptal et</label>
-            <label index="lDelete_warning">Bu kullanıcıyı silmek istediğinizden eminmisiniz?</label>
-            <label index="lDelete">Sil</label>
-            <label index="lUpdate">Güncelle</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="title">Översikt över uppgifter</label>
-            <label index="lReplyAddress">Din epostadress används som svarsadress</label>
-            <label index="lSelf">Själv</label>
-            <label index="lSendNew">Skicka meddelande</label>
-            <label index="lSendReply">Svara på meddelande</label>
-            <label index="listSeparator_Groups">__Grupper:__</label>
-            <label index="lHomedir">Hemkatalog</label>
-            <label index="lNone">[inget]</label>
-            <label index="lCreate">Skapa</label>
-            <label index="lCancel">Avbryt</label>
-            <label index="lDelete_warning">Är du säker på att du vill ta bort denna användare?</label>
-            <label index="lDelete">Ta bort</label>
-            <label index="lUpdate">Uppdatera</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="title">Histórico de Tarefas</label>
-            <label index="lReplyAddress">Endereço de resposta é o seu email</label>
-            <label index="lSelf">Próprio</label>
-            <label index="lSendNew">Enviar mensagem</label>
-            <label index="lSendReply">Responder à mensagem</label>
-            <label index="listSeparator_Groups">__Grupos:__</label>
-            <label index="lHomedir">Directoria raíz</label>
-            <label index="lNone">[nenhum]</label>
-            <label index="lCreate">Criar</label>
-            <label index="lCancel">Cancelar</label>
-            <label index="lDelete_warning">Tem a certeza que quer apagar este utilizador?</label>
-            <label index="lDelete">Apagar</label>
-            <label index="lUpdate">Actualizar</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="title">Обзор заданий</label>
-            <label index="lReplyAddress">Ваш ответный адрес эл. почты</label>
-            <label index="lSelf">Сам</label>
-            <label index="lSendNew">Послать сообщение</label>
-            <label index="lSendReply">Ответить на сообщение</label>
-            <label index="listSeparator_Groups">__Группы:__</label>
-            <label index="lHomedir">Исходная папка</label>
-            <label index="lNone">[без]</label>
-            <label index="lCreate">Создать</label>
-            <label index="lCancel">Отменить</label>
-            <label index="lDelete_warning">Вы уверены, что хотите удалить этого пользователя?</label>
-            <label index="lDelete">Удалить</label>
-            <label index="lUpdate">Обновить</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="title">Vedere a sarcinilor</label>
-            <label index="lReplyAddress">Adresa de raspuns este adresa ta de email</label>
-            <label index="lSelf">Individual</label>
-            <label index="lSendNew">Trimite mesaj</label>
-            <label index="lSendReply">Raspunde la mesaj</label>
-            <label index="listSeparator_Groups">__Grupuri:__</label>
-            <label index="lHomedir">Directorul principal</label>
-            <label index="lNone">[nimic]</label>
-            <label index="lCreate">Creeaza</label>
-            <label index="lCancel">Anuleaza</label>
-            <label index="lDelete_warning">Esti sigur ca vrei sa stergi acest utilizator?</label>
-            <label index="lDelete">Sterge</label>
-            <label index="lUpdate">Actualizeaza</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="title">Prehľad úloh</label>
-            <label index="lReplyAddress">Adresa pre odpoveď je váš e-mail</label>
-            <label index="lSelf">Vlastny</label>
-            <label index="lSendNew">Odoslať správu</label>
-            <label index="lSendReply">Odpovedať na správu</label>
-            <label index="listSeparator_Groups">__Skupiny:__</label>
-            <label index="lHomedir">Domáca zložka</label>
-            <label index="lNone">[žiadne]</label>
-            <label index="lCreate">Vytvoriť</label>
-            <label index="lCancel">Zrušiť</label>
-            <label index="lDelete_warning">Ste si naozaj istý , že chcete odstrániť akurát tohoto uživateľa?</label>
-            <label index="lDelete">Odstrániť</label>
-            <label index="lUpdate">Aktualizovať</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="title">Pregled zadataka</label>
-            <label index="lReplyAddress">Adresa za odgovor je vaš email</label>
-            <label index="lSelf">Sam</label>
-            <label index="lSendNew">Pošalji poruku</label>
-            <label index="lSendReply">Odgovori na poruku</label>
-            <label index="listSeparator_Groups">__Grupe:__</label>
-            <label index="lHomedir">Home pretinac</label>
-            <label index="lNone">[ništa]</label>
-            <label index="lCreate">Napravi</label>
-            <label index="lCancel">Odustani</label>
-            <label index="lDelete_warning">Sigurno želite pobrisati ovog korisnika?</label>
-            <label index="lDelete">Pobriši</label>
-            <label index="lUpdate">Obnovi</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="title">Feladat áttekintés</label>
-            <label index="lReplyAddress">Cím továbbítása a email címedre</label>
-            <label index="lSelf">Önmaga</label>
-            <label index="lSendNew">Üzenet küldése</label>
-            <label index="lSendReply">Üzenetre válaszolás</label>
-            <label index="listSeparator_Groups">__Csoportok:__</label>
-            <label index="lHomedir">Home könyvtár</label>
-            <label index="lNone">[üres]</label>
-            <label index="lCreate">Létrehozás</label>
-            <label index="lCancel">Mégsem</label>
-            <label index="lDelete_warning">Biztos törölni akarod ezt a felhasználót?</label>
-            <label index="lDelete">Törlés</label>
-            <label index="lUpdate">Módosítás</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="title">Histórico de Tarefas</label>
-            <label index="lReplyAddress">Endereço de resposta é o seu e-mail</label>
-            <label index="lSelf">Próprio</label>
-            <label index="lSendNew">Enviar mensagem</label>
-            <label index="lSendReply">Responder à mensagem</label>
-            <label index="listSeparator_Groups">__Grupos:__</label>
-            <label index="lHomedir">Diretório raiz</label>
-            <label index="lNone">[nenhum]</label>
-            <label index="lCreate">Criar</label>
-            <label index="lCancel">Cancelar</label>
-            <label index="lDelete_warning">Tem certeza que quer apagar este usuário?</label>
-            <label index="lDelete">Remover</label>
-            <label index="lUpdate">Atualizar</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-            <label index="title">Ülesande ülevaade</label>
-            <label index="lReplyAddress">Emili aadress, kuhu saata vastus</label>
-            <label index="lSelf">Ise</label>
-            <label index="lSendNew">Saada kiri</label>
-            <label index="lSendReply">Vasta kirjale</label>
-            <label index="listSeparator_Groups">__Grupid:__</label>
-            <label index="lHomedir">Kodukataloog</label>
-            <label index="lNone">[tühi]</label>
-            <label index="lCreate">Loo</label>
-            <label index="lCancel">Katkesta</label>
-            <label index="lDelete_warning">Olete kindel, et soovite selle kasutaja kustutada?</label>
-            <label index="lDelete">Kustuta</label>
-            <label index="lUpdate">Uuenda</label>
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-            <label index="title" type="integer">6410427</label>
-            <label index="lReplyAddress" type="integer">224962887</label>
-            <label index="lSelf" type="integer">181856101</label>
-            <label index="lSendNew" type="integer">122144419</label>
-            <label index="lSendReply" type="integer">105689675</label>
-            <label index="listSeparator_Groups" type="integer">221382396</label>
-            <label index="lHomedir" type="integer">24871266</label>
-            <label index="lNone" type="integer">173298844</label>
-            <label index="lCreate" type="integer">109504151</label>
-            <label index="lCancel" type="integer">245659783</label>
-            <label index="lDelete_warning" type="integer">173897440</label>
-            <label index="lDelete" type="integer">254438473</label>
-            <label index="lUpdate" type="integer">6894342</label>
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>Module labels</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:taskcenter/task/locallang.xml</fileId>
+		<labelContext type="array">
+			<label index="title"></label>
+			<label index="lReplyAddress"></label>
+			<label index="lSelf"></label>
+			<label index="lSendNew"></label>
+			<label index="lSendReply"></label>
+			<label index="listSeparator_Groups"></label>
+			<label index="lHomedir"></label>
+			<label index="lNone"></label>
+			<label index="lCreate"></label>
+			<label index="lCancel"></label>
+			<label index="lDelete_warning"></label>
+			<label index="lDelete"></label>
+			<label index="lUpdate"></label>
+		</labelContext>
+		<ext_filename_template>EXT:csh_###LANGKEY###/taskcenter/task/###LANGKEY###.locallang.xml</ext_filename_template>
+		<keep_original_text type="integer">1</keep_original_text>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">Task overview</label>
+			<label index="lReplyAddress">Reply address is your email</label>
+			<label index="lSelf">Self</label>
+			<label index="lSendNew">Send message</label>
+			<label index="lSendReply">Reply to message</label>
+			<label index="listSeparator_Groups">__Groups:__</label>
+			<label index="lHomedir">Home dir</label>
+			<label index="lNone">[none]</label>
+			<label index="lCreate">Create</label>
+			<label index="lCancel">Cancel</label>
+			<label index="lDelete_warning">Are you sure you want to delete this user?</label>
+			<label index="lDelete">Delete</label>
+			<label index="lUpdate">Update</label>
+		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/taskcenter/task/dk.locallang.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/taskcenter/task/de.locallang.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/taskcenter/task/no.locallang.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/taskcenter/task/it.locallang.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/taskcenter/task/fr.locallang.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/taskcenter/task/es.locallang.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/taskcenter/task/nl.locallang.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/taskcenter/task/cz.locallang.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/taskcenter/task/pl.locallang.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/taskcenter/task/si.locallang.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/taskcenter/task/fi.locallang.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/taskcenter/task/tr.locallang.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/taskcenter/task/se.locallang.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/taskcenter/task/pt.locallang.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/taskcenter/task/ru.locallang.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/taskcenter/task/ro.locallang.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/taskcenter/task/ch.locallang.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/taskcenter/task/sk.locallang.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/taskcenter/task/lt.locallang.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/taskcenter/task/is.locallang.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/taskcenter/task/hr.locallang.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/taskcenter/task/hu.locallang.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/taskcenter/task/gl.locallang.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/taskcenter/task/th.locallang.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/taskcenter/task/gr.locallang.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/taskcenter/task/hk.locallang.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/taskcenter/task/eu.locallang.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/taskcenter/task/bg.locallang.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/taskcenter/task/br.locallang.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/taskcenter/task/et.locallang.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/taskcenter/task/ar.locallang.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/taskcenter/task/he.locallang.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/taskcenter/task/ua.locallang.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/taskcenter/task/lv.locallang.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/taskcenter/task/jp.locallang.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/taskcenter/task/vn.locallang.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/taskcenter/task/ca.locallang.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/taskcenter/task/ba.locallang.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/taskcenter/task/kr.locallang.xml</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="title" type="integer">6410427</label>
+			<label index="lReplyAddress" type="integer">224962887</label>
+			<label index="lSelf" type="integer">181856101</label>
+			<label index="lSendNew" type="integer">122144419</label>
+			<label index="lSendReply" type="integer">105689675</label>
+			<label index="listSeparator_Groups" type="integer">221382396</label>
+			<label index="lHomedir" type="integer">24871266</label>
+			<label index="lNone" type="integer">173298844</label>
+			<label index="lCreate" type="integer">109504151</label>
+			<label index="lCancel" type="integer">245659783</label>
+			<label index="lDelete_warning" type="integer">173897440</label>
+			<label index="lDelete" type="integer">254438473</label>
+			<label index="lUpdate" type="integer">6894342</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

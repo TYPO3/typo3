@@ -1,386 +1,73 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Module labels</description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <fileId>EXT:lowlevel/dbint/locallang_mod.xml</fileId>
-        <labelContext type="array">
-            <label index="mlang_labels_tablabel"></label>
-            <label index="mlang_labels_tabdescr"></label>
-            <label index="mlang_tabs_tab"></label>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="mlang_labels_tablabel">Database integrity check</label>
-            <label index="mlang_labels_tabdescr">Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. In addition the existence of uploaded files attached to records (normally residing in uploads/* folders) are verified as well. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB check</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="mlang_labels_tablabel">Database integritets check</label>
-            <label index="mlang_labels_tabdescr">Her kan du verificere integriteten af databasetabellerne konfigureret med $TCA. For eksempel skal alle elementer tilhøre et side-element. Derudover bliver det undersøgt om filer, tilknyttet databaseelementer eksisterer (normalt beliggende i uploads/* mappen). Du kan også få et totaloverblik over sidetræet inklusiv slettede sider. Endeligt har du adgang til en overordnet databasesøgningsfunktion.&lt;br /&gt;&lt;em&gt;Adgang kun for 'admin' brugere!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB check</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="mlang_labels_tablabel">Databank Integritäts-Check</label>
-            <label index="mlang_labels_tabdescr">Hier kann die Integrität der Datenbanktabellen, welche von $TCA angelegt wurden, überprüft werden. Zum Beispiel müssen alle Datensätze zu einer Seite gehören. Zusätzlich wird die Existenz von mit Datensätzen verknüpften hochgeladenen Dateien überprüft (diese liegen normalerweise im Verzeichnis uploads/*). Es kann ebenfalls die komplette Seitenstruktur, inklusive gelöschter Seiten, angezeigt werden. Abschließend haben Sie noch Zugriff zu einer globalen Datenbank-Suchfunktion.&lt;br /&gt;&lt;em&gt;Zugriff nur für Administratoren!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB Überprüfung</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="mlang_labels_tablabel">Database integritets sjekk</label>
-            <label index="mlang_labels_tabdescr">Her kan du verifisere integriteten for databasetabellene som er konfigurert med $TCA. For eksempel skal alle elementer tilhøre et sideelement. Utover dette blir det kontrollert om filer tilknyttet databaseelementer eksisterer (normalt ligger disse i uploads/* mappen). Du kan også få en totaloversikt over sidetreet inklusive slettede sider. Videre har du adgang til en overordnet databasesøkfunksjon.&lt;br /&gt;&lt;em&gt;Adgang kun for 'admin' brukere!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB check</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="mlang_labels_tablabel">Controllo integrità database</label>
-            <label index="mlang_labels_tabdescr">In questo modulo potete controllare l'integrità delle tabelle del database configurate da $TCA. Per esempio, viene controllato che ogni record appartenga ad una pagina, e che tutti i file inviati sul server siano effettivamente presenti (di solito nelle sottocartelle di uploads/*. E' inoltre presente l'intero albero delle pagine (comprese quelle cancellate). Potete anche ricercare un termine all'interno di tutto il database.&lt;br /&gt;&lt;em&gt;Accesso riservato ai soli utenti 'admin'!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Controllo Database</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="mlang_labels_tablabel">Vérification de l'intégrité de la base de données</label>
-            <label index="mlang_labels_tabdescr">Ici, vous pouvez contrôler l'intégrité de la base de données, selon le $TCA. Pour l'instant, tous les enregistrements doivent correspondre à une page. Les fichiers Uploder orphelins sont eux aussi contrôlé.</label>
-            <label index="mlang_tabs_tab">Vérification BD</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="mlang_labels_tablabel">Verificación de la integridad de la base de datos</label>
-            <label index="mlang_labels_tabdescr">Aquí puede verificar la integridad de las tablas de la base de datos configuradas mendiante $TCA. Por ejemplo, todos los registros deben pertenecer a un registro de página. Así mismo la existencia de archivos enviados anexados a registros (normamente en el directorio uploads/*) también se verifican. También obtiene una vista del árbol de páginas incluyendo las páginas eliminadas. Finalmente tiene acceso a una herramienta de búsqueda global.&lt;br /&gt;&lt;em&gt;¡Acceso solamente a usuarios 'admin'&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Verificación BD</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="mlang_labels_tablabel">Integriteitscontrole van de database</label>
-            <label index="mlang_labels_tabdescr">Hier kan je de integriteit van de databasetabellen controleren geconfigureerd door de $TCA. Zo moeten bijvoorbeeld records gekoppeld zijn aan een paginarecord. Bovendien wordt de aanwezigheid van de geuploade bestanden (normaal gesproken gevonden in de map uploads/*) gekoppeld aan records ook geverifieerd. Je kan ook een totaaloverzicht van de totale paginastruktuur inclusief verwijderde pagina's opvragen. Tenslotte heb je de mogelijkheid de totale database te doorzoeken.&lt;br /&gt;&lt;em&gt;Alleen toegang voor 'admin' gebruikers!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB controle</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="mlang_labels_tablabel">Kontrola integrity databáze</label>
-            <label index="mlang_labels_tabdescr">Zde můžete kontroloavat integritu databázových tabulek konfigurovaných v $TCA. Napříkal všechny záznamy musí patřit k záznamu strany. Navíc je ověřena i existence záznamů pro uploadované soubory přiřazené k záznamům (normálně v uploads/* složkách). Také můžete vidět celkový strom včetně odstraněných stránek. Také máte přístup ke globálnímu vyhledávání.&lt;br /&gt;&lt;em&gt;Přístup pouze pro 'admin' uživatele!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB kontrola</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="mlang_labels_tablabel">Kontrola integralności bazy</label>
-            <label index="mlang_labels_tabdescr">Tutaj możesz sprawdzić poprawność tabel bazy danych ze wzorem zawartym w $TCA. Dla przykładu, wszystkie rekordy muszą należeć do jakiejś strony. Ponadto pliki uploadowane do katalogów uploads/* muszą mieć powiązanie z odpowiednim rekordem, co również jest kontrolowane. Oprócz tego możesz tu zobaczyć i przeszukać całą strukturę witryny, łącznie ze stronami usuniętymi.&lt;br /&gt;&lt;em&gt;Dostęp tylko dla administratorów!&lt;em&gt;</label>
-            <label index="mlang_tabs_tab">Kontrola bazy</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="mlang_labels_tablabel">Preverjanje integritete baze podatkov</label>
-            <label index="mlang_labels_tabdescr">Tukaj lahko preverite integriteto tabel, konfiguriranih v $TCA. Primer: vsi zapisi morajo pripadati neki strani. Preverite lahko tudi obstoj poslanih datotek, pripetih k zapisom (ponavadi so v uploads/* mapah). Na voljo je še ogled celotnega drevesa strani, vključno z izbrisanimi. Nazadnje je tu tudi globalni iskalnik po podatkovni bazi.&lt;br /&gt;&lt;em&gt;Uporaba je dovoljena le 'admin' uporabnikom!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Preverjanje baze</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="mlang_labels_tablabel">Tietokannan eheyden tarkistus</label>
-            <label index="mlang_labels_tabdescr">Täältä voit tarkistaa tietokannan taulujen eheyden kuten se on ohjelmoitu $TCA lla. Esim. kaikkien tietuiden tulee kuulua johonkin sivuun. Myös palvelimelle tuotujen tiedostojen kuuluminen tietueille tarkistetaan. Näet myös koko sivu rakenteen poistetut sivut mukaan lukien. Lisäksi pääset globaaliin tietokanta hakuun.&lt;br /&gt;&lt;em&gt;Pääsy vain 'Admin' kättäjille!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB tarkistus</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="mlang_labels_tablabel">Veritabanı bütünlüğünün kontrolu</label>
-            <label index="mlang_labels_tabdescr">$TCA tarafından konfigüre edilen veritabanı tablolarının bütünlüğünü buradan kontrol edebilirsiniz. Örneğin, tüm kayıtlar kesinlikle sayfa kayıtına aittir. Buna ek olarak kayıtlarla ilişkili yüklenen dosyaların (normal olarak yüklemeler içine bağlanıyor/* klasörler) varlığıda kanıtlanmış olur. Birde toplam sayfa ağacının görüntülenmesi silinen sayfaları içeriyor. Son olarak global veritabanı araştırma servisine erişmiş oluyorsunuz.&lt;br /&gt;&lt;em&gt;Sadece kullanıcıların 'yönetim' için geçişi!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">VB kontrol</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="mlang_labels_tablabel">Kontroll av databasens integritet</label>
-            <label index="mlang_labels_tabdescr">Här kan du kontrollera integriteten hos tabellern i databasen som konfigurerats av $TCA. Till exempel måste alla register höra till någon sida. Här kollas också att uppladdade filer, som bundits samman med register (normalt sparade i uploads/* -katalogen) finns i behåll. Man kan också se hela sidträdet inklusive raderade sidor. Slutligen kan du här använda ett sökverktyg för globala databaser.&lt;br /&gt;&lt;em&gt;Endast för 'admin'-användare!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB kontroll</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="mlang_labels_tablabel">Teste à integridade da base de dados</label>
-            <label index="mlang_labels_tabdescr">Aqui pode verificar a integridade das tabelas da base de dados configuradas através de $TCA. Por exemplo, todos os registos devem pertencer a um registo de página. Em adição a existência de ficheiros anexados a registos (normalmente residindo em directorias 'uploads/*') são verificados também. Pode também obter uma visualização de toda a árvore de páginas incluíndo as removidas. Finalmente tem acesso à facilidade de pesquisa global da base de dados.&lt;br /&gt;&lt;em&gt; Acesso só para utilizadores 'admin'!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">BD teste</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="mlang_labels_tablabel">Проверка целостности базы данных</label>
-            <label index="mlang_labels_tabdescr">Здесь вы можете проверить таблицы базы данных, настроенные массивом $TCA, на их целостность. Кроме того возможна проверка связей между записями и загруженными файлами (обычно помещенными в папку uploads/*). Также вы можете просмотреть здесь полное дерево страниц, включая удаленные страницы. В заключение возможен доступ к глобальным средствам поиска в базе данных.&lt;BR&gt;&lt;em&gt;Доступ только для администраторов!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Проверка БД</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="mlang_labels_tablabel">Verificarea integrităţii bazei de date</label>
-            <label index="mlang_labels_tabdescr">Aici puteţi verifica integritatea tabelelor de date configurate de către $TCA. De exemplu, toate înregistrările trebuie să aparţină unei pagini de înregistrări. Existenţa fişierelor upload-ate ataşate unor înregistrări (fişierele aflate implicit în directorul /uploads) sînt, de asemeni, verificate. Puteţi să obţineţi o vedere de ansamblu a structurii de pagini, incluzînd şi paginile şterse. În cele din urmă, puteţi avea acces la o căutare globală în toată baza de date. &lt;br /&gt;&lt;em&gt;Acces permis doar administratorilor.&lt;/em&gt;|</label>
-            <label index="mlang_tabs_tab">Verificare bază de date</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="mlang_labels_tablabel">Kontrola integrity databázy</label>
-            <label index="mlang_labels_tabdescr">Tu môžeš kontrolovať integritu databázových tabuliek konfigurovaných v $TCA. Napríklad všetky záznamy musia patriť k záznamu strany. Naviac je overená i existencia záznamov pre uploadované súbory priradené k záznamom ( normálne v uploads/* zložkách). Taktiež môžeš vidieť celkový strom vrátane odstránených stránok. Tiež máš prístup ku globálnemu vyhľadávaniu.&lt;BR&gt;&lt;em&gt;Prístup iba pre 'admin' užívateľa !&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Kontrola DB</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="mlang_labels_tablabel">Provjera cjelovitosti baze podataka</label>
-            <label index="mlang_labels_tabdescr">Ovdje možete provjeriti cjelovitost tablica baze podataka konfiguriranih pomoću $TCA. Na primjer svi zapisi moraju pripadati nekoj stranici zapisa. Također, dodatno se provjerava postojanje snimljenih datoteka pridruženih zapisima (uobičajeno se nalaze u direktorijima uploads/*). Nadalje možete dobiti pregled cijelog stabla stranica, uključujući izbrisane stranice. Na kraju, imate pristup pretraživaču globalne baze podataka.&lt;BR&gt;&lt;em&gt;Pristup samo za 'admin' korisnike!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">DB provjera</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="mlang_labels_tablabel">Adatbázis sértetlenség ellenőrzése</label>
-            <label index="mlang_labels_tabdescr">Itt ellenőrizhető a $TCA-ban beállított adatbázis táblák sértetlensége. Például az összes rekordnak egy oldal rekordhoz kell tartoznia. Ezenkívül a rekordokhoz tartozó feltöltött file-ok meglétét is ellenőrzi (alapállapotban a uploads/* könyvtárakban). valamint a teljes oldalfa megtekinthető a törölt oldalakkal együtt. És végül globális adatbázis keresésre is van lehetőség. &lt;br /&gt;&lt;em&gt;Csak 'admin' felhasználóknak!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">AB ellenőrzés</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="mlang_labels_tablabel">Teste de integridade do banco de dados</label>
-            <label index="mlang_labels_tabdescr">Aqui pode verificar a integridade das tabelas do banco de dados configuradas através de $TCA. Por exemplo, todos os registros devem pertencer a um registro de página. Além disso, a existência de arquivos anexados a registros (normalmente residindo em diretórios 'uploads/*') são verificados também. Você pode também obter uma visualização de toda a árvore de páginas incluíndo as removidas. Finalmente, você tem acesso à facilidade de pesquisa global do banco de dados.&lt;br /&gt;&lt;em&gt; Acesso só para usuários 'admin'!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">BD teste</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="mlang_labels_tablabel" type="integer">152428276</label>
-            <label index="mlang_labels_tabdescr" type="integer">58642779</label>
-            <label index="mlang_tabs_tab" type="integer">254834137</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>Module labels</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:lowlevel/dbint/locallang_mod.xml</fileId>
+		<labelContext type="array">
+			<label index="mlang_labels_tablabel"></label>
+			<label index="mlang_labels_tabdescr"></label>
+			<label index="mlang_tabs_tab"></label>
+		</labelContext>
+		<ext_filename_template>EXT:csh_###LANGKEY###/lowlevel/dbint/###LANGKEY###.locallang_mod.xml</ext_filename_template>
+		<keep_original_text type="integer">1</keep_original_text>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel">Database integrity check</label>
+			<label index="mlang_labels_tabdescr">Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. In addition the existence of uploaded files attached to records (normally residing in uploads/* folders) are verified as well. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
+			<label index="mlang_tabs_tab">DB check</label>
+		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/lowlevel/dbint/dk.locallang_mod.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/lowlevel/dbint/de.locallang_mod.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/lowlevel/dbint/no.locallang_mod.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/lowlevel/dbint/it.locallang_mod.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/lowlevel/dbint/fr.locallang_mod.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/lowlevel/dbint/es.locallang_mod.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/lowlevel/dbint/nl.locallang_mod.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/lowlevel/dbint/cz.locallang_mod.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/lowlevel/dbint/pl.locallang_mod.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/lowlevel/dbint/si.locallang_mod.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/lowlevel/dbint/fi.locallang_mod.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/lowlevel/dbint/tr.locallang_mod.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/lowlevel/dbint/se.locallang_mod.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/lowlevel/dbint/pt.locallang_mod.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/lowlevel/dbint/ru.locallang_mod.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/lowlevel/dbint/ro.locallang_mod.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/lowlevel/dbint/ch.locallang_mod.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/lowlevel/dbint/sk.locallang_mod.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/lowlevel/dbint/lt.locallang_mod.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/lowlevel/dbint/is.locallang_mod.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/lowlevel/dbint/hr.locallang_mod.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/lowlevel/dbint/hu.locallang_mod.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/lowlevel/dbint/gl.locallang_mod.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/lowlevel/dbint/th.locallang_mod.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/lowlevel/dbint/gr.locallang_mod.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/lowlevel/dbint/hk.locallang_mod.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/lowlevel/dbint/eu.locallang_mod.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/lowlevel/dbint/bg.locallang_mod.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/lowlevel/dbint/br.locallang_mod.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/lowlevel/dbint/et.locallang_mod.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/lowlevel/dbint/ar.locallang_mod.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/lowlevel/dbint/he.locallang_mod.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/lowlevel/dbint/ua.locallang_mod.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/lowlevel/dbint/lv.locallang_mod.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/lowlevel/dbint/jp.locallang_mod.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/lowlevel/dbint/vn.locallang_mod.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/lowlevel/dbint/ca.locallang_mod.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/lowlevel/dbint/ba.locallang_mod.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/lowlevel/dbint/kr.locallang_mod.xml</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel" type="integer">152428276</label>
+			<label index="mlang_labels_tabdescr" type="integer">58642779</label>
+			<label index="mlang_tabs_tab" type="integer">254834137</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

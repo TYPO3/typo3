@@ -1,3 +1,7 @@
+2004-11-18  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* !!! Moved ALL core localizations into language packs found in extensions prefixed "csh_[language key]". The consequence of this is that the backend will work in english until the proper language pack is installed for the language the user has selected. This step is taken to make backend localization more scalable and prevent the huge memory problems we have with ll-XML and 3.7.0. The "csh_*" extensions are NOT available in TER at the moment, but the whole bunch can be downloaded from http://130.228.0.33/t3dl/src/all_39_language_packs_as_local_extensions.tgz
+
 2004-11-18  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Implemented #0000508: Minor performance improvement in an if clause in t3lib_stdgraphic, thanks to Volker Graubaum.

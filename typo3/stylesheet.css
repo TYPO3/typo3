@@ -454,6 +454,7 @@ BODY#typo3-mod-tools-em-index-php TR.bgColor5 TD {font-weight: bold;}
 
 /* Dimmed span tag color (disabled) */
 .typo3-dimmed {color: #666666;}
+.c-na {color: #666666; font-style: italic; }
 
 /* Red span tag color (warning, notice) */
 .typo3-red {color: red;}

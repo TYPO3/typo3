@@ -532,6 +532,8 @@ class language {
 						$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
 						$LOCAL_LANG[$langKey] = $serContent['EXT_DATA'];
 					}
+				} else {
+					$LOCAL_LANG[$langKey] = array();
 				}
 			}
 

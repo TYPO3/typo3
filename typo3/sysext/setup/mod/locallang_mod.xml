@@ -6,6 +6,8 @@
 		<fileId>EXT:setup/mod/locallang_mod.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
+		<ext_filename_template>EXT:csh_###LANGKEY###/setup/mod/###LANGKEY###.locallang_mod.xml</ext_filename_template>
+		<keep_original_text type="integer">1</keep_original_text>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -13,310 +15,44 @@
 			<label index="mlang_labels_tabdescr">This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</label>
 			<label index="mlang_tabs_tab">Setup</label>
 		</languageKey>
-		<languageKey index="dk" type="array">
-			<label index="mlang_labels_tablabel">Personlig opsætning</label>
-			<label index="mlang_labels_tabdescr">Dette modul giver dig mulighed for at skræddersy indstillingerne i din brugerprofil. Du kan ændre det aktive systemsprog samt navn og email adresse. Du kan også indstille andre funktioner i systemet.</label>
-			<label index="mlang_tabs_tab">Indstillinger</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="mlang_labels_tablabel">Einstellungen</label>
-			<label index="mlang_labels_tabdescr">Dieses Modul dient zur Einstellung Ihres Backend Benutzerprofils. Hier können Sie Ihren Namen, Ihre Email Adresse, die benutzte Backend Sprache und viele andere allgemeine Eigenschaften des Systems für Ihren Benutzer einstellen.</label>
-			<label index="mlang_tabs_tab">Einst.</label>
-		</languageKey>
-		<languageKey index="no" type="array">
-			<label index="mlang_labels_tablabel">Personlig oppsett</label>
-			<label index="mlang_labels_tabdescr">Med denne modulen kan du skreddersy oppsettet for din brukerprofil. Du kan endre aktivt systemspråk samt navn og e-post adresse. Du kan også sette opp andre funksjoner i systemet. </label>
-			<label index="mlang_tabs_tab">Oppsett</label>
-		</languageKey>
-		<languageKey index="it" type="array">
-			<label index="mlang_labels_tablabel">Setup utente</label>
-			<label index="mlang_labels_tabdescr">Questo modulo vi consente di personalizzare il vostro profilo utente. Potete modificare la lingua di default, nome e indirizzo email. Potete anche configurare altre caratteristiche del sistema.</label>
-			<label index="mlang_tabs_tab">Setup</label>
-		</languageKey>
-		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel">Configuration utilisateur personnelle</label>
-			<label index="mlang_labels_tabdescr">Ce module vous permet de personnaliser votre profil. Vous pouvez changer ici, votre langue d'interface par défaut, votre nom, votre adresse e-mail. Vous pouvez aussi modifier quelques options générales du système.</label>
-			<label index="mlang_tabs_tab">Configuration</label>
-		</languageKey>
-		<languageKey index="es" type="array">
-			<label index="mlang_labels_tablabel">Personalización</label>
-			<label index="mlang_labels_tabdescr">Este módulo le permite el personalizar su perfil de usuario del backend. Aquí podrá cambiar el lenguaje activo, su nombre y dirección de email. También podrá configurar otras características generales en el sistema</label>
-			<label index="mlang_tabs_tab">Configuración</label>
-		</languageKey>
-		<languageKey index="nl" type="array">
-			<label index="mlang_labels_tablabel">Persoonlijke setup (gebruiker)</label>
-			<label index="mlang_labels_tabdescr">Deze module biedt U de mogelijkheid uw backendgebruikersprofiel aan te passen. Hier kunt u uw huidige systeemtaal, naam en emailadres wijzigen. U kunt hier ook algemene onderdelen van het systeem configureren.</label>
-			<label index="mlang_tabs_tab">Setup</label>
-		</languageKey>
-		<languageKey index="cz" type="array">
-			<label index="mlang_labels_tablabel">Uživatelské nastavení</label>
-			<label index="mlang_labels_tabdescr">Tento modul umožňuje přizpůsobit profil uživatele backendu. Zde můžete změnit jazyk, jméno, emailovou adresu. Také zde můžete konfigurovat další obecné vlastnosti systému.</label>
-			<label index="mlang_tabs_tab">Setup</label>
-		</languageKey>
-		<languageKey index="pl" type="array">
-			<label index="mlang_labels_tablabel">Ustawienia osobiste użytkownika</label>
-			<label index="mlang_labels_tabdescr">Centrum zadań umożliwia dostęp do twoich zadań, wiadomości, notesu, akcji, itp. Zawiera również skróty do dostępnych dla ciebie modułów i ostatnio edytowanych przez ciebie stron. Centrum zadań pozwala efektywnie zarządzać pracą w systemie.</label>
-			<label index="mlang_tabs_tab">Ustawienia</label>
-		</languageKey>
-		<languageKey index="si" type="array">
-			<label index="mlang_labels_tablabel">Uporabniške nastavitve</label>
-			<label index="mlang_labels_tabdescr">Ta modul vam omogoča urejanje vaših uporabniških nastavitev. Tu lahko spremenite jezik vmesnika, svoje ime in email naslov, kot tudi številne druge možnosti.</label>
-			<label index="mlang_tabs_tab">Nastavitve</label>
-		</languageKey>
-		<languageKey index="fi" type="array">
-			<label index="mlang_labels_tablabel">Henkilökohtaiset perustiedot</label>
-			<label index="mlang_labels_tabdescr">Tällä modulilla voit muokata taustakäyttäjän profiiliasi. Voit vaihtaa käytettävän kielen, nimesi ja sähköpostiosoitteesi. Voit asettaa myös muita järjestelmän ominaisuuksia.</label>
-			<label index="mlang_tabs_tab">Asetukset</label>
-		</languageKey>
-		<languageKey index="tr" type="array">
-			<label index="mlang_labels_tablabel">Kişisel kullanıcı kurulumu</label>
-			<label index="mlang_labels_tabdescr">Bu modül sizin arkaplan kullanıcı profilini kişiselleştirmeyi sağlar. Buarada sizin aktif sistem dilini, isminizi ve email adresinizi değiştirebilirsiniz. Birde sistemde diğer genel özellikleri konfigüre edebilirsiniz.</label>
-			<label index="mlang_tabs_tab">Kurulum</label>
-		</languageKey>
-		<languageKey index="se" type="array">
-			<label index="mlang_labels_tablabel">Personliga användarinställningar</label>
-			<label index="mlang_labels_tabdescr">Denna modul möjliggör en personifiering av backend användarprofilen. Här kan du ändra språket på ditt aktiva system, eller ange ditt namn och din epostadress. Du kan också ställa in andra grundinställningar i systemet.</label>
-			<label index="mlang_tabs_tab">Inställningar</label>
-		</languageKey>
-		<languageKey index="pt" type="array">
-			<label index="mlang_labels_tablabel">Configuração pessoal</label>
-			<label index="mlang_labels_tabdescr">Este módulo permite-lhe configurar o seu perfil de gestão do sistema . Aqui você pode alterar o idioma activo do sistema, nome e endereço de email. Pode também configurar outras opções gerais do sistema.</label>
-			<label index="mlang_tabs_tab">Configurar</label>
-		</languageKey>
-		<languageKey index="ru" type="array">
-			<label index="mlang_labels_tablabel">Личные настройки пользователя</label>
-			<label index="mlang_labels_tabdescr">Этот модуль позволяет изменять профиль внутреннего пользователя. Вы можете изменить системный язык, имя или email-адрес. Также вы можете настроить другие основные параметры системы.</label>
-			<label index="mlang_tabs_tab">Настройка</label>
-		</languageKey>
-		<languageKey index="ro" type="array">
-			<label index="mlang_labels_tablabel">Setari personale ale utilizatorului</label>
-			<label index="mlang_labels_tabdescr">Acest modul va permite sa va personalizati profilul de utilizator backend. Aici puteti schimba limba activa, numele si adresa de email. Deasemeni puteti configura alte caracteristici generale ale sistemului.</label>
-			<label index="mlang_tabs_tab">Setari</label>
-		</languageKey>
-		<languageKey index="ch" type="array">
-			<label index="mlang_labels_tablabel">个人用户设置</label>
-			<label index="mlang_labels_tabdescr">这个模块允许您制定您的后端用户轮廓.在此您可以更改您的激活系统语言, 名称和email地址. 您也能在您的系统中配置其它普通的特点.</label>
-			<label index="mlang_tabs_tab">设置</label>
-		</languageKey>
-		<languageKey index="sk" type="array">
-			<label index="mlang_labels_tablabel">Užívateľské nastavenie</label>
-			<label index="mlang_labels_tabdescr">Tento modul umožňuje prispôsobiť profil užívateľa backendu. Môžeš tu zmeniť jazyk, meno, emailovu adresu. Tiež  môžeš nakonfigurovať ďalšie obecné vlastnosti systému.</label>
-			<label index="mlang_tabs_tab">Nastavenie</label>
-		</languageKey>
-		<languageKey index="lt" type="array">
-			<label index="mlang_labels_tablabel">Asmeninių vartotojo parametrų nustatymas</label>
-			<label index="mlang_labels_tabdescr">Šis modulis leidžia keisti jūsų backend vartotojo profilį. Čia jūs galite pakeistį aktyvios sisteminės kalbos nustatymą, vardą ir elektroninio pašto adresą. Jūs taip pat galite keisti pagrindinių sistemos funkcijų nustatymus.</label>
-			<label index="mlang_tabs_tab">Nustatymai</label>
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-			<label index="mlang_labels_tablabel">Osobne korisničke postavke</label>
-			<label index="mlang_labels_tabdescr">Ovaj modul mogućava prilagodbe vašeg korisničkog profila za backend. Ovdje možete mijenjati aktivni jezik na sustavu, ime, email adresu. Isto tako možete konfigurirati druge općenite postavke na sustavu.</label>
-			<label index="mlang_tabs_tab">Postavke</label>
-		</languageKey>
-		<languageKey index="hu" type="array">
-			<label index="mlang_labels_tablabel">Személyes felhasználó beállítás</label>
-			<label index="mlang_labels_tabdescr">Ez a modul a backend profil testreszabását teszi lehetővé. Meg lehet változtatni a nyelvet, nevet, email címet, és egyéb általános rendszerjellemzőket.</label>
-			<label index="mlang_tabs_tab">Beállítások</label>
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-			<label index="mlang_labels_tablabel">การตั้งค่าส่วนบุคคล</label>
-			<label index="mlang_labels_tabdescr">โมดูลนี้ อนุญาตให้ท่านปรับแต่งโพรไฟล์ของผู้ใช้ ณ ที่นี่ท่านสามารถเปลี่ยนภาษาทำงานของระบบ ชื่อ และ อีเมล์ ท่านยังสามารถค่าฟีเจอร์ทั่วๆไปของระบบได้อีกด้วย</label>
-			<label index="mlang_tabs_tab">การตั้งค่า</label>
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-			<label index="mlang_labels_tablabel">Configuração pessoal</label>
-			<label index="mlang_labels_tabdescr">Este módulo lhe permite configurar seu perfil de administração do sistema. Aqui você pode alterar o idioma ativo do sistema, nome e endereço de e-mail. Pode também configurar outras opções gerais do sistema.</label>
-			<label index="mlang_tabs_tab">Configurar</label>
-		</languageKey>
-		<languageKey index="et" type="array">
-			<label index="mlang_labels_tablabel">Kasutaja seaded</label>
-			<label index="mlang_labels_tabdescr">See moodul võimaldab teil seadistada oma kasutajaprofiili. Siin saate muuta oma keeleseadeid, nime ja emaili aadressi, samuti teisi üldisi süsteemi seadistusi.</label>
-			<label index="mlang_tabs_tab">Seaded</label>
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-			<label index="mlang_labels_tablabel">הגדרת תצורה אישית של משתמש</label>
-			<label index="mlang_labels_tabdescr">מודול זה מאפשר לך לבצע התאמה אישית של פרופיל המשתמש. כאן ניתן לשנות שפת ממשק, שם ודוא''ל שלך. ניתן לשנות גם הגדרות מערכת שונות.</label>
-			<label index="mlang_tabs_tab">הגדרת תצורה</label>
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-			<label index="mlang_labels_tablabel">Personīgie lietotāja uzstādījumi</label>
-			<label index="mlang_tabs_tab">Uzstādījumi</label>
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/setup/mod/dk.locallang_mod.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/setup/mod/de.locallang_mod.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/setup/mod/no.locallang_mod.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/setup/mod/it.locallang_mod.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/setup/mod/fr.locallang_mod.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/setup/mod/es.locallang_mod.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/setup/mod/nl.locallang_mod.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/setup/mod/cz.locallang_mod.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/setup/mod/pl.locallang_mod.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/setup/mod/si.locallang_mod.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/setup/mod/fi.locallang_mod.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/setup/mod/tr.locallang_mod.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/setup/mod/se.locallang_mod.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/setup/mod/pt.locallang_mod.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/setup/mod/ru.locallang_mod.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/setup/mod/ro.locallang_mod.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/setup/mod/ch.locallang_mod.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/setup/mod/sk.locallang_mod.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/setup/mod/lt.locallang_mod.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/setup/mod/is.locallang_mod.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/setup/mod/hr.locallang_mod.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/setup/mod/hu.locallang_mod.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/setup/mod/gl.locallang_mod.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/setup/mod/th.locallang_mod.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/setup/mod/gr.locallang_mod.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/setup/mod/hk.locallang_mod.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/setup/mod/eu.locallang_mod.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/setup/mod/bg.locallang_mod.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/setup/mod/br.locallang_mod.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/setup/mod/et.locallang_mod.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/setup/mod/ar.locallang_mod.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/setup/mod/he.locallang_mod.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/setup/mod/ua.locallang_mod.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/setup/mod/lv.locallang_mod.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/setup/mod/jp.locallang_mod.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/setup/mod/vn.locallang_mod.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/setup/mod/ca.locallang_mod.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/setup/mod/ba.locallang_mod.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/setup/mod/kr.locallang_mod.xml</languageKey>
 	</data>
-	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="dk" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="no" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="it" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="es" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="nl" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="cz" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="pl" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="si" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="fi" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="tr" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="se" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="pt" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="ru" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="ro" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="ch" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="sk" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="lt" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="hu" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="et" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_labels_tabdescr" type="integer">237774117</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-			<label index="mlang_labels_tablabel" type="integer">39109629</label>
-			<label index="mlang_tabs_tab" type="integer">181548907</label>
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_hash>
 </T3locallang>

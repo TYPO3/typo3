@@ -108,31 +108,12 @@ xMOD_csh_corebe:new_pages,
 xMOD_csh_corebe:new_ce,</label>
 			<label index="_button_panel.image">EXT:cms/cshimages/pagemodule_2.png</label>
 		</languageKey>
-		<languageKey index="pl" type="array">
-			<label index="quickEdit.description">Szybki Edytor umożliwia bezpośrednią edycję pól formatki dla elementów treści.</label>
-			<label index="quickEdit_selElement.description">To jest ogólny widok elementów treści na tej stronie. Wybierz element do edycji lub kliknij ikonę &quot;Nowy&quot; aby dodać nową zawartość.</label>
-			<label index="columns_1.description">W widoku &quot;kolumnowym&quot; możesz kontrolować zawartość strony przyporządkowaną do poszczególnych kolumn.</label>
-		</languageKey>
-		<languageKey index="tr" type="array">
-			<label index="quickEdit.description">Hızlı Düzenleyici size sayfa içeriğine doğrudan erişimi sağlar.</label>
-		</languageKey>
-		<languageKey index="ro" type="array">
-			<label index="quickEdit.description">Editorul Rapid vă permite accesul direct la câmpurile formularului de conţinut al paginii.</label>
-			<label index="quickEdit.details">Editorul Rapid este proiectat să reducă numărul de clickuri necesare pentru editarea conţinutului unei pagini. Dând un click pe titlul paginii în arborele paginilor se va încărca primul element de conţinut din coloana principală. Din bara de instrumente se sus puteţi selecta alte elemente de conţinut de pe pagină utilizând căsuţa de selecţie.</label>
-			<label index="quickEdit_selElement.description">Acesta este un rezumat al elementelor de conţinut de pe această pagină. Selectaţi un element pentru a-l edita sau daţi un click pe iconiţa &quot;Nou&quot; pentru a crea un nou element de conţinut.</label>
-		</languageKey>
-		<languageKey index="sk" type="array">
-			<label index="quickEdit.description">Quick Editor umožňuje priamo upravovať polia obsahu stránky.</label>
-		</languageKey>
-		<languageKey index="et" type="array">
-			<label index="quickEdit.description">Quick Editor annab otsese ligipääsu lehel olevatele vormielementidele.</label>
-			<label index="quickEdit.details">Quick Editor on loodud lehe redigeerimisek vajamineva aja kokkuhoiuks. Klikkide lihtsalt lehekülje pealkirjale sisupuul, laetakse esimene sisuelement esimesse veergu. Tööriistaribalt saate rippmenüüst valida võimaluse redigeerida teisi sisuelemente.</label>
-			<label index="quickEdit_selElement.description">See on kõigi sellel lehel paiknevate sisuelementide ülevaade. Valige mõni element, mida soovite redigeerida, või klikkige &quot;Uus&quot; ikoonil, loomaks uut sisuelementi.</label>
-			<label index="columns_1.description">Vaatega &quot;Veerud&quot;, saate kontrollida lehekülgede sisu kui see on paigutatud veergudesse.</label>
-		</languageKey>
-		<languageKey index="ua" type="array">
-			<label index="quickEdit.description">Quick Editor дає вам безпосередній доступ до вмісту сторінки</label>
-		</languageKey>
+		<languageKey index="pl">EXT:csh_pl/cms/pl.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/cms/tr.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/cms/ro.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/cms/sk.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/cms/et.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/cms/ua.locallang_csh_weblayout.xml</languageKey>
 		<languageKey index="dk">EXT:csh_dk/cms/dk.locallang_csh_weblayout.xml</languageKey>
 		<languageKey index="lv">EXT:csh_lv/cms/lv.locallang_csh_weblayout.xml</languageKey>
 		<languageKey index="he">EXT:csh_he/cms/he.locallang_csh_weblayout.xml</languageKey>
@@ -152,6 +133,19 @@ xMOD_csh_corebe:new_ce,</label>
 		<languageKey index="fr">EXT:csh_fr/cms/fr.locallang_csh_weblayout.xml</languageKey>
 		<languageKey index="it">EXT:csh_it/cms/it.locallang_csh_weblayout.xml</languageKey>
 		<languageKey index="no">EXT:csh_no/cms/no.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/cms/si.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/cms/pt.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/cms/lt.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/cms/is.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/cms/gl.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/cms/th.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/cms/gr.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/cms/eu.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/cms/jp.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/cms/vn.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/cms/ca.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/cms/ba.locallang_csh_weblayout.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/cms/kr.locallang_csh_weblayout.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/cms/de.locallang_csh_weblayout.xml</languageKey>
 	</data>
 </T3locallang>

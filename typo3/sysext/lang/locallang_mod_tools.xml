@@ -6,289 +6,52 @@
 		<fileId>EXT:lang/locallang_mod_tools.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
+		<ext_filename_template>EXT:csh_###LANGKEY###/lang/###LANGKEY###.locallang_mod_tools.xml</ext_filename_template>
+		<keep_original_text type="integer">1</keep_original_text>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_labels_tablabel">Administration and maintenance tools</label>
 			<label index="mlang_tabs_tab">Tools</label>
 		</languageKey>
-		<languageKey index="dk" type="array">
-			<label index="mlang_labels_tablabel">Administrations- og vedligeholdelses-funktioner</label>
-			<label index="mlang_tabs_tab">Værktøjer</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="mlang_labels_tablabel">Administrations-Funktionen</label>
-			<label index="mlang_tabs_tab">Tools</label>
-		</languageKey>
-		<languageKey index="no" type="array">
-			<label index="mlang_labels_tablabel">Administrasjons- og vedlikeholds-funksjoner</label>
-			<label index="mlang_tabs_tab">Verktøy</label>
-		</languageKey>
-		<languageKey index="it" type="array">
-			<label index="mlang_labels_tablabel">Tools per la manutenzione e l'amministrazione</label>
-			<label index="mlang_tabs_tab">Tools</label>
-		</languageKey>
-		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel">Outils d'administration et de maintenance</label>
-			<label index="mlang_tabs_tab">Outils</label>
-		</languageKey>
-		<languageKey index="es" type="array">
-			<label index="mlang_labels_tablabel">Herramientas de administración y mantenimiento</label>
-			<label index="mlang_tabs_tab">Herramientas</label>
-		</languageKey>
-		<languageKey index="nl" type="array">
-			<label index="mlang_labels_tablabel">Beheer- en onderhoudswerkset</label>
-			<label index="mlang_tabs_tab">Werkset</label>
-		</languageKey>
-		<languageKey index="cz" type="array">
-			<label index="mlang_labels_tablabel">Nástroje pro správu</label>
-			<label index="mlang_tabs_tab">Nástroje</label>
-		</languageKey>
-		<languageKey index="pl" type="array">
-			<label index="mlang_labels_tablabel">Narzędzia administracyjne</label>
-			<label index="mlang_tabs_tab">Narzędzia</label>
-		</languageKey>
-		<languageKey index="si" type="array">
-			<label index="mlang_labels_tablabel">Orodja za administracijo</label>
-			<label index="mlang_tabs_tab">Orodja</label>
-		</languageKey>
-		<languageKey index="fi" type="array">
-			<label index="mlang_labels_tablabel">Ylläpito- ja hallintatyökalut</label>
-			<label index="mlang_tabs_tab">Työkalut</label>
-		</languageKey>
-		<languageKey index="tr" type="array">
-			<label index="mlang_labels_tablabel">Yönetim ve bakım araçları</label>
-			<label index="mlang_tabs_tab">Araçlar</label>
-		</languageKey>
-		<languageKey index="se" type="array">
-			<label index="mlang_labels_tablabel">Verktyg för administration och underhåll</label>
-			<label index="mlang_tabs_tab">Verktyg</label>
-		</languageKey>
-		<languageKey index="pt" type="array">
-			<label index="mlang_labels_tablabel">Ferramentas de administração e manutenção</label>
-			<label index="mlang_tabs_tab">Ferramentas</label>
-		</languageKey>
-		<languageKey index="ru" type="array">
-			<label index="mlang_labels_tablabel">Инструменты администрирования и обслуживания</label>
-			<label index="mlang_tabs_tab">Инструменты</label>
-		</languageKey>
-		<languageKey index="ro" type="array">
-			<label index="mlang_labels_tablabel">Instrumente pentru administrare si intretinere</label>
-			<label index="mlang_tabs_tab">Instrumente</label>
-		</languageKey>
-		<languageKey index="ch" type="array">
-			<label index="mlang_labels_tablabel">管理与维护工具</label>
-			<label index="mlang_tabs_tab">工具</label>
-		</languageKey>
-		<languageKey index="sk" type="array">
-			<label index="mlang_labels_tablabel">Nástroje pre správu a údržbu</label>
-			<label index="mlang_tabs_tab">Nástroje</label>
-		</languageKey>
-		<languageKey index="lt" type="array">
-			<label index="mlang_labels_tablabel">Administravimo ir priežiūros įrankiai</label>
-			<label index="mlang_tabs_tab">Įrankiai</label>
-		</languageKey>
-		<languageKey index="is" type="array">
-			<label index="mlang_labels_tablabel">Stjórnun og umsjónar verkfæri</label>
-			<label index="mlang_tabs_tab">Verkfæri</label>
-		</languageKey>
-		<languageKey index="hr" type="array">
-			<label index="mlang_labels_tablabel">Alati za administraciju i održavanje</label>
-			<label index="mlang_tabs_tab">Alati</label>
-		</languageKey>
-		<languageKey index="hu" type="array">
-			<label index="mlang_labels_tablabel">Adminisztrációs és karbantartó eszközök</label>
-			<label index="mlang_tabs_tab">Eszközök</label>
-		</languageKey>
-		<languageKey index="gl" type="array">
-			<label index="mlang_labels_tablabel">Aaqqissuinermut aserfallanneqarnermullu sakkussaq</label>
-			<label index="mlang_tabs_tab">Sakkussat</label>
-		</languageKey>
-		<languageKey index="th" type="array">
-			<label index="mlang_labels_tablabel">เครื่องมือสำหรับบริหารและดูแลระบบ</label>
-			<label index="mlang_tabs_tab">เครื่องมือ</label>
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-			<label index="mlang_labels_tablabel">管理及維護工具</label>
-			<label index="mlang_tabs_tab">工具</label>
-		</languageKey>
-		<languageKey index="eu" type="array">
-			<label index="mlang_labels_tablabel">Administrazio eta mantentze tresnak</label>
-			<label index="mlang_tabs_tab">Tresnak</label>
-		</languageKey>
-		<languageKey index="bg" type="array">
-			<label index="mlang_labels_tablabel">Администрация и инструменти за поддръжка</label>
-			<label index="mlang_tabs_tab">Инструменти</label>
-		</languageKey>
-		<languageKey index="br" type="array">
-			<label index="mlang_labels_tablabel">Ferramentas de administração e manutenção</label>
-			<label index="mlang_tabs_tab">Ferramentas</label>
-		</languageKey>
-		<languageKey index="et" type="array">
-			<label index="mlang_labels_tablabel">Administreerimise ja hoolduse tööristad</label>
-			<label index="mlang_tabs_tab">Tööriistad</label>
-		</languageKey>
-		<languageKey index="ar" type="array">
-			<label index="mlang_labels_tablabel">وسائل الصيانة و المراقبة</label>
-			<label index="mlang_tabs_tab">الوسائل</label>
-		</languageKey>
-		<languageKey index="he" type="array">
-			<label index="mlang_labels_tablabel">כלים לניהול ותחזוקה</label>
-			<label index="mlang_tabs_tab">כלים</label>
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-			<label index="mlang_labels_tablabel">Administrācijas un apkalpošanas rīki</label>
-			<label index="mlang_tabs_tab">Rīki</label>
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_mod_tools.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/lang/de.locallang_mod_tools.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/lang/no.locallang_mod_tools.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/lang/it.locallang_mod_tools.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/lang/fr.locallang_mod_tools.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/lang/es.locallang_mod_tools.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/lang/nl.locallang_mod_tools.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/lang/cz.locallang_mod_tools.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/lang/pl.locallang_mod_tools.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/lang/si.locallang_mod_tools.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/lang/fi.locallang_mod_tools.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/lang/tr.locallang_mod_tools.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/lang/se.locallang_mod_tools.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/lang/pt.locallang_mod_tools.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/lang/ru.locallang_mod_tools.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/lang/ro.locallang_mod_tools.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/lang/ch.locallang_mod_tools.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/lang/sk.locallang_mod_tools.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/lang/lt.locallang_mod_tools.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/lang/is.locallang_mod_tools.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/lang/hr.locallang_mod_tools.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/lang/hu.locallang_mod_tools.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/lang/gl.locallang_mod_tools.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/lang/th.locallang_mod_tools.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/lang/gr.locallang_mod_tools.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/lang/hk.locallang_mod_tools.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/lang/eu.locallang_mod_tools.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/lang/bg.locallang_mod_tools.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/lang/br.locallang_mod_tools.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/lang/et.locallang_mod_tools.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/lang/ar.locallang_mod_tools.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/lang/he.locallang_mod_tools.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/lang/ua.locallang_mod_tools.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/lang/lv.locallang_mod_tools.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/lang/jp.locallang_mod_tools.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/lang/vn.locallang_mod_tools.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/lang/ca.locallang_mod_tools.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/lang/ba.locallang_mod_tools.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/lang/kr.locallang_mod_tools.xml</languageKey>
 	</data>
-	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="dk" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="no" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="it" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="fr" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="es" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="nl" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="cz" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="pl" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="si" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="fi" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="tr" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="se" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="pt" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="ru" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="ro" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="ch" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="sk" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="lt" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="is" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="hr" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="hu" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="gl" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="th" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="eu" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="bg" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="br" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="et" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="ar" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="he" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-			<label index="mlang_labels_tablabel" type="integer">137463765</label>
-			<label index="mlang_tabs_tab" type="integer">140664349</label>
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_hash>
 </T3locallang>

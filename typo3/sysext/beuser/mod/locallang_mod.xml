@@ -1,398 +1,73 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Module labels</description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <fileId>EXT:beuser/mod/locallang_mod.xml</fileId>
-        <labelContext type="array">
-            <label index="mlang_labels_tablabel"></label>
-            <label index="mlang_labels_tabdescr"></label>
-            <label index="mlang_tabs_tab"></label>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="mlang_labels_tablabel">Administration of Backend Users</label>
-            <label index="mlang_labels_tabdescr">The User Admin module provides you with an overview of all backend users. You can group them by their properties so you're able to monitor their permissions, filemounts, TSconfig, member groups etc.. This module is an indispensable tool in order to make sure the users are correctly configured.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">User Admin</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="mlang_labels_tablabel">Administration af Opdateringsbrugere</label>
-            <label index="mlang_labels_tabdescr">'Brugere' modulet giver dig et overblik over alle opdateringsbrugere. Du kan gruppere dem efter deres egenskaber så du er i stand til at overvåge deres rettigheder, fildrev, TSconfig, medlemsgrupper osv. Dette modul er et uundværligt værktøj når man skal være sikker på, at brugere er korrekt konfigureret.&lt;br /&gt;&lt;em&gt;Adgang kun for 'admin' brugere!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Brugere</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="mlang_labels_tablabel">Administration der Backend Benutzer</label>
-            <label index="mlang_labels_tabdescr">Das Benutzer Administrations-Modul bietet Ihnen eine Übersicht über alle vorhanden Benutzer des TYPO3 Backends. Sie können diese Benutzer ihren Eigenschaften entsprechend gruppieren, deren Zugriffrechte, Dateifreigaben, Konfiguration, Gruppenzugehörigkeiten ansehen, usw. Dieses Modul ist ein unentbehrliches Hilfsmittel zur Überprüfung und Festlegung der korrekten Benutzerkonfiguration.&lt;br /&gt;&lt;em&gt;Zugriff nur für Administratoren!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Benutzer Administrator</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="mlang_labels_tablabel">Administrasjon av Oppdateringsbrukere</label>
-            <label index="mlang_labels_tabdescr">'Brukere' modulen gir deg en oversikt over alle oppdateringsbrukerne. Du kan gruppere dem etter deres egenskaper slik at du er i stand til å overvåke deres rettigheter, fildrev, TSconfig, medlemsgrupper osv. Dette er et uunnværlig verktøy når man skal være sikker på at brukerne er riktig konfigurert.&lt;br /&gt;&lt;em&gt;Adgang kun for 'admin' brukere!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Brukere</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="mlang_labels_tablabel">Gestione utenti Backend</label>
-            <label index="mlang_labels_tabdescr">Questo modulo offre una visione d'insieme degli utenti del backend (gli amministratori): puoi raggrupparli in base ai loro attributi, in modo da analizzare i permessi, filemount, TSconfig, gruppi di appartenenza, etc. Questo modulo è indispensabile per assicurarsi che tutti gli account di amministrazione siano correttamente configurati. &lt;br&gt;&lt;em&gt;Accesso riservato ai soli utenti 'admin'!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Gestione utenti Backend</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="mlang_labels_tablabel">Administration des utilisateurs Backend</label>
-            <label index="mlang_labels_tabdescr">Ce module vous offre une vue d'ensemble sur les comptes utilisateur Backend. Ce module est indispensable, pour être sûre de bien avoir configuer tous les comptes.</label>
-            <label index="mlang_tabs_tab">Administration des utilisateurs</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="mlang_labels_tablabel">Administración de los usuarios de Backend</label>
-            <label index="mlang_labels_tabdescr">El módulo de Administración de usuarios le da un listado de todos los usuraios de backend. Los puede agrupar por sus propiedades para así monitorear sus permisos, puntos de montaje de archivos, TSconfig, miembros de grupo etc. Este módulo es una herramienta indispensable para garantizar la correcta configuración de los usuarios.&lt;br /&gt;&lt;em&gt;¡Acceso solamente para usuarios 'administrador'!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Administración de usuarios</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="mlang_labels_tablabel">Administratie van de BeheerSitegebruikers</label>
-            <label index="mlang_labels_tabdescr">De Gebruikers Adminmodule biedt je een overzicht van de BeheerSitegebruikers. Je kan ze aan de hand van hun eigenschappen groeperen, zodat je toezicht kunt houden op hun rechten, startpunten, TSconfig, groepen van leden enz.... Deze module is een onmisbaar instrument. Zo kan je controleren of de gebruikers juist zijn geconfigureerd.&lt;br /&gt;&lt;em&gt;Alleen toegang voor 'admin' gebruikers!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Gebruikers Admin</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="mlang_labels_tablabel">Administrace uživatelů backendu</label>
-            <label index="mlang_labels_tabdescr">Modul administrace uživatelů poskytuje přehled o všech uživatelích backendu. Můžete je seskupovat podle vlastností, abyste mohli monitorovat jejich přístupová práva, mounty souborů, TSconfig, skupiny uživatelů atd. Tento modul je nepostradatelný, abyste si byli jisti, že jsou uživatelé správně nakonfigurováni.&lt;br /&gt;&lt;em&gt;Přístup pouze pro 'admin' uživatele!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Uživatelé</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="mlang_labels_tablabel">Administracja użytkownikami</label>
-            <label index="mlang_labels_tabdescr">Moduł administracji użytkownikami umożliwia przeglądanie listy użytkowników. Można tu porównywać użytkowników spełniających zadane kryteria. Jest to pomocne przy monitorowaniu ich uprawnień, dostępu do plików, grup oraz czuwaniu nad prawidłową konfiguracją użytkowników.&lt;br /&gt;&lt;em&gt;Dostęp tylko dla administratorów!&lt;em&gt;</label>
-            <label index="mlang_tabs_tab">Administracja użytkownikami</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="mlang_labels_tablabel">Administracija sistemskih uporabnikov</label>
-            <label index="mlang_labels_tabdescr">Modul za administracijo sistemskih uporabnikov vam omogoča nadzor nad uporabniki sistema. Lahko jih razvrstite po značilnostih in jim glede na to spremljati dostopne pravice, konfiguracijo TS, članstvo v skupinah, itd. Ta modul je nepogrešljivo orodje za administracijo.&lt;BR&gt;&lt;em&gt;Uporaba dovoljena le 'admin' uporabnikom!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Administracija uporabnikov</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="mlang_labels_tablabel">Backend käyttäjien hallinta</label>
-            <label index="mlang_labels_tabdescr">User admin modulilla hallitaan backend käyttäjiä. Nämä käyttäjät voidaan myös ryhmitellä jotta eri toimintojesa seuranta helpottuu. Modulin välttämättömyys korostuu varmistautuessa käyttäjien asetuksien ja oikeuksia asianmukaisuudesta.&lt;br /&gt;&lt;em&gt;Sallittu vain 'Admin'  käyttäjille.&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">User Admin</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="mlang_labels_tablabel">Arkaplan Kullanıcılarının Yönetimi </label>
-            <label index="mlang_labels_tabdescr">Kullanıcı Yönetim modülü tüm arkaplan kullanıcılarına genel bir görünüm sağlar. Kullanıcıları özellikleriyle grup yapabilirisiniz ki izinlerini, dosya mountlarını, TSkonfigürasyonlarını, üye gruplarını v.s.. görüntüleyebilirsiniz. Bu modül komuttaki gerekli aracı ne yapıp edip doğru bir şekilde konfigüre edilmesini sağlar.&lt;br /&gt;&lt;em&gt;Sadece kullanıcıların 'yönetim' için geçişi!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Kullanıcı Yönetimi</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="mlang_labels_tablabel">Administration av Backend användare</label>
-            <label index="mlang_labels_tabdescr">I denna modul får du en överblick över alla backend användare. Det går att gruppera dem enligt deras inställningar, så att du kan följa med deras rättigheter, filmonteringar, TSinställningar, medlemsgrupper mm. Denna modul är ett oumbärligt verktyg då det gäller att se till, att varje användare har rätt inställningar. &lt;BR&gt;&lt;em&gt;Tillgänglig endast för 'admin'-användare!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Användaradministration</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="mlang_labels_tablabel">Administração de Utilizadores do Sistema</label>
-            <label index="mlang_labels_tabdescr">O módulo de Administração de Utilizadores providencia uma vista geral de todos os utilizadores do sistema. Pode agrupá-los pelas suas propriedades a fim de lhe ser possível monitorizar as suas permissões, directorias, TSconfig, grupos, etc... Este módulo é uma ferramenta indispensável para garantir que os utilizadores estão correctamente configurados.&lt;br /&gt;&lt;em&gt;Acesso só para utilizadores 'admin'!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Admin Util</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="mlang_labels_tablabel">Управление настройками внутренних пользователей</label>
-            <label index="mlang_labels_tabdescr">Модуль управления пользователями предоставляет обзор всех внутренних пользователей. Вы можете группировать их по их свойствам, чтобы увидеть их права, корневые папки файлов, TSconfig, членство в группах и т.д. Этот модуль - незаменимый инструмент для проверки правильной настройки пользователей.&lt;BR&gt;&lt;em&gt;Доступ только для пользователей 'Admin'!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">User Admin</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="mlang_labels_tablabel">Administrarea utilizatorilor Backend</label>
-            <label index="mlang_labels_tabdescr">Modulul Administrare Utilizatori vă oferă o vedere de ansamblu a tuturor utilizatorilor backend. Îi puteţi grupa funcţie de proprietăţile lor, pentru a putea monitoriza permisiunile, căile rădăcină, configurările TS, grupurile de membri, etc...Acest modul este o unealtă indispensabilă dacă doriţi să fiţi sigur că toţi utilizatorii sînt corect configuraţi.</label>
-            <label index="mlang_tabs_tab">Administrare Utilizatori</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="mlang_labels_tablabel">Administrácia užívateľov backendu</label>
-            <label index="mlang_labels_tabdescr">Modul administrácie užívateľov poskytuje prehľad o všetkých užívateľoch backendu. Môžes ich zoskupovat podľa vlastností, aby si mohol monitorovať ich prístupové práva, mounty súborov, TSconfig, skupiny užívateľov atd. Tento modul je nepostradateľný, aby si si bol istí, že sú užívatelia správne nakonfigurovaní.&lt;BR&gt;&lt;em&gt;Prístup len pre 'admin' uživateľa !&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Užívatelia</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="mlang_labels_tablabel">Administracija korisnika backenda</label>
-            <label index="mlang_labels_tabdescr">Modul za administraciju backend korisnika omogućava pregled svih backend korisnika. Možete ih grupirati po osobinama kako bi mogli pratiti njihove dozvole, filemount-ove, TSconfig, grupe članove i sl. Ovaj je modul nezaobilazan alat za pravilno podešavanje korisnika.&lt;BR /&gt;&lt;em&gt; Pristup dozvoljen samo admin korisnicima!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Administracija korisnika</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="mlang_labels_tablabel">Backend felhasználók adminisztrációja</label>
-            <label index="mlang_labels_tabdescr">A Felhasználó Admin modulban megtekinthető az összes backend felhasználó. Csoportokba rendezheted őket a jellemzőik alapján,  figyelheted a jogaikat, a filemount-jaikat, TSconfig-ot, csoporttagságaikat, stb. Ez a modul nélkülözhetetlen, hogy biztosak lehessünk benne, minden felhasználó megfelelően van beállítva. &lt;br /&gt;&lt;em&gt;Csak 'admin' felhasználóknak!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Felhasználó Admin</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-            <label index="mlang_labels_tablabel">後勤使用者管理</label>
-            <label index="mlang_labels_tabdescr">後勤使用者模組使你有所有後勤使用者的概覽。你可以按著他們的特性來為他們為組，以致你能夠監察他們的權限﹑檔案附殖﹑TSconfig和會員群組等。這個模組於有效和正確地設定使用者是不可或缺的工具。&lt;Br&gt;&lt;em&gt;只許「管理」級使用者使用！&lt;/em?</label>
-            <label index="mlang_tabs_tab">使用者管理</label>
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-            <label index="mlang_labels_tablabel">Администрация на Backend потребители</label>
-            <label index="mlang_labels_tabdescr">Модула за администриране на потребителите Ви осигурява преглед (overview) на всички backend потребители. Можете да ги групирате по техните свойства, така че да могат да бъдат наблюдавани по техните права, закачени файлове (filemounts), TSconfig, членски групи и др.. Този модул е задължителен за да сте сигурни че потребителите са конфигурирани правилно. .&lt;BR&gt;&lt;em&gt;Достъп за 'Админ' потребители само!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Администратор на потребителите</label>
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="mlang_labels_tablabel">Administração de Usuários do Sistema</label>
-            <label index="mlang_labels_tabdescr">O módulo de Administração de Usuários providencia uma visão geral de todos os usuários do sistema. Você pode agrupá-los pelas suas propriedades para monitorar as suas permissões, diretórios, TSconfig, grupos, etc... Este módulo é uma ferramenta indispensável para garantir que os usuários estão corretamente configurados.&lt;br&gt;&lt;em&gt;Acesso só para usuários 'admin'!&lt;/em&gt;</label>
-            <label index="mlang_tabs_tab">Admin. de Usuários</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="mlang_labels_tablabel" type="integer">17821603</label>
-            <label index="mlang_labels_tabdescr" type="integer">165149409</label>
-            <label index="mlang_tabs_tab" type="integer">119990797</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>Module labels</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:beuser/mod/locallang_mod.xml</fileId>
+		<labelContext type="array">
+			<label index="mlang_labels_tablabel"></label>
+			<label index="mlang_labels_tabdescr"></label>
+			<label index="mlang_tabs_tab"></label>
+		</labelContext>
+		<ext_filename_template>EXT:csh_###LANGKEY###/beuser/mod/###LANGKEY###.locallang_mod.xml</ext_filename_template>
+		<keep_original_text type="integer">1</keep_original_text>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel">Administration of Backend Users</label>
+			<label index="mlang_labels_tabdescr">The User Admin module provides you with an overview of all backend users. You can group them by their properties so you're able to monitor their permissions, filemounts, TSconfig, member groups etc.. This module is an indispensable tool in order to make sure the users are correctly configured.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
+			<label index="mlang_tabs_tab">User Admin</label>
+		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/beuser/mod/dk.locallang_mod.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/beuser/mod/de.locallang_mod.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/beuser/mod/no.locallang_mod.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/beuser/mod/it.locallang_mod.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/beuser/mod/fr.locallang_mod.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/beuser/mod/es.locallang_mod.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/beuser/mod/nl.locallang_mod.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/beuser/mod/cz.locallang_mod.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/beuser/mod/pl.locallang_mod.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/beuser/mod/si.locallang_mod.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/beuser/mod/fi.locallang_mod.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/beuser/mod/tr.locallang_mod.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/beuser/mod/se.locallang_mod.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/beuser/mod/pt.locallang_mod.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/beuser/mod/ru.locallang_mod.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/beuser/mod/ro.locallang_mod.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/beuser/mod/ch.locallang_mod.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/beuser/mod/sk.locallang_mod.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/beuser/mod/lt.locallang_mod.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/beuser/mod/is.locallang_mod.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/beuser/mod/hr.locallang_mod.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/beuser/mod/hu.locallang_mod.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/beuser/mod/gl.locallang_mod.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/beuser/mod/th.locallang_mod.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/beuser/mod/gr.locallang_mod.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/beuser/mod/hk.locallang_mod.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/beuser/mod/eu.locallang_mod.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/beuser/mod/bg.locallang_mod.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/beuser/mod/br.locallang_mod.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/beuser/mod/et.locallang_mod.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/beuser/mod/ar.locallang_mod.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/beuser/mod/he.locallang_mod.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/beuser/mod/ua.locallang_mod.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/beuser/mod/lv.locallang_mod.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/beuser/mod/jp.locallang_mod.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/beuser/mod/vn.locallang_mod.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/beuser/mod/ca.locallang_mod.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/beuser/mod/ba.locallang_mod.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/beuser/mod/kr.locallang_mod.xml</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel" type="integer">17821603</label>
+			<label index="mlang_labels_tabdescr" type="integer">165149409</label>
+			<label index="mlang_tabs_tab" type="integer">119990797</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

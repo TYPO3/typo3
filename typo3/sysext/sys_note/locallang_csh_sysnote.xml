@@ -1,417 +1,92 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>CSH for note table</description>
-        <type>CSH</type>
-        <csh_table>sys_note</csh_table>
-        <fileId>EXT:sys_note/locallang_csh_sysnote.xml</fileId>
-        <labelContext type="array">
-            <label index=".description"></label>
-            <label index=".details"></label>
-            <label index="_.seeAlso"></label>
-            <label index="category.description"></label>
-            <label index="subject.description"></label>
-            <label index="message.description"></label>
-            <label index="author.description"></label>
-            <label index="email.description"></label>
-            <label index="personal.description"></label>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index=".description">Internal reminder note placed on a the page.</label>
-            <label index=".details">This provides a simple way to attach instructional notes to a page regarding backend related issues. Use it as you like for reminders, instructions etc. </label>
-            <label index="_.seeAlso">pages
+	<meta type="array">
+		<description>CSH for note table</description>
+		<type>CSH</type>
+		<csh_table>sys_note</csh_table>
+		<fileId>EXT:sys_note/locallang_csh_sysnote.xml</fileId>
+		<labelContext type="array">
+			<label index=".description"></label>
+			<label index=".details"></label>
+			<label index="_.seeAlso"></label>
+			<label index="category.description"></label>
+			<label index="subject.description"></label>
+			<label index="message.description"></label>
+			<label index="author.description"></label>
+			<label index="email.description"></label>
+			<label index="personal.description"></label>
+		</labelContext>
+		<ext_filename_template>EXT:csh_###LANGKEY###/sys_note/###LANGKEY###.locallang_csh_sysnote.xml</ext_filename_template>
+		<keep_original_text type="integer">1</keep_original_text>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">Internal reminder note placed on a the page.</label>
+			<label index=".details">This provides a simple way to attach instructional notes to a page regarding backend related issues. Use it as you like for reminders, instructions etc. </label>
+			<label index="_.seeAlso">pages
 </label>
-            <label index="category.description">Select a category which describes the character of the note.</label>
-            <label index="subject.description">Enter a title for the note.</label>
-            <label index="message.description">This is the note itself.</label>
-            <label index="author.description">Enter your name. </label>
-            <label index="email.description">Enter your email address.</label>
-            <label index="personal.description">Check this, if you don't want other users to see this note.</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index=".description">Interne Erinnerungsnotiz auf einer Seite.</label>
-            <label index=".details">Bietet eine einfache Möglichkeit, um interne Informationen und Anweisungen mit einer Seite zu verknüpfen.</label>
-            <label index="category.description">Wähle eine die Notiz beschreibende Kategorie aus.</label>
-            <label index="subject.description">Gib einen Titel für die Notiz ein.</label>
-            <label index="message.description">Dies ist die eigentliche Notiz.</label>
-            <label index="author.description">Gibt Deinen Namen ein.</label>
-            <label index="email.description">Gib Deine EMail-Adresse ein.</label>
-            <label index="personal.description">Notiz auch anderen Benutzern anzeigen.</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index=".description">Sisäinen huomautus muistuttamaan lisätty sivulle.</label>
-            <label index=".details">Tämä mahdollistaa yksinkertaisen tavan lisätä ohjeellisia huomautuksia sivulle jotka koskevat taustatoimintoja. Käytä kuten haluat muistioihin, ohjeisiin jne.</label>
-            <label index="_.seeAlso">sivuja</label>
-            <label index="category.description">Valitse luokka joka kuvastaa huomautuksen luonnetta.</label>
-            <label index="subject.description">Anna otsikko huomautukselle.</label>
-            <label index="message.description">Tässä on itse huomautus.</label>
-            <label index="author.description">Anna nimesi.</label>
-            <label index="email.description">Anna email osoitteesi.</label>
-            <label index="personal.description">Merkkaa tämä, jos et halua muiden käyttäjien näkevän tätä huomautusta.</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index=".description">Sayfaya hatırlatıcı not eklendi.</label>
-            <label index=".details">Bu özellik arkaplan yayınlarıyla ilişkili olarak sayfaya açıklayıcı notlar eklemenizi sağlar. Hatırlatma mesajı, açıklayıcı gibi kullanabilirsiniz.</label>
-            <label index="category.description">Tanımlanan not karakterinin kategorisini seçiniz.</label>
-            <label index="subject.description">Not için başlık yazınız.</label>
-            <label index="message.description">Not kısmı</label>
-            <label index="author.description">Adınızı Giriniz.</label>
-            <label index="email.description">E-mail adresininizi giriniz</label>
-            <label index="personal.description">Bunu tıklayınız, Eğer tıklamazsanız diğer kullanıcılar notlarınızı görebilir.</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index=".description">En intern påminnelse/notering för hemsidan.</label>
-            <label index=".details">Med detta verktyg gan du lätt lägga en förklarande notering angående Backend-saker till din sida. Använd den hur du vill: som påminnelse, förklaring osv.</label>
-            <label index="category.description">Välj till vilken kategori noteringen hör.</label>
-            <label index="subject.description">Ge noteringen en rubrik.</label>
-            <label index="message.description">Noteringens innehåll.</label>
-            <label index="author.description">Ge ditt namn.</label>
-            <label index="email.description">Ge din epostadress.</label>
-            <label index="personal.description">Välj denna, om du inte vill att andra användare skall se noteringen</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index=".description">Interni podsjetnik postavljen na stranicu.</label>
-            <label index=".details">Ovo je jednostavan način za prilaganje instrukcijskih bilješki na stranicu vezanih uz backend. Koristite ga kako želite za podsjetnike, instrukcije itd.</label>
-            <label index="category.description">Izaberite kategoriju koja opisuje karakter bilješke.</label>
-            <label index="subject.description">Unesite naslov bilješke.</label>
-            <label index="message.description">Ovo je sama bilješka.</label>
-            <label index="author.description">Unesite vaše ime.</label>
-            <label index="email.description">Unesite vašu email adresu.</label>
-            <label index="personal.description">Označite ovo, ako ne želite da ostali korisnici vide ovu bilješku.</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index=".description">Belső emlékeztető üzenetek elhelyezése az oldalakra.</label>
-            <label index=".details">Ez egy egyszerű módja feljegyzések, utasítások elhelyezésére.</label>
-            <label index="category.description">Válassz egy kategóriát, ami kifejezi a feljegyzés típusát.</label>
-            <label index="subject.description">Add meg a feljegyzés címét.</label>
-            <label index="message.description">Ez a jegyzet maga.</label>
-            <label index="author.description">Add meg a neved.</label>
-            <label index="email.description">Add meg az email címed.</label>
-            <label index="personal.description">Akkor jelöld be, ha más felhasználó nem láthatja ezt a jegyzetet.</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-            <label index=".description">Вътрешна напомняща бележка на страницата</label>
-            <label index=".details">Това позволява лесен начин да се оставят бележки с учебна цел на страница, отнасящи се за backend свързани публикации.</label>
-            <label index="_.seeAlso">страници</label>
-            <label index="category.description">Изберете категория която описва характера на бележката.</label>
-            <label index="subject.description">Въведете заглавие за вашата бележка.</label>
-            <label index="message.description">Това е самата бележка.</label>
-            <label index="author.description">Въведете вашето име.</label>
-            <label index="email.description">Въведете вашия email адрес.</label>
-            <label index="personal.description">Маркирайте това, ако не искате други потребители да видят тази бележка.</label>
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index=".description">Nota interna de lembrete adicionada a uma página.</label>
-            <label index=".details">Possibilita um modo simples de anexar notas instrucionais a uma página, sobre assuntos relativos à administração. Use-a como quiser para lembretes, instruções, etc.</label>
-            <label index="category.description">Selecione uma categoria para descrever a característica da nota.</label>
-            <label index="subject.description">Digite um título para a nota.</label>
-            <label index="message.description">Este é o conteúdo da nota.</label>
-            <label index="author.description">Digite seu nome.</label>
-            <label index="email.description">Digite seu endereço de e-mail.</label>
-            <label index="personal.description">Marque esta opção, se não quiser que outros usuários vejam esta nota.</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="_.seeAlso" type="integer">101943827</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="_.seeAlso" type="integer">101943827</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="_.seeAlso" type="integer">101943827</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index=".description" type="integer">112425504</label>
-            <label index=".details" type="integer">141602016</label>
-            <label index="category.description" type="integer">222277377</label>
-            <label index="subject.description" type="integer">58235458</label>
-            <label index="message.description" type="integer">268248387</label>
-            <label index="author.description" type="integer">205434485</label>
-            <label index="email.description" type="integer">259302369</label>
-            <label index="personal.description" type="integer">172550456</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_text>
+			<label index="category.description">Select a category which describes the character of the note.</label>
+			<label index="subject.description">Enter a title for the note.</label>
+			<label index="message.description">This is the note itself.</label>
+			<label index="author.description">Enter your name. </label>
+			<label index="email.description">Enter your email address.</label>
+			<label index="personal.description">Check this, if you don't want other users to see this note.</label>
+		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/sys_note/dk.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/sys_note/de.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/sys_note/no.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/sys_note/it.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/sys_note/fr.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/sys_note/es.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/sys_note/nl.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/sys_note/cz.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/sys_note/pl.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/sys_note/si.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/sys_note/fi.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/sys_note/tr.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/sys_note/se.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/sys_note/pt.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/sys_note/ru.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/sys_note/ro.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/sys_note/ch.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/sys_note/sk.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/sys_note/lt.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/sys_note/is.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/sys_note/hr.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/sys_note/hu.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/sys_note/gl.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/sys_note/th.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/sys_note/gr.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/sys_note/hk.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/sys_note/eu.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/sys_note/bg.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/sys_note/br.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/sys_note/et.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/sys_note/ar.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/sys_note/he.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/sys_note/ua.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/sys_note/lv.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/sys_note/jp.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/sys_note/vn.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/sys_note/ca.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/sys_note/ba.locallang_csh_sysnote.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/sys_note/kr.locallang_csh_sysnote.xml</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index=".description" type="integer">112425504</label>
+			<label index=".details" type="integer">141602016</label>
+			<label index="_.seeAlso" type="integer">101943827</label>
+			<label index="category.description" type="integer">222277377</label>
+			<label index="subject.description" type="integer">58235458</label>
+			<label index="message.description" type="integer">268248387</label>
+			<label index="author.description" type="integer">205434485</label>
+			<label index="email.description" type="integer">259302369</label>
+			<label index="personal.description" type="integer">172550456</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

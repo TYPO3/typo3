@@ -64,7 +64,7 @@ Here you see the &quot;TSconfig&quot; column. The overview exposes that these tw
 &lt;b&gt;Gray background (not available for default language):&lt;/b&gt; Page will fall back to the specified fallback mode for content. Depends on configuration. (sys_language_mode = content_fallback is recommended for most flexible fallback, sys_language_mode = strict will prevent this and issue an error instead!)
 
 &lt;b&gt;The pages &quot;Localization settings:&quot;&lt;/b&gt;
-It is the &quot;Localization settings&quot; of the page record that determines the modes above. In the column of the default translation each of these settings are represented by a &quot;N&quot; (Hide page if no translation for current language exists) or a &quot;D&quot; (Hide default translation of page). 
+It is the &quot;Localization settings&quot; of the page record that determines the modes above. In the column of the default translation each of these settings are represented by a &quot;N&quot; (Hide page if no translation for current language exists) or a &quot;D&quot; (Hide default translation of page).
 As you can see the page &quot;Startpage&quot; has the N flag set and therefore any access to the german version of that page will be blocked with an error message because there is no translation in german. By default &quot;german access&quot; to a non-translated page will just show the english content.
 There is also a page with the D flag (&quot;[Dummy]&quot;). The D flag means that the page is only available in one of the translations, in this case Danish. So any attempt to access the page in the default language or german will show an error message.
 
@@ -98,44 +98,43 @@ Will show the total number of page hits/sessions within main sections of a websi
 			<label index="lang.description">Gives an overview of which pages in the page tree are translated to the system languages installed.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/cms/dk.locallang_csh_webinfo.xml</languageKey>
-		<languageKey index="de" type="array">
-			<label index="pagetree_overview.alttitle">Seitenbaum Übersicht</label>
-			<label index="pagetree_overview.description">Die Seitenbaum Übersicht liefert Informationen über Seiten eines Bereiches des Seitenbaums. Enthalten sind unter anderem die Anzahl von Datensätzen, Seiteneinstellungen (z.B. Alias), Start- und Ende-Zeiten für die Darstellung, Cache Einstellungen usw.</label>
-			<label index="pagetree_overview.image_descr">Ein Beispiel für eine Funktion der Seitenbaum Übersicht ist die Möglichkeit, die Typen der Datensätze anzuzeigen, die auf bestimmten Seiten enthalten sind. In diesem Fall wird die Anzahl der Datensätze für den Teilbereich des Seitenbaumes in der 2. Ebene und tiefer angezeigt.</label>
-			<label index="func_0.alttitle">Basiseinstellungen</label>
-			<label index="func_0.description">Stellt eine Auswahl von Feldern bestimmter Seiten dar, die grundsätzliche Einstellungen für Seiten enthalten. Dazu gehören Aliase, Start- und Stopp-Zeiten, Zugrifssbeschränkungen usw.</label>
-			<label index="func_0.details">Die Ansicht der Basiseinstellungen ähnelt stark der von Cache und Alter. Sie unterscheiden sich jediglich durch die Auswahl der Felder die sie anzeigen.
-
-&lt;b&gt;Bearbeitung mehrerer Felder gleichzeitig&lt;/b&gt;
-In dieser Ansicht finden Sie mehrfach Bearbeitungs Symbole. Die Symbole in den Zeilen der Überschriften bringen Sie in einen Bearbeitungsmodus, in dem Sie genau dieses Feld für alle aufgeführten Tabellen bearbeiten können! Dies ist sehr nützlich, um etwa alle Start-Zeiten der Seiten zu verändern.
-Wenn Sie auf das Bearbeitungs Symbol der ID Nummern klicken, landen Sie direkt in der normalen Ansicht zur Bearbeitung des gesamten Seiten-Datensatzes.</label>
-			<label index="func_0.image_descr">Die Ansicht der Basiseinstellungen. Sehen Sie, wie einfach Sie einen Überblick über die Aliase, Start-Zeiten und Zugrifssbeschränkungen bekommen können?
-Wenn Sie auf ein Bearbeitungs-Symbol in der Überschrift klicken, können Sie das entsprechende Feld für alle aufgelisteten Seiten bearbeiten (in diesem Fall das &quot;Access&quot; Feld).
-So sieht das gleichzeige Bearbeiten mehrer Einträge aus; jeweils nur ein Feld je Datensatz!</label>
-			<label index="func_1.alttitle">Datensatz-Übersicht</label>
-			<label index="func_1.description">Die Datensatz-Übersicht gibt Ihnen einen guten Überblick über die Verteilung von bestimmten Datensätzen innerhalb des Seitenbaumes. Jede Datenbank Tabelle des Systems wird in einer eigenen Spalte dargestellt, jeweils mit der Anzahl der Datensätze dieser Tabelle, die auf der Seite enhalten sind.</label>
-			<label index="func_1.details">&lt;b&gt;Hinweis:&lt;/b&gt; Seien Sie vorsichtig mit der Ebenen-Einstellung. Wenn Sie beispielsweise die Anzeige von &quot;3 Ebenen&quot; auswählen, kann das System eventuell sehr langsam reagieren falls viele Seiten und entsprechend viele Datensätze in der Datenbank enthalten sind!
-
-&lt;b&gt;Teilansicht&lt;/b&gt;
-Haben Sie das kleine rote &quot;+&quot; neben einigen Seiten im Seitenbaum bemerkt? Der Grund dafür ist eine Einstellung für bestimmte Seiten, die Sie daran hindern den Seitenbaum für ihre Unterseiten aufzuklappen. Normalerweise wird diese Einstellung als Schutzmaßnahme verwendet wenn sich unterhalb der Seiten sehr viele weitere Seiten befinden (normalerweise mehrere Hundert). Wenn Sie auf das Symbol / den Titel klicken, wird für die Übersicht diese Seite als neuer Ausgangspunkt verwendet.</label>
-			<label index="func_1.image_descr">Beachten Sie, wie einfach Sie einen Überblick über die Verteilung der Inhaltselemente auf den Seiten bekommen. Sie können ebenfalls sehen wo sich Template Datensätze - grundsätzliche jede Art von Datensätzen - im Seitenbaum befinden.</label>
-			<label index="func_2.alttitle">Cache und Alter</label>
-			<label index="func_2.description">Zeigt eine Auswahl an Feldern aus Seiten Datensätzen, die Informationen zum Caching der Seite und dessen zeitlicher Steuerung enthalten.</label>
-			<label index="func_2.image_descr">Die &quot;Cache und Alter&quot; Ansicht.
-Hier sehen Sie die &quot;TSconfig&quot; Spalte. Die Übersicht zeigt, dass diese beiden Seiten TSconfig Code enhalten!</label>
-			<label index="stat.alttitle">Statistik der Seitenzugriffe</label>
-			<label index="stat.description">Zeigt eine Zugriffsstatistik für einen bestimmten Teilbereich des Seitenbaumes. Basiert auf einer einfachen, internen Statistik Tabelle, die jediglich Seitenaufrufe und Sitzungen protokolliert.</label>
-			<label index="stat.details">&lt;b&gt;Hinweis:&lt;/b&gt; Diese Funktion benötigt die Erweiterung &quot;Simple hit statistics&quot; (sys_stat). Sie müssen ausserdem über TypoScript das Protokollieren der Seitenaufrufe aktivieren.</label>
-			<label index="lang.alttitle">Lokalisierungs-Übersicht</label>
-			<label index="lang.description">Zeigt eine Übersicht der Seiten, welche in die installierten Systemsprachen übersetzt wurden.</label>
-			<label index="func_hits.alttitle">Statistik Ansichten</label>
-		</languageKey>
+		<languageKey index="de">EXT:csh_de/cms/de.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="fr">EXT:csh_fr/cms/fr.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/cms/it.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/cms/cz.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/cms/pl.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/cms/si.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/cms/tr.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/cms/se.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/cms/pt.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/cms/ru.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/cms/ro.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/cms/ch.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/cms/sk.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/cms/lt.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/cms/is.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/cms/hr.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/cms/gl.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/cms/th.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/cms/gr.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/cms/hk.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/cms/eu.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/cms/bg.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/cms/br.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/cms/et.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/cms/ar.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/cms/ua.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/cms/lv.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/cms/jp.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/cms/vn.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/cms/ca.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/cms/ba.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/cms/kr.locallang_csh_webinfo.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/cms/no.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="es">EXT:csh_es/cms/es.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="nl">EXT:csh_nl/cms/nl.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="fi">EXT:csh_fi/cms/fi.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="hu">EXT:csh_hu/cms/hu.locallang_csh_webinfo.xml</languageKey>
-		<languageKey index="no">EXT:csh_no/cms/no.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="he">EXT:csh_he/cms/he.locallang_csh_webinfo.xml</languageKey>
 	</data>
 </T3locallang>

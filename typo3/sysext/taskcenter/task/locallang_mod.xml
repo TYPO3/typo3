@@ -1,392 +1,73 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Module labels</description>
-        <type>module</type>
-        <csh_table></csh_table>
-        <fileId>EXT:taskcenter/task/locallang_mod.xml</fileId>
-        <labelContext type="array">
-            <label index="mlang_labels_tablabel"></label>
-            <label index="mlang_labels_tabdescr"></label>
-            <label index="mlang_tabs_tab"></label>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="mlang_labels_tablabel">Task Center with overviews, messages, ToDo lists</label>
-            <label index="mlang_labels_tabdescr">The task center provides access to your internal To-Do list, messages, Quick-note, actions etc. It also provides shortcuts to your available frontend modules and most recently edited pages. The Task Center is where you keep track of your daily tasks and workflows.</label>
-            <label index="mlang_tabs_tab">Task center</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="mlang_labels_tablabel">Arbejdsstyring med overblik, beskeder, opgavelister</label>
-            <label index="mlang_labels_tabdescr">Opgaver-modulet giver dig adgang til din interne opgaveliste, beskeder, Kvik-note, handlinger osv. Det giver dig også genveje til dine tilgængelige website moduler og senest ændrede sider. Opgaver-modulet er dér, hvor du holder styr på dine daglige opgaver og arbejdsgange.</label>
-            <label index="mlang_tabs_tab">Opgaver</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="mlang_labels_tablabel">Aufgaben mit Übersichten, Nachrichten, To-Do-Listen</label>
-            <label index="mlang_labels_tabdescr">Das Aufgaben-Center bietet Ihnen Zugriff auf Ihre interne To-Do-Liste, Nachrichten, Notizen, Befehle, usw. Es bietet Ihnen ebenso Verweise auf die verfügbaren Frontend-Module und die am häufigsten bearbeiteten Seiten. Im Aufgaben Center können Sie Ihre täglichen Aufgaben und Workflows verfolgen können.</label>
-            <label index="mlang_tabs_tab">Aufgaben</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="mlang_labels_tablabel">Arbeidsstyring med oversikt, beskjeder, oppgavelister</label>
-            <label index="mlang_labels_tabdescr">Oppgaver-modulen gir deg tilgang til din interne oppgaveliste, beskjeder, Hurtig-notater, handlinger osv. Den gir deg også snarveier til dine tilgjengelige webområde moduler og sist endrede sider. Det er i Oppgaver-modulen at du holder styr på dine daglige oppgaver og arbeidsgangen.</label>
-            <label index="mlang_tabs_tab">Oppgaver</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="mlang_labels_tablabel">Task Center con visione d'insieme, messaggi, lista dei to-do</label>
-            <label index="mlang_labels_tabdescr">Task Center dà l'accesso alla lista dei to-do, ai messaggi, alle note, alle 'azioni', etc. Vi dà inoltre accesso ai moduli frontend e alle pagine modificate recentemente. Task Center è il modulo in cui tenete traccia delle attività quotidiane e dei workflows.</label>
-            <label index="mlang_tabs_tab">Task center</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="mlang_labels_tablabel">Centre de Tâches avec résumé, messages et listes 'A faire'</label>
-            <label index="mlang_labels_tabdescr">Le Centre de Tâches vous donne accès au notes internes, aux tâches 'A faire', aux actions, ... Il vous donne aussi accès à vos modules 'Frontend' et les pages éditées récemment. Le Centre de Tâches est l'endroit ou vous voyez votre travail quotidien et le workflow</label>
-            <label index="mlang_tabs_tab">Centre de Tâches</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="mlang_labels_tablabel">Centro de Tareas con resúmenes, mensajes, pendientes.</label>
-            <label index="mlang_labels_tabdescr">El centro de tareas le da acceso a su lista de pendientes interna, mensajes, notas, aciones, etc. También tiene accesos directos a los módules sus módulos disponibles de frontend y las páginas que editó mas recientemente. El Centro de Tareas es donde ud. mantiene nota de sus tareas diarias y flujo de trabajo.</label>
-            <label index="mlang_tabs_tab">Centro de Tareas</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="mlang_labels_tablabel">Taak Centrum met overzichten, berichten, TeDoen lijsten</label>
-            <label index="mlang_labels_tabdescr">Het Taak Centrum geeft toegang tot de interne TeDoen lijst, berichten, NotitieBlok, Akties enz. Het bevat ook snelkoppelingen naar de beschikbare modules en onlangs aangepaste pagina's. In het Taak Centrum zijn de dagelijkse taken en werkschema's te volgen.</label>
-            <label index="mlang_tabs_tab">Taakcentrum</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="mlang_labels_tablabel">Task Center s přehledy, vzkazy a seznamem úkolů</label>
-            <label index="mlang_labels_tabdescr">Task Center poskytuje přistup k vašemu vnitřnímu seznamu úkolů, vzkazům, rychlé poznámce, akcím atd. Také poskytuje zkratky k vašim dostupným frontendovým modulům a naposled editovaným stránkám. V Task Center můžete udržovat přehled o vašich denních úkolech a workflow.</label>
-            <label index="mlang_tabs_tab">Task Center</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="mlang_labels_tablabel">Zadania i wiadomości dla ciebie</label>
-            <label index="mlang_labels_tabdescr">Moduł Twoje zadania umożliwia dostęp do twoich zadań, wiadomości, notesu, akcji, itp. Zawiera również skróty do dostępnych dla ciebie modułów i ostatnio edytowanych przez ciebie stron. Tutaj przechowywane są informacje o twojej aktywności na serwerze TYPO3.</label>
-            <label index="mlang_tabs_tab">Twoje zadania</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="mlang_labels_tablabel">Center opravil s pregledi nalog, sporočilo in seznamom opravil</label>
-            <label index="mlang_labels_tabdescr">Center opravil vam omogoča dostop do lastnega seznama opravil, sporočil, opomb, dejanj, idr. Vsebuje tudi bližnjice na razpoložljive module in zadnje urejene strani. S pomočjo centra opravil boste lahko sledili dnevnim opravilom in poteku dela.</label>
-            <label index="mlang_tabs_tab">Center opravil</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="mlang_labels_tablabel">Task Center </label>
-            <label index="mlang_labels_tabdescr">Task Center mahdollistaa pääsyn sisäisiin To-Do listaan, viesteihin, pikamuistio, toimintoihin jne. Sillä on mahdollisuus tehdä oikoteitä saatavilla oleviin frontend-moduleihin ja viimeksi muotoilluille sivuille. Task Center on paikka jossa seuraat päivittäisiä toimintojasi ja työkulkua.</label>
-            <label index="mlang_tabs_tab">Task Center</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="mlang_labels_tablabel">Görev merkezi ile genel görüntü, mesajlar, Yapılacaklar listesi</label>
-            <label index="mlang_labels_tabdescr">Görev merkezi sizin iç kısma ait yapılacak listenize, mesajlara, hızlı notunuza, aksiyonlarınıza vs erişim imkanı sağlar. Birde sizin mevcut önplan modülleri ve en son düzenlenen sayfalarınıza kısayol imkanı sağlar. Görev Merkezi sizin günlük görevlerinizi ve iş akışlarınızı takip etmenizi sağlayan yerdir.</label>
-            <label index="mlang_tabs_tab">Görev merkezi</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="mlang_labels_tablabel">Uppgifter med översikter, meddelande, Att göra-listor</label>
-            <label index="mlang_labels_tabdescr">I Uppgifter kommer du till den interna Att göra-listan, meddelanden, snabbanteckningar, aktiviteter mm. Där finns också genvägar till de frontend-moduler som du kan använda och till de sidor, som du senast jobbat med. I Uppgifter håller du ordning på ditt dagliga arbete och arbetsgången.</label>
-            <label index="mlang_tabs_tab">Uppgifter</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="mlang_labels_tablabel">Centro de Tarefas com listas de históricos, mensagens e a-fazer</label>
-            <label index="mlang_labels_tabdescr">O centro de tarefas providencia acesso à sua lista de A-Afazer, mensagens, Notas-rápidas, acções, etc. Também providencia atalhos para os módulos-cliente disponíveis e as páginas editadas mais recentemente. O Centro de Tarefas é onde mantém o control das suas tarefas e trabalhos diários.</label>
-            <label index="mlang_tabs_tab">Centro de Tarefas</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="mlang_labels_tablabel">Центр заданий содержит обзор заданий, сообщения и инструкции</label>
-            <label index="mlang_labels_tabdescr">Центр заданий предоставляет доступ к вашим личным планам, заметкам, действиям и т.д. Также вы найдете здесь ссылки к доступным вам модулям и список страниц, над которыми вы работали последнее время. Центр заданий - это ваш рабочий стол.</label>
-            <label index="mlang_tabs_tab">Центр заданий</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="mlang_labels_tablabel">Centru de sarcini cu liste de actiuni si mesaje.</label>
-            <label index="mlang_labels_tabdescr">Centrul de sarcini va ofera posibilitatea sa vedeti ce aveti de facut, mesaje, notite, etc. Deasemeni ofera shortcut-uri spre modulele frontend disponibile si spre cele mai recent editate pagini. Centrul de sarcini este locul in care iti tii evidenta indatoririlor zilnice.</label>
-            <label index="mlang_tabs_tab">Centrul de sarcini</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="mlang_labels_tablabel">Task Center s prehľadmi, odkazmi a zoznamom úloh</label>
-            <label index="mlang_labels_tabdescr">Task Center poskytuje prístup k vašemu internému zoznamu úloh, odkazov, rýchlym poznámkam, udalostiam atď. Taktiež poskytuje skratky k vašim dostupným frontendovým modulom a ku stránkam , ktoré ste editovali  posledné. V Task Center môžete udržiavať  prehľad o vašich denných úlohach a workflow.</label>
-            <label index="mlang_tabs_tab">Task center</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="mlang_labels_tablabel">Task Centar sa pregledima, porukama, to-do listama.</label>
-            <label index="mlang_labels_tabdescr">Task centar omogućava pristup vašim internim to-do listama, porukama, quick-notes zapisima, postupcima i sl. Isto tako sadrži kratice do dodtupnih frontend modula i nedavno izmjenjivanih stranica. Task centar je mjesto gdje vodite računa o vašim dnevnim zadacima i radnim procesima.</label>
-            <label index="mlang_tabs_tab">Task centar</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="mlang_labels_tablabel">Feladatközpont áttekintéssel, üzenetekkel, tennivaló listákkal</label>
-            <label index="mlang_labels_tabdescr">A Feladatközpont elérést biztosít a belső tennivaló listához, üzenetekhez, gyors jegyzetekhez, műveletekhez, stb. Parancsikonokat biztosít a frontend modulokhoz és a leggyakrabban szerkesztett oldalakhoz. A Feladatközpontban követheted nyomon a napi teendőket és a munkamenetet.</label>
-            <label index="mlang_tabs_tab">Feladatközpont</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="mlang_labels_tablabel">Centro de Tarefas com listas de históricos, mensagens e a-fazer</label>
-            <label index="mlang_labels_tabdescr">O centro de tarefas providencia acesso à sua lista de A-fazer, mensagens, Notas-rápidas, ações, etc. Também providencia atalhos para os módulos-clientes disponíveis e as páginas editadas mais recentemente. O Centro de Tarefas é onde você mantém o controle das suas tarefas e trabalhos diários.</label>
-            <label index="mlang_tabs_tab">Centro de Tarefas</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-            <label index="mlang_labels_tablabel">Ülesanded, teated, tegemata tööd</label>
-            <label index="mlang_labels_tabdescr">Ülesannete moodul pakub ligipääsu isiklike teadete, ülesannete, märkmete ja tegemata tööde loetelule. Samuti näitab see otsevaliku linke moodulitele ja viimati muudetud lehekülgedele. Ülesanded on moodul, kus saab hallata oma igapäevaseid tööülesandeid ja märkmeid.</label>
-            <label index="mlang_tabs_tab">Ülesanded</label>
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-            <label index="mlang_labels_tablabel" type="integer">42729585</label>
-            <label index="mlang_labels_tabdescr" type="integer">95609552</label>
-            <label index="mlang_tabs_tab" type="integer">109318877</label>
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-        <languageKey index="ca" type="array">
-        </languageKey>
-        <languageKey index="ba" type="array">
-        </languageKey>
-        <languageKey index="kr" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>Module labels</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:taskcenter/task/locallang_mod.xml</fileId>
+		<labelContext type="array">
+			<label index="mlang_labels_tablabel"></label>
+			<label index="mlang_labels_tabdescr"></label>
+			<label index="mlang_tabs_tab"></label>
+		</labelContext>
+		<ext_filename_template>EXT:csh_###LANGKEY###/taskcenter/task/###LANGKEY###.locallang_mod.xml</ext_filename_template>
+		<keep_original_text type="integer">1</keep_original_text>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel">Task Center with overviews, messages, ToDo lists</label>
+			<label index="mlang_labels_tabdescr">The task center provides access to your internal To-Do list, messages, Quick-note, actions etc. It also provides shortcuts to your available frontend modules and most recently edited pages. The Task Center is where you keep track of your daily tasks and workflows.</label>
+			<label index="mlang_tabs_tab">Task center</label>
+		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/taskcenter/task/dk.locallang_mod.xml</languageKey>
+		<languageKey index="de">EXT:csh_de/taskcenter/task/de.locallang_mod.xml</languageKey>
+		<languageKey index="no">EXT:csh_no/taskcenter/task/no.locallang_mod.xml</languageKey>
+		<languageKey index="it">EXT:csh_it/taskcenter/task/it.locallang_mod.xml</languageKey>
+		<languageKey index="fr">EXT:csh_fr/taskcenter/task/fr.locallang_mod.xml</languageKey>
+		<languageKey index="es">EXT:csh_es/taskcenter/task/es.locallang_mod.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/taskcenter/task/nl.locallang_mod.xml</languageKey>
+		<languageKey index="cz">EXT:csh_cz/taskcenter/task/cz.locallang_mod.xml</languageKey>
+		<languageKey index="pl">EXT:csh_pl/taskcenter/task/pl.locallang_mod.xml</languageKey>
+		<languageKey index="si">EXT:csh_si/taskcenter/task/si.locallang_mod.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/taskcenter/task/fi.locallang_mod.xml</languageKey>
+		<languageKey index="tr">EXT:csh_tr/taskcenter/task/tr.locallang_mod.xml</languageKey>
+		<languageKey index="se">EXT:csh_se/taskcenter/task/se.locallang_mod.xml</languageKey>
+		<languageKey index="pt">EXT:csh_pt/taskcenter/task/pt.locallang_mod.xml</languageKey>
+		<languageKey index="ru">EXT:csh_ru/taskcenter/task/ru.locallang_mod.xml</languageKey>
+		<languageKey index="ro">EXT:csh_ro/taskcenter/task/ro.locallang_mod.xml</languageKey>
+		<languageKey index="ch">EXT:csh_ch/taskcenter/task/ch.locallang_mod.xml</languageKey>
+		<languageKey index="sk">EXT:csh_sk/taskcenter/task/sk.locallang_mod.xml</languageKey>
+		<languageKey index="lt">EXT:csh_lt/taskcenter/task/lt.locallang_mod.xml</languageKey>
+		<languageKey index="is">EXT:csh_is/taskcenter/task/is.locallang_mod.xml</languageKey>
+		<languageKey index="hr">EXT:csh_hr/taskcenter/task/hr.locallang_mod.xml</languageKey>
+		<languageKey index="hu">EXT:csh_hu/taskcenter/task/hu.locallang_mod.xml</languageKey>
+		<languageKey index="gl">EXT:csh_gl/taskcenter/task/gl.locallang_mod.xml</languageKey>
+		<languageKey index="th">EXT:csh_th/taskcenter/task/th.locallang_mod.xml</languageKey>
+		<languageKey index="gr">EXT:csh_gr/taskcenter/task/gr.locallang_mod.xml</languageKey>
+		<languageKey index="hk">EXT:csh_hk/taskcenter/task/hk.locallang_mod.xml</languageKey>
+		<languageKey index="eu">EXT:csh_eu/taskcenter/task/eu.locallang_mod.xml</languageKey>
+		<languageKey index="bg">EXT:csh_bg/taskcenter/task/bg.locallang_mod.xml</languageKey>
+		<languageKey index="br">EXT:csh_br/taskcenter/task/br.locallang_mod.xml</languageKey>
+		<languageKey index="et">EXT:csh_et/taskcenter/task/et.locallang_mod.xml</languageKey>
+		<languageKey index="ar">EXT:csh_ar/taskcenter/task/ar.locallang_mod.xml</languageKey>
+		<languageKey index="he">EXT:csh_he/taskcenter/task/he.locallang_mod.xml</languageKey>
+		<languageKey index="ua">EXT:csh_ua/taskcenter/task/ua.locallang_mod.xml</languageKey>
+		<languageKey index="lv">EXT:csh_lv/taskcenter/task/lv.locallang_mod.xml</languageKey>
+		<languageKey index="jp">EXT:csh_jp/taskcenter/task/jp.locallang_mod.xml</languageKey>
+		<languageKey index="vn">EXT:csh_vn/taskcenter/task/vn.locallang_mod.xml</languageKey>
+		<languageKey index="ca">EXT:csh_ca/taskcenter/task/ca.locallang_mod.xml</languageKey>
+		<languageKey index="ba">EXT:csh_ba/taskcenter/task/ba.locallang_mod.xml</languageKey>
+		<languageKey index="kr">EXT:csh_kr/taskcenter/task/kr.locallang_mod.xml</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel" type="integer">42729585</label>
+			<label index="mlang_labels_tabdescr" type="integer">95609552</label>
+			<label index="mlang_tabs_tab" type="integer">109318877</label>
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>
