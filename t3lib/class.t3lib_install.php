@@ -467,6 +467,11 @@ class t3lib_install {
 					if (is_array($info['fields']))	{
 						foreach($info['fields'] as $fN => $fV) {
 							if ($info['whole_table'])	{
+								if(!strcmp($fN,'uid')) {
+									if(strstr($fV,'auto_increment')) {
+										$fV = eregi_replace('default \'0\'','',$fV);
+									}
+								}
 								$whole_table[]=$fN.' '.$fV;
 							} else {
 								if ($theKey=='extra')	{

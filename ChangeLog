@@ -1,3 +1,7 @@
+2004-11-16  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #0000416: Removing spurious DEFAULT '0' in SQL create table statements of uid columns right before they're executed in t3lib_install.
+
 2004-11-16  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Moved the remaining global extensions to sysext/ which were selected to be system extension.
@@ -37,7 +41,7 @@
 
  * Release of TYPO3 3.7.0RC2
 
-2004-09-19  Ingmar Schlecht  <ingmars@web.de>
+2004-09-19  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Added option to set the PHP memory_limit with the install tool.
  * Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
@@ -54,11 +58,11 @@
  * Fixed bug #0000298: Browser client Konqueror not recognized
  * Fixed bug #0000362: Changed field length of sys_log[IP] to 39 (IPv6 related, patch by Sven Wilhelm)
 
-2004-09-17  Ingmar Schlecht  <ingmars@web.de>
+2004-09-17  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Fixed bug #0000181: Added the word "JavaScript" to the note on the BE login page. It's now: "(Note: Cookies and JavaScript must be enabled!)"
 
-2004-09-15  Ingmar Schlecht  <ingmars@web.de>
+2004-09-15  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Fixed bug #0000353: In typo3/wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.
 
@@ -73,7 +77,7 @@
  * Fixed a typo in config_default.php
  * Changed description for lockRootPath
 
-2004-09-14  Ingmar Schlecht  <ingmars@web.de>
+2004-09-14  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Fixed bug #0000111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
 
@@ -193,7 +197,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* For testers: Ask me (kasper) for the "version" extension which is my test bench and future management tool for the final implementation.
 	* !!!Fieldnames 't3ver_oid', 't3ver_id' and 't3ver_label' has been reserved for versioning adminstration
 
-2004-08-22  Ingmar Schlecht  <ingmars@web.de>
+2004-08-22  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Changed the way how the EM and the Kickstarter interact
 		-> Removed all hardcoded references to the Kickstarter from the index.php of the EM and changed it to be extendable using the "Integrate into existing modules" functionality.
@@ -219,15 +223,15 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* Set-locale issue for USER_INT objects should be fixed. Please test this someone!!!
 
 
-2004-08-20  Ingmar Schlecht  <ingmars@web.de>
+2004-08-20  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Marginally changed the error message in t3lib_userauth appearing when the HTTP_REFERER mismatched.
 
-2004-08-20  Ingmar Schlecht  <ingmars@web.de>
+2004-08-20  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Fixed bugs #218 and #220: Install tool erroneously complained about low memory_limit
 
-2004-08-20  Ingmar Schlecht  <ingmars@web.de>
+2004-08-20  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Fixed bug #288: In t3lib_parsehtml prefixRelPath incorrectly prefixed absolute URLs
 
@@ -267,11 +271,11 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
  * Added new language flag icons (see t3lib/gfx/flags/). Will be used by templavoila and maybe sys_language
 
-2004-07-12  Ingmar Schlecht  <ingmars@web.de>
+2004-07-12  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Fixed bug #194: wizard_table.php, missing parameter 'backPath'
 
-2004-07-12  Ingmar Schlecht  <ingmars@web.de>
+2004-07-12  Ingmar Schlecht  <ingmar@typo3.org>
 
  * Fixed bug #79: Extension manager: Removing extensions containing empty folders did not work
  * Fixed bug: When removing an extension, typo3 tried to remove the extension directory twice
@@ -363,7 +367,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 
 	* Fixed remaining issues with styles in the backend regarding the TCEforms. There has been added additional possibilities of styling forms, now with classes in stylesheets, using $TBE_STYLES to set them up. Documentation of $TBE_STYLES for TCeforms has been updated in TYPo3 Core Api as well.
 
-2004-05-20  Ingmar Schlecht  <ingmars@web.de>
+2004-05-20  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed two install tool bugs:
 		#83: On non open_basedir'ed systems check if IM executables exist before trying to execut them.
