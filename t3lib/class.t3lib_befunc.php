@@ -1365,13 +1365,14 @@ class t3lib_BEfunc	{
 	 * @param	integer		Optional: $size is [w]x[h] of the thumbnail. 56 is default.
 	 * @return	string		Thumbnail image tag.
 	 */
-	function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir='',$abs=0,$tparams='',$size='')	{
+	function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir=NULL,$abs=0,$tparams='',$size='')	{
 		global $TCA;
 			// Load table.
 		t3lib_div::loadTCA($table);
 
 			// Find uploaddir automatically
-		$uploaddir = $uploaddir ? $uploaddir : $TCA[$table]['columns'][$field]['config']['uploadfolder'];
+		$uploaddir = (is_null($uploaddir)) ? $TCA[$table]['columns'][$field]['config']['uploadfolder'] : $uploaddir;
+		$uploaddir = preg_replace('#/$#','',$uploaddir);
 
 			// Set thumbs-script:
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
@@ -1397,7 +1398,7 @@ class t3lib_BEfunc	{
 				$max=0;
 				if (t3lib_div::inList('gif,jpg,png',$ext)) {
 					$imgInfo=@getimagesize(PATH_site.$uploaddir.'/'.$theFile);
-					if (is_array($imgInfo))	{$max = max($imgInfo);}
+					if (is_array($imgInfo))	{$max = max($imgInfo[0],$imgInfo[1]);}
 				}
 					// use the original image if it's size fits to the thumbnail size
 				if ($max && $max<=(count($sizeParts)&&max($sizeParts)?max($sizeParts):56))	{
@@ -1407,7 +1408,7 @@ class t3lib_BEfunc	{
 					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="../'.$backPath.$url.'" '.$imgInfo[3].' hspace="2" border="0" title="'.trim($url).'"'.$tparams.' alt="" /></a> ';
 						// New 190201 stop
 				} elseif ($ext=='ttf' || t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],$ext)) {
-					$theFile = ($abs?'':'../').$uploaddir.'/'.trim($theFile);
+					$theFile = ($abs?'':'../').($uploaddir?$uploaddir.'/':'').trim($theFile);
 					$params = '&file='.rawurlencode($theFile);
 					$params .= $size?'&size='.$size:'';
 					$url = $thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
@@ -2029,7 +2030,7 @@ class t3lib_BEfunc	{
 	 * See Inside TYPO3 for details about how to use / make Function menus
 	 * Usage: 50
 	 *
-	 * @param	string		$id is the "&id=" parameter value to be sent to the module
+	 * @param	string		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
 	 * @param	array		$menuItems is an array with the menu items for the selector box
@@ -2037,8 +2038,13 @@ class t3lib_BEfunc	{
 	 * @param	string		$addParams is additional parameters to pass to the script.
 	 * @return	string		HTML code for selector box
 	 */
-	function getFuncMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
+	function getFuncMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
 		if (is_array($menuItems))	{
+			if (!is_array($mainParams)) {
+				$mainParams = array('id' => $mainParams);
+			}
+			$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
+		
 			if (!$script) { $script=basename(PATH_thisScript); }
 
 			$options = array();
@@ -2048,7 +2054,7 @@ class t3lib_BEfunc	{
 								'</option>';
 			}
 			if (count($options))	{
-				$onChange = 'jumpToUrl(\''.$script.'?id='.rawurlencode($id).$addparams.'&'.$elementName.'=\'+this.options[this.selectedIndex].value,this);';
+				$onChange = 'jumpToUrl(\''.$script.'?'.$mainParams.$addparams.'&'.$elementName.'=\'+this.options[this.selectedIndex].value,this);';
 				return '
 
 					<!-- Function Menu of module -->
@@ -2066,7 +2072,7 @@ class t3lib_BEfunc	{
 	 * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
 	 * Usage: 34
 	 *
-	 * @param	string		$id is the "&id=" parameter value to be sent to the module
+	 * @param	string		$mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
 	 * @param	string		$script is the script to send the &id to, if empty it's automatically found
@@ -2075,9 +2081,14 @@ class t3lib_BEfunc	{
 	 * @return	string		HTML code for checkbox
 	 * @see getFuncMenu()
 	 */
-	function getFuncCheck($id,$elementName,$currentValue,$script='',$addparams='',$tagParams='')	{
+	function getFuncCheck($mainParams,$elementName,$currentValue,$script='',$addparams='',$tagParams='')	{
+		if (!is_array($mainParams)) {
+			$mainParams = array('id' => $mainParams);
+		}
+		$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
+		
 		if (!$script) {basename(PATH_thisScript);}
-		$onClick = 'jumpToUrl(\''.$script.'?id='.$id.$addparams.'&'.$elementName.'=\'+(this.checked?1:0),this);';
+		$onClick = 'jumpToUrl(\''.$script.'?'.$mainParams.$addparams.'&'.$elementName.'=\'+(this.checked?1:0),this);';
 		return '<input type="checkbox" name="'.$elementName.'"'.($currentValue?' checked="checked"':'').' onclick="'.htmlspecialchars($onClick).'"'.($tagParams?' '.$tagParams:'').' />';
 	}
 
@@ -2086,7 +2097,7 @@ class t3lib_BEfunc	{
 	 * Works like ->getFuncMenu() / ->getFuncCheck() but displays a input field instead which updates the script "onchange"
 	 * Usage: 1
 	 *
-	 * @param	string		$id is the "&id=" parameter value to be sent to the module
+	 * @param	string		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
 	 * @param	integer		Relative size of input field, max is 48
@@ -2095,9 +2106,14 @@ class t3lib_BEfunc	{
 	 * @return	string		HTML code for input text field.
 	 * @see getFuncMenu()
 	 */
-	function getFuncInput($id,$elementName,$currentValue,$size=10,$script="",$addparams="")	{
+	function getFuncInput($mainParams,$elementName,$currentValue,$size=10,$script="",$addparams="")	{
+		if (!is_array($mainParams)) {
+			$mainParams = array('id' => $mainParams);
+		}
+		$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
+		
 		if (!$script) {basename(PATH_thisScript);}
-		$onChange = 'jumpToUrl(\''.$script.'?id='.$id.$addparams.'&'.$elementName.'=\'+escape(this.value),this);';
+		$onChange = 'jumpToUrl(\''.$script.'?'.$mainParams.$addparams.'&'.$elementName.'=\'+escape(this.value),this);';
 		return '<input type="text"'.$GLOBALS['TBE_TEMPLATE']->formWidth($size).' name="'.$elementName.'" value="'.htmlspecialchars($currentValue).'" onchange="'.htmlspecialchars($onChange).'" />';
 	}
 
