@@ -64,7 +64,7 @@ error_reporting (E_ALL ^ E_NOTICE);
 // ******************
 define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
 define('TYPO3_MODE','BE');
-define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', php_sapi_name()=='cgi'||php_sapi_name()=='isapi'||php_sapi_name()=='cgi-fcgi' ? $HTTP_SERVER_VARS['PATH_TRANSLATED']:$HTTP_SERVER_VARS['SCRIPT_FILENAME'])));
+define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED'])? ($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED']):($HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']:$HTTP_SERVER_VARS['SCRIPT_FILENAME']))));
 
 define('PATH_site', ereg_replace('[^/]*.[^/]*$','',PATH_thisScript));		// the path to the website folder (see init.php)
 define('PATH_typo3conf', PATH_site.'typo3conf/');

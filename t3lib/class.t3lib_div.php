@@ -2503,10 +2503,10 @@ class t3lib_div {
 #		if ($getEnvName=='HTTP_REFERER')	return '';
 		switch((string)$getEnvName)	{
 			case 'SCRIPT_NAME':
-				return (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['PATH_INFO']?$HTTP_SERVER_VARS['PATH_INFO']:$HTTP_SERVER_VARS['ORIG_PATH_INFO']) ? ($HTTP_SERVER_VARS['PATH_INFO']?$HTTP_SERVER_VARS['PATH_INFO']:$HTTP_SERVER_VARS['ORIG_PATH_INFO']) : ($HTTP_SERVER_VARS['SCRIPT_NAME']?$HTTP_SERVER_VARS['SCRIPT_NAME']:$HTTP_SERVER_VARS['ORIG_SCRIPT_NAME']);
+				return (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_INFO']?$HTTP_SERVER_VARS['ORIG_PATH_INFO']:$HTTP_SERVER_VARS['PATH_INFO']) ? ($HTTP_SERVER_VARS['ORIG_PATH_INFO']?$HTTP_SERVER_VARS['ORIG_PATH_INFO']:$HTTP_SERVER_VARS['PATH_INFO']) : ($HTTP_SERVER_VARS['ORIG_SCRIPT_NAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_NAME']:$HTTP_SERVER_VARS['SCRIPT_NAME']);
 			break;
 			case 'SCRIPT_FILENAME':
-				return str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['PATH_TRANSLATED']?$HTTP_SERVER_VARS['PATH_TRANSLATED']:$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED'])? ($HTTP_SERVER_VARS['PATH_TRANSLATED']?$HTTP_SERVER_VARS['PATH_TRANSLATED']:$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']):($HTTP_SERVER_VARS['SCRIPT_FILENAME']?$HTTP_SERVER_VARS['SCRIPT_FILENAME']:$HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME'])));
+				return str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED'])? ($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED']):($HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']:$HTTP_SERVER_VARS['SCRIPT_FILENAME'])));
 			break;
 			case 'REQUEST_URI':
 				// Typical application of REQUEST_URI is return urls, forms submitting to itselt etc. Eg:	returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))
