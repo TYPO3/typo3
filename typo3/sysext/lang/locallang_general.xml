@@ -5,6 +5,8 @@
 		<type>module</type>
 		<fileId>EXT:lang/locallang_general.xml</fileId>
 		<labelContext type="array">
+			<label index="LGL.title">Title of a "thing", like the name of a category, web page, mail group etc.</label>
+			<label index="LGL.title_person">Honorable title of a person, like "Dr. Phil"</label>
 		</labelContext>
 		<ext_filename_template>EXT:csh_###LANGKEY###/lang/###LANGKEY###.locallang_general.xml</ext_filename_template>
 		<keep_original_text type="integer">1</keep_original_text>
@@ -31,6 +33,7 @@
 			<label index="LGL.text">Text:</label>
 			<label index="LGL.name">Name:</label>
 			<label index="LGL.title">Title:</label>
+			<label index="LGL.title_person">Title:</label>
 			<label index="LGL.address">Address:</label>
 			<label index="LGL.phone">Phone:</label>
 			<label index="LGL.fax">Fax:</label>

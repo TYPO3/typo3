@@ -17,12 +17,12 @@ if (TYPO3_MODE=='BE')	{
 		'interface' => Array (
 			'showRecordFieldList' => 'category,subject,message,author,email,personal'
 		),
-		'columns' => Array (	
+		'columns' => Array (
 			'category' => Array (
 				'label' => 'LLL:EXT:lang/locallang_general.php:LGL.category',
 				'config' => Array (
-					'type' => 'select',		
-					'items' => Array (	
+					'type' => 'select',
+					'items' => Array (
 						Array('', '0'),
 						Array('LLL:EXT:sys_note/locallang_tca.php:sys_note.category.I.1', '1'),
 						Array('LLL:EXT:sys_note/locallang_tca.php:sys_note.category.I.2', '3'),
@@ -44,7 +44,7 @@ if (TYPO3_MODE=='BE')	{
 				'label' => 'LLL:EXT:sys_note/locallang_tca.php:sys_note.message',
 				'config' => Array (
 					'type' => 'text',
-					'cols' => '40',	
+					'cols' => '40',
 					'rows' => '15'
 				)
 			),
@@ -73,7 +73,7 @@ if (TYPO3_MODE=='BE')	{
 				)
 			)
 		),
-		'types' => Array (	
+		'types' => Array (
 			'0' => Array('showitem' => 'category;;;;2-2-2, author, email, personal, subject;;;;3-3-3, message')
 		)
 	);
@@ -81,5 +81,5 @@ if (TYPO3_MODE=='BE')	{
 	t3lib_extMgm::allowTableOnStandardPages('sys_note');
 }
 
-t3lib_extMgm::addLLrefForTCAdescr('sys_note','EXT:sys_note/locallang_csh_sysnote.php');
+t3lib_extMgm::addLLrefForTCAdescr('sys_note','EXT:sys_note/locallang_csh_sysnote.xml');
 ?>

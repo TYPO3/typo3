@@ -605,7 +605,7 @@ $GLOBALS['TSFE']->content.='
 			$titleTagContent = $GLOBALS['TSFE']->cObj->callUserFunction($GLOBALS['TSFE']->config['config']['titleTagFunction'], array(), $titleTagContent);
 		}
 
-		if (strlen($titleTagContent))	{
+		if (strlen($titleTagContent) && intval($GLOBALS['TSFE']->config['config']['noPageTitle'])!==2)	{
 			$GLOBALS['TSFE']->content.='
 	<title>'.htmlspecialchars($titleTagContent).'</title>';
 		}

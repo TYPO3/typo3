@@ -139,7 +139,7 @@ $TCA['fe_users'] = Array (
 		),
 		'title' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.title',
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.title_person',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '20',

@@ -1,9 +1,9 @@
 <?php
 /**
  * Language labels for extension "css_styled_content"
- * 
+ *
  * $Id$
- * 
+ *
  * This file is detected by the translation tool.
  */
 
@@ -147,6 +147,42 @@ $LOCAL_LANG = Array (
 	'es' => Array (
 	),
 	'nl' => Array (
+
+
+      "label.toTop" => "Naar boven",
+
+      "login.username" => "Naam:",
+      "login.password" => "Wachtwoord:",
+      "login.login" => "Inloggen",
+      "login.logout" => "Uitloggen",
+      "search.emptySearch" => "Sorry, er is niets gevonden",
+      "search.resultRange" => "Zoekresultaat: ###RANGELOW###-###RANGEHIGH### van ###TOTAL###",
+      "search.searchResultNext" => "Volgende",
+      "search.searchResultPrev" => "Vorige",
+
+      "search.searchWord" => "Zoekwoord:",
+      "search.searchIn" => "Zoek in:",
+      "search.headersKeywords" => "Koppen en trefwoorden",
+      "search.pageContent" => "Pagina inhoud",
+      "search.searchButton" => "Zoek nu!",
+
+      "eIcon.html" => "Bewerk HTML inhoud",
+      "eIcon.header" => "Bewerk kop",
+      "eIcon.subheader" => "Bewerk subkop",
+      "eIcon.bodytext" => "Bewerk body tekst",
+      "eIcon.images" => "Bewerk plaatjes",
+      "eIcon.caption" => "Bewerk beschrijving plaatje",
+      "eIcon.bullets" => "Bewerk bullet list",
+      "eIcon.table" => "Bewerk tabel",
+      "eIcon.filelist" => "Bewerk bestanden lijst",
+      "eIcon.menuSitemap" => "Bewerk menu / sitemap",
+      "eIcon.recordList" => "Bewerk record lijst",
+      "eIcon.plugin" => "Wijzig/configureer plugin",
+      "eIcon.multimedia" => "Bewerk multimedia element",
+      "eIcon.form" => "Bewerk email formulier",
+      "eIcon.search" => "Bewerk zoek element",
+      "eIcon.login" => "Bewerk login element",
+      "eIcon.page" => "Pagina:",
 	),
 	'cz' => Array (
 	),

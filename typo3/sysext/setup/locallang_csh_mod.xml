@@ -25,7 +25,7 @@ This is how the Setup module interface looks like - a list of options to configu
 			<label index="language.details">&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
 The solution clearly is to set the configuration option mentioned above to a value like &quot;utf-8&quot;. This must be done by the developers responsible for the whole system configuration.</label>
 			<label index="_language.image">EXT:setup/cshimages/lang.png</label>
-			<label index="language.image_descr">TYPO3 is translated into around 40 languages. English is the default language and &lt;u&gt;all&lt;/u&gt; labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</label>
+			<label index="language.image_descr">TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</label>
 			<label index="option_condensedMode.alttitle">Condensed Mode</label>
 			<label index="option_condensedMode.description">If set, the backend will not load the Web-submodules and File-submodules in a frameset but allow the page and folder trees to load the submodule in the main content frame. This allows for a better display on small screens.</label>
 			<label index="_option_condensedMode.seeAlso">_MOD_user_setup:option_noMenuMode</label>

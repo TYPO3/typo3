@@ -31,6 +31,6 @@ if (TYPO3_MODE=='BE')	{
 	);
 }
 
-t3lib_extMgm::addLLrefForTCAdescr('sys_action','EXT:sys_action/locallang_csh_sysaction.php');
+t3lib_extMgm::addLLrefForTCAdescr('sys_action','EXT:sys_action/locallang_csh_sysaction.xml');
 
 ?>

@@ -713,6 +713,7 @@ class recordHistory {
 
 			$fieldsToDisplay = array_keys($entry['newRecord']);
 			foreach($fieldsToDisplay as $fN)	{
+				t3lib_div::loadTCA($table);
 				if (is_array($TCA[$table]['columns'][$fN]) && $TCA[$table]['columns'][$fN]['config']['type']!='passthrough')	{
 
 						// Create diff-result:
