@@ -1,3 +1,14 @@
+2004-02-12  Robert Lemke  <rl@robertlemke.de>
+
+	* 
+Made changes to class.tslib_content.php:
+- added function getAltParam () which acts as an abstraction method / API creating alt and title parameters for img tags
+- added a new TypoScript configuration property: "titleText" (string / stdWrp) similar to "altText". If only altText is specified, it will also be used for the "title" parameter
+- used getAltParam in IMGTEXT () for rendering the alt tag
+- used getAltParam in cImage () for rendering the alt tag
+- added title="" when neccessary, ie. all cleargifs havin an alt="" parameter now also have a title=""
+
+
 Kasper Skårhøj, 6/2:
  - Added procession option to RTE, "proc.plainImageMode"
  - Added options for select and group types in TCA to set the selector box style.
