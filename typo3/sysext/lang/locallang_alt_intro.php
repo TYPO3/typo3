@@ -195,6 +195,10 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'introtext' => 'Tīmekļa Satura Vadības Sistēma',
+		'introtext2' => 'Šis ir pieejamo moduļu īss apraksts:',
+		'endText' => 'Pieejamās iespējas var atšķirties, atkarībā no sistēmas konfigurācijas un jūsu tiesībām.',
+		'userInfo' => 'Tu esi ielogojies kā lietotājs:',
 	),
 	'jp' => Array (
 	),

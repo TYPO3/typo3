@@ -428,7 +428,86 @@ En extension är inte intern bara därför att den använder TYPO3:s allmänna klasse
 		'emconf_modify_tables.details' => 'Tabeller från denna lista finns i ext_tables.sql-filen i extensionen',
 		'.alttitle' => 'EM',
 		'.description' => 'Extension-managern (EM)',
+		'.details' => 'TYPO3 can be extended in nearly any direction without loosing backwards compatibility. The Extension API provides a powerful framework for easily adding, removing, installing and developing such extensions to TYPO3. This is in particular powered by the Extension Manager (EM) inside TYPO3.
+
+“Extensions” is a term in TYPO3 which covers two other terms, plugins and modules.
+
+A plugin is something that plays a role on the website itself. Eg. a board, guestbook, shop etc. It is normally enclosed in a PHP class and invoked through a USER or USER_INT cObject from TypoScript. A plugin is an extension in the frontend.
+
+A module is a backend application which has it\'s own position in the administration menu. It requires backend login and works inside the framework of the backend. We might also call something a module if it exploits any connectivity of an existing module, that is if it simply adds itself to the function menu of existing modules. A module is an extension in the backend.',
+		'emconf_private.alttitle' => 'Privat',
+		'emconf_private.description' => 'Om förkryssad kommer denna version inte att synas i den offentliga listan.',
+		'emconf_private.details' => '"Private" uploads requires you to manually enter a special key (which will be shown to you after an upload has been completed) to be able to import and view details for the uploaded extension.
+This is nice when you are working on something internally which you do not want others to look at.
+You can set and clear the private flag every time you upload your extension.',
+		'emconf_download_password.alttitle' => 'Lösenord för nerladdning',
+		'emconf_download_password.description' => 'Ett extra lösenord som behövs för att ladda ner privata extensioner.',
+		'emconf_download_password.details' => 'Anybody who knows the "special key" assigned to the private upload will be able to import it. Specifying an import password allows you to give away the download key for private uploads and also require a password given in addition. The password can be changed later on.',
+		'emconf_type.alttitle' => 'Installationstyp',
+		'emconf_type.description' => 'Typ av installation',
+		'emconf_type.details' => 'The files for an extension are located in a folder named by the extension key. The location of this folder can be either inside typo3/sysext/, typo3/ext/ or typo3conf/ext/. The extension must be programmed so that it does automatically detect where it is located and can work from all three locations.
+
+<b>Local location “typo3conf/ext/”:</b> This is where to put extensions which are local for a particular TYPO3 installation. The typo3conf/ dir is always local, containing local configuration (eg. localconf.php), local modules etc. If you put an extension here it will be available for this TYPO3 installation only. This is a “per-database” way to install an extension.
+
+<b>Global location “typo3/ext/”:</b> This is where to put extensions which are global for the TYPO3 source code on the web server. These extensions will be available for any TYPO3 installation sharing the source code. 
+When you upgrade your TYPO3 source code you probably want to copy the typo3/ext/ directory from the former source to the new source, overriding the default directory. In this way all global extension you use will be installed inside the new sourcecode. After that you can always enter TYPO3 and upgrade the versions if needed.
+This is a “per-server” way to install an extension.
+
+<b>System location “typo3/sysext/”:</b> This is system default extensions which cannot and should not be updated by the EM. 
+
+
+<b>Loading precedence</b>
+Local extensions take precedence which means that if an extension exists both in typo3conf/ext/ and typo3/ext/ the one in typo3conf/ext/ is loaded. Likewise global extension takes predence over system extensions. This means that extensions are loaded in the order of priority local-global-system. 
+In effect you can therefore have - say - a “stable” version of an extension installed in the global dir (typo3/ext/) which is used by all your projects on a server sharing source code, but on a single experimental project you can import the same extension in a newer “experimental” version and for that particular project the locally available extension will be used instead.',
+		'emconf_doubleInstall.alttitle' => 'Installerad dubbelt eller ännu flere gåner?',
+		'emconf_doubleInstall.description' => 'Berättar om extensionen är installerad i flere än ett system, globalt eller lokalt ställe.',
+		'emconf_doubleInstall.details' => 'Because an extension can reside at three locations, System, Global and Local, this indicates if the extension is found in other locations than the current. In that case you should be aware which one of the extensions is loaded!',
+		'emconf_rootfiles.alttitle' => 'Rotfiler',
+		'emconf_rootfiles.description' => 'Listar filerna i extensionens katalog. Visar inte filer i underkataloger.',
+		'emconf_dbReq.alttitle' => 'Databasens krav',
+		'emconf_dbReq.description' => 'Visar vilka krav databasens tabeller och fält ställer, om några.',
+		'emconf_dbReq.details' => 'This will read from the files ext_tables.sql and ext_tables_static+adt.sql and show you which tables, fields and static tables are required with this extension.',
+		'emconf_dbStatus.alttitle' => 'Statusen av databasens krav',
+		'emconf_dbStatus.description' => 'Visar nuvarande ställningen i databasen jämförd med extensionens krav.',
+		'emconf_dbStatus.details' => 'If the extension is loaded which will display and error message if some tables or fields are not present in the database as they should be!',
+		'emconf_flags.alttitle' => 'Flaggor',
+		'emconf_flags.description' => 'En lista på specialkoder som berättar någonting om vilka delar av TYPO3 som extensionen berör.',
+		'emconf_flags.details' => 'This is a list of the flags:
+
+<b>Module:</b> A true backend main/sub module is found to be added.
+
+<b>Module+:</b> The extension adds itself to the function menu of an existing backend module.
+
+<b>loadTCA:</b> The extension includes a function call to t3lib_div::loadTCA for loading a table. This potentially means that the system is slowed down, because the full table description of some table is always included. However there probably is a good reason for this to happen. Probably the extension tries to manipulate the TCA-config for an existing table in order to extend it.
+
+<b>TCA:</b> The extension contains configuration of a table in $TCA.
+
+<b>Plugin:</b> The extension adds a frontend plugin to the plugin list in Content Element type "Insert Plugin".
+
+<b>Plugin/ST43:</b> TypoScript rendering code for the plugin is added to the static template "Content (default)". "Plugin" and "Plugin/ST43" are commonly used together.
+
+<b>Page-TSconfig:</b> Default Page-TSconfig is added.
+
+<b>User-TSconfig:</b> Default User-TSconfig is added.
+
+<b>TS/Setup:</b> Default TypoScript Setup is added.
+
+<b>TS/Constants:</b> Default TypoScript Constants is added.',
+		'emconf_conf.description' => 'Visar om extensionen har en template för framtida lågnivåkonfigurering.',
+		'emconf_TSfiles.alttitle' => 'Statiska TypoScript filer',
+		'emconf_TSfiles.description' => 'Visar vilka statiska TypoScript-filer kan förekomma',
+		'emconf_TSfiles.details' => 'If the files ext_typoscript_constants.txt and/or ext_typoscript_setup.txt is found in the extension folder their are included in the hierarchy of all TypoScript templates in TYPO3 right after the inclusion of other static templates.',
+		'emconf_locallang.alttitle' => 'locallang-filer',
+		'emconf_locallang.description' => 'Shows which files named "locallang.php" are present in the extension folder (recursive search). Such files are usually used to present an array $LOCAL_LANG with labels for the application in the system languages.',
+		'emconf_moduleNames.alttitle' => 'Backend-modulernas namn',
+		'emconf_moduleNames.description' => 'Visar vilka modulnamn som hittades i extensionen',
+		'emconf_classNames.alttitle' => 'PHP klassnamn',
+		'emconf_classNames.description' => 'Visar vilka PHP-klasser som hittades i .php och .inc filerna.',
 		'emconf_errors.alttitle' => 'Fel',
+		'emconf_errors.description' => 'Visar allvarliga fel i extensionen.',
+		'emconf_NSerrors.alttitle' => 'Fel i namnen',
+		'emconf_NSerrors.description' => 'Vissa benämningsregler finns för extensionerna. Här visas eventuella fel i namnen.',
+		'emconf_NSerrors.details' => 'The naming convensions are defined in the "Inside TYPO3" document. To make naming as simple as possible, try to avoid underscores in your extension keys.',
 	),
 	'pt' => Array (
 	),
@@ -535,10 +614,41 @@ bilo kakvu povezivost nekog postojeæeg modula, tj. ako se dodaje
 meniju funkcija postojeæih modula. Modul je ekstenzija u backend-u.',
 		'emconf_private.alttitle' => 'Privatno',
 		'emconf_private.description' => 'Ako je postavljeno, ova verzija se ne pokazuje u javnoj listi online repozitorij.',
+		'emconf_private.details' => '"Privatni"  uploadi zahtjevaju da ruèno unesete posebni kljuè (koji æe vam se prikazati
+nakon što se upload završi) da bi mogli importirati i pregledavati detalje uploadane ekstenzije.
+To je zgodno kad radite na internim stvarima koje ne želite da drugi pregledavaju.
+Možete postaviti i maknuti zastavicu privatno svaki put kada uploadate ekstenziju.',
 		'emconf_download_password.alttitle' => 'Download zaporke',
 		'emconf_download_password.description' => 'Dodatna zaporka je potrebna za download privatne ekstenzije.',
+		'emconf_download_password.details' => 'Svi koji poznaju "poseban kljuè" dodijeljen privatnom uploadu mogu taj upload importirati. Specificiranje zaporke za importiranje omoguæava vam da podijelite kljuè za download privatnih uploada ali i dodatno zahtjevate spomenutu zaporku.Zaporka se može kasnije promijeniti.',
 		'emconf_type.alttitle' => 'Tip instalacije',
 		'emconf_type.description' => 'Tip instalacije',
+		'emconf_type.details' => 'Datoteke pojedine ekstenzije spremljene su u direktorij nazvan po kljuèu ekstenzije. Mjesto ovog direktorija može biti 
+unutar typo3/sysext/, typo3/ext/ , ili typo3conf/ext. Ekstenzija mora biti programirana tako da automatski otkriva
+gdje je smještena i da može rasditi sa sve tri lokacije.
+
+<b>  Lokalni smještaj “typo3conf/ext/”:</b> Ovdje se spremaju ekstenzije koje su lokalne za pojedinu TYPO3 instalaciju.
+Direktorij typo3conf/ je uvijek lokalan, i sadrži lokalnu konfiguraciju (npr. localconf.php), lokalne module, itd.
+Ako ovdje smjestite ekstenziju biti æe dostupna samo ovoj TYPO3 instalaciji. 
+To je "po-bazi-podataka" naèin instalacije ekstenzije.
+
+<b>Globalni smještaj “typo3/ext/”:</b> Ovdje se spremaju ekstenzije koje su globalne za TYPO3 izvorni kod na web
+poslužitelju. Ove ekstenzije æe biti dostupne za sve TYPO3 instalacije koje dijele izvorni kod.
+Kada ažurirate vaš TYPO3 izvorni kod prikladno je kopirati typo3/ext direktorij iz prijašnje u obnovljenu instalaciju, 
+nadjaèavši preddefinirani direktorij. Na taj æe se naèin sve korištene globalne ekstenzije naæi unutar novog izvornog koda.
+Nakon toga uvijek možete ulaskom u TYPO3 po potrebi ažurirati inaèice. 
+To je "po-serveru" naèin instalacije ekstenzije.
+
+<b> Sistemski smještaj “typo3/sysext/”:</b> Ovo su sistemski zadane ekstenzje  koje se nemogu i ne bi trebale ažurirati 
+od strane EM-a
+
+<b> Prioriteti uèitavanja</b> 
+Lokalne ekstenzije imju prednost što znaèi da ukoliko ekstenzija postoji u typo3conf/ext/ i typo3/ext/ uèitava 
+se samo ona iz typo3conf/ext/. Slièno globalne ekstenzije imaju prednost nad sistemskim. To znaèi da se ekstenzije
+uèitavaju redosljedom lokalne-globalne-sistemske.
+U praksi možete imati  "stabilnu" inaèicu instaliranu u globalni direktorij (typo3/ext/), koju koriste svi vaši projekti 
+koji dijele izvorni kod na poslužitelju. S  druge strane na pojedinom pokusnom projektu možete importirati istu 
+ekstenziju u novijoj "pokusnoj" inaèici, i za taj posebni projekt koristiti æe se lokalno dostupne ekstenzije.',
 		'emconf_doubleInstall.alttitle' => 'Instalirana dva ili više puta?',
 		'emconf_doubleInstall.description' => 'Pokazuje ako je ekstenzija instalirana na više od jednog Sistemskog, Globalnog ili Lokalnog mjesta.',
 		'emconf_doubleInstall.details' => 'Kako ekstenzija može postojati na tri mjesta, Sistemsko, Globalno, Lokalno, ovo ukazuje nalaz li se ekstenzijai i na drugim mjestima osim trenutnog. U tom sluèaju obratite pažnju koja je ekstenzija uèitana!',
@@ -583,7 +693,9 @@ dodan je statièkom predlošku "Sadržaj (osnovni)". "Plugin" i
 		'emconf_conf.description' => 'Pokazuje da li ekstenzija ima predložak za daljnju konfiguraciju',
 		'emconf_TSfiles.alttitle' => 'Statiène TypoScript datoteke',
 		'emconf_TSfiles.description' => 'Pokazuje koji TypoScript statiène datoteke mogu biti prisutne.',
+		'emconf_TSfiles.details' => 'Ako su datoteke ext_typoscript_constants.txt i/ili ext_typoscript_setup.txt pronaðene u direktoriju ekstenzije, one se ukljuèuju u hijerarhiju svih TypoScript predložaka u TYPO3 sustavu odmah nakon preostalih ukljuèenih statièkih predložaka.',
 		'emconf_locallang.alttitle' => 'locallang-datoteke',
+		'emconf_locallang.description' => 'Prikazuje koje su datoteke nazvane "locallang.php" prisutne u direktoriju ekstenzije (rekurzivna pretraga). Takve datoteke se uobièajeno koriste da dodijele nizu $LOCAL_LANG  oznake koje se koriste u sistemskim jezicima.',
 		'emconf_moduleNames.alttitle' => 'Imena Backend Modula',
 		'emconf_moduleNames.description' => 'Pokazuje koja su imena modula pronaðena unutar ekstenzije.',
 		'emconf_classNames.alttitle' => 'Imena PHP klasa',
@@ -1033,6 +1145,7 @@ Extensão para teste, para demonstrar conceitos, etc.',
 	'ar' => Array (
 	),
 	'he' => Array (
+		'emconf_category.alttitle' => '×§×˜×’×•×¨×™×”',
 	),
 	'ua' => Array (
 	),

@@ -225,6 +225,10 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'title' => 'Advancētas funkcijas',
+		'clickAPage_content' => 'Lūdzu uzklikšķiniet uz lapas virsraksta lapu kokā.',
+		'mlang_labels_tablabel' => 'Advancētas funkcijas',
+		'mlang_tabs_tab' => 'Funkcijas',
 	),
 	'jp' => Array (
 	),

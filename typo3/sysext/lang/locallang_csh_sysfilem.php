@@ -69,6 +69,22 @@ Voi olla että myös PHP-asetukset aiheuttavat rajoituksia Sinulle. kuten esimerki
 	'tr' => Array (
 	),
 	'se' => Array (
+		'.description' => 'Filmonteringarna visar sökvägen till en fil på servern, relativt eller absolut.',
+		'.details' => 'By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File>List module. 
+You need to create and set at least one filemount with a folder \'_temp_\' in it if you want users to upload files through the webbrowser.
+Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.',
+		'title.description' => 'Fyll i en titel för filmonteringen',
+		'path.description' => 'Fyll i filmonteringens sökväg, relativ eller absolut beroende på BASE-inställningarna.',
+		'path.details' => 'If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
+If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". 
+
+<strong>Notice:</strong> In any case, make sure the webserver user which PHP is running as has <em>at least</em> read-access to the path. If not, the mount will simply not appear without any warnings. 
+If you have problems - especially with absolute mounts - try to mount something "simple" like a relative path in fileadmin. If that is working well, try the absolute path.
+
+Your PHP-configuration may also impose other restrictions on you if safe-mode like features are enabled. Then use relative paths.',
+		'hidden.description' => 'Använd denna option för att tillfälligt stänga av filmonteringen.',
+		'hidden.details' => 'Alla backend-användare som använder denna filmontering avstängs. Detta inkluderar också \'Admin\'-användare.',
+		'base.description' => 'Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.',
 	),
 	'pt' => Array (
 	),
@@ -182,6 +198,23 @@ Sua configuração de PHP também pode impor outras restrições se características c
 		'.description' => 'ãåêÉ ÇäåäáÇÊ ÊÙÈÑ Ùæ Ùåâ åÓÇÑ Çäåäá Ùäé ÇäÓêÑáÑ ÓèÇÁ æÓÈêÇ Ãè å×äâÇ',
 		'.details' => 'Ùæ ×Ñêâ ÅæÔÇÁ ÓÌä äåäá ÑÇÈ× è èÖÙç ãæâ×É ÑÌèÙ áê åÌåèÙÉ ÇäåÓÊÎÏåêæ ÇäåÕååêæ. è êÊå Ğäã Ùæ ×Ñêâ ÇäÏÎèä Åäé Çäåäá ÇäÑÇÈ×  áê ÇäÌÇæÈ: åäá < ÇäâÇÆåÉ.
 ÃæÊ åÍÊÇÌ äÅæÔÇÁ Ùäé ÇäÃâä åäá ÑÇÈ× èÇÍÏ ÈåÌäÏ ÅÓåç ÇäåÌäÏ ÇäåÄâÊ \'_temp_\'  .',
+		'title.description' => 'ÃÏÎä ÇäÙæèÇæ ÇäÑÆêÓê äÑÇÈ× Çäåäá',
+		'path.description' => 'ÃÏÎä åÓÇÑ ÑÇÈ× Çäåäá ÓèÇÁ æÓÈê Ãè å×äâ Ùäé ÍÓÈ ÇäÊÖÈê×äÊ ÇäÃÓÇÓêÉ',
+		'path.details' => 'ÅĞÇ ãÇæ ÇäåÓÇÑ áê  ÇäÃÓÇÓ åÙåèä Ùäé åÓÇÑ æÓÈê è ÇäåÓÇÑ ÇäÑÇÈ× åèÌèÏ áê Çäåäá ÇäÊÍÊê "fileadmin/"   äÕáÍÉ ÇäèêÈ. ÅĞÇë êæÈÚê Ùäêã Ãæ ÊÏÎä Çäåäá ÇäÊÍÊê  "fileadmin/" ãåÓÇÑ.
+åËäÇ äè ãæÊ ÊÑêÏ Ãæ ÊÑÈ× Çäåäá Èàà :  "fileadmin/user_uploads/all/"  ÅĞÇë ÃÏÎä  "user_uploads/all" 
+ãåÓÇÑ ääÑÈ×
+
+ÃåÇ ÅĞÇ ãÇæ ÇäåÓÇÑ áê ÇäÃÓÇÓ åÙåèä Ùäé åÓÇÑ åï×äâ áÙêã Ãæ ÊïÏÎä ÇäåÓÇÑ Çäåï×äâ Ùêé ÇäÓêÑáÑ åËäÇë "/home/ftp_upload" or "C:/home/ftp_upload".
+
+
+<strong>åäÍèØÉ:</strong>Ùäé Ãê ÇäÃÍèÇä ÊÃãÏ Çæ ÓêÑáÑ ÇäèêÈ ÇäåïÓÊÎÏå <em> Ùäé ÇäÃâä </em> áêç ÇäèÖÙ read-access to the path. ÅĞÇ äå êãæ ãĞäã áÅæ ÇäÑÈ× äåæ êÍÏË ÈÏèæ ÑÓÇÆä ÊÍĞêÑêÉ.
+ÅĞÇ ãÇæ äÏêã åÔãäÉ áê ÇäÑÈ× ÌÑÈ ÃèäÇë ÑÈ× ÈÓê× ÈÇÓÊÎÏÇå ÇäÑÈ× ÇäæÓÈê áê Çä fileadmin . ÅĞÇ äå êãæ áêç åÔãäÉ ÌÑÈ ÈÙÏçÇ ÅÓÊÎÏÇå ÇäåÓÇÑ Çäåï×äâ.
+
+ÑÈåÇ ÊÍÊèê ÇäÊÙêêÑÇÊ ääàà PHP Ùäé âêèÏ ÙæÏ ÅÓÊÎÏÇåã áê ÍÇäÉ Çäàà safe-mode äÎÇÕêÉ  features ÅĞÇ ãÇæÊ ÇäåïÎÊààÇÑÉ. 
+áê çĞç ÇäÍÇäÉ ÅÓÊÎÏå ÇäåÓÇÑ ÇäæÓÈê.',
+		'hidden.description' => 'ÅÓÊÎÏå çĞç ÇäÎÇÕêÉ äè ãÇæ ÑÇÈ× Çäåäá',
+		'hidden.details' => 'ãä ÇäåÓÊÎÏåêæ ÇäĞêæ êÓÊÙåäèæ ÇäÑÈ× Óèá äÇ êÓÊ×êÙèæ ÅÓÊÎÏÇåç åÑÉë ÃÎÑé .çĞÇ êÍÊèê Ùäé åÓÊÎÏåêæ åÓÆèäêæ .',
+		'base.description' => 'ÅÍÓÈ Ãê åæ âêå ÇäåÓÇÑ ååãæ æÙÊÈÑçÇ åÓÇÑ åï×äâ Ùäé ÇäÓêÑáÑ Ãè ÇäåÓÇÑ ÇäæÓÈê Åäé Çäåäá ÅÍÓÈ Ãê åæ âêå ÇäåÓÇÑ ååãæ æÙÊÈÑçÇ åÓÇÑ åï×äâ Ùäé ÇäÓêÑáÑ Ãè ÇäåÓÇÑ ÇäæÓÈê Åäé Çäåäá  ÇäáÑÙê fileadmin/',
 	),
 	'he' => Array (
 		'.description' => '××•×¦×‘×™ ×§×‘×¦×™× ××ª××¨×™× × ×ª×™×‘ ×§×‘×¦×™× ×¢×œ ×”×©×¨×ª, ×™×—×¡×™ ××• ××•×—×œ×˜.',

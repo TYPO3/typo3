@@ -585,6 +585,23 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'clipBoard' => 'Rādīt starpliktuvi',
+		'clip_paste' => 'Ievietot starpliktuves saturu',
+		'clip_pasteInto' => 'Starpliktuves saturs tika ievietots šajā folderī',
+		'clip_markRecords' => 'Atzīmēt visu/neko',
+		'clip_selectMarked' => 'Ievietot atzīmētos failus starpliktuvē',
+		'clip_deleteMarked' => 'Dzēst atzīmētos',
+		'clip_deleteMarkedWarning' => 'Vai tiešām gribat dzēst visus atzīmētos failus šajā folderī?',
+		'displayThumbs' => 'Rādīt sīkattēlus',
+		'c_file' => 'Nosaukums',
+		'c_size' => 'Izmērs',
+		'c_fileext' => 'Tips',
+		'c_tstamp' => 'Datums',
+		'c_rw' => 'RW',
+		'files' => 'faili',
+		'mlang_labels_tablabel' => 'Failu liste direktorijā',
+		'mlang_labels_tabdescr' => 'Šī ir TYPO3 failu administrēšanas sistēma. Tā ļauj jums manipulēt ar failiem. Ar ši moduļa palīdzību jūs varat augšuplādēt, kopēt, pārvietot un dzēst failus uz servera.',
+		'mlang_tabs_tab' => 'Faili',
 	),
 	'jp' => Array (
 	),

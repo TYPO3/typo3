@@ -226,6 +226,11 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'welcome' => 'TYPO3 Profesionālā Tīmekļa Satura Vadības Sistēma',
+		'minor' => 'TYPO3 ir fleksiblā un profesionālā Atvērtā Koda Web-CMS, bāzēta uz PHP4 un MySQL.<br /><br />TYPO3 ir <B>brīvi pieejama</b> uz <A HREF="http://typo3.com/1244.0.html" target="_blank">TYPO3-licenses (GNU/GPL)</a> nosacījumiem.<br /><br />%s %s<br />',
+		'mlang_labels_tablabel' => 'Par TYPO3',
+		'mlang_labels_tabdescr' => 'Parāda pamatinformāciju par TYPO3 aplikāciju, tās versiju un licencēšanas noteikumus.',
+		'mlang_tabs_tab' => 'Par TYPO3',
 	),
 	'jp' => Array (
 	),

@@ -181,6 +181,45 @@ Tämä mahdollistaa helpon tavan luoda \'Supervisor\' käyttäjäryhmän.',
 	'tr' => Array (
 	),
 	'se' => Array (
+		'.description' => 'Dethär är backend-administrationens användargrupper som BE-användare kan använda. Dessa begränsar BE-användarnas rättigheter.',
+		'title.description' => 'Backend-användargruppens namn',
+		'db_mountpoints.description' => 'Bestäm startpunkter för användarnas sidträd.',
+		'db_mountpoints.details' => 'The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a \'Database mount\'.
+DB mounts may be inherited by the users which are members of this group. This does depend on whether the user is configured to include the mounts set in the member groups. However it\'s recommended to use backend user groups like this to configure mounts. Especially if the need to be shared amoung many users.',
+		'file_mountpoints.description' => 'Bestäm startpunkter för filhanteringsträdet.',
+		'file_mountpoints.details' => 'The file folder tree is used by all File-submodules to navigate between the file folders on the webserver.
+Notice as with \'DB mounts\' the file folder mounts may be inherited by the users which are members of this group.',
+		'pagetypes_select.description' => 'Välj vilka "Typer" av sidor som medlemmarna kan använda',
+		'pagetypes_select.details' => 'Denna option begränsar vilka sidor en användare kan ta i bruk.',
+		'tables_modify.description' => 'Välj vilka tabeller en användare kan ändra.',
+		'tables_modify.details' => 'An important part of setting permissions is to define which database tables a user is allowed to modify. 
+Tables allowed for modification is automatically also allowed for selection and thus you don\'t need to set tables entered here in the "Tables (listing)" box.
+
+<strong>Notice</strong> that this list adds to the fields selected in other member groups of a user.',
+		'tables_select.description' => 'Välj vilka tabeller användarna kan se i listan (\'ändra\' tabellerna behöver inte fyllas i här också!).',
+		'tables_select.details' => 'This determines which tables - in addition to those selected in the "Tables (modify)" box - may be viewed and listed for the user. He is thus not able to <em>edit</em> the table - only select the records and view the content.
+This list is not so very important. It\'s a pretty rare situation that a user may select tables but not modify them.',
+		'non_exclude_fields.description' => 'Vissa tabellfält är som standard spärrade. Dessa fält kan här öppnas för gruppens medlemmar.',
+		'non_exclude_fields.details' => '"Allowed excludefields" allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of "Allowed excludefields". So the user may create a new page, but cannot un-hide the page. Unless of course he has been assigned the "Page: Hidden" exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of table allowed to be modified.',
+		'hidden.description' => 'Spärra en användargrupp.',
+		'hidden.details' => 'Om du spärrar en användargrupp kommer  de egenskaper, som du ställt in för alla medlemmar i gruppen att begränsas.',
+		'lockToDomain.description' => 'Fyll i från vilken värddator användaren måste logga in.',
+		'lockToDomain.details' => 'Ett TYPO3-system kan ha många domain under sig. Denna option säkerställer att användarna kan logga in endast från en viss värddator.',
+		'groupMods.description' => 'Välj tillbudsstående moduler för gruppens medlemmar',
+		'groupMods.details' => 'This determines which \'menu items\' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.',
+		'inc_access_lists.description' => 'Välj om denna grupp skall kunna använda Sidtyp, Tabell, Modul och Godkända fält.',
+		'description.description' => 'Fyll i en kort förklaring för användargruppen, gruppens uppgift och vilka medlemmarna är. Detta är endast för internt bruk.',
+		'TSconfig.description' => 'Tilläggskonfigurering med TypoScript stilvärden (avancerad).',
+		'TSconfig.syntax' => 'TypoScript stilar utan villkor och konstanter',
+		'hide_in_lists.description' => 'Denna option förebygger att en användargrupp inte visas i listorna där användargrupper väljs.',
+		'hide_in_lists.details' => 'This will affect the list of user groups in the Task Center To-Do and Messages parts as well as the Web>Access module.
+The option is extremely useful if you have general user groups defining some global properties which all your users are members of. Then you would probably not like all those users to \'see\' each other through the membership of this group, for instance sending messages or To-Dos to each other. And this is what is option will prevent.',
+		'subgroup.description' => 'Välj de backend-användargrupper som automatiskt ges åt medlemmar i denna grupp.',
+		'subgroup.details' => 'The properties or subgroups are added to the properties of this groups and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create \'Supervisor\' user groups.',
 	),
 	'pt' => Array (
 	),

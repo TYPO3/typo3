@@ -471,6 +471,19 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'deleteItem' => 'Dzēst',
+		'deleteWarning' => 'Vai jūs tiešām gribat dzēst šo ierakstu?',
+		'undoLastChange' => 'Atcelt/Atkārtot pēdējo labojumu (%s atpakaļ)',
+		'recordHistory' => 'Apskatīt ieraksta labošanas vēsturi',
+		'editWholeRecord' => 'Labot veselu ierakstu',
+		'openDocs' => 'ATVĒRTIE DOKUMENTI',
+		'noDocuments' => 'Nav atvērto dokumentu',
+		'noDocuments_msg' => 'Nav atvērto dokumentu, kurus jūs varētu labot.',
+		'noDocuments_msg2' => 'Jūs varat iet uz %s, lai atrastu lapas vai ierakstus, kurus jūs vēlaties labot.',
+		'noDocuments_msg3' => 'Jūs varat izvēlēties vienu no jūsu nesen labotajiem ierakstiem no šī saraksta:',
+		'noDocuments_pagemodule' => 'Web>Page moduli',
+		'noDocuments_OR' => 'vai',
+		'noDocuments_listmodule' => 'Web>List moduli',
 	),
 	'jp' => Array (
 	),

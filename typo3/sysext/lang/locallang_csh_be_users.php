@@ -170,6 +170,8 @@ Salasana tallennetaan tietokantaa md5 toiminnolla suojattuna ja siten ei ole mah
 Ensimmäinen (ylin) ryhmä listalla on, oletusarvoisesti, niiden sivujen omistaja jotka käyttäjä luo.',
 		'lockToDomain.description' => 'Anna domainin nimi johon käyttäjä on pakotettu sisäänkirjoittautumaan (login).',
 		'lockToDomain.details' => 'TYPO3 järjestelmässä voi olla monta domainia. Siksi tämä vaihtoehto varmistaa käyttäjän pääsevän vain hänelle sallittuihin.',
+		'disableIPlock.description' => 'Poista taustakäyttäjiltä session lukitus  ulkoiseen IP numeroon.',
+		'disableIPlock.details' => 'Sinun on poistettava tämä lukitus jos taustakäyttäjät TYPO3 käyttäessään ovat ISDN tai modeemiyhteydessä, jotka yleensä saavat aina uuden IP numeron muodostaessaan uuden linjayhteyden. Sama koskee myös DHCP:n antamia IP-osoitteita, jotka uusiutuvat aika ajoin.',
 		'db_mountpoints.description' => 'Määrittele puurakenteen aloituskohta käyttäjälle.',
 		'db_mountpoints.details' => 'Sivujen puurakenteeseen, jota WEB-aliohjelmat käyttävät, tulee määritellä joitakin liityntä pisteitä. Tässä lisäät yhden tai useamman referenssin sivulle jotka edustavat sivuston rakenteen uutta juurta (alkupistettä).
 Tätä kutsutaan \'Tietokannan asetukseksi" ("Database mount").
@@ -212,6 +214,57 @@ Tämä kuitenkin mahdollistaa oivan tavan lisätä yhden erillisen aliohjelman käytt
 	'tr' => Array (
 	),
 	'se' => Array (
+		'.description' => 'Detta är tabellen med backend administratörsanvändare.',
+		'username.description' => 'Fyll i backend-användarens inloggningsnamn',
+		'username.details' => 'A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be prepended automatically.',
+		'password.description' => 'Fyll i backend-användarens lösenord (Märk, att det du fyller i kommer att synas)',
+		'password.details' => 'The password is required. Before the password is sent to the server it\'s md5-hashed, so the password value itself is not transferred over the internet. This is true both when editing the password and when the user logs in. 
+While this principle does not reveal the raw password it is <i>not</i> the same as real encryption. If you need the highest degree of security you should install the TYPO3 backend on a secure server.
+The password is stored in the database as an md5-hash and thus it\'s not possible to extract the original password from the database either. This means that \'lost passwords\' must be substituted with a new password for the user.',
+		'usergroup.description' => 'Välj vilka backend-användargrupper som användaren hör till.',
+		'usergroup.details' => 'The backend user groups defines the permissions which the backend user will inherit. So unless the backend user is an \'Admin\' user, he needs to be a member of one or more user groups in order to have practically any permissions assigned. The properties set in the user groups are mostly added together.
+The first (top) group in the list is the group which will, by default, be the owner of pages the user creates.',
+		'lockToDomain.description' => 'Fyll i från vilken värddator användaren måste logga in',
+		'lockToDomain.details' => 'A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.',
+		'disableIPlock.description' => 'Stänger möjligheten att låsa backend-användarens session till en speciell IP-nummer.',
+		'disableIPlock.details' => 'You will have to disable this lock if backend users are accessing TYPO3 from ISDN or modem connections which may shutdown and reconnect with a new IP. The same would be true for DHCP assignment of IP numbers where new IP numbers are frequently assigned.',
+		'db_mountpoints.description' => 'Ange startpunkter för användarens sidträd.',
+		'db_mountpoints.details' => 'The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a \'Database mount\'.
+
+<strong>Notice</strong> that backend user groups also has DB mounts which can be inherited by the user. So if you want a group of users to share a page tree, you should probably mount the page tree in the backend user group which they share instead.',
+		'file_mountpoints.description' => 'Ange startpunkter för filernas katalogträd.',
+		'file_mountpoints.details' => 'The file folder tree is used by all File-submodules to navigate between the file folders on the webserver. In order to be able to upload <em>any</em> files the user <em>must</em> have a file folder mounted with a folder named \'_temp_\' in it (which is where uploads go by default). 
+Notice as with \'DB mounts\' the file folder mounts may be inherited from the member groups of the user.',
+		'email.description' => 'Fyll i användarens epostadress.',
+		'email.details' => 'This address is rather important to enter because this is where messages from the system is sent.
+<strong>Notice</strong> the user is able to change this value by himself from within the User>Setup module.',
+		'realName.description' => 'Fyll i användarens riktiga namn, t.ex. Pelle Svensson.',
+		'realName.details' => '<strong>Märk</strong> att användaren själv kan ändra detta värde via modulen Användare>Inställningar',
+		'disable.description' => 'Denna option stänger tillfälligt användarens rättigheter att logga in.',
+		'admin.description' => '\'Admin\'-användare har TOTAL åtkomst till systemet!',
+		'admin.details' => '\'Admin\' can do anything TYPO3 allows and this kind of user should be used only for administrative purposes. All daily handling should be done with regular users. 
+\'Admin\' users don\'t need to be members or any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the \'Admin\' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
+\'Admin\' users are easily recognized as they appear with a red icon instead of the ordinary blue user-icon.
+
+You should probably not assign any other users than yourself as an \'Admin\' user.',
+		'options.description' => 'Välj om användaren skall erhålla sidträds- eller katalogträdsmonteringspunkter från medlemsgrupper.',
+		'options.details' => 'It\'s a great advantage to let users inherit mountpoints from membergroups because it makes administration of the same mountpoints for many users extremely easy. 
+If you don\'t check these options, you must make sure the mount points for the page tree and file folder tree is set specifically for the user.',
+		'fileoper_perms.description' => 'Välj filändringsrättigheter för användaren.',
+		'fileoper_perms.details' => 'These settings relates to the functions found in the File>List module as well as general upload of files.',
+		'starttime.description' => 'Fyll i från vilket datum kontot skall vara i bruk',
+		'endtime.description' => 'Fyll i när kontot skall stängas',
+		'lang.description' => 'Välj <i>standard</i> språk.',
+		'lang.details' => 'This determines the language of the backend interface for the user. All mainstream parts available for regular users are available in the system language selected. 
+\'Admin\'-users however will experience that the \'Admin\'-only parts of TYPO3 is in english. This includes all submodules in "Tools" and the Web>Template module.
+
+<b>Notice</b> this is only the default language. As soon as the user has logged in the language must be changed through the User>Setup module.',
+		'userMods.description' => 'Välj vilka backend-moduler användaren skall få.',
+		'userMods.details' => 'This determines which \'menu items\' are available for the user.
+
+Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It\'s highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he\'s a member of. However this list provides a great way to add a single module for specific users.',
+		'TSconfig.description' => 'Fyll i ytterligare TSconfig för användaren (avancerat).',
+		'TSconfig.details' => 'This field allows you to extend the configuration of the user in severe details. A brief summary of the options include a more detailed configuration of the backend modules, setting of user specific default table field values, setting of Rich Text Editor options etc. The list will be growing by time and is fully documented in the adminstration documentation, in particular \'admin_guide.pdf\' (see link below).',
 	),
 	'pt' => Array (
 	),
@@ -228,7 +281,7 @@ Tämä kuitenkin mahdollistaa oivan tavan lisätä yhden erillisen aliohjelman käytt
 	'is' => Array (
 	),
 	'hr' => Array (
-		'.description' => 'Forma za administraciju backend korisnika.',
+		'.description' => 'Ovo ja tablica backend korisnika.',
 		'username.description' => 'Unesite korisnièko ime backend korisnika.',
 		'username.details' => 'Korisnièko ime je obavezno i mora biti uneseno malim slovima bez razmaka. Korisnièko ime mora biti jedinstveno. Ako nije uneseno jedinstveno korisnièko ime sustav æe mu automatski pridodati broj.',
 		'password.description' => 'Unesite zaporku za prethodno upisano korisnièko ime (Zaporka koju unesete <i> biti æe vidljiva</i> u polju za unos.',
@@ -250,6 +303,10 @@ potrebne ovlasti. Parametri ovlasti postavljeni u pojedinim korisnièkim
 grupama se uglavnom zbrajaju.
 Prva (najviša) grupa u listi je grupa koja æe u pravilu bit vlasnik stranica 
 koje korisnik napravi.',
+		'lockToDomain.description' => 'Unesi ime raèunala s kojeg je korisnik prisiljen prijaviti se za rad.',
+		'lockToDomain.details' => 'TYPO3 sustav može imati višetruke domene koje upuæuju na njega. Stoga ova opcija osigurava da se korisnici mogu prijaviti samo s odreðenog raèunala.',
+		'disableIPlock.description' => 'Onemoguæi zakljuèavanje odreðenog sessiona za udeljenu IP adresu.',
+		'disableIPlock.details' => 'Morati æete iskljuèiti ovo zakljuèavanje ako korisnici pristupaju backendu pomoæu ISDN ili modemskih veza koje se mogu odspojiti i spojiti sa novom IP adresom.',
 		'db_mountpoints.description' => 'Dodijeli poèetne toèke zkorisnièkom stablu stranice.',
 		'db_mountpoints.details' => 'Stablo stranica koje koriste svi Web-podmoduli za navigaciju 
 mora imati odreðene poèetne toèke ulaska u stablo. Ovdje bi trebali
@@ -257,19 +314,44 @@ upisati jednu ili više referenci na stranicu koja æe predstavljati novu
 korijen stranicu u stablu stranica. 
 To se naziva \'Poveznica baze podataka\' (DB poveznica).
 
-<strong>Primjedba</strong> Backend korisnièke grupe takoðer
+<strong>Primjetite da</strong> Backend korisnièke grupe takoðer
 sadrže DB poveznice koje korisnik može naslijediti. U sluèaju da želite više 
 korisnika koji dijele jedno stablo stranice, trebate napraviti poveznicu stabla 
 stranice u backend korisnièkoj grupi koju æe korisnici naslijediti.',
 		'file_mountpoints.description' => 'Dodijeli poèetne toèke stablu datoteka',
+		'file_mountpoints.details' => 'Stablo datoteka koriste svi podmoduli za navigaciju meðu direktorijima na web poslužitelju. Kako bi bili u moguænosti izvršiti upload <em>bilo koje</em> datoteke korisnik  <em>mora</em> imati direktorij postavljen sa poddirektorijem nazvanim \'_temp_\' unutar njega (kamo idu uploadi).
+Primjetite da kao i sa \'DB mounts\' direktoriji za datoteke isto mogu biti naslijeðeni od korisnièke grupe kojoj pripada korisnik.',
 		'email.description' => 'Upišite email adresu korisnika.',
 		'email.details' => 'Ovu je adresu vrlo važno unijeti jer se na nju šalju sistemske poruke.
 <strong>Primjdba</strong> Korisnik može sam mijenjati adresu
 u Korisnik>Postavke modulu.',
 		'realName.description' => 'Unesi pravo ime korisnika, npr. Ivo Iviæ',
-		'realName.details' => '<strong>Primjdba</strong> Korisnik može sam mijenjati adresu u Korisnik>Postavke modulu.',
+		'realName.details' => '<strong>Napomena</strong> Korisnik može sam mijenjati adresu u Korisnik>Postavke modulu.',
 		'disable.description' => 'Ova moguænost privremeno onemoguæava korisniku pristup.',
 		'admin.description' => '\'Admin\' korisnici imaju POTPUN pristup sustavu!',
+		'admin.details' => '\'Admin\' može raditi sve što TYPO3 omoguæuje i ovaj bi se tip korisnika trebao koristiti samo u administracijske svrhe. Sve drugo bi trebalo raditi s obiènim korisnicima. 
+\'Admin\' korisnici ne moraju biti èlanovi ni jedne korisnièke grupe. Svejedno, treba imati na umu da æe svaka stranica koju napravi admin korisnik koji nije èlan neke grupe biti napravljena bez zadanog vlasnika ili grupe, pa neæe biti vidljiva ostalim korisnicima. Ako to postane problem, lako je rješiv time da se admin korisniku dodijeli neka postojeæa grupa. Time se naravno ne utjeæe na ovlasti jer su one ionako za admin korisnika neogranièene.
+\'Admin\' korisnike je lako razaznati jer je njihova ikona u crvene umjesto plave boje obiènog korisnika.
+
+Vjerovatno ne bi trebali odrediti nikoga osim sebe kao \'Admin\' korisnika.',
+		'options.description' => 'Odaberite treba li korisnik naslijediti stablo stranica ili stablo direktorija od korisnièkih grupa kojima pripada.',
+		'options.details' => 'Velika je prednost ukoliko se dopusti da korisnici naslijede postavljene direktorije od korisnièkih grupa kojima pripadaju jer je na taj naèin administracija veæeg broja korisnika vrlo laka. 
+Ako ne odaberete ove opcije, morate osigurati da je stablo stranica i stablo direktorija postavljeno za svakog korisnika zasebno.',
+		'fileoper_perms.description' => 'Odaberite dozvole za rad s datotekama za korisnika.',
+		'fileoper_perms.details' => 'Ove postavke vrijede za funkcije u Datoteka>Popis modulu kao i za opæeniti upload datoteka.',
+		'starttime.description' => 'Unesite datum od kojeg æe korisnièki raèun biti aktivan.',
+		'endtime.description' => 'Unesite datum od kojeg æe korisnièki raèun biti onemoguæen.',
+		'lang.description' => 'Odaberite <i>zadani</i> jezik.',
+		'lang.details' => 'Ovom postavkom se odreðuje jezik backend suèelja korisnika. Svi glavni dijelovi sustava dostupni su u odabranom jeziku.
+\'Admin\' korisnici primjetiti æe da su dijelovi TYPO3 namijenjeni samo \'Admin\'-ima na engleskom. To ukljuèuje sve podmodule u "Tools" i sve Web>Template module.
+
+<b>Napomena</b> Ova postavka vrijedi samo za zadani jezik. Èim se korisnik prijavi na sustav ova postavka se mora promieniti kroz User>Setup modul.',
+		'userMods.description' => 'Odaberite backend module koji æe biti dostupni korisniku',
+		'userMods.details' => 'Ovom postavkom se odreðuje sadržaj menija koji æe biti dostupan korisniku.
+
+Primjetite da ista lista modula može biti konfigurirana za backend korisnièke grupe te æe u tom sluèaju ona biti naslijeðena i dopunjena s modulima koji su ovdje selektirani. Poželjno je postavljati dostupne module putem backend korisnièkih grupa umjesto dodavanja modula putem ove opcije. Naravno ova opcija vam omoguæava da dodate pojedini modul specifiènom korisniku.',
+		'TSconfig.description' => 'Unesite dodatne TSconfig instrukcije za korisnika (napredno).',
+		'TSconfig.details' => 'Putem ovog polja moguæe je proširiti konfiguraciju koirsnika u nekoliko detalja. Ukratko ovdje možete detaljnije konfigurirati backend module, postaviti za posebno za kosirnika predefinirana vrijednos tpojedninih polja, definirati postavke WYSWYG editora (RTE editor), itd. Popis opcije koje možete podešavati putem ovog polja raste s vremenom i u potpunosti je dokumentiran u administratorskoj dkoumentaciji, posebno u \'admin_guide.pdf\' (pogledaj link ispod).',
 	),
 	'hu' => Array (
 		'.description' => 'Ez a Backend adminisztrátor felhasználók táblája.',
@@ -297,7 +379,9 @@ tulajdonságai általában összeadódnak.
 Ez elsõ (legfelsõ) csoport a listában az a csoport, amelyik a
 felhasználó által létrehozott oldal tulajdonosa lesz.',
 		'lockToDomain.description' => 'Add meg annak a hosztgépnek a nevét, ahonnan a felhasználónak be kell jelentkeznie.',
-		'lockToDomain.details' => 'A TYPO3 rendszernek több rámutató tartománya lehet. Így az opció biztosítja, hogy a felhasználó csak bizonyos hosztgéprõl jelentkezhet be.',
+		'lockToDomain.details' => 'A TYPO3 rendszerre több domain mutathat. Így az opció biztosítja, hogy a felhasználó csak bizonyos hosztgéprõl jelentkezhet be.',
+		'disableIPlock.description' => 'Távoli backend felhasználók IP cím zárolásának megszüntetése.',
+		'disableIPlock.details' => 'Akkor kapcsold ki, ha vannak backend felhasználók, akik ISDN vagy modem használatával kapcsolódnak a TYPO3-hoz, és az IP címük változhat újrakapcsolódáskor. Ugyanez érvényes, ha DHCP szerver rendeli a felhasználókhoz az IP címeket.',
 		'db_mountpoints.description' => 'A felhasználó oldalrendszeréhez kiindulópontot rendel.',
 		'db_mountpoints.details' => 'Az összes, navigálásra használt web-almodul
 oldalrendszerének rendelkeznie kell megadott belépési
@@ -400,6 +484,8 @@ bizonyos felhasználók részére.',
 ¦b¦W¤¤ªº²Ä¤@­Ó¡]³Ì¤Wªº¡^¨Ï¥ÎªÌ¸s²Õ¡A¹w³]¬°¨Ï¥ÎªÌ©Ò«Ø¥ßªººô­¶ªº¾Ö¦³ªÌ',
 		'lockToDomain.description' => '¿é¤J¥D¾÷ªº¦WºÙ¡A¨Ï¥ÎªÌ¥²¶·±q¦¹µn¤J',
 		'lockToDomain.details' => '¤@­ÓTYPO3¨t²Î¥i¥H¦³¦h­Óºô°ì¨Ï¥Î¡C¦]¦¹¡A³o­Ó¿ï¶µ«OÃÒ¥u¥i¥H±q¬Y¤@¥D¾÷µn¤J',
+		'disableIPlock.description' => 'Ãö³¬°O¿ý«á¶Ô¨Ï¥ÎªÌIP¦ì§}ªº¥\\¯à',
+		'disableIPlock.details' => '§A»Ý­nÃö³¬¦¹¥\\¯à¡A°²¦p¦³«á¶Ô¨Ï¥ÎªÌ¥HISDN©ÎMODEM³sµ²¨Ó¶i¤JTYPO3¡A¦]³o¨Ç³sµ²·|¦bÃö³¬¦A³s±µ«á±o¨ì·sªºIP¦ì§}¡C¥ÎDHCP¤À°t¦ì§}¥ç¤@¼Ë¡A±`±`·|¤À°t¨ì·sªºIP¦ì§}',
 		'db_mountpoints.description' => '³]©w¨Ï¥ÎªÌºô­¶¾ð¹Ïªº°_©lÂI',
 		'db_mountpoints.details' => 'ºô­¶¾ð¹Ï³Q©Ò¦³ºô¯¸°Æ¼Ò²Õ¥Î¥H·ÈÄýºô­¶¡A¥¦¤@©w­n¦³¬Y­Ó©w¸qªº°_©lÂI¡C³o¸Ì§AÀ³¸Ó´¡¤J©Î¥H¤Wªº°Ñ·Ó­Ó¬°¾ð¹Ï¤¤ªº·s®Ú­¶¡C³oºÙ¬°¡u¸ê®Æ®w±¾ÂI¡v
 
