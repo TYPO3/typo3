@@ -104,7 +104,7 @@ class localPageTree extends t3lib_browseTree {
 
 			// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode)	{
-			$thePageIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($thePageIcon,'pages',$row['uid'],0);
+			$thePageIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($thePageIcon,'pages',$row['uid'],0,'&bank='.$this->bank);
 		} elseif (!strcmp($this->ext_IconMode,'titlelink'))	{
 			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->treeName.'\');';
 			$thePageIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$thePageIcon.'</a>';

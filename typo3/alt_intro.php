@@ -96,7 +96,7 @@ class SC_alt_intro {
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$TYPO3_CONF_VARS;
-		global $TBE_TEMPLATE,$TYPO_VERSION;
+		global $TBE_TEMPLATE;
 
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 
@@ -110,7 +110,7 @@ class SC_alt_intro {
 			<p>%s</p>
 			<p>&nbsp;</p>
 			<p>%s</p>',
-			'TYPO3 '.$TYPO_VERSION,
+			'TYPO3 '.TYPO3_version,
 			$LANG->getLL('introtext'),
 			t3lib_BEfunc::TYPO3_copyRightNotice(),
 			$LANG->getLL('introtext2')

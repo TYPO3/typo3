@@ -77,6 +77,7 @@ class t3lib_arrayBrowser	{
 	var $searchKeys = array();		// After calling the getSearchKeys function this array is populated with the key-positions in the array which contains values matching the search.
 	var $fixedLgd=1;				// If set, the values are truncated with "..." appended if longer than a certain length.
 	var $regexMode=0;				// If set, search for string with regex, otherwise stristr()
+	var $varName='';				// Set var name here if you want links to the variable name.
 
 	/**
 	 * Make browsable tree
@@ -98,7 +99,7 @@ class t3lib_arrayBrowser	{
 		reset($arr);
 		while (list($key,)=each($arr))	{
 			$a++;
-			$depth=$depth_in.$key;
+			$depth = $depth_in.$key;
 			$goto = substr(md5($depth),0,6);
 
 			$deeper = (is_array($arr[$key]) && $this->depthKeys[$depth]) ? 1 : 0;
@@ -117,7 +118,7 @@ class t3lib_arrayBrowser	{
 			}
 
 			$label = $key;
-			$HTML.='['.$label.']';
+			$HTML.= $this->wrapArrayKey($label,$depth,!is_array($arr[$key]) ? $arr[$key] : '');
 
 			if (!is_array($arr[$key]))	{
 				$theValue = $arr[$key];
@@ -128,9 +129,9 @@ class t3lib_arrayBrowser	{
 					$theValue = $this->fixed_lgd($theValue,$lgdChars);
 				}
 				if ($this->searchKeys[$depth])	{
-					$HTML.='=<b><span style="color:red;">'.htmlspecialchars($theValue).'</font></b>';
+					$HTML.='=<span style="color:red;">'.$this->wrapValue($theValue,$depth).'</font>';
 				} else {
-					$HTML.='=<b>'.htmlspecialchars($theValue).'</b>';
+					$HTML.='='.$this->wrapValue($theValue,$depth);
 				}
 			}
 			$HTML.='<br />';
@@ -140,6 +141,40 @@ class t3lib_arrayBrowser	{
 			}
 		}
 		return $HTML;
+	}
+
+	/**
+	 * Wrapping the value in bold tags etc.
+	 *
+	 * @param	string		The title string
+	 * @param	string		Depth path
+	 * @return	string		Title string, htmlspecialchars()'ed
+	 */
+	function wrapValue($theValue,$depth)	{
+		return '<b>'.htmlspecialchars($theValue).'</b>';
+	}
+
+	/**
+	 * Wrapping the value in bold tags etc.
+	 *
+	 * @param	string		The title string
+	 * @param	string		Depth path
+	 * @param	string		The value for the array entry.
+	 * @return	string		Title string, htmlspecialchars()'ed
+	 */
+	function wrapArrayKey($label,$depth,$theValue)	{
+
+			// Protect label:
+		$label = htmlspecialchars($label);
+
+			// If varname is set:
+		if ($this->varName) {
+			$variableName = $this->varName.'[\''.str_replace('.','\'][\'',$depth).'\'] = '.(!t3lib_div::testInt($theValue) ? '\''.addslashes($theValue).'\'' : $theValue).'; ';
+			$label = '<a href="'.htmlspecialchars('index.php?varname='.$variableName.'#varname').'">'.$label.'</a>';
+		}
+
+			// Return:
+		return '['.$label.']';
 	}
 
 	/**

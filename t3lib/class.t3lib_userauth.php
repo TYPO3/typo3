@@ -114,14 +114,14 @@ class t3lib_userAuth {
 
 	var $auth_include = '';				// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
 
-	var $auth_timeout_field = 0;		// if > 0 : session-timeout in seconds. if false/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
+	var $auth_timeout_field = 0;		// if > 0 : session-timeout in seconds. if string: The string is fieldname from the usertable where the timeout can be found.
 	var $lifetime = 0;                  // 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
 	var $gc_time  = 24;               	// GarbageCollection. Purge all session data older than $gc_time hours.
 	var $gc_probability = 1;			// Possibility (in percent) for GarbageCollection to be run.
 	var $writeStdLog = 0;					// Decides if the writelog() function is called at login and logout
 	var $writeAttemptLog = 0;				// If the writelog() functions is called if a login-attempt has be tried without success
 	var $sendNoCacheHeaders = 1;		// If this is set, headers is sent to assure, caching is NOT done
-	var $getFallBack = 0;				// If this is set, authentication is also accepted by the HTTP_GET_VARS. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
+	var $getFallBack = 0;				// If this is set, authentication is also accepted by the $_GET. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
 	var $hash_length = 32;				// The ident-hash is normally 32 characters and should be! But if you are making sites for WAP-devices og other lowbandwidth stuff, you may shorten the length. Never let this value drop below 6. A length of 6 would give you more than 16 mio possibilities.
 	var $getMethodEnabled = 0;			// Setting this flag true lets user-authetication happen from GET_VARS if POST_VARS are not set. Thus you may supply username/password from the URL.
 	var $lockIP = 4;					// If set, will lock the session to the users IP address (all four numbers. Reducing to 1-3 means that only first, second or third part of the IP address is used).
@@ -135,7 +135,7 @@ class t3lib_userAuth {
 
 		// Internals
 	var $id;							// Internal: Will contain session_id (MD5-hash)
-	var $cookieId;						// Internal: Will contain the session_id gotten from cookie or GET method. This is used in statistics as a reliable cookie (one which is known to come from HTTP_COOKIE_VARS).
+	var $cookieId;						// Internal: Will contain the session_id gotten from cookie or GET method. This is used in statistics as a reliable cookie (one which is known to come from $_COOKIE).
 	var $loginSessionStarted = 0;		// Will be set to 1 if the login session is actually written during auth-check.
 
 	var $user;							// Internal: Will contain user- AND session-data from database (joined tables)
@@ -157,17 +157,16 @@ class t3lib_userAuth {
 	 * @return	void
 	 */
 	function start() {
-		global $HTTP_COOKIE_VARS, $HTTP_GET_VARS;
 
 			// Init vars.
 		$mode='';
 		$new_id = false;				// Default: not a new session
-		$id = isset($HTTP_COOKIE_VARS[$this->name]) ? stripslashes($HTTP_COOKIE_VARS[$this->name]) : '';	// $id is set to ses_id if cookie is present. Else set to false, which will start a new session
+		$id = isset($_COOKIE[$this->name]) ? stripslashes($_COOKIE[$this->name]) : '';	// $id is set to ses_id if cookie is present. Else set to false, which will start a new session
 		$this->hash_length = t3lib_div::intInRange($this->hash_length,6,32);
 
 			// If fallback to get mode....
 		if (!$id && $this->getFallBack && $this->get_name)	{
-			$id = isset($HTTP_GET_VARS[$this->get_name]) ? t3lib_div::_GET($this->get_name) : '';
+			$id = isset($_GET[$this->get_name]) ? t3lib_div::_GET($this->get_name) : '';
 			if (strlen($id)!=$this->hash_length)	$id='';
 			$mode='get';
 		}

@@ -14,7 +14,7 @@
 		<languageKey index="default" type="array">
 			<label index="layout.description">Select a layout for the page. Any effect depends on the website template.</label>
 			<label index="layout.details">This option may not have any impact on the page design since it depends on how (and if) the front end template uses it. In most default templates it's not used.</label>
-			<label index="doktype.description">Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</label>
+			<label index="doktype.description">Select a page type affects whether the page represents a visible webpage or is used for other purposes.</label>
 			<label index="doktype.details">'Standard' and 'Advanced' types are regular webpages, just differing in the number of options.
 'External URL' and 'Shortcut' types allows you to let a page be a shortcut to either an external URL or in the latter case a page in the page tree.
 'Not in menu' is also a regular page, but will not be shown in the navigation. &lt;em&gt;This page type is deprecated! Please use the &quot;Hide in menu&quot; option!&lt;/em&gt;

@@ -771,16 +771,16 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	/**
 	 * Upload of files (action=1)
 	 *
-	 * @param	array		$cmds['data'] is the ID-number (points to the global var that holds the filename-ref  ($GLOBALS['HTTP_POST_FILES']['upload_'.$id]['name']). $cmds['target'] is the target directory
+	 * @param	array		$cmds['data'] is the ID-number (points to the global var that holds the filename-ref  ($_FILES['upload_'.$id]['name']). $cmds['target'] is the target directory
 	 * @return	string		Returns the new filename upon success
 	 */
 	function func_upload($cmds)	{
 		if (!$this->isInit) return FALSE;
 		$id = $cmds['data'];
-		if ($GLOBALS['HTTP_POST_FILES']['upload_'.$id]['name'])	{
-			$theFile = $GLOBALS['HTTP_POST_FILES']['upload_'.$id]['tmp_name'];				// filename of the uploaded file
-			$theFileSize = $GLOBALS['HTTP_POST_FILES']['upload_'.$id]['size'];				// filesize of the uploaded file
-			$theName = $this->cleanFileName(stripslashes($GLOBALS['HTTP_POST_FILES']['upload_'.$id]['name']));	// The original filename
+		if ($_FILES['upload_'.$id]['name'])	{
+			$theFile = $_FILES['upload_'.$id]['tmp_name'];				// filename of the uploaded file
+			$theFileSize = $_FILES['upload_'.$id]['size'];				// filesize of the uploaded file
+			$theName = $this->cleanFileName(stripslashes($_FILES['upload_'.$id]['name']));	// The original filename
 			if (is_uploaded_file($theFile) && $theName)	{	// Check the file
 				if ($this->actionPerms['uploadFile'])	{
 					if ($theFileSize<($this->maxUploadFileSize*1024))	{

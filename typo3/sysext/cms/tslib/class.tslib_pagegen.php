@@ -410,7 +410,13 @@ function linkTo_UnCryptMailto(s)	{	//
 			$_attr = '';
 		}
 		$GLOBALS['TSFE']->content.='<html'.($_attr ? ' '.$_attr : '').'>
-<head>
+<head>';
+			// Setting charset meta tag:
+		$GLOBALS['TSFE']->content.='
+	<meta http-equiv="Content-Type" content="text/html; charset='.$theCharset.'" />';
+
+$GLOBALS['TSFE']->content.='
+
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is brought to you by TYPO3 - get.content.right
 	TYPO3 is a free open source Content Management Framework created by Kasper Skaarhoj and licensed under GNU/GPL.
@@ -598,8 +604,6 @@ function linkTo_UnCryptMailto(s)	{	//
 
 		$GLOBALS['TSFE']->content.='
 	<title>'.htmlspecialchars($titleTagContent).'</title>';
-		$GLOBALS['TSFE']->content.='
-	<meta http-equiv="Content-Type" content="text/html; charset='.$theCharset.'" />';
 		$GLOBALS['TSFE']->content.='
 	<meta name="generator" content="TYPO3 3.6 CMS" />';
 

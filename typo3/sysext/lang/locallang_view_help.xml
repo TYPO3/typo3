@@ -27,7 +27,7 @@
 			<label index="title">TYPO3 Inline Help</label>
 			<label index="manual_title">TYPO3 Inline User Manual</label>
 			<label index="introduction">Introduction</label>
-			<label index="description">The TYPO3 Inline User Manual is dynamically composed from the available help sources in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, descriptions of installation specific Backend Modules and Database Tables that are available based on your login credentials.</label>
+			<label index="description">The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</label>
 			<label index="full_manual">Full Manual (in one page)</label>
 			<label index="full_manual_chapters">Manual Chapters</label>
 		</languageKey>
@@ -339,28 +339,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="details" type="integer">65812061</label>
-			<label index="syntax" type="integer">154049890</label>
-			<label index="seeAlso" type="integer">101781834</label>
-			<label index="goBack" type="integer">36398395</label>
-			<label index="fullDescription" type="integer">233674735</label>
-			<label index="fullDescription_module" type="integer">201003905</label>
-			<label index="goToToc" type="integer">21517239</label>
-			<label index="to_top" type="integer">256968027</label>
-			<label index="TOC" type="integer">5416024</label>
-			<label index="TOC_core" type="integer">164327555</label>
-			<label index="TOC_modules" type="integer">39991288</label>
-			<label index="TOC_tables" type="integer">247039840</label>
-			<label index="TOC_other" type="integer">103881441</label>
-			<label index="close" type="integer">222113377</label>
-			<label index="title" type="integer">184225760</label>
-			<label index="manual_title" type="integer">89488469</label>
-			<label index="introduction" type="integer">12031893</label>
-			<label index="description" type="integer">54171837</label>
-			<label index="full_manual" type="integer">68472336</label>
-			<label index="full_manual_chapters" type="integer">161891675</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="details" type="integer">65812061</label>
 			<label index="syntax" type="integer">154049890</label>

@@ -132,7 +132,7 @@ class t3lib_DB {
 
 
 		// Debug:
-	var $debugOutput = FALSE;			// Set "TRUE" if you want database errors outputted.
+	var $debugOutput = TRUE;			// Set "TRUE" if you want database errors outputted.
 	var $debug_lastBuiltQuery = '';		// Internally: Set to last built query (not necessarily executed...)
 
 		// Default link identifier:
@@ -280,17 +280,25 @@ class t3lib_DB {
 	 * @param	string		See exec_SELECTquery()
 	 * @param	string		See exec_SELECTquery()
 	 * @param	string		See exec_SELECTquery()
+	 * @param	string		If set, the result array will carry this field names value as index. Requires that field to be selected of course!
 	 * @return	array		Array of rows.
 	 */
-	function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
+	function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')	{
 		$res = mysql_query($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit), $this->link);
 		if ($this->debugOutput)	$this->debug('exec_SELECTquery');
 
 		unset($output);
 		if (!$this->sql_error())	{
 			$output = array();
-			while($output[] = $this->sql_fetch_assoc($res));
-			array_pop($output);
+
+			if ($uidIndexField)	{
+				while($tempRow = $this->sql_fetch_assoc($res))	{
+					$output[$tempRow[$uidIndexField]] = $tempRow;
+				}
+			} else {
+				while($output[] = $this->sql_fetch_assoc($res));
+				array_pop($output);
+			}
 		}
 		return $output;
 	}

@@ -1028,7 +1028,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values=0;
 			$tce->start($this->TSFE_EDIT['data'],Array());
-			$tce->process_uploads($GLOBALS['HTTP_POST_FILES']);
+			$tce->process_uploads($_FILES);
 			$tce->process_datamap();
 		}
 	}

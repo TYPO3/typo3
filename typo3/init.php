@@ -69,7 +69,7 @@ error_reporting (E_ALL ^ E_NOTICE);
 // *******************************
 define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
 define('TYPO3_MODE','BE');
-define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED'])? ($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED']):($HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']:$HTTP_SERVER_VARS['SCRIPT_FILENAME']))));
+define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
 define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
 
 
@@ -111,8 +111,8 @@ if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	/
 		'PATH_thisScript'=>PATH_thisScript,
 		'php_sapi_name()'=>php_sapi_name(),
 		'TYPO3_MOD_PATH'=>TYPO3_MOD_PATH,
-		'PATH_TRANSLATED'=>$HTTP_SERVER_VARS['PATH_TRANSLATED'],
-		'SCRIPT_FILENAME'=>$HTTP_SERVER_VARS['SCRIPT_FILENAME']
+		'PATH_TRANSLATED'=>$_SERVER['PATH_TRANSLATED'],
+		'SCRIPT_FILENAME'=>$_SERVER['SCRIPT_FILENAME']
 	));
 	echo '</pre><HR>';
 	phpinfo();
@@ -196,13 +196,13 @@ if (intval($TYPO3_CONF_VARS['BE']['lockSSL']))	{
 // *******************************
 // Checking environment
 // *******************************
-if (t3lib_div::int_from_ver(phpversion())<4000006)	die ('TYPO3 runs with PHP4.0.6+ only');
-if (isset($HTTP_POST_VARS['GLOBALS']) || isset($HTTP_GET_VARS['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
+if (t3lib_div::int_from_ver(phpversion())<4100000)	die ('TYPO3 runs with PHP4.1.0+ only');
+if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
 if (!get_magic_quotes_gpc())	{
-	t3lib_div::addSlashesOnArray($HTTP_GET_VARS);
-	t3lib_div::addSlashesOnArray($HTTP_POST_VARS);
-	$_GET = $HTTP_GET_VARS;
-	$_POST = $HTTP_POST_VARS;
+	t3lib_div::addSlashesOnArray($_GET);
+	t3lib_div::addSlashesOnArray($_POST);
+	$HTTP_GET_VARS = $_GET;
+	$HTTP_POST_VARS = $_POST;
 }
 
 
@@ -271,6 +271,7 @@ if (TYPO3_extTableDef_script)	{
 $BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');	// New backend user object
 $BE_USER->warningEmail = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
 $BE_USER->lockIP = $TYPO3_CONF_VARS['BE']['lockIP'];
+$BE_USER->auth_timeout_field = intval($TYPO3_CONF_VARS['BE']['sessionTimeout']);
 $BE_USER->OS = TYPO3_OS;
 $BE_USER->start();			// Object is initialized
 $BE_USER->checkCLIuser();

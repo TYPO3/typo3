@@ -226,7 +226,7 @@ class tslib_search {
 	 * @param	string		Special chars which are deleted if the append the searchword (+-., is default)
 	 * @return	mixed		Returns an ARRAY if there were search words, othervise the return value may be unset.
 	 */
-	function split($origSword, $specchars='+-', $delchars='+-.,')	{
+	function split($origSword, $specchars='+-', $delchars='+.,-')	{
 		$sword = $origSword;
 		$specs = '['.$this->quotemeta($specchars).']';
 		$delchars = '['.$this->quotemeta($delchars).']';

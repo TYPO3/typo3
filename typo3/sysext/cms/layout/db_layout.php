@@ -700,6 +700,7 @@ class SC_db_layout {
 
 				// Initializing transfer-data object:
 			$trData = t3lib_div::makeInstance('t3lib_transferData');
+			$trData->addRawData = TRUE;
 			$trData->defVals[$eRParts[0]] = array (
 				'colPos' => intval($ex_colPos),
 				'sys_language_uid' => intval($this->current_sys_language)

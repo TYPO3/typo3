@@ -414,7 +414,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)	{
 		$MS_value = is_null($MS_value) ? $this->MOD_SETTINGS[$MM_key] : $MS_value;
 		$externalItems = $this->getExternalItemConfig($this->MCONF['name'],$MM_key,$MS_value);
-		if (is_array($externalItems))	$this->extClassConf = array_merge($externalItems,$this->extClassConf);
+		if (is_array($externalItems))	$this->extClassConf = array_merge($externalItems,is_array($this->extClassConf)?$this->extClassConf:array());
 		if (is_array($this->extClassConf) && $this->extClassConf['path'])	{
 			$this->include_once[]=$this->extClassConf['path'];
 		}
@@ -1019,10 +1019,10 @@ EXTENSION KEYS:
 			$fetchData = array($directInput,'');
 			$loc = !strcmp($loc,'G')?'G':'L';
 		} elseif ($uploadFlag)	{
-			if ($GLOBALS['HTTP_POST_FILES']['upload_ext_file']['tmp_name'])	{
+			if ($_FILES['upload_ext_file']['tmp_name'])	{
 
 					// Read uploaded file:
-				$uploadedTempFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES']['upload_ext_file']['tmp_name']);
+				$uploadedTempFile = t3lib_div::upload_to_tempfile($_FILES['upload_ext_file']['tmp_name']);
 				$fileContent = t3lib_div::getUrl($uploadedTempFile);
 				t3lib_div::unlink_tempfile($uploadedTempFile);
 
@@ -2602,9 +2602,9 @@ EXTENSION KEYS:
 			// Classes:
 		if ($validity)	{
 			$filesInside = $this->getClassIndexLocallangFiles($absPath,$table_class_prefix,$extKey);
-			if (is_array($filesInside['errors']))	$infoArray['errors'] = array_merge($infoArray['errors'],$filesInside['errors']);
-			if (is_array($filesInside['NSerrors']))	$infoArray['NSerrors'] = array_merge($infoArray['NSerrors'],$filesInside['NSerrors']);
-			if (is_array($filesInside['NSok']))	$infoArray['NSok'] = array_merge($infoArray['NSok'],$filesInside['NSok']);
+			if (is_array($filesInside['errors']))	$infoArray['errors'] = array_merge((array)$infoArray['errors'],$filesInside['errors']);
+			if (is_array($filesInside['NSerrors']))	$infoArray['NSerrors'] = array_merge((array)$infoArray['NSerrors'],$filesInside['NSerrors']);
+			if (is_array($filesInside['NSok']))	$infoArray['NSok'] = array_merge((array)$infoArray['NSok'],$filesInside['NSok']);
 			$infoArray['locallang'] = $filesInside['locallang'];
 			$infoArray['classes'] = $filesInside['classes'];
 		}

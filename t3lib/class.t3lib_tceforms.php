@@ -1936,7 +1936,7 @@ class t3lib_TCEforms	{
 
 						// Add to tab:
 					$tabParts[] = array(
-						'label' => ($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sKey),
+						'label' => ($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sheet),
 						'description' => ($sheetCfg['ROOT']['TCEforms']['sheetDescription'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetDescription']) : ''),
 						'linkTitle' => ($sheetCfg['ROOT']['TCEforms']['sheetShortDescr'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetShortDescr']) : ''),
 						'content' => $sheetContent

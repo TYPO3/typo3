@@ -99,7 +99,7 @@ tt_content:fe_group</label>
 tt_content:starttime,
 tt_content:hidden,
 tt_content:fe_group</label>
-			<label index="fe_group.description">Select a Website usergroup which is exclusive allowed to view the element.</label>
+			<label index="fe_group.description">Select a Website usergroup which is exclusively allowed to view the element.</label>
 			<label index="fe_group.details">The options in this box depends on which Website usergroups are created and available for you. When you select a user group here, the content element will no longer be visible to users which are not logged in. Only Website users which are logged in and members of the group you selected will be allowed to see the element.
 If you select &quot;Hide at login&quot; the effect is kind of reversed in that the element &lt;em&gt;disappears&lt;/em&gt; if &lt;em&gt;any&lt;/em&gt; Website user is logged in. This is useful if you want to present information like &quot;How to login&quot; and such which is irrelevant if a user is finally logged in.</label>
 			<label index="_fe_group.seeAlso">tt_content:hidden,

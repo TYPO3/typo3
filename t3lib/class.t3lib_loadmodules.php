@@ -387,7 +387,7 @@ class t3lib_loadModules {
 		$path = ereg_replace ('/[^/.]+/\.\./', '/', $fullpath); // because 'path/../path' does not work
 		if (@is_dir($path) && @file_exists($path.'/conf.php')) 	{
 			include($path.'/conf.php');	// The conf-file is included. This must be valid PHP.
-			if ($this->checkModAccess($name,$MCONF))	{
+			if (!$MCONF['shy'] && $this->checkModAccess($name,$MCONF))	{
 				$modconf['name']=$name;
 					// language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
 				if (is_object($GLOBALS['LANG']))	{

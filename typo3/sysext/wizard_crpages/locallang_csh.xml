@@ -13,7 +13,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_wizardcrpages.alttitle">Create Pages wizard</label>
-			<label index="tx_wizardcrpages.description">Enables you to create a batch of new, empty pages for quickly building up a new page tree. Very useful under development circumstances.
+			<label index="tx_wizardcrpages.description">Enables you to create a batch of new, empty pages for quickly building up a new page tree. 
 Just enter the titles for the pages you need. Only filled in fields will be created as pages.</label>
 			<label index="tx_wizardcrpages.details">The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is &quot;/Intro/Startpage/&quot;.
 

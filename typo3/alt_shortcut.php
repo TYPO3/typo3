@@ -141,7 +141,7 @@ class SC_alt_shortcut {
 	 * @return	void
 	 */
 	function preprocess()	{
-		global $BE_USER,$HTTP_POST_VARS;
+		global $BE_USER;
 
 			// Adding a shortcut being set from another frame
 		if ($this->modName && $this->URL)	{
@@ -165,9 +165,9 @@ class SC_alt_shortcut {
 		}
 
 			// If other changes in post-vars:
-		if (is_array($HTTP_POST_VARS))	{
+		if (is_array($_POST))	{
 				// Saving:
-			if (isset($HTTP_POST_VARS['_savedok_x']) || isset($HTTP_POST_VARS['_saveclosedok_x']))	{
+			if (isset($_POST['_savedok_x']) || isset($_POST['_saveclosedok_x']))	{
 				$fields_values = array(
 					'description' => $this->editName,
 					'sc_group' => intval($this->editGroup)
@@ -179,11 +179,11 @@ class SC_alt_shortcut {
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_be_shortcuts', 'uid='.intval($this->whichItem).$addUSERWhere, $fields_values);
 			}
 				// If save without close, keep the session going...
-			if (isset($HTTP_POST_VARS['_savedok_x']))	{
+			if (isset($_POST['_savedok_x']))	{
 				$this->editSC=$this->whichItem;
 			}
 				// Deleting a single shortcut ?
-			if (isset($HTTP_POST_VARS['_deletedok_x']))	{
+			if (isset($_POST['_deletedok_x']))	{
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_be_shortcuts', 'uid='.intval($this->whichItem).$addUSERWhere);
 
 				if (!$this->editSC)	$this->editSC=-1;	// Just to have the checkbox set...

@@ -37,81 +37,85 @@
  *
  *
  *
- *  143: class t3lib_stdGraphic
- *  218:     function init()
+ *  147: class t3lib_stdGraphic
+ *  224:     function init()
  *
  *              SECTION: Layering images / "IMAGE" GIFBUILDER object
- *  317:     function maskImageOntoImage(&$im,$conf,$workArea)
- *  377:     function copyImageOntoImage(&$im,$conf,$workArea)
- *  399:     function copyGifOntoGif(&$im,$cpImg,$conf,$workArea)
- *  478:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
+ *  324:     function maskImageOntoImage(&$im,$conf,$workArea)
+ *  384:     function copyImageOntoImage(&$im,$conf,$workArea)
+ *  406:     function copyGifOntoGif(&$im,$cpImg,$conf,$workArea)
+ *  485:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
  *
  *              SECTION: Text / "TEXT" GIFBUILDER object
- *  527:     function makeText(&$im,$conf,$workArea)
- *  643:     function txtPosition($conf,$workArea,$BB)
- *  697:     function calcBBox($conf)
- *  766:     function addToMap($cords,$conf)
- *  787:     function calcTextCordsForMap($cords,$offset, $conf)
- *  820:     function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing)
- *  853:     function fontResize($conf)
+ *  534:     function makeText(&$im,$conf,$workArea)
+ *  650:     function txtPosition($conf,$workArea,$BB)
+ *  704:     function calcBBox($conf)
+ *  773:     function addToMap($cords,$conf)
+ *  796:     function calcTextCordsForMap($cords,$offset, $conf)
+ *  831:     function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF=1)
+ *  868:     function fontResize($conf)
+ *  910:     function ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $string, $splitRendering, $sF=1)
+ *  951:     function ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering,$sF=1)
+ *  980:     function splitString($string,$splitRendering,$fontSize,$fontFile)
  *
  *              SECTION: Other GIFBUILDER objects related to TEXT
- *  915:     function makeOutline(&$im,$conf,$workArea,$txtConf)
- *  944:     function circleOffset($distance, $iterations)
- *  968:     function makeEmboss(&$im,$conf,$workArea,$txtConf)
- *  990:     function makeShadow(&$im,$conf,$workArea,$txtConf)
+ * 1136:     function makeOutline(&$im,$conf,$workArea,$txtConf)
+ * 1165:     function circleOffset($distance, $iterations)
+ * 1189:     function makeEmboss(&$im,$conf,$workArea,$txtConf)
+ * 1211:     function makeShadow(&$im,$conf,$workArea,$txtConf)
  *
  *              SECTION: Other GIFBUILDER objects
- * 1120:     function makeBox(&$im,$conf,$workArea)
- * 1139:     function makeEffect(&$im, $conf)
- * 1154:     function IMparams($setup)
- * 1237:     function adjust(&$im, $conf)
- * 1269:     function crop(&$im,$conf)
- * 1299:     function scale(&$im,$conf)
- * 1331:     function setWorkArea($workArea)
+ * 1341:     function makeBox(&$im,$conf,$workArea)
+ * 1360:     function makeEffect(&$im, $conf)
+ * 1375:     function IMparams($setup)
+ * 1458:     function adjust(&$im, $conf)
+ * 1490:     function crop(&$im,$conf)
+ * 1520:     function scale(&$im,$conf)
+ * 1552:     function setWorkArea($workArea)
  *
  *              SECTION: Adjustment functions
- * 1372:     function autolevels(&$im)
- * 1403:     function outputLevels(&$im,$low,$high,$swap='')
- * 1435:     function inputLevels(&$im,$low,$high,$swap='')
- * 1466:     function reduceColors(&$im,$limit, $cols)
+ * 1593:     function autolevels(&$im)
+ * 1624:     function outputLevels(&$im,$low,$high,$swap='')
+ * 1656:     function inputLevels(&$im,$low,$high,$swap='')
+ * 1687:     function reduceColors(&$im,$limit, $cols)
  *
  *              SECTION: GIFBUILDER Helper functions
- * 1504:     function prependAbsolutePath($fontFile)
- * 1518:     function v5_sharpen($factor)
- * 1537:     function v5_blur($factor)
- * 1554:     function randomName()
- * 1566:     function applyOffset($cords,$OFFSET)
- * 1579:     function convertColor($string)
- * 1629:     function recodeString($string)
- * 1650:     function singleChars($theText)
- * 1673:     function objPosition($conf,$workArea,$BB)
+ * 1725:     function prependAbsolutePath($fontFile)
+ * 1739:     function v5_sharpen($factor)
+ * 1758:     function v5_blur($factor)
+ * 1775:     function randomName()
+ * 1788:     function applyOffset($cords,$OFFSET)
+ * 1801:     function convertColor($string)
+ * 1851:     function recodeString($string)
+ * 1873:     function singleChars($theText,$returnUnicodeNumber=FALSE)
+ * 1896:     function objPosition($conf,$workArea,$BB)
  *
  *              SECTION: Scaling, Dimensions of images
- * 1752:     function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0)
- * 1835:     function getImageDimensions($imageFile)
- * 1863:     function cacheImageDimensions($identifyResult)
- * 1895:     function getCachedImageDimensions($imageFile)
- * 1930:     function getImageScale($info,$w,$h,$options)
- * 2018:     function file_exists_typo3temp_file($output,$orig='')
+ * 1975:     function imageMagickConvert($imagefile,$newExt='',$w='',$h='',$params='',$frame='',$options='',$mustCreate=0)
+ * 2063:     function getImageDimensions($imageFile)
+ * 2091:     function cacheImageDimensions($identifyResult)
+ * 2123:     function getCachedImageDimensions($imageFile)
+ * 2157:     function getImageScale($info,$w,$h,$options)
+ * 2245:     function file_exists_typo3temp_file($output,$orig='')
  *
  *              SECTION: ImageMagick API functions
- * 2079:     function imageMagickIdentify($imagefile)
- * 2112:     function imageMagickExec($input,$output,$params)
- * 2130:     function combineExec($input,$overlay,$mask,$output)
- * 2145:     function wrapFileName($inputName)
+ * 2306:     function imageMagickIdentify($imagefile)
+ * 2340:     function imageMagickExec($input,$output,$params)
+ * 2358:     function combineExec($input,$overlay,$mask,$output)
+ * 2373:     function wrapFileName($inputName)
  *
  *              SECTION: Various IO functions
- * 2186:     function checkFile($file)
- * 2201:     function applyImageMagickToPHPGif(&$im, $command)
- * 2227:     function gif_or_jpg($type,$w,$h)
- * 2244:     function output($file)
- * 2288:     function destroy()
- * 2298:     function imgTag ($imgInfo)
- * 2310:     function ImageGif($destImg, $theImage)
- * 2327:     function imageCreateFromGif($sourceImg)
+ * 2414:     function checkFile($file)
+ * 2428:     function createTempSubDir($dirName)
+ * 2450:     function applyImageMagickToPHPGif(&$im, $command)
+ * 2476:     function gif_or_jpg($type,$w,$h)
+ * 2493:     function output($file)
+ * 2537:     function destroy()
+ * 2547:     function imgTag ($imgInfo)
+ * 2559:     function ImageGif($destImg, $theImage)
+ * 2576:     function imageCreateFromGif($sourceImg)
  *
- * TOTAL FUNCTIONS: 54
+ * TOTAL FUNCTIONS: 58
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -156,8 +160,8 @@ class t3lib_stdGraphic	{
 	var $maskNegate = '';						// Will be ' -negate' if ImageMagick ver 5.2+. See init();
 	var $NO_IM_EFFECTS = '';
 	var $cmds = Array (
-		'jpg' => '-colorspace RGB -sharpen 50 -quality 60',
-		'jpeg' => '-colorspace RGB -sharpen 50 -quality 60',
+		'jpg' => '',
+		'jpeg' => '',
 		'gif' => '-colors 64',
 		'png' => '-colors 64'
 	);
@@ -220,6 +224,9 @@ class t3lib_stdGraphic	{
 	function init()	{
 		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
 
+			// Setting default JPG parameters:
+		$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -sharpen 50 -quality '.intval($gfxConf['im_jpg_quality']);
+
 		if ($gfxConf['im_combine_filename'])	$this->combineScript=$gfxConf['im_combine_filename'];
 		if ($gfxConf['im_noFramePrepended'])	$this->noFramePrepended=1;
 
@@ -255,8 +262,7 @@ class t3lib_stdGraphic	{
 				// - therefore must be disabled in order not to perform sharpen, blurring and such.
 			$this->NO_IM_EFFECTS = 1;
 
-			$this->cmds['jpg']  = '-colorspace RGB -quality 60';
-			$this->cmds['jpeg'] = '-colorspace RGB -quality 60';
+			$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality '.intval($gfxConf['im_jpg_quality']);
 		}
 			// ... but if 'im_v5effects' is set, dont care about 'im_no_effects'
 		if ($gfxConf['im_v5effects'])	{
@@ -264,8 +270,7 @@ class t3lib_stdGraphic	{
 			$this->V5_EFFECTS = 1;
 
 			if ($gfxConf['im_v5effects']>0)	{
-				$this->cmds['jpg']  = '-colorspace RGB -quality 60'.$this->v5_sharpen(10);
-				$this->cmds['jpeg'] = '-colorspace RGB -quality 60'.$this->v5_sharpen(10);
+				$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality '.intval($gfxConf['im_jpg_quality']).$this->v5_sharpen(10);
 			}
 		}
 
@@ -552,9 +557,9 @@ class t3lib_stdGraphic	{
 
 				for ($a=0; $a<$conf['iterations']; $a++)	{
 					if ($spacing || $wordSpacing)	{		// If any kind of spacing applys, we use this function:
-						$this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing);
+						$this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
 					} else {
-						ImageTTFText($im, t3lib_div::freetypeDpiComp($conf['fontSize']), $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText);
+						$this->ImageTTFTextWrapper($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.']);
 					}
 				}
 			} else {		// NICETEXT::
@@ -576,9 +581,9 @@ class t3lib_stdGraphic	{
 				ImageColorAllocate($maskImg, 255,255,255);
 				$Fcolor = ImageColorAllocate($maskImg, 0,0,0);
 				if ($spacing || $wordSpacing)	{		// If any kind of spacing applys, we use this function:
-					$this->SpacedImageTTFText($maskImg, ceil($sF*$conf['fontSize']), $conf['angle'], ceil($sF*$txtPos[0]), ceil($sF*$txtPos[1]), $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, ceil($sF*$spacing), ceil($sF*$wordSpacing));
+					$this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'],$sF);
 				} else {
-					ImageTTFText($maskImg, t3lib_div::freetypeDpiComp(ceil($sF*$conf['fontSize'])), $conf['angle'], ceil($sF*$txtPos[0]), ceil($sF*$txtPos[1]), $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText);
+					$this->ImageTTFTextWrapper($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'],$sF);
 				}
 				$this->ImageGif($maskImg, $fileMask);
 				ImageDestroy($maskImg);
@@ -712,7 +717,7 @@ class t3lib_stdGraphic	{
 		$wordSpacing*=$sF;
 		$theText = $this->recodeString($conf['text']);
 
-		$charInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$conf['fontSize']), $conf['angle'], t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText);
+		$charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $theText, $conf['splitRendering.'],$sF);
 		$theBBoxInfo = $charInf;
 		if ($conf['angle'])	{
 			$xArr = Array($charInf[0],$charInf[2],$charInf[4],$charInf[6]);
@@ -729,7 +734,7 @@ class t3lib_stdGraphic	{
 				$bits = explode(' ',$theText);
 				while(list(,$word)=each($bits))	{
 					$word.=' ';
-					$wordInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$conf['fontSize']), $conf['angle'], t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $word);
+					$wordInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $word, $conf['splitRendering.'],$sF);
 					$wordW = ($wordInf[2]-$wordInf[0]);
 					$x+=$wordW+$wordSpacing;
 				}
@@ -737,7 +742,7 @@ class t3lib_stdGraphic	{
 				$utf8Chars = $this->singleChars($theText);
 					// For each UTF-8 char, do:
 				foreach($utf8Chars as $char)	{
-					$charInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$conf['fontSize']), $conf['angle'], t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $char);
+					$charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $char, $conf['splitRendering.'],$sF);
 					$charW = ($charInf[2]-$charInf[0]);
 					$x+=$charW+(($char==' ')?$wordSpacing:$spacing);
 				}
@@ -819,28 +824,34 @@ class t3lib_stdGraphic	{
 	 * @param	string		(See argument for PHP function imageTTFtext()). UTF-8 string, possibly with entities in.
 	 * @param	integer		The spacing of letters in pixels
 	 * @param	integer		The spacing of words in pixels
+	 * @param	array		$splitRenderingConf array
+	 * @param	integer		Scale factor
 	 * @return	void
 	 * @access private
 	 */
-	function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing)	{
+	function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF=1)	{
+
+		$spacing*=$sF;
+		$wordSpacing*=$sF;
+
 		if (!$spacing && $wordSpacing)	{
 			$bits = explode(' ',$text);
 			reset($bits);
 			while(list(,$word)=each($bits))	{
 				$word.=' ';
 				$word = $word;
-				$wordInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($fontSize), $angle, t3lib_stdGraphic::prependAbsolutePath($fontFile), $word);
+				$wordInf = $this->ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $word, $splitRenderingConf ,$sF);
 				$wordW = ($wordInf[2]-$wordInf[0]);
-				ImageTTFText($im, t3lib_div::freetypeDpiComp($fontSize), $angle, $x, $y, $Fcolor, t3lib_stdGraphic::prependAbsolutePath($fontFile), $word);
+				$this->ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $word, $splitRenderingConf, $sF);
 				$x+=$wordW+$wordSpacing;
 			}
 		} else {
 			$utf8Chars = $this->singleChars($text);
 				// For each UTF-8 char, do:
 			foreach($utf8Chars as $char)	{
-				$charInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($fontSize), $angle, t3lib_stdGraphic::prependAbsolutePath($fontFile), $char);
+				$charInf = $this->ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $char, $splitRenderingConf, $sF);
 				$charW = ($charInf[2]-$charInf[0]);
-				ImageTTFText($im, t3lib_div::freetypeDpiComp($fontSize), $angle, $x, $y, $Fcolor, t3lib_stdGraphic::prependAbsolutePath($fontFile), $char);
+				$this->ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $char, $splitRenderingConf, $sF);
 				$x+=$charW+(($char==' ')?$wordSpacing:$spacing);
 			}
 		}
@@ -867,7 +878,7 @@ class t3lib_stdGraphic	{
 				do {
 					$conf['fontSize'] = $fontSize;
 						// determine bounding box.
-					$bounds = ImageTTFBBox(t3lib_div::freetypeDpiComp($conf['fontSize']), $conf['angle'], t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $this->recodeString($conf['text']));
+					$bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $this->recodeString($conf['text']), $conf['splitRendering.']);
 					if ($conf['angle']< 0) {
 						$pixelWidth = abs($bounds[4]-$bounds[0]);
 					} elseif ($conf['angle'] > 0) {
@@ -886,6 +897,243 @@ class t3lib_stdGraphic	{
 		return $conf['fontSize'];
 	}
 
+	/**
+	 * Wrapper for ImageTTFBBox
+	 *
+	 * @param	integer		(See argument for PHP function ImageTTFBBox())
+	 * @param	integer		(See argument for PHP function ImageTTFBBox())
+	 * @param	string		(See argument for PHP function ImageTTFBBox())
+	 * @param	string		(See argument for PHP function ImageTTFBBox())
+	 * @param	array		Split-rendering configuration
+	 * @param	integer		Scale factor
+	 * @return	array		Information array.
+	 */
+	function ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $string, $splitRendering, $sF=1)	{
+
+			// Initialize:
+		$offsetInfo = array();
+		$stringParts = $this->splitString($string,$splitRendering,$fontSize,$fontFile);
+
+			// Traverse string parts:
+		foreach($stringParts as $strCfg)	{
+
+				// Calculate Bounding Box for part:
+			$calc = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+
+				// Calculate offsets:
+			if (!count($offsetInfo))	{
+				$offsetInfo = $calc;	// First run, just copy over.
+			} else {
+				$offsetInfo[2]+=$calc[2]-$calc[0]+intval($splitRendering['compX'])+intval($strCfg['xSpaceBefore'])+intval($strCfg['xSpaceAfter']);
+				$offsetInfo[3]+=$calc[3]-$calc[1]-intval($splitRendering['compY'])-intval($strCfg['ySpaceBefore'])-intval($strCfg['ySpaceAfter']);
+				$offsetInfo[4]+=$calc[4]-$calc[6]+intval($splitRendering['compX'])+intval($strCfg['xSpaceBefore'])+intval($strCfg['xSpaceAfter']);
+				$offsetInfo[5]+=$calc[5]-$calc[7]-intval($splitRendering['compY'])-intval($strCfg['ySpaceBefore'])-intval($strCfg['ySpaceAfter']);
+			}
+		}
+
+		return $offsetInfo;
+	}
+
+	/**
+	 * Wrapper for ImageTTFText
+	 *
+	 * @param	pointer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	integer		(See argument for PHP function imageTTFtext())
+	 * @param	string		(See argument for PHP function imageTTFtext())
+	 * @param	string		(See argument for PHP function imageTTFtext()). UTF-8 string, possibly with entities in.
+	 * @param	array		Split-rendering configuration
+	 * @param	integer		Scale factor
+	 * @return	void
+	 */
+	function ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering,$sF=1)	{
+
+			// Initialize:
+		$stringParts = $this->splitString($string,$splitRendering,$fontSize,$fontFile);
+		$x = ceil($sF*$x);
+		$y = ceil($sF*$y);
+
+			// Traverse string parts:
+		foreach($stringParts as $i => $strCfg)	{
+
+				// Initialize:
+			$colorIndex = $color;
+
+				// Set custom color if any (only when niceText is off):
+			if ($strCfg['color'] && $sF==1)	{
+				$cols = $this->convertColor($strCfg['color']);
+				$colorIndex = ImageColorAllocate($im, $cols[0],$cols[1],$cols[2]);
+				$colorIndex = $color >= 0 ? $colorIndex : -$colorIndex;
+			}
+
+				// Setting xSpaceBefore
+			if ($i)	{
+				$x+= intval($strCfg['xSpaceBefore']);
+				$y-= intval($strCfg['ySpaceBefore']);
+			}
+
+				// Render part:
+			ImageTTFText($im, t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, $x, $y, $colorIndex, t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+
+				// Calculate offset to apply:
+			$wordInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF*$strCfg['fontSize']), $angle, t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+			$x+= $wordInf[2]-$wordInf[0]+intval($splitRendering['compX'])+intval($strCfg['xSpaceAfter']);
+			$y+= $wordInf[5]-$wordInf[7]-intval($splitRendering['compY'])-intval($strCfg['ySpaceAfter']);
+		}
+	}
+
+	/**
+	 * Splitting a string for ImageTTFBBox up into an array where each part has its own configuration options.
+	 *
+	 * @param	[type]		$string: ...
+	 * @param	[type]		$splitRendering: ...
+	 * @param	[type]		$fontSize: ...
+	 * @param	[type]		$fontFile: ...
+	 * @return	[type]		...
+	 */
+	function splitString($string,$splitRendering,$fontSize,$fontFile)	{
+
+			// Initialize by setting the whole string and default configuration as the first entry.
+		$result = array();
+		$result[] = array(
+			'str' => $string,
+			'fontSize' => $fontSize,
+			'fontFile' => $fontFile
+		);
+
+			// Traverse the split-rendering configuration:
+			// Splitting will create more entries in $result with individual configurations.
+		if (is_array($splitRendering))	{
+			$sKeyArray = t3lib_TStemplate::sortedKeyList($splitRendering);
+
+				// Traverse configured options:
+			foreach($sKeyArray as $key)	{
+				$cfg = $splitRendering[$key.'.'];
+
+					// Process each type of split rendering keyword:
+				switch((string)$splitRendering[$key])	{
+					case 'highlightWord':
+						if (strlen($cfg['value']))	{
+							$newResult = array();
+
+								// Traverse the current parts of the result array:
+							foreach($result as $part)	{
+									// Explode the string value by the word value to highlight:
+								$explodedParts = explode($cfg['value'],$part['str']);
+								foreach($explodedParts as $c => $expValue)	{
+									if (strlen($expValue))	{
+										$newResult[] = array_merge($part,array('str' => $expValue));
+									}
+									if ($c+1 < count($explodedParts))	{
+										$newResult[] = array(
+											'str' => $cfg['value'],
+											'fontSize' => $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
+											'fontFile' => $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
+											'color' => $cfg['color'],
+											'xSpaceBefore' => $cfg['xSpaceBefore'],
+											'xSpaceAfter' => $cfg['xSpaceAfter'],
+											'ySpaceBefore' => $cfg['ySpaceBefore'],
+											'ySpaceAfter' => $cfg['ySpaceAfter'],
+										);
+									}
+								}
+							}
+
+								// Set the new result as result array:
+							if (count($newResult))	{
+								$result = $newResult;
+							}
+						}
+					break;
+					case 'charRange':
+						if (strlen($cfg['value']))	{
+
+								// Initialize range:
+							$ranges = t3lib_div::trimExplode(',',$cfg['value'],1);
+							foreach($ranges as $i => $rangeDef)	{
+								$ranges[$i] = t3lib_div::intExplode('-',$ranges[$i]);
+								if (!isset($ranges[$i][1]))	$ranges[$i][1] = $ranges[$i][0];
+							}
+							$newResult = array();
+
+								// Traverse the current parts of the result array:
+							foreach($result as $part)	{
+
+									// Initialize:
+								$currentState = -1;
+								$bankAccum = '';
+
+									// Explode the string value by the word value to highlight:
+								$utf8Chars = $this->singleChars($part['str']);
+								foreach($utf8Chars as $utfChar)	{
+
+										// Find number and evaluate position:
+									$uNumber = $this->csConvObj->utf8CharToUnumber($utfChar);
+									$inRange = 0;
+									foreach($ranges as $rangeDef)	{
+										if ($uNumber >= $rangeDef[0] && (!$rangeDef[1] || $uNumber <= $rangeDef[1])) {
+											$inRange = 1;
+											break;
+										}
+									}
+									if ($currentState==-1)	$currentState = $inRange;	// Initialize first char
+
+										// Switch bank:
+									if ($inRange != $currentState && !t3lib_div::inList('32,10,13,9',$uNumber))	{
+
+											// Set result:
+										if (strlen($bankAccum))	{
+											$newResult[] = array(
+												'str' => $bankAccum,
+												'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
+												'fontFile' => $currentState && $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
+												'color' => $currentState ? $cfg['color'] : '',
+												'xSpaceBefore' => $currentState ? $cfg['xSpaceBefore'] : '',
+												'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
+												'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
+												'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : '',
+											);
+										}
+
+											// Initialize new settings:
+										$currentState = $inRange;
+										$bankAccum = '';
+									}
+
+										// Add char to bank:
+									$bankAccum.=$utfChar;
+								}
+
+									// Set result for FINAL part:
+								if (strlen($bankAccum))	{
+									$newResult[] = array(
+										'str' => $bankAccum,
+										'fontSize' => $currentState && $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
+										'fontFile' => $currentState && $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
+										'color' => $currentState ? $cfg['color'] : '',
+										'xSpaceBefore' => $currentState ? $cfg['xSpaceBefore'] : '',
+										'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
+										'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
+										'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : '',
+									);
+								}
+							}
+
+								// Set the new result as result array:
+							if (count($newResult))	{
+								$result = $newResult;
+							}
+						}
+					break;
+				}
+			}
+		}
+
+		return $result;
+	}
 
 
 
@@ -1650,12 +1898,13 @@ class t3lib_stdGraphic	{
 	 * Split a string into an array of individual characters
 	 * The function will look at  $this->nativeCharset and if that is set, the input string is expected to be UTF-8 encoded, possibly with entities in it. Otherwise the string is supposed to be a single-byte charset which is just splitted by a for-loop.
 	 *
-	 * @param	string		The text string to spli
+	 * @param	string		The text string to split
+	 * @param	boolean		Return Unicode numbers instead of chars.
 	 * @return	array		Numerical array with a char as each value.
 	 */
-	function singleChars($theText)	{
+	function singleChars($theText,$returnUnicodeNumber=FALSE)	{
 		if ($this->nativeCharset)	{
-			return $this->csConvObj->utf8_to_numberarray($theText,1,1);	// Get an array of separated UTF-8 chars
+			return $this->csConvObj->utf8_to_numberarray($theText,1,$returnUnicodeNumber ? 0 : 1);	// Get an array of separated UTF-8 chars
 		} else {
 			$output=array();
 			$c=strlen($theText);
@@ -2204,6 +2453,9 @@ class t3lib_stdGraphic	{
 
 	/**
 	 * Creates subdirectory in typo3temp/ if not already found.
+	 *
+	 * @param	string		Name of sub directory
+	 * @return	boolean		Result of t3lib_div::mkdir(), true if it went well.
 	 */
 	function createTempSubDir($dirName)	{
 

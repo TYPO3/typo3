@@ -55,7 +55,7 @@ error_reporting (E_ALL ^ E_NOTICE);
 $TYPO3_MISC['microtime_start'] = microtime();
 define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
 define('TYPO3_MODE','FE');
-define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED'])? ($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED']):($HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']:$HTTP_SERVER_VARS['SCRIPT_FILENAME']))));
+define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
 
 define('PATH_site', dirname(PATH_thisScript).'/');
 define('PATH_t3lib', PATH_site.'t3lib/');
@@ -115,15 +115,15 @@ $TT->pull();
 // *******************************
 // Checking environment
 // *******************************
-if (t3lib_div::int_from_ver(phpversion())<4000006)	die ('TYPO3 runs with PHP4.0.6+ only');
+if (t3lib_div::int_from_ver(phpversion())<4100000)	die ('TYPO3 runs with PHP4.1.0+ only');
 
-if (isset($HTTP_POST_VARS['GLOBALS']) || isset($HTTP_GET_VARS['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
+if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
 if (!get_magic_quotes_gpc())	{
 	$TT->push('Add slashes to GET/POST arrays','');
-	t3lib_div::addSlashesOnArray($HTTP_GET_VARS);
-	t3lib_div::addSlashesOnArray($HTTP_POST_VARS);
-	$_GET = $HTTP_GET_VARS;
-	$_POST = $HTTP_POST_VARS;
+	t3lib_div::addSlashesOnArray($_GET);
+	t3lib_div::addSlashesOnArray($_POST);
+	$HTTP_GET_VARS = $_GET;
+	$HTTP_POST_VARS = $_POST;
 	$TT->pull();
 }
 
@@ -165,7 +165,7 @@ $TT->pull();
 // BE_USER
 // *********
 $BE_USER='';
-if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
+if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
 	$TYPO3_MISC['microtime_BE_USER_start'] = microtime();
 	$TT->push('Back End user initialized','');
 		require_once (PATH_t3lib.'class.t3lib_befunc.php');

@@ -243,7 +243,7 @@ class tx_install extends t3lib_install {
 		$this->INSTALL = t3lib_div::_GP("TYPO3_INSTALL");
 		$this->mode = t3lib_div::_GP("mode");
 		$this->step = t3lib_div::_GP("step");
-		if ($GLOBALS["HTTP_GET_VARS"]["TYPO3_INSTALL"]["type"])	$this->INSTALL["type"] = $GLOBALS["HTTP_GET_VARS"]["TYPO3_INSTALL"]["type"];
+		if ($_GET["TYPO3_INSTALL"]["type"])	$this->INSTALL["type"] = $_GET["TYPO3_INSTALL"]["type"];
 
 		if ($this->step==3)	{
 			$this->INSTALL["type"]="database";
@@ -267,7 +267,7 @@ class tx_install extends t3lib_install {
 			// Check password
 			// ****************
 			// Getting a unique session key, used to encode the session-access cookie later...
-		$uKey = $GLOBALS["HTTP_COOKIE_VARS"][$this->cookie_name."_key"];
+		$uKey = $_COOKIE[$this->cookie_name."_key"];
 		if (!$uKey)	{
 			$uKey = md5(uniqid(microtime()));
 			SetCookie($this->cookie_name."_key", $uKey, 0, "/");		// Cookie is set
@@ -286,7 +286,7 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 
 		}
 			// Check if the password from TYPO3_CONF_VARS combined with uKey matches the sKey cookie. If not, ask for password.
-		$sKey = $GLOBALS["HTTP_COOKIE_VARS"][$this->cookie_name];
+		$sKey = $_COOKIE[$this->cookie_name];
 
 		if (md5($GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"]."|".$uKey) == $sKey || $this->checkPassword($uKey))	{
 			$this->passwordOK=1;
@@ -368,7 +368,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 	function init()	{
 		if (!defined("PATH_typo3"))	exit;		// Must be called after inclusion of init.php (or from init.php)
 		if (!$this->passwordOK)	exit;
-//		debug($GLOBALS["HTTP_COOKIE_VARS"]);
+//		debug($_COOKIE);
 
 			// Setting stuff...
 		$this->check_mail();
@@ -945,7 +945,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 
 		$gE_keys = explode(",","SERVER_PORT,SERVER_SOFTWARE,GATEWAY_INTERFACE,SCRIPT_NAME,PATH_TRANSLATED");
 		while(list(,$k)=each($gE_keys))	{
-			$sVar["SERVER: ".$k]=$GLOBALS["HTTP_SERVER_VARS"][$k];
+			$sVar["SERVER: ".$k]=$_SERVER[$k];
 		}
 
 		$gE_keys = explode(",","image_processing,gdlib,gdlib_png,gdlib_2,im,im_path,im_path_lzw,im_version_5,im_negate_mask,im_imvMaskState,im_combine_filename");
@@ -974,10 +974,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		}
 		$this->message($headCode,"t3lib_div::getIndpEnv()",t3lib_div::view_array(t3lib_div::getIndpEnv("_ARRAY")));
 		$this->message($headCode,"getenv()",t3lib_div::view_array($getEnvArray));
-		$this->message($headCode,"HTTP_ENV_VARS",t3lib_div::view_array($GLOBALS["HTTP_ENV_VARS"]));
-		$this->message($headCode,"HTTP_SERVER_VARS",t3lib_div::view_array($GLOBALS["HTTP_SERVER_VARS"]));
-		$this->message($headCode,"HTTP_COOKIE_VARS",t3lib_div::view_array($GLOBALS["HTTP_COOKIE_VARS"]));
-		$this->message($headCode,"HTTP_GET_VARS",t3lib_div::view_array($GLOBALS["HTTP_GET_VARS"]));
+		$this->message($headCode,"_ENV",t3lib_div::view_array($_ENV));
+		$this->message($headCode,"_SERVER",t3lib_div::view_array($_SERVER));
+		$this->message($headCode,"_COOKIE",t3lib_div::view_array($_COOKIE));
+		$this->message($headCode,"_GET",t3lib_div::view_array($_GET));
 
 		ob_start();
 		phpinfo();
@@ -1292,7 +1292,7 @@ From sub-directory:
 									$doit=1;
 									if ($k=="BE" && $vk=="installToolPassword")	{
 										if ($value)	{
-											if (isset($GLOBALS["HTTP_POST_VARS"]["installToolPassword_check"]) && (!t3lib_div::_GP("installToolPassword_check") || strcmp(t3lib_div::_GP("installToolPassword_check"),$value)))	{
+											if (isset($_POST["installToolPassword_check"]) && (!t3lib_div::_GP("installToolPassword_check") || strcmp(t3lib_div::_GP("installToolPassword_check"),$value)))	{
 												$doit=0;
 												debug("ERROR: The two passwords did not match! The password was not changed.");
 											}
@@ -3674,7 +3674,7 @@ From sub-directory:
 								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, '');
 								list($countEntries[$table]) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 									// Checkboxes:
-								$checkBoxes[]= '<input type="checkbox" name="TYPO3_INSTALL[database_clearcache]['.$table.']" value="1"'.($this->INSTALL["database_clearcache"][$table]||$GLOBALS["HTTP_GET_VARS"]["PRESET"]["database_clearcache"][$table]?" checked":"").'> <strong>'.$table.'</strong> ('.$countEntries[$table].' rows) - '.$labelArr[$table];
+								$checkBoxes[]= '<input type="checkbox" name="TYPO3_INSTALL[database_clearcache]['.$table.']" value="1"'.($this->INSTALL["database_clearcache"][$table]||$_GET["PRESET"]["database_clearcache"][$table]?" checked":"").'> <strong>'.$table.'</strong> ('.$countEntries[$table].' rows) - '.$labelArr[$table];
 							}
 						} else {
 								$checkBoxes[]= 	'<HR>';

@@ -1490,7 +1490,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
 	 * @return	string	JavaScript section for the HTML header.
 	 */
-	function getDynTabMenu($menuItems,$identString,$toggle=FALSE,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1)	{
+	function getDynTabMenu($menuItems,$identString,$toggle=FALSE,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE)	{
 		$content = '';
 
 		if (is_array($menuItems))	{
@@ -1574,7 +1574,7 @@ $str.=$this->docBodyTagBegin().
 						$tabContent.= '
 
 					<!-- Tab menu -->
-					<table cellpadding="0" cellspacing="0" border="0" width="100%" class="typo3-dyntabmenu">
+					<table cellpadding="0" cellspacing="0" border="0"'.($fullWidth ? ' width="100%"' : '').' class="typo3-dyntabmenu">
 						<tr>
 								'.implode('',$options[$a]).'
 						</tr>

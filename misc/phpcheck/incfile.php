@@ -32,15 +32,15 @@ class t3lib_div {
 	/**
 	 * Abstraction method which returns System Environment Variables regardless of server OS, CGI/MODULE version etc. Basically this is SERVER variables for most of them.
 	 * This should be used instead of getEnv() and HTTP_SERVER_VARS/ENV_VARS to get reliable values for all situations.
-	 * 
+	 *
 	 * Usage: 226
-	 * 
+	 *
 	 * @param	string		Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
 	 * @return	string		Value based on the input key, independent of server/os environment.
 	 */
 	function getIndpEnv($getEnvName)	{
 		global $HTTP_SERVER_VARS;
-		/* 
+		/*
 			Conventions:
 			output from parse_url():
 			URL:	http://username:password@192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/?arg1,arg2,arg3&p1=parameter1&p2[key]=value#link1
@@ -52,12 +52,12 @@ class t3lib_div {
 			    [path] => '/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/'
 			    [query] => 'arg1,arg2,arg3&p1=parameter1&p2[key]=value'
 			    [fragment] => 'link1'
-				
+
 				Further definition: [path_script] = '/typo3/32/temp/phpcheck/index.php'
 									[path_dir] = '/typo3/32/temp/phpcheck/'
 									[path_info] = '/arg1/arg2/arg3/'
 									[path] = [path_script/path_dir][path_info]
-										
+
 
 			Keys supported:
 
@@ -75,30 +75,30 @@ class t3lib_div {
 				REMOTE_HOST		=	(client host)
 				HTTP_USER_AGENT	=	(client user agent)
 				HTTP_ACCEPT_LANGUAGE	= (client accept language)
-	
+
 			SERVER____:
 				SCRIPT_FILENAME	=	Absolute filename of script		(Differs between windows/unix). On windows 'C:\\blabla\\blabl\\' will be converted to 'C:/blabla/blabl/'
-				
+
 			Special extras:
 				TYPO3_HOST_ONLY	=		[host]			= 192.168.1.4
 				TYPO3_PORT		=		[port]			= 8080 (blank if 80, taken from host value)
 				TYPO3_REQUEST_HOST = 	[scheme]://[host][:[port]]
-				TYPO3_REQUEST_URL =		[scheme]://[host][:[port]][path]?[query]	(sheme will by default be 'http' until we can detect if it's https - 
+				TYPO3_REQUEST_URL =		[scheme]://[host][:[port]][path]?[query]	(sheme will by default be 'http' until we can detect if it's https -
 				TYPO3_REQUEST_SCRIPT =  [scheme]://[host][:[port]][path_script]
 				TYPO3_REQUEST_DIR =		[scheme]://[host][:[port]][path_dir]
-				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website 
+				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website
 				TYPO3_DOCUMENT_ROOT	=	Absolute path of root of documents:	TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
-		
+
 			Notice: [fragment] is apparently NEVER available to the script!
-			
-			
+
+
 			Testing suggestions:
 			- Output all the values.
 			- In the script, make a link to the script it self, maybe add some parameters and click the link a few times so HTTP_REFERER is seen
 			- ALSO TRY the script from the ROOT of a site (like 'http://www.mytest.com/' and not 'http://www.mytest.com/test/' !!)
-		
+
 		*/
-		
+
 #		if ($getEnvName=='HTTP_REFERER')	return '';
 		switch((string)$getEnvName)	{
 			case 'SCRIPT_NAME':
@@ -214,7 +214,7 @@ class t3lib_div {
 	}
 
 }
-	
+
 	function view_array($array_in)	{
 		// Returns HTML-code, which is a visual representation of a multidimensional array
 		// use t3lib_div::print_array() in order to print an array
@@ -242,21 +242,21 @@ class t3lib_div {
 	}
 
 
-	
-	
-	
-	
-	
 
 
 
-	
-	
-	
 
 
-	
-	error_reporting (E_ALL ^ E_NOTICE); 
+
+
+
+
+
+
+
+
+
+	error_reporting (E_ALL ^ E_NOTICE);
 
 define("TYPO3_OS", stristr(PHP_OS,"win")&&!stristr(PHP_OS,"darwin")?"WIN":"");
 /*
@@ -271,7 +271,7 @@ define("PATH_thisScript",str_replace('//','/', str_replace('\\','/', php_sapi_na
 define('PATH_site', dirname(PATH_thisScript).'/');
 
 
-if (count($HTTP_GET_VARS) || $HTTP_SERVER_VARS["HTTP_REFERER"])	{
+if (count($_GET) || $_SERVER["HTTP_REFERER"])	{
 	# KOMPENSATED:
 	echo "<H3>t3lib_div::getIndpEnv()</H3><p>These are 'system variables' returned from t3lib_div::getIndpEnv() and should be universal for any server configuration:</p>";
 	debug(t3lib_div::getIndpEnv("_ARRAY"));
@@ -287,8 +287,8 @@ if (count($HTTP_GET_VARS) || $HTTP_SERVER_VARS["HTTP_REFERER"])	{
 
 
 	##debug(parse_url("http://admin:palindrom@192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/index.php?arg1,arg2,arg3&p1=parameter1&p2[key]=value#link1"));
-	
-	
+
+
 	echo "<H3>Raw values</H3><p>These are the raw 'system variables' returned from getenv(), HTTP_SERVER_VARS, HTTP_ENV_VARS etc. These are displayed here so we can find the right values via this testscript to map to with t3lib_div::getIndpEnv()</p>";
 	$envTestVars = explode(",","REQUEST_URI,REMOTE_ADDR,REMOTE_HOST,PATH_INFO,SCRIPT_NAME,SCRIPT_FILENAME,HTTP_HOST,HTTP_USER_AGENT,HTTP_ACCEPT_ENCODING,HTTP_REFERER,QUERY_STRING");
 	$lines=array();
@@ -322,8 +322,8 @@ if (count($HTTP_GET_VARS) || $HTTP_SERVER_VARS["HTTP_REFERER"])	{
 
 
 	echo "Cookie 'test_script_cookie': '<strong>".$HTTP_COOKIE_VARS["test_script_cookie"]."</strong>'<BR>";
-	
-	
+
+
 	echo '<HR><a name="link1"></a>';
 	echo '<div style="border: 1px solid black; padding: 10px 10px 10px 10px;"><h3>What to do now?</h3>
 		<p>1) Click this link above once more: <a href="index.php?arg1,arg2,arg3&p1=parameter1&p2[key]='.substr(md5(time()),0,4).'#link1">Go to this page again.</a><BR>
@@ -331,12 +331,12 @@ if (count($HTTP_GET_VARS) || $HTTP_SERVER_VARS["HTTP_REFERER"])	{
 		2a) You might help us find any differences in your values to this <a href="reference.html" target="_blank">reference example</a> by comparing the values before you send the result (thanks).
 		<br>
 		3) If you are really advanced you try and click the link below here. With CGI-versions of servers it will most likely give an error page. If it does not, please send the output to me as well (save HTML-page and send to kasper@typo3.com). If you do this PATH_INFO test, please let me know.<br><br>
-		
+
 		4) For the really, really advanced folks, it might be interesting to see the output if you could place this link in the root of a domain. That means the index.php script will be executed from eg. "http://www.blablabla.com/" and not "http://www.blablabla.com/kaspers_test/" - it can make a difference.<br>
 		<br>
 		<br>
 		I am operating with these categories of servers. <strong>Please identify your configuration and label your email with that "type":</strong><br><br>
-		
+
 		<table border=1>
 <tr bgcolor="#eeeeee">
 	<td><em>TYPE:</em></td>
@@ -388,10 +388,10 @@ if (count($HTTP_GET_VARS) || $HTTP_SERVER_VARS["HTTP_REFERER"])	{
 </tr>
 </table>
 
-		
+
 		</p></div>';
 	echo '<a href="index.php/arg1/arg2/arg3/#link2" name="link2">Go to this page again (PATH_INFO).</a><BR>';
-	
+
 	phpinfo();
 } else {
 	echo '<a href="index.php?arg1,arg2,arg3&p1=parameter1&p2[key]=value#link1" name="link1">Click this link to start the test.</a><BR>';

@@ -251,11 +251,6 @@ class user_feAdmin	{
 		$fe=t3lib_div::_GP('FE');
 		$this->dataArr = $fe[$this->theTable];	// Incoming data.
 
-/*
-		debug($GLOBALS['HTTP_POST_VARS']);
-		debug($GLOBALS['HTTP_GET_VARS']);
-		debug($GLOBALS['HTTP_POST_FILES']);
-*/
 			// Checking template file and table value
 		if (!$this->templateCode)	{
 			$content = 'No template file found: '.$this->conf['templateFile'];
@@ -506,7 +501,7 @@ class user_feAdmin	{
 	 * @see parseValues()
 	 */
 	function processFiles($cmdParts,$theField)	{
-//debug($GLOBALS['HTTP_POST_FILES']);
+//debug($_FILES);
 			// First, make an array with the filename and file reference, whether the file is just uploaded or a preview
 		$filesArr = array();
 
@@ -520,11 +515,11 @@ class user_feAdmin	{
 					'tmp_name'=>PATH_site.'typo3temp/'.$valParts[0]
 				);
 			}
-		} elseif (is_array($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['name']))	{	// Files from upload
-			reset($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['name']);
-			while(list($kk,$vv)=each($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['name']))	{
+		} elseif (is_array($_FILES['FE'][$this->theTable][$theField]['name']))	{	// Files from upload
+			reset($_FILES['FE'][$this->theTable][$theField]['name']);
+			while(list($kk,$vv)=each($_FILES['FE'][$this->theTable][$theField]['name']))	{
 				if ($vv)	{
-					$tmpFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['tmp_name'][$kk]);
+					$tmpFile = t3lib_div::upload_to_tempfile($_FILES['FE'][$this->theTable][$theField]['tmp_name'][$kk]);
 					if ($tmpFile)	{
 						$this->unlinkTempFiles[]=$tmpFile;
 						$filesArr[] = array (
@@ -534,11 +529,11 @@ class user_feAdmin	{
 					}
 				}
 			}
-		} elseif (is_array($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]))	{	// Files from upload
-			reset($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]);
-			while(list($kk,$vv)=each($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]))	{
+		} elseif (is_array($_FILES['FE']['name'][$this->theTable][$theField]))	{	// Files from upload
+			reset($_FILES['FE']['name'][$this->theTable][$theField]);
+			while(list($kk,$vv)=each($_FILES['FE']['name'][$this->theTable][$theField]))	{
 				if ($vv)	{
-					$tmpFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES']['FE']['tmp_name'][$this->theTable][$theField][$kk]);
+					$tmpFile = t3lib_div::upload_to_tempfile($_FILES['FE']['tmp_name'][$this->theTable][$theField][$kk]);
 					if ($tmpFile)	{
 						$this->unlinkTempFiles[]=$tmpFile;
 						$filesArr[] = array (

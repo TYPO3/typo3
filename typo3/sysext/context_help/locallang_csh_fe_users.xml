@@ -13,7 +13,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="username.description">Enter the username of the website user. This is needed to login.</label>
-			<label index="username.syntax">A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</label>
+			<label index="username.syntax">A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</label>
 			<label index="_username.seeAlso">Creating Frontend Users and Groups | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_users_group/</label>
 			<label index="password.description">Enter the password for the username above. This is needed to login.</label>
 			<label index="password.syntax">A password is required and must be in lowercase without spaces in it.</label>
@@ -71,7 +71,7 @@ fe_groups:TSconfig,
 be_users:TSconfig,
 be_groups:TSconfig</label>
 			<label index=".description">A website login user.</label>
-			<label index=".details">This is users with a username and password who are allowed specific access to otherwise restricted areas on your website.</label>
+			<label index=".details">These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</label>
 			<label index="_.seeAlso">fe_groups
 be_users</label>
 			<label index="_.image">EXT:context_help/cshimages/feusers_1.png,

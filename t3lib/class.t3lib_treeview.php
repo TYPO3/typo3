@@ -1051,34 +1051,6 @@ class t3lib_treeView {
 }
 
 
-
-
-// temporary code by r.fritz
-// will be removed if better solution is available
-
-class t3lib_TCEforms_SelectTreeView extends t3lib_treeview {
-
-	var $TCEforms_itemFormElName='';
-	var $TCEforms_nonSelectableItemsArray=array();
-
-	function wrapTitle($title,$v)	{
-		if($v['uid']>0) {
-			if (in_array($v['uid'],$this->TCEforms_nonSelectableItemsArray)) {
-				return '<span style="color:grey">'.$title.'</span>';
-			} else {
-				$aOnClick = 'setFormValueFromBrowseWin(\''.$this->TCEforms_itemFormElName.'\','.$v['uid'].',\''.$title.'\'); return false;';
-				return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
-			}
-		} else {
-			return $title;
-		}
-	}
-}
-
-
-
-
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_treeview.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_treeview.php']);
 }

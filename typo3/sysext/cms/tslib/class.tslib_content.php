@@ -210,8 +210,12 @@
 
 
   // Includes this class since it is used for parsing HTML
-require_once (PATH_t3lib."class.t3lib_parsehtml.php");
+require_once(PATH_t3lib."class.t3lib_parsehtml.php");
 
+	// Object TypoScript library included:
+if(t3lib_extMgm::isLoaded('obts')) {
+	require_once(t3lib_extMgm::extPath('obts').'_tsobject/_tso.php');
+}
 
 
 
@@ -453,93 +457,100 @@ class tslib_cObj {
 					$content.=$this->cObjGetSingle($name,$conf,$key);
 				$GLOBALS['TT']->decStackPointer();
 			} else {
-				switch($name)	{
-					case 'COBJ_ARRAY':
-					case 'COA':
-						$content.=$this->COBJ_ARRAY($conf);
-					break;
-					case 'COA_INT':
-						$content.=$this->COBJ_ARRAY($conf,'INT');
-					break;
-					case 'HTML':
-						$content.=$this->HTML($conf);
-					break;
-					case 'TEXT':
-						$content.=$this->TEXT($conf);
-					break;
-					case 'CLEARGIF':
-						$content.=$this->CLEARGIF($conf);
-					break;
-					case 'FILE':
-						$content.=$this->FILE($conf);
-					break;
-					case 'IMAGE':
-						$content.=$this->IMAGE($conf);
-					break;
-					case 'IMG_RESOURCE':
-						$content.=$this->IMG_RESOURCE($conf);
-					break;
-					case 'IMGTEXT':
-						$content.=$this->IMGTEXT($conf);
-					break;
-					case 'CONTENT':
-						$content.=$this->CONTENT($conf);
-					break;
-					case 'RECORDS':
-						$content.=$this->RECORDS($conf);
-					break;
-					case 'HMENU':
-						$content.=$this->HMENU($conf);
-					break;
-					case 'CTABLE':
-						$content.=$this->CTABLE($conf);
-					break;
-					case 'OTABLE':
-						$content.=$this->OTABLE($conf);
-					break;
-					case 'COLUMNS':
-						$content.=$this->COLUMNS($conf);
-					break;
-					case 'HRULER':
-						$content.=$this->HRULER($conf);
-					break;
-					case 'CASE':
-						$content.=$this->CASEFUNC($conf);
-					break;
-					case 'LOAD_REGISTER':
-					case 'RESTORE_REGISTER':
-						$this->LOAD_REGISTER($conf,$name);
-					break;
-					case 'FORM':
-						$content.=$this->FORM($conf);
-					break;
-					case 'SEARCHRESULT':
-						$content.=$this->SEARCHRESULT($conf);
-					break;
-					case 'PHP_SCRIPT':
-						$content.=$this->PHP_SCRIPT($conf);
-					break;
-					case 'PHP_SCRIPT_EXT':
-						$content.=$this->PHP_SCRIPT($conf,'EXT');
-					break;
-					case 'PHP_SCRIPT_INT':
-						$content.=$this->PHP_SCRIPT($conf,'INT');
-					break;
-					case 'USER':
-						$content.=$this->USER($conf);
-					break;
-					case 'USER_INT':
-						$content.=$this->USER($conf,'INT');
-					break;
-					case 'TEMPLATE':
-						$content.=$this->TEMPLATE($conf);
-					break;
-					case 'EDITPANEL':
-						if ($GLOBALS['TSFE']->beUserLogin)	{$content.=$this->editPanel($content, $conf);}
-					break;
-					case 'MULTIMEDIA':
-						$content.=$this->MULTIMEDIA($conf);
-					break;
+
+					// Object TypoScript hook:
+				if(t3lib_extMgm::isLoaded('obts') && isset($GLOBALS['OBTS']['tso_list'][$name])) {
+					$content.= obts_dtutil::renderDatatypeContent($name, $GLOBALS['OBTS']['tso_list'][$name], $conf, $this);
+				} else {
+						// Traditional Content Object branching:
+					switch($name)	{
+						case 'COBJ_ARRAY':
+						case 'COA':
+							$content.=$this->COBJ_ARRAY($conf);
+						break;
+						case 'COA_INT':
+							$content.=$this->COBJ_ARRAY($conf,'INT');
+						break;
+						case 'HTML':
+							$content.=$this->HTML($conf);
+						break;
+						case 'TEXT':
+							$content.=$this->TEXT($conf);
+						break;
+						case 'CLEARGIF':
+							$content.=$this->CLEARGIF($conf);
+						break;
+						case 'FILE':
+							$content.=$this->FILE($conf);
+						break;
+						case 'IMAGE':
+							$content.=$this->IMAGE($conf);
+						break;
+						case 'IMG_RESOURCE':
+							$content.=$this->IMG_RESOURCE($conf);
+						break;
+						case 'IMGTEXT':
+							$content.=$this->IMGTEXT($conf);
+						break;
+						case 'CONTENT':
+							$content.=$this->CONTENT($conf);
+						break;
+						case 'RECORDS':
+							$content.=$this->RECORDS($conf);
+						break;
+						case 'HMENU':
+							$content.=$this->HMENU($conf);
+						break;
+						case 'CTABLE':
+							$content.=$this->CTABLE($conf);
+						break;
+						case 'OTABLE':
+							$content.=$this->OTABLE($conf);
+						break;
+						case 'COLUMNS':
+							$content.=$this->COLUMNS($conf);
+						break;
+						case 'HRULER':
+							$content.=$this->HRULER($conf);
+						break;
+						case 'CASE':
+							$content.=$this->CASEFUNC($conf);
+						break;
+						case 'LOAD_REGISTER':
+						case 'RESTORE_REGISTER':
+							$this->LOAD_REGISTER($conf,$name);
+						break;
+						case 'FORM':
+							$content.=$this->FORM($conf);
+						break;
+						case 'SEARCHRESULT':
+							$content.=$this->SEARCHRESULT($conf);
+						break;
+						case 'PHP_SCRIPT':
+							$content.=$this->PHP_SCRIPT($conf);
+						break;
+						case 'PHP_SCRIPT_EXT':
+							$content.=$this->PHP_SCRIPT($conf,'EXT');
+						break;
+						case 'PHP_SCRIPT_INT':
+							$content.=$this->PHP_SCRIPT($conf,'INT');
+						break;
+						case 'USER':
+							$content.=$this->USER($conf);
+						break;
+						case 'USER_INT':
+							$content.=$this->USER($conf,'INT');
+						break;
+						case 'TEMPLATE':
+							$content.=$this->TEMPLATE($conf);
+						break;
+						case 'EDITPANEL':
+							if ($GLOBALS['TSFE']->beUserLogin)	{$content.=$this->editPanel($content, $conf);}
+						break;
+						case 'MULTIMEDIA':
+							$content.=$this->MULTIMEDIA($conf);
+						break;
+					}
 				}
 			}
 			if ($GLOBALS['TT']->LR) $GLOBALS['TT']->pull($content);
@@ -1639,7 +1650,7 @@ class tslib_cObj {
 
 						$rows=trim($fParts[2]) ? t3lib_div::intInRange($fParts[2],1,30) : 5;
 						$wrap=trim($fParts[3]) ? ' wrap="'.trim($fParts[3]).'"' : ' wrap="virtual"';
-						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], trim($parts[2]));
+						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], str_replace('\n',chr(10),trim($parts[2])));
 						$fieldCode=sprintf('<textarea name="%s"'.$elementIdAttribute.' cols="%s" rows="%s"%s'.$addParams.'>%s</textarea>',
 							$confData['fieldname'], $cols, $rows, $wrap, t3lib_div::formatForTextarea($default));
 					break;
@@ -1890,7 +1901,7 @@ class tslib_cObj {
 
 			// location data:
 		if ($conf['locationData'])	{
-			if ($conf['locationData']=='HTTP_POST_VARS' && isset($GLOBALS['HTTP_POST_VARS']['locationData']))	{
+			if ($conf['locationData']=='HTTP_POST_VARS' && isset($_POST['locationData']))	{
 				$locationData = t3lib_div::_POST('locationData');
 			} else {
 				$locationData = $GLOBALS['TSFE']->id.':'.$this->currentRecord;	// locationData is [hte page id]:[tablename]:[uid of record]. Indicates on which page the record (from tablename with uid) is shown. Used to check access.
@@ -2439,7 +2450,7 @@ class tslib_cObj {
 	 * @access private
 	 */
 	function getFieldDefaultValue($noValueInsert, $fieldName, $defaultVal) {
-		if (!$GLOBALS['TSFE']->no_cache || (!isset($GLOBALS['HTTP_POST_VARS'][$fieldName]) && !isset($GLOBALS['HTTP_GET_VARS'][$fieldName])) || $noValueInsert)	{
+		if (!$GLOBALS['TSFE']->no_cache || (!isset($_POST[$fieldName]) && !isset($_GET[$fieldName])) || $noValueInsert)	{
 			return $defaultVal;
 		} else {
 			return t3lib_div::_GP($fieldName);
@@ -3434,12 +3445,17 @@ class tslib_cObj {
 		$options = explode('|',$options);
 		$chars = intval($options[0]);
 		$afterstring = trim($options[1]);
+		$crop2space = trim($options[2]);
 		if ($chars)	{
 			if (strlen($content)>abs($chars))	{
 				if ($chars<0)	{
-					$content = $afterstring.$GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,$chars);
+					$content = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,$chars);
+					$trunc_at = strpos($content, ' ');
+					$content = ($trunc_at&&$crop2space) ? $afterstring.substr($content,$trunc_at) : $afterstring.$content;
 				} else {
-					$content = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,0,$chars).$afterstring;
+					$content = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,0,$chars);
+					$trunc_at = strrpos($content, ' ');
+					$content = ($trunc_at&&$crop2space) ? substr($content, 0, $trunc_at).$afterstring : $content.$afterstring;
 				}
 			}
 		}
@@ -4853,12 +4869,15 @@ class tslib_cObj {
 
 					// Detects if a file is found in site-root (or is a 'virtual' simulateStaticDocument file!) and if so it will be treated like a normal file.
 				list($rootFileDat) = explode('?',rawurldecode($link_param));
+				$containsSlash = strstr($rootFileDat,'/');
 				$rFD_fI = pathinfo($rootFileDat);
-				if (trim($rootFileDat) && !strstr($link_param,'/') && (@is_file(PATH_site.$rootFileDat) || t3lib_div::inList('php,html,htm',strtolower($rFD_fI['extension']))))	{
-					$isLocalFile=1;
+				if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site.$rootFileDat) || t3lib_div::inList('php,html,htm',strtolower($rFD_fI['extension']))))	{
+					$isLocalFile = 1;
+				} elseif ($containsSlash)	{
+					$isLocalFile = 2;		// Adding this so realurl directories are linked right (non-existing).
 				}
 
-				if($pU['scheme'] || (!$isLocalFile && $urlChar && (!$fileChar || $urlChar<$fileChar)))	{	// url (external): If doubleSlash or if a '.' comes before a '/'.
+				if($pU['scheme'] || ($isLocalFile!=1 && $urlChar && (!$containsSlash || $urlChar<$fileChar)))	{	// url (external): If doubleSlash or if a '.' comes before a '/'.
 					$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 					if ($conf['extTarget.'])	{$target = $this->stdWrap($target, $conf['extTarget.']);}
 					if ($forceTarget)	{$target=$forceTarget;}
@@ -4873,7 +4892,7 @@ class tslib_cObj {
 					$finalTagParts['url']=$this->lastTypoLinkUrl;
 					$finalTagParts['targetParams'] = $target ? ' target="'.$target.'"' : '';
 					$finalTagParts['TYPE']='url';
-				} elseif ($fileChar || $isLocalFile)	{	// file (internal)
+				} elseif ($containsSlash || $isLocalFile)	{	// file (internal)
 					$splitLinkParam = explode('?', $link_param);
 					if (@file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
 						if ($linktxt=='') $linktxt = rawurldecode($link_param);
@@ -6471,6 +6490,7 @@ class tslib_cObj {
 					$tceforms->helpTextFontTag='<font face="verdana,sans-serif" color="#333333" size="1">';
 
 					$trData = t3lib_div::makeInstance('t3lib_transferData');
+					$trData->addRawData = TRUE;
 					$trData->defVals = t3lib_div::_GP('defVals');		// Added without testing - should provide ability to submit default values in frontend editing, in-page.
 					$trData->fetchRecord($table,	($theCmd=='new'?$newUid:$dataArr['uid']), ($theCmd=='new'?'new':'') );
 					reset($trData->regTableItems_data);

@@ -41,7 +41,7 @@
 			<label index="4_t">Delete page and content.</label>
 			<label index="8_t">Create new pages under this page.</label>
 			<label index="mlang_labels_tablabel">Page editing permissions</label>
-			<label index="mlang_labels_tabdescr">Setting of page permissions is vital in order to control access to the pages for the backend users. You can assign a user and a group as owners of a page and set access permissions for each.</label>
+			<label index="mlang_labels_tabdescr">Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</label>
 			<label index="mlang_tabs_tab">Access</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
@@ -1091,40 +1091,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="permissions" type="integer">218680565</label>
-			<label index="ch_permissions" type="integer">210014620</label>
-			<label index="Legend" type="integer">162692626</label>
-			<label index="Owner" type="integer">191842862</label>
-			<label index="Group" type="integer">3749651</label>
-			<label index="Everybody" type="integer">2223491</label>
-			<label index="Save" type="integer">211601612</label>
-			<label index="Abort" type="integer">120043061</label>
-			<label index="Edit" type="integer">154624728</label>
-			<label index="recursive" type="integer">8697959</label>
-			<label index="pages_affected" type="integer">104651805</label>
-			<label index="user_overview" type="integer">52124806</label>
-			<label index="Mode" type="integer">105954913</label>
-			<label index="Depth" type="integer">108332394</label>
-			<label index="levels" type="integer">137816926</label>
-			<label index="User" type="integer">150585321</label>
-			<label index="def" type="integer">262383439</label>
-			<label index="A_Granted" type="integer">203576344</label>
-			<label index="A_Denied" type="integer">9809855</label>
-			<numIndex index="1" type="integer">256624387</numIndex>
-			<numIndex index="16" type="integer">102695873</numIndex>
-			<numIndex index="2" type="integer">66732081</numIndex>
-			<numIndex index="4" type="integer">220131191</numIndex>
-			<numIndex index="8" type="integer">146653009</numIndex>
-			<label index="1_t" type="integer">41719375</label>
-			<label index="16_t" type="integer">5382347</label>
-			<label index="2_t" type="integer">81453433</label>
-			<label index="4_t" type="integer">38381151</label>
-			<label index="8_t" type="integer">102802306</label>
-			<label index="mlang_labels_tablabel" type="integer">237456773</label>
-			<label index="mlang_labels_tabdescr" type="integer">115809010</label>
-			<label index="mlang_tabs_tab" type="integer">200750040</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="permissions" type="integer">218680565</label>
 			<label index="ch_permissions" type="integer">210014620</label>

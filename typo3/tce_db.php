@@ -191,7 +191,7 @@ class SC_tce_db {
 			$this->tce->log('',0,0,0,1,'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!',1,array($refInfo['host'],$httpHost));
 		} else {
 				// Register uploaded files
-			$this->tce->process_uploads($GLOBALS['HTTP_POST_FILES']);
+			$this->tce->process_uploads($_FILES);
 
 				// Execute actions:
 			$this->tce->process_datamap();

@@ -186,7 +186,7 @@ class SC_alt_main {
 		}
 	}
 	function busy_OpenRefreshWindow()	{	//
-		vHWin=window.open("login_frameset.php","relogin","height=350,width=700,status=0,menubar=0");
+		vHWin=window.open("login_frameset.php","relogin","height=350,width=700,status=0,menubar=0,location=1");
 		vHWin.focus();
 		this.openRefreshW=1;
 	}
@@ -417,7 +417,7 @@ class SC_alt_main {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$TYPO3_CONF_VARS,$TYPO_VERSION;
+		global $BE_USER,$TYPO3_CONF_VARS;
 
 			// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
@@ -431,7 +431,7 @@ class SC_alt_main {
 		$GLOBALS['TBE_TEMPLATE']->JScode.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->mainJScode);
 
 			// Title:
-		$title = $TYPO3_CONF_VARS['SYS']['sitename'] ? $TYPO3_CONF_VARS['SYS']['sitename'].' [TYPO3 '.$TYPO_VERSION.']' : 'TYPO3 '.$TYPO_VERSION;
+		$title = $TYPO3_CONF_VARS['SYS']['sitename'] ? $TYPO3_CONF_VARS['SYS']['sitename'].' [TYPO3 '.TYPO3_version.']' : 'TYPO3 '.TYPO3_version;
 
 			// Start page header:
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($title);

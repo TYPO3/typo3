@@ -413,7 +413,7 @@ class SC_index {
 		if ($BE_USER->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector))	{
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
-			if (!$GLOBALS['HTTP_COOKIE_VARS'][$BE_USER->name])	{
+			if (!$_COOKIE[$BE_USER->name])	{
 				t3lib_BEfunc::typo3PrintError ('Login-error',"Yeah, that's a classic. No cookies, no TYPO3.<br /><br />Please accept cookies from TYPO3 - otherwise you'll not be able to use the system.",0);
 				exit;
 			}

@@ -476,7 +476,7 @@ class t3lib_TStemplate	{
 
 			// Include "Based On" sys_templates:
 		if (trim($row['basedOn']))	{		// 'basedOn' is a list of templates to include
-				// Manually you can put this value in the field and then the based_on ID will be taken from the HTTP_GET_VARS var defined by '=....'.
+				// Manually you can put this value in the field and then the based_on ID will be taken from the $_GET var defined by '=....'.
 				// Example: If $row['basedOn'] is 'EXTERNAL_BASED_ON_TEMPLATE_ID=based_on_uid', then the global var, based_on_uid - given by the URL like '&based_on_uid=999' - is included instead!
 				// This feature allows us a hack to test/demonstrate various included templates on the same set of content bearing pages. Used by the "freesite" extension.
 			$basedOn_hackFeature = explode('=',$row['basedOn']);

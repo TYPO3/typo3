@@ -100,6 +100,7 @@ class t3lib_transferData {
 	var $disableRTE=0;					// Is set externally if RTE is disabled.
 	var $prevPageID = '';				// If the pid in the command is 'prev' then $prevPageID is used as pid for the record. This is used to attach new records to other previous records eg. new pages.
 	var $defVals=array();						// Can be set with an array of default values for tables. First key is table name, second level keys are field names. Originally this was a GLOBAL array used internally.
+	var $addRawData = FALSE;			// If set, the processed data is overlaid the raw record.
 
 		// Internal, dynamic
 	var $regTableItems = Array();		// Used to register, which items are already loaded!!
@@ -239,7 +240,7 @@ class t3lib_transferData {
 			$this->regTableItems_data[$uniqueItemRef] = $this->renderRecordRaw($table, $id, $pid, $row, $TSconfig, $tscPID);
 
 				// Merges the processed array on-top of the raw one - this is done because some things in TCEforms may need access to other fields than those in the columns configuration!
-			if (is_array($row) && is_array($this->regTableItems_data[$uniqueItemRef]))	{
+			if ($this->addRawData && is_array($row) && is_array($this->regTableItems_data[$uniqueItemRef]))	{
 				$this->regTableItems_data[$uniqueItemRef] = array_merge($row, $this->regTableItems_data[$uniqueItemRef]);
 			}
 		}

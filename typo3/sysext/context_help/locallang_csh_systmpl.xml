@@ -23,7 +23,7 @@ TypoScript by Example | http://typo3.org/documentation/document-library/doc_core
 EXT:context_help/cshimages/systemplate1.png</label>
 			<label index=".image_descr">A Template Record with constants and setup code.
 The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</label>
-			<label index="hidden.description">Hide the template record. This will deactivate the template record.</label>
+			<label index="hidden.description">Hiding the template will deactivate the template record.</label>
 			<label index="hidden.details">If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</label>
 			<label index="starttime.description">Start time. Use this to enable a template on a certain date.</label>
 			<label index="endtime.description">End time. Use this to disable a template on a certain date.</label>

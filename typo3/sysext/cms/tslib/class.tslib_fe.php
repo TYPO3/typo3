@@ -460,7 +460,7 @@
 		if (t3lib_div::_GP('FE_SESSION_KEY'))	{
 			$fe_sParts = explode('-',t3lib_div::_GP('FE_SESSION_KEY'));
 			if (!strcmp(md5($fe_sParts[0].'/'.$this->TYPO3_CONF_VARS['SYS']['encryptionKey']), $fe_sParts[1]))	{	// If the session key hash check is OK:
-				$GLOBALS['HTTP_COOKIE_VARS'][$this->fe_user->name]=$fe_sParts[0];
+				$_COOKIE[$this->fe_user->name]=$fe_sParts[0];
 				$this->fe_user->forceSetCookie=1;
 			}
 		}
@@ -541,7 +541,7 @@
 		$this->siteScript = t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT');
 
 			// Resolving of "simulateStaticDocuments" URLs:
-		if ($this->siteScript && substr($this->siteScript,0,9)!='index.php')	{		// If there has been a redirect (basically; we arrived here otherwise than via "index.php" in the URL) this can happend either due to a CGI-script or because of reWrite rule. Earlier we used $GLOBALS['HTTP_SERVER_VARS']['REDIRECT_URL'] to check but
+		if ($this->siteScript && substr($this->siteScript,0,9)!='index.php')	{		// If there has been a redirect (basically; we arrived here otherwise than via "index.php" in the URL) this can happend either due to a CGI-script or because of reWrite rule. Earlier we used $_SERVER['REDIRECT_URL'] to check but
 			$uParts = parse_url($this->siteScript);	// Parse the path:
 			$fI = t3lib_div::split_fileref($uParts['path']);
 
@@ -770,7 +770,12 @@
 		$GLOBALS['TT']->pull();
 
 		if ($this->pageNotFound && $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
-			$this->pageNotFoundHandler();
+			$pNotFoundMsg = array(
+				1 => 'ID was not an accessible page',
+				2 => 'Subsection was found and not accessible',
+				3 => 'ID was outside the domain',
+			);
+			$this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
 		}
 
 			// set no_cache if set
@@ -812,7 +817,7 @@
 				// If still no page...
 			if (!count($this->page))	{
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
-					$this->pageNotFoundHandler();
+					$this->pageNotFoundAndExit('The requested page does not exist!');
 				} else {
 					$this->printError('The requested page does not exist!');
 					exit;
@@ -1162,7 +1167,7 @@
 	}
 
 	/**
-	 * Merging values into the global $HTTP_GET_VARS/$_GET
+	 * Merging values into the global $_GET
 	 *
 	 * @param	array		Array of key/value pairs that will be merged into the current GET-vars. (Non-escaped values)
 	 * @return	void
@@ -1664,16 +1669,14 @@
 	 * @return	string		'email' if a formmail has been send, 'fe_tce' if front-end data submission (like forums, guestbooks) is send. '' if none.
 	 */
 	function checkDataSubmission()	{
-		global $HTTP_POST_VARS;
-
-		if ($HTTP_POST_VARS['formtype_db'] || $HTTP_POST_VARS['formtype_mail'])	{
+		if ($_POST['formtype_db'] || $_POST['formtype_mail'])	{
 			$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')==$refInfo['host'] || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
-				if ($this->locDataCheck($HTTP_POST_VARS['locationData']))	{
+				if ($this->locDataCheck($_POST['locationData']))	{
 					$ret = '';
-					if ($HTTP_POST_VARS['formtype_mail'])	{
+					if ($_POST['formtype_mail'])	{
 						$ret = 'email';
-					} elseif ($HTTP_POST_VARS['formtype_db'] && is_array($HTTP_POST_VARS['data']))	{
+					} elseif ($_POST['formtype_db'] && is_array($_POST['data']))	{
 						$ret = 'fe_tce';
 					}
 					$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": Return value: '.$ret,0);
@@ -1699,7 +1702,7 @@
 	/**
 	 * Checks if a formmail submission can be sent as email
 	 *
-	 * @param	string		The input from $GLOBALS['HTTP_POST_VARS']['locationData']
+	 * @param	string		The input from $_POST['locationData']
 	 * @return	void
 	 * @access private
 	 * @see checkDataSubmission()

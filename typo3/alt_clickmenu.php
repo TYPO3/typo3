@@ -727,7 +727,7 @@ class clickMenu {
 
 	/**
 	 * Adding CM element for a flag field of the input record
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	array		Record array
 	 * @param	string		Name of the flag field
@@ -742,7 +742,7 @@ class clickMenu {
 	    $loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 	    $editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
 	        "&data[".$table.']['.$uid.']['.$flagField.']='.($rec[$flagField]?0:1).'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
-	
+
 	    return $this->linkItem(
 	        $title,
 	        $this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,$iconRelPath.'button_'.($rec[$flagField]?'un':'').$name.'.gif','width="11" height="10"').' alt="" />'),
@@ -1110,7 +1110,7 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * Adds or inserts a menu item
 	 * Can be used to set the position of new menu entries within the list of existing menu entries. Has this syntax: [cmd]:[menu entry key],[cmd].... cmd can be "after", "before" or "top" (or blank/"bottom" which is default). If "after"/"before" then menu items will be inserted after/before the existing entry with [menu entry key] if found. "after-spacer" and "before-spacer" do the same, but inserts before or after an item and a spacer. If not found, the bottom of list. If "top" the items are inserted in the top of the list.
@@ -1122,19 +1122,19 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 	 */
 	function addMenuItems($menuItems,$newMenuItems,$position='')	{
 		if (is_array($newMenuItems))	{
-			
+
 			if($position) {
-			
+
 				$posArr = t3lib_div::trimExplode(',', $position, 1);
 				foreach($posArr as $pos) {
 					list($place,$menuEntry) = t3lib_div::trimExplode(':', $pos, 1);
-					list($place,$placeExtra) = t3lib_div::trimExplode('-', $place, 1);	
-		
+					list($place,$placeExtra) = t3lib_div::trimExplode('-', $place, 1);
+
 						// bottom
 					$pointer = count($menuItems);
-					
+
 					$found=FALSE;
-						
+
 					if ($place) {
 						switch(strtolower($place))	{
 							case 'after':
@@ -1152,7 +1152,7 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 										$p++;
 									}
 									if (!$found) break;
-									
+
 									if ($place=='before') {
 										$pointer--;
 										if ($placeExtra=='spacer' AND prev($menuItems)=='spacer') {
@@ -1182,10 +1182,10 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 			$menuItemsBefore = array_slice($menuItems, 0, ($pointer?$pointer:0));
 			$menuItemsAfter = array_slice($menuItems, $pointer);
 			$menuItems = $menuItemsBefore + $newMenuItems + $menuItemsAfter;
-		} 
+		}
 		return $menuItems;
 	}
-	
+
 	/**
 	 * Creating an array with various elements for the clickmenu entry
 	 *

@@ -930,7 +930,7 @@ class t3lib_sqlparser {
 		$result = array();
 
 			// Field type:
-		if ($result['fieldType'] =  $this->nextPart($parseString,'^(int|smallint|tinyint|mediumint|double|varchar|char|text|tinytext|mediumtext|blob|tinyblob|mediumblob)([[:space:]]+|\()'))	{
+		if ($result['fieldType'] =  $this->nextPart($parseString,'^(int|smallint|tinyint|mediumint|double|varchar|char|text|tinytext|mediumtext|blob|tinyblob|mediumblob|longblob)([[:space:]]+|\()'))	{
 
 				// Looking for value:
 			if (substr($parseString,0,1)=='(')	{

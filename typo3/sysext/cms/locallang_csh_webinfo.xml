@@ -13,7 +13,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="pagetree_overview.alttitle">Pagetree Overview</label>
-			<label index="pagetree_overview.description">The Pagetree Overview shows information related to pages for a branch of the page tree. This includes record counts, page settings like alias, start- and stop-times, cache settings etc.</label>
+			<label index="pagetree_overview.description">The Pagetree Overview shows information related to pages for a branch of the page tree. This includes start- and stop-times, cache settings etc.</label>
 			<label index="_pagetree_overview.seeAlso">_MOD_web_info:func_0,
 _MOD_web_info:func_1,
 _MOD_web_info:func_2,
@@ -33,19 +33,18 @@ _MOD_web_info:pagetree_overview</label>
 			<label index="_func_0.image">EXT:cms/cshimages/pagetree_overview_4.png,
 EXT:cms/cshimages/pagetree_overview_8.png,
 EXT:cms/cshimages/pagetree_overview_9.png</label>
-			<label index="func_0.image_descr">The Basic Settings view. Notice how this offers a very convenient overview of page aliases, start times and access restriction settings in the tree branch.
-If you click an edit-icon in the header you will be able to edit that field (here the &quot;Access&quot; field) for all listed pages.
-This is how batch-editing looks like; Only one field per record!</label>
+			<label index="func_0.image_descr">The Basic Settings view offers a very convenient overview of page aliases, start times and access restriction settings in the tree branch.
+If you click an edit-icon in the header you will be able to edit that field for all listed pages.</label>
 			<label index="func_1.alttitle">Record Overview</label>
 			<label index="func_1.description">Record overview gives you an indispensable overview of the distribution of records in the page tree. Each database table in the system is represented with a column and for each page you can see the number of records from that table located on the page.</label>
-			<label index="func_1.details">&lt;b&gt;Notice:&lt;/b&gt; Be careful with the level-setting. Setting for instance &quot;3 levels&quot; might make the module respond very slowly if there are many pages and many records in the database as well!
+			<label index="func_1.details">&lt;b&gt;Notice:&lt;/b&gt; Be careful with the level-setting. A high level-setting may cause the module to respond very slowly if there are many pages and many records in the database as well!
 
 &lt;b&gt;Tree stop?&lt;/b&gt;
 Notice the red &quot;+&quot; next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.</label>
 			<label index="_func_1.seeAlso">_MOD_web_info:pagetree_overview,
 pages:php_tree_stop</label>
 			<label index="_func_1.image">EXT:cms/cshimages/pagetree_overview_6.png</label>
-			<label index="func_1.image_descr">Notice how you can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</label>
+			<label index="func_1.image_descr">You can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</label>
 			<label index="func_2.alttitle">Cache and Age</label>
 			<label index="func_2.description">Displays a selection of fields from page records related to page caching and time settings.</label>
 			<label index="_func_2.seeAlso">_MOD_web_info:func_0,
@@ -70,10 +69,10 @@ This is an overview of the meaning of each view mode:
 This shows page hits/sessions for each page.
 
 &lt;b&gt;Total hits&lt;/b&gt;
-This will show statistics only for pages that has a Template Record (with Root-flag set) on it. This means that page hits are shown as totals for a whole website.
+This will show statistics for only pages that have a Template Record (with Root-flag set) on it. This means that page hits are shown as totals for a whole website.
 
 &lt;b&gt;Hits in main sections&lt;/b&gt;
-Will show the total number of page hits/sessions within main sections of a website. A &quot;main section&quot; is all subpages to a page on the first level of a website (defined by a Template Record with the Root flag set).</label>
+Will show the total number of page hits/sessions within main sections of a website. A &quot;main section&quot; is all subpages to a page on the first level of a website (defined by a Template Record with the Root flag set)</label>
 			<label index="_func_hits.image">EXT:cms/cshimages/pagetree_overview_2.png</label>
 			<label index="lang.alttitle">Localization overview</label>
 			<label index="lang.description">Gives an overview of which pages in the page tree are translated to the system languages installed.</label>

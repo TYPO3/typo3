@@ -43,6 +43,7 @@ $TYPO3_CONF_VARS = Array(
 		'im_noScaleUp' => 0,					// Boolean. If set, images are not being scaled up if told so (in t3lib/stdgraphics.php)
 		'im_combine_filename' => 'combine',		// String. Latest ImageMagick versions has changed the name of combine to composite. Configure here if needed.
 		'im_noFramePrepended' => 0,				// Boolean. If set, the the [x] frame indicator is NOT prepended to filenames in stdgraphic. Some IM5+ version didn't work at all with the typical [0]-prefix, which allow multipage pdf's and animated gif's to be scaled only for the first frame/page and that seriously cuts down rendering time. Set this flag only if your ImageMagick version cannot find the files. Notice that changing this flag causes temporary filenames to change, thus the server will begin scaling images again which were previously cached.
+		'im_jpg_quality' => 70,					// Integer. Default JPEG generation quality
 		'enable_typo3temp_db_tracking' => 0,	// Boolean. If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
 		'TTFLocaleConv' => '',					// String. Enter locale conversion string used to recode input to TrueType functions. Eg. 'cp1250..UTF-8'. Works ONLY if 'recode' is enabled in PHP. Depreciated from ver. 3.6.0 of TYPO3. Set up [BE][forceCharset] as strings are automatically converted from databsae charset to UTF-8.
 		'TTFdpi' => '72',						// Integer. Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
@@ -107,6 +108,7 @@ $TYPO3_CONF_VARS = Array(
 		'warning_email_addr' => '',				// Email-address that will receive a warning if there has been failed logins 4 times within an hour (all users).
 		'warning_mode' => '',					// Bit 1: If set, warning_email_addr gets a mail everytime a user logs in. Bit 2: If set, a mail is sent if an ADMIN user logs in! Other bits reserved for future options.
 		'lockIP' => 4,							// Integer (0-4). Session IP locking for backend users. See [FE][lockIP] for details. Default is 4 (which is locking the FULL IP address to session).
+		'sessionTimeout' => 3600,				// Integer, seconds. Session time out for backend users. Default is 3600 seconds = 1 hour.
 		'IPmaskList' => '',						// String. Lets you define a list of IP-numbers (with *-wildcards) that are the ONLY ones allowed access to ANY backend activity. On error an error header is sent and the script exits. Works like IP masking for users configurable through TSconfig. See syntax for that (or look up syntax for the function t3lib_div::cmpIP())
 		'lockBeUserToDBmounts' => 1,			// Boolean. If set, the backend user is allowed to work only within his page-mount. It's advisable to leave this on because it makes security easy to manage.
 		'lockSSL' => 0,							// Int. 0,1,2: If set (1+2), the backend can only be operated from an ssl-encrypted connection (https). Set to 2 you will be redirected to the https admin-url supposed to be the http-url, but with https scheme instead.
@@ -202,6 +204,10 @@ $TYPO3_CONF_VARS = Array(
 	)
 );
 $T3_VAR = array();	// Initialize.
+
+	// TYPO3 version
+$TYPO_VERSION = '3.7.0-dev';
+define('TYPO3_version', $TYPO_VERSION);
 
 // Database-variables are cleared!
 $typo_db = '';					// The database name
@@ -337,5 +343,4 @@ unset($LOCAL_LANG);
 	// Setting some global vars:
 $EXEC_TIME = time();					// $EXEC_TIME is set so that the rest of the script has a common value for the script execution time
 $SIM_EXEC_TIME = $EXEC_TIME;			// $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to simulate another execution-time when selecting from eg. a database
-$TYPO_VERSION = '3.7.0-dev';				// TYPO3 version
 ?>

@@ -13,7 +13,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_funcwizards.alttitle">Page Wizards</label>
-			<label index="tx_funcwizards.description">This submodule provides a framework where wizards for manipulation of the page tree (or whatever) can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</label>
+			<label index="tx_funcwizards.description">This submodule provides a framework where wizards can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</label>
 			<label index="_tx_funcwizards.seeAlso">_MOD_web_func:tx_wizardcrpages,
 _MOD_web_func:tx_wizardsortpages</label>
 		</languageKey>

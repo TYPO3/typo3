@@ -162,7 +162,8 @@ class SC_db_list {
 			// MENU-ITEMS:
 		$this->MOD_MENU = array(
 			'bigControlPanel' => '',
-			'clipBoard' => ''
+			'clipBoard' => '',
+			'localization' => ''
 		);
 
 			// Loading module configuration:
@@ -210,6 +211,7 @@ class SC_db_list {
 		$dblist->thumbs = $BE_USER->uc['thumbnailsByDefault'];
 		$dblist->returnUrl=$this->returnUrl;
 		$dblist->allFields = ($this->MOD_SETTINGS['bigControlPanel'] || $this->table) ? 1 : 0;
+		$dblist->localizationView = $this->MOD_SETTINGS['localization'];
 		$dblist->showClipboard = 1;
 		$dblist->disableSingleTableView = $this->modTSconfig['properties']['disableSingleTableView'];
 		$dblist->listOnlyInSingleTableMode = $this->modTSconfig['properties']['listOnlyInSingleTableView'];
@@ -380,8 +382,9 @@ class SC_db_list {
 
 			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php','').' '.$LANG->getLL('largeControl',1).'<br />';
 			if ($dblist->showClipboard)	{
-				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php','').' '.$LANG->getLL('showClipBoard',1);
+				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php','').' '.$LANG->getLL('showClipBoard',1).'<br />';
 			}
+			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[localization]',$this->MOD_SETTINGS['localization'],'db_list.php','').' '.$LANG->getLL('localization',1).'<br />';
 			$this->content.='
 						</form>
 					</div>';

@@ -74,7 +74,7 @@
 			<label index="m_tt_products_ext">Extended</label>
 			<label index="m_default">Default</label>
 			<label index="clickAPage_header">Web&gt;Page module</label>
-			<label index="clickAPage_content">If you wish to edit the content of a page, please click the page title in the page tree to the left.</label>
+			<label index="clickAPage_content">Please click the page title in the page tree to the left to edit page content.</label>
 			<label index="pI_crUser">Created by</label>
 			<label index="pI_crDate">Created date</label>
 			<label index="pI_lastChange">Last change</label>
@@ -2104,80 +2104,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="title" type="integer">73079758</label>
-			<label index="advancedFunctions" type="integer">155530193</label>
-			<label index="noEditItems" type="integer">22184829</label>
-			<label index="noEditPage" type="integer">59166922</label>
-			<label index="nextThree" type="integer">52002706</label>
-			<label index="moveUp" type="integer">70382816</label>
-			<label index="moveDown" type="integer">167541671</label>
-			<label index="unHide" type="integer">151399157</label>
-			<label index="hide" type="integer">103439945</label>
-			<label index="edit" type="integer">131916066</label>
-			<label index="newAfter" type="integer">9161017</label>
-			<label index="move_record" type="integer">57306690</label>
-			<label index="move_page" type="integer">32081372</label>
-			<label index="deleteItem" type="integer">254438473</label>
-			<label index="deleteWarning" type="integer">75838368</label>
-			<label index="editColumn" type="integer">14150015</label>
-			<label index="editPageTitle" type="integer">60384081</label>
-			<label index="editInRTE" type="integer">50446768</label>
-			<label index="newPageContent" type="integer">100832025</label>
-			<label index="newPageContent2" type="integer">74406052</label>
-			<label index="newInColumn" type="integer">192491768</label>
-			<label index="records" type="integer">115682368</label>
-			<label index="pageInformation" type="integer">9265976</label>
-			<label index="goToTable" type="integer">131114258</label>
-			<label index="internalNotes" type="integer">267841144</label>
-			<label index="clearCache" type="integer">128738260</label>
-			<label index="hiddenCE" type="integer">218457432</label>
-			<label index="new_language" type="integer">174017384</label>
-			<label index="newLabel" type="integer">38618522</label>
-			<label index="editLanguageHeader" type="integer">60830633</label>
-			<label index="editPageHeader" type="integer">60384081</label>
-			<label index="newRecordGeneral" type="integer">54021068</label>
-			<label index="newContentElement" type="integer">165001110</label>
-			<label index="CEonThisPage" type="integer">260925574</label>
-			<label index="newPage" type="integer">10918545</label>
-			<label index="newPage2" type="integer">107510865</label>
-			<label index="noAccess" type="integer">101501626</label>
-			<label index="noAccess_msg" type="integer">75856839</label>
-			<label index="undoLastChange" type="integer">109787245</label>
-			<label index="recordHistory" type="integer">38913415</label>
-			<label index="tt_board_subject" type="integer">209228523</label>
-			<label index="tt_board_author" type="integer">173111111</label>
-			<label index="tt_board_date" type="integer">71780721</label>
-			<label index="tt_board_age" type="integer">165204693</label>
-			<label index="tt_board_RE" type="integer">182416032</label>
-			<label index="m_function_0" type="integer">114319247</label>
-			<label index="m_function_1" type="integer">23640109</label>
-			<label index="m_function_2" type="integer">60853806</label>
-			<label index="m_tt_board_0" type="integer">267360715</label>
-			<label index="m_tt_board_expand" type="integer">224753595</label>
-			<label index="m_tt_address_0" type="integer">99410510</label>
-			<label index="m_tt_address_1" type="integer">244323618</label>
-			<label index="m_tt_address_2" type="integer">16616904</label>
-			<label index="m_tt_links_1" type="integer">20515061</label>
-			<label index="m_tt_links_2" type="integer">23258562</label>
-			<label index="m_tt_calender_date" type="integer">71780721</label>
-			<label index="m_tt_calender_date_ext" type="integer">248953831</label>
-			<label index="m_tt_calender_todo" type="integer">197754386</label>
-			<label index="m_tt_calender_todo_ext" type="integer">104661576</label>
-			<label index="m_tt_calender_ext" type="integer">253974415</label>
-			<label index="m_tt_products_ext" type="integer">253974415</label>
-			<label index="m_default" type="integer">128029197</label>
-			<label index="clickAPage_header" type="integer">150819539</label>
-			<label index="clickAPage_content" type="integer">187457778</label>
-			<label index="pI_crUser" type="integer">210659966</label>
-			<label index="pI_crDate" type="integer">188440759</label>
-			<label index="pI_lastChange" type="integer">48593502</label>
-			<label index="pI_lastChangeContent" type="integer">239918564</label>
-			<label index="pI_hitsTotal" type="integer">203132422</label>
-			<label index="pI_hitsPeriod" type="integer">248983029</label>
-			<label index="pI_hits24hours" type="integer">104044646</label>
-			<label index="pI_hits10days" type="integer">192341173</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="title" type="integer">73079758</label>
 			<label index="advancedFunctions" type="integer">155530193</label>

@@ -309,12 +309,7 @@ class t3lib_queryGenerator	{
 		$this->queryConfig = $qC;
 
 		$POST = t3lib_div::_POST();
-/*	 	// adjust queryConfig to match requests from user
-		if($GLOBALS["HTTP_POST_VARS"]["queryConfig"]) {
-			$this->queryConfig = $GLOBALS["HTTP_POST_VARS"]["queryConfig"];
-			t3lib_div::stripSlashesOnArray($this->queryConfig);
-		}
-*/
+
 		// if delete...
 		if($POST["qG_del"]) {
 			//initialize array to work on, save special parameters

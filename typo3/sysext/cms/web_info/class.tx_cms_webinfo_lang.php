@@ -81,7 +81,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	}
 
 	/**
-	 * MAIN function for page information display (including hit statistics)
+	 * MAIN function for page information of localization
 	 *
 	 * @return	string		Output HTML for the module.
 	 */

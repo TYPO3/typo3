@@ -201,7 +201,7 @@ class SC_wizard_forms {
 	 * @return	void
 	 */
 	function init()	{
-		global $BACK_PATH,$HTTP_POST_VARS;
+		global $BACK_PATH;
 
 			// GPvars:
 		$this->P = t3lib_div::_GP('P');
@@ -229,7 +229,7 @@ class SC_wizard_forms {
 		$this->content=$this->doc->startPage('Form Wizard');
 
 			// If save command found, include tcemain:
-		if ($HTTP_POST_VARS['savedok_x'] || $HTTP_POST_VARS['saveandclosedok_x'])	{
+		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
 			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
 	}
@@ -308,7 +308,6 @@ class SC_wizard_forms {
 	 * @access private
 	 */
 	function getConfigCode(&$row)	{
-		global $HTTP_POST_VARS;
 
 			// If some data has been submitted, then construct
 		if (isset($this->FORMCFG['c']))	{
@@ -332,7 +331,7 @@ class SC_wizard_forms {
 			}
 
 				// If a save button has been pressed, then save the new field content:
-			if ($HTTP_POST_VARS['savedok_x'] || $HTTP_POST_VARS['saveandclosedok_x'])	{
+			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
 
 					// Make TCEmain object:
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -353,7 +352,7 @@ class SC_wizard_forms {
 				$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 
 					// If the save/close button was pressed, then redirect the screen:
-				if ($HTTP_POST_VARS['saveandclosedok_x'])	{
+				if ($_POST['saveandclosedok_x'])	{
 					header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
 					exit;
 				}

@@ -58,7 +58,7 @@
 			<label index="p_newRecordAfter">New record after</label>
 			<label index="p_delete">Delete</label>
 			<label index="p_deleteConfirm">Are you sure you want to delete this record?</label>
-			<label index="p_hideConfirm">Hiding a record will make it invisible on the webpage and you will have to enter the backend or enable frontend preview before you can edit it again.
+			<label index="p_hideConfirm">Hiding a record will make it invisible on the webpage.  To edit the hidden record enter the backend or enable the frontend preview.
 Continue?</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
@@ -1691,58 +1691,6 @@ Soovite jätkata?</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="adminOptions" type="integer">147511050</label>
-			<label index="preview" type="integer">52420219</label>
-			<label index="preview_showHiddenPages" type="integer">134294512</label>
-			<label index="preview_showHiddenRecords" type="integer">197480530</label>
-			<label index="preview_simulateDate" type="integer">165211717</label>
-			<label index="preview_simulateUserGroup" type="integer">140125754</label>
-			<label index="cache" type="integer">179359504</label>
-			<label index="cache_noCache" type="integer">7012371</label>
-			<label index="cache_doit" type="integer">82152402</label>
-			<label index="cache_clearLevels" type="integer">9304802</label>
-			<label index="cache_cacheEntries" type="integer">248899248</label>
-			<label index="publish" type="integer">17867952</label>
-			<label index="publish_levels" type="integer">266651712</label>
-			<label index="publish_tree" type="integer">130627303</label>
-			<label index="publish_doit" type="integer">142429021</label>
-			<label index="edit" type="integer">186429311</label>
-			<label index="edit_displayIcons" type="integer">160544396</label>
-			<label index="edit_displayFieldIcons" type="integer">75845684</label>
-			<label index="edit_editFormsOnPage" type="integer">251694161</label>
-			<label index="edit_editNoPopup" type="integer">143991461</label>
-			<label index="edit_openAB" type="integer">177133592</label>
-			<label index="edit_recordHistory" type="integer">38913415</label>
-			<label index="edit_newContentElement" type="integer">165001110</label>
-			<label index="edit_move_page" type="integer">32081372</label>
-			<label index="edit_newPage" type="integer">10918545</label>
-			<label index="edit_editPageHeader" type="integer">60384081</label>
-			<label index="edit_db_list" type="integer">182815575</label>
-			<label index="tsdebug" type="integer">6141239</label>
-			<label index="tsdebug_tree" type="integer">60618427</label>
-			<label index="tsdebug_LR" type="integer">38630757</label>
-			<label index="tsdebug_forceTemplateParsing" type="integer">28246343</label>
-			<label index="tsdebug_displayTimes" type="integer">67634135</label>
-			<label index="tsdebug_displayMessages" type="integer">61942828</label>
-			<label index="tsdebug_displayContent" type="integer">118594150</label>
-			<label index="tsdebug_displayQueries" type="integer">26860700</label>
-			<label index="info" type="integer">67476226</label>
-			<label index="div_Levels_0" type="integer">98872550</label>
-			<label index="div_Levels_1" type="integer">81949190</label>
-			<label index="div_Levels_2" type="integer">92317091</label>
-			<label index="update" type="integer">6894342</label>
-			<label index="p_editRecord" type="integer">148343509</label>
-			<label index="p_moveUp" type="integer">259501942</label>
-			<label index="p_moveDown" type="integer">232386759</label>
-			<label index="p_unhide" type="integer">152488466</label>
-			<label index="p_hide" type="integer">103439945</label>
-			<label index="p_newSubpage" type="integer">81409489</label>
-			<label index="p_newRecordAfter" type="integer">264860337</label>
-			<label index="p_delete" type="integer">254438473</label>
-			<label index="p_deleteConfirm" type="integer">75838368</label>
-			<label index="p_hideConfirm" type="integer">202576585</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="adminOptions" type="integer">147511050</label>
 			<label index="preview" type="integer">52420219</label>
@@ -3348,80 +3296,4 @@ Soovite jätkata?</label>
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

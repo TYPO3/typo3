@@ -15,7 +15,7 @@
 			<label index="depth_2">2 levels</label>
 			<label index="depth_3">3 levels</label>
 			<label index="mlang_labels_tablabel">Page related information, eg. hit statistics, change log, record counts</label>
-			<label index="mlang_labels_tabdescr">The Web&gt;Info module is focused on statistic information about pages. This includes statistics of pagehits and a changelog which lets you browse the history of page changes. You can also get an overview of the number of records on each page as well as page settings presented in a classic tree structure.</label>
+			<label index="mlang_labels_tabdescr">The Web&gt;Info module is focused on statistic information about pages. This includes statistics of pagehits and a changelog allowing browsing of page history changes. An overview of the number of records on each page as well as page settings presented in a classic tree structure is provided.</label>
 			<label index="mlang_tabs_tab">Info</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
@@ -339,16 +339,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="title" type="integer">9265976</label>
-			<label index="depth_0" type="integer">98872550</label>
-			<label index="depth_1" type="integer">200641290</label>
-			<label index="depth_2" type="integer">228799796</label>
-			<label index="depth_3" type="integer">195275893</label>
-			<label index="mlang_labels_tablabel" type="integer">71381826</label>
-			<label index="mlang_labels_tabdescr" type="integer">160538617</label>
-			<label index="mlang_tabs_tab" type="integer">67476226</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="title" type="integer">9265976</label>
 			<label index="depth_0" type="integer">98872550</label>
@@ -669,80 +659,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

@@ -21,16 +21,16 @@
 			<label index="labels.enterSearchString">Search String:</label>
 			<label index="labels.enterSearchLevels">This page|1 level down|2 levels down|3 levels down|4 levels down</label>
 			<label index="labels.noEditPermission">Sorry, you didn't have proper permissions to perform this change.</label>
-			<label index="labels.fieldsMissing">There are fields in the form which are not yet correctly filled in.
-The fields are marked with a yellow exclamation mark.</label>
+			<label index="labels.fieldsMissing">The fields marked with a yellow exclamation mark are not yet correctly filled in. Please complete them properly.</label>
 			<label index="labels.fieldsChanged">There are unsaved changes in the form!
 Do you want to continue WITHOUT saving?</label>
-			<label index="labels.noRTEfound">Notice: You cannot edit this field since it can only be edited with a Rich Text Editor, but no editor was available or editing with an RTE has been disabled.</label>
+			<label index="labels.noRTEfound">Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</label>
 			<label index="labels.showPalettes">Show secondary options (palettes)</label>
 			<label index="labels.showDescriptions">Show field descriptions</label>
 			<label index="labels.disableRTE">Disable Rich Text Editor (RTE)</label>
 			<label index="labels._CONTROL_">Control</label>
 			<label index="labels._PATH_">Path</label>
+			<label index="labels._LOCALIZATION_">Localization</label>
 			<label index="labels.setFields">Set fields</label>
 			<label index="labels.search">Search</label>
 			<label index="labels.author">Author:</label>
@@ -193,6 +193,7 @@ Felterne er markeret med et gult udråbstegn.</label>
 			<label index="labels.disableRTE">Slå Formatteret Redigering fra (RTE)</label>
 			<label index="labels._CONTROL_">Kontrol</label>
 			<label index="labels._PATH_">Sti</label>
+			<label index="labels._LOCALIZATION_">Oversættelse</label>
 			<label index="labels.setFields">Sæt felter</label>
 			<label index="labels.search">Søg</label>
 			<label index="labels.author">Forfatter:</label>
@@ -4002,153 +4003,6 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="labels.openInNewWindow" type="integer">43359464</label>
-			<label index="labels.goBack" type="integer">36398395</label>
-			<label index="labels.makeShortcut" type="integer">172171229</label>
-			<label index="labels.lockedRecord" type="integer">198827351</label>
-			<label index="labels.lockedRecord_content" type="integer">187177677</label>
-			<label index="labels.showRecords" type="integer">159375536</label>
-			<label index="labels.path" type="integer">180814866</label>
-			<label index="labels.table" type="integer">85738935</label>
-			<label index="labels.upOneLevel" type="integer">206589180</label>
-			<label index="labels.enterSearchString" type="integer">109099181</label>
-			<label index="labels.enterSearchLevels" type="integer">93282459</label>
-			<label index="labels.noEditPermission" type="integer">199778334</label>
-			<label index="labels.fieldsMissing" type="integer">79275306</label>
-			<label index="labels.fieldsChanged" type="integer">196203045</label>
-			<label index="labels.noRTEfound" type="integer">160772255</label>
-			<label index="labels.showPalettes" type="integer">29229235</label>
-			<label index="labels.showDescriptions" type="integer">52412881</label>
-			<label index="labels.disableRTE" type="integer">236608630</label>
-			<label index="labels._CONTROL_" type="integer">169186731</label>
-			<label index="labels._PATH_" type="integer">180814866</label>
-			<label index="labels.setFields" type="integer">263441433</label>
-			<label index="labels.search" type="integer">20138052</label>
-			<label index="labels.author" type="integer">152306160</label>
-			<label index="labels.note" type="integer">264885215</label>
-			<label index="labels.category" type="integer">90868382</label>
-			<label index="labels.reload" type="integer">80857126</label>
-			<label index="labels.csv" type="integer">27365093</label>
-			<label index="labels.clear_cache" type="integer">256573092</label>
-			<label index="labels.no_title" type="integer">184697729</label>
-			<label index="labels.cancel" type="integer">245659783</label>
-			<label index="labels.hidden" type="integer">128769925</label>
-			<label index="labels.starttime" type="integer">174138022</label>
-			<label index="labels.endtime" type="integer">141907953</label>
-			<label index="labels.minutesHoursDaysYears" type="integer">180541581</label>
-			<label index="labels.menu" type="integer">260506399</label>
-			<label index="labels.showPage" type="integer">150194952</label>
-			<label index="labels.showList" type="integer">112377765</label>
-			<label index="labels.days" type="integer">72343236</label>
-			<label index="labels.depth_0" type="integer">98872550</label>
-			<label index="labels.depth_1" type="integer">200641290</label>
-			<label index="labels.depth_2" type="integer">228799796</label>
-			<label index="labels.depth_3" type="integer">195275893</label>
-			<label index="labels.refresh" type="integer">218889859</label>
-			<label index="labels.temporaryDBmount" type="integer">54643159</label>
-			<label index="labels.refreshList" type="integer">267625353</label>
-			<label index="labels.close" type="integer">222113377</label>
-			<label index="labels.new" type="integer">38618522</label>
-			<label index="labels.selected" type="integer">152781869</label>
-			<label index="labels.items" type="integer">165585921</label>
-			<label index="labels.remove_selected" type="integer">174131744</label>
-			<label index="labels.move_to_top" type="integer">179915530</label>
-			<label index="labels.browse_file" type="integer">252183313</label>
-			<label index="labels.browse_db" type="integer">3203407</label>
-			<label index="labels.clipInsert_file" type="integer">72963835</label>
-			<label index="labels.clipInsert_db" type="integer">123875466</label>
-			<label index="labels.generalOptions" type="integer">70509926</label>
-			<label index="labels.allTables" type="integer">64435182</label>
-			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
-			<label index="labels.thumbmode_clip" type="integer">251068306</label>
-			<label index="labels.copymode" type="integer">24481846</label>
-			<label index="labels.clipNoEl" type="integer">213419996</label>
-			<label index="labels.cliptabs" type="integer">219248137</label>
-			<label index="labels.removeItem" type="integer">61210410</label>
-			<label index="TYPO3_Element_Browser" type="integer">97099900</label>
-			<label index="show_item.php.viewItem" type="integer">31794211</label>
-			<label index="show_item.php.file" type="integer">11696408</label>
-			<label index="show_item.php.dimensions" type="integer">256394177</label>
-			<label index="show_item.php.filesize" type="integer">116837234</label>
-			<label index="show_item.php.ftp_area" type="integer">213910632</label>
-			<label index="db_new.php.pagetitle" type="integer">153049580</label>
-			<label index="db_new.php.after" type="integer">103981632</label>
-			<label index="db_new.php.inside" type="integer">53858117</label>
-			<label index="file_upload.php.pagetitle" type="integer">209578095</label>
-			<label index="file_upload.php.submit" type="integer">209578095</label>
-			<label index="file_upload.php.files" type="integer">73111091</label>
-			<label index="file_rename.php.pagetitle" type="integer">151300144</label>
-			<label index="file_rename.php.submit" type="integer">151300144</label>
-			<label index="file_edit.php.pagetitle" type="integer">131916066</label>
-			<label index="file_edit.php.submit" type="integer">211601612</label>
-			<label index="file_edit.php.saveAndClose" type="integer">253538544</label>
-			<label index="file_edit.php.coundNot" type="integer">155023303</label>
-			<label index="file_newfolder.php.pagetitle" type="integer">37247196</label>
-			<label index="file_newfolder.php.submit" type="integer">50275779</label>
-			<label index="file_newfolder.php.folders" type="integer">130756931</label>
-			<label index="file_newfolder.php.newfile_submit" type="integer">25278735</label>
-			<label index="file_newfolder.php.newfile" type="integer">77930857</label>
-			<label index="file_clipupload.php.warning_head" type="integer">159379252</label>
-			<label index="file_clipupload.php.warning" type="integer">223829658</label>
-			<label index="mess.redraw" type="integer">39712654</label>
-			<label index="mess.delete" type="integer">11983227</label>
-			<label index="mess.deleteClip" type="integer">86922765</label>
-			<label index="mess.refresh_login" type="integer">16856853</label>
-			<label index="mess.noSelItemForEdit" type="integer">260947711</label>
-			<label index="mess.onChangeAlert" type="integer">215006725</label>
-			<label index="mess.move_into" type="integer">267594206</label>
-			<label index="mess.move_after" type="integer">160860895</label>
-			<label index="mess.copy_into" type="integer">231649592</label>
-			<label index="mess.copy_after" type="integer">190775159</label>
-			<label index="mess.copycb_into" type="integer">233579989</label>
-			<label index="mess.copycb_after" type="integer">233968527</label>
-			<label index="mess.movecb_into" type="integer">206869075</label>
-			<label index="mess.movecb_after" type="integer">184153362</label>
-			<label index="rm.menu" type="integer">41019420</label>
-			<label index="rm.saveDoc" type="integer">34922005</label>
-			<label index="rm.saveDocShow" type="integer">266586540</label>
-			<label index="rm.saveCloseDoc" type="integer">43846535</label>
-			<label index="rm.saveCloseAllDocs" type="integer">105962057</label>
-			<label index="rm.saveNewDoc" type="integer">35091769</label>
-			<label index="rm.closeDoc" type="integer">64132522</label>
-			<label index="rm.closeAllDocs" type="integer">55835955</label>
-			<label index="rm.clearCache_clearCache" type="integer">127667564</label>
-			<label index="rm.clearCache_thisPage" type="integer">98872550</label>
-			<label index="rm.clearCache_pages" type="integer">110711253</label>
-			<label index="rm.clearCache_all" type="integer">51462420</label>
-			<label index="rm.clearCache_allTypo3Conf" type="integer">79469728</label>
-			<label index="rm.adminFunctions" type="integer">190550998</label>
-			<label index="rm.edit" type="integer">131916066</label>
-			<label index="rm.delete" type="integer">254438473</label>
-			<label index="buttons.logout" type="integer">3292644</label>
-			<label index="buttons.selMenu_modules" type="integer">23513772</label>
-			<label index="buttons.clear" type="integer">230886336</label>
-			<label index="buttons.clipboard" type="integer">37640827</label>
-			<label index="cm.copy" type="integer">100361047</label>
-			<label index="cm.cut" type="integer">246625500</label>
-			<label index="cm.view" type="integer">77133724</label>
-			<label index="cm.edit" type="integer">131916066</label>
-			<label index="cm.new" type="integer">3944062</label>
-			<label index="cm.pasteinto" type="integer">46910930</label>
-			<label index="cm.pasteafter" type="integer">48443221</label>
-			<label index="cm.select" type="integer">235284002</label>
-			<label index="cm.deselect" type="integer">155289095</label>
-			<label index="cm.selectto" type="integer">188624416</label>
-			<label index="cm.deselectto" type="integer">198679702</label>
-			<label index="cm.delete" type="integer">254438473</label>
-			<label index="cm.hide" type="integer">103439945</label>
-			<label index="cm.unhide" type="integer">205596222</label>
-			<label index="cm.upload" type="integer">194920219</label>
-			<label index="cm.rename" type="integer">151300144</label>
-			<label index="cm.open" type="integer">205255751</label>
-			<label index="cm.save" type="integer">211601612</label>
-			<label index="cm.unzip" type="integer">31401173</label>
-			<label index="cm.info" type="integer">67476226</label>
-			<label index="cm.createnew" type="integer">260012217</label>
-			<label index="cm.tempMountPoint" type="integer">10294929</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>
 			<label index="labels.goBack" type="integer">36398395</label>
@@ -4307,6 +4161,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="ver.selVer" type="integer">141725286</label>
 			<label index="ver.swap" type="integer">60665691</label>
 			<label index="ver.swapPage" type="integer">206706262</label>
+			<label index="labels._LOCALIZATION_" type="integer">57239651</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>

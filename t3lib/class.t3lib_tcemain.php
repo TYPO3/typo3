@@ -360,7 +360,7 @@ class t3lib_TCEmain	{
 	 * Processing of uploaded files.
 	 * It turns out that some versions of PHP arranges submitted data for files different if sent in an array. This function will unify this so the internal array $this->uploadedFileArray will always contain files arranged in the same structure.
 	 *
-	 * @param	array		HTTP_POST_FILES array
+	 * @param	array		$_FILES array
 	 * @return	void
 	 */
 	function process_uploads($postFiles)	{
@@ -387,8 +387,8 @@ class t3lib_TCEmain	{
 	 * Traverse the upload array if needed to rearrange values.
 	 *
 	 * @param	array		$this->uploadedFileArray passed by reference
-	 * @param	array		Input array  (HTTP_POST_FILES parts)
-	 * @param	string		The current HTTP_POST_FILES array key to set on the outermost level.
+	 * @param	array		Input array  ($_FILES parts)
+	 * @param	string		The current $_FILES array key to set on the outermost level.
 	 * @return	void
 	 * @access private
 	 * @see process_uploads()
@@ -3400,7 +3400,7 @@ class t3lib_TCEmain	{
 	 * @param	string		Table name
 	 * @param	integer		UID of the online record to swap
 	 * @param	integer		UID of the archived version to swap with!
-	 * @param	boolean		Swap content; If set then - for pages - the page content PIDs are swapped as well.
+	 * @param	string		If set, swap content; If set then - for pages - the page content PIDs are swapped as well. If set to "ALL" then subpages are swapped as well!
 	 * @return	void
 	 */
 	function version_swap($table,$id,$swapWith,$swapContent)	{
@@ -3490,7 +3490,7 @@ class t3lib_TCEmain	{
 
 								// Collect table names that should be copied along with the tables:
 								foreach($TCA as $tN => $tCfg)	{
-									if ($TCA[$tN]['ctrl']['versioning_followPages'] || $tN=='pages')	{		// THIS produces the problem that some records might be left inside a versionized branch. Question is; Should ALL records swap pids, not only the versioning_followPages ones?
+									if ($TCA[$tN]['ctrl']['versioning_followPages'] || ($tN=='pages' && $swapContent==='ALL'))	{		// THIS produces the problem that some records might be left inside a versionized branch. Question is; Should ALL records swap pids, not only the versioning_followPages ones?
 										$temporaryPid = -($id+1000000);
 
 										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));

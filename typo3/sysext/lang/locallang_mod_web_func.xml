@@ -12,7 +12,7 @@
 			<label index="title">Advanced functions</label>
 			<label index="clickAPage_content">Please click a page title in the page tree.</label>
 			<label index="mlang_labels_tablabel">Advanced functions</label>
-			<label index="mlang_labels_tabdescr">You'll find general export and import functions here. In addition this module contains specialized functions - wizards - usefull in specific situations. For instance you can batch create pages and perform sorting of pages.</label>
+			<label index="mlang_labels_tabdescr">This module contains general export and import functions in addition to specialised wizards enabling page sorting and batch creating of pages.</label>
 			<label index="mlang_tabs_tab">Functions</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
@@ -243,13 +243,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="title" type="integer">155530193</label>
-			<label index="clickAPage_content" type="integer">74170385</label>
-			<label index="mlang_labels_tablabel" type="integer">155530193</label>
-			<label index="mlang_labels_tabdescr" type="integer">178291472</label>
-			<label index="mlang_tabs_tab" type="integer">244559025</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="title" type="integer">155530193</label>
 			<label index="clickAPage_content" type="integer">74170385</label>

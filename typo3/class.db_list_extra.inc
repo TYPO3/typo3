@@ -299,12 +299,18 @@ class localRecordList extends recordList {
 		t3lib_div::loadTCA($table);
 
 			// Init
+		$addWhere = '';
 		$titleCol = $TCA[$table]['ctrl']['label'];
 		$thumbsCol = $TCA[$table]['ctrl']['thumbnail'];
+		$l10nEnabled = $TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'];
 
 			// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
 		$this->fieldArray=array();
 		$this->fieldArray[] = $titleCol;	// Add title column
+		if ($this->localizationView && $l10nEnabled)	{
+			$this->fieldArray[] = '_LOCALIZATION_';
+			$addWhere.=' AND '.$TCA[$table]['ctrl']['languageField'].'<=0';
+		}
 		if (!t3lib_div::inList($rowlist,'_CONTROL_'))	{
 			$this->fieldArray[] = '_CONTROL_';
 		}
@@ -347,6 +353,10 @@ class localRecordList extends recordList {
 		if ($TCA[$table]['ctrl']['versioning'])	{
 			$selectFields[] = 't3ver_id';
 		}
+		if ($l10nEnabled)	{
+			$selectFields[] = $TCA[$table]['ctrl']['languageField'];
+			$selectFields[] = $TCA[$table]['ctrl']['transOrigPointerField'];
+		}
 		if ($TCA[$table]['ctrl']['label_alt'])	{
 			$selectFields = array_merge($selectFields,t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['label_alt'],1));
 		}
@@ -355,7 +365,7 @@ class localRecordList extends recordList {
 		$selFieldList = implode(',',$selectFields);		// implode it into a list of fields for the SQL-statement.
 
 			// Create the SQL query for selecting the elements in the listing:
-		$queryParts = $this->makeQueryArray($table, $id,'',$selFieldList);	// (API function from class.db_list.inc)
+		$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);	// (API function from class.db_list.inc)
 		$this->setTotalItems($queryParts);		// Finding the total amount of records on the page (API function from class.db_list.inc)
 
 			// Init:
@@ -460,6 +470,25 @@ class localRecordList extends recordList {
 					if ($flag)	{
 						$cc++;
 						$iOut.=$this->renderListRow($table,$row,$cc,$titleCol,$thumbsCol);
+
+							// If localization view is enabled it means that the selected records are either default or All language and here we will not select translations which point to the main record:
+						if ($this->localizationView && $l10nEnabled)	{
+
+								// Look for translations of this record:
+							$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+								$selFieldList,
+								$table,
+								'pid='.$row['pid'].
+									' AND '.$TCA[$table]['ctrl']['languageField'].'>0'.
+									' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
+									t3lib_BEfunc::deleteClause($table)
+							);
+
+								// For each available translation, render the record:
+							foreach($translations as $lRow)	{
+								$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
+							}
+						}
 					}
 
 						// Counter of total rows incremented:
@@ -501,11 +530,12 @@ class localRecordList extends recordList {
 	 * @param	integer		Counter, counting for each time an element is rendered (used for alternating colors)
 	 * @param	string		Table field (column) where header value is found
 	 * @param	string		Table field (column) where (possible) thumbnails can be found
+	 * @param	integer		Indent from left.
 	 * @return	string		Table row for the element
 	 * @access private
 	 * @see getTable()
 	 */
-	function renderListRow($table,$row,$cc,$titleCol,$thumbsCol)	{
+	function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)	{
 		$iOut = '';
 
 			// Background color, if any:
@@ -522,7 +552,7 @@ class localRecordList extends recordList {
 		$this->counter++;
 
 			// The icon with link
-		$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"');
+		$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"'.($indent ? ' style="margin-left: '.$indent.'px;"' : ''));
 		$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,$table,$row['uid']) : $iconImg;
 
 			// Preparing and getting the data-array
@@ -538,6 +568,8 @@ class localRecordList extends recordList {
 				$theData[$fCol]=$this->makeControl($table,$row);
 			} elseif ($fCol=='_CLIPBOARD_') {
 				$theData[$fCol]=$this->makeClip($table,$row);
+			} elseif ($fCol=='_LOCALIZATION_') {
+				$theData[$fCol]=$this->makeLocalizationPanel($table,$row);
 			} else {
 				$theData[$fCol]=htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100));
 			}
@@ -582,6 +614,9 @@ class localRecordList extends recordList {
 			switch((string)$fCol)	{
 				case '_PATH_':			// Path
 					$theData[$fCol]='<i>['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels._PATH_',1).']</i>';
+				break;
+				case '_LOCALIZATION_':			// Path
+					$theData[$fCol]='<i>['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels._LOCALIZATION_',1).']</i>';
 				break;
 				case '_CLIPBOARD_':		// Clipboard:
 					$cells=array();
@@ -961,6 +996,61 @@ class localRecordList extends recordList {
 	}
 
 	/**
+	 * Creates the localization panel
+	 *
+	 * @param	string		The table
+	 * @param	array		The record for which to make the localization panel.
+	 * @return	string		HTML table with the localization panel
+	 */
+	function makeLocalizationPanel($table,$row)	{
+		global $TCA,$LANG;
+
+		$out = '';
+		if ($TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'])	{
+
+				// Language title and icon:
+			$out = $this->languageFlag($row[$TCA[$table]['ctrl']['languageField']]);
+
+				// Create new localizations links:
+			if ($row[$TCA[$table]['ctrl']['languageField']] <=0)	{
+
+					// Look for translations of this record, index by language field value:
+				$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'uid,'.$TCA[$table]['ctrl']['languageField'],
+					$table,
+					'pid='.intval($this->id).
+						' AND '.$TCA[$table]['ctrl']['languageField'].'>0'.
+						' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
+						t3lib_BEfunc::deleteClause($table),
+					'',
+					'',
+					'',
+					$TCA[$table]['ctrl']['languageField']
+				);
+
+					// Traverse page translations and add icon for each language that does NOT yet exist:
+				$lNew = '';
+				foreach($this->pageOverlays as $lUid_OnPage => $lsysRec)	{
+					if (!isset($translations[$lUid_OnPage]))	{
+						$href = $GLOBALS['TBE_TEMPLATE']->issueCommand('&cmd['.$table.']['.$row['uid'].'][localize]='.$lUid_OnPage,$rUrl='');
+
+						$lC = ($this->languageIconTitles[$lUid_OnPage]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$lUid_OnPage]['flagIcon'].'" class="absmiddle" alt="" />' : $this->languageIconTitles[$lUid_OnPage]['title']);
+						$lC = '<a href="'.htmlspecialchars($href).'">'.$lC.'</a> ';
+
+						$lNew.=$lC;
+					}
+				}
+
+				if ($lNew)	$out.=' - '.$LANG->getLL('Localize',1).': '.$lNew;
+			} else {
+				$out = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out;
+			}
+		}
+
+		return $out;
+	}
+
+	/**
 	 * Create the selector box for selecting fields to display from a table:
 	 *
 	 * @param	string		Table name
@@ -985,6 +1075,7 @@ class localRecordList extends recordList {
 
 			// Add pseudo "control" fields
 		$fields[]='_PATH_';
+		$fields[]='_LOCALIZATION_';
 		$fields[]='_CONTROL_';
 		$fields[]='_CLIPBOARD_';
 
@@ -1074,7 +1165,7 @@ class localRecordList extends recordList {
 	function addSortLink($code,$field,$table)	{
 
 			// Certain circumstances just return string right away (no links):
-		if ($field=='_CONTROL_' || $field=='_CLIPBOARD_' || $this->disableSingleTableView)	return $code;
+		if ($field=='_CONTROL_' || $field=='_LOCALIZATION_' || $field=='_CLIPBOARD_' || $this->disableSingleTableView)	return $code;
 
 			// If "_PATH_" (showing record path) is selected, force sorting by pid field (will at least group the records!)
 		if ($field=='_PATH_')	$field=pid;
@@ -1122,6 +1213,18 @@ class localRecordList extends recordList {
 	function makeReturnUrl()	{
 		return '&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 	}
+
+	/**
+	 * Return the icon for the language
+	 *
+	 * @param	integer		Sys language uid
+	 * @return	string		Language icon
+	 */
+	function languageFlag($sys_language_uid)	{
+		return ($this->languageIconTitles[$sys_language_uid]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$sys_language_uid]['flagIcon'].'" class="absmiddle" alt="" />&nbsp;' : '').
+				htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
+	}
+
 
 
 

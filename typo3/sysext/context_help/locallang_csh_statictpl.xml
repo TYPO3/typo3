@@ -12,7 +12,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index=".description">Static templates are a centrally distributed TypoScript library. You should never changes these values.</label>
+			<label index=".description">Static templates are a centrally distributed TypoScript library. You should never change these values.</label>
 			<label index=".details">The Static templates are meant to be included by your TypoScript Template records depending on your needs. Refer to the 'TSref' document (see below) for details on this process.
 Notice that by each release of TYPO3 you should reinstall the Static Templates table by the install tool. See the 'Install/Upgrade' document for details (see below).</label>
 			<label index="_.seeAlso">sys_template

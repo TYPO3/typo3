@@ -80,6 +80,7 @@ class tx_extrapagecmoptions {
 		global $BE_USER,$TCA,$LANG;
 
 		$localItems = array();	// Accumulation of local items.
+		$subname = t3lib_div::_GP('subname');
 
 			// Detecting menu level
 		if (!$backRef->cmLevel)	{	// LEVEL: Primary menu.
@@ -130,8 +131,7 @@ class tx_extrapagecmoptions {
 			} else {	// If no delete item was found, then just merge in the items:
 				$menuItems=array_merge($menuItems,$localItems);
 			}
-			return $menuItems;
-		} else {	// LEVEL: Secondary level of menus (activated by an item on the first level).
+		} elseif ($subname==='moreoptions') {	// LEVEL: Secondary level of menus (activated by an item on the first level).
 			if ($backRef->editOK)	{	// If the page can be edited, then show this:
 				if (!in_array('move_wizard',$backRef->disabledItems) && ($table=='pages' || $table=='tt_content'))	$localItems['move_wizard']=$backRef->DB_moveWizard($table,$uid,$backRef->rec);
 				if (!in_array('new_wizard',$backRef->disabledItems) && ($table=='pages' || $table=='tt_content'))	$localItems['new_wizard']=$backRef->DB_newWizard($table,$uid,$backRef->rec);
@@ -147,8 +147,8 @@ class tx_extrapagecmoptions {
 
 				// Merge the locally made items into the current menu items passed to this function.
 			$menuItems = array_merge($menuItems,$localItems);
-			return $menuItems;
 		}
+		return $menuItems;
 	}
 
 	/**

@@ -10,7 +10,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_labels_tablabel">List of database-records</label>
-			<label index="mlang_labels_tabdescr">The Web&gt;List module provides the most lowlevel access to the records one a page. While the other modules are mainly specialized in certain operations on certain database tables, this module provides ultimate access to the bare records available to a user.</label>
+			<label index="mlang_labels_tabdescr">The Web&gt;List module provides low level access to records appearing on a page.</label>
 			<label index="mlang_tabs_tab">List</label>
 			<label index="clip_pasteAfter">Paste after: Clipboard content is inserted after this record</label>
 			<label index="clip_pasteInto">Paste into: Clipboard content is inserted on this page</label>
@@ -42,12 +42,16 @@
 			<label index="history">Display change history / Un-do</label>
 			<label index="permissions">Set permissions for page</label>
 			<label index="largeControl">Extended view</label>
+			<label index="localization">Localization view</label>
 			<label index="contractView">List all tables</label>
 			<label index="expandView">List only this table</label>
 			<label index="showClipBoard">Show clipboard</label>
 			<label index="editShownColumns">Edit all shown fields of the listed records</label>
 			<label index="editThisColumn">Edit the '%s' field of the listed records</label>
 			<label index="deleteWarning">Are you sure you want to delete this record?</label>
+			<label index="defaultLanguage">Default</label>
+			<label index="multipleLanguages">All languages</label>
+			<label index="Localize">Localize</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="mlang_labels_tablabel">Liste over database-records</label>
@@ -83,12 +87,16 @@
 			<label index="history">Vis ændringsforløbet / Fortryd</label>
 			<label index="permissions">Sæt rettigheder for siden</label>
 			<label index="largeControl">Udvidet visning</label>
+			<label index="localization">Oversættelsesvisning</label>
 			<label index="contractView">Vis alle tabeller</label>
 			<label index="expandView">Vis kun denne tabel</label>
 			<label index="showClipBoard">Vis klippebord</label>
 			<label index="editShownColumns">Redigér alle viste felter i de oplistede elementer</label>
 			<label index="editThisColumn">Redigér feltet '%s' i de oplistede elementer</label>
 			<label index="deleteWarning">Er du sikker på, at du ønsker at slette dette element?</label>
+			<label index="defaultLanguage">Standard</label>
+			<label index="multipleLanguages">Alle sprog</label>
+			<label index="Localize">Oversæt</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_labels_tablabel">Liste der Datensätze</label>
@@ -1269,47 +1277,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="mlang_labels_tablabel" type="integer">234857507</label>
-			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
-			<label index="mlang_tabs_tab" type="integer">82717130</label>
-			<label index="clip_pasteAfter" type="integer">12147320</label>
-			<label index="clip_pasteInto" type="integer">179341666</label>
-			<label index="clip_paste" type="integer">25920339</label>
-			<label index="clip_markRecords" type="integer">58652945</label>
-			<label index="clip_selectMarked" type="integer">73984189</label>
-			<label index="clip_duplicates" type="integer">54279918</label>
-			<label index="clip_editMarked" type="integer">193825665</label>
-			<label index="clip_deleteMarked" type="integer">126346891</label>
-			<label index="clip_deleteMarkedWarning" type="integer">50666174</label>
-			<label index="showInfo" type="integer">18178327</label>
-			<label index="edit" type="integer">148343509</label>
-			<label index="editPage" type="integer">66732081</label>
-			<label index="new" type="integer">153049580</label>
-			<label index="newPage" type="integer">101902723</label>
-			<label index="newRecord" type="integer">217661453</label>
-			<label index="newRecordGeneral" type="integer">54021068</label>
-			<label index="moveUp" type="integer">263415460</label>
-			<label index="moveDown" type="integer">53528924</label>
-			<label index="move_record" type="integer">167081647</label>
-			<label index="move_page" type="integer">32081372</label>
-			<label index="hide" type="integer">36165326</label>
-			<label index="unHide" type="integer">141242332</label>
-			<label index="hidePage" type="integer">262097628</label>
-			<label index="unHidePage" type="integer">260510626</label>
-			<label index="prevLevel" type="integer">24123263</label>
-			<label index="nextLevel" type="integer">42130533</label>
-			<label index="delete" type="integer">257712260</label>
-			<label index="history" type="integer">106067206</label>
-			<label index="permissions" type="integer">57344679</label>
-			<label index="largeControl" type="integer">97098220</label>
-			<label index="contractView" type="integer">204145058</label>
-			<label index="expandView" type="integer">80203533</label>
-			<label index="showClipBoard" type="integer">249278403</label>
-			<label index="editShownColumns" type="integer">18795941</label>
-			<label index="editThisColumn" type="integer">118469315</label>
-			<label index="deleteWarning" type="integer">75838368</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
 			<label index="mlang_labels_tabdescr" type="integer">174619281</label>
@@ -1350,6 +1317,10 @@
 			<label index="editShownColumns" type="integer">18795941</label>
 			<label index="editThisColumn" type="integer">118469315</label>
 			<label index="deleteWarning" type="integer">75838368</label>
+			<label index="localization" type="integer">248902375</label>
+			<label index="defaultLanguage" type="integer">128029197</label>
+			<label index="multipleLanguages" type="integer">180223936</label>
+			<label index="Localize" type="integer">237672049</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="mlang_labels_tablabel" type="integer">234857507</label>
@@ -2529,80 +2500,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

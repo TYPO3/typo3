@@ -9,17 +9,17 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="sel1">Please select which kind of page content you wish to create:</label>
-			<label index="sel2">Now, click at the position where you wish to place the element on the page:</label>
+			<label index="sel1">Please select the type of page content you wish to create:</label>
+			<label index="sel2">Now, click the position where you wish to place the element on the page:</label>
 			<label index="common">Typical page content</label>
 			<label index="common_1_title">Regular text element</label>
 			<label index="common_1_description">A regular text element with header and bodytext fields.</label>
 			<label index="common_2_title">Text with image below</label>
-			<label index="common_2_description">Regular text element with a field which can contain any number of images which are positioned below the text.</label>
+			<label index="common_2_description">A regular text element which can contain any number of images positioned below the text</label>
 			<label index="common_3_title">Text with image to the right</label>
-			<label index="common_3_description">Like above but with the images placed to the right of the text with the text wrapping around the images.</label>
+			<label index="common_3_description">As above but with text wrapped around a right aligned image.</label>
 			<label index="common_4_title">Images only</label>
-			<label index="common_4_description">Any number of images aligned in columns and rows with caption. Like the image options above but without text.</label>
+			<label index="common_4_description">Any number of images aligned in columns and rows with a caption.</label>
 			<label index="common_5_title">Bullet list</label>
 			<label index="common_5_description">A single bullet list.</label>
 			<label index="common_6_title">Table</label>
@@ -35,14 +35,14 @@
 			<label index="special_4_description">With this element you can insert raw HTML code on the page.</label>
 			<label index="forms">Form elements</label>
 			<label index="forms_1_title">Mail form</label>
-			<label index="forms_1_description">A response mail form by which users of the website can submit responses.</label>
+			<label index="forms_1_description">A mail form allowing website users to submit responses.</label>
 			<label index="forms_2_title">Search form</label>
 			<label index="forms_2_description">Draws a search form and the searchresult if a search is performed.</label>
 			<label index="forms_3_title">Login form</label>
-			<label index="forms_3_description">Login/logout form for website users. This is used to password protect pages. You must create website users and groups for this to work.</label>
+			<label index="forms_3_description">Login/logout form used to password protect pages allowing only authorised website users and groups access.</label>
 			<label index="plugins">Plugins</label>
 			<label index="plugins_1_title">General Plugin</label>
-			<label index="plugins_1_description">If you want to insert a plugin which cannot be found among the options below, just select this element type and you can select your specific plugin in a selector box afterward.</label>
+			<label index="plugins_1_description">Select this element type to insert a plugin which cannot be found amongst the options below.</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="sel1">Vælg hvilken slags sideindhold du ønsker at oprette:</label>
@@ -980,42 +980,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="sel1" type="integer">257792844</label>
-			<label index="sel2" type="integer">2777796</label>
-			<label index="common" type="integer">57063941</label>
-			<label index="common_1_title" type="integer">134955826</label>
-			<label index="common_1_description" type="integer">29135748</label>
-			<label index="common_2_title" type="integer">153490096</label>
-			<label index="common_2_description" type="integer">215746919</label>
-			<label index="common_3_title" type="integer">13066984</label>
-			<label index="common_3_description" type="integer">57201809</label>
-			<label index="common_4_title" type="integer">62677049</label>
-			<label index="common_4_description" type="integer">233905425</label>
-			<label index="common_5_title" type="integer">88917113</label>
-			<label index="common_5_description" type="integer">136121208</label>
-			<label index="common_6_title" type="integer">85738935</label>
-			<label index="common_6_description" type="integer">145590635</label>
-			<label index="special" type="integer">183531399</label>
-			<label index="special_1_title" type="integer">23062602</label>
-			<label index="special_1_description" type="integer">154390211</label>
-			<label index="special_2_title" type="integer">49638223</label>
-			<label index="special_2_description" type="integer">87627445</label>
-			<label index="special_3_title" type="integer">92355808</label>
-			<label index="special_3_description" type="integer">36006628</label>
-			<label index="special_4_title" type="integer">238583373</label>
-			<label index="special_4_description" type="integer">92097111</label>
-			<label index="forms" type="integer">14172094</label>
-			<label index="forms_1_title" type="integer">173513512</label>
-			<label index="forms_1_description" type="integer">149875491</label>
-			<label index="forms_2_title" type="integer">184654558</label>
-			<label index="forms_2_description" type="integer">71325784</label>
-			<label index="forms_3_title" type="integer">149378624</label>
-			<label index="forms_3_description" type="integer">64416876</label>
-			<label index="plugins" type="integer">196313238</label>
-			<label index="plugins_1_title" type="integer">188310073</label>
-			<label index="plugins_1_description" type="integer">4113831</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="sel1" type="integer">257792844</label>
 			<label index="sel2" type="integer">2777796</label>
@@ -1951,80 +1915,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

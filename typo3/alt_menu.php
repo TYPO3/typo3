@@ -103,7 +103,7 @@ class SC_alt_menu {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$TYPO3_CONF_VARS,$TBE_TEMPLATE,$TYPO_VERSION;
+		global $BE_USER,$TYPO3_CONF_VARS,$TBE_TEMPLATE;
 
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='vertical-menu';

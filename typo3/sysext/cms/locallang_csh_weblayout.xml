@@ -13,8 +13,8 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index=".alttitle">Web &gt; Page Module</label>
-			<label index=".description">The page module is the primary module for all basic CMS operations you need to perform when you maintain the content on a website.</label>
-			<label index=".details">The Web&gt;Page module is activated from the backend menu. After selecting the module you will see the page tree and to edit content on a page you simply click the title of that page and in the right frame you will see the content of the page displayed by the Page module.
+			<label index=".description">The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</label>
+			<label index=".details">Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
 
 The page module has various modes of display of content;
 

@@ -35,7 +35,7 @@
 			<label index="emailAddress">Email address</label>
 			<label index="setLink">Set Link</label>
 			<label index="clickToRedrawFullSize">Image is larger than shown here! Click to redraw page with full sized images.</label>
-			<label index="findDragDrop">Find your image, then click on the image and drag it into the editor in the main window!</label>
+			<label index="findDragDrop">Find and click on your image then drag it into the editor in the main window!</label>
 			<label index="noWebFolder">You cannot drag images from this folder (yellow) because it is internal on the server.</label>
 			<label index="currentLink">Current Link</label>
 			<label index="invalidChar">ERROR: Invalid character found in file path (%s). Cannot add the file!</label>

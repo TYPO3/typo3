@@ -217,9 +217,7 @@ class SC_alt_doc {
 	 * @return	boolean		True, then save the document (data submitted)
 	 */
 	function doProcessData()	{
-		global $HTTP_POST_VARS;
-
-		$out = $this->doSave || isset($HTTP_POST_VARS['_savedok_x']) || isset($HTTP_POST_VARS['_saveandclosedok_x']) || isset($HTTP_POST_VARS['_savedokview_x']) || isset($HTTP_POST_VARS['_savedoknew_x']);
+		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']);
 		return $out;
 	}
 
@@ -229,7 +227,7 @@ class SC_alt_doc {
 	 * @return	void
 	 */
 	function processData()	{
-		global $BE_USER,$HTTP_POST_VARS,$TYPO3_CONF_VARS;
+		global $BE_USER,$TYPO3_CONF_VARS;
 
 			// GPvars specifically for processing:
 		$this->data = t3lib_div::_GP('data');
@@ -275,7 +273,7 @@ class SC_alt_doc {
 		} else {
 
 				// Perform the saving operation with TCEmain:
-			$tce->process_uploads($GLOBALS['HTTP_POST_FILES']);
+			$tce->process_uploads($_FILES);
 			$tce->process_datamap();
 
 				// If there was saved any new items, load them:
@@ -303,7 +301,7 @@ class SC_alt_doc {
 			}
 
 				// If a document is saved and a new one is created right after.
-			if (isset($HTTP_POST_VARS['_savedoknew_x']) && is_array($this->editconf))	{
+			if (isset($_POST['_savedoknew_x']) && is_array($this->editconf))	{
 
 					// Finding the current table:
 				reset($this->editconf);
@@ -330,12 +328,12 @@ class SC_alt_doc {
 			}
 
 			$tce->printLogErrorMessages(
-				isset($HTTP_POST_VARS['_saveandclosedok_x']) ?
+				isset($_POST['_saveandclosedok_x']) ?
 				$this->retUrl :
 				$this->R_URL_parts['path'].'?'.t3lib_div::implodeArrayForUrl('',$this->R_URL_getvars)	// popView will not be invoked here, because the information from the submit button for save/view will be lost .... But does it matter if there is an error anyways?
 			);
 		}
-		if (isset($HTTP_POST_VARS['_saveandclosedok_x']) || $this->closeDoc<0)	{	//  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED because if not, we just get that element re-listed as new. And we don't want that!
+		if (isset($_POST['_saveandclosedok_x']) || $this->closeDoc<0)	{	//  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED because if not, we just get that element re-listed as new. And we don't want that!
 			$this->closeDocument(abs($this->closeDoc));
 		}
 	}
@@ -346,7 +344,7 @@ class SC_alt_doc {
 	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$HTTP_POST_VARS;
+		global $BE_USER,$LANG,$BACK_PATH;
 
 			// Setting more GPvars:
 		$this->popViewId = t3lib_div::_GP('popViewId');
@@ -416,7 +414,7 @@ class SC_alt_doc {
 				}
 				return false;
 			}
-		'.(isset($HTTP_POST_VARS['_savedokview_x']) && $this->popViewId ? t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl,$this->popViewId_addParams) : '')
+		'.(isset($_POST['_savedokview_x']) && $this->popViewId ? t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl,$this->popViewId_addParams) : '')
 		).$this->doc->getDynTabMenuJScode();
 
 			// Setting up the context sensitive menu:
@@ -624,6 +622,7 @@ class SC_alt_doc {
 							if ($hasAccess)	{
 								$prevPageID = is_object($trData)?$trData->prevPageID:'';
 								$trData = t3lib_div::makeInstance('t3lib_transferData');
+								$trData->addRawData = TRUE;
 								$trData->defVals = $this->defVals;
 								$trData->lockRecords=1;
 								$trData->disableRTE = $this->MOD_SETTINGS['disableRTE'];

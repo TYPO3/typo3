@@ -236,7 +236,7 @@ class t3lib_div {
 	 */
 	function _GP($var)	{
 		if(empty($var)) return;
-		$value = isset($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : $GLOBALS['HTTP_GET_VARS'][$var];
+		$value = isset($_POST[$var]) ? $_POST[$var] : $_GET[$var];
 		if (isset($value))	{
 			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
 		}
@@ -249,11 +249,11 @@ class t3lib_div {
 	 * Usage: 27
 	 *
 	 * @param	string		Optional pointer to value in GET array (basically name of GET var)
-	 * @return	mixed		If $var is set it returns the value of $HTTP_GET_VARS[$var]. If $var is NULL (default), returns $HTTP_GET_VARS itself. In any case *slashes are stipped from the output!*
+	 * @return	mixed		If $var is set it returns the value of $_GET[$var]. If $var is NULL (default), returns $_GET itself. In any case *slashes are stipped from the output!*
 	 * @see _POST(), _GP(), _GETset()
 	 */
 	function _GET($var=NULL)	{
-		$value = ($var === NULL) ? $GLOBALS['HTTP_GET_VARS'] : (empty($var) ? NULL : $GLOBALS['HTTP_GET_VARS'][$var]);
+		$value = ($var === NULL) ? $_GET : (empty($var) ? NULL : $_GET[$var]);
 		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
 			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
 		}
@@ -266,11 +266,11 @@ class t3lib_div {
 	 * Usage: 41
 	 *
 	 * @param	string		Optional pointer to value in POST array (basically name of POST var)
-	 * @return	mixed		If $var is set it returns the value of $HTTP_POST_VARS[$var]. If $var is NULL (default), returns $HTTP_POST_VARS itself. In any case *slashes are stipped from the output!*
+	 * @return	mixed		If $var is set it returns the value of $_POST[$var]. If $var is NULL (default), returns $_POST itself. In any case *slashes are stipped from the output!*
 	 * @see _GET(), _GP()
 	 */
 	function _POST($var=NULL)	{
-		$value = ($var === NULL) ? $GLOBALS['HTTP_POST_VARS'] : (empty($var) ? NULL : $GLOBALS['HTTP_POST_VARS'][$var]);
+		$value = ($var === NULL) ? $_POST : (empty($var) ? NULL : $_POST[$var]);
 		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
 			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
 		}
@@ -278,10 +278,10 @@ class t3lib_div {
 	}
 
 	/**
-	 * Writes input value to $HTTP_GET_VARS / $_GET
+	 * Writes input value to $_GET
 	 * Usage: 2
 	 *
-	 * @param	array		Array to write to $HTTP_GET_VARS / $_GET. Values should NOT be escaped at input time (but will be escaped before writing according to TYPO3 standards).
+	 * @param	array		Array to write to $_GET. Values should NOT be escaped at input time (but will be escaped before writing according to TYPO3 standards).
 	 * @param	string		Alternative key; If set, this will not set the WHOLE GET array, but only the key in it specified by this value!
 	 * @return	void
 	 */
@@ -310,26 +310,10 @@ class t3lib_div {
 	 */
 	function GPvar($var,$strip=0)	{
 		if(empty($var)) return;
-		$value = isset($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : $GLOBALS['HTTP_GET_VARS'][$var];
-		if (isset($value) && is_string($value))	{ $value = stripslashes($value); }	// Originally check '&& get_magic_quotes_gpc() ' but the values of HTTP_GET_VARS are always slashed regardless of get_magic_quotes_gpc() because HTTP_POST/GET_VARS are run through addSlashesOnArray in the very beginning of index_ts.php eg.
+		$value = isset($_POST[$var]) ? $_POST[$var] : $_GET[$var];
+		if (isset($value) && is_string($value))	{ $value = stripslashes($value); }	// Originally check '&& get_magic_quotes_gpc() ' but the values of $_GET are always slashed regardless of get_magic_quotes_gpc() because HTTP_POST/GET_VARS are run through addSlashesOnArray in the very beginning of index_ts.php eg.
 		if ($strip && isset($value) && is_array($value)) { t3lib_div::stripSlashesOnArray($value); }
 		return $value;
-	}
-
-	/**
-	 * Sets global variables from HTTP_POST_VARS or HTTP_GET_VARS
-	 * Usage: 0
-	 *
-	 * @param	string		List of GET/POST var keys to set globally
-	 * @param	boolean		If set, values are passed through stripslashes()
-	 * @return	void
-	 * @deprecated
-	 */
-	function setGPvars($list,$strip=0)	{
-		$vars = t3lib_div::trimExplode(',',$list,1);
-		while(list(,$var)=each($vars))	{
-			$GLOBALS[$var] = t3lib_div::GPvar($var,$strip);
-		}
 	}
 
 	/**
@@ -342,8 +326,8 @@ class t3lib_div {
 	 * @deprecated
 	 */
 	function GParrayMerged($var)	{
-		$postA = is_array($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : array();
-		$getA = is_array($GLOBALS['HTTP_GET_VARS'][$var]) ? $GLOBALS['HTTP_GET_VARS'][$var] : array();
+		$postA = is_array($_POST[$var]) ? $_POST[$var] : array();
+		$getA = is_array($_GET[$var]) ? $_GET[$var] : array();
 		$mergedA = t3lib_div::array_merge_recursive_overrule($getA,$postA);
 		t3lib_div::stripSlashesOnArray($mergedA);
 		return $mergedA;
@@ -1321,7 +1305,7 @@ class t3lib_div {
 				} else {
 					if (!$skipBlank || strcmp($AVal,''))	{
 						$str.='&'.($rawurlencodeParamName ? rawurlencode($thisKeyName) : $thisKeyName).
-							'='.rawurlencode($AVal);	// strips slashes because HTTP_POST_VARS / GET_VARS input is with slashes...
+							'='.rawurlencode($AVal);	// strips slashes because _POST / _GET input is with slashes...
 					}
 				}
 			}
@@ -1756,52 +1740,54 @@ class t3lib_div {
 		$output='';
 
 			// Traverse the input array
-		foreach($array as $k=>$v)	{
-			$attr = '';
-			$tagName = $k;
+		if (is_array($array))	{
+			foreach($array as $k=>$v)	{
+				$attr = '';
+				$tagName = $k;
 
-				// Construct the tag name.
-			if (!strcmp(intval($tagName),$tagName))	{	// If integer...;
-				if ($options['useNindex']) {	// If numeric key, prefix "n"
-					$tagName = 'n'.$tagName;
-				} else {	// Use special tag for num. keys:
-					$attr.=' index="'.$tagName.'"';
-					$tagName = $options['useIndexTagForNum'] ? $options['useIndexTagForNum'] : 'numIndex';
+					// Construct the tag name.
+				if (!strcmp(intval($tagName),$tagName))	{	// If integer...;
+					if ($options['useNindex']) {	// If numeric key, prefix "n"
+						$tagName = 'n'.$tagName;
+					} else {	// Use special tag for num. keys:
+						$attr.=' index="'.$tagName.'"';
+						$tagName = $options['useIndexTagForNum'] ? $options['useIndexTagForNum'] : 'numIndex';
+					}
+				} elseif($options['useIndexTagForAssoc']) {		// Use tag for all associative keys:
+					$attr.=' index="'.htmlspecialchars($tagName).'"';
+					$tagName = $options['useIndexTagForAssoc'];
+				} elseif(isset($options['parentTagMap'][$parentTagName])) {		// Use tag based on parent tag name:
+					$attr.=' index="'.htmlspecialchars($tagName).'"';
+					$tagName = (string)$options['parentTagMap'][$parentTagName];
 				}
-			} elseif($options['useIndexTagForAssoc']) {		// Use tag for all associative keys:
-				$attr.=' index="'.htmlspecialchars($tagName).'"';
-				$tagName = $options['useIndexTagForAssoc'];
-			} elseif(isset($options['parentTagMap'][$parentTagName])) {		// Use tag based on parent tag name:
-				$attr.=' index="'.htmlspecialchars($tagName).'"';
-				$tagName = (string)$options['parentTagMap'][$parentTagName];
-			}
 
-				// The tag name is cleaned up so only alphanumeric chars (plus - and _) are in there and not longer than 100 chars either.
-			$tagName = substr(ereg_replace('[^[:alnum:]_-]','',$tagName),0,100);
+					// The tag name is cleaned up so only alphanumeric chars (plus - and _) are in there and not longer than 100 chars either.
+				$tagName = substr(ereg_replace('[^[:alnum:]_-]','',$tagName),0,100);
 
-				// If the value is an array then we will call this function recursively:
-			if (is_array($v))	{
-				// Sub elements:
-				$content = chr(10).t3lib_div::array2xml($v,$NSprefix,$level+1,'',$spaceInd,$options,$tagName).
-							str_pad('',($level+1)*$indentN,$indentChar);
-				$attr.=' type="array"';
-			} else {	// Just a value:
+					// If the value is an array then we will call this function recursively:
+				if (is_array($v))	{
+					// Sub elements:
+					$content = chr(10).t3lib_div::array2xml($v,$NSprefix,$level+1,'',$spaceInd,$options,$tagName).
+								str_pad('',($level+1)*$indentN,$indentChar);
+					$attr.=' type="array"';
+				} else {	// Just a value:
 
-					// Look for binary chars:
-				if (strcspn($v,$binaryChars) != strlen($v))	{	// Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
-						// If the value contained binary chars then we base64-encode it an set an attribute to notify this situation:
-					$content = chr(10).chunk_split(base64_encode($v));
-					$attr.=' base64="1"';
-				} else {
-						// Otherwise, just htmlspecialchar the stuff:
-					$content = htmlspecialchars($v);
-					$dType = gettype($v);
-					if ($dType!='string')	{ $attr.=' type="'.$dType.'"'; }
+						// Look for binary chars:
+					if (strcspn($v,$binaryChars) != strlen($v))	{	// Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
+							// If the value contained binary chars then we base64-encode it an set an attribute to notify this situation:
+						$content = chr(10).chunk_split(base64_encode($v));
+						$attr.=' base64="1"';
+					} else {
+							// Otherwise, just htmlspecialchar the stuff:
+						$content = htmlspecialchars($v);
+						$dType = gettype($v);
+						if ($dType!='string')	{ $attr.=' type="'.$dType.'"'; }
+					}
 				}
-			}
 
-				// Add the element to the output string:
-			$output.=str_pad('',($level+1)*$indentN,$indentChar).'<'.$NSprefix.$tagName.$attr.'>'.$content.'</'.$NSprefix.$tagName.'>'.chr(10);
+					// Add the element to the output string:
+				$output.=str_pad('',($level+1)*$indentN,$indentChar).'<'.$NSprefix.$tagName.$attr.'>'.$content.'</'.$NSprefix.$tagName.'>'.chr(10);
+			}
 		}
 
 			// If we are at the outer-most level, then we finally wrap it all in the document tags and return that as the value:
@@ -2518,14 +2504,13 @@ class t3lib_div {
 
 	/**
 	 * Abstraction method which returns System Environment Variables regardless of server OS, CGI/MODULE version etc. Basically this is SERVER variables for most of them.
-	 * This should be used instead of getEnv() and HTTP_SERVER_VARS/ENV_VARS to get reliable values for all situations.
+	 * This should be used instead of getEnv() and $_SERVER/ENV_VARS to get reliable values for all situations.
 	 * Usage: 221
 	 *
 	 * @param	string		Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
 	 * @return	string		Value based on the input key, independent of server/os environment.
 	 */
 	function getIndpEnv($getEnvName)	{
-		global $HTTP_SERVER_VARS;
 		/*
 			Conventions:
 			output from parse_url():
@@ -2589,25 +2574,25 @@ class t3lib_div {
 #		if ($getEnvName=='HTTP_REFERER')	return '';
 		switch((string)$getEnvName)	{
 			case 'SCRIPT_NAME':
-				return (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_INFO']?$HTTP_SERVER_VARS['ORIG_PATH_INFO']:$HTTP_SERVER_VARS['PATH_INFO']) ? ($HTTP_SERVER_VARS['ORIG_PATH_INFO']?$HTTP_SERVER_VARS['ORIG_PATH_INFO']:$HTTP_SERVER_VARS['PATH_INFO']) : ($HTTP_SERVER_VARS['ORIG_SCRIPT_NAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_NAME']:$HTTP_SERVER_VARS['SCRIPT_NAME']);
+				return (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO']?$_SERVER['ORIG_PATH_INFO']:$_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME']?$_SERVER['ORIG_SCRIPT_NAME']:$_SERVER['SCRIPT_NAME']);
 			break;
 			case 'SCRIPT_FILENAME':
-				return str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED'])? ($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED']):($HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']:$HTTP_SERVER_VARS['SCRIPT_FILENAME'])));
+				return str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME'])));
 			break;
 			case 'REQUEST_URI':
 				// Typical application of REQUEST_URI is return urls, forms submitting to itselt etc. Eg:	returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))
-				if (!$HTTP_SERVER_VARS['REQUEST_URI'])	{	// This is for ISS/CGI which does not have the REQUEST_URI available.
+				if (!$_SERVER['REQUEST_URI'])	{	// This is for ISS/CGI which does not have the REQUEST_URI available.
 					return '/'.ereg_replace('^/','',t3lib_div::getIndpEnv('SCRIPT_NAME')).
-						($HTTP_SERVER_VARS['QUERY_STRING']?'?'.$HTTP_SERVER_VARS['QUERY_STRING']:'');
-				} else return $HTTP_SERVER_VARS['REQUEST_URI'];
+						($_SERVER['QUERY_STRING']?'?'.$_SERVER['QUERY_STRING']:'');
+				} else return $_SERVER['REQUEST_URI'];
 			break;
 			case 'PATH_INFO':
-					// $HTTP_SERVER_VARS['PATH_INFO']!=$HTTP_SERVER_VARS['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
+					// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
 					// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
-					// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'php_sapi_name()=='cgi'' might be a better check. Right now strcmp($HTTP_SERVER_VARS['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return false for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of php_sapi_name()=='cgi' (see above)
-//				if (strcmp($HTTP_SERVER_VARS['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) && count(explode('/',$HTTP_SERVER_VARS['PATH_INFO']))>1)	{
+					// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'php_sapi_name()=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return false for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of php_sapi_name()=='cgi' (see above)
+//				if (strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) && count(explode('/',$_SERVER['PATH_INFO']))>1)	{
 				if (php_sapi_name()!='cgi'&&php_sapi_name()!='cgi-fcgi')	{
-					return $HTTP_SERVER_VARS['PATH_INFO'];
+					return $_SERVER['PATH_INFO'];
 				} else return '';
 			break;
 				// These are let through without modification
@@ -2618,7 +2603,7 @@ class t3lib_div {
 			case 'HTTP_USER_AGENT':
 			case 'HTTP_ACCEPT_LANGUAGE':
 			case 'QUERY_STRING':
-				return $HTTP_SERVER_VARS[$getEnvName];
+				return $_SERVER[$getEnvName];
 			break;
 			case 'TYPO3_DOCUMENT_ROOT':
 				// Some CGI-versions (LA13CGI) and mod-rewrite rules on MODULE versions will deliver a 'wrong' DOCUMENT_ROOT (according to our description). Further various aliases/mod_rewrite rules can disturb this as well.
@@ -2637,16 +2622,16 @@ class t3lib_div {
 				return $DR;
 			break;
 			case 'TYPO3_HOST_ONLY':
-				$p = explode(':',$HTTP_SERVER_VARS['HTTP_HOST']);
+				$p = explode(':',$_SERVER['HTTP_HOST']);
 				return $p[0];
 			break;
 			case 'TYPO3_PORT':
-				$p = explode(':',$HTTP_SERVER_VARS['HTTP_HOST']);
+				$p = explode(':',$_SERVER['HTTP_HOST']);
 				return $p[1];
 			break;
 			case 'TYPO3_REQUEST_HOST':
 				return (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').
-					$HTTP_SERVER_VARS['HTTP_HOST'];
+					$_SERVER['HTTP_HOST'];
 			break;
 			case 'TYPO3_REQUEST_URL':
 				return t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').t3lib_div::getIndpEnv('REQUEST_URI');
@@ -2670,7 +2655,7 @@ class t3lib_div {
 				return substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 			break;
 			case 'TYPO3_SSL':
-				return $HTTP_SERVER_VARS['SSL_SESSION_ID'] || !strcmp($HTTP_SERVER_VARS['HTTPS'],'on') ? TRUE : FALSE;
+				return $_SERVER['SSL_SESSION_ID'] || !strcmp($_SERVER['HTTPS'],'on') ? TRUE : FALSE;
 			break;
 			case '_ARRAY':
 				$out = array();
@@ -2934,7 +2919,7 @@ class t3lib_div {
 	 * REMEMBER to use t3lib_div::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in PATH_site."typo3temp/"!
 	 * Usage: 6
 	 *
-	 * @param	string		The temporary uploaded filename, eg. $GLOBALS['HTTP_POST_FILES']['[upload field name here]']['tmp_name']
+	 * @param	string		The temporary uploaded filename, eg. $_FILES['[upload field name here]']['tmp_name']
 	 * @return	string		If a new file was successfully created, return its filename, otherwise blank string.
 	 * @see unlink_tempfile(), upload_copy_move()
 	 */
@@ -3041,6 +3026,7 @@ class t3lib_div {
 	 */
 	function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	{
 		if (is_array($dataStructArray['sheets']))	{
+			$singleSheet = FALSE;
 			if (!isset($dataStructArray['sheets'][$sheet]))	{
 				$sheet='sDEF';
 			}
@@ -3054,10 +3040,11 @@ class t3lib_div {
 				}
 			}
 		} else {
+			$singleSheet = TRUE;
 			$dataStruct = $dataStructArray;
 			$sheet = 'sDEF';	// Default sheet
 		}
-		return array($dataStruct,$sheet);
+		return array($dataStruct,$sheet,$singleSheet);
 	}
 
 	/**
