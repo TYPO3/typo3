@@ -1,3 +1,10 @@
+2004-06-09  Robert Lemke  <rl@robertlemke.de>
+
+	* Fixed bug #0000123:
+		The stdWrap-option "stripHtml" should come before the option "crop" because HTML-Tags are recognized as Text by the crop-option but getafterwards stript out. That produces a wrong textlength.
+		Changed order of "crop" to after "stripHTML"
+		Affected file: class.tslib_content.php
+
 2004-06-08  Robert Lemke  <rl@robertlemke.de>
 
 	* Fixed bug #0000070: Number of files (file count) displayed in file list module was one number too high ("5 Files" although 4 only exist). Updated typo3/class.file_list.inc
