@@ -626,7 +626,7 @@ $TCA['sys_language'] = Array (
 				'items' => Array (
 					Array('',0),
 				),
-				'fileFolder' => 'EXT:cms/tslib/media/flags/',
+				'fileFolder' => 't3lib/gfx/flags/',
 				'fileFolder_extList' => 'png,jpg,jpeg,gif',
 				'fileFolder_recursions' => 0,
 				'selicon_cols' => 8,
