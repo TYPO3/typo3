@@ -115,7 +115,7 @@ class t3lib_extMgm {
 
 	/**************************************
 	 *
-	 *	 PATHS and other evaluation
+	 * PATHS and other evaluation
 	 *
 	 ***************************************/
 

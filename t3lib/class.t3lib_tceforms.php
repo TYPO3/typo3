@@ -1094,7 +1094,8 @@ class t3lib_TCEforms	{
 		}
 
 			// Creating the label for the "No Matching Value" entry.
-		$nMV_label = isset($PA['fieldTSConfig']['noMatchingValue_label']) ? $this->sL($PA['fieldTSConfig']['noMatchingValue_label']) : '[ '.sprintf($this->getLL('l_noMatchingValue'),$PA['itemFormElValue']).' ]';
+		$nMV_label = isset($PA['fieldTSConfig']['noMatchingValue_label']) ? $this->sL($PA['fieldTSConfig']['noMatchingValue_label']) : '[ '.$this->getLL('l_noMatchingValue').' ]';
+		$nMV_label = @sprintf($nMV_label, $PA['itemFormElValue']);
 
 			// Prepare some values:
 		$maxitems = intval($config['maxitems']);

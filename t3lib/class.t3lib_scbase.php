@@ -269,6 +269,9 @@ class t3lib_SCbase {
 		$this->MOD_MENU['function'] = $this->mergeExternalItems($this->MCONF['name'],'function',$this->MOD_MENU['function']);
 		$this->MOD_MENU['function'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['function'],'menu.function');
 
+		#debug($this->MOD_MENU['function'],$this->MCONF['name']);
+		#debug($this->modTSconfig['properties']);
+
 			// CLEANSE 'function' SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 	}

@@ -1970,14 +1970,23 @@ class t3lib_BEfunc	{
 	function getFuncMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
 		if (is_array($menuItems))	{
 			if (!$script) { $script=basename(PATH_thisScript); }
-			$options='';
-			reset($menuItems);
-			while(list($value,$label)=each($menuItems))	{
-				$options.='<option value="'.htmlspecialchars($value).'"'.(!strcmp($currentValue,$value)?' selected="selected"':'').'>'.t3lib_div::deHSCentities(htmlspecialchars($label)).'</option>';
+
+			$options = array();
+			foreach($menuItems as $value => $label)	{
+				$options[] = '<option value="'.htmlspecialchars($value).'"'.(!strcmp($currentValue,$value)?' selected="selected"':'').'>'.
+								t3lib_div::deHSCentities(htmlspecialchars($label)).
+								'</option>';
 			}
-			if ($options)	{
-				$onChange= 'jumpToUrl(\''.$script.'?id='.rawurlencode($id).$addparams.'&'.$elementName.'=\'+this.options[this.selectedIndex].value,this);';
-				return '<select name="'.$elementName.'" onchange="'.htmlspecialchars($onChange).'">'.$options.'</select>';
+			if (count($options))	{
+				$onChange = 'jumpToUrl(\''.$script.'?id='.rawurlencode($id).$addparams.'&'.$elementName.'=\'+this.options[this.selectedIndex].value,this);';
+				return '
+
+					<!-- Function Menu of module -->
+					<select name="'.$elementName.'" onchange="'.htmlspecialchars($onChange).'">
+						'.implode('
+						',$options).'
+					</select>
+							';
 			}
 		}
 	}

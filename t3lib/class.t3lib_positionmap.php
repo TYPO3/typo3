@@ -130,7 +130,7 @@ class t3lib_positionMap {
 	 * @return	string		HTML code for the tree.
 	 */
 	function positionTree($id,$pageinfo,$perms_clause,$R_URI)	{
-		global $LANG;
+		global $LANG, $BE_USER;
 
 			// Make page tree object:
 		$t3lib_pageTree = t3lib_div::makeInstance('localPageTree');
