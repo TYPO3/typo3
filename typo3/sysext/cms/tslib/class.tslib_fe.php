@@ -187,12 +187,13 @@
 	var $page='';						// The pagerecord (array)
 	var $contentPid=0;					// This will normally point to the same value as id, but can be changed to point to another page from which content will then be displayed instead.
 	var $sys_page='';					// The object with pagefunctions (object)
-	var $jumpurl='';		
+	var $jumpurl='';
 	var $pageNotFound=0;				// Is set to 1 if a pageNotFound handler could have been called.
 	var $domainStartPage=0;				// Domain start page
 	var $MP='';
 	var $RDCT='';
 	var $page_cache_reg1=0;				// This can be set from applications as a way to tag cached versions of a page and later perform some external cache management, like clearing only a part of the cache of a page...
+	var $siteScript='';					// Contains the value of the current script path that activated the frontend. Typically "index.php" but by rewrite rules it could be something else! Used for Speaking Urls / Simulate Static Documents.
 
 		// USER
 	var $fe_user='';					// The user (object)
@@ -491,25 +492,25 @@
 		global $TYPO3_CONF_VARS;
 		
 #		IF (TYPO3_OS=='WIN')	return;		# Commenting out this line will make it work for windows Apache mod_rewrite as well.
+		$this->siteScript = t3lib_div::getIndpEnv('TYPO3_SITE_SCRIPT');
 
-			// Redirect by mod_rewrite:
-		if ($GLOBALS['HTTP_SERVER_VARS']['REDIRECT_URL'])	{		// If there has been a redirect (basically; we arrived here otherwise than via "index.php" in the URL) this can happend either due to a CGI-script or because of reWrite rule.
-			$uParts = parse_url($GLOBALS['HTTP_SERVER_VARS']['REQUEST_URI']);
-			$requestFilename = trim(ereg_replace('.*\/','',$uParts['path']));		// This is the filename of the script/simulated html-file.
-			if ($requestFilename && substr($requestFilename,-4)!='.php')	{
-				$parts = explode('.',ereg_replace('.*\/','',$requestFilename));
+			// Resolving of "simulateStaticDocuments" URLs:
+		if ($this->siteScript && substr($this->siteScript,0,9)!='index.php')	{		// If there has been a redirect (basically; we arrived here otherwise than via "index.php" in the URL) this can happend either due to a CGI-script or because of reWrite rule. Earlier we used $GLOBALS['HTTP_SERVER_VARS']['REDIRECT_URL'] to check but
+			$uParts = parse_url($this->siteScript);	// Parse the path:
+			$requestFilename = basename($uParts['path']);		// This is the filename of the script/simulated html-file.
+			if (dirname($uParts['path'])=='.' && $requestFilename && substr($requestFilename,-5)=='.html')	{
+				$parts = explode('.',$requestFilename);
 				$pCount = count($parts);
-				if ($parts[$pCount-1]='html')	{
-					if ($pCount>2)	{
-						$this->type = intval($parts[$pCount-2]);
-						$this->id = $parts[$pCount-3];
-					} else {
-						$this->type = 0;
-						$this->id = $parts[0];
-					}
+				if ($pCount>2)	{
+					$this->type = intval($parts[$pCount-2]);
+					$this->id = $parts[$pCount-3];
+				} else {
+					$this->type = 0;
+					$this->id = $parts[0];
 				}
 			}
 		}
+
 			// If PATH_INFO
 		if (t3lib_div::getIndpEnv('PATH_INFO'))	{		// If pathinfo contains stuff...
 			$parts=t3lib_div::trimExplode('/',t3lib_div::getIndpEnv('PATH_INFO'),1);
@@ -533,7 +534,7 @@
 			}
 		}
 	}
-	
+
 	/**
 	 * Clears the preview-flags, sets sim_exec_time to current time.
 	 * Hidden pages must be hidden as default, $GLOBALS['SIM_EXEC_TIME'] is set to $GLOBALS['EXEC_TIME'] in t3lib/config_default.inc. Alter it by adding or subtracting seconds.

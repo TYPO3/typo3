@@ -2453,6 +2453,7 @@ class t3lib_div {
 				TYPO3_REQUEST_SCRIPT =  [scheme]://[host][:[port]][path_script]
 				TYPO3_REQUEST_DIR =		[scheme]://[host][:[port]][path_dir]
 				TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website
+				TYPO3_SITE_SCRIPT = 	[script / Speaking URL] of the TYPO3 website
 				TYPO3_DOCUMENT_ROOT	=	Absolute path of root of documents:	TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
 
 			Notice: [fragment] is apparently NEVER available to the script!
@@ -2544,7 +2545,9 @@ class t3lib_div {
 					if (substr($siteUrl,-1)!='/')	$siteUrl.='/';
 					return $siteUrl;
 				} else return '';
-
+			break;
+			case 'TYPO3_SITE_SCRIPT':
+				return substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 			break;
 			case '_ARRAY':
 				$out = array();
@@ -2562,6 +2565,7 @@ class t3lib_div {
 					TYPO3_REQUEST_SCRIPT,
 					TYPO3_REQUEST_DIR,
 					TYPO3_SITE_URL,
+					TYPO3_SITE_SCRIPT,
 					SCRIPT_NAME,
 					TYPO3_DOCUMENT_ROOT,
 					SCRIPT_FILENAME,

@@ -1,3 +1,7 @@
+2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Changed the way simulateStaticDocuments are resolved
+
 2004-03-28  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Changed "t3lib_div::calluserFunc" and t3lib_div::getUserObj to use "&" as token for persistent (global) objects rather than ">" - PLEASE UPDATE YOUR CODE if you happend to use these features already (less than a week old).
