@@ -27,6 +27,8 @@
 /**
  * Manage storing and restoring of $GLOBALS['SOBE']->MOD_SETTINGS settings.
  * Provides a presets box for BE modules.
+ * 
+ * This class is in pre-beta state!!
  *
  * $Id$
  *
@@ -381,4 +383,3 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_modSettings.php']);
 }
 ?>
-
