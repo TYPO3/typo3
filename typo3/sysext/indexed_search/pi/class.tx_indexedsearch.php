@@ -1622,11 +1622,10 @@ class tx_indexedsearch extends tslib_pibase {
 			case 'rank_flag':	// Based on priority assigned to <title> / <meta-keywords> / <meta-description> / <body>
 				if ($this->firstRow['order_val2'])	{
 					$base = $row['order_val1']*256; // (3 MSB bit, 224 is highest value of order_val1 currently)
-					$freqNumber = $row['order_val2']/$this->firstRow['order_val2']*pow(2,13);	// 16-3 MSB = 13
-					$total = t3lib_div::intInRange($base+$freqNumber,0,65536);
+					$freqNumber = $row['order_val2']/$this->firstRow['order_val2']*pow(2,12);	// 15-3 MSB = 12
+					$total = t3lib_div::intInRange($base+$freqNumber,0,32767);
 					#debug($total);
-					#debug(log($total)/log(65536)*100,1);
-					return ceil(log($total)/log(65536)*100).'%';
+					return ceil(log($total)/log(32767)*100).'%';
 				}
 			break;
 			case 'rank_freq':	// Based on frequency

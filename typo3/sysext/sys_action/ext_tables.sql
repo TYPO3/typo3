@@ -2,14 +2,14 @@
 # Table structure for table 'sys_action'
 #
 CREATE TABLE sys_action (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-  pid int(11) unsigned DEFAULT '0' NOT NULL,
-  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  crdate int(11) unsigned DEFAULT '0' NOT NULL,
-  cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
+  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  crdate int(11) DEFAULT '0' NOT NULL,
+  cruser_id int(11) DEFAULT '0' NOT NULL,
   title tinytext NOT NULL,
   description text NOT NULL,
-  type tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  type tinyint(3) DEFAULT '0' NOT NULL,
   t1_userprefix varchar(20) DEFAULT '' NOT NULL,
   t1_copy_of_user int(11) DEFAULT '0' NOT NULL,
   t1_allowed_groups tinyblob NOT NULL,
@@ -29,9 +29,9 @@ CREATE TABLE sys_action (
 # Table structure for table 'sys_action_asgr_mm'
 #
 CREATE TABLE sys_action_asgr_mm (
-  uid_local int(11) unsigned DEFAULT '0' NOT NULL,
-  uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
-  sorting int(11) unsigned DEFAULT '0' NOT NULL,
+  uid_local int(11) DEFAULT '0' NOT NULL,
+  uid_foreign int(11) DEFAULT '0' NOT NULL,
+  sorting int(11) DEFAULT '0' NOT NULL,
   KEY uid_local (uid_local),
   KEY uid_foreign (uid_foreign)
 );

@@ -1,5 +1,9 @@
 2005-04-06  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Removed all "unsigned" attributes from .sql files in the core and implemented a complete list of those fields for which it has been removed in the t3lib_install class. By default the install tool will NOT detect that these fields should be changed to signed integers since if the field is found in the list in the install class this difference will be ignored. The reason is that it will be 200+ ALTER TABLe changes and the significance is mostly cosmetic. However if somebody wants to actually do the conversion they can switch an internal variable in the t3lib_install class to TRUE and the install tool WILL convert...
+
+2005-04-06  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Extended a comment of a function in t3lib_extMgm
 
 2005-04-06  Michael Stucki  <michael@typo3.org>

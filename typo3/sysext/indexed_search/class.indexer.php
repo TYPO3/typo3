@@ -185,7 +185,7 @@ class tx_indexedsearch_indexer {
 
 	var $cHashParams = array();	// cHashparams array
 
-	var $freqRange = 65000;
+	var $freqRange = 32000;
 	var $freqMax = 0.1;
 
 		// Objects:

@@ -4001,8 +4001,7 @@ From sub-directory:
 		switch($fieldInfo["config"]["type"])	{
 			case "input":
 				if (ereg("date|time|int|year",$fieldInfo["config"]["eval"]))	{
-					$us=ereg("date|time",$fieldInfo["config"]["eval"]) ? " unsigned" : "";
-					$out = "int(11)".$us." NOT NULL default '0'";
+					$out = "int(11) NOT NULL default '0'";
 				} else {
 					$max = intval($fieldInfo["config"]["max"]);
 					if ($max>0 && $max<200)	{
@@ -4017,9 +4016,9 @@ From sub-directory:
 			break;
 			case "check":
 				if (is_array($fieldInfo["config"]["items"]) && count($fieldInfo["config"]["items"])>8)	{
-					$out = "int(11) unsigned NOT NULL default '0'";
+					$out = "int(11) NOT NULL default '0'";
 				} else {
-					$out = "tinyint(3) unsigned NOT NULL default '0'";
+					$out = "tinyint(3) NOT NULL default '0'";
 				}
 			break;
 			case "radio":
@@ -4036,7 +4035,7 @@ From sub-directory:
 						$len = $max*(10+1+5+1);		// Tablenames are 10, "_" 1, uid's 5, comma 1
 						$out=$this->getItemBlobSize($len);
 					} elseif ($max<=1) {
-						$out = "int(11) unsigned NOT NULL default '0'";
+						$out = "int(11) NOT NULL default '0'";
 					} else {
 						$len = $max*(5+1);		// uid's 5, comma 1
 						$out=$this->getItemBlobSize($len);
@@ -4052,7 +4051,7 @@ From sub-directory:
 				$max = t3lib_div::intInRange($fieldInfo["config"]["maxitems"],1,10000);
 				if ($max<=1)	{
 					if ($fieldInfo["config"]["foreign_table"])	{
-						$out = "int(11) unsigned NOT NULL default '0'";
+						$out = "int(11) NOT NULL default '0'";
 					} else {
 						$out = $this->getItemArrayType($fieldInfo["config"]["items"]);
 					}
@@ -4089,10 +4088,8 @@ From sub-directory:
 			$us = min($intSize)>=0 ? " unsigned" : "";
 			if (max($type)>0)	{
 				$out = "varchar(".max($type).") NOT NULL default ''";
-			} elseif (max($intSize)>(!$us?127:255))	{
-				$out = "int(11)".$us." NOT NULL default '0'";
 			} else {
-				$out = "tinyint(3)".$us." NOT NULL default '0'";
+				$out = "int(11) NOT NULL default '0'";
 			}
 		}
 		return $out;
