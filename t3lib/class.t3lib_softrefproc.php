@@ -106,7 +106,6 @@ require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
  * - 'typolink_tag' : As typolink, but searching for <link> tag to encapsulate it.
  * - 'TSconfig' processing (filerefs? Domains? what do we know...)
  * - 'TStemplate' : freetext references to "fileadmin/" files.
- * - 'ext_fileref' : Relative file reference, prefixed "EXT:[extkey]/" - for finding extension dependencies
  * - 'email' : Email highlight
  * - 'url' : URL highlights (with a scheme)
  *
@@ -321,9 +320,9 @@ class t3lib_softrefproc {
 		$elements = array();
 		foreach($linkTags as $k => $foundValue)	{
 			if ($k%2)	{
-				$typolinkValue = eregi_replace('<link[[:space:]]+','',substr($foundValue,0,-1));
+				$typolinkValue = eregi_replace('<LINK[[:space:]]+','',substr($foundValue,0,-1));
 				$tLP = $this->getTypoLinkParts($typolinkValue);
-				$linkTags[$k] = '<link '.$this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k).'>';
+				$linkTags[$k] = '<LINK '.$this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k).'>';
 			}
 		}
 
