@@ -1,3 +1,7 @@
+2003-12-16  Robert Lemke  <rl@robertlemke.de>
+
+	* Added and changed some features related to the replacement of default page module by a custom one (templavoila). See t3lib_positionmap, t3lib_tsfebeuserauth, alt_shortcut, alt_clickmenu
+
 2003-12-16  Kasper Skårhøj
 
 	* Added new languages labels for cms and lang extensions // increased version number to 3.6.0RC1
