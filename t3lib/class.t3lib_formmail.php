@@ -121,7 +121,7 @@ class t3lib_formmail extends t3lib_htmlmail {
  						$space = (strlen($val)>60)?chr(10):'';
 						$val = (is_array($val) ? implode($val,chr(10)) : $val);
 						$Plain_content.= strtoupper($key).':  '.$space.$val."\n".$space;
-						$HTML_content.='<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><b>'.strtoupper($key).'</b></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br(HTMLSpecialChars($val)).'&nbsp</font></td></tr>';
+						$HTML_content.='<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><b>'.strtoupper($key).'</b></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br(HTMLSpecialChars($val)).'&nbsp;</font></td></tr>';
 					}
 				}
 			}
