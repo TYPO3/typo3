@@ -2620,8 +2620,10 @@ if (version == "n3") {
 			$headers = array(
 				#'Last-Modified: '.gmdate('D, d M Y H:i:s T', $this->register['SYS_LASTCHANGED']),
 				#'ETag: '.md5($this->content),
-				'Cache-Control: no-cache',
-				'Pragma: no-cache',
+
+				#'Cache-Control: no-cache',
+				#'Pragma: no-cache',
+				'Cache-Control: private',		// Changed to this according to Ole Tange, FI.dk
 			);
 
 			$this->isClientCachable = FALSE;

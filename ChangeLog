@@ -1,3 +1,9 @@
+2005-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added Bernhard Krafts security improvement for server validated challenge value.
+	* Added "Esperanto" as language - now we are at 41 backend languages.
+	* Made a change to how cache-control headers are sent. Thanks to Ole Tange, FI, Denmark
+
 2005-04-01  Michael Stucki  <michael@typo3.org>
 
 	* Display empty tag contents in the backend (e.g. <link email@hostname.com></link>)

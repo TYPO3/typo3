@@ -53,6 +53,7 @@
 			<label index="lang_ca">Catalan</label>
 			<label index="lang_ba">Bosnian</label>
 			<label index="lang_kr">Korean</label>
+			<label index="lang_eo">Esperanto</label>
 			<label index="default">Default</label>
 			<label index="simulate">Simulate backend user</label>
 			<label index="opening">Startup</label>

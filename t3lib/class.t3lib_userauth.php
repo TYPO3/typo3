@@ -143,6 +143,7 @@ class t3lib_userAuth {
 
 	var $forceSetCookie=0;				// Will force the session cookie to be set everytime (lifetime must be 0)
 	var $dontSetCookie=0;				// Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
+	var $challengeStoredInCookie=0;		// If set, the challenge value will be stored in a session as well so the server can check that is was not forged.
 
 
 	/**
@@ -311,6 +312,15 @@ class t3lib_userAuth {
 						switch ($this->security_level)	{
 							case 'superchallenged':		// If superchallenged the password in the database ($tempuser[$this->userident_column]) must be a md5-hash of the original password.
 							case 'challenged':
+
+								if ($this->challengeStoredInCookie)	{
+									session_start();
+									if ($_SESSION['login_challenge'] !== $F_chalvalue) {
+										$this->logoff();
+										return 'login';
+									}
+								}
+
 								if (!strcmp($F_uident,md5($tempuser[$this->username_column].':'.$tempuser[$this->userident_column].':'.$F_chalvalue)))	{
 									$OK = true;
 								};

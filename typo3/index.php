@@ -205,11 +205,15 @@ class SC_index {
 			// Ending form:
 		$this->content.= '
 			<input type="hidden" name="userident" value="" />
-			<input type="hidden" name="challenge" value="'.md5(uniqid('')).'" />
+			<input type="hidden" name="challenge" value="'.($challenge = md5(uniqid('').getmypid())).'" />
 			<input type="hidden" name="redirect_url" value="'.htmlspecialchars($this->redirectToURL).'" />
 			<input type="hidden" name="loginRefresh" value="'.htmlspecialchars($this->loginRefresh).'" />
 			'.$this->interfaceSelector_hidden.'
 			';
+
+			// Save challenge value in session data (thanks to Bernhard Kraft for providing code):
+		session_start();
+		$_SESSION['login_challenge'] = $challenge;
 
 			// This moves focus to the right input field:
 		$this->content.=$TBE_TEMPLATE->wrapScriptTags('
