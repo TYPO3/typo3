@@ -1,18 +1,22 @@
+2005-03-28  Michael Stucki  <michael@typo3.org>
+
+ * Corrected a typo in fe_adminLib.inc (Ingmar watch this!)
+
 2005-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #0000341: Changed table definition of "fe_session_data" so field "content" is MEDIUMBLOB instead of BLOB
-	* Fixed bug #0000890: fe_adminLib.inc procesSetFixed does not support userFunc_afterSave
-	* Fixed bug #0000316: Backend typo3/template.php output spurious </body> tag for doctype xhtml_frames
-	* Added two hooks to t3lib_userauthgroup for Sebastian Kurfuerst's ACL implementation
-	* New Feature #0000341: New option "ascii" for spamProtectEmailAddresses (very cool, because it doesn't need JavaScript! Thanks to user "Karsten" on bugs.typo3.org)
+ * Fixed bug #0000341: Changed table definition of "fe_session_data" so field "content" is MEDIUMBLOB instead of BLOB
+ * Fixed bug #0000890: fe_adminLib.inc procesSetFixed does not support userFunc_afterSave
+ * Fixed bug #0000316: Backend typo3/template.php output spurious </body> tag for doctype xhtml_frames
+ * Added two hooks to t3lib_userauthgroup for Sebastian Kurfuerst's ACL implementation
+ * New feature #0000341: New option "ascii" for spamProtectEmailAddresses (very cool, because it doesn't need JavaScript! Thanks to Karsten Dambekalns
 
 2005-03-25  Michael Stucki  <michael@typo3.org>
 
-	* Added two hooks for tx_timtaw, written by Sebastian Kurfuerst
-	* FORM object is finally able to create a reset button (closes #0000743, thanks to Michael Scharkow)
-	* FE editing: Up/Down buttons in panel did not work (closes #0000849, thanks to Peter Niederlag for pointing me on this)
-	* typeNum 0 is now set automatically by default: If a page object has no typeNum and typeNum '0' is not defined, TYPO3 will automatically do that now
-	* Renamed admin function links in the left down corner of the BE (closes #0000025)
+ * Added two hooks for tx_timtaw, written by Sebastian Kurfuerst
+ * FORM object is finally able to create a reset button (closes #0000743, thanks to Michael Scharkow)
+ * FE editing: Up/Down buttons in panel did not work (closes #0000849, thanks to Peter Niederlag for pointing me on this)
+ * typeNum 0 is now set automatically by default: If a page object has no typeNum and typeNum '0' is not defined, TYPO3 will automatically do that now
+ * Renamed admin function links in the left down corner of the BE (closes #0000025)
 	* EM: Display privacy message before connecting to the online repository
 
 2005-03-16  Ingmar Schlecht  <ingmar@typo3.org>
@@ -95,7 +99,7 @@
 
 2005-01-21  Jan-Erik Revsbech	<jer@moccompany.com>
 
-	* Added a check to class t3lib_htmlmail to check if postfix version 1.XX is used. If this is the case the -f parameter is not used for call to mail(). This should fix the problem with mails not being sent when using Postfix as MTA..
+	* Added a check to class t3lib_htmlmail to check if postfix version 1.x is used. If this is the case the -f parameter is not used for call to mail(). This should fix the problem with mails not being sent when using Postfix as MTA...
 
 2005-01-21  Kasper Skårhøj,,,  <kasper@typo3.com>
 
@@ -198,61 +202,61 @@
 
 2004-09-24  Michael Stucki  <mundaun@gmx.ch>
 
- * Release of TYPO3 3.7.0
- * Increased version number to 3.7.0
+	* Release of TYPO3 3.7.0
+	* Increased version number to 3.7.0
 
 2004-09-24  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Updated backend localizations for 3.7.0 Release
- * Tagging the release with "TYPO3_3-7-0"
+	* Updated backend localizations for 3.7.0 Release
+	* Tagging the release with "TYPO3_3-7-0"
 
 2004-09-19  Michael Stucki  <mundaun@gmx.ch>
 
- * Release of TYPO3 3.7.0RC2
+	* Release of TYPO3 3.7.0RC2
 
 2004-09-19  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Added option to set the PHP memory_limit with the install tool.
- * Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
- * Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
- * Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>
- * Increasing version number to 3.7.0RC2
+	* Added option to set the PHP memory_limit with the install tool.
+	* Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
+	* Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
+	* Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>
+	* Increasing version number to 3.7.0RC2
 
 2004-09-19  Michael Stucki  <mundaun@gmx.ch>
 
- * A new warning message is displayed if the install tool password is still the default: "joh316"
- * Replaced all (comments AND code!) occurences of "writeable" with "writable"
- * Fixed bug #0000171: Displaying wrong filepermissions in filelist module
- * Fixed bug #0000261: fileDenyPattern default does not include ".php4"
- * Fixed bug #0000298: Browser client Konqueror not recognized
- * Fixed bug #0000362: Changed field length of sys_log[IP] to 39 (IPv6 related, patch by Sven Wilhelm)
+	* A new warning message is displayed if the install tool password is still the default: "joh316"
+	* Replaced all (comments AND code!) occurences of "writeable" with "writable"
+	* Fixed bug #0000171: Displaying wrong filepermissions in filelist module
+	* Fixed bug #0000261: fileDenyPattern default does not include ".php4"
+	* Fixed bug #0000298: Browser client Konqueror not recognized
+	* Fixed bug #0000362: Changed field length of sys_log[IP] to 39 (IPv6 related, patch by Sven Wilhelm)
 
 2004-09-17  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Fixed bug #0000181: Added the word "JavaScript" to the note on the BE login page. It's now: "(Note: Cookies and JavaScript must be enabled!)"
+	* Fixed bug #0000181: Added the word "JavaScript" to the note on the BE login page. It's now: "(Note: Cookies and JavaScript must be enabled!)"
 
 2004-09-15  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Fixed bug #0000353: In typo3/wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.
+	* Fixed bug #0000353: In typo3/wizard_add.php removed call to non-existing printContent() method. It doesn't need to print anything.
 
 2004-09-14  Michael Stucki  <mundaun@gmx.ch>
 
- * Release of TYPO3 3.7.0RC1
+	* Release of TYPO3 3.7.0RC1
 
 2004-09-14  Michael Stucki  <mundaun@gmx.ch>
 
- * Fixed bug #0000159: Logging did not work with absolute logfile_dir specified. However this will still work only if the specified path is within either PATH_site or lockRootPath.
- * The BE login screen now shows the sitename by default
- * Fixed a typo in config_default.php
- * Changed description for lockRootPath
+	* Fixed bug #0000159: Logging did not work with absolute logfile_dir specified. However this will still work only if the specified path is within either PATH_site or lockRootPath.
+	* The BE login screen now shows the sitename by default
+	* Fixed a typo in config_default.php
+	* Changed description for lockRootPath
 
 2004-09-14  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Fixed bug #0000111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
+	* Fixed bug #0000111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
 
 2004-09-14  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...
+	* Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...
 	* Updated all JavaDoc comments and function/class indexes in files, preparing for 3.7.0RC
 
 2004-09-13  Kasper Skårhøj,,,  <kasper@typo3.com>
@@ -314,6 +318,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
 	* Removed comment about the expired Unisys patent in class.tx_install.php
 
 2004-09-00  Jan-Erik Revsbech    <jer@moccompany.com>
+
 	* Fixed bug #292 concerning Return path in class.t3lib_mailer.php. The fix has a seperate solution for windows and Unix. The unix fix does however not work with safe_mode enabled. Do not know how to overcome this. Perhaps an environment variable for sendmail can be specified? The fix for windows works OK with safe_mode on since, it does not rely on passing parameter directly to the mailer tranport agent (Sendmail or postfix), but instead sets the php variable sendmail_from, which has no effect on Unix systemt.
 
 2004-09-02  Kasper Skårhøj,,,  <kasper@typo3.com>
@@ -430,6 +435,7 @@ Sorry for writing these changelog entries with a delay of two days. I write them
  * Added and Changed features around page languages. More to come including a document guiding people about charsets and localization.
 
 2004-07-24  Jan-Erik Revsbech <jer@moccompany.com>
+
  * Added support for other transfer encodings in the dmailer class. Will start to move the t3lib_directmailer class out of the core and into the direct_mail extension.
 
 2004-07-23  Kasper Skårhøj,,,  <kasper@typo3.com>
