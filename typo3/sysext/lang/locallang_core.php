@@ -1,6 +1,6 @@
 <?php
 /**
- * Core language labels. 
+ * Core language labels.
  * (Originally found in ->mainLang and ->php3Lang)
  * TYPO3 CVS ID: $Id$
  */
@@ -51,6 +51,7 @@ Do you want to continue WITHOUT saving?',
 		'labels.depth_2' => '2 levels',
 		'labels.depth_3' => '3 levels',
 		'labels.refresh' => 'Reload the tree from server',
+		'labels.refreshList' => 'Reload list from server',
 		'labels.close' => 'Close',
 		'labels.new' => 'NEW',
 		'labels.selected' => 'Selected',

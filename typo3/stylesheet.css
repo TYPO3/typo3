@@ -199,7 +199,7 @@ TABLE#typo3-tree TR TD { white-space: nowrap; }
 TABLE#typo3-tree TR TD IMG { vertical-align: middle; }
 TABLE#typo3-tree TR TD IMG.c-recIcon { margin-right: 1px;}
 TABLE#typo3-tree { margin-bottom: 10px; width: 95%; }
-BODY#typo3-alt-file-navframe-php P.c-refresh IMG, BODY#typo3-alt-db-navframe-php P.c-refresh IMG { vertical-align: middle;  margin-right: 7px;}
+P.c-refresh IMG { vertical-align: middle;  margin-right: 7px; }
 
 /* Element Browser / RTE link selection: */
 TABLE#typo3-curUrl { font-weight: bold; width: 100%; margin-bottom: 2px;}

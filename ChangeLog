@@ -1,5 +1,9 @@
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added refresh button to taskcenter (not in core CVS)
+
+2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added "Login failure" message in backend login box
 
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
