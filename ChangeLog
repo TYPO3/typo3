@@ -1,3 +1,7 @@
+2004-05-17  Ingmar Schlecht  <ingmars@web.de>
+
+	* Fixed bug #88:  fe_adminLib.inc issue
+
 2004-05-11  Ingmar Schlecht  <ingmar@ingmar_lap>
 
 	* Changed version number to 3.6.1 in t3lib/config_default.php
