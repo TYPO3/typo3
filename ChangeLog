@@ -1,3 +1,5 @@
+2004-01-24  Jan-Erik Revsbech	<jer@moccompany.com>
+	* The check to see if Postfix version 1.XX is used requires that the executable /usr/sbin/postconf exists. If it does not exists, some php configurations will die with an error. Now htmlmail makes a check to see if the files exists before calling it.
 2004-01-22  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000668: Removed spurious comma (,) from pages table definition in t3lib/stddb/tables.sql

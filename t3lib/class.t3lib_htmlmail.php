@@ -246,17 +246,22 @@ class t3lib_htmlmail {
 
 
 	/**
+	 * Constructor for the class. Make a check to see if Postfix version below 2.XX is used. 
+	 * If this is the case all calls to mail() must not be called with the -f parameter to correctly set
+	 * the Return-Path header.
 	 * @return	[type]		...
 	 */
 	function t3lib_htmlmail () {
 		if(!ini_get('safe_mode')) {
 			$res = Array();
-			@exec('/usr/sbin/postconf mail_version',$res);
-			if(!empty($res[0])) {
-				$temp = explode("=",$res[0]);
-				list($major,$minor,$micro) = explode(".",trim($temp[1]));
-				if($major == 1) {
-					$this->postfix_version1 = true;
+			if(file_exists('/usr/sbin/postconf')) {
+				@exec('/usr/sbin/postconf mail_version',$res);
+				if(!empty($res[0])) {
+					$temp = explode("=",$res[0]);
+					list($major,$minor,$micro) = explode(".",trim($temp[1]));
+					if($major == 1) {
+						$this->postfix_version1 = true;
+					}
 				}
 			}
 		}
