@@ -2255,13 +2255,13 @@ class t3lib_TCEforms	{
 		$fieldChangeFunc = $PA['fieldChangeFunc'];
 		$item = $itemKinds[0];
 		$outArr = array();
+		$colorBoxLinks = array();
 		$fName = '['.$table.']['.$row['uid'].']['.$field.']';
 		$md5ID = 'ID'.t3lib_div::shortmd5($itemName);
 
 			// traverse wizards:
 		if (is_array($wizConf) && !$this->disableWizards)	{
-			reset($wizConf);
-			while(list($wid,$wConf)=each($wizConf))	{
+			foreach($wizConf as $wid => $wConf)	{
 				if (substr($wid,0,1)!='_'
 						&& (!$wConf['enableByTypeConfig'] || @in_array($wid,$specConf['wizards']['parameters']))
 						&& ($RTE || !$wConf['RTEonly'])
@@ -2270,17 +2270,21 @@ class t3lib_TCEforms	{
 						// Title / icon:
 					$iTitle = htmlspecialchars($this->sL($wConf['title']));
 					if ($wConf['icon'])	{
-						$iDat = $this->getIcon($wConf['icon']);		// THIS is very ODD!!! Check it....
+						$iDat = $this->getIcon($wConf['icon']);
 						$icon = '<img src="'.$iDat[0].'" '.$iDat[1][3].' border="0"'.t3lib_BEfunc::titleAltAttrib($iTitle).' />';
-					} else $icon = $iTitle;
+					} else {
+						$icon = $iTitle;
+					}
 
-					$colorBoxLinks=array();
+						//
 					switch((string)$wConf['type'])	{
 						case 'userFunc':
 						case 'script':
 						case 'popup':
 						case 'colorbox':
 							if (!$wConf['notNewRecords'] || t3lib_div::testInt($row['uid']))	{
+
+									// Setting &P array contents:
 								$params = array();
 								$params['params'] = $wConf['params'];
 								$params['exampleImg'] = $wConf['exampleImg'];
@@ -2291,6 +2295,7 @@ class t3lib_TCEforms	{
 								$params['md5ID'] = $md5ID;
 								$params['returnUrl'] = $this->thisReturnUrl();
 
+									// Resolving script filename and setting URL.
 								if (!strcmp(substr($wConf['script'],0,4), 'EXT:')) {
 									$wScript = t3lib_div::getFileAbsFileName($wConf['script']);
 									if ($wScript)	{
@@ -2299,45 +2304,54 @@ class t3lib_TCEforms	{
 								} else {
 									$wScript = $wConf['script'];
 								}
-								$url = $this->backPath.$wScript.(strstr($wConf['script'],'?') ? '' : '?');
+								$url = $this->backPath.$wScript.(strstr($wScript,'?') ? '' : '?');
 
-								if ((string)$wConf['type']=='colorbox' && !$wConf['script'])	{
-									break;
-								}
+									// If there is no script and the type is "colorbox", break right away:
+								if ((string)$wConf['type']=='colorbox' && !$wConf['script'])	{ break; }
+
+									// If "script" type, create the links around the icon:
 								if ((string)$wConf['type']=='script')	{
 									$aUrl = $url.t3lib_div::implodeArrayForUrl('',array('P'=>$params));
 									$outArr[]='<a href="'.htmlspecialchars($aUrl).'" onclick="'.$this->blur().'return !TBE_EDITOR_isFormChanged();">'.
-												$icon.
-												'</a>';
-								}
+										$icon.
+										'</a>';
+								} else {
 
-								$params['formName'] = $this->formName;
-								$params['itemName'] = $itemName;
-								$params['fieldChangeFunc'] = $fieldChangeFunc;
-								if ((string)$wConf['type']=='popup' || (string)$wConf['type']=='colorbox')	{
-										// Current form value is passed as P[currentValue]!
-									$addJS = $wConf['popup_onlyOpenIfSelected']?'if (!TBE_EDITOR_curSelected(\''.$itemName.'_list\')){alert('.$GLOBALS['LANG']->JScharCode($this->getLL('m_noSelItemForEdit')).'); return false;}':'';
-									$curSelectedValues='+\'&P[currentSelectedValues]=\'+TBE_EDITOR_curSelected(\''.$itemName.'_list\')';
-									$aOnClick=	$this->blur().
-												$addJS.
-												'vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('',array('P'=>$params)).'\'+\'&P[currentValue]=\'+TBE_EDITOR_rawurlencode('.$this->elName($itemName).'.value,200)'.$curSelectedValues.',\'popUp'.$md5ID.'\',\''.$wConf['JSopenParams'].'\');'.
-												'vHWin.focus();return false;';
-									$colorBoxLinks = Array('<a href="#" onclick="'.htmlspecialchars($aOnClick).'">','</a>');
-									if ((string)$wConf['type']=='popup')	{
-										$outArr[] = $colorBoxLinks[0].$icon.$colorBoxLinks[1];
+										// ... else types "popup", "colorbox" and "userFunc" will need additional parameters:
+									$params['formName'] = $this->formName;
+									$params['itemName'] = $itemName;
+									$params['fieldChangeFunc'] = $fieldChangeFunc;
+
+									switch((string)$wConf['type'])	{
+										case 'popup':
+										case 'colorbox':
+												// Current form value is passed as P[currentValue]!
+											$addJS = $wConf['popup_onlyOpenIfSelected']?'if (!TBE_EDITOR_curSelected(\''.$itemName.'_list\')){alert('.$GLOBALS['LANG']->JScharCode($this->getLL('m_noSelItemForEdit')).'); return false;}':'';
+											$curSelectedValues='+\'&P[currentSelectedValues]=\'+TBE_EDITOR_curSelected(\''.$itemName.'_list\')';
+											$aOnClick=	$this->blur().
+														$addJS.
+														'vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('',array('P'=>$params)).'\'+\'&P[currentValue]=\'+TBE_EDITOR_rawurlencode('.$this->elName($itemName).'.value,200)'.$curSelectedValues.',\'popUp'.$md5ID.'\',\''.$wConf['JSopenParams'].'\');'.
+														'vHWin.focus();return false;';
+												// Setting "colorBoxLinks" - user LATER to wrap around the color box as well:
+											$colorBoxLinks = Array('<a href="#" onclick="'.htmlspecialchars($aOnClick).'">','</a>');
+											if ((string)$wConf['type']=='popup')	{
+												$outArr[] = $colorBoxLinks[0].$icon.$colorBoxLinks[1];
+											}
+										break;
+										case 'userFunc':
+											$params['item'] = &$item;	// Reference set!
+											$params['icon'] = $icon;
+											$params['iTitle'] = $iTitle;
+											$params['wConf'] = $wConf;
+											$params['row'] = $row;
+											$outArr[] = t3lib_div::callUserFunction($wConf['userFunc'],$params,$this);
+										break;
 									}
-								} elseif ((string)$wConf['type']=='userFunc')	{
-									$params['item'] = &$item;
-									$params['icon'] = $icon;
-									$params['iTitle'] = $iTitle;
-									$params['wConf'] = $wConf;
-									$params['row'] = $row;
-									$outArr[] = t3lib_div::callUserFunction($wConf['userFunc'],$params,$this);
 								}
 
-									// Hide?
+									// Hide the real form element?
 								if (is_array($wConf['hideParent']) || $wConf['hideParent'])	{
-									$item = $itemKinds[1];
+									$item = $itemKinds[1];	// Setting the item to a hidden-field.
 									if (is_array($wConf['hideParent']))	{
 										$item.= $this->getSingleField_typeNone_render($wConf['hideParent'], $PA['itemFormElValue']);
 									}
@@ -2345,16 +2359,15 @@ class t3lib_TCEforms	{
 							}
 						break;
 						case 'select':
-							$fieldValue=array('config'=>$wConf);
-							$TSconfig = $this->setTSconfig($table,$row);
+							$fieldValue = array('config' => $wConf);
+							$TSconfig = $this->setTSconfig($table, $row);
 							$TSconfig[$field] = $TSconfig[$field]['wizards.'][$wid.'.'];
-							$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($fieldValue),$fieldValue,$TSconfig,$field);
+							$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($fieldValue), $fieldValue, $TSconfig, $field);
 
-							reset($selItems);
-							$opt=array();
-							$opt[]='<option>'.$iTitle.'</option>';
-							while(list(,$p)=each($selItems))	{
-								$opt[]='<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
+							$opt = array();
+							$opt[] = '<option>'.$iTitle.'</option>';
+							foreach($selItems as $p)	{
+								$opt[] = '<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
 							}
 							if ($wConf['mode']=='append')	{
 								$assignValue = $this->elName($itemName).'.value=\'\'+this.options[this.selectedIndex].value+'.$this->elName($itemName).'.value';
@@ -2364,15 +2377,15 @@ class t3lib_TCEforms	{
 								$assignValue = $this->elName($itemName).'.value=this.options[this.selectedIndex].value';
 							}
 							$sOnChange = $assignValue.';this.selectedIndex=0;'.implode('',$fieldChangeFunc);
-							$outArr[]='<select name="_WIZARD'.$fName.'" onchange="'.htmlspecialchars($sOnChange).'">'.implode('',$opt).'</select>';
+							$outArr[] = '<select name="_WIZARD'.$fName.'" onchange="'.htmlspecialchars($sOnChange).'">'.implode('',$opt).'</select>';
 						break;
 					}
 
-						// Color wizard:
+						// Color wizard colorbox:
 					if ((string)$wConf['type']=='colorbox')	{
 						$dim = t3lib_div::intExplode('x',$wConf['dim']);
-						$dX=t3lib_div::intInRange($dim[0],1,200,20);
-						$dY=t3lib_div::intInRange($dim[1],1,200,20);
+						$dX = t3lib_div::intInRange($dim[0],1,200,20);
+						$dY = t3lib_div::intInRange($dim[1],1,200,20);
 						$color = $row[$field] ? ' bgcolor="'.htmlspecialchars($row[$field]).'"' : '';
 						$outArr[] = '<table border="0" cellpadding="0" cellspacing="0" id="'.$md5ID.'"'.$color.' style="'.htmlspecialchars($wConf['tableStyle']).'">
 									<tr>
@@ -2391,20 +2404,20 @@ class t3lib_TCEforms	{
 			if (count($outArr))	{
 				if ($wizConf['_HIDDENFIELD'])	$item = $itemKinds[1];
 
-				$outStr='';
+				$outStr = '';
 				$vAlign = $wizConf['_VALIGN'] ? ' valign="'.$wizConf['_VALIGN'].'"' : '';
 				if (count($outArr)>1 || $wizConf['_PADDING'])	{
-					$dist=intval($wizConf['_DISTANCE']);
+					$dist = intval($wizConf['_DISTANCE']);
 					if ($wizConf['_VERTICAL'])	{
-						$dist=$dist?'<tr><td><img src="clear.gif" width="1" height="'.$dist.'" alt="" /></td></tr>':'';
-						$outStr='<tr><td>'.implode('</td></tr>'.$dist.'<tr><td>',$outArr).'</td></tr>';
+						$dist = $dist ? '<tr><td><img src="clear.gif" width="1" height="'.$dist.'" alt="" /></td></tr>' : '';
+						$outStr = '<tr><td>'.implode('</td></tr>'.$dist.'<tr><td>',$outArr).'</td></tr>';
 					} else {
-						$dist=$dist?'<td><img src="clear.gif" height="1" width="'.$dist.'" alt="" /></td>':'';
-						$outStr='<tr><td'.$vAlign.'>'.implode('</td>'.$dist.'<td'.$vAlign.'>',$outArr).'</td></tr>';
+						$dist = $dist ? '<td><img src="clear.gif" height="1" width="'.$dist.'" alt="" /></td>' : '';
+						$outStr = '<tr><td'.$vAlign.'>'.implode('</td>'.$dist.'<td'.$vAlign.'>',$outArr).'</td></tr>';
 					}
-					$outStr='<table border="0" cellpadding="'.intval($wizConf['_PADDING']).'" cellspacing="0">'.$outStr.'</table>';
+					$outStr = '<table border="0" cellpadding="'.intval($wizConf['_PADDING']).'" cellspacing="0">'.$outStr.'</table>';
 				} else {
-					$outStr=implode('',$outArr);
+					$outStr = implode('',$outArr);
 				}
 
 				if (!strcmp($wizConf['_POSITION'],'left'))	{
@@ -2417,7 +2430,7 @@ class t3lib_TCEforms	{
 					$outStr = '<tr><td'.$vAlign.'>'.$item.'</td><td'.$vAlign.'>'.$outStr.'</td></tr>';
 				}
 
-				$item='<table border="0" cellpadding="0" cellspacing="0">'.$outStr.'</table>';
+				$item = '<table border="0" cellpadding="0" cellspacing="0">'.$outStr.'</table>';
 			}
 		}
 		return $item;
@@ -2434,17 +2447,17 @@ class t3lib_TCEforms	{
 			$file = t3lib_div::getFileAbsFileName($icon);
 			if ($file)	{
 				$file = substr($file,strlen(PATH_site));
-				$selIconFile=$this->backPath.'../'.$file;
+				$selIconFile = $this->backPath.'../'.$file;
 				$selIconInfo = @getimagesize(PATH_site.$file);
 			}
 		} elseif (substr($icon,0,3)=='../')	{
-			$selIconFile=$this->backPath.$icon;
+			$selIconFile = $this->backPath.$icon;
 			$selIconInfo = @getimagesize(PATH_site.substr($icon,3));
 		} elseif (substr($icon,0,4)=='ext/' || substr($icon,0,7)=='sysext/') {
-			$selIconFile=$icon;
+			$selIconFile = $icon;
 			$selIconInfo = @getimagesize(PATH_typo3.$icon);
 		} else {
-			$selIconFile='t3lib/gfx/'.$icon;
+			$selIconFile = 't3lib/gfx/'.$icon;
 			$selIconInfo = @getimagesize(PATH_t3lib.'gfx/'.$icon);
 		}
 		return array($selIconFile,$selIconInfo);

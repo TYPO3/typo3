@@ -173,7 +173,7 @@ class SC_wizard_add {
 					$addEl = $this->table.'_'.$this->id;
 					switch((string)$this->P['params']['setValue'])	{
 						case 'set':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']]=$addEl;
+							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
 						break;
 						case 'prepend':
 							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']].','.$addEl;

@@ -670,7 +670,7 @@ class t3lib_TCEmain	{
 			while(list(,$vconf) = each($types_fieldConfig))	{
 					// Write file configuration:
 				$eFile = t3lib_parsehtml_proc::evalWriteFile($vconf['spec']['static_write'],array_merge($currentRecord,$fieldArray));	// inserted array_merge($currentRecord,$fieldArray) 170502
-//debug($eFile);
+
 					// RTE transformations:
 				if (!$this->dontProcessTransformations)	{
 					if (isset($fieldArray[$vconf['field']]))	{
@@ -693,42 +693,6 @@ class t3lib_TCEmain	{
 							break;
 						}
 					}
-
-					// These transformations has been removed and the one above inserted; content is now transformed if a flag is sent with the field, typ. "_TRANSFORM_".[fieldname] = "RTE"
-					// This is more safe, doesn't require us to calculate if a transformation has to be done and finally; it is now possible to use RTEs in FlexForms as well!
-/*
-					if ($vconf['spec']['richtext'] && !$this->disableRTE)	{
-							// Cross transformation?
-						$this->crossRTEtransformation=0;	// Crosstransformation is, when a record is saved, the CType has changed and the other type might also use the RTE - then the transformation of THAT rte is used instead. This is usefull only if we know the TBE interface did it, because in that interface the CType value changes the interface and allows extended options in RTE without first saving the type-shift.
-						if ($this->crossRTEtransformation)	{
-							$next_types_fieldConfig=t3lib_BEfunc::getTCAtypes($table,array_merge($currentRecord,$fieldArray),1);
-							if ($next_types_fieldConfig[$vconf['field']]['spec']['richtext'])	{	// RTE must be enabled for the fields
-								$vconf['spec'] = $next_types_fieldConfig[$vconf['field']]['spec'];
-								$theTypeString = t3lib_BEfunc::getTCAtypeValue($table,array_merge($currentRecord,$fieldArray));
-							}
-						}
-//debug($theTypeString);
-							// transform if...
-						if ($vconf['spec']['rte_transform'])	{
-							$p=t3lib_BEfunc::getSpecConfParametersFromArray($vconf['spec']['rte_transform']['parameters']);
-							if ($p['mode'])	{	// There must be a mode set for transformation
-								if (isset($fieldArray[$vconf['field']]))	{
-									if ($tscPID>=0)	{
-//debug('RTEsetup');
-										$RTEsetup = $this->BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($tscPID));
-										$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$table,$vconf['field'],$theTypeString);
-										if (!$thisConfig['disabled'] && (!$p['flag'] || !$currentRecord[$p['flag']]) && $this->BE_USER->isRTE())	{	// ... and any disable flag should not be set!
-											$parseHTML = t3lib_div::makeInstance('t3lib_parsehtml_proc');
-											$parseHTML->init($table.':'.$vconf['field'],$currentRecord['pid']);
-											if (is_array($eFile))	{$parseHTML->setRelPath(dirname($eFile['relEditFile']));}
-											$fieldArray[$vconf['field']]=$parseHTML->RTE_transform($fieldArray[$vconf['field']],$vconf['spec'],'db',$thisConfig);
-										}
-									}
-								}
-							}
-						}
-					}
-					*/
 				}
 
 					// Write file configuration:
@@ -741,11 +705,7 @@ class t3lib_TCEmain	{
 					$eFileMarker = $eFile['markerField']&&trim($mixedRec[$eFile['markerField']]) ? trim($mixedRec[$eFile['markerField']]) : '###TYPO3_STATICFILE_EDIT###';
 					$insertContent = str_replace($eFileMarker,'',$mixedRec[$eFile['contentField']]);	// must replace the marker if present in content!
 
-					$SW_fileNewContent = $parseHTML->substituteSubpart(
-						$SW_fileContent,
-						$eFileMarker,
-						chr(10).$insertContent.chr(10),
-						1,1);
+					$SW_fileNewContent = $parseHTML->substituteSubpart($SW_fileContent, $eFileMarker, chr(10).$insertContent.chr(10), 1, 1);
 					t3lib_div::writeFile($eFile['editFile'],$SW_fileNewContent);
 
 						// Write status:

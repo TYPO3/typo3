@@ -491,7 +491,7 @@ class t3lib_transferData {
 		foreach($types_fieldConfig as $vconf)	{
 
 				// Find file to write to, if configured:
-			$eFile=t3lib_parsehtml_proc::evalWriteFile($vconf['spec']['static_write'],$totalRecordContent);
+			$eFile = t3lib_parsehtml_proc::evalWriteFile($vconf['spec']['static_write'],$totalRecordContent);
 
 				// Write file configuration:
 			if (is_array($eFile))	{
@@ -505,42 +505,10 @@ class t3lib_transferData {
 						$SW_fileContent,
 						$eFile['markerField']&&trim($totalRecordContent[$eFile['markerField']])
 							? trim($totalRecordContent[$eFile['markerField']])
-							: '###TYPO3_STATICFILE_EDIT###',
-						chr(10).$totalRecordContent[$eFile['contentField']].chr(10),
-						1,1);
+							: '###TYPO3_STATICFILE_EDIT###'
+					);
 				}
 			}
-
-
-			// MOVED TO the individual extensions (see TCEforms)
-/*
-				// RTE transformation
-			if ($vconf['spec']['rte_transform'] && !$this->disableRTE)	{
-				$p=t3lib_BEfunc::getSpecConfParametersFromArray($vconf['spec']['rte_transform']['parameters']);
-				if ($p['mode'])	{	// There must be a mode set for transformation
-					if (isset($totalRecordContent[$vconf['field']]))	{
-						if ($tscPID>=0)	{
-
-								// Get Rich Text Editor configuration from Page TSconfig:
-							$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($tscPID));
-							$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$table,$vconf['field'],t3lib_BEfunc::getTCAtypeValue($table,$totalRecordContent));
-
-								// ... and any disable flag should not be set!
-							if (!$thisConfig['disabled'] && (!$p['flag'] || !$totalRecordContent[$p['flag']]) && $GLOBALS['BE_USER']->isRTE())	{
-									// Initialize transformation:
-								$parseHTML = t3lib_div::makeInstance('t3lib_parsehtml_proc');
-								$parseHTML->init($table.':'.$vconf['field'],$pid);
-								if (is_array($eFile))	{
-									$parseHTML->setRelPath(dirname($eFile['relEditFile']));
-								}
-									// Perform transformation:
-								$totalRecordContent[$vconf['field']]=$parseHTML->RTE_transform($totalRecordContent[$vconf['field']],$vconf['spec'],'rte',$thisConfig);
-							}
-						}
-					}
-				}
-			}
-*/
 		}
 
 		return $totalRecordContent;
