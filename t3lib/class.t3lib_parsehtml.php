@@ -898,7 +898,7 @@ class t3lib_parsehtml {
 	 */
 	function prefixRelPath($prefix,$srcVal)	{
 		$pU = parse_url($srcVal);
-		if (!$pU['scheme'])		{	// If not an absolute URL.
+		if (!$pU['scheme'] && substr($srcVal, 0, 1)!='/')	{ // If not an absolute URL.
 			$srcVal = $prefix.$srcVal;
 		}
 		return $srcVal;

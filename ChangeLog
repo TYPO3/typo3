@@ -1,15 +1,19 @@
+2004-08-20  Ingmar Schlecht  <ingmars@web.de>
+
+ * Fixed bug #288: In t3lib_parsehtml prefixRelPath incorrectly prefixed absolute URLs
+
 2004-08-15  Michael Stucki  <mundaun@gmx.ch>
 
-	* Corrected wrong parameter order for some implode function calls.
+ * Corrected wrong parameter order for some implode function calls.
 
 2004-08-07  Kasper Skårhøj,,,  <kasper@typo3.com>
 
-	* Added three new permission modes for backend users: 1) Localization access control, 2) Access control on value level (for instance allow/deny individual selectorbox values), 3) API for custom permission options.
-	* Implemented control of these modes in tcemain, tceforms and alt_doc.php + QuickEdit. Still need to implement it for edit icons around, but this is not critical, mostly a usability issue.
-	* Moved table "sys_language" from extension "cms" back into the core
-	* Updated CSH at various places.
-	* Finished the accessListRenderMode(s) (see 4/8 below)
-	* Still unsettled about various default settings related to these new options, but will discuss on dev-list.
+ * Added three new permission modes for backend users: 1) Localization access control, 2) Access control on value level (for instance allow/deny individual selectorbox values), 3) API for custom permission options.
+ * Implemented control of these modes in tcemain, tceforms and alt_doc.php + QuickEdit. Still need to implement it for edit icons around, but this is not critical, mostly a usability issue.
+ * Moved table "sys_language" from extension "cms" back into the core
+ * Updated CSH at various places.
+ * Finished the accessListRenderMode(s) (see 4/8 below)
+ * Still unsettled about various default settings related to these new options, but will discuss on dev-list.
 
 2004-08-04  Kasper Skårhøj,,,  <kasper@typo3.com>
 
