@@ -1,3 +1,7 @@
+2005-01-02  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added Karsten D.s patches for DBAL.
+
 2004-12-20  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Changed "config.disableContentLengthHeader" over to "enableContentLengthHeader" because a default content-length header might introduce some weird and hard-to-debug situation for people.

@@ -1544,7 +1544,7 @@ class tx_indexedsearch_indexer {
 	 */
 	function checkContentHash()	{
 			// With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_phash AS A', 'A.phash_grouping='.intval($this->hash['phash_grouping']).' AND A.contentHash='.intval($this->content_md5h));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_phash A', 'A.phash_grouping='.intval($this->hash['phash_grouping']).' AND A.contentHash='.intval($this->content_md5h));
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			return $row;
 		}
@@ -1560,7 +1560,7 @@ class tx_indexedsearch_indexer {
 	 * @return	boolean		Returns true if the document needs to be indexed (that is, there was no result)
 	 */
 	function checkExternalDocContentHash($hashGr,$content_md5h)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_phash AS A', 'A.phash_grouping='.intval($hashGr).' AND A.contentHash='.intval($content_md5h));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_phash A', 'A.phash_grouping='.intval($hashGr).' AND A.contentHash='.intval($content_md5h));
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			return 0;
 		}
@@ -1665,7 +1665,7 @@ class tx_indexedsearch_indexer {
 	 * @return	void
 	 */
 	function removeLoginpagesWithContentHash()	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_phash AS A,index_grlist AS B', '
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_phash A,index_grlist B', '
 					A.phash=B.phash
 					AND A.phash_grouping='.intval($this->hash['phash_grouping']).'
 					AND B.hash_gr_list!='.$this->md5inthash($this->defaultGrList).'

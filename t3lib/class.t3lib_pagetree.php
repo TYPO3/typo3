@@ -88,7 +88,7 @@ class t3lib_pageTree extends t3lib_treeView	{
 	 * @return	void
 	 */
 	function init($clause='')	{
-		parent::init(' AND NOT deleted '.$clause, 'sorting');
+		parent::init(' AND deleted=0 '.$clause, 'sorting');
 
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			$this->fieldArray=array_merge($this->fieldArray,array('hidden','starttime','endtime','fe_group','module','extendToSubpages'));

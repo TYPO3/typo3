@@ -149,10 +149,10 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		if (is_array($this->user) && $this->user['usergroup'])	{
 			$groups = t3lib_div::intExplode(',',$this->user['usergroup']);
 			$list = implode(',',$groups);
-			$lockToDomain_SQL = ' AND (lockToDomain="" OR lockToDomain="'.t3lib_div::getIndpEnv('HTTP_HOST').'")';
-			if (!$this->showHiddenRecords)	$hiddenP = 'AND NOT hidden ';
+			$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain=\''.t3lib_div::getIndpEnv('HTTP_HOST').'\')';
+			if (!$this->showHiddenRecords)	$hiddenP = 'AND hidden=0 ';
 
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, 'NOT deleted '.$hiddenP.'AND uid IN ('.$list.')'.$lockToDomain_SQL);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, 'deleted=0 '.$hiddenP.'AND uid IN ('.$list.')'.$lockToDomain_SQL);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$this->groupData['title'][$row['uid']] = $row['title'];
 				$this->groupData['uid'][$row['uid']] = $row['uid'];
@@ -234,7 +234,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	function fetchSessionData()	{
 		// Gets SesData if any
 		if ($this->id)	{
-			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, 'fe_session_data').'"');
+			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data'));
 			if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
 				$this->sesData = unserialize($sesDataRow['content']);
 			}
@@ -265,7 +265,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 					'content' => serialize($this->sesData),
 					'tstamp' => time()
 				);
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, 'fe_session_data').'"');
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data'));
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_session_data', $insertFields);
 			}
 		}

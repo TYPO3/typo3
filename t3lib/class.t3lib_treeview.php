@@ -833,11 +833,11 @@ class t3lib_treeView {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'count(*)',
 						$this->table,
-						$this->parentField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($uid, $this->table).'"'.
+						$this->parentField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table).
 							t3lib_BEfunc::deleteClause($this->table).
 							$this->clause,	// whereClauseMightContainGroupOrderBy
 						'',
-						$this->orderByFields
+						'' //$this->orderByFields // sorting is senseless for count(*) !?!
 					);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 			return $row[0];
@@ -894,7 +894,7 @@ class t3lib_treeView {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						implode(',',$this->fieldArray),
 						$this->table,
-						$this->parentField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($parentId, $this->table).'"'.
+						$this->parentField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table).
 							t3lib_BEfunc::deleteClause($this->table).
 							$this->clause,	// whereClauseMightContainGroupOrderBy
 						'',

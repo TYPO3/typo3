@@ -777,7 +777,7 @@ class tx_cms_layout extends recordList {
 		$out='';
 		if (count($tree->ids))		{
 			$delClause = t3lib_BEfunc::deleteClause('sys_note');
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_note', 'pid IN ('.implode(',',$tree->ids).') AND (!personal OR cruser='.intval($GLOBALS['BE_USER']->user['uid']).')'.$delClause);
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_note', 'pid IN ('.implode(',',$tree->ids).') AND (personal=0 OR cruser='.intval($GLOBALS['BE_USER']->user['uid']).')'.$delClause);
 			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 
 				// If sys_notes were found, render them:

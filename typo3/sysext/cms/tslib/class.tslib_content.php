@@ -4948,7 +4948,7 @@ class tslib_cObj {
 							}
 							if (!$tCR_flag)	{
 								foreach($tCR_rootline as $tCR_data)	{
-									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=""'.$this->enableFields('sys_domain'), '', 'sorting');
+									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
 									if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 										$tCR_domain = ereg_replace('\/$','',$row['domainName']);
 										break;
@@ -5912,7 +5912,7 @@ class tslib_cObj {
 		if (count($OR_arr))	{
 			$whereDef=' AND ('.implode(' OR ',$OR_arr).')';
 			if ($GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'])	{
-				$whereDef.=' AND NOT '.$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'];
+				$whereDef.=' AND '.$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'].'=0';
 			}
 		}
 		return $whereDef;
@@ -5925,7 +5925,7 @@ class tslib_cObj {
 	 *
 	 * @param	string		The table for which to get the where clause
 	 * @param	boolean		If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
-	 * @return	string		The part of the where clause on the form " AND NOT [fieldname] AND ...". Eg. " AND NOT hidden AND starttime < 123345567"
+	 * @return	string		The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567"
 	 * @see t3lib_pageSelect::enableFields()
 	 */
 	function enableFields($table,$show_hidden=0)	{
@@ -5992,7 +5992,7 @@ class tslib_cObj {
 
 				// Select sublevel:
 			if ($depth>0)	{
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid='.intval($id).' AND NOT deleted AND doktype!=255 AND doktype!=6'.$moreWhereClauses, '' ,'sorting');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid='.intval($id).' AND deleted=0 AND doktype!=255 AND doktype!=6'.$moreWhereClauses, '' ,'sorting');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 #??				$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
@@ -6002,7 +6002,7 @@ class tslib_cObj {
 						// Overlay mode:
 					if (is_array($mount_info) && $mount_info['overlay'])	{
 						$next_id = $mount_info['mount_pid'];
-						$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND NOT deleted AND doktype!=255 AND doktype!=6'.$moreWhereClauses, '' ,'sorting');
+						$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid='.intval($next_id).' AND deleted=0 AND doktype!=255 AND doktype!=6'.$moreWhereClauses, '' ,'sorting');
 						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
 #??						$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 					}
@@ -6131,7 +6131,7 @@ class tslib_cObj {
 				if (strlen($val)>=2)	{
 					reset($searchFields);
 					while(list(,$field)=each($searchFields))	{
-						$where_p[]=$prefixTableName.$field.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($val, $searchTable).'%"';
+						$where_p[] = $prefixTableName.$field.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($val, $searchTable).'%\'';
 					}
 				}
 				if (count($where_p))	{

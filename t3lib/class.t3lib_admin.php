@@ -326,7 +326,23 @@ class t3lib_admin {
 				if ($TCA[$table] && trim($field_list))	{
 					t3lib_div::loadTCA($table);
 					$fieldArr = explode(',',$field_list);
+
+					if(t3lib_extMgm::isLoaded('dbal')) {
+						$fields = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
+						reset($fields);
+						list(,$field)=each($fieldArr);
+						$cl_fl = ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'R') ?
+						$field.'!=0' : $field.'!=\'\'';
+						while (list(,$field)=each($fieldArr))	{
+							$cl_fl .= ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'R') ?
+							' OR '.$field.'!=0' : ' OR '.$field.'!=\'\'';
+						}
+						unset($fields);
+					}
+					else {
 					$cl_fl = implode ('!="" OR ',$fieldArr). '!=""';
+					}
+
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$field_list, $table, $cl_fl);
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 						reset($fieldArr);
@@ -490,7 +506,7 @@ class t3lib_admin {
 			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'uid,pid,'.$TCA[$table]['ctrl']['label'].','.$field,
 							$table,
-							$field.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($id, $table).'%"'
+							$field.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($id, $table).'%\''
 						);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 					// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.
@@ -526,7 +542,7 @@ class t3lib_admin {
 			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'uid,pid,'.$TCA[$table]['ctrl']['label'].','.$field,
 							$table,
-							$field.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($filename, $table).'%"'
+							$field.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($filename, $table).'%\''
 						);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 				// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.

@@ -381,12 +381,24 @@
 	}
 
 	/**
+	 * Connect to MySQL database
+	 * May exit after outputting an error message or some JavaScript redirecting to the install tool.
+	 * Use connectToDB() instead!
+	 *
+	 * @return	void
+	 * @deprecated
+	 */
+	function connectToMySQL()	{
+	  $this->connectToDB();
+	}
+
+	/**
 	 * Connect to SQL database
 	 * May exit after outputting an error message or some JavaScript redirecting to the install tool.
 	 *
 	 * @return	void
 	 */
-	function connectToMySQL()	{
+	function connectToDB()	{
 		if ($GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 			if (!TYPO3_db)	{
 				$this->printError('No database selected','Database Error');
@@ -423,7 +435,7 @@
 	 * @return	void
 	 */
 	function sendRedirect()	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'cache_md5params', 'md5hash="'.$GLOBALS['TYPO3_DB']->quoteStr($this->RDCT, 'cache_md5params').'"');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->RDCT, 'cache_md5params'));
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$this->updateMD5paramsRecord($this->RDCT);
 			header('Location: '.$row['params']);
@@ -645,8 +657,8 @@
 				// Now it's investigated if the raw page-id points to a hidden page and if so, the flag is set.
 				// This does not require the preview flag to be set in the admin panel
 			if ($this->id)	{
-				$idQ = t3lib_div::testInt($this->id) ? 'uid="'.intval($this->id).'"' : 'alias="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, 'pages').'" AND pid>=0';	// pid>=0 added for the sake of versioning...
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('hidden', 'pages', $idQ.' AND hidden AND NOT deleted');
+				$idQ = t3lib_div::testInt($this->id) ? 'uid='.intval($this->id) : 'alias='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages').' AND pid>=0';	// pid>=0 added for the sake of versioning...
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('hidden', 'pages', $idQ.' AND hidden!=0 AND deleted=0');
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 					$this->fePreview = 1;	// The preview flag is set only if the current page turns out to actually be hidden!
 					$this->showHiddenPage = 1;
@@ -1172,7 +1184,7 @@
 				parse_str($addParams,$GET_VARS);
 			break;
 			case 'M5':
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'cache_md5params', 'md5hash="'.$GLOBALS['TYPO3_DB']->quoteStr(substr($str,2), 'cache_md5params').'"');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr(substr($str,2), 'cache_md5params'));
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 				$this->updateMD5paramsRecord(substr($str,2));
@@ -1318,12 +1330,12 @@
 			$GLOBALS['TT']->push('Cache Query','');
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'S.*',
-							'cache_pages AS S,pages AS P',
-							'S.hash="'.$GLOBALS['TYPO3_DB']->quoteStr($this->newHash, 'cache_pages').'"
+							'cache_pages S,pages P',
+							'S.hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages').'
 								AND S.page_id=P.uid
 								AND S.expires > '.intval($GLOBALS['EXEC_TIME']).'
-								AND NOT P.deleted
-								AND NOT P.hidden
+								AND P.deleted=0
+								AND P.hidden=0
 								AND P.starttime<='.intval($GLOBALS['EXEC_TIME']).'
 								AND (P.endtime=0 OR P.endtime>'.intval($GLOBALS['EXEC_TIME']).')'
 						);
@@ -1988,15 +2000,15 @@
 			<html>
 				<head>
 					<title>'.htmlspecialchars($this->tmpl->printTitle($this->page['title'])).'</title>
-					<meta http-equiv=Refresh Content="3; Url='.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" />
+					<meta http-equiv="refresh" content="3; URL='.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'" />
 				</head>
 				<body bgcolor="white">
-					<font size="1" face="VERDANA,ARIAL,HELVETICA" color="#cccccc">
+					<span style="font-family:Verdana,Arial,Helvetica" color="#cccccc">
 					<div align="center">
-						<b>Page is being generated.</b><br />
+						<strong>Page is being generated.</strong><br />
 						If this message does not disappear within '.$seconds.' seconds, please reload.
 					</div>
-					</font>
+					</span>
 				</body>
 			</html>';
 			$temp_content = $this->config['config']['message_page_is_being_generated'] ? $this->config['config']['message_page_is_being_generated'] : $stdMsg;
@@ -2067,7 +2079,7 @@
 	 * @return	void
 	 */
 	function clearPageCacheContent()	{
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($this->newHash, 'cache_pages').'"');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages'));
 	}
 
 	/**
@@ -2788,7 +2800,7 @@ if (version == "n3") {
 					$md5=substr(md5($addParams),0,10);
 					$enc='+M5'.$md5;
 
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('md5hash', 'cache_md5params', 'md5hash="'.$GLOBALS['TYPO3_DB']->quoteStr($md5, 'cache_md5params').'"');
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('md5hash', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($md5, 'cache_md5params'));
 					if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 						$insertFields = array(
 							'md5hash' => $md5,
@@ -3017,7 +3029,7 @@ if (version == "n3") {
 	 * @access private
 	 */
 	function updateMD5paramsRecord($hash)	{
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_md5params', 'md5hash="'.$GLOBALS['TYPO3_DB']->quoteStr($hash, 'cache_md5params').'"', array('tstamp' => time()));
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => time()));
 	}
 
 	/**

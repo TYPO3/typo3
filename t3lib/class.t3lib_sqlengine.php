@@ -368,7 +368,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 	 *
 	 * @param	string		List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
 	 * @param	string		Table(s) from which to select. This is what comes right after "FROM ...". Required value.
-	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->quoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
@@ -617,7 +617,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 	 * @return	[type]		...
 	 */
 	function select_evalSingle($table,$config,&$itemKeys)	{
-		$neg = ereg('^AND[[:space:]]+NOT$',trim($config['operator']));
+		$neg = preg_match('/^AND[[:space:]]+NOT$/',trim($config['operator']));
 
 		if (is_array($config['sub']))	{
 			$subSelKeys = $this->selectFromData($table,$config['sub']);
@@ -631,7 +631,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 				$itemKeys = array_intersect($itemKeys, $subSelKeys);
 			}
 		} else {
-			$comp = strtoupper(ereg_replace('[[:space:]]','',$config['comparator']));
+			$comp = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$config['comparator']));
 			$mod = strtoupper($config['modifier']);
 			switch($comp)	{
 				case 'NOTLIKE':
@@ -753,18 +753,6 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 
 		return $output;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

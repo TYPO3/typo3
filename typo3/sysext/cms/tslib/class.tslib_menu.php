@@ -564,7 +564,7 @@ class tslib_menu {
 							foreach($kwArr as $word)	{
 								$word = trim($word);
 								if ($word)	{
-									$keyWordsWhereArr[] = $kfield.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($word, 'pages').'%"';
+									$keyWordsWhereArr[] = $kfield.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($word, 'pages').'%\'';
 								}
 							}
 							$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode(' OR ',$keyWordsWhereArr).')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));

@@ -759,7 +759,7 @@ class SC_alt_doc {
 
 					// Undo:
 				$undoButton = 0;
-				$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($this->firstEl['table'], 'sys_history').'" AND recuid="'.intval($this->firstEl['uid']).'"', '', 'tstamp DESC', '1');
+				$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->firstEl['table'], 'sys_history').' AND recuid='.intval($this->firstEl['uid']), '', 'tstamp DESC', '1');
 				if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
 					$undoButton = 1;
 				}

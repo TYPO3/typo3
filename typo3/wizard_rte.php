@@ -177,7 +177,7 @@ class SC_wizard_rte {
 
 				// Getting settings for the undo button:
 			$undoButton = 0;
-			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($this->P['table'], 'sys_history').'" AND recuid="'.$GLOBALS['TYPO3_DB']->quoteStr($this->P['uid'], 'sys_history').'"', '', 'tstamp DESC', '1');
+			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->P['table'], 'sys_history').' AND recuid='.intval($this->P['uid']), '', 'tstamp DESC', '1');
 			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
 				$undoButton = 1;
 			}

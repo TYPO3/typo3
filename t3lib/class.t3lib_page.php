@@ -220,7 +220,7 @@ class t3lib_pageSelect {
 	 */
 	function getPageIdFromAlias($alias)	{
 		$alias = strtolower($alias);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'alias="'.$GLOBALS['TYPO3_DB']->quoteStr($alias, 'pages').'" AND pid>=0 AND pages.deleted=0');	// "AND pid>=0" is because of versioning...
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'alias='.$GLOBALS['TYPO3_DB']->fullQuoteStr($alias, 'pages').' AND pid>=0 AND pages.deleted=0');	// "AND pid>=0" is because of versioning...
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			return $row['uid'];
 		}
@@ -442,7 +442,7 @@ class t3lib_pageSelect {
 					'pages,sys_domain',
 					'pages.uid=sys_domain.pid
 						AND sys_domain.hidden=0
-						AND (sys_domain.domainName="'.$GLOBALS['TYPO3_DB']->quoteStr($domain, 'sys_domain').'" OR sys_domain.domainName="'.$GLOBALS['TYPO3_DB']->quoteStr($domain.'/', 'sys_domain').'") '.
+						AND (sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain').' OR sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain.'/', 'sys_domain').') '.
 						$this->where_hid_del,
 					'',
 					'',
@@ -777,7 +777,7 @@ class t3lib_pageSelect {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'*',
 						$theTable,
-						$theField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($theValue, $theTable).'"'.
+						$theField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($theValue, $theTable).
 							$this->deleteClause($theTable).' '.
 								$whereClause,	// whereClauseMightContainGroupOrderBy
 						$groupBy,
@@ -829,7 +829,7 @@ class t3lib_pageSelect {
 		if ($expTime)	{
 			$whereAdd = ' AND tstamp > '.(time()-$expTime);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($hash, 'cache_hash').'"'.$whereAdd);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash').$whereAdd);
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			return $row['content'];
@@ -853,7 +853,7 @@ class t3lib_pageSelect {
 			'ident' => $ident,
 			'tstamp' => time()
 		);
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($hash, 'cache_hash').'"');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash'));
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_hash', $insertFields);
 	}
 

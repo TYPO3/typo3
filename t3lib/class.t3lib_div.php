@@ -3473,7 +3473,7 @@ class t3lib_div {
 	function makeRedirectUrl($inUrl,$l=0,$index_script_url='')	{
 		if (strlen($inUrl)>$l)	{
 			$md5 = substr(md5($inUrl),0,20);
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('md5hash', 'cache_md5params', 'md5hash="'.$GLOBALS['TYPO3_DB']->quoteStr($md5, 'cache_md5params').'"');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('md5hash', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($md5, 'cache_md5params'));
 			if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				$insertFields = array(
 					'md5hash' => $md5,

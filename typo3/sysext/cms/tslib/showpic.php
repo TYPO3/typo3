@@ -174,10 +174,8 @@ class SC_tslib_showpic {
 			$img->tempPath = $this->alternativeTempPath;
 		}
 
-		#if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['enable_typo3temp_db_tracking'])	{
-				// Need to connect to database, because this may be used (eg. by stdgraphic)
+		// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
 			$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
-		#}
 
 		if (strstr($this->width.$this->height, 'm')) {$max='m';} else {$max='';}
 

@@ -202,8 +202,8 @@ class t3lib_userAuth {
 		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'*',
 						$this->session_table.','.$this->user_table,
-						$this->session_table.'.ses_id = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'"
-							AND '.$this->session_table.'.ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"
+						$this->session_table.'.ses_id = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
+							AND '.$this->session_table.'.ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table).'
 							AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.'
 							'.$this->ipLockClause().'
 							'.$this->hashLockClause().'
@@ -222,8 +222,8 @@ class t3lib_userAuth {
 			if ($timeout>0 && ($GLOBALS['EXEC_TIME'] < ($this->user['ses_tstamp']+$timeout)))	{
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 											$this->session_table,
-											'ses_id="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'"
-												AND ses_name="'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"',
+											'ses_id='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
+												AND ses_name='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table),
 											array('ses_tstamp' => $GLOBALS['EXEC_TIME'])
 										);
 					$this->user['ses_tstamp'] = $GLOBALS['EXEC_TIME'];	// Make sure that the timestamp is also updated in the array
@@ -295,7 +295,7 @@ class t3lib_userAuth {
 									'*',
 									$this->user_table,
 									($this->checkPid ? 'pid IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($this->checkPid_value).') AND ' : '').
-										$this->username_column.'="'.$GLOBALS['TYPO3_DB']->quoteStr($F_uname, $this->user_table).'" '.
+										$this->username_column.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($F_uname, $this->user_table).' '.
 										$this->user_where_clause()
 							);
 
@@ -352,7 +352,7 @@ class t3lib_userAuth {
 								if ($this->lastLogin_column)	{
 									$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 															$this->user_table,
-															$this->userid_column.'="'.$GLOBALS['TYPO3_DB']->quoteStr($tempuser[$this->userid_column], $this->user_table).'"',
+															$this->userid_column.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($tempuser[$this->userid_column], $this->user_table),
 															array($this->lastLogin_column => $GLOBALS['EXEC_TIME'])
 														);
 								}
@@ -426,8 +426,8 @@ class t3lib_userAuth {
 	function logoff() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					$this->session_table,
-					'ses_id = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'"
-						AND ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"'
+					'ses_id = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
+						AND ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table)
 				);
 		$this->user = "";
 	}
@@ -442,7 +442,7 @@ class t3lib_userAuth {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					$this->session_table,
 					'ses_tstamp < '.intval(time()-($this->gc_time*60*60)).'
-						AND ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"'
+						AND ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table)
 				);
 	}
 
@@ -454,8 +454,8 @@ class t3lib_userAuth {
 	 */
 	function user_where_clause()	{
 		return  (($this->enablecolumns['rootLevel']) ? 'AND '.$this->user_table.'.pid=0 ' : '').
-				(($this->enablecolumns['disabled']) ? ' AND NOT '.$this->user_table.'.'.$this->enablecolumns['disabled'] : '').
-				(($this->enablecolumns['deleted']) ? ' AND NOT '.$this->user_table.'.'.$this->enablecolumns['deleted'] : '').
+				(($this->enablecolumns['disabled']) ? ' AND '.$this->user_table.'.'.$this->enablecolumns['disabled'].'=0' : '').
+				(($this->enablecolumns['deleted']) ? ' AND '.$this->user_table.'.'.$this->enablecolumns['deleted'].'=0' : '').
 				(($this->enablecolumns['starttime']) ? ' AND ('.$this->user_table.'.'.$this->enablecolumns['starttime'].'<='.time().')' : '').
 				(($this->enablecolumns['endtime']) ? ' AND ('.$this->user_table.'.'.$this->enablecolumns['endtime'].'=0 OR '.$this->user_table.'.'.$this->enablecolumns['endtime'].'>'.time().')' : '');
 	}
@@ -469,8 +469,8 @@ class t3lib_userAuth {
 	function ipLockClause()	{
 		if ($this->lockIP)	{
 			$wherePart = 'AND (
-				'.$this->session_table.'.ses_iplock="'.$GLOBALS['TYPO3_DB']->quoteStr($this->ipLockClause_remoteIPNumber($this->lockIP),$this->session_table).'"
-				OR '.$this->session_table.'.ses_iplock="[DISABLED]"
+				'.$this->session_table.'.ses_iplock='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->ipLockClause_remoteIPNumber($this->lockIP),$this->session_table).'
+				OR '.$this->session_table.'.ses_iplock=\'[DISABLED]\'
 				)';
 			return $wherePart;
 		}
@@ -633,7 +633,7 @@ class t3lib_userAuth {
 		$sesDat[$key] = $data;
 		$this->user['ses_data'] = serialize($sesDat);
 
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->session_table, 'ses_id="'.$GLOBALS['TYPO3_DB']->quoteStr($this->user['ses_id'], $this->session_table).'"', array('ses_data' => $this->user['ses_data']));
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->session_table, 'ses_id='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->user['ses_id'], $this->session_table), array('ses_data' => $this->user['ses_data']));
 	}
 
 	/**
@@ -648,7 +648,7 @@ class t3lib_userAuth {
 	 * @see SC_mod_tools_be_user_index::compareUsers(), SC_mod_user_setup_index::simulateUser(), freesite_admin::startCreate()
 	 */
 	function setBeUserByUid($uid)	{
-		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, 'uid="'.intval($uid).'" '.$this->user_where_clause());
+		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, 'uid='.intval($uid).' '.$this->user_where_clause());
 		$this->user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
 	}
 
@@ -661,7 +661,7 @@ class t3lib_userAuth {
 	 * @internal
 	 */
 	function setBeUserByName($name)	{
-		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, 'username="'.$GLOBALS['TYPO3_DB']->quoteStr($name, $this->user_table).'" '.$this->user_where_clause());
+		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($name, $this->user_table).' '.$this->user_where_clause());
 		$this->user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
 	}
 }

@@ -1,17 +1,17 @@
+General:
+- Add an "alias" field to tt_content elements (unique for the PAGE like the "pid" field). [I'm not clear anymore about what this should be used for... - maybe anchors in links to content elements? I guess so...]
+- Include all files from a path like fileadmin/xxx/
+
+IMPORT:
+- Better logging to system
+
+
+*********
+NOTES:
+*********
 Input Charset conversion NOTE:
 	- T3D + XML/PHP4: Traverse array and convert proper places (meta data, header summaries, record values)
 		- Serialized/binary content in fields may be mal-formed?
 	- XML/PHP5: May be converted automatically without we can do anything.
 		- May break encapsulated text files which are not base64 encoded
 		- May break serialized strings
-
-************
-TODO
-************
-General:
-- Add an "alias" field to tt_content elements (unique for the PAGE like the "pid" field). [I'm not clear anymore about what this should be used for... - maybe anchors in links to content elements? I guess so...]
-
-IMPORT:
-- Better logging to system
-
-

@@ -346,7 +346,7 @@ class t3lib_TStemplate	{
 				if ($this->tt_track)	$GLOBALS['TT']->setTSlogMessage('TS template size, serialized: '.strlen(serialize($this->setup)).' bytes');
 
 				$rowSumHash = md5('ROWSUM:'.serialize($this->rowSum));
-				t3lib_pageSelect::storeHash($rowSumHash, serialize($cc['all']), 'TMPL CONDITIONS - ALL');
+				t3lib_pageSelect::storeHash($rowSumHash, serialize($cc['all']), 'TMPL CONDITIONS - AL');
 			}
 				// Add rootLine
 			$cc['rootLine'] = $this->rootLine;
@@ -361,6 +361,7 @@ class t3lib_TStemplate	{
 					'tstamp' => $GLOBALS['EXEC_TIME']
 				);
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id='.intval($GLOBALS['TSFE']->id).' AND mpvar_hash='.t3lib_div::md5int($GLOBALS['TSFE']->MP));
+
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pagesection', $insertFields);
 			}
 				// If everything OK.

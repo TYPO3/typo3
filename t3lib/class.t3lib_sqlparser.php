@@ -126,7 +126,6 @@ class t3lib_sqlparser {
 	 * @see compileSQL(), debug_testSQL()
 	 */
 	function parseSQL($parseString)	{
-
 			// Prepare variables:
 		$parseString = $this->trimSQL($parseString);
 		$this->parse_error = '';
@@ -134,8 +133,8 @@ class t3lib_sqlparser {
 
 			// Finding starting keyword of string:
 		$_parseString = $parseString;	// Protecting original string...
-		$keyword = $this->nextPart($_parseString, '^(SELECT|UPDATE|INSERT[[:space:]]+INTO|DELETE[[:space:]]+FROM|EXPLAIN|DROP[[:space:]]+TABLE|CREATE[[:space:]]+TABLE|ALTER[[:space:]]+TABLE)[[:space:]]+');
-		$keyword = strtoupper(ereg_replace('[[:space:]]*','',$keyword));
+		$keyword = $this->nextPart($_parseString, '^(SELECT|UPDATE|INSERT[[:space:]]+INTO|DELETE[[:space:]]+FROM|EXPLAIN|DROP[[:space:]]+TABLE|CREATE[[:space:]]+TABLE|CREATE[[:space:]]+DATABASE|ALTER[[:space:]]+TABLE)[[:space:]]+');
+		$keyword = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$keyword));
 
 		switch($keyword)	{
 			case 'SELECT':
@@ -170,6 +169,10 @@ class t3lib_sqlparser {
 					// Parsing CREATE TABLE query:
 				$result = $this->parseCREATETABLE($parseString);
 			break;
+			case 'CREATEDATABASE':
+					// Parsing CREATE DATABASE query:
+				$result = $this->parseCREATEDATABASE($parseString);
+			break;
 			default:
 				return $this->parseError('"'.$keyword.'" is not a keyword',$parseString);
 			break;
@@ -189,7 +192,7 @@ class t3lib_sqlparser {
 
 			// Removing SELECT:
 		$parseString = $this->trimSQL($parseString);
-		$parseString = eregi_replace('^SELECT[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr($parseString,6)); // REMOVE eregi_replace('^SELECT[[:space:]]+','',$parseString);
 
 			// Init output variable:
 		$result = array();
@@ -233,7 +236,7 @@ class t3lib_sqlparser {
 
 						// LIMIT parsing:
 					if ($this->lastStopKeyWord == 'LIMIT')	{
-						if (ereg('^([0-9]+|[0-9]+[[:space:]]*,[[:space:]]*[0-9]+)$',trim($parseString)))	{
+						if (preg_match('/^([0-9]+|[0-9]+[[:space:]]*,[[:space:]]*[0-9]+)$/',trim($parseString)))	{
 							$result['LIMIT'] = $parseString;
 						} else {
 							return $this->parseError('No value for limit!',$parseString);
@@ -258,7 +261,7 @@ class t3lib_sqlparser {
 
 			// Removing UPDATE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = eregi_replace('^UPDATE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr($parseString,6)); // REMOVE eregi_replace('^UPDATE[[:space:]]+','',$parseString);
 
 			// Init output variable:
 		$result = array();
@@ -312,7 +315,7 @@ class t3lib_sqlparser {
 
 			// Removing INSERT
 		$parseString = $this->trimSQL($parseString);
-		$parseString = eregi_replace('^INSERT[[:space:]]+INTO[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,6)),4)); // REMOVE eregi_replace('^INSERT[[:space:]]+INTO[[:space:]]+','',$parseString);
 
 			// Init output variable:
 		$result = array();
@@ -337,7 +340,7 @@ class t3lib_sqlparser {
 					if ($this->parse_error)	{ return $this->parse_error; }
 
 					foreach($fieldNames as $k => $fN)	{
-						if (ereg('^[[:alnum:]_]+$',$fN))	{
+						if (preg_match('/^[[:alnum:]_]+$/',$fN))	{
 							if (isset($values[$k]))	{
 								if (!isset($result['FIELDS'][$fN]))	{
 									$result['FIELDS'][$fN] = $values[$k];
@@ -372,7 +375,7 @@ class t3lib_sqlparser {
 
 			// Removing DELETE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = eregi_replace('^DELETE[[:space:]]+FROM[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,6)),4)); // REMOVE eregi_replace('^DELETE[[:space:]]+FROM[[:space:]]+','',$parseString);
 
 			// Init output variable:
 		$result = array();
@@ -410,7 +413,7 @@ class t3lib_sqlparser {
 
 			// Removing EXPLAIN
 		$parseString = $this->trimSQL($parseString);
-		$parseString = eregi_replace('^EXPLAIN[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr($parseString,6)); // REMOVE eregi_replace('^EXPLAIN[[:space:]]+','',$parseString);
 
 			// Init output variable:
 		$result = $this->parseSELECT($parseString);
@@ -432,7 +435,7 @@ class t3lib_sqlparser {
 
 			// Removing CREATE TABLE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = eregi_replace('^CREATE[[:space:]]+TABLE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,6)),5)); // REMOVE eregi_replace('^CREATE[[:space:]]+TABLE[[:space:]]+','',$parseString);
 
 			// Init output variable:
 		$result = array();
@@ -446,7 +449,7 @@ class t3lib_sqlparser {
 				// While the parseString is not yet empty:
 			while(strlen($parseString)>0)	{
 				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY)([[:space:]]+|\()'))	{	// Getting key
-					$key = strtoupper(ereg_replace('[[:space:]]','',$key));
+					$key = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$key));
 
 					switch($key)	{
 						case 'PRIMARYKEY':
@@ -504,7 +507,7 @@ class t3lib_sqlparser {
 
 			// Removing ALTER TABLE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = eregi_replace('^ALTER[[:space:]]+TABLE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,5)),5)); // REMOVE eregi_replace('^ALTER[[:space:]]+TABLE[[:space:]]+','',$parseString);
 
 			// Init output variable:
 		$result = array();
@@ -515,7 +518,7 @@ class t3lib_sqlparser {
 
 		if ($result['TABLE'])	{
 			if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|DROP[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|DROP|ADD|RENAME)([[:space:]]+|\()'))	{
-				$actionKey = strtoupper(ereg_replace('[[:space:]]','',$result['action']));
+				$actionKey = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$result['action']));
 
 					// Getting field:
 				if (t3lib_div::inList('ADDPRIMARYKEY,DROPPRIMARYKEY',$actionKey) || $fieldKey = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+'))	{
@@ -573,7 +576,7 @@ class t3lib_sqlparser {
 
 			// Removing DROP TABLE
 		$parseString = $this->trimSQL($parseString);
-		$parseString = eregi_replace('^DROP[[:space:]]+TABLE[[:space:]]+','',$parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,4)),5)); // eregi_replace('^DROP[[:space:]]+TABLE[[:space:]]+','',$parseString);
 
 			// Init output variable:
 		$result = array();
@@ -596,7 +599,35 @@ class t3lib_sqlparser {
 		} else return $this->parseError('No table found!',$parseString);
 	}
 
+	/**
+	 * Parsing CREATE DATABASE query
+	 *
+	 * @param	string		SQL string starting with CREATE DATABASE
+	 * @return	mixed		Returns array with components of CREATE DATABASE query on success, otherwise an error message string.
+	 */
+	function parseCREATEDATABASE($parseString)	{
 
+			// Removing CREATE DATABASE
+		$parseString = $this->trimSQL($parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString,6)),8)); // eregi_replace('^CREATE[[:space:]]+DATABASE[[:space:]]+','',$parseString);
+
+			// Init output variable:
+		$result = array();
+		$result['type'] = 'CREATEDATABASE';
+
+			// Get table:
+		$result['DATABASE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+');
+
+		if ($result['DATABASE'])	{
+
+				// Should be no more content now:
+			if ($parseString)	{
+				return $this->parseError('Still content in clause after parsing!',$parseString);
+			}
+
+			return $result;
+		} else return $this->parseError('No database found!',$parseString);
+	}
 
 
 
@@ -713,7 +744,7 @@ class t3lib_sqlparser {
 
 					// Looking for stop-keywords:
 				if ($stopRegex && $this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex))	{
-					$this->lastStopKeyWord = strtoupper(ereg_replace('[[:space:]]*','',$this->lastStopKeyWord));
+					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$this->lastStopKeyWord));
 					return $stack;
 				}
 
@@ -759,13 +790,9 @@ class t3lib_sqlparser {
 
 			// $parseString is continously shortend by the process and we keep parsing it till it is zero:
 		while (strlen($parseString)) {
-
 				// Looking for the table:
 			if ($stack[$pnt]['table'] = $this->nextPart($parseString,'^([[:alnum:]_]+)(,|[[:space:]]+)'))	{
-				if ($as = $this->nextPart($parseString,'^(AS)[[:space:]]+'))	{
-					$stack[$pnt]['as'] = $this->nextPart($parseString,'^([[:alnum:]_]+)(,|[[:space:]]+)');
-					$stack[$pnt]['as_keyword'] = $as;
-				}
+			    $stack[$pnt]['as'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]*');
 			} else return $this->parseError('No table name found as expected!',$parseString);
 
 				// Looking for JOIN
@@ -782,7 +809,7 @@ class t3lib_sqlparser {
 
 				// Looking for stop-keywords:
 			if ($stopRegex && $this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex))	{
-				$this->lastStopKeyWord = strtoupper(ereg_replace('[[:space:]]*','',$this->lastStopKeyWord));
+				$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$this->lastStopKeyWord));
 				return $stack;
 			}
 
@@ -894,7 +921,7 @@ class t3lib_sqlparser {
 
 						// Looking for stop-keywords:
 					if ($stopRegex && $this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex))	{
-						$this->lastStopKeyWord = strtoupper(ereg_replace('[[:space:]]*','',$this->lastStopKeyWord));
+						$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$this->lastStopKeyWord));
 						return $stack[0];
 					} else {
 						return $this->parseError('No operator, but parsing not finished.',$parseString);
@@ -942,7 +969,7 @@ class t3lib_sqlparser {
 
 				// Looking for keywords
 			while($keyword = $this->nextPart($parseString,'^(DEFAULT|NOT[[:space:]]+NULL|AUTO_INCREMENT|UNSIGNED)([[:space:]]+|,|\))'))	{
-				$keywordCmp = strtoupper(ereg_replace('[[:space:]]*','',$keyword));
+				$keywordCmp = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$keyword));
 
 				$result['featureIndex'][$keywordCmp]['keyword'] = $keyword;
 
@@ -983,7 +1010,8 @@ class t3lib_sqlparser {
 	 * @return	string		The value of the first parenthesis level of the REGEX.
 	 */
 	function nextPart(&$parseString,$regex,$trimAll=FALSE)	{
-		if (eregi($regex,$parseString.' ', $reg))	{	// Adding space char because [[:space:]]+ is often a requirement in regex's
+		//if (eregi($regex,$parseString.' ', $reg))	{	// Adding space char because [[:space:]]+ is often a requirement in regex's
+		if (preg_match('/'.$regex.'/i',$parseString.' ', $reg))	{	// Adding space char because [[:space:]]+ is often a requirement in regex's
 			$parseString = ltrim(substr($parseString,strlen($reg[$trimAll?0:1])));
 			return $reg[1];
 		}
@@ -997,7 +1025,8 @@ class t3lib_sqlparser {
 	 * @return	string		The value (string/integer). Otherwise an array with error message in first key (0)
 	 */
 	function getValue(&$parseString,$comparator='')	{
-		if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(ereg_replace('[[:space:]]','',$comparator))))	{	// List of values:
+		//if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(ereg_replace('[[:space:]]','',$comparator))))	{	// List of values:
+		if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(str_replace(array(' ',"\n","\r","\t"),'',$comparator))))	{	// List of values:
 			if ($this->nextPart($parseString,'^([(])'))	{
 				$listValues = array();
 				$comma=',';
@@ -1034,7 +1063,7 @@ class t3lib_sqlparser {
 					return array($this->getValueInQuotes($parseString,"'"),"'");
 				break;
 				default:
-					if (eregi('^([[:alnum:]._-]+)',$parseString, $reg))	{
+					if (preg_match('/^([[:alnum:]._-]+)/i',$parseString, $reg))	{
 						$parseString = ltrim(substr($parseString,strlen($reg[0])));
 						return array($reg[1]);
 					}
@@ -1059,6 +1088,7 @@ class t3lib_sqlparser {
 			$buffer.=$v;
 
 			unset($reg);
+			//preg_match('/[\]*$/',$v,$reg); // does not work. what is the *exact* meaning of the next line?
 			ereg('[\]*$',$v,$reg);
 			if (strlen($reg[0])%2)	{
 				$buffer.=$quote;
@@ -1091,6 +1121,7 @@ class t3lib_sqlparser {
 	 * @return	string		Output string
 	 */
 	function compileAddslashes($str)	{
+return $str;
 		$search = array('\\', '\'', '"', "\x00", "\x0a", "\x0d", "\x1a");
 		$replace = array('\\\\', '\\\'', '\\"', '\0', '\n', '\r', '\Z');
 
@@ -1119,7 +1150,8 @@ class t3lib_sqlparser {
 	 * @return	string		Output string
 	 */
 	function trimSQL($str)	{
-		return trim(ereg_replace('[[:space:];]*$','',$str)).' ';
+		return trim(rtrim($str, "; \r\n\t")).' ';
+		//return trim(ereg_replace('[[:space:];]*$','',$str)).' ';
 	}
 
 
@@ -1340,7 +1372,7 @@ class t3lib_sqlparser {
 		$query = 'ALTER TABLE '.$components['TABLE'].' '.$components['action'].' '.($components['FIELD']?$components['FIELD']:$components['KEY']);
 
 			// Based on action, add the final part:
-		switch(strtoupper(ereg_replace('[[:space:]]','',$components['action'])))	{
+		switch(strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$components['action'])))	{
 			case 'ADD':
 				$query.=' '.$this->compileFieldCfg($components['definition']);
 			break;
@@ -1460,6 +1492,7 @@ class t3lib_sqlparser {
 	/**
 	 * Implodes an array of WHERE clause configuration into a WHERE clause.
 	 * NOTICE: MIGHT BY A TEMPORARY FUNCTION. Use for debugging only!
+	 * BUT IT IS NEEDED FOR DBAL - MAKE IT PERMANENT?!?!
 	 *
 	 * @param	array		WHERE clause configuration
 	 * @return	string		WHERE clause as string.
@@ -1495,7 +1528,7 @@ class t3lib_sqlparser {
 						$output.=' '.$v['comparator'];
 
 							// Detecting value type; list or plain:
-						if (t3lib_div::inList('NOTIN,IN',strtoupper(ereg_replace('[[:space:]]','',$v['comparator']))))	{
+						if (t3lib_div::inList('NOTIN,IN',strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$v['comparator']))))	{
 							$valueBuffer = array();
 							foreach($v['value'] as $realValue)	{
 								$valueBuffer[]=$realValue[1].$this->compileAddslashes($realValue[0]).$realValue[1];
@@ -1609,10 +1642,10 @@ class t3lib_sqlparser {
 #		$str1 = stripslashes($str1);
 #		$str2 = stripslashes($str2);
 
-		if (strcmp(ereg_replace('[[:space:]]','',$this->trimSQL($str1)),ereg_replace('[[:space:]]','',$this->trimSQL($str2))))	{
+		if (strcmp(str_replace(array(' ',"\t","\r","\n"),'',$this->trimSQL($str1)),str_replace(array(' ',"\t","\r","\n"),'',$this->trimSQL($str2))))	{
 			return array(
-					ereg_replace('[[:space:]]+',' ',$str),
-					ereg_replace('[[:space:]]+',' ',$newStr),
+					str_replace(array(' ',"\t","\r","\n"),' ',$str),
+					str_replace(array(' ',"\t","\r","\n"),' ',$newStr),
 				);
 		}
 	}

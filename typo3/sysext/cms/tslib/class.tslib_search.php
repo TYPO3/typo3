@@ -388,7 +388,7 @@ class tslib_search {
 					if (is_array($searchfields))	{
 						foreach($searchfields as $key2 => $val2)	{
 							$this->listOfSearchFields.= $key3.'.'.$val2.',';
-							$sub_query_part[] = $key3.'.'.$val2.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($s_sword, $key3).'%"';
+							$sub_query_part[] = $key3.'.'.$val2.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($s_sword, $key3).'%\'';
 						}
 					}
 				}

@@ -261,8 +261,8 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function dmailer_masssend($query_info,$table,$mid)	{
-		$enableFields['tt_address']='NOT tt_address.deleted AND NOT tt_address.hidden';
-		$enableFields['fe_users']='NOT fe_users.deleted AND NOT fe_users.disable';
+		$enableFields['tt_address']='tt_address.deleted=0 AND tt_address.hidden=0';
+		$enableFields['fe_users']='fe_users.deleted=0 AND fe_users.disable=0';
 		$tKey = substr($table,0,1);
 		$begin=intval($this->dmailer_howManySendMails($mid,$tKey));
 		if ($query_info[$table])	{
@@ -297,8 +297,8 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function dmailer_masssend_list($query_info,$mid)	{
-		$enableFields['tt_address']='NOT tt_address.deleted AND NOT tt_address.hidden';
-		$enableFields['fe_users']='NOT fe_users.deleted AND NOT fe_users.disable';
+		$enableFields['tt_address']='tt_address.deleted=0 AND tt_address.hidden=0';
+		$enableFields['fe_users']='fe_users.deleted=0 AND fe_users.disable=0';
 
 		$c=0;
 		$returnVal=true;
@@ -414,7 +414,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function dmailer_howManySendMails($mid,$rtbl='')	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'sys_dmail_maillog', 'mid='.intval($mid).' AND response_type=0'.($rtbl ? ' AND rtbl="'.$GLOBALS['TYPO3_DB']->quoteStr($rtbl, 'sys_dmail_maillog').'"' : ''));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'sys_dmail_maillog', 'mid='.intval($mid).' AND response_type=0'.($rtbl ? ' AND rtbl='.$GLOBALS['TYPO3_DB']->fullQuoteStr($rtbl, 'sys_dmail_maillog') : ''));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
 	}
@@ -428,7 +428,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function dmailer_isSend($mid,$rid,$rtbl)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_dmail_maillog', 'rid='.intval($rid).' AND rtbl="'.$GLOBALS['TYPO3_DB']->quoteStr($rtbl, 'sys_dmail_maillog').'" AND mid='.intval($mid).' AND response_type=0');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_dmail_maillog', 'rid='.intval($rid).' AND rtbl='.$GLOBALS['TYPO3_DB']->fullQuoteStr($rtbl, 'sys_dmail_maillog').' AND mid='.intval($mid).' AND response_type=0');
 		return $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 	}
 
@@ -440,7 +440,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function dmailer_getSentMails($mid,$rtbl)	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('rid', 'sys_dmail_maillog', 'mid='.intval($mid).' AND rtbl="'.$GLOBALS['TYPO3_DB']->quoteStr($rtbl, 'sys_dmail_maillog').'" AND response_type=0');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('rid', 'sys_dmail_maillog', 'mid='.intval($mid).' AND rtbl='.$GLOBALS['TYPO3_DB']->fullQuoteStr($rtbl, 'sys_dmail_maillog').' AND response_type=0');
 		$list = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$list[] = $row['rid'];

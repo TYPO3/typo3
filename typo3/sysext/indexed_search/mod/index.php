@@ -161,7 +161,7 @@ class SC_mod_tools_isearch_index {
 
 			// TYPO3 pages, unique
 		$items = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),phash', 'index_phash', 'data_page_id!=0', 'phash_grouping');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),phash', 'index_phash', 'data_page_id!=0', 'phash_grouping,count(*),phash');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
 			$items[] = $row;
 		}
@@ -174,14 +174,14 @@ class SC_mod_tools_isearch_index {
 
 			// External files, unique
 		$items = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),phash', 'index_phash', 'data_filename!=""', 'phash_grouping');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),phash', 'index_phash', 'data_filename!=\'\'', 'phash_grouping');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
 			$items[] = $row;
 		}
 		$recList[] = array($this->tableHead("External files"), count($items));
 
 			// External files
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'data_filename!=""');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'data_filename!=\'\'');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		$recList[] = array($this->tableHead("External files, raw"), $row[0]);
 

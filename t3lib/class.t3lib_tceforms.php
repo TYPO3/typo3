@@ -4818,7 +4818,7 @@ class t3lib_TCEforms	{
 		$isL = t3lib_extMgm::isLoaded('static_info_tables');
 
 			// Find all language records in the system:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0 AND NOT hidden'.t3lib_BEfunc::deleteClause('sys_language'), '', 'title');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0 AND hidden=0'.t3lib_BEfunc::deleteClause('sys_language'), '', 'title');
 
 			// Traverse them:
 		$output=array();

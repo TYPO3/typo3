@@ -189,7 +189,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 
 			// Add search languages:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_language', '1'.$this->cObj->enableFields('sys_language'));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_language', '1=1'.$this->cObj->enableFields('sys_language'));
 		while($lR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$optValues["lang"][$lR["uid"]]=$lR["title"];
 		}
@@ -473,8 +473,8 @@ class tx_indexedsearch extends tslib_pibase {
 				case "20":
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 								'ISEC.phash',
-								'index_section AS ISEC, index_fulltext AS IFT',
-								'IFT.fulltextdata LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_fulltext').'%" AND
+								'index_section ISEC, index_fulltext IFT',
+								'IFT.fulltextdata LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_fulltext').'%\' AND
 									ISEC.phash = IFT.phash
 									'.$this->sectionTableWhere(),
 								'ISEC.phash'
@@ -532,10 +532,10 @@ class tx_indexedsearch extends tslib_pibase {
 	 */
 	function execPHashListQuery($wordSel,$plusQ="")	{
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'STRAIGHT_JOIN IR.phash',
-					'index_words AS IW,
-						index_rel AS IR,
-						index_section AS ISEC',
+					'IR.phash',
+					'index_words IW,
+						index_rel IR,
+						index_section ISEC',
 					$wordSel.'
 						AND IW.wid=IR.wid
 						AND ISEC.phash = IR.phash
@@ -691,11 +691,12 @@ class tx_indexedsearch extends tslib_pibase {
 			$wordSel='('.implode(' OR ',$this->wSelClauses).') AND ';
 
 			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'STRAIGHT_JOIN ISEC.*, IP.*, '.$grsel,
-						'index_words AS IW,
-							index_rel AS IR,
-							index_section AS ISEC,
-							index_phash AS IP'.
+						'ISEC.*, IP.phash_grouping,  IP.data_filename, IP.data_page_id, IP.data_page_reg1, IP.data_page_type, IP.data_page_mp, IP.gr_list, IP.item_type, IP.item_title, IP.item_description, IP.item_mtime, IP.tstamp, IP.item_size, IP.contentHash, IP.crdate, IP.parsetime, IP.sys_language_uid, IP.item_crdate, '
+						.$grsel,
+						'index_words IW,
+							index_rel IR,
+							index_section ISEC,
+							index_phash IP'.
 							$page_join,
 						$wordSel.'
 							IP.phash IN ('.$list.') '.
@@ -705,7 +706,7 @@ class tx_indexedsearch extends tslib_pibase {
 							AND ISEC.phash = IR.phash
 							AND IP.phash = IR.phash
 							AND	'.$page_where,
-						'IP.phash',
+						'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate',
 						$orderBy
 					);
 		} else {	// Otherwise, if sorting are done with the pages table or other fields, there is no need for joining with the rel/word tables:
@@ -731,7 +732,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'ISEC.*, IP.*',
-						'index_phash AS IP,index_section AS ISEC'.$page_join,
+						'index_phash IP,index_section ISEC'.$page_join,
 						'IP.phash IN ('.$list.') '.
 							$this->mediaTypeWhere().' '.
 							$this->languageWhere().'
@@ -752,7 +753,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 				// So, selecting for the grlist records belonging to the parent phash-row where the current users gr_list exists.
 				// If this is NOT found, there is still a theoretical possibility that another user accessible page would display a link, so maybe the resume of such a document here may be unjustified hidden. But this case is rare.
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash='.intval($row['phash_t3']).' AND gr_list="'.$GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist').'"');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash='.intval($row['phash_t3']).' AND gr_list='.$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 #				debug("Look up for external media '".$row["data_filename"]."': phash:".$row["phash_t3"]." YES - (".$GLOBALS["TSFE"]->gr_list.")!",1);
 				return 1;
@@ -763,7 +764,7 @@ class tx_indexedsearch extends tslib_pibase {
 		} else {	// ALm typo3 pages:
 			if (strcmp($row["gr_list"],$GLOBALS["TSFE"]->gr_list))	{
 					// Selecting for the grlist records belonging to the phash-row where the current users gr_list exists. If it is found it is proof that this user has direct access to the phash-rows content although he did not himself initiate the indexing...
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash='.intval($row['phash']).' AND gr_list="'.$GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist').'"');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash='.intval($row['phash']).' AND gr_list='.$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 					#debug("Checking on it ...".$row["item_title"]."/".$row["phash"]." - YES (".$GLOBALS["TSFE"]->gr_list.")",1);
 					return 1;
@@ -794,7 +795,7 @@ class tx_indexedsearch extends tslib_pibase {
 		$insertFields = array(
 			'searchstring' => $this->piVars['sword'],
 			'searchoptions' => serialize(array($this->piVars,$sWArr,$pt)),
-			'feuser_id' => $this->fe_user->user['uid'],			// fe_user id, integer
+			'feuser_id' => intval($this->fe_user->user['uid']),			// fe_user id, integer
 			'cookie' => $this->fe_user->id,						// cookie as set or retrieve. If people has cookies disabled this will vary all the time...
 			'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),		// Remote IP address
 			'hits' => intval($count),							// Number of hits on the search.

@@ -59,7 +59,7 @@ if ($day==date('w')) {
 }
 
 $date = date('Y-m-d', $son);
-$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'title LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($name.$date, 'pages').'"');  // get the uid of the page
+$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'title LIKE '.$GLOBALS['TYPO3_DB']->fullQuoteStr($name.$date, 'pages'));  // get the uid of the page
 $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 $value=$row['uid'];

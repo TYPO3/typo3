@@ -1193,7 +1193,7 @@ From sub-directory:
 		$action = $this->INSTALL['cleanup_type'];
 
 		if (($action == 'cache_imagesizes' || $action == 'all') && isset ($tables['cache_imagesizes'])) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery ('cache_imagesizes','1');
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery ('cache_imagesizes','');
 		}
 
 		$cleanupType = array (
@@ -1203,9 +1203,9 @@ From sub-directory:
 			// Get cache_imagesizes info
 		if (isset ($tables['cache_imagesizes'])) {
 			$cleanupType["cache_imagesizes"] = "Clear cached image sizes only";
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_imagesizes', '');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COUNT(*) AS icount', 'cache_imagesizes', '');
 			$resArr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc ($res);
-			$cachedImageSizesCounter = intval ($resArr['count(*)']);
+			$cachedImageSizesCounter = intval ($resArr['icount']);
 		} else {
 			$this->message($headCode,"Table cache_imagesizes does not exist!","
 				The table cache_imagesizes was not found. Please check your database settings in Basic Configuration and compare your table definition with the Database Analyzer.
@@ -3336,19 +3336,19 @@ From sub-directory:
 					$FDdb = $this->getFieldDefinitions_database();
 
 						// Displaying configured fields which are not in the database
-					$tLabel="Tables and fields in \$TCA, but not in database";
-					$cmpTCA_DB = $this->compareTCAandDatabase($GLOBALS["TCA"],$FDdb);
-					if (!count($cmpTCA_DB["extra"]))	{
-						$this->message($tLabel,"Table and field definitions OK","
+					$tLabel='Tables and fields in $TCA, but not in database';
+					$cmpTCA_DB = $this->compareTCAandDatabase($GLOBALS['TCA'],$FDdb);
+					if (!count($cmpTCA_DB['extra']))	{
+						$this->message($tLabel,'Table and field definitions OK','
 						All fields and tables configured in $TCA appeared to exist in the database as well
-						",-1);
+						',-1);
 					} else {
-						$this->message($tLabel,"Invalid table and field definitions in \$TCA!","
+						$this->message($tLabel,'Invalid table and field definitions in $TCA!','
 						There are some tables and/or fields configured in the \$TCA array which does not exist in the database!
 						This will most likely cause you trouble with the TYPO3 backend interface!
-						",3);
-						while(list($tableName, $conf)=each($cmpTCA_DB["extra"]))	{
-							$this->message($tLabel, $tableName,$this->displayFields($conf["fields"],0,"Suggested database field:"),2);
+						',3);
+						while(list($tableName, $conf)=each($cmpTCA_DB['extra']))	{
+							$this->message($tLabel, $tableName,$this->displayFields($conf['fields'],0,'Suggested database field:'),2);
 						}
 					}
 
@@ -3553,7 +3553,7 @@ From sub-directory:
 							$username = str_replace(" ","_",$username);
 							$pass = trim($this->INSTALL["database_adminUser"]["password"]);
 							if ($username && $pass)	{
-								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'be_users', 'username="'.$GLOBALS['TYPO3_DB']->quoteStr($username, 'be_users').'"');
+								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'be_users', 'username='.$GLOBALS['TYPO3_DB']->fullQuoteStr($username, 'be_users'));
 								if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 
 									$insertFields = array(
@@ -3701,7 +3701,7 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function isBackendAdminUser() {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'be_users', 'admin');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'be_users', 'admin=1');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		return current($row);
 	}
@@ -3768,7 +3768,7 @@ From sub-directory:
 			case "get_form":
 				$content="";
 				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_update["add"],"Add fields");
-				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_update["change"],"Changing fields",1,0,$arr_update["change_currentValue"]);
+				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_update["change"],"Changing fields",(t3lib_extMgm::isLoaded('dbal')?0:1),0,$arr_update["change_currentValue"]);
 				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_remove["change"],"Remove unused fields (rename with prefix)",$this->setAllCheckBoxesByDefault,1);
 				$content.=$this->generateUpdateDatabaseForm_checkboxes($arr_remove["drop"],"Drop fields (really!)",$this->setAllCheckBoxesByDefault);
 

@@ -313,10 +313,10 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 			// Query:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'ISEC.*, IP.*, count(*) as count_val',
-					'index_phash AS IP, index_section AS ISEC',
+					'ISEC.*, IP.*, count(*) AS count_val',
+					'index_phash IP, index_section ISEC',
 					'IP.phash = ISEC.phash AND ISEC.page_id = '.intval($data['uid']),
-					'IP.phash',
+					'IP.phash,IP.phash_grouping,IP.cHashParams,IP.data_filename,IP.data_page_id,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid',
 					'IP.item_type, IP.tstamp',
 					($this->maxListPerPage+1)
 				);
@@ -374,7 +374,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		}
 
 			// Checking for phash-rows which are NOT joined with the section table:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('IP.*', 'index_phash AS IP', 'IP.data_page_id = '.intval($data['uid']).' AND IP.phash NOT IN ('.implode(',',$phashAcc).')');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('IP.*', 'index_phash IP', 'IP.data_page_id = '.intval($data['uid']).' AND IP.phash NOT IN ('.implode(',',$phashAcc).')');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$out.='
 				<tr class="typo3-red">
@@ -1182,7 +1182,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			// Query:
 		list($resultRow) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'ISEC.*, IP.*',
-					'index_phash AS IP, index_section AS ISEC',
+					'index_phash IP, index_section ISEC',
 					'IP.phash = ISEC.phash
 						AND IP.phash = '.intval($phash).'
 						AND ISEC.page_id = '.intval($pageId)

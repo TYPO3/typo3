@@ -142,7 +142,7 @@ $TSFE = new $temp_TSFEclassName(
 		t3lib_div::_GP('MP'),
 		t3lib_div::_GP('RDCT')
 	);
-$TSFE->connectToMySQL();
+$TSFE->connectToDB();
 if ($TSFE->RDCT)	{$TSFE->sendRedirect();}
 
 

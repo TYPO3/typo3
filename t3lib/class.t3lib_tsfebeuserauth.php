@@ -262,7 +262,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'fe_groups.uid, fe_groups.title',
 						'fe_groups,pages',
-						'pages.uid=fe_groups.pid AND NOT pages.deleted '.t3lib_BEfunc::deleteClause('fe_groups').' AND '.$this->getPagePermsClause(1)
+						'pages.uid=fe_groups.pid AND pages.deleted=0 '.t3lib_BEfunc::deleteClause('fe_groups').' AND '.$this->getPagePermsClause(1)
 					);
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$options.= '<option value="'.$row['uid'].'"'.($this->uc['TSFE_adminConfig']['preview_simulateUserGroup']==$row['uid']?' selected="selected"':'').'>'.htmlspecialchars('['.$row['uid'].'] '.$row['title']).'</option>';
@@ -801,7 +801,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'uid,title',
 						'pages',
-						'pid='.$id.' AND doktype IN ('.$GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'].') AND NOT deleted AND '.$perms_clause
+						'pid='.$id.' AND doktype IN ('.$GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'].') AND deleted=0 AND '.$perms_clause
 					);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				if ($begin<=0)	{

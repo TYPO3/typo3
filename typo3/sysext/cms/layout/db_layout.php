@@ -517,7 +517,7 @@ class SC_db_layout {
 
 			// If the former record edited was the creation of a NEW record, this will look up the created records uid:
 		if ($this->new_unique_uid)	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid='.intval($BE_USER->user['uid']).' AND NEWid="'.$GLOBALS['TYPO3_DB']->quoteStr($this->new_unique_uid, 'sys_log').'"');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid='.intval($BE_USER->user['uid']).' AND NEWid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->new_unique_uid, 'sys_log'));
 			$sys_log_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			if (is_array($sys_log_row))	{
 				$edit_record=$sys_log_row['tablename'].':'.$sys_log_row['recuid'];
@@ -597,7 +597,7 @@ class SC_db_layout {
 
 			// If undo-button should be rendered (depends on available items in sys_history)
 		$undoButton=0;
-		$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($eRParts[0], 'sys_history').'" AND recuid="'.$GLOBALS['TYPO3_DB']->quoteStr($eRParts[1], 'sys_history').'"', '', 'tstamp DESC', '1');
+		$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($eRParts[0], 'sys_history').' AND recuid='.intval($eRParts[1]), '', 'tstamp DESC', '1');
 		if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
 			$undoButton=1;
 		}
@@ -1203,7 +1203,7 @@ class SC_db_layout {
 							'sys_language.*',
 							'pages_language_overlay,sys_language',
 							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).$exQ,
-							'pages_language_overlay.sys_language_uid',
+							'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
 							'sys_language.title'
 						);
 		} else {

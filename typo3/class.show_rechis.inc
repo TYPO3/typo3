@@ -225,7 +225,7 @@ class recordHistory {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'uid',
 						'sys_history',
-						'sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
+						'sys_history.tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($elParts[0], 'sys_history').'
 							AND sys_history.recuid='.intval($elParts[1]),
 						'',
 						'uid DESC',
@@ -293,7 +293,7 @@ class recordHistory {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'history_data',
 					'sys_history',
-					'sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
+					'sys_history.tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($elParts[0], 'sys_history').'
 						AND sys_history.recuid='.intval($elParts[1]),
 					'',
 					'uid DESC',
@@ -348,10 +348,10 @@ class recordHistory {
 
 				// Counting number of states:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'count(*)',
+						'COUNT(*)',
 						'sys_history,sys_log',
 						'sys_history.sys_log_uid=sys_log.uid
-							AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'"
+							AND sys_history.tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history').'
 							AND sys_history.recuid='.intval($elParts[1])
 					);
 			list($Rcount) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
@@ -361,10 +361,10 @@ class recordHistory {
 						'sys_history.*,sys_log.userid',
 						'sys_history,sys_log',
 						'sys_history.sys_log_uid=sys_log.uid
-							AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'"
+							AND sys_history.tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history').'
 							AND sys_history.recuid='.intval($elParts[1]),
 						'',
-						'uid',
+						'sys_log.uid',
 						t3lib_div::intInRange($Rcount-$this->maxSteps,0).','.$this->maxSteps
 					);
 
@@ -544,7 +544,7 @@ class recordHistory {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid',
 					'sys_history',
-					'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
+					'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($elParts[0], 'sys_history').'
 						AND recuid='.intval($elParts[1]).'
 						AND uid<'.intval($hisUid),
 					'',
@@ -559,7 +559,7 @@ class recordHistory {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid',
 					'sys_history',
-					'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
+					'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($elParts[0], 'sys_history').'
 						AND recuid='.intval($elParts[1]).'
 						AND uid>'.intval($hisUid),
 					'',
@@ -639,6 +639,8 @@ class recordHistory {
 			$c=0;
 			$cRecTypes=array();
 			foreach($currentRecord as $col => $val)	{
+				//$cRecTypes[$col] = $GLOBALS['TYPO3_DB']->sql_field_type($table,$col);
+// DBAL
 				$cRecTypes[$col] = $GLOBALS['TYPO3_DB']->sql_field_type($res,$c);
 				$c++;
 			}
@@ -856,7 +858,7 @@ class recordHistory {
 							'sys_history.*,sys_log.userid',
 							'sys_history,sys_log',
 							'sys_history.sys_log_uid=sys_log.uid
-								AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
+								AND sys_history.tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($elParts[0], 'sys_history').'
 								AND sys_history.recuid='.intval($elParts[1]).$addWhere,
 							'',
 							'uid DESC'

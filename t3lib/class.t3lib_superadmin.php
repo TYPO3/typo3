@@ -567,19 +567,19 @@ class t3lib_superadmin {
 		$DB = $this->globalSiteInfo[$key]['siteInfo']['TYPO3_db'];
 
 			// Non-admin users
-		$query = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', 'be_users', 'admin=0 AND NOT deleted');
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', 'be_users', 'admin=0 AND deleted=0');
 		$res = mysql($DB, $query);
 		$row = mysql_fetch_row($res);
 		$this->globalSiteInfo[$key]['siteInfo']['BE_USERS_NONADMIN'] = $row[0];
 
 			// Admin users
-		$query = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', 'be_users', 'admin!=0 AND NOT deleted');
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', 'be_users', 'admin!=0 AND deleted=0');
 		$res = mysql($DB, $query);
 		$row = mysql_fetch_row($res);
 		$this->globalSiteInfo[$key]['siteInfo']['BE_USERS_ADMIN'] = $row[0];
 
 			// Select Admin users
-		$query = $GLOBALS['TYPO3_DB']->SELECTquery('uid,username,password,email,realName,disable', 'be_users', 'admin!=0 AND NOT deleted');
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery('uid,username,password,email,realName,disable', 'be_users', 'admin!=0 AND deleted=0');
 		$res = mysql($DB, $query);
 		while($row = mysql_fetch_assoc($res))	{
 			$this->globalSiteInfo[$key]['siteInfo']['ADMINS'][] = $row;

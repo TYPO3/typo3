@@ -47,7 +47,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'*',
 							$this->db_user['table'],
-								$this->db_user['username_column'].'="'.$GLOBALS['TYPO3_DB']->quoteStr($this->login['uname'], $this->db_user['table']).'"'.
+								$this->db_user['username_column'].'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->login['uname'], $this->db_user['table']).
 								$this->db_user['check_pid_clause'].
 								$this->db_user['enable_clause']
 					);
@@ -56,7 +56,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 				$user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
 				$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
 			}
-			
+
 			if(!is_array($user)) {
 					// Failed login attempt (no username found)
 				if ($this->pObj->writeAttemptLog) {
@@ -84,7 +84,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 
 		if ($this->login['uident'] && $this->login['uname'])	{
 			$OK = false;
-			
+
 				// check the password
 			switch ($this->info['security_level'])	{
 				case 'superchallenged':		// If superchallenged the password in the database ($user[$this->db_user['userident_column']]) must be a md5-hash of the original password.
@@ -140,7 +140,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	function getGroups($user, $knownGroups)	{
 
 		$groupDataArr = array();
-		
+
 		if($this->mode=='getGroupsFE') 	{
 
 			$groups = array();
@@ -160,17 +160,17 @@ class tx_sv_auth extends tx_sv_authbase 	{
 
 			if (count($groups))	{
 				$list = implode(',',$groups);
-				
+
 				if ($this->writeDevLog) 	t3lib_div::devLog('Get usergroups with id: '.$list, 'tx_sv_auth');
 
 				$lockToDomain_SQL = ' AND (lockToDomain="" OR lockToDomain="'.$this->info['HTTP_HOST'].'")';
-				if (!$this->info['showHiddenRecords'])	$hiddenP = 'AND NOT hidden ';
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->db_groups['table'], 'NOT deleted '.$hiddenP.' AND uid IN ('.$list.')'.$lockToDomain_SQL);
+				if (!$this->info['showHiddenRecords'])	$hiddenP = 'AND hidden=0 ';
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 '.$hiddenP.' AND uid IN ('.$list.')'.$lockToDomain_SQL);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$groupDataArr[$row['uid']] = $row;
 				}
 				if ($res)	$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				
+
 			} else {
 				if ($this->writeDevLog) 	t3lib_div::devLog('No usergroups found.', 'tx_sv_auth', 2);
 			}
@@ -181,7 +181,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 			# Get the BE groups here
 			# still needs to be implemented in t3lib_userauthgroup
 		}
-		
+
 		return $groupDataArr;
 	}
 }

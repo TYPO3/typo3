@@ -109,7 +109,7 @@ class t3lib_loadDBGroup	{
 			$this->tableArray[$tName] = Array();
 			if ($this->checkIfDeleted && $GLOBALS['TCA'][$tName]['ctrl']['delete'])	{
 				$fieldN = $tName.'.'.$GLOBALS['TCA'][$tName]['ctrl']['delete'];
-				$this->additionalWhere[$tName].=' AND NOT '.$fieldN;
+				$this->additionalWhere[$tName].=' AND '.$fieldN.'=0';
 			}
 		}
 

@@ -176,7 +176,7 @@ class t3lib_DB {
 	 * Usage count/core: 50
 	 *
 	 * @param	string		Database tablename
-	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->quoteStr() yourself!
+	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
@@ -191,7 +191,7 @@ class t3lib_DB {
 	 * Usage count/core: 40
 	 *
 	 * @param	string		Database tablename
-	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->quoteStr() yourself!
+	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	function exec_DELETEquery($table,$where)	{
@@ -207,7 +207,7 @@ class t3lib_DB {
 	 *
 	 * @param	string		List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
 	 * @param	string		Table(s) from which to select. This is what comes right after "FROM ...". Required value.
-	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->quoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
@@ -231,7 +231,7 @@ class t3lib_DB {
 	 * @param	string		Tablename, local table
 	 * @param	string		Tablename, relation table
 	 * @param	string		Tablename, foreign table
-	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->quoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param	string		Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
@@ -336,7 +336,7 @@ class t3lib_DB {
 
 				// Add slashes old-school:
 			foreach($fields_values as $k => $v)	{
-				$fields_values[$k] = $this->quoteStr($fields_values[$k], $table);
+				$fields_values[$k] = $this->fullQuoteStr($fields_values[$k], $table);
 			}
 
 				// Build query:
@@ -345,8 +345,8 @@ class t3lib_DB {
 					'.implode(',
 					',array_keys($fields_values)).'
 				) VALUES (
-					"'.implode('",
-					"',$fields_values).'"
+					'.implode(',
+					',$fields_values).'
 				)';
 
 				// Return query:
@@ -374,7 +374,7 @@ class t3lib_DB {
 					// Add slashes old-school:
 				$nArr = array();
 				foreach($fields_values as $k => $v)	{
-					$nArr[] = $k.'="'.$this->quoteStr($v, $table).'"';
+					$nArr[] = $k.'='.$this->fullQuoteStr($v, $table);
 				}
 
 					// Build query:
@@ -476,7 +476,7 @@ class t3lib_DB {
 	 */
 	function listQuery($field, $value, $table)	{
 		$command = $this->quoteStr($value, $table);
-		$where = '('.$field.' LIKE "%,'.$command.',%" OR '.$field.' LIKE "'.$command.',%" OR '.$field.' LIKE "%,'.$command.'" OR '.$field.'="'.$command.'")';
+		$where = '('.$field.' LIKE \'%,'.$command.',%\' OR '.$field.' LIKE \''.$command.',%\' OR '.$field.' LIKE \'%,'.$command.'\' OR '.$field.'=\''.$command.'\')';
 		return $where;
 	}
 
@@ -492,7 +492,7 @@ class t3lib_DB {
 		$queryParts = array();
 
 		foreach($searchWords as $sw)	{
-			$like=' LIKE "%'.$this->quoteStr($sw, $table).'%"';
+			$like=' LIKE \'%'.$this->quoteStr($sw, $table).'%\'';
 			$queryParts[] = $table.'.'.implode($like.' OR '.$table.'.',$fields).$like;
 		}
 		$query = '('.implode(') AND (',$queryParts).')';
@@ -526,13 +526,29 @@ class t3lib_DB {
 	 **************************************/
 
 	/**
+	 * Escaping and quoting values for SQL statements.
+	 * Usage count/core: 100
+	 *
+	 * @param	string		Input string
+	 * @param	string		Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @return	string		Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+	 * @see quoteStr()
+	 */
+	function fullQuoteStr($str, $table)	{
+		return '\''.addslashes($str).'\'';
+	}
+
+	/**
 	 * Substitution for PHP function "addslashes()"
 	 * Use this function instead of the PHP addslashes() function when you build queries - this will prepare your code for DBAL.
-	 * Usage count/core: 105
+	 * NOTICE: You must wrap the output of this function in SINGLE QUOTES to be DBAL compatible. Unless you have to apply the single quotes yourself you should rather use ->fullQuoteStr()!
+	 *
+	 * Usage count/core: 20
 	 *
 	 * @param	string		Input string
 	 * @param	string		Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
 	 * @return	string		Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+	 * @see quoteStr()
 	 */
 	function quoteStr($str, $table)	{
 		return addslashes($str);
@@ -578,7 +594,7 @@ class t3lib_DB {
 	 * @see exec_SELECTquery(), stripGroupBy()
 	 */
 	function stripOrderBy($str)	{
-		return eregi_replace('^ORDER[[:space:]]+BY[[:space:]]+','',trim($str));
+		return preg_replace('/^ORDER[[:space:]]+BY[[:space:]]+/i','',trim($str));
 	}
 
 	/**
@@ -592,7 +608,7 @@ class t3lib_DB {
 	 * @see exec_SELECTquery(), stripOrderBy()
 	 */
 	function stripGroupBy($str)	{
-		return eregi_replace('^GROUP[[:space:]]+BY[[:space:]]+','',trim($str));
+		return preg_replace('/^GROUP[[:space:]]+BY[[:space:]]+/i','',trim($str));
 	}
 
 	/**
@@ -614,19 +630,19 @@ class t3lib_DB {
 		);
 
 			// Find LIMIT:
-		if (eregi('^(.*)[[:space:]]+LIMIT[[:space:]]+([[:alnum:][:space:],._]+)$',$str,$reg))	{
+		if (preg_match('/^(.*)[[:space:]]+LIMIT[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['LIMIT'] = trim($reg[2]);
 			$str = $reg[1];
 		}
 
 			// Find ORDER BY:
-		if (eregi('^(.*)[[:space:]]+ORDER[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$',$str,$reg))	{
+		if (preg_match('/^(.*)[[:space:]]+ORDER[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['ORDERBY'] = trim($reg[2]);
 			$str = $reg[1];
 		}
 
 			// Find GROUP BY:
-		if (eregi('^(.*)[[:space:]]+GROUP[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$',$str,$reg))	{
+		if (preg_match('/^(.*)[[:space:]]+GROUP[[:space:]]+BY[[:space:]]+([[:alnum:][:space:],._]+)$/i',$str,$reg))	{
 			$wgolParts['GROUPBY'] = trim($reg[2]);
 			$str = $reg[1];
 		}
@@ -845,7 +861,7 @@ class t3lib_DB {
 
 	/**
 	 * Listing databases from current MySQL connection. NOTICE: It WILL try to select those databases and thus break selection of current database.
-	 * This doesn't really make sense to transfer to a DBAL layer - this detection is also PRE-DBAL in many ways since it is only used as a service function in the 1-2-3 process of the Install Tool. In any case a lookup should be done in the _DEFAULT handler DBMS then.
+	 * This is only used as a service function in the (1-2-3 process) of the Install Tool. In any case a lookup should be done in the _DEFAULT handler DBMS then.
 	 * Use in Install Tool only!
 	 * Usage count/core: 1
 	 *

@@ -1841,13 +1841,13 @@ class t3lib_TCEmain	{
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$field]))	{
 
 				// Look for a record which might already have the value:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $field.'="'.$GLOBALS['TYPO3_DB']->quoteStr($value, $table).'" AND uid!='.intval($id).$whereAdd);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table).' AND uid!='.intval($id).$whereAdd);
 			$counter = 0;
 
 				// For as long as records with the test-value existing, try again (with incremented numbers appended).
 			while ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				$newValue = $value.$counter;
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $field.'="'.$GLOBALS['TYPO3_DB']->quoteStr($newValue, $table).'" AND uid!='.intval($id).$whereAdd);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($newValue, $table).' AND uid!='.intval($id).$whereAdd);
 				$counter++;
 				if ($counter>100)	{ break; }	// At "100" it will give up and accept a duplicate - should probably be fixed to a small hash string instead...!
 			}
@@ -2259,9 +2259,12 @@ class t3lib_TCEmain	{
 			$c = 0;
 			$cRecTypes = array();
 			foreach($currentRecord as $col => $val)	{
+// DBAL
+#				$cRecTypes[$col] = $GLOBALS['TYPO3_DB']->sql_field_type($table,$col);
 				$cRecTypes[$col] = $GLOBALS['TYPO3_DB']->sql_field_type($res,$c);
 				$c++;
 			}
+#debug($cRecTypes);
 
 				// Free result:
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -2376,13 +2379,14 @@ class t3lib_TCEmain	{
 		if (is_array($TCA[$table]) && $id)	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($id));
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-
 					// Traverse arrow of values that was inserted into the database and compare with the actually stored value:
 				$errorString = array();
 				foreach($fieldArray as $key => $value)	{
 					if ($this->checkStoredRecords_loose && !$value && !$row[$key])	{
 						// Nothing...
 					} elseif (strcmp($value,$row[$key]))	{
+					  // DEBUGGING KFISH
+					  // debug(array("$value != ".$row[$key]));
 						$errorString[] = $key;
 					}
 				}
@@ -2457,7 +2461,7 @@ class t3lib_TCEmain	{
 							// Builds list of pages on the SAME level as this page (siblings)
 						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 										'A.pid AS pid, B.uid AS uid',
-										'pages AS A, pages AS  B',
+										'pages A, pages B',
 										'A.uid='.intval($uid).' AND B.pid=A.pid AND B.deleted=0'
 									);
 
@@ -3704,7 +3708,7 @@ class t3lib_TCEmain	{
 
 			// Do check:
 		if ($prevTitle != $checkTitle || $count<100)	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid='.intval($pid).' AND '.$field.'="'.$GLOBALS['TYPO3_DB']->quoteStr($checkTitle, $table).'"'.$this->deleteClause($table), '', '', '1');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid='.intval($pid).' AND '.$field.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($checkTitle, $table).$this->deleteClause($table), '', '', '1');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				return $this->getCopyHeader($table,$pid,$field,$value,$count+1,$checkTitle);
 			}
@@ -4363,7 +4367,7 @@ class t3lib_TCEmain	{
 			// Returns the proper delete-clause if any for a table from TCA
 		global $TCA;
 		if ($TCA[$table]['ctrl']['delete'])	{
-			return ' AND NOT '.$table.'.'.$TCA[$table]['ctrl']['delete'];
+			return ' AND '.$table.'.'.$TCA[$table]['ctrl']['delete'].'=0';
 		} else {
 			return '';
 		}
@@ -4404,13 +4408,13 @@ class t3lib_TCEmain	{
 	function getInterfacePagePositionID($uid)	{
 		global $TCA;
 		$perms_clause = $this->BE_USER->getPagePermsClause(1);
-		$deleted = $TCA['pages']['ctrl']['delete'] ? 'AND NOT A.'.$TCA['pages']['ctrl']['delete'].' AND NOT pages.'.$TCA['pages']['ctrl']['delete'].' ' : '';
+		$deleted = $TCA['pages']['ctrl']['delete'] ? 'AND A.'.$TCA['pages']['ctrl']['delete'].'=0 AND pages.'.$TCA['pages']['ctrl']['delete'].'=0 ' : '';
 
 			// This fetches a list of 1 or 2 pages, where - if 2 - the 2nd is the page BEFORE this ($uid). If 1 then the page ($uid) is at the top itself
  		$subres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'pages.uid, pages.pid',
-					'pages AS A, pages',
-					'A.pid=pages.pid AND A.uid="'.$uid.'"
+					'pages A, pages',
+					'A.pid=pages.pid AND A.uid=\''.$uid.'\'
 						'.$deleted.'
 						AND pages.sorting<=A.sorting
 						AND '.$perms_clause,
@@ -4513,7 +4517,7 @@ class t3lib_TCEmain	{
 		$tstampLimit = $maxAgeSeconds ? time()-$maxAgeSeconds : 0;
 
 		$where = '
-			tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'"
+			tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history').'
 			AND recuid='.intval($id).'
 			AND snapshot=0';
 

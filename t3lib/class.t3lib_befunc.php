@@ -183,12 +183,12 @@ class t3lib_BEfunc	{
 	 * Usage: 71
 	 *
 	 * @param	string		Table name present in $TCA
-	 * @return	string		WHERE clause for filtering out deleted records, eg " AND NOT tablename.deleted"
+	 * @return	string		WHERE clause for filtering out deleted records, eg " AND tablename.deleted=0"
 	 */
 	function deleteClause($table)	{
 		global $TCA;
 		if ($TCA[$table]['ctrl']['delete'])	{
-			return ' AND NOT '.$table.'.'.$TCA[$table]['ctrl']['delete'];
+			return ' AND '.$table.'.'.$TCA[$table]['ctrl']['delete'].'=0';
 		} else {
 			return '';
 		}
@@ -258,7 +258,7 @@ class t3lib_BEfunc	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'*',
 						$theTable,
-						$theField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($theValue, $theTable).'"'.
+						$theField.'='.$GLOBALS['TYPO3_DB']->fullQuoteStr($theValue, $theTable).
 							t3lib_BEfunc::deleteClause($theTable).' '.
 							$whereClause,	// whereClauseMightContainGroupOrderBy
 						$groupBy,
@@ -395,8 +395,8 @@ class t3lib_BEfunc	{
 			if (is_array($ctrl['enablecolumns']))	{
 				if ($ctrl['enablecolumns']['disabled'])	{
 					$field = $table.'.'.$ctrl['enablecolumns']['disabled'];
-					$query[]='NOT '.$field;
-					$invQuery[]=$field;
+					$query[]=$field.'=0';
+					$invQuery[]=$field.'!=0';
 				}
 				if ($ctrl['enablecolumns']['starttime'])	{
 					$field = $table.'.'.$ctrl['enablecolumns']['starttime'];
@@ -1052,7 +1052,7 @@ class t3lib_BEfunc	{
 			'ident' => $ident,
 			'tstamp' => time()
 		);
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($hash, 'cache_hash').'"');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash'));
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_hash', $insertFields);
 	}
 
@@ -1071,7 +1071,7 @@ class t3lib_BEfunc	{
 		if ($expTime)	{
 			$whereAdd = ' AND tstamp > '.(time()-$expTime);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($hash, 'cache_hash').'"'.$whereAdd);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash').$whereAdd);
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			return $row['content'];
 		}
@@ -1877,7 +1877,7 @@ class t3lib_BEfunc	{
 				if ($fN==$TCA[$table]['ctrl']['tstamp'] || $fN==$TCA[$table]['ctrl']['crdate'])	{
 					$fVnew = t3lib_BEfunc::datetime($fV);
 				} elseif ($fN=='pid'){
-					$fVnew = t3lib_BEfunc::getRecordPath($fV,'1',20);	// Fetches the path with no regard to the users permissions to select pages.
+					$fVnew = t3lib_BEfunc::getRecordPath($fV,'1=1',20);	// Fetches the path with no regard to the users permissions to select pages.
 				} else {
 					$fVnew = $fV;
 				}
@@ -2552,7 +2552,7 @@ class t3lib_BEfunc	{
 					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
 					'FROM' => $foreign_table.',pages',
 					'WHERE' => 'pages.uid='.$foreign_table.'.pid
-								AND NOT pages.deleted '.
+								AND pages.deleted=0 '.
 								t3lib_BEfunc::deleteClause($foreign_table).
 								' AND '.$pageClause.' '.
 								$wgolParts['WHERE'],
@@ -2564,7 +2564,7 @@ class t3lib_BEfunc	{
 				$queryParts = array(
 					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'),
 					'FROM' => 'pages',
-					'WHERE' => 'NOT pages.deleted
+					'WHERE' => 'pages.deleted=0
 								AND '.$pageClause.' '.
 								$wgolParts['WHERE'],
 					'GROUPBY' => $wgolParts['GROUPBY'],
@@ -2698,7 +2698,7 @@ class t3lib_BEfunc	{
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			reset($rootLine);
 			while(list(,$row)=each($rootLine))	{
-				$dRec = t3lib_BEfunc::getRecordsByField('sys_domain','pid',$row['uid'],' AND redirectTo="" AND hidden=0', '', 'sorting');
+				$dRec = t3lib_BEfunc::getRecordsByField('sys_domain','pid',$row['uid'],' AND redirectTo=\'\' AND hidden=0', '', 'sorting');
 				if (is_array($dRec))	{
 					reset($dRec);
 					$dRecord = current($dRec);
@@ -2727,8 +2727,8 @@ class t3lib_BEfunc	{
 
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
 				pages.uid=sys_domain.pid
-				AND NOT sys_domain.hidden
-				AND (sys_domain.domainName="'.$GLOBALS['TYPO3_DB']->quoteStr($domain, 'sys_domain').'" or sys_domain.domainName="'.$GLOBALS['TYPO3_DB']->quoteStr($domain.'/', 'sys_domain').'")'.
+				AND sys_domain.hidden=0
+				AND (sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain').' or sys_domain.domainName='.$GLOBALS['TYPO3_DB']->fullQuoteStr($domain.'/', 'sys_domain').')'.
 				t3lib_BEfunc::deleteClause('pages'),
 				'', '', '1');
 			return $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
@@ -3090,7 +3090,7 @@ class t3lib_BEfunc	{
 	 * @obsolete
 	 */
 	function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')	{
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'doktype!=255 AND module IN ("'.implode('","',$name).'") AND'.$perms_clause.t3lib_BEfunc::deleteClause('pages'));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'doktype!=255 AND module IN (\''.implode('\',\'',$name).'\') AND'.$perms_clause.t3lib_BEfunc::deleteClause('pages'));
 		if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	return false;
 
 		$out='';

@@ -82,6 +82,7 @@ require_once(PATH_t3lib.'class.t3lib_sqlparser.php');
  */
 class t3lib_install {
 
+
 		// External, Static
 	var $updateIdentity = '';					// Set to string which identifies the script using this class.
 	var $deletedPrefixKey = 'zzz_deleted_';		// Prefix used for tables/fields when deleted/renamed.
@@ -120,6 +121,7 @@ class t3lib_install {
 	 *
 	 * Writing to localconf.php
 	 *
+
 	 **************************************/
 
 	/**
@@ -423,7 +425,7 @@ class t3lib_install {
 								foreach($info[$theKey] as $fieldN => $fieldC) {
 									if (!isset($FDcomp[$table][$theKey][$fieldN]))	{
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
-									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC)){
+									} elseif (strcmp($FDcomp[$table][$theKey][$fieldN], $fieldC) && strcmp($FDcomp[$table][$theKey][$fieldN], str_replace(' unsigned','',$fieldC))){
 										$diffArr[$table][$theKey][$fieldN] = $fieldC;
 										$diffArr_cur[$table][$theKey][$fieldN] = $FDcomp[$table][$theKey][$fieldN];
 									}
