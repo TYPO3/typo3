@@ -1722,7 +1722,7 @@ class t3lib_TCEforms	{
 					if ($show_thumbs)	{
 						$rr = t3lib_BEfunc::getRecord($this_table,$this_uid);
 						$imgs[] = '<span class="nobr">'.
-								$this->getClickMenu(t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).'"'),$this_table, $this_uid).
+								$this->getClickMenu(t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).' [UID: '.$rr['uid'].']"'),$this_table, $this_uid).
 								'&nbsp;'.
 								$this->noTitle($rr[$GLOBALS['TCA'][$this_table]['ctrl']['label']],array('<em>','</em>')).
 								'</span>';
@@ -4619,6 +4619,7 @@ class t3lib_TCEforms	{
 	 * @see t3lib_BEfunc::getRecordPath()
 	 */
 	function getRecordPath($table,$rec)	{
+		t3lib_BEfunc::fixVersioningPid($table,$rec);
 		list($tscPID,$thePidValue)=$this->getTSCpid($table,$rec['uid'],$rec['pid']);
 		if ($thePidValue>=0)	{
 			return t3lib_BEfunc::getRecordPath($tscPID,$this->readPerms(),15);

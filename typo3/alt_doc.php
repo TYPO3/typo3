@@ -589,6 +589,7 @@ class SC_alt_doc {
 								$this->dontStoreDocumentRef=1;		// Don't save this document title in the document selector if the document is new.
 							} else {	// Edit:
 								$calcPRec = t3lib_BEfunc::getRecord($table,$theUid);
+								t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
 								if (is_array($calcPRec))	{
 									if ($table=='pages')	{	// If pages:
 										$CALC_PERMS = $BE_USER->calcPerms($calcPRec);

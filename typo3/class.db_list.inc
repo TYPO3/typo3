@@ -624,6 +624,7 @@ class recordList extends t3lib_recordList {
 				if ($TCA[$table]['ctrl']['crdate'])	$fieldListArr[]=$TCA[$table]['ctrl']['crdate'];
 				if ($TCA[$table]['ctrl']['cruser_id'])	$fieldListArr[]=$TCA[$table]['ctrl']['cruser_id'];
 				if ($TCA[$table]['ctrl']['sortby'])	$fieldListArr[]=$TCA[$table]['ctrl']['sortby'];
+				if ($TCA[$table]['ctrl']['versioning'])	$fieldListArr[]='t3ver_id';
 			}
 		}
 		return $fieldListArr;

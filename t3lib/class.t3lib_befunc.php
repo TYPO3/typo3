@@ -269,6 +269,38 @@ class t3lib_BEfunc	{
 	}
 
 	/**
+	 * Find page-tree PID for versionized record
+	 * Will look if the "pid" value of the input record is -1 and if the table supports versioning - if so, it will translate the -1 PID into the PID of the original record
+	 *
+	 * @param	string		Table name
+	 * @param	array		Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" is nice and will save you a DB query.
+	 * @return	void		(Passed by ref).
+	 */
+	function fixVersioningPid($table,&$rr)	{
+		global $TCA;
+
+		if ($rr['pid']==-1 && $TCA[$table]['ctrl']['versioning'])	{
+			if ($rr['t3ver_oid']>0)	{	// If "t3ver_oid" is already a field, just set this:
+				$oid = $rr['t3ver_oid'];
+			} else {	// Otherwise we have to expect "uid" to be in the record and look up based on this:
+				$newPidRec = t3lib_BEfunc::getRecord($table,$rr['uid'],'t3ver_oid');
+				if (is_array($newPidRec))	{
+					$oid = $newPidRec['t3ver_oid'];
+				}
+			}
+
+				// If ID of current online version is found, look up the PID value of that:
+			if ($oid)	{
+				$oidRec = t3lib_BEfunc::getRecord($table,$oid,'pid');
+				if (is_array($oidRec))	{
+					$rr['_ORIG_pid'] = $rr['pid'];
+					$rr['pid'] = $oidRec['pid'];
+				}
+			}
+		}
+	}
+
+	/**
 	 * Returns a WHERE clause which will make an AND search for the words in the $searchWords array in any of the fields in array $fields.
 	 * Usage: 0
 	 *
@@ -494,6 +526,7 @@ class t3lib_BEfunc	{
 				debug($GLOBALS['TYPO3_DB']->sql_error(),1);
 			}
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				t3lib_BEfunc::fixVersioningPid('pages',$row);
 				$uid = $row['pid'];
 				$theRowArray[]=$row;
 			} else {
@@ -507,6 +540,8 @@ class t3lib_BEfunc	{
 			while(list($key,$val)=each($theRowArray))	{
 				$c--;
 				$output[$c]['uid'] = $val['uid'];
+				$output[$c]['pid'] = $val['pid'];
+				if (isset($val['_ORIG_pid'])) $output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
 				$output[$c]['title'] = $val['title'];
 				$output[$c]['TSconfig'] = $val['TSconfig'];
 				$output[$c]['is_siteroot'] = $val['is_siteroot'];
@@ -576,13 +611,18 @@ class t3lib_BEfunc	{
 		while ($uid!=0 && $loopCheck>0)	{
 			$loopCheck--;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'pid,title',
+						'uid,pid,title',
 						'pages',
 						'uid='.intval($uid).
 							t3lib_BEfunc::deleteClause('pages').
 							(strlen(trim($clause)) ? ' AND '.$clause : '')
 					);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				t3lib_BEfunc::fixVersioningPid('pages',$row);
+
+				if ($row['_ORIG_pid'])	{
+					$output = ' [#VEP#]'.$output;		// Adding visual token - Versioning Entry Point - that tells that THIS position was where the versionized branch got connected to the main tree. I will have to find a better name or something...
+				}
 				$uid = $row['pid'];
 				$output = '/'.t3lib_div::fixed_lgd_cs(strip_tags($row['title']),$titleLimit).$output;
 				if ($fullTitleLimit)	$fullOutput = '/'.t3lib_div::fixed_lgd_cs(strip_tags($row['title']),$fullTitleLimit).$fullOutput;
@@ -900,7 +940,6 @@ class t3lib_BEfunc	{
 		$ds_tableField = 	$conf['ds_tableField'];
 		$ds_searchParentField = 	$conf['ds_pointerField_searchParent'];
 
-
 			// Find source value:
 		$dataStructArray='';
 		if (is_array($ds_array))	{	// If there is a data source array, that takes precedence
@@ -926,7 +965,8 @@ class t3lib_BEfunc	{
 
 				// Searching recursively back if 'ds_pointerField_searchParent' is defined (typ. a page rootline, or maybe a tree-table):
 			if ($ds_searchParentField && !$srcPointer)	{
-				$rr = t3lib_BEfunc::getRecord($table,$row['uid'],$ds_searchParentField);	// Get the "pid" field - we cannot know that it is in the input record!
+				$rr = t3lib_BEfunc::getRecord($table,$row['uid'],'uid,'.$ds_searchParentField);	// Get the "pid" field - we cannot know that it is in the input record!
+				t3lib_BEfunc::fixVersioningPid($table,$rr);
 				$uidAcc=array();	// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
 				while(!$srcPointer)		{
@@ -936,9 +976,12 @@ class t3lib_BEfunc	{
 									'uid='.intval($rr[$ds_searchParentField]).t3lib_BEfunc::deleteClause($table)
 								);
 					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-					if (!is_array($rr) || isset($uidAcc[$rr['uid']]))	break;	// break if no result from SQL db or if looping...
+
+						// break if no result from SQL db or if looping...
+					if (!is_array($rr) || isset($uidAcc[$rr['uid']]))	break;
 					$uidAcc[$rr['uid']]=1;
 
+					t3lib_BEfunc::fixVersioningPid($table,$rr);
 					$srcPointer = ($subFieldPointer && $rr[$subFieldPointer]) ? $rr[$subFieldPointer] : $rr[$ds_pointerField];
 				}
 			}
@@ -959,7 +1002,6 @@ class t3lib_BEfunc	{
 				}
 			} else $dataStructArray='No source value in fieldname "'.$ds_pointerField.'"';	// Error message.
 		} else $dataStructArray='No proper configuration!';
-
 		return $dataStructArray;
 	}
 
@@ -1548,6 +1590,7 @@ class t3lib_BEfunc	{
 		$parts=array();
 		$parts[] = 'id='.$row['uid'];
 		if ($row['alias'])	$parts[]=$LANG->sL($TCA['pages']['columns']['alias']['label']).' '.$row['alias'];
+		if ($row['t3ver_id'])	$parts[] = 'v#'.$row['t3ver_id'];
 		if ($row['doktype']=='3')	{
 			$parts[]=$LANG->sL($TCA['pages']['columns']['url']['label']).' '.$row['url'];
 		} elseif ($row['doktype']=='4')	{
@@ -1610,6 +1653,9 @@ class t3lib_BEfunc	{
 			$out='id='.$row['uid'];	// Uid is added
 			if ($table=='pages' && $row['alias'])	{
 				$out.=' / '.$row['alias'];
+			}
+			if ($GLOBALS['TCA'][$table]['ctrl']['versioning'] && $row['t3ver_id'])	{
+				$out.=' - v#'.$row['t3ver_id'];
 			}
 			if ($ctrl['disabled'])	{		// Hidden ...
 				$out.=($row[$ctrl['disabled']]?' - '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.hidden'):'');
@@ -1865,6 +1911,9 @@ class t3lib_BEfunc	{
 			foreach($secondFields as $fieldN)	{
 				$fields[] = $prefix.$fieldN;
 			}
+		}
+		if ($TCA[$table]['ctrl']['versioning'])	{
+			$fields[] = $prefix.'t3ver_id';
 		}
 
 		if ($TCA[$table]['ctrl']['selicon_field'])	$fields[] = $prefix.$TCA[$table]['ctrl']['selicon_field'];
@@ -2676,6 +2725,42 @@ class t3lib_BEfunc	{
 				t3lib_BEfunc::deleteClause('pages'),
 				'', '', '1');
 			return $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		}
+	}
+
+	/**
+	 * Select all versions of a record, ordered by version id (DESC)
+	 *
+	 * @param	string	Table name to select from
+	 * @param	integer	Record uid for which to find versions.
+	 * @param	string	Field list to select
+	 * @return	array	Array of versions of table/uid
+	 */
+	function selectVersionsOfRecord($table, $uid, $fields='*')	{
+		global $TCA;
+
+		if ($TCA[$table] && $TCA[$table]['ctrl']['versioning'])	{
+
+				// Select all versions of record:
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				$fields,
+				$table,
+				'(t3ver_oid='.intval($uid).' || uid='.intval($uid).')'.
+					t3lib_BEfunc::deleteClause($table),
+				'',
+				't3ver_id DESC'
+			);
+
+				// Add rows to output array:
+			$outputRows = array();
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				if ($uid==$row['uid'])	{
+					$row['_CURRENT_VERSION']=TRUE;
+				}
+				$outputRows[] = $row;
+			}
+
+			return $outputRows;
 		}
 	}
 

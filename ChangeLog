@@ -1,3 +1,11 @@
+2004-08-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Implemented versioning API in tcemain plus other places. Still not functional for the broad public (will be in 3.8.0). Missing conceptual testing, implementation in the backend interface (still to be discussed how that is best done and fitting workflow) and not at all in the frontend.
+	* Tables configured for versioning by default is pages, tt_content, pages_language_overlay and sys_template
+	* !!!Notice that the type of integer for uid/pid fields of the above mentioned tables changed from "unsigned" to "signed". This should only mean something if you have uid/pid values over 2 billion - but then PHP will fail you anyways. So the impact should be nothing.
+	* For testers: Ask me (kasper) for the "version" extension which is my test bench and future management tool for the final implementation.
+	* !!!Fieldnames 't3ver_oid', 't3ver_id' and 't3ver_label' has been reserved for versioning adminstration
+
 2004-08-22  Ingmar Schlecht  <ingmars@web.de>
 
 	* Changed the way how the EM and the Kickstarter interact
@@ -22,7 +30,7 @@
 	* Added "sleep(5)" when a false login was detected in the login-screen. This makes trying lots of username/passwords in the login screen boooooring...
 	* Added new GUI type: Dynamic TAB menu which can switch between a number of sheets of content dynamically with tabs. Used in flexforms and also in TemplaVoila.
 	* Set-locale issue for USER_INT objects should be fixed. Please test this someone!!!
-	
+
 
 2004-08-20  Ingmar Schlecht  <ingmars@web.de>
 

@@ -205,7 +205,7 @@ class t3lib_pageSelect {
 	 */
 	function getPageIdFromAlias($alias)	{
 		$alias = strtolower($alias);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'alias="'.$GLOBALS['TYPO3_DB']->quoteStr($alias, 'pages').'" AND pages.deleted=0');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'alias="'.$GLOBALS['TYPO3_DB']->quoteStr($alias, 'pages').'" AND pid>=0 AND pages.deleted=0');	// "AND pid>=0" is because of versioning...
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			return $row['uid'];
 		}

@@ -1480,6 +1480,7 @@ $str.=$this->docBodyTagBegin().
 
 	/**
 	 * Creates a DYNAMIC tab-menu where the tabs are switched between with DHTML.
+	 * Should work in MSIE, Mozilla, Opera and Konqueror. On Konqueror I did find a serious problem: <textarea> fields loose their content when you switch tabs!
 	 *
 	 * @param	array	Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
 	 * @param	string	Identification string. This should be unique for every instance of a dynamic menu!

@@ -629,7 +629,7 @@
 				// Now it's investigated if the raw page-id points to a hidden page and if so, the flag is set.
 				// This does not require the preview flag to be set in the admin panel
 			if ($this->id)	{
-				$idQ = t3lib_div::testInt($this->id) ? 'uid="'.intval($this->id).'"' : 'alias="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, 'pages').'"';
+				$idQ = t3lib_div::testInt($this->id) ? 'uid="'.intval($this->id).'"' : 'alias="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, 'pages').'" AND pid>=0';	// pid>=0 added for the sake of versioning...
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('hidden', 'pages', $idQ.' AND hidden AND NOT deleted');
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 					$this->fePreview = 1;	// The preview flag is set only if the current page turns out to actually be hidden!

@@ -118,8 +118,11 @@ CREATE TABLE cache_imagesizes (
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-  pid int(11) unsigned DEFAULT '0' NOT NULL,
+  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  t3ver_oid int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_id int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_label varchar(30) DEFAULT '' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
@@ -128,6 +131,7 @@ CREATE TABLE pages (
   perms_user tinyint(4) unsigned DEFAULT '0' NOT NULL,
   perms_group tinyint(4) unsigned DEFAULT '0' NOT NULL,
   perms_everybody tinyint(4) unsigned DEFAULT '0' NOT NULL,
+  editlock tinyint(4) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
   title tinytext NOT NULL,
@@ -138,6 +142,7 @@ CREATE TABLE pages (
   php_tree_stop tinyint(4) DEFAULT '0' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
+  KEY t3ver_oid (t3ver_oid),
   KEY parent (pid),
 );
 

@@ -54,6 +54,7 @@
 			<label index="LGL.recursive">Recursive:</label>
 			<label index="LGL.l18n_parent">Transl.Orig:</label>
 			<label index="LGL.allLanguages">[All]</label>
+			<label index="LGL.versionLabel">Versioning Label:</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="LGL.endtime">Stop:</label>

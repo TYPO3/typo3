@@ -140,11 +140,13 @@ $TCA['pages'] = Array (
 		'sortby' => 'sorting',
 		'title' => 'LLL:EXT:lang/locallang_tca.php:pages',
 		'type' => 'doktype',
+		'versioning' => TRUE,
 		'delete' => 'deleted',
 		'crdate' => 'crdate',
 		'hideAtCopy' => 1,
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
 		'cruser_id' => 'cruser_id',
+		'editlock' => 'editlock',
 		'useColumnsForDefaultValues' => 'doktype'
 	),
 	'interface' => Array (
@@ -222,6 +224,21 @@ $TCA['pages'] = Array (
 			)
 		),
 		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
+		't3ver_label' => Array (
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'max' => '30',
+			)
+		),
+		'editlock' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_tca.php:editlock',
+			'config' => Array (
+				'type' => 'check'
+			)
+		),
 	),
 	'types' => Array (
 		'1' => Array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7'),
@@ -229,7 +246,7 @@ $TCA['pages'] = Array (
 		'255' => Array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7')
 	),
 	'palettes' => Array (
-		'6' => Array('showitem' => 'php_tree_stop'),
+		'6' => Array('showitem' => 'php_tree_stop, editlock'),
 		'7' => Array('showitem' => 'is_siteroot')
 	)
 );

@@ -91,7 +91,7 @@ class t3lib_browseTree extends t3lib_treeView {
 		$this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		$this->MOUNTS = $GLOBALS['WEBMOUNTS'];
 
-		$this->fieldArray = array_merge($this->fieldArray,array('doktype','php_tree_stop'));
+		$this->fieldArray = array_merge($this->fieldArray,array('doktype','php_tree_stop','t3ver_id'));
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			$this->fieldArray = array_merge($this->fieldArray,array('hidden','starttime','endtime','fe_group','module','extendToSubpages'));
 		}

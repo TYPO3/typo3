@@ -562,6 +562,14 @@ $TCA['pages_language_overlay'] = Array (
 		),
 		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
 		'l18n_diffsource' => Array('config'=>array('type'=>'passthrough')),
+		't3ver_label' => Array (
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'max' => '30',
+			)
+		),
 	),
 	'types' => Array (
 		'0' => Array('showitem' => 'hidden;;;;1-1-1, sys_language_uid, title;;;;2-2-2, subtitle, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4')
@@ -804,6 +812,14 @@ $TCA['sys_template'] = Array (
 			)
 		),
 		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
+		't3ver_label' => Array (
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'max' => '30',
+			)
+		),
 	),
 	'types' => Array (
 		'1' => Array('showitem' => 'title;;1;;2-2-2, sitetitle, constants;;;;3-3-3, config, resources, clear, root, --div--, include_static;;2;;5-5-5, include_static_file;;2, basedOn;;2, static_file_mode, nextLevel, --div--, description;;;;5-5-5, editorcfg')

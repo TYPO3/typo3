@@ -343,6 +343,9 @@ class localRecordList extends recordList {
 		if ($TCA[$table]['ctrl']['typeicon_column'])	{
 			$selectFields[] = $TCA[$table]['ctrl']['typeicon_column'];
 		}
+		if ($TCA[$table]['ctrl']['versioning'])	{
+			$selectFields[] = 't3ver_id';
+		}
 		if ($TCA[$table]['ctrl']['label_alt'])	{
 			$selectFields = array_merge($selectFields,t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['label_alt'],1));
 		}

@@ -913,6 +913,14 @@ $TCA['tt_content'] = Array (
 		),
 		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
 		'l18n_diffsource' => Array('config'=>array('type'=>'passthrough')),
+		't3ver_label' => Array (
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '30',
+				'max' => '30',
+			)
+		),
 	),
 	'types' => Array (
 		'1' => 	Array('showitem' => 'CType'),

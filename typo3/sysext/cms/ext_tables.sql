@@ -165,8 +165,11 @@ CREATE TABLE fe_users (
 # Table structure for table 'pages_language_overlay'
 #
 CREATE TABLE pages_language_overlay (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-  pid int(11) unsigned DEFAULT '0' NOT NULL,
+  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  t3ver_oid int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_id int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_label varchar(30) DEFAULT '' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
@@ -187,6 +190,7 @@ CREATE TABLE pages_language_overlay (
   l18n_diffsource mediumblob NOT NULL,
 
   PRIMARY KEY (uid),
+  KEY t3ver_oid (t3ver_oid),
   KEY parent (pid)
 );
 
@@ -233,8 +237,11 @@ CREATE TABLE sys_domain (
 # Table structure for table 'sys_template'
 #
 CREATE TABLE sys_template (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-  pid int(11) unsigned DEFAULT '0' NOT NULL,
+  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  t3ver_oid int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_id int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_label varchar(30) DEFAULT '' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -260,6 +267,7 @@ CREATE TABLE sys_template (
   static_file_mode tinyint(4) unsigned DEFAULT '0' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
+  KEY t3ver_oid (t3ver_oid),
   KEY parent (pid)
 );
 
@@ -268,8 +276,11 @@ CREATE TABLE sys_template (
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-  pid int(11) unsigned DEFAULT '0' NOT NULL,
+  uid int(11) DEFAULT '0' NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  t3ver_oid int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_id int(11) unsigned DEFAULT '0' NOT NULL,
+  t3ver_label varchar(30) DEFAULT '' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
@@ -335,6 +346,7 @@ CREATE TABLE tt_content (
   l18n_diffsource mediumblob NOT NULL,
 
   PRIMARY KEY (uid),
+  KEY t3ver_oid (t3ver_oid),
   KEY parent (pid)
 );
 

@@ -512,6 +512,12 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			}
 
+				// Checking "editlock" feature
+			if ($TCA[$table]['ctrl']['editlock'] && $idOrRow[$TCA[$table]['ctrl']['editlock']])	{
+				$this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
+				return FALSE;
+			}
+
 				// Checking record permissions
 			// THIS is where we can include a check for "perms_" fields for other records than pages...
 
