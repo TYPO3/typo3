@@ -974,7 +974,7 @@ class localRecordList extends recordList {
 
 			// Compile the options into a multiple selector box:
 		$lMenu = '
-										<select size='.t3lib_div::intInRange(count($fields)+1,3,20).' multiple="multiple" name="displayFields['.$table.'][]">'.implode('',$opt).'
+										<select size="'.t3lib_div::intInRange(count($fields)+1,3,20).'" multiple="multiple" name="displayFields['.$table.'][]">'.implode('',$opt).'
 										</select>
 				';
 

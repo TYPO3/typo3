@@ -96,6 +96,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 		if ($this->id && $access)	{
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
 			$this->doc->backPath = $BACK_PATH;
+			$this->doc->docType = 'xhtml_trans';
 
 				// JavaScript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -116,7 +117,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 			$this->doc->JScode.=$CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 
-			$this->doc->form='<form action="index.php" method="post"><input type="hidden" name="id" value="'.$this->id.'">';
+			$this->doc->form='<form action="index.php" method="post"><input type="hidden" name="id" value="'.$this->id.'" />';
 
 			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
 				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.
