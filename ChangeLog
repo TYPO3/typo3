@@ -1,5 +1,6 @@
 2004-06-08  Robert Lemke  <rl@robertlemke.de>
 
+	* Fixed bug #0000070: Number of files (file count) displayed in file list module was one number too high ("5 Files" although 4 only exist). Updated typo3/class.file_list.inc
 	* Changed one line in media/scripts/plaintextLib.inc which caused a "page not found" in some e-mail clients.
 
 2004-06-06  Kasper Skårhøj,,,  <kasper@typo3.com>
