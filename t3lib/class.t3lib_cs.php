@@ -185,6 +185,43 @@ class t3lib_cs {
 		KS C 5601 (EUC-KR) 
 	*/
 
+		// TYPO3 specific: Array with the system charsets used for each system language in TYPO3:
+		// Empty values means "iso-8859-1"
+	var $charSetArray = array(
+		'dk' => '',
+		'de' => '',
+		'no' => '',
+		'it' => '',
+		'fr' => '',
+		'es' => '',
+		'nl' => '',
+		'cz' => 'windows-1250',
+		'pl' => 'iso-8859-2',
+		'si' => 'windows-1250',
+		'fi' => '',
+		'tr' => 'iso-8859-9',
+		'se' => '',
+		'pt' => '',
+		'ru' => 'windows-1251',
+		'ro' => 'iso-8859-2',
+		'ch' => 'gb2312',
+		'sk' => 'windows-1250',
+		'lt' => 'windows-1257',
+		'is' => 'utf-8',
+		'hr' => 'windows-1250',
+		'hu' => 'iso-8859-2',
+		'gl' => '',
+		'th' => 'iso-8859-11',
+		'gr' => 'iso-8859-7',
+		'hk' => 'big5',
+		'eu' => '',
+		'bg' => 'windows-1251',
+		'br' => '',
+		'et' => 'iso-8859-4',
+		'ar' => 'iso-8859-6',
+		'he' => 'utf-8',
+		'ua' => 'windows-1251',
+	);
 
 	/**
 	 * Normalize - changes input character set to lowercase letters.
@@ -194,8 +231,8 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function parse_charset($charset)	{
-		$encoding = strtolower($charset);
-		if (isset($synonyms[$charset]))	$encoding = $synonyms[$charset];
+		$charset = strtolower($charset);
+		if (isset($this->synonyms[$charset]))	$charset = $this->synonyms[$charset];
 
 		return $charset;
 	}

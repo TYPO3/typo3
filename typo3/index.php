@@ -213,14 +213,14 @@ class SC_index {
 		$this->content.=$TBE_TEMPLATE->wrapScriptTags('
 		
 				// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
-			if (parent.opener && parent.opener.TS && parent.opener.TS.username)	{
+			if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
 				document.loginform.username.value = parent.opener.TS.username;
 			}
 
 				// If for some reason there already is a username in the username for field, move focus to the password field:
 			if (document.loginform.username && document.loginform.username.value == "") {
 				document.loginform.username.focus();
-			} else {
+			} else if (document.loginform.p_field && document.loginform.p_field.type!="hidden") {
 				document.loginform.p_field.focus();
 			}
 		');

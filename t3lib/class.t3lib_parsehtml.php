@@ -458,7 +458,8 @@ class t3lib_parsehtml {
 		$tagStack=array();
 		while(list(,$tok)=each($tokArr))	{
 			$firstChar = substr($tok,0,1);
-			if (strcmp(trim($firstChar),''))	{		// It is a tag...
+#			if (strcmp(trim($firstChar),''))	{		// It is a tag...
+			if (ereg('[[:alnum:]\/]',$firstChar))	{		// It is a tag... (first char is a-z0-9 or /) (fixed 19/01 2004)
 				$tagEnd = strcspn($tok,'>');
 				if (strlen($tok)!=$tagEnd)	{	// If there is and end-bracket...
 					$endTag = $firstChar=='/' ? 1 : 0;

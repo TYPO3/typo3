@@ -155,13 +155,27 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			if ($this->extAdmModuleEnabled('info'))	$out.= $this->extGetCategory_info();
 		}
 
-		$header.='<tr><td bgcolor="#9BA1A8" colspan="2" nowrap="nowrap">';
-		$header.=$this->extItemLink('top','<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" />'.
-					$this->extFw('<strong>'.$this->extGetLL('adminOptions').'</strong>')).$this->extFw(': '.$this->user['username']).
-					'</td><td bgcolor="#9BA1A8"><img src="clear.gif" width="10" height="1" alt="" /></td><td bgcolor="#9BA1A8"><input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td></tr>';
+		$header.='
+			<tr class="typo3-adminPanel-hRow" bgcolor="#9BA1A8">
+				<td colspan="2" nowrap="nowrap">'.
+					$this->extItemLink('top','<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_top']?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" /><strong>'.$this->extFw($this->extGetLL('adminOptions')).'</strong>').
+					$this->extFw(': '.$this->user['username']).
+					'</td>
+				<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+				<td><input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td>
+			</tr>';
 
-		$out='<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="post" style="margin: 0 0 0 0;"><table border="0" cellpadding="0" cellspacing="0" bgcolor="#F6F2E6">'.$header.$out.'</table></form>';
-		$out='<a name="TSFE_ADMIN"></a><table border="0" cellpadding="1" cellspacing="0" bgcolor="black"><tr><td>'.$out.'</td></tr></table>';
+		$out='
+<!-- 
+	ADMIN PANEL
+-->
+<a name="TSFE_ADMIN"></a>
+<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="post" style="margin: 0 0 0 0;">
+	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" bgcolor="#F6F2E6" border="1" bordercolor="black">'.
+		$header.$out.'
+	</table>
+</form>';
+
 		if ($this->uc['TSFE_adminConfig']['display_top'])	{
 			$out.='<script type="text/javascript" src="t3lib/jsfunc.evalfield.js"></script>';
 			$out.='
@@ -481,7 +495,10 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		$out.='<img src="t3lib/gfx/ol/'.($this->uc['TSFE_adminConfig']['display_'.$pre]?'minus':'plus').'bullet.gif" width="18" height="16" align="absmiddle" border="0" alt="" />';
 		$out.=$this->extFw($this->extGetLL($pre));
 		$out=$this->extItemLink($pre,$out);
-		return '<tr><td bgcolor="#ABBBB4" colspan="4" nowrap="nowrap">'.$out.'<input type="hidden" name="TSFE_ADMIN_PANEL[display_'.$pre.']" value="'.$this->uc['TSFE_adminConfig']['display_'.$pre].'" /></td></tr>';
+		return '
+				<tr class="typo3-adminPanel-itemHRow" bgcolor="#ABBBB4">
+					<td colspan="4" nowrap="nowrap">'.$out.'<input type="hidden" name="TSFE_ADMIN_PANEL[display_'.$pre.']" value="'.$this->uc['TSFE_adminConfig']['display_'.$pre].'" /></td>
+				</tr>';
 	}
 
 	/**
@@ -510,12 +527,13 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see extGetHead()
 	 */
 	function extGetItem($pre,$element)	{
-		return '<tr>
-			<td><img src="clear.gif" width="50" height="1" alt="" /></td>
-			<td nowrap="nowrap">'.($pre ? $this->extFw($this->extGetLL($pre)) : '&nbsp;').'</td>
-			<td><img src="clear.gif" width="10" height="1" alt="" /></td>
-			<td>'.$element.'</td>
-		</tr>';
+		return '
+					<tr class="typo3-adminPanel-itemRow">
+						<td><img src="clear.gif" width="50" height="1" alt="" /></td>
+						<td nowrap="nowrap">'.($pre ? $this->extFw($this->extGetLL($pre)) : '&nbsp;').'</td>
+						<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+						<td>'.$element.'</td>
+					</tr>';
 		
 	}
 
@@ -526,7 +544,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @return	string		
 	 */
 	function extFw($str)	{
-		return '<font face="Verdana" size="1" color="black"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="color:black;"':'').'>'.$str.'</font>';
+		return '<font face="verdana,arial" size="1" color="black">'.$str.'</font>';
 	}
 
 	/**

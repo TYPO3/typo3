@@ -80,6 +80,7 @@ TCEmain/TCEforms for FlexForms:
 	- mapping values to a plain-text search field(s)  
 	- Offering API functions for add/delete/move/copy
 	- Cleaning the original data in field since this may have an invalid structure if the data structure has changed in the meantime.
+	- Possibility to write the XML data values into a table instead (see Marc Schlingers idea, stored on paper in my red organizer).
 - TCEforms: 
 	- Support for checkboxes which can expand/collapse sections/containers? fold-in, fold-out, passing a list of fields to show (with sub-levels for horizontal display).
 	- Visual interface for forms, DHTML for sheets etc, various sheet modes, language menu form.
@@ -166,11 +167,11 @@ Element Browser:
 Wizards:
 - Finish the colorpicker! Some other person can be in charge of this (See "APPENDIX: Colorpicker")
 - Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)
+- Add wizard icon to see/clean up FlexForm data?
 - wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter K?hn). 
-- forms and table wizards should be configurable for making XML structures alternatively to the currently formatting.
+- forms and table wizards should be configurable for making XML structures alternatively to the currently formatting (programming wise ok, needs implementation)
 
 Interface:
-- Icons (see Bugs/Additions folder)
 - Showing in "frameset-modules" which submodule you are currently inside. And ability to change submodule in the rightmost frame anyways - maybe as a panel in top of the pages (must be cached so all submodules must not be loaded each time...)? (Message-ID: <3ADE655892793D499E2FBF623045AF4B54E9A4@dbwdfx2f.wdf.sap-ag.de>)
 - Ability to create another Main/sub module structure in the backend (Daniel H: Message-ID: <BAB9A920.E95D%daniel@typo3.com>)
 	- Change order, level, title, icon.
@@ -196,12 +197,10 @@ Web>List:
 - Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". This should be reflected in the LISTING order (before ordered by the "sorting" column) OR maybe in a hierarchical display?
 - Support for tree-tables (that can be browsed).
 - Support for a "tree-group" -> a chain of tables which are displayed in a tree since each table has a config for a parent field in a former table. (Eg. DS: brand -> domain -> product).
-- BUG: no label when copying an item into the Web>List module...
 - FlexForm tree view / editing: 
 	- When a record contains a FlexForm the web>List module could display the fields inside in a nice tree structure which one could expand/collapse! Then by clicking "edit" for a brand you get an interface where you can edit *that branch* of the flexform! Brilliant way to manage large structures inside of flexforms!
 		- Can you picture it? That would be like expanding an XML document by a node-tree and add/edit/delete/rearrange any of the internal informational pieces!
 
-		
 File>List:
 - BUG: UNIX: "RW" flag looks only on the permissions for the USER - not the group. So even if PHP via the group of a file can delete it, it is reported that it cannot.
 
@@ -209,16 +208,16 @@ History/Undo:
 - Must present a page/content element view, so a page with content elements can be restored as a whole 
 - Undo must be able to restore attached files as well 
 - Should be possible to disable for certain tables (can it be done already with TSconfig?)
-- Delete saved states (and save whole record content). 
-- Need to implement the diff-feature for windows as well (that is set configuration)
-  
+- Delete saved states (and save whole record content).
+- Need to implement the diff-feature for windows as well (that is; set configuration)
+
 LDAP support:
 - See "APPENDIX: LDAP"
 
 DBAL:
 - Next step: Create PHP-test scripts which performs 98% of the SQL operations we need in TYPO3 and then let people try to implement this; We will then know about all the obstacles first-hand before we do any efforts to implement it.
-- See "APPENDIX: DBAL" for Kaspers internal notes on the subject.
-- "TCEmain/Multiple DBs" as well.
+- See "APPENDIX: DBAL" for Kaspers internal notes on the subject + project description on TYPO3.org
+- "TCEmain/Multiple DBs" as well
 - MySQL practice: "Maybe it's a good idea to quote all table and column names in later versions of typo3 to avoid further problems like this one." (Message-ID: <mailman.1052907363.19535.typo3-english@lists.netfielders.de>) Also good for DBAL? + create API functions for making INSERT/UPDATE query strings.
 
 EM:
@@ -266,23 +265,19 @@ EM:
 - Check mailbox for more... ?
 - Related: The KickStarter Wizard, in particular a) cleaner code output, b) merging updates.
 
-
 The REGEX-{} problem:
 - BUG: Regexs; "Warning: Unmatched \{ in /home/sites/site14/typo3_src-3.5b3/typo3/mod/tools/em/index.php on line 1983" which is a ereg with { WITHOUT preceeding slash! (Message-ID: <003c01c275aa$c0c60c10$e3a1a33e@pentiumriv4v9a>, Message-ID: <20030729082437.79900.qmail@web11305.mail.yahoo.com>)
-  
+
 Install/Servers:
 - FIX: Check safe_mode? Check open_base_dir? (Message-ID: <B9B8E356.1CE0%typo3@ilveneto.net>)
 - FIX: To get PHP to handle PATH_INFO and PATH_TRANSLATED information correctly with this setup, the php parser should be compiled with the --enable-discard-path configure option. 
 - FIX: The "php_sapi_name()=="cgi"||php_sapi_name()=="isapi"" problems (Message-ID: <ADEEJCHPNMOFKAAOJJKKCEKMCAAA.martin.kokes@sitewell.cz>, Message-ID: <200304071146520757.0097D495@smtp.worldonline.dk>, Message-ID: <BACDA028.F428%daniel@typo3.com>)
-- CHECK: MD5 problem on Apache/Windows (Message-ID: <001901c26aeb$99db4c60$a9695651@NIGELJ>)
+- CHECK: MD5 problem on Apache/Windows (Message-ID: <001901c26aeb$99db4c60$a9695651@NIGELJ>) - maybe OK now because of "rb" flag?
 - CHECK: Security: Can HTTP_SERVER_VARS be overridden from URL if global vars are enabled???
 - [Ask Michael Stucki for an overview of bugs...?]
 - TYPO3_PORT bug (Message-ID: <005f01c2df3f$4006db00$0100a8c0@knoell>)
 - BUG: open_base_dir problem with tempnam() (affects: tidy, diff, new resource textfiles created in Web>Template/Info, Indexer (using temp-name for input from pdftotext)
 	-> Renes t3lib_exec class useful here?
-
-BE Language:
-- There are a few mails in the Translations mail folder. These files contains some translations which must be integrated manually...
 
 Filepermissions of source:
 - Test that these permissions work OK:

@@ -59,8 +59,9 @@ H4 {
 
 /* Preformatted text - not used so much in TYPO3 */
 PRE   {
-	font-family: mono-spaced; 
-	font-size: 12px;
+	font-family: monospace; 
+	font-size:11px; 
+	margin: 0 0 0 0;
 }
 
 /* Links in general */
@@ -363,7 +364,7 @@ TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
 .diff-r {color: red;}
 .diff-g {color: green;}
 IMG.absmiddle { vertical-align: middle; }
-.smallCheckboxes { width:12; height:12; margin:0 0 0 0; }
+.smallCheckboxes { width:12px; height:12px; margin:0 0 0 0; }
 .uppercase { text-transform : uppercase; }
 
 /* Permissions, green and red */

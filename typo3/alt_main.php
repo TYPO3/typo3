@@ -193,7 +193,7 @@ class SC_alt_main {
 
 			// Detecting the frameset module navigation frame widths (do this AFTER setting new timeout so that any errors in the code below does not prevent another time to be set!)
 		if (top && top.content && top.content.nav_frame && top.content.nav_frame.document)	{
-			TS.navFrameWidth = top.content.nav_frame.document.documentElement.clientWidth ? top.content.nav_frame.document.documentElement.clientWidth : top.content.nav_frame.document.body.clientWidth;
+			TS.navFrameWidth = (top.content.nav_frame.document.documentElement && top.content.nav_frame.document.documentElement.clientWidth) ? top.content.nav_frame.document.documentElement.clientWidth : top.content.nav_frame.document.body.clientWidth;
 		}
 	}
 	

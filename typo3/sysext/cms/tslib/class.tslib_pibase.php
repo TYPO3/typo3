@@ -38,58 +38,61 @@
  *
  *
  *
- *  128: class tslib_pibase 
+ *  131: class tslib_pibase 
  *
  *              SECTION: Init functions
- *  207:     function tslib_pibase()	
- *  221:     function pi_setPiVarDefaults()	
+ *  210:     function tslib_pibase()	
+ *  224:     function pi_setPiVarDefaults()	
  *
  *              SECTION: Link functions
- *  260:     function pi_getPageLink($id,$target='',$urlParameters=array())	
- *  276:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())	
- *  290:     function pi_linkTP($str,$urlParameters=array(),$cache=0)	
- *  312:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0)	
- *  335:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0)	
- *  351:     function pi_list_linkSingle($str,$uid,$cache=0,$mergeArr=array())	
- *  374:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')	
+ *  263:     function pi_getPageLink($id,$target='',$urlParameters=array())	
+ *  279:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())	
+ *  293:     function pi_linkTP($str,$urlParameters=array(),$cache=0)	
+ *  315:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0)	
+ *  338:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0)	
+ *  355:     function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE)	
+ *  383:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')	
  *
  *              SECTION: Functions for listing, browsing, searching etc.
- *  414:     function pi_list_browseresults($showResultCount=1,$tableParams='')	
- *  467:     function pi_list_searchBox($tableParams='')	
- *  486:     function pi_list_modeSelector($items=array(),$tableParams='')	
- *  513:     function pi_list_makelist($res,$tableParams='')	
- *  538:     function pi_list_row($c)	
- *  550:     function pi_list_header()	
+ *  423:     function pi_list_browseresults($showResultCount=1,$tableParams='')	
+ *  492:     function pi_list_searchBox($tableParams='')	
+ *  520:     function pi_list_modeSelector($items=array(),$tableParams='')	
+ *  558:     function pi_list_makelist($res,$tableParams='')	
+ *  593:     function pi_list_row($c)	
+ *  605:     function pi_list_header()	
  *
  *              SECTION: Stylesheet, CSS
- *  581:     function pi_getClassName($class)	
- *  593:     function pi_classParam($class)	
- *  607:     function pi_setClassStyle($class,$data,$selector='')	
- *  618:     function pi_wrapInBaseClass($str)	
+ *  636:     function pi_getClassName($class)	
+ *  648:     function pi_classParam($class)	
+ *  662:     function pi_setClassStyle($class,$data,$selector='')	
+ *  673:     function pi_wrapInBaseClass($str)	
  *
  *              SECTION: Frontend editing: Edit panel, edit icons
- *  654:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())	
- *  695:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='')	
+ *  722:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())	
+ *  763:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='')	
  *
  *              SECTION: Localization, locallang functions
- *  741:     function pi_getLL($key,$alt='')	
- *  757:     function pi_loadLL()	
+ *  810:     function pi_getLL($key,$alt='',$hsc=FALSE)	
+ *  831:     function pi_loadLL()	
  *
  *              SECTION: Database, queries
- *  819:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	
- *  880:     function pi_getRecord($table,$uid,$checkPage=0)	
- *  891:     function pi_getPidList($pid_list,$recursive=0)	
- *  912:     function pi_prependFieldsWithTable($table,$fieldList)	
- *  929:     function pi_getCategoryTableContents($table,$pid,$addWhere='')	
+ *  893:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	
+ *  954:     function pi_getRecord($table,$uid,$checkPage=0)	
+ *  965:     function pi_getPidList($pid_list,$recursive=0)	
+ *  986:     function pi_prependFieldsWithTable($table,$fieldList)	
+ * 1003:     function pi_getCategoryTableContents($table,$pid,$addWhere='')	
  *
  *              SECTION: Various
- *  965:     function pi_isOnlyFields($fList,$lowerThan=-1)	
- *  985:     function pi_autoCache($inArray)	
- * 1016:     function pi_RTEcssText($str)	
- * 1030:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	
- * 1045:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	
+ * 1039:     function pi_isOnlyFields($fList,$lowerThan=-1)	
+ * 1059:     function pi_autoCache($inArray)	
+ * 1090:     function pi_RTEcssText($str)	
  *
- * TOTAL FUNCTIONS: 33
+ *              SECTION: FlexForms related functions
+ * 1111:     function pi_initPIflexForm()	
+ * 1129:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	
+ * 1146:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	
+ *
+ * TOTAL FUNCTIONS: 34
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -806,7 +809,7 @@ class tslib_pibase {
 	 */
 	function pi_getLL($key,$alt='',$hsc=FALSE)	{
 		if (isset($this->LOCAL_LANG[$this->LLkey][$key]))	{
-			$word = $this->LOCAL_LANG[$this->LLkey][$key];
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key]);
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))	{
 			$word = $this->LOCAL_LANG['default'][$key];
 		} else {
@@ -1103,7 +1106,7 @@ class tslib_pibase {
 	/**
 	 * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
 	 * 
-	 * @return	void
+	 * @return	void		
 	 */
 	function pi_initPIflexForm()	{
 			// Converting flexform data into array:
@@ -1137,8 +1140,8 @@ class tslib_pibase {
 	 * @param	array		Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array an return element number X (whether this is right behavior is not settled yet...)
 	 * @param	string		Value for outermost key, typ. "vDEF" depending on language.
 	 * @return	mixed		The value, typ. string.
-	 * @see pi_getFFvalue()
 	 * @access private
+	 * @see pi_getFFvalue()
 	 */
 	function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	{
 	

@@ -43,58 +43,58 @@
  *
  *
  *  139: class tslib_menu 
- *  182:     function start($tmpl,$sys_page,$id,$conf,$menuNumber)	
- *  231:     function makeMenu()	
- *  663:     function includeMakeMenu($conf,$altSortField)	
- *  680:     function procesItemStates($splitCount)	
- *  863:     function subMenu($uid,$mount_point=0)	
- *  905:     function link($key,$altTarget='',$typeOverride='') 
- *  961:     function isActive($uid)	
- *  972:     function isCurrent($uid)	
- *  985:     function isSubMenu($uid,$mount_point=0)	
- * 1009:     function isItemState($kind,$key)	
- * 1046:     function accessKey($title)	
- * 1072:     function userProcess($mConfKey,$passVar)	
- * 1087:     function setATagParts()	
- * 1100:     function getPageTitle($title,$nav_title)	
+ *  181:     function start($tmpl,$sys_page,$id,$conf,$menuNumber)	
+ *  230:     function makeMenu()	
+ *  662:     function includeMakeMenu($conf,$altSortField)	
+ *  679:     function procesItemStates($splitCount)	
+ *  862:     function subMenu($uid,$mount_point=0)	
+ *  904:     function link($key,$altTarget='',$typeOverride='') 
+ *  960:     function isActive($uid)	
+ *  971:     function isCurrent($uid)	
+ *  984:     function isSubMenu($uid,$mount_point=0)	
+ * 1008:     function isItemState($kind,$key)	
+ * 1045:     function accessKey($title)	
+ * 1071:     function userProcess($mConfKey,$passVar)	
+ * 1086:     function setATagParts()	
+ * 1099:     function getPageTitle($title,$nav_title)	
  *
  *
- * 1131: class tslib_tmenu extends tslib_menu 
- * 1140:     function generate()	
- * 1156:     function writeMenu()	
- * 1286:     function getBeforeAfter($pref)	
- * 1316:     function addJScolorShiftFunction()	
- * 1338:     function extProc_init()	
- * 1349:     function extProc_RO($key)	
- * 1360:     function extProc_beforeLinking($key)	
- * 1372:     function extProc_afterLinking($key)	
- * 1389:     function extProc_beforeAllWrap($item,$key)	
- * 1400:     function extProc_finish()	
+ * 1130: class tslib_tmenu extends tslib_menu 
+ * 1139:     function generate()	
+ * 1155:     function writeMenu()	
+ * 1285:     function getBeforeAfter($pref)	
+ * 1315:     function addJScolorShiftFunction()	
+ * 1337:     function extProc_init()	
+ * 1348:     function extProc_RO($key)	
+ * 1359:     function extProc_beforeLinking($key)	
+ * 1371:     function extProc_afterLinking($key)	
+ * 1388:     function extProc_beforeAllWrap($item,$key)	
+ * 1399:     function extProc_finish()	
  *
  *
- * 1436: class tslib_gmenu extends tslib_menu 
- * 1445:     function generate()	
- * 1483:     function makeGifs($conf, $resKey)	
- * 1680:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	
- * 1752:     function writeMenu()	
- * 1850:     function extProc_init()	
- * 1861:     function extProc_RO($key)	
- * 1872:     function extProc_beforeLinking($key)	
- * 1885:     function extProc_afterLinking($key)	
- * 1902:     function extProc_beforeAllWrap($item,$key)	
- * 1913:     function extProc_finish()	
+ * 1435: class tslib_gmenu extends tslib_menu 
+ * 1444:     function generate()	
+ * 1482:     function makeGifs($conf, $resKey)	
+ * 1679:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	
+ * 1751:     function writeMenu()	
+ * 1849:     function extProc_init()	
+ * 1860:     function extProc_RO($key)	
+ * 1871:     function extProc_beforeLinking($key)	
+ * 1884:     function extProc_afterLinking($key)	
+ * 1901:     function extProc_beforeAllWrap($item,$key)	
+ * 1912:     function extProc_finish()	
  *
  *
- * 1947: class tslib_imgmenu extends tslib_menu 
- * 1956:     function generate()	
- * 1974:     function makeImageMap($conf)	
- * 2143:     function writeMenu()	
+ * 1946: class tslib_imgmenu extends tslib_menu 
+ * 1955:     function generate()	
+ * 1973:     function makeImageMap($conf)	
+ * 2142:     function writeMenu()	
  *
  *
- * 2186: class tslib_jsmenu extends tslib_menu 
- * 2193:     function generate()	
- * 2201:     function writeMenu()	
- * 2261:     function generate_level($levels,$count,$pid,$menuItemArray='')	
+ * 2185: class tslib_jsmenu extends tslib_menu 
+ * 2192:     function generate()	
+ * 2200:     function writeMenu()	
+ * 2260:     function generate_level($levels,$count,$pid,$menuItemArray='')	
  *
  * TOTAL FUNCTIONS: 40
  * (This index is automatically created/updated by the extension "extdeveval")

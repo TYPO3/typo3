@@ -43,103 +43,103 @@
  *
  *
  *  176: class tslib_fe	
- *  324:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')	
- *  346:     function connectToMySQL()	
- *  382:     function sendRedirect()	
+ *  326:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')	
+ *  348:     function connectToMySQL()	
+ *  384:     function sendRedirect()	
  *
  *              SECTION: Initializing, resolving page id
- *  422:     function initFEuser()	
- *  477:     function checkAlternativeIdMethods()	
- *  523:     function clear_preview()	
- *  536:     function determineId()	
- *  608:     function fetch_the_id()	
- *  714:     function getPageAndRootline() 
- *  776:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())	
- *  821:     function checkRootlineForIncludeSection()	
- *  855:     function checkEnableFields($row)	
- *  873:     function checkPagerecordForIncludeSection($row)	
- *  885:     function setIDfromArgV()	
- *  901:     function getPageAndRootlineWithDomain($domainStartPage)	
- *  929:     function findDomainRecord($recursive=0)	
- *  950:     function pageNotFoundHandler($code,$header='')	
- *  972:     function checkAndSetAlias()	
- *  987:     function idPartsAnalyze($str)	
+ *  424:     function initFEuser()	
+ *  479:     function checkAlternativeIdMethods()	
+ *  525:     function clear_preview()	
+ *  538:     function determineId()	
+ *  610:     function fetch_the_id()	
+ *  716:     function getPageAndRootline() 
+ *  778:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())	
+ *  823:     function checkRootlineForIncludeSection()	
+ *  857:     function checkEnableFields($row)	
+ *  875:     function checkPagerecordForIncludeSection($row)	
+ *  887:     function setIDfromArgV()	
+ *  903:     function getPageAndRootlineWithDomain($domainStartPage)	
+ *  931:     function findDomainRecord($recursive=0)	
+ *  952:     function pageNotFoundHandler($code,$header='')	
+ *  974:     function checkAndSetAlias()	
+ *  989:     function idPartsAnalyze($str)	
  *
  *              SECTION: Template and caching related functions.
- * 1042:     function makeCacheHash()	
- * 1063:     function cHashParams($addQueryParams) 
- * 1082:     function initTemplate()	
- * 1094:     function getFromCache()	
- * 1149:     function getHash()	
- * 1168:     function getConfigArray()	
+ * 1044:     function makeCacheHash()	
+ * 1065:     function cHashParams($addQueryParams) 
+ * 1086:     function initTemplate()	
+ * 1098:     function getFromCache()	
+ * 1153:     function getHash()	
+ * 1172:     function getConfigArray()	
  *
  *              SECTION: Further initialization and data processing
- * 1282:     function getCompressedTCarray()	
- * 1319:     function includeTCA($TCAloaded=1)	
- * 1346:     function settingLanguage()	
- * 1386:     function checkDataSubmission()	
- * 1411:     function fe_tce()	
- * 1425:     function locDataCheck($locationData)	
- * 1441:     function sendFormmail()	
- * 1459:     function checkJumpUrl()	
- * 1531:     function jumpUrl()	
- * 1574:     function setUrlIdToken()	
+ * 1286:     function getCompressedTCarray()	
+ * 1323:     function includeTCA($TCAloaded=1)	
+ * 1349:     function settingLanguage()	
+ * 1389:     function checkDataSubmission()	
+ * 1414:     function fe_tce()	
+ * 1428:     function locDataCheck($locationData)	
+ * 1444:     function sendFormmail()	
+ * 1462:     function checkJumpUrl()	
+ * 1534:     function jumpUrl()	
+ * 1577:     function setUrlIdToken()	
  *
  *              SECTION: Page generation; cache handling
- * 1617:     function isGeneratePage()	
- * 1627:     function tempPageCacheContent()	
- * 1658:     function realPageCacheContent()	
- * 1680:     function setPageCacheContent($c,$d,$t)	
- * 1692:     function clearPageCacheContent()	
- * 1702:     function clearPageCacheContent_pidList($pidList)	
- * 1713:     function setSysLastChanged()	
+ * 1620:     function isGeneratePage()	
+ * 1630:     function tempPageCacheContent()	
+ * 1661:     function realPageCacheContent()	
+ * 1683:     function setPageCacheContent($c,$d,$t)	
+ * 1695:     function clearPageCacheContent()	
+ * 1705:     function clearPageCacheContent_pidList($pidList)	
+ * 1716:     function setSysLastChanged()	
  *
  *              SECTION: Page generation; rendering and inclusion
- * 1750:     function generatePage_preProcessing()	
- * 1786:     function generatePage_whichScript()	
- * 1798:     function generatePage_postProcessing()	
- * 1856:     function INTincScript()	
- * 1914:     function INTincScript_loadJSCode()	
- * 1955:     function isINTincScript()	
- * 1964:     function isSearchIndexPage()	
- * 1973:     function doXHTML_cleaning()	
+ * 1753:     function generatePage_preProcessing()	
+ * 1789:     function generatePage_whichScript()	
+ * 1801:     function generatePage_postProcessing()	
+ * 1859:     function INTincScript()	
+ * 1917:     function INTincScript_loadJSCode()	
+ * 1958:     function isINTincScript()	
+ * 1967:     function isSearchIndexPage()	
+ * 1976:     function doXHTML_cleaning()	
  *
  *              SECTION: Finished off; outputting, storing session data, statistics...
- * 2005:     function isOutputting()	
- * 2016:     function processOutput()	
- * 2068:     function isEXTincScript()	
- * 2077:     function storeSessionData()	
- * 2087:     function setParseTime()	
- * 2099:     function statistics()	
- * 2176:     function previewInfo()	
- * 2197:     function beLoginLinkIPList()	
+ * 2008:     function isOutputting()	
+ * 2019:     function processOutput()	
+ * 2071:     function isEXTincScript()	
+ * 2080:     function storeSessionData()	
+ * 2090:     function setParseTime()	
+ * 2102:     function statistics()	
+ * 2179:     function previewInfo()	
+ * 2200:     function beLoginLinkIPList()	
  *
  *              SECTION: Various internal API functions
- * 2252:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	
- * 2294:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	
- * 2322:     function getSimulFileName()	
- * 2335:     function encryptEmail($string,$back=0)	
- * 2352:     function checkFileInclude($incFile)	
- * 2367:     function newCObj()	
- * 2380:     function setAbsRefPrefix()	
- * 2396:     function printError($label,$header='Error!')	
- * 2407:     function updateMD5paramsRecord($hash)	
- * 2419:     function tidyHTML($content)		
+ * 2255:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	
+ * 2297:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	
+ * 2325:     function getSimulFileName()	
+ * 2338:     function encryptEmail($string,$back=0)	
+ * 2355:     function checkFileInclude($incFile)	
+ * 2370:     function newCObj()	
+ * 2383:     function setAbsRefPrefix()	
+ * 2399:     function printError($label,$header='Error!')	
+ * 2410:     function updateMD5paramsRecord($hash)	
+ * 2422:     function tidyHTML($content)		
  *
  *              SECTION: Various external API functions - for use in plugins etc.
- * 2480:     function getStorageSiterootPids()	
- * 2495:     function getPagesTSconfig()	
- * 2528:     function setJS($key,$content='')	
- * 2566:     function setCSS($key,$content)	
- * 2581:     function make_seed() 
- * 2594:     function uniqueHash($str='')	
- * 2603:     function set_no_cache()	
- * 2613:     function set_cache_timeout_default($seconds)	
- * 2629:     function plainMailEncoded($email,$subject,$message,$headers='')	
- * 2652:     function sL($input)	
- * 2683:     function readLLfile($fileRef)	
- * 2698:     function getLLL($index,$LOCAL_LANG)	
- * 2712:     function initLLvars()	
+ * 2483:     function getStorageSiterootPids()	
+ * 2498:     function getPagesTSconfig()	
+ * 2531:     function setJS($key,$content='')	
+ * 2569:     function setCSS($key,$content)	
+ * 2584:     function make_seed() 
+ * 2597:     function uniqueHash($str='')	
+ * 2606:     function set_no_cache()	
+ * 2616:     function set_cache_timeout_default($seconds)	
+ * 2632:     function plainMailEncoded($email,$subject,$message,$headers='')	
+ * 2655:     function sL($input)	
+ * 2686:     function readLLfile($fileRef)	
+ * 2701:     function getLLL($index,$LOCAL_LANG)	
+ * 2715:     function initLLvars()	
  *
  * TOTAL FUNCTIONS: 81
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -287,18 +287,22 @@
 	
 		// Character set (charset) conversion object:
 	var $csConvObj;						// An instance of the "t3lib_cs" class. May be used by any application.
+	var $defaultCharSet='iso-8859-1';	// The default charset used in the frontend if nothing else is set.
 	
 		// CONTENT accumulation
 	var $content='';					// All page content is accumulated in this variable. See pagegen.php
 	
 		// GENERAL
-	var $clientInfo='';				// Set to the browser: net / msie if 4+ browsers
+	var $clientInfo='';					// Set to the browser: net / msie if 4+ browsers
 	var $scriptParseTime=0;
-	var $TCAloaded = 0;			// Set ONLY if the full TCA is loaded
+	var $TCAloaded = 0;					// Set ONLY if the full TCA is loaded
 	
 		// LANG:
-	var $lang='';
-	var $langSplitIndex=0;
+	var $lang='';						// Set to the system language key (used on the site)
+	var $langSplitIndex=0;				// Set to the index number of the language key
+	var $labelsCharset='';				// Charset of the labels from locallang (based on $this->lang)
+	var $siteCharset='';				// Charset of the website.
+	var $convCharsetToFrom='';			// Set to the charsets to convert from/to IF there are any difference. Otherwise this stays a string
 	var $LL_labels_cache=array();
 	var $LL_files_cache=array();
 	
@@ -2671,9 +2675,34 @@ if (version == "n3") {
 				if (!isset($this->LL_files_cache[$parts[0]]))	{	// Getting data if not cached
 					$this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
 				}
-				$this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]);
+				$this->LL_labels_cache[$this->lang][$input] = $this->csConv($this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]));
 			}
 			return $this->LL_labels_cache[$this->lang][$input];
+		}
+	}
+	
+	/**
+	 * Converts the charset of the input string if applicable.
+	 * The "from" charset is determined by the TYPO3 system charset for the current language key ($this->lang)
+	 * The "to" charset is determined by the currently used charset for the page which is "iso-8859-1" by default or set by $GLOBALS['TSFE']->config['config']['metaCharset']
+	 * Only if there is a difference between the two charsets will a conversion be made
+	 * The conversion is done real-time - no caching for performance at this point!
+	 * 
+	 * @param	string		String to convert charset for
+	 * @param	string		Optional "from" charset.
+	 * @return	string		Output string, converted if needed.
+	 * @see initLLvars(), t3lib_cs
+	 */
+	function csConv($str,$from='')	{
+		if (!$this->lang)	$this->initLLvars();
+
+		if ($from)	{
+			$output = $this->csConvObj->conv($str,$this->csConvObj->parse_charset($from),$this->siteCharset,1);
+			return $output ? $output : $str;
+		} elseif (is_array($this->convCharsetToFrom))	{
+			return $this->csConvObj->conv($str,$this->convCharsetToFrom['from'],$this->convCharsetToFrom['to'],1);
+		} else {
+			return $str;
 		}
 	}
 	
@@ -2714,9 +2743,20 @@ if (version == "n3") {
 	 */
 	function initLLvars()	{
 		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
+
 		$ls = explode('|',TYPO3_languages);
 		while(list($i,$v)=each($ls))	{
 			if ($v==$this->lang)	{$this->langSplitIndex=$i; break;}
+		}
+
+			// Setting charsets:
+		$this->siteCharset = $this->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['metaCharset'] ? $GLOBALS['TSFE']->config['config']['metaCharset'] : $GLOBALS['TSFE']->defaultCharSet);
+		$this->labelsCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$this->lang] ? $this->csConvObj->charSetArray[$this->lang] : 'iso-8859-1');
+		if ($this->siteCharset != $this->labelsCharset)	{
+			$this->convCharsetToFrom=array(
+				'from' => $this->labelsCharset,
+				'to' => $this->siteCharset
+			);
 		}
 	}
 }

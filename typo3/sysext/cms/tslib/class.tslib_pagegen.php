@@ -47,7 +47,7 @@
  *  309:     function renderContentWithHeader($pageContent)	
  *
  *
- *  610: class FE_loadDBGroup extends t3lib_loadDBGroup	
+ *  638: class FE_loadDBGroup extends t3lib_loadDBGroup	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -313,7 +313,7 @@ function linkTo_UnCryptMailto(s)	{	//
 		} else $customContent='';
 
 			// Setting charset:		
-		$theCharset = ($GLOBALS['TSFE']->config['config']['metaCharset'] ? $GLOBALS['TSFE']->config['config']['metaCharset'] : 'iso-8859-1');
+		$theCharset = ($GLOBALS['TSFE']->config['config']['metaCharset'] ? $GLOBALS['TSFE']->config['config']['metaCharset'] : $GLOBALS['TSFE']->defaultCharSet);
 		
 			// Reset the content variables:
 		$GLOBALS['TSFE']->content='';
@@ -461,6 +461,20 @@ A:hover {'.trim($GLOBALS['TSFE']->pSetup['hoverStyle']).'}';
 SELECT {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
 TEXTAREA  {  font-family: Verdana, Arial, Helvetica; font-size: 10px} 
 INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
+		}
+		if ($GLOBALS['TSFE']->pSetup['adminPanelStyles'])	{
+			$style.='
+
+/* Default styles for the Admin Panel */
+TABLE.typo3-adminPanel { border: 1px solid black; background-color: #F6F2E6; }
+TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #9BA1A8; }
+TABLE.typo3-adminPanel TR.typo3-adminPanel-itemHRow TD { background-color: #ABBBB4; }
+TABLE.typo3-adminPanel TABLE, TABLE.typo3-adminPanel TD { border: 0px; }
+TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 10px; color: black; }
+TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }			
+TABLE.typo3-editPanel { border: 1px solid black; background-color: #F6F2E6; }
+TABLE.typo3-editPanel TD { border: 0px; }
+			';
 		}
 		
 		if (trim($style))	{

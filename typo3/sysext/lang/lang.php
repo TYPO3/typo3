@@ -83,42 +83,8 @@ class language {
 		// Default charset in backend
 	var $charSet = 'iso-8859-1';
 	
-		// Array with alternative charsets for other languages.
-	var $charSetArray = array(
-		'dk' => '',
-		'de' => '',
-		'no' => '',
-		'it' => '',
-		'fr' => '',
-		'es' => '',
-		'nl' => '',
-		'cz' => 'windows-1250',
-		'pl' => 'iso-8859-2',
-		'si' => 'windows-1250',
-		'fi' => '',
-		'tr' => 'iso-8859-9',
-		'se' => '',
-		'pt' => '',
-		'ru' => 'windows-1251',
-		'ro' => 'iso-8859-2',
-		'ch' => 'gb2312',
-		'sk' => 'windows-1250',
-		'lt' => 'windows-1257',
-		'is' => 'utf-8',
-		'hr' => 'windows-1250',
-		'hu' => 'iso-8859-2',
-		'gl' => '',
-		'th' => 'iso-8859-11',
-		'gr' => 'iso-8859-7',
-		'hk' => 'big5',
-		'eu' => '',
-		'bg' => 'windows-1251',
-		'br' => '',
-		'et' => 'iso-8859-4',
-		'ar' => 'iso-8859-6',
-		'he' => 'utf-8',
-		'ua' => 'windows-1251',
-	);
+		// Array with alternative charsets for other languages. (Moved to t3lib_cs, Set from csConvObj!)
+	var $charSetArray = array();
 	
 		// This is the url to the TYPO3 manual
 	var $typo3_help_url= 'http://www.typo3.com/man_uk/';
@@ -175,6 +141,7 @@ class language {
 
 			// Initialize the conversion object:
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
+		$this->charSetArray = $this->csConvObj->charSetArray;
 
 			// If a forced charset is used and different from the charset otherwise used:
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']!=$this->charSet)	{

@@ -237,7 +237,9 @@ class alt_menu_functions {
 						if ($addJS && $GLOBALS['BE_USER']->uc['condensedMode'])	{$addJS.=  "+(cMR?'&cMR=1':'')";}
 
 							// Command for the selector box:
-						$JScmd = "top.content.location=top.getModuleUrl(top.TS.PATH_typo3+'".$this->wrapLinkWithAB($link)."'".$addJS.');';
+						$JScmd = "
+								top.content.location=top.getModuleUrl(top.TS.PATH_typo3+'".$this->wrapLinkWithAB($link)."'".$addJS.');
+								top.fsMod.currentMainLoaded="'.$moduleName.'";';
 
 							// If there is a frameset script in place:
 						if (!$GLOBALS['BE_USER']->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{

@@ -3,6 +3,7 @@ General:
 - Add a data type getting value from t3lib_div::getIndpVar() to "data" in TS
 - Add a condition, "PIDInFullRootline"
 - Add a data type "level" (general version of eg. "leveltitle") which defines the fieldname as second parameter (see Carlos suggestion in Message-ID: <mailman.1054748584.21635.typo3-features@lists.netfielders.de>)
+- Add "doctype" setting from TS
 - The feature "Get content from page" -> should that be active with "Standard" page type?
 - Some way to show the previous content element in a column ONLY when default display is on (useful for plugins where the default listing normally uses the previous content element, but doesn't want it when showing some details etc.) - probably this is not possible to do well. FlexForms will probably be the long-term answer for many plugins.
 - error-messages in TYPO3 (like "no template found") -> linking (config option)

@@ -209,7 +209,7 @@ define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 	//		- pages.lang item array (t3lib/stddb/tbl_be.php)
 	// 		- Kickstarter wizard (ext/extrep_wizard/pi/class.tx_extrepwizard.php)
 	//		- Add new file: sysext/lang/locallang_core.[lang_key].php
-	//		- Add character encoding for lang key in sysext/lang/lang.php class
+	//		- Add character encoding for lang key in t3lib/class.t3lib_cs.php
 define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua');
 
 	// Unsetting the configured values. Use of these are depreciated.
@@ -314,5 +314,5 @@ unset($LOCAL_LANG);
 	// Setting some global vars:
 $EXEC_TIME = time();					// $EXEC_TIME is set so that the rest of the script has a common value for the script execution time
 $SIM_EXEC_TIME = $EXEC_TIME;			// $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to simulate another execution-time when selecting from eg. a database 
-$TYPO_VERSION = '3.6.0RC1';			// TYPO3 version
+$TYPO_VERSION = '3.6.0RC1';				// TYPO3 version
 ?>
