@@ -417,10 +417,19 @@ class t3lib_TCEmain	{
 	 * Processing the data-array
 	 * Call this function to process the data-array set by start()
 	 *
-	 * @return	[type]		...
+	 * @return	void
 	 */
 	function process_datamap() {
 		global $TCA, $TYPO3_CONF_VARS;
+
+			// First prepare user defined objects (if any) for hooks which extend this function:
+		$hookObjectsArr = array();
+		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $classRef) {
+				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
+			}
+		}
+
 		reset ($this->datamap);
 
 			// Organize tables so that the pages-table are always processed first. This is required if you want to make sure that content pointing to a new page will be created.
@@ -457,6 +466,14 @@ class t3lib_TCEmain	{
 					// $incomingFieldArray is the array of fields
 				while (list($id,$incomingFieldArray) = each($this->datamap[$table]))	{
 					if (is_array($incomingFieldArray))	{
+
+							// Hook: processDatamap_preProcessIncomingFieldArray
+						reset($hookObjectsArr);
+						while (list(,$hookObj) = each($hookObjectsArr)) {
+							if (method_exists ($hookObj, 'processDatamap_preProcessIncomingFieldArray')) {
+								$hookObj->processDatamap_preProcessFieldArray ($incomingFieldArray, $table, $id, $this);
+							}
+						}
 
 							// ******************************
 							// Checking access to the record
@@ -553,13 +570,11 @@ class t3lib_TCEmain	{
 								$fieldArray[$TCA[$table]['ctrl']['tstamp']]=time();
 							}
 
-								// Hook: processDatamapClass
-							if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
-								foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $_classRef) {
-									$_procObj = &t3lib_div::getUserObj ($_classRef);
-									if (method_exists ($_procObj, 'processDatamap_preProcessFieldArray')) {
-										$_procObj->processDatamap_preProcessFieldArray($status, $table, $id, $fieldArray, $this);
-									}
+								// Hook: processDatamap_postProcessFieldArray
+							reset($hookObjectsArr);
+							while (list(,$hookObj) = each($hookObjectsArr)) {
+								if (method_exists ($hookObj, 'processDatamap_postProcessFieldArray')) {
+									$hookObj->processDatamap_postProcessFieldArray ($status, $table, $id, $fieldArray, $this);
 								}
 							}
 
