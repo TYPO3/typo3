@@ -1,0 +1,38 @@
+Changes in the typo3/ext/ directory.
+
+This directory is not part of the CVS tree. Please list
+all changes here unless Kasper has confirmed that these
+bugs have been fixed in HEAD.
+
+1. Typo in feuser_admin/locallang.php
+   - delete 2 lines at the end of the file
+
+--- cut locallang.php.diff ---
+--- locallang.php.bak   2004-07-04 20:03:45.000000000 +0200
++++ locallang.php       2004-07-04 20:03:54.000000000 +0200
+@@ -48,5 +48,3 @@
+        ),
+ );
+ ?>
+-
+-
+--- cut locallang.php.diff ---
+
+2. extrep_wizard/pi/class.tx_extrepwizard.php
+   - delete line 1083
+
+--- cut class.tx_extrepwizard.php.diff ---
+--- class.tx_extrepwizard.php.bak       2004-07-04 20:08:12.000000000 +0200
++++ class.tx_extrepwizard.php   2004-07-04 20:10:19.000000000 +0200
+@@ -1080,8 +1080,6 @@
+                        $c=array(0);
+                        $this->usedNames=array();
+                        if (is_array($piConf["fields"]))        {
+-                               $piConf["fields"] = $this->cleanFieldsAndDoCommands($piConf["fields"],$catID,$action[1]);
+-
+                                        // Do it for real...
+                                reset($piConf["fields"]);
+                                while(list($k,$v)=each($piConf["fields"]))      {
+--- cut class.tx_extrepwizard.php.diff ---
+
+ -- Michael Stucki <mundaun@gmx.ch>  Sun,  04 Jul 2004 20:02:51 +0200
