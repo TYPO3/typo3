@@ -116,16 +116,8 @@ class alt_menu_functions {
 		while(list($moduleName,$moduleInfo)=each($theModules))	{
 			$mC++;
 
-			$prefix='';
-			if ($moduleInfo['navFrameScript'])	{
-				if ($BE_USER->uc['condensedMode'])	{
-					$prefix=$moduleInfo['navFrameScript'].'?currentSubScript=';
-				} else {
-					$prefix='alt_mod_frameset.php?'.
-						'fW="+top.TS.navFrameWidth+"'.
-						'&nav='.rawurlencode($moduleInfo['navFrameScript']).
-						'&script=';
-				}
+			$prefix=$this->getNavFramePrefix ($moduleInfo);				
+			if ($prefix) {
 				$this->fsMod[]='fsMod.recentIds["'.$moduleName.'"]="";';
 			}
 
@@ -163,7 +155,7 @@ class alt_menu_functions {
 
 				// Creating the various links:
 			$label = $LANG->moduleLabels['tabs'][$moduleKey];
-			if ($link && $prefix)	$link=$prefix.rawurlencode($link);
+			if ($link && $prefix)	$link=$prefix.'"+top.TS.PATH_typo3_enc+"'.rawurlencode($link);
 			if ($link && !$dontLink)	{
 				$label = '<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;">'.$label.'</a>';	//  && !$link_sub
 
@@ -211,6 +203,8 @@ class alt_menu_functions {
 					}
 
 					$link = $subInfo['script'];
+					$prefix=$this->getNavFramePrefix ($moduleInfo, $subInfo);	
+					
 					$subKey = $moduleName.'_'.$subName.'_tab';
 					$moduleCSSId = 'ID_'.t3lib_div::md5int($moduleName.'_'.$subName);
 
@@ -231,7 +225,7 @@ class alt_menu_functions {
 					$label_descr = ' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'"';
 					$flabel = htmlspecialchars($label);
 					$origLink = $link;
-					if ($link && $prefix)	$link=$prefix.rawurlencode($link);
+					if ($link && $prefix)	$link=$prefix.'"+top.TS.PATH_typo3_enc+"'.rawurlencode($link);
 
 						// Setting additional JavaScript if frameset script:
 					$addJS = '';
@@ -254,10 +248,8 @@ class alt_menu_functions {
 								// use special nav script from sub module, otherwise from the main module
 							$subNavFrameScript = $subInfo['navFrameScript'] ? $subInfo['navFrameScript'] : $moduleInfo['navFrameScript'] ;
 
-								// should we add GET params for sub module to the nav script?
-							if ($subInfo['navFrameScriptParam']) {
-								$subNavFrameScript = $this->wrapLinkWithAB($subNavFrameScript).$subInfo['navFrameScriptParam'];
-							}
+								// add GET params for sub module to the nav script
+							$subNavFrameScript = $this->wrapLinkWithAB($subNavFrameScript).$subInfo['navFrameScriptParam'];
 
 							$JScmd = '
 								if (top.content.list_frame && top.fsMod.currentMainLoaded=="'.$moduleName.'") {
@@ -265,7 +257,7 @@ class alt_menu_functions {
 									top.content.list_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($origLink).'"'.$addJS.');
 									if(top.currentSubNavScript!="'.$subNavFrameScript.'") {
 										top.currentSubNavScript="'.$subNavFrameScript.'";
-										top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$this->wrapLinkWithAB($subNavFrameScript).'");
+										top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"'.$subNavFrameScript.'");
 									}
 								} else {
 									top.content.location=top.TS.PATH_typo3+(
@@ -274,6 +266,7 @@ class alt_menu_functions {
 										"'.$this->wrapLinkWithAB($link).'"'.$addJS.'
 									);
 									top.fsMod.currentMainLoaded="'.$moduleName.'";
+									top.currentSubScript="'.$origLink.'";
 								}
 								';
 						}
@@ -398,6 +391,29 @@ class alt_menu_functions {
 		return $final;
 	}
 
+	/**
+	 * Returns a prefix used to call the navframe with parameters to call the scripts defined in the modules info array.
+	 *
+	 * @param	string		Module info array
+	 * @param	string		Submodule info array
+	 * @return	string		Result url string
+	 */
+	function getNavFramePrefix ($moduleInfo, $subModuleInfo=array()) {
+		$prefix = '';
+		$navFrameScriptParam = $subModuleInfo['navFrameScriptParam'] ? $subModuleInfo['navFrameScriptParam'] : $moduleInfo['navFrameScriptParam'];
+		if ($moduleInfo['navFrameScript'])	{
+			if ($BE_USER->uc['condensedMode'])	{
+				$prefix=$this->wrapLinkWithAB($moduleInfo['navFrameScript']).$navFrameScriptParam.'&currentSubScript=';
+			} else {
+				$prefix='alt_mod_frameset.php?'.
+					'fW="+top.TS.navFrameWidth+"'.
+					'&nav="+top.TS.PATH_typo3+"'.rawurlencode($this->wrapLinkWithAB($moduleInfo['navFrameScript']).$navFrameScriptParam).
+					'&script=';
+			}
+		}
+		return $prefix;
+	}
+		
 	/**
 	 * Returns $Ifilename readable for script in PATH_typo3.
 	 * That means absolute names are just returned while relative names are prepended with $backPath (pointing back to typo3/ dir)
