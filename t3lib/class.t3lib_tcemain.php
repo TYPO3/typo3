@@ -86,7 +86,7 @@
  *
  *              SECTION: Storing data to Database Layer
  * 2076:     function updateDB($table,$id,$fieldArray)	
- * 2122:     function compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray)	
+ * 2122:     function compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray)
  * 2170:     function insertDB($table,$id,$fieldArray)	
  * 2224:     function checkStoredRecord($table,$id,$fieldArray,$action)	
  * 2259:     function dbAnalysisStoreExec()	
@@ -2195,7 +2195,8 @@ class t3lib_TCEmain	{
 
 				// Unset the fields which are similar:
 			foreach($fieldArray as $col => $val)	{
-				if (!isset($currentRecord[$col]) ||		// Unset fields which were NOT found in the current record!
+				if (
+						#!isset($currentRecord[$col]) ||		// Unset fields which were NOT found in the current record! [Uncommented because NULL fields will not return an entry in the array!]
 						!strcmp($val,$currentRecord[$col]) ||	// Unset fields which matched exactly.
 						($cRecTypes[$col]=='int' && $currentRecord[$col]==0 && !strcmp($val,''))	// Now, a situation where TYPO3 tries to put an empty string into an integer field, we should not strcmp the integer-zero and '', but rather accept them to be similar.
 					)	{
