@@ -701,9 +701,9 @@ class tslib_menu {
 
 			$c = 0;
 			$c_b = 0;
-			$minItems = intval($this->conf['minItems']);
-			$maxItems = intval($this->conf['maxItems']);
-			$begin = tslib_cObj::calc($this->conf['begin']);
+			$minItems = intval($this->mconf['minItems'] ? $this->mconf['minItems'] : $this->conf['minItems']);
+			$maxItems = intval($this->mconf['maxItems'] ? $this->mconf['maxItems'] : $this->conf['maxItems']);
+			$begin = tslib_cObj::calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
 
 			$banUidArray = array();
 			if (trim($this->conf['excludeUidList']))	{
