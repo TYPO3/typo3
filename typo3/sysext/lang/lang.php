@@ -401,6 +401,7 @@ class language {
 
 	/**
 	 * Includes locallang file (and possibly additional localized version if configured for)
+	 * Read language labels will be merged with $LOCAL_LANG (if $setGlobal=1).
 	 * 
 	 * @param	string		$fileRef is a file-reference (see t3lib_div::getFileAbsFileName)
 	 * @param	boolean		Setting in global variable $LOCAL_LANG (or returning the variable)
@@ -414,19 +415,17 @@ class language {
 		}
 
 			// Get default file:
-		$file = t3lib_div::getFileAbsFileName($fileRef);
-		if (@is_file($file))	{
-				// Include main locallang file:
-			include($file);
+		$llang = $this->readLLfile($fileRef);
+		
+		if (count($llang))	{
 
+			$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$llang);
+			
 				// Localized addition?
 			$lFileRef = $this->localizedFileRef($fileRef);
 			if ($lFileRef && (string)$LOCAL_LANG[$this->lang]=='EXT')	{
-				$lfile = t3lib_div::getFileAbsFileName($lFileRef);
-				if (@is_file($lfile))	{
-						// Include subfile:
-					include($lfile);
-				}
+				$llang = $this->readLLfile($fileRef);
+				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$llang);
 			}
 			
 				// Overriding file?
