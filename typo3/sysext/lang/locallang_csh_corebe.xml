@@ -4,6 +4,7 @@
         <key index="description">CSH for Core Modules</key>
         <key index="type">CSH</key>
         <key index="fileId">EXT:lang/locallang_csh_corebe.php</key>
+		<csh_table>xMOD_csh_corebe</csh_table>
         <key index="labelContext" type="array">
             <key index=".alttitle"></key>
             <key index="menu_adminFunction.description"></key>

@@ -45,7 +45,7 @@ CREATE TABLE be_sessions (
   ses_hashlock int(11) DEFAULT '0' NOT NULL,
   ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
   ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  ses_data blob NOT NULL,
+  ses_data mediumblob NOT NULL,
   PRIMARY KEY (ses_id,ses_name)
 );
 

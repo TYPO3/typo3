@@ -468,7 +468,8 @@ class SC_view_help {
 				} else {
 					// "table" reference
 					t3lib_div::loadTCA($iP[0]);
-					if (!isset($TCA[$iP[0]]) || (is_array($TCA[$iP[0]]['columns'][$iP[1]]) && (!$this->limitAccess || ($BE_USER->check('tables_select',$iP[0]) && (!$TCA[$iP[0]]['columns'][$iP[1]]['exclude'] || $BE_USER->check('non_exclude_fields',$iP[0].':'.$iP[1]))))))	{	// Checking read access:
+
+					if (!isset($TCA[$iP[0]]) || ((!$iP[1] || is_array($TCA[$iP[0]]['columns'][$iP[1]])) && (!$this->limitAccess || ($BE_USER->check('tables_select',$iP[0]) && (!$iP[1] || !$TCA[$iP[0]]['columns'][$iP[1]]['exclude'] || $BE_USER->check('non_exclude_fields',$iP[0].':'.$iP[1]))))))	{	// Checking read access:
 
 							// Make see-also link:
 						$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);
@@ -484,23 +485,36 @@ class SC_view_help {
 	/**
 	 * Will return an image tag with description in italics.
 	 *
-	 * @param	string		Image file reference
-	 * @param	string		Description string
+	 * @param	string		Image file reference (list of)
+	 * @param	string		Description string (divided for each image by line break)
 	 * @return	string		Image HTML codes
 	 */
-	function printImage($image,$descr)	{
-		$absImagePath = t3lib_div::getFileAbsFileName($image,1,1);
-		if ($absImagePath && @is_file($absImagePath))	{
-			$imgFile = substr($absImagePath,strlen(PATH_site));
-			$imgInfo = @getimagesize($absImagePath);
-			if (is_array($imgInfo))	{
-				$code = '<br /><img src="../'.$imgFile.'" '.$imgInfo[3].' alt="" /><br />
-				';
-				$code.= '<p><em>'.$GLOBALS['LANG']->hscAndCharConv($descr,0).'</em></p>
-				';
-				return $code;
+	function printImage($images,$descr)	{
+		$code = '';
+			// Splitting:
+		$imgArray = t3lib_div::trimExplode(',', $images, 1);
+		if (count($imgArray))	{
+			$descrArray = explode(chr(10),$descr,count($imgArray));
+#debug($descrArray);
+			foreach($imgArray as $k => $image)	{
+				$descr = $descrArray[$k];
+
+				$absImagePath = t3lib_div::getFileAbsFileName($image,1,1);
+				if ($absImagePath && @is_file($absImagePath))	{
+					$imgFile = substr($absImagePath,strlen(PATH_site));
+					$imgInfo = @getimagesize($absImagePath);
+					if (is_array($imgInfo))	{
+						$imgFile = '../'.$imgFile;
+						$code.= '<br /><img src="'.$imgFile.'" '.$imgInfo[3].' alt="" /><br />
+						';
+						$code.= '<p><em>'.$GLOBALS['LANG']->hscAndCharConv($descr,0).'</em></p>
+						';
+					}
+				}
 			}
 		}
+
+		return $code;
 	}
 
 	/**

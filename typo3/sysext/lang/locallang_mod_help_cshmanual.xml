@@ -1,247 +1,253 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <key index="meta" type="array">
-        <key index="description">Help &gt; Manual labels (CSH viewer)</key>
-        <key index="type">module</key>
-        <key index="fileId">EXT:lang/locallang_mod_help_cshmanual.php</key>
-        <key index="labelContext" type="array">
-            <key index="mlang_labels_tablabel"></key>
-            <key index="mlang_labels_tabdescr"></key>
-            <key index="mlang_tabs_tab"></key>
-        </key>
-    </key>
-    <key index="data" type="array">
-        <key index="default" type="array">
-            <key index="mlang_labels_tablabel">TYPO3 Inline Manual</key>
-            <key index="mlang_labels_tabdescr">Inline Manual based on the information sources for Context Sensitive Help in the system</key>
-            <key index="mlang_tabs_tab">Manual</key>
-        </key>
-        <key index="dk" type="array">
-        </key>
-        <key index="de" type="array">
-        </key>
-        <key index="no" type="array">
-        </key>
-        <key index="it" type="array">
-        </key>
-        <key index="fr" type="array">
-        </key>
-        <key index="es" type="array">
-        </key>
-        <key index="nl" type="array">
-        </key>
-        <key index="cz" type="array">
-        </key>
-        <key index="pl" type="array">
-        </key>
-        <key index="si" type="array">
-        </key>
-        <key index="fi" type="array">
-        </key>
-        <key index="tr" type="array">
-        </key>
-        <key index="se" type="array">
-        </key>
-        <key index="pt" type="array">
-        </key>
-        <key index="ru" type="array">
-        </key>
-        <key index="ro" type="array">
-        </key>
-        <key index="ch" type="array">
-        </key>
-        <key index="sk" type="array">
-        </key>
-        <key index="lt" type="array">
-        </key>
-        <key index="is" type="array">
-        </key>
-        <key index="hr" type="array">
-        </key>
-        <key index="hu" type="array">
-        </key>
-        <key index="gl" type="array">
-        </key>
-        <key index="th" type="array">
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-        </key>
-        <key index="eu" type="array">
-        </key>
-        <key index="bg" type="array">
-        </key>
-        <key index="br" type="array">
-        </key>
-        <key index="et" type="array">
-        </key>
-        <key index="ar" type="array">
-        </key>
-        <key index="he" type="array">
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-        </key>
-    </key>
-    <key index="orig_hash" type="array">
-        <key index="default" type="array">
-            <key index="mlang_labels_tablabel" type="integer">182726937</key>
-            <key index="mlang_labels_tabdescr" type="integer">127735123</key>
-            <key index="mlang_tabs_tab" type="integer">236691797</key>
-        </key>
-        <key index="dk" type="array">
-        </key>
-        <key index="de" type="array">
-        </key>
-        <key index="no" type="array">
-        </key>
-        <key index="it" type="array">
-        </key>
-        <key index="fr" type="array">
-        </key>
-        <key index="es" type="array">
-        </key>
-        <key index="nl" type="array">
-        </key>
-        <key index="cz" type="array">
-        </key>
-        <key index="pl" type="array">
-        </key>
-        <key index="si" type="array">
-        </key>
-        <key index="fi" type="array">
-        </key>
-        <key index="tr" type="array">
-        </key>
-        <key index="se" type="array">
-        </key>
-        <key index="pt" type="array">
-        </key>
-        <key index="ru" type="array">
-        </key>
-        <key index="ro" type="array">
-        </key>
-        <key index="ch" type="array">
-        </key>
-        <key index="sk" type="array">
-        </key>
-        <key index="lt" type="array">
-        </key>
-        <key index="is" type="array">
-        </key>
-        <key index="hr" type="array">
-        </key>
-        <key index="hu" type="array">
-        </key>
-        <key index="gl" type="array">
-        </key>
-        <key index="th" type="array">
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-        </key>
-        <key index="eu" type="array">
-        </key>
-        <key index="bg" type="array">
-        </key>
-        <key index="br" type="array">
-        </key>
-        <key index="et" type="array">
-        </key>
-        <key index="ar" type="array">
-        </key>
-        <key index="he" type="array">
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-        </key>
-    </key>
-    <key index="orig_text" type="array">
-        <key index="default" type="array">
-        </key>
-        <key index="dk" type="array">
-        </key>
-        <key index="de" type="array">
-        </key>
-        <key index="no" type="array">
-        </key>
-        <key index="it" type="array">
-        </key>
-        <key index="fr" type="array">
-        </key>
-        <key index="es" type="array">
-        </key>
-        <key index="nl" type="array">
-        </key>
-        <key index="cz" type="array">
-        </key>
-        <key index="pl" type="array">
-        </key>
-        <key index="si" type="array">
-        </key>
-        <key index="fi" type="array">
-        </key>
-        <key index="tr" type="array">
-        </key>
-        <key index="se" type="array">
-        </key>
-        <key index="pt" type="array">
-        </key>
-        <key index="ru" type="array">
-        </key>
-        <key index="ro" type="array">
-        </key>
-        <key index="ch" type="array">
-        </key>
-        <key index="sk" type="array">
-        </key>
-        <key index="lt" type="array">
-        </key>
-        <key index="is" type="array">
-        </key>
-        <key index="hr" type="array">
-        </key>
-        <key index="hu" type="array">
-        </key>
-        <key index="gl" type="array">
-        </key>
-        <key index="th" type="array">
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-        </key>
-        <key index="eu" type="array">
-        </key>
-        <key index="bg" type="array">
-        </key>
-        <key index="br" type="array">
-        </key>
-        <key index="et" type="array">
-        </key>
-        <key index="ar" type="array">
-        </key>
-        <key index="he" type="array">
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-        </key>
-    </key>
+	<meta type="array">
+		<description>Help &gt; Manual labels (CSH viewer)</description>
+		<type>module</type>
+		<fileId>EXT:lang/locallang_mod_help_cshmanual.php</fileId>
+		<labelContext type="array">
+			<languageKey index="mlang_labels_tablabel">Module title (for alt-text in module menu)</languageKey>
+			<languageKey index="mlang_labels_tabdescr"></languageKey>
+			<languageKey index="mlang_tabs_tab"></languageKey>
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel">TYPO3 Inline Manual</label>
+			<label index="mlang_labels_tabdescr">Inline Manual based on the information sources for Context Sensitive Help in the system.</label>
+			<label index="mlang_tabs_tab">Manual</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="mlang_labels_tablabel">TYPO3 Lokal Manual</label>
+			<label index="mlang_labels_tabdescr">Lokal manual baseret på informationskilderne til Kontekst Sensitiv Hjælp i systemet.</label>
+			<label index="mlang_tabs_tab">Manual</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="mlang_labels_tablabel" type="integer">182726937</label>
+			<label index="mlang_labels_tabdescr" type="integer">207607230</label>
+			<label index="mlang_tabs_tab" type="integer">236691797</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+		<languageKey index="dk" type="array">
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

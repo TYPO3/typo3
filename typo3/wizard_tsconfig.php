@@ -258,13 +258,13 @@ class SC_wizard_tsconfig {
 			// Adding link to TSref:
 		if ($this->mode=='tsref')	{
 			$this->content.=$this->doc->section($LANG->getLL('tsprop_TSref'),'
-			<a href="'.htmlspecialchars('http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4').'" target="_blank">'.$LANG->getLL('tsprop_TSref',1).'</a>
+			<a href="'.htmlspecialchars('http://typo3.org/documentation/document-library/doc_core_tsref/').'" target="_blank">'.$LANG->getLL('tsprop_TSref',1).'</a>
 			',0,1);
 		}
 			// Adding link to admin guides etc:
 		if ($this->mode=='page' || $this->mode=='beuser')	{
 			$this->content.=$this->doc->section($LANG->getLL('tsprop_tsconfig'),'
-			<a href="'.htmlspecialchars('http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=263&cHash=1f1b106a30').'" target="_blank">'.$LANG->getLL('tsprop_tsconfig',1).'</a>
+			<a href="'.htmlspecialchars('http://typo3.org/documentation/document-library/doc_core_tsconfig/').'" target="_blank">'.$LANG->getLL('tsprop_tsconfig',1).'</a>
 			',0,1);
 		}
 			// Ending page:

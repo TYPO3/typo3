@@ -1352,7 +1352,7 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function crop($charset,$string,$len,$crop='')	{
-		if ($len == 0)	return $crop;
+		if (intval($len) == 0)	return $string;
 
 		if ($charset == 'utf-8')	{
 			$i = $this->utf8_char2byte_pos($string,$len);

@@ -254,6 +254,7 @@ TABLE#typo3-TCEforms-palette TR TD.c-close { padding-top: 3px; }
 
 /* Context Sensitive Help window (view_help.php) */
 DIV.typo3-view-help { margin-top: 6px; margin-left: 3px; width:95%; }
+DIV.typo3-view-help IMG { border: 1px solid black; margin-top:5px; margin-bottom:3px;}
 DIV.typo3-view-help H2 { font-size: 16px; text-align: left; margin: 20px 0px 10px 0px; padding: 3px 3px 3px 3px;}
 DIV.typo3-view-help H3 { background-color: #ABBBB4; margin-top: 0px;}
 DIV.typo3-view-help H4 { margin-top: 15px; border-bottom: 1px black solid; }

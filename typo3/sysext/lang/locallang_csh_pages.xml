@@ -4,6 +4,7 @@
         <key index="description">CSH for Pages table</key>
         <key index="type">CSH</key>
         <key index="fileId">EXT:lang/locallang_csh_pages.php</key>
+		<csh_table>pages</csh_table>
         <key index="labelContext" type="array">
             <key index=".description"></key>
             <key index=".details"></key>
@@ -201,14 +202,14 @@ It's recommended that only admin-users are allowed access to this field!</key>
 'SysFolder'表示为一非网页- 一个文件夹作为您选择的记录的存储器.
 '再循环'是一垃圾箱.
 &lt;B&gt;注意:&lt;/B&gt;每个类型通常会附上一个指定的图标.并且某些类型可能
-对用户不可用 (因此您可能会经历一些选项对您是不可用的!). 
+对用户不可用 (因此您可能会经历一些选项对您是不可用的!).
 并且最后每种类型被配置仅允许页面中的某些表格记录(如果您有任何问题
 SysFolder将允许任何记录).</key>
             <key index="TSconfig.description">页面TypoScript 配置.</key>
             <key index="TSconfig.details">基本上'TypoScript'是一个呈现为树型结构,用于输入数值的概念.
 尤其是为TYPO3网站创建模板而著名.
 然而用来输入数值层次的相同原理在此用来配置与后端,模块中的
-功能,Rich Text 编辑器等相关的不同特性. 
+功能,Rich Text 编辑器等相关的不同特性.
 一个页面的'TSconfig'结果事实上是从页面树的根和至当前页面
 分支的所有'TSconfig'值的累计.因而所有子页面也同样受到影响.
 打印页面TSconfig可在'网页&gt;信息'模快中从'网页TSconfig'菜单内

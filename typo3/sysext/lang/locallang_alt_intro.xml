@@ -1,506 +1,506 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <key index="meta" type="array">
-        <key index="description">Labels for &quot;About Modules&quot; screen.</key>
-        <key index="type">module</key>
-        <key index="fileId">EXT:lang/locallang_alt_intro.php</key>
-        <key index="labelContext" type="array">
-            <key index="introtext"></key>
-            <key index="introtext2"></key>
-            <key index="endText"></key>
-            <key index="userInfo"></key>
-        </key>
-    </key>
-    <key index="data" type="array">
-        <key index="default" type="array">
-            <key index="introtext">Web Content Management System</key>
-            <key index="introtext2">This is a brief description of the available modules:</key>
-            <key index="endText">Features may vary depending on your website and permissions</key>
-            <key index="userInfo">You're logged in as user:</key>
-        </key>
-        <key index="dk" type="array">
-            <key index="introtext">Web Content Management System</key>
-            <key index="introtext2">Dette er en kort beskrivelse af de tilgængelige moduler:</key>
-            <key index="endText">Adgang til faciliteterne kan variere afhængigt af dit website og dine rettigheder.</key>
-            <key index="userInfo">Du er logget ind som bruger:</key>
-        </key>
-        <key index="de" type="array">
-            <key index="introtext">Web Content Management System</key>
-            <key index="introtext2">Dies ist eine kurze Beschreibung der vorhandenen Module:</key>
-            <key index="endText">Eigenschaften können abhängig von Ihrer Webseite und Ihren Zugriffsrechten variieren.</key>
-            <key index="userInfo">Sie sind angemeldet als:</key>
-        </key>
-        <key index="no" type="array">
-            <key index="introtext">Web Content Management System</key>
-            <key index="introtext2">Dette er en kort beskrivelse av de tilgjengelige modulene:</key>
-            <key index="endText">Adgang til fasiliteter kan variere avhengig av ditt webområde og dine rettigheter.</key>
-            <key index="userInfo">Du er logget inn som bruker:</key>
-        </key>
-        <key index="it" type="array">
-            <key index="introtext">Web Content Management System</key>
-            <key index="introtext2">Breve descrizione dei moduli disponibili:</key>
-            <key index="endText">Le caratteristiche possono variare a seconda del sito web e dei permessi utente</key>
-            <key index="userInfo">Hai avuto accesso come utente:</key>
-        </key>
-        <key index="fr" type="array">
-            <key index="introtext">Système de gestion de contenu Web</key>
-            <key index="introtext2">Voici une brève description des modules disponibles:</key>
-            <key index="endText">Les fonctions peuvent varier selon votre site web et selon vos droits d'accès.</key>
-            <key index="userInfo">Vous avez ouvert votre session en tant que:</key>
-        </key>
-        <key index="es" type="array">
-            <key index="introtext">Web Content Management System&lt;br /&gt;Sistema de Administración de Contenido</key>
-            <key index="introtext2">Esta es una descripcíón corta de los módulos disponibles:</key>
-            <key index="endText">Las características pueden variar dependiendo de su website y permisos</key>
-            <key index="userInfo">Está firmado como el usuario:</key>
-        </key>
-        <key index="nl" type="array">
-            <key index="introtext">Web Content Management Systeem</key>
-            <key index="introtext2">Dit is een korte omschrijving van de aanwezige modules:</key>
-            <key index="endText">De aanwezigheid van onderdelen hangt van de configuratie van de website en de rechten af.</key>
-            <key index="userInfo">&lt;font size=1&gt;Ingelogd als gebruiker: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="cz" type="array">
-            <key index="introtext">systém pro správu obsahu webu</key>
-            <key index="introtext2">Toto jsou krátké popisy dostupných modulů:</key>
-            <key index="endText">Vlastnosti se mohou měnit podle vašeho webu a přístupových práv</key>
-            <key index="userInfo">Jste zalogován jako uživatel:</key>
-        </key>
-        <key index="pl" type="array">
-            <key index="introtext">System Zarządzania Treścią Web</key>
-            <key index="introtext2">To jest krótki opis dostępnych modułów:</key>
-            <key index="endText">Funkcjonalność może się różnić w zależności od uprawnień</key>
-            <key index="userInfo">Jesteś zalogowany jako:</key>
-        </key>
-        <key index="si" type="array">
-            <key index="introtext">sistem za urejanje spletne vsebine</key>
-            <key index="introtext2">To je kratek opis modulov, ki so na voljo:</key>
-            <key index="endText">Možnosti se lahko razlikujejo glede na vašo verzijo in privilegije</key>
-            <key index="userInfo">Prijavljeni ste kot uporabnik:</key>
-        </key>
-        <key index="fi" type="array">
-            <key index="introtext">Web-sisällönhallintajärjestelmä</key>
-            <key index="introtext2">Tässä lyhyt kuvaus käytettävistä moduleista:</key>
-            <key index="endText">Mahdollisuudet voivat olla riippuvaisia asennuksesta ja käyttöympäristöstä</key>
-            <key index="userInfo">Olet kirjautunut sisään käyttäjänä:</key>
-        </key>
-        <key index="tr" type="array">
-            <key index="introtext">Web İçeriği Yönetim Sistemi</key>
-            <key index="introtext2">Bu mevcut modüllerin tanıtımının özetidir:</key>
-            <key index="endText">Özellikler websitenize ve izinlerinize değişik bir şekilde bağlanıyor olabilir</key>
-            <key index="userInfo">Kullanıcı olarak giriş yaptınız:</key>
-        </key>
-        <key index="se" type="array">
-            <key index="introtext">Web Content Management System</key>
-            <key index="introtext2">Detta är en kort förklaring till de moduler som står till buds:</key>
-            <key index="endText">Tillgången till moduler kan variera beroende på din website och dina rättigheter</key>
-            <key index="userInfo">Du är inloggad som:</key>
-        </key>
-        <key index="pt" type="array">
-            <key index="introtext">Sistema de Gestão de Conteúdos</key>
-            <key index="introtext2">Esta é uma breve descrição dos módulos disponíveis:</key>
-            <key index="endText">Opções podem variar dependendo do seu website e permissões</key>
-            <key index="userInfo">Você está conectado como utilizador:</key>
-        </key>
-        <key index="ru" type="array">
-            <key index="introtext">Система управления веб-контентом</key>
-            <key index="introtext2">Краткое описание модулей:</key>
-            <key index="endText">Список модулей может меняться в зависимости от ваших прав доступа</key>
-            <key index="userInfo">Вы зарегистрировались как пользователь:</key>
-        </key>
-        <key index="ro" type="array">
-            <key index="introtext">Sistem de Management a Conţinutului Site-urilor</key>
-            <key index="introtext2">Scurtă descriere a modulelor disponibile:</key>
-            <key index="endText">Pot apărea diferenţe în ceea ce priveşte opţiunile disponibile în funcţie de site şi permisiuni</key>
-            <key index="userInfo">Sînteţi conectat cu pseudonimul:</key>
-        </key>
-        <key index="ch" type="array">
-            <key index="introtext">网站内容管理系统</key>
-            <key index="introtext2">这是可用模块的简短说明</key>
-            <key index="endText">特征可能根据您的网站和权限而改变</key>
-            <key index="userInfo">您的登录身份:</key>
-        </key>
-        <key index="sk" type="array">
-            <key index="introtext">Systém pre správu obsahu na webe</key>
-            <key index="introtext2">Toto je krátky popis dostupných modulov:</key>
-            <key index="endText">Charakteristiky systému môžu závisieť od tvojho web sajtu a prístupových práv</key>
-            <key index="userInfo">Si prihlásený ako užívateľ:</key>
-        </key>
-        <key index="lt" type="array">
-            <key index="introtext">Web Turinio Valdymo Sistema</key>
-            <key index="introtext2">Trumpas aprašymas prieinamų modulių:</key>
-            <key index="endText">Savybės gali keistis priklauso nuo svetainės ir leidimų</key>
-            <key index="userInfo">Seansą pradėjote kaip vartotojas:</key>
-        </key>
-        <key index="is" type="array">
-            <key index="introtext">Vefumsjónarkerfi</key>
-            <key index="introtext2">Þetta er stutt lýsing á því sem hægt er að velja um í kerfinu:</key>
-            <key index="endText">Valmöguleikar eru háðir vefsíðu og þeim heimildum sem notandi hefur</key>
-            <key index="userInfo">&lt;font size=1&gt;Þú er skráð(ur) inn sem notandi: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="hr" type="array">
-            <key index="introtext">Sustav za upravljanje web sadržajima</key>
-            <key index="introtext2">Ovo je kratki opis rapoloživih modula</key>
-            <key index="endText">Mogućnosti se mogu ralikovati ovisno o vašem web sjedišu i dozvolama</key>
-            <key index="userInfo">Prijavljeni ste kao korisnik:</key>
-        </key>
-        <key index="hu" type="array">
-            <key index="introtext">Web Tartalomkezelő Rendszer</key>
-            <key index="introtext2">Rövid leírás a modulokról</key>
-            <key index="endText">A tulajdonságok függenek a jogosultságoktól</key>
-            <key index="userInfo">Bejelentkeztél mint:</key>
-        </key>
-        <key index="gl" type="array">
-        </key>
-        <key index="th" type="array">
-            <key index="introtext">เว็ประบบการบริหารเนื้อหา</key>
-            <key index="introtext2">นี่คือคำอธิบายแบบย่อๆ ของโมดุลที่มีอยู่</key>
-            <key index="endText">ลูกเล่นต่างๆในเว็ปขี้นอยู่กลับระดับการอนุญาตที่ท่านมี</key>
-            <key index="userInfo">&lt;font size=1&gt;ท่านล๊อกอินด้วยชื่อผู้ใช้: &lt;strong&gt;%s&lt;/strong&gt; (%s) &lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-            <key index="introtext">網站內容管理系統</key>
-            <key index="introtext2">這是可供使用模組的簡介</key>
-            <key index="endText">功能會因應你的網站和權限而有所不同</key>
-            <key index="userInfo">&lt;font size=1&gt;登入的使用者：&lt;strong&gt;%s&lt;/strong&gt;(%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="eu" type="array">
-            <key index="introtext">Web Edukia Kudeatzeko Sistema</key>
-            <key index="introtext2">Hau da eskuragarri dauden moduluen azalpen txiki bat</key>
-            <key index="endText">Ezaugarriak zure webgunearen eta baimenen arabera aldatu daitezke</key>
-            <key index="userInfo">&lt;font size=1&gt;Izen honekin hasi duzu saioa: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="bg" type="array">
-            <key index="introtext">Уеб система за управление на съдържанието</key>
-            <key index="introtext2">Това е кратка история на наличните модули:</key>
-            <key index="endText">Свойствата могат да варират, в зависимост от вашата уеб страница и позволения</key>
-            <key index="userInfo">&lt;font size=1&gt;Вие сте влезли като потребител: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="br" type="array">
-            <key index="introtext">Typo%s&lt;br&gt;Sistema de Administração de Conteúdo</key>
-            <key index="introtext2">Esta é uma breve descrição dos módulos disponíveis:</key>
-            <key index="endText">Opções podem variar dependendo do seu website e permissões</key>
-            <key index="userInfo">&lt;font size=1&gt;Você está conectado como usuário: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="et" type="array">
-            <key index="introtext">Veebi sisuhalduse süsteem</key>
-            <key index="introtext2">Kasutatavate moodulite lühikirjeldus:</key>
-            <key index="endText">Funktsioonid võivad varieeruda olenevalt teie veebilehest ja õigustest</key>
-            <key index="userInfo">&lt;font size=1&gt;Olete sisse loginud kasutajana: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="ar" type="array">
-            <key index="introtext">نظام إدارة محتويات الويب</key>
-            <key index="introtext2">هدا وصف لأدوات المجالات</key>
-            <key index="endText">الخواص التي يمكن لها أن تتغير بتغيير الصلاحيات المسموح بها على صفحاتك</key>
-            <key index="userInfo">&lt;font size=1&gt;لقد دخلت تحت إسم :  &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="he" type="array">
-            <key index="introtext">מערכת ניהול תוכן ברשת</key>
-            <key index="introtext2">להלן תקציר של מודולים זמינים:</key>
-            <key index="endText">תכונות יכולות להשתנות תלוי באתר אינטרנט שלכם והרשאות</key>
-            <key index="userInfo">&lt;font size=1&gt;משתמש: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</key>
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-            <key index="introtext">Tīmekļa Satura Vadības Sistēma</key>
-            <key index="introtext2">Šis ir pieejamo moduļu īss apraksts:</key>
-            <key index="endText">Pieejamās iespējas var atšķirties, atkarībā no sistēmas konfigurācijas un jūsu tiesībām.</key>
-            <key index="userInfo">Tu esi ielogojies kā lietotājs:</key>
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-            <key index="introtext">Hệ Thống Quản Lý Tài Liệu Trên Mạng</key>
-            <key index="introtext2">Cái này là tóm tắc của những modules hiện có:</key>
-            <key index="endText">Chức năng tùy theo trang mạng và phép</key>
-            <key index="userInfo">Bạn đang logged in as a user</key>
-        </key>
-    </key>
-    <key index="orig_hash" type="array">
-        <key index="default" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="dk" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="de" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="no" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="it" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="fr" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="es" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="nl" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="cz" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="pl" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="si" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="fi" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="tr" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="se" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="pt" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="ru" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="ro" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="ch" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="sk" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="lt" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="is" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="hr" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="hu" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="gl" type="array">
-        </key>
-        <key index="th" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="eu" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="bg" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="br" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="et" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="ar" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="he" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-            <key index="introtext" type="integer">194562478</key>
-            <key index="introtext2" type="integer">234766952</key>
-            <key index="endText" type="integer">206585252</key>
-            <key index="userInfo" type="integer">170934145</key>
-        </key>
-    </key>
-    <key index="orig_text" type="array">
-        <key index="default" type="array">
-        </key>
-        <key index="dk" type="array">
-        </key>
-        <key index="de" type="array">
-        </key>
-        <key index="no" type="array">
-        </key>
-        <key index="it" type="array">
-        </key>
-        <key index="fr" type="array">
-        </key>
-        <key index="es" type="array">
-        </key>
-        <key index="nl" type="array">
-        </key>
-        <key index="cz" type="array">
-        </key>
-        <key index="pl" type="array">
-        </key>
-        <key index="si" type="array">
-        </key>
-        <key index="fi" type="array">
-        </key>
-        <key index="tr" type="array">
-        </key>
-        <key index="se" type="array">
-        </key>
-        <key index="pt" type="array">
-        </key>
-        <key index="ru" type="array">
-        </key>
-        <key index="ro" type="array">
-        </key>
-        <key index="ch" type="array">
-        </key>
-        <key index="sk" type="array">
-        </key>
-        <key index="lt" type="array">
-        </key>
-        <key index="is" type="array">
-        </key>
-        <key index="hr" type="array">
-        </key>
-        <key index="hu" type="array">
-        </key>
-        <key index="gl" type="array">
-        </key>
-        <key index="th" type="array">
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-        </key>
-        <key index="eu" type="array">
-        </key>
-        <key index="bg" type="array">
-        </key>
-        <key index="br" type="array">
-        </key>
-        <key index="et" type="array">
-        </key>
-        <key index="ar" type="array">
-        </key>
-        <key index="he" type="array">
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-        </key>
-    </key>
+    <meta type="array">
+        <description>Labels for &quot;About Modules&quot; screen.</description>
+        <type>module</type>
+        <fileId>EXT:lang/locallang_alt_intro.php</fileId>
+        <labelContext type="array">
+            <languageKey index="introtext"></languageKey>
+            <languageKey index="introtext2"></languageKey>
+            <languageKey index="endText"></languageKey>
+            <languageKey index="userInfo"></languageKey>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="introtext">Web Content Management System</label>
+            <label index="introtext2">This is a brief description of the available modules:</label>
+            <label index="endText">Features may vary depending on your website and permissions</label>
+            <label index="userInfo">You're logged in as user:</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="introtext">Web Content Management System</label>
+            <label index="introtext2">Dette er en kort beskrivelse af de tilgængelige moduler:</label>
+            <label index="endText">Adgang til faciliteterne kan variere afhængigt af dit website og dine rettigheder.</label>
+            <label index="userInfo">Du er logget ind som bruger:</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="introtext">Web Content Management System</label>
+            <label index="introtext2">Dies ist eine kurze Beschreibung der vorhandenen Module:</label>
+            <label index="endText">Eigenschaften können abhängig von Ihrer Webseite und Ihren Zugriffsrechten variieren.</label>
+            <label index="userInfo">Sie sind angemeldet als:</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="introtext">Web Content Management System</label>
+            <label index="introtext2">Dette er en kort beskrivelse av de tilgjengelige modulene:</label>
+            <label index="endText">Adgang til fasiliteter kan variere avhengig av ditt webområde og dine rettigheter.</label>
+            <label index="userInfo">Du er logget inn som bruker:</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="introtext">Web Content Management System</label>
+            <label index="introtext2">Breve descrizione dei moduli disponibili:</label>
+            <label index="endText">Le caratteristiche possono variare a seconda del sito web e dei permessi utente</label>
+            <label index="userInfo">Hai avuto accesso come utente:</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="introtext">Système de gestion de contenu Web</label>
+            <label index="introtext2">Voici une brève description des modules disponibles:</label>
+            <label index="endText">Les fonctions peuvent varier selon votre site web et selon vos droits d'accès.</label>
+            <label index="userInfo">Vous avez ouvert votre session en tant que:</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="introtext">Web Content Management System&lt;br /&gt;Sistema de Administración de Contenido</label>
+            <label index="introtext2">Esta es una descripcíón corta de los módulos disponibles:</label>
+            <label index="endText">Las características pueden variar dependiendo de su website y permisos</label>
+            <label index="userInfo">Está firmado como el usuario:</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="introtext">Web Content Management Systeem</label>
+            <label index="introtext2">Dit is een korte omschrijving van de aanwezige modules:</label>
+            <label index="endText">De aanwezigheid van onderdelen hangt van de configuratie van de website en de rechten af.</label>
+            <label index="userInfo">&lt;font size=1&gt;Ingelogd als gebruiker: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="introtext">systém pro správu obsahu webu</label>
+            <label index="introtext2">Toto jsou krátké popisy dostupných modulů:</label>
+            <label index="endText">Vlastnosti se mohou měnit podle vašeho webu a přístupových práv</label>
+            <label index="userInfo">Jste zalogován jako uživatel:</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="introtext">System Zarządzania Treścią Web</label>
+            <label index="introtext2">To jest krótki opis dostępnych modułów:</label>
+            <label index="endText">Funkcjonalność może się różnić w zależności od uprawnień</label>
+            <label index="userInfo">Jesteś zalogowany jako:</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="introtext">sistem za urejanje spletne vsebine</label>
+            <label index="introtext2">To je kratek opis modulov, ki so na voljo:</label>
+            <label index="endText">Možnosti se lahko razlikujejo glede na vašo verzijo in privilegije</label>
+            <label index="userInfo">Prijavljeni ste kot uporabnik:</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="introtext">Web-sisällönhallintajärjestelmä</label>
+            <label index="introtext2">Tässä lyhyt kuvaus käytettävistä moduleista:</label>
+            <label index="endText">Mahdollisuudet voivat olla riippuvaisia asennuksesta ja käyttöympäristöstä</label>
+            <label index="userInfo">Olet kirjautunut sisään käyttäjänä:</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="introtext">Web İçeriği Yönetim Sistemi</label>
+            <label index="introtext2">Bu mevcut modüllerin tanıtımının özetidir:</label>
+            <label index="endText">Özellikler websitenize ve izinlerinize değişik bir şekilde bağlanıyor olabilir</label>
+            <label index="userInfo">Kullanıcı olarak giriş yaptınız:</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="introtext">Web Content Management System</label>
+            <label index="introtext2">Detta är en kort förklaring till de moduler som står till buds:</label>
+            <label index="endText">Tillgången till moduler kan variera beroende på din website och dina rättigheter</label>
+            <label index="userInfo">Du är inloggad som:</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="introtext">Sistema de Gestão de Conteúdos</label>
+            <label index="introtext2">Esta é uma breve descrição dos módulos disponíveis:</label>
+            <label index="endText">Opções podem variar dependendo do seu website e permissões</label>
+            <label index="userInfo">Você está conectado como utilizador:</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="introtext">Система управления веб-контентом</label>
+            <label index="introtext2">Краткое описание модулей:</label>
+            <label index="endText">Список модулей может меняться в зависимости от ваших прав доступа</label>
+            <label index="userInfo">Вы зарегистрировались как пользователь:</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="introtext">Sistem de Management a Conţinutului Site-urilor</label>
+            <label index="introtext2">Scurtă descriere a modulelor disponibile:</label>
+            <label index="endText">Pot apărea diferenţe în ceea ce priveşte opţiunile disponibile în funcţie de site şi permisiuni</label>
+            <label index="userInfo">Sînteţi conectat cu pseudonimul:</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="introtext">网站内容管理系统</label>
+            <label index="introtext2">这是可用模块的简短说明</label>
+            <label index="endText">特征可能根据您的网站和权限而改变</label>
+            <label index="userInfo">您的登录身份:</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="introtext">Systém pre správu obsahu na webe</label>
+            <label index="introtext2">Toto je krátky popis dostupných modulov:</label>
+            <label index="endText">Charakteristiky systému môžu závisieť od tvojho web sajtu a prístupových práv</label>
+            <label index="userInfo">Si prihlásený ako užívateľ:</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+            <label index="introtext">Web Turinio Valdymo Sistema</label>
+            <label index="introtext2">Trumpas aprašymas prieinamų modulių:</label>
+            <label index="endText">Savybės gali keistis priklauso nuo svetainės ir leidimų</label>
+            <label index="userInfo">Seansą pradėjote kaip vartotojas:</label>
+        </languageKey>
+        <languageKey index="is" type="array">
+            <label index="introtext">Vefumsjónarkerfi</label>
+            <label index="introtext2">Þetta er stutt lýsing á því sem hægt er að velja um í kerfinu:</label>
+            <label index="endText">Valmöguleikar eru háðir vefsíðu og þeim heimildum sem notandi hefur</label>
+            <label index="userInfo">&lt;font size=1&gt;Þú er skráð(ur) inn sem notandi: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="introtext">Sustav za upravljanje web sadržajima</label>
+            <label index="introtext2">Ovo je kratki opis rapoloživih modula</label>
+            <label index="endText">Mogućnosti se mogu ralikovati ovisno o vašem web sjedišu i dozvolama</label>
+            <label index="userInfo">Prijavljeni ste kao korisnik:</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="introtext">Web Tartalomkezelő Rendszer</label>
+            <label index="introtext2">Rövid leírás a modulokról</label>
+            <label index="endText">A tulajdonságok függenek a jogosultságoktól</label>
+            <label index="userInfo">Bejelentkeztél mint:</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+            <label index="introtext">เว็ประบบการบริหารเนื้อหา</label>
+            <label index="introtext2">นี่คือคำอธิบายแบบย่อๆ ของโมดุลที่มีอยู่</label>
+            <label index="endText">ลูกเล่นต่างๆในเว็ปขี้นอยู่กลับระดับการอนุญาตที่ท่านมี</label>
+            <label index="userInfo">&lt;font size=1&gt;ท่านล๊อกอินด้วยชื่อผู้ใช้: &lt;strong&gt;%s&lt;/strong&gt; (%s) &lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="introtext">網站內容管理系統</label>
+            <label index="introtext2">這是可供使用模組的簡介</label>
+            <label index="endText">功能會因應你的網站和權限而有所不同</label>
+            <label index="userInfo">&lt;font size=1&gt;登入的使用者：&lt;strong&gt;%s&lt;/strong&gt;(%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+            <label index="introtext">Web Edukia Kudeatzeko Sistema</label>
+            <label index="introtext2">Hau da eskuragarri dauden moduluen azalpen txiki bat</label>
+            <label index="endText">Ezaugarriak zure webgunearen eta baimenen arabera aldatu daitezke</label>
+            <label index="userInfo">&lt;font size=1&gt;Izen honekin hasi duzu saioa: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="introtext">Уеб система за управление на съдържанието</label>
+            <label index="introtext2">Това е кратка история на наличните модули:</label>
+            <label index="endText">Свойствата могат да варират, в зависимост от вашата уеб страница и позволения</label>
+            <label index="userInfo">&lt;font size=1&gt;Вие сте влезли като потребител: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="introtext">Typo%s&lt;br&gt;Sistema de Administração de Conteúdo</label>
+            <label index="introtext2">Esta é uma breve descrição dos módulos disponíveis:</label>
+            <label index="endText">Opções podem variar dependendo do seu website e permissões</label>
+            <label index="userInfo">&lt;font size=1&gt;Você está conectado como usuário: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="introtext">Veebi sisuhalduse süsteem</label>
+            <label index="introtext2">Kasutatavate moodulite lühikirjeldus:</label>
+            <label index="endText">Funktsioonid võivad varieeruda olenevalt teie veebilehest ja õigustest</label>
+            <label index="userInfo">&lt;font size=1&gt;Olete sisse loginud kasutajana: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+            <label index="introtext">نظام إدارة محتويات الويب</label>
+            <label index="introtext2">هدا وصف لأدوات المجالات</label>
+            <label index="endText">الخواص التي يمكن لها أن تتغير بتغيير الصلاحيات المسموح بها على صفحاتك</label>
+            <label index="userInfo">&lt;font size=1&gt;لقد دخلت تحت إسم :  &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="he" type="array">
+            <label index="introtext">מערכת ניהול תוכן ברשת</label>
+            <label index="introtext2">להלן תקציר של מודולים זמינים:</label>
+            <label index="endText">תכונות יכולות להשתנות תלוי באתר אינטרנט שלכם והרשאות</label>
+            <label index="userInfo">&lt;font size=1&gt;משתמש: &lt;strong&gt;%s&lt;/strong&gt; (%s)&lt;br&gt;&lt;/font&gt;</label>
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="introtext">Tīmekļa Satura Vadības Sistēma</label>
+            <label index="introtext2">Šis ir pieejamo moduļu īss apraksts:</label>
+            <label index="endText">Pieejamās iespējas var atšķirties, atkarībā no sistēmas konfigurācijas un jūsu tiesībām.</label>
+            <label index="userInfo">Tu esi ielogojies kā lietotājs:</label>
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+            <label index="introtext">Hệ Thống Quản Lý Tài Liệu Trên Mạng</label>
+            <label index="introtext2">Cái này là tóm tắc của những modules hiện có:</label>
+            <label index="endText">Chức năng tùy theo trang mạng và phép</label>
+            <label index="userInfo">Bạn đang logged in as a user</label>
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="is" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="he" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+            <label index="introtext" type="integer">194562478</label>
+            <label index="introtext2" type="integer">234766952</label>
+            <label index="endText" type="integer">206585252</label>
+            <label index="userInfo" type="integer">170934145</label>
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+    </orig_text>
 </T3locallang>
