@@ -235,6 +235,7 @@ class t3lib_div {
 	 * @see GPvar()
 	 */
 	function _GP($var)	{
+		if(empty($var)) return;
 		$value = isset($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : $GLOBALS['HTTP_GET_VARS'][$var];
 		if (isset($value))	{
 			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
@@ -248,13 +249,26 @@ class t3lib_div {
 	 * Usage: 27
 	 *
 	 * @param	string		Optional pointer to value in GET array (basically name of GET var)
-	 * @return	mixed		If $var is set it returns the value of $HTTP_GET_VARS[$var]. If $var is blank or zero, returns $HTTP_GET_VARS itself. In any case *slashes are stipped from the output!*
+	 * @return	mixed		If $var is set it returns the value of $HTTP_GET_VARS[$var]. If $var is 'HTTP_GET_VARS' (default), returns $HTTP_GET_VARS itself. In any case *slashes are stipped from the output!*
 	 * @see _POST(), _GP(), _GETset()
 	 */
-	function _GET($var='')	{
-		$getA = $GLOBALS['HTTP_GET_VARS'];
-		if (is_array($getA))	t3lib_div::stripSlashesOnArray($getA);	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
-		return $var ? $getA[$var] : $getA;
+	function _GET($var='HTTP_GET_VARS')	{
+		
+# I found it dangerous to use an empty $var to get all HTTP_GET_VARS back
+# An empty var can easily passed by accident which was really the case in t3lib_userauth
+# getting back an array with HTTP_GET_VARS might cause errors, or more bad, strange things can be happen
+
+# The change is some kind of backwards compatible, because t3lib_div::_GET() do the same as before
+
+# I changed also the code a bit to speed it up.
+# stripSlashesOnArray() was called always on the whole HTTP_GET_VARS array
+
+		if(empty($var)) return;
+		$value = ($var=='HTTP_GET_VARS') ? $GLOBALS['HTTP_GET_VARS'] : $GLOBALS['HTTP_GET_VARS'][$var];
+		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
+			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
+		}
+		return $value;
 	}
 
 	/**
@@ -263,13 +277,16 @@ class t3lib_div {
 	 * Usage: 41
 	 *
 	 * @param	string		Optional pointer to value in POST array (basically name of POST var)
-	 * @return	mixed		If $var is set it returns the value of $HTTP_POST_VARS[$var]. If $var is blank or zero, returns $HTTP_POST_VARS itself. In any case *slashes are stipped from the output!*
+	 * @return	mixed		If $var is set it returns the value of $HTTP_POST_VARS[$var]. If $var is 'HTTP_POST_VARS' (default), returns $HTTP_POST_VARS itself. In any case *slashes are stipped from the output!*
 	 * @see _GET(), _GP()
 	 */
-	function _POST($var='')	{
-		$postA = $GLOBALS['HTTP_POST_VARS'];
-		if (is_array($postA))	t3lib_div::stripSlashesOnArray($postA);	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
-		return $var ? $postA[$var] : $postA;
+	function _POST($var='HTTP_POST_VARS')	{
+		if(empty($var)) return;
+		$value = ($var=='HTTP_POST_VARS') ? $GLOBALS['HTTP_POST_VARS'] : $GLOBALS['HTTP_POST_VARS'][$var];
+		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
+			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
+		}
+		return $value;
 	}
 
 	/**
@@ -304,6 +321,7 @@ class t3lib_div {
 	 * @see _GP()
 	 */
 	function GPvar($var,$strip=0)	{
+		if(empty($var)) return;
 		$value = isset($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : $GLOBALS['HTTP_GET_VARS'][$var];
 		if (isset($value) && is_string($value))	{ $value = stripslashes($value); }	// Originally check '&& get_magic_quotes_gpc() ' but the values of HTTP_GET_VARS are always slashed regardless of get_magic_quotes_gpc() because HTTP_POST/GET_VARS are run through addSlashesOnArray in the very beginning of index_ts.php eg.
 		if ($strip && isset($value) && is_array($value)) { t3lib_div::stripSlashesOnArray($value); }
@@ -3313,7 +3331,7 @@ class t3lib_div {
 				'Content-Transfer-Encoding: 8bit';
 			break;
 		}
-		$headers = trim(implode(chr(10),t3lib_div::trimExplode(chr(10),$headers,1)));	// make sure no empty lines are there.
+		$headers=trim(implode(chr(10),t3lib_div::trimExplode(chr(10),$headers,1)));	// make sure no empty lines are there.
 
 		mail($email,$subject,$message,$headers);
 	}
@@ -3462,6 +3480,30 @@ class t3lib_div {
 			}
 		}
 	}
+	
+	/**
+	 * Converts a one dimensional array to a one line string which can be used for logging or debugging output
+	 * Example: "loginType: FE; refInfo: Array; HTTP_HOST: www.example.org; REMOTE_ADDR: 192.168.1.5; REMOTE_HOST:; security_level:; showHiddenRecords: 0;"
+	 * 
+	 * @param	array	Data array which should be outputted
+	 * @param	mixed	List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
+	 * @param	integer	Long string values are shortened to this length. Default: 20
+	 * @return	string	Output string with key names and their value as string
+	 */	
+	function arrayToLogString($arr, $valueList=array(), $valueLength=20) {
+		$str = '';
+		if(is_array($arr)) {
+			if (!is_array($valueList)) {
+				$valueList = explode(',', $valueList);
+			}
+			foreach($arr as $key => $value) {
+				if (!count($valueList) OR (count($valueList) AND in_array($key, $valueList))) {
+					$str .= (string)$key.trim(': '.t3lib_div::fixed_lgd(str_replace("\n",'|',(string)$value), $valueLength)).'; ';
+				}
+			}
+		}
+		return $str;
+	}	
 }
 
 ?>
