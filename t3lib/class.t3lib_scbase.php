@@ -247,7 +247,10 @@ class t3lib_SCbase {
 	 * @see menuConfig()
 	 */
 	function init()	{
-		$this->MCONF = $GLOBALS['MCONF'];
+			// name might be set from outside
+		if (!$this->MCONF['name']) {
+			$this->MCONF = $GLOBALS['MCONF'];
+		}
 		$this->id = intval(t3lib_div::_GP('id'));
 		$this->CMD = t3lib_div::_GP('CMD');
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -302,11 +305,13 @@ class t3lib_SCbase {
 	 * If for this array the key 'path' is set then that is expected to be an absolute path to a file which should be included - so it is set in the internal array $this->include_once
 	 *
 	 * @param	string		The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
+	 * @param	string		The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is usefull if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
 	 * @return	void
-	 * @see $include_once, init()
+	 * @see getExternalItemConfig(), $include_once, init()
 	 */
-	function handleExternalFunctionValue($MM_key='function')	{
-		$this->extClassConf = $this->getExternalItemConfig($this->MCONF['name'],$MM_key,$this->MOD_SETTINGS[$MM_key]);
+	function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)	{
+		$MS_value = is_null($MS_value) ? $this->MOD_SETTINGS[$MM_key] : $MS_value;
+		$this->extClassConf = $this->getExternalItemConfig($this->MCONF['name'],$MM_key,$MS_value);
 		if (is_array($this->extClassConf) && $this->extClassConf['path'])	{
 			$this->include_once[]=$this->extClassConf['path'];
 		}
