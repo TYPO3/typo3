@@ -1,5 +1,9 @@
 2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed incompatibility between Mount Points and property "overrideId" in menus.
+
+2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added support for JavaScript regular expression evaluation in FORM cObject. Means that fields in formmails can now be checked for a pattern and not only for "required".
 
 2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>

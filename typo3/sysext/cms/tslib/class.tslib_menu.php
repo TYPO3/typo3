@@ -968,6 +968,7 @@ class tslib_menu {
 
 	/**
 	 * Creates the URL, target and onclick values for the menu item link. Returns them in an array as key/value pairs for <A>-tag attributes
+	 * This function doesn't care about the url, because if we let the url be redirected, it will be logged in the stat!!!
 	 *
 	 * @param	integer		Pointer to a key in the $this->menuArr array where the value for that key represents the menu item we are linking to (page record)
 	 * @param	string		Alternative target
@@ -976,21 +977,26 @@ class tslib_menu {
 	 * @access private
 	 */
 	function link($key,$altTarget='',$typeOverride='') {
-			// this function doesn't care about the url, because if we let the url be redirected, it will be logged in the stat!!!
-		if ($this->mconf['overrideId'] || $this->menuArr[$key]['overrideId'])	{	// RF 22/10
-			$overrideArray = array();
-				// if a user script returned the value overrideId in the menu array we use that as page id
-			$overrideArray['uid'] = $this->mconf['overrideId']?$this->mconf['overrideId']:$this->menuArr[$key]['overrideId'];	// RF 22/10
-			$overrideArray['alias'] = '';
-		} else {
-			$overrideArray='';
-		}
-		$mainTarget = $altTarget ? $altTarget : $this->mconf['target'];
 
 			// Mount points:
 		$MP_var = $this->getMPvar($key);
 		$MP_params = $MP_var ? '&MP='.rawurlencode($MP_var) : '';
 
+			// Setting override ID
+		if ($this->mconf['overrideId'] || $this->menuArr[$key]['overrideId'])	{
+			$overrideArray = array();
+				// If a user script returned the value overrideId in the menu array we use that as page id
+			$overrideArray['uid'] = $this->mconf['overrideId']?$this->mconf['overrideId']:$this->menuArr[$key]['overrideId'];
+			$overrideArray['alias'] = '';
+			$MP_params = '';	// clear MP parameters since ID was changed.
+		} else {
+			$overrideArray = '';
+		}
+
+			// Setting main target:
+		$mainTarget = $altTarget ? $altTarget : $this->mconf['target'];
+
+			// Creating link:
 		if ($this->mconf['collapse'] && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)))	{
 			$thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
 			$LD = $this->tmpl->linkData($thePage,$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params, $typeOverride);
@@ -1007,17 +1013,17 @@ class tslib_menu {
 			// OnClick open in windows.
 		$onClick='';
 		if ($this->mconf['JSWindow'])	{
-			$conf=$this->mconf['JSWindow.'];
-			$url=$LD['totalURL'];
+			$conf = $this->mconf['JSWindow.'];
+			$url = $LD['totalURL'];
 			$LD['totalURL'] = '#';
-			$onClick= 'openPic(\''.$url.'\',\''.($conf['newWindow']?md5($url):'theNewPage').'\',\''.$conf['params'].'\'); return false;';
+			$onClick = 'openPic(\''.$url.'\',\''.($conf['newWindow']?md5($url):'theNewPage').'\',\''.$conf['params'].'\'); return false;';
 			$GLOBALS['TSFE']->setJS('openPic');
 		}
 			// out:
 		$list = array();
-		$list['HREF']=$LD['totalURL'];
-		$list['TARGET']=$LD['target'];
-		$list['onClick']=$onClick;
+		$list['HREF'] = $LD['totalURL'];
+		$list['TARGET'] = $LD['target'];
+		$list['onClick'] = $onClick;
 
 		return $list;
 	}
@@ -1942,6 +1948,7 @@ class tslib_gmenu extends tslib_menu {
 						$GLOBALS['TSFE']->setJS('mouseOver');
 						$this->extProc_RO($key);
 					}
+
 						// Set access key
 					if ($this->mconf['accessKey'])	{
 						$this->I['accessKey'] = $this->accessKey($this->I['title']);
