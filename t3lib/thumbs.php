@@ -144,7 +144,7 @@ class SC_t3lib_thumbs {
 
 			// if the filereference $this->file is relative, we correct the path
 		if (substr($this->file,0,3)=='../')	{
-			$this->input = PATH_site.ereg_replace('^\.\./','',$this->file);
+			$this->input = PATH_site.substr($this->file,3);
 		} else {
 			$this->input = $this->file;
 		}
@@ -175,10 +175,10 @@ class SC_t3lib_thumbs {
 				if ($ext=='ttf')	{
 					$this->fontGif($this->input);	// Make font preview... (will not return)
 				} elseif (!t3lib_div::inList($this->imageList, $ext))	{
-					$this->errorGif('Not imagefile!',$ext,$this->input);
+					$this->errorGif('Not imagefile!',$ext,basename($this->input));
 				}
 			} else {
-				$this->errorGif('Not imagefile!','No ext!',$this->input);
+				$this->errorGif('Not imagefile!','No ext!',basename($this->input));
 			}
 
 				// ... so we passed the extension test meaning that we are going to make a thumbnail here:
@@ -206,7 +206,7 @@ class SC_t3lib_thumbs {
 					// If thumbnail does not exist, we generate it
 				if (!@file_exists($this->output))	{
 /*					if (strstr($this->input,' ') || strstr($this->output,' '))	{
-						$this->errorGif('Spaces in','filepath',$this->input);
+						$this->errorGif('Spaces in','filepath',basename($this->input));
 					}
 */						// 16 colors for small (56) thumbs, 64 for bigger and all for jpegs
 					if ($outext=='jpg')	{
@@ -220,7 +220,7 @@ class SC_t3lib_thumbs {
 		//			echo $cmd;
 					exec($cmd);
 					if (!@file_exists($this->output))	{
-						$this->errorGif('No thumb','generated!',$this->input);
+						$this->errorGif('No thumb','generated!',basename($this->input));
 					}
 				}
 					// The thumbnail is read and output to the browser
@@ -235,7 +235,7 @@ class SC_t3lib_thumbs {
 				}
 			} else exit;
 		} else {
-			$this->errorGif('No valid','inputfile!',$this->input);
+			$this->errorGif('No valid','inputfile!',basename($this->input));
 		}
 	}
 
