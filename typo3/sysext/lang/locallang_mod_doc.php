@@ -19,7 +19,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Dok.',
 	),
 	'it' => Array (
-		'mlang_labels_tablabel' => 'Modifica i documenti e i records',
+		'mlang_labels_tablabel' => 'Modulo per l\'editing di documenti e record',
 		'mlang_tabs_tab' => 'Doc',
 	),
 	'fr' => Array (
@@ -67,6 +67,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Äîê',
 	),
 	'ro' => Array (
+		'mlang_labels_tablabel' => 'Editarea inregistrarilor si documentelor',
+		'mlang_tabs_tab' => 'Documentatie',
 	),
 	'ch' => Array (
 		'mlang_labels_tablabel' => '¼ÇÂ¼ÓëÎÄµµ±à¼­',
@@ -79,6 +81,52 @@ $LOCAL_LANG = Array (
 	'lt' => Array (
 		'mlang_labels_tablabel' => 'Redaguoti dokumantus ir áraðus',
 		'mlang_tabs_tab' => 'Dokumentai',
+	),
+	'is' => Array (
+		'mlang_labels_tablabel' => 'RitstÃ½ring af skrÃ¡m og skjÃ¶lum',
+		'mlang_tabs_tab' => 'Skjal',
+	),
+	'hr' => Array (
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'mlang_labels_tablabel' => '¡ÓÅÑ§á¡éä¢ºÑ¹·Ö¡¢éÍÁÙÅáÅÐàÍ¡ÊÒÃ',
+		'mlang_tabs_tab' => 'àÍ¡ÊÒÃ',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'mlang_labels_tablabel' => '½s¿è°O¿ý©M¤å¥ó',
+		'mlang_tabs_tab' => '¤å¥ó',
+	),
+	'eu' => Array (
+		'mlang_labels_tablabel' => 'Editatzen erregistro eta dokumentuak',
+		'mlang_tabs_tab' => 'Dok',
+	),
+	'bg' => Array (
+		'mlang_labels_tablabel' => 'Ðåäàêòèðàíå íà çàïèñè è äîêóìåíòè',
+		'mlang_tabs_tab' => 'Äîê',
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Edição de registros e documentos',
+		'mlang_tabs_tab' => 'Doc',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Kirjete ja dokumentide redigeerimine',
+		'mlang_tabs_tab' => 'Doc',
+	),
+	'ar' => Array (
+		'mlang_labels_tablabel' => 'ÊÙÏêä ÇäÓÌäÇÊ è ÇäèËÇÆâ',
+		'mlang_tabs_tab' => 'èËêâÉ',
+	),
+	'he' => Array (
+		'mlang_labels_tablabel' => '×¢×¨×™×›×” ×©×œ ×¨×©×•×ž×•×ª ×•×ž×¡×ž×›×™×',
+		'mlang_tabs_tab' => '×ž×¡×ž×š',
+	),
+	'ua' => Array (
 	),
 );
 ?>

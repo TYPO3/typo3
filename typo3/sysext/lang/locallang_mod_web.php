@@ -67,6 +67,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Âåá',
 	),
 	'ro' => Array (
+		'mlang_labels_tablabel' => 'Pagini web si continutul bazelor de date',
+		'mlang_tabs_tab' => 'Web',
 	),
 	'ch' => Array (
 		'mlang_labels_tablabel' => 'ÍøÒ³ÓëÊý¾Ý¿âÄÚÈÝ',
@@ -79,6 +81,52 @@ $LOCAL_LANG = Array (
 	'lt' => Array (
 		'mlang_labels_tablabel' => 'Tinklapiai ir duomenø bazës turinys',
 		'mlang_tabs_tab' => 'Tinklapiai',
+	),
+	'is' => Array (
+		'mlang_labels_tablabel' => 'VefsÃ­Ã°ur og innihald gagnasafns',
+		'mlang_tabs_tab' => 'Vefur',
+	),
+	'hr' => Array (
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'mlang_labels_tablabel' => 'Ë¹éÒàÇç»áÅÐ°Ò¹¢éÍÁÙÅà¹×éÍËÒ',
+		'mlang_tabs_tab' => 'àÇç»',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'mlang_labels_tablabel' => 'ºô­¶©M¸ê®Æ®w¤º®e',
+		'mlang_tabs_tab' => 'ºô¯¸',
+	),
+	'eu' => Array (
+		'mlang_labels_tablabel' => 'Webguneak eta datubasearen edukia',
+		'mlang_tabs_tab' => 'Web',
+	),
+	'bg' => Array (
+		'mlang_labels_tablabel' => 'Óåá ñòðàíèöè è áàçè äàííè ñúñ ñúäúðæàíèÿ',
+		'mlang_tabs_tab' => 'Óåá',
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Páginas e conteúdo do banco de dados',
+		'mlang_tabs_tab' => 'Web',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Veebilehed ja andmebaasi sisu',
+		'mlang_tabs_tab' => 'Web',
+	),
+	'ar' => Array (
+		'mlang_labels_tablabel' => 'ÕáÍÇÊ ÇäèêÈ è Èæã ÇäåÙäèåÇÊ',
+		'mlang_tabs_tab' => 'ÇäèêÈ',
+	),
+	'he' => Array (
+		'mlang_labels_tablabel' => '×“×¤×™ ××™× ×˜×¨× ×˜ ×•×ª×•×›×Ÿ ×ž××’×¨ ×ž×™×“×¢',
+		'mlang_tabs_tab' => '××™× ×˜×¨× ×˜',
+	),
+	'ua' => Array (
 	),
 );
 ?>

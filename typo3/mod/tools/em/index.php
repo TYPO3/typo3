@@ -2424,14 +2424,14 @@ EXTENSION KEYS:
 								}
 							}
 								// 
-							$XclassParts = explode('if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]',$fContent,2);
+							$XclassParts = explode('if (defined(\'TYPO3_MODE\') && $TYPO3_CONF_VARS[TYPO3_MODE][\'XCLASS\']',$fContent,2);
 							if (count($XclassParts)==2)	{
 								unset($reg);
-								ereg('^\["([[:alnum:]_\/\.]*)"\]',$XclassParts[1],$reg);
+								ereg('^\[\'([[:alnum:]_\/\.]*)\'\]',$XclassParts[1],$reg);
 								if ($reg[1]) {
 									$cmpF = "ext/".$eKey."/".$fileName;
 									if (!strcmp($reg[1],$cmpF))	{
-										if (strstr($XclassParts[1],'_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["'.$cmpF.'"]);'))	{
+										if (strstr($XclassParts[1],'_once($TYPO3_CONF_VARS[TYPO3_MODE][\'XCLASS\'][\''.$cmpF.'\']);'))	{
 											 $out["msg"][]="XCLASS OK in ".$fileName;
 										} else $out["errors"][]="Couldn't find the include_once statement for XCLASS!";
 									} else $out["errors"][]="The XCLASS filename-key '".$reg[1]."' was different from '".$cmpF."' which it should have been!";
@@ -2508,11 +2508,11 @@ EXTENSION KEYS:
 			$line = trim($l);
 			unset($reg);
 			if (ereg('^define[[:space:]]*\([[:space:]]*["\']TYPO3_MOD_PATH["\'][[:space:]]*,[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*\)[[:space:]]*;',$line,$reg))	{
-				$lines[$k]=str_replace($reg[0], 'define("TYPO3_MOD_PATH", "'.$this->typeRelPaths[$type].$mP.'");', $lines[$k]);
+				$lines[$k]=str_replace($reg[0], 'define(\'TYPO3_MOD_PATH\', \''.$this->typeRelPaths[$type].$mP.'\');', $lines[$k]);
 				$flag_M=$k+1;
 			}
 			if (ereg('^\$BACK_PATH[[:space:]]*=[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*;',$line,$reg))	{
-				$lines[$k]=str_replace($reg[0], '$BACK_PATH="'.$this->typeBackPaths[$type].'";', $lines[$k]);
+				$lines[$k]=str_replace($reg[0], '$BACK_PATH=\''.$this->typeBackPaths[$type].'\';', $lines[$k]);
 				$flag_B=$k+1;
 			}
 		}

@@ -19,7 +19,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Filer',
 	),
 	'it' => Array (
-		'mlang_labels_tablabel' => 'File di amministrazione sul server',
+		'mlang_labels_tablabel' => 'Gestione dei file sul server',
 		'mlang_tabs_tab' => 'File',
 	),
 	'fr' => Array (
@@ -67,6 +67,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ôàéë',
 	),
 	'ro' => Array (
+		'mlang_labels_tablabel' => 'Administrarea fisierelor pe server',
+		'mlang_tabs_tab' => 'Fisier',
 	),
 	'ch' => Array (
 		'mlang_labels_tablabel' => '·þÎñÆ÷ÎÄ¼þ¹ÜÀí',
@@ -79,6 +81,52 @@ $LOCAL_LANG = Array (
 	'lt' => Array (
 		'mlang_labels_tablabel' => 'Bylø administravimas serveryje',
 		'mlang_tabs_tab' => 'Byla',
+	),
+	'is' => Array (
+		'mlang_labels_tablabel' => 'SkrÃ¡arstjÃ³rnun Ã¡ netÃ¾jÃ³nnin',
+		'mlang_tabs_tab' => 'SkrÃ¡',
+	),
+	'hr' => Array (
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'mlang_labels_tablabel' => '¡ÒÃ¨Ñ´¡ÒÃá¿éÁ¢éÍÁÙÅº¹à¤Ã×èÍ§à«ÔÃì¿àÇèÍ',
+		'mlang_tabs_tab' => 'á¿éÁ¢éÍÁÙÅ',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'mlang_labels_tablabel' => '¦øªA¾¹ÀÉ®×ºÞ²z',
+		'mlang_tabs_tab' => 'ÀÉ®×',
+	),
+	'eu' => Array (
+		'mlang_labels_tablabel' => 'Fitxategi administrazioa zerbitzarian',
+		'mlang_tabs_tab' => 'Fitxategia',
+	),
+	'bg' => Array (
+		'mlang_labels_tablabel' => 'Ôàéëîâà àäìèíèñòðàöèÿ íà ñúðâúðà',
+		'mlang_tabs_tab' => 'Ôàéë',
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Administração de arquivos no servidor',
+		'mlang_tabs_tab' => 'Arquivo',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Failide administreerimine serveris',
+		'mlang_tabs_tab' => 'Fail',
+	),
+	'ar' => Array (
+		'mlang_labels_tablabel' => 'åäá ÇäÎÏåÉ Ùäé ÇäÍÇÓÈ ÇäÑÆêÓê',
+		'mlang_tabs_tab' => 'åäá',
+	),
+	'he' => Array (
+		'mlang_labels_tablabel' => '× ×™×”×•×œ ×§×‘×¦×™× ×¢×œ ×”×©×¨×ª',
+		'mlang_tabs_tab' => '×§×•×‘×¥',
+	),
+	'ua' => Array (
 	),
 );
 ?>

@@ -1,7 +1,9 @@
 2003-12-16  Kasper Skårhøj
 
-	* Changed order of DOCTYPE and XML declaration for XHTML support (for standards compliance mode detection in MSIE)
+	* Added new languages labels for cms and lang extensions // increased version number to 3.6.0RC1
 
+2003-12-16  Kasper Skårhøj
+	* Changed order of DOCTYPE and XML declaration for XHTML support (for standards compliance mode detection in MSIE)
 2003-10-24  Kasper Skårhøj
 	* Moved changelog.txt to ChangeLog ("cvs compliant")
 TYPO3 3.6.0-dev

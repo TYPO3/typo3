@@ -18,6 +18,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gå tilbage',
 		'fullDescription' => 'Se hele tabelbeskrivelsen',
 		'close' => 'Luk',
+		'title' => 'TYPO3 Online hjælp',
 	),
 	'de' => Array (
 		'details' => 'Details',
@@ -38,9 +39,9 @@ $LOCAL_LANG = Array (
 	'it' => Array (
 		'details' => 'Dettagli',
 		'syntax' => 'Sintassi',
-		'seeAlso' => 'Vedi altro',
+		'seeAlso' => 'Vedi anche',
 		'goBack' => 'Indietro',
-		'fullDescription' => 'Vedi descrizione completa della tavola',
+		'fullDescription' => 'Vedi descrizione completa',
 		'close' => 'Chiudi',
 	),
 	'fr' => Array (
@@ -132,6 +133,12 @@ $LOCAL_LANG = Array (
 		'close' => 'Çàêðûòü',
 	),
 	'ro' => Array (
+		'details' => 'Detalii',
+		'syntax' => 'Sintaxa',
+		'seeAlso' => 'Vezi deasemeni',
+		'goBack' => 'Innapoi',
+		'fullDescription' => 'Vezi descrierea completa a tabelului',
+		'close' => 'Inchide',
 	),
 	'ch' => Array (
 		'details' => 'ÏêÏ¸',
@@ -156,6 +163,82 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gráðti atgal',
 		'fullDescription' => 'Þiûrëkite pilna lentelës apraðymà',
 		'close' => 'Uþdaryti',
+	),
+	'is' => Array (
+		'details' => 'SmÃ¡atriÃ°i',
+		'syntax' => 'Setningarbygging',
+		'seeAlso' => 'SkoÃ°a einnig',
+		'goBack' => 'Til baka',
+		'fullDescription' => 'SkoÃ°a nÃ¡kvÃ¦ma lÃ½singu af tÃ¶flu',
+		'close' => 'Loka',
+	),
+	'hr' => Array (
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'details' => 'ÃÒÂÅÐàÍÕÂ´',
+		'syntax' => 'Syntax',
+		'seeAlso' => '´Ùà¾ÔèÁàµÔÁ',
+		'goBack' => '¡ÅÑºä»',
+		'fullDescription' => '´Ù¤ÓÍ¸ÔºÒÂáººàµçÁ¢Í§µÒÃÒ§',
+		'close' => '»Ô´',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'details' => '¸Ô±¡',
+		'syntax' => '»yªk',
+		'seeAlso' => '°Ñ¬Ý',
+		'goBack' => 'ªð¦^',
+		'fullDescription' => 'ÀËµøªí®æªºº¡¾ã¤¶²Ð',
+		'close' => 'Ãö³¬',
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+		'details' => 'Äåòàéëè',
+		'syntax' => 'Ñèíòàêñ',
+		'seeAlso' => 'Âèæ ñúùî',
+		'goBack' => 'Âúðíè ñå',
+		'fullDescription' => 'Âèæ ïúëíî îïèñàíèå íà òàáëèöàòà',
+		'close' => 'Çàòâîðè',
+	),
+	'br' => Array (
+		'details' => 'Detalhes',
+		'syntax' => 'Sintaxe',
+		'seeAlso' => 'Veja também',
+		'goBack' => 'Voltar',
+		'fullDescription' => 'Ver descrição completa da tabela',
+		'close' => 'Fechar',
+	),
+	'et' => Array (
+		'details' => 'Detailid',
+		'syntax' => 'Süntaks',
+		'seeAlso' => 'Vaata lisaks',
+		'goBack' => 'Tagasi',
+		'fullDescription' => 'Tabeli täiskirjeldus',
+		'close' => 'Sulge',
+	),
+	'ar' => Array (
+		'details' => 'ÊáÇÕêä',
+		'syntax' => 'ÇäÃåÑ',
+		'seeAlso' => 'ÃæØÑ ÇêÖÇ',
+		'goBack' => 'ÅÑÌÙ',
+		'fullDescription' => 'ÅæØÑ ÇäèÕá ÇäãÇåä ääÌÏèä',
+		'close' => 'Åâáä',
+	),
+	'he' => Array (
+		'details' => '×¤×¨×˜×™×',
+		'syntax' => '×ª×—×‘×™×¨',
+		'seeAlso' => '×¨××” ×’×',
+		'goBack' => '×¢×‘×•×¨ ×—×–×¨×”',
+		'fullDescription' => '×¨××” ×ª×™××•×¨ ×ž×œ× ×©×œ ×˜×‘×œ×”',
+		'close' => '×¡×’×•×¨',
+	),
+	'ua' => Array (
 	),
 );
 ?>
