@@ -100,7 +100,6 @@ class SC_index {
 	var $L_vars;				// Set to the labels used for the login screen.
 
 		// Internal, dynamic:
-	var $interfaceSelector;		// If set tru, if there is a redirect URL
 	var $content;				// Content accumulation
 
 	var $interfaceSelector;			// A selector box for selecting value for "interface" may be rendered into this variable

@@ -87,7 +87,6 @@ class SC_alt_shortcut {
 	var $URL;
 	var $editSC;
 	var $deleteCategory;
-	var $editPage;
 	var $editName;
 	var $editGroup;
 	var $whichItem;
