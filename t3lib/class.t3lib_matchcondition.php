@@ -37,16 +37,17 @@
  *
  *
  *
- *   76: class t3lib_matchCondition 
- *   90:     function match($string)	
- *  302:     function testNumber($test,$value) 
- *  324:     function matchWild($haystack,$needle)	
- *  354:     function whichDevice($useragent)	
- *  404:     function browserInfo($useragent)	
- *  503:     function getGlobal($var,$inArr='') 
- *  528:     function getGP_ENV_TSFE($var) 
+ *   77: class t3lib_matchCondition 
+ *   91:     function match($string)	
+ *  303:     function testNumber($test,$value) 
+ *  325:     function matchWild($haystack,$needle)	
+ *  355:     function whichDevice($useragent)	
+ *  405:     function browserInfo($useragent)	
+ *  503:     function browserInfo_version($tmp)	
+ *  515:     function getGlobal($var,$inArr='') 
+ *  540:     function getGP_ENV_TSFE($var) 
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -407,9 +408,7 @@ class t3lib_matchCondition {
 		$browserInfo['useragent']=$useragent;
 		if ($useragent)	{
 			// browser
-			if (strstr($useragent,'MSIE'))	{
-				$browserInfo['browser']='msie';
-			} elseif(strstr($useragent,'Opera'))	{
+			if(strstr($useragent,'Opera'))	{
 				$browserInfo['browser']='opera';
 			} elseif(strstr($useragent,'Lynx'))	{
 				$browserInfo['browser']='lynx';
@@ -425,42 +424,44 @@ class t3lib_matchCondition {
 				$browserInfo['browser']='teleport';
 			} elseif(strstr($useragent,'Mozilla'))	{
 				$browserInfo['browser']='netscape';
+			} elseif (strstr($useragent,'MSIE'))	{
+				$browserInfo['browser']='msie';
 			} else {
 				$browserInfo['browser']='unknown';
 			}
 			// version
 			switch($browserInfo['browser'])	{
 				case 'netscape':
-					$browserInfo['version'] = doubleval(substr($useragent,8));
+					$browserInfo['version'] = $this->browserInfo_version(substr($useragent,8));
 					if (strstr($useragent,'Netscape6')) {$browserInfo['version']=6;}
 				break;
 				case 'msie':
 					$tmp = strstr($useragent,'MSIE');
-					$browserInfo['version'] = doubleval(substr($tmp,4));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,4));
 				break;
 				case 'opera':
 					$tmp = strstr($useragent,'Opera');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 				case 'lynx':
 					$tmp = strstr($useragent,'Lynx/');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 				case 'php':
 					$tmp = strstr($useragent,'PHP/');
-					$browserInfo['version'] = doubleval(substr($tmp,4));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,4));
 				break;
 				case 'avantgo':
 					$tmp = strstr($useragent,'AvantGo');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 				case 'acrobat':
 					$tmp = strstr($useragent,'WebCapture');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 				case 'ibrowse':
 					$tmp = strstr($useragent,'IBrowse/');
-					$browserInfo['version'] = doubleval(substr($tmp,5));
+					$browserInfo['version'] = $this->browserInfo_version(substr($tmp,5));
 				break;
 			}
 			// system
@@ -489,7 +490,18 @@ class t3lib_matchCondition {
 				$browserInfo['system']='unix_hp';
 			}
 		}
+
 		return $browserInfo;
+	}
+
+	/**
+	 * Returns the version of a browser; Basically getting doubleval() of the input string, stripping of any non-numeric values in the beginning of the string first.
+	 *
+	 * @param	string		A string with version number, eg. "/7.32 blablabla"
+	 * @return	double		Returns double value, eg. "7.32"
+	 */
+	function browserInfo_version($tmp)	{
+		return doubleval(ereg_replace('^[^0-9]*','',$tmp));
 	}
 
 	/**

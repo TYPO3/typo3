@@ -1,5 +1,9 @@
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed some browser detection bugs in t3lib_matchcondition and t3lib_div. Not necessarily exhaustive! For instance a report on Netscape 7.2 being wrongly detected may not be resolved (need teh value of HTTP_USER_AGENT to solve it since I do not have netscape 7.2!)
+
+2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added full safety for the internal TYPO3 formmail; email addresses in the fields "recipient" and "recipient_copy" are encrypted in the transfer and the "formmail" interface is safe for spam-misuse (since a proper recipient address cannot be forged automatically). 
 !!!If someone are using the "formmail" API from other renderers than the FORM cObject in TypoScript you will have to set the recipient address to the encrypted value by default OR alternatively disabled the check by TYPO3_CONF_VARS[FE][strictFormmail] = FALSE
 

@@ -141,7 +141,7 @@
  * 2363:     function linkThisUrl($url,$getParams=array())	
  * 2385:     function getIndpEnv($getEnvName)	
  * 2569:     function milliseconds()	
- * 2582:     function clientInfo($useragent='')	
+ * 2582:     function clientInfo($useragent='')
  *
  *              SECTION: TYPO3 SPECIFIC FUNCTIONS
  * 2671:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)	
@@ -2637,11 +2637,11 @@ class t3lib_div {
 				break;
 				case 'msie':
 					$tmp = strstr($useragent,'MSIE');
-					$bInfo['VERSION'] = doubleval(substr($tmp,4));
+					$bInfo['VERSION'] = doubleval(ereg_replace('^[^0-9]*','',substr($tmp,4)));
 				break;
 				case 'opera':
 					$tmp = strstr($useragent,'Opera');
-					$bInfo['VERSION'] = doubleval(substr($tmp,5));
+					$bInfo['VERSION'] = doubleval(ereg_replace('^[^0-9]*','',substr($tmp,5)));
 				break;
 				case 'konqu':
 					$tmp = strstr($useragent,'Konqueror/');
