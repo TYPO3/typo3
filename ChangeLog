@@ -1,20 +1,20 @@
-2004-02-02  Ingmar Schlecht  <ingmar@typo3.org>
+2005-02-02  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000728: "Enabling DevLog in t3lib_modsettings via SC_OPTIONS does not work." Reason: t3lib_modsettings::init() used $TYPO3_CONF_VARS although the global var was not available there. Changed it to $GLOBALS['TYPO3_CONF_VARS'].
 
-2004-02-01  Ingmar Schlecht  <ingmar@typo3.org>
+2005-02-01  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Committed patches by Peter Klein <peter at umloud.dk> implementing the IESelectFix for xmenu_layers.php: A fix that makes the layer menus display correctly on IE when over a <SELECT> box.
 
-2004-01-24  Jan-Erik Revsbech	<jer@moccompany.com>
+2005-01-24  Jan-Erik Revsbech	<jer@moccompany.com>
 
 	* The check to see if Postfix version 1.XX is used requires that the executable /usr/sbin/postconf exists. If it does not exists, some php configurations will die with an error. Now htmlmail makes a check to see if the files exists before calling it.
 
-2004-01-22  Ingmar Schlecht  <ingmar@typo3.org>
+2005-01-22  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000668: Removed spurious comma (,) from pages table definition in t3lib/stddb/tables.sql
 
-2004-01-21  Ingmar Schlecht  <ingmar@typo3.org>
+2005-01-21  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000703: Added missing ';' to '&nbsp' in t3lib\class.t3lib_formmail.php
 
