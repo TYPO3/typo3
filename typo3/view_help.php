@@ -29,7 +29,7 @@
  * See Inside TYPO3 for details.
  *
  * $Id$
- * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ * Revised for TYPO3 3.7 5/2004 by Kasper Skaarhoj
  * XHTML-trans compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
@@ -39,26 +39,35 @@
  *
  *
  *
- *   78: class SC_view_help
- *   97:     function init()
- *  119:     function main()
- *  173:     function printContent()
- *  184:     function make_seeAlso($value,$anchorTable='')
- *  222:     function printImage($image,$descr)
- *  244:     function headerLine($str,$type=0)
- *  265:     function prepareContent($str)
- *  280:     function printItem($table,$field,$anchors=0)
- *  316:     function getTableFieldNames($table,$field)
+ *   87: class SC_view_help
+ *  110:     function init()
+ *  130:     function main()
+ *  158:     function printContent()
  *
- * TOTAL FUNCTIONS: 9
+ *              SECTION: Rendering main modes
+ *  181:     function render_TOC()
+ *  280:     function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)
+ *  311:     function render_TOC_makeTocList($tocArray)
+ *  346:     function render_Table($table)
+ *  391:     function render_Single($table,$field)
+ *
+ *              SECTION: Rendering CSH items
+ *  433:     function make_seeAlso($value,$anchorTable='')
+ *  471:     function printImage($image,$descr)
+ *  493:     function headerLine($str,$type=0)
+ *  514:     function prepareContent($str)
+ *  529:     function printItem($table,$field,$anchors=0)
+ *  565:     function getTableFieldNames($table,$field)
+ *
+ * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
-require ('init.php');
-require ('template.php');
-include ('sysext/lang/locallang_view_help.php');
-
+require('init.php');
+require('template.php');
+include('sysext/lang/locallang_view_help.php');
+require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
 
 
 
@@ -78,8 +87,6 @@ include ('sysext/lang/locallang_view_help.php');
 class SC_view_help {
 	var $allowedHTML = '<strong><em><b><i>';
 
-	var $content;	// Content accumulation.
-
 		// For these vars, see init()
 	var $limitAccess;	// If set access to fields and tables is checked. Should be done for true database tables.
 	var $table;			// The "table" key
@@ -88,6 +95,12 @@ class SC_view_help {
 		// Internal, static: GPvar:
 	var $tfID;			// Table/FIeld id.
 	var $back;			// Back (previous tfID)
+	var $renderALL;		// If set, then in TOC mode the FULL manual will be printed as well!
+
+		// Internal, dynamic:
+	var $content;	// Content accumulation.
+
+
 
 	/**
 	 * Initialize the class for various input etc.
@@ -95,20 +108,18 @@ class SC_view_help {
 	 * @return	void
 	 */
 	function init()	{
-		global $LANG;
+		global $LANG, $TCA;
 
 			// Setting GPvars:
 		$this->tfID = t3lib_div::_GP('tfID');
 		$this->back = t3lib_div::_GP('back');
+		$this->renderALL = t3lib_div::_GP('renderALL');
 
 			// Set internal table/field to the parts of "tfID" incoming var.
-		list($this->table,$this->field)=explode('.',$this->tfID);
-
-			// Load descriptions for table $this->table
-		$LANG->loadSingleTableDescription($this->table);
+		list($this->table,$this->field) = explode('.',$this->tfID);
 
 			// limitAccess is checked if the $this->table really IS a table.
-		$this->limitAccess = !isset($TCA[$this->table]) ? 0 : 1;
+		$this->limitAccess = isset($TCA[$this->table]) ? TRUE : FALSE;
 	}
 
 	/**
@@ -120,51 +131,24 @@ class SC_view_help {
 		global $BE_USER,$LANG,$TCA_DESCR,$TCA,$TBE_TEMPLATE;
 
 			// Start HTML output accumulation:
-		$TBE_TEMPLATE->docType='xhtml_trans';
-		$TBE_TEMPLATE->divClass='typo3-view-help';
-		$this->content.=$TBE_TEMPLATE->startPage($LANG->getLL('title'));
+		$TBE_TEMPLATE->docType = 'xhtml_trans';
+		$TBE_TEMPLATE->divClass = 'typo3-view-help';
+		$this->content.= $TBE_TEMPLATE->startPage($LANG->getLL('title'));
 
-			// If ALL fields is supposed to be shown:
-		if ($this->field=='*')	{
-				// Load table TCA
-			t3lib_div::loadTCA($this->table);
-
-			if (is_array($TCA_DESCR[$this->table]['columns']) && (!$this->limitAccess || $BE_USER->check('tables_select',$this->table)))	{
-					// Traverse table columns as listed in TCA_DESCR
-				$parts=array();
-				$parts[0]='';	// Reserved for header of table
-				reset($TCA_DESCR[$this->table]['columns']);
-				while(list($this->field)=each($TCA_DESCR[$this->table]['columns']))	{
-					$fieldValue = isset($TCA[$this->table]) && strcmp($this->field,"") ? $TCA[$this->table]['columns'][$this->field] : array();
-
-					if (is_array($fieldValue) && (!$this->limitAccess || !$fieldValue['exclude'] || $BE_USER->check('non_exclude_fields',$this->table.':'.$this->field)))	{
-						if (!$this->field)	{
-							$parts[0]=$this->printItem($this->table,'',1);
-						} else {
-							$parts[]=$this->printItem($this->table,$this->field,1);
-						}
-					}
-				}
-
-				if (!strcmp($parts,""))	unset($parts[0]);
-				$this->content.= implode('<br />',$parts);
-			}
-		} else {
-				// ... otherwise show only single field:
-			$this->content.=$this->printItem($this->table,$this->field);
-
-				// Link to Full table description:
-		#	$onClick = 'vHWin=window.open(\'view_help.php?tfID='.rawurlencode($this->table.'.*').'&ONLY='.$LANG->lang.'\',\'fullHelpWindow\',\'width=600,scrollbars=1,status=1,menubar=1,location=1,resizable=1,toolbar=1\');vHWin.focus();return false;';
-			$onClick = 'document.location = \'view_help.php?tfID='.rawurlencode($this->table.'.*').'&ONLY='.$LANG->lang.'\';return false;';
-			$this->content.='<br /><p><a href="#" onclick="'.htmlspecialchars($onClick).'">'.htmlspecialchars($LANG->getLL('fullDescription')).'</a></p>';
+		if ($this->field=='*')	{ // If ALL fields is supposed to be shown:
+			$this->content.= $this->render_Table($this->table);
+		} elseif ($this->tfID) { // ... otherwise show only single field:
+			$this->content.= $this->render_Single($this->table,$this->field);
+		} else {	// Render Table Of Contents if nothing else:
+			$this->content.= $this->render_TOC();
 		}
 
 			// Print close-button:
-		$this->content.='<br /><form action=""><input type="submit" value="'.htmlspecialchars($LANG->getLL('close')).'" onclick="self.close(); return false;" /></form>
-			<br/>';
+#		$this->content.='<br /><form action=""><input type="submit" value="'.htmlspecialchars($LANG->getLL('close')).'" onclick="self.close(); return false;" /></form><br/>';
 
 			// End page:
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content.= '<br/>';
+		$this->content.= $TBE_TEMPLATE->endPage();
 	}
 
 	/**
@@ -175,6 +159,290 @@ class SC_view_help {
 	function printContent()	{
 		echo $this->content;
 	}
+
+
+
+
+
+
+
+
+
+	/************************************
+	 *
+	 * Rendering main modes
+	 *
+	 ************************************/
+
+	/**
+	 * Creates Table Of Contents and possibly "Full Manual" mode if selected.
+	 *
+	 * @return	string		HTML content
+	 */
+	function render_TOC()	{
+		global $TCA_DESCR,$TCA,$LANG,$BE_USER,$TBE_MODULES;
+
+			// Initialize:
+		$CSHkeys = array_flip(array_keys($TCA_DESCR));
+		$TCAkeys = array_keys($TCA);
+
+		$outputSections = array();
+		$tocArray = array();
+
+
+			// TYPO3 Core Features:
+		$LANG->loadSingleTableDescription('xMOD_csh_corebe');
+		$this->render_TOC_el('xMOD_csh_corebe', 'core', $outputSections, $tocArray, $CSHkeys);
+
+			// Backend Modules:
+		$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+		$loadModules->load($TBE_MODULES);
+		foreach($loadModules->modules as $mainMod => $info)	{
+			$cshKey = '_MOD_'.$mainMod;
+			if ($CSHkeys[$cshKey])	{
+				$LANG->loadSingleTableDescription($cshKey);
+				$this->render_TOC_el($cshKey, 'modules', $outputSections, $tocArray, $CSHkeys);
+			}
+
+			if (is_array($info['sub']))	{
+				foreach($info['sub'] as $subMod => $subInfo)	{
+					$cshKey = '_MOD_'.$mainMod.'_'.$subMod;
+					if ($CSHkeys[$cshKey])	{
+						$LANG->loadSingleTableDescription($cshKey);
+						$this->render_TOC_el($cshKey, 'modules', $outputSections, $tocArray, $CSHkeys);
+					}
+				}
+			}
+		}
+
+			// Database Tables:
+		foreach($TCAkeys as $table)	{
+				// Load descriptions for table $table
+			$LANG->loadSingleTableDescription($table);
+			if (is_array($TCA_DESCR[$table]['columns']) && $BE_USER->check('tables_select',$table))	{
+				$this->render_TOC_el($table, 'tables', $outputSections, $tocArray, $CSHkeys);
+			}
+		}
+
+			// Other:
+		foreach($CSHkeys as $cshKey => $value)	{
+			if (!t3lib_div::isFirstPartOfStr($cshKey, '_MOD_') && !isset($TCA[$cshKey]))	{
+				$LANG->loadSingleTableDescription($cshKey);
+				$this->render_TOC_el($cshKey, 'other', $outputSections, $tocArray, $CSHkeys);
+			}
+		}
+
+
+			// COMPILE output:
+		$output = '';
+		$output.= '
+
+			<h1>'.$LANG->getLL('manual_title',1).'</h1>
+			<p>'.t3lib_BEfunc::TYPO3_copyRightNotice().'</p>';
+
+		$output.= '
+
+			<h1>'.$LANG->getLL('introduction',1).'</h1>
+			<p>'.$LANG->getLL('description',1).'</p>';
+
+		$output.= '
+
+			<h1>'.$LANG->getLL('TOC',1).'</h1>'.
+			$this->render_TOC_makeTocList($tocArray);
+
+		if (!$this->renderALL)	{
+		$output.= '
+				<br/>
+				<p class="c-nav"><a href="view_help.php?renderALL=1">'.$LANG->getLL('full_manual',1).'</a></p>';
+		}
+
+		if ($this->renderALL)	{
+			$output.= '
+
+				<h1>'.$LANG->getLL('full_manual_chapters',1).'</h1>'.
+				implode('
+
+
+				<!-- NEW SECTION: -->
+				',$outputSections);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Creates a TOC list element and renders corresponding HELP content if "renderALL" mode is set.
+	 *
+	 * @param	string		CSH key / Table name
+	 * @param	string		TOC category keyword: "core", "modules", "tables", "other"
+	 * @param	array		Array for accumulation of rendered HELP Content (in "renderALL" mode). Passed by reference!
+	 * @param	array		TOC array; Here TOC index elements are created. Passed by reference!
+	 * @param	array		CSH keys array. Every item rendered will be unset in this array so finally we can see what CSH keys are not processed yet. Passed by reference!
+	 * @return	void
+	 */
+	function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)	{
+		global $LANG;
+
+		if ($this->renderALL)	{	// Render full manual right here!
+			$outputSections[$table] = $this->render_Table($table);
+
+			if ($outputSections[$table])	{
+				$outputSections[$table] = '
+
+		<!-- New CSHkey/Table: '.$table.' -->
+		<p class="c-nav"><a name="ANCHOR_'.$table.'" href="#">'.$LANG->getLL('to_top',1).'</a></p>
+		<h2>'.$this->getTableFieldLabel($table).'</h2>
+
+		'.$outputSections[$table];
+				$tocArray[$tocCat][$table] = '<a href="#ANCHOR_'.$table.'">'.$this->getTableFieldLabel($table).'</a>';
+			} else {
+				unset($outputSections[$table]);
+			}
+		} else {	// Only TOC:
+			$tocArray[$tocCat][$table] = '<p><a href="view_help.php?tfID='.rawurlencode($table.'.*').'">'.$this->getTableFieldLabel($table).'</a></p>';
+		}
+
+			// Unset CSH key:
+		unset($CSHkeys[$table]);
+	}
+
+	/**
+	 * Renders the TOC index as a HTML bullet list from TOC array
+	 *
+	 * @param	array		ToC Array.
+	 * @return	string		HTML bullet list for index.
+	 */
+	function render_TOC_makeTocList($tocArray)	{
+		global $LANG;
+
+			// The Various manual sections:
+		$keys = explode(',', 'core,modules,tables,other');
+
+			// Create TOC bullet list:
+		$output = '';
+		foreach($keys as $tocKey)	{
+			if (is_array($tocArray[$tocKey]))	{
+				$output.='
+					<li>'.$LANG->getLL('TOC_'.$tocKey,1).'
+						<ul>
+							<li>'.implode('</li>
+							<li>',$tocArray[$tocKey]).'</li>
+						</ul>
+					</li>';
+			}
+		}
+
+			// Compile TOC:
+		$output = '
+
+			<!-- TOC: -->
+			<div class="c-toc">
+				<ul>
+				'.$output.'
+				</ul>
+			</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Render CSH for a full cshKey/table
+	 *
+	 * @param	string		CSH key / table name
+	 * @return	string		HTML output
+	 */
+	function render_Table($table)	{
+		global $BE_USER,$TCA_DESCR,$TCA,$LANG;
+
+		$output = '';
+
+			// Load table TCA
+		t3lib_div::loadTCA($table);
+
+			// Load descriptions for table $table
+		$LANG->loadSingleTableDescription($table);
+
+		if (is_array($TCA_DESCR[$table]['columns']) && (!$this->limitAccess || $BE_USER->check('tables_select',$table)))	{
+				// Initialize variables:
+			$parts = array();
+			$parts[0] = '';	// Reserved for header of table
+
+				// Traverse table columns as listed in TCA_DESCR
+			reset($TCA_DESCR[$table]['columns']);
+			while(list($field) = each($TCA_DESCR[$table]['columns']))	{
+
+				$fieldValue = isset($TCA[$table]) && strcmp($field,'') ? $TCA[$table]['columns'][$field] : array();
+
+				if (is_array($fieldValue) && (!$this->limitAccess || !$fieldValue['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$field)))	{
+					if (!$field)	{
+						$parts[0] = $this->printItem($table,'',1);	// Header
+					} else {
+						$parts[] = $this->printItem($table,$field,1);	// Field
+					}
+				}
+			}
+
+			if (!strcmp($parts,''))	unset($parts[0]);
+			$output.= implode('<br />',$parts);
+		}
+
+			// TOC link:
+		if (!$this->renderALL)	{
+			$tocLink = '<p class="c-nav"><a href="view_help.php">'.$LANG->getLL('goToToc',1).'</a></p>';
+
+			$output =
+				$tocLink.'
+				<br/>'.
+				$output.'
+				<br />'.
+				$tocLink;
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Renders CSH for a single field.
+	 *
+	 * @param	string		CSH key / table name
+	 * @param	string		Sub key / field name
+	 * @return	string		HTML output
+	 */
+	function render_Single($table,$field)	{
+		global $LANG, $TCA;
+
+		$output = '';
+
+			// Load descriptions for table $table
+		$LANG->loadSingleTableDescription($table);
+
+			// Render single item:
+		$output.= $this->printItem($table,$field);
+
+			// Link to Full table description and TOC:
+		$getLLKey = $this->limitAccess ? 'fullDescription' : 'fullDescription_module';
+		$output.= '<br />
+			<p class="c-nav"><a href="view_help.php?tfID='.rawurlencode($table.'.*').'">'.$LANG->getLL($getLLKey,1).'</a></p>
+			<p class="c-nav"><a href="view_help.php">'.$LANG->getLL('goToToc',1).'</a></p>';
+
+		return $output;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	/************************************
+	 *
+	 * Rendering CSH items
+	 *
+	 ************************************/
 
 	/**
 	 * Make seeAlso links from $value
@@ -187,26 +455,25 @@ class SC_view_help {
 		global $TCA,$BE_USER;
 			// Split references by comma, vert.line or linebreak
 		$items = split(',|'.chr(10),$value);
-		reset($items);
-		$lines=array();
-		while(list(,$val)=each($items))	{
+		$lines = array();
+
+		foreach($items as $val)	{
 			$val = trim($val);
 			if ($val)	{
 				$iP = explode(':',$val);
 				$iPUrl = t3lib_div::trimExplode('|',$val);
 					// URL reference:
 				if (substr($iPUrl[1],0,4)=='http')	{
-					$lines[]='<a href="'.htmlspecialchars($iPUrl[1]).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
+					$lines[] = '<a href="'.htmlspecialchars($iPUrl[1]).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
 				} else {
 					// "table" reference
 					t3lib_div::loadTCA($iP[0]);
 					if (!isset($TCA[$iP[0]]) || (is_array($TCA[$iP[0]]['columns'][$iP[1]]) && (!$this->limitAccess || ($BE_USER->check('tables_select',$iP[0]) && (!$TCA[$iP[0]]['columns'][$iP[1]]['exclude'] || $BE_USER->check('non_exclude_fields',$iP[0].':'.$iP[1]))))))	{	// Checking read access:
-						list($tableName,$fieldName) = $this->getTableFieldNames($iP[0],$iP[1]);
 
 							// Make see-also link:
-						$href = ($anchorTable&&$iP[0]==$anchorTable ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);
-						$label = $GLOBALS['LANG']->sL($tableName).($iP[1]?' / '.ereg_replace(':$','',$GLOBALS['LANG']->sL($fieldName)):'');
-						$lines[]='<a href="'.htmlspecialchars($href).'">'.htmlspecialchars($label).'</a>';
+						$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);
+						$label = $this->getTableFieldLabel($iP[0],$iP[1],' / ');
+						$lines[] = '<a href="'.htmlspecialchars($href).'">'.htmlspecialchars($label).'</a>';
 					}
 				}
 			}
@@ -225,7 +492,7 @@ class SC_view_help {
 		$absImagePath = t3lib_div::getFileAbsFileName($image,1,1);
 		if ($absImagePath && @is_file($absImagePath))	{
 			$imgFile = substr($absImagePath,strlen(PATH_site));
-			$imgInfo=@getimagesize($absImagePath);
+			$imgInfo = @getimagesize($absImagePath);
 			if (is_array($imgInfo))	{
 				$code = '<br /><img src="../'.$imgFile.'" '.$imgInfo[3].' alt="" /><br />
 				';
@@ -289,13 +556,10 @@ class SC_view_help {
 				// Make seeAlso references.
 			$seeAlsoRes = $this->make_seeAlso($TCA_DESCR[$table]['columns'][$field]['seeAlso'],$anchors?$table:'');
 
-				// Get Human Readable table and field labels
-			list($tableName,$fieldName) = $this->getTableFieldNames($table,$field);
-
 				// Making item:
 			$out= '<a name="'.$table.'.'.$field.'"></a>
 					'.
-					$this->headerLine($LANG->sL($tableName).': '.($field?ereg_replace(':$','',trim($LANG->sL($fieldName))):''),1).
+					$this->headerLine($this->getTableFieldLabel($table,$field),1).
 					$this->prepareContent($TCA_DESCR[$table]['columns'][$field]['description']).
 					($TCA_DESCR[$table]['columns'][$field]['details'] ? $this->headerLine($LANG->getLL('details').':').$this->prepareContent($TCA_DESCR[$table]['columns'][$field]['details']) : '').
 					($TCA_DESCR[$table]['columns'][$field]['syntax'] ? $this->headerLine($LANG->getLL('syntax').':').$this->prepareContent($TCA_DESCR[$table]['columns'][$field]['syntax']) : '').
@@ -324,6 +588,28 @@ class SC_view_help {
 							$TCA_DESCR[$table]['columns'][$field]['alttitle'] :
 							(isset($TCA[$table])&&isset($TCA[$table]['columns'][$field]) ? $TCA[$table]['columns'][$field]['label'] : $field);
 		return array($tableName,$fieldName);
+	}
+
+	/**
+	 * Returns composite label for table/field
+	 *
+	 * @param	string		Table name
+	 * @param	string		Field name
+	 * @param	string		Token to merge the two strings with.
+	 * @return	array		Table and field labels in a numeric array
+	 * @see getTableFieldNames()
+	 */
+	function getTableFieldLabel($table,$field='',$mergeToken=': ')	{
+		global $LANG;
+
+			// Get table / field parts:
+		list($tableName,$fieldName) = $this->getTableFieldNames($table,$field);
+
+			// Create label:
+		$labelStr = $LANG->sL($tableName).
+					($field ? $mergeToken.ereg_replace(':$','', trim($LANG->sL($fieldName))):'');
+
+		return $labelStr;
 	}
 }
 

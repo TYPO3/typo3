@@ -8,8 +8,21 @@ $LOCAL_LANG = Array (
 		'seeAlso' => 'See also',
 		'goBack' => 'Go back',
 		'fullDescription' => 'See full description of table',
+		'fullDescription_module' => 'See full description of module',
+		'goToToc' => 'Go to TOC',
+		'to_top' => 'To top',
+		'TOC' => 'Table Of Contents',
+		'TOC_core' => 'TYPO3 Core Features',
+		'TOC_modules' => 'Backend Modules',
+		'TOC_tables' => 'Database Tables',
+		'TOC_other' => 'Other',
 		'close' => 'Close',
-		'title' => 'TYPO3 Online Help',
+		'title' => 'TYPO3 Inline Help',
+		'manual_title' => 'TYPO3 Inline User Manual',
+		'introduction' => 'Introduction',
+		'description' => 'The TYPO3 Inline User Manual is dynamically composed from the available help sources in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, descriptions of installation specific Backend Modules and Database Tables that are available based on your login credentials.',
+		'full_manual' => 'Full Manual (in one page)',
+		'full_manual_chapters' => 'Manual Chapters',
 	),
 	'dk' => Array (
 		'details' => 'Detaljer',
@@ -18,7 +31,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'GÂ tilbage',
 		'fullDescription' => 'Se hele tabelbeskrivelsen',
 		'close' => 'Luk',
-		'title' => 'TYPO3 Online hjÊlp',
+		'title' => 'TYPO3 Inline hjÊlp',
 	),
 	'de' => Array (
 		'details' => 'Details',
@@ -27,7 +40,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Zur¸ck',
 		'fullDescription' => 'Komplette Beschreibung der Tabelle ansehen',
 		'close' => 'Schliessen',
-		'title' => 'TYPO3 Online Hilfe',
+		'title' => 'TYPO3 Inline Hilfe',
 	),
 	'no' => Array (
 		'details' => 'Detaljer',
@@ -36,7 +49,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'GÂ tilbake',
 		'fullDescription' => 'Se hele tabellbeskrivelsen',
 		'close' => 'Lukk',
-		'title' => 'TYPO3 Online Hjelp',
+		'title' => 'TYPO3 Inline Hjelp',
 	),
 	'it' => Array (
 		'details' => 'Dettagli',
@@ -45,7 +58,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Indietro',
 		'fullDescription' => 'Vedi descrizione completa',
 		'close' => 'Chiudi',
-		'title' => 'Typo3 Help Online',
+		'title' => 'Typo3 Help Inline',
 	),
 	'fr' => Array (
 		'details' => 'DÈtails',
@@ -70,7 +83,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Ga terug',
 		'fullDescription' => 'Bekijk volledige omschrijving van deze tabel.',
 		'close' => 'Sluiten',
-		'title' => 'TYPO3 Online Help',
+		'title' => 'TYPO3 Inline Help',
 	),
 	'cz' => Array (
 		'details' => 'Detaily',
@@ -79,7 +92,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'JÌt zpÏt',
 		'fullDescription' => 'Zobrazit ˙pln˝ popis tabulky',
 		'close' => 'Zav¯Ìt',
-		'title' => 'Online n·povÏda TYPO3',
+		'title' => 'Inline n·povÏda TYPO3',
 	),
 	'pl' => Array (
 		'details' => 'SzczegÛ≥y',
@@ -88,7 +101,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'PowrÛt',
 		'fullDescription' => 'Zobacz pe≥ny opis tablicy',
 		'close' => 'Zamknij',
-		'title' => 'Pomoc online TYPO3',
+		'title' => 'Pomoc Inline TYPO3',
 	),
 	'si' => Array (
 		'details' => 'Podrobnosti',
@@ -105,7 +118,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Takaisin',
 		'fullDescription' => 'Katso koko taulun kuvausta',
 		'close' => 'Sulje',
-		'title' => 'Typo3 online ohjeet',
+		'title' => 'Typo3 Inline ohjeet',
 	),
 	'tr' => Array (
 		'details' => 'Ayrnt˝lar',
@@ -114,7 +127,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Geri git',
 		'fullDescription' => 'Tablonun t¸m tan˝t˝m˝n˝ gˆr',
 		'close' => 'Kapat',
-		'title' => 'TYPO3 online yard˝m',
+		'title' => 'TYPO3 Inline yard˝m',
 	),
 	'se' => Array (
 		'details' => 'Detaljer',
@@ -123,7 +136,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'GÂ tillbaka',
 		'fullDescription' => 'Se full fˆrklaring ˆver tabellen',
 		'close' => 'St‰ng',
-		'title' => 'Typo3 Online-hj‰lp',
+		'title' => 'Typo3 Inline-hj‰lp',
 	),
 	'pt' => Array (
 		'details' => 'Detalhes',
@@ -165,7 +178,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'ChoÔ nasp‰ù',
 		'fullDescription' => 'Pozri cel˝ popis tabuæky',
 		'close' => 'Zavrieù',
-		'title' => 'TYPO3 Online Pomoc',
+		'title' => 'TYPO3 Inline Pomoc',
 	),
 	'lt' => Array (
 		'details' => 'DetalÎs',
@@ -190,7 +203,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Natrag',
 		'fullDescription' => 'Pogledaj pun opis tablice',
 		'close' => 'Zatvori',
-		'title' => 'TYPO3 online pomoÊ',
+		'title' => 'TYPO3 Inline pomoÊ',
 	),
 	'hu' => Array (
 		'details' => 'RÈszletek',
@@ -199,7 +212,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Menj vissza',
 		'fullDescription' => 'A t·bla teljes leÌr·s·nak megtekintÈse',
 		'close' => 'Bez·r',
-		'title' => 'TYPO3 Online S˙gÛ',
+		'title' => 'TYPO3 Inline S˙gÛ',
 	),
 	'gl' => Array (
 	),
@@ -240,7 +253,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Voltar',
 		'fullDescription' => 'Ver descriÁ„o completa da tabela',
 		'close' => 'Fechar',
-		'title' => 'Ajuda Online TYPO3',
+		'title' => 'Ajuda Inline TYPO3',
 	),
 	'et' => Array (
 		'details' => 'Detailid',
@@ -249,7 +262,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Tagasi',
 		'fullDescription' => 'Tabeli t‰iskirjeldus',
 		'close' => 'Sulge',
-		'title' => 'TYPO3 Online Abi',
+		'title' => 'TYPO3 Inline Abi',
 	),
 	'ar' => Array (
 		'details' => ' ·«’Í‰',

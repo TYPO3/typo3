@@ -345,7 +345,7 @@ $TBE_MODULES = Array (
 	'doc' => '',	// This should always be empty!
 	'user' => '',
 	'tools' => 'em',
-	'help' => 'about'
+	'help' => 'about,cshmanual'
 );
 
 
