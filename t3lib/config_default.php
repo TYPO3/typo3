@@ -74,6 +74,7 @@ $TYPO3_CONF_VARS = Array(
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
+		'displayErrors' => 0,                                   // Integer, -1,0,1. 0=Do not display any PHP error messages. 1=Display error messages. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you leave this unchanged but enable the "error_log" option in php.ini instead.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -114,7 +115,7 @@ $TYPO3_CONF_VARS = Array(
 		'lockBeUserToDBmounts' => 1,			// Boolean. If set, the backend user is allowed to work only within his page-mount. It's advisable to leave this on because it makes security easy to manage.
 		'lockSSL' => 0,							// Int. 0,1,2: If set (1+2), the backend can only be operated from an ssl-encrypted connection (https). Set to 2 you will be redirected to the https admin-url supposed to be the http-url, but with https scheme instead.
 		'enabledBeUserIPLock' => 1,				// Boolean. If set, the User/Group TSconfig option 'option.lockToIP' is enabled.
-		'adminOnly' => 0,						// Boolean. If set (>=1), the only "admin" users can log in to the backend. If "<=-1" then the backend is totally shut down! For maintenance purposes.
+		'adminOnly' => 0,						// Int. If set (>=1), the only "admin" users can log in to the backend. If "<=-1" then the backend is totally shut down! For maintenance purposes.
 		'disable_exec_function' => 0,			// Boolean. Don't use exec() function (except for ImageMagick which is disabled by [GFX][im]=0). If set, all fileoperations are done by the default PHP-functions. This is nescessary under windows! On UNIX the system commands by exec() can be used, unless this is disabled.
 		'usePHPFileFunctions' => 1,				// Boolean. If set, all fileoperations are done by the default PHP-functions. Default on UNIX is using the system commands by exec(). You need to set this flag under safe_mode.
 		'compressionLevel' => 0,				// Determines output compression. Requires zlib in your php4 install. Range 1-9, where 1 is least compression (approx. 50%) and 9 is greatest compression (approx 33%). 'true' as value will set the compression based on system load (works with Linux, freebsd). Good default value is 3. For more info, see class in t3lib/class.gzip_encode.php written by Sandy McArthur, Jr. <Leknor@Leknor.com>
@@ -156,7 +157,7 @@ $TYPO3_CONF_VARS = Array(
 		'tidy' => 0,							// Boolean. If set, the output html-code will be passed through 'tidy' which is a little program you can get from http://www.w3.org/People/Raggett/tidy/. 'Tidy' cleans the HTML-code for nice display!
 		'tidy_option' => 'cached',				// options [all, cached, output]. 'all' = the content is always passed through 'tidy' before it may be stored in cache. 'cached' = only if the page is put into the cache, 'output' = only the output code just before it's echoed out.
 		'tidy_path' => 'tidy -i --quiet true --tidy-mark true -wrap 0',		// Path with options for tidy. For XHTML output, add " --output-xhtml true"
-		'logfile_dir' => '', 					// Path where TYPO3 should write webserver-style logfiles to. This path must be write-enabled for the webserver. Doesn't work for Windows! Remember slash AFTER! Eg: 'fileadmin/' or '/var/typo3logs/'. Please see the TypoScript reference!
+		'logfile_dir' => '', 					// Path where TYPO3 should write webserver-style logfiles to. This path must be write-enabled for the webserver. If this path is outside the PATH_site, you have to allow it using [BE][lockRootPath]
 		'logfile_write' => '',					// Keywords for write-mode of logfiles. Default is unix "echo". Keyword "fputs" will make PHP use "fputs" instead (compliant with safe_mode)
 		'publish_dir' => '',					// Path where TYPO3 should write staticly published documents. This path must be write-enabled for the webserver. Remember slash AFTER! Eg: 'publish/' or '/www/htdocs/publish/'. See admPanel option 'publish'
 		'addAllowedPaths' => '',				// Additional relative paths (comma-list) to allow TypoScript resources be in. Should be prepended with '/'. If not, then any path where the first part is like this path will match. That is: 'myfolder/ , myarchive' will match eg. 'myfolder/', 'myarchive/', 'myarchive_one/', 'myarchive_2/' ... No check is done to see if this directory actually exists in the root of the site. Paths are matched by simply checking if these strings equals the first part of any TypoScript resource filepath. (See class template, function init() in t3lib/class.t3lib_tsparser.php)
@@ -300,6 +301,12 @@ function debugEnd() {
 
 	// Init services array:
 $T3_SERVICES = array();
+
+
+	// Turn error logging on/off
+if(intval($TYPO3_CONF_VARS['SYS']['displayErrors']!='-1')) {
+	@ini_set('display_errors', intval($TYPO3_CONF_VARS['SYS']['displayErrors']));
+}
 
 
 	// Set PHP memory limit depending on value of $TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]

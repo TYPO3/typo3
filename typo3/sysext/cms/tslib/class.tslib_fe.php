@@ -2542,7 +2542,7 @@ if (version == "n3") {
 
 					// Apache:
 				if ($this->config['config']['stat_apache'] && $this->config['stat_vars']['pageName'])	{
-					if (@is_file($this->config['stat_vars']['logFile']) && TYPO3_OS!='WIN')	{
+					if (@is_file($this->config['stat_vars']['logFile']))	{
 						$LogLine = ((t3lib_div::getIndpEnv('REMOTE_HOST') && !$this->config['config']['stat_apache_noHost']) ? t3lib_div::getIndpEnv('REMOTE_HOST') : t3lib_div::getIndpEnv('REMOTE_ADDR')).' - - '.Date('[d/M/Y:H:i:s +0000]',$GLOBALS['EXEC_TIME']).' "GET '.$this->config['stat_vars']['pageName'].' HTTP/1.1" 200 '.strlen($this->content);
 						if (!$this->config['config']['stat_apache_notExtended'])	{
 							$LogLine.= ' "'.t3lib_div::getIndpEnv('HTTP_REFERER').'" "'.t3lib_div::getIndpEnv('HTTP_USER_AGENT').'"';
@@ -2558,7 +2558,11 @@ if (version == "n3") {
 							break;
 							default:
 								$GLOBALS['TT']->push('Write to log file (echo)');
-									$execCmd = 'echo "'.addslashes($LogLine).'" >> '.$this->config['stat_vars']['logFile'];
+									if (TYPO3_OS=="WIN") {
+										$execCmd = 'echo '.$LogLine.' >> '.$this->config['stat_vars']['logFile'];
+									} else {
+										$execCmd = 'echo "'.addslashes($LogLine).'" >> '.$this->config['stat_vars']['logFile'];
+									}
 									exec($execCmd);
 								$GLOBALS['TT']->pull();
 							break;

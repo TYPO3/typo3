@@ -605,8 +605,10 @@ $GLOBALS['TSFE']->content.='
 			$titleTagContent = $GLOBALS['TSFE']->cObj->callUserFunction($GLOBALS['TSFE']->config['config']['titleTagFunction'], array(), $titleTagContent);
 		}
 
-		$GLOBALS['TSFE']->content.='
+		if (strlen($titleTagContent))	{
+			$GLOBALS['TSFE']->content.='
 	<title>'.htmlspecialchars($titleTagContent).'</title>';
+		}
 		$GLOBALS['TSFE']->content.='
 	<meta name="generator" content="TYPO3 3.8 CMS" />';
 
