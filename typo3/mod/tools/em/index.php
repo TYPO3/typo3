@@ -29,31 +29,148 @@
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *  151: class em_install_class extends t3lib_install 
+ *  153:     function em_install_class()	
+ *
+ *
+ *  174: class SC_mod_tools_em_index 
+ *  272:     function init()	
+ *  305:     function jumpToUrl(URL)	
+ *  329:     function menuConfig()	
+ *  406:     function main()	
+ *  477:     function printContent()	
+ *  491:     function kickstarter()	
+ *  508:     function alterSettings()	
+ *  528:     function extensionList_loaded()	
+ *  564:     function extensionList_import()	
+ *  715:     function extensionList_installed()	
+ *  792:     function importExtInfo($extRepUid)	
+ *  882:     function getDocManual($extension_key,$loc="")	
+ *  902:     function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput="",$recentTranslations=0,$incManual=0)	
+ * 1051:     function showExtDetails($extKey)	
+ * 1296:     function updatesForm($extKey,$info,$notSilent=0,$script="",$addFields="")	
+ * 1327:     function extDumpTables($eKey,$info)	
+ * 1392:     function extDelete($eKey,$info)	
+ * 1418:     function extUpdateEMCONF($eKey,$info)	
+ * 1438:     function extMakeNewFromFramework($eKey,$info)	
+ * 1459:     function extBackup($eKey,$info)	
+ * 1513:     function extBackup_dumpDataTablesLine($tablesArray,$eKey)	
+ * 1542:     function extInformationArray($eKey,$info,$remote=0)	
+ * 1636:     function extInformationArray_dbReq($techInfo,$tableHeader=0)	
+ * 1649:     function extInformationArray_dbInst($dbInst,$current)	
+ * 1668:     function wrapEmail($str,$email)	
+ * 1681:     function helpCol($key)	
+ * 1696:     function getRepositoryUploadForm($eKey,$info)	
+ * 1767:     function extensionListRowHeader($bgColor,$cells,$import=0)	
+ * 1829:     function extensionListRow($eKey,$eConf,$info,$cells,$bgColor="",$inst_list=array(),$import=0,$altLinkUrl="")	
+ * 1929:     function labelInfo($str)	
+ * 1940:     function createDirsInPath($dirs,$extDirPath)	
+ * 1967:     function removeExtDirectory($removePath,$removeContentOnly=0)	
+ * 2027:     function extractDirsFromFileList($files)	
+ * 2052:     function clearAndMakeExtensionDir($importedData,$type)	
+ * 2098:     function versionDifference($v1,$v2,$div=1)	
+ * 2109:     function fetchServerData($repositoryUrl)	
+ * 2132:     function decodeServerData($externalData,$stat=array())	
+ * 2151:     function addClearCacheFiles()	
+ * 2175:     function extensionTitleIconHeader($eKey,$info,$align="top")	
+ * 2194:     function makeDetailedExtensionAnalysis($eKey,$info,$validity=0)	
+ * 2367:     function getClassIndexLocallangFiles($absPath,$table_class_prefix,$eKey)	
+ * 2438:     function first_in_array($str,$array)	
+ * 2453:     function modConfFileAnalysis($confFilePath)	
+ * 2481:     function writeTYPO3_MOD_PATH($confFilePath,$type,$mP)	
+ * 2519:     function tsStyleConfigForm($eKey,$info,$output=0,$script="",$addFields="")	
+ * 2569:     function writeTsStyleConfig($eKey,$arr)	
+ * 2590:     function dumpStaticTables($tableList)	
+ * 2617:     function dumpTableAndFieldStructure($arr)	
+ * 2634:     function dumpHeader()	
+ * 2651:     function dumpTableHeader($table,$fieldKeyInfo,$dropTableIfExists=0)	
+ * 2685:     function dumpTableContent($table,$fieldStructure)	
+ * 2711:     function writeNewExtensionList($newExtList)	
+ * 2730:     function removeCacheFiles()	
+ * 2751:     function checkClearCache($eKey,$info)	
+ * 2773:     function checkUploadFolder($eKey,$info)	
+ * 2846:     function checkDBupdates($eKey,$info,$infoOnly=0)	
+ * 2946:     function findMD5ArrayDiff($current,$past)	
+ * 2962:     function removeCVSentries($arr)	
+ * 2977:     function serverExtensionMD5Array($extKey,$conf)	
+ * 2999:     function makeUploadArray($extKey,$conf)	
+ * 3057:     function getSerializedLocalLang($file,$content)	
+ * 3074:     function getTableAndFieldStructure($parts)	
+ * 3106:     function construct_ext_emconf_file($extKey,$EM_CONF)	
+ * 3148:     function decodeExchangeData($str)	
+ * 3167:     function makeUploadDataFromArray($uploadArray,$local_gzcompress=-1)	
+ * 3193:     function getFileListOfExtension($extKey,$conf)	
+ * 3241:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList="",$regDirs=0)	
+ * 3264:     function removePrefixPathFromList($fileArr,$extPath)	
+ * 3281:     function getExtPath($extKey,$conf)	
+ * 3297:     function addExtToList($extKey,$list)	
+ * 3348:     function removeExtFromList($extKey,$list)	
+ * 3381:     function removeRequiredExtFromListArr($listArr)	
+ * 3396:     function managesPriorities($listArr,$list)	
+ * 3427:     function getInstalledExtensions()	
+ * 3452:     function getInstExtList($path,$list,$cat,$type)	
+ * 3487:     function getImportExtList($listArr)	
+ * 3539:     function setCat($cat,$list,$eKey)	
+ * 3562:     function processRepositoryReturnData($TER_CMD)	
+ * 3591:     function updateLocalEM_CONF($extKey,$info)	
+ * 3614:     function includeEMCONF($path,$_EXTKEY)	
+ * 3627:     function listOrderTitle($listOrder,$key)	
+ * 3657:     function makeVersion($v,$mode)	
+ * 3669:     function renderVersion($v,$raise="")	
+ * 3702:     function T3instID()	
+ * 3711:     function makeReturnUrl()	
+ * 3720:     function repTransferParams()	
+ * 3734:     function ulFolder($eKey)	
+ * 3743:     function removeButton()	
+ * 3752:     function installButton()	
+ * 3761:     function importAtAll()	
+ * 3770:     function noImportMsg()	
+ * 3781:     function importAsType($type,$lockType="")	
+ *
+ * TOTAL FUNCTIONS: 93
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+ 
+ 
 unset($MCONF);
-require ("conf.php");
-require ($BACK_PATH."init.php");
-require ($BACK_PATH."template.php");
+require ('conf.php');
+require ($BACK_PATH.'init.php');
+require ($BACK_PATH.'template.php');
 $BE_USER->modAccess($MCONF,1);
 
-
-require_once(PATH_t3lib."class.t3lib_tcemain.php");
-require_once(PATH_t3lib."class.t3lib_install.php");
+	// Include classes needed:
+require_once(PATH_t3lib.'class.t3lib_tcemain.php');
+require_once(PATH_t3lib.'class.t3lib_install.php');
 class em_install_class extends t3lib_install {
 		# Make sure the normal constructor is not called:
 	function em_install_class()	{
 	}
 }
+require_once(PATH_t3lib.'class.t3lib_tsstyleconfig.php');
 
-require_once(PATH_t3lib."class.t3lib_tsstyleconfig.php");
-
-if (t3lib_extMgm::isLoaded("extrep_wizard"))	{
-	require("class.kickstarter.php");
+	// Include kickstarter wrapped class if extension "extrep_wizard" turns out to be loaded!
+if (t3lib_extMgm::isLoaded('extrep_wizard'))	{
+	require('./class.kickstarter.php');
 }
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+/**
+ * Module: Extension manager
+ * 
+ * @author	Kasper Skårhøj <kasper@typo3.com>
+ */
 class SC_mod_tools_em_index {
 	var $MCONF=array();
 	var $MOD_MENU=array();
@@ -65,66 +182,66 @@ class SC_mod_tools_em_index {
 	var $content;
 	var $inst_keys=array();
 
-	var $versionDiffFactor = 1000;	// This means that version difference testing for import is detected for sub-versions only. Not dev-versions. Default: 1000
-	var $systemInstall = 0;		// If "1" then installs in the sysext directory is allowed. Default: 0
-	var $repositoryUrl = "";	// Default is "http://ter.typo3.com/?id=t3_extrep" configured in config_default.php
+	var $versionDiffFactor = 1000;		// This means that version difference testing for import is detected for sub-versions only. Not dev-versions. Default: 1000
+	var $systemInstall = 0;				// If "1" then installs in the sysext directory is allowed. Default: 0
+	var $repositoryUrl = "";			// Default is "http://ter.typo3.com/?id=t3_extrep" configured in config_default.php
 
-	var $maxUploadSize = 4024000;	// Max size of plugin upload to repository
+	var $maxUploadSize = 4024000;		// Max size of plugin upload to repository
 	var $kbMax=100;
 	var $gzcompress=0;
 	var $categories = Array(
-		"fe" => "Frontend",
-		"plugin" => "Frontend Plugins",
-		"be" => "Backend",
-		"module" => "Backend Modules",
-		"example" => "Examples",
-		"misc" => "Miscellaneous",
-		"services" => "Services",
-		"templates" => "Templates",
-		"doc" => "Documentation"
+		'fe' => 'Frontend',
+		'plugin' => 'Frontend Plugins',
+		'be' => 'Backend',
+		'module' => 'Backend Modules',
+		'example' => 'Examples',
+		'misc' => 'Miscellaneous',
+		'services' => 'Services',
+		'templates' => 'Templates',
+		'doc' => 'Documentation'
 	);
 	var $states = Array (
-		"alpha" => "Alpha",
-		"beta" => "Beta",
-		"stable" => "Stable",
-		"experimental" => "Experimental",
-		"test" => "Test",
+		'alpha' => 'Alpha',
+		'beta' => 'Beta',
+		'stable' => 'Stable',
+		'experimental' => 'Experimental',
+		'test' => 'Test',
 	);
 	var $typeLabels = Array (
-		"S" => "System",
-		"G" => "Global",
-		"L" => "Local",
+		'S' => 'System',
+		'G' => 'Global',
+		'L' => 'Local',
 	);
 	var $typeDescr = Array (
-		"S" => "System extension (typo3/sysext/) - Always distributed with source code (Static).",
-		"G" => "Global extensions (typo3/ext/) - Available for shared source on server (Dynamic).",
-		"L" => "Local extensions (typo3conf/ext/) - Local for this TYPO3 installation only (Dynamic).",
+		'S' => 'System extension (typo3/sysext/) - Always distributed with source code (Static).',
+		'G' => 'Global extensions (typo3/ext/) - Available for shared source on server (Dynamic).',
+		'L' => 'Local extensions (typo3conf/ext/) - Local for this TYPO3 installation only (Dynamic).',
 	);
 	var $typePaths = Array();
 	var $typeBackPaths = Array();
 	
 	var $typeRelPaths = Array (
-		"S" => "sysext/",
-		"G" => "ext/",
-		"L" => "../typo3conf/ext/",
+		'S' => 'sysext/',
+		'G' => 'ext/',
+		'L' => '../typo3conf/ext/',
 	);
 	var $remoteAccess = Array (
-		"all" => "",
-		"owner" => "Owner",
-		"selected" => "Selected",
-		"member" => "Member",
+		'all' => '',
+		'owner' => 'Owner',
+		'selected' => 'Selected',
+		'member' => 'Member',
 	);
 	
 	var $defaultCategories = Array(
-		"cat" => Array (
-			"be" => array(),
-			"module" => array(),
-			"fe" => array(),
-			"plugin" => array(),
-			"misc" => array(),
-			"services" => array(),
-			"templates" => array(),
-			"example" => array()
+		'cat' => Array (
+			'be' => array(),
+			'module' => array(),
+			'fe' => array(),
+			'plugin' => array(),
+			'misc' => array(),
+			'services' => array(),
+			'templates' => array(),
+			'example' => array()
 		)
 	);
 	var $detailCols = Array (
@@ -138,17 +255,19 @@ class SC_mod_tools_em_index {
 	var $noCVS=0;	// Tried to set it to 1, but then the CVS dir was removed and check in didn't work - there was an error. So now we try to accept that CVS dirs come along with the extension... Maybe it's not a problem at all.
 	
 	var $fe_user=array(
-			"username" => "",
-			"password" => "",
-			"uploadPass" => "",
+			'username' => '',
+			'password' => '',
+			'uploadPass' => '',
 		);
 	
 	var $privacyNotice = 'When ever you interact with the online repository, server information is sent and stored in the repository for statistics. No personal information is sent, only identification of this TYPO3 install. If you want know exactly what is sent, look in typo3/tools/em/index.php, function repTransferParams()';
-	var $editTextExtensions = "html,htm,txt,css,tmpl,inc,php,sql,conf,cnf,pl,pm,sh";
-	var $nameSpaceExceptions = "beuser_tracking,design_components,impexp,static_file_edit,cms,freesite,quickhelp,classic_welcome,indexed_search,sys_action,sys_workflows,sys_todos,sys_messages,plugin_mgm,direct_mail,sys_stat,tt_address,tt_board,tt_calender,tt_guest,tt_links,tt_news,tt_poll,tt_rating,tt_products,setup,taskcenter,tsconfig_help,context_help,sys_note,tstemplate,lowlevel,install,belog,beuser,phpmyadmin,aboutmodules,imagelist,setup,taskcenter,sys_notepad,viewpage";
+	var $editTextExtensions = 'html,htm,txt,css,tmpl,inc,php,sql,conf,cnf,pl,pm,sh';
+	var $nameSpaceExceptions = 'beuser_tracking,design_components,impexp,static_file_edit,cms,freesite,quickhelp,classic_welcome,indexed_search,sys_action,sys_workflows,sys_todos,sys_messages,plugin_mgm,direct_mail,sys_stat,tt_address,tt_board,tt_calender,tt_guest,tt_links,tt_news,tt_poll,tt_rating,tt_products,setup,taskcenter,tsconfig_help,context_help,sys_note,tstemplate,lowlevel,install,belog,beuser,phpmyadmin,aboutmodules,imagelist,setup,taskcenter,sys_notepad,viewpage';
 	
 	/**
 	 * Standard init function of a module.
+	 * 
+	 * @return	[type]		...
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
@@ -156,9 +275,9 @@ class SC_mod_tools_em_index {
 #sleep(10);
 
 		$this->typePaths = Array (
-			"S" => TYPO3_mainDir."sysext/",
-			"G" => TYPO3_mainDir."ext/",
-			"L" => "typo3conf/ext/"
+			'S' => TYPO3_mainDir.'sysext/',
+			'G' => TYPO3_mainDir.'ext/',
+			'L' => 'typo3conf/ext/'
 		);
 		$this->typeBackPaths = Array (
 			"S" => "../../../",
@@ -204,6 +323,8 @@ class SC_mod_tools_em_index {
 
 	/**
 	 * Configuration of which mod-menu items can be used
+	 * 
+	 * @return	[type]		...
 	 */
 	function menuConfig()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
@@ -279,6 +400,8 @@ class SC_mod_tools_em_index {
 
 	/**
 	 * Main function.
+	 * 
+	 * @return	[type]		...
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
@@ -348,6 +471,8 @@ class SC_mod_tools_em_index {
 
 	/**
 	 * Print module content. Called as last thing in the global scope.
+	 * 
+	 * @return	[type]		...
 	 */
 	function printContent()	{
 		global $SOBE;
@@ -360,6 +485,8 @@ class SC_mod_tools_em_index {
 
 	/**
 	 * Making of new extensions.
+	 * 
+	 * @return	[type]		...
 	 */
 	function kickstarter()	{
 		$kickstarter = t3lib_div::makeInstance('em_kickstarter');
@@ -375,6 +502,8 @@ class SC_mod_tools_em_index {
 	
 	/**
 	 * Allows changing of settings
+	 * 
+	 * @return	[type]		...
 	 */
 	function alterSettings()	{
 		$content = '
@@ -393,6 +522,8 @@ class SC_mod_tools_em_index {
 
 	/**
 	 * Listing of loaded (installed) extensions
+	 * 
+	 * @return	[type]		...
 	 */
 	function extensionList_loaded()	{
 		global $TYPO3_LOADED_EXT;
@@ -427,6 +558,8 @@ class SC_mod_tools_em_index {
 
 	/**
 	 * Listing remote extensions from online repository
+	 * 
+	 * @return	[type]		...
 	 */
 	function extensionList_import()	{
 		global $TYPO3_LOADED_EXT;
@@ -576,6 +709,8 @@ class SC_mod_tools_em_index {
 
 	/**
 	 * Listing of available (installed) extensions
+	 * 
+	 * @return	[type]		...
 	 */
 	function extensionList_installed()	{
 		global $TYPO3_LOADED_EXT;
@@ -650,6 +785,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns detailed info about an extension in the online repository
+	 * 
+	 * @param	[type]		$extRepUid: ...
+	 * @return	[type]		...
 	 */
 	function importExtInfo($extRepUid)	{
 		$uidParts = t3lib_div::trimExplode("-",$extRepUid);
@@ -736,6 +874,10 @@ EXTENSION KEYS:
 	
 	/**
 	 * Returns true if the doc/manual.sxw should be returned
+	 * 
+	 * @param	[type]		$extension_key: ...
+	 * @param	[type]		$loc: ...
+	 * @return	[type]		...
 	 */
 	function getDocManual($extension_key,$loc="")	{
 		$res=0;
@@ -748,6 +890,14 @@ EXTENSION KEYS:
 
 	/**
 	 * Imports an extensions from the online repository
+	 * 
+	 * @param	[type]		$extRepUid: ...
+	 * @param	[type]		$loc: ...
+	 * @param	[type]		$uploadFlag: ...
+	 * @param	[type]		$directInput: ...
+	 * @param	[type]		$recentTranslations: ...
+	 * @param	[type]		$incManual: ...
+	 * @return	[type]		...
 	 */
 	function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput="",$recentTranslations=0,$incManual=0)	{
 		if (is_array($directInput))	{
@@ -758,6 +908,7 @@ EXTENSION KEYS:
 				
 				$fileContent = t3lib_div::getUrl($GLOBALS["HTTP_POST_FILES"]["upload_ext_file"]["tmp_name"]);
 				$fetchData=array($this->decodeExchangeData($fileContent),"");
+
 				if (is_array($fetchData))	{
 					$extKey = $fetchData[0]["extKey"];
 					if ($extKey)	{
@@ -893,6 +1044,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Display extensions details.
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @return	[type]		...
 	 */
 	function showExtDetails($extKey)	{
 		global $TYPO3_LOADED_EXT;
@@ -1128,8 +1282,17 @@ EXTENSION KEYS:
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$info: ...
+	 * @param	[type]		$notSilent: ...
+	 * @param	[type]		$script: ...
+	 * @param	[type]		$addFields: ...
+	 * @return	[type]		...
+	 */
 	function updatesForm($extKey,$info,$notSilent=0,$script="",$addFields="")	{
 		$script = $script ? $script : t3lib_div::linkThisScript();
 		$updates.=$this->checkDBupdates($extKey,$info);
@@ -1156,6 +1319,10 @@ EXTENSION KEYS:
 	
 	/**
 	 * Dumping static tables and table/fields structures...
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function extDumpTables($eKey,$info)	{
 			// Get dbInfo which holds the structure known from the tables.sql file
@@ -1217,6 +1384,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Delete extension...
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function extDelete($eKey,$info)	{
 		$absPath = $this->getExtPath($eKey,$info);
@@ -1239,6 +1410,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Update extension EM_CONF...
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function extUpdateEMCONF($eKey,$info)	{
 		$absPath = $this->getExtPath($eKey,$info);
@@ -1255,6 +1430,10 @@ EXTENSION KEYS:
 	
 	/**
 	 * make from framework
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function extMakeNewFromFramework($eKey,$info)	{
 		$absPath = $this->getExtPath($eKey,$info);
@@ -1272,6 +1451,10 @@ EXTENSION KEYS:
 		
 	/**
 	 * Makes Backup files
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function extBackup($eKey,$info)	{
 		$uArr = $this->makeUploadArray($eKey,$info);
@@ -1320,6 +1503,13 @@ EXTENSION KEYS:
 		} else die("Error...");
 	}
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$tablesArray: ...
+	 * @param	[type]		$eKey: ...
+	 * @return	[type]		...
+	 */
 	function extBackup_dumpDataTablesLine($tablesArray,$eKey)	{
 		reset($tablesArray);
 		$tables=array();
@@ -1343,6 +1533,11 @@ EXTENSION KEYS:
 
 	/**
 	 * Prints a table with extension information in it.
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @param	[type]		$remote: ...
+	 * @return	[type]		...
 	 */
 	function extInformationArray($eKey,$info,$remote=0)	{
 		$lines=array();
@@ -1430,11 +1625,27 @@ EXTENSION KEYS:
 				
 		return '<table border=0 cellpadding=1 cellspacing=2>'.implode("",$lines).'</table>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$techInfo: ...
+	 * @param	[type]		$tableHeader: ...
+	 * @return	[type]		...
+	 */
 	function extInformationArray_dbReq($techInfo,$tableHeader=0)	{
 		return nl2br(trim((is_array($techInfo["tables"])?($tableHeader?"\n\n<strong>Tables:</strong>\n":"").implode("\n",$techInfo["tables"]):"").
 				(is_array($techInfo["static"])?"\n\n<strong>Static tables:</strong>\n".implode("\n",$techInfo["static"]):"").
 				(is_array($techInfo["fields"])?"\n\n<strong>Additional fields:</strong>\n".implode("<HR>",$techInfo["fields"]):"")));
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$dbInst: ...
+	 * @param	[type]		$current: ...
+	 * @return	[type]		...
+	 */
 	function extInformationArray_dbInst($dbInst,$current)	{
 		if (strlen($dbInst)>1)	{
 			$others=array();
@@ -1446,12 +1657,27 @@ EXTENSION KEYS:
 			return $GLOBALS["TBE_TEMPLATE"]->rfw("A ".implode(" and ",$others)." extension with this key is also available on the server, but cannot be loaded because the '".$this->typeLabels[$current]."' version takes precendence.");
 		} else return "";
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$email: ...
+	 * @return	[type]		...
+	 */
 	function wrapEmail($str,$email)	{
 		if ($email)	{
 			$str='<a href="mailto:'.$email.'">'.$str.'</a>';
 		}
 		return $str;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$key: ...
+	 * @return	[type]		...
+	 */
 	function helpCol($key)	{
 		global $BE_USER;
 		if ($BE_USER->uc["edit_showFieldHelp"])	{	
@@ -1462,6 +1688,10 @@ EXTENSION KEYS:
 	
 	/**
 	 * Prints the upload form for extensions
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function getRepositoryUploadForm($eKey,$info)	{
 		$uArr = $this->makeUploadArray($eKey,$info);
@@ -1528,6 +1758,11 @@ EXTENSION KEYS:
 
 	/**
 	 * Prints the header row for the various listings
+	 * 
+	 * @param	[type]		$bgColor: ...
+	 * @param	[type]		$cells: ...
+	 * @param	[type]		$import: ...
+	 * @return	[type]		...
 	 */
 	function extensionListRowHeader($bgColor,$cells,$import=0)	{
 		$cells[]='<td></td>';
@@ -1580,6 +1815,16 @@ EXTENSION KEYS:
 
 	/**
 	 * Prints a row with data for the various extension listings
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$eConf: ...
+	 * @param	[type]		$info: ...
+	 * @param	[type]		$cells: ...
+	 * @param	[type]		$bgColor: ...
+	 * @param	[type]		$inst_list: ...
+	 * @param	[type]		$import: ...
+	 * @param	[type]		$altLinkUrl: ...
+	 * @return	[type]		...
 	 */
 	function extensionListRow($eKey,$eConf,$info,$cells,$bgColor="",$inst_list=array(),$import=0,$altLinkUrl="")	{
 		$imgInfo = @getImageSize($this->getExtPath($eKey,$info)."/ext_icon.gif");
@@ -1677,6 +1922,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns title and style attribute for mouseover help text.
+	 * 
+	 * @param	[type]		$str: ...
+	 * @return	[type]		...
 	 */
 	function labelInfo($str)	{
 		return t3lib_BEfunc::titleAttrib($str).' style="cursor:help;"';
@@ -1684,6 +1932,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Creates directories in $extDirPath
+	 * 
+	 * @param	[type]		$dirs: ...
+	 * @param	[type]		$extDirPath: ...
+	 * @return	[type]		...
 	 */
 	function createDirsInPath($dirs,$extDirPath)	{
 		if (is_array($dirs))	{
@@ -1707,6 +1959,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Removes the extension directory
+	 * 
+	 * @param	[type]		$removePath: ...
+	 * @param	[type]		$removeContentOnly: ...
+	 * @return	[type]		...
 	 */
 	function removeExtDirectory($removePath,$removeContentOnly=0)	{
 		if (@is_dir($removePath) && substr($removePath,-1)=="/" && (
@@ -1764,6 +2020,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Extracts the directories in the $files array
+	 * 
+	 * @param	[type]		$files: ...
+	 * @return	[type]		...
 	 */
 	function extractDirsFromFileList($files)	{
 		$dirs = array();
@@ -1785,6 +2044,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Removes the current extension of $type and creates the base folder for the new one (which is going to be imported)
+	 * 
+	 * @param	[type]		$importedData: ...
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
 	 */
 	function clearAndMakeExtensionDir($importedData,$type)	{
 		if (!$importedData["extKey"])	return "FATAL ERROR: Extension key was not set for some VERY strange reason. Nothing done...";
@@ -1826,6 +2089,11 @@ EXTENSION KEYS:
 
 	/**
 	 * Evaluates differences in version numbers with three parts, x.x.x. Returns true if $v1 is greater than $v2
+	 * 
+	 * @param	[type]		$v1: ...
+	 * @param	[type]		$v2: ...
+	 * @param	[type]		$div: ...
+	 * @return	[type]		...
 	 */
 	function versionDifference($v1,$v2,$div=1)	{
 #		debug(array(floor($this->makeVersion($v1,"int")/$div),floor($this->makeVersion($v2,"int")/$div)));
@@ -1834,6 +2102,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Fetches data from the $repositoryUrl, un-compresses it, unserializes array and returns an array with the content if success.
+	 * 
+	 * @param	[type]		$repositoryUrl: ...
+	 * @return	[type]		...
 	 */
 	function fetchServerData($repositoryUrl)	{
 		$ps1 = t3lib_div::milliseconds();
@@ -1853,6 +2124,10 @@ EXTENSION KEYS:
 	
 	/**
 	 * Decode server data
+	 * 
+	 * @param	[type]		$externalData: ...
+	 * @param	[type]		$stat: ...
+	 * @return	[type]		...
 	 */
 	function decodeServerData($externalData,$stat=array())	{
 		$parts = explode(":",$externalData,4);
@@ -1870,6 +2145,8 @@ EXTENSION KEYS:
 	
 	/**
 	 * Clearing of cache-files in typo3conf/ + menu
+	 * 
+	 * @return	[type]		...
 	 */
 	function addClearCacheFiles()	{
 		global $TYPO3_CONF_VARS;
@@ -1889,6 +2166,11 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns a header for an extensions including icon if any
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @param	[type]		$align: ...
+	 * @return	[type]		...
 	 */
 	function extensionTitleIconHeader($eKey,$info,$align="top")	{
 		$imgInfo = @getImageSize($this->getExtPath($eKey,$info)."/ext_icon.gif");
@@ -1903,6 +2185,11 @@ EXTENSION KEYS:
 	/**
 	 * Perform a detailed, technical analysis of the available extension on server!
 	 * Includes all kinds of verifications
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @param	[type]		$validity: ...
+	 * @return	[type]		...
 	 */
 	function makeDetailedExtensionAnalysis($eKey,$info,$validity=0)	{
 		$absPath = $this->getExtPath($eKey,$info);
@@ -2071,6 +2358,11 @@ EXTENSION KEYS:
 
 	/**
 	 * Analyses the php-scripts of an available extension on server
+	 * 
+	 * @param	[type]		$absPath: ...
+	 * @param	[type]		$table_class_prefix: ...
+	 * @param	[type]		$eKey: ...
+	 * @return	[type]		...
 	 */
 	function getClassIndexLocallangFiles($absPath,$table_class_prefix,$eKey)	{
 		$filesInside = $this->removePrefixPathFromList($this->getAllFilesAndFoldersInPath(array(),$absPath,"php,inc"),$absPath);
@@ -2138,6 +2430,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns true if the $str is found as the first part of a string in $array
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$array: ...
+	 * @return	[type]		...
 	 */
 	function first_in_array($str,$array)	{
 		if (is_array($array))	{
@@ -2150,6 +2446,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Reads $confFilePath (a module $conf-file) and returns information on the existence of TYPO3_MOD_PATH definition and MCONF_name
+	 * 
+	 * @param	[type]		$confFilePath: ...
+	 * @return	[type]		...
 	 */
 	function modConfFileAnalysis($confFilePath)	{
 		$lines = explode(chr(10),t3lib_div::getUrl($confFilePath));
@@ -2173,6 +2472,11 @@ EXTENSION KEYS:
 
 	/**
 	 * Write new TYPO3_MOD_PATH
+	 * 
+	 * @param	[type]		$confFilePath: ...
+	 * @param	[type]		$type: ...
+	 * @param	[type]		$mP: ...
+	 * @return	[type]		...
 	 */
 	function writeTYPO3_MOD_PATH($confFilePath,$type,$mP)	{
 		$lines = explode(chr(10),t3lib_div::getUrl($confFilePath));
@@ -2204,6 +2508,13 @@ EXTENSION KEYS:
 
 	/**
 	 * Produces the config form for an extension (if any template file, ext_conf_template.txt is found)
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @param	[type]		$output: ...
+	 * @param	[type]		$script: ...
+	 * @param	[type]		$addFields: ...
+	 * @return	[type]		...
 	 */
 	function tsStyleConfigForm($eKey,$info,$output=0,$script="",$addFields="")	{
 		$absPath = $this->getExtPath($eKey,$info);
@@ -2250,6 +2561,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Writes the TSstyleconf values to localconf.php
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$arr: ...
+	 * @return	[type]		...
 	 */
 	function writeTsStyleConfig($eKey,$arr)	{
 			// Instance of install tool					
@@ -2268,6 +2583,9 @@ EXTENSION KEYS:
 	/**
 	 * Dump static table information
 	 * Which tables are determined by the ext_tables_static+adt.sql
+	 * 
+	 * @param	[type]		$tableList: ...
+	 * @return	[type]		...
 	 */
 	function dumpStaticTables($tableList)	{
 		$instObj = new em_install_class;
@@ -2292,6 +2610,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Makes a dump of the tables/fields for an extension
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @return	[type]		...
 	 */
 	function dumpTableAndFieldStructure($arr)	{
 		$tables = array();
@@ -2307,6 +2628,8 @@ EXTENSION KEYS:
 
 	/**
 	 * Dump-header
+	 * 
+	 * @return	[type]		...
 	 */
 	function dumpHeader()	{
 		return trim("		
@@ -2319,6 +2642,11 @@ EXTENSION KEYS:
 
 	/**
 	 * Dump table header
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$fieldKeyInfo: ...
+	 * @param	[type]		$dropTableIfExists: ...
+	 * @return	[type]		...
 	 */
 	function dumpTableHeader($table,$fieldKeyInfo,$dropTableIfExists=0)	{
 		$lines=array();
@@ -2349,6 +2677,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Dump table content
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$fieldStructure: ...
+	 * @return	[type]		...
 	 */
 	function dumpTableContent($table,$fieldStructure)	{
 			// Borrowed a some chunks of code from phpMyAdmin here...
@@ -2372,6 +2704,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Writes the extension list
+	 * 
+	 * @param	[type]		$newExtList: ...
+	 * @return	[type]		...
 	 */
 	function writeNewExtensionList($newExtList)	{
 			// Instance of install tool					
@@ -2389,6 +2724,8 @@ EXTENSION KEYS:
 
 	/**
 	 * Unlink (delete) cache files
+	 * 
+	 * @return	[type]		...
 	 */
 	function removeCacheFiles()	{
 		$cacheFiles=t3lib_extMgm::currentCacheFiles();
@@ -2406,6 +2743,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Check if clear-cache should be performed, otherwise show form (for installation of extension)
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function checkClearCache($eKey,$info)	{
 		if ($info["EM_CONF"]["clearCacheOnLoad"])	{
@@ -2425,7 +2766,9 @@ EXTENSION KEYS:
 	}
 
 	/**
-	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function checkUploadFolder($eKey,$info)	{
 		$instObj = new em_install_class;
@@ -2494,6 +2837,11 @@ EXTENSION KEYS:
 	/**
 	 * Validates the database according to extension requirements
 	 * Prints form for changes if any. If none, returns blank. If an update is ordered, empty is returned as well.
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @param	[type]		$info: ...
+	 * @param	[type]		$infoOnly: ...
+	 * @return	[type]		...
 	 */
 	function checkDBupdates($eKey,$info,$infoOnly=0)	{
 
@@ -2590,6 +2938,10 @@ EXTENSION KEYS:
 	
 	/**
 	 * Compares two arrays with MD5-hash values for analysis of which files has changed.
+	 * 
+	 * @param	[type]		$current: ...
+	 * @param	[type]		$past: ...
+	 * @return	[type]		...
 	 */
 	function findMD5ArrayDiff($current,$past)	{
 		if (!is_array($current))	$current=array();
@@ -2603,6 +2955,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Removes all entries in the array having the script CVS/ in it
+	 * 
+	 * @param	[type]		$arr: ...
+	 * @return	[type]		...
 	 */
 	function removeCVSentries($arr)	{
 		reset($arr);
@@ -2614,6 +2969,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Creates a MD5-hash array over the current files in the extension
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
 	 */
 	function serverExtensionMD5Array($extKey,$conf)	{
 		$mUA = $this->makeUploadArray($extKey,$conf);
@@ -2632,6 +2991,10 @@ EXTENSION KEYS:
 	
 	/**
 	 * Make upload array out of extension
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
 	 */
 	function makeUploadArray($extKey,$conf)	{
 		$extPath=$this->getExtPath($extKey,$conf);
@@ -2687,7 +3050,9 @@ EXTENSION KEYS:
 	}
 	
 	/**
-	 *
+	 * @param	[type]		$file: ...
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
 	 */
 	function getSerializedLocalLang($file,$content)	{
 		$returnParts = explode('$LOCAL_LANG',$content,2);
@@ -2702,6 +3067,9 @@ EXTENSION KEYS:
 	/**
 	 * Gets the table and field structure from database. 
 	 * Which fields and which tables are determined from the ext_tables.sql file
+	 * 
+	 * @param	[type]		$parts: ...
+	 * @return	[type]		...
 	 */
 	function getTableAndFieldStructure($parts)	{
 			// Instance of install tool
@@ -2730,6 +3098,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Compiles the ext_emconf.php file
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$EM_CONF: ...
+	 * @return	[type]		...
 	 */
 	function construct_ext_emconf_file($extKey,$EM_CONF)	{
 		reset($EM_CONF);
@@ -2769,6 +3141,9 @@ EXTENSION KEYS:
 
 	/**
 	 * Decodes extension upload array
+	 * 
+	 * @param	[type]		$str: ...
+	 * @return	[type]		...
 	 */
 	function decodeExchangeData($str)	{
 		$parts = explode(":",$str,3);
@@ -2779,11 +3154,15 @@ EXTENSION KEYS:
 		}
 		if (md5($parts[2]) == $parts[0])	{
 			return unserialize($parts[2]);
-		}
+		} else debug('MD5 mismatch. Maybe the extension file was downloaded and saved as a text file by the browser and thereby corrupted!? (Always select "All" filetype when saving extensions)');
 	}
 
 	/**
 	 * Encodes extension upload array
+	 * 
+	 * @param	[type]		$uploadArray: ...
+	 * @param	[type]		$local_gzcompress: ...
+	 * @return	[type]		...
 	 */
 	function makeUploadDataFromArray($uploadArray,$local_gzcompress=-1)	{
 		if (is_array($uploadArray))	{
@@ -2806,6 +3185,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns file-listing of an extension
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
 	 */
 	function getFileListOfExtension($extKey,$conf)	{
 		$extPath=$this->getExtPath($extKey,$conf);
@@ -2848,6 +3231,12 @@ EXTENSION KEYS:
 
 	/**
 	 * Recursively gather all files and folders of extension path.
+	 * 
+	 * @param	[type]		$fileArr: ...
+	 * @param	[type]		$extPath: ...
+	 * @param	[type]		$extList: ...
+	 * @param	[type]		$regDirs: ...
+	 * @return	[type]		...
 	 */
 	function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList="",$regDirs=0)	{
 		if ($regDirs)	$fileArr[]=$extPath;
@@ -2867,6 +3256,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Removes the absolute part of all files/folders in fileArr
+	 * 
+	 * @param	[type]		$fileArr: ...
+	 * @param	[type]		$extPath: ...
+	 * @return	[type]		...
 	 */
 	function removePrefixPathFromList($fileArr,$extPath)	{
 		reset($fileArr);
@@ -2880,6 +3273,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns the path of an available extension based on "type" (SGL)
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
 	 */
 	function getExtPath($extKey,$conf)	{
 		$typeP = $this->typePaths[$conf["type"]];
@@ -2892,6 +3289,10 @@ EXTENSION KEYS:
 	/**
 	 * Adds extension to extension list and returns new list. If -1 is returned, an error happend.
 	 * Checks dependencies etc.
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$list: ...
+	 * @return	[type]		...
 	 */
 	function addExtToList($extKey,$list)	{
 		global $TYPO3_LOADED_EXT;
@@ -2939,6 +3340,10 @@ EXTENSION KEYS:
 	/**
 	 * Remove extension from list and returns list. If -1 is returned, an error happend.
 	 * Checks dependencies etc.
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$list: ...
+	 * @return	[type]		...
 	 */
 	function removeExtFromList($extKey,$list)	{
 		global $TYPO3_LOADED_EXT;
@@ -2969,6 +3374,9 @@ EXTENSION KEYS:
 
 	/**
 	 * This removes any required extensions from the $listArr - they should NOT be added to the common extension list, because they are found already in "requiredExt" list
+	 * 
+	 * @param	[type]		$listArr: ...
+	 * @return	[type]		...
 	 */
 	function removeRequiredExtFromListArr($listArr)	{
 		reset($listArr);
@@ -2980,6 +3388,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Traverse the array and arranges extension in the priority order they should be in
+	 * 
+	 * @param	[type]		$listArr: ...
+	 * @param	[type]		$list: ...
+	 * @return	[type]		...
 	 */
 	function managesPriorities($listArr,$list)	{
 		reset($listArr);
@@ -3009,6 +3421,8 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns the list of available (installed) extensions
+	 * 
+	 * @return	[type]		...
 	 */
 	function getInstalledExtensions()	{
 		$list=array();
@@ -3028,6 +3442,12 @@ EXTENSION KEYS:
 
 	/**
 	 * Gathers all extensions in $path
+	 * 
+	 * @param	[type]		$path: ...
+	 * @param	[type]		$list: ...
+	 * @param	[type]		$cat: ...
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
 	 */
 	function getInstExtList($path,$list,$cat,$type)	{
 		if (@is_dir($path))	{
@@ -3060,6 +3480,9 @@ EXTENSION KEYS:
 	
 	/**
 	 * Maps remote extensions information into $cat/$list arrays for listing
+	 * 
+	 * @param	[type]		$listArr: ...
+	 * @return	[type]		...
 	 */
 	function getImportExtList($listArr)	{
 		$list=array();
@@ -3106,7 +3529,12 @@ EXTENSION KEYS:
 	}
 
 	/**
-	 *  Set category for extension listing
+	 * Set category for extension listing
+	 * 
+	 * @param	[type]		$cat: ...
+	 * @param	[type]		$list: ...
+	 * @param	[type]		$eKey: ...
+	 * @return	[type]		...
 	 */
 	function setCat($cat,$list,$eKey)	{
 		$cat["cat"][$list[$eKey]["EM_CONF"]["category"]][$eKey]=$list[$eKey]["EM_CONF"]["title"];
@@ -3126,7 +3554,10 @@ EXTENSION KEYS:
 	}
 
 	/**
-	 *  Processes return-data from online repository.
+	 * Processes return-data from online repository.
+	 * 
+	 * @param	[type]		$TER_CMD: ...
+	 * @return	[type]		...
 	 */
 	function processRepositoryReturnData($TER_CMD)	{
 		switch((string)$TER_CMD["cmd"])	{
@@ -3151,7 +3582,11 @@ EXTENSION KEYS:
 	}
 
 	/**
-	 *  Forces update of local EM_CONF. This will renew the information of changed files.
+	 * Forces update of local EM_CONF. This will renew the information of changed files.
+	 * 
+	 * @param	[type]		$extKey: ...
+	 * @param	[type]		$info: ...
+	 * @return	[type]		...
 	 */
 	function updateLocalEM_CONF($extKey,$info)	{
 		$EM_CONF=$info["EM_CONF"];
@@ -3171,6 +3606,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns the $EM_CONF array from an extensions ext_emconf.php file
+	 * 
+	 * @param	[type]		$path: ...
+	 * @param	[type]		$_EXTKEY: ...
+	 * @return	[type]		...
 	 */
 	function includeEMCONF($path,$_EXTKEY)	{
 		include($path);
@@ -3180,6 +3619,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns subtitles for the extension listings
+	 * 
+	 * @param	[type]		$listOrder: ...
+	 * @param	[type]		$key: ...
+	 * @return	[type]		...
 	 */
 	function listOrderTitle($listOrder,$key)	{
 		switch($listOrder)	{
@@ -3206,6 +3649,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns version information
+	 * 
+	 * @param	[type]		$v: ...
+	 * @param	[type]		$mode: ...
+	 * @return	[type]		...
 	 */
 	function makeVersion($v,$mode)	{
 		$vDat = $this->renderVersion($v);
@@ -3214,6 +3661,10 @@ EXTENSION KEYS:
 
 	/**
 	 * Parses the version number x.x.x and returns an array with the various parts.
+	 * 
+	 * @param	[type]		$v: ...
+	 * @param	[type]		$raise: ...
+	 * @return	[type]		...
 	 */
 	function renderVersion($v,$raise="")	{
 		$parts = t3lib_div::intExplode(".",$v."..");
@@ -3245,6 +3696,8 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns the unique TYPO3 Install Identification (sent to repository for statistics)
+	 * 
+	 * @return	[type]		...
 	 */
 	function T3instID()	{
 		return $GLOBALS["TYPO3_CONF_VARS"]["SYS"]["T3instID"];
@@ -3252,6 +3705,8 @@ EXTENSION KEYS:
 
 	/**
 	 * Returns the return Url of the current script (for repository exchange)
+	 * 
+	 * @return	[type]		...
 	 */
 	function makeReturnUrl()	{
 		return t3lib_div::getIndpEnv("TYPO3_REQUEST_URL");
@@ -3259,6 +3714,8 @@ EXTENSION KEYS:
 
 	/**
 	 * Compiles the additional GET-parameters sent to the repository during requests for information.
+	 * 
+	 * @return	[type]		...
 	 */
 	function repTransferParams()	{
 		return "&tx_extrep[T3instID]=".rawurlencode($this->T3instID()).
@@ -3270,22 +3727,57 @@ EXTENSION KEYS:
 	
 	/**
 	 * Returns upload folder for extension
+	 * 
+	 * @param	[type]		$eKey: ...
+	 * @return	[type]		...
 	 */
 	function ulFolder($eKey)	{
 		return "uploads/tx_".str_replace("_","",$eKey)."/";
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function removeButton()	{
 		return '<img src="uninstall.gif" width="16" height="16" border="0" alt="Remove extension" align=top>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function installButton()	{
 		return '<img src="install.gif" width="16" height="16" border="0" alt="Install extension..." align=top>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function importAtAll()	{
 		return ($GLOBALS["TYPO3_CONF_VARS"]["EXT"]["allowGlobalInstall"] || $GLOBALS["TYPO3_CONF_VARS"]["EXT"]["allowLocalInstall"]);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function noImportMsg()	{
 		return '<img src="'.$this->doc->backPath.'gfx/icon_warning2.gif" width="18" height="16" border="0" align=top><strong>Import to both local and global path is disabled in TYPO3_CONF_VARS!</strong>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$type: ...
+	 * @param	[type]		$lockType: ...
+	 * @return	[type]		...
+	 */
 	function importAsType($type,$lockType="")	{
 		switch($type)	{
 			case "G":
