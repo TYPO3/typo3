@@ -277,6 +277,10 @@ function debugEnd() {
 }
 
 
+	// Init services array:
+$T3_SERVICES = array();
+
+
 // Load extensions:
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->push('Loading localconf.php extensions','');
 $TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
@@ -315,7 +319,6 @@ unset($BE_USER);
 	// Those set otherwise:
 unset($TBE_MODULES_EXT);
 unset($TCA_DESCR);
-unset($T3_SERVICES);
 unset($LOCAL_LANG);
 
 
