@@ -1,6 +1,12 @@
+2004-11-15  Michael Stucki  <michael@typo3.org>
+
+ * Fixed bug #0000459: undefined function: float() in class.t3lib_cs.php
+ * Changed URL to licensing details page in LICENSE.txt
+
 2004-10-25  Jan-Erik Revsbech <jer@moccompany.com>
-	*Fixed problem in htmlmail when running ith safe mode enabled.
-	
+
+ * Fixed problem in htmlmail when running ith safe mode enabled.
+
 2004-09-24  Michael Stucki  <mundaun@gmx.ch>
 
  * Release of TYPO3 3.7.0
@@ -57,7 +63,7 @@
 
 2004-09-14  Kasper Skårhøj,,,  <kasper@typo3.com>
 
- * Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...
+	* Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...
 	* Updated all JavaDoc comments and function/class indexes in files, preparing for 3.7.0RC
 
 2004-09-13  Kasper Skårhøj,,,  <kasper@typo3.com>
