@@ -884,6 +884,15 @@ BACKEND TOOLS:
 - Global search and replace of records (Rene F?)
 - Export the complete typo3 site/database, in a big file like mycompletesite.t3d
 
+Repeated intervals extension:
+- Cron-job which alters the start/end times according to some schedule.
+- Configurable for any element of course
+
+New-Wizard:
+- An extension offering people to configure a wizard for creation of records. For instance you can configure to create a content element in three steps: First select type and header, then according to first choice, select more. Each screen has custom text/images/examples. Eventually the record is created. After creation there might be more options to set. In the end the wizard might fire up another application (like TemplaVoila) or a wizard or such.
+- Could be useful for: TemplaVoila Template Objects, Content Elements (like tables/forms/plugins), Pages of sorts.
+- Configuration could be in XML (since it needs a hierarchy)
+
 
 **************************************
 APPENDIX: PATTERN-control

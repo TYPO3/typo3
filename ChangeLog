@@ -1,3 +1,12 @@
+2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added possibility to copy database/file elements attached to records; You can now click the icon of these elements in the editing forms and get a (limited) context menu for these elements.
+	* Fixed some other bugs around.
+
+2004-04-16  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* fixed detection of schemes (http://, ftp:// etc) in "typolinks". Now email addresses are detected only if NOT prepended with a scheme. Also the presence of a scheme will make typolink function detect the input as a plain URL which should just be passed through untouched.
+
 2004-04-14  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Mount Points (Mount pages) reworking:

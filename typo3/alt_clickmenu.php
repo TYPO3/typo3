@@ -46,59 +46,61 @@
  *
  *
  *
- *  123: class clickMenu
- *  155:     function init($item)
- *  198:     function doDisplayTopFrameCM()
+ *  125: class clickMenu
+ *  157:     function init($item)
+ *  200:     function doDisplayTopFrameCM()
  *
  *              SECTION: DATABASE
- *  226:     function printDBClickMenu($table,$uid)
- *  313:     function printNewDBLevel($table,$uid)
- *  350:     function externalProcessingOfDBMenuItems($menuItems)
- *  362:     function processingByExtClassArray($menuItems,$table,$uid)
- *  381:     function urlRefForCM($url,$retUrl='',$hideCM=1)
- *  398:     function DB_copycut($table,$uid,$type)
- *  421:     function DB_paste($table,$uid,$type,$elInfo)
- *  442:     function DB_info($table,$uid)
- *  458:     function DB_history($table,$uid)
- *  477:     function DB_perms($table,$uid,$rec)
- *  496:     function DB_db_list($table,$uid,$rec)
- *  515:     function DB_moveWizard($table,$uid,$rec)
- *  536:     function DB_newWizard($table,$uid,$rec)
- *  559:     function DB_editAccess($table,$uid)
- *  577:     function DB_editPageHeader($uid)
- *  595:     function DB_edit($table,$uid)
- *  637:     function DB_new($table,$uid)
- *  662:     function DB_hideUnhide($table,$rec,$hideField)
- *  686:     function DB_delete($table,$uid,$elInfo)
- *  707:     function DB_view($id,$anchor='')
+ *  228:     function printDBClickMenu($table,$uid)
+ *  315:     function printNewDBLevel($table,$uid)
+ *  352:     function externalProcessingOfDBMenuItems($menuItems)
+ *  364:     function processingByExtClassArray($menuItems,$table,$uid)
+ *  383:     function urlRefForCM($url,$retUrl='',$hideCM=1)
+ *  400:     function DB_copycut($table,$uid,$type)
+ *  429:     function DB_paste($table,$uid,$type,$elInfo)
+ *  450:     function DB_info($table,$uid)
+ *  466:     function DB_history($table,$uid)
+ *  485:     function DB_perms($table,$uid,$rec)
+ *  504:     function DB_db_list($table,$uid,$rec)
+ *  523:     function DB_moveWizard($table,$uid,$rec)
+ *  544:     function DB_newWizard($table,$uid,$rec)
+ *  567:     function DB_editAccess($table,$uid)
+ *  585:     function DB_editPageHeader($uid)
+ *  603:     function DB_edit($table,$uid)
+ *  645:     function DB_new($table,$uid)
+ *  670:     function DB_hideUnhide($table,$rec,$hideField)
+ *  694:     function DB_delete($table,$uid,$elInfo)
+ *  715:     function DB_view($id,$anchor='')
  *
  *              SECTION: FILE
- *  736:     function printFileClickMenu($path)
- *  800:     function externalProcessingOfFileMenuItems($menuItems)
- *  814:     function FILE_launch($path,$script,$type,$image)
- *  833:     function FILE_copycut($path,$type)
- *  853:     function FILE_delete($path)
- *  875:     function FILE_paste($path,$target,$elInfo)
+ *  744:     function printFileClickMenu($path)
+ *  808:     function externalProcessingOfFileMenuItems($menuItems)
+ *  822:     function FILE_launch($path,$script,$type,$image)
+ *  841:     function FILE_copycut($path,$type)
+ *  867:     function FILE_delete($path)
+ *  889:     function FILE_paste($path,$target,$elInfo)
  *
  *              SECTION: COMMON
- *  915:     function printItems($menuItems,$item)
- *  960:     function printLayerJScode($menuItems)
- *  998:     function wrapColorTableCM($str)
- * 1021:     function menuItemsForTopFrame($menuItems)
- * 1038:     function menuItemsForClickMenu($menuItems)
- * 1073:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)
- * 1097:     function excludeIcon($iconCode)
- * 1107:     function label($label)
- * 1116:     function isCMlayers()
- * 1126:     function frameLocation($str)
+ *  929:     function printItems($menuItems,$item)
+ *  981:     function printLayerJScode($menuItems)
+ * 1019:     function wrapColorTableCM($str)
+ * 1042:     function menuItemsForTopFrame($menuItems)
+ * 1059:     function menuItemsForClickMenu($menuItems)
+ * 1094:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)
+ * 1118:     function excludeIcon($iconCode)
+ * 1128:     function enableDisableItems($menuItems)
+ * 1166:     function cleanUpSpacers($menuItems)
+ * 1208:     function label($label)
+ * 1217:     function isCMlayers()
+ * 1227:     function frameLocation($str)
  *
  *
- * 1151: class SC_alt_clickmenu
- * 1169:     function init()
- * 1260:     function main()
- * 1295:     function printContent()
+ * 1252: class SC_alt_clickmenu
+ * 1271:     function init()
+ * 1369:     function main()
+ * 1403:     function printContent()
  *
- * TOTAL FUNCTIONS: 41
+ * TOTAL FUNCTIONS: 43
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -132,7 +134,7 @@ class clickMenu {
 	var $listFrame=0;			// If set, the calling document should be in the listframe of a frameset.
 	var $isDBmenu=0;			// If set, the menu is about database records, not files. (set if part 2 [1] of the item-var is NOT blank)
 	var $alwaysContentFrame=0;	// If true, the "content" frame is always used for reference (when condensed mode is enabled)
-	var $iParts=array();		// Stores the parts of the input $item string, splitted by "|"
+	var $iParts=array();		// Stores the parts of the input $item string, splitted by "|": [0] = table/file, [1] = uid/blank, [2] = flag: If set, listFrame, [3] = ("+" prefix = disable all by default, enable these. Default is to disable) Items key list
 	var $disabledItems=array();	// Contains list of keywords of items to disable in the menu
 	var $dontDisplayTopFrameCM=0;	// If true, the context sensitive menu will not appear in the top frame, only as a layer.
 	var $leftIcons=0;			// If true, Show icons on the left.
@@ -400,10 +402,15 @@ class clickMenu {
 			$isSel = $this->clipObj->isSelected($table,$uid);
 		}
 
+		$addParam = array();
+		if ($this->listFrame)	{
+			$addParam['reloadListFrame'] = ($this->alwaysContentFrame ? 2 : 1);
+		}
+
 		return $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
-			"top.loadTopMenu('".$this->clipObj->selUrlDB($table,$uid,($type=='copy'?1:0),($isSel==$type),array('reloadListFrame'=>$this->listFrame))."');return false;"
+			"top.loadTopMenu('".$this->clipObj->selUrlDB($table,$uid,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"
 		);
 	}
 
@@ -832,15 +839,21 @@ class clickMenu {
 	 * @internal
 	 */
 	function FILE_copycut($path,$type)	{
-		$table='_FILE';		// Pseudo table name for use in the clipboard.
+		$table = '_FILE';		// Pseudo table name for use in the clipboard.
 		$uid = t3lib_div::shortmd5($path);
 		if ($this->clipObj->current=='normal')	{
 			$isSel = $this->clipObj->isSelected($table,$uid);
 		}
+
+		$addParam = array();
+		if ($this->listFrame)	{
+			$addParam['reloadListFrame'] = ($this->alwaysContentFrame ? 2 : 1);
+		}
+
 		return $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
-			"top.loadTopMenu('".$this->clipObj->selUrlFile($path,($type=='copy'?1:0),($isSel==$type))."');return false;"
+			"top.loadTopMenu('".$this->clipObj->selUrlFile($path,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"
 		);
 	}
 
@@ -914,7 +927,14 @@ class clickMenu {
 	 * @return	string		HTML code
 	 */
 	function printItems($menuItems,$item)	{
+
 		$out='';
+
+			// Enable/Disable items:
+		$menuItems = $this->enableDisableItems($menuItems);
+
+			// Clean up spacers:
+		$menuItems = $this->cleanUpSpacers($menuItems);
 
 			// Adding topframe part (horizontal clickmenu)
 		if ($this->doDisplayTopFrameCM())	{
@@ -1100,6 +1120,86 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 	}
 
 	/**
+	 * Enabling / Disabling items based on list provided from GET var ($this->iParts[3])
+	 *
+	 * @param	array		Menu items array
+	 * @return	array		Menu items array, processed.
+	 */
+	function enableDisableItems($menuItems)	{
+		if ($this->iParts[3])	{
+
+				// Detect "only" mode: (only showing listed items)
+			if (substr($this->iParts[3],0,1)=='+')	{
+				$this->iParts[3] = substr($this->iParts[3],1);
+				$only = TRUE;
+			} else {
+				$only = FALSE;
+			}
+
+				// Do filtering:
+			if ($only)	{	// Transfer ONLY elements which are mentioned (or are spacers)
+				$newMenuArray = array();
+				foreach($menuItems as $key => $value)	{
+					if (t3lib_div::inList($this->iParts[3], $key) || (is_string($value) && $value=='spacer'))	{
+						$newMenuArray[$key] = $value;
+					}
+				}
+				$menuItems = $newMenuArray;
+			} else {	// Traverse all elements except those listed (just unsetting them):
+				$elements = t3lib_div::trimExplode(',',$this->iParts[3],1);
+				foreach($elements as $value)	{
+					unset($menuItems[$value]);
+				}
+			}
+		}
+
+			// Return processed menu items:
+		return $menuItems;
+	}
+
+	/**
+	 * Clean up spacers; Will remove any spacers in the start/end of menu items array plus any duplicates.
+	 *
+	 * @param	array		Menu items array
+	 * @return	array		Menu items array, processed.
+	 */
+	function cleanUpSpacers($menuItems)	{
+
+			// Remove doubles:
+		$prevItemWasSpacer = FALSE;
+		foreach($menuItems as $key => $value)	{
+			if (is_string($value) && $value=='spacer')	{
+				if ($prevItemWasSpacer)	{
+					unset($menuItems[$key]);
+				}
+				$prevItemWasSpacer = TRUE;
+			} else {
+				$prevItemWasSpacer = FALSE;
+			}
+		}
+
+			// Remove first:
+		reset($menuItems);
+		$key = key($menuItems);
+		$value = current($menuItems);
+		if (is_string($value) && $value=='spacer')	{
+			unset($menuItems[$key]);
+		}
+
+
+			// Remove last:
+		end($menuItems);
+		$key = key($menuItems);
+		$value = current($menuItems);
+		if (is_string($value) && $value=='spacer')	{
+			unset($menuItems[$key]);
+		}
+
+			// Return processed menu items:
+		return $menuItems;
+	}
+
+	/**
 	 * Get label from locallang_core.php:cm.*
 	 *
 	 * @param	string		The "cm."-suffix to get.
@@ -1212,6 +1312,7 @@ class SC_alt_clickmenu {
 		$secs = t3lib_div::intInRange($BE_USER->getTSConfigVal('options.contextMenu.options.clickMenuTimeOut'),1,100,5);	// default is 5
 
 			// Setting the JavaScript controlling the timer on the page
+		$listFrameDoc = $this->reloadListFrame!=2 ? 'top.content.list_frame' : 'top.content';
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
 	var date = new Date();
 	var mo_timeout = Math.floor(date.getTime()/1000);
@@ -1255,7 +1356,7 @@ class SC_alt_clickmenu {
 
 	'.($this->reloadListFrame ? '
 		// Reload list frame:
-	if(top.content.list_frame){top.content.list_frame.document.location=top.content.list_frame.document.location;}' :
+	if('.$listFrameDoc.'){'.$listFrameDoc.'.document.location='.$listFrameDoc.'.document.location;}' :
 	'').'
 		');
 	}
@@ -1274,7 +1375,6 @@ class SC_alt_clickmenu {
 
 			// Update clipboard if some actions are sent.
 		$CB = t3lib_div::_GET('CB');
-
 		$clipObj->setCmd($CB);
 		$clipObj->cleanCurrent();
 		$clipObj->endClipboard();	// Saves

@@ -309,6 +309,7 @@ TABLE.typo3-page-ceHeader IMG { vertical-align: middle; }
 TABLE.typo3-page-columnsMode IMG.c-divider { margin: 10px 0px 5px 0px;}
 TABLE.typo3-page-columnsMode TR TD A { text-decoration: none; }
 TABLE.typo3-page-columnsMode TR TD A B { text-decoration: underline; }
+TABLE.typo3-page-cols TR TD SPAN.exampleContent A { text-decoration: none;}
 
 /* Web > List */
 TABLE.typo3-dblist IMG { vertical-align: middle; }

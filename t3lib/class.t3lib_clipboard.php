@@ -373,11 +373,11 @@ class t3lib_clipboard {
 
 					if ($table=='_FILE')	{	// Rendering files/directories on the clipboard:
 						if (@file_exists($v) && t3lib_div::isAllowedAbsPath($v))	{
-							$fI=pathinfo($v);
+							$fI = pathinfo($v);
 							$icon = is_dir($v) ? 'folder.gif' : t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
-							$size=' ('.t3lib_div::formatSize(filesize($v)).'bytes)';
+							$size = ' ('.t3lib_div::formatSize(filesize($v)).'bytes)';
 							$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$icon,'width="18" height="16"').' border="0" hspace="20" class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
-							$thumb= $this->clipData['_setThumb'] ? (t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],$fI['extension']) ? t3lib_BEfunc::getThumbNail($this->backPath.'thumbs.php',$v,' vspace="4"') : '') :'';
+							$thumb = $this->clipData['_setThumb'] ? (t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],$fI['extension']) ? t3lib_BEfunc::getThumbNail($this->backPath.'thumbs.php',$v,' vspace="4"') : '') :'';
 
 							$lines[]='
 								<tr>

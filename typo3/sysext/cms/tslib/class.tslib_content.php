@@ -4636,8 +4636,11 @@ class tslib_cObj {
 			$target = isset($conf['target']) ? $conf['target'] : $GLOBALS['TSFE']->intTarget;
 			if ($conf['target.'])	{$target=$this->stdWrap($target, $conf['target.']);}
 
+				// Parse URL:
+			$pU = parse_url($link_param);
+
 				// Detecting kind of link:
-			if(strstr($link_param,'@'))	{		// If it's a mail address:
+			if(strstr($link_param,'@') && !$pU['scheme'])	{		// If it's a mail address:
 				$link_param = eregi_replace('^mailto:','',$link_param);
 				if ($linktxt=='') $linktxt = $link_param;
 				if (!$GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $GLOBALS['TSFE']->config['config']['jumpurl_mailto_disable'])	{
@@ -4664,12 +4667,12 @@ class tslib_cObj {
 					$isLocalFile=1;
 				}
 
-				if(!$isLocalFile && $urlChar && (strstr($link_param,'//') || !$fileChar || $urlChar<$fileChar))	{	// url (external): If doubleSlash or if a '.' comes before a '/'.
+				if($pU['scheme'] || (!$isLocalFile && $urlChar && (!$fileChar || $urlChar<$fileChar)))	{	// url (external): If doubleSlash or if a '.' comes before a '/'.
 					$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 					if ($conf['extTarget.'])	{$target = $this->stdWrap($target, $conf['extTarget.']);}
 					if ($forceTarget)	{$target=$forceTarget;}
 					if ($linktxt=='') $linktxt = $link_param;
-					if (!ereg('^[a-z]*://',trim(strtolower($link_param))))	{$scheme='http://';} else {$scheme='';}
+					if (!$pU['scheme'])	{$scheme='http://';} else {$scheme='';}
 					if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'])	{
 						$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix.$GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode($scheme.$link_param).$GLOBALS['TSFE']->getMethodUrlIdToken;
 					} else {
@@ -4680,7 +4683,7 @@ class tslib_cObj {
 					$finalTagParts['targetParams'] = $target ? ' target="'.$target.'"' : '';
 					$finalTagParts['TYPE']='url';
 				} elseif ($fileChar || $isLocalFile)	{	// file (internal)
-					$splitLinkParam = explode('?',$link_param);
+					$splitLinkParam = explode('?', $link_param);
 					if (@file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile)	{
 						if ($linktxt=='') $linktxt = rawurldecode($link_param);
 						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'])	{

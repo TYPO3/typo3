@@ -415,6 +415,12 @@ class SC_alt_doc {
 			}
 		'.(isset($HTTP_POST_VARS['_savedokview_x']) && $this->popViewId ? t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl) : '')
 		);
+
+			// Setting up the context sensitive menu:
+		$CMparts = $this->doc->getContextMenuCode();
+		$this->doc->JScode.= $CMparts[0];
+		$this->doc->bodyTagAdditions = $CMparts[1];
+		$this->doc->postCode.= $CMparts[2];
 	}
 
 	/**
@@ -439,6 +445,7 @@ class SC_alt_doc {
 			$this->tceforms->returnUrl = $this->R_URI;
 			$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 			$this->tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
+			$this->tceforms->enableClickMenu = TRUE;
 
 				// Clipboard is initialized:
 			$this->tceforms->clipObj = t3lib_div::makeInstance('t3lib_clipboard');		// Start clipboard

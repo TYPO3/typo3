@@ -279,12 +279,14 @@ class template {
 	 * @param	integer		If icon is for database record this is the UID for the record from $table
 	 * @param	boolean		Tells the top frame script that the link is coming from a "list" frame which means a frame from within the backend content frame.
 	 * @param	string		Additional GET parameters for the link to alt_clickmenu.php
+	 * @param	string		Enable / Disable click menu items. Example: "+new,view" will display ONLY these two items (and any spacers in between), "new,view" will display all BUT these two items.
+	 * @param	boolean		If set, will return only the onclick JavaScript, not the whole link.
 	 * @return	string		The link-wrapped input string.
 	 */
-	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='')	{
+	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)	{
 		$backPath = '&backPath='.rawurlencode($this->backPath).'|'.t3lib_div::shortMD5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr).$backPath.$addParams.'\');'.$this->thisBlur().'return false;';
-		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
+		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr.'|'.$enDisItems).$backPath.$addParams.'\');'.$this->thisBlur().'return false;';
+		return $returnOnClick ? $onClick : '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
 
 	/**

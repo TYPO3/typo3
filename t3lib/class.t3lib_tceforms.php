@@ -38,113 +38,114 @@
  *
  *
  *
- *  174: class t3lib_TCEforms
- *  272:     function t3lib_TCEforms()
- *  304:     function initDefaultBEmode()
+ *  175: class t3lib_TCEforms
+ *  274:     function t3lib_TCEforms()
+ *  306:     function initDefaultBEmode()
  *
  *              SECTION: Rendering the forms, fields etc
- *  349:     function getSoloField($table,$row,$theFieldToReturn)
- *  388:     function getMainFields($table,$row,$depth=0)
- *  515:     function getListedFields($table,$row,$list)
- *  556:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')
- *  632:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)
- *  760:     function getSingleField_SW($table,$field,$row,&$PA)
+ *  351:     function getSoloField($table,$row,$theFieldToReturn)
+ *  390:     function getMainFields($table,$row,$depth=0)
+ *  517:     function getListedFields($table,$row,$list)
+ *  558:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')
+ *  634:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)
+ *  762:     function getSingleField_SW($table,$field,$row,&$PA)
  *
  *              SECTION: Rendering of each TCEform field type
- *  831:     function getSingleField_typeInput($table,$field,$row,&$PA)
- *  883:     function getSingleField_typeText($table,$field,$row,&$PA)
- *  982:     function getSingleField_typeCheck($table,$field,$row,&$PA)
- * 1041:     function getSingleField_typeRadio($table,$field,$row,&$PA)
- * 1071:     function getSingleField_typeSelect($table,$field,$row,&$PA)
- * 1233:     function getSingleField_typeGroup($table,$field,$row,&$PA)
- * 1379:     function getSingleField_typeNone($table,$field,$row,&$PA)
- * 1395:     function getSingleField_typeNone_render($config,$itemValue)
- * 1452:     function getSingleField_typeFlex($table,$field,$row,&$PA)
- * 1553:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)
- * 1572:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)
- * 1602:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())
- * 1754:     function getSingleField_typeUnknown($table,$field,$row,&$PA)
- * 1769:     function getSingleField_typeUser($table,$field,$row,&$PA)
+ *  833:     function getSingleField_typeInput($table,$field,$row,&$PA)
+ *  885:     function getSingleField_typeText($table,$field,$row,&$PA)
+ *  984:     function getSingleField_typeCheck($table,$field,$row,&$PA)
+ * 1043:     function getSingleField_typeRadio($table,$field,$row,&$PA)
+ * 1073:     function getSingleField_typeSelect($table,$field,$row,&$PA)
+ * 1235:     function getSingleField_typeGroup($table,$field,$row,&$PA)
+ * 1389:     function getSingleField_typeNone($table,$field,$row,&$PA)
+ * 1405:     function getSingleField_typeNone_render($config,$itemValue)
+ * 1462:     function getSingleField_typeFlex($table,$field,$row,&$PA)
+ * 1563:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)
+ * 1582:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)
+ * 1612:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())
+ * 1764:     function getSingleField_typeUnknown($table,$field,$row,&$PA)
+ * 1779:     function getSingleField_typeUser($table,$field,$row,&$PA)
  *
  *              SECTION: "Configuration" fetching/processing functions
- * 1803:     function getRTypeNum($table,$row)
- * 1829:     function rearrange($fields)
- * 1855:     function getExcludeElements($table,$row,$typeNum)
- * 1903:     function getFieldsToAdd($table,$row,$typeNum)
- * 1928:     function mergeFieldsWithAddedFields($fields,$fieldsToAdd)
- * 1960:     function setTSconfig($table,$row,$field='')
- * 1982:     function getSpecConfForField($table,$row,$field)
- * 2003:     function getSpecConfFromString($extraString, $defaultExtras)
+ * 1813:     function getRTypeNum($table,$row)
+ * 1839:     function rearrange($fields)
+ * 1865:     function getExcludeElements($table,$row,$typeNum)
+ * 1913:     function getFieldsToAdd($table,$row,$typeNum)
+ * 1938:     function mergeFieldsWithAddedFields($fields,$fieldsToAdd)
+ * 1970:     function setTSconfig($table,$row,$field='')
+ * 1992:     function getSpecConfForField($table,$row,$field)
+ * 2013:     function getSpecConfFromString($extraString, $defaultExtras)
  *
  *              SECTION: Form element helper functions
- * 2035:     function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')
- * 2167:     function getClipboardElements($allowed,$mode)
- * 2218:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)
- * 2388:     function getIcon($icon)
- * 2419:     function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)
- * 2443:     function checkBoxParams($itemName,$thisValue,$c,$iCount,$addFunc='')
- * 2457:     function elName($itemName)
- * 2468:     function noTitle($str,$wrapParts=array())
- * 2477:     function blur()
- * 2486:     function thisReturnUrl()
- * 2499:     function getSingleHiddenField($table,$field,$row)
- * 2521:     function formWidth($size=48,$textarea=0)
- * 2543:     function formWidthText($size=48,$wrap='')
- * 2558:     function formElStyle($type)
- * 2576:     function insertDefStyle($type)
+ * 2045:     function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')
+ * 2177:     function getClipboardElements($allowed,$mode)
+ * 2226:     function getClickMenu($str,$table,$uid='')
+ * 2247:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)
+ * 2417:     function getIcon($icon)
+ * 2448:     function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)
+ * 2472:     function checkBoxParams($itemName,$thisValue,$c,$iCount,$addFunc='')
+ * 2486:     function elName($itemName)
+ * 2497:     function noTitle($str,$wrapParts=array())
+ * 2506:     function blur()
+ * 2515:     function thisReturnUrl()
+ * 2528:     function getSingleHiddenField($table,$field,$row)
+ * 2550:     function formWidth($size=48,$textarea=0)
+ * 2572:     function formWidthText($size=48,$wrap='')
+ * 2587:     function formElStyle($type)
+ * 2605:     function insertDefStyle($type)
  *
  *              SECTION: Item-array manipulation functions (check/select/radio)
- * 2607:     function initItemArray($fieldValue)
- * 2625:     function addItems($items,$iArray)
- * 2647:     function procItems($items,$iArray,$config,$table,$row,$field)
- * 2671:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)
- * 2749:     function addSelectOptionsToItemArray_makeModuleData($value)
- * 2771:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)
+ * 2636:     function initItemArray($fieldValue)
+ * 2654:     function addItems($items,$iArray)
+ * 2676:     function procItems($items,$iArray,$config,$table,$row,$field)
+ * 2700:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)
+ * 2778:     function addSelectOptionsToItemArray_makeModuleData($value)
+ * 2800:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)
  *
  *              SECTION: Template functions
- * 2848:     function setFancyDesign()
- * 2875:     function setNewBEDesign()
- * 2929:     function intoTemplate($inArr,$altTemplate='')
- * 2953:     function addUserTemplateMarkers($marker,$table,$field,$row,&$PA)
- * 2964:     function wrapLabels($str)
- * 2977:     function wrapTotal($c,$rec,$table)
- * 2990:     function replaceTableWrap($arr,$rec,$table)
- * 3012:     function wrapBorder(&$out_array,&$out_pointer)
- * 3033:     function rplColorScheme($inTemplate)
- * 3046:     function getDivider()
- * 3056:     function printPalette($palArr)
- * 3098:     function helpTextIcon($table,$field,$force=0)
- * 3114:     function helpText($table,$field)
- * 3136:     function setColorScheme($scheme)
- * 3150:     function resetSchemes()
- * 3161:     function storeSchemes()
- * 3172:     function restoreSchemes()
+ * 2877:     function setFancyDesign()
+ * 2904:     function setNewBEDesign()
+ * 2958:     function intoTemplate($inArr,$altTemplate='')
+ * 2982:     function addUserTemplateMarkers($marker,$table,$field,$row,&$PA)
+ * 2993:     function wrapLabels($str)
+ * 3006:     function wrapTotal($c,$rec,$table)
+ * 3019:     function replaceTableWrap($arr,$rec,$table)
+ * 3041:     function wrapBorder(&$out_array,&$out_pointer)
+ * 3062:     function rplColorScheme($inTemplate)
+ * 3075:     function getDivider()
+ * 3085:     function printPalette($palArr)
+ * 3127:     function helpTextIcon($table,$field,$force=0)
+ * 3143:     function helpText($table,$field)
+ * 3165:     function setColorScheme($scheme)
+ * 3179:     function resetSchemes()
+ * 3190:     function storeSchemes()
+ * 3201:     function restoreSchemes()
  *
  *              SECTION: JavaScript related functions
- * 3201:     function JStop()
- * 3252:     function JSbottom($formname='forms[0]')
- * 3563:     function dbFileCon($formObj='document.forms[0]')
- * 3671:     function printNeededJSFunctions()
- * 3698:     function printNeededJSFunctions_top()
+ * 3230:     function JStop()
+ * 3281:     function JSbottom($formname='forms[0]')
+ * 3592:     function dbFileCon($formObj='document.forms[0]')
+ * 3700:     function printNeededJSFunctions()
+ * 3727:     function printNeededJSFunctions_top()
  *
  *              SECTION: Various helper functions
- * 3746:     function getDefaultRecord($table,$pid=0)
- * 3785:     function getRecordPath($table,$rec)
- * 3798:     function readPerms()
- * 3812:     function sL($str)
- * 3825:     function getLL($str)
- * 3843:     function isPalettesCollapsed($table,$palette)
- * 3858:     function isDisplayCondition($displayCond,$row)
- * 3911:     function getTSCpid($table,$uid,$pid)
- * 3925:     function doLoadTableDescr($table)
- * 3937:     function getAvailableLanguages($onlyIsoCoded=1,$setDefault=1)
+ * 3775:     function getDefaultRecord($table,$pid=0)
+ * 3814:     function getRecordPath($table,$rec)
+ * 3827:     function readPerms()
+ * 3841:     function sL($str)
+ * 3854:     function getLL($str)
+ * 3872:     function isPalettesCollapsed($table,$palette)
+ * 3887:     function isDisplayCondition($displayCond,$row)
+ * 3940:     function getTSCpid($table,$uid,$pid)
+ * 3954:     function doLoadTableDescr($table)
+ * 3966:     function getAvailableLanguages($onlyIsoCoded=1,$setDefault=1)
  *
  *
- * 3979: class t3lib_TCEforms_FE extends t3lib_TCEforms
- * 3987:     function wrapLabels($str)
- * 3997:     function printPalette($palArr)
+ * 4008: class t3lib_TCEforms_FE extends t3lib_TCEforms
+ * 4016:     function wrapLabels($str)
+ * 4026:     function printPalette($palArr)
  *
- * TOTAL FUNCTIONS: 85
+ * TOTAL FUNCTIONS: 86
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -203,6 +204,7 @@ class t3lib_TCEforms	{
 	var $fieldOrder='';					// Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
 	var $doPrintPalette=1;				// If set to false, palettes will NEVER be rendered.
 	var $clipObj=FALSE;					// Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
+	var $enableClickMenu=FALSE;			// Enable click menu on reference icons.
 
 	var $form_rowsToStylewidth = 9.58;	// Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $CLIENT[FORMSTYLE] value set)
 	var $form_largeComp = 1.33;			// Form field width compensation: Compensation for large documents, doc-tab (editing)
@@ -1190,7 +1192,7 @@ class t3lib_TCEforms	{
 				// Put together the select form with selected elements:
 			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
 			$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
-			$thumbnails='<select name="'.$PA['itemFormElName'].'_sel"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].$selector_itemListStyle.'>';
+			$thumbnails = '<select name="'.$PA['itemFormElName'].'_sel"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].$selector_itemListStyle.'>';
 			foreach($selItems as $p)	{
 				$thumbnails.= '<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
 			}
@@ -1246,117 +1248,125 @@ class t3lib_TCEforms	{
 		$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
 		$info='';
 
-			// If the element is of the internal type "file":
-		if ($config['internal_type']=='file')	{
+			// Acting according to either "file" or "db" type:
+		switch((string)$config['internal_type'])	{
+			case 'file':	// If the element is of the internal type "file":
 
-				// Creating string showing allowed types:
-			$tempFT = t3lib_div::trimExplode(',',$allowed,1);
-			reset($tempFT);
-			if (!count($tempFT))	{$info.='*';}
-			while(list(,$ext)=each($tempFT))	{
-				if ($ext)	{
-					$info.=strtoupper($ext).' ';
-				}
-			}
-				// Creating string, showing disallowed types:
-			$tempFT_dis = t3lib_div::trimExplode(',',$disallowed,1);
-			reset($tempFT_dis);
-			if (count($tempFT_dis))	{$info.='<br />';}
-			while(list(,$ext)=each($tempFT_dis))	{
-				if ($ext)	{
-					$info.='-'.strtoupper($ext).' ';
-				}
-			}
-
-				// Making the array of file items:
-			$itemArray=t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
-
-				// Showing thumbnails:
-			$thumbsnail='';
-			if ($show_thumbs)	{
-				reset($itemArray);
-				$imgs=array();
-				while(list(,$imgRead)=each($itemArray))	{
-					$imgP = explode('|',$imgRead);
-
-					$rowCopy=array();
-					$rowCopy[$field] = $imgP[0];
-					$imgs[]= '<span class="nobr">'.t3lib_BEfunc::thumbCode($rowCopy,$table,$field,$this->backPath,'thumbs.php',$config['uploadfolder'],0,' align="middle"').$imgP[0].'</span>';
-				}
-				$thumbsnail = implode('<br />',$imgs);
-			}
-
-				// Creating the element:
-			$params=array(
-				'size' => $size,
-				'dontShowMoveIcons' => ($maxitems<=1),
-				'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
-				'maxitems' => $maxitems,
-				'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
-				'info' => $info,
-				'thumbnails' => $thumbsnail
-			);
-			$item.= $this->dbFileIcons($PA['itemFormElName'],'file',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
-
-				// Adding the upload field:
-			if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
-		}
-
-			// If the element is of the internal type "db":
-		if ($config['internal_type']=='db')	{
-
-				// Creating string showing allowed types:
-			$tempFT = t3lib_div::trimExplode(',',$allowed,1);
-			if (!strcmp(trim($tempFT[0]),'*'))	{
-				$info.='<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;'.
-						htmlspecialchars($this->getLL('l_allTables')).
-						'</span><br />';
-			} else {
-				while(list(,$theT)=each($tempFT))	{
-					if ($theT)	{
-						$info.='<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;'.
-								t3lib_iconWorks::getIconImage($theT,array(),$this->backPath,'align="top"').
-								htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])).
-								'</span><br />';
+					// Creating string showing allowed types:
+				$tempFT = t3lib_div::trimExplode(',',$allowed,1);
+				if (!count($tempFT))	{$info.='*';}
+				foreach($tempFT as $ext)	{
+					if ($ext)	{
+						$info.=strtoupper($ext).' ';
 					}
 				}
-			}
-
-			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-			$itemArray=array();
-			$imgs=array();
-
-				// Thumbnails:
-			$temp_itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
-			foreach($temp_itemArray as $dbRead)	{
-				$recordParts = explode('|',$dbRead);
-				list($this_table,$this_uid) = t3lib_BEfunc::splitTable_Uid($recordParts[0]);
-				$itemArray[] = array('table'=>$this_table, 'id'=>$this_uid);
-				if ($show_thumbs)	{
-					$rr = t3lib_BEfunc::getRecord($this_table,$this_uid);
-					$imgs[]='<span class="nobr">'.
-							t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).'"').
-							'&nbsp;'.
-							$this->noTitle($rr[$GLOBALS['TCA'][$this_table]['ctrl']['label']],array('<em>','</em>')).
-							'</span>';
+					// Creating string, showing disallowed types:
+				$tempFT_dis = t3lib_div::trimExplode(',',$disallowed,1);
+				if (count($tempFT_dis))	{$info.='<br />';}
+				foreach($tempFT_dis as $ext)	{
+					if ($ext)	{
+						$info.='-'.strtoupper($ext).' ';
+					}
 				}
-			}
-			$thumbsnail='';
-			if ($show_thumbs)	{
-				$thumbsnail = implode('<br />',$imgs);
-			}
 
-				// Creating the element:
-			$params=array(
-				'size' => $size,
-				'dontShowMoveIcons' => ($maxitems<=1),
-				'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
-				'maxitems' => $maxitems,
-				'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
-				'info' => $info,
-				'thumbnails' => $thumbsnail
-			);
-			$item.= $this->dbFileIcons($PA['itemFormElName'],'db',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
+					// Making the array of file items:
+				$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
+
+					// Showing thumbnails:
+				$thumbsnail = '';
+				if ($show_thumbs)	{
+					$imgs = array();
+					foreach($itemArray as $imgRead)	{
+						$imgP = explode('|',$imgRead);
+
+						$rowCopy = array();
+						$rowCopy[$field] = $imgP[0];
+
+							// Icon + clickmenu:
+						$absFilePath = t3lib_div::getFileAbsFileName($config['uploadfolder'].'/'.$imgP[0]);
+
+						$fI = pathinfo($imgP[0]);
+						$fileIcon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
+						$fileIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$fileIcon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].($absFilePath ? ' ('.t3lib_div::formatSize(filesize($absFilePath)).'bytes)' : ' - FILE NOT FOUND!')).'" alt="" />';
+
+						$imgs[] = '<span class="nobr">'.t3lib_BEfunc::thumbCode($rowCopy,$table,$field,$this->backPath,'thumbs.php',$config['uploadfolder'],0,' align="middle"').
+									($absFilePath ? $this->getClickMenu($fileIcon, $absFilePath) : $fileIcon).
+									$imgP[0].
+									'</span>';
+					}
+					$thumbsnail = implode('<br />',$imgs);
+				}
+
+					// Creating the element:
+				$params = array(
+					'size' => $size,
+					'dontShowMoveIcons' => ($maxitems<=1),
+					'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
+					'maxitems' => $maxitems,
+					'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
+					'info' => $info,
+					'thumbnails' => $thumbsnail
+				);
+				$item.= $this->dbFileIcons($PA['itemFormElName'],'file',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
+
+					// Adding the upload field:
+				if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
+			break;
+			case 'db':	// If the element is of the internal type "db":
+
+					// Creating string showing allowed types:
+				$tempFT = t3lib_div::trimExplode(',',$allowed,1);
+				if (!strcmp(trim($tempFT[0]),'*'))	{
+					$info.='<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;'.
+							htmlspecialchars($this->getLL('l_allTables')).
+							'</span><br />';
+				} else {
+					while(list(,$theT)=each($tempFT))	{
+						if ($theT)	{
+							$info.='<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;'.
+									t3lib_iconWorks::getIconImage($theT,array(),$this->backPath,'align="top"').
+									htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])).
+									'</span><br />';
+						}
+					}
+				}
+
+				$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+				$itemArray = array();
+				$imgs = array();
+
+					// Thumbnails:
+				$temp_itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
+				foreach($temp_itemArray as $dbRead)	{
+					$recordParts = explode('|',$dbRead);
+					list($this_table,$this_uid) = t3lib_BEfunc::splitTable_Uid($recordParts[0]);
+					$itemArray[] = array('table'=>$this_table, 'id'=>$this_uid);
+					if ($show_thumbs)	{
+						$rr = t3lib_BEfunc::getRecord($this_table,$this_uid);
+						$imgs[] = '<span class="nobr">'.
+								$this->getClickMenu(t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).'"'),$this_table, $this_uid).
+								'&nbsp;'.
+								$this->noTitle($rr[$GLOBALS['TCA'][$this_table]['ctrl']['label']],array('<em>','</em>')).
+								'</span>';
+					}
+				}
+				$thumbsnail='';
+				if ($show_thumbs)	{
+					$thumbsnail = implode('<br />',$imgs);
+				}
+
+					// Creating the element:
+				$params = array(
+					'size' => $size,
+					'dontShowMoveIcons' => ($maxitems<=1),
+					'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
+					'maxitems' => $maxitems,
+					'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
+					'info' => $info,
+					'thumbnails' => $thumbsnail
+				);
+				$item.= $this->dbFileIcons($PA['itemFormElName'],'db',implode(',',$tempFT),$itemArray,'',$params,$PA['onFocus']);
+			break;
 		}
 
 			// Wizards:
@@ -2169,36 +2179,55 @@ class t3lib_TCEforms	{
 		$output = array();
 
 		if (is_object($this->clipObj))	{
-			if ($mode=='file')	{
-				$elFromTable = $this->clipObj->elFromTable('_FILE');
-				$allowedExts = t3lib_div::trimExplode(',', $allowed, 1);
+			switch($mode)	{
+				case 'file':
+					$elFromTable = $this->clipObj->elFromTable('_FILE');
+					$allowedExts = t3lib_div::trimExplode(',', $allowed, 1);
 
-				if ($allowedExts)	{	// If there are a set of allowed extensions, filter the content:
-					foreach($elFromTable as $elValue)	{
-						$pI = pathinfo($elValue);
-						$ext = strtolower($pI['extension']);
-						if (in_array($ext, $allowedExts))	{
-							$output[] = $elValue;
+					if ($allowedExts)	{	// If there are a set of allowed extensions, filter the content:
+						foreach($elFromTable as $elValue)	{
+							$pI = pathinfo($elValue);
+							$ext = strtolower($pI['extension']);
+							if (in_array($ext, $allowedExts))	{
+								$output[] = $elValue;
+							}
+						}
+					} else {	// If all is allowed, insert all: (This does NOT respect any disallowed extensions, but those will be filtered away by the backend TCEmain)
+						$output = $elFromTable;
+					}
+				break;
+				case 'db':
+					$allowedTables = t3lib_div::trimExplode(',', $allowed, 1);
+					if (!strcmp(trim($allowedTables[0]),'*'))	{	// All tables allowed for relation:
+						$output = $this->clipObj->elFromTable('');
+					} else {	// Only some tables, filter them:
+						foreach($allowedTables as $tablename)	{
+							$elFromTable = $this->clipObj->elFromTable($tablename);
+							$output = array_merge($output,$elFromTable);
 						}
 					}
-				} else {	// If all is allowed, insert all: (This does NOT respect any disallowed extensions, but those will be filtered away by the backend TCEmain)
-					$output = $elFromTable;
-				}
-			} else {
-				$allowedTables = t3lib_div::trimExplode(',', $allowed, 1);
-				if (!strcmp(trim($allowedTables[0]),'*'))	{	// All tables allowed for relation:
-					$output = $this->clipObj->elFromTable('');
-				} else {	// Only some tables, filter them:
-					foreach($allowedTables as $tablename)	{
-						$elFromTable = $this->clipObj->elFromTable($tablename);
-						$output = array_merge($output,$elFromTable);
-					}
-				}
-				$output = array_keys($output);
+					$output = array_keys($output);
+				break;
 			}
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Wraps the icon of a relation item (database record or file) in a link opening the context menu for the item.
+	 * Icons will be wrapped only if $this->enableClickMenu is set. This must be done only if a global SOBE object exists and if the necessary JavaScript for displaying the context menus has been added to the page header.
+	 *
+	 * @param	string		The icon HTML to wrap
+	 * @param	string		Table name (eg. "pages" or "tt_content") OR the absolute path to the file
+	 * @param	integer		The uid of the record OR if file, just blank value.
+	 * @return	string		HTML
+	 */
+	function getClickMenu($str,$table,$uid='')	{
+		if ($this->enableClickMenu)	{
+			$onClick = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($str,$table,$uid,1,'','+copy,info,edit,view', TRUE);
+			return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
+		}
 	}
 
 	/**
