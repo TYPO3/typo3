@@ -2487,10 +2487,13 @@ if (version == "n3") {
 			// no_cache cannot be set: If it is, the page might contain dynamic content and should never be cached.
 			// There can be no USER_INT objects on the page ("isINTincScript()") because they implicitly indicate dynamic content
 			// There can be no logged in user because user sessions are based on a cookie and thereby does not offer client caching a chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache headers in page sections where user logins change the page content.
+		$doCache = !$this->no_cache
+				&& !$this->isINTincScript()
+				&& !$this->isEXTincScript()
+				&& !is_array($this->fe_user->user);
+
 			// Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
-		if (!$this->no_cache
-				&& !$this->isINTincScript() && !$this->isEXTincScript()
-				&& !is_array($this->fe_user->user)
+		if ($doCache
 				&& !$this->beUserLogin)	{
 
 				// Build headers:
@@ -2513,6 +2516,20 @@ if (version == "n3") {
 			);
 
 			$this->isClientCachable = FALSE;
+
+				// Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
+			if ($this->beUserLogin) {
+				if ($doCache)	{
+					$GLOBALS['TT']->setTSlogMessage('Cache-headers with max-age "'.($this->cacheExpires - $GLOBALS['EXEC_TIME']).'" would have been sent');
+				} else {
+					$reasonMsg = '';
+					$reasonMsg.= !$this->no_cache ? '' : 'Caching disabled (no_cache). ';
+					$reasonMsg.= !$this->isINTincScript() ? '' : '*_INT object(s) on page. ';
+					$reasonMsg.= !$this->isEXTincScript() ? '' : '*_EXT object(s) on page. ';
+					$reasonMsg.= !is_array($this->fe_user->user) ? '' : 'Frontend user logged in. ';
+					$GLOBALS['TT']->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "'.$reasonMsg.'"',1);
+				}
+			}
 		}
 
 			// Send headers:
