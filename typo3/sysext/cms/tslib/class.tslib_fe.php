@@ -1408,10 +1408,11 @@
 
 						// STAT:
 					$theLogFile = $this->TYPO3_CONF_VARS['FE']['logfile_dir'].$this->config['config']['stat_apache_logfile'];
-					if ($this->config['config']['stat_apache'] &&
-						$this->config['config']['stat_apache_logfile'] &&
-						!strstr($this->config['config']['stat_apache_logfile'],'/') &&
-						@is_dir($this->TYPO3_CONF_VARS['FE']['logfile_dir']) && @is_file($theLogFile)	&& @is_writeable($theLogFile))	{
+						// Add PATH_site left to $theLogFile if the path is not absolute yet
+					if(!ereg("^/", $theLogFile)) $theLogFile = PATH_site.$theLogFile;
+
+					if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'],'/'))	{
+						if(t3lib_div::isAllowedAbsPath($theLogFile) && @is_file($theLogFile) && @is_writeable($theLogFile))	{
 							$this->config['stat_vars']['logFile'] = $theLogFile;
 							$shortTitle = substr(ereg_replace('[^\.[:alnum:]_-]','_',$this->page['title']),0,30);
 							$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';
@@ -1424,6 +1425,9 @@
 							$len = t3lib_div::intInRange($this->config['config']['stat_titleLen'],1,100,20);
 							$pageName = str_replace('[path]', ereg_replace('[^\.[:alnum:]\/_-]','_',$this->sys_page->getPathFromRootline($temp,$len)).'/' ,$pageName);
 							$this->config['stat_vars']['pageName'] = $pageName;
+						} else {
+							$GLOBALS['TT']->setTSlogMessage('Could not set logfile path. Check filepath and permissions.',3);
+						}
 					}
 					$this->config['FEData'] = $this->tmpl->setup['FEData'];
 					$this->config['FEData.'] = $this->tmpl->setup['FEData.'];
@@ -2545,14 +2549,14 @@ if (version == "n3") {
 						switch($this->TYPO3_CONF_VARS['FE']['logfile_write'])	{
 							case 'fputs':
 								$GLOBALS['TT']->push('Write to log file (fputs)');
-									$logfilehandle = fopen(PATH_site.$this->config['stat_vars']['logFile'], 'a');
+									$logfilehandle = fopen($this->config['stat_vars']['logFile'], 'a');
 									fputs($logfilehandle, $LogLine."\n");
 									@fclose($logfilehandle);
 								$GLOBALS['TT']->pull();
 							break;
 							default:
 								$GLOBALS['TT']->push('Write to log file (echo)');
-									$execCmd = 'echo "'.addslashes($LogLine).'" >> '.PATH_site.$this->config['stat_vars']['logFile'];
+									$execCmd = 'echo "'.addslashes($LogLine).'" >> '.$this->config['stat_vars']['logFile'];
 									exec($execCmd);
 								$GLOBALS['TT']->pull();
 							break;

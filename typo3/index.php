@@ -177,6 +177,9 @@ class SC_index {
 			// Initialize interface selectors:
 		$this->makeInterfaceSelectorBox();
 
+			// Replace an optional marker in the "Administration Login" label
+		$this->L_vars[6] = str_replace("###SITENAME###",$TYPO3_CONF_VARS['SYS']['sitename'],$this->L_vars[6]);
+
 			// Creating form based on whether there is a login or not:
 		if (!$BE_USER->user['uid'])	{
 			$TBE_TEMPLATE->form = '
