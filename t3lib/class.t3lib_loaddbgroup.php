@@ -41,11 +41,11 @@
  *   99:     function start ($itemlist,$tablelist, $MMtable='',$MMuid=0)	
  *  140:     function readList($itemlist)	
  *  186:     function readMM($tableName,$uid)	
- *  216:     function writeMM($tableName,$uid,$prependTableName=0)	
- *  245:     function getValueArray($prependTableName='')	
- *  273:     function convertPosNeg($valueArray,$fTable,$nfTable)	
- *  295:     function getFromDB()	
- *  328:     function readyForInterface()	
+ *  215:     function writeMM($tableName,$uid,$prependTableName=0)	
+ *  251:     function getValueArray($prependTableName='')	
+ *  279:     function convertPosNeg($valueArray,$fTable,$nfTable)	
+ *  301:     function getFromDB()	
+ *  333:     function readyForInterface()	
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,7 +64,7 @@
 /**
  * Load database groups (relations)
  * Used to process the relations created by the TCA element types "group" and "select" for database records. Manages MM-relations as well.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -89,12 +89,12 @@ class t3lib_loadDBGroup	{
 
 	/**
 	 * Initialization of the class.
-	 * 
+	 *
 	 * @param	string		List of group/select items
 	 * @param	string		Comma list of tables, first table takes priority if no table is set for an entry in the list.
 	 * @param	string		Name of a MM table.
 	 * @param	integer		Local UID for MM lookup
-	 * @return	void		
+	 * @return	void
 	 */
 	function start ($itemlist,$tablelist, $MMtable='',$MMuid=0)	{
 			// If the table list is "*" then all tables are used in the list:
@@ -133,9 +133,9 @@ class t3lib_loadDBGroup	{
 	
 	/**
 	 * Explodes the item list and stores the parts in the internal arrays itemArray and tableArray from MM records.
-	 * 
+	 *
 	 * @param	string		Item list
-	 * @return	void		
+	 * @return	void
 	 */
 	function readList($itemlist)	{
 		if ((string)trim($itemlist)!='')	{
@@ -178,19 +178,17 @@ class t3lib_loadDBGroup	{
 	/**
 	 * Reads the record tablename/id into the internal arrays itemArray and tableArray from MM records.
 	 * You can call this function after start if you supply no list to start()
-	 * 
+	 *
 	 * @param	string		MM Tablename
 	 * @param	integer		Local UID
-	 * @return	void		
+	 * @return	void
 	 */
 	function readMM($tableName,$uid)	{
-			// Select all MM relations:
-		$query='SELECT * FROM '.$tableName.' WHERE uid_local='.intval($uid).' ORDER BY sorting';
-		$res=mysql(TYPO3_db,$query);
-		echo mysql_error();
-		
 		$key=0;
-		while($row=mysql_fetch_assoc($res))	{
+
+			// Select all MM relations:
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, 'uid_local='.intval($uid), '', 'sorting');
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$theTable = $row['tablenames'] ? $row['tablenames'] : $this->firstTable;		// If tablesnames columns exists and contain a name, then this value is the table, else it's the the firstTable...
 			if (($row['uid_foreign'] || $theTable=='pages') && $theTable && isset($this->tableArray[$theTable]))	{
 				$this->itemArray[$key]['id'] = $row['uid_foreign'];
@@ -203,20 +201,21 @@ class t3lib_loadDBGroup	{
 			}
 			$key++;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
 	/**
 	 * Writes the internal itemArray to MM table:
-	 * 
+	 *
 	 * @param	string		MM table name
 	 * @param	integer		Local UID
 	 * @param	boolean		If set, then table names will always be written.
-	 * @return	void		
+	 * @return	void
 	 */
 	function writeMM($tableName,$uid,$prependTableName=0)	{
+
 			// Delete all relations:
-		$query='DELETE FROM '.$tableName.' WHERE uid_local='.intval($uid);
-		$res=mysql(TYPO3_db,$query);
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName, 'uid_local='.intval($uid));
 		
 			// If there are tables...			
 		$tableC = count($this->tableArray);
@@ -224,21 +223,28 @@ class t3lib_loadDBGroup	{
 			$prep = ($tableC>1||$prependTableName) ? 1 : 0;
 			$c=0;
 			$tName=array();
+
 				// For each item, insert it:
 			foreach($this->itemArray as $val)	{
 				$c++;
+				
+				$insertFields = array(
+					'uid_local' => $uid,
+					'uid_foreign' => $val['id'],
+					'sorting' => $c
+				);
 				if ($prep || $val['table']=='_NO_TABLE')	{
-					$tName=array(',tablenames', ',"'.addslashes($val['table']).'"');
+					$insertFields['tablenames'] = $val['table'];
 				}
-				$query='INSERT INTO '.$tableName.' (uid_local,uid_foreign,sorting'.$tName[0].') VALUES ("'.$uid.'","'.addslashes($val['id']).'",'.$c.$tName[1].')';
-				$res=mysql(TYPO3_db,$query);
+
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery($tableName, $insertFields);
 			}
 		}
 	}
 
 	/**
 	 * After initialization you can extract an array of the elements from the object. Use this function for that.
-	 * 
+	 *
 	 * @param	boolean		If set, then table names will ALWAYS be prepended (unless its a _NO_TABLE value)
 	 * @return	array		A numeric array.
 	 */
@@ -264,7 +270,7 @@ class t3lib_loadDBGroup	{
 
 	/**
 	 * Converts id numbers from negative to positive.
-	 * 
+	 *
 	 * @param	array		Array of [table]_[id] pairs.
 	 * @param	string		Foreign table (the one used for positive numbers)
 	 * @param	string		NEGative foreign table
@@ -289,8 +295,8 @@ class t3lib_loadDBGroup	{
 	/**
 	 * Reads all records from internal tableArray into the internal ->results array where keys are table names and for each table, records are stored with uids as their keys.
 	 * If $this->fromTC is set you can save a little memory since only uid,pid and a few other fields are selected.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function getFromDB()	{
 			// Traverses the tables listed:		
@@ -308,9 +314,8 @@ class t3lib_loadDBGroup	{
 							$from.= ','.$GLOBALS['TCA'][$key]['ctrl']['thumbnail'];	// Thumbnail
 						}
 					}
-					$query='SELECT '.$from.' FROM '.$key.' WHERE uid IN ('.$itemList.')'.$this->additionalWhere[$key];
-					$res=mysql(TYPO3_db,$query);
-					while($row = mysql_fetch_assoc($res))	{
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($from, $key, 'uid IN ('.$itemList.')'.$this->additionalWhere[$key]);
+					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 						$this->results[$key][$row['uid']]=$row;
 					}
 				}
@@ -321,8 +326,8 @@ class t3lib_loadDBGroup	{
 
 	/**
 	 * Prepare items from itemArray to be transferred to the TCEforms interface (as a comma list)
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 * @see t3lib_transferdata::renderRecord()
 	 */
 	function readyForInterface()	{

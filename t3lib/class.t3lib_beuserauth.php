@@ -39,14 +39,14 @@
  *
  *
  *   75: class t3lib_beUserAuth extends t3lib_userAuthGroup 
- *  150:     function trackBeUser($flag)	
- *  163:     function checkLockToIP()	
- *  183:     function backendCheckLogin()	
- *  208:     function backendSetUC()	
- *  243:     function overrideUC()	
- *  253:     function resetUC()	
- *  266:     function emailAtLogin()	
- *  318:     function veriCode()	
+ *  151:     function trackBeUser($flag)	
+ *  169:     function checkLockToIP()	
+ *  189:     function backendCheckLogin()	
+ *  219:     function backendSetUC()	
+ *  254:     function overrideUC()	
+ *  264:     function resetUC()	
+ *  277:     function emailAtLogin()	
+ *  329:     function veriCode()	
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,10 +64,10 @@
 
 /**
  * TYPO3 user authentication, backend
- * Could technically have been the same class as t3lib_userauthgroup since these two are always used together and only together. 
+ * Could technically have been the same class as t3lib_userauthgroup since these two are always used together and only together.
  * t3lib_userauthgroup contains most of the functions used for checking permissions, authenticating users, setting up the user etc. This class is most interesting in terms of an API for user from outside.
  * This class contains the configuration of the database fields used plus some functions for the authentication process of backend users.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -143,21 +143,26 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	/**
 	 * If flag is set and the extensions 'beuser_tracking' is loaded, this will insert a table row with the REQUEST_URI of current script - thus tracking the scripts the backend users uses...
 	 * This function works ONLY with the "beuser_tracking" extension and is depreciated since it does nothing useful.
-	 * 
+	 *
 	 * @param	boolean		Activate insertion of the URL.
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 */
 	function trackBeUser($flag)	{
 		if ($flag && t3lib_extMgm::isLoaded('beuser_tracking'))	{
-			$query = 'INSERT INTO sys_trackbeuser (userid,tstamp,script) VALUES ('.$this->user['uid'].','.time().',"'.addslashes(t3lib_div::getIndpEnv('REQUEST_URI')).'")';
-			$res = mysql(TYPO3_db,$query);
+			$insertFields = array(
+				'userid' => intval($this->user['uid']),
+				'tstamp' => time(),
+				'script' => t3lib_div::getIndpEnv('REQUEST_URI')
+			);
+			
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_trackbeuser', $insertFields);
 		}
 	}
 
 	/**
 	 * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and an IP-list is found in the User TSconfig objString "options.lockToIP", then make an IP comparison with REMOTE_ADDR and return the outcome (true/false)
-	 * 
+	 *
 	 * @return	boolean		True, if IP address validates OK (or no check is done at all)
 	 * @access private
 	 */
@@ -178,8 +183,8 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * Check if user is logged in and if so, call ->fetchGroupData() to load group information and access lists of all kind, further check IP, set the ->uc array and send login-notification email if required.
 	 * If no user is logged in the default behaviour is to exit with an error message, but this will happen ONLY if the constant TYPO3_PROCEED_IF_NO_USER is set true.
 	 * This function is called right after ->start() in fx. init.php
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function backendCheckLogin()	{
 		if (!$this->user['uid'])	{
@@ -207,8 +212,8 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	/**
 	 * Initialize the internal ->uc array for the backend user
 	 * Will make the overrides if necessary, and write the UC back to the be_users record if changes has happend
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @internal
 	 */
 	function backendSetUC()	{
@@ -240,10 +245,10 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	}
 
 	/**
-	 * Override: Call this function every time the uc is updated. 
+	 * Override: Call this function every time the uc is updated.
 	 * That is 1) by reverting to default values, 2) in the setup-module, 3) userTS changes (userauthgroup)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @internal
 	 */
 	function overrideUC()	{
@@ -252,8 +257,8 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 
 	/**
 	 * Clears the user[uc] and ->uc to blank strings. Then calls ->backendSetUC() to fill it again with reset contents
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @internal
 	 */
 	function resetUC()	{
@@ -265,8 +270,8 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	/**
 	 * Will send an email notification to warning_email_address/the login users email address when a login session is just started.
 	 * Depends on various parameters whether mails are send and to whom.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 */
 	function emailAtLogin()	{
@@ -316,10 +321,10 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	}
 
 	/**
-	 * VeriCode returns 10 first chars of a md5 hash of the session cookie AND the encryptionKey from TYPO3_CONF_VARS. 
+	 * VeriCode returns 10 first chars of a md5 hash of the session cookie AND the encryptionKey from TYPO3_CONF_VARS.
 	 * This code is used as an alternative verification when the JavaScript interface executes cmd's to tce_db.php from eg. MSIE 5.0 because the proper referer is not passed with this browser...
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function veriCode()	{
 		return substr(md5($this->id.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']),0,10);

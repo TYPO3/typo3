@@ -71,7 +71,7 @@
 
 /**
  * Contains functions for management, validation etc of files in TYPO3, using the concepts of web- and ftp-space. Please see the comment for the init() function
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -101,7 +101,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Constructor
 	 * This function should be called to initialise the internal arrays $this->mounts and $this->f_ext
-	 * 
+	 *
 	 *  A typical example of the array $mounts is this:
 	 * 		$mounts[xx][path] = (..a mounted path..)
 	 * 	the 'xx'-keys is just numerical from zero. There are also a [name] and [type] value that just denotes the mountname and type. Not used for athentication here.
@@ -109,7 +109,7 @@ class t3lib_basicFileFunctions	{
 	 * 	The mountpaths are with a trailing '/'. $thePath must be with a trailing '/' also!
 	 * 	As you can see, $this->mounts is very critical! This is the array that decides where the user will be allowed to copy files!!
 	 *  Typically the global var $WEBMOUNTS would be passed along as $mounts
-	 * 
+	 *
 	 * 	A typical example of the array $f_ext is this:
 	 * 		$f_ext['webspace']['allow']='';
 	 * 		$f_ext['webspace']['deny']='php3,php';
@@ -120,13 +120,13 @@ class t3lib_basicFileFunctions	{
 	 * 	You list extensions comma-separated. If the value is a '*' every extension is allowed
 	 * 	The list is case-insensitive when used in this class (see init())
 	 *  Typically TYPO3_CONF_VARS['BE']['fileExtensions'] would be passed along as $f_ext.
-	 * 
+	 *
 	 *  Example:
 	 * 	$basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
-	 * 
+	 *
 	 * @param	array		Contains the paths of the file mounts for the current BE user. Normally $GLOBALS['FILEMOUNTS'] is passed. This variable is set during backend user initialization; $FILEMOUNTS = $BE_USER->returnFilemounts(); (see typo3/init.php)
 	 * @param	array		Array with information about allowed and denied file extensions. Typically passed: $TYPO3_CONF_VARS['BE']['fileExtensions']
-	 * @return	void		
+	 * @return	void
 	 * @see typo3/init.php, t3lib_userAuthGroup::returnFilemounts()
 	 */
 	function init($mounts, $f_ext)	{
@@ -142,7 +142,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns an array with a whole lot of fileinformation.
-	 * 
+	 *
 	 * @param	string		Filepath to existing file. Should probably be absolute. Filefunctions are performed on this value.
 	 * @return	array		Information about the file in the filepath
 	 */
@@ -161,7 +161,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Checks if a $iconkey (fileextension) is allowed according to $this->f_ext.
-	 * 
+	 *
 	 * @param	string		The extension to check, eg. "php" or "html" etc.
 	 * @param	string		Either "webspage" or "ftpspace" - points to a key in $this->f_ext
 	 * @return	boolean		True if file extension is allowed.
@@ -187,9 +187,9 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns true if you can operate of ANY file ('*') in the space $theDest is in ('webspace' / 'ftpspace')
-	 * 
+	 *
 	 * @param	string		Absolute path
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function checkIfFullAccess($theDest)	{
 		$type = $this->is_webpath($theDest)?'webspace':'ftpspace';
@@ -201,9 +201,9 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Checks if $this->webPath (should be TYPO3_DOCUMENT_ROOT) is in the first part of $path
 	 * Returns true also if $this->init is not set or if $path is empty...
-	 * 
+	 *
 	 * @param	string		Absolute path to check
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function is_webpath($path)	{		
 		if ($this->isInit)	{
@@ -219,7 +219,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * If the filename is given, check it against the TYPO3_CONF_VARS[BE][fileDenyPattern] +
 	 * Checks if the $ext fileextension is allowed in the path $theDest (this is based on whether $theDest is below the $this->webPath)
-	 * 
+	 *
 	 * @param	string		File extension, eg. "php" or "html"
 	 * @param	string		Absolute path for which to test
 	 * @param	string		Filename to check against TYPO3_CONF_VARS[BE][fileDenyPattern]
@@ -231,9 +231,9 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns true if the input filename string is shorter than $this->maxInputNameLen.
-	 * 
+	 *
 	 * @param	string		Filename, eg "somefile.html"
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function checkFileNameLen($fileName)	{
 		return strlen($fileName) <= $this->maxInputNameLen;
@@ -241,7 +241,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Cleans $theDir for slashes in the end of the string and returns the new path, if it exists on the server.
-	 * 
+	 *
 	 * @param	string		Directory path to check
 	 * @return	string		Returns the cleaned up directory name if OK, otherwise false.
 	 */
@@ -257,7 +257,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Wrapper for t3lib_div::validPathStr()
-	 * 
+	 *
 	 * @param	string		Filepath to evaluate
 	 * @return	boolean		True, if no '//', '..' or '\' is in the $theFile
 	 * @see	t3lib_div::validPathStr()
@@ -270,7 +270,7 @@ class t3lib_basicFileFunctions	{
 	 * Returns the destination path/filename of a unique filename/foldername in that path.
 	 * If $theFile exists in $theDest (directory) the file have numbers appended up to $this->maxNumber. Hereafter a unique string will be appended.
 	 * This function is used by fx. TCEmain when files are attached to records and needs to be uniquely named in the uploads/* folders
-	 * 
+	 *
 	 * @param	string		The input filename to check
 	 * @param	string		The directory for which to return a unique filename for $theFile. $theDest MUST be a valid directory. Should be absolute.
 	 * @param	boolean		If set the filename is returned with the path prepended without checking whether it already existed!
@@ -315,7 +315,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Checks if $thePath is a path under one of the paths in $this->mounts
 	 * See comment in the header of this class.
-	 * 
+	 *
 	 * @param	string		$thePath MUST HAVE a trailing '/' in order to match correctly with the mounts
 	 * @return	string		The key to the first mount found, otherwise nothing is returned.
 	 * @see init()
@@ -334,7 +334,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Removes filemount part of a path, thus blinding the position.
 	 * Takes a path, $thePath, and removes the part of the path which equals the filemount.
-	 * 
+	 *
 	 * @param	string		$thePath is a path which MUST be found within one of the internally set filemounts, $this->mounts
 	 * @return	string		The processed input path
 	 */
@@ -351,7 +351,7 @@ class t3lib_basicFileFunctions	{
 	/**
 	 * Find temporary folder
 	 * Finds the first $this->tempFN ('_temp_' usually) -folder in the internal array of filemounts, $this->mounts
-	 * 
+	 *
 	 * @return	string		Returns the path if found, otherwise nothing if error.
 	 */
 	function findTempFolder()	{
@@ -379,7 +379,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Removes all dots, slashes and spaces after a path...
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @return	string		Output string
 	 */
@@ -389,7 +389,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Converts any double slashes (//) to a single slash (/)
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @return	string		Returns the converted string
 	 */
@@ -399,7 +399,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns a string which has a slash '/' appended if it doesn't already have that slash
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @return	string		Output string with a slash in the end (if not already there)
 	 */
@@ -412,7 +412,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_'
-	 * 
+	 *
 	 * @param	string		Input string, typically the body of a filename
 	 * @return	string		Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_'
 	 */
@@ -423,7 +423,7 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Formats an integer, $sizeInBytes, to Mb or Kb or just bytes
-	 * 
+	 *
 	 * @param	integer		Bytes to be formated
 	 * @return	string		Formatted with M,K or &nbsp;&nbsp; appended.
 	 */

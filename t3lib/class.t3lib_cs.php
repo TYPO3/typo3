@@ -35,21 +35,21 @@
  *
  *
  *  104: class t3lib_cs 
- *  196:     function parse_charset($charset)	
- *  213:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
- *  247:     function utf8_encode($str,$charset)	
- *  288:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
- *  336:     function utf8_to_entities($str)	
- *  369:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
- *  400:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
- *  441:     function initCharset($charset)	
- *  512:     function UnumberToChar($cbyte)	
- *  556:     function utf8CharToUnumber($str,$hex=0)	
- *  585:     function utf8_strtrunc($str,$len)	
- *  625:     function utf_strlen($str)	
- *  638:     function utf_substr($str,$start,$len=0)	
- *  652:     function utf_strpos($haystack,$needle,$offset=0)	
- *  665:     function utf_strrpos($haystack,$needle,$offset=0)	
+ *  233:     function parse_charset($charset)	
+ *  250:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
+ *  284:     function utf8_encode($str,$charset)	
+ *  325:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
+ *  373:     function utf8_to_entities($str)	
+ *  406:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
+ *  437:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
+ *  478:     function initCharset($charset)	
+ *  549:     function UnumberToChar($cbyte)	
+ *  593:     function utf8CharToUnumber($str,$hex=0)	
+ *  622:     function utf8_strtrunc($str,$len)	
+ *  662:     function utf_strlen($str)	
+ *  675:     function utf_substr($str,$start,$len=0)	
+ *  689:     function utf_strpos($haystack,$needle,$offset=0)	
+ *  702:     function utf_strrpos($haystack,$needle,$offset=0)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -95,7 +95,7 @@
  */
 /**
  * Class for conversion between charsets.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
  * @package TYPO3
@@ -225,7 +225,7 @@ class t3lib_cs {
 
 	/**
 	 * Normalize - changes input character set to lowercase letters.
-	 * 
+	 *
 	 * @param	string		Input charset
 	 * @return	string		Normalized charset
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
@@ -240,7 +240,7 @@ class t3lib_cs {
 
 	/**
 	 * Convert from one charset to another charset.
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @param	string		From charset (the current charset of the string)
 	 * @param	string		To charset (the output charset wanted)
@@ -276,7 +276,7 @@ class t3lib_cs {
 
 	/**
 	 * Converts $str from $charset to UTF-8
-	 * 
+	 *
 	 * @param	string		String in local charset to convert to UTF-8
 	 * @param	string		Charset, lowercase. Must be found in csconvtbl/ folder.
 	 * @return	string		Output string, converted to UTF-8
@@ -316,7 +316,7 @@ class t3lib_cs {
 
 	/**
 	 * Converts $str from UTF-8 to $charset
-	 * 
+	 *
 	 * @param	string		String in UTF-8 to convert to local charset
 	 * @param	string		Charset, lowercase. Must be found in csconvtbl/ folder.
 	 * @param	boolean		If set, then characters that are not available in the destination character set will be encoded as numeric entities
@@ -366,7 +366,7 @@ class t3lib_cs {
 
 	/**
 	 * Converts all chars > 127 to numeric entities.
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @return	string		Output string
 	 */
@@ -398,7 +398,7 @@ class t3lib_cs {
 	
 	/**
 	 * Converts numeric entities (UNICODE, eg. decimal (&#1234;) or hexadecimal (&#x1b;)) to UTF-8 multibyte chars
-	 * 
+	 *
 	 * @param	string		Input string, UTF-8
 	 * @param	boolean		If set, then all string-HTML entities (like &amp; or &pound; will be converted as well)
 	 * @return	string		Output string
@@ -428,7 +428,7 @@ class t3lib_cs {
 	
 	/**
 	 * Converts all chars in the input UTF-8 string into integer numbers returned in an array
-	 * 
+	 *
 	 * @param	string		Input string, UTF-8
 	 * @param	boolean		If set, then all HTML entities (like &amp; or &pound; or &#123; or &#x3f5d;) will be detected as characters.
 	 * @param	boolean		If set, then instead of integer numbers the real UTF-8 char is returned.
@@ -468,9 +468,9 @@ class t3lib_cs {
 	/**
 	 * This will initialize a charset for use if it's defined in the PATH_t3lib.'csconvtbl/' folder
 	 * This function is automatically called by the conversion functions
-	 * 
+	 *
 	 * PLEASE SEE: http://www.unicode.org/Public/MAPPINGS/
-	 * 
+	 *
 	 * @param	string		The charset to be initialized. Use lowercase charset always (the charset must match exactly with a filename in csconvtbl/ folder ([charset].tbl)
 	 * @return	integer		Returns '1' if already loaded. Returns FALSE if charset conversion table was not found. Returns '2' if the charset conversion table was found and parsed.
 	 * @access private
@@ -531,9 +531,9 @@ class t3lib_cs {
 	/**
 	 * Converts a UNICODE number to a UTF-8 multibyte character
 	 * Algorithm based on script found at From: http://czyborra.com/utf/
-	 * 
-	 * The binary representation of the character's integer value is thus simply spread across the bytes and the number of high bits set in the lead byte announces the number of bytes in the multibyte sequence: 
-	 * 
+	 *
+	 * The binary representation of the character's integer value is thus simply spread across the bytes and the number of high bits set in the lead byte announces the number of bytes in the multibyte sequence:
+	 *
 	 *  bytes | bits | representation
 	 *      1 |    7 | 0vvvvvvv
 	 *      2 |   11 | 110vvvvv 10vvvvvv
@@ -541,7 +541,7 @@ class t3lib_cs {
 	 *      4 |   21 | 11110vvv 10vvvvvv 10vvvvvv 10vvvvvv
 	 *      5 |   26 | 111110vv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
 	 *      6 |   31 | 1111110v 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
-	 * 
+	 *
 	 * @param	integer		UNICODE integer
 	 * @return	string		UTF-8 multibyte character string
 	 * @see utf8CharToUnumber()
@@ -584,7 +584,7 @@ class t3lib_cs {
 	
 	/**
 	 * Converts a UTF-8 Multibyte character to a UNICODE number
-	 * 
+	 *
 	 * @param	string		UTF-8 multibyte character string
 	 * @param	boolean		If set, then a hex. number is returned.
 	 * @return	integer		UNICODE integer
@@ -612,7 +612,7 @@ class t3lib_cs {
 
 	/**
 	 * Truncates a string in UTF-8 short at a given byte length
-	 * 
+	 *
 	 * @param	string		UTF-8 multibyte character string
 	 * @param	integer		the byte length
 	 * @return	string		the shortened string

@@ -42,105 +42,105 @@
  *  320:     function checkPassword($uKey)	
  *  380:     function init()	
  *  540:     function stepOutput()	
- *  791:     function checkTheConfig()	
- *  822:     function typo3conf_edit()	
- *  932:     function phpinformation()	
+ *  792:     function checkTheConfig()	
+ *  823:     function typo3conf_edit()	
+ *  933:     function phpinformation()	
  *
  *              SECTION: typo3temp/ manager
- * 1033:     function typo3TempManager()	
- * 1134:     function getSelectorOptions($deleteType,$tt="")	
+ * 1034:     function typo3TempManager()	
+ * 1135:     function getSelectorOptions($deleteType,$tt="")	
  *
  *              SECTION: CONFIGURATION FORM
- * 1167:     function generateConfigForm($type="")	
- * 1239:     function getDefaultConfigArrayComments($string,$mainArray=array(),$commentArray=array())	
+ * 1168:     function generateConfigForm($type="")	
+ * 1240:     function getDefaultConfigArrayComments($string,$mainArray=array(),$commentArray=array())	
  *
  *              SECTION: CHECK CONFIGURATION FUNCTIONS
- * 1292:     function checkConfiguration()	
- * 1481:     function check_mail($cmd="")	
- * 1504:     function checkExtensions()	
- * 1567:     function checkDirs()	
- * 1636:     function checkImageMagick($paths)	
- * 1697:     function _checkImageMagickGifCapability($file)	
- * 1739:     function _checkImageMagick_getVersion($file)	
- * 1752:     function checkDatabase()		
- * 1814:     function setupGeneral($cmd="")	
- * 1979:     function writeToLocalconf_control($lines="",$dontOutputContent=0)	
- * 2027:     function outputExitBasedOnStep($content)	
- * 2042:     function checkForBadString($string)	
- * 2057:     function setValueInLocalconfFile(&$line_array, $variable, $value)	
- * 2104:     function slashValueForSingleDashes($value)	
- * 2115:     function setLabelValueArray($arr,$type)	
- * 2143:     function getFormElement($labels,$values,$fieldName,$default,$msg="")	
- * 2163:     function getDatabaseList()	
- * 2192:     function setupGeneralCalculate()	
- * 2261:     function getGDPartOfPhpinfo()	
- * 2280:     function isTTF($phpinfo="")	
+ * 1293:     function checkConfiguration()	
+ * 1488:     function check_mail($cmd="")	
+ * 1511:     function checkExtensions()	
+ * 1574:     function checkDirs()	
+ * 1643:     function checkImageMagick($paths)	
+ * 1710:     function _checkImageMagickGifCapability($file)	
+ * 1752:     function _checkImageMagick_getVersion($file)	
+ * 1765:     function checkDatabase()		
+ * 1827:     function setupGeneral($cmd="")	
+ * 1995:     function writeToLocalconf_control($lines="",$dontOutputContent=0)	
+ * 2043:     function outputExitBasedOnStep($content)	
+ * 2058:     function checkForBadString($string)	
+ * 2073:     function setValueInLocalconfFile(&$line_array, $variable, $value)	
+ * 2119:     function slashValueForSingleDashes($value)	
+ * 2130:     function setLabelValueArray($arr,$type)	
+ * 2158:     function getFormElement($labels,$values,$fieldName,$default,$msg="")	
+ * 2178:     function getDatabaseList()	
+ * 2202:     function setupGeneralCalculate()	
+ * 2271:     function getGDPartOfPhpinfo()	
+ * 2290:     function isTTF($phpinfo="")	
  *
  *              SECTION: ABOUT the isXXX functions.
- * 2329:     function isGD()	
- * 2340:     function isGIF()	
- * 2352:     function isJPG()	
- * 2363:     function isPNG()	
- * 2375:     function ImageTypes()	
- * 2386:     function getGDSoftwareInfo()	
- * 2398:     function generallyAboutConfiguration()	
+ * 2339:     function isGD()	
+ * 2350:     function isGIF()	
+ * 2362:     function isJPG()	
+ * 2373:     function isPNG()	
+ * 2385:     function ImageTypes()	
+ * 2396:     function getGDSoftwareInfo()	
+ * 2408:     function generallyAboutConfiguration()	
  *
  *              SECTION: IMAGE processing
- * 2458:     function checkTheImageProcessing()	
- * 2937:     function isExtensionEnabled($ext, $headCode, $short)	
- * 2953:     function displayTwinImage ($imageFile, $IMcommands=array(), $note="")	
- * 3024:     function getTwinImageMessage($message, $label_1="", $label_2="")	
- * 3040:     function formatImCmds($arr)	
- * 3061:     function imagemenu()	
+ * 2468:     function checkTheImageProcessing()	
+ * 2947:     function isExtensionEnabled($ext, $headCode, $short)	
+ * 2963:     function displayTwinImage ($imageFile, $IMcommands=array(), $note="")	
+ * 3034:     function getTwinImageMessage($message, $label_1="", $label_2="")	
+ * 3050:     function formatImCmds($arr)	
+ * 3071:     function imagemenu()	
  *
  *              SECTION: DATABASE analysing
- * 3103:     function checkTheDatabase()	
- * 3702:     function isBackendAdminUser() 
- * 3714:     function isStaticTemplates()	
- * 3727:     function isBasicComplete($tLabel)	
- * 3763:     function getListOfTables()	
- * 3783:     function generateUpdateDatabaseForm($type, $arr_update, $arr_remove, $action_type)	
- * 3813:     function getUpdateDbFormWrap($action_type, $content, $label="Write to database")	
- * 3829:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)	
- * 3863:     function preformUpdateQueries($arr,$keyArr)	
- * 3884:     function displayFields($arr, $pre=0, $label="")	
- * 3909:     function displayFieldComp($arr, $arr_db)	
- * 3951:     function displaySuggestions($arr, $excludeList="")	
- * 3980:     function getCreateTables($statements, $insertCountFlag=0)	
- * 4005:     function getTableInsertStatements($statements, $table)	
- * 4031:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex="")	
- * 4067:     function assembleFieldDefinition($row)	
- * 4094:     function getFieldDefinitions_database($database)	
- * 4132:     function getFieldDefinitions_sqlContent($sqlContent)	
- * 4172:     function getDatabaseExtra($FDsrc, $FDcomp)	
- * 4210:     function compareDatabaseAndTCA($FDsrc, $TCA, $onlyFields=0)	
- * 4268:     function compareTCAandDatabase($TCA, $FDcomp)	
- * 4303:     function getUpdateSuggestions($diffArr,$keyList="extra,diff")	
- * 4405:     function suggestFieldDefinition($fieldInfo)	
- * 4483:     function getItemArrayType($arr)	
- * 4513:     function getItemBlobSize($len)	
- * 4524:     function suggestTCAFieldDefinition($fieldName,$fieldInfo)	
- * 4667:     function includeTCA()	
+ * 3113:     function checkTheDatabase()	
+ * 3699:     function isBackendAdminUser() 
+ * 3710:     function isStaticTemplates()	
+ * 3722:     function isBasicComplete($tLabel)	
+ * 3758:     function getListOfTables()	
+ * 3772:     function generateUpdateDatabaseForm($type, $arr_update, $arr_remove, $action_type)	
+ * 3802:     function getUpdateDbFormWrap($action_type, $content, $label="Write to database")	
+ * 3818:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)	
+ * 3852:     function preformUpdateQueries($arr,$keyArr)	
+ * 3871:     function displayFields($arr, $pre=0, $label="")	
+ * 3896:     function displayFieldComp($arr, $arr_db)	
+ * 3938:     function displaySuggestions($arr, $excludeList="")	
+ * 3967:     function getCreateTables($statements, $insertCountFlag=0)	
+ * 3992:     function getTableInsertStatements($statements, $table)	
+ * 4018:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex="")	
+ * 4054:     function assembleFieldDefinition($row)	
+ * 4080:     function getFieldDefinitions_database()	
+ * 4122:     function getFieldDefinitions_sqlContent($sqlContent)	
+ * 4162:     function getDatabaseExtra($FDsrc, $FDcomp)	
+ * 4200:     function compareDatabaseAndTCA($FDsrc, $TCA, $onlyFields=0)	
+ * 4258:     function compareTCAandDatabase($TCA, $FDcomp)	
+ * 4293:     function getUpdateSuggestions($diffArr,$keyList="extra,diff")	
+ * 4395:     function suggestFieldDefinition($fieldInfo)	
+ * 4473:     function getItemArrayType($arr)	
+ * 4503:     function getItemBlobSize($len)	
+ * 4514:     function suggestTCAFieldDefinition($fieldName,$fieldInfo)	
+ * 4657:     function includeTCA()	
  *
  *              SECTION: GENERAL FUNCTIONS
- * 4709:     function linkIt($url,$link="")	
- * 4737:     function printSection($head, $short_string, $long_string, $type)	
- * 4778:     function fw($str,$size=1)	
- * 4791:     function fwheader($str)	
- * 4802:     function wrapInCells($label,$content)	
- * 4811:     function printAll()	
- * 4830:     function outputWrapper($content)	
- * 4883:     function menu()	
- * 4905:     function stepHeader()	
- * 4947:     function note123()	
- * 4961:     function endNotes()	
- * 4980:     function convertByteSize($bytes)	
- * 4994:     function securityRisk()	
- * 5012:     function alterPasswordForm()	
- * 5028:     function messageBasicFinished()	
- * 5050:     function setScriptName($type)	
- * 5063:     function formWidth($size=48,$textarea=0,$styleOverride="") 
- * 5084:     function formWidthText($size=48,$styleOverride="",$wrap="") 
+ * 4699:     function linkIt($url,$link="")	
+ * 4727:     function printSection($head, $short_string, $long_string, $type)	
+ * 4768:     function fw($str,$size=1)	
+ * 4781:     function fwheader($str)	
+ * 4792:     function wrapInCells($label,$content)	
+ * 4801:     function printAll()	
+ * 4820:     function outputWrapper($content)	
+ * 4873:     function menu()	
+ * 4895:     function stepHeader()	
+ * 4937:     function note123()	
+ * 4951:     function endNotes()	
+ * 4970:     function convertByteSize($bytes)	
+ * 4984:     function securityRisk()	
+ * 5002:     function alterPasswordForm()	
+ * 5018:     function messageBasicFinished()	
+ * 5040:     function setScriptName($type)	
+ * 5053:     function formWidth($size=48,$textarea=0,$styleOverride="") 
+ * 5074:     function formWidthText($size=48,$styleOverride="",$wrap="") 
  *
  * TOTAL FUNCTIONS: 89
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -157,7 +157,7 @@
 
 /**
  * Used to setup localconf.php and verify the TYPO3 installation
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -237,7 +237,7 @@ class t3lib_install {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function t3lib_install()	{
@@ -313,7 +313,7 @@ On behalf of PHP we regret this inconvenience.
 
 	/**
 	 * Returns true if submitted password is ok. Else displays a form in which to enter password.
-	 * 
+	 *
 	 * @param	[type]		$uKey: ...
 	 * @return	[type]		...
 	 */
@@ -374,7 +374,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 	
 	/**
 	 * Calling function that checks system, IM, GD, dirs, database and lets you alter localconf.php
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function init()	{
@@ -534,7 +534,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 	
 	/**
 	 * Controls the step 1-2-3-go process
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function stepOutput()	{
@@ -653,7 +653,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				';
 			break;
 			case 2:
-				if ($result = @mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 					$dbArr = $this->getDatabaseList();
 					reset($dbArr);
 					$options="";
@@ -716,8 +716,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				}
 			break;
 			case 3:
-				if ($result = @mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
-					if (mysql_select_db(TYPO3_db))	{
+				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+					if ($GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
 						$sFiles = t3lib_div::getFilesInDir(PATH_typo3conf,"sql",1,1);
 						reset($sFiles);
 						$opt='';
@@ -751,8 +751,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				}
 			break;
 			case "go":
-				if ($result = @mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
-					if (mysql_select_db(TYPO3_db))	{
+				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+					if ($GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
 						if (count($whichTables))	{
 							$msg='
 							<br>
@@ -786,7 +786,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 
 	/**
 	 * Calling the functions that checks the system
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function checkTheConfig()	{
@@ -809,7 +809,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 			$this->checkIMlzw=1;
 		}
 		if ($this->INSTALL["checkIM"]["path"])	{
-			$paths[]=trim(stripslashes($this->INSTALL["checkIM"]["path"]));
+			$paths[]=trim($this->INSTALL["checkIM"]["path"]);
 		}
 		if ($this->checkIM)	$this->checkImageMagick($paths);
 		$this->checkDatabase();
@@ -817,7 +817,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function typo3conf_edit()	{
@@ -842,7 +842,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 				$save_to_file_md5 = md5($save_to_file);
 				if (isset($this->INSTALL["FILE"][$save_to_file_md5]) && t3lib_div::isFirstPartOfStr($save_to_file,$EDIT_path."") && substr($save_to_file,-1)!="~")	{
 					$this->INSTALL["typo3conf_files"] = $save_to_file;
-					$save_fileContent = stripslashes($this->INSTALL["FILE"][$save_to_file_md5]);
+					$save_fileContent = $this->INSTALL["FILE"][$save_to_file_md5];
 
 					if ($this->INSTALL["FILE"]["win_to_unix_br"])	{
 						$save_fileContent = str_replace(chr(13).chr(10),chr(10),$save_fileContent);
@@ -927,7 +927,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function phpinformation()	{
@@ -1127,7 +1127,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$deleteType: ...
 	 * @param	[type]		$tt: ...
 	 * @return	[type]		...
@@ -1218,7 +1218,7 @@ Number of files at a time:
 											if (t3lib_div::_GP("installToolPassword_md5"))	$value =md5($value);
 										} else $doit=0;
 									}
-									if ($doit && strcmp($GLOBALS["TYPO3_CONF_VARS"][$k][$vk],stripslashes($value)))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["'.$k.'"]["'.$vk.'"]', $value);
+									if ($doit && strcmp($GLOBALS["TYPO3_CONF_VARS"][$k][$vk],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["'.$k.'"]["'.$vk.'"]', $value);
 								}
 							}
 						}
@@ -1231,7 +1231,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$string: ...
 	 * @param	[type]		$mainArray: ...
 	 * @param	[type]		$commentArray: ...
@@ -1287,7 +1287,7 @@ Number of files at a time:
 	
 	/**
 	 * Checking php.ini configuration and set appropriate messages and flags.
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function checkConfiguration()	{
@@ -1297,15 +1297,15 @@ Number of files at a time:
 			// *****************
 			// Incoming values:
 			// *****************
-			
+/*
 		if (!get_cfg_var("track_vars"))	{
 			$this->message($ext, "Tracking Vars not set","
 				<i>track_vars=".get_cfg_var("track_vars")."</i>
-				Tracking vars are essential for almost any PHP-application. 
+				Tracking vars are essential for almost any PHP-application.
 				The fact that the value is not set may not impose a problem, because it's always set in version 4.03+ of PHP.
 			",1);
 		} else $this->message($ext, "Tracking Vars enabled","",-1);
-
+*/
 /*
 		if (!get_cfg_var("allow_url_fopen"))	{
 			$this->message($ext, "fopen() not allowed to open URL's","
@@ -1323,6 +1323,8 @@ Number of files at a time:
 				Normally the current path, '.', is included in the include_path of PHP. Although TYPO3 is made to work around this it is an unusual setting that may introduce problems.
 			",1);
 		} else $this->message($ext, "Current dir in include path","",-1);
+
+/*
 		if (!ini_get("register_globals"))	{
 			$this->message($ext, "Register globals disabled","
 				<i>register_globals=".ini_get("register_globals")."</i>
@@ -1339,7 +1341,7 @@ Number of files at a time:
 		if (ini_get("magic_quotes_runtime"))	{
 			$this->message($ext, "Magic Quotes Runtime is enabled","
 				<i>magic_quotes_runtime=".ini_get("magic_quotes_runtime")."</i>
-				TYPO3 is depending on this option NOT being enabled! 
+				TYPO3 is depending on this option NOT being enabled!
 			",3);
 		} else $this->message($ext, "magic_quotes_runtime","<i>magic_quotes_runtime=".ini_get("magic_quotes_runtime")."</i>",-1);
 		if (ini_get("gpc_order")!="GPC")	{
@@ -1348,7 +1350,7 @@ Number of files at a time:
 				The order of GET, POST and COOKIE vars are non-standard. The value should be \"GPC\".
 			",2);
 		} else $this->message($ext, "GPC order","",-1);
-
+*/
 			// *****************
 			// File uploads
 			// *****************
@@ -1479,7 +1481,7 @@ Number of files at a time:
 
 	/**
 	 * Check if php function mail() works
-	 * 
+	 *
 	 * @param	string		$cmd	If "get_form" then a formfield for the mail-address is shown. If not, it's checked if "check_mail" was in the INSTALL array and if so a test mail is sent to the recipient given.
 	 * @return	[type]		...
 	 */
@@ -1503,7 +1505,7 @@ Number of files at a time:
 
 	/**
 	 * Checking php extensions, specifically GDLib and Freetype
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function checkExtensions()	{
@@ -1566,7 +1568,7 @@ Number of files at a time:
 
 	/**
 	 * Checking and testing that the required writable directories are writable.
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function checkDirs()	{
@@ -1632,9 +1634,9 @@ Number of files at a time:
 
 	/**
 	 * Checking for existing ImageMagick installs.
-	 * 
+	 *
 	 * This tries to find available ImageMagick installations and tries to find the version numbers by executing "convert" without parameters. If the ->checkIMlzw is set, LZW capabilities of the IM installs are check also.
-	 * 
+	 *
 	 * @param	[type]		$paths: ...
 	 * @return	[type]		...
 	 */
@@ -1690,7 +1692,7 @@ Number of files at a time:
 			<form action="'.$this->action.'" method="POST">'.$content.'<input type="checkbox" name="TYPO3_INSTALL[checkIM][lzw]" value="1"'.($this->INSTALL["checkIM"]["lzw"]?" checked":"").'> Check LZW capabilities.
 
 				Check this path for ImageMagick installation:
-				<input type="text" name="TYPO3_INSTALL[checkIM][path]" value="'.htmlspecialchars(stripslashes($this->INSTALL["checkIM"]["path"])).'"> 
+				<input type="text" name="TYPO3_INSTALL[checkIM][path]" value="'.htmlspecialchars($this->INSTALL["checkIM"]["path"]).'"> 
 				(Eg. "D:\wwwroot\im537\ImageMagick\" for windows or "/usr/bin/" for Unix)<br>
 				
 				<input type="submit" value="Send">
@@ -1701,7 +1703,7 @@ Number of files at a time:
 
 	/**
 	 * Checking GIF-compression capabilities of ImageMagick install
-	 * 
+	 *
 	 * @param	[type]		$file: ...
 	 * @return	[type]		...
 	 */
@@ -1743,7 +1745,7 @@ Number of files at a time:
 
 	/**
 	 * Extracts the version number for imagemagick
-	 * 
+	 *
 	 * @param	string		$file	This is the path to the convert-program to execute in order to find the version number
 	 * @return	[type]		...
 	 */
@@ -1757,7 +1759,7 @@ Number of files at a time:
 
 	/**
 	 * Checks database username/password/host/database
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function checkDatabase()		{
@@ -1782,8 +1784,8 @@ Number of files at a time:
 					Use the form below.
 				",2);
 			}
-			if ($result = @mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
-				$this->message($ext, "Connected to MySQL successfully","
+			if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+				$this->message($ext, "Connected to SQL database successfully","
 				".trim($cInfo)."
 				",-1,1);
 				$this->config_array["mysqlConnect"]=1;
@@ -1793,7 +1795,7 @@ Number of files at a time:
 						Please select one or create a new database.
 					",3);
 					$this->config_array["no_database"]=1;
-				} elseif (!mysql_select_db(TYPO3_db))  {
+				} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))  {
 					$this->message($ext, "Database","
 						'".TYPO3_db."' could not be selected as database!
 						Please select another one or create a new database.
@@ -1805,8 +1807,8 @@ Number of files at a time:
 					",1,1);
 				}
 			} else {
-				$this->message($ext, "Could not connect to MySQL!","
-				Connecting to MySQL failed with these settings:
+				$this->message($ext, "Could not connect to SQL database!","
+				Connecting to SQL database failed with these settings:
 				".trim($cInfo)."
 				
 				Make sure you're using the correct set of data.".($this->config_array["sql.safe_mode_user"]? "
@@ -1818,7 +1820,7 @@ Number of files at a time:
 
 	/**
 	 * Prints form for updating localconf.php or updates localconf.php depending on $cmd
-	 * 
+	 *
 	 * @param	string		$cmd	If "get_form" it outputs the form. Default is to write "localconf.php" based on input in ->INSTALL[localconf.php] array and flag ->setLocalconf
 	 * @return	[type]		...
 	 */
@@ -1900,10 +1902,9 @@ Number of files at a time:
 					if (trim($this->INSTALL["localconf.php"]["NEW_DATABASE_NAME"]))	{
 						$newdbname=trim($this->INSTALL["localconf.php"]["NEW_DATABASE_NAME"]);
 						if (!ereg("[^[:alnum:]_]",$newdbname))	{
-							if ($result = @mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
-#								if (mysql_create_db($newdbname))	{	// Disabled because of safe_mode restrictions or something like that...
-								if (mysql_query('CREATE DATABASE '.$newdbname)) {
-									$this->INSTALL["localconf.php"]["typo_db"]=$newdbname;
+							if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+								if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE '.$newdbname)) {
+									$this->INSTALL["localconf.php"]["typo_db"] = $newdbname;
 									$this->messages[]= "Database '".$newdbname."' created";
 								} else $this->messages[]= $errorMessages[] = "Could not create database '".$newdbname."' (...not created)";
 							} else $this->messages[]= $errorMessages[] = "Could not connect to database when creating database '".$newdbname."' (...not created)";
@@ -1986,7 +1987,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$lines: ...
 	 * @param	[type]		$dontOutputContent: ...
 	 * @return	[type]		...
@@ -2035,7 +2036,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
 	 */
@@ -2050,7 +2051,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$string: ...
 	 * @return	[type]		...
 	 */
@@ -2063,14 +2064,13 @@ Number of files at a time:
 	
 	/**
 	 * This functions takes an array with lines from localconf.php, finds a variable and inserts the new value.
-	 * 
+	 *
 	 * @param	array		$lime_array	the localconf.php file exploded into an array by linebreaks.
 	 * @param	string		$variable	The variable name to find and substitute. This string must match the first part of a trimmed line in the line-array. Matching is done backwards so the last appearing line will be substituted.
 	 * @param	string		$value		Is the value to be insert for the variable
 	 * @return	[type]		...
 	 */
 	function setValueInLocalconfFile(&$line_array, $variable, $value)	{
-		$value = stripslashes($value);
 		if (!$this->checkForBadString($value))	return 0;
 		$found=0;
 		$commentKey = "## ";
@@ -2112,7 +2112,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$value: ...
 	 * @return	[type]		...
 	 */
@@ -2122,7 +2122,7 @@ Number of files at a time:
 
 	/**
 	 * This appends something to value in the input array based on $type. Private.
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @param	[type]		$type: ...
 	 * @return	[type]		...
@@ -2147,7 +2147,7 @@ Number of files at a time:
 
 	/**
 	 * Returns a form-element for the localconf.php update form
-	 * 
+	 *
 	 * @param	[type]		$labels: ...
 	 * @param	[type]		$values: ...
 	 * @param	[type]		$fieldName: ...
@@ -2172,36 +2172,31 @@ Number of files at a time:
 
 	/**
 	 * Returns the list of available databases (with access-check based on username/password)
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function getDatabaseList()	{
 		$dbArr=array();
-		if ($result = @mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
-			$db_list = mysql_list_dbs();
-			while ($row = mysql_fetch_object($db_list)) {
-				if (mysql_select_db($row->Database))	{
-					$dbArr[]=$row->Database;
-				}
-			}
+		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+			$dbArr = $GLOBALS['TYPO3_DB']->admin_get_dbs();
 		}	      		
 		return $dbArr;
 	}
 
 	/**
 	 * Calculates the suggested setup that should be written to localconf.php
-	 * 
+	 *
 	 * If safe_mode
 	 * - disable_exec_function = 1
 	 * - im = 0
-	 * 
+	 *
 	 * if PNG/GIF/GD
 	 * - disable gdlib if nothing
 	 * 	- select png/gif if only one of them is available, else PNG/GIF selector, defaulting to GIF
 	 * - (safe_mode is on)
 	 * 	- im_path (default to 4.2.9, preferable with LZW)		im_ver5-flag is set based on im_path being 4.2.9 or 5+
 	 * 	- im_path_lzw (default to LZW version, pref. 4.2.9)
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function setupGeneralCalculate()	{
@@ -2270,7 +2265,7 @@ Number of files at a time:
 
 	/**
 	 * Returns the part of phpinfo() output that tells about GD library (HTML-code)
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function getGDPartOfPhpinfo()	{
@@ -2288,7 +2283,7 @@ Number of files at a time:
 
 	/**
 	 * Returns true if TTF lib is install according to phpinfo(). If $phpinfo supply as parameter that string is searched instead.
-	 * 
+	 *
 	 * @param	[type]		$phpinfo: ...
 	 * @return	[type]		...
 	 */
@@ -2349,7 +2344,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function isGIF()	{
@@ -2361,7 +2356,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function isJPG()	{
@@ -2372,7 +2367,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function isPNG()	{
@@ -2384,7 +2379,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function ImageTypes()	{
@@ -2395,7 +2390,7 @@ Number of files at a time:
 
 	/**
 	 * Returns general information about GDlib
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function getGDSoftwareInfo()	{
@@ -2407,30 +2402,30 @@ Number of files at a time:
 
 	/**
 	 * Returns general information about configuration of TYPO3.
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function generallyAboutConfiguration()	{
 		$out='
 		Local configuration is done by overriding default values in the included file, typo3conf/localconf.php. In this file you enter the database information along with values in the global array TYPO3_CONF_VARS.
 		The options in the TYPO3_CONF_VARS array and how to use it for your own purposes is discussed in the base configuration file, t3lib/config_default.php. This file sets up the default values and subsequently includes the localconf.php file in which you can then override values.
-		See this page for '.$this->linkIt("http://www.typo3.com/index.php/Server_software_and/1051/0/","more information about system requirements.").'
+		See this page for '.$this->linkIt("http://typo3.org/1275.0.html","more information about system requirements.").'
 		';
 		return trim($out);
 	}
 
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 	/**********************
 	 *
 	 * IMAGE processing
@@ -2443,31 +2438,31 @@ Number of files at a time:
 	 * jesus.JPG:	Save for web, 30 quality
 	 * jesus.PNG:	Save for web, PNG-24
 	 * jesus.tga	24 bit TGA file
-	 * jesus.pcx	
+	 * jesus.pcx
 	 * jesus.bmp	24 bit BMP file
 	 * jesus_ps6.PDF:	PDF w/layers and vector data
 	 * typo3logo.ai:	Illustrator 8 file
 	 * pdf_from_imagemagick.PDF	PDF-file made by Acrobat Distiller from InDesign PS-file
-	 * 
-	 * 
+	 *
+	 *
 	 * Imagemagick
 	 * - Read formats
 	 * - Write png, gif, jpg
-	 * 
+	 *
 	 * Problems may arise from the use of safe_mode (eg. png)
 	 * In safemode you will automatically execute the program convert in the safe_mode_exec_path no matter what other path you specify
 	 * check fileexist before anything...
-	 * 
+	 *
 	 * - compare gif size
 	 * - scaling (by stdgraphic)
 	 * - combining (by stdgraphic)
-	 * 
-	 * GDlib: 
+	 *
+	 * GDlib:
 	 * - create from:....
 	 * - ttf text
-	 * 
+	 *
 	 * From TypoScript: (GD only, GD+IM, IM)
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function checkTheImageProcessing()	{
@@ -2943,7 +2938,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$ext: ...
 	 * @param	[type]		$headCode: ...
 	 * @param	[type]		$short: ...
@@ -2959,7 +2954,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$imageFile: ...
 	 * @param	[type]		$IMcommands: ...
 	 * @param	[type]		$note: ...
@@ -3030,7 +3025,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$message: ...
 	 * @param	[type]		$label_1: ...
 	 * @param	[type]		$label_2: ...
@@ -3048,7 +3043,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @return	[type]		...
 	 */
@@ -3070,7 +3065,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function imagemenu()	{
@@ -3137,8 +3132,8 @@ Number of files at a time:
 
 			// Getting number of static_template records
 		if ($whichTables["static_template"])	{
-			$res_static = mysql(TYPO3_db,"SELECT count(*) FROM static_template");
-			list($static_template_count) = mysql_fetch_assoc($res_static);
+			$res_static = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'static_template', '');
+			list($static_template_count) = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_static);
 		}
 		$static_template_count=intval($static_template_count);
 
@@ -3152,7 +3147,7 @@ Number of files at a time:
 			Password: <strong>".TYPO3_db_password."</strong>
 			Host: <strong>".TYPO3_db_host."</strong>
 		";
-		$this->message($headCode, "Connected to MySQL successfully","
+		$this->message($headCode, "Connected to SQL database successfully","
 		".trim($cInfo)."
 		",-1,1);
 		$this->message($headCode, "Database","
@@ -3292,7 +3287,7 @@ Number of files at a time:
 
 							// Updating database...
 						if (is_array($this->INSTALL["database_update"]))	{
-							$FDdb = $this->getFieldDefinitions_database(TYPO3_db);
+							$FDdb = $this->getFieldDefinitions_database();
 							$diff = $this->getDatabaseExtra($FDfile, $FDdb);
 							$update_statements = $this->getUpdateSuggestions($diff);
 							$diff = $this->getDatabaseExtra($FDdb, $FDfile);
@@ -3309,7 +3304,7 @@ Number of files at a time:
 						}
 						
 							// Init again / first time depending...
-						$FDdb = $this->getFieldDefinitions_database(TYPO3_db);
+						$FDdb = $this->getFieldDefinitions_database();
 						$diff = $this->getDatabaseExtra($FDfile, $FDdb);
 						$update_statements = $this->getUpdateSuggestions($diff);
 						$diff = $this->getDatabaseExtra($FDdb, $FDfile);
@@ -3334,7 +3329,7 @@ Number of files at a time:
 				case "cmpTCA":
 					$this->includeTCA();
 					$this->mysqlVersion = "3.23";	// Set this previously to calling the function below in order to make the rendering right for the comparison.
-					$FDdb = $this->getFieldDefinitions_database(TYPO3_db);
+					$FDdb = $this->getFieldDefinitions_database();
 
 						// Displaying configured fields which are not in the database
 					$tLabel="Tables and fields in \$TCA, but not in database";
@@ -3448,9 +3443,7 @@ Number of files at a time:
 							reset($statements);
 							$r=0;
 							while(list($k,$v)=each($statements))	{
-								$res=mysql(TYPO3_db, $v);
-								$err =mysql_error();
-								if ($err)	echo $err."<BR>";
+								$res = $GLOBALS['TYPO3_DB']->admin_query($v);
 								$r++;
 							}
 							$this->message($tLabel,"Imported ALL","
@@ -3466,21 +3459,14 @@ Number of files at a time:
 							reset($this->INSTALL["database_import"]);
 							while(list($table,$md5str)=each($this->INSTALL["database_import"]))	{
 								if ($md5str==md5($statements_table[$table]))	{
-									$res=mysql(TYPO3_db, "DROP TABLE IF EXISTS ".$table);
-									$err =mysql_error();
-									if ($err)	echo $err."<BR>";
-									
-									$res=mysql(TYPO3_db, $statements_table[$table]);
-									$err =mysql_error();
-									if ($err)	echo $err."<BR>";
+									$res = $GLOBALS['TYPO3_DB']->admin_query("DROP TABLE IF EXISTS ".$table);
+									$res = $GLOBALS['TYPO3_DB']->admin_query($statements_table[$table]);
 
 									if ($insertCount[$table])	{
 										$statements_insert = $this->getTableInsertStatements($statements, $table);
 										reset($statements_insert);
 										while(list($k,$v)=each($statements_insert))	{
-											$res=mysql(TYPO3_db, $v);
-											$err =mysql_error();
-											if ($err)	echo $err."<BR>";
+											$res = $GLOBALS['TYPO3_DB']->admin_query($v);
 										}
 									}
 
@@ -3563,26 +3549,30 @@ Number of files at a time:
 							$username = str_replace(" ","_",$username);
 							$pass = trim($this->INSTALL["database_adminUser"]["password"]);
 							if ($username && $pass)	{
-								$query = "SELECT uid FROM be_users WHERE username='".$username."'";
-								$res = mysql(TYPO3_db,$query);
-								echo mysql_error();
-								if (!mysql_num_rows($res))	{
-									$query = "INSERT INTO be_users (username,password,admin,uc,fileoper_perms,tstamp,crdate) VALUES ('".$username."','".md5($pass)."',1,'',7,".time().",".time().")";
-									$res = mysql(TYPO3_db,$query);
-									echo mysql_error();
+								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'be_users', 'username="'.$GLOBALS['TYPO3_DB']->quoteStr($username, 'be_users').'"');
+								if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+								
+									$insertFields = array(
+										'username' => $username,
+										'password' => md5($pass),
+										'admin' => 1,
+										'uc' => '',
+										'fileoper_perms' => 7,
+										'tstamp' => time(),
+										'crdate' => time()
+									);
+									
+									$GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
 								
 									$this->isBasicComplete($headCode);
 
 									$this->message($headCode,"User created",'
-									Username: <strong>'.stripslashes($username).'</strong><BR>
-									Password: <strong>'.stripslashes($pass).'</strong><BR>
-									'.$query
+									Username: <strong>'.htmlspecialchars($username).'</strong><BR>
+									Password: <strong>'.htmlspecialchars($pass).'</strong><BR>'
 									,1,1);
 								} else {
 									$this->message($headCode,"Username not unique!",'
-									The username, <strong>'.stripslashes($username).'</strong>, was not unique.<BR><BR>
-									'.$query
-									,2,1);
+									The username, <strong>'.htmlspecialchars($username).'</strong>, was not unique.',2,1);
 								}
 							}
 						}
@@ -3607,13 +3597,8 @@ Number of files at a time:
 				case "UC":
 					if ($whichTables["be_users"])	{
 						if (!strcmp($this->INSTALL["database_UC"],1))	{
-							$query = "UPDATE be_users SET uc = ''";
-							$res = mysql(TYPO3_db,$query);
-							echo mysql_error();
-							$this->message($headCode,"Clearing be_users.uc",'
-								The following SQL query was preformed:<BR><BR>
-								'.$query
-								,1);
+							$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', '', array('uc' => ''));
+							$this->message($headCode,"Clearing be_users.uc",'Done.',1);
 						}
 						$content = '
 						<input type="checkbox" name="TYPO3_INSTALL[database_UC]" value=1 checked> Clear be_users preferences ("uc" field)
@@ -3646,16 +3631,14 @@ Number of files at a time:
 							if ($table!="--div--")	{
 								$table_c = TYPO3_OS=="WIN" ? strtolower($table) : $table;
 								if ($this->INSTALL["database_clearcache"][$table] && $whichTables[$table_c])	{
-									$query = "DELETE FROM ".$table;
-									$qList[] = $query;
-									$res = mysql(TYPO3_db,$query);
-									echo mysql_error();
+									$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, '');
+									$qList[] = $table;
 								}
 							}
 						}
 						if (count($qList))	{
 							$this->message($headCode,"Clearing cache",'
-							The following SQL queries were preformed:<BR><BR>
+							The following tables were emptied:<BR><BR>
 							'.implode($qList,"<BR>")
 							,1);
 						}
@@ -3683,9 +3666,8 @@ Number of files at a time:
 						if ($table!="--div--")	{
 							$table_c = TYPO3_OS=="WIN" ? strtolower($table) : $table;
 							if ($whichTables[$table_c])	{
-								$query = "SELECT count(*) FROM ".$table;
-								$res = mysql(TYPO3_db,$query);
-								list($countEntries[$table]) = mysql_fetch_row($res);
+								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, '');
+								list($countEntries[$table]) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 									// Checkboxes:
 								$checkBoxes[]= '<input type="checkbox" name="TYPO3_INSTALL[database_clearcache]['.$table.']" value="1"'.($this->INSTALL["database_clearcache"][$table]||$GLOBALS["HTTP_GET_VARS"]["PRESET"]["database_clearcache"][$table]?" checked":"").'> <strong>'.$table.'</strong> ('.$countEntries[$table].' rows) - '.$labelArr[$table];
 							}
@@ -3711,31 +3693,29 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function isBackendAdminUser() {
-		$query="SELECT count(*) FROM be_users WHERE admin";
-		$res=mysql(TYPO3_db,$query);
-		$row = mysql_fetch_assoc($res);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'be_users', 'admin');
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		return current($row);
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function isStaticTemplates()	{
-		$query="SELECT count(*) FROM static_template";
-		$res=mysql(TYPO3_db,$query);
-		$row = mysql_fetch_assoc($res);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'static_template', '');
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		return current($row);
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$tLabel: ...
 	 * @return	[type]		...
 	 */
@@ -3772,23 +3752,17 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function getListOfTables()	{
-		$whichTables=array();
-		$tables_result=mysql_list_tables(TYPO3_db); 
-		if (!mysql_error())	{
-			while ($theTable=mysql_fetch_assoc($tables_result)) {
-				$whichTables[current($theTable)]=current($theTable);
-			}
-		}
+		$whichTables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
 		return $whichTables;
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$type: ...
 	 * @param	[type]		$arr_update: ...
 	 * @param	[type]		$arr_remove: ...
@@ -3819,7 +3793,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$action_type: ...
 	 * @param	[type]		$content: ...
 	 * @param	[type]		$label: ...
@@ -3832,7 +3806,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @param	[type]		$label: ...
 	 * @param	[type]		$checked: ...
@@ -3870,7 +3844,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @param	[type]		$keyArr: ...
 	 * @return	[type]		...
@@ -3880,9 +3854,7 @@ Number of files at a time:
 			reset($arr);
 			while(list($key,$string)=each($arr))	{
 				if (isset($keyArr[$key]) && $keyArr[$key])	{
-					$res = mysql(TYPO3_db,$string);
-					$err = mysql_error();
-					if ($err)	echo $err."<BR>";
+					$res = $GLOBALS['TYPO3_DB']->admin_query($string);
 				}
 			}
 		}
@@ -3890,7 +3862,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @param	[type]		$pre: ...
 	 * @param	[type]		$label: ...
@@ -3916,7 +3888,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @param	[type]		$arr_db: ...
 	 * @return	[type]		...
@@ -3958,7 +3930,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @param	[type]		$excludeList: ...
 	 * @return	[type]		...
@@ -3987,7 +3959,7 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$statements: ...
 	 * @param	[type]		$insertCountFlag: ...
 	 * @return	[type]		...
@@ -4012,14 +3984,14 @@ Number of files at a time:
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$statements: ...
 	 * @param	[type]		$table: ...
 	 * @return	[type]		...
 	 */
 	function getTableInsertStatements($statements, $table)	{
 		reset($statements);
-//		$str="INSERT INTO ".strtoupper($table);
+
 		$outStatements=array();
 		while(list($line,$linecontent)=each($statements))	{
 			if (eregi("^insert[[:space:]]*into[[:space:]]*([[:alnum:]_]*)",substr($linecontent,0,100),$reg))	{
@@ -4037,7 +4009,7 @@ Number of files at a time:
 	
 	/**
 	 * Returns an array where every entry is a single sql-statement. Input must be formatted like an ordinary MySQL-dump files
-	 * 
+	 *
 	 * @param	string		$sqlcode	The sql-file content. Provided that 1) every query in the input is ended with ";" and that a line in the file contains only one query or a part of a query.
 	 * @param	[type]		$removeNonSQL: ...
 	 * @param	[type]		$query_regex: ...
@@ -4075,7 +4047,7 @@ Number of files at a time:
 	
 	/**
 	 * Converts a result row with field information into the SQL field definition string
-	 * 
+	 *
 	 * @param	[type]		$row: ...
 	 * @return	[type]		...
 	 */
@@ -4102,28 +4074,31 @@ Number of files at a time:
 	
 	/**
 	 * Reads the field definitions for the current database
-	 * 
-	 * @param	string		$database	database name to get content from.
+	 *
 	 * @return	[type]		...
 	 */
-	function getFieldDefinitions_database($database)	{
-		$total=array();
-		mysql_select_db($database); 
-		echo mysql_error();
-		$tables=mysql_list_tables($database); 
-		while ($tableRow=mysql_fetch_assoc($tables))	{
+	function getFieldDefinitions_database()	{
+		$total = array();
+		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db); 
+		echo $GLOBALS['TYPO3_DB']->sql_error();
+		
+		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db); 
+		foreach($tables as $tableName)	{
+
 				// Fields:
-			$columns_res = mysql($database, "show columns from ".current($tableRow));
-			while($fieldRow=mysql_fetch_assoc($columns_res))	{
-				$total[current($tableRow)]["fields"][$fieldRow["Field"]] = $this->assembleFieldDefinition($fieldRow);
+			$fieldInformation = $GLOBALS['TYPO3_DB']->admin_get_fields($tableName);
+			foreach($fieldInformation as $fN => $fieldRow)	{
+				$total[$tableName]["fields"][$fN] = $this->assembleFieldDefinition($fieldRow);
 			}
+			
 				// Keys:
-			$keyRes = mysql(TYPO3_db, "show keys from ".current($tableRow));
-			while($keyRow=mysql_fetch_assoc($keyRes))	{
-				$tempKeys[current($tableRow)][$keyRow["Key_name"]][$keyRow["Seq_in_index"]] = $keyRow["Column_name"];
-				$tempKeysPrefix[current($tableRow)][$keyRow["Key_name"]]= ($keyRow["Key_name"]=="PRIMARY"?"PRIMARY KEY":($keyRow["Non_unique"]?"KEY":"UNIQUE")." ".$keyRow["Key_name"]);
+			$keyInformation = $GLOBALS['TYPO3_DB']->admin_get_keys($tableName);
+			foreach($keyInformation as $kN => $keyRow)	{
+				$tempKeys[$tableName][$keyRow["Key_name"]][$keyRow["Seq_in_index"]] = $keyRow["Column_name"];
+				$tempKeysPrefix[$tableName][$keyRow["Key_name"]]= ($keyRow["Key_name"]=="PRIMARY"?"PRIMARY KEY":($keyRow["Non_unique"]?"KEY":"UNIQUE")." ".$keyRow["Key_name"]);
 			}
 		}
+
 			// Compile information:
 		if (is_array($tempKeys))	{
 			reset($tempKeys);
@@ -4140,7 +4115,7 @@ Number of files at a time:
 
 	/**
 	 * Reads the field definitions for the input sql-file string
-	 * 
+	 *
 	 * @param	string		$sqlContent		Should be a string read from an sql-file made with 'mysqldump [database_name] -d'
 	 * @return	[type]		...
 	 */
@@ -4177,9 +4152,9 @@ Number of files at a time:
 
 	/**
 	 * Compares two arrays with field information
-	 * 
+	 *
 	 * Returns an array with 1) all elements from $FSsrc that is not in $FDcomp (in key "extra") and 2) all elements from $FSsrc that is difference from the ones in $FDcomp
-	 * 
+	 *
 	 * @param	[type]		$FDsrc: ...
 	 * @param	[type]		$FDcomp: ...
 	 * @return	[type]		...
@@ -4216,7 +4191,7 @@ Number of files at a time:
 
 	/**
 	 * Compares an array with field definitions with $TCA array
-	 * 
+	 *
 	 * @param	[type]		$FDsrc: ...
 	 * @param	[type]		$TCA: ...
 	 * @param	[type]		$onlyFields: ...
@@ -4275,7 +4250,7 @@ Number of files at a time:
 
 	/**
 	 * Compares the $TCA array with a field definition array
-	 * 
+	 *
 	 * @param	[type]		$TCA: ...
 	 * @param	[type]		$FDcomp: ...
 	 * @return	[type]		...
@@ -4310,7 +4285,7 @@ Number of files at a time:
 
 	/**
 	 * Returns an array with SQL-statements that is needed to update according to the diff-array
-	 * 
+	 *
 	 * @param	[type]		$diffArr: ...
 	 * @param	[type]		$keyList: ...
 	 * @return	[type]		...
@@ -4397,8 +4372,8 @@ Number of files at a time:
 								$statements["drop_table"][md5($statement)]=$statement;
 							}
 							// count:
-							$res = mysql(TYPO3_db,"SELECT count(*) FROM ".$table);
-							list($count) = mysql_fetch_row($res);
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, '');
+							list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 							$statements["tables_count"][md5($statement)] = $count?"Records in table: ".$count:"";
 						} else {
 							$statement = "CREATE TABLE ".$table." (\n".implode($whole_table,",\n")."\n) TYPE=MyISAM;";
@@ -4413,7 +4388,7 @@ Number of files at a time:
 	
 	/**
 	 * Suggests a field definition for a TCA config array.
-	 * 
+	 *
 	 * @param	[type]		$fieldInfo: ...
 	 * @return	[type]		...
 	 */
@@ -4491,7 +4466,7 @@ Number of files at a time:
 
 	/**
 	 * Private
-	 * 
+	 *
 	 * @param	[type]		$arr: ...
 	 * @return	[type]		...
 	 */
@@ -4521,7 +4496,7 @@ Number of files at a time:
 
 	/**
 	 * Private
-	 * 
+	 *
 	 * @param	[type]		$len: ...
 	 * @return	[type]		...
 	 */
@@ -4531,7 +4506,7 @@ Number of files at a time:
 
 	/**
 	 * Should suggest a TCA configuration for a specific field.
-	 * 
+	 *
 	 * @param	[type]		$fieldName: ...
 	 * @param	[type]		$fieldInfo: ...
 	 * @return	[type]		...
@@ -4676,7 +4651,7 @@ $out='
 
 	/**
 	 * Includes TCA
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function includeTCA()	{
@@ -4716,7 +4691,7 @@ $out='
 
 	/**
 	 * This creates a link to the given $url. If $link is set, that'll be the link-text
-	 * 
+	 *
 	 * @param	[type]		$url: ...
 	 * @param	[type]		$link: ...
 	 * @return	[type]		...
@@ -4742,7 +4717,7 @@ $out='
 
 	/**
 	 * This "prints" a section with a message to the ->sections array
-	 * 
+	 *
 	 * @param	[type]		$head: ...
 	 * @param	[type]		$short_string: ...
 	 * @param	[type]		$long_string: ...
@@ -4785,7 +4760,7 @@ $out='
 
 	/**
 	 * Wraps the str in a font-tag with verdana 1
-	 * 
+	 *
 	 * @param	[type]		$str: ...
 	 * @param	[type]		$size: ...
 	 * @return	[type]		...
@@ -4799,7 +4774,7 @@ $out='
 
 	/**
 	 * Wraps the str in a font-tag with verdana 1
-	 * 
+	 *
 	 * @param	[type]		$str: ...
 	 * @return	[type]		...
 	 */
@@ -4809,7 +4784,7 @@ $out='
 
 	/**
 	 * Wrapping labal/content in a table-row.
-	 * 
+	 *
 	 * @param	[type]		$label: ...
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
@@ -4820,7 +4795,7 @@ $out='
 
 	/**
 	 * This prints all the messages in the ->section array
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function printAll()	{
@@ -4838,7 +4813,7 @@ $out='
 
 	/**
 	 * This wraps and returns the main content of the page into proper html-code.
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
 	 */
@@ -4892,7 +4867,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function menu()	{
@@ -4914,7 +4889,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function stepHeader()	{
@@ -4956,7 +4931,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function note123()	{
@@ -4970,7 +4945,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function endNotes()	{
@@ -4988,7 +4963,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$bytes: ...
 	 * @return	[type]		...
 	 */
@@ -5003,7 +4978,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function securityRisk()	{
@@ -5021,7 +4996,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function alterPasswordForm()	{
@@ -5037,7 +5012,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function messageBasicFinished()	{
@@ -5058,7 +5033,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$type: ...
 	 * @return	[type]		...
 	 */
@@ -5069,7 +5044,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$size: ...
 	 * @param	[type]		$textarea: ...
 	 * @param	[type]		$styleOverride: ...
@@ -5090,7 +5065,7 @@ A:hover {color: #000066}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$size: ...
 	 * @param	[type]		$styleOverride: ...
 	 * @param	[type]		$wrap: ...

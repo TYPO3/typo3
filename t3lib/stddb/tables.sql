@@ -41,6 +41,7 @@ CREATE TABLE be_groups (
 CREATE TABLE be_sessions (
   ses_id varchar(32) DEFAULT '' NOT NULL,
   ses_name varchar(32) DEFAULT '' NOT NULL,
+  ses_iplock varchar(15) DEFAULT '' NOT NULL,
   ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
   ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ses_data blob NOT NULL,

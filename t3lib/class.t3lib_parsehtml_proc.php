@@ -49,30 +49,30 @@
  *
  *              SECTION: Specific RTE TRANSFORMATION functions
  *  378:     function TS_images_db($value)	
- *  479:     function TS_images_rte($value)	
- *  513:     function TS_reglinks($value,$direction)		
- *  547:     function TS_links_db($value)	
- *  591:     function TS_links_rte($value)	
- *  666:     function TS_preserve_db($value)	
- *  690:     function TS_preserve_rte($value)	
- *  711:     function TS_transform_db($value,$css=FALSE)	
- *  822:     function TS_transform_rte($value,$css=0)	
- *  893:     function TS_strip_db($value)	
+ *  517:     function TS_images_rte($value)	
+ *  551:     function TS_reglinks($value,$direction)		
+ *  585:     function TS_links_db($value)	
+ *  629:     function TS_links_rte($value)	
+ *  704:     function TS_preserve_db($value)	
+ *  728:     function TS_preserve_rte($value)	
+ *  749:     function TS_transform_db($value,$css=FALSE)	
+ *  860:     function TS_transform_rte($value,$css=0)	
+ *  931:     function TS_strip_db($value)	
  *
  *              SECTION: Generic RTE transformation, analysis and helper functions
- *  924:     function getURL($url)	
- *  938:     function HTMLcleaner_db($content,$tagList='')	
- *  959:     function getKeepTags($direction='rte',$tagList='')	
- * 1068:     function divideIntoLines($value,$count=5,$returnArray=FALSE)	
- * 1172:     function setDivTags($value,$dT='p')	
- * 1217:     function internalizeFontTags($value)	
- * 1253:     function siteUrl()	
- * 1263:     function rteImageStorageDir()	
- * 1275:     function removeTables($value,$breakChar='<br />')	
- * 1307:     function defaultTStagMapping($code,$direction='rte')	
- * 1330:     function getWHFromAttribs($attribArray)	
- * 1356:     function urlInfoForLinkTags($url)	
- * 1415:     function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)	
+ *  962:     function getURL($url)	
+ *  976:     function HTMLcleaner_db($content,$tagList='')	
+ *  997:     function getKeepTags($direction='rte',$tagList='')	
+ * 1106:     function divideIntoLines($value,$count=5,$returnArray=FALSE)	
+ * 1210:     function setDivTags($value,$dT='p')	
+ * 1255:     function internalizeFontTags($value)	
+ * 1291:     function siteUrl()	
+ * 1301:     function rteImageStorageDir()	
+ * 1313:     function removeTables($value,$breakChar='<br />')	
+ * 1345:     function defaultTStagMapping($code,$direction='rte')	
+ * 1368:     function getWHFromAttribs($attribArray)	
+ * 1394:     function urlInfoForLinkTags($url)	
+ * 1453:     function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)	
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,7 +94,7 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -129,10 +129,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 	/**
 	 * Initialize, setting element reference and record PID
-	 * 
+	 *
 	 * @param	string		Element reference, eg "tt_content:bodytext"
 	 * @param	integer		PID of the record (page id)
-	 * @return	void		
+	 * @return	void
 	 */
 	function init($elRef='',$recPid=0)	{
 		$this->recPid=$recPid;
@@ -142,7 +142,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Setting the ->relPath and ->relBackPath to proper values so absolute references to links and images can be converted to relative dittos.
 	 * This is used when editing files with the RTE
-	 * 
+	 *
 	 * @param	string		The relative path from PATH_site to the place where the file being edited is. Eg. "fileadmin/static".
 	 * @return	void		There is no output, it is set in internal variables. With the above example of "fileadmin/static" as input this will yield ->relPath to be "fileadmin/static/" and ->relBackPath to be "../../"
 	 */
@@ -164,7 +164,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Evaluate the environment for editing a staticFileEdit file.
 	 * Called for almost all fields being saved in the database. Is called without an instance of the object: t3lib_parsehtml_proc::evalWriteFile()
-	 * 
+	 *
 	 * @param	array		Parameters for the current field as found in types-config
 	 * @param	array		Current record we are editing.
 	 * @return	mixed		On success an array with various information is returned, otherwise a string with an error message
@@ -220,7 +220,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Tranform value for RTE based on specConf in the direction specified by $direction (rte/db)
 	 * This is the main function called from tcemain and transfer data classes
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @param	array		Special configuration for a field; This is coming from the types-configuration of the field in the TCA. In the types-configuration you can setup features for the field rendering and in particular the RTE takes al its major configuration options from there!
 	 * @param	string		Direction of the transformation. Two keywords are allowed; "db" or "rte". If "db" it means the transformation will clean up content coming from the Rich Text Editor and goes into the database. The other direction, "rte", is of course when content is coming from database and must be transformed to fit the RTE.
@@ -367,11 +367,11 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Transformation handler: 'ts_images' / direction: "db"
 	 * Processing images inserted in the RTE.
-	 * This is used when content goes from the RTE to the database. 
+	 * This is used when content goes from the RTE to the database.
 	 * Images inserted in the RTE has an absolute URL applied to the src attribute. This URL is converted to a relative URL
 	 * If it turns out that the URL is from another website than the current the image is read from that external URL and moved to the local server.
 	 * Also "magic" images are processed here.
-	 * 
+	 *
 	 * @param	string		The content from RTE going to Database
 	 * @return	string		Processed content
 	 */
@@ -510,7 +510,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * Transformation handler: 'ts_images' / direction: "rte"
 	 * Processing images from database content going into the RTE.
 	 * Processing includes converting the src attribute to an absolute URL.
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @return	string		Content output
 	 */
@@ -543,7 +543,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Transformation handler: 'ts_reglinks' / direction: "db"+"rte" depending on $direction variable.
 	 * Converting <A>-tags to/from abs/rel
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @param	string		Direction of conversion; "rte" (from database to RTE) or "db" (from RTE to database)
 	 * @return	string		Content output
@@ -577,7 +577,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Transformation handler: 'ts_links' / direction: "db"
 	 * Converting <A>-tags to <LINK tags>
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @return	string		Content output
 	 * @see TS_links_rte()
@@ -621,7 +621,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Transformation handler: 'ts_links' / direction: "rte"
 	 * Converting <LINK tags> to <A>-tags
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @return	string		Content output
 	 * @see TS_links_rte()
@@ -697,7 +697,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	
 	/**
 	 * Preserve special tags
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @return	string		Content output
 	 */
@@ -721,7 +721,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	
 	/**
 	 * Preserve special tags
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @return	string		Content output
 	 */
@@ -740,7 +740,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Transformation handler: 'ts_transform' + 'css_transform' / direction: "db"
 	 * Cleaning (->db) for standard content elements (ts)
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @param	boolean		If true, the transformation was "css_transform", otherwise "ts_transform"
 	 * @return	string		Content output
@@ -851,7 +851,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Transformation handler: 'ts_transform' + 'css_transform' / direction: "rte"
 	 * Set (->rte) for standard content elements (ts)
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @param	boolean		If true, the transformation was "css_transform", otherwise "ts_transform"
 	 * @return	string		Content output
@@ -924,7 +924,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Transformation handler: 'ts_strip' / direction: "db"
 	 * Removing all non-allowed tags
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @return	string		Content output
 	 */
@@ -954,7 +954,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 	/**
 	 * Reads the file or url $url and returns the content
-	 * 
+	 *
 	 * @param	string		Filepath/URL to read
 	 * @return	string		The content from the resource given as input.
 	 * @see t3lib_div::getURL()
@@ -964,10 +964,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	}
 
 	/**
-	 * Function for cleaning content going into the database. 
+	 * Function for cleaning content going into the database.
 	 * Content is cleaned eg. by removing unallowed HTML and ds-HSC content
 	 * It is basically calling HTMLcleaner from the parent class with some preset configuration specifically set up for cleaning content going from the RTE into the db
-	 * 
+	 *
 	 * @param	string		Content to clean up
 	 * @param	string		Comma list of tags to specifically allow. Default comes from getKeepTags and is ""
 	 * @return	string		Clean content
@@ -988,7 +988,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Creates an array of configuration for the HTMLcleaner function based on whether content go TO or FROM the Rich Text Editor ($direction)
 	 * Unless "tagList" is given, the function will cache the configuration for next time processing goes on. (In this class that is the case only if we are processing a bulletlist)
-	 * 
+	 *
 	 * @param	string		The direction of the content being processed by the output configuration; "db" (content going into the database FROM the rte) or "rte" (content going into the form)
 	 * @param	string		Comma list of tags to keep (overriding default which is to keep all + take notice of internal configuration)
 	 * @return	array		Configuration array
@@ -1096,7 +1096,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * This point is to resolve the HTML-code returned from RTE into ordinary lines so it's 'human-readable'
 	 * The function ->setDivTags does the opposite.
 	 * This function processes content to go into the database.
-	 * 
+	 *
 	 * @param	string		Value to process.
 	 * @param	integer		Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p/div tags).
 	 * @param	boolean		If true, an array with the lines is returned, otherwise a string of the processed input value.
@@ -1201,7 +1201,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Converts all lines into <div></div>/<p></p>-sections (unless the line is a div-section already)
 	 * For processing of content going FROM database TO RTE.
-	 * 
+	 *
 	 * @param	string		Value to convert
 	 * @param	string		Tag to wrap with. Either "p" or "div" should it be. Lowercase preferably.
 	 * @return	string		Processed value.
@@ -1242,12 +1242,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	}
 
 	/**
-	 * This splits the $value in font-tag chunks. 
+	 * This splits the $value in font-tag chunks.
 	 * If there are any <P>/<DIV> sections inside of them, the font-tag is wrapped AROUND the content INSIDE of the P/DIV sections and the outer font-tag is removed.
-	 * This functions seems to be a good choice for pre-processing content if it has been pasted into the RTE from eg. star-office. 
+	 * This functions seems to be a good choice for pre-processing content if it has been pasted into the RTE from eg. star-office.
 	 * In that case the font-tags are normally on the OUTSIDE of the sections.
 	 * This function is used by eg. divideIntoLines() if the procesing option 'internalizeFontTags' is set.
-	 * 
+	 *
 	 * @param	string		Input content
 	 * @return	string		Output content
 	 * @see divideIntoLines()
@@ -1284,7 +1284,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	
 	/**
 	 * Returns SiteURL based on thisScript.
-	 * 
+	 *
 	 * @return	string		Value of t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 	 * @see t3lib_div::getIndpEnv()
 	 */
@@ -1295,8 +1295,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Return the storage folder of RTE image files.
 	 * Default is $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'] unless something else is configured in the types configuration for the RTE.
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function rteImageStorageDir()	{
 		return $this->rte_p['imgpath'] ? $this->rte_p['imgpath'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'];
@@ -1305,7 +1305,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Remove all tables from incoming code
 	 * The function is trying to to this is some more or less respectfull way. The approach is to resolve each table cells content and implode it all by <br /> chars. Thus at least the content is preserved in some way.
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @param	string		Break character to use for linebreaks.
 	 * @return	string		Output value
@@ -1337,7 +1337,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	
 	/**
 	 * Default tag mapping for TS
-	 * 
+	 *
 	 * @param	string		Input code to process
 	 * @param	string		Direction To databsae (db) or from database to RTE (rte)
 	 * @return	string		Processed value
@@ -1361,7 +1361,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	/**
 	 * Finds width and height from attrib-array
 	 * If the width and height is found in the style-attribute, use that!
-	 * 
+	 *
 	 * @param	array		Array of attributes from tag in which to search. More specifically the content of the key "style" is used to extract "width:xxx / height:xxx" information
 	 * @return	array		Integer w/h in key 0/1. Zero is returned if not found.
 	 */
@@ -1387,7 +1387,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	
 	/**
 	 * Parse <A>-tag href and return status of email,external,file or page
-	 * 
+	 *
 	 * @param	string		URL to analyse.
 	 * @return	array		Information in an array about the URL
 	 */
@@ -1445,7 +1445,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 	/**
 	 * Converting <A>-tags to absolute URLs (+ setting rtekeep attribute)
-	 * 
+	 *
 	 * @param	string		Content input
 	 * @param	boolean		If true, then the "rtekeep" attribute will not be set.
 	 * @return	string		Content output

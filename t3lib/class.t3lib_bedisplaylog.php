@@ -45,10 +45,10 @@
  *  146:     function getTypeLabel($code)	
  *  160:     function getActionLabel($code)	
  *  178:     function getDetails($code,$text,$data,$sys_log_uid=0)	
- *  211:     function reset()	
- *  225:     function getErrorFormatting($sign)	
- *  235:     function formatDetailsForList($row)	
- *  252:     function stripPath($inArr)	
+ *  210:     function reset()	
+ *  224:     function getErrorFormatting($sign)	
+ *  234:     function formatDetailsForList($row)	
+ *  251:     function stripPath($inArr)	
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -72,7 +72,7 @@
 /**
  * This class holds some functions used to display the sys_log table-content.
  * Used in the status-scripts and the log-module.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -94,8 +94,8 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Initialize the log table array with header labels.
-	 * 
-	 * @return	array		
+	 *
+	 * @return	array
 	 */
 	function initArray()	{
 		$codeArr=Array();
@@ -110,7 +110,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Get time label for log listing
-	 * 
+	 *
 	 * @param	integer		Timestamp to display
 	 * @return	string		If the timestamp was also shown last time, then "." is returned. Otherwise the new timestamp formatted with ->doc->formatTime()
 	 */
@@ -125,7 +125,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Get user name label for log listing
-	 * 
+	 *
 	 * @param	integer		be_user uid
 	 * @return	string		If username is different from last username then the username, otherwise "."
 	 */
@@ -139,7 +139,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Get type label for log listing
-	 * 
+	 *
 	 * @param	string		Key for the type label in locallang
 	 * @return	string		If labe is different from last type label then the label is returned, otherwise "."
 	 */
@@ -153,7 +153,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Get action label for log listing
-	 * 
+	 *
 	 * @param	string		Key for the action label in locallang
 	 * @return	string		If labe is different from last action label then the label is returned, otherwise "."
 	 */
@@ -167,7 +167,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Get details for the log entry
-	 * 
+	 *
 	 * @param	string		Suffix to "msg_" to get label from locallang.
 	 * @param	string		Details text
 	 * @param	array		Data array
@@ -180,9 +180,9 @@ class t3lib_BEDisplayLog {
 		if (is_array($data))	{
 			if ($this->detailsOn)	{
 				if (is_object($GLOBALS['LANG']))	{
-					$label=$GLOBALS['LANG']->getLL('msg_'.$code);
+					$label = $GLOBALS['LANG']->getLL('msg_'.$code);
 				} else {
-					list($label)=explode(',',$text);
+					list($label) = explode(',',$text);
 				}
 				if ($label)	{$text=$label;}
 				$text = sprintf($text, htmlspecialchars($data[0]),htmlspecialchars($data[1]),htmlspecialchars($data[2]),htmlspecialchars($data[3]),htmlspecialchars($data[4]));
@@ -192,9 +192,8 @@ class t3lib_BEDisplayLog {
 		}
 		
 			// Finding the history for the record
-		$query='SELECT uid,fieldlist FROM sys_history WHERE sys_log_uid='.intval($sys_log_uid);
-		$res = mysql(TYPO3_db,$query);
-		$newRow = mysql_fetch_assoc($res);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,fieldlist', 'sys_history', 'sys_log_uid='.intval($sys_log_uid));
+		$newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if (is_array($newRow))	{
 			$text.=' Changes in fields: <em>'.$newRow['fieldlist'].'</em>.';
 			$text.=' <a href="'.htmlspecialchars($GLOBALS['BACK_PATH'].'show_rechis.php?sh_uid='.$newRow['uid'].'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'"><b>->His</b></a>';
@@ -205,8 +204,8 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Reset all internal "last..." variables to blank string.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function reset()	{
 		$this->lastTimeLabel='';
@@ -217,7 +216,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Formats input string in red-colored font tags
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @return	string		Input wrapped in red font-tag and bold
 	 * @obsolete
@@ -228,7 +227,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Formatting details text for the sys_log row inputted
-	 * 
+	 *
 	 * @param	array		sys_log row
 	 * @return	string		Details string
 	 */
@@ -244,9 +243,9 @@ class t3lib_BEDisplayLog {
 	/**
 	 * For all entries in the $inArray (expected to be filepaths) the basename is extracted and set as value (if $this->stripPath is set)
 	 * This is done for log-entries from the FILE modules
-	 * 
+	 *
 	 * @param	array		Array of file paths
-	 * @return	array		
+	 * @return	array
 	 * @see formatDetailsForList()
 	 */
 	function stripPath($inArr)	{

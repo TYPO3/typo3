@@ -39,15 +39,15 @@
  *
  *
  *   85: class t3lib_iconWorks	
- *   99:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=0)	
- *  116:     function getIcon($table,$row=array(),$shaded=0)	
- *  198:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)	
+ *   99:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=FALSE)	
+ *  116:     function getIcon($table,$row=array(),$shaded=FALSE)	
+ *  251:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)	
  *
  *              SECTION: Other functions
- *  267:     function makeIcon($iconfile,$mode, $user, $protectSection=0,$absFile='')	
- *  370:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
- *  403:     function imagecreatefrom($file)	
- *  420:     function imagemake($im, $path)	
+ *  325:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)	
+ *  441:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
+ *  474:     function imagecreatefrom($file)	
+ *  491:     function imagemake($im, $path)	
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -66,18 +66,18 @@
 /**
  * Icon generation, backend
  * This library has functions that returns - and if necessary creates - the icon for an element in TYPO3
- * 
+ *
  * Expects global vars:
  * - $BACK_PATH
  * - PATH_typo3
  * - $TCA, $PAGES_TYPES
- * 
- * 
+ *
+ *
  * Notes:
  * These functions are strongly related to the interface of TYPO3.
  * The class is included in eg. init.php
  * ALL functions called without making a class instance, eg. "t3lib_iconWorks::getIconImage()"
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -85,9 +85,9 @@
 class t3lib_iconWorks	{
 	
 	/**
-	 * Returns an icon image tag, 18x16 pixels, based on input information. 
+	 * Returns an icon image tag, 18x16 pixels, based on input information.
 	 * This function is recommended to use in your backend modules.
-	 * 
+	 *
 	 * @param	string		The table name
 	 * @param	array		The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
 	 * @param	string		The backpath to the main TYPO3 directory (relative path back to PATH_typo3)
@@ -106,7 +106,7 @@ class t3lib_iconWorks	{
 	/**
 	 * Creates the icon for input table/row
 	 * Returns filename for the image icon, relative to PATH_typo3
-	 * 
+	 *
 	 * @param	string		The table name
 	 * @param	array		The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
 	 * @param	boolean		If set, the icon will be grayed/shaded
@@ -240,7 +240,7 @@ class t3lib_iconWorks	{
 	/**
 	 * Returns the src=... for the input $src value OR any alternative found in $TBE_STYLES['skinImg']
 	 * Used for skinning the TYPO3 backend with an alternative set of icons
-	 * 
+	 *
 	 * @param	string		Current backpath to PATH_typo3 folder
 	 * @param	string		Icon file name relative to PATH_typo3 folder
 	 * @param	string		Default width/height, defined like 'width="12" height="14"'
@@ -312,7 +312,7 @@ class t3lib_iconWorks	{
 
 	/**
 	 * Creates the icon file for the function getIcon()
-	 * 
+	 *
 	 * @param	string		Original unprocessed Icon file, relative path to PATH_typo3
 	 * @param	string		Mode string, eg. "deleted" or "futuretiming" determining how the icon will look
 	 * @param	integer		The number of the fe_group record uid if applicable
@@ -422,9 +422,9 @@ class t3lib_iconWorks	{
 	 * 	And so it happend - ImageMagick is now used to combine my two indexed-color images with transparency. And that works.
 	 * 	Of course it works only if ImageMagick is able to create valid png-images - which you cannot be sure of with older versions (still 5+)
 	 * 	The only drawback is (apparently) that IM creates true-color png's. The transparency of these will not be shown by MSIE on windows at this time (although it's straight 0%/100% transparency!) and the file size may be larger.
-	 * 
+	 *
 	 * For parameters, see PHP function "imagecopyresized()"
-	 * 
+	 *
 	 * @param	pointer		see PHP function "imagecopyresized()"
 	 * @param	pointer		see PHP function "imagecopyresized()"
 	 * @param	integer		see PHP function "imagecopyresized()"
@@ -435,7 +435,7 @@ class t3lib_iconWorks	{
 	 * @param	integer		see PHP function "imagecopyresized()"
 	 * @param	integer		see PHP function "imagecopyresized()"
 	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 */
 	function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	{
@@ -465,7 +465,7 @@ class t3lib_iconWorks	{
 
 	/**
 	 * Create new image pointer from input file (either gif/png, in case the wrong format it is converted by t3lib_div::read_png_gif())
-	 * 
+	 *
 	 * @param	string		Absolute filename of the image file from which to start the icon creation.
 	 * @return	mixed		If success, image pointer, otherwise "-1"
 	 * @access private
@@ -482,10 +482,10 @@ class t3lib_iconWorks	{
 
 	/**
 	 * Write the icon in $im pointer to $path
-	 * 
+	 *
 	 * @param	pointer		Pointer to GDlib image resource
 	 * @param	string		Absolute path to the filename in which to write the icon.
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 */
 	function imagemake($im, $path)	{

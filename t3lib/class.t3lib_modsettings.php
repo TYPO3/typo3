@@ -48,8 +48,8 @@
  *  204:     function addToStoreConfigs($storeConfigs,$index)	
  *  222:     function loadStoreConfigs($storeConfigs,$storeIndex,$writeArray)	
  *  238:     function getStoreControl($show='load,remove,save')	
- *  295:     function procesStoreControl($mconfName='')	
- *  376:     function saveQueryInAction($uid)	
+ *  294:     function procesStoreControl($mconfName='')	
+ *  374:     function saveQueryInAction($uid)	
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -95,7 +95,7 @@
 /**
  * Manage storing and restoring of $GLOBALS['SOBE']->MOD_SETTINGS settings.
  * Provides a presets box for BE modules.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
@@ -137,7 +137,7 @@ class t3lib_modSettings {
 
 	/**
 	 * add names of keys of the MOD_SETTING array which should be stored by a prefix
-	 * 
+	 *
 	 * @param	string		prefix of MOD_SETTING array keys that should be stored
 	 * @return	[type]		...
 	 */
@@ -161,7 +161,7 @@ class t3lib_modSettings {
 
 	/**
 	 * get and init the stored settings
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function initStoreArray()	{
@@ -179,7 +179,7 @@ class t3lib_modSettings {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$storeConfigs: ...
 	 * @param	[type]		$storeArray: ...
 	 * @return	[type]		...
@@ -196,7 +196,7 @@ class t3lib_modSettings {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$storeConfigs: ...
 	 * @param	[type]		$index: ...
 	 * @return	[type]		...
@@ -213,7 +213,7 @@ class t3lib_modSettings {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$storeConfigs: ...
 	 * @param	[type]		$storeIndex: ...
 	 * @param	[type]		$writeArray: ...
@@ -231,7 +231,7 @@ class t3lib_modSettings {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$show: ...
 	 * @return	[type]		...
 	 */
@@ -250,11 +250,10 @@ class t3lib_modSettings {
 
 			// Actions:
 		if (t3lib_extMgm::isLoaded('sys_action'))	{
-			$query = 'SELECT * FROM sys_action WHERE type=2 ORDER BY title';
-			$res = mysql(TYPO3_db,$query);
-			if (mysql_num_rows($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', 'type=2', '', 'title');
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				$opt[]='<option value="0">__Save to Action:__</option>';
-				while($row=mysql_fetch_assoc($res))	{
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$opt[]='<option value="-'.$row['uid'].'"'.(!strcmp($cur,"-".$row['uid'])?" selected":"").'>'.htmlspecialchars($row['title'].' ['.$row['uid'].']').'</option>';
 				}
 			}
@@ -288,7 +287,7 @@ class t3lib_modSettings {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$mconfName: ...
 	 * @return	[type]		...
 	 */
@@ -302,7 +301,6 @@ class t3lib_modSettings {
 		$saveStoreArray=0;
 		$writeArray=array();
 		if (is_array($storeControl))	{
-			$storeControl = t3lib_div::slashArray($storeControl,'strip');
 			if ($storeControl['LOAD'])	{
 				if ($storeIndex>0)	{
 					$writeArray=$this->loadStoreConfigs($storeConfigs,$storeIndex,$writeArray);
@@ -369,7 +367,7 @@ class t3lib_modSettings {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$uid: ...
 	 * @return	[type]		...
 	 */

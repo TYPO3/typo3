@@ -182,7 +182,7 @@
 
 /**
  * HTML mail class
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -257,7 +257,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function useBase64()	{
@@ -268,7 +268,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
 	 */
@@ -278,7 +278,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
 	 */
@@ -290,7 +290,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$file: ...
 	 * @return	[type]		...
 	 */
@@ -308,7 +308,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$file: ...
 	 * @return	[type]		...
 	 */
@@ -330,7 +330,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * External used to extract HTML-parts
-	 * 
+	 *
 	 * @param	[type]		$html: ...
 	 * @param	[type]		$url: ...
 	 * @return	[type]		...
@@ -342,7 +342,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$recipient: ...
 	 * @return	[type]		...
 	 */
@@ -425,7 +425,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$recip: ...
 	 * @return	[type]		...
 	 */
@@ -444,7 +444,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function getHTMLContentType()	{
@@ -453,7 +453,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function setContent()	{
@@ -479,7 +479,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$boundary: ...
 	 * @return	[type]		...
 	 */
@@ -518,7 +518,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$boundary: ...
 	 * @return	[type]		...
 	 */
@@ -542,7 +542,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$boundary: ...
 	 * @return	[type]		...
 	 */
@@ -563,7 +563,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$boundary: ...
 	 * @return	[type]		...
 	 */
@@ -597,7 +597,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function sendTheMail () {
@@ -631,7 +631,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function getBoundary()	{
@@ -642,7 +642,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
 	 */
@@ -653,7 +653,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
 	 */
@@ -664,7 +664,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$header: ...
 	 * @return	[type]		...
 	 */
@@ -675,7 +675,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$string: ...
 	 * @return	[type]		...
 	 */
@@ -686,7 +686,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$type: ...
 	 * @return	[type]		...
 	 */
@@ -696,7 +696,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function preview()	{
@@ -742,7 +742,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function fetchHTMLMedia()	{
@@ -763,7 +763,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function extractMediaLinks()	{
@@ -839,7 +839,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function extractHyperLinks()	{
@@ -888,7 +888,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function extractFramesInfo()	{
@@ -913,7 +913,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$absolute: ...
 	 * @return	[type]		...
 	 */
@@ -941,7 +941,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function substHREFsInHTML()	{
@@ -968,7 +968,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$content: ...
 	 * @return	[type]		...
 	 */
@@ -1009,7 +1009,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function fixRollOvers()	{
@@ -1066,7 +1066,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$url: ...
 	 * @return	[type]		...
 	 */
@@ -1086,7 +1086,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$url: ...
 	 * @return	[type]		...
 	 */
@@ -1101,7 +1101,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$url: ...
 	 * @return	[type]		...
 	 */
@@ -1122,7 +1122,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$url: ...
 	 * @return	[type]		...
 	 */
@@ -1143,7 +1143,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$url: ...
 	 * @return	[type]		...
 	 */
@@ -1172,7 +1172,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$ref: ...
 	 * @return	[type]		...
 	 */
@@ -1192,7 +1192,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$fileref: ...
 	 * @return	[type]		...
 	 */
@@ -1219,7 +1219,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$path: ...
 	 * @return	[type]		...
 	 */
@@ -1234,7 +1234,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$tagArray: ...
 	 * @return	[type]		...
 	 */
@@ -1254,9 +1254,9 @@ class t3lib_htmlmail {
 	/**
 	 * analyses a HTML-tag
 	 * $tag is either like this "<TAG OPTION ATTRIB=VALUE>" or this " OPTION ATTRIB=VALUE>" which means you can omit the tag-name
-	 * returns an array with the attributes as keys in lower-case		
+	 * returns an array with the attributes as keys in lower-case
 	 * If an attribute is empty (like OPTION) the value of that key is just empty. Check it with is_set();
-	 * 
+	 *
 	 * @param	[type]		$tag: ...
 	 * @return	[type]		...
 	 */
@@ -1296,7 +1296,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$string: ...
 	 * @return	[type]		...
 	 */
@@ -1334,7 +1334,7 @@ class t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$name: ...
 	 * @return	[type]		...
 	 */

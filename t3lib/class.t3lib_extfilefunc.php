@@ -42,19 +42,19 @@
  *  216:     function mapData($inputArray)		
  *  225:     function processData()	
  *  274:     function printLogErrorMessages($redirect)	
- *  312:     function findRecycler($theFile)	
+ *  343:     function findRecycler($theFile)	
  *
  *              SECTION: File operation functions
- *  354:     function func_upload($cmds)	
- *  395:     function func_copy($cmds)	
- *  485:     function func_move($cmds)	
- *  576:     function func_delete($cmds)	
- *  642:     function func_rename($cmds)	
- *  690:     function func_newfolder($cmds)	
- *  723:     function func_unzip($cmds)	
- *  758:     function func_newfile($cmds)	
- *  796:     function func_edit($cmds)	
- *  845:     function writeLog($action,$error,$details_nr,$details,$data)	
+ *  385:     function func_upload($cmds)	
+ *  427:     function func_copy($cmds)	
+ *  517:     function func_move($cmds)	
+ *  608:     function func_delete($cmds)	
+ *  674:     function func_rename($cmds)	
+ *  722:     function func_newfolder($cmds)	
+ *  756:     function func_unzip($cmds)	
+ *  791:     function func_newfile($cmds)	
+ *  829:     function func_edit($cmds)	
+ *  878:     function writeLog($action,$error,$details_nr,$details,$data)	
  *
  * TOTAL FUNCTIONS: 16
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -115,7 +115,7 @@
 /**
  * Contains functions for performing file operations like copying, pasting, uploading, moving, deleting etc. through the TCE
  * Extending class to class t3lib_basicFileFunctions.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -174,9 +174,9 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	}
 
 	/**
-	 * Sets up permission to perform file/directory operations. 
+	 * Sets up permission to perform file/directory operations.
 	 * See below or the be_user-table for the significanse of the various bits in $setup ($BE_USER->user['fileoper_perms'])
-	 * 
+	 *
 	 * @param	[type]		$setup: ...
 	 * @return	[type]		...
 	 */
@@ -209,7 +209,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 
 	/**
 	 * If PHP4 then we just set the incoming data to the arrays as PHP4 submits multidimensional arrays
-	 * 
+	 *
 	 * @param	[type]		$inputArray: ...
 	 * @return	[type]		...
 	 */
@@ -225,7 +225,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	function processData()	{
 		if (!$this->isInit) return false;
 		if (is_array($this->datamap))	{
-			t3lib_div::stripSlashesOnArray($this->datamap);
+			#t3lib_div::stripSlashesOnArray($this->datamap);	// NOT needed anymore since $this->datamap is required to be stripped already!
 		
 			reset($this->datamap);
 			while (list($action, $content) = each($this->datamap))	{
@@ -272,32 +272,63 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	 * @return	[type]		...
 	 */
 	function printLogErrorMessages($redirect)	{
-		if ($redirect)	{
-			header('Location: '.t3lib_div::locationHeaderUrl($redirect));
+
+		$res_log = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					'sys_log',
+					'type=2 AND userid='.intval($GLOBALS['BE_USER']->user['uid']).' AND tstamp='.intval($GLOBALS['EXEC_TIME']).'	AND error!=0'
+				);
+		$errorJS = array();
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_log)) {
+			$log_data = unserialize($row['log_data']);
+			$errorJS[] = $row[error].': '.sprintf($row['details'], $log_data[0],$log_data[1],$log_data[2],$log_data[3],$log_data[4]);
+		}
+
+		if (count($errorJS))	{
+			$error_doc = t3lib_div::makeInstance('template');
+			$error_doc->backPath = '';
+
+			$content.=$error_doc->startPage('tce_db.php Error output');
+
+			$lines[]='<tr class="bgColor5"><td colspan=2 align=center><strong>Errors:</strong></td></tr>';
+			reset($errorJS);
+			while(list(,$line)=each($errorJS))	{
+				$lines[]='<tr class="bgColor4"><td valign=top><img'.t3lib_iconWorks::skinImg('','gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td><td>'.htmlspecialchars($line).'</td></tr>';
+			}
+
+			$lines[]='<tr><td colspan=2 align=center><BR><form action=""><input type="submit" value="Continue" onClick="document.location=\''.$redirect.'\';return false;"></form></td></tr>';
+			$content.= '<BR><BR><table border=0 cellpadding=1 cellspacing=1 width=300 align=center>'.implode('',$lines).'</table>';
+			$content.= $error_doc->endPage();
+			echo $content;
+			exit;
+		} else {
+
+			t3lib_BEfunc::getSetUpdateSignal('updateFolderTree');
+
+			if ($redirect)	{
+				header('Location: '.t3lib_div::locationHeaderUrl($redirect));
+				exit;
+			}
+
+			echo '
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+	<html>
+	<head>
+	<title>File Status script</title>
+	</head>
+	<body bgcolor="#F7F3EF">
+
+	<script language="javascript" type="text/javascript">
+	if (top.busy)	{
+		top.busy.loginRefreshed();
+	}
+	top.goToModule("file_list");
+	</script>
+	</body>
+	</html>
+			';
 			exit;
 		}
-	
-	
-		t3lib_BEfunc::getSetUpdateSignal('updateFolderTree');
-		
-		echo '
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<title>File Status script</title>
-</head>
-<body bgcolor="#F7F3EF">
-
-<script language="javascript" type="text/javascript">
-if (top.busy)	{
-	top.busy.loginRefreshed();
-}
-top.goToModule("file_list");
-</script>
-</body>
-</html>		
-		';
-	exit;
 	}
 
 	/**
@@ -305,7 +336,7 @@ top.goToModule("file_list");
 	 * Goes back in the path and checks in each directory if a folder named $this->recyclerFN (usually '_recycler_') is present.
 	 * Returns the path (without trailing slash) of the closest recycle-folder if found. Else false.
 	 * If a folder in the tree happens to be a _recycler_-folder (which means that we're deleting something inside a _recycler_-folder) this is ignored
-	 * 
+	 *
 	 * @param	[type]		$theFile: ...
 	 * @return	[type]		...
 	 */
@@ -347,7 +378,7 @@ top.goToModule("file_list");
 	 * $cmds['data'] is the ID-number (points to the global var that holds the filename-ref  ($GLOBALS['HTTP_POST_FILES']['upload_'.$id]['name'])
 	 * $cmds['target'] is the target directory
 	 * Returns the new filename upon success
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
@@ -389,7 +420,7 @@ top.goToModule("file_list");
 	 * $cmds['target'] is the path where to copy to
 	 * $cmds['altName'] (boolean): If set, another filename is found in case the target already exists
 	 * Returns the new filename upon success
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
@@ -479,7 +510,7 @@ top.goToModule("file_list");
 	 * $cmds['target'] is the path where to move to
 	 * $cmds['altName'] (boolean): If set, another filename is found in case the target already exists
 	 * Returns the new filename upon success
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
@@ -570,7 +601,7 @@ top.goToModule("file_list");
 	 * Deleting files and folders (action=4)
 	 * $cmds['data'] is the the file/folder to delete
 	 * Returns true upon success
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
@@ -636,7 +667,7 @@ top.goToModule("file_list");
 	 * $cmds['data'] is the new name
 	 * $cmds['target'] is the target (file or dir)
 	 * Returns the new filename upon success
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
@@ -684,7 +715,7 @@ top.goToModule("file_list");
 	 * $cmds['data'] is the foldername
 	 * $cmds['target'] is the path where to create it
 	 * Returns the new foldername upon success
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
@@ -718,7 +749,7 @@ top.goToModule("file_list");
 	 * $cmds['data'] is the zip-file
 	 * $cmds['target'] is the target directory. If not set we'll default to the same directory as the file is in
 	 * If target is not supplied the target will be the current directory
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
@@ -753,7 +784,7 @@ top.goToModule("file_list");
 	 * $cmds['data'] is the new filename
 	 * $cmds['target'] is the path where to create it
 	 * Returns the new filename upon success
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
@@ -791,14 +822,14 @@ top.goToModule("file_list");
 	 * Editing textfiles or foldes (action=9)
 	 * $cmds['data'] is the new content
 	 * $cmds['target'] is the target (file or dir)
-	 * 
+	 *
 	 * @param	[type]		$cmds: ...
 	 * @return	[type]		...
 	 */
 	function func_edit($cmds)	{
 		if (!$this->isInit) return false;
 		$theTarget = $cmds['target'];
-		$content = $cmds['data'];	// Slashes ARE stripped earlier in this function; t3lib_div::stripSlashesOnArray($this->datamap);
+		$content = $cmds['data'];
 		$extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
 		$type = filetype($theTarget);
 		if ($type=='file')	{		// $type MUST BE file
@@ -822,20 +853,20 @@ top.goToModule("file_list");
 
 	/**
 	 * Logging actions
-	 * 	 
+	 *
 	 * Log messages:
 	 * [action]-[details_nr.]
-	 * 
+	 *
 	 * REMEMBER to UPDATE the real messages set in tools/log/localconf_log.php
-	 * 
-	 * 9-1:	File saved to '%s', bytes: %s, MD5: %s 	 
-	 * 
+	 *
+	 * 9-1:	File saved to '%s', bytes: %s, MD5: %s
+	 *
 	 * $action:		The action number. See the functions in the class for a hint. Eg. edit is '9', upload is '1' ...
 	 * $error:		The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
 	 * $details_nr:	This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages.
 	 * $details:	This is the default, raw error message in english
 	 * $data:		Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
-	 * 
+	 *
 	 * @param	[type]		$action: ...
 	 * @param	[type]		$error: ...
 	 * @param	[type]		$details_nr: ...

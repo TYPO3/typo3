@@ -79,7 +79,7 @@
 /**
  * Functions used to read email content
  * The class is still just a bunch of miscellaneous functions used to read content out of emails
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -114,7 +114,7 @@ class t3lib_readmail {
 
 	/**
 	 * Returns special TYPO3 Message ID (MID) from input TO header (the return address of the sent mail from Dmailer. Used by Dmailer, return mails)
-	 * 
+	 *
 	 * @param	string		email address, return address string
 	 * @return	mixed		array with 'mid', 'rtbl' and 'rid' keys are returned.
 	 * @internal
@@ -134,7 +134,7 @@ class t3lib_readmail {
 
 	/**
 	 * Returns special TYPO3 Message ID (MID) from input mail content (used by Dmailer, return mails)
-	 * 
+	 *
 	 * @param	string		Mail (header) content
 	 * @return	mixed		If "X-Typo3MID" header is found and integrity is OK, then an array with 'mid', 'rtbl' and 'rid' keys are returned. Otherwise void.
 	 * @internal
@@ -181,7 +181,7 @@ class t3lib_readmail {
 	/**
 	 * Returns the text content of a mail which has previously been parsed by eg. extractMailHeader()
 	 * Probably obsolete since the function fullParse() is more advanced and safer to use.
-	 * 
+	 *
 	 * @param	array		Output from extractMailHeader()
 	 * @return	string		The content.
 	 */
@@ -206,7 +206,7 @@ class t3lib_readmail {
 	/**
 	 * Returns the body part of a raw mail message (including headers)
 	 * Probably obsolete since the function fullParse() is more advanced and safer to use.
-	 * 
+	 *
 	 * @param	string		Raw mail content
 	 * @return	string		Body of message
 	 */
@@ -220,7 +220,7 @@ class t3lib_readmail {
 	/**
 	 * Splits the body of a mail into parts based on the boundary string given.
 	 * Obsolete, use fullParse()
-	 * 
+	 *
 	 * @param	string		Boundary string used to split the content.
 	 * @param	string		BODY section of a mail
 	 * @return	array		Parts of the mail based on this
@@ -240,7 +240,7 @@ class t3lib_readmail {
 	/**
 	 * Returns Content Type plus more.
 	 * Obsolete, use fullParse()
-	 * 
+	 *
 	 * @param	string		"ContentType" string with more
 	 * @return	array		parts in key/value pairs
 	 * @ignore
@@ -264,7 +264,7 @@ class t3lib_readmail {
 	/**
 	 * Analyses the return-mail content for the Dmailer module - used to find what reason there was for rejecting the mail
 	 * Used by the Dmailer, but not exclusively.
-	 * 
+	 *
 	 * @param	string		message body/text
 	 * @return	array		key/value pairs with analysis result. Eg. "reason", "content", "reason_text", "mailserver" etc.
 	 */
@@ -319,7 +319,7 @@ class t3lib_readmail {
 
 	/**
 	 * Decodes a header-string with the =?....?= syntax including base64/quoted-printable encoding.
-	 * 
+	 *
 	 * @param	string		A string (encoded or not) from a mail header, like sender name etc.
 	 * @return	string		The input string, but with the parts in =?....?= decoded.
 	 */
@@ -347,7 +347,7 @@ class t3lib_readmail {
 	
 	/**
 	 * Extracts name/email parts from a header field (like 'To:' or 'From:' with name/email mixed up.
-	 * 
+	 *
 	 * @param	string		Value from a header field containing name/email values.
 	 * @return	array		Array with the name and email in. Email is validated, otherwise not set.
 	 */
@@ -376,7 +376,7 @@ class t3lib_readmail {
 	
 	/**
 	 * Returns the data from the 'content-type' field. That is the boundary, charset and mime-type
-	 * 
+	 *
 	 * @param	string		"Content-type-string"
 	 * @return	array		key/value pairs with the result.
 	 */
@@ -399,7 +399,7 @@ class t3lib_readmail {
 	
 	/**
 	 * Makes a UNIX-date based on the timestamp in the 'Date' header field.
-	 * 
+	 *
 	 * @param	string		String with a timestamp according to email standards.
 	 * @return	integer		The timestamp converted to unix-time in seconds and compensated for GMT/CET ($this->serverGMToffsetMinutes);
 	 */
@@ -421,7 +421,7 @@ class t3lib_readmail {
 	
 	/**
 	 * Parsing the GMT offset value from a mail timestamp.
-	 * 
+	 *
 	 * @param	string		A string like "+0100" or so.
 	 * @return	integer		Minutes to offset the timestamp
 	 * @access private
@@ -435,7 +435,7 @@ class t3lib_readmail {
 	
 	/**
 	 * This returns the mail header items in an array with associative keys and the mail body part in another CONTENT field
-	 * 
+	 *
 	 * @param	string		Raw mail content
 	 * @param	integer		A safety limit that will put a upper length to how many header chars will be processed. Set to zero means that there is no limit. (Uses a simple substr() to limit the amount of mail data to process to avoid run-away)
 	 * @return	array		An array where each key/value pair is a header-key/value pair. The mail BODY is returned in the key 'CONTENT' if $limit is not set!
@@ -467,7 +467,7 @@ class t3lib_readmail {
 
 	/**
 	 * The extended version of the extractMailHeader() which will also parse all the content body into an array and further process the header fields and decode content etc. Returns every part of the mail ready to go.
-	 * 
+	 *
 	 * @param	string		Raw email input.
 	 * @return	array		Multidimensional array with all parts of the message organized nicely. Use t3lib_div::debug() to analyse it visually.
 	 */

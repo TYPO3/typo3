@@ -39,7 +39,7 @@
  *
  *   69: class t3lib_formmail extends t3lib_htmlmail 
  *   95:     function start($V,$base64=1)	
- *  169:     function addAttachment($file, $filename)	
+ *  166:     function addAttachment($file, $filename)	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -60,7 +60,7 @@
 
 /**
  * Formmail class, used by the TYPO3 "cms" extension (default frontend) to send email forms.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -74,10 +74,10 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * Start function
 	 * This class is able to generate a mail in formmail-style from the data in $V
 	 * Fields:
-	 * 
+	 *
 	 * [recipient]:		email-adress of the one to receive the mail. If array, then all values are expected to be recipients
 	 * [attachment]:		....
-	 * 
+	 *
 	 * [subject]:			The subject of the mail
 	 * [from_email]:		Sender email. If not set, [email] is used
 	 * [from_name]:		Sender name. If not set, [name] is used
@@ -87,10 +87,10 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * [priority]:			Priority, 1-5, default 3
 	 * [html_enabled]:		If mail is sent as html
 	 * [quoted_printable]:	if set, quoted-printable will be used instead of base 64
-	 * 
+	 *
 	 * @param	array		Contains values for the field names listed above (with slashes removed if from POSt input)
 	 * @param	boolean		Whether to base64 encode the mail content
-	 * @return	void		
+	 * @return	void
 	 */
 	function start($V,$base64=1)	{
 		if ($base64 && !$V['quoted_printable'])	{$this->useBase64();}
@@ -157,7 +157,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 	/**
 	 * Adds an attachment to the mail
-	 * 
+	 *
 	 * @param	string		The absolute path to the file to add as attachment
 	 * @param	string		The files original filename (not necessarily the same as the current since this could be uploaded files...)
 	 * @return	boolean		True if the file existed and was added.

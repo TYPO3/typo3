@@ -44,22 +44,22 @@
  *  132:     function positionTree($id,$pageinfo,$perms_clause,$R_URI)	
  *  246:     function JSimgFunc($prefix='')	
  *  276:     function boldTitle($t_code,$dat,$id)	
- *  290:     function onClickEvent($pid,$newPagePID)	
- *  309:     function insertlabel()	
- *  321:     function linkPageTitle($str,$rec)	
- *  332:     function checkNewPageInPid($pid)	
- *  348:     function getModConfig($pid)	
- *  364:     function insertQuadLines($codes,$allBlank=0)	
+ *  293:     function onClickEvent($pid,$newPagePID)	
+ *  312:     function insertlabel()	
+ *  324:     function linkPageTitle($str,$rec)	
+ *  335:     function checkNewPageInPid($pid)	
+ *  351:     function getModConfig($pid)	
+ *  366:     function insertQuadLines($codes,$allBlank=0)	
  *
  *              SECTION: Content element positioning:
- *  402:     function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)	
- *  434:     function printRecordMap($lines,$colPosArray)	
- *  472:     function wrapColumnHeader($str,$vv)	
- *  486:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)	
- *  503:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
- *  523:     function wrapRecordHeader($str,$row)	
- *  533:     function getRecordHeader($row)	
- *  546:     function wrapRecordTitle($str,$row)	
+ *  404:     function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)	
+ *  440:     function printRecordMap($lines,$colPosArray)	
+ *  478:     function wrapColumnHeader($str,$vv)	
+ *  492:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)	
+ *  509:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
+ *  529:     function wrapRecordHeader($str,$row)	
+ *  539:     function getRecordHeader($row)	
+ *  552:     function wrapRecordTitle($str,$row)	
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,9 +75,9 @@
  
  
 /**
- * Position map class - generating a page tree / content element list which links for inserting (copy/move) of records. 
+ * Position map class - generating a page tree / content element list which links for inserting (copy/move) of records.
  * Used for pages / tt_content element wizards of various kinds.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -122,7 +122,7 @@ class t3lib_positionMap {
 	/**
 	 * Creates a "position tree" based on the page tree.
 	 * Notice: A class, "localPageTree" must exist and probably it is an extension class of the t3lib_pageTree class. See "db_new.php" in the core for an example.
-	 * 
+	 *
 	 * @param	integer		Current page id
 	 * @param	array		Current page record.
 	 * @param	string		Page selection permission clause.
@@ -239,7 +239,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Creates the JavaScritp for insert new-record rollover image
-	 * 
+	 *
 	 * @param	string		Insert record image prefix.
 	 * @return	string		<script> section
 	 */
@@ -267,7 +267,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Wrap $t_code in bold IF the $dat uid matches $id
-	 * 
+	 *
 	 * @param	string		Title string
 	 * @param	array		Infomation array with record array inside.
 	 * @param	integer		The current id.
@@ -285,7 +285,7 @@ class t3lib_positionMap {
 	 *
 	 * TSconfig mod.web_list.newPageWiz.overrideWithExtension may contain an extension which provides a module
 	 * to be used instead of the normal create new page wizard.
-	 * 
+	 *
 	 * @param	integer		The pid.
 	 * @param	integer		New page id.
 	 * @return	string		Onclick attribute content
@@ -306,7 +306,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Get label, htmlspecialchars()'ed
-	 * 
+	 *
 	 * @return	string		The localized label for "insert new page here"
 	 */
 	function insertlabel()	{
@@ -316,7 +316,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Wrapping page title.
-	 * 
+	 *
 	 * @param	string		Page title.
 	 * @param	array		Page record (?)
 	 * @return	string		Wrapped title.
@@ -328,9 +328,9 @@ class t3lib_positionMap {
 	/**
 	 * Checks if the user has permission to created pages inside of the $pid page.
 	 * Uses caching so only one regular lookup is made - hence you can call the function multiple times without worrying about performance.
-	 * 
+	 *
 	 * @param	integer		Page id for which to test.
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function checkNewPageInPid($pid)	{
 		global $BE_USER;
@@ -343,7 +343,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Returns module configuration for a pid.
-	 * 
+	 *
 	 * @param	integer		Page id for which to get the module configuration.
 	 * @return	array		The properties of teh module configuration for the page id.
 	 * @see onClickEvent()
@@ -358,7 +358,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Insert half/quad lines.
-	 * 
+	 *
 	 * @param	string		keywords for which lines to insert.
 	 * @param	boolean		If true all lines are just blank clear.gifs
 	 * @return	string		HTML content.
@@ -393,7 +393,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Creates HTML for inserting/moving content elements.
-	 * 
+	 *
 	 * @param	integer		page id onto which to insert content element.
 	 * @param	integer		Move-uid (tt_content element uid?)
 	 * @param	string		List of columns to show
@@ -408,27 +408,31 @@ class t3lib_positionMap {
 
 		$lines=array();
 		while(list($kk,$vv)=each($colPosArray))	{
-			$query = 'SELECT * FROM tt_content WHERE pid='.intval($pid).
-				($showHidden ? "" : t3lib_BEfunc::BEenableFields('tt_content')).
-				' AND colPos='.$vv.
-				(strcmp($this->cur_sys_language,'') ? " AND sys_language_uid=".intval($this->cur_sys_language) : "").
-				t3lib_BEfunc::deleteClause('tt_content').
-				' ORDER BY sorting';
-			$res = mysql(TYPO3_db,$query);
-
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'*', 
+							'tt_content', 
+							'pid='.intval($pid).
+								($showHidden ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
+								' AND colPos='.intval($vv).
+								(strcmp($this->cur_sys_language,'') ? ' AND sys_language_uid='.intval($this->cur_sys_language) : '').
+								t3lib_BEfunc::deleteClause('tt_content'),
+							'', 
+							'sorting'
+						);
 			$lines[$kk]=array();
 			$lines[$kk][]=$this->insertPositionIcon('',$vv,$kk,$moveUid,$pid);
-			while($row=mysql_fetch_assoc($res))		{
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))		{
 				$lines[$kk][]=$this->wrapRecordHeader($this->getRecordHeader($row),$row);
 				$lines[$kk][]=$this->insertPositionIcon($row,$vv,$kk,$moveUid,$pid);
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $this->printRecordMap($lines,$colPosArray);
 	}
 
 	/**
 	 * Creates the table with the content columns
-	 * 
+	 *
 	 * @param	array		Array with arrays of lines for each column
 	 * @param	array		Column position array
 	 * @return	string		HTML
@@ -465,10 +469,10 @@ class t3lib_positionMap {
 
 	/**
 	 * Wrapping the column header
-	 * 
+	 *
 	 * @param	string		Header value
 	 * @param	string		Column info.
-	 * @return	string		
+	 * @return	string
 	 * @see printRecordMap()
 	 */
 	function wrapColumnHeader($str,$vv)	{
@@ -477,13 +481,13 @@ class t3lib_positionMap {
 
 	/**
 	 * Creates a linked position icon.
-	 * 
+	 *
 	 * @param	array		Element row.
 	 * @param	string		Column position value.
 	 * @param	integer		Column key.
 	 * @param	integer		Move uid
 	 * @param	integer		PID value.
-	 * @return	string		
+	 * @return	string
 	 */
 	function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)	{
 		$cc = hexdec(substr(md5($row['uid'].'-'.$vv.'-'.$kk),0,4));
@@ -494,13 +498,13 @@ class t3lib_positionMap {
 
 	/**
 	 * Create on-click event value.
-	 * 
+	 *
 	 * @param	array		The record.
 	 * @param	string		Column position value.
 	 * @param	integer		Move uid
 	 * @param	integer		PID value.
 	 * @param	integer		System language (not used currently)
-	 * @return	string		
+	 * @return	string
 	 */
 	function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) {
 		$table='tt_content';
@@ -517,7 +521,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Wrapping the record header  (from getRecordHeader())
-	 * 
+	 *
 	 * @param	string		HTML content
 	 * @param	array		Record array.
 	 * @return	string		HTML content
@@ -528,7 +532,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Create record header (includes teh record icon, record title etc.)
-	 * 
+	 *
 	 * @param	array		Record row.
 	 * @return	string		HTML
 	 */
@@ -540,7 +544,7 @@ class t3lib_positionMap {
 
 	/**
 	 * Wrapping the title of the record.
-	 * 
+	 *
 	 * @param	string		The title value.
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.

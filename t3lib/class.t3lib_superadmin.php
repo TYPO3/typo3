@@ -26,46 +26,62 @@
 ***************************************************************/
 /**
  * Super Admin class has functions for the administration of multiple TYPO3 sites in folders
- * See "misc/superadmin.php" for details on how to use!
+ * See 'misc/superadmin.php' for details on how to use!
  *
  * $Id$
+ * Revised for TYPO3 3.6 February/2004 by Kasper Skaarhoj
+ * XHTML Compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  104: function debug($p1,$p2='')	
+ *  119: function debug($p1,$p2='')	
  *
  *
- *  117: class t3lib_superadmin 
- *  140:     function init($parentDirs)	
- *  149:     function initProcess()	
- *  182:     function make()	
- *  240:     function setMenuItem($code,$label)	
- *  254:     function error($str)	
- *  265:     function headerParentDir($str)	
- *  276:     function headerSiteDir($str)	
- *  288:     function processSiteDir($path,$dir)	
- *  322:     function includeLocalconf($localconf)	
- *  345:     function connectToDatabase($siteInfo)	
- *  363:     function getDBInfo($key)	
- *  391:     function makeTable()	
- *  454:     function localExtensions()	
- *  594:     function getExtensionInfo($path,$extKey,$k)	
- *  640:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList="",$regDirs=0)	
- *  663:     function serverExtensionMD5Array($fileArr,$extPath)	
- *  682:     function findMostRecent($fileArr,$extPath)	
- *  701:     function removePrefixPathFromList($fileArr,$extPath)	
- *  717:     function singleSite($exp)	
- *  737:     function rmCachedFiles($exp)	
- *  769:     function menuContent($exp)	
- *  867:     function makeAdminLogin()	
- *  924:     function loginLog($DB)	
- *  955:     function log_getDetails($text,$data)	
- *  967:     function changeAdminPasswordsForm()	
- * 1000:     function setNewPasswords()	
- * 1039:     function defaultSet()	
+ *  133: class t3lib_superadmin 
+ *
+ *              SECTION: Initialize stuff
+ *  179:     function t3lib_superadmin()	
+ *  191:     function init($parentDirs)	
+ *
+ *              SECTION: Main functions
+ *  214:     function defaultSet()	
+ *  268:     function make()	
+ *
+ *              SECTION: Output preparation
+ *  370:     function setMenuItem($code,$label)	
+ *  384:     function error($str)	
+ *  395:     function headerParentDir($str)	
+ *  406:     function headerSiteDir($str)	
+ *
+ *              SECTION: Collection information
+ *  438:     function initProcess()	
+ *  476:     function processSiteDir($path,$dir)	
+ *  518:     function includeLocalconf($localconf)	
+ *  542:     function connectToDatabase($siteInfo)	
+ *  564:     function getDBInfo($key)	
+ *
+ *              SECTION: Content: Installation Overview
+ *  614:     function makeTable()	
+ *
+ *              SECTION: Content: Local extensions
+ *  717:     function localExtensions()	
+ *  890:     function getExtensionInfo($path,$extKey,$k)	
+ *  939:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
+ *  961:     function findMostRecent($fileArr,$extPath)
+ *  979:     function removePrefixPathFromList($fileArr,$extPath)
+ *
+ *              SECTION: Content: Other
+ * 1016:     function singleSite($exp)	
+ * 1047:     function loginLog($DB)	
+ * 1085:     function log_getDetails($text,$data)	
+ * 1099:     function rmCachedFiles($exp)	
+ * 1132:     function menuContent($exp)	
+ * 1204:     function makeAdminLogin()	
+ * 1278:     function changeAdminPasswordsForm()	
+ * 1313:     function setNewPasswords()	
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -89,17 +105,16 @@ define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend admi
  
 // Dependency:
 include_once('./typo3_src/t3lib/class.t3lib_div.php');
-
+include_once('./typo3_src/t3lib/class.t3lib_db.php');
+$TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 
 
 /**
- * Debug function.
- * 
- * @param	[type]		$p1: ...
- * @param	[type]		$p2: ...
- * @return	[type]		...
- * @package TYPO3
- * @subpackage t3lib
+ * Debug function. Substitute since no config_default.php file is included anywhere
+ *
+ * @param	mixed		Debug var
+ * @param	string		Header string
+ * @return	void
  */
 function debug($p1,$p2='')	{
 	t3lib_div::debug($p1,$p2);
@@ -109,989 +124,113 @@ function debug($p1,$p2='')	{
 
 /**
  * Super Admin class has functions for the administration of multiple TYPO3 sites in folders
- * 
+ * NOTICE: Only compliant with single MySQL database usage per installation!
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_superadmin {
-	var $parentDirs=array();
-	var $globalSiteInfo=array();
-	var $currentUrl='';
-	var $targetWindow='superAdminWindow';
-	var $targetWindowAdmin='superAdminWindowAdmin';
-	var $targetWindowInstall='superAdminWindowInstall';
-	var $mapDBtoKey=array();
-	var $collectAdminPasswords=array();
-	var $changeAdminPasswords=array();
-	var $collectInstallPasswords=array();
-	var $scriptName="superadmin.php";
+
+		// External, static:
+	var $targetWindow = 'superAdminWindow';
+	var $targetWindowAdmin = 'superAdminWindowAdmin';
+	var $targetWindowInstall = 'superAdminWindowInstall';
+	var $scriptName = 'superadmin.php';
+
+		// GP vars:
+	var $show;			// "menu", "all", "admin", "info", "rmTempCached", "localext"
+	var $type;			// "phpinfo", "page" - default renders a frameset
+	var $exp;			// Additional parameter, typically a md5-hash pointing to an installation of TYPO3
+
+		// Internal, static:
+	var $parentDirs = array();			// Configured directories to search
+	var $globalSiteInfo = array();		// Array with information about found TYPO3 installations
+
+	var $currentUrl = ''; 
+	var $mapDBtoKey = array();
+	var $collectAdminPasswords = array();
+	var $changeAdminPasswords = array();
+	var $collectInstallPasswords = array();
 
 		// Control:
-	var $full=0;	// If set, the full information array per site is printed.
+	var $full = 0;	// If set, the full information array per site is printed.
 
-	var $noCVS=0;	// See tools/em/index.php....
+	var $noCVS = 0;	// See tools/em/index.php....
 	
 	
+
+
+
+
+
+
+	/**********************************
+	 *
+	 * Initialize stuff
+	 *
+	 **********************************/
+
 	/**
-	 * @param	[type]		$parentDirs: ...
-	 * @return	[type]		...
+	 * Constructor, setting GP vars
+	 *
+	 * @return	void
+	 */
+	function t3lib_superadmin()	{
+		$this->show = t3lib_div::_GP('show');
+		$this->type = t3lib_div::_GP('type');
+		$this->exp = t3lib_div::_GP('exp');
+	}
+	 
+	/**
+	 * Initialize with configuration - from the 'superadmin.php' script. See misc/superadmin.php for example.
+	 *
+	 * @param	array		Numerical array with arrays having two keys, 'dir' and 'url' where 'dir' is the absolute path to a directory with TYPO3 installations inside.
+	 * @return	void
 	 */
 	function init($parentDirs)	{
 		$this->parentDirs = $parentDirs;
 	}
 
-	/**
-	 * [Describe function...]
-	 * 
-	 * @return	[type]		...
-	 */
-	function initProcess()	{
-		$content="";
-		reset($this->parentDirs);
-		while(list($k,$v)=each($this->parentDirs))	{
-			$dir = ereg_replace("/$","",$v["dir"]);
-			$baseUrl=ereg_replace("/$","",$v["url"]);
-			$content.="<BR><BR><BR>";
-			$content.=$this->headerParentDir($dir);
-			if (@is_dir($dir))	{
-				$in_dirs = t3lib_div::get_dirs($dir);
-				asort($in_dirs);
-				reset($in_dirs);
-				$dirArr=array();
-				while(list($k,$v)=each($in_dirs))	{
-					if (substr($v,0,9)!="typo3_src")	{
-						$this->currentUrl=$baseUrl."/".$v;
-						$content.=$this->headerSiteDir($v);
-						$content.=$this->processSiteDir($dir."/".$v,$dir);
-					}
-				}
-			} else {
-				$content.=$this->error("'".$dir."' was not a directory!");
-			}
-		}
-//		debug($this->globalSiteInfo);
-		return $content;
-	}
 
-	/**
-	 * [Describe function...]
-	 * 
-	 * @return	[type]		...
-	 */
-	function make()	{
-		reset($this->parentDirs);
-		$content = $this->initProcess();
-		
-			// Output mode:
-		$mode=t3lib_div::_GP("show");
-//debug($GLOBALS["HTTP_GET_VARS"]);
-		switch($mode)	{
-			case "menu":
-				$lines=array();
-				$lines[]=$this->setMenuItem("info","INFO");
-				$lines[]=$this->setMenuItem("update","UPDATE");
-				$lines[]='';
-				$lines[]='<A HREF="'.$this->scriptName.'?type=page" target="TSApage">Default</A>';
-				$lines[]='<a HREF="'.$this->scriptName.'?type=page&show=all" target="TSApage">All details</a>';
-				$lines[]='<a HREF="'.$this->scriptName.'?type=page&show=admin" target="TSApage">Admin logins</a>';
-				$lines[]='<a HREF="'.$this->scriptName.'?type=phpinfo" target="TSApage">phpinfo()</a>';
-				$lines[]='<a HREF="'.$this->scriptName.'?type=localext&show=localext" target="TSApage">Local extensions</a>';
-				$lines[]='';
-				$content = '<font>'.implode("<BR>",$lines).'</font>';
-				$content.= '<HR>';
-				$content.=$this->menuContent(t3lib_div::_GP("exp"));
-				return '<h2><nobr><div align="center">TYPO3<BR>Super Admin</div></nobr></h2>'.$content;
-			break;
-			case "all":
-				return '<h1>All details:</h1><h2>Overview:</h2>'.$this->makeTable()."<BR><HR><BR>".
-				'<h1>Details per site:</h1>'.$content;
-			break;
-			case "admin":
-				$content = $this->setNewPasswords();
-				$this->makeTable();
-				return $content.'<h1>Admin options:</h1><h2>Admin logins:</h2>'.$this->makeAdminLogin()."<BR><HR><BR>".
-				'<h2>TBE Admin Passwords:</h2>'.t3lib_div::view_array($this->collectAdminPasswords)."<BR><HR><BR>".
-				'<h2>Install Tool Passwords:</h2>'.t3lib_div::view_array($this->collectInstallPasswords)."<BR><HR><BR>".
-				'<h2>Change TBE Admin Passwords:</h2>'.$this->changeAdminPasswordsForm()."<BR><HR><BR>";
-			break;
-			case "info":
-				return '<h1>Single site details</h1>'.$this->singleSite(t3lib_div::_GP("exp"))."<BR>";
-			break;
-			case "rmTempCached":
-				return '<h1>Removing temp_CACHED_*.php files</h1>'.$this->rmCachedFiles(t3lib_div::_GP("exp"))."<BR>";
-			break;
-			case "localext":	
-				return '<h1>Local Extensions Found:</h1>'.$this->localExtensions()."<BR>";
-			break;
-			default:
-				return '<h1>Default info:</h1>'.$content;
-			break;
-		}
-	}
 
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$code: ...
-	 * @param	[type]		$label: ...
-	 * @return	[type]		...
-	 */
-	function setMenuItem($code,$label)	{
-		$out = '<a HREF="'.$this->scriptName.'?type=menu&show=menu&exp='.$code.'" target="TSAmenu">'.$label.'</a>';	
-		if ($code==t3lib_div::_GP("exp"))	{
-			$out = '<font color=red>&gt;&gt;</font>'.$out;
-		}
-		return $out;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$str: ...
-	 * @return	[type]		...
-	 */
-	function error($str)	{
-		$out = '<font color=red size=4>'.$str.'</font>';
-		return $out;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$str: ...
-	 * @return	[type]		...
-	 */
-	function headerParentDir($str)	{
-		$out = '<h2>'.$str.'</h2>';
-		return $out;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$str: ...
-	 * @return	[type]		...
-	 */
-	function headerSiteDir($str)	{
-		$out = '<h3>'.$str.'</h3>';
-		return $out;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$path: ...
-	 * @param	[type]		$dir: ...
-	 * @return	[type]		...
-	 */
-	function processSiteDir($path,$dir)	{
-		if (@is_dir($path))	{
-			$localconf = $path."/typo3conf/localconf.php";
-			if (@is_file($localconf))	{
-				$key = md5($localconf);
-				$this->includeLocalconf($localconf);
-
-				$this->mapDBtoKey[$this->globalSiteInfo[$key]["siteInfo"]["TYPO3_db"]]=$key;
-				$this->globalSiteInfo[$key]["siteInfo"]["MAIN_DIR"]=$dir;
-				$this->globalSiteInfo[$key]["siteInfo"]["SA_PATH"]=$path;
-				$this->globalSiteInfo[$key]["siteInfo"]["URL"]=$this->currentUrl."/";
-				$this->globalSiteInfo[$key]["siteInfo"]["ADMIN_URL"]=$this->currentUrl."/".TYPO3_mainDir;
-				$this->globalSiteInfo[$key]["siteInfo"]["INSTALL_URL"]=$this->currentUrl."/".TYPO3_mainDir."install/";
-
-				$conMsg = $this->connectToDatabase($this->globalSiteInfo[$key]["siteInfo"]);
-				if (!$conMsg)	{
-					$this->getDBInfo($key);
-					if ($this->full)	{
-						$out.=t3lib_div::view_array($this->globalSiteInfo[$key]);
-					} else {
-						$out.=t3lib_div::view_array($this->globalSiteInfo[$key]["siteInfo"]);
-					}
-				} else {$out=$this->error($conMsg);}
-			} else $out=$this->error($localconf." is not a file!");
-		} else $out=$this->error($path." is not a directory!");
-		return $out;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$localconf: ...
-	 * @return	[type]		...
-	 */
-	function includeLocalconf($localconf)	{
-		include($localconf);
-
-		$siteInfo=array();
-		$siteInfo["sitename"] = $TYPO3_CONF_VARS["SYS"]["sitename"];
-		$siteInfo["TYPO3_db"] = $typo_db;
-		$siteInfo["TYPO3_db_username"] = $typo_db_username;
-		$siteInfo["TYPO3_db_password"] = $typo_db_password;
-		$siteInfo["TYPO3_db_host"] = $typo_db_host;
-		$siteInfo["installToolPassword"] = $TYPO3_CONF_VARS["BE"]["installToolPassword"];
-		$siteInfo["warningEmailAddress"] = $TYPO3_CONF_VARS["BE"]["warning_email_addr"];
-		$siteInfo["warningMode"] = $TYPO3_CONF_VARS["BE"]["warning_mode"];
-		
-		$this->globalSiteInfo[md5($localconf)]=array("siteInfo"=>$siteInfo,"TYPO3_CONF_VARS"=>$TYPO3_CONF_VARS);
-		return $siteInfo;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$siteInfo: ...
-	 * @return	[type]		...
-	 */
-	function connectToDatabase($siteInfo)	{
-		if (@mysql_pconnect($siteInfo["TYPO3_db_host"], $siteInfo["TYPO3_db_username"], $siteInfo["TYPO3_db_password"]))	{
-			if (!$siteInfo["TYPO3_db"])	{
-				return $this->error("No database selected");
-			} elseif (!mysql_select_db($siteInfo["TYPO3_db"]))	{
-				return $this->error("Cannot connect to the current database, '".$siteInfo["TYPO3_db"]."'");
-			}
-		} else {
-			return $this->error("The current username, password or host was not accepted when the connection to the database was attempted to be established!");
-		}
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$key: ...
-	 * @return	[type]		...
-	 */
-	function getDBInfo($key)	{
-		$DB = $this->globalSiteInfo[$key]["siteInfo"]["TYPO3_db"];
-
-			// Non-admin users
-		$query="SELECT count(*) FROM be_users WHERE admin=0 AND NOT deleted";
-		$res = mysql($DB,$query);
-		$row = mysql_fetch_row($res);
-		$this->globalSiteInfo[$key]["siteInfo"]["BE_USERS_NONADMIN"] = $row[0];
-			// Admin users
-		$query="SELECT count(*) FROM be_users WHERE admin!=0 AND NOT deleted";
-		$res = mysql($DB,$query);
-		$row = mysql_fetch_row($res);
-		$this->globalSiteInfo[$key]["siteInfo"]["BE_USERS_ADMIN"] = $row[0];
-
-			// Select Admin users
-		$query="SELECT uid,username,password,email,realName FROM be_users WHERE admin!=0 AND NOT deleted";
-		$res = mysql($DB,$query);
-		while($row = mysql_fetch_assoc($res))	{
-//			debug($row);
-			$this->globalSiteInfo[$key]["siteInfo"]["ADMINS"][] = $row;
-		}
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @return	[type]		...
-	 */
-	function makeTable()	{
-			// TITLE:
-			$info=array();
-			$info[]="Site:";
-			$info[]="Database:";
-			$info[]="Username";
-			$info[]="Password";
-			$info[]="Host";
-			$info[]="Links (new win)";
-			$info[]="#Users NA/A";
-			$info[]="Admin be_users Info";
-			$info[]="Install Tool Password";
-			$info[]="Warning email address";
-			$info[]="W.mode";
-			$mainArrRows[]="<TR bgcolor=#eeeeee><TD nowrap valign=top>".implode("</TD><TD nowrap valign=top>",$info)."</TD></TR>";
 	
-		reset($this->globalSiteInfo);
-		while(list($k,$all)=each($this->globalSiteInfo))	{
-			$info=array();
-			$info[]=$all["siteInfo"]["sitename"];
-			$info[]=$all["siteInfo"]["TYPO3_db"];
-			$info[]=$all["siteInfo"]["TYPO3_db_username"];
-			$info[]=$all["siteInfo"]["TYPO3_db_password"];
-			$info[]=$all["siteInfo"]["TYPO3_db_host"];
-				// URL
-			$info[]='<A HREF="'.$all["siteInfo"]["URL"].'" target="'.$this->targetWindow.'">Site</A> / <A HREF="'.$all["siteInfo"]["ADMIN_URL"].'" target="'.$this->targetWindowAdmin.'">Admin</A> / <A HREF="'.$all["siteInfo"]["INSTALL_URL"].'" target="'.$this->targetWindowInstall.'">Install</A>';
-			$info[]=$all["siteInfo"]["BE_USERS_NONADMIN"]."/".$all["siteInfo"]["BE_USERS_ADMIN"];
-
-				// Admin
-			if (is_array($all["siteInfo"]["ADMINS"]))	{
-				reset($all["siteInfo"]["ADMINS"]);
-				$lines=array();
-				while(list(,$vArr)=each($all["siteInfo"]["ADMINS"]))	{
-					$lines[]=$vArr["password"]." - ".$vArr["username"]." (".$vArr["realName"].", ".$vArr["email"].")";
-					$this->collectAdminPasswords[$vArr["password"]][] = $all["siteInfo"]["sitename"]." (".$all["siteInfo"]["TYPO3_db"]."), ".$vArr["username"]." (".$vArr["realName"].", ".$vArr["email"].")";
-					$this->changeAdminPasswords[$vArr["password"]][]=$all["siteInfo"]["TYPO3_db"].":".$vArr["uid"].":".$vArr["username"];
-				}
-				$info[]=implode("<BR>",$lines);
-			} else {
-				$info[]='<font color="red">No DB connection!</font>';
-			}
-				// Install
-			$info[]=$all["siteInfo"]["installToolPassword"];
-			$this->collectInstallPasswords[$all["siteInfo"]["installToolPassword"]][] = $all["siteInfo"]["sitename"]." (".$all["siteInfo"]["TYPO3_db"].")";
-			
-			$info[]=$all["siteInfo"]["warningEmailAddress"];
-			$info[]=$all["siteInfo"]["warningMode"];
-//			debug($all["siteInfo"]);
-			
-			
-				// compile
-			$mainArrRows[]="<TR><TD nowrap valign=top>".implode("</TD><TD nowrap valign=top>",$info)."</TD></TR>";
-		}
-		$table = '<TABLE border=1 cellpadding=1 cellspacing=1>'.implode("",$mainArrRows).'</TABLE>';
-		return $table;
-	}
-
-	/**
-	 * Based on the globalSiteInfo array, this prints information about local extensions for each site.
-	 * In particular version number and most recent mod-time is interesting!
-	 * 
-	 * @return	[type]		...
-	 */
-	function localExtensions()	{
-		$this->extensionInfoArray=array();
-
-		reset($this->globalSiteInfo);
-		while(list($k,$all)=each($this->globalSiteInfo))	{
-			if ($all["siteInfo"]["SA_PATH"])	{
-				$extDir = $all["siteInfo"]["SA_PATH"]."/typo3conf/ext/";
-				if (@is_dir($extDir))	{
-					$this->extensionInfoArray["site"][$k]=array();
-					
-#					debug($extDir,1);
-					$extensions=t3lib_div::get_dirs($extDir);
-					if (is_array($extensions))	{
 	
-	#					debug($extensions);
-						reset($extensions);
-						while(list(,$extKey)=each($extensions))	{
-							$eInfo = $this->getExtensionInfo($extDir,$extKey,$k);
 	
-							$this->extensionInfoArray["site"][$k][$extKey]=$eInfo;
-							$this->extensionInfoArray["ext"][$extKey][$k]=$eInfo;
-						}
-					}
-				}
-			}
-		}	
-		
-			// Display results:
-		$out="";
-		
-#debug($this->extensionInfoArray);
-			// PER EXTENSION:
-		if (is_array($this->extensionInfoArray["ext"]))	{
-			$extensionKeysCollect=array();
-
-			ksort($this->extensionInfoArray["ext"]);
-			reset($this->extensionInfoArray["ext"]);
-			$rows=array(
-				"reg"=>array(),
-				"user"=>array()
-			);
-			while(list($extKey,$instances)=each($this->extensionInfoArray["ext"]))	{
-				$mtimes=array();
-
-					// Find most recent mtime of the options:
-				reset($instances);
-				while(list($k,$eInfo)=each($instances))	{
-					$mtimes[]=$eInfo["mtime"];
-				}
-					// Max mtime:
-				$maxMtime=max($mtimes);
-				$c=0;
-
-					// So, traverse all sites with the extension present:
-				reset($instances);
-				while(list($k,$eInfo)=each($instances))	{
-						// Set background color if mtime matches
-					if ($maxMtime==$eInfo["mtime"])	{
-						$this->extensionInfoArray["site"][$k][$extKey]["_highlight"]=1;
-						$bgCol = $eInfo["dirtype"]=='link' ? ' bgcolor="#ffcccc"' : ' bgcolor="#eeeeee"';
-					} else {
-						$bgCol = ' style="color: #999999; font-style: italic;"';
-					}
 	
-						// Make row:
-					$type = substr($extKey,0,5)!="user_"?"reg":"user";
-					if ($type=="reg")	$extensionKeysCollect[]=$extKey;
-					$rows[$type][]='
-					<tr>
-						'.(!$c?'<td rowspan="'.count($instances).'">'.$extKey.'</td>':'').'
-						<td nowrap'.$bgCol.'>'.$this->globalSiteInfo[$k]["siteInfo"]["SA_PATH"].'</td>
-						<td nowrap'.$bgCol.'>'.$eInfo["title"].'</td>
-						<td nowrap'.$bgCol.'>'.$eInfo["version"].'</td>
-						<td nowrap'.$bgCol.'>'.$eInfo["numberfiles"].'</td>
-						<td nowrap'.$bgCol.'>'.($eInfo["manual"]?'M':'-').'</td>
-						<td nowrap'.$bgCol.'>'.($eInfo["mtime"]?date("d-m-y H:i:s",$eInfo["mtime"]):'').'</td>
-						<td nowrap'.$bgCol.'>'.$eInfo["mtime_hash"].'</td>
-					</tr>
-					';
-					$c++;
-				}
-			}
-
-			$out.='<h3>Registered extensions:</h3><table border=1>'.implode("",$rows["reg"]).'</table>';
-			
-			$extensionKeysCollect = array_unique($extensionKeysCollect);
-			asort($extensionKeysCollect);
-			$out.='<form action=""><textarea cols="80" rows="10">'.implode(chr(10),$extensionKeysCollect).'</textarea></form>';
-
-			$out.='<BR><h3>User extensions:</h3><table border=1>'.implode("",$rows["user"]).'</table>';
-		}
-		
-			// PER SITE:
-		if (is_array($this->extensionInfoArray["site"]))	{
-			reset($this->extensionInfoArray["site"]);
-			$rows=array();
-			while(list($k,$extensions)=each($this->extensionInfoArray["site"]))	{
-					// So, traverse all sites with the extension present:
-				$c=0;
-				reset($extensions);
-				while(list($extKey,$eInfo)=each($extensions))	{
-						// Set background color if mtime matches
-					if ($eInfo["_highlight"])	{
-						$bgCol = $eInfo["dirtype"]=='link' ? ' bgcolor="#ffcccc"' : ' bgcolor="#eeeeee"';
-					} else {
-						$bgCol = ' style="color: #999999; font-style: italic;"';
-					}
 	
-						// Make row:
-					$rows[]='
-					<tr>
-						'.(!$c?'<td rowspan="'.count($extensions).'">'.$this->globalSiteInfo[$k]["siteInfo"]["SA_PATH"].'</td>':'').'
-						<td nowrap'.$bgCol.'>'.$extKey.'</td>
-						<td nowrap'.$bgCol.'>'.$eInfo["title"].'</td>
-						<td nowrap'.$bgCol.'>'.$eInfo["version"].'</td>
-						<td nowrap'.$bgCol.'>'.$eInfo["numberfiles"].'</td>
-						<td nowrap'.$bgCol.'>'.($eInfo["mtime"]?date("d-m-y H:i:s",$eInfo["mtime"]):'').'</td>
-						<td nowrap'.$bgCol.'>'.$eInfo["mtime_hash"].'</td>
-					</tr>
-					';
-					$c++;
-				}
-			}
-			$out.='<BR><h3>Sites:</h3><table border=1>'.implode("",$rows).'</table>';
-		}
-		return $out;
-
-
-#		debug($this->extensionInfoArray);
-#		debug($this->globalSiteInfo);
-	}
+	/**************************
+	 *
+	 * Main functions
+	 *
+	 **************************/
 
 	/**
-	 * Gets information for an extension, eg. version and most-recently-edited-script
-	 * 
-	 * @param	[type]		$path: ...
-	 * @param	[type]		$extKey: ...
-	 * @param	[type]		$k: ...
-	 * @return	[type]		...
-	 */
-	function getExtensionInfo($path,$extKey,$k)	{
-		$file = $path.$extKey."/ext_emconf.php";
-		if (@is_file($file))	{
-			$_EXTKEY = $extKey;
-			include($file);
-			
-			$eInfo=array();
-				// Info from emconf:
-			$eInfo["title"] = $EM_CONF[$extKey]["title"];
-			$eInfo["version"] = $EM_CONF[$extKey]["version"];
-			$filesHash = unserialize($EM_CONF[$extKey]["_md5_values_when_last_written"]);
-
-#			debug(count($filesHash),1);
-			if (!is_array($filesHash) || count($filesHash)<150)	{
-					// Get all files list (may take LOONG time):
-				$extPath=$path.$extKey."/";
-				$fileArr = array();
-				$fileArr = $this->removePrefixPathFromList($this->getAllFilesAndFoldersInPath($fileArr,$extPath),$extPath);
-
-					// Number of files:
-				$eInfo["numberfiles"]=count($fileArr);
-				$eInfo["dirtype"]= filetype($path.$extKey);			
-
-					// Most recent modification:
-				$eInfo["mtime_files"]=$this->findMostRecent($fileArr,$extPath);
-				if (count($eInfo["mtime_files"]))	$eInfo["mtime"]=max($eInfo["mtime_files"]);
-				$eInfo["mtime_hash"] = md5(implode(",",$eInfo["mtime_files"]));
-			}
-			
-			$eInfo["manual"] = @is_file($path.$extKey."/doc/manual.sxw");
-
-			return $eInfo;
-#			debug(unserialize($EM_CONF[$extKey]["_md5_values_when_last_written"]));
-#			debug($this->serverExtensionMD5Array($fileArr,$extPath));
-#			debug($fileArr);
-		} else return "ERROR: No emconf.php file: ".$file;
-	}
-
-	/**
-	 * Recursively gather all files and folders of extension path.
-	 * 
-	 * @param	[type]		$fileArr: ...
-	 * @param	[type]		$extPath: ...
-	 * @param	[type]		$extList: ...
-	 * @param	[type]		$regDirs: ...
-	 * @return	[type]		...
-	 */
-	function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList="",$regDirs=0)	{
-		if ($regDirs)	$fileArr[]=$extPath;
-		$fileArr=array_merge($fileArr,t3lib_div::getFilesInDir($extPath,$extList,1,1));		// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
-		
-		$dirs = t3lib_div::get_dirs($extPath);
-		if (is_array($dirs))	{
-			reset($dirs);
-			while(list(,$subdirs)=each($dirs))	{
-				if ($subdirs && (strcmp($subdirs,"CVS") || !$this->noCVS))	{
-					$fileArr = $this->getAllFilesAndFoldersInPath($fileArr,$extPath.$subdirs."/",$extList,$regDirs);
-				}
-			}
-		}
-		return $fileArr;
-	}
-
-	/**
-	 * Creates a MD5-hash array over the current files in the extension
-	 * 
-	 * @param	[type]		$fileArr: ...
-	 * @param	[type]		$extPath: ...
-	 * @return	[type]		...
-	 */
-	function serverExtensionMD5Array($fileArr,$extPath)	{
-		reset($fileArr);
-		$md5Array=array();
-		while(list(,$fN)=each($fileArr))	{
-			if ($fN!="ext_emconf.php")	{
-				$content_md5 = md5(t3lib_div::getUrl($extPath.$fN));
-				$md5Array[$fN]=substr($content_md5,0,4);
-			}
-		}
-		return $md5Array;
-	}
-
-	/**
-	 * Creates a MD5-hash array over the current files in the extension
-	 * 
-	 * @param	[type]		$fileArr: ...
-	 * @param	[type]		$extPath: ...
-	 * @return	[type]		...
-	 */
-	function findMostRecent($fileArr,$extPath)	{
-		reset($fileArr);
-		$mtimeArray=array();
-		while(list(,$fN)=each($fileArr))	{
-			if ($fN!="ext_emconf.php")	{
-				$mtime = filemtime($extPath.$fN);
-				$mtimeArray[$fN]=$mtime;
-			}
-		}
-		return $mtimeArray;
-	}
-
-	/**
-	 * Removes the absolute part of all files/folders in fileArr
-	 * 
-	 * @param	[type]		$fileArr: ...
-	 * @param	[type]		$extPath: ...
-	 * @return	[type]		...
-	 */
-	function removePrefixPathFromList($fileArr,$extPath)	{
-		reset($fileArr);
-		while(list($k,$absFileRef)=each($fileArr))	{
-			if(t3lib_div::isFirstPartOfStr($absFileRef,$extPath))	{
-				$fileArr[$k]=substr($absFileRef,strlen($extPath));
-			} else return "ERROR: One or more of the files was NOT prefixed with the prefix-path!";
-		}
-		return $fileArr;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$exp: ...
-	 * @return	[type]		...
-	 */
-	function singleSite($exp)	{
-		$all = $this->globalSiteInfo[$exp];
-		$content = '<h2>'.$all["siteInfo"]["sitename"].' (DB: '.$all["siteInfo"]["TYPO3_db"].')</h2>';
-		$content.= '<HR>';
-		$content.= '<h3>Main details:</h3>';
-		$content.= '<font>LINKS: <A HREF="'.$all["siteInfo"]["URL"].'" target="'.$this->targetWindow.'">Site</A> / <A HREF="'.$all["siteInfo"]["ADMIN_URL"].'" target="'.$this->targetWindowAdmin.'">Admin</A> / <A HREF="'.$all["siteInfo"]["INSTALL_URL"].'" target="'.$this->targetWindowInstall.'">Install</A></font><BR><BR>';
-		$content.= t3lib_div::view_array($all);
-
-		$content.= '<h3>Login-Log for last month:</h3>';
-		$content.= $this->loginLog($all["siteInfo"]["TYPO3_db"]);
-
-		return $content;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$exp: ...
-	 * @return	[type]		...
-	 */
-	function rmCachedFiles($exp)	{
-		$all = $this->globalSiteInfo[$exp];
-		$content = '<h2>'.$all["siteInfo"]["sitename"].' (DB: '.$all["siteInfo"]["TYPO3_db"].')</h2>';
-		$content.= '<HR>';
-		$content.= '<h3>typo3conf/temp_CACHED_* files:</h3>';
-
-		$path = $all["siteInfo"]["SA_PATH"]."/typo3conf/";
-		if (@is_dir($path))	{
-			$filesInDir=t3lib_div::getFilesInDir($path,"php",1);
-			reset($filesInDir);
-			while(list($kk,$vv)=each($filesInDir))	{
-				if (t3lib_div::isFirstPartOfStr(basename($vv),"temp_CACHED_"))	{
-					if (strstr(basename($vv),"ext_localconf.php") || strstr(basename($vv),"ext_tables.php"))	{
-						$content.="REMOVED: ".$vv."<BR>";
-						unlink($vv);
-						if (file_exists($vv))	$content.="<strong><font color=red>ERROR: File still exists, so could not be removed anyways!</font></strong><BR>";
-					}
-				}
-			}
-		} else {
-			$content.='<strong><font color=red>ERROR: '.$path.' was not a directory!</font></strong>';
-		}
-		
-		return $content;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$exp: ...
-	 * @return	[type]		...
-	 */
-	function menuContent($exp)	{
-		if ($exp)	{
-			reset($this->globalSiteInfo);
-			$lines=array();
-			$head="";
-			while(list($k,$all)=each($this->globalSiteInfo))	{
-					// Setting section header, if needed.
-				if ($head!=$all["siteInfo"]["MAIN_DIR"])	{
-					$lines[]='<h4><nobr>'.t3lib_div::fixed_lgd_pre($all["siteInfo"]["MAIN_DIR"],18).'</nobr></h4>';
-					$head=$all["siteInfo"]["MAIN_DIR"];
-				}
-				
-				switch($exp)	{
-					case "update":
-							// Label:
-						$label = $all["siteInfo"]["sitename"] ? $all["siteInfo"]["sitename"] : "(DB: ".$all["siteInfo"]["TYPO3_db"].")";
-						$lines[]='<HR><b>'.$label.'</b> ('.substr($all["siteInfo"]["SA_PATH"],strlen($all["siteInfo"]["MAIN_DIR"])+1).')<BR>';
-						
-							// Get SQL-files:
-/*						$readPath = $all["siteInfo"]["SA_PATH"]."/typo3/t3lib/stddb/";
-						$fileArr = t3lib_div::getFilesInDir($readPath,"sql",1,"mtime");
-						$file=array();
-						if (is_array($fileArr))	{
-							reset($fileArr);
-							while(list(,$fP)=each($fileArr))	{
-	//							if (substr($fP,0,strlen($readPath."static_template"))==$readPath."static_template")	{
-								if (substr($fP,0,strlen($readPath."static+"))==$readPath."static+")	{
-									$file["static_template.sql"]=$fP;
-								}
-								if (substr($fP,0,strlen($readPath."sys_tabledescr_X"))==$readPath."sys_tabledescr_X")	{
-									$file["sys_tabledescr_X.sql"]=$fP;
-								}
-								if (substr($fP,0,strlen($readPath."tables"))==$readPath."tables")	{
-									$file["tables.sql"]=$fP;
-								}
-							}
-						}
-*/
-						$tempVal='&_someUniqueValue='.time();
-
-//							$url = $all["siteInfo"]["ADMIN_URL"]."mod/tools/em/index.php";
-//							$lines[]='<nobr><a HREF="'.$url.'" target="TSApage">EM</a></nobr>';	
-
-				
-
-							$lines[]='<nobr><a HREF="'.$this->scriptName.'?type=page&show=rmTempCached&exp='.$k.$tempVal.'" target="TSApage">Remove temp_CACHED files</a></nobr>';	
-
-							$url = $all["siteInfo"]["INSTALL_URL"]."index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES".$tempVal."#bottom";
-							$lines[]='<nobr><a HREF="'.$url.'" target="TSApage">CURRENT_TABLES</a></nobr>';	
-
-							$url = $all["siteInfo"]["INSTALL_URL"]."index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=import|CURRENT_STATIC"."&presetWholeTable=1".$tempVal."#bottom";
-							$lines[]='<nobr><a HREF="'.$url.'" target="TSApage">CURRENT_STATIC</a></nobr>';	
-
-/*
-							// Link to tables:
-						if ($file["tables.sql"])	{
-							$url = $all["siteInfo"]["INSTALL_URL"]."index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=cmpFile|".rawurlencode($file["tables.sql"]).$tempVal."#bottom";
-							$lines[]='<nobr><a HREF="'.$url.'" target="TSApage">'.basename($file["tables.sql"]).'</a></nobr>';	
-						}
-							// Link to static_tempalte
-						if ($file["static_template.sql"])	{
-							$url = $all["siteInfo"]["INSTALL_URL"]."index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=import|".rawurlencode($file["static_template.sql"])."&presetWholeTable=1".$tempVal."#bottom";
-							$lines[]='<nobr><a HREF="'.$url.'" target="TSApage">'.basename($file["static_template.sql"]).'</a></nobr>';	
-						}
-							// Link to language file
-						if ($file["sys_tabledescr_X.sql"])	{
-							$url = $all["siteInfo"]["INSTALL_URL"]."index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=import|".rawurlencode($file["sys_tabledescr_X.sql"])."&presetWholeTable=1".$tempVal."#bottom";
-							$lines[]='<nobr><a HREF="'.$url.'" target="TSApage">'.basename($file["sys_tabledescr_X.sql"]).'</a></nobr>';	
-						}
-						*/
-							// Cache
-						$url = $all["siteInfo"]["INSTALL_URL"]."index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=cache|".
-										"&PRESET[database_clearcache][cache_pages]=1".
-										"&PRESET[database_clearcache][cache_pagesection]=1".
-										"&PRESET[database_clearcache][cache_hash]=1".
-										$tempVal.
-										"#bottom";
-						$lines[]='<nobr><a HREF="'.$url.'" target="TSApage">Clear cache</a></nobr>';	
-						
-
-						$lines[]='<nobr><a HREF="'.$all["siteInfo"]["ADMIN_URL"].'index.php" target="'.$this->targetWindowAdmin.'">Admin -></a></nobr>';	
-					break;
-					case "info":
-							// item
-						$label = $all["siteInfo"]["sitename"] ? $all["siteInfo"]["sitename"] : "(DB: ".$all["siteInfo"]["TYPO3_db"].")";
-						$lines[]='<nobr><a HREF="'.$this->scriptName.'?type=page&show=info&exp='.$k.'" target="TSApage">'.$label.'</a> ('.substr($all["siteInfo"]["SA_PATH"],strlen($all["siteInfo"]["MAIN_DIR"])+1).'/)</nobr>';	
-					break;
-				}
-			}	
-			return "<font>".implode("<BR>",$lines)."<BR></font>";	
-		}
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @return	[type]		...
-	 */
-	function makeAdminLogin()	{
-		reset($this->globalSiteInfo);
-		$lines=array();
-		$head="";
-		while(list($k,$all)=each($this->globalSiteInfo))	{
-				// Setting section header, if needed.
-			if ($head!=$all["siteInfo"]["MAIN_DIR"])	{
-				$lines[]='<tr><td colspan=2><BR><h4>'.$all["siteInfo"]["MAIN_DIR"].'</h4></td></tr>';
-				$head=$all["siteInfo"]["MAIN_DIR"];
-			}
-
-
-
-				// item
-			$label = $all["siteInfo"]["sitename"] ? $all["siteInfo"]["sitename"] : "(DB: ".$all["siteInfo"]["TYPO3_db"].")";
-			$unique=md5(microtime());
-			
-			$opts=array();
-			
-			$defUName="";
-			if (is_array($all["siteInfo"]["ADMINS"]))	{
-				reset($all["siteInfo"]["ADMINS"]);
-				while(list(,$vArr)=each($all["siteInfo"]["ADMINS"]))	{
-					$chalVal = md5($vArr["username"].":".$vArr["password"].":".$unique);
-					$opts[]='<option value="'.$chalVal.'">'.$vArr["username"].'</option>';
-					if (!$defUName) {$defUName=$vArr["username"];}
-				}
-			}
-			if (count($opts)>1)	{
-					$userident='
-					<select name="userident" onChange="document[\''.$k.'\'].username.value=this.options[this.selectedIndex].text;">'.implode("",$opts).'</select>
-				';
-			} else {
-				$userident='('.$defUName.')<BR><input type="Hidden" name="userident" value="'.$chalVal.'">';
-			}
-			
-			$form='
-			<form name="'.$k.'" action="'.$all["siteInfo"]["ADMIN_URL"].'index.php" target="EXTERnalWindow" method="post">
-				<input type="submit" name="submit" value="Login">
-				<input type="Hidden" name="username" value="'.$defUName.'">
-				<input type="Hidden" name="challenge" value="'.$unique.'">
-				<input type="Hidden" name="redirect_url" value="">
-				<input type="Hidden" name="login_status" value="login">
-				'.trim($userident).'
-			</form>';
-			
-			$lines[]='<tr><td><strong>'.$label.'</strong></td><td nowrap>'.trim($form).'</td></tr>';
-		}	
-		return "<table border=1 cellpadding=5 cellspacing=1>".implode("",$lines)."</table>";	
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$DB: ...
-	 * @return	[type]		...
-	 */
-	function loginLog($DB)	{
-			// Non-admin users
-		$query="SELECT sys_log.*, be_users.username  AS username, be_users.admin AS admin FROM sys_log,be_users WHERE be_users.uid=sys_log.userid AND sys_log.type=255 AND sys_log.tstamp > ".(time()-(60*60*24*30))." ORDER BY sys_log.tstamp DESC";
-
-		//1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent
-		$res = mysql($DB,$query);
-		echo mysql_error();
-		$dayRef="";
-		$lines=array();
-		while($row = mysql_fetch_assoc($res))	{
-			$day = date("d-m-Y",$row["tstamp"]);
-			if ($dayRef!=$day)	{
-				$lines[]='
-				<h4>'.$day.':</h4>';
-				$dayRef=$day;
-			}
-			$theLine = date("H:i",$row["tstamp"]).":   ".str_pad(substr($row["username"],0,10),10)."    ".$this->log_getDetails($row["details"],unserialize($row["log_data"]));
-			$lines[]= $row["admin"] ? '<span class=redclass>'.$theLine.'</span>' : $theLine;
-			
-			// debug($row);
-		}
-		return '<pre>'.implode(chr(10),$lines).'</pre>';
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$text: ...
-	 * @param	[type]		$data: ...
-	 * @return	[type]		...
-	 */
-	function log_getDetails($text,$data)	{
-			// $code is used later on to substitute errormessages with language-corrected values...
-		if (is_array($data))	{
-			return sprintf($text, $data[0],$data[1],$data[2],$data[3],$data[4]);
-		} else return $text;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @return	[type]		...
-	 */
-	function changeAdminPasswordsForm()	{
-		reset($this->changeAdminPasswords);
-		$content="";
-		while(list($k,$p)=each($this->changeAdminPasswords))	{
-			$content.='<h3>'.$k.'</h3>';
-			reset($p);
-			while(list($kk,$pp)=each($p))	{
-				$content.='<nobr>';
-				$content.='<input type="checkbox" name="SETFIELDS[]" value="'.$pp.'"> '.$pp.' - ';
-				$content.=$this->collectAdminPasswords[$k][$kk];
-				$content.='</nobr><BR>';
-			}
-		}
-		
-		$content.='New password: <input type="text" name="NEWPASS"><BR>';
-		$content.='New password (md5): <input type="text" name="NEWPASS_md5"><BR>
-			(This overrules any plain password above!)
-		<br>';
-		$content='
-		<form action="'.$this->scriptName.'?type=page&show=admin" method="post">
-		'.$content.'
-		<input type="submit" name="Set">
-		</form>
-		';
-		
-		return $content;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @return	[type]		...
-	 */
-	function setNewPasswords()	{
-		$whichFields = t3lib_div::_GP("SETFIELDS");
-
-		$pass = trim(t3lib_div::_GP("NEWPASS"));
-		$passMD5 = t3lib_div::_GP("NEWPASS_md5");
-		$updatedFlag=0;
-		if ($pass || $passMD5)	{
-			$pass = $passMD5 ? $passMD5 : md5($pass);
-			
-			reset($whichFields);
-			while(list(,$values)=each($whichFields))	{
-				$parts = explode(":",$values);
-				if (count($parts)>2)	{
-					$key = $this->mapDBtoKey[$parts[0]];
-					if ($key && isset($this->globalSiteInfo[$key]["siteInfo"]))	{
-						$error = $this->connectToDatabase($this->globalSiteInfo[$key]["siteInfo"]);
-						if (!$error)	{
-							$DB = $this->globalSiteInfo[$key]["siteInfo"]["TYPO3_db"];
-							$content.='<h3>Updating '.$DB.':</h3>';
-							$query = "UPDATE be_users SET password='".addslashes($pass)."' WHERE uid=".intval($parts[1])." AND username='".addslashes($parts[2])."' AND admin!=0";	// username/admin are added to security. But they are certainly redundant!!
-							$content.='<i>'.htmlspecialchars($query).'</i><BR>';
-							$res = mysql($DB,$query);
-							echo mysql_error();
-							$content.='Affected rows: '.mysql_affected_rows().'<BR><HR>';
-							$updatedFlag="1";
-						}
-					}
-				}
-			}
-		}
-		$this->initProcess();
-		return $content;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @return	[type]		...
+	 * Main function, creating HTML content; frameset, menu, content frames.
+	 * Outputs the full HTML to browser.
+	 *
+	 * @return	void
 	 */
 	function defaultSet()	{
-		$style = '
-<style type="text/css">
-.redclass {color: red;}
-P {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px}
-FONT {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
-H1 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 20px; color: #000066;}
-H2 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 17px; color: #000066;}
-H3 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; color: #000066;}
-H4 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: maroon;}
-TD {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
-</style>
-';
-
-		switch(t3lib_div::_GP("type"))	{
-			case "phpinfo":
+	
+			// Creating content based on "type" variable:
+		switch($this->type)	{
+			case 'phpinfo':
 				phpinfo();
 			break;
-			case "page":
+			case 'page':
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<?php echo $style;?>
-<html>
-<head>
-	<title>TYPO3 Super Admin MAIN</title>
-</head>
-<body>
-<br>
-<?php 
-	echo $this->make();
-?>
-</body>
-</html>
-<?php 
-			break;
-			case "menu":
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<?php echo $style;?>
-<html>
-<head>
-	<title>TYPO3 Super Admin MENU</title>
-</head>
-<body>
-<?php 
-	echo $this->make();
-?>
-</body>
-</html>
-<?php 
-			break;
-			case "localext":
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<?php echo $style;?>
+<style type="text/css">
+	.redclass {color: red;}
+	P {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px}
+	BODY {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
+	H1 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 20px; color: #000066;}
+	H2 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 17px; color: #000066;}
+	H3 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; color: #000066;}
+	H4 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: maroon;}
+	TD {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
+</style>
 <html>
 <head>
 	<title>TYPO3 Super Admin</title>
@@ -1112,13 +251,1105 @@ TD {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
 	<title>TYPO3 Super Admin</title>
 </head>
 <frameset  cols="250,*">
-    <frame name="TSAmenu" src="superadmin.php?type=menu&show=menu" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
+    <frame name="TSAmenu" src="superadmin.php?type=page&show=menu" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
     <frame name="TSApage" src="superadmin.php?type=page" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
 </frameset>
 </html>
 <?php	
 			break;
 		}
+	}
+
+	/**
+	 * Main function, creating page content.
+	 *
+	 * @return	string		HTML content.
+	 */
+	function make()	{
+	
+			// Creating information about the sites found:
+		$content = $this->initProcess();
+		
+			// Output mode:
+		switch($this->show)	{
+			case 'menu':
+				$lines=array();
+				$lines[]=$this->setMenuItem('info','INFO');
+				$lines[]=$this->setMenuItem('update','UPDATE');
+				$lines[]='';
+				$lines[]='<a href="'.$this->scriptName.'?type=page" target="TSApage">Default</a>';
+				$lines[]='<a href="'.$this->scriptName.'?type=page&show=all" target="TSApage">All details</a>';
+				$lines[]='<a href="'.$this->scriptName.'?type=page&show=admin" target="TSApage">Admin logins</a>';
+				$lines[]='<a href="'.$this->scriptName.'?type=phpinfo" target="TSApage">phpinfo()</a>';
+				$lines[]='<a href="'.$this->scriptName.'?type=page&show=localext" target="TSApage">Local extensions</a>';
+				$lines[]='';
+				$content = implode('<br />',$lines);
+				$content.= '<hr />';
+				$content.=$this->menuContent($this->exp);
+				return '<h2 align="center">TYPO3<br />Super Admin</h2>'.$content;
+			break;
+			case 'all':
+				return '
+					<h1>All details:</h1>
+					<h2>Overview:</h2>
+					'.$this->makeTable().'
+					<br /><hr /><br />
+					<h1>Details per site:</h1>
+					'.$content;
+			break;
+			case 'admin':
+				$content = $this->setNewPasswords();
+				$this->makeTable();
+				return $content.'
+					<h1>Admin options:</h1>
+					
+					<h2>Admin logins:</h2>
+					'.$this->makeAdminLogin().'
+					<br /><hr /><br />
+					
+					<h2>TBE Admin Passwords:</h2>
+					'.t3lib_div::view_array($this->collectAdminPasswords).'
+					<br /><hr /><br />	
+					
+					<h2>Install Tool Passwords:</h2>
+					'.t3lib_div::view_array($this->collectInstallPasswords).'
+					<br /><hr /><br />
+					
+					<h2>Change TBE Admin Passwords:</h2>
+					'.$this->changeAdminPasswordsForm().'
+					<br /><hr /><br />';
+			break;
+			case 'info':
+				return '
+					<h1>Single site details</h1>
+					'.$this->singleSite($this->exp).
+					'<br />';
+			break;
+			case 'rmTempCached':
+				return '
+					<h1>Removing temp_CACHED_*.php files</h1>
+					'.$this->rmCachedFiles($this->exp).
+					'<br />';
+			break;
+			case 'localext':	
+				return '
+					<h1>Local Extensions Found:</h1>
+					'.$this->localExtensions().
+					'<br />';
+			break;
+			default:
+				return '
+					<h1>Default info:</h1>'.
+					$content;
+			break;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/********************************
+	 *
+	 * Output preparation
+	 *
+	 *******************************/
+
+	/**
+	 * Creates menu item from input.
+	 *
+	 * @param	string		Value for "&exp" parameter
+	 * @param	string		The label
+	 * @return	string		Wrapped value
+	 */
+	function setMenuItem($code,$label)	{
+		$out = '<a href="'.htmlspecialchars($this->scriptName.'?type=page&show=menu&exp='.$code).'" target="TSAmenu">'.htmlspecialchars($label).'</a>';	
+		if ($code==$this->exp)	{
+			$out = '<span style="color:red;">&gt;&gt;</span>'.$out;
+		}
+		return $out;
+	}
+
+	/**
+	 * Wrap string in red span tag (for errors)
+	 *
+	 * @param	string		Input string
+	 * @return	string		Output string
+	 */
+	function error($str)	{
+		$out = '<span style="color:red; font-size: 14px; font-weight: bold;">'.htmlspecialchars($str).'</span>';
+		return $out;
+	}
+
+	/**
+	 * Wraps input string in <h2>
+	 *
+	 * @param	string		Input string
+	 * @return	string		Output string, wrapped in <h2>
+	 */
+	function headerParentDir($str)	{
+		$out = '<h2>'.htmlspecialchars($str).'</h2>';
+		return $out;
+	}
+
+	/**
+	 * Wraps input string in <h3>
+	 *
+	 * @param	string		Input string
+	 * @return	string		Output string, wrapped in <h3>
+	 */
+	function headerSiteDir($str)	{
+		$out = '<h3>'.htmlspecialchars($str).'</h3>';
+		return $out;
+	}
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/********************************
+	 *
+	 * Collection information
+	 *
+	 *******************************/
+
+	/**
+	 * Traverses the parent dirs, collecting the list of TYPO3 installations into $this->globalSiteInfo
+	 *
+	 * @return	string		HTML content (The default view seen when starting the superadmin.php script)
+	 */
+	function initProcess()	{
+		$content = '';
+		
+		foreach($this->parentDirs as $k => $v)	{
+			$dir = ereg_replace('/$','',$v['dir']);
+			$baseUrl=ereg_replace('/$','',$v['url']);
+			$content.='<br /><br /><br />';
+			$content.=$this->headerParentDir($dir);
+			if (@is_dir($dir))	{
+				$in_dirs = t3lib_div::get_dirs($dir);
+				asort($in_dirs);
+				reset($in_dirs);
+				$dirArr=array();
+				while(list($k,$v)=each($in_dirs))	{
+					if (substr($v,0,9)!='typo3_src')	{
+						$this->currentUrl = $baseUrl.'/'.$v;
+						$content.= $this->headerSiteDir($v);
+						$content.= $this->processSiteDir($dir.'/'.$v,$dir);
+					}
+				}
+			} else {
+				$content.=$this->error('"'.$dir.'" was not a directory!');
+			}
+		}
+
+		return $content;
+	}
+	
+	/**
+	 * Creating information array for a specific TYPO3 installation
+	 * Information about site is stored in ->globalSiteInfo array
+	 *
+	 * @param	string		Absolute path to installation (PATH_site)
+	 * @param	string		Directory of main directory (level under PATH_site)
+	 * @return	string		HTML content with information about the site.
+	 * @access private
+	 * @see initProcess()
+	 */
+	function processSiteDir($path,$dir)	{
+		if (@is_dir($path))	{
+			$localconf = $path.'/typo3conf/localconf.php';
+			if (@is_file($localconf))	{
+				$key = md5($localconf);
+				$this->includeLocalconf($localconf);
+
+				$this->mapDBtoKey[$this->globalSiteInfo[$key]['siteInfo']['TYPO3_db']] = $key;
+				$this->globalSiteInfo[$key]['siteInfo']['MAIN_DIR'] = $dir;
+				$this->globalSiteInfo[$key]['siteInfo']['SA_PATH'] = $path;
+				$this->globalSiteInfo[$key]['siteInfo']['URL'] = $this->currentUrl.'/';
+				$this->globalSiteInfo[$key]['siteInfo']['ADMIN_URL'] = $this->currentUrl.'/'.TYPO3_mainDir;
+				$this->globalSiteInfo[$key]['siteInfo']['INSTALL_URL'] = $this->currentUrl.'/'.TYPO3_mainDir.'install/';
+
+					// Connect to database:
+				$conMsg = $this->connectToDatabase($this->globalSiteInfo[$key]['siteInfo']);
+				if (!$conMsg)	{
+					$this->getDBInfo($key);
+					$out.='';
+				} else {
+					$out = $conMsg;
+				}
+				
+					// Show details:
+				if ($this->full)	{
+					$out.=t3lib_div::view_array($this->globalSiteInfo[$key]);
+				} else {
+					$out.=t3lib_div::view_array($this->globalSiteInfo[$key]['siteInfo']);
+				}
+			} else $out = $this->error($localconf.' is not a file!');
+		} else $out = $this->error($path.' is not a directory!');
+		return $out;
+	}
+
+	/**
+	 * Includes "localconf" of a TYPO3 installation an loads $this->globalSiteInfo with this information.
+	 *
+	 * @param	string		Absolute path to localconf.php file to include.
+	 * @return	array		Array with information about the site.
+	 * @access private
+	 * @see processSiteDir()
+	 */
+	function includeLocalconf($localconf)	{
+		include($localconf);
+
+		$siteInfo=array();
+		$siteInfo['sitename'] = $TYPO3_CONF_VARS['SYS']['sitename'];
+		$siteInfo['TYPO3_db'] = $typo_db;
+		$siteInfo['TYPO3_db_username'] = $typo_db_username;
+		$siteInfo['TYPO3_db_password'] = $typo_db_password;
+		$siteInfo['TYPO3_db_host'] = $typo_db_host;
+		$siteInfo['installToolPassword'] = $TYPO3_CONF_VARS['BE']['installToolPassword'];
+		$siteInfo['warningEmailAddress'] = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
+		$siteInfo['warningMode'] = $TYPO3_CONF_VARS['BE']['warning_mode'];
+		
+		$this->globalSiteInfo[md5($localconf)] = array('siteInfo'=>$siteInfo,'TYPO3_CONF_VARS'=>$TYPO3_CONF_VARS);
+		return $siteInfo;
+	}
+
+	/**
+	 * Connects to a MySQL database with the TYPO3 db host/username/password and database as found in the localconf.php file!
+	 * This is NOT compatible with DBAL and connection will obviously just fail with an error message if it turns out that the _DEFAULT handler of a site is not in a MySQL database
+	 *
+	 * @param	array		$siteInfo array, containing username/password/host/database values.
+	 * @return	string		Array message if any
+	 */
+	function connectToDatabase($siteInfo)	{
+		if (@mysql_pconnect($siteInfo['TYPO3_db_host'], $siteInfo['TYPO3_db_username'], $siteInfo['TYPO3_db_password']))	{
+			if (!$siteInfo['TYPO3_db'])	{
+				return $this->error('No database selected');
+			} elseif (!mysql_select_db($siteInfo['TYPO3_db']))	{
+				return $this->error('Cannot connect to the current database, "'.$siteInfo['TYPO3_db'].'"');
+			}
+		} else {
+			return $this->error('The current username, password or host was not accepted when the connection to the database was attempted to be established!');
+		}
+	}
+
+
+	/**
+	 * Get database information, assuming standard tables like "be_users"
+	 * Adding the information to ->globalSiteInfo
+	 *
+	 * @param	string		Key for site in ->globalSiteInfo
+	 * @return	void
+	 * @access private
+	 * @see processSiteDir()
+	 */
+	function getDBInfo($key)	{
+		$DB = $this->globalSiteInfo[$key]['siteInfo']['TYPO3_db'];
+
+			// Non-admin users
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', 'be_users', 'admin=0 AND NOT deleted');
+		$res = mysql($DB, $query);
+		$row = mysql_fetch_row($res);
+		$this->globalSiteInfo[$key]['siteInfo']['BE_USERS_NONADMIN'] = $row[0];
+
+			// Admin users
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', 'be_users', 'admin!=0 AND NOT deleted');
+		$res = mysql($DB, $query);
+		$row = mysql_fetch_row($res);
+		$this->globalSiteInfo[$key]['siteInfo']['BE_USERS_ADMIN'] = $row[0];
+
+			// Select Admin users
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery('uid,username,password,email,realName,disable', 'be_users', 'admin!=0 AND NOT deleted');
+		$res = mysql($DB, $query);
+		while($row = mysql_fetch_assoc($res))	{
+			$this->globalSiteInfo[$key]['siteInfo']['ADMINS'][] = $row;
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Content: Installation Overview
+	 *
+	 ******************************/
+
+	/**
+	 * Creates big table with information about all installations in ->globalSiteInfo
+	 *
+	 * @return	string		HTML table
+	 */
+	function makeTable()	{
+
+			// Header row
+		$info = array();
+		$info[] = 'Site:';
+		$info[] = 'Path:';
+		$info[] = 'Database:';
+		$info[] = 'Username';
+		$info[] = 'Password';
+		$info[] = 'Host';
+		$info[] = 'Links (new win)';
+		$info[] = '#Users NA/A';
+		$info[] = 'Admin be_users Info';
+		$info[] = 'Install Tool Password';
+		$info[] = 'Warning email address';
+		$info[] = 'W.mode';
+		$mainArrRows[] = '
+			<tr bgcolor="#eeeeee">
+				<td nowrap="nowrap" valign="top">'.implode('</td>
+				<td nowrap="nowrap" valign="top">',$info).'</td>
+			</tr>';
+
+			// Traverse globalSiteInfo for each site:
+		foreach($this->globalSiteInfo as $k => $all)	{
+			$info = array();
+
+				// Sitename and Database details:
+			$info[] = htmlspecialchars($all['siteInfo']['sitename']);
+			$info[] = '<span style="color:#666666;">'.htmlspecialchars($all['siteInfo']['MAIN_DIR']).'</span>'.htmlspecialchars(substr($all['siteInfo']['SA_PATH'],strlen($all['siteInfo']['MAIN_DIR'])));
+			$info[] = htmlspecialchars($all['siteInfo']['TYPO3_db']);
+			$info[] = htmlspecialchars($all['siteInfo']['TYPO3_db_username']);
+			$info[] = htmlspecialchars($all['siteInfo']['TYPO3_db_password']);
+			$info[] = htmlspecialchars($all['siteInfo']['TYPO3_db_host']);
+
+				// URL
+			$info[] = '<a href="'.htmlspecialchars($all['siteInfo']['URL']).'" target="'.$this->targetWindow.'">Site</a>'.
+						' / <a href="'.htmlspecialchars($all['siteInfo']['ADMIN_URL']).'" target="'.$this->targetWindowAdmin.'">Admin</a>'.
+						' / <a href="'.htmlspecialchars($all['siteInfo']['INSTALL_URL']).'" target="'.$this->targetWindowInstall.'">Install</a>';
+			$info[] = htmlspecialchars($all['siteInfo']['BE_USERS_NONADMIN'].'/'.$all['siteInfo']['BE_USERS_ADMIN']);
+
+				// Admin
+			if (is_array($all['siteInfo']['ADMINS']))	{
+				$lines = array();
+				foreach($all['siteInfo']['ADMINS'] as $vArr)	{
+					$lines[] = htmlspecialchars($vArr['password'].' - '.$vArr['username'].' ('.$vArr['realName'].', '.$vArr['email'].')');
+					$this->collectAdminPasswords[$vArr['password']][] = array(
+						'path' => $all['siteInfo']['SA_PATH'],
+						'site' => $all['siteInfo']['sitename'],
+						'database' => $all['siteInfo']['TYPO3_db'],
+						'user' => $vArr['username'],
+						'name_email' => $vArr['realName'].', '.$vArr['email']
+					);
+					$this->changeAdminPasswords[$vArr['password']][] = $all['siteInfo']['TYPO3_db'].':'.$vArr['uid'].':'.$vArr['username'];
+				}
+				$info[] = implode('<br />',$lines);
+			} else {
+				$info[] = $this->error('No DB connection!');
+			}
+				// Install
+			$info[] = htmlspecialchars($all['siteInfo']['installToolPassword']);
+			$this->collectInstallPasswords[$all['siteInfo']['installToolPassword']][] = $all['siteInfo']['SA_PATH'].' - '.$all['siteInfo']['sitename'].' - ('.$all['siteInfo']['TYPO3_db'].')';
+			
+			$info[] = htmlspecialchars($all['siteInfo']['warningEmailAddress']);
+			$info[] = htmlspecialchars($all['siteInfo']['warningMode']);
+			
+				// compile
+			$mainArrRows[] = '
+				<tr>
+					<td nowrap="nowrap" valign="top">'.implode('</td>
+					<td nowrap="nowrap" valign="top">',$info).'</td>
+				</tr>';
+		}
+
+			// Compile / return table finally:
+		$table = '<table border="1" cellpadding="1" cellspacing="1">'.implode('',$mainArrRows).'</table>';
+		return $table;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Content: Local extensions
+	 *
+	 ******************************/
+
+	/**
+	 * Based on the globalSiteInfo array, this prints information about local extensions for each site.
+	 * In particular version number and most recent mod-time is interesting!
+	 *
+	 * @return	string		HTML
+	 */
+	function localExtensions()	{
+		$this->extensionInfoArray=array();
+
+			// Traverse $this->globalSiteInfo for local extensions:
+		foreach($this->globalSiteInfo as $k => $all)	{
+			if ($all['siteInfo']['SA_PATH'])	{
+				$extDir = $all['siteInfo']['SA_PATH'].'/typo3conf/ext/';
+				if (@is_dir($extDir))	{
+					$this->extensionInfoArray['site'][$k] = array();
+					
+						// Get extensions in local directory
+					$extensions=t3lib_div::get_dirs($extDir);
+					if (is_array($extensions))	{
+						foreach($extensions as $extKey)	{
+								// Getting and setting information for extension:
+							$eInfo = $this->getExtensionInfo($extDir,$extKey,$k);
+							$this->extensionInfoArray['site'][$k][$extKey] = $eInfo;
+							$this->extensionInfoArray['ext'][$extKey][$k] = $eInfo;
+						}
+					}
+				}
+			}
+		}	
+		
+			// Display results:
+		$out='';
+		$headerRow = '
+					<tr bgcolor="#ccccee" style="font-weight:bold;">
+						<td>Extension key</td>
+						<td>Path</td>
+						<td>Title</td>
+						<td>Ver.</td>
+						<td>Files</td>
+						<td><span title="If M, then there is a manual.">M</span></td>
+						<td>Last mod. time</td>
+						<td>Hash off all file mod. times:</td>
+						<td>TYPO3 ver. req.</td>
+						<td>CGL compliance</td>
+					</tr>
+					';
+		
+			// PER EXTENSION:
+		if (is_array($this->extensionInfoArray['ext']))	{
+			$extensionKeysCollect=array();
+
+			ksort($this->extensionInfoArray['ext']);
+			reset($this->extensionInfoArray['ext']);
+			$rows=array(
+				'reg'=>array(),
+				'user'=>array()
+			);
+			
+			foreach($this->extensionInfoArray['ext'] as $extKey => $instances)	{
+				$mtimes = array();
+
+					// Find most recent mtime of the options:
+				reset($instances);
+				while(list($k,$eInfo)=each($instances))	{
+					$mtimes[] = $eInfo['mtime'];
+				}
+					// Max mtime:
+				$maxMtime = max($mtimes);
+				$c = 0;
+
+					// So, traverse all sites with the extension present:
+				foreach($instances as $k => $eInfo)	{
+						// Set background color if mtime matches
+					if ($maxMtime==$eInfo['mtime'])	{
+						$this->extensionInfoArray['site'][$k][$extKey]['_highlight']=1;
+						$bgCol = $eInfo['dirtype']=='link' ? ' bgcolor="#ffcccc"' : ' bgcolor="#eeeeee"';
+					} else {
+						$bgCol = ' style="color: #999999; font-style: italic;"';
+					}
+	
+						// Make row:
+					$type = substr($extKey,0,5)!='user_' ? 'reg' : 'user';
+					if ($type=='reg')	$extensionKeysCollect[] = $extKey;
+					
+					if (!is_array($eInfo))	{
+							// Standard listing:
+						$rows[$type][] = '
+						<tr>
+							'.(!$c?'<td rowspan="'.count($instances).'">'.htmlspecialchars($extKey).'</td>':'').'
+							<td nowrap="nowrap" bgcolor="#ccddcc">'.htmlspecialchars($this->globalSiteInfo[$k]['siteInfo']['SA_PATH']).'</td>
+							<td nowrap="nowrap" bgcolor="#ccddcc" colspan="8"><em>'.htmlspecialchars($eInfo).'</em></td>
+						</tr>
+						';
+					} else {
+							// Standard listing:
+						$rows[$type][] = '
+						<tr>
+							'.(!$c?'<td rowspan="'.count($instances).'">'.htmlspecialchars($extKey).'</td>':'').'
+							<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($this->globalSiteInfo[$k]['siteInfo']['SA_PATH']).'</td>
+							<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['title']).'</td>
+							<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['version']).'</td>
+							<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['numberfiles']).'</td>
+							<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['manual']?'M':'-').'</td>
+							<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['mtime']?date('d-m-y H:i:s',$eInfo['mtime']):'').'</td>
+							<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['mtime_hash']).'</td>
+
+							<td'.$bgCol.'>'.htmlspecialchars($eInfo['TYPO3_version']).'</td>
+							<td'.$bgCol.'><img src="clear.gif" width="150" height="1" alt="" /><br />'.htmlspecialchars($eInfo['CGLcompliance'].($eInfo['CGLcompliance_note'] ? ' - '.$eInfo['CGLcompliance_note'] : '')).'</td>
+						</tr>
+						';
+					}
+					$c++;
+				}
+			}
+
+				// Extensions with registered extension keys:
+			$out.='
+				<h3>Registered extensions:</h3>
+				<table border="1">'.$headerRow.implode('',$rows['reg']).'</table>';
+			
+				// List of those extension keys in a form field:
+			$extensionKeysCollect = array_unique($extensionKeysCollect);
+			asort($extensionKeysCollect);
+			$out.='<form action=""><textarea cols="80" rows="10">'.implode(chr(10),$extensionKeysCollect).'</textarea></form>';
+
+				// USER extension (prefixed "user_")
+			$out.='<br />
+				<h3>User extensions:</h3>
+				<table border="1">'.$headerRow.implode('',$rows['user']).'</table>';
+		}
+		
+			// PER SITE:
+		if (is_array($this->extensionInfoArray['site']))	{
+			$rows = array();
+			foreach($this->extensionInfoArray['site'] as $k => $extensions)	{
+
+					// So, traverse all sites with the extension present:
+				$c = 0;
+				foreach($extensions as $extKey => $eInfo)	{
+
+						// Set background color if mtime matches
+					if ($eInfo['_highlight'])	{
+						$bgCol = $eInfo['dirtype']=='link' ? ' bgcolor="#ffcccc"' : ' bgcolor="#eeeeee"';
+					} else {
+						$bgCol = ' style="color: #999999; font-style: italic;"';
+					}
+	
+						// Make row:
+					$rows[] = '
+					<tr>
+						'.(!$c?'<td rowspan="'.count($extensions).'">'.htmlspecialchars($this->globalSiteInfo[$k]['siteInfo']['SA_PATH']).'</td>':'').'
+						<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($extKey).'</td>
+						<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['title']).'</td>
+						<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['version']).'</td>
+						<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['numberfiles']).'</td>
+						<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['mtime']?date('d-m-y H:i:s',$eInfo['mtime']):'').'</td>
+						<td nowrap="nowrap"'.$bgCol.'>'.htmlspecialchars($eInfo['mtime_hash']).'</td>
+					</tr>
+					';
+					$c++;
+				}
+			}
+			$out.='<br />
+				<h3>Sites:</h3>
+				<table border="1">'.implode('',$rows).'</table>';
+		}
+		
+			// Return content
+		return $out;
+	}
+
+	/**
+	 * Gets information for an extension, eg. version and most-recently-edited-script
+	 *
+	 * @param	string		Path to local extension folder
+	 * @param	string		Extension key
+	 * @param	string		Key to globalSiteInformation array
+	 * @return	array		Information array (unless an error occured)
+	 */
+	function getExtensionInfo($path,$extKey,$k)	{
+		$file = $path.$extKey.'/ext_emconf.php';
+		if (@is_file($file))	{
+			$_EXTKEY = $extKey;
+			include($file);
+			
+			$eInfo = array();
+				// Info from emconf:
+			$eInfo['title'] = $EM_CONF[$extKey]['title'];
+			$eInfo['version'] = $EM_CONF[$extKey]['version'];
+			$eInfo['CGLcompliance'] = $EM_CONF[$extKey]['CGLcompliance'];
+			$eInfo['CGLcompliance_note'] = $EM_CONF[$extKey]['CGLcompliance_note'];
+			$eInfo['TYPO3_version'] = $EM_CONF[$extKey]['TYPO3_version'];
+			$filesHash = unserialize($EM_CONF[$extKey]['_md5_values_when_last_written']);
+
+			if (!is_array($filesHash) || count($filesHash)<500)	{
+
+					// Get all files list (may take LOONG time):
+				$extPath = $path.$extKey.'/';
+				$fileArr = array();
+				$fileArr = $this->removePrefixPathFromList($this->getAllFilesAndFoldersInPath($fileArr,$extPath),$extPath);
+
+				if (!is_array($fileArr))	{
+					debug(array($fileArr,$extKey,$extPath,$this->getAllFilesAndFoldersInPath(array(),$extPath)),'ERROR');
+				}
+
+					// Number of files:
+				$eInfo['numberfiles'] = count($fileArr);
+				$eInfo['dirtype'] = filetype($path.$extKey);
+
+					// Most recent modification:
+				$eInfo['mtime_files'] = $this->findMostRecent($fileArr,$extPath);
+				if (count($eInfo['mtime_files']))	$eInfo['mtime'] = max($eInfo['mtime_files']);
+				$eInfo['mtime_hash'] = md5(implode(',',$eInfo['mtime_files']));
+			} else {
+				$eInfo['mtime_hash'] = 'No calculation done, too many files in extension: '.count($filesHash);
+			}
+
+			$eInfo['manual'] = @is_file($path.$extKey.'/doc/manual.sxw');
+
+			return $eInfo;
+		} else return 'ERROR: No emconf.php file: '.$file;
+	}
+
+	/**
+	 * Recursively gather all files and folders of extension path.
+	 *
+	 * @param	array		Array of files to which new files are added
+	 * @param	string		Path to look up files in
+	 * @param	string		List of file extensions to include. Blank = all
+	 * @param	boolean		If set, directories are included as well.
+	 * @return	array		$fileArr with new entries added.
+	 */
+	function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)	{
+		if ($regDirs)	$fileArr[] = $extPath;
+		$fileArr = array_merge($fileArr,t3lib_div::getFilesInDir($extPath,$extList,1,1));
+		
+		$dirs = t3lib_div::get_dirs($extPath);
+		if (is_array($dirs))	{
+			foreach($dirs as $subdirs)	{
+				if ($subdirs && (strcmp($subdirs,'CVS') || !$this->noCVS))	{
+					$fileArr = $this->getAllFilesAndFoldersInPath($fileArr,$extPath.$subdirs.'/',$extList,$regDirs);
+				}
+			}
+		}
+		return $fileArr;
+	}
+
+	/**
+	 * Creates an array with modification times of all files in $fileArr
+	 *
+	 * @param	array		Files in extension (rel path)
+	 * @param	string		Abs path prefix for files.
+	 * @return	array		Array with modification times of files (filenames are keys)
+	 */
+	function findMostRecent($fileArr,$extPath)	{
+		$mtimeArray = array();
+		foreach($fileArr as $fN)	{
+			if ($fN!='ext_emconf.php')	{
+				$mtime = filemtime($extPath.$fN);
+				$mtimeArray[$fN] = $mtime;
+			}
+		}
+		return $mtimeArray;
+	}
+
+	/**
+	 * Removes the absolute part of all files/folders in fileArr
+	 *
+	 * @param	array		File array
+	 * @param	string		Prefix to remove
+	 * @return	array		Modified file array (or error string)
+	 */
+	function removePrefixPathFromList($fileArr,$extPath)	{
+		reset($fileArr);
+		while(list($k,$absFileRef)=each($fileArr))	{
+			if(t3lib_div::isFirstPartOfStr($absFileRef,$extPath))	{
+				$fileArr[$k]=substr($absFileRef,strlen($extPath));
+			} else return 'ERROR: One or more of the files was NOT prefixed with the prefix-path!';
+		}
+		return $fileArr;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Content: Other
+	 *
+	 ******************************/
+
+	/**
+	 * Shows detailed information for a single installation of TYPO3
+	 *
+	 * @param	string		KEY pointing to installation
+	 * @return	string		HTML content
+	 */
+	function singleSite($exp)	{
+		$all = $this->globalSiteInfo[$exp];
+		
+			// General information:
+		$content = '
+			<h2>'.htmlspecialchars($all['siteInfo']['sitename'].' (DB: '.$all['siteInfo']['TYPO3_db']).')</h2>
+			<hr />
+		
+			<h3>Main details:</h3>
+			
+			LINKS: <a href="'.htmlspecialchars($all['siteInfo']['URL']).'" target="'.$this->targetWindow.'">Site</a> / <a href="'.htmlspecialchars($all['siteInfo']['ADMIN_URL']).'" target="'.$this->targetWindowAdmin.'">Admin</a> / <a href="'.htmlspecialchars($all['siteInfo']['INSTALL_URL']).'" target="'.$this->targetWindowInstall.'">Install</a>
+			<br /><br />';
+
+			// Add all information in globalSiteInfo array:
+		$content.= t3lib_div::view_array($all);
+
+			// Last-login:
+		$content.= '
+			<h3>Login-Log for last month:</h3>';
+		$content.= $this->loginLog($all['siteInfo']['TYPO3_db']);
+
+			// Return content
+		return $content;
+	}
+	
+	/**
+	 * Get last-login log for database.
+	 *
+	 * @param	string		Database
+	 * @return	string		HTML
+	 */
+	function loginLog($DB)	{
+			// Non-admin users
+			//1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery(
+						'sys_log.*, be_users.username  AS username, be_users.admin AS admin', 
+						'sys_log,be_users', 
+						'be_users.uid=sys_log.userid AND sys_log.type=255 AND sys_log.tstamp > '.(time()-(60*60*24*30)),
+						'',
+						'sys_log.tstamp DESC'
+					);
+		$res = mysql($DB,$query);
+		
+		$dayRef = '';
+		$lines = array();
+		
+		while($row = mysql_fetch_assoc($res))	{
+			$day = date('d-m-Y',$row['tstamp']);
+			if ($dayRef!=$day)	{
+				$lines[] = '
+				<h4>'.$day.':</h4>';
+				$dayRef=$day;
+			}
+			$theLine = date('H:i',$row['tstamp']).':   '.str_pad(substr($row['username'],0,10),10).'    '.$this->log_getDetails($row['details'],unserialize($row['log_data']));
+			$theLine = htmlspecialchars($theLine);
+			$lines[]= $row['admin'] ? '<span class="redclass">'.$theLine.'</span>' : $theLine;
+			
+			// debug($row);
+		}
+		return '<pre>'.implode(chr(10),$lines).'</pre>';
+	}
+
+	/**
+	 * Compile log details into template string
+	 *
+	 * @param	string		Log message (template)
+	 * @param	array		Data array to insert in log message
+	 * @return	string		Log details.
+	 */
+	function log_getDetails($text,$data)	{
+			// $code is used later on to substitute errormessages with language-corrected values...
+		if (is_array($data))	{
+			return sprintf($text, $data[0],$data[1],$data[2],$data[3],$data[4]);
+		} else return $text;
+	}
+
+
+	/**
+	 * Removing temp_CACHED files for installation
+	 *
+	 * @param	string		KEY pointing to installation
+	 * @return	string		HTML content
+	 */
+	function rmCachedFiles($exp)	{
+		$all = $this->globalSiteInfo[$exp];
+		$content = '
+			<h2>'.htmlspecialchars($all['siteInfo']['sitename'].' (DB: '.$all['siteInfo']['TYPO3_db']).')</h2>
+			<hr />
+			<h3>typo3conf/temp_CACHED_* files:</h3>';
+
+		$path = $all['siteInfo']['SA_PATH'].'/typo3conf/';
+		if (@is_dir($path))	{
+			$filesInDir = t3lib_div::getFilesInDir($path,'php',1);
+			
+			foreach($filesInDir as $kk => $vv)	{
+				if (t3lib_div::isFirstPartOfStr(basename($vv),'temp_CACHED_'))	{
+					if (strstr(basename($vv),'ext_localconf.php') || strstr(basename($vv),'ext_tables.php'))	{
+						$content.='REMOVED: '.$vv.'<br />';
+						unlink($vv);
+						if (file_exists($vv))	$content.= $this->error('ERROR: File still exists, so could not be removed anyways!').'<br />';
+					}
+				}
+			}
+		} else {
+			$content.= $this->error('ERROR: '.$path.' was not a directory!');
+		}
+		
+		return $content;
+	}
+
+	/**
+	 * Menu for either update/information, showing links for each installation found
+	 *
+	 * @param	string		Action key "update" or "info"
+	 * @return	string		HTML output.
+	 */
+	function menuContent($exp)	{
+		if ($exp)	{
+		
+				// Initialize:
+			$lines = array();
+			$head = '';
+			
+			foreach($this->globalSiteInfo as $k => $all)	{
+
+					// Setting section header, if needed.
+				if ($head!=$all['siteInfo']['MAIN_DIR'])	{
+					$lines[] = '
+						<h4 style="white-space: nowrap;">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($all['siteInfo']['MAIN_DIR'],18)).'</h4>';
+					$head = $all['siteInfo']['MAIN_DIR'];	// Set new head...
+				}
+				
+					// Display mode:
+				switch($exp)	{
+					case 'update':
+
+							// Label:
+						$label = $all['siteInfo']['sitename'] ? $all['siteInfo']['sitename'] : '(DB: '.$all['siteInfo']['TYPO3_db'].')';
+						$lines[] = '
+							<hr />
+							<b>'.htmlspecialchars($label).'</b> ('.htmlspecialchars(substr($all['siteInfo']['SA_PATH'],strlen($all['siteInfo']['MAIN_DIR'])+1)).')<br />';
+						
+								// To avoid "visited links" display on next hit:
+							$tempVal='&_someUniqueValue='.time();
+
+								// Add links for update:
+							$url = $this->scriptName.'?type=page&show=rmTempCached&exp='.$k.$tempVal;
+							$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">Remove temp_CACHED files</a></span>';	
+
+							$url = $all['siteInfo']['INSTALL_URL'].'index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=import|CURRENT_STATIC'."&presetWholeTable=1".$tempVal.'#bottom';
+							$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">CURRENT_STATIC</a></span>';
+
+							$url = $all['siteInfo']['INSTALL_URL'].'index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES'.$tempVal.'#bottom';
+							$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">CURRENT_TABLES</a></span>';
+
+								// Cache
+							$url = $all['siteInfo']['INSTALL_URL'].'index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=cache|'.
+											"&PRESET[database_clearcache][cache_pages]=1".
+											'&PRESET[database_clearcache][cache_pagesection]=1'.
+											"&PRESET[database_clearcache][cache_hash]=1".
+											$tempVal.
+											'#bottom';
+							$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">Clear cache</a></span>';
+
+								// Admin link
+							$url = $all['siteInfo']['ADMIN_URL'].'index.php';
+							$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="'.$this->targetWindowAdmin.'">Admin -></a></span>';
+					break;
+					case 'info':
+							// item
+						$label = $all['siteInfo']['sitename'] ? $all['siteInfo']['sitename'] : '(DB: '.$all['siteInfo']['TYPO3_db'].')';
+						
+						$url = $this->scriptName.'?type=page&show=info&exp='.$k;
+						$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">'.htmlspecialchars($label).'</a> ('.htmlspecialchars(substr($all['siteInfo']['SA_PATH'],strlen($all['siteInfo']['MAIN_DIR'])+1)).'/)</span>';	
+					break;
+				}
+			}	
+			
+				// Return result.
+			return implode('<br />',$lines).'<br />';	
+		}
+	}
+
+	/**
+	 * Create list of admin logins.
+	 *
+	 * @return	string		HTML table
+	 */
+	function makeAdminLogin()	{
+	
+			// Initialize:
+		$lines = array();
+		$head = '';
+		
+			// Traverse installations found:
+		foreach($this->globalSiteInfo as $k => $all)	{
+
+				// Setting section header, if needed.
+			if ($head!=$all['siteInfo']['MAIN_DIR'])	{
+				$lines[] = '
+					<tr>
+						<td colspan="2"><br />
+						<h4>'.htmlspecialchars($all['siteInfo']['MAIN_DIR']).'</h4>
+						</td>
+					</tr>';
+				$head = $all['siteInfo']['MAIN_DIR'];
+			}
+
+				// item
+			$label = $all['siteInfo']['sitename'] ? $all['siteInfo']['sitename'] : '(DB: '.$all['siteInfo']['TYPO3_db'].')';
+			$unique = md5(microtime());
+			
+			$opts = array();
+			$defUName = '';
+
+			if (is_array($all['siteInfo']['ADMINS']))	{
+			
+				foreach($all['siteInfo']['ADMINS'] as $vArr)	{
+					$chalVal = md5($vArr['username'].':'.$vArr['password'].':'.$unique);
+					$opts[] = '<option value="'.$chalVal.'">'.htmlspecialchars($vArr['username'].($vArr['disable']?' [DISABLED]':'')).'</option>';
+					if (!$defUName) { $defUName = $vArr['username']; }
+				}
+			}
+			if (count($opts)>1)	{
+					$userident = '
+					<select name="userident" onchange="document[\''.$k.'\'].username.value=this.options[this.selectedIndex].text;">
+						'.implode('
+						',$opts).'
+					</select>
+				';
+			} else {
+				$userident = '
+					('.$defUName.')<br />
+					<input type="hidden" name="userident" value="'.$chalVal.'" />';
+			}
+			
+			$form='
+			<form name="'.$k.'" action="'.$all['siteInfo']['ADMIN_URL'].'index.php" target="EXTERnalWindow" method="post">
+				<input type="submit" name="submit" value="Login" />
+				<input type="hidden" name="username" value="'.$defUName.'" />
+				<input type="hidden" name="challenge" value="'.$unique.'" />
+				<input type="hidden" name="redirect_url" value="" />
+				<input type="hidden" name="login_status" value="login" />
+				'.trim($userident).'
+			</form>';
+			
+			$lines[] = '
+				<tr>
+					<td><strong>'.htmlspecialchars($label).'</strong></td>
+					<td nowrap="nowrap">'.trim($form).'</td>
+				</tr>';
+		}	
+		
+			// Return login table:
+		return '<table border="1" cellpadding="5" cellspacing="1">'.implode('',$lines).'</table>';	
+	}
+
+	/**
+	 * For for changing admin passwords
+	 *
+	 * @return	string		Form content.
+	 */
+	function changeAdminPasswordsForm()	{
+		$content='';
+
+		foreach($this->changeAdminPasswords as $k => $p)	{
+			$content.='
+				<h3>'.$k.'</h3>';
+				
+			foreach($p as $kk => $pp)	{
+				$content.= '<span style="white-space: nowrap;">';
+				$content.= '<input type="checkbox" name="SETFIELDS[]" value="'.$pp.'" /> '.$pp.' - ';
+				$content.= htmlspecialchars(implode(' - ',$this->collectAdminPasswords[$k][$kk]));
+				$content.= '</span><br />';
+			}
+		}
+		
+		$content.='New password: <input type="text" name="NEWPASS" /><br />';
+		$content.='New password (md5): <input type="text" name="NEWPASS_md5" /><br />
+			(This overrules any plain password above!)
+		<br />';
+		$content='
+		<form action="'.htmlspecialchars($this->scriptName.'?type=page&show=admin').'" method="post">
+		'.$content.'
+		<input type="submit" name="Set" />
+		</form>
+		';
+		
+		return $content;
+	}
+
+	/**
+	 * Setting new passwords
+	 *
+	 * @return	string		Status
+	 * @see changeAdminPasswordsForm()
+	 */
+	function setNewPasswords()	{
+		$whichFields = t3lib_div::_POST('SETFIELDS');
+		$pass = trim(t3lib_div::_POST('NEWPASS'));
+		$passMD5 = t3lib_div::_POST('NEWPASS_md5');
+
+		$updatedFlag = 0;
+		if (($pass || $passMD5) && is_array($whichFields))	{
+			$pass = $passMD5 ? $passMD5 : md5($pass);
+			
+			foreach($whichFields as $values)	{
+				$parts = explode(':',$values);
+				if (count($parts)>2)	{
+					$key = $this->mapDBtoKey[$parts[0]];
+					if ($key && isset($this->globalSiteInfo[$key]['siteInfo']))	{
+						$error = $this->connectToDatabase($this->globalSiteInfo[$key]['siteInfo']);
+						if (!$error)	{
+							$DB = $this->globalSiteInfo[$key]['siteInfo']['TYPO3_db'];
+							$content.='<h3>Updating '.$DB.':</h3>';
+							
+							$query = $GLOBALS['TYPO3_DB']->UPDATEquery(
+													'be_users', 
+													'uid='.intval($parts[1]).' AND username="'.addslashes($parts[2]).'" AND admin!=0', 
+													array('password' => $pass)
+												);	// username/admin are added to security. But they are certainly redundant!!
+							mysql($DB,$query);
+
+							$content.= 'Affected rows: '.mysql_affected_rows().'<br /><hr />';
+							$updatedFlag = '1';
+						}
+					}
+				}
+			}
+		}
+		
+		$this->initProcess();
+		return $content;
 	}
 }
 

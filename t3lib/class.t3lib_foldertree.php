@@ -38,19 +38,18 @@
  *
  *
  *
- *   82: class t3lib_folderTree extends t3lib_treeView  
- *   89:     function t3lib_folderTree()	
- *  108:     function wrapTitle($title,$row)	
- *  121:     function wrapIcon($icon,$row)	
- *  141:     function getId($v) 
- *  151:     function getJumpToParm($v) 
- *  163:     function getTitleStr($row,$titleLen=30)	
- *  173:     function getBrowsableTree()	
- *  236:     function getFolderTree($files_path, $depth=999, $depthData='')	
- *  315:     function getCount($files_path)	
- *  331:     function initializePositionSaving()	
+ *   81: class t3lib_folderTree extends t3lib_treeView  
+ *   88:     function t3lib_folderTree()	
+ *  106:     function wrapIcon($icon,$row)	
+ *  126:     function getId($v) 
+ *  136:     function getJumpToParm($v) 
+ *  148:     function getTitleStr($row,$titleLen=30)	
+ *  158:     function getBrowsableTree()	
+ *  221:     function getFolderTree($files_path, $depth=999, $depthData='')	
+ *  301:     function getCount($files_path)	
+ *  317:     function initializePositionSaving()	
  *
- * TOTAL FUNCTIONS: 10
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -72,7 +71,7 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
 
 /**
  * Extension class for the t3lib_treeView class, specially made for browsing folders in the File module
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
@@ -83,8 +82,8 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 	/**
 	 * Constructor function of the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function t3lib_folderTree()	{
 		parent::init();
@@ -98,7 +97,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 	
 	/**
 	 * Wrapping the folder icon
-	 * 
+	 *
 	 * @param	string		The image tag for the icon
 	 * @param	array		The row for the current element
 	 * @return	string		The processed icon input value.
@@ -120,7 +119,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 	/**
 	 * Returns the id from the record - for folders, this is an md5 hash.
-	 * 
+	 *
 	 * @param	array		Record array
 	 * @return	integer		The "uid" field value.
 	 */
@@ -130,7 +129,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 	/**
 	 * Returns jump-url parameter value.
-	 * 
+	 *
 	 * @param	array		The record array.
 	 * @return	string		The jump-url parameter.
 	 */
@@ -139,9 +138,9 @@ class t3lib_folderTree extends t3lib_treeView  {
 	}
 
 	/**
-	 * Returns the title for the input record. If blank, a "no title" labele (localized) will be returned. 
+	 * Returns the title for the input record. If blank, a "no title" labele (localized) will be returned.
 	 * '_title' is used for setting an alternative title for folders.
-	 * 
+	 *
 	 * @param	array		The input row array (where the key "_title" is used for the title)
 	 * @param	integer		Title length (30)
 	 * @return	string		The title.
@@ -153,7 +152,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 	/**
 	 * Will create and return the HTML code for a browsable tree of folders.
 	 * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
-	 * 
+	 *
 	 * @return	string		HTML code for the browsable tree
 	 */
 	function getBrowsableTree()	{
@@ -212,7 +211,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 	/**
 	 * Fetches the data for the tree
-	 * 
+	 *
 	 * @param	string		Abs file path
 	 * @param	integer		Max depth (recursivity limit)
 	 * @param	string		HTML-code prefix for recursive calls.
@@ -295,9 +294,9 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 	/**
 	 * Counts the number of directories in a file path.
-	 * 
+	 *
 	 * @param	string		File path.
-	 * @return	integer		
+	 * @return	integer
 	 */
 	function getCount($files_path)	{
 			// This generates the directory tree
@@ -311,8 +310,8 @@ class t3lib_folderTree extends t3lib_treeView  {
 	
 	/**
 	 * Get stored tree structure AND updating it if needed according to incoming PM GET var.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 */
 	function initializePositionSaving()	{

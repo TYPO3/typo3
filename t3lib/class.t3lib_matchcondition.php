@@ -39,12 +39,12 @@
  *
  *   76: class t3lib_matchCondition 
  *   90:     function match($string)	
- *  301:     function testNumber($test,$value) 
- *  323:     function matchWild($haystack,$needle)	
- *  353:     function whichDevice($useragent)	
- *  403:     function browserInfo($useragent)	
- *  502:     function getGlobal($var,$inArr='') 
- *  527:     function getGP_ENV_TSFE($var) 
+ *  302:     function testNumber($test,$value) 
+ *  324:     function matchWild($haystack,$needle)	
+ *  354:     function whichDevice($useragent)	
+ *  404:     function browserInfo($useragent)	
+ *  503:     function getGlobal($var,$inArr='') 
+ *  528:     function getGP_ENV_TSFE($var) 
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,10 +64,10 @@
 
 /**
  * Matching TypoScript conditions
- * 
+ *
  * Used with the TypoScript parser.
  * Matches browserinfo, IPnumbers for use with templates
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -81,7 +81,7 @@ class t3lib_matchCondition {
 		
 	/**
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
-	 * 
+	 *
 	 * @param	string		The condition to match against its criterias.
 	 * @return	boolean		Returns true or false based on the evaluation.
 	 * @see t3lib_tsparser::parse()
@@ -294,7 +294,7 @@ class t3lib_matchCondition {
 
 	/**
 	 * Will evaluate a $value based on an operator: "<", ">" or "=" (default)
-	 * 
+	 *
 	 * @param	string		The value to compare with on the form [operator][number]. Eg. "< 123"
 	 * @param	integer		The number
 	 * @return	boolean		If $value is "50" and $test is "< 123" then it will return true.
@@ -316,7 +316,7 @@ class t3lib_matchCondition {
 
 	/**
 	 * Matching two strings against each other, supporting a "*" wildcard in either end of the $needle
-	 * 
+	 *
 	 * @param	string		The string in which to find $needle.
 	 * @param	string		The string to find in $haystack
 	 * @return	boolean		Returns true if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Netscape*" then it returns true.
@@ -345,7 +345,7 @@ class t3lib_matchCondition {
 
 	/**
 	 * Returns a code for a browsing device based on the input useragent string
-	 * 
+	 *
 	 * @param	string		User agent string from browser, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
 	 * @return	string		A code. See link.
 	 * @access private
@@ -395,7 +395,7 @@ class t3lib_matchCondition {
 	/**
 	 * Generates an array with abstracted browser information
 	 * In the function match() this method is called and the result stored in $this->browserInfoArray
-	 * 
+	 *
 	 * @param	string		The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
 	 * @return	array		Contains keys "browser", "version", "system"
 	 * @access private
@@ -494,7 +494,7 @@ class t3lib_matchCondition {
 
 	/**
 	 * Return global variable where the input string $var defines array keys separated by "|"
-	 * 
+	 *
 	 * @param	string		Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the id GET parameter back.
 	 * @param	array		Alternative array than $GLOBAL to get variables from.
 	 * @return	mixed		Whatever value. If none, then blank string.
@@ -519,7 +519,7 @@ class t3lib_matchCondition {
 
 	/**
 	 * Returns GP / ENV / TSFE vars
-	 * 
+	 *
 	 * @param	string		Identifier
 	 * @return	mixed		The value of the variable pointed to.
 	 * @access private

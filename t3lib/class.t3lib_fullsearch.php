@@ -44,15 +44,15 @@
  *  171:     function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)	
  *  188:     function addToStoreQueryConfigs($storeQueryConfigs,$index)	
  *  204:     function saveQueryInAction($uid)	
- *  254:     function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)	
- *  270:     function procesStoreControl()	
- *  343:     function queryMaker()	
- *  407:     function getQueryResultCode($mQ,$res,$table)	
- *  514:     function csvValues($row,$delim=",",$quote='"')	
- *  524:     function tableWrap($str)	
- *  533:     function search()	
- *  591:     function resultRowDisplay($row,$conf,$table)	
- *  614:     function resultRowTitles($row,$conf,$table)	
+ *  251:     function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)	
+ *  267:     function procesStoreControl()	
+ *  339:     function queryMaker()	
+ *  402:     function getQueryResultCode($mQ,$res,$table)	
+ *  509:     function csvValues($row,$delim=",",$quote='"')	
+ *  519:     function tableWrap($str)	
+ *  528:     function search()	
+ *  583:     function resultRowDisplay($row,$conf,$table)	
+ *  606:     function resultRowTitles($row,$conf,$table)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,7 +75,7 @@
 /**
  * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
  * However the class has a general principle in it which may be used in the web/export module.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -92,7 +92,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function form()	{
@@ -106,7 +106,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function makeStoreControl()	{
@@ -123,14 +123,14 @@ class t3lib_fullsearch {
 		
 			// Actions:
 		if (t3lib_extMgm::isLoaded("sys_action"))	{
-			$query = "SELECT * FROM sys_action WHERE type=2 ORDER BY title";
-			$res = mysql(TYPO3_db,$query);
-			if (mysql_num_rows($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', 'type=2', '', 'title');
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				$opt[]='<option value="0">__Save to Action:__</option>';
-				while($row=mysql_fetch_assoc($res))	{
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$opt[]='<option value="-'.$row["uid"].'"'.(!strcmp($cur,"-".$row["uid"])?" selected":"").'>'.htmlspecialchars($row["title"]." [".$row["uid"]."]").'</option>';
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 
 		$TDparams=' nowrap="nowrap" class="bgColor4"';
@@ -145,7 +145,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function initStoreArray()	{
@@ -163,7 +163,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$storeQueryConfigs: ...
 	 * @param	[type]		$storeArray: ...
 	 * @return	[type]		...
@@ -180,7 +180,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$storeQueryConfigs: ...
 	 * @param	[type]		$index: ...
 	 * @return	[type]		...
@@ -197,7 +197,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$uid: ...
 	 * @return	[type]		...
 	 */
@@ -210,8 +210,7 @@ class t3lib_fullsearch {
 				$saveArr[$k]=$GLOBALS["SOBE"]->MOD_SETTINGS[$k];
 			}
 	
-			$dA=array();
-			$qOK=0;
+			$qOK = 0;
 				// Show query				
 			if ($saveArr["queryTable"])	{
 				$qGen = t3lib_div::makeInstance("t3lib_queryGenerator");
@@ -220,32 +219,30 @@ class t3lib_fullsearch {
 				
 				$qGen->enablePrefix=1;
 				$qString = $qGen->getQuery($qGen->queryConfig);
-				$qCount = "SELECT count(*) FROM ".$qGen->table." WHERE ".$qString.t3lib_BEfunc::deleteClause($qGen->table);
+				$qCount = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString.t3lib_BEfunc::deleteClause($qGen->table));
 				$qSelect = $qGen->getSelectQuery($qString);
 	
-				$res = @mysql(TYPO3_db,$qCount);
-				if (!mysql_error())	{
+				$res = @$GLOBALS['TYPO3_DB']->sql(TYPO3_db,$qCount);
+				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
+					$dA = array();
 					$dA["t2_data"] = serialize(array(
 						"qC"=>$saveArr,
 						"qCount" => $qCount,
 						"qSelect" => $qSelect,
 						"qString" => $qString
 					));
-	//				debug(unserialize($dA["t2_data"]));
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery("sys_action", "uid=".intval($uid), $dA);
 					$qOK=1;
 				}
 			}
-			//$this->tableWrap($qExplain)
-			
-			$query = t3lib_BEfunc::DBcompileUpdate("sys_action","uid=".intval($uid),$dA);
-			$res = mysql(TYPO3_db,$query);
+
 			return $qOK;
 		}
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$storeQueryConfigs: ...
 	 * @param	[type]		$storeIndex: ...
 	 * @param	[type]		$writeArray: ...
@@ -264,7 +261,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function procesStoreControl()	{
@@ -276,12 +273,11 @@ class t3lib_fullsearch {
 		$saveStoreArray=0;
 		$writeArray=array();
 		if (is_array($storeControl))	{
-			$storeControl = t3lib_div::slashArray($storeControl,"strip");
 			if ($storeControl["LOAD"])	{
 				if ($storeIndex>0)	{
 					$writeArray=$this->loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray);
 					$saveStoreArray=1;
-					$msg="'".$storeArray[$storeIndex]."' query loaded!";
+					$msg="'".htmlspecialchars($storeArray[$storeIndex])."' query loaded!";
 				} elseif ($storeIndex<0 && t3lib_extMgm::isLoaded("sys_action"))	{
 					$actionRecord=t3lib_BEfunc::getRecord("sys_action",abs($storeIndex));
 					if (is_array($actionRecord))	{
@@ -315,7 +311,7 @@ class t3lib_fullsearch {
 						}
 						$storeQueryConfigs=$this->addToStoreQueryConfigs($storeQueryConfigs,$storeIndex);
 						$saveStoreArray=1;
-						$msg="'".$storeArray[$storeIndex]."' query saved!";
+						$msg="'".htmlspecialchars($storeArray[$storeIndex])."' query saved!";
 					}
 				}
 			} elseif ($storeControl["REMOVE"])	{
@@ -337,7 +333,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function queryMaker()	{
@@ -370,10 +366,9 @@ class t3lib_fullsearch {
 		
 				switch($mQ)	{
 					case "count":
-						$qExplain = "SELECT count(*) FROM ".$qGen->table." WHERE ".$qString.t3lib_BEfunc::deleteClause($qGen->table);
+						$qExplain = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString.t3lib_BEfunc::deleteClause($qGen->table));
 					break;
 					default:
-//						$qExplain = "SELECT uid,pid,".$TCA[$qGen->table]["ctrl"]["label"]." FROM ".$qGen->table." WHERE ".$qString.t3lib_BEfunc::deleteClause($qGen->table)." LIMIT 100";
 						$qExplain = $qGen->getSelectQuery($qString);
 						if ($mQ=="explain")	{
 							$qExplain="EXPLAIN ".$qExplain;
@@ -381,11 +376,11 @@ class t3lib_fullsearch {
 					break;
 				}
 
-				$output.= $GLOBALS["SOBE"]->doc->section('SQL query',$this->tableWrap($qExplain),0,1);
+				$output.= $GLOBALS["SOBE"]->doc->section('SQL query',$this->tableWrap(htmlspecialchars($qExplain)),0,1);
 
-				$res = @mysql(TYPO3_db,$qExplain);
-				if (mysql_error())	{
-					$out.="<BR><strong>Error:</strong><BR><font color=red><strong>".mysql_error()."</strong></font>";
+				$res = @$GLOBALS['TYPO3_DB']->sql(TYPO3_db,$qExplain);
+				if ($GLOBALS['TYPO3_DB']->sql_error())	{
+					$out.="<BR><strong>Error:</strong><BR><font color=red><strong>".$GLOBALS['TYPO3_DB']->sql_error()."</strong></font>";
 					$output.= $GLOBALS["SOBE"]->doc->section('SQL error',$out,0,1);
 				} else {
 					$cPR = $this->getQueryResultCode($mQ,$res,$qGen->table);
@@ -398,7 +393,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$mQ: ...
 	 * @param	[type]		$res: ...
 	 * @param	[type]		$table: ...
@@ -410,13 +405,13 @@ class t3lib_fullsearch {
 		$cPR=array();
 		switch($mQ)	{
 			case "count":
-				$row = mysql_fetch_row($res);
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 				$cPR["header"]='Count';
 				$cPR["content"]="<BR><strong>".$row[0]. "</strong> records selected.";
 			break;
 			case "all":
 				$rowArr=array();
-				while($row=mysql_fetch_assoc($res))	{
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$rowArr[]=$this->resultRowDisplay($row,$TCA[$table],$table);
 					$lrow=$row;
 				}
@@ -430,7 +425,7 @@ class t3lib_fullsearch {
 			case "csv":
 				$rowArr=array();
 				$first=1;
-				while($row=mysql_fetch_assoc($res))	{
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					if ($first)	{
 						$rowArr[]=$this->csvValues(array_keys($row),",","");
 						$first=0;
@@ -462,7 +457,7 @@ class t3lib_fullsearch {
 				$xmlObj->includeNonEmptyValues=1;
 				$xmlObj->renderHeader();
 				$first=1;
-				while($row=mysql_fetch_assoc($res))	{
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					if ($first)	{
 						$xmlObj->setRecFields($table,implode(",",array_keys($row)));
 		//				debug($xmlObj->XML_recFields);
@@ -471,7 +466,7 @@ class t3lib_fullsearch {
 					$xmlObj->addRecord($table,$row);
 				}
 				$xmlObj->renderFooter();
-				if (mysql_num_rows($res))	{
+				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 					$xmlData=$xmlObj->getResult();
 					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS["SOBE"]->doc->formWidthText($this->formW,"","off").'>'.t3lib_div::formatForTextarea($xmlData).'</textarea>';
 					if (!$this->noDownloadB)	{
@@ -493,7 +488,7 @@ class t3lib_fullsearch {
 			break;
 			case "explain":
 			default:
-				while($row=mysql_fetch_assoc($res))	{
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$out.="<BR>".t3lib_div::view_array($row);
 				}
 				$cPR["header"]='Explain SQL query';
@@ -505,7 +500,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$row: ...
 	 * @param	[type]		$delim: ...
 	 * @param	[type]		$quote: ...
@@ -517,7 +512,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$str: ...
 	 * @return	[type]		...
 	 */
@@ -527,7 +522,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function search()	{
@@ -550,13 +545,11 @@ class t3lib_fullsearch {
 					$list[]=$field;
 				}
 					// Get query
-				$qp = t3lib_BEfunc::searchQuery(array($swords),$list);
+				$qp = $GLOBALS['TYPO3_DB']->searchQuery(array($swords), $list, $table);
 				
 					// Count:
-				$query = "SELECT count(*) FROM ".$table." WHERE ".$qp.t3lib_BEfunc::deleteClause($table);
-				$res = mysql(TYPO3_db,$query);
-				echo mysql_error();
-				list($count)=mysql_fetch_row($res);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $qp.t3lib_BEfunc::deleteClause($table));
+				list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 				if($count || $showAlways)	{
 						// Output header:
 					$out.="<strong>TABLE:</strong> ".$GLOBALS["LANG"]->sL($conf["ctrl"]["title"])."<BR>";
@@ -564,10 +557,9 @@ class t3lib_fullsearch {
 	
 						// Show to limit
 					if ($count)	{
-						$query = "SELECT uid,pid,".$conf["ctrl"]["label"]." FROM ".$table." WHERE ".$qp.t3lib_BEfunc::deleteClause($table)." LIMIT ".$limit;
-						$res = mysql(TYPO3_db,$query);
-						$rowArr=array();
-						while($row=mysql_fetch_assoc($res))	{
+						$rowArr = array();
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,'.$conf['ctrl']['label'], $table, $qp.t3lib_BEfunc::deleteClause($table), '', '', $limit);
+						while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 							$rowArr[]=$this->resultRowDisplay($row,$conf,$table);
 							$lrow=$row;
 						}
@@ -582,7 +574,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$row: ...
 	 * @param	[type]		$conf: ...
 	 * @param	[type]		$table: ...
@@ -605,7 +597,7 @@ class t3lib_fullsearch {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$row: ...
 	 * @param	[type]		$conf: ...
 	 * @param	[type]		$table: ...

@@ -37,13 +37,13 @@
  *
  *
  *
- *  147: class t3lib_extobjbase 
- *  199:     function init(&$pObj,$conf)	
- *  223:     function handleExternalFunctionValue()	
- *  239:     function incLocalLang()	
- *  252:     function checkExtObj()	
- *  267:     function extObjContent()	
- *  278:     function modMenu()	
+ *  145: class t3lib_extobjbase 
+ *  197:     function init(&$pObj,$conf)	
+ *  221:     function handleExternalFunctionValue()	
+ *  237:     function incLocalLang()	
+ *  250:     function checkExtObj()	
+ *  265:     function extObjContent()	
+ *  276:     function modMenu()	
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -136,7 +136,7 @@
  * The magic that binds this together is stored in the global variable $TBE_MODULES_EXT where extensions wanting to connect a module based on this class to an existing backend module store configuration which consists of the classname, script-path and a label (title/name)
  * For more information about this, please see the large example comment for the class t3lib_SCbase. This will show the principle of a 'level-1' connection.
  * The more advanced example - having two layers as it is done by the 'func_wizards' extension with the 'web_info' module - can be seen in the comment above.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -188,10 +188,10 @@ class t3lib_extobjbase {
 
 	/**
 	 * Initialize the object
-	 * 
+	 *
 	 * @param	object		A reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
 	 * @param	array		The configuration set for this module - from global array TBE_MODULES_EXT
-	 * @return	void		
+	 * @return	void
 	 * @see t3lib_SCbase::checkExtObj()
 	 */
 	function init(&$pObj,$conf)	{
@@ -214,8 +214,8 @@ class t3lib_extobjbase {
 
 	/**
 	 * If $this->function_key is set (which means there are two levels of object connectivity) then $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see $function_key, tx_funcwizards_webfunc::init()
 	 */
 	function handleExternalFunctionValue()	{
@@ -231,8 +231,8 @@ class t3lib_extobjbase {
 
 	/**
 	 * Including any locallang file configured and merging its content over the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function incLocalLang()	{
 		if ($this->localLangFile && @is_file($this->thisPath.'/'.$this->localLangFile))	{
@@ -243,8 +243,8 @@ class t3lib_extobjbase {
 
 	/**
 	 * Same as t3lib_SCbase::checkExtObj()
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see t3lib_SCbase::checkExtObj()
 	 */
 	function checkExtObj()	{
@@ -259,8 +259,8 @@ class t3lib_extobjbase {
 
 	/**
 	 * Calls the main function inside ANOTHER sub-submodule which might exist.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function extObjContent()	{
 		if (is_object($this->extObj))	return $this->extObj->main();
@@ -269,7 +269,7 @@ class t3lib_extobjbase {
 	/**
 	 * Dummy function - but is used to set up additional menu items for this submodule.
 	 * For an example see the extension 'cms' where the 'web_info' submodule is defined in cms/web_info/class.tx_cms_webinfo.php, tx_cms_webinfo_page::modMenu()
-	 * 
+	 *
 	 * @return	array		A MOD_MENU array which will be merged together with the one from the parent object
 	 * @see init(), tx_cms_webinfo_page::modMenu()
 	 */

@@ -66,11 +66,11 @@
 
 /**
  * Load Backend Interface modules
- * 
+ *
  * Typically instantiated like this:
  * 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
  * 		$this->loadModules->load($TBE_MODULES);
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -89,10 +89,10 @@ class t3lib_loadModules {
 	 * Init.
 	 * The outcome of the load() function will be a $this->modules array populated with the backend module structure available to the BE_USER
 	 * Further the global var $LANG will have labels and images for the modules loaded in an internal array.
-	 * 
+	 *
 	 * @param	array		$modulesArray should be the global var $TBE_MODULES, $BE_USER can optionally be set to an alternative Backend user object than the global var $BE_USER (which is the currently logged in user)
 	 * @param	object		Optional backend user object to use. If not set, the global BE_USER object is used.
-	 * @return	void		
+	 * @return	void
 	 */
 	function load($modulesArray,$BE_USER='')	{
 			// Setting the backend user for use internally
@@ -359,7 +359,7 @@ class t3lib_loadModules {
 
 	/**
 	 * If the module name ($name) is a module from an extension (has path in $this->absPathArray) then that path is returned relative to PATH_site
-	 * 
+	 *
 	 * @param	string		Module name
 	 * @return	string		If found, the relative path from PATH_site
 	 */
@@ -377,7 +377,7 @@ class t3lib_loadModules {
 	 * 	'notFound':	If the module was not found in the path
 	 * 	false:		If no access to the module
 	 * 	array():	Configuration array, in case a valid module where access IS granted exists.
-	 * 
+	 *
 	 * @param	string		Module name
 	 * @param	string		Absolute path to module
 	 * @return	mixed		See description of function
@@ -450,7 +450,7 @@ class t3lib_loadModules {
 
 	/**
 	 * Returns true if the internal BE_USER has access to the module $name with $MCONF (based on security level set for that module)
-	 * 
+	 *
 	 * @param	string		Module name
 	 * @param	array		MCONF array (module configuration array) from the modules conf.php file (contains settings about what access level the module has)
 	 * @return	boolean		True if access is granted for $this->BE_USER
@@ -474,7 +474,7 @@ class t3lib_loadModules {
 	/**
 	 * Parses the moduleArray ($TBE_MODULES) into a internally useful structure.
 	 * Returns an array where the keys are names of the module and the values may be true (only module) or an array (of submodules)
-	 * 
+	 *
 	 * @param	array		moduleArray ($TBE_MODULES)
 	 * @return	array		Output structure with available modules
 	 */
@@ -504,9 +504,9 @@ class t3lib_loadModules {
 
 	/**
 	 * The $str is cleaned so that it contains alphanumerical characters only. Modules must only consist of these characters
-	 * 
+	 *
 	 * @param	string		String to clean up
-	 * @return	string		
+	 * @return	string
 	 */
 	function cleanName ($str)	{
 		return ereg_replace('[^A-Za-z0-9]*','',$str);
@@ -514,7 +514,7 @@ class t3lib_loadModules {
 
 	/**
 	 * Get relative path for $destDir compared to $baseDir
-	 * 
+	 *
 	 * @param	string		Base directory
 	 * @param	string		Destination directory
 	 * @return	string		The relative path of destination compared to base.

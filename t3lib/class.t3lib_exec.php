@@ -55,25 +55,25 @@
 /**
  * returns exec command for a program
  * or false
- * 
+ *
  * This class is meant to be used without instance:
  * $cmd = t3lib_exec::getCommand ('awstats','perl');
- * 
+ *
  * The data of this class is hold in a global variable. Doing it this way the setup is cached.
  * That means if a program is found once it don't have to be searched again.
- * 
+ *
  * user functions:
- * 
+ *
  * addPaths() could be used to extend the search paths
  * getCommand() get a command string
  * checkCommand() returns true if a command is available
- * 
+ *
  * Search paths that are included:
  * $TYPO3_CONF_VARS['GFX']['im_path_lzw'] or $TYPO3_CONF_VARS['GFX']['im_path']
  * $TYPO3_CONF_VARS['SYS']['binPath']
  * $GLOBALS['_SERVER']['PATH']
  * '/usr/bin/,/usr/local/bin/' on Unix
- * 
+ *
  * @author	René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
@@ -83,7 +83,7 @@ class t3lib_exec {
 	/**
 	 * checks if a command is valid or not
 	 * updates global vars
-	 * 
+	 *
 	 * @param	string		the command that should be executed. eg: "convert"
 	 * @param	string		executer for the command. eg: "perl"
 	 * @return	boolean		false if cmd is not found, or -1 if the handler is not found
@@ -153,7 +153,7 @@ class t3lib_exec {
 	
 	/**
 	 * returns a command string for exec(), system()
-	 * 
+	 *
 	 * @param	string		the command that should be executed. eg: "convert"
 	 * @param	string		handler (executor) for the command. eg: "perl"
 	 * @param	string		options for the handler, like '-w' for "perl"
@@ -184,7 +184,7 @@ class t3lib_exec {
 
 	/**
 	 * Extend the preset paths. This way an extension can install an axecutable and provide the path to t3lib_exec.
-	 * 
+	 *
 	 * @param	string		comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
 	 * @return	[type]		...
 	 */
@@ -194,7 +194,7 @@ class t3lib_exec {
 
 	/**
 	 * set the search paths from different sources
-	 * 
+	 *
 	 * @return	[type]		...
 	 * @internal
 	 */
@@ -262,7 +262,7 @@ class t3lib_exec {
 
 	/**
 	 * init
-	 * 
+	 *
 	 * @return	[type]		...
 	 * @internal
 	 */
@@ -277,7 +277,7 @@ class t3lib_exec {
 
 	/**
 	 * init and extend the preset paths with own
-	 * 
+	 *
 	 * @param	string		comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
 	 * @return	[type]		...
 	 * @internal
@@ -333,7 +333,7 @@ class t3lib_exec {
 
 	/**
 	 * returns on which OS we're runing
-	 * 
+	 *
 	 * @return	string		the OS type: "UNIX" or "WIN"
 	 * @internal
 	 */
@@ -343,7 +343,7 @@ class t3lib_exec {
 
 	/**
 	 * set a path to the right format
-	 * 
+	 *
 	 * @param	string		path
 	 * @return	string		path
 	 * @internal

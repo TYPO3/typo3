@@ -37,16 +37,16 @@
  *
  *
  *
- *  134: class t3lib_SCbase 
- *  250:     function init()	
- *  267:     function menuConfig()	
- *  287:     function mergeExternalItems($modName,$menuKey,$menuArr)	
- *  306:     function handleExternalFunctionValue($MM_key='function')	
- *  323:     function getExternalItemConfig($modName,$menuKey,$value='')	
- *  337:     function checkExtObj()	
- *  351:     function checkSubExtObj()	
- *  363:     function extObjHeader()	
- *  372:     function extObjContent()	
+ *  133: class t3lib_SCbase 
+ *  249:     function init()	
+ *  266:     function menuConfig()	
+ *  286:     function mergeExternalItems($modName,$menuKey,$menuArr)	
+ *  305:     function handleExternalFunctionValue($MM_key='function')	
+ *  322:     function getExternalItemConfig($modName,$menuKey,$value='')	
+ *  336:     function checkExtObj()	
+ *  350:     function checkSubExtObj()	
+ *  362:     function extObjHeader()	
+ *  371:     function extObjContent()	
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -124,7 +124,7 @@
 /**
  * Parent class for 'ScriptClasses' in backend modules.
  * See example comment above.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -242,8 +242,8 @@ class t3lib_SCbase {
 
 	/**
 	 * Initializes the backend module by setting internal variables, initializing the menu.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see menuConfig()
 	 */
 	function init()	{
@@ -259,8 +259,8 @@ class t3lib_SCbase {
 	 * Initializes the internal MOD_MENU array setting and unsetting items based on various conditions. It also merges in external menu items from the global array TBE_MODULES_EXT (see mergeExternalItems())
 	 * Then MOD_SETTINGS array is cleaned up (see t3lib_BEfunc::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
 	 * Also loads the modTSconfig internal variable.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see init(), $MOD_MENU, $MOD_SETTINGS, t3lib_BEfunc::getModuleData(), mergeExternalItems()
 	 */
 	function menuConfig()	{
@@ -275,7 +275,7 @@ class t3lib_SCbase {
 
 	/**
 	 * Merges menu items from global array $TBE_MODULES_EXT
-	 * 
+	 *
 	 * @param	string		Module name for which to find value
 	 * @param	string		Menu key, eg. 'function' for the function menu.
 	 * @param	array		The part of a MOD_MENU array to work on.
@@ -297,9 +297,9 @@ class t3lib_SCbase {
 	/**
 	 * Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
 	 * If for this array the key 'path' is set then that is expected to be an absolute path to a file which should be included - so it is set in the internal array $this->include_once
-	 * 
+	 *
 	 * @param	string		The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
-	 * @return	void		
+	 * @return	void
 	 * @see $include_once, init()
 	 */
 	function handleExternalFunctionValue($MM_key='function')	{
@@ -312,7 +312,7 @@ class t3lib_SCbase {
 	/**
 	 * Returns configuration values from the global variable $TBE_MODULES_EXT for the module given.
 	 * For example if the module is named "web_info" and the "function" key ($menuKey) of MOD_SETTINGS is "stat" ($value) then you will have the values of $TBE_MODULES_EXT['webinfo']['MOD_MENU']['function']['stat'] returned.
-	 * 
+	 *
 	 * @param	string		Module name
 	 * @param	string		Menu key, eg. "function" for the function menu. See $this->MOD_MENU
 	 * @param	string		Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
@@ -329,8 +329,8 @@ class t3lib_SCbase {
 	 * The array $this->extClassConf is set in handleExternalFunctionValue() based on the value of MOD_SETTINGS[function]
 	 * (Should be) called from global scope right after inclusion of files from the ->include_once array.
 	 * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see handleExternalFunctionValue(), t3lib_extMgm::insertModuleFunction(), $extObj
 	 */
 	function checkExtObj()	{
@@ -344,8 +344,8 @@ class t3lib_SCbase {
 
 	/**
 	 * Calls the checkExtObj function in sub module if present.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function checkSubExtObj()	{
 		if (is_object($this->extObj))	$this->extObj->checkExtObj();
@@ -356,8 +356,8 @@ class t3lib_SCbase {
 	 * A header function might be needed to add JavaScript or other stuff in the head. This can't be done in the main function because the head is already written.
 	 * example call in the header function:
 	 * $this->pObj->doc->JScode = $this->pObj->doc->wrapScriptTags(' ...
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function extObjHeader()	{
 		if (is_callable(array($this->extObj,'head')))	$this->extObj->head();
@@ -365,8 +365,8 @@ class t3lib_SCbase {
 
 	/**
 	 * Calls the 'main' function inside the "Function menu module" if present
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function extObjContent()	{
 		$this->extObj->pObj = &$this;

@@ -43,15 +43,15 @@
  *  217:     function dmailer_sendSimple($addressList)	
  *  239:     function dmailer_getBoundaryParts($cArray,$userCategories)	
  *  261:     function dmailer_masssend($query_info,$table,$mid)	
- *  298:     function dmailer_masssend_list($query_info,$mid)	
- *  360:     function shipOfMail($mid,$recipRow,$tKey)	
- *  378:     function convertFields($recipRow)	
- *  393:     function dmailer_setBeginEnd($mid,$key)	
- *  418:     function dmailer_howManySendMails($mid,$rtbl='')	
- *  434:     function dmailer_isSend($mid,$rid,$rtbl)	
- *  447:     function dmailer_getSentMails($mid,$rtbl)	
- *  467:     function dmailer_addToMailLog($mid,$rid,$size,$parsetime,$html)	
- *  479:     function runcron()	
+ *  297:     function dmailer_masssend_list($query_info,$mid)	
+ *  358:     function shipOfMail($mid,$recipRow,$tKey)	
+ *  376:     function convertFields($recipRow)	
+ *  391:     function dmailer_setBeginEnd($mid,$key)	
+ *  415:     function dmailer_howManySendMails($mid,$rtbl='')	
+ *  429:     function dmailer_isSend($mid,$rid,$rtbl)	
+ *  441:     function dmailer_getSentMails($mid,$rtbl)	
+ *  460:     function dmailer_addToMailLog($mid,$rid,$size,$parsetime,$html)	
+ *  482:     function runcron()	
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -78,7 +78,7 @@
  */
 /**
  * Class, doing the sending of Direct-mails, eg. through a cron-job
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -137,7 +137,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$recipRow: ...
 	 * @param	[type]		$tableNameChar: ...
 	 * @return	[type]		...
@@ -210,7 +210,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$addressList: ...
 	 * @return	[type]		...
 	 */
@@ -231,7 +231,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$cArray: ...
 	 * @param	[type]		$userCategories: ...
 	 * @return	[type]		...
@@ -252,7 +252,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$query_info: ...
 	 * @param	[type]		$table: ...
 	 * @param	[type]		$mid: ...
@@ -264,14 +264,13 @@ class t3lib_dmailer extends t3lib_htmlmail {
 		$tKey = substr($table,0,1);
 		$begin=intval($this->dmailer_howManySendMails($mid,$tKey));
 		if ($query_info[$table])	{
-			$query='SELECT '.$table.'.* FROM '.$table.' WHERE '.$enableFields[$table].' AND ('.$query_info[$table].') ORDER BY tstamp DESC LIMIT '.intval($begin).','.$this->sendPerCycle; // This way, we select newest edited records first. So if any record is added or changed in between, it'll end on top and do no harm
-			$res=mysql(TYPO3_db,$query);
-			if (mysql_error())	{
-				die (mysql_error());
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($table.'.*', $table, $enableFields[$table].' AND ('.$query_info[$table].')', '', 'tstamp DESC', intval($begin).','.$this->sendPerCycle); // This way, we select newest edited records first. So if any record is added or changed in between, it'll end on top and do no harm
+			if ($GLOBALS['TYPO3_DB']->sql_error())	{
+				die ($GLOBALS['TYPO3_DB']->sql_error());
 			}
-			$numRows=mysql_num_rows($res);
+			$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			$cc=0;
-			while($recipRow=mysql_fetch_assoc($res))	{
+			while($recipRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				if (!$this->dmailer_isSend($mid,$recipRow['uid'],$tKey))	{
 					$pt = t3lib_div::milliseconds();
 					if ($recipRow['telephone'])	$recipRow['phone'] = $recipRow['telephone'];	// Compensation for the fact that fe_users has the field, 'telephone' instead of 'phone'
@@ -290,7 +289,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$query_info: ...
 	 * @param	[type]		$mid: ...
 	 * @return	[type]		...
@@ -331,10 +330,9 @@ class t3lib_dmailer extends t3lib_htmlmail {
 					} else {
 						$idList = implode(',',$listArr);
 						if ($idList)	{
-							$query='SELECT '.$table.'.* FROM '.$table.' WHERE uid IN ('.$idList.') AND uid NOT IN ('.($sendIds?$sendIds:0).') AND '.($enableFields[$table]?$enableFields[$table]:'1=1').' LIMIT '.($this->sendPerCycle+1);
-							$res=mysql(TYPO3_db,$query);
-							if (mysql_error())	{die (mysql_error());}
-							while($recipRow=mysql_fetch_assoc($res))	{
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($table.'.*', $table, 'uid IN ('.$idList.') AND uid NOT IN ('.($sendIds?$sendIds:0).') AND '.($enableFields[$table]?$enableFields[$table]:'1=1'), '', '', $this->sendPerCycle+1);
+							if ($GLOBALS['TYPO3_DB']->sql_error())	{die ($GLOBALS['TYPO3_DB']->sql_error());}
+							while($recipRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 								if ($c>=$this->sendPerCycle)	{$returnVal = false; break;}		// We are NOT finished!
 								$this->shipOfMail($mid,$recipRow,$tKey);
 								$ct++;
@@ -351,7 +349,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$mid: ...
 	 * @param	[type]		$recipRow: ...
 	 * @param	[type]		$tKey: ...
@@ -371,7 +369,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$recipRow: ...
 	 * @return	[type]		...
 	 */
@@ -385,78 +383,73 @@ class t3lib_dmailer extends t3lib_htmlmail {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$mid: ...
 	 * @param	[type]		$key: ...
 	 * @return	[type]		...
 	 */
 	function dmailer_setBeginEnd($mid,$key)	{
-		$query='UPDATE sys_dmail SET scheduled_'.$key.'='.time().' WHERE uid='.intval($mid);
-		$res=mysql(TYPO3_db,$query);
-		echo mysql_error();
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_dmail', 'uid='.intval($mid), array('scheduled_'.$key => time()));
+
 		switch($key)	{
 			case 'begin':
-				$subject='DMAILER mid:'.$mid.' JOB BEGIN';
-				$message=': '.date('d-m-y h:i:s');
+				$subject = 'DMAILER mid:'.$mid.' JOB BEGIN';
+				$message = ': '.date('d-m-y h:i:s');
 			break;
 			case 'end':
-				$subject='DMAILER mid:'.$mid.' JOB END';
-				$message=': '.date('d-m-y h:i:s');
+				$subject = 'DMAILER mid:'.$mid.' JOB END';
+				$message = ': '.date('d-m-y h:i:s');
 			break;
 		}
-		$this->logArray[]=$subject.': '.$message;
+		$this->logArray[] = $subject.': '.$message;
 		mail($this->from_email, $subject, $message);
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$mid: ...
 	 * @param	[type]		$rtbl: ...
 	 * @return	[type]		...
 	 */
 	function dmailer_howManySendMails($mid,$rtbl='')	{
-		$tblClause = $rtbl ? ' AND rtbl="'.$rtbl.'"' : '';
-		$query='SELECT count(*) FROM sys_dmail_maillog WHERE mid='.$mid.' AND response_type=0'.$tblClause;
-		$res=mysql(TYPO3_db,$query);
-		$row= mysql_fetch_row($res);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'sys_dmail_maillog', 'mid='.intval($mid).' AND response_type=0'.($rtbl ? ' AND rtbl="'.$GLOBALS['TYPO3_DB']->quoteStr($rtbl, 'sys_dmail_maillog').'"' : ''));
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$mid: ...
 	 * @param	[type]		$rid: ...
 	 * @param	[type]		$rtbl: ...
 	 * @return	[type]		...
 	 */
 	function dmailer_isSend($mid,$rid,$rtbl)	{
-		$query='SELECT uid FROM sys_dmail_maillog WHERE rid='.intval($rid).' AND rtbl="'.$rtbl.'" AND mid='.intval($mid).' AND response_type=0';
-		$res=mysql(TYPO3_db,$query);
-		return mysql_num_rows($res);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_dmail_maillog', 'rid='.intval($rid).' AND rtbl="'.$GLOBALS['TYPO3_DB']->quoteStr($rtbl, 'sys_dmail_maillog').'" AND mid='.intval($mid).' AND response_type=0');
+		return $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$mid: ...
 	 * @param	[type]		$rtbl: ...
 	 * @return	[type]		...
 	 */
 	function dmailer_getSentMails($mid,$rtbl)	{
-		$query='SELECT rid FROM sys_dmail_maillog WHERE mid='.$mid.' AND rtbl="'.$rtbl.'" AND response_type=0';
-		$res=mysql(TYPO3_db,$query);
-		$list=array();
-		while($row=mysql_fetch_assoc($res))	{
-			$list[]=$row['rid'];
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('rid', 'sys_dmail_maillog', 'mid='.intval($mid).' AND rtbl="'.$GLOBALS['TYPO3_DB']->quoteStr($rtbl, 'sys_dmail_maillog').'" AND response_type=0');
+		$list = array();
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$list[] = $row['rid'];
 		}
-		return implode(',',$list);
+		return implode(',', $list);
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @param	[type]		$mid: ...
 	 * @param	[type]		$rid: ...
 	 * @param	[type]		$size: ...
@@ -465,28 +458,37 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function dmailer_addToMailLog($mid,$rid,$size,$parsetime,$html)	{
-		$temp_recip=explode('_',$rid);
-		$temp_query="INSERT INTO sys_dmail_maillog (mid,rtbl,rid,tstamp,url,size,parsetime,html_sent) VALUES ('".intval($mid)."','".addslashes($temp_recip[0])."','".intval($temp_recip[1])."','".time()."','','".$size."','".$parsetime."',".intval($html).')';
-		$temp_res = mysql(TYPO3_db,$temp_query);
-		echo mysql_error();
+		$temp_recip = explode('_',$rid);
+		
+		$insertFields = array(
+			'mid' => intval($mid),
+			'rtbl' => $temp_recip[0],
+			'rid' => intval($temp_recip[1]),
+			'tstamp' => time(),
+			'url' => '',
+			'size' => $size,
+			'parsetime' => $parsetime,
+			'html_sent' => intval($html)
+		);
+		
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_dmail_maillog', $insertFields);
 	}
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function runcron()	{
 		$pt = t3lib_div::milliseconds();
 
-		$query='SELECT * FROM sys_dmail WHERE scheduled!=0 AND scheduled<'.time().' AND scheduled_end=0 ORDER BY scheduled';
-		$res=mysql(TYPO3_db,$query);
-		if (mysql_error())	{
-			die (mysql_error());
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_dmail', 'scheduled!=0 AND scheduled<'.time().' AND scheduled_end=0', '', 'scheduled');
+		if ($GLOBALS['TYPO3_DB']->sql_error())	{
+			die ($GLOBALS['TYPO3_DB']->sql_error());
 		}
 		$this->logArray[]='Invoked at '.date('h:i:s d-m-Y');
 		
-		if ($row=mysql_fetch_assoc($res))	{
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$this->logArray[]='sys_dmail record '.$row['uid'].", '".$row['subject']."' processed...";
 			$this->dmailer_prepare($row);
 			$query_info=unserialize($row['query_info']);

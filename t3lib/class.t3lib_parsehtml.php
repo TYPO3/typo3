@@ -45,25 +45,25 @@
  *  303:     function getAllParts($parts,$tag_parts=1,$include_tag=1)	
  *  322:     function removeFirstAndLastTag($str)	
  *  341:     function getFirstTag($str)	
- *  355:     function getFirstTagName($str)	
- *  373:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')	
- *  447:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())	
- *  618:     function get_tag_attributes($tag,$deHSC=0)	
- *  659:     function split_tag_attributes($tag)	
- *  696:     function bidir_htmlspecialchars($value,$dir)	
- *  716:     function prefixResourcePath($main_prefix,$content,$alternatives=array())	
- *  784:     function prefixRelPath($prefix,$srcVal)	
- *  802:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)	
- *  833:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')	
- *  850:     function unprotectTags($content,$tagList='')	
- *  883:     function stripTagsExcept($value,$tagList)	
- *  906:     function caseShift($str,$flag,$cacheKey='')	
- *  930:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)	
- *  959:     function get_tag_attributes_classic($tag,$deHSC=0)	
- *  972:     function HTMLparserConfig($TSconfig,$keepTags=array())	
- * 1085:     function XHTML_clean($content)	
- * 1107:     function processTag($value,$conf,$endTag,$protected=0)	
- * 1153:     function processContent($value,$dir,$conf)	
+ *  356:     function getFirstTagName($str,$preserveCase=FALSE)	
+ *  376:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')	
+ *  450:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())	
+ *  645:     function get_tag_attributes($tag,$deHSC=0)	
+ *  687:     function split_tag_attributes($tag)	
+ *  724:     function bidir_htmlspecialchars($value,$dir)	
+ *  746:     function prefixResourcePath($main_prefix,$content,$alternatives=array())	
+ *  814:     function prefixRelPath($prefix,$srcVal)	
+ *  832:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)	
+ *  863:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')	
+ *  880:     function unprotectTags($content,$tagList='')	
+ *  913:     function stripTagsExcept($value,$tagList)	
+ *  936:     function caseShift($str,$flag,$cacheKey='')	
+ *  960:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)	
+ *  989:     function get_tag_attributes_classic($tag,$deHSC=0)	
+ * 1002:     function HTMLparserConfig($TSconfig,$keepTags=array())	
+ * 1126:     function XHTML_clean($content)	
+ * 1149:     function processTag($value,$conf,$endTag,$protected=0)	
+ * 1196:     function processContent($value,$dir,$conf)	
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -90,9 +90,9 @@
 
 
 /**
- * Functions for parsing HTML. 
+ * Functions for parsing HTML.
  * You are encouraged to use this class in your own applications
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -109,10 +109,10 @@ class t3lib_parsehtml {
 
 	/**
 	 * Returns the first subpart encapsulated in the marker, $marker (possibly present in $content as a HTML comment)
-	 * 
+	 *
 	 * @param	string		Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
 	 * @param	string		Marker string, eg. "###CONTENT_PART###"
-	 * @return	string		
+	 * @return	string
 	 */
 	function getSubpart($content, $marker)	{
 		if ($marker && strstr($content,$marker))	{
@@ -134,7 +134,7 @@ class t3lib_parsehtml {
 
 	/**
 	 * Substitutes a subpart in $content with the content of $subpartContent.
-	 * 
+	 *
 	 * @param	string		Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
 	 * @param	string		Marker string, eg. "###CONTENT_PART###"
 	 * @param	array		If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the content of the subpart (fetched by getSubpart())
@@ -198,9 +198,9 @@ class t3lib_parsehtml {
 
 	/**
 	 * Returns an array with the $content divided by tag-blocks specified with the list of tags, $tag
-	 * Even numbers in the array are outside the blocks, Odd numbers are block-content. 
+	 * Even numbers in the array are outside the blocks, Odd numbers are block-content.
 	 * Use ->getAllParts() and ->removeFirstAndLastTag() to process the content if needed.
-	 * 
+	 *
 	 * @param	string		List of tags, comma separated.
 	 * @param	string		HTML-content
 	 * @param	boolean		If set, excessive end tags are ignored - you should probably set this in most cases.
@@ -258,9 +258,9 @@ class t3lib_parsehtml {
 
 	/**
 	 * Returns an array with the $content divided by tag-blocks specified with the list of tags, $tag
-	 * Even numbers in the array are outside the blocks, Odd numbers are block-content. 
+	 * Even numbers in the array are outside the blocks, Odd numbers are block-content.
 	 * Use ->getAllParts() and ->removeFirstAndLastTag() to process the content if needed.
-	 * 
+	 *
 	 * @param	string		List of tags
 	 * @param	string		HTML-content
 	 * @return	array		Even numbers in the array are outside the blocks, Odd numbers are block-content.
@@ -293,7 +293,7 @@ class t3lib_parsehtml {
 
 	/**
 	 * Returns an array with either tag or non-tag content of the result from ->splitIntoBlock()/->splitTags()
-	 * 
+	 *
 	 * @param	array		Parts generated by ->splitIntoBlock() or >splitTags()
 	 * @param	boolean		Whether to return the tag-parts (default,true) or what was outside the tags.
 	 * @param	boolean		Whether to include the tags in the tag-parts (most useful for input made by ->splitIntoBlock())
@@ -315,9 +315,9 @@ class t3lib_parsehtml {
 	/**
 	 * Removes the first and last tag in the string
 	 * Anything before and after the first and last tags respectively is also removed
-	 * 
+	 *
 	 * @param	string		String to process
-	 * @return	string		
+	 * @return	string
 	 */
 	function removeFirstAndLastTag($str)	{
 			// First:
@@ -334,9 +334,9 @@ class t3lib_parsehtml {
 	/**
 	 * Returns the first tag in $str
 	 * Actually everything from the begining of the $str is returned, so you better make sure the tag is the first thing...
-	 * 
+	 *
 	 * @param	string		HTML string with tags
-	 * @return	string		
+	 * @return	string
 	 */
 	function getFirstTag($str)	{
 			// First:
@@ -347,7 +347,7 @@ class t3lib_parsehtml {
 
 	/**
 	 * Returns the NAME of the first tag in $str
-	 * 
+	 *
 	 * @param	string		HTML tag (The element name MUST be separated from the attributes by a space character! Just *whitespace* will not do)
 	 * @param	boolean		If set, then the tag is NOT converted to uppercase by case is preserved.
 	 * @return	string		Tag name in upper case
@@ -367,7 +367,7 @@ class t3lib_parsehtml {
 	 * NOTICE: Correct XHTML might actually fail since "<br></br>" is allowed as well as "<br/>". However only the LATTER is accepted by this function (with "br" in the "solo-tag" list), the first example will result in a warning.
 	 * NOTICE: Correct XHTML might actually fail since "<p/>" is allowed as well as "<p></p>". However only the LATTER is accepted by this function (with "p" in the "block-tag" list), the first example will result in an ERROR!
 	 * NOTICE: Correct HTML version "something" allows eg. <p> and <li> to be NON-ended (implicitly ended by other tags). However this is NOT accepted by this function (with "p" and "li" in the block-tag list) and it will result in an ERROR!
-	 * 
+	 *
 	 * @param	string		HTML content to analyze
 	 * @param	string		Tag names for block tags (eg. table or div or p) in lowercase, commalist (eg. "table,div,p")
 	 * @param	string		Tag names for solo tags (eg. img, br or input) in lowercase, commalist ("img,br,input")
@@ -415,10 +415,10 @@ class t3lib_parsehtml {
 
 	/**
 	 * Function that can clean up HTML content according to configuration given in the $tags array.
-	 * 
-	 * Initializing the $tags array to allow a list of tags (in this case <B>,<I>,<U> and <A>), set it like this:		 $tags = array_flip(explode(',','b,a,i,u'))	
+	 *
+	 * Initializing the $tags array to allow a list of tags (in this case <B>,<I>,<U> and <A>), set it like this:		 $tags = array_flip(explode(',','b,a,i,u'))
 	 * If the value of the $tags[$tagname] entry is an array, advanced processing of the tags is initialized. These are the options:
-	 * 	   
+	 *
 	 * 	$tags[$tagname] = Array(
 	 * 		'overrideAttribs' => ''		If set, this string is preset as the attributes of the tag
 	 * 		'allowedAttribs' =>   '0' (zero) = no attributes allowed, '[commalist of attributes]' = only allowed attributes. If blank, all attributes are allowed.
@@ -427,7 +427,7 @@ class t3lib_parsehtml {
 	 * 				'default' => 	If no attribute exists by this name, this value is set as default value (if this value is not blank)
 	 * 				'always' => 	Boolean. If set, the attribute is always processed. Normally an attribute is processed only if it exists
 	 * 				'trim,intval,lower,upper' => 	All booleans. If any of these keys are set, the value is passed through the respective PHP-functions.
-	 * 				'range' => Array ('[low limit]','[high limit, optional]')		Setting integer range. 
+	 * 				'range' => Array ('[low limit]','[high limit, optional]')		Setting integer range.
 	 * 				'list' => Array ('[value1/default]','[value2]','[value3]')		Attribute must be in this list. If not, the value is set to the first element.
 	 * 				'removeIfFalse' => 	Boolean/'blank'.	If set, then the attribute is removed if it is 'false'. If this value is set to 'blank' then the value must be a blank string (that means a 'zero' value will not be removed)
 	 * 				'removeIfEquals' => 	[value]	If the attribute value matches the value set here, then it is removed.
@@ -439,7 +439,7 @@ class t3lib_parsehtml {
 	 * 		'rmTagIfNoAttrib' => '',	Boolean. If set, then the tag is removed if no attributes happend to be there.
 	 * 		'nesting' => '',	Boolean/'global'. If set true, then this tag must have starting and ending tags in the correct order. Any tags not in this order will be discarded. Thus '</B><B><I></B></I></B>' will be converted to '<B><I></B></I>'. Is the value 'global' then true nesting in relation to other tags marked for 'global' nesting control is preserved. This means that if <B> and <I> are set for global nesting then this string '</B><B><I></B></I></B>' is converted to '<B></B>'
 	 * 	)
-	 * 
+	 *
 	 * @param	string		$content; is the HTML-content being processed. This is also the result being returned.
 	 * @param	array		$tags; is an array where each key is a tagname in lowercase. Only tags present as keys in this array are preserved. The value of the key can be an array with a vast number of options to configure.
 	 * @param	string		$keepAll; boolean/'protect', if set, then all tags are kept regardless of tags present as keys in $tags-array. If 'protect' then the preserved tags have their <> converted to &lt; and &gt;
@@ -637,7 +637,7 @@ class t3lib_parsehtml {
 	/**
 	 * Returns an array with all attributes as keys. Attributes are only lowercase a-z
 	 * If a attribute is empty (shorthand), then the value for the key is empty. You can check if it existed with isset()
-	 * 
+	 *
 	 * @param	string		Tag: $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
 	 * @param	boolean		If set, the attribute values are de-htmlspecialchar'ed. Should actually always be set!
 	 * @return	array		array(Tag attributes,Attribute meta-data)
@@ -678,9 +678,9 @@ class t3lib_parsehtml {
 	/**
 	 * Returns an array with the 'components' from an attribute list. The result is normally analyzed by get_tag_attributes
 	 * Removes tag-name if found
-	 * 
+	 *
 	 * @param	string		The tag or attributes
-	 * @return	array		
+	 * @return	array
 	 * @access private
 	 * @see t3lib_div::split_tag_attributes()
 	 */
@@ -716,7 +716,7 @@ class t3lib_parsehtml {
 	
 	/**
 	 * Converts htmlspecialchars forth ($dir=1) AND back ($dir=-1)
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @param	integer		Direction: forth ($dir=1, dir=2 for preserving entities) AND back ($dir=-1)
 	 * @return	string		Output value
@@ -737,7 +737,7 @@ class t3lib_parsehtml {
 
 	/**
 	 * Prefixes the relative paths of hrefs/src/action in the tags [td,table,body,img,input,form,link,script,a] in the $content with the $main_prefix or and alternative given by $alternatives
-	 * 
+	 *
 	 * @param	string		Prefix string
 	 * @param	string		HTML content
 	 * @param	array		Array with alternative prefixes for certain of the tags. key=>value pairs where the keys are the tag element names in uppercase
@@ -805,7 +805,7 @@ class t3lib_parsehtml {
 	
 	/**
 	 * Internal sub-function for ->prefixResourcePath()
-	 * 
+	 *
 	 * @param	string		Prefix string
 	 * @param	string		Relative path/URL
 	 * @return	string		Output path, prefixed if no scheme in input string
@@ -820,9 +820,9 @@ class t3lib_parsehtml {
 	}
 
 	/**
-	 * Cleans up the input $value for fonttags. 
+	 * Cleans up the input $value for fonttags.
 	 * If keepFace,-Size and -Color is set then font-tags with an allowed property is kept. Else deleted.
-	 * 
+	 *
 	 * @param	string		HTML content with font-tags inside to clean up.
 	 * @param	boolean		If set, keep "face" attribute
 	 * @param	boolean		If set, keep "size" attribute
@@ -853,7 +853,7 @@ class t3lib_parsehtml {
 	
 	/**
 	 * This is used to map certain tag-names into other names.
-	 * 
+	 *
 	 * @param	string		HTML content
 	 * @param	array		Array with tag key=>value pairs where key is from-tag and value is to-tag
 	 * @param	string		Alternative less-than char to search for (search regex string)
@@ -872,7 +872,7 @@ class t3lib_parsehtml {
 
 	/**
 	 * This converts htmlspecialchar()'ed tags (from $tagList) back to real tags. Eg. '&lt;strong&gt' would be converted back to '<strong>' if found in $tagList
-	 * 
+	 *
 	 * @param	string		HTML content
 	 * @param	string		Tag list, separated by comma. Lowercase!
 	 * @return	string		Processed HTML content
@@ -904,7 +904,7 @@ class t3lib_parsehtml {
 	/**
 	 * Strips tags except the tags in the list, $tagList
 	 * OBSOLETE - use PHP function strip_tags()
-	 * 
+	 *
 	 * @param	string		Value to process
 	 * @param	string		List of tags
 	 * @return	string		Output value
@@ -926,7 +926,7 @@ class t3lib_parsehtml {
 	
 	/**
 	 * Internal function for case shifting of a string or whole array
-	 * 
+	 *
 	 * @param	mixed		Input string/array
 	 * @param	boolean		If $str is a string AND this boolean is true, the string is returned in uppercase
 	 * @param	string		Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
@@ -950,7 +950,7 @@ class t3lib_parsehtml {
 	
 	/**
 	 * Compiling an array with tag attributes into a string
-	 * 
+	 *
 	 * @param	array		Tag attributes
 	 * @param	array		Meta information about these attributes (like if they were quoted)
 	 * @param	boolean		If set, then the attribute names will be set in lower case, value quotes in double-quotes and the value will be htmlspecialchar()'ed
@@ -980,10 +980,10 @@ class t3lib_parsehtml {
 	
 	/**
 	 * Get tag attributes, the classic version (which had some limitations?)
-	 * 
+	 *
 	 * @param	string		The tag
 	 * @param	boolean		De-htmlspecialchar flag.
-	 * @return	array		
+	 * @return	array
 	 * @access private
 	 */
 	function get_tag_attributes_classic($tag,$deHSC=0)	{
@@ -993,10 +993,10 @@ class t3lib_parsehtml {
 
 	/**
 	 * Converts TSconfig into an array for the HTMLcleaner function.
-	 * 
+	 *
 	 * @param	array		TSconfig for HTMLcleaner
 	 * @param	array		Array of tags to keep (?)
-	 * @return	array		
+	 * @return	array
 	 * @access private
 	 */
 	function HTMLparserConfig($TSconfig,$keepTags=array())	{
@@ -1101,7 +1101,7 @@ class t3lib_parsehtml {
 	/**
 	 * Tries to convert the content to be XHTML compliant and other stuff like that.
 	 * STILL EXPERIMENTAL. See comments below.
-	 * 
+	 *
 	 * 			What it does NOT do (yet) according to XHTML specs.:
 	 * 			- Wellformedness: Nesting is NOT checked
 	 * 			- name/id attribute issue is not observed at this point.
@@ -1112,13 +1112,13 @@ class t3lib_parsehtml {
 	 * 			- stylesheet element and attribute names are NOT converted to lowercase
 	 * 			- ampersands (and entities in general I think) MUST be converted to an entity reference! (&amps;). This may mean further conversion of non-tag content before output to page. May be related to the charset issue as a whole.
 	 * 			- Minimized values not allowed: Must do this: selected="selected"
-	 * 			
+	 *
 	 * 			What it does at this point:
 	 * 			- All tags (frame,base,meta,link + img,br,hr,area,input) is ended with "/>" - others?
 	 * 			- Lowercase for elements and attributes
 	 * 			- All attributes in quotes
 	 * 			- Add "alt" attribute to img-tags if it's not there already.
-	 * 
+	 *
 	 * @param	string		Content to clean up
 	 * @return	string		Cleaned up content returned.
 	 * @access private
@@ -1138,7 +1138,7 @@ class t3lib_parsehtml {
 	/**
 	 * Processing all tags themselves
 	 * (Some additions by Sacha Vorbeck)
-	 * 
+	 *
 	 * @param	string		Tag to process
 	 * @param	array		Configuration array passing instructions for processing. If count()==0, function will return value unprocessed. See source code for details
 	 * @param	boolean		Is endtag, then set this.
@@ -1186,7 +1186,7 @@ class t3lib_parsehtml {
 	
 	/**
 	 * Processing content between tags for HTML_cleaner
-	 * 
+	 *
 	 * @param	string		The value
 	 * @param	integer		Direction, either -1 or +1. 0 (zero) means no change to input value.
 	 * @param	mixed		Not used, ignore.

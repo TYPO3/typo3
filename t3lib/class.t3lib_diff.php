@@ -39,11 +39,11 @@
  *
  *
  *   67: class t3lib_diff 
- *   85:     function makeDiffDisplay($str1,$str2)	
- *  159:     function getDiff($str1,$str2)	
- *  186:     function addClearBuffer($clearBuffer,$last=0)	
- *  202:     function explodeStringIntoWords($str)	
- *  223:     function tagSpace($str,$rev=0)	
+ *   86:     function makeDiffDisplay($str1,$str2)	
+ *  160:     function getDiff($str1,$str2)	
+ *  187:     function addClearBuffer($clearBuffer,$last=0)	
+ *  203:     function explodeStringIntoWords($str)	
+ *  224:     function tagSpace($str,$rev=0)	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -59,7 +59,7 @@
 /**
  * This class has functions which generates a difference output of a content string
  * Currently works only with LINUX/UNIX
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -78,7 +78,7 @@ class t3lib_diff {
 	
 	/**
 	 * This will produce a color-marked-up diff output in HTML from the input strings.
-	 * 
+	 *
 	 * @param	string		String 1
 	 * @param	string		String 2
 	 * @return	string		Formatted output.
@@ -151,7 +151,7 @@ class t3lib_diff {
 	/**
 	 * Produce a diff (with the "diff" application on unix) between two strings
 	 * The function will write the two input strings to temporary files, then execute the diff program, delete the temp files and return the result.
-	 * 
+	 *
 	 * @param	string		String 1
 	 * @param	string		String 2
 	 * @return	array		The result from the exec() function call.
@@ -178,7 +178,7 @@ class t3lib_diff {
 	
 	/**
 	 * Will bring down the length of strings to < 150 chars if they were longer than 200 chars. This done by preserving the 70 first and last chars and concatenate those strings with "..." and a number indicating the string length
-	 * 
+	 *
 	 * @param	string		The input string.
 	 * @param	boolean		If set, it indicates that the string should just end with ... (thus no "complete" ending)
 	 * @return	string		Processed string.
@@ -195,7 +195,7 @@ class t3lib_diff {
 	/**
 	 * Explodes the input string into words.
 	 * This is done by splitting first by lines, then by space char. Each word will be in stored as a value in an array. Lines will be indicated by two subsequent empty values.
-	 * 
+	 *
 	 * @param	string		The string input
 	 * @return	array		Array with words.
 	 * @access private
@@ -215,7 +215,7 @@ class t3lib_diff {
 
 	/**
 	 * Adds a space character before and after HTML tags (more precisely any found < or >)
-	 * 
+	 *
 	 * @param	string		String to process
 	 * @param	boolean		If set, the < > searched for will be &lt; and &gt;
 	 * @return	string		Processed string

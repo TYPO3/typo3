@@ -82,7 +82,7 @@
 
 /**
  * TYPO3 clipboard for records and files
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -120,8 +120,8 @@ class t3lib_clipboard {
 
 	/**
 	 * Initialize the clipboard from the be_user session
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function initializeClipboard()	{
 		global $BE_USER;
@@ -149,8 +149,8 @@ class t3lib_clipboard {
 	/**
 	 * Call this method after initialization if you want to lock the clipboard to operate on the normal pad only. Trying to switch pad through ->setCmd will not work
 	 * This is used by the clickmenu since it only allows operation on single elements at a time (that is the "normal" pad)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function lockToNormal()	{
 		$this->lockToNormal=1;
@@ -161,13 +161,13 @@ class t3lib_clipboard {
 	 * The array $cmd may hold various keys which notes some action to take.
 	 * Normally perform only one action at a time.
 	 * In scripts like db_list.php / file_list.php the GET-var CB is used to control the clipboard.
-	 * 
+	 *
 	 * 		Selecting / Deselecting elements
 	 * 		Array $cmd['el'] has keys = element-ident, value = element value (see description of clipData array in header)
 	 * 		Selecting elements for 'copy' should be done by simultaneously setting setCopyMode.
-	 * 
+	 *
 	 * @param	array		Array of actions, see function description
-	 * @return	void		
+	 * @return	void
 	 */
 	function setCmd($cmd)	{
 		if (is_array($cmd['el']))	{
@@ -212,9 +212,9 @@ class t3lib_clipboard {
 	
 	/**
 	 * Setting the current pad on clipboard
-	 * 
+	 *
 	 * @param	string		Key in the array $this->clipData
-	 * @return	void		
+	 * @return	void
 	 */
 	function setCurrentPad($padIdent)	{
 			// Change clipboard pad (if not locked to normal)
@@ -226,10 +226,10 @@ class t3lib_clipboard {
 	}
 
 	/**
-	 * Call this after initialization and setCmd in order to save the clipboard to the user session. 
+	 * Call this after initialization and setCmd in order to save the clipboard to the user session.
 	 * The function will check if the internal flag ->changed has been set and if so, save the clipboard. Else not.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function endClipboard()	{
 		if ($this->changed)	$this->saveClipboard();
@@ -238,7 +238,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Cleans up an incoming element array $CBarr (Array selecting/deselecting elements)
-	 * 
+	 *
 	 * @param	array		Element array from outside ("key" => "selected/deselected")
 	 * @param	string		$table is the 'table which is allowed'. Must be set.
 	 * @param	boolean		$removeDeselected can be set in order to remove entries which are marked for deselection.
@@ -259,7 +259,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Reports if the current pad has elements (does not check file/DB type OR if file/DBrecord exists or not. Only counting array)
-	 * 
+	 *
 	 * @return	boolean		True if elements exist.
 	 */
 	function isElements()	{
@@ -268,7 +268,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Prints the clipboard
-	 * 
+	 *
 	 * @return	string		HTML output
 	 */
 	function printClipboard()	{
@@ -355,7 +355,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Print the content on a pad. Called from ->printClipboard()
-	 * 
+	 *
 	 * @param	string		Pad reference
 	 * @return	array		Array with table rows for the clipboard.
 	 * @access private
@@ -429,7 +429,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Wraps title of pad in bold-tags and maybe the number of elements if any.
-	 * 
+	 *
 	 * @param	string		String (already htmlspecialchars()'ed)
 	 * @param	string		Pad reference
 	 * @return	string		HTML output (htmlspecialchar'ed content inside of tags.)
@@ -445,11 +445,11 @@ class t3lib_clipboard {
 
 	/**
 	 * Wraps the title of the items listed in link-tags. The items will link to the page/folder where they originate from
-	 * 
+	 *
 	 * @param	string		Title of element - must be htmlspecialchar'ed on beforehand.
 	 * @param	mixed		If array, a record is expected. If string, its a path
 	 * @param	string		Table name
-	 * @return	string		
+	 * @return	string
 	 */
 	function linkItemText($str,$rec,$table='')	{
 		if (is_array($rec) && $table)	{	
@@ -471,10 +471,10 @@ class t3lib_clipboard {
 	/**
 	 * Verifies if the item $table/$uid is on the current pad.
 	 * If the pad is "normal", the mode value is returned if the element existed. Thus you'll know if the item was copy or cut moded...
-	 * 
+	 *
 	 * @param	string		Table name, (_FILE for files...)
 	 * @param	integer		Element uid (path for files)
-	 * @return	string		
+	 * @return	string
 	 */
 	function isSelected($table,$uid)	{
 		$k=$table.'|'.$uid;
@@ -485,7 +485,7 @@ class t3lib_clipboard {
 	 * Returns item record $table,$uid if selected on current clipboard
 	 * If table and uid is blank, the first element is returned.
 	 * Makes sense only for DB records - not files!
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Element uid
 	 * @return	array		Element record with extra field _RECORD_TITLE set to the title of the record...
@@ -505,7 +505,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Returns the select-url for database elements
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Uid of record
 	 * @param	boolean		If set, copymode will be enabled
@@ -522,7 +522,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Returns the select-url for files
-	 * 
+	 *
 	 * @param	string		Filepath
 	 * @param	boolean		If set, copymode will be enabled
 	 * @param	boolean		If set, the link will deselect, otherwise select.
@@ -540,11 +540,11 @@ class t3lib_clipboard {
 	 * pasteUrl of the element (database and file)
 	 * For the meaning of $table and $uid, please read from ->makePasteCmdArray!!!
 	 * The URL will point to tce_file or tce_db depending in $table
-	 * 
+	 *
 	 * @param	string		Tablename (_FILE for files)
 	 * @param	mixed		"destination": can be positive or negative indicating how the paste is done (paste into / paste after)
 	 * @param	boolean		If set, then the redirect URL will point back to the current script, but with CB reset.
-	 * @return	string		
+	 * @return	string
 	 */
 	function pasteUrl($table,$uid,$setRedirect=1)	{
 		$rU = $this->backPath.($table=='_FILE'?'tce_file.php':'tce_db.php').'?'.
@@ -558,10 +558,10 @@ class t3lib_clipboard {
 	
 	/**
 	 * deleteUrl for current pad
-	 * 
+	 *
 	 * @param	boolean		If set, then the redirect URL will point back to the current script, but with CB reset.
 	 * @param	boolean		If set, then the URL will link to the tce_file.php script in the typo3/ dir.
-	 * @return	string		
+	 * @return	string
 	 */
 	function deleteUrl($setRedirect=1,$file=0)	{
 		$rU = $this->backPath.($file?'tce_file.php':'tce_db.php').'?'.
@@ -577,7 +577,7 @@ class t3lib_clipboard {
 	 * editUrl of all current elements
 	 * ONLY database
 	 * Links to alt_doc.php
-	 * 
+	 *
 	 * @return	string		The URL to alt_doc.php with parameters.
 	 */
 	function editUrl()	{
@@ -596,7 +596,7 @@ class t3lib_clipboard {
 	/**
 	 * Returns the remove-url (file and db)
 	 * for file $table='_FILE' and $uid = shortmd5 hash of path
-	 * 
+	 *
 	 * @param	string		Tablename
 	 * @param	string		uid integer/shortmd5 hash
 	 * @return	string		URL
@@ -606,10 +606,10 @@ class t3lib_clipboard {
 	}
 
 	/**
-	 * This traverses the elements on the current clipboard pane 
+	 * This traverses the elements on the current clipboard pane
 	 * and unsets elements which does not exist anymore or are disabled.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function cleanCurrent()	{
 		if (is_array($this->clipData[$this->current]['el']))	{
@@ -633,7 +633,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Counts the number of elements from the table $matchTable. If $matchTable is blank, all tables (except '_FILE' of course) is counted.
-	 * 
+	 *
 	 * @param	string		Table to match/count for.
 	 * @param	string		$pad can optionally be used to set another pad than the current.
 	 * @return	array		Array with keys from the CB.
@@ -663,7 +663,7 @@ class t3lib_clipboard {
 	
 	/**
 	 * Returns confirm JavaScript message
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	mixed		For records its an array, for files its a string (path)
 	 * @param	string		Type-code
@@ -709,9 +709,9 @@ class t3lib_clipboard {
 
 	/**
 	 * Removes element on clipboard
-	 * 
+	 *
 	 * @param	string		Key of element in ->clipData array
-	 * @return	void		
+	 * @return	void
 	 */
 	function removeElement($el)	{
 		unset($this->clipData[$this->current]['el'][$el]);
@@ -721,8 +721,8 @@ class t3lib_clipboard {
 	/**
 	 * Saves the clipboard, no questions asked.
 	 * Use ->endClipboard normally (as it checks if changes has been done so saving is necessary)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 */
 	function saveClipboard()	{
@@ -732,7 +732,7 @@ class t3lib_clipboard {
 
 	/**
 	 * Returns the current mode, 'copy' or 'cut'
-	 * 
+	 *
 	 * @return	string		"copy" or "cut"
 	 */
 	function currentMode()	{
@@ -741,10 +741,10 @@ class t3lib_clipboard {
 
 	/**
 	 * Clipboard label - getting from "EXT:lang/locallang_core.php:"
-	 * 
+	 *
 	 * @param	string		Label Key
 	 * @param	string		Alternative key to "labels"
-	 * @return	string		
+	 * @return	string
 	 */
 	function clLabel($key,$Akey='labels')	{
 		return htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:'.$Akey.'.'.$key));
@@ -771,18 +771,18 @@ class t3lib_clipboard {
 	 ****************************************/
 	 
 	/**
-	 * Applies the proper paste configuration in the $cmd array send to tce_db.php. 
+	 * Applies the proper paste configuration in the $cmd array send to tce_db.php.
 	 * $ref is the target, see description below.
 	 * The current pad is pasted
-	 * 
-	 * 		$ref: [tablename]:[paste-uid]. 
-	 * 		tablename is the name of the table from which elements *on the current clipboard* is pasted with the 'pid' paste-uid. 
+	 *
+	 * 		$ref: [tablename]:[paste-uid].
+	 * 		tablename is the name of the table from which elements *on the current clipboard* is pasted with the 'pid' paste-uid.
 	 * 		No tablename means that all items on the clipboard (non-files) are pasted. This requires paste-uid to be positive though.
 	 * 		so 'tt_content:-3'	means 'paste tt_content elements on the clipboard to AFTER tt_content:3 record
 	 * 		'tt_content:30'	means 'paste tt_content elements on the clipboard into page with id 30
 	 * 		':30'	means 'paste ALL database elements on the clipboard into page with id 30
 	 * 		':-30'	not valid.
-	 * 
+	 *
 	 * @param	string		[tablename]:[paste-uid], see description
 	 * @param	array		Command-array
 	 * @return	array		Modified Command-array
@@ -812,7 +812,7 @@ class t3lib_clipboard {
 	
 	/**
 	 * Delete record entries in CMD array
-	 * 
+	 *
 	 * @param	array		Command-array
 	 * @return	array		Modified Command-array
 	 */
@@ -852,9 +852,9 @@ class t3lib_clipboard {
 	 ****************************************/
 	 
 	/**
-	 * Applies the proper paste configuration in the $file array send to tce_file.php. 
+	 * Applies the proper paste configuration in the $file array send to tce_file.php.
 	 * The current pad is pasted
-	 * 
+	 *
 	 * @param	string		Reference to element (splitted by "|")
 	 * @param	array		Command-array
 	 * @return	array		Modified Command-array
@@ -877,7 +877,7 @@ class t3lib_clipboard {
 	
 	/**
 	 * Delete files in CMD array
-	 * 
+	 *
 	 * @param	array		Command-array
 	 * @return	array		Modified Command-array
 	 */

@@ -66,7 +66,7 @@
 /**
  * Class for displaying an array as a tree
  * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -81,7 +81,7 @@ class t3lib_arrayBrowser	{
 	/**
 	 * Make browsable tree
 	 * Before calling this function you may want to set some of the internal vars like depthKeys, regexMode and fixedLgd. For examples see SC_mod_tools_config_index::main()
-	 * 
+	 *
 	 * @param	array		The array to display
 	 * @param	string		Key-position id. Build up during recursive calls - [key1].[key2].[key3] - an so on.
 	 * @param	string		Depth-data - basically a prefix for the icons. For calling this function from outside, let it stay blank.
@@ -144,12 +144,12 @@ class t3lib_arrayBrowser	{
 
 	/**
 	 * Creates an array with "depthKeys" which will expand the array to show the search results
-	 * 
+	 *
 	 * @param	array		The array to search for the value
 	 * @param	string		Depth string - blank for first call (will build up during recursive calling creating an id of the position: [key1].[key2].[key3]
 	 * @param	string		The string to search for
 	 * @param	array		Key array, for first call pass empty array
-	 * @return	array		
+	 * @return	array
 	 */
 	function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray)		{
 		reset($keyArr);
@@ -178,7 +178,7 @@ class t3lib_arrayBrowser	{
 
 	/**
 	 * Fixed length function
-	 * 
+	 *
 	 * @param	string		String to process
 	 * @param	integer		Max number of chars
 	 * @return	string		Processed string
@@ -194,7 +194,7 @@ class t3lib_arrayBrowser	{
 
 	/**
 	 * Function modifying the depthKey array
-	 * 
+	 *
 	 * @param	array		Array with instructions to open/close nodes.
 	 * @param	array		Input depth_key array
 	 * @return	array		Output depth_key array with entries added/removed based on $arr

@@ -40,12 +40,12 @@
  *
  *   78: class t3lib_recordList 
  *  119:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	
- *  193:     function writeTop()	
- *  201:     function writeBottom()	
- *  220:     function fwd_rwd_nav($table='')	
- *  253:     function fwd_rwd_HTML($type,$pointer,$table='')	
- *  276:     function listURL()	
- *  285:     function CBfunctions()	
+ *  194:     function writeTop()	
+ *  202:     function writeBottom()	
+ *  221:     function fwd_rwd_nav($table='')	
+ *  254:     function fwd_rwd_HTML($type,$pointer,$table='')	
+ *  277:     function listURL()	
+ *  286:     function CBfunctions()	
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -69,7 +69,7 @@
 
 /**
  * This class is the base for listing of database records and files in the modules Web>List and File>Filelist
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -107,7 +107,7 @@ class t3lib_recordList {
 	/**
 	 * Returns a table-row with the content from the fields in the input data array.
 	 * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
-	 * 
+	 *
 	 * @param	integer		$h is an integer >=0 and denotes how tall a element is. Set to '0' makes a halv line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
 	 * @param	string		$icon is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
 	 * @param	array		$data is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
@@ -188,16 +188,16 @@ class t3lib_recordList {
 	
 	/**
 	 * Dummy function, used to write the top of a table listing.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function writeTop()	{
 	}
 	
 	/**
 	 * Finishes the list with the "stopper"-gif, adding the HTML code for that item to the internal ->HTMLcode string
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function writeBottom()	{
 		$this->HTMLcode.='
@@ -214,7 +214,7 @@ class t3lib_recordList {
 	
 	/**
 	 * Creates a forward/reverse button based on the status of ->eCounter, ->firstElementNumber, ->iLimit
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @return	array		array([boolean], [HTML]) where [boolean] is 1 for reverse element, [HTML] is the table-row code for the element
 	 */
@@ -244,11 +244,11 @@ class t3lib_recordList {
 	
 	/**
 	 * Creates the button with link to either forward or reverse
-	 * 
+	 *
 	 * @param	string		Type: "fwd" or "rwd"
 	 * @param	integer		Pointer
 	 * @param	string		Table name
-	 * @return	string		
+	 * @return	string
 	 * @access private
 	 */
 	function fwd_rwd_HTML($type,$pointer,$table='')	{
@@ -271,8 +271,8 @@ class t3lib_recordList {
 	
 	/**
 	 * Returning "listURL" - the script with parameters to which forward/backward requests are sent
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function listURL()	{
 		return 'dummy.php?';
@@ -280,8 +280,8 @@ class t3lib_recordList {
 	
 	/**
 	 * Returning JavaScript for ClipBoard functionality.
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function CBfunctions()	{
 		return '

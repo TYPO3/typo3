@@ -43,103 +43,105 @@
  *
  *
  *
- *  158: class t3lib_BEfunc	
+ *  160: class t3lib_BEfunc	
  *
  *              SECTION: SQL-related, selecting records, searching
- *  179:     function deleteClause($table)	
- *  203:     function getRecord($table,$uid,$fields='*',$where='')	
+ *  181:     function deleteClause($table)	
+ *  205:     function getRecord($table,$uid,$fields='*',$where='')	
  *  228:     function getRecordRaw($table,$where='',$fields='*')	
- *  249:     function getRecordsByField($theTable,$theField,$theValue,$endClause='')	
- *  272:     function searchQuery($searchWords,$fields)	
- *  294:     function listQuery($field,$value)	
- *  309:     function splitTable_Uid($str)	
- *  325:     function getSQLselectableList ($in_list,$tablename,$default_tablename)	
- *  354:     function BEenableFields($table,$inv=0)	
- *  398:     function mm_query($select,$local_table,$mm_table,$foreign_table,$endClause='')	
- *  415:     function DBcompileInsert($table,$fields_values,$slash=1)	
- *  434:     function DBcompileUpdate($table,$where,$fields_values,$slash=1)	
+ *  251:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')	
+ *  284:     function searchQuery($searchWords,$fields,$table='')	
+ *  300:     function listQuery($field,$value)	
+ *  313:     function splitTable_Uid($str)	
+ *  329:     function getSQLselectableList ($in_list,$tablename,$default_tablename)	
+ *  358:     function BEenableFields($table,$inv=0)	
+ *
+ *              SECTION: SQL-related, DEPRECIATED functions
+ *  422:     function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')	
+ *  444:     function DBcompileInsert($table,$fields_values)	
+ *  458:     function DBcompileUpdate($table,$where,$fields_values)	
  *
  *              SECTION: Page tree, TCA related
- *  473:     function BEgetRootLine ($uid,$clause='')	
- *  520:     function getRecordPath($uid,$clause,$titleLimit)	
- *  547:     function getExcludeFields()	
- *  580:     function readPageAccess($id,$perms_clause)	
- *  610:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)	
- *  656:     function getTCAtypeValue($table,$rec)	
- *  679:     function getSpecConfParts($str)	
- *  704:     function getSpecConfParametersFromArray($pArr)	
- *  729:     function getFlexFormDS($conf,$row,$table)	
+ *  488:     function BEgetRootLine ($uid,$clause='')	
+ *  539:     function getRecordPath($uid,$clause,$titleLimit)	
+ *  564:     function getExcludeFields()	
+ *  599:     function readPageAccess($id,$perms_clause)	
+ *  629:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)	
+ *  675:     function getTCAtypeValue($table,$rec)	
+ *  698:     function getSpecConfParts($str)	
+ *  723:     function getSpecConfParametersFromArray($pArr)	
+ *  748:     function getFlexFormDS($conf,$row,$table)	
  *
  *              SECTION: Caching related
- *  833:     function storeHash($hash,$data,$ident)	
- *  849:     function getHash($hash,$expTime)	
+ *  853:     function storeHash($hash,$data,$ident)	
+ *  874:     function getHash($hash,$expTime)	
  *
  *              SECTION: TypoScript related
- *  886:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)	
- *  937:     function updatePagesTSconfig($id,$pageTS,$TSconfPrefix,$impParams='')	
- *  992:     function implodeTSParams($p,$k='')	
+ *  911:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)	
+ *  962:     function updatePagesTSconfig($id,$pageTS,$TSconfPrefix,$impParams='')	
+ * 1018:     function implodeTSParams($p,$k='')	
  *
  *              SECTION: Users / Groups related
- * 1030:     function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')	
- * 1050:     function getGroupNames($fields='title,uid',$where='')	
- * 1069:     function getListGroupNames($fields='title,uid')	
- * 1089:     function blindUserNames($usernames,$groupArray,$excludeBlindedFlag=0)	
- * 1123:     function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)	
+ * 1056:     function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')	
+ * 1075:     function getGroupNames($fields='title,uid', $where='')	
+ * 1093:     function getListGroupNames($fields='title,uid')	
+ * 1113:     function blindUserNames($usernames,$groupArray,$excludeBlindedFlag=0)	
+ * 1147:     function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)	
  *
  *              SECTION: Output related
- * 1167:     function daysUntil($tstamp)	
- * 1180:     function date($tstamp)	
- * 1192:     function datetime($value)	
- * 1205:     function time($value)	
- * 1222:     function calcAge ($seconds,$labels)	
- * 1249:     function dateTimeAge($tstamp,$prefix=1,$date='')	
- * 1268:     function titleAttrib($content='',$hsc=0)	
- * 1280:     function titleAltAttrib($content)	
- * 1305:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir='',$abs=0,$tparams='',$size='')	
- * 1374:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')	
- * 1392:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)	
- * 1447:     function getRecordIconAltText($row,$table='pages')	
- * 1482:     function getLabelFromItemlist($table,$col,$key)	
- * 1509:     function getItemLabel($table,$col,$printAllWrap='')	
- * 1535:     function getRecordTitle($table,$row,$prep=0)	
- * 1571:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)	
- * 1666:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)	
- * 1691:     function getFileIcon($ext)	
- * 1706:     function getCommonSelectFields($table,$prefix)	
- * 1733:     function makeConfigForm($configArray,$defaults,$dataPrefix)	
+ * 1191:     function daysUntil($tstamp)	
+ * 1204:     function date($tstamp)	
+ * 1216:     function datetime($value)	
+ * 1229:     function time($value)	
+ * 1246:     function calcAge ($seconds,$labels)	
+ * 1273:     function dateTimeAge($tstamp,$prefix=1,$date='')	
+ * 1292:     function titleAttrib($content='',$hsc=0)	
+ * 1304:     function titleAltAttrib($content)	
+ * 1329:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir='',$abs=0,$tparams='',$size='')	
+ * 1398:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')	
+ * 1416:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)	
+ * 1471:     function getRecordIconAltText($row,$table='pages')	
+ * 1506:     function getLabelFromItemlist($table,$col,$key)	
+ * 1533:     function getItemLabel($table,$col,$printAllWrap='')	
+ * 1559:     function getRecordTitle($table,$row,$prep=0)	
+ * 1596:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)	
+ * 1691:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)	
+ * 1716:     function getFileIcon($ext)	
+ * 1731:     function getCommonSelectFields($table,$prefix)	
+ * 1758:     function makeConfigForm($configArray,$defaults,$dataPrefix)	
  *
  *              SECTION: Backend Modules API functions
- * 1810:     function helpTextIcon($table,$field,$BACK_PATH,$force=0)	
- * 1832:     function helpText($table,$field,$BACK_PATH)	
- * 1853:     function editOnClick($params,$backPath='',$requestUri='')	
- * 1870:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='')	
- * 1897:     function getModTSconfig($id,$TSref)	
- * 1919:     function getFuncMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	
- * 1949:     function getFuncCheck($id,$elementName,$currentValue,$script='',$addparams='',$tagParams='')	
- * 1970:     function getFuncInput($id,$elementName,$currentValue,$size=10,$script="",$addparams="")	
- * 1987:     function unsetMenuItems($modTSconfig,$itemArray,$TSref)	
- * 2011:     function getSetUpdateSignal($set='')	
- * 2061:     function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type='', $dontValidateList='', $setDefaultList='')	
+ * 1835:     function helpTextIcon($table,$field,$BACK_PATH,$force=0)	
+ * 1857:     function helpText($table,$field,$BACK_PATH)	
+ * 1878:     function editOnClick($params,$backPath='',$requestUri='')	
+ * 1895:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='')	
+ * 1922:     function getModTSconfig($id,$TSref)	
+ * 1944:     function getFuncMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	
+ * 1974:     function getFuncCheck($id,$elementName,$currentValue,$script='',$addparams='',$tagParams='')	
+ * 1995:     function getFuncInput($id,$elementName,$currentValue,$size=10,$script="",$addparams="")	
+ * 2012:     function unsetMenuItems($modTSconfig,$itemArray,$TSref)	
+ * 2036:     function getSetUpdateSignal($set='')	
+ * 2087:     function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type='', $dontValidateList='', $setDefaultList='')	
  *
  *              SECTION: Core
- * 2138:     function lockRecords($table='',$uid=0,$pid=0)	
- * 2169:     function isRecordLocked($table,$uid)	
- * 2208:     function foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')	
- * 2261:     function getTCEFORM_TSconfig($table,$row) 
- * 2309:     function getTSconfig_pidValue($table,$uid,$pid)	
- * 2338:     function getPidForModTSconfig($table,$uid,$pid)	
- * 2355:     function getTSCpid($table,$uid,$pid)	
- * 2372:     function firstDomainRecord($rootLine)	
- * 2395:     function getDomainStartPage($domain, $path='')	
- * 2428:     function RTEsetup($RTEprop,$table,$field,$type='')	
- * 2449:     function isModuleSetInTBE_MODULES($modName)	
+ * 2164:     function lockRecords($table='',$uid=0,$pid=0)	
+ * 2194:     function isRecordLocked($table,$uid)	
+ * 2235:     function exec_foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')	
+ * 2317:     function getTCEFORM_TSconfig($table,$row) 
+ * 2365:     function getTSconfig_pidValue($table,$uid,$pid)	
+ * 2394:     function getPidForModTSconfig($table,$uid,$pid)	
+ * 2411:     function getTSCpid($table,$uid,$pid)	
+ * 2428:     function firstDomainRecord($rootLine)	
+ * 2451:     function getDomainStartPage($domain, $path='')	
+ * 2482:     function RTEsetup($RTEprop,$table,$field,$type='')	
+ * 2503:     function isModuleSetInTBE_MODULES($modName)	
  *
  *              SECTION: Miscellaneous
- * 2499:     function typo3PrintError ($header,$text,$js='',$head=1)	
- * 2546:     function getPathType_web_nonweb($path)	
- * 2559:     function ADMCMD_previewCmds($pageinfo)	
- * 2582:     function processParams($params)	
- * 2609:     function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')	
+ * 2553:     function typo3PrintError ($header,$text,$js='',$head=1)	
+ * 2600:     function getPathType_web_nonweb($path)	
+ * 2613:     function ADMCMD_previewCmds($pageinfo)	
+ * 2636:     function processParams($params)	
+ * 2663:     function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')	
  *
  * TOTAL FUNCTIONS: 78
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -150,7 +152,7 @@
 /**
  * Standard functions available for the TYPO3 backend.
  * Don't instantiate - call functions with "t3lib_BEfunc::" prefixed the function name.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
@@ -170,9 +172,9 @@ class t3lib_BEfunc	{
 	 * Returns the WHERE clause " AND NOT [tablename].[deleted-field]" if a deleted-field is configured in $TCA for the tablename, $table
 	 * This function should ALWAYS be called in the backend for selection on tables which are configured in TCA since it will ensure consistent selection of records, even if they are marked deleted (in which case the system must always treat them as non-existent!)
 	 * In the frontend a function, ->enableFields(), is known to filter hidden-field, start- and endtime and fe_groups as well. But that is a job of the frontend, not the backend. If you need filtering on those fields as well in the backend you can use ->BEenableFields() though.
-	 * 
+	 *
 	 * Usage: 80
-	 * 
+	 *
 	 * @param	string		Table name present in $TCA
 	 * @return	string		WHERE clause for filtering out deleted records, eg " AND NOT tablename.deleted"
 	 */
@@ -191,9 +193,9 @@ class t3lib_BEfunc	{
 	 * Additional WHERE clauses can be added by $where (fx. ' AND blabla=1')
 	 * Will automatically check if records has been deleted and if so, not return anything.
 	 * $table must be found in $TCA
-	 * 
+	 *
 	 * Usage: 168
-	 * 
+	 *
 	 * @param	string		Table name present in $TCA
 	 * @param	integer		UID of record
 	 * @param	string		List of fields to select
@@ -202,10 +204,8 @@ class t3lib_BEfunc	{
 	 */
 	function getRecord($table,$uid,$fields='*',$where='')	{
 		if ($GLOBALS['TCA'][$table])	{
-			$del=t3lib_BEfunc::deleteClause($table);
-			$query='SELECT '.$fields.' FROM '.$table.' WHERE uid='.intval($uid).$del.$where;
-			$res = mysql(TYPO3_db, $query);
-			if ($row = mysql_fetch_assoc($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid='.intval($uid).t3lib_BEfunc::deleteClause($table).$where);
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				return $row;
 			}
 		}
@@ -217,18 +217,17 @@ class t3lib_BEfunc	{
 	 * $table does NOT need to be configured in $TCA
 	 * The query used is simply this:
 	 * $query='SELECT '.$fields.' FROM '.$table.' WHERE '.$where;
-	 * 
+	 *
 	 * Usage: 5 (ext: sys_todos)
-	 * 
+	 *
 	 * @param	string		Table name (not necessarily in TCA)
 	 * @param	string		WHERE clause
 	 * @param	string		$fields is a list of fields to select, default is '*'
 	 * @return	array		First row found, if any
 	 */
 	function getRecordRaw($table,$where='',$fields='*')	{
-		$query='SELECT '.$fields.' FROM '.$table.' WHERE '.$where;
-		$res = mysql(TYPO3_db, $query);
-		if ($row = mysql_fetch_assoc($res))	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			return $row;
 		}
 	}
@@ -237,86 +236,91 @@ class t3lib_BEfunc	{
 	 * Returns records from table, $theTable, where a field ($theField) equals the value, $theValue
 	 * The records are returned in an array
 	 * If no records were selected, the function returns nothing
-	 * 
+	 *
 	 * Usage: 8
-	 * 
+	 *
 	 * @param	string		Table name present in $TCA
 	 * @param	string		Field to select on
 	 * @param	string		Value that $theField must match
-	 * @param	string		$endClause is a string prepended to the SQL-statement. Can be additional where clauses, a "LIMIT" clause or whatever.
-	 * @return	array		Multidimensional array with selected records
+	 * @param	string		Optional additional WHERE clauses put in the end of the query. DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
+	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
+	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
+	 * @return	mixed		Multidimensional array with selected records (if any is selected)
 	 */
-	function getRecordsByField($theTable,$theField,$theValue,$endClause='')	{
+	function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
 		global $TCA;
 		if (is_array($TCA[$theTable])) {
-			$del=t3lib_BEfunc::deleteClause($theTable);
-			$query = 'SELECT * FROM '.$theTable.' WHERE '.$theField.'="'.addslashes($theValue).'"'.$del.' '.$endClause;
-			$res = mysql(TYPO3_db, $query);
-			$rows=array();
-			while($row = mysql_fetch_assoc($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'*', 
+						$theTable, 
+						$theField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($theValue, $theTable).'"'.
+							t3lib_BEfunc::deleteClause($theTable).' '.
+							$whereClause,	// whereClauseMightContainGroupOrderBy
+						$groupBy,
+						$orderBy,
+						$limit
+					);
+			$rows = array();
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$rows[] = $row;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if (count($rows))	return $rows;
 		}
 	}
 
 	/**
 	 * Returns a WHERE clause which will make an AND search for the words in the $searchWords array in any of the fields in array $fields.
-	 * 
+	 *
 	 * Usage: 1 (class t3lib_fullsearch)
-	 * 
+	 *
 	 * @param	array		Array of search words
 	 * @param	array		Array of fields
+	 * @param	string		Table in which we are searching (for DBAL detection of quoteStr() method)
 	 * @return	string		WHERE clause for search
+	 * @depreciated		Use $GLOBALS['TYPO3_DB']->searchQuery() directly!
 	 */
-	function searchQuery($searchWords,$fields)	{
-		reset($searchWords);
-		$queryParts=array();
-		while(list(,$sw)=each($searchWords))	{
-			$like=' LIKE "%'.addslashes($sw).'%"';
-			$queryParts[] = implode($like.' OR ',$fields).$like;
-		}
-		$query = '('.implode(') AND (',$queryParts).')';
-		return $query ;
+	function searchQuery($searchWords,$fields,$table='')	{
+		return $GLOBALS['TYPO3_DB']->searchQuery($searchWords,$fields,$table);
 	}
 
 	/**
 	 * Returns a WHERE clause that can find a value ($value) in a list field ($field)
 	 * For instance a record in the database might contain a list of numbers, "34,234,5" (with no spaces between). This query would be able to select that record based on the value "34", "234" or "5" regardless of their positioni in the list (left, middle or right).
 	 * Is nice to look up list-relations to records or files in TYPO3 database tables.
-	 * 
+	 *
 	 * Usage: 3
-	 * 
+	 *
 	 * @param	string		Table field name
 	 * @param	string		Value to find in list
 	 * @return	string		WHERE clause for a query
+	 * @depreciated		Use $GLOBALS['TYPO3_DB']->listQuery() directly!
 	 */
 	function listQuery($field,$value)	{
-		$command=addslashes($value);
-		$where='('.$field.' LIKE "%,'.$command.',%" OR '.$field.' LIKE "'.$command.',%" OR '.$field.' LIKE "%,'.$command.'" OR '.$field.'="'.$command.'")';
-		return $where;
+		return $GLOBALS['TYPO3_DB']->listQuery($field,$value,'');
 	}	
 
 	/**
 	 * Makes an backwards explode on the $str and returns an array with ($table,$uid).
 	 * Example: tt_content_45	=>	array('tt_content',45)
-	 * 
+	 *
 	 * Usage: 1
-	 * 
+	 *
 	 * @param	string		[tablename]_[uid] string to explode
-	 * @return	array		
+	 * @return	array
 	 */
 	function splitTable_Uid($str)	{
-		list($uid,$table)=explode('_',strrev($str),2);
+		list($uid,$table) = explode('_',strrev($str),2);
 		return array(strrev($table),strrev($uid));
 	}
 
 	/**
 	 * Returns a list of pure integers based on $in_list being a list of records with table-names prepended.
 	 * Ex: $in_list = "pages_4,tt_content_12,45" would result in a return value of "4,45" if $tablename is "pages" and $default_tablename is 'pages' as well.
-	 * 
+	 *
 	 * Usage: 1 (t3lib_userauthgroup)
-	 * 
+	 *
 	 * @param	string		Input list
 	 * @param	string		Table name from which ids is returned
 	 * @param	string		$default_tablename denotes what table the number '45' is from (if nothing is prepended on the value)
@@ -344,9 +348,9 @@ class t3lib_BEfunc	{
 	 * Notice that "fe_groups" is not selected for - only disabled, starttime and endtime.
 	 * Notice that deleted-fields are NOT filtered - you must ALSO call deleteClause in addition.
 	 * $GLOBALS["SIM_EXEC_TIME"] is used for date.
-	 * 
+	 *
 	 * Usage: 5
-	 * 
+	 *
 	 * @param	string		$table is the table from which to return enableFields WHERE clause. Table name must have a 'ctrl' section in $TCA.
 	 * @param	boolean		$inv means that the query will select all records NOT VISIBLE records (inverted selection)
 	 * @return	string		WHERE clause part
@@ -379,69 +383,80 @@ class t3lib_BEfunc	{
 		return $outQ;
 	}
 
+	
+
+
+
+
+
+
+
+
+	/*******************************************
+	 *
+	 * SQL-related, DEPRECIATED functions
+	 * (use t3lib_DB functions instead)
+	 *
+	 *******************************************/
+
+	
 	/**
 	 * Returns a SELECT query, selecting fields ($select) from two/three tables joined
 	 * $local_table and $mm_table is mandatory. $foreign_table is optional.
 	 * The JOIN is done with [$local_table].uid <--> [$mm_table].uid_local  / [$mm_table].uid_foreign <--> [$foreign_table].uid
-	 * $endClause is additional WHERE clauses / LIMIT / GROUP / ORDER BY
 	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $TCA in Inside TYPO3 for more details.
-	 * 
-	 * Usage: 12 (spec. ext. sys_action, sys_messages, sys_todos)
-	 * 
+	 * DEPRECIATED - Use $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query() instead since that will return the result pointer while this returns the query. Using this function may make your application less fitted for DBAL later.
+	 *
 	 * @param	string		Field list for SELECT
 	 * @param	string		Tablename, local table
 	 * @param	string		Tablename, relation table
 	 * @param	string		Tablename, foreign table
-	 * @param	string		Additional WHERE clause
+	 * @param	string		Optional additional WHERE clauses put in the end of the query. DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
+	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
+	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return	string		Full SQL query
+	 * @depreciated
+	 * @see t3lib_DB::exec_SELECT_mm_query()
 	 */
-	function mm_query($select,$local_table,$mm_table,$foreign_table,$endClause='')	{
-		$query = 'SELECT '.$select.'
-			FROM '.$local_table.','.$mm_table.($foreign_table?','.$foreign_table:'').'
-			WHERE '.$local_table.'.uid='.$mm_table.'.uid_local'.($foreign_table?' AND '.$foreign_table.'.uid='.$mm_table.'.uid_foreign ':' ').$endClause;
+	function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery(
+					$select, 
+					$local_table.','.$mm_table.($foreign_table?','.$foreign_table:''), 
+					$local_table.'.uid='.$mm_table.'.uid_local'.($foreign_table?' AND '.$foreign_table.'.uid='.$mm_table.'.uid_foreign':'').' '.
+						$whereClause,	// whereClauseMightContainGroupOrderBy
+					$groupBy,
+					$orderBy,
+					$limit
+				);
 		return $query;
 	}
 
 	/**
 	 * Creates an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
-	 * 
-	 * Usage: 12
-	 * 
+	 * DEPRECIATED - $GLOBALS['TYPO3_DB']->INSERTquery() directly instead! But better yet, use $GLOBALS['TYPO3_DB']->exec_INSERTquery()
+	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs.
-	 * @param	boolean		Set $slash=1 if values should be addslashes()'ed (default). YOU SHOULD ALWAYS USE THIS!
 	 * @return	string		Full SQL query for INSERT
+	 * @depreciated
 	 */
-	function DBcompileInsert($table,$fields_values,$slash=1)	{
-		if (is_array($fields_values))	{
-			if ($slash)	{$fields_values = t3lib_div::slashArray($fields_values, 'add');}
-			$query = 'INSERT INTO '.$table.' ('.implode(',',array_keys($fields_values)).') VALUES ("'.implode('","',$fields_values).'")';
-			return $query;
-		}
+	function DBcompileInsert($table,$fields_values)	{
+		return $GLOBALS['TYPO3_DB']->INSERTquery($table, $fields_values);
 	}
 
 	/**
 	 * Creates an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
-	 * 
-	 * Usage: 15
-	 * 
+	 * DEPRECIATED - $GLOBALS['TYPO3_DB']->UPDATEquery() directly instead! But better yet, use $GLOBALS['TYPO3_DB']->exec_UPDATEquery()
+	 *
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1"
 	 * @param	array		Field values as key=>value pairs.
-	 * @param	boolean		Set $slash=1 if values should be addslashes()'ed (default)
 	 * @return	string		Full SQL query for UPDATE
+	 * @depreciated
 	 */
-	function DBcompileUpdate($table,$where,$fields_values,$slash=1)	{
-		if (is_array($fields_values))	{
-			if ($slash)	{$fields_values = t3lib_div::slashArray($fields_values, 'add');}
-			$nArr=array();
-			reset($fields_values);
-			while(list($k,$v)=each($fields_values))	{
-				$nArr[]=$k.'="'.$v.'"';
-			}
-			$query = 'UPDATE '.$table.' SET '.implode(',',$nArr).' WHERE '.$where;
-			return $query;
-		}
+	function DBcompileUpdate($table,$where,$fields_values)	{
+		return $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values);
 	}
 
 
@@ -463,9 +478,9 @@ class t3lib_BEfunc	{
 	 * Returns what is called the 'RootLine'. That is an array with information about the page records from a page id ($uid) and back to the root.
 	 * By default deleted pages are filtered.
 	 * This RootLine will follow the tree all the way to the root. This is opposite to another kind of root line known from the frontend where the rootline stops when a root-template is found.
-	 * 
+	 *
 	 * Usage: 13
-	 * 
+	 *
 	 * @param	integer		Page id for which to create the root line.
 	 * @param	string		$clause can be used to select other criteria. It would typically be where-clauses that stops the proces if we meet a page, the user has no reading access to.
 	 * @return	array		Root line array, all the way to the page tree root (or as far as $clause allows!)
@@ -476,13 +491,17 @@ class t3lib_BEfunc	{
 		$output=Array();
 		while ($uid!=0 && $loopCheck>0)	{
 			$loopCheck--;
-			$query = 'SELECT pid,uid,title,TSconfig,is_siteroot,storage_pid from pages WHERE uid='.intval($uid).' '.t3lib_BEfunc::deleteClause('pages').' '.$clause;
-			$res = mysql(TYPO3_db, $query);  
-			if (mysql_error())	{
-				debug($query,1);
-				debug(mysql_error(),1);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'pid,uid,title,TSconfig,is_siteroot,storage_pid', 
+							'pages', 
+							'uid='.intval($uid).' '.
+								t3lib_BEfunc::deleteClause('pages').' '.
+								$clause		// whereClauseMightContainGroupOrderBy 
+						);
+			if ($GLOBALS['TYPO3_DB']->sql_error())	{
+				debug($GLOBALS['TYPO3_DB']->sql_error(),1);
 			}
-			if ($row = mysql_fetch_assoc($res))	{
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$uid = $row['pid'];
 				$theRowArray[]=$row;
 			} else {
@@ -495,11 +514,11 @@ class t3lib_BEfunc	{
 			$c=count($theRowArray);
 			while(list($key,$val)=each($theRowArray))	{
 				$c--;
-				$output[$c]['uid']=$val['uid'];
-				$output[$c]['title']=$val['title'];
-				$output[$c]['TSconfig']=$val['TSconfig'];
-				$output[$c]['is_siteroot']=$val['is_siteroot'];
-				$output[$c]['storage_pid']=$val['storage_pid'];
+				$output[$c]['uid'] = $val['uid'];
+				$output[$c]['title'] = $val['title'];
+				$output[$c]['TSconfig'] = $val['TSconfig'];
+				$output[$c]['is_siteroot'] = $val['is_siteroot'];
+				$output[$c]['storage_pid'] = $val['storage_pid'];
 			}
 		}
 		return $output;
@@ -509,9 +528,9 @@ class t3lib_BEfunc	{
 	 * Returns the path (visually) of a page $uid, fx. "/First page/Second page/Another subpage"
 	 * Each part of the path will be limited to $titleLimit characters
 	 * Deleted pages are filtered out.
-	 * 
+	 *
 	 * Usage: 23
-	 * 
+	 *
 	 * @param	integer		Page uid for which to create record path
 	 * @param	string		$clause is additional where clauses, eg. "
 	 * @param	integer		Title limit
@@ -523,10 +542,8 @@ class t3lib_BEfunc	{
 		$output='/';
 		while ($uid!=0 && $loopCheck>0)	{
 			$loopCheck--;
-			$query='SELECT pid, title FROM pages WHERE uid='.intval($uid).t3lib_BEfunc::deleteClause('pages').' AND '.$clause;
-			$res = mysql(TYPO3_db, $query);
-			echo mysql_error();
-			if ($row = mysql_fetch_assoc($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid,title', 'pages', 'uid='.intval($uid).t3lib_BEfunc::deleteClause('pages').' AND '.$clause);
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$uid = $row['pid'];
 				$output='/'.t3lib_div::fixed_lgd(strip_tags($row['title']),$titleLimit).$output;
 			} else {
@@ -539,9 +556,9 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns an array with the exclude-fields as defined in TCA
 	 * Used for listing the exclude-fields in be_groups forms
-	 * 
+	 *
 	 * Usage: 2 (t3lib_tceforms + t3lib_transferdata)
-	 * 
+	 *
 	 * @return	array		Array of arrays with excludeFields (fieldname, table:fieldname) from all TCA entries
 	 */
 	function getExcludeFields()	{
@@ -572,9 +589,9 @@ class t3lib_BEfunc	{
 	 * Returns a page record (of page with $id) with an extra field "_thePath" set to the record path IF the WHERE clause, $perms_clause, selects the record.
 	 * If $id is zero a pseudo root-page with "_thePath" set is returned IF the current BE_USER is admin.
 	 * In any case ->isInWebMount must return true for the user (regardless of $perms_clause)
-	 * 
+	 *
 	 * Usage: 21
-	 * 
+	 *
 	 * @param	integer		Page uid for which to check read-access
 	 * @param	string		$perms_clause is typically a value generated with $BE_USER->getPagePermsClause(1);
 	 * @return	array		Returns page record if OK, otherwise false.
@@ -601,13 +618,13 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns the "types" configuration parsed into an array for the record, $rec, from table, $table
-	 * 
+	 *
 	 * Usage: 6
-	 * 
+	 *
 	 * @param	string		Table name (present in TCA)
 	 * @param	array		Record from $table
 	 * @param	boolean		If $useFieldNameAsKey is set, then the fieldname is associative keys in the return array, otherwise just numeric keys.
-	 * @return	array		
+	 * @return	array
 	 */
 	function getTCAtypes($table,$rec,$useFieldNameAsKey=0)	{
 		global $TCA;
@@ -647,9 +664,9 @@ class t3lib_BEfunc	{
 	 * Returns the "type" value of $rec from $table which can be used to look up the correct "types" rendering section in $TCA
 	 * If no "type" field is configured in the "ctrl"-section of the $TCA for the table, zero is used.
 	 * If zero is not an index in the "types" section of $TCA for the table, then the $fieldValue returned will default to 1 (no matter if that is an index or not)
-	 * 
+	 *
 	 * Usage: 7
-	 * 
+	 *
 	 * @param	string		Table name present in TCA
 	 * @param	array		Record from $table
 	 * @return	string		Field value
@@ -672,36 +689,36 @@ class t3lib_BEfunc	{
 	 * Parses a part of the field lists in the "types"-section of $TCA arrays, namely the "special configuration" at index 3 (position 4)
 	 * Elements are splitted by ":" and within those parts, parameters are splitted by "|".
 	 * Everything is returned in an array and you should rather see it visually than listen to me anymore now...  Check out example in Inside TYPO3
-	 * 
+	 *
 	 * Usage: 3
-	 * 
+	 *
 	 * @param	string		Content from the "types" configuration of TCA (the special configuration) - see description of function
-	 * @return	array		
+	 * @return	array
 	 */
 	function getSpecConfParts($str)	{
 		if (trim($str))	{
-			$specConfParts=explode(':',$str);
+			$specConfParts = explode(':',$str);
 			reset($specConfParts);
-			while(list($k2,$v2)=each($specConfParts))	{
+			while(list($k2,$v2) = each($specConfParts))	{
 				if (ereg('(.*)\[(.*)\]',$v2,$reg))	{
 					unset($specConfParts[$k2]);
-					$specConfParts[$reg[1]]=array(
+					$specConfParts[$reg[1]] = array(
 						'parameters'=>explode('|',$reg[2])
 					);
 				}
 			}
-		} else {$specConfParts=array();}
+		} else { $specConfParts = array(); }
 		return $specConfParts;
 	}
 
 	/**
 	 * Takes an array of "[key]=[value]" strings and returns an array with the keys set as keys pointing to the value.
 	 * Better see it in action! Find example in Inside TYPO3
-	 * 
+	 *
 	 * Usage: 6
-	 * 
+	 *
 	 * @param	array		Array of "[key]=[value]" strings to convert.
-	 * @return	array		
+	 * @return	array
 	 */
 	function getSpecConfParametersFromArray($pArr)	{
 		$out=array();
@@ -721,7 +738,7 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Finds the Data Structure for a FlexForm field
-	 * 
+	 *
 	 * @param	array		Field config array
 	 * @param	array		Record data
 	 * @param	string		The table name
@@ -766,12 +783,13 @@ class t3lib_BEfunc	{
 				$uidAcc=array();	// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
 				while(!$srcPointer)		{
-					$query = 'SELECT uid,'.$ds_pointerField.','.$ds_searchParentField.($subFieldPointer?','.$subFieldPointer:'').' 
-								FROM '.$table.' WHERE uid='.intval($rr[$ds_searchParentField]).
-								t3lib_BEfunc::deleteClause($table);
-					$res = mysql(TYPO3_db,$query);
-					$rr = mysql_fetch_assoc($res);
-					if (!is_array($rr) || isset($uidAcc[$rr['uid']]))	break;	// break if no result from MySQL or if looping...
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+									'uid,'.$ds_pointerField.','.$ds_searchParentField.($subFieldPointer?','.$subFieldPointer:''), 
+									$table, 
+									'uid='.intval($rr[$ds_searchParentField]).t3lib_BEfunc::deleteClause($table)
+								);
+					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					if (!is_array($rr) || isset($uidAcc[$rr['uid']]))	break;	// break if no result from SQL db or if looping...
 					$uidAcc[$rr['uid']]=1;
 					
 					$srcPointer = ($subFieldPointer && $rr[$subFieldPointer]) ? $rr[$subFieldPointer] : $rr[$ds_pointerField];
@@ -824,29 +842,34 @@ class t3lib_BEfunc	{
 	/**
 	 * Stores the string value $data in the 'cache_hash' table with the hash key, $hash, and visual/symbolic identification, $ident
 	 * IDENTICAL to the function by same name found in t3lib_page:
-	 * 
+	 *
 	 * Usage: 2
-	 * 
+	 *
 	 * @param	string		Hash key, 32 bytes hex
 	 * @param	string		$data must be serialized before function call
 	 * @param	string		Visual/symbolic identification (informational only)
-	 * @return	void		
+	 * @return	void
 	 */
 	function storeHash($hash,$data,$ident)	{
-			// $ident is just a textual identification in order to inform about the content! May be 20 characters long.
-		$res = mysql (TYPO3_db, 'DELETE FROM cache_hash WHERE hash = "'.$hash.'"');
-		$res = mysql (TYPO3_db, 'INSERT INTO cache_hash (hash, content, ident, tstamp) VALUES ("'.$hash.'","'.addSlashes($data).'","'.addSlashes($ident).'","'.time().'")');
+		$insertFields = array(
+			'hash' => $hash, 
+			'content' => $data, 
+			'ident' => $ident, 
+			'tstamp' => time()
+		);
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($hash, 'cache_hash').'"');
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_hash', $insertFields);
 	}
 
 	/**
 	 * Retrieves the string content stored with hash key, $hash, in cache_hash
 	 * IDENTICAL to the function by same name found in t3lib_page:
-	 * 
+	 *
 	 * Usage: 2
-	 * 
+	 *
 	 * @param	string		Hash key, 32 bytes hex
 	 * @param	integer		$expTime represents the expire time in seconds. For instance a value of 3600 would allow cached content within the last hour, otherwise nothing is returned.
-	 * @return	string		
+	 * @return	string
 	 */
 	function getHash($hash,$expTime)	{
 			// if expTime is not set, the hash will never expire
@@ -854,8 +877,8 @@ class t3lib_BEfunc	{
 		if ($expTime)	{
 			$whereAdd = ' AND tstamp > '.(time()-$expTime);
 		}
-		$res = mysql (TYPO3_db, 'SELECT content FROM cache_hash WHERE hash = "'.$hash.'"'.$whereAdd);
-		if ($row=mysql_fetch_assoc($res))	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($hash, 'cache_hash').'"'.$whereAdd);
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			return $row['content'];
 		}
 	}
@@ -876,9 +899,9 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns the Page TSconfig for page with id, $id
 	 * Requires class "t3lib_TSparser"
-	 * 
+	 *
 	 * Usage: 26 (spec. in ext info_pagetsconfig)
-	 * 
+	 *
 	 * @param	integer		Page uid for which to create Page TSconfig
 	 * @param	array		If $rootLine is an array, that is used as rootline, otherwise rootline is just calculated
 	 * @param	boolean		If $returnPartArray is set, then the array with accumulated Page TSconfig is returned non-parsed. Otherwise the output will be parsed by the TypoScript parser.
@@ -922,17 +945,17 @@ class t3lib_BEfunc	{
 	 * Updates Page TSconfig for a page with $id
 	 * The function seems to take $pageTS as an array with properties and compare the values with those that already exists for the "object string", $TSconfPrefix, for the page, then sets those values which were not present.
 	 * $impParams can be supplied as already known Page TSconfig, otherwise it's calculated.
-	 * 
+	 *
 	 * THIS DOES NOT CHECK ANY PERMISSIONS. SHOULD IT?
 	 * More documentation is needed.
-	 * 
+	 *
 	 * Usage: 1 (ext. direct_mail)
-	 * 
+	 *
 	 * @param	integer		Page id
 	 * @param	array		Page TS array to write
 	 * @param	string		Prefix for object paths
 	 * @param	array		[Description needed.]
-	 * @return	void		
+	 * @return	void
 	 * @internal
 	 * @see implodeTSParams(), getPagesTSconfig()
 	 */
@@ -974,19 +997,20 @@ class t3lib_BEfunc	{
 					}
 				}
 				$TSlines = array_reverse($TSlines);
+
 					// store those changes
 				$TSconf = implode(chr(10),$TSlines);
-				$q=t3lib_befunc::DBcompileUpdate('pages','uid='.$id,array('TSconfig'=>$TSconf));
-				$res=mysql(TYPO3_db,$q);
+				
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'uid='.intval($id), array('TSconfig' => $TSconf));
 			}
 		}
 	}
 
 	/**
 	 * Implodes a multi dimensional TypoScript array, $p, into a one-dimentional array (return value)
-	 * 
+	 *
 	 * Usage: 3
-	 * 
+	 *
 	 * @param	array		TypoScript structure
 	 * @param	string		Prefix string
 	 * @return	array		Imploded TypoScript objectstring/values
@@ -1022,19 +1046,18 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns an array with be_users records of all user NOT DELETED sorted by their username
 	 * Keys in the array is the be_users uid
-	 * 
+	 *
 	 * Usage: 14 (spec. ext. "beuser" and module "web_perm")
-	 * 
+	 *
 	 * @param	string		Optional $fields list (default: username,usergroup,usergroup_cached_list,uid) can be used to set the selected fields
 	 * @param	string		Optional $where clause (fx. "AND username='pete'") can be used to limit query
-	 * @return	array		
+	 * @return	array
 	 */
 	function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')	{
 		$be_user_Array=Array();
-		$query = 'SELECT '.$fields.' FROM be_users WHERE pid=0 '.$where.t3lib_BEfunc::deleteClause('be_users').' ORDER BY username'; 
-		$res = mysql(TYPO3_db,$query);
-		echo mysql_error();
-		while($row=mysql_fetch_assoc($res))	{
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_users', 'pid=0 '.$where.t3lib_BEfunc::deleteClause('be_users'), '', 'username'); 
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$be_user_Array[$row['uid']]=$row;
 		}
 		return $be_user_Array;
@@ -1042,19 +1065,18 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns an array with be_groups records (title, uid) of all groups NOT DELETED sorted by their title
-	 * 
+	 *
 	 * Usage: 8 (spec. ext. "beuser" and module "web_perm")
-	 * 
+	 *
 	 * @param	string		Field list
 	 * @param	string		WHERE clause
-	 * @return	array		
+	 * @return	array
 	 */
-	function getGroupNames($fields='title,uid',$where='')	{
-		$be_group_Array=Array();
-		$query = 'SELECT title,uid FROM be_groups WHERE pid=0 '.$where.t3lib_BEfunc::deleteClause('be_groups').' ORDER BY title'; 
-		$res = mysql(TYPO3_db,$query);
-		while($row=mysql_fetch_assoc($res))	{
-			$be_group_Array[$row['uid']]=$row;
+	function getGroupNames($fields='title,uid', $where='')	{
+		$be_group_Array = Array();
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_groups', 'pid=0 '.$where.t3lib_BEfunc::deleteClause('be_groups'), '', 'title'); 
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$be_group_Array[$row['uid']] = $row;
 		}
 		return $be_group_Array;
 	}
@@ -1062,11 +1084,11 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns an array with be_groups records (like ->getGroupNames) but:
 	 * - if the current BE_USER is admin, then all groups are returned, otherwise only groups that the current user is member of (usergroup_cached_list) will be returned.
-	 * 
+	 *
 	 * Usage: 2 (module "web_perm" and ext. taskcenter)
-	 * 
+	 *
 	 * @param	string		Field list; $fields specify the fields selected (default: title,uid)
-	 * @return	array		
+	 * @return	array
 	 */
 	function getListGroupNames($fields='title,uid')	{
 		$exQ=' AND hide_in_lists=0';
@@ -1080,9 +1102,9 @@ class t3lib_BEfunc	{
 	 * Returns the array $usernames with the names of all users NOT IN $groupArray changed to the uid (hides the usernames!).
 	 * If $excludeBlindedFlag is set, then these records are unset from the array $usernames
 	 * Takes $usernames (array made by t3lib_BEfunc::getUserNames()) and a $groupArray (array with the groups a certain user is member of) as input
-	 * 
+	 *
 	 * Usage: 8
-	 * 
+	 *
 	 * @param	array		User names
 	 * @param	array		Group names
 	 * @param	boolean		If $excludeBlindedFlag is set, then these records are unset from the array $usernames
@@ -1114,13 +1136,13 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Corresponds to blindUserNames but works for groups instead
-	 * 
+	 *
 	 * Usage: 2 (module web_perm)
-	 * 
+	 *
 	 * @param	array		Group names
 	 * @param	array		Group names (reference)
 	 * @param	boolean		If $excludeBlindedFlag is set, then these records are unset from the array $usernames
-	 * @return	array		
+	 * @return	array
 	 */
 	function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)	{
 		if (is_array($groups) && is_array($groupArray))	{
@@ -1160,11 +1182,11 @@ class t3lib_BEfunc	{
 	 
 	/**
 	 * Returns the difference in days between input $tstamp and $EXEC_TIME
-	 * 
+	 *
 	 * Usage: 2 (class t3lib_BEfunc)
-	 * 
+	 *
 	 * @param	integer		Time stamp, seconds
-	 * @return	integer		
+	 * @return	integer
 	 */
 	function daysUntil($tstamp)	{
 		$delta_t = $tstamp-$GLOBALS['EXEC_TIME'];
@@ -1173,9 +1195,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns $tstamp formatted as "ddmmyy" (According to $TYPO3_CONF_VARS['SYS']['ddmmyy'])
-	 * 
+	 *
 	 * Usage: 11
-	 * 
+	 *
 	 * @param	integer		Time stamp, seconds
 	 * @return	string		Formatted time
 	 */
@@ -1185,9 +1207,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns $tstamp formatted as "ddmmyy hhmm" (According to $TYPO3_CONF_VARS['SYS']['ddmmyy'] AND $TYPO3_CONF_VARS['SYS']['hhmm'])
-	 * 
+	 *
 	 * Usage: 28
-	 * 
+	 *
 	 * @param	integer		Time stamp, seconds
 	 * @return	string		Formatted time
 	 */
@@ -1198,9 +1220,9 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns $value (in seconds) formatted as hh:mm:ss
 	 * For instance $value = 3600 + 60*2 + 3 should return "01:02:03"
-	 * 
+	 *
 	 * Usage: 1 (class t3lib_BEfunc)
-	 * 
+	 *
 	 * @param	integer		Time stamp, seconds
 	 * @return	string		Formatted time
 	 */
@@ -1214,9 +1236,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns the "age" of the number of $seconds inputted.
-	 * 
+	 *
 	 * Usage: 15
-	 * 
+	 *
 	 * @param	integer		$seconds could be the difference of a certain timestamp and time()
 	 * @param	string		$labels should be something like ' min| hrs| days| yrs'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears")
 	 * @return	string		Formatted time
@@ -1240,13 +1262,13 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns a formatted timestamp if $tstamp is set.
 	 * The date/datetime will be followed by the age in parenthesis.
-	 * 
+	 *
 	 * Usage: 3
-	 * 
+	 *
 	 * @param	integer		Time stamp, seconds
 	 * @param	integer		1/-1 depending on polarity of age.
 	 * @param	string		$date=="date" will yield "dd:mm:yy" formatting, otherwise "dd:mm:yy hh:mm"
-	 * @return	string		
+	 * @return	string
 	 */
 	function dateTimeAge($tstamp,$prefix=1,$date='')	{
 		return $tstamp ? 
@@ -1259,12 +1281,12 @@ class t3lib_BEfunc	{
 	 * If no $content is given only the attribute name is returned.
 	 * The returned attribute with content will have a leading space char.
 	 * Warning: Be careful to submit empty $content var - that will return just the attribute name!
-	 * 
+	 *
 	 * Usage: 203
-	 * 
+	 *
 	 * @param	string		String to set as title-attribute. If no $content is given only the attribute name is returned.
 	 * @param	boolean		If $hsc is set, then content of the attribute is htmlspecialchar()'ed (which is good for XHTML and other reasons...)
-	 * @return	string		
+	 * @return	string
 	 * @depreciated		The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
 	 */
 	function titleAttrib($content='',$hsc=0)	{
@@ -1275,9 +1297,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns alt="" and title="" attributes with the value of $content.
-	 * 
+	 *
 	 * @param	string		Value for 'alt' and 'title' attributes (will be htmlspecialchars()'ed before output)
-	 * @return	string		
+	 * @return	string
 	 */
 	function titleAltAttrib($content)	{
 		$out='';
@@ -1290,9 +1312,9 @@ class t3lib_BEfunc	{
 	 * Returns a linked image-tag for thumbnail(s) from a database row with a list of image files in a field
 	 * All $TYPO3_CONF_VARS['GFX']['imagefile_ext'] extension are made to thumbnails + ttf file (renders font-example)
 	 * Thumbsnails are linked to the show_item.php script which will display further details.
-	 * 
+	 *
 	 * Usage: 7
-	 * 
+	 *
 	 * @param	array		$row is the database row from the table, $table.
 	 * @param	string		Table name for $row (present in TCA)
 	 * @param	string		$field is pointing to the field with the list of image files
@@ -1364,9 +1386,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns single image tag to thumbnail
-	 * 
+	 *
 	 * Usage: 3
-	 * 
+	 *
 	 * @param	string		$thumbScript must point to "thumbs.php" relative to the script position
 	 * @param	string		$theFile must be the proper reference to the file thumbs.php should show
 	 * @param	string		$tparams are additional attributes for the image tag
@@ -1383,13 +1405,13 @@ class t3lib_BEfunc	{
 	
 	/**
 	 * Returns title-attribute information for a page-record informing about id, alias, doktype, hidden, starttime, endtime, fe_group etc.
-	 * 
+	 *
 	 * Usage: 8
-	 * 
+	 *
 	 * @param	array		Input must be a page row ($row) with the proper fields set (be sure - send the full range of fields for the table)
 	 * @param	string		$perms_clause is used to get the record path of the shortcut page, if any (and doktype==4)
 	 * @param	boolean		If $includeAttrib is set, then the 'title=""' attribute is wrapped about the return value, which is in any case htmlspecialchar()'ed already
-	 * @return	string		
+	 * @return	string
 	 */
 	function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)	{
 		global $TCA,$LANG;
@@ -1439,12 +1461,12 @@ class t3lib_BEfunc	{
 	 * Returns title-attribute information for ANY record (from a table defined in TCA of course)
 	 * The included information depends on features of the table, but if hidden, starttime, endtime and fe_group fields are configured for, information about the record status in regard to these features are is included.
 	 * "pages" table can be used as well and will return the result of ->titleAttribForPages() for that page.
-	 * 
+	 *
 	 * Usage: 10
-	 * 
+	 *
 	 * @param	array		Table row; $row is a row from the table, $table
 	 * @param	string		Table name
-	 * @return	string		
+	 * @return	string
 	 */
 	function getRecordIconAltText($row,$table='pages')	{
 		if ($table=='pages')	{
@@ -1473,9 +1495,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns the label of the first found entry in an "items" array from $TCA (tablename=$table/fieldname=$col) where the value is $key
-	 * 
+	 *
 	 * Usage: 9
-	 * 
+	 *
 	 * @param	string		Table name, present in $TCA
 	 * @param	string		Field name, present in $TCA
 	 * @param	string		items-array value to match
@@ -1500,13 +1522,13 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns the label-value for fieldname $col in table, $table
 	 * If $printAllWrap is set (to a "wrap") then it's wrapped around the $col value IF THE COLUMN $col DID NOT EXIST in TCA!, eg. $printAllWrap='<b>|</b>' and the fieldname was 'not_found_field' then the return value would be '<b>not_found_field</b>'
-	 * 
+	 *
 	 * Usage: 17
-	 * 
+	 *
 	 * @param	string		Table name, present in $TCA
 	 * @param	string		Field name
 	 * @param	string		Wrap value - set function description
-	 * @return	string		
+	 * @return	string
 	 */
 	function getItemLabel($table,$col,$printAllWrap='')	{
 		global $TCA;
@@ -1515,7 +1537,7 @@ class t3lib_BEfunc	{
 			// Check if column exists
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$col]))	{
 				// Re
-			return stripslashes($TCA[$table]['columns'][$col]['label']);
+			return $TCA[$table]['columns'][$col]['label'];
 		}
 		if ($printAllWrap)	{
 			$parts = explode('|',$printAllWrap);
@@ -1526,13 +1548,13 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns the "title"-value in record, $row, from table, $table
 	 * The field(s) from which the value is taken is determined by the "ctrl"-entries 'label', 'label_alt' and 'label_alt_force'
-	 * 
+	 *
 	 * Usage: 26
-	 * 
+	 *
 	 * @param	string		Table name, present in TCA
 	 * @param	array		Row from table
 	 * @param	boolean		If set, result is prepared for output: The output is cropped to a limited lenght (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized). Further, the output is htmlspecialchars()'ed
-	 * @return	string		
+	 * @return	string
 	 */
 	function getRecordTitle($table,$row,$prep=0)	{
 		global $TCA;
@@ -1549,7 +1571,7 @@ class t3lib_BEfunc	{
 				if ($TCA[$table]['ctrl']['label_alt_force'])	$t=implode(', ',$tA);
 			}
 			if ($prep) 	{
-				$t=htmlspecialchars(t3lib_div::fixed_lgd($t,$GLOBALS['BE_USER']->uc['titleLen']));
+				$t = htmlspecialchars(t3lib_div::fixed_lgd($t,$GLOBALS['BE_USER']->uc['titleLen']));
 				if (!strcmp(trim($t),''))	$t='<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>';
 			}
 			return $t;
@@ -1560,15 +1582,16 @@ class t3lib_BEfunc	{
 	 * Returns a human readable output of a value from a record
 	 * For instance a database record relation would be looked up to display the title-value of that record. A checkbox with a "1" value would be "Yes", etc.
 	 * $table/$col is tablename and fieldname
-	 * 
+	 * REMEMBER to pass the output through htmlspecialchars() if you output it to the browser! (To protect it from XSS attacks and be XHTML compliant)
+	 *
 	 * Usage: 24
-	 * 
+	 *
 	 * @param	string		Table name, present in TCA
 	 * @param	string		Field name, present in TCA
 	 * @param	string		$value is the value of that field from a selected record
 	 * @param	integer		$fixed_lgd_chars is the max amount of characters the value may occupy
 	 * @param	boolean		$defaultPassthrough flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
-	 * @return	string		
+	 * @return	string
 	 */
 	function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)	{
 		global $TCA;
@@ -1655,14 +1678,14 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Same as ->getProcessedValue() but will go easy on fields like "tstamp" and "pid" which are not configured in TCA - they will be formatted by this function instead.
-	 * 
+	 *
 	 * Usage: 2
-	 * 
+	 *
 	 * @param	string		Table name, present in TCA
 	 * @param	string		Field name
 	 * @param	string		Field value
 	 * @param	integer		$fixed_lgd_chars is the max amount of characters the value may occupy
-	 * @return	string		
+	 * @return	string
 	 * @see getProcessedValue()
 	 */
 	function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)	{
@@ -1673,7 +1696,7 @@ class t3lib_BEfunc	{
 				if ($fN==$TCA[$table]['ctrl']['tstamp'] || $fN==$TCA[$table]['ctrl']['crdate'])	{
 					$fVnew = t3lib_BEfunc::datetime($fV);
 				} elseif ($fN=='pid'){
-					$fVnew = t3lib_BEfunc::getRecordPath ($fV,'1',20);	// Fetches the path with no regard to the users permissions to select pages.
+					$fVnew = t3lib_BEfunc::getRecordPath($fV,'1',20);	// Fetches the path with no regard to the users permissions to select pages.
 				} else {
 					$fVnew = $fV;
 				}
@@ -1684,9 +1707,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns file icon name (from $FILEICONS) for the fileextension $ext
-	 * 
+	 *
 	 * Usage: 10
-	 * 
+	 *
 	 * @param	string		File extension, lowercase
 	 * @return	string		File icon filename
 	 */
@@ -1698,9 +1721,9 @@ class t3lib_BEfunc	{
 	 * Returns fields for a table, $table, which would typically be interesting to select
 	 * This includes uid, the fields defined for title, icon-field.
 	 * Returned as a list ready for query ($prefix can be set to eg. "pages." if you are selecting from the pages table and want the table name prefixed)
-	 * 
+	 *
 	 * Usage: 3
-	 * 
+	 *
 	 * @param	string		Table name, present in TCA
 	 * @param	string		Table prefix
 	 * @return	string		List of fields.
@@ -1724,9 +1747,9 @@ class t3lib_BEfunc	{
 	 * Makes a form for configuration of some values based on configuration found in the array $configArray, with default values from $defaults and a data-prefix $dataPrefix
 	 * <form>-tags must be supplied separately
 	 * Needs more documentation and examples, in particular syntax for configuration array. See Inside TYPO3. That's were you can expect to find example, if anywhere.
-	 * 
+	 *
 	 * Usage: 1 (ext. direct_mail)
-	 * 
+	 *
 	 * @param	array		Field configuration code.
 	 * @param	array		Defaults
 	 * @param	string		Prefix for formfields
@@ -1800,9 +1823,9 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns help-text icon if configured for.
 	 * TCA_DESCR must be loaded prior to this function and $BE_USER must have 'edit_showFieldHelp' set to 'icon', otherwise nothing is returned
-	 * 
+	 *
 	 * Usage: 6
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	string		Field name
 	 * @param	string		Back path
@@ -1823,9 +1846,9 @@ class t3lib_BEfunc	{
 	 * Returns CSH help text (description), if configured for.
 	 * TCA_DESCR must be loaded prior to this function and $BE_USER must have "edit_showFieldHelp" set to "text", otherwise nothing is returned
 	 * Will automatically call t3lib_BEfunc::helpTextIcon() to get the icon for the text.
-	 * 
+	 *
 	 * Usage: 10
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	string		Field name
 	 * @param	string		Back path
@@ -1844,13 +1867,13 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns a JavaScript string (for an onClick handler) which will load the alt_doc.php script that shows the form for editing of the record(s) you have send as params.
 	 * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
-	 * 
+	 *
 	 * Usage: 35
-	 * 
+	 *
 	 * @param	string		$params is parameters sent along to alt_doc.php. This requires a much more details description which you must seek in Inside TYPO3s documentation of the alt_doc.php API. And example could be '&edit[pages][123]=edit' which will show edit form for page record 123.
 	 * @param	string		$backPath must point back to the TYPO3_mainDir directory (where alt_doc.php is)
 	 * @param	string		$requestUri is an optional returnUrl you can set - automatically set to REQUEST_URI.
-	 * @return	string		
+	 * @return	string
 	 */
 	function editOnClick($params,$backPath='',$requestUri='')	{
 		$retUrl = 'returnUrl='.($requestUri==-1?"'+T3_THIS_LOCATION+'":rawurlencode($requestUri?$requestUri:t3lib_div::getIndpEnv('REQUEST_URI')));
@@ -1859,15 +1882,15 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns a JavaScript string for viewing the page id, $id
-	 * 
+	 *
 	 * Usage: 8
-	 * 
+	 *
 	 * @param	integer		$id is page id
 	 * @param	string		$backpath must point back to TYPO3_mainDir (where the site is assumed to be one level above)
 	 * @param	array		If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
 	 * @param	string		$anchor is optional anchor to the URL
 	 * @param	string		$altUrl is an alternative URL which - if set - will make all other parameters ignored: The function will just return the window.open command wrapped around this URL!
-	 * @return	string		
+	 * @return	string
 	 */
 	function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='')	{
 		if ($altUrl)	{
@@ -1889,12 +1912,12 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns the merged User/Page TSconfig for page id, $id.
 	 * Please read details about module programming elsewhere!
-	 * 
+	 *
 	 * Usage: 15
-	 * 
+	 *
 	 * @param	integer		Page uid
 	 * @param	string		$TSref is an object string which determines the path of the TSconfig to return.
-	 * @return	array		
+	 * @return	array
 	 */
 	function getModTSconfig($id,$TSref)	{
 		$pageTS_modOptions = $GLOBALS['BE_USER']->getTSConfig($TSref,t3lib_BEfunc::getPagesTSconfig($id));
@@ -1907,9 +1930,9 @@ class t3lib_BEfunc	{
 	 * Returns a selector box "function menu" for a module
 	 * Requires the JS function jumpToUrl() to be available
 	 * See Inside TYPO3 for details about how to use / make Function menus
-	 * 
+	 *
 	 * Usage: 50
-	 * 
+	 *
 	 * @param	string		$id is the "&id=" parameter value to be sent to the module
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
@@ -1936,9 +1959,9 @@ class t3lib_BEfunc	{
 	/**
 	 * Checkbox function menu.
 	 * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
-	 * 
+	 *
 	 * Usage: 34
-	 * 
+	 *
 	 * @param	string		$id is the "&id=" parameter value to be sent to the module
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
@@ -1957,9 +1980,9 @@ class t3lib_BEfunc	{
 	/**
 	 * Input field function menu
 	 * Works like ->getFuncMenu() / ->getFuncCheck() but displays a input field instead which updates the script "onchange"
-	 * 
+	 *
 	 * Usage: 1
-	 * 
+	 *
 	 * @param	string		$id is the "&id=" parameter value to be sent to the module
 	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
 	 * @param	string		$currentValue is the value to be selected currently.
@@ -1978,9 +2001,9 @@ class t3lib_BEfunc	{
 	/**
 	 * Removes menu items from $itemArray if they are configured to be removed by TSconfig for the module ($modTSconfig)
 	 * See Inside TYPO3 about how to program modules and use this API.
-	 * 
+	 *
 	 * Usage: 4
-	 * 
+	 *
 	 * @param	array		Module TS config array
 	 * @param	array		Array of items from which to remove items.
 	 * @param	string		$TSref points to the "object string" in $modTSconfig
@@ -2004,9 +2027,9 @@ class t3lib_BEfunc	{
 	 * Call to update the page tree frame (or something else..?) after
 	 * t3lib_BEfunc::getSetUpdateSignal('updatePageTree') -> will set the page tree to be updated.
 	 * t3lib_BEfunc::getSetUpdateSignal() -> will return some JavaScript that does the update (called in the typo3/template.php file, end() function)
-	 * 
+	 *
 	 * Usage: 11
-	 * 
+	 *
 	 * @param	string		Whether to set or clear the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set.
 	 * @return	string		HTML code (<script> section)
 	 */
@@ -2052,7 +2075,7 @@ class t3lib_BEfunc	{
 	 * If a key from MOD_MENU is set in the CHANGED_SETTINGS array (eg. a value is passed to the script from the outside), this value is put into the settings-array
 	 * Ultimately, see Inside TYPO3 for how to use this function in relation to your modules.
 	 * Usage: 23
-	 * 
+	 *
 	 * @param	array		MOD_MENU is an array that defines the options in menus.
 	 * @param	array		CHANGED_SETTINGS represents the array used when passing values to the script from the menus.
 	 * @param	string		modName is the name of this module. Used to get the correct module data.
@@ -2128,55 +2151,56 @@ class t3lib_BEfunc	{
 	/**
 	 * Unlock or Lock a record from $table with $uid
 	 * If $table and $uid is not set, then all locking for the current BE_USER is removed!
-	 * 
+	 *
 	 * Usage: 5
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
 	 * @param	integer		Record pid
-	 * @return	void		
+	 * @return	void
 	 * @internal
 	 * @see t3lib_transferData::lockRecord(), alt_doc.php, db_layout.php, db_list.php, wizard_rte.php
 	 */
 	function lockRecords($table='',$uid=0,$pid=0)	{
 		$user_id = intval($GLOBALS['BE_USER']->user['uid']);
 		if ($table && $uid)	{
-			$fields_values=array(
-				'userid'=>$user_id,
-				'tstamp'=>$GLOBALS['EXEC_TIME'],
-				'record_table'=>$table,
-				'record_uid'=>$uid,
-				'username'=>$GLOBALS['BE_USER']->user['username'],
-				'record_pid'=>$pid
+			$fields_values = array(
+				'userid' => $user_id,
+				'tstamp' => $GLOBALS['EXEC_TIME'],
+				'record_table' => $table,
+				'record_uid' => $uid,
+				'username' => $GLOBALS['BE_USER']->user['username'],
+				'record_pid' => $pid
 			);
-			$query=t3lib_BEfunc::DBcompileInsert('sys_lockedrecords',$fields_values);
+			
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_lockedrecords', $fields_values);
 		} else {
-			$query='DELETE FROM sys_lockedrecords WHERE userid='.$user_id;
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_lockedrecords', 'userid='.intval($user_id));
 		}
-
-		$res = mysql(TYPO3_db,$query);
 	}
 
 	/**
 	 * Returns information about whether the record from table, $table, with uid, $uid is currently locked (edited by another user - which should issue a warning).
 	 * Notice: Locking is not strictly carried out since locking is abandoned when other backend scripts are activated - which means that a user CAN have a record "open" without having it locked. So this just serves as a warning that counts well in 90% of the cases, which should be sufficient.
-	 * 
+	 *
 	 * Usage: 5
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
-	 * @return	array		
+	 * @return	array
 	 * @internal
 	 * @see class.db_layout.inc, alt_db_navframe.php, alt_doc.php, db_layout.php
 	 */
 	function isRecordLocked($table,$uid)	{
 		global $LOCKED_RECORDS;
 		if (!is_array($LOCKED_RECORDS))	{
-			$query='SELECT * FROM sys_lockedrecords WHERE '.
-				'sys_lockedrecords.userid!='.intval($GLOBALS['BE_USER']->user['uid']).
-				' AND sys_lockedrecords.tstamp > '.($GLOBALS['EXEC_TIME']-2*3600);
-			$res = mysql(TYPO3_db,$query);
-			while($row=mysql_fetch_assoc($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'*', 
+							'sys_lockedrecords', 
+							'sys_lockedrecords.userid!='.intval($GLOBALS['BE_USER']->user['uid']).' 
+								AND sys_lockedrecords.tstamp > '.($GLOBALS['EXEC_TIME']-2*3600)
+						);
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$LOCKED_RECORDS[$row['record_table'].':'.$row['record_uid']]=$row;
 				$LOCKED_RECORDS[$row['record_table'].':'.$row['record_uid']]['msg']=sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.lockedRecord'),
@@ -2197,9 +2221,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns select statement for MM relations (as used by TCEFORMs etc)
-	 * 
+	 *
 	 * Usage: 3
-	 * 
+	 *
 	 * @param	array		Configuration array for the field, taken from $TCA
 	 * @param	string		Field name
 	 * @param	array		TSconfig array from which to get further configuration settings for the field name
@@ -2208,7 +2232,7 @@ class t3lib_BEfunc	{
 	 * @internal
 	 * @see t3lib_transferData::renderRecord(), t3lib_TCEforms::foreignTable()
 	 */
-	function foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')	{
+	function exec_foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')	{
 		global $TCA;
 		$foreign_table = $fieldValue['config'][$prefix.'foreign_table'];
 		$rootLevel = $TCA[$foreign_table]['ctrl']['rootLevel'];
@@ -2231,34 +2255,63 @@ class t3lib_BEfunc	{
 		$fTWHERE = str_replace('###STORAGE_PID###',intval($TSconfig['_STORAGE_PID']),$fTWHERE);
 		$fTWHERE = str_replace('###SITEROOT###',intval($TSconfig['_SITEROOT']),$fTWHERE);
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_ID###',intval($TSconfig[$field]['PAGE_TSCONFIG_ID']),$fTWHERE);
-		$fTWHERE = str_replace('###PAGE_TSCONFIG_IDLIST###',implode(',',t3lib_div::intExplode(',',$TSconfig[$field]['PAGE_TSCONFIG_IDLIST'])),$fTWHERE);
-		$fTWHERE = str_replace('###PAGE_TSCONFIG_STR###',addslashes($TSconfig[$field]['PAGE_TSCONFIG_STR']),$fTWHERE);
-		
+		$fTWHERE = str_replace('###PAGE_TSCONFIG_IDLIST###',$GLOBALS['TYPO3_DB']->cleanIntList($TSconfig[$field]['PAGE_TSCONFIG_IDLIST']),$fTWHERE);
+		$fTWHERE = str_replace('###PAGE_TSCONFIG_STR###',$GLOBALS['TYPO3_DB']->quoteStr($TSconfig[$field]['PAGE_TSCONFIG_STR'], $foreign_table),$fTWHERE);
 		
 			// rootLevel = -1 is not handled 'properly' here - it goes as if it was rootLevel = 1 (that is pid=0)
+		$wgolParts = $GLOBALS['TYPO3_DB']->splitGroupOrderLimit($fTWHERE);
 		if ($rootLevel)	{
-			$query = 'SELECT '.t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.').' FROM '.$foreign_table.' WHERE '.$foreign_table.'.pid=0 '.t3lib_BEfunc::deleteClause($foreign_table).' '.$fTWHERE;
+			$queryParts = array(
+				'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'), 
+				'FROM' => $foreign_table, 
+				'WHERE' => $foreign_table.'.pid=0 '.
+							t3lib_BEfunc::deleteClause($foreign_table).' '.
+							$wgolParts['WHERE'],
+				'GROUPBY' => $wgolParts['GROUPBY'],
+				'ORDERBY' => $wgolParts['ORDERBY'],
+				'LIMIT' => $wgolParts['LIMIT']
+			);
 		} else {
 			$pageClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 			if ($foreign_table!='pages')	{
-				$query = 'SELECT '.t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.').' FROM '.$foreign_table.',pages WHERE pages.uid='.$foreign_table.'.pid AND NOT pages.deleted '.t3lib_BEfunc::deleteClause($foreign_table).' AND '.$pageClause.' '.$fTWHERE;
+				$queryParts = array(
+					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'), 
+					'FROM' => $foreign_table.',pages', 
+					'WHERE' => 'pages.uid='.$foreign_table.'.pid 
+								AND NOT pages.deleted '.
+								t3lib_BEfunc::deleteClause($foreign_table).
+								' AND '.$pageClause.' '.
+								$wgolParts['WHERE'],
+					'GROUPBY' => $wgolParts['GROUPBY'],
+					'ORDERBY' => $wgolParts['ORDERBY'],
+					'LIMIT' => $wgolParts['LIMIT']
+				);
 			} else {
-				$query = 'SELECT '.t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.').' FROM pages WHERE NOT pages.deleted AND '.$pageClause.' '.$fTWHERE;
+				$queryParts = array(
+					'SELECT' => t3lib_BEfunc::getCommonSelectFields($foreign_table,$foreign_table.'.'), 
+					'FROM' => 'pages', 
+					'WHERE' => 'NOT pages.deleted 
+								AND '.$pageClause.' '.
+								$wgolParts['WHERE'],
+					'GROUPBY' => $wgolParts['GROUPBY'],
+					'ORDERBY' => $wgolParts['ORDERBY'],
+					'LIMIT' => $wgolParts['LIMIT']
+				);
 			}
 		}
-//	debug(array($query));
-		return $query;
+
+		return $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 	}
 
 	/**
 	 * Returns TSConfig for the TCEFORM object in Page TSconfig.
 	 * Used in TCEFORMs
-	 * 
+	 *
 	 * Usage: 4
-	 * 
+	 *
 	 * @param	string		Table name present in TCA
 	 * @param	array		Row from table
-	 * @return	array		
+	 * @return	array
 	 * @see t3lib_transferData::renderRecord(), t3lib_TCEforms::setTSconfig(), SC_wizard_list::main(), SC_wizard_add::main()
 	 */
 	function getTCEFORM_TSconfig($table,$row) {
@@ -2299,13 +2352,13 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Find the real PID of the record (with $uid from $table). This MAY be impossible if the pid is set as a reference to the former record or a page (if two records are created at one time).
-	 * 
+	 *
 	 * Usage: 2
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
 	 * @param	integer		Record pid
-	 * @return	integer		
+	 * @return	integer
 	 * @internal
 	 * @see t3lib_TCEmain::copyRecord(), getTSCpid()
 	 */
@@ -2328,13 +2381,13 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Return $uid if $table is pages and $uid is integer - otherwise the $pid
-	 * 
+	 *
 	 * Usage: 1
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
 	 * @param	integer		Record pid
-	 * @return	integer		
+	 * @return	integer
 	 * @internal
 	 * @see t3lib_TCEforms::getTSCpid()
 	 */
@@ -2345,13 +2398,13 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns the REAL pid of the record, if possible. If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
-	 * 
+	 *
 	 * Usage: 8
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Record uid
 	 * @param	integer		Record pid
-	 * @return	integer		
+	 * @return	integer
 	 * @internal
 	 * @see t3lib_TCEmain::setHistory(), t3lib_TCEmain::process_datamap()
 	 */
@@ -2366,9 +2419,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns first found domain record "domainName" (without trailing slash) if found in the input $rootLine
-	 * 
+	 *
 	 * Usage: 2
-	 * 
+	 *
 	 * @param	array		Root line array
 	 * @return	string		Domain name, if found.
 	 */
@@ -2376,7 +2429,7 @@ class t3lib_BEfunc	{
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			reset($rootLine);
 			while(list(,$row)=each($rootLine))	{
-				$dRec = t3lib_BEfunc::getRecordsByField('sys_domain','pid',$row['uid'],' AND redirectTo="" AND hidden=0 ORDER BY sorting');
+				$dRec = t3lib_BEfunc::getRecordsByField('sys_domain','pid',$row['uid'],' AND redirectTo="" AND hidden=0', '', 'sorting');
 				if (is_array($dRec))	{
 					reset($dRec);
 					$dRecord = current($dRec);
@@ -2388,9 +2441,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns the sys_domain record for $domain, optionally with $path appended.
-	 * 
+	 *
 	 * Usage: 2
-	 * 
+	 *
 	 * @param	string		Domain name
 	 * @param	string		Appended path
 	 * @return	array		Domain record, if found
@@ -2404,23 +2457,21 @@ class t3lib_BEfunc	{
 				// stuff:
 			$domain.=$path;
 			
-			$query = 'SELECT sys_domain.*'.
-				'FROM pages,sys_domain where pages.uid=sys_domain.pid 
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
+				pages.uid=sys_domain.pid 
 				AND NOT sys_domain.hidden 
-				AND (sys_domain.domainName="'.addSlashes($domain).'" or sys_domain.domainName="'.addSlashes($domain.'/').'") '.
-				t3lib_BEfunc::deleteClause('pages').
-				' LIMIT 1';
-			$res = mysql(TYPO3_db, $query);
-			echo mysql_error();
-			return mysql_fetch_assoc($res);
+				AND (sys_domain.domainName="'.$GLOBALS['TYPO3_DB']->quoteStr($domain, 'sys_domain').'" or sys_domain.domainName="'.$GLOBALS['TYPO3_DB']->quoteStr($domain.'/', 'sys_domain').'")'.
+				t3lib_BEfunc::deleteClause('pages'),
+				'', '', '1');
+			return $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		}
 	}
 
 	/**
 	 * Returns overlayered RTE setup from an array with TSconfig. Used in TCEforms and TCEmain
-	 * 
+	 *
 	 * Usage: 8
-	 * 
+	 *
 	 * @param	array		The properties of Page TSconfig in the key "RTE."
 	 * @param	string		Table name
 	 * @param	string		Field name
@@ -2443,11 +2494,11 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns true if $modName is set and is found as a main- or submodule in $TBE_MODULES array
-	 * 
+	 *
 	 * Usage: 1
-	 * 
+	 *
 	 * @param	string		Module name
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function isModuleSetInTBE_MODULES($modName)	{
 		reset($GLOBALS['TBE_MODULES']);
@@ -2490,14 +2541,14 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Print error message with header, text etc.
-	 * 
+	 *
 	 * Usage: 19
-	 * 
+	 *
 	 * @param	string		Header string
 	 * @param	string		Content string
 	 * @param	boolean		Will return an alert() with the content of header and text.
 	 * @param	boolean		Print header.
-	 * @return	void		
+	 * @return	void
 	 */
 	function typo3PrintError ($header,$text,$js='',$head=1)	{
 		// This prints out a TYPO3 error message.
@@ -2540,11 +2591,11 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns "web" if the $path (absolute) is within the DOCUMENT ROOT - and thereby qualifies as a "web" folder.
-	 * 
+	 *
 	 * Usage: 4
-	 * 
+	 *
 	 * @param	string		Path to evaluate
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function getPathType_web_nonweb($path)	{
 		return t3lib_div::isFirstPartOfStr($path,t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')) ? 'web' : '';
@@ -2552,9 +2603,9 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Creates ADMCMD parameters for the "viewpage" extension / "cms" frontend
-	 * 
+	 *
 	 * Usage: 1
-	 * 
+	 *
 	 * @param	array		Page record
 	 * @return	string		Query-parameters
 	 * @internal
@@ -2576,11 +2627,11 @@ class t3lib_BEfunc	{
 	 * Returns an array with key=>values based on input text $params
 	 * $params is exploded by line-breaks and each line is supposed to be on the syntax [key] = [some value]
 	 * These pairs will be parsed into an array an returned.
-	 * 
+	 *
 	 * Usage: 1
-	 * 
+	 *
 	 * @param	string		String of parameters on multiple lines to parse into key-value pairs (see function description)
-	 * @return	array		
+	 * @return	array
 	 */
 	function processParams($params)	{
 		$paramArr=array();
@@ -2597,10 +2648,10 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns "list of backend modules". Most likely this will be obsolete soon / removed. Don't use.
-	 * 
+	 *
 	 * Usage: 3
-	 * 
-	 * @param	string		Module names list
+	 *
+	 * @param	array		Module names in array. Must be "addslashes()"ed
 	 * @param	string		Perms clause for SQL query
 	 * @param	string		Backpath
 	 * @param	string		The URL/script to jump to (used in A tag)
@@ -2610,12 +2661,12 @@ class t3lib_BEfunc	{
 	 * @obsolete
 	 */
 	function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')	{
-		$query = 'SELECT * FROM pages where doktype!=255 AND module IN ("'.$name.'") AND'.$perms_clause.t3lib_BEfunc::deleteClause('pages');
-		$res = mysql(TYPO3_db,$query);
-		if (!mysql_num_rows($res))	return false;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'doktype!=255 AND module IN ("'.implode('","',$name).'") AND'.$perms_clause.t3lib_BEfunc::deleteClause('pages'));
+		if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	return false;
+
 		$out='';
 		$theRows=array();
-		while($row=mysql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$theRows[]=$row;
 			$out.='<span class="nobr"><a href="'.htmlspecialchars($script.'?id='.$row['uid']).'">'.
 					t3lib_iconWorks::getIconImage('pages',$row,$backPath,'title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($row['uid'],$perms_clause,20)).'" align="top"').

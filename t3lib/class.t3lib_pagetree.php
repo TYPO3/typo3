@@ -38,14 +38,13 @@
  *
  *
  *
- *   79: class t3lib_pageTree extends t3lib_treeView	
- *   91:     function init($clause='')	
- *  107:     function expandNext($id)	
- *  119:     function wrapIcon($icon,$row)	
- *  136:     function PMicon($row,$a,$c,$nextCount,$exp)	
- *  151:     function initializePositionSaving()	
+ *   78: class t3lib_pageTree extends t3lib_treeView	
+ *   90:     function init($clause='')	
+ *  106:     function expandNext($id)	
+ *  123:     function PMicon($row,$a,$c,$nextCount,$exp)	
+ *  138:     function initializePositionSaving()	
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -69,7 +68,7 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
 
 /**
  * Class for generating a page tree.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  * @see t3lib_treeView, t3lib_browseTree
@@ -84,12 +83,12 @@ class t3lib_pageTree extends t3lib_treeView	{
 	/**
 	 * Init function
 	 * REMEMBER to feed a $clause which will filter out non-readable pages!
-	 * 
+	 *
 	 * @param	string		Part of where query which will filter out non-readable pages.
-	 * @return	void		
+	 * @return	void
 	 */
 	function init($clause='')	{
-		parent::init(' AND NOT deleted '.$clause.' ORDER BY sorting');
+		parent::init(' AND NOT deleted '.$clause, 'sorting');
 
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			$this->fieldArray=array_merge($this->fieldArray,array('hidden','starttime','endtime','fe_group','module','extendToSubpages'));
@@ -100,9 +99,9 @@ class t3lib_pageTree extends t3lib_treeView	{
 
 	/**
 	 * Returns true/false if the next level for $id should be expanded - and all levels should, so we always return 1.
-	 * 
+	 *
 	 * @param	integer		ID (uid) to test for (see extending classes where this is checked againts session data)
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function expandNext($id)	{
 		return 1;
@@ -111,7 +110,7 @@ class t3lib_pageTree extends t3lib_treeView	{
 	/**
 	 * Generate the plus/minus icon for the browsable tree.
 	 * In this case, there is no plus-minus icon displayed.
-	 * 
+	 *
 	 * @param	array		record for the entry
 	 * @param	integer		The current entry number
 	 * @param	integer		The total number of entries. If equal to $a, a 'bottom' element is returned.
@@ -132,8 +131,8 @@ class t3lib_pageTree extends t3lib_treeView	{
 	/**
 	 * Get stored tree structure AND updating it if needed according to incoming PM GET var.
 	 * - Here we just set it to nothing since we want to just render the tree, nothing more.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 */
 	function initializePositionSaving()	{
