@@ -119,7 +119,7 @@ class SC_tce_db {
 		$this->CB = t3lib_div::_GP('CB');
 		$this->vC = t3lib_div::_GP('vC');
 		$this->uPT = t3lib_div::_GP('uPT');
-		
+
 			// Creating TCEmain object
 		$this->tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$this->tce->stripslashes_values=0;

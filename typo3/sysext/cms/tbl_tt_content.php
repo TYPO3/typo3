@@ -559,7 +559,7 @@ $TCA['tt_content'] = Array (
 			)
 		),
 		'imagecaption_position' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_ttc.php:imagecaption_position',
 			'config' => Array (
 				'type' => 'select',

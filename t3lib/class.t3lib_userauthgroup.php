@@ -542,8 +542,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			if ($this->isAdmin())	{
 				$this->TSdataArray[]=$this->addTScomment('"admin" user presets:').'
 					admPanel.enable.all = 1
-					setup.default.deleteCmdInClipboard = 1
-					options.shortcutFrame=1
+					options.shortcutFrame = 1
 				';
 				if (t3lib_extMgm::isLoaded('tt_news'))	{
 					$this->TSdataArray[]='

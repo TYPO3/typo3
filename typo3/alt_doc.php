@@ -49,7 +49,7 @@
  *  481:     function printContent()	
  *
  *              SECTION: Sub-content functions, rendering specific parts of the module content.
- *  516:     function makeEditForm()	
+ *  516:     function makeEditForm()
  *  680:     function makeButtonPanel()	
  *  759:     function makeDocSel()	
  *  798:     function makeCmenu()	
@@ -619,30 +619,30 @@ class SC_alt_doc {
 
 										// Setting variables in TCEforms object:
 									$this->tceforms->hiddenFieldList = '';
-									$this->tceforms->globalShowHelp = $this->disHelp?0:1;
+									$this->tceforms->globalShowHelp = $this->disHelp ? 0 : 1;
 									if (is_array($this->overrideVals[$table]))	{
-										$this->tceforms->hiddenFieldListArr=array_keys($this->overrideVals[$table]);
+										$this->tceforms->hiddenFieldListArr = array_keys($this->overrideVals[$table]);
 									}
 
 										// Create form for the record (either specific list of fields or the whole record):
-									$panel='';
+									$panel = '';
 									if ($this->columnsOnly)	{
-										$panel.=$this->tceforms->getListedFields($table,$rec,$this->columnsOnly);
+										$panel.= $this->tceforms->getListedFields($table,$rec,$this->columnsOnly);
 									} else {
-										$panel.=$this->tceforms->getMainFields($table,$rec);
+										$panel.= $this->tceforms->getMainFields($table,$rec);
 									}
-									$panel=$this->tceforms->wrapTotal($panel,$rec,$table);
-		
+									$panel = $this->tceforms->wrapTotal($panel,$rec,$table);
+
 										// Setting the pid value for new records:
 									if ($cmd=='new')	{
-										$panel.='<input type="hidden" name="data['.$table.']['.$rec['uid'].'][pid]" value="'.$rec['pid'].'" />';
+										$panel.= '<input type="hidden" name="data['.$table.']['.$rec['uid'].'][pid]" value="'.$rec['pid'].'" />';
 										$this->newC++;
 									}
-									
+
 										// Display "is-locked" message:
-									if ($lockInfo=t3lib_BEfunc::isRecordLocked($table,$rec['uid']))	{
-										$lockIcon='
-										
+									if ($lockInfo = t3lib_BEfunc::isRecordLocked($table,$rec['uid']))	{
+										$lockIcon = '
+
 											<!--
 											 	Warning box:
 											-->
@@ -653,10 +653,10 @@ class SC_alt_doc {
 												</tr>
 											</table>
 										';
-									} else $lockIcon='';
-	
+									} else $lockIcon = '';
+
 										// Combine it all:
-									$editForm.=$lockIcon.$panel;
+									$editForm.= $lockIcon.$panel;
 								}
 								
 								$thePrevUid = $rec['uid'];

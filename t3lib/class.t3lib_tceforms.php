@@ -171,16 +171,16 @@
 class t3lib_TCEforms	{
 
 		// variables not commented yet.... (do so...)
-	var $helpTextFontTag='<font color="#333333">';
-	var $palFieldArr=array();
-	var $disableWizards=0;
-	var $isPalettedoc=0;
-	var $paletteMargin=1;
+	var $helpTextFontTag = '<font color="#333333">';
+	var $palFieldArr = array();
+	var $disableWizards = 0;
+	var $isPalettedoc = 0;
+	var $paletteMargin = 1;
 	var $defStyle = ''; // 'font-family:Verdana;font-size:10px;';
-	var $cachedTSconfig=array();
-	var $cachedTSconfig_fieldLevel=array();
-	var $transformedRow=array();
-	var $extJSCODE='';
+	var $cachedTSconfig = array();
+	var $cachedTSconfig_fieldLevel = array();
+	var $transformedRow = array();
+	var $extJSCODE = '';
 	var $printNeededJS = array();
 	var $hiddenFieldAccum=array();
 	var $TBE_EDITOR_fieldChanged_func='';
@@ -222,6 +222,7 @@ class t3lib_TCEforms	{
 	var $clientInfo=array();					// Loaded with info about the browser when class is instantiated.
 	var $RTEenabled=0;							// True, if RTE is possible for the current user (based on result from BE_USER->isRTE())
 	var $RTEenabled_notReasons='';				// If $this->RTEenabled was false, you can find the reasons listed in this array which is filled with reasons why the RTE could not be loaded)
+	var $RTEcounter = 0;						// Counter that is incremented before an RTE is created. Can be used for unique ids etc.
 		
 	var $colorScheme;							// Contains current color scheme
 	var $defColorScheme;						// Contains the default color scheme
@@ -247,6 +248,7 @@ class t3lib_TCEforms	{
 	var $savedSchemes=array();					// Color scheme buffer.
 
 		// Internal, registers for user defined functions etc.
+	var $additionalCode_pre = array();			// Additional HTML code, printed before the form.
 	var $additionalJS_pre = array();			// Additional JavaScript, printed before the form
 	var $additionalJS_post = array();			// Additional JavaScript printed after the form
 	var $additionalJS_submit = array();			// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
@@ -913,6 +915,7 @@ class t3lib_TCEforms	{
 
 					if (!$thisConfig['disabled'])	{
 						if (!$this->disableRTE)	{
+							$this->RTEcounter++;
 
 								// Find alternative relative path for RTE images/links:
 							$eFile = t3lib_parsehtml_proc::evalWriteFile($specConf['static_write'], $row);
@@ -3079,6 +3082,18 @@ class t3lib_TCEforms	{
 	 * @return	string		A <script></script> section with JavaScript.
 	 */
 	function JStop()	{
+
+		$out = '';
+
+			// Additional top HTML:
+		if (count($this->additionalCode_pre))	{
+			$out.= implode('
+
+				// NEXT:
+			',$this->additionalCode_pre);
+		}
+
+			// Additional top JavaScript
 		if (count($this->additionalJS_pre))	{
 			$out.='
 
@@ -3099,9 +3114,11 @@ class t3lib_TCEforms	{
 		</script>
 			';
 		}
+
+			// Return result:
 		return $out;
 	}
-	
+
 	/**
 	 * JavaScript code used for input-field evaluation.
 	 *

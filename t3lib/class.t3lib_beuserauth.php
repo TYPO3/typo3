@@ -111,9 +111,10 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $uc;
 
 		// User Config Default values:
+		// The array may contain other fields for configuration. For this, see "setup" extension and "TSConfig" document (User TSconfig, "setup.[xxx]....")
 		/*
 			Reserved keys for other storage of session data:
-			moduleData		
+			moduleData
 			moduleSessionID
 		*/
 	var $uc_default = Array (
@@ -125,8 +126,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'condensedMode' => 0,
 		'noMenuMode' => 0,
 		'startInTaskCenter' => 0,
-		'localFrameEdit' => 0,
-		'dontEditInPageModule' => 0,
 		'hideSubmoduleIcons' => 0,
 		'helpText' => 1,
 		'titleLen' => 30,

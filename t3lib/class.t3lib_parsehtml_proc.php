@@ -39,7 +39,7 @@
  *
  *
  *
- *  102: class t3lib_parsehtml_proc extends t3lib_parsehtml 
+ *  102: class t3lib_parsehtml_proc extends t3lib_parsehtml
  *  137:     function init($elRef='',$recPid=0)
  *  149:     function setRelPath($path)
  *  173:     function evalWriteFile($pArr,$currentRecord)	
@@ -174,7 +174,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 			// Write file configuration:
 		if (is_array($pArr))	{
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath'] 
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath']
 				&& substr($GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath'],-1)=='/' 
 				&& @is_dir(PATH_site.$GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath']))	{
 				
@@ -204,7 +204,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 	
 	
-	
+
 	
 	
 	
@@ -231,7 +231,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	function RTE_transform($value,$specConf,$direction='rte',$thisConfig=array())	{
 
 			// Init:
-		$this->procOptions=$thisConfig['proc.'];
+		$this->procOptions = $thisConfig['proc.'];
 		$this->preserveTags = strtoupper(implode(',',t3lib_div::trimExplode(',',$this->procOptions['preserveTags'])));
 
 			// Get parameters for rte_transformation:
@@ -879,10 +879,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			if ($k%2)	{	// Inside one of the blocks:
 			
 					// Init:
-				$tag=$this->getFirstTag($v);
-				$tagName=strtolower($this->getFirstTagName($v));
-				$attribArray=$this->get_tag_attributes_classic($tag);
-				
+				$tag = $this->getFirstTag($v);
+				$tagName = strtolower($this->getFirstTagName($v));
+				$attribArray = $this->get_tag_attributes_classic($tag);
+
 					// Based on tagname, we do transformations:
 				switch($tagName)	{
 					case 'blockquote':	// Keep blockquotes:
@@ -895,8 +895,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							$tListContent = $this->removeFirstAndLastTag($blockSplit[$k]);
 							$tListContent = ereg_replace('^[ ]*'.chr(10),'',$tListContent);
 							$tListContent = ereg_replace(chr(10).'[ ]*$','',$tListContent);
-							$lines=explode(chr(10),$tListContent);
-							$typ= $attribArray['type']==1?'ol':'ul';
+							$lines = explode(chr(10),$tListContent);
+							$typ = $attribArray['type']==1 ? 'ol' : 'ul';
 							$blockSplit[$k] = '<'.$typ.'>'.chr(10).
 												'<li>'.implode('</li>'.chr(10).'<li>',$lines).'</li>'.
 												'</'.$typ.'>';
@@ -904,8 +904,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					break;
 					case 'typohead':	// Transform typohead into Hx tags.
 						if (!isset($this->procOptions['typohead']) || $this->procOptions['typohead'])	{
-							$tC=$this->removeFirstAndLastTag($blockSplit[$k]);
-							$typ=t3lib_div::intInRange($attribArray['type'],0,6);
+							$tC = $this->removeFirstAndLastTag($blockSplit[$k]);
+							$typ = t3lib_div::intInRange($attribArray['type'],0,6);
 							if (!$typ)	$typ=6;
 							$align = $attribArray['align']?' align="'.$attribArray['align'].'"': '';
 							$class = $attribArray['class']?' class="'.$attribArray['class'].'"': '';
@@ -915,18 +915,18 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 					break;
 				}
-				$blockSplit[$k+1]=ereg_replace('^[ ]*'.chr(10),'',$blockSplit[$k+1]);	// Removing linebreak if typohead
+				$blockSplit[$k+1] = ereg_replace('^[ ]*'.chr(10),'',$blockSplit[$k+1]);	// Removing linebreak if typohead
 			} else {	// NON-block:
 				$nextFTN = $this->getFirstTagName($blockSplit[$k+1]);
 				$singleLineBreak = $blockSplit[$k]==chr(10);
 				if (t3lib_div::inList('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.$this->headListTags,$nextFTN))	{	// Removing linebreak if typolist/typohead
-					$blockSplit[$k]=ereg_replace(chr(10).'[ ]*$','',$blockSplit[$k]);
+					$blockSplit[$k] = ereg_replace(chr(10).'[ ]*$','',$blockSplit[$k]);
 				}
 					// If $blockSplit[$k] is blank then unset the line. UNLESS the line happend to be a single line break.
 				if (!strcmp($blockSplit[$k],'') && !$singleLineBreak)	{
-					unset($blockSplit[$k]);	
+					unset($blockSplit[$k]);
 				} else {
-					$blockSplit[$k]=$this->setDivTags($blockSplit[$k],($this->procOptions['useDIVasParagraphTagForRTE']?'div':'p'));
+					$blockSplit[$k] = $this->setDivTags($blockSplit[$k],($this->procOptions['useDIVasParagraphTagForRTE']?'div':'p'));
 				}
 			}
 		}

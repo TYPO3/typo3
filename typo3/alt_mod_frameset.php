@@ -103,7 +103,7 @@ class SC_alt_mod_frameset {
 			$width = $BE_USER->uc['navFrameWidth'];
 			$width = intval($width)?intval($width):($TBE_STYLES['dims']['navFrameWidth'] ? intval($TBE_STYLES['dims']['navFrameWidth']) : $this->defaultWidth);
 		}
-		
+
 			// Navigation frame URL:
 		$script = t3lib_div::_GP('script');
 		$nav = t3lib_div::_GP('nav');

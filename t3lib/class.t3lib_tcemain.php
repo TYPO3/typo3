@@ -40,7 +40,7 @@
  *  190: class t3lib_TCEmain	
  *  275:     function start($data,$cmd,$altUserObject='')	
  *  308:     function setMirror($mirror)	
- *  333:     function setDefaultsFromUserTS($userTS)	
+ *  333:     function setDefaultsFromUserTS($userTS)
  *  357:     function process_uploads($postFiles)	
  *  387:     function process_uploads_traverseArray(&$outputArr,$inputArr,$keyToSet)	
  *
@@ -333,9 +333,8 @@ class t3lib_TCEmain	{
 	function setDefaultsFromUserTS($userTS)	{
 		global $TCA;
 		if (is_array($userTS))	{
-			reset($userTS);
-			while(list($k,$v)=each($userTS))	{
-				$k=substr($k,0,-1);
+			foreach($userTS as $k => $v)	{
+				$k = substr($k,0,-1);
 				if ($k && is_array($v) && isset($TCA[$k]))	{
 					if (is_array($this->defaultValues[$k]))	{
 						$this->defaultValues[$k] = array_merge($this->defaultValues[$k],$v);

@@ -123,7 +123,6 @@ $TYPO3_CONF_VARS = Array(
 //			'everybody' => ''						// default in tce_main is ''. If this is set (uncomment), this value is used instead.
 		),
 		'defaultUC' => array (					// Override default settings for BE-users. See class.t3lib_beuserauth.php, array $uc_default
-//			'openDirectly' => '0'
 		),
 			// The control of fileextensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
 			// The control is done like this: If an extension matches 'allow' then the check returns true. If not and an extension matches 'deny' then the check return false. If no match at all, returns true.
