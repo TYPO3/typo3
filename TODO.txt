@@ -651,7 +651,7 @@ Authors: Julle and Kasper.
 ******************
 APPENDIX: Charsets
 ******************
-In TYPO3s backend charsets used has traditionally been the the charset of the backend user language. This is of course a big problem (when other than western european languages are involved) since the encoding of content is thus depending on the charset of the user and not of the system
+In TYPO3s backend charsets used have traditionally been the charset of the backend user language. This is of course a big problem (when other than western european languages are involved) since the encoding of content is thus depending on the charset of the user and not of the system
 From TYPO3 3.6.0 you can define a global charset for the whole database. This can be any local charset like iso-8859-1 or windows-1250. But for multilingual sites it is recommended to use utf-8 since that can represent all languages.
 You set the global charset in a localconf file like this: $TYPO3_CONF_VARS["BE"]["forceCharset"] = "utf-8";
 
