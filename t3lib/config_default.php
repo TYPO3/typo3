@@ -170,6 +170,8 @@ $TYPO3_CONF_VARS = Array(
 	'MODS' => Array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
 	'USER' => Array(		// Here you may define your own setup-vars for use in your include-scripts. (obsolete, make extension instead)
+	),
+	'SC_OPTIONS' => Array(		// Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script and values can then be anything that scripts wants to define for itself.
 	)
 );
 
@@ -230,13 +232,13 @@ if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])	{
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']=$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']?0:1;
 }
 
-// simple debug function which prints output immediately
+	// simple debug function which prints output immediately
 function xdebug($var="",$br=0)	{
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;
 	t3lib_div::debug($var,$br);
 }
-// Debug function which calls $GLOBALS['error'] error handler if available
+	// Debug function which calls $GLOBALS['error'] error handler if available
 function debug($variable, $name='*variable*', $line='*line*', $file='*file*', $recursiveDepth=3, $debugLevel=E_DEBUG)	{
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;

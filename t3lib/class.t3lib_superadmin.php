@@ -332,7 +332,7 @@ class t3lib_superadmin {
 			// Display results:
 		$out="";
 		
-		
+#debug($this->extensionInfoArray);
 			// PER EXTENSION:
 		if (is_array($this->extensionInfoArray["ext"]))	{
 			$extensionKeysCollect=array();
@@ -450,12 +450,12 @@ class t3lib_superadmin {
 			$filesHash = unserialize($EM_CONF[$extKey]["_md5_values_when_last_written"]);
 
 #			debug(count($filesHash),1);
-			if (is_array($filesHash) && count($filesHash)<50)	{
+			if (!is_array($filesHash) || count($filesHash)<150)	{
 					// Get all files list (may take LOONG time):
 				$extPath=$path.$extKey."/";
 				$fileArr = array();
 				$fileArr = $this->removePrefixPathFromList($this->getAllFilesAndFoldersInPath($fileArr,$extPath),$extPath);
-		
+
 					// Number of files:
 				$eInfo["numberfiles"]=count($fileArr);
 

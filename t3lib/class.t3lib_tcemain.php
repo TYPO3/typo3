@@ -2222,6 +2222,19 @@ class t3lib_TCEmain	{
 					$this->clear_cacheCmd($cmdPart);	
 				}
 			}
+
+				// Call post processing function for clear-cache:
+			global $TYPO3_CONF_VARS;
+			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
+				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $funcRef)	{
+					$a = array(
+						'table' => $table,
+						'uid' => $uid,
+						'uid_page' => $uid_page
+					);
+					t3lib_div::callUserFunction($funcRef,$a,$this);
+				}
+			}		
 		}
 	}
 
@@ -3590,11 +3603,16 @@ class t3lib_TCEmain	{
 	 * $cacheCmd='pages':	Clears cache for all pages. Requires admin-flag to be set for BE_USER
 	 * $cacheCmd='all':		Clears all cache_tables. This is necessary if templates are updated. Requires admin-flag to be set for BE_USER
 	 * $cacheCmd=[integer]:		Clears cache for the page pointed to by $cacheCmd (an integer).
+	 *
+	 * Can call a list of post processing functions as defined in $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] (num array with values being the function references, called by t3lib_div::callUserFunction())
 	 * 
-	 * @param	[type]		$cacheCmd: ...
-	 * @return	[type]		...
+	 * @param	string		The cache comment, see above description.
+	 * @return	void
 	 */
 	function clear_cacheCmd($cacheCmd)	{
+		global $TYPO3_CONF_VARS;
+		
+			// Clear cache for either ALL pages or ALL tables!
 		switch($cacheCmd)	{
 			case "pages":
 				if ($this->admin || $this->BE_USER->getTSConfigVal("options.clearCache.pages"))	{
@@ -3613,11 +3631,20 @@ class t3lib_TCEmain	{
 				}
 			break;
 		}
+			// Clear cache for a page ID!
 		if (t3lib_div::testInt($cacheCmd))	{
 			if (t3lib_extMgm::isLoaded("cms"))	{
 				$res = mysql(TYPO3_db,"DELETE FROM cache_pages WHERE page_id=".intval($cacheCmd));
 			}
 		}
+		
+			// Call post processing function for clear-cache:
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $funcRef)	{
+				$a =array('cacheCmd'=>$cacheCmd);
+				t3lib_div::callUserFunction($funcRef,$a,$this);
+			}
+		}		
 	}
 }
 
