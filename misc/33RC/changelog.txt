@@ -1,0 +1,87 @@
+Log from Typo33b1.3->RC
+
+
+Bugs fixed:
+- PATH_INFO bug
+- PHP 4.1.1 compliant
+- Absolute font-paths for freetype
+- Languages updated
+
+
+
+CHANGELOG_____________________________________________________________________________________:
+
+Database:
+
+TBE:
+- Upload option: overwrite existing file
+- Finished off the alternative backend: Clickmenus are there now.
+- Shortcut feature (Set User TSconfig: options.shortcutFrame=1)
+- Colored tables.
+- added upload directly in tceforms (alt_doc.php and the others...)
+- Swapped "QuickEdit" and "Columns" view so that columsn are the first thing one see... (QuickEdit has proved to be quick, but not intuitive or providing any overview...)
+- Added subtypes to $TCA config (AB only)
+- Added more options for the "select" type in $TCA (AB only)
+- Support for secondary label fields of records (that is fields, from which the label value is taken if the label field itself is empty).
+- Added "IPmaskList" to TYPO3_CONF_VARS which will allow you to specify a list of allowed-only IP numbers for backend activities.
+- Web>Records renamed back to Web>List .... just couldn't change the ingrown habit...
+- Added a two new actions to create and list records.
+- Changed a bunch of things in Web>Page module.
+- "alternative" is now DEFAULT backend. You can of course reconfigure this through TYPO3_CONF_VARS
+- Lots of work on the RTE.
+- Extended the shortcuts, included the options for admins to add global shortcuts available for some or all other users.
+- Corrected a bug in tcemain: Elements with "copyAfterDuplFields" set was not filled with the "copyAfterDuplFields" values when copied - but was when moved.
+- added a HTML-comment in the end of alt_doc.php and db_layout.php scripts which tells you why the RTE does not "work". There are SO many possibilities for it to be disabled, that this kind of debugging could come in handy...
+- Done a lot of work in the RTE. Added processing features en masse. 
+- Fixed the processing of links for the content element type "Rich Text" (and for the static_file edit feature, which recognizes relative links correctly now.)
+!!! - Added extra security BY DEFAULT which allows non-admin users to work inside their database mount ONLY. Can be disabled by TYPO3_CONF_VARS["BE"]["lockBeUserToDBmounts"]=0. But you should probably leave it on.
+!!! - $id, $SET, $imagemode, $table, $uid, $target and $type has been removed as global variable.
+
+
+
+PHP:
+- added function t3lib_div::formatForTextarea. ALL content set between <textarea>-tags should be passed through this function. If not, then if the first character in the textarea is a newline, it will be stripped away by browsers.
+!!! Changed the default behaviour of Typo3 so the tables.php file is included from t3lib/install/ by default. This means you can safely remove and stop updateting the tables.php file in typo3conf/. However if you need to include your own tables.php file, you can set the filename of your custom tables.php file in localconf.php file (see t3lib/config_default.php for details).
+- all class declarations of "loadDBgroup" was removed and objects instantiated directly from class t3lib_loadDBGroup
+- tslib_fe::makeSimulFileName() function has been added a $page and $type parameter.
+!!! - Install tool has become a phpinfo() section along with a file-editor which allows editing of ANY real file in typo3conf/ (including PHP-files!). So remember now to protect your install tool, OK!!
+- Class_rearrangement: "gifbuilder" class renamed to "tslib_gifBuilder"
+- Class_rearrangement: "gmenu", "tmenu", "imgmenu", "jsmenu" + "gmenu_foldout" and "gmenu_layers" classes renamed with prefix "tslib_"
+!!! - If you make user-defined use of the classes "pageselect" or "t3lib_pageSelect" please read on: The class "pageselect" which extended "t3lib_pageSelect" lots of places has been removed. So "pageselect" is renamed to "t3lib_pageSelect",The $where_hid_del = " AND NOT pages.deleted" was set in the parent class "t3lib_pageSelect" AS DEFAULT because I could not spot ONE single location where the extension "pageselect" was not used anyways.
+- Class "transferData" is removed and renamed to "t3lib_transferData".
+- A function, t3lib_div::makeInstance() and t3lib_div::makeInstanceClassName() are introduced. All instances of objects in Typo3 are now created with these functions. They are responsible for the new extension-concept of classes as outlined in "Inside Typo3" document. Please read that for details.
+- Fixed a bug in the TypoScript parser. Probably something which did not mean anything for most people as it had to do with not-wellformed TypoScript anyways. The bug was that the parser did not truely escape to the GLOBAL scape whenever a [GLOBAL] condition was met. It does now.
+!!! - If you have already used the class extension features as introduced in 1.9, please observe that some classes has changed names and "include-keys" in order to harmonize naming throughout the system.
+
+TypoScript/PHP
+- Removed the "__Advanced__" division for content elements-
+- Added "Divider" element for rare custom purposes
+- Changed "Modules" (frontend) into "Plugins" throughout!
+- Removed other dividers in selector box lists.
+- Fixed bug in the up/down buttons of the front end edit panel.
+- TSparser: The special [global] (or [GLOBAL]) condition will at anytime break TypoScript parsing within braces and return to the global scope. Will not affect anything if your TypoScripts are sound and "well-formed".
+- Added the option of disabling type=0 values in simulate_staticdocument filenames.
+- Added automatic redirection of PATH_INFO errors....
+- Fixed bug with Language overlay and menus.
+- Added field "nav_title" to pages-table. This is meant as an alternative page title used in navigation, if present. For TMENU's this is working out of the box, but for GMENU's you must change your lines of TEXT objects to fetch the content the fields nav_title,title in that order of priority. You do that by: ".... text.field = nav_title // title" instead of the current typical setup ".... text.field = title"
+- Added support for auto-mounting of fe_groups based on IPmasks in TYPO3_CONF_VARS
+- Added an option like "Hide at login", called "Show at any login" which works just opposite: Showing the element when ANY user is logged in (regardless of group)
+- Added TypoScript condition "loginUser"
+- Added default TypoScript (setup/constants) value in TYPO3_CONF_VARS
+- !!! Added new DEFAULT rendering of bodytext content. New thing is that each line is always wrapped in <P>...</P> tags. You can disable this behaviour by setting the TypoScript constant "content.RTE_compliant = 0" if this is a problem for you. If it is, please make sure to tell me WHY it is a problem, because without this way of rendering you might have equally big trouble (if you are using the RTE of course...)
+
+
+media/scripts:
+
+Static_templates
+
+Applications:
+
+Search/Replace:
+!!! Most default tables has been moved from tables.php to other files so they load as "dynamic tables" which is a new concept introduced. That means, BEFORE YOU DO ANY operations on the $TCA array of tables which is not the "pages"-table and which is not an operation on the [ctrl] part of the array, you must call this function, t3lib_div::loadTCA($tablename), in order to make sure the full description in $TCA is loaded. This is true for both backend (primarily) and frontend (secondarily) applications.
+
+
+
+
+
+...AND MANY OTHER SMALLER CHANGES....

@@ -1,0 +1,33 @@
+
+- class tslib_timetrack moved to t3lib_timetrack
+- GENERALLY use of XCLASS configuration for extending backend classes: Please check that the scripts you have extended has not moved! Lots of scripts has moved!
+- If you include classes which are not found in t3lib/ but rather in other locations in the source, the class might have moved to another location inside an extension.
+- !!! This will affect most people: The scripts in media/scripts/ for such as tt_board, tt_calender, tt_guest, tt_links, tt_news, tt_poll, tt_products, tt_rating, tipafriend, direct_mail_subscription, feuser_admin HAS BEEN REMOVED! In the future you should use these plugins as extension, so simply enable the extension corresponding to the function you used and you are set again. You can also move the files back if you wish. They are found in misc/3.0.0/oldscripts/
+- People using the getPageShortcut() method in tslib_fe should change the parameter order. Most likely nobody uses that method...
+
+
+CMS/TypoScript:
+- added menu state ACTIFSUB
+!!! - GMENU_LAYERS has be heavily redesigned and may need testing. Please be careful with an update if you use GMENU_LAYERS. Test first if the new version does not affect your menu with a bug. If it does, please report it. If everything goes well, don't worry.
+- GMENU_LAYERS has been extended to support non-absolute menus, cascading menus, multiple menus on a page. Further TMENU_LAYERS has been introduced as a near-indentical copy of GMENU_LAYERS.
+- Spam encryption of typolink-email addresses has been added (config-option)
+- New option in TypoScript: Includes: YOu can now just like with conditions add an include directive on a single line in TypoScript. It's all described in TSref, but for interested people it looks like this: <INCLUDE_TYPOSCRIPT: source="FILE: fileadmin/html/mainmenu_typoscript.txt">  - and this would then read given file and insert it into the template at that particular position.
+!!!- stdWrap.prepend and stdWrap.append were switched around in the source and that bug is now corrected. This will affect sites using this feature!
+- Added new options for shortcut-doktype: Shortcut to first subpage (makes it possible to swap start-page with hidden/starttime events.) and shortcut to random subpage (allows for random "page rotation")
+- Added option in page-header to set another PID for content display. So a page simply gets the content records from another page!
+- Fixed what might have been inconsistencies in selection of menu items. Consistently doktypes 5 and 6 are now excluded from menus (tslib_menu class)
+- Added base64 encoding on most plain text system mails including new "URL-cache"/redirection mechanism for long urls (more than 76 chars) in emails.
+!!- stdWrap.crop was not working correctly if using negative crop numbers and a "appendstring" - the string was PREpended and now it has been - as the TSref says - appended.
+
+SYSTEM:
+- Registers save-buttons with isset() instead of value. This should make totally sure that the pressed button is registered and that you can use Return to save forms. Please report if some browsers/PHP-versions does not do this correctly.
+- yet again had to fix wrapping for textareas throughout... Remember to always use a ->formWidthText() method for setting cols/rows/style parameters of textarea-fields.
+- Has changed the flag TYPO3_CONF_VARS["BE"]["usePHPFileFunctions"] to one (always use PHP-functions for filehandling)
+- Removed method "split_attributes()" from t3lib_div since it seemed not to be used anywhere
+- t3lib_BEfunc::siteUrl() has been discarded. Use t3lib_div::getIndpEnv("TYPO3_SITE_URL") instead to get the URL of the Typo3 website (notice this functions prepends the scheme, eg. "http://..."
+- alt_clickmenu.php?item= parameter list i delimited by "|", not ":" anymore. That goes for the Clipboard elements as well!
+ - Image control flags "TTFdpi", "im_imvMaskState", "gdlib_2" and "im5effects" has been added and will help you to configure TYpo3 for use with the most recent ImageMagick versions, GDlib 2 and FreeType 2
+ 
+ 
+ 
+ ... OK this changelog.txt is highly incomplete. Sorry for that.

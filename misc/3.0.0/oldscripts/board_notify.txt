@@ -1,0 +1,16 @@
+###SUBJECT_PREFIX### '###HOST###'
+Hello,
+
+###AUTHOR### (###AUTHOR_EMAIL###) ###DID_WHAT### ###HOST###.
+
+This thread is located at:
+
+###URL###
+
+Text Snippet:
+
+~~~
+Subject: ###SUBJECT###
+Content:
+###BODY###
+~~~

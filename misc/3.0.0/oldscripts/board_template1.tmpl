@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<TITLE>Board example template</TITLE>
+</head>
+
+<body>
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<H1>BOARD TEMPLATES</H1>
+<h2>EXAMPLE 1 - LIST style</h2>
+
+
+
+<br>
+<br>
+<br>
+<pre>
+<strong>Global markers, as set up in TypoScript:</strong>
+These are substituted throughout the whole template.
+
+GW1B / GW1E
+GW2B / GW2E
+GW3B / GW3E
+
+GC1
+GC2
+GC3
+GC4
+</pre>
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_OVERVIEW</h3>
+<em>This is the template for the overview of categories and forums.</em><br>
+<pre>
+
+// Category Markers:
+CATEGORY_TITLE
+CATEGORY_DESCRIPTION 
+CATEGORY_FORUMNUMBER
+
+// Category subparts:
+LINK
+
+
+// Forum Markers:
+FORUM_POSTS
+FORUM_THREADS
+FORUM_TITLE
+FORUM_DESCRIPTION
+
+LAST_POST_DATE,
+LAST_POST_TIME
+LAST_POST_AUTHOR
+LAST_POST_AGE
+
+// Forum subparts:
+LINK
+LINK_LAST_POST
+
+
+// Post Markers:
+POST_TITLE  // include link
+POST_CONTENT
+POST_REPLIES
+POST_AUTHOR
+
+POST_DATE,
+POST_TIME
+POST_AGE
+
+// Post Subparts:
+LINK
+</pre>
+<br>
+<br>
+
+
+<!-- ###TEMPLATE_OVERVIEW### begin 
+	This is the template for the overview of categories and forums.
+-->
+<TABLE cellpadding="4" cellspacing="1" border="0" width="98%">
+	<TR bgcolor="###GC3###">
+		<TD>&nbsp;</TD>
+		<TD valign="bottom">###GW3B### <B>Forum</B> ###GW3E###
+		</TD><TD nowrap valign="bottom" align="center"><B>###GW3B### Posts ###GW3E###</B></TD>
+		<TD nowrap valign="bottom" align="center"><B>###GW3B### Threads ###GW3E###</B></TD>
+		<TD nowrap valign="bottom" align="center">###GW3B### <B>Last Post</B>###GW3E###</TD>
+	</TR>
+	<!-- ###CONTENT###  begin
+		This is the part of the template substituted with the list of categories and forums: 
+	-->
+		<!-- ###CATEGORY### begin
+			Template for the category title 
+		-->
+			<TR bgcolor="###GC4###">
+				<TD colspan="5"><B>###GW2B###<font color="#FFFFFF"><!--###LINK###-->###CATEGORY_TITLE###<!--###LINK###--></FONT>###GW2E###</B></TD>
+			</TR>
+		<!-- ###CATEGORY###  end -->
+		<!-- ###FORUM### begin
+			Template for the display of forum information 
+		-->
+			<TR>
+				<TD bgcolor="###GC2###" align="center" valign="top"><IMG src="clear.gif" width=20 height=1 border="0"></TD>
+				<TD bgcolor="###GC2###" valign="top">###GW1B### <B><!--###LINK###-->###FORUM_TITLE###<!--###LINK###--></B>###GW1E###<BR>###GW2B### ###FORUM_DESCRIPTION### ###GW2E###</TD>
+				<TD bgcolor="###GC1###" align="center" valign="top" nowrap>###GW1B### ###FORUM_POSTS### ###GW1E###</TD>
+				<TD bgcolor="###GC2###" align="center" valign="top" nowrap>###GW1B### ###FORUM_THREADS### ###GW1E###</TD>
+				<TD bgcolor="###GC1###" nowrap valign="top" align="center">###GW2B### <!--###LINK_LAST_POST###-->Last Post!<!--###LINK_LAST_POST###--> ###LAST_POST_DATE### ###LAST_POST_TIME###<BR>###LAST_POST_AUTHOR### - ###LAST_POST_AGE### ###GW2E###</TD>
+			</TR>
+		<!-- ###FORUM### end-->
+		<!-- ###POST### begin
+			Template for the display of latest posts of a forum 
+		-->
+			<TR>
+				<TD align="center" valign="top">NEW!</TD>
+				<TD valign="top"><!--###LINK###-->###GW1B### <B>###POST_TITLE###</B>###GW1E###<!--###LINK###--><BR>###GW2B### ###POST_CONTENT### ###GW2E###</TD>
+				<TD align="center" valign="top" nowrap>###GW1B### ###POST_REPLIES### ###GW1E###</TD>
+				<TD align="center" valign="top" nowrap>###GW1B### &nbsp; ###GW1E###</TD>
+				<TD nowrap valign="top" align="center">###GW2B### ###POST_DATE###  ###POST_TIME###<BR>###POST_AUTHOR### ###GW2E###</TD>
+			</TR>
+		<!-- ###POST### end-->
+	<!-- ###CONTENT###  end -->
+</TABLE>
+<!-- ###TEMPLATE_OVERVIEW### end -->
+
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_FORUM</h3>
+<em>Template for listing of items in a single forum.</em><br>
+<pre>
+
+
+// Post Markers
+POST_THREAD_CODE
+POST_TITLE 
+POST_CONTENT
+POST_REPLIES
+POST_AUTHOR
+
+POST_DATE
+POST_TIME
+POST_AGE
+
+LAST_POST_DATE
+LAST_POST_TIME
+LAST_POST_AUTHOR
+LAST_POST_AGE
+
+
+// Post Subparts
+LINK
+LINK_LAST_POST 
+
+</pre>
+<br>
+<br>
+
+<!-- ###TEMPLATE_FORUM### begin
+	Template for listing of items in a single forum.
+-->
+<TABLE border="0" cellpadding="4" border="0" cellspacing="1" width="98%">
+	<TR bgcolor="###GC3###">
+		<TD colspan="3"></TD>
+		<TD align="center" nowrap>###GW3B### <B>Thread Starter</B> ###GW3E###</TD>
+		<TD align="center">###GW3B### <B>Replies</B> ###GW3E###</TD>
+		<TD align="center" nowrap>###GW3B### <B>Last Post</A></B> ###GW3E###</TD>
+	</TR>
+	<!-- ###CONTENT### begin -->
+		<!--###POST### begin -->
+			<TR>
+				<TD align="center" bgcolor="###GC2###">(icon?)</TD>
+				<TD align="center" bgcolor="###GC2###" width="0" height="0"></TD>
+				<TD bgcolor="###GC2###" width="100%">###GW1B### <!--###LINK###-->###POST_TITLE###<!--###LINK###--><BR>###GW1E###</TD>
+				<TD align="center" bgcolor="###GC1###" nowrap>###GW1B### ###POST_AUTHOR### ###GW1E###</TD>
+				<TD align="center" bgcolor="###GC2###">###GW1B### ###POST_REPLIES### ###GW1E###</TD>
+				<TD bgcolor="###GC2###" nowrap>###GW2B### <!--###LINK_LAST_POST###-->Last post<!--###LINK_LAST_POST###--> ###LAST_POST_DATE### ###LAST_POST_TIME### by ###LAST_POST_AUTHOR### - age: ###LAST_POST_AGE### ###GW2E###</TD>
+			</TR>
+		<!--###POST### end -->
+	<!-- ###CONTENT###  end -->
+<form action="###FORM_URL###" method="POST">
+	<TR bgcolor="###GC1###">
+		<TD colspan=6 nowrap>###GW1B###<B>Searching: </B>###GW1E###<input type="text" name="tt_board_sword" value="###SEARCH_WORD###">	<input type="submit" value="Search in the board">
+		</TD>
+	</TR>
+</form>	
+</TABLE>
+<!-- ###TEMPLATE_FORUM### end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_THREAD</h3>
+<em>Template for the listing of a the posts in a thread.</em><br>
+<pre>
+
+// General subparts
+LINK_BACK_TO_FORUM
+LINK_FIRST_POST
+LINK_PREV_THREAD
+LINK_NEXT_THREAD
+
+// General markers
+FORUM_TITLE
+
+// Post Markers
+POST_THREAD_CODE
+POST_TITLE 
+POST_CONTENT
+POST_REPLIES
+POST_AUTHOR
+POST_AUTHOR_EMAIL
+
+POST_DATE,
+POST_TIME
+POST_AGE
+
+// Post subparts
+LINK
+LINK_PREV_POST
+LINK_NEXT_POST
+
+</pre>
+<br>
+<br>
+
+
+<!-- ###TEMPLATE_THREAD### begin
+	Template for the listing of a the posts in a thread.
+-->
+<TABLE width="98%" border="0" cellspacing="1" cellpadding="4">
+	<TR bgcolor="###GC3###">
+		<TD valign="middle" width="175" nowrap>###GW3B###<B>Author</B>###GW3E###</TD>
+		<TD valign="middle" width="100%">&nbsp;</TD>
+	</TR>
+	<!-- ###CONTENT###  begin -->
+		<!--###POST### begin -->
+			<TR bgcolor="###GC1###">
+				<TD width="175" valign="middle" height="16" nowrap>###GW2B### ###POST_DATE### ###POST_TIME### ###GW2E###</TD>
+				<TD valign="middle">###GW1B### ###POST_TITLE### ###GW1E###</TD>
+			</TR>
+			<TR bgcolor="###GC1###">
+				<TD width="175" valign="top" nowrap>
+					###GW1B### <B>###POST_AUTHOR###</B>###GW1E###<BR>
+				</TD>
+				<TD valign="top">
+					###GW1B### ###POST_CONTENT### ###GW1E###
+				</TD>
+			</TR>
+		<!--###POST### end -->
+		<!--###POST_1### begin -->
+			<TR bgcolor="###GC2###">
+				<TD width="175" valign="middle" height="16" nowrap>###GW2B### ###POST_DATE### ###POST_TIME### ###GW2E###</TD>
+				<TD valign="middle">###GW1B### ###POST_TITLE### ###GW1E###</TD>
+			</TR>
+			<TR bgcolor="###GC2###">
+				<TD width="175" valign="top" nowrap>
+					###GW1B### <B>###POST_AUTHOR###</B>###GW1E###<BR>
+				</TD>
+				<TD valign="top">
+					###GW1B### ###POST_CONTENT### ###GW1E###
+				</TD>
+			</TR>
+		<!--###POST_1### end -->
+	<!-- ###CONTENT###  end -->
+	<TR>
+		<TD colspan=2><!--###LINK_BACK_TO_FORUM###-->###GW2B### <B>< BACK TO FORUM</B> ###GW2E###<!--###LINK_BACK_TO_FORUM###--></TD>
+	</TR>
+</TABLE>
+<!-- ###TEMPLATE_THREAD### end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<TITLE>Tip-a-Friend example template</TITLE>
+</head>
+
+<body>
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<H1>Tip-a-Friend</H1>
+<h2>EXAMPLE</h2>
+
+
+<br>
+<br>
+<br>
+<pre>
+<strong>Global markers, as set up in TypoScript:</strong>
+These are substituted throughout the whole template.
+
+<em>Markers:</em>
+GW1B / GW1E
+GW2B / GW2E
+GW3B / GW3E
+
+GC1
+GC2
+GC3
+GC4
+</pre>
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_TIPFORM</h3>
+<em>This is the template for the form where the user enters the email addresse of the recipient.</em>
+<br>
+<br>
+<br>
+<br>
+<!-- ###TEMPLATE_TIPFORM### begin
+	This is the template for the form where the user enters the email addresse of the recipient.
+-->
+<TABLE cellpadding="4" cellspacing="1" border="0">
+<form action="###FORM_URL###" method="POST">
+	<TR bgcolor="###GC3###">
+		<TD align="center" colspan=3>###GW1B### <font color="#FFFFFF"><B>Send et tip:</B></FONT>###GW1E###</TD>
+	</TR>
+	<TR bgcolor="###GC1###">
+		<TD colspan=3 align=center>###GW1B###Du sender nu dette link til en andens email adresse:###GW1E###<BR><br>
+		###GW2B###<a href="###URL###" target="_blank">###URL_SPECIALCHARS###</a>###GW2E###</TD>
+	</TR>
+<!--###ERROR_MSG### this subpart is removed if the form has no errors! -->
+	<TR bgcolor="###GC1###">
+		<TD colspan=3 align=center bgcolor=red>###GW1B###<font color=white><strong>Fejl!</strong><BR>Enten har du ikke udfyldt alle påkrævede felter eller også var email adressen ikke en korrekt email.</font>###GW1E###</TD>
+	</TR>
+<!--###ERROR_MSG###-->
+	<TR bgcolor="###GC1###">
+		<TD>###GW1B###Dit navn: *###GW1E###</TD>
+		<TD></TD>
+		<TD><input type="text" size=30 name="TIPFORM[name]" value="###YOUR_NAME###"></TD>
+	</TR>
+	<TR bgcolor="###GC1###">
+		<TD>###GW1B###Din email: *###GW1E###</TD>
+		<TD></TD>
+		<TD><input type="text" size=30 name="TIPFORM[email]" value="###YOUR_EMAIL###"></TD>
+	</TR>
+	<TR bgcolor="###GC1###">
+		<TD>###GW1B###Modtager email: *###GW1E###<BR>###GW2B###(Flere modtagere kan adskilles med komma)###GW2E###</TD>
+		<TD></TD>
+		<TD><input type="text" size=30 name="TIPFORM[recipient]" value="###RECIPIENT###"></TD>
+	</TR>
+	<TR bgcolor="###GC1###">
+		<TD>###GW1B###Besked:###GW1E###</TD>
+		<TD></TD>
+		<TD><textarea cols=30 rows=4 name="TIPFORM[message]">###MESSAGE###</textarea></TD>
+	</TR>
+	<TR bgcolor="###GC2###">
+		<TD>###GW2B###(Du <u>skal</u> udfylde eller felterne med * korrekt!)###GW2E###</TD>
+		<Td></TD>
+		<TD><input type="submit" name="submit" value="Send"><input type="hidden" name="tipUrl" value="###URL_SPECIALCHARS###"><input type="hidden" name="sendTip" value="1"></TD>
+	</TR>
+</form>
+</TABLE>
+<!-- ###TEMPLATE_TIPFORM### end -->
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_TIPFORM_SENT</h3>
+<em>This is the template for the 'is-sent' display.</em>
+<br>
+<br>
+<br>
+<br>
+<!-- ###TEMPLATE_TIPFORM_SENT### begin
+	This is the template for the 'is-sent' display.
+-->
+<br>
+<br>
+###GW1B###
+<strong>Besked sendt til:<BR><br>
+<em>###RECIPIENT###</em></strong><br>
+<br>
+<!--###LINK###-->Gå tilbage<!--###LINK###-->
+###GW1E###
+<br>
+
+<!-- ###TEMPLATE_TIPFORM_SENT### end -->
+
+
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_TIPLINK</h3>
+<em>This is the template for the link to the tip-page</em>
+<br>
+<br>
+<br>
+<br>
+<!-- ###TEMPLATE_TIPLINK### begin
+	This is the template for the form where the user enters the email addresse of the recipient.
+-->
+<br>
+<br>
+<!--###LINK###-->###GW1B###<strong>Klik her for at sende et tip om denne side til en ven!</strong>###GW1E###<!--###LINK###-->
+
+<!-- ###TEMPLATE_TIPLINK### end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_EMAIL</h3>
+<em>
+Template for the plain link notification email.
+First line is used as subject for the mail.<br>
+</em><br>
+<br>
+<br>
+<pre>
+<!-- ###TEMPLATE_EMAIL### begin
+	Template for the plain link notification email.
+	First line is used as subject for the mail.
+-->
+Tip en ven
+
+###YOUR_NAME### (###YOUR_EMAIL###) har sendt dette link til dig:
+
+###URL###
+
+
+Denne besked fulgte med:
+###MESSAGE###
+
+
+Venlig hilsen
+
+<!-- ###TEMPLATE_EMAIL### end -->
+</pre>
+
+
+
+
+
+</BODY>
+</HTML>

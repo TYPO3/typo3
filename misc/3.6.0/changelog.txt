@@ -1,0 +1,10 @@
+TYPO3 3.5.0RC
+
+- Raised the PHP version requirement from 4.0.3 to 4.0.6
+- Added more security to the encoding of the parameters sent to showpic.php and thumbs.php
+- Added streamlined checking of paths, that they don't contain ".." chars. Affects file module, mount paths, edit file in install tool, file references in TypoScript.
+- Increased checking on which files thumbs.php is allowed to read. Now only files in PATH_site and files in the lockRootPath (works on windows?)
+- Added a pattern that if it matches a filename in webspace will deny it's creation or renaming. $GLOBALS["TYPO3_CONF_VARS"]["BE"]["fileDenyPattern"] is the pattern. Applies to the module File>List (through the classes class.t3lib_basicfilefunc.php) and TCE (tcemain uses basicfilefunc as well! And TCE controls all backend uploads for regular users) and fe_adminLib (which controls stuff autonomous). 
+- Added a new menu item to the DBint module which allows you to search for a filename in the webroot (PATH_site) of an installation of TYPO3. This allows you to search for files with extensions or names compromising security. 
+- Support for PHP 4.3.0: It *seems* to work (even with PHP5) but I had 1) a problem with MySQL which is still undefined and 2) the bundled GD library makes my Install Tool Crash - so we are back to the famous situation from last summer where people will complain about TYPO3 crashing PHP - while this is not OUR fault but PHPs fault! Opposite to last summer we are checking every single possible thing we can before we call the imagecreate functions in a last desperate hope to verify PNG support - but that will crash PHP. Great. There will be a lot of yelling and screaming now... Workaround: Open the file typo3/t3lib/class.t3lib_install.php, go to line 2042, make the function isPNG() return "0" hardcoded. Now your install tool will work with PHP 4.3.0 if it crashed before.
+

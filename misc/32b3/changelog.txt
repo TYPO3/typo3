@@ -1,0 +1,65 @@
+Database:
+Removed the cache_search table. Never used, will be substituted with the indexing feature.
+Added key to tt_board so selects on pid,parent is done quicker. Very important if you have many, many posts in one pid (On typo3.com it improved performance from 20 sec. to 1.6 sec with 12000+ posts in one forum...)
+
+TBE:
+Made it work with NN6.1 ! Use it, support it!
+Added cool Search/query/export module in Tools>DBint>Search
+Got a whole lot further with the mailing module. Now it works.
+Initial work on a indexed-search module. Displays stats at this time which is not so usefull yet.
+
+PHP:
+Changed the filenames class.t3lib_basicfilefunctions.php and class.t3lib_extfilefunctions.php to ...filefunc.php. Filenames in Typo3 are not supposed to be longer than 31 chars now.
+Login: $TYPO3_CONF_VARS["BE"]["warning_mode"] added so you can get admin notification emails EVERY time a user logs in.
+Added a new script, superadmin.php, in misc-folder. Really interesting tool for those with many Typo3 sites to administrate.
+updateforms.js was bugfixed for the way checkboxes were set.
+
+TypoScript/PHP
+Fixed v32 upgrade related bug in matchcondition class, which prevented caching under certain circumstances
+GMENU_LAYERS:  (Rene Fritz) If you used 'displayActiveOnLoad' the active layer was initialized with xy:0,0 and not with the coordinates of mouseover. This was a bug, I think. I fixed this.
+GMENU_LAYERS:  (Rene Fritz) The hiding of layers (mouseout) is now done with a timer. 'hideMenuTimer = 1000' sets a timeout of one second. This means if you move the mouse away the submenu is not hidden suddenly but after one second. This should give a more smooth handling.
+GMENU_LAYERS: Major restructuring done by Kasper. JavaScript functions and variables are renamed. The behaviour of displayActiveOnLoad and freezeMouseover have changed and may affect your site. But certainly you can configure your way out of it.
+Added user-function option for typolinks.
+GMENU_FOLDOUT and GMENU_LAYERS: The function and variable naming has been harmonized, which means prefixed with GF_/GFV_ and GL_/GLV_ respectively
+removed check for global jumpurl_enable settings in tslib_cobj->filelink()
+Added optional secure download to the ->filelink function (jumpurl feature)
+Added alternativeSortingField as order-by for special menus "keywords" and "updated" plus added "starttime" as mode option for those two.
+Added directReturn property to TypoScript ->if function
+Added new stdWRap property addParams for adding properties to tags in the content.
+Fixed bug with unique filenames in relation to using the .m properties of imgResources (masking): Filename *could* be non-unique, if the mask images was GIFBUILDER types using stdWrap to fetch a value like background color. Then filenames would be the same no matter the background color.
+Extended OTABLE and offsetWrap x,y format to x,y,r,b,w,h !
+Added "slide" parameter to leveltitle, leveluid, levelmedia data types.
+Added .nonTypoTagUserFunc and .nonTypoTagStdWrap properties to parseFunc. Added .breakoutTypoTagContent to ->tags objects (also parseFunc related). Restructured things in parseFunc.
+Change processParams in tslib_cObj so lines starting with # and / are now comments.
+Added EXPLAIN SELECT flag in adminPanel>TypoScript. Used with boardLib.inc only at this time. 
+Added .splitChar property to wrap, wrap2 and wrap3 properties in stdWrap
+
+
+media/scripts:
+Modified productsLib.php according to Rene Fritz's recommendations + some more.
+Finished media/scripts/newsLib.inc (tt_news) (at least the first version...)
+Added media/scripts/tipafriendLib.inc which provides a way to let people send a tip by email to a friend of theirs about a page on the site.
+Added media/scripts/tt_rating* which are developed by Rene Fritz
+Heaps of changes in fe_adminLib plus full documentation in TSref.pdf
+
+
+Static_templates
+plugin.meta: selectorbox Language keys has changed to Internet Explorer defaults from the previous strange and unknown format.
+Added description field to filelinks (content element type "Upload"). Each line is a description. There must be defined a wrap for the description for it to show up!
+Changed cSet stylesheet and the default stylesheet was changed a bit.
+!!!Changed styles.gmenu_layer.green so that the text offset of the first menu item is separately defined. This will affect any sites using the standard template GREEN! Sorry for this change. Better now than later.
+
+
+Applications:
+Added an info display in the freesite application so you can see a full list of features for a template!
+
+Search/Replace:
+
+GENERAL: 
+Prepended all file-functions with @:
+--search
+([^@>])(is_dir|is_file|file_exists|is_writeable)([[:space:]]*\()
+--replace
+\1@\2\3
+
+Changed all use of <img alt=".."> to <img title=".."> where alt was carrying information (backend)

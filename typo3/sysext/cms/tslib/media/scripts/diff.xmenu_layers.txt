@@ -1,0 +1,36 @@
+The files gmenu_layers and tmenu_layers should be exactly the same except
+these differences:
+
+
+
+
+
+
+28c28
+<  * GMENU_LAYERS extension classs
+---
+>  * TMENU_LAYERS extension classs
+37c37,40
+< class tslib_gmenu_layers extends tslib_gmenu {
+---
+> class tslib_tmenu_layers extends tslib_tmenu {
+> 
+> 
+> // FULL DUPLICATE FROM gmenu_layers BEGIN:
+39d41
+< // FULL DUPLICATE TO tmenu_layers BEGIN:
+411d412
+< // FULL DUPLICATE TO tmenu_layers END:
+413c414,417
+< $GLOBALS["TSFE"]->tmpl->menuclasses.=",gmenu_layers";
+---
+> // FULL DUPLICATE FROM gmenu_layers END:
+> 
+> 
+> $GLOBALS["TSFE"]->tmpl->menuclasses.=",tmenu_layers";
+415,416c419,420
+< if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["media/scripts/gmenu_layers.php"])	{
+< 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["media/scripts/gmenu_layers.php"]);
+---
+> if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["media/scripts/tmenu_layers.php"])	{
+> 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["media/scripts/tmenu_layers.php"]);

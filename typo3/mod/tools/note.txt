@@ -1,0 +1,11 @@
+NOTE:
+
+The mod/tools/ section is meant to be for admin-users ONLY (where the admin-flag is set), so all access configurations should be set to "admin"
+If you want access-minded modules for ordinary users, the mod/user module is suggested.
+
+All language labels (except module name and short description in the $conf-files) are in english for administrators.
+
+
+- kasper
+
+(5/12 2001, reviewed 2003/2)

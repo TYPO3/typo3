@@ -1,0 +1,151 @@
+CHANGELOG, rc2
+
+
+
+Database:
+tt_products:
+!!! FIELD_VALUE changed to FIELD_QTY
+two tables, sys_log and cache_pages had a field, "data" which is renamed in order to comply with MySQL reserved words definitions.
+changed a bunch of tinytext fields to text-fields. That means they can hold more content.
+changed a lot of tinytext/text fields into tinyblob/blob types. It's regarded more correct to use blob for fields which is not used for case insensitive search.
+Added title,zip,city,country,www,company and image field to fe_user.
+added description field to tt_address
+ADDED abstract-field to pages.
+added www-field to guestbook and implemented it in the default template
+added ordered field (for counting number of ordered items) and fe_group field for access-control on products!
+added field to sys_template so you can choose to include the basedOn template before the static_templates.
+added fields in be_users/fe_users + groups for TypoScript style configuration of user-values.
+!!! NOTICE ABOUT DATABASE UPGRADE: This update of the database is both system related and standard-database related. If you do not use the standard database exclusively you should delete all lines in this document that makes changes to tables, you're not using!!! After the final release updates will be published in separate files.
+added new table, sys_subscriber for subscribtion to news-letters.
+Changed tablenames to lowercase. You can update manually or use the install tool to delete the old tables and create the new ones. DON'T use the install tool if you have orders in sys_products_orders table!!! (but changes are, you haven't):
+# alter table cache_pageSection rename cache_pagesection;
+# alter table sys_products_orders_MM_tt_products rename sys_products_orders_mm_tt_products;
+
+tables.php:
+Changed max size of tt_content media and multimedia fields from 2000 kb to 10000 kb.
+Changed max number of basis-template to 50 (from 5)
+(see above, addition of fields)
+
+TBE (Typo3 Backend Interface):
+Added "Save and close document" instead of "Save all documents". Configurable from "User"-module though. Also added three icons in Dok-module: "Save", "save and close" and "close"
+Added "View document" icon
+added new options in user-config; Rich Text editor, uploads in doc-module, number of default content records to edit when "Edit page", wide document background.
+added editfile and newfile functions in File-module for creating txt-files with these extensions: txt,html,htm,css,inc,php,php3,tmpl,js,sql (configurable from TYPO3_CONF_VARS)
+Improvements in the TS module: You can now create templates and extensions as well as upload resources directly in the constant editor. You can also select which template from a page to work with. You can also create new text-based resources directly and make copies of resources from bAsed-on templates. Good if you want to modify a stylesheet or html-template file.
+Added new options to GMENU rendering: You can now specify all menuitems to be as wide as the largest of them all.
+Removed some options from the user-module. They are still available through TSconfig for users/groups, but considered too irrelevant for display in the user-setup screen. The advanced options are still only available for editing for admin-users, but through TSconfig they may be assigned to regular users.
+recursiveDelete and copyLevels are available for all user-types.
+Fixed bug in TS_browser with bad constant substitution.
+Fixed referer-problem with MSIE5.0 in backend when issuing copy/delete/move actions.
+New module "Welcome" set up as default module for users. This has a series of animations explaining key concepts in Typo3.
+
+PHP:
+Changed t3lib/tsparser.php , line 457 to		$splitCount = intval($splitCount);
+Change t3lib/load_interface_mod so it doesn't compare array with string.
+Added $GLOBALS["TYPO3_CONF_VARS"]["BE"]["defaultPermissions"] to tce_main in order to configure Typo3 to use other default permissions than 31,27,0. See t3lib/tce_main.php + typo3/init.php
+Added secondary parameter to function FORM in tslib/content.php for better PHP-script use of the FORM cObject.
+Added alternative option in t3lib/userauth_groups that user-home dirs without prepended username will also mount (that is dirname is only be_user uid, just like groups)
+Changed stdlib/trimExplode() so that only really blank values (only " and not zero) is regarded empty.
+Added compression to the backend php-scripts. This is disabled by default, but can be enabled in the TYPO3_CONF_VARS[BE][compressionLevel] array.
+Spanish language added, Dutch language added.
+Added option in sys_template for including the static_template after the basedOn template. Usefull for "plugin"-records from static_template.
+Added TypoScript style configuration values in be_/fe_user + _groups
+Changed display of the language labels layout in setup-module
+Added config option, $GLOBALS["TYPO3_CONF_VARS"]["BE"]["maxFileSize"], for configuration of max fileoperation file sizes.
+Fixed stuff in stdlib/htmlmail.php. Hopefully it works with Outlook
+Fixed bug in t3lib/transferdata.php with "path to file"
+Changed name of function exGV() to GPvar() (see stdlib/standard.php)
+Added page not found handling. See TYPO3_CONF_VARS in config_default.php
+added option for overriding default config value for be_users from TYPO3_CONF_VARS["BE"]["defaultUC"]
+added subgroups to BE user authetication (class.t3lib_userauthgroup.php)
+added TSconfig parsing for backend users/groups which allows you to configure additional values for users using TypoScript syntax (without conditions though). See adminguide document for options!
+!!!added lots of new options for TCE, see "Inside Typo3", section "tables.php". Among others: M-M relations, copying is able to remap-references to records if the referer records were copied themselves.
+changed slightly on the way permissions work (about moving pages) plus corrected some bugs in TCE, See "Admin guide" document for a description.
+!!!changed userauth so the user-pid is checked at login. This means that fe_users must be configured in TypoScript to be in a specific pid. Or you must add the sysFolder with the users as the second page in the "Send to page" box of the login form (this overrides the template config)
+Disabled using root-level as a page-record in record-selector boxes. This should not affect anything probably.
+Set error_reporting to the PHP4 default in all scripts.
+Added further protection for objects resources,sitetitle and types in Template TypoScript
+Added support for 'chained' page shortcuts (that is a page refering to another page refering to another page.... support). Originally this would accept only one step.
+
+
+
+PHP/TypoScript related:
+!!! Changed tslib/content.php to include mp3 in function MULTIMEDIA and also not set the usual size of the player (height=16, width=200)
+Changed tslib/content.php , function typolink() so that internal links to same page with sectionIndex only shows sectionIndex, eg "#123" instead of "id=1/type=2#123" (only if there are no other parameters than id and type though)
+tslib/gifbuilder: transparentColor option now takes only one color and not multiple. This feature didn't work anyway...
+!!! Changed the current record of the stdWrap function in TMENUITEMS so current record is more logically the menu item and not the current page. This means you MAY have to change your template if you depend on the page-record in TMENU's. See TSref/TMENUITEM for details.
+Added stdWrap property for PAGE objects
+Added offsetWrap as property for the stdWrap function
+Added GMENU_FOLDOUT extension in media/scripts as a new menutype. See TSref.pdf
+GMENU_LAYERS is now NN6 compatible. Also added alignment-options
+Changed stuff in tslib/media/scripts/gmenu_layers.php so that it's compatible with Opera and NN6. Also a lot of new options is added like up- and left-ward alignment
+Added support for PATH_INFO in simulateStaticDocuments (for windows users this is especially interesting and recommended!)
+Added support for class_gzip_encode.php written by Sandy McArthur, Jr. <Leknor@Leknor.com>. This compresses the output HTML-code for less trafic and faster download
+Added .lang-property to stdWrap and ->config object
+In typolink function, added support for linking to other domains in same database
+Added maxWidth option to GIFBUILDER TEXT-object.
+Added "userdefined" as special-value for HMENU cObjects. This enables you to include your own PHP-script for generating an array of menu-items for use with GMENU/TMENU/IMGMENU and so on! (THanks Olaf)
+Added .setKeywords to special-value "keywords" for HMENU cObjects. Lets you override the keywords of the page for context-menus there. Thanks Rene and Stephan.
+Added more options to GMENU_LAYERS
+Inverse the order of printing the content and putting the statistics in logfile/database in index_ts.php
+Added two new PHP_SCRIPT cObjects: PHP_SCRIPT_EXT and _INT. Please read more in TSref. These possibilities lets you combine dynamic content with cached content, offering much faster rendering!!
+Removed support for use of Global var PHP_SCRIPT_headerData. Introduced global var, array additionalHeaderData for the original purpose.
+substituteMarkerInObject (&$tree, $markContentArray)  in cObj now creates a reference to first parameter, but returns also the value.
+Changed yet some things about the header-code. The general JS functions over(), out() and openPic() are now included ONLY if they are used. You may force-include them by a config-flag from TypoSCript
+Built-in formmail supports arrays send with select-boxes
+Added flag for pages "Include subpages" that extends the effect of hidden, starttime, endtime and fe_user to the whole section of subpages. However this flag does only prevent display of pages, searching and menus based on keywords/updated types to get those pages. Records on pages in the section will still be displayed if included from content elements in accessible sections.
+!!! TypoScript has moved to version 2. This implies these changes:
+- Stricter syntax that allows ONLY alphanumeric (a-zA-Z0-9), underscore (_) and dash (-) in object names!
+- The Copy operator now totally wipes out any existing values/properties, like if you first cleared the recipient object and then copied. Earlier values were overridden ONLY if the value or property in the copied value existed. This may especially impact your setup of RO and ACT in menus (just because this is a typical place to do it wrong, that is inverse the settings)
+- (..[lines]..) added for defining multiple line values.
+- Using conditions within braces is not allowed. It never worked anyway, but now it will be ignored.
+- Excessive end-braces generates a warning, but does not halt parsing.
+!!!When using the reference syntax for cObjects (cObj->cObjGetSingle), the config of the object which holds the reference is joined with the config of the reference itself. This provides a way to on-the-fly override properties.
+!!!fe_users must be assigned to a special folder. If you're using fe_users, you must enter a pid where the users are for every login. Unless you disable the feature.
+Fixed bug with .setKeywords in HMENU
+Fixed bug with JSMENU that caused it not to use the special property correctly.
+Fixed bug with parseFunc/constants didn't check for boolean.
+Added parseFunc property .short for local constants to be substituted. str-replace...
+Added .plainTextStdWrap and .userFunc properties for parseFunc.
+Fixed bug with maxH in stdgraphic class. Strange somebody didn't discover this before. Has been there for long time..
+Added data/getText option, db, for selecting fields in the database directly.
+Added option for filelink function in cObj class to choose another label than the filename.
+Added substituteMarkerArrayCached() function to class cObj. Everybody is encouraged to use this function instead of substituteMarkerArray(). It has additional features though. Changed TEMPLATE cObject to work with this function as well.
+Added calcPriority function to t3lib_div for calculation of input with parenthesis levels and operators + and - given priority over */%^
+Added double post check for guest book and forum (FEDATA feature)
+Added options to ->typolink object
+Added exploding of the &id parameter by "." and "," for additional parameters. "." divides id-number from optional, overruling &type, and "," separates the remaining &id value into values where the first is of course the plain id and the rest is for any purpose you like. Passing parameters in WML documents inspired the feature...
+
+static_template
+Added plugin.meta record
+!!! Changed records "content.tt_board,  content.tt_calendar,  content.tt_guest ,  content.tt_products " so that the actual object is eg "content.tt_board" and the tt_content.list -object is only REFERING to the object (opposite to copying). So if anyone has overridden TS values in directly for board, calendar, guestbook or products, please correct this to the new position. Sorry for the inconvienience.
+!!! Defined new values as reserved words in Toplevel Objects. See TSref, SETUP/Toplevel objects. Sorry to do this. Some of you might use these toplevel objects already.
+Added constant, tt_content.shortcut.tables: The list of tables used with the shortcut item
+!!!Changed the search-form and login-form definitions from using the .data property to using the new dataArray property. This is done in order to support linguistic translations. If you have overridded the .data value directly you should check your TypoScript code.
+Removed the use of description/keyword meta tags in the "template" static_templates (all 11) and included 'plugin.meta' instead. It should be backwards compatible.
+
+TypoScript:
+!!!HMENU/special/updated and keywords. Major change in the way depth and beginAtLevel works. Basically you have to increment depth with one and if you use beginAtLevel, depth has now become relative to that value (that is, substract the value of beginAtLEvel from the depth also) See tsref
+TMENU has a new property that lets you insert a the unique element uid by a marker
+Added new content objects, USER, USER_INT:  Lets you process content with your own functions and classes without including scripts.
+Added new content object, COA_INT
+Added new properties to stdWrap, namely preUserFunc and postUserFunc. Lets you process content with your own functions and classes without including scripts.
+Added new content object RESTORE_REGISTER
+FORM cObject supports multiple selects in selectors.
+!!! GENERAL NOTICE about tt_guest, tt_board, tt_products and tt_calender: guest,board and products has moved into a USER cObject instead of PHP_SCRIPT. Also example tempalte from media/scripts/ has possibly changed. In addition they are TS object wise moved to plugin.* from content.*. All this means that you probably should 
+!!! GUESTBOOK: content.tt_guest moved to plugin.tt_guest, including constants, which you must change! template subpart maker, '###GUESTBOOK###' is changed to '###TEMPLATE_GUESTBOOK###'.
+!!! CALENDAR: content.tt_calendar moved to plugin.tt_calender (notice back to "..der" and not "..dar" to be consistent with the name of the table), including constants, which you must change! template subpart maker, '###TEMPLATE###' is changed to '###TEMPLATE_CALENDAR###'. Also not-used markesr like ###BGCOLOR### and ###SIZE### and ###MONTH_HEADER### was removed.
+!!! BOARD: moved from content.* to plugin.*. NOTICE that the list and tree style forums are splitted out into two separate static_templates (although sharing some configuration). This means that if you use the tree-style forum you'll need to include the static_template plugin.tt_board_tree instead of (or along with) plugin.tt_board_list. Splitted the default template file into three files with each a separate layout.
+!!! PRODUCTS: (see above, almost the same...)
+Added cellpadding (cellspacing and border already there...) for tt_content table definition 
+Added static template printversion for easy printer-friendly layout. (type number 98)
+Added static template for alternative plug-n-play wap/xml/pda layout (using type numbers 95,96,97)
+!!! PRODUCTS:
+	These markers has changed names to the shorter version:
+	###GLOBAL_WRAP_1_BEGIN### -> ###GW1B###
+	###GLOBAL_WRAP_1_END### -> ###GW1E###
+	###GLOBAL_WRAP_2_BEGIN### -> ###GW2B###
+	###GLOBAL_WRAP_2_END### -> ###GW2E###
+	###GLOBAL_COLOR_1### -> ###GC1###
+	###GLOBAL_COLOR_2### -> ###GC2###
+	

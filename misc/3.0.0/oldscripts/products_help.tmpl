@@ -1,0 +1,41 @@
+<!--###TEMPLATE_DEFAULT### begin
+	Help template for the default language, english
+-->
+<table border=1 cellpadding=4 cellspacing=1 bgcolor="#eeeeee"> 
+<tr>
+	<td colspan=2>
+	
+	<div align="center"><h3>Shop Codes</h3></div>
+	<font face=verdana size=2>
+	You must insert a code in the CODE field of the "List" content element before the shop will work. The code tells the shop module what to do. You can insert multiple codes by separating them by a comma.<br>
+	Here is an example:<br><BR>
+	<div align="center"><img src="media/scripts/products_help1.gif" width="388" height="224" border="2" alt=""></div>
+
+	
+	<HR>
+	Current CODE = "<b>###CODE###</b>"
+	</font>
+	</td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>LIST</strong></font></td>
+	<td><font face=verdana size=2>Inserts a list of the products on the current page. If you want a blank CODE field to act as LIST, you can set it up in the TypoScript of the shop.</font></td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>SINGLE</strong></font></td>
+	<td><font face=verdana size=2>Displays a single product if a GET/POST var 'tt_products' is set.</font></td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>SEARCH</strong></font></td>
+	<td><font face=verdana size=2>Displays a search dialog for searching products.</font></td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>BASKET<BR>PAYMENT<BR>FINALIZE<BR>INFO</strong></font></td>
+	<td><font face=verdana size=2>Displays the shopping basket. <BR>The code 'BASKET' works in general but using the specific codes INFO (address form), PAYMENT (last check) and FINALIZE (thank you screen), you can split out the function over multiple pages.</font></td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>TRACKING</strong></font></td>
+	<td><font face=verdana size=2>Displays tracking dialog / information for an order.</font></td>
+</tr>
+</table>
+<!--###TEMPLATE_DEFAULT### end -->

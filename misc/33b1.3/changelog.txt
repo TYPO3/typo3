@@ -1,0 +1,107 @@
+This release is upgraded to 3.3 because this time the backend has changed significantly. This is step towards the final look and feel of version 3.3 (without any "beta"-suffixes :-)). The frontend code has only been changed in minor areas.
+
+Alternative backend and General changes:
+For a long while (years) it has been recognized that the "Classic" backend is heavy due to the 6000 lines static javascript. Although this features nice possibilities it has many drawbacks. You can read a little summary of pros and cons in the "Inside Typo3" document where you have been able to find a list of those for a long time. So:
+- Typo3 now features an Alternative Backend, which works with other browsers than MSIE and NN6.1+. The main challenge of an alternative backend has been to create a parallel editing-form engine to the one in the "Doc." module of the classic interface. This has now been finished and this means that we are now able to present forms for editing of content independently of the classic "Doc" module. This was needed for an alternative backend to make any sense. The Alternative backend does not include any use of layers and thereby no click-menus. Also there is no clipboard. A substitution for both the click-menu and (simple) clipboard is still on the to-do list. However the clipboard is not expected to be implemented as feature-rich as in the classic Typo3 interface. But the need for the clipboard is also much reduced due to the existence of the element browser:
+- An Element browser has been made which lets you browse for files and records for inserting in lists instead of first placing such items on the clipboard and then inserting in the lists. This is a more logical flow in most cases.
+- Languages added: Polish and Slovenian. Languages are also updated and implemented in modules where their implementation was still missing (eg. the "Page" module)
+- There has been added an approach to include help-texts (icons or the whole summary) directly with the form-fields. This is supposed to evolve by time and for now it's only in english until it's good enough to be translated.
+
+Modules:
+- The "Page" submodule has been redesigned a lot and language implemented. There's now a quick-edit. Also there has been added a simple page-hit view in the bottom of the pages.
+- Multi-language page content elements are now supported as an alternative way to implement multiple translations of a specific page (the usual way would be to have separate page-trees (sites), one for each language). Multi-language is implemented by the "Page" module
+- The "List" submodule has been extended very much and features a lot of lovely options now! Multiple columns, multilevel search, soring of the display, control-panel per record and more details.
+- The "Function" and "Info" submodule has been organized a bit more. The "Info" module now features information which relates to the page/pagetree (while the "Page" module only deals with the current page content) The "Function" module includes Wizards to create multiple empty pages and also sort pages.
+- A "Modules" submodule has been introduced (and replaces the DMail module). This relates to pages marked to be a "module" and as such the module is an approach to ease the management of what you may call 'module' in the frontend - such as boards, guestbooks, shops and also the Direct Mailer.
+- A task center has been added. This is meant to be the primary overview of your work inside of Typo3. It includes a to-do list and message system. The to-do list is combined with the new workflow engine. There's also a little private notepad. Also theres a list of the pages which you edited most recently and finally a list of "Actions" you may perform. See below
+- A workflow system is now integrated. This lets you define a "workflow" which may be attached to a to-do item which you can issue to a certain backend user. A workflow is simply passing the task to a user to create or update a record in the system. Thus a 'defined' the workflow includes a reference to a table in typo3 and further options of a review-user and possibly how the workflow handles the record after completion, eg. should it be un-hidden?, moved to another page?, changed permissions?  
+- The concept of "Actions" (not really makros) has been implemented. As an admin you can define an action (currently there are two options: "Create a backend user" and "SQL-query") which you may assign to a user to use. This means that a user which is not an admin-user can be allowed to create new backend users for his own area of the website by executing such an action. Or a use may in one click export the contents of an SQL-query to a CSV file.
+- !!! Added access-restrictions on the 'Welcome' module. You must update your backend user groups if you still want your users to access this module. The reason why is the coming of the alternative backend and RTE which offers new ways of doing things. And thus users using these features may not recognize the animation in the welcome module very well!
+
+RTE
+- Finally the Rich Text Editor is launched for serious testing (Works with MSIE 5+ ONLY.). This features:
+- Format text with buttons instead of HTML-codes
+- Format text with classes (on to-do list)
+- Insert links by a page-browser
+- Insert images directly in the text by a browser. This features a concept called "Magic Image" which means the image inserted will be intelligently processed on the server after any adjustments. This means that if the user resizes the image in the RTE the TCE (Typo Core Engine) will detect the change and rescale the image physically and also force the proportions to be kept. This is in the spirit of Typo3 because - once again - users cannot make the mistake of inserting an image too large; It's always scaled physically to fit!
+The rich text may be configured in many ways. Not only which options are available in the tool bar, but most importantly is the concept of "Transformation" which occurs when you submit the content to the database as well as retreaves it back for editing. To give you a short idea, the Rich Text Editor generates traditional HTML. But we like to store text in Typo3 with a minimum of HTML codes. So the transformations converts back and forth. To give you an example, links (<A>-tags) are transformed from <A ...> into the typo3-format <LINK...>. This may seem a weird thing to do, but there is a good reason, because a <A>-tag is very absolute, defining targets and other things. Now, when you use the <LINK>-tag in Typo3, the front-end display automatically sets the target and adds any extra parameters to the URL as you've configured. This would not happen if the <A>-tags was inserted. So in the end, it the <A>-tag was not transformed into the <LINK>-tag stored in the database, we would leave the whole responsibility to the user!
+So all in all the Rich Text Editor is a gain, but it must be controlled by transformation in the cases where it's used with content which we would like to store "clean" in the database. 
+If you do not like the interference of the transformation, there has been added a new content element type, "Rich Text", which allows you all the options with no transformation. Of course.
+NOTICE: The Rich Text Editor is still a beta-feature and I expect it to be finetuned before the final Typo3.3 release early this spring.
+
+AdminPanel
+- The admin panel is not changed, but the Edit option of the AdminPanel is now FULLY functional, so now it actually makes sense to use it! This users the same form-field generator engine as the Alternative Backend does.
+
+... and finally the whole framework of the TSconfig for both pages and be_users/groups are being defined, so soon there'll be some documentation on how you can customize the behaviour of Typo3 for users induvidually through the TSconfig.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CHANGELOG_____________________________________________________________________________________:
+(actually most changes as described in the overview above are not logged here. There has happend so much to the interface. What goes into this list is primarily changes in the code which may be too detailed for you to discover if I didn't give you a notice. 
+Especially ALWAYS read the lines with three exclamation marks (!!!) because this is information which may affect how your site works and if it does, you'll need to make some changes. So these are always important to check out!)
+
+Database:
+
+TBE:
+If you configured the RTE for use in your own tables, notice that the syntax for RTE options set in tables.php has changed. Parameters are now separated with vertical lines "|" and there has been added a few more options for parsing of the data.
+Added support for multilingual descriptions of fields in the tables. This is independant of the tables.php files and may be loaded as needed.
+Fixed bug in transferdata-library whic hprevented multi-element selectorboxes from loading correctly.
+!!! Users which were assigned the DMAIL module must be re-assigned to the new MODULES module
+!!! Users which were assigned the USER module must be assigned to the new USER/SETUP module as well
+!!! The functions fw(), dfw() and rfw() are now placed in typo3/template.php file and so they will be redeclared in you own modules if you include them there!
+Page-module: Now supports user added content columns set in TCA.
+!!! Any configuration in page TSconfig or BE-user TSconfig of 'mod.web_dmail' should be changed to 'mod.web_modules.dmail'
+Added a flag to the pages-table (treeStop) which will prevent the JavaScript page tree to load beyond the point where this flag is set. 
+Fixed a bug in the method t3lib_BEfunc::getPagesTSconfig() which basically loaded the TypoScript from the page tree in the wrong order so the root pages was processed last and thus NOT overrideing anything. In fact this error is quite serious, however the Page TSconfig is not used by anything serious yet, so in the end it's not a big deal.
+The login screen has been modified so you can select which "backend" to log in to. The options are configuration through TYPO3_CONF_VARS and you can even translate the labels there as well to your own language. The "Frontend" feature is meant as a return to the website if you want to edit the pages through the adminPanel editor. This requires the panel to be inserted in the template and configured for the users of course.
+Removed the apidoc/ folder (didn't update it anyway - we're hopefully going to make a proper api-documentation some day though!)
+Removed the man/ folder - User Manual are now linked to an url, currently Typo3.com. In the future manuals in more than english is planned for - it all depends on who's going to translate it...
+Fixed bug in Web>TS>Analyser which displayed the wrong when a template was clicked template under certain circumstances.
+Changed a bit in tcemain regarding the internal admin-flag.
+Added sys_history table which is in support of the new un-do/record history function in the backend.
+Changed a bit on the order of group-ids listed in BE_USER->groupList. The list contains the be_groups ids represented only once. Formerly an included subgroup was represented by it's first appearance, now it's represented by it's last appearance. Thus we see the order in which TSconfig for users/group is really parsed. Probably is not a big deal to you.
+
+PHP:
+Fixed t3lib_div::array_merge_recursive_overrule for a bug where the overruling var was not an array
+tables.php/tt_content/sectionIndex: Set default value to "CHECKED" instead of non-checked.
+Bugfix: in t3lib_div::split_attributes resulted in zero's the value of the last parameter of a html-tag being returned as empty string.
+!!! TypoScript parser: Fixed 'BUG' which removed blank lines if they appeared in multiline values. This may affect your scripts if blank lines are vital for those values. But in most cases (99%) I would guess this does not demand any changes.
+!!! TypoScript parser: Added a syntax for use of /* ...   */ comments (where the 'in' and 'out' part must be in the begining of a line each!)
+
+TypoScript/PHP
+- added options for imgResource to scale with -sample instead of the slower -geometry AND to specify an alternative cache-dir than typo3temp/
+- added support for cache_typo3temp_log database table in stdgraphic. This feature, called "enable_typo3temp_db_tracking" is used to track if a file is being rendered by a proces so that other processes ignores the file instead of parallel-processing it also.
+- Corrected what is considered a bug in cObj->getTreeList which allowed a treelist of id's to include the contents of a recycler page. So now both deleted pages and recycler pages are excluded in the select. This will probably not influence your application. But the correction means that pages in a recycler will not be selected during a search! Which is good.
+- added support for incoming arrays in config.linkVars
+- Fixed a bug in the adminPanel, preview, which clearly proves that nobody uses the user-group preview, because this bug would surely prevent it from working... :-)
+- Fixed a bug in tslib_fe that made PATH_INFO passed to the index.php go nuts in case you use frames.... Now an error comes up.
+- added TSoption to ->filelink function so prepended numbers may be removed.
+- fixed potential bug in function typolink in class t3lib_cObj: separating parameter and target in <link> tags would not work if the separation was with more than one space character. Now the whitespace may be of any length
+- fixed a bug that made external urls set for FORM cObjects discard any set target from TypoScript.
+- fixed bug that issued a pageNotFound when shortcut pages were hit.
+- Added 'third parameter' to typolink function (and in effect, the whole <LINK ...> concept) which allows you to set a class for the link as the 'third parameter' (whitespace-separated) in the link tag.
+- Added showHiddenRecords/-Page to the selection of sys_template and pages_languages_overlay records. Also fixed a bug that would prevent start and endtime for templates to work in addition to hiding templates.
+- CHanged time() evaluation in matchcondition class to use SIM_EXEC_TIME so template can be properly simulated by the adminPanel>Preview feature.
+!!! - (only relevant if you call the cObj->getTreeList from external code). Fixed what was considered to be a buggy implementation of this function: This is how it works now: The pagetree is NOT decended if a page is a recycler or backend user section and if pages are marked deleted of course. The pagetree IS decended if a page is disabled by enableFields, but the page itself being disabled will not be returned in the id-list. Further the function lacked passing on some of the function parameters to the recursive calls and thus those things didn't work either.
+- Added support for transfer of sessions between domains in the same database. Currently the automated way to do it is to make a page an External URL and set this parameter in the page TSconfig: 'TSFE.jumpUrl_transferSession=1'
+
+media/scripts:
+
+Static_templates
+- added "Indent 33/66%" to the list of content element frames in tables.php and in styles.content (default): Lets you indent content elements so they occupy 2/3 of a column either to the left or right.
+- tables.php/tt_content/media: Increased the number of files to 10 from 5. The average filename lenght of those ten files may not pass 24 chars before you need to change field into a blob and not tinyblob. That's a potential danger here.
+
+Applications:
+
+Search/Replace:

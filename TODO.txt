@@ -1,0 +1,668 @@
+*****************
+TODO LIST
+*****************
+
+General:
+- BUG: Row-highlighting for both Page and Folder trees are not stable enough.
+- BUG: when editing records from Web>View the palette will not show properly in the topframe!
+- BUG: Email forms wizard: "Checked: " for checkboxes does not work!
+- BUG: CSM disappears too fast in MSIE4 (does not register the width of layer?)
+- BUG: is_executable on windows does not exist/work/make sense.
+- BUG: "if (count($fieldArr)) -> t3lib_page.php, ln. 270"
+- BUG: File>List , list-frame: Click menu does NOT work in Mozilla! cannot find the bug!
+- BUG: (Not) using "rawurlencode" in links (breaks when spaces/special chars are in either dirname or filename):
+  - cImage... (see Rene Fritz report)
+  - RTE images break
+  - RTE drag'n'drop WORKS!
+  - RTE links break.
+  - thumbnails display break.
+  - attachment of records break.
+  - CHECK: header links in content elements?
+- CHECK: What is the number of supported page levels? 20 or 100?
+- CHECK: possible XSS problem with alt_mod_frameset.php taking parameters for scripts to display in frames.
+- Convert selecting of filemounts from GROUP selector to a selectorbox.
+- Option: Turn of "onBlur" in backend (Message-ID: <001801c2a28c$bb020c70$963afea9@bla8kdvxpl8glk>)
+- Option: Frameset modules without the "border" frame and therefore adjustable freely.
+- Feature: "admin" can click a button which wipes out all record-lockings. (Message-Id: <200301281752.23246.mundaun@gmx.ch>)
+- Feature: Controlling access to function menu modules as well (thus we could have a user-module inside “Template” which could edit the constants field)
+- Feature: Web >plugins -> to be a main module where people can place cmodules for their extension.
+
+TCEmain:
+- Commenting of the class.
+- Charset:
+	- Currently the upper/lower case conversion converts danish/german letters as if they were iso-8859-1. This will be a problem if other charsets are used. What to do?
+	- Note: No charset conversion is done in TCEmain. It is expected that the content enters TCEmain in the charset of the backend in general.
+- FEATURES:
+	- Support for submitting dates in non-UNIX-time format (eg. DD-MM-YYYY) (is there a PHP function to which you can directly pass something like "DD-MM-YYYY" and then it will clean it all up? Or convert?
+	- Recyclebin: If an item is deleted and is NOT in the recyclebin, then move it (all pages to the root of) the closest recyclebin (in a rootline pid AND with write permissions) in the pagetree. If that is not present, then delete normally. If you delete anything in a recycle bin, it's totally deleted.
+	- Implement field evaluation in TCEmain: Evaluate min/max? Checking references exists?
+	- Implement a feature, "max_number_of_records_in_pid" which means the TCEmain will check if a number of records of a kind has been exceeded for the page.
+	- "Pattern-control" for relation fields? (See "APPENDIX: PATTERN-control") Probably create an API by which you can do your own evaluating, return true/false, return an error message.
+	- pre and post processing by user functions of the data? (Message-ID: <C018FF617C61AB4588D15494126A5C0F23E431@Soulman.hanno-kirchhoff.de>) 
+	- "Tree-tables": Adding TCA-feature which can describe a field being a internal_pid for the table so tables can be listed as a tree in Web>List (and for TCEmain this means that copying an element). "parent" items. Rene needs this for "categories". See (Message-Id: <200212201257.24705.r.fritz@colorcube.de>)
+	- Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". But copy/cut operations must understand this. And Web>List should reflect this as categorizing. 
+	- "child records" - records which MUST be related to another table - and will be moved along with the main record if moved.
+	- Implement *real* record locking?
+	- If an input value in the data array is NOT a string/integer but an array then just serialize this array and store (thus allowing customly build forms from PHP scripts to submit hierarchical information)
+		- Could be solved by PRE-processing of content in user functions!
+	- Implement "last_edited_by" field saving the BE-user UID just like tstamps are... (JH asked)
+	- Transformation API: Implement the possibility of custom to/from transformations for the "user" type (or any field?) 
+		- Custom transformations for RTE fields/API?
+	- Selector box type: 
+		- MM support for strings
+	- Support for MM-records which does NOT get deleted, but is kept... and then support for having data in those!!
+	- Support that the content of a single field can be stored in an external file instead.
+	- Support that a list of fields can be stored in an external XML file instead.
+- VERSIONING:
+	- Swapping API: A page can be copied for making modifications. Afterwards swapped with the original (page/tt_content uids preserved if possible). The original page is stored in archive of some kind.
+- LOGGING: 
+	- Finish the logging of TCEmain actions (delete/copy) + finally define the API to the "sys_log" table!
+- CLEAN_UP: 
+	- Implement kill/restore of "deleted" records.
+	- Remove references to records when deleting totally (or also deleted-to-recycler records? Maybe "deleted-to-recycler" references are important to remove in order to make sure "recycler" records are not selected!) (refs to MM for both tables/files)
+- PERMISSIONS: 
+	- Permission management on selector box/radio button values 
+		- so certain "CType" / "Insert plugin" / "FlexForm datatypes" values could be blocked
+		- Could it be considered to implement some "access pool" where elements on any level (like here selectorboxes or for FlexForms elements/types there) could add their element by an API and then it would A) automatically be listed for groups access lists and B) automatically enforced.
+	- Permission management for translations?
+	- Permissions on record-level
+	- CHECK: That permissions are properly evaluated (especially for moving content?)
+	- Security in tcemain: Uploaded/Attached files are allowed to be in ONLY a relative path OR in the "lockDir"!
+- BUG: 
+	- if a file is uploaded (directly in the form) and there is an upper limit to the number of files which is then exceeded, the uploaded file is STILL copied to the upload folder and will thus be listed as "Files with no references at all (delete them!):"
+	- TCEmain: If there is a comma in the filename supplied as an uploaded file it will confuse the handling of files because the comma is also used to split the filename from each other. (29/04/2003). This is a problem with Inter-Photo Netprint where files uploaded by FTP with comma in the name will not be attached as they should. I think the solution should be found in TCEmain so any filename can be supplied as uploaded.
+	- CHECK: hideAtCopy - does it work??
+	- CHECK: copyAfterDuplFields - check it (tt_content).
+- RELATED: DBint/admin, logging-display, TCEforms, Web>List
+- IDEA: check for potential dangerous php-extension
+- Multiple DBs:
+	- The ability to configure "any" table to be stored in another database. 
+	- Think DBAL into this and also notice that joins could ONLY be done if tables are in the same DB! (since other databases could also be from non-MySQL dbs when the DBAL comes)
+	- Affects: Basically anywhere records are selected -> requires a check of $TCA[ctrl] for the table first before the query is done!
+	- Maybe this feature should wait till DBAL is implemented anyways.
+
+
+TCEmain/TCEforms for FlexForms:
+- Affects: "lowlevel" ext/DBint , "impexp" extension. Must/Should be extended.
+- Permissions handled per-field in FlexForms?
+- What to do if data structure was not found? (Both TCEmain, TCEforms, templavoila_pi1, t3lib_transferdata) 
+- TCEmain features:
+	- caching of references/files in meta data (for analysis tools)?
+	- mapping values to a plain-text search field(s)  
+	- Offering API functions for add/delete/move/copy
+	- Cleaning the original data in field since this may have an invalid structure if the data structure has changed in the meantime.
+- TCEforms: 
+	- Support for checkboxes which can expand/collapse sections/containers? fold-in, fold-out, passing a list of fields to show (with sub-levels for horizontal display).
+	- Visual interface for forms, DHTML for sheets etc, various sheet modes, language menu form.
+	- Fix the JavaScript in TCEform which keeps track of REG/CM images and required values etc. These things does not work for flex forms yet!
+	- Add many "types" of sections at a time when "add new"
+	- NiceToHave: Attaching an image to the Data Structure. This image is a preview of what the data structure can create. When rolling over the image you can have the form fields highlighted which affects the area. (by a red border or so...)
+		- visual: Table with condition in top header, condition value column + block column. Not user supplied. -> OR just a selector box deciding what is shown below!? (possibly "ALL")
+	- Displaying partial branch of the data structure (and to a certain level)
+	
+		
+TCEforms:
+- Support for other backend charsets / right-aligned charsets!?
+- FEATURES:
+	- GENERAL:
+		- Customized display of a field, possibly passing an array with code that should be displayed and then people can themselves put it together from PHP?
+		- Ability to set up user functions for pre and post processing of the data?
+		- API for adding JS-functions to the onchange-event.
+		- Make STORAGE_FOLDERs a LIST of pages - not just one page (still the first page could be the default while other pages will be where stuff is selected from).
+	- SELECT type:
+		- select a filepath as a source of the items you can add to the box (single/multiple) without copying the files of course.
+		- Ability to see icon/image from record of selected value in the selector box.
+		- IFRAME alternative for the selectorboxes where a HTML view can be shown. Possibly having an external script show the content which would be useful for display of tree-tables.
+		- Reflect possible tree-structure for records in Select/Items list
+		- a way to grant read for the selectors without displaying the storagefolder in the treeview?
+		- move one up / one down buttons for the list (also for GROUP element)
+		- Ability to move items when selecting/deselecting them. Or ability to gray out elements in the right list if selected.
+		- CHECK: "multiple" feature, single, sorted and non-sorted selections.
+		- Having elements ordered by the "list-order" of the selection selector must be done in JS (or tcemain)
+		- making copies of select fields etc - check that remapped records are OK treated (with foreign/neg_foreign + free string values)
+		- Letting one selectorbox set another hidden fields value apart from its own? [USE: When selecting a template, that also sets the DS value! (Thus a template is always selected!)]
+		- Exclude field selection better, in a tree?
+		- set the width of the selector field.
+	- GROUP type:
+		- [file] allow the selection of files from the system to be added as REFERENCES, not copied! (Message-ID: <003f01c23503$8cdd69d0$55333bd4@comtech>, + notify "illuminatus")
+		- In the thumbnail list add the Edit and view icons as in the good old days.
+		- BUG: By the way, isn't there a bug in the listing of the thumbnails of records?
+		- Nested records:
+		  - Group-fields of DB-type could be made to actually SHOW the records it contains in the very same form! Possibly with Add/Delete facilities.
+		  - See JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F23E410@Soulman.hanno-kirchhoff.de>
+		- IFRAME alternative for Element Browser.
+		- Like in CB: Copy image/reference from a record to clipboard, then insert that file/reference in another record again (Element Browser change).
+	- INPUT type:
+		- having a selectorbox from which a default value can be selected (which is just transferred to the input field). Of course the selectorbox can have its content added by a PHP script.
+	- ? type:
+		- "Inverse relations"/"Foreign relations": A "Pseudo field", which lists records REFERING TO this record (foreign relations, eg. many small price-records belonging to ONE shop-article). Possibly this could also EDIT those references (attaching/adding new, removing old, no manual ordering though! - This is what RENE is doing (Message-Id: <E17LO4D-0002hj-00@cube.colorcube>) 
+	- TRANSLATION:
+		- Concept for translation of other language versions simultaneously? (Showing the default/any language side-by-side?)
+		- Would require UTF-8 display in backend.
+		- Support for "original/translation" relationships: 
+		  - The idea is that a) one field from a record is configured in [ctrl] to hold the sys_language (0=default, x=translation of default) value AND b) another field is configured to keep a reference back to the original element (for the translated records)
+		    - If the record is "default" then ALL fields are shown.
+		    - If the record is "translated" then SOME fields are disabled for editing (as configured) BUT shown in the form for information (the value from the original).
+			- When the record is selected for display or whatever an API call can fetch the original record and take the value of those configured fields and overlay in the translation (exactly like we do with page_overlay_records)
+			- The core support basically is, that TCEforms automatically understands to disable the fields if needed and display the original content.
+			- see Message-ID: <200205300155190552.08F5563C@smtp.worldonline.dk>, Message-ID: <mailman.1055945641.8348.typo3-english@lists.netfielders.de>
+	- DISPLAY_CONDITIONS:
+		- "readonly" flag, or user group dependant. See "Message-Id: <200210241441.50295.r.fritz@colorcube.de>"
+- BUGS:
+	- Ask to save record when you want to add a category with the "Plus" icon.
+	- CHECK: ###STORAGE_PID### incorrectly calculated?
+- DONE?: Support for label for main palette: (Rene: Message-Id: <200210011646.10346.r.fritz@colorcube.de>)
+
+Charset:
+
+- checking (for XML) if there is "character data" in a string?
+
+TCEforms/RTE API:
+[Dominic Brander and Martin Schmidt has shown interest in the ekit Java RTE and may work on that.]
+- API for RTE's (plus converting current RTE to using that!)
+  - review of class.t3lib_parsehtml_proc.php
+- Make TYPO3 ready to accept alternative RTE made in Java. Needs data exchange to (config+data)/from (data) applet.
+- Implement Ekit as Proof-of-concept: http://www.hexidec.com/ekit.php
+- Implement another ActiveX editor as Proof-of-concept.
+
+Element Browser:
+- Support for DAM
+- Support for browsing custom category-trees (passed by some PHP script)
+- Support for deleting files in the listing there.
+- Disable thumbnail option for faster display.
+- Element Browser configurable a) without the page tree but hardcoded to specific PID, b) just default PID (possibly able to override from TSconfig)
+- Selecting files from other resource-fields of records (which the user can actually read) - maybe with the Element Browser, browsing for record, clicking it, seeing a list of files inside the record?)
+- Ability to insert images when their info page (larger thumbnail) is displayed. Maybe a small + (plus) icon would do. (Notify Patrick Roeder)
+- Some quick-lookup feature (like we have on TER)
+
+Wizards:
+- Finish the colorpicker! Some other person can be in charge of this (See "APPENDIX: Colorpicker")
+- Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)
+- wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter Kühn). 
+
+Interface:
+- Icons (see Bugs/Additions folder)
+- Showing in "frameset-modules" which submodule you are currently inside. And ability to change submodule in the rightmost frame anyways - maybe as a panel in top of the pages (must be cached so all submodules must not be loaded each time...)? (Message-ID: <3ADE655892793D499E2FBF623045AF4B54E9A4@dbwdfx2f.wdf.sap-ag.de>)
+- Make a "NavFrame adjustment bar" which allows people to click on an images under the navigation bar of "Frameset modules" and set the width of it (permanently). (Message-ID: <3ADE655892793D499E2FBF623045AF4B54EA0D@dbwdfx2f.wdf.sap-ag.de>)
+- Review the template/stylesheet interface. Document it -> Skinning API. (also how to substitute icons from gfx/ etc.)
+- Ability to create another Main/sub module structure in the backend (Daniel H: Message-ID: <BAB9A920.E95D%daniel@typo3.com>)
+	- Change order, level, title, icon.
+	- Use User TSconfig... and allow someone to create an extension to visually create a TSconfig output
+	- See DHs mail: Message-ID: <mailman.1060763871.6396.typo3-metadev@lists.netfielders.de>
+	- Links could be going directly to the function menus inside modules as well!
+
+Login:
+- admin-only flag in TYPO3_CONF_VARS so only administrators can log in/be authenticated.
+- New login form. (see mailbox)
+	
+Context Sensitive Menus (CSM):
+- Click menu does not work in task-center/weblist
+- Click menu does not work in Opera.
+
+Context Sensitive Help (CSH):
+- Add multimedia?
+
+WEB main module/page tree:
+- The "Page Stop" flag, clicking the red "+" simply makes that point the NEW root in the tree frame (temporarily of course...), see JHs mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F1F660B@Soulman.hanno-kirchhoff.de>
+- Option: For a frameset module, register the ID per sub-module, not just globally (see JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F1F67AB@Soulman.hanno-kirchhoff.de>)
+
+Web>List:
+- Add "New" to the clickmenu of eg. "be_users" (non-sorted items) when you want to copy a user into the list.
+- Add email function where you can 0) send email to single records email field, 1) all records on the clipboard, 2) all emails in a list of shown records, 3) all records in the PID. By emailing you can select to receive a copy yourself. Backend user must have name/email configured as from/reply-to/return-path information. Mails can be sent Bcc,CC or seperately. Can be used for lightweight newsletter feature! Maybe implement through some API to the Web>List module.
+- Page-tree-stop: Click on red "+" brings forth some kind of browser (list of pages, browseable, Web>List module feature?)
+- Add flag to TCA/[interface] which keeps a table from being listed in the list module. Probably an option which allows the display for admin-users.
+- Check that permissions are respected for the buttons in the control-panel of the List module
+- Why is web>list slow on new typo3.org?
+- Page TSconfig option: Only to select the table-headers for display (with record count), and only the extended view will show the records inside.
+- Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". This should be reflected in the LISTING order (before ordered by the "sorting" column) OR maybe in a hierarchical display?
+- Support for tree-tables (that can be browsed).
+- Support for a "tree-group" -> a chain of tables which are displayed in a tree since each table has a config for a parent field in a former table. (Eg. DS: brand -> domain -> product).
+- BUG: no label when copying an item into the Web>List module...
+- FlexForm tree view / editing: 
+	- When a record contains a FlexForm the web>List module could display the fields inside in a nice tree structure which one could expand/collapse! Then by clicking "edit" for a brand you get an interface where you can edit *that branch* of the flexform! Brilliant way to manage large structures inside of flexforms!
+		- Can you picture it? That would be like expanding an XML document by a node-tree and add/edit/delete/rearrange any of the internal informational pieces!
+
+		
+File>List:
+- BUG: UNIX: "RW" flag looks only on the permissions for the USER - not the group. So even if PHP via the group of a file can delete it, it is reported that it cannot.
+
+History/Undo:
+- Must present a page/content element view, so a page with content elements can be restored as a whole 
+- Undo must be able to restore attached files as well 
+- Should be possible to disable for certain tables (can it be done already with TSconfig?)
+- Delete saved states (and save whole record content). 
+- Need to implement the diff-feature for windows as well (that is set configuration)
+  
+LDAP support:
+- See "APPENDIX: LDAP"
+
+DBAL:
+- Next step: Create PHP-test scripts which performs 98% of the SQL operations we need in TYPO3 and then let people try to implement this; We will then know about all the obstacles first-hand before we do any efforts to implement it.
+- See "APPENDIX: DBAL" for Kaspers internal notes on the subject.
+- "TCEmain/Multiple DBs" as well.
+- MySQL practice: "Maybe it's a good idea to quote all table and column names in later versions of typo3 to avoid further problems like this one." (Message-ID: <mailman.1052907363.19535.typo3-english@lists.netfielders.de>) Also good for DBAL? + create API functions for making INSERT/UPDATE query strings.
+
+EM:
+- Code commenting
+- Display: Adding "back" buttons a few places.
+- Display: review-flag + link to review - cannot be overridden?
+- Display: Link to Introduction + other sections (typo3.org-API-script), getting started manual in doc/index.html (See extension "tstemplate_styler" which has a prototype!), homepage link
+- Display: After import, link to Install/Details.
+- Display: Clean up the red errors: Major / Minor errors, and make sure it does not report non-errors.
+- Display: Warning for extension of same classes?
+- Display: Better filtering, quicker listing
+- Feature: Specify preferred order of certain extensions.
+- Feature: Change order of loaded extensions
+- Feature: Dependencies includes minimum/max-version (Typo3, PHP, PHP-extensions, T3extensions)
+- Feature: EM suggest clear-cache af scripts?
+- Feature: New category, "templates"
+- Feature: New review state: security-screened (light review, not quality oriented)
+- Install: Select other repository URLS in selector box?
+- Install: Extensions which can point the import/export to a directory with import-files.
+- Install: Updates of plugin checks if there is a local manual.sxw file. If there is the manual is also downloaded. Maybe people can set a flag in the configuration that manuals should always be fetched. (Some of this is already implemented)
+- Install: Upgrade multiple extensions at a time.
+- Install: Upgrade single extension without getting full list from TER
+- Install: Import from online rep: search freetext, enter extension key etc...
+- Install: Getting from TER only already installed extensions.
+- Install: Flag: "Import ext"; "Show non-secure extensions" (show ALL ext., not only reviewed ones)
+- Install: Update button for an extension in the details view.
+- Install: After upload of extension then we should return to the "Information" view, not "Upload"
+- Install: At upgrade: That an extension can display the total changelog between the formerly installed version and the new one.
+- Install: Configuration for EM: Request most recent translations by default?
+- Upload: emconf.php should have the md5-part updated when upload to TER
+- CHECK: flag in [EXT] about if local/global extensions can be updated. (does it work?)
+- CHECK: Are single quotes accepted when writing the "conf.php" files?
+- CHECK: Better failure-tolerance when "fatal errors" occur in ext_localconf/ext_tables.php files!?
+- CHECK: Can Install Tool bypass including ext_localconf/ext_tables if there are errors in them?
+- BUG: EM-extMgm: caching af localconf + extTables configuration in ARRAY? Plus ændringer til API specs. (problem when those files includes classes etc... probably not possible)
+- BUG: Fix memory consumption problem.
+- BUG: backend shortcut links to EM pages does not carry the edit-file information. They should.
+- BUG: Clear cache files should remove ALL "temp_CACHED_*" files in typo3conf/ (not just the current two)
+- BUG: detection of single quotes in XCLASS and CONF.PHP file cases (and wherever a regex searches for code snippets!). 
+- BUG: MSIE4: Cannot make backup of extensions (and probably not export them either) because the header-mime-typen is not registered as it should be.
+- DOC: "Extension API" manual.sxw!
+- Check mailbox for more... ?
+- Related: The KickStarter Wizard, in particular a) cleaner code output, b) merging updates.
+
+
+The REGEX-{} problem:
+- BUG: Regexs; "Warning: Unmatched \{ in /home/sites/site14/typo3_src-3.5b3/typo3/mod/tools/em/index.php on line 1983" which is a ereg with { WITHOUT preceeding slash! (Message-ID: <003c01c275aa$c0c60c10$e3a1a33e@pentiumriv4v9a>, Message-ID: <20030729082437.79900.qmail@web11305.mail.yahoo.com>)
+  
+Install/Servers:
+- FIX: Check safe_mode? Check open_base_dir? (Message-ID: <B9B8E356.1CE0%typo3@ilveneto.net>)
+- FIX: To get PHP to handle PATH_INFO and PATH_TRANSLATED information correctly with this setup, the php parser should be compiled with the --enable-discard-path configure option. 
+- FIX: The "php_sapi_name()=="cgi"||php_sapi_name()=="isapi"" problems (Message-ID: <ADEEJCHPNMOFKAAOJJKKCEKMCAAA.martin.kokes@sitewell.cz>, Message-ID: <200304071146520757.0097D495@smtp.worldonline.dk>, Message-ID: <BACDA028.F428%daniel@typo3.com>)
+- CHECK: MD5 problem on Apache/Windows (Message-ID: <001901c26aeb$99db4c60$a9695651@NIGELJ>)
+- CHECK: Security: Can HTTP_SERVER_VARS be overridden from URL if global vars are enabled???
+- [Ask Michael Stucki for an overview of bugs...?]
+- TYPO3_PORT bug (Message-ID: <005f01c2df3f$4006db00$0100a8c0@knoell>)
+- BUG: open_base_dir problem with tempnam() (affects: tidy, diff, new resource textfiles created in Web>Template/Info, Indexer (using temp-name for input from pdftotext)
+	-> Renes t3lib_exec class useful here?
+
+BE Language:
+- There are a few mails in the Translations mail folder. These files contains some translations which must be integrated manually...
+
+Filepermissions of source:
+- Test that these permissions work OK:
+  - chmod 555 typo3_src/ -R
+  - cd typo3_src/typo3/
+  - chmod 755 ext/
+
+
+
+**************************
+DOCUMENTATION TODO list
+**************************
+Extensions:
+- Document how to make "static_template_files" in an extension (Example: How to make a standard templates in extensions to TYPO3) => Rene Fritz doing that?
+
+
+
+
+
+
+*****************
+NOTES
+*****************
+- Undo/Redo behaviour strange?  => This bug report turned out to be about frontend caching: If you saved a value and quickly after (probably within a second) pressed "Undo" button, then the (browser)cached content would be shown. It was obvious because the sys_history table WAS updated, only the form wasnt.
+
+
+
+  
+*******************
+APPENDIX 2: XHTML
+*******************
+Overview of implications before implementation:
+- UTF-8 encoding is in fact expected by XML! So the real charset must be set
+- Wellformedness: Nesting ok. All img tags must be ended with />
+- Lowercase for elements and attributes (and everything else...) + stylesheet element and attribute names.
+- All attributes in quotes
+- Minimized values not allowed: Must do this: selected="selected"
+- Wrapping scripts and style element contents in CDATA - or alternatively they should have entitites converted.
+- name/id attribute double
+- Certain nesting of elements not allowed. Most interesting, <PRE> cannot contain img, big,small,sub,sup ...
+- Setting charsets may put some special requirements on both XML declaration/ meta-http-equiv. (C.9)
+- ampersands (and entities in general I think) MUST be converted to an entity reference! (&amps;). This may mean further conversion of non-tag content before output to page. May be related to the charset issue as a whole.
+
+Related issues:
+- Charset / encoding issues
+
+---------
+Practical steps for creating XHTML compliance:
+
+- lowercase: <(td|tr|p|div|table|b|i|u|a)
+- attributes in lowercase and ""; TYP: bgColor, border=0 cellspacing=0 cellpadding=0, valign=top, onClick, onChange, onSubmit, method="POST", type="Submit"
+- Ending tags: <br>, <hr>, <input>, <img>
+- shorthand: checked, selected, multiple, nowrap
+- href="", action="", src="", onclick= tags: htmlspecialchars() of URLS
+- <img -> ' alt="" />'    REGEX: <img[^>]*>
+- FINDING attributes with no quotes:
+([[:space:]]+)(class|face|hspace|vspace|rowspan|bgcolor|src|colspan|align|color|valign|border|width|height|cellpadding|cellspacing)=([^[:space:]>"']+)
+
+
+
+
+
+******************
+APPENDIX: Charsets
+******************
+In TYPO3s backend charsets used has traditionally been the the charset of the backend user language. This is of course a big problem since the encoding of content is thus depending on the charset of the user and not of the system
+From TYPO3 3.6.0 you can define a global charset for the whole database. This can be any local charset like iso-8859-1 or windows-1250. But for multilingual sites it is recommended to use utf-8 since that can represent all languages.
+You set the global charset in a localconf file like this: $TYPO3_CONF_VARS["BE"]["forceCharset"] = "utf-8";
+
+Here are a few notes:
+- JavaScript functions to convert cases to upper/lower seemed to work with all letters from any charset. In the old days this was not the case and thus functions in eg. "jsfunc.evalfield.js" compensated. This is now disabled since it is apparently not needed anymore.
+- PHP Upper/Lowercase - not tested.
+- When one enters eg. danish letters in a form when the russian charset is used, these letters are converted to HTML entities, eg. "&#248;" - this is NOT changed. The philosophy is that IF anyone needs to use characters outside the range of the used backend character set he should use UTF-8 instead. Theoretically we COULD allow the entities to be shown correctly but we dont for now. Better use the right charset.
+
+
+
+******************
+APPENDIX: LDAP
+******************
+- hash of base-dn skal være cleaned op. Måske prefixe usernames med 10-char hash af base-dn.
+- Moduler som "User Admin" og andre steder, hvor "usergroups" feltet benyttes skal slå det op i LDAP uden authentication. -> Faktisk er det IKKE kun usergroups men ALLE felter, som kan mappes!!!
+- Ved record creation: LDAP default group.
+
+? Getting info like usergroups, email, name?
+? Case-sensitivity of the DN in general?
+? DN entering..
+! MD5-hashed passwords
+
+1) AUTO -DN : Array of DN's, searched in order.
+2) Select dn: User selects the DN he is from.
+--------------------------
+So we are looking at two scenarios:
+1) fe_/be_user records are automatically created when a LDAP authenticated user loggs in. Configurable is: Where it applies (fe/be) and if any additional LDAP info we can get should be mapped to MySQL records (like name, email, address or user-groups uid's)
+2) fe_/be_user records basically is the same as before (they hold a reference to LDAP user) and authentication is the same, BUT in this case fe_/be_ users are created manually, maybe using a tool of some sort which can look up the whole list of users in LDAP and allow the T3 admin to check off which users to make references to (this would be "Batch create").
+3) Mapping of ONE typo3 user to MANY LDAP users...
+
+- Also have the possibility of local users: Thus 1) FIRST a lookup is done in LDAP, 2) THEN if this fails we look in the local mysql table. (Well, this solution is straight forward since a user must ALWAYS have a record in the local MySQL table...)
+
+
+Also see:
+- [Kasper] "LDAP" folder in Mailbox 
+
+
+********************
+APPENDIX: DBAL
+********************
+Issues:
+- Install tool, analysing SQL files, comparing, dumping etc. How? (MetaDatabase, MetaTables)
+- case-folding?
+- reserved words (uid!!) Which R-words?
+- LIMIT. selectLimit(x,x)
+- mysql_fetch_assoc substitute (seems to be there)
+- escaping chars with special function!!!
+- datatypes? Integer not there? LOB's a problem?
+- Internal functions: AVG, SUM, count
+- mysql_num_rows() = recordCount()
+- autoinc. of numbers with GenID()
+- how about joining?
+- ALTER TABLE syntax?
+
+Analysis:
+- SUPPORT: Core (+ 'cms') will support all DBs, extension MAY support a SUBSET of DBs only.
+- EM: MySQL will be the main supported database. sql-files for install tool follows MySQL syntax. Comparison can be done if ADOdb allows us to read table/field info (will need mapping of datatypes), updates may only be done if we support it. Not important. People CAN update manually with other DBs.
+- NAMING: Reserved words and case restrictions are a real problem. For now, lets call it unacceptable. Handling of this would include 1) conversion table in ADOdb for result set assoc. key mapping AND mapping of fields in the queries!
+- ESCAPING: Escaping characters will be very annoying because we'll have to pass an array first to stripslashes, then to add DB-specific slashes, then make Query. But we can for MySQL (and similar) bypass this...
+- LOBs: Working with LOBs seems to be extremely irritating, inserting them separately (In oracle)!! How are we knowing anyways that this is a LOB? Solution might be to bypass for MySQL and for problem DBs send the UPDATE/INSERT row (must be array then!!!) through a filter which returns new row plus a blob row for update afterwards.
+- AUTO-ID: Auto-incrementing is also a BIG irritation! Currently all inserts DO NOT set the id column!!! All insert statements must include the new, correct field (at least for the problem DB's like Oracle)
+- BTW: Escaping and BLOB handling seems to require the same for all INSERTs and UPDATEs: A field_array passed to function. Auto-id may relate to this (at least it will be required all places ...)
+- SQL: Will have to split up LIMIT selects. New escaping in SELECT queries. INSERT/UPDATE from field_arrays + processing, mysql_fetch_assoc() function "pandan"
+
+API:
+SELECT: 
+- Separate LIMIT from the rest. 
+- JOINS ? Functions like AVG, SUM?
+- Escaping of search strings
+
+UPDATE/INSERT:
+- Array passed to function if not MySQL
+  Function has: possible "autoincrement" field argument; If Oracle, auto-id is handled; If Oracle, BLOB-array is returned for separate insertion.
+
+
+ORACLE does not allow us to CHANGE existing fields into something else - only create new fields, otherwise we must export/import database.
+
+Other notes:
+- Datatypes to use for integers and others? Date/Time not a problem because typo3 uses integers.
+- AVG, SUM, COUNT - will they be there?
+- I'll need access to Oracle, MSSQL, PostGres - basically the databases we are going to connect to!!!
+- JOINS???
+- Having some lookup table (not TCA, because this is very individual from site to site) telling us which database (name+brand+server) a table is coming from, if not the default database. This also means that we will have an array of databases set up (one being default)!
+
+180303 / Oracle:
+- all fields/tablenames must be quoted
+- a quoted value cannot be inserted into an integerfield!!!
+
+
+insert... "kasper"
+
+Related issues: 
+- LPE: DB/DB sync.
+
+ORACLE / DB2:
+- u: db2admin
+- p: password
+
+Also see:
+- [Kasper] "DB Abstraction" folder in Mailbox 
+
+
+**********************
+APPENDIX: LPE
+*********************
+Syncronization:
+DB -> DB (1):
+- Production environment, which can dump configured set of tables to live server database and back. This is controlled from Production env.
+- Live server has two databases: One which accepts content from P (and is never written to) (P->L). One which ARE written to and is READ back by P (L->P).
+- The "P->L" database has a "backup" (db1, db2) where the "idle" database is the one being updated and after the update it's switched with the live db, which is now idle. The "L->P" database is not affected by this timing issue.
+- uploads/* dirs (and any files at all) might be syncronized by general rsync/ftp syncronization. Both ways? Primarily from P->L. Basically this sync. might take the whole sourcecode with it... 
+
+Req to T3:
+- That EACH table can be found in its own database (configurable). This means the TYPO3_db constant might have to be wasted? And not just another MySQL database - at another Database server or type (like Oracle). This is related to DBAL.
+- Q's: FTP-functions in php; How to syncronize? MySQL working across databases, connecting to more than one database? 
+
+DB->HTML
+- Basically this is an rsync/ftp sync question which requires a set of static files.
+- Also a "mixed mode" concept where static files not found are server dynamically by TYPO3, but where the TYPO3 install does NOT allow backend access at all - only frontend delivery.
+
+Two situation:
+- Publish static for local server, using mod_rewrite to direct requests transparently (static/dynamic). So all *.html requests WILL be found, static or dynamically! (Static/Dynamic blend)
+- Publish static for FTP server. All *.html requests MUST exist. (Purely static, limitations acceptable.)
+
+A HTML-filename which contains parameters__________:
+ - Two solutions: using base64 or md5/db to encode/store parameters, adding md5/base64 to html-filename (either the real staticly written filename or the "fake" one)
+ - Examples:
+&tt_board_uid=233&cHash=alkdfjlaskdf
+&tx_mininews_pi1[pointer]=0&tx_mininews_pi1[sword]=asdf&tx_mininews_pi1[mode]=asdf
++1/3 length:
+This_is_my_page.123.1.64WAoaFRW9BXWTlzZ0ow53Dx8PEgASxh9namzMWxYIBDMdGnDx8PEgASxh9namzMWxYIBDMdGn.html
+
+This_is_my_page.123.1.m5abe83fd83e.html
+&tt_board_uid=233&blablabla=342&cHash=alkdfjlaskdf
+
+de dk
+This_is_my_page.123.1.m5abe83fd83e.html
+This_is_my_page.123.1.m5edf837afde.html
+
+Management__________________:
+- Clear-all-static-pages button; Staticly written filenames are retrieved from database table where those filenames are stored when ever they are written to disk (includes TTL time etc)
+- Clear-page-cache might also clear-page-static files.
+
+---------------------------------------
+General config:        
+    For each page-id:
+        &lang=   (dk|de)
+        &cur=     (Euro/DKK)
+        &type=     (1)
+            2x2 = 4  (here we have some limit applied!)
+
+MAIN PAGE    &type=  (0|1|2|3)    4*4 = 16
+- Page 1    
+- Page 2    
+- Page 3    (Adresselist):    &tx_address_list[pointer]=    (0|1|2|3|4)    4*5 = 20 pages
+
+Various______________:
+- SearchEngine friendly / cachable URLs in board, products, tt_news
+- "Publish" funktionen brugte images_on_page. Genskab dette.
+
+THOUGHTS from Dassault work:
+# WriteToStatic function [Basically the static publishing system] (core feature: Kasper).
+  - writes static file IF simulateStaticDocument uses HTML *without* any parameters
+  - setting a "config.disableStaticCreation = 1" flag can disable it (for conditions situations)
+  - setting a value from PHP function (eg. if a search form needs to submit to the page) can disabled it
+  - registering the filename related to ID [and other parameters] so that "clear page cache" can also remove the file automatically.
+  - Also registeres: a) resources on the page (images/stylesheets), b) GET parameters from M5/B6 encryption.
+  - a browsing mechanism for creating static versions; could browse page, then show all links with checkboxes. Then checking of which links to follow and press button; browses the new pages. Then again checkboxes and so on. Which links were checked should be stored so that a process of publising could thus be followed automatically. This feature would include "clear files" function and also warn if a requested page was NOT written. (Problem; what if user-requests would generate the file? Possibly use a cookie or GET parameter or backend flag to request this.)
+  - includes an overview module showing all files and which pages they related to, possible "lost files" (those not registered in database) and "missing files" (in the database but not there).
+  - To create new versions doesn't have to REMOVE the existing! Just overwrite!
+
+Also see:
+- [Kasper] "LPE" folder in Mailbox 
+
+
+
+
+******************************
+APPENDIX: Image Processing
+*****************************
+Generally we want:
+- Full PNG main support
+- Full IM5.x support
+- Non-ImageMagick version which CAN scale images (with GD/JPG)
+
+To get rid of ImageMagick totally we need a GD with...:
+- blur/sharpening
+- scaling
+- masking
+- reduce colors / dithering
+- jpg quality control
+- 96 dpi / 72 dpi 
+- other effects?
+- Support for many file formats.
+This is currently implemented for GD2 by Kasper/Rene but the changes are not used. Just proof-of-concept. We are in contact with Pierre-Alain from the PHP-dev team about the issue and hope that his changes will make the future GDlib in PHP5 so powerful that ImageMagick is not needed anymore and most importantly: We can rely on a totally standard PHP installation available at any webhotel (in the future).
+
+Notes:
+- Consider imageprocessing issues like PNG / GDlib2 / Freetype2 / IM5.4.x  / T1lib
+- Other options: PHPImLib? GIMP?
+- Improve Install Tool
+
+--------------------
+imagecopymerge
+
+jonny at sanriowasteland dot net
+29-Sep-2002 06:36 
+ 
+If you need to merge 2 png's (or  presumably 2 gifs) with different color palettes, I have found this is the function to use.  Just set pct to 99, and you are rocking.  With pct set to 100, or imagecopy for that matter, the palette seems to go wonky.  (It probably just uses the palette of the source image. but don't quote me on that).
+ 
+ 
+Also see:
+- [Kasper] "ImageManipulation" folder in Mailbox 
+
+ 
+******************************
+APPENDIX: Idea about "Roles"
+******************************
+This is a few ideas about adding roles to the permission concept of TYPO3:
+- There could be, say, 4 default roles:  author, editor, administrator, developer
+- Users can be assigned "membership" of a role (basically a "role" is like a hardcoded "user-group"?)
+- Like you can configure database fields in TCA to be an "excludeField" you could also configure which ROLES can edit the field.
+- Possibly each role could assign membership of some groups.
+
+
+*************************************
+APPENDIX: Various ideas for extensions
+*************************************
+EMAIL publication:
+- People can publish stuff by sending email to certain adresse piping the content into database.
+- This could also be upload of files, eg. a word document to a place in fileadmin/ (such a document could contain information inside which was displayed on the website).
+- See mail from DH, subject; "Last day for feature requests" Message-ID: <200202181821120933.01CA5B9F@smtp.worldonline.dk>
+
+IMPORT WEBSITE:
+- Import external website! (Rene's extension). Includes some crawler feature (locally og external url)
+
+SITE-CRAWLER:
+- A crawler which crawls either local or external site, invoked from a) backend or b) cron-script.
+- Used for 1) Indexed Search, 2) External website import, 3) Just walking through a site for indexing/caching all pages.
+- Trying to define a sitemap/menu structure + find "content" on page
+  - maybe with some kind of "hint" facility to tell what html-elements wraps content or maybe for each page visually pick out the content area: OR this could be done by the TemplaVoila tool?
+
+BACKEND TOOLS:
+- Global search and replace of records (Rene F?)
+- Export the complete typo3 site/database, in a big file like mycompletesite.t3d
+  
+
+**************************************
+APPENDIX: PATTERN-control
+**************************************
+- Specify a pattern of allowed/required values.
+- Those values are on the basic level just "table:uids". On the next level it would also set requirements on one or more field values inside!
+- How can this be done?
+- Will be hard to manage that records being a part of the pattern are not changed after having been added to the pattern. But at least this could be a beginning...?
+
+
+
+**************************************
+Rapport of "deleted"-check in typoscripts (190500) 
+**************************************
+TYPO3: 
+- "deleted"-field must be set manually in userauth for user-tables!
+Hardcoding: 
+- "pages" in load_tree.php 
+- "sys_filemounts" in userauth_group 
+- "user-group tables" in userauth_groups 
+- "pages" in ti_inc.php 
+- "pages" in transferdata.php 
+
+TypoScript: 
+- sys_domain is NOT checked for deleted in "page.php" 
+- getForeignRecords() (page.php) does not check for deleted!!! (this is even not used any more!! 
+Hardcoding: 
+- "pages" in page.php 
+- "pages" in t_search.php 
+- "pages" in index_ts.php (caching) 
+- "sys_template" in t_template.php 
+- "fe_groups" in index_ts.php 
+
+
+**************************************
+Bugs, considerations, notes
+**************************************
+- mail() hangs in 90 second (approx) if computer is not on the net! (deliver to mail-server)
+- REWRITE of files when they already exists? shortMD5 is guilty?
+- "Fields not properly updated:" - error: Varchar(xx) cannot included spaces AFTER the last character and therefore TYPO3 interface reports an error. Solve this error by setting "eval" to "trim" in $TCA for inputfields of the type VARCHAR. 
+- mysql_query() function should not be used I think as this queries the current database. mysql() should be used instead. 
+- JavaScript: escape() doesn't rawurlencode the "+"-character. This can be a problem, eg. when trying to rename files with a plus in the name. I have made an alternative escape-function. 
+- PDF-files over 600 k are not rendered by ImageMagick. Less than 270 is! How come and is this true. Number of pages? 
+- When GDlib is disabled it can be very confusing that record icons does not change their look according to hidden/starttime/endtime etc...
+
+
+
+**************************************
+Innovation, brainstorming for future
+**************************************
+- TSconfig defined through FlexForms?
+- Drop tt_content for content rendering and let extensions be the sole source of new content element types?
+- Check sitecore ideas for adding new fields etc.
+- Backend for PDAs/Lynx

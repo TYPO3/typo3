@@ -1,0 +1,99 @@
+<?php
+
+$LOCAL_LANG = Array (
+	'default' => Array (
+		'mlang_labels_tablabel' => 'Page content',
+		'mlang_labels_tabdescr' => 'This module allows you to create and edit webpages. It provides a Quick-Editor for instant access to the primary page content. In addition you can manage different languages and columns of content per page. Finally you may access special page content like guestbook, board and shopping items. The module also presents pagehit statistics for the individual pages.',
+		'mlang_tabs_tab' => 'Page',
+	),
+	'dk' => Array (
+		'mlang_labels_tablabel' => 'Sideindhold',
+		'mlang_labels_tabdescr' => 'Dette modul giver dig mulighed for at oprette og redigere websider. Kvik-redigerings-funktionen giver dig øjeblikkelig adgang til det primære indhold på siderne. Herudover kan du styre forskellige sprog og kolonner per side. Endeligt kan du tilgå specialiseret sideindhold så som gæstebog-, forum- og produktelementer. Modulet fremviser også en sidevisningsstatestik for de enkelte sider.',
+		'mlang_tabs_tab' => 'Side',
+	),
+	'de' => Array (
+		'mlang_labels_tablabel' => 'Seiten-Info und Inhalt',
+		'mlang_labels_tabdescr' => 'Mit diesem Modul können Sie neue Webseiten anlegen und bearbeiten. Es bietet einen Quickeditor für schnellen Zugriff auf den Hauptseiteninhalt. Zusätzlich können Sie verschiedene Sprachen und Inhaltsspalten Ihre Seite verwalten. Zusätzlich können Sie speziellen Seiteninhalt wie Gästebücher-, Forums- und Shop-Einträge verwalten. Das Modul zeigt Ihnen auch Seitenzugriffstatistiken für die einzelnen Seiten an.',
+		'mlang_tabs_tab' => 'Seite',
+	),
+	'no' => Array (
+		'mlang_labels_tablabel' => 'Side-info og innhold',
+		'mlang_labels_tabdescr' => 'Hurtigredigeringsfunksjonen gir deg rask tilgang til det primære innholdet på sidene. Du kan også velge forskjellige språk og kolonner per side. Utover dette har du tilgang til spesielt sideinnhold som gjestebok-, forum- og produktelementer. Modulen viser også sidevisningsstatistikk for de enkelte sidene.',
+		'mlang_tabs_tab' => 'Side',
+	),
+	'it' => Array (
+		'mlang_labels_tablabel' => 'Contenuto della pagina',
+		'mlang_labels_tabdescr' => 'Questo modulo permette di creare e editare le pagine. Fornisce un Quick-Editor per modificare velocemente il contenuto. Potete gestire i paragrafi in multilingua, su differenti colonne, e potete accedere a pagine di tipo speciale, come guestbook, forum di discussione, shopping. Attraverso questo modulo potete, infine, vedere alcune statistiche sulla pagina.',
+		'mlang_tabs_tab' => 'Pagina',
+	),
+	'fr' => Array (
+		'mlang_labels_tablabel' => 'Contenu page',
+		'mlang_labels_tabdescr' => 'Ce modules vous permet de créer et d\'editer les pages web. Il vous apporte un Editeur rapide pour un accès immédiat au contenu primaire de la page. En plus, vous pouvez gérer plusieurs langues et colone pour le contenu de la page. Finalement, vous pouvez accéder au contenu spécial des pages comme les livres d\'or, les forums de discitions et le magasin en ligne. Ce module présente aussi les statistiques pour chaque page.',
+		'mlang_tabs_tab' => 'Page',
+	),
+	'es' => Array (
+		'mlang_labels_tablabel' => 'Contenido de la página',
+		'mlang_labels_tabdescr' => 'Este módulo le permite crear y editar páginas web. Posee un Editor Rápido que facilita acceso instantáneo al contenido primario de la página. También puede administrar los diferentes lenguajes y columnas de contenido por página. Finalmente puede acceder a contenido especial como la lista de visitantes, el tablero de mensajes y los artículos de la tienda. El módulo también muestra una estadística de consulta de cada página individualmente.',
+		'mlang_tabs_tab' => 'Página',
+	),
+	'nl' => Array (
+		'mlang_labels_tablabel' => 'Pagina-inhoud',
+		'mlang_labels_tabdescr' => 'Via deze module kan je webpagina\'s aanmaken en bewerken. Je vindt hier een Quick-Editor die je directe toegang geeft tot de primaire pagina-inhoud. Bovendien kan je de diverse talen en kolommen inhoud per pagina manipuleren. Tenslotte heb je toegang tot speciale pagina-inhoud zoals gastenboek, forum en winkelartikelen. Deze module introduceert ook statistieken van de pagina-treffers voor individuele pagina\'s.',
+		'mlang_tabs_tab' => 'Pagina',
+	),
+	'cz' => Array (
+		'mlang_labels_tablabel' => 'Obsah strany',
+		'mlang_labels_tabdescr' => 'Tento modul umožòuje vytváøet a editovat webové stránky. Poskytuje Quick-Editor pro okamžitý pøístup k základnímu obsahu strany. Navíc mùžete spravovat rùzné jazyky a sloupce obsahu na stranì. Navíc máte pøístupný i speciální obsah stran jako je návštìvní kniha, nástìnka nebo zboží obchodu. Modul také ukazuje statistiku pøístupù pro jednotlivé stránky.',
+		'mlang_tabs_tab' => 'Strana',
+	),
+	'pl' => Array (
+		'mlang_labels_tablabel' => 'Zawarto¶æ strony',
+		'mlang_labels_tabdescr' => 'Ten modu³ pozwala tworzyæ i edytowaæ strony. Do dyspozycji masz Szybki-Edytor do b³yskawicznej edycji tre¶ci zawartej na stronie. Mo¿esz równie¿ zarz±dzaæ tre¶ci± w kolumnach oraz ró¿nymi wersjami jêzykowymi dla strony. Masz dostêp równie¿ do specjalnej zawarto¶ci typu wpisy w forum dyskusyjnym, ksiêdze go¶ci czy asortyment sklepu. Modu³ wy¶wietla te¿ statystyki ods³on dla poszczególnych stron.',
+		'mlang_tabs_tab' => 'Uk³ad',
+	),
+	'si' => Array (
+		'mlang_labels_tablabel' => 'Vsebina strani',
+		'mlang_labels_tabdescr' => 'Ta modul vam omogoèa ustvarjanje in urejanje spletnih strani. Vsebuje hitri urejevalnik za takojšnji dostop do primarne vsebine strani. Omogoèa tudi upravljanje razliènih jezikovnih verzij strani. Lahko uporabite tudi posebno vsebino, naprimer knjigo gostov, oglasno desko, ali online trgovino. Tudi v tem modulu si lahko ogledate statistiko obiska strani.',
+		'mlang_tabs_tab' => 'Stran',
+	),
+	'fi' => Array (
+		'mlang_labels_tablabel' => 'Sivun sisältö',
+		'mlang_labels_tabdescr' => 'Tällä modulilla luot, muotoilet ja ylläpidät www-sivujasi. QuichEdit teksturilla käsittelet sivujen sisältöä. Lisäksi voit hallita useita erikieliä ja sarakkeita sivuillasi. Lisäksi pääset spesiaali sisältöihin kuten esimerkiksi vieraskijaan, keskustelusivuille ja kauppasivuille. Moduli näyttää myös sivuittain käyttötilastot.',
+		'mlang_tabs_tab' => 'Sivu',
+	),
+	'tr' => Array (
+		'mlang_labels_tablabel' => 'Sayfa içeriði',
+		'mlang_labels_tabdescr' => 'Bu modül websayfalarý yaratmanýza ve düzenlemenize izin verir. Hýzlý Düzenleyici birincil sayfa içeriðine acil eriþim imkaný saðlar. Buna ek olarak deðiþik dilleri ve her sayfa içeriðinin sütünlarýný yönetebilirsiniz. Son olarak özel sayfa içeriðine eriþebilirsiniz ziyaretçi defteri, ilan tahtasý ve alýþveriþ nesneleri gibi. Birde modül küþüsel sayfalar için sayfa eriþim istatistikleri sunuyor.',
+		'mlang_tabs_tab' => 'Sayfa',
+	),
+	'se' => Array (
+		'mlang_labels_tablabel' => 'Sidans innehåll',
+		'mlang_labels_tabdescr' => 'Med denna modul kan man skapa och ändra web-sidor. Här finns en snabbeditering med vilken man snabbt kommer åt det viktigaste sidinnehållet. Dessutom kan man välja språk och kolumner med innehåll för alla sidor. Slutligen kan man redigera olika slag av sidinnehåll, t.ex. gästbok, diskussionsforum och produkter. Modulen presenterar också hur många träffar varje individuell sida fått.',
+		'mlang_tabs_tab' => 'Sida',
+	),
+	'pt' => Array (
+		'mlang_labels_tablabel' => 'Conteúdo da página',
+		'mlang_labels_tabdescr' => 'Este módulo permite-lhe criar e editar páginas da internet. Providência um Editor-Rápido para acesso instantâneo ao conteúdo da página primária. Em adição pode gerir diferentes idiomas e colunas de conteúdo por página. Finalmente pode aceder a páginas de conteúdos especiais tais como livros de visitas, forum e items de loja. O módulo também apresenta estatísticas de visualização para páginas individuais.',
+		'mlang_tabs_tab' => 'Página',
+	),
+	'ru' => Array (
+		'mlang_labels_tablabel' => 'Ñîäåðæèìîå ñòðàíèöû',
+		'mlang_labels_tabdescr' => 'Ýòîò ìîäóëü ïîçâîëÿåò ñîçäàâàòü è èçìåíÿòü âåá-ñòðàíèöû. Ñ ïîìîùüþ ýòîãî ðåäàêòîðà âû ìîæåòå ëåãêî ïîëó÷èòü äîñòóï ê îñíîâíûì çàïèñÿì ñòðàíèöû. Êðîìå òîãî âû ìîæåòå ðàáîòàòü íàä ðàçëè÷íûì ÿçûêîâûì ñîäåðæèìûì èëè æå íàä ñîäåðæèìûì â ðàçëè÷íûõ ïîëÿõ ñòðàíèöû. Òàêæå çäåñü âîçìîæåí äîñòóï ê ñïåöèàëüíûì çàïèñÿì, íàïðèìåð èç ãîñòåâîé êíèãè, ôîðóìà èëè æå ìàãàçèíà. Äàííûé ìîäóëü òàêæå ïîêàçûâàåò ñòàòèñòèêó õèòîâ íà îòäåëüíûõ ñòðàíèöàõ.',
+		'mlang_tabs_tab' => 'Ñòðàíèöà',
+	),
+	'ro' => Array (
+		'mlang_labels_tablabel' => 'Conþinut de paginã',
+		'mlang_labels_tabdescr' => 'Acest modul vã permite sã creaþi ºi sã modificaþi pagini de web. Vi se oferã un editor pentru acces imediat la conþinutul unei pagini. În completare, puteþi administra limbaje diferite ºi coloane de conþinut în fiecare paginã. Mai puteþi crea pagini cu conþinut special, cum ar fi cartea de oaspeþi, forum sau pagina de cumpãrãturi. Acest modul prezintã ºi statistici de accesare pentru fiecare paginã în parte.',
+		'mlang_tabs_tab' => 'Paginã',
+	),
+	'ch' => Array (
+	),
+	'sk' => Array (
+		'mlang_labels_tablabel' => 'Obsah stránky',
+		'mlang_labels_tabdescr' => 'Tento modul umožòuje vytvára a pozmieòa webové stránky. Poskytuje Quick-Editor na rýchly prístup k základnému obsahu stránky. Navia môžete spravova rôzne jazykové verzie a ståpce na stránke. Nakoniec, môžete ma prístup k špeciálnemu obsahu stránky ako je kniha návštev, nástenka, tovar obchodu atï. Modul okrem iného ukazuje štatistiky prístupov pre jednotlivé stránky.',
+		'mlang_tabs_tab' => 'Stránka',
+	),
+	'lt' => Array (
+	),
+);
+?>

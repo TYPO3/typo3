@@ -1,0 +1,47 @@
+<!--###TEMPLATE_DEFAULT### begin
+	Help template for the default language, english
+-->
+<table border=1 cellpadding=4 cellspacing=1 bgcolor="#eeeeee"> 
+<tr>
+	<td colspan=2>
+	
+	<div align="center"><h3>News Codes</h3></div>
+	<font face=verdana size=2>
+	You must insert a code in the CODE field of the "List" content element before the news module will work. The code tells the news module what to do. You can insert multiple codes by separating them by a comma.<br>
+	Here is an example:<br><BR>
+	<div align="center"><img src="media/scripts/news_help1.gif" width="370" height="220" border="2" alt=""></div>
+<br>
+	Starting point: If you don't insert a page as starting point the current page is used. Notice that the recursive function <i>do work</i> with news and thus you can select news from multiple pages and subpages.
+	
+	<HR>
+	Current CODE = "<b>###CODE###</b>"
+	</font>
+	</td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>LATEST</strong></font></td>
+	<td><font face=verdana size=2>List the latests non-archive news</font></td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>AMENU</strong></font></td>
+	<td><font face=verdana size=2>Displays a menu of the archive divided into time periods.</font></td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>LIST</strong></font></td>
+	<td><font face=verdana size=2>Displays all news by default or news from a given time interval defined with a URL parameter (eg. used by the ARCHIVE function)</font></td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>SEARCH</strong></font></td>
+	<td><font face=verdana size=2>Displays a search box and result listing for searching the archive.</font></td>
+</tr>
+<tr>
+	<td><font face=verdana size=2><strong>SINGLE</strong></font></td>
+	<td><font face=verdana size=2>Displays a single news item if tt_news is set as a GET var.</font></td>
+</tr>
+<tr>
+	<td colspan=2><font face=verdana size=2><strong>Special: </strong> You can specify any of these codes prepended with a slash and a number, which indicates which category to use. If no category is defined all categories are used by default. If you enter two slashes (parameter number 2) you specify whether the listing is from archive (1), non-archive (-1) or don't-care (0).
+	<BR>Example: 'LIST/2/-1' - displays all news not in archive from the category with id '2'.</font></td>
+</tr>
+</table>
+<!--###TEMPLATE_DEFAULT### end -->
+

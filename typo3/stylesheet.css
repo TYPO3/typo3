@@ -1,0 +1,172 @@
+/****************************************
+
+	GENERAL STYLE FOR TYPO3 BACKEND:
+
+Stylesheet for the TYPO3 backend. 
+You can configure another/additional stylesheet for use by the $TBE_STYLES global var
+	
+*****************************************/
+SELECT, TEXTAREA, INPUT, TD, BODY, .defstyle, P, DIV {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	margin: 0 0 0 0;
+	color: black;
+}
+FORM {margin: 0 0 0 0;}
+H1, H2, H3, H4 {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	font-weight: bold;
+	margin: 3px 0px 3px 0px;
+}
+
+/* Occasionally used, eg. in About Modules: */
+H1 {
+	font-size: 14px;
+	text-align: center;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+/* MAIN page header: */
+H2 {
+	background-color: #666666;
+	text-align: center;
+}
+
+/* Normal section headers */
+H3 {
+	margin: 8px 0px 5px 0px;
+	padding: 1px 3px 1px 3px;
+}
+
+/* Discrete section headers (no background) */
+H4 {
+	margin-top: 6px;
+	color: #333333;
+}
+
+/* Preformatted text - not used so much in TYPO3 */
+PRE   {
+	font-family: mono-spaced; 
+	font-size: 12px;
+}
+
+/* Links in general */
+A {
+	color : black;
+	text-decoration: none;
+}
+
+
+/* Dimmed span tag color (disabled) */
+.typo3-dimmed {color: #666666;}
+
+/* Red span tag color (warning, notice) */
+.typo3-red {color: red;}
+
+/* Vertical menu: */
+DIV.vertical-menu {
+	margin: 0px 0px 0px 2px;
+}
+DIV.typo3-mainmenu-inner {
+	background-color: #D9D9D8; 
+	margin: 1px 1px 1px 1px;
+}
+TD.typo3-mainmenu-outer {
+	background-color: #9BA1A8; 
+}
+TR.typo3-submenu	{
+}
+DIV.typo3-mainmenu-inner A, 
+TD.typo3-submenu-label A {
+	text-decoration: none;
+}
+TR.typo3-submenu-divrow {
+}
+TR.typo3-submenu-endrow {
+}
+
+/* About modules, main items/tablecells: */
+TD.typo3-aboutmod-outer {
+}
+
+/* clipboard  */
+TR.typo3-clipboard-head {
+	background-color: #cccccc;
+}
+
+/* Go back A-tags */
+A.typo3-goBack {
+	font-weight: bold;
+	background-color: #D9D5C9;
+	padding: 1px 1px 1px 1px;
+}
+
+/***
+NOTICE: These selectors (below) are also defined in the documents header. 
+This is done since the general color scheme is supposed to be controlled by the template class/TBE_STYLES global var.
+Refer to the source code of typo3/template.php for details.
+***/
+A:hover {color: #254D7B;}
+H2 {background-color: #9BA1A8;}
+H3 {background-color: #E7DBA8;}
+BODY {background-color: #F7F3EF;}
+
+
+/***
+TypoScript highlighting
+***/
+PRE.ts-hl {font-size: 11px; font-family : monospace;}
+PRE.ts-hl .ts-prespace {}
+PRE.ts-hl .ts-objstr_postspace {}
+PRE.ts-hl .ts-operator_postspace {}
+PRE.ts-hl .ts-operator { color: black; font-weight: bold; }
+PRE.ts-hl .ts-value {color: #cc0000;}
+PRE.ts-hl .ts-objstr {color: #0000cc;}
+PRE.ts-hl .ts-value_copy {color: #006600;}
+PRE.ts-hl .ts-value_unset {background-color: #66cc66;}
+PRE.ts-hl .ts-ignored {background-color: #66cc66;}
+PRE.ts-hl .ts-default {background-color: #66cc66;}
+PRE.ts-hl .ts-comment {color: #666666; font-style: italic;}
+PRE.ts-hl .ts-condition {background-color: maroon; color: #ffffff; font-weight: bold;}
+PRE.ts-hl .ts-error {background-color: yellow; border: 1px red dashed; font-weight: bold;}
+PRE.ts-hl .ts-linenum {background-color: #eeeeee;}
+
+
+
+/****************************************
+
+	SPECIFIC WRAPPERS
+	
+	The "template" class is usually instantiated as either
+	bicDoc, mediumDoc, smallDoc or noDoc
+	Each of these will result in the whole page content between the bodytags being wrapped in a DIV-section with a class.
+	The class name will be "typo3-[classname]"
+	In particular we set the width of these wrapper-sections:
+
+*****************************************/
+DIV.typo3-bigDoc {width: 740px;}
+
+DIV.typo3-noDoc {width: 740px;}
+DIV.typo3-noDoc H2 {width: 740px;}
+
+DIV.typo3-mediumDoc {width: 470px;}
+
+DIV.typo3-smallDoc {width: 350px;}
+
+
+/* Certain special wrapped DIV's */
+/* For shortcut frame: */
+DIV.typo3-shortcut {border-top: 1px solid #666666;}
+
+/* For view_help.php document : */
+DIV.typo3-view-help {margin-left: 5px; margin-top: 2px; width:95%;}
+DIV.typo3-view-help H3 {background-color: #ABBBB4;}
+DIV.typo3-view-help H4 {margin-top: 15px; border-bottom: 1px black solid;}
+
+/* Visual debugging: */
+/*
+H2,H3,H4,DIV {border: 1px dotted #666666;}
+*/
+

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<TITLE>Guestbook example template</TITLE>
+</head>
+
+<body>
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<H1>GUESTBOOK TEMPLATES</H1>
+<h2>EXAMPLE 2</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<em>This template for the guestbook features:<br>
+- A header section (the gray table cell with title)<br>
+- A content section with only one design for an element (as opposed to Example 1 where there are two alternating designs).<BR>
+(See the source code for subparts and markers)<br>
+</em>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+<!-- ###TEMPLATE_GUESTBOOK###  begin 
+	This is the template for the guest book or comment items
+-->
+<TABLE cellpadding="4" cellspacing="1" border="0" width="98%">
+	<TR bgcolor="#999999"><TD colspan=2 valign="bottom"><FONT face="verdana,arial,helvetica" size="2" color="#FFFFFF"><div align="center"><B>The Guestbook</B></div></FONT></TD></TR>
+	<!-- ###CONTENT### begin
+		  This is the part of the template substituted with the list of comments/entries: 
+	-->
+		<!-- ###POST### begin 
+			Template for a single item 
+		-->
+			<TR>
+				<TD nowrap width="10%" bgColor="#cccccc"><FONT face="arial, helvetica" size="1"><B>###POST_DATE###</B></FONT></TD>
+				<TD valign="top" bgColor="#cccccc"><FONT face="arial, helvetica" size="2"><B>###POST_TITLE###</B></FONT></TD>
+			</TR>
+			<TR>
+				<TD valign="top">
+				</TD>
+				<TD valign="top">
+					<FONT face="verdana,arial,helvetica" size="1">
+						###POST_CONTENT###<br><br>
+						
+					-----------<br>
+					Name: <B>###POST_AUTHOR###</B><br>
+					Email: <a href="mailto:###POST_EMAIL###">###POST_EMAIL###</a>
+					</FONT>
+				</TD>
+			</TR>
+		<!-- ###POST### end-->
+	<!-- ###CONTENT###  end -->
+</TABLE><BR>
+<!-- ###TEMPLATE_GUESTBOOK### end -->
+
+
+
+</BODY>
+</HTML>

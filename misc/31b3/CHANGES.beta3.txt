@@ -1,0 +1,32 @@
+CHANGES, beta3:
+
+Added recordCounter and recordTotal in PHP in cObject, CONTENT + RECORDS
+Little change in dblayout: nl2br on sysnote output.
+Changes made in ti_inc, transferdata and exportdata so that a foreign_table may be "pages"
+fixed error in save.html
+changes t3lib/page.php/checkRecord so that the row is returned if it exists
+added function getCurrentVal() to tslib/content.php
+fixed bug that prevented pagecontent from being properly previewed.
+Fixed things with the multimedia element, add asf and mpg as videoextensions.
+Modified tslib/content.php/makelinks function (3/12)
+Modified TEXT-menues so that links are blurred by default if clicked (that means no dashes lines around the links!). "noBlur" option can disable this.
+added config-property ATagParams which is included in the end of all typo generated links (except menus)
+added isInList property for the if. object in TypoScript
+changed order of libraries included in tslib/pagegen.php
+tce_main changed so that the order tables are processed always starts with the pages-table.
+fixed bug with the preview function which prevented it from working with framesets and rewrite-rule (index_ts.php)
+fixed bug in t3lib/tce_main.php that made fileattachment errors duplicate the filereferences in the record.
+corrected formerly line 1896 in tslib/content.php for regex-bug (added slashes to {}). (function linkWrap). Error on some installations...
+changed the FORM-cObject in TypoScript so that it automatically includes any submitted data into the forms again if eg. data is submitted to the same search-form. 
+added property "excludeUidList" to HMENU cObject in TypoScript: Option for excluding specific pages from menus. Smart for excluding pages in menus on certain treelevels like not linking to the frontpage in the menu from... the frontpage itself.
+fixed tslib/content.php/substituteSubpart() to substitute recursively if there are more than just the first subpart. 
+fixed t3lib/page.php/checkRecord() to check differently.
+added new function tslib/content.php/substituteMarkerArray() 
+fized meta-tag object in TypoScript to use "name" attribute instead of http-equiv
+Changed the "calender" labels to "calendar"
+Changed $maxUploadFileSize in t3lib/extfilefunctions.php from 1900 kb to 10000 kb.
+Modified various stuff with GET_URL_ID_TOKEN and a fix for removing the "?" after links with no further arguments
+Introduced TYPO#_CONF_VARS global array for configuration and removed the original global vars (THIS MAY NEED TO BE UPDATED IN SOME SCRIPTS and in localconf.php!!)
+Added GDLib/PNG support. See localconf.php for details on config.
+Added windowssupport with almost all functions. (Files changed: - t3lib/extfilefunctions.php- t3lib/tce_main.php- t3lib/userauth_group.php- typo3/init.php- typo3/main.html- typo3/thumbs.php
+Module: file/images (shows the images with bigger thumbnails and size-info.)

@@ -1,0 +1,22 @@
+
+System:
+- Added prefix "./" in front of the path of some include-function calls in the frontend. That will help using Typo3 with include-path set to strange things and further avoid absolute includes which should not be allowed in those cases.
+- Added "PATH_site" constant before the PATH_t3lib, PATH_tslib and PATH_typo3conf in frontend. Also to avoid include-path problems.
+- Added TYPO3_mainDir constant to the "4-scripts" - index.php, showpic.php, thumbs.php and init.php - You can change this hardcoded constant to get another admin dir than typo3/ (see Inside Typo3 for instructions)
+- Substituted a lot of include_once() and include() with require*() functions
+- Added flag, lockSSL, which will require backend operation to happend through https.
+- Solved more ImageMagick issues, this time with 5.4.9 - not even capable of writing to it's file format without failing. IM is really looser-software seen from my POV.
+- Fixed bug with GMENU where if GDlib was disabled you could not specify an alternative image. now you can.
+!!! - $TYPO3_CONF_VARS["GFX"]["im_noFramePrepended"] has had it's default value changed back to zero from 1. The reason it was set at one was because of some ImageMagick version sometime in history. However the newest IM 5.4.9 and the classic 4.2.9 both works with this flag unset, which is better for many reasons. Therefore it has been set back. Please make sure to set this flag locally for your sites if you are having problems with the new default!
+- Fixed potential bug for gifbuilder objects: The filename hash was based on image dimensions and filename. Now the mtime is included so an updated file of similar dimensions will result in a re-generation of image. This mtime is added in getImageResource in tslib_content (origFile_mtime)
+- Added "form_enctype" value to TYPO3_CONF_VARS which allows you to use Typo3 with file_uploads disabled.
+- Managed to get icon-generation working with GD2/png only (with Imagemagick also). Please see some comments in the t3lib_iconworks class.
+!!! - RTE extension is added! You MUST install this extension if you use the RTE!
+!!! - The RTE extension also means that any class extensions to the SC_rte_rte class has a new XCLASS key: "ext/rte/rte.php" instead of "typo3/rte/rte.php". Sorry for the inconvenience.
+- Fixed a series of bugs of course plus minor additions / features not listed here.
+!!! - $LANG_GENERAL_LABELS is highly discouraged and most keys are removed from the array (except: endtime,hidden,starttime,fe_group,hide_at_login,any_login,usergroups). Instead use a reference to the locallang file with the labels instead. For example if you used $LANG_GENERAL_LABELS["endtime"] changes the value to "LLL:EXT:lang/locallang_general.php:LGL.endtime". That simple. Still 
+- The concepts of localization has been streamlined for almost all cases in Typo3. The concept known as "locallang.php" has proven to be the most flexible and therefore all occurencies of "Language Splitted" labels (those divided by vertical bars, |) and backend module $MLANG labels has been converted. The old concepts still work, but is very much discouraged. In particular if you want the translation tools to work with them. Further the system localization has been put into a required plugin, call "lang". 
+
+As always read at least the lines prefixed with "!!!"
+
+- kasper

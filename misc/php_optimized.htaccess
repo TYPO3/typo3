@@ -1,0 +1,5 @@
+php_flag allow_call_time_pass_reference off
+php_flag register_globals off
+php_flag register_argc_argv off
+php_flag magic_quotes_gpc off
+php_value variables_order GPCS

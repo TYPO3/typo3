@@ -1,0 +1,228 @@
+a:2:{s:4:"meta";a:2:{s:5:"title";s:16:"System Languages";s:5:"descr";s:113:"This class contains method you can use to fetch labels for your backend modules so they are language independant.";}s:5:"files";a:1:{s:8:"lang.php";a:3:{s:8:"filesize";i:14382;s:6:"header";a:5:{s:4:"text";s:341:"
+
+Contains the TYPO3 Backend Language class
+
+For detailed information about how localization is handled,
+please refer to the 'Inside TYPO3' document which descibes this.
+
+This class is normally instantiated as the global variable $LANG in typo3/template.php
+It's only available in the backend and under certain circumstances in the frontend
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:2:{i:0;s:41:"@author	Kasper Skårhøj <kasper@typo3.com>";i:1;s:33:"@see typo3/template.php, template";}s:11:"other_index";a:2:{s:7:"@author";a:1:{i:0;s:33:"Kasper Skårhøj <kasper@typo3.com>";}s:4:"@see";a:1:{i:0;s:28:"typo3/template.php, template";}}}s:3:"DAT";a:10:{i:1;a:8:{s:6:"header";s:16:"class language {";s:5:"class";i:1;s:11:"parentClass";s:8:"language";s:4:"cDat";a:5:{s:4:"text";s:341:"
+
+Contains the TYPO3 Backend Language class
+
+For detailed information about how localization is handled,
+please refer to the 'Inside TYPO3' document which descibes this.
+
+This class is normally instantiated as the global variable $LANG in typo3/template.php
+It's only available in the backend and under certain circumstances in the frontend
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:2:{i:0;s:41:"@author	Kasper Skårhøj <kasper@typo3.com>";i:1;s:33:"@see typo3/template.php, template";}s:11:"other_index";a:2:{s:7:"@author";a:1:{i:0;s:33:"Kasper Skårhøj <kasper@typo3.com>";}s:4:"@see";a:1:{i:0;s:28:"typo3/template.php, template";}}}s:7:"content";a:2:{i:0;s:1825:"	var $lang='default';		// This is set to the language that is currently running for the user
+	var $langSplit='default';	// Values like the labels in the tables.php-document are split by '|'. This values defines which language is represented by which position in the resulting array after splitting a value. (NOTICE: Obsolete concept!)
+
+		// Default charset in backend
+	var $charSet = 'iso-8859-1';
+		// Array with alternative charsets for other languages.
+	var $charSetArray = array(
+		'dk' => '',
+		'de' => '',
+		'no' => '',
+		'it' => '',
+		'fr' => '',
+		'es' => '',
+		'nl' => '',
+		'cz' => 'windows-1250',
+		'pl' => 'iso-8859-2',
+		'si' => 'windows-1250',
+		'fi' => '',
+		'tr' => 'iso-8859-9',
+		'se' => '',
+		'pt' => '',
+		'ru' => 'windows-1251',
+		'ro' => 'iso-8859-2',
+		'ch' => 'gb2312',
+		'sk' => 'windows-1250',
+		'lt' => 'windows-1257',
+	);
+	
+		// This is the url to the Typo3 manual
+	var $typo3_help_url= 'http://www.typo3.com/man_uk/';
+		// Array with alternative URLs based on language.
+	var $helpUrlArray = array(
+		'dk' => 'http://www.typo3.com/man_dk/',
+		'de' => '',
+		'no' => '',
+		'it' => '',
+		'fr' => '',
+		'es' => '',
+		'nl' => '',
+		'cz' => '',
+		'pl' => '',
+		'si' => '',
+		'fi' => '',
+		'tr' => '',
+		'se' => '',
+		'pt' => '',
+		'ru' => '',
+		'ro' => '',
+		'ch' => '',
+		'sk' => '',
+		'lt' => '',
+	);
+
+
+	var $moduleLabels = Array();	// Can contain labels and image references from the backend modules. Relies on t3lib_loadmodules to initialize modules after a global instance of $LANG has been created.
+
+		// Internal
+	var $langSplitIndex=0;			// Points to the position of the current language key as found in constant TYPO3_languages
+	var $LL_files_cache=array();	// Internal cache for read LL-files
+	var $LL_labels_cache=array();	// Internal cache for ll-labels (filled as labels are requested)
+
+	
+	";i:1;i:-1;}s:12:"content_size";i:1825;s:13:"content_lines";i:62;s:6:"atLine";i:69;}i:3;a:7:{s:6:"header";s:34:"function init($lang,$altPath='')	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:3:{s:4:"text";s:232:"
+
+Initializes the backend language.
+This is for example done in typo3/template.php with lines like these:
+
+require (PATH_typo3.'sysext/lang/lang.php');
+$LANG = t3lib_div::makeInstance('language');
+$LANG->init($BE_USER->uc['lang']);
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:66:"The language key (two character string from backend users profile)";}i:1;a:2:{i:0;s:6:"string";i:1;s:17:"IGNORE. Not used.";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:507:"			// Internally setting the list of TYPO3 backend languages.
+		$this->langSplit=TYPO3_languages;
+
+			// Finding the requested language in this list based on the $lang key being inputted to this function.			
+		$ls = explode('|',$this->langSplit);
+		while(list($i,$v)=each($ls))	{
+			if ($v==$lang)	{	// Language is found. Configure it:
+				$this->langSplitIndex=$i;		// The i
+[...]
+[$this->lang])	$this->charSet=$this->charSetArray[$this->lang];		// The charset if different from the default.
+			}
+		}
+	}
+
+	";i:1;i:1;}s:12:"content_size";i:785;s:13:"content_lines";i:15;s:6:"atLine";i:144;}i:5;a:7:{s:6:"header";s:40:"function addModuleLabels($arr,$prefix)	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:5:{s:4:"text";s:95:"
+
+Adds labels and image references from the backend modules to the internal moduleLabels array
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:109:"Array with references to module labels, keys: ['labels']['tablabel'], ['labels']['tabdescr'], ['tabs']['tab']";}i:1;a:2:{i:0;s:6:"string";i:1;s:18:"Module name prefix";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}s:5:"other";a:1:{i:0;s:22:"@see t3lib_loadModules";}s:11:"other_index";a:1:{s:4:"@see";a:1:{i:0;s:18:"t3lib_loadModules ";}}}s:7:"content";a:2:{i:0;s:322:"		if (is_array($arr))	{
+			reset($arr);
+			while(list($k,$larr)=each($arr))	{
+				if (!isset($this->moduleLabels[$k]))	{
+					$this->moduleLabels[$k]=array();
+				}
+				if (is_array($larr))	{
+					reset($larr);
+					while(list($l,$v)=each($larr))	{
+						$this->moduleLabels[$k][$prefix.$l]=$v;
+					}
+				}
+			}
+		}
+	}
+
+	";i:1;i:0;}s:12:"content_size";i:322;s:13:"content_lines";i:16;s:6:"atLine";i:168;}i:7;a:7:{s:6:"header";s:31:"function getLL($index,$hsc=0)	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:3:{s:4:"text";s:165:"
+
+Returns the label with key $index form the globally loaded $LOCAL_LANG array.
+Mostly used from modules with only one LOCAL_LANG file loaded into the global space.
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:9:"Label key";}i:1;a:2:{i:0;s:7:"boolean";i:1;s:46:"If set, the return value is htmlspecialchar'ed";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:419:"		// Get Local Language
+		if (strcmp($GLOBALS['LOCAL_LANG'][$this->lang][$index],''))	{
+			return $hsc ? htmlspecialchars($GLOBALS['LOCAL_LANG'][$this->lang][$index]) : $GLOBALS['LOCAL_LANG'][$this->lang][$index];	// Returns local label if not blank.
+		} else {
+			return $hsc ? htmlspecialchars($GLOBALS['LOCAL_LANG']['default'][$index]) : $GLOBALS['LOCAL_LANG']['default'][$index];	// Returns default label
+		}
+	}
+	
+	";i:1;i:0;}s:12:"content_size";i:419;s:13:"content_lines";i:8;s:6:"atLine";i:193;}i:9;a:7:{s:6:"header";s:44:"function getLLL($index,$LOCAL_LANG,$hsc=0)	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:3:{s:4:"text";s:118:"
+
+Works like ->getLL() but takes the $LOCAL_LANG array used as the second argument instead of using the global array.
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:9:"Label key";}i:1;a:2:{i:0;s:5:"array";i:1;s:39:"$LOCAL_LANG array to get label key from";}i:2;a:2:{i:0;s:7:"boolean";i:1;s:46:"If set, the return value is htmlspecialchar'ed";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:365:"		// Get Local Language
+		if (strcmp($LOCAL_LANG[$this->lang][$index],''))	{
+			return $hsc ? htmlspecialchars($LOCAL_LANG[$this->lang][$index]) : $LOCAL_LANG[$this->lang][$index];	// Returns local label if not blank.
+		} else {
+			return $hsc ? htmlspecialchars($LOCAL_LANG['default'][$index]) : $LOCAL_LANG['default'][$index];		// Returns default label
+		}
+	}
+	
+	";i:1;i:0;}s:12:"content_size";i:365;s:13:"content_lines";i:8;s:6:"atLine";i:210;}i:11;a:7:{s:6:"header";s:28:"function sL($input,$hsc=0)	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:3:{s:4:"text";s:507:"
+
+splitLabel function
+Historically labels were exploded by '|' and each part would correspond to the translation of the language found at the same 'index' in the TYPO3_languages constant.
+Today all translations are based on $LOCAL_LANG variables. 'language-splitted' labels can therefore refer to a local-lang file + index instead!
+It's highly recommended to use the 'local_lang' method (and thereby it's highly depreciated to use 'language-splitted' label strings)
+Refer to 'Inside TYPO3' for more details
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:19:"Label key/reference";}i:1;a:2:{i:0;s:7:"boolean";i:1;s:46:"If set, the return value is htmlspecialchar'ed";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:507:"		if (strcmp(substr($input,0,4),'LLL:'))	{	// Using obsolete 'language-splitted' labels:
+			$t = explode('|',$input);
+			$out = $t[$this->langSplitIndex] ? $t[$this->langSplitIndex] : $t[0];
+			return $hsc ? htmlspecialchars($out) : $out;
+		} else {	// LOCAL_LANG:
+			if (!isset($this->LL_labels_cache[$this->lang][$input])) {	// If cached label
+				$restStr = trim(substr($i
+[...]
+hsc ? htmlspecialchars($this->LL_labels_cache[$this->lang][$input]) : $this->LL_labels_cache[$this->lang][$input];
+		}
+	}
+	
+	";i:1;i:1;}s:12:"content_size";i:1784;s:13:"content_lines";i:36;s:6:"atLine";i:230;}i:13;a:7:{s:6:"header";s:45:"function loadSingleTableDescription($table)	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:3:{s:4:"text";s:142:"
+
+Loading $TCA_DESCR[$table]['columns'] with content from locallang files as defined in $TCA_DESCR[$table]['refs']
+$TCA_DESCR is a global var
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:50:"Table name found as key in global array $TCA_DESCR";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";a:2:{i:0;s:507:"		global $TCA_DESCR;
+
+		if (is_array($TCA_DESCR[$table]) 
+				&& !isset($TCA_DESCR[$table]['columns']) 
+				&& is_array($TCA_DESCR[$table]['refs']))	 {	// First the 'table' cannot already be loaded in [columns] and secondly there must be a references to locallang files available in [refs]
+
+				// Init $TCA_DESCR for $table-key
+			$TCA_DESCR[$table]['columns']=array();
+
+			
+[...]
+ing:
+								$TCA_DESCR[$table]['columns'][$kParts[0]][$kParts[1]] = $lVal;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	";i:1;i:1;}s:12:"content_size";i:1451;s:13:"content_lines";i:42;s:6:"atLine";i:274;}i:15;a:7:{s:6:"header";s:72:"function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:3:{s:4:"text";s:88:"
+
+Includes locallang file (and possibly additional localized version if configured for)
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:64:"$fileRef is a file-reference (see t3lib_div::getFileAbsFileName)";}i:1;a:2:{i:0;s:7:"boolean";i:1;s:66:"Setting in global variable $LOCAL_LANG (or returning the variable)";}i:2;a:2:{i:0;s:7:"boolean";i:1;s:160:"If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.";}}s:6:"return";a:2:{i:0;s:5:"mixed";i:1;s:138:"If $setGlobal is true the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function";}}s:7:"content";a:2:{i:0;s:507:"			// Configure for global flag:
+		if ($setGlobal)	{
+			global $LOCAL_LANG;
+		}
+
+			// Get default file:
+		$file = t3lib_div::getFileAbsFileName($fileRef);
+		if (@is_file($file))	{
+				// Include main locallang file:
+			include($file);
+
+				// Localized addition?
+			$lFileRef = $this->localizedFileRef($fileRef);
+			if ($lFileRef && (string)$LOCAL_LANG[$this->lang]=='EXT')	
+[...]
+NG[$this->lang]);
+			}
+		}
+		
+			// Return value if not global is set.
+		if (!$setGlobal)	{
+			return $LOCAL_LANG;
+		}
+	}
+	
+	";i:1;i:1;}s:12:"content_size";i:1299;s:13:"content_lines";i:40;s:6:"atLine";i:325;}i:17;a:4:{s:6:"header";s:31:"function readLLfile($fileRef)	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:3:{s:4:"text";s:76:"
+
+Includes a locallang file and returns the $LOCAL_LANG array found inside.
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:172:"Input is a file-reference (see t3lib_div::getFileAbsFileName) which, if exists, is included. That file is expected to be a 'local_lang' file containing a $LOCAL_LANG array.";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:111:"Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array";}}s:6:"atLine";i:372;}i:19;a:7:{s:6:"header";s:37:"function localizedFileRef($fileRef)	{";s:11:"parentClass";s:8:"language";s:4:"cDat";a:3:{s:4:"text";s:45:"
+
+Returns localized fileRef (.[langkey].php)
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:39:"Filename/path of a "locallang.php" file";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:84:"Input filename with a ".[lang-key].php" ending added if $this->lang is not "default"";}}s:7:"content";a:2:{i:0;s:130:"		if ($this->lang!='default' && substr($fileRef,-4)=='.php')	{
+			return substr($fileRef,0,-4).'.'.$this->lang.'.php';
+		}
+	}
+}
+?>";i:1;i:0;}s:12:"content_size";i:130;s:13:"content_lines";i:5;s:6:"atLine";i:386;}}}}}

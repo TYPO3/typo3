@@ -1,0 +1,43 @@
+<!-- ###EMAIL_HTML_SHELL### begin
+	This is wrapping HTML code for the HTML-emails sent. The marker, HTML_BODY, is substituted with the order content.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<STYLE TYPE="text/css">
+<!--
+		select  {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
+		textarea  {  font-family: Verdana, Arial, Helvetica; font-size: 10px} 
+		input   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
+-->
+</STYLE>
+<title>Typo3 Shopping HTML-email wrapper</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="generator" content="Typo 3.1 CMS">
+<script language="javascript">
+<!--
+	browserName = navigator.appName;
+	browserVer = parseInt(navigator.appVersion);
+	var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
+	if ((browserName == "Netscape" && browserVer >= 3) || msie4) {version = "n3";} else {version = "n2";}
+
+	function openPic(url,winName,winParams)	{
+		var theWindow = window.open(url,winName,winParams);	
+		if (theWindow)	{theWindow.focus();}
+	}
+	function blurLink(theObject)	{
+		if (msie4)	{
+			theObject.blur();
+		}
+	}
+
+	
+// End Hiding Script -->
+</script>
+</head>
+<BODY bgColor="#FBF9F7" link="black" vlink="black" alink="black" leftmargin="10" topmargin="10" marginwidth="10" marginheight="10">
+
+###HTML_BODY###
+
+</body></html>
+<!-- ###EMAIL_HTML_SHELL### end-->

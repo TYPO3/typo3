@@ -1,0 +1,19 @@
+Changelog beta2p1:
+
+Fixed bug in tslib/content.php/substituteSubpart()
+Fixed bug in tslib/index_ts.php where REDIRECT_URL created trouble with PHP as Apache CGI. Now Typo3 should work out fine with PHP as CGI with Apache. REQUEST_URI is now used to fetch the original scriptname instead of REDIRECT_URL
+Substituted al occurencies of $SCRIPT_FILENAME with $HTTP_ENV_VARS["PATH_TRANSLATED"] for PHP as CGI to work properly.
+Added "noTrimWrap"-property to stdWrap function
+Added "params"-property to tableStyle function
+Including typo3conf/localconf.php in typo3/thumbs.php and using $PATH_ImageMagick_LWZ (and PATH_ImageMagick if no PATH_ImageMagick_LWZ) for the creation of thumbnails.
+Added "wav,mp3,mov,avi" to the list of fileextensions for the media-field in table tt_content. Allows for filelinks to these filetypes.
+Fixed bug in stdlib/htmlmail, function fixrollovers
+Added $GLOBALS["typo_db_extTableDef_script"] as an oppotunity to define a script filename in the typo3conf/-folder to include right after having included "tables.php". This provides a way to extend the table- and module definitions without sacrificing the use of the standard distributed tables.php
+Added support for previewing pages when hidden. You must refer directly to the page with eg. "?id=23". Do this by chosing "View" in the clickmenu of a page in the Typo3 backend interface. Does not work if a page is also timed by start/stop dates!
+Fixed bug with "jumpurl"-functionality when used with "mailto:" prepended emails in text. Also added config-option for disabling jumpurl and jumpurl for mailto only (the last should be used with MSIE5.5 for some reason!)
+Added property "colRelations" to IMGTEXT
+Added a new item to the "special"-feature of HMENU which may be used to generate menus of the most recently updated pages on a site.
+Added property "strftime" to stdWrap plus "locale" to "config" 
+The fact that the Typo3 interface remembers the last used url of each module is now disabled, due to some inconviniences.
+Think I managed to fix odd MSIE bug in db_layout (some basic text output almost looked like binary stuff). We'll see...
+Added treeLevel-condition to templates.

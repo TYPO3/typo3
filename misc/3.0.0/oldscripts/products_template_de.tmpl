@@ -1,0 +1,1397 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Untitled</title>
+</head>
+
+<body>
+
+
+
+
+
+
+
+<!-- ###ITEM_LIST_TEMPLATE###
+
+This subpart is used to display the regular list of products.
+
+It's also used by search-results.
+
+-->
+
+		<TABLE border="0" cellspacing="0" cellpadding="1" width=1>
+			<tr>
+				<td><!--###LINK_PREV###-->###GLOBAL_WRAP_2_BEGIN###<div align="left"><b>previous page</b></div>###GLOBAL_WRAP_2_END###<!--###LINK_PREV###--></td>
+				<td></td>
+				<td></td>
+				<td><!--###LINK_NEXT###-->###GLOBAL_WRAP_2_BEGIN###<div align="right"><b>next page</b></div>###GLOBAL_WRAP_2_END###<!--###LINK_NEXT###--></td>
+			</tr>
+			<tr>
+				<td><img src="clear.gif" width=100 height=1></td>
+				<td><img src="clear.gif" width=5 height=1></td>
+				<td><img src="clear.gif" width=300 height=1></td>
+				<td><img src="clear.gif" width=100 height=1></td>
+			</tr>
+	<!-- ###ITEM_CATEGORY_AND_ITEMS### -->
+		<!-- ###ITEM_CATEGORY### begin -->
+			<tr>
+				<td colspan=4><br>###GLOBAL_WRAP_1_BEGIN###<font size=3><strong>###CATEGORY_TITLE###</strong></font> ###GLOBAL_WRAP_1_END###
+				<br>
+
+				</td>
+			</tr>
+		<!-- ###ITEM_CATEGORY### end -->
+		<!-- ###ITEM_LIST### begin -->
+			<tr>
+				<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>product:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>quantity:</b>###GLOBAL_WRAP_2_END###</td>
+			</tr>
+			<!-- ###ITEM_SINGLE### begin-->
+			<FORM method="post" action="###FORM_URL###">
+				<tr>
+					<td colspan=4><img src="clear.gif" width=1 height=6></td>
+				</tr>
+				<tr>
+					<td colspan=4 bgcolor="###GLOBAL_COLOR_1###"><!-- ###LINK_ITEM###-->###GLOBAL_WRAP_1_BEGIN###<b>###PRODUCT_TITLE###</b>###GLOBAL_WRAP_1_END###<!-- ###LINK_ITEM###--></td>
+				</tr>
+				<TR>
+					<TD valign=top>###PRODUCT_IMAGE###</TD>
+					<td></td>
+					<TD valign=top>###GLOBAL_WRAP_2_BEGIN######PRODUCT_NOTE######GLOBAL_WRAP_2_END###<br>
+						###GLOBAL_WRAP_1_BEGIN###<B>price:</b> <font color=red><strong>###PRICE_TAX### $</strong></font>###GLOBAL_WRAP_1_END###<br>
+						###GLOBAL_WRAP_2_BEGIN###(excl. tax: ###PRICE_NO_TAX###)###GLOBAL_WRAP_2_END###
+					</TD>
+					<TD valign=top nowrap align=right>###GLOBAL_WRAP_2_BEGIN### quantity: ###GLOBAL_WRAP_2_END###<INPUT size="3" maxlength="4" type="text" name="###FIELD_NAME###" value="###FIELD_QTY###"><BR><input type="Submit" name="order" value="put in basket">
+					</TD>
+				</TR>
+			</FORM>
+			<!-- ###ITEM_SINGLE### end -->
+		<!-- ###ITEM_LIST### end -->
+
+	<!-- ###ITEM_CATEGORY_AND_ITEMS### -->
+			<tr>
+				<td><!--###LINK_PREV###-->###GLOBAL_WRAP_2_BEGIN###<div align="left"><b>previous page</b></div>###GLOBAL_WRAP_2_END###<!--###LINK_PREV###--></td>
+				<td></td>
+				<td></td>
+				<td><!--###LINK_NEXT###-->###GLOBAL_WRAP_2_BEGIN###<div align="right"><b>next page</b></div>###GLOBAL_WRAP_2_END###<!--###LINK_NEXT###--></td>
+			</tr>
+</TABLE>
+<BR><BR>
+<!-- ###ITEM_LIST_TEMPLATE### -->
+
+
+
+
+
+
+
+
+
+
+<!-- ###ITEM_SINGLE_DISPLAY###
+
+This subpart is used to display single products.
+
+-->
+		<TABLE border="0" cellspacing="0" cellpadding="1" width=1>
+<FORM method="post" action="###FORM_URL###">
+			<tr>
+				<td><img src="clear.gif" width=100 height=1></td>
+				<td><img src="clear.gif" width=5 height=1></td>
+				<td><img src="clear.gif" width=300 height=1></td>
+			</tr>
+			<tr>
+				<td colspan=3><img src="clear.gif" width=1 height=6></td>
+			</tr>
+			<tr>
+				<td colspan=3 bgcolor="###GLOBAL_COLOR_1###"><!-- ###LINK_ITEM###-->###GLOBAL_WRAP_1_BEGIN###<b>###PRODUCT_TITLE###</b>###GLOBAL_WRAP_1_END###<!-- ###LINK_ITEM###--></td>
+			</tr>
+			<TR>
+				<TD valign=top>###PRODUCT_IMAGE###</TD>
+				<td></td>
+				<TD valign=top>
+					###GLOBAL_WRAP_1_BEGIN###
+						<B>category:</B> ###CATEGORY_TITLE### <br>
+						<B>product:</B> ###PRODUCT_ITEMNUMBER###<br>
+						<B>price:</B> <font color=red><strong>###PRICE_TAX### $</strong></font>###GLOBAL_WRAP_2_BEGIN### &nbsp; (excl. tax ###PRICE_NO_TAX###)###GLOBAL_WRAP_2_END###<br>
+
+						<B>info:</B><br>
+						###PRODUCT_NOTE###<br>
+					###GLOBAL_WRAP_1_END###	<br>
+						<nobr>###GLOBAL_WRAP_2_BEGIN### quantity: ###GLOBAL_WRAP_2_END###<INPUT size="3" maxlength="4" type="text" name="###FIELD_NAME###" value="###FIELD_QTY###"> &nbsp; <input type="Submit" name="order" value="put in basket"></nobr>
+				</TD>
+			</TR>
+</form>
+		</TABLE>
+<br>
+<br>
+
+	###GLOBAL_WRAP_2_BEGIN###
+	<!--###LINK_ITEM###-->
+	<b><- TILBAGE TIL LISTEN</b>
+	<!--###LINK_ITEM###-->
+	###GLOBAL_WRAP_2_END###
+
+
+<!-- ###ITEM_SINGLE_DISPLAY### -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###ITEM_SEARCH###
+
+Subpart for the search-form
+
+-->
+<FORM method="post" action="###FORM_URL###">
+	<INPUT size="30" maxlength="100" type="text" name="swords" value="###SWORDS###">
+	<input type="Submit" name="order" value="search">
+</form>
+<!-- ###ITEM_SEARCH### -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###ITEM_SEARCH_EMPTY###
+
+Subpart displayed if the search was empty. If the search was successfull, the ITEM_LIST_TEMPLATE in the top is used.
+
+-->
+###GLOBAL_WRAP_1_BEGIN###<B>Søgningen var tom.</B>###GLOBAL_WRAP_1_END###
+<!-- ###ITEM_SEARCH_EMPTY### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###BASKET_TEMPLATE###
+
+Subpart used to display the content of the shopping basket.
+The product list part has the exact same features as the regular LIST_ITEM_TEMPLATE subpart.
+In addition there's a number of fields used for delivery and payment information.
+
+-->
+
+			<FORM method="post" action="###FORM_URL###">
+		<TABLE border="0" cellspacing="0" cellpadding="1" width=1>
+			<tr>
+				<td><img src="clear.gif" width=100 height=1></td>
+				<td><img src="clear.gif" width=5 height=1></td>
+				<td><img src="clear.gif" width=200 height=1></td>
+				<td colspan=3><img src="clear.gif" width=200 height=1></td>
+			</tr>
+			<tr>
+				<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>product:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>price:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>quantity:</b>###GLOBAL_WRAP_2_END###</td>
+				<td align=center bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>total:</b>###GLOBAL_WRAP_2_END###</td>
+			</tr>
+
+	<!-- ###ITEM_CATEGORY_AND_ITEMS### -->
+		<!-- ###ITEM_CATEGORY### begin -->
+			<tr>
+				<td colspan=6><br>###CATEGORY_TITLE###<br>
+				</td>
+			</tr>
+		<!-- ###ITEM_CATEGORY### end -->
+		<!-- ###ITEM_LIST### begin -->
+			<!-- ###ITEM_SINGLE### begin-->
+				<tr>
+					<td colspan=6><img src="clear.gif" width=1 height=6></td>
+				</tr>
+				<TR>
+					<TD valign=top>###PRODUCT_IMAGE###</TD>
+					<td></td>
+					<TD valign=top>
+						<!-- ###LINK_ITEM###-->###GLOBAL_WRAP_1_BEGIN###<b>###PRODUCT_TITLE###</b>###GLOBAL_WRAP_1_END###<!-- ###LINK_ITEM###-->
+
+					</TD>
+					<td valign=top>###GLOBAL_WRAP_1_BEGIN### ###PRICE_TAX### ###GLOBAL_WRAP_1_END###</td>
+					<TD valign=top>&nbsp;<INPUT size="3" maxlength="4" type="text" name="###FIELD_NAME###" value="###FIELD_QTY###">&nbsp;</TD>
+					<td valign=top align=right>###GLOBAL_WRAP_1_BEGIN### <b>###PRICE_TOTAL_TAX###</b> ###GLOBAL_WRAP_1_END###</td>
+				</TR>
+			<!-- ###ITEM_SINGLE### end -->
+		<!-- ###ITEM_LIST### end -->
+	<!-- ###ITEM_CATEGORY_AND_ITEMS###  end -->
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>delivery form:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=6></td>
+		</tr>
+		<TR>
+			<td colspan=5>
+			###GLOBAL_WRAP_1_BEGIN###shipping: <b>###SHIPPING_TITLE###</B>###GLOBAL_WRAP_1_END###<br><br>
+
+			###SHIPPING_SELECTOR###
+
+			###SHIPPING_IMAGE###
+			</td>
+			<td valign=top align=right>###GLOBAL_WRAP_1_BEGIN### <b>###PRICE_SHIPPING_TAX###</b> <BR>(###PRICE_SHIPPING_NO_TAX###) ###GLOBAL_WRAP_1_END###</td>
+		</TR>
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>payment form:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=6></td>
+		</tr>
+		<TR>
+			<td colspan=5>
+			###GLOBAL_WRAP_1_BEGIN###
+
+			###PAYMENT_SELECTOR###
+
+			###GLOBAL_WRAP_1_END###
+
+###GLOBAL_WRAP_2_BEGIN###
+			<!-- ###MESSAGE_PAYMENT###
+				This whole subpart, message_payment is substituted with the subpart 'message_payment_[number-of-method-in-typoscript]'
+			-->
+				<!-- ###MESSAGE_PAYMENT_11### -->
+				<BR><B>Du kan kun bruge udenlandske Mastercard i vores butik. Desuden tager MasterCard 5,75% af transaktionsbeløbet i gebyr. Derfor bliver der kompenseret for dette beløb her.</b><br>
+				<!-- ###MESSAGE_PAYMENT_11### -->
+				<!-- ###MESSAGE_PAYMENT_12### -->
+				<br>
+				<B>Du kan kun bruge udenlandske VISA-kort i vores butik. Desuden tager VISA 5,75% af transaktionsbeløbet i gebyr. Derfor bliver der kompenseret for dette beløb her.</b><br>
+				<!-- ###MESSAGE_PAYMENT_12### -->
+				<!-- ###MESSAGE_PAYMENT_13### -->
+				<br>
+				<B>Du kan kun bruge udenlandske Diners-kort i vores butik. Desuden tager Diners Club 5,75% af transaktionsbeløbet i gebyr. Derfor bliver der kompenseret for dette beløb her.</b><br>
+				<!-- ###MESSAGE_PAYMENT_13### -->
+			<!-- ###MESSAGE_PAYMENT### -->
+###GLOBAL_WRAP_2_END###
+
+			</td>
+			<td valign=top align=right>###GLOBAL_WRAP_1_BEGIN### <b>###PRICE_PAYMENT_TAX###</b> <BR>(###PRICE_PAYMENT_NO_TAX###) ###GLOBAL_WRAP_1_END###</td>
+		</TR>
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=6 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>TOTAL:</b>###GLOBAL_WRAP_2_END###</td>
+		</tr>
+		<TR>
+			<td valign=top colspan=5></td>
+			<td valign=top align=right nowrap>###GLOBAL_WRAP_1_BEGIN### <b>$ ###PRICE_TOTAL_TAX###</b><br>
+			(excl. tax: ###PRICE_TOTAL_NO_TAX###) ###GLOBAL_WRAP_1_END###</td>
+		</TR>
+	</TABLE>
+	<input type="Submit" name="products_update" value="update calc.">&nbsp;&nbsp;
+	<input type="Submit" name="products_info" value="continue with order/payment" onClick="document.forms[0].action='###FORM_URL_INFO###';">
+	</FORM>
+<BR>
+<!-- ###BASKET_TEMPLATE### -->
+
+
+
+
+
+
+
+
+<!-- ###BASKET_INFO_TEMPLATE###
+
+Subpart used if the GLOBAL var "products_info" was set. This is normally used to let people enter address information separately from the real basket
+Exact same features as BASKET_TEMPLATE
+
+-->
+
+	<FORM method="post" action="###FORM_URL###">
+
+	<TABLE border="0" cellspacing="0" cellpadding="1" width=1>
+		<tr>
+			<td><img src="clear.gif" width=100 height=1></td>
+			<td><img src="clear.gif" width=5 height=1></td>
+			<td><img src="clear.gif" width=200 height=1></td>
+			<td colspan=3><img src="clear.gif" width=200 height=1></td>
+		</tr>
+
+
+		<tr>
+			<td colspan=6 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>invoice adress:</b>###GLOBAL_WRAP_2_END###</td>
+		</tr>
+		<tr>
+			<td colspan=6>
+
+			<!-- ###BILLING_ADDRESS### start -->
+
+			###GLOBAL_WRAP_1_BEGIN###
+				Indtast din address her. Dette navn og denne adresse vil stå på regningen som den, der køber varerne. <br>
+				Normalt vil vi sende varerne til denne adresse, men hvis du angiver en alternativ adresse i felterne nedenfor, så vil vi sende dine varer derhen i stedet.<br>
+				Hvis du har valgt "Afhentning" som delivery form, så sendes varerne naturligvis ikke - heller ikke selvom du angiver en leveringsadresse nedenfor. Men det er dog stadig påkrævet, at du angiver en korrekt faktura adresse.
+			###GLOBAL_WRAP_1_END###
+				<br>
+				<br>
+				<table>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>name/company: </strong>*###GLOBAL_WRAP_1_END###</td>
+					<td><input type="text" name="recs[personinfo][name]" size="30" value="###PERSON_NAME###"></td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>address: </strong>*###GLOBAL_WRAP_1_END###</td>
+					<td><textarea cols=30 rows=5 name="recs[personinfo][address]" wrap="off">###PERSON_ADDRESS###</textarea></td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>telephone: </strong>*###GLOBAL_WRAP_1_END###</td>
+					<td><input type="text" name="recs[personinfo][telephone]" size="30" value="###PERSON_TELEPHONE###"></td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>email:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td><input type="text" name="recs[personinfo][email]" size="30" value="###PERSON_EMAIL###"></td>
+				</tr>
+				</table><br>
+
+				###GLOBAL_WRAP_1_BEGIN###
+				<em>Bemærk: Felter med * skal udfyldes!</em>
+				###GLOBAL_WRAP_1_END###
+
+			<!-- ###BILLING_ADDRESS### end-->
+
+
+			<!-- ###BILLING_ADDRESS_LOGIN### start
+
+				If this part is not empty then this will be used instead of BILLING_ADDRESS if there is a FE-login user.
+			 -->
+				<br>
+				<table>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>name/company:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN######PERSON_NAME######GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>address:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN######PERSON_ADDRESS_DISPLAY######GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>telephone:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN######PERSON_TELEPHONE######GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>email:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN######PERSON_EMAIL######GLOBAL_WRAP_1_END###</td>
+				</tr>
+				</table>
+			<!-- ###BILLING_ADDRESS_LOGIN### end-->
+			</td>
+		</tr>
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>delivery adress (if not invoice adress):</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+			###GLOBAL_WRAP_1_BEGIN###
+				Hvis du ønsker levering til en anden adresse end fakturaadressen ovenfor, så indtast den fulde adresse her. Du kan også angive en contact person/email i forbindelse med dette leveringssted.
+			###GLOBAL_WRAP_1_END###
+				<br>
+				<br>
+
+				<table>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>contact person:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td><input type="text" name="recs[delivery][name]" size="30" value="###DELIVERY_NAME###"></td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>address:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td><textarea cols=30 rows=5 name="recs[delivery][address]" wrap="off">###DELIVERY_ADDRESS###</textarea></td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>telephone:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td><input type="text" name="recs[delivery][telephone]" size="30" value="###DELIVERY_TELEPHONE###"></td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>email:</strong>###GLOBAL_WRAP_1_END###</td>
+					<td><input type="text" name="recs[delivery][email]" size="30" value="###DELIVERY_EMAIL###"></td>
+				</tr>
+				</table>
+			</td>
+			<td colspan=3></td>
+		</tr>
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>annotation:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				###GLOBAL_WRAP_1_BEGIN###
+					Hvis du har nogle kommentarer til din ordre eller leveringen, så benyt dette felt til disse.
+				###GLOBAL_WRAP_1_END###
+				<br>
+				<br>
+
+				<table>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###annotation:###GLOBAL_WRAP_1_END###</td>
+					<td><textarea cols=30 rows=5 name="recs[delivery][note]">###DELIVERY_NOTE###</textarea></td>
+				</tr>
+				</table>
+			</td>
+			<td colspan=3></td>
+		</tr>
+	</TABLE>
+	<br>
+	<input type="Submit" name="products_update" value="back to basket">&nbsp;&nbsp;	<input type="Submit" name="products_payment" value="pay / order" onClick="document.forms[0].action='###FORM_URL_FINALIZE###';">
+
+	</FORM>
+<BR>
+<!-- ###BASKET_INFO_TEMPLATE### -->
+
+
+
+
+
+
+
+
+<!-- ###BASKET_PAYMENT_TEMPLATE###
+
+Subpart used if the GLOBAL var "products_payment" was set. This displays the final information about the order before the payment is initiated.
+Exact same features as BASKET_TEMPLATE
+
+-->
+
+		<TABLE border="0" cellspacing="0" cellpadding="1" width=1>
+			<tr>
+				<td><img src="clear.gif" width=100 height=1></td>
+				<td><img src="clear.gif" width=5 height=1></td>
+				<td><img src="clear.gif" width=200 height=1></td>
+				<td colspan=3><img src="clear.gif" width=200 height=1></td>
+			</tr>
+			<tr>
+				<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>product:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>price:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>quantity:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>total:</b>###GLOBAL_WRAP_2_END###</td>
+			</tr>
+
+	<!-- ###ITEM_CATEGORY_AND_ITEMS### -->
+		<!-- ###ITEM_CATEGORY### begin -->
+			<tr>
+				<td colspan=6><br>###CATEGORY_TITLE###<br>
+				</td>
+			</tr>
+		<!-- ###ITEM_CATEGORY### end -->
+		<!-- ###ITEM_LIST### begin -->
+			<!-- ###ITEM_SINGLE### begin-->
+				<tr>
+					<td colspan=6><img src="clear.gif" width=1 height=6></td>
+				</tr>
+				<TR>
+					<TD valign=top>###PRODUCT_IMAGE###</TD>
+					<td></td>
+					<TD valign=top>
+						###GLOBAL_WRAP_1_BEGIN###<b>###PRODUCT_TITLE###</b>###GLOBAL_WRAP_1_END###
+
+					</TD>
+					<td valign=top>###GLOBAL_WRAP_1_BEGIN### ###PRICE_TAX### ###GLOBAL_WRAP_1_END###</td>
+					<TD valign=top>###GLOBAL_WRAP_1_BEGIN### ###FIELD_QTY### ###GLOBAL_WRAP_1_END###</TD>
+					<td valign=top align=right>###GLOBAL_WRAP_1_BEGIN### <b>###PRICE_TOTAL_TAX###</b> ###GLOBAL_WRAP_1_END###</td>
+				</TR>
+			<!-- ###ITEM_SINGLE### end -->
+		<!-- ###ITEM_LIST### end -->
+	<!-- ###ITEM_CATEGORY_AND_ITEMS###  end -->
+
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>invoice adress:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				<table cellspacing=3>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###name/company:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###PERSON_NAME###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###address:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###PERSON_ADDRESS_DISPLAY###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###telephone:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###PERSON_TELEPHONE###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###email:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###PERSON_EMAIL###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				</table>
+			</td>
+			<td colspan=3></td>
+		</tr>
+
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>Delivery adress:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				<table>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###address:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_ADDRESS_DISPLAY###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###contact person:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_NAME###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###telephone:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_TELEPHONE###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###email:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_EMAIL###</strong>###GLOBAL_WRAP_1_END###
+					###GLOBAL_WRAP_2_BEGIN###<BR>(Denne adresse modtager ordre bekræftelsen!)###GLOBAL_WRAP_2_END###<BR>
+					</td>
+				</tr>
+				</table>
+			</td>
+			<td colspan=3></td>
+		</tr>
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>annotation:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				<table>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###annotation:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_NOTE_DISPLAY###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				</table>
+			</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>shipping/payment:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+
+
+
+		<TR>
+			<td valign=top colspan=3>###GLOBAL_WRAP_1_BEGIN###
+				<strong>shipping form:</strong><br>
+				###SHIPPING_IMAGE### ###SHIPPING_TITLE###
+
+			###GLOBAL_WRAP_1_END###</td>
+
+			<td valign=top align=right colspan=3>###GLOBAL_WRAP_1_BEGIN###
+			<b>###PRICE_SHIPPING_TAX###</b><br>
+			(###PRICE_SHIPPING_NO_TAX###)<br>
+
+			###GLOBAL_WRAP_1_END###</td>
+		</TR>
+		<TR>
+			<td valign=top colspan=3>###GLOBAL_WRAP_1_BEGIN###
+				<strong>payment form:</strong><br>
+				###PAYMENT_IMAGE### ###PAYMENT_TITLE###
+			###GLOBAL_WRAP_1_END###
+###GLOBAL_WRAP_2_BEGIN###
+			<!-- ###MESSAGE_PAYMENT###
+				This whole subpart, message_payment is substituted with the subpart 'message_payment_[number-of-method-in-typoscript]'
+			-->
+				<!-- ###MESSAGE_PAYMENT_11### -->
+				<BR><B>Du kan kun bruge udenlandske Mastercard i vores butik. Desuden tager MasterCard 5,75% af transaktionsbeløbet i gebyr. Derfor bliver der kompenseret for dette beløb her.</b><br>
+				<!-- ###MESSAGE_PAYMENT_11### -->
+				<!-- ###MESSAGE_PAYMENT_12### -->
+				<br>
+				<B>Du kan kun bruge udenlandske VISA-kort i vores butik. Desuden tager VISA 5,75% af transaktionsbeløbet i gebyr. Derfor bliver der kompenseret for dette beløb her.</b><br>
+				<!-- ###MESSAGE_PAYMENT_12### -->
+				<!-- ###MESSAGE_PAYMENT_13### -->
+				<br>
+				<B>Du kan kun bruge udenlandske Diners-kort i vores butik. Desuden tager Diners Club 5,75% af transaktionsbeløbet i gebyr. Derfor bliver der kompenseret for dette beløb her.</b><br>
+				<!-- ###MESSAGE_PAYMENT_13### -->
+			<!-- ###MESSAGE_PAYMENT### -->
+###GLOBAL_WRAP_2_END###
+			</td>
+			<td valign=top align=right colspan=3>###GLOBAL_WRAP_1_BEGIN###
+			<b>###PRICE_PAYMENT_TAX###</b><br>
+			(###PRICE_PAYMENT_NO_TAX###)<br>
+
+			###GLOBAL_WRAP_1_END###</td>
+		</TR>
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=6 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>TOTAL:</b>###GLOBAL_WRAP_2_END###</td>
+		</tr>
+		<TR>
+			<td valign=top colspan=3>###GLOBAL_WRAP_1_BEGIN###
+				<strong>total beløb i DKR:</strong>
+			###GLOBAL_WRAP_1_END###</td>
+
+			<td valign=top align=right colspan=3 nowrap>###GLOBAL_WRAP_1_BEGIN###
+			<b>$ ###PRICE_TOTAL_TAX###</b><br>
+			(excl. tax: ###PRICE_TOTAL_NO_TAX###)<br>
+
+			###GLOBAL_WRAP_1_END###</td>
+		</TR>
+	</TABLE>
+	<br>
+
+	<FORM method="post" action="###FORM_URL###">
+	<input type="Submit" name="products_update" value="back to shopping">&nbsp;&nbsp;	<input type="Submit" name="products_finalize" value="Udfør ordre" onClick="document.forms[0].action='###FORM_URL_THANKS###'; document.forms[0].target='###FORM_URL_TARGET###';">
+	</FORM>
+<BR>
+
+
+
+<!-- ###BASKET_PAYMENT_TEMPLATE### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###BASKET_ORDERCONFIRMATION_TEMPLATE###
+
+Subpart used if the order is finalized and this is thus the confirmation shown.
+
+-->
+
+		<TABLE border="0" cellspacing="0" cellpadding="1" width=1>
+			<tr>
+				<td><img src="clear.gif" width=100 height=1></td>
+				<td><img src="clear.gif" width=5 height=1></td>
+				<td><img src="clear.gif" width=200 height=1></td>
+				<td colspan=3><img src="clear.gif" width=200 height=1></td>
+			</tr>
+
+
+
+			<tr>
+				<td colspan=6>
+				###GLOBAL_WRAP_1_BEGIN###
+					<b>Ordre bekræftelse:</b><br>
+					Mange tak fordi du handlede med os.<br>
+					Din ordre er gennemført og har nummer:<br><br>
+										&nbsp;&nbsp;&nbsp;&nbsp;<B>###ORDER_UID###</B> <br>
+										<br>
+										Brug dette nummer som reference ved henvendelse til Inter-Photo.<br>
+					Ordrebekræftelsen er også sendt til email-adressen under "Levering" (###DELIVERY_EMAIL###) såfremt denne er angivet. Du bør dog under alle omstændigheder printe denne page ud som bevis på din bestilling.<br>
+					<br>
+
+					<!-- ###MESSAGE_PAYMENT###
+						This whole subpart, message_payment is substituted with the subpart 'message_payment_[number-of-method-in-typoscript]'
+					-->
+						<!-- ###MESSAGE_PAYMENT_10### -->
+						<B>Dankort transaktionen blev godkendt</B> og har transaktionsnummeret, ###TRANSACT_CODE###.<br>
+						<br>
+						<!-- ###MESSAGE_PAYMENT_10### -->
+						<!-- ###MESSAGE_PAYMENT_11### -->
+						<B>Mastercard transaktionen blev godkendt</B> og har transaktionsnummeret, ###TRANSACT_CODE###.<br>
+						<br>
+						<!-- ###MESSAGE_PAYMENT_11### -->
+						<!-- ###MESSAGE_PAYMENT_12### -->
+						<B>VISA transaktionen blev godkendt</B> og har transaktionsnummeret, ###TRANSACT_CODE###.<br>
+						<br>
+						<!-- ###MESSAGE_PAYMENT_12### -->
+						<!-- ###MESSAGE_PAYMENT_13### -->
+						<B>Diner Club transaktionen blev godkendt</B> og har transaktionsnummeret, ###TRANSACT_CODE###.<br>
+						<br>
+						<!-- ###MESSAGE_PAYMENT_13### -->
+						<!-- ###MESSAGE_PAYMENT_20### -->
+						<B>Solo-e transaktionen blev godkendt</B> og har transaktionsnummeret, ###TRANSACT_CODE###.<br>
+						<br>
+						<!-- ###MESSAGE_PAYMENT_20### -->
+						<!-- ###MESSAGE_PAYMENT_40### -->
+						<B>VIGTIGT! Dit næste skridt:</B><br>
+						Da du har valgt at betale for varerne forud skal du overføre pengene til Inter-Photo's bank- eller GIROkonto. <br>
+						- Bank: Unibank. Reg: <strong>1938</strong> Konto: <strong>0381576000</strong><br>
+						- GIRO: 1160036<br>
+						- Check: Send til butikkens address. Ses nederst på denne page.<br>
+						Husk at anfør ordre-nummeret, ###ORDER_UID###, på overførslen.<br>
+						<br>
+						<!-- ###MESSAGE_PAYMENT_40### -->
+						<!-- ###MESSAGE_PAYMENT_50### -->
+						<B>Køb på kredit</B><br>
+						Du har det privilegie at være kontokunde hos os, så beløbet bliver ganske enkelt skrevet på din regning i butikken - sådan som du er vant til!<br>
+						<br>
+						<!-- ###MESSAGE_PAYMENT_50### -->
+					<!-- ###MESSAGE_PAYMENT### -->
+
+					<b>Levering og ordrestatus:</b><br>
+					Levering sker iflg. vores salgs- og leveringsbetingelser inden for 3 dage fra ordreafgivelsen, som er dateret til ###ORDER_DATE###.<br>
+					<br>
+					Du kan følge status med din ordre ved at bruge dit trackingnummer, som er <br>
+					<strong>###ORDER_TRACKING_NO###</strong>. Klik her for at <a href="http://www.inter-photo.dk/?tracking&type=1&tracking=###ORDER_TRACKING_NO###">se status nu.</a><br><br>
+
+					Vi håber, at du har følt dig lige så godt betjent i vores Internet-butik, som i vores virkelige forretninger. Hvis du har forslag til forbedringer eller andre kommentarer, så skriv til <a href="mailto:butik@inter-photo.dk">butik@inter-photo.dk</a>.<br>
+					<br>
+
+				###GLOBAL_WRAP_1_END###
+				</td>
+			</tr>
+
+
+			<tr>
+				<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>product:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>price:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>qty:</b>###GLOBAL_WRAP_2_END###</td>
+				<td bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>total:</b>###GLOBAL_WRAP_2_END###</td>
+			</tr>
+
+
+	<!-- ###ITEM_CATEGORY_AND_ITEMS### -->
+		<!-- ###ITEM_CATEGORY### begin -->
+			<tr>
+				<td colspan=6><br>###CATEGORY_TITLE###<br>
+				</td>
+			</tr>
+		<!-- ###ITEM_CATEGORY### end -->
+		<!-- ###ITEM_LIST### begin -->
+			<!-- ###ITEM_SINGLE### begin-->
+				<tr>
+					<td colspan=6><img src="clear.gif" width=1 height=6></td>
+				</tr>
+				<TR>
+					<TD valign=top>###PRODUCT_IMAGE###</TD>
+					<td></td>
+					<TD valign=top>
+						###GLOBAL_WRAP_1_BEGIN###<b>###PRODUCT_TITLE###</b>###GLOBAL_WRAP_1_END###
+
+					</TD>
+					<td valign=top>###GLOBAL_WRAP_1_BEGIN### ###PRICE_TAX### ###GLOBAL_WRAP_1_END###</td>
+					<TD valign=top>###GLOBAL_WRAP_1_BEGIN### ###FIELD_QTY### ###GLOBAL_WRAP_1_END###</TD>
+					<td valign=top align=right>###GLOBAL_WRAP_1_BEGIN### <b>###PRICE_TOTAL_TAX###</b> ###GLOBAL_WRAP_1_END###</td>
+				</TR>
+			<!-- ###ITEM_SINGLE### end -->
+		<!-- ###ITEM_LIST### end -->
+	<!-- ###ITEM_CATEGORY_AND_ITEMS###  end -->
+
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>invoice adress:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				<table cellspacing=3>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###name/company:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###PERSON_NAME###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###address:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###PERSON_ADDRESS_DISPLAY###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###telephone:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###PERSON_TELEPHONE###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###email:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###PERSON_EMAIL###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+
+					<!-- ###FE_USER_SECTION###  begin -->
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###Brugernavn:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###FE_USER_USERNAME###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###Brugerid:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###FE_USER_UID###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+					<!-- ###FE_USER_SECTION###  end -->
+
+				</table>
+			</td>
+			<td colspan=3></td>
+		</tr>
+
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>delivery address:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				<table>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###address:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_ADDRESS_DISPLAY###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###contact person:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_NAME###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###telephone:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_TELEPHONE###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###email:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_EMAIL###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				</table>
+			</td>
+			<td colspan=3></td>
+		</tr>
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>annotation:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				<table>
+				<tr>
+					<td>###GLOBAL_WRAP_1_BEGIN###annotation:###GLOBAL_WRAP_1_END###</td>
+					<td>###GLOBAL_WRAP_1_BEGIN###<strong>###DELIVERY_NOTE_DISPLAY###</strong>###GLOBAL_WRAP_1_END###</td>
+				</tr>
+				</table>
+			</td>
+			<td colspan=3></td>
+		</tr>
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=3 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>shipping/order:</b>###GLOBAL_WRAP_2_END###</td>
+			<td colspan=3></td>
+		</tr>
+
+
+
+		<TR>
+			<td valign=top colspan=3>###GLOBAL_WRAP_1_BEGIN###
+				<strong>shipping form:</strong><br>
+				###SHIPPING_IMAGE### ###SHIPPING_TITLE###
+
+			###GLOBAL_WRAP_1_END###</td>
+
+			<td valign=top align=right colspan=3>###GLOBAL_WRAP_1_BEGIN###
+			<b>###PRICE_SHIPPING_TAX###</b><br>
+			(###PRICE_SHIPPING_NO_TAX###)<br>
+
+			###GLOBAL_WRAP_1_END###</td>
+		</TR>
+		<TR>
+			<td valign=top colspan=3>###GLOBAL_WRAP_1_BEGIN###
+				<strong>order form:</strong><br>
+				###PAYMENT_IMAGE### ###PAYMENT_TITLE###
+			###GLOBAL_WRAP_1_END###</td>
+
+			<td valign=top align=right colspan=3>###GLOBAL_WRAP_1_BEGIN###
+			<b>###PRICE_PAYMENT_TAX###</b><br>
+			(###PRICE_PAYMENT_NO_TAX###)<br>
+
+			###GLOBAL_WRAP_1_END###</td>
+		</TR>
+
+
+		<tr>
+			<td colspan=6><img src="clear.gif" width=1 height=10></td>
+		</tr>
+		<tr>
+			<td colspan=6 bgcolor="###GLOBAL_COLOR_2###">###GLOBAL_WRAP_2_BEGIN###<b>TOTAL:</b>###GLOBAL_WRAP_2_END###</td>
+		</tr>
+		<TR>
+			<td valign=top colspan=3>###GLOBAL_WRAP_1_BEGIN###
+				<strong>total beløb i DKR:</strong>
+			###GLOBAL_WRAP_1_END###</td>
+
+			<td valign=top align=right colspan=3>###GLOBAL_WRAP_1_BEGIN###
+			<b>$ ###PRICE_TOTAL_TAX###</b><br>
+			(excl. tax: ###PRICE_TOTAL_NO_TAX###)<br>
+
+			###GLOBAL_WRAP_1_END###</td>
+		</TR>
+			<tr>
+				<td colspan=6>
+				###GLOBAL_WRAP_1_BEGIN###
+
+<br>
+<br>
+Med venlig hilsen:
+<br>
+<br>
+
+&nbsp;&nbsp;&nbsp;<strong>Inter Photo A/S </strong><br>
+&nbsp;&nbsp;&nbsp;Torvet 14 <br>
+&nbsp;&nbsp;&nbsp;8600 Silkeborg <br>
+<br>
+&nbsp;&nbsp;&nbsp;Tlf.nr.: 86 80 41 42<br>
+
+				###GLOBAL_WRAP_1_END###
+				</td>
+			</tr>
+	</TABLE>
+	<br>
+<BR>
+<!-- ###BASKET_ORDERCONFIRMATION_TEMPLATE### -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###BASKET_TEMPLATE_EMPTY###
+
+If the basket is empty this subpart is displayed
+
+-->
+###GLOBAL_WRAP_1_BEGIN###<B>shopping basket is empty.</B>###GLOBAL_WRAP_1_END###
+<!-- ###BASKET_TEMPLATE_EMPTY### -->
+
+
+
+
+
+
+
+<!-- ###BASKET_REQUIRED_INFO_MISSING###
+
+If payment is initiated but the required information fields are not filled in correctly, this happens
+
+-->
+###GLOBAL_WRAP_1_BEGIN###<B>Du har ikke udfyldt alle påkrævede felter med adresse information. Gå venligst tilbage og gør det.</B>###GLOBAL_WRAP_1_END###
+
+	<FORM method="post" action="###FORM_URL###">
+	<input type="Submit" name="products_info" value="input adress information" onClick="document.forms[0].action='###FORM_URL_INFO###';">
+	</FORM>
+
+<!-- ###BASKET_REQUIRED_INFO_MISSING### -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###TRACKING_DISPLAY_INFO###
+Displays the view of the order status by tracking codes.
+-->
+###GLOBAL_WRAP_1_BEGIN###
+<B>your order (###ORDER_UID###) has this status:</B><br>
+(Nederste linie er seneste ændring)<br>
+<br>
+
+<table border=1 cellpadding=0 cellspacing=4>
+	<tr>
+		<td>###GLOBAL_WRAP_2_BEGIN### <strong>date:</strong> ###GLOBAL_WRAP_2_END###</td>
+		<td>###GLOBAL_WRAP_2_BEGIN### <strong>code:</strong> ###GLOBAL_WRAP_2_END###</td>
+		<td>###GLOBAL_WRAP_2_BEGIN### <strong>Handling:</strong> ###GLOBAL_WRAP_2_END###</td>
+		<td>###GLOBAL_WRAP_2_BEGIN### <strong>comment:</strong> ###GLOBAL_WRAP_2_END###</td>
+	</tr>
+
+		<!-- ###STATUS_ITEM### begin
+
+		This part is repeated for each order status item and finally this part in the template code is substituted with the accumulated code for all order status actions.
+		-->
+	<tr>
+		<td nowrap valign=top>###GLOBAL_WRAP_2_BEGIN### ###ORDER_STATUS_TIME### &nbsp;###GLOBAL_WRAP_2_END###</td>
+		<td valign=top>###GLOBAL_WRAP_2_BEGIN### ###ORDER_STATUS### &nbsp;###GLOBAL_WRAP_2_END###</td>
+		<td nowrap valign=top>###GLOBAL_WRAP_2_BEGIN### ###ORDER_STATUS_INFO### &nbsp;###GLOBAL_WRAP_2_END###</td>
+		<td valign=top>###GLOBAL_WRAP_2_BEGIN### ###ORDER_STATUS_COMMENT### &nbsp;###GLOBAL_WRAP_2_END###</td>
+	</tr>
+		<!-- ###STATUS_ITEM### end -->
+</table>
+<br>
+
+	<!-- ###ADMIN_CONTROL### begin -->
+<table border=0 cellpadding=1 cellspacing=0 bgcolor="black"><tr><td>
+	<table border=0 cellpadding=10 cellspacing=0 bgcolor="#92AFCB"><tr><td>
+		###GLOBAL_WRAP_1_BEGIN### <strong>Inter-Photo ADMIN:</strong><br>
+		Ordre: ####ORDER_UID###
+		<br>
+		###GLOBAL_WRAP_1_BEGIN###
+
+	<!-- ###ADMIN_CONTROL_OK### begin -->
+	<FORM method="post" action="###FORM_URL###">
+	<select name="orderRecord[status][]" size="9" multiple>
+		###STATUS_OPTIONS###
+	</select>
+		<br>
+		###GLOBAL_WRAP_1_BEGIN###Kommentar til ny ordre status:###GLOBAL_WRAP_1_BEGIN###<br>
+		<textarea cols="40" rows="5" name="orderRecord[status_comment]"></textarea><br>
+
+		<input type="hidden" name="tracking" value="###TRACKING_NUMBER###"><br>
+		<input type="hidden" name="update_code" value="###UPDATE_CODE###"><br>
+		<input type="Submit" name="submit" value="add order status">
+		</FORM>
+		<hr>
+		Skift ordre:
+		<FORM method="post" action="###FORM_URL###">
+			<select name="tracking" size="9">
+				###OTHER_ORDERS_OPTIONS###
+			</select><br><br>
+
+			<input type="Submit" name="submit" value="Vælg">
+			<input type="hidden" name="update_code" value="###UPDATE_CODE###"><br>
+		</FORM>
+	<!-- ###ADMIN_CONTROL_OK### begin -->
+	<!-- ###ADMIN_CONTROL_DENY### begin -->
+		<FORM method="post" action="###FORM_URL###">
+		<input type="hidden" name="tracking" value="###TRACKING_NUMBER###"><br>
+		###GLOBAL_WRAP_1_BEGIN###code:###GLOBAL_WRAP_1_BEGIN###<br>
+		<input type="password" size=40 name="update_code" value="###UPDATE_CODE###">
+		<input type="Submit" name="submit" value="input code">
+		</FORM>
+	<!-- ###ADMIN_CONTROL_DENY### begin -->
+
+
+		</td></tr></table>
+	</td></tr>
+</table><br>
+
+	<!-- ###ADMIN_CONTROL### end -->
+
+
+<strong>email besked:</strong><br>
+Hvis du ønsker at modtage en besked til ordrens contactemail, ###FIELD_EMAIL###, hver gang status opdateres, så afkryds dette felt herunder.<br>
+	<FORM method="post" action="###FORM_URL###">
+
+	<input type="hidden" name="orderRecord[email_notify]" value="0">
+	<input type="checkbox" name="orderRecord[email_notify]" value="1"###FIELD_email_NOTIFY###>Modtag besked ved status ændringer<br>
+	<input type="text" size=40 name="orderRecord[email]" value="###FIELD_EMAIL###">
+	<input type="hidden" name="tracking" value="###TRACKING_NUMBER###">
+
+	<input type="Submit" name="submit" value="Opdater">
+	</FORM>
+<br><br>
+<strong>Besked til butikken:</strong><br>
+Du kan indsende en besked til butikken angående denne ordre.<br>
+	<FORM method="post" action="###FORM_URL###">
+	<input type="hidden" name="tracking" value="###TRACKING_NUMBER###">
+	###GLOBAL_WRAP_1_BEGIN###Vælg emne:###GLOBAL_WRAP_1_BEGIN###<br>
+	<select name="orderRecord[status][]" size="1">
+		<option value=51>Besked fra kunden til butikken</option>
+		<option value=50>Kunden anmoder om annullering</option>
+	</select>
+	<br>
+	###GLOBAL_WRAP_1_BEGIN###Kommentar til beskeden:###GLOBAL_WRAP_1_BEGIN###<br>
+	<textarea cols="40" rows="5" name="orderRecord[status_comment]"></textarea><br>
+	<input type="Submit" name="submit" value="Indsend besked">
+	</FORM>
+<br>
+<br>
+<B>Dette er din oprindelige ordre bekræftelse:</B><br><br>
+###GLOBAL_WRAP_1_END###
+<HR>
+<br>
+
+###ORDER_HTML_OUTPUT###
+<!-- ###TRACKING_DISPLAY_INFO### -->
+
+
+
+
+
+
+
+
+
+<!-- ###TRACKING_ENTER_NUMBER###
+Displays form for entering the tracking number.
+-->
+###GLOBAL_WRAP_1_BEGIN###<B>Indtast din tracking kode:</B>###GLOBAL_WRAP_1_END###<br>
+
+
+	<FORM method="post" action="###FORM_URL###">
+	<input type="text" name="tracking"><br>
+	<input type="Submit" name="submit" value="Se status">
+	</FORM>
+
+<!-- ###TRACKING_ENTER_NUMBER### -->
+
+
+
+<!-- ###TRACKING_WRONG_NUMBER###
+Displays error message if no tracking code.
+-->
+###GLOBAL_WRAP_1_BEGIN###<B>Den indtastede kode fandtes ikke! Prøv venligst igen!</B>###GLOBAL_WRAP_1_END###<br>
+
+
+	<FORM method="post" action="###FORM_URL###">
+	<input type="text" name="tracking"><br>
+	<input type="Submit" name="submit" value="Se status">
+	</FORM>
+
+<!-- ###TRACKING_WRONG_NUMBER### -->
+
+
+<!-- ###TRACKING_emailNOTIFY_TEMPLATE###
+
+Subpart used as template for the notify emails
+First line is used as subject for the mail.
+-->
+
+Inter-Photo ordre status (####ORDER_UID###)
+
+ORDRE INFORMATION (####ORDER_UID###):
+Status på din ordre er blevet ændret:
+
+Tid: ###ORDER_STATUS_TIME###
+Status: ###ORDER_STATUS_INFO###
+
+Kommentar:
+###ORDER_STATUS_COMMENT###
+
+
+TRACKING:
+Du får denne email, fordi du har valgt at modtage information om din ordre ved at opgive din email adresse.
+Du kan følge status med din ordre samt ændre indstillinger for ordre information ved at bruge dit trackingnummer, som er
+        ###ORDER_TRACKING_NO###
+
+Klik her for at se information nu:
+        http://www.inter-photo.dk/?tracking&type=1&tracking=###ORDER_TRACKING_NO###
+
+
+
+Med venlig hilsen
+	Inter Photo A/S
+	Torvet 14
+	8600 Silkeborg
+
+	Tlf.nr.: 86804142
+
+<!-- ###TRACKING_emailNOTIFY_TEMPLATE### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###email_PLAINTEXT_TEMPLATE###
+
+Subpart used as template for the order-emails
+
+
+First line is used as subject for the mail.
+
+-->
+
+Inter-Photo ordre ####ORDER_UID###
+
+ORDRE BEKRÆFTELSE:
+Din ordre er gennemført og har nummer ###ORDER_UID###.
+Brug dette nummer som reference ved henvendelse til Inter-Photo.
+Vi håber, at du har følt dig lige så godt betjent i
+vores Internet-butik, som i vores virkelige forretninger.
+
+
+TRACKING:
+Du kan følge status med din ordre ved at bruge dit trackingnummer, som er
+        http://www.inter-photo.dk/?tracking&type=1&tracking=###ORDER_TRACKING_NO###
+
+
+ORDRE:
+
+1) Varer:
+	<!-- ###ITEM_CATEGORY_AND_ITEMS### -->
+		<!-- ###ITEM_LIST### begin -->
+			<!-- ###ITEM_SINGLE### begin-->
+producttitel: ###PRODUCT_TITLE###
+productnummer: ###PRODUCT_ITEMNUMBER###
+price: ###PRICE_TAX### $
+quantity: ###FIELD_QTY###        = ###PRICE_TOTAL_TAX### $
+			<!-- ###ITEM_SINGLE### end -->
+		<!-- ###ITEM_LIST### end -->
+	<!-- ###ITEM_CATEGORY_AND_ITEMS###  end -->
+
+2) invoice adress:
+###PERSON_NAME###
+###PERSON_ADDRESS###
+
+telephone: ###PERSON_TELEPHONE###
+email: ###PERSON_EMAIL###
+
+
+3) delivery address:
+###DELIVERY_ADDRESS###
+att. ###DELIVERY_NAME###
+telephone: ###DELIVERY_TELEPHONE###
+email: ###DELIVERY_EMAIL###
+
+
+4) Noter ved ordren:
+###DELIVERY_NOTE_DISPLAY###
+
+
+5) Forsendelse:
+###SHIPPING_TITLE###
+price: ###PRICE_SHIPPING_TAX### $ (###PRICE_SHIPPING_NO_TAX### excl. tax)
+
+
+6) payment form:
+###PAYMENT_TITLE###
+price: ###PRICE_PAYMENT_TAX### $ (###PRICE_PAYMENT_NO_TAX### excl. tax)
+
+
+TOTAL: ________________________ $ ###PRICE_TOTAL_TAX###
+(excl. tax: ###PRICE_TOTAL_NO_TAX###)
+
+Med venlig hilsen, Inter-Photo
+
+
+
+
+
+<!-- ###email_PLAINTEXT_TEMPLATE### -->
+
+
+
+
+<!-- ###email_HTML_SHELL### -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+<STYLE TYPE="text/css">
+<!--
+
+		select  {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
+		textarea  {  font-family: Verdana, Arial, Helvetica; font-size: 10px}
+		input   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
+
+-->
+</STYLE>
+<title>Inter-Photo: Betaling / Indkøbskurv</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="generator" content="Typo 3.1 CMS">
+
+<script language="javascript">
+<!--
+	browserName = navigator.appName;
+	browserVer = parseInt(navigator.appVersion);
+	var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
+	if ((browserName == "Netscape" && browserVer >= 3) || msie4) {version = "n3";} else {version = "n2";}
+
+	function openPic(url,winName,winParams)	{
+		var theWindow = window.open(url,winName,winParams);
+		if (theWindow)	{theWindow.focus();}
+	}
+	function blurLink(theObject)	{
+		if (msie4)	{
+			theObject.blur();
+		}
+	}
+
+
+// End Hiding Script -->
+</script>
+
+</head>
+<BODY bgColor="#FBF9F7" link="black" vlink="black" alink="black" leftmargin="10" topmargin="10" marginwidth="10" marginheight="10">
+
+###HTML_BODY###
+
+</body></html>
+
+<!-- ###email_HTML_SHELL### -->
+
+
+</body>
+</html>
+

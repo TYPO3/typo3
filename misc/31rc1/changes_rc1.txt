@@ -1,0 +1,75 @@
+CHANGELOG, rc1
+
+
+NOTE!
+TS: discarded config.no_ftu (it's now default NOT to add the tracking-id to links, thus searchengines sees "clean" html-documents without "?"), added "config.ftu" for enabling the feature.
+tslib/template.php has been moved to t3lib and renamed to tsparser.php as well as the class inside, which is now named tsparser_base. This is done, because the backend module, TS, is using the class. 
+t3lib/tsparser.php has been changed a lot. It should not affect the way any TypoScript's are parsed, but still this code has been changed and there are always a theoretical change of error.
+The object "styles.content.list" from static_template "styles.content (default)" has been removed (it was clearly marked beta sofar!). The object was in charge of how content elements of type "List of items" displayed content. But apart from the calender it didn't display anything and most people probably didn't use it. "tt_content.list" is now a CASE-cObject found in "content (default)" and the rendering of the lists are based on included static_template records named "content; ..."
+Corrected bug in HMENU.special feature. which meant that it did not work recursively on level 2. Now you can use the ".special" property with multiple levels.
+changed a lot of coding in the IMGTEXT cObject. This is tested but the combinations of parameters regarding noRows, noCols, number of columns and the way browses display it are many so their MAY be bugs, which I would like to have reported with a URL for display
+textMargin space with IMGTEXT objects are not rendered if the position of the image block is above or below the text. For a long period this space has been there (unless you chose "center"), but logically it shouldn't. A flag is introduced for the IMGTEXT object which will unset this correction to the old way.
+typolink() now splits the input by a character-space. The first part becomes the traditional parameter for typolink(), but the second part is an optional target, you define. Theoretically this should not affect anything for you (unless you have invalid parameters for your <link-tags" anyway) because space-characters are not allowed in urls. But potentially this may affect links made by the <link>-tag
+Added splitting of getText values (.data in stdWrap): The value is split with "//". Will probably not affect your scripts, unless you use "//" already with getText datatypes
+Fixed bug in the makelinks-functionality " mailto:" where a "mailto:" inserted without anything after would result in a bad link. Also corrected for "http://"
+Corrected a bug in the tslib/menu.php file: Menus with a maxHeight had a link on the final item, which they shouldn't. This has influence on the BUG static_template
+jumpurl is by default disabled. The config option config.jumpurl_disable is change into config.jumpurl_enable, which you should set, if you for some unknown reason liked the jumpurl concept, which is not implemented yet anyway...
+FEData objects are now in toplevel ONLY! As this TypoScript feature is yet unofficial, it has been moved without regard for any implementations.
+
+
+Major:
+Changed the HTML-title content of the backend - now displays the full version number + name of the site.
+Added Delete-function to clipboard for admin's (is enabled in Setup-module)
+Added recursive-copy support for admin's (is enabled in Setup-module)
+Added recursive-delete support for admin's (is enabled in Setup-module)
+Added ["TYPO3_CONF_VARS"]["FE"]["noPHPscriptInclude"] option to prevent PHP-script from being included by TypoScript (Security)
+Added [else] and [end] conditions to the TypoScript Conditions syntax.
+Added support for modifying GraphicColor database by a factor or linear value.
+
+
+Minor:
+Added support for userdefined modules to be included from typo3conf/-dir. Follows the structure the default modules.
+"TSConstantEditor." cannot be used in the constants-field.
+Fixed bug in t3lib/load_tree.php that prevented the tree from loading correctly if a mounted page had been deleted.
+Added support for a special value in sys_template.basedOn field, EXTERNAL_BASED_ON_TEMPLATE_ID= (see tslib/tsparser.php)
+tslib/index.php. DELETE CACHE-statement executed ONLY if a new page is put in cache or if the current cache holds temporary content. This means that pages normally cached but required displayed with a no_cache-flag does not clear the cache every time!
+Removed a lot of unused elements from the textbox-content item. You're probably not affected by this.
+typolink parameters that are page-ids or aliases are now split by "#" and any content after "#" is prepended as a link to a section on the page. Using uid-numbers of tt_content records on a page will create a link to those records.
+fixed bug in TypoScript Conditions parser that affected the way month,hours, days an so on was evaluated. 
+$WHICH_OS has been defined otherwise in order to return true on win2k. Haven't tested thoroughly.
+Changed the labels of ExcludeFields in the be_groups record to be the correct field-labels.
+Added support for HMENU generating a menu with links to a page/content element on that page. Called "sectionIndex". See GMENU, TMENU and so on.
+Added contentObject IMG_RESOURCE
+Added captionSplit property for IMGTEXT cObject
+Added support for opening menuitems in JavaScript windows
+Corrected bug in the way "Active" pages are detected in menus. Now any page which uid is in the rootline is an active pages. Probably does not affect anything on your site.
+fixed bug in tslib/menu.php/imgNamePrefix
+
+
+
+static_template:
+Constant comments has been added to all templates.
+Some templates has got new constants.
+A few templates has been corrected for minor problems.
+styles.content.tableStyle.alignField has been entered as constant which DOES NOT (as new constants usually would) contain the old value "text_align" anymore (new is empty). It is regarded an error that the alignment of the table elements depended on text-alignment.
+
+
+
+
+TypoScript:
+lig.stdHeader has been modified so that the parseFunc of the header-string is not used if the header is of type "5" - graphical header. This is good due to several reasons. 
+tt_content.shortcut included records no matter what the layout type was. Now the layout nust be 0 (zero) - which it is by default if you haven't altered it - in order to normally render these records. This is done in order to reserve layout 1-3 for your purposes.
+includeLibs property like the one for PAGE-objects has been added as a toplevel object. It has lower priority than the one for the PAGE object which means that any properties in this object is overridden by the same property in the PAGE-objects "includeLibs"-property. But it's more flexible as you don't need to know the name of the page-object in order to include a script.
+added support for the HMENU property special=list to hold more than one of the same page. (change in tslib/menu.php)
+changed image-names to be randomly generated by default with menuobjects.
+
+
+
+
+TypoScript parser:
+
+BUGS:
+Corrected bug in t3lib/tce_main.php: Fileextensions were not correctly checked.
+
+misc:
+Added stripslashes() on the recs-array / usersession data.

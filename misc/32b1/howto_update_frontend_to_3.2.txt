@@ -1,0 +1,190 @@
+Typo3 3.2 has been changed in numerous ways and that requires you to take extraordinary actions in the process of upgrading. We're sorry, but it's all done in order to streamline the product and clear out the concepts of inconsistent functionality. So this is why it all comes at one time - and hopefully not for the next many updates.
+
+
+***************
+** FILESYSTEM
+***************
+- remove the stdlib/ directory
+
+- Relink the media-directory (ONLY if you use softlinks on unix:)
+rm media
+ln -s tslib/media/
+
+- Relink the tables.php file which is now stored in t3lib/install/tables.php
+cd typo3conf/
+rm ./tables.php
+ln -s ../t3lib/install/tables.php
+
+******************
+** CONFIGURATION
+******************
+- update your "typo_db_extTableDef_script" script, if you have one; The old $tc array is renamed to $TCA
+
+
+********************************************
+** PHP_SCRIPT include-scripts and libraries
+********************************************
+
+(Searching: Unless stated, the search/replace strings are a regular expression. These work with Allaire Homesite 4.52. Also the substitution is done in .php and .inc files. Search is case-insensitive by default. You should always commit a search without replace first to check the instances found. Also make a backup of your scripts before you do these things.)
+
+
+Classes has changed names, check any objects, you create and change the names of the class they are created from:
+--search
+(class|extends|new)[[:space:]]+[[:alnum:]_]*
+--action
+replace name if necessary
+
+
+Functions from the old stdlib/ are put into a class, t3lib_div. You might use some of these, so search for that and replace if needed.
+--search
+--search
+([^A-Za-z0-9_>:])(milliseconds|gif_compress|png_to_gif_by_imagemagick|checkbrowser|fixed_lgd|fixed_lgd_pre|hardspace|break_text|unbreak_text|inList|inArray|rmFromList|intInRange|intval_positive|intExplode|trimExplode|extParseUrl|split_fileref|modifyHTMLColor|rm_endcomma|danish_strtoupper|split_attributes|splitCalc|uniqueArray|uniqueList|shortMD5|testInt|isFirstPartOfStr|formatSize|stripslashes_array|get_tag_attributes|split_tag_attributes|imagefinder|linkfinder|getURL|getStrippedURL|getMimeType|writeFile|get_dirs|debug_white_space|debug_ordvalue|debug_code|parsetime|view_array|print_array,GPvar)[[:space:]]*\(
+--Replace with:
+\1t3lib_div::\2(
+
+
+
+replace $GLOBALS["typo_db"] with the new constant, TYPO3_db
+--search, case-sensitive:
+(\$GLOBALS\[[[:space:]]*['"]?|\$)typo_db(['"]?[[:space:]]*\]|)
+--replace
+TYPO3_db
+--check it (regex): This will find all mysql()-function calls that still use a variable as database. This might be an error unless it's a database name of your own.
+mysql[[:space:]]*\([[:space:]]*\$
+
+
+
+check if you use any old global vars, which are now constants:
+--search
+stdlib_path|typo3lib_path|config_path|sitePath|TSlib_path|modPath|typo3Path|sitePath|tempPath
+--action
+Replace them with the proper constants, see changelog_Typo3.2
+
+
+
+GLOBAL Vars that moved into the global object $TSFE
+--search, case sensitive
+\$GLOBALS[[:space:]]*\[[[:space:]]*['"]?(parsetime_start|browser|register|all|be_user|BE_USER_LOGIN|TYPO3_CONF_VARS|id|rootLine|page|sys_page|no_cache|fe_user|loginUser|gr_list|type|BE_USER_LOGIN|additionalHeaderData|JSCode|JSImgCode|typo3_DIV_SECTION|tmpl|show_hidden_page|FE_PREVIEW|cache_timeout_default|content|config|cacheContent_flag|sPre|pSetup|newHash|jumpurl|GET_URL_ID_TOKEN|no_cache_beforePageGen|debug|intTarget|extTarget|absRefPrefix|compensateFieldWidth|lockFilePath|ATagParams|config|SWORD_REGEX|sword_list|linkVars)['"]?[[:space:]]*\]
+--replace
+$GLOBALS["TSFE"]->\1
+--check it (regex): This checks if you use any "global ...." definitions in functions. Manually check if some of the former global vars were defined there
+global[[:space:]]*\$
+
+
+
+Remove/redefine timetracking.
+--search
+\$GLOBALS[[:space:]]*\[[[:space:]]*['"]?(tt)['"]?[[:space:]]*\]
+--action
+The timetracking utility works a bit different now, so check that out or just remove your entry
+
+
+
+cObj goes into TSFE:
+--search
+(\$GLOBALS\[[[:space:]]*["']?)cObj(["']?[[:space:]]*\])([^A-Za-z0-9_])
+--replace
+$GLOBALS["TSFE"]->cObj\3
+
+
+
+$be_user converted to $BE_USER;
+--search
+(\$GLOBALS\[[[:space:]]*["']?)be_user(["']?[[:space:]]*\])([^A-Za-z0-9_])
+--replace
+$GLOBALS["BE_USER"]\3
+
+
+
+Find instances of use of $tc array and replace with $TCA
+--search
+(\$GLOBALS\[[[:space:]]*["']?)tc(["']?[[:space:]]*\])([^A-Za-z0-9_])
+--replace
+$GLOBALS["TCA"]\3
+--check, search case-sensitive:
+\$tc([^A-Za-z0-9_])
+
+
+
+--search, check:
+(BE_USER_LOGIN|FE_PREVIEW|GET_URL_ID_TOKEN|show_hidden_page|cache_timeout_default|cacheContent_flag|no_cache_beforePageGen|typo3_DIV_SECTION|SWORD_REGEX|sword_list|cobj_depth_counter|ACCESSKEY|IMAGES_ON_PAGE|LAST_IMAGE_INFO|parsetime_start)
+--action
+If any of these are use, notice that they are moved into the global object TSFE and they are renamed as well. Look in the class tslib_fe to see their new name (or check the changelog-Typo3.2)
+
+
+--search, checking if any of these are used by your script.
+convertPathFromWindows|PHPVER|WHICH_OS|contentTable|sitename|DDMMYY|HHMM|typo_db|sim_exec_time|exec_time|cobj_depth_counter|recordRegister|currentRecord|TSPath|IMAGES_ON_PAGE|LAST_IMAGE_INFO|currentRecordTotal|currentRecordNumber|stype|scols|sword|scount|spointer|ACCESSKEY
+--action
+If any matches, check out the code and find out (see the changelog-Typo3.2) what has changed and what you need to do about that.
+
+
+Converting your use of global vars from GET or POST method into using t3lib_div::GPvar() to fetch it.
+This search finds all $GLOBALS[.. instances with alphanumeric names that does NOT start with an upper-case letter. This excludes HTTP_POST_VARS/GET_VARS and other system globals + TSFE, the new front-end global. But if you use any globals in the url which are upper-case they are not found either!
+--search, case SENSItive
+\$GLOBALS\[["']?([^A-Z"'][[:alnum:]_]*)["']?\]
+--replace
+t3lib_div::GPvar("\1")
+--check (see all globals which are probably not TSFE) search, case sensitive
+\$GLOBALS\[["']?[^T"']
+
+--search
+set_no_cache|set_cache_timeout_default
+--action
+if these are found, prepend $GLOBALS["TSFE"]->, BUT maybe you should consider using the new PHP_SCRIPT_INC instead which enables you to combine cached page-content with dynamic content.
+
+
+
+Recommended use of php is that the split() function is replaced with explode() (which now has a third parameter!) and mysql_fetch_array() is converted to mysql_fetch_assoc() (which does not return num keys in the array). You are not forced to do this substitution.
+split()
+--search
+([^A-Za-z0-9_>:])split([[:space:]]*)\([[:space:]]*["']
+--action
+Manually replace if possible
+
+mysql_fetch_array() -> mysql_fetch_assoc()
+--search
+([^A-Za-z0-9_>:])mysql_fetch_array([[:space:]]*)\(
+--replace
+\1mysql_fetch_assoc\2(
+
+--search (environment variable that should go into getenv())
+(\$GLOBALS\[[[:space:]]*["']?|\$)(QUERY_STRING|HTTP_ACCEPT|HTTP_ACCEPT_ENCODING|HTTP_ACCEPT_LANGUAGE|HTTP_CONNECTION|HTTP_COOKIE|HTTP_HOST|HTTP_USER_AGENT|REMOTE_ADDR|REMOTE_HOST|REMOTE_PORT|SERVER_ADDR|SERVER_ADMIN|SERVER_NAME|SERVER_PORT|SERVER_SIGNATURE|SERVER_SOFTWARE|GATEWAY_INTERFACE|SERVER_PROTOCOL|REQUEST_METHOD|SCRIPT_NAME|PATH_TRANSLATED)(["']?[[:space:]]*\]|)([^A-Za-z0-9_])
+--replace
+getenv("\2")\4
+
+
+
+
+******************
+** Database
+******************
+
+Trivial stuff:
+- update the database as usual.
+Use the install-tool, see "Inside Typo3" document: "Now to upgrade..."
+
+
+
+******************
+** TypoScript
+******************
+
+.....
+1) Check with TS-module if your templates comply with TypoScript v2 (check both constants and setup)
+2) Print out the sys_templates and search for :
+Regex that finds lines where a GMENU object is copied.
+[ ]*[[:alnum:]\. ]+[A-Z]+[ ]*<
+
+If you use global vars, which are mapped elsewhere
+=[[:space:]]*global
+
+Search for stuff like:
+[globalString= todo=email] 
+
+******************
+** On site
+******************
+- FE-users in one folder!
+- Reset user settings
+
+

@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<TITLE>News example template</TITLE>
+</head>
+
+<body>
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<H1>NEWS TEMPLATES</H1>
+<h2>EXAMPLE</h2>
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<pre>
+<strong>Global markers, as set up in TypoScript:</strong>
+These are substituted throughout the whole template.
+
+<em>Markers:</em>
+GW1B / GW1E
+GW2B / GW2E
+GW3B / GW3E
+
+GC1
+GC2
+GC3
+GC4
+
+
+<strong>Common markers:</strong>
+These are substituted in all news item displaying templates:
+
+<em>Markers:</em>
+NEWS_UID - ID number (uid) of the news item
+NEWS_TITLE - News item title
+NEWS_AUTHOR - name of author
+NEWS_EMAIL - email of author
+NEWS_DATE - date
+NEWS_TIME - time
+NEWS_AGE - age of news item in minutes, hours, days or years
+NEWS_SUBHEADER - subheader, if empty main content is inserted here in LIST and LATEST
+NEWS_CONTENT - main content
+NEWS_LINKS - news links
+NEWS_CATEGORY - news item category
+NEWS_RELATED - links to related news
+NEWS_IMAGE - news item images
+
+PAGE_UID - Page id of the parent page (pid)
+PAGE_TITLE - Title of the parent page of the news item
+PAGE_AUTHOR - Page author, if any
+PAGE_AUTHOR_EMAIL - Page author email, if any
+
+<em>Wrapped Subparts:</em>
+LINK_ITEM - link to the news item single display
+</pre>
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_LATEST</h3>
+<em>This is the template for the latest news, typically displayed on a frontpage.</em>
+<br>
+<br>
+<br>
+<br>
+
+
+
+<!-- ###TEMPLATE_LATEST### begin
+	This is the template for the latest news, typically displayed on a frontpage 
+-->
+<TABLE cellpadding="4" cellspacing="1" border="0" width="1" align="right">
+	<TR bgcolor="###GC3###">
+		<TD valign="bottom">###GW2B### <font color="#FFFFFF"><B>BREAKING NEWS:</B></FONT>###GW2E###</TD>
+	</TR>
+	<!-- ###CONTENT### begin
+		  This is the part of the template substituted with the list of news: 
+	-->
+		<!-- ###NEWS### begin 
+			Template for a single item 
+		-->
+			<TR>
+				<TD bgcolor="###GC2###" valign="top">
+				###GW2B### ###NEWS_DATE### ###NEWS_TIME### <br>
+				<!--###LINK_ITEM###--><B>###NEWS_TITLE###</B><!--###LINK_ITEM###--><BR>
+				###NEWS_IMAGE### ###NEWS_SUBHEADER### <!--###LINK_ITEM###-->[more]<!--###LINK_ITEM###--><BR>(Cat: ###NEWS_CATEGORY###) ###GW2E###<BR>
+				</TD>
+			</TR>
+		<!-- ###NEWS### end-->
+		<!-- ###NEWS_1### begin 
+			Template for an alternative item 
+		-->
+			<TR>
+				<TD bgcolor="###GC1###" valign="top">
+				###GW2B### ###NEWS_DATE### ###NEWS_TIME### <br>
+				<!--###LINK_ITEM###--><B>###NEWS_TITLE###</B><!--###LINK_ITEM###--><BR>
+				###NEWS_IMAGE### ###NEWS_SUBHEADER### <!--###LINK_ITEM###-->[more]<!--###LINK_ITEM###--><BR>(Cat: ###NEWS_CATEGORY###) ###GW2E###<BR>
+				</TD>
+			</TR>
+		<!-- ###NEWS_1### end-->
+	<!-- ###CONTENT###  end -->
+	<TR bgcolor="###GC3###">
+		<TD valign="bottom"><!--###LINK_ARCHIVE###-->###GW2B###<font color="#FFFFFF"><B>Go to archive</B></FONT>###GW2E###<!--###LINK_ARCHIVE###--></TD>
+	</TR>
+	<TR>
+		<TD><img src=clear.gif width=150 height=1></TD>
+	</TR>
+</TABLE>
+<!-- ###TEMPLATE_LATEST### end -->
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_LIST</h3>
+<em>This is the template for the list of news in the archive or news page or search.</em>
+<br>
+<br>
+<br>
+<br>
+<!-- ###TEMPLATE_LIST### begin
+	This is the template for the list of news in the archive or news page or search
+-->
+<TABLE cellpadding="4" cellspacing="1" border="0" width="98%">
+	<!-- ###CONTENT### begin
+		  This is the part of the template substituted with the list of news: 
+	-->
+		<!-- ###NEWS### begin 
+			Template for a single item 
+		-->
+			<TR bgcolor="###GC1###">
+				<TD valign="top" colspan=3>
+					###GW1B### <strong><!--###LINK_ITEM###-->###NEWS_TITLE###<!--###LINK_ITEM###--></strong> ###GW1E### ###GW2B### - ###NEWS_DATE### ###GW2E###
+				</TD>
+			</TR>
+			<TR>
+				<TD valign="top">
+					###GW1B### ###NEWS_SUBHEADER### ###GW1E###<BR>
+					<BR>
+					###GW2B###By ###NEWS_AUTHOR###, ###NEWS_TIME### <br>
+					Category: ###NEWS_CATEGORY###
+					###GW2E###
+				</TD>
+				<TD><img src=clear.gif height=1 width=10></TD>
+				<TD width=1%>###NEWS_IMAGE###</TD>
+			</TR>
+			<TR>
+				<TD valign="top" colspan=3><img src=clear.gif height=5 width=1></TD>
+			</TR>
+		<!-- ###NEWS### end-->
+	<!-- ###CONTENT###  end -->
+	<TR>
+		<TD align="center" colspan=3>###GW2B###<!--###LINK_PREV###-->Prev<!--###LINK_PREV###--> ###BROWSE_LINKS### <!--###LINK_NEXT###-->Next<!--###LINK_NEXT###-->###GW2E###</TD>
+	</TR>
+</TABLE><BR>
+<!-- ###TEMPLATE_LIST### end -->
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_SINGLE</h3>
+<em>This subpart is used to display single news items</em><br>
+<br>
+<br>
+
+<!-- ###TEMPLATE_SINGLE### begin
+	This subpart is used to display single news items
+-->
+<TABLE border="0" cellspacing="0" cellpadding="1" width=98%>
+	<TR>
+		<TD valign="top">
+			###GW2B### ###NEWS_DATE### ###NEWS_TIME### ###GW2E###<br>
+			###GW1B###<B>###NEWS_TITLE###</B>###GW1E###<BR>
+			<img src=clear.gif width=1 height=5><BR>
+			###GW2B### By ###NEWS_AUTHOR### ###GW2E###<br><br>
+			
+			
+			###GW1B### <em>###NEWS_SUBHEADER###</em> <br> <br>
+			
+			###NEWS_IMAGE### 
+			###NEWS_CONTENT### <br>
+			<br>
+			<strong>Links:</strong><br>
+			###NEWS_LINKS###<br>
+			<br>
+			<br>
+			<strong>Related news:</strong><br>
+			###NEWS_RELATED###
+			
+			###GW1E###<BR>
+		</TD>
+	</TR>
+</TABLE>
+<br>
+<br>
+
+###GW2B###	
+<!--###LINK_ITEM###-->
+<b><- Back to the news list</b>
+<!--###LINK_ITEM###-->
+###GW2E###						
+<!-- ###TEMPLATE_SINGLE### end -->
+
+
+
+
+
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_ARCHIVE</h3>
+<em>Subpart for the news archive menu.</em><br>
+<br>
+<br>
+<!-- ###TEMPLATE_ARCHIVE### begin
+	Subpart for the news archive menu
+-->
+<TABLE cellpadding="4" cellspacing="1" border="0" width="1">
+	<TR bgcolor="###GC3###">
+		<TD valign="bottom">###GW2B### <font color="#FFFFFF"><B>ARCHIVE:</B></FONT>###GW2E###</TD>
+	</TR>
+	<!-- ###CONTENT### begin
+		  This is the part of the template substituted with the list of items: 
+	-->
+		<!-- ###MENUITEM### begin 
+			Template for a single item 
+		-->
+			<TR>
+				<TD bgcolor="###GC2###" valign="top" nowrap>###GW2B###<!--###LINK_ITEM###-->###ARCHIVE_TITLE###<!--###LINK_ITEM###--> - (###ARCHIVE_COUNT### items)###GW2E###</TD>
+			</TR>
+		<!-- ###MENUITEM### end-->
+	<!-- ###CONTENT###  end -->
+	<TR>
+		<TD><img src=clear.gif width=150 height=1></TD>
+	</TR>
+</TABLE>
+<!-- ###TEMPLATE_ARCHIVE### end -->
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_ARCHIVE_NOITEMS</h3>
+<em>Shown if the archive has no items!</em><br>
+<br>
+<br>
+<!-- ###TEMPLATE_ARCHIVE_NOITEMS### begin
+	Shown if the archive has no items!
+-->
+<TABLE cellpadding="4" cellspacing="1" border="0" width="1">
+	<TR bgcolor="###GC3###">
+		<TD valign="bottom">###GW2B### <font color="#FFFFFF"><B>ARCHIVE:</B></FONT>###GW2E###</TD>
+	</TR>
+	<TR>
+		<TD bgcolor="###GC2###" valign="top">###GW2B### The archive is empty! ###GW2E###</TD>
+	</TR>
+	<TR>
+		<TD><img src=clear.gif width=150 height=1></TD>
+	</TR>
+</TABLE>
+<!-- ###TEMPLATE_ARCHIVE_NOITEMS### end -->
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_SEARCH</h3>
+<em>Subpart for the search-form.</em><br>
+<br>
+<br>
+
+<!-- ###TEMPLATE_SEARCH### begin
+	Subpart for the search-form
+-->
+<FORM method="post" action="###FORM_URL###">
+	<INPUT size="30" maxlength="100" type="text" name="swords" value="###SWORDS###">
+	<input type="Submit" name="order" value="Search">
+</form>
+<!-- ###TEMPLATE_SEARCH### end -->
+
+
+
+
+
+</BODY>
+</HTML>

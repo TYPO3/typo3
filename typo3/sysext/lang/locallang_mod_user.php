@@ -1,0 +1,83 @@
+<?php
+
+$LOCAL_LANG = Array (
+	'default' => Array (
+		'mlang_labels_tablabel' => 'Your personal tasks, overview and setup',
+		'mlang_tabs_tab' => 'User',
+	),
+	'dk' => Array (
+		'mlang_labels_tablabel' => 'Dine personlige opgaver, overblik og indstillinger',
+		'mlang_tabs_tab' => 'Bruger',
+	),
+	'de' => Array (
+		'mlang_labels_tablabel' => 'Ihre persönliche Aufgaben, Übersicht und Einstellungen',
+		'mlang_tabs_tab' => 'Benutzer',
+	),
+	'no' => Array (
+		'mlang_labels_tablabel' => 'Dine personlige oppgaver, oversikt og oppsett',
+		'mlang_tabs_tab' => 'Bruker',
+	),
+	'it' => Array (
+		'mlang_labels_tablabel' => 'Lavori personali , vista e setup',
+		'mlang_tabs_tab' => 'Utente',
+	),
+	'fr' => Array (
+		'mlang_labels_tablabel' => 'Vos tâches personnelles, résumé et configuration',
+		'mlang_tabs_tab' => 'Utilisateur',
+	),
+	'es' => Array (
+		'mlang_labels_tablabel' => 'Sus tareas personales, resúmen y configuración',
+		'mlang_tabs_tab' => 'Usuario',
+	),
+	'nl' => Array (
+		'mlang_labels_tablabel' => 'Je persoonlijke taken, overzicht en setup',
+		'mlang_tabs_tab' => 'Gebruiker',
+	),
+	'cz' => Array (
+		'mlang_labels_tablabel' => 'Vaše osbní úkoly, pøehled a nastavení',
+		'mlang_tabs_tab' => 'Uživatel',
+	),
+	'pl' => Array (
+		'mlang_labels_tablabel' => 'Twoje zadania i ustawienia osobiste',
+		'mlang_tabs_tab' => 'U¿ytkownik',
+	),
+	'si' => Array (
+		'mlang_labels_tablabel' => 'Vaše osebne nastavitve in naloge',
+		'mlang_tabs_tab' => 'Uporabnik',
+	),
+	'fi' => Array (
+		'mlang_labels_tablabel' => 'Sinun henkilökohtaiset toimet, yleis- ja perustiedot.',
+		'mlang_tabs_tab' => 'Käyttäjä',
+	),
+	'tr' => Array (
+		'mlang_labels_tablabel' => 'Kiþisel görevleriniz, genel görüntü ve kurulumunuz',
+		'mlang_tabs_tab' => 'Kullanýcý',
+	),
+	'se' => Array (
+		'mlang_labels_tablabel' => 'Dina personliga uppgifter, översikter och konfigurationer',
+		'mlang_tabs_tab' => 'Användare',
+	),
+	'pt' => Array (
+		'mlang_labels_tablabel' => 'Suas tarefas pessoais, resumo e configuração',
+		'mlang_tabs_tab' => 'Utilizador',
+	),
+	'ru' => Array (
+		'mlang_labels_tablabel' => 'Âàøè ëè÷íûå çàäà÷è, ñîñòîÿíèå è íàñòðîéêè',
+		'mlang_tabs_tab' => 'Ïîëüçîâàòåëü',
+	),
+	'ro' => Array (
+	),
+	'ch' => Array (
+		'mlang_labels_tablabel' => 'ÄúµÄ¸öÈË×÷Òµ¡¢×ÜÀÀÓëÉèÖÃ',
+		'mlang_tabs_tab' => 'ÓÃ»§',
+	),
+	'sk' => Array (
+		'mlang_labels_tablabel' => 'Tvoje osobné úlohy, preh¾ad a nastavenia',
+		'mlang_tabs_tab' => 'Užívate¾',
+	),
+	'lt' => Array (
+		'mlang_labels_tablabel' => 'Jûsø asmeninës uþduotys, nustatymai',
+		'mlang_tabs_tab' => 'Vartotojas',
+	),
+);
+?>

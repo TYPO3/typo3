@@ -1,0 +1,433 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Untitled</title>
+</head>
+
+<body>
+
+
+
+<!-- ###DIBS_CARDNO_TEMPLATE### 
+
+This subpart is used to display the card number information dialog
+
+
+Has the standard fields of the normal BASKET-templates 
++  ###HIDDEN_FIELDS###  (mandatory for the DIBS hidden fields)
+
+-->
+
+
+<TABLE border="0" cellspacing="0" cellpadding="1" width=1>
+	<tr>
+		<td><img src="clear.gif" width=100 height=1></td>
+		<td><img src="clear.gif" width=5 height=1></td>
+		<td><img src="clear.gif" width=100 height=1></td>
+		<td colspan=3><img src="clear.gif" width=200 height=1></td>
+	</tr>
+	<tr>
+		<td colspan=6 bgcolor="###GC2###">###GW2B###<b>TOTAL:</b>###GW2E###</td>
+	</tr>
+	<TR>
+		<td valign=top colspan=3>###GW1B###
+			<strong>Total beløb i DKR:</strong>				
+		###GW1E###</td>
+		
+		<td valign=top align=right colspan=3 nowrap>###GW1B###
+		<b>Kr. ###PRICE_TOTAL_TAX###</b><br>
+		###GW1E###</td>
+	</TR>
+</TABLE>
+
+
+
+<form action="https://payment.architrade.com/cgi-ssl/auth.cgi" method=POST autocomplete="off">
+
+	
+	
+	<table width=400>
+		<tr>
+			<td nowrap>###GW1B###Kortnummer:###GW1E###</td>
+			<td nowrap>&nbsp; &nbsp; &nbsp;</td>
+			<td valign=top><input type=text name=cardno size=20></td>
+		</tr>
+		<tr>
+			<td nowrap>###GW1B###Udløbsdato (mm/åå):###GW1E###</td>
+			<td nowrap>&nbsp; &nbsp; &nbsp;</td>
+			<td valign=top><input type=text name=expmon size=2 maxlength=2> / 
+	<input type=text name=expyear size=2 maxlength=2></td>
+		</tr>
+		<tr>
+			<td>###GW1B###Kontrolcifre:###GW1E###</td>
+			<td nowrap>&nbsp; &nbsp; &nbsp;</td>
+			<td valign=top><input type=text name=cvc size=3 maxlength=4></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>&nbsp; &nbsp; &nbsp;</td>
+			<td valign=top nowrap><input type="submit" name="betal" value="Betal">&nbsp;&nbsp; ###PAYMENT_IMAGE###</td>
+		</tr>
+	</table>
+
+	###HIDDEN_FIELDS###
+</form>
+
+
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="5">
+<TR>
+<TD><A HREF="http://www.dibs.dk/" TARGET="_blank"><IMG SRC="/images/DIBS.gif" BORDER="0"></A></TD>
+<TD><FONT FACE="Verdana, Arial, Helvetica" SIZE=1>Denne butik anvender DIBS <A HREF="http://www.dibs.dk/" TARGET="_blank">(Dansk Internet Betalingssystem)</A>
+<BR>
+Betalingen med kreditkort i denne butik er derfor sikkert og godkendt af <A HREF="http://www.pbs.dk/" TARGET="_blank">PBS</A>.
+<BR>
+Er De i tvivl, har De har mulighed for at se en <A HREF="http://www.dibs.dk/butikker.pml" TARGET="_blank">liste over godkendte butikker</A>.</FONT></TD>
+</TR>
+</TABLE>
+
+
+
+
+###GW1B###
+<br>
+<br>
+<br>
+Inter-Photo's butik er helt sikker at handle i. Det skyldes, at vi benytter Danmarks mest udbredte og gennemtestede e-handels system, DIBS.<br>
+<br>
+For at handle med Dankort skal du opgive følgende oplysninger fra dit kort:<br>
+<br>
+<B>Kortnummer:</B><br>
+Findes på kortets forside og er de 16 cifre, som er præget ind i kortet.<br>
+<br>
+<B>Udløbsdato:</B><br>
+Findes også på forsiden lige under kortnummeret. Der står muligvis "Expires", "Gyldig til" eller lign.<br>
+<br>
+<B>Kontrolcifrene</B><br>
+findes på bagsiden af dit kreditkort som 3 cifre lige efter kortnummeret i nederste højre hjørne (se billedet herunder). <br>
+Det er <i>frivilligt</i> at benytte dem, men det giver os hos Inter-Photo en ekstra sikkerhed for, at der ikke snydes med dit kort. Så hvis du angiver kontrolcifrene, er vi alle ekstra trygge ved handelen.<br>
+<br>
+<img src="media/logos/creditcard_control_numbers_mini.gif" width="52" height="95" border="0" alt="">
+
+###GW1E###
+<!-- ###DIBS_CARDNO_TEMPLATE###	 end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###DIBS_SOLOE_TEMPLATE### 
+
+This subpart is used to display the card number information dialog FOR Unibank SOLO-E payment. It differs because this dialog does not use any
+
+-->
+
+
+<TABLE border="0" cellspacing="0" cellpadding="1" width=1>
+	<tr>
+		<td><img src="clear.gif" width=100 height=1></td>
+		<td><img src="clear.gif" width=5 height=1></td>
+		<td><img src="clear.gif" width=100 height=1></td>
+		<td colspan=3><img src="clear.gif" width=200 height=1></td>
+	</tr>
+	<tr>
+		<td colspan=6 bgcolor="###GC2###">###GW2B###<b>TOTAL:</b>###GW2E###</td>
+	</tr>
+	<TR>
+		<td valign=top colspan=3>###GW1B###
+			<strong>Total beløb i DKR:</strong>				
+		###GW1E###</td>
+		
+		<td valign=top align=right colspan=3 nowrap>###GW1B###
+		<b>Kr. ###PRICE_TOTAL_TAX###</b><br>
+		###GW1E###</td>
+	</TR>
+</TABLE>
+
+###GW1B###
+Du har valgt Unibanks e-betaling. Tryk derfor på nedenstående knap og din PC-bank vil blive startet op. Betalingen foregår direkte via Unibanks software.
+
+###GW1E###
+
+
+<form action="https://payment.architrade.com/cgi-ssl/solo_payment.cgi" method=POST autocomplete="off">
+<input type="submit" name="betal" value="Gå til Unibank e-betaling">&nbsp;&nbsp;<img src="tslib/media-00/logos/soloe.gif" width="53" height="33" hspace=10 border="0" alt="" align=absmiddle>
+	###HIDDEN_FIELDS###
+</form>
+
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="5">
+<TR>
+<TD><A HREF="http://www.dibs.dk/" TARGET="_blank"><IMG SRC="/images/DIBS.gif" BORDER="0"></A></TD>
+<TD><FONT FACE="Verdana, Arial, Helvetica" SIZE=1>Denne butik anvender DIBS <A HREF="http://www.dibs.dk/" TARGET="_blank">(Dansk Internet Betalingssystem)</A>
+<BR>
+Betalingen med kreditkort i denne butik er derfor sikkert og godkendt af <A HREF="http://www.pbs.dk/" TARGET="_blank">PBS</A>.
+<BR>
+Er De i tvivl, har De har mulighed for at se en <A HREF="http://www.dibs.dk/butikker.pml" TARGET="_blank">liste over godkendte butikker</A>.</FONT></TD>
+</TR>
+</TABLE>
+
+<!-- ###DIBS_SOLOE_TEMPLATE###	 end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###DIBS_DECLINE_TEMPLATE### 
+
+This subpart is used to display information IF the payment was declined!
+
+Has the standard fields of the normal BASKET-templates 
++  ###REASON_CODE###  which is the global var, $reason
+
+-->
+###GW1B###
+
+<strong>Transaktionen blev desværre afvist!</strong><br>
+<br>
+
+Der kan være flere grunde til dette. <br>
+Koden for afvisningen var <strong>###REASON_CODE###</strong>. I tabellen herunder kan du se, hvad denne kode betyder:<br>
+<br>
+
+<table cellpadding=4>
+<tr>
+	<td>###GW2B###<strong>10</strong>###GW2E###</td>
+	<td>###GW2B###Ugyldig korttype###GW2E###</td>
+</tr>
+<tr>
+	<td>###GW2B###<strong>5</strong>###GW2E###</td>
+	<td>###GW2B###Korttype understøttes ikke af butikken###GW2E###</td>
+</tr>
+<tr>
+	<td>###GW2B###<strong>4</strong>###GW2E###</td>
+	<td>###GW2B###Kortet er udløbet###GW2E###</td>
+</tr>
+<tr>
+	<td>###GW2B###<strong>1,2,3</strong>###GW2E###</td>
+	<td>###GW2B###Kommunikationsfejl mellem DIBS og PBS###GW2E###</td>
+</tr>
+<tr>
+	<td>###GW2B###<strong>0</strong>###GW2E###</td>
+	<td>###GW2B###Anden fejl (f.eks. spærret eller ugyldigt kort)###GW2E###</td>
+</tr>
+</table>
+<br>
+		
+Din ordre er i midlertid ikke slettet, så du kan <a href="http://www.inter-photo.dk/?butik">gå tilbage til butikken</a> og vælge en anden betalingsform.
+<br>
+<br>
+		 
+
+###GW1E###
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="5">
+<TR>
+<TD><A HREF="http://www.dibs.dk/" TARGET="_blank"><IMG SRC="/images/DIBS.gif" BORDER="0"></A></TD>
+<TD><FONT FACE="Verdana, Arial, Helvetica" SIZE=1>Denne butik anvender DIBS <A HREF="http://www.dibs.dk/" TARGET="_blank">(Dansk Internet Betalingssystem)</A>
+<BR>
+Betalingen med kreditkort i denne butik er derfor sikkert og godkendt af <A HREF="http://www.pbs.dk/" TARGET="_blank">PBS</A>.
+<BR>
+Er De i tvivl, har De har mulighed for at se en <A HREF="http://www.dibs.dk/butikker.pml" TARGET="_blank">liste over godkendte butikker</A>.</FONT></TD>
+</TR>
+</TABLE>
+
+<!-- ###DIBS_DECLINE_TEMPLATE###	 end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###DIBS_DECLINE_MD5_TEMPLATE### 
+
+This subpart is used to display information IF the payment was declined!
+
+Has the standard fields of the normal BASKET-templates 
+
+-->
+###GW1B###
+
+<strong>Transaktionen blev godkendt, men returkoden var ikke korrekt!</strong><br>
+<br>
+Du bør øjeblikkeligt rette henvendelse til <a href="mailto:kasper@curbysoft.dk">kasper@curbysoft.dk</a> og gøre opmærksom på problemet, der ikke burde forekomme medmindre man forsøger at snyde systemet til at godtage en betaling. Opgiv venligst dit ordrenummer, ###ORDER_UID###.
+<br>
+<br>
+		
+Din ordre er i midlertid ikke slettet, så du kan <a href="http://www.inter-photo.dk/?butik">gå tilbage til butikken</a> og vælge en anden betalingsform.
+<br>
+<br>
+		 
+
+###GW1E###
+
+<!-- ###DIBS_DECLINE_MD5_TEMPLATE###	 end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###DIBS_SOLOE_CANCEL_TEMPLATE### 
+
+This subpart is used to display information IF the payment was cancel by Unibank Solo-E software
+
+Has the standard fields of the normal BASKET-templates 
+
+-->
+###GW1B###
+
+<strong>Du har afbrudt transaktionen med Unibank e-betaling.</strong><br>
+<br>
+		
+Din ordre er i midlertid ikke slettet, så du kan <a href="http://www.inter-photo.dk/?butik">gå tilbage til butikken</a> og vælge en anden betalingsform.
+<br>
+<br>
+ 
+
+###GW1E###
+
+<!-- ###DIBS_SOLOE_CANCEL_TEMPLATE### 	 end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###DIBS_DECLINE_ORDERID_TEMPLATE### 
+
+This subpart is used to display information IF the payment was declined!
+
+Has the standard fields of the normal BASKET-templates 
+
+-->
+###GW1B###
+
+<strong>Transaktionen blev godkendt, men ordrenummeret, ###ORDER_UID### passer ikke!</strong><br>
+<br>
+Du bør øjeblikkeligt rette henvendelse til <a href="mailto:kasper@curbysoft.dk">kasper@curbysoft.dk</a> og gøre opmærksom på problemet, der ikke burde forekomme medmindre man forsøger at snyde systemet til at godtage en betaling. Opgiv venligst dit ordrenummer, ###ORDER_UID###.
+<br>
+<br>
+		
+Din ordre er i midlertid ikke slettet, så du kan <a href="http://www.inter-photo.dk/?butik">gå tilbage til butikken</a> og vælge en anden betalingsform.
+<br>
+<br>
+		 
+
+###GW1E###
+
+<!-- ###DIBS_DECLINE_ORDERID_TEMPLATE###	 end -->
+
+
+
+
+
+
+
+
+
+
+<!-- ###DIBS_REDIRECT_TEMPLATE### 
+
+This subpart is used to display information IF the payment was declined!
+
+Has the standard fields of the normal BASKET-templates 
++ ###REDIRECT_URL###
+
+-->
+###GW1B###
+	Du omdirigeres nu til en sikker betalingsserver. 
+	<script>
+		document.location = '###REDIRECT_URL###';
+	</script>
+###GW1E###
+
+<!-- ###DIBS_REDIRECT_TEMPLATE###	 end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###DIBS_ACCEPT_TEMPLATE### 
+Used for dummy purpose onlu
+-->
+DUMMY
+<!-- ###DIBS_ACCEPT_TEMPLATE###	 end -->
+
+
+
+
+</body>
+</html>

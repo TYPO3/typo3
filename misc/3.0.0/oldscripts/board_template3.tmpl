@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<TITLE>Board example template</TITLE>
+</head>
+
+<body>
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<H1>BOARD TEMPLATES</H1>
+<h2>EXAMPLE 3 - LIST style</h2>
+
+<strong>Notice:</strong> <br>
+For the full list of markers/subparts, see board_template1.tmpl<br>
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_OVERVIEW</h3>
+<em>This is the template for the overview of categories and forums.</em><br>
+<br>
+<br>
+<br>
+
+
+<!-- ###TEMPLATE_OVERVIEW### begin 
+	This is the template for the overview of categories and forums.
+-->
+<TABLE cellpadding="4" cellspacing="1" border="0" width="98%">
+	<TR bgcolor="#7C848C">
+		<TD><FONT face="verdana,arial,helvetica" size="1">&nbsp;</font></TD>
+		<TD><FONT face="verdana,arial,helvetica" size="1" color="#FFFFFF">&nbsp;</FONT></TD>
+		<TD nowrap align="center"><B><FONT face="verdana,arial,helvetica" size="1" color="#FFFFFF">Posts</FONT></B></TD>
+		<TD nowrap align="center"><B><FONT face="verdana,arial,helvetica" size="1" color="#FFFFFF">Threads</FONT></B></TD>
+		<TD nowrap align="center"><FONT face="verdana,arial,helvetica" size="1" color="#FFFFFF"><B>Last Post</B></FONT></TD>
+	</TR>
+	<!-- ###CONTENT###  begin
+		This is the part of the template substituted with the list of categories and forums: 
+	-->
+		<!-- ###CATEGORY### begin
+			Template for the category title 
+		-->
+			<TR bgcolor="#05437E">
+				<TD colspan="5"><!--###LINK###--><B><FONT face="arial, helvetica" size="2" color="#FFFFFF">###CATEGORY_TITLE###</FONT></B><!--###LINK###--><BR><FONT face="arial, helvetica" size="1" color="#FFFFFF">###CATEGORY_DESCRIPTION###</font></TD>
+			</TR>
+		<!-- ###CATEGORY###  end -->
+		<!-- ###FORUM### begin
+			Template for the display of forum information 
+		-->
+			<TR>
+				<TD bgcolor="#CECAC3" align="center" valign="top"><IMG src="clear.gif" width=20 height=1 border="0"></TD>
+				<TD bgcolor="#CECAC3" valign="top"><FONT face="arial, helvetica" size="2"><B><!--###LINK###-->###FORUM_TITLE###<!--###LINK###--></B></FONT><BR><FONT face="verdana,arial,helvetica" size="1">###FORUM_DESCRIPTION###</FONT></TD>
+				<TD bgcolor="#CECAC3" align="center" valign="top" nowrap><FONT face="arial, helvetica" size="2">###FORUM_POSTS###</FONT></TD>
+				<TD bgcolor="#CECAC3" align="center" valign="top" nowrap><FONT face="arial, helvetica" size="2">###FORUM_THREADS###</FONT></TD>
+				<TD bgcolor="#CECAC3" valign="top" align="center"><!--###LINK_LAST_POST###--><FONT face="verdana,arial, helvetica" size="1" color="black">###LAST_POST_DATE### ###LAST_POST_TIME###<BR>###LAST_POST_AUTHOR###</FONT><!--###LINK_LAST_POST###--></TD>
+			</TR>
+		<!-- ###FORUM### end-->
+		<!-- ###POST### begin
+			Template for the display of latest posts of a forum 
+		-->
+			<TR>
+				<TD bgcolor="#E7E3DB" align="center" valign="top"></TD>
+				<TD bgcolor="#E7E3DB" valign="top"><!--###LINK###--><FONT face="verdana,arial, helvetica" size="1" color="black"><B>###POST_TITLE###</B></FONT><!--###LINK###--><BR><FONT face="verdana,arial,helvetica" size="1">###POST_CONTENT###</FONT></TD>
+				<TD bgcolor="#E7E3DB" align="center" valign="top" nowrap><FONT face="verdana,arial, helvetica" size="1">###POST_REPLIES###</FONT></TD>
+				<TD bgcolor="#E7E3DB" align="center" valign="top" nowrap><FONT face="verdana,arial, helvetica" size="1">&nbsp;</FONT></TD>
+				<TD bgcolor="#E7E3DB" valign="top" align="center"><FONT face="verdana,arial, helvetica" size="1">###POST_AGE### ago </font><br><FONT face="arial, helvetica" size="1">by ###POST_AUTHOR###</FONT></TD>
+			</TR>
+		<!-- ###POST### end-->
+	<!-- ###CONTENT###  end -->
+</TABLE>
+<!-- ###TEMPLATE_OVERVIEW### end -->
+
+
+
+
+
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_THREAD</h3>
+<em>Template for listing of items in a single forum.</em><br>
+<br>
+<br>
+<br>
+
+
+
+<!-- ###TEMPLATE_FORUM### begin -->
+<TABLE border="0" cellpadding="4" border="0" cellspacing="1" width="98%">
+	<TR bgcolor="#7C848C">
+		<TD align="center" width="100%"><FONT face="verdana,arial" size="1" color="white"><B>Subject</B></FONT></TD>
+		<TD align="center" nowrap><FONT face="verdana,arial" size="1" color="white"><B>Thread Starter</B></FONT></TD>
+		<TD align="center"><FONT face="verdana,arial" size="1" color="white"><B>Replies</B></FONT></TD>
+		<TD align="center" nowrap><FONT face="verdana,arial" size="1" color="white"><B>Last Post</B></FONT></TD>
+	</TR>
+	<!-- ###CONTENT### begin -->
+	<!--###POST### begin -->
+		<TR>
+			<TD bgcolor="#E7E3DB" valign="top"><FONT face="verdana,arial" size="1"><!--###LINK###--><b>###POST_TITLE###</b><!--###LINK###--><br>###POST_CONTENT###</FONT></TD>
+			<TD bgcolor="#E7E3DB" align="center" valign="top"><FONT face="verdana,arial" size="1">###POST_AUTHOR###</FONT></TD>
+			<TD bgcolor="#E7E3DB" align="center" valign="top"><FONT face="verdana,arial" size="1">###POST_REPLIES###</FONT></TD>
+			<TD bgcolor="#E7E3DB" align="center" valign="top"><FONT face="verdana,arial" size="1"><!--###LINK_LAST_POST###-->###LAST_POST_AGE###<!--###LINK_LAST_POST###--></FONT></TD>
+		</TR>
+	<!--###POST### end -->
+	<!-- ###CONTENT###  end -->
+</TABLE>
+<!-- ###TEMPLATE_FORUM### end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<BR><BR><BR><BR><HR><BR><BR><BR>
+<h3>TEMPLATE_FORUM</h3>
+<em>Template for the listing of a the posts in a thread.</em><br>
+
+
+
+
+
+
+<!-- ###TEMPLATE_THREAD### begin
+	Template for the listing of a the posts in a thread 
+-->
+<TABLE width="98%" border="0" cellspacing="1" cellpadding="4">
+	<TR>
+		<TD colspan=2><!--###LINK_BACK_TO_FORUM###--><FONT face="verdana,arial" size="1" color="black"><B>< BACK TO FORUM</B></FONT><!--###LINK_BACK_TO_FORUM###--></TD>
+	</TR>
+	<TR bgcolor="#7C848C">
+		<TD align="center" nowrap><FONT face="verdana,arial" size="1" color="white"><B>Author:</B></FONT></TD>
+		<TD align="center" nowrap><FONT face="verdana,arial" size="1" color="white"><B>Content:</B></FONT></TD>
+	</TR>
+	<!-- ###CONTENT###  begin -->
+		<!--###POST### begin -->
+			<TR bgcolor="#E7E3DB">
+				<TD nowrap valign="top"><FONT face="verdana,arial,helvetica" size="1">###POST_DATE### ###POST_TIME### &nbsp;&nbsp;</FONT></TD>
+				<TD width="80%"><FONT face="verdana,arial,helvetica" size="2"><b>###POST_TITLE###</b></font></TD>
+			</TR>
+			<TR bgcolor="#E7E3DB">
+				<TD valign="top"><FONT face="verdana,arial,helvetica" size="1">Author:<br><b><a href="mailto:###POST_AUTHOR_EMAIL###">###POST_AUTHOR###</A></b></FONT></TD>
+				<TD valign="top" width="80%"><FONT face="verdana,arial,helvetica" size="1">###POST_CONTENT###</font></TD>
+			</TR>
+		<!--###POST### end -->
+		<!--###POST_1### begin -->
+			<TR bgcolor="#CECAC3">
+				<TD nowrap valign="top"><FONT face="verdana,arial,helvetica" size="1">###POST_DATE### ###POST_TIME### &nbsp;&nbsp;</FONT></TD>
+				<TD width="80%"><FONT face="verdana,arial,helvetica" size="2"><b>###POST_TITLE###</b></font></TD>
+			</TR>
+			<TR bgcolor="#CECAC3">
+				<TD valign="top"><FONT face="verdana,arial,helvetica" size="1">Author:<br><b><a href="mailto:###POST_AUTHOR_EMAIL###">###POST_AUTHOR###</a></b></FONT></TD>
+				<TD valign="top" width="80%"><FONT face="verdana,arial,helvetica" size="1">###POST_CONTENT###</font></TD>
+			</TR>
+		<!--###POST_1### end -->
+	<!-- ###CONTENT###  end -->
+	<TR>
+		<TD colspan=2><!--###LINK_BACK_TO_FORUM###--><FONT face="verdana,arial" size="1" color="black"><B>< BACK TO FORUM</B></FONT><!--###LINK_BACK_TO_FORUM###--></TD>
+	</TR>
+</TABLE>
+<!-- ###TEMPLATE_THREAD### end -->
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Print version example template</title>
+</head>
+
+<body>
+
+
+
+
+
+
+<br />
+<br />
+<br />
+<h1>PRINTER FRIENDLY TEMPLATE</h1>
+
+
+
+
+
+
+<br /><br /><br /><br /><hr /><br /><br /><br />
+<em>
+This template is the framework for printer friendly display of content. This file is the default file used by the static_template 'plugin.alt.print'.<br />
+<br />
+You can insert a few markers:<br />
+<br />
+
+###PAGE_TITLE### - the page title<br />
+###PAGE_SUBTITLE### - the page subtitle<br />
+###PAGE_AUTHOR### - the page author (with email address link)<br />
+###CONTENT### - the 'normal' content of the page <br />
+and<br />
+###PAGE_UID### - the page uid number (eg. for use with a 'back' link)<br />
+
+
+</em>
+<br />
+<br />
+<br />
+<br />
+
+
+
+<!-- ###DOCUMENT_BODY### begin
+  The content between these subpart markers goes right into the body section of the webpage when displayed:
+-->
+Title: ###PAGE_TITLE###<br />
+Subtitle: ###PAGE_SUBTITLE###<br />
+Author: ###PAGE_AUTHOR###<br />
+<hr />
+###CONTENT###
+<hr />
+<a href="index.php?id=###PAGE_UID###">Go back to the regular design...</a>
+
+
+<!-- ###DOCUMENT_BODY### end -->
+
+</body>
+</html>
