@@ -582,30 +582,36 @@ class template {
 			// Get META tag containing the currently selected charset for backend output. The function sets $this->charSet.
 		$charSet = $this->initCharset();
 		$generator = $this->generator();
-
+		
+			// For debugging: If this outputs "QuirksMode"/"BackCompat" (IE) the browser runs in quirks-mode. Otherwise the value is "CSS1Compat"
+		$this->JScodeArray[]='alert(document.compatMode);';
+		
 			// Send HTTP header for selected charset. Added by Robert Lemke 23.10.2003
 		header ('Content-Type:text/html;charset='.$this->charset);
 
 		switch($this->docType)	{
 			case 'xhtml_strict':
-				$headerStart= '<?xml version="1.0" encoding="'.$this->charset.'"?>
-<?xml-stylesheet href="#internalStyle" type="text/css"?>
-<!DOCTYPE html 
+				$headerStart= '<!DOCTYPE html 
 	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="'.$this->charset.'"?>
+<?xml-stylesheet href="#internalStyle" type="text/css"?>
+';
 			break;
 			case 'xhtml_trans':
-				$headerStart= '<?xml version="1.0" encoding="'.$this->charset.'"?>
-<?xml-stylesheet href="#internalStyle" type="text/css"?>
-<!DOCTYPE html 
+				$headerStart= '<!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="'.$this->charset.'"?>
+<?xml-stylesheet href="#internalStyle" type="text/css"?>
+';
 			break;
 			case 'xhtml_frames':
-				$headerStart= '<?xml version="1.0" encoding="'.$this->charset.'"?>
-<!DOCTYPE html 
+				$headerStart= '<!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<?xml version="1.0" encoding="'.$this->charset.'"?>
+';
 			break;
 			default:
 				$headerStart='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';

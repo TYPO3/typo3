@@ -321,10 +321,11 @@ function linkTo_UnCryptMailto(s)	{	//
 			// Setting document type:
 		switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
 			case 'xhtml_trans':
-				$GLOBALS['TSFE']->content.='<?xml version="1.0" encoding="'.$theCharset.'"?>
-<!DOCTYPE html 
+				$GLOBALS['TSFE']->content.='<!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="'.$theCharset.'"?>
+';
 			break;
 			default:
 				$GLOBALS['TSFE']->content.='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';

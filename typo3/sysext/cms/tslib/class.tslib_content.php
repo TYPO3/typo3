@@ -2837,7 +2837,7 @@ class tslib_cObj {
 				if ($conf['age']){$content=$this->calcAge(time()-$content,$conf['age']);}
 				
 				if ($conf['case']){$content=$this->HTMLcaseshift($content, $conf['case']);}
-				if ($conf['bytes']){$content=$this->bytes($content);}
+				if ($conf['bytes']){$content=$this->bytes($content,$conf['bytes.']['labels']);}
 				if ($conf['substring']){$content=$this->substring($content,$conf['substring']);}
 				if ($conf['crop']){$content=$this->crop($content, $conf['crop']);}
 				if ($conf['stripHtml']){$content=strip_tags($content);}
@@ -4972,16 +4972,16 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Formats a number to Mb or Kb or just bytes
+	 * Formats a number to GB, Mb or Kb or just bytes
 	 * 
-	 * @param	integer		Bytes to format
+	 * @param	integer		Number of bytes to format.
+	 * @param	string		Labels for bytes, kilo, mega and giga separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
 	 * @return	string		
 	 * @see t3lib_div::formatSize(), stdWrap()
 	 * @depreciated	Use t3lib_div::formatSize() instead
-	 * @see t3lib_div::formatSize()
 	 */
-	function bytes($sizeInBytes)	{
-		return t3lib_div::formatSize($sizeInBytes);
+	function bytes($sizeInBytes,$labels)	{
+		return t3lib_div::formatSize($sizeInBytes,$labels);
 	}
 
 	/**

@@ -1,10 +1,9 @@
+2003-12-16  Kasper Skårhøj
+
+	* Changed order of DOCTYPE and XML declaration for XHTML support (for standards compliance mode detection in MSIE)
+
 2003-10-24  Kasper Skårhøj
-
 	* Moved changelog.txt to ChangeLog ("cvs compliant")
-
-
-
-
 TYPO3 3.6.0-dev
 PHP:
 !!! $LANG->php3Lang + ->mainLang has been cancelled and replaced with a local-lang call: Search/replace regex: search for '->php3Lang\["([^]]*)"\]\["([^]]*)"\]', replace with '->sL("LLL:EXT:lang/locallang_core.php:\1.\2")'. Same for ->mainLang.

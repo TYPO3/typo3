@@ -1918,7 +1918,7 @@ class t3lib_BEfunc	{
 	 */
 	function getFuncMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
 		if (is_array($menuItems))	{
-			if (!$script) {$script=basename(PATH_thisScript);}
+			if (!$script) { $script=basename(PATH_thisScript); }
 			$options='';
 			reset($menuItems);
 			while(list($value,$label)=each($menuItems))	{

@@ -858,19 +858,34 @@ class t3lib_div {
 	 * Usage: 54
 	 * 
 	 * @param	integer		Number of bytes to format.
+	 * @param	string		Labels for bytes, kilo, mega and giga separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
 	 * @return	string		Formatted representation of the byte number, for output.
 	 */
-	function formatSize($sizeInBytes)	{
+	function formatSize($sizeInBytes,$labels='')	{
+	
+			// Set labels:
+		if (strlen($labels) == 0) {
+		    $labels = ' | K| M| G';
+		} else { 
+		    $labels = str_replace('"','',$labels);
+		}
+		$labelArr = explode('|',$labels);
+		
+			// Find size:
 		if ($sizeInBytes>900)	{
-			if ($sizeInBytes>900000)	{	// MB
+			if ($sizeInBytes>900000000)	{	// GB
+				$val = $sizeInBytes/(1024*1024*1024);
+				return number_format($val, (($val<20)?1:0), '.', '').$labelArr[3];
+			}
+			elseif ($sizeInBytes>900000)	{	// MB
 				$val = $sizeInBytes/(1024*1024);
-				return number_format($val, (($val<20)?1:0), '.', '').' M';
+				return number_format($val, (($val<20)?1:0), '.', '').$labelArr[2];
 			} else {	// KB
 				$val = $sizeInBytes/(1024);
-				return number_format($val, (($val<20)?1:0), '.', '').' K';
+				return number_format($val, (($val<20)?1:0), '.', '').$labelArr[1];
 			}
 		} else {	// Bytes
-			return $sizeInBytes.'&nbsp;&nbsp;';
+			return $sizeInBytes.$labelArr[0];
 		}
 	}
 
