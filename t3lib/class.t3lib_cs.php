@@ -1365,11 +1365,12 @@ class t3lib_cs {
 			return $string;
 		} else	{
 			if ($len > 0)	{
-				if (isset($string{$i}))	{
+				if (strlen($string{$i}))	{
 					return substr($string,0,$i).$crop;
+
 				}
 			} else {
-				if (isset($string{$i-1}))	{
+				if (strlen($string{$i-1}))	{
 					return $crop.substr($string,$i);
 				}
 			}
@@ -1515,7 +1516,7 @@ class t3lib_cs {
 		}
 
 		$out = '';
-		for($i=0; isset($str{$i}); $i++)	{
+		for($i=0; strlen($str{$i}); $i++)	{
 			$c = $str{$i};
 			if (isset($map[$c]))	{
 				$out .= $map[$c];
@@ -1588,7 +1589,7 @@ class t3lib_cs {
 	 */
 	function utf8_strlen($str)	{
 		$n=0;
-		for($i=0; isset($str{$i}); $i++)	{
+		for($i=0; strlen($str{$i}); $i++)	{
 			$c = ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$n++;
@@ -1684,14 +1685,14 @@ class t3lib_cs {
 			$d = -1;
 		}
 
-		for( ; isset($str{$i}) && $n<$p; $i+=$d)	{
+		for( ; strlen($str{$i}) && $n<$p; $i+=$d)	{
 			$c = (int)ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$n++;
 			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
 				$n++;
 		}
-		if (!isset($str{$i}))	return false; // offset beyond string length
+		if (!strlen($str{$i}))	return false; // offset beyond string length
 
 		if ($pos >= 0)	{
 				// skip trailing multi-byte data bytes
@@ -1722,7 +1723,7 @@ class t3lib_cs {
 			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
 				$n++;
 		}
-		if (!isset($str{$i}))	return false; // offset beyond string length
+		if (!strlen($str{$i}))	return false; // offset beyond string length
 
 		return $n;
 	}
@@ -1753,7 +1754,7 @@ class t3lib_cs {
 				return $str;
 		}
 
-		for($i=0; isset($str{$i}); $i++)	{
+		for($i=0; strlen($str{$i}); $i++)	{
 			$c = ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$mbc = $str{$i};
@@ -1814,7 +1815,7 @@ class t3lib_cs {
 	 */
 	function euc_strtrunc($str,$len,$charset)	 {
 		$sjis = ($charset == 'shift_jis');
-		for ($i=0; isset($str{$i}) && $i<$len; $i++) {
+		for ($i=0; strlen($str{$i}) && $i<$len; $i++) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
@@ -1823,7 +1824,7 @@ class t3lib_cs {
 				if ($c >= 0x80)	$i++;	// advance a double-byte char
 			}
 		}
-		if (!isset($str{$i}))	return $str;	// string shorter than supplied length
+		if (!strlen($str{$i}))	return $str;	// string shorter than supplied length
 
 		if ($i>$len)
 			return substr($str,0,$len-1);	// we ended on a first byte
@@ -1869,7 +1870,7 @@ class t3lib_cs {
 	function euc_strlen($str,$charset)	 {
 		$sjis = ($charset == 'shift_jis');
 		$n=0;
-		for ($i=0; isset($str{$i}); $i++) {
+		for ($i=0; strlen($str{$i}); $i++) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
@@ -1906,7 +1907,7 @@ class t3lib_cs {
 			$d = -1;
 		}
 
-		for ( ; isset($str{$i}) && $n<$p; $i+=$d) {
+		for ( ; strlen($str{$i}) && $n<$p; $i+=$d) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i+=$d;	// advance a double-byte char
@@ -1917,7 +1918,7 @@ class t3lib_cs {
 
 			$n++;
 		}
-		if (!isset($str{$i}))	return false; // offset beyond string length
+		if (!strlen($str{$i}))	return false; // offset beyond string length
 
 		if ($pos < 0)	$i++;	// correct offset
 
@@ -1952,7 +1953,7 @@ class t3lib_cs {
 
 		$sjis = ($charset == 'shift_jis');
 		$out = '';
-		for($i=0; isset($str{$i}); $i++)	{
+		for($i=0; strlen($str{$i}); $i++)	{
 			$mbc = $str{$i};
 			$c = ord($mbc);
 

@@ -102,6 +102,7 @@
 			<label index="LGL.recursive">Rekursivt:</label>
 			<label index="LGL.l18n_parent">Overs.Orig:</label>
 			<label index="LGL.allLanguages">[Alle]</label>
+			<label index="LGL.versionLabel">Versioneringstitel:</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="LGL.endtime">Stop:</label>
@@ -1599,6 +1600,7 @@
 			<label index="LGL.recursive" type="integer">152463034</label>
 			<label index="LGL.l18n_parent" type="integer">166415577</label>
 			<label index="LGL.allLanguages" type="integer">24137953</label>
+			<label index="LGL.versionLabel" type="integer">210163440</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="LGL.endtime" type="integer">167679436</label>

@@ -40,6 +40,7 @@
 			<label index="sys_language">Website sprog</label>
 			<label index="sys_language.isocode">Vælg officielt sprog (ISO kode):</label>
 			<label index="sys_language.flag">Vælg flagikon:</label>
+			<label index="editlock">Afvis redigering af ikke-admin brugere:</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pages">Seite</label>
@@ -472,6 +473,7 @@
 			<label index="sys_language" type="integer">144875845</label>
 			<label index="sys_language.isocode" type="integer">49440593</label>
 			<label index="sys_language.flag" type="integer">145114393</label>
+			<label index="editlock" type="integer">177820058</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pages" type="integer">26464201</label>

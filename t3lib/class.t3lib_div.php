@@ -1826,6 +1826,7 @@ class t3lib_div {
 	 * @see array2xml()
 	 */
 	function xml2array($string,$NSprefix='') {
+		global $TYPO3_CONF_VARS;
 
 			// Create parser:
 		$parser = xml_parser_create();
@@ -1834,6 +1835,19 @@ class t3lib_div {
 
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
+
+			// PHP5 fix of charset awareness:
+			// Problem is: PHP5 apparently detects the charset of the XML file (or defaults to utf-8) and will AUTOMATICALLY convert the content to either utf-8, iso-8859-1 or us-ascii. PHP4 just passed the content through without taking action regarding the charset.
+			// In TYPO3 we expect that the charset of XML content is NOT handled in the parser but internally in TYPO3 instead. THerefore it would be very nice if PHP5 could be configured to NOT process the charset of the files. But this is not possible for now.
+			// What we do here fixes the problem but ONLY if the charset is utf-8, iso-8859-1 or us-ascii. That should work for most TYPO3 installations, in particular if people use utf-8 which we highly recommend.
+		if ((double)phpversion()>=5)	{
+			unset($ereg_result);
+			ereg('^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"',substr($string,0,200),$ereg_result);
+			$theCharset = $ereg_result[1] ? $ereg_result[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
+			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);  // us-ascii / utf-8 / iso-8859-1
+		}
+
+			// Parse content:
 		xml_parse_into_struct($parser, $string, $vals, $index);
 
 			// If error, return error message:

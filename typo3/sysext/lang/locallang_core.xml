@@ -217,6 +217,7 @@ Felterne er markeret med et gult udråbstegn.</label>
 			<label index="labels.depth_3">3 niveauer</label>
 			<label index="labels.allow">Tillad</label>
 			<label index="labels.deny">Afvis</label>
+			<label index="labels.generalTab">Generelt</label>
 			<label index="labels.refresh">Genindlæs træet fra serveren</label>
 			<label index="labels.temporaryDBmount">Afbryd midlertidigt DB mount</label>
 			<label index="labels.refreshList">Genindlæs liste fra serveren</label>
@@ -241,6 +242,13 @@ Felterne er markeret med et gult udråbstegn.</label>
 			<label index="labels.removeItem">Fjern emne</label>
 			<label index="labels.holdDownCTRL">Vigtigt: Hold CTRL tasten nede mens du vælger elementer fra denne liste!</label>
 			<label index="labels.revertSelection">Bring valgte elementer tilbage</label>
+			<label index="labels.setAllCheckboxes">Vælg alle checkboxe</label>
+			<label index="labels.changeInOrig">Ændring i originalen</label>
+			<label index="ver.online">ONLINE</label>
+			<label index="ver.mgm">Versionsstyring</label>
+			<label index="ver.selVer">Vælg version:</label>
+			<label index="ver.swap">Skift/Udgiv</label>
+			<label index="ver.swapPage">Udgiv denne version af siden inklusiv indhold</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Finder</label>
 			<label index="show_item.php.viewItem">Vis emner</label>
 			<label index="show_item.php.file">Fil</label>
@@ -4291,6 +4299,14 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.deny" type="integer">57158934</label>
 			<label index="labels.holdDownCTRL" type="integer">246729511</label>
 			<label index="labels.revertSelection" type="integer">137669033</label>
+			<label index="labels.generalTab" type="integer">14366585</label>
+			<label index="labels.setAllCheckboxes" type="integer">249015448</label>
+			<label index="labels.changeInOrig" type="integer">207166982</label>
+			<label index="ver.online" type="integer">141368811</label>
+			<label index="ver.mgm" type="integer">75564445</label>
+			<label index="ver.selVer" type="integer">141725286</label>
+			<label index="ver.swap" type="integer">60665691</label>
+			<label index="ver.swapPage" type="integer">206706262</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>

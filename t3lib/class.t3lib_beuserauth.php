@@ -238,6 +238,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * @internal
 	 */
 	function backendSetUC()	{
+
 			// UC - user configuration is a serialized array inside the userobject
 		$temp_theSavedUC=unserialize($this->user['uc']);		// if there is a saved uc we implement that instead of the default one.
 		if (is_array($temp_theSavedUC))	{
@@ -245,7 +246,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		}
 			// Setting defaults if uc is empty
 		if (!is_array($this->uc))	{
-			$this->uc = array_merge($this->uc_default,$TYPO3_CONF_VARS['BE']['defaultUC'],$this->getTSConfigProp('setup.default'));	// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+			$this->uc = array_merge($this->uc_default, (array)$TYPO3_CONF_VARS['BE']['defaultUC'], (array)$this->getTSConfigProp('setup.default'));	// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
 			$this->overrideUC();
 			$U=1;
 		}
@@ -273,7 +274,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * @internal
 	 */
 	function overrideUC()	{
-		$this->uc = array_merge($this->uc,$this->getTSConfigProp('setup.override'));	// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+		$this->uc = array_merge((array)$this->uc, (array)$this->getTSConfigProp('setup.override'));	// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
 	}
 
 	/**

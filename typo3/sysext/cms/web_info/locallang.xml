@@ -64,6 +64,7 @@
 			<label index="lang_renderl10n_page">Side</label>
 			<label index="lang_renderl10n_default">Standard</label>
 			<label index="lang_getlangsta_createNewTranslationHeaders">Opret nye sproghoveder</label>
+			<label index="lang_renderl10n_CEcount">Optælling af Indholdselementer</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="page_title">Seitenbaum-Übersicht</label>
@@ -581,6 +582,7 @@
 			<label index="lang_renderl10n_default" type="integer">128029197</label>
 			<label index="lang_getlangsta_createNewTranslationHeaders" type="integer">193499435</label>
 			<label index="lang_renderl10n_badThingThereAre" type="integer">258445119</label>
+			<label index="lang_renderl10n_CEcount" type="integer">196252064</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="page_title" type="integer">46867233</label>

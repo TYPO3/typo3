@@ -127,6 +127,9 @@
 			<label index="lang_lv">Lettisk</label>
 			<label index="lang_jp">Japansk</label>
 			<label index="lang_vn">Vietnamesisk</label>
+			<label index="lang_ca">Katalansk</label>
+			<label index="lang_ba">Bosnisk</label>
+			<label index="lang_kr">Koreansk</label>
 			<label index="default">Standard</label>
 			<label index="simulate">Simulér opdateringsbruger</label>
 			<label index="opening">Åbning</label>
@@ -1695,6 +1698,9 @@
 			<label index="newPasswordAgain" type="integer">985181</label>
 			<label index="newPassword_ok" type="integer">249160755</label>
 			<label index="newPassword_failed" type="integer">202693756</label>
+			<label index="lang_ca" type="integer">151036235</label>
+			<label index="lang_ba" type="integer">165586767</label>
+			<label index="lang_kr" type="integer">218880828</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="UserSettings" type="integer">46681867</label>
