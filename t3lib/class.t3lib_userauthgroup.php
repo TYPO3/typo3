@@ -128,7 +128,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		'tables_select'=>'',
 		'tables_modify'=>'',
 		'pagetypes_select'=>'',
-		'non_exclude_fields'=>''
+		'non_exclude_fields'=>'',
+		'explicit_allowdeny'=>'',
+		'allowed_languages' => '',
+		'custom_options' => '',
 	);
 	var $includeHierarchy=array();		// For debugging/display of order in which subgroups are included.
 	var $includeGroupArray=array();		// List of group_id's in the order they are processed.
@@ -141,7 +144,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	var $userTS_dontGetCached=0;		// Set this from outside if you want the user TSconfig to ALWAYS be parsed and not fetched from cache.
 
 	var $RTE_errors = array();			// RTE availability errors collected.
-
+	var $errorMsg = '';					// Contains last error message
 
 
 
@@ -364,11 +367,156 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		String to search for in the groupData-list
 	 * @return	boolean		True if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
 	 */
-	function check ($type,$value)	{
+	function check($type,$value)	{
 		if (isset($this->groupData[$type]))	{
 			if ($this->isAdmin() || $this->inList($this->groupData[$type],$value)) {
 				return 1;
 			}
+		}
+	}
+
+	/**
+	 * Checking the authMode of a select field with authMode set
+	 *
+	 * @param	string		Table name
+	 * @param	string		Field name (must be configured in TCA and of type "select" with authMode set!)
+	 * @param	string		Value to evaluation (single value, must not contain any of the chars ":,|")
+	 * @param	string		Auth mode keyword (explicitAllow, explicitDeny, individual)
+	 * @return	boolean		True or false whether access is granted or not.
+	 */
+	function checkAuthMode($table,$field,$value,$authMode)	{
+		global $TCA;
+
+			// Admin users can do anything:
+		if ($this->isAdmin())	return TRUE;
+
+			// Allow all blank values:
+		if (!strcmp($value,''))	return TRUE;
+
+			// Certain characters are not allowed in the value
+		if (ereg('[:|,]',$value))	{
+			return FALSE;
+		}
+
+			// Initialize:
+		$testValue = $table.':'.$field.':'.$value;
+		$out = TRUE;
+
+			// Checking value:
+		switch((string)$authMode)	{
+			case 'explicitAllow':
+				if (!$this->inList($this->groupData['explicit_allowdeny'],$testValue.':ALLOW'))	{
+					$out = FALSE;
+				}
+			break;
+			case 'explicitDeny':
+				if ($this->inList($this->groupData['explicit_allowdeny'],$testValue.':DENY'))	{
+					$out = FALSE;
+				}
+			break;
+			case 'individual':
+				t3lib_div::loadTCA($table);
+				if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$field]))	{
+					$items = $TCA[$table]['columns'][$field]['config']['items'];
+					if (is_array($items))	{
+						foreach($items as $iCfg)	{
+							if (!strcmp($iCfg[1],$value) && $iCfg[4])	{
+								switch((string)$iCfg[4])	{
+									case 'EXPL_ALLOW':
+										if (!$this->inList($this->groupData['explicit_allowdeny'],$testValue.':ALLOW'))	{
+											$out = FALSE;
+										}
+									break;
+									case 'EXPL_DENY':
+										if ($this->inList($this->groupData['explicit_allowdeny'],$testValue.':DENY'))	{
+											$out = FALSE;
+										}
+									break;
+								}
+								break;
+							}
+						}
+					}
+				}
+			break;
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Checking if a language value (-1, 0 and >0 for sys_language records) is allowed to be edited by the user.
+	 *
+	 * @param	integer		Language value to evaluate
+	 * @return	boolean		Returns true if the language value is allowed, otherwise false.
+	 */
+	function checkLanguageAccess($langValue)	{
+		if (strcmp($this->groupData['allowed_languages'],''))	{	// The users language list must be non-blank - otherwise all languages are allowed.
+			$langValue = intval($langValue);
+			if ($langValue != -1 && !$this->check('allowed_languages',$langValue))	{	// Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+	/**
+	 * Checking if a user has editing access to a record from a $TCA table.
+	 * The checks does not take page permissions and other "environmental" things into account. It only deal with record internals; If any values in the record fields disallows it.
+	 * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
+	 * The function takes an ID (integer) or row (array) as second argument.
+	 *
+	 * @param	string		Table name
+	 * @param	mixed		If integer, then this is the ID of the record. If Array this just represents fields in the record.
+	 * @return	boolean		True if OK, otherwise false
+	 */
+	function recordEditAccessInternals($table,$idOrRow)	{
+		global $TCA;
+
+		if (isset($TCA[$table]))	{
+			t3lib_div::loadTCA($table);
+
+				// Always return true for Admin users.
+			if ($this->isAdmin())	return TRUE;
+
+				// Fetching the record if the $idOrRow variable was not an array on input:
+			if (!is_array($idOrRow))	{
+				$idOrRow = t3lib_BEfunc::getRecord($table, $idOrRow);
+				if (!is_array($idOrRow))	{
+					$this->errorMsg = 'ERROR: Record could not be fetched.';
+					return FALSE;
+				}
+			}
+
+				// Checking languages:
+			if ($TCA[$table]['ctrl']['languageField'])	{
+				if (isset($idOrRow[$TCA[$table]['ctrl']['languageField']]))	{	// Language field must be found in input row - otherwise it does not make sense.
+					if (!$this->checkLanguageAccess($idOrRow[$TCA[$table]['ctrl']['languageField']]))	{
+						$this->errorMsg = 'ERROR: Language was not allowed.';
+						return FALSE;
+					}
+				}
+			}
+
+				// Checking authMode fields:
+			if (is_array($TCA[$table]['columns']))	{
+				foreach($TCA[$table]['columns'] as $fN => $fV)	{
+					if (isset($idOrRow[$fN]))	{	//
+						if ($fV['config']['type']=='select' && $fV['config']['authMode'] && !strcmp($fV['config']['authMode_enforce'],'strict')) {
+							if (!$this->checkAuthMode($table,$fN,$idOrRow[$fN],$fV['config']['authMode']))	{
+								$this->errorMsg = 'ERROR: authMode "'.$fV['config']['authMode'].'" failed for field "'.$fN.'" with value "'.$idOrRow[$fN].'" evaluated';
+								return FALSE;
+							}
+						}
+					}
+				}
+			}
+
+				// Checking record permissions
+			// THIS is where we can include a check for "perms_" fields for other records than pages...
+
+				// Finally, return true if all is well.
+			return TRUE;
 		}
 	}
 
@@ -532,6 +680,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				// Get lists for the be_user record and set them as default/primary values.
 			$this->dataLists['modList'] = $this->user['userMods'];					// Enabled Backend Modules
+			$this->dataLists['allowed_languages'] = $this->user['allowed_languages'];					// Add Allowed Languages
 			$this->dataLists['webmount_list'] = $this->user['db_mountpoints'];		// Database mountpoints
 			$this->dataLists['filemount_list'] = $this->user['file_mountpoints'];	// File mountpoints
 
@@ -626,6 +775,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->groupData['tables_select'] = t3lib_div::uniqueList($this->dataLists['tables_modify'].','.$this->dataLists['tables_select']);
 			$this->groupData['tables_modify'] = t3lib_div::uniqueList($this->dataLists['tables_modify']);
 			$this->groupData['non_exclude_fields'] = t3lib_div::uniqueList($this->dataLists['non_exclude_fields']);
+			$this->groupData['explicit_allowdeny'] = t3lib_div::uniqueList($this->dataLists['explicit_allowdeny']);
+			$this->groupData['allowed_languages'] = t3lib_div::uniqueList($this->dataLists['allowed_languages']);
+			$this->groupData['custom_options'] = t3lib_div::uniqueList($this->dataLists['custom_options']);
 			$this->groupData['modules'] = t3lib_div::uniqueList($this->dataLists['modList']);
 
 				// populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
@@ -690,13 +842,16 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					}
 				}
 
-					// The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields
+					// The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
 				if ($row['inc_access_lists']==1)	{
 					$this->dataLists['modList'].= ','.$row['groupMods'];
 					$this->dataLists['tables_select'].= ','.$row['tables_select'];
 					$this->dataLists['tables_modify'].= ','.$row['tables_modify'];
 					$this->dataLists['pagetypes_select'].= ','.$row['pagetypes_select'];
 					$this->dataLists['non_exclude_fields'].= ','.$row['non_exclude_fields'];
+					$this->dataLists['explicit_allowdeny'].= ','.$row['explicit_allowdeny'];
+					$this->dataLists['allowed_languages'].= ','.$row['allowed_languages'];
+					$this->dataLists['custom_options'].= ','.$row['custom_options'];
 				}
 					// If this function is processing the users OWN group-list (not subgroups) AND if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
 				if (!strcmp($idList,'') && !$this->firstMainGroup)	{

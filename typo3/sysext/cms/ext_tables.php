@@ -615,23 +615,6 @@ $TCA['pages_language_overlay'] = Array (
 	)
 );
 
-// ******************************************************************
-// sys_language
-// ******************************************************************
-$TCA['sys_language'] = Array (
-	'ctrl' => Array (
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'default_sortby' => 'ORDER BY title',
-		'title' => 'LLL:EXT:cms/locallang_tca.php:sys_language',
-		'adminOnly' => 1,
-		'rootLevel' => 1,
-		'enablecolumns' => Array (
-			'disabled' => 'hidden'
-		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
-	)
-);
 
 // ******************************************************************
 // sys_template

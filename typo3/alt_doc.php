@@ -557,8 +557,9 @@ class SC_alt_doc {
 								// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
 								// First, resetting flags.
 							$hasAccess = 1;
-							$deleteAccess=0;
-							$this->viewId=0;
+							$deniedAccessReason = '';
+							$deleteAccess = 0;
+							$this->viewId = 0;
 
 								// If the command is to create a NEW record...:
 							if ($cmd=='new')	{
@@ -586,7 +587,7 @@ class SC_alt_doc {
 								}
 								$this->dontStoreDocumentRef=1;		// Don't save this document title in the document selector if the document is new.
 							} else {	// Edit:
-								$calcPRec=t3lib_BEfunc::getRecord($table,$theUid);
+								$calcPRec = t3lib_BEfunc::getRecord($table,$theUid);
 								if (is_array($calcPRec))	{
 									if ($table=='pages')	{	// If pages:
 										$CALC_PERMS = $BE_USER->calcPerms($calcPRec);
@@ -599,7 +600,13 @@ class SC_alt_doc {
 										$deleteAccess = $CALC_PERMS&16 ? 1 : 0;
 										$this->viewId = $calcPRec['pid'];
 									}
-								} else $hasAccess=0;
+
+										// Check internals regarding access:
+									if ($hasAccess)	{
+										$hasAccess = $BE_USER->recordEditAccessInternals($table, $calcPRec);
+										$deniedAccessReason = $BE_USER->errorMsg;
+									}
+								} else $hasAccess = 0;
 							}
 
 							// AT THIS POINT we have checked the access status of the editing/creation of records and we can now proceed with creating the form elements:
@@ -679,7 +686,8 @@ class SC_alt_doc {
 								$thePrevUid = $rec['uid'];
 							} else {
 								$this->errorC++;
-								$editForm.=$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.noEditPermission',1).'<br /><br />';
+								$editForm.=$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.noEditPermission',1).'<br /><br />'.
+											($deniedAccessReason ? 'Reason: '.htmlspecialchars($deniedAccessReason).'<br/><br/>' : '');
 							}
 						}
 					}

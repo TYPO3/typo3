@@ -74,6 +74,8 @@ $TCA['be_users'] = Array (
 				'foreign_table_where' => 'ORDER BY be_groups.title',
 				'size' => '5',
 				'maxitems' => '20',
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 				'wizards' => Array(
 					'_PADDING' => 1,
 					'_VERTICAL' => 1,
@@ -140,6 +142,8 @@ $TCA['be_users'] = Array (
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
+				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'iconsInOptionTags' => 1,
 				'wizards' => Array(
 					'_PADDING' => 1,
 					'_VERTICAL' => 1,
@@ -320,6 +324,15 @@ $TCA['be_users'] = Array (
 				'iconsInOptionTags' => 1,
 			)
 		),
+		'allowed_languages' => Array (
+			'label' => 'Limit to languages:',
+			'config' => Array (
+				'type' => 'select',
+				'special' => 'languages',
+				'maxitems' => '1000',
+				'renderMode' => 'checkbox',
+			)
+		),
 		'TSconfig' => Array (
 			'label' => 'TSconfig:',
 			'config' => Array (
@@ -341,7 +354,7 @@ $TCA['be_users'] = Array (
 		'createdByAction' => Array('config'=>array('type'=>'passthrough'))
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
+		'0' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, lockToDomain, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, userMods;;;;4-4-4, allowed_languages, options, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5'),
 		'1' => Array('showitem' => 'username;;;;2-2-2, password, usergroup, disableIPlock, admin;;;;5-5-5, realName;;;;3-3-3, email, lang, options;;;;4-4-4, db_mountpoints, file_mountpoints, fileoper_perms, --div--, TSconfig;;;;5-5-5')
 	),
 	'palettes' => Array (
@@ -471,9 +484,34 @@ $TCA['be_groups'] = Array (
 				'size' => '25',
 				'maxitems' => '300',
 				'autoSizeMax' => 50,
-
-				'renderMode' => 'checkbox',
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+			)
+		),
+		'explicit_allowdeny' => Array (
+			'label' => 'Explicitly allow/deny field values:',
+			'config' => Array (
+				'type' => 'select',
+				'special' => 'explicitValues',
+				'maxitems' => '1000',
+				'renderMode' => 'checkbox',
+			)
+		),
+		'allowed_languages' => Array (
+			'label' => 'Limit to languages:',
+			'config' => Array (
+				'type' => 'select',
+				'special' => 'languages',
+				'maxitems' => '1000',
+				'renderMode' => 'checkbox',
+			)
+		),
+		'custom_options' => Array (
+			'label' => 'Custom module options:',
+			'config' => Array (
+				'type' => 'select',
+				'special' => 'custom',
+				'maxitems' => '1000',
+				'renderMode' => 'checkbox',
 			)
 		),
 		'hidden' => Array (
@@ -561,7 +599,7 @@ $TCA['be_groups'] = Array (
 	),
 	'types' => Array (
 		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, db_mountpoints;;;;4-4-4,file_mountpoints,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5'),
-		'1' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, --div--, db_mountpoints;;;;4-4-4,file_mountpoints,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5')
+		'1' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2, lockToDomain, --div--, inc_access_lists;;;;3-3-3, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options, --div--, db_mountpoints;;;;4-4-4,file_mountpoints,hide_in_lists,subgroup,description, --div--, TSconfig;;;;5-5-5')
 	)
 );
 
@@ -616,4 +654,71 @@ $TCA['sys_filemounts'] = Array (
 		'0' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;3-3-3,path,base')
 	)
 );
+
+
+
+/**
+ * System languages - Defines possible languages used for translation of records in the system
+ */
+$TCA['sys_language'] = Array (
+	'ctrl' => $TCA['sys_language']['ctrl'],
+	'interface' => Array (
+		'showRecordFieldList' => 'hidden,title'
+	),
+	'columns' => Array (
+		'title' => Array (
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '35',
+				'max' => '80',
+				'eval' => 'trim,required'
+			)
+		),
+		'hidden' => Array (
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'exclude' => 1,
+			'config' => Array (
+				'type' => 'check',
+				'default' => '0'
+			)
+		),
+		'static_lang_isocode' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_tca.php:sys_language.isocode',
+			'displayCond' => 'EXT:static_info_tables:LOADED:true',
+			'config' => Array (
+				'type' => 'select',
+				'items' => Array (
+					Array('',0),
+				),
+				'foreign_table' => 'static_languages',
+				'foreign_table_where' => 'AND static_languages.pid=0 ORDER BY static_languages.lg_name_en',
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1,
+			)
+		),
+		'flag' => array(
+			'label' => 'LLL:EXT:lang/locallang_tca.php:sys_language.flag',
+			'config' => Array (
+				'type' => 'select',
+				'items' => Array (
+					Array('',0),
+				),
+				'fileFolder' => 't3lib/gfx/flags/',	// Only shows if "t3lib/" is in the PATH_site...
+				'fileFolder_extList' => 'png,jpg,jpeg,gif',
+				'fileFolder_recursions' => 0,
+				'selicon_cols' => 8,
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1,
+	        )
+		)
+	),
+	'types' => Array (
+		'1' => Array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,static_lang_isocode,flag')
+	)
+);
+
 ?>

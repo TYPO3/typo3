@@ -76,11 +76,8 @@
 			<label index="sys_domain.redirectTo">Redirect to:</label>
 			<label index="sys_domain.prepend_params">Transfer parameters to Redirect URL:</label>
 			<label index="pages_language_overlay">Alternative Page Language</label>
-			<label index="sys_language">Website Language</label>
 			<label index="sys_template">Template</label>
 			<label index="static_template">Static templates</label>
-			<label index="sys_language.isocode">Select Official Language (ISO code):</label>
-			<label index="sys_language.flag">Select flag icon:</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="mod_tx_cms_webinfo_page">Overblik over sidetræ</label>

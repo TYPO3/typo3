@@ -1,3 +1,12 @@
+2004-08-07  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added three new permission modes for backend users: 1) Localization access control, 2) Access control on value level (for instance allow/deny individual selectorbox values), 3) API for custom permission options.
+	* Implemented control of these modes in tcemain, tceforms and alt_doc.php + QuickEdit. Still need to implement it for edit icons around, but this is not critical, mostly a usability issue.
+	* Moved table "sys_language" from extension "cms" back into the core
+	* Updated CSH at various places.
+	* Finished the accessListRenderMode(s) (see 4/8 below)
+	* Still unsettled about various default settings related to these new options, but will discuss on dev-list.
+
 2004-08-04  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added new rendering modes for the "select" type in TCA: You can now render multiple-select lists as either a SINGLE selector box with multiple value selection OR as a list of checkboxes. For mozilla even the icons are rendered nicely in the option tags. Check out the backend user group configurations. Work is still in progress.

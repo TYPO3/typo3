@@ -15,6 +15,9 @@ CREATE TABLE be_groups (
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(20) DEFAULT '' NOT NULL,
   non_exclude_fields blob NOT NULL,
+  explicit_allowdeny blob NOT NULL,
+  allowed_languages tinyblob NOT NULL,
+  custom_options blob NOT NULL,
   db_mountpoints varchar(40) DEFAULT '' NOT NULL,
   pagetypes_select tinyblob NOT NULL,
   tables_select blob NOT NULL,
@@ -71,6 +74,7 @@ CREATE TABLE be_users (
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
   realName varchar(80) DEFAULT '' NOT NULL,
   userMods tinyblob NOT NULL,
+  allowed_languages tinyblob NOT NULL,
   uc blob NOT NULL,
   file_mountpoints varchar(40) DEFAULT '' NOT NULL,
   fileoper_perms tinyint(4) DEFAULT '0' NOT NULL,
@@ -224,8 +228,18 @@ CREATE TABLE sys_log (
   KEY event (userid,event_pid)
 );
 
-
-
-
-
+#
+# Table structure for table 'sys_language'
+#
+CREATE TABLE sys_language (
+  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+  pid int(11) unsigned DEFAULT '0' NOT NULL,
+  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
+  title varchar(80) DEFAULT '' NOT NULL,
+  flag varchar(20) DEFAULT '' NOT NULL,
+  static_lang_isocode int(11) unsigned DEFAULT '0' NOT NULL,
+  PRIMARY KEY (uid),
+  KEY parent (pid)
+);
 

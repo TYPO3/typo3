@@ -135,6 +135,7 @@ $TYPO3_CONF_VARS = Array(
 			'webspace' => array('allow'=>'', 'deny'=>'php3,php'),
 			'ftpspace' => array('allow'=>'*', 'deny'=>'')
 		),
+		'customPermOptions' => array(),			// Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
 		'fileDenyPattern' => '\.php\.|\.php3\.',	// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. Matching with eregi() (case-insensitive).
 		'interfaces' => 'backend',					// This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")
 		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login|(Note: Cookies must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
@@ -142,7 +143,7 @@ $TYPO3_CONF_VARS = Array(
 		'XCLASS' => Array(),					// See 'Inside TYPO3' document for more information.
 		'XLLfile' => Array(),					// For extension/overriding of the arrays in 'locallang' files in the backend. See 'Inside TYPO3' for more information.
 		'notificationPrefix' => '[TYPO3 Note]',
-		'accessListRenderMode' => 'checkbox',
+		'accessListRenderMode' => 'singlebox',	// Can be "singlebox", "checkbox" or blank. Refers to the "renderMode" for the selector boxes in be-groups configuration.
 	),
 	'FE' => Array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => 0,						// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/

@@ -426,25 +426,24 @@ class t3lib_TCEmain	{
 		$hookObjectsArr = array();
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $classRef) {
-				$hookObjectsArr[] = &t3lib_div::getUserObj ($classRef);
+				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
 			}
 		}
-
-		reset ($this->datamap);
 
 			// Organize tables so that the pages-table are always processed first. This is required if you want to make sure that content pointing to a new page will be created.
 		$orderOfTables = Array();
 		if (isset($this->datamap['pages']))	{		// Set pages first.
 			$orderOfTables[]='pages';
 		}
+		reset($this->datamap);
 		while (list($table,) = each($this->datamap))	{
 			if ($table!='pages')	{
 				$orderOfTables[]=$table;
 			}
 		}
+
 			// Process the tables...
-		reset($orderOfTables);
-		while (list(,$table) = each($orderOfTables))	{			// Have found table
+		foreach($orderOfTables as $table)	{
 				/* Check if
 					- table is set in $TCA,
 					- table is NOT readOnly,
@@ -457,28 +456,26 @@ class t3lib_TCEmain	{
 			}
 			if (isset($TCA[$table]) && !$this->tableReadOnly($table) && is_array($this->datamap[$table]) && $modifyAccessList)	{
 				if ($this->reverseOrder)	{
-					$this->datamap[$table] = array_reverse ($this->datamap[$table], 1);
+					$this->datamap[$table] = array_reverse($this->datamap[$table], 1);
 				}
-				reset ($this->datamap[$table]);
 
 					// For each record from the table, do:
 					// $id is the record uid, may be a string if new records...
 					// $incomingFieldArray is the array of fields
-				while (list($id,$incomingFieldArray) = each($this->datamap[$table]))	{
+				foreach($this->datamap[$table] as $id => $incomingFieldArray)	{
 					if (is_array($incomingFieldArray))	{
 
 							// Hook: processDatamap_preProcessIncomingFieldArray
-						reset($hookObjectsArr);
-						while (list(,$hookObj) = each($hookObjectsArr)) {
-							if (method_exists ($hookObj, 'processDatamap_preProcessIncomingFieldArray')) {
-								$hookObj->processDatamap_preProcessFieldArray ($incomingFieldArray, $table, $id, $this);
+						foreach($hookObjectsArr as $hookObj)	{
+							if (method_exists($hookObj, 'processDatamap_preProcessIncomingFieldArray')) {
+								$hookObj->processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, $this);
 							}
 						}
 
 							// ******************************
 							// Checking access to the record
 							// ******************************
-						$recordAccess=0;
+						$recordAccess = 0;
 						$old_pid_value = '';
 						if (!t3lib_div::testInt($id)) {               // Is it a new record? (Then Id is a string)
 							$fieldArray = $this->newFieldArray($table);	// Get a fieldArray with default values
@@ -524,36 +521,42 @@ class t3lib_TCEmain	{
 							} else {
 								debug('Internal ERROR: pid should not be less than zero!');
 							}
-							$status='new';						// Yes new record, change $record_status to 'insert'
+							$status = 'new';						// Yes new record, change $record_status to 'insert'
 						} else {	// Nope... $id is a number
 							$fieldArray = Array();
 							$recordAccess = $this->checkRecordUpdateAccess($table,$id);
 							if (!$recordAccess)		{
 								$propArr = $this->getRecordProperties($table,$id);
 								$this->log($table,$id,2,0,1,"Attempt to modify record '%s' (%s) without permission. Or non-existing page.",2,array($propArr['header'],$table.':'.$id),$propArr['event_pid']);
-							} else {	// Here we fetch the PID of the record that we point to...
-								$tempdata = $this->recordInfo($table,$id,'pid');
-								$theRealPid=$tempdata['pid'];
+							} else {	// Next check of the record permissions (internals)
+								$recordAccess = $this->BE_USER->recordEditAccessInternals($table,$id);
+								if (!$recordAccess)		{
+									$propArr = $this->getRecordProperties($table,$id);
+									$this->log($table,$id,2,0,1,"recordEditAccessInternals() check failed. [".$this->BE_USER->errorMsg."]",2,array($propArr['header'],$table.':'.$id),$propArr['event_pid']);
+								} else {	// Here we fetch the PID of the record that we point to...
+									$tempdata = $this->recordInfo($table,$id,'pid');
+									$theRealPid = $tempdata['pid'];
+								}
 							}
-							$status='update';	// the default is 'update'
+							$status = 'update';	// the default is 'update'
 						}
 
 							// **************************************
 							// If access was granted above, proceed:
 							// **************************************
 						if ($recordAccess)	{
-//debug('tce_main',-2);
+
 							list($tscPID) = t3lib_BEfunc::getTSCpid($table,$id,$old_pid_value ? $old_pid_value : $fieldArray['pid']);	// Here the "pid" is sent IF NOT the old pid was a string pointing to a place in the subst-id array.
 							$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-//debug($TSConfig);
 							if ($status=='new' && $table=='pages' && is_array($TSConfig['permissions.']))	{
 								$fieldArray = $this->setTSconfigPermissions($fieldArray,$TSConfig['permissions.']);
 							}
 
-//debug(array($table,$tscPID));
-
 							$fieldArray = $this->fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$theRealPid,$status,$tscPID);
-							$fieldArray = $this->overrideFieldArray($table,$fieldArray);
+
+								// NOTICE! All manipulation beyond this point bypasses both "excludeFields" AND possible "MM" relations / file uploads to field!
+
+							$fieldArray = $this->overrideFieldArray($table,$fieldArray);	// NOTICE: This overriding is potentially dangerous; permissions per field is not checked!!!
 
 								// Setting system fields
 							if ($status=='new')	{
@@ -563,7 +566,7 @@ class t3lib_TCEmain	{
 								if ($TCA[$table]['ctrl']['cruser_id'])	{
 									$fieldArray[$TCA[$table]['ctrl']['cruser_id']]=$this->userid;
 								}
-							} elseif ($this->checkSimilar) {
+							} elseif ($this->checkSimilar) {	// Removing fields which are equal to the current value:
 								$fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table,$id,$fieldArray);
 							}
 							if ($TCA[$table]['ctrl']['tstamp'])	{
@@ -571,15 +574,15 @@ class t3lib_TCEmain	{
 							}
 
 								// Hook: processDatamap_postProcessFieldArray
-							reset($hookObjectsArr);
-							while (list(,$hookObj) = each($hookObjectsArr)) {
-								if (method_exists ($hookObj, 'processDatamap_postProcessFieldArray')) {
-									$hookObj->processDatamap_postProcessFieldArray ($status, $table, $id, $fieldArray, $this);
+							foreach($hookObjectsArr as $hookObj)	{
+								if (method_exists($hookObj, 'processDatamap_postProcessFieldArray')) {
+									$hookObj->processDatamap_postProcessFieldArray($status, $table, $id, $fieldArray, $this);
 								}
 							}
 
 								// Performing insert/update. If fieldArray has been unset by some userfunction (see hook above), don't do anything
-							if (is_array ($fieldArray)) {
+								// Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already and files could have been uploaded that are now "lost"
+							if (is_array($fieldArray)) {
 								if ($status=='new')	{
 	//								if ($pid_value<0)	{$fieldArray = $this->fixCopyAfterDuplFields($table,$id,abs($pid_value),0,$fieldArray);}	// Out-commented 02-05-02: I couldn't understand WHY this is needed for NEW records. Obviously to proces records being copied? Problem is that the fields are not set anyways and the copying function should basically take care of this!
 									$this->insertDB($table,$id,$fieldArray);
@@ -640,53 +643,57 @@ class t3lib_TCEmain	{
 		foreach($incomingFieldArray as $field => $fieldValue)	{
 			if (!in_array($table.'-'.$field, $this->exclude_array) && !$this->data_disableFields[$table][$id][$field])	{	// The field must be editable.
 
+					// Checking language:
+				$languageDeny = $TCA[$table]['ctrl']['languageField'] && !strcmp($TCA[$table]['ctrl']['languageField'], $field) && !$this->BE_USER->checkLanguageAccess($fieldValue);
 
-					// Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
-				if ($this->stripslashes_values)	{
-					if (is_array($fieldValue))	{
-						t3lib_div::stripSlashesOnArray($fieldValue);
-					} else $fieldValue = stripslashes($fieldValue);
-				}
+				if (!$languageDeny)	{
+						// Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
+					if ($this->stripslashes_values)	{
+						if (is_array($fieldValue))	{
+							t3lib_div::stripSlashesOnArray($fieldValue);
+						} else $fieldValue = stripslashes($fieldValue);
+					}
 
-				switch ($field)	{
-					case 'uid':
-					case 'pid':
-						// Nothing happens, already set
-					break;
-					case 'perms_userid':
-					case 'perms_groupid':
-					case 'perms_user':
-					case 'perms_group':
-					case 'perms_everybody':
-							// Permissions can be edited by the owner or the administrator
-						if ($table=='pages' && ($this->admin || $status=='new' || $this->pageInfo($id,'perms_userid')==$this->userid) )	{
-							$value=intval($fieldValue);
-							switch($field)	{
-								case 'perms_userid':
-									$fieldArray[$field]=$value;
-								break;
-								case 'perms_groupid':
-									$fieldArray[$field]=$value;
-								break;
-								default:
-									if ($value>=0 && $value<pow(2,5))	{
+					switch ($field)	{
+						case 'uid':
+						case 'pid':
+							// Nothing happens, already set
+						break;
+						case 'perms_userid':
+						case 'perms_groupid':
+						case 'perms_user':
+						case 'perms_group':
+						case 'perms_everybody':
+								// Permissions can be edited by the owner or the administrator
+							if ($table=='pages' && ($this->admin || $status=='new' || $this->pageInfo($id,'perms_userid')==$this->userid) )	{
+								$value=intval($fieldValue);
+								switch($field)	{
+									case 'perms_userid':
 										$fieldArray[$field]=$value;
-									}
-								break;
+									break;
+									case 'perms_groupid':
+										$fieldArray[$field]=$value;
+									break;
+									default:
+										if ($value>=0 && $value<pow(2,5))	{
+											$fieldArray[$field]=$value;
+										}
+									break;
+								}
 							}
-						}
-					break;
-					default:
-						if (isset($TCA[$table]['columns'][$field]))	{
-								// Evaluating the value.
-							$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid,$tscPID);
-							if (isset($res['value']))	{
-								$fieldArray[$field]=$res['value'];
+						break;
+						default:
+							if (isset($TCA[$table]['columns'][$field]))	{
+									// Evaluating the value.
+								$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid,$tscPID);
+								if (isset($res['value']))	{
+									$fieldArray[$field]=$res['value'];
+								}
 							}
-						}
-					break;
-				}
-			}
+						break;
+					}
+				}	// Checking language.
+			}	// Check exclude fields / disabled fields...
 		}
 
 			// Checking for RTE-transformations of fields:
@@ -1290,7 +1297,7 @@ class t3lib_TCEmain	{
 			break;
 			case 'group':
 			case 'select':
-				$res = $this->checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles);
+				$res = $this->checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field);
 			break;
 			case 'flex':
 				if ($field)	{	// FlexForms are only allowed for real fields.
@@ -1399,9 +1406,10 @@ class t3lib_TCEmain	{
 	 * @param	array		Field configuration from TCA
 	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param	[type]		$uploadedFiles: ...
+	 * @param	string		Field name
 	 * @return	array		Modified $res array
 	 */
-	function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles)	{
+	function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field)	{
 		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
 
 			// Detecting if value send is an array and if so, implode it around a comma:
@@ -1421,10 +1429,23 @@ class t3lib_TCEmain	{
 			$valueArray = array_unique($valueArray);
 		}
 
-		// This could be a good spot for parsing the array through a validation-function which checks if the values are allright
+		// This could be a good spot for parsing the array through a validation-function which checks if the values are allright (except that database references are not in their final form - but that is the point, isn't it?)
 		// NOTE!!! Must check max-items of files before the later check because that check would just leave out filenames if there are too many!!
 
+			// Checking for select / authMode, removing elements from $valueArray if any of them is not allowed!
+		if ($tcaFieldConf['type']=='select' && $tcaFieldConf['authMode'])	{
+			$preCount = count($valueArray);
+			foreach($valueArray as $kk => $vv)	{
+				if (!$this->BE_USER->checkAuthMode($table,$field,$vv,$tcaFieldConf['authMode']))	{
+					unset($valueArray[$kk]);
+				}
+			}
 
+				// During the check it turns out that the value / all values were removed - we respond by simply returning an empty array so nothing is written to DB for this field.
+			if ($preCount && !count($valueArray))	{
+				return array();
+			}
+		}
 
 			// For group types:
 		if ($tcaFieldConf['type']=='group')	{
@@ -1451,7 +1472,7 @@ class t3lib_TCEmain	{
 			$valueArray = $this->checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,'select');
 		}
 
-
+// BTW, checking for min and max items here does NOT make any sense when MM is used because the above function calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check before? Probably because we could not evaluate the validity of record uids etc... Hmm...
 
 			// Checking the number of items, that it is correct.
 			// If files, there MUST NOT be too many files in the list at this point, so check that prior to this code.
@@ -1469,7 +1490,7 @@ class t3lib_TCEmain	{
 			$valueArrayC--;
 			$newVal[]=$nextVal;
 		}
-		$res['value']=implode(',',$newVal);
+		$res['value'] = implode(',',$newVal);
 
 		return $res;
 	}

@@ -66,7 +66,9 @@ $TCA['tt_content'] = Array (
 					Array('LLL:EXT:cms/locallang_ttc.php:CType.I.16', 'div'),
 					Array('LLL:EXT:cms/locallang_ttc.php:CType.I.17', 'html')
 				),
-				'default' => 'text'
+				'default' => 'text',
+				'authMode' => 'explicitDeny',
+				'authMode_enforce' => 'strict',
 			)
 		),
 		'hidden' => Array (
@@ -661,7 +663,8 @@ $TCA['tt_content'] = Array (
 				'items' => Array (
 					Array('','')
 				),
-				'default' => ''
+				'default' => '',
+				'authMode' => 'explicitAllow',
 			)
 		),
 		'select_key' => Array (

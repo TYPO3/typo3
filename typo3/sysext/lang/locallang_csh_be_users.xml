@@ -135,6 +135,10 @@ Notice that the same list of modules may be configured for the backend user grou
 fe_users:TSconfig,
 be_groups:TSconfig,
 User TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/</label>
+			<label index="allowed_languages.description">Select which record languages the group members are limited to edit.</label>
+			<label index="allowed_languages.details">You can also limit users to specific languages with user group settings. Please see the same field for backend user groups for more details.</label>
+			<label index="_allowed_languages.seeAlso">be_groups:allowed_languages</label>
+			<label index="_allowed_languages.image">EXT:lang/cshimages/be_groups_18.png</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_be_users.xml</languageKey>
 		<languageKey index="br">EXT:csh_br/lang/br.locallang_csh_be_users.xml</languageKey>

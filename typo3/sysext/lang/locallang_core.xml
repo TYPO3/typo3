@@ -53,6 +53,8 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.depth_1">1 level</label>
 			<label index="labels.depth_2">2 levels</label>
 			<label index="labels.depth_3">3 levels</label>
+			<label index="labels.allow">Allow</label>
+			<label index="labels.deny">Deny</label>
 			<label index="labels.refresh">Reload the tree from server</label>
 			<label index="labels.temporaryDBmount">Cancel temporary DB mount</label>
 			<label index="labels.refreshList">Reload list from server</label>
@@ -69,7 +71,7 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.generalOptions">General options:</label>
 			<label index="labels.allTables">[All tables]</label>
 			<label index="labels.moreOptions">More options...</label>
-			<label index="labels.noMatchingValue">CURRENT VALUE IS NOT AVAILABLE (%s)</label>
+			<label index="labels.noMatchingValue">INVALID VALUE (&quot;%s&quot;)</label>
 			<label index="labels.thumbmode_clip">Show Thumbnails on ClipBoard</label>
 			<label index="labels.copymode">Copy items instead of moving them</label>
 			<label index="labels.clipNoEl">No elements</label>
@@ -169,6 +171,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="labels.lockedRecord_content">Brugeren '%s' påbegyndte redigering af indhold på denne side %s siden.</label>
 			<label index="labels.showRecords">Vis elementer</label>
 			<label index="labels.path">Sti</label>
+			<label index="labels.table">Tabel</label>
 			<label index="labels.upOneLevel">Ét niveau op</label>
 			<label index="labels.enterSearchString">Indtast søgeord:</label>
 			<label index="labels.enterSearchLevels">Denne side|1 niveau ned|2 niveauer ned|3 niveuaer ned|4 niveauer ned</label>
@@ -204,7 +207,10 @@ Felterne er markeret med et gult udråbstegn.</label>
 			<label index="labels.depth_1">1 niveau</label>
 			<label index="labels.depth_2">2 niveauer</label>
 			<label index="labels.depth_3">3 niveauer</label>
+			<label index="labels.allow">Tillad</label>
+			<label index="labels.deny">Afvis</label>
 			<label index="labels.refresh">Genindlæs træet fra serveren</label>
+			<label index="labels.temporaryDBmount">Afbryd midlertidigt DB mount</label>
 			<label index="labels.refreshList">Genindlæs liste fra serveren</label>
 			<label index="labels.close">Luk</label>
 			<label index="labels.new">NY</label>
@@ -219,12 +225,14 @@ Felterne er markeret med et gult udråbstegn.</label>
 			<label index="labels.generalOptions">Generelle valg:</label>
 			<label index="labels.allTables">[Alle tabeller]</label>
 			<label index="labels.moreOptions">Flere valg...</label>
-			<label index="labels.noMatchingValue">NUVÆRENDE VÆRDI ER IKKE TILGÆNGELIG (%s)</label>
+			<label index="labels.noMatchingValue">FEJLAGTIG VÆRDI (&quot;%s&quot;)</label>
 			<label index="labels.thumbmode_clip">Vis miniaturer på klippebordet</label>
 			<label index="labels.copymode">Kopier emner i stedet for blot at flytte dem</label>
 			<label index="labels.clipNoEl">Ingen elementer</label>
 			<label index="labels.cliptabs">Klippebord #</label>
 			<label index="labels.removeItem">Fjern emne</label>
+			<label index="labels.holdDownCTRL">Vigtigt: Hold CTRL tasten nede mens du vælger elementer fra denne liste!</label>
+			<label index="labels.revertSelection">Bring valgte elementer tilbage</label>
 			<label index="TYPO3_Element_Browser">TYPO3 Element Finder</label>
 			<label index="show_item.php.viewItem">Vis emner</label>
 			<label index="show_item.php.file">Fil</label>
@@ -307,8 +315,6 @@ Vil du forny det nu?</label>
 			<label index="cm.unzip">Unzip</label>
 			<label index="cm.info">Info</label>
 			<label index="cm.createnew">Opret ny</label>
-			<label index="labels.table">Tabel</label>
-			<label index="labels.temporaryDBmount">Afbryd midlertidigt DB mount</label>
 			<label index="cm.tempMountPoint">Toppunkt i træet</label>
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -4184,7 +4190,7 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.generalOptions" type="integer">70509926</label>
 			<label index="labels.allTables" type="integer">64435182</label>
 			<label index="labels.moreOptions" type="integer">220835237</label>
-			<label index="labels.noMatchingValue" type="integer">115009320</label>
+			<label index="labels.noMatchingValue" type="integer">216503775</label>
 			<label index="labels.thumbmode_clip" type="integer">251068306</label>
 			<label index="labels.copymode" type="integer">24481846</label>
 			<label index="labels.clipNoEl" type="integer">213419996</label>
@@ -4273,6 +4279,10 @@ Kas soovite praegu salvestada, et uuendada kuvand?</label>
 			<label index="labels.table" type="integer">85738935</label>
 			<label index="labels.temporaryDBmount" type="integer">54643159</label>
 			<label index="cm.tempMountPoint" type="integer">10294929</label>
+			<label index="labels.allow" type="integer">73338807</label>
+			<label index="labels.deny" type="integer">57158934</label>
+			<label index="labels.holdDownCTRL" type="integer">246729511</label>
+			<label index="labels.revertSelection" type="integer">137669033</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="labels.openInNewWindow" type="integer">43359464</label>

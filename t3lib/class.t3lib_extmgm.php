@@ -145,7 +145,10 @@ class t3lib_extMgm {
 	 */
 	function extPath($key,$script='')	{
 		global $TYPO3_LOADED_EXT;
-		if (!isset($TYPO3_LOADED_EXT[$key]))	die('TYPO3 Fatal Error: Extension key "'.$key.'" was NOT loaded!');
+		if (!isset($TYPO3_LOADED_EXT[$key]))	{
+			#debug(array(debug_backtrace()));
+			die('TYPO3 Fatal Error: Extension key "'.$key.'" was NOT loaded! (t3lib_extMgm::extPath)');
+		}
 		return PATH_site.$TYPO3_LOADED_EXT[$key]['siteRelPath'].$script;
 	}
 
@@ -160,7 +163,9 @@ class t3lib_extMgm {
 	 */
 	function extRelPath($key)	{
 		global $TYPO3_LOADED_EXT;
-		if (!isset($TYPO3_LOADED_EXT[$key]))	die('TYPO3 Fatal Error: Extension key "'.$key.'" was NOT loaded!');
+		if (!isset($TYPO3_LOADED_EXT[$key]))	{
+			die('TYPO3 Fatal Error: Extension key "'.$key.'" was NOT loaded! (t3lib_extMgm::extRelPath)');
+		}
 		return $TYPO3_LOADED_EXT[$key]['typo3RelPath'];
 	}
 
@@ -253,7 +258,7 @@ class t3lib_extMgm {
 			foreach($TCA[$table]['types'] as $k => $v)	{
 				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
 
-					
+
 
 					if ($insert) {
 						$append=true;
@@ -263,7 +268,7 @@ class t3lib_extMgm {
 							$parts = explode(';',$fieldInfo);
 							$theField = trim($parts[0]);
 							$palette = trim($parts[0]).';;'.trim($parts[2]);
-							
+
 								// insert before: find exact field name or palette with number
 							if (in_array($theField, $positionArr) OR in_array($palette, $positionArr) OR
 								in_array('before:'.$theField, $positionArr) OR in_array('before:'.$palette, $positionArr))	{

@@ -140,6 +140,22 @@ The option is extremely useful if you have general user groups defining some glo
 			<label index="subgroup.description">Select backend user groups which are automatically included for members of this group.</label>
 			<label index="subgroup.details">The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
 This feature provides a great way to create 'Supervisor' user groups.</label>
+			<label index="explicit_allowdeny.description">Select field values to explicitly deny or allow for user group members.</label>
+			<label index="explicit_allowdeny.details">Selector box fields can be configured for access control on value level. This list represents all values that are configured for access control. 
+Each value can be configured to require either explicit access (Allow) or explicit denial (Deny). If a value has the prefix &quot;Allow&quot; (green icon) it means that by default users &lt;em&gt;cannot&lt;/em&gt; set this value unless they are member of a user group which explicitly allows it (by setting this checkbox).
+If a value has the prefix &quot;Deny&quot; (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
+The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</label>
+			<label index="_explicit_allowdeny.image">EXT:lang/cshimages/be_groups_19.png</label>
+			<label index="allowed_languages.description">Select which record languages the group members are limited to edit.</label>
+			<label index="allowed_languages.details">Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
+If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</label>
+			<label index="_allowed_languages.seeAlso">be_users:allowed_languages</label>
+			<label index="_allowed_languages.image">EXT:lang/cshimages/be_groups_18.png</label>
+			<label index="allowed_languages.image_descr">This example shows a situation where two languages, Danish and German, are created in addition to the default language.</label>
+			<label index="custom_options.description">Select custom permission options.</label>
+			<label index="custom_options.details">This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</label>
+			<label index="_custom_options.image">EXT:lang/cshimages/be_groups_20.png</label>
+			<label index="custom_options.image_descr">This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_csh_be_groups.xml</languageKey>
 		<languageKey index="he">EXT:csh_he/lang/he.locallang_csh_be_groups.xml</languageKey>

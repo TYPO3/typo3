@@ -269,6 +269,7 @@ class t3lib_transferData {
 
 			// Traverse the configured columns for the table (TCA):
 			// For each column configured, we will perform processing if needed based on the type (eg. for "group" and "select" types this is needed)
+		t3lib_div::loadTCA($table);
 		$copyOfColumns = $TCA[$table]['columns'];
 		foreach($copyOfColumns as $field => $fieldConfig)	{
 				// Set $data variable for the field, either inputted value from $row - or if not found, the default value as defined in the "config" array
@@ -678,11 +679,55 @@ class t3lib_transferData {
 			break;
 			case 'exclude':		// Listing exclude fields.
 				$theExcludeFields = t3lib_BEfunc::getExcludeFields();
+
 				if (is_array($theExcludeFields))	{
 					foreach($theExcludeFields as $theExcludeFieldsArrays)	{
 						foreach($elements as $eKey => $value)	{
 							if (!strcmp($theExcludeFieldsArrays[1],$value))	{
 								$dataAcc[$eKey]=rawurlencode($value).'|'.rawurlencode(ereg_replace(':$','',$theExcludeFieldsArrays[0]));
+							}
+						}
+					}
+				}
+			break;
+			case 'explicitValues':
+				$theTypes = t3lib_BEfunc::getExplicitAuthFieldValues();
+
+				foreach($theTypes as $tableFieldKey => $theTypeArrays)	{
+					if (is_array($theTypeArrays['items']))	{
+						foreach($theTypeArrays['items'] as $itemValue => $itemContent)	{
+							foreach($elements as $eKey => $value)	{
+								if (!strcmp($tableFieldKey.':'.$itemValue.':'.$itemContent[0], $value))	{
+									$dataAcc[$eKey] = rawurlencode($value).'|'.rawurlencode('['.$itemContent[2].'] '.$itemContent[1]);
+								}
+							}
+						}
+					}
+				}
+			break;
+			case 'languages':
+				$theLangs = t3lib_BEfunc::getSystemLanguages();
+				foreach($theLangs as $lCfg)	{
+					foreach($elements as $eKey => $value)	{
+						if (!strcmp($lCfg[1], $value))	{
+							$dataAcc[$eKey] = rawurlencode($value).'|'.rawurlencode($lCfg[0]);
+						}
+					}
+				}
+			break;
+			case 'custom':
+				$customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
+
+				if (is_array($customOptions))	{
+					foreach($customOptions as $coKey => $coValue) {
+						if (is_array($coValue['items']))	{
+								// Traverse items:
+							foreach($coValue['items'] as $itemKey => $itemCfg)	{
+								foreach($elements as $eKey => $value)	{
+									if (!strcmp($coKey.':'.$itemKey, $value))	{
+										$dataAcc[$eKey] = rawurlencode($value).'|'.rawurlencode($GLOBALS['LANG']->sl($itemCfg[0]));
+									}
+								}
 							}
 						}
 					}

@@ -630,6 +630,98 @@ class t3lib_BEfunc	{
 	}
 
 	/**
+	 * Returns an array with explicit Allow/Deny fields.
+	 * Used for listing these field/value pairs in be_groups forms
+	 *
+	 * @return	array		Array with information from all of $TCA
+	 */
+	function getExplicitAuthFieldValues()	{
+		global $TCA;
+
+			// Initialize:
+		$adLabel = array(
+			'ALLOW' => $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.allow'),
+			'DENY' => $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.deny'),
+		);
+
+			// All TCA keys:
+		$allowDenyOptions = Array();
+		$tc_keys = array_keys($TCA);
+		foreach($tc_keys as $table)	{
+
+				// Load table
+			t3lib_div::loadTCA($table);
+
+				// All field names configured:
+			if (is_array($TCA[$table]['columns']))	{
+				$f_keys = array_keys($TCA[$table]['columns']);
+				foreach($f_keys as $field)	{
+					$fCfg = $TCA[$table]['columns'][$field]['config'];
+					if ($fCfg['type']=='select' && $fCfg['authMode'])	{
+
+							// Check for items:
+						if (is_array($fCfg['items']))	{
+								// Get Human Readable names of fields and table:
+							$allowDenyOptions[$table.':'.$field]['tableFieldLabel'] = $GLOBALS['LANG']->sl($TCA[$table]['ctrl']['title']).': '.$GLOBALS['LANG']->sl($TCA[$table]['columns'][$field]['label']);
+
+								// Check for items:
+							foreach($fCfg['items'] as $iVal)	{
+								if (strcmp($iVal[1],''))	{	// Values '' is not controlled by this setting.
+
+										// Find iMode:
+									$iMode = '';
+									switch((string)$fCfg['authMode'])	{
+										case 'explicitAllow':
+											$iMode = 'ALLOW';
+										break;
+										case 'explicitDeny':
+											$iMode = 'DENY';
+										break;
+										case 'individual':
+											if (!strcmp($iVal[4],'EXPL_ALLOW'))	{
+												$iMode = 'ALLOW';
+											} elseif (!strcmp($iVal[4],'EXPL_DENY'))	{
+												$iMode = 'DENY';
+											}
+										break;
+									}
+
+										// Set iMode:
+									if ($iMode)	{
+										$allowDenyOptions[$table.':'.$field]['items'][$iVal[1]] = array($iMode, $GLOBALS['LANG']->sl($iVal[0]), $adLabel[$iMode]);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return $allowDenyOptions;
+	}
+
+	/**
+	 * Returns an array with system languages:
+	 *
+	 * @return	array		Array with languages
+	 */
+	function getSystemLanguages()	{
+
+			// Initialize, add default language:
+		$sysLanguages = array();
+		$sysLanguages[] = array('Default language', 0);
+
+			// Traverse languages
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,flag','sys_language','pid=0'.t3lib_BEfunc::deleteClause('sys_language'));
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$sysLanguages[] = array($row['title'].' ['.$row['uid'].']', $row['uid'], ($row['flag'] ? '../t3lib/gfx/flags/'.$row['flag'] : ''));
+		}
+
+		return $sysLanguages;
+	}
+
+	/**
 	 * Returns a page record (of page with $id) with an extra field "_thePath" set to the record path IF the WHERE clause, $perms_clause, selects the record. Thus is works as an access check that returns a page record if access was granted, otherwise not.
 	 * If $id is zero a pseudo root-page with "_thePath" set is returned IF the current BE_USER is admin.
 	 * In any case ->isInWebMount must return true for the user (regardless of $perms_clause)
@@ -1764,17 +1856,28 @@ class t3lib_BEfunc	{
 	 */
 	function getCommonSelectFields($table,$prefix)	{
 		global $TCA;
-		$fields=array();
-		$fields[]=$prefix.'uid';
-		$fields[]=$prefix.$TCA[$table]['ctrl']['label'];
+		$fields = array();
+		$fields[] = $prefix.'uid';
+		$fields[] = $prefix.$TCA[$table]['ctrl']['label'];
+
 		if ($TCA[$table]['ctrl']['label_alt'])	{
 			$secondFields = t3lib_div::trimExplode(',',$TCA[$table]['ctrl']['label_alt'],1);
-			while(list(,$fieldN)=each($secondFields))	{
-				$fields[]=$prefix.$fieldN;
+			foreach($secondFields as $fieldN)	{
+				$fields[] = $prefix.$fieldN;
 			}
 		}
-		if ($TCA[$table]['ctrl']['selicon_field'])	$fields[]=$prefix.$TCA[$table]['ctrl']['selicon_field'];
-		return implode(',',$fields);
+
+		if ($TCA[$table]['ctrl']['selicon_field'])	$fields[] = $prefix.$TCA[$table]['ctrl']['selicon_field'];
+		if ($TCA[$table]['ctrl']['typeicon_column'])	$fields[] = $prefix.$TCA[$table]['ctrl']['typeicon_column'];
+
+		if (is_array($TCA[$table]['ctrl']['enablecolumns']))		{
+			if ($TCA[$table]['ctrl']['enablecolumns']['disabled'])	$fields[] = $prefix.$TCA[$table]['ctrl']['enablecolumns']['disabled'];
+			if ($TCA[$table]['ctrl']['enablecolumns']['starttime'])	$fields[] = $prefix.$TCA[$table]['ctrl']['enablecolumns']['starttime'];
+			if ($TCA[$table]['ctrl']['enablecolumns']['endtime'])	$fields[] = $prefix.$TCA[$table]['ctrl']['enablecolumns']['endtime'];
+			if ($TCA[$table]['ctrl']['enablecolumns']['fe_group'])	$fields[] = $prefix.$TCA[$table]['ctrl']['enablecolumns']['fe_group'];
+		}
+
+		return implode(',',array_unique($fields));
 	}
 
 	/**

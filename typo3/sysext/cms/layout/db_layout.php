@@ -691,7 +691,6 @@ class SC_db_layout {
 		$content.=$this->doc->section('',$hS2);
 		$content.=$this->doc->spacer(7);
 
-
 			// Creating editing form:
 		if ($BE_USER->check('tables_modify',$eRParts[0]) && $edit_record && (($eRParts[0]!='pages'&&$this->EDIT_CONTENT) || ($eRParts[0]=='pages'&&($this->CALC_PERMS&1))))	{
 
@@ -715,12 +714,19 @@ class SC_db_layout {
 				$new_unique_uid = uniqid('NEW');
 				$rec['uid'] = $new_unique_uid;
 				$rec['pid'] = intval($ex_pid)?intval($ex_pid):$this->id;
+				$recordAccess = TRUE;
 			} else {
 				$rec['uid'] = $uidVal;
+
+					// Checking internals access:
+				$recordAccess = $BE_USER->recordEditAccessInternals($eRParts[0],$uidVal);
 			}
 
-				// If the record is an array (which it will always be... :-)
-			if (is_array($rec))	{
+			if (!$recordAccess)	{
+					// If no edit access, print error message:
+				$content.=$this->doc->section($LANG->getLL('noAccess'),$LANG->getLL('noAccess_msg').'<br /><br />'.
+							($BE_USER->errorMsg ? 'Reason: '.$BE_USER->errorMsg.'<br/><br/>' : ''),0,1);
+			} elseif (is_array($rec))	{	// If the record is an array (which it will always be... :-)
 
 					// Create instance of TCEforms, setting defaults:
 				$tceforms = t3lib_div::makeInstance('t3lib_TCEforms');

@@ -1077,6 +1077,7 @@ class t3lib_TCEforms	{
 	 * @return	string		The HTML code for the TCEform field
 	 */
 	function getSingleField_typeSelect($table,$field,$row,&$PA)	{
+		global $TCA;
 
 			// Field configuration from TCA:
 		$config = $PA['fieldConf']['config'];
@@ -1089,9 +1090,14 @@ class t3lib_TCEforms	{
 			// Possibly remove some items:
 		$removeItems = t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
 		foreach($selItems as $tk => $p)	{
-			if (in_array($p[1],$removeItems))	{
+
+				// Checking languages and authMode:
+			$languageDeny = $TCA[$table]['ctrl']['languageField'] && !strcmp($TCA[$table]['ctrl']['languageField'], $field) && !$GLOBALS['BE_USER']->checkLanguageAccess($p[1]);
+			$authModeDeny = $config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table,$field,$p[1],$config['authMode']);
+
+			if (in_array($p[1],$removeItems) || $languageDeny || $authModeDeny)	{
 				unset($selItems[$tk]);
-			} else if (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
+			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
 				$selItems[$tk][0]=$this->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]);
 			}
 
@@ -1105,290 +1111,416 @@ class t3lib_TCEforms	{
 
 			// Creating the label for the "No Matching Value" entry.
 		$nMV_label = isset($PA['fieldTSConfig']['noMatchingValue_label']) ? $this->sL($PA['fieldTSConfig']['noMatchingValue_label']) : '[ '.$this->getLL('l_noMatchingValue').' ]';
-		$nMV_label = @sprintf($nMV_label, $PA['itemFormElValue']);
 
 			// Prepare some values:
 		$maxitems = intval($config['maxitems']);
-		$minitems = intval($config['minitems']);
-		$size = intval($config['size']);
 
 			// If a SINGLE selector box...
 		if ($maxitems<=1)	{
-			$c=0;
-			$sI=0;
-			$noMatchingValue=1;
-			$opt=array();
-			$selicons=array();
-			$onlySelectedIconShown=0;
-
-			if ($config['suppress_icons']=='IF_VALUE_FALSE')	{
-				$suppressIcons = !$PA['itemFormElValue'] ? 1 : 0;
-			} elseif ($config['suppress_icons']=='ONLY_SELECTED')	{
-				$suppressIcons=0;
-				$onlySelectedIconShown=1;
-			} elseif ($config['suppress_icons']) 	{
-				$suppressIcons = 1;
-			} else $suppressIcons = 0;
-
-				// Traverse the Array of selector box items:
-			foreach($selItems as $p)	{
-				$sM = (!strcmp($PA['itemFormElValue'],$p[1])?' selected="selected"':'');
-				if ($sM)	{
-					$sI=$c;
-					$noMatchingValue=0;
-				}
-
-					// Getting style attribute value (for icons):
-				if ($config['iconsInOptionTags'])	list($styleAttrValue) = $this->optionTagStyle($p[2]);
-
-					// Compiling the <option> tag:
-				$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
-							$sM.
-							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							(!strcmp($p[1],'--div--') ? ' class="c-divider"' : '').
-							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>';
-
-					// If there is an icon for the selector box (rendered in table under)...:
-				if ($p[2] && !$suppressIcons && (!$onlySelectedIconShown || $sM))	{
-					list($selIconFile,$selIconInfo)=$this->getIcon($p[2]);
-					$iOnClick = $this->elName($PA['itemFormElName']).'.selectedIndex='.$c.'; '.implode('',$PA['fieldChangeFunc']).$this->blur().'return false;';
-					$selicons[]=array(
-						(!$onlySelectedIconShown ? '<a href="#" onclick="'.htmlspecialchars($iOnClick).'">' : '').
-						'<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" title="'.htmlspecialchars($p[0]).'" alt="'.htmlspecialchars($p[0]).'" />'.
-						(!$onlySelectedIconShown ? '</a>' : ''),
-						$c,$sM);
-				}
-				$c++;
-			}
-			if ($PA['itemFormElValue'] && $noMatchingValue && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement'])	{
-				$opt[]= '<option value="'.htmlspecialchars($PA['itemFormElValue']).'" selected="selected">'.htmlspecialchars($nMV_label).'</option>';
-			}
-			$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex='.$sI.';} '.implode('',$PA['fieldChangeFunc']);
-			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
-			$item.= '<select name="'.$PA['itemFormElName'].'"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].'>';
-			$item.= implode('',$opt);
-			$item.= '</select>';
-
-			if (count($selicons))	{
-				$item.='<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-selectIcons">';
-				$selicon_cols = intval($config['selicon_cols']);
-				if (!$selicon_cols)	$selicon_cols=count($selicons);
-				$sR = ceil(count($selicons)/$selicon_cols);
-				$selicons = array_pad($selicons,$sR*$selicon_cols,'');
-				for($sa=0;$sa<$sR;$sa++)	{
-					$item.='<tr>';
-					for($sb=0;$sb<$selicon_cols;$sb++)	{
-						$sk=($sa*$selicon_cols+$sb);
-						$imgN = 'selIcon_'.$table.'_'.$row['uid'].'_'.$field.'_'.$selicons[$sk][1];
-						$imgS = ($selicons[$sk][2]?$this->backPath.'gfx/content_selected.gif':'clear.gif');
-						$item.='<td><img name="'.htmlspecialchars($imgN).'" src="'.$imgS.'" width="7" height="10" alt="" /></td>';
-						$item.='<td>'.$selicons[$sk][0].'</td>';
-					}
-					$item.='</tr>';
-				}
-				$item.='</table>';
-			}
+			$item = $this->getSingleField_typeSelect_single($table,$field,$row,$PA,$config,$selItems,$nMV_label);
 		} elseif (!strcmp($config['renderMode'],'checkbox'))	{	// Checkbox renderMode
-
-				// Selected items:
-			$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
-			foreach($itemArray as $tk => $tv) {
-				$tvP = explode('|',$tv,2);
-				$tvP[0] = rawurldecode($tvP[0]);
-
-				$itemArray[$tk] = $tvP[0];
-			}
-
-				// Traverse the Array of selector box items:
-			$tRows = array();
-			$sOnChange = implode('',$PA['fieldChangeFunc']);
-			$c=0;
-			foreach($selItems as $p)	{
-					// Non-selectable element:
-				if (!strcmp($p[1],'--div--'))	{
-					$tRows[] = '
-						<tr class="c-header">
-							<td colspan="2">'.htmlspecialchars($p[0]).'</td>
-						</tr>';
-				} else {
-						// Selected or not by default:
-					if (in_array($p[1], $itemArray))	{
-						$sM = ' checked="checked"';
-					} else {
-						$sM = '';
-					}
-
-						// Icon:
-					if ($p[2])	{
-						list($selIconFile,$selIconInfo) = $this->getIcon($p[2]);
-					} else {
-						$selIconFile = '';
-					}
-
-						// Compile row:
-					$onClickCell = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=!'.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked;';
-					$onClick= 'this.attributes.getNamedItem("class").nodeValue = '.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked ? "c-selectedItem" : "";';
-					$tRows[] = '
-						<tr class="'.($sM ? 'c-selectedItem' : '').'" onclick="'.htmlspecialchars($onClick).'" style="cursor: pointer;">
-							<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
-							<td class="c-labelCell" onclick="'.htmlspecialchars($onClickCell).'">'.
-								($selIconFile ? '<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" class="absmiddle" style="margin-right: 4px;" alt="" />' : '').
-								t3lib_div::deHSCentities(htmlspecialchars($p[0])).
-								(strcmp($p[3],'') ? '<br/><p class="c-descr">'.htmlspecialchars($p[3]).'</p>' : '').
-								'</td>
-						</tr>';
-					$c++;
-				}
-			}
-
-				// Implode rows in table:
-			$item.= '
-				<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-select-checkbox">'.
-					implode('',$tRows).'
-				</table>';
-
+			$item = $this->getSingleField_typeSelect_checkbox($table,$field,$row,$PA,$config,$selItems,$nMV_label);
 		} elseif (!strcmp($config['renderMode'],'singlebox'))	{	// Single selector box renderMode
-
-				// Selected items:
-			$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
-			foreach($itemArray as $tk => $tv) {
-				$tvP = explode('|',$tv,2);
-				$tvP[0] = rawurldecode($tvP[0]);
-
-				$itemArray[$tk] = $tvP[0];
-			}
-
-				// Traverse the Array of selector box items:
-			$opt = array();
-			$restoreCmd = array();
-			$c=0;
-			foreach($selItems as $p)	{
-					// Selected or not by default:
-				if (in_array($p[1], $itemArray))	{
-					$sM = ' selected="selected"';
-					$restoreCmd[] = $this->elName($PA['itemFormElName'].'[]').'.options['.$c.'].selected=1;';
-				} else {
-					$sM = '';
-				}
-
-					// Non-selectable element:
-				if (!strcmp($p[1],'--div--'))	{
-					$nonSel = ' onclick="this.selected=0;" class="c-divider"';
-				} else {
-					$nonSel = '';
-				}
-
-					// Icon style for option tag:
-				if ($config['iconsInOptionTags']) list($styleAttrValue) = $this->optionTagStyle($p[2]);
-
-					// Compile <option> tag:
-				$opt[] = '<option value="'.htmlspecialchars($p[1]).'"'.
-							$sM.
-							$nonSel.
-							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>';
-				$c++;
-			}
-
-				// Compile selector box:
-			$sOnChange = implode('',$PA['fieldChangeFunc']);
-			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
-			$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
-			$selectBox = '<select name="'.$PA['itemFormElName'].'[]"'.
-							$this->insertDefStyle('select').
-							($size ? ' size="'.$size.'"' : '').
-							' multiple="multiple" onchange="'.htmlspecialchars($sOnChange).'"'.
-							$PA['onFocus'].
-							$selector_itemListStyle.'>
-							'.
-						implode('
-							',$opt).'
-						</select>';
-
-				// Put it all into a table:
-			$item.= '
-				<table border="0" cellspacing="0" cellpadding="0" width="1" class="typo3-TCEforms-select-singlebox">
-					<tr>
-						<td>
-						'.$selectBox.'
-						<br/>
-						<em>'.
-							htmlspecialchars($this->getLL('l_holdDownCTRL')).
-							'</em>
-						</td>
-						<td valign="top">
-						<a href="#" onclick="'.htmlspecialchars($this->elName($PA['itemFormElName'].'[]').'.selectedIndex=-1;'.implode('',$restoreCmd).' return false;').'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/history.gif','width="13" height="12"').' title="'.htmlspecialchars($this->getLL('l_revertSelection')).'" alt="" />'.
-							'</a>
-						</td>
-					</tr>
-				</table>
-					';
-
+			$item = $this->getSingleField_typeSelect_singlebox($table,$field,$row,$PA,$config,$selItems,$nMV_label);
 		} else {	// Traditional multiple selector box:
-			$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_mul" value="'.($config['multiple']?1:0).'" />';
-
-				// Set max and min items:
-			$maxitems = t3lib_div::intInRange($config['maxitems'],0);
-			if (!$maxitems)	$maxitems=100000;
-			$minitems = t3lib_div::intInRange($config['minitems'],0);
-
-				// Register the required number of elements:
-			$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
-
-			$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
-
-				// Perform modification of the selected items array:
-			$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
-			foreach($itemArray as $tk => $tv) {
-				$tvP = explode('|',$tv,2);
-				if (in_array($tvP[0],$removeItems) && !$PA['fieldTSConfig']['disableNoMatchingValueElement'])	{
-					$tvP[1] = rawurlencode($nMV_label);
-				} elseif (isset($PA['fieldTSConfig']['altLabels.'][$tvP[0]])) {
-					$tvP[1] = rawurlencode($this->sL($PA['fieldTSConfig']['altLabels.'][$tvP[0]]));
-				} else {
-					$tvP[1] = rawurlencode($this->sL(rawurldecode($tvP[1])));
-				}
-				$itemArray[$tk] = implode('|',$tvP);
-			}
-
-				// Put together the select form with selected elements:
-			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
-			$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
-			$thumbnails = '<select name="'.$PA['itemFormElName'].'_sel"'.
-							$this->insertDefStyle('select').
-							($size ? ' size="'.$size.'"' : '').
-							' onchange="'.htmlspecialchars($sOnChange).'"'.
-							$PA['onFocus'].
-							$selector_itemListStyle.'>';
-			foreach($selItems as $p)	{
-				if ($config['iconsInOptionTags'])	list($styleAttrValue) = $this->optionTagStyle($p[2]);
-				$thumbnails.= '<option value="'.htmlspecialchars($p[1]).'"'.
-								($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-								'>'.htmlspecialchars($p[0]).'</option>';
-			}
-			$thumbnails.= '</select>';
-
-			$params = array(
-				'size' => $size,
-				'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
-				'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
-				'dontShowMoveIcons' => ($maxitems<=1),
-				'maxitems' => $maxitems,
-				'info' => '',
-				'headers' => array(
-					'selector' => $this->getLL('l_selected').':<br />',
-					'items' => $this->getLL('l_items').':<br />'
-				),
-				'noBrowser' => 1,
-				'thumbnails' => $thumbnails
-			);
-			$item.= $this->dbFileIcons($PA['itemFormElName'],'','',$itemArray,'',$params,$PA['onFocus']);
+			$item = $this->getSingleField_typeSelect_multiple($table,$field,$row,$PA,$config,$selItems,$nMV_label);
 		}
 
 			// Wizards:
 		$altItem = '<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
 		$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf);
+
+		return $item;
+	}
+
+	/**
+	 * Creates a single-selector box
+	 * (Render function for getSingleField_typeSelect())
+	 *
+	 * @param	string		See getSingleField_typeSelect()
+	 * @param	string		See getSingleField_typeSelect()
+	 * @param	array		See getSingleField_typeSelect()
+	 * @param	array		See getSingleField_typeSelect()
+	 * @param	array		(Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param	array		Items available for selection
+	 * @param	string		Label for no-matching-value
+	 * @return	string		The HTML code for the item
+	 * @see getSingleField_typeSelect()
+	 */
+	function getSingleField_typeSelect_single($table,$field,$row,&$PA,$config,$selItems,$nMV_label)	{
+
+			// Initialization:
+		$c = 0;
+		$sI = 0;
+		$noMatchingValue = 1;
+		$opt = array();
+		$selicons = array();
+		$onlySelectedIconShown = 0;
+		$size = intval($config['size']);
+
+			// Icon configuration:
+		if ($config['suppress_icons']=='IF_VALUE_FALSE')	{
+			$suppressIcons = !$PA['itemFormElValue'] ? 1 : 0;
+		} elseif ($config['suppress_icons']=='ONLY_SELECTED')	{
+			$suppressIcons=0;
+			$onlySelectedIconShown=1;
+		} elseif ($config['suppress_icons']) 	{
+			$suppressIcons = 1;
+		} else $suppressIcons = 0;
+
+			// Traverse the Array of selector box items:
+		foreach($selItems as $p)	{
+			$sM = (!strcmp($PA['itemFormElValue'],$p[1])?' selected="selected"':'');
+			if ($sM)	{
+				$sI = $c;
+				$noMatchingValue = 0;
+			}
+
+				// Getting style attribute value (for icons):
+			if ($config['iconsInOptionTags'])	{
+				$styleAttrValue = $this->optionTagStyle($p[2]);
+			}
+
+				// Compiling the <option> tag:
+			$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
+						$sM.
+						($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
+						(!strcmp($p[1],'--div--') ? ' class="c-divider"' : '').
+						'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>';
+
+				// If there is an icon for the selector box (rendered in table under)...:
+			if ($p[2] && !$suppressIcons && (!$onlySelectedIconShown || $sM))	{
+				list($selIconFile,$selIconInfo)=$this->getIcon($p[2]);
+				$iOnClick = $this->elName($PA['itemFormElName']).'.selectedIndex='.$c.'; '.implode('',$PA['fieldChangeFunc']).$this->blur().'return false;';
+				$selicons[]=array(
+					(!$onlySelectedIconShown ? '<a href="#" onclick="'.htmlspecialchars($iOnClick).'">' : '').
+					'<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" title="'.htmlspecialchars($p[0]).'" alt="'.htmlspecialchars($p[0]).'" />'.
+					(!$onlySelectedIconShown ? '</a>' : ''),
+					$c,$sM);
+			}
+			$c++;
+		}
+
+			// No-matching-value:
+		if ($PA['itemFormElValue'] && $noMatchingValue && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement'])	{
+			$nMV_label = @sprintf($nMV_label, $PA['itemFormElValue']);
+			$opt[]= '<option value="'.htmlspecialchars($PA['itemFormElValue']).'" selected="selected">'.htmlspecialchars($nMV_label).'</option>';
+		}
+
+			// Create item form fields:
+		$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex='.$sI.';} '.implode('',$PA['fieldChangeFunc']);
+		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_selIconVal" value="'.htmlspecialchars($sI).'" />';	// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
+		$item.= '<select name="'.$PA['itemFormElName'].'"'.
+					$this->insertDefStyle('select').
+					($size?' size="'.$size.'"':'').
+					' onchange="'.htmlspecialchars($sOnChange).'"'.
+					$PA['onFocus'].'>';
+		$item.= implode('',$opt);
+		$item.= '</select>';
+
+			// Create icon table:
+		if (count($selicons))	{
+			$item.='<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-selectIcons">';
+			$selicon_cols = intval($config['selicon_cols']);
+			if (!$selicon_cols)	$selicon_cols=count($selicons);
+			$sR = ceil(count($selicons)/$selicon_cols);
+			$selicons = array_pad($selicons,$sR*$selicon_cols,'');
+			for($sa=0;$sa<$sR;$sa++)	{
+				$item.='<tr>';
+				for($sb=0;$sb<$selicon_cols;$sb++)	{
+					$sk=($sa*$selicon_cols+$sb);
+					$imgN = 'selIcon_'.$table.'_'.$row['uid'].'_'.$field.'_'.$selicons[$sk][1];
+					$imgS = ($selicons[$sk][2]?$this->backPath.'gfx/content_selected.gif':'clear.gif');
+					$item.='<td><img name="'.htmlspecialchars($imgN).'" src="'.$imgS.'" width="7" height="10" alt="" /></td>';
+					$item.='<td>'.$selicons[$sk][0].'</td>';
+				}
+				$item.='</tr>';
+			}
+			$item.='</table>';
+		}
+
+		return $item;
+	}
+
+	/**
+	 * Creates a checkbox list (renderMode = "checkbox")
+	 * (Render function for getSingleField_typeSelect())
+	 *
+	 * @param	string		See getSingleField_typeSelect()
+	 * @param	string		See getSingleField_typeSelect()
+	 * @param	array		See getSingleField_typeSelect()
+	 * @param	array		See getSingleField_typeSelect()
+	 * @param	array		(Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param	array		Items available for selection
+	 * @param	string		Label for no-matching-value
+	 * @return	string		The HTML code for the item
+	 * @see getSingleField_typeSelect()
+	 */
+	function getSingleField_typeSelect_checkbox($table,$field,$row,&$PA,$config,$selItems,$nMV_label)	{
+
+			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
+		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
+
+			// Traverse the Array of selector box items:
+		$tRows = array();
+		$sOnChange = implode('',$PA['fieldChangeFunc']);
+		$c=0;
+		foreach($selItems as $p)	{
+				// Non-selectable element:
+			if (!strcmp($p[1],'--div--'))	{
+				$tRows[] = '
+					<tr class="c-header">
+						<td colspan="2">'.htmlspecialchars($p[0]).'</td>
+					</tr>';
+			} else {
+					// Selected or not by default:
+				$sM = '';
+				if (isset($itemArray[$p[1]]))	{
+					$sM = ' checked="checked"';
+					unset($itemArray[$p[1]]);
+				}
+
+					// Icon:
+				$selIconFile = '';
+				if ($p[2])	{
+					list($selIconFile,$selIconInfo) = $this->getIcon($p[2]);
+				}
+
+					// Compile row:
+				$onClickCell = $this->elName($PA['itemFormElName'].'['.$c.']').'.checked=!'.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked;';
+				$onClick = 'this.attributes.getNamedItem("class").nodeValue = '.$this->elName($PA['itemFormElName'].'['.$c.']').'.checked ? "c-selectedItem" : "";';
+				$tRows[] = '
+					<tr class="'.($sM ? 'c-selectedItem' : '').'" onclick="'.htmlspecialchars($onClick).'" style="cursor: pointer;">
+						<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($p[1]).'"'.$sM.' onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
+						<td class="c-labelCell" onclick="'.htmlspecialchars($onClickCell).'">'.
+							($selIconFile ? '<img src="'.$selIconFile.'" '.$selIconInfo[3].' vspace="2" border="0" class="absmiddle" style="margin-right: 4px;" alt="" />' : '').
+							t3lib_div::deHSCentities(htmlspecialchars($p[0])).
+							(strcmp($p[3],'') ? '<br/><p class="c-descr">'.nl2br(trim(htmlspecialchars($p[3]))).'</p>' : '').
+							'</td>
+					</tr>';
+				$c++;
+			}
+		}
+
+			// Remaining values (invalid):
+		if (count($itemArray) && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement'])	{
+			foreach($itemArray as $theNoMatchValue => $temp)	{
+					// Compile <checkboxes> tag:
+				array_unshift($tRows,'
+						<tr class="c-invalidItem">
+							<td><input type="checkbox" name="'.htmlspecialchars($PA['itemFormElName'].'['.$c.']').'" value="'.htmlspecialchars($theNoMatchValue).'" checked="checked" onclick="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].' /></td>
+							<td class="c-labelCell">'.
+								t3lib_div::deHSCentities(htmlspecialchars(@sprintf($nMV_label, $theNoMatchValue))).
+								'</td>
+						</tr>');
+				$c++;
+			}
+		}
+
+			// Add an empty hidden field which will send a blank value if all items are unselected.
+		$item.='<input type="hidden" name="'.htmlspecialchars($PA['itemFormElName']).'" value="" />';
+
+			// Implode rows in table:
+		$item.= '
+			<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-select-checkbox">'.
+				implode('',$tRows).'
+			</table>';
+
+		return $item;
+	}
+
+	/**
+	 * Creates a selectorbox list (renderMode = "singlebox")
+	 * (Render function for getSingleField_typeSelect())
+	 *
+	 * @param	string		See getSingleField_typeSelect()
+	 * @param	string		See getSingleField_typeSelect()
+	 * @param	array		See getSingleField_typeSelect()
+	 * @param	array		See getSingleField_typeSelect()
+	 * @param	array		(Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param	array		Items available for selection
+	 * @param	string		Label for no-matching-value
+	 * @return	string		The HTML code for the item
+	 * @see getSingleField_typeSelect()
+	 */
+	function getSingleField_typeSelect_singlebox($table,$field,$row,&$PA,$config,$selItems,$nMV_label)	{
+
+			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
+		$itemArray = array_flip($this->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
+
+			// Traverse the Array of selector box items:
+		$opt = array();
+		$restoreCmd = array();	// Used to accumulate the JS needed to restore the original selection.
+		$c = 0;
+		foreach($selItems as $p)	{
+				// Selected or not by default:
+			$sM = '';
+			if (isset($itemArray[$p[1]]))	{
+				$sM = ' selected="selected"';
+				$restoreCmd[] = $this->elName($PA['itemFormElName'].'[]').'.options['.$c.'].selected=1;';
+				unset($itemArray[$p[1]]);
+			}
+
+				// Non-selectable element:
+			$nonSel = '';
+			if (!strcmp($p[1],'--div--'))	{
+				$nonSel = ' onclick="this.selected=0;" class="c-divider"';
+			}
+
+				// Icon style for option tag:
+			if ($config['iconsInOptionTags']) {
+				$styleAttrValue = $this->optionTagStyle($p[2]);
+			}
+
+				// Compile <option> tag:
+			$opt[] = '<option value="'.htmlspecialchars($p[1]).'"'.
+						$sM.
+						$nonSel.
+						($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
+						'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>';
+			$c++;
+		}
+
+			// Remaining values:
+		if (count($itemArray) && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement'])	{
+			foreach($itemArray as $theNoMatchValue => $temp)	{
+					// Compile <option> tag:
+				array_unshift($opt,'<option value="'.htmlspecialchars($theNoMatchValue).'" selected="selected">'.t3lib_div::deHSCentities(htmlspecialchars(@sprintf($nMV_label, $theNoMatchValue))).'</option>');
+			}
+		}
+
+			// Compile selector box:
+		$sOnChange = implode('',$PA['fieldChangeFunc']);
+		$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
+		$size = intval($config['size']);
+		$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($selItems)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
+		$selectBox = '<select name="'.$PA['itemFormElName'].'[]"'.
+						$this->insertDefStyle('select').
+						($size ? ' size="'.$size.'"' : '').
+						' multiple="multiple" onchange="'.htmlspecialchars($sOnChange).'"'.
+						$PA['onFocus'].
+						$selector_itemListStyle.'>
+						'.
+					implode('
+						',$opt).'
+					</select>';
+
+			// Add an empty hidden field which will send a blank value if all items are unselected.
+		$item.='<input type="hidden" name="'.htmlspecialchars($PA['itemFormElName']).'" value="" />';
+
+			// Put it all into a table:
+		$item.= '
+			<table border="0" cellspacing="0" cellpadding="0" width="1" class="typo3-TCEforms-select-singlebox">
+				<tr>
+					<td>
+					'.$selectBox.'
+					<br/>
+					<em>'.
+						htmlspecialchars($this->getLL('l_holdDownCTRL')).
+						'</em>
+					</td>
+					<td valign="top">
+					<a href="#" onclick="'.htmlspecialchars($this->elName($PA['itemFormElName'].'[]').'.selectedIndex=-1;'.implode('',$restoreCmd).' return false;').'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/history.gif','width="13" height="12"').' title="'.htmlspecialchars($this->getLL('l_revertSelection')).'" alt="" />'.
+						'</a>
+					</td>
+				</tr>
+			</table>
+				';
+
+		return $item;
+	}
+
+	/**
+	 * Creates a multiple-selector box (two boxes, side-by-side)
+	 * (Render function for getSingleField_typeSelect())
+	 *
+	 * @param	string		See getSingleField_typeSelect()
+	 * @param	string		See getSingleField_typeSelect()
+	 * @param	array		See getSingleField_typeSelect()
+	 * @param	array		See getSingleField_typeSelect()
+	 * @param	array		(Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param	array		Items available for selection
+	 * @param	string		Label for no-matching-value
+	 * @return	string		The HTML code for the item
+	 * @see getSingleField_typeSelect()
+	 */
+	function getSingleField_typeSelect_multiple($table,$field,$row,&$PA,$config,$selItems,$nMV_label)	{
+
+			// Setting this hidden field (as a flag that JavaScript can read out)
+		$item.= '<input type="hidden" name="'.$PA['itemFormElName'].'_mul" value="'.($config['multiple']?1:0).'" />';
+
+			// Set max and min items:
+		$maxitems = t3lib_div::intInRange($config['maxitems'],0);
+		if (!$maxitems)	$maxitems=100000;
+		$minitems = t3lib_div::intInRange($config['minitems'],0);
+
+			// Register the required number of elements:
+		$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
+
+			// Get "removeItems":
+		$removeItems = t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
+
+			// Perform modification of the selected items array:
+		$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
+		foreach($itemArray as $tk => $tv) {
+			$tvP = explode('|',$tv,2);
+			$evalValue = rawurldecode($tvP[0]);
+			$isRemoved = in_array($evalValue,$removeItems)  || ($config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table,$field,$evalValue,$config['authMode']));
+			if ($isRemoved && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement'])	{
+				$tvP[1] = rawurlencode(@sprintf($nMV_label, $evalValue));
+			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$evalValue])) {
+				$tvP[1] = rawurlencode($this->sL($PA['fieldTSConfig']['altLabels.'][$evalValue]));
+			} else {
+				$tvP[1] = rawurlencode($this->sL(rawurldecode($tvP[1])));
+			}
+			$itemArray[$tk] = implode('|',$tvP);
+		}
+
+			// Create option tags:
+		$opt = array();
+		$styleAttrValue = '';
+		foreach($selItems as $p)	{
+			if ($config['iconsInOptionTags'])	{
+				$styleAttrValue = $this->optionTagStyle($p[2]);
+			}
+			$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
+							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
+							'>'.htmlspecialchars($p[0]).'</option>';
+		}
+
+			// Put together the selector box:
+		$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
+		$size = intval($config['size']);
+		$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
+		$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
+		$itemsToSelect = '
+			<select name="'.$PA['itemFormElName'].'_sel"'.
+						$this->insertDefStyle('select').
+						($size ? ' size="'.$size.'"' : '').
+						' onchange="'.htmlspecialchars($sOnChange).'"'.
+						$PA['onFocus'].
+						$selector_itemListStyle.'>
+				'.implode('
+				',$opt).'
+			</select>';
+
+			// Pass to "dbFileIcons" function:
+		$params = array(
+			'size' => $size,
+			'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
+			'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
+			'dontShowMoveIcons' => ($maxitems<=1),
+			'maxitems' => $maxitems,
+			'info' => '',
+			'headers' => array(
+				'selector' => $this->getLL('l_selected').':<br />',
+				'items' => $this->getLL('l_items').':<br />'
+			),
+			'noBrowser' => 1,
+			'thumbnails' => $itemsToSelect
+		);
+		$item.= $this->dbFileIcons($PA['itemFormElName'],'','',$itemArray,'',$params,$PA['onFocus']);
 
 		return $item;
 	}
@@ -2427,6 +2559,17 @@ class t3lib_TCEforms	{
 		$colorBoxLinks = array();
 		$fName = '['.$table.']['.$row['uid'].']['.$field.']';
 		$md5ID = 'ID'.t3lib_div::shortmd5($itemName);
+		$listFlag = '_list';
+
+			// Manipulate the field name (to be the true form field name) and remove a suffix-value if the item is a selector box with renderMode "singlebox":
+		if ($PA['fieldConf']['config']['type']=='select')	{
+			if ($PA['fieldConf']['config']['maxitems']<=1)	{	// Single select situation:
+				$listFlag = '';
+			} elseif ($PA['fieldConf']['config']['renderMode']=='singlebox')	{
+				$itemName.='[]';
+				$listFlag = '';
+			}
+		}
 
 			// traverse wizards:
 		if (is_array($wizConf) && !$this->disableWizards)	{
@@ -2495,8 +2638,8 @@ class t3lib_TCEforms	{
 										case 'popup':
 										case 'colorbox':
 												// Current form value is passed as P[currentValue]!
-											$addJS = $wConf['popup_onlyOpenIfSelected']?'if (!TBE_EDITOR_curSelected(\''.$itemName.'_list\')){alert('.$GLOBALS['LANG']->JScharCode($this->getLL('m_noSelItemForEdit')).'); return false;}':'';
-											$curSelectedValues='+\'&P[currentSelectedValues]=\'+TBE_EDITOR_curSelected(\''.$itemName.'_list\')';
+											$addJS = $wConf['popup_onlyOpenIfSelected']?'if (!TBE_EDITOR_curSelected(\''.$itemName.$listFlag.'\')){alert('.$GLOBALS['LANG']->JScharCode($this->getLL('m_noSelItemForEdit')).'); return false;}':'';
+											$curSelectedValues='+\'&P[currentSelectedValues]=\'+TBE_EDITOR_curSelected(\''.$itemName.$listFlag.'\')';
 											$aOnClick=	$this->blur().
 														$addJS.
 														'vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('',array('P'=>$params)).'\'+\'&P[currentValue]=\'+TBE_EDITOR_rawurlencode('.$this->elName($itemName).'.value,200)'.$curSelectedValues.',\'popUp'.$md5ID.'\',\''.$wConf['JSopenParams'].'\');'.
@@ -2620,8 +2763,8 @@ class t3lib_TCEforms	{
 				$selIconInfo = @getimagesize(PATH_site.$file);
 			}
 		} elseif (substr($icon,0,3)=='../')	{
-			$selIconFile = $this->backPath.$icon;
-			$selIconInfo = @getimagesize(PATH_site.substr($icon,3));
+			$selIconFile = $this->backPath.t3lib_div::resolveBackPath($icon);
+			$selIconInfo = @getimagesize(PATH_site.t3lib_div::resolveBackPath(substr($icon,3)));
 		} elseif (substr($icon,0,4)=='ext/' || substr($icon,0,7)=='sysext/') {
 			$selIconFile = $this->backPath.$icon;
 			$selIconInfo = @getimagesize(PATH_typo3.$icon);
@@ -2633,16 +2776,36 @@ class t3lib_TCEforms	{
 	}
 
 	/**
+	 * Creates style attribute content for option tags in a selector box, primarily setting it up to show the icon of an element as background image (works in mozilla)
 	 *
+	 * @param	string		Icon string for option item
+	 * @return	string		Style attribute content, if any
 	 */
 	function optionTagStyle($iconString)	{
 		if ($iconString)	{
 			list($selIconFile,$selIconInfo) = $this->getIcon($iconString);
 			$padTop = t3lib_div::intInRange(($selIconInfo[1]-12)/2,0);
 			$styleAttr = 'background-image: url('.$selIconFile.'); background-repeat: no-repeat; height: '.t3lib_div::intInRange(($selIconInfo[1]+2)-$padTop,0).'px; padding-top: '.$padTop.'px; padding-left: '.($selIconInfo[0]+4).'px;';
-		} else $styleAttr = '';
+			return $styleAttr;
+		}
+	}
 
-		return array($styleAttr, intval($selIconInfo[1]));
+	/**
+	 * Extracting values from a value/label list (as made by transferData class)
+	 *
+	 * @param	string		Value string where values are comma separated, intermixed with labels and rawurlencoded (this is what is delivered to TCEforms normally!)
+	 * @param	array		Values in an array
+	 */
+	function extractValuesOnlyFromValueLabelList($itemFormElValue)	{
+			// Get values of selected items:
+		$itemArray = t3lib_div::trimExplode(',',$itemFormElValue,1);
+		foreach($itemArray as $tk => $tv) {
+			$tvP = explode('|',$tv,2);
+			$tvP[0] = rawurldecode($tvP[0]);
+
+			$itemArray[$tk] = $tvP[0];
+		}
+		return $itemArray;
 	}
 
 	/**
@@ -2981,40 +3144,138 @@ class t3lib_TCEforms	{
 			}
 		}
 
-
 			// If 'special' is configured:
 		if ($fieldValue['config']['special'])	{
 			switch ($fieldValue['config']['special'])	{
 				case 'tables':
 					$temp_tc = array_keys($TCA);
-					reset($temp_tc);
-					while (list(,$theTableNames)=each($temp_tc))	{
+					$descr = '';
+
+					foreach($temp_tc as $theTableNames)	{
 						if (!$TCA[$theTableNames]['ctrl']['adminOnly'])	{
+
+								// Icon:
+							$icon = '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon($theTableNames, array()),'',1);
+
+								// Add description texts:
+							if ($this->edit_showFieldHelp)	{
+								$GLOBALS['LANG']->loadSingleTableDescription($theTableNames);
+								$fDat = $GLOBALS['TCA_DESCR'][$theTableNames]['columns'][''];
+								$descr = $fDat['description'];
+							}
+
+								// Item configuration:
 							$items[] = array(
 								$this->sL($TCA[$theTableNames]['ctrl']['title']),
-								$theTableNames
+								$theTableNames,
+								$icon,
+								$descr
 							);
 						}
 					}
 				break;
 				case 'pagetypes':
 					$theTypes = $TCA['pages']['columns']['doktype']['config']['items'];
-					reset($theTypes);
-					while (list(,$theTypeArrays)=each($theTypes))	{
+
+					foreach($theTypes as $theTypeArrays)	{
+							// Icon:
+						$icon = $theTypeArrays[1]!='--div--' ? '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon('pages', array('doktype' => $theTypeArrays[1])),'',1) : '';
+
+							// Item configuration:
 						$items[] = array(
 							$this->sL($theTypeArrays[0]),
-							$theTypeArrays[1]
+							$theTypeArrays[1],
+							$icon
 						);
 					}
 				break;
 				case 'exclude':
 					$theTypes = t3lib_BEfunc::getExcludeFields();
-					reset($theTypes);
-					while (list(,$theTypeArrays)=each($theTypes))	{
+					$descr = '';
+
+					foreach($theTypes as $theTypeArrays)	{
+						list($theTable, $theField) = explode(':', $theTypeArrays[1]);
+
+							// Add description texts:
+						if ($this->edit_showFieldHelp)	{
+							$GLOBALS['LANG']->loadSingleTableDescription($theTable);
+							$fDat = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theField];
+							$descr = $fDat['description'];
+						}
+
+							// Item configuration:
 						$items[] = array(
 							ereg_replace(':$','',$theTypeArrays[0]),
-							$theTypeArrays[1]
+							$theTypeArrays[1],
+							'',
+							$descr
 						);
+					}
+				break;
+				case 'explicitValues':
+					$theTypes = t3lib_BEfunc::getExplicitAuthFieldValues();
+
+							// Icons:
+					$icons = array(
+						'ALLOW' => '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,'gfx/icon_ok2.gif','',1),
+						'DENY' => '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,'gfx/icon_fatalerror.gif','',1),
+					);
+
+						// Traverse types:
+					foreach($theTypes as $tableFieldKey => $theTypeArrays)	{
+
+						if (is_array($theTypeArrays['items']))	{
+								// Add header:
+							$items[] = array(
+								$theTypeArrays['tableFieldLabel'],
+								'--div--',
+							);
+
+								// Traverse options for this field:
+							foreach($theTypeArrays['items'] as $itemValue => $itemContent)	{
+									// Add item to be selected:
+								$items[] = array(
+									'['.$itemContent[2].'] '.$itemContent[1],
+									$tableFieldKey.':'.ereg_replace('[:|,]','',$itemValue).':'.$itemContent[0],
+									$icons[$itemContent[0]]
+								);
+							}
+						}
+					}
+				break;
+				case 'languages':
+					$items = array_merge($items,t3lib_BEfunc::getSystemLanguages());
+				break;
+				case 'custom':
+						// Initialize:
+					$customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
+					if (is_array($customOptions))	{
+						foreach($customOptions as $coKey => $coValue) {
+							if (is_array($coValue['items']))	{
+									// Add header:
+								$items[] = array(
+									$GLOBALS['LANG']->sl($coValue['header']),
+									'--div--',
+								);
+
+									// Traverse items:
+								foreach($coValue['items'] as $itemKey => $itemCfg)	{
+										// Icon:
+									if ($itemCfg[1])	{
+										list($icon) = $this->getIcon($itemCfg[1]);
+										if ($icon)	$icon = '../typo3/'.$icon;
+									} else $icon = '';
+
+										// Add item to be selected:
+									$items[] = array(
+										$GLOBALS['LANG']->sl($itemCfg[0]),
+										$coKey.':'.ereg_replace('[:|,]','',$itemKey),
+										$icon,
+										$GLOBALS['LANG']->sl($itemCfg[2]),
+									);
+								}
+							}
+						}
 					}
 				break;
 				case 'modListGroup':
@@ -3026,15 +3287,29 @@ class t3lib_TCEforms	{
 
 					$modList = $fieldValue['config']['special']=='modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
 					if (is_array($modList))	{
+						$descr = '';
+
 						foreach($modList as $theMod)	{
+
+								// Icon:
 							$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$theMod.'_tab'];
 							if ($icon)	{
 								$icon = '../'.substr($icon,strlen(PATH_site));
 							}
+
+								// Description texts:
+							if ($this->edit_showFieldHelp)	{
+								$descr = $GLOBALS['LANG']->moduleLabels['labels'][$theMod.'_tablabel'].
+											chr(10).
+											$GLOBALS['LANG']->moduleLabels['labels'][$theMod.'_tabdescr'];
+							}
+
+								// Item configuration:
 							$items[] = array(
 								$this->addSelectOptionsToItemArray_makeModuleData($theMod),
 								$theMod,
-								$icon
+								$icon,
+								$descr
 							);
 						}
 					}
@@ -3106,7 +3381,10 @@ class t3lib_TCEforms	{
 			if ($iField && $iPath && $row[$iField])	{
 				$iParts = t3lib_div::trimExplode(',',$row[$iField],1);
 				$icon = '../'.$iPath.'/'.trim($iParts[0]);
-			} else $icon='';
+			} elseif (t3lib_div::inList('singlebox,checkbox',$fieldValue['config']['renderMode'])) {
+				$icon = '../typo3/'.t3lib_iconWorks::skinImg($this->backPath,t3lib_iconWorks::getIcon($f_table, $row),'',1);
+			} else $icon = '';
+
 				// Add the item:
 			$items[] = array(
 				t3lib_div::fixed_lgd_cs($lPrefix.strip_tags(t3lib_BEfunc::getRecordTitle($f_table,$row)),$this->titleLen),
@@ -3834,11 +4112,13 @@ class t3lib_TCEforms	{
 				function TBE_EDITOR_curSelected(theField)	{	//
 					var fObjSel = document.'.$formname.'[theField];
 					var retVal="";
-					if (fObjSel && fObjSel.type=="select-multiple")	{
-						var l=fObjSel.length;
-						for (a=0;a<l;a++)	{
-							if (fObjSel.options[a].selected==1)	{
-								retVal+=fObjSel.options[a].value+",";
+					if (fObjSel)	{
+						if (fObjSel.type=="select-multiple" || fObjSel.type=="select-one")	{
+							var l=fObjSel.length;
+							for (a=0;a<l;a++)	{
+								if (fObjSel.options[a].selected==1)	{
+									retVal+=fObjSel.options[a].value+",";
+								}
 							}
 						}
 					}

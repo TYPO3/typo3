@@ -226,21 +226,6 @@ CREATE TABLE sys_domain (
 );
 
 
-#
-# Table structure for table 'sys_language'
-#
-CREATE TABLE sys_language (
-  uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-  pid int(11) unsigned DEFAULT '0' NOT NULL,
-  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  title varchar(80) DEFAULT '' NOT NULL,
-  flag varchar(20) DEFAULT '' NOT NULL,
-  static_lang_isocode int(11) unsigned DEFAULT '0' NOT NULL,
-  PRIMARY KEY (uid),
-  KEY parent (pid)
-);
-
 
 #
 # Table structure for table 'sys_template'

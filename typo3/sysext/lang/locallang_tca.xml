@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Core Database Table labels (for all core fields in the "pages" table plus the table names of backend users, groups and file mounts).</description>
+		<description>Core Database Table labels (for all core fields in the &quot;pages&quot; table plus the table names of backend users, groups and file mounts).</description>
 		<type>database</type>
 		<fileId>EXT:lang/locallang_tca.xml</fileId>
 		<labelContext type="array">
@@ -20,6 +20,9 @@
 			<label index="be_users">Backend user</label>
 			<label index="be_groups">Backend usergroup</label>
 			<label index="sys_filemounts">Filemount</label>
+			<label index="sys_language">Website Language</label>
+			<label index="sys_language.isocode">Select Official Language (ISO code):</label>
+			<label index="sys_language.flag">Select flag icon:</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="pages">Side</label>
@@ -33,6 +36,9 @@
 			<label index="be_users">Opdaterings bruger</label>
 			<label index="be_groups">Opdaterings brugergruppe</label>
 			<label index="sys_filemounts">Filmount</label>
+			<label index="sys_language">Website sprog</label>
+			<label index="sys_language.isocode">Vælg officielt sprog (ISO kode):</label>
+			<label index="sys_language.flag">Vælg flagikon:</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pages">Seite</label>
@@ -462,6 +468,9 @@
 			<label index="be_users" type="integer">104926801</label>
 			<label index="be_groups" type="integer">190780417</label>
 			<label index="sys_filemounts" type="integer">140334923</label>
+			<label index="sys_language" type="integer">144875845</label>
+			<label index="sys_language.isocode" type="integer">49440593</label>
+			<label index="sys_language.flag" type="integer">145114393</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pages" type="integer">26464201</label>
@@ -865,80 +874,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

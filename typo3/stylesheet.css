@@ -230,6 +230,7 @@ TABLE.typo3-TCEforms SPAN.typo3-TCEforms-newToken { font-weight: bold; color: #9
 TABLE.typo3-TCEforms SPAN.typo3-TCEforms-helpText { color: #666666; }
 TABLE.typo3-TCEforms OPTION.c-divider { font-style: italic; color: #666666; background-color: #eeeeee; text-transform : uppercase; margin-top: 10px; border-bottom: 1px solid #666666; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-selectedItem {background-color: #c5c1b5; }
+TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR.c-invalidItem {background-color: #ff6600; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD {border-bottom: 1px #999999 dashed; padding: 1px 3px 1px 3px; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD.c-labelCell { padding-right: 30px; }
 TABLE.typo3-TCEforms TABLE.typo3-TCEforms-select-checkbox TR TD.c-labelCell P.c-descr {margin-left: 30px; font-style: italic;}
