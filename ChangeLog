@@ -1,3 +1,7 @@
+2004-07-02  Michael Stucki  <mundaun@gmx.ch>
+
+	* Fixed bug #191: Small typo in German translation
+
 2004-06-21  Michael Stucki  <mundaun@gmx.ch>
 
 	* Fixed bug #119: One more fe_adminLib.inc issue
