@@ -40,6 +40,11 @@ TCEmain:
 	- Support for MM-records which does NOT get deleted, but is kept... and then support for having data in those!!
 	- Support that the content of a single field can be stored in an external file instead.
 	- Support that a list of fields can be stored in an external XML file instead.
+	- Record Reference tracking in a table in TCEmain; Used to:
+		- Check before deletion that a record is not used.
+		- Used by TemplaVoila where it is hard to track references in FlexForms
+		- A backend module can regenerate the "index-table" if it becomes invalid over time for some reason...
+		- Used for import/export module and anywhere else where we are looking up references!
 - VERSIONING:
 	- See description in appendix.
 - LOGGING:
@@ -58,8 +63,6 @@ TCEmain:
 - BUG:
 	- if a file is uploaded (directly in the form) and there is an upper limit to the number of files which is then exceeded, the uploaded file is STILL copied to the upload folder and will thus be listed as "Files with no references at all (delete them!):"
 	- TCEmain: If there is a comma in the filename supplied as an uploaded file it will confuse the handling of files because the comma is also used to split the filename from each other. (29/04/2003). This is a problem with Inter-Photo Netprint where files uploaded by FTP with comma in the name will not be attached as they should. I think the solution should be found in TCEmain so any filename can be supplied as uploaded.
-	- CHECK: hideAtCopy - does it work??
-	- CHECK: copyAfterDuplFields - check it (tt_content).
 - RELATED: DBint/admin, logging-display, TCEforms, Web>List
 - IDEA: check for potential dangerous php-extension
 - TCEforms/TCEmain available for frontend?
@@ -73,7 +76,7 @@ TCEmain/TCEforms for FlexForms:
 - ['pi_flexform']['config']['ds'] must be set to some default message making sense!
 - CSH for flexforms
 - TCEmain features:
-	- caching of references/files in meta data (for analysis tools)?
+	- caching of references/files in meta data (for analysis tools)? --> NO, rather use the "new" planned reference index table, see above.
 	- mapping values to a plain-text search field(s)
 	- Offering API functions for add/delete/move/copy
 	- Cleaning the original data in field since this may have an invalid structure if the data structure has changed in the meantime.
@@ -106,14 +109,12 @@ TCEforms:
 		- Reflect possible tree-structure for records in Select/Items list
 		- a way to grant read for the selectors without displaying the storagefolder in the treeview?
 		- move one up / one down buttons for the list (also for GROUP element)
-		- Ability to move items when selecting/deselecting them. Or ability to gray out elements in the right list if selected.
 		- CHECK: "multiple" feature, single, sorted and non-sorted selections.
-		- Having elements ordered by the "list-order" of the selection selector must be done in JS (or tcemain)
 		- making copies of select fields etc - check that remapped records are OK treated (with foreign/neg_foreign + free string values)
 		- Letting one selectorbox set another hidden fields value apart from its own? [USE: When selecting a template, that also sets the DS value! (Thus a template is always selected!)]
-		- Exclude field selection better, in a tree?
-		- set the width of the selector field
+		- Exclude field selection better, in a tree? (in IFRAME, could be cool!)
 		- BUG: itemsArrayProcFunc only active IF there is an array! Shouldn't it be in any case?
+		- set the width of the selector field(s)
 	- GROUP type:
 		- [file] allow the selection of files from the system to be added as REFERENCES, not copied! (Message-ID: <003f01c23503$8cdd69d0$55333bd4@comtech>, + notify "illuminatus")
 		- In the thumbnail list add the Edit and view icons as in the good old days.
@@ -123,20 +124,10 @@ TCEforms:
 		  - See JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F23E410@Soulman.hanno-kirchhoff.de>
 		- IFRAME alternative for Element Browser.
 		- set the width of the selector field(s)
-	- ? type:
-		- "Inverse relations"/"Foreign relations": A "Pseudo field", which lists records REFERING TO this record (foreign relations, eg. many small price-records belonging to ONE shop-article). Possibly this could also EDIT those references (attaching/adding new, removing old, no manual ordering though! - This is what RENE is doing (Message-Id: <E17LO4D-0002hj-00@cube.colorcube>)
-	- TRANSLATION:
-		- Concept for translation of other language versions simultaneously? (Showing the default/any language side-by-side?)
-		- Would require UTF-8 display in backend! (or at least using forceCharset being set!)
-		- Support for "original/translation" relationships:
-		  - The idea is that a) one field from a record is configured in [ctrl] to hold the sys_language (0=default, x=translation of default) value AND b) another field is configured to keep a reference back to the original element (for the translated records)
-		    - If the record is "default" then ALL fields are shown.
-		    - If the record is "translated" then SOME fields are disabled for editing (as configured) BUT shown in the form for information (the value from the original).
-			- When the record is selected for display or whatever an API call can fetch the original record and take the value of those configured fields and overlay in the translation (exactly like we do with page_overlay_records)
-			- The core support basically is, that TCEforms automatically understands to disable the fields if needed and display the original content.
-			- see Message-ID: <200205300155190552.08F5563C@smtp.worldonline.dk>, Message-ID: <mailman.1055945641.8348.typo3-english@lists.netfielders.de>
 	- DISPLAY_CONDITIONS:
 		- "readonly" flag, or user group dependant. See "Message-Id: <200210241441.50295.r.fritz@colorcube.de>"
+	- ? type:
+		- "Inverse relations"/"Foreign relations": A "Pseudo field", which lists records REFERING TO this record (foreign relations, eg. many small price-records belonging to ONE shop-article). Possibly this could also EDIT those references (attaching/adding new, removing old, no manual ordering though! - This is what RENE is doing (Message-Id: <E17LO4D-0002hj-00@cube.colorcube>)
 - BUGS:
 	- Ask to save record when you want to add a category with the "Plus" icon.
 	- CHECK: ###STORAGE_PID### incorrectly calculated?
@@ -606,37 +597,60 @@ Authors: Julle and Kasper.
 	OK - ONE element having an official position in the TYPO3 page tree, thus holding the official "uid" of the element! (If this element was deleted from the system, so are all versions of that element!)
 	OK - All versions of this one element being a) at pid "-1" and b) a field "real_id" pointing to the official UID
 	OK - Pages-versioning: For all elements belonging to a version of a page; They are just copied and has no official new version or binding back to whatever element they came from. They just came along. And in fact, they could even have their own version history for them selves!
-	- Backend user access to elements is based on the access restrictions for the official element. THis must be implemented on core level.
+	? - Backend user access to elements is based on the access restrictions for the official element. THis must be implemented on core level.
 
-- Preview in fronend
-  - At page level, done with a simple selector in the AdminPanel. Just like date/user/hidden is done.
-  - For other element, time will show.
-  - clear-cache actions when swapping?
+- Preview in frontend:
+  OK - Pages can be previewed just by their UID (which will select the offline version!)
+  OK - For other elements, sending ADMCMD_vPrev array
+  - Selector in the AdminPanel selects:
+  	- Version of page for current ID?
+	- TAG (across many records)
+
+- Tagging:
+	- Setting tags across records for mass-swapping:
+		- A tag can only be set for ONE version of a record
+		- There is a default tag used when new versions are created called "draft". Users can create own tags and select one of those instead.
+		- Implicitly the published version is tagged "published"
+		- When a tag is swapped into published, the records swapped into archive will get a new tag to remind us that they were swapped out instead of that TAG. Something like "TAG-archive". Only done when TAG-swapping is used, not for spontaneous swapping.
+		- We might set states like "draft (never published, many), published (online, only 1), archive	(has been published, many) - but what significance does that carry?
+
+- Permission setting:
+	- That NO record with PID!=-1 OR PID!=-1 in rootline can be edited or otherwise! This will effectively LOCK every single record capable of versioning in the live tree!
+		Enabled for tables with:
+		- versioning enabled
+		- a certain extra flag set in [ctrl] (eg. "versioning_freezeOnline"
+		- Globally set with a flag in TYPO3_CONF_VARS (so we can build the first version of the site)
+		- "admin" users can circumvent it.
+
+- Swapping versions:
+  OK - clear-cache actions when swapping?
+  OK - Swapping might need to exclude fields like "sorting" etc. Others could be imagined.
+  OK - copies:
+  OK - Swapping should consider if a PAGE record should be swapped record-only OR including its content!!
+  - Swapping pages (pids) should consider that some records might be left inside a versionized branch. Question is; Should ALL records swap pids, not only the versioning_followPages ones?
   - TODO: When swapping; Check "unique" fields (like pages.alias) etc.
+  - Swap by TAG (across many records)
 
-- ID-swapping for versioned elements
-  - Pages-versioning and the impact of NOT swapping tt_content element uids:
+- Trunk/Branch:
+    OK - Create version of single page (as above)
+	OK - Create version of page branch (1-... levels)
+		OK (API) - Either create version of EACH page individually (like tagging in CVS)
+		OK (API) - Or create single-point-of-reference so that pages INSIDE can be swapped, deleted and created (just like content elements can)
+			- Requirement: Intelligent swapping of "sub-element" ids that CAN be traced back to the original!
+
+- Backend:
+  OK - In list-module we might display a) an icon to a version selector (where diff-ing could be done, swapping performed etc.), b) show archive versions as children in the listing.
+  OK - In Page module + TemplaVoila page module: There will be a version selector implemented so users can switch around between versions.
+
+
+- Pages-versioning and the impact of NOT swapping tt_content element uids:
 	- Loose anchor-points, manually made (could be hack-fixed by some intelligent copying tracking)
 	- TemplaVoila references to elements from other pages (will break, however bad practice to reference elements not in some sort of central library which will NEVER be page-versioned anyways)
 	- Insert-records could potentially do the same
 	- Impact assesment: Low.
 	- Clean-up module (in templavoila?) could also track such things
 	- Problems for non-templavoila sites would be low.
-  OK - Swapping might need to exclude fields like "sorting" etc. Others could be imagined.
-  OK - copies:
     - What about a page alias?
-- Trunk/Branch:
-    - Create version of single page (as above)
-	- Create version of page branch (1-... levels)
-		- Either create version of EACH page individually (like tagging in CVS)
-		- Or create single-point-of-reference so that pages INSIDE can be swapped, deleted and created (just like content elements can)
-			- Requirement: Intelligent swapping of "sub-element" ids that CAN be traced back to the original!
-
-- Backend:
-  - For single-editing of records we will show a version list from which to choose a version to edit (just like the delete button is also hidden at multi-edit)
-  - In list-module we might display a) an icon to a version selector (where diff-ing could be done, swapping performed etc.), b) show archive versions as children in the listing.
-  - In Page module + TemplaVoila page module: There will be a version selector implemented so users can switch around between versions.
-
 
 
 

@@ -505,6 +505,7 @@ class t3lib_cs {
 	 * @param	string		To charset (the output charset wanted)
 	 * @param	boolean		If set, then characters that are not available in the destination character set will be encoded as numeric entities
 	 * @return	string		Converted string
+	 * @see convArray()
 	 */
 	function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	{
 		if ($fromCS==$toCS)	return $str;
@@ -535,6 +536,26 @@ class t3lib_cs {
 		return $str;
 	}
 
+	/**
+	 * Convert all elements in ARRAY from one charset to another charset.
+	 * NOTICE: Array is passed by reference!
+	 *
+	 * @param	string		Input array, possibly multidimensional
+	 * @param	string		From charset (the current charset of the string)
+	 * @param	string		To charset (the output charset wanted)
+	 * @param	boolean		If set, then characters that are not available in the destination character set will be encoded as numeric entities
+	 * @return	void
+	 * @see conv()
+	 */
+	function convArray(&$array,$fromCS,$toCS,$useEntityForNoChar=0)	{
+		foreach($array as $key => $value)	{
+			if (is_array($array[$key]))	{
+				$this->convArray($array[$key],$fromCS,$toCS,$useEntityForNoChar);
+			} else {
+				$array[$key] = $this->conv($array[$key],$fromCS,$toCS,$useEntityForNoChar);
+			}
+		}
+	}
 
 	/**
 	 * Converts $str from $charset to UTF-8

@@ -275,6 +275,7 @@ class t3lib_BEfunc	{
 	 * @param	string		Table name
 	 * @param	array		Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" is nice and will save you a DB query.
 	 * @return	void		(Passed by ref).
+	 * @see t3lib_page::fixVersioningPid()
 	 */
 	function fixVersioningPid($table,&$rr)	{
 		global $TCA;
@@ -2752,12 +2753,19 @@ class t3lib_BEfunc	{
 			);
 
 				// Add rows to output array:
+			$realPid = 0;
 			$outputRows = array();
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				if ($uid==$row['uid'])	{
 					$row['_CURRENT_VERSION']=TRUE;
+					$realPid = $row['pid'];
 				}
 				$outputRows[] = $row;
+			}
+
+				// Set real-pid:
+			foreach($outputRows as $idx => $oRow)	{
+				$outputRows[$idx]['_REAL_PID'] = $realPid;
 			}
 
 			return $outputRows;

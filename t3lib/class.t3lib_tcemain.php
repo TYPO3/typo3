@@ -2598,7 +2598,7 @@ class t3lib_TCEmain	{
 										}
 									break;
 									case 'swap':
-										$this->version_swap($table,$id,$value['swapWith']);
+										$this->version_swap($table,$id,$value['swapWith'],$value['swapContent']);
 									break;
 								}
 							break;
@@ -3398,9 +3398,10 @@ class t3lib_TCEmain	{
 	 * @param	string		Table name
 	 * @param	integer		UID of the online record to swap
 	 * @param	integer		UID of the archived version to swap with!
+	 * @param	boolean		Swap content; If set then - for pages - the page content PIDs are swapped as well.
 	 * @return	void
 	 */
-	function version_swap($table,$id,$swapWith)	{
+	function version_swap($table,$id,$swapWith,$swapContent)	{
 		global $TCA;
 
 		/*
@@ -3449,7 +3450,7 @@ class t3lib_TCEmain	{
 					foreach($keepFields as $fN)	{
 						$swapVerBaseArray[$fN] = $curVersion[$fN];
 					}
-
+#debug($swapVerBaseArray);
 						// Check if the swapWith record really IS a version of the original!
 					if ($swapVersion['pid']==-1 && $swapVersion['t3ver_oid']==$id)	{
 #debug($curVersion,'$curVersion');
@@ -3483,16 +3484,19 @@ class t3lib_TCEmain	{
 							$this->log($table,$id,0,0,0,'Swapping successful for table "'.$table.'" uid '.$id.'=>'.$swapWith);
 
 								// SWAPPING pids for subrecords:
-							if ($table=='pages')	{
+							if ($table=='pages' && $swapContent)	{
+
 								// Collect table names that should be copied along with the tables:
 								foreach($TCA as $tN => $tCfg)	{
-									if ($TCA[$tN]['ctrl']['versioning_followPages'] || $tN=='pages')	{
+									if ($TCA[$tN]['ctrl']['versioning_followPages'] || $tN=='pages')	{		// THIS produces the problem that some records might be left inside a versionized branch. Question is; Should ALL records swap pids, not only the versioning_followPages ones?
 										$temporaryPid = -($id+1000000);
 
 										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($id),array('pid'=>$temporaryPid));
 										if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
 										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($swapWith),array('pid'=>$id));
 										if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
+
 										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN,'pid='.intval($temporaryPid),array('pid'=>$swapWith));
 										if ($GLOBALS['TYPO3_DB']->sql_error())	$sqlErrors[]=$GLOBALS['TYPO3_DB']->sql_error();
 
@@ -3502,6 +3506,9 @@ class t3lib_TCEmain	{
 									}
 								}
 							}
+								// Clear cache:
+							$this->clear_cache($table,$id);
+
 						} else $this->log($table,$id,0,0,1,'During Swapping: SQL errors happend: '.implode('; ',$sqlErrors));
 					} else $this->log($table,$id,0,0,1,'In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!');
 				} else $this->log($table,$id,0,0,1,'Error: A record with a negative UID existed - that indicates some inconsistency in the database from prior versioning actions!');

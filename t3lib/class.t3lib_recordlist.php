@@ -270,12 +270,14 @@ class t3lib_recordList {
 	}
 
 	/**
-	 * Returning "listURL" - the script with parameters to which forward/backward requests are sent
+	 * Creates the URL to this script, including all relevant GPvars
 	 *
-	 * @return	string
+	 * @param	string		Alternative id value. Enter blank string for the current id ($this->id)
+	 * @return	string		URL
 	 */
-	function listURL()	{
-		return 'dummy.php?';
+	function listURL($altId='')	{
+		return $this->script.
+			'?id='.(strcmp($altId,'')?$altId:$this->id);
 	}
 
 	/**

@@ -1,3 +1,18 @@
+2004-08-26  Kasper Skårhøj,,,  <kasperYYYY@typo3.com>
+
+	* Bugfix: in browse_links where the record listing contained links to clickmenus:
+	* Added "Save and View" support for records which has another language set; For instance content elements and page overlay records will now view the page with the "&L=xx" parameter set to the language they represent.
+	* Version selector (implemented in template class) implemented in all Web>* modules (depends on "version" extension)
+	* Support for versioning in Web>List module ("v" button) (depends on "version" extension)
+	* Bugfix: In Web>List the page icon is restored. "Was lost, but now is found."
+	* Bugfix: Fixed access control in the interface of the page module and wizard_rte; Now checks if user has proper permissions before displaying certain buttons. Not critical bug, but obviously confusing for users to see the editing forms like if they actually could edit...
+	* Added view-page icons in Web>Page module for the language column view.
+	* Added first support for versioning previews in the frontend (CONTENT and RECORD cObjects)
+	* Implemented new localization modes configurable with TypoScript, "config.sys_language_overlay" and "config.sys_language_softMergeIfNotBlank"
+	* Added automatic character set conversion of frontend output if metaCharset and renderCharset are different. Also incoming POST arrays are converted in the reverse direction.
+	* Changed calling order of TSFE->getCompressedTCarray() in "index_ts.php": Now it loads before ->getConfigArray(). Should be no difference to anyone except internal processing in tslib_fe which can now access the array a little before it usually could.
+	* Added t3lib_cs::convArray() for charset conversion of array contents.
+
 2004-08-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Implemented versioning API in tcemain plus other places. Still not functional for the broad public (will be in 3.8.0). Missing conceptual testing, implementation in the backend interface (still to be discussed how that is best done and fitting workflow) and not at all in the frontend.
