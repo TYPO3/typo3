@@ -940,7 +940,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		$sVar["imagepng()"]=function_exists("imagepng");
 		$sVar["imagejpeg()"]=function_exists("imagejpeg");
 		$sVar["imagettftext()"]=function_exists("imagettftext");
-		$sVar["OTHER: IMAGE_TYPES"]=imagetypes();
+		$sVar["OTHER: IMAGE_TYPES"]=function_exists("imagetypes") ? imagetypes() : 0;
 		$sVar["OTHER: memory_limit"]=ini_get("memory_limit");
 
 		$gE_keys = explode(",","SERVER_PORT,SERVER_SOFTWARE,GATEWAY_INTERFACE,SCRIPT_NAME,PATH_TRANSLATED");
