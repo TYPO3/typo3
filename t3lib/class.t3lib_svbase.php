@@ -457,7 +457,9 @@ function available()	{
 		if ($this->checkInputFile ($absFile)) {
 			if ($fd = fopen ($absFile, 'rb')) {
 				$length = intval($length) ? intval($length) : filesize ($absFile);
-				$out = fread ($fd, $length);
+				if ($length > 0) {
+					$out = fread ($fd, $length);
+				}
 				fclose ($fd);
 			} else {
 				$this->errorPush(T3_ERR_SV_FILE_READ, 'Can not read from file: '.$absFile);
