@@ -154,8 +154,8 @@ class t3lib_basicFileFunctions	{
 		$info['type'] = @filetype($wholePath);
 		$info['owner'] = @fileowner($wholePath);
 		$info['perms'] = @fileperms($wholePath);
-		$info['writeable'] = ($info['perms']&2 || ($theuser==$info['owner'] && $info['perms']&128));
-		$info['readable'] = ($info['perms']&4 || ($theuser==$info['owner'] && $info['perms']&256));
+		$info['writable'] = !@is_writable($wholePath);
+		$info['readable'] = !@is_readable($wholePath);
 		return $info;
 	}
 
