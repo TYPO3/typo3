@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -87,9 +87,8 @@ class tx_indexedsearch_lexer {
 			0x5f,	// "_"
 			0x3a,	// ":"
 			0x2f,	// "/"
-			0x2d,	// "-" DUPE
 			0x27,	// "'"
-	// 0x615 ARABIC SMALL HIGH TAH
+			// 0x615,	// ARABIC SMALL HIGH TAH
 		),
 		'casesensitive' => FALSE,	// Set, if case sensitive indexing is wanted.
 		'removeChars' => array(		// List of unicode numbers of chars that will be removed before words are returned (eg. "-")
@@ -360,11 +359,13 @@ class tx_indexedsearch_lexer {
 			// Ranges are not certain - deducted from the translation tables in t3lib/csconvtbl/
 			// Verified with http://www.unicode.org/charts/ (16/2) - may still not be complete.
 		if (
+				($cp >= 0x3040 && $cp <= 0x30FF) ||		// HIRAGANA and KATAKANA letters
+				($cp >= 0x3130 && $cp <= 0x318F) ||		// Hangul Compatibility Jamo
+				($cp >= 0x3400 && $cp <= 0x4DBF) ||		// CJK Unified Ideographs Extension A
 				($cp >= 0x4E00 && $cp <= 0x9FAF) ||		// CJK Unified Ideographs
 				($cp >= 0xAC00 && $cp <= 0xD7AF) ||		// Hangul Syllables
-				($cp >= 0x3130 && $cp <= 0x318F) ||		// Hangul Compatibility Jamo
-				($cp >= 0x3040 && $cp <= 0x309F) ||		// HIRAGANA letters
-				($cp >= 0x30A0 && $cp <= 0x30FF)		// KATAKANA letters
+				($cp >= 0x20000 && $cp <= 0x2FA1F)		// CJK Unified Ideographs Extension B and CJK Compatibility Ideographs Supplement
+														// also include CJK and Kangxi radicals or Bopomofo letter?
 			)	{
 			return array('cjk');
 		}
