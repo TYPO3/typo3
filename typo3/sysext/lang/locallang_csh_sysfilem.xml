@@ -6,31 +6,6 @@
 		<fileId>EXT:lang/locallang_csh_sysfilem.php</fileId>
 		<csh_table>sys_filemounts</csh_table>
 		<labelContext type="array">
-			<languageKey index=".description"></languageKey>
-			<languageKey index=".details"></languageKey>
-			<languageKey index=".syntax"></languageKey>
-			<languageKey index="_.seeAlso"></languageKey>
-			<languageKey index="_.image"></languageKey>
-			<languageKey index="title.description"></languageKey>
-			<languageKey index="title.details"></languageKey>
-			<languageKey index="title.syntax"></languageKey>
-			<languageKey index="_title.seeAlso"></languageKey>
-			<languageKey index="_title.image"></languageKey>
-			<languageKey index="path.description"></languageKey>
-			<languageKey index="path.details"></languageKey>
-			<languageKey index="path.syntax"></languageKey>
-			<languageKey index="_path.seeAlso"></languageKey>
-			<languageKey index="_path.image"></languageKey>
-			<languageKey index="hidden.description"></languageKey>
-			<languageKey index="hidden.details"></languageKey>
-			<languageKey index="hidden.syntax"></languageKey>
-			<languageKey index="_hidden.seeAlso"></languageKey>
-			<languageKey index="_hidden.image"></languageKey>
-			<languageKey index="base.description"></languageKey>
-			<languageKey index="base.details"></languageKey>
-			<languageKey index="base.syntax"></languageKey>
-			<languageKey index="_base.seeAlso"></languageKey>
-			<languageKey index="_base.image"></languageKey>
 		</labelContext>
 	</meta>
 	<data type="array">
@@ -322,6 +297,16 @@ Sua configuração de PHP também pode impor outras restrições se característ
 			<label index="base.details" type="integer">222419149</label>
 			<label index="base.syntax" type="integer">222419149</label>
 			<label index="_base.image" type="integer">222419149</label>
+			<label index=".alttitle" type="integer">222419149</label>
+			<label index=".image_descr" type="integer">222419149</label>
+			<label index="title.alttitle" type="integer">222419149</label>
+			<label index="title.image_descr" type="integer">222419149</label>
+			<label index="path.alttitle" type="integer">222419149</label>
+			<label index="path.image_descr" type="integer">222419149</label>
+			<label index="hidden.alttitle" type="integer">222419149</label>
+			<label index="hidden.image_descr" type="integer">222419149</label>
+			<label index="base.alttitle" type="integer">222419149</label>
+			<label index="base.image_descr" type="integer">222419149</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>

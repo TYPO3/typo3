@@ -71,7 +71,7 @@ unset($MCONF);
 require('conf.php');
 require($BACK_PATH.'init.php');
 require($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:cms/layout/locallang.php');
+$LANG->includeLLFile('EXT:cms/layout/locallang.xml');
 require_once(PATH_t3lib.'class.t3lib_pagetree.php');
 require_once(PATH_t3lib.'class.t3lib_page.php');
 require_once(PATH_t3lib.'class.t3lib_recordlist.php');

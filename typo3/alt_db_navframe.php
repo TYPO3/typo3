@@ -119,6 +119,21 @@ class localPageTree extends t3lib_browseTree {
 
 		return $thePageIcon.$lockIcon.$pageIdStr;
 	}
+
+	/**
+	 * Adds a red "+" to the input string, $str, if the field "php_tree_stop" in the $row (pages) is set
+	 *
+	 * @param	string		Input string, like a page title for the tree
+	 * @param	array		record row with "php_tree_stop" field
+	 * @return	string		Modified string
+	 * @access private
+	 */
+	function wrapStop($str,$row)	{
+		if ($row['php_tree_stop'])	{
+			$str.='<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => $row['uid']))).'" class="typo3-red">+</a> ';
+		}
+		return $str;
+	}
 }
 
 

@@ -2065,7 +2065,7 @@ class t3lib_div {
 							// Checking if the "subdir" is found:
 						$subdir = substr($fI['dirname'],strlen($dirName));
 						if ($subdir)	{
-							if (ereg('^[[:alnum:]]+\/$',$subdir))	{
+							if (ereg('^[[:alnum:]_]+\/$',$subdir))	{
 								$dirName.= $subdir;
 								if (!@is_dir($dirName))	{
 									t3lib_div::mkdir($dirName);

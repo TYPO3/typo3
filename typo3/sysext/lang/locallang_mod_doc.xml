@@ -1,372 +1,370 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <key index="meta" type="array">
-        <key index="description">Document Module labels</key>
-        <key index="type">module</key>
-        <key index="fileId">EXT:lang/locallang_mod_doc.php</key>
-        <key index="labelContext" type="array">
-            <key index="mlang_labels_tablabel"></key>
-            <key index="mlang_tabs_tab"></key>
-        </key>
-    </key>
-    <key index="data" type="array">
-        <key index="default" type="array">
-            <key index="mlang_labels_tablabel">Editing of records and documents</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="dk" type="array">
-            <key index="mlang_labels_tablabel">Redigering af records og dokumenter</key>
-            <key index="mlang_tabs_tab">Dok.</key>
-        </key>
-        <key index="de" type="array">
-            <key index="mlang_labels_tablabel">Bearbeiten von Datensätzen und Dokumenten</key>
-            <key index="mlang_tabs_tab">Dok.</key>
-        </key>
-        <key index="no" type="array">
-            <key index="mlang_labels_tablabel">Redigering av records og dokumenter</key>
-            <key index="mlang_tabs_tab">Dok.</key>
-        </key>
-        <key index="it" type="array">
-            <key index="mlang_labels_tablabel">Modulo per l'editing di documenti e record</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="fr" type="array">
-            <key index="mlang_labels_tablabel">Edition d'enregistrements et de documents</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="es" type="array">
-            <key index="mlang_labels_tablabel">Edición de registros y documentos</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="nl" type="array">
-            <key index="mlang_labels_tablabel">Bewerken van records en documenten</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="cz" type="array">
-            <key index="mlang_labels_tablabel">Úprava záznamů a dokumentů</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="pl" type="array">
-            <key index="mlang_labels_tablabel">Edycja rekordów i dokumentów</key>
-            <key index="mlang_tabs_tab">Dokumenty</key>
-        </key>
-        <key index="si" type="array">
-            <key index="mlang_labels_tablabel">Urejanje zapisov in dokumentov</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="fi" type="array">
-            <key index="mlang_labels_tablabel">Tietueiden ja dokumettien muotoilu</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="tr" type="array">
-            <key index="mlang_labels_tablabel">Kayıtların ve dökümanların düzenlenmesi</key>
-            <key index="mlang_tabs_tab">Döküman</key>
-        </key>
-        <key index="se" type="array">
-            <key index="mlang_labels_tablabel">Ändra element och dokument</key>
-            <key index="mlang_tabs_tab">Dokument</key>
-        </key>
-        <key index="pt" type="array">
-            <key index="mlang_labels_tablabel">Edição de registros e documentos</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="ru" type="array">
-            <key index="mlang_labels_tablabel">Редактирование записей и документов</key>
-            <key index="mlang_tabs_tab">Док</key>
-        </key>
-        <key index="ro" type="array">
-            <key index="mlang_labels_tablabel">Editarea inregistrarilor si documentelor</key>
-            <key index="mlang_tabs_tab">Documentatie</key>
-        </key>
-        <key index="ch" type="array">
-            <key index="mlang_labels_tablabel">记录与文档编辑</key>
-            <key index="mlang_tabs_tab">文档</key>
-        </key>
-        <key index="sk" type="array">
-            <key index="mlang_labels_tablabel">Pozmenenie záznamu a dokumentov</key>
-            <key index="mlang_tabs_tab">Dok</key>
-        </key>
-        <key index="lt" type="array">
-            <key index="mlang_labels_tablabel">Redaguoti dokumantus ir įrašus</key>
-            <key index="mlang_tabs_tab">Dokumentai</key>
-        </key>
-        <key index="is" type="array">
-            <key index="mlang_labels_tablabel">Ritstýring af skrám og skjölum</key>
-            <key index="mlang_tabs_tab">Skjal</key>
-        </key>
-        <key index="hr" type="array">
-            <key index="mlang_labels_tablabel">Uređivanje zapisa i dokumenata</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="hu" type="array">
-            <key index="mlang_labels_tablabel">Rekordok és dokumentumok szerkesztése</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="gl" type="array">
-            <key index="mlang_labels_tablabel">Allakkat recordsillu aaqqissuinerat</key>
-            <key index="mlang_tabs_tab">Allakkat</key>
-        </key>
-        <key index="th" type="array">
-            <key index="mlang_labels_tablabel">กำลังแก้ไขบันทึกข้อมูลและเอกสาร</key>
-            <key index="mlang_tabs_tab">เอกสาร</key>
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-            <key index="mlang_labels_tablabel">編輯記錄和文件</key>
-            <key index="mlang_tabs_tab">文件</key>
-        </key>
-        <key index="eu" type="array">
-            <key index="mlang_labels_tablabel">Editatzen erregistro eta dokumentuak</key>
-            <key index="mlang_tabs_tab">Dok</key>
-        </key>
-        <key index="bg" type="array">
-            <key index="mlang_labels_tablabel">Редактиране на записи и документи</key>
-            <key index="mlang_tabs_tab">Док</key>
-        </key>
-        <key index="br" type="array">
-            <key index="mlang_labels_tablabel">Edição de registros e documentos</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="et" type="array">
-            <key index="mlang_labels_tablabel">Kirjete ja dokumentide redigeerimine</key>
-            <key index="mlang_tabs_tab">Doc</key>
-        </key>
-        <key index="ar" type="array">
-            <key index="mlang_labels_tablabel">تعديل السجلات و الوثائق</key>
-            <key index="mlang_tabs_tab">وثيقة</key>
-        </key>
-        <key index="he" type="array">
-            <key index="mlang_labels_tablabel">עריכה של רשומות ומסמכים</key>
-            <key index="mlang_tabs_tab">מסמך</key>
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-            <key index="mlang_labels_tablabel">Dzēst visas norādes šajā grupā?</key>
-            <key index="mlang_tabs_tab">Dokumenti</key>
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-        </key>
-    </key>
-    <key index="orig_hash" type="array">
-        <key index="default" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="dk" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="de" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="no" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="it" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="fr" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="es" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="nl" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="cz" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="pl" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="si" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="fi" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="tr" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="se" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="pt" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="ru" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="ro" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="ch" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="sk" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="lt" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="is" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="hr" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="hu" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="gl" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="th" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="eu" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="bg" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="br" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="et" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="ar" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="he" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-            <key index="mlang_labels_tablabel" type="integer">39334020</key>
-            <key index="mlang_tabs_tab" type="integer">128223969</key>
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-        </key>
-    </key>
-    <key index="orig_text" type="array">
-        <key index="default" type="array">
-        </key>
-        <key index="dk" type="array">
-        </key>
-        <key index="de" type="array">
-        </key>
-        <key index="no" type="array">
-        </key>
-        <key index="it" type="array">
-        </key>
-        <key index="fr" type="array">
-        </key>
-        <key index="es" type="array">
-        </key>
-        <key index="nl" type="array">
-        </key>
-        <key index="cz" type="array">
-        </key>
-        <key index="pl" type="array">
-        </key>
-        <key index="si" type="array">
-        </key>
-        <key index="fi" type="array">
-        </key>
-        <key index="tr" type="array">
-        </key>
-        <key index="se" type="array">
-        </key>
-        <key index="pt" type="array">
-        </key>
-        <key index="ru" type="array">
-        </key>
-        <key index="ro" type="array">
-        </key>
-        <key index="ch" type="array">
-        </key>
-        <key index="sk" type="array">
-        </key>
-        <key index="lt" type="array">
-        </key>
-        <key index="is" type="array">
-        </key>
-        <key index="hr" type="array">
-        </key>
-        <key index="hu" type="array">
-        </key>
-        <key index="gl" type="array">
-        </key>
-        <key index="th" type="array">
-        </key>
-        <key index="gr" type="array">
-        </key>
-        <key index="hk" type="array">
-        </key>
-        <key index="eu" type="array">
-        </key>
-        <key index="bg" type="array">
-        </key>
-        <key index="br" type="array">
-        </key>
-        <key index="et" type="array">
-        </key>
-        <key index="ar" type="array">
-        </key>
-        <key index="he" type="array">
-        </key>
-        <key index="ua" type="array">
-        </key>
-        <key index="lv" type="array">
-        </key>
-        <key index="jp" type="array">
-        </key>
-        <key index="vn" type="array">
-        </key>
-    </key>
+	<meta type="array">
+		<description>Document Module labels</description>
+		<type>module</type>
+		<fileId>EXT:lang/locallang_mod_doc.php</fileId>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel">Editing of records and documents</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="mlang_labels_tablabel">Redigering af records og dokumenter</label>
+			<label index="mlang_tabs_tab">Dok.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="mlang_labels_tablabel">Bearbeiten von Datensätzen und Dokumenten</label>
+			<label index="mlang_tabs_tab">Dok.</label>
+		</languageKey>
+		<languageKey index="no" type="array">
+			<label index="mlang_labels_tablabel">Redigering av records og dokumenter</label>
+			<label index="mlang_tabs_tab">Dok.</label>
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="mlang_labels_tablabel">Modulo per l'editing di documenti e record</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="mlang_labels_tablabel">Edition d'enregistrements et de documents</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+			<label index="mlang_labels_tablabel">Edición de registros y documentos</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="mlang_labels_tablabel">Bewerken van records en documenten</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+			<label index="mlang_labels_tablabel">Úprava záznamů a dokumentů</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="pl" type="array">
+			<label index="mlang_labels_tablabel">Edycja rekordów i dokumentów</label>
+			<label index="mlang_tabs_tab">Dokumenty</label>
+		</languageKey>
+		<languageKey index="si" type="array">
+			<label index="mlang_labels_tablabel">Urejanje zapisov in dokumentov</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="mlang_labels_tablabel">Tietueiden ja dokumettien muotoilu</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+			<label index="mlang_labels_tablabel">Kayıtların ve dökümanların düzenlenmesi</label>
+			<label index="mlang_tabs_tab">Döküman</label>
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="mlang_labels_tablabel">Ändra element och dokument</label>
+			<label index="mlang_tabs_tab">Dokument</label>
+		</languageKey>
+		<languageKey index="pt" type="array">
+			<label index="mlang_labels_tablabel">Edição de registros e documentos</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="ru" type="array">
+			<label index="mlang_labels_tablabel">Редактирование записей и документов</label>
+			<label index="mlang_tabs_tab">Док</label>
+		</languageKey>
+		<languageKey index="ro" type="array">
+			<label index="mlang_labels_tablabel">Editarea inregistrarilor si documentelor</label>
+			<label index="mlang_tabs_tab">Documentatie</label>
+		</languageKey>
+		<languageKey index="ch" type="array">
+			<label index="mlang_labels_tablabel">记录与文档编辑</label>
+			<label index="mlang_tabs_tab">文档</label>
+		</languageKey>
+		<languageKey index="sk" type="array">
+			<label index="mlang_labels_tablabel">Pozmenenie záznamu a dokumentov</label>
+			<label index="mlang_tabs_tab">Dok</label>
+		</languageKey>
+		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel">Redaguoti dokumantus ir įrašus</label>
+			<label index="mlang_tabs_tab">Dokumentai</label>
+		</languageKey>
+		<languageKey index="is" type="array">
+			<label index="mlang_labels_tablabel">Ritstýring af skrám og skjölum</label>
+			<label index="mlang_tabs_tab">Skjal</label>
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="mlang_labels_tablabel">Uređivanje zapisa i dokumenata</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+			<label index="mlang_labels_tablabel">Rekordok és dokumentumok szerkesztése</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="gl" type="array">
+			<label index="mlang_labels_tablabel">Allakkat recordsillu aaqqissuinerat</label>
+			<label index="mlang_tabs_tab">Allakkat</label>
+		</languageKey>
+		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel">กำลังแก้ไขบันทึกข้อมูลและเอกสาร</label>
+			<label index="mlang_tabs_tab">เอกสาร</label>
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+			<label index="mlang_labels_tablabel">編輯記錄和文件</label>
+			<label index="mlang_tabs_tab">文件</label>
+		</languageKey>
+		<languageKey index="eu" type="array">
+			<label index="mlang_labels_tablabel">Editatzen erregistro eta dokumentuak</label>
+			<label index="mlang_tabs_tab">Dok</label>
+		</languageKey>
+		<languageKey index="bg" type="array">
+			<label index="mlang_labels_tablabel">Редактиране на записи и документи</label>
+			<label index="mlang_tabs_tab">Док</label>
+		</languageKey>
+		<languageKey index="br" type="array">
+			<label index="mlang_labels_tablabel">Edição de registros e documentos</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="et" type="array">
+			<label index="mlang_labels_tablabel">Kirjete ja dokumentide redigeerimine</label>
+			<label index="mlang_tabs_tab">Doc</label>
+		</languageKey>
+		<languageKey index="ar" type="array">
+			<label index="mlang_labels_tablabel">تعديل السجلات و الوثائق</label>
+			<label index="mlang_tabs_tab">وثيقة</label>
+		</languageKey>
+		<languageKey index="he" type="array">
+			<label index="mlang_labels_tablabel">עריכה של רשומות ומסמכים</label>
+			<label index="mlang_tabs_tab">מסמך</label>
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+			<label index="mlang_labels_tablabel">Dzēst visas norādes šajā grupā?</label>
+			<label index="mlang_tabs_tab">Dokumenti</label>
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="no" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="pl" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="si" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="pt" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="ru" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="ro" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="ch" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="sk" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="lt" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="is" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="gl" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="th" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="eu" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="bg" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="br" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="et" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="ar" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="he" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+			<label index="mlang_labels_tablabel" type="integer">39334020</label>
+			<label index="mlang_tabs_tab" type="integer">128223969</label>
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+		<languageKey index="dk" type="array">
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,9 +24,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Module: User configuration
- * 
+ *
  * This module lets users viev and change their individual settings
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
@@ -34,11 +34,11 @@
  * XHTML compatible.
  */
 
- 
+
 unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require_once (PATH_t3lib.'class.t3lib_tcemain.php');
+require('conf.php');
+require($BACK_PATH.'init.php');
+require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 
 
 // ***************************
@@ -48,12 +48,12 @@ class SC_mod_user_setup_index {
 	var $MCONF=array();
 	var $MOD_MENU=array();
 	var $MOD_SETTINGS=array();
-	var $doc;	
+	var $doc;
 
 	var $content;
 	var $overrideConf;
 	var $OLD_BE_USER;
-	
+
 	/**
 	 * If settings are submitted to _POST[DATA], store them
 	 * NOTICE: This method is called before the template.php is included. See buttom of document
@@ -66,15 +66,15 @@ class SC_mod_user_setup_index {
 		// *******************************************************************************
 		$d = t3lib_div::_POST('data');
 		if (is_array($d))	{
-		
+
 				// UC hashed before applying changes
 			$save_before=md5(serialize($BE_USER->uc));
 
 
 				// PUT SETTINGS into the ->uc array
-				// Language		
+				// Language
 			$BE_USER->uc['lang']=$d['lang'];
-				// Startup				
+				// Startup
 			$BE_USER->uc['condensedMode']=$d['condensedMode'];
 			$BE_USER->uc['noMenuMode']=$d['noMenuMode'];
 			if (t3lib_extMgm::isLoaded('taskcenter'))	$BE_USER->uc['startInTaskCenter']=$d['startInTaskCenter'];
@@ -92,25 +92,25 @@ class SC_mod_user_setup_index {
 			$BE_USER->uc['disableCMlayers']=$d['disableCMlayers'];
 				// Personal:
 			$BE_USER->uc['emailMeAtLogin']=$d['emailMeAtLogin'];
-			
-				
+
+
 			if ($d['setValuesToDefault'])	{	// If every value should be default
 				$BE_USER->resetUC();
 			}
 			$BE_USER->overrideUC();	// Inserts the overriding values.
-		
+
 			$save_after=md5(serialize($BE_USER->uc));
 			if ($save_before!=$save_after)	{	// If something in the uc-array of the user has changed, we save the array...
 				$BE_USER->writeUC($BE_USER->uc);
 				$BE_USER->writelog(254,1,0,1,'Personal settings changed',Array());
 			}
-		
+
 				// Personal data for the users be_user-record (email, name, password...)
 				// If email and name is changed, set it in the users record:
 			$be_user_data=t3lib_div::_GP('ext_beuser');
 			$this->PASSWORD_UPDATED=strlen($be_user_data['password1'].$be_user_data['password2'])>0 ? -1 : 0;
-			if ($be_user_data['email']!=$BE_USER->user['email'] 
-					|| $be_user_data['realName']!=$BE_USER->user['realName'] 
+			if ($be_user_data['email']!=$BE_USER->user['email']
+					|| $be_user_data['realName']!=$BE_USER->user['realName']
 					|| (strlen($be_user_data['password1'])==32
 							&& !strcmp($be_user_data['password1'],$be_user_data['password2']))
 					)	{
@@ -131,7 +131,7 @@ class SC_mod_user_setup_index {
 			}
 		}
 	}
-	
+
 	/**
 	 * Initializes the module for display of the settings form.
 	 */
@@ -142,11 +142,11 @@ class SC_mod_user_setup_index {
 			// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
 		$scriptUser = $this->getRealScriptUserObj();
 		$scriptUser->modAccess($this->MCONF,1);	// ... and checking module access for the logged in user.
-		
+
 			// Getting the 'override' values as set might be set in User TSconfig
 		$this->overrideConf = $BE_USER->getTSConfigProp('setup.override');
 
-			// Create instance of object for output of data		
+			// Create instance of object for output of data
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = "xhtml_trans";
@@ -162,7 +162,7 @@ class SC_mod_user_setup_index {
 		$this->doc->table_TR = '<tr class="bgColor4">';
 		$this->doc->table_TABLE = '<table border="0" cellspacing="1" cellpadding="2">';
 	}
-	
+
 	/**
 	 * Generate the main settings formular:
 	 */
@@ -182,28 +182,28 @@ class SC_mod_user_setup_index {
 			}
 			$this->content.=$this->doc->spacer(25);
 		}
-		
+
 			// Simulate selector box:
 		if ($this->simulateSelector)	{
 			$this->content.=$this->doc->section($LANG->getLL('simulate').':',$this->simulateSelector,1,0,($this->simUser?2:0));
 		}
-		
+
 			// Languages:
 		$opt=array();
 		$opt['000000000']='
 					<option value="">'.$LANG->getLL('lang_default',1).'</option>';
 		$theLanguages=t3lib_div::trimExplode('|',TYPO3_languages);
-		
+
 			// Character set conversion object:
 		$csConvObj = t3lib_div::makeInstance('t3lib_cs');
-		
+
 			// traverse the number of languages:
 		foreach($theLanguages as $val)	{
 			if ($val!='default')	{
 				if ($BE_USER->uc['lang']!='default')	{
 					$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
 				} else $localLabel='';
-				
+
 				$opt[$GLOBALS['LOCAL_LANG']['default']['lang_'.$val].'--'.$val]='
 					<option value="'.$val.'"'.($BE_USER->uc['lang']==$val?' selected="selected"':'').'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
 			}
@@ -214,11 +214,11 @@ class SC_mod_user_setup_index {
 					implode('',$opt).'
 				</select>';
 		$this->content.=$this->doc->section($LANG->getLL('language').':',$code,0,1);
-		
-		
+
+
 			// 'Startup' section:
 		$code = Array();
-		
+
 		$code[2][1] = $this->setLabel('condensedMode','condensedMode').':';
 		$code[2][2] = '<input type="checkbox" name="data[condensedMode]"'.($BE_USER->uc['condensedMode']?' checked="checked"':'').' />';
 		$code[3][1] = $this->setLabel('noMenuMode','noMenuMode').':';
@@ -239,18 +239,18 @@ class SC_mod_user_setup_index {
 		$code[7][2] = '<input type="text" name="data[titleLen]" value="'.$BE_USER->uc['titleLen'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" />';
 
 		$this->content.=$this->doc->section($LANG->getLL('opening').':',$this->doc->table($code),0,1);
-		
-		
+
+
 			// Advanced Operations:
 		$code = Array();
 		$code[1][1] = $this->setLabel('copyLevels').':';
 		$code[1][2] = '<input type="text" name="data[copyLevels]" value="'.$BE_USER->uc['copyLevels'].'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(5).' maxlength="5" /> '.$this->setLabel('levels','copyLevels');
 		$code[2][1] = $this->setLabel('recursiveDelete').':';
 		$code[2][2] = '<input type="checkbox" name="data[recursiveDelete]"'.($BE_USER->uc['recursiveDelete']?' checked="checked"':'').' />';
-		
+
 		$this->content.=$this->doc->section($LANG->getLL('functions').":",$this->doc->table($code),0,1);
-		
-		
+
+
 			// Edit
 		$code = Array();
 		$code[2][1] = $this->setLabel('edit_wideDocument').':';
@@ -268,13 +268,13 @@ class SC_mod_user_setup_index {
 			<option value="icon"'.($BE_USER->uc['edit_showFieldHelp']=='icon'?' selected="selected"':'').'>'.$this->setLabel('edit_showFieldHelp_icon').'</option>
 			<option value="text"'.($BE_USER->uc['edit_showFieldHelp']=='text'?' selected="selected"':'').'>'.$this->setLabel('edit_showFieldHelp_message').'</option>
 		</select>';
-			
+
 		$code[7][1] = $this->setLabel('disableCMlayers').':';
 		$code[7][2] = '<input type="checkbox" name="data[disableCMlayers]"'.($BE_USER->uc['disableCMlayers']?' checked="checked"':'').' />';
-		
+
 		$this->content.=$this->doc->section($LANG->getLL('edit_functions').":",$this->doc->table($code),0,1);
-		
-			
+
+
 			// Personal data
 		$code = Array();
 		$code[1][1] = $this->setLabel('beUser_realName').':';
@@ -287,23 +287,23 @@ class SC_mod_user_setup_index {
 		$code[4][2] = '<input type="password" name="ext_beuser[password1]" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\';" />';
 		$code[5][1] = $this->setLabel('newPasswordAgain').':';
 		$code[5][2] = '<input type="password" name="ext_beuser[password2]" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\'" />';
-		
+
 		$this->content.=$this->doc->section($LANG->getLL('personal_data').":",$this->doc->table($code),0,1);
-		
-		
+
+
 			// Submit:
 		$this->content.=$this->doc->spacer(20);
 		$this->content.=$this->doc->section('','
 			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
 			 &nbsp; <b>'.$LANG->getLL('setToStandard').': </b><input type="checkbox" name="data[setValuesToDefault]" />
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />');
-		
-		
+
+
 			// Notice
 		$this->content.=$this->doc->spacer(5);
 		$this->content.=$this->doc->section('',$LANG->getLL('activateChanges'));
 	}
-	
+
 	/**
 	 * Returns the backend user object, either the global OR the $this->OLD_BE_USER which is set during simulate-user operation.
 	 * Anyways: The REAL user is returned - the one logged in.
@@ -311,14 +311,14 @@ class SC_mod_user_setup_index {
 	function getRealScriptUserObj()	{
 		return is_object($this->OLD_BE_USER) ? $this->OLD_BE_USER : $GLOBALS['BE_USER'];
 	}
-	
+
 	/**
 	 * Will make the simulate-user selector if the logged in user is administrator.
 	 * It will also set the GLOBAL(!) BE_USER to the simulated user selected if any (and set $this->OLD_BE_USER to logged in user)
 	 */
 	function simulateUser()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-		
+
 		// *******************************************************************************
 		// If admin, allow simulation of another user
 		// *******************************************************************************
@@ -327,7 +327,7 @@ class SC_mod_user_setup_index {
 		unset($this->OLD_BE_USER);
 		if ($BE_USER->isAdmin())	{
 			$this->simUser = t3lib_div::_GP('simUser');
-		
+
 				// Make user-selector:
 			$users = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,realName');
 			$opt=array();
@@ -340,11 +340,11 @@ class SC_mod_user_setup_index {
 			}
 			$this->simulateSelector = '<select name="simulateUser" onchange="document.location=\'index.php?simUser=\'+this.options[this.selectedIndex].value;">'.implode('',$opt).'</select>';
 		}
-		
+
 		if ($this->simUser>0)	{	// This can only be set if the previous code was executed.
 			$this->OLD_BE_USER = $BE_USER;	// Save old user...
 			unset($BE_USER);	// Unset current
-		
+
 			$BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');	// New backend user object
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($this->simUser);
@@ -353,7 +353,7 @@ class SC_mod_user_setup_index {
 			$GLOBALS['BE_USER'] = $BE_USER;	// Must do this, because unsetting $BE_USER before apparently unsets the reference to the global variable by this name!
 		}
 	}
-	
+
 	/**
 	 * Prints the content / ends page
 	 */
@@ -364,7 +364,7 @@ class SC_mod_user_setup_index {
 		echo $this->content;		exit;
 		echo debug(array($this->content));
 	}
-	
+
 	/**
 	 * Returns the label $str from getLL() and grays out the value if the $str/$key is found in $this->overrideConf array
 	 */
@@ -400,7 +400,7 @@ $SOBE->storeIncomingData();
 
 // These includes MUST be afterwards the settings are saved...!
 require ($BACK_PATH.'template.php');
-$LANG->includeLLFile('EXT:setup/mod/locallang.php');
+$LANG->includeLLFile('EXT:setup/mod/locallang.xml');
 
 $SOBE->init();
 $SOBE->main();

@@ -6,135 +6,23 @@
 		<fileId>EXT:lang/locallang_csh_be_groups.php</fileId>
 		<csh_table>be_groups</csh_table>
 		<labelContext type="array">
-			<languageKey index=".alttitle"></languageKey>
-			<languageKey index=".description"></languageKey>
-			<languageKey index=".details"></languageKey>
-			<languageKey index=".syntax"></languageKey>
-			<languageKey index="_.seeAlso"></languageKey>
-			<languageKey index="_.image"></languageKey>
-			<languageKey index=".image_descr"></languageKey>
-			<languageKey index="title.alttitle"></languageKey>
-			<languageKey index="title.description"></languageKey>
-			<languageKey index="title.details"></languageKey>
-			<languageKey index="title.syntax"></languageKey>
-			<languageKey index="_title.seeAlso"></languageKey>
-			<languageKey index="_title.image"></languageKey>
-			<languageKey index="title.image_descr"></languageKey>
-			<languageKey index="db_mountpoints.alttitle"></languageKey>
-			<languageKey index="db_mountpoints.description"></languageKey>
-			<languageKey index="db_mountpoints.details"></languageKey>
-			<languageKey index="db_mountpoints.syntax"></languageKey>
-			<languageKey index="_db_mountpoints.seeAlso"></languageKey>
-			<languageKey index="_db_mountpoints.image"></languageKey>
-			<languageKey index="db_mountpoints.image_descr"></languageKey>
-			<languageKey index="file_mountpoints.alttitle"></languageKey>
-			<languageKey index="file_mountpoints.description"></languageKey>
-			<languageKey index="file_mountpoints.details"></languageKey>
-			<languageKey index="file_mountpoints.syntax"></languageKey>
-			<languageKey index="_file_mountpoints.seeAlso"></languageKey>
-			<languageKey index="_file_mountpoints.image"></languageKey>
-			<languageKey index="file_mountpoints.image_descr"></languageKey>
-			<languageKey index="pagetypes_select.alttitle"></languageKey>
-			<languageKey index="pagetypes_select.description"></languageKey>
-			<languageKey index="pagetypes_select.details"></languageKey>
-			<languageKey index="pagetypes_select.syntax"></languageKey>
-			<languageKey index="_pagetypes_select.seeAlso"></languageKey>
-			<languageKey index="_pagetypes_select.image"></languageKey>
-			<languageKey index="pagetypes_select.image_descr"></languageKey>
-			<languageKey index="tables_modify.alttitle"></languageKey>
-			<languageKey index="tables_modify.description"></languageKey>
-			<languageKey index="tables_modify.details"></languageKey>
-			<languageKey index="tables_modify.syntax"></languageKey>
-			<languageKey index="_tables_modify.seeAlso"></languageKey>
-			<languageKey index="_tables_modify.image"></languageKey>
-			<languageKey index="tables_modify.image_descr"></languageKey>
-			<languageKey index="tables_select.alttitle"></languageKey>
-			<languageKey index="tables_select.description"></languageKey>
-			<languageKey index="tables_select.details"></languageKey>
-			<languageKey index="tables_select.syntax"></languageKey>
-			<languageKey index="_tables_select.seeAlso"></languageKey>
-			<languageKey index="_tables_select.image"></languageKey>
-			<languageKey index="tables_select.image_descr"></languageKey>
-			<languageKey index="non_exclude_fields.alttitle"></languageKey>
-			<languageKey index="non_exclude_fields.description"></languageKey>
-			<languageKey index="non_exclude_fields.details"></languageKey>
-			<languageKey index="non_exclude_fields.syntax"></languageKey>
-			<languageKey index="_non_exclude_fields.seeAlso"></languageKey>
-			<languageKey index="_non_exclude_fields.image"></languageKey>
-			<languageKey index="non_exclude_fields.image_descr"></languageKey>
-			<languageKey index="hidden.alttitle"></languageKey>
-			<languageKey index="hidden.description"></languageKey>
-			<languageKey index="hidden.details"></languageKey>
-			<languageKey index="hidden.syntax"></languageKey>
-			<languageKey index="_hidden.seeAlso"></languageKey>
-			<languageKey index="_hidden.image"></languageKey>
-			<languageKey index="hidden.image_descr"></languageKey>
-			<languageKey index="lockToDomain.alttitle"></languageKey>
-			<languageKey index="lockToDomain.description"></languageKey>
-			<languageKey index="lockToDomain.details"></languageKey>
-			<languageKey index="lockToDomain.syntax"></languageKey>
-			<languageKey index="_lockToDomain.seeAlso"></languageKey>
-			<languageKey index="_lockToDomain.image"></languageKey>
-			<languageKey index="lockToDomain.image_descr"></languageKey>
-			<languageKey index="groupMods.alttitle"></languageKey>
-			<languageKey index="groupMods.description"></languageKey>
-			<languageKey index="groupMods.details"></languageKey>
-			<languageKey index="groupMods.syntax"></languageKey>
-			<languageKey index="_groupMods.seeAlso"></languageKey>
-			<languageKey index="_groupMods.image"></languageKey>
-			<languageKey index="groupMods.image_descr"></languageKey>
-			<languageKey index="inc_access_lists.alttitle"></languageKey>
-			<languageKey index="inc_access_lists.description"></languageKey>
-			<languageKey index="inc_access_lists.details"></languageKey>
-			<languageKey index="inc_access_lists.syntax"></languageKey>
-			<languageKey index="_inc_access_lists.seeAlso"></languageKey>
-			<languageKey index="_inc_access_lists.image"></languageKey>
-			<languageKey index="inc_access_lists.image_descr"></languageKey>
-			<languageKey index="description.alttitle"></languageKey>
-			<languageKey index="description.description"></languageKey>
-			<languageKey index="description.details"></languageKey>
-			<languageKey index="description.syntax"></languageKey>
-			<languageKey index="_description.seeAlso"></languageKey>
-			<languageKey index="_description.image"></languageKey>
-			<languageKey index="description.image_descr"></languageKey>
-			<languageKey index="TSconfig.alttitle"></languageKey>
-			<languageKey index="TSconfig.description"></languageKey>
-			<languageKey index="TSconfig.details"></languageKey>
-			<languageKey index="TSconfig.syntax"></languageKey>
-			<languageKey index="_TSconfig.seeAlso"></languageKey>
-			<languageKey index="_TSconfig.image"></languageKey>
-			<languageKey index="TSconfig.image_descr"></languageKey>
-			<languageKey index="hide_in_lists.alttitle"></languageKey>
-			<languageKey index="hide_in_lists.description"></languageKey>
-			<languageKey index="hide_in_lists.details"></languageKey>
-			<languageKey index="hide_in_lists.syntax"></languageKey>
-			<languageKey index="_hide_in_lists.seeAlso"></languageKey>
-			<languageKey index="_hide_in_lists.image"></languageKey>
-			<languageKey index="hide_in_lists.image_descr"></languageKey>
-			<languageKey index="subgroup.alttitle"></languageKey>
-			<languageKey index="subgroup.description"></languageKey>
-			<languageKey index="subgroup.details"></languageKey>
-			<languageKey index="subgroup.syntax"></languageKey>
-			<languageKey index="_subgroup.seeAlso"></languageKey>
-			<languageKey index="_subgroup.image"></languageKey>
-			<languageKey index="subgroup.image_descr"></languageKey>
 		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index=".description">This is the backend administration user groups available for the Backend users. These determine the permissions for the Backend users.</label>
-			<label index="_.seeAlso">be_users, 
-&quot;Inside TYPO3&quot; about users / groups | http://typo3.org/documentation/document-library/doc_core_inside/Users_and_groups/, 
-How to set up a backend user | http://typo3.org/documentation/document-library/doc_core_inside/Setting_up_a_new_use/, 
+			<label index=".description">This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</label>
+			<label index="_.seeAlso">be_users,
+&quot;Inside TYPO3&quot; about users / groups | http://typo3.org/documentation/document-library/doc_core_inside/Users_and_groups/,
+How to set up a backend user | http://typo3.org/documentation/document-library/doc_core_inside/Setting_up_a_new_use/,
 Setting up groups (from &quot;Getting Started&quot;) | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</label>
 			<label index="title.description">Name of the Backend usergroup. The name should be descriptive and can always be changed later.</label>
 			<label index="db_mountpoints.description">Define page tree root points for the group members.</label>
 			<label index="db_mountpoints.details">The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a &quot;Database mount&quot; or &quot;DB mount&quot;.
-DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups. 
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
 However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</label>
 			<label index="_db_mountpoints.seeAlso">be_groups:file_mountpoints,
 be_users:db_mountpoints,
-be_users:options, 
+be_users:options,
 xMOD_csh_corebe:list_module</label>
 			<label index="file_mountpoints.description">Define startpoints for the file folder tree.</label>
 			<label index="file_mountpoints.details">The file folder tree is used by all File-submodules to navigate the file folders on the webserver. If you want users to access the servers file system through TYPO3 they need at least one File Mount (and access to eg. File &gt; Filelist module).
@@ -144,12 +32,12 @@ Notice; as with 'DB mounts' the file folder mounts may be inherited by the users
 			<label index="_file_mountpoints.seeAlso">be_groups:db_mountpoints,
 be_users:file_mountpoints,
 be_users:options,
-be_users, 
-sys_filemounts, 
-xMOD_csh_corebe:filelist_module, 
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
 More about File Mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/</label>
 			<label index="pagetypes_select.description">Select which 'Types' of Pages the members may set.</label>
-			<label index="pagetypes_select.details">This option limits the number of valid choices for the user when he is about to select a page type. 
+			<label index="pagetypes_select.details">This option limits the number of valid choices for the user when he is about to select a page type.
 Choice of Page types (doktype) for a page is associated with a) a special icon for the page, b) permitted tables on the page (see $PAGES_TYPES global variable) and c) if the page is a web page or &quot;system folder&quot; type.</label>
 			<label index="_pagetypes_select.seeAlso">pages:doktype,
 be_groups:inc_access_lists</label>
@@ -159,7 +47,7 @@ Tables allowed for modification is automatically also allowed for selection and 
 
 &lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</label>
 			<label index="_tables_modify.seeAlso">be_groups:tables_select,
-be_groups:inc_access_lists, 
+be_groups:inc_access_lists,
 xMOD_csh_corebe:new_regular</label>
 			<label index="tables_select.description">Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</label>
 			<label index="tables_select.details">This determines which tables - in addition to those selected in the &quot;Tables (modify)&quot; box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
@@ -170,7 +58,7 @@ be_groups:inc_access_lists</label>
 			<label index="non_exclude_fields.details">&quot;Allowed excludefields&quot; allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
 One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of &quot;Allowed excludefields&quot;. So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the &quot;Page: Hide page&quot; exclude field through one of his member groups.
 Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</label>
-			<label index="_non_exclude_fields.seeAlso">be_groups:inc_access_lists, 
+			<label index="_non_exclude_fields.seeAlso">be_groups:inc_access_lists,
 Examples from &quot;Getting Started&quot; | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</label>
 			<label index="hidden.description">Disables a user group.</label>
 			<label index="hidden.details">If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</label>
@@ -184,7 +72,7 @@ fe_groups:lockToDomain</label>
 			<label index="groupMods.details">This determines which 'menu items' are available for the group members.
 This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</label>
 			<label index="_groupMods.seeAlso">be_users:userMods,
-be_groups:inc_access_lists, 
+be_groups:inc_access_lists,
 Backend Interface | http://typo3.org/documentation/document-library/doc_core_inside/Backend_interface/</label>
 			<label index="inc_access_lists.description">Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</label>
 			<label index="_inc_access_lists.seeAlso">be_groups:pagetypes_select,
@@ -199,8 +87,8 @@ be_groups:non_exclude_fields</label>
 			<label index="_TSconfig.seeAlso">be_users:TSconfig
 fe_users:TSconfig
 fe_groups:TSconfig
-pages:TSconfig, 
-TSconfig Reference| http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/, 
+pages:TSconfig,
+TSconfig Reference| http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/,
 TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</label>
 			<label index="hide_in_lists.description">This option will prevent the user group from showing up in lists, where user groups are selected.</label>
 			<label index="hide_in_lists.details">This will affect the list of user groups in the Task Center To-Do and Messages parts as well as the Web&gt;Access module.
@@ -210,49 +98,49 @@ The option is extremely useful if you have general user groups defining some glo
 This feature provides a great way to create 'Supervisor' user groups.</label>
 			<label index=".details">Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
 When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</label>
-			<label index="_.image">EXT:lang/cshimages/snapshot2.png, 
-EXT:lang/cshimages/snapshot1.png</label>
+			<label index="_.image">EXT:lang/cshimages/be_groups_2.png,
+EXT:lang/cshimages/be_groups_1.png</label>
 			<label index=".image_descr">Backend Usergroups are found in the root of the page tree where only &quot;admin&quot; users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
 This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</label>
 			<label index="title.details">Backend Usergroups are identified by their &quot;uid&quot; field value (integer) and therefore the title can always be changed. The &quot;uid&quot; can never be changed for a user group.</label>
-			<label index="_title.image">EXT:lang/cshimages/snapshot2.png</label>
+			<label index="_title.image">EXT:lang/cshimages/be_groups_2.png</label>
 			<label index="title.image_descr">The usergroup title is shown in the record lists.</label>
-			<label index="_db_mountpoints.image">EXT:lang/cshimages/snapshot3.png, 
-EXT:lang/cshimages/snapshot4.png</label>
+			<label index="_db_mountpoints.image">EXT:lang/cshimages/be_groups_3.png,
+EXT:lang/cshimages/be_groups_4.png</label>
 			<label index="db_mountpoints.image_descr">Here a page is added as a &quot;DB mount&quot;...
 ... and in the page tree of member users this will become the starting point for the page tree.</label>
-			<label index="_file_mountpoints.image">EXT:lang/cshimages/snapshot5.png, 
-EXT:lang/cshimages/snapshot6.png, 
-EXT:lang/cshimages/snapshot7.png, 
-EXT:lang/cshimages/snapshot8.png</label>
-			<label index="file_mountpoints.image_descr">The File Mounts are references to records from the &quot;Filemounts&quot; table. 
+			<label index="_file_mountpoints.image">EXT:lang/cshimages/be_groups_5.png,
+EXT:lang/cshimages/be_groups_6.png,
+EXT:lang/cshimages/be_groups_7.png,
+EXT:lang/cshimages/be_groups_8.png</label>
+			<label index="file_mountpoints.image_descr">The File Mounts are references to records from the &quot;Filemounts&quot; table.
 In the Filemount record you define whether the path should be absolute (must be within $TYPO3_CONF_VARS[BE][lockRootPath]) or relative to &quot;fileadmin/&quot;. In this case the Filemount points to &quot;fileadmin/user_upload/&quot;
 This is the page tree of the &quot;admin&quot; user. Notice the folder &quot;user_upload&quot; which is the folder referred to by the File Mount record.
 This shows the mounted folder as seen by a user who was member of the group.
 Filemount records are also created in the page tree root.</label>
-			<label index="_pagetypes_select.image">EXT:lang/cshimages/snapshot9.png</label>
+			<label index="_pagetypes_select.image">EXT:lang/cshimages/be_groups_9.png</label>
 			<label index="pagetypes_select.image_descr">The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</label>
-			<label index="_tables_modify.image">EXT:lang/cshimages/snapshot10.png, 
-EXT:lang/cshimages/snapshot15.png,
-EXT:lang/cshimages/snapshot11.png</label>
+			<label index="_tables_modify.image">EXT:lang/cshimages/be_groups_10.png,
+EXT:lang/cshimages/be_groups_15.png,
+EXT:lang/cshimages/be_groups_11.png</label>
 			<label index="tables_modify.image_descr">The screen shot above shows how the &quot;Create new record&quot; dialog looks for a user limited to editing only &quot;Page&quot; and &quot;Pagecontent&quot; elements.
 The two tables are simply added to the list of &quot;Tables (modify)&quot; in the group Access Lists.
 This is (an example of) the full amount of elements that can be created on the page by the &quot;admin&quot; user for whom there are no restrictions.</label>
-			<label index="_non_exclude_fields.image">EXT:lang/cshimages/snapshot14.png</label>
-			<label index="_groupMods.image">EXT:lang/cshimages/snapshot12.png, 
-EXT:lang/cshimages/snapshot13.png</label>
-			<label index="groupMods.image_descr">The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically &quot;Web &gt; Page&quot; is used for editing of page content. 
+			<label index="_non_exclude_fields.image">EXT:lang/cshimages/be_groups_14.png</label>
+			<label index="_groupMods.image">EXT:lang/cshimages/be_groups_12.png,
+EXT:lang/cshimages/be_groups_13.png</label>
+			<label index="groupMods.image_descr">The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically &quot;Web &gt; Page&quot; is used for editing of page content.
 This is the assignment of Backend Modules to the user from the screen shot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</label>
-			<label index="inc_access_lists.details">If this option is disabled the Access Lists cannot be configured for the group. 
+			<label index="inc_access_lists.details">If this option is disabled the Access Lists cannot be configured for the group.
 When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</label>
 			<label index="TSconfig.details">User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the &quot;Admin Panel&quot; (frontend), various backend tweaks (lock user to IP, show shortcut frame, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</label>
-			<label index="_TSconfig.image">EXT:lang/cshimages/snapshot16.png, 
-EXT:lang/cshimages/snapshot17.png</label>
+			<label index="_TSconfig.image">EXT:lang/cshimages/be_groups_16.png,
+EXT:lang/cshimages/be_groups_17.png</label>
 			<label index="TSconfig.image_descr">In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
 In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
-			<label index=".description"></label>
+			<label index=".description">Dette er Backend brugergrupperne som er til rådighed for Backend brugere. Disse afgør rettighederne for backend brugerne.</label>
 			<label index=".details"></label>
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -780,150 +668,47 @@ Esta característica é uma ótima forma de criar grupos de usuários 'Superviso
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index=".description" type="integer">223285620</label>
-			<label index="_.seeAlso" type="integer">100438398</label>
+		<languageKey index="dk" type="array">
+			<label index=".description" type="integer">24692837</label>
 			<label index="title.description" type="integer">122308063</label>
 			<label index="db_mountpoints.description" type="integer">79572288</label>
-			<label index="db_mountpoints.details" type="integer">102560316</label>
-			<label index="_db_mountpoints.seeAlso" type="integer">18266177</label>
+			<label index="db_mountpoints.details" type="integer">43503742</label>
 			<label index="file_mountpoints.description" type="integer">172594607</label>
 			<label index="file_mountpoints.details" type="integer">65754039</label>
-			<label index="_file_mountpoints.seeAlso" type="integer">43129230</label>
 			<label index="pagetypes_select.description" type="integer">44094257</label>
-			<label index="pagetypes_select.details" type="integer">219739890</label>
-			<label index="_pagetypes_select.seeAlso" type="integer">143468106</label>
+			<label index="pagetypes_select.details" type="integer">266555079</label>
 			<label index="tables_modify.description" type="integer">138526409</label>
 			<label index="tables_modify.details" type="integer">89351209</label>
-			<label index="_tables_modify.seeAlso" type="integer">125148859</label>
 			<label index="tables_select.description" type="integer">79180839</label>
 			<label index="tables_select.details" type="integer">95679269</label>
-			<label index="_tables_select.seeAlso" type="integer">222964706</label>
 			<label index="non_exclude_fields.description" type="integer">17658287</label>
 			<label index="non_exclude_fields.details" type="integer">206989457</label>
-			<label index="_non_exclude_fields.seeAlso" type="integer">130354679</label>
 			<label index="hidden.description" type="integer">190841262</label>
 			<label index="hidden.details" type="integer">191806419</label>
 			<label index="lockToDomain.description" type="integer">139426379</label>
 			<label index="lockToDomain.details" type="integer">85223659</label>
-			<label index="_lockToDomain.seeAlso" type="integer">207873211</label>
 			<label index="groupMods.description" type="integer">249603367</label>
 			<label index="groupMods.details" type="integer">250073054</label>
-			<label index="_groupMods.seeAlso" type="integer">140659555</label>
 			<label index="inc_access_lists.description" type="integer">208224239</label>
-			<label index="_inc_access_lists.seeAlso" type="integer">160061806</label>
 			<label index="description.description" type="integer">189455419</label>
-			<label index="_description.seeAlso" type="integer">77550801</label>
 			<label index="TSconfig.description" type="integer">211026111</label>
 			<label index="TSconfig.syntax" type="integer">185290164</label>
-			<label index="_TSconfig.seeAlso" type="integer">49834457</label>
 			<label index="hide_in_lists.description" type="integer">169107711</label>
 			<label index="hide_in_lists.details" type="integer">20735693</label>
 			<label index="subgroup.description" type="integer">244521906</label>
 			<label index="subgroup.details" type="integer">41206182</label>
-			<label index=".details" type="integer">152748622</label>
-			<label index=".syntax" type="integer">222419149</label>
-			<label index="_.image" type="integer">210467886</label>
-			<label index="title.details" type="integer">131557834</label>
-			<label index="title.syntax" type="integer">222419149</label>
-			<label index="_title.seeAlso" type="integer">222419149</label>
-			<label index="_title.image" type="integer">39296829</label>
-			<label index="db_mountpoints.syntax" type="integer">222419149</label>
-			<label index="_db_mountpoints.image" type="integer">49438226</label>
-			<label index="file_mountpoints.syntax" type="integer">222419149</label>
-			<label index="_file_mountpoints.image" type="integer">122881366</label>
-			<label index="pagetypes_select.syntax" type="integer">222419149</label>
-			<label index="_pagetypes_select.image" type="integer">116665565</label>
-			<label index="tables_modify.syntax" type="integer">222419149</label>
-			<label index="_tables_modify.image" type="integer">35726286</label>
-			<label index="tables_select.syntax" type="integer">222419149</label>
-			<label index="_tables_select.image" type="integer">222419149</label>
-			<label index="non_exclude_fields.syntax" type="integer">222419149</label>
-			<label index="_non_exclude_fields.image" type="integer">71124836</label>
-			<label index="hidden.syntax" type="integer">222419149</label>
-			<label index="_hidden.seeAlso" type="integer">222419149</label>
-			<label index="_hidden.image" type="integer">222419149</label>
-			<label index="lockToDomain.syntax" type="integer">222419149</label>
-			<label index="_lockToDomain.image" type="integer">222419149</label>
-			<label index="groupMods.syntax" type="integer">222419149</label>
-			<label index="_groupMods.image" type="integer">27444658</label>
-			<label index="inc_access_lists.details" type="integer">53107329</label>
-			<label index="inc_access_lists.syntax" type="integer">222419149</label>
-			<label index="_inc_access_lists.image" type="integer">222419149</label>
-			<label index="description.details" type="integer">222419149</label>
-			<label index="description.syntax" type="integer">222419149</label>
-			<label index="_description.image" type="integer">222419149</label>
-			<label index="TSconfig.details" type="integer">267445991</label>
-			<label index="_TSconfig.image" type="integer">27732471</label>
-			<label index="hide_in_lists.syntax" type="integer">222419149</label>
-			<label index="_hide_in_lists.seeAlso" type="integer">222419149</label>
-			<label index="_hide_in_lists.image" type="integer">222419149</label>
-			<label index="subgroup.syntax" type="integer">222419149</label>
-			<label index="_subgroup.seeAlso" type="integer">222419149</label>
-			<label index="_subgroup.image" type="integer">222419149</label>
-			<label index=".alttitle" type="integer">222419149</label>
+			<label index=".details" type="integer">241169600</label>
 			<label index=".image_descr" type="integer">13061130</label>
-			<label index="title.alttitle" type="integer">222419149</label>
+			<label index="title.details" type="integer">131557834</label>
 			<label index="title.image_descr" type="integer">254619996</label>
-			<label index="db_mountpoints.alttitle" type="integer">222419149</label>
 			<label index="db_mountpoints.image_descr" type="integer">217823442</label>
-			<label index="file_mountpoints.alttitle" type="integer">222419149</label>
-			<label index="file_mountpoints.image_descr" type="integer">53812295</label>
-			<label index="pagetypes_select.alttitle" type="integer">222419149</label>
+			<label index="file_mountpoints.image_descr" type="integer">176310322</label>
 			<label index="pagetypes_select.image_descr" type="integer">59933954</label>
-			<label index="tables_modify.alttitle" type="integer">222419149</label>
 			<label index="tables_modify.image_descr" type="integer">125152696</label>
-			<label index="tables_select.alttitle" type="integer">222419149</label>
-			<label index="tables_select.image_descr" type="integer">222419149</label>
-			<label index="non_exclude_fields.alttitle" type="integer">222419149</label>
-			<label index="non_exclude_fields.image_descr" type="integer">222419149</label>
-			<label index="hidden.alttitle" type="integer">222419149</label>
-			<label index="hidden.image_descr" type="integer">222419149</label>
-			<label index="lockToDomain.alttitle" type="integer">222419149</label>
-			<label index="lockToDomain.image_descr" type="integer">222419149</label>
-			<label index="groupMods.alttitle" type="integer">222419149</label>
-			<label index="groupMods.image_descr" type="integer">140894901</label>
-			<label index="inc_access_lists.alttitle" type="integer">222419149</label>
-			<label index="inc_access_lists.image_descr" type="integer">222419149</label>
-			<label index="description.alttitle" type="integer">222419149</label>
-			<label index="description.image_descr" type="integer">222419149</label>
-			<label index="TSconfig.alttitle" type="integer">222419149</label>
+			<label index="groupMods.image_descr" type="integer">193960165</label>
+			<label index="inc_access_lists.details" type="integer">163860974</label>
+			<label index="TSconfig.details" type="integer">267445991</label>
 			<label index="TSconfig.image_descr" type="integer">230747652</label>
-			<label index="hide_in_lists.alttitle" type="integer">222419149</label>
-			<label index="hide_in_lists.image_descr" type="integer">222419149</label>
-			<label index="subgroup.alttitle" type="integer">222419149</label>
-			<label index="subgroup.image_descr" type="integer">222419149</label>
-		</languageKey>
-		<languageKey index="dk" type="array">
-			<label index=".description" type="integer">223285620</label>
-			<label index="title.description" type="integer">136359204</label>
-			<label index="db_mountpoints.description" type="integer">83626085</label>
-			<label index="db_mountpoints.details" type="integer">42992197</label>
-			<label index="file_mountpoints.description" type="integer">103273463</label>
-			<label index="file_mountpoints.details" type="integer">217961862</label>
-			<label index="pagetypes_select.description" type="integer">44094257</label>
-			<label index="pagetypes_select.details" type="integer">87375254</label>
-			<label index="tables_modify.description" type="integer">138526409</label>
-			<label index="tables_modify.details" type="integer">119211823</label>
-			<label index="tables_select.description" type="integer">79180839</label>
-			<label index="tables_select.details" type="integer">88019767</label>
-			<label index="non_exclude_fields.description" type="integer">17658287</label>
-			<label index="non_exclude_fields.details" type="integer">70305008</label>
-			<label index="hidden.description" type="integer">190841262</label>
-			<label index="hidden.details" type="integer">40392035</label>
-			<label index="lockToDomain.description" type="integer">139426379</label>
-			<label index="lockToDomain.details" type="integer">140149042</label>
-			<label index="groupMods.description" type="integer">249603367</label>
-			<label index="groupMods.details" type="integer">250073054</label>
-			<label index="inc_access_lists.description" type="integer">38173329</label>
-			<label index="description.description" type="integer">189455419</label>
-			<label index="TSconfig.description" type="integer">119693809</label>
-			<label index="TSconfig.syntax" type="integer">95248911</label>
-			<label index="hide_in_lists.description" type="integer">169107711</label>
-			<label index="hide_in_lists.details" type="integer">20735693</label>
-			<label index="subgroup.description" type="integer">244521906</label>
-			<label index="subgroup.details" type="integer">31323636</label>
-			<label index=".details" type="integer">33737622</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>
@@ -1291,9 +1076,61 @@ Esta característica é uma ótima forma de criar grupos de usuários 'Superviso
 		</languageKey>
 	</orig_hash>
 	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
 		<languageKey index="dk" type="array">
+			<label index=".details">Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.d
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</label>
+			<label index=".image_descr">Backend Usergroups are found in the root of the page tree where only &quot;admin&quot; users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</label>
+			<label index="title.description">Name of the Backend usergroup. The name should be descriptive and can always be changed later.</label>
+			<label index="title.details">Backend Usergroups are identified by their &quot;uid&quot; field value (integer) and therefore the title can always be changed. The &quot;uid&quot; can never be changed for a user group.</label>
+			<label index="title.image_descr">The usergroup title is shown in the record lists.</label>
+			<label index="db_mountpoints.description">Define page tree root points for the group members.</label>
+			<label index="db_mountpoints.details">The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a &quot;Database mount&quot; or &quot;DB mount&quot;.
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</label>
+			<label index="db_mountpoints.image_descr">Here a page is added as a &quot;DB mount&quot;...
+... and in the page tree of member users this will become the starting point for the page tree.</label>
+			<label index="file_mountpoints.description">Define startpoints for the file folder tree.</label>
+			<label index="file_mountpoints.details">The file folder tree is used by all File-submodules to navigate the file folders on the webserver. If you want users to access the servers file system through TYPO3 they need at least one File Mount (and access to eg. File &gt; Filelist module).
+You can mount a path in &quot;fileadmin/&quot; relative to the TYPO3 installation or you can mount an absolute path somewhere else on the server (outside webroot!). The last requires that $TYPO3_CONF_VARS[BE][lockRootPath] is defined. The path you mount is defined by the Filemount record you refer to by this field. So a File Mount just points to another record inside of which the details are configured. See screen shots below.
+&quot;admin&quot; users always have the &quot;fileadmin/&quot; folder mounted by default.
+Notice; as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</label>
+			<label index="file_mountpoints.image_descr">The File Mounts are references to records from the &quot;Filemounts&quot; table.
+In the Filemount record you define whether the path should be absolute (must be within $TYPO3_CONF_VARS[BE][lockRootPath]) or relative to &quot;fileadmin/&quot;. In this case the Filemount points to &quot;fileadmin/user_upload/&quot;
+This is the page tree of the &quot;admin&quot; user. Notice the folder &quot;user_upload&quot; which is the folder referred to by the File Mount record.
+This shows the mounted folder as seen by a user who was member of the group.
+Filemount records are also created in the page tree root.</label>
+			<label index="pagetypes_select.details">This option limits the number of valid choices for the user when he is about to select a page type.
+Choice of Page types (doktype) for a page is associated with a) a special icon for the page, b) permitted tables on the page (see $PAGES_TYPES global variable) and c) if the page is a web page or &quot;system folder&quot; type.</label>
+			<label index="pagetypes_select.image_descr">The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</label>
+			<label index="tables_modify.details">An important part of setting permissions is to define which database tables a user is allowed to modify.
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the &quot;Tables (listing)&quot; box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</label>
+			<label index="tables_modify.image_descr">The screen shot above shows how the &quot;Create new record&quot; dialog looks for a user limited to editing only &quot;Page&quot; and &quot;Pagecontent&quot; elements.
+The two tables are simply added to the list of &quot;Tables (modify)&quot; in the group Access Lists.
+This is (an example of) the full amount of elements that can be created on the page by the &quot;admin&quot; user for whom there are no restrictions.</label>
+			<label index="tables_select.details">This determines which tables - in addition to those selected in the &quot;Tables (modify)&quot; box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</label>
+			<label index="non_exclude_fields.details">&quot;Allowed excludefields&quot; allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of &quot;Allowed excludefields&quot;. So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the &quot;Page: Hide page&quot; exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</label>
+			<label index="hidden.details">If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</label>
+			<label index="lockToDomain.details">A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
+Setting this to for example &quot;www.my-domain.com&quot; will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</label>
+			<label index="groupMods.image_descr">The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically &quot;Web &gt; Page&quot; is used for editing of page content.
+This is the assignment of Backend Modules to the user from the screen shot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</label>
+			<label index="inc_access_lists.description">Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</label>
+			<label index="inc_access_lists.details">If this option is disabled the Access Lists cannot be configured for the group.
+When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</label>
+			<label index="TSconfig.description">User TSconfig: Additional configuration through TypoScript style values (Advanced).</label>
+			<label index="TSconfig.details">User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the &quot;Admin Panel&quot; (frontend), various backend tweaks (lock user to IP, show shortcut frame, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</label>
+			<label index="TSconfig.syntax">TypoScript syntax without conditions and constants.</label>
+			<label index="TSconfig.image_descr">In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
+In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</label>
+			<label index="subgroup.details">The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</label>
+			<label index=".description">This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>

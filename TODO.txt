@@ -71,6 +71,7 @@ TCEmain/TCEforms for FlexForms:
 - What to do if data structure was not found? (Both TCEmain, TCEforms, templavoila_pi1, t3lib_transferdata)
 - block the creation of FlexForm in FlexForm inside TCEforms.
 - ['pi_flexform']['config']['ds'] must be set to some default message making sense!
+- CSH for flexforms
 - TCEmain features:
 	- caching of references/files in meta data (for analysis tools)?
 	- mapping values to a plain-text search field(s)
@@ -480,6 +481,7 @@ typo3/sysext/___________________________________________:
 		install/	[ingmar]
 OK		cms/
 OK		lang/
+		setup/				(1/400)
 
 typo3/ext/_____________________________________:
 OK		aboutmodules/
@@ -509,7 +511,6 @@ XQ-R:	metatags/
 		rte/				(5/1900)		[H]
 OK		rte_conf/
 OK		setoldpluginlist/
-		setup/				(1/400)
 OK		skin1/
 OK		static_file_edit/
 		sys_action/			(1/400)

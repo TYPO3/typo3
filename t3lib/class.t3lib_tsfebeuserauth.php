@@ -864,7 +864,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	function extGetLL($key)	{
 		global $LOCAL_LANG;
 		if (!is_array($LOCAL_LANG))	{
-			include('./'.TYPO3_mainDir.'sysext/lang/locallang_tsfe.php');
+			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
+			#include('./'.TYPO3_mainDir.'sysext/lang/locallang_tsfe.php');
 			if (!is_array($LOCAL_LANG))		$LOCAL_LANG=array();
 		}
 

@@ -1,1093 +1,1078 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <description>Labels for Web&gt;Info module</description>
-        <type>module</type>
-        <fileId>EXT:cms/web_info/locallang.php</fileId>
-        <labelContext type="array">
-            <languageKey index="page_title"></languageKey>
-            <languageKey index="page_sysnote"></languageKey>
-            <languageKey index="pageInformation"></languageKey>
-            <languageKey index="pages_0"></languageKey>
-            <languageKey index="pages_2"></languageKey>
-            <languageKey index="pages_1"></languageKey>
-            <languageKey index="stat_type_0"></languageKey>
-            <languageKey index="stat_type_1"></languageKey>
-            <languageKey index="stat_type_2"></languageKey>
-            <languageKey index="stat_period"></languageKey>
-            <languageKey index="pI_crUser"></languageKey>
-            <languageKey index="pI_crDate"></languageKey>
-            <languageKey index="pI_lastChange"></languageKey>
-            <languageKey index="pI_lastChangeContent"></languageKey>
-            <languageKey index="hits_title"></languageKey>
-        </labelContext>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="page_title">Pagetree overview</label>
-            <label index="page_sysnote">Internal notes</label>
-            <label index="pageInformation">Page information</label>
-            <label index="pages_0">Basic settings</label>
-            <label index="pages_2">Cache and Age</label>
-            <label index="pages_1">Record overview</label>
-            <label index="stat_type_0">Page hits</label>
-            <label index="stat_type_1">Total hits</label>
-            <label index="stat_type_2">Hits in main sections</label>
-            <label index="stat_period">Statistics in the period %s back to %s</label>
-            <label index="pI_crUser">Created by</label>
-            <label index="pI_crDate">Created date</label>
-            <label index="pI_lastChange">Last change</label>
-            <label index="pI_lastChangeContent">Last change, content</label>
-            <label index="hits_title">Hit Statistics</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="page_title">Overblik over sidetræ</label>
-            <label index="page_sysnote">Interne notater</label>
-            <label index="pageInformation">Sideinformation</label>
-            <label index="pages_0">Grundlæggende indstillinger</label>
-            <label index="pages_2">Cache og alder</label>
-            <label index="pages_1">Element overblik</label>
-            <label index="stat_type_0">Sidevisninger</label>
-            <label index="stat_type_1">Total antal visninger</label>
-            <label index="stat_type_2">Visninger i hovedsektioner</label>
-            <label index="stat_period">Statistik for perioden %s tilbage til %s</label>
-            <label index="pI_crUser">Oprettet af</label>
-            <label index="pI_crDate">Oprettelsesdato</label>
-            <label index="pI_lastChange">Seneste ændring</label>
-            <label index="pI_lastChangeContent">Seneste indholdsændring</label>
-            <label index="hits_title">Sidevisnings-statestik</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="page_title">Seitenbaum-Übersicht</label>
-            <label index="page_sysnote">Interne Notizen</label>
-            <label index="pageInformation">Seiteninformationen</label>
-            <label index="pages_0">Basiseinstellungen</label>
-            <label index="pages_2">Cache und Alter</label>
-            <label index="pages_1">Datensatz-Übersicht</label>
-            <label index="stat_type_0">Seitenzugriffe</label>
-            <label index="stat_type_1">Zugriffe insgesamt</label>
-            <label index="stat_type_2">Zugriffe auf Hauptbereich</label>
-            <label index="stat_period">Statistik der Periode %s zurück bis %s</label>
-            <label index="pI_crUser">Erzeugt von</label>
-            <label index="pI_crDate">Erzeugt am</label>
-            <label index="pI_lastChange">Letzte Änderung</label>
-            <label index="pI_lastChangeContent">Letzte Änderung, Inhalt</label>
-            <label index="hits_title">Zugriffsstatistik</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="page_title">Oversikt over sidetre</label>
-            <label index="page_sysnote">Interne notater</label>
-            <label index="pageInformation">Sideinformasjon</label>
-            <label index="pages_0">Grunnleggende innstillinger</label>
-            <label index="pages_2">Cache og alder</label>
-            <label index="pages_1">Element oversikt</label>
-            <label index="stat_type_0">Sidevisninger</label>
-            <label index="stat_type_1">Totalt antall visninger</label>
-            <label index="stat_type_2">Visninger i hovedseksjoner</label>
-            <label index="stat_period">Statistikk for perioden %s tilbake til %s</label>
-            <label index="pI_crUser">Opprettet av</label>
-            <label index="pI_crDate">Opprettelsesdato</label>
-            <label index="pI_lastChange">Siste endring</label>
-            <label index="pI_lastChangeContent">Siste innholdsendring</label>
-            <label index="hits_title">Sidevisningsstatistikk</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="page_title">Albero delle pagine</label>
-            <label index="page_sysnote">Note interne</label>
-            <label index="pageInformation">Informazioni sulla pagina</label>
-            <label index="pages_0">Impostazioni di base</label>
-            <label index="pages_2">Cache ed età</label>
-            <label index="pages_1">Vista d'insieme dei record</label>
-            <label index="stat_type_0">Visite per pagina</label>
-            <label index="stat_type_1">Visite totali</label>
-            <label index="stat_type_2">Visite raggruppate per sezione</label>
-            <label index="stat_period">Statistiche nel periodo compreso tra %s e %s</label>
-            <label index="pI_crUser">Creato da</label>
-            <label index="pI_crDate">Data creazione</label>
-            <label index="pI_lastChange">Ultimo cambiamento</label>
-            <label index="pI_lastChangeContent">Ultimo cambiamento dei contenuti</label>
-            <label index="hits_title">Statistiche di visita</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="page_title">Arborescence (résumé)</label>
-            <label index="page_sysnote">Notes internes</label>
-            <label index="pageInformation">Information sur la page</label>
-            <label index="pages_0">Paramêtres de base</label>
-            <label index="pages_2">Cache et âge</label>
-            <label index="pages_1">Elément (résumé)</label>
-            <label index="stat_type_0">Affichages de la page</label>
-            <label index="stat_type_1">Affichages totals</label>
-            <label index="stat_type_2">Affichages dans la section principale</label>
-            <label index="stat_period">Statistique pour la période du %s au %s</label>
-            <label index="pI_crUser">Créé par</label>
-            <label index="pI_crDate">Date de création</label>
-            <label index="pI_lastChange">Dernier changement</label>
-            <label index="pI_lastChangeContent">Dernier changement, contenu</label>
-            <label index="hits_title">Statistiques d'affichage</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="page_title">Resumen del árbol de páginas</label>
-            <label index="page_sysnote">Notas internas</label>
-            <label index="pageInformation">Información de la página</label>
-            <label index="pages_0">Configuración básica</label>
-            <label index="pages_2">Caché y antigüedad</label>
-            <label index="pages_1">Resúmen del registro</label>
-            <label index="stat_type_0">Consultas a la página</label>
-            <label index="stat_type_1">Total de Consultas</label>
-            <label index="stat_type_2">Consultas en secciones principales</label>
-            <label index="stat_period">Estadísticas en el periodo %s hasta %s</label>
-            <label index="pI_crUser">Creado por</label>
-            <label index="pI_crDate">Fecha de creación</label>
-            <label index="pI_lastChange">Último cambio</label>
-            <label index="pI_lastChangeContent">Último cambio, contenido</label>
-            <label index="hits_title">Estadísticas de consultas</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="page_title">Overzicht pagina (boomstructuur)</label>
-            <label index="page_sysnote">Interne aantekeningen</label>
-            <label index="pageInformation">Pagina informatie</label>
-            <label index="pages_0">Basis instellingen</label>
-            <label index="pages_2">Cache en ouderdom</label>
-            <label index="pages_1">Overzicht van records</label>
-            <label index="stat_type_0">Pagina hits</label>
-            <label index="stat_type_1">Totaal aantal hits</label>
-            <label index="stat_type_2">Hits in hoofd secties</label>
-            <label index="stat_period">Statistieken over de periode %s terug tot %s</label>
-            <label index="pI_crUser">Gemaakt door</label>
-            <label index="pI_crDate">Gemaakt op</label>
-            <label index="pI_lastChange">Laatste wijziging</label>
-            <label index="pI_lastChangeContent">Laatste wijziging, inhoud</label>
-            <label index="hits_title">Statistieken van hits</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="page_title">Přehled stromu stránek</label>
-            <label index="page_sysnote">Interní poznámky</label>
-            <label index="pageInformation">Informace o stránce</label>
-            <label index="pages_0">Základní nastavení</label>
-            <label index="pages_2">Mezipaměť a stáří</label>
-            <label index="pages_1">Přehled záznamů</label>
-            <label index="stat_type_0">Počet shlédnutí stránky:</label>
-            <label index="stat_type_1">Celkový počet shlédnutí:</label>
-            <label index="stat_type_2">Počet shlédnutí v hlavních oddílech</label>
-            <label index="stat_period">Statistika v období %s zpět k %s</label>
-            <label index="pI_crUser">Vytvořeno kým</label>
-            <label index="pI_crDate">Vytvořeno kdy</label>
-            <label index="pI_lastChange">Poslední změna</label>
-            <label index="pI_lastChangeContent">Poslední změna, obsah</label>
-            <label index="hits_title">Statistika přístupů</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="page_title">Widok Drzewko</label>
-            <label index="page_sysnote">Notatki wewnętrzne</label>
-            <label index="pageInformation">Informacje o stronie</label>
-            <label index="pages_0">Podstawowe ustawienia</label>
-            <label index="pages_2">Cache i wiek</label>
-            <label index="pages_1">Statystyka rekordów</label>
-            <label index="stat_type_0">Trafienia strony</label>
-            <label index="stat_type_1">Wszystkie trafienia</label>
-            <label index="stat_type_2">Trafienia w główne sekcje</label>
-            <label index="stat_period">Statystyki z okresu %s wstecz do %s</label>
-            <label index="pI_crUser">Utworzono przez</label>
-            <label index="pI_crDate">Data utworzenia</label>
-            <label index="pI_lastChange">Ostatnia zmiana</label>
-            <label index="pI_lastChangeContent">Ostatnia zmiana treści</label>
-            <label index="hits_title">Liczba odsłon</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="page_title">Pregled drevesa strani</label>
-            <label index="page_sysnote">Osebne opombe</label>
-            <label index="pageInformation">Podatki o strani</label>
-            <label index="pages_0">Osnovne nastavitve</label>
-            <label index="pages_2">Predpomnilnik in starost</label>
-            <label index="pages_1">Pregled zapisov</label>
-            <label index="stat_type_0">Obiskov strani</label>
-            <label index="stat_type_1">Vseh obiskov</label>
-            <label index="stat_type_2">Obiskov glavnih sekcij</label>
-            <label index="stat_period">Statistika za obdobje od %s do %s</label>
-            <label index="pI_crUser">Ustvaril</label>
-            <label index="pI_crDate">Ustvarjeno dne</label>
-            <label index="pI_lastChange">Zadnja sprememba</label>
-            <label index="pI_lastChangeContent">Zadnja sprememba, vsebina</label>
-            <label index="hits_title">Statistika obiska</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="page_title">Sivurakenteen yleiskuvaus</label>
-            <label index="page_sysnote">Sisäiset tiedottet</label>
-            <label index="pageInformation">Sivu tiedot</label>
-            <label index="pages_0">Perusasetukset</label>
-            <label index="pages_2">Välimuisti ja Ikä</label>
-            <label index="pages_1">Tietueen yleiskuvaus</label>
-            <label index="stat_type_0">Osumia sivulla</label>
-            <label index="stat_type_1">Osumat yhteensä</label>
-            <label index="stat_type_2">Osumat pää valinnoissa</label>
-            <label index="stat_period">Tilasto ajanjaksolta %s - %s</label>
-            <label index="pI_crUser">Luonti</label>
-            <label index="pI_crDate">Luontipäivä</label>
-            <label index="pI_lastChange">Viime muutos</label>
-            <label index="pI_lastChangeContent">Viime muutos, sisältö</label>
-            <label index="hits_title">Sattuma tilastot</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="page_title">Sayfa ağacı genel görüntüsü</label>
-            <label index="page_sysnote">İç kısma ait notlar</label>
-            <label index="pageInformation">Sayfa bilgisi</label>
-            <label index="pages_0">Temel ayarlar</label>
-            <label index="pages_2">Önbellek and Devir</label>
-            <label index="pages_1">Kayıt genel görüntüsü</label>
-            <label index="stat_type_0">Sayfa hitleri</label>
-            <label index="stat_type_1">Toplam hitler</label>
-            <label index="stat_type_2">Ana bölümlerdeki hitler</label>
-            <label index="stat_period">Periyottaki istatistikler %s den %s ye kadardır</label>
-            <label index="pI_crUser">Tarafından yaratıldı</label>
-            <label index="pI_crDate">Yaratılmış tarih</label>
-            <label index="pI_lastChange">Son değişiklik</label>
-            <label index="pI_lastChangeContent">Son değişiklik, içerik</label>
-            <label index="hits_title">Erişim İstatistikleri</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="page_title">Sidstrukturens översikt</label>
-            <label index="page_sysnote">Interna noteringar</label>
-            <label index="pageInformation">Sidinformation</label>
-            <label index="pages_0">Basinställningar</label>
-            <label index="pages_2">Cache och ålder</label>
-            <label index="pages_1">Elementöversikt</label>
-            <label index="stat_type_0">Sidträffar</label>
-            <label index="stat_type_1">Träffar totalt</label>
-            <label index="stat_type_2">Träffar i huvudsektionerna</label>
-            <label index="stat_period">Statistik över perioden %s till %s</label>
-            <label index="pI_crUser">Skapad av</label>
-            <label index="pI_crDate">Skapad</label>
-            <label index="pI_lastChange">Senast ändrad</label>
-            <label index="pI_lastChangeContent">Senast ändrad, innehåll</label>
-            <label index="hits_title">Statistik över träffar</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="page_title">Visualização da Árvore</label>
-            <label index="page_sysnote">Notas internas</label>
-            <label index="pageInformation">Informação da página</label>
-            <label index="pages_0">Definições básicas</label>
-            <label index="pages_2">Cache e Idade</label>
-            <label index="pages_1">Visualização do registo</label>
-            <label index="stat_type_0">Visualizações da página</label>
-            <label index="stat_type_1">Visualizações totais</label>
-            <label index="stat_type_2">Visualizações em áreas principais</label>
-            <label index="stat_period">Estatísticas no período %s até %s</label>
-            <label index="pI_crUser">Criado por</label>
-            <label index="pI_crDate">Criado em</label>
-            <label index="pI_lastChange">Última alteração</label>
-            <label index="pI_lastChangeContent">Última alteração, conteúdo</label>
-            <label index="hits_title">Estatísticas de Visualização</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="page_title">Обзор дерева страниц</label>
-            <label index="page_sysnote">Заметки</label>
-            <label index="pageInformation">Информация о странице</label>
-            <label index="pages_0">Основные параметры</label>
-            <label index="pages_2">Кеш и Возраст</label>
-            <label index="pages_1">Просмотр записи</label>
-            <label index="stat_type_0">Хиты страницы</label>
-            <label index="stat_type_1">Всего хитов</label>
-            <label index="stat_type_2">Хиты в основном разделе</label>
-            <label index="stat_period">Статистика в период %s назад до %s</label>
-            <label index="pI_crUser">Автор</label>
-            <label index="pI_crDate">Дата создания</label>
-            <label index="pI_lastChange">Последние изменения</label>
-            <label index="pI_lastChangeContent">Последние изменения, содержимое</label>
-            <label index="hits_title">Статистика хитов</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="page_title">Structura de pagini</label>
-            <label index="page_sysnote">Note interne</label>
-            <label index="pageInformation">Informaţii despre pagini</label>
-            <label index="pages_0">Setări de bază</label>
-            <label index="pages_2">Cache şi vîrsta</label>
-            <label index="pages_1">Înregistrări - vedere de ansamblu</label>
-            <label index="stat_type_0">Accesări pagină</label>
-            <label index="stat_type_1">Accesări totale</label>
-            <label index="stat_type_2">Accesări în secţiunile de bază</label>
-            <label index="stat_period">Statistici de la %s pînă la %s</label>
-            <label index="pI_crUser">Creat de</label>
-            <label index="pI_crDate">Data creării</label>
-            <label index="pI_lastChange">Ultima schimbare</label>
-            <label index="pI_lastChangeContent">Ultima schimbare, conţinut</label>
-            <label index="hits_title">Statistici accesare</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-            <label index="page_title">页面属总览</label>
-            <label index="page_sysnote">内部记录</label>
-            <label index="pageInformation">页面信息</label>
-            <label index="pages_0">Basic设置</label>
-            <label index="pages_2">存储器和时期</label>
-            <label index="pages_1">记录总览</label>
-            <label index="stat_type_0">找到页面</label>
-            <label index="stat_type_1">找到标题</label>
-            <label index="stat_type_2">找到主要片段</label>
-            <label index="stat_period">周期统计%s返回到%s</label>
-            <label index="pI_crUser">由创建</label>
-            <label index="pI_crDate">创建日期</label>
-            <label index="pI_lastChange">上次更改</label>
-            <label index="pI_lastChangeContent">上次更改,内容</label>
-            <label index="hits_title">找到统计</label>
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="page_title">Prehľad stromu stránok</label>
-            <label index="page_sysnote">Interné poznámky</label>
-            <label index="pageInformation">Informácie o stránke</label>
-            <label index="pages_0">Základné nastavenia</label>
-            <label index="pages_2">Cache a Vek</label>
-            <label index="pages_1">Prehľad záznamu</label>
-            <label index="stat_type_0">Prístupy na stránku</label>
-            <label index="stat_type_1">Celkové prístupy</label>
-            <label index="stat_type_2">Prístupy v hlavných sekciách</label>
-            <label index="stat_period">Štatistika pre obdobie od %s do %s</label>
-            <label index="pI_crUser">Vytvoril</label>
-            <label index="pI_crDate">Dátum vytvorenia</label>
-            <label index="pI_lastChange">Posledná zmena</label>
-            <label index="pI_lastChangeContent">Posledná zmena, obsah</label>
-            <label index="hits_title">Štatistika prístupov</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-            <label index="page_title">Yfirlit yfir skipulagstré</label>
-            <label index="page_sysnote">Nóta fyrir innri notkunn</label>
-            <label index="pageInformation">Siðu upplýsingar</label>
-            <label index="pages_0">Grundvallar stillingar</label>
-            <label index="pages_2">Flýtiminni og Aldur</label>
-            <label index="pages_1">Skrá yfirlit</label>
-            <label index="stat_type_0">Siðu heimsoknir</label>
-            <label index="stat_type_1">Heimsoknir samtals</label>
-            <label index="stat_type_2">Heimsoknir á aðal svæðinum</label>
-            <label index="stat_period">Tölfræði á tímabilið %s til baka til %s</label>
-            <label index="pI_crUser">Stofnað af</label>
-            <label index="pI_crDate">Dagsetning stofnuð</label>
-            <label index="pI_lastChange">Siðasta breyting</label>
-            <label index="pI_lastChangeContent">Siðasta breyting, innihald</label>
-            <label index="hits_title">Heimsokn Tölfræði</label>
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="page_title">Pogled na stablo stranica</label>
-            <label index="page_sysnote">Interne zabilješke</label>
-            <label index="pageInformation">Informacije o stranici</label>
-            <label index="pages_0">Osnovne postavke</label>
-            <label index="pages_2">Međuspremnik (cache) i starost</label>
-            <label index="pages_1">Pregled zapisa</label>
-            <label index="stat_type_0">Posjećenost stranica</label>
-            <label index="stat_type_1">Ukupna posjećenost</label>
-            <label index="stat_type_2">Posjećenost stranica u glavnim skcijama</label>
-            <label index="stat_period">Statistika u periodu od %s do %s</label>
-            <label index="pI_crUser">Napravio</label>
-            <label index="pI_crDate">Datum izrade</label>
-            <label index="pI_lastChange">Posljednja promjena</label>
-            <label index="pI_lastChangeContent">Posljednja promjena, sadržaj</label>
-            <label index="hits_title">Statistika posjećenosti</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="page_title">Oldalfa áttekintés</label>
-            <label index="page_sysnote">Belső megjegyzések</label>
-            <label index="pageInformation">Oldal információ</label>
-            <label index="pages_0">Alap beállítások</label>
-            <label index="pages_2">Cache és Kor</label>
-            <label index="pages_1">rekord áttekintés</label>
-            <label index="stat_type_0">Oldal találatok</label>
-            <label index="stat_type_1">Összes találat</label>
-            <label index="stat_type_2">Találatok a főrészben</label>
-            <label index="stat_period">Statisztikák %s-tól visszamenőleg %s-ig</label>
-            <label index="pI_crUser">Készítette</label>
-            <label index="pI_crDate">Létrehozási dátum</label>
-            <label index="pI_lastChange">Utolsó változtatás</label>
-            <label index="pI_lastChangeContent">Utolsó változtatás, tartalma</label>
-            <label index="hits_title">Találati Statisztikák</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-            <label index="page_title">網頁樹圖概覽</label>
-            <label index="page_sysnote">內部筆記</label>
-            <label index="pageInformation">網頁資料</label>
-            <label index="pages_0">基本設定</label>
-            <label index="pages_2">快取和歷史</label>
-            <label index="pages_1">記錄概覽</label>
-            <label index="stat_type_0">溜覽次數</label>
-            <label index="stat_type_1">總溜覽次數</label>
-            <label index="stat_type_2">主區溜覽次數</label>
-            <label index="stat_period">%s到%s期間的統計</label>
-            <label index="pI_crUser">建立者</label>
-            <label index="pI_crDate">建立日期</label>
-            <label index="pI_lastChange">最後更新</label>
-            <label index="pI_lastChangeContent">最後更新內容</label>
-            <label index="hits_title">溜覽次數統計</label>
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-            <label index="page_title">Преглед на дървото на страницата</label>
-            <label index="page_sysnote">Вътрешни бележки</label>
-            <label index="pageInformation">Информация за страницата</label>
-            <label index="pages_0">Основни настройки</label>
-            <label index="pages_2">Кеш и Възраст</label>
-            <label index="pages_1">Преглед на записа</label>
-            <label index="stat_type_0">Посещения на страницата</label>
-            <label index="stat_type_1">Общо посещения</label>
-            <label index="stat_type_2">Посещения в главната част</label>
-            <label index="stat_period">Статистика през периода %s обратно до %s</label>
-            <label index="pI_crUser">Създадено от</label>
-            <label index="pI_crDate">Дата на създаване</label>
-            <label index="pI_lastChange">Последна промяна</label>
-            <label index="pI_lastChangeContent">Последна промяна, съдържание</label>
-            <label index="hits_title">Статистика на посещенията</label>
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="page_title">Visualização da Árvore</label>
-            <label index="page_sysnote">Notas internas</label>
-            <label index="pageInformation">Informações da página</label>
-            <label index="pages_0">Configurações básicas</label>
-            <label index="pages_2">Cache e Idade</label>
-            <label index="pages_1">Visualização do registro</label>
-            <label index="stat_type_0">Visualizações da página</label>
-            <label index="stat_type_1">Visualizações totais</label>
-            <label index="stat_type_2">Visualizações em áreas principais</label>
-            <label index="stat_period">Estatísticas no período de %s a %s</label>
-            <label index="pI_crUser">Criado por</label>
-            <label index="pI_crDate">Criado em</label>
-            <label index="pI_lastChange">Última alteração</label>
-            <label index="pI_lastChangeContent">Última alteração, conteúdo</label>
-            <label index="hits_title">Estatísticas de Visualização</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-            <label index="page_title">Sisupuu ülevaade</label>
-            <label index="page_sysnote">Sisemised märkmed</label>
-            <label index="pageInformation">Lehekülje informatsioon</label>
-            <label index="pages_0">Algseadistused</label>
-            <label index="pages_2">Vahemälu ja vanus</label>
-            <label index="pages_1">Kirjete ülevaade</label>
-            <label index="stat_type_0">Lehekülje külastusi</label>
-            <label index="stat_type_1">Kokku külastusi</label>
-            <label index="stat_type_2">Peasektsiooni külastusi</label>
-            <label index="stat_period">Statistika perioodil %s kuni %s</label>
-            <label index="pI_crUser">Autor</label>
-            <label index="pI_crDate">Loomise kuupäev</label>
-            <label index="pI_lastChange">Viimati muudetud</label>
-            <label index="pI_lastChangeContent">Viimati sisu muudetud</label>
-            <label index="hits_title">Külastusstatistika</label>
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-            <label index="page_title">תצוגת דפים בצורת אץ</label>
-            <label index="page_sysnote">הערות פנימיות</label>
-            <label index="pageInformation">מידע אודות דף</label>
-            <label index="pages_0">הגדרות בסיסיות</label>
-            <label index="pages_2">מטמון וגיל</label>
-            <label index="pages_1">מידע אודות רשומה</label>
-            <label index="stat_type_0">הורדות של דף</label>
-            <label index="stat_type_1">סה''כ הורדות</label>
-            <label index="stat_type_2">הורדות בחלקים עיקריים</label>
-            <label index="stat_period">סטטיסטיקה לתקופה %s %s</label>
-            <label index="pI_crUser">יוצר על ידי</label>
-            <label index="pI_crDate">תאריך ייצור</label>
-            <label index="pI_lastChange">שינוי אחרון</label>
-            <label index="pI_lastChangeContent">שינוי אחרון, תוכן</label>
-            <label index="hits_title">סטטיסטיקת הורדות</label>
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-            <label index="page_title">Lapu koka pārskats</label>
-            <label index="page_sysnote">Iekšējās piezīmes</label>
-            <label index="pageInformation">Lapas informācija</label>
-            <label index="pages_0">Pamatkonfigurācija</label>
-            <label index="pages_2">Kešs un vecums</label>
-            <label index="pages_1">Ierakstu pārskats</label>
-            <label index="stat_type_0">Lapas apmeklējumi</label>
-            <label index="stat_type_1">Kopā apmeklējumi</label>
-            <label index="stat_type_2">Pamatsekciju apmeklējumi</label>
-            <label index="stat_period">Statistika periodā %s atpakaļ līdz %s</label>
-            <label index="pI_crUser">Izveidoja</label>
-            <label index="pI_crDate">Izveidošanas datums</label>
-            <label index="pI_lastChange">Pēdējie labojumi</label>
-            <label index="pI_lastChangeContent">Pēdējie labojumi saturā</label>
-            <label index="hits_title">Apmeklējuma statistika</label>
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-    </data>
-    <orig_hash type="array">
-        <languageKey index="default" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="dk" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="de" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="no" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="it" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="fr" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="es" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="nl" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="cz" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="pl" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="si" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="fi" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="tr" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="se" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="pt" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="ru" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="ro" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="ch" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="sk" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="hr" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="hu" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="br" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="et" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-            <label index="page_title" type="integer">46867233</label>
-            <label index="page_sysnote" type="integer">267841144</label>
-            <label index="pageInformation" type="integer">9265976</label>
-            <label index="pages_0" type="integer">155022480</label>
-            <label index="pages_2" type="integer">198333821</label>
-            <label index="pages_1" type="integer">71658561</label>
-            <label index="stat_type_0" type="integer">131565852</label>
-            <label index="stat_type_1" type="integer">110417445</label>
-            <label index="stat_type_2" type="integer">86813859</label>
-            <label index="stat_period" type="integer">100779727</label>
-            <label index="pI_crUser" type="integer">210659966</label>
-            <label index="pI_crDate" type="integer">188440759</label>
-            <label index="pI_lastChange" type="integer">48593502</label>
-            <label index="pI_lastChangeContent" type="integer">239918564</label>
-            <label index="hits_title" type="integer">55072016</label>
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-    </orig_hash>
-    <orig_text type="array">
-        <languageKey index="default" type="array">
-        </languageKey>
-        <languageKey index="dk" type="array">
-        </languageKey>
-        <languageKey index="de" type="array">
-        </languageKey>
-        <languageKey index="no" type="array">
-        </languageKey>
-        <languageKey index="it" type="array">
-        </languageKey>
-        <languageKey index="fr" type="array">
-        </languageKey>
-        <languageKey index="es" type="array">
-        </languageKey>
-        <languageKey index="nl" type="array">
-        </languageKey>
-        <languageKey index="cz" type="array">
-        </languageKey>
-        <languageKey index="pl" type="array">
-        </languageKey>
-        <languageKey index="si" type="array">
-        </languageKey>
-        <languageKey index="fi" type="array">
-        </languageKey>
-        <languageKey index="tr" type="array">
-        </languageKey>
-        <languageKey index="se" type="array">
-        </languageKey>
-        <languageKey index="pt" type="array">
-        </languageKey>
-        <languageKey index="ru" type="array">
-        </languageKey>
-        <languageKey index="ro" type="array">
-        </languageKey>
-        <languageKey index="ch" type="array">
-        </languageKey>
-        <languageKey index="sk" type="array">
-        </languageKey>
-        <languageKey index="lt" type="array">
-        </languageKey>
-        <languageKey index="is" type="array">
-        </languageKey>
-        <languageKey index="hr" type="array">
-        </languageKey>
-        <languageKey index="hu" type="array">
-        </languageKey>
-        <languageKey index="gl" type="array">
-        </languageKey>
-        <languageKey index="th" type="array">
-        </languageKey>
-        <languageKey index="gr" type="array">
-        </languageKey>
-        <languageKey index="hk" type="array">
-        </languageKey>
-        <languageKey index="eu" type="array">
-        </languageKey>
-        <languageKey index="bg" type="array">
-        </languageKey>
-        <languageKey index="br" type="array">
-        </languageKey>
-        <languageKey index="et" type="array">
-        </languageKey>
-        <languageKey index="ar" type="array">
-        </languageKey>
-        <languageKey index="he" type="array">
-        </languageKey>
-        <languageKey index="ua" type="array">
-        </languageKey>
-        <languageKey index="lv" type="array">
-        </languageKey>
-        <languageKey index="jp" type="array">
-        </languageKey>
-        <languageKey index="vn" type="array">
-        </languageKey>
-    </orig_text>
+	<meta type="array">
+		<description>Labels for Web&gt;Info module</description>
+		<type>module</type>
+		<fileId>EXT:cms/web_info/locallang.php</fileId>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="page_title">Pagetree overview</label>
+			<label index="page_sysnote">Internal notes</label>
+			<label index="pageInformation">Page information</label>
+			<label index="pages_0">Basic settings</label>
+			<label index="pages_2">Cache and Age</label>
+			<label index="pages_1">Record overview</label>
+			<label index="stat_type_0">Page hits</label>
+			<label index="stat_type_1">Total hits</label>
+			<label index="stat_type_2">Hits in main sections</label>
+			<label index="stat_period">Statistics in the period %s back to %s</label>
+			<label index="pI_crUser">Created by</label>
+			<label index="pI_crDate">Created date</label>
+			<label index="pI_lastChange">Last change</label>
+			<label index="pI_lastChangeContent">Last change, content</label>
+			<label index="hits_title">Hit Statistics</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="page_title">Overblik over sidetræ</label>
+			<label index="page_sysnote">Interne notater</label>
+			<label index="pageInformation">Sideinformation</label>
+			<label index="pages_0">Grundlæggende indstillinger</label>
+			<label index="pages_2">Cache og alder</label>
+			<label index="pages_1">Element overblik</label>
+			<label index="stat_type_0">Sidevisninger</label>
+			<label index="stat_type_1">Total antal visninger</label>
+			<label index="stat_type_2">Visninger i hovedsektioner</label>
+			<label index="stat_period">Statistik for perioden %s tilbage til %s</label>
+			<label index="pI_crUser">Oprettet af</label>
+			<label index="pI_crDate">Oprettelsesdato</label>
+			<label index="pI_lastChange">Seneste ændring</label>
+			<label index="pI_lastChangeContent">Seneste indholdsændring</label>
+			<label index="hits_title">Sidevisnings-statestik</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="page_title">Seitenbaum-Übersicht</label>
+			<label index="page_sysnote">Interne Notizen</label>
+			<label index="pageInformation">Seiteninformationen</label>
+			<label index="pages_0">Basiseinstellungen</label>
+			<label index="pages_2">Cache und Alter</label>
+			<label index="pages_1">Datensatz-Übersicht</label>
+			<label index="stat_type_0">Seitenzugriffe</label>
+			<label index="stat_type_1">Zugriffe insgesamt</label>
+			<label index="stat_type_2">Zugriffe auf Hauptbereich</label>
+			<label index="stat_period">Statistik der Periode %s zurück bis %s</label>
+			<label index="pI_crUser">Erzeugt von</label>
+			<label index="pI_crDate">Erzeugt am</label>
+			<label index="pI_lastChange">Letzte Änderung</label>
+			<label index="pI_lastChangeContent">Letzte Änderung, Inhalt</label>
+			<label index="hits_title">Zugriffsstatistik</label>
+		</languageKey>
+		<languageKey index="no" type="array">
+			<label index="page_title">Oversikt over sidetre</label>
+			<label index="page_sysnote">Interne notater</label>
+			<label index="pageInformation">Sideinformasjon</label>
+			<label index="pages_0">Grunnleggende innstillinger</label>
+			<label index="pages_2">Cache og alder</label>
+			<label index="pages_1">Element oversikt</label>
+			<label index="stat_type_0">Sidevisninger</label>
+			<label index="stat_type_1">Totalt antall visninger</label>
+			<label index="stat_type_2">Visninger i hovedseksjoner</label>
+			<label index="stat_period">Statistikk for perioden %s tilbake til %s</label>
+			<label index="pI_crUser">Opprettet av</label>
+			<label index="pI_crDate">Opprettelsesdato</label>
+			<label index="pI_lastChange">Siste endring</label>
+			<label index="pI_lastChangeContent">Siste innholdsendring</label>
+			<label index="hits_title">Sidevisningsstatistikk</label>
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="page_title">Albero delle pagine</label>
+			<label index="page_sysnote">Note interne</label>
+			<label index="pageInformation">Informazioni sulla pagina</label>
+			<label index="pages_0">Impostazioni di base</label>
+			<label index="pages_2">Cache ed età</label>
+			<label index="pages_1">Vista d'insieme dei record</label>
+			<label index="stat_type_0">Visite per pagina</label>
+			<label index="stat_type_1">Visite totali</label>
+			<label index="stat_type_2">Visite raggruppate per sezione</label>
+			<label index="stat_period">Statistiche nel periodo compreso tra %s e %s</label>
+			<label index="pI_crUser">Creato da</label>
+			<label index="pI_crDate">Data creazione</label>
+			<label index="pI_lastChange">Ultimo cambiamento</label>
+			<label index="pI_lastChangeContent">Ultimo cambiamento dei contenuti</label>
+			<label index="hits_title">Statistiche di visita</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="page_title">Arborescence (résumé)</label>
+			<label index="page_sysnote">Notes internes</label>
+			<label index="pageInformation">Information sur la page</label>
+			<label index="pages_0">Paramêtres de base</label>
+			<label index="pages_2">Cache et âge</label>
+			<label index="pages_1">Elément (résumé)</label>
+			<label index="stat_type_0">Affichages de la page</label>
+			<label index="stat_type_1">Affichages totals</label>
+			<label index="stat_type_2">Affichages dans la section principale</label>
+			<label index="stat_period">Statistique pour la période du %s au %s</label>
+			<label index="pI_crUser">Créé par</label>
+			<label index="pI_crDate">Date de création</label>
+			<label index="pI_lastChange">Dernier changement</label>
+			<label index="pI_lastChangeContent">Dernier changement, contenu</label>
+			<label index="hits_title">Statistiques d'affichage</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+			<label index="page_title">Resumen del árbol de páginas</label>
+			<label index="page_sysnote">Notas internas</label>
+			<label index="pageInformation">Información de la página</label>
+			<label index="pages_0">Configuración básica</label>
+			<label index="pages_2">Caché y antigüedad</label>
+			<label index="pages_1">Resúmen del registro</label>
+			<label index="stat_type_0">Consultas a la página</label>
+			<label index="stat_type_1">Total de Consultas</label>
+			<label index="stat_type_2">Consultas en secciones principales</label>
+			<label index="stat_period">Estadísticas en el periodo %s hasta %s</label>
+			<label index="pI_crUser">Creado por</label>
+			<label index="pI_crDate">Fecha de creación</label>
+			<label index="pI_lastChange">Último cambio</label>
+			<label index="pI_lastChangeContent">Último cambio, contenido</label>
+			<label index="hits_title">Estadísticas de consultas</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="page_title">Overzicht pagina (boomstructuur)</label>
+			<label index="page_sysnote">Interne aantekeningen</label>
+			<label index="pageInformation">Pagina informatie</label>
+			<label index="pages_0">Basis instellingen</label>
+			<label index="pages_2">Cache en ouderdom</label>
+			<label index="pages_1">Overzicht van records</label>
+			<label index="stat_type_0">Pagina hits</label>
+			<label index="stat_type_1">Totaal aantal hits</label>
+			<label index="stat_type_2">Hits in hoofd secties</label>
+			<label index="stat_period">Statistieken over de periode %s terug tot %s</label>
+			<label index="pI_crUser">Gemaakt door</label>
+			<label index="pI_crDate">Gemaakt op</label>
+			<label index="pI_lastChange">Laatste wijziging</label>
+			<label index="pI_lastChangeContent">Laatste wijziging, inhoud</label>
+			<label index="hits_title">Statistieken van hits</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+			<label index="page_title">Přehled stromu stránek</label>
+			<label index="page_sysnote">Interní poznámky</label>
+			<label index="pageInformation">Informace o stránce</label>
+			<label index="pages_0">Základní nastavení</label>
+			<label index="pages_2">Mezipaměť a stáří</label>
+			<label index="pages_1">Přehled záznamů</label>
+			<label index="stat_type_0">Počet shlédnutí stránky:</label>
+			<label index="stat_type_1">Celkový počet shlédnutí:</label>
+			<label index="stat_type_2">Počet shlédnutí v hlavních oddílech</label>
+			<label index="stat_period">Statistika v období %s zpět k %s</label>
+			<label index="pI_crUser">Vytvořeno kým</label>
+			<label index="pI_crDate">Vytvořeno kdy</label>
+			<label index="pI_lastChange">Poslední změna</label>
+			<label index="pI_lastChangeContent">Poslední změna, obsah</label>
+			<label index="hits_title">Statistika přístupů</label>
+		</languageKey>
+		<languageKey index="pl" type="array">
+			<label index="page_title">Widok Drzewko</label>
+			<label index="page_sysnote">Notatki wewnętrzne</label>
+			<label index="pageInformation">Informacje o stronie</label>
+			<label index="pages_0">Podstawowe ustawienia</label>
+			<label index="pages_2">Cache i wiek</label>
+			<label index="pages_1">Statystyka rekordów</label>
+			<label index="stat_type_0">Trafienia strony</label>
+			<label index="stat_type_1">Wszystkie trafienia</label>
+			<label index="stat_type_2">Trafienia w główne sekcje</label>
+			<label index="stat_period">Statystyki z okresu %s wstecz do %s</label>
+			<label index="pI_crUser">Utworzono przez</label>
+			<label index="pI_crDate">Data utworzenia</label>
+			<label index="pI_lastChange">Ostatnia zmiana</label>
+			<label index="pI_lastChangeContent">Ostatnia zmiana treści</label>
+			<label index="hits_title">Liczba odsłon</label>
+		</languageKey>
+		<languageKey index="si" type="array">
+			<label index="page_title">Pregled drevesa strani</label>
+			<label index="page_sysnote">Osebne opombe</label>
+			<label index="pageInformation">Podatki o strani</label>
+			<label index="pages_0">Osnovne nastavitve</label>
+			<label index="pages_2">Predpomnilnik in starost</label>
+			<label index="pages_1">Pregled zapisov</label>
+			<label index="stat_type_0">Obiskov strani</label>
+			<label index="stat_type_1">Vseh obiskov</label>
+			<label index="stat_type_2">Obiskov glavnih sekcij</label>
+			<label index="stat_period">Statistika za obdobje od %s do %s</label>
+			<label index="pI_crUser">Ustvaril</label>
+			<label index="pI_crDate">Ustvarjeno dne</label>
+			<label index="pI_lastChange">Zadnja sprememba</label>
+			<label index="pI_lastChangeContent">Zadnja sprememba, vsebina</label>
+			<label index="hits_title">Statistika obiska</label>
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="page_title">Sivurakenteen yleiskuvaus</label>
+			<label index="page_sysnote">Sisäiset tiedottet</label>
+			<label index="pageInformation">Sivu tiedot</label>
+			<label index="pages_0">Perusasetukset</label>
+			<label index="pages_2">Välimuisti ja Ikä</label>
+			<label index="pages_1">Tietueen yleiskuvaus</label>
+			<label index="stat_type_0">Osumia sivulla</label>
+			<label index="stat_type_1">Osumat yhteensä</label>
+			<label index="stat_type_2">Osumat pää valinnoissa</label>
+			<label index="stat_period">Tilasto ajanjaksolta %s - %s</label>
+			<label index="pI_crUser">Luonti</label>
+			<label index="pI_crDate">Luontipäivä</label>
+			<label index="pI_lastChange">Viime muutos</label>
+			<label index="pI_lastChangeContent">Viime muutos, sisältö</label>
+			<label index="hits_title">Sattuma tilastot</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+			<label index="page_title">Sayfa ağacı genel görüntüsü</label>
+			<label index="page_sysnote">İç kısma ait notlar</label>
+			<label index="pageInformation">Sayfa bilgisi</label>
+			<label index="pages_0">Temel ayarlar</label>
+			<label index="pages_2">Önbellek and Devir</label>
+			<label index="pages_1">Kayıt genel görüntüsü</label>
+			<label index="stat_type_0">Sayfa hitleri</label>
+			<label index="stat_type_1">Toplam hitler</label>
+			<label index="stat_type_2">Ana bölümlerdeki hitler</label>
+			<label index="stat_period">Periyottaki istatistikler %s den %s ye kadardır</label>
+			<label index="pI_crUser">Tarafından yaratıldı</label>
+			<label index="pI_crDate">Yaratılmış tarih</label>
+			<label index="pI_lastChange">Son değişiklik</label>
+			<label index="pI_lastChangeContent">Son değişiklik, içerik</label>
+			<label index="hits_title">Erişim İstatistikleri</label>
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="page_title">Sidstrukturens översikt</label>
+			<label index="page_sysnote">Interna noteringar</label>
+			<label index="pageInformation">Sidinformation</label>
+			<label index="pages_0">Basinställningar</label>
+			<label index="pages_2">Cache och ålder</label>
+			<label index="pages_1">Elementöversikt</label>
+			<label index="stat_type_0">Sidträffar</label>
+			<label index="stat_type_1">Träffar totalt</label>
+			<label index="stat_type_2">Träffar i huvudsektionerna</label>
+			<label index="stat_period">Statistik över perioden %s till %s</label>
+			<label index="pI_crUser">Skapad av</label>
+			<label index="pI_crDate">Skapad</label>
+			<label index="pI_lastChange">Senast ändrad</label>
+			<label index="pI_lastChangeContent">Senast ändrad, innehåll</label>
+			<label index="hits_title">Statistik över träffar</label>
+		</languageKey>
+		<languageKey index="pt" type="array">
+			<label index="page_title">Visualização da Árvore</label>
+			<label index="page_sysnote">Notas internas</label>
+			<label index="pageInformation">Informação da página</label>
+			<label index="pages_0">Definições básicas</label>
+			<label index="pages_2">Cache e Idade</label>
+			<label index="pages_1">Visualização do registo</label>
+			<label index="stat_type_0">Visualizações da página</label>
+			<label index="stat_type_1">Visualizações totais</label>
+			<label index="stat_type_2">Visualizações em áreas principais</label>
+			<label index="stat_period">Estatísticas no período %s até %s</label>
+			<label index="pI_crUser">Criado por</label>
+			<label index="pI_crDate">Criado em</label>
+			<label index="pI_lastChange">Última alteração</label>
+			<label index="pI_lastChangeContent">Última alteração, conteúdo</label>
+			<label index="hits_title">Estatísticas de Visualização</label>
+		</languageKey>
+		<languageKey index="ru" type="array">
+			<label index="page_title">Обзор дерева страниц</label>
+			<label index="page_sysnote">Заметки</label>
+			<label index="pageInformation">Информация о странице</label>
+			<label index="pages_0">Основные параметры</label>
+			<label index="pages_2">Кеш и Возраст</label>
+			<label index="pages_1">Просмотр записи</label>
+			<label index="stat_type_0">Хиты страницы</label>
+			<label index="stat_type_1">Всего хитов</label>
+			<label index="stat_type_2">Хиты в основном разделе</label>
+			<label index="stat_period">Статистика в период %s назад до %s</label>
+			<label index="pI_crUser">Автор</label>
+			<label index="pI_crDate">Дата создания</label>
+			<label index="pI_lastChange">Последние изменения</label>
+			<label index="pI_lastChangeContent">Последние изменения, содержимое</label>
+			<label index="hits_title">Статистика хитов</label>
+		</languageKey>
+		<languageKey index="ro" type="array">
+			<label index="page_title">Structura de pagini</label>
+			<label index="page_sysnote">Note interne</label>
+			<label index="pageInformation">Informaţii despre pagini</label>
+			<label index="pages_0">Setări de bază</label>
+			<label index="pages_2">Cache şi vîrsta</label>
+			<label index="pages_1">Înregistrări - vedere de ansamblu</label>
+			<label index="stat_type_0">Accesări pagină</label>
+			<label index="stat_type_1">Accesări totale</label>
+			<label index="stat_type_2">Accesări în secţiunile de bază</label>
+			<label index="stat_period">Statistici de la %s pînă la %s</label>
+			<label index="pI_crUser">Creat de</label>
+			<label index="pI_crDate">Data creării</label>
+			<label index="pI_lastChange">Ultima schimbare</label>
+			<label index="pI_lastChangeContent">Ultima schimbare, conţinut</label>
+			<label index="hits_title">Statistici accesare</label>
+		</languageKey>
+		<languageKey index="ch" type="array">
+			<label index="page_title">页面属总览</label>
+			<label index="page_sysnote">内部记录</label>
+			<label index="pageInformation">页面信息</label>
+			<label index="pages_0">Basic设置</label>
+			<label index="pages_2">存储器和时期</label>
+			<label index="pages_1">记录总览</label>
+			<label index="stat_type_0">找到页面</label>
+			<label index="stat_type_1">找到标题</label>
+			<label index="stat_type_2">找到主要片段</label>
+			<label index="stat_period">周期统计%s返回到%s</label>
+			<label index="pI_crUser">由创建</label>
+			<label index="pI_crDate">创建日期</label>
+			<label index="pI_lastChange">上次更改</label>
+			<label index="pI_lastChangeContent">上次更改,内容</label>
+			<label index="hits_title">找到统计</label>
+		</languageKey>
+		<languageKey index="sk" type="array">
+			<label index="page_title">Prehľad stromu stránok</label>
+			<label index="page_sysnote">Interné poznámky</label>
+			<label index="pageInformation">Informácie o stránke</label>
+			<label index="pages_0">Základné nastavenia</label>
+			<label index="pages_2">Cache a Vek</label>
+			<label index="pages_1">Prehľad záznamu</label>
+			<label index="stat_type_0">Prístupy na stránku</label>
+			<label index="stat_type_1">Celkové prístupy</label>
+			<label index="stat_type_2">Prístupy v hlavných sekciách</label>
+			<label index="stat_period">Štatistika pre obdobie od %s do %s</label>
+			<label index="pI_crUser">Vytvoril</label>
+			<label index="pI_crDate">Dátum vytvorenia</label>
+			<label index="pI_lastChange">Posledná zmena</label>
+			<label index="pI_lastChangeContent">Posledná zmena, obsah</label>
+			<label index="hits_title">Štatistika prístupov</label>
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+			<label index="page_title">Yfirlit yfir skipulagstré</label>
+			<label index="page_sysnote">Nóta fyrir innri notkunn</label>
+			<label index="pageInformation">Siðu upplýsingar</label>
+			<label index="pages_0">Grundvallar stillingar</label>
+			<label index="pages_2">Flýtiminni og Aldur</label>
+			<label index="pages_1">Skrá yfirlit</label>
+			<label index="stat_type_0">Siðu heimsoknir</label>
+			<label index="stat_type_1">Heimsoknir samtals</label>
+			<label index="stat_type_2">Heimsoknir á aðal svæðinum</label>
+			<label index="stat_period">Tölfræði á tímabilið %s til baka til %s</label>
+			<label index="pI_crUser">Stofnað af</label>
+			<label index="pI_crDate">Dagsetning stofnuð</label>
+			<label index="pI_lastChange">Siðasta breyting</label>
+			<label index="pI_lastChangeContent">Siðasta breyting, innihald</label>
+			<label index="hits_title">Heimsokn Tölfræði</label>
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="page_title">Pogled na stablo stranica</label>
+			<label index="page_sysnote">Interne zabilješke</label>
+			<label index="pageInformation">Informacije o stranici</label>
+			<label index="pages_0">Osnovne postavke</label>
+			<label index="pages_2">Međuspremnik (cache) i starost</label>
+			<label index="pages_1">Pregled zapisa</label>
+			<label index="stat_type_0">Posjećenost stranica</label>
+			<label index="stat_type_1">Ukupna posjećenost</label>
+			<label index="stat_type_2">Posjećenost stranica u glavnim skcijama</label>
+			<label index="stat_period">Statistika u periodu od %s do %s</label>
+			<label index="pI_crUser">Napravio</label>
+			<label index="pI_crDate">Datum izrade</label>
+			<label index="pI_lastChange">Posljednja promjena</label>
+			<label index="pI_lastChangeContent">Posljednja promjena, sadržaj</label>
+			<label index="hits_title">Statistika posjećenosti</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+			<label index="page_title">Oldalfa áttekintés</label>
+			<label index="page_sysnote">Belső megjegyzések</label>
+			<label index="pageInformation">Oldal információ</label>
+			<label index="pages_0">Alap beállítások</label>
+			<label index="pages_2">Cache és Kor</label>
+			<label index="pages_1">rekord áttekintés</label>
+			<label index="stat_type_0">Oldal találatok</label>
+			<label index="stat_type_1">Összes találat</label>
+			<label index="stat_type_2">Találatok a főrészben</label>
+			<label index="stat_period">Statisztikák %s-tól visszamenőleg %s-ig</label>
+			<label index="pI_crUser">Készítette</label>
+			<label index="pI_crDate">Létrehozási dátum</label>
+			<label index="pI_lastChange">Utolsó változtatás</label>
+			<label index="pI_lastChangeContent">Utolsó változtatás, tartalma</label>
+			<label index="hits_title">Találati Statisztikák</label>
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+			<label index="page_title">網頁樹圖概覽</label>
+			<label index="page_sysnote">內部筆記</label>
+			<label index="pageInformation">網頁資料</label>
+			<label index="pages_0">基本設定</label>
+			<label index="pages_2">快取和歷史</label>
+			<label index="pages_1">記錄概覽</label>
+			<label index="stat_type_0">溜覽次數</label>
+			<label index="stat_type_1">總溜覽次數</label>
+			<label index="stat_type_2">主區溜覽次數</label>
+			<label index="stat_period">%s到%s期間的統計</label>
+			<label index="pI_crUser">建立者</label>
+			<label index="pI_crDate">建立日期</label>
+			<label index="pI_lastChange">最後更新</label>
+			<label index="pI_lastChangeContent">最後更新內容</label>
+			<label index="hits_title">溜覽次數統計</label>
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+			<label index="page_title">Преглед на дървото на страницата</label>
+			<label index="page_sysnote">Вътрешни бележки</label>
+			<label index="pageInformation">Информация за страницата</label>
+			<label index="pages_0">Основни настройки</label>
+			<label index="pages_2">Кеш и Възраст</label>
+			<label index="pages_1">Преглед на записа</label>
+			<label index="stat_type_0">Посещения на страницата</label>
+			<label index="stat_type_1">Общо посещения</label>
+			<label index="stat_type_2">Посещения в главната част</label>
+			<label index="stat_period">Статистика през периода %s обратно до %s</label>
+			<label index="pI_crUser">Създадено от</label>
+			<label index="pI_crDate">Дата на създаване</label>
+			<label index="pI_lastChange">Последна промяна</label>
+			<label index="pI_lastChangeContent">Последна промяна, съдържание</label>
+			<label index="hits_title">Статистика на посещенията</label>
+		</languageKey>
+		<languageKey index="br" type="array">
+			<label index="page_title">Visualização da Árvore</label>
+			<label index="page_sysnote">Notas internas</label>
+			<label index="pageInformation">Informações da página</label>
+			<label index="pages_0">Configurações básicas</label>
+			<label index="pages_2">Cache e Idade</label>
+			<label index="pages_1">Visualização do registro</label>
+			<label index="stat_type_0">Visualizações da página</label>
+			<label index="stat_type_1">Visualizações totais</label>
+			<label index="stat_type_2">Visualizações em áreas principais</label>
+			<label index="stat_period">Estatísticas no período de %s a %s</label>
+			<label index="pI_crUser">Criado por</label>
+			<label index="pI_crDate">Criado em</label>
+			<label index="pI_lastChange">Última alteração</label>
+			<label index="pI_lastChangeContent">Última alteração, conteúdo</label>
+			<label index="hits_title">Estatísticas de Visualização</label>
+		</languageKey>
+		<languageKey index="et" type="array">
+			<label index="page_title">Sisupuu ülevaade</label>
+			<label index="page_sysnote">Sisemised märkmed</label>
+			<label index="pageInformation">Lehekülje informatsioon</label>
+			<label index="pages_0">Algseadistused</label>
+			<label index="pages_2">Vahemälu ja vanus</label>
+			<label index="pages_1">Kirjete ülevaade</label>
+			<label index="stat_type_0">Lehekülje külastusi</label>
+			<label index="stat_type_1">Kokku külastusi</label>
+			<label index="stat_type_2">Peasektsiooni külastusi</label>
+			<label index="stat_period">Statistika perioodil %s kuni %s</label>
+			<label index="pI_crUser">Autor</label>
+			<label index="pI_crDate">Loomise kuupäev</label>
+			<label index="pI_lastChange">Viimati muudetud</label>
+			<label index="pI_lastChangeContent">Viimati sisu muudetud</label>
+			<label index="hits_title">Külastusstatistika</label>
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+			<label index="page_title">תצוגת דפים בצורת אץ</label>
+			<label index="page_sysnote">הערות פנימיות</label>
+			<label index="pageInformation">מידע אודות דף</label>
+			<label index="pages_0">הגדרות בסיסיות</label>
+			<label index="pages_2">מטמון וגיל</label>
+			<label index="pages_1">מידע אודות רשומה</label>
+			<label index="stat_type_0">הורדות של דף</label>
+			<label index="stat_type_1">סה''כ הורדות</label>
+			<label index="stat_type_2">הורדות בחלקים עיקריים</label>
+			<label index="stat_period">סטטיסטיקה לתקופה %s %s</label>
+			<label index="pI_crUser">יוצר על ידי</label>
+			<label index="pI_crDate">תאריך ייצור</label>
+			<label index="pI_lastChange">שינוי אחרון</label>
+			<label index="pI_lastChangeContent">שינוי אחרון, תוכן</label>
+			<label index="hits_title">סטטיסטיקת הורדות</label>
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+			<label index="page_title">Lapu koka pārskats</label>
+			<label index="page_sysnote">Iekšējās piezīmes</label>
+			<label index="pageInformation">Lapas informācija</label>
+			<label index="pages_0">Pamatkonfigurācija</label>
+			<label index="pages_2">Kešs un vecums</label>
+			<label index="pages_1">Ierakstu pārskats</label>
+			<label index="stat_type_0">Lapas apmeklējumi</label>
+			<label index="stat_type_1">Kopā apmeklējumi</label>
+			<label index="stat_type_2">Pamatsekciju apmeklējumi</label>
+			<label index="stat_period">Statistika periodā %s atpakaļ līdz %s</label>
+			<label index="pI_crUser">Izveidoja</label>
+			<label index="pI_crDate">Izveidošanas datums</label>
+			<label index="pI_lastChange">Pēdējie labojumi</label>
+			<label index="pI_lastChangeContent">Pēdējie labojumi saturā</label>
+			<label index="hits_title">Apmeklējuma statistika</label>
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+		<languageKey index="default" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="dk" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="no" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="fr" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="cz" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="pl" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="si" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="fi" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="tr" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="pt" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="ru" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="ro" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="ch" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="sk" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="hr" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="hu" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="br" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="et" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+			<label index="page_title" type="integer">46867233</label>
+			<label index="page_sysnote" type="integer">267841144</label>
+			<label index="pageInformation" type="integer">9265976</label>
+			<label index="pages_0" type="integer">155022480</label>
+			<label index="pages_2" type="integer">198333821</label>
+			<label index="pages_1" type="integer">71658561</label>
+			<label index="stat_type_0" type="integer">131565852</label>
+			<label index="stat_type_1" type="integer">110417445</label>
+			<label index="stat_type_2" type="integer">86813859</label>
+			<label index="stat_period" type="integer">100779727</label>
+			<label index="pI_crUser" type="integer">210659966</label>
+			<label index="pI_crDate" type="integer">188440759</label>
+			<label index="pI_lastChange" type="integer">48593502</label>
+			<label index="pI_lastChangeContent" type="integer">239918564</label>
+			<label index="hits_title" type="integer">55072016</label>
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_hash>
+	<orig_text type="array">
+		<languageKey index="default" type="array">
+		</languageKey>
+		<languageKey index="dk" type="array">
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+		<languageKey index="no" type="array">
+		</languageKey>
+		<languageKey index="it" type="array">
+		</languageKey>
+		<languageKey index="fr" type="array">
+		</languageKey>
+		<languageKey index="es" type="array">
+		</languageKey>
+		<languageKey index="nl" type="array">
+		</languageKey>
+		<languageKey index="cz" type="array">
+		</languageKey>
+		<languageKey index="pl" type="array">
+		</languageKey>
+		<languageKey index="si" type="array">
+		</languageKey>
+		<languageKey index="fi" type="array">
+		</languageKey>
+		<languageKey index="tr" type="array">
+		</languageKey>
+		<languageKey index="se" type="array">
+		</languageKey>
+		<languageKey index="pt" type="array">
+		</languageKey>
+		<languageKey index="ru" type="array">
+		</languageKey>
+		<languageKey index="ro" type="array">
+		</languageKey>
+		<languageKey index="ch" type="array">
+		</languageKey>
+		<languageKey index="sk" type="array">
+		</languageKey>
+		<languageKey index="lt" type="array">
+		</languageKey>
+		<languageKey index="is" type="array">
+		</languageKey>
+		<languageKey index="hr" type="array">
+		</languageKey>
+		<languageKey index="hu" type="array">
+		</languageKey>
+		<languageKey index="gl" type="array">
+		</languageKey>
+		<languageKey index="th" type="array">
+		</languageKey>
+		<languageKey index="gr" type="array">
+		</languageKey>
+		<languageKey index="hk" type="array">
+		</languageKey>
+		<languageKey index="eu" type="array">
+		</languageKey>
+		<languageKey index="bg" type="array">
+		</languageKey>
+		<languageKey index="br" type="array">
+		</languageKey>
+		<languageKey index="et" type="array">
+		</languageKey>
+		<languageKey index="ar" type="array">
+		</languageKey>
+		<languageKey index="he" type="array">
+		</languageKey>
+		<languageKey index="ua" type="array">
+		</languageKey>
+		<languageKey index="lv" type="array">
+		</languageKey>
+		<languageKey index="jp" type="array">
+		</languageKey>
+		<languageKey index="vn" type="array">
+		</languageKey>
+	</orig_text>
 </T3locallang>
