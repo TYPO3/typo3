@@ -103,6 +103,7 @@ class recordList extends t3lib_recordList {
 		// Internal, static:
 	var $id;						// Page id
 	var $table='';					// Tablename if single-table mode
+	var $listOnlyInSingleTableMode=FALSE;	// If true, records are listed only if a specific table is selected.
 	var $firstElementNumber=0;		// Pointer for browsing list
 	var $searchString='';			// Search string
 	var $searchLevels='';			// Levels to search down.

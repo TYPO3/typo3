@@ -85,7 +85,7 @@ class t3lib_recordList {
 	var $oddColumnsTDParams ='';			// If set this is <td>-params for odd columns in addElement. Used with db_layout / pages section
 	var $backPath='';
 	var $fieldArray = Array();				// Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
-	var $addElement_tdParams=array();		// Keys are fieldnames and values are td-parameters to add in addElement();
+	var $addElement_tdParams = array();		// Keys are fieldnames and values are td-parameters to add in addElement();
 
 		// Not used in this class - but maybe extension classes...
 	var $fixedL = 50;						// Max length of strings
@@ -150,8 +150,8 @@ class t3lib_recordList {
 		$lastKey='';
 		$c=0;
 		$ccount=0;
-		$tdP[0]= $this->oddColumnsTDParams ? $this->oddColumnsTDParams : $tdParams;
-		$tdP[1]=$tdParams;
+		$tdP[0] = $this->oddColumnsTDParams ? $this->oddColumnsTDParams : $tdParams;
+		$tdP[1] = $tdParams;
 
 			// Traverse field array which contains the data to present:
 		reset($this->fieldArray);

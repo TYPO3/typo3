@@ -1,5 +1,9 @@
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added Page TSconfig option "mod.web_list.listOnlyInSingleTableView = 1" which makes the List module list only the table names by default. You have to click the table name to get the single-table view before records show up. This is useful for pages containing many records from many tables.
+
+2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added refresh button to taskcenter (not in core CVS)
 
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>

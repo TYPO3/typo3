@@ -321,6 +321,9 @@ TABLE.typo3-dblist TR TD.c-headLineTable A { text-decoration: none;font-weight: 
 TABLE.typo3-dblist TR TD DIV.typo3-DBctrl { background-color: #C5C1B5; }
 TABLE.typo3-dblist TR TD DIV.typo3-clipCtrl {background-color: #ABBBB4; text-align: center; }
 TABLE.typo3-dblist TR TD DIV.typo3-clipCtrl IMG, TABLE.typo3-dblist TR TD DIV.typo3-DBctrl IMG { margin-left: 1px; margin-right: 1px; }
+TABLE.typo3-dblist-overview { width: 410px; margin-top: 10px; margin-left:1px;}
+TABLE.typo3-dblist-overview TD.c-tableDescription {padding-left: 10px; font-style: italic; color: #333333;}
+TABLE.typo3-dblist-overview TD.c-tableDescription IMG { margin-right: 10px; }
 
 DIV#typo3-newRecordLink { margin: 5px 0px 5px 0px; font-weight: bold;}
 DIV#typo3-newRecordLink IMG { margin-right: 5px; vertical-align: middle; }

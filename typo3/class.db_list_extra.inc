@@ -364,17 +364,21 @@ class localRecordList extends recordList {
 			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		}
 
+		$LOISmode = $this->listOnlyInSingleTableMode && !$this->table;
+
 			// If any records was selected, render the list:
 		if ($dbCount)	{
 
 				// Half line is drawn between tables:
-			$theData = Array();
-			if (!$this->table && !$rowlist)	{
-				$theData[$titleCol] = '<img src="clear.gif" width="'.($GLOBALS['SOBE']->MOD_SETTINGS['bigControlPanel']?'230':'350').'" height="1" alt="" />';
-				if (in_array('_CONTROL_',$this->fieldArray))	$theData['_CONTROL_']='';
-				if (in_array('_CLIPBOARD_',$this->fieldArray))	$theData['_CLIPBOARD_']='';
+			if (!$LOISmode)	{
+				$theData = Array();
+				if (!$this->table && !$rowlist)	{
+					$theData[$titleCol] = '<img src="clear.gif" width="'.($GLOBALS['SOBE']->MOD_SETTINGS['bigControlPanel']?'230':'350').'" height="1" alt="" />';
+					if (in_array('_CONTROL_',$this->fieldArray))	$theData['_CONTROL_']='';
+					if (in_array('_CLIPBOARD_',$this->fieldArray))	$theData['_CLIPBOARD_']='';
+				}
+				$out.=$this->addelement(0,'',$theData,'',$this->leftMargin);
 			}
-			$out.=$this->addelement(0,'',$theData,'',$this->leftMargin);
 
 				// Header line is drawn
 			$theData = Array();
@@ -383,59 +387,81 @@ class localRecordList extends recordList {
 			} else {
 				$theData[$titleCol] = $this->linkWrapTable($table,'<span class="c-table">'.$GLOBALS['LANG']->sL($TCA[$table]['ctrl']['title'],1).'</span> ('.$this->totalItems.') <img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/'.($this->table?'minus':'plus').'bullet_list.gif','width="18" height="12"').' hspace="10" class="absmiddle" title="'.$GLOBALS['LANG']->getLL(!$this->table?'expandView':'contractView',1).'" alt="" />');
 			}
-			$theUpIcon = ($table=='pages'&&$this->id&&isset($this->pageRow['pid'])) ? '<a href="'.htmlspecialchars($this->listURL($this->pageRow['pid'])).'"><img'.t3lib_iconWorks::skinImg('','gfx/i/pages_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" /></a>':'';
-			$out.=$this->addelement(1,$theUpIcon,$theData,' class="c-headLineTable"','');
 
-				// Fixing a order table for sortby tables
-			$this->currentTable=array();
-			$currentIdList=array();
-			$doSort = ($TCA[$table]['ctrl']['sortby'] && !$this->sortField);
+			if ($LOISmode)	{
+				$out.='
+					<tr>
+						<td class="c-headLineTable" style="width:95%;">'.$theData[$titleCol].'</td>
+					</tr>';
 
-			$prevUid=0;
-			$prevPrevUid=0;
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
-				$currentIdList[] = $row['uid'];
-				if ($doSort)	{
-					if ($prevUid)	{
-						$this->currentTable['prev'][$row['uid']]=$prevPrevUid;
-						$this->currentTable['next'][$prevUid]='-'.$row['uid'];
-						$this->currentTable['prevUid'][$row['uid']]=$prevUid;
+				if ($GLOBALS['BE_USER']->uc["edit_showFieldHelp"])	{
+					$GLOBALS['LANG']->loadSingleTableDescription($table);
+					if (isset($GLOBALS['TCA_DESCR'][$table]['columns']['']))	{
+						$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$table.'.\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
+						$out.='
+					<tr>
+						<td class="c-tableDescription">'.t3lib_BEfunc::helpTextIcon($table,'',$this->backPath,TRUE).$GLOBALS['TCA_DESCR'][$table]['columns']['']['description'].'</td>
+					</tr>';
 					}
-					$prevPrevUid = isset($this->currentTable['prev'][$row['uid']]) ? -$prevUid : $row['pid'];
-					$prevUid=$row['uid'];
 				}
+			} else {
+				$theUpIcon = ($table=='pages'&&$this->id&&isset($this->pageRow['pid'])) ? '<a href="'.htmlspecialchars($this->listURL($this->pageRow['pid'])).'"><img'.t3lib_iconWorks::skinImg('','gfx/i/pages_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" /></a>':'';
+				$out.=$this->addelement(1,$theUpIcon,$theData,' class="c-headLineTable"','');
 			}
-			$GLOBALS['TYPO3_DB']->sql_data_seek($result,0);
 
-				// CSV initiated
-			if ($this->csvOutput) $this->initCSV();
+			If (!$LOISmode)	{
+					// Fixing a order table for sortby tables
+				$this->currentTable = array();
+				$currentIdList = array();
+				$doSort = ($TCA[$table]['ctrl']['sortby'] && !$this->sortField);
 
-				// Render items:
-			$this->CBnames=array();
-			$this->duplicateStack=array();
-			$this->eCounter=$this->firstElementNumber;
+				$prevUid = 0;
+				$prevPrevUid = 0;
+				$accRows = array();	// Accumulate rows here
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
+					$accRows[] = $row;
+					$currentIdList[] = $row['uid'];
+					if ($doSort)	{
+						if ($prevUid)	{
+							$this->currentTable['prev'][$row['uid']] = $prevPrevUid;
+							$this->currentTable['next'][$prevUid] = '-'.$row['uid'];
+							$this->currentTable['prevUid'][$row['uid']] = $prevUid;
+						}
+						$prevPrevUid = isset($this->currentTable['prev'][$row['uid']]) ? -$prevUid : $row['pid'];
+						$prevUid=$row['uid'];
+					}
+				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($result);
 
-			$iOut='';
-			$cc=0;
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
+					// CSV initiated
+				if ($this->csvOutput) $this->initCSV();
 
-					// Forward/Backwards navigation links:
-				list($flag,$code) = $this->fwd_rwd_nav($table);
-				$iOut.=$code;
+					// Render items:
+				$this->CBnames=array();
+				$this->duplicateStack=array();
+				$this->eCounter=$this->firstElementNumber;
 
-					// If render item, increment counter and call function
-				if ($flag)	{
-					$cc++;
-					$iOut.=$this->renderListRow($table,$row,$cc,$titleCol,$thumbsCol);
+				$iOut = '';
+				$cc = 0;
+				foreach($accRows as $row)	{
+
+						// Forward/Backwards navigation links:
+					list($flag,$code) = $this->fwd_rwd_nav($table);
+					$iOut.=$code;
+
+						// If render item, increment counter and call function
+					if ($flag)	{
+						$cc++;
+						$iOut.=$this->renderListRow($table,$row,$cc,$titleCol,$thumbsCol);
+					}
+
+						// Counter of total rows incremented:
+					$this->eCounter++;
 				}
 
-					// Counter of total rows incremented:
-				$this->eCounter++;
+					// The header row for the table is now created:
+				$out.=$this->renderListHeader($table,$currentIdList);
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($result);
-
-				// The header row for the table is now created:
-			$out.=$this->renderListHeader($table,$currentIdList);
 
 				// The list of records is added after the header:
 			$out.=$iOut;
@@ -448,7 +474,7 @@ class localRecordList extends recordList {
 			<!--
 				DB listing of elements:	"'.htmlspecialchars($table).'"
 			-->
-				<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
+				<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist'.($LOISmode?' typo3-dblist-overview':'').'">
 					'.$out.'
 				</table>';
 
