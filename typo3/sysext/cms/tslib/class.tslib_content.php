@@ -328,6 +328,7 @@ class tslib_cObj {
 	var $lastTypoLinkUrl=''; 	// This will be set by typoLink() to the url of the most recent link created.
 	var $lastTypoLinkTarget=''; 	// DO. link target.
 	var $substMarkerCache=array();	// Caching substituteMarkerArrayCached function
+	var $recordRegister=array();	// Array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
 	
 	/**
 	 * Class constructor.
@@ -1096,9 +1097,9 @@ class tslib_cObj {
 	function CONTENT($conf)	{
 		$theValue='';
 
-		$originalRec=$GLOBALS['TSFE']->currentRecord;	
+		$originalRec = $GLOBALS['TSFE']->currentRecord;
 		if ($originalRec)	{		// If the currentRecord is set, we register, that this record has invoked this function. It's should not be allowed to do this again then!!
-			$GLOBALS['TSFE']->recordRegister[md5($originalRec)]++;
+			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 
 		if ($conf['table']=='pages' || substr($conf['table'],0,3)=='tt_' || substr($conf['table'],0,3)=='fe_' || substr($conf['table'],0,3)=='tx_' || substr($conf['table'],0,4)=='ttx_' || substr($conf['table'],0,5)=='user_')	{
@@ -1117,23 +1118,24 @@ class tslib_cObj {
 				$cObj->setParent($this->data,$this->currentRecord);
 				$this->currentRecordNumber=0;
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					if (!$GLOBALS['TSFE']->recordRegister[md5($val['table'].':'.$val['id'])])	{
+					if (!$GLOBALS['TSFE']->recordRegister[$conf['table'].':'.$row['uid']])	{
 						$this->currentRecordNumber++;
-						$cObj->parentRecordNumber=$this->currentRecordNumber;
-						$GLOBALS['TSFE']->currentRecord=$conf['table'].':'.$row['uid'];
+						$cObj->parentRecordNumber = $this->currentRecordNumber;
+						$GLOBALS['TSFE']->currentRecord = $conf['table'].':'.$row['uid'];
 						$this->lastChanged($row['tstamp']);
 						$cObj->start($row,$conf['table']);
-						if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->';}
-						$theValue.=$cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-					} else {debug($val['table'].':'.$val['id']);}
+						if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->'; }
+						$theValue.= $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+					}# else debug($GLOBALS['TSFE']->recordRegister,'CONTENT');
 				}
-				if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_END-->';}
+				if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{ $theValue.='<!--DMAILER_SECTION_BOUNDARY_END-->'; }
 			}
 		}
-		
+
 		$theValue = $this->wrap($theValue,$conf['wrap']);
 		if ($conf['stdWrap.']) $theValue = $this->stdWrap($theValue,$conf['stdWrap.']);
-		$GLOBALS['TSFE']->currentRecord=$originalRec;
+
+		$GLOBALS['TSFE']->currentRecord = $originalRec;	// Restore
 		return $theValue;
 	}
 
@@ -1147,9 +1149,9 @@ class tslib_cObj {
 	function RECORDS($conf)	{
 		$theValue='';
 
-		$originalRec=$GLOBALS['TSFE']->currentRecord;	
+		$originalRec = $GLOBALS['TSFE']->currentRecord;
 		if ($originalRec)	{		// If the currentRecord is set, we register, that this record has invoked this function. It's should not be allowed to do this again then!!
-			$GLOBALS['TSFE']->recordRegister[md5($originalRec)]++;
+			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 
 		$conf['source'] = $this->stdWrap($conf['source'],$conf['source.']);
@@ -1161,7 +1163,7 @@ class tslib_cObj {
 					if (substr($k,-1)!='.')		$allowedTables.=','.$k;
 				}
 			}
-			
+
 			$loadDB = t3lib_div::makeInstance('FE_loadDBGroup');
 			$loadDB->start($conf['source'], $allowedTables);
 			reset($loadDB->tableArray);
@@ -1185,22 +1187,22 @@ class tslib_cObj {
 				if (!$conf['dontCheckPid'])	{
 					$row = $this->checkPid($row['pid']) ? $row : '';
 				}
-				if ($row && !$GLOBALS['TSFE']->recordRegister[md5($val['table'].':'.$val['id'])])	{
+				if ($row && !$GLOBALS['TSFE']->recordRegister[$val['table'].':'.$val['id']])	{
 					$renderObjName = $conf['conf.'][$val['table']] ? $conf['conf.'][$val['table']] : '<'.$val['table'];
 					$renderObjKey = $conf['conf.'][$val['table']] ? 'conf.'.$val['table'] : '';
 					$renderObjConf = $conf['conf.'][$val['table'].'.'];
 					$this->currentRecordNumber++;
 					$cObj->parentRecordNumber=$this->currentRecordNumber;
-					$GLOBALS['TSFE']->currentRecord=$val['table'].':'.$val['id'];
+					$GLOBALS['TSFE']->currentRecord = $val['table'].':'.$val['id'];
 					$this->lastChanged($row['tstamp']);
 					$cObj->start($row,$val['table']);
 					if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_'.intval($row['module_sys_dmail_category']).'-->';}
 					$theValue.=$cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
 					if ($GLOBALS['TSFE']->config['config']['insertDmailerBoundaries'])	{$theValue.='<!--DMAILER_SECTION_BOUNDARY_END-->';}
-				}
+				}# else debug($GLOBALS['TSFE']->recordRegister,'RECORDS');
 			}
 		}
-		$GLOBALS['TSFE']->currentRecord=$originalRec;
+		$GLOBALS['TSFE']->currentRecord = $originalRec;	// Restore
 		return $this->wrap($theValue,$conf['wrap']);
 	}
 

@@ -38,33 +38,33 @@
  *
  *
  *
- *  101: class t3lib_pageSelect 
- *  117:     function init($show_hidden)	
+ *  101: class t3lib_pageSelect
+ *  117:     function init($show_hidden)
  *
  *              SECTION: Selecting page records
- *  156:     function getPage($uid)	
- *  171:     function getPage_noCheck($uid)	
- *  186:     function getFirstWebPage($uid)	
- *  203:     function getPageIdFromAlias($alias)	
- *  219:     function getPageOverlay($pageInput,$lUid=-1)	
+ *  156:     function getPage($uid)
+ *  171:     function getPage_noCheck($uid)
+ *  186:     function getFirstWebPage($uid)
+ *  203:     function getPageIdFromAlias($alias)
+ *  219:     function getPageOverlay($pageInput,$lUid=-1)
  *
  *              SECTION: Page related: Menu, Domain record, Root line
- *  296:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')	
+ *  296:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')
  *  315:     function getDomainStartPage($domain, $path='',$request_uri='')
- *  361:     function getRootLine($uid, $MP='')	
- *  421:     function getPathFromRootline($rl,$len=20)	
- *  442:     function getExtURL($pagerow,$disable=0)
+ *  362:     function getRootLine($uid, $MP='')
+ *  422:     function getPathFromRootline($rl,$len=20)
+ *  443:     function getExtURL($pagerow,$disable=0)
  *
  *              SECTION: Selecting records in general
- *  483:     function checkRecord($table,$uid,$checkPage=0)	
- *  513:     function getRawRecord($table,$uid,$fields='*')	
- *  536:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')	
+ *  491:     function checkRecord($table,$uid,$checkPage=0)
+ *  521:     function getRawRecord($table,$uid,$fields='*')
+ *  544:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Caching and standard clauses
- *  587:     function getHash($hash,$expTime=0)	
- *  610:     function storeHash($hash,$data,$ident)	
- *  628:     function deleteClause($table)	
- *  643:     function enableFields($table,$show_hidden=-1,$ignore_array=array())	
+ *  595:     function getHash($hash,$expTime=0)
+ *  618:     function storeHash($hash,$data,$ident)
+ *  636:     function deleteClause($table)
+ *  651:     function enableFields($table,$show_hidden=-1,$ignore_array=array())
  *
  * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
