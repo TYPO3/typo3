@@ -108,6 +108,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	var $map;			// map-data
 	var $workArea;
 	var $setup = Array ();		// This holds the operational setup for gifbuilder. Basically this is a TypoScript array with properties.
+	var $combinedTextStrings = array();		// Contains all text strings used on this image
+	var $combinedFileNames = array();		// Contains all filenames (basename without extension) used on this image
 	var $data = Array();		// This is the array from which data->field: [key] is fetched. So this is the current record!
 	var $objBB = Array();
 	var $myClassName = 'gifbuilder';
@@ -174,7 +176,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				// Checking TEXT and IMAGE objects for files. If any errors the objects are cleared.
 				// The Bounding Box for the objects is stored in an array
 			foreach($sKeyArray as $theKey) {
-				$theValue=$this->setup[$theKey];
+				$theValue = $this->setup[$theKey];
 
 				if (intval($theKey) && $conf=$this->setup[$theKey.'.'])	{
 						// Swipes through TEXT and IMAGE-objects
@@ -189,21 +191,22 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 									// Calculate bounding box:
 								$txtInfo=$this->calcBBox($this->setup[$theKey.'.']);
-								$this->setup[$theKey.'.']['BBOX']=$txtInfo;
-								$this->objBB[$theKey]=$txtInfo;
-								$this->setup[$theKey.'.']['imgMap']=0;
+								$this->setup[$theKey.'.']['BBOX'] = $txtInfo;
+								$this->objBB[$theKey] = $txtInfo;
+								$this->setup[$theKey.'.']['imgMap'] = 0;
 							}
 						break;
 						case 'IMAGE':
 							$fileInfo = $this->getResource($conf['file'],$conf['file.']);
 							if ($fileInfo)	{
-								$this->setup[$theKey.'.']['file']=$fileInfo[3];
-								$this->setup[$theKey.'.']['BBOX']=$fileInfo;
-								$this->objBB[$theKey]=$fileInfo;
+								$this->combinedFileNames[] = ereg_replace('\.[[:alnum:]]+$','',basename($fileInfo[3]));
+								$this->setup[$theKey.'.']['file'] = $fileInfo[3];
+								$this->setup[$theKey.'.']['BBOX'] = $fileInfo;
+								$this->objBB[$theKey] = $fileInfo;
 								if ($conf['mask'])	{
 									$maskInfo = $this->getResource($conf['mask'],$conf['mask.']);
 									if ($maskInfo)	{
-										$this->setup[$theKey.'.']['mask']=$maskInfo[3];
+										$this->setup[$theKey.'.']['mask'] = $maskInfo[3];
 									} else {
 										$this->setup[$theKey.'.']['mask'] = '';
 									}
@@ -489,6 +492,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		if (!$conf['doNotStripHTML'])	{
 			$conf['text'] = strip_tags($conf['text']);
 		}
+		$this->combinedTextStrings[] = strip_tags($conf['text']);
+
 			// Max length = 100
 		$tlen = intval($conf['textMaxLength']) ? intval($conf['textMaxLength']) : 100;
 		$conf['text'] = substr($conf['text'],0,$tlen);
@@ -625,7 +630,13 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 */
 	function fileName($pre)	{
-		return $this->tempPath.$pre.t3lib_div::shortMD5(serialize($this->setup)).'.'.$this->extension();
+
+			// WARNING: In PHP5 I discovered that rendering with freetype of Japanese letters was totally corrupt. Not only the wrong glyphs are printed but also some memory stack overflow resulted in strange additional chars - and finally the reason for this investigation: The Bounding box data was changing all the time resulting in new images being generated all the time. With PHP4 it works fine.
+		return $this->tempPath.
+				$pre.
+				($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'] ? $GLOBALS['TSFE']->fileNameASCIIPrefix(implode('_',array_merge($this->combinedTextStrings,$this->combinedFileNames)),intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']),'_') : '').
+				t3lib_div::shortMD5(serialize($this->setup)).
+				'.'.$this->extension();
 	}
 
 	/**

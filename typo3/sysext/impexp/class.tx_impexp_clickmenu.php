@@ -37,9 +37,9 @@
  *
  *
  *
- *   64: class tx_impexp_clickmenu
- *   73:     function main(&$backRef,$menuItems,$table,$uid)
- *  115:     function includeLL()
+ *   67: class tx_impexp_clickmenu
+ *   79:     function main(&$backRef,$menuItems,$table,$uid)
+ *  121:     function includeLL()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -67,6 +67,8 @@
 class tx_impexp_clickmenu {
 
 	/**
+	 * Processing of clickmenu items
+	 *
 	 * @param	object		Reference to parent
 	 * @param	array		Menu items array to modify
 	 * @param	string		Table name
@@ -78,7 +80,7 @@ class tx_impexp_clickmenu {
 		global $BE_USER,$TCA;
 
 		$localItems=array();
-		if ($backRef->cmLevel && t3lib_div::_GP('subname')=='moreoptions')	{
+		if (($backRef->cmLevel && t3lib_div::_GP('subname')=='moreoptions') || ($table==='pages' && $uid==0))	{	// Show import/export on second level menu OR root level.
 
 			$LL = $this->includeLL();
 

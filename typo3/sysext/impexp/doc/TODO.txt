@@ -1,34 +1,17 @@
+Input Charset conversion NOTE:
+	- T3D + XML/PHP4: Traverse array and convert proper places (meta data, header summaries, record values)
+		- Serialized/binary content in fields may be mal-formed?
+	- XML/PHP5: May be converted automatically without we can do anything.
+		- May break encapsulated text files which are not base64 encoded
+		- May break serialized strings
+
 ************
 TODO
 ************
 General:
-- fe_group: -1/-2 must be handled in both import/export
-- Imp/Exp for non-admins?
-- Include a path from fileadmin/xxx/
-- BUG: Export, where some pages were outsite the page tree those pages were NOT created (but other records were)
-- References inside of text fields such as bodytext-fields and simple link-fields are NOT detected. This includes:
-  - RTE images
-  - references to "fileadmin/" files from bodytexts/link-fields (eg. in template resources and links)
-  - references to other pages from bodytext/link-fields with page-id's
-  (Re-writing of included files from fileadmin/xxx/ should be mappable also if they are imported in other directories!)
-- Option: Store content as XML instead of serialize()
-- Have the option of importing records by *syncronization* to existing records! This could include a "diff" display where you can see what differences there would be and then select which records/fields in records should be updated.
-- Add an "alias" field to tt_content elements (unique for the PAGE like the "pid" field). [I'm not clear anymore about what this should be used for...]
-- Add thumbnail + description for an exported file.
+- Add an "alias" field to tt_content elements (unique for the PAGE like the "pid" field). [I'm not clear anymore about what this should be used for... - maybe anchors in links to content elements? I guess so...]
 
-  
 IMPORT:
-- merging.
-- relation mapping to non-static records (fx. to "sys_language" table)
-
-EXPORT:
-- check read permissions! (record/table)
-- add "list" parameter to incoming command-array (so you can export all records from a certain (or more) pids)
-- add "remove" checkbox to structure display (so you can exclude specific records)
-- add links in the web>list module to export (general for tables, specific for current display - like CSV button)
-- clipboard export
-- Add registration of extension from the export computer 
-
-
+- Better logging to system
 
 

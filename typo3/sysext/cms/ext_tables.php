@@ -206,7 +206,8 @@ if (TYPO3_MODE=='BE')	{
 				'type' => 'input',
 				'size' => '10',
 				'max' => '20',
-				'eval' => 'nospace,alphanum_x,lower,unique'
+				'eval' => 'nospace,alphanum_x,lower,unique',
+				'softref' => 'notify'
 			)
 		),
 		'url' => Array (
@@ -215,7 +216,8 @@ if (TYPO3_MODE=='BE')	{
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
-				'eval' => 'trim'
+				'eval' => 'trim',
+				'softref' => 'url'
 			)
 		),
 		'urltype' => Array (
@@ -383,7 +385,8 @@ if (TYPO3_MODE=='BE')	{
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '80'
+				'max' => '80',
+				'softref' => 'email[subst]'
 			)
 		),
 		'media' => Array (

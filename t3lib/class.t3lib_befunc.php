@@ -2804,16 +2804,17 @@ class t3lib_BEfunc	{
 
 	/**
 	 * Returns first possible RTE object if available.
+	 * Usage: $RTEobj = &t3lib_BEfunc::RTEgetObj();
 	 *
 	 * @return	mixed		If available, returns RTE object, otherwise an array of messages from possible RTEs
 	 */
 	function &RTEgetObj()	{
 
 			// If no RTE object has been set previously, try to create it:
-		if (!isset($GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj']))	{
+		if (!isset($GLOBALS['T3_VAR']['RTEobj']))	{
 
 				// Set the object string to blank by default:
-			$GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'] = array();
+			$GLOBALS['T3_VAR']['RTEobj'] = array();
 
 				// Traverse registered RTEs:
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg']))	{
@@ -2821,22 +2822,86 @@ class t3lib_BEfunc	{
 					$rteObj = &t3lib_div::getUserObj($rteObjCfg['objRef']);
 					if (is_object($rteObj))	{
 						if ($rteObj->isAvailable())	{
-							$GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'] = &$rteObj;
+							$GLOBALS['T3_VAR']['RTEobj'] = &$rteObj;
 							break;
 						} else {
-							$GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'] = array_merge($GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'], $rteObj->errorLog);
+							$GLOBALS['T3_VAR']['RTEobj'] = array_merge($GLOBALS['T3_VAR']['RTEobj'], $rteObj->errorLog);
 						}
 					}
 				}
 			}
 
-			if (!count($GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj']))	{
-				$GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'][] = 'No RTEs configured at all';
+			if (!count($GLOBALS['T3_VAR']['RTEobj']))	{
+				$GLOBALS['T3_VAR']['RTEobj'][] = 'No RTEs configured at all';
 			}
 		}
 
 			// Return RTE object (if any!)
-		return $GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'];
+		return $GLOBALS['T3_VAR']['RTEobj'];
+	}
+
+	/**
+	 * Returns soft-reference parser for the softRef processing type
+	 * Usage: $softRefObj = &t3lib_BEfunc::softRefParserObj('[parser key]');
+	 *
+	 * @param	string		softRef parser key
+	 * @return	mixed		If available, returns Soft link parser object.
+	 */
+	function &softRefParserObj($spKey)	{
+
+			// If no softRef parser object has been set previously, try to create it:
+		if (!isset($GLOBALS['T3_VAR']['softRefParser'][$spKey]))	{
+
+				// Set the object string to blank by default:
+			$GLOBALS['T3_VAR']['softRefParser'][$spKey] = '';
+
+				// Now, try to create parser object:
+			$objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey] ?
+							$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey] :
+							$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey];
+			if ($objRef)	{
+				$softRefParserObj = &t3lib_div::getUserObj($objRef,'');
+				if (is_object($softRefParserObj))	{
+					$GLOBALS['T3_VAR']['softRefParser'][$spKey] = &$softRefParserObj;
+				}
+			}
+		}
+
+			// Return RTE object (if any!)
+		return $GLOBALS['T3_VAR']['softRefParser'][$spKey];
+	}
+
+	/**
+	 * Returns array of soft parser references
+	 *
+	 * @param	string		softRef parser list
+	 * @param	string		Table name
+	 * @param	string		Field name
+	 * @return	array		Array where the parser key is the key and the value is the parameter string
+	 */
+	function explodeSoftRefParserList($parserList, $table, $field)	{
+
+			// Looking for global parsers:
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL']))	{
+			$parserList = implode(',',array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])).','.$parserList;
+		}
+
+			// Return immediately if list is blank:
+		if (!strlen($parserList))	return FALSE;
+
+			// Otherwise parse the list:
+		$keyList = t3lib_div::trimExplode(',', $parserList, 1);
+		$output = array();
+
+		foreach($keyList as $val)	{
+			$reg = array();
+			if (ereg('^([[:alnum:]_-]+)\[(.*)\]$', $val, $reg))	{
+				$output[$reg[1]] = t3lib_div::trimExplode(';', $reg[2], 1);
+			} else {
+				$output[$val] = '';
+			}
+		}
+		return $output;
 	}
 
 	/**

@@ -109,6 +109,9 @@ class SC_alt_shortcut {
 	var $editPage;			// Page alias or id to be edited
 	var $selOpt;			// Select options.
 
+	var $alternativeTableUid = array();	// Array with key 0/1 being table/uid of record to edit. Internally set.
+
+
 
 	/**
 	 * Pre-initialization - setting input variables for storing shortcuts etc.
@@ -232,7 +235,7 @@ class SC_alt_shortcut {
 	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG;
+		global $BE_USER,$LANG,$TCA;
 
 			// Setting groups and globals
 		$this->nGroups=4;
@@ -322,8 +325,15 @@ class SC_alt_shortcut {
 
 			';
 
+			// Launch Edit page:
 		if ($this->theEditRec['uid'])	{
 			$this->content.=$this->doc->wrapScriptTags('top.loadEditId('.$this->theEditRec['uid'].');');
+		}
+
+			// Load alternative table/uid into editing form.
+		if (count($this->alternativeTableUid)==2 && isset($TCA[$this->alternativeTableUid[0]]) && t3lib_div::testInt($this->alternativeTableUid[1]))	{
+			$JSaction = t3lib_BEfunc::editOnClick('&edit['.$this->alternativeTableUid[0].']['.$this->alternativeTableUid[1].']=edit','','dummy.php');
+			$this->content.=$this->doc->wrapScriptTags('function editArbitraryElement() { top.content.'.$JSaction.'; } editArbitraryElement();');
 		}
 	}
 
@@ -403,28 +413,34 @@ class SC_alt_shortcut {
 		$this->editError = '';
 		$this->theEditRec = '';
 		if ($this->editPage)	{
-			$where = ' AND ('.$BE_USER->getPagePermsClause(2).' OR '.$BE_USER->getPagePermsClause(16).')';
-			if (t3lib_div::testInt($this->editPage))	{
-				$this->theEditRec = t3lib_BEfunc::getRecord ('pages',$this->editPage,'*',$where);
-			} else {
-				$records = t3lib_BEfunc::getRecordsByField('pages','alias',$this->editPage,$where);
-				if (is_array($records))	{
-					reset($records);
-					$this->theEditRec = current($records);
+
+				// First, test alternative value consisting of [table]:[uid] and if not found, proceed with traditional page ID resolve:
+			$this->alternativeTableUid = explode(':',$this->editPage);
+			if (!(count($this->alternativeTableUid)==2 && $BE_USER->isAdmin()))	{	// We restrict it to admins only just because I'm not really sure if alt_doc.php properly checks permissions of passed records for editing. If alt_doc.php does that, then we can remove this.
+
+				$where = ' AND ('.$BE_USER->getPagePermsClause(2).' OR '.$BE_USER->getPagePermsClause(16).')';
+				if (t3lib_div::testInt($this->editPage))	{
+					$this->theEditRec = t3lib_BEfunc::getRecord ('pages',$this->editPage,'*',$where);
+				} else {
+					$records = t3lib_BEfunc::getRecordsByField('pages','alias',$this->editPage,$where);
+					if (is_array($records))	{
+						reset($records);
+						$this->theEditRec = current($records);
+					}
 				}
-			}
-			if (!is_array($this->theEditRec) || !$BE_USER->isInWebMount($this->theEditRec['uid']))	{
-				unset($this->theEditRec);
-				$this->editError=$LANG->getLL('shortcut_notEditable');
-			} else {
-					// Visual path set:
-				$perms_clause = $BE_USER->getPagePermsClause(1);
-				$this->editPath = t3lib_BEfunc::getRecordPath($this->theEditRec['pid'], $perms_clause, 30);
+				if (!is_array($this->theEditRec) || !$BE_USER->isInWebMount($this->theEditRec['uid']))	{
+					unset($this->theEditRec);
+					$this->editError=$LANG->getLL('shortcut_notEditable');
+				} else {
+						// Visual path set:
+					$perms_clause = $BE_USER->getPagePermsClause(1);
+					$this->editPath = t3lib_BEfunc::getRecordPath($this->theEditRec['pid'], $perms_clause, 30);
 
-				if(!$BE_USER->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree')) {
+					if(!$BE_USER->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree')) {
 
-						// Expanding page tree:
-					t3lib_BEfunc::openPageTree($this->theEditRec['pid'],!$BE_USER->getTSConfigVal('options.shortcut_onEditId_keepExistingExpanded'));
+							// Expanding page tree:
+						t3lib_BEfunc::openPageTree($this->theEditRec['pid'],!$BE_USER->getTSConfigVal('options.shortcut_onEditId_keepExistingExpanded'));
+					}
 				}
 			}
 		}

@@ -2670,11 +2670,7 @@ if (version == "n3") {
 		$titleChars = intval($this->config['config']['simulateStaticDocuments_addTitle']);
 		$out = '';
 		if ($titleChars)	{
-			$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
-			$out= ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
-			$out= ereg_replace('_*$','',$out);
-			$out= ereg_replace('^_*','',$out);
-			if ($out)	$out.='.';
+			$out = $this->fileNameASCIIPrefix($inTitle, $titleChars);
 		}
 		$enc = '';
 		if (strcmp($addParams,'') && !$no_cache)	{
@@ -2746,6 +2742,25 @@ if (version == "n3") {
 		$url='';
 		$url.=$this->makeSimulFileName($this->page['title'], $this->page['alias']?$this->page['alias']:$this->id, $this->type).'.html';
 		return $url;
+	}
+
+	/**
+	 * Converts input string to an ASCII based file name prefix
+	 *
+	 * @param	string		String to base output on
+	 * @param	integer		Number of characters in the string
+	 * @param	string		Character to put in the end of string to merge it with the next value.
+	 * @return	string		String
+	 */
+	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
+		$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
+		$out = ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
+		$out = ereg_replace('[_-]*$','',$out);
+		$out = ereg_replace('^[_-]*','',$out);
+		$out = ereg_replace('([_-])[_-]*','\1',$out);
+		if (strlen($out))	$out.=$mergeChar;
+
+		return $out;
 	}
 
 	/**

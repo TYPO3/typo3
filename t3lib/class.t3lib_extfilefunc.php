@@ -136,6 +136,8 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	var $PHPFileFunctions = 0;			// If set, all fileoperations are done by the default PHP-functions. This is necessary under windows! On UNIX the system commands by exec() can be used unless safe_mode is enabled
 	var $dont_use_exec_commands = 0;	// This is necessary under windows!
 
+		// Internal, dynamic:
+	var $internalUploadMap = array();	// Will contain map between upload ID and the final filename
 
 
 
@@ -793,6 +795,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 									t3lib_div::upload_copy_move($theFile,$theNewFile);
 									clearstatcache();
 									if (@is_file($theNewFile))	{
+										$this->internalUploadMap[$id] = $theNewFile;
 										$this->writelog(1,0,1,'Uploading file "%s" to "%s"',Array($theName,$theNewFile, $id));
 										return $theNewFile;
 									} else $this->writelog(1,1,100,'Uploaded file could not be moved! Write-permission problem in "%s"?',Array($theTarget.'/'));

@@ -228,6 +228,13 @@ class localRecordList extends recordList {
 							'</a>';
 		}
 
+			// Add "Export" link, if a specific table is shown:
+		if ($this->table && t3lib_extMgm::isLoaded('impexp'))	{
+			$theData['up'][]='<a href="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('impexp').'app/index.php?tx_impexp[action]=export&tx_impexp[list][]='.rawurlencode($this->table.':'.$this->id)).'">'.
+							'<img'.t3lib_iconWorks::skinImg($this->backPath,t3lib_extMgm::extRelPath('impexp').'export.gif',' width="18" height="16"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.export',1).'" alt="" />'.
+							'</a>';
+		}
+
 			// Add "refresh" link:
 		$theData['up'][]='<a href="'.htmlspecialchars($this->listURL()).'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.reload',1).'" alt="" />'.
@@ -310,6 +317,7 @@ class localRecordList extends recordList {
 		$this->fieldArray[] = $titleCol;	// Add title column
 		if ($this->localizationView && $l10nEnabled)	{
 			$this->fieldArray[] = '_LOCALIZATION_';
+			$this->fieldArray[] = '_LOCALIZATION_b';
 			$addWhere.=' AND '.$TCA[$table]['ctrl']['languageField'].'<=0';
 		}
 		if (!t3lib_div::inList($rowlist,'_CONTROL_'))	{
@@ -570,7 +578,11 @@ class localRecordList extends recordList {
 			} elseif ($fCol=='_CLIPBOARD_') {
 				$theData[$fCol]=$this->makeClip($table,$row);
 			} elseif ($fCol=='_LOCALIZATION_') {
-				$theData[$fCol]=$this->makeLocalizationPanel($table,$row);
+				list($lC1, $lC2) = $this->makeLocalizationPanel($table,$row);
+				$theData[$fCol] = $lC1;
+				$theData[$fCol.'b'] = $lC2;
+			} elseif ($fCol=='_LOCALIZATION_b') {
+				// Do nothing, has been done above.
 			} else {
 				$theData[$fCol]=htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100));
 			}
@@ -614,10 +626,13 @@ class localRecordList extends recordList {
 
 			switch((string)$fCol)	{
 				case '_PATH_':			// Path
-					$theData[$fCol]='<i>['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels._PATH_',1).']</i>';
+					$theData[$fCol] = '<i>['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels._PATH_',1).']</i>';
 				break;
 				case '_LOCALIZATION_':			// Path
-					$theData[$fCol]='<i>['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels._LOCALIZATION_',1).']</i>';
+					$theData[$fCol] = '<i>['.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels._LOCALIZATION_',1).']</i>';
+				break;
+				case '_LOCALIZATION_b':			// Path
+					$theData[$fCol] = $LANG->getLL('Localize',1);
 				break;
 				case '_CLIPBOARD_':		// Clipboard:
 					$cells=array();
@@ -1001,16 +1016,19 @@ class localRecordList extends recordList {
 	 *
 	 * @param	string		The table
 	 * @param	array		The record for which to make the localization panel.
-	 * @return	string		HTML table with the localization panel
+	 * @return	array		Array with key 0/1 with content for column 1 and 2
 	 */
 	function makeLocalizationPanel($table,$row)	{
 		global $TCA,$LANG;
 
-		$out = '';
+		$out = array(
+			0 => '',
+			1 => '',
+		);
 		if ($TCA[$table]['ctrl']['languageField'] && $TCA[$table]['ctrl']['transOrigPointerField'] && !$TCA[$table]['ctrl']['transOrigPointerTable'])	{
 
 				// Language title and icon:
-			$out = $this->languageFlag($row[$TCA[$table]['ctrl']['languageField']]);
+			$out[0] = $this->languageFlag($row[$TCA[$table]['ctrl']['languageField']]);
 
 				// Create new localizations links:
 			if ($row[$TCA[$table]['ctrl']['languageField']] <=0)	{
@@ -1042,9 +1060,9 @@ class localRecordList extends recordList {
 					}
 				}
 
-				if ($lNew)	$out.=' - '.$LANG->getLL('Localize',1).': '.$lNew;
+				if ($lNew)	$out[1].= $lNew;
 			} else {
-				$out = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out;
+				$out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out[1];
 			}
 		}
 

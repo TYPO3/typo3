@@ -145,6 +145,7 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="rm.clearCache_allTypo3Conf">Clear temp_CACHED</label>
 			<label index="rm.adminFunctions">Admin functions</label>
 			<label index="rm.edit">Edit</label>
+			<label index="rm.export">Export</label>
 			<label index="rm.delete">Delete</label>
 			<label index="buttons.logout">Logout</label>
 			<label index="buttons.selMenu_modules">MODULES</label>

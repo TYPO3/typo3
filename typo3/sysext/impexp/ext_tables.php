@@ -6,5 +6,12 @@ if (TYPO3_MODE=='BE')	{
 		'name' => 'tx_impexp_clickmenu',
 		'path' => t3lib_extMgm::extPath($_EXTKEY).'class.tx_impexp_clickmenu.php'
 	);
+
+	t3lib_extMgm::insertModuleFunction(
+		'user_task',
+		'tx_impexp_modfunc1',
+		t3lib_extMgm::extPath($_EXTKEY).'modfunc1/class.tx_impexp_modfunc1.php',
+		'LLL:EXT:impexp/app/locallang.xml:moduleFunction.tx_impexp_modfunc1'
+	);
 }
 ?>

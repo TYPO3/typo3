@@ -84,7 +84,8 @@ $TCA['fe_users'] = Array (
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '50',
-				'checkbox' => ''
+				'checkbox' => '',
+				'softref' => 'substitute'
 			)
 		),
 		'name' => Array (
@@ -262,7 +263,8 @@ $TCA['fe_users'] = Array (
 						'icon' => 'wizard_tsconfig.gif',
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
 					)
-				)
+				),
+				'softref' => 'TSconfig'
 			)
 		)
 	),
@@ -342,7 +344,8 @@ $TCA['fe_groups'] = Array (
 						'icon' => 'wizard_tsconfig.gif',
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
 					)
-				)
+				),
+				'softref' => 'TSconfig'
 			)
 		)
 	),
@@ -369,8 +372,9 @@ $TCA['sys_domain'] = Array (
 				'type' => 'input',
 				'size' => '35',
 				'max' => '80',
-				'eval' => 'required,unique,lower,trim'
-			)
+				'eval' => 'required,unique,lower,trim',
+				'softref' => 'substitute'
+			),
 		),
 		'redirectTo' => Array (
 			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.redirectTo',
@@ -380,8 +384,9 @@ $TCA['sys_domain'] = Array (
 				'max' => '120',
 				'checkbox' => '',
 				'default' => '',
-				'eval' => 'trim'
-			)
+				'eval' => 'trim',
+				'softref' => 'substitute'
+			),
 		),
 		'hidden' => Array (
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
@@ -667,8 +672,9 @@ $TCA['sys_template'] = Array (
 				'type' => 'text',
 				'cols' => '48',
 				'rows' => '10',
-				'wrap' => 'OFF'
-			)
+				'wrap' => 'OFF',
+				'softref' => 'TStemplate,email[subst],url[subst]'
+			),
 		),
 		'resources' => Array (
 			'label' => 'Resources:',
@@ -705,8 +711,8 @@ $TCA['sys_template'] = Array (
 				'foreign_table_where' => 'ORDER BY static_template.title DESC',
 				'size' => 10,
 				'maxitems' => 20,
-				'default' => ''
-			)
+				'default' => '',
+			),
 		),
 		'include_static_file' => Array(
 			'label' => 'Include static (from extensions):',
@@ -715,7 +721,8 @@ $TCA['sys_template'] = Array (
 				'size' => 10,
 				'maxitems' => 20,
 				'items' => Array (
-				)
+				),
+				'softref' => 'ext_fileref'
 			)
 		),
 		'basedOn' => Array (
@@ -779,7 +786,8 @@ $TCA['sys_template'] = Array (
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
 					)
 				),
-				'wrap' => 'OFF'
+				'wrap' => 'OFF',
+				'softref' => 'TStemplate,email[subst],url[subst]'
 			)
 		),
 		'editorcfg' => Array (

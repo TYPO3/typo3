@@ -118,6 +118,23 @@ class t3lib_clipboard {
 	var $fileMode=0;		// If set, clipboard is displaying files.
 
 
+
+
+
+
+
+
+
+
+
+
+
+	/*****************************************
+	 *
+	 * Initialize
+	 *
+	 ****************************************/
+
 	/**
 	 * Initialize the clipboard from the be_user session
 	 *
@@ -153,8 +170,8 @@ class t3lib_clipboard {
 	 * @return	void
 	 */
 	function lockToNormal()	{
-		$this->lockToNormal=1;
-		$this->current='normal';
+		$this->lockToNormal = 1;
+		$this->current = 'normal';
 	}
 
 	/**
@@ -257,14 +274,22 @@ class t3lib_clipboard {
 		return $CBarr;
 	}
 
-	/**
-	 * Reports if the current pad has elements (does not check file/DB type OR if file/DBrecord exists or not. Only counting array)
+
+
+
+
+
+
+
+
+
+
+
+	/*****************************************
 	 *
-	 * @return	boolean		True if elements exist.
-	 */
-	function isElements()	{
-		return is_array($this->clipData[$this->current]['el']) && count($this->clipData[$this->current]['el']);
-	}
+	 * Clipboard HTML renderings
+	 *
+	 ****************************************/
 
 	/**
 	 * Prints the clipboard
@@ -291,17 +316,27 @@ class t3lib_clipboard {
 			// Selector menu + clear button
 		$opt=array();
 		$opt[]='<option value="" selected="selected">'.$this->clLabel('menu','rm').'</option>';
-		if (!$this->fileMode && $elCount)	$opt[]='<option value="'.htmlspecialchars("document.location='".$this->editUrl()."&returnUrl='+top.rawurlencode(document.location);").'">'.$this->clLabel('edit','rm').'</option>';
-		if ($elCount)	$opt[]='<option value="'.htmlspecialchars("
+				// Import / Export link:
+		if ($elCount && t3lib_extMgm::isLoaded('impexp'))	{
+			$opt[] = '<option value="'.htmlspecialchars("document.location='".$this->backPath.t3lib_extMgm::extRelPath('impexp').'app/index.php'.$this->exportClipElementParameters().'\';').'">'.$this->clLabel('export','rm').'</option>';
+		}
+				// Edit:
+		if (!$this->fileMode && $elCount)	{
+			$opt[]='<option value="'.htmlspecialchars("document.location='".$this->editUrl()."&returnUrl='+top.rawurlencode(document.location);").'">'.$this->clLabel('edit','rm').'</option>';
+		}
+				// Delete:
+		if ($elCount)	{
+			$opt[]='<option value="'.htmlspecialchars("
 			if(confirm(".$GLOBALS['LANG']->JScharCode(sprintf($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'),$elCount)).")){
 				document.location='".$this->deleteUrl(0,$this->fileMode?1:0)."&redirect='+top.rawurlencode(document.location);
 			}
 			").'">'.$this->clLabel('delete','rm').'</option>';
+		}
 		$selector_menu = '<select name="_clipMenu" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">'.implode('',$opt).'</select>';
 
 		$out[]='
 			<tr class="typo3-clipboard-head">
-				<td>'.
+				<td nowrap="nowrap">'.
 				'<a href="'.htmlspecialchars($thumb_url).'#clip_head">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/thumb_'.($this->clipData['_setThumb']?'s':'n').'.gif','width="21" height="16"').' vspace="2" border="0" title="'.$this->clLabel('thumbmode_clip').'" alt="" />'.
 					'</a>'.
@@ -310,7 +345,10 @@ class t3lib_clipboard {
 					'</a>'.
 				'</td>
 				<td width="95%">'.$selector_menu.'</td>
-				<td><a href="'.htmlspecialchars($rmall_url).'#clip_head">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.clear',1).'</a></td>
+				<td>'.
+				'<a href="'.htmlspecialchars($rmall_url).'#clip_head">'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/closedok_2.gif','width="21" height="16"').' vspace="2" border="0" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.clear',1).'" alt="" />'.
+					'</a></td>
 			</tr>';
 
 
@@ -384,7 +422,7 @@ class t3lib_clipboard {
 									<td class="'.$bgColClass.'">'.$icon.'</td>
 									<td class="'.$bgColClass.'" nowrap="nowrap" width="95%">&nbsp;'.$this->linkItemText(htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($v),$GLOBALS['BE_USER']->uc['titleLen'])),$v).
 										($pad=='normal'?(' <strong>('.($this->clipData['normal']['mode']=='copy'?$this->clLabel('copy','cm'):$this->clLabel('cut','cm')).')</strong>'):'').'&nbsp;'.($thumb?'<br />'.$thumb:'').'</td>
-									<td class="'.$bgColClass.'" align="center">'.
+									<td class="'.$bgColClass.'" align="center" nowrap="nowrap">'.
 									'<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$v.'\', \'\'); return false;').'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' hspace="2" border="0" title="'.$this->clLabel('info','cm').'" alt="" /></a>'.
 									'<a href="'.htmlspecialchars($this->removeUrl('_FILE',t3lib_div::shortmd5($v))).'#clip_head"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/close_12h.gif','width="11" height="12"').' border="0" title="'.$this->clLabel('removeItem').'" alt="" /></a>'.
 									'</td>
@@ -402,7 +440,7 @@ class t3lib_clipboard {
 									<td class="'.$bgColClass.'">'.$this->linkItemText(t3lib_iconWorks::getIconImage($table,$rec,$this->backPath,'hspace="20" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($rec,$table)).'"'),$rec,$table).'</td>
 									<td class="'.$bgColClass.'" nowrap="nowrap" width="95%">&nbsp;'.$this->linkItemText(htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$rec),$GLOBALS['BE_USER']->uc['titleLen'])),$rec,$table).
 										($pad=='normal'?(' <strong>('.($this->clipData['normal']['mode']=='copy'?$this->clLabel('copy','cm'):$this->clLabel('cut','cm')).')</strong>'):'').'&nbsp;</td>
-									<td class="'.$bgColClass.'" align="center">'.
+									<td class="'.$bgColClass.'" align="center" nowrap="nowrap">'.
 									'<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.intval($uid).'\'); return false;').'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' hspace="2" border="0" title="'.$this->clLabel('info','cm').'" alt="" /></a>'.
 									'<a href="'.htmlspecialchars($this->removeUrl($table,$uid)).'#clip_head"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/close_12h.gif','width="11" height="12"').' border="0" title="'.$this->clLabel('removeItem').'" alt="" /></a>'.
 									'</td>
@@ -466,41 +504,6 @@ class t3lib_clipboard {
 			}
 		}
 		return $str;
-	}
-
-	/**
-	 * Verifies if the item $table/$uid is on the current pad.
-	 * If the pad is "normal", the mode value is returned if the element existed. Thus you'll know if the item was copy or cut moded...
-	 *
-	 * @param	string		Table name, (_FILE for files...)
-	 * @param	integer		Element uid (path for files)
-	 * @return	string
-	 */
-	function isSelected($table,$uid)	{
-		$k=$table.'|'.$uid;
-		return $this->clipData[$this->current]['el'][$k] ? ($this->current=='normal'?$this->currentMode():1) : '';
-	}
-
-	/**
-	 * Returns item record $table,$uid if selected on current clipboard
-	 * If table and uid is blank, the first element is returned.
-	 * Makes sense only for DB records - not files!
-	 *
-	 * @param	string		Table name
-	 * @param	integer		Element uid
-	 * @return	array		Element record with extra field _RECORD_TITLE set to the title of the record...
-	 */
-	function getSelectedRecord($table='',$uid='')	{
-		if (!$table && !$uid)	{
-			$elArr = $this->elFromTable('');
-			reset($elArr);
-			list($table,$uid) = explode('|',key($elArr));
-		}
-		if ($this->isSelected($table,$uid))	{
-			$selRec = t3lib_BEfunc::getRecord($table,$uid);
-			$selRec['_RECORD_TITLE'] = t3lib_BEfunc::getRecordTitle($table,$selRec);
-			return $selRec;
-		}
 	}
 
 	/**
@@ -606,6 +609,144 @@ class t3lib_clipboard {
 	}
 
 	/**
+	 * Returns confirm JavaScript message
+	 *
+	 * @param	string		Table name
+	 * @param	mixed		For records its an array, for files its a string (path)
+	 * @param	string		Type-code
+	 * @param	array		Array of selected elements
+	 * @return	string		JavaScript "confirm" message
+	 */
+	function confirmMsg($table,$rec,$type,$clElements)	{
+		$labelKey = 'LLL:EXT:lang/locallang_core.php:mess.'.($this->currentMode()=='copy'?'copy':'move').($this->current=='normal'?'':'cb').'_'.$type;
+		$msg = $GLOBALS['LANG']->sL($labelKey);
+
+		if ($table=='_FILE')	{
+			$thisRecTitle = basename($rec);
+			if ($this->current=='normal')	{
+				reset($clElements);
+				$selItem = current($clElements);
+				$selRecTitle = basename($selItem);
+			} else {
+				$selRecTitle=count($clElements);
+			}
+		} else {
+			$thisRecTitle = (
+				$table=='pages' && !is_array($rec) ?
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] :
+				t3lib_BEfunc::getRecordTitle($table,$rec)
+			);
+
+			if ($this->current=='normal')	{
+				$selItem = $this->getSelectedRecord();
+				$selRecTitle=$selItem['_RECORD_TITLE'];
+			} else {
+				$selRecTitle=count($clElements);
+			}
+		}
+
+			// Message:
+		$conf='confirm('.$GLOBALS['LANG']->JScharCode(sprintf(
+			$msg,
+			t3lib_div::fixed_lgd_cs($selRecTitle,30),
+			t3lib_div::fixed_lgd_cs($thisRecTitle,30)
+			)).')';
+		return $conf;
+	}
+
+	/**
+	 * Clipboard label - getting from "EXT:lang/locallang_core.php:"
+	 *
+	 * @param	string		Label Key
+	 * @param	string		Alternative key to "labels"
+	 * @return	string
+	 */
+	function clLabel($key,$Akey='labels')	{
+		return htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:'.$Akey.'.'.$key));
+	}
+
+	/**
+	 * Creates GET parameters for linking to the export module.
+	 *
+	 * @return	string		GET parameters for current clipboard content to be exported.
+	 */
+	function exportClipElementParameters()	{
+
+			// Init:
+		$pad = $this->current;
+		$params = array();
+		$params[] = 'tx_impexp[action]=export';
+
+			// Traverse items:
+		if (is_array($this->clipData[$pad]['el']))	{
+			reset($this->clipData[$pad]['el']);
+			while(list($k,$v)=each($this->clipData[$pad]['el']))	{
+				if ($v)	{
+					list($table,$uid) = explode('|',$k);
+
+					if ($table=='_FILE')	{	// Rendering files/directories on the clipboard:
+						if (@file_exists($v) && t3lib_div::isAllowedAbsPath($v))	{
+							$params[] = 'tx_impexp['.(is_dir($v) ? 'dir' : 'file').'][]='.rawurlencode($v);
+						}
+					} else {	// Rendering records:
+						$rec = t3lib_BEfunc::getRecord($table,$uid);
+						if (is_array($rec))	{
+							$params[] = 'tx_impexp[record][]='.rawurlencode($table.':'.$uid);
+						}
+					}
+				}
+			}
+		}
+
+		return '?'.implode('&', $params);
+	}
+
+
+
+
+
+
+
+
+	/*****************************************
+	 *
+	 * Helper functions
+	 *
+	 ****************************************/
+
+	/**
+	 * Removes element on clipboard
+	 *
+	 * @param	string		Key of element in ->clipData array
+	 * @return	void
+	 */
+	function removeElement($el)	{
+		unset($this->clipData[$this->current]['el'][$el]);
+		$this->changed=1;
+	}
+
+	/**
+	 * Saves the clipboard, no questions asked.
+	 * Use ->endClipboard normally (as it checks if changes has been done so saving is necessary)
+	 *
+	 * @return	void
+	 * @access private
+	 */
+	function saveClipboard()	{
+		global $BE_USER;
+		$BE_USER->pushModuleData('clipboard',$this->clipData);
+	}
+
+	/**
+	 * Returns the current mode, 'copy' or 'cut'
+	 *
+	 * @return	string		"copy" or "cut"
+	 */
+	function currentMode()	{
+		return $this->clipData[$this->current]['mode']=='copy' ? 'copy' : 'cut';
+	}
+
+	/**
 	 * This traverses the elements on the current clipboard pane
 	 * and unsets elements which does not exist anymore or are disabled.
 	 *
@@ -662,92 +803,47 @@ class t3lib_clipboard {
 	}
 
 	/**
-	 * Returns confirm JavaScript message
+	 * Verifies if the item $table/$uid is on the current pad.
+	 * If the pad is "normal", the mode value is returned if the element existed. Thus you'll know if the item was copy or cut moded...
 	 *
-	 * @param	string		Table name
-	 * @param	mixed		For records its an array, for files its a string (path)
-	 * @param	string		Type-code
-	 * @param	array		Array of selected elements
-	 * @return	string		JavaScript "confirm" message
-	 */
-	function confirmMsg($table,$rec,$type,$clElements)	{
-		$labelKey = 'LLL:EXT:lang/locallang_core.php:mess.'.($this->currentMode()=='copy'?'copy':'move').($this->current=='normal'?'':'cb').'_'.$type;
-		$msg = $GLOBALS['LANG']->sL($labelKey);
-
-		if ($table=='_FILE')	{
-			$thisRecTitle = basename($rec);
-			if ($this->current=='normal')	{
-				reset($clElements);
-				$selItem = current($clElements);
-				$selRecTitle = basename($selItem);
-			} else {
-				$selRecTitle=count($clElements);
-			}
-		} else {
-			$thisRecTitle = (
-				$table=='pages' && !is_array($rec) ?
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] :
-				t3lib_BEfunc::getRecordTitle($table,$rec)
-			);
-
-			if ($this->current=='normal')	{
-				$selItem = $this->getSelectedRecord();
-				$selRecTitle=$selItem['_RECORD_TITLE'];
-			} else {
-				$selRecTitle=count($clElements);
-			}
-		}
-
-			// Message:
-		$conf='confirm('.$GLOBALS['LANG']->JScharCode(sprintf(
-			$msg,
-			t3lib_div::fixed_lgd_cs($selRecTitle,30),
-			t3lib_div::fixed_lgd_cs($thisRecTitle,30)
-			)).')';
-		return $conf;
-	}
-
-	/**
-	 * Removes element on clipboard
-	 *
-	 * @param	string		Key of element in ->clipData array
-	 * @return	void
-	 */
-	function removeElement($el)	{
-		unset($this->clipData[$this->current]['el'][$el]);
-		$this->changed=1;
-	}
-
-	/**
-	 * Saves the clipboard, no questions asked.
-	 * Use ->endClipboard normally (as it checks if changes has been done so saving is necessary)
-	 *
-	 * @return	void
-	 * @access private
-	 */
-	function saveClipboard()	{
-		global $BE_USER;
-		$BE_USER->pushModuleData('clipboard',$this->clipData);
-	}
-
-	/**
-	 * Returns the current mode, 'copy' or 'cut'
-	 *
-	 * @return	string		"copy" or "cut"
-	 */
-	function currentMode()	{
-		return $this->clipData[$this->current]['mode']=='copy' ? 'copy' : 'cut';
-	}
-
-	/**
-	 * Clipboard label - getting from "EXT:lang/locallang_core.php:"
-	 *
-	 * @param	string		Label Key
-	 * @param	string		Alternative key to "labels"
+	 * @param	string		Table name, (_FILE for files...)
+	 * @param	integer		Element uid (path for files)
 	 * @return	string
 	 */
-	function clLabel($key,$Akey='labels')	{
-		return htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:'.$Akey.'.'.$key));
+	function isSelected($table,$uid)	{
+		$k=$table.'|'.$uid;
+		return $this->clipData[$this->current]['el'][$k] ? ($this->current=='normal'?$this->currentMode():1) : '';
+	}
+
+	/**
+	 * Returns item record $table,$uid if selected on current clipboard
+	 * If table and uid is blank, the first element is returned.
+	 * Makes sense only for DB records - not files!
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Element uid
+	 * @return	array		Element record with extra field _RECORD_TITLE set to the title of the record...
+	 */
+	function getSelectedRecord($table='',$uid='')	{
+		if (!$table && !$uid)	{
+			$elArr = $this->elFromTable('');
+			reset($elArr);
+			list($table,$uid) = explode('|',key($elArr));
+		}
+		if ($this->isSelected($table,$uid))	{
+			$selRec = t3lib_BEfunc::getRecord($table,$uid);
+			$selRec['_RECORD_TITLE'] = t3lib_BEfunc::getRecordTitle($table,$selRec);
+			return $selRec;
+		}
+	}
+
+	/**
+	 * Reports if the current pad has elements (does not check file/DB type OR if file/DBrecord exists or not. Only counting array)
+	 *
+	 * @return	boolean		True if elements exist.
+	 */
+	function isElements()	{
+		return is_array($this->clipData[$this->current]['el']) && count($this->clipData[$this->current]['el']);
 	}
 
 

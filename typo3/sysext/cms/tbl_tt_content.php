@@ -224,7 +224,8 @@ $TCA['tt_content'] = Array (
 						'script' => 'browse_links.php?mode=wizard',
 						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
 					)
-				)
+				),
+				'softref' => 'typolink'
 			)
 		),
 		'header_layout' => Array (
@@ -250,7 +251,8 @@ $TCA['tt_content'] = Array (
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
-				'max' => '256'
+				'max' => '256',
+				'softref' => 'email[subst]'
 			)
 		),
 		'bodytext' => Array (
@@ -289,7 +291,8 @@ $TCA['tt_content'] = Array (
 						'script' => 'wizard_forms.php?special=formtype_mail',
 						'params' => array('xmlOutput' => 0)
 					)
-				)
+				),
+				'softref' => 'typolink_tag,images,email[subst],url'
 			)
 		),
 		'text_align' => Array (
@@ -480,7 +483,8 @@ $TCA['tt_content'] = Array (
 						'script' => 'browse_links.php?mode=wizard',
 						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
 					)
-				)
+				),
+				'softref' => 'typolink[linkList]'
 			)
 		),
 		'image_zoom' => Array (
@@ -578,7 +582,8 @@ $TCA['tt_content'] = Array (
 			'config' => Array (
 				'type' => 'text',
 				'cols' => '30',
-				'rows' => '3'
+				'rows' => '3',
+				'softref' => 'typolink_tag,images,email[subst],url'
 			)
 		),
 		'imagecaption_position' => Array (

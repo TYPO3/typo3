@@ -813,11 +813,12 @@ class t3lib_parsehtml {
 	 * @param	string		Prefix string
 	 * @param	string		HTML content
 	 * @param	array		Array with alternative prefixes for certain of the tags. key=>value pairs where the keys are the tag element names in uppercase
+	 * @param	string		Suffix string (put after the resource).
 	 * @return	string		Processed HTML content
 	 */
-	function prefixResourcePath($main_prefix,$content,$alternatives=array())	{
+	function prefixResourcePath($main_prefix,$content,$alternatives=array(),$suffix='')	{
 
-		$parts = $this->splitTags('td,table,body,img,input,form,link,script,a',$content);
+		$parts = $this->splitTags('embed,td,table,body,img,input,form,link,script,a',$content);
 		foreach($parts as $k => $v)	{
 			if ($k%2)	{
 				$params = $this->get_tag_attributes($v,1);
@@ -832,7 +833,7 @@ class t3lib_parsehtml {
 					case 'table':
 						$src = $params[0]['background'];
 						if ($src)	{
-							$params[0]['background'] = $this->prefixRelPath($prefix,$params[0]['background']);
+							$params[0]['background'] = $this->prefixRelPath($prefix,$params[0]['background'],$suffix);
 							$somethingDone=1;
 						}
 					break;
@@ -840,9 +841,10 @@ class t3lib_parsehtml {
 					case 'img':
 					case 'input':
 					case 'script':
+					case 'embed':
 						$src = $params[0]['src'];
 						if ($src)	{
-							$params[0]['src'] = $this->prefixRelPath($prefix,$params[0]['src']);
+							$params[0]['src'] = $this->prefixRelPath($prefix,$params[0]['src'],$suffix);
 							$somethingDone=1;
 						}
 					break;
@@ -850,7 +852,7 @@ class t3lib_parsehtml {
 					case 'a':
 						$src = $params[0]['href'];
 						if ($src)	{
-							$params[0]['href'] = $this->prefixRelPath($prefix,$params[0]['href']);
+							$params[0]['href'] = $this->prefixRelPath($prefix,$params[0]['href'],$suffix);
 							$somethingDone=1;
 						}
 					break;
@@ -858,7 +860,7 @@ class t3lib_parsehtml {
 					case 'form':
 						$src = $params[0]['action'];
 						if ($src)	{
-							$params[0]['action'] = $this->prefixRelPath($prefix,$params[0]['action']);
+							$params[0]['action'] = $this->prefixRelPath($prefix,$params[0]['action'],$suffix);
 							$somethingDone=1;
 						}
 					break;
@@ -879,7 +881,7 @@ class t3lib_parsehtml {
 			$parts = $this->splitIntoBlock('style',$content);
 			foreach($parts as $k => $v)	{
 				if ($k%2)	{
-					$parts[$k] = eregi_replace('(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))','\1'.$prefix.'\2\3',$parts[$k]);
+					$parts[$k] = eregi_replace('(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))','\1'.$prefix.'\2'.$suffix.'\3',$parts[$k]);
 				}
 			}
 			$content = implode('',$parts);
@@ -893,13 +895,14 @@ class t3lib_parsehtml {
 	 *
 	 * @param	string		Prefix string
 	 * @param	string		Relative path/URL
+	 * @param	string		Suffix
 	 * @return	string		Output path, prefixed if no scheme in input string
 	 * @access private
 	 */
-	function prefixRelPath($prefix,$srcVal)	{
+	function prefixRelPath($prefix,$srcVal,$suffix='')	{
 		$pU = parse_url($srcVal);
 		if (!$pU['scheme'] && substr($srcVal, 0, 1)!='/')	{ // If not an absolute URL.
-			$srcVal = $prefix.$srcVal;
+			$srcVal = $prefix.$srcVal.$suffix;
 		}
 		return $srcVal;
 	}

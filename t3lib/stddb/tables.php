@@ -193,7 +193,8 @@ $TCA['pages'] = Array (
 						'icon' => 'wizard_tsconfig.gif',
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
 					)
-				)
+				),
+				'softref' => 'TSconfig'
 			)
 		),
 		'php_tree_stop' => Array (

@@ -1,3 +1,30 @@
+2004-12-17  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Mainly: Did tons of improvements on the import/export module (system extension "impexp").
+		Main features:
+			Supports flexforms (hence TEmplaVoila).
+			Supports RTE embedded images.
+			Supports updates of existing records in various forms.
+			Has optional XML format.
+			Supports a new concept called "soft references" which are plain-text links/file references/markers and allows to track and include these in export. Examples are "fileadmin/..." references in TypoScript templates and <link> typolink tags.
+			Can export from the page tree root.
+			Character set dependant
+			Extension dependencies can be set
+			Embedding of HTML files and internal resources
+			Export links directly from clipboard and Web>List
+			Supports meta data including embedded thumbnail
+
+	* In shortcut frame I added possibility to enter  a table:uid pair in the "Edit page" box. For instance "tt_content:123" will launch the doc module for that element.
+	* Soft References; A parser-concept tied to TCA which allows to define parsers for certain fields that finds "soft references", eg. <link> tags, file-references etc. See import/export improvements above.
+	* Improvements to array2xml which allows detained mapping of array keys to XML-tags. As an example, study the import/export extensions T3RecordDocument configuration.
+	* Improved t3lib_parsehtml::prefixResourcePath() to access a suffix string to WRAP file references
+	* Improved t3lib_tcemain with support for forcing a UID for newly created records (used by import/export)
+	* t3lib_tcemain::checkValue_flex_procInData_travDS() now supports callback functions from external objects
+	* Changed "displayErrors" in config_default.php BACK to "-1" which corresponds to the default from before (notice this, stucki!)
+	* Ended the regime of the new be-usergroup selection box - back to the previous with ordering of backend groups since the first group was significant (being the default owner group)
+	* Added support for having temporary files in typo3temp/ prefixed with a meaningful prefix, typically coming from the menu title, original image name etc.
+
+
 2004-11-28  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Main feature: Lots of updates on Indexed Search extension. The changes are mainly in the indexer, not the search plugin. The work is NOT FINISHED yet and don't update a production site with this work! One main thing to be aware of is that all indexing is done internally as utf-8. You should flush your old index tables before running the new one.
@@ -6,7 +33,7 @@
 	* Fixed order of configuration forms in Extension Manager
 	* Added timezone option in TYPO3_CONF_VARS array
 	* Added right-click feature on context menus. Can be disabled with TYPO3_CONF_VARS if you don't like it. And a rightclick on the page/folder _title_ will also activate the menu! Theoretically it is not valid XHTML. Works in Mozilla and MSIE. Thanks Wolfgang!
-	* Added TS option "USERUID_substToken" 
+	* Added TS option "USERUID_substToken"
 
 2004-11-26  Michael Stucki  <michael@typo3.org>
 

@@ -4420,6 +4420,11 @@ class tslib_cObj {
 						if (!isset($GLOBALS['TSFE']->tmpl->fileCache[$hash]))	{
 							$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 							$gifCreator->init();
+
+							if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])	{
+								$gifCreator->filenamePrefix = $GLOBALS['TSFE']->fileNameASCIIPrefix(ereg_replace('\.[[:alnum:]]+$','',basename($theImage)),intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']),'_');
+							}
+
 							if ($fileArray['sample'])	{
 								$gifCreator->scalecmd = '-sample';
 								$GLOBALS['TT']->setTSlogMessage('Sample option: Images are scaled with -sample.');
@@ -4907,7 +4912,7 @@ class tslib_cObj {
 						$GLOBALS['TT']->setTSlogMessage("typolink(): File '".$splitLinkParam[0]."' did not exist, so '".$linktxt."' was not linked.",1);
 						return $linktxt;
 					}
-	 			} else {	// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
+	 			} else {	// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to definition in $TCA!)
 					if ($conf['no_cache.'])	$conf['no_cache']=$this->stdWrap($conf['no_cache'], $conf['no_cache.']);
 					$link_params_parts=explode('#',$link_param);
 					$link_param = trim($link_params_parts[0]);		// Link-data del

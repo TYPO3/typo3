@@ -18,6 +18,8 @@
 			<label index="import">Import from .t3d</label>
 			<label index="export">Export to .t3d</label>
 			<label index="title">Import / Export</label>
+			<label index="moduleFunction.tx_impexp_modfunc1">Export Presets</label>
+			<label index="tableselec_configuration">Configuration</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/impexp/app/dk.locallang.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/impexp/app/de.locallang.xml</languageKey>

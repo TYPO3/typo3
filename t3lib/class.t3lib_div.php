@@ -1707,11 +1707,11 @@ class t3lib_div {
 	 * @param	string		Alternative document tag. Default is "phparray".
 	 * @param	integer		If set, the number of spaces corresponding to this number is used for indenting, otherwise a single chr(9) (TAB) is used
 	 * @param	array		Options for the compilation. Key "useNindex" => 0/1 (boolean: whether to use "n0, n1, n2" for num. indexes); Key "useIndexTagForNum" => "[tag for numerical indexes]"; Key "useIndexTagForAssoc" => "[tag for associative indexes"; Key "parentTagMap" => array('parentTag' => 'thisLevelTag')
-	 * @param	string		Parent tag name. Don't touch.
+	 * @param	string		Stack data. Don't touch.
 	 * @return	string		An XML string made from the input content in the array.
 	 * @see xml2array()
 	 */
-	function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$parentTagName='')	{
+	function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$stackData=array())	{
 			// The list of byte values which will trigger binary-safe storage. If any value has one of these char values in it, it will be encoded in base64
 		$binaryChars = chr(0).chr(1).chr(2).chr(3).chr(4).chr(5).chr(6).chr(7).chr(8).
 						chr(11).chr(12).chr(14).chr(15).chr(16).chr(17).chr(18).chr(19).
@@ -1731,7 +1731,16 @@ class t3lib_div {
 				$tagName = $k;
 
 					// Construct the tag name.
-				if (!strcmp(intval($tagName),$tagName))	{	// If integer...;
+				if(isset($options['grandParentTagMap'][$stackData['grandParentTagName'].'/'.$stackData['parentTagName']])) {		// Use tag based on grand-parent + parent tag name
+					$attr.=' index="'.htmlspecialchars($tagName).'"';
+					$tagName = (string)$options['grandParentTagMap'][$stackData['grandParentTagName'].'/'.$stackData['parentTagName']];
+				}elseif(isset($options['parentTagMap'][$stackData['parentTagName'].':'.$tagName])) {		// Use tag based on parent tag name + current tag
+					$attr.=' index="'.htmlspecialchars($tagName).'"';
+					$tagName = (string)$options['parentTagMap'][$stackData['parentTagName'].':'.$tagName];
+				} elseif(isset($options['parentTagMap'][$stackData['parentTagName']])) {		// Use tag based on parent tag name:
+					$attr.=' index="'.htmlspecialchars($tagName).'"';
+					$tagName = (string)$options['parentTagMap'][$stackData['parentTagName']];
+				} elseif (!strcmp(intval($tagName),$tagName))	{	// If integer...;
 					if ($options['useNindex']) {	// If numeric key, prefix "n"
 						$tagName = 'n'.$tagName;
 					} else {	// Use special tag for num. keys:
@@ -1741,9 +1750,6 @@ class t3lib_div {
 				} elseif($options['useIndexTagForAssoc']) {		// Use tag for all associative keys:
 					$attr.=' index="'.htmlspecialchars($tagName).'"';
 					$tagName = $options['useIndexTagForAssoc'];
-				} elseif(isset($options['parentTagMap'][$parentTagName])) {		// Use tag based on parent tag name:
-					$attr.=' index="'.htmlspecialchars($tagName).'"';
-					$tagName = (string)$options['parentTagMap'][$parentTagName];
 				}
 
 					// The tag name is cleaned up so only alphanumeric chars (plus - and _) are in there and not longer than 100 chars either.
@@ -1751,8 +1757,30 @@ class t3lib_div {
 
 					// If the value is an array then we will call this function recursively:
 				if (is_array($v))	{
-					// Sub elements:
-					$content = chr(10).t3lib_div::array2xml($v,$NSprefix,$level+1,'',$spaceInd,$options,$tagName).
+
+						// Sub elements:
+					if ($options['alt_options'][$stackData['path'].'/'.$tagName])	{
+						$subOptions = $options['alt_options'][$stackData['path'].'/'.$tagName];
+						$clearStackPath = $subOptions['clearStackPath'];
+					} else {
+						$subOptions = $options;
+						$clearStackPath = FALSE;
+					}
+
+					$content = chr(10).
+								t3lib_div::array2xml(
+									$v,
+									$NSprefix,
+									$level+1,
+									'',
+									$spaceInd,
+									$subOptions,
+									array(
+										'parentTagName' => $tagName,
+										'grandParentTagName' => $stackData['parentTagName'],
+										'path' => $clearStackPath ? '' : $stackData['path'].'/'.$tagName,
+									)
+								).
 								str_pad('',($level+1)*$indentN,$indentChar);
 					$attr.=' type="array"';
 				} else {	// Just a value:
@@ -1766,7 +1794,7 @@ class t3lib_div {
 							// Otherwise, just htmlspecialchar the stuff:
 						$content = htmlspecialchars($v);
 						$dType = gettype($v);
-						if ($dType!='string')	{ $attr.=' type="'.$dType.'"'; }
+						if ($dType!='string' && !$options['disableTypeAttrib'])	{ $attr.=' type="'.$dType.'"'; }
 					}
 				}
 
@@ -1793,10 +1821,11 @@ class t3lib_div {
 	 *
 	 * @param	string		XML content to convert into an array
 	 * @param	string		The tag-prefix resolve, eg. a namespace like "T3:"
+	 * @param	boolean		If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
 	 * @return	mixed		If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
 	 * @see array2xml()
 	 */
-	function xml2array($string,$NSprefix='') {
+	function xml2array($string,$NSprefix='',$reportDocTag=FALSE) {
 		global $TYPO3_CONF_VARS;
 
 			// Create parser:
@@ -1809,7 +1838,7 @@ class t3lib_div {
 
 			// PHP5 fix of charset awareness:
 			// Problem is: PHP5 apparently detects the charset of the XML file (or defaults to utf-8) and will AUTOMATICALLY convert the content to either utf-8, iso-8859-1 or us-ascii. PHP4 just passed the content through without taking action regarding the charset.
-			// In TYPO3 we expect that the charset of XML content is NOT handled in the parser but internally in TYPO3 instead. THerefore it would be very nice if PHP5 could be configured to NOT process the charset of the files. But this is not possible for now.
+			// In TYPO3 we expect that the charset of XML content is NOT handled in the parser but internally in TYPO3 instead. Therefore it would be very nice if PHP5 could be configured to NOT process the charset of the files. But this is not possible for now.
 			// What we do here fixes the problem but ONLY if the charset is utf-8, iso-8859-1 or us-ascii. That should work for most TYPO3 installations, in particular if people use utf-8 which we highly recommend.
 		if ((double)phpversion()>=5)	{
 			unset($ereg_result);
@@ -1822,20 +1851,24 @@ class t3lib_div {
 		xml_parse_into_struct($parser, $string, $vals, $index);
 
 			// If error, return error message:
-		if (xml_get_error_code($parser))	return 'Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser));
+		if (xml_get_error_code($parser))	{
+			return 'Line '.xml_get_current_line_number($parser).': '.xml_error_string(xml_get_error_code($parser));
+		}
 		xml_parser_free($parser);
 
 			// Init vars:
 		$stack = array(array());
 		$stacktop = 0;
 		$current=array();
-		$tagName='';
+		$tagName = '';
+		$documentTag = '';
 
 			// Traverse the parsed XML structure:
 		foreach($vals as $key => $val) {
 
 				// First, process the tag-name (which is used in both cases, whether "complete" or "close")
 			$tagName = $val['tag'];
+			if (!$documentTag)	$documentTag = $tagName;
 
 				// Test for name space:
 			$tagName = ($NSprefix && substr($tagName,0,strlen($NSprefix))==$NSprefix) ? substr($tagName,strlen($NSprefix)) : $tagName;
@@ -1885,6 +1918,10 @@ class t3lib_div {
 					}
 				break;
 			}
+		}
+
+		if ($reportDocTag)	{
+			$current[$tagName]['_DOCUMENT_TAG'] = $documentTag;
 		}
 
 			// Finally return the content of the document tag.
@@ -2144,7 +2181,7 @@ class t3lib_div {
 				while($entry=$d->read()) {
 					if (@is_file($path.'/'.$entry))	{
 						$fI = pathinfo($entry);
-						$key = md5($path.'/'.$entry);
+						$key = md5($path.'/'.$entry);	// Don't change this ever - extensions may depend on the fact that the hash is an md5 of the path! (import/export extension)
 						if (!$extensionList || t3lib_div::inList($extensionList,strtolower($fI['extension'])))	{
 						    $filearray[$key]=($prependPath?$path.'/':'').$entry;
 							if ($order=='mtime') {$sortarray[$key]=filemtime($path.'/'.$entry);}

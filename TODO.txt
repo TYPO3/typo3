@@ -41,7 +41,7 @@ TCEmain:
 	- Transformation API: Implement the possibility of custom to/from transformations for the "user" type (or any field?)
 	- Selector box type:
 		- MM support for strings
-	- Support for MM-records which does NOT get deleted, but is kept... and then support for having data in those!!
+	- Support for MM-records which does NOT get deleted, but is kept... and then support for having data in those!! NOTE 3/12 04: This will cause severe problems in the import/export interface and probably many other places where the MM relations are stored only as the uid of another table and nothing more. That makes it impossible to track the record in the middle....
 	- Support that the content of a single field can be stored in an external file instead.
 	- Support that a list of fields can be stored in an external XML file instead.
 	- Record Reference tracking in a table in TCEmain; Used to:

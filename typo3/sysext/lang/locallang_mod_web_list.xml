@@ -53,7 +53,7 @@
 			<label index="localization">Localization view</label>
 			<label index="defaultLanguage">Default</label>
 			<label index="multipleLanguages">All languages</label>
-			<label index="Localize">Localize</label>
+			<label index="Localize">Localize to:</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/lang/dk.locallang_mod_web_list.xml</languageKey>
 		<languageKey index="de">EXT:csh_de/lang/de.locallang_mod_web_list.xml</languageKey>

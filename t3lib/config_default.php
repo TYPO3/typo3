@@ -74,7 +74,7 @@ $TYPO3_CONF_VARS = Array(
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
-		'displayErrors' => 0,                                   // Integer, -1,0,1. 0=Do not display any PHP error messages. 1=Display error messages. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you leave this unchanged but enable the "error_log" option in php.ini instead.
+		'displayErrors' => -1,					// Integer, -1,0,1. 0=Do not display any PHP error messages. 1=Display error messages. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
 		'serverTimeZone' => 1					// Integer, GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
@@ -197,7 +197,22 @@ $TYPO3_CONF_VARS = Array(
 	),
 	'USER' => Array(		// Here you may define your own setup-vars for use in your include-scripts. (obsolete, make extension instead)
 	),
-	'SC_OPTIONS' => Array(		// Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself.
+	'SC_OPTIONS' => Array(		// Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.
+		'GLOBAL' => array(
+			'softRefParser' => array(
+				'substitute' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'notify' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'images' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'typolink' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'typolink_tag' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'TSconfig' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'TStemplate' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'ext_fileref' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'email' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+				'url' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
+			),
+			'softRefParser_GL' => array()	// Global soft reference parsers
+		)
 	),
 	'EXTCONF' => Array (		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
 //		'--key--' => array()

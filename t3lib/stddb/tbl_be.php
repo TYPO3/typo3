@@ -74,7 +74,7 @@ $TCA['be_users'] = Array (
 				'foreign_table_where' => 'ORDER BY be_groups.title',
 				'size' => '5',
 				'maxitems' => '20',
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+#				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 				'wizards' => Array(
 					'_PADDING' => 1,
@@ -118,7 +118,8 @@ $TCA['be_users'] = Array (
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '50',
-				'checkbox' => ''
+				'checkbox' => '',
+				'softref' => 'substitute'
 			)
 		),
 		'db_mountpoints' => Array (
@@ -185,7 +186,8 @@ $TCA['be_users'] = Array (
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '80'
+				'max' => '80',
+				'softref' => 'email[subst]'
 			)
 		),
 		'realName' => Array (
@@ -351,7 +353,8 @@ $TCA['be_users'] = Array (
 						'icon' => 'wizard_tsconfig.gif',
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
 					)
-				)
+				),
+				'softref' => 'TSconfig'
 			)
 		),
 		'createdByAction' => Array('config'=>array('type'=>'passthrough'))
@@ -531,7 +534,8 @@ $TCA['be_groups'] = Array (
 				'size' => '20',
 				'eval' => 'trim',
 				'max' => '50',
-				'checkbox' => ''
+				'checkbox' => '',
+				'softref' => 'substitute'
 			)
 		),
 		'groupMods' => Array (
@@ -576,7 +580,8 @@ $TCA['be_groups'] = Array (
 						'icon' => 'wizard_tsconfig.gif',
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
 					)
-				)
+				),
+				'softref' => 'TSconfig'
 			)
 		),
 		'hide_in_lists' => Array (
@@ -632,7 +637,8 @@ $TCA['sys_filemounts'] = Array (
 				'type' => 'input',
 				'size' => '40',
 				'max' => '120',
-				'eval' => 'required,trim'
+				'eval' => 'required,trim',
+				'softref' => 'substitute'
 			)
 		),
 		'hidden' => Array (

@@ -213,6 +213,8 @@ class t3lib_TCEmain	{
 	var $storeLogMessages=1;		// If set, the default log-messages will be stored. This should not be necessary if the locallang-file for the log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
 	var $enableLogging=1;			// If set, actions are logged.
 
+	var $callBackObj;				// Call back object for flex form traversation. Useful when external classes wants to use the iteration functions inside tcemain for traversing a FlexForm structure.
+
 //	var $history=1;					// Bit-array: Bit0: History on/off. DEPENDS on checkSimilar to be set!
 	var $checkSimilar=1;			// Boolean: If set, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
 	var $dontProcessTransformations=0;	// Boolean: If set, then transformations are NOT performed on the input.
@@ -236,6 +238,7 @@ class t3lib_TCEmain	{
 	var $data_disableFields=array();		// If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
 	var $defaultValues=array();				// You can set this array on the form $defaultValues[$table][$field] = $value to override the default values fetched from TCA. You must set this externally.
 	var $overrideValues=array();			// You can set this array on the form $overrideValues[$table][$field] = $value to override the incoming data. You must set this externally. You must make sure the fields in this array are also found in the table, because it's not checked. All columns can be set by this array!
+	var $suggestedInsertUids=array();		// Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be true, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
 
 		// *********
 		// internal
@@ -595,7 +598,7 @@ class t3lib_TCEmain	{
 							if (is_array($fieldArray)) {
 								if ($status=='new')	{
 	//								if ($pid_value<0)	{$fieldArray = $this->fixCopyAfterDuplFields($table,$id,abs($pid_value),0,$fieldArray);}	// Out-commented 02-05-02: I couldn't understand WHY this is needed for NEW records. Obviously to proces records being copied? Problem is that the fields are not set anyways and the copying function should basically take care of this!
-									$this->insertDB($table,$id,$fieldArray);
+									$this->insertDB($table,$id,$fieldArray,FALSE,$incomingFieldArray['uid']);
 								} else {
 									$this->updateDB($table,$id,$fieldArray);
 								}
@@ -2020,7 +2023,8 @@ class t3lib_TCEmain	{
 							$uploadedFiles[$sKey][$lKey],
 							$dataStruct['ROOT']['el'],
 							$pParams,
-							$callBackFunc
+							$callBackFunc,
+							$sKey.'/'.$lKey.'/'
 						);
 					}
 				}
@@ -2039,11 +2043,11 @@ class t3lib_TCEmain	{
 	 * @param	array		Uploaded files array for sheet/language. May be empty array() if not needed (for callBackFunctions)
 	 * @param	array		Data structure which fits the data array
 	 * @param	array		A set of parameters to pass through for the calling of the evaluation functions / call back function
-	 * @param	string		Call back function, default is checkValue_SW().
+	 * @param	string		Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
 	 * @return	void
 	 * @see checkValue_flex_procInData()
 	 */
-	function checkValue_flex_procInData_travDS(&$dataValues,$dataValues_current,$uploadedFiles,$DSelements,$pParams,$callBackFunc='')	{
+	function checkValue_flex_procInData_travDS(&$dataValues,$dataValues_current,$uploadedFiles,$DSelements,$pParams,$callBackFunc,$structurePath)	{
 		if (is_array($DSelements))	{
 
 				// For each DS element:
@@ -2062,7 +2066,8 @@ class t3lib_TCEmain	{
 											$uploadedFiles[$key]['el'][$ik][$theKey]['el'],
 											$DSelements[$key]['el'][$theKey]['el'],
 											$pParams,
-											$callBackFunc
+											$callBackFunc,
+											$structurePath.$key.'/el/'.$ik.'/'.$theKey.'/el/'
 										);
 								}
 							}
@@ -2074,7 +2079,8 @@ class t3lib_TCEmain	{
 									$uploadedFiles[$key]['el'],
 									$DSelements[$key]['el'],
 									$pParams,
-									$callBackFunc
+									$callBackFunc,
+									$structurePath.$key.'/el/'
 								);
 						}
 					}
@@ -2083,13 +2089,24 @@ class t3lib_TCEmain	{
 						foreach($dataValues[$key] as $vKey => $data)	{
 
 							if ($callBackFunc)	{
-								$res = $this->$callBackFunc(
-											$pParams,
-											$dsConf['TCEforms']['config'],
-											$dataValues[$key][$vKey],
-											$dataValues_current[$key][$vKey],
-											$uploadedFiles[$key][$vKey]
-										);
+								if (is_object($this->callBackObj))	{
+									$res = $this->callBackObj->$callBackFunc(
+												$pParams,
+												$dsConf['TCEforms']['config'],
+												$dataValues[$key][$vKey],
+												$dataValues_current[$key][$vKey],
+												$uploadedFiles[$key][$vKey],
+												$structurePath.$key.'/'.$vKey.'/'
+											);
+								} else {
+									$res = $this->$callBackFunc(
+												$pParams,
+												$dsConf['TCEforms']['config'],
+												$dataValues[$key][$vKey],
+												$dataValues_current[$key][$vKey],
+												$uploadedFiles[$key][$vKey]
+											);
+								}
 							} else {	// Default
 								list($CVtable,$CVid,$CVcurValue,$CVstatus,$CVrealPid,$CVrecFID,$CVtscPID) = $pParams;
 
@@ -2277,15 +2294,30 @@ class t3lib_TCEmain	{
 	 * @param	string		"NEW...." uid string
 	 * @param	array		Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
 	 * @param	boolean		Set to true if new version is created.
+	 * @param	integer		Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
 	 * @return	void
 	 */
-	function insertDB($table,$id,$fieldArray,$newVersion=FALSE)	{
+	function insertDB($table,$id,$fieldArray,$newVersion=FALSE,$suggestedUid=0)	{
 		global $TCA;
 
 		if (is_array($fieldArray) && is_array($TCA[$table]) && isset($fieldArray['pid']))	{
 			unset($fieldArray['uid']);	// Do NOT insert the UID field, ever!
 
 			if (count($fieldArray))	{
+
+					// Check for "suggestedUid".
+					// This feature is used by the import functionality to force a new record to have a certain UID value.
+					// This is only recommended for use when the destination server is a passive mirrow of another server.
+					// As a security measure this feature is available only for Admin Users (for now)
+				$suggestedUid = intval($suggestedUid);
+				if ($this->BE_USER->isAdmin() && $suggestedUid && $this->suggestedInsertUids[$table.':'.$suggestedUid])	{
+						// When the value of ->suggestedInsertUids[...] is "DELETE" it will try to remove the previous record
+					if ($this->suggestedInsertUids[$table.':'.$suggestedUid]==='DELETE')	{
+							// DELETE:
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($suggestedUid));
+					}
+					$fieldArray['uid'] = $suggestedUid;
+				}
 
 					// Execute the INSERT query:
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $fieldArray);
@@ -2406,7 +2438,7 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	function clear_cache($table,$uid) {
-		global $TCA;
+		global $TCA, $TYPO3_CONF_VARS;
 
 		$uid = intval($uid);
 		if (is_array($TCA[$table]) && $uid > 0)	{
@@ -2416,8 +2448,10 @@ class t3lib_TCEmain	{
 			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 
 			if (!$TSConfig['clearCache_disable'])	{
+
 					// If table is "pages":
 				if (t3lib_extMgm::isLoaded('cms'))	{
+					$list_cache = array();
 					if ($table=='pages')	{
 
 							// Builds list of pages on the SAME level as this page (siblings)
@@ -2427,7 +2461,6 @@ class t3lib_TCEmain	{
 										'A.uid='.intval($uid).' AND B.pid=A.pid AND B.deleted=0'
 									);
 
-						$list_cache = array();
 						$pid_tmp = 0;
 						while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
 							$list_cache[] = $row_tmp['uid'];
@@ -2460,16 +2493,23 @@ class t3lib_TCEmain	{
 								$list_cache[] = $row_tmp['pid'];
 							}
 						}
+					} else {	// For other tables than "pages", delete cache for the records "parent page".
+						$list_cache[] = intval($this->getPID($table,$uid));
+					}
 
-							// Delete cache for selected pages:
+						// Call pre-processing function for clearing of cache for page ids:
+					if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval']))	{
+						foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName)	{
+							$_params = array('pageIdArray' => &$list_cache, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()');
+								// Returns the array of ids to clear, false if nothing should be cleared! Never an empty array!
+							t3lib_div::callUserFunction($funcName,$_params,$this);
+						}
+					}
+
+						// Delete cache for selected pages:
+					if (is_array($list_cache))	{
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
-					} else {	// For other tables than "pages", delete cache for the records "parent page".
-						$uid_page = $this->getPID($table,$uid);
-						if ($uid_page>0)	{
-							$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id='.intval($uid_page));
-							$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id='.intval($uid_page));
-						}
 					}
 				}
 			}
@@ -4389,10 +4429,10 @@ class t3lib_TCEmain	{
 	}
 
 	/**
-	 * [Describe function...]
+	 * Returns true if the TCA/columns field type is a DB reference field
 	 *
-	 * @param	[type]		$conf: ...
-	 * @return	[type]		...
+	 * @param	array		config array for TCA/columns field
+	 * @return	boolean		True if DB reference field (group/db or select with foreign-table)
 	 */
 	function isReferenceField($conf)	{
 		return ($conf['type']=='group' && $conf['internal_type']=='db') ||	($conf['type']=='select' && $conf['foreign_table']);
@@ -4635,7 +4675,23 @@ class t3lib_TCEmain	{
 			// Clear cache for a page ID!
 		if (t3lib_div::testInt($cacheCmd))	{
 			if (t3lib_extMgm::isLoaded('cms'))	{
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id='.intval($cacheCmd));
+
+				$list_cache = array($cacheCmd);
+
+					// Call pre-processing function for clearing of cache for page ids:
+				if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval']))	{
+					foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName)	{
+						$_params = array('pageIdArray' => &$list_cache, 'cacheCmd' => $cacheCmd, 'functionID' => 'clear_cacheCmd()');
+							// Returns the array of ids to clear, false if nothing should be cleared! Never an empty array!
+						t3lib_div::callUserFunction($funcName,$_params,$this);
+					}
+				}
+
+					// Delete cache for selected pages:
+				if (is_array($list_cache))	{
+					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
+					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');	// Originally, cache_pagesection was not cleared with cache_pages!
+				}
 			}
 		}
 

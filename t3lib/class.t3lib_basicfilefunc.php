@@ -332,6 +332,24 @@ class t3lib_basicFileFunctions	{
 	}
 
 	/**
+	 * Find first web folder (relative to PATH_site.'fileadmin') in filemounts array
+	 *
+	 * @return	string		The key to the first mount inside PATH_site."fileadmin" found, otherwise nothing is returned.
+	 */
+	function findFirstWebFolder()	{
+		global $TYPO3_CONF_VARS;
+
+		if (is_array($this->mounts))	{
+			reset ($this->mounts);
+			while(list($k,$val)=each($this->mounts))	{
+				if (t3lib_div::isFirstPartOfStr($val['path'], PATH_site.$TYPO3_CONF_VARS['BE']['fileadminDir']))	{
+					return $k;
+				}
+			}
+		}
+	}
+
+	/**
 	 * Removes filemount part of a path, thus blinding the position.
 	 * Takes a path, $thePath, and removes the part of the path which equals the filemount.
 	 *
@@ -365,6 +383,11 @@ class t3lib_basicFileFunctions	{
 			}
 		}
 	}
+
+
+
+
+
 
 
 
