@@ -3471,7 +3471,7 @@ class t3lib_TCEforms	{
 					if (setOK)	{
 						fObj.length++;
 						fObj.options[l].value=value;
-						fObj.options[l].text=label;
+						fObj.options[l].text=unescape(label);
 		
 							// Traversing list and set the hidden-field
 						setHiddenFromList(fObj,formObj[fName]);

@@ -218,7 +218,7 @@ class SC_tce_db {
 		if ($this->prErr)	{
 			$this->tce->printLogErrorMessages($this->redirect);
 		}
-		
+
 		if ($this->redirect && !$this->tce->debug) {
 			Header('Location: '.t3lib_div::locationHeaderUrl($this->redirect));
 		}

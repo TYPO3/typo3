@@ -1399,6 +1399,10 @@ class t3lib_TCEmain	{
 	function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles)	{
 		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
 
+			// This converts all occurencies of "&#123;" to the byte 123 in the string - this is needed in very rare cases where filenames with special characters (like זרו, umlaud etc) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not MOzilla and Opera.
+			// Anyways, this should NOT disturb anything else:
+		$value = $this->convNumEntityToByteValue($value);
+		
 			// When values are send as group or select they come as comma-separated values which are exploded by this function:
 		$valueArray = $this->checkValue_group_select_explodeSelectGroupValue($value);
 
@@ -3332,6 +3336,28 @@ class t3lib_TCEmain	{
 	}
 
 	/**
+	 * Converts a HTML entity (like &#123;) to the character "123"
+	 * 
+	 * @param	string		Input string
+	 * @return	string		Output string
+	 */	
+	function convNumEntityToByteValue($input)	{
+		$token = md5(microtime());
+		$parts = explode($token,ereg_replace('(&#([0-9]+);)',$token.'\2'.$token,$input));
+
+		foreach($parts as $k => $v)	{
+			if ($k%2)	{
+				$v = intval($v);
+				if ($v > 32)	{	// Just to make sure that control bytes are not converted.
+					$parts[$k] =chr(intval($v));
+				}
+			}
+		}	
+		
+		return implode('',$parts);
+	}
+
+	/**
 	 * Returns absolute destination path for the uploadfolder, $folder
 	 * 
 	 * @param	[type]		$folder: ...
@@ -3653,7 +3679,7 @@ class t3lib_TCEmain	{
 			$lines[]='<tr class="bgColor5"><td colspan=2 align=center><strong>Errors:</strong></td></tr>';
 			reset($errorJS);
 			while(list(,$line)=each($errorJS))	{
-				$lines[]='<tr class="bgColor4"><td valign=top><img'.t3lib_iconWorks::skinImg('','gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td><td>'.$line.'</td></tr>';
+				$lines[]='<tr class="bgColor4"><td valign=top><img'.t3lib_iconWorks::skinImg('','gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td><td>'.htmlspecialchars($line).'</td></tr>';
 			}
 			
 			$lines[]='<tr><td colspan=2 align=center><BR><form action=""><input type="submit" value="Continue" onClick="document.location=\''.$redirect.'\';return false;"></form></td></tr>';
