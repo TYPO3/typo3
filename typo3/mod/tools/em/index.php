@@ -2706,14 +2706,14 @@ EXTENSION KEYS:
 								}
 							}
 								// 
-							$XclassParts = explode('if (defined(\'TYPO3_MODE\') && $TYPO3_CONF_VARS[TYPO3_MODE][\'XCLASS\']',$fContent,2);
+							$XclassParts = split('if \(defined\([\'"]TYPO3_MODE[\'"]\) && \$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]',$fContent,2);
 							if (count($XclassParts)==2)	{
 								unset($reg);
-								ereg('^\[\'([[:alnum:]_\/\.]*)\'\]',$XclassParts[1],$reg);
+								ereg('^\[[\'"]([[:alnum:]_\/\.]*)[\'"]\]',$XclassParts[1],$reg);
 								if ($reg[1]) {
 									$cmpF = 'ext/'.$extKey.'/'.$fileName;
 									if (!strcmp($reg[1],$cmpF))	{
-										if (strstr($XclassParts[1],'_once($TYPO3_CONF_VARS[TYPO3_MODE][\'XCLASS\'][\''.$cmpF.'\']);'))	{
+										if (ereg('_once\(\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]\[[\'"]'.$cmpF.'[\'"]\]\);', $XclassParts[1]))	{
 											 $out['msg'][] = 'XCLASS OK in '.$fileName;
 										} else $out['errors'][] = 'Couldn\'t find the include_once statement for XCLASS!';
 									} else $out['errors'][] = 'The XCLASS filename-key "'.$reg[1].'" was different from "'.$cmpF.'" which it should have been!';
