@@ -4366,6 +4366,9 @@ class tslib_cObj {
 					case 'getenv':
 						$retVal= getenv($key);
 					break;
+					case 'getindpenv':
+						$retVal= t3lib_div::getIndpEnv($key);
+					break;
 					case 'field':
 						$retVal= $fieldArray[$key];
 					break;
