@@ -497,9 +497,10 @@
 			// Resolving of "simulateStaticDocuments" URLs:
 		if ($this->siteScript && substr($this->siteScript,0,9)!='index.php')	{		// If there has been a redirect (basically; we arrived here otherwise than via "index.php" in the URL) this can happend either due to a CGI-script or because of reWrite rule. Earlier we used $GLOBALS['HTTP_SERVER_VARS']['REDIRECT_URL'] to check but
 			$uParts = parse_url($this->siteScript);	// Parse the path:
-			$requestFilename = basename($uParts['path']);		// This is the filename of the script/simulated html-file.
-			if (dirname($uParts['path'])=='.' && $requestFilename && substr($requestFilename,-5)=='.html')	{
-				$parts = explode('.',$requestFilename);
+			$fI = t3lib_div::split_fileref($uParts['path']);
+
+			if (!$fI['path'] && $fI['file'] && substr($fI['file'],-5)=='.html')	{
+				$parts = explode('.',$fI['file']);
 				$pCount = count($parts);
 				if ($pCount>2)	{
 					$this->type = intval($parts[$pCount-2]);

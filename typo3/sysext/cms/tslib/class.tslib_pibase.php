@@ -470,7 +470,7 @@ class tslib_pibase {
 			($showResultCount ? '
 			<p>'.sprintf(
 				str_replace('###SPAN_BEGIN###','<span'.$this->pi_classParam('browsebox-strong').'>',$this->pi_getLL('pi_list_browseresults_displays','Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
-				$pR1,
+				$this->internal['res_count'] > 0 ? $pR1 : 0,
 				min(array($this->internal['res_count'],$pR2)),
 				$this->internal['res_count']
 				).'</p>':''
