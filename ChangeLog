@@ -1,5 +1,9 @@
 2004-05-29  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed bug; All page types (doktype) was shown to uses even if they were not all in their list of possible type values.
+
+2004-05-29  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Created a new DEFAULT backend module called "manual". It shows a TOC of CSH items from the system. This will provide a "user sensitive" manual inside of TYPO3 with localized content to the extend that translators has translated CSH labels in the system. The vision is that the Documentation Team will develop CSH content so far that this will become a really good inline reference for users of TYPO3. Also, extension authors are encouraged to implement CSH for their tables and backend modules and let that be the user manual for their products!
 
 2004-05-28  Kasper Skårhøj,,,  <kasper@typo3.com>

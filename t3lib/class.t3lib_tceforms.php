@@ -1084,12 +1084,19 @@ class t3lib_TCEforms	{
 		if ($config['itemsProcFunc']) $selItems = $this->procItems($selItems,$PA['fieldTSConfig']['itemsProcFunc.'],$config,$table,$row,$field);
 
 			// Possibly remove some items:
-		$removeItems=t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
+		$removeItems = t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
 		foreach($selItems as $tk => $p)	{
 			if (in_array($p[1],$removeItems))	{
 				unset($selItems[$tk]);
 			} else if (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
 				$selItems[$tk][0]=$this->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]);
+			}
+
+				// Removing doktypes with no access:
+			if ($table.'.'.$field == 'pages.doktype')	{
+				if (!($GLOBALS['BE_USER']->isAdmin() || t3lib_div::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'],$p[1])))	{
+					unset($selItems[$tk]);
+				}
 			}
 		}
 
