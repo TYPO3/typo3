@@ -225,7 +225,7 @@ TABLE#typo3-vmenu TR.c-endrow TD {height: 5px;}
 TABLE#typo3-vmenu TR.c-first TD {height: 2px;}
 TABLE#typo3-vmenu TD.c-subitem-label A { display: block; width: 100%; }
 TABLE#typo3-vmenu TR.c-subitem-row { }
-TABLE#typo3-vmenu TR.c-subitem-row-HL { background-color: #D9D5C9; }
+TABLE#typo3-vmenu TR.c-subitem-row-HL { background-color: #e3dfdb; }
 
 DIV#typo3-alt-menu-php-logininfo { text-align: center; width: 90px; margin-top:15px; margin-bottom: 15px;}
 DIV#typo3-alt-menu-php-logininfo P { margin-top:5px; }

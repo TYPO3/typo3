@@ -1,5 +1,9 @@
 2004-09-19  Ingmar Schlecht  <ingmars@web.de>
 
+	* Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
+
+2004-09-19  Ingmar Schlecht  <ingmars@web.de>
+
 	* Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
 
 2004-09-19  Ingmar Schlecht  <ingmars@web.de>
