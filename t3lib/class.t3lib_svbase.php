@@ -159,8 +159,15 @@ class t3lib_svbase {
 	  */
 	 var $outputFile = '';
 
-
-
+	 
+	 /**
+	  * Temporary files which have to be deleted
+	  *
+	  * @private
+	  */
+	 var $tempFiles = array();
+	 
+	 
 
 	/***************************************
 	 *
@@ -427,11 +434,7 @@ function available()	{
 		$ret = TRUE;
 
 		if (!$absFile) {
-			$absFile = t3lib_div::tempnam($this->prefixId);
-			if(!$absFile) {
-				$this->errorPush(T3_ERR_SV_FILE_WRITE, 'Can not create temp file.');
-				$ret = FALSE;
-			}
+			$absFile = $this->tempFile($this->prefixId);
 		}
 
 		if($absFile) {
@@ -440,16 +443,57 @@ function available()	{
 				@fclose($fd);
 			} else {
 				$this->errorPush(T3_ERR_SV_FILE_WRITE, 'Can not write to file: '.$absFile);
-				$ret = FALSE;
+				$absFile = FALSE;
 			}
 		}
 
+		return $absFile;
+	}
+
+	/**
+	 * Create a temporary file.
+	 * 
+	 * @param	string		File prefix.
+	 * @return	string		File name or FALSE
+	 */
+	function tempFile ($filePrefix)	{
+		$absFile = t3lib_div::tempnam($filePrefix);
+		if($absFile) {
+			$ret = TRUE;
+			$this->registerTempFile ($absFile);
+		} else {
+			$ret = FALSE;
+			$this->errorPush(T3_ERR_SV_FILE_WRITE, 'Can not create temp file.');
+		}
 		return ($ret ? $absFile : FALSE);
 	}
 
-
-
-
+	/**
+	 * Register file which should be deleted afterwards.
+	 * 
+	 * @param	string		File name with absolute path.
+	 * @return	void
+	 */
+	function registerTempFile ($absFile)	{
+		$this->tempFiles[]=$absFile;
+#debug($this->tempFiles,'registerTempFile');
+	}
+	
+	/**
+	 * Delete registered temporary files.
+	 * 
+	 * @param	string		File name with absolute path.
+	 * @return	void
+	 */
+	function unlinkTempFiles ()	{
+#debug($this->tempFiles, 'unlinkTempFiles: '.$this->info['serviceKey']);
+		foreach ($this->tempFiles as $absFile) {
+			t3lib_div::unlink_tempfile($absFile);
+		}
+		$this->tempFiles = array();
+	}	
+	
+	
 	/***************************************
 	 *
 	 *	 IO input
@@ -506,11 +550,11 @@ function available()	{
 	 * @param	string		File name. If empty a temp file will be created.
 	 * @return	string		File name or FALSE if no input or file error.
 	 */
-	function getInputFile ($absFile='') {
+	function getInputFile ($createFile='') {
 		if($this->inputFile) {
 			$this->inputFile = $this->checkInputFile($this->inputFile);
 		} elseif ($this->inputContent) {
-			$this->inputFile = $this->writeFile($this->inputContent, $absFile);
+			$this->inputFile = $this->writeFile($this->inputContent, $createFile);
 		}
 		return $this->inputFile;
 	}
@@ -580,6 +624,8 @@ function available()	{
 	 * @return	boolean		TRUE if the service is available
 	 */
 	function init()	{
+		// do not work :-(  register_shutdown_function(array(&$this, '__destruct'));
+		
 		$this->reset();
 
 			// check for external programs which are defined by $info['exec']
@@ -599,6 +645,7 @@ function available()	{
 	 * @return	void
 	 */
 	function reset()	{
+		$this->unlinkTempFiles();
 		$this->resetErrors();
 		$this->out = '';
 		$this->inputFile = '';
@@ -607,7 +654,16 @@ function available()	{
 		$this->outputFile = '';
 	}
 
-
+	/**
+	 * Clean up the service.
+	 * 
+	 * @return	void		
+	 */
+	function __destruct() {
+		$this->unlinkTempFiles();
+	}
+	
+	
 	/* every service type has it's own API
 	function process($content='', $type='', $conf=array())	{
 	}
