@@ -604,10 +604,16 @@ class t3lib_htmlmail {
 			// Requires the recipient, message and headers to be set.
 #debug(array($this->recipient,$this->subject,$this->message,$this->headers));
 		if (trim($this->recipient) && trim($this->message))	{	//  && trim($this->headers)
+		        $returnPath = (strlen($this->returnPath)>0)?"-f".$this->returnPath:'';
+			//On windows the -f flag is not used (specific for sendmail and postfix), but instead the php.ini parameter sendmail_from is used.
+                        if($this->returnPath) {
+			  ini_set(sendmail_from, $this->returnPath);
+			}
 			mail( 	$this->recipient,
 					$this->subject,
 					$this->message,
-					$this->headers	);
+					$this->headers,
+				        $returnPath);
 				// Sending copy:
 			if ($this->recipient_copy)	{
 				mail( 	$this->recipient_copy,
@@ -622,7 +628,11 @@ class t3lib_htmlmail {
 				mail( 	$this->from_email,
 						$theParts[0],
 						$theParts[1],
-						"From: ".$this->recipient	);
+						"From: ".$this->recipient,
+					        $returnPath);
+			}
+			if($this->returnPath) {
+			  ini_restore(sendmail_from);
 			}
 			return true;
 		} else {return false;}
