@@ -1541,6 +1541,8 @@ class t3lib_div {
 		}
 		return trim($string);
 	}
+
+
 	/**
 	 * Parses XML input into a PHP array with associative keys
 	 * 
@@ -2115,11 +2117,11 @@ class t3lib_div {
 			$result='<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
 			if (!count($array_in))	{$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>'.HTMLSpecialChars("EMPTY!").'</b></font></td></tr>';}
 			while (list($key,$val)=each($array_in))	{
-				$result.= '<tr><td><font face="Verdana,Arial" size="1">'.HTMLSpecialChars($key).'</font></td><td>';
+				$result.= '<tr><td><font face="Verdana,Arial" size="1">'.HTMLSpecialChars((string)$key).'</font></td><td>';
 				if (is_array($array_in[$key]))	{
 					$result.=t3lib_div::view_array($array_in[$key]);
 				} else
-					$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(HTMLSpecialChars($val)).'<br /></font>';
+					$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(HTMLSpecialChars((string)$val)).'<br /></font>';
 				$result.= '</td></tr>';
 			}
 			$result.= '</table>';
@@ -2155,13 +2157,17 @@ class t3lib_div {
 	 */
 	function debug($var="",$brOrHeader=0)	{
 		if ($brOrHeader && !t3lib_div::testInt($brOrHeader)) {
-			echo '<table border=0 cellpadding=0 cellspacing=0 bgcolor=white style="border:0px;margin-top:3px;margin-bottom:3px;"><tr><td bgcolor="#bbbbbb"><font face="Verdana,Arial" size="1">&nbsp;<b>'.@HTMLSpecialChars($brOrHeader).'</b></font></td></tr><td>';
+			echo '<table border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px;margin-top:3px;margin-bottom:3px;"><tr><td bgcolor="#bbbbbb"><font face="Verdana,Arial" size="1">&nbsp;<b>'.(string)HTMLSpecialChars($brOrHeader).'</b></font></td></tr><td>';
 		} elseif ($brOrHeader<0) {
-			for($a=0;$a<abs(intval($br));$a++){echo '<br />';}
+			for($a=0;$a<abs(intval($brOrHeader));$a++){echo '<br />';}
 		}
 
 		if (is_array($var))	{
-			t3lib_div::print_array($var,$head?1:0);
+			t3lib_div::print_array($var);
+		} elseif (is_object($var))	{
+			echo '<b>|Object:<pre>';
+			print_r($var);
+			echo '</pre>|</b>';
 		} elseif ((string)$var!='') {
 			echo '<b>|'.HTMLSpecialChars((string)$var).'|</b>';
 		} else {
@@ -2171,7 +2177,7 @@ class t3lib_div {
 		if ($brOrHeader && !t3lib_div::testInt($brOrHeader)) {
 			echo '</td></tr></table>';
 		} elseif ($brOrHeader>0) {
-			for($a=0;$a<intval($br);$a++){echo '<br />';}
+			for($a=0;$a<intval($brOrHeader);$a++){echo '<br />';}
 		}
 	}
 	
@@ -2684,12 +2690,13 @@ class t3lib_div {
 
 	/**
 	 * Calls a userdefined function/method in class
+	 * Such a function/method should look like this: "function proc(&$params, &$ref)	{...}"
 	 * 
 	 * Usage: 3
 	 * 
 	 * @param	string		Method reference, [class]->[method] or [function]
-	 * @param	mixed		Parameters to be pass along (REFERENCE!)
-	 * @param	mixed		Reference (can't remember what this is for) (REFERENCE!)
+	 * @param	mixed		Parameters to be pass along (typically an array) (REFERENCE!)
+	 * @param	mixed		Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param	string		Required prefix of class or function name
 	 * @param	boolean		If set, not debug() error message is shown if class/function is not present.
 	 * @return	mixed		Content from method/function call
