@@ -2,9 +2,9 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "lang"
-# 
+#
 # Auto generated 26-04-2004 14:27
-# 
+#
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
 ########################################################################
@@ -18,8 +18,8 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => 'top',
 	'loadOrder' => '',
-	'TYPO3_version' => '0.0.1-0.0.1',
-	'PHP_version' => '0.0.1-0.0.1',
+	'TYPO3_version' => '3.6.0RC2',
+	'PHP_version' => '',
 	'module' => '',
 	'state' => 'stable',
 	'internal' => 1,

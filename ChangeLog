@@ -1,5 +1,17 @@
 2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added a PAGE Tsconfig option to disable the automatic clearing of page cache when records are edited.
+
+2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Updated "cms" extension with most recent labels from TYPO3.org
+
+2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Updated "lang" extension with most recent labels from TYPO3.org
+
+2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added Latvian, Japanese and Vietnamese languages
 
 2004-04-24  Kasper Skårhøj,,,  <kasper@typo3.com>

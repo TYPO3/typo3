@@ -2354,59 +2354,61 @@ class t3lib_TCEmain	{
 			list($tscPID) = t3lib_BEfunc::getTSCpid($table,$uid,'');
 			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 
-				// If table is "pages":
-			if (t3lib_extMgm::isLoaded('cms'))	{
-				if ($table=='pages')	{
+			if (!$TSConfig['clearCache_disable'])	{
+					// If table is "pages":
+				if (t3lib_extMgm::isLoaded('cms'))	{
+					if ($table=='pages')	{
 
-						// Builds list of pages on the SAME level as this page (siblings)
-					$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-									'A.pid AS pid, B.uid AS uid',
-									'pages AS A, pages AS  B',
-									'A.uid='.intval($uid).' AND B.pid=A.pid AND B.deleted=0'
-								);
+							// Builds list of pages on the SAME level as this page (siblings)
+						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+										'A.pid AS pid, B.uid AS uid',
+										'pages AS A, pages AS  B',
+										'A.uid='.intval($uid).' AND B.pid=A.pid AND B.deleted=0'
+									);
 
-					$list_cache = array();
-					$pid_tmp = 0;
-					while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
-						$list_cache[] = $row_tmp['uid'];
-						$pid_tmp = $row_tmp['pid'];
+						$list_cache = array();
+						$pid_tmp = 0;
+						while ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
+							$list_cache[] = $row_tmp['uid'];
+							$pid_tmp = $row_tmp['pid'];
 
-							// Add children as well:
-						if ($TSConfig['clearCache_pageSiblingChildren'])	{
-							$res_tmp2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-											'uid',
-											'pages',
-											'pid='.intval($row_tmp['uid']).' AND deleted=0'
-										);
-							while ($row_tmp2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp2))	{
-								$list_cache[] = $row_tmp2['uid'];
+								// Add children as well:
+							if ($TSConfig['clearCache_pageSiblingChildren'])	{
+								$res_tmp2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+												'uid',
+												'pages',
+												'pid='.intval($row_tmp['uid']).' AND deleted=0'
+											);
+								while ($row_tmp2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp2))	{
+									$list_cache[] = $row_tmp2['uid'];
+								}
 							}
 						}
-					}
 
-						// Finally, add the parent page as well:
-					$list_cache[] = $pid_tmp;
+							// Finally, add the parent page as well:
+						$list_cache[] = $pid_tmp;
 
-						// Add grand-parent as well:
-					if ($TSConfig['clearCache_pageGrandParent'])	{
-						$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-										'pid',
-										'pages',
-										'uid='.intval($pid_tmp)
-									);
-						if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp))	{
-							$list_cache[] = $row_tmp['pid'];
+							// Add grand-parent as well:
+						if ($TSConfig['clearCache_pageGrandParent'])	{
+							$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+											'pid',
+											'pages',
+											'uid='.intval($pid_tmp)
+										);
+							if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp))	{
+								$list_cache[] = $row_tmp['pid'];
+							}
 						}
-					}
 
-						// Delete cache for selected pages:
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
-				} else {	// For other tables than "pages", delete cache for the records "parent page".
-					$uid_page = $this->getPID($table,$uid);
-					if ($uid_page>0)	{
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id='.intval($uid_page));
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id='.intval($uid_page));
+							// Delete cache for selected pages:
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
+						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($list_cache)).')');
+					} else {	// For other tables than "pages", delete cache for the records "parent page".
+						$uid_page = $this->getPID($table,$uid);
+						if ($uid_page>0)	{
+							$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id='.intval($uid_page));
+							$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id='.intval($uid_page));
+						}
 					}
 				}
 			}
@@ -2423,7 +2425,7 @@ class t3lib_TCEmain	{
 				// Call post processing function for clear-cache:
 			global $TYPO3_CONF_VARS;
 			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
-				$_params = array('table' => $table,'uid' => $uid,'uid_page' => $uid_page);
+				$_params = array('table' => $table,'uid' => $uid,'uid_page' => $uid_page,'TSConfig' => $TSConfig);
 				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef)	{
 					t3lib_div::callUserFunction($_funcRef,$_params,$this);
 				}
