@@ -586,11 +586,6 @@ class t3lib_cs {
 							} else break;
 						}
 
-# Martin Kutschker...! this does not work! With russian UTF-8 converted back to windows-1251 it failed... So the old code is re-inserted.
-#						for ($bc=0; $ord & 0x80; $ord = $ord << 1) { $bc++; }	// calculate number of bytes
-#						$buf.=substr($str,$i,$bc);
-#						$i+=$bc-1;
-
 						if (isset($this->parsedCharsets[$charset]['utf8'][$buf]))	{	// If the UTF-8 char-sequence is found then...
 							$mByte = $this->parsedCharsets[$charset]['utf8'][$buf];	// The local number
 							if ($mByte>255)	{	// If the local number is greater than 255 we will need to split the byte (16bit word assumed) in two chars.
