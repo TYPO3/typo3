@@ -956,7 +956,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		$sVar["imagejpeg()"]=function_exists("imagejpeg");
 		$sVar["imagettftext()"]=function_exists("imagettftext");
 		$sVar["OTHER: IMAGE_TYPES"]=imagetypes();
-		$sVar["OTHER: memory_limit"]=get_cfg_var("memory_limit");
+		$sVar["OTHER: memory_limit"]=ini_get("memory_limit");
 
 		$gE_keys = explode(",","SERVER_PORT,SERVER_SOFTWARE,GATEWAY_INTERFACE,SCRIPT_NAME,PATH_TRANSLATED");
 		while(list(,$k)=each($gE_keys))	{
@@ -1373,18 +1373,18 @@ Number of files at a time:
 			// Incoming values:
 			// *****************
 /*
-		if (!get_cfg_var("track_vars"))	{
+		if (!ini_get("track_vars"))	{
 			$this->message($ext, "Tracking Vars not set","
-				<i>track_vars=".get_cfg_var("track_vars")."</i>
+				<i>track_vars=".ini_get("track_vars")."</i>
 				Tracking vars are essential for almost any PHP-application.
 				The fact that the value is not set may not impose a problem, because it's always set in version 4.03+ of PHP.
 			",1);
 		} else $this->message($ext, "Tracking Vars enabled","",-1);
 */
 /*
-		if (!get_cfg_var("allow_url_fopen"))	{
+		if (!ini_get("allow_url_fopen"))	{
 			$this->message($ext, "fopen() not allowed to open URL's","
-				<i>allow_url_fopen=".get_cfg_var("allow_url_fopen")."</i>
+				<i>allow_url_fopen=".ini_get("allow_url_fopen")."</i>
 				allow_url_fopen should be enabled if you want TYPO3 to connect to the online TYPO3 Extension Repository.
 			",2);
 		} else $this->message($ext, "fopen() allowed to open URL's","",-1);
@@ -1451,13 +1451,13 @@ Number of files at a time:
 			// *****************
 			// Memory and functions
 			// *****************
-		$memory_limit_value = $this->convertByteSize(get_cfg_var("memory_limit"));
+		$memory_limit_value = $this->convertByteSize(ini_get("memory_limit"));
 		if ($memory_limit_value<16*1024*1024)	{
 			$this->message($ext, "Memory Limit below 16 MB","
-				<i>memory_limit=".get_cfg_var("memory_limit")."</i>
+				<i>memory_limit=".ini_get("memory_limit")."</i>
 				Your system is configured to enforce a memory limit of PHP scripts lower than 16 MB. The Extension Manager needs to include more PHP-classes than will fit into this memory space. There is nothing else to do than raise the limit. To be safe, ask the system administrator of the webserver to raise the limit to over 25 MB.
 			",3);
-		} else $this->message($ext, "Memory Limit","<i>memory_limit=".get_cfg_var("memory_limit")."</i>",-1);
+		} else $this->message($ext, "Memory Limit","<i>memory_limit=".ini_get("memory_limit")."</i>",-1);
 		if (ini_get("max_execution_time")<30)	{
 			$this->message($ext, "Max Execution Time below default 30 seconds","
 				<i>max_execution_time=".ini_get("max_execution_time")."</i>
@@ -1746,9 +1746,10 @@ Number of files at a time:
 			reset($programs);
 			if (!ereg('[\\\/]$',$v)) $v.='/';
 			while(list(,$filename)=each($programs))	{
-#				if (@file_exists($v) && @is_file($v.$filename.$isExt))    {       // file_exists was necessary on windows, because is_file issued a warning if the path was not correct.
-				if($this->_checkImageMagick_getVersion($v.$filename.$isExt) > 0 ) {
-					$index[$v][$filename]=$this->_checkImageMagick_getVersion($v.$filename.$isExt);
+				if (ini_get("open_basedir")||(@file_exists($v)&& @is_file($v.$filename.$isExt))) { 				     // file_exists was necessary on windows, because is_file issued a warning if the path was not correct.
+					if($this->_checkImageMagick_getVersion($v.$filename.$isExt) > 0 ) {
+						$index[$v][$filename]=$this->_checkImageMagick_getVersion($v.$filename.$isExt);
+					}
 				}
 			}
 			if (count($index[$v])>=3)	{$this->config_array["im"]=1;}

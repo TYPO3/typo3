@@ -1,3 +1,8 @@
+2004-05-19  Ingmar Schlecht  <ingmars@web.de>
+
+	* Fixed bug #83: On non open_basedir'ed systems check if IM executables exist before trying to execut them.
+	* Fixed bug #95: Use ini_get() instead of get_cfg_var()
+
 2004-05-17  Ingmar Schlecht  <ingmars@web.de>
 
 	* Fixed bug #88:  fe_adminLib.inc issue
