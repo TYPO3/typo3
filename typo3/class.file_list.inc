@@ -148,7 +148,6 @@ class fileList extends t3lib_recordList {
 
 		if ($path)	{
 			$out='';
-			$this->counter++;
 			$theFile = $GLOBALS['SOBE']->basicFF->getTotalFileInfo($path);
 			$root = $GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($theFile['path']);
 			$titleCol='path';
@@ -282,7 +281,7 @@ class fileList extends t3lib_recordList {
 
 			// half line is drawn
 		$theData = Array();
-		$theData[$titleCol] = $this->counter.' Files, '.$GLOBALS['SOBE']->basicFF->formatSize($this->totalbytes).'bytes';
+		$theData[$titleCol] = $this->counter.' File(s), '.$GLOBALS['SOBE']->basicFF->formatSize($this->totalbytes).'bytes';
 		$out.=$this->addelement(1,'',$theData);
 
 			// finish
