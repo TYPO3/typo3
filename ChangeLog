@@ -1,3 +1,7 @@
+2005-04-04  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added to-top/up/down/to_bottom bottoms for the select/group element. up/down will show up by default, to-top and to-bottom will appear automatically when the SIZE of the selector is >= 5.
+
 2005-04-03  Michael Stucki  <michael@typo3.org>
 
 	* Fixed a stupid error in the display-empty-tags function
