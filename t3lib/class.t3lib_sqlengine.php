@@ -1216,11 +1216,11 @@ class t3lib_sqlengine {
 		$result['TABLE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+');
 
 		if ($result['TABLE'])	{
-			if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|DROP|ADD|RENAME)([[:space:]]+|\()'))	{
+			if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|DROP[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|DROP|ADD|RENAME)([[:space:]]+|\()'))	{
 				$actionKey = strtoupper(ereg_replace('[[:space:]]','',$result['action']));
 
 					// Getting field:
-				if ($actionKey=='ADDPRIMARYKEY' || $fieldKey = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+'))	{
+				if (t3lib_div::inList('ADDPRIMARYKEY,DROPPRIMARYKEY',$actionKey) || $fieldKey = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+'))	{
 
 					switch($actionKey)	{
 						case 'ADD':
@@ -1248,6 +1248,9 @@ class t3lib_sqlengine {
 						break;
 						case 'DROPKEY':
 							$result['KEY'] = $fieldKey;
+						break;
+						case 'DROPPRIMARYKEY':
+							// ??? todo!
 						break;
 					}
 				} else return $this->parseError('No field name found',$parseString);

@@ -37,26 +37,29 @@
  *
  *
  *
- *   86: class t3lib_userAuth
- *  155:     function start()
- *  256:     function check_authentication()
- *  407:     function redirect()
- *  420:     function logoff()
- *  435:     function gc()
- *  449:     function user_where_clause()
- *  463:     function ipLockClause()
- *  481:     function writeUC($variable='')
- *  504:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
- *  513:     function checkLogFailures()
- *  522:     function unpack_uc($theUC='')
- *  538:     function pushModuleData($module,$data,$noSave=0)
- *  551:     function getModuleData($module,$type='')
- *  564:     function getSessionData($key)
- *  577:     function setAndSaveSessionData($key,$data)
- *  596:     function setBeUserByUid($uid)
- *  609:     function setBeUserByName($name)
+ *   89: class t3lib_userAuth
+ *  158:     function start()
+ *  260:     function check_authentication()
+ *  412:     function redirect()
+ *  425:     function logoff()
+ *  440:     function gc()
+ *  454:     function user_where_clause()
+ *  468:     function ipLockClause()
+ *  484:     function ipLockClause_remoteIPNumber($parts)
+ *  505:     function hashLockClause()
+ *  515:     function hashLockClause_getHashInt()
+ *  527:     function writeUC($variable='')
+ *  550:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
+ *  559:     function checkLogFailures()
+ *  568:     function unpack_uc($theUC='')
+ *  584:     function pushModuleData($module,$data,$noSave=0)
+ *  597:     function getModuleData($module,$type='')
+ *  610:     function getSessionData($key)
+ *  623:     function setAndSaveSessionData($key,$data)
+ *  642:     function setBeUserByUid($uid)
+ *  655:     function setBeUserByName($name)
  *
- * TOTAL FUNCTIONS: 17
+ * TOTAL FUNCTIONS: 20
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -121,7 +124,8 @@ class t3lib_userAuth {
 	var $getFallBack = 0;				// If this is set, authentication is also accepted by the HTTP_GET_VARS. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
 	var $hash_length = 32;				// The ident-hash is normally 32 characters and should be! But if you are making sites for WAP-devices og other lowbandwidth stuff, you may shorten the length. Never let this value drop below 6. A length of 6 would give you more than 16 mio possibilities.
 	var $getMethodEnabled = 0;			// Setting this flag true lets user-authetication happen from GET_VARS if POST_VARS are not set. Thus you may supply username/password from the URL.
-	var $lockIP = 1;					// If set, will lock the session to the users IP address.
+	var $lockIP = 4;					// If set, will lock the session to the users IP address (all four numbers. Reducing to 1-3 means that only first, second or third part of the IP address is used).
+	var $lockHashKeyWords = 'useragent';	// Keyword list (commalist with no spaces!): "useragent". Each keyword indicates some information that can be included in a integer hash made to lock down usersessions.
 
 	var $warningEmail = '';				// warning -emailaddress:
 	var $warningPeriod = 3600;			// Period back in time (in seconds) in which number of failed logins are collected
@@ -203,8 +207,10 @@ class t3lib_userAuth {
 							AND '.$this->session_table.'.ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"
 							AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.'
 							'.$this->ipLockClause().'
+							'.$this->hashLockClause().'
 							'.$this->user_where_clause()
 					);
+
 		if ($this->user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
 				// A user was found
 			if (is_string($this->auth_timeout_field))	{
@@ -336,7 +342,8 @@ class t3lib_userAuth {
 								$insertFields = array(
 									'ses_id' => $this->id,
 									'ses_name' => $this->name,
-									'ses_iplock' => $this->user['disableIPlock'] ? '[DISABLED]' : t3lib_div::getIndpEnv('REMOTE_ADDR'),
+									'ses_iplock' => $this->user['disableIPlock'] ? '[DISABLED]' : $this->ipLockClause_remoteIPNumber($this->lockIP),
+									'ses_hashlock' => $this->hashLockClause_getHashInt(),
 									'ses_userid' => $tempuser[$this->userid_column],
 									'ses_tstamp' => $GLOBALS['EXEC_TIME']
 								);
@@ -463,11 +470,59 @@ class t3lib_userAuth {
 	function ipLockClause()	{
 		if ($this->lockIP)	{
 			$wherePart = 'AND (
-				'.$this->session_table.'.ses_iplock="'.$GLOBALS['TYPO3_DB']->quoteStr(t3lib_div::getIndpEnv('REMOTE_ADDR'),$this->session_table).'"
+				'.$this->session_table.'.ses_iplock="'.$GLOBALS['TYPO3_DB']->quoteStr($this->ipLockClause_remoteIPNumber($this->lockIP),$this->session_table).'"
 				OR '.$this->session_table.'.ses_iplock="[DISABLED]"
 				)';
 			return $wherePart;
 		}
+	}
+
+	/**
+	 * Returns the IP address to lock to.
+	 * The IP address may be partial based on $parts.
+	 *
+	 * @param	integer		1-4: Indicates how many parts of the IP address to return. 4 means all, 1 means only first number.
+	 * @return	string		(Partial) IP address for REMOTE_ADDR
+	 * @access private
+	 */
+	function ipLockClause_remoteIPNumber($parts)	{
+		$IP = t3lib_div::getIndpEnv('REMOTE_ADDR');
+
+		if ($parts>=4)	{
+			return $IP;
+		} else {
+			$parts = t3lib_div::intInRange($parts,1,3);
+			$IPparts = explode('.',$IP);
+			for($a=4;$a>$parts;$a--)	{
+				unset($IPparts[$a-1]);
+			}
+			return implode('.',$IPparts);
+		}
+	}
+
+	/**
+	 * This returns the where-clause needed to lock a user to a hash integer
+	 *
+	 * @return	string
+	 * @access private
+	 */
+	function hashLockClause()	{
+		$wherePart = 'AND '.$this->session_table.'.ses_hashlock='.intval($this->hashLockClause_getHashInt());
+		return $wherePart;
+	}
+
+	/**
+	 * Creates hash integer to lock user to. Depends on configured keywords
+	 *
+	 * @return	integer		Hash integer
+	 * @access private
+	 */
+	function hashLockClause_getHashInt()	{
+		$hashStr = '';
+
+		if (t3lib_div::inList($this->lockHashKeyWords,'useragent'))	$hashStr.=':'.t3lib_div::getIndpEnv('HTTP_USER_AGENT');
+
+		return t3lib_div::md5int($hashStr);
 	}
 
 	/**

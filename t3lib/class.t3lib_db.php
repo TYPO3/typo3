@@ -132,7 +132,7 @@ class t3lib_DB {
 
 
 		// Debug:
-	var $debugOutput = FALSE;			// Set "TRUE" if you want database errors outputted.
+	var $debugOutput = TRUE;			// Set "TRUE" if you want database errors outputted.
 	var $debug_lastBuiltQuery = '';		// Internally: Set to last built query (not necessarily executed...)
 
 		// Default link identifier:

@@ -1,5 +1,9 @@
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added to user authentication that the HTTP_USER_AGENT is hashed and a part of the session lookup (in other words, if the HTTP_USER_AGENT stays constant the session stays as well). Also added possibility of configuring that the IP adresse used to lock down sessions is only part 1,2,3 or 4 (all) used. Mainly this is easily configurable for frontend users (which has had the "security level" set to "2" now instead of disabled totally!). For backend users I didn't make configuration options in TYPO3_CONF_VARS - just wanted to know if people needed it there first (not to bloat options....)
+
+2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added possibility of jumping directly to editing a page in the backend. You specify "alt_main.php?edit=[page id]" and you will be brought directly to the page edit module.
 
 2004-04-22  Kasper Skårhøj,,,  <kasper@typo3.com>
