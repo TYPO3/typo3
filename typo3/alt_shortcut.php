@@ -408,7 +408,7 @@ class SC_alt_shortcut {
 		global $BE_USER,$LANG;
 
 		if (!t3lib_extMgm::isLoaded('cms'))	return;
-	
+
 			// EDIT page:
 		$this->editPage = trim(strtolower($this->editPage));
 		$this->editError='';
@@ -428,7 +428,7 @@ class SC_alt_shortcut {
 				unset($this->theEditRec);
 				$this->editError=$LANG->getLL('shortcut_notEditable');
 			} elseif(!$BE_USER->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree')) {
-				$expandedPages=unserialize($BE_USER->uc['browsePages']);
+				$expandedPages=unserialize($BE_USER->uc['browseTrees']['browsePages']);
 				if (!$BE_USER->getTSConfigVal('options.shortcut_onEditId_keepExistingExpanded'))	$expandedPages=array();	
 				$rL=t3lib_BEfunc::BEgetRootLine($this->theEditRec['pid']);
 				reset($rL);
@@ -436,7 +436,7 @@ class SC_alt_shortcut {
 					$expandedPages[0][$rLDat['uid']]=1;
 		//			debug($rLDat['uid']);
 				}
-				$BE_USER->uc['browsePages'] = serialize($expandedPages);
+				$BE_USER->uc['browseTrees']['browsePages'] = serialize($expandedPages);
 				$BE_USER->writeUC();
 			}
 		}

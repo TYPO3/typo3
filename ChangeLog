@@ -1,5 +1,9 @@
 2004-03-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed bug that page tree didn't unfold when entering page id in the shortcut frame.
+
+2004-03-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added a checkbox for be-users to disable IP locking. This is useful if you have backend users complaining about being thrown off sessions.
 
 [RC2 note:

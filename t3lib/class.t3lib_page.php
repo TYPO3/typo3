@@ -359,7 +359,7 @@ class t3lib_pageSelect {
 	 * @see tslib_fe::getPageAndRootline()
 	 */
 	function getRootLine($uid, $MP='')	{
-		$selFields = t3lib_div::uniqueList('pid,uid,title,nav_title,media,layout,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,TSconfig,storage_pid,is_siteroot,mount_pid,'.$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']);
+		$selFields = t3lib_div::uniqueList('pid,uid,title,alias,nav_title,media,layout,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,TSconfig,storage_pid,is_siteroot,mount_pid,'.$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']);
 
 			// Splitting the $MP parameters if present
 		$MPA = array();
