@@ -185,25 +185,6 @@ if (t3lib_extMgm::isLoaded('extrep_wizard'))	{
 }
 
 
-/**
- * Extension class of install tool for use in Extension Manager.
- *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- */
-class em_install_class extends t3lib_install {
-
-	/**
-	 * Make sure the normal constructor is NOT called:
-	 *
-	 * @return	void
-	 */
-	function em_install_class()	{
-	}
-}
-
-
 
 
 
@@ -3091,14 +3072,14 @@ EXTENSION KEYS:
 	function writeNewExtensionList($newExtList)	{
 
 			// Instance of install tool
-		$instObj = new em_install_class;
+		$instObj = new t3lib_install;
 		$instObj->allowUpdateLocalConf =1;
 		$instObj->updateIdentity = 'TYPO3 Extension Manager';
 
 			// Get lines from localconf file
 		$lines = $instObj->writeToLocalconf_control();
 		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$instObj->writeToLocalconf_control($lines,1);
+		$instObj->writeToLocalconf_control($lines);
 
 		$this->removeCacheFiles();
 	}
@@ -3114,14 +3095,14 @@ EXTENSION KEYS:
 	function writeTsStyleConfig($extKey,$arr)	{
 
 			// Instance of install tool
-		$instObj = new em_install_class;
+		$instObj = new t3lib_install;
 		$instObj->allowUpdateLocalConf =1;
 		$instObj->updateIdentity = 'TYPO3 Extension Manager';
 
 			// Get lines from localconf file
 		$lines = $instObj->writeToLocalconf_control();
 		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][\''.$extKey.'\']', serialize($arr));	// This will be saved only if there are no linebreaks in it !
-		$instObj->writeToLocalconf_control($lines,1);
+		$instObj->writeToLocalconf_control($lines);
 
 		$this->removeCacheFiles();
 	}
@@ -3491,7 +3472,6 @@ EXTENSION KEYS:
 				$tce->start(Array(),Array());
 				$tce->clear_cacheCmd('all');
 			} else {	// Show checkbox for clearing cache:
-				$instObj = new em_install_class;
 				$content.= '
 					<br />
 					<h3>Clear cache</h3>
@@ -3512,9 +3492,6 @@ EXTENSION KEYS:
 	 * @return	string		HTML content.
 	 */
 	function checkUploadFolder($extKey,$extInfo)	{
-
-			// Install class instance:
-		$instObj = new em_install_class;
 
 			// Checking for upload folder:
 		$uploadFolder = PATH_site.$this->ulFolder($extKey);
@@ -3602,7 +3579,7 @@ EXTENSION KEYS:
 	function checkDBupdates($extKey,$extInfo,$infoOnly=0)	{
 
 			// Initializing Install Tool object:
-		$instObj = new em_install_class;
+		$instObj = new t3lib_install;
 		$instObj->INSTALL = t3lib_div::_GP('TYPO3_INSTALL');
 		$dbStatus = array();
 
@@ -3621,9 +3598,9 @@ EXTENSION KEYS:
 
 					// Updating database...
 				if (!$infoOnly && is_array($instObj->INSTALL['database_update']))	{
-					$instObj->preformUpdateQueries($update_statements['add'],$instObj->INSTALL['database_update']);
-					$instObj->preformUpdateQueries($update_statements['change'],$instObj->INSTALL['database_update']);
-					$instObj->preformUpdateQueries($update_statements['create_table'],$instObj->INSTALL['database_update']);
+					$instObj->performUpdateQueries($update_statements['add'],$instObj->INSTALL['database_update']);
+					$instObj->performUpdateQueries($update_statements['change'],$instObj->INSTALL['database_update']);
+					$instObj->performUpdateQueries($update_statements['create_table'],$instObj->INSTALL['database_update']);
 				} else {
 					$content.=$instObj->generateUpdateDatabaseForm_checkboxes($update_statements['add'],'Add fields');
 					$content.=$instObj->generateUpdateDatabaseForm_checkboxes($update_statements['change'],'Changing fields',1,0,$update_statements['change_currentValue']);
@@ -3818,7 +3795,7 @@ EXTENSION KEYS:
 	 * @see dumpTableAndFieldStructure()
 	 */
 	function dumpStaticTables($tableList)	{
-		$instObj = new em_install_class;
+		$instObj = new t3lib_install;
 		$dbFields = $instObj->getFieldDefinitions_database(TYPO3_db);
 
 		$out = '';
@@ -3939,7 +3916,7 @@ EXTENSION KEYS:
 	 */
 	function getTableAndFieldStructure($parts)	{
 			// Instance of install tool
-		$instObj = new em_install_class;
+		$instObj = new t3lib_install;
 		$dbFields = $instObj->getFieldDefinitions_database(TYPO3_db);
 
 

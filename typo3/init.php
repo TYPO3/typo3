@@ -210,10 +210,11 @@ if (!get_magic_quotes_gpc())	{
 // Check if the install script should be run:
 // ********************************************
 if (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript)	{
-	require_once (PATH_t3lib.'class.t3lib_install.php');
-	require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
-	$install_check = t3lib_div::makeInstance('t3lib_install');
-	$install_check->allowUpdateLocalConf=1;
+	if (!t3lib_extMgm::isLoaded('install'))	die('Install Tool is not loaded as an extension.<br/>You must add the key "install" to the list of installed extensions in typo3temp/localconf.php, $TYPO3_CONF_VARS["EXT"]["extList"].');
+
+	require_once(t3lib_extMgm::extPath('install').'mod/class.tx_install.php');
+	$install_check = t3lib_div::makeInstance('tx_install');
+	$install_check->allowUpdateLocalConf = 1;
 	$install_check->init();
 	exit;
 }

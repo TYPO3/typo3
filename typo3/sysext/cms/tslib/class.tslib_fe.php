@@ -2178,7 +2178,7 @@ if (version == "n3") {
 
 			// Set header for charset-encoding if set. Added by RL 17.10.03
 		if ($this->config['config']['metaCharset'])	{
-			$headLine = 'Content-Type:text/html;charset='.trim ($this->config['config']['metaCharset']);
+			$headLine = 'Content-Type:text/html;charset='.trim($this->config['config']['metaCharset']);
 			header ($headLine);
 		}
 
@@ -2984,7 +2984,7 @@ if (version == "n3") {
 		$this->siteCharset = $this->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['metaCharset'] ? $GLOBALS['TSFE']->config['config']['metaCharset'] : $GLOBALS['TSFE']->defaultCharSet);
 		$this->labelsCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$this->lang] ? $this->csConvObj->charSetArray[$this->lang] : 'iso-8859-1');
 		if ($this->siteCharset != $this->labelsCharset)	{
-			$this->convCharsetToFrom=array(
+			$this->convCharsetToFrom = array(
 				'from' => $this->labelsCharset,
 				'to' => $this->siteCharset
 			);
@@ -3016,7 +3016,6 @@ if (version == "n3") {
 		}
 	}
 }
-
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/class.tslib_fe.php'])	{

@@ -1,3 +1,15 @@
+2004-05-17  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Moved "install" extension to be a sys extension in sysext/
+
+2004-05-17  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Corrected some bugs in t3lib_cs while writing a unit test for it.
+
+2004-05-15  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Splitted the Install Tool interface parts out from t3lib_install into the class tx_install (in extension "install"). Only things left are logic to update localconf.php files and manage SQL / Database (for Extension Manager).
+
 2004-05-11  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Changed version number to 3.7.0-dev according to newly adopted major.minor.patch version numbering model.
