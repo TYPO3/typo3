@@ -1,3 +1,8 @@
+2004-09-10  Michael Stucki  <mundaun@gmx.ch>
+
+	* Replaced t3lib_div::uniqueArray with native PHP function array_unique. The old function will remain for compatibility reasons only. Please do not use it anymore!
+	* Removed comment about the expired Unisys patent in class.tx_install.php
+
 2004-09-00  Jan-Erik Revsbech    <jer@moccompany.com>
 	* Fixed bug #292 concerning Return path in class.t3lib_mailer.php. The fix has a seperate solution for windows and Unix. The unix fix does however not work with safe_mode enabled. Do not know how to overcome this. Perhaps an environment variable for sendmail can be specified? The fix for windows works OK with safe_mode on since, it does not rely on passing parameter directly to the mailer tranport agent (Sendmail or postfix), but instead sets the php variable sendmail_from, which has no effect on Unix systemt.
 

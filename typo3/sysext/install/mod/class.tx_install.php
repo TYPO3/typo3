@@ -1621,8 +1621,7 @@ From sub-directory:
 					$msg[0]="You can choose between generating GIF or PNG files, as your GDLib supports both.";
 				}
 				if ($this->config_array["gd_gif"])		{
-					$msg[10]="You should know that generating GIF files are covered by a UNISYS patent. <a target=\"_blank\" href=\"http://www.boutell.com/gd/\">Read more for details.</a>";
-					$msg[11]="In addition you should watch out for the generated size of the GIF-files because GDLib does not compress them with LZW, but RLE and ImageMagick is subsequently used to compress with LZW. But in the case of ImageMagick failing this task (eg. not being compiled with LZW which is the case with newer versions) you'll end up with GIF-filesizes all too big!
+					$msg[10]="You should watch out for the generated size of the GIF-files because some versions of the GD library do not compress them with LZW, but RLE and ImageMagick is subsequently used to compress with LZW. But in the case of ImageMagick failing this task (eg. not being compiled with LZW which is the case with some versions) you'll end up with GIF-filesizes all too big!
 					This install tool tests what kinds of GIF compression are available in the ImageMagick installations by a physical test. You can also check it manually by opening a TYPO3 generated gif-file with Photoshop and save it in a new file. If the file sizes of the original and the new file are almost the same, you're having LZW compression and everything is fine.";
 				}
 				if ($this->config_array["gd_png"])		{

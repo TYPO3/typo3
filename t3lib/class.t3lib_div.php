@@ -755,7 +755,7 @@ class t3lib_div {
 			}
 			$listArray = array_merge($listArray,$in_list);
 		}
-		return implode(',',t3lib_div::uniqueArray($listArray));
+		return implode(',',array_unique($listArray));
 	}
 
 	/**
@@ -1234,12 +1234,9 @@ class t3lib_div {
 	}
 
 	/**
-	 * Takes a one-dimensional array and returns an array where the values are unique
-	 * The keys in the array are substituted with some md5-hashes
-	 * If the value is trim(empty), the value is ignored.
-	 * Values are trimmed
-	 * (Deprecated, use PHP function array_unique instead)
-	 * Usage: 1
+	 * Remove duplicate values from an array
+	 * This function is deprecated, use the PHP function array_unique instead
+	 * Usage: 0
 	 *
 	 * @param	array		Array of values to make unique
 	 * @return	array
@@ -1247,17 +1244,7 @@ class t3lib_div {
 	 * @deprecated
 	 */
 	function uniqueArray($valueArray)	{
-		$array_out=array();
-		if (is_array($valueArray))	{
-			while (list($key,$val)=each($valueArray)) {
-				$val=trim($val);
-				if ((string)$val!='')	{
-					$array_out[md5($val)]=$val;
-				}
-			}
-		}
-		reset($array_out);
-		return $array_out;
+		return array_unique($valueArray);
 	}
 
 	/**
