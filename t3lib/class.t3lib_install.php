@@ -223,6 +223,7 @@ class t3lib_install {
 		"images" => "Image Processing",
 		"extConfig" => "All Configuration",
 		"typo3temp" => "typo3temp/",
+		"cleanup" => "Clean up database",
 		"phpinfo" => "phpinfo()",
 		"typo3conf_edit" => "Edit files in typo3conf/",
 		"about" => "About"
@@ -463,6 +464,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					$this->checkTheConfig();
 					$this->silent=0;
 					$this->typo3TempManager();
+				break;
+				case "cleanup":
+					$this->checkTheConfig();
+					$this->silent=0;
+					$this->cleanupManager();
 				break;
 				case "phpinfo":
 					$this->silent=0;
@@ -1031,7 +1037,9 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 	 *******************************/
 
 	/**
-	 * @return	[type]		...
+	 * Provides a tool for deleting temporary files located in typo3temp/
+	 *
+	 * @return	string	HTML output
 	 */
 	function typo3TempManager()	{
 		$headCode = "typo3temp/ directory";
@@ -1117,7 +1125,7 @@ Number of files at a time:
 		</form>
 		This tool will delete files only if the last 10 characters before the extension (3 chars+\'.\') are hexadecimal valid ciphers, which are lowercase a-f and 0-9.';
 
-		$this->message($headCode,"Statestics","
+		$this->message($headCode,"Statistics","
 		Number of temporary files: <strong>".($fileCounter-$deleteCounter)."</strong>
 		Number matching '".htmlspecialchars($deleteType[$tt])."': <strong>".$criteriaMatch."</strong>
 		Number deleted: <strong>".$deleteCounter."</strong>
@@ -1143,6 +1151,71 @@ Number of files at a time:
 			}
 		}
 		return $out;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	/*******************************
+	 *
+	 * cleanup manager
+	 *
+	 *******************************/
+
+	/**
+	 * Provides a tool cleaning up various tables in the database
+	 *
+	 * @return	string	HTML output
+	 * @author	Robert Lemke <rl@robertlemke.de>
+	 * @todo	Add more functionality ...
+	 */
+	function cleanupManager()	{
+		$headCode = "Clean up database";
+		$this->message($headCode,"What is it?","
+		This function will become a general clean up manager for various tables used by TYPO3. By now you can only empty the cache which is used for storing image sizes of all pictures used in TYPO3.
+		
+		<strong>Clear cached image sizes</strong>
+		Clears the cache used for memorizing sizes of all images used in your website. This information is cached in order to gain performance and will be stored each time a new image is being displayed in the frontend.
+		
+		You should <em>Clear All Cache</em> in the backend after clearing this cache.
+		");
+
+		$tables = $this->getListOfTables();
+		$action = $this->INSTALL['cleanup_type'];
+		
+		if (($action == 'cache_imagesizes' || $action == 'all') && isset ($tables['cache_imagesizes'])) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery ('cache_imagesizes','1');
+		}
+		
+		$cleanupType = array (
+			"all" => "Clean up everything",
+		);
+		
+			// Get cache_imagesizes info
+		if (isset ($tables['cache_imagesizes'])) {
+			$cleanupType["cache_imagesizes"] = "Clear cached image sizes only";			
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_imagesizes', '');
+			$resArr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc ($res);
+			$cachedImageSizesCounter = intval ($resArr['count(*)']);
+		} else {
+			$this->message($headCode,"Table cache_imagesizes does not exist!","
+				The table cache_imagesizes was not found. Please check your database settings in Basic Configuration and compare your table definition with the Database Analyzer.
+			",2);
+			$cachedImageSizesCounter = 'unknown';
+		}
+
+		$content = '<select name="TYPO3_INSTALL[cleanup_type]">'.$this->getSelectorOptions($cleanupType,$tt).'</select> ';
+		$form = '<form action="'.$this->action.'" method="POST">'.$content.'<input type="submit" value="Execute"></form>';
+		$this->message($headCode,"Statistics","
+			Number cached image sizes: <strong>".$cachedImageSizesCounter."</strong><br>
+		".$form,1);
+
+		echo $this->outputWrapper($this->printAll());
 	}
 
 
@@ -1580,17 +1653,23 @@ Number of files at a time:
 
 		$uniqueName = md5(uniqid(microtime()));
 
+			// The requirement level (the integer value, ie. the second value of the value array) has the following meanings:
+			// -1 = not required, but if it exists may be writeable or not
+			//  0 = not required, if it exists the dir should be writeable
+			//  1 = required, don't has to be writeable
+			//  2 = required, has to be writeable
+			
 		$checkWrite=array(
-			"typo3temp/" => array("The folder is used by both the frontend (FE) and backend interface (TBE) for image manipulated files.",1,"dir_typo3temp"),
+			"typo3temp/" => array("The folder is used by both the frontend (FE) and backend interface (TBE) for image manipulated files.",2,"dir_typo3temp"),
 #			TYPO3_mainDir."temp/" => array("The folder is used by the backend interface only (TBE) for icons, pane tabs and click-menu items. The directory is usually not empty in the distribution, but you should be able to clear it out and TYPO3 should generate new files automatically.",1,"dir_temp"),
-			"typo3conf/" => array("This directory contains the local configuration files of your website. TYPO3 must be able to write to these configuration files during setup and when the Extension Manager (EM) installs extensions.",1),
+			"typo3conf/" => array("This directory contains the local configuration files of your website. TYPO3 must be able to write to these configuration files during setup and when the Extension Manager (EM) installs extensions.",2),
 			"typo3conf/ext/" => array("Location for local extensions. Must be writable if the Extension Manager is supposed to install extensions for this website.",0),
-			TYPO3_mainDir."ext/" => array("Location for global extensions. Must be writable if the Extension Manager is supposed to install extensions globally in the source.",1),
-			"uploads/" => array("Location for uploaded files from RTE + in the subdirs for tables.",1),
+			TYPO3_mainDir."ext/" => array("Location for global extensions. Must be writable if the Extension Manager is supposed to install extensions globally in the source.",-1),
+			"uploads/" => array("Location for uploaded files from RTE + in the subdirs for tables.",2),
 			"uploads/pics/" => array("Typical location for uploaded files (images especially).",0),
 			"uploads/media/" => array("Typical location for uploaded files (non-images especially).",0),
 			"uploads/tf/" => array("Typical location for uploaded files (TS template resources).",0),
-			"fileadmin/" => array("Location for local files such as templates, independent uploads etc.",0),
+			"fileadmin/" => array("Location for local files such as templates, independent uploads etc.",-1),
 			"fileadmin/_temp_/" => array("Typical temporary location for default upload of files by administrators.",0),
 		);
 
@@ -1607,11 +1686,16 @@ Number of files at a time:
 					This error should not occur as ".$relpath." must always be accessible in the root of a TYPO3 website.
 					",3);
 				} else {
+					if ($descr[1] == 0) {
+						$msg = 'This directory does not necessarily have to exist but if it does it must be writable.';
+					} else {
+						$msg = 'This directory does not necessarily have to exist and if it does it can be writable or not.';
+					}
 					$this->message($ext, $relpath." directory does not exist","
 					<em>Full path: ".PATH_site.$relpath."</em>
 					".$general_message."
 
-					This directory does not necessarily have to exist but if it does it must be writable.
+					".$msg."
 					",2);
 				}
 			} else {
@@ -1622,13 +1706,19 @@ Number of files at a time:
 					if ($descr[2])	{ $this->config_array[$descr[2]]=1; }
 					$this->message($ext, $relpath." writeable","",-1);
 				} else {
+					$severity = ($descr[1]==2 || $descr[1]==0) ? 3 : 2;
+					if ($descr[1] == 0 || $descr[1] == 2) {
+						$msg = "The directory ".$relpath." must be writable!";
+					} elseif ($descr[1] == -1 || $descr[1] == 1) {
+						$msg = "The directory ".$relpath." does not neccesarily have to be writable.";
+					}
 					$this->message($ext, $relpath." directory not writeable","
 					<em>Full path: ".$file."</em>
 					".$general_message."
 
 					Tried to write this file (with touch()) but didn't succeed.
-					The directory ".$relpath." must be writable!
-					",3);
+					".$msg."
+					",$severity);
 				}
 			}
 		}

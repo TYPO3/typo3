@@ -1924,7 +1924,7 @@ EXTENSION KEYS:
 					$others[]='"'.$this->typeLabels[substr($dbInst,$a,1)].'"';
 				}
 			}
-			return $GLOBALS['TBE_TEMPLATE']->rfw('A '.implode(' and ',$others).' extension with this key is also available on the server, but cannot be loaded because the "'.$this->typeLabels[$current].'" version takes precendence.');
+			return $GLOBALS['TBE_TEMPLATE']->rfw('A '.implode(' and ',$others).' extension with this key is also available on the server, but cannot be loaded because the "'.$this->typeLabels[$current].'" version takes precedence.');
 		} else return '';
 	}
 

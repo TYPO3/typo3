@@ -4035,7 +4035,6 @@ class t3lib_TCEmain	{
 					if (t3lib_extMgm::isLoaded('cms'))	{
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','');
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection','');
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_imagesizes','');
 					}
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash','');
 				}
