@@ -570,20 +570,19 @@ class t3lib_div {
 		$IPpartsReq = explode('.',$baseIP);
 		if (count($IPpartsReq)==4)	{
 			$values = t3lib_div::trimExplode(',',$list,1);
-			reset($values);
-			while(list(,$test)=each($values))	{
+
+			foreach($values as $test)	{
 				list($test,$mask) = explode('/',$test);
 
 				if(intval($mask)) {
 						// "192.168.3.0/24"
-					$lnet=ip2long($test);
-					$lip=ip2long($baseIP);
-					$binnet=str_pad( decbin($lnet),32,"0","STR_PAD_LEFT" );
-					$firstpart=substr($binnet,0,$mask);
-					$binip=str_pad( decbin($lip),32,"0","STR_PAD_LEFT" );
-					$firstip=substr($binip,0,$mask);
-					$yes=(strcmp($firstpart,$firstip)==0);
-
+					$lnet = ip2long($test);
+					$lip = ip2long($baseIP);
+					$binnet = str_pad( decbin($lnet),32,"0","STR_PAD_LEFT" );
+					$firstpart = substr($binnet,0,$mask);
+					$binip = str_pad( decbin($lip),32,"0","STR_PAD_LEFT" );
+					$firstip = substr($binip,0,$mask);
+					$yes = (strcmp($firstpart,$firstip)==0);
 				} else {
 						// "192.168.*.*"
 					$IPparts = explode('.',$test);
@@ -594,6 +593,34 @@ class t3lib_div {
 						if (strcmp($val,'*') && strcmp($IPpartsReq[$index],$val))	{
 							$yes=0;
 						}
+					}
+				}
+				if ($yes) return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Match fully qualified domain name with list of strings with wildcard
+	 *
+	 * @param       string         $baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
+	 * @param       string          $list is a comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
+	 * @return      boolean         True if a domain name mask from $list matches $baseIP
+	 */
+	function cmpFQDN($baseIP, $list)        {
+		if (count(explode('.',$baseIP))==4)     {
+			$resolvedHostName = explode('.', gethostbyaddr($baseIP));
+			$values = t3lib_div::trimExplode(',',$list,1);
+
+			foreach($values as $test)	{
+				$hostNameParts = explode('.',$test);
+				$yes = 1;
+
+				foreach($hostNameParts as $index => $val)	{
+					$val = trim($val);
+					if (strcmp($val,'*') && strcmp($resolvedHostName[$index],$val)) {
+						$yes=0;
 					}
 				}
 				if ($yes) return true;

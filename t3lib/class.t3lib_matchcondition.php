@@ -177,6 +177,9 @@ class t3lib_matchCondition {
 				case 'IP':
 					if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $pcs[1]))	{return true;}
 				break;
+				case 'hostname':
+					if (t3lib_div::cmpFQDN(t3lib_div::getIndpEnv('REMOTE_ADDR'), $pcs[1]))  {return true;}
+				break;
 					// hour, minute, dayofweek, dayofmonth, month
 				case 'hour':
 				case 'minute':

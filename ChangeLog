@@ -1,5 +1,9 @@
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added TypoScript condition "hostname" for matching hostnames for IP addresses.
+
+2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added API for configuring extra tables/fields for listing in Web > Page
 
 2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
