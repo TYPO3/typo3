@@ -375,7 +375,7 @@ class t3lib_cs {
 		// mapping of locale names to charsets
 	var $locale_to_charset=array(
 		'japanese.euc' => 'euc-jp',
-		'ja_JP.ujis' => 'euc-jp',
+		'ja_jp.ujis' => 'euc-jp',
 		'korean.euc' => 'euc-kr',
 		'zh_cn' => 'gb2312',
 		'zh_hk' => 'big5',
@@ -492,12 +492,12 @@ class t3lib_cs {
 				break;
 
 			case 'iconv':
-				$conv_str = iconv($str,$fromCS,$toCS.'//TRANSLIT');
+				$conv_str = iconv($fromCS,$toCS.'//TRANSLIT',$str);
 				if (false !== $conv_str)	return $conv_str;
 				break;
 
 			case 'recode':
-				$conv_str = recode_string($toCS.'..'.$fromCS,$str);
+				$conv_str = recode_string($fromCS.'..'.$toCS,$str);
 				if (false !== $conv_str)	return $conv_str;
 				break;
 			}
@@ -877,7 +877,7 @@ class t3lib_cs {
 		$unicodeDataFile = PATH_t3lib.'unidata/UnicodeData.txt';
 		if (!(t3lib_div::validPathStr($unicodeDataFile) && @is_file($unicodeDataFile)))	return false;
 
-		$fh = fopen($unicodeDataFile,'r');
+		$fh = fopen($unicodeDataFile,'rb');
 		if (!$fh)	return false;
 
 			// key = utf8 char (single codepoint), value = utf8 string (codepoint sequence)
@@ -889,7 +889,7 @@ class t3lib_cs {
 		$utf8CaseFolding['toTitle'] = array();
 
 		while (!feof($fh))	{
-			$line = fgets($fh);
+			$line = fgets($fh,4096);
 				// has also other info like character class (digit, white space, etc.) and more
 			list($char,,,,,,,,,,,,$upper,$lower,$title,) = split(';', rtrim($line));
 			$char = $this->UnumberToChar(hexdec($char));
@@ -904,10 +904,10 @@ class t3lib_cs {
 		$specialCasingFile = PATH_t3lib.'unidata/SpecialCasing.txt';
 		if (t3lib_div::validPathStr($specialCasingFile) && @is_file($specialCasingFile))	{
 
-			$fh = fopen($specialCasingFile,'r');
+			$fh = fopen($specialCasingFile,'rb');
 			if ($fh)	{
 				while (!feof($fh))	{
-					$line = fgets($fh);
+					$line = fgets($fh,4096);
 					if ($line{0} != '#' && trim($line) != '')	{
 
 						list($char,$lower,$title,$upper,$cond) = t3lib_div::trimExplode(';', $line);
@@ -916,17 +916,17 @@ class t3lib_cs {
 							if ($char != $lower)	{
 								$arr = split(' ',$lower);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
-								$utf8CaseFolding['toLower'][$utf8_char] = implode($arr);
+								$utf8CaseFolding['toLower'][$utf8_char] = implode('',$arr);
 							}
 							if ($char != $title && $title != $upper)	{
 								$arr = split(' ',$title);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
-								$utf8CaseFolding['toTitle'][$utf8_char] = implode($arr);
+								$utf8CaseFolding['toTitle'][$utf8_char] = implode('',$arr);
 							}
 							if ($char != $upper)	{
 									$arr = split(' ',$upper);
 								for ($i=0; isset($arr[$i]); $i++)	$arr[$i] = $this->UnumberToChar(hexdec($arr[$i]));
-								$utf8CaseFolding['toUpper'][$utf8_char] = implode($arr);
+								$utf8CaseFolding['toUpper'][$utf8_char] = implode('',$arr);
 							}
 						}
 					}
@@ -1102,7 +1102,7 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function crop($charset,$string,$len,$crop='')	{
-		if ($len == 0)	return $crop;
+		if ($len == 0)	return $string;
 
 		if ($charset == 'utf-8')	{
 			$i = $this->utf8_char2byte_pos($string,$len);
@@ -1121,11 +1121,11 @@ class t3lib_cs {
 			return $string;
 		} else	{
 			if ($len > 0)	{
-				if ($string{$i+1})	{
+				if (isset($string{$i}))	{
 					return substr($string,0,$i).$crop;
 				}
 			} else {
-				if ($string{$i-1})	{
+				if (isset($string{$i-1}))	{
 					return $crop.substr($string,$i);
 				}
 			}
@@ -1189,7 +1189,8 @@ class t3lib_cs {
 
 		$out = '';
 		$caseConv =& $this->caseFolding[$charset][$case];
-		for($i=0; $c=$string{$i}; $i++)	{
+		for($i=0; isset($string{$i}); $i++)	{
+			$c=$string{$i};
 			$cc = $caseConv[$c];
 			if ($cc)	{
 				$out .= $cc;
@@ -1282,7 +1283,7 @@ class t3lib_cs {
 	 */
 	function utf8_strlen($str)	{
 		$n=0;
-		for($i=0; $str{$i}; $i++)	{
+		for($i=0; isset($str{$i}); $i++)	{
 			$c = ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$n++;
@@ -1356,14 +1357,14 @@ class t3lib_cs {
 			$d = -1;
 		}
 
-		for( ; $str{$i} && $n<$p; $i+=d)	{
+		for( ; isset($str{$i}) && $n<$p; $i+=$d)	{
 			$c = (int)ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$n++;
 			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
 				$n++;
 		}
-		if (!$str{$i})	return false; // offset beyond string length
+		if (!isset($str{$i}))	return false; // offset beyond string length
 
 		if ($pos >= 0)	{
 				// skip trailing multi-byte data bytes
@@ -1393,7 +1394,7 @@ class t3lib_cs {
 			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
 				$n++;
 		}
-		if (!$str{$i})	return false; // offset beyond string length
+		if (!isset($str{$i}))	return false; // offset beyond string length
 
 		return $n;
 	}
@@ -1412,7 +1413,7 @@ class t3lib_cs {
 
 		$out = '';
 		$caseConv =& $this->caseFolding['utf-8'][$case];
-		for($i=0; $str{$i}; $i++)	{
+		for($i=0; isset($str{$i}); $i++)	{
 			$c = ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$mbc = $str{$i};
@@ -1474,7 +1475,7 @@ class t3lib_cs {
 	 */
 	function euc_strtrunc($str,$len,$charset)	 {
 		$sjis = ($charset == 'shift_jis');
-		for ($i=0; $str{$i} && $i<$len; $i++) {
+		for ($i=0; isset($str{$i}) && $i<$len; $i++) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
@@ -1483,7 +1484,7 @@ class t3lib_cs {
 				if ($c >= 0x80)	$i++;	// advance a double-byte char
 			}
 		}
-		if (!$str{$i})	return $str;	// string shorter than supplied length
+		if (!isset($str{$i}))	return $str;	// string shorter than supplied length
 
 		if ($i>$len)
 			return substr($str,0,$len-1);	// we ended on a first byte
@@ -1529,7 +1530,7 @@ class t3lib_cs {
 	function euc_strlen($str,$charset)	 {
 		$sjis = ($charset == 'shift_jis');
 		$n=0;
-		for ($i=0; $str{$i}; $i++) {
+		for ($i=0; isset($str{$i}); $i++) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
@@ -1566,7 +1567,7 @@ class t3lib_cs {
 			$d = -1;
 		}
 
-		for ( ; $str{$i} && $n<$p; $i+=$d) {
+		for ( ; isset($str{$i}) && $n<$p; $i+=$d) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i+=$d;	// advance a double-byte char
@@ -1577,7 +1578,7 @@ class t3lib_cs {
 
 			$n++;
 		}
-		if (!$str{$i})	return false; // offset beyond string length
+		if (!isset($str{$i}))	return false; // offset beyond string length
 
 		if ($pos < 0)	$i++;	// correct offset
 
@@ -1600,7 +1601,8 @@ class t3lib_cs {
 		$sjis = ($charset == 'shift_jis');
 		$out = '';
 		$caseConv =& $this->caseFolding[$charset][$case];
-		for($i=0; $mbc=$str{$i}; $i++)	{
+		for($i=0; isset($str{$i}); $i++)	{
+			$mbc=$str{$i};
 			$c = ord($str{$i});
 
 			if ($sjis)	{
