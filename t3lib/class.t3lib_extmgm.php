@@ -501,12 +501,31 @@ class t3lib_extMgm {
 				}
 
 				if( $info['available'] AND ($info['subtype']=='' XOR $info['serviceSubTypes'][$serviceSubType]) AND $info['priority']>=$priority ) {
+						// has a lower quality than the already found, therefore we skip this service
 					if($info['priority']==$priority AND $info['quality']<$quality) {
 						continue;
 					}
-					$serviceKey = $key;
-					$priority = $info['priority'];
-					$quality = $info['quality'];
+
+						// service depends on external programs - check if they exists
+					if(trim($info['exec'])) {
+						require_once(PATH_t3lib.'class.t3lib_exec.php');
+
+						$executables = t3lib_div::trimExplode(',', $info['exec'],1);
+						foreach($executables as $executable)	{
+							if(!t3lib_exec::checkCommand($executable)) {
+								t3lib_extMgm::deactivateService($serviceType, $key);
+								$info['available']=FALSE;
+								break;
+							}
+						}
+					}
+
+						// still available after exec check?
+					if($info['available']) {
+						$serviceKey = $key;
+						$priority = $info['priority'];
+						$quality = $info['quality'];
+					}
 				}
 			}
 		}

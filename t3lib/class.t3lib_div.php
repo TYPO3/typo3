@@ -56,7 +56,7 @@
  *  466:     function fixed_lgd($string,$chars,$preStr='...')	
  *  488:     function fixed_lgd_pre($string,$chars)	
  *  502:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)	
- *  522:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)	
+ *  522:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
  *  558:     function cmpIP($baseIP, $list)	
  *  589:     function inList($in_list,$item)	
  *  602:     function rmFromList($element,$list)	
@@ -1513,22 +1513,34 @@ class t3lib_div {
 	
 	/**
 	 * Wraps JavaScript code XHTML ready with <script>-tags
+	 * Automatic re-identing of the JS code is done by using the first line as ident reference.
+	 * This is nice for identing JS code with PHP code on the same level.
 	 *
-	 * @param    string        JavaScript code
-	 * @return    string        The wrapped JS code, ready to put into a XHTML page
+	 * @param    string 	JavaScript code
+	 * @param	boolean 	Wrap script element in linebreaks? Default is TRUE.
+	 * @return    string 	The wrapped JS code, ready to put into a XHTML page
 	 * @author	Ingmar Schlecht <ingmars@web.de>
+	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
-	function wrapJS($JSCode) {
-		return '
-<script type="text/javascript">
-	/*<![CDATA[*/
-'.$JSCode.'
-	/*]]>*/
-</script>
-';
+	function wrapJS($string, $linebreak=TRUE) {
+		if(trim($string)) {
+				// <script wrapped in nl?
+			$cr = $linebreak? "\n" : '';
+
+				// remove nl from the beginning
+			$string = preg_replace ('/^\n+/', '', $string);
+				// re-ident to one tab using the first line as reference
+			if(preg_match('/^(\t+)/',$string,$match)) {
+				$string = str_replace($match[1],"\t", $string);
+			}
+			$string = $cr.'<script type="text/javascript">
+/*<![CDATA[*/
+'.$string.'
+/*]]>*/
+</script>'.$cr;
+		}
+		return trim($string);
 	}
-
-
 	/**
 	 * Parses XML input into a PHP array with associative keys
 	 * 
@@ -1783,7 +1795,7 @@ class t3lib_div {
 	function xmlGetHeaderAttribs($xmlData)	{
 		$xmlHeader = substr(trim($xmlData),0,200);
 		$reg=array();
-		if (eregi('^<\?xml([^>]*)\?>',$xmlHeader,$reg))	{
+		if (eregi('^<\?xml([^>]*)\?\>',$xmlHeader,$reg))	{
 			return t3lib_div::get_tag_attributes($reg[1]);
 		}
 	}

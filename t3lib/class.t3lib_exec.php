@@ -29,7 +29,6 @@
  * @subpackage t3lib
  */
 
-#require_once(t3lib_extMgm::extPath('cc_debug').'class.tx_ccdebug.php');
 
 /**
  * returns exec command for a program
@@ -65,7 +64,7 @@ class t3lib_exec {
 	 *
 	 * @param 	string 	the command that should be executed. eg: "convert"
 	 * @param 	string 	executer for the command. eg: "perl"
-	 * @return 	boolean -1 if cmd is not found, or -2 if the handler is not found
+	 * @return 	boolean false if cmd is not found, or -1 if the handler is not found
 	 */
 	function checkCommand($cmd, $handler='')	{
 
@@ -76,7 +75,7 @@ class t3lib_exec {
 #debug($GLOBALS['t3lib_exec'], 't3lib_exec', __LINE__, __FILE__);
 
 		if ($handler && !t3lib_exec::checkCommand($handler)) {
-			return -2;
+			return -1;
 		}
 			// already checked and valid
 		if ($GLOBALS['t3lib_exec']['apps'][$cmd]['valid']) {
@@ -88,7 +87,7 @@ class t3lib_exec {
 		}
 		
 		reset($GLOBALS['t3lib_exec']['paths']);
-		while(list($path,$validPath)=each($GLOBALS['t3lib_exec']['paths'])) {
+		foreach($GLOBALS['t3lib_exec']['paths'] as $path => $validPath) {
 				// ignore invalid (false) paths
 			if ($validPath) {
 				if ($osType=='WIN') {
@@ -115,9 +114,9 @@ class t3lib_exec {
 			}
 		}
 
-			// try to get the executable with the command 'which'. It do the same like already done, but that on other paths??
+			// try to get the executable with the command 'which'. It do the same like already done, but maybe on other paths??
 		if ($osType=='UNIX') {
-			$cmd = exec ('which '.$val['cmd']);
+			$cmd = @exec ('which '.$val['cmd']);
 
 			if (@is_executable($cmd)) {
 				$GLOBALS['t3lib_exec']['apps'][$cmd]['app'] = $cmd;
@@ -127,7 +126,7 @@ class t3lib_exec {
 			}
 		}
 
-		return -1;
+		return false;
 	}
 	
 
@@ -138,7 +137,7 @@ class t3lib_exec {
 	 * @param 	string 	the command that should be executed. eg: "convert"
 	 * @param 	string 	handler (executor) for the command. eg: "perl"
 	 * @param 	string 	options for the handler, like '-w' for "perl"
-	 * @return 	mixed returns command string, or -1 if cmd is not found, or -2 if the handler is not found
+	 * @return 	mixed returns command string, or false if cmd is not found, or -1 if the handler is not found
 	 */
 	function getCommand($cmd, $handler='', $handlerOpt='')	{
 
@@ -149,14 +148,14 @@ class t3lib_exec {
 			$handler = t3lib_exec::getCommand($handler);
 
 			if (!$handler) {
-				return -2;
+				return -1;
 			}
 			$handler .= ' '.$handlerOpt.' ';
 		}
 
 			// command
 		if (!t3lib_exec::checkCommand($cmd)) {
-			return -1;
+			return false;
 		}
 		$cmd = $GLOBALS['t3lib_exec']['apps'][$cmd]['path'].$GLOBALS['t3lib_exec']['apps'][$cmd]['app'].' ';
 

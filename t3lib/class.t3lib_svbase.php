@@ -355,7 +355,7 @@ function available()	{
 	 * @param	string 	File name to write into. If empty a temp file will be created.
 	 * @return 	string 	File name or FALSE
 	 */
-	function writeFile (&$content, $absFile='')	{
+	function writeFile ($content, $absFile='')	{
 		$ret = TRUE;
 
 		if (!$absFile) {

@@ -41,12 +41,12 @@
  *  136: class t3lib_SCbase 
  *  252:     function init()	
  *  269:     function menuConfig()	
- *  289:     function mergeExternalItems($modName,$menuKey,$menuArr)	
+ *  289:     function mergeExternalItems($modName,$menuKey,$menuArr)
  *  308:     function handleExternalFunctionValue($MM_key='function')	
  *  325:     function getExternalItemConfig($modName,$menuKey,$value='')	
  *  339:     function checkExtObj()	
  *  353:     function checkSubExtObj()	
- *  362:     function extObjContent()	
+ *  362:     function extObjContent()
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -55,7 +55,7 @@
 /**
  * EXAMPLE PROTOTYPE
  * 
- * As for examples there are lots of them if you search for classes which extends 't3lib_SCbase'. 
+ * As for examples there are lots of them if you search for classes which extends 't3lib_SCbase'.
  * However you can see a prototype example of how a module might use this class in an index.php file typically hosting a backend module.
  * NOTICE: This example only outlines the basic structure of how this class is used. You should consult the documentation and other real-world examples for some actual things to do when building modules.
  *  
@@ -347,7 +347,7 @@ class t3lib_SCbase {
 
 	/**
 	 * Calls the checkExtObj function in sub module if present.
-	 * 
+	 *
 	 * @return	void		
 	 */
 	function checkSubExtObj()	{
@@ -355,12 +355,25 @@ class t3lib_SCbase {
 	}
 
 	/**
-	 * Calls the main function inside the "Function menu module" if present
-	 * 
-	 * @return	void		
+	 * Calls the 'header' function inside the "Function menu module" if present.
+	 * A header function might be needed to add JavaScript or other stuff in the head. This can't be done in the main function because the head is already written.
+	 * example call in the header function:
+	 * $this->pObj->doc->JScode = $this->pObj->doc->wrapScriptTags(' ...
+	 *
+	 * @return	void
+	 */
+	function extObjHeader()	{
+		if (is_callable(array($this->extObj,'head')))	$this->extObj->head();
+	}
+
+	/**
+	 * Calls the 'main' function inside the "Function menu module" if present
+	 *
+	 * @return	void
 	 */
 	function extObjContent()	{
-		if (is_object($this->extObj))	$this->content.=$this->extObj->main();
+		$this->extObj->pObj = &$this;
+		if (is_callable(array($this->extObj, 'main')))	$this->content.=$this->extObj->main();
 	}
 }
 ?>

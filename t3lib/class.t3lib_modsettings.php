@@ -172,7 +172,7 @@ class t3lib_modSettings {
 
 
 
-	function makeStoreControl($show='load,remove,save')	{
+	function getStoreControl($show='load,remove,save')	{
 			// Load/Save
 		$show = t3lib_div::trimexplode(',',$show,1);
 		$storeArray = $this->initStoreArray();

@@ -35,32 +35,32 @@
  *
  *
  *
- *  193: class t3lib_TCEforms	
+ *  193: class t3lib_TCEforms
  *  286:     function t3lib_TCEforms()	
  *  323:     function initDefaultBEmode()	
  *
  *              SECTION: Rendering the forms, fields etc
  *  366:     function getSoloField($table,$row,$theFieldToReturn)	
  *  405:     function getMainFields($table,$row,$depth=0)	
- *  532:     function getListedFields($table,$row,$list)	
+ *  532:     function getListedFields($table,$row,$list)
  *  574:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	
- *  650:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	
- *  777:     function getSingleField_SW($table,$field,$row,&$PA)	
+ *  650:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)
+ *  777:     function getSingleField_SW($table,$field,$row,&$PA)
  *
  *              SECTION: Rendering of each TCEform field type
- *  848:     function getSingleField_typeInput($table,$field,$row,&$PA)	
- *  900:     function getSingleField_typeText($table,$field,$row,&$PA)	
- *  969:     function getSingleField_typeCheck($table,$field,$row,&$PA)	
- * 1028:     function getSingleField_typeRadio($table,$field,$row,&$PA)	
- * 1058:     function getSingleField_typeSelect($table,$field,$row,&$PA)	
- * 1217:     function getSingleField_typeGroup($table,$field,$row,&$PA)	
- * 1359:     function getSingleField_typeNone($table,$field,$row,&$PA)	
- * 1413:     function getSingleField_typeFlex($table,$field,$row,&$PA)	
- * 1514:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)	
- * 1533:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)	
- * 1563:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())	
- * 1712:     function getSingleField_typeUnknown($table,$field,$row,&$PA)	
- * 1727:     function getSingleField_typeUser($table,$field,$row,&$PA)	
+ *  848:     function getSingleField_typeInput($table,$field,$row,&$PA)
+ *  900:     function getSingleField_typeText($table,$field,$row,&$PA)
+ *  969:     function getSingleField_typeCheck($table,$field,$row,&$PA)
+ * 1028:     function getSingleField_typeRadio($table,$field,$row,&$PA)
+ * 1058:     function getSingleField_typeSelect($table,$field,$row,&$PA)
+ * 1217:     function getSingleField_typeGroup($table,$field,$row,&$PA)
+ * 1359:     function getSingleField_typeNone($table,$field,$row,&$PA)
+ * 1413:     function getSingleField_typeFlex($table,$field,$row,&$PA)
+ * 1514:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)
+ * 1533:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)
+ * 1563:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())
+ * 1712:     function getSingleField_typeUnknown($table,$field,$row,&$PA)
+ * 1727:     function getSingleField_typeUser($table,$field,$row,&$PA)
  *
  *              SECTION: "Configuration" fetching/processing functions
  * 1759:     function getRTypeNum($table,$row)	
@@ -75,7 +75,7 @@
  *              SECTION: Form element helper functions
  * 1990:     function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')	
  * 2099:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)	
- * 2262:     function getIcon($icon)	
+ * 2262:     function getIcon($icon)
  * 2293:     function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)	
  * 2317:     function checkBoxParams($itemName,$thisValue,$c,$iCount,$addFunc='')	
  * 2331:     function elName($itemName)	
@@ -91,9 +91,9 @@
  * 2472:     function initItemArray($fieldValue)	
  * 2490:     function addItems($items,$iArray)	
  * 2512:     function procItems($items,$iArray,$config,$table,$row,$field)	
- * 2536:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)	
- * 2614:     function addSelectOptionsToItemArray_makeModuleData($value)	
- * 2636:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)	
+ * 2536:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)
+ * 2614:     function addSelectOptionsToItemArray_makeModuleData($value)
+ * 2636:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)
  *
  *              SECTION: Template functions
  * 2714:     function setFancyDesign()	
@@ -544,10 +544,9 @@ class t3lib_TCEforms	{
 
 		$out='';
 		$types_fieldConfig=t3lib_BEfunc::getTCAtypes($table,$row,1);
-		
+
 		$editFieldList=array_unique(t3lib_div::trimExplode(',',$list,1));
-		reset($editFieldList);
-		while(list(,$theFieldC)=each($editFieldList))	{
+		foreach($editFieldList as $theFieldC)	{
 			list($theField,$palFields) = split('\[|\]',$theFieldC);
 			$theField = trim($theField);
 			$palFields = trim($palFields);
@@ -668,7 +667,6 @@ class t3lib_TCEforms	{
 			// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $TCA[$table]['columns'][$field];
 
-		
 			// Now, check if this field is configured and editable (according to excludefields + other configuration)
 		if (	is_array($PA['fieldConf']) &&
 				(!$PA['fieldConf']['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$field)) && 
@@ -721,7 +719,7 @@ class t3lib_TCEforms	{
 					$PA['fieldChangeFunc']=array();
 					$PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = "TBE_EDITOR_fieldChanged('".$table."','".$row['uid']."','".$field."','".$PA['itemFormElName']."');";
 					$PA['fieldChangeFunc']['alert']=$alertMsgOnChange;
-					
+
 						// Based on the type of the item, call a render function:
 					$item = $this->getSingleField_SW($table,$field,$row,$PA);
 
@@ -1074,15 +1072,14 @@ class t3lib_TCEforms	{
 
 			// Possibly remove some items:		
 		$removeItems=t3lib_div::trimExplode(',',$PA['fieldTSConfig']['removeItems'],1);
-		reset($selItems);
-		while(list($tk,$p)=each($selItems))	{
+		foreach($selItems as $tk => $p)	{
 			if (in_array($p[1],$removeItems))	{
 				unset($selItems[$tk]);
 			} else if (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
 				$selItems[$tk][0]=$this->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]);
 			}
 		}
-		
+
 			// Creating the label for the "No Matching Value" entry.
 		$nMV_label = isset($PA['fieldTSConfig']['noMatchingValue_label']) ? $this->sL($PA['fieldTSConfig']['noMatchingValue_label']) : '[ '.sprintf($this->getLL('l_noMatchingValue'),$PA['itemFormElValue']).' ]';
 		
@@ -2544,7 +2541,7 @@ class t3lib_TCEforms	{
 	 */
 	function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)	{
 		global $TCA;
-			
+
 			// Values from foreign tables:
 		if ($fieldValue['config']['foreign_table'])	{
 			$items = $this->foreignTable($items,$fieldValue,$TSconfig,$field);
@@ -2656,10 +2653,10 @@ class t3lib_TCEforms	{
 			// Perform lookup
 		$res = @mysql (TYPO3_db, $query);
 		if (mysql_error())	{ 
-			debug(array(mysql_error()."\n\nQuery:\n ".$query."\n\nThis may indicate a table defined in tables.php is not existing in the database!"));
-			exit;
+			echo(mysql_error()."\n\nQuery:\n ".$query."\n\nThis may indicate a table defined in tables.php is not existing in the database!");
+			return array();
 		}
-		
+
 			// Get label prefix.
 		$lPrefix = $this->sL($fieldValue['config'][$pF.'foreign_table_prefix']);
 
