@@ -215,15 +215,16 @@ class user_feAdmin	{
 			// Initialize markerArray, setting FORM_URL and HIDDENFIELDS
 		$this->markerArray['###FORM_URL###'] = 'index.php?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type.$this->nc.$this->conf['addParams'];
 		$this->markerArray['###FORM_URL_ENC###'] = rawurlencode($this->markerArray['###FORM_URL###']);
-		$this->markerArray['###FORM_URL###'] = htmlspecialchars($this->markerArray['###FORM_URL###']);
+		$this->markerArray['###FORM_URL_HSC###'] = htmlspecialchars($this->markerArray['###FORM_URL###']);
+
 		$this->markerArray['###BACK_URL###'] = $this->backURL;
 		$this->markerArray['###BACK_URL_ENC###'] = rawurlencode($this->markerArray['###BACK_URL###']);
-		$this->markerArray['###BACK_URL###'] = htmlspecialchars($this->markerArray['###BACK_URL###']);
+		$this->markerArray['###BACK_URL_HSC###'] = htmlspecialchars($this->markerArray['###BACK_URL###']);
 
-		$this->markerArray['###THE_PID###'] = htmlspecialchars($this->thePid);
-		$this->markerArray['###REC_UID###'] = htmlspecialchars($this->recUid);
-		$this->markerArray['###AUTH_CODE###'] = htmlspecialchars($this->authCode);
-		$this->markerArray['###THIS_ID###'] = htmlspecialchars($GLOBALS['TSFE']->id);
+		$this->markerArray['###THE_PID###'] = $this->thePid;
+		$this->markerArray['###REC_UID###'] = $this->recUid;
+		$this->markerArray['###AUTH_CODE###'] = $this->authCode;
+		$this->markerArray['###THIS_ID###'] = $GLOBALS['TSFE']->id;
 		$this->markerArray['###THIS_URL###'] = htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'));
 		$this->markerArray['###HIDDENFIELDS###'] =
 			($this->cmd?'<input type="hidden" name="cmd" value="'.htmlspecialchars($this->cmd).'" />':'').
