@@ -1,3 +1,7 @@
+2005-04-06  Michael Stucki  <michael@typo3.org>
+
+	* Release of TYPO3 3.8.0beta1
+
 2005-04-05  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Changed the way htmlspecialchars() is applied to tag attributes on xhtmlCleaning

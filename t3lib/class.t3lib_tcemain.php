@@ -603,6 +603,13 @@ class t3lib_TCEmain	{
 									$this->updateDB($table,$id,$fieldArray);
 								}
 							}
+
+								// Hook: processDatamap_afterDatabaseOperations
+							foreach($hookObjectsArr as $hookObj)	{
+								if (method_exists($hookObj, 'processDatamap_afterDatabaseOperations')) {
+									$hookObj->processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $this);
+								}
+							}
 						}	// if ($recordAccess)	{
 					}	// if (is_array($incomingFieldArray))	{
 				}
