@@ -1037,7 +1037,7 @@ th { font-family: verdana,arial, helvetica, sans-serif; font-size: 10pt; font-we
 		");
 
 		if (!$this->config_array["dir_typo3temp"])	{
-			$this->message("typo3temp/ directory","typo3temp/ not writeable!","
+			$this->message("typo3temp/ directory","typo3temp/ not writable!","
 				You must make typo3temp/ write enabled before you can proceed with this test.
 			",2);
 			echo $this->outputWrapper($this->printAll());
@@ -1661,10 +1661,10 @@ From sub-directory:
 		$uniqueName = md5(uniqid(microtime()));
 
 			// The requirement level (the integer value, ie. the second value of the value array) has the following meanings:
-			// -1 = not required, but if it exists may be writeable or not
-			//  0 = not required, if it exists the dir should be writeable
-			//  1 = required, don't has to be writeable
-			//  2 = required, has to be writeable
+			// -1 = not required, but if it exists may be writable or not
+			//  0 = not required, if it exists the dir should be writable
+			//  1 = required, don't has to be writable
+			//  2 = required, has to be writable
 
 		$checkWrite=array(
 			"typo3temp/" => array("The folder is used by both the frontend (FE) and backend interface (TBE) for image manipulated files.",2,"dir_typo3temp"),
@@ -1711,7 +1711,7 @@ From sub-directory:
 				if (@is_file($file))	{
 					unlink($file);
 					if ($descr[2])	{ $this->config_array[$descr[2]]=1; }
-					$this->message($ext, $relpath." writeable","",-1);
+					$this->message($ext, $relpath." writable","",-1);
 				} else {
 					$severity = ($descr[1]==2 || $descr[1]==0) ? 3 : 2;
 					if ($descr[1] == 0 || $descr[1] == 2) {
@@ -1719,7 +1719,7 @@ From sub-directory:
 					} elseif ($descr[1] == -1 || $descr[1] == 1) {
 						$msg = "The directory ".$relpath." does not neccesarily have to be writable.";
 					}
-					$this->message($ext, $relpath." directory not writeable","
+					$this->message($ext, $relpath." directory not writable","
 					<em>Full path: ".$file."</em>
 					".$general_message."
 
@@ -2540,7 +2540,7 @@ From sub-directory:
 			return;
 		}
 		if (!$this->config_array["dir_typo3temp"])	{
-			$this->message("Image Processing","typo3temp/ not writeable!","
+			$this->message("Image Processing","typo3temp/ not writable!","
 				You must make typo3temp/ write enabled before you can proceed with this test.
 			",2);
 			echo $this->outputWrapper($this->printAll());

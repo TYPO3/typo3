@@ -136,11 +136,11 @@ $TYPO3_CONF_VARS = Array(
 			// If no fileextension, true is returned if 'allow' is '*', false if 'deny' is '*' and true if none of these matches
 			// This configuration below accepts everything in ftpspace and everything in webspace except php3 or php files
 		'fileExtensions' => array (
-			'webspace' => array('allow'=>'', 'deny'=>'php3,php'),
+			'webspace' => array('allow'=>'', 'deny'=>'php,php3,php4,php5'),
 			'ftpspace' => array('allow'=>'*', 'deny'=>'')
 		),
 		'customPermOptions' => array(),			// Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
-		'fileDenyPattern' => '\.php\.|\.php3\.',	// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. Matching with eregi() (case-insensitive).
+		'fileDenyPattern' => '\.php$|\.php.$',	// A regular expression that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. Matching with eregi() (case-insensitive).
 		'interfaces' => 'backend',					// This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")
 		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End|Administration Login on ###SITENAME###|(Note: Cookies and JavaScript must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt.
 		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs

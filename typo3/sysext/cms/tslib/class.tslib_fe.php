@@ -1412,7 +1412,7 @@
 					if(!ereg("^/", $theLogFile)) $theLogFile = PATH_site.$theLogFile;
 
 					if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'],'/'))	{
-						if(t3lib_div::isAllowedAbsPath($theLogFile) && @is_file($theLogFile) && @is_writeable($theLogFile))	{
+						if(t3lib_div::isAllowedAbsPath($theLogFile) && @is_file($theLogFile) && @is_writable($theLogFile))	{
 							$this->config['stat_vars']['logFile'] = $theLogFile;
 							$shortTitle = substr(ereg_replace('[^\.[:alnum:]_-]','_',$this->page['title']),0,30);
 							$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';

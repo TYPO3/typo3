@@ -188,8 +188,8 @@ class t3lib_install {
 		if (!$this->allowUpdateLocalConf)	{
 			die("->allowUpdateLocalConf flag in the install object is not set and therefore 'localconf.php' cannot be altered.");
 		}
-		if (!@is_writeable($writeToLocalconf_dat['file']))	{
-			die($writeToLocalconf_dat['file'].' is not writeable!');
+		if (!@is_writable($writeToLocalconf_dat['file']))	{
+			die($writeToLocalconf_dat['file'].' is not writable!');
 		}
 
 				// Splitting localconf.php file into lines:

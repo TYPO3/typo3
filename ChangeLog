@@ -1,3 +1,11 @@
+2004-09-19  Michael Stucki  <mundaun@gmx.ch>
+
+	* Replaced all (comments AND code!) occurences of "writeable" with "writable"
+	* Fixed bug #0000171: Displaying wrong filepermissions in filelist module
+	* Fixed bug #0000261: fileDenyPattern default does not include ".php4"
+	* Fixed bug #0000298: Browser client Konqueror not recognized
+	* Fixed bug #0000362: Changed field length of sys_log[IP] to 39 (IPv6 related, patch by Sven Wilhelm)
+
 2004-09-19  Ingmar Schlecht  <ingmars@web.de>
 
 	* Fixed bug #0000248: Highlighting color of BE module is now the same as highlighting color in the page tree
