@@ -27,15 +27,8 @@ if (TYPO3_MODE=='BE')	{
 // ******************************************************************
 
 if (TYPO3_MODE=='BE')	{
-	// Setting ICON_TYPES
-	$ICON_TYPES = Array(
-		'shop' => Array('icon' => 'modules_shop.gif'),
-		'board' => Array('icon' => 'modules_board.gif'),
-		'news' => Array('icon' => 'modules_news.gif'),
-		'dmail' => Array('icon' => 'modules_dmail.gif'),
-		'fe_users' => Array('icon' => 'modules_fe_users.gif'),
-		'approve' => Array('icon' => 'modules_approvals.gif')
-	);
+	// Setting ICON_TYPES (obsolete by the removal of the plugin_mgm extension)
+	$ICON_TYPES = Array();
 }
 
 	// Adding pages_types:

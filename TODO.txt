@@ -1,6 +1,10 @@
-******************
-TODO LIST
-*****************
+*******************************************
+TODO LIST for the Core of TYPO3.
+
+Maintained by Kasper
+Do not modify without permission!
+*******************************************
+
 
 General:
 - CHECK: What is the number of supported page levels? 20 or 100?
@@ -170,6 +174,7 @@ Localization:
 
 Context Sensitive Help (CSH):
 - Add multimedia?
+- Special Glossary Support?
 
 WEB main module/page tree:
 - Option: For a frameset module, register the ID per sub-module, not just globally (see JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F1F67AB@Soulman.hanno-kirchhoff.de>)
@@ -296,6 +301,7 @@ Cleaning for 3.6 involves:
 Status 27/10 (TYPO3 Core + extensions "cms" and "lang" in sysext/ (but without global extensions in ext/ !)):
 - 2000 @param and @return tags in 800 functions still needs commenting (3800 tags in 1400 functions has already been done)
 - 50 scripts still needs cleaning for XHTML, comments and single-quotes
+
 
 Note on XHTML compliance:
 - We strive for XHTML transitional / frames
@@ -477,78 +483,44 @@ XQCR: layout/db_new_content_el.php
 
 
 typo3/sysext/___________________________________________:
+OK		aboutmodules/
+		belog			(2 / 500)
+			- Needs a vision! Couldn't the Log be more useful?
+		beuser			(1 / 1300)
+			- Add option to Create backend users there! (backend users, groups, filemounts)
 OK		cms/
-OK		lang/
-OK		setup/
+OK		context_help/
+		css_styled_content		(1/200)		[H]
+			- Manual written?
+XQCR:	extra_page_cm_options/
 XQCR:	func_wizards/
+		impexp				(2/2000)
+			- Extend support and finish it with the efforts soon to be done for "DBint" (lowlevel) and TCEmain
+		indexed_search		(4/3500)
+			- Templates?
+			- Speedoptimizations?
+			- Kasper has some objections regarding complex code parts.
+XQCR	info_pagetsconfig/
+		install/					[ingmar]
+			- Clean-up of the Install Tool in general!
+OK		lang/
+		lowlevel			(2/800)
+			- Extend support and finish it with the efforts soon to be done for TCEmain.
+OK		setup/
+?		sv/							[Rene]
+		sys_action			(1/400)
+			- Extend with API for adding custom action scripts
+			- flexforms for configuration!
+OK		sys_note
+		taskcenter			(4/400)	[Julle]
+OK		tsconfig_help
+			- Needs maintenance plan
+		version				[Kasper]
+			- (See Kaspers personal todo and Appendix about versioning in this document)
+		viewpage			(2/200)
 XQRC:	wizard_crpages/
 XQRC:	wizard_sortpages/
-XQCR:	extra_page_cm_options/
-OK		aboutmodules/
-			install/					[ingmar]
-XQCR	info_pagetsconfig/
-OK		context_help/
-			sv/							[Rene]
 
-typo3/ext/_____________________________________:
-		belog/		(2 / 500)
-		beuser/		(1 / 1300)
-		cms_plaintext_import/	(1/200)
-OK		conf_userts/
-		css_styled_content/		(1/200)		[H]
-		direct_mail/		(3/2500)		[Jan-Erik] + class.t3lib_htmlmail.php
-OK		direct_mail_subscription/
-		extrep_wizard/		(2/4500)		[H]
-		feuser_admin/						[testsite...] - XHTML
-		freesite/			(2/1600)
-		imagelist/			(1/250)
-		impexp/				(2/2000)		[H]
-		indexed_search/		(4/3500)		[H] [testsite...]
-		lowlevel/			(2/800)			[H]
-XQ-R:	metatags/
-		phpmyadmin/			(1/130)
-		plugin_mgm/			(1/300) 	->move? remove?
-		quickhelp/			(1/80)
-		rte/				(5/1900)		[H]
-OK		rte_conf/
-OK		setoldpluginlist/
-OK		skin1/
-OK		static_file_edit/
-		sys_action/			(1/400)
-		sys_messages/		(1/450)
-OK		sys_note/
-		sys_notepad/		(1/130)
-OK		sys_stat/
-		sys_todos/			(1/1100)
-OK		sys_workflows/
-		taskcenter/			(4/400)
-		taskcenter_modules/		(1/100)
-		taskcenter_recent/		(1/150)
-		taskcenter_rootlist/	(1/50)
-		tipafriend/				(1/260)		[testsite...]
-OK		tsconfig_help/
-OK		ts_language_de/
-OK		ts_language_dk/
-OK		ts_language_fr/
-OK		ts_language_nl/
-OK		ts_language_no/
-		tstemplate/				(1/450)		+ class.t3lib_tsparser_ext.php (1700)
-		tstemplate_analyzer/	(1/250)
-		tstemplate_ceditor/		(1/250)
-		tstemplate_info/		(1/450)
-		tstemplate_objbrowser/	(1/500)
-		tstemplate_styler/		(1/1700)
-OK		tt_address/
-		tt_board/				(3/1200)
-		tt_calender/			(1/170)		[testsite...]
-		tt_guest/				(2/350)		[testsite...]
-		tt_news/				(1/750)		[testsite...]
-		tt_poll/				(2/400)		[testsite...], [Rene F]
-		tt_products/			(5/2000)	[testsite...], [? Peter Kuehn]
-		tt_rating/				(3/550)		[testsite...], [Rene F]
-		viewpage/				(2/200)
-
-32,5 K Codes lines....
 
 For all extensions (even those approved):
 - Remember to add package tags to all classes!
