@@ -1,3 +1,7 @@
+2004-09-14  Ingmar Schlecht  <ingmars@web.de>
+
+	* Fixed bug #0000111: Install tool now allows for database name, password and username to contain any kind of chars (not limited to alphanumerical any more).
+ 
 2004-09-14  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...

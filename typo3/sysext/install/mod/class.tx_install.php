@@ -2001,14 +2001,14 @@ From sub-directory:
 #debug($this->INSTALL);
 					if (trim($this->INSTALL["localconf.php"]["NEW_DATABASE_NAME"]))	{
 						$newdbname=trim($this->INSTALL["localconf.php"]["NEW_DATABASE_NAME"]);
-						if (!ereg("[^[:alnum:]_]",$newdbname))	{
+						if (!ereg("[^[:alnum:]_-]",$newdbname))	{
 							if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 								if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE '.$newdbname)) {
 									$this->INSTALL["localconf.php"]["typo_db"] = $newdbname;
 									$this->messages[]= "Database '".$newdbname."' created";
 								} else $this->messages[]= $errorMessages[] = "Could not create database '".$newdbname."' (...not created)";
 							} else $this->messages[]= $errorMessages[] = "Could not connect to database when creating database '".$newdbname."' (...not created)";
-						} else $this->messages[]= $errorMessages[] = "The NEW database name '".$newdbname."' was not alphanumeric, a-zA-Z0-9_ (...not created)";
+						} else $this->messages[]= $errorMessages[] = "The NEW database name '".$newdbname."' was not alphanumeric, a-zA-Z0-9_- (...not created)";
 					}
 #debug($this->messages)		;
 						// Parsing values
@@ -2016,14 +2016,14 @@ From sub-directory:
 					while(list($key,$value)=each($this->INSTALL["localconf.php"]))		{
 						switch((string)$key)	{
 							case "typo_db_username":
-								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
-									if (strcmp(TYPO3_db_username,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_username', $value);
-								} else $this->messages[]= $errorMessages[] = "Username '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
+								if (strlen($value)<50)	{
+									if (strcmp(TYPO3_db_username,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_username', trim($value));
+								} else $this->messages[]= $errorMessages[] = "Username '".$value."' was longer than 50 chars (...not saved)";
 							break;
 							case "typo_db_password":
-								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
-									if (strcmp(TYPO3_db_password,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_password', $value);
-								} else $this->messages[]= $errorMessages[] = "Password '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
+								if (strlen($value)<50)	{
+									if (strcmp(TYPO3_db_password,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_password',  trim($value));
+								} else $this->messages[]= $errorMessages[] = "Password '".$value."' was longer than 50 chars (...not saved)";
 							break;
 							case "typo_db_host":
 								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
@@ -2031,9 +2031,9 @@ From sub-directory:
 								} else $this->messages[]= $errorMessages[] = "Host '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
 							break;
 							case "typo_db":
-								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
-									if (strcmp(TYPO3_db,$value))		$this->setValueInLocalconfFile($lines, '$typo_db', $value);
-								} else $this->messages[]= $errorMessages[] = "Database '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
+								if (strlen($value)<50)	{
+									if (strcmp(TYPO3_db,$value))		$this->setValueInLocalconfFile($lines, '$typo_db',  trim($value));
+								} else $this->messages[]= $errorMessages[] = "Database name '".$value."' was longer than 50 chars (...not saved)";
 							break;
 							case "disable_exec_function":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["BE"]["disable_exec_function"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["BE"]["disable_exec_function"]', $value?1:0);
