@@ -525,6 +525,46 @@ class t3lib_BEfunc	{
 	}
 
 	/**
+	 * Opens the page tree to the specified page id
+	 *
+	 * @param	integer		Page id.
+	 * @param	boolean		If set, then other open branches are closed.
+	 * @return	void
+	 */
+	function openPageTree($pid,$clearExpansion)	{
+		global $BE_USER;
+
+			// Get current expansion data:
+		if ($clearExpansion)	{
+			$expandedPages = array();
+		} else {
+			$expandedPages = unserialize($BE_USER->uc['browseTrees']['browsePages']);
+		}
+
+			// Get rootline:
+		$rL = t3lib_BEfunc::BEgetRootLine($pid);
+
+			// First, find out what mount index to use (if more than one DB mount exists):
+		$mountIndex = 0;
+		$mountKeys = array_flip($BE_USER->returnWebmounts());
+		foreach($rL as $rLDat)	{
+			if (isset($mountKeys[$rLDat['uid']]))	{
+				$mountIndex = $mountKeys[$rLDat['uid']];
+				break;
+			}
+		}
+
+			// Traverse rootline and open paths:
+		foreach($rL as $rLDat)	{
+			$expandedPages[$mountIndex][$rLDat['uid']] = 1;
+		}
+
+			// Write back:
+		$BE_USER->uc['browseTrees']['browsePages'] = serialize($expandedPages);
+		$BE_USER->writeUC();
+	}
+
+	/**
 	 * Returns the path (visually) of a page $uid, fx. "/First page/Second page/Another subpage"
 	 * Each part of the path will be limited to $titleLimit characters
 	 * Deleted pages are filtered out.

@@ -103,6 +103,7 @@ class SC_alt_shortcut {
 
 	var $editLoaded;		// Flag for defining whether we are editing
 	var $editError;			// Can contain edit error message
+	var $editPath;			// Set to the record path of the record being edited.
 	var $editSC_rec;		// Holds the shortcut record when editing
 	var $theEditRec;		// Page record to be edited
 	var $editPage;			// Page alias or id to be edited
@@ -199,10 +200,6 @@ class SC_alt_shortcut {
 	function init()	{
 		global $BACK_PATH;
 
-			// If another page module was specified, replace the default Page module with the new one
-		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
-		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
-
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="alt_shortcut.php" name="shForm" method="post">';
@@ -224,16 +221,6 @@ class SC_alt_shortcut {
 			}
 			function submitEditPage(id)	{	//
 				document.location="alt_shortcut.php?editPage="+top.rawurlencode(id);
-			}
-			function loadEditId(id)	{	//
-				top.fsMod.recentIds["web"]=id;
-				top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_0";		// For highlighting
-
-				if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
-					top.content.nav_frame.refresh_nav();
-				}
-
-				top.goToModule("'.$pageModule.'");
 			}
 			');
 		$this->content.=$this->doc->startPage('Shortcut frame');
@@ -313,7 +300,7 @@ class SC_alt_shortcut {
 		if (!$this->editLoaded && t3lib_extMgm::isLoaded('cms'))	{
 				$editIdCode = '<td nowrap="nowrap">'.$LANG->getLL('shortcut_editID',1).': <input type="text" value="'.($this->editError?htmlspecialchars($this->editPage):'').'" name="editPage"'.$this->doc->formWidth(5).' onchange="submitEditPage(this.value);" />'.
 					($this->editError?'&nbsp;<strong><span class="typo3-red">'.htmlspecialchars($this->editError).'</span></strong>':'').
-					(is_array($this->theEditRec)?'&nbsp;<strong>'.$LANG->getLL('shortcut_loadEdit',1).' \''.t3lib_BEfunc::getRecordTitle('pages',$this->theEditRec,1).'\'</strong>':'').
+					(is_array($this->theEditRec)?'&nbsp;<strong>'.$LANG->getLL('shortcut_loadEdit',1).' \''.t3lib_BEfunc::getRecordTitle('pages',$this->theEditRec,1).'\'</strong> ('.htmlspecialchars($this->editPath).')':'').
 					'</td>';
 		} else $editIdCode='';
 
@@ -333,7 +320,7 @@ class SC_alt_shortcut {
 			';
 
 		if ($this->theEditRec['uid'])	{
-			$this->content.=$this->doc->wrapScriptTags('loadEditId('.$this->theEditRec['uid'].');');
+			$this->content.=$this->doc->wrapScriptTags('top.loadEditId('.$this->theEditRec['uid'].');');
 		}
 	}
 
@@ -410,10 +397,10 @@ class SC_alt_shortcut {
 
 			// EDIT page:
 		$this->editPage = trim(strtolower($this->editPage));
-		$this->editError='';
-		$this->theEditRec='';
+		$this->editError = '';
+		$this->theEditRec = '';
 		if ($this->editPage)	{
-			$where=' AND ('.$BE_USER->getPagePermsClause(2).' OR '.$BE_USER->getPagePermsClause(16).')';
+			$where = ' AND ('.$BE_USER->getPagePermsClause(2).' OR '.$BE_USER->getPagePermsClause(16).')';
 			if (t3lib_div::testInt($this->editPage))	{
 				$this->theEditRec = t3lib_BEfunc::getRecord ('pages',$this->editPage,'*',$where);
 			} else {
@@ -426,17 +413,16 @@ class SC_alt_shortcut {
 			if (!is_array($this->theEditRec) || !$BE_USER->isInWebMount($this->theEditRec['uid']))	{
 				unset($this->theEditRec);
 				$this->editError=$LANG->getLL('shortcut_notEditable');
-			} elseif(!$BE_USER->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree')) {
-				$expandedPages=unserialize($BE_USER->uc['browseTrees']['browsePages']);
-				if (!$BE_USER->getTSConfigVal('options.shortcut_onEditId_keepExistingExpanded'))	$expandedPages=array();
-				$rL=t3lib_BEfunc::BEgetRootLine($this->theEditRec['pid']);
-				reset($rL);
-				while(list(,$rLDat)=each($rL))	{
-					$expandedPages[0][$rLDat['uid']]=1;
-		//			debug($rLDat['uid']);
+			} else {
+					// Visual path set:
+				$perms_clause = $BE_USER->getPagePermsClause(1);
+				$this->editPath = t3lib_BEfunc::getRecordPath($this->theEditRec['pid'], $perms_clause, 30);
+
+				if(!$BE_USER->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree')) {
+
+						// Expanding page tree:
+					t3lib_BEfunc::openPageTree($this->theEditRec['pid'],!$BE_USER->getTSConfigVal('options.shortcut_onEditId_keepExistingExpanded'));
 				}
-				$BE_USER->uc['browseTrees']['browsePages'] = serialize($expandedPages);
-				$BE_USER->writeUC();
 			}
 		}
 	}

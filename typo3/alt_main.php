@@ -26,6 +26,7 @@
 ***************************************************************/
 /**
  * Main frameset of the TYPO3 backend
+ * Sending the GET var "alt_main.php?edit=[page id]" will load the page id in the editing module configured.
  *
  * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
@@ -54,7 +55,7 @@ require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
-
+include ('sysext/lang/locallang_misc.php');
 
 
 /**
@@ -108,11 +109,15 @@ class SC_alt_main {
 	function generateJScode()	{
 		global $BE_USER,$LANG;
 
-		$pt3=t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
+		$pt3 = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 		$goToModule_switch = $this->alt_menuObj->topMenu($this->loadModules->modules,0,"",4);
 		$fsMod = implode(chr(10),$this->alt_menuObj->fsMod);
 
-		$this->mainJScode='
+			// If another page module was specified, replace the default Page module with the new one
+		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
+		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+
+		$this->mainJScode = '
 	/**
 	 * Function similar to PHPs  rawurlencode();
 	 */
@@ -226,6 +231,20 @@ class SC_alt_main {
 	}
 
 	/**
+	 * Loads a page id for editing in the page edit module:
+	 */
+	function loadEditId(id)	{	//
+		top.fsMod.recentIds["web"]=id;
+		top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_0";		// For highlighting
+
+		if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
+			top.content.nav_frame.refresh_nav();
+		}
+
+		top.goToModule("'.$pageModule.'");
+	}
+
+	/**
 	 * Returns incoming URL (to a module) unless nextLoadModuleUrl is set. If that is the case nextLoadModuleUrl is returned (and cleared)
 	 * Used by the shortcut frame to set a "intermediate URL"
 	 */
@@ -294,7 +313,62 @@ class SC_alt_main {
 		// Used by Frameset Modules
 	var condensedMode = '.($BE_USER->uc['condensedMode']?1:0).';
 	var currentSubScript = "";
+
 		';
+
+			// Check editing of page:
+		$this->editPageHandling();
+	}
+
+	/**
+	 * Checking if the "&edit" variable was sent so we can open for editing the page.
+	 * Code based on code from "alt_shortcut.php"
+	 *
+	 * @return void
+	 */
+	function editPageHandling()	{
+		global $BE_USER;
+
+		if (!t3lib_extMgm::isLoaded('cms'))	return;
+
+			// EDIT page:
+		$editId = ereg_replace('[^[:alnum:]_]','',t3lib_div::_GET('edit'));
+		$theEditRec = '';
+
+		if ($editId)	{
+
+				// Looking up the page to edit, checking permissions:
+			$where = ' AND ('.$BE_USER->getPagePermsClause(2).' OR '.$BE_USER->getPagePermsClause(16).')';
+			if (t3lib_div::testInt($editId))	{
+				$theEditRec = t3lib_BEfunc::getRecord('pages',$editId,'*',$where);
+			} else {
+				$records = t3lib_BEfunc::getRecordsByField('pages','alias',$editId,$where);
+				if (is_array($records))	{
+					reset($records);
+					$theEditRec = current($records);
+				}
+			}
+
+				// If the page was accessible, then let the user edit it.
+			if (is_array($theEditRec) && $BE_USER->isInWebMount($theEditRec['uid']))	{
+					// Setting JS code to open editing:
+				$this->mainJScode.='
+		// Load page to edit:
+	window.setTimeout("top.loadEditId('.intval($theEditRec['uid']).');",500);
+			';
+					// Checking page edit parameter:
+				if(!$BE_USER->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree')) {
+
+						// Expanding page tree:
+					t3lib_BEfunc::openPageTree(intval($theEditRec['pid']),!$BE_USER->getTSConfigVal('options.shortcut_onEditId_keepExistingExpanded'));
+				}
+			} else {
+				$this->mainJScode.='
+		// Warning about page editing:
+	alert('.$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('noEditPage'),$editId)).');
+			';
+			}
+		}
 	}
 
 	/**

@@ -40,6 +40,7 @@ $LOCAL_LANG = Array (
 		'CM_newWizard' => '\'Create New\' wizard',
 		'CM_editPageHeader' => 'Edit page header',
 		'CM_db_list' => 'Web>List module',
+		'noEditPage' => 'You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.',
 	),
 	'dk' => Array (
 		'shortcut_edit' => 'Rediger',

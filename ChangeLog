@@ -1,3 +1,7 @@
+2004-04-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added possibility of jumping directly to editing a page in the backend. You specify "alt_main.php?edit=[page id]" and you will be brought directly to the page edit module.
+
 2004-04-22  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added in RTE link box: Searched *into* Content ELements of type Text and Text w/Image after anchors (<a name="...">) and lists them as well with content elements to which an anchor link can be made.

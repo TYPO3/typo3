@@ -122,7 +122,6 @@ TCEforms:
 		  - Group-fields of DB-type could be made to actually SHOW the records it contains in the very same form! Possibly with Add/Delete facilities.
 		  - See JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F23E410@Soulman.hanno-kirchhoff.de>
 		- IFRAME alternative for Element Browser.
-		- Like in CB: Copy image/reference from a record to clipboard, then insert that file/reference in another record again (Element Browser change).
 		- set the width of the selector field(s)
 	- INPUT type:
 		- having a selectorbox from which a default value can be selected (which is just transferred to the input field). Of course the selectorbox can have its content added by a PHP script.
@@ -207,6 +206,7 @@ Web>List:
 
 File>List:
 - BUG: UNIX: "RW" flag looks only on the permissions for the USER - not the group. So even if PHP via the group of a file can delete it, it is reported that it cannot.
+- Adding possibility to show files recursively (more levels), filter on a file name, search file content
 
 History/Undo:
 - Must present a page/content element view, so a page with content elements can be restored as a whole
