@@ -96,7 +96,10 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 */
 	function dmailer_prepare($row)	{
 		$sys_dmail_uid = $row['uid'];
-		$this->useBase64();
+		print "TEST: ".$row["encoding"]."<br />";
+		if($row["encoding"] == "base64") {			  
+		  $this->useBase64();
+		}
 		$this->theParts = unserialize($row['mailContent']);
 		$this->messageid = $this->theParts['messageid'];
 		$this->subject = $row['subject'];
@@ -214,6 +217,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 * @return	[type]		...
 	 */
 	function dmailer_sendSimple($addressList)	{
+	        $this->useBase64();
 		if ($this->theParts['html']['content'])		{
 			$this->theParts['html']['content'] = $this->encodeMsg($this->dmailer_getBoundaryParts($this->dmailer['boundaryParts_html'],-1));
 		} else $this->theParts['html']['content'] = '';
