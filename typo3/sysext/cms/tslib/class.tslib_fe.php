@@ -1991,13 +1991,16 @@
 					$INTiS_cObj->INT_include=1;
 					switch($INTiS_config[$INTiS_key]['type'])	{
 						case 'SCRIPT':
-							$incContent=$INTiS_cObj->PHP_SCRIPT($INTiS_config[$INTiS_key]['conf']);
+							$incContent = $INTiS_cObj->PHP_SCRIPT($INTiS_config[$INTiS_key]['conf']);
 						break;
 						case 'COA':
-							$incContent=$INTiS_cObj->COBJ_ARRAY($INTiS_config[$INTiS_key]['conf']);
+							$incContent = $INTiS_cObj->COBJ_ARRAY($INTiS_config[$INTiS_key]['conf']);
 						break;
 						case 'FUNC':
-							$incContent=$INTiS_cObj->USER($INTiS_config[$INTiS_key]['conf']);
+							$incContent = $INTiS_cObj->USER($INTiS_config[$INTiS_key]['conf']);
+						break;
+						case 'POSTUSERFUNC':
+							$incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
 						break;
 					}
 				}

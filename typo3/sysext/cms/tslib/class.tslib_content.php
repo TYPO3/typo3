@@ -648,10 +648,10 @@ class tslib_cObj {
 				$substKey = $ext.'_SCRIPT.'.$GLOBALS['TSFE']->uniqueHash();
 				$content.='<!--'.$substKey.'-->';
 				$GLOBALS['TSFE']->config[$ext.'incScript'][$substKey] = array(
-					'file'=>$incFile, 
-					'conf'=>$conf,
-					'cObj'=>serialize($this),
-					'type'=>'FUNC'
+					'file' => $incFile,
+					'conf' => $conf,
+					'cObj' => serialize($this),
+					'type' => 'FUNC'
 				);
 			break;
 			default:
@@ -2944,7 +2944,17 @@ class tslib_cObj {
 					if ($conf['offsetWrap.']['stdWrap.'])	{	$content=$this->stdWrap($content,$conf['offsetWrap.']['stdWrap.']);	}
 				}
 				if ($conf['postUserFunc'])	{$content = $this->callUserFunction($conf['postUserFunc'], $conf['postUserFunc.'], $content);}
-				
+				if ($conf['postUserFuncInt'])	{
+					$substKey = 'INT_SCRIPT.'.$GLOBALS['TSFE']->uniqueHash();
+					$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
+						'content' => $content,
+						'postUserFunc' => $conf['postUserFuncInt'],
+						'conf' => $conf['postUserFuncInt.'],
+						'type' => 'POSTUSERFUNC',
+						'cObj' => serialize($this),
+					);
+					$content ='<!--'.$substKey.'-->';
+				}
 					// Various:
 				if ($conf['prefixComment'] && !$GLOBALS['TSFE']->config['config']['disablePrefixComment'])	{$content = $this->prefixComment($conf['prefixComment'], $conf['prefixComment.'], $content);}
 
