@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2003-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -35,13 +35,13 @@
  *
  *
  *  136: class t3lib_cs
- *  502:     function parse_charset($charset)
- *  521:     function get_locale_charset($locale)
+ *  503:     function parse_charset($charset)
+ *  522:     function get_locale_charset($locale)
  *
  *              SECTION: Charset Conversion functions
- *  574:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
- *  614:     function convArray(&$array,$fromCS,$toCS,$useEntityForNoChar=0)
- *  631:     function utf8_encode($str,$charset)
+ *  575:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
+ *  615:     function convArray(&$array,$fromCS,$toCS,$useEntityForNoChar=0)
+ *  632:     function utf8_encode($str,$charset)
  *  678:     function utf8_decode($str,$charset,$useEntityForNoChar=0)
  *  721:     function utf8_to_entities($str)
  *  754:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)

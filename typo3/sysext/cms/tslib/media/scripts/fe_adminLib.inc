@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -62,27 +62,27 @@
  * 1101:     function procesSetFixed()
  *
  *              SECTION: Template processing functions
- * 1188:     function removeRequired($templateCode,$failure)
- * 1206:     function getPlainTemplate($key,$r='')
- * 1223:     function modifyDataArrForFormUpdate($inputArr)
- * 1292:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')
+ * 1190:     function removeRequired($templateCode,$failure)
+ * 1208:     function getPlainTemplate($key,$r='')
+ * 1225:     function modifyDataArrForFormUpdate($inputArr)
+ * 1294:     function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')
  *
  *              SECTION: Emailing
- * 1354:     function sendInfoMail()
- * 1402:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())
- * 1448:     function sendMail($recipient, $admin, $content='', $adminContent='')
- * 1493:     function isHTMLContent($c)
- * 1514:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')
+ * 1356:     function sendInfoMail()
+ * 1404:     function compileMail($key, $DBrows, $recipient, $setFixedConfig=array())
+ * 1450:     function sendMail($recipient, $admin, $content='', $adminContent='')
+ * 1495:     function isHTMLContent($c)
+ * 1516:     function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')
  *
  *              SECTION: Various helper functions
- * 1598:     function aCAuth($r)
- * 1612:     function authCode($r,$extra='')
- * 1638:     function setfixed($markerArray, $setfixed, $r)
- * 1676:     function setfixedHash($recCopy,$fields='')
- * 1697:     function isPreview()
- * 1706:     function createFileFuncObj()
- * 1717:     function clearCacheIfSet()
- * 1732:     function getFailure($theField, $theCmd, $label)
+ * 1600:     function aCAuth($r)
+ * 1614:     function authCode($r,$extra='')
+ * 1640:     function setfixed($markerArray, $setfixed, $r)
+ * 1678:     function setfixedHash($recCopy,$fields='')
+ * 1699:     function isPreview()
+ * 1708:     function createFileFuncObj()
+ * 1719:     function clearCacheIfSet()
+ * 1734:     function getFailure($theField, $theCmd, $label)
  *
  * TOTAL FUNCTIONS: 33
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -2,18 +2,27 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. TYPO3 is free software;
-*  You can redistribute it and/or modify it under the terms of the
-*  TYPO3 License as published from the www.typo3.com website.
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
 *
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
 *
-*  This copyright notice MUST APPEAR in all copies of this script
+*  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
  * Contains the TYPO3 Backend Language class
@@ -28,20 +37,20 @@
  *
  *
  *
- *   80: class language
- *  128:     function init($lang,$altPath='')
- *  173:     function addModuleLabels($arr,$prefix)
- *  199:     function hscAndCharConv($lStr,$hsc)
- *  214:     function makeEntities($str)
- *  231:     function JScharCode($str)
- *  250:     function getLL($index,$hsc=0)
- *  267:     function getLLL($index,$LOCAL_LANG,$hsc=0)
- *  287:     function sL($input,$hsc=0)
- *  331:     function loadSingleTableDescription($table)
- *  383:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)
- *  428:     function readLLfile($fileRef)
- *  449:     function readLLXMLfile($fileRef,$langKey)
- *  548:     function localizedFileRef($fileRef)
+ *   89: class language
+ *  137:     function init($lang,$altPath='')
+ *  182:     function addModuleLabels($arr,$prefix)
+ *  208:     function hscAndCharConv($lStr,$hsc)
+ *  223:     function makeEntities($str)
+ *  240:     function JScharCode($str)
+ *  259:     function getLL($index,$hsc=0)
+ *  276:     function getLLL($index,$LOCAL_LANG,$hsc=0)
+ *  296:     function sL($input,$hsc=0)
+ *  340:     function loadSingleTableDescription($table)
+ *  392:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)
+ *  437:     function readLLfile($fileRef)
+ *  458:     function readLLXMLfile($fileRef,$langKey)
+ *  559:     function localizedFileRef($fileRef)
  *
  * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")

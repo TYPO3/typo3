@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,18 +41,18 @@
  *
  *
  *   88: class tslib_search
- *  130:     function register_tables_and_columns($requestedCols,$allowedCols)
- *  171:     function explodeCols($in)
- *  196:     function register_and_explode_search_string($sword)
- *  229:     function split($origSword, $specchars='+-', $delchars='+.,-')
- *  272:     function quotemeta($str)
- *  288:     function build_search_query($endClause)
- *  374:     function build_search_query_for_searchwords()
- *  416:     function get_operator($operator)
- *  439:     function count_query()
- *  452:     function execute_query()
- *  465:     function get_searchwords()
- *  480:     function get_searchwordsArray()
+ *  127:     function register_tables_and_columns($requestedCols,$allowedCols)
+ *  168:     function explodeCols($in)
+ *  193:     function register_and_explode_search_string($sword)
+ *  226:     function split($origSword, $specchars='+-', $delchars='+.,-')
+ *  269:     function quotemeta($str)
+ *  285:     function build_search_query($endClause)
+ *  371:     function build_search_query_for_searchwords()
+ *  413:     function get_operator($operator)
+ *  436:     function count_query()
+ *  449:     function execute_query()
+ *  462:     function get_searchwords()
+ *  477:     function get_searchwordsArray()
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")

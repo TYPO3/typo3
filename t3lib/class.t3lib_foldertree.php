@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,18 +38,19 @@
  *
  *
  *
- *   81: class t3lib_folderTree extends t3lib_treeView
- *   88:     function t3lib_folderTree()
- *  106:     function wrapIcon($icon,$row)
- *  126:     function getId($v)
- *  136:     function getJumpToParam($v)
- *  148:     function getTitleStr($row,$titleLen=30)
- *  158:     function getBrowsableTree()
- *  221:     function getFolderTree($files_path, $depth=999, $depthData='')
- *  301:     function getCount($files_path)
- *  317:     function initializePositionSaving()
+ *   82: class t3lib_folderTree extends t3lib_treeView
+ *   89:     function t3lib_folderTree()
+ *  107:     function wrapIcon($icon,$row)
+ *  130:     function wrapTitle($title,$row,$bank=0)
+ *  145:     function getId($v)
+ *  155:     function getJumpToParam($v)
+ *  167:     function getTitleStr($row,$titleLen=30)
+ *  177:     function getBrowsableTree()
+ *  240:     function getFolderTree($files_path, $depth=999, $depthData='')
+ *  320:     function getCount($files_path)
+ *  336:     function initializePositionSaving()
  *
- * TOTAL FUNCTIONS: 9
+ * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

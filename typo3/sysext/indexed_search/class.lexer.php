@@ -36,15 +36,15 @@
  *
  *
  *   73: class tx_indexedsearch_lexer
- *  104:     function tx_indexedsearch_lexer()
- *  115:     function split2Words($wordString)
+ *  105:     function tx_indexedsearch_lexer()
+ *  116:     function split2Words($wordString)
  *
  *              SECTION: Helper functions
  *  178:     function addWords(&$words, &$wordString, $start, $len)
  *  239:     function get_word(&$str, $pos=0)
  *  264:     function utf8_is_letter(&$str, &$len, $pos=0)
- *  328:     function charType($cp)
- *  371:     function utf8_ord(&$str, &$len, $pos=0, $hex=false)
+ *  329:     function charType($cp)
+ *  383:     function utf8_ord(&$str, &$len, $pos=0, $hex=false)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,26 +38,26 @@
  *
  *
  *   89: class t3lib_userAuth
- *  159:     function start()
- *  261:     function check_authentication()
- *  413:     function redirect()
- *  426:     function logoff()
- *  441:     function gc()
- *  455:     function user_where_clause()
- *  469:     function ipLockClause()
- *  487:     function ipLockClause_remoteIPNumber($parts)
- *  508:     function hashLockClause()
- *  519:     function hashLockClause_getHashInt()
- *  535:     function writeUC($variable='')
- *  558:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
- *  567:     function checkLogFailures()
- *  576:     function unpack_uc($theUC='')
- *  592:     function pushModuleData($module,$data,$noSave=0)
- *  605:     function getModuleData($module,$type='')
- *  618:     function getSessionData($key)
- *  631:     function setAndSaveSessionData($key,$data)
- *  650:     function setBeUserByUid($uid)
- *  663:     function setBeUserByName($name)
+ *  160:     function start()
+ *  262:     function check_authentication()
+ *  423:     function redirect()
+ *  436:     function logoff()
+ *  451:     function gc()
+ *  465:     function user_where_clause()
+ *  479:     function ipLockClause()
+ *  497:     function ipLockClause_remoteIPNumber($parts)
+ *  518:     function hashLockClause()
+ *  529:     function hashLockClause_getHashInt()
+ *  545:     function writeUC($variable='')
+ *  568:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
+ *  577:     function checkLogFailures()
+ *  586:     function unpack_uc($theUC='')
+ *  602:     function pushModuleData($module,$data,$noSave=0)
+ *  615:     function getModuleData($module,$type='')
+ *  628:     function getSessionData($key)
+ *  641:     function setAndSaveSessionData($key,$data)
+ *  660:     function setBeUserByUid($uid)
+ *  673:     function setBeUserByName($name)
  *
  * TOTAL FUNCTIONS: 20
  * (This index is automatically created/updated by the extension "extdeveval")

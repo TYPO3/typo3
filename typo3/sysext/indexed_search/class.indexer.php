@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,88 +35,91 @@
  *
  *
  *
- *  135: class tx_indexedsearch_indexer
- *  198:     function hook_indexContent(&$pObj)
+ *  138: class tx_indexedsearch_indexer
+ *  204:     function hook_indexContent(&$pObj)
  *
  *              SECTION: Backend API
- *  283:     function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array=array(), $createCHash=FALSE)
- *  320:     function backend_setFreeIndexUid($freeIndexUid)
- *  337:     function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate=0, $recordUid=0)
+ *  303:     function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array=array(), $createCHash=FALSE)
+ *  340:     function backend_setFreeIndexUid($freeIndexUid)
+ *  357:     function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate=0, $recordUid=0)
  *
  *              SECTION: Initialization
- *  388:     function init()
- *  439:     function initializeExternalParsers()
+ *  408:     function init()
+ *  459:     function initializeExternalParsers()
  *
  *              SECTION: Indexing; TYPO3 pages (HTML content)
- *  480:     function indexTypo3PageContent()
- *  564:     function splitHTMLContent($content)
- *  610:     function getHTMLcharset($content)
- *  625:     function convertHTMLToUtf8($content,$charset='')
- *  653:     function embracingTags($string,$tagName,&$tagContent,&$stringAfter,&$paramList)
- *  680:     function typoSearchTags(&$body)
- *  709:     function extractLinks($content)
- *  752:     function extractHyperLinks($string)
+ *  500:     function indexTypo3PageContent()
+ *  586:     function splitHTMLContent($content)
+ *  632:     function getHTMLcharset($content)
+ *  647:     function convertHTMLToUtf8($content,$charset='')
+ *  675:     function embracingTags($string,$tagName,&$tagContent,&$stringAfter,&$paramList)
+ *  702:     function typoSearchTags(&$body)
+ *  731:     function extractLinks($content)
+ *  774:     function extractHyperLinks($string)
  *
  *              SECTION: Indexing; external URL
- *  804:     function indexExternalUrl($externalUrl)
- *  835:     function getUrlHeaders($url, $timeout = 2)
+ *  826:     function indexExternalUrl($externalUrl)
+ *  857:     function getUrlHeaders($url, $timeout = 2)
  *
  *              SECTION: Indexing; external files (PDF, DOC, etc)
- *  895:     function indexRegularDocument($file, $force=FALSE, $contentTmpFile='', $altExtension='')
- * 1001:     function readFileContent($ext,$absFile,$cPKey)
- * 1018:     function fileContentParts($ext,$absFile)
- * 1036:     function splitRegularContent($content)
+ *  917:     function indexRegularDocument($file, $force=FALSE, $contentTmpFile='', $altExtension='')
+ * 1023:     function readFileContent($ext,$absFile,$cPKey)
+ * 1040:     function fileContentParts($ext,$absFile)
+ * 1058:     function splitRegularContent($content)
  *
  *              SECTION: Analysing content, Extracting words
- * 1069:     function charsetEntity2utf8(&$contentArr, $charset)
- * 1091:     function procesWordsInArrays($contentArr)
- * 1114:     function bodyDescription($contentArr)
- * 1135:     function indexAnalyze($content)
- * 1156:     function analyzeHeaderinfo(&$retArr,$content,$key,$offset)
- * 1175:     function analyzeBody(&$retArr,$content)
- * 1195:     function metaphone($word,$retRaw=FALSE)
+ * 1091:     function charsetEntity2utf8(&$contentArr, $charset)
+ * 1114:     function procesWordsInArrays($contentArr)
+ * 1137:     function bodyDescription($contentArr)
+ * 1159:     function indexAnalyze($content)
+ * 1180:     function analyzeHeaderinfo(&$retArr,$content,$key,$offset)
+ * 1199:     function analyzeBody(&$retArr,$content)
+ * 1219:     function metaphone($word,$retRaw=FALSE)
  *
  *              SECTION: SQL; TYPO3 Pages
- * 1237:     function submitPage()
- * 1306:     function submit_grlist($hash,$phash_x)
- * 1326:     function submit_section($hash,$hash_t3)
- * 1344:     function removeOldIndexedPages($phash)
+ * 1261:     function submitPage()
+ * 1330:     function submit_grlist($hash,$phash_x)
+ * 1350:     function submit_section($hash,$hash_t3)
+ * 1368:     function removeOldIndexedPages($phash)
  *
  *              SECTION: SQL; External media
- * 1387:     function submitFilePage($hash,$file,$subinfo,$ext,$mtime,$ctime,$size,$content_md5h,$contentParts)
- * 1449:     function submitFile_grlist($hash)
- * 1463:     function submitFile_section($hash)
- * 1477:     function removeOldIndexedFiles($phash)
+ * 1411:     function submitFilePage($hash,$file,$subinfo,$ext,$mtime,$ctime,$size,$content_md5h,$contentParts)
+ * 1473:     function submitFile_grlist($hash)
+ * 1487:     function submitFile_section($hash)
+ * 1501:     function removeOldIndexedFiles($phash)
  *
  *              SECTION: SQL Helper functions
- * 1513:     function checkMtimeTstamp($mtime,$phash)
- * 1549:     function checkContentHash()
- * 1566:     function checkExternalDocContentHash($hashGr,$content_md5h)
- * 1580:     function is_grlist_set($phash_x)
- * 1593:     function update_grlist($phash,$phash_x)
- * 1608:     function updateTstamp($phash,$mtime=0)
- * 1624:     function updateParsetime($phash,$parsetime)
- * 1637:     function updateRootline()
- * 1652:     function getRootLineFields(&$fieldArr)
- * 1671:     function removeLoginpagesWithContentHash()
+ * 1537:     function checkMtimeTstamp($mtime,$phash)
+ * 1573:     function checkContentHash()
+ * 1590:     function checkExternalDocContentHash($hashGr,$content_md5h)
+ * 1604:     function is_grlist_set($phash_x)
+ * 1617:     function update_grlist($phash,$phash_x)
+ * 1632:     function updateTstamp($phash,$mtime=0)
+ * 1648:     function updateParsetime($phash,$parsetime)
+ * 1661:     function updateRootline()
+ * 1676:     function getRootLineFields(&$fieldArr)
+ * 1695:     function removeLoginpagesWithContentHash()
  *
  *              SECTION: SQL; Submitting words
- * 1706:     function checkWordList($wl)
- * 1743:     function submitWords($wl,$phash)
- * 1767:     function freqMap($freq)
+ * 1730:     function checkWordList($wl)
+ * 1767:     function submitWords($wl,$phash)
+ * 1791:     function freqMap($freq)
  *
  *              SECTION: Hashing
- * 1800:     function setT3Hashes()
- * 1826:     function setExtHashes($file,$subinfo=array())
- * 1850:     function md5inthash($str)
- * 1860:     function makeCHash($paramArray)
+ * 1824:     function setT3Hashes()
+ * 1850:     function setExtHashes($file,$subinfo=array())
+ * 1874:     function md5inthash($str)
+ * 1884:     function makeCHash($paramArray)
  *
  *              SECTION: Internal logging functions
- * 1902:     function log_push($msg,$key)
- * 1911:     function log_pull()
- * 1922:     function log_setTSlogMessage($msg, $errorNum=0)
+ * 1916:     function log_push($msg,$key)
+ * 1925:     function log_pull()
+ * 1936:     function log_setTSlogMessage($msg, $errorNum=0)
  *
- * TOTAL FUNCTIONS: 55
+ *              SECTION: tslib_fe hooks:
+ * 1961:     function fe_headerNoCache(&$params, $ref)
+ *
+ * TOTAL FUNCTIONS: 56
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

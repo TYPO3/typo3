@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,23 +38,23 @@
  *
  *
  *  105: class t3lib_extFileFunctions extends t3lib_basicFileFunctions
- *  149:     function start($fileCmds)
- *  179:     function init_actionPerms($setup)
- *  211:     function processData()
- *  268:     function printLogErrorMessages($redirect='')
- *  326:     function findRecycler($theFile)
- *  355:     function writeLog($action,$error,$details_nr,$details,$data)
+ *  151:     function start($fileCmds)
+ *  181:     function init_actionPerms($setup)
+ *  213:     function processData()
+ *  270:     function printLogErrorMessages($redirect='')
+ *  328:     function findRecycler($theFile)
+ *  357:     function writeLog($action,$error,$details_nr,$details,$data)
  *
  *              SECTION: File operation functions
- *  382:     function func_delete($cmds)
- *  449:     function func_copy($cmds)
- *  539:     function func_move($cmds)
- *  632:     function func_rename($cmds)
- *  678:     function func_newfolder($cmds)
- *  708:     function func_newfile($cmds)
- *  745:     function func_edit($cmds)
- *  777:     function func_upload($cmds)
- *  815:     function func_unzip($cmds)
+ *  384:     function func_delete($cmds)
+ *  451:     function func_copy($cmds)
+ *  541:     function func_move($cmds)
+ *  634:     function func_rename($cmds)
+ *  680:     function func_newfolder($cmds)
+ *  710:     function func_newfile($cmds)
+ *  747:     function func_edit($cmds)
+ *  779:     function func_upload($cmds)
+ *  818:     function func_unzip($cmds)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")

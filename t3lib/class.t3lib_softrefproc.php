@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2003-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -39,23 +39,23 @@
  *
  *
  *
- *  115: class t3lib_softrefproc
- *  136:     function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')
- *  208:     function findRef_images($content, $spParams)
- *  275:     function findRef_typolink($content, $spParams)
- *  312:     function findRef_typolink_tag($content, $spParams)
- *  347:     function findRef_TStemplate($content, $spParams)
- *  429:     function findRef_TSconfig($content, $spParams)
- *  452:     function findRef_email($content, $spParams)
- *  490:     function findRef_url($content, $spParams)
- *  532:     function findRef_extension_fileref($content, $spParams)
+ *  116: class t3lib_softrefproc
+ *  137:     function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath='')
+ *  209:     function findRef_images($content, $spParams)
+ *  276:     function findRef_typolink($content, $spParams)
+ *  313:     function findRef_typolink_tag($content, $spParams)
+ *  348:     function findRef_TStemplate($content, $spParams)
+ *  430:     function findRef_TSconfig($content, $spParams)
+ *  453:     function findRef_email($content, $spParams)
+ *  493:     function findRef_url($content, $spParams)
+ *  535:     function findRef_extension_fileref($content, $spParams)
  *
  *              SECTION: Helper functions
- *  584:     function fileadminReferences($content, &$elements)
- *  627:     function getTypoLinkParts($typolinkValue)
- *  711:     function setTypoLinkPartsElement($tLP, &$elements, $content, $idx)
- *  822:     function getPageIdFromAlias($link_param)
- *  834:     function makeTokenID($index='')
+ *  587:     function fileadminReferences($content, &$elements)
+ *  630:     function getTypoLinkParts($typolinkValue)
+ *  714:     function setTypoLinkPartsElement($tLP, &$elements, $content, $idx)
+ *  825:     function getPageIdFromAlias($link_param)
+ *  837:     function makeTokenID($index='')
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -50,12 +50,12 @@
  *  540:     function nextHisUid($element,$hisUid)
  *  586:     function compareChangesWithCurrent($element,$changeRec)
  *  631:     function readFieldTypes($table,$id)
- *  660:     function cmp($changeStatus,$oldRecord)
- *  683:     function removeFilefields($table,$dataArray)
- *  706:     function renderEntry($entry,$table)
- *  766:     function listHeader()
- *  810:     function linkPage($str,$inparams=array(),$anchor='')
- *  838:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)
+ *  662:     function cmp($changeStatus,$oldRecord)
+ *  685:     function removeFilefields($table,$dataArray)
+ *  708:     function renderEntry($entry,$table)
+ *  769:     function listHeader()
+ *  813:     function linkPage($str,$inparams=array(),$anchor='')
+ *  841:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,33 +46,33 @@
  *  227:     function isInWebMount($id,$readPerms='',$exitOnError=0)
  *  254:     function modAccess($conf,$exitOnError)
  *  290:     function getPagePermsClause($perms)
- *  316:     function calcPerms($row)
- *  339:     function isRTE()
- *  373:     function check($type,$value)
- *  390:     function checkAuthMode($table,$field,$value,$authMode)
- *  456:     function checkLanguageAccess($langValue)
- *  476:     function recordEditAccessInternals($table,$idOrRow)
- *  541:     function isPSet($lCP,$table,$type='')
- *  558:     function mayMakeShortcut()
+ *  329:     function calcPerms($row)
+ *  367:     function isRTE()
+ *  401:     function check($type,$value)
+ *  418:     function checkAuthMode($table,$field,$value,$authMode)
+ *  484:     function checkLanguageAccess($langValue)
+ *  504:     function recordEditAccessInternals($table,$idOrRow)
+ *  569:     function isPSet($lCP,$table,$type='')
+ *  586:     function mayMakeShortcut()
  *
  *              SECTION: Miscellaneous functions
- *  586:     function getTSConfig($objectString,$config='')
- *  612:     function getTSConfigVal($objectString)
- *  624:     function getTSConfigProp($objectString)
- *  636:     function inList($in_list,$item)
- *  647:     function returnWebmounts()
- *  657:     function returnFilemounts()
+ *  614:     function getTSConfig($objectString,$config='')
+ *  640:     function getTSConfigVal($objectString)
+ *  652:     function getTSConfigProp($objectString)
+ *  664:     function inList($in_list,$item)
+ *  675:     function returnWebmounts()
+ *  685:     function returnFilemounts()
  *
  *              SECTION: Authentication methods
- *  687:     function fetchGroupData()
- *  810:     function fetchGroups($grList,$idList='')
- *  882:     function setCachedList($cList)
- *  902:     function addFileMount($title, $altTitle, $path, $webspace, $type)
- *  949:     function addTScomment($str)
+ *  715:     function fetchGroupData()
+ *  838:     function fetchGroups($grList,$idList='')
+ *  910:     function setCachedList($cList)
+ *  930:     function addFileMount($title, $altTitle, $path, $webspace, $type)
+ *  977:     function addTScomment($str)
  *
  *              SECTION: Logging
- *  996:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='')
- * 1029:     function checkLogFailures($email, $secondsBack=3600, $max=3)
+ * 1024:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='')
+ * 1057:     function checkLogFailures($email, $secondsBack=3600, $max=3)
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -300,18 +300,18 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				'OR(pages.perms_userid = '.$this->user['uid'].' AND pages.perms_user & '.$perms.' = '.$perms.')';	// User
 			if ($this->groupList){$str.='OR(pages.perms_groupid in ('.$this->groupList.') AND pages.perms_group & '.$perms.' = '.$perms.')';}	// Group (if any is set)
 			$str.=')';
-			
+
 			// ****************
 			// getPagePermsClause-HOOK
 			// ****************
 			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
-				
+
 				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] as $_funcRef) {
 					$_params = array('currentClause' => $str, 'perms' => $perms);
 					$str = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
-			
+
 			return $str;
 		} else {
 			return ' 1=0';
@@ -340,7 +340,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 			$out|=$row['perms_everybody'];
 		}
-		
+
 		// ****************
 		// CALCPERMS hook
 		// ****************
@@ -353,7 +353,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				$out = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
-		
+
 		return $out;
 	}
 

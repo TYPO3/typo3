@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2002-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,6 +13,9 @@
 *
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
 *
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,17 +36,18 @@
  *
  *
  *
- *   63: class tx_cssstyledcontent_pi1 extends tslib_pibase
+ *   67: class tx_cssstyledcontent_pi1 extends tslib_pibase
  *
  *              SECTION: Rendering of Content Elements:
- *   91:     function render_bullets($content,$conf)
- *  130:     function render_table($content,$conf)
- *  191:     function render_uploads($content,$conf)
+ *   95:     function render_bullets($content,$conf)
+ *  140:     function render_table($content,$conf)
+ *  207:     function render_uploads($content,$conf)
  *
  *              SECTION: Helper functions
- *  313:     function getTableAttributes($conf,$type)
+ *  335:     function getTableAttributes($conf,$type)
+ *  364:     function &hookRequest($functionName)
  *
- * TOTAL FUNCTIONS: 4
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

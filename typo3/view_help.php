@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,28 +39,35 @@
  *
  *
  *
- *   88: class SC_view_help
- *  111:     function init()
- *  131:     function main()
- *  160:     function printContent()
+ *   82: class local_t3lib_parsehtml extends t3lib_parsehtml
+ *   93:     function processContent($value,$dir,$conf)
+ *
+ *
+ *  114: class SC_view_help
+ *  138:     function init()
+ *  159:     function main()
+ *  190:     function printContent()
  *
  *              SECTION: Rendering main modes
- *  183:     function render_TOC()
- *  292:     function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)
- *  324:     function render_TOC_makeTocList($tocArray)
- *  363:     function render_Table($table)
- *  420:     function render_Single($table,$field)
+ *  213:     function render_TOC()
+ *  330:     function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)
+ *  362:     function render_TOC_makeTocList($tocArray)
+ *  401:     function render_Table($table)
+ *  461:     function render_Single($table,$field)
  *
  *              SECTION: Rendering CSH items
- *  463:     function make_seeAlso($value,$anchorTable='')
- *  512:     function printImage($images,$descr)
- *  547:     function headerLine($str,$type=0)
- *  568:     function prepareContent($str)
- *  583:     function printItem($table,$field,$anchors=0)
- *  616:     function getTableFieldNames($table,$field)
- *  639:     function getTableFieldLabel($table,$field='',$mergeToken=': ')
+ *  507:     function make_seeAlso($value,$anchorTable='')
+ *  556:     function printImage($images,$descr)
+ *  591:     function headerLine($str,$type=0)
+ *  612:     function prepareContent($str)
+ *  627:     function printItem($table,$field,$anchors=0)
+ *  660:     function getTableFieldNames($table,$field)
+ *  683:     function getTableFieldLabel($table,$field='',$mergeToken=': ')
+ *  702:     function createGlossaryIndex()
+ *  738:     function substituteGlossaryWords($code)
+ *  776:     function substituteGlossaryWords_nonHTML($code)
  *
- * TOTAL FUNCTIONS: 15
+ * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -72,6 +79,13 @@ require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 
+/**
+ * Extension of the parse_html class.
+ *
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class local_t3lib_parsehtml extends t3lib_parsehtml {
 
 	/**
@@ -760,6 +774,12 @@ class SC_view_help {
 		return $code;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$code: ...
+	 * @return	[type]		...
+	 */
 	function substituteGlossaryWords_nonHTML($code) {
 		$htmlParser = t3lib_div::makeInstance('local_t3lib_parsehtml');
 		$htmlParser->pObj = &$this;

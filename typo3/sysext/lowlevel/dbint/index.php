@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -98,7 +98,7 @@ class SC_mod_tools_dbint_index {
 	var $menu;
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -128,7 +128,7 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function menuConfig()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -187,7 +187,7 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -226,7 +226,7 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function printContent()	{
 
@@ -235,7 +235,7 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function func_search()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -265,7 +265,7 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function func_tree()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -286,7 +286,7 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function func_records()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -382,7 +382,7 @@ class SC_mod_tools_dbint_index {
 	}
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function func_relations()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -432,6 +432,8 @@ class SC_mod_tools_dbint_index {
 
 	/**
 	 * Searching for files with a specific pattern
+	 *
+	 * @return	[type]		...
 	 */
 	function func_filesearch()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -474,6 +476,12 @@ class SC_mod_tools_dbint_index {
 
 	/**
 	 * Searching for filename pattern recursively in the specified dir.
+	 *
+	 * @param	[type]		$basedir: ...
+	 * @param	[type]		$pattern: ...
+	 * @param	[type]		$matching_files: ...
+	 * @param	[type]		$depth: ...
+	 * @return	[type]		...
 	 */
 	function findFile($basedir,$pattern,&$matching_files,$depth)	{
 		$files_searched=0;
@@ -515,6 +523,8 @@ class SC_mod_tools_dbint_index {
 
 	/**
 	 * Menu
+	 *
+	 * @return	[type]		...
 	 */
 	function func_default()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;

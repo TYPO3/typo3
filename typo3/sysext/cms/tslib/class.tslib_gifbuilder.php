@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,17 +39,17 @@
  *
  *
  *  102: class tslib_gifBuilder extends t3lib_stdGraphic
- *  127:     function start($conf,$data)
- *  296:     function gifBuild()
- *  324:     function make()
+ *  129:     function start($conf,$data)
+ *  299:     function gifBuild()
+ *  327:     function make()
  *
  *              SECTION: Various helper functions
- *  475:     function checkTextObj($conf)
- *  552:     function calcOffset($string)
- *  601:     function getResource($file,$fileArray)
- *  616:     function checkFile($file)
- *  627:     function fileName($pre)
- *  637:     function extension()
+ *  478:     function checkTextObj($conf)
+ *  557:     function calcOffset($string)
+ *  606:     function getResource($file,$fileArray)
+ *  621:     function checkFile($file)
+ *  632:     function fileName($pre)
+ *  648:     function extension()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")

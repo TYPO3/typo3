@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,22 +38,23 @@
  *
  *
  *
- *   77: class localPageTree extends t3lib_browseTree
- *   87:     function localPageTree()
- *   98:     function wrapIcon($icon,&$row)
- *  136:     function wrapStop($str,$row)
+ *   78: class localPageTree extends t3lib_browseTree
+ *   88:     function localPageTree()
+ *   99:     function wrapIcon($icon,&$row)
+ *  137:     function wrapStop($str,$row)
+ *  153:     function wrapTitle($title,$row,$bank=0)
  *
  *
- *  162: class SC_alt_db_navframe
- *  180:     function init()
- *  276:     function main()
- *  327:     function printContent()
+ *  181: class SC_alt_db_navframe
+ *  199:     function init()
+ *  295:     function main()
+ *  346:     function printContent()
  *
  *              SECTION: Temporary DB mounts
- *  354:     function initializeTemporaryDBmount()
- *  383:     function settingTemporaryMountPoint($pageId)
+ *  373:     function initializeTemporaryDBmount()
+ *  402:     function settingTemporaryMountPoint($pageId)
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

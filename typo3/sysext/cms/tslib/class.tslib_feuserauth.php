@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,14 +40,14 @@
  *
  *   77: class tslib_feUserAuth extends t3lib_userAuth
  *  141:     function fetchGroupData()
- *  189:     function getUserTSconf()
+ *  194:     function getUserTSconf()
  *
  *              SECTION: Session data management functions
- *  234:     function fetchSessionData()
- *  256:     function storeSessionData()
- *  282:     function getKey($type,$key)
- *  307:     function setKey($type,$key,$data)
- *  332:     function record_registration($recs)
+ *  239:     function fetchSessionData()
+ *  261:     function storeSessionData()
+ *  287:     function getKey($type,$key)
+ *  312:     function setKey($type,$key,$data)
+ *  337:     function record_registration($recs)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,13 +42,13 @@
  *
  *   73: class alt_menu_functions
  *   94:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)
- *  402:     function getNavFramePrefix ($moduleInfo, $subModuleInfo=array())
- *  429:     function mIconFile($Ifilename,$backPath)
- *  444:     function mIconFilename($Ifilename,$backPath)
- *  456:     function topButtons()
- *  468:     function adminButtons()
- *  487:     function adminFunctions($backPath)
- *  520:     function wrapLinkWithAB($link)
+ *  405:     function getNavFramePrefix ($moduleInfo, $subModuleInfo=array())
+ *  435:     function mIconFile($Ifilename,$backPath)
+ *  450:     function mIconFilename($Ifilename,$backPath)
+ *  462:     function topButtons()
+ *  474:     function adminButtons()
+ *  493:     function adminFunctions($backPath)
+ *  526:     function wrapLinkWithAB($link)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")

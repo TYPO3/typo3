@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,62 +40,63 @@
  *
  *
  *
- *  120: class tx_indexedsearch extends tslib_pibase
- *  164:     function main($content, $conf)
- *  197:     function initialize()
- *  374:     function getSearchWords($defOp)
+ *  121: class tx_indexedsearch extends tslib_pibase
+ *  165:     function main($content, $conf)
+ *  198:     function initialize()
+ *  381:     function getSearchWords($defOp)
+ *  415:     function procSearchWordsByLexer($SWArr)
  *
  *              SECTION: Main functions
- *  418:     function doSearch($sWArr)
- *  451:     function getResultRows($sWArr)
- *  521:     function getResultRows_SQLpointer($sWArr)
- *  541:     function getDisplayResults($sWArr, $resData)
- *  592:     function compileResult($resultRows)
+ *  459:     function doSearch($sWArr)
+ *  492:     function getResultRows($sWArr)
+ *  562:     function getResultRows_SQLpointer($sWArr)
+ *  582:     function getDisplayResults($sWArr, $resData)
+ *  633:     function compileResult($resultRows)
  *
  *              SECTION: Searching functions (SQL)
- *  685:     function getPhashList($sWArr)
- *  786:     function execPHashListQuery($wordSel,$plusQ='')
- *  806:     function sectionTableWhere()
- *  853:     function mediaTypeWhere()
- *  878:     function languageWhere()
- *  890:     function execFinalQuery($list)
- * 1028:     function checkResume($row)
- * 1075:     function isDescending($inverse=FALSE)
- * 1089:     function writeSearchStat($sWArr,$count,$pt)
+ *  726:     function getPhashList($sWArr)
+ *  827:     function execPHashListQuery($wordSel,$plusQ='')
+ *  847:     function sectionTableWhere()
+ *  894:     function mediaTypeWhere()
+ *  919:     function languageWhere()
+ *  931:     function execFinalQuery($list)
+ * 1069:     function checkResume($row)
+ * 1116:     function isDescending($inverse=FALSE)
+ * 1130:     function writeSearchStat($sWArr,$count,$pt)
  *
  *              SECTION: HTML output functions
- * 1140:     function makeSearchForm($optValues)
- * 1212:     function printRules()
- * 1228:     function printResultSectionLinks()
- * 1250:     function makeSectionHeader($id,$sectionTitleLinked,$countResultRows)
- * 1266:     function printResultRow($row, $headerOnly=0)
- * 1341:     function pi_list_browseresults($showResultCount=1,$addString='',$addPart='')
+ * 1181:     function makeSearchForm($optValues)
+ * 1253:     function printRules()
+ * 1269:     function printResultSectionLinks()
+ * 1291:     function makeSectionHeader($id,$sectionTitleLinked,$countResultRows)
+ * 1307:     function printResultRow($row, $headerOnly=0)
+ * 1382:     function pi_list_browseresults($showResultCount=1,$addString='',$addPart='')
  *
  *              SECTION: Support functions for HTML output (with a minimum of fixed markup)
- * 1404:     function prepareResultRowTemplateData($row, $headerOnly)
- * 1448:     function tellUsWhatIsSeachedFor($sWArr)
- * 1482:     function wrapSW($str)
- * 1494:     function renderSelectBox($name,$value,$optValues)
- * 1517:     function makePointerSelector_link($str,$p)
- * 1530:     function makeItemTypeIcon($it,$alt='',$specRowConf)
- * 1572:     function makeRating($row)
- * 1617:     function makeDescription($row,$noMarkup=0,$lgd=180)
- * 1647:     function markupSWpartsOfString($str)
- * 1742:     function makeTitle($row)
- * 1766:     function makeInfo($row,$tmplArray)
- * 1791:     function getSpecialConfigForRow($row)
- * 1815:     function makeLanguageIndication($row)
- * 1852:     function makeAccessIndication($id)
- * 1866:     function linkPage($id,$str,$row=array())
- * 1909:     function getRootLine($id,$pathMP='')
- * 1924:     function getFirstSysDomainRecordForPage($id)
- * 1937:     function getPathFromPageId($id,$pathMP='')
- * 1989:     function getMenu($id)
- * 2008:     function multiplePagesType($item_type)
- * 2018:     function utf8_to_currentCharset($str)
- * 2028:     function &hookRequest($functionName)
+ * 1445:     function prepareResultRowTemplateData($row, $headerOnly)
+ * 1489:     function tellUsWhatIsSeachedFor($sWArr)
+ * 1523:     function wrapSW($str)
+ * 1535:     function renderSelectBox($name,$value,$optValues)
+ * 1558:     function makePointerSelector_link($str,$p)
+ * 1571:     function makeItemTypeIcon($it,$alt='',$specRowConf)
+ * 1613:     function makeRating($row)
+ * 1658:     function makeDescription($row,$noMarkup=0,$lgd=180)
+ * 1688:     function markupSWpartsOfString($str)
+ * 1768:     function makeTitle($row)
+ * 1792:     function makeInfo($row,$tmplArray)
+ * 1817:     function getSpecialConfigForRow($row)
+ * 1841:     function makeLanguageIndication($row)
+ * 1878:     function makeAccessIndication($id)
+ * 1892:     function linkPage($id,$str,$row=array())
+ * 1935:     function getRootLine($id,$pathMP='')
+ * 1950:     function getFirstSysDomainRecordForPage($id)
+ * 1963:     function getPathFromPageId($id,$pathMP='')
+ * 2015:     function getMenu($id)
+ * 2034:     function multiplePagesType($item_type)
+ * 2044:     function utf8_to_currentCharset($str)
+ * 2054:     function &hookRequest($functionName)
  *
- * TOTAL FUNCTIONS: 45
+ * TOTAL FUNCTIONS: 46
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,17 +41,17 @@
  *   87: class SC_index
  *  119:     function init()
  *  150:     function main()
- *  236:     function printContent()
+ *  243:     function printContent()
  *
  *              SECTION: Various functions
- *  260:     function makeLoginForm()
- *  306:     function makeLogoutForm()
- *  348:     function wrapLoginForm($content)
- *  408:     function checkRedirect()
- *  453:     function makeInterfaceSelectorBox()
- *  507:     function makeCopyrightNotice()
- *  540:     function makeLoginBoxImage()
- *  580:     function makeLoginNews()
+ *  267:     function makeLoginForm()
+ *  312:     function makeLogoutForm()
+ *  354:     function wrapLoginForm($content)
+ *  414:     function checkRedirect()
+ *  459:     function makeInterfaceSelectorBox()
+ *  513:     function makeCopyrightNotice()
+ *  546:     function makeLoginBoxImage()
+ *  586:     function makeLoginNews()
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -528,7 +528,7 @@ class SC_index {
 					'<img src="gfx/loginlogo_transp.gif" width="75" height="19" alt="TYPO3 logo" align="left" />'.
 					'TYPO3 CMS'.($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']):'').
 					'</a>. '.
-					'Copyright &copy; 1998-2004 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
+					'Copyright &copy; 1998-2005 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
 					'Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details. '.
 					$warrantyNote.' '.
 					'This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. '.
@@ -569,7 +569,7 @@ class SC_index {
 			}
 		} else {	// If no rotation folder configured, print default image:
 			$loginImage = 'loginbox_image_dev.png';
-			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2004 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
+			$imagecopy = $loginImage=='loginbox_image_dev.png' ? 'You are running the CVS version of TYPO3 '.$GLOBALS['TYPO_VERSION'] : 'Photo: &copy; 2004-2005 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,29 +41,29 @@
  *
  *   90: class localRecordList extends recordList
  *  122:     function writeTop($row)
- *  296:     function getTable($table,$id,$rowlist)
- *  539:     function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)
- *  603:     function renderListHeader($table,$currentIdList)
+ *  303:     function getTable($table,$id,$rowlist)
+ *  547:     function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)
+ *  616:     function renderListHeader($table,$currentIdList)
  *
  *              SECTION: Rendering of various elements
- *  745:     function makeControl($table,$row)
- *  937:     function makeClip($table,$row)
- * 1006:     function makeLocalizationPanel($table,$row)
- * 1061:     function fieldSelectBox($table,$formFields=1)
+ *  761:     function makeControl($table,$row)
+ *  953:     function makeClip($table,$row)
+ * 1022:     function makeLocalizationPanel($table,$row)
+ * 1080:     function fieldSelectBox($table,$formFields=1)
  *
  *              SECTION: Helper functions
- * 1141:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
- * 1152:     function clipNumPane()
- * 1166:     function addSortLink($code,$field,$table)
- * 1191:     function recPath($pid)
- * 1204:     function showNewRecLink($table)
- * 1214:     function makeReturnUrl()
+ * 1160:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
+ * 1171:     function clipNumPane()
+ * 1185:     function addSortLink($code,$field,$table)
+ * 1210:     function recPath($pid)
+ * 1223:     function showNewRecLink($table)
+ * 1233:     function makeReturnUrl()
  *
  *              SECTION: CSV related functions
- * 1239:     function initCSV()
- * 1261:     function addToCSV($row)
- * 1283:     function setCsvRow($csvRow)
- * 1294:     function outputCSV($prefix)
+ * 1258:     function initCSV()
+ * 1280:     function addToCSV($row)
+ * 1302:     function setCsvRow($csvRow)
+ * 1313:     function outputCSV($prefix)
  *
  * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")

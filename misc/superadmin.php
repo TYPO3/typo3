@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2003 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
@@ -27,41 +27,41 @@
 /**
  * Super admin configuration and main script (sample)
  *
- * $Id$ 
+ * $Id$
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /*
  * WHAT IS IT:
- * This script is intended to provide administrator information and 
+ * This script is intended to provide administrator information and
  * relevant links to multiple Typo3 sites on a webserver.
- *  
+ *
  * LOCATION:
  * This script must be located in a directory with the Typo3 source available in typo3_src/
  * The script includes the class t3lib/class.t3lib_superadmin.php
- *  
- * IMPORTANT: 
- * This script MUST be secured as it reads out password information an provides direct login links to sites! 
+ *
+ * IMPORTANT:
+ * This script MUST be secured as it reads out password information an provides direct login links to sites!
  * It's recommended to use the script over a secure connection and to use the strongest webserver http-based authentication, you can.
  * Furthermore it's adviced to out-comment the 'die'-line below when you're not using the script.
- * 
+ *
  * CONFIGURATION:
  * The point is that you configure one or more directories (parent directories) on the webserver to the script.
  * The script expects these directories (parents) to contain other directories (childs) exclusively with Typo3 sites in + any number of directories names 'typo3_src*' which will be ignored.
- * Every Typo3 site (child) in these parent directories will get listed in the interface. 
- * 
+ * Every Typo3 site (child) in these parent directories will get listed in the interface.
+ *
  * For each 'parent directory' you enter information like this:
- * 
+ *
  * $parentDirs[] = array(
- * 	'dir'=> '/www/htdocs/typo3/32/', 
+ * 	'dir'=> '/www/htdocs/typo3/32/',
  * 	'url' => 'http://192.168.1.4/typo3/32/'
  * );
- * 
+ *
  * 'dir' is the absolute path of the parent directory where the sites are located in subdirs
  * 'url' is the web-accessible url of the parent directory.
  */
 
- 
+
 // *****************
 // Security:
 // *****************
@@ -80,11 +80,11 @@ require_once ('./typo3_src/t3lib/class.t3lib_superadmin.php');
 // *****************
 $parentDirs = array();
 $parentDirs[] = array(
-	'dir'=> '/www/htdocs/typo3/commercial_sites/', 
+	'dir'=> '/www/htdocs/typo3/commercial_sites/',
 	'url' => 'http://123.234.43.212/typo3/commercial_sites/'
 );
 $parentDirs[] = array(
-	'dir'=> '/www/htdocs/typo3/nonprofit_sites/', 
+	'dir'=> '/www/htdocs/typo3/nonprofit_sites/',
 	'url' => 'http://123.234.43.212/typo3/nonprofit_sites/'
 );
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -62,50 +62,50 @@
  *              SECTION: PAGE BUILDING FUNCTIONS.
  *  592:     function startPage($title)
  *  667:     function endPage()
- *  696:     function header($text)
- *  717:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
- *  741:     function divider($dist)
- *  757:     function spacer($dist)
- *  776:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
- *  793:     function sectionBegin()
- *  814:     function sectionEnd()
- *  834:     function middle()
- *  843:     function endPageJS()
- *  860:     function docBodyTagBegin()
- *  870:     function docStyle()
- *  912:     function insertStylesAndJS($content)
- *  932:     function initCharset()
- *  944:     function generator()
+ *  701:     function header($text)
+ *  722:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
+ *  746:     function divider($dist)
+ *  762:     function spacer($dist)
+ *  781:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
+ *  798:     function sectionBegin()
+ *  819:     function sectionEnd()
+ *  839:     function middle()
+ *  848:     function endPageJS()
+ *  865:     function docBodyTagBegin()
+ *  875:     function docStyle()
+ *  917:     function insertStylesAndJS($content)
+ *  937:     function initCharset()
+ *  949:     function generator()
  *
  *              SECTION: OTHER ELEMENTS
- *  977:     function icons($type, $styleAttribValue='')
- * 1006:     function t3Button($onClick,$label)
- * 1017:     function dfw($string)
- * 1027:     function rfw($string)
- * 1037:     function wrapInCData($string)
- * 1054:     function wrapScriptTags($string, $linebreak=TRUE)
- * 1092:     function table($arr, $layout='')
- * 1134:     function menuTable($arr1,$arr2=array(), $arr3=array())
- * 1167:     function funcMenu($content,$menu)
- * 1185:     function clearCacheMenu($id,$addSaveOptions=0)
- * 1221:     function getContextMenuCode()
- * 1408:     function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
- * 1438:     function getTabMenuRaw($menuItems)
- * 1507:     function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)
- * 1630:     function getDynTabMenuJScode()
- * 1687:     function getVersionSelector($id,$noAction=FALSE)
+ *  982:     function icons($type, $styleAttribValue='')
+ * 1011:     function t3Button($onClick,$label)
+ * 1022:     function dfw($string)
+ * 1032:     function rfw($string)
+ * 1042:     function wrapInCData($string)
+ * 1059:     function wrapScriptTags($string, $linebreak=TRUE)
+ * 1097:     function table($arr, $layout='')
+ * 1139:     function menuTable($arr1,$arr2=array(), $arr3=array())
+ * 1172:     function funcMenu($content,$menu)
+ * 1190:     function clearCacheMenu($id,$addSaveOptions=0)
+ * 1226:     function getContextMenuCode()
+ * 1413:     function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
+ * 1443:     function getTabMenuRaw($menuItems)
+ * 1512:     function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)
+ * 1637:     function getDynTabMenuJScode()
+ * 1723:     function getVersionSelector($id,$noAction=FALSE)
  *
  *
- * 1761: class bigDoc extends template
+ * 1797: class bigDoc extends template
  *
  *
- * 1770: class noDoc extends template
+ * 1806: class noDoc extends template
  *
  *
- * 1779: class smallDoc extends template
+ * 1815: class smallDoc extends template
  *
  *
- * 1788: class mediumDoc extends template
+ * 1824: class mediumDoc extends template
  *
  * TOTAL FUNCTIONS: 49
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -1696,12 +1696,12 @@ $str.=$this->docBodyTagBegin().
 					}
 				}
 
-				function DTM_mouseOver(obj) {
+				function DTM_mouseOver(obj) {	//
 						DTM_origClass = obj.attributes.getNamedItem(\'class\').nodeValue;
 						obj.attributes.getNamedItem(\'class\').nodeValue += "_over";
 				}
 
-				function DTM_mouseOut(obj) {
+				function DTM_mouseOut(obj) {	//
 						obj.attributes.getNamedItem(\'class\').nodeValue = DTM_origClass;
 						DTM_origClass = "";
 				}

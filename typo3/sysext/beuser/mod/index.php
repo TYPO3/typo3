@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,55 +34,68 @@
  *
  *
  *
- *  114: class localPageTree extends t3lib_browseTree
- *  124:     function localPageTree($BE_USER,$WEBMOUNTS='',$FILEMOUNTS='')
- *  137:     function wrapTitle($str)
- *  149:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  158:     function permsC()
- *  169:     function wrapIcon($str,$val)
+ *  128: class localPageTree extends t3lib_browseTree
+ *  139:     function localPageTree($BE_USER,$WEBMOUNTS='')
+ *  153:     function ext_permsC()
+ *  164:     function wrapTitle($str,$row)
+ *  176:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  187:     function wrapIcon($icon,$row)
+ *  200:     function initializePositionSaving()
  *
  *
- *  195: class printAllPageTree extends localPageTree
- *  202:     function permsC()
- *  214:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  225:     function wrapIcon($str,$val)
+ *  221: class printAllPageTree extends localPageTree
+ *  230:     function ext_permsC()
+ *  242:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  253:     function wrapIcon($icon,$row)
  *
  *
- *  252: class printAllPageTree_perms extends printAllPageTree
- *  259:     function printTree($treeArr='',$printPath=0)
- *  302:     function ext_printPerms($int)
- *  321:     function ext_groupPerms($row,$firstGroup)
+ *  278: class printAllPageTree_perms extends printAllPageTree
+ *  287:     function printTree($treeArr='',$printPath=0)
+ *  330:     function ext_printPerms($int)
+ *  348:     function ext_groupPerms($row,$firstGroup)
  *
  *
- *  350: class local_beUserAuth extends t3lib_beUserAuth
- *  358:     function returnWebmounts($pClause='')
- *  378:     function ext_non_readAccessPages()
- *  394:     function user_where_clause()
- *  407:     function ext_printOverview($uInfo,$compareFlags,$printTrees=0)
- *  572:     function ext_getReadableButNonmounted()
- *  604:     function ext_printPerms($int)
- *  623:     function ext_groupPerms($row,$firstGroup)
- *  639:     function ext_compileUserInfoForHash()
- *  689:     function ext_uniqueAndSortList($list)
- *  703:     function ext_ksortArrayRecursive(&$arr)
+ *  376: class localFolderTree extends t3lib_folderTree
+ *  387:     function localFolderTree($BE_USER,$FILEMOUNTS='')
+ *  402:     function wrapTitle($str,$row)
+ *  414:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  425:     function wrapIcon($icon,$row)
+ *  438:     function initializePositionSaving()
  *
  *
- *  730: class SC_mod_tools_be_user_index
- *  742:     function init()
- *  772:     function menuConfig()
- *  793:     function main()
- *  829:     function printContent()
+ *  462: class printAllFolderTree extends localFolderTree
+ *  474:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *
+ *
+ *  496: class local_beUserAuth extends t3lib_beUserAuth
+ *  508:     function returnWebmounts($pClause='')
+ *  532:     function ext_non_readAccessPages()
+ *  555:     function user_where_clause()
+ *  567:     function ext_printOverview($uInfo,$compareFlags,$printTrees=0)
+ *  831:     function ext_getReadableButNonmounted()
+ *  866:     function ext_printPerms($int)
+ *  884:     function ext_groupPerms($row,$firstGroup)
+ *  899:     function ext_compileUserInfoForHash()
+ *  959:     function ext_uniqueAndSortList($list)
+ *  973:     function ext_ksortArrayRecursive(&$arr)
+ *
+ *
+ * 1000: class SC_mod_tools_be_user_index
+ * 1012:     function init()
+ * 1040:     function menuConfig()
+ * 1061:     function main()
+ * 1097:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  852:     function compareUsers($compareFlags)
- * 1030:     function linkUser($str,$rec)
- * 1041:     function elementLinks($table,$row)
- * 1072:     function initUsers()
- * 1092:     function localPath($str)
- * 1104:     function switchUser($switchUser)
+ * 1119:     function compareUsers($compareFlags)
+ * 1297:     function linkUser($str,$rec)
+ * 1308:     function elementLinks($table,$row)
+ * 1339:     function initUsers()
+ * 1359:     function localPath($str)
+ * 1371:     function switchUser($switchUser)
  *
- * TOTAL FUNCTIONS: 31
- * (This index is automatically created/updated by the extension 'extdeveval')
+ * TOTAL FUNCTIONS: 38
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 

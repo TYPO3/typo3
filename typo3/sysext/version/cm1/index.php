@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,24 @@
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   73: class tx_version_cm1 extends t3lib_SCbase
+ *   80:     function main()
+ *  105:     function jumpToUrl(URL)
+ *  139:     function printContent()
+ *  150:     function moduleContent()
+ *  307:     function pageSubContent($pid,$c=0)
+ *  359:     function lookForOwnVersions($table,$uid)
+ *  376:     function adminLinks($table,$row)
+ *
+ * TOTAL FUNCTIONS: 7
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 
 	// DEFAULT initialization of a module [BEGIN]
@@ -46,11 +63,19 @@ require_once (PATH_t3lib."class.t3lib_scbase.php");
 require_once(PATH_t3lib.'class.t3lib_diff.php');
 
 
-
+/**
+ * Context Menu module for versioning. NOT READY FOR RELEASE YET
+ *
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class tx_version_cm1 extends t3lib_SCbase {
 
 	/**
 	 * Main function of the module. Write the content to $this->content
+	 *
+	 * @return	[type]		...
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -105,12 +130,23 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$this->content.=$this->doc->spacer(10);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function moduleContent()	{
 		global $TCA;
 
@@ -261,6 +297,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$pid: ...
+	 * @param	[type]		$c: ...
+	 * @return	[type]		...
+	 */
 	function pageSubContent($pid,$c=0)	{
 		global $TCA;
 
@@ -306,6 +349,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 		return $content ? '<table border="1" cellpadding="1" cellspacing="0" width="100%">'.$content.'</table>' : '';
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$uid: ...
+	 * @return	[type]		...
+	 */
 	function lookForOwnVersions($table,$uid)	{
 		global $TCA;
 
@@ -316,6 +366,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 		return FALSE;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function adminLinks($table,$row)	{
 		global $BE_USER;
 

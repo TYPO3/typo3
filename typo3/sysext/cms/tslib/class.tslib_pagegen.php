@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,16 +41,16 @@
  *
  *   88: class TSpagegen
  *   95:     function pagegenInit()
- *  225:     function getIncFiles()
- *  258:     function JSeventFunctions()
- *  292:     function renderContent()
- *  319:     function renderContentWithHeader($pageContent)
+ *  229:     function getIncFiles()
+ *  262:     function JSeventFunctions()
+ *  296:     function renderContent()
+ *  323:     function renderContentWithHeader($pageContent)
  *
  *              SECTION: Helper functions
- *  754:     function inline2TempFile($str,$ext)
+ *  760:     function inline2TempFile($str,$ext)
  *
  *
- *  808: class FE_loadDBGroup extends t3lib_loadDBGroup
+ *  814: class FE_loadDBGroup extends t3lib_loadDBGroup
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -427,7 +427,7 @@ $GLOBALS['TSFE']->content.='
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is brought to you by TYPO3 - get.content.right
 	TYPO3 is a free open source Content Management Framework created by Kasper Skaarhoj and licensed under GNU/GPL.
-	TYPO3 is copyright 1998-2004 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	TYPO3 is copyright 1998-2005 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
 	Information and contribution at http://www.typo3.com
 -->
 ';

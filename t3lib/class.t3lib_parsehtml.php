@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -56,20 +56,20 @@
  *              SECTION: Clean HTML code
  *  600:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())
  *  796:     function bidir_htmlspecialchars($value,$dir)
- *  818:     function prefixResourcePath($main_prefix,$content,$alternatives=array())
- *  899:     function prefixRelPath($prefix,$srcVal)
- *  917:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)
- *  948:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')
- *  965:     function unprotectTags($content,$tagList='')
- *  998:     function stripTagsExcept($value,$tagList)
- * 1021:     function caseShift($str,$flag,$cacheKey='')
- * 1045:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)
- * 1074:     function get_tag_attributes_classic($tag,$deHSC=0)
- * 1087:     function indentLines($content, $number=1, $indentChar="\t")
- * 1104:     function HTMLparserConfig($TSconfig,$keepTags=array())
- * 1228:     function XHTML_clean($content)
- * 1250:     function processTag($value,$conf,$endTag,$protected=0)
- * 1296:     function processContent($value,$dir,$conf)
+ *  819:     function prefixResourcePath($main_prefix,$content,$alternatives=array(),$suffix='')
+ *  902:     function prefixRelPath($prefix,$srcVal,$suffix='')
+ *  920:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)
+ *  951:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')
+ *  968:     function unprotectTags($content,$tagList='')
+ * 1001:     function stripTagsExcept($value,$tagList)
+ * 1024:     function caseShift($str,$flag,$cacheKey='')
+ * 1048:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)
+ * 1077:     function get_tag_attributes_classic($tag,$deHSC=0)
+ * 1090:     function indentLines($content, $number=1, $indentChar="\t")
+ * 1107:     function HTMLparserConfig($TSconfig,$keepTags=array())
+ * 1231:     function XHTML_clean($content)
+ * 1253:     function processTag($value,$conf,$endTag,$protected=0)
+ * 1299:     function processContent($value,$dir,$conf)
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -895,7 +895,7 @@ class t3lib_parsehtml {
 	 *
 	 * @param	string		Prefix string
 	 * @param	string		Relative path/URL
-	 * @param	string		Suffix
+	 * @param	string		Suffix string
 	 * @return	string		Output path, prefixed if no scheme in input string
 	 * @access private
 	 */

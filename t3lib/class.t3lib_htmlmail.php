@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,61 +36,62 @@
  *
  *
  *
- *  190: class t3lib_htmlmail
- *  253:     function start ()
- *  263:     function useBase64()
- *  275:     function encodeMsg($content)
- *  285:     function addPlain ($content)
- *  297:     function addAttachment($file)
- *  315:     function addHTML ($file)
- *  338:     function extractHtmlInit($html,$url)
- *  349:     function send($recipient)
+ *  191: class t3lib_htmlmail
+ *  256:     function t3lib_htmlmail ()
+ *  275:     function start ()
+ *  286:     function useBase64()
+ *  298:     function encodeMsg($content)
+ *  308:     function addPlain ($content)
+ *  320:     function addAttachment($file)
+ *  338:     function addHTML ($file)
+ *  361:     function extractHtmlInit($html,$url)
+ *  372:     function send($recipient)
  *
  *              SECTION: Main functions
- *  378:     function setHeaders ()
- *  432:     function setRecipient ($recip)
- *  450:     function getHTMLContentType()
- *  459:     function setContent()
- *  486:     function constructMixed ($boundary)
- *  525:     function constructHTML ($boundary)
- *  548:     function constructAlternative($boundary)
- *  569:     function constructHTML_media ($boundary)
- *  602:     function sendTheMail ()
- *  664:     function getBoundary()
- *  676:     function setPlain ($content)
- *  687:     function setHtml ($content)
- *  698:     function add_header ($header)
- *  709:     function add_message ($string)
- *  720:     function getContent($type)
- *  729:     function preview()
+ *  401:     function setHeaders ()
+ *  455:     function setRecipient ($recip)
+ *  473:     function getHTMLContentType()
+ *  482:     function setContent()
+ *  509:     function constructMixed ($boundary)
+ *  548:     function constructHTML ($boundary)
+ *  571:     function constructAlternative($boundary)
+ *  592:     function constructHTML_media ($boundary)
+ *  646:     function sendTheMail ()
+ *  712:     function getBoundary()
+ *  724:     function setPlain ($content)
+ *  735:     function setHtml ($content)
+ *  746:     function add_header ($header)
+ *  757:     function add_message ($string)
+ *  768:     function getContent($type)
+ *  777:     function preview()
  *
  *              SECTION: Functions for acquiring attachments, HTML, analyzing and so on  **
- *  757:     function fetchHTML($file)
- *  775:     function fetchHTMLMedia()
- *  796:     function extractMediaLinks()
- *  872:     function extractHyperLinks()
- *  921:     function extractFramesInfo()
- *  947:     function substMediaNamesInHTML($absolute)
- *  974:     function substHREFsInHTML()
- * 1002:     function substHTTPurlsInPlainText($content)
- * 1042:     function fixRollOvers()
+ *  805:     function fetchHTML($file)
+ *  823:     function fetchHTMLMedia()
+ *  844:     function extractMediaLinks()
+ *  920:     function extractHyperLinks()
+ *  969:     function extractFramesInfo()
+ *  995:     function substMediaNamesInHTML($absolute)
+ * 1022:     function substHREFsInHTML()
+ * 1050:     function substHTTPurlsInPlainText($content)
+ * 1090:     function fixRollOvers()
  *
  *              SECTION: File and URL-functions
- * 1089:     function makeBase64($inputstr)
- * 1100:     function getExtendedURL($url)
- * 1120:     function addUserPass($url)
- * 1135:     function getURL($url)
- * 1156:     function getStrippedURL($url)
- * 1177:     function getMimeType($url)
- * 1206:     function absRef($ref)
- * 1226:     function split_fileref($fileref)
- * 1253:     function extParseUrl($path)
- * 1268:     function tag_regex($tagArray)
- * 1290:     function get_tag_attributes($tag)
- * 1330:     function quoted_printable($string)
- * 1368:     function convertName($name)
+ * 1137:     function makeBase64($inputstr)
+ * 1148:     function getExtendedURL($url)
+ * 1168:     function addUserPass($url)
+ * 1183:     function getURL($url)
+ * 1204:     function getStrippedURL($url)
+ * 1225:     function getMimeType($url)
+ * 1254:     function absRef($ref)
+ * 1274:     function split_fileref($fileref)
+ * 1301:     function extParseUrl($path)
+ * 1316:     function tag_regex($tagArray)
+ * 1338:     function get_tag_attributes($tag)
+ * 1380:     function quoted_printable($string)
+ * 1390:     function convertName($name)
  *
- * TOTAL FUNCTIONS: 46
+ * TOTAL FUNCTIONS: 47
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -249,6 +250,7 @@ class t3lib_htmlmail {
 	 * Constructor for the class. Make a check to see if Postfix version below 2.0 is used.
 	 * If this is the case all calls to mail() must not be called with the -f parameter to correctly set
 	 * the Return-Path header.
+	 *
 	 * @return	[type]		...
 	 */
 	function t3lib_htmlmail () {
@@ -638,7 +640,6 @@ class t3lib_htmlmail {
 	 * standard MTA's then we are very open for suggestions.
 	 *
 	 * With time this function should be made such that several ways of sending the mail is possible (local MTA, smtp other).
-	 *
 	 *
 	 * @return	[type]		...
 	 */

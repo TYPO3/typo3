@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,11 +26,29 @@
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   52: class tx_version_modfunc1 extends t3lib_extobjbase
+ *   66:     function main()
+ *
+ * TOTAL FUNCTIONS: 1
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 
 require_once(PATH_t3lib."class.t3lib_extobjbase.php");
 
+/**
+ * Module for versioning. NOT READY FOR RELEASE YET
+ *
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class tx_version_modfunc1 extends t3lib_extobjbase {
 	function modMenu()	{
 		global $LANG;
@@ -40,6 +58,11 @@ class tx_version_modfunc1 extends t3lib_extobjbase {
 		);
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function main()	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -43,9 +43,9 @@
  *  333:     function matchWild($haystack,$needle)
  *  363:     function whichDevice($useragent)
  *  413:     function browserInfo($useragent)
- *  511:     function browserInfo_version($tmp)
- *  523:     function getGlobal($var,$inArr='')
- *  548:     function getGP_ENV_TSFE($var)
+ *  517:     function browserInfo_version($tmp)
+ *  529:     function getGlobal($var,$inArr='')
+ *  554:     function getGP_ENV_TSFE($var)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")

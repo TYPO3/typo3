@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -47,10 +47,10 @@
  *  270:     function getFileFields($uploadfolder)
  *  293:     function getDBFields($theSearchTable)
  *  321:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)
- *  394:     function testFileRefs ()
- *  445:     function testDBRefs($theArray)
- *  483:     function whereIsRecordReferenced($searchTable,$id)
- *  520:     function whereIsFileReferenced($uploadfolder,$filename)
+ *  410:     function testFileRefs ()
+ *  461:     function testDBRefs($theArray)
+ *  499:     function whereIsRecordReferenced($searchTable,$id)
+ *  536:     function whereIsFileReferenced($uploadfolder,$filename)
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")

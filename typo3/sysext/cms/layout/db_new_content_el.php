@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,21 +39,22 @@
  *
  *
  *
- *  100: class ext_posMap extends t3lib_positionMap
- *  110:     function wrapRecordTitle($str,$row)
- *  124:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
+ *  101: class ext_posMap extends t3lib_positionMap
+ *  111:     function wrapRecordTitle($str,$row)
+ *  125:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0)
  *
  *
- *  152: class SC_db_new_content_el
- *  175:     function init()
- *  211:     function main()
- *  358:     function printContent()
+ *  153: class SC_db_new_content_el
+ *  176:     function init()
+ *  212:     function main()
+ *  359:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  387:     function getWizardItems()
- *  397:     function wizardArray()
+ *  388:     function getWizardItems()
+ *  398:     function wizardArray()
+ *  559:     function removeInvalidElements(&$wizardItems)
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

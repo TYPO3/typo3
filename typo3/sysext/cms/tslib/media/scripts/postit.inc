@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -35,7 +35,7 @@
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
- 
+
 
 
 if (!is_object($this)) die ('Error: No parent object present.');
@@ -43,7 +43,7 @@ if (!is_object($this)) die ('Error: No parent object present.');
 
 
 
-  
+
 
 /***************************************************************
 TypoScript config:
@@ -128,7 +128,7 @@ while(list($key,$content)=each($lines))	{
 		if ($text)	{
 			$imgConf = $conf['images.'][$type.'.'];
 			$imgConf['file.'] = $this->gifBuilderTextBox ($imgConf['file.'], $conf['textBox.'], $text);
-			
+
 			$image = $this->IMAGE($imgConf);
 			if ($image)	{
 				$this->setCurrentVal($link);

@@ -2,7 +2,7 @@
 	/***************************************************************
 	*  Copyright notice
 	*
-	*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+	*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 	*  All rights reserved
 	*
 	*  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,8 +31,8 @@
 	* @author Christian Jul Jensen <christian(at)jul(dot)net>
 	*     Revision for TYPO3 3.8.0 / Native Workflow System
 	*/
-	 
-	 
+
+
 	unset($MCONF);
 	require ('conf.php');
 	require ($BACK_PATH.'init.php');
@@ -40,10 +40,10 @@
 	$LANG->includeLLFile('EXT:taskcenter/task/locallang.php');
 	require_once(PATH_t3lib.'class.t3lib_scbase.php');
 	require_once('class.mod_user_task.php');
-	 
+
 	$BE_USER->modAccess($MCONF, 1);
-	 
-	 
+
+
 	// ***************************
 	// Script Classes
 	// ***************************
@@ -51,7 +51,7 @@
 		var $allExtClassConf = array();
 		var $backPath;
 		var $BE_USER;
-		 
+
 		/**
 		* This makes sure that all classes of task-center related extensions are included
 		* Further it registers the classes in the variable $this->allExtClassConf
@@ -67,7 +67,7 @@
 				}
 			}
 		}
-		 
+
 		/**
 		* This is the main function called by the TYPO3 framework
 		*
@@ -108,7 +108,7 @@
 
 			}
  </script>';
-			 
+
 			/* call getMainContent first, because what happens here might affect leftContent */
 			$mainContent = $this->getMainContent();
 
@@ -144,7 +144,7 @@
 			}
 			return $this->doc->getDynTabMenu($parts, 'tx_taskcenter', 1, true);
 		}
-		 
+
 		/**
 		* Generate the header of the left column
 		*
@@ -154,9 +154,9 @@
 			$name = $GLOBALS['BE_USER']->user['realName']?$GLOBALS['BE_USER']->user['realName']:
 			$GLOBALS['BE_USER']->user['username'];
 			return '<h1>TYPO3 taskcenter <br />'.$name.'</h1>';
-			 
+
 		}
-		 
+
 		/**
 		* Get the main content for the module by initiating the external object (if any) and calling it's main function.
 		*
@@ -169,7 +169,7 @@
 				return $this->extObj->main();
 			}
 		}
-		 
+
 		/**
 		* Output the content of the object to the browser
 		*
@@ -179,35 +179,35 @@
 			$this->content .= $this->doc->endPage();
 			echo $this->content;
 		}
-		 
+
 	}
-	 
-	 
-	 
+
+
+
 	// Include extension?
 	if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/taskcenter/task/index.php']) {
 		include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/taskcenter/task/index.php']);
 	}
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
+
+
+
+
+
+
+
+
+
+
+
 	// Make instance:
 	$SOBE = t3lib_div::makeInstance('SC_mod_user_task_index');
 	$SOBE->init();
 	$SOBE->includeAllClasses();
-	 
+
 	// Include files?
 	foreach($SOBE->include_once as $INC_FILE) include_once($INC_FILE);
 	$SOBE->checkExtObj(); // Checking for first level external objects
-	 
+
 	$SOBE->main();
 	$SOBE->printContent();
 ?>

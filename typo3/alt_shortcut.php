@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,18 +42,18 @@
  *
  *
  *   82: class SC_alt_shortcut
- *  118:     function preinit()
- *  143:     function preprocess()
- *  200:     function init()
- *  234:     function main()
- *  335:     function editLoadedFunc()
- *  396:     function editPageIdFunc()
- *  438:     function printContent()
+ *  121:     function preinit()
+ *  146:     function preprocess()
+ *  203:     function init()
+ *  237:     function main()
+ *  345:     function editLoadedFunc()
+ *  406:     function editPageIdFunc()
+ *  454:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  466:     function mIconFilename($Ifilename,$backPath)
- *  479:     function getIcon($modName)
- *  503:     function itemLabel($inlabel,$modName,$M_modName='')
+ *  482:     function mIconFilename($Ifilename,$backPath)
+ *  495:     function getIcon($modName)
+ *  519:     function itemLabel($inlabel,$modName,$M_modName='')
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")

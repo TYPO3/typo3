@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,31 +37,32 @@
  *
  *
  *
- *   80: class t3lib_basicFileFunctions
+ *   81: class t3lib_basicFileFunctions
  *
  *              SECTION: Checking functions
- *  132:     function init($mounts, $f_ext)
- *  149:     function getTotalFileInfo($wholePath)
- *  169:     function is_allowed($iconkey,$type)
- *  194:     function checkIfFullAccess($theDest)
- *  208:     function is_webpath($path)
- *  228:     function checkIfAllowed($ext, $theDest, $filename='')
- *  238:     function checkFileNameLen($fileName)
- *  248:     function is_directory($theDir)
- *  265:     function isPathValid($theFile)
- *  280:     function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)
- *  323:     function checkPathAgainstMounts($thePath)
- *  341:     function blindPath($thePath)
- *  357:     function findTempFolder()
+ *  133:     function init($mounts, $f_ext)
+ *  150:     function getTotalFileInfo($wholePath)
+ *  170:     function is_allowed($iconkey,$type)
+ *  195:     function checkIfFullAccess($theDest)
+ *  209:     function is_webpath($path)
+ *  229:     function checkIfAllowed($ext, $theDest, $filename='')
+ *  239:     function checkFileNameLen($fileName)
+ *  249:     function is_directory($theDir)
+ *  266:     function isPathValid($theFile)
+ *  281:     function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)
+ *  324:     function checkPathAgainstMounts($thePath)
+ *  340:     function findFirstWebFolder()
+ *  360:     function blindPath($thePath)
+ *  376:     function findTempFolder()
  *
  *              SECTION: Cleaning functions
- *  386:     function cleanDirectoryName($theDir)
- *  396:     function rmDoubleSlash($string)
- *  406:     function slashPath($path)
- *  419:     function cleanFileName($fileName)
- *  430:     function formatSize($sizeInBytes)
+ *  410:     function cleanDirectoryName($theDir)
+ *  420:     function rmDoubleSlash($string)
+ *  430:     function slashPath($path)
+ *  443:     function cleanFileName($fileName)
+ *  454:     function formatSize($sizeInBytes)
  *
- * TOTAL FUNCTIONS: 18
+ * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

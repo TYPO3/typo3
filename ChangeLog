@@ -1,5 +1,10 @@
 2005-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Updated all years from 2004 to 2005
+	* Updated all function indexeds in top of scripts (no actual code changes done!)
+
+2005-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added Bernhard Krafts security improvement for server validated challenge value.
 	* Added "Esperanto" as language - now we are at 41 backend languages.
 	* Made a change to how cache-control headers are sent. Thanks to Ole Tange, FI, Denmark

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,6 +13,9 @@
 *
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
 *
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,22 +35,22 @@ require_once(PATH_t3lib.'class.t3lib_svbase.php');
 class tx_sv_authbase extends t3lib_svbase 	{
 
 	var $pObj; 						// Parent object
-	
+
 	var $mode;						// Subtype of the service which is used to call the service.
-	
-	var $login=array();				// Submitted login form data 
+
+	var $login=array();				// Submitted login form data
 	var $info=array();				// Various data
-	
+
 	var $db_user=array();			// User db table definition
 	var $db_groups=array();			// Usergroups db table definition
-	
+
 	var $writeAttemptLog = 0;		// If the writelog() functions is called if a login-attempt has be tried without success
 
 	/**
 	 * init service
 	 *
 	 * @param	string 		Subtype of the service which is used to call the service.
-	 * @param	array 		Submitted login form data 
+	 * @param	array 		Submitted login form data
 	 * @param	array 		Information array. Holds submitted form data etc.
 	 * @param	object 		Parent object
 	 * @return	void
@@ -55,16 +58,16 @@ class tx_sv_authbase extends t3lib_svbase 	{
 	function initAuth($mode, $loginData, $info, &$pObj)	{
 
 		$this->pObj = &$pObj;
-		
+
 		$this->mode = $mode;
 		$this->login = $loginData;
 		$this->info = $info;
 
 		$this->db_user = $this->getServiceOption('db_user', $info['db_user'], FALSE);
 		$this->db_groups = $this->getServiceOption('db_groups', $info['db_groups'], FALSE);
-		
-		$this->writeAttemptLog = $this->pObj->writeAttemptLog;	
-		$this->writeDevLog	 = $this->pObj->writeDevLog;	
+
+		$this->writeAttemptLog = $this->pObj->writeAttemptLog;
+		$this->writeDevLog	 = $this->pObj->writeDevLog;
 	}
 
 	/**
@@ -87,7 +90,7 @@ class tx_sv_authbase extends t3lib_svbase 	{
 			$this->pObj->writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid);
 		}
 	}
-	
+
 }
 
 

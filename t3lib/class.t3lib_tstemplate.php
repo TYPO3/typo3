@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -44,34 +44,34 @@
  *  288:     function start($theRootLine)
  *
  *              SECTION: Fetching TypoScript code text for the Template Hierarchy
- *  403:     function runThroughTemplates($theRootLine,$start_template_uid=0)
- *  450:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')
- *  565:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)
- *  626:     function addExtensionStatics($idList,$templateID,$pid,$row)
- *  659:     function prependStaticExtra($subrow)
+ *  404:     function runThroughTemplates($theRootLine,$start_template_uid=0)
+ *  451:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')
+ *  566:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)
+ *  627:     function addExtensionStatics($idList,$templateID,$pid,$row)
+ *  660:     function prependStaticExtra($subrow)
  *
  *              SECTION: Parsing TypoScript code text from Template Records into PHP array
- *  695:     function generateConfig()
- *  859:     function procesIncludes()
- *  883:     function mergeConstantsFromPageTSconfig($constArray)
- *  912:     function flattenSetup($setupArray, $prefix, $resourceFlag)
- *  936:     function substituteConstants($all)
+ *  696:     function generateConfig()
+ *  862:     function procesIncludes()
+ *  886:     function mergeConstantsFromPageTSconfig($constArray)
+ *  915:     function flattenSetup($setupArray, $prefix, $resourceFlag)
+ *  939:     function substituteConstants($all)
  *
  *              SECTION: Various API functions, used from elsewhere in the frontend classes
- *  974:     function splitConfArray($conf,$splitCount)
- * 1051:     function getFileName($fileFromSetup)
- * 1108:     function extractFromResources($res,$file)
- * 1136:     function checkFile($name,$menuArr)
- * 1153:     function printTitle($title,$no_title=0,$titleFirst=0)
- * 1176:     function fileContent($fName)
- * 1196:     function wrap($content,$wrap)
- * 1210:     function removeQueryString($url)
- * 1227:     function sortedKeyList($setupArr, $acceptOnlyProperties=FALSE)
+ *  977:     function splitConfArray($conf,$splitCount)
+ * 1054:     function getFileName($fileFromSetup)
+ * 1111:     function extractFromResources($res,$file)
+ * 1139:     function checkFile($name,$menuArr)
+ * 1156:     function printTitle($title,$no_title=0,$titleFirst=0)
+ * 1179:     function fileContent($fName)
+ * 1199:     function wrap($content,$wrap)
+ * 1213:     function removeQueryString($url)
+ * 1230:     function sortedKeyList($setupArr, $acceptOnlyProperties=FALSE)
  *
  *              SECTION: Functions for creating links
- * 1274:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')
- * 1393:     function getFromMPmap($pageId=0)
- * 1429:     function initMPmap_create($id,$MP_array=array(),$level=0)
+ * 1277:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')
+ * 1396:     function getFromMPmap($pageId=0)
+ * 1432:     function initMPmap_create($id,$MP_array=array(),$level=0)
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,12 +46,12 @@
  *              SECTION: Rendering module
  *  215:     function init()
  *  247:     function main()
- *  397:     function printContent()
+ *  402:     function printContent()
  *
  *              SECTION: Helper functions
- *  426:     function getRealScriptUserObj()
- *  436:     function simulateUser()
- *  482:     function setLabel($str,$key='')
+ *  431:     function getRealScriptUserObj()
+ *  441:     function simulateUser()
+ *  487:     function setLabel($str,$key='')
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")

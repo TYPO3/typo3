@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,59 +37,60 @@
  *
  *
  *
- *  132: class t3lib_DB
+ *  133: class t3lib_DB
  *
  *              SECTION: Query execution
- *  167:     function exec_INSERTquery($table,$fields_values)
- *  183:     function exec_UPDATEquery($table,$where,$fields_values)
- *  197:     function exec_DELETEquery($table,$where)
- *  216:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
- *  241:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *  264:     function exec_SELECT_queryArray($queryParts)
- *  287:     function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')
+ *  168:     function exec_INSERTquery($table,$fields_values)
+ *  184:     function exec_UPDATEquery($table,$where,$fields_values)
+ *  198:     function exec_DELETEquery($table,$where)
+ *  217:     function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  242:     function exec_SELECT_mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  265:     function exec_SELECT_queryArray($queryParts)
+ *  288:     function exec_SELECTgetRows($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='',$uidIndexField='')
  *
  *              SECTION: Query building
- *  332:     function INSERTquery($table,$fields_values)
- *  368:     function UPDATEquery($table,$where,$fields_values)
- *  407:     function DELETEquery($table,$where)
- *  436:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
- *  477:     function listQuery($field, $value, $table)
- *  491:     function searchQuery($searchWords,$fields,$table)
+ *  333:     function INSERTquery($table,$fields_values)
+ *  369:     function UPDATEquery($table,$where,$fields_values)
+ *  408:     function DELETEquery($table,$where)
+ *  437:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')
+ *  478:     function listQuery($field, $value, $table)
+ *  492:     function searchQuery($searchWords,$fields,$table)
  *
  *              SECTION: Various helper functions
- *  537:     function quoteStr($str, $table)
- *  550:     function cleanIntArray($arr)
- *  566:     function cleanIntList($list)
- *  580:     function stripOrderBy($str)
- *  594:     function stripGroupBy($str)
- *  606:     function splitGroupOrderLimit($str)
+ *  538:     function fullQuoteStr($str, $table)
+ *  554:     function quoteStr($str, $table)
+ *  567:     function cleanIntArray($arr)
+ *  583:     function cleanIntList($list)
+ *  597:     function stripOrderBy($str)
+ *  611:     function stripGroupBy($str)
+ *  623:     function splitGroupOrderLimit($str)
  *
  *              SECTION: MySQL wrapper functions
- *  671:     function sql($db,$query)
- *  685:     function sql_query($query)
- *  698:     function sql_error()
- *  710:     function sql_num_rows($res)
- *  722:     function sql_fetch_assoc($res)
- *  735:     function sql_fetch_row($res)
- *  747:     function sql_free_result($res)
- *  758:     function sql_insert_id()
- *  769:     function sql_affected_rows()
- *  782:     function sql_data_seek($res,$seek)
- *  795:     function sql_field_type($res,$pointer)
- *  809:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
- *  826:     function sql_select_db($TYPO3_db)
+ *  688:     function sql($db,$query)
+ *  702:     function sql_query($query)
+ *  715:     function sql_error()
+ *  727:     function sql_num_rows($res)
+ *  739:     function sql_fetch_assoc($res)
+ *  752:     function sql_fetch_row($res)
+ *  764:     function sql_free_result($res)
+ *  775:     function sql_insert_id()
+ *  786:     function sql_affected_rows()
+ *  799:     function sql_data_seek($res,$seek)
+ *  812:     function sql_field_type($res,$pointer)
+ *  826:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
+ *  843:     function sql_select_db($TYPO3_db)
  *
  *              SECTION: SQL admin functions
- *  854:     function admin_get_dbs()
- *  872:     function admin_get_tables()
- *  891:     function admin_get_fields($tableName)
- *  909:     function admin_get_keys($tableName)
- *  927:     function admin_query($query)
+ *  871:     function admin_get_dbs()
+ *  889:     function admin_get_tables()
+ *  908:     function admin_get_fields($tableName)
+ *  926:     function admin_get_keys($tableName)
+ *  944:     function admin_query($query)
  *
  *              SECTION: Debugging
- *  954:     function debug($func)
+ *  971:     function debug($func)
  *
- * TOTAL FUNCTIONS: 38
+ * TOTAL FUNCTIONS: 39
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

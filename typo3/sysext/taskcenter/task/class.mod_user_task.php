@@ -2,7 +2,7 @@
 	/***************************************************************
 	*  Copyright notice
 	*
-	*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+	*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 	*  All rights reserved
 	*
 	*  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,21 +31,21 @@
 	* @author Christian Jul Jensen <christian(at)jul(dot)net>
 	*					Revision for TYPO3 3.8.0 / Native Workflow System
 	*/
-	 
+
 	require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
-	 
+
 	class mod_user_task extends t3lib_extobjbase {
 		var $getUserNamesFields = 'username,usergroup,usergroup_cached_list,uid,realName,email';
 		var $userGroupArray = array();
 		var $perms_clause = '';
-		 
+
 		var $backPath;
 		var $BE_USER;
-		 
+
 		function JScode() {
-			 
+
 		}
-		 
+
 		/**
 		* Send an email...
 		*
@@ -60,15 +60,15 @@
 		function sendEmail($email, $subject, $message) {
 			$sender = $this->BE_USER->user['realName'].' <'.$this->BE_USER->user['email'].'>';
 			$message .= '
-				 
+
 				--------
 				'.sprintf($GLOBALS['LANG']->getLL('messages_emailFooter'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], t3lib_div::getIndpEnv('HTTP_HOST'));
 			mail($email, $GLOBALS['TYPO3_CONF_VARS']['BE']['notificationPrefix'].' '.$subject, $message, "From: ".$sender);
-			 
+
 			//  debug($email);
 			//  debug($message);
 		}
-		 
+
 		/**
 		* Initialise the object
 		*
@@ -79,7 +79,7 @@
 			$this->BE_USER = $BE_USER;
 			$this->perms_clause = $this->BE_USER->getPagePermsClause(1);
 		}
-		 
+
 		/**
 		* Return helpbubble image
 		*
@@ -88,8 +88,8 @@
 		function helpBubble() {
 			return '<img src="'.$this->backPath.'gfx/helpbubble.gif" width="14" height="14" hspace=2 align=top'.$GLOBALS['SOBE']->doc->helpStyle().'>';
 		}
-		 
-		 
+
+
 		/**
 		* Create a link to the module with the name of the module as link text.
 		*
@@ -103,7 +103,7 @@
 			if (!$dontLink) $str = '<a href="index.php?SET[function]='.$key.$params.'" onClick="this.blur();">'.htmlspecialchars($str).'</a>';
 			return $str;
 		}
-		 
+
 		/**
 		* Return a string cropped to a fixed length according to system setting or parameter
 		*
@@ -114,7 +114,7 @@
 		function fixed_lgd($str, $len = 0) {
 			return t3lib_div::fixed_lgd($str, $len?$len:$this->BE_USER->uc['titleLen']);
 		}
-		 
+
 		/**
 		* Return an error icon
 		*
@@ -123,7 +123,7 @@
 		function errorIcon() {
 			return '<img src="'.$this->backPath.'gfx/icon_fatalerror.gif" width="18" height="16" align=top>';
 		}
-		 
+
 		/**
 		* [Describe function...]
 		*
@@ -136,11 +136,11 @@
 			// Usernames
 			$be_user_Array = $be_user_Array_o = t3lib_BEfunc::getUserNames($this->getUserNamesFields);
 			if (!$GLOBALS['BE_USER']->isAdmin()) $be_user_Array = t3lib_BEfunc::blindUserNames($be_user_Array, $groupArray, 1);
-				 
+
 			$this->userGroupArray = array($be_user_Array, $be_group_Array, $be_user_Array_o);
 			return $this->userGroupArray;
 		}
-		 
+
 		/**
 		* [Describe function...]
 		*
@@ -151,7 +151,7 @@
 		function dateTimeAge($tstamp, $prefix = 1) {
 			return t3lib_BEfunc::dateTimeAge($tstamp, $prefix);
 		}
-		 
+
 		/**
 		* [Describe function...]
 		*
@@ -161,7 +161,7 @@
 		function accessMod($mod) {
 			return $this->BE_USER->modAccess(array('name' => $mod, 'access' => 'user,group'), 0);
 		}
-		 
+
 		/**
 		* Create configuration for entry in the left tab menu.
 		*
@@ -179,7 +179,7 @@
 			if ((string) $linkTitle) $configArr['linkTitle'] = $linkTitle;
 			return $configArr;
 		}
-		 
+
 		/**
 		* Returns HTML code to dislay an url in an iframe with the right side of the taskcenter
 		*
@@ -189,14 +189,14 @@
 		function urlInIframe($url,$max=0) {
 			return '<iframe onload="resizeIframe(this,'.$max.');" scrolling="auto" width="100%" src="'.$url.'" name="list_frame" frameborder="no" style="border: none;"></iframe>';
 		}
-		 
-		 
+
+
 	}
-	 
+
 	// Include extension?
 	if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/taskcenter/task/class.mod_user_task.php']) {
 		include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/taskcenter/task/class.mod_user_task.php']);
 	}
-	 
-	 
+
+
 ?>

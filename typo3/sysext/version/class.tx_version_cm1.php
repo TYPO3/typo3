@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,11 +24,39 @@
 /**
  * Addition of an item to the clickmenu
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   51: class tx_version_cm1
+ *   60:     function main(&$backRef,$menuItems,$table,$uid)
+ *  109:     function includeLL()
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
+/**
+ * Addition of an item to the clickmenu
+ *
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class tx_version_cm1 {
+
+	/**
+	 * @param	[type]		$$backRef: ...
+	 * @param	[type]		$menuItems: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$uid: ...
+	 * @return	[type]		...
+	 */
 	function main(&$backRef,$menuItems,$table,$uid)	{
 		global $BE_USER,$TCA,$LANG;
 
@@ -75,6 +103,8 @@ class tx_version_cm1 {
 
 	/**
 	 * Includes the [extDir]/locallang.php and returns the $LOCAL_LANG array found in that file.
+	 *
+	 * @return	[type]		...
 	 */
 	function includeLL()	{
 		global $LANG;
@@ -88,5 +118,4 @@ class tx_version_cm1 {
 if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/version/class.tx_version_cm1.php"])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/version/class.tx_version_cm1.php"]);
 }
-
 ?>

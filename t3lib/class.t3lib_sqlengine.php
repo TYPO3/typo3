@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -68,15 +68,15 @@
  *  740:     function getResultSet($keys, $table, $fieldList)
  *
  *              SECTION: Debugging
- *  785:     function debug_printResultSet($array)
+ *  773:     function debug_printResultSet($array)
  *
  *
- *  824: class t3lib_sqlengine_resultobj
- *  838:     function sql_num_rows()
- *  847:     function sql_fetch_assoc()
- *  858:     function sql_fetch_row()
- *  876:     function sql_data_seek($pointer)
- *  889:     function sql_field_type()
+ *  812: class t3lib_sqlengine_resultobj
+ *  826:     function sql_num_rows()
+ *  835:     function sql_fetch_assoc()
+ *  846:     function sql_fetch_row()
+ *  864:     function sql_data_seek($pointer)
+ *  877:     function sql_field_type()
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -453,7 +453,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 	/**
 	 * Quoting strings for insertion in SQL queries
 	 *
-	 * @param	string		String
+	 * @param	string		Input String
 	 * @return	string		String, with quotes escaped
 	 */
 	function quoteStr($str)	{

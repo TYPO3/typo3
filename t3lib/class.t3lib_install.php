@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,27 +37,27 @@
  *
  *
  *   83: class t3lib_install
- *  111:     function t3lib_install()
+ *  112:     function t3lib_install()
  *
  *              SECTION: Writing to localconf.php
- *  134:     function setValueInLocalconfFile(&$line_array, $variable, $value)
- *  184:     function writeToLocalconf_control($inlines='')
- *  236:     function checkForBadString($string)
- *  249:     function slashValueForSingleDashes($value)
+ *  136:     function setValueInLocalconfFile(&$line_array, $variable, $value)
+ *  186:     function writeToLocalconf_control($inlines='')
+ *  238:     function checkForBadString($string)
+ *  251:     function slashValueForSingleDashes($value)
  *
  *              SECTION: SQL
- *  274:     function getFieldDefinitions_sqlContent($sqlContent)
- *  318:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
- *  365:     function getFieldDefinitions_database()
- *  409:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
- *  454:     function getUpdateSuggestions($diffArr,$keyList='extra,diff')
- *  550:     function assembleFieldDefinition($row)
- *  579:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')
- *  619:     function getCreateTables($statements, $insertCountFlag=0)
- *  643:     function getTableInsertStatements($statements, $table)
- *  663:     function performUpdateQueries($arr,$keyArr)
- *  679:     function getListOfTables()
- *  695:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)
+ *  276:     function getFieldDefinitions_sqlContent($sqlContent)
+ *  320:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
+ *  367:     function getFieldDefinitions_database()
+ *  411:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
+ *  456:     function getUpdateSuggestions($diffArr,$keyList='extra,diff')
+ *  557:     function assembleFieldDefinition($row)
+ *  586:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')
+ *  626:     function getCreateTables($statements, $insertCountFlag=0)
+ *  650:     function getTableInsertStatements($statements, $table)
+ *  670:     function performUpdateQueries($arr,$keyArr)
+ *  686:     function getListOfTables()
+ *  702:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")

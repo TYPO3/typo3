@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,44 +40,44 @@
  *  312:     function indexed_info($data, $firstColContent)
  *  398:     function printPhashRow($row,$grouping=0,$extraGrListRows)
  *  539:     function printPhashRowHeader()
- *  592:     function returnNumberOfColumns()
+ *  594:     function returnNumberOfColumns()
  *
  *              SECTION: Details display, phash row
- *  628:     function showDetailsForPhash($phash)
- *  745:     function listWords($ftrows,$header, $stopWordBoxes=FALSE, $page='')
- *  794:     function listMetaphoneStat($ftrows,$header)
- *  831:     function linkWordDetails($string,$wid)
- *  843:     function linkMetaPhoneDetails($string,$metaphone)
- *  853:     function flagsMsg($flags)
+ *  630:     function showDetailsForPhash($phash)
+ *  747:     function listWords($ftrows,$header, $stopWordBoxes=FALSE, $page='')
+ *  796:     function listMetaphoneStat($ftrows,$header)
+ *  833:     function linkWordDetails($string,$wid)
+ *  845:     function linkMetaPhoneDetails($string,$metaphone)
+ *  855:     function flagsMsg($flags)
  *
  *              SECTION: Details display, words / metaphone
- *  884:     function showDetailsForWord($wid)
- *  943:     function showDetailsForMetaphone($metaphone)
+ *  886:     function showDetailsForWord($wid)
+ *  945:     function showDetailsForMetaphone($metaphone)
  *
  *              SECTION: Helper functions
- * 1014:     function printRemoveIndexed($phash,$alt)
- * 1027:     function printReindex($resultRow,$alt)
- * 1042:     function linkDetails($string,$phash)
- * 1051:     function linkList()
- * 1062:     function showPageDetails($string,$id)
- * 1072:     function printExtraGrListRows($extraGrListRows)
- * 1089:     function printRootlineInfo($row)
- * 1123:     function makeItemTypeIcon($it,$alt='')
- * 1148:     function utf8_to_currentCharset($string)
+ * 1016:     function printRemoveIndexed($phash,$alt)
+ * 1029:     function printReindex($resultRow,$alt)
+ * 1044:     function linkDetails($string,$phash)
+ * 1053:     function linkList()
+ * 1064:     function showPageDetails($string,$id)
+ * 1074:     function printExtraGrListRows($extraGrListRows)
+ * 1091:     function printRootlineInfo($row)
+ * 1125:     function makeItemTypeIcon($it,$alt='')
+ * 1150:     function utf8_to_currentCharset($string)
  *
  *              SECTION: Reindexing
- * 1180:     function reindexPhash($phash, $pageId)
- * 1234:     function getUidRootLineForClosestTemplate($id)
+ * 1183:     function reindexPhash($phash, $pageId)
+ * 1237:     function getUidRootLineForClosestTemplate($id)
  *
  *              SECTION: Indexing of configurations
- * 1275:     function extraIndexing()
- * 1386:     function indexExtUrlRecursively($url, $depth, $pageId, $rl, $cfgUid)
+ * 1278:     function extraIndexing()
+ * 1389:     function indexExtUrlRecursively($url, $depth, $pageId, $rl, $cfgUid)
  *
  *              SECTION: SQL functions
- * 1443:     function removeIndexedPhashRow($phashList,$clearPageCache=1)
- * 1480:     function getGrListEntriesForPhash($phash,$gr_list)
- * 1500:     function processStopWords($stopWords)
- * 1520:     function processPageKeywords($pageKeywords, $pageUid)
+ * 1446:     function removeIndexedPhashRow($phashList,$clearPageCache=1)
+ * 1483:     function getGrListEntriesForPhash($phash,$gr_list)
+ * 1503:     function processStopWords($stopWords)
+ * 1523:     function processPageKeywords($pageKeywords, $pageUid)
  *
  * TOTAL FUNCTIONS: 32
  * (This index is automatically created/updated by the extension "extdeveval")

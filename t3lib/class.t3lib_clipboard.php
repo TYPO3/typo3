@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,43 +38,50 @@
  *
  *
  *
- *   90: class t3lib_clipboard
- *  126:     function initializeClipboard()
- *  155:     function lockToNormal()
- *  172:     function setCmd($cmd)
- *  219:     function setCurrentPad($padIdent)
- *  234:     function endClipboard()
- *  247:     function cleanUpCBC($CBarr,$table,$removeDeselected=0)
- *  265:     function isElements()
- *  274:     function printClipboard()
- *  363:     function printContentFromTab($pad)
- *  437:     function padTitleWrap($str,$pad)
- *  454:     function linkItemText($str,$rec,$table='')
- *  479:     function isSelected($table,$uid)
- *  493:     function getSelectedRecord($table='',$uid='')
- *  516:     function selUrlDB($table,$uid,$copy=0,$deselect=0,$baseArray=array())
- *  532:     function selUrlFile($path,$copy=0,$deselect=0,$baseArray=array())
- *  549:     function pasteUrl($table,$uid,$setRedirect=1)
- *  566:     function deleteUrl($setRedirect=1,$file=0)
- *  583:     function editUrl()
- *  604:     function removeUrl($table,$uid)
- *  614:     function cleanCurrent()
- *  641:     function elFromTable($matchTable='',$pad='')
- *  673:     function confirmMsg($table,$rec,$type,$clElements)
- *  716:     function removeElement($el)
- *  728:     function saveClipboard()
- *  738:     function currentMode()
- *  749:     function clLabel($key,$Akey='labels')
+ *   97: class t3lib_clipboard
+ *
+ *              SECTION: Initialize
+ *  150:     function initializeClipboard()
+ *  179:     function lockToNormal()
+ *  196:     function setCmd($cmd)
+ *  243:     function setCurrentPad($padIdent)
+ *  258:     function endClipboard()
+ *  271:     function cleanUpCBC($CBarr,$table,$removeDeselected=0)
+ *
+ *              SECTION: Clipboard HTML renderings
+ *  306:     function printClipboard()
+ *  408:     function printContentFromTab($pad)
+ *  482:     function padTitleWrap($str,$pad)
+ *  499:     function linkItemText($str,$rec,$table='')
+ *  526:     function selUrlDB($table,$uid,$copy=0,$deselect=0,$baseArray=array())
+ *  542:     function selUrlFile($path,$copy=0,$deselect=0,$baseArray=array())
+ *  559:     function pasteUrl($table,$uid,$setRedirect=1)
+ *  576:     function deleteUrl($setRedirect=1,$file=0)
+ *  593:     function editUrl()
+ *  614:     function removeUrl($table,$uid)
+ *  627:     function confirmMsg($table,$rec,$type,$clElements)
+ *  671:     function clLabel($key,$Akey='labels')
+ *  680:     function exportClipElementParameters()
+ *
+ *              SECTION: Helper functions
+ *  730:     function removeElement($el)
+ *  742:     function saveClipboard()
+ *  752:     function currentMode()
+ *  762:     function cleanCurrent()
+ *  789:     function elFromTable($matchTable='',$pad='')
+ *  820:     function isSelected($table,$uid)
+ *  834:     function getSelectedRecord($table='',$uid='')
+ *  852:     function isElements()
  *
  *              SECTION: FOR USE IN tce_db.php:
- *  790:     function makePasteCmdArray($ref,$CMD)
- *  819:     function makeDeleteCmdArray($CMD)
+ *  893:     function makePasteCmdArray($ref,$CMD)
+ *  922:     function makeDeleteCmdArray($CMD)
  *
  *              SECTION: FOR USE IN tce_file.php:
- *  862:     function makePasteCmdArray_file($ref,$FILE)
- *  884:     function makeDeleteCmdArray_file($FILE)
+ *  965:     function makePasteCmdArray_file($ref,$FILE)
+ *  987:     function makeDeleteCmdArray_file($FILE)
  *
- * TOTAL FUNCTIONS: 30
+ * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */

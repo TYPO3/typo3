@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,55 +36,56 @@
  *
  *
  *
- *  106: class t3lib_sqlparser
+ *  107: class t3lib_sqlparser
  *
  *              SECTION: SQL Parsing, full queries
- *  128:     function parseSQL($parseString)
- *  188:     function parseSELECT($parseString)
- *  257:     function parseUPDATE($parseString)
- *  311:     function parseINSERT($parseString)
- *  371:     function parseDELETE($parseString)
- *  409:     function parseEXPLAIN($parseString)
- *  431:     function parseCREATETABLE($parseString)
- *  503:     function parseALTERTABLE($parseString)
- *  572:     function parseDROPTABLE($parseString)
+ *  129:     function parseSQL($parseString)
+ *  192:     function parseSELECT($parseString)
+ *  261:     function parseUPDATE($parseString)
+ *  315:     function parseINSERT($parseString)
+ *  375:     function parseDELETE($parseString)
+ *  413:     function parseEXPLAIN($parseString)
+ *  435:     function parseCREATETABLE($parseString)
+ *  507:     function parseALTERTABLE($parseString)
+ *  576:     function parseDROPTABLE($parseString)
+ *  609:     function parseCREATEDATABASE($parseString)
  *
  *              SECTION: SQL Parsing, helper functions for parts of queries
- *  631:     function parseFieldList(&$parseString, $stopRegex='')
- *  749:     function parseFromTables(&$parseString, $stopRegex='')
- *  816:     function parseWhereClause(&$parseString, $stopRegex='')
- *  924:     function parseFieldDef(&$parseString, $stopRegex='')
+ *  663:     function parseFieldList(&$parseString, $stopRegex='')
+ *  781:     function parseFromTables(&$parseString, $stopRegex='')
+ *  844:     function parseWhereClause(&$parseString, $stopRegex='')
+ *  952:     function parseFieldDef(&$parseString, $stopRegex='')
  *
  *              SECTION: Parsing: Helper functions
- *  985:     function nextPart(&$parseString,$regex,$trimAll=FALSE)
- *  999:     function getValue(&$parseString,$comparator='')
- * 1054:     function getValueInQuotes(&$parseString,$quote)
- * 1079:     function parseStripslashes($str)
- * 1093:     function compileAddslashes($str)
- * 1107:     function parseError($msg,$restQuery)
- * 1121:     function trimSQL($str)
+ * 1013:     function nextPart(&$parseString,$regex,$trimAll=FALSE)
+ * 1028:     function getValue(&$parseString,$comparator='')
+ * 1084:     function getValueInQuotes(&$parseString,$quote)
+ * 1110:     function parseStripslashes($str)
+ * 1124:     function compileAddslashes($str)
+ * 1139:     function parseError($msg,$restQuery)
+ * 1153:     function trimSQL($str)
  *
  *              SECTION: Compiling queries
- * 1149:     function compileSQL($components)
- * 1187:     function compileSELECT($components)
- * 1218:     function compileUPDATE($components)
- * 1246:     function compileINSERT($components)
- * 1286:     function compileDELETE($components)
- * 1306:     function compileCREATETABLE($components)
- * 1337:     function compileALTERTABLE($components)
+ * 1182:     function compileSQL($components)
+ * 1220:     function compileSELECT($components)
+ * 1251:     function compileUPDATE($components)
+ * 1279:     function compileINSERT($components)
+ * 1319:     function compileDELETE($components)
+ * 1339:     function compileCREATETABLE($components)
+ * 1370:     function compileALTERTABLE($components)
  *
  *              SECTION: Compiling queries, helper functions for parts of queries
- * 1390:     function compileFieldList($selectFields)
- * 1432:     function compileFromTables($tablesArray)
- * 1468:     function compileWhereClause($clauseArray)
- * 1522:     function compileFieldCfg($fieldCfg)
+ * 1423:     function compileFieldList($selectFields)
+ * 1465:     function compileFromTables($tablesArray)
+ * 1502:     function compileWhereClause($clauseArray)
+ * 1556:     function compileFieldCfg($fieldCfg)
  *
  *              SECTION: Debugging
- * 1571:     function debug_parseSQLpart($part,$str)
- * 1593:     function debug_parseSQLpartCompare($str,$newStr,$caseInsensitive=FALSE)
- * 1626:     function debug_testSQL($SQLquery)
+ * 1605:     function debug_parseSQLpart($part,$str)
+ * 1627:     function debug_parseSQLpartCompare($str,$newStr,$caseInsensitive=FALSE)
+ * 1660:     function debug_testSQL($SQLquery)
  *
- * TOTAL FUNCTIONS: 34
+ * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
