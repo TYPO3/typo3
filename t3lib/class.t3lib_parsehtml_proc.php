@@ -239,23 +239,27 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 			// Setting modes:
 		if (strcmp($this->procOptions['overruleMode'],''))	{
-			$modes=array_unique(t3lib_div::trimExplode(',',$this->procOptions['overruleMode']));
+			$modes = array_unique(t3lib_div::trimExplode(',',$this->procOptions['overruleMode']));
 		} else {
-			$modes=array_unique(t3lib_div::trimExplode('-',$p['mode']));
+			$modes = array_unique(t3lib_div::trimExplode('-',$p['mode']));
 		}
-		$revmodes=array_flip($modes);
+		$revmodes = array_flip($modes);
 
 			// Find special modes and extract them:
 		if (isset($revmodes['ts']))	{
-			$modes[$revmodes['ts']]='ts_transform,ts_preserve,ts_images,ts_links';
+			$modes[$revmodes['ts']] = 'ts_transform,ts_preserve,ts_images,ts_links';
 		}
 			// Find special modes and extract them:
 		if (isset($revmodes['ts_css']))	{
-			$modes[$revmodes['ts_css']]='css_transform,ts_images,ts_links';
+			$modes[$revmodes['ts_css']] = 'css_transform,ts_images,ts_links';
 		}
+
+			// Make list unique
 		$modes = array_unique(t3lib_div::trimExplode(',',implode(',',$modes),1));
+
+			// Reverse order if direction is "rte"
 		if ($direction=='rte')	{
-			$modes=array_reverse($modes);
+			$modes = array_reverse($modes);
 		}
 
 			// Getting additional HTML cleaner configuration. These are applied either before or after the main transformation is done and is thus totally independant processing options you can set up:
@@ -276,54 +280,69 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		foreach($modes as $cmd)	{
 				// ->DB
 			if ($direction=='db')	{
-				switch($cmd)	{
-					case 'ts_images':
-						$value=$this->TS_images_db($value);
-					break;
-					case 'ts_reglinks':
-						$value=$this->TS_reglinks($value,'db');
-					break;
-					case 'ts_links':
-						$value=$this->TS_links_db($value);
-					break;
-					case 'ts_preserve':
-						$value=$this->TS_preserve_db($value);
-					break;
-					case 'ts_transform':
-					case 'css_transform':
-						$value = str_replace(chr(13),'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
-						$this->allowedClasses = t3lib_div::trimExplode(',',strtoupper($this->procOptions['allowedClasses']),1);
-						$value=$this->TS_transform_db($value,$cmd=='css_transform');
-					break;
-					case 'ts_strip':
-						$value=$this->TS_strip_db($value);
-					break;
-					case 'dummy':
-					break;
+					// Checking for user defined transformation:
+				if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])	{
+					$_procObj = &t3lib_div::getUserObj($_classRef);
+					$_procObj->pObj = &$this;
+					$_procObj->transformationKey = $cmd;
+					$value = $_procObj->transform_db($value,$this);
+				} else {	// ... else use defaults:
+					switch($cmd)	{
+						case 'ts_images':
+							$value = $this->TS_images_db($value);
+						break;
+						case 'ts_reglinks':
+							$value = $this->TS_reglinks($value,'db');
+						break;
+						case 'ts_links':
+							$value = $this->TS_links_db($value);
+						break;
+						case 'ts_preserve':
+							$value = $this->TS_preserve_db($value);
+						break;
+						case 'ts_transform':
+						case 'css_transform':
+							$value = str_replace(chr(13),'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
+							$this->allowedClasses = t3lib_div::trimExplode(',',strtoupper($this->procOptions['allowedClasses']),1);
+							$value = $this->TS_transform_db($value,$cmd=='css_transform');
+						break;
+						case 'ts_strip':
+							$value = $this->TS_strip_db($value);
+						break;
+						default:
+						break;
+					}
 				}
 			}
 				// ->RTE
 			if ($direction=='rte')	{
-				switch($cmd)	{
-					case 'ts_images':
-						$value=$this->TS_images_rte($value);
-					break;
-					case 'ts_reglinks':
-						$value=$this->TS_reglinks($value,'rte');
-					break;
-					case 'ts_links':
-						$value=$this->TS_links_rte($value);
-					break;
-					case 'ts_preserve':
-						$value=$this->TS_preserve_rte($value);
-					break;
-					case 'ts_transform':
-					case 'css_transform':
-						$value = str_replace(chr(13),'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
-						$value=$this->TS_transform_rte($value,$cmd=='css_transform');
-					break;
-					case 'dummy':
-					break;
+					// Checking for user defined transformation:
+				if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])	{
+					$_procObj = &t3lib_div::getUserObj($_classRef);
+					$_procObj->pObj = &$this;
+					$value = $_procObj->transform_rte($value,$this);
+				} else {	// ... else use defaults:
+					switch($cmd)	{
+						case 'ts_images':
+							$value = $this->TS_images_rte($value);
+						break;
+						case 'ts_reglinks':
+							$value = $this->TS_reglinks($value,'rte');
+						break;
+						case 'ts_links':
+							$value = $this->TS_links_rte($value);
+						break;
+						case 'ts_preserve':
+							$value = $this->TS_preserve_rte($value);
+						break;
+						case 'ts_transform':
+						case 'css_transform':
+							$value = str_replace(chr(13),'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
+							$value = $this->TS_transform_rte($value,$cmd=='css_transform');
+						break;
+						default:
+						break;
+					}
 				}
 			}
 		}

@@ -166,11 +166,8 @@ Element Browser:
 - Some quick-lookup feature (like we have on TER)
 
 Wizards:
-- Finish the colorpicker! Some other person can be in charge of this (See "APPENDIX: Colorpicker")
 - Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)
 - Add wizard icon to see/clean up FlexForm data?
-- wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter K?hn).
-- forms and table wizards should be configurable for making XML structures alternatively to the currently formatting (programming wise ok, needs implementation)
 
 Interface:
 - Showing in "frameset-modules" which submodule you are currently inside. And ability to change submodule in the rightmost frame anyways - maybe as a panel in top of the pages (must be cached so all submodules must not be loaded each time...)? (Message-ID: <3ADE655892793D499E2FBF623045AF4B54E9A4@dbwdfx2f.wdf.sap-ag.de>)

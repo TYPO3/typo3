@@ -1,3 +1,7 @@
+2004-05-24  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added API for custom RTE transformations. Documented in upcoming "TYPO3 Core API".
+
 2004-05-20  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Fixed remaining issues with styles in the backend regarding the TCEforms. There has been added additional possibilities of styling forms, now with classes in stylesheets, using $TBE_STYLES to set them up. Documentation of $TBE_STYLES for TCeforms has been updated in TYPo3 Core Api as well.
