@@ -2,7 +2,7 @@
 
 	GENERAL STYLE FOR TYPO3 BACKEND:
 
-Stylesheet for the TYPO3 backend.
+Stylesheet for the TYPO3 backend. 
 You can configure another/additional stylesheet for use by the $TBE_STYLES global var
 
 TYPO3 CVS ID: $Id$
@@ -59,8 +59,8 @@ H4 {
 
 /* Preformatted text - not used so much in TYPO3 */
 PRE   {
-	font-family: monospace;
-	font-size:11px;
+	font-family: monospace; 
+	font-size:11px; 
 	margin: 0 0 0 0;
 }
 
@@ -83,12 +83,12 @@ HR, DIV.hr {
 IMG {
   border: 0px;
 }
-
-
-
-
-
-
+		
+		
+		
+		
+		
+		
 /*********************************************
  * Background color classes:
  *********************************************/
@@ -104,7 +104,7 @@ IMG {
 .bgColor5 {background-color: #ABBBB4;}
 .bgColor6 {background-color: #E7DBA8;}
 
-
+				
 
 
 
@@ -113,14 +113,14 @@ IMG {
  *********************************************/
 
  /* Set default values for bodytags: */
-BODY {
-	margin: 2px 2px 0px 4px;
+BODY { 
+	margin: 2px 2px 0px 4px; 
 	background-color: #F7F3EF;
 }
 
  /* Setting alternative background color on some frames: */
 BODY#typo3-alt-toplogo-php, BODY#typo3-alt-menu-sel-php, BODY#typo3-alt-topmenu-dummy-php, BODY#typo3-alt-topmenu-dummy-php-iconmenu, BODY#typo3-alt-clickmenu-php, BODY#typo3-alt-clickmenu-php-notop, BODY#typo3-alt-palette-php  {
-	background-color: #9BA1A8;
+	background-color: #9BA1A8; 
 }
 
 
@@ -133,9 +133,9 @@ BODY#typo3-alt-toplogo-php, BODY#typo3-alt-menu-sel-php, BODY#typo3-alt-topmenu-
  * bicDoc, mediumDoc, smallDoc or noDoc
  * Each of these will result in the whole page content between the bodytags being wrapped in a DIV-section with a class.
  * The class name will be "typo3-[classname]"
- * In particular we set the width of these wrapper-sections:
+ * In particular we set the width of these wrapper-sections: 
  *****************************************/
-
+ 
 DIV.typo3-bigDoc, DIV.typo3-noDoc { margin-left: 10px; margin-top: 5px; width: 740px; }
 DIV.typo3-noDoc H2 { width: 740px; }
 DIV.typo3-mediumDoc { width: 470px; }
@@ -171,6 +171,15 @@ TABLE#typo3-topMenu TR TD {white-space: nowrap; vertical-align: top; }
 TABLE#typo3-topMenu TR TD.c-logout, TABLE#typo3-topMenu TR TD.c-admin {padding-left: 20px;}
 TABLE#typo3-topMenu TR TD.c-menu IMG {margin: 0px 1px 0px 1px;}
 
+/* Tab menu (template.php) */
+TABLE#typo3-tabmenu { margin-top:5px; }
+TABLE#typo3-tabmenu TD.tabact { color: #000; border: solid black 1px; background: #e7dba8; }
+TABLE#typo3-tabmenu TD.tab { color:grey; border: solid #555 1px; border-left: solid #aaa 3px; background: #c4d4cd; }
+TABLE#typo3-tabmenu TD.tab, TABLE#typo3-tabmenu TD.tabact { border-radius: 3px; -moz-border-radius: 3px; border-bottom: 0px; }
+TABLE#typo3-tabmenu TD A { color:grey; text-decoration:none; display: block; width:100%; padding:2px; padding-left:3px; padding-right:5px; }
+TABLE#typo3-tabmenu TD.tabact A { color:#000; padding-left:10px; padding-right:10px; }
+TABLE#typo3-tabmenu TD A:hover { color:#000; background: #f6eab7; text-decoration:none; }
+
 /* Logo frame (alt_toplogo.php) */
 BODY#typo3-alt-toplogo-php {margin: 0px 0px 0px 0px;}
 
@@ -188,11 +197,14 @@ TABLE#typo3-vmenu TR.c-endrow TD {height: 5px;}
 TABLE#typo3-vmenu TR.c-first TD {height: 2px;}
 TABLE#typo3-vmenu TR.c-mainitem TD IMG { vertical-align: middle; margin-right: 2px;}
 TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label { position: relative; top: 1px;}
+TABLE#typo3-vmenu TD.c-subitem-label A { display: block; width: 100%; }
+TABLE#typo3-vmenu TD.c-subitem-label A:hover { background: #FFFBF7; }
+
 DIV#typo3-alt-menu-php-logininfo { text-align: center; width: 90px; margin-top:15px; margin-bottom: 15px;}
 DIV#typo3-alt-menu-php-logininfo P { margin-top:5px; }
 DIV#typo3-alt-menu-php-adminFunc { text-align: left; width: 110px; margin-top:15px; }
 DIV#typo3-alt-menu-php-adminFunc IMG { margin: 0px 2px 0px 2px;}
-
+ 
 /* Trees */
 TABLE#typo3-tree A { text-decoration: none; }
 TABLE#typo3-tree TR TD { white-space: nowrap; }
@@ -208,7 +220,7 @@ TABLE#typo3-linkTarget { margin-bottom: 25px; }
 TABLE#typo3-linkPages TR TD.c-wCell, TABLE#typo3-linkFiles TR TD.c-wCell, TABLE#typo3-EBrecords TR TD.c-wCell, TABLE#typo3-EBfiles TR TD.c-wCell { padding-right: 5px; white-space: nowrap; }
 BODY#typo3-browse-links-php IMG, BODY#ext-rte-app-rte-select-image-php IMG { vertical-align: middle; }
 BODY#typo3-browse-links-php IMG.c-blinkArrowL { margin: 0px 3px 0px 3px; }
-TABLE#typo3-linkMail, TABLE#typo3-linkURL, TABLE#typo3-linkTarget { margin-top: 5px; }
+TABLE#typo3-linkMail, TABLE#typo3-linkURL, TABLE#typo3-linkTarget { margin-top: 5px; } 
 BODY#typo3-browse-links-php H3.bgColor5 { margin-top: 2px; }
 BODY#typo3-browse-links-php A { text-decoration: none; }
 TABLE#typo3-msgBox { margin-top: 10px; margin-bottom: 10px;}
@@ -239,7 +251,7 @@ TABLE.typo3-recent-edited TD { white-space: nowrap; }
 BODY#typo3-alt-doc-nodoc-php P IMG { vertical-align: middle; margin-left: 5px; }
 BODY#typo3-alt-doc-nodoc-php { margin-left: 5px; }
 
-/* Login Screen
+/* Login Screen 
 
 	 * Warning:
 	 * DO NOT prevent the copyright notice from being shown!
@@ -294,17 +306,17 @@ BODY#typo3-move-el-php IMG { vertical-align: middle; }
 BODY#typo3-move-el-php TABLE#typo3-ttContentList IMG, BODY#typo3-move-el-php IMG#c-recIcon {margin-right: 4px; }
 
 /* File scripts */
-BODY#typo3-file-upload-php DIV#c-submit, BODY#typo3-file-upload-php DIV#c-upload, BODY#typo3-file-upload-php DIV#c-override, BODY#typo3-file-upload-php DIV#c-select {
-	margin-top: 10px;
+BODY#typo3-file-upload-php DIV#c-submit, BODY#typo3-file-upload-php DIV#c-upload, BODY#typo3-file-upload-php DIV#c-override, BODY#typo3-file-upload-php DIV#c-select { 
+	margin-top: 10px; 
 }
-BODY#typo3-file-rename-php DIV#c-submit, BODY#typo3-file-rename-php DIV#c-rename  {
-	margin-top: 10px;
+BODY#typo3-file-rename-php DIV#c-submit, BODY#typo3-file-rename-php DIV#c-rename  { 
+	margin-top: 10px; 
 }
 BODY#typo3-file-newfolder-php DIV#c-select, BODY#typo3-file-newfolder-php DIV#c-createFolders, BODY#typo3-file-newfolder-php DIV#c-submitFolders, BODY#typo3-file-newfolder-php DIV#c-newFile, BODY#typo3-file-newfolder-php DIV#c-submitFiles {
-	margin-top: 10px;
+	margin-top: 10px; 
 }
-BODY#typo3-file-edit-php DIV#c-submit, BODY#typo3-file-edit-php DIV#c-edit {
-	margin-top: 10px;
+BODY#typo3-file-edit-php DIV#c-submit, BODY#typo3-file-edit-php DIV#c-edit { 
+	margin-top: 10px; 
 }
 
 /* Web > Page */
@@ -382,7 +394,7 @@ BODY#typo3-db-new-php DIV#typo3-newPageLink { margin-top: 20px; }
 /* Red span tag color (warning, notice) */
 .typo3-red {color: red;}
 TABLE.warningbox { border: solid 2px black; background-color: yellow; margin: 20px 0px 20px 0px; }
-TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; }
+TABLE.warningbox TD { padding: 20px 20px 20px 20px; font-weight: bold; } 
 
 /* Various classes: */
 .nobr {white-space: nowrap;}
@@ -415,7 +427,7 @@ SPAN.typo3-moduleHeader IMG { vertical-align: middle; margin-right: 4px; }
 /*********************************************
  * TypoScript Highlighting:
  *********************************************/
-
+ 
 PRE.ts-hl {font-size: 11px; font-family : monospace;}
 PRE.ts-hl .ts-prespace {}
 PRE.ts-hl .ts-objstr_postspace {}
