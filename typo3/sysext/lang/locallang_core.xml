@@ -143,8 +143,8 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="rm.clearCache_clearCache">Clear cache</label>
 			<label index="rm.clearCache_thisPage">This page</label>
 			<label index="rm.clearCache_pages">Clear Page Cache</label>
-			<label index="rm.clearCache_all">Clear All Cache</label>
-			<label index="rm.clearCache_allTypo3Conf">Clear temp_CACHED</label>
+			<label index="rm.clearCache_all">Clear FE cache</label>
+			<label index="rm.clearCache_allTypo3Conf">Clear cache in typo3conf/</label>
 			<label index="rm.adminFunctions">Admin functions</label>
 			<label index="rm.edit">Edit</label>
 			<label index="rm.export">Export</label>

@@ -132,15 +132,15 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			reset($this->extAdminConfig['enable.']);
 			while(list($k,$v)=each($this->extAdminConfig['enable.']))	{
 				if ($v)	{
-						// Enable panel
-					$this->extAdmEnabled=1;
-
-						// Init TSFE_EDIT variables:
-					$this->TSFE_EDIT = t3lib_div::_POST('TSFE_EDIT');
-
+					$this->extAdmEnabled=1;	// Enable panel
 					break;
 				}
 			}
+		}
+
+			// Init TSFE_EDIT variables if either the admPanel is enabled or if forceDisplayIcons is set
+		if($this->extAdmEnabled || $this->extGetFeAdminValue('edit', 'displayIcons'))	{
+			$this->TSFE_EDIT = t3lib_div::_POST('TSFE_EDIT');
 		}
 	}
 
@@ -940,7 +940,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see index_ts.php
 	 */
 	function extEditAction()	{
-		global $TCA;
+		global $TCA, $TYPO3_CONF_VARS;
 			// Commands:
 		list($table,$uid) = explode(':',$this->TSFE_EDIT['record']);
 		if ($this->TSFE_EDIT['cmd'] && $table && $uid && isset($TCA[$table]))	{
@@ -949,6 +949,17 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$recData=array();
 			$cmdData=array();
 			$cmd=$this->TSFE_EDIT['cmd'];
+
+			// ****************
+			// extEditAction HOOK
+			// ****************
+			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'])) {
+				$_params = array();
+				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'] as $_funcRef) {
+								t3lib_div::callUserFunction($_funcRef,$_params,$this);
+				}
+			}
+
 			switch($cmd)	{
 				case 'hide':
 				case 'unhide':

@@ -1,3 +1,12 @@
+2005-03-25  Michael Stucki  <michael@typo3.org>
+
+	* Added two hooks for tx_timtaw, written by Sebastian Kurfuerst
+	* FORM object is finally able to create a reset button (closes #0000743, thanks to Michael Scharkow)
+	* FE editing: Up/Down buttons in panel did not work (closes #0000849, thanks to Peter Niederlag for pointing me on this)
+	* typeNum 0 is now set automatically by default: If a page object has no typeNum and typeNum '0' is not defined, TYPO3 will automatically do that now
+	* Renamed admin function links in the left down corner of the BE (closes #0000025)
+	* EM: Display privacy message before connecting to the online repository
+
 2005-03-16  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #0000335 in class.t3lib_extfilefunc.php: If $this->dont_use_exec_commands was set, it was impossible to delete any directories, which is now possible again. It's still impossible to delete direcories recursively though.

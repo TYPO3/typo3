@@ -161,6 +161,16 @@ $TT->push('Front End user initialized','');
 	$TSFE->initFEuser();
 $TT->pull();
 
+// ****************
+// PRE BE_USER HOOK
+// ****************
+if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
+	foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] as $_funcRef) {
+		$_params = array();
+		t3lib_div::callUserFunction($_funcRef, $_params ,$this);
+	}
+}
+
 // *********
 // BE_USER
 // *********
@@ -208,8 +218,8 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 					$BE_USER->ext_forcePreview=1;
 				}
 
-					// Include classes for editing IF editing module in Admin Panel is open (it is assumed that $TSFE->displayEditIcons is set only if the Edit module is open in the Admin Panel)
-				if ($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit'))	{
+					// Include classes for editing IF editing module in Admin Panel is open
+				if (($BE_USER->extAdmModuleEnabled('edit') && $BE_USER->extIsAdmMenuOpen('edit')) || $TSFE->displayEditIcons == 1)	{
 					$TSFE->includeTCA();
 					if ($BE_USER->extIsEditAction())	{
 						require_once (PATH_t3lib.'class.t3lib_tcemain.php');

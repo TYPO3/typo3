@@ -824,7 +824,8 @@ EXTENSION KEYS:
 			$onCLick = "document.location='index.php?ter_connect=1&ter_search='+escape(this.form['_lookUp'].value);return false;";
 			$content.= '<br />
 			Look up: <input type="text" name="_lookUp" value="" />
-			<input type="submit" value="Connect to online repository" onclick="'.htmlspecialchars($onCLick).'" />';
+			<input type="submit" value="Connect to online repository" onclick="'.htmlspecialchars($onCLick).'" />
+			<br /><br /><strong>PRIVACY NOTICE:</strong><br /> '.$this->privacyNotice;
 
 			$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository',$content,0,1);
 		}

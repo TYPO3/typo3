@@ -1772,10 +1772,15 @@ class tslib_cObj {
 						} else $image='';
 						if($image)	{
 							$fieldCode = str_replace('<img','<input type="image"'.$addParams.' name="'.$confData['fieldname'].'"' ,$image);
-						} else {
+						} else	{
 							$fieldCode=sprintf('<input type="submit" name="%s"'.$elementIdAttribute.' value="%s"'.$addParams.' />',
 								$confData['fieldname'], t3lib_div::deHSCentities(htmlspecialchars($value)));
 						}
+					break;
+					case 'reset':
+						$value=trim($parts[2]);
+						$fieldCode=sprintf('<input type="reset" name="%s"'.$elementIdAttribute.' value="%s"'.$addParams.' />',
+							$confData['fieldname'], t3lib_div::deHSCentities(htmlspecialchars($value)));
 					break;
 					case 'label':
 						$fieldCode = nl2br(htmlspecialchars(trim($parts[2])));

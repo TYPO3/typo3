@@ -174,7 +174,7 @@ class SC_mod_tools_config_index {
 				// Variable name:
 			if (t3lib_div::_GP('varname'))	{
 				$this->content.= '<div style="margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px; background-color: #eeeeee; border: 1px solid black;">Variable: <br/>
-					<input type="text" name="_" value="'.htmlspecialchars(t3lib_div::_GP('varname')).'" size="80" /><br/>
+					<input type="text" name="_" value="'.trim(htmlspecialchars(t3lib_div::_GP('varname'))).'" size="80" /><br/>
 					(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)
 					</div>
 				';

@@ -837,6 +837,8 @@ class t3lib_TStemplate	{
 					$tN = $this->setup[$theKey.'.']['typeNum'];
 					if (isset($tN))	{
 						$this->setup['types.'][$tN] = $theKey;
+					} elseif(!$this->setup['types.'][0])	{	// If there is no type 0 yet and typeNum was not set, we use the current object as the default
+						$this->setup['types.'][0] = $theKey;
 					}
 				}
 			}
