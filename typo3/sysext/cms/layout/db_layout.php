@@ -53,7 +53,7 @@
  *  362:     function clearCache()	
  *  377:     function main()	
  *  475:     function renderQuickEdit()	
- *  839:     function renderListContent()	
+ *  839:     function renderListContent()
  * 1104:     function printContent()	
  *
  *              SECTION: Other functions
@@ -843,19 +843,19 @@ class SC_db_layout {
 		$dblist = t3lib_div::makeInstance('tx_cms_layout');
 		$dblist->backPath = $BACK_PATH;
 		$dblist->thumbs = $this->imagemode;
-		$dblist->no_noWrap=1;
+		$dblist->no_noWrap = 1;
 		
 		$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
 		$dblist->script = 'db_layout.php';
 		$dblist->showIcon = 0;
 		$dblist->setLMargin=0;
 		$dblist->doEdit = $this->CALC_PERMS&16 ? 1 : 0;
-		$dblist->agePrefixes=$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
-		$dblist->id=$this->id;
+		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
+		$dblist->id = $this->id;
 		$dblist->nextThree = t3lib_div::intInRange($this->modTSconfig['properties']['editFieldsAtATime'],0,10);
 		$dblist->option_showBigButtons = $this->modTSconfig['properties']['disableBigButtons'] ? 0 : 1;
 		$dblist->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
-		if (!$dblist->nextThree)	$dblist->nextThree= 1;
+		if (!$dblist->nextThree)	$dblist->nextThree = 1;
 		
 
 			// Create menu for selecting a table to jump to (this is, if more than just pages/tt_content elements are found on the page!)
@@ -923,14 +923,14 @@ class SC_db_layout {
 						$dblist->tt_contentConfig['single'] =1;	// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
 						$dblist->tt_contentConfig['showSingleCol']=current($colList);	// The column(s) to show if single mode (under each other)
 					}
-					$dblist->tt_contentConfig['cols']= implode(',',$colList);		// The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
-					$dblist->tt_contentConfig['showHidden']=$this->MOD_SETTINGS['tt_content_showHidden'];
+					$dblist->tt_contentConfig['cols'] = implode(',',$colList);		// The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
+					$dblist->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
 					$dblist->tt_contentConfig['sys_language_uid'] = intval($this->current_sys_language);
 					
 						// If the function menu is set to "Language":
 					if ($this->MOD_SETTINGS['function']==2)	{
-						$dblist->tt_contentConfig['single']=0;
-						$dblist->tt_contentConfig['languageMode']=1;
+						$dblist->tt_contentConfig['single'] = 0;
+						$dblist->tt_contentConfig['languageMode'] = 1;
 						$dblist->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
 						$dblist->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
 					}
@@ -939,7 +939,7 @@ class SC_db_layout {
 	
 				// Start the dblist object:
 			$dblist->start($this->id,$table,$this->pointer,$this->search_field,$this->search_levels,$this->showLimit);
-			$dblist->counter=$CMcounter;
+			$dblist->counter = $CMcounter;
 			$dblist->ext_function = $this->MOD_SETTINGS['function'];
 			
 				// Generate the list of elements here:
@@ -952,29 +952,30 @@ class SC_db_layout {
 							($h_func_b?'<img src="clear.gif" width="1" height="10" alt="" /><br />'.$h_func_b:'');
 							
 				// ... and any accumulated JavaScript goes the same way!
-			$tableJSOutput[$table]=$dblist->JScode;
-			
+			$tableJSOutput[$table] = $dblist->JScode;
+
 				// Increase global counter:
-			$CMcounter+=$dblist->counter;
+			$CMcounter+= $dblist->counter;
 											
 				// Reset variables after operation:
 			$dblist->HTMLcode='';
 			$dblist->JScode='';
-			$h_func='';
-			$h_func_b='';
+			$h_func = '';
+			$h_func_b = '';
 		}	// END: traverse tables
 
 
 			// For Context Sensitive Menus:
-		$CMparts=$this->doc->getContextMenuCode();
+		$CMparts = $this->doc->getContextMenuCode();
 		$this->doc->bodyTagAdditions = $CMparts[1];
-		$this->doc->JScode.=$CMparts[0];
+		$this->doc->JScode.= $CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
 	
 
 			// Draw the page header.
 		$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
-						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.htmlspecialchars(t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50));
+						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.
+						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50)).'</span>';
 
 
 			// Create icon "toolbar" for common operations like creating/moving elements/pages etc.

@@ -157,9 +157,9 @@
  * 2874:     function loadTCA($table)	
  * 2893:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	
  * 2921:     function resolveAllSheetsInDS($dataStructArray)	
- * 2950:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	
- * 3053:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	
- * 3092:     function makeInstanceClassName($className)	
+ * 2950:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)
+ * 3053:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')
+ * 3092:     function makeInstanceClassName($className)
  * 3112:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)	
  * 3159:     function quoted_printable($string,$maxlen=76)	
  * 3202:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	
@@ -1985,7 +1985,7 @@ class t3lib_div {
 
 				// Setting file system mode of file:
 			if (@is_file($file) && TYPO3_OS!='WIN')	{
-				chmod($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
+				@chmod($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));		// "@" is there because file is not necessarily OWNED by the user
 			}
 
 			return true;
@@ -2968,6 +2968,7 @@ class t3lib_div {
 	 * @param	string		Required prefix of class or function name
 	 * @param	boolean		If set, not debug() error message is shown if class/function is not present.
 	 * @return	mixed		Content from method/function call
+	 * @see getUserObj()
 	 */
 	function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	{
 
@@ -2985,7 +2986,7 @@ class t3lib_div {
 		if (strstr($funcName,':'))	{
 			list($file,$funcRef) = t3lib_div::revExplode(':',$funcName,2);
 			$requireFile = t3lib_div::getFileAbsFileName($file);
-			require_once($requireFile);
+			if ($requireFile) require_once($requireFile);
 		} else {
 			$funcRef = $funcName;
 		}
@@ -2996,7 +2997,7 @@ class t3lib_div {
 			!t3lib_div::isFirstPartOfStr(trim($funcRef),'tx_')
 			)	{
 			if (!$silent)	debug("Function '".$funcRef."' was not prepended with '".$checkPrefix."'",1);
-			return $content;
+			return FALSE;
 		}
 
 			// Call function or method:
@@ -3042,6 +3043,62 @@ class t3lib_div {
 			}
 		}
 		return $content;
+	}
+
+	/**
+	 * Creates and returns reference to a user defined object.
+	 * This function can return an object reference if you like. Just prefix the function call with "&": "$objRef = &t3lib_div::getUserObj('EXT:myext/class.tx_myext_myclass.php:>tx_myext_myclass');"
+	 *
+	 * @param	string		Class reference, [file-reference]:[[">"]class-reference]. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:>tx_realurl". Finally; for the class name you can prefix it with ">" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same object later in another place in the code you will get a reference to the first created one!).
+	 * @param	string		Required prefix of class name
+	 * @param	boolean		If set, not debug() error message is shown if class/function is not present.
+	 * @return	object		The instance of the class asked for. Instance is created with t3lib_div::makeInstance
+	 * @see callUserFunction()
+	 */
+	function &getUserObj($classRef,$checkPrefix='user_',$silent=0)	{
+
+			// Check persistent object and if found, call directly and exit.
+		if (is_object($GLOBALS['T3_VAR']['getUserObj'][$classRef]))	{
+			return $GLOBALS['T3_VAR']['getUserObj'][$classRef];
+		} else {
+
+				// Check file-reference prefix; if found, require_once() the file (should be library of code)
+			if (strstr($classRef,':'))	{
+				list($file,$class) = t3lib_div::revExplode(':',$classRef,2);
+				$requireFile = t3lib_div::getFileAbsFileName($file);
+				if ($requireFile)	require_once($requireFile);
+			} else {
+				$class = $classRef;
+			}
+
+				// Check for persistent object token, ">"
+			if (substr($class,0,1)=='>')	{
+				$class = substr($class,1);
+				$storePersistentObject = TRUE;
+			} else $storePersistentObject = FALSE;
+
+				// Check prefix is valid:
+			if ($checkPrefix &&
+				!t3lib_div::isFirstPartOfStr(trim($class),$checkPrefix) &&
+				!t3lib_div::isFirstPartOfStr(trim($class),'tx_')
+				)	{
+				if (!$silent)	debug("Function '".$class."' was not prepended with '".$checkPrefix."'",1);
+				return FALSE;
+			}
+
+				// Check if class/method exists:
+			if (class_exists($class))	{
+				$classObj = t3lib_div::makeInstance($class);
+					// If persistent object should be created, set reference:
+				if ($storePersistentObject)	{
+					$GLOBALS['T3_VAR']['getUserObj'][$classRef] = &$classObj;
+				}
+
+				return $classObj;
+			} else {
+				if (!$silent)	debug("<strong>ERROR:</strong> No class named: ".$class,1);
+			}
+		}
 	}
 
 	/**

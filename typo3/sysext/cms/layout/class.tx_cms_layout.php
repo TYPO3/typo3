@@ -87,7 +87,7 @@
  * 2033:     function noEditIcon($label='noEditItems')	
  * 2042:     function cleanTableNames()	
  * 2078:     function isRTEforField($table,$row,$field)
- * 2107:     function getSpecConfForField($table,$row,$field)	
+ * 2107:     function getSpecConfForField($table,$row,$field)
  *
  *              SECTION: External renderings
  * 2144:     function getPageInfoBox($rec,$edit=0)	
@@ -2077,9 +2077,9 @@ class tx_cms_layout extends recordList {
 	 */
 	function isRTEforField($table,$row,$field){
 		$specConf = $this->getSpecConfForField($table,$row,$field);
-		$p=t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
+		$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
 		if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']]))	{
-			list($tscPID,$thePidValue)=t3lib_BEfunc::getTSCpid($table,$row['uid'],$row['pid']);
+			list($tscPID,$thePidValue) = t3lib_BEfunc::getTSCpid($table,$row['uid'],$row['pid']);
 			if ($thePidValue>=0)	{	// If the pid-value is not negative (that is, a pid could NOT be fetched)
 				$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($tscPID));
 				$RTEtypeVal = t3lib_BEfunc::getTCAtypeValue($table,$row);
@@ -2107,26 +2107,26 @@ class tx_cms_layout extends recordList {
 	function getSpecConfForField($table,$row,$field)	{
 
 			// Get types-configuration for the record:
-		$types_fieldConfig=t3lib_BEfunc::getTCAtypes($table,$row);
-		
+		$types_fieldConfig = t3lib_BEfunc::getTCAtypes($table,$row);
+
 			// Find the given field and return the spec key value if found:
 		if (is_array($types_fieldConfig))	{
 			foreach($types_fieldConfig as $vconf)	{
 				if ($vconf['field']==$field)	return $vconf['spec'];
 			}
 		}
-	}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}
+
+
+
+
+
+
+
+
+
+
+
 	
 	/*****************************************
 	 *

@@ -6092,7 +6092,6 @@ class tslib_cObj {
 					$tceforms->doSaveFieldName = 'TSFE_EDIT[doSave]';
 					$tceforms->formName = $formName;
 					$tceforms->backPath = TYPO3_mainDir;
-					$tceforms->RTEbgColor= '#ABBBB4';
 					$tceforms->setFancyDesign();
 					$tceforms->defStyle = 'font-family:Verdana;font-size:10px;';
 					$tceforms->edit_showFieldHelp = $GLOBALS['BE_USER']->uc['edit_showFieldHelp'];

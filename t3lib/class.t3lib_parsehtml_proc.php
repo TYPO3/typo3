@@ -40,8 +40,8 @@
  *
  *
  *  102: class t3lib_parsehtml_proc extends t3lib_parsehtml 
- *  137:     function init($elRef='',$recPid=0)	
- *  149:     function setRelPath($path)	
+ *  137:     function init($elRef='',$recPid=0)
+ *  149:     function setRelPath($path)
  *  173:     function evalWriteFile($pArr,$currentRecord)	
  *
  *              SECTION: Main function
@@ -106,7 +106,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 		// Internal, static:
 	var $recPid = 0;				// Set this to the pid of the record manipulated by the class.
-	var $elRef = '';				// Element reference [table]:[field], eg. "tt_content:bodytext" 
+	var $elRef = '';				// Element reference [table]:[field], eg. "tt_content:bodytext"
 	var $relPath='';				// Relative path
 	var $relBackPath='';			// Relative back-path
 	var $procOptions = '';			// Set to the TSconfig options coming from Page TSconfig
@@ -135,8 +135,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * @return	void
 	 */
 	function init($elRef='',$recPid=0)	{
-		$this->recPid=$recPid;
-		$this->elRef=$elRef;
+		$this->recPid = $recPid;
+		$this->elRef = $elRef;
 	}
 
 	/**

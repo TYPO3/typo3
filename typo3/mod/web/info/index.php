@@ -125,8 +125,10 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->doc->JScode.=$CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 
-			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
-		
+			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.
+				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.
+				'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50)).'</span>';
+
 				// Draw the header.
 			$this->doc->form='<form action="" method="post">';
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));

@@ -112,8 +112,10 @@ class t3lib_syntaxhl {
 		'T3FlexForms' => array('<span style="font-weight: bold;">','</span>'),
 		'meta' => array('<span style="font-weight: bold; color: #800080;">','</span>'),
 		'data' => array('<span style="font-weight: bold; color: #800080;">','</span>'),
+		'el' => array('<span style="font-weight: bold; color: #80a000;">','</span>'),
+		'numIndex' => array('<span style="color: #333333;">','</span>'),
 		'_unknown' => array('<span style="font-style: italic; color: #666666;">','</span>'),
-		
+
 
 		'sDEF'  => array('<span style="font-weight: bold; color: #008000;">','</span>'),
 		'level:sheet' => array('<span style="font-weight: bold; color: #008000;">','</span>'),
@@ -123,8 +125,8 @@ class t3lib_syntaxhl {
 
 		'level:fieldname' => array('<span style="font-weight: bold; color: #666666;">','</span>'),
 
-		'vDEF'  => array('<span style="font-weight: bold; color: #800000;">','</span>'),
-		'level:value' => array('<span style="font-weight: bold; color: #800000;">','</span>'),
+		'vDEF'  => array('<span style="font-weight: bold; color: #008080;">','</span>'),
+		'level:value' => array('<span style="font-weight: bold; color: #008080;">','</span>'),
 
 		'currentSheetId' => array('<span style="color: #000080;">','</span>'),
 		'currentLangId' => array('<span style="color: #000080;">','</span>'),
@@ -300,16 +302,22 @@ class t3lib_syntaxhl {
 			$app='fieldname';
 		} elseif($app=='fieldname')	{
 			$app='value';
+		} elseif($app=='el' || $app=='numIndex')	{
+			$app='fieldname';
 		}
-		
-			// Traverse structure:		
+
+			// Traverse structure:
 		foreach($struct as $k => $v)	{
 			if ($k%2)	{
 				$wrap = array('','');
 
-					// Default wrap:				
+				if ($v['tagName'] == 'numIndex')	{
+					$app = 'numIndex';
+				}
+
+					// Default wrap:
 				$wrap = $this->FF_wrapTags[$v['tagName']];
-				
+
 					// If no wrap defined, us "unknown" definition
 				if (!is_array($wrap))	{
 					switch($app)	{
@@ -323,6 +331,10 @@ class t3lib_syntaxhl {
 							$wrap = $this->FF_wrapTags['_unknown'];
 						break;
 					}
+				}
+
+				if ($v['tagName']=='el')	{
+					$app='el';
 				}
 
 				$output.=$wrap[0].htmlspecialchars($v['tag']).$wrap[1];

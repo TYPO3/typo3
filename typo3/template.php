@@ -49,8 +49,8 @@
  *  341:     function isCMlayers()	
  *  351:     function thisBlur()	
  *  361:     function helpStyle()	
- *  378:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))	
- *  404:     function getFileheader($title,$path,$iconfile)	
+ *  378:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))
+ *  404:     function getFileheader($title,$path,$iconfile)
  *  419:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")	
  *  452:     function makeShortcutUrl($gvList,$setList)	
  *  473:     function formWidth($size=48,$textarea=0,$styleOverride='') 
@@ -160,7 +160,7 @@ class template {
 	var $backPath = '';				// 'backPath' pointing back to the PATH_typo3
 	var $form = '';					// This can be set to the HTML-code for a formtag. Useful when you need a form to span the whole page; Inserted exactly after the body-tag.
 	var $JScode = '';				// Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
-	var $JScodeArray = array();		// Similar to $JScode but for use as array with assioziative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
+	var $JScodeArray = array();		// Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
 	var $postCode = '';				// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
 	var $docType = '';				// Doc-type used in the header. Default is HTML 4. You can also set it to 'strict', 'xhtml_trans', or 'xhtml_frames'.
 
@@ -378,8 +378,8 @@ class template {
 	function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))	{
 		global $TCA;
 		if (is_array($row) && $row['uid'])	{
-			$iconImgTag=t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($path).'"');
-			$title= strip_tags($row[$TCA[$table]['ctrl']['label']]);
+			$iconImgTag = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($path).'"');
+			$title = strip_tags($row[$TCA[$table]['ctrl']['label']]);
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'],$this->backPath,'');
 			if ($table=='pages')	$path.=' - '.t3lib_BEfunc::titleAttribForPages($row,'',0);
 		} else {

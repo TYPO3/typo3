@@ -22,6 +22,7 @@ $LOCAL_LANG = Array (
 The fields are marked with a yellow exclamation mark.',
 		'labels.fieldsChanged' => 'There are unsaved changes in the form!
 Do you want to continue WITHOUT saving?',
+		'labels.noRTEfound' => 'Notice: You cannot edit this field since it can only be edited with a Rich Text Editor, but no editor was available or editing with an RTE has been disabled.',
 		'labels.showPalettes' => 'Show secondary options (palettes)',
 		'labels.showDescriptions' => 'Show field descriptions',
 		'labels.disableRTE' => 'Disable Rich Text Editor (RTE)',

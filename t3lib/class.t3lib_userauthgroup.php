@@ -42,12 +42,12 @@
  *              SECTION: Permission checking functions:
  *  170:     function isAdmin()	
  *  182:     function isMemberOfGroup($groupId)	
- *  204:     function doesUserHaveAccess($row,$perms)	
+ *  204:     function doesUserHaveAccess($row,$perms)
  *  221:     function isInWebMount($id,$readPerms='',$exitOnError=0)	
  *  248:     function modAccess($conf,$exitOnError)	
  *  284:     function getPagePermsClause($perms)	
  *  310:     function calcPerms($row)	
- *  332:     function isRTE()	
+ *  332:     function isRTE()
  *  358:     function check ($type,$value)	
  *  375:     function isPSet($lCP,$table,$type='')	
  *  392:     function mayMakeShortcut()	
@@ -140,7 +140,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	var $userTSUpdated=0;				// Set internally if the user TSconfig was parsed and needs to be cached.
 	var $userTS_dontGetCached=0;		// Set this from outside if you want the user TSconfig to ALWAYS be parsed and not fetched from cache.
 	
-
+	var $RTE_errors = array();			// RTE availability errors collected.
 
 
 
@@ -201,7 +201,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	integer		$perms is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
 	 * @return	boolean		True or False upon evaluation
 	 */
-	function doesUserHaveAccess($row,$perms)	{	
+	function doesUserHaveAccess($row,$perms)	{
 		$userPerms = $this->calcPerms($row);
 		return ($userPerms & $perms)==$perms;
 	}
@@ -223,10 +223,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		$id = intval($id);
 		if (!$readPerms)	$readPerms = $this->getPagePermsClause(1);
 		if ($id>0)	{
-			$wM=$this->returnWebmounts();
-			$rL=t3lib_BEfunc::BEgetRootLine($id,' AND '.$readPerms);
-			reset($rL);
-			while(list(,$v)=each($rL))	{
+			$wM = $this->returnWebmounts();
+			$rL = t3lib_BEfunc::BEgetRootLine($id,' AND '.$readPerms);
+
+			foreach($rL as $v)	{
 				if ($v['uid'] && in_array($v['uid'],$wM))	{
 					return $v['uid'];
 				}
@@ -326,25 +326,34 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Returns true if the RTE (Rich Text Editor) can be enabled for the user
 	 * Strictly this is not permissions being checked but rather a series of settings like a loaded extension, browser/client type and a configuration option in ->uc[edit_RTE]
+	 * The reasons for a FALSE return can be found in $this->RTE_errors
 	 *
 	 * @return	boolean
 	 */
 	function isRTE()	{
 		global $CLIENT;
-		if (
-			t3lib_extMgm::isLoaded('rte') && 
-			$CLIENT['BROWSER']=='msie' && 
-			$CLIENT['SYSTEM']=='win' && 
-			$CLIENT['VERSION']>=5 && 
-			$this->uc['edit_RTE'] &&
-			$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']
-			)	{
-				return 1;
+
+			// Start:
+		$this->RTE_errors = array();
+		if (!$this->uc['edit_RTE'])
+			$this->RTE_errors[] = 'RTE is not enabled for user!';
+		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'])
+			$this->RTE_errors[] = 'RTE is not enabled in $TYPO3_CONF_VARS["BE"]["RTEenabled"]';
+
+
+			// Acquire RTE object:
+		$RTE = &t3lib_BEfunc::RTEgetObj();
+		if (!is_object($RTE))	{
+			$this->RTE_errors = array_merge($this->RTE_errors, $RTE);
+		}
+
+		if (!count($this->RTE_errors))	{
+			return TRUE;
 		} else {
-			return 0;
+			return FALSE;
 		}
 	}
-	
+
 	/**
 	 * Returns true if the $value is found in the list in a $this->groupData[] index pointed to by $type (array key).
 	 * Can thus be users to check for modules, exclude-fields, select/modify permissions for tables etc.

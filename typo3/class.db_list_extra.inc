@@ -40,7 +40,7 @@
  *
  *
  *   89: class localRecordList extends recordList 
- *  121:     function writeTop($row,$path)	
+ *  121:     function writeTop($row,$path)
  *  295:     function getTable($table,$id,$rowlist)	
  *  476:     function renderListRow($table,$row,$cc,$titleCol,$thumbsCol)	
  *  539:     function renderListHeader($table,$currentIdList)	
@@ -115,10 +115,9 @@ class localRecordList extends recordList {
 	 * Writes the top of the full listing
 	 *
 	 * @param	array		Current page record
-	 * @param	string		Path string (the page root line visually...)
 	 * @return	void		(Adds content to internal variable, $this->HTMLcode)
 	 */
-	function writeTop($row,$path)	{
+	function writeTop($row)	{
 		global $LANG;
 		
 			// Makes the code for the pageicon in the top
@@ -237,7 +236,7 @@ class localRecordList extends recordList {
 		if ($this->id)	{	// If there IS a real page...:
 		
 				// Setting title of page + the "Go up" link:
-			$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_pre($path,$this->fixedL));
+			$theData[$titleCol].='<br /><span title="'.htmlspecialchars($row['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($row['_thePath'],$this->fixedL)).'</span>';
 			$theData['up'][]='<a href="'.htmlspecialchars($this->listURL($row['pid'])).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/pages_up.gif','width="18" height="16"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" />'.
 							'</a>';

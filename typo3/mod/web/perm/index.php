@@ -244,7 +244,9 @@ class SC_mod_web_perm_index {
 			$this->content.=$this->doc->spacer(5);
 			$this->content.=$this->doc->section('',
 				$this->doc->funcMenu(
-					$this->doc->getHeader('pages',$this->pageinfo,htmlspecialchars($this->pageinfo['_thePath'])).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.htmlspecialchars(t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50)),
+					$this->doc->getHeader('pages',$this->pageinfo,htmlspecialchars($this->pageinfo['_thePath'])).'<br />'.
+						$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.
+						'<span title="'.htmlspecialchars($this->pageinfo['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50)).'</span>',
 					t3lib_BEfunc::getFuncMenu($this->id,'SET[mode]',$this->MOD_SETTINGS['mode'],$this->MOD_MENU['mode'])
 				));
 			$this->content.=$this->doc->divider(5);

@@ -48,29 +48,28 @@ $TYPO3_CONF_VARS = Array(
 		'TTFdpi' => '72',						// Integer. Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
 	),
 	'SYS' => Array(			// System related concerning both frontend and backend.
-		'textfile_ext' => 'txt,html,htm,css,inc,php,php3,tmpl,js,sql',	// Text file extensions. Those that can be edited. php,php3 cannot be edited in webspace if they are disallowed! Notice:
-		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
 		'sitename' => 'TYPO3',					// Name of the base-site. This title shows up in the root of the tree structure if you're an 'admin' backend user.
-		'ddmmyy' => 'd-m-y',					// Format of Date-Month-Year - see php-function date()
-		'hhmm' => 'H:i',						// Format of Hours-minutes - see php-function date()
 		'encryptionKey' => '',					// Insert some unique string here! Used in eg. direct mail module to generate a md5 hash in combination with uid. This string should be kept secret although it's not as critical as a password.
 		'doNotCheckReferer' => 0,				// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => 0,			// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
-		'report_error_html' => chr(10).'Please report this error to the <a href="mailto:dev@typo3.com">TYPO3 Development Team</a>',
-		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
 		'devIPmask' => '192.168.*,127.0.0.1',	// Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function t3lib_div::cmpIP() for details on syntax. Setting this to blank value will deny all. Setting to '*' will allow all.
+		'enable_DLOG' => FALSE,					// Whether the developer log is enabled. See constant "TYPO3_DLOG"
+		'ddmmyy' => 'd-m-y',					// Format of Date-Month-Year - see php-function date()
+		'hhmm' => 'H:i',						// Format of Hours-minutes - see php-function date()
+		'loginCopyrightWarrantyProvider' => '',		// String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).
+		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
+		'loginCopyrightShowVersion' => 0,		// Boolean: If set, the current TYPO3 version is shown.
 		'curlUse' => 0,							// Boolean: If set, try to use Curl to fetch external URLs (implemented by Arco <arco@appeltaart.mine.nu>)
 		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/.
 		'curlProxyTunnel' => 0,					// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.).
 		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass.
 		'form_enctype' => 'multipart/form-data',	// String: This is the default form encoding type for most forms in TYPO3. It allows for file uploads to be in the form. However if file-upload is disabled for your PHP version even ordinary data sent with this encryption will not get to the server. So if you have file_upload disabled, you will have to change this to eg. 'application/x-www-form-urlencoded'
-		'loginCopyrightWarrantyProvider' => '',		// String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).
-		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
-		'loginCopyrightShowVersion' => 0,		// Boolean: If set, the current TYPO3 version is shown.
+		'textfile_ext' => 'txt,html,htm,css,inc,php,php3,tmpl,js,sql',	// Text file extensions. Those that can be edited. php,php3 cannot be edited in webspace if they are disallowed! Notice:
+		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
+		'T3instID' => 'N/A',					// A unique installation ID - not used yet. The idea is that a TYPO3 installation can identify itself by this ID string to the Extension Repository on TYPO3.org so that we can keep a realistic count of serious TYPO3 installations.
 		'binPath' => '', 						// String, comma seperated list: list of absolute paths where external programs should be searched for
 		't3lib_cs_convMethod' => '',			// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset conversing functions in t3lib_cs. Will speed up charset conversion radically.
 		't3lib_cs_utils' => '',					// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
-		'enable_DLOG' => FALSE,					// Whether the developer log is enabled. See constant "TYPO3_DLOG"
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -92,7 +91,9 @@ $TYPO3_CONF_VARS = Array(
 		'unzip_path' => '',						// Path to "unzip".
 		'diff_path' => 'diff',					// Path to "diff". For Windows this program can be downloaded here: http://unxutils.sourceforge.net/
 		'fileadminDir' => 'fileadmin/',			// Path to the fileadmin dir. This is relative to PATH_site. (Automatically mounted for admin-users if set)
+		'RTEenabled' => 1,						// Boolean. If set, the Rich Text editor will be an option in the backend. Notice that the editor must be enabled per-user and options are configurable. See admin guide.
 		'RTE_imageStorageDir' => 'uploads/',	// Default storage directory for Rich Text Editor files
+		'RTE_reg' => array(),					// Contains arrays of possible RTEs available (keys=extKey, values=cfg-array). Each array contains a key, "objRef", which contains a user function call with prefixed script path and instanciating a persistent global object. This can report back if browser requirements are OK, draw the RTE and do the transformations needed.
 		'staticFileEditPath' => 'fileadmin/static/',	// Path to directory with static files for editing (see table sys_staticfiles_edit). Relative to PATH_site.
 		'lockRootPath' => '',					// First part of the userHomePath/groupHomePath. Observe that the first part of 'userHomePath' and 'groupHomePath' must be the value of 'lockRootPath'. Eg. '/home/typo3/'. This path is also used to evaluate if paths outside the PATH_site should be allowed. Ending slash required!
 		'userHomePath' => '',					// Path to the directory where TYPO3 backend-users have their home-dirs.  Eg. '/home/typo3/users/'. A home for backend user 2 would be: '/home/typo3/users/2/'. Ending slash required!
@@ -110,7 +111,6 @@ $TYPO3_CONF_VARS = Array(
 		'usePHPFileFunctions' => 1,				// Boolean. If set, all fileoperations are done by the default PHP-functions. Default on UNIX is using the system commands by exec(). You need to set this flag under safe_mode.
 		'compressionLevel' => 0,				// Determines output compression. Requires zlib in your php4 install. Range 1-9, where 1 is least compression (approx. 50%) and 9 is greatest compression (approx 33%). 'true' as value will set the compression based on system load (works with Linux, freebsd). Good default value is 3. For more info, see class in t3lib/class.gzip_encode.php written by Sandy McArthur, Jr. <Leknor@Leknor.com>
 		'maxFileSize' => '10000',				// Integer. If set this is the max fileoperation filesize in kb's set in t3lib/extFileFunctions.
-		'RTEenabled' => 1,						// Boolean. If set, the Rich Text editor will be an option in the backend. Notice that the editor must be enabled per-user and options are configurable. See admin guide.
 		'forceCharset' => '',					// String. Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value.
 		'installToolPassword' => '',			// String. This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
 		'trackBeUser' => 0,						// Boolean. If set, every invokation of a backend script is logged in sys_trackbeuser. This is used to get a view of the backend users behaviour. Mostly for debugging, support and user interaction analysis. Requires 'beuser_tracking' extension.
@@ -162,7 +162,7 @@ $TYPO3_CONF_VARS = Array(
 		'userFuncClassPrefix' => 'user_',		// This prefix must be the first part of any function or class name called from TypoScript, for instance in the stdWrap function.
 		'addRootLineFields' => '',				// Comma-list of fields from the 'pages'-table. These fields are added to the select query for fields in the rootline.
 		'checkFeUserPid' => 1,					// Boolean. If set, the pid of fe_user logins must be sent in the form as the field 'pid' and then the user must be located in the pid. Default is 1 from Typo32+. If you unset this, you should change the fe_users.username eval-flag 'uniqueInPid' to 'unique' in $TCA. This will do: $TCA['fe_users']['columns']['username']['config']['eval']= 'nospace,lower,required,unique';
-		'lockIP' => 0,							// Boolean. If set, fe_users are locked to their REMOTE_ADDR IP for their session. Enhances security but may throw of users that may change IP during their session.
+		'lockIP' => 0,							// Boolean. If set, fe_users are locked to their REMOTE_ADDR IP for their session. Enhances security but may throw off users that may change IP during their session.
 		'defaultUserTSconfig' => '',			// Enter lines of default frontend user/group TSconfig.
 		'defaultTypoScript_constants' => '',	// Enter lines of default TypoScript, constants-field.
 		'defaultTypoScript_constants.' => Array(),	// Lines of TS to include after a static template with the uid = the index in the array (Constants)

@@ -10,7 +10,7 @@
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
 *  A copy is found in the textfile GPL.txt and important notices to the license 
@@ -63,10 +63,10 @@
  *
  *              SECTION: Page tree, TCA related
  *  488:     function BEgetRootLine ($uid,$clause='')	
- *  539:     function getRecordPath($uid,$clause,$titleLimit)	
+ *  539:     function getRecordPath($uid,$clause,$titleLimit)
  *  564:     function getExcludeFields()	
  *  599:     function readPageAccess($id,$perms_clause)	
- *  629:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)	
+ *  629:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)
  *  675:     function getTCAtypeValue($table,$rec)	
  *  698:     function getSpecConfParts($str)	
  *  723:     function getSpecConfParametersFromArray($pArr)	
@@ -130,10 +130,10 @@
  * 2317:     function getTCEFORM_TSconfig($table,$row) 
  * 2365:     function getTSconfig_pidValue($table,$uid,$pid)	
  * 2394:     function getPidForModTSconfig($table,$uid,$pid)	
- * 2411:     function getTSCpid($table,$uid,$pid)	
+ * 2411:     function getTSCpid($table,$uid,$pid)
  * 2428:     function firstDomainRecord($rootLine)	
  * 2451:     function getDomainStartPage($domain, $path='')	
- * 2482:     function RTEsetup($RTEprop,$table,$field,$type='')	
+ * 2482:     function RTEsetup($RTEprop,$table,$field,$type='')
  * 2503:     function isModuleSetInTBE_MODULES($modName)	
  *
  *              SECTION: Miscellaneous
@@ -534,23 +534,31 @@ class t3lib_BEfunc	{
 	 * @param	integer		Page uid for which to create record path
 	 * @param	string		$clause is additional where clauses, eg. "
 	 * @param	integer		Title limit
-	 * @return	string		Path of record
+	 * @param	integer		Title limit of Full title (typ. set to 1000 or so)
+	 * @return	mixed		Path of record (string) OR array with short/long title if $fullTitleLimit is set.
 	 */
-	function getRecordPath($uid,$clause,$titleLimit)	{
-		if (!$titleLimit) {$titleLimit=1000;}
+	function getRecordPath($uid, $clause, $titleLimit, $fullTitleLimit=0)	{
+		if (!$titleLimit) { $titleLimit=1000; }
+
 		$loopCheck = 100;
-		$output='/';
+		$output = $fullOutput = '/';
 		while ($uid!=0 && $loopCheck>0)	{
 			$loopCheck--;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid,title', 'pages', 'uid='.intval($uid).t3lib_BEfunc::deleteClause('pages').' AND '.$clause);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$uid = $row['pid'];
-				$output='/'.t3lib_div::fixed_lgd(strip_tags($row['title']),$titleLimit).$output;
+				$output = '/'.t3lib_div::fixed_lgd(strip_tags($row['title']),$titleLimit).$output;
+				if ($fullTitleLimit)	$fullOutput = '/'.t3lib_div::fixed_lgd(strip_tags($row['title']),$fullTitleLimit).$fullOutput;
 			} else {
 				break;
 			}
 		}
-		return $output;
+
+		if ($fullTitleLimit)	{
+			return array($output, $fullOutput);
+		} else {
+			return $output;
+		}
 	}
 
 	/**
@@ -598,17 +606,17 @@ class t3lib_BEfunc	{
 	 */
 	function readPageAccess($id,$perms_clause)	{
 		if ((string)$id!='')	{
-			$id=intval($id);
+			$id = intval($id);
 			if (!$id)	{
 				if ($GLOBALS['BE_USER']->isAdmin())	{
-					$path='/';
-					$pageinfo['_thePath']=$path;
+					$path = '/';
+					$pageinfo['_thePath'] = $path;
 					return $pageinfo;
 				}
 			} else {
-				$pageinfo = t3lib_BEfunc::getRecord('pages',$id,'*',($perms_clause?' AND '.$perms_clause:''));
+				$pageinfo = t3lib_BEfunc::getRecord('pages',$id,'*',($perms_clause ? ' AND '.$perms_clause : ''));
 				if ($pageinfo['uid'] && $GLOBALS['BE_USER']->isInWebMount($id,$perms_clause))	{
-					$pageinfo['_thePath']=t3lib_BEfunc::getRecordPath (intval($pageinfo['uid']),$perms_clause,15);
+					list($pageinfo['_thePath'],$pageinfo['_thePathFull']) = t3lib_BEfunc::getRecordPath(intval($pageinfo['uid']), $perms_clause, 15, 1000);
 					return $pageinfo;
 				}
 			}
@@ -631,6 +639,7 @@ class t3lib_BEfunc	{
 
 		t3lib_div::loadTCA($table);
 		if ($TCA[$table])	{
+
 				// Get type value:
 			$fieldValue = t3lib_BEfunc::getTCAtypeValue($table,$rec);
 
@@ -638,24 +647,31 @@ class t3lib_BEfunc	{
 			$typesConf = $TCA[$table]['types'][$fieldValue];
 
 				// Get fields list and traverse it
-			$fieldList = explode(',',$typesConf['showitem']);
-			$altFieldList=array();
-			reset($fieldList);
-			while(list($k,$v)=each($fieldList))	{
-				$vParts=explode(';',$v);
-				$specConfParts = t3lib_BEfunc::getSpecConfParts($vParts[3]);
+			$fieldList = explode(',', $typesConf['showitem']);
+			$altFieldList = array();
+
+				// Traverse fields in types config and parse the configuration into a nice array:
+			foreach($fieldList as $k => $v)	{
+				list($pFieldName, $pAltTitle, $pPalette, $pSpec) = t3lib_div::trimExplode(';', $v);
+				$defaultExtras = is_array($TCA[$table]['columns'][$pFieldName]) ? $TCA[$table]['columns'][$pFieldName]['defaultExtras'] : '';
+				$specConfParts = t3lib_BEfunc::getSpecConfParts($pSpec, $defaultExtras);
+
 				$fieldList[$k]=array(
-					'field'=>trim($vParts[0]),
-					'title'=>trim($vParts[1]),
-					'palette'=>trim($vParts[2]),
-					'spec'=>$specConfParts,
-					'origString'=>$v
+					'field' => $pFieldName,
+					'title' => $pAltTitle,
+					'palette' => $pPalette,
+					'spec' => $specConfParts,
+					'origString' => $v
 				);
 				if ($useFieldNameAsKey)	{
-					$altFieldList[$fieldList[$k]['field']]=$fieldList[$k];
+					$altFieldList[$fieldList[$k]['field']] = $fieldList[$k];
 				}
 			}
-			if ($useFieldNameAsKey)	$fieldList=$altFieldList;
+			if ($useFieldNameAsKey)	{
+				$fieldList = $altFieldList;
+			}
+
+				// Return array:
 			return $fieldList;
 		}
 	}
@@ -678,9 +694,9 @@ class t3lib_BEfunc	{
 			// If no field-value, set it to zero. If there is no type matching the field-value (which now may be zero...) test field-value '1' as default.
 		t3lib_div::loadTCA($table);
 		if ($TCA[$table])	{
-			$field=$TCA[$table]['ctrl']['type'];
-			$fieldValue = $field?($rec[$field]?$rec[$field]:0):0;
-			if (!is_array($TCA[$table]['types'][$fieldValue]))	$fieldValue=1;
+			$field = $TCA[$table]['ctrl']['type'];
+			$fieldValue = $field ? ($rec[$field] ? $rec[$field] : 0) : 0;
+			if (!is_array($TCA[$table]['types'][$fieldValue]))	$fieldValue = 1;
 			return $fieldValue;
 		}
 	}
@@ -693,21 +709,28 @@ class t3lib_BEfunc	{
 	 * Usage: 3
 	 *
 	 * @param	string		Content from the "types" configuration of TCA (the special configuration) - see description of function
+	 * @param	string		The ['defaultExtras'] value from field configuration
 	 * @return	array
 	 */
-	function getSpecConfParts($str)	{
-		if (trim($str))	{
-			$specConfParts = explode(':',$str);
-			reset($specConfParts);
-			while(list($k2,$v2) = each($specConfParts))	{
+	function getSpecConfParts($str, $defaultExtras)	{
+
+			// Add defaultExtras:
+		$specConfParts = t3lib_div::trimExplode(':', $defaultExtras.':'.$str, 1);
+
+		if (count($specConfParts))	{
+			foreach($specConfParts as $k2 => $v2)	{
+				unset($specConfParts[$k2]);
 				if (ereg('(.*)\[(.*)\]',$v2,$reg))	{
-					unset($specConfParts[$k2]);
-					$specConfParts[$reg[1]] = array(
-						'parameters'=>explode('|',$reg[2])
+					$specConfParts[trim($reg[1])] = array(
+						'parameters' => t3lib_div::trimExplode('|', $reg[2], 1)
 					);
+				} else {
+					$specConfParts[trim($v2)] = 1;
 				}
 			}
-		} else { $specConfParts = array(); }
+		} else {
+			$specConfParts = array();
+		}
 		return $specConfParts;
 	}
 
@@ -2120,7 +2143,6 @@ class t3lib_BEfunc	{
 			} else {die ('No menu!');}
 	
 			if ($changed)	{
-//debug('write!');
 				$GLOBALS['BE_USER']->pushModuleData($modName,$settings);
 			}
 			
@@ -2404,13 +2426,13 @@ class t3lib_BEfunc	{
 	 * @param	string		Table name
 	 * @param	integer		Record uid
 	 * @param	integer		Record pid
-	 * @return	integer
+	 * @return	array		Array of two integers; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID, second value is the PID value for TSconfig (uid if table is pages, otherwise the pid)
 	 * @internal
 	 * @see t3lib_TCEmain::setHistory(), t3lib_TCEmain::process_datamap()
 	 */
 	function getTSCpid($table,$uid,$pid)	{
 			// If pid is negative (referring to another record) the pid of the other record is fetched and returned.
-		$cPid = t3lib_BEfunc::getTSconfig_pidValue($table,$uid,$pid);	
+		$cPid = t3lib_BEfunc::getTSconfig_pidValue($table,$uid,$pid);
 			// $TScID is the id of $table=pages, else it's the pid of the record.
 		$TScID = t3lib_BEfunc::getPidForModTSconfig($table,$uid,$cPid);
 
@@ -2490,6 +2512,43 @@ class t3lib_BEfunc	{
 			$thisConfig = t3lib_div::array_merge_recursive_overrule($thisConfig,$RTEprop['config.'][$table.'.'][$field.'.']['types.'][$type.'.']);
 		}
 		return $thisConfig;
+	}
+
+	/**
+	 * Returns first possible RTE object if available.
+	 *
+	 * @return	mixed		If available, returns RTE object, otherwise an array of messages from possible RTEs
+	 */
+	function &RTEgetObj()	{
+
+			// If no RTE object has been set previously, try to create it:
+		if (!isset($GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj']))	{
+
+				// Set the object string to blank by default:
+			$GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'] = array();
+
+				// Traverse registered RTEs:
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg']))	{
+				foreach($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'] as $extKey => $rteObjCfg)	{
+					$rteObj = &t3lib_div::getUserObj($rteObjCfg['objRef']);
+					if (is_object($rteObj))	{
+						if ($rteObj->isAvailable())	{
+							$GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'] = &$rteObj;
+							break;
+						} else {
+							$GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'] = array_merge($GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'], $rteObj->errorLog);
+						}
+					}
+				}
+			}
+
+			if (!count($GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj']))	{
+				$GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'][] = 'No RTEs configured at all';
+			}
+		}
+
+			// Return RTE object (if any!)
+		return $GLOBALS['TYPO3_CONF_VARS']['T3_VAR']['RTEobj'];
 	}
 
 	/**

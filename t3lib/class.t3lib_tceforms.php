@@ -47,23 +47,23 @@
  *  388:     function getMainFields($table,$row,$depth=0)	
  *  515:     function getListedFields($table,$row,$list)	
  *  556:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	
- *  632:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	
+ *  632:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)
  *  760:     function getSingleField_SW($table,$field,$row,&$PA)
  *
  *              SECTION: Rendering of each TCEform field type
- *  831:     function getSingleField_typeInput($table,$field,$row,&$PA)	
- *  883:     function getSingleField_typeText($table,$field,$row,&$PA)	
- *  986:     function getSingleField_typeCheck($table,$field,$row,&$PA)	
- * 1045:     function getSingleField_typeRadio($table,$field,$row,&$PA)	
+ *  831:     function getSingleField_typeInput($table,$field,$row,&$PA)
+ *  883:     function getSingleField_typeText($table,$field,$row,&$PA)
+ *  986:     function getSingleField_typeCheck($table,$field,$row,&$PA)
+ * 1045:     function getSingleField_typeRadio($table,$field,$row,&$PA)
  * 1075:     function getSingleField_typeSelect($table,$field,$row,&$PA)
- * 1236:     function getSingleField_typeGroup($table,$field,$row,&$PA)	
- * 1380:     function getSingleField_typeNone($table,$field,$row,&$PA)	
- * 1434:     function getSingleField_typeFlex($table,$field,$row,&$PA)	
+ * 1236:     function getSingleField_typeGroup($table,$field,$row,&$PA)
+ * 1380:     function getSingleField_typeNone($table,$field,$row,&$PA)
+ * 1434:     function getSingleField_typeFlex($table,$field,$row,&$PA)
  * 1535:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)	
  * 1554:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)	
  * 1584:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())
- * 1734:     function getSingleField_typeUnknown($table,$field,$row,&$PA)	
- * 1749:     function getSingleField_typeUser($table,$field,$row,&$PA)	
+ * 1734:     function getSingleField_typeUnknown($table,$field,$row,&$PA)
+ * 1749:     function getSingleField_typeUser($table,$field,$row,&$PA)
  *
  *              SECTION: "Configuration" fetching/processing functions
  * 1783:     function getRTypeNum($table,$row)	
@@ -73,11 +73,11 @@
  * 1908:     function mergeFieldsWithAddedFields($fields,$fieldsToAdd)	
  * 1940:     function setTSconfig($table,$row,$field='')
  * 1962:     function getSpecConfForField($table,$row,$field)	
- * 1982:     function getSpecConfFromString($extraString)    
+ * 1982:     function getSpecConfFromString($extraString)
  *
  *              SECTION: Form element helper functions
  * 2014:     function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')	
- * 2123:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)	
+ * 2123:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)
  * 2286:     function getIcon($icon)	
  * 2317:     function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)	
  * 2341:     function checkBoxParams($itemName,$thisValue,$c,$iCount,$addFunc='')	
@@ -93,7 +93,7 @@
  *              SECTION: Item-array manipulation functions (check/select/radio)
  * 2496:     function initItemArray($fieldValue)
  * 2514:     function addItems($items,$iArray)	
- * 2536:     function procItems($items,$iArray,$config,$table,$row,$field)	
+ * 2536:     function procItems($items,$iArray,$config,$table,$row,$field)
  * 2560:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)
  * 2638:     function addSelectOptionsToItemArray_makeModuleData($value)
  * 2660:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)	
@@ -102,7 +102,7 @@
  * 2737:     function setFancyDesign()	
  * 2764:     function setNewBEDesign()	
  * 2818:     function intoTemplate($inArr,$altTemplate='')	
- * 2842:     function addUserTemplateMarkers($marker,$table,$field,$row,&$PA)	
+ * 2842:     function addUserTemplateMarkers($marker,$table,$field,$row,&$PA)
  * 2853:     function wrapLabels($str)	
  * 2866:     function wrapTotal($c,$rec,$table)	
  * 2879:     function replaceTableWrap($arr,$rec,$table)	
@@ -118,21 +118,21 @@
  * 3061:     function restoreSchemes()	
  *
  *              SECTION: JavaScript related functions
- * 3091:     function JStop($formname='forms[0]')	
+ * 3091:     function JStop($formname='forms[0]')
  * 3131:     function JSbottom($formname='forms[0]')	
  * 3447:     function dbFileCon($formObj='document.forms[0]')	
  * 3555:     function printNeededJSFunctions()	
- * 3582:     function printNeededJSFunctions_top()	
+ * 3582:     function printNeededJSFunctions_top()
  *
  *              SECTION: Various helper functions
  * 3630:     function getDefaultRecord($table,$pid=0)	
  * 3669:     function getRecordPath($table,$rec)	
  * 3682:     function readPerms()	
  * 3696:     function sL($str)	
- * 3709:     function getLL($str)	
+ * 3709:     function getLL($str)
  * 3727:     function isPalettesCollapsed($table,$palette)	
- * 3742:     function isDisplayCondition($displayCond,$row)	
- * 3795:     function getTSCpid($table,$uid,$pid)	
+ * 3742:     function isDisplayCondition($displayCond,$row)
+ * 3795:     function getTSCpid($table,$uid,$pid)
  * 3809:     function doLoadTableDescr($table)	
  * 3821:     function getAvailableLanguages($onlyIsoCoded=1,$setDefault=1)	
  *
@@ -172,10 +172,8 @@ class t3lib_TCEforms	{
 
 		// variables not commented yet.... (do so...)
 	var $helpTextFontTag='<font color="#333333">';
-	var $RTEpath = 'ext/rte/app/';
 	var $palFieldArr=array();
 	var $disableWizards=0;
-	var $RTEdivStyle='';
 	var $isPalettedoc=0;
 	var $paletteMargin=1;
 	var $defStyle = ''; // 'font-family:Verdana;font-size:10px;';
@@ -183,7 +181,6 @@ class t3lib_TCEforms	{
 	var $cachedTSconfig_fieldLevel=array();
 	var $transformedRow=array();
 	var $extJSCODE='';
-	var $RTEwindows=array();
 	var $printNeededJS = array();
 	var $hiddenFieldAccum=array();
 	var $TBE_EDITOR_fieldChanged_func='';
@@ -209,12 +206,11 @@ class t3lib_TCEforms	{
 	var $maxInputWidth=48;				// The maximum abstract value for input fields
 	var $defaultMultipleSelectorStyle='width:250px;';	// Default style for the selector boxes used for multiple items in "select" and "group" types.
 
-	
+
 		// INTERNAL, static
 	var $prependFormFieldNames = 'data';		// The string to prepend formfield names with.
 	var $prependFormFieldNames_file = 'data_files';		// The string to prepend FILE form field names with.
 	var $formName = 'editform';					// The name attribute of the form. 
-	var $RTEbgColor= '#F6F2E6';					// The background color passed to the RTE
 
 		
 
@@ -250,7 +246,10 @@ class t3lib_TCEforms	{
 	var $renderDepth=0;							// Keeps track of the rendering depth of nested records.
 	var $savedSchemes=array();					// Color scheme buffer.
 
-
+		// Internal, registers for user defined functions etc.
+	var $additionalJS_pre = array();			// Additional JavaScript, printed before the form
+	var $additionalJS_post = array();			// Additional JavaScript printed after the form
+	var $additionalJS_submit = array();			// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
 
 
 
@@ -266,21 +265,16 @@ class t3lib_TCEforms	{
 	function t3lib_TCEforms()	{
 		global $CLIENT;
 		
-		$this->clientInfo=t3lib_div::clientInfo();
+		$this->clientInfo = t3lib_div::clientInfo();
+
 		$this->RTEenabled = $GLOBALS['BE_USER']->isRTE();
 		if (!$this->RTEenabled)	{
-			$this->RTEenabled_notReasons=
-				(!t3lib_extMgm::isLoaded('rte') ? "- 'rte' extension is not loaded\n":'').
-				($CLIENT['BROWSER']!='msie' ? "- Browser is not MSIE\n":'').
-				($CLIENT['SYSTEM']!='win' ? "- Client system is not Windows\n":'').
-				($CLIENT['VERSION']<5 ? "- Browser version below 5\n":'').
-				(!$GLOBALS['BE_USER']->uc['edit_RTE'] ? "- RTE is not enabled for user!\n":'').
-				(!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'] ? '- RTE is not enabled in $TYPO3_CONF_VARS["BE"]["RTEenabled"]'.chr(10):'');
-			$this->commentMessages[]='RTE NOT ENABLED IN SYSTEM due to:'.chr(10).$this->RTEenabled_notReasons;
+			$this->RTEenabled_notReasons = implode(chr(10),$GLOBALS['BE_USER']->RTE_errors);
+			$this->commentMessages[] = 'RTE NOT ENABLED IN SYSTEM due to:'.chr(10).$this->RTEenabled_notReasons;
 		}
-		
+
 			// Default color scheme
-		$this->defColorScheme=array(
+		$this->defColorScheme = array(
 			$GLOBALS['SOBE']->doc->bgColor,	// Background for the field AND palette
 			t3lib_div::modifyHTMLColorAll($GLOBALS['SOBE']->doc->bgColor,-20),	// Background for the field header
 			t3lib_div::modifyHTMLColorAll($GLOBALS['SOBE']->doc->bgColor,-10),	// Background for the palette field header
@@ -290,11 +284,11 @@ class t3lib_TCEforms	{
 
 			// Override / Setting defaults from TBE_STYLES array
 		$this->resetSchemes();
-		
+
 			// Setting the current colorScheme to default.
-		$this->defColorScheme=$this->colorScheme;
+		$this->defColorScheme = $this->colorScheme;
 	}
-	
+
 	/**
 	 * Initialize various internal variables.
 	 *
@@ -304,7 +298,6 @@ class t3lib_TCEforms	{
 		global $BE_USER;
 		$this->prependFormFieldNames = 'data';
 		$this->formName = 'editform';
-		$this->RTEbgColor = $GLOBALS['SOBE']->doc->bgColor;
 		$this->setNewBEDesign();
 		$this->docLarge = $BE_USER->uc['edit_wideDocument'] ? 1 : 0;
 		$this->edit_showFieldHelp = $BE_USER->uc['edit_showFieldHelp'];
@@ -632,13 +625,13 @@ class t3lib_TCEforms	{
 	function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	{
 		global $TCA,$BE_USER;
 
-		$out='';
-		$PA=array();
-		$PA['altName']=$altName;
+		$out = '';
+		$PA = array();
+		$PA['altName'] = $altName;
 		$PA['palette'] = $palette;
 		$PA['extra'] = $extra;
 		$PA['pal'] = $pal;
-	 
+
 			// Make sure to load full $TCA array for the table:
 		t3lib_div::loadTCA($table);
 
@@ -647,23 +640,23 @@ class t3lib_TCEforms	{
 
 			// Now, check if this field is configured and editable (according to excludefields + other configuration)
 		if (	is_array($PA['fieldConf']) &&
-				(!$PA['fieldConf']['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$field)) && 
+				(!$PA['fieldConf']['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$field)) &&
 				$PA['fieldConf']['config']['type']!='passthrough' &&
 				($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE']) &&
 				(!$PA['fieldConf']['displayCond'] || $this->isDisplayCondition($PA['fieldConf']['displayCond'],$row))
 			)	{
 
-				// Fetching the TSconfig for the current table/field. This includes the $row which means that 
+				// Fetching the TSconfig for the current table/field. This includes the $row which means that
 			$PA['fieldTSConfig'] = $this->setTSconfig($table,$row,$field);
 
 				// If the field is NOT disabled from TSconfig (which it could have been) then render it
 			if (!$PA['fieldTSConfig']['disabled'])	{
-					
+
 					// Init variables:
 				$PA['itemFormElName']=$this->prependFormFieldNames.'['.$table.']['.$row['uid'].']['.$field.']';		// Form field name
 				$PA['itemFormElName_file']=$this->prependFormFieldNames_file.'['.$table.']['.$row['uid'].']['.$field.']';	// Form field name, in case of file uploads
 				$PA['itemFormElValue']=$row[$field];		// The value to show in the form field.
-				
+
 					// Create a JavaScript code line which will ask the user to save/update the form due to changing the element. This is used for eg. "type" fields and others configured with "requestUpdate"
 				if (
 						(($TCA[$table]['ctrl']['type'] && !strcmp($field,$TCA[$table]['ctrl']['type'])) ||
@@ -671,12 +664,12 @@ class t3lib_TCEforms	{
 						&& !$BE_USER->uc['noOnChangeAlertInTypeFields'])	{
 					$alertMsgOnChange = 'if (confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')).') && TBE_EDITOR_checkSubmit(-1)){ TBE_EDITOR_submitForm() };';
 				} else {$alertMsgOnChange='';}
-				
+
 					// Render as a hidden field?
 				if (in_array($field,$this->hiddenFieldListArr))	{
 					$this->hiddenFieldAccum[]='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
 				} else {	// Render as a normal field:
-				
+
 						// If the field is NOT a palette field, then we might create an icon which links to a palette for the field, if one exists.
 					if (!$PA['palette'])	{
 						if ($PA['pal'] && $this->isPalettesCollapsed($table,$PA['pal']))	{
@@ -688,7 +681,7 @@ class t3lib_TCEforms	{
 					}
 						// onFocus attribute to add to the field:
 					$PA['onFocus'] = ($palJSfunc && !$BE_USER->uc['dontShowPalettesOnFocusInAB']) ? ' onfocus="'.htmlspecialchars($palJSfunc).'"' : '';
-					
+
 						// Find item
 					$item='';
 					$PA['label'] = $PA['altName'] ? $PA['altName'] : $PA['fieldConf']['label'];
@@ -834,7 +827,7 @@ class t3lib_TCEforms	{
 
 		$config = $PA['fieldConf']['config'];
 #		$specConf = $this->getSpecConfForField($table,$row,$field);
-		$specConf = $this->getSpecConfFromString($PA['extra']);
+		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
 		$size = t3lib_div::intInRange($config['size']?$config['size']:30,5,$this->maxInputWidth);
 		$evalList = t3lib_div::trimExplode(',',$config['eval'],1);
 
@@ -901,7 +894,7 @@ class t3lib_TCEforms	{
 		$RTEwouldHaveBeenLoaded = 0;	// Set true, if the RTE would have been loaded if it wasn't for the disable-RTE flag in the bottom of the page...
 
 			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. Traditionally, this is where RTE configuration has been found.
-		$specConf = $this->getSpecConfFromString($PA['extra']);
+		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
 
 			// Setting up the altItem form field, which is a hidden field containing the value
 		$altItem = '<input type="hidden" name="'.htmlspecialchars($PA['itemFormElName']).'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
@@ -910,7 +903,6 @@ class t3lib_TCEforms	{
 		if ($this->RTEenabled) {
 			$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
 			if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']]))	{	// If the field is configured for RTE and if any flag-field is not set to disable it.
-
 				list($tscPID,$thePidValue) = $this->getTSCpid($table,$row['uid'],$row['pid']);
 
 					// If the pid-value is not negative (that is, a pid could NOT be fetched)
@@ -918,29 +910,21 @@ class t3lib_TCEforms	{
 					$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($tscPID));
 					$RTEtypeVal = t3lib_BEfunc::getTCAtypeValue($table,$row);
 					$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$table,$field,$RTEtypeVal);
+
 					if (!$thisConfig['disabled'])	{
 						if (!$this->disableRTE)	{
-							$RTEWidth = 460+($this->docLarge ? 150 : 0);
-							$RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:380px; width:'.$RTEWidth.'px; border:solid 0px;';
-							$rteURL = $this->backPath.$this->RTEpath.'rte.php?'.
-											'elementId='.rawurlencode($PA['itemFormElName']).	// Form element name
-											'&pid='.$row['pid'].								// PID for record being edited.
-											'&typeVal='.rawurlencode($RTEtypeVal).				// TCA "types" value for record
-											'&bgColor='.rawurlencode($this->colorScheme[0]).	// Background color
-											'&sC='.rawurlencode($PA['extra']).					// Extra options; This is index 3 (part #4) of the TCA "types" configuration of the field. Can be parsed by
-											'&formName='.rawurlencode($this->formName);			// Form name
 
-							$item = $altItem;
-							$item.= '
-								<div id="cdiv'.count($this->RTEwindows).'" style="'.htmlspecialchars($RTEdivStyle).'">
-								<iframe
-									src="'.htmlspecialchars($rteURL).'"
-									id="'.$PA['itemFormElName'].'_RTE"
-									style="visibility:visible; position:absolute; left:0px; top:0px; height:100%; width:100%;"></iframe>
-								</div>';
+								// Find alternative relative path for RTE images/links:
+							$eFile = t3lib_parsehtml_proc::evalWriteFile($specConf['static_write'], $row);
+							$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
 
+								// Get RTE object, draw form and set flag:
+							$RTEobj = &t3lib_BEfunc::RTEgetObj();
+							$item = $RTEobj->drawRTE($this,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue);
+
+								// Wizard:
 							$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf,1);
-							$this->RTEwindows[] = $PA['itemFormElName'];
+
 							$RTEwasLoaded = 1;
 						} else {
 							$RTEwouldHaveBeenLoaded = 1;
@@ -949,24 +933,28 @@ class t3lib_TCEforms	{
 					} else $this->commentMessages[] = $PA['itemFormElName'].': RTE is disabled by the Page TSconfig, "RTE"-key (eg. by RTE.default.disabled=0 or such)';
 				} else $this->commentMessages[] = $PA['itemFormElName'].': PID value could NOT be fetched. Rare error, normally with new records.';
 			} else {
-				if (!isset($specConf['richtext']))	$this->commentMessages[]=$PA['itemFormElName'].': RTE was not configured for this field in TCA-types';
-				if (!(!$p['flag'] || !$row[$p['flag']]))	 $this->commentMessages[]=$PA['itemFormElName'].': Field-flag ('.$PA['flag'].') has been set to disable RTE!';
+				if (!isset($specConf['richtext']))	$this->commentMessages[] = $PA['itemFormElName'].': RTE was not configured for this field in TCA-types';
+				if (!(!$p['flag'] || !$row[$p['flag']]))	 $this->commentMessages[] = $PA['itemFormElName'].': Field-flag ('.$PA['flag'].') has been set to disable RTE!';
 			}
 		}
 
 			// Display ordinary field if RTE was not loaded.
 		if (!$RTEwasLoaded) {
-			if (strstr($PA['extra'],'nowrap'))	{
-				$wrap = 'off';
+			if ($specConf['rte_only'])	{	// Show message, if no RTE (field can only be edited with RTE!)
+				$item = '<p><em>'.htmlspecialchars($this->getLL('l_noRTEfound')).'</em></p>';
 			} else {
-				$wrap = ($config['wrap'] ? $config['wrap'] : 'virtual');
+				if ($specConf['nowrap'])	{
+					$wrap = 'off';
+				} else {
+					$wrap = ($config['wrap'] ? $config['wrap'] : 'virtual');
+				}
+				$iOnChange = implode('',$PA['fieldChangeFunc']);
+				$item.= '
+							<textarea name="'.$PA['itemFormElName'].'"'.$this->formWidthText($cols,$wrap).' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
+							t3lib_div::formatForTextarea($PA['itemFormElValue']).
+							'</textarea>';
+				$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf,$RTEwouldHaveBeenLoaded);
 			}
-			$iOnChange = implode('',$PA['fieldChangeFunc']);
-			$item.= '
-						<textarea name="'.$PA['itemFormElName'].'"'.$this->formWidthText($cols,$wrap).' rows="'.$rows.'" wrap="'.$wrap.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].'>'.
-						t3lib_div::formatForTextarea($PA['itemFormElValue']).
-						'</textarea>';
-			$item = $this->renderWizards(array($item,$altItem),$config['wizards'],$table,$row,$field,$PA,$PA['itemFormElName'],$specConf,$RTEwouldHaveBeenLoaded);
 		}
 
 			// Return field HTML:
@@ -1000,7 +988,7 @@ class t3lib_TCEforms	{
 			$item.= '<table border="0" cellspacing="0" cellpadding="0">';
 			for ($c=0;$c<count($selItems);$c++) {
 				$p = $selItems[$c];
-				if(!($c%$cols))	{$item.='<tr>';}
+				if(!($c%$cols))	{ $item.='<tr>'; }
 				$cBP = $this->checkBoxParams($PA['itemFormElName'],$thisValue,$c,count($selItems),implode('',$PA['fieldChangeFunc']));
 				$cBName = $PA['itemFormElName'].'_'.$c;
 				$item.= '<td nowrap="nowrap">'.
@@ -1014,7 +1002,7 @@ class t3lib_TCEforms	{
 				for ($c=0;$c<$rest;$c++) {
 					$item.= '<td></td>';
 				}
-				if ($c>0)	{$item.= '</tr>';}
+				if ($c>0)	{ $item.= '</tr>'; }
 			}
 			$item.= '</table>';
 		} else {
@@ -1695,7 +1683,9 @@ class t3lib_TCEforms	{
 							$fakePA=array();
 							$fakePA['fieldConf']=array(
 								'label' => $this->sL($value['TCEforms']['label']),
-								'config' => $value['TCEforms']['config']
+								'config' => $value['TCEforms']['config'],
+								'defaultExtras' => $value['TCEforms']['defaultExtras'],
+								'displayCond' => $value['TCEforms']['displayCond'],	// Haven't tested this...
 							);
 							$fakePA['fieldChangeFunc']=$PA['fieldChangeFunc'];
 							$fakePA['onFocus']=$PA['onFocus'];
@@ -1961,8 +1951,8 @@ class t3lib_TCEforms	{
 	 */
 	function getSpecConfForField($table,$row,$field)	{
 			// Finds the current "types" configuration for the table/row:
-		$types_fieldConfig=t3lib_BEfunc::getTCAtypes($table,$row);
-		
+		$types_fieldConfig = t3lib_BEfunc::getTCAtypes($table,$row);
+
 			// If this is an array, then traverse it:
 		if (is_array($types_fieldConfig))	{
 			foreach($types_fieldConfig as $vconf)	{
@@ -1976,11 +1966,12 @@ class t3lib_TCEforms	{
 	 * Returns the "special" configuration of an "extra" string (non-parsed)
 	 *
 	 * @param	string		The "Part 4" of the fields configuration in "types" "showitem" lists.
+	 * @param	string		The ['defaultExtras'] value from field configuration
 	 * @return	array		An array with the special options in.
 	 * @see getSpecConfForField(), t3lib_BEfunc::getSpecConfParts()
 	 */
-	function getSpecConfFromString($extraString)    {
-		return t3lib_BEfunc::getSpecConfParts($extraString);
+	function getSpecConfFromString($extraString, $defaultExtras)    {
+		return t3lib_BEfunc::getSpecConfParts($extraString, $defaultExtras);
 	}
 
 
@@ -3083,33 +3074,29 @@ class t3lib_TCEforms	{
 	 ********************************************/
 
 	/**
-	 * JavaScript code used for input-field evaluation.
+	 * JavaScript code added BEFORE the form is drawn:
 	 *
-	 * @param	string		The identification of the form on the page.
 	 * @return	string		A <script></script> section with JavaScript.
 	 */
-	function JStop($formname='forms[0]')	{
-		if (count($this->RTEwindows))	{
+	function JStop()	{
+		if (count($this->additionalJS_pre))	{
 			$out.='
 
 
-				<!--
-					JavaScript in top of page (before form):
-					Setting content in RTE!
-				-->
+		<!--
+			JavaScript in top of page (before form):
+		-->
 
-				<script type="text/javascript">
-					/*<![CDATA[*/
-						var TBE_RTE_WINDOWS = new Array();
+		<script type="text/javascript">
+			/*<![CDATA[*/
 
-						function TBE_EDITOR_setRTEref(RTEobj,theField,loadContent)	{	//
-							TBE_RTE_WINDOWS[theField] = RTEobj;
-							if (loadContent)	{
-								RTEobj.setHTML(document.'.$formname.'[theField].value);
-							}
-						}
-					/*]]>*/
-				</script>
+			'.implode('
+
+				// NEXT:
+			',$this->additionalJS_pre).'
+
+			/*]]>*/
+		</script>
 			';
 		}
 		return $out;
@@ -3152,15 +3139,6 @@ class t3lib_TCEforms	{
 				$reqRangeCheck[]="					if (!TBE_EDITOR_checkRange(document.".$formname."['".$itemName."_list'],".$range[0].",".$range[1]."))	{OK=0;}";
 				$reqRangeSet[]="					if (!TBE_EDITOR_checkRange(document.".$formname."['".$itemName."_list'],".$range[0].",".$range[1]."))	{TBE_EDITOR_setImage('req_".$range['imgName']."','TBE_EDITOR_req');}";
 			}
-//	debug($reqRange);
-
-			$RTEwinArr = array();
-			$RTEwinArrTransfer = array();
-			reset($this->RTEwindows);
-			while(list(,$itemName)=each($this->RTEwindows))	{
-				#$RTEwinArr[]="					TBE_RTE_WINDOWS['".$itemName."'] = 0;";		// THIS line was commented out to fix the following bug; Content wasn't saved in the RTE once in a while on slow machines. Reason. The TBE_RTE_WINDOWS variable would correctly be set to an object reference BUT in cases where the RTE window loaded BEFORE the general TCEform did not finish its rendering the initialization of the TBE_RTE_WINDOWS variable would OVERRIDE the object reference being set before! Not initializing (or initializing BEFORE the form is drawn) is the solution.
-				$RTEwinArrTransfer[]="					if(TBE_RTE_WINDOWS['".$itemName."'])	{ document.".$formname."['".$itemName."'].value = TBE_RTE_WINDOWS['".$itemName."'].getHTML(); } else { OK=0; }";
-			}
 
 			$this->TBE_EDITOR_fieldChanged_func='TBE_EDITOR_fieldChanged_fName(fName,formObj[fName+"_list"]);';
 
@@ -3172,11 +3150,11 @@ class t3lib_TCEforms	{
 			<script type="text/javascript" src="'.$this->backPath.'t3lib/jsfunc.evalfield.js"></script>
 			<script type="text/javascript">
 				/*<![CDATA[*/
-				
-				var TBE_EDITOR_req=new Image(); 	TBE_EDITOR_req.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/required_h.gif','',1).'"; 
-				var TBE_EDITOR_cm=new Image(); 		TBE_EDITOR_cm.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/content_client.gif','',1).'"; 
-				var TBE_EDITOR_sel=new Image(); 	TBE_EDITOR_sel.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/content_selected.gif','',1).'"; 
-				var TBE_EDITOR_clear=new Image(); 	TBE_EDITOR_clear.src = "'.$this->backPath.'clear.gif"; 
+
+				var TBE_EDITOR_req=new Image(); 	TBE_EDITOR_req.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/required_h.gif','',1).'";
+				var TBE_EDITOR_cm=new Image(); 		TBE_EDITOR_cm.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/content_client.gif','',1).'";
+				var TBE_EDITOR_sel=new Image(); 	TBE_EDITOR_sel.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/content_selected.gif','',1).'";
+				var TBE_EDITOR_clear=new Image(); 	TBE_EDITOR_clear.src = "'.$this->backPath.'clear.gif";
 				var TBE_REQUIRED=new Array();
 '.implode(chr(10),$reqLines).'
 
@@ -3185,7 +3163,8 @@ class t3lib_TCEforms	{
 				var TBE_RANGE_upper=new Array();
 '.implode(chr(10),$reqRange).'
 
-'.implode(chr(10),$RTEwinArr).'
+				// $this->additionalJS_post:
+'.implode(chr(10),$this->additionalJS_post).'
 
 				var TBE_EDITOR_loadTime = 0;
 				var TBE_EDITOR_isChanged = 0;
@@ -3285,7 +3264,10 @@ class t3lib_TCEforms	{
 						return false;
 					}
 					var OK=1;
-'.implode(chr(10),$RTEwinArrTransfer).'
+
+					// $this->additionalJS_post:
+'.implode(chr(10),$this->additionalJS_submit).'
+
 					if(!OK)	{
 						if (!confirm(unescape("SYSTEM ERROR: One or more Rich Text Editors on the page could not be contacted. This IS an error, although it should not be regular.\nYou can save the form now by pressing OK, but you will loose the Rich Text Editor content if you do.\n\nPlease report the error to your administrator if it persists.")))	{
 							return false;
@@ -3714,7 +3696,7 @@ class t3lib_TCEforms	{
 			case 'm_':
 				return $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.substr($str,2));
 			break;
-		} 
+		}
 	}
 
 	/**
@@ -3741,7 +3723,7 @@ class t3lib_TCEforms	{
 	 */
 	function isDisplayCondition($displayCond,$row)	{
 		$output = FALSE;
-		
+
 		$parts = explode(':',$displayCond);
 		switch((string)$parts[0])	{	// Type of condition:
 			case 'FIELD':

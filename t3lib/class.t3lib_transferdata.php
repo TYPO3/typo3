@@ -46,7 +46,7 @@
  *  318:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
  *  369:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
  *  431:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
- *  460:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)	
+ *  460:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)
  *
  *              SECTION: FlexForm processing functions
  *  544:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)
@@ -482,6 +482,9 @@ class t3lib_transferData {
 				}
 			}
 
+
+			// MOVED TO the individual extensions (see TCEforms)
+/*
 				// RTE transformation
 			if ($vconf['spec']['rte_transform'] && !$this->disableRTE)	{
 				$p=t3lib_BEfunc::getSpecConfParametersFromArray($vconf['spec']['rte_transform']['parameters']);
@@ -508,8 +511,9 @@ class t3lib_transferData {
 					}
 				}
 			}
+*/
 		}
-		
+
 		return $totalRecordContent;
 	}
 	

@@ -273,8 +273,8 @@ class SC_db_list {
 			$dblist->setDispFields();
 				
 				// Render the page header:
-			$dblist->writeTop($this->pageinfo,t3lib_BEfunc::getRecordPath (intval($this->pageinfo['uid']),$this->perms_clause,15));
-			
+			$dblist->writeTop($this->pageinfo);
+
 				// Render the list of tables:
 			$dblist->generateList($this->id,$this->table);
 			

@@ -46,7 +46,7 @@
  *
  *              SECTION: PROCESSING DATA
  *  423:     function process_datamap() 
- *  586:     function fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$realPid,$status,$tscPID)	
+ *  586:     function fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$realPid,$status,$tscPID)
  *  757:     function checkModifyAccessList($table)	
  *  769:     function isRecordInWebMount($table,$id)	
  *  783:     function isInWebMount($pid)	
@@ -59,30 +59,30 @@
  * 1046:     function recordInfo($table,$id,$fieldList)	
  * 1063:     function getRecordProperties($table,$id)	
  * 1075:     function getRecordPropertiesFromRow($table,$row)	
- * 1094:     function setTSconfigPermissions($fieldArray,$TSConfig_p)	
+ * 1094:     function setTSconfigPermissions($fieldArray,$TSConfig_p)
  * 1110:     function newFieldArray($table)	
  * 1141:     function overrideFieldArray($table,$data)	
  * 1154:     function assemblePermissions($string)	
  *
  *              SECTION: Evaluation of input values
- * 1204:     function checkValue($table,$field,$value,$id,$status,$realPid,$currentRecord)	
- * 1264:     function checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$uploadedFiles,$currentRecord=array())	
- * 1303:     function checkValue_input($res,$value,$tcaFieldConf,$PP,$field='')	
- * 1341:     function checkValue_check($res,$value,$tcaFieldConf,$PP)	
- * 1364:     function checkValue_radio($res,$value,$tcaFieldConf,$PP)	
- * 1389:     function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles)	
- * 1471:     function checkValue_group_select_file($valueArray,$tcaFieldConf,$curValue,$uploadedFileArray,$status,$table,$id,$recFID)	
- * 1624:     function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$curRecordArr,$field)	
- * 1681:     function checkValue_flexArray2Xml($array)	
+ * 1204:     function checkValue($table,$field,$value,$id,$status,$realPid,$currentRecord)
+ * 1264:     function checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$uploadedFiles,$currentRecord=array())
+ * 1303:     function checkValue_input($res,$value,$tcaFieldConf,$PP,$field='')
+ * 1341:     function checkValue_check($res,$value,$tcaFieldConf,$PP)
+ * 1364:     function checkValue_radio($res,$value,$tcaFieldConf,$PP)
+ * 1389:     function checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles)
+ * 1471:     function checkValue_group_select_file($valueArray,$tcaFieldConf,$curValue,$uploadedFileArray,$status,$table,$id,$recFID)
+ * 1624:     function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$curRecordArr,$field)
+ * 1681:     function checkValue_flexArray2Xml($array)
  * 1698:     function _DELETE_FLEX_FORMdata(&$valueArrayToRemoveFrom,$deleteCMDS)	
  *
  *              SECTION: Helper functions for evaluation functions.
  * 1746:     function getUnique($table,$field,$value,$id,$newPid=0)	
- * 1784:     function checkValue_input_Eval($value,$evalArray,$is_in)	
- * 1872:     function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)	
- * 1905:     function checkValue_group_select_explodeSelectGroupValue($value)	
- * 1928:     function checkValue_flex_procInData($dataPart,$dataPart_current,$uploadedFiles,$dataStructArray,$pParams,$callBackFunc='')	
- * 1965:     function checkValue_flex_procInData_travDS(&$dataValues,$dataValues_current,$uploadedFiles,$DSelements,$pParams,$callBackFunc='')	
+ * 1784:     function checkValue_input_Eval($value,$evalArray,$is_in)
+ * 1872:     function checkValue_group_select_processDBdata($valueArray,$tcaFieldConf,$id,$status,$type)
+ * 1905:     function checkValue_group_select_explodeSelectGroupValue($value)
+ * 1928:     function checkValue_flex_procInData($dataPart,$dataPart_current,$uploadedFiles,$dataStructArray,$pParams,$callBackFunc='')
+ * 1965:     function checkValue_flex_procInData_travDS(&$dataValues,$dataValues_current,$uploadedFiles,$DSelements,$pParams,$callBackFunc='')
  *
  *              SECTION: Storing data to Database Layer
  * 2076:     function updateDB($table,$id,$fieldArray)	
@@ -134,8 +134,8 @@
  * 3708:     function tableAdminOnly($table)	
  * 3722:     function getInterfacePagePositionID($uid)	
  * 3755:     function isReferenceField($conf)	
- * 3765:     function getTCEMAIN_TSconfig($tscPID)	
- * 3779:     function getTableEntries($table,$TSconfig)	
+ * 3765:     function getTCEMAIN_TSconfig($tscPID)
+ * 3779:     function getTableEntries($table,$TSconfig)
  * 3793:     function setHistory($table,$id,$logId)		
  * 3830:     function clearHistory($table,$id,$keepEntries=10,$maxAgeSeconds=604800)		
  * 3878:     function log($table,$recuid,$action,$recpid,$error,$details,$details_nr=0,$data=array(),$event_pid=-1,$NEWid='') 
@@ -207,7 +207,7 @@ class t3lib_TCEmain	{
 	var $checkSimilar=1;			// Boolean: If set, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
 	var $dontProcessTransformations=0;	// Boolean: If set, then transformations are NOT performed on the input.
 	var $disableRTE = 0;			// Boolean: If set, the RTE is expected to have been disabled in the interface which submitted information. Thus transformations related to the RTE is not done.
-	
+
 	var $pMap = Array(		// Permission mapping
 		'show' => 1,			// 1st bit
 		'edit' => 2,			// 2nd bit
@@ -220,18 +220,18 @@ class t3lib_TCEmain	{
 		'group' => 'show,edit,new,editcontent',
 		'everybody' => ''
 	);
-	
+
 
 	var $alternativeFileName=array();		// Use this array to force another name onto a file. Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field, then 'my_file.txt' will be used as the name instead.
 	var $data_disableFields=array();		// If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
 	var $defaultValues=array();				// You can set this array on the form $defaultValues[$table][$field] = $value to override the default values fetched from TCA. You must set this externally.
 	var $overrideValues=array();			// You can set this array on the form $overrideValues[$table][$field] = $value to override the incoming data. You must set this externally. You must make sure the fields in this array are also found in the table, because it's not checked. All columns can be set by this array!
-	
+
 		// *********
 		// internal
 		// *********
 	var $fileFunc;		// May contain an object
-	var $last_log_id;	
+	var $last_log_id;
 	var $BE_USER;		// The user-object the the script uses. If not set from outside, this is set to the current global $BE_USER.
 	var $userid;		// will be set to uid of be_user executing this script
 	var $username;		// will be set to username of be_user executing this script
@@ -258,8 +258,8 @@ class t3lib_TCEmain	{
 	var $dbAnalysisStore=array();
 	var $removeFilesStore=array();
 	var $copiedFileMap=array();
-	
 
+	var $checkValue_currentRecord=array();		// Set to "currentRecord" during checking of values.
 
 
 	/**
@@ -527,7 +527,7 @@ class t3lib_TCEmain	{
 							// **************************************
 						if ($recordAccess)	{
 //debug('tce_main',-2);
-							list($tscPID)=t3lib_BEfunc::getTSCpid($table,$id,$old_pid_value ? $old_pid_value : $fieldArray['pid']);	// Here the "pid" is sent IF NOT the old pid was a string pointing to a place in the subst-id array.
+							list($tscPID) = t3lib_BEfunc::getTSCpid($table,$id,$old_pid_value ? $old_pid_value : $fieldArray['pid']);	// Here the "pid" is sent IF NOT the old pid was a string pointing to a place in the subst-id array.
 							$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 //debug($TSConfig);
 							if ($status=='new' && $table=='pages' && is_array($TSConfig['permissions.']))	{
@@ -535,11 +535,11 @@ class t3lib_TCEmain	{
 							}
 
 //debug(array($table,$tscPID));
-						
+
 							$fieldArray = $this->fillInFieldArray($table,$id,$fieldArray,$incomingFieldArray,$theRealPid,$status,$tscPID);
 							$fieldArray = $this->overrideFieldArray($table,$fieldArray);
 
-								// Setting system fields 
+								// Setting system fields
 							if ($status=='new')	{
 								if ($TCA[$table]['ctrl']['crdate'])	{
 									$fieldArray[$TCA[$table]['ctrl']['crdate']]=time();
@@ -600,6 +600,7 @@ class t3lib_TCEmain	{
 		} else {
 			$currentRecord = $checkValueRecord = $this->recordInfo($table,$id,'*');	// We must use the current values as basis for this!
 		}
+		$this->checkValue_currentRecord = $checkValueRecord;
 
 			/*
 				In the following all incoming value-fields are tested:
@@ -612,7 +613,7 @@ class t3lib_TCEmain	{
 			*/
 		foreach($incomingFieldArray as $field => $fieldValue)	{
 			if (!in_array($table.'-'.$field, $this->exclude_array) && !$this->data_disableFields[$table][$id][$field])	{	// The field must be editable.
-			
+
 
 					// Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
 				if ($this->stripslashes_values)	{
@@ -620,7 +621,7 @@ class t3lib_TCEmain	{
 						t3lib_div::stripSlashesOnArray($fieldValue);
 					} else $fieldValue = stripslashes($fieldValue);
 				}
-			
+
 				switch ($field)	{
 					case 'uid':
 					case 'pid':
@@ -652,7 +653,7 @@ class t3lib_TCEmain	{
 					default:
 						if (isset($TCA[$table]['columns'][$field]))	{
 								// Evaluating the value.
-							$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid, $checkValueRecord);
+							$res = $this->checkValue($table,$field,$fieldValue,$id,$status,$realPid,$tscPID);
 							if (isset($res['value']))	{
 								$fieldArray[$field]=$res['value'];
 							}
@@ -662,11 +663,7 @@ class t3lib_TCEmain	{
 			}
 		}
 
-
-		// Checking for RTE-transformations of fields:
-
-//debug($currentRecord);
-//			debug($id);
+			// Checking for RTE-transformations of fields:
 		$types_fieldConfig = t3lib_BEfunc::getTCAtypes($table,$currentRecord);
 		$theTypeString = t3lib_BEfunc::getTCAtypeValue($table,$currentRecord);
 		if (is_array($types_fieldConfig))	{
@@ -677,6 +674,30 @@ class t3lib_TCEmain	{
 //debug($eFile);
 					// RTE transformations:
 				if (!$this->dontProcessTransformations)	{
+					if (isset($fieldArray[$vconf['field']]))	{
+							// Look for transformation flag:
+						switch((string)$incomingFieldArray['_TRANSFORM_'.$vconf['field']])	{
+							case 'RTE':
+								$RTEsetup = $this->BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($tscPID));
+								$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$table,$vconf['field'],$theTypeString);
+
+									// Set alternative relative path for RTE images/links:
+								$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
+
+									// Get RTE object, draw form and set flag:
+								$RTEobj = &t3lib_BEfunc::RTEgetObj();
+								if (is_object($RTEobj))	{
+									$fieldArray[$vconf['field']] = $RTEobj->transformContent('db',$fieldArray[$vconf['field']],$table,$vconf['field'],$currentRecord,$vconf['spec'],$thisConfig,$RTErelPath,$currentRecord['pid']);
+								} else {
+									debug('NO RTE OBJECT FOUND!');
+								}
+							break;
+						}
+					}
+
+					// These transformations has been removed and the one above inserted; content is now transformed if a flag is sent with the field, typ. "_TRANSFORM_".[fieldname] = "RTE"
+					// This is more safe, doesn't require us to calculate if a transformation has to be done and finally; it is now possible to use RTEs in FlexForms as well!
+/*
 					if ($vconf['spec']['richtext'] && !$this->disableRTE)	{
 							// Cross transformation?
 						$this->crossRTEtransformation=0;	// Crosstransformation is, when a record is saved, the CType has changed and the other type might also use the RTE - then the transformation of THAT rte is used instead. This is usefull only if we know the TBE interface did it, because in that interface the CType value changes the interface and allows extended options in RTE without first saving the type-shift.
@@ -708,6 +729,7 @@ class t3lib_TCEmain	{
 							}
 						}
 					}
+					*/
 				}
 
 					// Write file configuration:
@@ -1198,16 +1220,16 @@ class t3lib_TCEmain	{
 	 * @param	string		The record-uid, mainly - but not exclusively - used for logging
 	 * @param	string		'update' or 'new' flag
 	 * @param	[type]		$realPid: ...
-	 * @param	array		The "current record". If an element already exists this is simply a lookup for record with $id in $table. For NEW records this is the *default values* overlaid with the *incoming value* unprocessed.
+	 * @param	integer		$tscPID
 	 * @return	array		Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
 	 */
-	function checkValue($table,$field,$value,$id,$status,$realPid,$currentRecord)	{
+	function checkValue($table,$field,$value,$id,$status,$realPid,$tscPID)	{
 		global $TCA, $PAGES_TYPES;
 		t3lib_div::loadTCA($table);
 
 		$res = Array();	// result array
 		$recFID = $table.':'.$id.':'.$field;
-		
+
 			// Processing special case of field pages.doktype
 		if ($table=='pages' && $field=='doktype')	{
 				// If the user may not use this specific doktype, we issue a warning
@@ -1233,16 +1255,16 @@ class t3lib_TCEmain	{
 			// Get current value:
 		$curValueRec = $this->recordInfo($table,$id,$field);
 		$curValue = $curValueRec[$field];
-							
+
 			// Getting config for the field
 		$tcaFieldConf = $TCA[$table]['columns'][$field]['config'];
-		
+
 			// Preform processing:
-		$res = $this->checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$this->uploadedFileArray[$table][$id][$field],$currentRecord);
+		$res = $this->checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$this->uploadedFileArray[$table][$id][$field],$tscPID);
 
 		return $res;
 	}
-	
+
 	/**
 	 * Branches out evaluation of a field value based on its type as configured in TCA
 	 * Can be called for FlexForm pseudo fields as well, BUT must not have $field set if so.
@@ -1258,31 +1280,33 @@ class t3lib_TCEmain	{
 	 * @param	[type]		$recFID: ...
 	 * @param	string		Field name. Must NOT be set if the call is for a flexform field (since flexforms are not allowed within flexforms).
 	 * @param	[type]		$uploadedFiles: ...
-	 * @param	array		The "current record". If an element already exists this is simply a lookup for record with $id in $table. For NEW records this is the *default values* overlaid with the *incoming value* unprocessed.
 	 * @return	array		Returns the evaluated $value as key "value" in this array.
 	 */
-	function checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$uploadedFiles,$currentRecord=array())	{
+	function checkValue_SW($res,$value,$tcaFieldConf,$table,$id,$curValue,$status,$realPid,$recFID,$field,$uploadedFiles,$tscPID)	{
+
+		$PP = array($table,$id,$curValue,$status,$realPid,$recFID,$tscPID);
+
 		switch ($tcaFieldConf['type']) {
 			case 'text':
 			case 'passthrough':
 				$res['value'] = $value;
 			break;
 			case 'input':
-				$res = $this->checkValue_input($res,$value,$tcaFieldConf,array($table,$id,$curValue,$status,$realPid,$recFID),$field);
+				$res = $this->checkValue_input($res,$value,$tcaFieldConf,$PP,$field);
 			break;
 			case 'check':
-				$res = $this->checkValue_check($res,$value,$tcaFieldConf,array($table,$id,$curValue,$status,$realPid,$recFID));
+				$res = $this->checkValue_check($res,$value,$tcaFieldConf,$PP);
 			break;
 			case 'radio':
-				$res = $this->checkValue_radio($res,$value,$tcaFieldConf,array($table,$id,$curValue,$status,$realPid,$recFID));
+				$res = $this->checkValue_radio($res,$value,$tcaFieldConf,$PP);
 			break;
 			case 'group':
 			case 'select':
-				$res = $this->checkValue_group_select($res,$value,$tcaFieldConf,array($table,$id,$curValue,$status,$realPid,$recFID),$uploadedFiles);
+				$res = $this->checkValue_group_select($res,$value,$tcaFieldConf,$PP,$uploadedFiles);
 			break;
 			case 'flex':
 				if ($field)	{	// FlexForms are only allowed for real fields.
-					$res = $this->checkValue_flex($res,$value,$tcaFieldConf,array($table,$id,$curValue,$status,$realPid,$recFID),$uploadedFiles,$currentRecord,$field);
+					$res = $this->checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field);
 				}
 			break;
 		}
@@ -1305,17 +1329,17 @@ class t3lib_TCEmain	{
 
 			// Secures the string-length to be less than max. Will probably make problems with multi-byte strings!
 		if (intval($tcaFieldConf['max'])>0)	{$value = substr($value,0,intval($tcaFieldConf['max']));}
-		
+
 			// Checking range of value:
 		if ($tcaFieldConf['range'] && $value!=$tcaFieldConf['checkbox'])	{	// If value is not set to the allowed checkbox-value then it is checked against the ranges
 			if (isset($tcaFieldConf['range']['upper'])&&$value>$tcaFieldConf['range']['upper'])	{$value=$tcaFieldConf['range']['upper'];}
 			if (isset($tcaFieldConf['range']['lower'])&&$value<$tcaFieldConf['range']['lower'])	{$value=$tcaFieldConf['range']['lower'];}
 		}
-		
+
 			// Process evaluation settings:
 		$evalCodesArray = t3lib_div::trimExplode(',',$tcaFieldConf['eval'],1);
 		$res = $this->checkValue_input_Eval($value,$evalCodesArray,$tcaFieldConf['is_in']);
-		
+
 			// Process UNIQUE settings:
 		if ($field)	{	// Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields!
 			if ($res['value'] && in_array('uniqueInPid',$evalCodesArray))	{
@@ -1325,7 +1349,7 @@ class t3lib_TCEmain	{
 				$res['value'] = $this->getUnique($table,$field,$res['value'],$id);
 			}
 		}
-		
+
 		return $res;
 	}
 
@@ -1621,19 +1645,20 @@ class t3lib_TCEmain	{
 	 * @param	string		Field name
 	 * @return	array		Modified $res array
 	 */
-	function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$curRecordArr,$field)	{
+	function checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field)	{
 		list($table,$id,$curValue,$status,$realPid,$recFID) = $PP;
 
 		if (is_array($value))	{
 
 				// Get current value array:
-			$dataStructArray = t3lib_BEfunc::getFlexFormDS($tcaFieldConf,$curRecordArr,$table);
+			$dataStructArray = t3lib_BEfunc::getFlexFormDS($tcaFieldConf,$this->checkValue_currentRecord,$table);
+#debug($this->checkValue_currentRecord);
 			$currentValueArray = t3lib_div::xml2array($curValue);
 			if (!is_array($currentValueArray))	$currentValueArray = array();
 			if (is_array($currentValueArray['meta']['currentLangId']))		unset($currentValueArray['meta']['currentLangId']);	// Remove all old meta for languages...
 
 				// Evaluation of input values:
-			$value['data'] = $this->checkValue_flex_procInData($value['data'],$currentValueArray['data'],$uploadedFiles['data'],$dataStructArray,array($table,$id,$curValue,$status,$realPid,$recFID));
+			$value['data'] = $this->checkValue_flex_procInData($value['data'],$currentValueArray['data'],$uploadedFiles['data'],$dataStructArray,$PP);
 
 				// Create XML and convert charsets from input value:
 			$xmlValue = $this->checkValue_flexArray2Xml($value);
@@ -2010,7 +2035,7 @@ class t3lib_TCEmain	{
 											$uploadedFiles[$key][$vKey]
 										);
 							} else {	// Default
-								list($CVtable,$CVid,$CVcurValue,$CVstatus,$CVrealPid,$CVrecFID) = $pParams;
+								list($CVtable,$CVid,$CVcurValue,$CVstatus,$CVrealPid,$CVrecFID,$CVtscPID) = $pParams;
 
 								$res = $this->checkValue_SW(
 											array(),
@@ -2023,14 +2048,43 @@ class t3lib_TCEmain	{
 											$CVrealPid,
 											$CVrecFID,
 											'',
-											$uploadedFiles[$key][$vKey]
+											$uploadedFiles[$key][$vKey],
+											array(),
+											$CVtscPID
 										);
+
+									// Look for RTE transformation of field:
+								if ($dataValues[$key]['_TRANSFORM_'.$vKey] == 'RTE' && !$this->dontProcessTransformations)	{
+
+										// Unsetting trigger field - we absolutely don't want that into the data storage!
+									unset($dataValues[$key]['_TRANSFORM_'.$vKey]);
+
+									if (isset($res['value']))	{
+
+											// Calculating/Retrieving some values here:
+										list(,,$recFieldName) = explode(':', $CVrecFID);
+										$theTypeString = t3lib_BEfunc::getTCAtypeValue($CVtable,$this->checkValue_currentRecord);
+										$specConf = t3lib_BEfunc::getSpecConfParts('',$dsConf['TCEforms']['defaultExtras']);
+
+											// Find, thisConfig:
+										$RTEsetup = $this->BE_USER->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($CVtscPID));
+										$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$CVtable,$recFieldName,$theTypeString);
+
+											// Get RTE object, draw form and set flag:
+										$RTEobj = &t3lib_BEfunc::RTEgetObj();
+										if (is_object($RTEobj))	{
+											$res['value'] = $RTEobj->transformContent('db',$res['value'],$CVtable,$recFieldName,$this->checkValue_currentRecord,$specConf,$thisConfig,'',$CVrealPid);
+										} else {
+											debug('NO RTE OBJECT FOUND!');
+										}
+									}
+								}
 							}
 
-								// Evaluating the value.
+								// Adding the value:
 							if (isset($res['value']))	{
 								$dataValues[$key][$vKey] = $res['value'];
-							}		
+							}
 						}
 					}
 				}
