@@ -1012,7 +1012,6 @@ class t3lib_cs {
 			// process additional Unicode data for casing (allow folded characters to expand into a sequence)
 		$specialCasingFile = PATH_t3lib.'unidata/SpecialCasing.txt';
 		if (t3lib_div::validPathStr($specialCasingFile) && @is_file($specialCasingFile))	{
-
 			$fh = fopen($specialCasingFile,'r');
 			if ($fh)	{
 				while (!feof($fh))	{
@@ -1044,50 +1043,21 @@ class t3lib_cs {
 			}
 		}
 
-			// custom decompositions
-		$decomposition['U+00A5'] = array('0079','0065','006E');	// YEN SIGN => yen
-		$decomposition['U+00A6'] = array('007C');		// BROKEN BAR => |
-		$decomposition['U+00AB'] = array('003C','003C');	// LEFT-POINTING DOUBLE ANGLE QUOTATION MARK => <<
-		$decomposition['U+00A9'] = array('0028','0063','0029');	// COPYRIGHT SIGN => (c)
-		$decomposition['U+00AE'] = array('0028','0052','0029');	// REGISTERED SIGN => (R)
-		$decomposition['U+00B1'] = array('002B','002F','002D');	// PLUS-MINUS SIGN => +/-
-		$decomposition['U+00B5'] = array('0075');		// MICRO SIGN => u
-		$decomposition['U+00B7'] = array('002A');		// MIDDLE DOT => *
-		$decomposition['U+00BB'] = array('003E','003E');	// RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK => <<
-		$decomposition['U+00C4'] = array('0041','0045');	// LATIN CAPITAL LETTER A WITH DIAERESIS => AE (German)
-		$decomposition['U+00C5'] = array('0041','0041');	// LATIN CAPITAL LETTER A WITH RING ABOVE => AA (Danish)
-		$decomposition['U+00C6'] = array('0041','0045');	// LATIN CAPITAL LETTER AE => AE (Danish)
-		$decomposition['U+00D6'] = array('004F','0045');	// LATIN CAPITAL LETTER O WITH DIAERESIS => OE (German)
-		$decomposition['U+00D7'] = array('002A');		// MULTIPLICATION SIGN => *
-		$decomposition['U+00D8'] = array('004F','0045');	// LATIN CAPITAL LETTER O WITH STROKE => OE (Danish)
-		$decomposition['U+00DC'] = array('0055','0045');	// LATIN CAPITAL LETTER U WITH DIAERESIS => UE (German)
-		$decomposition['U+00E4'] = array('0061','0065');	// LATIN SMALL LETTER A WITH DIAERESIS => ae (German)
-		$decomposition['U+00E5'] = array('0061','0061');	// LATIN SMALL LETTER A WITH RING ABOVE => aa (Danish)
-		$decomposition['U+00DF'] = array('0073','0073');	// LATIN SMALL LETTER SHARP S => ss (German)
-		$decomposition['U+00E6'] = array('0061','0065');	// LATIN SMALL LETTER AE => ae (Danish)
-		$decomposition['U+00F6'] = array('006F','0065');	// LATIN SMALL LETTER O WITH DIAERESIS => oe (German)
-		$decomposition['U+00F7'] = array('002F');		// DIVISION SIGN => /
-		$decomposition['U+00F8'] = array('006F','0065');	// LATIN SMALL LETTER O WITH STROKE => oe (Danish)
-		$decomposition['U+00FC'] = array('0075','0065');	// LATIN SMALL LETTER U WITH DIAERESIS => ue (German)
-		$decomposition['U+0152'] = array('004F','0045');	// LATIN CAPITAL LETTER OE => OE
-		$decomposition['U+0153'] = array('006F','0065');	// LATIN SMALL LETTER OE => oe
-		$decomposition['U+0192'] = array('0066');		// LATIN SMALL LETTER F WITH HOOK => f
-		$decomposition['U+02BC'] = array('0027');		// MODIFIER LETTER APOSTROPHE => '
-		$decomposition['U+02CA'] = array('0027');		// MODIFIER LETTER ACUTE ACCENT => '
-		$decomposition['U+2010'] = array('002D');		// HYPHEN => -
-		$decomposition['U+2013'] = array('002D');		// EN DASH => -
-		$decomposition['U+2014'] = array('002D');		// EM DASH => -
-		$decomposition['U+2018'] = array('0060');		// LEFT SINGLE QUOTATION MARK => `
-		$decomposition['U+2019'] = array('0027');		// RIGHT SINGLE QUOTATION MARK >= '
-		$decomposition['U+201C'] = array('0022');		// LEFT DOUBLE QUOTATION MARK => "
-		$decomposition['U+201D'] = array('0022');		// RIGHT DOUBLE QUOTATION MARK => "
-		$decomposition['U+201E'] = array('0022');		// DOUBLE LOW-9 QUOTATION MARK => "
-		$decomposition['U+2022'] = array('002A');		// BULLET => *
-		$decomposition['U+2039'] = array('003C');		// SINGLE LEFT-POINTING ANGLE QUOTATION MARK => <
-		$decomposition['U+203A'] = array('003E');		// SINGLE RIGHT-POINTING ANGLE QUOTATION MARK => >
-		$decomposition['U+2044'] = array('002F');		// FRACTION SLASH => /
-		$decomposition['U+20A0'] = array('0045','0055','0052');	// EURO-CURRENCY SIGN => EUR
-		$decomposition['U+20AC'] = array('0045','0055','0052');	// EURO-CURRENCY SIGN => EUR
+			// process custom decompositions
+		$customTranslitFile = PATH_t3lib.'unidata/Translit.txt';
+		if (t3lib_div::validPathStr($customTranslitFile) && @is_file($customTranslitFile))	{
+			$fh = fopen($customTranslitFile,'r');
+			if ($fh)	{
+				while (!feof($fh))	{
+					$line = fgets($fh);
+					if ($line{0} != '#' && trim($line) != '')	{
+						list($char,$translit) = t3lib_div::trimExplode(';', $line);
+						$decomposition["U+$char"] = split(' ', $translit);
+					}
+				}
+				fclose($fh);
+			}
+		}
 
 			// decompose and remove marks; inspired by unac (Loic Dachary <loic@senga.org>)
 		foreach($decomposition as $from => $to)	{
