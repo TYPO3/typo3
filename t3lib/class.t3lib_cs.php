@@ -296,12 +296,6 @@ class t3lib_cs {
 				if ($ord>127)	{	// This means multibyte! (first byte!)
 					if ($ord & 64)	{	// Since the first byte must have the 7th bit set we check that. Otherwise we might be in the middle of a byte sequence.
 
-
-/*
- *
- *
- *	alternative code which fewers substrs and concatenations: see below
- *
 						$buf=$chr;	// Add first byte
 						for ($b=0;$b<8;$b++)	{	// for each byte in multibyte string...
 							$ord = $ord << 1;	// Shift it left and ...
@@ -310,12 +304,11 @@ class t3lib_cs {
 								$buf.=substr($str,$a,1);	// ... and add the next char.
 							} else break;
 						}
-*
-*/
 
-						for ($bc=0; $ord & 0x80; $ord = $ord << 1) { $bc++; }	// calculate number of bytes
-						$buf.=substr($str,$i,$bc);
-						$i+=$bc-1;
+# Martin Kutschker...! this does not work! With russian UTF-8 converted back to windows-1251 it failed... So the old code is re-inserted.
+#						for ($bc=0; $ord & 0x80; $ord = $ord << 1) { $bc++; }	// calculate number of bytes
+#						$buf.=substr($str,$i,$bc);
+#						$i+=$bc-1;
 
 						if (isset($this->parsedCharsets[$charset]['utf8'][$buf]))	{	// If the UTF-8 char-sequence is found then...
 							$mByte = $this->parsedCharsets[$charset]['utf8'][$buf];	// The local number
