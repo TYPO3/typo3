@@ -943,7 +943,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						'*',
 						'tx_impexp_presets',
 						'(public>0 || user_uid='.intval($GLOBALS['BE_USER']->user['uid']).')'.
-							($inData['pagetree']['id'] ? ' AND item_uid='.intval($inData['pagetree']['id']) : '')
+							($inData['pagetree']['id'] ? ' AND (item_uid='.intval($inData['pagetree']['id']).' OR item_uid=0)' : '')
 
 					);
 		if (is_array($presets))	{
@@ -1084,6 +1084,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$import->import_mode = $inData['import_mode'];
 			$import->enableLogging = $inData['enableLogging'];
 			$import->global_ignore_pid = $inData['global_ignore_pid'];
+			$import->force_all_UIDS = $inData['force_all_UIDS'];
 			$import->showDiff = !$inData['notShowDiff'];
 			$import->allowPHPScripts = $inData['allowPHPScripts'];
 			$import->softrefInputValues = $inData['softrefInputValues'];
@@ -1139,7 +1140,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					<input type="checkbox" name="tx_impexp[global_ignore_pid]" value="1"'.($inData['global_ignore_pid'] ? ' checked="checked"' : '').' />
 					'.$LANG->getLL('importdata_ignorePidDifferencesGlobally',1).'<br/>
 					<em>('.$LANG->getLL('importdata_ifYouSetThis',1).')</em>
-
 					' : ''
 				).'</td>
 				</tr>';
@@ -1154,7 +1154,14 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 					'.($GLOBALS['BE_USER']->isAdmin() ? '
 					<input type="checkbox" name="tx_impexp[allowPHPScripts]" value="1"'.($inData['allowPHPScripts'] ? ' checked="checked"' : '').' />
-					'.$LANG->getLL('importdata_allowToWriteBanned',1).'<br/>' : '').'
+					'.$LANG->getLL('importdata_allowToWriteBanned',1).'<br/>' : '').
+
+					(!$inData['do_update'] && $GLOBALS['BE_USER']->isAdmin() ? '
+					<br/>
+					<input type="checkbox" name="tx_impexp[force_all_UIDS]" value="1"'.($inData['force_all_UIDS'] ? ' checked="checked"' : '').' />
+					<span class="typo3-red">'.$LANG->getLL('importdata_force_all_UIDS',1).'</span><br/>
+					<em>('.$LANG->getLL('importdata_force_all_UIDS_descr',1).')</em>' : '').
+					'
 				</td>
 				</tr>';
 
@@ -1411,18 +1418,16 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$inData_temp = unserialize($preset['preset_data']);
 				if (is_array($inData_temp))	{
 					if (isset($presetData['merge']))	{
+
 							// Merge records in:
 						if (is_array($inData_temp['record']))	{
-							$inData_temp['record'] = array_merge($inData_temp['record'], $inData['record']);
-						} else $inData_temp['record'] = $inData['record'];
+							$inData['record'] = array_merge((array)$inData['record'], $inData_temp['record']);
+						}
+
 							// Merge lists in:
 						if (is_array($inData_temp['list']))	{
-							$inData_temp['list'] = array_merge($inData_temp['list'], $inData['list']);
-						} else $inData_temp['list'] = $inData['list'];
-						$inData_temp['listCfg'] = $inData['listCfg'];
-
-							// Swap:
-						$inData = $inData_temp;
+							$inData['list'] = array_merge((array)$inData['list'], $inData_temp['list']);
+						}
 					} else {
 						$msg = 'Preset #'.$preset['uid'].' loaded!';
 						$inData = $inData_temp;

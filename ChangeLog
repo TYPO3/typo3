@@ -1,3 +1,7 @@
+2005-01-21  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added a new feature to force all UIDs in the "impexp" extension.
+
 2005-01-14  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* import/export: CSH for the whole module, localization of all labels

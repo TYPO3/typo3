@@ -96,6 +96,10 @@
 			<label index="importdata_thisOptionRequiresThat">This option requires that the structure you import already exists on this server and only needs to be updated with new content!</label>
 			<label index="importdata_ignorePidDifferencesGlobally">Ignore PID differences globally</label>
 			<label index="importdata_ifYouSetThis">If you set this option, the position of updated elements will not be updated to match the structure of the input file.</label>
+
+			<label index="importdata_force_all_UIDS">Force ALL UIDs values</label>
+			<label index="importdata_force_all_UIDS_descr">With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</label>
+
 			<label index="importdata_options">Options:</label>
 			<label index="importdata_doNotShowDifferences">Do not show differences in records</label>
 			<label index="importdata_greenValuesAreFrom">Green values are from the import file, red values from the current database record and black values are similar in both versions.</label>

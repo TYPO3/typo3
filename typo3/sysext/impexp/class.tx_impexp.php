@@ -214,6 +214,7 @@ class tx_impexp {
 	var $suggestedInsertUids = array();		// Used to register the forged UID values for imported records that we want to create with the same UIDs as in the import file. Admin-only feature.
 	var $import_mode = array();				// Setting import modes during update state: as_new, exclude, force_uid
 	var $global_ignore_pid = FALSE;			// If set, PID correct is ignored globally
+	var $force_all_UIDS = FALSE;			// If set, all UID values are forced! (update or import)
 	var $showDiff = FALSE;					// If set, a diff-view column is added to the overview.
 	var $allowPHPScripts = FALSE;			// If set, and if the user is admin, allow the writing of PHP scripts to fileadmin/ area.
 	var $enableLogging = FALSE;				// Disable logging when importing
@@ -1651,7 +1652,7 @@ class tx_impexp {
 				} else {	// Inserts:
 					$this->import_data[$table][$ID]['pid'] = $pid;
 
-					if ($this->import_mode[$table.':'.$uid]==='force_uid' && $GLOBALS['BE_USER']->isAdmin())	{
+					if ((($this->import_mode[$table.':'.$uid]==='force_uid' && $this->update) || $this->force_all_UIDS) && $GLOBALS['BE_USER']->isAdmin())	{
 #debug($this->import_mode[$table.':'.$uid],$table.':'.$uid);
 						$this->import_data[$table][$ID]['uid'] = $uid;
 						$this->suggestedInsertUids[$table.':'.$uid] = 'DELETE';
