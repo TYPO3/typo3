@@ -1556,7 +1556,7 @@ class t3lib_TCEmain	{
 									// If we have a unique destination filename, then write the file:
 								if ($theDestFile)	{
 									t3lib_div::upload_copy_move($theFile,$theDestFile);
-									$this->copiedFileMap[$theFile]=$theDestFile;
+									$this->copiedFileMap[$theFile] = $theDestFile;
 									clearstatcache();
 									if (!@is_file($theDestFile))	$this->log($table,$id,5,0,1,"Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)",16,array($theFile, dirname($theDestFile), $recFID),$propArr['event_pid']);
 								} else $this->log($table,$id,5,0,1,"Copying file '%s' failed!: No destination file (%s) possible!. (%s)",11,array($theFile, $theDestFile, $recFID),$propArr['event_pid']);
