@@ -155,22 +155,31 @@ windows-874.tbl
 Microsoft Windows Codepage : 874 (Thai)
 http://www.microsoft.com/globaldev/reference/sbcs/874.htm
 
+shift_jis.tbl
+Microsoft Windows Codepage : 932 (Japanese Shift-JIS)
+http://www.microsoft.com/globaldev/reference/dbcs/932.htm
+(Multibyte)
+
 gb2312.tbl
 Microsoft Windows Codepage : 936 (Simplified Chinese GBK)
 gb2312 936 Chinese Simplified (GB2312) 
 gb_2312-80 936 Chinese Simplified (GB2312) 
 http://www.microsoft.com/globaldev/reference/dbcs/936.htm
 (Multibyte)
+Note: this is a MS-specific superset of the real GB2312
+
+euc-kr.tbl
+Microsoft Windows Codepage : 949 (Korean EUC-KR)
+http://www.microsoft.com/globaldev/reference/dbcs/932.htm
+(Multibyte)
+Note: this is a MS-specific superset of the real EUC-KR
 
 big5.tbl
 Microsoft Windows Codepage : 950 (Traditional Chinese Big5)
 http://www.microsoft.com/globaldev/reference/dbcs/950.htm
 (Multibyte)
+Note: this is a MS-specific superset of the real Big5
 
-shift_jis.tbl
-Microsoft Windows Codepage : 932 (Japanese Shift-JIS)
-http://www.microsoft.com/globaldev/reference/dbcs/932.htm
-(Multibyte)
 
 koi8-r.tbl
 Cyrillic (Russian)

@@ -152,6 +152,7 @@ class t3lib_cs {
 	var $eucBasedSets=array(
 		'gb2312'=>1,		// Chinese, simplified.
 		'big5'=>1,		// Chinese, traditional.
+		'euc-kr'=>1,		// Korean
 		'shift_jis'=>1,		// Japanese - WARNING: Shift-JIS includes half-width katakana single-bytes characters above 0x80!
 	);
 
@@ -225,6 +226,7 @@ class t3lib_cs {
 		'sjis' => 'shift_jis',
 		'shift-jis' => 'shift_jis',
 		'cp932' => 'shift_jis',
+		'cp949' => 'euc-kr',
 		'utf7' => 'utf-7',
 		'utf8' => 'utf-8',
 		'utf16' => 'utf-16',
@@ -377,7 +379,7 @@ class t3lib_cs {
 		'lithuanian' => 'windows-1257',
 		'vietnamese' => 'windows-1258',
 		'thai' => 'cp874',
-		'korean' => 'cp950',
+		'korean' => 'cp949',
 		'chinese' => 'gb2312',
 		'japanese' => 'shift_jis',
 		'simpl_chinese' => 'gb2312',
@@ -438,6 +440,50 @@ class t3lib_cs {
 		'kr' => 'euc-kr',
 	);
 
+		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:
+		// Empty values means sames as Typo3
+	var $isoArray = array(
+		'dk' => 'da',
+		'de' => '',
+		'no' => '',
+		'it' => '',
+		'fr' => '',
+		'es' => '',
+		'nl' => '',
+		'cz' => 'cs',
+		'pl' => '',
+		'si' => 'sl',
+		'fi' => '',
+		'tr' => '',
+		'se' => 'sv',
+		'pt' => '',
+		'ru' => '',
+		'ro' => '',
+		'ch' => 'zh_CN',
+		'sk' => '',
+		'lt' => '',
+		'is' => '',
+		'hr' => '',
+		'hu' => '',
+		'gl' => '', // Greenlandic
+		'th' => '',
+		'gr' => 'el',
+		'hk' => 'zh_HK',
+		'eu' => '',
+		'bg' => '',
+		'br' => 'pt_BR',
+		'et' => '',
+		'ar' => '',
+		'he' => 'iw',
+		'ua' => 'uk',
+		'jp' => 'ja',
+		'lv' => '',
+		'vn' => 'vi',
+		'ca' => '',
+		'ba' => '', // Bosnian
+		'kr' => '',
+	);
+
 	/**
 	 * Normalize - changes input character set to lowercase letters.
 	 *
@@ -455,9 +501,10 @@ class t3lib_cs {
 	/**
 	 * Get the charset of a locale.
 	 *
-	 * ln        language
-	 * ln_CN     language / country
-	 * ln_CN.cs  language / country / charset
+	 * ln            language
+	 * ln_CN         language / country
+	 * ln_CN.cs      language / country / charset
+	 * ln_CN.cs@mod  language / country / charset / modifier
 	 *
 	 * @param	string		Locale string
 	 * @return	string		Charset resolved for locale string
@@ -469,9 +516,15 @@ class t3lib_cs {
 			// exact locale specific charset?
 		if (isset($this->locale_to_charset[$locale]))	return $this->locale_to_charset[$locale];
 
+			// get modifier
+		list($locale,$modifier) = explode('@',$locale);
+
 			// locale contains charset: use it
 		list($locale,$charset) = explode('.',$locale);
 		if ($charset)	return $this->parse_charset($charset);
+
+			// modifier is 'euro' (after charset check, because of xx.utf-8@euro)
+		if ($modifier == 'euro')	return 'iso-8859-15';
 
 			// get language
 		list($language,$country) = explode('_',$locale);
@@ -970,6 +1023,7 @@ class t3lib_cs {
 		$decomposition = array();	// array of temp. decompositions
 		$mark = array();		// array of chars that are marks (eg. composing accents)
 		$number = array();		// array of chars that are numbers (eg. digits)
+		$omit = array();		// array of chars to be omitted (eg. Russian hard sign)
 
 		while (!feof($fh))	{
 			$line = fgets($fh,4096);
@@ -1076,7 +1130,9 @@ class t3lib_cs {
 					$line = fgets($fh,4096);
 					if ($line{0} != '#' && trim($line) != '')	{
 						list($char,$translit) = t3lib_div::trimExplode(';', $line);
+						if (!$translit)	$omit["U+$char"] = 1;
 						$decomposition["U+$char"] = split(' ', $translit);
+						
 					}
 				}
 				fclose($fh);
@@ -1096,7 +1152,7 @@ class t3lib_cs {
 					array_push($code_decomp, $code_value);
 				}
 			}
-			if (count($code_decomp)) {
+			if (count($code_decomp) || isset($omit[$from]))	{
 				$decomposition[$from] = $code_decomp;
 			} else {
 				unset($decomposition[$from]);
