@@ -1,3 +1,7 @@
+2004-04-21  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added features around "includeCSS" TypoScript property for PAGE objects: "import" and "alternate" attributes (booleans) are now supported.
+
 2004-04-20  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Changed a bunch of things, added a few new features to make TYPO3 accessible. One significant thing was the attributes "altText", "titleText" and "longdescURL" for IMAGE, IMGTEXT, FILE and ->filelink() in TypoScript. 

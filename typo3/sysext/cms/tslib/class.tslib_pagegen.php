@@ -455,7 +455,7 @@ function linkTo_UnCryptMailto(s)	{	//
 			$ss=$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
 			if ($ss) {
 				$GLOBALS['TSFE']->content.='
-	<link rel="stylesheet" href="'.htmlspecialchars($ss).'" />';
+	<link rel="stylesheet" type="text/css" href="'.htmlspecialchars($ss).'" />';
 			}
 		}
 		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.'])) {
@@ -464,11 +464,21 @@ function linkTo_UnCryptMailto(s)	{	//
 				if (!is_array($iCSSfile))	{
 					$ss=$GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
 					if ($ss) {
-						$GLOBALS['TSFE']->content.='
-	<link rel="stylesheet" href="'.htmlspecialchars($ss).'"'.
+						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['import'])	{
+							$GLOBALS['TSFE']->content.='
+	<style type="text/css">
+	<!--
+	@import url("'.htmlspecialchars($ss).'") '.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media']).';
+	-->
+	</style>
+							';
+						} else {
+							$GLOBALS['TSFE']->content.='
+	<link rel="'.($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['alternate'] ? 'alternate stylesheet' : 'stylesheet').'" type="text/css" href="'.htmlspecialchars($ss).'"'.
 			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title'] ? ' title="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title']).'"' : '').
 			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media'] ? ' media="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media']).'"' : '').
 			' />';
+						}
 					}
 				}
 			}
@@ -648,7 +658,7 @@ function linkTo_UnCryptMailto(s)	{	//
 			$GLOBALS['TSFE']->content.=TSpagegen::inline2TempFile($_scriptCode, 'js');
 		}
 
-		$GLOBALS['TSFE']->content.=implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
+		$GLOBALS['TSFE']->content.=chr(10).implode($GLOBALS['TSFE']->additionalHeaderData,chr(10)).'
 '.$JSef[0].'
 </head>';
 		if ($GLOBALS['TSFE']->pSetup['frameSet.'])	{
@@ -739,7 +749,7 @@ function linkTo_UnCryptMailto(s)	{	//
 			case 'css':
 				$script = 'typo3temp/stylesheet_'.substr(md5($str),0,10).'.css';
 				$output = '
-	<link rel="stylesheet" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$script).'" />';
+	<link rel="stylesheet" type="text/css" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$script).'" />';
 			break;
 		}
 
