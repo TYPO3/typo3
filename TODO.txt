@@ -194,7 +194,7 @@ Web>List:
 - FlexForm tree view / editing:
 	- When a record contains a FlexForm the web>List module could display the fields inside in a nice tree structure which one could expand/collapse! Then by clicking "edit" for a brand you get an interface where you can edit *that branch* of the flexform! Brilliant way to manage large structures inside of flexforms!
 		- Can you picture it? That would be like expanding an XML document by a node-tree and add/edit/delete/rearrange any of the internal informational pieces!
-- Fikse copy/paste så at list-module reloader (løser også problemet med paste fra sidetræet/foldertræet?)
+- Fikse copy/paste sï¿½at list-module reloader (lser ogsï¿½problemet med paste fra sidetrï¿½t/foldertrï¿½t?)
 
 File>List:
 - BUG: UNIX: "RW" flag looks only on the permissions for the USER - not the group. So even if PHP via the group of a file can delete it, it is reported that it cannot.
@@ -930,72 +930,46 @@ Innovation, brainstorming for future
 *********************************
 Translation of Backend
 *********************************
-Overview of missing translations. (UPDATED before 3.7.0 final)
-Numbers in format: (New / Changed)
+Overview of missing translations. (UPDATED 18/11 after major change to ll-XML and csh_* language packs)
+Numbers are new labels needing translation (changed labels are not measured)
 
-- de [German]		0/0
-- no [Norwegian]	0/0
-- it [Italian]		0/0
-- fr [French]		0/7
-- es [Spanish]		1/3
-- nl [Dutch]		0/0
-- cz [Czech]		111/23 (inactive!)	- 11/15: same
-- pl [Polish]		0/0
-- si [Slovenian]	98/19 (inactive!)	- 11/15: same
-- fi [Finnish]		0/0
-- tr [Turkish]		0/0
-- se [Swedish]		0/0
-- pt [Portuguese]	127/23 (inactive!)  - 11/15: same
-- ru [Russian]		0/0
-- ro [Romanian]		7/19	(inactive??)   - 11/15: same
-- ch [Chinese (Simpl)]	141/21	(inactive??)  - 11/15: same
-- sk [Slovak]		106/21	(inactive??)	- 11/15: same
-- lt [Lithuanian]	5/7   - 11/15: 1/0
-- is [Icelandic]	483/9	(inactive!)  - 11/15: same
-- hr [Croatian]		76/25	(inactive!)  - 11/15: same
-- hu [Hungarian]	0/0
-- gl [Greenlandic]	890/1	(inactive!)  - 11/15: same
-- th [Thai]			6/21     - 11/15: 0/0
-- gr [Greek]		1121/0	(inactive!)  - 11/15: same
-- hk [Chinese (Trad)]	72/1   - 11/15: 41/1
-- eu [Basque]		797/8	(inactive!)  - 11/15: same
-- bg [Bulgarian]	192/18	(inactive!) - 11/15: same
-- br [Brazilian Portuguese]	6/0       - 11/15: same
-- et [Estonian]		137/25	(inactive!) - 11/15: same
-- ar [Arabic]		550/10	(inactive!)	- 11/15: same
-- he [Hebrew]		12/0		- 11/15: same
-- ua [Ukrainian]	679/11	(inactive!) - 11/15: same
-- lv [Latvian]		170/15	(inactive!) - 11/15: same
-- jp [Japanese]		1120/0	(inactive!) - 11/15: same
-- vn [Vietnamese]	1104/0	(inactive!) - 11/15: same
-- ca [Catalan]		1121/0	(inactive!) - 11/15: same
-- ba [Bosnian]		789/0		- 11/15 : 0/0!
-- kr [Korean]		1121/0	(inactive!)	- 11/15: same
-
-
-
-Same password:
-
-	no		 	f4e72bc32f2c636059d5f3ba44323921  	Norwegian
-	pt 			f4e72bc32f2c636059d5f3ba44323921 	Portuguese
-	gr 			f4e72bc32f2c636059d5f3ba44323921 	Greek
-	jp 			f4e72bc32f2c636059d5f3ba44323921 	Japanese
-	vn 			f4e72bc32f2c636059d5f3ba44323921 	Vietnamese
-	ba 			f4e72bc32f2c636059d5f3ba44323921 	Bosnian
-	kr 			f4e72bc32f2c636059d5f3ba44323921 	Korean
-	it 			f4e72bc32f2c636059d5f3ba44323921 	Italian
-	fr 			f4e72bc32f2c636059d5f3ba44323921 	French
-	cz 			f4e72bc32f2c636059d5f3ba44323921 	Czech
-	tr 			f4e72bc32f2c636059d5f3ba44323921 	Turkish
-	se 			f4e72bc32f2c636059d5f3ba44323921 	Swedish
-	ro 			f4e72bc32f2c636059d5f3ba44323921 	Romanian
-	ch 			f4e72bc32f2c636059d5f3ba44323921 	Chinese (Simpl)
-	sk 			f4e72bc32f2c636059d5f3ba44323921 	Slovak
-	is 			f4e72bc32f2c636059d5f3ba44323921 	Icelandic
-	hr 			f4e72bc32f2c636059d5f3ba44323921 	Croatian
-	eu 			f4e72bc32f2c636059d5f3ba44323921 	Basque
-	bg 			f4e72bc32f2c636059d5f3ba44323921 	Bulgarian
-	br 			f4e72bc32f2c636059d5f3ba44323921 	Brazilian Portuguese
-	et 			f4e72bc32f2c636059d5f3ba44323921 	Estonian
-	ua 			f4e72bc32f2c636059d5f3ba44323921 	Ukrainian
+- dk [Danish]		55
+- de [German]		9
+- no [Norwegian]	57
+- it [Italian]		9
+- fr [French]		36
+- es [Spanish]		63
+- nl [Dutch]		9
+- cz [Czech]		9
+- pl [Polish]		9
+- si [Slovenian]	90
+- fi [Finnish]		9
+- tr [Turkish]		9
+- se [Swedish]		9
+- pt [Portuguese]	136
+- ru [Russian]		79
+- ro [Romanian]		74
+- ch [Chinese (Simpl)]	282
+- sk [Slovak]		188
+- lt [Lithuanian]	142
+- is [Icelandic]	624
+- hr [Croatian]		121
+- hu [Hungarian]	9
+- gl [Greenlandic]	1031
+- th [Thai]			141
+- gr [Greek]		1262
+- hk [Chinese (Trad)]	168
+- eu [Basque]		938
+- bg [Bulgarian]	319
+- br [Brazilian Portuguese]	15
+- et [Estonian]		243
+- ar [Arabic]		691
+- he [Hebrew]		153
+- ua [Ukrainian]	662
+- lv [Latvian]		307
+- jp [Japanese]		1261
+- vn [Vietnamese]	1245
+- ca [Catalan]		1262
+- ba [Bosnian]		141
+- kr [Korean]		1262
 
