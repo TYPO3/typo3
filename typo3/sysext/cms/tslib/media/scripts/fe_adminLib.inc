@@ -1359,7 +1359,7 @@ class user_feAdmin	{
 	function sendInfoMail()	{
 		if ($this->conf['infomail'] && $this->conf['email.']['field'])	{
 			$fetch = t3lib_div::_GP('fetch');
-			if (isset($fetch))	{
+			if ($fetch)	{
 					// Getting infomail config.
 				$key= trim(t3lib_div::_GP('key'));
 				if (is_array($this->conf['infomail.'][$key.'.']))		{
