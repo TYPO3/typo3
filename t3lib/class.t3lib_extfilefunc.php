@@ -278,7 +278,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 		}
 	
 	
-		#t3lib_BEfunc::getSetUpdateSignal('updateFolderTree');
+		t3lib_BEfunc::getSetUpdateSignal('updateFolderTree');
 		
 		echo '
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -698,7 +698,8 @@ top.goToModule("file_list");
 						$theNewFolder = $theTarget.'/'.$theFolder;
 						if ($this->checkPathAgainstMounts($theNewFolder))	{
 							if (!@file_exists($theNewFolder))	{
-								if (@mkdir($theNewFolder, 0755))	{
+								if (@mkdir($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']))){
+									@chmod($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])); //added this line, because the mode at 'mkdir' has a strange behaviour sometimes
 									$this->writelog(6,0,1,"Directory '%s' created in '%s'",Array($theFolder,$theTarget.'/'));
 									return $theNewFolder;
 								} else $this->writelog(6,1,100,"Directory '%s' not created. Write-permission problem in '%s'?",Array($theFolder,$theTarget.'/'));

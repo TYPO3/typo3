@@ -1891,7 +1891,10 @@ class t3lib_div {
 		if($fd = fopen($file,'wb'))	{
 			fwrite( $fd, $content);
 			fclose( $fd );
-			if (@is_file($file) && TYPO3_OS!='WIN')	{@chmod ($file, 0644);}
+			
+				// Setting file system mode of file:
+			if (@is_file($file) && TYPO3_OS!='WIN')	{ @chmod ($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])); }
+			
 			return true;
 		}
 	}
@@ -2022,7 +2025,10 @@ class t3lib_div {
 			// Return the value of move_uploaded_file, and if false the temporary $source is still around so the user can use unlink to delete it:
 			return move_uploaded_file($source, $destination);
 		} else @copy($source,$destination);
-		if (@is_file($destination) && TYPO3_OS!='WIN')	{@chmod ($destination, 0644);}
+		
+			// Setting file system mode of file:
+		if (@is_file($destination) && TYPO3_OS!='WIN')	{ @chmod ($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])); }
+
 			// If here the file is copied and the temporary $source is still around, so when returning false the user can try unlink to delete the $source
 		return false;
 	}
