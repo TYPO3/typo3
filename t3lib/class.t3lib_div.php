@@ -2836,9 +2836,9 @@ class t3lib_div {
 					$error = $obj->getLastErrorArray();
 					unset($obj);
 				}
-					// deactivate the service
-				t3lib_extMgm::deactivateService($info['serviceType'],$info['serviceKey']);
 			}
+				// deactivate the service
+			t3lib_extMgm::deactivateService($info['serviceType'],$info['serviceKey']);
 		}
 		return $error;
 	}
