@@ -130,42 +130,45 @@ class t3lib_svbase {
 	 */
 	var $error=array();
 
+	/**
+	 * Defines if debug messages should be written with t3lib_div::devLog
+	 */
+	var $writeDevLog = false;
 
 
+	/**
+	 * The output content.
+	 * That's what the services produced as result.
+	 */
+	var $out = '';
 
-	 /**
-	  * The output content.
-	  * That's what the services produced as result.
-	  */
-	 var $out = '';
+	/**
+	 * The file that should be processed.
+	 */
+	var $inputFile = '';
 
-	 /**
-	  * The file that should be processed.
-	  */
-	 var $inputFile = '';
+	/**
+	 * The content that should be processed.
+	 */
+	var $inputContent = '';
 
-	 /**
-	  * The content that should be processed.
-	  */
-	 var $inputContent = '';
+	/**
+	 * The type of the input content (or file). Might be the same as the service subtypes.
+	 */
+	var $inputType = '';
 
-	 /**
-	  * The type of the input content (or file). Might be the same as the service subtypes.
-	  */
-	 var $inputType = '';
-
-	 /**
-	  * The file where the output should be written to.
-	  */
-	 var $outputFile = '';
+	/**
+	 * The file where the output should be written to.
+	 */
+	var $outputFile = '';
 
 	 
-	 /**
-	  * Temporary files which have to be deleted
-	  *
-	  * @private
-	  */
-	 var $tempFiles = array();
+	/**
+	 * Temporary files which have to be deleted
+	 *
+	 * @private
+	 */
+	var $tempFiles = array();
 	 
 	 
 
@@ -200,6 +203,32 @@ class t3lib_svbase {
 	}
 
 
+	/**
+	 * Returns service configuration values from the $TYPO3_CONF_VARS['SVCONF'] array
+	 *
+	 * @param	string		Name of the config option
+	 * @return	mixed		Default configuration value for the service. Will be returned if no value found.
+	 * @param	boolean		If set the 'default' config will be return if no special config for this service is available (default: true)
+	 * @return	mixed		configuration value for the service 
+	 */
+	function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE) {
+		global $TYPO3_CONF_VARS;
+		
+		$config = NULL;
+		
+		$svOptions = $TYPO3_CONF_VARS['SVCONF'][$this->info['serviceType']];
+		
+		if(isset($svOptions[$this->info['serviceKey']][$optionName])) {
+			$config = $svOptions['default'][$optionName];
+		} elseif($includeDefaultConfig AND isset($svOptions['default'][$optionName])) {
+			$config = $svOptions['default'][$optionName];
+		}
+		if(!isset($config)) {
+			$config = $defaultValue;
+		}
+		return $config;
+	}
+
 
 
 	/***************************************
@@ -209,6 +238,21 @@ class t3lib_svbase {
 	 ***************************************/
 
 
+	/**
+	 * Logs debug messages to t3lib_div::devLog()
+	 *
+	 * @param	string 		Debug message
+	 * @param	integer		Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
+	 * @param	array		Additional data you want to pass to the logger.
+	 * @return	void
+	 */
+	function devLog($msg, $severity=0, $dataVar=FALSE) {
+		if($this->writeDevLog) {
+			t3lib_div::devLog($msg, $this->info['serviceKey'], $severity, $dataVar);
+		}
+	}
+	
+	
 	/**
 	 * Puts an error on the error stack. Calling without parameter adds a general error.
 	 *
@@ -323,7 +367,7 @@ class t3lib_svbase {
 	function checkExec($progList) {
 		$ret = TRUE;
 
-		require_once(PATH_t3lib."class.t3lib_exec.php");
+		require_once(PATH_t3lib.'class.t3lib_exec.php');
 
 		$progList = t3lib_div::trimExplode(',', $progList, 1);
 		foreach($progList as $prog) {
