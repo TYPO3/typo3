@@ -4019,6 +4019,17 @@ class t3lib_TCEmain	{
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection','');
 					}
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash','');
+
+						// Clearing additional cache tables:
+					if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables']))	{
+						foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName)	{
+							if (!ereg('[^[:alnum:]_]',$tableName) && substr($tableName,-5)=='cache')	{
+								$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName,'');
+							} else {
+								die('Fatal Error: Trying to flush table "'.$tableName.'" with "Clear All Cache"');
+							}
+						}
+					}
 				}
 			break;
 			case 'temp_CACHED':

@@ -178,7 +178,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 -->
 <a name="TSFE_ADMIN"></a>
 <form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="post" style="margin: 0 0 0 0;">
-	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" bgcolor="#F6F2E6" border="1" bordercolor="black">'.
+	<table border="0" cellpadding="0" cellspacing="0" class="typo3-adminPanel" bgcolor="#F6F2E6" style="border: 1px solid black; z-index:0; position:absolute;">'.
 		$header.$out.'
 	</table>
 </form>';

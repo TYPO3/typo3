@@ -1,5 +1,10 @@
 2004-06-03  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added API for configuring tables (ending on "cache") that are flushed together with "Clear All Cache".
+	* Fixed that the Admin Panel is always on top (z-index : 0;
+
+2004-06-03  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added base url to typo3 error dialog in frontend. Means it shows logo when using realurls now.
 	* Added "READFILE:" prefix for pageNotFound handler in frontend; This will read the contents of an html file and output with substitution of a few marker strings.
 	* Added feature in page tree; Temporary mounting a point in the users page tree as root. (available in the "More options..." - needs upgrade of that extension as well...).
