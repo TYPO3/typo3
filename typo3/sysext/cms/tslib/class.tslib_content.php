@@ -249,11 +249,7 @@ if(t3lib_extMgm::isLoaded('obts')) {
  */
 class tslib_cObj {
 	var $align = Array ('center', 'right', 'left');
-/*	var $caseConvStrings = array(
-			'�������',
-			'��������
-		);
-*/
+
 	/**
 	 * Holds ImageMagick parameters and extensions used for compression
 	 *
@@ -3471,7 +3467,7 @@ class tslib_cObj {
 	 * @param	array		TypoScript configuration.
 	 * @return	string		Return string
 	 * @author	Thomas Bley (all from moregroupware cvs code / readmessage.inc.php, published under gpl by Thomas)
-	 * @author	Kasper Sk�hj
+	 * @author	Kasper Skaarhoj
 	 */
 	function removeBadHTML($text, $conf)	{
 
@@ -6999,7 +6995,7 @@ class tslib_controlTable	{
 	var $cMt = 0;		// content margin, top
 	var $cMb = 1;		// content margin, bottom
 
-	var $contentW = 0;	// s�ter en lille gif-spacer nedest i content-framen
+	var $contentW = 0;	// Places a little gif-spacer in the bottom of the content frame
 
 	var $tableParams = 'border="0" cellspacing="0" cellpadding="0"';
 
@@ -7032,7 +7028,7 @@ class tslib_controlTable	{
 		if ($this->bm) $rows++;
 		if ($this->content) $rows++;
 		if ($this->contentW) $rows++;
-		if (!$rows && $cols) $rows=1;		// hvis der slet ingen r�ker er sat i midten men der trods alt er nogle kolonner
+		if (!$rows && $cols) $rows=1;		// If there are no rows in the middle but still som columns...
 
 		if ($rows&&$cols)	{
 			$res = chr(10).'<table '.$this->tableParams.'>';
@@ -7059,12 +7055,12 @@ class tslib_controlTable	{
 			if ($this->contentW)	{	$middle[]='<td><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$this->contentW.'" alt="" title="" /></td>';}
 			if (isset($middle[0]))	{$res.=$middle[0];}
 
-				// venstre for content
+				// Left of content
 			if ($cMargArr[2])	{	$res.='<td'.$rowspan.'><img src="'.$GLOBALS['TSFE']->absRefPrefix.'clear.gif" height="1" width="'.$cMargArr[2].'" alt="" title="" /></td>';		}
 			if ($this->rm)	{	$res.='<td'.$rowspan.' '.$this->rmTDparams.'>'.$this->rm.'</td>';		}
 			$res.= '</tr>';
 
-				// flere end de 2 r�ker
+				// More than the two rows
 			$mCount = count($middle);
 			for($a=1;$a<$mCount;$a++)	{
 				$res.='<tr>'.$middle[$a].'</tr>';
