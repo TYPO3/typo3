@@ -1,3 +1,9 @@
+2004-05-20  Ingmar Schlecht  <ingmars@web.de>
+
+	* Fixed two install tool bugs:
+		#83: On non open_basedir'ed systems check if IM executables exist before trying to execut them.
+		#95: Use ini_get() instead of get_cfg_var()
+
 2004-05-19  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Fixed stylesheet issues in Extension Manager.
