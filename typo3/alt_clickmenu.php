@@ -1131,10 +1131,9 @@ class SC_alt_clickmenu {
 		// Internal:
 	var $content='';				// Content accumulation
 	var $doc;						// Template object 
-	var $includeOnce=array();		// Files to include_once() - set in init() function
+	var $include_once=array();		// Files to include_once() - set in init() function
 	var $extClassArray=array();		// Internal array of classes for extending the clickmenu
 	var $dontDisplayTopFrameCM=0;	// If set, then the clickmenu will NOT display in the top frame.
-	var $backPath='';
 
 	/**
 	 * Constructor function for script class.
@@ -1152,8 +1151,8 @@ class SC_alt_clickmenu {
 		$this->MCONF['name']='xMOD_alt_clickmenu.php';
 
 			// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
-		$inputBP = explode('|',t3lib_div::GPvar('backPath'));
-		if (count($inputBP)==2 && $inputBP[1]==md5($inputBP[0].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+		$inputBP = explode('|',$this->backPath);
+		if (count($inputBP)==2 && $inputBP[1]==t3lib_div::shortMD5($inputBP[0].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
 			$this->backPath = $inputBP[0];
 		} else {
 			$this->backPath = $BACK_PATH;
@@ -1298,8 +1297,7 @@ $SOBE = t3lib_div::makeInstance('SC_alt_clickmenu');
 $SOBE->init();
 
 // Include files?
-reset($SOBE->includeOnce);	
-while(list(,$INC_FILE)=each($SOBE->includeOnce))	{include_once($INC_FILE);}
+foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();

@@ -188,13 +188,11 @@ $SOBE = t3lib_div::makeInstance('SC_mod_web_info_index');
 $SOBE->init();
 
 // Include files?
-reset($SOBE->include_once);	
-while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 $SOBE->checkExtObj();	// Checking for first level external objects
 
 // Repeat Include files! - if any files has been added by second-level extensions
-reset($SOBE->include_once);	
-while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 $SOBE->checkSubExtObj();	// Checking second level external objects
 
 $SOBE->main();

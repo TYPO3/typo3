@@ -221,8 +221,7 @@ $SOBE = t3lib_div::makeInstance('SC_wizard_add');
 $SOBE->init();
 
 // Include files?
-reset($SOBE->include_once);	
-while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->main();
 $SOBE->printContent();

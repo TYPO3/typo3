@@ -277,7 +277,7 @@ class template {
 	 * @return	string		The link-wrapped input string.
 	 */
 	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1)	{
-		$backPath = '&backPath='.rawurlencode($this->backPath).'|'.md5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+		$backPath = '&backPath='.rawurlencode($this->backPath).'|'.t3lib_div::shortMD5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 		$onClick = 'top.loadTopMenu(\''.$this->backPath.'alt_clickmenu.php?item='.rawurlencode($table.'|'.$uid.'|'.$listFr).$backPath.'\');'.$this->thisBlur().'return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
@@ -584,7 +584,7 @@ class template {
 		$generator = $this->generator();
 		
 			// For debugging: If this outputs "QuirksMode"/"BackCompat" (IE) the browser runs in quirks-mode. Otherwise the value is "CSS1Compat"
-		$this->JScodeArray[]='alert(document.compatMode);';
+#		$this->JScodeArray[]='alert(document.compatMode);';
 		
 			// Send HTTP header for selected charset. Added by Robert Lemke 23.10.2003
 		header ('Content-Type:text/html;charset='.$this->charset);

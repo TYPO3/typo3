@@ -110,8 +110,7 @@
  * 		$SOBE->init();
  * 		
  * 		  // AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE
- * 		reset($SOBE->include_once);	
- * 		while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
+ * 		foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
  * 		
  * 		  // THEN WE WILL CHECK IF THERE IS A 'SUBMODULE' REGISTERED TO BE INITIALIZED AS WELL:
  * 		$SOBE->checkExtObj();
