@@ -47,7 +47,7 @@
  */
 
 
-$BACK_PATH='';
+$BACK_PATH = '';
 require ('init.php');
 require ('template.php');
 include ('sysext/lang/locallang_wizards.php');

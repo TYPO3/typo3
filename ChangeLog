@@ -1,3 +1,7 @@
+2004-05-19  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Finally fixed typo3/show_item.php and typo3/wizard_colorpicker.php scripts for TYPO3 3.6.0 compliance. Now only extensions and some t3lib/ are missing clean-up.
+
 2004-05-18  Kasper Skårhøj,,,  <kasper@typo3.com>
 	* Added t3lib_cs::specCharsToASCII() for converting special chars (like umlauts) to their double-byte alternatives in ASCII (like au, oe etc...). Function is NOT finished at all, only added so I could use it for the conversion of filenames in simulateStaticDocuments.
 	* TypoScript charset compatibility extended: tslib_cObj::caseshift(), tslib_cObj::substring(), tslib_cObj::crop() uses functions in t3lib_cs now. Also stdWrap.strftime will automatically convert localized string from locale charset (guessed by t3lib_cs) to renderCharset.

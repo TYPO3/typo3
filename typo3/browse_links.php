@@ -820,11 +820,11 @@ class SC_browse_links {
 				window.opener.'.$v;
 			}
 
-			$P2=array();
-			$P2['itemName']=$this->P['itemName'];
-			$P2['formName']=$this->P['formName'];
-			$P2['fieldChangeFunc']=$this->P['fieldChangeFunc'];
-			$addPassOnParams.=t3lib_div::implodeArrayForUrl('P',$P2);
+			$P2 = array();
+			$P2['itemName'] = $this->P['itemName'];
+			$P2['formName'] = $this->P['formName'];
+			$P2['fieldChangeFunc'] = $this->P['fieldChangeFunc'];
+			$addPassOnParams.= t3lib_div::implodeArrayForUrl('P',$P2);
 
 			$JScode.='
 				function link_typo3Page(id,anchor)	{	//

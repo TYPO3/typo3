@@ -8,5 +8,3 @@ Currently the system extensions are:
 
 "cms" - the TYPO3 frontend which most projects uses.
 "lang" - the system language labels for TYPO3. This is only an extension in order to utilize the typo3.org translation interface - thats the only reason. This is DEFINITELY needed by the core of TYPO3 - otherwise you would see no texts anywhere... :-)
-
-There are no plans of adding more extensions as "System" extensions.

@@ -2280,6 +2280,7 @@ class t3lib_TCEforms	{
 							if (!$wConf['notNewRecords'] || t3lib_div::testInt($row['uid']))	{
 								$params = array();
 								$params['params'] = $wConf['params'];
+								$params['exampleImg'] = $wConf['exampleImg'];
 								$params['table'] = $table;
 								$params['uid'] = $row['uid'];
 								$params['pid'] = $row['pid'];

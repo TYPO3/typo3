@@ -220,19 +220,21 @@ class t3lib_superadmin {
 			break;
 			case 'page':
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<style type="text/css">
-	.redclass {color: red;}
-	P {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px}
-	BODY {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
-	H1 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 20px; color: #000066;}
-	H2 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 17px; color: #000066;}
-	H3 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; color: #000066;}
-	H4 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: maroon;}
-	TD {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
-</style>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
+	<style type="text/css">
+		.redclass {color: red;}
+		P {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px}
+		BODY {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
+		H1 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 20px; color: #000066;}
+		H2 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 17px; color: #000066;}
+		H3 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; color: #000066;}
+		H4 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: maroon;}
+		TD {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
+	</style>
 	<title>TYPO3 Super Admin</title>
 </head>
 <body>
@@ -277,11 +279,11 @@ class t3lib_superadmin {
 				$lines[]=$this->setMenuItem('info','INFO');
 				$lines[]=$this->setMenuItem('update','UPDATE');
 				$lines[]='';
-				$lines[]='<a href="'.$this->scriptName.'?type=page" target="TSApage">Default</a>';
-				$lines[]='<a href="'.$this->scriptName.'?type=page&show=all" target="TSApage">All details</a>';
-				$lines[]='<a href="'.$this->scriptName.'?type=page&show=admin" target="TSApage">Admin logins</a>';
-				$lines[]='<a href="'.$this->scriptName.'?type=phpinfo" target="TSApage">phpinfo()</a>';
-				$lines[]='<a href="'.$this->scriptName.'?type=page&show=localext" target="TSApage">Local extensions</a>';
+				$lines[]='<a href="'.htmlspecialchars($this->scriptName.'?type=page').'" target="TSApage">Default</a>';
+				$lines[]='<a href="'.htmlspecialchars($this->scriptName.'?type=page&show=all').'" target="TSApage">All details</a>';
+				$lines[]='<a href="'.htmlspecialchars($this->scriptName.'?type=page&show=admin').'" target="TSApage">Admin logins</a>';
+				$lines[]='<a href="'.htmlspecialchars($this->scriptName.'?type=phpinfo').'" target="TSApage">phpinfo()</a>';
+				$lines[]='<a href="'.htmlspecialchars($this->scriptName.'?type=page&show=localext').'" target="TSApage">Local extensions</a>';
 				$lines[]='';
 				$content = implode('<br />',$lines);
 				$content.= '<hr />';

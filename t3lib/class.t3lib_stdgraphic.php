@@ -1847,7 +1847,7 @@ class t3lib_stdGraphic	{
 				} else {
 					$returnArr = $this->imageMagickIdentify($imageFile);
 				}
-				if($returnArr) {
+				if ($returnArr) {
 					$this->cacheImageDimensions($returnArr);
 					return $returnArr;
 				}

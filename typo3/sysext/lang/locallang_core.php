@@ -14,6 +14,7 @@ $LOCAL_LANG = Array (
 		'labels.lockedRecord_content' => 'The user \'%s\' began to edit content on this page %s ago.',
 		'labels.showRecords' => 'Show records',
 		'labels.path' => 'Path',
+		'labels.table' => 'Table',
 		'labels.upOneLevel' => 'Up one level',
 		'labels.enterSearchString' => 'Search String:',
 		'labels.enterSearchLevels' => 'This page|1 level down|2 levels down|3 levels down|4 levels down',

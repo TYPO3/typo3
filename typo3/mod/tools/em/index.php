@@ -1205,7 +1205,7 @@ EXTENSION KEYS:
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td nowrap="nowrap">Extension:&nbsp;<strong>'.$this->extensionTitleIconHeader($extKey,$list[$extKey],'absmiddle').'</strong> ('.$extKey.')</td>
+					<td nowrap="nowrap">Extension:&nbsp;<strong>'.$this->extensionTitleIconHeader($extKey,$list[$extKey]).'</strong> ('.$extKey.')</td>
 					<td align="right" nowrap="nowrap">'.
 						t3lib_BEfunc::getFuncMenu(0,'SET[singleDetails]',$this->MOD_SETTINGS['singleDetails'],$this->MOD_MENU['singleDetails'],'','&CMD[showExt]='.$extKey).' &nbsp; &nbsp; '.
 						'<a href="index.php" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' class="absmiddle" alt="" /> Go back</a></td>

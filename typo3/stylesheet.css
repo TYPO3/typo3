@@ -295,6 +295,7 @@ TABLE#typo3-formwizard TR#typo3-formWizardHeader TD { font-weight: bold; text-al
 TABLE#typo3-formwizard TR TD { padding: 0px 2px 0px 2px; }
 BODY#typo3-wizard-rte-php, BODY#typo3-wizard-rte-php TABLE#typo3-rtewizard { height: 98%; }
 BODY#typo3-wizard-rte-php TABLE#typo3-rtewizard TR TD#c-formContent { height: 100%; vertical-align: top; }
+BODY#typo3-wizard-colorpicker-php P.c-head {font-weight: bold; margin-top: 4px;}
 
 /* History / Undo */
 TABLE#typo3-history TR TD, TABLE#typo3-history-item TR TD { vertical-align: top; }

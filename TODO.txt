@@ -327,7 +327,7 @@ XQCR: t3lib/class.t3lib_clipboard.php
 -QC-: t3lib/class.t3lib_cs.php
 XQCR: t3lib/class.t3lib_diff.php
 XQCR: t3lib/class.t3lib_div.php
-		t3lib/class.t3lib_dmailer.php	[Pekue?]
+		t3lib/class.t3lib_dmailer.php	[Jan-Erik?]
 		t3lib/class.t3lib_exec.php		[Rene]
 		t3lib/class.t3lib_extfilefunc.php
 -QCR: t3lib/class.t3lib_extmgm.php
@@ -335,7 +335,7 @@ XQCR: t3lib/class.t3lib_div.php
 XQCR: t3lib/class.t3lib_foldertree.php
 -QCR: t3lib/class.t3lib_formmail.php
 		t3lib/class.t3lib_fullsearch.php
-		t3lib/class.t3lib_htmlmail.php	[Pekue?]
+		t3lib/class.t3lib_htmlmail.php	[Jan-Erik?]
 XQCR: t3lib/class.t3lib_iconworks.php
 		t3lib/class.t3lib_install.php
 -QCR: t3lib/class.t3lib_loaddbgroup.php
@@ -457,14 +457,14 @@ XQCR: listframe_loader.php
 XQCR: login_frameset.php
 -QC-: logout.php		TODO: Check "redirect" GPvar for XSS hole!?
 XQCR: move_el.php
-		show_item.php				[Peter Kuehn]
+XQCR: show_item.php
 XQCR: show_rechis.php
 -QCR: tce_db.php
 -QCR: tce_file.php
 XQCR: template.php
 XQCR: view_help.php
 XQCR: wizard_add.php
-		wizard_colorpicker.php		[Matthias]
+XQCR: wizard_colorpicker.php
 XQCR: wizard_edit.php
 XQCR: wizard_forms.php
 XQCR: wizard_list.php
@@ -479,6 +479,11 @@ XQCR: mod/web/func/index.php
 XQCR: mod/web/perm/index.php
 
 
+typo3/sysext/___________________________________________:
+		install/	[ingmar]
+OK		cms/
+OK		lang/
+
 typo3/ext/_____________________________________:
 OK		aboutmodules/
 		belog/		(2 / 500)
@@ -487,7 +492,7 @@ OK		aboutmodules/
 OK		conf_userts/
 OK		context_help/
 		css_styled_content/		(1/200)		[H]
-		direct_mail/		(3/2500)		[Peter Kuehn] + class.t3lib_htmlmail.php
+		direct_mail/		(3/2500)		[Jan-Erik] + class.t3lib_htmlmail.php
 OK		direct_mail_subscription/
 XQCR:	extra_page_cm_options/
 		extrep_wizard/		(2/4500)		[H]
