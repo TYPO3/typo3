@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,10 +24,27 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * This is the frameset to the file/record browser window
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * XHTML-frames compatible.
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   66: class SC_browser
+ *   77:     function main()
+ *  121:     function printContent()
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 require ('init.php');
 require ('template.php');
@@ -41,70 +58,54 @@ require ('template.php');
 
 /**
  * Script Class, putting the frameset together.
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_browser {
+
+		// Internal, dynamic
 	var $content;
 
 	/**
 	 * Main function.
 	 * Creates the header code in XHTML, the JavaScript, then the frameset for the two frames.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
-		$mode =t3lib_div::GPvar('mode');
+
+			// Setting GPvars:
+		$mode =t3lib_div::_GP('mode');
+		$bparams = t3lib_div::_GP('bparams');
+
 
 			// Set doktype:
-		$GLOBALS["TBE_TEMPLATE"]->docType="xhtml_frames";
-		$GLOBALS["TBE_TEMPLATE"]->JScode= '
-			<script type="text/javascript">
-				  /*<![CDATA[*/
-				  	//
-				function closing()	{
-					if (parent.typoWin)	{
-						if (parent.typoWin.clipBrd) {
-							parent.typoWin.focus();
-							parent.typoWin.clipBrd.detachBrowser();
-						} else {
-							parent.typoWin.browserWin="";
-						}
-					}
+		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
+		$GLOBALS['TBE_TEMPLATE']->JScode=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+				function closing()	{	//
 					close();
 				}
-					//
-				function setParams(mode,params)	{
+				function setParams(mode,params)	{	//
 					parent.content.document.location = "browse_links.php?mode="+mode+"&bparams="+params;
 				}
-			
-				if (!parent.typoWin)	{
-					if (window.opener)	{
-						parent.typoWin=window.opener;
-					} else {
-						alert("ERROR: Sorry, no link to main window... Closing");	// clipboard is opened
-						close();
-					}
+				if (!window.opener)	{
+					alert("ERROR: Sorry, no link to main window... Closing");
+					close();
 				}
-				//alert(parent.typoWin);
-			
-				if (parent.typoWin)	{
-					window.typoWin = parent.typoWin;
-					theBrowser = parent.typoWin.theBrowser;
-				}
+		');
 
-				/*]]>*/
-			</script>
-		';
-		
-		$this->content.=$GLOBALS["TBE_TEMPLATE"]->startPage('TYPO3 Element Browser');
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
+
+			// URL for the inner main frame:
+		$url = 'browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode($bparams);
 
 			// Create the frameset for the window:
+			// Formerly there were a ' onunload="closing();"' in the <frameset> tag - but it failed on Safari browser on Mac unless the handler was "onUnload"
 		$this->content.='
-			<frameset rows="*,1" framespacing="0" frameborder="0" border="0" onunload="closing();">
-				<frame name="content" src="'.htmlspecialchars('browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode(t3lib_div::GPvar('bparams'))).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" onblur="closing();" />
+			<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
+				<frame name="content" src="'.htmlspecialchars($url).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
 				<frame name="menu" src="dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		';
@@ -115,8 +116,8 @@ class SC_browser {
 
 	/**
 	 * Outputs the page content.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

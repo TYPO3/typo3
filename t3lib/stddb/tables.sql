@@ -3,6 +3,8 @@
 # Host: localhost    Database: t3_testsite
 #--------------------------------------------------------
 # Server version	3.22.27
+#
+# TYPO3 CVS ID: $Id$
 
 #
 # Table structure for table 'be_groups'
@@ -39,6 +41,8 @@ CREATE TABLE be_groups (
 CREATE TABLE be_sessions (
   ses_id varchar(32) DEFAULT '' NOT NULL,
   ses_name varchar(32) DEFAULT '' NOT NULL,
+  ses_iplock varchar(15) DEFAULT '' NOT NULL,
+  ses_hashlock int(11) DEFAULT '0' NOT NULL,
   ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
   ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ses_data blob NOT NULL,
@@ -71,6 +75,7 @@ CREATE TABLE be_users (
   file_mountpoints varchar(40) DEFAULT '' NOT NULL,
   fileoper_perms tinyint(4) DEFAULT '0' NOT NULL,
   lockToDomain varchar(50) DEFAULT '' NOT NULL,
+  disableIPlock tinyint(3) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
   TSconfig blob NOT NULL,
   lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
@@ -90,6 +95,19 @@ CREATE TABLE cache_hash (
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ident varchar(20) DEFAULT '' NOT NULL,
   PRIMARY KEY (hash)
+);
+
+#
+# Table structure for table 'cache_imagesizes'
+#
+CREATE TABLE cache_imagesizes (
+  md5hash varchar(32) DEFAULT '' NOT NULL,
+  md5filename varchar(32) DEFAULT '' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  filename tinytext NOT NULL,
+  imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
+  imageheight mediumint(11) unsigned DEFAULT '0' NOT NULL,
+  PRIMARY KEY (md5filename)
 );
 
 #

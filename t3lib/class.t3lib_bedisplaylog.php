@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,32 +24,31 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class for display of backend log
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   80: class t3lib_BEDisplayLog 
- *   99:     function initArray()	
- *  116:     function getTimeLabel($code)	
- *  131:     function getUserLabel($code)	
- *  145:     function getTypeLabel($code)	
- *  159:     function getActionLabel($code)	
- *  177:     function getDetails($code,$text,$data,$sys_log_uid=0)	
- *  210:     function reset()	
- *  224:     function getErrorFormatting($sign)	
- *  234:     function formatDetailsForList($row)	
- *  251:     function stripPath($inArr)	
+ *   81: class t3lib_BEDisplayLog
+ *  100:     function initArray()
+ *  117:     function getTimeLabel($code)
+ *  132:     function getUserLabel($code)
+ *  146:     function getTypeLabel($code)
+ *  160:     function getActionLabel($code)
+ *  178:     function getDetails($code,$text,$data,$sys_log_uid=0)
+ *  210:     function reset()
+ *  224:     function getErrorFormatting($sign)
+ *  234:     function formatDetailsForList($row)
+ *  251:     function stripPath($inArr)
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -73,8 +72,10 @@
 /**
  * This class holds some functions used to display the sys_log table-content.
  * Used in the status-scripts and the log-module.
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see tx_belog_webinfo, SC_mod_tools_log_index
  */
 class t3lib_BEDisplayLog {
@@ -82,7 +83,7 @@ class t3lib_BEDisplayLog {
 	var $lastUserLabel='';
 	var $lastTypeLabel='';
 	var $lastActionLabel='';
-	
+
 	var $detailsOn = 1;	// If detailsOn, %s is substituted with values from the data-array (see getDetails())
 	var $stripPath = 1;	// This strips the path from any value in the data-array when the data-array is parsed through stripPath()
 	var $errorSign = Array(
@@ -93,8 +94,8 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Initialize the log table array with header labels.
-	 * 
-	 * @return	array		
+	 *
+	 * @return	array
 	 */
 	function initArray()	{
 		$codeArr=Array();
@@ -108,8 +109,8 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get time label
-	 * 
+	 * Get time label for log listing
+	 *
 	 * @param	integer		Timestamp to display
 	 * @return	string		If the timestamp was also shown last time, then "." is returned. Otherwise the new timestamp formatted with ->doc->formatTime()
 	 */
@@ -119,12 +120,12 @@ class t3lib_BEDisplayLog {
 			$this->lastTimeLabel=$t;
 			return $t;
 		} else return '.';
-		
+
 	}
 
 	/**
-	 * Get user name label
-	 * 
+	 * Get user name label for log listing
+	 *
 	 * @param	integer		be_user uid
 	 * @return	string		If username is different from last username then the username, otherwise "."
 	 */
@@ -137,8 +138,8 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get type label
-	 * 
+	 * Get type label for log listing
+	 *
 	 * @param	string		Key for the type label in locallang
 	 * @return	string		If labe is different from last type label then the label is returned, otherwise "."
 	 */
@@ -151,8 +152,8 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get action label
-	 * 
+	 * Get action label for log listing
+	 *
 	 * @param	string		Key for the action label in locallang
 	 * @return	string		If labe is different from last action label then the label is returned, otherwise "."
 	 */
@@ -166,7 +167,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Get details for the log entry
-	 * 
+	 *
 	 * @param	string		Suffix to "msg_" to get label from locallang.
 	 * @param	string		Details text
 	 * @param	array		Data array
@@ -179,9 +180,9 @@ class t3lib_BEDisplayLog {
 		if (is_array($data))	{
 			if ($this->detailsOn)	{
 				if (is_object($GLOBALS['LANG']))	{
-					$label=$GLOBALS['LANG']->getLL('msg_'.$code);
+					$label = $GLOBALS['LANG']->getLL('msg_'.$code);
 				} else {
-					list($label)=explode(',',$text);
+					list($label) = explode(',',$text);
 				}
 				if ($label)	{$text=$label;}
 				$text = sprintf($text, htmlspecialchars($data[0]),htmlspecialchars($data[1]),htmlspecialchars($data[2]),htmlspecialchars($data[3]),htmlspecialchars($data[4]));
@@ -189,11 +190,10 @@ class t3lib_BEDisplayLog {
 				$text = str_replace('%s','',$text);
 			}
 		}
-		
+
 			// Finding the history for the record
-		$query='SELECT uid,fieldlist FROM sys_history WHERE sys_log_uid='.intval($sys_log_uid);
-		$res = mysql(TYPO3_db,$query);
-		$newRow = mysql_fetch_assoc($res);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,fieldlist', 'sys_history', 'sys_log_uid='.intval($sys_log_uid));
+		$newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if (is_array($newRow))	{
 			$text.=' Changes in fields: <em>'.$newRow['fieldlist'].'</em>.';
 			$text.=' <a href="'.htmlspecialchars($GLOBALS['BACK_PATH'].'show_rechis.php?sh_uid='.$newRow['uid'].'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'"><b>->His</b></a>';
@@ -203,9 +203,9 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Reset
-	 * 
-	 * @return	void		
+	 * Reset all internal "last..." variables to blank string.
+	 *
+	 * @return	void
 	 */
 	function reset()	{
 		$this->lastTimeLabel='';
@@ -216,7 +216,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Formats input string in red-colored font tags
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @return	string		Input wrapped in red font-tag and bold
 	 * @obsolete
@@ -227,7 +227,7 @@ class t3lib_BEDisplayLog {
 
 	/**
 	 * Formatting details text for the sys_log row inputted
-	 * 
+	 *
 	 * @param	array		sys_log row
 	 * @return	string		Details string
 	 */
@@ -243,9 +243,9 @@ class t3lib_BEDisplayLog {
 	/**
 	 * For all entries in the $inArray (expected to be filepaths) the basename is extracted and set as value (if $this->stripPath is set)
 	 * This is done for log-entries from the FILE modules
-	 * 
-	 * @param	array		
-	 * @return	array		
+	 *
+	 * @param	array		Array of file paths
+	 * @return	array
 	 * @see formatDetailsForList()
 	 */
 	function stripPath($inArr)	{
@@ -253,7 +253,7 @@ class t3lib_BEDisplayLog {
 			while(list($key,$val)=each($inArr))	{
 				$inArr[$key]=basename($val);
 			}
-		}	
+		}
 		return $inArr;
 	}
 }

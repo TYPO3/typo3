@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -17,6 +18,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gå tilbage',
 		'fullDescription' => 'Se hele tabelbeskrivelsen',
 		'close' => 'Luk',
+		'title' => 'TYPO3 Online hjælp',
 	),
 	'de' => Array (
 		'details' => 'Details',
@@ -25,6 +27,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Zurück',
 		'fullDescription' => 'Komplette Beschreibung der Tabelle ansehen',
 		'close' => 'Schliessen',
+		'title' => 'TYPO3 Online Hilfe',
 	),
 	'no' => Array (
 		'details' => 'Detaljer',
@@ -33,14 +36,16 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gå tilbake',
 		'fullDescription' => 'Se hele tabellbeskrivelsen',
 		'close' => 'Lukk',
+		'title' => 'TYPO3 Online Hjelp',
 	),
 	'it' => Array (
 		'details' => 'Dettagli',
 		'syntax' => 'Sintassi',
-		'seeAlso' => 'Vedi altro',
+		'seeAlso' => 'Vedi anche',
 		'goBack' => 'Indietro',
-		'fullDescription' => 'Vedi descrizione completa della tavola',
+		'fullDescription' => 'Vedi descrizione completa',
 		'close' => 'Chiudi',
+		'title' => 'Typo3 Help Online',
 	),
 	'fr' => Array (
 		'details' => 'Détails',
@@ -63,8 +68,9 @@ $LOCAL_LANG = Array (
 		'syntax' => 'Syntax',
 		'seeAlso' => 'Zie ook',
 		'goBack' => 'Ga terug',
-		'fullDescription' => 'Zie volledige omschrijving van deze tabel.',
+		'fullDescription' => 'Bekijk volledige omschrijving van deze tabel.',
 		'close' => 'Sluiten',
+		'title' => 'TYPO3 Online Help',
 	),
 	'cz' => Array (
 		'details' => 'Detaily',
@@ -73,6 +79,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Jít zpìt',
 		'fullDescription' => 'Zobrazit úplný popis tabulky',
 		'close' => 'Zavøít',
+		'title' => 'Online nápovìda TYPO3',
 	),
 	'pl' => Array (
 		'details' => 'Szczegó³y',
@@ -81,6 +88,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Powrót',
 		'fullDescription' => 'Zobacz pe³ny opis tablicy',
 		'close' => 'Zamknij',
+		'title' => 'Pomoc online TYPO3',
 	),
 	'si' => Array (
 		'details' => 'Podrobnosti',
@@ -95,8 +103,9 @@ $LOCAL_LANG = Array (
 		'syntax' => 'Syntaksi',
 		'seeAlso' => 'Katso myös',
 		'goBack' => 'Takaisin',
-		'fullDescription' => 'Katso koko tauln kuvausta',
+		'fullDescription' => 'Katso koko taulun kuvausta',
 		'close' => 'Sulje',
+		'title' => 'Typo3 online ohjeet',
 	),
 	'tr' => Array (
 		'details' => 'Ayrntýlar',
@@ -105,6 +114,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Geri git',
 		'fullDescription' => 'Tablonun tüm tanýtýmýný gör',
 		'close' => 'Kapat',
+		'title' => 'TYPO3 online yardým',
 	),
 	'se' => Array (
 		'details' => 'Detaljer',
@@ -113,6 +123,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gå tillbaka',
 		'fullDescription' => 'Se full förklaring över tabellen',
 		'close' => 'Stäng',
+		'title' => 'Typo3 Online-hjälp',
 	),
 	'pt' => Array (
 		'details' => 'Detalhes',
@@ -127,10 +138,17 @@ $LOCAL_LANG = Array (
 		'syntax' => 'Ñèíòàêñèñ',
 		'seeAlso' => 'Ñì. òàêæå',
 		'goBack' => 'Âîçâðàò',
-		'fullDescription' => 'Ñì. ïîëíîå îïèñàíèå òàáëèöû',
+		'fullDescription' => 'Ñì. ïîëíîå îïèñàíèå',
 		'close' => 'Çàêðûòü',
+		'title' => 'Äèàëîãîâàÿ ïîìîùü TYPO3',
 	),
 	'ro' => Array (
+		'details' => 'Detalii',
+		'syntax' => 'Sintaxa',
+		'seeAlso' => 'Vezi deasemeni',
+		'goBack' => 'Innapoi',
+		'fullDescription' => 'Vezi descrierea completa a tabelului',
+		'close' => 'Inchide',
 	),
 	'ch' => Array (
 		'details' => 'ÏêÏ¸',
@@ -147,6 +165,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Choï naspä',
 		'fullDescription' => 'Pozri celý popis tabu¾ky',
 		'close' => 'Zavrie',
+		'title' => 'TYPO3 Online Pomoc',
 	),
 	'lt' => Array (
 		'details' => 'Detalës',
@@ -155,6 +174,115 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Gráðti atgal',
 		'fullDescription' => 'Þiûrëkite pilna lentelës apraðymà',
 		'close' => 'Uþdaryti',
+	),
+	'is' => Array (
+		'details' => 'SmÃ¡atriÃ°i',
+		'syntax' => 'Setningarbygging',
+		'seeAlso' => 'SkoÃ°a einnig',
+		'goBack' => 'Til baka',
+		'fullDescription' => 'SkoÃ°a nÃ¡kvÃ¦ma lÃ½singu af tÃ¶flu',
+		'close' => 'Loka',
+	),
+	'hr' => Array (
+		'details' => 'Detaljnjije',
+		'syntax' => 'Sintaksa',
+		'seeAlso' => 'Pogledaj još',
+		'goBack' => 'Natrag',
+		'fullDescription' => 'Pogledaj pun opis tablice',
+		'close' => 'Zatvori',
+		'title' => 'TYPO3 online pomoæ',
+	),
+	'hu' => Array (
+		'details' => 'Részletek',
+		'syntax' => 'Szintaxis',
+		'seeAlso' => 'Lásd még',
+		'goBack' => 'Menj vissza',
+		'fullDescription' => 'A tábla teljes leírásának megtekintése',
+		'close' => 'Bezár',
+		'title' => 'TYPO3 Online Súgó',
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+		'details' => 'ÃÒÂÅÐàÍÕÂ´',
+		'syntax' => 'Syntax',
+		'seeAlso' => '´Ùà¾ÔèÁàµÔÁ',
+		'goBack' => '¡ÅÑºä»',
+		'fullDescription' => '´Ù¤ÓÍ¸ÔºÒÂáººàµçÁ¢Í§µÒÃÒ§',
+		'close' => '»Ô´',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'details' => '¸Ô±¡',
+		'syntax' => '»yªk',
+		'seeAlso' => '°Ñ¬Ý',
+		'goBack' => 'ªð¦^',
+		'fullDescription' => 'ÀËµøªí®æªº§¹¾ã¤¶²Ð',
+		'close' => 'Ãö³¬',
+		'title' => 'TYPO3 ½u¤W¤ä´©',
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+		'details' => 'Äåòàéëè',
+		'syntax' => 'Ñèíòàêñ',
+		'seeAlso' => 'Âèæ ñúùî',
+		'goBack' => 'Âúðíè ñå',
+		'fullDescription' => 'Âèæ ïúëíî îïèñàíèå íà òàáëèöàòà',
+		'close' => 'Çàòâîðè',
+		'title' => 'TYPO3 îíëàéí ïîìîù',
+	),
+	'br' => Array (
+		'details' => 'Detalhes',
+		'syntax' => 'Sintaxe',
+		'seeAlso' => 'Veja também',
+		'goBack' => 'Voltar',
+		'fullDescription' => 'Ver descrição completa da tabela',
+		'close' => 'Fechar',
+		'title' => 'Ajuda Online TYPO3',
+	),
+	'et' => Array (
+		'details' => 'Detailid',
+		'syntax' => 'Süntaks',
+		'seeAlso' => 'Vaata lisaks',
+		'goBack' => 'Tagasi',
+		'fullDescription' => 'Tabeli täiskirjeldus',
+		'close' => 'Sulge',
+		'title' => 'TYPO3 Online Abi',
+	),
+	'ar' => Array (
+		'details' => 'ÊáÇÕêä',
+		'syntax' => 'ÇäÃåÑ',
+		'seeAlso' => 'ÃæØÑ ÇêÖÇ',
+		'goBack' => 'ÅÑÌÙ',
+		'fullDescription' => 'ÅæØÑ ÇäèÕá ÇäãÇåä ääÌÏèä',
+		'close' => 'Åâáä',
+		'title' => 'åÓÇÙÏÉ Ùäé ÇäçèÇÁ äàà ÊêÈè 3',
+	),
+	'he' => Array (
+		'details' => '×¤×¨×˜×™×',
+		'syntax' => '×ª×—×‘×™×¨',
+		'seeAlso' => '×¨××” ×’×',
+		'goBack' => '×¢×‘×•×¨ ×—×–×¨×”',
+		'fullDescription' => '×¨××” ×ª×™××•×¨ ×ž×œ× ×©×œ ×˜×‘×œ×”',
+		'close' => '×¡×’×•×¨',
+		'title' => '×¢×–×¨×” ×‘××™× ×˜×¨× ×˜',
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+		'details' => 'SÄ«kÄk',
+		'syntax' => 'Sintakse',
+		'seeAlso' => 'SkatÄ«t arÄ«',
+		'goBack' => 'Atgriezties',
+		'fullDescription' => 'SkatÄ«t tabulas pilnu aprakstu',
+		'close' => 'AizvÄ“rt',
+		'title' => 'TYPO3 palÄ«dzÄ«ba',
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

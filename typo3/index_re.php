@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Apache-trailing-slash workaround
  *
  * Meant to solve the trailing slash problem with Apache:
@@ -33,13 +33,14 @@
  * 		RewriteRule   ^typo3$  typo3/index_re.php
  * ... and this document will redirect to the right script.
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
 
-define("TYPO3_PROCEED_IF_NO_USER", 1);
-require ("init.php");
-header("Location: ".t3lib_div::locationHeaderUrl(t3lib_div::getIndpEnv("TYPO3_REQUEST_DIR")."index.php"));
+define('TYPO3_PROCEED_IF_NO_USER', 1);
+require ('init.php');
+header('Location: '.t3lib_div::locationHeaderUrl(t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'));
 ?>

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,34 +24,33 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains a class for evaluation of database integrity according to $TCA
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   89: class t3lib_admin 
- *  115:     function genTree($theID, $depthData)	
- *  149:     function lostRecords($pid_list)	
- *  178:     function fixLostRecord($table,$uid)	
- *  196:     function countRecords($pid_list)	
- *  226:     function getGroupFields($mode)	
- *  260:     function getFileFields($uploadfolder)	
- *  283:     function getDBFields($theSearchTable)	
- *  311:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)	
- *  386:     function testFileRefs ()	
- *  437:     function testDBRefs($theArray)	
- *  476:     function whereIsRecordReferenced($searchTable,$id)	
- *  510:     function whereIsFileReferenced($uploadfolder,$filename)	
+ *   90: class t3lib_admin
+ *  116:     function genTree($theID, $depthData)
+ *  156:     function lostRecords($pid_list)
+ *  187:     function fixLostRecord($table,$uid)
+ *  208:     function countRecords($pid_list)
+ *  236:     function getGroupFields($mode)
+ *  270:     function getFileFields($uploadfolder)
+ *  293:     function getDBFields($theSearchTable)
+ *  321:     function selectNonEmptyRecordsWithFkeys($fkey_arrays)
+ *  394:     function testFileRefs ()
+ *  445:     function testDBRefs($theArray)
+ *  483:     function whereIsRecordReferenced($searchTable,$id)
+ *  520:     function whereIsFileReferenced($uploadfolder,$filename)
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,12 +78,14 @@
 
 /**
  * This class holds functions used by the TYPO3 backend to check the integrity of the database (The DBint module, 'lowlevel' extension)
- * 
+ *
  * Depends on:		Depends on loaddbgroup from t3lib/
- * 
+ *
  * @todo	Need to really extend this class when the tcemain library has been updated and the whole API is better defined. There are some known bugs in this library. Further it would be nice with a facility to not only analyze but also clean up!
  * @see SC_mod_tools_dbint_index::func_relations(), SC_mod_tools_dbint_index::func_records()
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_admin {
 	var $genTree_includeDeleted = 1;	// if set, genTree() includes deleted pages. This is default.
@@ -93,7 +94,7 @@ class t3lib_admin {
 		// internal
 	var $genTree_idlist = '';	// Will hold the id-list from genTree()
 	var $getTree_HTML = '';		// Will hold the HTML-code visualising the tree. genTree()
-	var $backPath='';	
+	var $backPath='';
 
 		// internal
 	var $checkFileRefs = Array();
@@ -107,24 +108,30 @@ class t3lib_admin {
 
 	/**
 	 * Generates a list of Page-uid's that corresponds to the tables in the tree. This list should ideally include all records in the pages-table.
-	 * 
+	 *
 	 * @param	integer		a pid (page-record id) from which to start making the tree
 	 * @param	string		HTML-code (image-tags) used when this function calls itself recursively.
-	 * @return	integer		Number of mysql_num_rows (most recent query)
+	 * @return	integer		Number of $GLOBALS['TYPO3_DB']->sql_num_rows (most recent query)
 	 */
 	function genTree($theID, $depthData)	{
-		$res = mysql(TYPO3_db, 'SELECT uid,title,doktype,deleted'.(t3lib_extMgm::isLoaded('cms')?',hidden':'').' FROM pages WHERE pid="'.$theID.'" '.((!$this->genTree_includeDeleted)?'AND NOT deleted':'').$this->perms_clause.' ORDER BY sorting');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid,title,doktype,deleted'.(t3lib_extMgm::isLoaded('cms')?',hidden':''),
+					'pages',
+					'pid='.intval($theID).' '.((!$this->genTree_includeDeleted)?'AND deleted=0':'').$this->perms_clause,
+					'',
+					'sorting'
+				);
 		$a=0;
-		$c=mysql_num_rows($res);
-		while ($row = mysql_fetch_assoc($res))	{
+		$c = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$a++;
 			$newID =$row['uid'];
-			if ($this->genTree_makeHTML)	{	
-				$this->genTree_HTML.=chr(10).'<div><nobr>';
+			if ($this->genTree_makeHTML)	{
+				$this->genTree_HTML.=chr(10).'<div><span class="nobr">';
 				$PM = 'join';
 				$LN = ($a==$c)?'blank':'line';
 				$BTM = ($a==$c)?'bottom':'';
-				$this->genTree_HTML.= $depthData.'<img src="'.$this->backPath.'t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" alt="" /><img src="'.$this->backPath.t3lib_iconWorks::getIcon('pages',$row).'" width="18" height="16" align="top" alt="" />'.htmlspecialchars($row['uid'].': '.t3lib_div::fixed_lgd(strip_tags($row['title']),50)).'</nobr></div>';
+				$this->genTree_HTML.= $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" alt="" />'.t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'align="top"').htmlspecialchars($row['uid'].': '.t3lib_div::fixed_lgd(strip_tags($row['title']),50)).'</span></div>';
 			}
 
 			if (isset($page_idlist[$newID]))	{
@@ -134,17 +141,17 @@ class t3lib_admin {
 			if ($row['deleted']) {$this->recStat['deleted']++;}
 			if ($row['hidden']) {$this->recStat['hidden']++;}
 			$this->recStat['doktype'][$row['doktype']]++;
-			
-			$this->genTree($newID,$this->genTree_HTML ? $depthData.'<img src="'.$this->backPath.'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />'  : '');
+
+			$this->genTree($newID,$this->genTree_HTML ? $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' align="top" alt="" />'  : '');
 		}
-		return (mysql_num_rows($res));
+		return $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 	}
-	
+
 	/**
 	 * Fills $this->lRecords with the records from all tc-tables that are not attached to a PID in the pid-list.
-	 * 
+	 *
 	 * @param	string		list of pid's (page-record uid's). This list is probably made by genTree()
-	 * @return	void		
+	 * @return	void
 	 */
 	function lostRecords($pid_list)	{
 		global $TCA;
@@ -153,11 +160,13 @@ class t3lib_admin {
 		if ($pid_list)	{
 			while (list($table)=each($TCA))	{
 				t3lib_div::loadTCA($table);
-			 	$query = 'SELECT uid,pid,'.$TCA[$table]['ctrl']['label'].' FROM '.$table.' WHERE pid NOT IN ('.$pid_list.')';
-				$garbage = mysql(TYPO3_db,$query);
-				echo mysql_error();
+			 	$garbage = $GLOBALS['TYPO3_DB']->exec_SELECTquery (
+								'uid,pid,'.$TCA[$table]['ctrl']['label'],
+								$table,
+								'pid NOT IN ('.$pid_list.')'
+							);
 				$lostIdList=Array();
-				while ($row = mysql_fetch_assoc($garbage))	{
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($garbage))	{
 					$this->lRecords[$table][$row['uid']]=Array('uid'=>$row['uid'], 'pid'=>$row['pid'], 'title'=> strip_tags($row[$TCA[$table]['ctrl']['label']]) );
 					$lostIdList[]=$row['uid'];
 				}
@@ -170,26 +179,29 @@ class t3lib_admin {
 
 	/**
 	 * Fixes lost record from $table with uid $uid by setting the PID to zero. If there is a disabled column for the record that will be set as well.
-	 * 
-	 * @param	string		Tablename
+	 *
+	 * @param	string		Database tablename
 	 * @param	integer		The uid of the record which will have the PID value set to 0 (zero)
 	 * @return	boolean		True if done.
 	 */
 	function fixLostRecord($table,$uid)	{
 		if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->user['admin'])	{
-			$extra='';
+
+			$updateFields = array();
+			$updateFields['pid'] = 0;
 			if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])	{	// If possible a lost record restored is hidden as default
-				$extra.=','.$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'].'=1';
+				$updateFields[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] = 1;
 			}
-			$fixQuery = 'UPDATE '.$table.' SET pid=0'.$extra.' WHERE uid="'.$uid.'"';
-			$fixQ = mysql(TYPO3_db,$fixQuery);
-			return true;
-		} else return false;
+
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+
+			return TRUE;
+		} else return FALSE;
 	}
 
 	/**
 	 * Counts records from $TCA-tables that ARE attached to an existing page.
-	 * 
+	 *
 	 * @param	string		list of pid's (page-record uid's). This list is probably made by genTree()
 	 * @return	array		an array with the number of records from all $TCA-tables that are attached to a PID in the pid-list.
 	 */
@@ -201,15 +213,13 @@ class t3lib_admin {
 		if ($pid_list)	{
 			while (list($table)=each($TCA))	{
 				t3lib_div::loadTCA($table);
-			 	$query = 'SELECT count(*) FROM '.$table.' WHERE pid IN ('.$pid_list.')';
-				$count = mysql(TYPO3_db,$query);
-				if ($row = mysql_fetch_row($count))	{
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$pid_list.')');
+				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($count))	{
 					$list[$table]=$row[0];
 				}
 
-			 	$query = 'SELECT count(*) FROM '.$table.' WHERE pid IN ('.$pid_list.')'.t3lib_BEfunc::deleteClause($table);
-				$count = mysql(TYPO3_db,$query);
-				if ($row = mysql_fetch_row($count))	{
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, 'pid IN ('.$pid_list.')'.t3lib_BEfunc::deleteClause($table));
+				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($count))	{
 					$list_n[$table]=$row[0];
 				}
 			}
@@ -219,7 +229,7 @@ class t3lib_admin {
 
 	/**
 	 * Finding relations in database based on type 'group' (files or database-uid's in a list)
-	 * 
+	 *
 	 * @param	string		$mode = file, $mode = db, $mode = '' (all...)
 	 * @return	array		An array with all fields listed that somehow are references to other records (foreign-keys) or files
 	 */
@@ -234,7 +244,7 @@ class t3lib_admin {
 			while (list($field,$config)=each($cols))	{
 				if ($config['config']['type']=='group')	{
 					if (
-						((!$mode||$mode=='file') && $config['config']['internal_type']=='file') || 
+						((!$mode||$mode=='file') && $config['config']['internal_type']=='file') ||
 						((!$mode||$mode=='db') && $config['config']['internal_type']=='db')
 						)	{
 						$result[$table][]=$field;
@@ -253,7 +263,7 @@ class t3lib_admin {
 
 	/**
 	 * Finds all fields that hold filenames from uploadfolder
-	 * 
+	 *
 	 * @param	string		Path to uploadfolder
 	 * @return	array		An array with all fields listed that have references to files in the $uploadfolder
 	 */
@@ -276,9 +286,9 @@ class t3lib_admin {
 
 	/**
 	 * Returns an array with arrays of table/field pairs which are allowed to hold references to the input table name - according to $TCA
-	 * 
+	 *
 	 * @param	string		Table name
-	 * @return	array		
+	 * @return	array
 	 */
 	function getDBFields($theSearchTable)	{
 		global $TCA;
@@ -303,9 +313,9 @@ class t3lib_admin {
 
 	/**
 	 * This selects non-empty-records from the tables/fields in the fkey_array generated by getGroupFields()
-	 * 
-	 * @param	array		
-	 * @return	void		
+	 *
+	 * @param	array		Array with tables/fields generated by getGroupFields()
+	 * @return	void
 	 * @see getGroupFields()
 	 */
 	function selectNonEmptyRecordsWithFkeys($fkey_arrays)	{
@@ -317,10 +327,8 @@ class t3lib_admin {
 					t3lib_div::loadTCA($table);
 					$fieldArr = explode(',',$field_list);
 					$cl_fl = implode ('!="" OR ',$fieldArr). '!=""';
-					$query = 'SELECT uid,'.$field_list.' FROM '.$table.' WHERE '.$cl_fl;
-					$mres = mysql(TYPO3_db,$query);
-					echo mysql_error();
-					while ($row=mysql_fetch_assoc($mres))	{
+					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$field_list, $table, $cl_fl);
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 						reset($fieldArr);
 						while (list(,$field)=each($fieldArr))	{
 							if (trim($row[$field]))		{
@@ -380,7 +388,7 @@ class t3lib_admin {
 
 	/**
 	 * Depends on selectNonEmpty.... to be executed first!!
-	 * 
+	 *
 	 * @return	array		Report over files; keys are "moreReferences", "noReferences", "noFile", "error"
 	 */
 	function testFileRefs ()	{
@@ -430,7 +438,7 @@ class t3lib_admin {
 
 	/**
 	 * Depends on selectNonEmpty.... to be executed first!!
-	 * 
+	 *
 	 * @param	array		Table with key/value pairs being table names and arrays with uid numbers
 	 * @return	string		HTML Error message
 	 */
@@ -445,9 +453,8 @@ class t3lib_admin {
 				}
 				$theList = implode($idlist,',');
 				if ($theList)	{
-					$query='SELECT uid FROM '.$table.' WHERE uid IN ('.$theList.') '.t3lib_BEfunc::deleteClause($table);
-					$mres = mysql(TYPO3_db,$query);
-					while($row=mysql_fetch_assoc($mres))	{
+					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN ('.$theList.')'.t3lib_BEfunc::deleteClause($table));
+					while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 						if (isset($dbArr[$row['uid']]))	{
 							unset ($dbArr[$row['uid']]);
 						} else {
@@ -468,25 +475,28 @@ class t3lib_admin {
 
 	/**
 	 * Finding all references to record based on table/uid
-	 * 
+	 *
 	 * @param	string		Table name
-	 * @param	integer		Uid
+	 * @param	integer		Uid of database record
 	 * @return	array		Array with other arrays containing information about where references was found
 	 */
 	function whereIsRecordReferenced($searchTable,$id)	{
 		global $TCA;
 		$fileFields = $this->getDBFields($searchTable);	// Gets tables / Fields that reference to files...
-		$theRecordList=Array();	
+		$theRecordList=Array();
 		while (list(,$info)=each($fileFields))	{
 			$table=$info[0];	$field=$info[1];
 			t3lib_div::loadTCA($table);
-			$query = 'SELECT uid,pid,'.$TCA[$table]['ctrl']['label'].','.$field.' FROM '.$table.' WHERE '.$field.' LIKE "%'.addSlashes($id).'%"';
-			$mres = mysql(TYPO3_db,$query);
-			while ($row = mysql_fetch_assoc($mres))	{
+			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'uid,pid,'.$TCA[$table]['ctrl']['label'].','.$field,
+							$table,
+							$field.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($id, $table).'%"'
+						);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 					// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.
 				$fieldConf = $TCA[$table]['columns'][$field]['config'];
 				$allowedTables = ($fieldConf['type']=='group') ? $fieldConf['allowed'] : $fieldConf['foreign_table'];
-			
+
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 				$dbAnalysis->start($row[$field],$allowedTables,$fieldConf['MM'],$row['uid']);
 				reset($dbAnalysis->itemArray);
@@ -502,20 +512,23 @@ class t3lib_admin {
 
 	/**
 	 * Finding all references to file based on uploadfolder / filename
-	 * 
+	 *
 	 * @param	string		Upload folder where file is found
-	 * @param	string		filename
+	 * @param	string		Filename to search for
 	 * @return	array		Array with other arrays containing information about where references was found
 	 */
 	function whereIsFileReferenced($uploadfolder,$filename)	{
 		global $TCA;
 		$fileFields = $this->getFileFields($uploadfolder);	// Gets tables / Fields that reference to files...
-		$theRecordList=Array();	
+		$theRecordList=Array();
 		while (list(,$info)=each($fileFields))	{
 			$table=$info[0];	$field=$info[1];
-			$query = 'SELECT uid,pid,'.$TCA[$table]['ctrl']['label'].','.$field.' FROM '.$table.' WHERE '.$field.' LIKE "%'.addSlashes($filename).'%"';
-			$mres = mysql(TYPO3_db,$query);
-			while ($row = mysql_fetch_assoc($mres))	{
+			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'uid,pid,'.$TCA[$table]['ctrl']['label'].','.$field,
+							$table,
+							$field.' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($filename, $table).'%"'
+						);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 				// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.
 				$tempArr = explode(',',trim($row[$field]));
 				while (list(,$file)=each($tempArr))	{

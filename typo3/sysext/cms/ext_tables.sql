@@ -2,6 +2,7 @@
 #
 # Host: TYPO3_host    Database: t3_testsite
 #--------------------------------------------------------
+# TYPO3 CVS ID: $Id$
 
 
 #
@@ -27,9 +28,10 @@ CREATE TABLE cache_pages (
 #
 CREATE TABLE cache_pagesection (
   page_id int(11) unsigned DEFAULT '0' NOT NULL,
+  mpvar_hash int(11) unsigned DEFAULT '0' NOT NULL,
   content blob NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  PRIMARY KEY (page_id)
+  PRIMARY KEY (page_id,mpvar_hash)
 );
 
 
@@ -54,6 +56,20 @@ CREATE TABLE cache_md5params (
   type tinyint(3) DEFAULT '0' NOT NULL,
   params text NOT NULL,
   PRIMARY KEY (md5hash)
+);
+
+
+#
+# Table structure for table 'cache_imagesizes'
+#
+CREATE TABLE cache_imagesizes (
+  md5hash varchar(32) DEFAULT '' NOT NULL,
+  md5filename varchar(32) DEFAULT '' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  filename tinytext NOT NULL,
+  imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
+  imageheight mediumint(11) unsigned DEFAULT '0' NOT NULL,
+  PRIMARY KEY (md5filename)
 );
 
 
@@ -92,6 +108,8 @@ CREATE TABLE fe_session_data (
 CREATE TABLE fe_sessions (
   ses_id varchar(32) DEFAULT '' NOT NULL,
   ses_name varchar(32) DEFAULT '' NOT NULL,
+  ses_iplock varchar(15) DEFAULT '' NOT NULL,
+  ses_hashlock int(11) DEFAULT '0' NOT NULL,
   ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
   ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ses_data blob NOT NULL,
@@ -158,13 +176,14 @@ CREATE TABLE pages_language_overlay (
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
   subtitle tinytext NOT NULL,
+  nav_title tinytext NOT NULL,
   media tinyblob NOT NULL,
   keywords text NOT NULL,
   description text NOT NULL,
   abstract text NOT NULL,
   author tinytext NOT NULL,
   author_email varchar(80) DEFAULT '' NOT NULL,
-  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,  
+  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -201,7 +220,7 @@ CREATE TABLE sys_domain (
   redirectTo varchar(120) DEFAULT '' NOT NULL,
   sorting int(10) unsigned DEFAULT '0' NOT NULL,
   prepend_params int(10) DEFAULT '0' NOT NULL,
-  
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -251,7 +270,7 @@ CREATE TABLE sys_template (
   deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
   includeStaticAfterBasedOn tinyint(4) unsigned DEFAULT '0' NOT NULL,
   static_file_mode tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,  
+  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -322,9 +341,9 @@ CREATE TABLE tt_content (
   module_sys_dmail_category int(10) unsigned DEFAULT '0' NOT NULL,
   rte_enabled tinyint(4) DEFAULT '0' NOT NULL,
   sys_language_uid int(11) DEFAULT '0' NOT NULL,
-  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,  
+  tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   pi_flexform mediumtext NOT NULL,
-    
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -360,8 +379,10 @@ CREATE TABLE pages (
   author tinytext NOT NULL,
   author_email varchar(80) DEFAULT '' NOT NULL,
   nav_title tinytext NOT NULL,
+  nav_hide tinyint(4) DEFAULT '0' NOT NULL,
   content_from_pid int(10) unsigned DEFAULT '0' NOT NULL,
   mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
+  mount_pid_ol tinyint(4) DEFAULT '0' NOT NULL,
   alias varchar(20) DEFAULT '' NOT NULL,
   KEY alias (alias)
 );

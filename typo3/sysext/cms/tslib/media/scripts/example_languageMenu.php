@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -29,11 +29,12 @@
  *
  * THIS IS AN EXAMPLE designed to work with the official TYPO3 testsite, section "Another site in the ..."
  * You will have to program a similar menu for your own case.
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * 
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 
  
@@ -43,12 +44,11 @@ if (!is_object($this)) die ('Error: No parent object present.');
 
  
  // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language.
-$query = 'SELECT * FROM pages_language_overlay WHERE pid='.$GLOBALS['TSFE']->id.$GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay').' GROUP BY sys_language_uid';
+$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages_language_overlay', 'pid='.intval($GLOBALS['TSFE']->id).$GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay'), 'sys_language_uid');
 
-$res = mysql(TYPO3_db,$query);
-$langArr=array();
-while($row=mysql_fetch_assoc($res))	{
-	$langArr[$row['sys_language_uid']]=$row['title'];
+$langArr = array();
+while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+	$langArr[$row['sys_language_uid']] = $row['title'];
 }
 
 // Little red arrow, which is inserted to the left of the flag-icon if the TSFE->sys_language_uid equals the language uid (notice that 0=english, 1=danish and 2=german is SPECIFIC to this database, because these numbers refer to uid's of the table sys_language)

@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -34,8 +35,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Help',
 	),
 	'cz' => Array (
-		'mlang_labels_tablabel' => 'Help a podpora',
-		'mlang_tabs_tab' => 'Help',
+		'mlang_labels_tablabel' => 'Nápovìda a podpora',
+		'mlang_tabs_tab' => 'Nápovìda',
 	),
 	'pl' => Array (
 		'mlang_labels_tablabel' => 'Pomoc i wsparcie',
@@ -66,6 +67,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ñïðàâêà',
 	),
 	'ro' => Array (
+		'mlang_labels_tablabel' => 'Ajutor si suport',
+		'mlang_tabs_tab' => 'Ajutor',
 	),
 	'ch' => Array (
 		'mlang_labels_tablabel' => '°ïÖúÓëÖ§³Ö',
@@ -78,6 +81,66 @@ $LOCAL_LANG = Array (
 	'lt' => Array (
 		'mlang_labels_tablabel' => 'Pagalba ir palaikymas',
 		'mlang_tabs_tab' => 'Pagalba',
+	),
+	'is' => Array (
+		'mlang_labels_tablabel' => 'HjÃ¡lp og Ã¾jÃ³nusta',
+		'mlang_tabs_tab' => 'HjÃ¡lp',
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Pomoæ i podrška',
+		'mlang_tabs_tab' => 'Pomoæ',
+	),
+	'hu' => Array (
+		'mlang_labels_tablabel' => 'Súgó és tanácsadás',
+		'mlang_tabs_tab' => 'Súgó',
+	),
+	'gl' => Array (
+		'mlang_labels_tablabel' => 'Ikiuut tapersuullu',
+		'mlang_tabs_tab' => 'Ikiuut',
+	),
+	'th' => Array (
+		'mlang_labels_tablabel' => '¡ÒÃãªéáÅÐ¡ÒÃãËé¡ÒÃÊ¹ÑºÊ¹Ø¹',
+		'mlang_tabs_tab' => '¡ÒÃãªé',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'mlang_labels_tablabel' => 'À°§U»P¤ä´©',
+		'mlang_tabs_tab' => 'À°§U',
+	),
+	'eu' => Array (
+		'mlang_labels_tablabel' => 'Laguntza eta laguntza teknikoa',
+		'mlang_tabs_tab' => 'Laguntza',
+	),
+	'bg' => Array (
+		'mlang_labels_tablabel' => 'Ïîìîù è ïîääðúæêà',
+		'mlang_tabs_tab' => 'Ïîìîù',
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Ajuda e suporte',
+		'mlang_tabs_tab' => 'Ajuda',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Abi ja tugi',
+		'mlang_tabs_tab' => 'Abi',
+	),
+	'ar' => Array (
+		'mlang_labels_tablabel' => 'åÓÇÙÏÉ è åÓÇæÏÉ',
+		'mlang_tabs_tab' => 'åÓÇÙÏÉ',
+	),
+	'he' => Array (
+		'mlang_labels_tablabel' => '×¢×–×¨×” ×•×ª×ž×™×›×” ×˜×›× ×™×ª',
+		'mlang_tabs_tab' => '×¢×–×¨×”',
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+		'mlang_labels_tablabel' => 'PalÄ«dzÄ«ba un atbalsts',
+		'mlang_tabs_tab' => 'PalÄ«dzÄ«ba',
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

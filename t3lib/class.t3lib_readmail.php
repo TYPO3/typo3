@@ -1,8 +1,8 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,36 +27,35 @@
 /**
  * Contains a class with functions used to read email content
  *
- * Revised for TYPO3 3.6 May 2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 May 2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   88: class t3lib_readmail 
+ *   87: class t3lib_readmail
  *
  *              SECTION: FUNCTIONS for the Dmailer
- *  123:     function find_MIDfromReturnPath($to)	
- *  143:     function find_XTypo3MID($content)	
+ *  122:     function find_MIDfromReturnPath($to)
+ *  142:     function find_XTypo3MID($content)
  *
  *              SECTION: General
- *  189:     function getMessage($mailParts)	
- *  214:     function getTextContent($content)	
- *  229:     function getMailBoundaryParts($boundary,$content)	
- *  249:     function getCType($str)	
- *  272:     function analyseReturnError($c)	
- *  327:     function decodeHeaderString($str)	
- *  355:     function extractNameEmail($str)	
- *  384:     function getContentTypeData($contentTypeStr)	
- *  407:     function makeUnixDate($dateStr)	
- *  430:     function getGMToffset($GMT)	
- *  444:     function extractMailHeader($content,$limit=0)	
- *  475:     function fullParse($content)	
+ *  188:     function getMessage($mailParts)
+ *  213:     function getTextContent($content)
+ *  228:     function getMailBoundaryParts($boundary,$content)
+ *  248:     function getCType($str)
+ *  271:     function analyseReturnError($c)
+ *  326:     function decodeHeaderString($str)
+ *  354:     function extractNameEmail($str)
+ *  383:     function getContentTypeData($contentTypeStr)
+ *  406:     function makeUnixDate($dateStr)
+ *  429:     function getGMToffset($GMT)
+ *  443:     function extractMailHeader($content,$limit=0)
+ *  474:     function fullParse($content)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,11 +78,11 @@
 
 /**
  * Functions used to read email content
- * 
- * The class is still just a bunch of miscellaneous functions used to 
- * read content out of emails
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * The class is still just a bunch of miscellaneous functions used to read content out of emails
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_readmail {
 	var $dateAbbrevs = array(
@@ -115,7 +114,7 @@ class t3lib_readmail {
 
 	/**
 	 * Returns special TYPO3 Message ID (MID) from input TO header (the return address of the sent mail from Dmailer. Used by Dmailer, return mails)
-	 * 
+	 *
 	 * @param	string		email address, return address string
 	 * @return	mixed		array with 'mid', 'rtbl' and 'rid' keys are returned.
 	 * @internal
@@ -135,7 +134,7 @@ class t3lib_readmail {
 
 	/**
 	 * Returns special TYPO3 Message ID (MID) from input mail content (used by Dmailer, return mails)
-	 * 
+	 *
 	 * @param	string		Mail (header) content
 	 * @return	mixed		If "X-Typo3MID" header is found and integrity is OK, then an array with 'mid', 'rtbl' and 'rid' keys are returned. Otherwise void.
 	 * @internal
@@ -182,7 +181,7 @@ class t3lib_readmail {
 	/**
 	 * Returns the text content of a mail which has previously been parsed by eg. extractMailHeader()
 	 * Probably obsolete since the function fullParse() is more advanced and safer to use.
-	 * 
+	 *
 	 * @param	array		Output from extractMailHeader()
 	 * @return	string		The content.
 	 */
@@ -207,7 +206,7 @@ class t3lib_readmail {
 	/**
 	 * Returns the body part of a raw mail message (including headers)
 	 * Probably obsolete since the function fullParse() is more advanced and safer to use.
-	 * 
+	 *
 	 * @param	string		Raw mail content
 	 * @return	string		Body of message
 	 */
@@ -221,7 +220,7 @@ class t3lib_readmail {
 	/**
 	 * Splits the body of a mail into parts based on the boundary string given.
 	 * Obsolete, use fullParse()
-	 * 
+	 *
 	 * @param	string		Boundary string used to split the content.
 	 * @param	string		BODY section of a mail
 	 * @return	array		Parts of the mail based on this
@@ -241,7 +240,7 @@ class t3lib_readmail {
 	/**
 	 * Returns Content Type plus more.
 	 * Obsolete, use fullParse()
-	 * 
+	 *
 	 * @param	string		"ContentType" string with more
 	 * @return	array		parts in key/value pairs
 	 * @ignore
@@ -265,7 +264,7 @@ class t3lib_readmail {
 	/**
 	 * Analyses the return-mail content for the Dmailer module - used to find what reason there was for rejecting the mail
 	 * Used by the Dmailer, but not exclusively.
-	 * 
+	 *
 	 * @param	string		message body/text
 	 * @return	array		key/value pairs with analysis result. Eg. "reason", "content", "reason_text", "mailserver" etc.
 	 */
@@ -307,20 +306,20 @@ class t3lib_readmail {
 			if (eregi('Unknown Recipient|Delivery failed 550|Receiver not found|User not listed|recipient problem|Delivery to the following recipients failed|User unknown|recipient name is not recognized',$cp['reason_text']))	{
 				$cp['reason']=550;	// 550 Invalid recipient, User unknown
 			} elseif (eregi('over quota|mailbox full',$cp['reason_text']))	{
-				$cp['reason']=551;	
+				$cp['reason']=551;
 			} elseif (eregi('Error in Header',$cp['reason_text']))	{
-				$cp['reason']=554;	
+				$cp['reason']=554;
 			} else {
 				$cp['reason']=-1;
 			}
 		}
 
-		return $cp;	
+		return $cp;
 	}
 
 	/**
 	 * Decodes a header-string with the =?....?= syntax including base64/quoted-printable encoding.
-	 * 
+	 *
 	 * @param	string		A string (encoded or not) from a mail header, like sender name etc.
 	 * @return	string		The input string, but with the parts in =?....?= decoded.
 	 */
@@ -345,16 +344,16 @@ class t3lib_readmail {
 		}
 		return implode('',$parts);
 	}
-	
+
 	/**
 	 * Extracts name/email parts from a header field (like 'To:' or 'From:' with name/email mixed up.
-	 * 
+	 *
 	 * @param	string		Value from a header field containing name/email values.
 	 * @return	array		Array with the name and email in. Email is validated, otherwise not set.
 	 */
 	function extractNameEmail($str)	{
 		$outArr=array();
-		
+
 			// Email:
 		$reg='';
 		ereg('<([^>]*)>',$str,$reg);
@@ -373,11 +372,11 @@ class t3lib_readmail {
 			}
 		}
 		return $outArr;
-	}	
-	
+	}
+
 	/**
 	 * Returns the data from the 'content-type' field. That is the boundary, charset and mime-type
-	 * 
+	 *
 	 * @param	string		"Content-type-string"
 	 * @return	array		key/value pairs with the result.
 	 */
@@ -385,7 +384,7 @@ class t3lib_readmail {
 		$outValue=array();
 		$cTypeParts = t3lib_div::trimExplode(';',$contentTypeStr,1);
 		$outValue['_MIME_TYPE']=$cTypeParts[0];	// content type, first value is supposed to be the mime-type, whatever after the first is something else.
-			
+
 		reset($cTypeParts);
 		next($cTypeParts);
 		while(list(,$v)=Each($cTypeParts))	{
@@ -397,17 +396,17 @@ class t3lib_readmail {
 		}
 		return $outValue;
 	}
-	
+
 	/**
 	 * Makes a UNIX-date based on the timestamp in the 'Date' header field.
-	 * 
+	 *
 	 * @param	string		String with a timestamp according to email standards.
 	 * @return	integer		The timestamp converted to unix-time in seconds and compensated for GMT/CET ($this->serverGMToffsetMinutes);
 	 */
 	function makeUnixDate($dateStr)	{
 		$dateParts=explode(',',$dateStr);
 		$dateStr=count($dateParts)>1 ? $dateParts[1] : $dateParts[0];
-		
+
 		$spaceParts = t3lib_div::trimExplode(' ',$dateStr,1);
 
 		$spaceParts[1]=$this->dateAbbrevs[strtoupper($spaceParts[1])];
@@ -416,13 +415,13 @@ class t3lib_readmail {
 
 		$offset = $this->getGMToffset($spaceParts[4]);
 		$timeStamp-=($offset*60);	// Compensates for GMT by subtracting the number of seconds which the date is offset from serverTime
-		
+
 		return $timeStamp;
 	}
-	
+
 	/**
 	 * Parsing the GMT offset value from a mail timestamp.
-	 * 
+	 *
 	 * @param	string		A string like "+0100" or so.
 	 * @return	integer		Minutes to offset the timestamp
 	 * @access private
@@ -433,17 +432,17 @@ class t3lib_readmail {
 		$GMToffset-=$this->serverGMToffsetMinutes;
 		return $GMToffset;
 	}
-	
+
 	/**
 	 * This returns the mail header items in an array with associative keys and the mail body part in another CONTENT field
-	 * 
+	 *
 	 * @param	string		Raw mail content
 	 * @param	integer		A safety limit that will put a upper length to how many header chars will be processed. Set to zero means that there is no limit. (Uses a simple substr() to limit the amount of mail data to process to avoid run-away)
 	 * @return	array		An array where each key/value pair is a header-key/value pair. The mail BODY is returned in the key 'CONTENT' if $limit is not set!
 	 */
 	function extractMailHeader($content,$limit=0)	{
 		if ($limit)	$content = substr($content,0,$limit);
-		
+
 		$lines=explode(chr(10),ltrim($content));
 		$headers=array();
 		$p='';
@@ -468,7 +467,7 @@ class t3lib_readmail {
 
 	/**
 	 * The extended version of the extractMailHeader() which will also parse all the content body into an array and further process the header fields and decode content etc. Returns every part of the mail ready to go.
-	 * 
+	 *
 	 * @param	string		Raw email input.
 	 * @return	array		Multidimensional array with all parts of the message organized nicely. Use t3lib_div::debug() to analyse it visually.
 	 */
@@ -494,7 +493,7 @@ class t3lib_readmail {
 		}
 			// Decode date from human-readable format to unix-time (includes compensation for GMT CET)
 		$mailParts['_DATE']=$this->makeUnixDate($mailParts['date']);
-		
+
 			// Transfer encodings of body content
 		switch(strtolower($mailParts['content-transfer-encoding']))	{
 			case 'quoted-printable':
@@ -504,7 +503,7 @@ class t3lib_readmail {
 				$mailParts['CONTENT']=base64_decode($mailParts['CONTENT']);
 			break;
 		}
-		
+
 			// Content types
 		$mailParts['_CONTENT_TYPE_DAT']=$this->getContentTypeData($mailParts['content-type']);
 

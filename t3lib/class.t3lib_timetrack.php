@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -27,34 +27,37 @@
 /**
  * Contains class with time tracking functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   85: class t3lib_timeTrack 
+ *   88: class t3lib_timeTrack
  *
  *              SECTION: Logging parsing times in the scripts
- *  141:     function start()	
- *  154:     function push($tslabel, $value='')	
- *  179:     function pull($content='')	
- *  197:     function setTSlogMessage($content,$num=0)	
- *  212:     function setTSselectQuery($query,$msg)	
- *  225:     function incStackPointer()	
- *  236:     function decStackPointer()	
- *  246:     function mtime()	
- *  256:     function convertMicrotime($microtime)	
+ *  144:     function start()
+ *  157:     function push($tslabel, $value='')
+ *  182:     function pull($content='')
+ *  200:     function setTSlogMessage($content,$num=0)
+ *  214:     function setTSselectQuery($query,$msg)
+ *  227:     function incStackPointer()
+ *  238:     function decStackPointer()
+ *  248:     function mtime()
+ *  258:     function convertMicrotime($microtime)
  *
  *              SECTION: Printing the parsing time information (for Admin Panel)
- *  289:     function printTSlog()	
- *  434:     function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')	
- *  498:     function fixCLen($c,$v)	
- *  514:     function fw($str)	
- *  528:     function createHierarchyArray(&$arr,$pointer,$uniqueId)	
- *  547:     function debug_typo3PrintError($header,$text,$js)	
+ *  291:     function printTSlog()
+ *  435:     function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')
+ *  499:     function fixCLen($c,$v)
+ *  515:     function fw($str)
+ *  529:     function createHierarchyArray(&$arr,$pointer,$uniqueId)
+ *  548:     function debug_typo3PrintError($header,$text,$js)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -73,18 +76,18 @@
 
 /**
  * Frontend Timetracking functions
- * 
+ *
  * Is used to register how much time is used with operations in TypoScript
  * Used by index_ts
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen
  */
 class t3lib_timeTrack {
 	var $starttime = 0;				// Is loaded with the millisecond time when this object is created
-	
+
 	var $LR = 1;					// Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle(). This determines whether or not the TypoScript parsing activity is logged. But it also slows down the rendering
 	var $printConf=array(
 		'showParentKeys' => 1,
@@ -99,7 +102,7 @@ class t3lib_timeTrack {
 		'factor' => 10,
 		'col' => '#D9D5C9'
 	);
-	
+
 	var $wrapError =array(
 		0 => array('',''),
 		1 => array('<b>','</b>'),
@@ -112,7 +115,7 @@ class t3lib_timeTrack {
 		2 => '<img src="t3lib/gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
 		3 => '<img src="t3lib/gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
 	);
-	
+
 	var $uniqueCounter=0;
 	var $tsStack = array(array());
 	var $tsStackLevel = 0;
@@ -120,35 +123,35 @@ class t3lib_timeTrack {
 	var $tsStackLog = array();
 	var $tsStackPointer=0;
 	var $currentHashPointer=array();
-	
+
 
 
 
 
 
 	/*******************************************
-	 * 
+	 *
 	 * Logging parsing times in the scripts
-	 * 
+	 *
 	 *******************************************/
 
 	/**
 	 * Constructor
 	 * Sets the starting time
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function start()	{
 		$this->starttime=0;
 		$this->starttime=$this->mtime();
-	}	
+	}
 
 	/**
 	 * Pushes an element to the TypoScript tracking array
-	 * 
+	 *
 	 * @param	string		Label string for the entry, eg. TypoScript property name
 	 * @param	string		Additional value(?)
-	 * @return	void		
+	 * @return	void
 	 * @see tslib_cObj::cObjGetSingle(), pull()
 	 */
 	function push($tslabel, $value='')	{
@@ -171,9 +174,9 @@ class t3lib_timeTrack {
 
 	/**
 	 * Pulls an element from the TypoScript tracking array
-	 * 
+	 *
 	 * @param	string		The content string generated within the push/pull part.
-	 * @return	void		
+	 * @return	void
 	 * @see tslib_cObj::cObjGetSingle(), push()
 	 */
 	function pull($content='')	{
@@ -185,29 +188,28 @@ class t3lib_timeTrack {
 		array_pop($this->tsStack[$this->tsStackPointer]);
 		array_pop($this->currentHashPointer);
 	}
-	
+
 	/**
 	 * Logs the TypoScript entry
-	 * 
+	 *
 	 * @param	string		The message string
 	 * @param	integer		Message type: 0: information, 1: message, 2: warning, 3: error
-	 * @return	void		
+	 * @return	void
 	 * @see tslib_cObj::CONTENT()
 	 */
 	function setTSlogMessage($content,$num=0)	{
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 
-		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num].$this->wrapError[$num][0].$content.$this->wrapError[$num][1];
+		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num].$this->wrapError[$num][0].htmlspecialchars($content).$this->wrapError[$num][1];
 	}
 
 	/**
-	 * Set TSselectQuery.
-	 * Apparently not used anywhere?
-	 * 
-	 * @param	string		Query
-	 * @param	string		Message
-	 * @return	void		
+	 * Set TSselectQuery - for messages in TypoScript debugger.
+	 *
+	 * @param	string		Query string
+	 * @param	string		Message/Label to attach
+	 * @return	void
 	 */
 	function setTSselectQuery($query,$msg)	{
 		end($this->currentHashPointer);
@@ -218,19 +220,19 @@ class t3lib_timeTrack {
 
 	/**
 	 * Increases the stack pointer
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see decStackPointer(), TSpagegen::renderContent(), tslib_cObj::cObjGetSingle()
 	 */
 	function incStackPointer()	{
 		$this->tsStackPointer++;
 		$this->tsStack[$this->tsStackPointer]=array();
 	}
-	 
+
 	/**
 	 * Decreases the stack pointer
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see incStackPointer(), TSpagegen::renderContent(), tslib_cObj::cObjGetSingle()
 	 */
 	function decStackPointer()	{
@@ -240,8 +242,8 @@ class t3lib_timeTrack {
 
 	/**
 	 * Returns the current time in milliseconds
-	 * 
-	 * @return	integer		
+	 *
+	 * @return	integer
 	 */
 	function mtime()	{
 		return $this->convertMicrotime(microtime())-$this->starttime;
@@ -249,9 +251,9 @@ class t3lib_timeTrack {
 
 	/**
 	 * Returns microtime input to milliseconds
-	 * 
+	 *
 	 * @param	string		PHP microtime string
-	 * @return	integer		
+	 * @return	integer
 	 */
 	function convertMicrotime($microtime)	{
 		$parts = explode(' ',$microtime);
@@ -275,14 +277,14 @@ class t3lib_timeTrack {
 
 
 	/*******************************************
-	 * 
+	 *
 	 * Printing the parsing time information (for Admin Panel)
-	 * 
+	 *
 	 *******************************************/
 
 	/**
-	 * Print TSlog
-	 * 
+	 * Print TypoScript parsing log
+	 *
 	 * @return	string		HTML table with the information about parsing times.
 	 * @see t3lib_tsfeBeUserAuth::extGetCategory_tsdebug()
 	 */
@@ -306,7 +308,7 @@ class t3lib_timeTrack {
 		}
 			// Parsing the registeret content and create icon-html for the tree
 		$this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.']['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', 0, $arr['0.'][0]);
-	
+
 			// Displaying the tree:
 		reset($this->tsStackLog);
 		$out='<tr>
@@ -322,13 +324,13 @@ class t3lib_timeTrack {
 			$out.='
 			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Own').'</b></td>';
 		}
-			
+
 		$out.='
 			<td bgcolor="#ABBBB4" align="center"><b>'.$this->fw('Details').'</b></td>
 			</tr>';
 
 
-			
+
 		$flag_tree=$this->printConf['flag_tree'];
 		$flag_messages=$this->printConf['flag_messages'];
 		$flag_content=$this->printConf['flag_content'];
@@ -336,7 +338,7 @@ class t3lib_timeTrack {
 		$keyLgd=$this->printConf['keyLgd'];
 		$factor=$this->printConf['factor'];
 		$col=$this->printConf['col'];
-		
+
 		$c=0;
 		while(list($uniqueId,$data)=each($this->tsStackLog))	{
 			$bgColor = ' bgcolor="'.($c%2 ? t3lib_div::modifyHTMLColor($col,$factor,$factor,$factor) : $col).'"';
@@ -346,8 +348,8 @@ class t3lib_timeTrack {
 				$data['key']= 'Script Start';
 				$data['value'] = '';
 			}
-			
-			
+
+
 				// key label:
 			$keyLabel='';
 			if (!$flag_tree && $data['stackPointer'])	{
@@ -384,23 +386,22 @@ class t3lib_timeTrack {
 				$item.='<td valign="top" align="right" nowrap="nowrap"'.$bgColor.'>'.$this->fw($data['owntime']).'</td>';
 			}
 
-			
+
 				// messages:
 			$msgArr=array();
 			$msg='';
 			if ($flag_messages && is_array($data['message']))	{
 				reset($data['message']);
 				while(list(,$v)=each($data['message']))	{
-					$msgArr[]=nl2br(htmlspecialchars($v));
+					$msgArr[]=nl2br($v);
 				}
 			}
 			if ($flag_queries && is_array($data['selectQuery']))	{
 				reset($data['selectQuery']);
 				while(list(,$v)=each($data['selectQuery']))	{
-					$res = mysql(TYPO3_db,'EXPLAIN '.$v['query']);
-					$v['mysql_error']=mysql_error();
-					if (!mysql_error())	{
-						while($row=mysql_fetch_assoc($res))	{
+					$v['mysql_error'] = $GLOBALS['TYPO3_DB']->sql_error();
+					if (!$GLOBALS['TYPO3_DB']->sql_error())	{
+						while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 							$v['explain'][]=$row;
 						}
 					}
@@ -423,7 +424,7 @@ class t3lib_timeTrack {
 
 	/**
 	 * Recursively generates the content to display
-	 * 
+	 *
 	 * @param	array		Array which is modified with content. Reference
 	 * @param	string		Current content string for the level
 	 * @param	string		Prefixed icons for new PM icons
@@ -454,7 +455,7 @@ class t3lib_timeTrack {
 				$BTM = ($ac==$c)?'bottom':'';
 				$PM = is_array($arr[$k.'.']) ? ($deeper ? 'minus':'plus') : 'join';
 				$this->tsStackLog[$v]['icons']=$depthData.($first?'':'<img src="t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />');
-				
+
 				if (strlen($this->tsStackLog[$v]['content']))	{
 					$content = str_replace($this->tsStackLog[$v]['content'],$v, $content);
 				}
@@ -474,7 +475,7 @@ class t3lib_timeTrack {
 			$this->tsStackLog[$vKey]['owntime']=$this->tsStackLog[$vKey]['deltatime']-$subtime;
 		}
 		$content=$this->fixCLen($content, $this->tsStackLog[$vKey]['value']);
-		
+
 			// Traverse array again, this time substitute the unique hash with the red key
 		reset($arr);
 		while(list($k,$v)=each($arr))	{
@@ -490,10 +491,10 @@ class t3lib_timeTrack {
 
 	/**
 	 * Wraps the input content string in green colored font-tags IF the length o fthe input string exceeds $this->printConf['contentLength'] (or $this->printConf['contentLength_FILE'] if $v == "FILE"
-	 * 
+	 *
 	 * @param	string		The content string
 	 * @param	string		Command: If "FILE" then $this->printConf['contentLength_FILE'] is used for content length comparison, otherwise $this->printConf['contentLength']
-	 * @return	string		
+	 * @return	string
 	 */
 	function fixCLen($c,$v)	{
 		$len = $v=='FILE'?$this->printConf['contentLength_FILE']:$this->printConf['contentLength'];
@@ -504,12 +505,12 @@ class t3lib_timeTrack {
 		}
 		return $c;
 	}
-	
+
 	/**
 	 * Wraps input string in a <font> tag with verdana, black and size 1
-	 * 
+	 *
 	 * @param	string		The string to be wrapped
-	 * @return	string		
+	 * @return	string
 	 */
 	function fw($str)	{
 		return '<font face="verdana" color="black" size="1" style="color:black;">'.$str.'&nbsp;</font>';
@@ -517,11 +518,11 @@ class t3lib_timeTrack {
 
 	/**
 	 * Helper function for internal data manipulation
-	 * 
+	 *
 	 * @param	array		Array (passed by reference) and modified
-	 * @param	integer		
-	 * @param	string		
-	 * @return	void		
+	 * @param	integer		Pointer value
+	 * @param	string		Unique ID string
+	 * @return	void
 	 * @access private
 	 * @see printTSlog()
 	 */
@@ -538,11 +539,11 @@ class t3lib_timeTrack {
 
 	/**
 	 * This prints out a TYPO3 error message.
-	 * 
+	 *
 	 * @param	string		Header string
 	 * @param	string		Message string
 	 * @param	boolean		If set, then this will produce a alert() line for inclusion in JavaScript.
-	 * @return	string		
+	 * @return	string
 	 */
 	function debug_typo3PrintError($header,$text,$js)	{
 		if ($js)	{
@@ -553,9 +554,9 @@ class t3lib_timeTrack {
 					<head>
 						<title>Error!</title>
 					</head>
-					<body bgcolor="#cccccc">
+					<body bgcolor="white">
 						<div align="center">
-							<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#cccccc">
+							<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#ffffff">
 								<tr>
 									<td><img src="t3lib/gfx/typo3logo.gif" width="333" height="43" vspace="10" border="0" alt="" /></td>
 								</tr>

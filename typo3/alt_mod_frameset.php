@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,15 +24,27 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Creates the frameset for 'Frameset modules' like Web>* and File>*
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant content (with exception of a few attributes for the <frameset> tags)
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   63: class SC_alt_mod_frameset
+ *   88:     function main()
+ *  147:     function printContent()
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 require ('init.php');
@@ -41,39 +53,85 @@ require ('template.php');
 
 
 
-// ***************************
-// Script Class
-// ***************************
+/**
+ * Script Class for rendering the frameset which keeps the navigation and list frames together for socalled "Frameset modules"
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_mod_frameset {
-	var $content;
-	var $defaultWidth = 245;
-	
+
+		// Internal, static:
+	var $defaultWidth = 245;		// Default width of the navigation frame. Can be overridden from $TBE_STYLES['dims']['navFrameWidth'] (alternative default value) AND from User TSconfig
+	var $resizable = TRUE;			// If true, the frame can be resized.
+
+		// Internal, dynamic:
+	var $content;					// Content accumulation.
+
+		// GPvars:
+	var $exScript='';				// Script to load in list frame.
+	var $id='';						// ID of page
+	var $fW='';						// Framewidth
+
+
+
+
+
+
+
 	/**
 	 * Creates the header and frameset for the module/submodules
+	 *
+	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$TBE_TEMPLATE;
-		
-			// Processing vars:
-		$width = $BE_USER->uc['navFrameWidth'];
-		$width = intval($width)?intval($width):$this->defaultWidth;
-		
+		global $BE_USER,$TBE_TEMPLATE,$TBE_STYLES;
+
+			// GPvars:
+		$this->exScript = t3lib_div::_GP('exScript');
+		$this->id = t3lib_div::_GP('id');
+		$this->fW = t3lib_div::_GP('fW');
+
+			// Setting resizing flag:
+		$this->resizable = $BE_USER->uc['navFrameResizable'] ? TRUE : FALSE;
+
+			// Setting frame width:
+		if (intval($this->fW) && $this->resizable)	{	// Framewidth from stored value, last one.
+			$width = t3lib_div::intInRange($this->fW,100,1000)+10;	// +10 to compensate for width of scrollbar. However, width is always INSIDE scrollbars, so potentially it will jump a little forth/back...
+		} else {	//	Framewidth from configuration;
+			$width = $BE_USER->uc['navFrameWidth'];
+			$width = intval($width)?intval($width):($TBE_STYLES['dims']['navFrameWidth'] ? intval($TBE_STYLES['dims']['navFrameWidth']) : $this->defaultWidth);
+		}
+
 			// Navigation frame URL:
-		$script = t3lib_div::GPvar('script');
-		$nav = t3lib_div::GPvar('nav');
+		$script = t3lib_div::_GP('script');
+		$nav = t3lib_div::_GP('nav');
 		$URL_nav = htmlspecialchars($nav.'?currentSubScript='.rawurlencode($script));
-		
+
 			// List frame URL:
-		$exScript = t3lib_div::GPvar('exScript');
-		$id = t3lib_div::GPvar('id');
-		$URL_list = htmlspecialchars($exScript?$exScript:($script.($id?'?id='.rawurlencode($id):'')));
-		
+		$URL_list = htmlspecialchars($this->exScript?$this->exScript:($script.($this->id?'?id='.rawurlencode($this->id):'')));
+
 			// Start page output
 		$TBE_TEMPLATE->docType='xhtml_frames';
 		$this->content = $TBE_TEMPLATE->startPage('Frameset');
-		$this->content.= '
 
-	<frameset cols="'.$width.',8,*" framespacing="0" frameborder="0" border="0">
+			// THis onload handler is a bug-fix for a possible bug in Safari browser for Mac. Posted by Jack COLE. Should not influence other browsers negatively.
+		$onLoadHandler = ' onload="if(top.content.nav_frame.location.href.length == 1) {top.content.nav_frame.location=\''.$URL_nav.'\';};"';
+
+		if ($this->resizable)	{
+			$this->content.= '
+	<frameset cols="'.$width.',*"'.$onLoadHandler.'>
+		<frame name="nav_frame" src="'.$URL_nav.'" marginwidth="0" marginheight="0" scrolling="auto" />
+		<frame name="list_frame" src="'.$URL_list.'" marginwidth="0" marginheight="0" scrolling="auto" />
+	</frameset>
+
+</html>
+';
+		} else {
+			$this->content.= '
+
+	<frameset cols="'.$width.',8,*" framespacing="0" frameborder="0" border="0"'.$onLoadHandler.'>
 		<frame name="nav_frame" src="'.$URL_nav.'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
 		<frame name="border_frame" src="border.html" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 		<frame name="list_frame" src="'.$URL_list.'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
@@ -81,10 +139,13 @@ class SC_alt_mod_frameset {
 
 </html>
 ';
+		}
 	}
 
 	/**
-	 * Outputs it all.
+	 * Outputting the accumulated content to screen
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
