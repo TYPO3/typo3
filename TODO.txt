@@ -45,6 +45,9 @@ TCEmain:
 		- Used by TemplaVoila where it is hard to track references in FlexForms
 		- A backend module can regenerate the "index-table" if it becomes invalid over time for some reason...
 		- Used for import/export module and anywhere else where we are looking up references!
+	- "uniquePerField"
+		- used for pages_overlay_records "pid"
+		- used for "tt_content"/"sys_language_uid", field "l18n_parent"
 - VERSIONING:
 	- See description in appendix.
 - LOGGING:
@@ -158,6 +161,12 @@ Interface:
 	- See DHs mail: Message-ID: <mailman.1060763871.6396.typo3-metadev@lists.netfielders.de>
 	- Links could be going directly to the function menus inside modules as well!
 
+Localization:
+- Export/Import of "translation XML file" or spreadsheet:
+	- Will allow all translation of new and changed content to be done in ONE place, probably outside of TYPO3
+	- In TYPO3 tool for such a file format: Can also show diff-view like with ll-XML format.
+	- SOAP services(?)
+	- Contains fields similar to orig_hash and orig_text with values of translated content so diff can be shown
 
 Context Sensitive Help (CSH):
 - Add multimedia?

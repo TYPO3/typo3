@@ -2877,6 +2877,7 @@ class t3lib_TCEmain	{
 	 * Technically the copy is made with THIS instance of the tcemain class contrary to copyRecord() which creates a new instance and uses the processData() function.
 	 * The copy is created by insertNewCopyVersion() which bypasses most of the regular input checking associated with processData() - maybe copyRecord() should even do this as well!?
 	 * This function is used to create new versions of a record.
+	 * NOTICE: DOES NOT CHECK PERMISSIONS to create! And since page permissions are just passed through and not changed to the user who executes the copy we cannot enforce permissions without getting an incomplete copy - unless we change permissions of course.
 	 *
 	 * @param	string		Element table
 	 * @param	integer		Element UID
@@ -2932,7 +2933,7 @@ class t3lib_TCEmain	{
 	}
 
 	/**
-	 * Inserts a record in the database, passing TCA configuration values through checkValue() but otherwise does nothing and checks nothing regarding permissions.
+	 * Inserts a record in the database, passing TCA configuration values through checkValue() but otherwise does NOTHING and checks nothing regarding permissions.
 	 * Passes the "version" parameter to insertDB() so the copy will look like a new version in the log - should probably be changed or modified a bit for more broad usage...
 	 *
 	 * @param	string		Table name
@@ -3273,7 +3274,12 @@ class t3lib_TCEmain	{
 		$id = intval($id);
 
 		if ($TCA[$table] && $TCA[$table]['ctrl']['versioning'] && $id>0)	{
-			if ($this->doesRecordExist($table,$id,'show'))	{
+			if ($this->doesRecordExist($table,$id,'show') && $this->doesRecordExist($table,$id,'edit'))	{
+
+					// WE DO NOT check if the record being versionized can be edited (based on page permissions) - all we need is "view" permissions - just like when making a copy
+					// BUT we check EDIT permissions when SWAPPING.
+					// Maybe one should implement "create new version" permissions?
+
 					// Select main record:
 				$row = $this->recordInfo($table,$id,'pid,t3ver_id');
 				if (is_array($row))	{

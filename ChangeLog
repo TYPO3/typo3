@@ -1,3 +1,7 @@
+2004-08-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Adding editlock icon in Web>Access
+
 2004-08-26  Kasper Skårhøj,,,  <kasperYYYY@typo3.com>
 
 	* Bugfix: in browse_links where the record listing contained links to clickmenus:

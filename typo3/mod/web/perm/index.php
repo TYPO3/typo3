@@ -484,6 +484,7 @@ class SC_mod_web_perm_index {
 		$tree->addField('fe_group');
 		$tree->addField('starttime');
 		$tree->addField('endtime');
+		$tree->addField('editlock');
 
 			// Creating top icon; the current page
 		$HTML=t3lib_iconWorks::getIconImage('pages',$this->pageinfo,$BACK_PATH,'align="top"');
@@ -504,6 +505,8 @@ class SC_mod_web_perm_index {
 					<td class="bgColor2" align="center"><b>'.$LANG->getLL('Group',1).'</b></td>
 					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
 					<td class="bgColor2" align="center"><b>'.$LANG->getLL('Everybody',1).'</b></td>
+					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td class="bgColor2" align="center"><b>'.$LANG->getLL('EditLock',1).'</b></td>
 				</tr>
 			';
 		} else {
@@ -512,6 +515,8 @@ class SC_mod_web_perm_index {
 					<td class="bgColor2" colspan="2">&nbsp;</td>
 					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
 					<td class="bgColor2" align="center" nowrap="nowrap"><b>'.$LANG->getLL('User',1).':</b> '.$BE_USER->user['username'].'</td>
+					'.(!$BE_USER->isAdmin()?'<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td class="bgColor2" align="center"><b>'.$LANG->getLL('EditLock',1).'</b></td>':'').'
 				</tr>';
 		}
 
@@ -556,6 +561,9 @@ class SC_mod_web_perm_index {
 
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['uid']?' '.$this->printPerms($data['row']['perms_everybody']):'').'</td>
+
+					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock']?'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/recordlock_warning2.gif','width="22" height="16"').' title="'.$LANG->getLL('EditLock_descr',1).'" alt="" />':'').'</td>
 				';
 			} else {
 				$cells[]='
@@ -563,7 +571,11 @@ class SC_mod_web_perm_index {
 
 				if ($BE_USER->user['uid']==$data['row']['perms_userid'])	{$bgCol = ' class="bgColor-20"';} else {$bgCol = $lE_bgCol;}
 				$cells[]='
-					<td'.$bgCol.' nowrap="nowrap" align="center">'.($data['row']['uid']?$owner.$this->printPerms($BE_USER->calcPerms($data['row'])):'').'</td>';
+					<td'.$bgCol.' nowrap="nowrap" align="center">'.($data['row']['uid']?$owner.$this->printPerms($BE_USER->calcPerms($data['row'])):'').'</td>
+					'.(!$BE_USER->isAdmin()?'
+					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock']?'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/recordlock_warning2.gif','width="22" height="16"').' title="'.$LANG->getLL('EditLock_descr',1).'" alt="" />':'').'</td>
+					':'');
 				$bgCol = $lE_bgCol;
 			}
 

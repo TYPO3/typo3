@@ -15,6 +15,8 @@
 			<label index="Owner">Owner</label>
 			<label index="Group">Group</label>
 			<label index="Everybody">Everybody</label>
+			<label index="EditLock">Lock</label>
+			<label index="EditLock_descr">The page and all content is locked for editing by all non-Admin users.</label>
 			<label index="Save">Save</label>
 			<label index="Abort">Abort</label>
 			<label index="Edit">EDIT</label>
