@@ -436,8 +436,11 @@ class t3lib_cs {
 		foreach($parts as $k => $v)	{
 			if ($k%2)	{
 				if (substr($v,0,1)=='#')	{	// Dec or hex entities:
-					if (substr($v,1,1)=='x')	$v=hexdec(substr($v,2));
-					$parts[$k] = $this->UnumberToChar(substr($v,1));
+					if (substr($v,1,1)=='x')	{
+						$parts[$k] = $this->UnumberToChar(hexdec(substr($v,2)));
+					} else {
+						$parts[$k] = $this->UnumberToChar(substr($v,1));
+					}
 				} elseif ($alsoStdHtmlEnt && $trans_tbl['&'.$v.';']) {	// Other entities:
 					$parts[$k] = $this->utf8_encode($trans_tbl['&'.$v.';'],'iso-8859-1');
 				} else {	// No conversion:
