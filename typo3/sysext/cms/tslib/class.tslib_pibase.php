@@ -268,7 +268,7 @@ class tslib_pibase {
 	/**
 	 * Link a string to some page.
 	 * Like pi_getPageLink() but takes a string as first parameter which will in turn be wrapped with the URL including target attribute
-	 * Simple example: $this->pi_getPageLink('My link', 123) to get something like <a href="index.php?id=123&type=1">My link</a> (or <a href="123.1.html">My link</a> if simulateStaticDocuments is set)
+	 * Simple example: $this->pi_linkToPage('My link', 123) to get something like <a href="index.php?id=123&type=1">My link</a> (or <a href="123.1.html">My link</a> if simulateStaticDocuments is set)
 	 *
 	 * @param	string		The content string to wrap in <a> tags
 	 * @param	integer		Page id

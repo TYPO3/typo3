@@ -544,7 +544,13 @@ class t3lib_BEfunc	{
 		$output = $fullOutput = '/';
 		while ($uid!=0 && $loopCheck>0)	{
 			$loopCheck--;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid,title', 'pages', 'uid='.intval($uid).t3lib_BEfunc::deleteClause('pages').' AND '.$clause);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'pid,title',
+						'pages',
+						'uid='.intval($uid).
+							t3lib_BEfunc::deleteClause('pages').
+							(strlen(trim($clause)) ? ' AND '.$clause : '')
+					);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$uid = $row['pid'];
 				$output = '/'.t3lib_div::fixed_lgd(strip_tags($row['title']),$titleLimit).$output;
