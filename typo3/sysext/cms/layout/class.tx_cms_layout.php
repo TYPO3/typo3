@@ -949,36 +949,36 @@ class tx_cms_layout extends recordList {
 					// Date default
 				$fList = 'date,title';
 				$icon=0;
-				$out = $this->makeOrdinaryList('fe_users',$id, $fList, $icon, ' AND type=0');
+				$out = $this->makeOrdinaryList('tt_calender',$id, $fList, $icon, ' AND type=0');
 				return $out;
 			break;
 			case 'date_ext':
 					// Date extended
 				$fList = 'title;date;time;datetext;link,note';
 				$icon=1;
-				$out = $this->makeOrdinaryList('fe_users',$id, $fList, $icon, ' AND type=0');
+				$out = $this->makeOrdinaryList('tt_calender',$id, $fList, $icon, ' AND type=0');
 				return $out;
 			break;
 			case 'todo':
 					// Todo default
 				$fList = 'title,complete,priority,date';
 				$icon=0;
-				$out = $this->makeOrdinaryList('fe_users',$id, $fList, $icon, ' AND type=1');
+				$out = $this->makeOrdinaryList('tt_calender',$id, $fList, $icon, ' AND type=1');
 				return $out;
 			break;
 			case 'todo_ext':
 					// Todo extended
 				$fList = 'title;complete;priority;date;workgroup;responsible;category,note';
 				$icon=1;
-				$out = $this->makeOrdinaryList('fe_users',$id, $fList, $icon, ' AND type=1');
+				$out = $this->makeOrdinaryList('tt_calender',$id, $fList, $icon, ' AND type=1');
 				return $out;
 			break;
 			default:
 					// Overview, both todo and calender
 				$fList = 'title,date,time,week';
 				$icon=1;
-				$out = $this->makeOrdinaryList('fe_users',$id, $fList, $icon, ' AND type=0');
-				$out.= $this->makeOrdinaryList('fe_users',$id, $fList, $icon, ' AND type=1');
+				$out = $this->makeOrdinaryList('tt_calender',$id, $fList, $icon, ' AND type=0');
+				$out.= $this->makeOrdinaryList('tt_calender',$id, $fList, $icon, ' AND type=1');
 				return $out;
 			break;
 		}
