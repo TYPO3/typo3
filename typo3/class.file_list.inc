@@ -178,7 +178,7 @@ class fileList extends t3lib_recordList {
 			}
 
 				// Adding top element
-			$out.=$this->addelement(1,'',$theData,'',$this->leftMargin,$theIcon);
+			$out.=$this->addelement(1,'',$theData,'','',$theIcon);
 
 			$this->HTMLcode.='
 
@@ -229,7 +229,7 @@ class fileList extends t3lib_recordList {
 			// half line is drawn
 		$theData = Array();
 		$theData[$titleCol] = $this->widthGif;
-		$out.=$this->addelement(0,'',$theData,'',$this->leftMargin);
+		$out.=$this->addelement(0,'',$theData,'');
 
 
 
@@ -281,7 +281,7 @@ class fileList extends t3lib_recordList {
 
 			// half line is drawn
 		$theData = Array();
-		$theData[$titleCol] = $this->counter.' File(s), '.$GLOBALS['SOBE']->basicFF->formatSize($this->totalbytes).'bytes';
+		$theData[$titleCol] = $this->counter.' File(s), '.t3lib_div::formatSize($this->totalbytes).'bytes';
 		$out.=$this->addelement(1,'',$theData);
 
 			// finish
@@ -328,7 +328,7 @@ class fileList extends t3lib_recordList {
 					while(list(,$field)=each($this->fieldArray))	{
 						switch($field)	{
 							case 'size':
-	//							$theData[$field]=$GLOBALS['SOBE']->basicFF->formatSize($theFile[$field]);
+	//							$theData[$field]=t3lib_div::formatSize($theFile[$field]);
 							break;
 							case 'rw':
 								$theData[$field]= (($theFile['readable'])?'':'<span class="typo3-red"><b>R</b></span>').(($theFile['writeable'])?'':'<span class="typo3-red"><b>W</b></span>');
@@ -454,7 +454,7 @@ class fileList extends t3lib_recordList {
 					while(list(,$field)=each($this->fieldArray))	{
 						switch($field)	{
 							case 'size':
-								$theData[$field]=$GLOBALS['SOBE']->basicFF->formatSize($theFile[$field]);
+								$theData[$field]=t3lib_div::formatSize($theFile[$field]);
 							break;
 							case 'rw':
 								$theData[$field]= (($theFile['readable'])?'':'<span class="typo3-red"><b>R</b></span>').(($theFile['writeable'])?'':'<span class="typo3-red"><b>W</b></span>');
