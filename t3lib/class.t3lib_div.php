@@ -249,12 +249,11 @@ class t3lib_div {
 	 * Usage: 27
 	 *
 	 * @param	string		Optional pointer to value in GET array (basically name of GET var)
-	 * @return	mixed		If $var is set it returns the value of $HTTP_GET_VARS[$var]. If $var is 'HTTP_GET_VARS' (default), returns $HTTP_GET_VARS itself. In any case *slashes are stipped from the output!*
+	 * @return	mixed		If $var is set it returns the value of $HTTP_GET_VARS[$var]. If $var is NULL (default), returns $HTTP_GET_VARS itself. In any case *slashes are stipped from the output!*
 	 * @see _POST(), _GP(), _GETset()
 	 */
-	function _GET($var='HTTP_GET_VARS')	{
-		if(empty($var)) return;
-		$value = ($var=='HTTP_GET_VARS') ? $GLOBALS['HTTP_GET_VARS'] : $GLOBALS['HTTP_GET_VARS'][$var];
+	function _GET($var=NULL)	{
+		$value = ($var === NULL) ? $GLOBALS['HTTP_GET_VARS'] : (empty($var) ? NULL : $GLOBALS['HTTP_GET_VARS'][$var]);
 		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
 			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
 		}
@@ -267,12 +266,11 @@ class t3lib_div {
 	 * Usage: 41
 	 *
 	 * @param	string		Optional pointer to value in POST array (basically name of POST var)
-	 * @return	mixed		If $var is set it returns the value of $HTTP_POST_VARS[$var]. If $var is 'HTTP_POST_VARS' (default), returns $HTTP_POST_VARS itself. In any case *slashes are stipped from the output!*
+	 * @return	mixed		If $var is set it returns the value of $HTTP_POST_VARS[$var]. If $var is NULL (default), returns $HTTP_POST_VARS itself. In any case *slashes are stipped from the output!*
 	 * @see _GET(), _GP()
 	 */
-	function _POST($var='HTTP_POST_VARS')	{
-		if(empty($var)) return;
-		$value = ($var=='HTTP_POST_VARS') ? $GLOBALS['HTTP_POST_VARS'] : $GLOBALS['HTTP_POST_VARS'][$var];
+	function _POST($var=NULL)	{
+		$value = ($var === NULL) ? $GLOBALS['HTTP_POST_VARS'] : (empty($var) ? NULL : $GLOBALS['HTTP_POST_VARS'][$var]);
 		if (isset($value))	{	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
 			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
 		}
@@ -3066,6 +3064,7 @@ class t3lib_div {
 	 * @see getUserObj()
 	 */
 	function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	{
+		global $TYPO3_CONF_VARS;
 
 			// Check persistent object and if found, call directly and exit.
 		if (is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName]))	{
@@ -3164,7 +3163,7 @@ class t3lib_div {
 	 * @see callUserFunction()
 	 */
 	function &getUserObj($classRef,$checkPrefix='user_',$silent=0)	{
-
+		global $TYPO3_CONF_VARS;
 			// Check persistent object and if found, call directly and exit.
 		if (is_object($GLOBALS['T3_VAR']['getUserObj'][$classRef]))	{
 			return $GLOBALS['T3_VAR']['getUserObj'][$classRef];
@@ -3248,7 +3247,7 @@ class t3lib_div {
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	{
-		global $T3_SERVICES;
+		global $T3_SERVICES, $TYPO3_CONF_VARS;
 
 		$error = FALSE;
 
@@ -3470,16 +3469,16 @@ class t3lib_div {
 			}
 		}
 	}
-	
+
 	/**
 	 * Converts a one dimensional array to a one line string which can be used for logging or debugging output
 	 * Example: "loginType: FE; refInfo: Array; HTTP_HOST: www.example.org; REMOTE_ADDR: 192.168.1.5; REMOTE_HOST:; security_level:; showHiddenRecords: 0;"
-	 * 
+	 *
 	 * @param	array	Data array which should be outputted
 	 * @param	mixed	List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
 	 * @param	integer	Long string values are shortened to this length. Default: 20
 	 * @return	string	Output string with key names and their value as string
-	 */	
+	 */
 	function arrayToLogString($arr, $valueList=array(), $valueLength=20) {
 		$str = '';
 		if(is_array($arr)) {
@@ -3493,7 +3492,7 @@ class t3lib_div {
 			}
 		}
 		return $str;
-	}	
+	}
 }
 
 ?>
