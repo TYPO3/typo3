@@ -72,7 +72,7 @@ $TYPO3_CONF_VARS = Array(
 		't3lib_cs_utils' => '',					// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
-		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited!
+		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
 		'allowGlobalInstall' => 0,				// Boolean: If set, global extensions in typo3/ext/ are allowed to be installed, updated and deleted etc.
 		'allowLocalInstall' => 1,				// Boolean: If set, local extensions in typo3conf/ext/ are allowed to be installed, updated and deleted etc.
 		'em_devVerUpdate' => 0,					// If set, developer versions will also appear as red - ready for upgrade

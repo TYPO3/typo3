@@ -967,19 +967,30 @@ class t3lib_TStemplate	{
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=289&cHash=6604390b37
 	 */
 	function splitConfArray($conf,$splitCount)	{
+
+			// Initialize variables:
 		$splitCount = intval($splitCount);
 		$conf2 = Array();
+		
 		if ($splitCount && is_array($conf))	{
-			while (list($cKey,$val)=each($conf))	{
+
+				// Initialize output to carry at least the keys:
+			for ($aKey=0;$aKey<$splitCount;$aKey++)	{
+				$conf2[$aKey] = array();
+			}
+		
+				// Recursive processing of array keys:
+			foreach($conf as $cKey => $val)	{
 				if (is_array($val))	{
 					$tempConf = $this->splitConfArray($val,$splitCount);
-					while (list($aKey,$val)=each($tempConf))	{
+					foreach($tempConf as $aKey => $val)	{
 						$conf2[$aKey][$cKey] = $val;
 					}
 				}
 			}			
-			reset($conf);
-			while (list($cKey,$val)=each($conf))	{
+
+				// Splitting of all values on this level of the TypoScript object tree:
+			foreach($conf as $cKey => $val)	{
 				if (!is_array($val))	{
 					if (!strstr($val,'|*|') && !strstr($val,'||'))	{
 						for ($aKey=0;$aKey<$splitCount;$aKey++)	{

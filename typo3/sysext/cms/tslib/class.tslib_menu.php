@@ -677,8 +677,11 @@ class tslib_menu {
 	 * @access private
 	 */
 	function procesItemStates($splitCount)	{
+
 			// Prepare normal settings
+		if (!is_array($this->mconf['NO.']) && $this->mconf['NO'])	$this->mconf['NO.']=array();	// Setting a blank array if NO=1 and there are no properties.
 		$NOconf = $this->tmpl->splitConfArray($this->mconf['NO.'],$splitCount);
+
 			// Prepare rollOver settings, overriding normal settings
 		$ROconf=array();
 		if ($this->mconf['RO'])	{

@@ -657,6 +657,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					$dbArr = $this->getDatabaseList();
 					reset($dbArr);
 					$options="";
+					$options.='<option value="">[ SELECT DATABASE ]</option>';
 					$dbIncluded=0;
 					while(list(,$dbname)=each($dbArr))	{
 						$options.='<option value="'.htmlspecialchars($dbname).'"'.($dbname==TYPO3_db?' selected':'').'>'.htmlspecialchars($dbname).'</option>';
@@ -719,14 +720,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					if (mysql_select_db(TYPO3_db))	{
 						$sFiles = t3lib_div::getFilesInDir(PATH_typo3conf,"sql",1,1);
 						reset($sFiles);
-						$opt="";
+						$opt='';
 						while(list(,$f)=each($sFiles))	{
 							$opt.='<option value="import|'.htmlspecialchars($f).'">'.htmlspecialchars(basename($f)).'</option>';
 						}
 						
 						
 						$content='
-							'.$this->fontTag2.'Databases in typo3conf/ directory:</font><BR>
+							'.$this->fontTag2.'Database dumps in typo3conf/ directory:</font><BR>
 							<input type="hidden" name="TYPO3_INSTALL[database_import_all]" value=1>
 						   <input type="hidden" name="step" value="">
 						   <input type="hidden" name="goto_step" value="go">
@@ -1886,6 +1887,7 @@ Number of files at a time:
 			break;
 			default:
 				if (is_array($this->INSTALL["localconf.php"]))		{
+					$errorMessages=array();
 					$lines = $this->writeToLocalconf_control();
 						
 						// New database?
@@ -1898,9 +1900,9 @@ Number of files at a time:
 								if (mysql_query('CREATE DATABASE '.$newdbname)) {
 									$this->INSTALL["localconf.php"]["typo_db"]=$newdbname;
 									$this->messages[]= "Database '".$newdbname."' created";
-								} else $this->messages[]= "Could not create database '".$newdbname."' (...not created)";
-							} else $this->messages[]= "Could not connect to database when creating database '".$newdbname."' (...not created)";
-						} else $this->messages[]= "The NEW database name '".$newdbname."' was not alphanumeric, a-zA-Z0-9_ (...not created)";
+								} else $this->messages[]= $errorMessages[] = "Could not create database '".$newdbname."' (...not created)";
+							} else $this->messages[]= $errorMessages[] = "Could not connect to database when creating database '".$newdbname."' (...not created)";
+						} else $this->messages[]= $errorMessages[] = "The NEW database name '".$newdbname."' was not alphanumeric, a-zA-Z0-9_ (...not created)";
 					}
 #debug($this->messages)		;
 						// Parsing values
@@ -1908,24 +1910,24 @@ Number of files at a time:
 					while(list($key,$value)=each($this->INSTALL["localconf.php"]))		{
 						switch((string)$key)	{
 							case "typo_db_username":
-								if (!ereg("[^[:alnum:]_]",$value) && strlen($value)<50)	{
+								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
 									if (strcmp(TYPO3_db_username,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_username', $value);
-								} else $this->messages[]= "Username '".$value."' was not alphanumeric, a-zA-Z0-9_, or longer than 50 chars (...not saved)";
+								} else $this->messages[]= $errorMessages[] = "Username '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
 							break;
 							case "typo_db_password":
-								if (!ereg("[^[:alnum:]_]",$value) && strlen($value)<50)	{
+								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
 									if (strcmp(TYPO3_db_password,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_password', $value);
-								} else $this->messages[]= "Password '".$value."' was not alphanumeric, a-zA-Z0-9_, or longer than 50 chars (...not saved)";
+								} else $this->messages[]= $errorMessages[] = "Password '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
 							break;
 							case "typo_db_host":
 								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
 									if (strcmp(TYPO3_db_host,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
-								} else $this->messages[]= "Host '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
+								} else $this->messages[]= $errorMessages[] = "Host '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
 							break;
 							case "typo_db":
-								if (!ereg("[^[:alnum:]_]",$value) && strlen($value)<50)	{
+								if (!ereg("[^[:alnum:]_\.-]",$value) && strlen($value)<50)	{
 									if (strcmp(TYPO3_db,$value))		$this->setValueInLocalconfFile($lines, '$typo_db', $value);
-								} else $this->messages[]= "Database '".$value."' was not alphanumeric, a-zA-Z0-9_, or longer than 50 chars (...not saved)";
+								} else $this->messages[]= $errorMessages[] = "Database '".$value."' was not alphanumeric, a-zA-Z0-9_-., or longer than 50 chars (...not saved)";
 							break;
 							case "disable_exec_function":
 								if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["BE"]["disable_exec_function"],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["BE"]["disable_exec_function"]', $value?1:0);
@@ -1951,22 +1953,24 @@ Number of files at a time:
 									if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_version_5"],$value_ext))	{
 										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["im_version_5"]', $value_ext);
 									}
-								} else $this->messages[]= "Path '".$value."' contains spaces or is longer than 100 chars (...not saved)";
+								} else $this->messages[]= $errorMessages[] = "Path '".$value."' contains spaces or is longer than 100 chars (...not saved)";
 							break;
 							case "im_path_lzw":
 								list($value) = explode("|",$value);
 								if (!ereg("[[:space:]]",$value) && strlen($value)<100)	{
 									if (strcmp($GLOBALS["TYPO3_CONF_VARS"]["GFX"][$key],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["GFX"]["'.$key.'"]', $value);
-								} else $this->messages[]= "Path '".$value."' contains spaces or is longer than 100 chars (...not saved)";
+								} else $this->messages[]= $errorMessages[] = "Path '".$value."' contains spaces or is longer than 100 chars (...not saved)";
 							break;
 						}
 						
 						
 					}
 					
-					if (count($this->messages))	{
-#						echo "<H3>ERRORS</H3>";
-#						debug($this->messages);
+					if (count($errorMessages))	{
+						echo "<H3>ERRORS</H3>";
+						echo t3lib_div::view_array($errorMessages);
+						echo 'Click the browsers "Back" button to reenter the values.';
+						exit;
 					}
 					$this->writeToLocalconf_control($lines);
 				}

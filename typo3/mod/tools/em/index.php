@@ -971,7 +971,7 @@ EXTENSION KEYS:
 					if (!$EM_CONF["lockType"] || !strcmp($EM_CONF["lockType"],$loc))	{
 						$res = $this->clearAndMakeExtensionDir($fetchData[0],$loc);
 						if (is_array($res))	{
-							$extDirPath = $res[0];
+							$extDirPath = trim($res[0]);
 							if ($extDirPath && @is_dir($extDirPath) && substr($extDirPath,-1)=="/")	{
 
 								$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
@@ -1399,6 +1399,8 @@ EXTENSION KEYS:
 		$absPath = $this->getExtPath($eKey,$info);
 		if (t3lib_extMgm::isLoaded($eKey))	{
 			return "This extension is currently installed (loaded and active) and so cannot be deleted!";
+		} elseif (!$this->deleteAsType($info["type"])) {
+			return "You cannot delete (and install/update) extensions in the ".$this->typeLabels[$info["type"]].' scope.';
 		} elseif (t3lib_div::inList("G,L",$info["type"])) {
 			if ($this->CMD["doDelete"] && !strcmp($absPath,$this->CMD["absPath"])) {
 				$res = $this->removeExtDirectory($absPath);
@@ -3825,6 +3827,24 @@ EXTENSION KEYS:
 			break;
 			case "S":
 				return $this->systemInstall;
+			break;
+		}
+	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$type: ...
+	 * @param	[type]		$lockType: ...
+	 * @return	[type]		...
+	 */
+	function deleteAsType($type)	{
+		switch($type)	{
+			case "G":
+				return $GLOBALS["TYPO3_CONF_VARS"]["EXT"]["allowGlobalInstall"];
+			break;
+			case "L":
+				return $GLOBALS["TYPO3_CONF_VARS"]["EXT"]["allowLocalInstall"];
 			break;
 		}
 	}

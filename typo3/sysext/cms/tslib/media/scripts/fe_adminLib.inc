@@ -156,6 +156,8 @@ class user_feAdmin	{
 	var $fileFunc='';	// Set to a basic_filefunc object 
 	var $filesStoredInUploadFolders=array();		// This array will hold the names of files transferred to the uploads/* folder if any. If the records are NOT saved, these files should be deleted!! Currently this is not working!
 
+		// Internal vars, dynamic:
+	var $unlinkTempFiles = array();			// Is loaded with all temporary filenames used for upload which should be deleted before exit...
 	
 	/**
 	 * Main function. Called from TypoScript.
@@ -241,7 +243,7 @@ class user_feAdmin	{
 		$fe=t3lib_div::GPvar('FE');
 		$this->dataArr = $fe[$this->theTable];	// Incoming data.
 
-		/*
+/*
 		debug($GLOBALS['HTTP_POST_VARS']);
 		debug($GLOBALS['HTTP_GET_VARS']);
 		debug($GLOBALS['HTTP_POST_FILES']);
@@ -354,6 +356,12 @@ class user_feAdmin	{
 			}
 		}	
 	
+			// Delete temp files:
+		foreach($this->unlinkTempFiles as $tempFileName)	{
+			t3lib_div::unlink_tempfile($tempFileName);
+		}
+	
+			// Return content:
 		return $content;		
 	}
 
@@ -492,7 +500,8 @@ class user_feAdmin	{
 	function processFiles($cmdParts,$theField)	{
 //debug($GLOBALS['HTTP_POST_FILES']);
 			// First, make an array with the filename and file reference, whether the file is just uploaded or a preview 
-		$filesArr=array();
+		$filesArr = array();
+		
 		if (is_string($this->dataArr[$theField]))	{		// files from preview.
 			$tmpArr = explode(',',$this->dataArr[$theField]);
 			reset($tmpArr);
@@ -507,22 +516,28 @@ class user_feAdmin	{
 			reset($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['name']);
 			while(list($kk,$vv)=each($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['name']))	{
 				if ($vv)	{
-					$tmpFile = $GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['tmp_name'][$kk];
-					$filesArr[] = array (
-						'name'=>$vv,
-						'tmp_name'=>$tmpFile
-					);
+					$tmpFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES']['FE'][$this->theTable][$theField]['tmp_name'][$kk]);
+					if ($tmpFile)	{
+						$this->unlinkTempFiles[]=$tmpFile;
+						$filesArr[] = array (
+							'name'=>$vv,
+							'tmp_name'=>$tmpFile
+						);
+					}
 				}
 			}
 		} elseif (is_array($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]))	{	// Files from upload
 			reset($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]);
 			while(list($kk,$vv)=each($GLOBALS['HTTP_POST_FILES']['FE']['name'][$this->theTable][$theField]))	{
 				if ($vv)	{
-					$tmpFile = $GLOBALS['HTTP_POST_FILES']['FE']['tmp_name'][$this->theTable][$theField][$kk];
-					$filesArr[] = array (
-						'name'=>$vv,
-						'tmp_name'=>$tmpFile
-					);
+					$tmpFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES']['FE']['tmp_name'][$this->theTable][$theField][$kk]);
+					if ($tmpFile)	{
+						$this->unlinkTempFiles[]=$tmpFile;
+						$filesArr[] = array (
+							'name'=>$vv,
+							'tmp_name'=>$tmpFile
+						);
+					}
 				}
 			}
 		}
@@ -531,7 +546,7 @@ class user_feAdmin	{
 		$this->dataArr[$theField]='';
 		$finalFilesArr=array();
 		if (count($filesArr))	{
-			$extArray=t3lib_div::trimExplode(';',strtolower($cmdParts[1]),1);
+			$extArray = t3lib_div::trimExplode(';',strtolower($cmdParts[1]),1);
 			$maxSize = intval($cmdParts[3]);
 			reset($filesArr);
 			while(list(,$infoArr)=each($filesArr))	{
@@ -554,31 +569,31 @@ class user_feAdmin	{
 		while(list(,$infoArr)=each($finalFilesArr))	{
 			if ($this->isPreview())	{		// If the form is a preview form (and data is therefore not going into the database...) do this.
 				$this->createFileFuncObj();
-				$fI=pathinfo($infoArr['name']);
+				$fI = pathinfo($infoArr['name']);
 				$tmpFilename = $this->theTable.'_'.t3lib_div::shortmd5(uniqid($infoArr['name'])).'.'.$fI['extension'];
 				$theDestFile = $this->fileFunc->getUniqueName($this->fileFunc->cleanFileName($tmpFilename), PATH_site.'typo3temp/');
 				t3lib_div::upload_copy_move($infoArr['tmp_name'],$theDestFile);
 					// Setting the filename in the list
-				$fI2=pathinfo($theDestFile);
-				$fileNameList[]=$fI2['basename'].'|'.$infoArr['name'];
+				$fI2 = pathinfo($theDestFile);
+				$fileNameList[] = $fI2['basename'].'|'.$infoArr['name'];
 			} else {
 				$this->createFileFuncObj();
 				$GLOBALS['TSFE']->includeTCA();
 				t3lib_div::loadTCA($this->theTable);
 				if (is_array($GLOBALS['TCA'][$this->theTable]['columns'][$theField]))	{
-					$uploadPath=$GLOBALS['TCA'][$this->theTable]['columns'][$theField]['config']['uploadfolder'];
+					$uploadPath = $GLOBALS['TCA'][$this->theTable]['columns'][$theField]['config']['uploadfolder'];
 				}
 				if ($uploadPath)	{
 					$theDestFile = $this->fileFunc->getUniqueName($this->fileFunc->cleanFileName($infoArr['name']), PATH_site.$uploadPath);
-					copy($infoArr['tmp_name'],$theDestFile);
+					t3lib_div::upload_copy_move($infoArr['tmp_name'],$theDestFile);
 						// Setting the filename in the list
-					$fI2=pathinfo($theDestFile);
-					$fileNameList[]=$fI2['basename'];
+					$fI2 = pathinfo($theDestFile);
+					$fileNameList[] = $fI2['basename'];
 					$this->filesStoredInUploadFolders[]=$theDestFile;
 				}
 			}
 				// Implode the list of filenames
-			$this->dataArr[$theField]=implode(',',$fileNameList);
+			$this->dataArr[$theField] = implode(',',$fileNameList);
 		}
 	}
 
