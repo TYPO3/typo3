@@ -858,9 +858,11 @@ EXTENSION KEYS:
 		$eInfo["_TECH_INFO"]=unserialize($fetchData["techinfo"]);
 		$tempFiles=unserialize($fetchData["files"]);
 
-		reset($tempFiles);
-		while(list($fk)=each($tempFiles))	{
-			if (!strstr($fk,"/"))	$eInfo["files"][]=$fk;
+		if (is_array($tempFiles))	{
+			reset($tempFiles);
+			while(list($fk)=each($tempFiles))	{
+				if (!strstr($fk,"/"))	$eInfo["files"][]=$fk;
+			}
 		}
 		
 		$content='<strong>'.$fetchData["_ICON"]." &nbsp;".$eInfo["EM_CONF"]["title"].'</strong><br /><br />';
@@ -1587,14 +1589,16 @@ EXTENSION KEYS:
 		if (!$remote)	$lines[]='<tr class="bgColor4"><td>Download password:</td><td>'.$info["EM_CONF"]["download_password"].'</td>'.$this->helpCol("download_password").'</tr>';
 
 			// Installation status:
-		sort($info["files"]);
 		$lines[]='<tr><td>&nbsp;</td><td></td>'.$this->helpCol("").'</tr>';
 		$lines[]='<tr class="bgColor5"><td colspan=2><strong>Installation status:</strong></td>'.$this->helpCol("").'</tr>';
 		if (!$remote)	{
 			$lines[]='<tr class="bgColor4"><td>Type of install:</td><td>'.$this->typeLabels[$info["type"]].' - <em>'.$this->typeDescr[$info["type"]].'</em></td>'.$this->helpCol("type").'</tr>';
 			$lines[]='<tr class="bgColor4"><td>Double installs?</td><td>'.$this->extInformationArray_dbInst($info["doubleInstall"],$info["type"]).'</td>'.$this->helpCol("doubleInstall").'</tr>';
 		}
-		$lines[]='<tr class="bgColor4"><td>Root files:</td><td>'.implode("<br />",$info["files"]).'</td>'.$this->helpCol("rootfiles").'</tr>';
+		if (is_array($info["files"]))	{
+			sort($info["files"]);
+			$lines[]='<tr class="bgColor4"><td>Root files:</td><td>'.implode("<br />",$info["files"]).'</td>'.$this->helpCol("rootfiles").'</tr>';
+		}
 
 		if (!$remote)	{
 			$techInfo = $this->makeDetailedExtensionAnalysis($eKey,$info,1);

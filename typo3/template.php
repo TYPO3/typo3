@@ -1300,6 +1300,7 @@ $str.=$this->docBodyTagBegin().
 						tempLayerObjCss.left = GLV_x+"px";
 						tempLayerObjCss.top = GLV_y+"px";
 						tempLayerObjCss.visibility = "visible";
+						if (bw.ie5)	showHideSelectorBoxes("hidden");
 
 						GLV_isVisible[level]=1;
 						GLV_curLayerWidth[level] = tempLayerObj.width;
@@ -1317,6 +1318,8 @@ $str.=$this->docBodyTagBegin().
 					GL_getObjCss("contentMenu"+level).visibility = "hidden";
 					GL_getObj("contentMenu"+level).el.innerHTML = "";
 					GLV_isVisible[level]=0;
+					
+					if (bw.ie5 && level==0)	showHideSelectorBoxes("visible");
 				}
 					// debugObj(obj,name)
 				function debugObj(obj,name)	{	//
@@ -1331,6 +1334,15 @@ $str.=$this->docBodyTagBegin().
 					}
 					layerObj = GL_getObj("contentMenu1");
 					layerObjCss = GL_getObjCss("contentMenu1");
+				}
+				function showHideSelectorBoxes(action)	{	// This function by Michiel van Leening
+					for (i=0;i<document.forms.length;i++) {
+						for (j=0;j<document.forms[i].elements.length;j++) {
+							if(document.forms[i].elements[j].type=="select-one") {
+								document.forms[i].elements[j].style.visibility=action;
+							}
+						}
+					}					
 				}
 			/*]]>*/
 			</script>		
