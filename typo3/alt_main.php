@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -290,7 +290,9 @@ class SC_alt_main {
 	 */
 	var currentlyHighLightedId = "";
 	var currentlyHighLighted_restoreValue = "";
+	var currentlyHighLightedMain = "";
 	function highlightModuleMenuItem(trId, mainModule)	{	//
+		currentlyHighLightedMain = mainModule;
 			// Get document object:
 		if (top.menu && top.menu.document)	{
 			var docObj = top.menu.document;
@@ -315,6 +317,16 @@ class SC_alt_main {
 		}
 	}
 
+	/**
+	 * Function restoring previous selection in left menu after clearing cache
+	 */
+	
+	function restoreHighlightedModuleMenuItem() {
+		if (currentlyHighLightedId) {
+			highlightModuleMenuItem(currentlyHighLightedId,currentlyHighLightedMain);
+		}
+	}
+	
 	/**
 	 * Function used to switch switch module.
 	 */

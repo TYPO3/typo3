@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,6 +32,7 @@
  * XHTML-trans compliant
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @co-author Sebastian Kurfürst <sebastian@garbage-group.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -72,6 +73,7 @@ require_once ('class.alt_menu_functions.inc');
  * Script Class for rendering the vertical menu in the left side of the backend frameset
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @co-author Sebastian Kurfürst <sebastian@garbage-group.de>
  * @package TYPO3
  * @subpackage core
  */
@@ -107,13 +109,13 @@ class SC_alt_menu {
 
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='vertical-menu';
+		$TBE_TEMPLATE->bodyTagAdditions = 'onLoad="top.restoreHighlightedModuleMenuItem()"';
 		$this->content.=$TBE_TEMPLATE->startPage('Vertical Backend Menu');
 		$backPath = $GLOBALS['BACK_PATH'];
 
 			// Printing the menu
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 		$this->content.= $alt_menuObj->topMenu($this->loadModules->modules);
-		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'menu_modules', $GLOBALS['BACK_PATH']);
 
 			// clear cache commands for Admins
 		if($BE_USER->isAdmin()) {

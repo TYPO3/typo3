@@ -2050,6 +2050,7 @@ class t3lib_TCEforms	{
 					$rowCells['formEl']='';
 					if ($value['type']=='array')	{
 						if ($value['section'])	{
+								// Render "NEW [container]" selectorbox:
 							if (is_array($value['el']))	{
 								$opt=array();
 								$opt[]='<option value=""></option>';
@@ -2114,6 +2115,8 @@ class t3lib_TCEforms	{
 							$tRows[]='<tr class="bgColor2">
 								<td nowrap="nowrap" valign="top">'.
 								'<input name="_DELETE_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" type="checkbox" value="1" /><img src="'.$this->backPath.'gfx/garbage.gif" border="0" alt="" />'.
+								'<input name="_MOVEUP_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" type="checkbox" value="1" /><img src="'.$this->backPath.'gfx/button_up.gif" border="0" alt="" />'.
+								'<input name="_MOVEDOWN_FLEX_FORM'.$PA['itemFormElName'].$formPrefix.'" type="checkbox" value="1" /><img src="'.$this->backPath.'gfx/button_down.gif" border="0" alt="" />'.
 								$rowCells['title'].'</td>
 								<td>'.$rowCells['formEl'].'</td>
 							</tr>';

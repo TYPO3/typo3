@@ -1,3 +1,7 @@
+2005-04-04	Robert Lemke	<robert@typo3.org>
+	+ Added a preliminary way for moving containers in a flexform section in TCEforms + TCEmain. Before you could only delete containers.
+	+ Added Sebastian Kurfürst's collapsable modules feature for the backend's module bar
+
 2005-04-04  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added to-top/up/down/to_bottom bottoms for the select/group element. up/down will show up by default, to-top and to-bottom will appear automatically when the SIZE of the selector is >= 5.
@@ -36,7 +40,7 @@
 
 	* TYPO3 seems to prefer "mediumblob" instead of "MEDIUMBLOB", thus I changed that in typo3/sysext/cms/ext_tables.sql
 	* Added hook in tslib_fe
-
+ 
 2005-03-28  Michael Stucki  <michael@typo3.org>
 
 	* Corrected a typo in fe_adminLib.inc (Ingmar watch this!)

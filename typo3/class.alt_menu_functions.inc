@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,13 +42,13 @@
  *
  *   73: class alt_menu_functions
  *   94:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)
- *  405:     function getNavFramePrefix ($moduleInfo, $subModuleInfo=array())
- *  435:     function mIconFile($Ifilename,$backPath)
- *  450:     function mIconFilename($Ifilename,$backPath)
- *  462:     function topButtons()
- *  474:     function adminButtons()
- *  493:     function adminFunctions($backPath)
- *  526:     function wrapLinkWithAB($link)
+ *  402:     function getNavFramePrefix ($moduleInfo, $subModuleInfo=array())
+ *  429:     function mIconFile($Ifilename,$backPath)
+ *  444:     function mIconFilename($Ifilename,$backPath)
+ *  456:     function topButtons()
+ *  468:     function adminButtons()
+ *  487:     function adminFunctions($backPath)
+ *  520:     function wrapLinkWithAB($link)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,6 +94,11 @@ class alt_menu_functions {
 	function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)	{
 		global $LANG, $TBE_TEMPLATE, $BE_USER;
 
+			// By default module sections are collapsable, only if they are explicitly turned off via TSconfig, they are not:
+		$tmpArr = $BE_USER->getTSConfig('options.moduleMenuCollapsable');			
+		$collapsable = ($tmpArr['value'] ? 0 : 1);
+		unset($tmpArr);
+		
 			// Initialize vars:
 		$final='';
 		$menuCode='';
@@ -112,6 +117,34 @@ class alt_menu_functions {
 			unset($theModules['doc']);
 		}
 
+			// Get collapsed configuration
+		if ($collapsable == 1) {
+			$config = is_array ($BE_USER->uc['moduleData']['alt_menu.php']) ? $BE_USER->uc['moduleData']['alt_menu.php'] : array(); 
+			$collapsedOverride = t3lib_div::_GP('collapsedOverride');
+			if (is_array ($collapsedOverride)) {
+				$config = array_merge ($config, $collapsedOverride);
+			}
+			
+			if (t3lib_div::_GP('collapsableExpandAll') == 1) {
+				$config['expandAll'] = t3lib_div::_GP('expandAll');
+			}
+			
+			if ($config['expandAll'] && is_array($collapsedOverride)) {
+				$config = $collapsedOverride;
+			}
+			
+			$BE_USER->uc['moduleData']['alt_menu.php'] = $config;
+			$BE_USER->writeUC($BE_USER->uc);
+			
+				// all items have to be expanded when expandAll is set
+			if($config['expandAll'] == 1) {
+				foreach($config as $key => $value) {
+					if($key != 'expandAll')
+						$config[$key] = 0;
+				}
+			}
+		}
+		
 			// Traverse array with modules
 		reset($theModules);
 		while(list($moduleName,$moduleInfo)=each($theModules))	{
@@ -138,8 +171,6 @@ class alt_menu_functions {
 				$link = $moduleInfo['script'];
 				$link_sub = 0;
 			}
-
-			$link = t3lib_div::resolveBackPath($link);
 
 			$moduleKey = $moduleName.'_tab';
 			$moduleCSSId = 'ID_'.t3lib_div::md5int($moduleName);
@@ -173,10 +204,19 @@ class alt_menu_functions {
 			$selectItems[] = '<option value="top.goToModule(\''.$moduleName.'\');">'.htmlspecialchars($LANG->moduleLabels['tabs'][$moduleKey]).'</option>';
 			$label='&nbsp;<b>'.$label.'</b>&nbsp;';
 
+			
+				// make menu collapsable
+			if($collapsable == 1 && is_array($moduleInfo['sub'])) {
+				$collapseJS = 'onclick="window.location.href=\'alt_menu.php?collapsedOverride['.$moduleName.']='.($config[$moduleName] ? '0' : '1').'\'"';				
+				$collapseIcon = '<span class="c-iconCollapse"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/ol/'.($config[$moduleName] ? 'plusbullet.gif':'minusbullet.gif'),'width="18" height="16"').' title="" alt="" /></span>';				
+			} else {
+				$collapseJS = $collapseIcon = '';
+			}
+			
 				// Creating a main item for the vertical menu (descr=0)
 			$menuCode.='
 						<tr class="c-mainitem" id="'.$moduleCSSId.'">
-							<td colspan="3">'.$imageCode.'<span class="c-label">'.$label.'</span></td>
+							<td colspan="3" '.$collapseJS.' >'.$imageCode.'<span class="c-label">'.$label.'</span>'.$collapseIcon.'</td>
 						</tr>';
 
 				// Code for "About modules"
@@ -186,9 +226,12 @@ class alt_menu_functions {
 						</tr>';
 
 
+				// Hide submodules when collapsed:
+			if($collapsable == 1 && $config[$moduleName] == 1 && $descr == 0 && $config['expandAll'] != 1) {
+				unset($moduleInfo['sub']);
+			}
 
-
-				// Travesing submodules
+				// Traversing submodules
 			$subCode='';
 			if (is_array($moduleInfo['sub']))	{
 				reset($moduleInfo['sub']);
@@ -205,7 +248,7 @@ class alt_menu_functions {
 								</tr>';
 					}
 
-					$link = t3lib_div::resolveBackPath($subInfo['script']);
+					$link = $subInfo['script'];
 					$prefix=$this->getNavFramePrefix ($moduleInfo, $subInfo);
 
 					$subKey = $moduleName.'_'.$subName.'_tab';
@@ -249,8 +292,7 @@ class alt_menu_functions {
 						if (!$BE_USER->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
 
 								// use special nav script from sub module, otherwise from the main module
-							$subNavFrameScript = $subInfo['navFrameScript'] ? $subInfo['navFrameScript'] : $moduleInfo['navFrameScript'];
-							$subNavFrameScript = t3lib_div::resolveBackPath($subNavFrameScript);
+							$subNavFrameScript = $subInfo['navFrameScript'] ? $subInfo['navFrameScript'] : $moduleInfo['navFrameScript'] ;
 
 								// add GET params for sub module to the nav script
 							$subNavFrameScript = $this->wrapLinkWithAB($subNavFrameScript).$subInfo['navFrameScriptParam'];
@@ -333,6 +375,21 @@ class alt_menu_functions {
 
 			// $descr==0:	Ordinary vertical menu
 		if ($menuCode)	{
+			if($collapsable == 1 || $config['expandAll'] == 1) {
+				$collapseAllHTML = '<tr class="c-endrow">
+						<td></td>
+						<td align="center">
+								<form action="alt_menu.php" method="get">
+									<input type="hidden" name="collapsableExpandAll" value="1" />
+									<input type="checkbox" name="expandAll" value="1" onclick="this.form.submit();" '.($config['expandAll']?'checked="checked"':'').' />
+								</form>
+						</td>
+						<td class="c-subitem-label">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll',1).'</td>
+					</tr>';
+			} else {
+				$collapseAllHTML = '';
+			}
+			
 			$final = '
 
 
@@ -341,6 +398,9 @@ class alt_menu_functions {
 				-->
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-vmenu">
 					'.$menuCode.'
+					<tr class="c-endrow">
+						<td colspan="3">'.t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'menu_modules', $GLOBALS['BACK_PATH']).'</td></tr>
+					'.$collapseAllHTML.'
 				</table>';
 		}
 
@@ -408,15 +468,12 @@ class alt_menu_functions {
 		$prefix = '';
 		$navFrameScriptParam = $subModuleInfo['navFrameScriptParam'] ? $subModuleInfo['navFrameScriptParam'] : $moduleInfo['navFrameScriptParam'];
 		if ($moduleInfo['navFrameScript'])	{
-			$navFrameScript = t3lib_div::resolveBackPath($moduleInfo['navFrameScript']);
-			$navFrameScript = $this->wrapLinkWithAB($navFrameScript);
-
 			if ($BE_USER->uc['condensedMode'])	{
-				$prefix=$navFrameScript.$navFrameScriptParam.'&currentSubScript=';
+				$prefix=$this->wrapLinkWithAB($moduleInfo['navFrameScript']).$navFrameScriptParam.'&currentSubScript=';
 			} else {
 				$prefix='alt_mod_frameset.php?'.
 					'fW="+top.TS.navFrameWidth+"'.
-					'&nav="+top.TS.PATH_typo3+"'.rawurlencode($navFrameScript.$navFrameScriptParam).
+					'&nav="+top.TS.PATH_typo3+"'.rawurlencode($this->wrapLinkWithAB($moduleInfo['navFrameScript']).$navFrameScriptParam).
 					'&script=';
 			}
 		}

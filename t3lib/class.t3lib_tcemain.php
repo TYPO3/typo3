@@ -1736,12 +1736,27 @@ class t3lib_TCEmain	{
 				$xmlValue = $this->checkValue_flexArray2Xml($arrValue);
 			}
 
-				// Temporary fix to delete elements:
+				// Temporary fix to delete flex form elements:
 			$deleteCMDs = t3lib_div::_GP('_DELETE_FLEX_FORMdata');
-
 			if (is_array($deleteCMDs[$table][$id][$field]['data']))	{
 				$arrValue = t3lib_div::xml2array($xmlValue);
 				$this->_DELETE_FLEX_FORMdata($arrValue['data'],$deleteCMDs[$table][$id][$field]['data']);
+				$xmlValue = $this->checkValue_flexArray2Xml($arrValue);
+			}
+
+				// Temporary fix to move flex form elements up:
+			$moveCMDs = t3lib_div::_GP('_MOVEUP_FLEX_FORMdata');
+			if (is_array($moveCMDs[$table][$id][$field]['data']))	{
+				$arrValue = t3lib_div::xml2array($xmlValue);
+				$this->_MOVE_FLEX_FORMdata($arrValue['data'],$moveCMDs[$table][$id][$field]['data'], 'up');
+				$xmlValue = $this->checkValue_flexArray2Xml($arrValue);
+			}
+
+				// Temporary fix to move flex form elements down:
+			$moveCMDs = t3lib_div::_GP('_MOVEDOWN_FLEX_FORMdata');
+			if (is_array($moveCMDs[$table][$id][$field]['data']))	{
+				$arrValue = t3lib_div::xml2array($xmlValue);
+				$this->_MOVE_FLEX_FORMdata($arrValue['data'],$moveCMDs[$table][$id][$field]['data'], 'down');
 				$xmlValue = $this->checkValue_flexArray2Xml($arrValue);
 			}
 
@@ -1773,11 +1788,11 @@ class t3lib_TCEmain	{
 	}
 
 	/**
-	 * [Describe function...]
+	 * Deletes a flex form element
 	 *
-	 * @param	[type]		$$valueArrayToRemoveFrom: ...
-	 * @param	[type]		$deleteCMDS: ...
-	 * @return	[type]		...
+	 * @param	array		&$valueArrayToRemoveFrom: by reference
+	 * @param	[type]		$deleteCMDS: ...	 * 
+	 * @return	void
 	 */
 	function _DELETE_FLEX_FORMdata(&$valueArrayToRemoveFrom,$deleteCMDS)	{
 		if (is_array($valueArrayToRemoveFrom) && is_array($deleteCMDS))	{
@@ -1791,7 +1806,43 @@ class t3lib_TCEmain	{
 		}
 	}
 
+	/**
+	 * Deletes a flex form element
+	 *
+	 * @param	array		&$valueArrayToMoveIn: by reference
+	 * @param	[type]		$moveCMDS: ...	 *
+	 * @param	string		$direction: 'up' or 'down' 
+	 * @return	void
+	 * TODO: Like _DELETE_FLEX_FORMdata, this is only a temporary solution!
+	 */
+	function _MOVE_FLEX_FORMdata(&$valueArrayToMoveIn, $moveCMDS, $direction)	{
+		if (is_array($valueArrayToMoveIn) && is_array($moveCMDS))	{
 
+				// Only execute the first move command:
+			list ($key, $value) = each ($moveCMDS);
+			
+			if (is_array($moveCMDS[$key]))	{
+				$this->_MOVE_FLEX_FORMdata($valueArrayToMoveIn[$key],$moveCMDS[$key], $direction);
+			} else {
+				switch ($direction) {
+					case 'up':
+						if ($key > 1) {
+							$tmpArr = $valueArrayToMoveIn[$key];
+							$valueArrayToMoveIn[$key] = $valueArrayToMoveIn[$key-1];
+							$valueArrayToMoveIn[$key-1] = $tmpArr; 
+						}
+					break;
+					case 'down':
+						if ($key < count($valueArrayToMoveIn)) {
+							$tmpArr = $valueArrayToMoveIn[$key];
+							$valueArrayToMoveIn[$key] = $valueArrayToMoveIn[$key+1];
+							$valueArrayToMoveIn[$key+1] = $tmpArr; 
+						}
+					break;				
+				}
+			}
+		}
+	}
 
 
 

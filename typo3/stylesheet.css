@@ -218,10 +218,11 @@ TABLE#typo3-about-modules TR.c-mainitem TD IMG { vertical-align: middle;  paddin
 /* Vertical Module Menu script, left frame (alt_menu.php): */
 BODY#typo3-alt-menu-php { margin: 2px 0px 0px 2px; }
 BODY#typo3-alt-menu-php A { text-decoration: none; }
-TABLE#typo3-vmenu TR.c-mainitem TD { background-color: #D9D9D8; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle;}
+TABLE#typo3-vmenu TR.c-mainitem TD { background-color: #D9D9D8; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle; width: 100px}
 TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label A { text-decoration : underline; }
 TABLE#typo3-vmenu TR.c-mainitem TD IMG { vertical-align: middle; margin-right: 2px;}
 TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label { position: relative; top: 1px;}
+TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-iconCollapse { position:absolute; left:90px; cursor:pointer}
 TABLE#typo3-vmenu TR.c-mainitem-HL TD { background-color: #AAAAAA; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle;}
 TABLE#typo3-vmenu TR.c-mainitem-HL TD SPAN.c-label A { text-decoration : underline; }
 TABLE#typo3-vmenu TR.c-mainitem-HL TD IMG { vertical-align: middle; margin-right: 2px;}
