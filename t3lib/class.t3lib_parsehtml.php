@@ -816,9 +816,9 @@ class t3lib_parsehtml {
 	 * @return	string		Processed HTML content
 	 */
 	function prefixResourcePath($main_prefix,$content,$alternatives=array())	{
+
 		$parts = $this->splitTags('td,table,body,img,input,form,link,script,a',$content);
-		reset($parts);
-		while(list($k,$v)=each($parts))	{
+		foreach($parts as $k => $v)	{
 			if ($k%2)	{
 				$params = $this->get_tag_attributes($v,1);
 				$tagEnd = substr($v,-2)=='/>' ? ' />' : '>';	// Detect tag-ending so that it is re-applied correctly.
@@ -871,8 +871,22 @@ class t3lib_parsehtml {
 				}
 			}
 		}
+		$content = implode('',$parts);
 
-		return implode('',$parts);
+			// Fix <style> section:
+		$prefix = isset($alternatives['style']) ? $alternatives['style'] : $main_prefix;
+		if (strlen($prefix))	{
+			$parts = $this->splitIntoBlock('style',$content);
+			foreach($parts as $k => $v)	{
+				if ($k%2)	{
+					$parts[$k] = eregi_replace('(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))','\1'.$prefix.'\2\3',$parts[$k]);
+				}
+			}
+			debug($parts);
+			$content = implode('',$parts);
+		}
+
+		return $content;
 	}
 
 	/**

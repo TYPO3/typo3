@@ -2148,6 +2148,13 @@ class tslib_cObj {
 		if ($conf['workOnSubpart'])	{
 			$content = $this->getSubpart($content, $PRE.$conf['workOnSubpart'].$POST);
 		}
+
+			// Fixing all relative paths found:
+		if ($conf['relPathPrefix'])	{
+			$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
+			$content = $htmlParser->prefixResourcePath($conf['relPathPrefix'],$content,$conf['relPathPrefix.']);
+		}
+
 		if ($content)	{
 			if ($conf['nonCachedSubst'])	{		// NON-CACHED:
 					// Getting marks

@@ -1,3 +1,7 @@
+2004-05-07  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added "relPathprefix" to TEMPLATE cObject and also added support for relative path substitution of references in url() wrappers in <style> tags. This will also fix THAT problem reported for automaketemplate.
+
 2004-04-30  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Merged TYPO3_3-6-0 branch changes by robert into HEAD. See 3.6.0 branch change log if you want.
