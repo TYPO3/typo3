@@ -1,5 +1,9 @@
 2004-09-14  Michael Stucki  <mundaun@gmx.ch>
 
+	* Release of TYPO3 3.7.0RC1
+
+2004-09-14  Michael Stucki  <mundaun@gmx.ch>
+
 	* Fixed bug #0000159: Logging did not work with absolute logfile_dir specified. However this will still work only if the specified path is within either PATH_site or lockRootPath.
 	* The BE login screen now shows the sitename by default
 	* Fixed a typo in config_default.php
