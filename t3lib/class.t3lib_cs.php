@@ -34,39 +34,48 @@
  *
  *
  *
- *  119: class t3lib_cs
- *  261:     function parse_charset($charset)
- *  278:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
- *  312:     function utf8_encode($str,$charset)
- *  359:     function utf8_decode($str,$charset,$useEntityForNoChar=0)
- *  407:     function utf8_to_entities($str)
- *  440:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)
- *  474:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)
- *  515:     function initCharset($charset)
- *  586:     function UnumberToChar($cbyte)
- *  630:     function utf8CharToUnumber($str,$hex=0)
+ *  128: class t3lib_cs
+ *  442:     function parse_charset($charset)
+ *  460:     function get_locale_charset($locale)
+ *  492:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
+ *  529:     function utf8_encode($str,$charset)
+ *  576:     function utf8_decode($str,$charset,$useEntityForNoChar=0)
+ *  619:     function utf8_to_entities($str)
+ *  652:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)
+ *  686:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)
+ *  736:     function UnumberToChar($cbyte)
+ *  781:     function utf8CharToUnumber($str,$hex=0)
+ *
+ *              SECTION: Init functions
+ *  824:     function initCharset($charset)
+ *  885:     function initCaseFoldingUTF8()
+ *  973:     function initCaseFolding($charset)
  *
  *              SECTION: String operation functions
- *  682:     function strtrunc($charset,$string,$len)
- *  716:     function substr($charset,$str,$start,$len=null)
- *  755:     function strlen($charset,$string)
+ * 1058:     function substr($charset,$string,$start,$len=null)
+ * 1096:     function strlen($charset,$string)
+ * 1124:     function crop($charset,$string,$len,$crop='')
+ * 1165:     function strtrunc($charset,$string,$len)
+ * 1197:     function conv_case($charset,$string,$case)
  *
- *              SECTION: UTF-8 String operation functions
- *  803:     function utf8_strtrunc($str,$len)
- *  831:     function utf8_substr($str,$start,$len=null)
- *  857:     function utf8_strlen($str)
- *  879:     function utf8_strpos($haystack,$needle,$offset=0)
- *  902:     function utf8_strrpos($haystack,$needle)
- *  921:     function utf8_char2byte_pos($str,$pos)
- *  946:     function utf8_byte2char_pos($str,$pos)
+ *              SECTION: Internal UTF-8 string operation functions
+ * 1264:     function utf8_substr($str,$start,$len=null)
+ * 1297:     function utf8_strlen($str)
+ * 1318:     function utf8_strtrunc($str,$len)
+ * 1340:     function utf8_strpos($haystack,$needle,$offset=0)
+ * 1363:     function utf8_strrpos($haystack,$needle)
+ * 1383:     function utf8_char2byte_pos($str,$pos)
+ * 1424:     function utf8_byte2char_pos($str,$pos)
+ * 1448:     function utf8_conv_case($str,$case)
  *
- *              SECTION: EUC String operation functions
- *  994:     function euc_strtrunc($str,$len,$charset)
- * 1028:     function euc_substr($str,$start,$charset,$len=null)
- * 1055:     function euc_strlen($str,$charset)
- * 1082:     function euc_char2byte_pos($str,$pos,$charset)
+ *              SECTION: Internal EUC string operation functions
+ * 1514:     function euc_strtrunc($str,$len,$charset)
+ * 1543:     function euc_substr($str,$start,$charset,$len=null)
+ * 1568:     function euc_strlen($str,$charset)
+ * 1595:     function euc_char2byte_pos($str,$pos,$charset)
+ * 1636:     function euc_conv_case($str,$case,$charset)
  *
- * TOTAL FUNCTIONS: 24
+ * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -117,7 +126,7 @@
  * @subpackage t3lib
  */
 class t3lib_cs {
-	var $noCharByteVal=127;		// ASCII Value for chars with no equalent.
+	var $noCharByteVal=63;		// ASCII Value for chars with no equivalent.
 
 		// This is the array where parsed conversion tables are stored (cached)
 	var $parsedCharsets=array();
@@ -138,9 +147,9 @@ class t3lib_cs {
 
 		// This tells the converter which charsets use a scheme like the Extended Unix Code:
 	var $eucBasedSets=array(
-		'gb2312'=>1,	// Chinese, simplified.
-		'big5'=>1,	// Chinese, traditional.
-		'shift_jis'=>1,	// Japanes - WARNING: Shift-JIS includes half-width katakana single-bytes characters above 0x80!
+		'gb2312'=>1,		// Chinese, simplified.
+		'big5'=>1,			// Chinese, traditional.
+		'shift_jis'=>1,		// Japanese - WARNING: Shift-JIS includes half-width katakana single-bytes characters above 0x80!
 	);
 
 		// see	http://developer.apple.com/documentation/macos8/TextIntlSvcs/TextEncodingConversionManager/TEC1.5/TEC.b0.html
@@ -375,7 +384,7 @@ class t3lib_cs {
 		// mapping of locale names to charsets
 	var $locale_to_charset=array(
 		'japanese.euc' => 'euc-jp',
-		'ja_JP.ujis' => 'euc-jp',
+		'ja_jp.ujis' => 'euc-jp',
 		'korean.euc' => 'euc-kr',
 		'zh_cn' => 'gb2312',
 		'zh_hk' => 'big5',
@@ -444,8 +453,8 @@ class t3lib_cs {
 	 * ln_CN     language / country
 	 * ln_CN.cs  language / country / charset
 	 *
-	 * @param	string		Locale
-	 * @return	string		Charset
+	 * @param	string		Locale string
+	 * @return	string		Charset resolved for locale string
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function get_locale_charset($locale)	{
@@ -642,7 +651,7 @@ class t3lib_cs {
 	 */
 	function entities_to_utf8($str,$alsoStdHtmlEnt=0)	{
 		if ($alsoStdHtmlEnt)	{
-			$trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES));
+			$trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES));		// Getting them in iso-8859-1 - but thats ok since this is observed below.
 		}
 
 		$token = md5(microtime());
@@ -706,6 +715,103 @@ class t3lib_cs {
 	}
 
 	/**
+	 * Converts a UNICODE number to a UTF-8 multibyte character
+	 * Algorithm based on script found at From: http://czyborra.com/utf/
+	 * Unit-tested by Kasper
+	 *
+	 * The binary representation of the character's integer value is thus simply spread across the bytes and the number of high bits set in the lead byte announces the number of bytes in the multibyte sequence:
+	 *
+	 *  bytes | bits | representation
+	 *      1 |    7 | 0vvvvvvv
+	 *      2 |   11 | 110vvvvv 10vvvvvv
+	 *      3 |   16 | 1110vvvv 10vvvvvv 10vvvvvv
+	 *      4 |   21 | 11110vvv 10vvvvvv 10vvvvvv 10vvvvvv
+	 *      5 |   26 | 111110vv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
+	 *      6 |   31 | 1111110v 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
+	 *
+	 * @param	integer		UNICODE integer
+	 * @return	string		UTF-8 multibyte character string
+	 * @see utf8CharToUnumber()
+	 */
+	function UnumberToChar($cbyte)	{
+		$str='';
+
+		if ($cbyte < 0x80) {
+			$str.=chr($cbyte);
+		} else if ($cbyte < 0x800) {
+			$str.=chr(0xC0 | ($cbyte >> 6));
+			$str.=chr(0x80 | ($cbyte & 0x3F));
+		} else if ($cbyte < 0x10000) {
+			$str.=chr(0xE0 | ($cbyte >> 12));
+			$str.=chr(0x80 | (($cbyte >> 6) & 0x3F));
+			$str.=chr(0x80 | ($cbyte & 0x3F));
+		} else if ($cbyte < 0x200000) {
+			$str.=chr(0xF0 | ($cbyte >> 18));
+			$str.=chr(0x80 | (($cbyte >> 12) & 0x3F));
+			$str.=chr(0x80 | (($cbyte >> 6) & 0x3F));
+			$str.=chr(0x80 | ($cbyte & 0x3F));
+		} else if ($cbyte < 0x4000000) {
+			$str.=chr(0xF8 | ($cbyte >> 24));
+			$str.=chr(0x80 | (($cbyte >> 18) & 0x3F));
+			$str.=chr(0x80 | (($cbyte >> 12) & 0x3F));
+			$str.=chr(0x80 | (($cbyte >> 6) & 0x3F));
+			$str.=chr(0x80 | ($cbyte & 0x3F));
+		} else if ($cbyte < 0x80000000) {
+			$str.=chr(0xFC | ($cbyte >> 30));
+			$str.=chr(0x80 | (($cbyte >> 24) & 0x3F));
+			$str.=chr(0x80 | (($cbyte >> 18) & 0x3F));
+			$str.=chr(0x80 | (($cbyte >> 12) & 0x3F));
+			$str.=chr(0x80 | (($cbyte >> 6) & 0x3F));
+			$str.=chr(0x80 | ($cbyte & 0x3F));
+		} else { // Cannot express a 32-bit character in UTF-8
+			$str .= chr($this->noCharByteVal);
+		}
+		return $str;
+	}
+
+	/**
+	 * Converts a UTF-8 Multibyte character to a UNICODE number
+	 * Unit-tested by Kasper
+	 *
+	 * @param	string		UTF-8 multibyte character string
+	 * @param	boolean		If set, then a hex. number is returned.
+	 * @return	integer		UNICODE integer
+	 * @see UnumberToChar()
+	 */
+	function utf8CharToUnumber($str,$hex=0)	{
+		$ord=ord(substr($str,0,1));	// First char
+
+		if (($ord & 192) == 192)	{	// This verifyes that it IS a multi byte string
+			$binBuf='';
+			for ($b=0;$b<8;$b++)	{	// for each byte in multibyte string...
+				$ord = $ord << 1;	// Shift it left and ...
+				if ($ord & 128)	{	// ... and with 8th bit - if that is set, then there are still bytes in sequence.
+					$binBuf.=substr('00000000'.decbin(ord(substr($str,$b+1,1))),-6);
+				} else break;
+			}
+			$binBuf=substr('00000000'.decbin(ord(substr($str,0,1))),-(6-$b)).$binBuf;
+
+			$int = bindec($binBuf);
+		} else $int = $ord;
+
+		return $hex ? 'x'.dechex($int) : $int;
+	}
+
+
+
+
+
+
+
+
+
+	/********************************************
+	 *
+	 * Init functions
+	 *
+	 ********************************************/
+
+	/**
 	 * This will initialize a charset for use if it's defined in the PATH_t3lib.'csconvtbl/' folder
 	 * This function is automatically called by the conversion functions
 	 *
@@ -766,87 +872,6 @@ class t3lib_cs {
 				return 2;
 			} else return false;
 		} else return 1;
-	}
-
-	/**
-	 * Converts a UNICODE number to a UTF-8 multibyte character
-	 * Algorithm based on script found at From: http://czyborra.com/utf/
-	 *
-	 * The binary representation of the character's integer value is thus simply spread across the bytes and the number of high bits set in the lead byte announces the number of bytes in the multibyte sequence:
-	 *
-	 *  bytes | bits | representation
-	 *      1 |    7 | 0vvvvvvv
-	 *      2 |   11 | 110vvvvv 10vvvvvv
-	 *      3 |   16 | 1110vvvv 10vvvvvv 10vvvvvv
-	 *      4 |   21 | 11110vvv 10vvvvvv 10vvvvvv 10vvvvvv
-	 *      5 |   26 | 111110vv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
-	 *      6 |   31 | 1111110v 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
-	 *
-	 * @param	integer		UNICODE integer
-	 * @return	string		UTF-8 multibyte character string
-	 * @see utf8CharToUnumber()
-	 */
-	function UnumberToChar($cbyte)	{
-		$str='';
-
-		if ($cbyte < 0x80) {
-			$str.=chr($cbyte);
-		} else if ($cbyte < 0x800) {
-			$str.=chr(0xC0 | ($cbyte >> 6));
-			$str.=chr(0x80 | ($cbyte & 0x3F));
-		} else if ($cbyte < 0x10000) {
-			$str.=chr(0xE0 | ($cbyte >> 12));
-			$str.=chr(0x80 | (($cbyte >> 6) & 0x3F));
-			$str.=chr(0x80 | ($cbyte & 0x3F));
-		} else if ($cbyte < 0x200000) {
-			$str.=chr(0xF0 | ($cbyte >> 18));
-			$str.=chr(0x80 | (($cbyte >> 12) & 0x3F));
-			$str.=chr(0x80 | (($cbyte >> 6) & 0x3F));
-			$str.=chr(0x80 | ($cbyte & 0x3F));
-		} else if ($cbyte < 0x4000000) {
-			$str.=chr(0xF8 | ($cbyte >> 24));
-			$str.=chr(0x80 | (($cbyte >> 18) & 0x3F));
-			$str.=chr(0x80 | (($cbyte >> 12) & 0x3F));
-			$str.=chr(0x80 | (($cbyte >> 6) & 0x3F));
-			$str.=chr(0x80 | ($cbyte & 0x3F));
-		} else if ($cbyte < 0x80000000) {
-			$str.=chr(0xFC | ($cbyte >> 30));
-			$str.=chr(0x80 | (($cbyte >> 24) & 0x3F));
-			$str.=chr(0x80 | (($cbyte >> 18) & 0x3F));
-			$str.=chr(0x80 | (($cbyte >> 12) & 0x3F));
-			$str.=chr(0x80 | (($cbyte >> 6) & 0x3F));
-			$str.=chr(0x80 | ($cbyte & 0x3F));
-		} else { // Cannot express a 32-bit character in UTF-8
-			$str .= chr($this->noCharByteVal);
-		}
-		return $str;
-	}
-
-	/**
-	 * Converts a UTF-8 Multibyte character to a UNICODE number
-	 *
-	 * @param	string		UTF-8 multibyte character string
-	 * @param	boolean		If set, then a hex. number is returned.
-	 * @return	integer		UNICODE integer
-	 * @see UnumberToChar()
-	 */
-	function utf8CharToUnumber($str,$hex=0)	{
-		$ord=ord(substr($str,0,1));	// First char
-
-		if (($ord & 192) == 192)	{	// This verifyes that it IS a multi byte string
-			$binBuf='';
-			for ($b=0;$b<8;$b++)	{	// for each byte in multibyte string...
-				$ord = $ord << 1;	// Shift it left and ...
-				if ($ord & 128)	{	// ... and with 8th bit - if that is set, then there are still bytes in sequence.
-					$binBuf.=substr('00000000'.decbin(ord(substr($str,$b+1,1))),-6);
-				} else break;
-			}
-			$binBuf=substr('00000000'.decbin(ord(substr($str,0,1))),-(6-$b)).$binBuf;
-
-			$int = bindec($binBuf);
-		} else $int = $ord;
-
-		return $hex ? 'x'.dechex($int) : $int;
 	}
 
 	/**
@@ -941,6 +966,7 @@ class t3lib_cs {
 	 * This function initializes the folding table for a charset other than UTF-8.
 	 * This function is automatically called by the case folding functions.
 	 *
+	 * @param	string		Charset for which to initialize case folding.
 	 * @return	integer		Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
 	 * @access private
 	 */
@@ -1018,42 +1044,14 @@ class t3lib_cs {
 	 ********************************************/
 
 	/**
-	 * Cuts a string short at a given byte length.
-	 *
-	 * @param	string		the character set
-	 * @param	string		character string
-	 * @param	integer		the byte length
-	 * @return	string		the shortened string
-	 * @see mb_strcut()
-	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */
-	function strtrunc($charset,$string,$len)	{
-		if ($len <= 0)	return '';
-
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-			return mb_strcut($string,0,$len,$charset);
-		} elseif ($charset == 'utf-8')	{
-			return $this->utf8_strtrunc($string);
-		} elseif ($this->eucBasedSets[$charset])	{
-			return $this->euc_strtrunc($string,$charset);
-		} elseif ($this->twoByteSets[$charset])	{
-			if ($len % 2)	$len--;		// don't cut at odd positions
-		} elseif ($this->fourByteSets[$charset])	{
-			$x = $len % 4;
-			$len -= $x;	// realign to position dividable by four
-		}
-		// treat everything else as single-byte encoding
-		return substr($string,0,$len);
-	}
-
-	/**
 	 * Returns a part of a string.
+	 * Unit-tested by Kasper (single byte charsets only)
 	 *
-	 * @param	string		the character set
-	 * @param	string		character string
-	 * @param	int		start position (character position)
-	 * @param	int		length (in characters)
-	 * @return	string		the substring
+	 * @param	string		The character set
+	 * @param	string		Character string
+	 * @param	integer		Start position (character position)
+	 * @param	integer		Length (in characters)
+	 * @return	string		The substring
 	 * @see substr(), mb_substr()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
@@ -1082,17 +1080,44 @@ class t3lib_cs {
 		}
 
 		// treat everything else as single-byte encoding
-		return substr($string,$start,$len);
+		return $len === NULL ? substr($string,$start) : substr($string,$start,$len);
+	}
+
+	/**
+	 * Counts the number of characters.
+	 * Unit-tested by Kasper (single byte charsets only)
+	 *
+	 * @param	string		The character set
+	 * @param	string		Character string
+	 * @return	integer		The number of characters
+	 * @see strlen()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function strlen($charset,$string)	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
+			return mb_strlen($string,$charset);
+		} elseif ($charset == 'utf-8')	{
+			return $this->utf8_strlen($string);
+		} elseif ($this->eucBasedSets[$charset])	{
+			return $this->euc_strlen($string,$charset);
+		} elseif ($this->twoByteSets[$charset])	{
+			return strlen($string)/2;
+		} elseif ($this->fourByteSets[$charset])	{
+			return strlen($string)/4;
+		}
+		// treat everything else as single-byte encoding
+		return strlen($string);
 	}
 
 	/**
 	 * Truncates a string and pre-/appends a string.
+	 * Unit tested by Kasper
 	 *
-	 * @param	string		the character set
-	 * @param	string		character string
-	 * @param	int		length (in characters)
-	 * @param	string		crop signifier
-	 * @return	string		the shortened string
+	 * @param	string		The character set
+	 * @param	string		Character string
+	 * @param	integer		Length (in characters)
+	 * @param	string		Crop signifier
+	 * @return	string		The shortened string
 	 * @see substr(), mb_strimwidth()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
@@ -1115,12 +1140,10 @@ class t3lib_cs {
 		if ($i === false)	{	// $len outside actual string length
 			return $string;
 		} else	{
-			if ($len > 0)	{
-				if ($string{$i+1})	{
+			if (abs($len)<strlen($string))	{
+				if ($len > 0)	{
 					return substr($string,0,$i).$crop;
-				}
-			} else {
-				if ($string{$i-1})	{
+				} else {
 					return $crop.substr($string,$i);
 				}
 			}
@@ -1130,38 +1153,44 @@ class t3lib_cs {
 	}
 
 	/**
-	 * Counts the number of characters.
+	 * Cuts a string short at a given byte length.
 	 *
-	 * @param	string		the character set
-	 * @param	string		character string
-	 * @return	integer		the number of characters
-	 * @see strlen()
+	 * @param	string		The character set
+	 * @param	string		Character string
+	 * @param	integer		The byte length
+	 * @return	string		The shortened string
+	 * @see mb_strcut()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
-	function strlen($charset,$string)	{
+	function strtrunc($charset,$string,$len)	{
+		if ($len <= 0)	return '';
+
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
-			return mb_strlen($string,$charset);
+			return mb_strcut($string,0,$len,$charset);
 		} elseif ($charset == 'utf-8')	{
-			return $this->utf8_strlen($string);
+			return $this->utf8_strtrunc($string,$len);
 		} elseif ($this->eucBasedSets[$charset])	{
-			return $this->euc_strlen($string,$charset);
+			return $this->euc_strtrunc($string,$charset);
 		} elseif ($this->twoByteSets[$charset])	{
-			return strlen($string)/2;
+			if ($len % 2)	$len--;		// don't cut at odd positions
 		} elseif ($this->fourByteSets[$charset])	{
-			return strlen($string)/4;
+			$x = $len % 4;
+			$len -= $x;	// realign to position dividable by four
 		}
 		// treat everything else as single-byte encoding
-		return strlen($string);
+		return substr($string,0,$len);
 	}
 
 	/**
 	 * Translates all characters of a string into their respective case values.
 	 * Unlike strtolower() and strtoupper() this method is locale independent.
-	 *
+	 * Unit-tested by Kasper
 	 * Real case folding is language dependent, this method ignores this fact.
 	 *
-	 * @param	string		string
-	 * @return	string		the converted string
+	 * @param	string		Character set of string
+	 * @param	string		Input string to convert case for
+	 * @param	string		Case keyword: "toLower" means lowercase conversion, anything else is uppercase (use "toUpper" )
+	 * @return	string		The converted string
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 * @see strtolower(), strtoupper()
 	 */
@@ -1181,10 +1210,11 @@ class t3lib_cs {
 
 		// treat everything else as single-byte encoding
 		if (!$this->initCaseFolding($charset))	return $string;	// do nothing
-
 		$out = '';
 		$caseConv =& $this->caseFolding[$charset][$case];
-		for($i=0; $c=$string{$i}; $i++)	{
+
+		for($i=0; strlen($string{$i}); $i++)	{
+			$c = $string{$i};
 			$cc = $caseConv[$c];
 			if ($cc)	{
 				$out .= $cc;
@@ -1221,6 +1251,62 @@ class t3lib_cs {
 	 ********************************************/
 
 	/**
+	 * Returns a part of a UTF-8 string.
+	 * Unit-tested by Kasper and works 100% like substr() / mb_substr() for full range of $start/$len
+	 *
+	 * @param	string		UTF-8 string
+	 * @param	integer		Start position (character position)
+	 * @param	integer		Length (in characters)
+	 * @return	string		The substring
+	 * @see substr()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function utf8_substr($str,$start,$len=null)	{
+		if (!strcmp($len,'0'))	return '';
+
+		$byte_start = $this->utf8_char2byte_pos($str,$start);
+		if ($byte_start === false)	{
+			if ($start > 0)	{
+				return false;	// $start outside string length
+			} else {
+				$start = 0;
+			}
+		}
+
+		$str = substr($str,$byte_start);
+
+		if ($len!=null)	{
+			$byte_end = $this->utf8_char2byte_pos($str,$len);
+			if ($byte_end === false)	// $len outside actual string length
+				return $len<0 ? '' : $str;	// When length is less than zero and exceeds, then we return blank string.
+			else
+				return substr($str,0,$byte_end);
+		}
+		else	return $str;
+	}
+
+	/**
+	 * Counts the number of characters of a string in UTF-8.
+	 * Unit-tested by Kasper and works 100% like strlen() / mb_strlen()
+	 *
+	 * @param	string		UTF-8 multibyte character string
+	 * @return	integer		The number of characters
+	 * @see strlen()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function utf8_strlen($str)	{
+		$n=0;
+		for($i=0; strlen($str{$i}); $i++)	{
+			$c = ord($str{$i});
+			if (!($c & 0x80))	// single-byte (0xxxxxx)
+				$n++;
+			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
+				$n++;
+		}
+		return $n;
+	}
+
+	/**
 	 * Truncates a string in UTF-8 short at a given byte length.
 	 *
 	 * @param	string		UTF-8 multibyte character string
@@ -1242,58 +1328,12 @@ class t3lib_cs {
 	}
 
 	/**
-	 * Returns a part of a UTF-8 string.
-	 *
-	 * @param	string		$str	UTF-8 string
-	 * @param	int		$start	start position (character position)
-	 * @param	int		$len	length (in characters)
-	 * @return	string		the substring
-	 * @see substr()
-	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */
-	function utf8_substr($str,$start,$len=null)	{
-		$byte_start = $this->utf8_char2byte_pos($str,$start);
-		if ($byte_start === false)	return false;	// $start outside string length
-
-		$str = substr($str,$byte_start);
-
-		if ($len!=null)	{
-			$byte_end = $this->utf8_char2byte_pos($str,$len);
-			if ($byte_end === false)	// $len outside actual string length
-				return $str;
-			else
-				return substr($str,0,$byte_end);
-		}
-		else	return $str;
-	}
-
-	/**
-	 * Counts the number of characters of a string in UTF-8.
-	 *
-	 * @param	string		UTF-8 multibyte character string
-	 * @return	int		the number of characters
-	 * @see strlen()
-	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */
-	function utf8_strlen($str)	{
-		$n=0;
-		for($i=0; $str{$i}; $i++)	{
-			$c = ord($str{$i});
-			if (!($c & 0x80))	// single-byte (0xxxxxx)
-				$n++;
-			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
-				$n++;
-		}
-		return $n;
-	}
-
-	/**
 	 * Find position of first occurrence of a string, both arguments are in UTF-8.
 	 *
 	 * @param	string		UTF-8 string to search in
 	 * @param	string		UTF-8 string to search for
-	 * @param	int		positition to start the search
-	 * @return	int		the character position
+	 * @param	integer		Positition to start the search
+	 * @return	integer		The character position
 	 * @see strpos()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
@@ -1315,8 +1355,8 @@ class t3lib_cs {
 	 * Find position of last occurrence of a char in a string, both arguments are in UTF-8.
 	 *
 	 * @param	string		UTF-8 string to search in
-	 * @param	char		UTF-8 character to search for
-	 * @return	int		the character position
+	 * @param	string		UTF-8 character to search for (single character)
+	 * @return	integer		The character position
 	 * @see strrpos()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
@@ -1333,15 +1373,16 @@ class t3lib_cs {
 
 	/**
 	 * Translates a character position into an 'absolute' byte position.
+	 * Unit tested by Kasper.
 	 *
 	 * @param	string		UTF-8 string
-	 * @param	int		character position (negative values start from the end)
-	 * @return	int		byte position
+	 * @param	integer		Character position (negative values start from the end)
+	 * @return	integer		Byte position
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function utf8_char2byte_pos($str,$pos)	{
-		$n = 0;		// number of characters found
-		$p = abs($pos);	// number of characters wanted
+		$n = 0;				// number of characters found
+		$p = abs($pos);		// number of characters wanted
 
 		if ($pos >= 0)	{
 			$i = 0;
@@ -1351,14 +1392,14 @@ class t3lib_cs {
 			$d = -1;
 		}
 
-		for( ; $str{$i} && $n<$p; $i+=d)	{
+		for( ; strlen($str{$i}) && $n<$p; $i+=$d)	{
 			$c = (int)ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$n++;
 			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
 				$n++;
 		}
-		if (!$str{$i})	return false; // offset beyond string length
+		if (!strlen($str{$i}))	return false; // offset beyond string length
 
 		if ($pos >= 0)	{
 				// skip trailing multi-byte data bytes
@@ -1373,10 +1414,11 @@ class t3lib_cs {
 
 	/**
 	 * Translates an 'absolute' byte position into a character position.
+	 * Unit tested by Kasper.
 	 *
 	 * @param	string		UTF-8 string
-	 * @param	int		byte position
-	 * @return	int		character position
+	 * @param	integer		byte position
+	 * @return	integer		character position
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function utf8_byte2char_pos($str,$pos)	{
@@ -1388,13 +1430,14 @@ class t3lib_cs {
 			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
 				$n++;
 		}
-		if (!$str{$i})	return false; // offset beyond string length
+		if (!strlen($str{$i}))	return false; // offset beyond string length
 
 		return $n;
 	}
 
 	/**
 	 * Translates all characters of an UTF-8 string into their respective case values.
+	 * Unit-tested by Kasper
 	 *
 	 * @param	string		UTF-8 string
 	 * @param	string		conversion: 'toLower' or 'toUpper'
@@ -1407,7 +1450,8 @@ class t3lib_cs {
 
 		$out = '';
 		$caseConv =& $this->caseFolding['utf-8'][$case];
-		for($i=0; $str{$i}; $i++)	{
+
+		for($i=0; strlen($str{$i}); $i++)	{
 			$c = ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$mbc = $str{$i};
@@ -1469,7 +1513,7 @@ class t3lib_cs {
 	 */
 	function euc_strtrunc($str,$len,$charset)	 {
 		$sjis = ($charset == 'shift_jis');
-		for ($i=0; $str{$i} && $i<$len; $i++) {
+		for ($i=0; strlen($str{$i}) && $i<$len; $i++) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
@@ -1478,7 +1522,7 @@ class t3lib_cs {
 				if ($c >= 0x80)	$i++;	// advance a double-byte char
 			}
 		}
-		if (!$str{$i})	return $str;	// string shorter than supplied length
+		if (!strlen($str{$i}))	return $str;	// string shorter than supplied length
 
 		if ($i>$len)
 			return substr($str,0,$len-1);	// we ended on a first byte
@@ -1490,9 +1534,9 @@ class t3lib_cs {
 	 * Returns a part of a string in the EUC charset family.
 	 *
 	 * @param	string		EUC multibyte character string
-	 * @param	int		start position (character position)
+	 * @param	integer		start position (character position)
 	 * @param	string		the charset
-	 * @param	int		length (in characters)
+	 * @param	integer		length (in characters)
 	 * @return	string		the substring
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
@@ -1517,14 +1561,14 @@ class t3lib_cs {
 	 *
 	 * @param	string		EUC multibyte character string
 	 * @param	string		the charset
-	 * @return	int		the number of characters
+	 * @return	integer		the number of characters
 	 * @see strlen()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function euc_strlen($str,$charset)	 {
 		$sjis = ($charset == 'shift_jis');
 		$n=0;
-		for ($i=0; $str{$i}; $i++) {
+		for ($i=0; strlen($str{$i}); $i++) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
@@ -1537,15 +1581,15 @@ class t3lib_cs {
 		}
 
 		return $n;
-        }
+	}
 
 	/**
 	 * Translates a character position into an 'absolute' byte position.
 	 *
 	 * @param	string		EUC multibyte character string
-	 * @param	int		character position (negative values start from the end)
+	 * @param	integer		character position (negative values start from the end)
 	 * @param	string		the charset
-	 * @return	int		byte position
+	 * @return	integer		byte position
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function euc_char2byte_pos($str,$pos,$charset)	{
@@ -1561,7 +1605,7 @@ class t3lib_cs {
 			$d = -1;
 		}
 
-		for ( ; $str{$i} && $n<$p; $i+=$d) {
+		for ( ; strlen($str{$i}) && $n<$p; $i+=$d) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i+=$d;	// advance a double-byte char
@@ -1572,7 +1616,7 @@ class t3lib_cs {
 
 			$n++;
 		}
-		if (!$str{$i})	return false; // offset beyond string length
+		if (!strlen($str{$i}))	return false; // offset beyond string length
 
 		if ($pos < 0)	$i++;	// correct offset
 
@@ -1621,7 +1665,6 @@ class t3lib_cs {
 
 		return $out;
 	}
-
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_cs.php'])	{
