@@ -80,17 +80,17 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 class SC_tce_db {
 
 		// Internal, static: GPvar
-	var $flags;
-	var $data;
-	var $cmd;
-	var $mirror;
-	var $cacheCmd;
-	var $redirect;
-	var $prErr;
-	var $_disableRTE;
-	var $CB;
-	var $vC;
-	var $uPT;
+	var $flags;			// Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (boolean).
+	var $data;			// Data array on the form [tablename][uid][fieldname] = value
+	var $cmd;			// Command array on the form [tablename][uid][command] = value. This array may get additional data set internally based on clipboard commands send in CB var!
+	var $mirror;		// Array passed to ->setMirror.
+	var $cacheCmd;		// Cache command sent to ->clear_cacheCmd
+	var $redirect;		// Redirect URL. Script will redirect to this location after performing operations (unless errors has occured)
+	var $prErr;			// Boolean. If set, errors will be printed on screen instead of redirection. Should always be used, otherwise you will see no errors if they happen.
+#	var $_disableRTE;
+	var $CB;			// Clipboard command array. May trigger changes in "cmd"
+	var $vC;			// Verification code
+	var $uPT;			// Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
 
 		// Internal, dynamic:
 	var $include_once=array();		// Files to include after init() function is called:
@@ -145,7 +145,7 @@ class SC_tce_db {
 			$this->tce->reverseOrder=1;
 		}
 
-		$this->tce->disableRTE = $this->_disableRTE;
+#		$this->tce->disableRTE = $this->_disableRTE;
 
 			// Clipboard?
 		if (is_array($this->CB))	{

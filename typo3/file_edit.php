@@ -48,10 +48,10 @@
  *
  */
 
-$BACK_PATH='';
-require ('init.php');
-require ('template.php');
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
+$BACK_PATH = '';
+require('init.php');
+require('template.php');
+require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 
 
@@ -82,6 +82,7 @@ class SC_file_edit {
 		// Internal, static: GPvar
 	var $origTarget;		// Original input target
 	var $target;			// The original target, but validated.
+	var $returnUrl;		// Return URL of list module.
 
 
 	/**
@@ -94,6 +95,7 @@ class SC_file_edit {
 
 			// Setting target, which must be a file reference to a file within the mounts.
 		$this->target = $this->origTarget = t3lib_div::_GP('target');
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
 
 			// Creating file management object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
@@ -156,13 +158,13 @@ class SC_file_edit {
 			$fileContent = t3lib_div::getUrl($this->target);
 
 				// making the formfields
-			$hValue = 'file_edit.php?target='.rawurlencode($this->origTarget);
-			$code='';
+			$hValue = 'file_edit.php?target='.rawurlencode($this->origTarget).'&returnUrl='.rawurlencode($this->returnUrl);
+			$code = '';
 			$code.='
 				<div id="c-submit">
 					<input type="hidden" name="redirect" value="'.htmlspecialchars($hValue).'" />
 					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.submit',1).'" />
-					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose',1).'" onclick="document.editform.redirect.value=\'\';" />
+					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose',1).'" onclick="document.editform.redirect.value=\''.htmlspecialchars($this->returnUrl).'\';" />
 					<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
 				</div>
 				';

@@ -39,15 +39,15 @@
  *
  *
  *   85: class t3lib_iconWorks
- *   99:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=FALSE)
- *  116:     function getIcon($table,$row=array(),$shaded=FALSE)
- *  251:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)
+ *  100:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=FALSE)
+ *  118:     function getIcon($table,$row=array(),$shaded=FALSE)
+ *  254:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)
  *
  *              SECTION: Other functions
- *  325:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)
- *  441:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
- *  474:     function imagecreatefrom($file)
- *  491:     function imagemake($im, $path)
+ *  328:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)
+ *  444:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
+ *  477:     function imagecreatefrom($file)
+ *  494:     function imagemake($im, $path)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -87,6 +87,7 @@ class t3lib_iconWorks	{
 	/**
 	 * Returns an icon image tag, 18x16 pixels, based on input information.
 	 * This function is recommended to use in your backend modules.
+	 * Usage: 60
 	 *
 	 * @param	string		The table name
 	 * @param	array		The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
@@ -106,6 +107,7 @@ class t3lib_iconWorks	{
 	/**
 	 * Creates the icon for input table/row
 	 * Returns filename for the image icon, relative to PATH_typo3
+	 * Usage: 24
 	 *
 	 * @param	string		The table name
 	 * @param	array		The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
@@ -240,6 +242,7 @@ class t3lib_iconWorks	{
 	/**
 	 * Returns the src=... for the input $src value OR any alternative found in $TBE_STYLES['skinImg']
 	 * Used for skinning the TYPO3 backend with an alternative set of icons
+	 * Usage: 336
 	 *
 	 * @param	string		Current backpath to PATH_typo3 folder
 	 * @param	string		Icon file name relative to PATH_typo3 folder

@@ -39,136 +39,140 @@
  *
  *
  *
- *  203: class t3lib_div
+ *  207: class t3lib_div
  *
  *              SECTION: GET/POST Variables
- *  232:     function _GP($var)
- *  246:     function _GET($var='')
- *  260:     function _POST($var='')
- *  273:     function _GETset($inputGet,$key='')
- *  297:     function GPvar($var,$strip=0)
- *  314:     function setGPvars($list,$strip=0)
- *  331:     function GParrayMerged($var)
+ *  237:     function _GP($var)
+ *  254:     function _GET($var='')
+ *  269:     function _POST($var='')
+ *  283:     function _GETset($inputGet,$key='')
+ *  306:     function GPvar($var,$strip=0)
+ *  322:     function setGPvars($list,$strip=0)
+ *  338:     function GParrayMerged($var)
  *
  *              SECTION: IMAGE FUNCTIONS
- *  376:     function gif_compress($theFile, $type)
- *  404:     function png_to_gif_by_imagemagick($theFile)
- *  428:     function read_png_gif($theFile,$output_png=0)
+ *  382:     function gif_compress($theFile, $type)
+ *  408:     function png_to_gif_by_imagemagick($theFile)
+ *  432:     function read_png_gif($theFile,$output_png=0)
  *
  *              SECTION: STRING FUNCTIONS
- *  477:     function fixed_lgd($string,$chars,$preStr='...')
- *  499:     function fixed_lgd_pre($string,$chars)
- *  513:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)
- *  533:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
- *  569:     function cmpIP($baseIP, $list)
- *  616:     function inList($in_list,$item)
- *  629:     function rmFromList($element,$list)
- *  648:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
- *  665:     function intval_positive($theInt)
- *  679:     function int_from_ver($verNumberStr)
- *  692:     function md5int($str)
- *  704:     function uniqueList($in_list)
- *  717:     function split_fileref($fileref)
- *  754:     function dirname($path)
- *  771:     function modifyHTMLColor($color,$R,$G,$B)
- *  792:     function modifyHTMLColorAll($color,$all)
- *  804:     function rm_endcomma($string)
- *  817:     function danish_strtoupper($string)
- *  832:     function convUmlauts($str)
- *  847:     function shortMD5($input, $len=10)
- *  859:     function testInt($var)
- *  872:     function isFirstPartOfStr($str,$partStr)
- *  889:     function formatSize($sizeInBytes,$labels='')
- *  925:     function convertMicrotime($microtime)
- *  939:     function splitCalc($string,$operators)
- *  961:     function calcPriority($string)
- * 1001:     function calcParenthesis($string)
- * 1028:     function htmlspecialchars_decode($value)
- * 1042:     function deHSCentities($str)
- * 1055:     function slashJS($string,$extended=0,$char="'")
- * 1069:     function rawUrlEncodeJS($str)
- * 1080:     function rawUrlEncodeFP($str)
- * 1092:     function validEmail($email)
- * 1108:     function formatForTextarea($content)
+ *  481:     function fixed_lgd($string,$origChars,$preStr='...')
+ *  506:     function fixed_lgd_pre($string,$chars)
+ *  520:     function fixed_lgd_cs($string,$chars)
+ *  537:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)
+ *  556:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
+ *  591:     function cmpIP($baseIP, $list)
+ *  633:     function cmpFQDN($baseIP, $list)
+ *  663:     function inList($in_list,$item)
+ *  675:     function rmFromList($element,$list)
+ *  693:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
+ *  709:     function intval_positive($theInt)
+ *  722:     function int_from_ver($verNumberStr)
+ *  734:     function md5int($str)
+ *  747:     function shortMD5($input, $len=10)
+ *  758:     function uniqueList()
+ *  778:     function split_fileref($fileref)
+ *  815:     function dirname($path)
+ *  831:     function modifyHTMLColor($color,$R,$G,$B)
+ *  851:     function modifyHTMLColorAll($color,$all)
+ *  862:     function rm_endcomma($string)
+ *  875:     function danish_strtoupper($string)
+ *  890:     function convUmlauts($str)
+ *  903:     function testInt($var)
+ *  915:     function isFirstPartOfStr($str,$partStr)
+ *  931:     function formatSize($sizeInBytes,$labels='')
+ *  966:     function convertMicrotime($microtime)
+ *  980:     function splitCalc($string,$operators)
+ * 1002:     function calcPriority($string)
+ * 1042:     function calcParenthesis($string)
+ * 1068:     function htmlspecialchars_decode($value)
+ * 1083:     function deHSCentities($str)
+ * 1096:     function slashJS($string,$extended=0,$char="'")
+ * 1109:     function rawUrlEncodeJS($str)
+ * 1121:     function rawUrlEncodeFP($str)
+ * 1132:     function validEmail($email)
+ * 1147:     function formatForTextarea($content)
  *
  *              SECTION: ARRAY FUNCTIONS
- * 1140:     function inArray($in_array,$item)
- * 1158:     function intExplode($delim, $string)
- * 1178:     function revExplode($delim, $string, $count=0)
- * 1199:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)
- * 1224:     function uniqueArray($valueArray)
- * 1247:     function removeArrayEntryByValue($array,$cmpValue)
- * 1276:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
- * 1303:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)
- * 1327:     function addSlashesOnArray(&$theArray)
- * 1352:     function stripSlashesOnArray(&$theArray)
- * 1375:     function slashArray($arr,$cmd)
- * 1392:     function array_merge_recursive_overrule ($arr0,$arr1,$notAddKeys=0)
- * 1422:     function array_merge($arr1,$arr2)
- * 1436:     function csvValues($row,$delim=',',$quote='"')
+ * 1178:     function inArray($in_array,$item)
+ * 1195:     function intExplode($delim, $string)
+ * 1214:     function revExplode($delim, $string, $count=0)
+ * 1234:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)
+ * 1259:     function uniqueArray($valueArray)
+ * 1281:     function removeArrayEntryByValue($array,$cmpValue)
+ * 1309:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
+ * 1336:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)
+ * 1359:     function addSlashesOnArray(&$theArray)
+ * 1383:     function stripSlashesOnArray(&$theArray)
+ * 1405:     function slashArray($arr,$cmd)
+ * 1421:     function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0)
+ * 1450:     function array_merge($arr1,$arr2)
+ * 1463:     function csvValues($row,$delim=',',$quote='"')
  *
  *              SECTION: HTML/XML PROCESSING
- * 1479:     function get_tag_attributes($tag)
- * 1517:     function split_tag_attributes($tag)
- * 1552:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
- * 1580:     function wrapJS($string, $linebreak=TRUE)
- * 1609:     function xml2tree($string,$depth=999)
- * 1694:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$parentTagName='')
- * 1776:     function xml2array($string,$NSprefix='')
- * 1863:     function xmlRecompileFromStructValArray($vals)
- * 1906:     function xmlGetHeaderAttribs($xmlData)
+ * 1505:     function get_tag_attributes($tag)
+ * 1542:     function split_tag_attributes($tag)
+ * 1576:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
+ * 1604:     function wrapJS($string, $linebreak=TRUE)
+ * 1634:     function xml2tree($string,$depth=999)
+ * 1720:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$parentTagName='')
+ * 1803:     function xml2array($string,$NSprefix='')
+ * 1891:     function xmlRecompileFromStructValArray($vals)
+ * 1935:     function xmlGetHeaderAttribs($xmlData)
  *
  *              SECTION: FILES FUNCTIONS
- * 1939:     function getURL($url)
- * 1982:     function writeFile($file,$content)
- * 2002:     function mkdir($theNewFolder)
- * 2019:     function get_dirs($path)
- * 2045:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')
- * 2098:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)
- * 2120:     function removePrefixPathFromList($fileArr,$prefixToRemove)
- * 2137:     function fixWindowsFilePath($theFile)
- * 2147:     function resolveBackPath($pathStr)
- * 2175:     function locationHeaderUrl($path)
+ * 1967:     function getURL($url)
+ * 2009:     function writeFile($file,$content)
+ * 2030:     function mkdir($theNewFolder)
+ * 2046:     function get_dirs($path)
+ * 2071:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')
+ * 2125:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)
+ * 2148:     function removePrefixPathFromList($fileArr,$prefixToRemove)
+ * 2164:     function fixWindowsFilePath($theFile)
+ * 2175:     function resolveBackPath($pathStr)
+ * 2202:     function locationHeaderUrl($path)
  *
  *              SECTION: DEBUG helper FUNCTIONS
- * 2215:     function debug_ordvalue($string,$characters=100)
- * 2232:     function view_array($array_in)
- * 2260:     function print_array($array_in)
- * 2276:     function debug($var="",$brOrHeader=0)
+ * 2242:     function debug_ordvalue($string,$characters=100)
+ * 2259:     function view_array($array_in)
+ * 2287:     function print_array($array_in)
+ * 2302:     function debug($var="",$brOrHeader=0)
  *
  *              SECTION: SYSTEM INFORMATION
- * 2345:     function getThisUrl()
- * 2362:     function linkThisScript($getParams=array())
- * 2386:     function linkThisUrl($url,$getParams=array())
- * 2412:     function getIndpEnv($getEnvName)
- * 2604:     function milliseconds()
- * 2617:     function clientInfo($useragent='')
+ * 2371:     function getThisUrl()
+ * 2387:     function linkThisScript($getParams=array())
+ * 2411:     function linkThisUrl($url,$getParams=array())
+ * 2436:     function getIndpEnv($getEnvName)
+ * 2626:     function milliseconds()
+ * 2638:     function clientInfo($useragent='')
  *
  *              SECTION: TYPO3 SPECIFIC FUNCTIONS
- * 2706:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)
- * 2742:     function validPathStr($theFile)
- * 2754:     function isAbsPath($path)
- * 2766:     function isAllowedAbsPath($path)
- * 2784:     function verifyFilenameAgainstDenyPattern($filename)
- * 2802:     function upload_copy_move($source,$destination)
- * 2830:     function upload_to_tempfile($uploadedFileName)
- * 2847:     function unlink_tempfile($uploadedTempFileName)
- * 2862:     function tempnam($filePrefix)
- * 2875:     function stdAuthCode($uid_or_record,$fields='')
- * 2909:     function loadTCA($table)
- * 2928:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')
- * 2956:     function resolveAllSheetsInDS($dataStructArray)
- * 2986:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)
- * 3165:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')
- * 3204:     function makeInstanceClassName($className)
- * 3224:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)
- * 3271:     function quoted_printable($string,$maxlen=76)
- * 3314:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
- * 3349:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')
- * 3377:     function freetypeDpiComp($font_size)
- * 3396:     function devLog($msg, $extKey, $severity=0, $dataVar=FALSE)
+ * 2726:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)
+ * 2761:     function validPathStr($theFile)
+ * 2772:     function isAbsPath($path)
+ * 2783:     function isAllowedAbsPath($path)
+ * 2800:     function verifyFilenameAgainstDenyPattern($filename)
+ * 2818:     function upload_copy_move($source,$destination)
+ * 2847:     function upload_to_tempfile($uploadedFileName)
+ * 2865:     function unlink_tempfile($uploadedTempFileName)
+ * 2881:     function tempnam($filePrefix)
+ * 2894:     function stdAuthCode($uid_or_record,$fields='')
+ * 2928:     function loadTCA($table)
+ * 2948:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')
+ * 2976:     function resolveAllSheetsInDS($dataStructArray)
+ * 3005:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)
+ * 3103:     function &getUserObj($classRef,$checkPrefix='user_',$silent=0)
+ * 3161:     function &makeInstance($className)
+ * 3173:     function makeInstanceClassName($className)
+ * 3187:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')
+ * 3232:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)
+ * 3277:     function quoted_printable($string,$maxlen=76)
+ * 3319:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
+ * 3353:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')
+ * 3380:     function freetypeDpiComp($font_size)
+ * 3399:     function devLog($msg, $extKey, $severity=0, $dataVar=FALSE)
  *
- * TOTAL FUNCTIONS: 109
+ * TOTAL FUNCTIONS: 113
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -224,6 +228,7 @@ class t3lib_div {
 	 * Strips slashes from all output, both strings and arrays.
 	 * This function substitutes t3lib_div::GPvar()
 	 * To enhancement security in your scripts, please consider using t3lib_div::_GET or t3lib_div::_POST if you already know by which method your data is arriving to the scripts!
+	 * Usage: 537
 	 *
 	 * @param	string		GET/POST var to return
 	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
@@ -240,6 +245,7 @@ class t3lib_div {
 	/**
 	 * Returns the global GET array (or value from) normalized to contain un-escaped values.
 	 * ALWAYS use this API function to acquire the GET variables!
+	 * Usage: 27
 	 *
 	 * @param	string		Optional pointer to value in GET array (basically name of GET var)
 	 * @return	mixed		If $var is set it returns the value of $HTTP_GET_VARS[$var]. If $var is blank or zero, returns $HTTP_GET_VARS itself. In any case *slashes are stipped from the output!*
@@ -254,6 +260,7 @@ class t3lib_div {
 	/**
 	 * Returns the global POST array (or value from) normalized to contain un-escaped values.
 	 * ALWAYS use this API function to acquire the POST variables!
+	 * Usage: 41
 	 *
 	 * @param	string		Optional pointer to value in POST array (basically name of POST var)
 	 * @return	mixed		If $var is set it returns the value of $HTTP_POST_VARS[$var]. If $var is blank or zero, returns $HTTP_POST_VARS itself. In any case *slashes are stipped from the output!*
@@ -267,6 +274,7 @@ class t3lib_div {
 
 	/**
 	 * Writes input value to $HTTP_GET_VARS / $_GET
+	 * Usage: 2
 	 *
 	 * @param	array		Array to write to $HTTP_GET_VARS / $_GET. Values should NOT be escaped at input time (but will be escaped before writing according to TYPO3 standards).
 	 * @param	string		Alternative key; If set, this will not set the WHOLE GET array, but only the key in it specified by this value!
@@ -287,13 +295,12 @@ class t3lib_div {
 	 * GET/POST variable
 	 * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST (that is equalent to 'GP' order)
 	 * Strips slashes of string-outputs, but not arrays UNLESS $strip is set. If $strip is set all output will have escaped characters unescaped.
-	 *
-	 * Usage: 686
+	 * Usage: 2
 	 *
 	 * @param	string		GET/POST var to return
 	 * @param	boolean		If set, values are stripped of return values that are *arrays!* - string/integer values returned are always strip-slashed()
 	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
-	 * @depreciated		Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
+	 * @deprecated		Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
 	 * @see _GP()
 	 */
 	function GPvar($var,$strip=0)	{
@@ -305,13 +312,12 @@ class t3lib_div {
 
 	/**
 	 * Sets global variables from HTTP_POST_VARS or HTTP_GET_VARS
-	 *
-	 * Usage: 9
+	 * Usage: 0
 	 *
 	 * @param	string		List of GET/POST var keys to set globally
 	 * @param	boolean		If set, values are passed through stripslashes()
 	 * @return	void
-	 * @depreciated
+	 * @deprecated
 	 */
 	function setGPvars($list,$strip=0)	{
 		$vars = t3lib_div::trimExplode(',',$list,1);
@@ -322,13 +328,12 @@ class t3lib_div {
 
 	/**
 	 * Returns the GET/POST global arrays merged with POST taking precedence.
-	 *
 	 * Usage: 1
 	 *
 	 * @param	string		Key (variable name) from GET or POST vars
 	 * @return	array		Returns the GET vars merged recursively onto the POST vars.
 	 * @ignore
-	 * @depreciated
+	 * @deprecated
 	 */
 	function GParrayMerged($var)	{
 		$postA = is_array($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : array();
@@ -367,8 +372,7 @@ class t3lib_div {
 	 *
 	 * 		$theFile is expected to be a valid GIF-file!
 	 * 		The function returns a code for the operation.
-	 *
-	 * Usage: 11
+	 * Usage: 9
 	 *
 	 * @param	string		Filepath
 	 * @param	string		See description of function
@@ -394,9 +398,7 @@ class t3lib_div {
 
 	/**
 	 * Converts a png file to gif
-	 *
 	 * This converts a png file to gif IF the FLAG $GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] is set true.
-	 *
 	 * Usage: 5
 	 *
 	 * @param	string		$theFile	the filename with path
@@ -420,7 +422,7 @@ class t3lib_div {
 	/**
 	 * Returns filename of the png/gif version of the input file (which can be png or gif).
 	 * If input file type does not match the wanted output type a conversion is made and temp-filename returned.
-	 * Usage: 1
+	 * Usage: 2
 	 *
 	 * @param	string		Filepath of image file
 	 * @param	boolean		If set, then input file is converted to PNG, otherwise to GIF
@@ -468,8 +470,7 @@ class t3lib_div {
 	 * Returns a new string of max. $chars length.
 	 * If the string is longer, it will be truncated and appended with '...'.
 	 * DEPRECIATED. Works ONLY for single-byte charsets! USE t3lib_div::fixed_lgd_cs() instead
-	 *
-	 * Usage: 119
+	 * Usage: 39
 	 *
 	 * @param	string		$string 	string to truncate
 	 * @param	integer		$chars 	must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
@@ -495,8 +496,7 @@ class t3lib_div {
 	 * If the string is longer, it will be truncated and prepended with '...'.
 	 * This works like fixed_lgd, but is truncated in the start of the string instead of the end
 	 * DEPRECIATED. Use either fixed_lgd() or fixed_lgd_cs() (with negative input value for $chars)
-	 *
-	 * Usage: 19
+	 * Usage: 6
 	 *
 	 * @param	string		$string 	string to truncate
 	 * @param	integer		$chars 	must be an integer of at least 4
@@ -510,6 +510,7 @@ class t3lib_div {
 	/**
 	 * Truncates a string with appended/prepended "..." and takes backend character set into consideration
 	 * Use only from backend!
+	 * Usage: 75
 	 *
 	 * @param	string		$string 	string to truncate
 	 * @param	integer		$chars 	must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
@@ -526,7 +527,6 @@ class t3lib_div {
 
 	/**
 	 * Breaks up the text for emails
-	 *
 	 * Usage: 1
 	 *
 	 * @param	string		The string to break up
@@ -545,8 +545,7 @@ class t3lib_div {
 
 	/**
 	 * Breaks up a single line of text for emails
-	 *
-	 * Usage: 3
+	 * Usage: 5
 	 *
 	 * @param	string		The string to break up
 	 * @param	string		The string to implode the broken lines with (default/typically \n)
@@ -583,8 +582,7 @@ class t3lib_div {
 
 	/**
 	 * Match IP number with list of numbers with wildcard
-	 *
-	 * Usage: 8
+	 * Usage: 10
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
 	 * @param	string		$list is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168)
@@ -628,9 +626,9 @@ class t3lib_div {
 	/**
 	 * Match fully qualified domain name with list of strings with wildcard
 	 *
-	 * @param       string         $baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
-	 * @param       string          $list is a comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
-	 * @return      boolean         True if a domain name mask from $list matches $baseIP
+	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
+	 * @param	string		$list is a comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
+	 * @return	boolean		True if a domain name mask from $list matches $baseIP
 	 */
 	function cmpFQDN($baseIP, $list)        {
 		if (count(explode('.',$baseIP))==4)     {
@@ -655,10 +653,8 @@ class t3lib_div {
 
 	/**
 	 * Check for item in list
-	 *
 	 * Check if an item exists in a comma-separated list of items.
-	 *
-	 * Usage: 166
+	 * Usage: 163
 	 *
 	 * @param	string		$in_list 	comma-separated list of items (string)
 	 * @param	string		$item 	item to check for
@@ -670,7 +666,6 @@ class t3lib_div {
 
 	/**
 	 * Removes an item from a comma-separated list of items.
-	 *
 	 * Usage: 1
 	 *
 	 * @param	string		$element  	element to remove
@@ -687,8 +682,7 @@ class t3lib_div {
 
 	/**
 	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is 'false' then the $zeroValue is applied.
-	 *
-	 * Usage: 226
+	 * Usage: 224
 	 *
 	 * @param	integer		Input value
 	 * @param	integer		Lower limit
@@ -707,7 +701,6 @@ class t3lib_div {
 
 	/**
 	 * Returns the $integer if greater than zero, otherwise returns zero.
-	 *
 	 * Usage: 1
 	 *
 	 * @param	integer		Integer string to process
@@ -721,7 +714,6 @@ class t3lib_div {
 
 	/**
 	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
-	 *
 	 * Usage: 2
 	 *
 	 * @param	string		Version number on format x.x.x
@@ -734,8 +726,7 @@ class t3lib_div {
 
 	/**
 	 * Makes a positive integer hash out of the first 7 chars from the md5 hash of the input
-	 *
-	 * Usage: 0
+	 * Usage: 5
 	 *
 	 * @param	string		String to md5-hash
 	 * @return	integer		Returns 28bit integer-hash
@@ -745,8 +736,20 @@ class t3lib_div {
 	}
 
 	/**
-	 * Takes comma-separated lists and arrays and removes all duplicates
+	 * Returns the first 10 positions of the MD5-hash		(changed from 6 to 10 recently)
 	 *
+	 * Usage: 37
+	 *
+	 * @param	string		Input string to be md5-hashed
+	 * @param	integer		The string-length of the output
+	 * @return	string		Substring of the resulting md5-hash, being $len chars long (from beginning)
+	 */
+	function shortMD5($input, $len=10)	{
+		return substr(md5($input),0,$len);
+	}
+
+	/**
+	 * Takes comma-separated lists and arrays and removes all duplicates
 	 * Usage: 16
 	 *
 	 * @param	string		Accept multiple parameters wich can be comma-separated lists of values and arrays.
@@ -767,7 +770,6 @@ class t3lib_div {
 
 	/**
 	 * Splits a reference to a file in 5 parts
-	 *
 	 * Usage: 43
 	 *
 	 * @param	string		Filename/filepath to be analysed
@@ -817,8 +819,7 @@ class t3lib_div {
 
 	/**
 	 * Modifies a HTML Hex color by adding/subtracting $R,$G and $B integers
-	 *
-	 * Usage: 37
+	 * Usage: 11
 	 *
 	 * @param	string		A hexadecimal color code, #xxxxxx
 	 * @param	integer		Offset value 0-255
@@ -840,8 +841,7 @@ class t3lib_div {
 
 	/**
 	 * Modifies a HTML Hex color by adding/subtracting $all integer from all R/G/B channels
-	 *
-	 * Usage: 4
+	 * Usage: 6
 	 *
 	 * @param	string		A hexadecimal color code, #xxxxxx
 	 * @param	integer		Offset value 0-255 for all three channels.
@@ -854,8 +854,7 @@ class t3lib_div {
 
 	/**
 	 * Removes comma (if present) in the end of string
-	 *
-	 * Usage: 4
+	 * Usage: 2
 	 *
 	 * @param	string		String from which the comma in the end (if any) will be removed.
 	 * @return	string
@@ -895,22 +894,8 @@ class t3lib_div {
 	}
 
 	/**
-	 * Returns the first 10 positions of the MD5-hash		(changed from 6 to 10 recently)
-	 *
-	 * Usage: 43
-	 *
-	 * @param	string		Input string to be md5-hashed
-	 * @param	integer		The string-length of the output
-	 * @return	string		Substring of the resulting md5-hash, being $len chars long (from beginning)
-	 */
-	function shortMD5($input, $len=10)	{
-		return substr(md5($input),0,$len);
-	}
-
-	/**
 	 * Tests if the input is an integer.
-	 *
-	 * Usage: 74
+	 * Usage: 77
 	 *
 	 * @param	mixed		Any input variable to test.
 	 * @return	boolean		Returns true if string is an integer
@@ -921,8 +906,7 @@ class t3lib_div {
 
 	/**
 	 * Returns true if the first part of $str matches the string $partStr
-	 *
-	 * Usage: 58
+	 * Usage: 59
 	 *
 	 * @param	string		Full string to check
 	 * @param	string		Reference string which must be found as the "first part" of the full string
@@ -938,8 +922,7 @@ class t3lib_div {
 
 	/**
 	 * Formats the input integer $sizeInBytes as bytes/kilobytes/megabytes (-/K/M)
-	 *
-	 * Usage: 54
+	 * Usage: 53
 	 *
 	 * @param	integer		Number of bytes to format.
 	 * @param	string		Labels for bytes, kilo, mega and giga separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
@@ -975,7 +958,6 @@ class t3lib_div {
 
 	/**
 	 * Returns microtime input to milliseconds
-	 *
 	 * Usage: 2
 	 *
 	 * @param	string		Microtime
@@ -1078,8 +1060,7 @@ class t3lib_div {
 
 	/**
 	 * Inverse version of htmlspecialchars()
-	 *
-	 * Usage: 2
+	 * Usage: 4
 	 *
 	 * @param	string		Value where &gt;, &lt;, &quot; and &amp; should be converted to regular chars.
 	 * @return	string		Converted result.
@@ -1094,6 +1075,7 @@ class t3lib_div {
 
 	/**
 	 * Re-converts HTML entities if they have been converted by htmlspecialchars()
+	 * Usage: 10
 	 *
 	 * @param	string		String which contains eg. "&amp;amp;" which should stay "&amp;". Or "&amp;#1234;" to "&#1234;". Or "&amp;#x1b;" to "&#x1b;"
 	 * @return	string		Converted result.
@@ -1104,7 +1086,7 @@ class t3lib_div {
 
 	/**
 	 * This function is used to escape any ' -characters when transferring text to JavaScript!
-	 * Usage: 6
+	 * Usage: 3
 	 *
 	 * @param	string		String to escape
 	 * @param	boolean		If set, also backslashes are escaped.
@@ -1119,8 +1101,7 @@ class t3lib_div {
 	/**
 	 * Version of rawurlencode() where all spaces (%20) are re-converted to space-characters.
 	 * Usefull when passing text to JavaScript where you simply url-encode it to get around problems with syntax-errors, linebreaks etc.
-	 *
-	 * Usage: 8
+	 * Usage: 4
 	 *
 	 * @param	string		String to raw-url-encode with spaces preserved
 	 * @return	string		Rawurlencoded result of input string, but with all %20 (space chars) converted to real spaces.
@@ -1132,6 +1113,7 @@ class t3lib_div {
 	/**
 	 * rawurlencode which preserves "/" chars
 	 * Usefull when filepaths should keep the "/" chars, but have all other special chars encoded.
+	 * Usage: 5
 	 *
 	 * @param	string		Input string
 	 * @return	string		Output string
@@ -1142,8 +1124,7 @@ class t3lib_div {
 
 	/**
 	 * Checking syntax of input email address
-	 *
-	 * Usage: 4
+	 * Usage: 5
 	 *
 	 * @param	string		Input string to evaluate
 	 * @return	boolean		Returns true if the $email address (input string) is valid; Has a "@", domain name with at least one period and only allowed a-z characters.
@@ -1158,8 +1139,7 @@ class t3lib_div {
 	 * Formats a string for output between <textarea>-tags
 	 * All content outputted in a textarea form should be passed through this function
 	 * Not only is the content htmlspecialchar'ed on output but there is also a single newline added in the top. The newline is necessary because browsers will ignore the first newline after <textarea> if that is the first character. Therefore better set it!
-	 *
-	 * Usage: 30
+	 * Usage: 23
 	 *
 	 * @param	string		Input string to be formatted.
 	 * @return	string		Formatted for <textarea>-tags
@@ -1188,7 +1168,6 @@ class t3lib_div {
 	/**
 	 * Check if an item exists in an array
 	 * Please note that the order of parameters is reverse compared to the php4-function in_array()!!!
-	 *
 	 * Usage: 3
 	 *
 	 * @param	array		$in_array		one-dimensional array of items
@@ -1207,8 +1186,7 @@ class t3lib_div {
 	/**
 	 * Explodes a $string delimited by $delim and passes each item in the array through intval().
 	 * Corresponds to explode(), but with conversion to integers for all values.
-	 *
-	 * Usage: 86
+	 * Usage: 76
 	 *
 	 * @param	string		Delimiter string to explode with
 	 * @param	string		The string to explode
@@ -1226,8 +1204,7 @@ class t3lib_div {
 	/**
 	 * Reverse explode which explodes the string counting from behind.
 	 * Thus t3lib_div::revExplode(':','my:words:here',2) will return array('my:words','here')
-	 *
-	 * Usage: 6
+	 * Usage: 8
 	 *
 	 * @param	string		Delimiter string to explode with
 	 * @param	string		The string to explode
@@ -1247,8 +1224,7 @@ class t3lib_div {
 	/**
 	 * Explodes a string and trims all values for whitespace in the ends.
 	 * If $onlyNonEmptyValues is set, then all blank ('') values are removed.
-	 *
-	 * Usage: 239
+	 * Usage: 256
 	 *
 	 * @param	string		Delimiter string to explode with
 	 * @param	string		The string to explode
@@ -1272,13 +1248,13 @@ class t3lib_div {
 	 * The keys in the array are substituted with some md5-hashes
 	 * If the value is trim(empty), the value is ignored.
 	 * Values are trimmed
-	 * (Depreciated, use PHP function array_unique instead)
-	 * Usage: 2
+	 * (Deprecated, use PHP function array_unique instead)
+	 * Usage: 1
 	 *
 	 * @param	array		Array of values to make unique
 	 * @return	array
 	 * @ignore
-	 * @depreciated
+	 * @deprecated
 	 */
 	function uniqueArray($valueArray)	{
 		$array_out=array();
@@ -1296,8 +1272,7 @@ class t3lib_div {
 
 	/**
 	 * Removes the value $cmpValue from the $array if found there. Returns the modified array
-	 *
-	 * Usage: 2
+	 * Usage: 3
 	 *
 	 * @param	array		Array containing the values
 	 * @param	string		Value to search for and if found remove array entry where found.
@@ -1322,7 +1297,6 @@ class t3lib_div {
 
 	/**
 	 * Implodes a multidim-array into GET-parameters (eg. &param[key][key2]=value2&param[key][key3]=value3)
-	 *
 	 * Usage: 24
 	 *
 	 * @param	string		Name prefix for entries. Set to blank if you wish none.
@@ -1377,8 +1351,7 @@ class t3lib_div {
 	 * This function traverses a multidimentional array and adds slashes to the values.
 	 * NOTE that the input array is and argument by reference.!!
 	 * Twin-function to stripSlashesOnArray
-	 *
-	 * Usage: 6
+	 * Usage: 8
 	 *
 	 * @param	array		Multidimensional input array, (REFERENCE!)
 	 * @return	array
@@ -1402,8 +1375,7 @@ class t3lib_div {
 	 * This function traverses a multidimentional array and strips slashes to the values.
 	 * NOTE that the input array is and argument by reference.!!
 	 * Twin-function to addSlashesOnArray
-	 *
-	 * Usage: 7
+	 * Usage: 10
 	 *
 	 * @param	array		Multidimensional input array, (REFERENCE!)
 	 * @return	array
@@ -1424,8 +1396,7 @@ class t3lib_div {
 
 	/**
 	 * Either slashes ($cmd=add) or strips ($cmd=strip) array $arr depending on $cmd
-	 *
-	 * Usage: 6
+	 * Usage: 0
 	 *
 	 * @param	array		Multidimensional input array
 	 * @param	string		"add" or "strip", depending on usage you wish.
@@ -1438,17 +1409,16 @@ class t3lib_div {
 	}
 
 	/**
-	 * Merges two arrays recursively, overruling similar the values in the first array ($arr0) with the values of the second array ($arr1)
+	 * Merges two arrays recursively and "binary safe" (integer keys are overridden as well), overruling similar the values in the first array ($arr0) with the values of the second array ($arr1)
 	 * In case of identical keys, ie. keeping the values of the second.
-	 *
-	 * Usage: 26
+	 * Usage: 0
 	 *
 	 * @param	array		First array
 	 * @param	array		Second array, overruling the first array
 	 * @param	boolean		If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
 	 * @return	array		Resulting array where $arr1 values has overruled $arr0 values
 	 */
-	function array_merge_recursive_overrule ($arr0,$arr1,$notAddKeys=0) {
+	function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0) {
 		reset($arr1);
 		while(list($key,$val) = each($arr1)) {
 			if(is_array($arr0[$key])) {
@@ -1470,9 +1440,8 @@ class t3lib_div {
 	}
 
 	/**
-	 * An array_merge function where the keys are NOT renumbered as they happen to be with the real php-array_merge function
-	 *
-	 * Usage: 27
+	 * An array_merge function where the keys are NOT renumbered as they happen to be with the real php-array_merge function. It is "binary safe" in the sense that integer keys are overridden as well.
+	 * Usage: 16
 	 *
 	 * @param	array		First array
 	 * @param	array		Second array
@@ -1484,7 +1453,6 @@ class t3lib_div {
 
 	/**
 	 * Takes a row and returns a CSV string of the values with $delim (default is ,) and $quote (default is ") as separator chars.
-	 *
 	 * Usage: 5
 	 *
 	 * @param	array		Input array of values
@@ -1526,11 +1494,10 @@ class t3lib_div {
 	 *************************/
 
 	/**
+	 * Returns an array with all attributes of the input HTML tag as key/value pairs. Attributes are only lowercase a-z
 	 * $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
-	 * Returns an array with all attributes as keys. Attributes are only lowercase a-z
 	 * If a attribute is empty (I call it 'an option'), then the value for the key is empty. You can check if it existed with isset()
-	 *
-	 * Usage: 9
+	 * Usage: 8
 	 *
 	 * @param	string		HTML-tag string (or attributes only)
 	 * @return	array		Array with the attribute values.
@@ -1566,8 +1533,7 @@ class t3lib_div {
 	/**
 	 * Returns an array with the 'components' from an attribute list from an HTML tag. The result is normally analyzed by get_tag_attributes
 	 * Removes tag-name if found
-	 *
-	 * Usage: 1
+	 * Usage: 2
 	 *
 	 * @param	string		HTML-tag string (or attributes only)
 	 * @return	array		Array with the attribute values.
@@ -1600,8 +1566,7 @@ class t3lib_div {
 
 	/**
 	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
-	 *
-	 * Usage: 10
+	 * Usage: 14
 	 *
 	 * @param	array		Array with attribute key/value pairs, eg. "bgcolor"=>"red", "border"=>0
 	 * @param	boolean		If set the resulting attribute list will have a) all attributes in lowercase (and duplicates weeded out, first entry taking precedence) and b) all values htmlspecialchar()'ed. It is recommended to use this switch!
@@ -1659,6 +1624,7 @@ class t3lib_div {
 
 	/**
 	 * Parses XML input into a PHP array with associative keys
+	 * Usage: 0
 	 *
 	 * @param	string		XML data input
 	 * @param	integer		Number of element levels to resolve the XML into an array. Any further structure will be set as XML.
@@ -1736,9 +1702,10 @@ class t3lib_div {
 	 * This also means that only alphanumeric characters are allowed in the tag names AND only keys NOT starting with numbers (so watch your usage of keys!). However there are options you can set to avoid this problem.
 	 * Numeric keys are stored with the default tagname "numIndex" but can be overridden to other formats)
 	 * The function handles input values from the PHP array in a binary-safe way; All characters below 32 (except 9,10,13) will trigger the content to be converted to a base64-string
-	 * The PHP variable type of the data is IS preserved as long as the types are strings, arrays, integers and booleans. Strings are the default type unless the "type" attribute is set.
+	 * The PHP variable type of the data IS preserved as long as the types are strings, arrays, integers and booleans. Strings are the default type unless the "type" attribute is set.
 	 * The output XML has been tested with the PHP XML-parser and parses OK under all tested circumstances.
 	 * However using MSIE to read the XML output didn't always go well: One reason could be that the character encoding is not observed in the PHP data. The other reason may be if the tag-names are invalid in the eyes of MSIE. Also using the namespace feature will make MSIE break parsing. There might be more reasons...
+	 * Usage: 5
 	 *
 	 * @param	array		The input PHP array with any kind of data; text, binary, integers. Not objects though.
 	 * @param	string		tag-prefix, eg. a namespace prefix like "T3:"
@@ -1826,6 +1793,7 @@ class t3lib_div {
 	/**
 	 * Converts an XML string to a PHP array.
 	 * This is the reverse function of array2xml()
+	 * Usage: 17
 	 *
 	 * @param	string		XML content to convert into an array
 	 * @param	string		The tag-prefix resolve, eg. a namespace like "T3:"
@@ -1915,6 +1883,7 @@ class t3lib_div {
 
 	/**
 	 * This implodes an array of XML parts (made with xml_parse_into_struct()) into XML again.
+	 * Usage: 2
 	 *
 	 * @param	array		A array of XML parts, see xml2tree
 	 * @return	string		Re-compiled XML data.
@@ -1958,6 +1927,7 @@ class t3lib_div {
 
 	/**
 	 * Extract the encoding scheme as found in the first line of an XML document (typically)
+	 * Usage: 1
 	 *
 	 * @param	string		XML data
 	 * @return	string		Encoding scheme (lowercase), if found.
@@ -1989,8 +1959,7 @@ class t3lib_div {
 	/**
 	 * Reads the file or url $url and returns the content
 	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $TYPO3_CONF_VARS['SYS']['curlUse'] etc.
-	 *
-	 * Usage: 79
+	 * Usage: 83
 	 *
 	 * @param	string		Filepath/URL to read
 	 * @return	string		The content from the resource given as input.
@@ -2031,8 +2000,7 @@ class t3lib_div {
 
 	/**
 	 * Writes $content to the file $file
-	 *
-	 * Usage: 31
+	 * Usage: 30
 	 *
 	 * @param	string		Filepath to write to
 	 * @param	string		Content to write
@@ -2054,6 +2022,7 @@ class t3lib_div {
 
 	/**
 	 * Wrapper function for mkdir, setting folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']
+	 * Usage: 6
 	 *
 	 * @param	string		Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
 	 * @return	boolean		TRUE if @mkdir went well!
@@ -2069,8 +2038,7 @@ class t3lib_div {
 	/**
 	 * Returns an array with the names of folders in a specific path
 	 * Will return 'error' (string) if there were an error with reading directory content.
-	 *
-	 * Usage: 13
+	 * Usage: 11
 	 *
 	 * @param	string		Path to list directories from
 	 * @return	array		Returns an array with the directory entries as values. If no path, the return value is nothing.
@@ -2092,8 +2060,7 @@ class t3lib_div {
 
 	/**
 	 * Returns an array with the names of files in a specific path
-	 *
-	 * Usage: 17
+	 * Usage: 18
 	 *
 	 * @param	string		$path: Is the path to the file
 	 * @param	string		$extensionList is the comma list of extensions to read only (blank = all)
@@ -2146,6 +2113,7 @@ class t3lib_div {
 
 	/**
 	 * Recursively gather all files and folders of a path.
+	 * Usage: 5
 	 *
 	 * @param	array		$fileArr: Empty input array (will have files added to it)
 	 * @param	string		$path: The path to read recursively from (absolute) (include trailing slash!)
@@ -2171,6 +2139,7 @@ class t3lib_div {
 
 	/**
 	 * Removes the absolute part of all files/folders in fileArr
+	 * Usage: 2
 	 *
 	 * @param	array		$fileArr: The file array to remove the prefix from
 	 * @param	string		$prefixToRemove: The prefix path to remove (if found as first part of string!)
@@ -2187,7 +2156,6 @@ class t3lib_div {
 
 	/**
 	 * Fixes a path for windows-backslashes and reduces double-slashes to single slashes
-	 *
 	 * Usage: 2
 	 *
 	 * @param	string		File path to process
@@ -2198,7 +2166,9 @@ class t3lib_div {
 	}
 
 	/**
-	 * Resolves "../" sections in the input path string
+	 * Resolves "../" sections in the input path string.
+	 * For example "fileadmin/directory/../other_directory/" will be resolved to "fileadmin/other_directory/"
+	 * Usage: 2
 	 *
 	 * @param	string		File path in which "/../" is resolved
 	 * @return	string
@@ -2225,8 +2195,7 @@ class t3lib_div {
 	 * - If already having a scheme, nothing is prepended
 	 * - If having REQUEST_URI slash '/', then prefixing 'http://[host]' (relative to host)
 	 * - Otherwise prefixed with TYPO3_REQUEST_DIR (relative to current dir / TYPO3_REQUEST_DIR)
-	 *
-	 * Usage: 31
+	 * Usage: 30
 	 *
 	 * @param	string		URL / path to prepend full URL addressing to.
 	 * @return	string
@@ -2264,7 +2233,7 @@ class t3lib_div {
 
 	/**
 	 * Returns a string with a list of ascii-values for the first $characters characters in $string
-	 * Usage: 5
+	 * Usage: 0
 	 *
 	 * @param	string		String to show ASCII value for
 	 * @param	integer		Number of characters to show
@@ -2283,7 +2252,7 @@ class t3lib_div {
 	 * Returns HTML-code, which is a visual representation of a multidimensional array
 	 * use t3lib_div::print_array() in order to print an array
 	 * Returns false if $array_in is not an array
-	 * Usage: 27
+	 * Usage: 31
 	 *
 	 * @param	array		Array to view
 	 * @return	string		HTML output
@@ -2309,7 +2278,7 @@ class t3lib_div {
 
 	/**
 	 * Prints an array
-	 * Usage: 28
+	 * Usage: 6
 	 *
 	 * @param	array		Array to print visually (in a table).
 	 * @return	void
@@ -2325,7 +2294,6 @@ class t3lib_div {
 	 * Prints $var in bold between two vertical lines
 	 * If not $var the word 'debug' is printed
 	 * If $var is an array, the array is printed by t3lib_div::print_array()
-	 *
 	 * Usage: 8
 	 *
 	 * @param	mixed		Variable to print
@@ -2410,10 +2378,9 @@ class t3lib_div {
 
 	/**
 	 * Returns the link-url to the current script.
-	 * In $getParams you can set associative keys corresponding to the get-vars you wish to add to the url. If you set them empty, they will remove existing get-vars from the current url.
+	 * In $getParams you can set associative keys corresponding to the GET-vars you wish to add to the URL. If you set them empty, they will remove existing GET-vars from the current URL.
 	 * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
-	 *
-	 * Usage: 54
+	 * Usage: 52
 	 *
 	 * @param	array		Array of GET parameters to include
 	 * @return	string
@@ -2462,8 +2429,7 @@ class t3lib_div {
 	/**
 	 * Abstraction method which returns System Environment Variables regardless of server OS, CGI/MODULE version etc. Basically this is SERVER variables for most of them.
 	 * This should be used instead of getEnv() and HTTP_SERVER_VARS/ENV_VARS to get reliable values for all situations.
-	 *
-	 * Usage: 226
+	 * Usage: 221
 	 *
 	 * @param	string		Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
 	 * @return	string		Value based on the input key, independent of server/os environment.
@@ -2653,10 +2619,8 @@ class t3lib_div {
 
 	/**
 	 * milliseconds
-	 *
 	 * microtime recalculated to t3lib_div::milliseconds(1/1000 sec)
-	 *
-	 * Usage: 39
+	 * Usage: 20
 	 *
 	 * @return	integer
 	 */
@@ -2667,7 +2631,6 @@ class t3lib_div {
 
 	/**
 	 * Client Browser Information
-	 *
 	 * Usage: 4
 	 *
 	 * @param	string		Alternative User Agent string (if empty, t3lib_div::getIndpEnv('HTTP_USER_AGENT') is used)
@@ -2752,10 +2715,8 @@ class t3lib_div {
 	 *************************/
 
 	/**
-	 * Returns the absolute filename of $filename.
-	 * Decodes the prefix EXT: for TYPO3 Extensions.
-	 *
-	 * Usage: 9
+	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix (way of referring to files inside extensions) and checks that the file is inside the PATH_site of the TYPO3 installation and implies a check with t3lib_div::validPathStr(). Returns false if checks failed. Does not check if the file exists.
+	 * Usage: 24
 	 *
 	 * @param	string		The input filename/filepath to evaluate
 	 * @param	boolean		If $onlyRelative is set (which it is by default), then only return values relative to the current PATH_site is accepted.
@@ -2788,11 +2749,11 @@ class t3lib_div {
 	}
 
 	/**
+	 * Checks for malicious file paths.
 	 * Returns true if no '//', '..' or '\' is in the $theFile
 	 * This should make sure that the path is not pointing 'backwards' and further doesn't contain double/back slashes.
-	 * So it's compatible with  the UNIX style path strings valid for TYPO3 internally.
-	 *
-	 * Usage: 8
+	 * So it's compatible with the UNIX style path strings valid for TYPO3 internally.
+	 * Usage: 14
 	 *
 	 * @param	string		Filepath to evaluate
 	 * @return	boolean		True, if no '//', '..' or '\' is in the $theFile
@@ -2804,8 +2765,7 @@ class t3lib_div {
 
 	/**
 	 * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns true if so.
-	 *
-	 * Usage: 9
+	 * Usage: 8
 	 *
 	 * @param	string		Filepath to evaluate
 	 * @return	boolean
@@ -2816,8 +2776,7 @@ class t3lib_div {
 
 	/**
 	 * Returns true if the path is absolute, without backpath '..' and within the PATH_site OR within the lockRootPath
-	 *
-	 * Usage: 1
+	 * Usage: 5
 	 *
 	 * @param	string		Filepath to evaluate
 	 * @return	boolean
@@ -2834,7 +2793,6 @@ class t3lib_div {
 
 	/**
 	 * Verifies the input filename againts the 'fileDenyPattern'. Returns true if OK.
-	 *
 	 * Usage: 2
 	 *
 	 * @param	string		Filepath to evaluate
@@ -2850,7 +2808,7 @@ class t3lib_div {
 
 	/**
 	 * Moves $source file to $destination if uploaded, otherwise try to make a copy
-	 * Usage: 3
+	 * Usage: 4
 	 *
 	 * @param	string		Source file, absolute path
 	 * @param	string		Destination file, absolute path
@@ -2881,6 +2839,7 @@ class t3lib_div {
 	 * Will move an uploaded file (normally in "/tmp/xxxxx") to a temporary filename in PATH_site."typo3temp/" from where TYPO3 can use it under safe_mode.
 	 * Use this function to move uploaded files to where you can work on them.
 	 * REMEMBER to use t3lib_div::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in PATH_site."typo3temp/"!
+	 * Usage: 6
 	 *
 	 * @param	string		The temporary uploaded filename, eg. $GLOBALS['HTTP_POST_FILES']['[upload field name here]']['tmp_name']
 	 * @return	string		If a new file was successfully created, return its filename, otherwise blank string.
@@ -2898,6 +2857,7 @@ class t3lib_div {
 	 * Deletes (unlink) a temporary filename in 'PATH_site."typo3temp/"' given as input.
 	 * The function will check that the file exists, is in PATH_site."typo3temp/" and does not contain back-spaces ("../") so it should be pretty safe.
 	 * Use this after upload_to_tempfile() or tempnam() from this class!
+	 * Usage: 9
 	 *
 	 * @param	string		Filepath for a file in PATH_site."typo3temp/". Must be absolute.
 	 * @return	boolean		Returns true if the file was unlink()'ed
@@ -2913,10 +2873,11 @@ class t3lib_div {
 	 * Create temporary filename (Create file with unique file name)
 	 * This function should be used for getting temporary filenames - will make your applications safe for open_basedir = on
 	 * REMEMBER to delete the temporary files after use! This is done by t3lib_div::unlink_tempfile()
+	 * Usage: 7
 	 *
 	 * @param	string		Prefix to temp file (which will have no extension btw)
 	 * @return	string		result from PHP function tempnam() with PATH_site.'typo3temp/' set for temp path.
-	 * @see unlink_tempfile()
+	 * @see unlink_tempfile(), upload_to_tempfile()
 	 */
 	function tempnam($filePrefix)	{
 		return tempnam(PATH_site.'typo3temp/',$filePrefix);
@@ -2960,7 +2921,7 @@ class t3lib_div {
 	 * 1) must be configured table (the ctrl-section configured),
 	 * 2) columns must not be an array (which it is always if whole table loaded), and
 	 * 3) there is a value for dynamicConfigFile (filename in typo3conf)
-	 * Usage: 92
+	 * Usage: 84
 	 *
 	 * @param	string		Table name for which to load the full TCA array part into the global $TCA
 	 * @return	void
@@ -2979,6 +2940,7 @@ class t3lib_div {
 	/**
 	 * Looks for a sheet-definition in the input data structure array. If found it will return the data structure for the sheet given as $sheet (if found).
 	 * If the sheet definition is in an external file that file is parsed and the data structure inside of that is returned.
+	 * Usage: 5
 	 *
 	 * @param	array		Input data structure, possibly with a sheet-definition and references to external data source files.
 	 * @param	string		The sheet to return, preferably.
@@ -3031,8 +2993,7 @@ class t3lib_div {
 	/**
 	 * Calls a userdefined function/method in class
 	 * Such a function/method should look like this: "function proc(&$params, &$ref)	{...}"
-	 *
-	 * Usage: 3
+	 * Usage: 17
 	 *
 	 * @param	string		Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call.
 	 * @param	mixed		Parameters to be pass along (typically an array) (REFERENCE!)
@@ -3129,14 +3090,10 @@ class t3lib_div {
 		return $content;
 	}
 
-
-
-
-
-
 	/**
 	 * Creates and returns reference to a user defined object.
 	 * This function can return an object reference if you like. Just prefix the function call with "&": "$objRef = &t3lib_div::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');". This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
+	 * Usage: 5
 	 *
 	 * @param	string		Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
 	 * @param	string		Required prefix of class name. By default "tx_" is allowed.
@@ -3197,8 +3154,7 @@ class t3lib_div {
 	 * Make instance of class
 	 * Takes the class-extensions API of TYPO3 into account
 	 * Please USE THIS instead of the PHP "new" keyword. Eg. "$obj = new myclass;" should be "$obj = t3lib_div::makeInstance("myclass")" instead!
-	 *
-	 * Usage: 455
+	 * Usage: 447
 	 *
 	 * @param	string		Class name to instantiate
 	 * @return	object		The object
@@ -3210,8 +3166,7 @@ class t3lib_div {
 	/**
 	 * Return classname for new instance
 	 * Takes the class-extensions API of TYPO3 into account
-	 *
-	 * Usage: 18
+	 * Usage: 17
 	 *
 	 * @param	string		Base Class name to evaluate
 	 * @return	string		Final class name to instantiate with "new [classname]"
@@ -3261,10 +3216,9 @@ class t3lib_div {
 	}
 
 	/**
-	 * Simple substitute for the PHP function mail().
+	 * Simple substitute for the PHP function mail() which allows you to specify encoding and character set
 	 * The fifth parameter, $enc, will allow you to specify 'base64' encryption for the output (set $enc=base64)
 	 * Further the output has the charset set to ISO-8859-1 by default.
-	 *
 	 * Usage: 4
 	 *
 	 * @param	string		Email address to send to. (see PHP function mail())
@@ -3305,8 +3259,7 @@ class t3lib_div {
 				'Content-Transfer-Encoding: 8bit';
 			break;
 		}
-		$headers=trim(implode(chr(10),t3lib_div::trimExplode(chr(10),$headers,1)));	// make sure no empty lines are there.
-#debug(array($email,$subject,$message,$headers));
+		$headers = trim(implode(chr(10),t3lib_div::trimExplode(chr(10),$headers,1)));	// make sure no empty lines are there.
 
 		mail($email,$subject,$message,$headers);
 	}
@@ -3316,7 +3269,6 @@ class t3lib_div {
 	 * This functions is buggy. It seems that in the part where the lines are breaked every 76th character, that it fails if the break happens right in a quoted_printable encode character!
 	 * (Originally taken from class.t3lib_htmlmail.php - which may be updated if this function should ever be improved!
 	 * See RFC 1521, section 5.1 Quoted-Printable Content-Transfer-Encoding
-	 *
 	 * Usage: 2
 	 *
 	 * @param	string		Content to encode
@@ -3357,7 +3309,6 @@ class t3lib_div {
 	/**
 	 * Takes a clear-text message body for a plain text email, finds all 'http://' links and if they are longer than 76 chars they are converted to a shorter URL with a hash parameter. The real parameter is stored in the database and the hash-parameter/URL will be redirected to the real parameter when the link is clicked.
 	 * This function is about preserving long links in messages.
-	 *
 	 * Usage: 3
 	 *
 	 * @param	string		Message content
@@ -3392,7 +3343,6 @@ class t3lib_div {
 
 	/**
 	 * Subfunction for substUrlsInPlainText() above.
-	 *
 	 * Usage: 2
 	 *
 	 * @param	string		Input URL
@@ -3423,8 +3373,7 @@ class t3lib_div {
 
 	/**
 	 * Function to compensate for FreeType2 96 dpi
-	 *
-	 * Usage: 16
+	 * Usage: 21
 	 *
 	 * @param	integer		Fontsize for freetype function call
 	 * @return	integer		Compensated fontsize based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']

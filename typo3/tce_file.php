@@ -84,7 +84,7 @@ class SC_tce_file {
 
 		// Internal, dynamic:
 	var $include_once=array();		// Used to set the classes to include after the init() function is called.
-
+	var $fileProcessor;				// File processor object
 
 
 
@@ -104,7 +104,7 @@ class SC_tce_file {
 
 			// If clipboard is set, then include the clipboard class:
 		if (is_array($this->CB))	{
-			$this->include_once[]=PATH_t3lib.'class.t3lib_clipboard.php';
+			$this->include_once[] = PATH_t3lib.'class.t3lib_clipboard.php';
 		}
 	}
 
@@ -138,22 +138,36 @@ class SC_tce_file {
 		global $FILEMOUNTS,$TYPO3_CONF_VARS,$BE_USER;
 
 			// Initializing:
-		$fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
-		$fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS['BE']['fileExtensions']);
-		$fileProcessor->init_actionPerms($BE_USER->user['fileoper_perms']);
-		$fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
+		$this->fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS['BE']['fileExtensions']);
+		$this->fileProcessor->init_actionPerms($BE_USER->user['fileoper_perms']);
+		$this->fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 
 			// Checking referer / executing:
 		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 		if ($httpHost!=$refInfo['host'] && $this->vC!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
-			$fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!',array($refInfo['host'],$httpHost));
+			$this->fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!',array($refInfo['host'],$httpHost));
 		} else {
-			$fileProcessor->start($this->file);
-			$fileProcessor->processData();
+			$this->fileProcessor->start($this->file);
+			$this->fileProcessor->processData();
 		}
+	}
 
-		$fileProcessor->printLogErrorMessages($this->redirect);
+	/**
+	 * Redirecting the user after the processing has been done.
+	 * Might also display error messages directly, if any.
+	 *
+	 * @return	void
+	 */
+	function finish()	{
+			// Prints errors, if...
+		$this->fileProcessor->printLogErrorMessages($this->redirect);
+
+		t3lib_BEfunc::getSetUpdateSignal('updateFolderTree');
+		if ($this->redirect) {
+			Header('Location: '.t3lib_div::locationHeaderUrl($this->redirect));
+		}
 	}
 }
 
@@ -182,4 +196,5 @@ foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
 
 $SOBE->initClipboard();
 $SOBE->main();
+$SOBE->finish();
 ?>

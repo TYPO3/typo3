@@ -505,7 +505,7 @@ class SC_mod_web_perm_index {
 
 			// Traverse tree:
 		foreach($tree->tree as $data)	{
-			$cells=array();
+			$cells = array();
 
 				// Background colors:
 			if ($this->lastEdited==$data['row']['uid'])	{$bgCol = ' class="bgColor-20"';} else {$bgCol = '';}
@@ -514,7 +514,7 @@ class SC_mod_web_perm_index {
 				// User/Group names:
 			$userN = $be_user_Array[$data['row']['perms_userid']] ? $be_user_Array[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ? '<i>['.$data['row']['perms_userid'].']!</i>' : '');
 			$groupN = $be_group_Array[$data['row']['perms_groupid']] ? $be_group_Array[$data['row']['perms_groupid']]['title']  : ($data['row']['perms_groupid'] ? '<i>['.$data['row']['perms_groupid'].']!</i>' : '');
-			$groupN=t3lib_div::fixed_lgd_cs($groupN,20);
+			$groupN = t3lib_div::fixed_lgd_cs($groupN,20);
 
 				// Seeing if editing of permissions are allowed for that page:
 			$editPermsAllowed=($data['row']['perms_userid']==$BE_USER->user['uid'] || $BE_USER->isAdmin());

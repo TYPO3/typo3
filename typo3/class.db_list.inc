@@ -535,7 +535,6 @@ class recordList extends t3lib_recordList {
 			case 'show':
 					// "Show" link (only pages and tt_content elements)
 				if ($table=='pages' || $table=='tt_content')	{
-					$params = '&edit['.$table.']['.$row['uid'].']=edit';
 					$code = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($table=='tt_content'?$this->id.'#'.$row['uid']:$row['uid'])).'" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'">'.
 							$code.
 							'</a>';

@@ -170,7 +170,7 @@ class t3lib_extobjbase {
 	var $extClassConf;
 
 	/**
-	 * If this value is set it points to a key in the TCE_MODULES_EXT array (not on the top level..) where another classname/filepath/title can be defined for sub-subfunctions.
+	 * If this value is set it points to a key in the TBE_MODULES_EXT array (not on the top level..) where another classname/filepath/title can be defined for sub-subfunctions.
 	 * This is a little hard to explain, so see it in action; it used in the extension 'func_wizards' in order to provide yet a layer of interfacing with the backend module.
 	 * The extension 'func_wizards' has this description: 'Adds the 'Wizards' item to the function menu in Web>Func. This is just a framework for wizard extensions.' - so as you can see it is designed to allow further connectivity - 'level 2'
 	 *

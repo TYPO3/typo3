@@ -318,13 +318,13 @@ class t3lib_parsehtml {
 	 * @see splitIntoBlock(), getAllParts(), removeFirstAndLastTag()
 	 */
 	function splitTags($tag,$content)	{
-		$tags=t3lib_div::trimExplode(',',$tag,1);
-		$regexStr = '<('.implode('|',$tags).')(>|[[:space:]][^>]*>)';
+		$tags = t3lib_div::trimExplode(',',$tag,1);
+		$regexStr = '<('.implode('|',$tags).')(>|\/>|[[:space:]][^>]*>)';
 		$parts = spliti($regexStr,$content);
 
-		$pointer=strlen($parts[0]);
-		$newParts=array();
-		$newParts[]=$parts[0];
+		$pointer = strlen($parts[0]);
+		$newParts = array();
+		$newParts[] = $parts[0];
 		reset($parts);
 		next($parts);
 		while(list($k,$v)=each($parts))	{
@@ -332,12 +332,12 @@ class t3lib_parsehtml {
 
 				// Set tag:
 			$tag = substr($content,$pointer,$tagLen);	// New buffer set and pointer increased
-			$newParts[]=$tag;
-			$pointer+=strlen($tag);
+			$newParts[] = $tag;
+			$pointer+= strlen($tag);
 
 				// Set content:
-			$newParts[]=$v;
-			$pointer+=strlen($v);
+			$newParts[] = $v;
+			$pointer+= strlen($v);
 		}
 		return $newParts;
 	}

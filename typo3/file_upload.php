@@ -49,12 +49,11 @@
 
 
 
-$BACK_PATH='';
-require ('init.php');
-require ('template.php');
-include ('sysext/lang/locallang_misc.php');
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-
+$BACK_PATH = '';
+require('init.php');
+require('template.php');
+include('sysext/lang/locallang_misc.php');
+require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 
 
@@ -90,6 +89,7 @@ class SC_file_upload {
 		// Internal, static (GPVar):
 	var $number;
 	var $target;		// Set with the target path inputted in &target
+	var $returnUrl;		// Return URL of list module.
 
 		// Internal, dynamic:
 	var $content;		// Accumulating content
@@ -106,6 +106,7 @@ class SC_file_upload {
 			// Initialize GPvars:
 		$this->number = t3lib_div::_GP('number');
 		$this->target = t3lib_div::_GP('target');
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
 
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
@@ -212,6 +213,7 @@ class SC_file_upload {
 			<div id="c-submit">
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit',1).'" />
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
+				<input type="hidden" name="redirect" value="'.htmlspecialchars($this->returnUrl).'" />
 			</div>
 		';
 

@@ -206,7 +206,7 @@ class t3lib_TCEmain	{
 //	var $history=1;					// Bit-array: Bit0: History on/off. DEPENDS on checkSimilar to be set!
 	var $checkSimilar=1;			// Boolean: If set, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
 	var $dontProcessTransformations=0;	// Boolean: If set, then transformations are NOT performed on the input.
-	var $disableRTE = 0;			// Boolean: If set, the RTE is expected to have been disabled in the interface which submitted information. Thus transformations related to the RTE is not done.
+#	var $disableRTE = 0;			// Boolean: If set, the RTE is expected to have been disabled in the interface which submitted information. Thus transformations related to the RTE is not done.
 
 	var $pMap = Array(		// Permission mapping
 		'show' => 1,			// 1st bit
@@ -3933,10 +3933,10 @@ class t3lib_TCEmain	{
 	}
 
 	/**
-	 * Print log messages from this request out.
+	 * Print log error messages from the operations of this script instance
 	 *
-	 * @param	[type]		$redirect: ...
-	 * @return	[type]		...
+	 * @param	string		Redirect URL (for creating link in message)
+	 * @return	void	(Will exit on error)
 	 */
 	function printLogErrorMessages($redirect)	{
 		$res_log = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -3954,16 +3954,34 @@ class t3lib_TCEmain	{
 			$error_doc = t3lib_div::makeInstance('template');
 			$error_doc->backPath = '';
 
-			$content.=$error_doc->startPage('tce_db.php Error output');
+			$content.= $error_doc->startPage('tce_db.php Error output');
 
-			$lines[]='<tr class="bgColor5"><td colspan=2 align=center><strong>Errors:</strong></td></tr>';
-			reset($errorJS);
-			while(list(,$line)=each($errorJS))	{
-				$lines[]='<tr class="bgColor4"><td valign=top><img'.t3lib_iconWorks::skinImg('','gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td><td>'.htmlspecialchars($line).'</td></tr>';
+			$lines[] = '
+					<tr class="bgColor5">
+						<td colspan="2" align="center"><strong>Errors:</strong></td>
+					</tr>';
+
+			foreach($errorJS as $line)	{
+				$lines[] = '
+					<tr class="bgColor4">
+						<td valign="top"><img'.t3lib_iconWorks::skinImg('','gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td>
+						<td>'.htmlspecialchars($line).'</td>
+					</tr>';
 			}
 
-			$lines[]='<tr><td colspan=2 align=center><BR><form action=""><input type="submit" value="Continue" onClick="document.location=\''.$redirect.'\';return false;"></form></td></tr>';
-			$content.= '<BR><BR><table border=0 cellpadding=1 cellspacing=1 width=300 align=center>'.implode('',$lines).'</table>';
+			$lines[] = '
+					<tr>
+						<td colspan="2" align="center"><br />'.
+						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('document.location=\''.$redirect.'\';return false;').'"></form>'.
+						'</td>
+					</tr>';
+
+			$content.= '
+				<br/><br/>
+				<table border="0" cellpadding="1" cellspacing="1" width="300" align="center">
+					'.implode('',$lines).'
+				</table>';
+
 			$content.= $error_doc->endPage();
 			echo $content;
 			exit;

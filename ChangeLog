@@ -1,3 +1,7 @@
+2004-05-27  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Fixed various things in file processing, t3lib_extFileFunc et al.
+
 2004-05-24  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added API for custom RTE transformations. Documented in upcoming "TYPO3 Core API".

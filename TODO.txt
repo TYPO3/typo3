@@ -326,7 +326,7 @@ XQCR: t3lib/class.t3lib_diff.php
 XQCR: t3lib/class.t3lib_div.php
 		t3lib/class.t3lib_dmailer.php	[Jan-Erik?]
 		t3lib/class.t3lib_exec.php		[Rene]
-		t3lib/class.t3lib_extfilefunc.php
+-QCR: t3lib/class.t3lib_extfilefunc.php
 -QCR: t3lib/class.t3lib_extmgm.php
 -QCR: t3lib/class.t3lib_extobjbase.php
 XQCR: t3lib/class.t3lib_foldertree.php

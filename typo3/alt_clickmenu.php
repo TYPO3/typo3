@@ -624,7 +624,7 @@ class clickMenu {
 			}
 		}
 		if (!$editOnClick)	{
-			$editOnClick="if(".$loc."){".$loc.".document.location=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
+			$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
 		}
 
 		return $this->linkItem(
@@ -820,8 +820,9 @@ class clickMenu {
 	 * @internal
 	 */
 	function FILE_launch($path,$script,$type,$image)	{
-		$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
-		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'".$script.'?target='.rawurlencode($path)."';}";
+		$loc = 'top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
+
+		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'".$script.'?target='.rawurlencode($path)."&returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').");}";
 
 		return $this->linkItem(
 			$this->label($type),

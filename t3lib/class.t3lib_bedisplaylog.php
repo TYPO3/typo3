@@ -79,10 +79,10 @@
  * @see tx_belog_webinfo, SC_mod_tools_log_index
  */
 class t3lib_BEDisplayLog {
-	var $lastTimeLabel='';
-	var $lastUserLabel='';
-	var $lastTypeLabel='';
-	var $lastActionLabel='';
+	var $lastTimeLabel = '';
+	var $lastUserLabel = '';
+	var $lastTypeLabel = '';
+	var $lastActionLabel = '';
 
 	var $detailsOn = 1;	// If detailsOn, %s is substituted with values from the data-array (see getDetails())
 	var $stripPath = 1;	// This strips the path from any value in the data-array when the data-array is parsed through stripPath()
@@ -91,6 +91,8 @@ class t3lib_BEDisplayLog {
 		2 => 'Sys!',
 		3 => 'Secur!'
 	);
+
+	var $be_user_Array = array();		// Username array (set externally)
 
 	/**
 	 * Initialize the log table array with header labels.
@@ -132,7 +134,7 @@ class t3lib_BEDisplayLog {
 	function getUserLabel($code)	{
 		if ($this->lastUserLabel!=$code)	{
 			$this->lastUserLabel=$code;
-			$label=$GLOBALS['be_user_Array'][$code]['username'];
+			$label = $this->be_user_Array[$code]['username'];
 			return $label ? $label : '['.$code.']';
 		} else return '.';
 	}

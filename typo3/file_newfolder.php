@@ -49,12 +49,10 @@
 
 
 
-$BACK_PATH='';
-require ('init.php');
-require ('template.php');
-require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-
-
+$BACK_PATH = '';
+require('init.php');
+require('template.php');
+require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 
 
@@ -88,6 +86,7 @@ class SC_file_newfolder {
 		// Internal, static (GPVar):
 	var $number;
 	var $target;		// Set with the target path inputted in &target
+	var $returnUrl;		// Return URL of list module.
 
 		// Internal, dynamic:
 	var $content;		// Accumulating content
@@ -105,6 +104,7 @@ class SC_file_newfolder {
 			// Initialize GPvars:
 		$this->number = t3lib_div::_GP('number');
 		$this->target = t3lib_div::_GP('target');
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
 
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
@@ -203,6 +203,7 @@ class SC_file_newfolder {
 			<div id="c-submitFolders">
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.submit',1).'" />
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
+				<input type="hidden" name="redirect" value="'.htmlspecialchars($this->returnUrl).'" />
 			</div>
 			';
 		$this->content.= $this->doc->section('',$code);
@@ -230,6 +231,7 @@ class SC_file_newfolder {
 			<div id="c-submitFiles">
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile_submit',1).'" />
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
+				<input type="hidden" name="redirect" value="'.htmlspecialchars($this->returnUrl).'" />
 			</div>
 			';
 

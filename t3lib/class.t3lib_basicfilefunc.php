@@ -88,7 +88,7 @@ class t3lib_basicFileFunctions	{
 	var $f_ext = Array();			// See comment in header
 	var $mounts = Array();			// See comment in header
 	var $webPath ='';				// Set to DOCUMENT_ROOT.
-	var $isInit=0;					// Set to true after start();
+	var $isInit = 0;				// Set to true after init()/start();
 
 
 
@@ -137,7 +137,7 @@ class t3lib_basicFileFunctions	{
 
 		$this->mounts = $mounts;
 		$this->webPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
-		$this->isInit=1;
+		$this->isInit = 1;
 	}
 
 	/**
@@ -149,11 +149,11 @@ class t3lib_basicFileFunctions	{
 	function getTotalFileInfo($wholePath)	{
 		$theuser = getmyuid();
 		$info = t3lib_div::split_fileref($wholePath);
-		$info['tstamp']=@filectime($wholePath);
-		$info['size']=@filesize($wholePath);
-		$info['type']=@filetype($wholePath);
-		$info['owner']=@fileowner($wholePath);
-		$info['perms']=@fileperms($wholePath);
+		$info['tstamp'] = @filectime($wholePath);
+		$info['size'] = @filesize($wholePath);
+		$info['type'] = @filetype($wholePath);
+		$info['owner'] = @fileowner($wholePath);
+		$info['perms'] = @fileperms($wholePath);
 		$info['writeable'] = ($info['perms']&2 || ($theuser==$info['owner'] && $info['perms']&128));
 		$info['readable'] = ($info['perms']&4 || ($theuser==$info['owner'] && $info['perms']&256));
 		return $info;
