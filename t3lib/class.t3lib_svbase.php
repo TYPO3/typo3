@@ -101,7 +101,7 @@ define ('T3_ERR_SV_FILE_WRITE', -22); // File not writeable
 define ('T3_ERR_SV_PROG_NOT_FOUND', -40); // passed subtype is not possible with this service
 define ('T3_ERR_SV_PROG_FAILED', -41); // passed subtype is not possible with this service
 
-// define ('T3_ERR_SV_serviceType_myerr, -100); // All errors with prefix T3SV_ERR_[serviceType]_ and lower than -99 are service type dependent error
+// define ('T3_ERR_SV_serviceType_myerr, -100); // All errors with prefix T3_ERR_SV_[serviceType]_ and lower than -99 are service type dependent error
 
 
 require_once(PATH_t3lib.'class.t3lib_exec.php');
@@ -519,8 +519,7 @@ function available()	{
 	 * @return	void
 	 */
 	function registerTempFile ($absFile)	{
-		$this->tempFiles[]=$absFile;
-#debug($this->tempFiles,'registerTempFile');
+		$this->tempFiles[] = $absFile;
 	}
 	
 	/**
@@ -530,7 +529,6 @@ function available()	{
 	 * @return	void
 	 */
 	function unlinkTempFiles ()	{
-#debug($this->tempFiles, 'unlinkTempFiles: '.$this->info['serviceKey']);
 		foreach ($this->tempFiles as $absFile) {
 			t3lib_div::unlink_tempfile($absFile);
 		}
@@ -668,13 +666,16 @@ function available()	{
 	 * @return	boolean		TRUE if the service is available
 	 */
 	function init()	{
-		// do not work :-(  register_shutdown_function(array(&$this, '__destruct'));
+		// do not work :-(  but will not hurt
+		register_shutdown_function(array(&$this, '__destruct'));
+		// look in makeInstanceService()
 		
 		$this->reset();
 
 			// check for external programs which are defined by $info['exec']
 		if (trim($this->info['exec'])) {
 			if (!$this->checkExec($this->info['exec'])) {
+				// nothing todo here or?
 			}
 		}
 
