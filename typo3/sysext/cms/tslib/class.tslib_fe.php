@@ -1978,11 +1978,19 @@
 		if ($this->config['config']['cache_clearAtMidnight'])	{
 			$midnightTime = mktime (0,0,0,date('m',$timeOutTime),date('d',$timeOutTime),date('Y',$timeOutTime));
 			if ($midnightTime > time())	{		// If the midnight time of the expire-day is greater than the current time, we may set the timeOutTime to the new midnighttime.
-				$timeOutTime=$midnightTime;
+				$timeOutTime = $midnightTime;
 			}
 		}
 		$this->config['hash_base'] = $this->hash_base;
 		$this->setPageCacheContent($this->content,$this->config,$timeOutTime);
+
+			// Hook for cache post processing (eg. writing static files!)
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache']))	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'] as $_classRef)	{
+				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj->insertPageIncache($this,$timeOutTime);
+			}
+		}
 	}
 
 	/**

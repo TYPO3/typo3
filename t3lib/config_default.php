@@ -71,7 +71,7 @@ $TYPO3_CONF_VARS = Array(
 		't3lib_cs_convMethod' => '',			// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset conversing functions in t3lib_cs. Will speed up charset conversion radically.
 		't3lib_cs_utils' => '',					// String (values: "iconv", "recode", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various Charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => 0,						// Boolean: If true, "connect" is used instead of "pconnect" when connecting to the database!
-		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size. This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
+		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is useful if you want to expand the size of fields for utf-8 etc. For western european sites using utf-8 the need should not be for more than twice the normal single-byte size (2) and for chinese / asian languages 3 should suffice.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)

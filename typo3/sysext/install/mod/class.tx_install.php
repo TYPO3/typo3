@@ -2560,7 +2560,7 @@ From sub-directory:
 		$parseStart = microtime();
 		$imageProc = t3lib_div::makeInstance("t3lib_stdGraphic");
 		$imageProc->init();
-		$imageProc->tempPath=$this->typo3temp_path;
+		$imageProc->tempPath = $this->typo3temp_path;
 		$imageProc->dontCheckForExistingTempFile=1;
 //		$imageProc->filenamePrefix="install_".($GLOBALS["TYPO3_CONF_VARS"]["GFX"]["im_version_5"]?"v5":"");
 		$imageProc->filenamePrefix="install_";
@@ -2969,16 +2969,17 @@ From sub-directory:
 		$errorLevels=array(-1);
 		if ($imageFile)	{
 			$verifyFile = t3lib_extMgm::extPath("install")."verify_imgs/".basename($imageFile);
+#debug(array($imageFile,$this->backPath.'../'.substr($imageFile,strlen(PATH_site))),1);
 			$destImg = @getImageSize($imageFile);
-			$destImgCode ='<img src="'.$this->backPath.'../typo3temp/'.basename($imageFile).'" '.$destImg[2].'>';
+			$destImgCode ='<img src="'.$this->backPath.'../'.substr($imageFile,strlen(PATH_site)).'" '.$destImg[3].'>';
 			$verifyImg = @getImageSize($verifyFile);
-			$verifyImgCode = '<img src="'.$this->backPath.t3lib_extMgm::extRelPath("install").'verify_imgs/'.basename($verifyFile).'" '.$verifyImg[2].'>';
+			$verifyImgCode = '<img src="'.$this->backPath.t3lib_extMgm::extRelPath("install").'verify_imgs/'.basename($verifyFile).'" '.$verifyImg[3].'>';
 			if (!$verifyImg)	{
 				$gifVersion=1;
 				$verifyFile_alt = substr($verifyFile,0,-3)."gif";
 				$verifyImg = @getImageSize($verifyFile_alt);
 				if ($verifyImg)	{
-					$verifyImgCode = '<img src="'.$this->backPath.'t3lib/install/verify_imgs/'.basename($verifyFile_alt).'" '.$verifyImg[2].'>';
+					$verifyImgCode = '<img src="'.$this->backPath.'t3lib/install/verify_imgs/'.basename($verifyFile_alt).'" '.$verifyImg[3].'>';
 					$verifyImgCode= '<table border=0 cellpadding=4 cellspacing=0 bgcolor=red><tr><td align=center>'.$verifyImgCode.'<BR>'.$this->fw("<strong>NO REFERENCE FOUND!</strong><BR><BR>GIF version looks like this.").'</td></tr></table>';
 				} else {
 					$verifyImgCode= '<table border=0 cellpadding=4 cellspacing=0 bgcolor=red><tr><td align=center>'.$this->fw("<strong>NO REFERENCE FOUND!</strong><BR><BR>".basename($verifyFile)).'</td></tr></table>';

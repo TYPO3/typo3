@@ -671,7 +671,7 @@ Authors: Julle and Kasper.
 ******************
 APPENDIX: Charsets
 ******************
-In TYPO3s backend charsets used has traditionally been the the charset of the backend user language. This is of course a big problem since the encoding of content is thus depending on the charset of the user and not of the system
+In TYPO3s backend charsets used has traditionally been the the charset of the backend user language. This is of course a big problem (when other than western european languages are involved) since the encoding of content is thus depending on the charset of the user and not of the system
 From TYPO3 3.6.0 you can define a global charset for the whole database. This can be any local charset like iso-8859-1 or windows-1250. But for multilingual sites it is recommended to use utf-8 since that can represent all languages.
 You set the global charset in a localconf file like this: $TYPO3_CONF_VARS["BE"]["forceCharset"] = "utf-8";
 
@@ -731,12 +731,11 @@ DB -> DB (1):
 - uploads/* dirs (and any files at all) might be syncronized by general rsync/ftp syncronization. Both ways? Primarily from P->L. Basically this sync. might take the whole sourcecode with it...
 
 Req to T3:
-- That EACH table can be found in its own database (configurable). This means the TYPO3_db constant might have to be wasted? And not just another MySQL database - at another Database server or type (like Oracle). This is related to DBAL.
-- Q's: FTP-functions in php; How to syncronize? MySQL working across databases, connecting to more than one database?
+OK [The dbal implementation solves this.] - That EACH table can be found in its own database (configurable). This means the TYPO3_db constant might have to be wasted? And not just another MySQL database - at another Database server or type (like Oracle). This is related to DBAL.
 
 DB->HTML
 - Basically this is an rsync/ftp sync question which requires a set of static files.
-- Also a "mixed mode" concept where static files not found are server dynamically by TYPO3, but where the TYPO3 install does NOT allow backend access at all - only frontend delivery.
+- Also a "mixed mode" concept where static files not found are served dynamically by TYPO3, but where the TYPO3 install does NOT allow backend access at all - only frontend delivery.
 
 Two situations:
 - Publish static for local server, using mod_rewrite to direct requests transparently (static/dynamic). So all *.html requests WILL be found, static or dynamically! (Static/Dynamic blend)
@@ -744,7 +743,7 @@ Two situations:
 
 _____________________________________
 Server sync. extension, PLAN:
-Create an extension which syncronizes a set of tables to another database, using DBAL extension to determine handler for the remove tables
+Create an extension which syncronizes a set of tables to another database, using DBAL extension to determine handler for the remote tables
 - Use "tstamp" for update, "crdate" for inserts; does not dump full tables, only pushes updated content!
 - "Complete Sync": Feature for MD5 checking whole tables, thereby pushing content not based on timestamps but Md5 sum of content. This is if the timestamps are not getting updated correctly.
 
@@ -773,7 +772,7 @@ CACHE MANAGEMENT EXTENSION
 
 - cache_pages -> API for adding key1/key2 custom content!
 - automatic clear-pages cache protection? (global flag)
-- Configuration: Configure "cache_" tables to clear when "Clear all cache"
+- OK - Configuration: Configure "cache_" tables to clear when "Clear all cache"
 - "clear-cache" might not DELETE records but rather mark them "update-cache" or something like that... (would require the URL to be around...)
 - protect-flag which will disable the *automatic* clearing of page cache for a single page (in page header; expiry set to never -> setting flag in "cache_pages" table and records with that flag set cannot be flushed!)
 - "key1" and "key2" for granularity in caching!
@@ -783,6 +782,8 @@ CACHE MANAGEMENT EXTENSION
 	-> For TV: ->registerElement('tt_content','uid'); when elements are NOT on the physical page
 	-> For 3dsplm: ->registerElement('bfs_brand','catia')
 	-> For 3dsplm: ->registerElement('bfs_skills','')	[saying that ANY bfs_skill changed will clear cache of front-page where all are shown.]
+- &no_cache can be disabled (allows DoS attacks!)
+- cHash problems?
 
 cache-extension ("cachemgm")
 - in click menu, link to cache mgm

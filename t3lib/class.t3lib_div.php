@@ -1442,7 +1442,7 @@ class t3lib_div {
 				} else {
 					if ($includeEmtpyValues OR $val) {
 						$arr0[$key] = $val;
-					} 
+					}
 				}
 			}
 		}
@@ -1574,7 +1574,7 @@ class t3lib_div {
 		if (is_array($value))	reset($value);
 		return $value;
 	}
-	
+
 	/**
 	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
 	 * Usage: 14
@@ -3074,7 +3074,7 @@ class t3lib_div {
 	 * Such a function/method should look like this: "function proc(&$params, &$ref)	{...}"
 	 * Usage: 17
 	 *
-	 * @param	string		Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call.
+	 * @param	string		Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
 	 * @param	mixed		Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param	mixed		Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param	string		Required prefix of class or function name
@@ -3280,7 +3280,7 @@ class t3lib_div {
 					// reset service and return object
 				$T3_VAR['makeInstanceService'][$info['className']]->reset();
 				return $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']];
-				
+
 				// include file and create object
 			} elseif (@is_file($info['classFile'])) {
 				require_once ($info['classFile']);
@@ -3292,13 +3292,13 @@ class t3lib_div {
 					}
 					$obj->info = $info;
 					if ($obj->init()) { // service available?
-	
+
 							// create persistent object
 						$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
 
 							// needed to delete temp files
-						register_shutdown_function(array(&$obj, '__destruct'));			
-									
+						register_shutdown_function(array(&$obj, '__destruct'));
+
 						return $obj; // object is passed as reference by funtion definition
 					}
 					$error = $obj->getLastErrorArray();

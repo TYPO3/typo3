@@ -178,8 +178,8 @@ class t3lib_stdGraphic	{
 	var $workArea = Array();
 
 		// Constants:
-	var $tempPath = 'typo3temp/';						// The temp-directory where to store the files. Relative to PATH_site. MUST NOT be absolute!
-	var $absPrefix = '';								// Prefix for relative paths. Used on "show_item.php" script
+	var $tempPath = 'typo3temp/';						// The temp-directory where to store the files. Normally relative to PATH_site but is allowed to be the absolute path AS LONG AS it is a subdir to PATH_site.
+	var $absPrefix = '';								// Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
 	var $scalecmd = '-geometry';						// ImageMagick scaling command; "-geometry" eller "-sample". Used in makeText() and imageMagickConvert()
 	var $im5fx_blurSteps='1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';			// Used by v5_blur() to simulate 10 continuous steps of blurring
 	var $im5fx_sharpenSteps='1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';		// Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
@@ -2206,9 +2206,17 @@ class t3lib_stdGraphic	{
 	 * Creates subdirectory in typo3temp/ if not already found.
 	 */
 	function createTempSubDir($dirName)	{
+
+			// Checking if the this->tempPath is already prefixed with PATH_site and if not, prefix it with that constant.
+		if (t3lib_div::isFirstPartOfStr($this->tempPath,PATH_site))	{
+			$tmpPath = $this->tempPath;
+		} else {
+			$tmpPath = PATH_site.$this->tempPath;
+		}
+
 			// Making the temporary filename:
-		if (!@is_dir(PATH_site.$this->tempPath.$dirName))	 {
-			return t3lib_div::mkdir(PATH_site.$this->tempPath.$dirName);
+		if (!@is_dir($tmpPath.$dirName))	 {
+			return t3lib_div::mkdir($tmpPath.$dirName);
 		}
 	}
 
