@@ -953,3 +953,50 @@ Innovation, brainstorming for future
 - Backend for PDAs/Lynx
 
 
+
+
+*********************************
+Translation of Backend
+*********************************
+Overview of missing translations. (UPDATED before 3.7.0RC)
+Numbers in format: (New / Changed)
+
+- de [German]		6/22
+- no [Norwegian]	24/21
+- it [Italian]		6/18
+- fr [French]		7/21
+- es [Spanish]		7/21
+- nl [Dutch]		8/20
+- cz [Czech]		113/23
+- pl [Polish]		8/20
+- si [Slovenian]	100/19
+- fi [Finnish]		7/19
+- tr [Turkish]		9/20
+- se [Swedish]		81/25
+- pt [Portuguese]	129/23
+- ru [Russian]		49/24
+- ro [Romanian]		9/19
+- ch [Chinese (Simpl)]	143/21
+- sk [Slovak]		108/21
+- lt [Lithuanian]	8/20
+- is [Icelandic]	485/9
+- hr [Croatian]		78/25
+- hu [Hungarian]	8/20
+- gl [Greenlandic]	892/1
+- th [Thai]		8/21
+- gr [Greek]		1123/0
+- hk [Chinese (Trad)]	194/23
+- eu [Basque]		799/8
+- bg [Bulgarian]	194/18
+- br [Brazilian Portuguese]	119/25
+- et [Estonian]		139/25
+- ar [Arabic]		552/10
+- he [Hebrew]		202/23
+- ua [Ukrainian]	681/11
+- lv [Latvian]		172/15
+- jp [Japanese]		1122/0
+- vn [Vietnamese]	1106/0
+- ca [Catalan]		1123/0
+- ba [Bosnian]		861/1
+- kr [Korean]		1123/0
+
