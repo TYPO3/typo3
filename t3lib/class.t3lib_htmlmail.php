@@ -534,7 +534,6 @@ class t3lib_htmlmail {
 			$this->constructAlternative($newBoundary);	// Adding the plaintext/html mix
 
 			$this->constructHTML_media($boundary);
-			$this->add_message("--".$boundary."--\n");
 		} else {
 			$this->constructAlternative($boundary);	// Adding the plaintext/html mix, and if no media, then use $boundary instead of $newBoundary
 		}
