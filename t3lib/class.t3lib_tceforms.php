@@ -1180,11 +1180,13 @@ class t3lib_TCEforms	{
 				// Perform modification of the selected items array:
 			$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
 			foreach($itemArray as $tk => $tv) {
-				$tvP=explode('|',$tv,2);
+				$tvP = explode('|',$tv,2);
 				if (in_array($tvP[0],$removeItems) && !$PA['fieldTSConfig']['disableNoMatchingValueElement'])	{
-					$tvP[1]=rawurlencode($nMV_label);
+					$tvP[1] = rawurlencode($nMV_label);
 				} elseif (isset($PA['fieldTSConfig']['altLabels.'][$tvP[0]])) {
-					$tvP[1]=rawurlencode($this->sL($PA['fieldTSConfig']['altLabels.'][$tvP[0]]));
+					$tvP[1] = rawurlencode($this->sL($PA['fieldTSConfig']['altLabels.'][$tvP[0]]));
+				} else {
+					$tvP[1] = rawurlencode($this->sL(rawurldecode($tvP[1])));
 				}
 				$itemArray[$tk]=implode('|',$tvP);
 			}
