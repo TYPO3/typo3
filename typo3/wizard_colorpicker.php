@@ -61,7 +61,7 @@ $BACK_PATH = '';
 require('init.php');
 require('template.php');
 require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
-require('sysext/lang/locallang_wizards.php');
+$LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 
 /**
  * Script Class for colorpicker wizard

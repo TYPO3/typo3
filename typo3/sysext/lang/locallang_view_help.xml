@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">CSH interface labels (?)</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_view_help.php</key>
+        <key index="labelContext" type="array">
+            <key index="details"></key>
+            <key index="syntax"></key>
+            <key index="seeAlso"></key>
+            <key index="goBack"></key>
+            <key index="fullDescription"></key>
+            <key index="fullDescription_module"></key>
+            <key index="goToToc"></key>
+            <key index="to_top"></key>
+            <key index="TOC"></key>
+            <key index="TOC_core"></key>
+            <key index="TOC_modules"></key>
+            <key index="TOC_tables"></key>
+            <key index="TOC_other"></key>
+            <key index="close"></key>
+            <key index="title"></key>
+            <key index="manual_title"></key>
+            <key index="introduction"></key>
+            <key index="description"></key>
+            <key index="full_manual"></key>
+            <key index="full_manual_chapters"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="details">Details</key>
+            <key index="syntax">Syntax</key>
+            <key index="seeAlso">See also</key>
+            <key index="goBack">Go back</key>
+            <key index="fullDescription">See full description of table</key>
+            <key index="fullDescription_module">See full description of module</key>
+            <key index="goToToc">Go to TOC</key>
+            <key index="to_top">To top</key>
+            <key index="TOC">Table Of Contents</key>
+            <key index="TOC_core">TYPO3 Core Features</key>
+            <key index="TOC_modules">Backend Modules</key>
+            <key index="TOC_tables">Database Tables</key>
+            <key index="TOC_other">Other</key>
+            <key index="close">Close</key>
+            <key index="title">TYPO3 Inline Help</key>
+            <key index="manual_title">TYPO3 Inline User Manual</key>
+            <key index="introduction">Introduction</key>
+            <key index="description">The TYPO3 Inline User Manual is dynamically composed from the available help sources in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, descriptions of installation specific Backend Modules and Database Tables that are available based on your login credentials.</key>
+            <key index="full_manual">Full Manual (in one page)</key>
+            <key index="full_manual_chapters">Manual Chapters</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="details">Detaljer</key>
+            <key index="syntax">Format</key>
+            <key index="seeAlso">Se også</key>
+            <key index="goBack">Gå tilbage</key>
+            <key index="fullDescription">Se hele tabelbeskrivelsen</key>
+            <key index="close">Luk</key>
+            <key index="title">TYPO3 Inline hjælp</key>
+        </key>
+        <key index="de" type="array">
+            <key index="details">Details</key>
+            <key index="syntax">Syntax</key>
+            <key index="seeAlso">Siehe auch</key>
+            <key index="goBack">Zurück</key>
+            <key index="fullDescription">Komplette Beschreibung der Tabelle ansehen</key>
+            <key index="close">Schliessen</key>
+            <key index="title">TYPO3 Inline Hilfe</key>
+        </key>
+        <key index="no" type="array">
+            <key index="details">Detaljer</key>
+            <key index="syntax">Format</key>
+            <key index="seeAlso">Se også</key>
+            <key index="goBack">Gå tilbake</key>
+            <key index="fullDescription">Se hele tabellbeskrivelsen</key>
+            <key index="close">Lukk</key>
+            <key index="title">TYPO3 Inline Hjelp</key>
+        </key>
+        <key index="it" type="array">
+            <key index="details">Dettagli</key>
+            <key index="syntax">Sintassi</key>
+            <key index="seeAlso">Vedi anche</key>
+            <key index="goBack">Indietro</key>
+            <key index="fullDescription">Vedi descrizione completa</key>
+            <key index="close">Chiudi</key>
+            <key index="title">Typo3 Help Inline</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="details">Détails</key>
+            <key index="syntax">Syntaxe</key>
+            <key index="seeAlso">Voir aussi</key>
+            <key index="goBack">Page précédente</key>
+            <key index="fullDescription">Voir la description complète de la table</key>
+            <key index="close">Fermer</key>
+            <key index="title">Aide en ligne TYPO3</key>
+        </key>
+        <key index="es" type="array">
+            <key index="details">Detalles</key>
+            <key index="syntax">Sintáxis</key>
+            <key index="seeAlso">Veáse también</key>
+            <key index="goBack">Regresar</key>
+            <key index="fullDescription">Ver descripción completa de la tabla</key>
+            <key index="close">Cerrar</key>
+            <key index="title">Ayuda en línea de TYPO3</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="details">Details</key>
+            <key index="syntax">Syntax</key>
+            <key index="seeAlso">Zie ook</key>
+            <key index="goBack">Ga terug</key>
+            <key index="fullDescription">Bekijk volledige omschrijving van deze tabel.</key>
+            <key index="close">Sluiten</key>
+            <key index="title">TYPO3 Inline Help</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="details">Detaily</key>
+            <key index="syntax">Syntaxe</key>
+            <key index="seeAlso">Viz také</key>
+            <key index="goBack">Jít zpět</key>
+            <key index="fullDescription">Zobrazit úplný popis tabulky</key>
+            <key index="close">Zavřít</key>
+            <key index="title">Inline nápověda TYPO3</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="details">Szczegóły</key>
+            <key index="syntax">Składnia</key>
+            <key index="seeAlso">Zobacz również</key>
+            <key index="goBack">Powrót</key>
+            <key index="fullDescription">Zobacz pełny opis tablicy</key>
+            <key index="close">Zamknij</key>
+            <key index="title">Pomoc Inline TYPO3</key>
+        </key>
+        <key index="si" type="array">
+            <key index="details">Podrobnosti</key>
+            <key index="syntax">Sintaksa</key>
+            <key index="seeAlso">Glej tudi</key>
+            <key index="goBack">Pojdi nazaj</key>
+            <key index="fullDescription">Poglej poln opis tabele</key>
+            <key index="close">Zapri</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="details">Yksityiskohdat</key>
+            <key index="syntax">Syntaksi</key>
+            <key index="seeAlso">Katso myös</key>
+            <key index="goBack">Takaisin</key>
+            <key index="fullDescription">Katso koko taulun kuvausta</key>
+            <key index="close">Sulje</key>
+            <key index="title">Typo3 Inline ohjeet</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="details">Ayrntılar</key>
+            <key index="syntax">Sözdizimi</key>
+            <key index="seeAlso">Gör</key>
+            <key index="goBack">Geri git</key>
+            <key index="fullDescription">Tablonun tüm tanıtımını gör</key>
+            <key index="close">Kapat</key>
+            <key index="title">TYPO3 Inline yardım</key>
+        </key>
+        <key index="se" type="array">
+            <key index="details">Detaljer</key>
+            <key index="syntax">Syntax</key>
+            <key index="seeAlso">Se också</key>
+            <key index="goBack">Gå tillbaka</key>
+            <key index="fullDescription">Se full förklaring över tabellen</key>
+            <key index="close">Stäng</key>
+            <key index="title">Typo3 Inline-hjälp</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="details">Detalhes</key>
+            <key index="syntax">Sintaxe</key>
+            <key index="seeAlso">Veja também</key>
+            <key index="goBack">Voltar</key>
+            <key index="fullDescription">Veja descrição completa da tabela</key>
+            <key index="close">Fechar</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="details">Детали</key>
+            <key index="syntax">Синтаксис</key>
+            <key index="seeAlso">См. также</key>
+            <key index="goBack">Возврат</key>
+            <key index="fullDescription">См. полное описание</key>
+            <key index="close">Закрыть</key>
+            <key index="title">Диалоговая помощь TYPO3</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="details">Detalii</key>
+            <key index="syntax">Sintaxa</key>
+            <key index="seeAlso">Vezi deasemeni</key>
+            <key index="goBack">Innapoi</key>
+            <key index="fullDescription">Vezi descrierea completa a tabelului</key>
+            <key index="close">Inchide</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="details">详细</key>
+            <key index="syntax">语法</key>
+            <key index="seeAlso">参阅</key>
+            <key index="goBack">返回</key>
+            <key index="fullDescription">查看表格详细描述</key>
+            <key index="close">关闭</key>
+            <key index="title">TYPO3在线帮助</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="details">Detaily</key>
+            <key index="syntax">Syntax</key>
+            <key index="seeAlso">Pozri aj</key>
+            <key index="goBack">Choď naspäť</key>
+            <key index="fullDescription">Pozri celý popis tabuľky</key>
+            <key index="close">Zavrieť</key>
+            <key index="title">TYPO3 Inline Pomoc</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="details">Detalės</key>
+            <key index="syntax">Sintaksė</key>
+            <key index="seeAlso">Žiūrėkit taip pat</key>
+            <key index="goBack">Grįšti atgal</key>
+            <key index="fullDescription">Žiūrėkite pilna lentelės aprašymą</key>
+            <key index="close">Uždaryti</key>
+            <key index="title">TYPO3 Pagalba</key>
+        </key>
+        <key index="is" type="array">
+            <key index="details">Smáatriði</key>
+            <key index="syntax">Setningarbygging</key>
+            <key index="seeAlso">Skoða einnig</key>
+            <key index="goBack">Til baka</key>
+            <key index="fullDescription">Skoða nákvæma lýsingu af töflu</key>
+            <key index="close">Loka</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="details">Detaljnjije</key>
+            <key index="syntax">Sintaksa</key>
+            <key index="seeAlso">Pogledaj još</key>
+            <key index="goBack">Natrag</key>
+            <key index="fullDescription">Pogledaj pun opis tablice</key>
+            <key index="close">Zatvori</key>
+            <key index="title">TYPO3 Inline pomoć</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="details">Részletek</key>
+            <key index="syntax">Szintaxis</key>
+            <key index="seeAlso">Lásd még</key>
+            <key index="goBack">Menj vissza</key>
+            <key index="fullDescription">A tábla teljes leírásának megtekintése</key>
+            <key index="close">Bezár</key>
+            <key index="title">TYPO3 Inline Súgó</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="details">รายละเอียด</key>
+            <key index="syntax">Syntax</key>
+            <key index="seeAlso">ดูเพิ่มเติม</key>
+            <key index="goBack">กลับไป</key>
+            <key index="fullDescription">ดูคำอธิบายแบบเต็มของตาราง</key>
+            <key index="close">ปิด</key>
+            <key index="title">ระบบช่วยเหลือ TYPO ออนไลน์</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="details">詳情</key>
+            <key index="syntax">語法</key>
+            <key index="seeAlso">參看</key>
+            <key index="goBack">返回</key>
+            <key index="fullDescription">檢視表格的完整介紹</key>
+            <key index="close">關閉</key>
+            <key index="title">TYPO3 線上支援</key>
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+            <key index="details">Детайли</key>
+            <key index="syntax">Синтакс</key>
+            <key index="seeAlso">Виж също</key>
+            <key index="goBack">Върни се</key>
+            <key index="fullDescription">Виж пълно описание на таблицата</key>
+            <key index="close">Затвори</key>
+            <key index="title">TYPO3 онлайн помощ</key>
+        </key>
+        <key index="br" type="array">
+            <key index="details">Detalhes</key>
+            <key index="syntax">Sintaxe</key>
+            <key index="seeAlso">Veja também</key>
+            <key index="goBack">Voltar</key>
+            <key index="fullDescription">Ver descrição completa da tabela</key>
+            <key index="close">Fechar</key>
+            <key index="title">Ajuda Inline TYPO3</key>
+        </key>
+        <key index="et" type="array">
+            <key index="details">Detailid</key>
+            <key index="syntax">Süntaks</key>
+            <key index="seeAlso">Vaata lisaks</key>
+            <key index="goBack">Tagasi</key>
+            <key index="fullDescription">Tabeli täiskirjeldus</key>
+            <key index="close">Sulge</key>
+            <key index="title">TYPO3 Inline Abi</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="details">تفاصيل</key>
+            <key index="syntax">الأمر</key>
+            <key index="seeAlso">أنظر ايضا</key>
+            <key index="goBack">إرجع</key>
+            <key index="fullDescription">إنظر الوصف الكامل للجدول</key>
+            <key index="close">إقفل</key>
+            <key index="title">مساعدة على الهواء لــ تيبو 3</key>
+        </key>
+        <key index="he" type="array">
+            <key index="details">פרטים</key>
+            <key index="syntax">תחביר</key>
+            <key index="seeAlso">ראה גם</key>
+            <key index="goBack">עבור חזרה</key>
+            <key index="fullDescription">ראה תיאור מלא של טבלה</key>
+            <key index="close">סגור</key>
+            <key index="title">עזרה באינטרנט</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="details">Sīkāk</key>
+            <key index="syntax">Sintakse</key>
+            <key index="seeAlso">Skatīt arī</key>
+            <key index="goBack">Atgriezties</key>
+            <key index="fullDescription">Skatīt tabulas pilnu aprakstu</key>
+            <key index="close">Aizvērt</key>
+            <key index="title">TYPO3 palīdzība</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="fullDescription_module" type="integer">201003905</key>
+            <key index="goToToc" type="integer">21517239</key>
+            <key index="to_top" type="integer">256968027</key>
+            <key index="TOC" type="integer">5416024</key>
+            <key index="TOC_core" type="integer">164327555</key>
+            <key index="TOC_modules" type="integer">39991288</key>
+            <key index="TOC_tables" type="integer">247039840</key>
+            <key index="TOC_other" type="integer">103881441</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+            <key index="manual_title" type="integer">89488469</key>
+            <key index="introduction" type="integer">12031893</key>
+            <key index="description" type="integer">54171837</key>
+            <key index="full_manual" type="integer">68472336</key>
+            <key index="full_manual_chapters" type="integer">161891675</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="de" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="no" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="it" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="es" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="si" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="se" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="is" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="br" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="et" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="he" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="details" type="integer">65812061</key>
+            <key index="syntax" type="integer">154049890</key>
+            <key index="seeAlso" type="integer">101781834</key>
+            <key index="goBack" type="integer">36398395</key>
+            <key index="fullDescription" type="integer">233674735</key>
+            <key index="close" type="integer">222113377</key>
+            <key index="title" type="integer">184225760</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

@@ -1,0 +1,2647 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Web&gt;List Module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_web_list.php</key>
+        <key index="labelContext" type="array">
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_labels_tabdescr"></key>
+            <key index="mlang_tabs_tab"></key>
+            <key index="clip_pasteAfter"></key>
+            <key index="clip_pasteInto"></key>
+            <key index="clip_paste"></key>
+            <key index="clip_markRecords"></key>
+            <key index="clip_selectMarked"></key>
+            <key index="clip_duplicates"></key>
+            <key index="clip_editMarked"></key>
+            <key index="clip_deleteMarked"></key>
+            <key index="clip_deleteMarkedWarning"></key>
+            <key index="showInfo"></key>
+            <key index="edit"></key>
+            <key index="editPage"></key>
+            <key index="new"></key>
+            <key index="newPage"></key>
+            <key index="newRecord"></key>
+            <key index="newRecordGeneral"></key>
+            <key index="moveUp"></key>
+            <key index="moveDown"></key>
+            <key index="move_record"></key>
+            <key index="move_page"></key>
+            <key index="hide"></key>
+            <key index="unHide"></key>
+            <key index="hidePage"></key>
+            <key index="unHidePage"></key>
+            <key index="prevLevel"></key>
+            <key index="nextLevel"></key>
+            <key index="delete"></key>
+            <key index="history"></key>
+            <key index="permissions"></key>
+            <key index="largeControl"></key>
+            <key index="contractView"></key>
+            <key index="expandView"></key>
+            <key index="showClipBoard"></key>
+            <key index="editShownColumns"></key>
+            <key index="editThisColumn"></key>
+            <key index="deleteWarning"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel">List of database-records</key>
+            <key index="mlang_labels_tabdescr">The Web&gt;List module provides the most lowlevel access to the records one a page. While the other modules are mainly specialized in certain operations on certain database tables, this module provides ultimate access to the bare records available to a user.</key>
+            <key index="mlang_tabs_tab">List</key>
+            <key index="clip_pasteAfter">Paste after: Clipboard content is inserted after this record</key>
+            <key index="clip_pasteInto">Paste into: Clipboard content is inserted on this page</key>
+            <key index="clip_paste">Paste in clipboard content</key>
+            <key index="clip_markRecords">Mark All/Mark none</key>
+            <key index="clip_selectMarked">Transfer the selection of records to clipboard</key>
+            <key index="clip_duplicates">Mark duplicates</key>
+            <key index="clip_editMarked">Edit marked</key>
+            <key index="clip_deleteMarked">Delete marked</key>
+            <key index="clip_deleteMarkedWarning">Are you sure you want to delete all marked records from the table '%s'?</key>
+            <key index="showInfo">Display information</key>
+            <key index="edit">Edit record</key>
+            <key index="editPage">Edit page</key>
+            <key index="new">New record</key>
+            <key index="newPage">Create new page after this page</key>
+            <key index="newRecord">Create new record after this record</key>
+            <key index="newRecordGeneral">Create new record</key>
+            <key index="moveUp">Move up in list</key>
+            <key index="moveDown">Move down in list</key>
+            <key index="move_record">Re-position content element</key>
+            <key index="move_page">Move page</key>
+            <key index="hide">Hide record</key>
+            <key index="unHide">Un-hide record</key>
+            <key index="hidePage">Hide page</key>
+            <key index="unHidePage">Un-hide page</key>
+            <key index="prevLevel">Move this page to the position after the current parent page (Inwards)</key>
+            <key index="nextLevel">Move this page to be a subpage of the page above (Outwards)</key>
+            <key index="delete">Delete record (!)</key>
+            <key index="history">Display change history / Un-do</key>
+            <key index="permissions">Set permissions for page</key>
+            <key index="largeControl">Extended view</key>
+            <key index="contractView">List all tables</key>
+            <key index="expandView">List only this table</key>
+            <key index="showClipBoard">Show clipboard</key>
+            <key index="editShownColumns">Edit all shown fields of the listed records</key>
+            <key index="editThisColumn">Edit the '%s' field of the listed records</key>
+            <key index="deleteWarning">Are you sure you want to delete this record?</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel">Liste over database-records</key>
+            <key index="mlang_labels_tabdescr">Modulet Web&gt;Liste giver dig den mest grundliggende tilgang til databaseelementerne på en side. Mens andre moduler hovedsagligt er specialiserede indenfor enkelte operationer på enkelte databasetabeller, så giver dette modul ultimativ adgang til de egentlige databaseelementer som er tilgængelige for en bruger.</key>
+            <key index="mlang_tabs_tab">Liste</key>
+            <key index="clip_pasteAfter">Indsæt efter: Klippebordets indhold indsættes efter dette element</key>
+            <key index="clip_pasteInto">Indsæt i: Klippebordets indhold indsættes på denne side</key>
+            <key index="clip_paste">Indsæt klippebordets indhold</key>
+            <key index="clip_markRecords">Markér alle/Markér ingen</key>
+            <key index="clip_selectMarked">Overfør udvalget af elementer til klippebordet</key>
+            <key index="clip_duplicates">Markér gengangere</key>
+            <key index="clip_editMarked">Redigér markerede</key>
+            <key index="clip_deleteMarked">Slet markerede</key>
+            <key index="clip_deleteMarkedWarning">Er du sikker på, at du vil slette alle markerede elementer fra tabellen '%s'?</key>
+            <key index="showInfo">Vis information</key>
+            <key index="edit">Redigér element</key>
+            <key index="editPage">Redigér side</key>
+            <key index="new">Nyt element</key>
+            <key index="newPage">Opret ny side efter denne side</key>
+            <key index="newRecord">Opret nyt element efter dette element</key>
+            <key index="newRecordGeneral">Opret nyt element</key>
+            <key index="moveUp">Flyt op i listen</key>
+            <key index="moveDown">Flyt ned i listen</key>
+            <key index="move_record">Skift position for indholdselement</key>
+            <key index="move_page">Flyt side</key>
+            <key index="hide">Skjul element</key>
+            <key index="unHide">Vis element</key>
+            <key index="hidePage">Skjul side</key>
+            <key index="unHidePage">Vis side</key>
+            <key index="prevLevel">Flyt denne side til positionen efter den nuværende side (Indad)</key>
+            <key index="nextLevel">Flyt denne side til at være en underside til siden herover (Udad)</key>
+            <key index="delete">Slet element (!)</key>
+            <key index="history">Vis ændringsforløbet / Fortryd</key>
+            <key index="permissions">Sæt rettigheder for siden</key>
+            <key index="largeControl">Udvidet visning</key>
+            <key index="contractView">Vis alle tabeller</key>
+            <key index="expandView">Vis kun denne tabel</key>
+            <key index="showClipBoard">Vis klippebord</key>
+            <key index="editShownColumns">Redigér alle viste felter i de oplistede elementer</key>
+            <key index="editThisColumn">Redigér feltet '%s' i de oplistede elementer</key>
+            <key index="deleteWarning">Er du sikker på, at du ønsker at slette dette element?</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel">Liste der Datensätze</key>
+            <key index="mlang_labels_tabdescr">Das Web-Listen Modul bietet den grundlegensten Zugriff auf die Datensätze einer Seite. Während die anderen Module hauptsächlich mit bestimmten Operationen auf bestimmte Datensätze spezialisiert sind, bietet dieses Modul den entscheidenen Zugriff auf die Datensätze, die für den jeweiligen Benutzer zugänglich sind.</key>
+            <key index="mlang_tabs_tab">Liste</key>
+            <key index="clip_pasteAfter">Einfügen nach: der Inhalt des Klemmbretts wurde nach diesem Datensatz eingefügt</key>
+            <key index="clip_pasteInto">Einfügen in: der Inhalt des Klemmbretts wurde in diese Seite eingefügt</key>
+            <key index="clip_paste">Klemmbrett-Inhalt einfügen</key>
+            <key index="clip_markRecords">Alles/nichts markieren</key>
+            <key index="clip_selectMarked">Ausgewählte Datensätze auf das Klemmbratt transferieren</key>
+            <key index="clip_duplicates">Markiere Duplikate</key>
+            <key index="clip_editMarked">Markierte bearbeiten</key>
+            <key index="clip_deleteMarked">Markierte löschen</key>
+            <key index="clip_deleteMarkedWarning">Sind Sie sicher, dass Sie alle markieren Datensätze aus der Tabelle '%s' löschen wollen?</key>
+            <key index="showInfo">Informationen anzeigen</key>
+            <key index="edit">Datensatz bearbeiten</key>
+            <key index="editPage">Seite bearbeiten</key>
+            <key index="new">Datensatz anlegen</key>
+            <key index="newPage">Neue Seite nach dieser Seite anlegen</key>
+            <key index="newRecord">Neuen Datensatz nach diesem Datensatz anlegen</key>
+            <key index="newRecordGeneral">Neuen Datensatz anlegen</key>
+            <key index="moveUp">Nach oben verschieben</key>
+            <key index="moveDown">Nach unten verschieben</key>
+            <key index="move_record">Datensatz verschieben</key>
+            <key index="move_page">Seite verschieben</key>
+            <key index="hide">Datensatz verbergen</key>
+            <key index="unHide">Datensatz nicht verbergen</key>
+            <key index="hidePage">Seite verstecken</key>
+            <key index="unHidePage">Seite sichtbar machen</key>
+            <key index="prevLevel">Bewege diese Seite hinter die derzeit übergeordnete Seite (einwärts)</key>
+            <key index="nextLevel">Bewege diese Seite als Unterseite in die derzeit vorhergehende Seite (auswärts)</key>
+            <key index="delete">Datensatz löschen (!)</key>
+            <key index="history">Änderungsverlauf anzeigen / Rückgängig</key>
+            <key index="permissions">Zugriffsrechte für Seite einstellen</key>
+            <key index="largeControl">Erweiterte Ansicht</key>
+            <key index="contractView">Alle Tabellen anzeigen</key>
+            <key index="expandView">Nur diese Tabelle anzeigen</key>
+            <key index="showClipBoard">Klemmbrett anzeigen</key>
+            <key index="editShownColumns">Bearbeite alle angezeigten Felder der angelisteten Datensätze</key>
+            <key index="editThisColumn">Bearbeite das Feld '%s' des angelisteten Datensätze</key>
+            <key index="deleteWarning">Soll dieser Datensatz wirklich gelöscht werden?</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel">Liste over database-records</key>
+            <key index="mlang_labels_tabdescr">Modulen Web&gt;Liste gir den mest grunnleggende tilgangen til databaseelementene på en side. Mens andre moduler hovedsakelig er spesialiserte for enkelte operasjoner på enkelte databasetabeller, gir denne modulen ultimat  tilgang til de egentlige databaseelementene som er tilgjengelige for brukeren.</key>
+            <key index="mlang_tabs_tab">Liste</key>
+            <key index="clip_pasteAfter">Lim inn etter: Innholdet på klippebordet settes inn etter dette elementet</key>
+            <key index="clip_pasteInto">Lim inn i: Innholdet på klippebordet settes inn på denne siden</key>
+            <key index="clip_paste">Lim inn klippebordets innhold</key>
+            <key index="clip_markRecords">Merk alle/ Merk ingen</key>
+            <key index="clip_selectMarked">Overfør de valgte elementene til klippebordet</key>
+            <key index="clip_duplicates">Merk duplikater</key>
+            <key index="clip_editMarked">Rediger merkede</key>
+            <key index="clip_deleteMarked">Slett merkede</key>
+            <key index="clip_deleteMarkedWarning">Er du sikker på at du vil slette alle markerte elementer fra tabellen '%s'?</key>
+            <key index="showInfo">Vis informasjon</key>
+            <key index="edit">Rediger element</key>
+            <key index="editPage">Rediger side</key>
+            <key index="new">Nytt element</key>
+            <key index="newPage">Opprett ny side etter denne siden</key>
+            <key index="newRecord">Opprett nytt element etter dette elementet</key>
+            <key index="newRecordGeneral">Opprett nytt element</key>
+            <key index="moveUp">Flytt oppover i listen</key>
+            <key index="moveDown">Flytt nedover i listen</key>
+            <key index="move_record">Skift posisjon for innholdselement</key>
+            <key index="move_page">Flytt side</key>
+            <key index="hide">Skjul element</key>
+            <key index="unHide">Vis element</key>
+            <key index="hidePage">Skjul side</key>
+            <key index="unHidePage">Vis side</key>
+            <key index="prevLevel">Flytt denne siden til posisjonen etter gjeldende side (Innover)</key>
+            <key index="nextLevel">Flytt denne siden slik at den blir en underside til siden over (Utover)</key>
+            <key index="delete">Slett element(!)</key>
+            <key index="history">Vis endringshistorikk / Angre</key>
+            <key index="permissions">Sett rettigheter for siden</key>
+            <key index="largeControl">Utvidet visning</key>
+            <key index="contractView">Vis alle tabeller</key>
+            <key index="expandView">Vis kun denne tabellen</key>
+            <key index="showClipBoard">Vis klippebord</key>
+            <key index="editShownColumns">Rediger alle viste felt i de opplistede elementene</key>
+            <key index="editThisColumn">Rediger feltet '%s' i de opplistede elementene</key>
+            <key index="deleteWarning">Er du sikker på at du ønsker å slette dette elementet?</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel">Lista dei record del database</key>
+            <key index="mlang_labels_tabdescr">Il modulo Web&gt;Lista fornisce l'accesso più 'a basso livello' ai record di una pagina. Mentre gli altri moduli sono specializzati in determinate funzioni su certe tabelle del database, questo modulo fornisce l'accesso a tutti i record della pagina che l'utente può visualizzare.</key>
+            <key index="mlang_tabs_tab">Lista</key>
+            <key index="clip_pasteAfter">Incolla dopo: il contenuto della clipboard viene inserito dopo questo record</key>
+            <key index="clip_pasteInto">Incolla in: il contenuto della clipboard viene inserito in questa pagina</key>
+            <key index="clip_paste">Incolla contenuto clipboard</key>
+            <key index="clip_markRecords">Seleziona tutti/nessuno</key>
+            <key index="clip_selectMarked">Trasferisci i record selezionati nella clipboard</key>
+            <key index="clip_duplicates">Seleziona duplicati</key>
+            <key index="clip_editMarked">Modifica selezionati</key>
+            <key index="clip_deleteMarked">Elimina selezionati</key>
+            <key index="clip_deleteMarkedWarning">Sei sicuro di voler eliminare tutti i record selezionati dalla tabella '%s'?</key>
+            <key index="showInfo">Visualizza informazioni</key>
+            <key index="edit">Modifica record</key>
+            <key index="editPage">Modifica pagina</key>
+            <key index="new">Nuovo record</key>
+            <key index="newPage">Crea nuova pagina dopo questa</key>
+            <key index="newRecord">Crea nuovo record dopo questo</key>
+            <key index="newRecordGeneral">Crea nuovo record</key>
+            <key index="moveUp">Sposta su</key>
+            <key index="moveDown">Sposta giù</key>
+            <key index="move_record">Ri-posiziona l'elemento di contenuto</key>
+            <key index="move_page">Sposta pagina</key>
+            <key index="hide">Nascondi record</key>
+            <key index="unHide">Mostra record</key>
+            <key index="hidePage">Nascondi pagina</key>
+            <key index="unHidePage">Mostra pagina</key>
+            <key index="prevLevel">Sposta questa pagina dopo la pagina padre (Inwards)</key>
+            <key index="nextLevel">Fai diventare questa pagina sottopagina della pagina sovrastante (Outwards)</key>
+            <key index="delete">Elimina record (!)</key>
+            <key index="history">Mostra ultime modifiche / annulla</key>
+            <key index="permissions">Imposta i permessi per la pagina</key>
+            <key index="largeControl">Vista estesa</key>
+            <key index="contractView">Elenca tutte le tabelle</key>
+            <key index="expandView">Elenca solo questa tabella</key>
+            <key index="showClipBoard">Mostra clipboard</key>
+            <key index="editShownColumns">Modifica tutti i campi dei record visualizzati</key>
+            <key index="editThisColumn">Modifica il campo '%s' dei record visualizzati</key>
+            <key index="deleteWarning">Sei sicuro di voler eliminare questo record?</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel">Liste des pages et des enregistrements</key>
+            <key index="mlang_labels_tabdescr">Le module Web&gt;Liste vous offre l'entier contrôle sur tous les enregistrements d'une page. Contrairement aux autres modules plus spécialisés, celui-ci vous donne accès à toutes les informations disponibles.</key>
+            <key index="mlang_tabs_tab">Liste</key>
+            <key index="clip_pasteAfter">Coller après: Le contenu du presse-papiers est inséré après cet enregistrement</key>
+            <key index="clip_pasteInto">Coller dans: Le contenu du presse-papiers est inséré dans cette page</key>
+            <key index="clip_paste">Coller le contenu du presse-papiers</key>
+            <key index="clip_markRecords">Sélectionner tout/rien</key>
+            <key index="clip_selectMarked">Transférer les enregistrements sélectionnés dans le presse-papiers</key>
+            <key index="clip_duplicates">Sélectionner les doublons</key>
+            <key index="clip_editMarked">Editer la sélection</key>
+            <key index="clip_deleteMarked">Supprimer la sélection</key>
+            <key index="clip_deleteMarkedWarning">Etes-vous sûr de vouloir supprimer de la table '%s' tous les enregistrements sélectionnés?</key>
+            <key index="showInfo">Afficher les informations</key>
+            <key index="edit">Editer l'enregistrement</key>
+            <key index="editPage">Editer la page</key>
+            <key index="new">Créer un nouvel enregistrement</key>
+            <key index="newPage">Créer une nouvelle page, après celle-ci</key>
+            <key index="newRecord">Créer un nouvel élément, après celui-ci</key>
+            <key index="newRecordGeneral">Créer un nouvel enregistrement</key>
+            <key index="moveUp">Déplacer vers le haut</key>
+            <key index="moveDown">Déplacer vers le bas</key>
+            <key index="move_record">Déplacer l'élément de contenu</key>
+            <key index="move_page">Déplacer la page</key>
+            <key index="hide">Cacher l'enregistrement</key>
+            <key index="unHide">Montrer l'enregistrement</key>
+            <key index="hidePage">Cacher la page</key>
+            <key index="unHidePage">Montrer la page</key>
+            <key index="prevLevel">Déplacer cette page après la page qui présentement la contient</key>
+            <key index="nextLevel">Déplacer cette page pour qu'elle soit la sous-page de la page précédente</key>
+            <key index="delete">Supprimer (!)</key>
+            <key index="history">Afficher l'historique des changements / Annuler</key>
+            <key index="permissions">Définir les droits d'accès à la page</key>
+            <key index="largeControl">Vue étendue</key>
+            <key index="contractView">Lister toutes les tables</key>
+            <key index="expandView">Lister uniquement cette table</key>
+            <key index="showClipBoard">Afficher le presse-papiers</key>
+            <key index="editShownColumns">Editer tous les champs de l'enregistrement</key>
+            <key index="editThisColumn">Editer le champs '%s' de l'enregistrement</key>
+            <key index="deleteWarning">Etes-vous sûr de vouloir supprimer cet enregistrement?</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel">Lista de registros</key>
+            <key index="mlang_labels_tabdescr">El módulo Web&gt;Lista provee del acceso a mas bajo nivel de los registros que forman una página. En tanto que los otros módulos están especializados en cietas operaciones en ciertas tablas, este módulo permite el acceso total a los registros en crudo disponibles para el usuario.</key>
+            <key index="mlang_tabs_tab">Lista</key>
+            <key index="clip_pasteAfter">Pegar después: El contenido del portapapeles es insertado después de este registro</key>
+            <key index="clip_pasteInto">Pegar en: El contenido del portapapeles es insertado en esta página</key>
+            <key index="clip_paste">Pegar el contenido del portapapeles</key>
+            <key index="clip_markRecords">Marcar/Desmarcar todos</key>
+            <key index="clip_selectMarked">Transferir la selección de registros al portapapeles</key>
+            <key index="clip_duplicates">Marcar duplicados</key>
+            <key index="clip_editMarked">Editar marcados</key>
+            <key index="clip_deleteMarked">Borrar marcados</key>
+            <key index="clip_deleteMarkedWarning">¿Seguro que quieres borrar todos los registros marcados de la tabla '%s'?</key>
+            <key index="showInfo">Mostrar información</key>
+            <key index="edit">Editar registro</key>
+            <key index="editPage">Editar página</key>
+            <key index="new">Nuevo registro</key>
+            <key index="newPage">Crear página después de esta página</key>
+            <key index="newRecord">Crear nuevo registro después de este registro</key>
+            <key index="newRecordGeneral">Crear nuevo registro</key>
+            <key index="moveUp">Subir en la lista</key>
+            <key index="moveDown">Bajar en la lista</key>
+            <key index="move_record">Re-posicionar elemento de contenido</key>
+            <key index="move_page">Mover página</key>
+            <key index="hide">Ocultar registro</key>
+            <key index="unHide">Mostrar registro</key>
+            <key index="hidePage">Ocultar página</key>
+            <key index="unHidePage">Mostrar página</key>
+            <key index="prevLevel">Mover esta página a la posición después de la página padre actual (hacia dentro)</key>
+            <key index="nextLevel">Mover esta página a una subpágina de la página superior (hacia afuera)</key>
+            <key index="delete">Eliminar registro (!)</key>
+            <key index="history">Mostrar historial de cambios / Deshacer</key>
+            <key index="permissions">Establecer permisos para esta página</key>
+            <key index="largeControl">Vista extendida</key>
+            <key index="contractView">Listar todas las tablas</key>
+            <key index="expandView">Listar solamente esta tabla</key>
+            <key index="showClipBoard">Mostrar portapapeles</key>
+            <key index="editShownColumns">Editar los campos mostrados en los registros listados</key>
+            <key index="editThisColumn">Editar el campo '%s' en los registros listados</key>
+            <key index="deleteWarning">¿Seguro que desea eliminar este registro?</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel">Lijst van databaserecords</key>
+            <key index="mlang_labels_tabdescr">De Web&gt;Lijstmodule biedt de meest basale toegang tot de records in een pagina. Terwijl de andere modules voornamelijk gespecialiseerd zijn in bepaalde bewerkingen van databasetabellen, geeft deze module fundamentele toegang tot de records die beschikbaar zijn voor de gebruiker.</key>
+            <key index="mlang_tabs_tab">Lijst</key>
+            <key index="clip_pasteAfter">Plaats na: Klembordinhoud wordt ingevoegd na dit element</key>
+            <key index="clip_pasteInto">Plaats in: Klembordinhoud wordt ingevoegd op deze pagina</key>
+            <key index="clip_paste">Plaats in klembordinhoud</key>
+            <key index="clip_markRecords">Selecteer alle/Selecteer geen</key>
+            <key index="clip_selectMarked">Verplaats de geselecteerde elementen naar het klembord</key>
+            <key index="clip_duplicates">Selecteer gelijke</key>
+            <key index="clip_editMarked">Bewerk geselecteerde</key>
+            <key index="clip_deleteMarked">Verwijder geselecteerde</key>
+            <key index="clip_deleteMarkedWarning">Geselecteerde elementen verwijderen uit tabel '%s'?</key>
+            <key index="showInfo">Toon informatie</key>
+            <key index="edit">Bewerk record</key>
+            <key index="editPage">Bewerk pagina</key>
+            <key index="new">Nieuw record</key>
+            <key index="newPage">Maak nieuwe pagina na deze</key>
+            <key index="newRecord">Maak nieuw record na deze</key>
+            <key index="newRecordGeneral">Maak nieuw record</key>
+            <key index="moveUp">Verplaats naar boven in lijst</key>
+            <key index="moveDown">Verplaats naar beneden in lijst</key>
+            <key index="move_record">Herpositioneer inhoudselement</key>
+            <key index="move_page">Verplaats pagina</key>
+            <key index="hide">Verberg record</key>
+            <key index="unHide">Verbergen record opheffen</key>
+            <key index="hidePage">Verberg Pagina</key>
+            <key index="unHidePage">Toon Pagina</key>
+            <key index="prevLevel">Plaats deze pagina een niveau terug (binnen de parent)</key>
+            <key index="nextLevel">Plaats deze pagina een niveau dieper (als een subpagina)</key>
+            <key index="delete">Verwijder dit record</key>
+            <key index="history">Toon wijzigingen / Ongedaan maken</key>
+            <key index="permissions">Instellen rechten voor deze pagina</key>
+            <key index="largeControl">Uitgebreid overzicht</key>
+            <key index="contractView">Laat alle tabellen zien</key>
+            <key index="expandView">Laat alleen deze tabel zien</key>
+            <key index="showClipBoard">Toon klembord</key>
+            <key index="editShownColumns">Bewerk alle zichtbare velden van de getoonde records</key>
+            <key index="editThisColumn">Bewerk het '%s' veld van de getoonde records</key>
+            <key index="deleteWarning">Dit record verwijderen?</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel">Seznam databázových záznamů</key>
+            <key index="mlang_labels_tabdescr">Modul Web&gt;Seznam poskytuje základní přístup k záznamům na každé straně. Jiné moduly jsou specializovány zejména na určité operace na určitých databázových tabulkách, tento modul poskytuje přímý přístup k základním záznamům dostupným uživateli.</key>
+            <key index="mlang_tabs_tab">Seznam</key>
+            <key index="clip_pasteAfter">Vložit za: Obsah schránky je vložen za tento záznam</key>
+            <key index="clip_pasteInto">Vložit do: Obsah schránky je vložen na tuto stránku</key>
+            <key index="clip_paste">Vložit obsah schránky</key>
+            <key index="clip_markRecords">Označit vše/Odznačit vše</key>
+            <key index="clip_selectMarked">Přenést všechny zvolené záznamy do schránky</key>
+            <key index="clip_duplicates">Označit duplikáty</key>
+            <key index="clip_editMarked">Upravit označené</key>
+            <key index="clip_deleteMarked">Odstranit označené</key>
+            <key index="clip_deleteMarkedWarning">Jste si jisti, že chcete odstranit všechny označené záznamy z tabulky '%s'?</key>
+            <key index="showInfo">Zobrazovaná informace</key>
+            <key index="edit">Upravit záznam</key>
+            <key index="editPage">Upravit stránku</key>
+            <key index="new">Nový záznam</key>
+            <key index="newPage">Vytvořit novou stranu za touto stranou</key>
+            <key index="newRecord">Vytvořit záznam za tímto záznamem</key>
+            <key index="newRecordGeneral">Vytvořit nový záznam</key>
+            <key index="moveUp">Přesunout nahoru v seznamu</key>
+            <key index="moveDown">Přesunout dolů v seznamu</key>
+            <key index="move_record">Změnit pozici obsahu</key>
+            <key index="move_page">Přesunout stranu</key>
+            <key index="hide">Skrýt záznam</key>
+            <key index="unHide">Odkrýt záznam</key>
+            <key index="hidePage">Skrýt stránku</key>
+            <key index="unHidePage">Odkrýt stránku</key>
+            <key index="prevLevel">Přesunout stránku na pozici za současnou stránkou (Dovnitř)</key>
+            <key index="nextLevel">Přesunout stránku jako podstránku stránky nahoře (Ven)</key>
+            <key index="delete">Smazat záznam (!)</key>
+            <key index="history">Zobrazit historii změn / Undo</key>
+            <key index="permissions">Nastavit přístup pro stránku</key>
+            <key index="largeControl">Rozšířený pohled</key>
+            <key index="contractView">Vypsat všechny tabulky</key>
+            <key index="expandView">Vypsat všechny tabulky</key>
+            <key index="showClipBoard">Ukázat schránku</key>
+            <key index="editShownColumns">Upravit všechna ukázaná pole vypsaných záznamů</key>
+            <key index="editThisColumn">Upravit '%s' pole vypsaných záznamů</key>
+            <key index="deleteWarning">Jste si jisti, že chcete smazat tento záznam?</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel">Lista zawartości bazy</key>
+            <key index="mlang_labels_tabdescr">Moduł Web&gt;Lista zapewnia dostęp niskiego poziomu do rekordów zawartych na stronie. O ile inne moduły pełnią wyspecjalizowane funkcje dotyczące konkretnych tablic, ten moduł umożliwia dostep do większości rekordów dostępnych dla użytkownika.</key>
+            <key index="mlang_tabs_tab">Lista</key>
+            <key index="clip_pasteAfter">Wstaw za: Zawartość schowka jest wstawiana za tym rekordem</key>
+            <key index="clip_pasteInto">Wstaw w: Zawartość schowka jest wstawiana na tej stronie</key>
+            <key index="clip_paste">Wstaw zawartość ze schowka</key>
+            <key index="clip_markRecords">Zaznacz/Odznacz wszystkie</key>
+            <key index="clip_selectMarked">Przenieś zaznaczone rekordy do schowka</key>
+            <key index="clip_duplicates">Zaznacz duplikaty</key>
+            <key index="clip_editMarked">Edytuj zaznaczone</key>
+            <key index="clip_deleteMarked">Usuń zaznaczone</key>
+            <key index="clip_deleteMarkedWarning">Czy jesteś pewien, że chcesz usunąć wszystkie zaznaczone rekordy z tablicy '%s'?</key>
+            <key index="showInfo">Wyświetl informację</key>
+            <key index="edit">Edytuj rekord</key>
+            <key index="editPage">Edytuj stronę</key>
+            <key index="new">Nowy rekord</key>
+            <key index="newPage">Stwórz nową stronę za tą</key>
+            <key index="newRecord">Stwórz nowy rekord za tym</key>
+            <key index="newRecordGeneral">Stwórz nowy rekord</key>
+            <key index="moveUp">Przesuń w górę</key>
+            <key index="moveDown">Przesuń w dół</key>
+            <key index="move_record">Przenieś bieżący element treści</key>
+            <key index="move_page">Przenieś stronę</key>
+            <key index="hide">Ukryj rekord</key>
+            <key index="unHide">Odkryj rekord</key>
+            <key index="hidePage">Ukryj stronę</key>
+            <key index="unHidePage">Odkryj stronę</key>
+            <key index="prevLevel">Przesuń stronę o poziom w górę (obok rodzica)</key>
+            <key index="nextLevel">Przesuń tą stronę jako podstronę do strony powyżej</key>
+            <key index="delete">Usuń rekord (!)</key>
+            <key index="history">Wyświetl historię zmian</key>
+            <key index="permissions">Ustaw uprawnienia dla strony</key>
+            <key index="largeControl">Widok rozszerzony</key>
+            <key index="contractView">Wyświetlaj wszystkie tablice</key>
+            <key index="expandView">Wyświetl tylko tą tablicę</key>
+            <key index="showClipBoard">Pokaż schowek</key>
+            <key index="editShownColumns">Edytuj wszystkie pokazane pola w rekordach</key>
+            <key index="editThisColumn">Edytuj '%s' pole w rekordach</key>
+            <key index="deleteWarning">Czy na pewno chcesz usunąć ten rekord?</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel">Seznam zapisov v bazi podatkov</key>
+            <key index="mlang_labels_tabdescr">Modul Internet&gt;Seznam omogoča najbolj osnovni dostop do zapisov na strani.</key>
+            <key index="mlang_tabs_tab">Seznam</key>
+            <key index="clip_pasteAfter">Prilepi za: Vsebina iz odložišča bo vstavljena za ta zapis</key>
+            <key index="clip_pasteInto">Prilepi v: Vsebina iz odložišča bo vstavljena na to stran</key>
+            <key index="clip_paste">Prilepi v odložišče</key>
+            <key index="clip_markRecords">Označi vse / Ne označi nič</key>
+            <key index="clip_selectMarked">Prenesi izbrane zapise v odložišče</key>
+            <key index="clip_duplicates">Označi dvojnike</key>
+            <key index="clip_editMarked">Uredi označeno</key>
+            <key index="clip_deleteMarked">Izbriši označeno</key>
+            <key index="clip_deleteMarkedWarning">Res želite izbrisati vse označene zapise iz tabele '%s'?</key>
+            <key index="showInfo">Prikaži informacije</key>
+            <key index="edit">Uredi zapis</key>
+            <key index="editPage">Uredi stran</key>
+            <key index="new">Nov zapis</key>
+            <key index="newPage">Ustvari novo stran za to stranjo</key>
+            <key index="newRecord">Ustvari nov zapis za tem zapisom</key>
+            <key index="newRecordGeneral">Ustvari nov zapis</key>
+            <key index="moveUp">Premakni navzgor po seznamu</key>
+            <key index="moveDown">Premakni navzdol po seznamu</key>
+            <key index="move_record">Premakni vsebinski element</key>
+            <key index="move_page">Premakni stran</key>
+            <key index="hide">Skrij zapis</key>
+            <key index="unHide">Pokaži zapis</key>
+            <key index="hidePage">Skrij stran</key>
+            <key index="unHidePage">Pokaži stran</key>
+            <key index="prevLevel">Premakni to stran v nižji nivo</key>
+            <key index="nextLevel">Premakni to stran v višji nivo</key>
+            <key index="delete">Izbriši zapis (!)</key>
+            <key index="history">Prikaži zgodovino sprememb / Razveljavi</key>
+            <key index="permissions">Nastavi dovoljenja za stran</key>
+            <key index="largeControl">Razširjen pogled</key>
+            <key index="contractView">Štej vse tabele</key>
+            <key index="expandView">Štej samo to tabelo</key>
+            <key index="showClipBoard">Prikaži odložišče</key>
+            <key index="editShownColumns">Uredi vsa prikazana polja prikazanih zapisov</key>
+            <key index="editThisColumn">Uredi polje '%s' prikazanih zapisov</key>
+            <key index="deleteWarning">Ste prepričani, da želite izbrisati ta zapis?</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel">Luettelo tietokannan tietueista</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Luettelo-moduli mahdollistaa alemman tason käsittelun sivun tietueille. Kun muut modilit pääsääntöisesti ovat erikoistuneet tiettyihin toimenpiteisiin tietyissä tietokannan tauluissa, on tällä modulilla mahdollisuus äärimmäisiin toimiin pelkillä tietueilla.</key>
+            <key index="mlang_tabs_tab">Luettelo</key>
+            <key index="clip_pasteAfter">Liitä: Leikepöydän sisältö lisätään tämän tietueen jälkeen</key>
+            <key index="clip_pasteInto">Liitä: Leikepöydän sisältö lisätään tälle sivulle</key>
+            <key index="clip_paste">Liitä leikepöydälle</key>
+            <key index="clip_markRecords">Merkitse kaikki/Poista merkintä</key>
+            <key index="clip_selectMarked">Siirrä valitut tiedostot leikepöydälle</key>
+            <key index="clip_duplicates">Merkitse kopiot (duplikaatit)</key>
+            <key index="clip_editMarked">Muokkaa merkittyjä</key>
+            <key index="clip_deleteMarked">Poista merkityt</key>
+            <key index="clip_deleteMarkedWarning">Haluatko todella poistaa kaikki merkityt tietueet taulusta '%s'?</key>
+            <key index="showInfo">Näytä tiedot</key>
+            <key index="edit">Muotoile tietuetta</key>
+            <key index="editPage">Muotoile sivua</key>
+            <key index="new">Uusi tietue</key>
+            <key index="newPage">Luo uusi sivu tämän sivun jälkeen</key>
+            <key index="newRecord">Luo uusi tietue tämän tietueen jälkeen</key>
+            <key index="newRecordGeneral">Luo uusi tietue</key>
+            <key index="moveUp">Siirrä ylös listalla</key>
+            <key index="moveDown">Siirrä alas listalla</key>
+            <key index="move_record">Sijoita sisältö-elementti uudelleen</key>
+            <key index="move_page">Siirrä sivua</key>
+            <key index="hide">Piilota tietue</key>
+            <key index="unHide">Ota tietue pois piilosta</key>
+            <key index="hidePage">Piilota sivu</key>
+            <key index="unHidePage">Ota sivu piilosta</key>
+            <key index="prevLevel">Siirrä sivu nykyisen ylemmän tason jälkeiseksi</key>
+            <key index="nextLevel">Siirrä sivu edellisen sivun alapuolelle</key>
+            <key index="delete">Poista tietue (!)</key>
+            <key index="history">Näytä muutos historia / Palauta</key>
+            <key index="permissions">Aseta sivun käyttöoikeudet</key>
+            <key index="largeControl">Laajennettu näyttö</key>
+            <key index="contractView">Listaa kaikki taulut</key>
+            <key index="expandView">Listaa ainoastaan tämä taulu</key>
+            <key index="showClipBoard">Näytä leikepöytä</key>
+            <key index="editShownColumns">Muotoile kaikki näytetyt kentät listatuista tietueista</key>
+            <key index="editThisColumn">Muotoile '%s' tietoa listatuista tietueista</key>
+            <key index="deleteWarning">Oletko varma että haluat poistaa tämän tietueen ?</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel">Veritabanı kayıtlarının listelenmesi</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Listesi modülü her sayfada bir kayıta en düşük seviyede erişim imkanı sağlar.Diğer modüller belli veritabanı tablolarındaki belli uygulamalar için özelleştirilmişken, bu modül kullanıcının erişebilmesine izin verilen tüm kayıtlara erişebilmesine imkan sağlar.</key>
+            <key index="mlang_tabs_tab">Liste</key>
+            <key index="clip_pasteAfter">Sonrakine yapıştır: Bu kayıttan sonra pano içeriği eklendi</key>
+            <key index="clip_pasteInto">İçine yapıştır: Bu sayfa üzerinde pano içeriği eklendi</key>
+            <key index="clip_paste">Pano içeriğinin içine yapıştır</key>
+            <key index="clip_markRecords">Tümünü İşaretle/Hiçbirini İşaretleme</key>
+            <key index="clip_selectMarked">Seçili kayıtları panoya transfer et</key>
+            <key index="clip_duplicates">İkinci kopyası olanları işaretle</key>
+            <key index="clip_editMarked">İşaretlenmiş olanı düzelt</key>
+            <key index="clip_deleteMarked">İşaretlenmiş olanı sil</key>
+            <key index="clip_deleteMarkedWarning">Tüm işaretli kayıtları tablodan '%s' silmek istediğinizden emin misiniz?</key>
+            <key index="showInfo">Bilginin görüntülenmesi</key>
+            <key index="edit">Kayıt düzenleme</key>
+            <key index="editPage">Sayfayı düzelt</key>
+            <key index="new">Yeni kayıt</key>
+            <key index="newPage">Sonraki sayfaya yeni sayfa yarat</key>
+            <key index="newRecord">Sonraki kayıta yeni kayıt yarat</key>
+            <key index="newRecordGeneral">Yeni kayıt yarat</key>
+            <key index="moveUp">Listenin içinde yukarı taşı</key>
+            <key index="moveDown">Listenin içinde aşağı taşı</key>
+            <key index="move_record">Yeni pozisyon içerik elementi</key>
+            <key index="move_page">Sayfayı taşı</key>
+            <key index="hide">Kayıtı sakla</key>
+            <key index="unHide">Saklanamayan kayıt</key>
+            <key index="hidePage">Sayfayı gizle</key>
+            <key index="unHidePage">Sayfayı gizleme</key>
+            <key index="prevLevel">Bu sayfayı sonraki güncel ana sayfadaki konuma taşı (İç kısımlar)</key>
+            <key index="nextLevel">Bu sayfayı yukarıdaki sayfanın bir alt sayfası olarak taşı (Dış kısımlar)</key>
+            <key index="delete">Kayıtı sil (!)</key>
+            <key index="history">Değişim günlüğünün görüntülenmesi / Geri al</key>
+            <key index="permissions">Sayfa için izinleri kur</key>
+            <key index="largeControl">Genişletilmiş görüntü</key>
+            <key index="contractView">Tüm tabloların listesi</key>
+            <key index="expandView">Sadece bu tablonun listelenmesi</key>
+            <key index="showClipBoard">Panoyu göster</key>
+            <key index="editShownColumns">Listelenen kayıtların tüm alanlarının gösterilmesinin düzeltilmesi</key>
+            <key index="editThisColumn">Listelenen kayıtların alanının '%s' düzeltilmesi</key>
+            <key index="deleteWarning">Bu kayıtı silmek istediğinizden emin misiniz?</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel">Lista över databasregistren</key>
+            <key index="mlang_labels_tabdescr">Web&gt;List modulen innehåller den mest detaljerade åtkomsten till sidornas register. Medan andra moduler i huvudsak specialiserar sig på vissa funktioner i en viss databastabell, ger denna modul åtkomst till de rena registren en andvändare har rätt till.</key>
+            <key index="mlang_tabs_tab">Lista</key>
+            <key index="clip_pasteAfter">Klistra in efter: Innehållet i klippbordet klistras in efter detta element</key>
+            <key index="clip_pasteInto">Klistra ini: Innehållet i klippbordet klistras in på denna sida</key>
+            <key index="clip_paste">Klistra in klippbordets innehåll</key>
+            <key index="clip_markRecords">Markera allt/Avmarkera allt</key>
+            <key index="clip_selectMarked">Flytta markerade element till klippbordet</key>
+            <key index="clip_duplicates">Märk dubbelkopior</key>
+            <key index="clip_editMarked">Ändra de markerade</key>
+            <key index="clip_deleteMarked">Radera de markerade</key>
+            <key index="clip_deleteMarkedWarning">Är du säker på att du vill radera alla markerade element i tabellen '%s'?</key>
+            <key index="showInfo">Visa information</key>
+            <key index="edit">Ändra element</key>
+            <key index="editPage">Ändra sida</key>
+            <key index="new">Nytt element</key>
+            <key index="newPage">Skapa ny sida efter denna sida</key>
+            <key index="newRecord">Skapa nytt element efter detta element</key>
+            <key index="newRecordGeneral">Skapa nytt element</key>
+            <key index="moveUp">Flytta uppåt i listan</key>
+            <key index="moveDown">Flytta neråt i listan</key>
+            <key index="move_record">Byt plats för element</key>
+            <key index="move_page">Flytta sida</key>
+            <key index="hide">Göm element</key>
+            <key index="unHide">Visa element</key>
+            <key index="hidePage">Göm sida</key>
+            <key index="unHidePage">Visa sida</key>
+            <key index="prevLevel">Flytta denna sida så den kommer efter nuvarande huvudsida</key>
+            <key index="nextLevel">Flytta denna sida så den blir en undersida till sidan ovanför</key>
+            <key index="delete">Radera element (!)</key>
+            <key index="history">Visa ändringshistoria / Gör om</key>
+            <key index="permissions">Ställ in rättigheter för sidan</key>
+            <key index="largeControl">Utökat fönster</key>
+            <key index="contractView">Lista över alla tabeller</key>
+            <key index="expandView">Lista endast denna tabell</key>
+            <key index="showClipBoard">Visa klippbord</key>
+            <key index="editShownColumns">Ändra alla visade fält i det listade elementet</key>
+            <key index="editThisColumn">Ändra '%s' -fältet i det listade elementet</key>
+            <key index="deleteWarning">Är du säker på att du vill radera detta element?</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel">Lista de registros no banco de dados</key>
+            <key index="mlang_labels_tabdescr">O módulo Web&gt;Lista dá o acesso de mais baixo nível aos registros de uma página. Enquanto os outros módulos são especializados em certas operações em tabelas específicas do banco de dados, este módulo provê ao usuário acesso direto aos registros.</key>
+            <key index="mlang_tabs_tab">Lista</key>
+            <key index="clip_pasteAfter">Colar depois: O conteúdo da área de transferência é inserido após este registro.</key>
+            <key index="clip_pasteInto">Colar dentro: O conteúdo da área de transferência é inserido nesta página.</key>
+            <key index="clip_paste">Colar conteúdo da área de transferência</key>
+            <key index="clip_markRecords">Marcar todos/Desmarcar Todos</key>
+            <key index="clip_selectMarked">Transferir os registros selecionados para a área de transferência</key>
+            <key index="clip_duplicates">Marcar duplicados</key>
+            <key index="clip_editMarked">Editar marcados</key>
+            <key index="clip_deleteMarked">Apagar marcados</key>
+            <key index="clip_deleteMarkedWarning">Você está certo de que deseja apagar todos os registros marcados da tabela '%s'?</key>
+            <key index="showInfo">Mostrar informações</key>
+            <key index="edit">Editar registro</key>
+            <key index="editPage">Editar página</key>
+            <key index="new">Novo registro</key>
+            <key index="newPage">Criar nova página após esta</key>
+            <key index="newRecord">Criar novo registro depois deste</key>
+            <key index="newRecordGeneral">Criar novo registro</key>
+            <key index="moveUp">Subir na lista</key>
+            <key index="moveDown">Descer na lista</key>
+            <key index="move_record">Reposicionar elemento de conteúdo</key>
+            <key index="move_page">Mover página</key>
+            <key index="hide">Ocultar registro</key>
+            <key index="unHide">Mostrar registro</key>
+            <key index="hidePage">Esconder página</key>
+            <key index="unHidePage">Mostrar página</key>
+            <key index="prevLevel">Mover esta página para a posição logo após a página principal deste nível</key>
+            <key index="nextLevel">Mover esta página para ser uma sub-página da página acima</key>
+            <key index="delete">Apagar registro (!)</key>
+            <key index="history">Mostrar histórico de alterações / Desfazer</key>
+            <key index="permissions">Configurar permissões para a página</key>
+            <key index="largeControl">Visão aperfeiçoada</key>
+            <key index="contractView">Listar todas as tabelas</key>
+            <key index="expandView">Listar somente esta tabela</key>
+            <key index="showClipBoard">Mostrar área de transferência</key>
+            <key index="editShownColumns">Editar todos os campos mostrados dos registros listados</key>
+            <key index="editThisColumn">Editar o campo '%s' dos registros listados</key>
+            <key index="deleteWarning">Você está certo de que deseja apagar este registro?</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel">Список записей базы данных</key>
+            <key index="mlang_labels_tabdescr">Модуль Веб&amp;gt;Список обеспечивает наиболее широкий доступ к записям страницы. В то время, как другие модули главным образом специализированы на некоторых операциях над таблицами базы данных, этот модуль обеспечивает максимально возможный для данного пользователя доступ</key>
+            <key index="mlang_tabs_tab">Список</key>
+            <key index="clip_pasteAfter">Вставка после: вставить содержимое Буфера обмена после этой записи</key>
+            <key index="clip_pasteInto">Вставка внутрь: вставить содержимое Буфера обмена в эту страницу</key>
+            <key index="clip_paste">Вставить содержимое Буфера обмена</key>
+            <key index="clip_markRecords">Выделить все/Снять выделение</key>
+            <key index="clip_selectMarked">Передать выбранные записи в Буфер обмена</key>
+            <key index="clip_duplicates">Выделить дубликаты</key>
+            <key index="clip_editMarked">Редактировать выделенные</key>
+            <key index="clip_deleteMarked">Удалить выделенные</key>
+            <key index="clip_deleteMarkedWarning">Вы уверены, что хотите удалить все выделенные записи из таблицы '%s'</key>
+            <key index="showInfo">Показать информацию</key>
+            <key index="edit">Редактировать запись</key>
+            <key index="editPage">Редактировать страницу</key>
+            <key index="new">Создать запись</key>
+            <key index="newPage">Создать новую страницу после этой</key>
+            <key index="newRecord">Создать новую запись после этой</key>
+            <key index="newRecordGeneral">Создать новую запись</key>
+            <key index="moveUp">Переместить выше по списку</key>
+            <key index="moveDown">Переместить ниже по списку</key>
+            <key index="move_record">Перемещение записи</key>
+            <key index="move_page">Переместить страницу</key>
+            <key index="hide">Сделать запись невидимой</key>
+            <key index="unHide">Сделать запись видимой</key>
+            <key index="hidePage">Сделать страницу невидимой</key>
+            <key index="unHidePage">Сделать страницу видимой</key>
+            <key index="prevLevel">Переместить страницу ближе к корню дерева (так, чтобы она располагалась сразу после страницы, которая сейчас является родительской)</key>
+            <key index="nextLevel">Переместить эту страницу дальше от корня дерева (так, чтобы она стала подстраницей той страницы, которая сейчас в предыдущей строке списка)</key>
+            <key index="delete">Удалить запись (!)</key>
+            <key index="history">Показать историю изменений / Отмена</key>
+            <key index="permissions">Установить права доступа к странице</key>
+            <key index="largeControl">Расширенный вид</key>
+            <key index="contractView">Список всех таблиц</key>
+            <key index="expandView">Список только этих таблиц</key>
+            <key index="showClipBoard">Показать Буфер обмена</key>
+            <key index="editShownColumns">Редактировать все поля перечисленных записей</key>
+            <key index="editThisColumn">Редактировать поле '%s' перечисленных записей</key>
+            <key index="deleteWarning">Вы уверены, что хотите удалить эту запись?</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel">Lista inregistrarilor din baza de date</key>
+            <key index="mlang_labels_tabdescr">Modulul Web&gt;List ofera cel mai coborat nivel de acces la datele dintr-o pagina. In timp ce alte module sunt in principal specializate pe operatii in anumite tabele din baza de date, acest modul ofera acces fundamental la inregistrarile disponibile pentru un user.</key>
+            <key index="mlang_tabs_tab">Lista</key>
+            <key index="clip_pasteAfter">Copie dupa: Continutul clipboard-ului este inserat dupa aceasta inregistrare</key>
+            <key index="clip_pasteInto">Copie in: Continutul clipboard-ului este inserat in aceasta pagina</key>
+            <key index="clip_paste">Copie in continutul clipboard-ului</key>
+            <key index="clip_markRecords">Marcheaza tot/Nu marcheaza</key>
+            <key index="clip_selectMarked">Transfera toate inregistrarile selectate in clipboard</key>
+            <key index="clip_duplicates">Marcheaza dublurile</key>
+            <key index="clip_editMarked">Editeaza elementele marcate</key>
+            <key index="clip_deleteMarked">Sterge elementele marcate</key>
+            <key index="clip_deleteMarkedWarning">Sunteti sigur ca vreti sa stergeti toate inregistrarile marcate din tabel '%s'?</key>
+            <key index="showInfo">Afiseaza informatii</key>
+            <key index="edit">Editeaza inregistrare</key>
+            <key index="editPage">Editeaza pagina</key>
+            <key index="new">Inregistrare noua</key>
+            <key index="newPage">Creeaza pagina noua dupa aceasta pagina</key>
+            <key index="newRecord">Creeaza inregistrare noua dupa aceasta inregistrare</key>
+            <key index="newRecordGeneral">Creeaza inregistrare noua</key>
+            <key index="moveUp">Muta mai sus in lista</key>
+            <key index="moveDown">Muta mai jos in lista</key>
+            <key index="move_record">Repozitioneaza elementul de continut</key>
+            <key index="move_page">Muta pagina</key>
+            <key index="hide">Ascunde inregistrarea</key>
+            <key index="unHide">Arata inregistrarea</key>
+            <key index="hidePage">Ascunde pagina</key>
+            <key index="unHidePage">Arata pagina</key>
+            <key index="prevLevel">Muta aceasta pagina dupa pagina curenta</key>
+            <key index="nextLevel">Muta aceasta pagina pentru a fi o subpagina a celei de mai sus</key>
+            <key index="delete">Sterge inregistrarea</key>
+            <key index="history">Afiseaza istoria schimbarilor / Anuleaza</key>
+            <key index="permissions">Stabileste permisiuni pentru pagina</key>
+            <key index="largeControl">Vedere de ansamblu</key>
+            <key index="contractView">Listeaza toate tabelele</key>
+            <key index="expandView">Listeaza numai acest tabel</key>
+            <key index="showClipBoard">Arata clipboard-ul</key>
+            <key index="editShownColumns">Editeaza toate campurile aratate din inregistrarile listate</key>
+            <key index="editThisColumn">Editeaza campul '%s' din inregistrarile listate</key>
+            <key index="deleteWarning">Sunteti sigur ca vreti sa stergeti aceasta inregistrare?</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel">数据库记录列表</key>
+            <key index="mlang_labels_tabdescr">模块Web&gt;List提供页面记录的最底层访问. 与其他模块主要针对某些表执行某些操作不同, 该模块提供用户允许访问记录的最总访问能力.</key>
+            <key index="mlang_tabs_tab">列表</key>
+            <key index="clip_pasteAfter">粘贴与后面: 剪贴板内容插入至记录后面</key>
+            <key index="clip_pasteInto">粘贴到里面: 剪贴板内容插入至页面中</key>
+            <key index="clip_paste">贴入剪贴板内容</key>
+            <key index="clip_markRecords">标记所有/取消所有标记</key>
+            <key index="clip_selectMarked">传送选择的记录动剪贴板</key>
+            <key index="clip_duplicates">标记副本</key>
+            <key index="clip_editMarked">编辑标记的</key>
+            <key index="clip_deleteMarked">删除标记的</key>
+            <key index="clip_deleteMarkedWarning">您是否确认删除表'%s'中所有标记了的记录?</key>
+            <key index="showInfo">显示记录</key>
+            <key index="edit">编辑记录</key>
+            <key index="editPage">编辑页面</key>
+            <key index="new">新建记录</key>
+            <key index="newPage">在该页后新建页面</key>
+            <key index="newRecord">在该记录后新建页面</key>
+            <key index="newRecordGeneral">创建新记录</key>
+            <key index="moveUp">在列表中上移</key>
+            <key index="moveDown">在列表中下移</key>
+            <key index="move_record">重定位内容元素</key>
+            <key index="move_page">移动页面</key>
+            <key index="hide">隐藏记录</key>
+            <key index="unHide">恢复显示记录</key>
+            <key index="hidePage">隐藏页面</key>
+            <key index="unHidePage">恢复显示页面</key>
+            <key index="prevLevel">移动当前页面至从属页面之后</key>
+            <key index="nextLevel">移动当前页面使它作为上一页面的子页面</key>
+            <key index="delete">删除记录(!)</key>
+            <key index="history">显示修改历史/恢复</key>
+            <key index="permissions">为页面设置权限</key>
+            <key index="largeControl">扩展视图</key>
+            <key index="contractView">列表所有表格</key>
+            <key index="expandView">只列表该表</key>
+            <key index="showClipBoard">显示剪切板</key>
+            <key index="editShownColumns">编辑显示列表记录的所有显示域</key>
+            <key index="editThisColumn">编辑列表记录的'%s'域</key>
+            <key index="deleteWarning">您是否确认删除该记录?</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel">Zoznam databázových záznamov</key>
+            <key index="mlang_labels_tabdescr">Modul Web&gt;Zoznam poskytuje základný prístup k záznamom na každej stránke. Iné moduly sú špecializované predovšetkým na určité operácie na určitých databázových tabuľkách, tento modul poskytuje priamy prístup k základným záznamom dostupným uživatelovi.</key>
+            <key index="mlang_tabs_tab">Zoznam</key>
+            <key index="clip_pasteAfter">Vlož za: Obsah schránky je vložený za tento záznam</key>
+            <key index="clip_pasteInto">Vlož do: Obsah schránky je vložený na túto stránku</key>
+            <key index="clip_paste">Vlož obsah schránky</key>
+            <key index="clip_markRecords">Označ všetko/Odznač všetko</key>
+            <key index="clip_selectMarked">Prenes všetky zvolené záznamy do schránky</key>
+            <key index="clip_duplicates">Označ duplikáty</key>
+            <key index="clip_editMarked">Edituj označené</key>
+            <key index="clip_deleteMarked">Odstráň označené</key>
+            <key index="clip_deleteMarkedWarning">Si si istý, že chceš odstrániť všetky označené záznamy z tabuľky '%s'?</key>
+            <key index="showInfo">Zobraz informáciu</key>
+            <key index="edit">Edituj záznam</key>
+            <key index="editPage">Edituj stránku</key>
+            <key index="new">Nový záznam</key>
+            <key index="newPage">Vytvor novú stránku za touto stránkou</key>
+            <key index="newRecord">Vytvor nový záznam za týmto záznamom</key>
+            <key index="newRecordGeneral">Vytvor nový záznam</key>
+            <key index="moveUp">Presuň nahor v zozname</key>
+            <key index="moveDown">Presuň nadol v zozname</key>
+            <key index="move_record">Zmeň pozíciu prvku obsahu</key>
+            <key index="move_page">Presuň stránku</key>
+            <key index="hide">Skry záznam</key>
+            <key index="unHide">Odkry záznam</key>
+            <key index="hidePage">Skry stránku</key>
+            <key index="unHidePage">Odkry stránku</key>
+            <key index="prevLevel">Presuň stránku na pozíciu za súčasnou stránkou (Dovnútra)</key>
+            <key index="nextLevel">Presuň stránku ako podstránku stránky povyše (Von)</key>
+            <key index="delete">Zmaž záznam (!)</key>
+            <key index="history">Zobraz históriu zmien / Un-do</key>
+            <key index="permissions">Nastav oprávnenia prístupu na stránku</key>
+            <key index="largeControl">Rozšírený pohľad</key>
+            <key index="contractView">Zobraz všetky tabuľky</key>
+            <key index="expandView">Zobraz iba túto tabuľku</key>
+            <key index="showClipBoard">Ukáž schránku</key>
+            <key index="editShownColumns">Edituj všetky zobrazené polia vypísaných záznamov</key>
+            <key index="editThisColumn">Edituj '%s' polia vypísaných záznamov</key>
+            <key index="deleteWarning">Si si istý, že chceš zmazať tento záznam?</key>
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel">Útskift á gagnasafns-skjölum</key>
+            <key index="mlang_tabs_tab">Listi</key>
+            <key index="edit">Lagfæra skjal</key>
+            <key index="editPage">Lagfæra síðu</key>
+            <key index="new">Nýtt skjal</key>
+            <key index="newPage">Búa til nýja síðu eftir þessa síðu</key>
+            <key index="newRecord">Búa til nýtt skjal eftir þetta skjal</key>
+            <key index="newRecordGeneral">Búa til nýtt skjal</key>
+            <key index="moveUp">Flytja upp í listann</key>
+            <key index="moveDown">Flytja niður í listann</key>
+            <key index="move_page">Flytja síðu</key>
+            <key index="hide">Fela skjal</key>
+            <key index="unHide">Ófalið skjal</key>
+            <key index="hidePage">Fela síðu</key>
+            <key index="unHidePage">Ófalin síða</key>
+            <key index="delete">Eyða skjali (!)</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel">Lista zapisa u bazi podataka</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Popis modul omogućava najnižu razinu pristupa zapisima na stranici. Dok su drugi moduli  uglavnom specijalizirani za određene operacije na određenim tablicama u bazi, ovaj modul omogućava krajnji pristup golim zapisima dostupnim korisniku.</key>
+            <key index="mlang_tabs_tab">Popis</key>
+            <key index="clip_pasteAfter">Zalijepi nakon: Sadržaj memorije je ubačen nakon ovog zapisa</key>
+            <key index="clip_pasteInto">Zalijepi u: Sadržaj memorije je ubačen na stranicu</key>
+            <key index="clip_paste">Zalijepi sadržaj memorije</key>
+            <key index="clip_markRecords">Označi sve/ozmači ništa</key>
+            <key index="clip_selectMarked">Prenesi odabrane zapise u memoriju</key>
+            <key index="clip_duplicates">Označi duplikate</key>
+            <key index="clip_editMarked">Uredi označeno</key>
+            <key index="clip_deleteMarked">Obriši označeno</key>
+            <key index="clip_deleteMarkedWarning">Sigurno želite pobrisati sve odbrane zapise iz tabele  '%s'?</key>
+            <key index="showInfo">Prikaži informacije</key>
+            <key index="edit">Uređuj zapise</key>
+            <key index="editPage">Uređuj stranicu</key>
+            <key index="new">Novi zapis</key>
+            <key index="newPage">Napravi novu stranicu nakon ove stranice</key>
+            <key index="newRecord">Napravi novi zapis iza ovog zapisa</key>
+            <key index="newRecordGeneral">Napravi novi zapis</key>
+            <key index="moveUp">Pomakni prema gore u popisu</key>
+            <key index="moveDown">Pomakni prema dolje u popisu</key>
+            <key index="move_record">Repozicioniraj element sadržaja</key>
+            <key index="move_page">Premjesti stranicu</key>
+            <key index="hide">Sakri zapis</key>
+            <key index="unHide">Otkri zapis</key>
+            <key index="hidePage">Sakri stranicu</key>
+            <key index="unHidePage">Otkri stranicu</key>
+            <key index="prevLevel">Premjesti ovu stranicu na poziciju iza trenutne &quot;parent&quot; stranice (Unutra)</key>
+            <key index="nextLevel">Premjesti ovu stranicu da bude podstranica stranice iznad (Van)</key>
+            <key index="delete">Obriši zapis (!)</key>
+            <key index="history">Prikaži povijest promjena / Un-do</key>
+            <key index="permissions">Postavi dozvole za stranicu</key>
+            <key index="largeControl">Prošireni pogled</key>
+            <key index="contractView">Izlistaj sve tablice</key>
+            <key index="expandView">Izlistaj samo ovu stranicu</key>
+            <key index="showClipBoard">Prikaži memoriju</key>
+            <key index="editShownColumns">Uređuj sva prikazana polja izllistanih zapisa</key>
+            <key index="editThisColumn">Uređuj '%s' polje izlistanih zapisa</key>
+            <key index="deleteWarning">Sigurno želite obrisati ovaj zapis?</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel">Adatbázis rekordok listája</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Lista modul rendezve jeleníti meg az oldal adatbázis rekordjait</key>
+            <key index="mlang_tabs_tab">Lista</key>
+            <key index="clip_pasteAfter">Oldal után: A vágólap tartalmát ezután a rekord uán illeszti be</key>
+            <key index="clip_pasteInto">Beillesztés ide: A Vágólap tartalma erre lapra kerül</key>
+            <key index="clip_paste">Beillesztés a vágólap tartalmára</key>
+            <key index="clip_markRecords">Összeset kijelöli / Semelyiket sem jelöl ki</key>
+            <key index="clip_selectMarked">A kiválasztott rekordok mozgatása a vágólapra</key>
+            <key index="clip_duplicates">Duplikációk kijelölése</key>
+            <key index="clip_editMarked">Kijelöltek szerkesztése</key>
+            <key index="clip_deleteMarked">Kijelöltek törlése</key>
+            <key index="clip_deleteMarkedWarning">Biztosan törölni akarod az összes kijelölt rekordot a '%s' táblázatból?</key>
+            <key index="showInfo">Információk megjelenítése</key>
+            <key index="edit">Rekord szerkesztése</key>
+            <key index="editPage">Oldal szerkesztése</key>
+            <key index="new">Új rekord</key>
+            <key index="newPage">Új oldal létrehozása emögé</key>
+            <key index="newRecord">Új rekord létrehozása emögé</key>
+            <key index="newRecordGeneral">Új rekord létrehozása</key>
+            <key index="moveUp">Mozgatás a listában felfelé</key>
+            <key index="moveDown">Mozgatás a listában lefelé</key>
+            <key index="move_record">Tartalmi elemek újrapozícionálása</key>
+            <key index="move_page">Oldal mozgatása</key>
+            <key index="hide">Rekord elrejtése</key>
+            <key index="unHide">Rekord megjelenítése</key>
+            <key index="hidePage">Oldal elrejtése</key>
+            <key index="unHidePage">Oldal megjelenítése</key>
+            <key index="prevLevel">Az oldal mozgatása a szülő oldal mögé (befelé)</key>
+            <key index="nextLevel">Az oldal mozgatása, hogy a felette lévő lap aloldala legyen (kifelé)</key>
+            <key index="delete">Rekord törlése (!)</key>
+            <key index="history">Változások megjelenítése / Visszavonás</key>
+            <key index="permissions">Az oldalra vonatkozó jogosultságok beállítása</key>
+            <key index="largeControl">Kiterjesztett megjelenítés</key>
+            <key index="contractView">Összes táblázat listázása</key>
+            <key index="expandView">Csak ez a táblázat látszik</key>
+            <key index="showClipBoard">Vágólap megjelenítése</key>
+            <key index="editShownColumns">A listázott rekordok összes látható mezőjének módosítása</key>
+            <key index="editThisColumn">A listázott rekord '%s' mezőjének szerkesztése</key>
+            <key index="deleteWarning">Biztosan törölni ezt a rekordot?</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel">แสดงระเบียนฐานข้อมูล</key>
+            <key index="mlang_labels_tabdescr">เว็ป &gt; โหมดแสดงรายการ จัดให้มีการเข้าถึงระดับต่ำระเบียนที่อยู่บนหน้า ในขณะที่โมดูลอื่นๆส่วนใหญ่จะทำงานเฉพาะด้านต่อเฉพาะฐานข้อมูล แต่โมดูลตัวนี้ให้การเข้าถึงสูงสุดแสดงระเบียนที่ทีอยู่ต่อผู้ใช้</key>
+            <key index="mlang_tabs_tab">รายการ</key>
+            <key index="clip_pasteAfter">วางหลังจาก: คลิปบอร์ดเนื้อหาถูกแทรกหลังระเบียนนี้</key>
+            <key index="clip_pasteInto">วางใน: คลิปบอร์ดเนื้อหาถูกแทรกลงในระเบียนนี้</key>
+            <key index="clip_paste">วางในคลิปบอร์ดเนื้อหา</key>
+            <key index="clip_markRecords">ทำหมาย ทั้งหมด/ เอาหมายออกหมด</key>
+            <key index="clip_selectMarked">โอนส่วนที่เลือกของระเบียนไปที่คลิปบอร์ด</key>
+            <key index="clip_duplicates">ทำหมายซ้ำ</key>
+            <key index="clip_editMarked">แก้ไขหมาย</key>
+            <key index="clip_deleteMarked">ลบหมาย</key>
+            <key index="clip_deleteMarkedWarning">คุณแน่ใจว่าต้องการลบระเบียนที่หมายทั้งหมดจากตาราง '%s'?</key>
+            <key index="showInfo">แสดงข้อมูล</key>
+            <key index="edit">แก้ไขระเบียน</key>
+            <key index="editPage">แก้ไขหน้า</key>
+            <key index="new">ระเบียนใหม่</key>
+            <key index="newPage">สร้างหน้าใหม่หลังจากหน้านี้</key>
+            <key index="newRecord">สร้างระเบียนใหม่หลังจากระเบียนนี้</key>
+            <key index="newRecordGeneral">สร้างระเบียนใหม่</key>
+            <key index="moveUp">ย้ายขึ้นในรายการ</key>
+            <key index="moveDown">ย้ายลงในรายการ</key>
+            <key index="move_record">วางตำแหน่งองค์ประกอบเนื้อหาใหม่</key>
+            <key index="move_page">ย้ายหน้า</key>
+            <key index="hide">ซ่อน ระเบียน</key>
+            <key index="unHide">เลิกซ่อน ระเบียน</key>
+            <key index="hidePage">ซ่อนหน้า</key>
+            <key index="unHidePage">เลิกซ่อนหน้า</key>
+            <key index="prevLevel">ย้ายหน้านี้ไปที่ตำแหน่งหลังจากหน้าแม่ปัจจุบัน (เข้าใน)</key>
+            <key index="nextLevel">ย้ายหน้านี้ไปเป็นหน้ย่อยของหน้าด้านบน(ออกนอก)</key>
+            <key index="delete">ลบระเบียน (!)</key>
+            <key index="history">แสดง ประวัติเปลี่ยนแปลง/ ยกเลิก</key>
+            <key index="permissions">ตั้งการเข้าถึงสำหรับหน้านี้</key>
+            <key index="largeControl">มุมมองขยาย</key>
+            <key index="contractView">แสดงทุกตาราง</key>
+            <key index="expandView">แสดงเฉพาะตารางนี้</key>
+            <key index="showClipBoard">แสดงคลิปบอร์ด</key>
+            <key index="editShownColumns">แก้ไขฟิลด์ที่แสดงของรายการระเบียน</key>
+            <key index="editThisColumn">แก้ไขฟิลด์ที่ '%s' ของรายการระเบียน</key>
+            <key index="deleteWarning">คุณแน่ใจว่าคุณต้องการลบระเบียนนี้</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel">表列資料庫記錄</key>
+            <key index="mlang_labels_tabdescr">網站＞表列模組提供對網頁的記錄作最低層的存取。其他模組主要特定對固定的資料表進行特定的工作時，這個模組向使用者可以使用的記錄提供最終的存取。</key>
+            <key index="mlang_tabs_tab">表列</key>
+            <key index="clip_pasteAfter">在後面貼上：剪貼薄內容插入這個記錄之後</key>
+            <key index="clip_pasteInto">貼上：剪貼薄內容插入這網頁</key>
+            <key index="clip_paste">貼上剪貼薄內容</key>
+            <key index="clip_markRecords">全部標示／全部不標示</key>
+            <key index="clip_selectMarked">傳送已選的記錄到剪貼薄</key>
+            <key index="clip_duplicates">複製已標示的</key>
+            <key index="clip_editMarked">修改已標示的</key>
+            <key index="clip_deleteMarked">刪除已標示的</key>
+            <key index="clip_deleteMarkedWarning">你是否肯定要從表格'%s'中刪除所有被標示的記錄？</key>
+            <key index="showInfo">顯示資訊</key>
+            <key index="edit">修改記錄</key>
+            <key index="editPage">修改網頁</key>
+            <key index="new">新記錄</key>
+            <key index="newPage">在這網貢之後建立新網頁</key>
+            <key index="newRecord">在這個記錄後建立新記錄</key>
+            <key index="newRecordGeneral">建立新記錄</key>
+            <key index="moveUp">在表列中向上移</key>
+            <key index="moveDown">在表列中向下移</key>
+            <key index="move_record">為內容元件重新定位</key>
+            <key index="move_page">移動網頁</key>
+            <key index="hide">隱藏記錄</key>
+            <key index="unHide">顯示記錄</key>
+            <key index="hidePage">隱藏網頁</key>
+            <key index="unHidePage">顯示網頁</key>
+            <key index="prevLevel">移動此網頁至現存母網頁之後（向內）</key>
+            <key index="nextLevel">移動此網頁成為上一頁的子網頁（向外）</key>
+            <key index="delete">刪除記錄（！）</key>
+            <key index="history">顯示改變歷史／復原</key>
+            <key index="permissions">為網頁定權限</key>
+            <key index="largeControl">延伸觀看</key>
+            <key index="contractView">表列所有表格</key>
+            <key index="expandView">只表列這表格</key>
+            <key index="showClipBoard">顯示剪貼薄</key>
+            <key index="editShownColumns">修改所有列出的記錄中所顯示的欄位</key>
+            <key index="editThisColumn">修改列出的記錄'%s'欄位</key>
+            <key index="deleteWarning">你是否肯定要刪除這個記錄？</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel">Datubase erregistroen zerrenda</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Zerrenda moduluak orri bateko erregistroetara behe mailako sarbidea ematen dizu. Beste moduluak datubaseko eremu zehatzeko eragiketa zehatzean espezialduak dauden bitartean,  modulu honek sarbide osoa ematen du erabiltzailearen esku dauden  datubaseko erregistroetara</key>
+            <key index="mlang_tabs_tab">Zerrenda</key>
+            <key index="clip_pasteAfter">Itsatsi ostean: Arbeleko edukia erregistro hau eta gero itsatsiko da</key>
+            <key index="clip_pasteInto">Itsatsi hemen: Arbeleko edukia orri honetan itsatsiko da</key>
+            <key index="clip_paste">Itsatsi arbeleko edukia</key>
+            <key index="clip_markRecords">Markatu/desmarkatu guztiak</key>
+            <key index="clip_selectMarked">Erregistroen aukera arbelera kopiatu</key>
+            <key index="clip_duplicates">markatu bikoiztutakoak</key>
+            <key index="clip_editMarked">Editatu markatutakoak</key>
+            <key index="clip_deleteMarked">Ezabatu markatutakoak</key>
+            <key index="clip_deleteMarkedWarning">Ziur markatutako erregistro guztiak ezabatu nahi dituzula %s taulatik?</key>
+            <key index="showInfo">Erakutsi informazioa</key>
+            <key index="edit">Editatu erregistroa</key>
+            <key index="editPage">Editatu orria</key>
+            <key index="new">Erregistro berria</key>
+            <key index="newPage">Sortu orri berri orri honen ostean</key>
+            <key index="newRecord">Sortu erregistro berria erregistro honen ostean</key>
+            <key index="newRecordGeneral">Sortu erregistro berria</key>
+            <key index="moveUp">Mugitu gora zerrendan</key>
+            <key index="moveDown">Mugitu behera zerrendan</key>
+            <key index="move_record">Berkokatu eduki elementua</key>
+            <key index="move_page">Mugitu orria</key>
+            <key index="hide">Ezkutatu erregistroa</key>
+            <key index="unHide">Des-ezkutatu erregistroa</key>
+            <key index="hidePage">Ezkutatu orria</key>
+            <key index="unHidePage">Des-ezkutatu orria</key>
+            <key index="prevLevel">Mugitu orri hau oraingo orri gurasoaren osteko posiziora (Barrura)</key>
+            <key index="nextLevel">Mugitu orri hau goiko orriaren azpiorri bat izan dadin (Kanpora)</key>
+            <key index="delete">Ezabatu erregistroa (!)</key>
+            <key index="history">Erakutsi aldaketa historia / Desegin</key>
+            <key index="permissions">Ezarro orriaren baimenak</key>
+            <key index="largeControl">Ikuspegi zabala</key>
+            <key index="contractView">Zerrendatu taula guztiak</key>
+            <key index="expandView">Zerrendatu taula hau soilik</key>
+            <key index="showClipBoard">Erakutsi arbela</key>
+            <key index="editShownColumns">Editatu erakutsitako eremu guztiak zerrendatutako erregistroetan</key>
+            <key index="editThisColumn">Editatu '%s' eremua zerrendatutako erregistroetan</key>
+            <key index="deleteWarning">Ziur erregistro hau ezabatu nahi duzula?</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel">Списък на записите в базата данни</key>
+            <key index="mlang_labels_tabdescr">Уеб&gt;Лист модула осигурява най-ниското ниво на достъп до записите на една страница. Докато другите модули, в повечето случай са специализирани в определени операции на определени таблици на базата данни, този модул осигурява максимален достъп до &quot;голите&quot; (bare) записи на потребителя.</key>
+            <key index="mlang_tabs_tab">Списък</key>
+            <key index="clip_pasteAfter">Paste след: Clipboard съдържанието е вкарано след този запис</key>
+            <key index="clip_pasteInto">Paste във: Clipboard съдържанието е вкарано на тази страница</key>
+            <key index="clip_paste">Paste в clipboard съдържанието</key>
+            <key index="clip_markRecords">Маркирай всички/Не маркирай</key>
+            <key index="clip_selectMarked">Премества селекцията от файлове към clipboard-а</key>
+            <key index="clip_duplicates">Маркирай дублиращите</key>
+            <key index="clip_editMarked">Редактирай маркираните</key>
+            <key index="clip_deleteMarked">Изтрива маркираните</key>
+            <key index="clip_deleteMarkedWarning">Сигурни ли сте, че искате да изтриете всички маркирани файлове от тази таблица '%s' ?</key>
+            <key index="showInfo">Показване на информация</key>
+            <key index="edit">Редактиране на запис</key>
+            <key index="editPage">Редактиране на страница</key>
+            <key index="new">Нов запис</key>
+            <key index="newPage">Създаване на нова страница след тази страница</key>
+            <key index="newRecord">Създаване на нов запис след този запис</key>
+            <key index="newRecordGeneral">Създаване на нов запис</key>
+            <key index="moveUp">Премести нагоре в листа</key>
+            <key index="moveDown">Премести надолу в листа</key>
+            <key index="move_record">Препозициониране на елемент на съдържанието</key>
+            <key index="move_page">Премести страница</key>
+            <key index="hide">Скрии запис</key>
+            <key index="unHide">Открии запис</key>
+            <key index="hidePage">Скрии страница</key>
+            <key index="unHidePage">Открии страница</key>
+            <key index="prevLevel">Премести тази страница на позиция след настоящата &quot;родителска&quot; страница (Inwards)</key>
+            <key index="nextLevel">Премести тази страница да бъде подстраница на страницата отгоре</key>
+            <key index="delete">Изтриване на записа (!)</key>
+            <key index="history">Покажи история на промените / Вращане (Undo)</key>
+            <key index="permissions">Слагане на позволения за страницата</key>
+            <key index="largeControl">Разширен вид (Extended view)</key>
+            <key index="contractView">Изброй всички таблици</key>
+            <key index="expandView">Изброй само тази таблица</key>
+            <key index="showClipBoard">Показване на clipboard-а</key>
+            <key index="editShownColumns">Редактира всички показани полета на изброените записи</key>
+            <key index="editThisColumn">Редактира '%s'  полето на изброените записи</key>
+            <key index="deleteWarning">Сигурни ли сте че искате да изтриете този запис?</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel">Lista de registros no banco de dados</key>
+            <key index="mlang_labels_tabdescr">O módulo Web&gt;Lista dá o acesso de nível mais simples aos registros de uma página. Enquanto os outros módulos são especializados em certas operações em tabelas específicas do banco de dados, este módulo provê ao usuário acesso direto aos registros.</key>
+            <key index="mlang_tabs_tab">Lista</key>
+            <key index="clip_pasteAfter">Colar depois: O conteúdo da área de transferência é inserido após este registro.</key>
+            <key index="clip_pasteInto">Colar dentro: O conteúdo da área de transferência é inserido nesta página.</key>
+            <key index="clip_paste">Colar conteúdo da área de transferência</key>
+            <key index="clip_markRecords">Marcar todos/Desmarcar Todos</key>
+            <key index="clip_selectMarked">Transferir os registros selecionados para a área de transferência</key>
+            <key index="clip_duplicates">Marcar duplicatas</key>
+            <key index="clip_editMarked">Editar marcados</key>
+            <key index="clip_deleteMarked">Apagar marcados</key>
+            <key index="clip_deleteMarkedWarning">Tem certeza de que deseja apagar todos os registros marcados da tabela '%s'?</key>
+            <key index="showInfo">Mostrar informações</key>
+            <key index="edit">Editar registro</key>
+            <key index="editPage">Editar página</key>
+            <key index="new">Novo registro</key>
+            <key index="newPage">Criar nova página após esta</key>
+            <key index="newRecord">Criar novo registro depois deste</key>
+            <key index="newRecordGeneral">Criar novo registro</key>
+            <key index="moveUp">Subir na lista</key>
+            <key index="moveDown">Descer na lista</key>
+            <key index="move_record">Reposicionar elemento de conteúdo</key>
+            <key index="move_page">Mover página</key>
+            <key index="hide">Ocultar registro</key>
+            <key index="unHide">Revelar registro</key>
+            <key index="hidePage">Esconder página</key>
+            <key index="unHidePage">Revelar página</key>
+            <key index="prevLevel">Mover esta página para a posição logo após a página principal deste nível</key>
+            <key index="nextLevel">Mover esta página para ser uma sub-página da página acima</key>
+            <key index="delete">Apagar registro (!)</key>
+            <key index="history">Mostrar histórico de alterações / Desfazer</key>
+            <key index="permissions">Configurar permissões para a página</key>
+            <key index="largeControl">Visualização aperfeiçoada</key>
+            <key index="contractView">Listar todas as tabelas</key>
+            <key index="expandView">Listar somente esta tabela</key>
+            <key index="showClipBoard">Mostrar área de transferência</key>
+            <key index="editShownColumns">Editar todos os campos mostrados dos registros listados</key>
+            <key index="editThisColumn">Editar o campo '%s' dos registros listados</key>
+            <key index="deleteWarning">Tem certeza de que deseja apagar este registro?</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel">Andmebaasi kirjete loetelu</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Loetelu moodul pakub parimat ligipääsu lehel paiknevatele kirjetele. Samal ajal kui teised moodulid on loodud teatud operatsioonide teostamiseks kindlates andmetabelites, siis see moodul pakub ligipääsu ainult kirjetele.</key>
+            <key index="mlang_tabs_tab">Loetelu</key>
+            <key index="clip_pasteAfter">Kleebi järele: Lõikelaua sisu lisatakse selle kirje järele</key>
+            <key index="clip_pasteInto">Kleebi lehele: Lõikelaua sisu lisatakse sellele lehele</key>
+            <key index="clip_paste">Kleebi lõikelaua sisu</key>
+            <key index="clip_markRecords">Märgi kõik/Ära märgi</key>
+            <key index="clip_selectMarked">Teisalda valitud kirjed lõikelauale</key>
+            <key index="clip_duplicates">Märgi koopiad</key>
+            <key index="clip_editMarked">Muuda märgituid</key>
+            <key index="clip_deleteMarked">Kustuta märgitud</key>
+            <key index="clip_deleteMarkedWarning">Olete kindel, et soovite kustutada kõik märgitud kirjed tabelist '%s'?</key>
+            <key index="showInfo">Kuva info</key>
+            <key index="edit">Redigeeri kirjet</key>
+            <key index="editPage">Redigeeri lehekülge</key>
+            <key index="new">Uus kirje</key>
+            <key index="newPage">Loo uus lehekülg peale seda lehte</key>
+            <key index="newRecord">Loo uus kirje peale seda kirjet</key>
+            <key index="newRecordGeneral">Loo uus kirje</key>
+            <key index="moveUp">Teisalda loetelus ülespoole</key>
+            <key index="moveDown">Teisalda loetelus allapoole</key>
+            <key index="move_record">Teisalda sisuelement</key>
+            <key index="move_page">Teisalda lehekülg</key>
+            <key index="hide">Peida kirje</key>
+            <key index="unHide">Tee kirje nähtavaks</key>
+            <key index="hidePage">Peida lehekülg</key>
+            <key index="unHidePage">Tee lehekülg nähtavaks</key>
+            <key index="prevLevel">Teisalda lehekülg praeguse emaelemendi järele (hierarhias ülespoole)</key>
+            <key index="nextLevel">Teisalda lehekülg eelneva lehekülje alamleheks (hierarhias allapoole)</key>
+            <key index="delete">Kustuta kirje (!)</key>
+            <key index="history">Näita muudatuste ajalugu / Võta tagasi</key>
+            <key index="permissions">Sea õiguste kogum lehe jaoks</key>
+            <key index="largeControl">Laiendatud vaade</key>
+            <key index="contractView">Näite kõiki tabeleid</key>
+            <key index="expandView">Näita ainult seda tabelit</key>
+            <key index="showClipBoard">Näita lõikelauda</key>
+            <key index="editShownColumns">Redigeeri kõiki kirje välju</key>
+            <key index="editThisColumn">Redigeeri kirje välja '%s'</key>
+            <key index="deleteWarning">Olete kindel, et soovite kirje kustutada?</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel">قائمة السجلات</key>
+            <key index="mlang_labels_tabdescr">.يمكنك عن طريق القائمة في ركن الويب ان تدخل مباشرة إلى أقرب السجلات لصفحة معينة. الأركان الأخرى لها وظائف تختص بسجلات معينة في جداول معينة أما هنا يمكمك الدخول على البيانات الخاصة بك كمستخدم</key>
+            <key index="mlang_tabs_tab">قائمة</key>
+            <key index="clip_pasteAfter">إلصاق بعد: محتويات لوحة اللصق دخلت بعد هذا السجل</key>
+            <key index="clip_pasteInto">إلصاق في: محتويات لوحة اللصق دخلت في هذه الصفحة</key>
+            <key index="clip_paste">إلصاق في محتويات لوحة اللصق</key>
+            <key index="clip_markRecords">تحديد الكل\ لا شئ</key>
+            <key index="clip_selectMarked">نقل الملفات المختارة إلى لوحة اللصق</key>
+            <key index="clip_duplicates">مضاعفة ما تم تحديده</key>
+            <key index="clip_editMarked">تعديل ما تم تحديده</key>
+            <key index="clip_deleteMarked">حذف ما تم تحديده</key>
+            <key index="clip_deleteMarkedWarning">؟ '%s' هل تريد فعلا إزالة كل لسجلات التي حددتهــا من جدول</key>
+            <key index="showInfo">إعرض معلومات</key>
+            <key index="edit">عدِل سجل</key>
+            <key index="editPage">عدِل صفحة</key>
+            <key index="new">سجل جديد</key>
+            <key index="newPage">أنشئ صفحة جديدة بعد هذه الصفحة</key>
+            <key index="newRecord">أنشئ سجل جديد بعد هذا السجل</key>
+            <key index="newRecordGeneral">أنشئ سجل جديد</key>
+            <key index="moveUp">تحرك إلى أعلى</key>
+            <key index="moveDown">تحرك إلى أسفل</key>
+            <key index="move_record">أعد محتويات عنصر إلى مكانها</key>
+            <key index="move_page">إنقل الصفحة</key>
+            <key index="hide">إخفي سجل</key>
+            <key index="unHide">إظهر سجل</key>
+            <key index="hidePage">إخفي الصفحة</key>
+            <key index="unHidePage">إظهر الصفحة</key>
+            <key index="prevLevel">إنقل هذه الصفحة كي تكون تحت الصفحة الحالية</key>
+            <key index="nextLevel">إنقل هذه الصفحة كي تكون صفحة داخلية تحت الصفحة العليا</key>
+            <key index="delete">إحذف سجل</key>
+            <key index="history">إعرض التغييرات \ أزلها</key>
+            <key index="permissions">ضبط خاصية السماحية لهذه الصفحة</key>
+            <key index="largeControl">الرؤية بشكل أوسع</key>
+            <key index="contractView">فهرس كل الجداول</key>
+            <key index="expandView">فهرس لهذا الجدول فقط</key>
+            <key index="showClipBoard">إعرض لوحة اللصق</key>
+            <key index="editShownColumns">تعديل كل الصناديق التي في السجل المعروض</key>
+            <key index="editThisColumn">لهذا السجل المعروض  '%s'  تعديل الصندوق</key>
+            <key index="deleteWarning">هل أنت متأكد من أنك تريد حذف هذا السجل</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel">רשימת רשומות במאגר מידע</key>
+            <key index="mlang_labels_tabdescr">מודול רשת&gt;רשימה מאפשר גישה ברמה בסיסית ביותר לרשומות בתוך דף. כאשר מודולים אחרים בעיקר מתמצאים בפעולות מסוימות בטבלאות מסוימות במאגר מידע, מודול זה מאפשר גישה מוחלטת לרשומות הזמינות למשתמש.</key>
+            <key index="mlang_tabs_tab">רשימה</key>
+            <key index="clip_pasteAfter">הדבק אחרי: תוכן לוח גזירות מושתל אחרי רשומה זו</key>
+            <key index="clip_pasteInto">הדבק לתוך: תוכן לוח גזירות מושתל בתוך דף זה</key>
+            <key index="clip_paste">הדבק בתוך תוכן לוח גזירות</key>
+            <key index="clip_markRecords">בחר הכל/בטל בחירה</key>
+            <key index="clip_selectMarked">העבר רשומות נבחרות ללוח גזירות</key>
+            <key index="clip_duplicates">בחר כפלים</key>
+            <key index="clip_editMarked">ערוך נבחרים</key>
+            <key index="clip_deleteMarked">מחק נבחרים</key>
+            <key index="clip_deleteMarkedWarning">האם הנך בטוח כי ברצונך למחוק כל הרשומות הנבחרות מהטבלה &quot;%s&quot;?</key>
+            <key index="showInfo">מידע אודות תצוגה</key>
+            <key index="edit">ערוך רשומה</key>
+            <key index="editPage">ערוך דף</key>
+            <key index="new">רשומה חדשה</key>
+            <key index="newPage">צור דף חדש אחרי דף זה</key>
+            <key index="newRecord">צור רשומה חדשה אחרי רשומה זו</key>
+            <key index="newRecordGeneral">צור רשומה חדשה</key>
+            <key index="moveUp">לעלות ברשימה</key>
+            <key index="moveDown">לרדת ברשימה</key>
+            <key index="move_record">לשנות מיקום של פריט תוכן</key>
+            <key index="move_page">להזיז דף</key>
+            <key index="hide">להחביא רשומה</key>
+            <key index="unHide">בטל החבאת רשומה</key>
+            <key index="hidePage">להחביא דף</key>
+            <key index="unHidePage">בטל החבאת דף</key>
+            <key index="prevLevel">הזז דף זה למיקום אחרי דף אב נוכחי (פנימה)</key>
+            <key index="nextLevel">הזז דף זה להיות תת-דף של הדף לעיל (החוצה)</key>
+            <key index="delete">מחק רשומה (!)</key>
+            <key index="history">הצג היסטורית שינויים / בטל שינויים</key>
+            <key index="permissions">קבע הרשאות לדף</key>
+            <key index="largeControl">תצוגה מורחבת</key>
+            <key index="contractView">הצג כל הטבלאות</key>
+            <key index="expandView">הצג טבלה זו בלבד</key>
+            <key index="showClipBoard">הצג לוח גזירות</key>
+            <key index="editShownColumns">ערוך כל שדות המוצגים של רשומות המוצגות</key>
+            <key index="editThisColumn">ערוך שדה  &quot;%s&quot; של רשומות המוצגות</key>
+            <key index="deleteWarning">האם הנך בטוח כי ברצונך למחוק רשומה זו?</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel">Datubāzes ierakstu liste</key>
+            <key index="mlang_tabs_tab">Liste</key>
+            <key index="clip_pasteAfter">Ievietot pēc: starpliktuves saturs tiek ievietots pēc šī ieraksta</key>
+            <key index="clip_pasteInto">Ievietot iekš: starpliktuves saturs tiek ievietots šajā lapā</key>
+            <key index="clip_paste">Ievietot starpliktuves saturu</key>
+            <key index="clip_markRecords">Atzīmēt visu/neko</key>
+            <key index="clip_selectMarked">Pārvietot atzīmētos ierakstus starpliktuvē</key>
+            <key index="clip_duplicates">Atzīmēt dublikātus</key>
+            <key index="clip_editMarked">Labot atzīmētos</key>
+            <key index="clip_deleteMarked">Dzēst atzīmētos</key>
+            <key index="clip_deleteMarkedWarning">Vai tiešām gribat dzēst visus atzīmētos ierakstus no tabulas '%s'?</key>
+            <key index="showInfo">Rādīt informāciju</key>
+            <key index="edit">Labot ierakstu</key>
+            <key index="editPage">Labot lapu</key>
+            <key index="new">Jauns ieraksts</key>
+            <key index="newPage">Izveidot jaunu lapu pēc šīs</key>
+            <key index="newRecord">Izveidot jaunu ierakstu pēc šī</key>
+            <key index="newRecordGeneral">Izveidot jaunu ierakstu</key>
+            <key index="moveUp">Pārvietot uz augšu</key>
+            <key index="moveDown">Pārvietot uz leju</key>
+            <key index="move_record">Pārvietot satura elementu</key>
+            <key index="move_page">Pārvietot lapu</key>
+            <key index="hide">Slēpt ierakstu</key>
+            <key index="unHide">Rādīt ierakstu</key>
+            <key index="hidePage">Slēpt lapu</key>
+            <key index="unHidePage">Rādīt lapu</key>
+            <key index="prevLevel">Pārvietot šo lapu uz pozīciju pēc tekošās lapas (uz iekšu)</key>
+            <key index="nextLevel">Pārvietot šo lapu, lai tā kļūtu par augstākstāvošās lapas apakšlapu (uz āru)</key>
+            <key index="delete">Dzēst ierakstu (!)</key>
+            <key index="history">Rādīt labojumu vēsuri / Undo</key>
+            <key index="permissions">Nodefinēt tiesības lapai</key>
+            <key index="largeControl">Paplašināts skats</key>
+            <key index="contractView">Rādīt visas tabulas</key>
+            <key index="expandView">Rādīt tikai šo tabulas</key>
+            <key index="showClipBoard">Rādīt starpliktuvi</key>
+            <key index="editShownColumns">Labot visus laukus redzamajos ierakstos</key>
+            <key index="editThisColumn">Labot '%s' lauku redzamajos ierakstos</key>
+            <key index="deleteWarning">Vai jūs tiešām gribat dzēst šo ierakstu?</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="delete" type="integer">257712260</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_labels_tabdescr" type="integer">174619281</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel" type="integer">234857507</key>
+            <key index="mlang_tabs_tab" type="integer">82717130</key>
+            <key index="clip_pasteAfter" type="integer">12147320</key>
+            <key index="clip_pasteInto" type="integer">179341666</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">73984189</key>
+            <key index="clip_duplicates" type="integer">54279918</key>
+            <key index="clip_editMarked" type="integer">193825665</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">50666174</key>
+            <key index="showInfo" type="integer">18178327</key>
+            <key index="edit" type="integer">148343509</key>
+            <key index="editPage" type="integer">66732081</key>
+            <key index="new" type="integer">153049580</key>
+            <key index="newPage" type="integer">101902723</key>
+            <key index="newRecord" type="integer">217661453</key>
+            <key index="newRecordGeneral" type="integer">54021068</key>
+            <key index="moveUp" type="integer">263415460</key>
+            <key index="moveDown" type="integer">53528924</key>
+            <key index="move_record" type="integer">167081647</key>
+            <key index="move_page" type="integer">32081372</key>
+            <key index="hide" type="integer">36165326</key>
+            <key index="unHide" type="integer">141242332</key>
+            <key index="hidePage" type="integer">262097628</key>
+            <key index="unHidePage" type="integer">260510626</key>
+            <key index="prevLevel" type="integer">24123263</key>
+            <key index="nextLevel" type="integer">42130533</key>
+            <key index="delete" type="integer">257712260</key>
+            <key index="history" type="integer">106067206</key>
+            <key index="permissions" type="integer">57344679</key>
+            <key index="largeControl" type="integer">97098220</key>
+            <key index="contractView" type="integer">204145058</key>
+            <key index="expandView" type="integer">80203533</key>
+            <key index="showClipBoard" type="integer">249278403</key>
+            <key index="editShownColumns" type="integer">18795941</key>
+            <key index="editThisColumn" type="integer">118469315</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

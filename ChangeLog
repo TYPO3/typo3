@@ -1,5 +1,9 @@
 2004-06-06  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Changed all locallang files from "lang" system extension into the new locallang-XML format instead. Includes changes to a bunch of core scripts which had to include the new files with an API function from the $LANG object.
+
+2004-06-06  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added "groupChangeMask" option in TYPO3_CONF_VARS - makes it possible to set which group newly created files and folders will get. (Thanks to Stucki)
 
 2004-06-03  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Extension Manager labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_tools_em.php</key>
+        <key index="labelContext" type="array">
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_labels_tabdescr"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Extension Manager</key>
+            <key index="mlang_labels_tabdescr">Manages TYPO3 extensions, which includes plugins, modules, class extensions, configuration code etc. from a central repository.</key>
+            <key index="mlang_tabs_tab">Ext Manager</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Extension Manager</key>
+            <key index="mlang_labels_tabdescr">Håndterer TYPO3 udvidelser hvilket inkluderer plugins, moduler, klasseudvidelser, opsætningskode osv. fra et centralt lager.</key>
+            <key index="mlang_tabs_tab">Ext. Manager</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Erweiterungs-Manager</key>
+            <key index="mlang_labels_tabdescr">Verwaltet TYPO3 Erweiterungen, wozu Plugins, Module, Konfiguationen und Übersetzngen zählen.</key>
+            <key index="mlang_tabs_tab">Ext.-Manager</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Extension Manager</key>
+            <key index="mlang_labels_tabdescr">Håndterer TYPO3 utvidelser, slik som  plugins, moduler, class extensions, konfigurasjonskode mm fra et sentralt lager.</key>
+            <key index="mlang_tabs_tab">Ext Manager</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Extension Manager</key>
+            <key index="mlang_labels_tabdescr">Consente di gestire le &quot;estensioni&quot; di TYPO3 (plugin, moduli aggiuntivi, etc) attraverso un repository centrale</key>
+            <key index="mlang_tabs_tab">Ext Manager</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel">Gestion des extensions TYPO3</key>
+            <key index="mlang_labels_tabdescr">Cet outil permet de gérer dans un référentiel central les extensions TYPO3, y inclus les plugins, les modules, les extensions de classe, les codes de configuration, etc.</key>
+            <key index="mlang_tabs_tab">Gestion des extensions</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel">Administrador de extensiones TYPO3</key>
+            <key index="mlang_labels_tabdescr">Gestiona extensiones de TYPO3, que incluyen plug-ins, módulos, extensiones de clases, código de configuraciones, etc... desde un repositorio central.</key>
+            <key index="mlang_tabs_tab">Adm. Extensiones</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Extensie Manager</key>
+            <key index="mlang_labels_tabdescr">Beheer van TYPO3 extensies, waaronder plugins, modules, class extensies, configuratie code enz. vanuit een centraal depot.</key>
+            <key index="mlang_tabs_tab">Ext Manager</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel">Správce extenzí TYPO3</key>
+            <key index="mlang_labels_tabdescr">Spravuje extenze TYPO3, které zahrnují doplňky, moduly, rozšíření tříd, konfigurační kódy apod. z centrálního depozitáře</key>
+            <key index="mlang_tabs_tab">Správce ext.</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel">Menadżer rozszerzeń</key>
+            <key index="mlang_labels_tabdescr">Zarządznie rozszeżeniami do TYPO3, wliczając wtyczki, moduły, rozszeżone klasy, skrypty konfiguracyjne itd. z jednego, centralnego repozytorium.</key>
+            <key index="mlang_tabs_tab">Menadżer Ext</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel">Upravitelj razširitev za sistem Typo3</key>
+            <key index="mlang_labels_tabdescr">Upravlja razširitve za sistem Typo3, kar vključuje vtičnike, module, razredne razširitve, konfiguracijsko kodo, idr. iz osrednjega hranilnika.</key>
+            <key index="mlang_tabs_tab">Upravitelj razš.</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Lisäpalvelujen Hallinta</key>
+            <key index="mlang_labels_tabdescr">TYPO3 lisäpalvelujen hallinta, joka sisältää plugin, moduli, luokka lisäykset, konfiguraatio koodeja jne. jotka saadaan keskitetystä kirjastosta.</key>
+            <key index="mlang_tabs_tab">Lisäpalvelujen Hallinta</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel">Typo3 Uzantı Yönetimi</key>
+            <key index="mlang_labels_tabdescr">TYPO3 Uzantı Yönetimi, Eklentileri, modülleri, uzanti birimlerini, konfigürasyon kodlarını vs. merkezi repository den içerir.</key>
+            <key index="mlang_tabs_tab">Uzantı Yönetimi</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel">TYPO3:s verktyg för extra tjänster</key>
+            <key index="mlang_labels_tabdescr">Upprätthåller TYPO3:s extra tjänster, såsom plugins, moduler, class extensions, konfigurationskoder mm från en central källa.</key>
+            <key index="mlang_tabs_tab">Tjänstverktyg</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Gestor de Extensões</key>
+            <key index="mlang_labels_tabdescr">Gere as extensões do TYPO3, que incluem pluins, módulos, classes, código de configuração, etc. a partir de um depósito central.</key>
+            <key index="mlang_tabs_tab">Gestor Ext</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel">Менеджер расширений TYPO3</key>
+            <key index="mlang_labels_tabdescr">Управляет плагинами, модулями, классами расширения, конфигурационным кодом и другими расширениями из центрального архива TYPO3.</key>
+            <key index="mlang_tabs_tab">Менеджер расш.</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel">Administratorul de Extensii TYPO3</key>
+            <key index="mlang_labels_tabdescr">Administreaza extensiile TYPO3, care includ plugin-uri, module, extensii ale claselor, coduri de configurare, etc. dintr-un depozit central.</key>
+            <key index="mlang_tabs_tab">Administrator Ext</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel">TYPO3扩展管理器</key>
+            <key index="mlang_labels_tabdescr">TYPO3扩展管理器包括来自一个中央库的插件、模块、类扩展与配置代码等.</key>
+            <key index="mlang_tabs_tab">扩展管理器</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Manažér nadstavieb</key>
+            <key index="mlang_labels_tabdescr">Spravuje TYPO3 nadstavby a rozšírenia, ktoré zahrňujú</key>
+            <key index="mlang_tabs_tab">Manažér nadstavieb</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Plėtinių Tvarkyklė</key>
+            <key index="mlang_labels_tabdescr">Tvarko TYPO3 plėtinius, kuriuos sudaro itarpai, moduliai, klasių plėtiniai, konfiguraciniai kodai ir kt. iš centrinės saugyklos.</key>
+            <key index="mlang_tabs_tab">Plėtinių Tvarkyklė</key>
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel">Typo3 Viðbætur Umhverfi</key>
+            <key index="mlang_labels_tabdescr">Stýringar á viðbótum fyrir Typo3. Which includes plugins, modules, class extensions, configuration code etc. from a central repository.</key>
+            <key index="mlang_tabs_tab">Viðbætur Umhverfi</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel">Manager TYPO3  ekstenzija</key>
+            <key index="mlang_labels_tabdescr">Upravlja TYPO3 ekstenzijama, što uključuje plugine, module, class ekstenzije, konfiguracijski kod i sl. iz centralnog repoztorija.</key>
+            <key index="mlang_tabs_tab">Ext Manager</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel">Typo3 Bővítménykezelő</key>
+            <key index="mlang_labels_tabdescr">A Typo3 bővítményeit, plugin-jeit, moduljait kezelheted, telepítheted és konfigurálhatod.</key>
+            <key index="mlang_tabs_tab">Bővítménykezelő</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel">Typo3 ผู้จัดการส่วนเพิ่มเติม (Extension)</key>
+            <key index="mlang_labels_tabdescr">จัดการ ส่วนเพิ่มเติม ของ Typo3 ซึ่งประกอบด้วย ปั้กอิน โมดูล คลาส ต้นระหัสปรับแต่ง และอื่นๆ จากที่เก็บส่วนกลาง</key>
+            <key index="mlang_tabs_tab">ผู้จัดการ Ext</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel">Typo3延伸工具管理員</key>
+            <key index="mlang_labels_tabdescr">管理Typo3的延伸工具，包括來自中央程式庫的偛入式元件、模組、分類延伸工具、調較編碼等</key>
+            <key index="mlang_tabs_tab">延伸工具管理員</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel">Typo3 Extentsio Kudeatzailea</key>
+            <key index="mlang_labels_tabdescr">Typo3 extentsioak biltegi zentraletik kudeatzen ditu, plugin, modulu, klase extentsioak, konfigurazio kodea, eta abar barne.</key>
+            <key index="mlang_tabs_tab">Ext Kudeatzailea</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel">Typo3 мениджър на разширенията</key>
+            <key index="mlang_labels_tabdescr">Управление на Typo3 разширения, който включват plugins, модули, class разширения, конфигурационни кодове и др. от централно хранилище.</key>
+            <key index="mlang_tabs_tab">Мениджър на разширенията</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel">Administrador de Extensões do Typo3</key>
+            <key index="mlang_labels_tabdescr">Administra as extensões do Typo3, que incluem pluins, módulos, classes, código de configuração, etc. a partir de um depósito central.</key>
+            <key index="mlang_tabs_tab">Adm. de Extensões</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel">Typo3 laiendite haldur</key>
+            <key index="mlang_labels_tabdescr">Haldab Typo3 laiendeid, mis sisaldavad pluginaid, mooduleid, klasside laiendeid, konfiguratsiooni koode jne, kesksest varamust.</key>
+            <key index="mlang_tabs_tab">Laiendite haldur</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel">إدارة الإضافة إلى تيبو 3</key>
+            <key index="mlang_labels_tabdescr">إدارة إضافات تيبو 3 التي تحتوي على تركيبة داخلية , ركن من الأركان , زيادة  توصيفية , شفرة معايرة من مخزن الإضافات</key>
+            <key index="mlang_tabs_tab">مدير الإضافة</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel">מנהל תוספות TYPO3</key>
+            <key index="mlang_labels_tabdescr">מנהל תוספות TYPO3, שמכילות התקני-תקע, מודולים, תוספות מחלקה (class extensions), קוד הגדרות וכו' ממאגר מרכזי.</key>
+            <key index="mlang_tabs_tab">מנהל תוספות</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel">TYPO3 Paplašinājumu menedžeris</key>
+            <key index="mlang_tabs_tab">Paplašinājumi</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_labels_tabdescr" type="integer">130260296</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel" type="integer">107630623</key>
+            <key index="mlang_tabs_tab" type="integer">199372037</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

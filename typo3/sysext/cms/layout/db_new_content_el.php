@@ -69,7 +69,7 @@ unset($MCONF);
 unset($MLANG);
 
 	// Merging locallang files/arrays:
-include ($BACK_PATH.'sysext/lang/locallang_misc.php');
+$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 $LOCAL_LANG_orig = $LOCAL_LANG;
 include ('locallang_db_new_content_el.php');
 $LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig,$LOCAL_LANG);

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">CSH for Core Modules</key>
+        <key index="type">CSH</key>
+        <key index="fileId">EXT:lang/locallang_csh_corebe.php</key>
+        <key index="labelContext" type="array">
+            <key index=".alttitle"></key>
+            <key index="menu_adminFunction.description"></key>
+            <key index="menu_adminFunction.details"></key>
+            <key index="menu_modules.alttitle"></key>
+            <key index="menu_modules.description"></key>
+            <key index="pagetree.description"></key>
+            <key index="filetree.description"></key>
+            <key index="shortcuts.description"></key>
+            <key index="list_clipboard.description"></key>
+            <key index="list_searchbox.description"></key>
+            <key index="list_options.description"></key>
+            <key index="list_module.description"></key>
+            <key index="list_module_noId.description"></key>
+            <key index="list_module_root.description"></key>
+            <key index="info_module.description"></key>
+            <key index="func_module.description"></key>
+            <key index="perm_module_setting.description"></key>
+            <key index="perm_module.description"></key>
+            <key index="move_el_pages.description"></key>
+            <key index="move_el_cs.description"></key>
+            <key index="history_sum.description"></key>
+            <key index="history_log.description"></key>
+            <key index="history_entry.description"></key>
+            <key index="TCEforms.description"></key>
+            <key index="TCEforms_docSelector.description"></key>
+            <key index="TCEforms_cacheSelector.description"></key>
+            <key index="new_pages.description"></key>
+            <key index="new_regular.description"></key>
+            <key index="filelist_module.description"></key>
+            <key index="filelist_clipboard.description"></key>
+            <key index="filelist_options.description"></key>
+            <key index="file_edit.description"></key>
+            <key index="file_newfolder.description"></key>
+            <key index="file_newfile.description"></key>
+            <key index="file_rename.description"></key>
+            <key index="file_upload.description"></key>
+            <key index="wizard_forms_wiz.description"></key>
+            <key index="wizard_forms_wiz_buttons.description"></key>
+            <key index="wizard_forms_wiz_formmail_info.description"></key>
+            <key index="wizard_table_wiz.description"></key>
+            <key index="wizard_table_wiz_buttons.description"></key>
+            <key index=".description"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index=".alttitle">TYPO3 Core</key>
+            <key index="menu_adminFunction.description">[FILL IN]</key>
+            <key index="menu_adminFunction.details">[FILL IN]</key>
+            <key index="menu_modules.alttitle">Backend modules</key>
+            <key index="menu_modules.description">[FILL IN] menu modules</key>
+            <key index="pagetree.description">[FILL IN] pagetree</key>
+            <key index="filetree.description">[FILL IN] filetree</key>
+            <key index="shortcuts.description">[FILL IN] shortcuts</key>
+            <key index="list_clipboard.description">[FILL IN] list clipboard</key>
+            <key index="list_searchbox.description">[FILL IN] list searchbox</key>
+            <key index="list_options.description">[FILL IN] list options</key>
+            <key index="list_module.description">[FILL IN] list_module</key>
+            <key index="list_module_noId.description">[FILL IN] list_module_noId</key>
+            <key index="list_module_root.description">[FILL IN] list_module_root</key>
+            <key index="info_module.description">[FILL IN] info_module</key>
+            <key index="func_module.description">[FILL IN] func_module</key>
+            <key index="perm_module_setting.description">[FILL IN] perm_module_setting</key>
+            <key index="perm_module.description">[FILL IN] perm_module</key>
+            <key index="move_el_pages.description">[FILL IN] move_el_pages</key>
+            <key index="move_el_cs.description">[FILL IN] move_el_cs</key>
+            <key index="history_sum.description">[FILL IN] history_sum</key>
+            <key index="history_log.description">[FILL IN] history_log</key>
+            <key index="history_entry.description">[FILL IN] history_entry</key>
+            <key index="TCEforms.description">[FILL IN] TCEforms</key>
+            <key index="TCEforms_docSelector.description">[FILL IN] TCEforms Document Sel</key>
+            <key index="TCEforms_cacheSelector.description">[FILL IN] TCEforms Cache Sel</key>
+            <key index="new_pages.description">[FILL IN] new_pages</key>
+            <key index="new_regular.description">[FILL IN] new_regular</key>
+            <key index="filelist_module.description">[FILL IN] filelist_module</key>
+            <key index="filelist_clipboard.description">[FILL IN] filelist clipboard</key>
+            <key index="filelist_options.description">[FILL IN] filelist options</key>
+            <key index="file_edit.description">[FILL IN] file_edit</key>
+            <key index="file_newfolder.description">[FILL IN] file_newfolder</key>
+            <key index="file_newfile.description">[FILL IN] file_newfile</key>
+            <key index="file_rename.description">[FILL IN] file_rename</key>
+            <key index="file_upload.description">[FILL IN] file_upload</key>
+            <key index="wizard_forms_wiz.description">[FILL IN] wizard_forms_wiz</key>
+            <key index="wizard_forms_wiz_buttons.description">[FILL IN] wizard_forms_wiz_buttons</key>
+            <key index="wizard_forms_wiz_formmail_info.description">[FILL IN] wizard_forms_wiz_formmail_info</key>
+            <key index="wizard_table_wiz.description">[FILL IN] wizard_table_wiz</key>
+            <key index="wizard_table_wiz_buttons.description">[FILL IN] wizard_table_wiz_buttons</key>
+            <key index=".description">[FILL IN] </key>
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index=".alttitle" type="integer">60773436</key>
+            <key index="menu_adminFunction.description" type="integer">121439715</key>
+            <key index="menu_adminFunction.details" type="integer">121439715</key>
+            <key index="menu_modules.alttitle" type="integer">103207836</key>
+            <key index="menu_modules.description" type="integer">51582115</key>
+            <key index="pagetree.description" type="integer">256826738</key>
+            <key index="filetree.description" type="integer">258789533</key>
+            <key index="shortcuts.description" type="integer">13052515</key>
+            <key index="list_clipboard.description" type="integer">90625176</key>
+            <key index="list_searchbox.description" type="integer">84776855</key>
+            <key index="list_options.description" type="integer">149404681</key>
+            <key index="list_module.description" type="integer">69500156</key>
+            <key index="list_module_noId.description" type="integer">38090785</key>
+            <key index="list_module_root.description" type="integer">60868516</key>
+            <key index="info_module.description" type="integer">51261808</key>
+            <key index="func_module.description" type="integer">3732880</key>
+            <key index="perm_module_setting.description" type="integer">161197109</key>
+            <key index="perm_module.description" type="integer">54875924</key>
+            <key index="move_el_pages.description" type="integer">154762797</key>
+            <key index="move_el_cs.description" type="integer">217662585</key>
+            <key index="history_sum.description" type="integer">180605428</key>
+            <key index="history_log.description" type="integer">158617802</key>
+            <key index="history_entry.description" type="integer">103600627</key>
+            <key index="TCEforms.description" type="integer">171124957</key>
+            <key index="TCEforms_docSelector.description" type="integer">239044298</key>
+            <key index="TCEforms_cacheSelector.description" type="integer">151451131</key>
+            <key index="new_pages.description" type="integer">47489892</key>
+            <key index="new_regular.description" type="integer">79339447</key>
+            <key index="filelist_module.description" type="integer">265382195</key>
+            <key index="filelist_clipboard.description" type="integer">246597358</key>
+            <key index="filelist_options.description" type="integer">101974831</key>
+            <key index="file_edit.description" type="integer">81111182</key>
+            <key index="file_newfolder.description" type="integer">11562116</key>
+            <key index="file_newfile.description" type="integer">61429058</key>
+            <key index="file_rename.description" type="integer">166217964</key>
+            <key index="file_upload.description" type="integer">116644368</key>
+            <key index="wizard_forms_wiz.description" type="integer">216639347</key>
+            <key index="wizard_forms_wiz_buttons.description" type="integer">91006180</key>
+            <key index="wizard_forms_wiz_formmail_info.description" type="integer">219652920</key>
+            <key index="wizard_table_wiz.description" type="integer">31521432</key>
+            <key index="wizard_table_wiz_buttons.description" type="integer">184757431</key>
+            <key index=".description" type="integer">83516368</key>
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

@@ -62,7 +62,7 @@
 $BACK_PATH='';
 require ('init.php');
 require ('template.php');
-include ('sysext/lang/locallang_wizards.php');
+$LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 
 
 

@@ -1,0 +1,3119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">General Core Labels 2</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_general.php</key>
+        <key index="labelContext" type="array">
+            <key index="LGL.endtime"></key>
+            <key index="LGL.hidden"></key>
+            <key index="LGL.starttime"></key>
+            <key index="LGL.fe_group"></key>
+            <key index="LGL.hide_at_login"></key>
+            <key index="LGL.any_login"></key>
+            <key index="LGL.usergroups"></key>
+            <key index="LGL.type"></key>
+            <key index="LGL.description"></key>
+            <key index="LGL.prependAtCopy"></key>
+            <key index="LGL.layout"></key>
+            <key index="LGL.default_value"></key>
+            <key index="LGL.normal"></key>
+            <key index="LGL.images"></key>
+            <key index="LGL.image"></key>
+            <key index="LGL.caption"></key>
+            <key index="LGL.subheader"></key>
+            <key index="LGL.text"></key>
+            <key index="LGL.name"></key>
+            <key index="LGL.title"></key>
+            <key index="LGL.address"></key>
+            <key index="LGL.phone"></key>
+            <key index="LGL.fax"></key>
+            <key index="LGL.author"></key>
+            <key index="LGL.email"></key>
+            <key index="LGL.company"></key>
+            <key index="LGL.city"></key>
+            <key index="LGL.zip"></key>
+            <key index="LGL.country"></key>
+            <key index="LGL.www"></key>
+            <key index="LGL.note"></key>
+            <key index="LGL.parameters"></key>
+            <key index="LGL.code"></key>
+            <key index="LGL.links"></key>
+            <key index="LGL.language"></key>
+            <key index="LGL.category"></key>
+            <key index="LGL.shortcut_page"></key>
+            <key index="LGL.keywords"></key>
+            <key index="LGL.disable"></key>
+            <key index="LGL.startingpoint"></key>
+            <key index="LGL.disableRTE"></key>
+            <key index="LGL.external"></key>
+            <key index="LGL.recursive"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Hide:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Access:</key>
+            <key index="LGL.hide_at_login">Hide at login</key>
+            <key index="LGL.any_login">Show at any login</key>
+            <key index="LGL.usergroups">__Usergroups:__</key>
+            <key index="LGL.type">Type:</key>
+            <key index="LGL.description">Description:</key>
+            <key index="LGL.prependAtCopy"> (copy %s)</key>
+            <key index="LGL.layout">Layout:</key>
+            <key index="LGL.default_value">Default</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Images:</key>
+            <key index="LGL.image">Image:</key>
+            <key index="LGL.caption">Caption:</key>
+            <key index="LGL.subheader">Subheader:</key>
+            <key index="LGL.text">Text:</key>
+            <key index="LGL.name">Name:</key>
+            <key index="LGL.title">Title:</key>
+            <key index="LGL.address">Address:</key>
+            <key index="LGL.phone">Phone:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Author:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Company:</key>
+            <key index="LGL.city">City:</key>
+            <key index="LGL.zip">Zipcode:</key>
+            <key index="LGL.country">Country:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Note:</key>
+            <key index="LGL.parameters">Parameters:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Links</key>
+            <key index="LGL.language">Language:</key>
+            <key index="LGL.category">Category:</key>
+            <key index="LGL.shortcut_page">Shortcut to page:</key>
+            <key index="LGL.keywords">Keywords (,):</key>
+            <key index="LGL.disable">Disable:</key>
+            <key index="LGL.startingpoint">Startingpoint:</key>
+            <key index="LGL.disableRTE">Disable Rich Text Editor:</key>
+            <key index="LGL.external">External URL</key>
+            <key index="LGL.recursive">Recursive:</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Skjul:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Adgang:</key>
+            <key index="LGL.hide_at_login">Skjul ved login</key>
+            <key index="LGL.any_login">Vis ved alle logins</key>
+            <key index="LGL.usergroups">__Brugergrupper:__</key>
+            <key index="LGL.type">Type:</key>
+            <key index="LGL.description">Beskrivelse:</key>
+            <key index="LGL.prependAtCopy"> (kopi %s)</key>
+            <key index="LGL.layout">Layout:</key>
+            <key index="LGL.default_value">Standard</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Billeder:</key>
+            <key index="LGL.image">Billede:</key>
+            <key index="LGL.caption">Billedtekst:</key>
+            <key index="LGL.subheader">Manchet:</key>
+            <key index="LGL.text">Tekst:</key>
+            <key index="LGL.name">Navn:</key>
+            <key index="LGL.title">Titel:</key>
+            <key index="LGL.address">Adresse:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Forfatter:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Firma:</key>
+            <key index="LGL.city">By:</key>
+            <key index="LGL.zip">Postnr:</key>
+            <key index="LGL.country">Land:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Note:</key>
+            <key index="LGL.parameters">Parametre:</key>
+            <key index="LGL.code">KODE:</key>
+            <key index="LGL.links">Links</key>
+            <key index="LGL.language">Sprog:</key>
+            <key index="LGL.category">Kategori:</key>
+            <key index="LGL.shortcut_page">Genvej til side:</key>
+            <key index="LGL.keywords">Nøgleord (,):</key>
+            <key index="LGL.disable">Inaktiv:</key>
+            <key index="LGL.startingpoint">Udgangspunkt:</key>
+            <key index="LGL.disableRTE">Slå formatteret redigering fra:</key>
+            <key index="LGL.external">Extern URL</key>
+            <key index="LGL.recursive">Rekursivt:</key>
+        </key>
+        <key index="de" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Verstecken:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Zugriff:</key>
+            <key index="LGL.hide_at_login">Beim Login verstecken</key>
+            <key index="LGL.any_login">Bei jeden Login anzeigen</key>
+            <key index="LGL.usergroups">__Benutzergruppen:__</key>
+            <key index="LGL.type">Typ:</key>
+            <key index="LGL.description">Beschreibung:</key>
+            <key index="LGL.prependAtCopy"> (kopiere %s)</key>
+            <key index="LGL.layout">Layout:</key>
+            <key index="LGL.default_value">Standard</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Bilder:</key>
+            <key index="LGL.image">Bild:</key>
+            <key index="LGL.caption">Bildtext:</key>
+            <key index="LGL.subheader">Untertitel:</key>
+            <key index="LGL.text">Text:</key>
+            <key index="LGL.name">Name:</key>
+            <key index="LGL.title">Titel:</key>
+            <key index="LGL.address">Adresse:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Firma:</key>
+            <key index="LGL.city">Stadt:</key>
+            <key index="LGL.zip">PLZ:</key>
+            <key index="LGL.country">Land:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Bemerkung:</key>
+            <key index="LGL.parameters">Parameter:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Links</key>
+            <key index="LGL.language">Sprache:</key>
+            <key index="LGL.category">Kategorie:</key>
+            <key index="LGL.shortcut_page">Shortcut zur Seite:</key>
+            <key index="LGL.keywords">Stichworte (,):</key>
+            <key index="LGL.disable">Inaktiv:</key>
+            <key index="LGL.startingpoint">Ausgangspunkt:</key>
+            <key index="LGL.disableRTE">Rich Text Editor abschalten:</key>
+            <key index="LGL.external">Externe URL</key>
+            <key index="LGL.recursive">Rekursiv:</key>
+        </key>
+        <key index="no" type="array">
+            <key index="LGL.endtime">Stopp:</key>
+            <key index="LGL.hidden">Skjul:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Adgang:</key>
+            <key index="LGL.hide_at_login">Skjul ved login</key>
+            <key index="LGL.any_login">Vis ved alle innlogginger</key>
+            <key index="LGL.usergroups">__Brukergrupper:__</key>
+            <key index="LGL.type">Type:</key>
+            <key index="LGL.description">Beskrivelse:</key>
+            <key index="LGL.prependAtCopy">(kopi %s)</key>
+            <key index="LGL.layout">Layout:</key>
+            <key index="LGL.default_value">Standard</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Bilder:</key>
+            <key index="LGL.image">Bilde:</key>
+            <key index="LGL.caption">Bildetekst:</key>
+            <key index="LGL.subheader">Undertittel:</key>
+            <key index="LGL.text">Tekst:</key>
+            <key index="LGL.name">Navn:</key>
+            <key index="LGL.title">Tittel:</key>
+            <key index="LGL.address">Adresse:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Forfatter:</key>
+            <key index="LGL.email">Epost:</key>
+            <key index="LGL.company">Firma:</key>
+            <key index="LGL.city">Sted:</key>
+            <key index="LGL.zip">Postnr:</key>
+            <key index="LGL.country">Land:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Kommentar:</key>
+            <key index="LGL.parameters">Parameter:</key>
+            <key index="LGL.code">KODE:</key>
+            <key index="LGL.links">Linker</key>
+            <key index="LGL.language">Språk:</key>
+            <key index="LGL.category">Kategori:</key>
+            <key index="LGL.shortcut_page">Snarvei til side:</key>
+            <key index="LGL.keywords">Nøkkelord (,):</key>
+            <key index="LGL.disable">Deaktiv:</key>
+            <key index="LGL.startingpoint">Utgangspunkt:</key>
+            <key index="LGL.disableRTE">Ikke benytt 'Rik tekst editor':</key>
+            <key index="LGL.external">Ekstern URL</key>
+            <key index="LGL.recursive">Rekursivt:</key>
+        </key>
+        <key index="it" type="array">
+            <key index="LGL.endtime">Fine:</key>
+            <key index="LGL.hidden">Nascondi:</key>
+            <key index="LGL.starttime">Inizio:</key>
+            <key index="LGL.fe_group">Accesso:</key>
+            <key index="LGL.hide_at_login">Nascondi al login</key>
+            <key index="LGL.any_login">Mostra in caso di login</key>
+            <key index="LGL.usergroups">__Gruppi utenti:__</key>
+            <key index="LGL.type">Tipo:</key>
+            <key index="LGL.description">Descrizione:</key>
+            <key index="LGL.prependAtCopy">(copia %s)</key>
+            <key index="LGL.layout">Layout:</key>
+            <key index="LGL.default_value">Predefinito</key>
+            <key index="LGL.normal">Normale</key>
+            <key index="LGL.images">Immagini:</key>
+            <key index="LGL.image">Immagine:</key>
+            <key index="LGL.caption">Didascalia:</key>
+            <key index="LGL.subheader">Sottointestazione:</key>
+            <key index="LGL.text">Testo:</key>
+            <key index="LGL.name">Nome:</key>
+            <key index="LGL.title">Titolo:</key>
+            <key index="LGL.address">Indirizzo:</key>
+            <key index="LGL.phone">Telefono:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autore:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Società:</key>
+            <key index="LGL.city">Città:</key>
+            <key index="LGL.zip">CAP:</key>
+            <key index="LGL.country">Paese:</key>
+            <key index="LGL.www">Sito web:</key>
+            <key index="LGL.note">Note:</key>
+            <key index="LGL.parameters">Parametri:</key>
+            <key index="LGL.code">CODICE:</key>
+            <key index="LGL.links">Links</key>
+            <key index="LGL.language">Lingua:</key>
+            <key index="LGL.category">Categoria:</key>
+            <key index="LGL.shortcut_page">Collegamento alla pagina:</key>
+            <key index="LGL.keywords">Parole chiavi (separate da ,):</key>
+            <key index="LGL.disable">Disabilitato:</key>
+            <key index="LGL.startingpoint">Punto di partenza:</key>
+            <key index="LGL.disableRTE">Disabilita Rich Text Editor:</key>
+            <key index="LGL.external">URL esterno</key>
+            <key index="LGL.recursive">Ricorsivo:</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="LGL.endtime">Arrêt:</key>
+            <key index="LGL.hidden">Cacher:</key>
+            <key index="LGL.starttime">Lancement:</key>
+            <key index="LGL.fe_group">Accès:</key>
+            <key index="LGL.hide_at_login">Cacher à l'ouverture d'une session</key>
+            <key index="LGL.any_login">Afficher à toute ouverture de session</key>
+            <key index="LGL.usergroups">__Groupes utilisateurs:__</key>
+            <key index="LGL.type">Type:</key>
+            <key index="LGL.description">Description:</key>
+            <key index="LGL.prependAtCopy">(copie %s)</key>
+            <key index="LGL.layout">Mise en page:</key>
+            <key index="LGL.default_value">Par défaut</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Images:</key>
+            <key index="LGL.image">Image:</key>
+            <key index="LGL.caption">Titre:</key>
+            <key index="LGL.subheader">Sous-titre:</key>
+            <key index="LGL.text">Texte:</key>
+            <key index="LGL.name">Nom:</key>
+            <key index="LGL.title">Titre:</key>
+            <key index="LGL.address">Adresse:</key>
+            <key index="LGL.phone">Téléphone:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Auteur:</key>
+            <key index="LGL.email">Adresse électronique:</key>
+            <key index="LGL.company">Société:</key>
+            <key index="LGL.city">Localité:</key>
+            <key index="LGL.zip">NPA:</key>
+            <key index="LGL.country">Pays:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Note:</key>
+            <key index="LGL.parameters">Paramètres:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Liens:</key>
+            <key index="LGL.language">Langues:</key>
+            <key index="LGL.category">Catégorie:</key>
+            <key index="LGL.shortcut_page">Raccourci vers la page:</key>
+            <key index="LGL.keywords">Mots-clé (,):</key>
+            <key index="LGL.disable">Désactiver:</key>
+            <key index="LGL.startingpoint">Point de départ:</key>
+            <key index="LGL.disableRTE">Désactiver l'éditeur de texte enrichi (RTE):</key>
+            <key index="LGL.external">URL externe</key>
+            <key index="LGL.recursive">Niveaux d'aborescence:</key>
+        </key>
+        <key index="es" type="array">
+            <key index="LGL.endtime">Final:</key>
+            <key index="LGL.hidden">Ocultar:</key>
+            <key index="LGL.starttime">Inicio:</key>
+            <key index="LGL.fe_group">Acceso:</key>
+            <key index="LGL.hide_at_login">No mostrar si hay sesión</key>
+            <key index="LGL.any_login">Mostrar con cualquier sesión</key>
+            <key index="LGL.usergroups">__Grupos de usuarios:__</key>
+            <key index="LGL.type">Tipo:</key>
+            <key index="LGL.description">Descripción:</key>
+            <key index="LGL.prependAtCopy">(copiar %s)</key>
+            <key index="LGL.layout">Distribución:</key>
+            <key index="LGL.default_value">Por defecto</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Imágenes:</key>
+            <key index="LGL.image">Imágen:</key>
+            <key index="LGL.caption">Pié de foto:</key>
+            <key index="LGL.subheader">Subtítulo:</key>
+            <key index="LGL.text">Texto:</key>
+            <key index="LGL.name">Nombre:</key>
+            <key index="LGL.title">Título:</key>
+            <key index="LGL.address">Dirección:</key>
+            <key index="LGL.phone">Teléfono:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Empresa:</key>
+            <key index="LGL.city">Ciudad:</key>
+            <key index="LGL.zip">Código Postal:</key>
+            <key index="LGL.country">País:</key>
+            <key index="LGL.www">Sitio Web:</key>
+            <key index="LGL.note">Nota:</key>
+            <key index="LGL.parameters">Parámetros:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Enlaces</key>
+            <key index="LGL.language">Lenguaje:</key>
+            <key index="LGL.category">Categoría:</key>
+            <key index="LGL.shortcut_page">Acceso directo a la página:</key>
+            <key index="LGL.keywords">Palabras clave (,):</key>
+            <key index="LGL.disable">Deshabilitar:</key>
+            <key index="LGL.startingpoint">Lugar de inicio:</key>
+            <key index="LGL.disableRTE">Desactivar editor RTF:</key>
+            <key index="LGL.external">URL Externo</key>
+            <key index="LGL.recursive">Recursivo:</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Verberg:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Toegang:</key>
+            <key index="LGL.hide_at_login">Verberg bij login</key>
+            <key index="LGL.any_login">Toon bij elke login</key>
+            <key index="LGL.usergroups">__Gebruikersgroep:__</key>
+            <key index="LGL.type">Type:</key>
+            <key index="LGL.description">Omschrijving:</key>
+            <key index="LGL.prependAtCopy">(kopie %s)</key>
+            <key index="LGL.layout">Layout:</key>
+            <key index="LGL.default_value">Standaard</key>
+            <key index="LGL.normal">Normaal</key>
+            <key index="LGL.images">Afbeeldingen:</key>
+            <key index="LGL.image">Afbeelding:</key>
+            <key index="LGL.caption">Onderschrift:</key>
+            <key index="LGL.subheader">Subkop:</key>
+            <key index="LGL.text">Tekst:</key>
+            <key index="LGL.name">Naam:</key>
+            <key index="LGL.title">Titel:</key>
+            <key index="LGL.address">Adres:</key>
+            <key index="LGL.phone">Telefoon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Auteur:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Bedrijf:</key>
+            <key index="LGL.city">Stad:</key>
+            <key index="LGL.zip">Postcode:</key>
+            <key index="LGL.country">Land:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Opmerking:</key>
+            <key index="LGL.parameters">Parameters:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Links</key>
+            <key index="LGL.language">Taal:</key>
+            <key index="LGL.category">Categorie:</key>
+            <key index="LGL.shortcut_page">Snelkoppeling naar pagina:</key>
+            <key index="LGL.keywords">Kernwoorden (,):</key>
+            <key index="LGL.disable">Uitschakelen:</key>
+            <key index="LGL.startingpoint">Startpunt:</key>
+            <key index="LGL.disableRTE">Deactiveer Rich Text Editor:</key>
+            <key index="LGL.external">Externe URL</key>
+            <key index="LGL.recursive">Recursief:</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Skrýt:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Přístup:</key>
+            <key index="LGL.hide_at_login">Skrýt po přihlášení</key>
+            <key index="LGL.any_login">Ukázat všem přihlášeným</key>
+            <key index="LGL.usergroups">__Skupiny uživatelů:__</key>
+            <key index="LGL.type">Typ:</key>
+            <key index="LGL.description">Popis:</key>
+            <key index="LGL.prependAtCopy">(kopie %s)</key>
+            <key index="LGL.layout">Vzhled:</key>
+            <key index="LGL.default_value">Základní</key>
+            <key index="LGL.normal">Normální</key>
+            <key index="LGL.images">Obrázky:</key>
+            <key index="LGL.image">Obrázek:</key>
+            <key index="LGL.caption">Popisek:</key>
+            <key index="LGL.subheader">Podnadpis:</key>
+            <key index="LGL.text">Text:</key>
+            <key index="LGL.name">Název:</key>
+            <key index="LGL.title">Titul:</key>
+            <key index="LGL.address">Adresa:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">E-mail:</key>
+            <key index="LGL.company">Firma:</key>
+            <key index="LGL.city">Město:</key>
+            <key index="LGL.zip">PSČ:</key>
+            <key index="LGL.country">Stát:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Poznámka:</key>
+            <key index="LGL.parameters">Parametry:</key>
+            <key index="LGL.code">KÓD:</key>
+            <key index="LGL.links">Odkazy</key>
+            <key index="LGL.language">Jazyk:</key>
+            <key index="LGL.category">Kategorie:</key>
+            <key index="LGL.shortcut_page">Zkratka na stranu:</key>
+            <key index="LGL.keywords">Klíčová slova (,):</key>
+            <key index="LGL.disable">Deaktivovat:</key>
+            <key index="LGL.startingpoint">Začátek:</key>
+            <key index="LGL.disableRTE">Vypnout rozšířený editor:</key>
+            <key index="LGL.external">Externí URL</key>
+            <key index="LGL.recursive">Rekurzivně:</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Ukryj:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Uprawnienia:</key>
+            <key index="LGL.hide_at_login">Ukryj po zalogowaniu</key>
+            <key index="LGL.any_login">Pokaż po zalogowaniu</key>
+            <key index="LGL.usergroups">__Grupy użytk.:__</key>
+            <key index="LGL.type">Typ:</key>
+            <key index="LGL.description">Opis:</key>
+            <key index="LGL.prependAtCopy"> (kopiuj %s)</key>
+            <key index="LGL.layout">Układ:</key>
+            <key index="LGL.default_value">Domyślnie</key>
+            <key index="LGL.normal">Normalnie</key>
+            <key index="LGL.images">Obrazki:</key>
+            <key index="LGL.image">Obrazek:</key>
+            <key index="LGL.caption">Podpis:</key>
+            <key index="LGL.subheader">Podnagłówek:</key>
+            <key index="LGL.text">Tekst:</key>
+            <key index="LGL.name">Nazwa:</key>
+            <key index="LGL.title">Tytuł:</key>
+            <key index="LGL.address">Adres:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Firma:</key>
+            <key index="LGL.city">Miasto:</key>
+            <key index="LGL.zip">Kod pocztowy:</key>
+            <key index="LGL.country">Kraj:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Notatka:</key>
+            <key index="LGL.parameters">Parametry:</key>
+            <key index="LGL.code">KOD:</key>
+            <key index="LGL.links">Odnośniki</key>
+            <key index="LGL.language">Język:</key>
+            <key index="LGL.category">Kategoria:</key>
+            <key index="LGL.shortcut_page">Skrót do strony:</key>
+            <key index="LGL.keywords">Słowa kluczowe (,):</key>
+            <key index="LGL.disable">Wyłącz:</key>
+            <key index="LGL.startingpoint">Punkt startowy:</key>
+            <key index="LGL.disableRTE">Wyłącz RTE:</key>
+            <key index="LGL.external">URL zewnętrzny</key>
+            <key index="LGL.recursive">Rekursywnie:</key>
+        </key>
+        <key index="si" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Skrij:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Dostop:</key>
+            <key index="LGL.hide_at_login">Skrij ob prijavi</key>
+            <key index="LGL.any_login">Prikaži pri vsaki prijavi</key>
+            <key index="LGL.usergroups">__Upor. skupine:__</key>
+            <key index="LGL.type">Tip:</key>
+            <key index="LGL.description">Opis:</key>
+            <key index="LGL.prependAtCopy">(kopija %s)</key>
+            <key index="LGL.layout">Izgled:</key>
+            <key index="LGL.default_value">Privzeto</key>
+            <key index="LGL.normal">Normalno</key>
+            <key index="LGL.images">Slike:</key>
+            <key index="LGL.image">Slika:</key>
+            <key index="LGL.caption">Napis:</key>
+            <key index="LGL.subheader">Podnaslov:</key>
+            <key index="LGL.text">Tekst:</key>
+            <key index="LGL.name">Ime:</key>
+            <key index="LGL.title">Naziv:</key>
+            <key index="LGL.address">Naslov:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Faks:</key>
+            <key index="LGL.author">Avtor:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Podjetje:</key>
+            <key index="LGL.city">Mesto:</key>
+            <key index="LGL.zip">Poštna št.:</key>
+            <key index="LGL.country">Država:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Opomba:</key>
+            <key index="LGL.parameters">Parametri:</key>
+            <key index="LGL.code">KODA:</key>
+            <key index="LGL.links">Povezave</key>
+            <key index="LGL.language">Jezik</key>
+            <key index="LGL.category">Kategorija:</key>
+            <key index="LGL.shortcut_page">Bližnjica do strani:</key>
+            <key index="LGL.keywords">Ključne besede (,):</key>
+            <key index="LGL.disable">Izklopi:</key>
+            <key index="LGL.startingpoint">Začni na:</key>
+            <key index="LGL.disableRTE">Izklopi urejevalnik oblikovanega besedila:</key>
+            <key index="LGL.external">Eksterni URL</key>
+            <key index="LGL.recursive">Rekurzivno:</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Piilota:</key>
+            <key index="LGL.starttime">Aloita:</key>
+            <key index="LGL.fe_group">Pääsyoikeus:</key>
+            <key index="LGL.hide_at_login">Piilota sisäänkirjoituksessa</key>
+            <key index="LGL.any_login">Näytä kaikilla sisäänkirjoituksilla</key>
+            <key index="LGL.usergroups">__Käyttäjäryhmät:__</key>
+            <key index="LGL.type">Tyyppi:</key>
+            <key index="LGL.description">Kuvaus:</key>
+            <key index="LGL.prependAtCopy">(kopioi %s)</key>
+            <key index="LGL.layout">Muotomalli:</key>
+            <key index="LGL.default_value">Oletusarvo</key>
+            <key index="LGL.normal">Normaali</key>
+            <key index="LGL.images">Kuvat:</key>
+            <key index="LGL.image">Kuva:</key>
+            <key index="LGL.caption">Kuvateksti</key>
+            <key index="LGL.subheader">Alaotsikko:</key>
+            <key index="LGL.text">Teksti:</key>
+            <key index="LGL.name">Nimi:</key>
+            <key index="LGL.title">Arvo:</key>
+            <key index="LGL.address">Osoite:</key>
+            <key index="LGL.phone">Puhelin:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Kirjoittaja:</key>
+            <key index="LGL.email">Sähköposti:</key>
+            <key index="LGL.company">Yritys:</key>
+            <key index="LGL.city">Kaupunki:</key>
+            <key index="LGL.zip">Postinumero:</key>
+            <key index="LGL.country">Maa:</key>
+            <key index="LGL.www">WWW:</key>
+            <key index="LGL.note">Huomautus:</key>
+            <key index="LGL.parameters">Muuttujat:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Linkit</key>
+            <key index="LGL.language">Kieli</key>
+            <key index="LGL.category">Luokka:</key>
+            <key index="LGL.shortcut_page">Pikavalinta sivulle:</key>
+            <key index="LGL.keywords">Avainsanat (,):</key>
+            <key index="LGL.disable">Poista käytöstä:</key>
+            <key index="LGL.startingpoint">Aloituspaikka:</key>
+            <key index="LGL.disableRTE">Poista RTE käytöstä:</key>
+            <key index="LGL.external">Ulkopuolinen URL</key>
+            <key index="LGL.recursive">Rekursiivinen:</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="LGL.endtime">Durdur:</key>
+            <key index="LGL.hidden">Sakla:</key>
+            <key index="LGL.starttime">Başlat:</key>
+            <key index="LGL.fe_group">Erişim:</key>
+            <key index="LGL.hide_at_login">Girişte gizle</key>
+            <key index="LGL.any_login">Girişte göster</key>
+            <key index="LGL.usergroups">__Kullanıcı grubu:__</key>
+            <key index="LGL.type">Tür:</key>
+            <key index="LGL.description">Tanıtım:</key>
+            <key index="LGL.prependAtCopy">(kopyala %s)</key>
+            <key index="LGL.layout">Sayfa düzeni:</key>
+            <key index="LGL.default_value">Standart</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Resimler:</key>
+            <key index="LGL.image">Resim:</key>
+            <key index="LGL.caption">Manşet:</key>
+            <key index="LGL.subheader">Alt ana başlık:</key>
+            <key index="LGL.text">Metin:</key>
+            <key index="LGL.name">İsim:</key>
+            <key index="LGL.title">Başlık:</key>
+            <key index="LGL.address">Adres:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Yazar:</key>
+            <key index="LGL.email">E-mail:</key>
+            <key index="LGL.company">Firma:</key>
+            <key index="LGL.city">Şehir:</key>
+            <key index="LGL.zip">Posta kodu:</key>
+            <key index="LGL.country">Ülke:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Not:</key>
+            <key index="LGL.parameters">Parametreler:</key>
+            <key index="LGL.code">KOD:</key>
+            <key index="LGL.links">Linkler</key>
+            <key index="LGL.language">Dil:</key>
+            <key index="LGL.category">Kategori:</key>
+            <key index="LGL.shortcut_page">Sayfaya kısayol:</key>
+            <key index="LGL.keywords">Anahtar kelimeler (,):</key>
+            <key index="LGL.disable">Devre dışı bırak:</key>
+            <key index="LGL.startingpoint">Başlama noktası:</key>
+            <key index="LGL.disableRTE">Zengin Metin Düzenleyiciyi devre dışı bırak:</key>
+            <key index="LGL.external">Dış URL</key>
+            <key index="LGL.recursive">Yinele:</key>
+        </key>
+        <key index="se" type="array">
+            <key index="LGL.endtime">Sluta:</key>
+            <key index="LGL.hidden">Göm:</key>
+            <key index="LGL.starttime">Starta:</key>
+            <key index="LGL.fe_group">Tillgång:</key>
+            <key index="LGL.hide_at_login">Göm vid inloggning</key>
+            <key index="LGL.any_login">Visa vid alla inloggningar</key>
+            <key index="LGL.usergroups">_Användargrupper:_</key>
+            <key index="LGL.type">Typ:</key>
+            <key index="LGL.description">Förklaring:</key>
+            <key index="LGL.prependAtCopy">(kopieria %s)</key>
+            <key index="LGL.layout">Layout:</key>
+            <key index="LGL.default_value">Normal</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Bilder:</key>
+            <key index="LGL.image">Bild:</key>
+            <key index="LGL.caption">Rubrik:</key>
+            <key index="LGL.subheader">Underrubrik:</key>
+            <key index="LGL.text">Text:</key>
+            <key index="LGL.name">Namn:</key>
+            <key index="LGL.title">Titel:</key>
+            <key index="LGL.address">Adress:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Skriven av:</key>
+            <key index="LGL.email">Epost:</key>
+            <key index="LGL.company">Företag:</key>
+            <key index="LGL.city">Postadress:</key>
+            <key index="LGL.zip">Postnummer:</key>
+            <key index="LGL.country">Land:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Anmärkning:</key>
+            <key index="LGL.parameters">Parametrar:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Länkar</key>
+            <key index="LGL.language">Språk:</key>
+            <key index="LGL.category">Katergori:</key>
+            <key index="LGL.shortcut_page">Genväg till sida:</key>
+            <key index="LGL.keywords">Nyckelord (,):</key>
+            <key index="LGL.disable">Stäng:</key>
+            <key index="LGL.startingpoint">Startpunkt:</key>
+            <key index="LGL.disableRTE">Stäng Rich Text Editorn:</key>
+            <key index="LGL.external">Yttre URL</key>
+            <key index="LGL.recursive">Rekursiv:</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="LGL.endtime">Pare:</key>
+            <key index="LGL.hidden">Ocultar:</key>
+            <key index="LGL.starttime">Iniciar:</key>
+            <key index="LGL.fe_group">Acesso:</key>
+            <key index="LGL.hide_at_login">Ocultar ao acessar</key>
+            <key index="LGL.any_login">Mostrar para qualquer acesso</key>
+            <key index="LGL.usergroups">__Grupos de Utilizadores:__</key>
+            <key index="LGL.type">Tipo:</key>
+            <key index="LGL.description">Descrição:</key>
+            <key index="LGL.prependAtCopy">(copiar %s)</key>
+            <key index="LGL.layout">Formato:</key>
+            <key index="LGL.default_value">Padrão</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Imagens:</key>
+            <key index="LGL.image">Imagem:</key>
+            <key index="LGL.caption">Sub-título:</key>
+            <key index="LGL.subheader">Sub-cabeçalho:</key>
+            <key index="LGL.text">Texto:</key>
+            <key index="LGL.name">Nome:</key>
+            <key index="LGL.title">Título:</key>
+            <key index="LGL.address">Endereço:</key>
+            <key index="LGL.phone">Telefone:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">E-mail:</key>
+            <key index="LGL.company">Companhia:</key>
+            <key index="LGL.city">Cidade:</key>
+            <key index="LGL.zip">Código Postal:</key>
+            <key index="LGL.country">País:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Nota:</key>
+            <key index="LGL.parameters">Parâmetros:</key>
+            <key index="LGL.code">Código:</key>
+            <key index="LGL.links">Ligações</key>
+            <key index="LGL.language">Idioma:</key>
+            <key index="LGL.category">Categoria:</key>
+            <key index="LGL.shortcut_page">Atalho para a página:</key>
+            <key index="LGL.keywords">Palavras chave (,):</key>
+            <key index="LGL.disable">Desabilitar:</key>
+            <key index="LGL.startingpoint">Ponte de Início:</key>
+            <key index="LGL.disableRTE">Desabilitar RTF:</key>
+            <key index="LGL.external">Endereço (URL) externo:</key>
+            <key index="LGL.recursive">Recursivo:</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="LGL.endtime">Стоп:</key>
+            <key index="LGL.hidden">Скрыть:</key>
+            <key index="LGL.starttime">Старт:</key>
+            <key index="LGL.fe_group">Доступ:</key>
+            <key index="LGL.hide_at_login">Скрыть после входа в систему</key>
+            <key index="LGL.any_login">Виден при любом входе</key>
+            <key index="LGL.usergroups">__Группы пользователей:__</key>
+            <key index="LGL.type">Тип:</key>
+            <key index="LGL.description">Описание:</key>
+            <key index="LGL.prependAtCopy">(копия %s)</key>
+            <key index="LGL.layout">Вид:</key>
+            <key index="LGL.default_value">Стандартный</key>
+            <key index="LGL.normal">Обычный</key>
+            <key index="LGL.images">Изображения:</key>
+            <key index="LGL.image">Изображение:</key>
+            <key index="LGL.caption">Подпись:</key>
+            <key index="LGL.subheader">Подзаголовок:</key>
+            <key index="LGL.text">Текст:</key>
+            <key index="LGL.name">Имя/Фамилия:</key>
+            <key index="LGL.title">Звание:</key>
+            <key index="LGL.address">Адрес:</key>
+            <key index="LGL.phone">Телефон:</key>
+            <key index="LGL.fax">Факс:</key>
+            <key index="LGL.author">Автор:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Компания:</key>
+            <key index="LGL.city">Город:</key>
+            <key index="LGL.zip">Почтовый индекс:</key>
+            <key index="LGL.country">Страна:</key>
+            <key index="LGL.www">Веб-адрес:</key>
+            <key index="LGL.note">Примечание:</key>
+            <key index="LGL.parameters">Параметры:</key>
+            <key index="LGL.code">Код:</key>
+            <key index="LGL.links">Гиперссылки:</key>
+            <key index="LGL.language">Язык:</key>
+            <key index="LGL.category">Категория:</key>
+            <key index="LGL.shortcut_page">Ссылка на страницу:</key>
+            <key index="LGL.keywords">Ключевые слова (,):</key>
+            <key index="LGL.disable">Выключить:</key>
+            <key index="LGL.startingpoint">Исходная точка:</key>
+            <key index="LGL.disableRTE">Выключить комфортный редактор текста (RTE):</key>
+            <key index="LGL.external">Внешний адрес</key>
+            <key index="LGL.recursive">Рекурсивно:</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Ascuns:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Acces:</key>
+            <key index="LGL.hide_at_login">Ascunde la autentificare</key>
+            <key index="LGL.any_login">Afiseaza la orice autentificare</key>
+            <key index="LGL.usergroups">__Grupuri de utilizatori:__</key>
+            <key index="LGL.type">Tip:</key>
+            <key index="LGL.description">Descriere:</key>
+            <key index="LGL.prependAtCopy">(copiat %)</key>
+            <key index="LGL.layout">Afisaj</key>
+            <key index="LGL.default_value">Implicit</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Imagini:</key>
+            <key index="LGL.image">Imagine:</key>
+            <key index="LGL.caption">Generic:</key>
+            <key index="LGL.subheader">Subheader:</key>
+            <key index="LGL.text">Text:</key>
+            <key index="LGL.name">Nume:</key>
+            <key index="LGL.title">Titlu:</key>
+            <key index="LGL.address">Adresa:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Companie:</key>
+            <key index="LGL.city">Oras:</key>
+            <key index="LGL.zip">Cod postal:</key>
+            <key index="LGL.country">Tara:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Nota:</key>
+            <key index="LGL.parameters">Parametrii:</key>
+            <key index="LGL.code">Cod:</key>
+            <key index="LGL.links">Link-uri</key>
+            <key index="LGL.language">Limba:</key>
+            <key index="LGL.category">Categorie:</key>
+            <key index="LGL.shortcut_page">Legatura la pagina:</key>
+            <key index="LGL.keywords">Cuvinte cheie (,):</key>
+            <key index="LGL.disable">Dezactivat:</key>
+            <key index="LGL.startingpoint">Punct de inceput:</key>
+            <key index="LGL.disableRTE">Dezactivarea Editorului de Text Imbogatit:</key>
+            <key index="LGL.external">Adresa URL externa</key>
+            <key index="LGL.recursive">Recurent:</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="LGL.endtime">停止:</key>
+            <key index="LGL.hidden">隐藏:</key>
+            <key index="LGL.starttime">开始:</key>
+            <key index="LGL.fe_group">存取:</key>
+            <key index="LGL.hide_at_login">登录时隐藏</key>
+            <key index="LGL.any_login">登录时显示</key>
+            <key index="LGL.usergroups">__用户组:__</key>
+            <key index="LGL.type">类型:</key>
+            <key index="LGL.description">描述:</key>
+            <key index="LGL.prependAtCopy">(拷贝 %s)</key>
+            <key index="LGL.layout">布局</key>
+            <key index="LGL.default_value">默认</key>
+            <key index="LGL.normal">正规</key>
+            <key index="LGL.images">图片:</key>
+            <key index="LGL.image">图片:</key>
+            <key index="LGL.caption">标题:</key>
+            <key index="LGL.subheader">子目录:</key>
+            <key index="LGL.text">文字:</key>
+            <key index="LGL.name">名字:</key>
+            <key index="LGL.title">标题:</key>
+            <key index="LGL.address">地址:</key>
+            <key index="LGL.phone">电话:</key>
+            <key index="LGL.fax">传真:</key>
+            <key index="LGL.author">作者:</key>
+            <key index="LGL.email">电子邮件:</key>
+            <key index="LGL.company">公司:</key>
+            <key index="LGL.city">城市:</key>
+            <key index="LGL.zip">邮编:</key>
+            <key index="LGL.country">国家:</key>
+            <key index="LGL.www">网址:</key>
+            <key index="LGL.note">注解:</key>
+            <key index="LGL.parameters">参数:</key>
+            <key index="LGL.code">编码:</key>
+            <key index="LGL.links">链接</key>
+            <key index="LGL.language">语言:</key>
+            <key index="LGL.category">类别:</key>
+            <key index="LGL.shortcut_page">页面快捷键:</key>
+            <key index="LGL.keywords">关键字(,):</key>
+            <key index="LGL.disable">禁止:</key>
+            <key index="LGL.startingpoint">起点:</key>
+            <key index="LGL.disableRTE">不使用可视化编辑器</key>
+            <key index="LGL.external">外部URL</key>
+            <key index="LGL.recursive">递归的</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Skryť:</key>
+            <key index="LGL.starttime">Štart:</key>
+            <key index="LGL.fe_group">Prístup:</key>
+            <key index="LGL.hide_at_login">Skyť po prihlásení</key>
+            <key index="LGL.any_login">Ukáž pri každom prihlásení</key>
+            <key index="LGL.usergroups">__Uživateľské skupiny:__</key>
+            <key index="LGL.type">Typ:</key>
+            <key index="LGL.description">Popis:</key>
+            <key index="LGL.prependAtCopy">(kópia %s)</key>
+            <key index="LGL.layout">Layout:</key>
+            <key index="LGL.default_value">Základný</key>
+            <key index="LGL.normal">Normálny</key>
+            <key index="LGL.images">Obrázky:</key>
+            <key index="LGL.image">Obrázok:</key>
+            <key index="LGL.caption">Úvod:</key>
+            <key index="LGL.subheader">Podtitulok:</key>
+            <key index="LGL.text">Text:</key>
+            <key index="LGL.name">Meno:</key>
+            <key index="LGL.title">Titulok:</key>
+            <key index="LGL.address">Adresa:</key>
+            <key index="LGL.phone">Telefón:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Firma:</key>
+            <key index="LGL.city">Mesto:</key>
+            <key index="LGL.zip">PSČ:</key>
+            <key index="LGL.country">Krajina:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Poznámky:</key>
+            <key index="LGL.parameters">Parametre:</key>
+            <key index="LGL.code">KÓD:</key>
+            <key index="LGL.links">Odkazy</key>
+            <key index="LGL.language">Jazyk:</key>
+            <key index="LGL.category">Kategória:</key>
+            <key index="LGL.shortcut_page">Zkratka na stránku:</key>
+            <key index="LGL.keywords">Kľúčové slová (,):</key>
+            <key index="LGL.disable">Deaktivuj:</key>
+            <key index="LGL.startingpoint">Počiatočný bod:</key>
+            <key index="LGL.disableRTE">Deaktivuj Rich Text Editor:</key>
+            <key index="LGL.external">Externá URL</key>
+            <key index="LGL.recursive">Rekurzivná:</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="LGL.endtime">Sustabdyti:</key>
+            <key index="LGL.hidden">Paslėpti:</key>
+            <key index="LGL.starttime">Pradėti:</key>
+            <key index="LGL.fe_group">Teisės:</key>
+            <key index="LGL.hide_at_login">Paslėpti prisijungus</key>
+            <key index="LGL.any_login">Rodyti bet kokiam prisijungimui</key>
+            <key index="LGL.usergroups">__Vartotojųgrupės:__</key>
+            <key index="LGL.type">Tipas:</key>
+            <key index="LGL.description">Aprašymas:</key>
+            <key index="LGL.prependAtCopy">(kopija %s)</key>
+            <key index="LGL.layout">Išklotinė</key>
+            <key index="LGL.default_value">Pradinis</key>
+            <key index="LGL.normal">Normalus</key>
+            <key index="LGL.images">Paveiksliukai:</key>
+            <key index="LGL.image">Paveiksliukas:</key>
+            <key index="LGL.caption">Antraštė:</key>
+            <key index="LGL.subheader">Subantraštė:</key>
+            <key index="LGL.text">Tekstas:</key>
+            <key index="LGL.name">Pavadinimas:</key>
+            <key index="LGL.title">Antraštė</key>
+            <key index="LGL.address">Adresas:</key>
+            <key index="LGL.phone">Telefonas:</key>
+            <key index="LGL.fax">Faksas:</key>
+            <key index="LGL.author">Autorius:</key>
+            <key index="LGL.email">El. paštas:</key>
+            <key index="LGL.company">Kompanija:</key>
+            <key index="LGL.city">Miestas:</key>
+            <key index="LGL.zip">Indeksas:</key>
+            <key index="LGL.country">Šalis:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Pastaba:</key>
+            <key index="LGL.parameters">Parametrai:</key>
+            <key index="LGL.code">KODAS:</key>
+            <key index="LGL.links">Nuorodos:</key>
+            <key index="LGL.language">Kalba:</key>
+            <key index="LGL.category">Kategorija:</key>
+            <key index="LGL.shortcut_page">Nuoroda į puslapį:</key>
+            <key index="LGL.keywords">Raktiniai žodžiai (,):</key>
+            <key index="LGL.disable">Deaktyvuoti:</key>
+            <key index="LGL.startingpoint">Pradinis taškas:</key>
+            <key index="LGL.disableRTE">Deaktyvuoti tekstų redaktorių:</key>
+            <key index="LGL.external">Išorinis URL</key>
+            <key index="LGL.recursive">Rekursinis:</key>
+        </key>
+        <key index="is" type="array">
+            <key index="LGL.endtime">Stopp:</key>
+            <key index="LGL.hidden">Fela:</key>
+            <key index="LGL.starttime">Byrja:</key>
+            <key index="LGL.fe_group">Aðgangur:</key>
+            <key index="LGL.hide_at_login">Fela við innskráningu</key>
+            <key index="LGL.any_login">Birta við allar innskráningar</key>
+            <key index="LGL.usergroups">_Notendahópar_</key>
+            <key index="LGL.type">Tegund:</key>
+            <key index="LGL.description">Lýsing:</key>
+            <key index="LGL.prependAtCopy">(afrita %s)</key>
+            <key index="LGL.layout">Útlit:</key>
+            <key index="LGL.default_value">Sjálfgildandi</key>
+            <key index="LGL.normal">Venjulegt</key>
+            <key index="LGL.images">Myndir:</key>
+            <key index="LGL.image">Mynd:</key>
+            <key index="LGL.caption">Yfirskrift:</key>
+            <key index="LGL.subheader">Undirtitill</key>
+            <key index="LGL.text">Texti:</key>
+            <key index="LGL.name">Nafn:</key>
+            <key index="LGL.title">Titill:</key>
+            <key index="LGL.address">Heimilisfang:</key>
+            <key index="LGL.phone">Sími:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Höfundur:</key>
+            <key index="LGL.email">Póstfang:</key>
+            <key index="LGL.company">Fyrirtæki:</key>
+            <key index="LGL.city">Bæjarfélag:</key>
+            <key index="LGL.zip">Póstnúmer:</key>
+            <key index="LGL.country">Land:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Athugasemd:</key>
+            <key index="LGL.parameters">Færibreyta:</key>
+            <key index="LGL.code">KÓÐI:</key>
+            <key index="LGL.links">Hlekkur</key>
+            <key index="LGL.language">Tungumál:</key>
+            <key index="LGL.category">Efnisflokkur:</key>
+            <key index="LGL.shortcut_page">Flýtivísir á síðu:</key>
+            <key index="LGL.keywords">Lykilorð (,):</key>
+            <key index="LGL.disable">Óvirkt:</key>
+            <key index="LGL.startingpoint">Útgangspunktur:</key>
+            <key index="LGL.disableRTE">Óvirkt Ríkan Texta Ritil</key>
+            <key index="LGL.external">Ytra Vefslóð 'URL'</key>
+            <key index="LGL.recursive">Vinstri halli:</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Sakri:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Pristup:</key>
+            <key index="LGL.hide_at_login">Sakri po prijavi</key>
+            <key index="LGL.any_login">Prikaži po bilo kojoj prijavi na sustav</key>
+            <key index="LGL.usergroups">__Korisničke grupe:__</key>
+            <key index="LGL.type">Tip:</key>
+            <key index="LGL.description">Opis:</key>
+            <key index="LGL.prependAtCopy">(kopija %s)</key>
+            <key index="LGL.layout">Izgled:</key>
+            <key index="LGL.default_value">Zadano</key>
+            <key index="LGL.normal">Normalno</key>
+            <key index="LGL.images">Slike:</key>
+            <key index="LGL.image">Slika:</key>
+            <key index="LGL.caption">Caption:</key>
+            <key index="LGL.subheader">Podzaglavlje:</key>
+            <key index="LGL.text">Tekst:</key>
+            <key index="LGL.name">Ime:</key>
+            <key index="LGL.title">Naslov:</key>
+            <key index="LGL.address">Adresa:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Tvrtka:</key>
+            <key index="LGL.city">Grad:</key>
+            <key index="LGL.zip">Poštanski broj:</key>
+            <key index="LGL.country">Država:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Napomena:</key>
+            <key index="LGL.parameters">Parametri:</key>
+            <key index="LGL.code">KOD:</key>
+            <key index="LGL.links">Linkovi:</key>
+            <key index="LGL.language">Jezik:</key>
+            <key index="LGL.category">Kategorija:</key>
+            <key index="LGL.shortcut_page">Kratica do sranice:</key>
+            <key index="LGL.keywords">Ključne riječi(,):</key>
+            <key index="LGL.disable">Onemogući:</key>
+            <key index="LGL.startingpoint">Startna točka:</key>
+            <key index="LGL.disableRTE">Onemogući Rich Text Editor:</key>
+            <key index="LGL.external">Vanjski URL</key>
+            <key index="LGL.recursive">Rekurzivno</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="LGL.endtime">Vége:</key>
+            <key index="LGL.hidden">Elrejt:</key>
+            <key index="LGL.starttime">Kezdet:</key>
+            <key index="LGL.fe_group">Hozzáférés:</key>
+            <key index="LGL.hide_at_login">Rejtsd el bejelentkezésnél</key>
+            <key index="LGL.any_login">Mutasd a bejelentkezésnél</key>
+            <key index="LGL.usergroups">__Usergroups:__</key>
+            <key index="LGL.type">Típus:</key>
+            <key index="LGL.description">Leírás:</key>
+            <key index="LGL.prependAtCopy">(másol %s)</key>
+            <key index="LGL.layout">Elhelyezés:</key>
+            <key index="LGL.default_value">Alapértelmezett</key>
+            <key index="LGL.normal">Normál</key>
+            <key index="LGL.images">Képek:</key>
+            <key index="LGL.image">Kép:</key>
+            <key index="LGL.caption">Képszöveg:</key>
+            <key index="LGL.subheader">Alfejléc:</key>
+            <key index="LGL.text">Szöveg:</key>
+            <key index="LGL.name">Név:</key>
+            <key index="LGL.title">Cím:</key>
+            <key index="LGL.address">Cím:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Szerző:</key>
+            <key index="LGL.email">E-mail:</key>
+            <key index="LGL.company">Társaság:</key>
+            <key index="LGL.city">Város:</key>
+            <key index="LGL.zip">Irányítószám:</key>
+            <key index="LGL.country">Ország:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Feljegyzés:</key>
+            <key index="LGL.parameters">Paraméterek:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Linkek</key>
+            <key index="LGL.language">Nyelv:</key>
+            <key index="LGL.category">Kategória:</key>
+            <key index="LGL.shortcut_page">Parancsikon az oldalra:</key>
+            <key index="LGL.keywords">Kulcsszavak (,):</key>
+            <key index="LGL.disable">Letilt:</key>
+            <key index="LGL.startingpoint">Kezdőpont:</key>
+            <key index="LGL.disableRTE">Rich Text Editor tiltása:</key>
+            <key index="LGL.external">Külső URL</key>
+            <key index="LGL.recursive">Rekurzív:</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="LGL.endtime">Unitsiguk</key>
+            <key index="LGL.hidden">Isertoruk</key>
+            <key index="LGL.starttime">Aallartiguk</key>
+            <key index="LGL.fe_group">Iserfigiguk</key>
+            <key index="LGL.hide_at_login">Isernermi isertoruk</key>
+            <key index="LGL.any_login">Isernermi tamatigut takutitsiguk</key>
+            <key index="LGL.usergroups">__Atuisoqatigiit:__</key>
+            <key index="LGL.type">Qanoq issusia:</key>
+            <key index="LGL.description">Nassuiaat</key>
+            <key index="LGL.prependAtCopy">(assiliaq %s)</key>
+            <key index="LGL.layout">Layout</key>
+            <key index="LGL.default_value">Nalinginnaasoq</key>
+            <key index="LGL.normal">Pisusissamisoortoq</key>
+            <key index="LGL.images">Assit</key>
+            <key index="LGL.image">Asseq</key>
+            <key index="LGL.caption">Qulequtaq</key>
+            <key index="LGL.subheader">Qulequtaa tullia</key>
+            <key index="LGL.text">Allaffissaq</key>
+            <key index="LGL.name">Ateq</key>
+            <key index="LGL.title">Taaguut</key>
+            <key index="LGL.address">Najugaq</key>
+            <key index="LGL.phone">Oqarasuaat</key>
+            <key index="LGL.fax">Allakkasuaat</key>
+            <key index="LGL.author">Atuakkiortoq</key>
+            <key index="LGL.email">E-mail</key>
+            <key index="LGL.company">Suliffeqarfik</key>
+            <key index="LGL.city">Illoqarfik</key>
+            <key index="LGL.zip">Illoqarfiup normua:</key>
+            <key index="LGL.country">Nuna</key>
+            <key index="LGL.www">www</key>
+            <key index="LGL.note">Nalunaarut</key>
+            <key index="LGL.parameters">Uuttuut:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Attaveqaatit</key>
+            <key index="LGL.language">Oqaatsit</key>
+            <key index="LGL.category">Sumut atassuseq</key>
+            <key index="LGL.shortcut_page">Iserasuaat quppernermut</key>
+            <key index="LGL.keywords">Oqaatsit pingaartut (,):</key>
+            <key index="LGL.disable">Atorsinnaajunnaartillugu</key>
+            <key index="LGL.startingpoint">Aallarniut</key>
+            <key index="LGL.disableRTE">Rich Text Editor atorsinnaajunnaartillugu</key>
+            <key index="LGL.external">URL avataaniittoq</key>
+            <key index="LGL.recursive">Uteqattaartoq (rekursiv):</key>
+        </key>
+        <key index="th" type="array">
+            <key index="LGL.endtime">หยุด:</key>
+            <key index="LGL.hidden">ซ่อน:</key>
+            <key index="LGL.starttime">เริ่ม:</key>
+            <key index="LGL.fe_group">เข้าถึง:</key>
+            <key index="LGL.hide_at_login">ซ่อนเมื่อล็อคอิน</key>
+            <key index="LGL.any_login">แสดงเมื่อล็อคอินใดๆ</key>
+            <key index="LGL.usergroups">กลุ่มผู้ใช้:</key>
+            <key index="LGL.type">ชนิด:</key>
+            <key index="LGL.description">อธิบาย:</key>
+            <key index="LGL.prependAtCopy">คัดลอก %s</key>
+            <key index="LGL.layout">จัดเรียง:</key>
+            <key index="LGL.default_value">ค่าที่ตั้งไว้</key>
+            <key index="LGL.normal">ปกติ:</key>
+            <key index="LGL.images">หลายรูปภาพ:</key>
+            <key index="LGL.image">รูปภาพ:</key>
+            <key index="LGL.caption">ชื่อรูปภาพ:</key>
+            <key index="LGL.subheader">หัวข้อย่อย:</key>
+            <key index="LGL.text">ข้อความ:</key>
+            <key index="LGL.name">ชื่อ:</key>
+            <key index="LGL.title">ชื่อเรื่อง:</key>
+            <key index="LGL.address">ที่อยู่:</key>
+            <key index="LGL.phone">โทรศัพท์:</key>
+            <key index="LGL.fax">โทรสาร:</key>
+            <key index="LGL.author">ผู้แต่ง:</key>
+            <key index="LGL.email">อีเมล์:</key>
+            <key index="LGL.company">บริษัท:</key>
+            <key index="LGL.city">เมือง:</key>
+            <key index="LGL.zip">รหัสไปรษณีย์:</key>
+            <key index="LGL.country">ประเทศ:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">บันทึกย่อ:</key>
+            <key index="LGL.parameters">ตัวแปร:</key>
+            <key index="LGL.code">โค๊ต:</key>
+            <key index="LGL.links">เชื่อมโยง</key>
+            <key index="LGL.language">ภาษา:</key>
+            <key index="LGL.category">ชนิด:</key>
+            <key index="LGL.shortcut_page">ทางลัดไปหน้า:</key>
+            <key index="LGL.keywords">คำหลัก (,):</key>
+            <key index="LGL.disable">ห้ามใช้:</key>
+            <key index="LGL.startingpoint">จุดเริ่มต้น:</key>
+            <key index="LGL.disableRTE">ห้ามใช้ Rich text Editor:</key>
+            <key index="LGL.external">URL ภายนอก</key>
+            <key index="LGL.recursive">อย่างซ้ำอีก:</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="LGL.endtime">停止：</key>
+            <key index="LGL.hidden">隱藏：</key>
+            <key index="LGL.starttime">開始：</key>
+            <key index="LGL.fe_group">權限：</key>
+            <key index="LGL.hide_at_login">於登入時隱藏</key>
+            <key index="LGL.any_login">於所有登入時顯示</key>
+            <key index="LGL.usergroups">__使用者群組：__</key>
+            <key index="LGL.type">種類：</key>
+            <key index="LGL.description">簡介：</key>
+            <key index="LGL.prependAtCopy">(複製 %)</key>
+            <key index="LGL.layout">版面編排：</key>
+            <key index="LGL.default_value">預設</key>
+            <key index="LGL.normal">正常</key>
+            <key index="LGL.images">圖像:</key>
+            <key index="LGL.image">圖像:</key>
+            <key index="LGL.caption">簡介:</key>
+            <key index="LGL.subheader">副標題:</key>
+            <key index="LGL.text">文字:</key>
+            <key index="LGL.name">名字:</key>
+            <key index="LGL.title">稱謂:</key>
+            <key index="LGL.address">地址:</key>
+            <key index="LGL.phone">電話:</key>
+            <key index="LGL.fax">傳真:</key>
+            <key index="LGL.author">作者:</key>
+            <key index="LGL.email">電郵:</key>
+            <key index="LGL.company">公司:</key>
+            <key index="LGL.city">城市:</key>
+            <key index="LGL.zip">郵遞編號：</key>
+            <key index="LGL.country">國家：</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">短訊：</key>
+            <key index="LGL.parameters">週邊參數：</key>
+            <key index="LGL.code">編碼：</key>
+            <key index="LGL.links">連結</key>
+            <key index="LGL.language">語言：</key>
+            <key index="LGL.category">分類：</key>
+            <key index="LGL.shortcut_page">網頁捷徑：</key>
+            <key index="LGL.keywords">關鍵字(,)：</key>
+            <key index="LGL.disable">關閉以下功能：</key>
+            <key index="LGL.startingpoint">起始點：</key>
+            <key index="LGL.disableRTE">關閉多功能文字編輯器：</key>
+            <key index="LGL.external">外部URL</key>
+            <key index="LGL.recursive">重複發生：</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="LGL.endtime">Gelditu:</key>
+            <key index="LGL.hidden">Ezkutatu:</key>
+            <key index="LGL.starttime">Hasi:</key>
+            <key index="LGL.fe_group">Sartu:</key>
+            <key index="LGL.hide_at_login">Saioa hastean ezkutatu</key>
+            <key index="LGL.any_login">Bistaratu edozein saio hasita</key>
+            <key index="LGL.usergroups">__Erabiltzaile Taldeak:__</key>
+            <key index="LGL.type">Mota:</key>
+            <key index="LGL.description">Azalpena:</key>
+            <key index="LGL.prependAtCopy">(Kopiat %s)</key>
+            <key index="LGL.layout">Diseinua:</key>
+            <key index="LGL.default_value">Lehenetsia</key>
+            <key index="LGL.normal">Normala</key>
+            <key index="LGL.images">Irudiak:</key>
+            <key index="LGL.image">Irudia:</key>
+            <key index="LGL.caption">Epigrafea:</key>
+            <key index="LGL.subheader">Azpigoiburukoa:</key>
+            <key index="LGL.text">Testua:</key>
+            <key index="LGL.name">Izena:</key>
+            <key index="LGL.title">Izenburua:</key>
+            <key index="LGL.address">Helbidea:</key>
+            <key index="LGL.phone">Telefonoa:</key>
+            <key index="LGL.fax">Faxa:</key>
+            <key index="LGL.author">Egilea:</key>
+            <key index="LGL.email">ePosta:</key>
+            <key index="LGL.company">Enpresa:</key>
+            <key index="LGL.city">Hiria:</key>
+            <key index="LGL.zip">Posta Kodea:</key>
+            <key index="LGL.country">Herrialdea:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Oharra:</key>
+            <key index="LGL.parameters">Parametroak:</key>
+            <key index="LGL.code">KODEA:</key>
+            <key index="LGL.links">Loturak</key>
+            <key index="LGL.language">Hizkuntza</key>
+            <key index="LGL.category">Kategoria:</key>
+            <key index="LGL.shortcut_page">Orrira lasterbidea:</key>
+            <key index="LGL.keywords">Hitz gakoak (,):</key>
+            <key index="LGL.disable">Desgaitu:</key>
+            <key index="LGL.startingpoint">Hasiera puntua:</key>
+            <key index="LGL.disableRTE">Desgaitu Testu Aberastu Editorea:</key>
+            <key index="LGL.external">Kanpoko URL-a</key>
+            <key index="LGL.recursive">Errepikaria</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="LGL.endtime">Стоп:</key>
+            <key index="LGL.hidden">Скрии:</key>
+            <key index="LGL.starttime">Старт:</key>
+            <key index="LGL.fe_group">Достъп:</key>
+            <key index="LGL.hide_at_login">Скрии при влизане в системата (login)</key>
+            <key index="LGL.any_login">Показвай при всяко влизане в системата (login)</key>
+            <key index="LGL.usergroups">__Потребителски Групи:__</key>
+            <key index="LGL.type">Тип:</key>
+            <key index="LGL.description">Описание:</key>
+            <key index="LGL.prependAtCopy">(copy %s)</key>
+            <key index="LGL.layout">Оформление:</key>
+            <key index="LGL.default_value">По подразбиране</key>
+            <key index="LGL.normal">Нормално</key>
+            <key index="LGL.images">Изображения:</key>
+            <key index="LGL.image">Изображение:</key>
+            <key index="LGL.caption">Обяснение към снимка/изображение</key>
+            <key index="LGL.subheader">Подзаглавие:</key>
+            <key index="LGL.text">Текст:</key>
+            <key index="LGL.name">Име:</key>
+            <key index="LGL.title">Звание:</key>
+            <key index="LGL.address">Адрес:</key>
+            <key index="LGL.phone">Телефон:</key>
+            <key index="LGL.fax">Факс:</key>
+            <key index="LGL.author">Автор:</key>
+            <key index="LGL.email">Email:</key>
+            <key index="LGL.company">Фирма:</key>
+            <key index="LGL.city">Град:</key>
+            <key index="LGL.zip">Пощенски код:</key>
+            <key index="LGL.country">Страна:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Бележка:</key>
+            <key index="LGL.parameters">Параметри:</key>
+            <key index="LGL.code">Код:</key>
+            <key index="LGL.links">Връзки</key>
+            <key index="LGL.language">Език:</key>
+            <key index="LGL.category">Категория:</key>
+            <key index="LGL.shortcut_page">Препратка към страница:</key>
+            <key index="LGL.keywords">Ключови думи (,):</key>
+            <key index="LGL.disable">Изключен:</key>
+            <key index="LGL.startingpoint">Точка на стартиране:</key>
+            <key index="LGL.disableRTE">Изключи текстовия редактор:</key>
+            <key index="LGL.external">Външно URL</key>
+            <key index="LGL.recursive">Recursive:</key>
+        </key>
+        <key index="br" type="array">
+            <key index="LGL.endtime">Pare:</key>
+            <key index="LGL.hidden">Ocultar:</key>
+            <key index="LGL.starttime">Iniciar:</key>
+            <key index="LGL.fe_group">Acesso:</key>
+            <key index="LGL.hide_at_login">Ocultar ao acessar</key>
+            <key index="LGL.any_login">Mostrar para qualquer acesso</key>
+            <key index="LGL.usergroups">__Grupos de Usuários:__</key>
+            <key index="LGL.type">Tipo:</key>
+            <key index="LGL.description">Descrição:</key>
+            <key index="LGL.prependAtCopy">(copiar %s)</key>
+            <key index="LGL.layout">Formato:</key>
+            <key index="LGL.default_value">Padrão</key>
+            <key index="LGL.normal">Normal</key>
+            <key index="LGL.images">Imagens:</key>
+            <key index="LGL.image">Imagem:</key>
+            <key index="LGL.caption">Sub-título:</key>
+            <key index="LGL.subheader">Sub-cabeçalho:</key>
+            <key index="LGL.text">Texto:</key>
+            <key index="LGL.name">Nome:</key>
+            <key index="LGL.title">Título:</key>
+            <key index="LGL.address">Endereço:</key>
+            <key index="LGL.phone">Telefone:</key>
+            <key index="LGL.fax">Fax:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">E-mail:</key>
+            <key index="LGL.company">Companhia:</key>
+            <key index="LGL.city">Cidade:</key>
+            <key index="LGL.zip">CEP:</key>
+            <key index="LGL.country">País:</key>
+            <key index="LGL.www">Site:</key>
+            <key index="LGL.note">Anotação:</key>
+            <key index="LGL.parameters">Parâmetros:</key>
+            <key index="LGL.code">Código:</key>
+            <key index="LGL.links">Links:</key>
+            <key index="LGL.language">Idioma:</key>
+            <key index="LGL.category">Categoria:</key>
+            <key index="LGL.shortcut_page">Atalho para a página:</key>
+            <key index="LGL.keywords">Palavras-chave (,):</key>
+            <key index="LGL.disable">Desabilitar:</key>
+            <key index="LGL.startingpoint">Ponte de Partida:</key>
+            <key index="LGL.disableRTE">Desabilitar RTF:</key>
+            <key index="LGL.external">Endereço (URL) externo:</key>
+            <key index="LGL.recursive">Endereço (URL) externo:</key>
+        </key>
+        <key index="et" type="array">
+            <key index="LGL.endtime">Stop:</key>
+            <key index="LGL.hidden">Peida:</key>
+            <key index="LGL.starttime">Start:</key>
+            <key index="LGL.fe_group">Õigused:</key>
+            <key index="LGL.hide_at_login">Peida sisse logides</key>
+            <key index="LGL.any_login">Näita kõikide sisselogimiste juures</key>
+            <key index="LGL.usergroups">__Kasutajagrupid:__</key>
+            <key index="LGL.type">Liik:</key>
+            <key index="LGL.description">Kirjeldus:</key>
+            <key index="LGL.prependAtCopy">(kopeeri %s)</key>
+            <key index="LGL.layout">Paigutus:</key>
+            <key index="LGL.default_value">Vaikimisi</key>
+            <key index="LGL.normal">Tavaline</key>
+            <key index="LGL.images">Pildid:</key>
+            <key index="LGL.image">Pilt:</key>
+            <key index="LGL.caption">Seletus:</key>
+            <key index="LGL.subheader">Alampäis:</key>
+            <key index="LGL.text">Tekst:</key>
+            <key index="LGL.name">Nimi:</key>
+            <key index="LGL.title">Pealkiri:</key>
+            <key index="LGL.address">Aadress:</key>
+            <key index="LGL.phone">Telefon:</key>
+            <key index="LGL.fax">Faks:</key>
+            <key index="LGL.author">Autor:</key>
+            <key index="LGL.email">E-mail:</key>
+            <key index="LGL.company">Ettevõte:</key>
+            <key index="LGL.city">Linn:</key>
+            <key index="LGL.zip">Postiindeks:</key>
+            <key index="LGL.country">Riik:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Märkus:</key>
+            <key index="LGL.parameters">Parameetrid:</key>
+            <key index="LGL.code">KOOD:</key>
+            <key index="LGL.links">Lingid</key>
+            <key index="LGL.language">Keel:</key>
+            <key index="LGL.category">Kategooria:</key>
+            <key index="LGL.shortcut_page">Otsetee leheküljele:</key>
+            <key index="LGL.keywords">Märksõnad (,):</key>
+            <key index="LGL.disable">Blokeeri:</key>
+            <key index="LGL.startingpoint">Algpunkt:</key>
+            <key index="LGL.disableRTE">Blokeeri tekstiredaktor:</key>
+            <key index="LGL.external">Väline URL</key>
+            <key index="LGL.recursive">Rekursiivne (iseendale viitav):</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="LGL.endtime">النهاية</key>
+            <key index="LGL.hidden">إخفي</key>
+            <key index="LGL.starttime">البداية</key>
+            <key index="LGL.fe_group">أدخل:</key>
+            <key index="LGL.hide_at_login">إختفي عند الدخول</key>
+            <key index="LGL.any_login">إعرض عند دخول أي مستخدم</key>
+            <key index="LGL.usergroups">__مجموعة المستخدمين:__</key>
+            <key index="LGL.type">النوع:</key>
+            <key index="LGL.description">التوضيح:</key>
+            <key index="LGL.prependAtCopy">(طباعة %s)</key>
+            <key index="LGL.layout">الشكل العام:</key>
+            <key index="LGL.default_value">الضبط الإفتراضي</key>
+            <key index="LGL.normal">الحالة العامة</key>
+            <key index="LGL.images">صور:</key>
+            <key index="LGL.image">صورة:</key>
+            <key index="LGL.caption">لقطة:</key>
+            <key index="LGL.subheader">عنوان رئيسي ثان:</key>
+            <key index="LGL.text">عبارة:</key>
+            <key index="LGL.name">إسم:</key>
+            <key index="LGL.title">المنصب:</key>
+            <key index="LGL.address">العنوان:</key>
+            <key index="LGL.phone">النليفون:</key>
+            <key index="LGL.fax">الفاكس:</key>
+            <key index="LGL.author">المختص:</key>
+            <key index="LGL.email">بريد:</key>
+            <key index="LGL.company">الشركة:</key>
+            <key index="LGL.city">المدينة:</key>
+            <key index="LGL.zip">رقم المدينة:</key>
+            <key index="LGL.country">الدولة:</key>
+            <key index="LGL.www">الويب:</key>
+            <key index="LGL.note">ملحوظة:</key>
+            <key index="LGL.parameters">معاملات:</key>
+            <key index="LGL.code">الكود:</key>
+            <key index="LGL.links">روابط:</key>
+            <key index="LGL.language">اللغــة:</key>
+            <key index="LGL.category">المجال:</key>
+            <key index="LGL.shortcut_page">ربط سريع بالصفحة:</key>
+            <key index="LGL.keywords">مفاتيخ الكلام (,):</key>
+            <key index="LGL.disable">إلغاء:</key>
+            <key index="LGL.startingpoint">نقطة البداية:</key>
+            <key index="LGL.disableRTE">إلغاء المعالج الخطي:</key>
+            <key index="LGL.external">عنوان خارجي</key>
+            <key index="LGL.recursive">إعــادة الحالة</key>
+        </key>
+        <key index="he" type="array">
+            <key index="LGL.endtime">עצור:</key>
+            <key index="LGL.hidden">החביא:</key>
+            <key index="LGL.starttime">התחל:</key>
+            <key index="LGL.fe_group">גישה:</key>
+            <key index="LGL.hide_at_login">החביא בכניסה למערכת</key>
+            <key index="LGL.any_login">הצג בכל כניסה למערכת</key>
+            <key index="LGL.usergroups">קבוצות משתמשים:</key>
+            <key index="LGL.type">סוג:</key>
+            <key index="LGL.description">תיאור:</key>
+            <key index="LGL.prependAtCopy">(העתק %)</key>
+            <key index="LGL.layout">סידור:</key>
+            <key index="LGL.default_value">ברירת מחדל</key>
+            <key index="LGL.normal">רגיל</key>
+            <key index="LGL.images">תמונות:</key>
+            <key index="LGL.image">תמונה:</key>
+            <key index="LGL.caption">מלות-הסבר:</key>
+            <key index="LGL.subheader">תת-כותרת:</key>
+            <key index="LGL.text">טקסט:</key>
+            <key index="LGL.name">שם:</key>
+            <key index="LGL.title">כותרת:</key>
+            <key index="LGL.address">כתובת:</key>
+            <key index="LGL.phone">טלפון:</key>
+            <key index="LGL.fax">פקס:</key>
+            <key index="LGL.author">יוצר:</key>
+            <key index="LGL.email">דוא''ל:</key>
+            <key index="LGL.company">חברה:</key>
+            <key index="LGL.city">עיר:</key>
+            <key index="LGL.zip">מיקוד:</key>
+            <key index="LGL.country">מדינה:</key>
+            <key index="LGL.www">אתר אינטרנט:</key>
+            <key index="LGL.note">הערה:</key>
+            <key index="LGL.parameters">פרמטרים:</key>
+            <key index="LGL.code">קוד:</key>
+            <key index="LGL.links">קישורים:</key>
+            <key index="LGL.language">שפה:</key>
+            <key index="LGL.category">קטגוריה:</key>
+            <key index="LGL.shortcut_page">קיצור דרך לדף:</key>
+            <key index="LGL.keywords">מלות מפתח (,):</key>
+            <key index="LGL.disable">נטרל:</key>
+            <key index="LGL.startingpoint">נקודת התחלה:</key>
+            <key index="LGL.disableRTE">נטרל עורך Rich Text</key>
+            <key index="LGL.external">כתובת אינטרנט חיצונית:</key>
+            <key index="LGL.recursive">רקורסיבי (חוזר על עצמו)</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="LGL.endtime">Beigas:</key>
+            <key index="LGL.hidden">Noslēpt:</key>
+            <key index="LGL.starttime">Sākums:</key>
+            <key index="LGL.fe_group">Pieeja:</key>
+            <key index="LGL.hide_at_login">Noslēpt pēc ielogošanas</key>
+            <key index="LGL.any_login">Rādīt pēc jebkuras ielogošanas</key>
+            <key index="LGL.usergroups">__Lietotāju grupas:__</key>
+            <key index="LGL.type">Tips:</key>
+            <key index="LGL.description">Apraksts:</key>
+            <key index="LGL.prependAtCopy">(kopēt %s)</key>
+            <key index="LGL.layout">Izvietojums:</key>
+            <key index="LGL.default_value">Noklusēts</key>
+            <key index="LGL.normal">Normāls</key>
+            <key index="LGL.images">Attēli:</key>
+            <key index="LGL.image">Attēls:</key>
+            <key index="LGL.caption">Bildes uzraksts:</key>
+            <key index="LGL.subheader">Apakšvirsraksts:</key>
+            <key index="LGL.text">Teksts:</key>
+            <key index="LGL.name">Vārds:</key>
+            <key index="LGL.title">Amats:</key>
+            <key index="LGL.address">Adrese:</key>
+            <key index="LGL.phone">Tālrunis:</key>
+            <key index="LGL.fax">Fakss:</key>
+            <key index="LGL.author">Autors:</key>
+            <key index="LGL.email">E-pasts:</key>
+            <key index="LGL.company">Uzņēmums:</key>
+            <key index="LGL.city">Pilsēta:</key>
+            <key index="LGL.zip">Pasta indekss:</key>
+            <key index="LGL.country">Valsts:</key>
+            <key index="LGL.www">www:</key>
+            <key index="LGL.note">Piezīmes:</key>
+            <key index="LGL.parameters">Parametri:</key>
+            <key index="LGL.code">CODE:</key>
+            <key index="LGL.links">Linki</key>
+            <key index="LGL.language">Valoda:</key>
+            <key index="LGL.category">Kategorija:</key>
+            <key index="LGL.shortcut_page">Links uz lapu:</key>
+            <key index="LGL.keywords">Atslēgvārdi (,):</key>
+            <key index="LGL.disable">Neaktīvs</key>
+            <key index="LGL.startingpoint">Sākumpunkts</key>
+            <key index="LGL.disableRTE">Atslēgt Rich Text Editor</key>
+            <key index="LGL.external">Ārējais URL</key>
+            <key index="LGL.recursive">Rekursīvi:</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="de" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="no" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="it" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="es" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="si" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="se" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="is" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="th" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="br" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="et" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="he" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="LGL.endtime" type="integer">167679436</key>
+            <key index="LGL.hidden" type="integer">187640334</key>
+            <key index="LGL.starttime" type="integer">14051517</key>
+            <key index="LGL.fe_group" type="integer">152799121</key>
+            <key index="LGL.hide_at_login" type="integer">226183283</key>
+            <key index="LGL.any_login" type="integer">160946861</key>
+            <key index="LGL.usergroups" type="integer">157574305</key>
+            <key index="LGL.type" type="integer">241539922</key>
+            <key index="LGL.description" type="integer">218120871</key>
+            <key index="LGL.prependAtCopy" type="integer">150009848</key>
+            <key index="LGL.layout" type="integer">229574886</key>
+            <key index="LGL.default_value" type="integer">128029197</key>
+            <key index="LGL.normal" type="integer">157332556</key>
+            <key index="LGL.images" type="integer">160221445</key>
+            <key index="LGL.image" type="integer">73502731</key>
+            <key index="LGL.caption" type="integer">173808390</key>
+            <key index="LGL.subheader" type="integer">184069646</key>
+            <key index="LGL.text" type="integer">248708136</key>
+            <key index="LGL.name" type="integer">81871034</key>
+            <key index="LGL.title" type="integer">85903807</key>
+            <key index="LGL.address" type="integer">46079327</key>
+            <key index="LGL.phone" type="integer">108244482</key>
+            <key index="LGL.fax" type="integer">14875483</key>
+            <key index="LGL.author" type="integer">152306160</key>
+            <key index="LGL.email" type="integer">111272549</key>
+            <key index="LGL.company" type="integer">98955432</key>
+            <key index="LGL.city" type="integer">201307921</key>
+            <key index="LGL.zip" type="integer">156650211</key>
+            <key index="LGL.country" type="integer">258260574</key>
+            <key index="LGL.www" type="integer">250096340</key>
+            <key index="LGL.note" type="integer">264885215</key>
+            <key index="LGL.parameters" type="integer">222124821</key>
+            <key index="LGL.code" type="integer">102879645</key>
+            <key index="LGL.links" type="integer">198772955</key>
+            <key index="LGL.language" type="integer">8937228</key>
+            <key index="LGL.category" type="integer">90868382</key>
+            <key index="LGL.shortcut_page" type="integer">52292198</key>
+            <key index="LGL.keywords" type="integer">154314501</key>
+            <key index="LGL.disable" type="integer">43554746</key>
+            <key index="LGL.startingpoint" type="integer">79778717</key>
+            <key index="LGL.disableRTE" type="integer">146298503</key>
+            <key index="LGL.external" type="integer">76246465</key>
+            <key index="LGL.recursive" type="integer">152463034</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

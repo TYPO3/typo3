@@ -65,16 +65,16 @@
 
 
 $BACK_PATH='';
-require ('init.php');
-require ('template.php');
-include ('sysext/lang/locallang_misc.php');
+require('init.php');
+require('template.php');
+$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
 // ***************************
 // Including classes
 // ***************************
-require_once (PATH_t3lib.'class.t3lib_page.php');
-require_once (PATH_t3lib.'class.t3lib_positionmap.php');
-require_once (PATH_t3lib.'class.t3lib_pagetree.php');
+require_once(PATH_t3lib.'class.t3lib_page.php');
+require_once(PATH_t3lib.'class.t3lib_positionmap.php');
+require_once(PATH_t3lib.'class.t3lib_pagetree.php');
 
 
 

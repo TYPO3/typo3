@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Web&gt;Info Module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_web_info.php</key>
+        <key index="labelContext" type="array">
+            <key index="title"></key>
+            <key index="depth_0"></key>
+            <key index="depth_1"></key>
+            <key index="depth_2"></key>
+            <key index="depth_3"></key>
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_labels_tabdescr"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="title">Page information</key>
+            <key index="depth_0">This page</key>
+            <key index="depth_1">1 level</key>
+            <key index="depth_2">2 levels</key>
+            <key index="depth_3">3 levels</key>
+            <key index="mlang_labels_tablabel">Page related information, eg. hit statistics, change log, record counts</key>
+            <key index="mlang_labels_tabdescr">The Web&gt;Info module is focused on statistic information about pages. This includes statistics of pagehits and a changelog which lets you browse the history of page changes. You can also get an overview of the number of records on each page as well as page settings presented in a classic tree structure.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="title">Sideinformation</key>
+            <key index="depth_0">Denne side</key>
+            <key index="depth_1">1 niveau</key>
+            <key index="depth_2">2 niveauer</key>
+            <key index="depth_3">3 niveauer</key>
+            <key index="mlang_labels_tablabel">Siderelateret information, fx. visningsstatestik, ændrings-log, element-optælling</key>
+            <key index="mlang_labels_tabdescr">Modulet Web&gt;Info fokuserer på statistisk information om sider. Dette omfatter sidevisningsstatestik samt en opdateringslog som lader dig gennemse ændringsforløbet for en side. Du kan også få et overblik over antallet af elementer på hver side samt sidernes indstillinger alt sammen præsenteret i den klassiske træstruktur.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="de" type="array">
+            <key index="title">Seiteninformation</key>
+            <key index="depth_0">Diese Seite</key>
+            <key index="depth_1">Inkl. 1 Ebene</key>
+            <key index="depth_2">Inkl. 2 Ebenen</key>
+            <key index="depth_3">Inkl. 3 Ebenen</key>
+            <key index="mlang_labels_tablabel">Seitenbezogene Informationen, z.B. Zugriffsstatistik, Änderungsprotokollierung, Datensatzanzahl</key>
+            <key index="mlang_labels_tabdescr">Das Web-Info Modul ist spezialisiert auf statistische Informationen über Webseiten. Dies beinhaltet Statistiken über Seitenzugriffe und eine Änderungsprotokollierung, welche Sie durch alle Änderung der Seite navigieren lässt. Sie können sich ebenso eine Übersicht der verwendeten Datensätze auf den einzelnen Seiten als auch die Seiteneinstellungen in Form einer Baumansicht ansehen.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="no" type="array">
+            <key index="title">Sideinformasjon</key>
+            <key index="depth_0">Denne side</key>
+            <key index="depth_1">1 nivå</key>
+            <key index="depth_2">2 nivåer</key>
+            <key index="depth_3">3 nivåer</key>
+            <key index="mlang_labels_tablabel">Siderelatert informasjon, for eksempel visningsstatistikk, endringslogg, antall elementer.</key>
+            <key index="mlang_labels_tabdescr">Modulen Web&gt;Info omhandler statistisk informasjon omsider. Dette omfatter sidevisningsstatistikk samt en oppdateringslogg hvor du kan bla gjennom endringsforløpet for en side. Du kan også få en oversikt over antall elementer på hver side samt sidenes innstillinger alt dette presentert i den klassiske trestrukturen.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="it" type="array">
+            <key index="title">Informazioni sulla pagina</key>
+            <key index="depth_0">Questa pagina</key>
+            <key index="depth_1">1 livello</key>
+            <key index="depth_2">2 livelli</key>
+            <key index="depth_3">3 livelli</key>
+            <key index="mlang_labels_tablabel">Informazioni correlate alla pagina, quali log dei cambiamenti e statistiche sulla pagina e sui record</key>
+            <key index="mlang_labels_tabdescr">Il modulo Web&gt;Info si occupa di informazioni di tipo statistico sulle pagine. Fra queste informazioni troviamo il 'pagehit' ed il log dei cambiamenti che permette di scorrere la storia delle modifiche alla pagina. C'è anche una vista d'insieme sul numero dei record, sul loro tipo e su altri parametri, presentati nella classica struttura ad albero.</key>
+            <key index="mlang_tabs_tab">Informazioni</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="title">Information sur la page</key>
+            <key index="depth_0">Cette page</key>
+            <key index="depth_1">1 niveau</key>
+            <key index="depth_2">2 niveaux</key>
+            <key index="depth_3">3 niveaux</key>
+            <key index="mlang_labels_tablabel">Information sur les pages, ex.: statistiques, historique de changements, nombre d'éléments.</key>
+            <key index="mlang_labels_tabdescr">Le module Web&gt;Info présente des informations statistiques sur les pages. Ceci inclut des statistiques d'accès aux pages et le journal des changements apportés aux pages. Vous pouvez aussi consulter un sommaire du nombre d'éléments et des options de chaque page dans une présentation arborescente classique.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="es" type="array">
+            <key index="title">Información de las páginas</key>
+            <key index="depth_0">Esta página</key>
+            <key index="depth_1">Un nivel</key>
+            <key index="depth_2">2 niveles</key>
+            <key index="depth_3">3 niveles</key>
+            <key index="mlang_labels_tablabel">Información de las páginas, i.e.: estadísticas, bitácora, conteo de registros.</key>
+            <key index="mlang_labels_tabdescr">El módulo WebInfo está enfocado en la información estadística de las páginas. Incluye estadísticas de los accesos y bitácora de cambios que le permite el recorrer el histórico de modificaciones de cada página. Todo ello mostrado en la estructura clásica de árbol.</key>
+            <key index="mlang_tabs_tab">Información</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="title">Pagina-informatie</key>
+            <key index="depth_0">Deze pagina</key>
+            <key index="depth_1">1 niveau</key>
+            <key index="depth_2">2 niveau's</key>
+            <key index="depth_3">3 niveau's</key>
+            <key index="mlang_labels_tablabel">Pagina gerelateerde informatie, zoals statistieken van hits, logwijzigingen, aantal records</key>
+            <key index="mlang_labels_tabdescr">De Web&gt;Infomodule richt zich op statistische informatie over pagina's. Dit omvat statistieken van paginahits en een log van wijzigingen met de mogelijkheid te zoeken door voorgaande paginawijzigingen. Er is ook een overzicht beschikbaar van het aantal records op elke pagina alsmede de pagina-instellingen gepresenteerd in de klassieke boomstructuur.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="title">Informace o straně</key>
+            <key index="depth_0">Tato strana</key>
+            <key index="depth_1">1 úroveň</key>
+            <key index="depth_2">2 úrovně</key>
+            <key index="depth_3">3 úrovně</key>
+            <key index="mlang_labels_tablabel">Informace, které se vážou ke stránce, např. statistika přístupů, záznam změn, počty záznamů</key>
+            <key index="mlang_labels_tabdescr">Modul Web&gt;Info je zaměřen na statistické informace o stranách. To zahrnuje statistiku přístupů a záznam změn, který umožňuje procházet provedené změny. Můžete také získat přehled o počtu záznamů na každé straně, stejně jako nastavení stran v klasické stromové struktuře.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="title">Informacje o stronie</key>
+            <key index="depth_0">Ta strona</key>
+            <key index="depth_1">1 poziom</key>
+            <key index="depth_2">2 poziomy</key>
+            <key index="depth_3">3 poziomy</key>
+            <key index="mlang_labels_tablabel">Informacje dotyczące strony, np. ilość odsłon, log zmian, liczba rekordów</key>
+            <key index="mlang_labels_tabdescr">Moduł Web&gt;Informacje skupia się na statystykach odsłon i historii zmian na stronie. Podawana jest tu również liczba rekordów na stronie i ustawienia strony w klasycznym ujęciu typu drzewko.</key>
+            <key index="mlang_tabs_tab">Informacje</key>
+        </key>
+        <key index="si" type="array">
+            <key index="title">Informacije o strani</key>
+            <key index="depth_0">Ta stran</key>
+            <key index="depth_1">1 nivo</key>
+            <key index="depth_2">2 nivoja</key>
+            <key index="depth_3">3 nivoji</key>
+            <key index="mlang_labels_tablabel">Informacije o straneh, npr. statistika obiskov, dnevnik sprememb, število zapisov</key>
+            <key index="mlang_labels_tabdescr">Info modul je prikazuje predvsem statistične informacije o straneh. To vključuje statistiko obiska strani in dnevnik sprememb, preko katerega imate vpogled v zgodovino strani. Ogledate si lahko ša seznam zapisov na posamezni strani ter nastavitve.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="title">Sivun tiedot</key>
+            <key index="depth_0">Tämä sivu</key>
+            <key index="depth_1">1 taso</key>
+            <key index="depth_2">2 tasoa</key>
+            <key index="depth_3">3 tasoa</key>
+            <key index="mlang_labels_tablabel">Sivuihin liittyvää tietoa, esim. sattumien määrä, muutosloki, tietueiden määrä jne.</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Info modulin tarkoituksena on antaa tilastotietoa sivuista. Tietoja ovat tilastot sattumista sivuille, muutosloki josta selviää sivujen muutoshistoria. Näet myös lukumäärätiedot tietueista, kuten myös sivujen asetukset perinteisestä sivustorakenteesta.</key>
+            <key index="mlang_tabs_tab">Tiedot</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="title">Sayfa bilgisi</key>
+            <key index="depth_0">Bu sayfa</key>
+            <key index="depth_1">Seviye 1</key>
+            <key index="depth_2">Seviye 2</key>
+            <key index="depth_3">Seviye 3</key>
+            <key index="mlang_labels_tablabel">Sayfa bilgi, erişim istatistikleri, değişim logu, kayıt sayılarına gibi bağlantı kurdu</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Bilgi modülü sayfadaki istatistik bilgisine odaklandı. Bu sayfa erişimlerinin istatistiklerini ve değişim logları içeriyor ki sayfa tarihinin değişikliklerine gözatmanıza izin veriyor. Birde her bir sayfada kayıtların numarasının genel görüntüsünü elde edebilirsiniz bunun yanısıra klasik ağaç yapısında sayfa ayarları sunuldu.</key>
+            <key index="mlang_tabs_tab">Bilgi</key>
+        </key>
+        <key index="se" type="array">
+            <key index="title">Sidinformation</key>
+            <key index="depth_0">Denna sida</key>
+            <key index="depth_1">1 nivå</key>
+            <key index="depth_2">2 nivåer</key>
+            <key index="depth_3">3 nivåer</key>
+            <key index="mlang_labels_tablabel">Information som hänför sig till sidorna, t.ex. statistik över besökare, ändringsloggar och elementräknare.</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Info modulen fokuserar på statistisk information om sidorna. Här finns statistik över hur många gånger sidorna besökts och en logfil över hur sidan ändrats, du kan med andra ord se sidans hela historia. Här kan du också få en överblick över mängden element på varje sida. Sidans inställningar presenteras i form av en klassisk trädstruktur.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="title">Informações da página</key>
+            <key index="depth_0">Esta página</key>
+            <key index="depth_1">1 Nível</key>
+            <key index="depth_2">2 Níveis</key>
+            <key index="depth_3">3 Níveis</key>
+            <key index="mlang_labels_tablabel">Informação relacionada à página, isto é, estatísticas, histórico de alterações, contagem de registros</key>
+            <key index="mlang_labels_tabdescr">O módulo Web&gt;Info está focado em informações estatísticas sobre as páginas. Isto inclui visualizações de página (pagehits) e um histórico de alterações na página. Você também pode obter um visualização do número de registros em cada página bem como as configurações de página apresentadas em uma clássica estrutura de árvore.</key>
+            <key index="mlang_tabs_tab">Informações</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="title">Информация о странице</key>
+            <key index="depth_0">Эта страница</key>
+            <key index="depth_1">+ 1 подуровень</key>
+            <key index="depth_2">+ 2 подуровня</key>
+            <key index="depth_3">+ 3 подуровня</key>
+            <key index="mlang_labels_tablabel">Информация о страницах, например статистика обращений к страницам, журнал изменений, количество записей</key>
+            <key index="mlang_labels_tabdescr">Модуль Веб-&amp;gt;Инфо предоставляет статистическую информацию о страницах: сюда входят статистика обращений, журнал истории изменений, количество записей на каждой странице и настройки отдельных страниц, классически представленные в виде дерева.</key>
+            <key index="mlang_tabs_tab">Инфо</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="title">Informatii pagina</key>
+            <key index="depth_0">Aceasta pagina</key>
+            <key index="depth_1">Primul nivel</key>
+            <key index="depth_2">Al doilea nivel</key>
+            <key index="depth_3">Al treilea nivel</key>
+            <key index="mlang_labels_tablabel">Informatii referitoare la pagina, ex. statistica accesarilor, schimbare log-uri, contorizare inregistrari</key>
+            <key index="mlang_labels_tabdescr">Modulul Web&gt;Info este axat pe informatiile statistice ale paginilor. Acestea includ statistici legate de accesarea paginilor si schimbarea log-urilor care va vor permite cunoasterea istoriei paginii. Deasemeni, puteti vedea numarul de inregistrari din fiecare pagina ca si setarile existente, prezentate intr-o structura arborescenta clasica.</key>
+            <key index="mlang_tabs_tab">Informatii</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="title">页面信息</key>
+            <key index="depth_0">该页</key>
+            <key index="depth_1">第一层</key>
+            <key index="depth_2">第二层</key>
+            <key index="depth_3">第三层</key>
+            <key index="mlang_labels_tablabel">页面相关信息, 例如点击统计、修改日志、记录数</key>
+            <key index="mlang_labels_tabdescr">模块Web&gt;Info专注于页面的统计信息. 其中包括页面点击统计与一个允许您查看页面修改历史的修改日志. 您也可以根据出色的树型结构显示出来的页面设置得知每个页面上的记录总数.</key>
+            <key index="mlang_tabs_tab">信息</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="title">Informácie o stránke</key>
+            <key index="depth_0">Táto stránka</key>
+            <key index="depth_1">1. úroveň</key>
+            <key index="depth_2">2. úrovne</key>
+            <key index="depth_3">3. úrovne</key>
+            <key index="mlang_labels_tablabel">Informácie týkajúce sa stránky, napr. štatistika prístupov, záznam zmien, počet záznamov</key>
+            <key index="mlang_labels_tabdescr">Modul Web&gt;Info je zameraný na štatistické informácie o stránkach. To zahrňuje štatistiky prístupov a záznam zmien, ktorý umožňuje prechádzať uskutočnenými zmenami. Môzete taktiež získať prehľad o počte záznamov na každej stránke, ako aj o nastavení stránky prezentované v klasickej stromovej štruktúre.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="title">Puslapio informacija</key>
+            <key index="depth_0">Šis puslapis</key>
+            <key index="depth_1">1 lygis</key>
+            <key index="depth_2">2 lygis</key>
+            <key index="depth_3">3 lygis</key>
+            <key index="mlang_labels_tablabel">Su Puslapiu susijusi informacija, pvz. statistika, pakeitimai, įrašu skaičius</key>
+            <key index="mlang_labels_tabdescr">Svetainė&gt;Informacinis modulis atspindi puslapių statistika. Šis modulis parodo puslapių paspaudimo statistika ir pakeitimus darytus juose ir leidzhia peržiūrėti juos. Tai pat galite gauti įrašų skaičių puslapyje ir jo nustatymus.</key>
+            <key index="mlang_tabs_tab">Informacija</key>
+        </key>
+        <key index="is" type="array">
+            <key index="title">Siða upplýsingar</key>
+            <key index="depth_0">Þessi siða</key>
+            <key index="depth_1">1 stig</key>
+            <key index="depth_2">2 stig</key>
+            <key index="depth_3">3 stig</key>
+            <key index="mlang_labels_tablabel">Upplýsingar tengd siða, t.d. breytingar sögu, skráar teljingar</key>
+            <key index="mlang_labels_tabdescr">Vefin&gt;Upplýsingar viðbætur beina að tölfræði upplýsingar um vefsiðum. Innifalið er tölur um heimsoknir og breytingar sögu sem er hægt að skoða.</key>
+            <key index="mlang_tabs_tab">Upplýsingar</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="title">Informacije o stranici</key>
+            <key index="depth_0">Ova stranica</key>
+            <key index="depth_1">1 razina</key>
+            <key index="depth_2">2 razine</key>
+            <key index="depth_3">3 razine</key>
+            <key index="mlang_labels_tablabel">Informacije o stranicama, npr. statistika pregleda, evidencija promjena, broj zapisa</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Info modul pruža statističke informacije o stranicama. To uključuje statistiku pregleda stranica i evidenciju promjena koja vam omogućava pregledavanje povijesti promjena na stranicama. Uz to možete dobiti pregled broja zapisa na svakoj stranici kao i postavke na stranicama prikazane u klasičnoj strukturi stabla.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="title">Oldal információ</key>
+            <key index="depth_0">Ez az oldal</key>
+            <key index="depth_1">1. szint</key>
+            <key index="depth_2">2. szint</key>
+            <key index="depth_3">3. szint</key>
+            <key index="mlang_labels_tablabel">Általános oldalinformációk, például statisztika, változtatások naplója stb..</key>
+            <key index="mlang_labels_tabdescr">A Web&gt;Info az általános, statikus oldalinformációkat jeleníti meg.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="title">ข้อมูลหน้า</key>
+            <key index="depth_0">หน้านี้</key>
+            <key index="depth_1">1 ระดับ</key>
+            <key index="depth_2">2 ระดับ</key>
+            <key index="depth_3">3 ระดับ</key>
+            <key index="mlang_labels_tablabel">ข้อมูลที่สัมพันธ์กับ หน้า เช่นสถิติการเข้าชม บันทึกการเปลี่ยนแปลง นับจำนวนระเบียน</key>
+            <key index="mlang_labels_tabdescr">หน้า &gt; ข้อมูลโมดูลที่มุ่งเน้นในด้านข้อมูลสถิติเกี่ยวกับหน้า ประกอปด้วย สถิติการเข้าชม บันทึกการเปลี่ยนแปลง ซึ่งช่วยให้คุณดูประวัติการเปลี่ยนแปลงของหน้า คุณยังสามารถที่จะดูจำนวนระเบียนของแต่ละหน้ารวมทั้ง ค่าที่ตั้งต่างๆ แสดงในรูปแบบโครงสร้างต้นไม้</key>
+            <key index="mlang_tabs_tab">ข้อมูล</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="title">網頁資訊</key>
+            <key index="depth_0">此網頁</key>
+            <key index="depth_1">１層</key>
+            <key index="depth_2">２層</key>
+            <key index="depth_3">３層</key>
+            <key index="mlang_labels_tablabel">與網頁有關的資料，例如：到訪統計、更改日誌、記錄計數</key>
+            <key index="mlang_labels_tabdescr">網站＞資訊模組重點在於有關網頁的統計數字。這個模組包括網頁到訪次數統計和更改人誌，使你可以溜覽網頁改變的歷史。你也可以概覽每一頁的記錄數目和以典型的樹狀結構來檢視頁的設定。</key>
+            <key index="mlang_tabs_tab">資訊</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="title">Orri informazioa</key>
+            <key index="depth_0">Orri hau</key>
+            <key index="depth_1">Maila 1</key>
+            <key index="depth_2">2 maila</key>
+            <key index="depth_3">3 maila</key>
+            <key index="mlang_labels_tablabel">Orriari lotutako informazioa, adibidez: agerraldi estatistikak, aldaketa egunkaria, erregistro kontua</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Info modulua orrien informazio estatistikoan zentratuta dago.hala nola,  orrien agerraldi estatistikak edo aldaketa egunkariak, hauek orrien aldaketen historia begiratzen uzten dizu. Bestalde orri bakoitzaren erregistro kopuruaren informazioa jaso dezakezu eta baita orri ezarpenak estruktura klasiko batean.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="title">Информация за страницата</key>
+            <key index="depth_0">Тази страница</key>
+            <key index="depth_1">1 ниво</key>
+            <key index="depth_2">2 ниво</key>
+            <key index="depth_3">3 ниво</key>
+            <key index="mlang_labels_tablabel">Информация свързана със страницата, статистика на посещенията, запис на промените, брояч на записите</key>
+            <key index="mlang_labels_tabdescr">Уеб&gt;Инфо модула е фокусиран на статистическата информация относно страницата. Това включва статистика на посещенията и запис на промените, което позволява да разглеждате историята на промените в страницата. Можете да получите също и обзор на броя на записите на всяка страница, както и настрйки на страницата представена в класическата дървовидна структура.</key>
+            <key index="mlang_tabs_tab">Инфо</key>
+        </key>
+        <key index="br" type="array">
+            <key index="title">Informações da página</key>
+            <key index="depth_0">Esta página</key>
+            <key index="depth_1">1 Nível</key>
+            <key index="depth_2">2 Níveis</key>
+            <key index="depth_3">3 Níveis</key>
+            <key index="mlang_labels_tablabel">Informações relacionadas à página, ex: estatísticas, histórico de alterações, contagem de registros</key>
+            <key index="mlang_labels_tabdescr">O módulo Web&gt;Info foca em informações estatísticas sobre as páginas. Isto inclui visualizações de página (pagehits) e um histórico de alterações na página. Você também pode obter uma visão geral do número de registros em cada página bem como as configurações de página apresentadas em uma estrutura clássica de árvore.</key>
+            <key index="mlang_tabs_tab">Informações</key>
+        </key>
+        <key index="et" type="array">
+            <key index="title">Lehekülje informatsioon</key>
+            <key index="depth_0">See lehekülg</key>
+            <key index="depth_1">1 tase</key>
+            <key index="depth_2">2 taset</key>
+            <key index="depth_3">3 taset</key>
+            <key index="mlang_labels_tablabel">Leheküljega seotud informatsioon nagu külastusstatistika, muudatuste logi, kirjete arv</key>
+            <key index="mlang_labels_tabdescr">Web&gt;Info moodul koondab statistikat lehekülgede kohta. Siia kuulub külastusstatistika ning muudatuste ajalugu. Siit saab ka ülevaate igal lehel olevatest kirjete arvust ning lehekülgede seadetest, mis on esutatud klassikalise sisupuu struktuuris.</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="title">معلومات عن الصفحة</key>
+            <key index="depth_0">هذه الصفحة</key>
+            <key index="depth_1">المستوى الأول</key>
+            <key index="depth_2">المستوى الثاني</key>
+            <key index="depth_3">المستوى الثالث</key>
+            <key index="mlang_labels_tablabel">المعلومات المتعلقة بالصفحة مثل إحصائية لعدد مرات الدخول عليها و التغييرات التي حدثت و عدد السجلات</key>
+            <key index="mlang_labels_tabdescr">قسم المعلومات عن الصفحات يحتوي على معلومات إحصائية مثل عدد مرات الدخول على الصفحةو كذلك تاريخ كامل عن التغييرات التي حدثت و كذلك عرض كامل لكل السجلات لكل صفحة و تضبيطها</key>
+            <key index="mlang_tabs_tab">معلومات</key>
+        </key>
+        <key index="he" type="array">
+            <key index="title">מידע על הדף</key>
+            <key index="depth_0">דף זה</key>
+            <key index="depth_1">רמה 1</key>
+            <key index="depth_2">2 רמות</key>
+            <key index="depth_3">3 רמות</key>
+            <key index="mlang_labels_tablabel">מידע מיוחסת לדף, כגון סטטיסטיקת ביקורים, שינוי יומן, ספירת רשומות</key>
+            <key index="mlang_labels_tabdescr">מודול רשת&gt;מידע מתמקד במידע סטטיסטי אודות דפים. הוא מכיל סטטיסטיקה על ביקורים בדפים ושינוי יומן שמאפשר לך לדפדף בהיסטורית שינויים של דף. בנוסף הנך יכול לראות כמות רשומות על כל דף והגדרות דף המוצגים בצורה קלאסית של אץ.</key>
+            <key index="mlang_tabs_tab">מידע</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="title">Lapas informācija</key>
+            <key index="depth_0">Šī lapa</key>
+            <key index="depth_1">1 līmenis</key>
+            <key index="depth_2">2 līmeņi</key>
+            <key index="depth_3">3 līmeņi</key>
+            <key index="mlang_labels_tablabel">Informācija ar lapām - apmeklējumu statistika, labojumu vēsture, ierakstu skaits</key>
+            <key index="mlang_tabs_tab">Info</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="de" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="no" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="it" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="es" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="si" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="se" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="is" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="br" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="et" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="he" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_labels_tabdescr" type="integer">160538617</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="title" type="integer">9265976</key>
+            <key index="depth_0" type="integer">98872550</key>
+            <key index="depth_1" type="integer">200641290</key>
+            <key index="depth_2" type="integer">228799796</key>
+            <key index="depth_3" type="integer">195275893</key>
+            <key index="mlang_labels_tablabel" type="integer">71381826</key>
+            <key index="mlang_tabs_tab" type="integer">67476226</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

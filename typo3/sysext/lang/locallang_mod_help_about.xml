@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Help&gt;About module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_help_about.php</key>
+        <key index="labelContext" type="array">
+            <key index="welcome"></key>
+            <key index="minor"></key>
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_labels_tabdescr"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="welcome">TYPO3 Professional Web Content Management System</key>
+            <key index="minor">TYPO3 is a flexible and professional Open Source Web-CMS based on PHP4 and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">About TYPO3</key>
+            <key index="mlang_labels_tabdescr">Displays the basic facts about the TYPO3 application, version and licensing terms.</key>
+            <key index="mlang_tabs_tab">About</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="welcome">TYPO3 Professionelt Web Content Management System</key>
+            <key index="minor">TYPO3 er et flexibelt og professionelt Open Source Web-CMS baseret på PHP4 og MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 er til &lt;b&gt;fri afbenyttelse&lt;/b&gt; under &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-licensen (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Information om TYPO3</key>
+            <key index="mlang_labels_tabdescr">Viser grundlæggende fakta omkring TYPO3 systemet, versionsnummer og licensbetingelser.</key>
+            <key index="mlang_tabs_tab">Om TYPO3</key>
+        </key>
+        <key index="de" type="array">
+            <key index="welcome">TYPO3 Professionelles Web Content Managment System</key>
+            <key index="minor">TYPO3 ist ein flexibles und professionelles Open Source Web-CMS basierend auf PHP4 und MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 ist &lt;b&gt;frei verfügbar&lt;/b&gt; unter der &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-Lizenz (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Informationen über TYPO3</key>
+            <key index="mlang_labels_tabdescr">Zeigt Ihnen die grundlegenden Informationen zu TYPO3, Versionsinformationen und Lizenzbedingungen an.</key>
+            <key index="mlang_tabs_tab">Über TYPO3</key>
+        </key>
+        <key index="no" type="array">
+            <key index="welcome">TYPO3 profesjonelt Web Content Management System</key>
+            <key index="minor">TYPO3 er et fleksibelt og profesjonelt Open Source Web-CMS basert på PHP4 og MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 kan &lt;b&gt;fritt benyttes&lt;/b&gt; under &lt;a href=&quot;http://www.TYPO3.dk/?price_dk&quot; target=&quot;_blank&quot;&gt;TYPO3-lisensen (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Informasjon om TYPO3</key>
+            <key index="mlang_labels_tabdescr">Grunnleggende informasjon om TYPO3 systemet, versjonsnummer og lisensbetingelser.</key>
+            <key index="mlang_tabs_tab">Om TYPO3</key>
+        </key>
+        <key index="it" type="array">
+            <key index="welcome">TYPO3 Professional Web Content Management System</key>
+            <key index="minor">TYPO3 è un flessibile e professionale Web-CMS Open Source, basato su PHP4 e MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 è &lt;b&gt;liberamente disponibile&lt;/b&gt; su &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Notizie su TYPO3</key>
+            <key index="mlang_labels_tabdescr">Mostra notizie di carattere generale su TYPO3, quali la versione e la licenza d'uso.</key>
+            <key index="mlang_tabs_tab">Notizie</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="welcome">TYPO3 Système de gestion de contenu Web.</key>
+            <key index="minor">TYPO3 est un &quot;logiciel libre&quot; flexible et professionnel de gestion de contenu web basé sur PHP4 et mySQL. TYPO3 est &lt;b&gt;librement disponible&lt;/b&gt; selon les termes de la &lt;A HREF=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;licence TYPO3 (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">A propos de TYPO3</key>
+            <key index="mlang_labels_tabdescr">Affiche les informations de base à propos de TYPO3, sa version, et les termes de sa licence.</key>
+            <key index="mlang_tabs_tab">A propos de ...</key>
+        </key>
+        <key index="es" type="array">
+            <key index="welcome">TYPO3 Professional Web Content Management System</key>
+            <key index="minor">TYPO3 es un CMS flexible y profesional, con su código fuente abierto, basado en PHP4 y MySQL. &lt;br /&gt;&lt;br /&gt;TYPO3 está &lt;b&gt;disponible libremente&lt;/b&gt; bajo la &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;licencia TYPO3 (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Acerca de TYPO3</key>
+            <key index="mlang_labels_tabdescr">Muestra </key>
+            <key index="mlang_tabs_tab">Acerca de</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="welcome">TYPO3 Professioneel Web Content Management Systeem</key>
+            <key index="minor">TYPO3 is een flexibel en professioneel Open Source Web-CMS gebaseerd op PHP4 en MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;gratis verkrijgbaar&lt;/b&gt; onder de &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-licentie (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Over TYPO3</key>
+            <key index="mlang_labels_tabdescr">Toont de belangrijkste gegevens over de TYPO3 applicatie, versie en licentie bepalingen.</key>
+            <key index="mlang_tabs_tab">Over</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="welcome">Profesionální systém pro správu obsahu webu TYPO3</key>
+            <key index="minor">TYPO3 je flexibilní a profesionální Open Source Web-CMS založený na PHP4 a MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 je &lt;b&gt;volně dostupný&lt;/b&gt; pod &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-licencí GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt; </key>
+            <key index="mlang_labels_tablabel">O TYPO3</key>
+            <key index="mlang_labels_tabdescr">Zobrazí základní informace o aplikaci TYPO3, verzi a licenčních podmínkách.</key>
+            <key index="mlang_tabs_tab">O TYPO3</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="welcome">TYPO3 Profesjonalny System do Zarządzania Treścią</key>
+            <key index="minor">TYPO3 jest elastycznym i profesjonalnym systemem klasy Web-CMS o Otwartym Kodzie (Open Source), opartym na PHP4 i MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 jest &lt;b&gt;dostępny bez opłat&lt;/b&gt; na zasadach &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;licencji TYPO3 (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Informacje o TYPO3</key>
+            <key index="mlang_labels_tabdescr">Wyświetla podstawowe informacje o TYPO3 oraz wersję i warunki licencji.</key>
+            <key index="mlang_tabs_tab">O TYPO3</key>
+        </key>
+        <key index="si" type="array">
+            <key index="welcome">TYPO3 - sistem za urejanje spletne vsebine (Web CMS)</key>
+            <key index="minor">TYPO3 je prilagodljiv profesionalen sistem za urejanje spletne vsebine. Deluje na podlagi PHP4 in  MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 je &lt;b&gt;dosegljiv zastonj&lt;/b&gt; upoštevajoč &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3 licenco (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 je v slovenski jezik prevedel Andrej Blatnik, ablatnik@email.si&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">O TYPO3</key>
+            <key index="mlang_labels_tabdescr">Prikaže osnovne informacije o programu TYPO3: verzija in licenčni pogoji.</key>
+            <key index="mlang_tabs_tab">O TYPO3</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="welcome">TYPO3 Professional Web Content Management System</key>
+            <key index="minor">TYPO3 on joustava ja ammattimaisesti tehty avoin www-sivujen hallinta ohjelmisto.joka perustuu PHP4 ja MySQL ohjelmistoihin. &lt;br /&gt;&lt;br /&gt;TYPO3 on &lt;b&gt;vapaasti saatavissa&lt;/b&gt;, www-sivuilta &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-lisenssin mukaisesti (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Tietoa TYPO3sta</key>
+            <key index="mlang_labels_tabdescr">Näyttää yleisiä tietoja TYPO3sta</key>
+            <key index="mlang_tabs_tab">Tietoa TYPO3sta</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="welcome">TYPO3 Profesyonel Web İçerik Yönetim Sistemi±</key>
+            <key index="minor">TYPO3 PHP4 ve Mysql tabanlı profesyonel ve esnek kaynak kodu açık bir Web-CMS'dir.&lt;br /&gt;&lt;br /&gt;TYPO3&lt;b&gt;serbestçe elde edilebilir&lt;/b&gt; aşağıdaki &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3 lisansı (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">TYPO3 hakkında</key>
+            <key index="mlang_labels_tabdescr">TYPO3 başvurusu, versiyon ve lisans koşulları hakkında temel olguları gösterir.</key>
+            <key index="mlang_tabs_tab">Hakkında</key>
+        </key>
+        <key index="se" type="array">
+            <key index="welcome">TYPO3 Professional Web Content Management System</key>
+            <key index="minor">TYPO3 är en flexibel och professionell Open Source Web-CMS och är baserad på PHP4 och MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 kan &lt;b&gt;fritt användas&lt;/b&gt; enligt villkoren i&lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-licensen (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Om TYPO3</key>
+            <key index="mlang_labels_tabdescr">Visar grunduppgifter om applikationen TYPO3 såsom version och licensvillkor.</key>
+            <key index="mlang_tabs_tab">Om</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="welcome">TYPO3 Gestor de Conteúdos Web Profissional</key>
+            <key index="minor">Typo3 é um Web-CMS Open Source flexível e profissional baseado no PHP4 e MySQL.&lt;br&gt;&lt;br&gt;Typo3 é &lt;B&gt;gratuitamente disponível&lt;/b&gt; sob a licença &lt;A HREF=&quot;http://www.typo3.com/?price_uk&quot; target=&quot;_blank&quot;&gt;Typo3-license (GNU/GPL)&lt;/a&gt;.&lt;br&gt;&lt;br&gt;%s %s&lt;br&gt;</key>
+            <key index="mlang_labels_tablabel">Acerca do TYPO3</key>
+            <key index="mlang_labels_tabdescr">Mostra os factos básicos acerca da aplicação TYPO3, versão e termos de licenciamento.</key>
+            <key index="mlang_tabs_tab">Acerca</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="welcome">Профессиональная система управления веб-сайтами TYPO3</key>
+            <key index="minor">TYPO3 - это гибкая и профессиональная открытая система управления контентом на базе PHP4 и МySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 &lt;b&gt;свободно доступна &lt;/b&gt; на условиях &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-лицензии (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">О TYPO3</key>
+            <key index="mlang_labels_tabdescr">Содержит основные факты о системе Тypo3, номер версии и условия лицензирования</key>
+            <key index="mlang_tabs_tab">О системе</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="welcome">Sistemul Profesional de Administrare a Continutului TYPO3</key>
+            <key index="minor">TYPO3 este un CMS flexibil si profesional, bazat pe PHP4 si MySQL. Typo3 este sub licenta Open Source.&lt;br /&gt;&lt;br /&gt;TYPO3 este &lt;b&gt; disponibil gratuit &lt;/b&gt; sub &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt; licenta TYPO3 (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Despre TYPO3</key>
+            <key index="mlang_labels_tabdescr">Afiseaza datele primare despre aplicatia TYPO3, versiunea si termenii licentei.</key>
+            <key index="mlang_tabs_tab">Despre</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="welcome">TYPO3专业网站内容管理系统</key>
+            <key index="minor">TYPO3是一个灵活专业的开放源代码的基于PHP4与MySQL的网站内容管理系统.&lt;br /&gt;&lt;br /&gt;TYPO3在遵守&lt;a href=&quot;http://www.typo3.com/?price_uk&quot; target=&quot;_blank&quot;&gt;TYPO3-许可证(GNU/GPL)&lt;/a&gt;的条件下&lt;b&gt;可自由地使用&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">关于TYPO3</key>
+            <key index="mlang_labels_tabdescr">显示TYPO3应用的基本行为, 版本与许可条款.</key>
+            <key index="mlang_tabs_tab">关于</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="welcome">TYPO3 Profesionálny systém na správu obsahu na webe</key>
+            <key index="minor">TYPO3 je flexibilný a profesionálny Open Source Web-CMS založený na PHP4 a MySQL..&lt;br /&gt;&lt;br /&gt;TYPO3 je &lt;b&gt;dostupný gratis&lt;/b&gt; pod &lt;a href=&quot;http://www.typo3.com/?price_uk&quot; target=&quot;_blank&quot;&gt;licenciou TYPO3 (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">O TYPO3</key>
+            <key index="mlang_labels_tabdescr">Zobraz základné údaje o aplikácií TYPO3,o jej verzií a licenčných podmienkach.</key>
+            <key index="mlang_tabs_tab">O TYPO3</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="welcome">TYPO3 Profesionali Web Turinio Valdymo Sistema</key>
+            <key index="minor">TYPO3 yra lanksti ir profesionali Atviro Kodo Web-TVS sukurta PHP4 ir MySQL pagrindu.&lt;br /&gt;&lt;br /&gt;TYPO3 yra &lt;b&gt;laisvai platinama&lt;/b&gt; po &lt;a href=&quot;http://www.typo3.com/?price_uk&quot; target=&quot;_blank&quot;&gt;TYPO3 licensija (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Apie TYPO3</key>
+            <key index="mlang_labels_tabdescr">Parodo pagrindinius faktus apie TYPO3 programa, versija ir licenzijavima.</key>
+            <key index="mlang_tabs_tab">Apie</key>
+        </key>
+        <key index="is" type="array">
+            <key index="welcome">TYPO3 Faglegur Vefumsjónarkerfi</key>
+            <key index="minor">TYPO3 er frjálslegur og faglegur Open Source Vefumsjónskerfi byggd út frá PHP4 og MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 er fáanlegur undir &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Um TYPO3</key>
+            <key index="mlang_labels_tabdescr">Sýnir í aðalatriðum staðreyndirnar um TYPO3 kerfið, útgáfu og leyfisskilmálana</key>
+            <key index="mlang_tabs_tab">Um</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="welcome">TYPO3 profesionalni sustav za upravljanje web sadržajima</key>
+            <key index="minor">TYPO3 je fleksibilan i profesionalan Open Source Web-CMS zasnovan na PHP4 i MySQL-u.&lt;br /&gt;&lt;br /&gt;TYPO3 je&lt;br /&gt; slobodno dostupan pod &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-licencom (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">O TYPO3</key>
+            <key index="mlang_labels_tabdescr">Prikazuje osnovne činjenice o TYPO3 aplikaciji, verziji i uvjetima licenciranja.</key>
+            <key index="mlang_tabs_tab">Deklaracija</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="welcome">Typo3 Professzionális Web Tartalomkezelő Rendszer</key>
+            <key index="minor">TYPO3 egy nyílt forráskódú Web-CMS rendszer, ami a PHP4-re és a MySQL-re épül. &lt;br&gt;&lt;br&gt;A TYPO3 &lt;b&gt;szabadon elérhető a &lt;/b&gt; &lt;A HREF=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt; alatt.&lt;br&gt;&lt;br&gt;%s %s&lt;br&gt;</key>
+            <key index="mlang_labels_tablabel">A TYPO3-ról</key>
+            <key index="mlang_labels_tabdescr">A TYPO3 bemutatása.</key>
+            <key index="mlang_tabs_tab">Névjegy</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="welcome">TYPO3 ระบบเว็ปจัดการเนื้อหา</key>
+            <key index="minor">TYPO3 is a flexible and professional Open Source Web-CMS based on PHP4 and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">เกี่ยวกับ TYPO3</key>
+            <key index="mlang_labels_tabdescr">แสดงข้อเท็จจริงเกี่ยวกับโปรแกรม TYPO3 รุ่น และลิขสิทธิ์</key>
+            <key index="mlang_tabs_tab">เกี่ยวกับ</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="welcome">Typo3專業網站內容管理系統</key>
+            <key index="minor">Typo3是一個富彈性和專業的開放源程式碼網站內容管理系統，此系統建基於PHP4和MySql.&lt;br /&gt;&lt;br /&gt;Typo3在遵守&lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3使用證(GNU/GPL)&lt;/a&gt;.&lt;br /&gt;%s%s&lt;br /&gt;&lt;b&gt;免費自由使用&lt;/b&gt;</key>
+            <key index="mlang_labels_tablabel">關於TYPO3</key>
+            <key index="mlang_labels_tabdescr">顯示有關TYPO3的應用、版本和使用證條款的基本事實</key>
+            <key index="mlang_tabs_tab">關於</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="welcome">TYPO3 Web Eduki Kudeatzaile Profesionala</key>
+            <key index="minor">TYPO3 kode irekiko Web-CMS (edukia kudeatzeko sistema) malgu eta profesionala da. PHP4 eta MySQLn oinarritutakoa &lt;br /&gt;&lt;br /&gt;TYPO3 &lt;b&gt;dohainik eskuragarri&lt;/b&gt; dago &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-Lizentziapean (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">TYPO3ri buruz</key>
+            <key index="mlang_labels_tabdescr">TYPO3 aplikazioen oinarrizko informazioa erakusten du, bertsioak eta lizentzia terminoak</key>
+            <key index="mlang_tabs_tab">Buruz</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="welcome">TYPO3 Професионална уеб система за управление на съдържанието</key>
+            <key index="minor">TYPO3 е гъвкава и професионална Open Source Уеб-СУС, базирана на PHP4 и MySQL. .&lt;br /&gt;&lt;br /&gt;TYPO3 е &lt;b&gt;свободна на разположение&lt;/b&gt; под &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-лиценз (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Относно TYPO3</key>
+            <key index="mlang_labels_tabdescr">Покажи основните факти за TYPO3 проложения, версия и лицензионни условия.</key>
+            <key index="mlang_tabs_tab">Относно</key>
+        </key>
+        <key index="br" type="array">
+            <key index="welcome">Typo3 Administrador de Conteúdo Web Profissional</key>
+            <key index="minor">Typo3 é um Web-CMS de Código Aberto flexível e profissional baseado em PHP4 e MySQL.&lt;br /&gt;&lt;br /&gt;Typo3 é &lt;b&gt;disponível gratuitamente&lt;/b&gt; sob a licença &lt;a href=&quot;http://www.typo3.com/?price_uk&quot; target=&quot;_blank&quot;&gt;Typo3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Sobre o TYPO3</key>
+            <key index="mlang_labels_tabdescr">Mostra as informações básicas sobre a aplicação, versão e termos de licenciamento do Typo3.</key>
+            <key index="mlang_tabs_tab">Sobre</key>
+        </key>
+        <key index="et" type="array">
+            <key index="welcome">TYPO3 Professionaalne sisuhaldus tarkvara</key>
+            <key index="minor">TYPO3 on paindlik ja professionaalne Open Source sisuhaldus tarkvara, mis toetub PHP4-le ja MySQL-ile.&lt;br /&gt;&lt;br /&gt;TYPO3 on &lt;b&gt;vabalt kättesaadav&lt;/b&gt; &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;GNU/GPL litsentsi all&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">TYPO3 tiitelandmed</key>
+            <key index="mlang_labels_tabdescr">Näitab peamisi fakte TYPO3 rakendusest, versioonist ja litsentsitingimustest.</key>
+            <key index="mlang_tabs_tab">Tiitelandmed</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="welcome">تيبو3 نظام إدارة التعديل في محتويــات الويب</key>
+            <key index="minor">تيبو 3 عبارة عن تطبيق بسيط مفتوح الشفرة لنظام الصفحات المبنية باستخدام التي تعتمد على نزام السي إم إٍس</key>
+            <key index="mlang_labels_tablabel">تعريف بتيبو3</key>
+            <key index="mlang_labels_tabdescr">عرض القواعد الأساسية عن تيبو3 تطبيق وحقوق و رقم الإصدار</key>
+            <key index="mlang_tabs_tab">تعريف</key>
+        </key>
+        <key index="he" type="array">
+            <key index="welcome">TYPO3 - מערכת ניהול תוכן ברשת</key>
+            <key index="minor">TYPO3 הינה מערכת גמישה ומקצועית עם מקור פתוח (Open Source) המתבססת על PHP4 ו- MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 &lt;b&gt;זמינה בחינם&lt;/b&gt; תחת &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">אודות TYPO3</key>
+            <key index="mlang_labels_tabdescr">מציג עובדות בסיסיות אודות תוכנת TYPO3, גירסה ותנאי שימוש.</key>
+            <key index="mlang_tabs_tab">אודות</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="welcome">TYPO3 Profesionālā Tīmekļa Satura Vadības Sistēma</key>
+            <key index="minor">TYPO3 ir fleksiblā un profesionālā Atvērtā Koda Web-CMS, bāzēta uz PHP4 un MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 ir &lt;b&gt;brīvi pieejama&lt;/b&gt; uz &lt;a href=&quot;http://typo3.com/1244.0.html&quot; target=&quot;_blank&quot;&gt;TYPO3-licenses (GNU/GPL)&lt;/a&gt; nosacījumiem.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</key>
+            <key index="mlang_labels_tablabel">Par TYPO3</key>
+            <key index="mlang_labels_tabdescr">Parāda pamatinformāciju par TYPO3 aplikāciju, tās versiju un licencēšanas noteikumus.</key>
+            <key index="mlang_tabs_tab">Par TYPO3</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="de" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="no" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="it" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="es" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="si" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="se" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="is" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="br" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="et" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="he" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="welcome" type="integer">169034643</key>
+            <key index="minor" type="integer">259198789</key>
+            <key index="mlang_labels_tablabel" type="integer">253557007</key>
+            <key index="mlang_labels_tabdescr" type="integer">3018876</key>
+            <key index="mlang_tabs_tab" type="integer">150467777</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

@@ -53,7 +53,7 @@ unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
-include (PATH_typo3.'sysext/lang/locallang_mod_help_about.php');
+$LANG->includeLLFile('EXT:lang/locallang_mod_help_about.xml');
 $BE_USER->modAccess($MCONF,1);
 
 

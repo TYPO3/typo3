@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">File module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_file.php</key>
+        <key index="labelContext" type="array">
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel">File administration on the server</key>
+            <key index="mlang_tabs_tab">File</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel">Fil-administration på serveren</key>
+            <key index="mlang_tabs_tab">Filer</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel">Datei-Administration auf dem Server</key>
+            <key index="mlang_tabs_tab">Datei</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel">Fil-administratoren på serveren</key>
+            <key index="mlang_tabs_tab">Filer</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel">Gestione dei file sul server</key>
+            <key index="mlang_tabs_tab">File</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel">Administration des fichiers sur le serveur</key>
+            <key index="mlang_tabs_tab">Fichier</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel">Administración de archivos en el servidor</key>
+            <key index="mlang_tabs_tab">Archivos</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel">Bestandenbeheer op de server</key>
+            <key index="mlang_tabs_tab">Bestand</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel">Správa souborů na serveru</key>
+            <key index="mlang_tabs_tab">Soubory</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel">Administracja plikami na serwerze</key>
+            <key index="mlang_tabs_tab">Pliki</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel">Administracija datotek na strežniku</key>
+            <key index="mlang_tabs_tab">Datoteke</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel">Tiedosto hallinta palvelimella</key>
+            <key index="mlang_tabs_tab">Tiedosto</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel">Sunucuda dosya yönetimi</key>
+            <key index="mlang_tabs_tab">Dosya</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel">Filhantering på servern</key>
+            <key index="mlang_tabs_tab">Fil</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel">Administração de ficheiros no servidor</key>
+            <key index="mlang_tabs_tab">Ficheiro</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel">Управление файлами на сервере</key>
+            <key index="mlang_tabs_tab">Файл</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel">Administrarea fisierelor pe server</key>
+            <key index="mlang_tabs_tab">Fisier</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel">服务器文件管理</key>
+            <key index="mlang_tabs_tab">文件</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel">Správa súborov na serveri</key>
+            <key index="mlang_tabs_tab">Súbor</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="mlang_labels_tablabel">Bylų administravimas serveryje</key>
+            <key index="mlang_tabs_tab">Byla</key>
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel">Skráarstjórnun á netþjónnin</key>
+            <key index="mlang_tabs_tab">Skrá</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel">Administracija datoteka na poslužitelju</key>
+            <key index="mlang_tabs_tab">Datoteke</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel">File adminisztráció a szerveren</key>
+            <key index="mlang_tabs_tab">File</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="mlang_labels_tablabel">Serverimi fiilimik aaqqissuivik</key>
+            <key index="mlang_tabs_tab">Fiili</key>
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel">การจัดการแฟ้มข้อมูลบนเครื่องเซิร์ฟเว่อ</key>
+            <key index="mlang_tabs_tab">แฟ้มข้อมูล</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel">伺服器檔案管理</key>
+            <key index="mlang_tabs_tab">檔案</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel">Fitxategi administrazioa zerbitzarian</key>
+            <key index="mlang_tabs_tab">Fitxategia</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel">Файлова администрация на сървъра</key>
+            <key index="mlang_tabs_tab">Файл</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel">Administração de arquivos no servidor</key>
+            <key index="mlang_tabs_tab">Arquivo</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel">Failide administreerimine serveris</key>
+            <key index="mlang_tabs_tab">Fail</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel">ملف الخدمة على الحاسب الرئيسي</key>
+            <key index="mlang_tabs_tab">ملف</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel">ניהול קבצים על השרת</key>
+            <key index="mlang_tabs_tab">קובץ</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel">Failu administrēšana</key>
+            <key index="mlang_tabs_tab">Fails</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel" type="integer">259447562</key>
+            <key index="mlang_tabs_tab" type="integer">11696408</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

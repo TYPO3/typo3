@@ -1,0 +1,1119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Labels for Record Editing screen</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_alt_doc.php</key>
+        <key index="labelContext" type="array">
+            <key index="deleteItem"></key>
+            <key index="deleteWarning"></key>
+            <key index="undoLastChange"></key>
+            <key index="recordHistory"></key>
+            <key index="editWholeRecord"></key>
+            <key index="openDocs"></key>
+            <key index="noDocuments"></key>
+            <key index="noDocuments_msg"></key>
+            <key index="noDocuments_msg2"></key>
+            <key index="noDocuments_msg3"></key>
+            <key index="noDocuments_pagemodule"></key>
+            <key index="noDocuments_OR"></key>
+            <key index="noDocuments_listmodule"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="deleteItem">Delete</key>
+            <key index="deleteWarning">Are you sure you want to delete this record?</key>
+            <key index="undoLastChange">Undo/Redo last change (%s ago)</key>
+            <key index="recordHistory">View record change history</key>
+            <key index="editWholeRecord">Edit whole record</key>
+            <key index="openDocs">OPEN DOCUMENTS</key>
+            <key index="noDocuments">No open documents</key>
+            <key index="noDocuments_msg">There are no open documents available to edit.</key>
+            <key index="noDocuments_msg2">You can go to %s to find the page or the record you wish to edit.</key>
+            <key index="noDocuments_msg3">You can select one of your most recently edited records from this list:</key>
+            <key index="noDocuments_pagemodule">the Web&gt;Page module</key>
+            <key index="noDocuments_OR">or</key>
+            <key index="noDocuments_listmodule">the Web&gt;List module</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="deleteItem">Slet</key>
+            <key index="deleteWarning">Er du sikker på, at du ønsker at slette dette element?</key>
+            <key index="undoLastChange">Fortryd/Gendan seneste ændring (%s siden)</key>
+            <key index="recordHistory">Vis elementets ændringshistorik</key>
+            <key index="editWholeRecord">Rediger hele elementet</key>
+            <key index="openDocs">ÅBNE DOKUMENTER</key>
+            <key index="noDocuments">Ingen åbne dokumenter</key>
+            <key index="noDocuments_msg">Der er ingen åbne dokumenter at redigere.</key>
+            <key index="noDocuments_msg2">Du kan gå til %s for at finde den side eller det element, du ønsker at redigere.</key>
+            <key index="noDocuments_msg3">Du kan vælge en af dine senest redigerede elementer fra denne liste:</key>
+            <key index="noDocuments_pagemodule">Web&gt;Side modulet</key>
+            <key index="noDocuments_OR">eller</key>
+            <key index="noDocuments_listmodule">Web&gt;Liste modulet</key>
+        </key>
+        <key index="de" type="array">
+            <key index="deleteItem">Entfernen</key>
+            <key index="deleteWarning">Sind Sie sicher, dass Sie diesen Datensatz löschen wollen?</key>
+            <key index="undoLastChange">Letzte Änderung Zurücknehmen/Ausführen (%s Schritte)</key>
+            <key index="recordHistory">Änderungsprotokoll des Datensatzes anzeigen</key>
+            <key index="editWholeRecord">Kompletten Datensatz bearbeiten</key>
+            <key index="openDocs">GEÖFFNETE DOKUMENTE</key>
+            <key index="noDocuments">Keine geöffneten Dokumente</key>
+            <key index="noDocuments_msg">Es sind keine Dokumente zur Verarbeitung geöffnet.</key>
+            <key index="noDocuments_msg2">Gehen Sie zu %s, um die Seite oder den Datensatz zu finden, den Sie bearbeiten möchten.</key>
+            <key index="noDocuments_msg3">Aus dieser Liste können Sie die zuletzt bearbeiteten Datensätze auswählen:</key>
+            <key index="noDocuments_pagemodule">das Web&gt;Seitenmodul</key>
+            <key index="noDocuments_OR">oder</key>
+            <key index="noDocuments_listmodule">das Web&gt;Listenmodul</key>
+        </key>
+        <key index="no" type="array">
+            <key index="deleteItem">Slett</key>
+            <key index="deleteWarning">Er du sikker på at du ønsker å slette dette elementet?</key>
+            <key index="undoLastChange">Angre/ gjør om siste endring (%s siden)</key>
+            <key index="recordHistory">Vis endringshistorikken til elementet</key>
+            <key index="editWholeRecord">Rediger hele elementet</key>
+            <key index="openDocs">ÅPNE DOKUMENTER</key>
+            <key index="noDocuments">Ingen åpne dokumenter</key>
+            <key index="noDocuments_msg">Det er ingen åpne dokumenter å redigere.</key>
+            <key index="noDocuments_msg2">Du kan gå til %s for at finne den siden eller det elementet, du ønsker å redigere.</key>
+            <key index="noDocuments_msg3">Du kan velge ett av dine sist redigerte elementer fra denne listen:</key>
+            <key index="noDocuments_pagemodule">Web&gt;Side modulen</key>
+            <key index="noDocuments_OR">eller</key>
+            <key index="noDocuments_listmodule">Web&gt;Liste modulen</key>
+        </key>
+        <key index="it" type="array">
+            <key index="deleteItem">Elimina</key>
+            <key index="deleteWarning">Sei sicuro di voler eliminare questo record?</key>
+            <key index="undoLastChange">Annulla/Ripristina ultimo cambiamento (%s fa)</key>
+            <key index="recordHistory">Storia dei cambiamenti del record</key>
+            <key index="editWholeRecord">Modifica intero record</key>
+            <key index="openDocs">DOCUMENTI APERTI</key>
+            <key index="noDocuments">Nessun documento aperto</key>
+            <key index="noDocuments_msg">Non ci sono documenti aperti da modificare.</key>
+            <key index="noDocuments_msg2">Puoi andare su %s per trovare la pagina o il record che vuoi modificare.</key>
+            <key index="noDocuments_msg3">Puoi selezionare dalla lista sottostante uno fra i documenti modificati di recente:</key>
+            <key index="noDocuments_pagemodule">modulo Web&gt;Pagina</key>
+            <key index="noDocuments_OR">o</key>
+            <key index="noDocuments_listmodule">modulo Web&gt;Lista</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="deleteItem">Supprimer</key>
+            <key index="deleteWarning">Etes-vous sûr de vouloir supprimer cet enregistrement?</key>
+            <key index="undoLastChange">Annuler/Rétablir le dernier changement (%s)</key>
+            <key index="recordHistory">Visualiser l'historique des changements</key>
+            <key index="editWholeRecord">Editer l'enregistrement complet</key>
+            <key index="openDocs">DOCUMENTS OUVERTS</key>
+            <key index="noDocuments">Aucun document ouvert</key>
+            <key index="noDocuments_msg">Il n'y a aucun document ouvert disponible pour édition.</key>
+            <key index="noDocuments_msg2">Vous pouvez aller à %s pour trouver l'enregistrement que vous souhaitez éditer.</key>
+            <key index="noDocuments_msg3">Vous pouvez sélectionner dans cette liste vos documents les plus récemment édités:</key>
+            <key index="noDocuments_pagemodule">le module Web&gt;Page</key>
+            <key index="noDocuments_OR">ou</key>
+            <key index="noDocuments_listmodule">le module Web&gt;Liste</key>
+        </key>
+        <key index="es" type="array">
+            <key index="deleteItem">Borrar</key>
+            <key index="deleteWarning">¿Seguro que desea borrar este registro?</key>
+            <key index="undoLastChange">Deshacer/rehacer el último cambio (hace %s)</key>
+            <key index="recordHistory">Ver historial de cambios del registro</key>
+            <key index="editWholeRecord">Editar registro completo</key>
+            <key index="openDocs">DOCUMENTOS ABIERTOS</key>
+            <key index="noDocuments">No hay documentos abiertos</key>
+            <key index="noDocuments_msg">No hay documentos disponibles para editar.</key>
+            <key index="noDocuments_msg2">Usted puede ir a %s para encontrar la página o el registro que quiere editar.</key>
+            <key index="noDocuments_msg3">Usted puede seleccionar uno de sus registros editados más recientes de la siguiente lista:</key>
+            <key index="noDocuments_pagemodule">el módulo Web&gt;Página</key>
+            <key index="noDocuments_OR">o</key>
+            <key index="noDocuments_listmodule">el módulo Web&gt;Lista</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="deleteItem">Verwijder</key>
+            <key index="deleteWarning">Weet u zeker dat u dit record wilt verwijderen?</key>
+            <key index="undoLastChange">Ongedaan maken/Opnieuw doen wijzigingen (%s geleden)</key>
+            <key index="recordHistory">Bekijk wijzigingen in de records</key>
+            <key index="editWholeRecord">Bewerk hele record</key>
+            <key index="openDocs">OPEN DOCUMENTEN</key>
+            <key index="noDocuments">Geen open documenten</key>
+            <key index="noDocuments_msg">Er zijn geen open documenten beschikbaar om te bewerken.</key>
+            <key index="noDocuments_msg2">U kan naar %s gaan om de pagina of het record te bewerken.</key>
+            <key index="noDocuments_msg3">U kan een van de laatst bewerkte records kiezen uit de lijst:</key>
+            <key index="noDocuments_pagemodule">de Web&gt;Pagina module</key>
+            <key index="noDocuments_OR">of</key>
+            <key index="noDocuments_listmodule">de Web&gt;Lijst module</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="deleteItem">Odstranit</key>
+            <key index="deleteWarning">Jste si jisti, že chcete odstranit tento záznam?</key>
+            <key index="undoLastChange">Zpět/Znovu poslední změna (%s zpět)</key>
+            <key index="recordHistory">Zobrazit historii změn záznamu</key>
+            <key index="editWholeRecord">Upravit celý záznam</key>
+            <key index="openDocs">OTEVŘENÉ DOKUMENTY</key>
+            <key index="noDocuments">Žádné otevřené dokumenty</key>
+            <key index="noDocuments_msg">Nejsou žádné otevřené dokumenty dostupné pro úpravy.</key>
+            <key index="noDocuments_msg2">Můžete jít na %s, abyste nalezli stránku nebo záznam, jenž chcete upravit.</key>
+            <key index="noDocuments_msg3">Můžete zvolit jeden ze záznamů, které jste upravili naposled:</key>
+            <key index="noDocuments_pagemodule">Modul Web&gt;Strana</key>
+            <key index="noDocuments_OR">nebo</key>
+            <key index="noDocuments_listmodule">Modul Web&gt;Seznam</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="deleteItem">Usuń</key>
+            <key index="deleteWarning">Jesteś pewien, że chcesz usunąć ten rekord?</key>
+            <key index="undoLastChange">Cofnij/Przywróć ostatnią zmianę (%s temu)</key>
+            <key index="recordHistory">Zobacz historię zmian w rekordzie</key>
+            <key index="editWholeRecord">Edytuj cały rekord</key>
+            <key index="openDocs">OTWÓRZ DOKUMENTY</key>
+            <key index="noDocuments">Brak otwartych dokumentów</key>
+            <key index="noDocuments_msg">Nie ma otwartych dokumentów do edycji.</key>
+            <key index="noDocuments_msg2">Możesz przejść do %s aby znaleźć stronę lub rekord do edycji.</key>
+            <key index="noDocuments_msg3">Z tej listy możesz wybrać ostatnio edytowane przez siebie rekordy:</key>
+            <key index="noDocuments_pagemodule">moduł Web&gt;Strona</key>
+            <key index="noDocuments_OR">lub</key>
+            <key index="noDocuments_listmodule">moduł Web&gt;Lista</key>
+        </key>
+        <key index="si" type="array">
+            <key index="deleteItem">Izbriši</key>
+            <key index="deleteWarning">Ste prepričani, da želite izbrisati ta zapis?</key>
+            <key index="undoLastChange">Razveljavi / Ponovi zadnjo spremembo (pred %s)</key>
+            <key index="recordHistory">Poglej zgodovino sprememb zapisov</key>
+            <key index="editWholeRecord">Uredi celoten zapis</key>
+            <key index="openDocs">ODPRTI DOKUMENTI</key>
+            <key index="noDocuments">Ni odprtih dokumentov</key>
+            <key index="noDocuments_msg">Ni odprtih dokumentov, ki bi jih lahko urejali.</key>
+            <key index="noDocuments_msg2">Lahko se pomaknete do %s, da poiščete stran ali zapis, ki jo želite spremeniti.</key>
+            <key index="noDocuments_msg3">Seznam nedavno spremenjenih zapisov:</key>
+            <key index="noDocuments_pagemodule">modul Web&gt;Stran</key>
+            <key index="noDocuments_OR">ali</key>
+            <key index="noDocuments_listmodule">modul Web&gt;Seznam</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="deleteItem">Poista</key>
+            <key index="deleteWarning">Haluatko varmasti poistaa tämän tietueen?</key>
+            <key index="undoLastChange">Palauta/Tee uudestaan viimeinen muutos (%s kertaa)</key>
+            <key index="recordHistory">Katsele tietueen muutoshistoriaa</key>
+            <key index="editWholeRecord">Muokkaa koko tietuetta</key>
+            <key index="openDocs">AVOIMET DOKUMENTIT</key>
+            <key index="noDocuments">Ei avoimia dokumentteja</key>
+            <key index="noDocuments_msg">Ei avoimia dokumentteja muotoiltavaksi.</key>
+            <key index="noDocuments_msg2">Voit siirtyä %s löytääksesi sivun tai tietueen jota haluat muotoilla.</key>
+            <key index="noDocuments_msg3">Voit valita yhden viimeksi muotoilluista tietueista tältä listalta:</key>
+            <key index="noDocuments_pagemodule">Web-Sivu -moduli</key>
+            <key index="noDocuments_OR">tai</key>
+            <key index="noDocuments_listmodule">Web-Lista -moduli</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="deleteItem">Sil</key>
+            <key index="deleteWarning">Bu kayıtı silmek istediğinizden emin misiniz?</key>
+            <key index="undoLastChange">Geri al/Yenile son değişikliği (%s önce)</key>
+            <key index="recordHistory">Kayıt değişim günlüğünün görüntülenmesi</key>
+            <key index="editWholeRecord">Tüm kayıtı düzelt</key>
+            <key index="openDocs">DOKÜMANLARI AÇ</key>
+            <key index="noDocuments">Açık dokümanlar yok</key>
+            <key index="noDocuments_msg">Düzenlenebilecek açık dokümanlar bulunmamaktadır.</key>
+            <key index="noDocuments_msg2">Eğer düzeltme istiyorsanız sayfa veya kayıtın %s ini bulmak için gidebilirsiniz.</key>
+            <key index="noDocuments_msg3">Listeden son zamanlarda en çok düzenlediğiniz kayıtları seçebilirsiniz:</key>
+            <key index="noDocuments_pagemodule">Web&gt;Sayfa modülü</key>
+            <key index="noDocuments_OR">veya</key>
+            <key index="noDocuments_listmodule">Web&gt;Liste modülü</key>
+        </key>
+        <key index="se" type="array">
+            <key index="deleteItem">Radera</key>
+            <key index="deleteWarning">Är du säker på att du vill radera detta element?</key>
+            <key index="undoLastChange">Ångra/Gör om senaste ändringar (sedan %s)</key>
+            <key index="recordHistory">Visa elementets ändringshistoria</key>
+            <key index="editWholeRecord">Ändra hela elementet</key>
+            <key index="openDocs">ÖPPNA DOKUMENT</key>
+            <key index="noDocuments">Inga öppna dokument</key>
+            <key index="noDocuments_msg">Det finns inga öppna dokument att ändra.</key>
+            <key index="noDocuments_msg2">Du kan gå till %s för att hitta den sida eller det element som du vill ändra.</key>
+            <key index="noDocuments_msg3">Du kan välja ett av de element som du senast ändrat från denna lista:</key>
+            <key index="noDocuments_pagemodule">Web&gt;Sida -modulen</key>
+            <key index="noDocuments_OR">eller</key>
+            <key index="noDocuments_listmodule">Web&gt;List -modulen</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="deleteItem">Apagar</key>
+            <key index="deleteWarning">Tem a certeza de querer apagar este registo?</key>
+            <key index="undoLastChange">Desfazer/Refazer última alteração (%s ant.)</key>
+            <key index="recordHistory">Vêr histórico de alterações de registo</key>
+            <key index="editWholeRecord">Editar todo o registo</key>
+            <key index="openDocs">DOCUMENTOS ABERTOS</key>
+            <key index="noDocuments">Nenhum documento aberto</key>
+            <key index="noDocuments_msg">Não existem documentos abertos disponíveis para editar.</key>
+            <key index="noDocuments_msg2">Pode ir para %s a fim de encontrar a página ou registo que deseja editar.</key>
+            <key index="noDocuments_msg3">Pode selecionar um dos seus registos mais recentemente editados desta lista:</key>
+            <key index="noDocuments_pagemodule">o módulo Web&gt;Página</key>
+            <key index="noDocuments_OR">ou</key>
+            <key index="noDocuments_listmodule">o módulo Web&gt;Lista</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="deleteItem">Удалить</key>
+            <key index="deleteWarning">Вы уверены, что хотите удалить эту запись?</key>
+            <key index="undoLastChange">Отменить/Восстановить последние изменения (%s шагов)</key>
+            <key index="recordHistory">Показать историю изменения записи</key>
+            <key index="editWholeRecord">Редактировать всю запись</key>
+            <key index="openDocs">ОТКРЫТЫЕ ДОКУМЕНТЫ</key>
+            <key index="noDocuments">Открытых документов нет</key>
+            <key index="noDocuments_msg">Нет открытых документов, доступных для редактирования.</key>
+            <key index="noDocuments_msg2">Идите в %s, чтобы найти страницу или запись, которую вы хотите изменить.</key>
+            <key index="noDocuments_msg3">Вы можете выбрать из этого списка записи, которые вы правили последними:</key>
+            <key index="noDocuments_pagemodule">модуль Веб&gt;Страница</key>
+            <key index="noDocuments_OR">или</key>
+            <key index="noDocuments_listmodule">модуль Веб&gt;Список</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="deleteItem">Ştergere</key>
+            <key index="deleteWarning">Eşti sigur că vrei să ştergi această înregistrare?</key>
+            <key index="undoLastChange">Anulează/Execută din nou ultima modificare (ultimile %s)</key>
+            <key index="recordHistory">Verifică istoricul modificărilor efectuate</key>
+            <key index="editWholeRecord">Editare completă a înregistrării</key>
+            <key index="openDocs">DOCUMENTE DESCHISE</key>
+            <key index="noDocuments">Nu sînt documente deschise</key>
+            <key index="noDocuments_msg">Nu există documente deschise disponibile pentru editare.</key>
+            <key index="noDocuments_msg2">Puteţi merge la %s pentru a găsi pagina sau înregistrarea pe care doriţi s-o editaţi.</key>
+            <key index="noDocuments_msg3">Puteţi selecta una din înregistrările care au fost modificate recent:</key>
+            <key index="noDocuments_pagemodule">Modulul Web&gt;Pagini</key>
+            <key index="noDocuments_OR">sau</key>
+            <key index="noDocuments_listmodule">Modulul Web&gt;Listă</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="deleteItem">删除</key>
+            <key index="deleteWarning">您是否真要删除这条记录?</key>
+            <key index="undoLastChange">回退/重做上次更改(%s之前)</key>
+            <key index="recordHistory">查看记录更改历史</key>
+            <key index="editWholeRecord">编辑整条记录</key>
+            <key index="openDocs">打开文档</key>
+            <key index="noDocuments">没有打开的文档</key>
+            <key index="noDocuments_msg">没有打开的文档可用来编辑</key>
+            <key index="noDocuments_msg2">您可以到%s去寻找您想编辑的页面或记录</key>
+            <key index="noDocuments_msg3">您可以从这个列表中选择您最近编辑的记录</key>
+            <key index="noDocuments_pagemodule">网站/页面模块</key>
+            <key index="noDocuments_OR">或</key>
+            <key index="noDocuments_listmodule">网站/列表模块</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="deleteItem">Vymaž</key>
+            <key index="deleteWarning">Si si istý,že chceš vymazať tento zápis?</key>
+            <key index="undoLastChange">Zruš/Potvrď poslednú zmenu (pred %s)</key>
+            <key index="recordHistory">Ukáž históriu zmien zápisu</key>
+            <key index="editWholeRecord">Pozmeň celý zápis</key>
+            <key index="openDocs">OTVORENÉ DOKUMENTY</key>
+            <key index="noDocuments">Nemáš žiadne otvorené dokumenty</key>
+            <key index="noDocuments_msg">Nemáš žiadne otvorené dokumenty na pozmenenie</key>
+            <key index="noDocuments_msg2">Ak chceš nájsť stránku alebo záznam na pozmenenie, choď na %s.</key>
+            <key index="noDocuments_msg3">Môžeš si vybrať zo zoznamu jeden z následovných záznamov, ktoré boli práve pozmenené:</key>
+            <key index="noDocuments_pagemodule">Modul Web&gt;Page</key>
+            <key index="noDocuments_OR">alebo</key>
+            <key index="noDocuments_listmodule">Modul Web&gt;List</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="deleteItem">Šalinti</key>
+            <key index="deleteWarning">Jus tikrai norite šalinti šį įrašą?</key>
+            <key index="undoLastChange">Atšaukti/Atsatatyti paskutini pakeitima (%s)</key>
+            <key index="recordHistory">Rodyti pakeistų įrašų istorija</key>
+            <key index="editWholeRecord">Taisyti visa įraša</key>
+            <key index="openDocs">ATVIRI DOKUMENTAI</key>
+            <key index="noDocuments">Atvirų dokumentų nėra</key>
+            <key index="noDocuments_msg">Redagavimui atvirų dokumentu nėra.</key>
+            <key index="noDocuments_msg2">Jus galite eiti į %s susirasti puslapį arba įrašą kuri norite redaguoti.</key>
+            <key index="noDocuments_msg3">Jus galite pažymėti sąraše, viena iš daugelio redaguojamų įrašų:</key>
+            <key index="noDocuments_pagemodule">Svetainė&gt;Puslapio modulis</key>
+            <key index="noDocuments_OR">arba</key>
+            <key index="noDocuments_listmodule">Svetainė&gt;Sąrašų modulis</key>
+        </key>
+        <key index="is" type="array">
+            <key index="deleteItem">Eyða</key>
+            <key index="deleteWarning">Ertu viss um að þú viljir eyða þessari skrá?</key>
+            <key index="undoLastChange">Hætta við/Endurgera síðastu breytingu (%s siðan)</key>
+            <key index="recordHistory">Sjá skrá breytingasögu</key>
+            <key index="editWholeRecord">Ritstýra allar skrár</key>
+            <key index="openDocs">Opna skjöl</key>
+            <key index="noDocuments">Engin skjöl opin</key>
+            <key index="noDocuments_msg">Það eru enginn opin skjöl til breyta</key>
+            <key index="noDocuments_msg2">Þú getur farið á %s til að finna síðuna eða skrána sem þú vilt breyta.</key>
+            <key index="noDocuments_msg3">Þú getur valið nýlega breytum skjöl frá þessum lista:</key>
+            <key index="noDocuments_pagemodule">Vefin &gt; Síða viðbætur</key>
+            <key index="noDocuments_OR">eða</key>
+            <key index="noDocuments_listmodule">Vefurinn &gt; Listi yfir viðbætur</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="deleteItem">Brisanje</key>
+            <key index="deleteWarning">Jeste li sigurni da želite pobrisati ovaj zapis?</key>
+            <key index="undoLastChange">Undo/Redo zadnjih promjena (%s prije)</key>
+            <key index="recordHistory">Pogledaj povijest izmjene zapisa</key>
+            <key index="editWholeRecord">Uređuj cijeli zapis</key>
+            <key index="openDocs">OTVORENI DOKUMENTI</key>
+            <key index="noDocuments">Nema opvorenih dokumenata</key>
+            <key index="noDocuments_msg">Nema otvorenih dokumenata raspoloživih za uređivanje.</key>
+            <key index="noDocuments_msg2">Možete otići na %s da pronađete stranicu koji želite uređivati.</key>
+            <key index="noDocuments_msg3">Možete odabrati neku od nedavno uređuvanih stratica s ovog popisa:</key>
+            <key index="noDocuments_pagemodule">WEB&gt;Stranica modul</key>
+            <key index="noDocuments_OR">ili</key>
+            <key index="noDocuments_listmodule">Web&gt;Popis (List) modul</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="deleteItem">Töröl</key>
+            <key index="deleteWarning">Biztos, hogy törölni akarod ezt a rekordot?</key>
+            <key index="undoLastChange">Visszavon/Újra utolsó módosítást (%s)</key>
+            <key index="recordHistory">Mutasd a rekord módosítás naplóját.</key>
+            <key index="editWholeRecord">Az összes rekord szerkesztése</key>
+            <key index="openDocs">DOKUMENTUM MEGNYITÁSA</key>
+            <key index="noDocuments">Nincs megnyitott dokumentum</key>
+            <key index="noDocuments_msg">Nincs szerkesztésre megnyitott dukumentum.</key>
+            <key index="noDocuments_msg2">Kattints a %s menüpontra, ahol választhatsz a szerkeszthető dokumentumok közül.</key>
+            <key index="noDocuments_msg3">Válassz egyet a mostanában szerkesztett rekordok közül:</key>
+            <key index="noDocuments_pagemodule">Web&gt; Oldal modul</key>
+            <key index="noDocuments_OR">vagy</key>
+            <key index="noDocuments_listmodule">Web&gt; Lista modul</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="deleteItem">Nunguteruk</key>
+            <key index="deleteWarning">Ilumut immersugassaq taanna nunguterniarpiuk?</key>
+            <key index="openDocs">ALLAKKAT AMMASUT</key>
+            <key index="noDocuments">Ammasumik allagaqanngilaq</key>
+            <key index="noDocuments_OR">imal.</key>
+        </key>
+        <key index="th" type="array">
+            <key index="deleteItem">ลบ</key>
+            <key index="deleteWarning">ีคุณแน่ใจว่าจะลบข้อมูลนี้</key>
+            <key index="undoLastChange">ย้อนกลับ/ทำซ้ำ การเปลี่ยนแปลง (%s ที่ผ่านมา)</key>
+            <key index="recordHistory">ดูประวัติข้อมูลที่มีการเบลี่ยนแปลง</key>
+            <key index="editWholeRecord">แก้ไขข้อมูลทั้งหมด</key>
+            <key index="openDocs">เปิดเอกสาร</key>
+            <key index="noDocuments">ไม่มีเอกสารที่เปิดอยู่</key>
+            <key index="noDocuments_msg">ไม่มีเอกสารที่จะแก้ไข</key>
+            <key index="noDocuments_msg2">ท่านสามารถไป %s เพื่อหาหน้าหรือข้อมูลที่ต้องการจะแก้ไข</key>
+            <key index="noDocuments_msg3">ท่านสามารถเลือกหนึ่งในข้อมูลที่พึ่งถูกแก้ไขได้จากปุ่มแสดงนี้</key>
+            <key index="noDocuments_pagemodule">เว็ป &gt; โมดุล หน้า</key>
+            <key index="noDocuments_OR">หรีอ</key>
+            <key index="noDocuments_listmodule">เว็ป &gt; โมดุล แสดง</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="deleteItem">刪除</key>
+            <key index="deleteWarning">你是否真的要刪除這個記錄？</key>
+            <key index="undoLastChange">復原／重做上次的改變（％秒之前）</key>
+            <key index="recordHistory">檢視記錄改變歷史</key>
+            <key index="editWholeRecord">修改整個記錄</key>
+            <key index="openDocs">開啟文件</key>
+            <key index="noDocuments">沒有開啟的文件</key>
+            <key index="noDocuments_msg">沒有開啟的文件可供修改</key>
+            <key index="noDocuments_msg2">你可以到％秒去尋找你想修改的網頁或記錄</key>
+            <key index="noDocuments_msg3">你可以從這個清單中選取其中一個你最近修改過的記錄</key>
+            <key index="noDocuments_pagemodule">網站＞網頁模組</key>
+            <key index="noDocuments_OR">或</key>
+            <key index="noDocuments_listmodule">網站＞表列模組</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="deleteItem">Ezabatu</key>
+            <key index="deleteWarning">Ziur  erregistro hau ezabatu nahi duzula?</key>
+            <key index="undoLastChange">Desegin/Berregin azken aldaketa (orain dela %s)</key>
+            <key index="recordHistory">Ikusi erregistroaren aldaketa historia</key>
+            <key index="editWholeRecord">Editatu erregistro osoa</key>
+            <key index="openDocs">DOKUMENTU IREKIAK</key>
+            <key index="noDocuments">Ez dago dokumentu irekirik</key>
+            <key index="noDocuments_msg">Ez dago dokumentu irekirik editatzeko</key>
+            <key index="noDocuments_msg2">%s-ra joan zaitezke editatu nahi duzun orria edo erregistroa editatzeko</key>
+            <key index="noDocuments_msg3">Zerrenda honetatik editatutako azken erregistroetako bat aukeratu dezakezu:</key>
+            <key index="noDocuments_pagemodule">Web&gt;Orria modulua</key>
+            <key index="noDocuments_OR">edo</key>
+            <key index="noDocuments_listmodule">Web&gt;Zerrenda modulua</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="deleteItem">Изтриване</key>
+            <key index="deleteWarning">Сигурен ли сте че искате да изтриете този запис?</key>
+            <key index="undoLastChange">Undo/Redo последен шанс (%s ago)</key>
+            <key index="recordHistory">Виж история на промяната на записа</key>
+            <key index="editWholeRecord">Редактирай целия запис</key>
+            <key index="openDocs">Отвори документ</key>
+            <key index="noDocuments">Няма отворени документи</key>
+            <key index="noDocuments_msg">Няма отворени документи на разположение за редактиране.</key>
+            <key index="noDocuments_msg2">Можете да отидете до %s за да намерите страницата или записа, който желаете да редактирате.</key>
+            <key index="noDocuments_msg3">Можете да изберете един от вашите най-често редактирани записа от този лист:</key>
+            <key index="noDocuments_pagemodule">Web&gt;Страница модул</key>
+            <key index="noDocuments_OR">или</key>
+            <key index="noDocuments_listmodule">Web&gt;Лист модул</key>
+        </key>
+        <key index="br" type="array">
+            <key index="deleteItem">Apagar</key>
+            <key index="deleteWarning">Tem certeza de que quer apagar este registro?</key>
+            <key index="undoLastChange">Desfazer/Refazer última alteração (%s ant.)</key>
+            <key index="recordHistory">Ver histórico de alterações de registro</key>
+            <key index="editWholeRecord">Editar todo o registro</key>
+            <key index="openDocs">DOCUMENTOS ABERTOS</key>
+            <key index="noDocuments">Nenhum documento aberto</key>
+            <key index="noDocuments_msg">Não há documentos abertos disponíveis para edição.</key>
+            <key index="noDocuments_msg2">Você pode ir para %s a fim de encontrar a página ou registro que deseja editar.</key>
+            <key index="noDocuments_msg3">Você pode selecionar um dos seus registros editados mais recentemente desta lista:</key>
+            <key index="noDocuments_pagemodule">o módulo Web&gt;Página</key>
+            <key index="noDocuments_OR">ou</key>
+            <key index="noDocuments_listmodule">o módulo Web&gt;Lista</key>
+        </key>
+        <key index="et" type="array">
+            <key index="deleteItem">Kustuta</key>
+            <key index="deleteWarning">Olete kindel, et soovite kirje kustutada?</key>
+            <key index="undoLastChange">Võta tagasi/Tee uuesti viimane muudatus (%s tagasi)</key>
+            <key index="recordHistory">Vaata kirje ajalugu</key>
+            <key index="editWholeRecord">Redigeeri kogu kirjet</key>
+            <key index="openDocs">AVA DOKUMNENDID</key>
+            <key index="noDocuments">Avatud dokumendid puuduvad</key>
+            <key index="noDocuments_msg">Pole ühtegi avatud dokumenti, mida redigeerida.</key>
+            <key index="noDocuments_msg2">Võite minna %s, et leida lehekülge või kirjet, mida soovite redigeerida.</key>
+            <key index="noDocuments_msg3">Võite nimekirjast valida viimati muudetud kirjed:</key>
+            <key index="noDocuments_pagemodule">Web&gt;Lehekülje moodul</key>
+            <key index="noDocuments_OR">või</key>
+            <key index="noDocuments_listmodule">Web&gt;Loendi moodul</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="deleteItem">إمسح</key>
+            <key index="deleteWarning">هل أنت متأكد إنك عاوز تمسح هذه الفقرة</key>
+            <key index="undoLastChange">لا تغير / إعادة آخر تغيير  (%s ago)</key>
+            <key index="recordHistory">مشاهدة كل التغييرات التي حدثت قي هذه الفقرة</key>
+            <key index="editWholeRecord">تعديل الفقرة كلها</key>
+            <key index="openDocs">فتح وثيقة</key>
+            <key index="noDocuments">غير موجود وثيقة مفتوحة</key>
+            <key index="noDocuments_msg">غير موجود وثيقة مفتوحة لتعديلها</key>
+            <key index="noDocuments_msg2">يمكنك الوصول إلى s% لإيجاد الصفحة أو الفقرة التي تريد تعديلها</key>
+            <key index="noDocuments_msg3">يمكنك إختيار الفقرات التي نسنخدمعا غالبا</key>
+            <key index="noDocuments_pagemodule">الويب &gt; الصفحة</key>
+            <key index="noDocuments_OR">أو</key>
+            <key index="noDocuments_listmodule">الويب &gt; قائمة الفقرات</key>
+        </key>
+        <key index="he" type="array">
+            <key index="deleteItem">מחיקה</key>
+            <key index="deleteWarning">האם הנך בטוח כי ברצונך למחוק רשומה זו?</key>
+            <key index="undoLastChange">בטל/שחזר שינוי אחרון (% אחורה)</key>
+            <key index="recordHistory">הצג היסטוריית שינויים ברשומות</key>
+            <key index="editWholeRecord">ערוך רשומה שלמה</key>
+            <key index="openDocs">מסמכים פתוחים</key>
+            <key index="noDocuments">אין מסמכים פתוחים</key>
+            <key index="noDocuments_msg">אין מסמכים פתוחים לעריכה</key>
+            <key index="noDocuments_msg2">הנך יכול לעבור אל % כדי למצוא דף או רשומה שברצונך לערוך</key>
+            <key index="noDocuments_msg3">הנך יכול לבחור רשומה שערכת לאחרונה מתוך רשימה הבאה:</key>
+            <key index="noDocuments_pagemodule">מודול אינטרנט &gt; דף</key>
+            <key index="noDocuments_OR">או</key>
+            <key index="noDocuments_listmodule">מודול אינטרנט &gt; רשימה</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="deleteItem">Dzēst</key>
+            <key index="deleteWarning">Vai jūs tiešām gribat dzēst šo ierakstu?</key>
+            <key index="undoLastChange">Atcelt/Atkārtot pēdējo labojumu (%s atpakaļ)</key>
+            <key index="recordHistory">Apskatīt ieraksta labošanas vēsturi</key>
+            <key index="editWholeRecord">Labot veselu ierakstu</key>
+            <key index="openDocs">ATVĒRTIE DOKUMENTI</key>
+            <key index="noDocuments">Nav atvērto dokumentu</key>
+            <key index="noDocuments_msg">Nav atvērto dokumentu, kurus jūs varētu labot.</key>
+            <key index="noDocuments_msg2">Jūs varat iet uz %s, lai atrastu lapas vai ierakstus, kurus jūs vēlaties labot.</key>
+            <key index="noDocuments_msg3">Jūs varat izvēlēties vienu no jūsu nesen labotajiem ierakstiem no šī saraksta:</key>
+            <key index="noDocuments_pagemodule">Web&gt;Page moduli</key>
+            <key index="noDocuments_OR">vai</key>
+            <key index="noDocuments_listmodule">Web&gt;List moduli</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+            <key index="deleteItem">Hũy bỏ</key>
+            <key index="deleteWarning">Bạn có chắc chán muốn Xóa dữ kiền này không?</key>
+            <key index="undoLastChange">Làm lại</key>
+            <key index="recordHistory">Xem dữ kiện trong trang sử</key>
+            <key index="editWholeRecord">Xửa tất cả record</key>
+            <key index="openDocs">Documents Đang Mở</key>
+            <key index="noDocuments">Không có hồ sơ</key>
+            <key index="noDocuments_msg">Không có documents nào để chỉnh.</key>
+            <key index="noDocuments_msg2">Bạn có thể mở %s để tìm trang hay dữ kiện mà bạn muốn chỉnh.</key>
+            <key index="noDocuments_msg3">Bạn có thể chọn một cái dữ kiện gần nhất từ trong cái list này:</key>
+            <key index="noDocuments_pagemodule">Trang module</key>
+            <key index="noDocuments_OR">hay là</key>
+            <key index="noDocuments_listmodule">Danh Sách module</key>
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="de" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="no" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="it" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="es" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="si" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="se" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="is" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+        </key>
+        <key index="th" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="br" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="et" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="he" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+            <key index="deleteItem" type="integer">254438473</key>
+            <key index="deleteWarning" type="integer">75838368</key>
+            <key index="undoLastChange" type="integer">109787245</key>
+            <key index="recordHistory" type="integer">38913415</key>
+            <key index="editWholeRecord" type="integer">195506325</key>
+            <key index="openDocs" type="integer">260671662</key>
+            <key index="noDocuments" type="integer">118569122</key>
+            <key index="noDocuments_msg" type="integer">264542935</key>
+            <key index="noDocuments_msg2" type="integer">15726238</key>
+            <key index="noDocuments_msg3" type="integer">187019899</key>
+            <key index="noDocuments_pagemodule" type="integer">126847616</key>
+            <key index="noDocuments_OR" type="integer">243385572</key>
+            <key index="noDocuments_listmodule" type="integer">97512249</key>
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

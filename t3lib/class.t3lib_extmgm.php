@@ -413,11 +413,11 @@ class t3lib_extMgm {
 	/**
 	 * Adds a reference to a locallang file with TCA_DESCR labels
 	 * FOR USE IN ext_tables.php FILES
-	 * eg. t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:lang/locallang_csh_pages.php'); for the pages table or t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout','EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
+	 * eg. t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:lang/locallang_csh_pages.xml'); for the pages table or t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout','EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
 	 * Usage: 31
 	 *
 	 * @param	string		Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
-	 * @param	string		File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.php"
+	 * @param	string		File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.php" (or ".xml")
 	 * @return	void
 	 */
 	function addLLrefForTCAdescr($tca_descr_key,$file_ref)	{

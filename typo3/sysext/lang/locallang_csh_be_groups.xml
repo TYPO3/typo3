@@ -1,0 +1,1136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">CSH for Backend Groups</key>
+        <key index="type">CSH</key>
+        <key index="fileId">EXT:lang/locallang_csh_be_groups.php</key>
+        <key index="labelContext" type="array">
+            <key index=".description"></key>
+            <key index="_.seeAlso"></key>
+            <key index="title.description"></key>
+            <key index="db_mountpoints.description"></key>
+            <key index="db_mountpoints.details"></key>
+            <key index="_db_mountpoints.seeAlso"></key>
+            <key index="file_mountpoints.description"></key>
+            <key index="file_mountpoints.details"></key>
+            <key index="_file_mountpoints.seeAlso"></key>
+            <key index="pagetypes_select.description"></key>
+            <key index="pagetypes_select.details"></key>
+            <key index="_pagetypes_select.seeAlso"></key>
+            <key index="tables_modify.description"></key>
+            <key index="tables_modify.details"></key>
+            <key index="_tables_modify.seeAlso"></key>
+            <key index="tables_select.description"></key>
+            <key index="tables_select.details"></key>
+            <key index="_tables_select.seeAlso"></key>
+            <key index="non_exclude_fields.description"></key>
+            <key index="non_exclude_fields.details"></key>
+            <key index="_non_exclude_fields.seeAlso"></key>
+            <key index="hidden.description"></key>
+            <key index="hidden.details"></key>
+            <key index="lockToDomain.description"></key>
+            <key index="lockToDomain.details"></key>
+            <key index="_lockToDomain.seeAlso"></key>
+            <key index="groupMods.description"></key>
+            <key index="groupMods.details"></key>
+            <key index="_groupMods.seeAlso"></key>
+            <key index="inc_access_lists.description"></key>
+            <key index="_inc_access_lists.seeAlso"></key>
+            <key index="description.description"></key>
+            <key index="_description.seeAlso"></key>
+            <key index="TSconfig.description"></key>
+            <key index="TSconfig.syntax"></key>
+            <key index="_TSconfig.seeAlso"></key>
+            <key index="hide_in_lists.description"></key>
+            <key index="hide_in_lists.details"></key>
+            <key index="subgroup.description"></key>
+            <key index="subgroup.details"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index=".description">This is the backend administration user groups available for the Backend users. These determine the permissions for the Backend users.</key>
+            <key index="_.seeAlso">be_users</key>
+            <key index="title.description">Name of the Backend usergroup</key>
+            <key index="db_mountpoints.description">Assign startpoints for the users page tree.</key>
+            <key index="db_mountpoints.details">The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a 'Database mount'.
+DB mounts may be inherited by the users which are members of this group. This does depend on whether the user is configured to include the mounts set in the member groups. However it's recommended to use backend user groups like this to configure mounts. Especially if the need to be shared amoung many users.</key>
+            <key index="_db_mountpoints.seeAlso">be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options
+</key>
+            <key index="file_mountpoints.description">Assign startpoints for the file folder tree.</key>
+            <key index="file_mountpoints.details">The file folder tree is used by all File-submodules to navigate between the file folders on the webserver.
+Notice as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</key>
+            <key index="_file_mountpoints.seeAlso">be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options
+</key>
+            <key index="pagetypes_select.description">Select which 'Types' of Pages the members may set.</key>
+            <key index="pagetypes_select.details">This option limits the number of valid choices for the user when he is about to select a page type.</key>
+            <key index="_pagetypes_select.seeAlso">pages:doktype,
+be_groups:inc_access_lists</key>
+            <key index="tables_modify.description">Select which tables the members may modify.</key>
+            <key index="tables_modify.details">An important part of setting permissions is to define which database tables a user is allowed to modify. 
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the &quot;Tables (listing)&quot; box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</key>
+            <key index="_tables_modify.seeAlso">be_groups:tables_select,
+be_groups:inc_access_lists</key>
+            <key index="tables_select.description">Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</key>
+            <key index="tables_select.details">This determines which tables - in addition to those selected in the &quot;Tables (modify)&quot; box - may be viewed and listed for the user. He is thus not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not so very important. It's a pretty rare situation that a user may select tables but not modify them.</key>
+            <key index="_tables_select.seeAlso">be_groups:tables_modify,
+be_groups:inc_access_lists</key>
+            <key index="non_exclude_fields.description">Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</key>
+            <key index="non_exclude_fields.details">&quot;Allowed excludefields&quot; allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of &quot;Allowed excludefields&quot;. So the user may create a new page, but cannot un-hide the page. Unless of course he has been assigned the &quot;Page: Hidden&quot; exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of table allowed to be modified.</key>
+            <key index="_non_exclude_fields.seeAlso">be_groups:inc_access_lists</key>
+            <key index="hidden.description">Disables a user group.</key>
+            <key index="hidden.details">If you disable a user group all user which are members of the group will in effect not inherit any properties this group may have given them.</key>
+            <key index="lockToDomain.description">Enter the host name from which the user is forced to login.</key>
+            <key index="lockToDomain.details">A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</key>
+            <key index="_lockToDomain.seeAlso">be_users:lockToDomain,
+fe_users:lockToDomain,
+fe_groups:lockToDomain</key>
+            <key index="groupMods.description">Select available backend modules for the group members.</key>
+            <key index="groupMods.details">This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</key>
+            <key index="_groupMods.seeAlso">be_users:userMods,
+be_groups:inc_access_lists</key>
+            <key index="inc_access_lists.description">Select whether Page type, Table, Module and Allowed excludefield access lists are enabled for this group.</key>
+            <key index="_inc_access_lists.seeAlso">be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields
+</key>
+            <key index="description.description">Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</key>
+            <key index="_description.seeAlso">fe_groups:description</key>
+            <key index="TSconfig.description">Additional configuration through TypoScript style values (Advanced).</key>
+            <key index="TSconfig.syntax">TypoScript style without conditions and constants.</key>
+            <key index="_TSconfig.seeAlso">be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig</key>
+            <key index="hide_in_lists.description">This option will prevent the user group from showing up in lists, where user groups are selected.</key>
+            <key index="hide_in_lists.details">This will affect the list of user groups in the Task Center To-Do and Messages parts as well as the Web&gt;Access module.
+The option is extremely useful if you have general user groups defining some global properties which all your users are members of. Then you would probably not like all those users to 'see' each other through the membership of this group, for instance sending messages or To-Dos to each other. And this is what is option will prevent.</key>
+            <key index="subgroup.description">Select backend user groups which are automatically included for members of this group.</key>
+            <key index="subgroup.details">The properties or subgroups are added to the properties of this groups and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</key>
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+            <key index=".description">Ceci est l'interface BE d'administration des groupes utilisateurs disponible pour les utilisateurs BE: ici sont déterminées les permissions pour les utilisateurs BE</key>
+            <key index="title.description">Nom du groupe utilisateur Backend</key>
+            <key index="db_mountpoints.description">Assigne le point de départ de l'arborescence de pages de l'utilisateur</key>
+            <key index="db_mountpoints.details">L'arborescence de pages vue dans les sous-modules web en naviguant doit avoir des points d'entrée définis. Ici vous devriez insérer une ou plusieurs références à des pages qui représenteront de nouvelles pages racine dans l'arborescence. Ceci est appelé un 'point de montage de base de données' (DB mounts, faisant référence à la notion de point de montage Unix)
+Les DB mounts peuvent hérités des utilisateurs qui sont membres de ce groupe. Ceci dépend de la façon dont l'utilisateur est configuré, s'il doit inclure les DB mounts spécifiés dans son (ses) groupes. Cependant il est recommandé d'utiliser les groupes utilisateures comme ceci pour configurer les montages, surtout s'ils doivent être partagés par un grand nombre d'utilisateurs</key>
+            <key index="file_mountpoints.description">Assigne des points de départ pour l'arborescence de fichiers</key>
+        </key>
+        <key index="es" type="array">
+            <key index=".description">Este es el administrador de grupos de usuarios del backend disponible para los usuarios del Backend. Dichos grupos determinan los permisos para los usuarios del Backend.</key>
+            <key index="title.description">Nombre del grupo de usuarios del Backend</key>
+            <key index="db_mountpoints.description">Asigna puntos de entrada para el árbol de páginas de los usuarios</key>
+            <key index="db_mountpoints.details">El árbol de páginas usado por todos mis submódulos Web para navegar debe tener algunos puntos de entrada definidos. Aquí deberías insertar una o más referencias a una página que representará una nueva página raíz para el árbol de páginas. Esto es conocido como un ?Punto de montaje de base de datos?.
+Los Puntos de Montaje de BBDD pueden ser heredados por los usuarios miembros de este grupo. Esto depende de si el usuario está configurado para incluir los puntos de montaje establecidos en los grupos de usuarios a los que pertenece. De cualquier manera, es recomendable utilizar grupos de usuarios para configurar dichos puntos de montaje, especialmente si deben ser compartidos por varios usuarios.</key>
+            <key index="file_mountpoints.description">Asigna puntos de entrada para el árbol de carpetas de ficheros.</key>
+            <key index="file_mountpoints.details">El árbol de carpetas de ficheros es utilizado por todos los submódulos de ?Fichero? para navegar entre las carpetas de servidor web.
+Como ocurre con los puntos de montaje de BBDD, los puntos de montaje de ficheros pueden ser heredados por los usuarios que son miembros de este grupo.</key>
+            <key index="pagetypes_select.description">Selecciona qué &quot;Tipos&quot; de páginas pueden utilizar los miembros del grupo.</key>
+            <key index="pagetypes_select.details">Esta opción limita el número de opciones válidas para el usuario cuando éste va a seleccionar un tipo de página.</key>
+            <key index="tables_modify.description">Selecciona qué tablas pueden modificar los miembros.</key>
+            <key index="tables_modify.details">Un parte importante al establecer permisos es definir qué tablas de la base de datos puede modificar un usuario.
+Las tablas que se han seleccionado para modificación automáticamente son seleccionadas para visualización, por lo que no es necesario especificarlas también en el cuadro ?Tablas (Visualización)?.
+
+&lt;strong&gt;Nota:&lt;/strong&gt; Esta lista se acumula con las que existen en otros grupos de los que es miembro el usuario.</key>
+            <key index="tables_select.description">Seleciona qué tablas puede ver el usuario en las listas de registros (no es necesario especificar aquí las tablas para modificación).</key>
+            <key index="tables_select.details">Esto determina qué tablas ? además de las seleccionadas en el cuadro ?Tablas (modificar)? - deben ser visibles y listadas por el usuario. Por tanto él no puede &lt;em&gt;editar&lt;/em&gt; la tabla, sino tan sólo seleccionar los registros y ver el contenido.
+Esta lista no es demasiado importante. Es una situación bastante extraña el que un usuario pueda ver unas tablas pero no modificarlas.</key>
+            <key index="non_exclude_fields.description">Algunos campos de las tablas no están disponibles por defecto. Dichos campor pueden ser activados explícitamente para los miembros del grupo aquí.</key>
+            <key index="non_exclude_fields.details">?Campos permitidos? permite detallar los permisos asignados a las tablas. Por defecto todos esos campos no están disponibles a los usuarios y deben ser activados específicamente seleccionándolos aquí.
+Una aplicación de esto es que las páginas están normalmente ocultas por defecto y el campo ?Ocultar? no está disponible para los usuarios a no ser que se active explícitamente en esta lista. Así, el usuario puede crear una página nueva pero no la puede dejar visible. A no ser por supuesto que tenga seleccionado el campo ?Página: Ocultar? en uno de los grupos de los que es miembro.
+Por supuesto no tiene sentido añadir campos de tablas que no están en la lista de tablas con permiso para modificar.</key>
+            <key index="hidden.description">Desactiva un grupo de usuarios.</key>
+            <key index="hidden.details">Si desactivas un grupo de usuarios, todos los usuarios que sean miembros del grupo no heredarán ninguna de las propiedades que el grupo les ofecía.</key>
+            <key index="lockToDomain.description">Introduce el nombre del equipo desde el cual el usuario está forzado a autentificarse.</key>
+            <key index="lockToDomain.details">Un sistema TYPO3 puede tener múltiples dominios apuntando a él. Esta opción asegura que los usuarios sólo puedan entrar desde cierto equipo.</key>
+            <key index="groupMods.description">Selecciona los módulos de backend disponibles para los miembros del grupo.</key>
+            <key index="groupMods.details">Esto determina qué ?elementos de menú? están disponibles para los miembros del grupo. 
+Esta lista de módulos se suma a las de los otros grupos a los que pertenece el usuario, así como a los seleccionados en el mismo campo del propio usuario.</key>
+            <key index="inc_access_lists.description">Selecciona que listas de acceso de tipo de página, tabla, módulo y campos permitidos están activados en este grupo.</key>
+            <key index="description.description">Introduce una pequeña descripción del grupo de usuarios, para qué se utiliza y quienes deben ser los miembros. Esto es sólo para uso interno.</key>
+            <key index="TSconfig.description">Configuración adicional mediante valores de estilo de TypoScript (Avanzado).</key>
+            <key index="TSconfig.syntax">Estilo de TypoScript sin condiciones ni constantes.</key>
+            <key index="hide_in_lists.description">Esta opcion previene al grupo de usuarios de aparecer en las listas donde son seleccionados los grupos de usuarios.</key>
+            <key index="hide_in_lists.details">Esto afectará el listado de grupos de usuarios en en Centro de Tareas (partes de Tareas y Mensajes) y también en el módulo Web&gt;Acceso.
+Esta opción es extremadamente útil si dispones de grupos de usuarios generales que definen algunas propiedades globales de los que son miembros tus usuarios. Seguramente no quieras que todos esos usuarios ?vean? a los otros ya que son miembros del mismo grupo, para por ejemplo enviar mensajes o tareas entre ellos. Y esto es lo que previene esta opción.</key>
+            <key index="subgroup.description">Selecciona grupos de usuarios del backend que serán incluidos automáticamente para miembros de este grupo.</key>
+            <key index="subgroup.details">Las propiedades o subgrupos son añadidos a las propiedades de estos grupos y básicamente serán añadidos a la lista de grupos miembros de cualquier usuario que sea miembro de este grupo.
+Esta carácterística ofrece una buena manera de crear grupos de usuarios de ?Supervisores?.</key>
+        </key>
+        <key index="nl" type="array">
+            <key index=".description">Dit zijn de backendbeheer-gebruikersgroepen die beschikbaar zijn voor de Backendgebruikers. Deze bepalen de permissies voor de Backendgebruikers.</key>
+            <key index="title.description">Naam van de backendgebruikersgroep</key>
+            <key index="db_mountpoints.description">Startpunten toekennen voor de gebruikers paginaboom.</key>
+            <key index="db_mountpoints.details">De paginaboom, gebruikt om door alle web-submodules te navigeren, dient een aantal ingangspunten gedefiniëerd te hebben. Hier moeten een aantal referenties naar een pagina worden ingevoegd die een nieuwe rootpagina representeren voor de paginaboom. Dit word een 'Databasestartpunt' genoemd.
+Databasestartpunten kunnen worden ge-erfd door gebruikers die lid zijn van deze groep. De gebruiker dient dan wel zo geconfigureerd te zijn dat deze de startpunten bevat zoals bepaald in de gebruikersgroepen. Het wordt echter aanbevolen de backend gebruikersgroepen te gebruiken om de startpunten te configureren. Vooral als ze gedeeld worden door een groot aantal gebruikers.</key>
+            <key index="file_mountpoints.description">Startpunten toekennen aan de mappenweergave.</key>
+            <key index="file_mountpoints.details">Om de mappenweergave met alle sub-modules zichtbaar te maken moeten er startpunten ingegeven worden. Hier worden een of meer referenties aangegeven naar een pagina welke zichtbaar wordt als een beginpunt voor de mappenweergave. Dit wordt een &quot;Database mount&quot; genoemd. DB mounts worden door leden van een gebruikersgroep overgenomen, mits dit zo is ingesteld. Het wordt aangeraden om met gebruikersgroepen te werken, zeker als er veel gebruikers zijn.</key>
+            <key index="pagetypes_select.description">Selecteer welke 'Type' pagina's de leden van de groep mogen bepalen.</key>
+            <key index="pagetypes_select.details">Deze optie beperkt het aantal geldige keuzes voor de gebruiker als deze een paginatype wil selecteren.</key>
+            <key index="tables_modify.description">Selecteer welke tabellen door de leden van de groep aangepast mogen worden.</key>
+            <key index="tables_modify.details">Een zeer belangerijke optie is welke database velden (tabellen) de gebruiker mag aanpassen. De velden die hier worden geselecteerd worden automatisch toegevoegd aan de lijst van velden (tabellen).
+
+&lt;strong&gt;p.s.&lt;/strong&gt; Bedenk wel dat de geselecteerde velden ook worden toegevoegd aan eventuele subgroepen van deze beheergroep.</key>
+            <key index="tables_select.description">Om de boomstructuur met alle sub-modules zichtbaar te maken moeten er startpunten ingegeven worden. Hier worden een of meer referenties aangegeven naar een pagina welke zichtbaar wordt als een beginpunt voor de boomstructuur. Dit wordt een &quot;Database mount&quot; genoemd. DB mounts worden door leden van een gebruikersgroep overgenomen, mits dit zo is ingesteld. Het wordt aangeraden om met gebruikersgroepen te werken, zeker als er veel gebruikers zijn.</key>
+            <key index="tables_select.details">Deze optie bepaalt welke velden - als toevoeging aan degene die reeds zijn geselecteerd (Tables (modify) in aan te passen velden - in de lijst van bestanden komen die bekeken kunnen worden.
+Deze lijst is niet zo belangrijk. Het komt zelden voor dat een gebruiker wel tabellen kan selecteren, maar niet kan aanpassen.</key>
+            <key index="non_exclude_fields.description">Bepaalde velden zijn niet standaard beschikbaar. Deze velden kunnen hier expliciet, voor groepsleden, beschikbaar gemaakt worden.</key>
+            <key index="non_exclude_fields.details">&quot;Toegestane uitgesloten velden&quot; geven de mogelijkheid om tot in detail permissies aan velden toe te kennen. Standaard zijn deze velden niet beschikbaar voor gebruikers, maar beschikbaar gemaakt worden door ze hier te selecteren. 
+Een toepassing van dit is dat pagina's normaal gesproken verborgen worden en dat de verberg optie niet beschikbaar is voor de gebruiker, tenzij hier geselecteerd. Dit betekend dat de gebruiker wel een nieuwe pagina kan creeren, maar niet verbergen, tenzij deze gebruiker via de gebruikersgroep de permissie heeft om de pagina te verbergen. 
+Het heeft geen zin om hier velden te selecteren als men deze niet ook heeft geselecteerd in de tabel voor aan te passen velden.</key>
+            <key index="hidden.description">Verbergt een gebruikersgroep</key>
+            <key index="hidden.details">Ten gevolge van het verbergen (uitschakelen) van een gebruikersgroep, zullen de leden van deze groep niet de instellingen van deze groep overerven.</key>
+            <key index="lockToDomain.description">Geef hier op van welk domein de gebruiker MOET inloggen.</key>
+            <key index="lockToDomain.details">Sommige TYPO3 installatie's hebben meerdere domeinen. Deze optie zorgt ervoor dat gebruikers alleen van een bepaald domein kunnen inloggen.</key>
+            <key index="groupMods.description">Selecteer beschikbare backendmodules voor de groepsleden.</key>
+            <key index="groupMods.details">Dit bepaald welke menu items beschikbaar zijn voor groepsleden. 
+De lijst van menu items worden automatisch aan de leden van de groep toegevoegt.</key>
+            <key index="inc_access_lists.description">Selecteer hier welke pagina types, tabellen, modules zichtbaar zijn voor deze groep</key>
+            <key index="description.description">Geef een korte beschrijving van de gebruikers groep, wat voor soort groep is het en wie er leden zouden moeten zijn. Dit is alleen voor intern gebruik.</key>
+            <key index="TSconfig.description">Additionele configuratie d.m.v typoscript.</key>
+            <key index="TSconfig.syntax">Typoscript zonder condities en constantes</key>
+            <key index="hide_in_lists.description">Deze optie voorkomt dat gebruikersgroepen verschijnen in lijsten, waar men gebruikersgroepen kan selecteren.</key>
+            <key index="hide_in_lists.details">Dit heeft gevolgen voor de lijst van gebruikersgroepen in het taakcentrum, bij to-do en de berichten, en in de Web&gt;toegang module. 
+Deze optie is erg handig als er algemene gebruikersgroepen zijn met globale instellingen waar alle gebruikers lid van zijn. Dit voorkomt dat men elkaar kan waarnemen als lid van een groep en men elkaar berichten en to-do kan sturen.</key>
+            <key index="subgroup.description">Selecteer de beheergroepen die als leden tot deze groep behoren.</key>
+            <key index="subgroup.details">De eigenschappen van de subgroepen worden toegevoegd aan de eigenschappen van deze groep, waardoor elk lid van deze groep alle eigenschappen van de groep en de subgroep heeft.
+Deze feature is ideaal om een 'Supervisor' gebruikersgroep aan te maken.</key>
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+            <key index=".description">Tämä on taustan hallinta käytettävissä oleville Taustakäyttäjien (BE) käyttäjäryhmille. Nämä ryhmät määrittelevät käyttöoikeudet Taustakäyttäjille (BE).</key>
+            <key index="title.description">Taustakäyttäjien ryhmän nimi.</key>
+            <key index="db_mountpoints.description">Määrittele aloituskohta käyttäjien sivurakenteelle.</key>
+            <key index="db_mountpoints.details">Sivujen puurakenteeseen, jota WEB-aliohjelmat käyttävät, tulee määritellä joitakin liityntä pisteitä. Tässä lisäät yhden tai useamman referenssin sivulle jotka edustavat sivuston rakenteen uutta juurta (alkupistettä).
+Tätä kutsutaan 'Tietokannan asetukseksi&quot; (&quot;Database mount&quot;).
+Tietokanta asetukset periytyvät käyttäjälle siltä käyttäjäryhmältä jonka jäsen hän on. Tämä ei riipu onko käyttäjälle konfiguroitu käyttäjäryhmän sisältämät asetukset. On kuitenkin suositeltavaa käyttää tämänkaltaisia käyttäjäryhmiä asetusten konfiguroimiseksi. Erityisesti jos näitä jaetaan useiden käyttäjien kesken.</key>
+            <key index="file_mountpoints.description">Määrittele aloituskohta tiedostohakemistojen rakenteelle.</key>
+            <key index="file_mountpoints.details">Tiedostohakemistoa käyttävät kaikki Tiedosto-aliohjelmat siirtyessään palvelimen tiedostohakemistoissa.
+Huomaa, että kuten 'DB asetuksissa' tiedostohakemistojen käyttöoikeudet käyttäjille periytyvät niistä käyttäjäryhmistä joiden jäseniä käyttäjät ovat.</key>
+            <key index="pagetypes_select.description">Valitse mihin sivutyyppeihin käyttäjillä on oikeus.</key>
+            <key index="pagetypes_select.details">Tämä valinta rajoittaa valintaehtojen lukumäärää käyttäjille kun he valitsevat sivun tyyppiä.</key>
+            <key index="tables_modify.description">Valitse mihin tauluihin käyttäjillä on muutosoikeus.</key>
+            <key index="tables_modify.details">Asetusten asettamisen tärkeä osa on kuinka määritellään käyttäjälle sallittujen tietokannan taulujen muutosoikeus.
+Taulujen muutosoikeus asettaa oikeudet myös taulun valinnann eikä Sinun tarvitse asettaa tauluja tähän &quot;Taulut (listaus)&quot; laatikkoon.
+
+&lt;strong&gt;Huomaa&lt;/strong&gt; että tämä lista lisää valitut tiedot myös käyttäjän muihin käyttäjäryhmiin.</key>
+            <key index="tables_select.description">Valitse mitkä taulut käyttäjät voivat nähdä tietolistoilla ('muokkaa' tauluja ei tarvitse lisätä uudelleen tässä!).</key>
+            <key index="tables_select.details">Tämä määrittelee mitä tauluja - niiden lisäksi jotka olet valinnut &quot;Taulut (muokkaa) laatikossa&quot; - käyttäjä näkee. Käyttäjä ei siisvoi &lt;em&gt;muokata&lt;/em&gt; taulua - ainoastaan valita tietoja ja katsoa sisältöä.
+Tämä lista ei siis ole kovin tärkeä. On perin harvinaista että käyttäjä voi valita taulun muttei muuttaa sen sisältöä.</key>
+            <key index="non_exclude_fields.description">Eräät taulujen tiedot eivät ole oletusarvoisesti käytettävissä. Nuo tiedot voidaan eksplisiittisesti saattaa voimaan ryhmän jäsenille tässä.</key>
+            <key index="non_exclude_fields.details">&quot;Sallitut suljetut tiedot&quot; antavat Sinullemahdollisuuden määritellä yksityiskohtasia oikeuksia tauluille. Oletusarvoisesti eivätmitkään näistä tiedoista ole sallittuja käyttäjille vaan niille on erityisesti annettava oikeudet valitsemalla tästä.
+Esimerkki, sivut ovat oletuksena piilotettuja ja piilotettu kenttä ei ole käyttäjän saavutettavissa ilman että hänelle on annettu oikeuksia tällä &quot;Sallitut suljetut tiedot&quot; listalla. Joten käyttäjä voi luoda uuden sivun muttei voi piilottaa sivua. Tämä tietenkin jos käyttäjälle ei ole annettu oikeuksia &quot;Sivu:Piilotettu&quot; (&quot;Page:Hidden&quot;) suljettu tietoon jonkin hänen käyttäjäryhmänsä kautta.
+Ei ole kuitenkaan mieltää antaa käyttäjälle oikeuksia sellaisiin tietoihin eri tauluista johon hänellä ei ole muokkausoikeuksia.</key>
+            <key index="hidden.description">Poista käyttäjäryhmän voimassaolo.</key>
+            <key index="hidden.details">Jos poistat voimassaolon käyttäjäryhmältä</key>
+            <key index="lockToDomain.description">Anna domainin nimi mihin käyttäjä on pakoitettu sisäänkirjoittautumaan.</key>
+            <key index="lockToDomain.details">Typo3 järjestelmässä voi olla useita domaineja. Siksi tämä vaihtoehto varmistaa että käyttäjät pääsevät vain heille tarkoittuihin domaineihin.</key>
+            <key index="groupMods.description">Valitse käytettävissä olevat tausta-aliohjelmat ryhmän käyttäjille.</key>
+            <key index="groupMods.details">Tämä määrittelee mitkä 'valikko osat' ovat käytettävissä ryhmälle.
+Tämä aliohjelma lista lisätään kaikkiin muihinkin käyttäjän ryhmiin kuin myös vastaavaan tietoon käyttäjälle itselleen.</key>
+            <key index="inc_access_lists.description">Valitse mitkä Sivu tyypit (Page type), Taulut (Table), Aliohjelmat (Module) ja Sallitut estetyt kentät (Allowed excludefields) ovat sallittuja tälle käyttäjäryhmälle.</key>
+            <key index="description.description">Anna lyhyt kuvaus käyttäjäryhmästä, miksi se on olemassa ja minkälaisia käyttäjiä siihen kuuluu. Tämä tieto on vain sisäiseen käyttöön.</key>
+            <key index="TSconfig.description">Lisäasetukset käyttäen TypoScript-tyylitietoja (Laajennettu eli Advanced).</key>
+            <key index="TSconfig.syntax">TypoScript-tyyli ilman ehtoja (conditions) ja vakioita (constants).</key>
+            <key index="hide_in_lists.description">Tämä valinta estää käyttäjäryhmää näkymästä listoilla kun käyttäjäryhmiä valitaan.</key>
+            <key index="hide_in_lists.details">Tämä vaikuttaa käyttäjäryhmälistalle Toimanta Keskuksen To-Do ja Viesti osiin kuin myös Web&gt;Oikeudet aliohjelmaan.
+Vaihtoehto on erityisen hyödyllinen jos Sinulla on yleisiä käyttäjäryhmiä jotka tarvitsevat ylesiä ominaisuuksia. 
+Jos et esimerkiksi halua tämän ryhmän lähettävän viestejä toisilleen tai et halua heidän näkevän toistensa To-Do listaa on tämä vaihtoehto mitä tarvitset.</key>
+            <key index="subgroup.description">Valitse taustakäyttäjäryhmä, joka automaattisesti lisätään tämän ryhmän jäsenille.</key>
+            <key index="subgroup.details">Ominaisuudet ja aliryhmät lisätään tämän ryhmän ominaisuuksiin. Periaatteessa ne yksinkertaisesti lisätään kaikkien kaikille ryhmän jäsenille.
+Tämä mahdollistaa helpon tavan luoda 'Supervisor' käyttäjäryhmän.</key>
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+            <key index=".description">Dethär är backend-administrationens användargrupper som BE-användare kan använda. Dessa begränsar BE-användarnas rättigheter.</key>
+            <key index="title.description">Backend-användargruppens namn</key>
+            <key index="db_mountpoints.description">Bestäm startpunkter för användarnas sidträd.</key>
+            <key index="db_mountpoints.details">The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a 'Database mount'.
+DB mounts may be inherited by the users which are members of this group. This does depend on whether the user is configured to include the mounts set in the member groups. However it's recommended to use backend user groups like this to configure mounts. Especially if the need to be shared amoung many users.</key>
+            <key index="file_mountpoints.description">Bestäm startpunkter för filhanteringsträdet.</key>
+            <key index="file_mountpoints.details">The file folder tree is used by all File-submodules to navigate between the file folders on the webserver.
+Notice as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</key>
+            <key index="pagetypes_select.description">Välj vilka &quot;Typer&quot; av sidor som medlemmarna kan använda</key>
+            <key index="pagetypes_select.details">Denna option begränsar vilka sidor en användare kan ta i bruk.</key>
+            <key index="tables_modify.description">Välj vilka tabeller en användare kan ändra.</key>
+            <key index="tables_modify.details">An important part of setting permissions is to define which database tables a user is allowed to modify. 
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the &quot;Tables (listing)&quot; box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</key>
+            <key index="tables_select.description">Välj vilka tabeller användarna kan se i listan ('ändra' tabellerna behöver inte fyllas i här också!).</key>
+            <key index="tables_select.details">This determines which tables - in addition to those selected in the &quot;Tables (modify)&quot; box - may be viewed and listed for the user. He is thus not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not so very important. It's a pretty rare situation that a user may select tables but not modify them.</key>
+            <key index="non_exclude_fields.description">Vissa tabellfält är som standard spärrade. Dessa fält kan här öppnas för gruppens medlemmar.</key>
+            <key index="non_exclude_fields.details">&quot;Allowed excludefields&quot; allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of &quot;Allowed excludefields&quot;. So the user may create a new page, but cannot un-hide the page. Unless of course he has been assigned the &quot;Page: Hidden&quot; exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of table allowed to be modified.</key>
+            <key index="hidden.description">Spärra en användargrupp.</key>
+            <key index="hidden.details">Om du spärrar en användargrupp kommer  de egenskaper, som du ställt in för alla medlemmar i gruppen att begränsas.</key>
+            <key index="lockToDomain.description">Fyll i från vilken värddator användaren måste logga in.</key>
+            <key index="lockToDomain.details">Ett TYPO3-system kan ha många domain under sig. Denna option säkerställer att användarna kan logga in endast från en viss värddator.</key>
+            <key index="groupMods.description">Välj tillbudsstående moduler för gruppens medlemmar</key>
+            <key index="groupMods.details">This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</key>
+            <key index="inc_access_lists.description">Välj om denna grupp skall kunna använda Sidtyp, Tabell, Modul och Godkända fält.</key>
+            <key index="description.description">Fyll i en kort förklaring för användargruppen, gruppens uppgift och vilka medlemmarna är. Detta är endast för internt bruk.</key>
+            <key index="TSconfig.description">Tilläggskonfigurering med TypoScript stilvärden (avancerad).</key>
+            <key index="TSconfig.syntax">TypoScript stilar utan villkor och konstanter</key>
+            <key index="hide_in_lists.description">Denna option förebygger att en användargrupp inte visas i listorna där användargrupper väljs.</key>
+            <key index="hide_in_lists.details">This will affect the list of user groups in the Task Center To-Do and Messages parts as well as the Web&gt;Access module.
+The option is extremely useful if you have general user groups defining some global properties which all your users are members of. Then you would probably not like all those users to 'see' each other through the membership of this group, for instance sending messages or To-Dos to each other. And this is what is option will prevent.</key>
+            <key index="subgroup.description">Välj de backend-användargrupper som automatiskt ges åt medlemmar i denna grupp.</key>
+            <key index="subgroup.details">The properties or subgroups are added to the properties of this groups and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</key>
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+            <key index=".description">Группы внутренних пользователей, доступные для пользователей бэкенда. Членство в группах определяет права пользователей бэкенда.</key>
+            <key index="title.description">Название группы пользвателей</key>
+            <key index="db_mountpoints.description">Выбрать исходную точку для дерева страниц, видимого пользователями.</key>
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+            <key index=".description">这是后端管理用户组,对后端用户有效.它们为后端用户确定权限.</key>
+            <key index="title.description">后端用户组的名称</key>
+            <key index="db_mountpoints.description">未用户页面树分配开始点.</key>
+            <key index="db_mountpoints.details">页面树使用所有的站点子模块进行定位,
+必须已定义了一些进入点.
+此处您应该为一个页面插入一个和多个参考,
+该页面将为页面树显示一个新的根页面.这被
+称为'数据库mount'.
+DB mounts属性可以从作为组成员的用户处被继承.
+这取决于在成员组中用户是否被配置为包括mounts set.
+无论如何建议使用后端用户组来配置mounts.特别是在许多
+用户之间有共享需求时.</key>
+            <key index="file_mountpoints.description">为文件目录树分配开始点.</key>
+            <key index="file_mountpoints.details">所有的文件子模块用文件目录树在站点服务器上的文件目录之间进行定位.
+带有'DB mounts'的文件目录mounts可能是从作为组成员的用户那里继承
+了该属性.</key>
+            <key index="pagetypes_select.description">选择成员可能设置的页面属性.</key>
+            <key index="pagetypes_select.details">对将选择页面类型的用户此选项限制其有效选择的数量.</key>
+            <key index="tables_modify.description">选择成员可能修改的表格.</key>
+            <key index="tables_modify.details">设置权限的一个重要部分是定义哪些数据库表格允许用户修改.
+允许修改的表格也同样自动允许选择,因此您不需要在此处&quot;表格(列表)&quot;
+框中输入表格.
+
+&lt;strong&gt;注意&lt;/strong&gt;该列表添加到在用户的另一个成员组中所选择
+的域内.</key>
+            <key index="tables_select.description">选择成员在记录列表中可能要查看的表格('修改'表格不需要在此处重新输入!)</key>
+            <key index="tables_select.details">此项决定哪些表格 - 除了在&quot;表格(修改)&quot;框中所选择的表格之外 - 可能被
+用户查看和列出的表格. 这样他不能&lt;em&gt;编辑&lt;/em&gt;表格 - 只能选择
+记录和查看内容.
+此列表不是非常重要.一般不太会出现用户选择表格但不修改它们的情况.</key>
+            <key index="non_exclude_fields.description">某些表格域在缺省情况下是无效的.那些域在此对于组成员可用.</key>
+            <key index="non_exclude_fields.details">&quot;允许excludefields&quot;允许您为表格详细指明准许的权限.缺省情况下所有的这些
+域对于用户是不可用的,但可以通过在此处选择来指定为可用.
+一个应用实例为通常页面在缺省下是被隐藏的,并且被隐藏的页面对于用户
+是不可用的,除非他被此列表&quot;允许excludefields&quot;准许访问. 因此用户可以创建一个
+新的页面,但不能不隐藏页面.当然除非他已经通过他的成员组中的一个组被
+分配了&quot;页面:隐藏&quot;不包括域属性.
+当然,从那些不包括在允许被修改的表格列表中的表格添加域也没有任何意义.</key>
+            <key index="hidden.description">禁止一个用户组.</key>
+            <key index="hidden.details">如果您禁止了一个用户组,那么该组的所有用户将不能继承该组授予他们的任何属性.</key>
+            <key index="lockToDomain.description">输入用户被要求登录的主机名称.</key>
+            <key index="lockToDomain.details">一个TYPO3系统可能有多个域指向它.因此该选项保证用户只可以从某一个主机名称登录.</key>
+            <key index="groupMods.description">为组成员选择有效的后端模块.</key>
+            <key index="groupMods.details">此项决定哪些'菜单项'对于组成员可用.
+此模块列表被添加到任何一个用户的其它成员组中所选的模块以及用户自己
+相关的域.</key>
+            <key index="inc_access_lists.description">选择页面类型,表格,模块和允许excludefields访问列表对于此组是否可用.</key>
+            <key index="description.description">输入一个用户组的简短描述,创建目的和组成员. 这只供内部使用.</key>
+            <key index="TSconfig.description">通过TypoScript样式值(高级)的附加配置.</key>
+            <key index="TSconfig.syntax">TypoScript样式不带条件和常量.</key>
+            <key index="hide_in_lists.description">此选项将防止用户组显示在被选中的用户组列表中.</key>
+            <key index="hide_in_lists.details">这将影响到To-Do任务中心内的用户组列表和消息部分以及站点&gt;访问模块.
+如果您有定义了一些全局属性的一般用户组, 所有您的用户都是成员, 该选
+项非常有用.然后您不希望所有的那些用户通过该组的成员关系'看到'其它
+成员,例如发送消息或任务给其它人.这就是此选项所要防止的.</key>
+            <key index="subgroup.description">选择被自动包括在该组成员中的后端用户组.</key>
+            <key index="subgroup.details">属性和子组被添加到该组的属性中,并且基本上他们将被完全的添加到作为
+该组成员的任何用户的成员组列表中.
+此特性提供了一个很好的方法来创建'管理员'用户组.</key>
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+            <key index=".description">Ovo je pozadinska administracija korisničkih grupa dostupna pozadinskim korisnicima. Ovdje se određuju dozvole za pozadinske korisnike.</key>
+            <key index="title.description">Naziv grupe pozadinskih korisnika</key>
+            <key index="db_mountpoints.description">Pridruži početnu točku stabla stranica korisnika.</key>
+            <key index="db_mountpoints.details">Stablo stranica koje koriste svi podmoduli unutar Web navigacije mora imati definiranu točku ulaska. Ovdje možete unjeti jednu ili više referenci na stranicu koja će predstvljati novu početnu stranicu stabla. To se naziva 'Database mount' (DB poveznica).
+DB poveznica može biti naslijeđena od korisnika koji je član grupe. Ovo zavisi od toga da li je korisnik konfiguriran tako da uključuje svoje poveznice u grupu čiji je član. Preporučljivo je koristiti pozadinske korisničke grupe slične ovoj za konfiguraciu poveznica, posebno ako je trebate dijeliti između mnogo korisnika.</key>
+            <key index="file_mountpoints.description">Pridruži početnu točku stabla pretinaca.</key>
+            <key index="file_mountpoints.details">Stablo pretinaca koristi se od svih podmodula unutar menija 'Datoteka' radi navigacije između pretinaca web sjedišta. Napomenimo da slično kao i kod 'DB povezince' (DB mount) povezinca pretinaca može biti naslijeđena od korsinika koji je član grupe.</key>
+            <key index="pagetypes_select.description">Selektirajte koji tip stranice članovi grupe mogu postaviti.</key>
+            <key index="pagetypes_select.details">Ova opcija ograničava broj izbora koji korisnik može odabrati prilikom selektiranja tipa stranice.</key>
+            <key index="tables_modify.description">Selektirajte koje tablice članovi grupe mogu modificirati.</key>
+            <key index="tables_modify.details">Važan dio postavljanja dozvola predstavlja definiranja tablica baze koje korsinici mgu mijenjati. Tablice nad kojima je omogućeno mijenjanje također je automatski omogućena i selekcija i tako da nemate potrebu za postavljanjem tablica unutar &quot;Tables (popis)&quot; okvira.
+
+&lt;strong&gt;Napomena:&lt;/strong&gt;</key>
+            <key index="tables_select.description">Selektirajte koje tablice članovi grupe mogu vidjeti u popisu (tablice nad kojima je omogućeno modificiranje ne moraju ponovo biti unešene ovdje).</key>
+            <key index="tables_select.details">Ovdje definirate koje tablice - u dodatku onih selektiranih u okviru &quot;Tables (modify)&quot; - mogu biti dodane na popis tablica koje korisnik može pregledavati. Korisnik nije u mogućnosti &lt;em&gt;editirati&lt;/em&gt; tablice već samo selektirati zapis i pregledati njegov sadržaj.
+Ovaj popis nije pretjerano važan. Prilično su rijetke situacije u kojima korisnik može selektirati tablice ali ih ne može i mijenjati.</key>
+            <key index="non_exclude_fields.description">Određena polja tablice početno nisu dostupna. Ta polja ovdje trebaju biti eksplicitno omogućena članovima grupe.</key>
+            <key index="non_exclude_fields.details">&quot;Allowed excludefields&quot; omogućavaju detaljnije dozvole nad dostupnim tablicama. Početno sva ova polja nisu dostupna korisnicima već moraju ovdje biti selektirana.
+Jedana primjena ovog svojstva su stranice koje su obićno početno definirane kao skrivene i polje koje sadrži to svojstvo nije dostupno korisniku dokle god mu to pravo nije dano pomoću &quot;Allowed excludefields&quot;. Dakloe korisnik može kreirati novu stranicu ali će ona ostati skrivena dokle god on ne bude pridružen isključenom polju &quot;Page: Hidden&quot; putm članstva u grupi.
+Naravno nema nikakvog smisla dodavati polja tablica koje nisu uključene  na popis tablica koje grupa može mijenjati.</key>
+            <key index="hidden.description">Onemogućava grupu korisnika</key>
+            <key index="hidden.details">Ukoliko onemogućite grupu korisnika niti jedan član grupe neće naslijediti svojstva ove grupe.</key>
+            <key index="lockToDomain.description">Unesite naziv poslužitelja (domene) putem kojega se prisiljava korisnika za prijavu.</key>
+            <key index="lockToDomain.details">TYPO3 sustav omogućava opsluživanje više domena. Ovom opcijom osiguravate da se korisnik može prijaviti na sustav samo putem zadane domene (naziva poslužitelja - URLa).</key>
+            <key index="groupMods.description">Selektirajte dostupne pozadinske module članovima grupe.</key>
+            <key index="groupMods.details">Ova opcija određuje koji sadržaj menija će biti dostupan članovima grupe.
+Ova lista modula biti će dodana listi modula koje korisnik dobiva kao član drugih grupa kao i odgovarajučim postavkama samog korisnika.</key>
+            <key index="inc_access_lists.description">Odaberite jesu li tip stranice, tablica, modul i &quot;allowed excludefield&quot; pristupne liste omogućene za ovu grupu.</key>
+            <key index="description.description">Unesite kratak opis korisničke grupe, koja joj je namjena i tko može postati njezin član. Ovo je samo za internu upotrebu.</key>
+            <key index="TSconfig.description">Dodatna konfiguracija kroz unos vrijednosti u TypoScript stilu (napredna opcija).</key>
+            <key index="TSconfig.syntax">TypoScript stil bez uvjeta i konstanti.</key>
+            <key index="hide_in_lists.description">Ova opcija omogućava skrivanje korisničke grupe u popisu grupa.</key>
+            <key index="hide_in_lists.details">Ova opcija ima efekt na korisničke grupe unutar &quot;Task Center To-Do&quot; i &quot;Messagess&quot; dijela kao i Web&gt;Pristup modula.
+Ova opcija je izrazito korisna kada imate općenite korisničke grupe koje definiraju neka globalna svojstva čiji su članovi svi korisnici. Tada vjerojatno nećete htjeti da svi korisnici vide ostale kroz članstvo u ovoj grupi, tako da npr. ne mogu slati poruke ili dodjeljivati zadatke jedni drugima.</key>
+            <key index="subgroup.description">Odaberite pozadinsku grupu korisnika u koja će automatski biti dodani članovi ove grupe.</key>
+            <key index="subgroup.details">Osobine ili podgrupe se dodaju osobinama ovih grupa i u osnovi one će jednostavno biti dodane popisu grupa članica bilo kojeg korisnika koji je pripadnik ovih grupa.
+Ova mogućnost pruža sjajan način da se kreiraju &quot;nadzorne&quot; korisničke grupe.</key>
+        </key>
+        <key index="hu" type="array">
+            <key index=".description">Ez a Backend felhasználók által elérhető Backend adminisztrációs csoport. Jogosultságokat ad meg a Backend felhasználók részére.</key>
+            <key index="title.description">Backend felhasználócsoport neve</key>
+            <key index="db_mountpoints.description">A felhasználói oldalrendszerhez rendel kiinduló pontot.</key>
+            <key index="db_mountpoints.details">Az összes, navigálásra használt web-almodul
+oldalrendszerének rendelkeznie kell egy megadott belépési
+ponttal. Itt egy vagy több hivatkozást kell beszúrni egy
+oldalhoz, amely az oldalcsoporthoz új kiinduló oldalt ad
+meg. Ezt hívják adatbázis csatolásnak. Az adatbázis
+csatolások öröklődhetnek a csoporthoz tartozó
+felhasználóktól. Ez függ attól, hogy a felhasználónak a
+csoportban van-e jogosultsága csatoláshoz. 
+Tehát ajánlatos backend felhasználó csoportokat alkalmazni a
+csatolások beállításához. Különosen akkor, ha szükséges a
+megosztás sok felhasználó között.</key>
+            <key index="file_mountpoints.description">A fájlkönyvtár csoporthoz rendel kiinduló pontot.</key>
+            <key index="file_mountpoints.details">A fájl könyvtár-rendszert az összes, a webszerver
+fájlkönyvtárai közötti navigálásra szánt fájl almodul
+használja. Meg kell jegyezni, hogy az adatbázis
+csatolásokhoz hasonlóan, a fájlkönyvtár csatolások is
+öröklődnek a csoporthoz tartozó felhasználóktól.</key>
+            <key index="pagetypes_select.description">Válaszd ki, hogy a csoporttagok milyen típusú oldalakat állíthatnak be.</key>
+            <key index="pagetypes_select.details">Ez az opció korlátozza az érvényes választási lehetőségek számát, ha a felhasználó az oldal típusának kiválasztására készül.</key>
+            <key index="tables_modify.description">Válaszd ki, hogy a csoporttagok milyen táblákat módosíthatnak.</key>
+            <key index="tables_modify.details">Az engedélybeállítások esetén fontos annak a megadása, hogy
+melyik táblát módosíthatja egy felhasználó.
+A módosításra engedélyezett táblák elérhetőek kiválasztásra
+is, így nem szükséges az itt megadott táblákat a
+&quot;Táblák (listázás)&quot; dobozban beállítani.</key>
+            <key index="tables_select.description">Válaszd ki, hogy mely táblákat láthatják a tagok a listában (a módosítandó táblákat nem szükséges újra megadni!).</key>
+            <key index="tables_select.details">Megadja, hogy melyik táblák - beleértve a
+&quot;Táblák (módosítás)&quot; dobozban kiválasztottak is - láthatók és
+listázhatók ki a felhasználó részére. Így nem képes
+&lt;em&gt;szerkeszteni&lt;/em&gt; a táblát, csak a rekordokat
+kiválasztani és a tartalmukat megjeleníteni.
+Ez a lista nem annyira fontos. Elég ritka az a helyzet, amikor
+egy felhasználó táblákat választhat ki de nem módosíthatja
+azokat.</key>
+            <key index="non_exclude_fields.description">Bizonyos táblamezők alapértelmezésben nem elérhetőek. Ezek explicit módon engedélyezhetőek a csoporttagok részére.</key>
+            <key index="non_exclude_fields.details">A &quot;mezőkizárás engedélyezés&quot; lehetővé teszi a táblákhoz
+kiosztott engedélyek részletezését. Alapértelmezésként a
+felhasználók nem érhetik el ezeket a mezőket, de speciálisan
+elérhetővé tehetik itt kiválasztva őket. Ennek egy
+alkalmazása, hogy ezek az oldalak gyakran rejtettek
+alapértelmezésben és az, hogy a rejtett mezők sem
+hozzáférhetőek egy felhasználó számára, hacsak nincs
+jogosultsága a hozzáféréshez a &quot;mezőkizárás engedélyezés&quot;
+alapján. Így a felhasználó új oldalt hozhat létre, de nem rejtheti el az oldalt. Hacsak nincs
+hozzárendelve  &quot;Oldal: rejtett&quot;  kizáró mező a tagcsoportok
+egyikén keresztül.
+Természetesen ez nem érinti a mező hozzáadását olyan
+tábkákból, amelyek nincsenek beszúrva a módosításra
+engedélyezett tábla listában.</key>
+            <key index="hidden.description">Nem engedélyez egy felhasználói csoportot.</key>
+            <key index="hidden.details">Ha egy felhasználói csoport nincs engedélyezve, a csoportnak minden tagja nem örökli azokat a tulajdonságokat, amelyeket valószínűleg a csoportjukból kifolyólag kaptak.</key>
+            <key index="lockToDomain.description">Add meg azt a hosztnevet, ahonnan a felhasználónak be kell jelentkeznie.</key>
+            <key index="lockToDomain.details">A TYPO3 rendszernek több rámutató tartománypontja is lehet. Így ez az opció biztosítja, hogy a felhasználók csak bizonyos hosztnévről jelentkezhessenek be.</key>
+            <key index="groupMods.description">Válaszd ki az csoporttagok számára elérhető backend modulokat.</key>
+            <key index="groupMods.details">Meghatározza, hogy melyik menüpont érhető el a
+felhasználócsoport részére.
+Ez a modullista hozzáadódik bármelyik, más tagcsoport által
+kiválasztottakhoz továbbá a megfelelő magának a
+felhasználónak a megfelelő mezője.</key>
+            <key index="inc_access_lists.description">Válaszd ki, hogy az Oldaltípus, Tábla, Modul és Mezőkizárás engedélyezés listák elérhetőek-e ezen csoport részére.</key>
+            <key index="description.description">Add meg a felhasználó csoport rövid leírását, mire való és ki lehet tag. Csak belső használatra.</key>
+            <key index="TSconfig.description">Kiegészítő beállítások TypoScript stílusú értékeken (Részletes).</key>
+            <key index="TSconfig.syntax">TypoScript stílus feltételek és állandók nélkül.</key>
+            <key index="hide_in_lists.description">Ez az opció megvédi a felhasználó csoportot a megjelenéstől a csoportkiválasztó listában.</key>
+            <key index="hide_in_lists.details">Ez érinteni fogja a Feladatközpont Teendők és Üzenetek
+részében levő felhasználócsoportok listáját valamint a
+Web&gt;Hozzáférés modult. Az opció gyakran használatos
+ha csak általános, néhány globális tulajdonsággal bíró
+felhasználói csoportok vannak.
+Valószínűleg nem szeretnénk, hogy az összes felhasználó lássa
+egymást ezen csoportbeli tagság alapján, például
+üzenetküldésre vagy a teendők megosztására egymás között.
+Ez az, amit ez az opció megakadályoz.</key>
+            <key index="subgroup.description">Válaszd ki azon backend felhasználócsoportokat, amelyek automatikusan bekerülnek ennek a csoportnak a tagjai közé.</key>
+            <key index="subgroup.details">A tulajdonságok vagy alcsoportok hozzáadódnak ezen csoport
+tulajdonságaihoz és alapjában hozzáadódnak bármelyik
+felhasználó csoport listájához, amelyeknek a felhasználó a
+tagja.
+Ez lehetőséget ad egy 'Supervisor' csoport létrehozásához.</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index=".description">這是一個後勤管理員使用者群組可拱後勤使用者使用。這些決定後勤使用者的存取權。</key>
+            <key index="title.description">後勤使用者群組的名稱</key>
+            <key index="db_mountpoints.description">設定使用者在樹圖的起始點。</key>
+            <key index="db_mountpoints.details">被所有網站副模組所使用的網頁樹圖一定要有一些定對了的進入點。在這裡你應該向一個網頁插入一個或多個的參照，而這個網頁會代表網頁樹圖中一個新的根頁。這稱為「資料庫掛點」。資料庫掛點會由被所有屬於同一使用者群組的使用者所承襲。這在乎使用者是否被設定為使用與群組相同的掛點。然而，我們建議使用後勤使用者群組來設定掛點。特別是需要給很多使用者共用時。</key>
+            <key index="file_mountpoints.description">設定檔案資料夾樹圖的起始點</key>
+            <key index="file_mountpoints.details">所有檔案副模組使用檔案資料夾樹圖來溜覽網站伺服器上的檔案資料夾。留意，正如資料庫掛點一樣，檔案掛點也可以被所有屬於同一使用者群組的使用者承襲。</key>
+            <key index="pagetypes_select.description">選擇群組成員可以設定的網頁「種類」</key>
+            <key index="pagetypes_select.details">這個選項在他要準備選擇一個網頁種類時，限制使用者的有效選擇數目</key>
+            <key index="tables_modify.description">選擇成員可以修改那些資料表格</key>
+            <key index="tables_modify.details">一個設定存取權限的重要部分是定義使用者可以修改那些資料表格。容許修改的資料表格會同時自動的容許選擇，因此你不需要設定在「表格（表列）」中輸入的表格。
+
+&lt;strong&gt;留意：&lt;/strong&gt;這個名單加進使用者其他所屬的群組已選的欄目中。</key>
+            <key index="tables_select.description">選擇員可以在記錄表列中可以看到那些資料表格（「修改」表格不需要在這裡重新輸入！）</key>
+            <key index="tables_select.details">決定那些資料表 - 加上那些在「資料表（修改）」盒子中的料表 - 可以被使用者預覽和列出。他因此不能&lt;em&gt;修改&lt;/em&gt;資料表 - 只能選擇記錄和觀看內容。
+這名單不是非常重要。這是一個頗為罕見的情況，一名使用者可以選擇資料表但不能修改它們。</key>
+            <key index="non_exclude_fields.description">某些資料表格是預設不能使用的。那些欄不能直接被啟動給群組成員使用</key>
+            <key index="non_exclude_fields.details">「容許的額外欄位」容許你詳細的賦予資料表的權限。預設所有這些位都不供使用者使用，但是在這裡選擇的就會特別的被啟動。
+這裡的一個應用是網頁預設是隱藏的，而這個隱藏欄位是不供使用者運用的，除非他透過「容許的額外欄位」得到存取的權限，否則他不可以使用這個欄位。因此使用以建立網頁，但是他不能隱藏網頁。當然他透過他所屬的其中一個群組得到配給「網頁：隱藏」額外欄位例外。
+從不容許修改的資料表中加入欄位當然並不有意義。</key>
+            <key index="hidden.description">關閉一個使用者群組</key>
+            <key index="hidden.details">假如你關閉一個使用者群組，所有屬於此一群組的使用者都會被影響不能承襲此群組所賜予的任何特性。</key>
+            <key index="lockToDomain.description">輸入主機的名稱，使用者必須從此登入</key>
+            <key index="lockToDomain.details">一個TYPO3系統可以有多個網域使用。因此，這個選項保證只可以從某一主機登入</key>
+            <key index="groupMods.description">為群組成員選擇可用的後勤模組</key>
+            <key index="groupMods.details">決定那一些「選單項目」可供群組成員使用。
+這個模組的名單同時被加進所有被使用者其他群組中選擇的模組和使用者自己相對的欄目中。</key>
+            <key index="inc_access_lists.description">選擇網頁﹑種類﹑模組和許可的額外欄啟動給這個群組使用</key>
+            <key index="description.description">輸入使用者群組的簡短描述，其目的和誰人成為成員。只作內部使用。</key>
+            <key index="TSconfig.description">透過TypoScript形態數值（進階）的附加設定</key>
+            <key index="TSconfig.syntax">沒有條件和常值的TypoScript形態</key>
+            <key index="hide_in_lists.description">這個選項會防止使用者群組在選擇名單中出現</key>
+            <key index="hide_in_lists.details">這會影響「工作中心」工作清單和訊息部分，與及網頁&gt;權限模組的使用者群組名單。
+假如你有一般的使用者群組定義你群組中的使用者整體的特性，這個選項是就非常有用。然後你或許不喜歡所有這些使用者透過這個群組員身份「看到」對方，例如傳送訊息或工作清單給對方。而這就是這個選項所避免的。</key>
+            <key index="subgroup.description">選擇自動地包括在這個群組成員的後勤使用者群組</key>
+            <key index="subgroup.details">特性和副群組被加進這個群組中，而基本上他們會加進所有此群組的成員的成員群組名單中。這個功能提拱很好的方法去建立「監察者」使用者群組</key>
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+            <key index=".description">Това е backend администраторската потребителска група на разположение на Backend потребителите. В тази група се определят разрешенията за Backend потребителите.</key>
+            <key index="title.description">Име на Backend потребителската група</key>
+            <key index="db_mountpoints.description">Задаване на стартовата точка за потребителското дърво.</key>
+            <key index="file_mountpoints.description">Задаване на стартовата точка за файловите папки дърво.</key>
+            <key index="pagetypes_select.description">Селектирайте кои 'Типовe' на страници, членовете ще могат да нагласяват.</key>
+            <key index="tables_modify.description">Селектирайте кои таблици могат да бъдат променяни от членовете.</key>
+        </key>
+        <key index="br" type="array">
+            <key index=".description">Estes são os grupos de usuário do administrador disponíveis para os usuários da ferramenta de administração. Estes grupos determinam as permissões para os usuários do Administrador.</key>
+            <key index="title.description">Nome do grupo de usuário do Administrador</key>
+            <key index="db_mountpoints.description">Definir pontos de partida para as árvores de páginas dos usuários.</key>
+            <key index="db_mountpoints.details">A árvore de páginas, usada para navegar por todos os submódulos incluídos em &quot;Internet&quot;, deve possuir pontos-de-entrada definidos. Aqui você deve inserir uma ou mais referências para uma página, a qual representará uma nova página-raiz na árvore de páginas.
+Os pontos de partida podem ser herdados pelos usuários que são membros deste grupo. Isso vai depender se o usuário estiver configurado para incluir os pontos de partida atribuídos aos membros do grupo. Entretanto, recomenda-se usar grupos de usuários-administradores como este para configurar os pontos de partida. Especialmente se houver necessidade de compartilhá-los entre muitos usuários.</key>
+            <key index="file_mountpoints.description">Definir pontos de partida para a árvore de pastas de arquivos.</key>
+            <key index="file_mountpoints.details">A árvore de pastas de arquivos é usada por todos os submódulos incluídos em &quot;Arquivo&quot; para navegar entre as pastas de arquivos do servidor.
+Observe que, assim como os 'pontos de partida para a árvore de páginas', os pontos de partida para a árvore de arquivos podem ser herdados pelos usuários membros deste grupo.</key>
+            <key index="pagetypes_select.description">Selecionar quais 'Tipos' de Páginas os membros podem alterar.</key>
+            <key index="pagetypes_select.details">Esta opção limita o número de tipos válidos para o usuário, quando este for selecionar um tipo de página.</key>
+            <key index="tables_modify.description">Selecionar quais tabelas os membros podem modificar.</key>
+            <key index="tables_modify.details">Uma parte importante ao atribuir permissões é definir quais tabelas do banco de dados um usuário tem permissão para modificar.
+Tabelas liberadas para modificação são automaticamente liberadas também para seleção e portanto você não precisa incluir novamente na caixa &quot;Tabelas (lista)&quot; as tabelas selecionadas aqui.
+
+&lt;strong&gt;Observe&lt;/strong&gt; que esta lista se soma aos campos selecionados nos outros grupos de membros de um usuário.</key>
+            <key index="tables_select.description">Selecionar quais tabelas os membros podem visualizar na lista de registros (tabelas 'modificáveis' não precisam ser reinseridas aqui).</key>
+            <key index="tables_select.details">Determina quais tabelas - além das selecionadas na caixa &quot;Tabelas (modificar)&quot; - podem ser visualizadas e listadas pelo usuário. Porém, ele não é capaz de &lt;em&gt;editar&lt;/em&gt; a tabela - apenas selecionar os registros e visualizar o conteúdo.
+Esta lista não é tão importante. É uma das raras situações em que um usuário pode selecionar tabelas mas não modificá-las.</key>
+            <key index="non_exclude_fields.description">Certos campos da tabela não estão disponíveis no modo padrão. Esses campos podem ser explicitamente habilitados aos membros do grupo aqui.</key>
+            <key index="non_exclude_fields.details">&quot;Habilitar campos ocultos&quot; permite a você configurar detalhadamente as permissões de acesso às tabelas. Por padrão, estes campos não são disponibilizados aos usuários, portanto precisam ser especificamente habilitados através desta opção.
+Uma utilidade para esta opção é que as páginas são normalmente ocultas por padrão, e a opção &quot;oculta&quot; não está disponível ao usuário a não ser que tenha o acesso atribuído através da listagem de &quot;Habilitar campos ocultos&quot;. Desta forma, o usuário pode criar uma página, mas não pode torná-la visível. A não ser, claro, se estiver atribuído a ele o campo &quot;Página: oculta&quot; através de um dos grupos de usuário.
+É logico também que não fará sentido nenhum adicionar campos de tabelas que não estejam incluídas na listagem de tabelas modificáveis.</key>
+            <key index="hidden.description">Desativa um grupo de usuários.</key>
+            <key index="hidden.details">Se você desabilita um grupo de usuários, os membros desse grupo não mais herdarão quaisquer propriedades que este grupo tenha atribuído a eles.</key>
+            <key index="lockToDomain.description">Digite o nome de domínio através do qual o usuário deverá fazer o login.</key>
+            <key index="lockToDomain.details">Um sistema TYPO3 pode ter vários domínios direcionados a ele. Assim, esta opção garante que os usuários façam seu login apenas a partir de um determinado nome de domínio.</key>
+            <key index="groupMods.description">Seleciona os módulos de administração disponibilizados aos membros do grupo.</key>
+            <key index="groupMods.details">Esta opção determina quais 'ítens de menu' serão disponibilizados aos membros do grupo.
+Esta lista de módulos se soma aos módulos selecionados nos outros grupos ao qual o usuário pertence, assim como no campo correspondente ao usuário em si.</key>
+            <key index="inc_access_lists.description">Selecione se as listas de acesso Tipo de Página, Tabela, Módulo e Permitir campos excluídos estão disponíveis para este grupo.</key>
+            <key index="description.description">Digite uma breve descrição do grupo de usuários, para que ele serve e quem deve ser membro. Apenas para uso interno.</key>
+            <key index="TSconfig.description">Configurações adicionais através de valores de estilo TypoScript (Avançado).</key>
+            <key index="TSconfig.syntax">Estilo TypoScript sem condições e constantes.</key>
+            <key index="hide_in_lists.description">Esta opção previne que o grupo de usuário seja mostrado em listas onde outros grupos de usuários estejam selecionados.</key>
+            <key index="hide_in_lists.details">Afeta a listagem de grupos de usuários nos módulos A Fazer e Mensagens, no Centro de Tarefas, assim como no módulo Internet&gt;Acesso.
+Esta opção é muito útil se você possui grupos genéricos de usuários, com definições de algumas propriedades globais, dos quais todos seus usuários são membros. Assim, provavelmente você não gostaria que todos esses usuários 'vejam' uns aos outros durante a participação no grupo, como por exemplo enviando mensagens ou A Fazer a cada usuário. Isto é o que esta opção previne.</key>
+            <key index="subgroup.description">Selecione os usuários-administradores que serão automaticamente incluídos como membros deste grupo.</key>
+            <key index="subgroup.details">As propriedades dos subgrupos são adicionadas às propriedades destes grupos, e basicamente estes subgrupos são simplesmente adicionados à listagem de grupos de usuários vista por qualquer membro deste grupo.
+Esta característica é uma ótima forma de criar grupos de usuários 'Supervisores'.</key>
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+            <key index=".description">אלו קבוצות משתמשים של הממשק האחורי הזמינות עבור משתמשי ממשק האחורי. הם מגדירים הרשאות למשתמשי ממשק האחורי.</key>
+            <key index="title.description">שם של קבוצת משתמשים של ממשק האחורי.</key>
+            <key index="db_mountpoints.description">הקצה ניקודות התחלה של עץ דפים של משתמש.</key>
+            <key index="db_mountpoints.details">עץ דפים, שמשתמשים בו כל תת-מודולים באינטרנט כדי לנווט, חובה שיהיו לו נקודות כניסה מוגדרות. כאן עליך להכניס סימוכין לדף שתייצג דף שורש חדשה בעץ דפים. זה נקרא &quot;מוצב מאגר מידע&quot;. משתמשים בקבוצה זו יכולים לרשת מוצבי מאגר מידע. זה תלוי בהגדרה אצל המשתמש אם עליו לרשת מוצבים המוגדרים בקבוצות משתמשים אליהם הוא משתייך. בכל זאת, מומלץ להשתמש בקבוצות משתמשי ממשק אחורי בצורה הזו כדי להגדיר מוצבים. במיוחד אם יש צורך לשתף אותו בין משתמשים רבים.</key>
+            <key index="file_mountpoints.description">הקצה ניקודות התחלה של עץ תיקיות קבצים.</key>
+            <key index="file_mountpoints.details">כל התת-מודולים של &quot;קובץ&quot; משתמשים בעץ קבצים כדי לנווט בין תיקיות על השרת. נא לציין, שמשתמשים בקבוצה יכולים לרשת מוצבי קבצים, כמו מוצבי מאגר מידע.</key>
+            <key index="pagetypes_select.description">בחר איזה &quot;סוגים&quot; של דפים יכולים לקבוע המשתמשים.</key>
+            <key index="pagetypes_select.details">אפשרות זו מגבילה מספר בחירות למשתמש כאשר הוא עומד לבחור סוג דף.</key>
+            <key index="tables_modify.description">בחר איזה טבלאות יכולים המשתמשים לערוך.</key>
+            <key index="tables_modify.details">שלב חשוב בהגדרת הרשאות הוא לציין איזה טבלאות המשתמש יכול לערוך. טבלאות, שיש עליהם אישור עריכה - יש עליהם גם אישור בחירה אוטומטית, לכן אין צורך לציין טבלאות שציינת כאן גם ב&quot;טבלאות(רשימה)&quot;.
+&lt;strong&gt;שים לב,&lt;/strong&gt; כי רשימה זו מתווספת לשדות שנבחרו עבור משתמש בקבוצות אחרות אליהם הוא משתייך.</key>
+            <key index="tables_select.description">בחר איזה טבלאות המשתמשים יכולים לראות ברשימות רשומות (לא נדרש להכניס כאן טבלאות &quot;ערוך&quot; שוב)</key>
+            <key index="tables_select.details">זה מגדיר איזו טבלאות, בנוסף לאלא שנבחרו ב-&quot;טבלאות(ערוך)&quot;, משתמש יכול לראות. לכן הוא לא יכול &lt;em&gt;לערוך&lt;/em&gt;את הטבלה - רק לבחור רשומות ולראות את התוכן.
+הרשימה לא חשובה כל כך. די נדיר שמשתמש יכול לבחור טבלאות אבל לא לערוך אותם.</key>
+            <key index="non_exclude_fields.description">שדות טבלה מסוימות לא זמינות כברירת מחדל. כאן ניתן להפוך אותם לזמינות למשתמשים בקבוצה.</key>
+            <key index="non_exclude_fields.details">כאן ניתן לפרט הרשאות שנתת לטבלאות. כברירת מחדל, כל השדות האלא לא זמינות למשתמשים וצריך להגדיר גישה אליהם כאן. לדוגמה, אחד השימושים ברעיון שמאחורי זה - דפים חדשים נוצרים חבויים ואם למשתמש לא מוגדרת גישה לשדה &quot;חבוי&quot; - הוא אינו יכול לשחרר את הדף. למשתמש אחר (מבקר) מופיע השדה, ואז הוא יכול לשחרר את הדף אחרי בדיקת תוכן.</key>
+            <key index="hidden.description">הופך קבוצת משתמשים ללא זמינה.</key>
+            <key index="hidden.details">אם אתה הופך קבוצת משתמשים ללא זמינה - כל המשתמשים בקבוצה לא ירשו כל הגדרה מקבוצה זו כתוצאה.</key>
+            <key index="lockToDomain.description">הכנס שם דומיין שרק ממנו משתמש יכול להכנס למערכת.</key>
+            <key index="lockToDomain.details">מערכת TYPO3 יכולה לאפשר לדומיינים רבים להצביע אליה. לכן, אפשרות זו מבטיחה שמשתמשים יכולים להכנס רק משם דומיין מסוים.</key>
+            <key index="groupMods.description">בחר מודולים בממשק אחורי שזמינים למשתמשים בקבוצה.</key>
+            <key index="groupMods.details">זה קובע איזה &quot;פריטי תפריט&quot; זמינים למשתמשי הקבוצה. רשימה זו של מודולים מתווספת לכל המודולים שנבחרו בקבוצות משתמשים אחרות של המשתמש, כמו גם שדה שה בהגדרות של המשתמש עצמו.</key>
+            <key index="inc_access_lists.description">בחר אם גישה לסוג דף, טבלה, מודול ושדות מיוחדות מותרות לקבוצה זו.</key>
+            <key index="description.description">הכנס תיאור קצר של הקבוצה, מה היא ומי הם המשתמשים. זה לשימוש פנימי בלבד.</key>
+            <key index="TSconfig.description">הגדרות נוספות דרך ערכים TypoScript (מתקדם).</key>
+            <key index="TSconfig.syntax">בסגנון TypoScript ללא conditions ו-constants.</key>
+            <key index="hide_in_lists.description">אפשרות זו תמנע מהקבוצה להופיע ברשימות של קבוצות משתמשים.</key>
+            <key index="hide_in_lists.details">זה ישפיע על רשימת קבוצות משתמשים במרכז משימות ומודול אינטרנט&gt;גישה. הבחירה הינה מאוד שימושית אם יש לכם קבוצות משתמשים כלליות, שמגדירות אפשרויות כלליות וכל המשתמשים שייכים אליהם. אז, אתם בטח לא תרצו שכל המשתמשים הללו יראו זה את זה.</key>
+            <key index="subgroup.description">בחר קבוצות משתמשים של ממשק אחורי שנכללים אוטומטית עבור משתמשים בקבוצה זו.</key>
+            <key index="subgroup.details">הגדרות של תת-קבוצות מתווספות להגדרות של קבוצות אלו ופשוט יתווספו לרשימת קבוצות משתמשים של משתמש ששייך אליהם. הגדרה זו נותנת דרך טובה ליצור &quot;קבוצות מנהלים&quot;.</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="_.seeAlso" type="integer">217629564</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="_db_mountpoints.seeAlso" type="integer">239880530</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="_file_mountpoints.seeAlso" type="integer">154343538</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="_pagetypes_select.seeAlso" type="integer">143468106</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="_tables_modify.seeAlso" type="integer">193878993</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="_tables_select.seeAlso" type="integer">222964706</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="_non_exclude_fields.seeAlso" type="integer">168546609</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="_lockToDomain.seeAlso" type="integer">207873211</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="_groupMods.seeAlso" type="integer">133882641</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="_inc_access_lists.seeAlso" type="integer">73603796</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="_description.seeAlso" type="integer">77550801</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="_TSconfig.seeAlso" type="integer">165682544</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+        </key>
+        <key index="es" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="nl" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="hu" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+        </key>
+        <key index="br" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+            <key index=".description" type="integer">223285620</key>
+            <key index="title.description" type="integer">136359204</key>
+            <key index="db_mountpoints.description" type="integer">83626085</key>
+            <key index="db_mountpoints.details" type="integer">42992197</key>
+            <key index="file_mountpoints.description" type="integer">103273463</key>
+            <key index="file_mountpoints.details" type="integer">217961862</key>
+            <key index="pagetypes_select.description" type="integer">44094257</key>
+            <key index="pagetypes_select.details" type="integer">87375254</key>
+            <key index="tables_modify.description" type="integer">138526409</key>
+            <key index="tables_modify.details" type="integer">119211823</key>
+            <key index="tables_select.description" type="integer">79180839</key>
+            <key index="tables_select.details" type="integer">88019767</key>
+            <key index="non_exclude_fields.description" type="integer">17658287</key>
+            <key index="non_exclude_fields.details" type="integer">70305008</key>
+            <key index="hidden.description" type="integer">190841262</key>
+            <key index="hidden.details" type="integer">40392035</key>
+            <key index="lockToDomain.description" type="integer">139426379</key>
+            <key index="lockToDomain.details" type="integer">140149042</key>
+            <key index="groupMods.description" type="integer">249603367</key>
+            <key index="groupMods.details" type="integer">250073054</key>
+            <key index="inc_access_lists.description" type="integer">38173329</key>
+            <key index="description.description" type="integer">189455419</key>
+            <key index="TSconfig.description" type="integer">119693809</key>
+            <key index="TSconfig.syntax" type="integer">95248911</key>
+            <key index="hide_in_lists.description" type="integer">169107711</key>
+            <key index="hide_in_lists.details" type="integer">20735693</key>
+            <key index="subgroup.description" type="integer">244521906</key>
+            <key index="subgroup.details" type="integer">31323636</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

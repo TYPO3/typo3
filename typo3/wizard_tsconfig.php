@@ -68,7 +68,7 @@
 $BACK_PATH='';
 require ('init.php');
 require ('template.php');
-include ('sysext/lang/locallang_wizards.php');
+$LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 require_once (PATH_t3lib.'class.t3lib_tstemplate.php');
 require_once (PATH_t3lib.'class.t3lib_tsparser_ext.php');

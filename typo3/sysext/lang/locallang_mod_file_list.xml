@@ -1,0 +1,1353 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Filelist module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_file_list.php</key>
+        <key index="labelContext" type="array">
+            <key index="clipBoard"></key>
+            <key index="clip_paste"></key>
+            <key index="clip_pasteInto"></key>
+            <key index="clip_markRecords"></key>
+            <key index="clip_selectMarked"></key>
+            <key index="clip_deleteMarked"></key>
+            <key index="clip_deleteMarkedWarning"></key>
+            <key index="displayThumbs"></key>
+            <key index="c_file"></key>
+            <key index="c_size"></key>
+            <key index="c_fileext"></key>
+            <key index="c_tstamp"></key>
+            <key index="c_rw"></key>
+            <key index="files"></key>
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_labels_tabdescr"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="clipBoard">Show clipboard</key>
+            <key index="clip_paste">Paste in clipboard content</key>
+            <key index="clip_pasteInto">Paste into: Clipboard content is inserted into this folder</key>
+            <key index="clip_markRecords">Mark All/Mark none</key>
+            <key index="clip_selectMarked">Transfer the selection of files to clipboard</key>
+            <key index="clip_deleteMarked">Delete marked</key>
+            <key index="clip_deleteMarkedWarning">Are you sure you want to delete all marked files from this folder?</key>
+            <key index="displayThumbs">Display thumbnails</key>
+            <key index="c_file">Filename</key>
+            <key index="c_size">Size</key>
+            <key index="c_fileext">Type</key>
+            <key index="c_tstamp">Date</key>
+            <key index="c_rw">RW</key>
+            <key index="files">files</key>
+            <key index="mlang_labels_tablabel">Listing of files in the directory</key>
+            <key index="mlang_labels_tabdescr">This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</key>
+            <key index="mlang_tabs_tab">Filelist</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="clipBoard">Vis klippebord</key>
+            <key index="clip_paste">Indsæt klippebordets indhold</key>
+            <key index="clip_pasteInto">Indsæt i: Klippebordets indhold indsættes i denne mappe</key>
+            <key index="clip_markRecords">Markér alle/Markér ingen</key>
+            <key index="clip_selectMarked">Overfør udvalget af filer til klippebordet</key>
+            <key index="clip_deleteMarked">Slet markerede</key>
+            <key index="clip_deleteMarkedWarning">Er du sikker på, at du vil slette alle markerede filer og mapper?</key>
+            <key index="displayThumbs">Vis miniaturer</key>
+            <key index="c_file">Filnavn</key>
+            <key index="c_size">Str</key>
+            <key index="c_fileext">Type</key>
+            <key index="c_tstamp">Dato</key>
+            <key index="c_rw">RW</key>
+            <key index="files">filer</key>
+            <key index="mlang_labels_tablabel">Listning af filer i kataloget</key>
+            <key index="mlang_labels_tabdescr">Dette er filadminstrations-delen af TYPO3. Her kan du som bruger tilgå dine fildrev på serveren. Via dette modul kan du uploade, kopiere, flytte og slette filer på serveren.</key>
+            <key index="mlang_tabs_tab">Filliste</key>
+        </key>
+        <key index="de" type="array">
+            <key index="clipBoard">Klemmbrett anzeigen</key>
+            <key index="clip_paste">Klemmbrettinhalt einfügen</key>
+            <key index="clip_pasteInto">Eingefügen in: der Inhalt des Klemmbretts wurde in diesen Ordner eingefügt</key>
+            <key index="clip_markRecords">Alles/nichts markieren</key>
+            <key index="clip_selectMarked">Ausgewählte Dateien auf das Klemmbrett transferieren</key>
+            <key index="clip_deleteMarked">Markierte löschen</key>
+            <key index="clip_deleteMarkedWarning">Sind Sie sicher, dass alles markierten Dateien aus diesem Ordner gelöscht werden sollen?</key>
+            <key index="displayThumbs">Thumbnails anzeigen</key>
+            <key index="c_file">Dateiname</key>
+            <key index="c_size">Grösse</key>
+            <key index="c_fileext">Typ</key>
+            <key index="c_tstamp">Datum</key>
+            <key index="c_rw">ANTW</key>
+            <key index="files">Dateien</key>
+            <key index="mlang_labels_tablabel">Anzeige von Dateien im Ordner</key>
+            <key index="mlang_labels_tabdescr">Dies ist das Dateiverwaltungssystem von TYPO3. Es erlaubt den Zugriff auf die für Ihren Login gültigen Dateifreigaben. Mit diesem Modul können Sie Dateien auf dem Server hochladen, kopieren, verschieben und löschen.</key>
+            <key index="mlang_tabs_tab">Dateiliste</key>
+        </key>
+        <key index="no" type="array">
+            <key index="clipBoard">Vis klippebord</key>
+            <key index="clip_paste">Lim inn innholdet fra klippebordet</key>
+            <key index="clip_pasteInto">Lim inn i: Innholdet fra klippebordet settes inn i denne mappen</key>
+            <key index="clip_markRecords">Merk alle/Merk ingen</key>
+            <key index="clip_selectMarked">Overfør utvalget av filer til klippebordet</key>
+            <key index="clip_deleteMarked">Slett markerte</key>
+            <key index="clip_deleteMarkedWarning">Er du sikker på at du vil slette alle markerte filer fra mappen?</key>
+            <key index="displayThumbs">Vis miniatyrer</key>
+            <key index="c_file">Filnavn</key>
+            <key index="c_size">Str</key>
+            <key index="c_fileext">Type</key>
+            <key index="c_tstamp">Dato</key>
+            <key index="c_rw">RW</key>
+            <key index="files">filer</key>
+            <key index="mlang_labels_tablabel">Listing av filer i katalogen</key>
+            <key index="mlang_labels_tabdescr">Dette er filadministrasjonsdelen av TYPO3. Her kan du som bruker få tilgang til dine fildrev på serveren. Via denne modulen kan du laste opp, kopiere, flytte og slette filer på serveren.</key>
+            <key index="mlang_tabs_tab">Filliste</key>
+        </key>
+        <key index="it" type="array">
+            <key index="clipBoard">Mostra clipboard</key>
+            <key index="clip_paste">Incolla il contenuto della clipboard</key>
+            <key index="clip_pasteInto">Incolla dentro: il contenuto della clipboad viene inserito in questa cartella</key>
+            <key index="clip_markRecords">Seleziona tutti/nessuno</key>
+            <key index="clip_selectMarked">Trasferisci i file selezionati nella clipboard</key>
+            <key index="clip_deleteMarked">Elimina file selezionati</key>
+            <key index="clip_deleteMarkedWarning">Sei sicuro di voler eliminare tutti i file selezionati in questa cartella?</key>
+            <key index="displayThumbs">Mostra miniature</key>
+            <key index="c_file">Nome file</key>
+            <key index="c_size">Dimensione</key>
+            <key index="c_fileext">Tipo</key>
+            <key index="c_tstamp">Data</key>
+            <key index="c_rw">RW</key>
+            <key index="files">File</key>
+            <key index="mlang_labels_tablabel">Lista dei file nella cartella</key>
+            <key index="mlang_labels_tabdescr">Sistema per la gestione dei file di Typo3. Consente di accedere alle cartelle per cui avete i permessi. Attraverso questo modulo potete copiare, spostare, rinominare, eliminare e uploadare i file sul server.</key>
+            <key index="mlang_tabs_tab">Lista file</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="clipBoard">Afficher le presse-papiers</key>
+            <key index="clip_paste">Coller le contenu du presse-papiers</key>
+            <key index="clip_pasteInto">Coller dans: le contenu du presse-papiers est inséré dans ce dossier</key>
+            <key index="clip_markRecords">Sélectionner tout/rien</key>
+            <key index="clip_selectMarked">Transférer les fichiers sélectionnés dans le presse-papiers</key>
+            <key index="clip_deleteMarked">Supprimer la sélection</key>
+            <key index="clip_deleteMarkedWarning">Etes-vous sûr de vouloir supprimer de ce dossier tous les fichiers sélectionnés?</key>
+            <key index="displayThumbs">Afficher les miniatures</key>
+            <key index="c_file">Nom de fichier</key>
+            <key index="c_size">Taille</key>
+            <key index="c_fileext">Type</key>
+            <key index="c_tstamp">Date</key>
+            <key index="c_rw">RW</key>
+            <key index="files">fichiers</key>
+            <key index="mlang_labels_tablabel">Liste des fichiers du répertoire</key>
+            <key index="mlang_labels_tabdescr">C'est le système d'administration des fichiers de TYPO3. Il vous permet d'accéder aux points de montage auxquels vous avez droit. Avec ce module, vous pouvez envoyer, copier, déplacer et supprimer des fichiers sur le serveur.</key>
+            <key index="mlang_tabs_tab">Fichiers</key>
+        </key>
+        <key index="es" type="array">
+            <key index="clipBoard">Mostrar portapapeles</key>
+            <key index="clip_paste">Pegar en contenido de portapapeles</key>
+            <key index="clip_pasteInto">Pegar dentro: El contenido del portapapeles es insertado en esta carpeta</key>
+            <key index="clip_markRecords">Marcar/Desmarcar Todos</key>
+            <key index="clip_selectMarked">Transferir la selección de los archivos al portapapeles</key>
+            <key index="clip_deleteMarked">Borrar marcados</key>
+            <key index="clip_deleteMarkedWarning">¿Estás seguro de que quieres borrar todos los archivos marcados de esta carpeta?</key>
+            <key index="displayThumbs">Mostrar miniaturas</key>
+            <key index="c_file">Nombre del archivo:</key>
+            <key index="c_size">Tamaño:</key>
+            <key index="c_fileext">Tipo:</key>
+            <key index="c_tstamp">Fecha:</key>
+            <key index="c_rw">RW</key>
+            <key index="files">archivos</key>
+            <key index="mlang_labels_tablabel">Relación de archivos en el directorio</key>
+            <key index="mlang_labels_tabdescr">Este es el sistema de administración de archivos de TYPO3. Permite acceder a los puntos de montaje de su cuenta. Mediante este módulo puedes enviar, copiar, mover y borrar archivos en el servidor.</key>
+            <key index="mlang_tabs_tab">Lista de archivos</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="clipBoard">Toon klembord</key>
+            <key index="clip_paste">Plaats op klembord</key>
+            <key index="clip_pasteInto">Plaats in: Klembordinhoud wordt ingevoegd in deze map.</key>
+            <key index="clip_markRecords">Selecteer alle/Selecteer geen</key>
+            <key index="clip_selectMarked">Verplaats geselecteerde bestanden naar klembord</key>
+            <key index="clip_deleteMarked">Verwijder geselecteerde bestanden</key>
+            <key index="clip_deleteMarkedWarning">Alle geselecteerde bestanden verwijderen?</key>
+            <key index="displayThumbs">Toon mini-afbeelding</key>
+            <key index="c_file">Bestandsnaam</key>
+            <key index="c_size">Grootte</key>
+            <key index="c_fileext">Type</key>
+            <key index="c_tstamp">Datum</key>
+            <key index="c_rw">RW</key>
+            <key index="files">bestanden</key>
+            <key index="mlang_labels_tablabel">Lijst van bestanden in de map</key>
+            <key index="mlang_labels_tabdescr">Dit is het bestandsbeheersysteem in Typo3. Het biedt toegang tot de bestandsstartpunten behorende bij login. Via deze module kunt u bestanden uploaden, kopiëren, verplaatsen en verwijderen op de server.</key>
+            <key index="mlang_tabs_tab">Bestand (lijst)</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="clipBoard">Ukázat schránku</key>
+            <key index="clip_paste">Vložit do obsahu schránky</key>
+            <key index="clip_pasteInto">Vložit do: Obsah schránky se vloží do této složky</key>
+            <key index="clip_markRecords">Označit vše/Odznačit vše</key>
+            <key index="clip_selectMarked">Přenést zvolené soubory do schránky</key>
+            <key index="clip_deleteMarked">Odstranit označené</key>
+            <key index="clip_deleteMarkedWarning">Jste si jisti, že chcete odstranit všechny označené soubory z této složky?</key>
+            <key index="displayThumbs">Zobrazovat náhledy</key>
+            <key index="c_file">Název</key>
+            <key index="c_size">Velikost</key>
+            <key index="c_fileext">Typ</key>
+            <key index="c_tstamp">Datum</key>
+            <key index="c_rw">RW</key>
+            <key index="files">soubory</key>
+            <key index="mlang_labels_tablabel">Seznam souborů ve složce</key>
+            <key index="mlang_labels_tabdescr">Toto je systém administrace souborů v TYPO3. Dovoluje vám přistupovat k souborům. Tímto modulem můžete nahrávat, kopírovat, přesunovat a odstraňovat soubory ze serveru.</key>
+            <key index="mlang_tabs_tab">Seznam souborů</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="clipBoard">Pokaż schowek</key>
+            <key index="clip_paste">Wstaw zawartość ze schowka</key>
+            <key index="clip_pasteInto">Wstaw w: Zawartość schowka jest wstawiana do tego katalogu</key>
+            <key index="clip_markRecords">Zaznacz/Odznacz wszystkie</key>
+            <key index="clip_selectMarked">Przenieś oznaczone pliki do schowka</key>
+            <key index="clip_deleteMarked">Usuń zaznaczone</key>
+            <key index="clip_deleteMarkedWarning">Czy jesteś pewien, że chcesz usunąć wszystkie zaznaczone pliki z tego katalogu?</key>
+            <key index="displayThumbs">Pokaż miniatury</key>
+            <key index="c_file">Nazwa</key>
+            <key index="c_size">Rozmiar</key>
+            <key index="c_fileext">Typ</key>
+            <key index="c_tstamp">Data</key>
+            <key index="c_rw">RW</key>
+            <key index="files">plik(ów)</key>
+            <key index="mlang_labels_tablabel">Lista plików w katalogu</key>
+            <key index="mlang_labels_tabdescr">To jest moduł do administrowania plikami. Tutaj masz dostęp do swoich plików. Dzięki temu modułowi możesz uploadować, kopiować, przenosić i usuwać pliki na serwerze.</key>
+            <key index="mlang_tabs_tab">Lista plików</key>
+        </key>
+        <key index="si" type="array">
+            <key index="clipBoard">Pokaži odložišče</key>
+            <key index="clip_paste">Prilepi v odložišče</key>
+            <key index="clip_pasteInto">Prilepi v: V to mapo je vstavljena vsebina odložišča</key>
+            <key index="clip_markRecords">Označi vse/Ne označi nič</key>
+            <key index="clip_selectMarked">Prenesi izbor datotek v odložišče</key>
+            <key index="clip_deleteMarked">Izbriši označeno</key>
+            <key index="clip_deleteMarkedWarning">Res želite izbrisati vse označene datoteke iz te mape?</key>
+            <key index="displayThumbs">Prikaži zavihke</key>
+            <key index="c_file">Ime datoteke</key>
+            <key index="c_size">Velikost</key>
+            <key index="c_fileext">Vrsta</key>
+            <key index="c_tstamp">Datum</key>
+            <key index="c_rw">RW</key>
+            <key index="files">datotek</key>
+            <key index="mlang_labels_tablabel">Seznam datotek v mapi</key>
+            <key index="mlang_labels_tabdescr">To je sistem za delo z datotekami. Z njim lahko dostopate do svojih datotek na strežniku. Lahko jih prenašate, kopirate, preimenujete ali izbrišete.</key>
+            <key index="mlang_tabs_tab">Seznam datotek</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="clipBoard">Näytä leikepöytä</key>
+            <key index="clip_paste">Liitä leikepöydän sisältö</key>
+            <key index="clip_pasteInto">Liitäminen: Leikepöydän sisältö lisätään tähän hakemistoon</key>
+            <key index="clip_markRecords">Merkitse kaikki/Poista merkintä</key>
+            <key index="clip_selectMarked">Siirrä valitut tiedostot leikepöydälle</key>
+            <key index="clip_deleteMarked">Poista merkityt</key>
+            <key index="clip_deleteMarkedWarning">Haluatko todella poistaa kaikki merkityt tiedostot hakemistosta?</key>
+            <key index="displayThumbs">Näytä pienkuvakkeet</key>
+            <key index="c_file">Tiedosto</key>
+            <key index="c_size">Koko</key>
+            <key index="c_fileext">Tyyppi</key>
+            <key index="c_tstamp">Päiväys</key>
+            <key index="c_rw">RW</key>
+            <key index="files">tiedostot</key>
+            <key index="mlang_labels_tablabel">Hakemiston tiedostoluettelo</key>
+            <key index="mlang_labels_tabdescr">Tämä on TYPO3 tiedostonhallinta järjestelmä. Se antaa mahdollisuuden käytössäsi olevien tiedotojen hallinnan. Modulin kautta voit vie, kopioida, siirtää ja poistaa tiedostoja palvelimella.</key>
+            <key index="mlang_tabs_tab">Tiedostolista</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="clipBoard">Panoyu göster</key>
+            <key index="clip_paste">Pano içeriğine yapıştır</key>
+            <key index="clip_pasteInto">İçine yapıştır: Pano içeriği bu klasörün içine eklendi</key>
+            <key index="clip_markRecords">Tümünü işaretle/hiçbirini işaretleme</key>
+            <key index="clip_selectMarked">Seçili dosyaları panoya transfer et</key>
+            <key index="clip_deleteMarked">İşaretli olanı sil</key>
+            <key index="clip_deleteMarkedWarning">Tüm işaretli dosyaları bu klasörden silmek stediğinizden emin misiniz?</key>
+            <key index="displayThumbs">Küçük resimleri görüntüle</key>
+            <key index="c_file">Dosya adı</key>
+            <key index="c_size">Ebat</key>
+            <key index="c_fileext">Tip</key>
+            <key index="c_tstamp">Tarih</key>
+            <key index="c_rw">O-Y</key>
+            <key index="files">Dosyalar</key>
+            <key index="mlang_labels_tablabel">Dizindeki dosyaların listesi</key>
+            <key index="mlang_labels_tabdescr">Bu TYPO3 ün içindeki sistem yönetimi dosyasıdır. Mount dosyasına girişiniz buna erişim imkanı sağlar. Bu modül aracılığıyla sunucudaki dosyaları yükleyebilir, kopyalayabilir, taşıyabilir ve silebilirsiniz.</key>
+            <key index="mlang_tabs_tab">Dosya listesi</key>
+        </key>
+        <key index="se" type="array">
+            <key index="clipBoard">Visa klippbord</key>
+            <key index="clip_paste">Klistra in klippbordets innehåll</key>
+            <key index="clip_pasteInto">Klistra in: Klippbordets innehåll klistras in i denna katalog</key>
+            <key index="clip_markRecords">Markera allt/Avmarkera allt</key>
+            <key index="clip_selectMarked">Flytta valda filer till klippbordet</key>
+            <key index="clip_deleteMarked">Radera det markerade</key>
+            <key index="clip_deleteMarkedWarning">Är du säker på att du vill radera alla markerade filer i denna katalog?</key>
+            <key index="displayThumbs">Visa ikoner</key>
+            <key index="c_file">Filnamn</key>
+            <key index="c_size">Storlek</key>
+            <key index="c_fileext">Typ</key>
+            <key index="c_tstamp">Datum</key>
+            <key index="c_rw">RW</key>
+            <key index="files">filer</key>
+            <key index="mlang_labels_tablabel">Lista på filer i katalogen</key>
+            <key index="mlang_labels_tabdescr">Detta är filhanteraren i TYPO3. Här kan du administrera de filer du har rättigheter till. Här kan du ladda upp, kopiera, flytta och radera filer, som finns på servern.</key>
+            <key index="mlang_tabs_tab">Lista på filer</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="clipBoard">Mostrar área de transferência</key>
+            <key index="clip_paste">Colar conteúdo da área de transferência</key>
+            <key index="clip_pasteInto">Colar: Conteúdo da área de transferência é inserido nesta pasta</key>
+            <key index="clip_markRecords">Marcar todos/Desmarcar todos</key>
+            <key index="clip_selectMarked">Transferir a seleção de arquivos para a área de transferência</key>
+            <key index="clip_deleteMarked">Apagar marcados</key>
+            <key index="clip_deleteMarkedWarning">Você está certo de que deseja apagar todos os arquivos marcados desta pasta?</key>
+            <key index="displayThumbs">Mostrar ícones</key>
+            <key index="c_file">Nome do arquivo</key>
+            <key index="c_size">Tamanho</key>
+            <key index="c_fileext">Tipo</key>
+            <key index="c_tstamp">Data</key>
+            <key index="c_rw">L/E</key>
+            <key index="files">arquivos</key>
+            <key index="mlang_labels_tablabel">Lista de arquivos no diretório</key>
+            <key index="mlang_labels_tabdescr">Esta é a administração de arquivos no TYPO3. Ela permite que você acesse seus arquivos de utilizador. Através deste módulo você pode transferir, copiar, mover e deletar arquivos no servidor.</key>
+            <key index="mlang_tabs_tab">Lista de Arquivos</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="clipBoard">Показать Буфер обмена</key>
+            <key index="clip_paste">Вставить содержимое Буфера обмена</key>
+            <key index="clip_pasteInto">Вставка внутрь: вставить содержимое Буфера обмена в эту папку</key>
+            <key index="clip_markRecords">Выделить все/Снять выделение</key>
+            <key index="clip_selectMarked">Переместить выделенные файлы в Буфер обмена</key>
+            <key index="clip_deleteMarked">Удалить выделенные</key>
+            <key index="clip_deleteMarkedWarning">Вы уверены, что хотите удалить все выделенные файлы из этой папки?</key>
+            <key index="displayThumbs">Показать миниатюры картинок</key>
+            <key index="c_file">Имя файла</key>
+            <key index="c_size">Размер</key>
+            <key index="c_fileext">Тип</key>
+            <key index="c_tstamp">Дата</key>
+            <key index="c_rw">RW</key>
+            <key index="files">Файлы</key>
+            <key index="mlang_labels_tablabel">Список файлов в каталоге</key>
+            <key index="mlang_labels_tabdescr">Это система управления файлами. Она позволяет работать с файлами, находящимися в зоне вашего доступа. С ее помощью вы можете загружать на сервер файлы, копировать, перемещать и удалять их.</key>
+            <key index="mlang_tabs_tab">Список файлов</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="clipBoard">Arata buffer-ul pentru zona ecran</key>
+            <key index="clip_paste">Copiere in continutul buffer-ului pentru zona ecran</key>
+            <key index="clip_pasteInto">Copiere in: Continutul buffer-ului pentru zona ecran a fost inserat in acest fisier</key>
+            <key index="clip_markRecords">Marcheaza tot/Nu marca nimic</key>
+            <key index="clip_selectMarked">Sterge fisiere marcate</key>
+            <key index="clip_deleteMarked">Sterge fisiere marcate</key>
+            <key index="clip_deleteMarkedWarning">Sunteti sigur a vreti sa stergeti toate fisierele marcate din acest fisier?</key>
+            <key index="displayThumbs">Afiseaza thumbnails</key>
+            <key index="c_file">Nume fisier</key>
+            <key index="c_size">Marime</key>
+            <key index="c_fileext">Tip</key>
+            <key index="c_tstamp">Data</key>
+            <key index="c_rw">Citire/Scriere</key>
+            <key index="files">Fisiere</key>
+            <key index="mlang_labels_tablabel">Listare fisiere in director</key>
+            <key index="mlang_labels_tabdescr">Acesta este sistemul de administrare al fisierelor din Typo3. Acest modul va permite accesarea fisierelor disponibile. Folosind acest modul puteti incarca, copia, muta si sterge fisiere de pe server.</key>
+            <key index="mlang_tabs_tab">Lista fisiere</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="clipBoard">显示剪贴板</key>
+            <key index="clip_paste">粘贴剪贴板内容</key>
+            <key index="clip_pasteInto">粘贴入:粘贴板中内容插入该目录中</key>
+            <key index="clip_markRecords">标注所有/删除所有标注</key>
+            <key index="clip_selectMarked">传送选择的文件到粘贴板中</key>
+            <key index="clip_deleteMarked">删除已标志文件</key>
+            <key index="clip_deleteMarkedWarning">您确定要删除该目录下所有标志了的文件?</key>
+            <key index="displayThumbs">显示小图</key>
+            <key index="c_file">文件名</key>
+            <key index="c_size">文件大小</key>
+            <key index="c_fileext">文件类型</key>
+            <key index="c_tstamp">创建日期</key>
+            <key index="c_rw">读写</key>
+            <key index="files">文件</key>
+            <key index="mlang_labels_tablabel">列表目录中的文件</key>
+            <key index="mlang_labels_tabdescr">这是TYPO3的文件管理系统. 它让您可以访问您登录的文件根目录. 通过它您可以上传, 复制, 移动和删除服务器上的文件.</key>
+            <key index="mlang_tabs_tab">文件列表</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="clipBoard">Ukáž schránku</key>
+            <key index="clip_paste">Vlož do obsahu schránky</key>
+            <key index="clip_pasteInto">Vlož do: Obsah schránky sa vloží do tejto zložky</key>
+            <key index="clip_markRecords">Označ všetko/Odznač všetko</key>
+            <key index="clip_selectMarked">Prenes zvolené súbory do schránky</key>
+            <key index="clip_deleteMarked">Odstráň označené</key>
+            <key index="clip_deleteMarkedWarning">Si si istý, že chceš odstrániť všetky označené súbory z tejto zložky?</key>
+            <key index="displayThumbs">Zobraz náhlady</key>
+            <key index="c_file">Názov súboru</key>
+            <key index="c_size">Veľkosť</key>
+            <key index="c_fileext">Typ</key>
+            <key index="c_tstamp">Dátum</key>
+            <key index="c_rw">RW</key>
+            <key index="files">súbory</key>
+            <key index="mlang_labels_tablabel">Zoznam súborov v adresári</key>
+            <key index="mlang_labels_tabdescr">Toto je systém správy súborov v Typo3. Dovoluje vám pristupovať k súborom. Týmto modulom môžete nahrávať, kopírovať, presúvať a odstraňovať súbory zo servra.</key>
+            <key index="mlang_tabs_tab">Zoznam súborov</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="clipBoard">Rodyti iškarpine</key>
+            <key index="clip_paste">Įdėti į iškarpnės turinį</key>
+            <key index="clip_pasteInto">Įdėti į: Iškarpinės turinis jau yra šiame aplanke</key>
+            <key index="clip_markRecords">Žymėti visus/Nežymėti</key>
+            <key index="clip_selectMarked">Siųsti pažymėtas bylas į iškarpinę</key>
+            <key index="clip_deleteMarked">Šalinti pažymėtus</key>
+            <key index="clip_deleteMarkedWarning">Jus tikrai norite pašalinti pažymėtas bylas iš šio aplanko?</key>
+            <key index="displayThumbs">Rodyti glaustai</key>
+            <key index="c_file">Bylos pavadinimas</key>
+            <key index="c_size">Dydis</key>
+            <key index="c_fileext">Tipas</key>
+            <key index="c_tstamp">Data</key>
+            <key index="c_rw">Teisės</key>
+            <key index="files">bylos</key>
+            <key index="mlang_labels_tablabel">Bylų sąrašas kataloge</key>
+            <key index="mlang_labels_tabdescr">Čia yra bylų administravimo modulis TYPO3 sistemoje. Jo pagalba galėsite prieiti prie bylų savo susisjungimo seanse. Taip pat siųsti, kopijuoti, šalinti, perkelti bylas ant serverio.</key>
+            <key index="mlang_tabs_tab">Bylų sąrašąs</key>
+        </key>
+        <key index="is" type="array">
+            <key index="clipBoard">Birta klemmuspjald</key>
+            <key index="clip_paste">Líma inn innihald á klemmuspjaldi</key>
+            <key index="clip_pasteInto">Líma inn í: Innihald klemmuspjalds er sett inn í þessa möppu</key>
+            <key index="clip_markRecords">Merkja allt/Ekkert merkt</key>
+            <key index="clip_selectMarked">Flytja valin skjöl á klemmuspjald</key>
+            <key index="clip_deleteMarked">Eyða merktu</key>
+            <key index="clip_deleteMarkedWarning">Ertu viss um að þú viljir eyða öllum merktum skrám frá þessari möppu?</key>
+            <key index="displayThumbs">Birta smærri***</key>
+            <key index="c_file">Skráarnafn</key>
+            <key index="c_size">Stærð</key>
+            <key index="c_fileext">Tegund</key>
+            <key index="c_tstamp">Dagsetning</key>
+            <key index="c_rw">RW</key>
+            <key index="files">skrár</key>
+            <key index="mlang_labels_tablabel">Útskrift á skrám í skráasafni</key>
+            <key index="mlang_labels_tabdescr">Þetta er skráarkerfistjórn í Typo3. Þú sem notandi færð aðgang þínum skrám á vefþjóni. Með þessum viðbætum geturðu sent, afritað, flutt og eytt skrám á vefþjóni.</key>
+            <key index="mlang_tabs_tab">Skráarlisti</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="clipBoard">Prikaži memoriju (clipboard)</key>
+            <key index="clip_paste">Zalijepi sadržaj memorije</key>
+            <key index="clip_pasteInto">Zalijepi u: sadržaj memorije je ubačen u ovaj pretinac</key>
+            <key index="clip_markRecords">Označi sve/Označi ništa</key>
+            <key index="clip_selectMarked">Premjesti odabir datoteka u memoriju</key>
+            <key index="clip_deleteMarked">Obriši označeno</key>
+            <key index="clip_deleteMarkedWarning">Sigurno želite obrisati označene datoteke iz ovog pretinca?</key>
+            <key index="displayThumbs">Prikaži sličice</key>
+            <key index="c_file">Ime datoteke</key>
+            <key index="c_size">Veličina</key>
+            <key index="c_fileext">Tip</key>
+            <key index="c_tstamp">Datum</key>
+            <key index="c_rw">RW</key>
+            <key index="files">datoteke</key>
+            <key index="mlang_labels_tablabel">Popis datoteka u pretincu</key>
+            <key index="mlang_labels_tabdescr">Ovo je sustav za administriranje datoteka u TYPO3-u. Omogućava vam da pristupite poveznicama na datoteke vašeg korisničkog računa. Ovim modulom možete uploadati, kopirati, premještati i brisati datoteke na poslužitelju.</key>
+            <key index="mlang_tabs_tab">Popis datoteka</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="clipBoard">Vágólap megjelenítése</key>
+            <key index="clip_paste">Illeszd be a vágólap tartalmát</key>
+            <key index="clip_pasteInto">Illeszd  ide: A vágólap tartalmát ebbe a mappába</key>
+            <key index="clip_markRecords">Jelöld mindet/semmit</key>
+            <key index="clip_selectMarked">Mozgasd a kijelölt file-okat a vágólapra</key>
+            <key index="clip_deleteMarked">Töröld a kijelölteket</key>
+            <key index="clip_deleteMarkedWarning">Biztos vagy benne, hogy az összes kijelölt file-t törölni akarod a mappából?</key>
+            <key index="displayThumbs">Mutasd a miniatürizált képeket</key>
+            <key index="c_file">File név</key>
+            <key index="c_size">Méret</key>
+            <key index="c_fileext">Típus</key>
+            <key index="c_tstamp">Dátum</key>
+            <key index="c_rw">RW</key>
+            <key index="files">file-ok</key>
+            <key index="mlang_labels_tablabel">File-ok listája a mappában</key>
+            <key index="mlang_labels_tabdescr">Ez a file adminisztációs rendszer a Typo3-ban. Itt érheted el, töltheted fel, másolhatod, mozgathatod és törölheted a file-okat a szerveren.</key>
+            <key index="mlang_tabs_tab">File-lista</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="c_file">Fiilip aqqa</key>
+            <key index="c_size">Angissuseq</key>
+            <key index="c_tstamp">Ulloq</key>
+            <key index="files">Fiilit</key>
+            <key index="mlang_tabs_tab">Fiilit allattorsimaffii</key>
+        </key>
+        <key index="th" type="array">
+            <key index="clipBoard">แสดงคลิ๊ปบอร์ด</key>
+            <key index="clip_paste">วางในคลิ๊ปบอร์ดเก็บเนื้อหา</key>
+            <key index="clip_pasteInto">วาง: เนื้อหาในคลิ๊ปบอร์ดถูกแซกไปในแฟ้มข้อมูลแล้ว</key>
+            <key index="clip_markRecords">เลือทั้งหมด/ไม่เลือกเลย</key>
+            <key index="clip_selectMarked">โอนแฟ้มข้อมูลที่เลือกไปยังคลิ๊ปบอร์ด</key>
+            <key index="clip_deleteMarked">ลบที่เลือก</key>
+            <key index="clip_deleteMarkedWarning">ท่านแน่ใจที่จะลบแฟ้มข้อมูลที่เลือกจากแฟ้มเอกสารนี้?</key>
+            <key index="displayThumbs">แสดงแบบย่อ</key>
+            <key index="c_file">ชื่อเฟ้ม</key>
+            <key index="c_size">ขนาด</key>
+            <key index="c_fileext">ชนิด</key>
+            <key index="c_tstamp">วันที่</key>
+            <key index="c_rw">อ่านเขียน</key>
+            <key index="files">แฟ้มข้อมูล</key>
+            <key index="mlang_labels_tablabel">แสดงรายการแฟ้มข้อมูลในไดเร็กทอรี่</key>
+            <key index="mlang_labels_tabdescr">ที่นี่คือระบบจัดการแฟ้มข้อมูล ของ Typo3 ท่านจะสามารถเข้าถึงแฟ้มต่างๆที่โหลดมาในนามล๊อกอินของท่าน</key>
+            <key index="mlang_tabs_tab">รายการแฟ้มข้อมูล</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="clipBoard">顯示剪貼薄</key>
+            <key index="clip_paste">貼上剪貼薄內容</key>
+            <key index="clip_pasteInto">貼上：剪貼薄內容插入這個資料夾內</key>
+            <key index="clip_markRecords">全部標示／全部不標示</key>
+            <key index="clip_selectMarked">傳送已選的檔案到剪貼薄</key>
+            <key index="clip_deleteMarked">刪除已標示的檔案</key>
+            <key index="clip_deleteMarkedWarning">你真的想從這個資料夾中刪除所有已標示的檔案？</key>
+            <key index="displayThumbs">顯示小圖示</key>
+            <key index="c_file">檔案名稱</key>
+            <key index="c_size">大小</key>
+            <key index="c_fileext">種類</key>
+            <key index="c_tstamp">日期</key>
+            <key index="c_rw">讀寫</key>
+            <key index="files">檔案</key>
+            <key index="mlang_labels_tablabel">列出目錄中的檔案</key>
+            <key index="mlang_labels_tabdescr">這是Typo3中的檔案管理系統。它容許你取用你登入的檔案目錄。透過這模組你可以上載、複製、移動和刪除伺服器中的檔案。</key>
+            <key index="mlang_tabs_tab">檔案列表</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="clipBoard">Erakutsi arbela</key>
+            <key index="clip_paste">Itsatsi arbeleko edukia</key>
+            <key index="clip_pasteInto">Itsasi hemen: Arbelaren edukia karpeta honetan sartzen da</key>
+            <key index="clip_markRecords">Markatu/desmarkatu denak</key>
+            <key index="clip_selectMarked">Pasatu fitxategi aukera arbelera</key>
+            <key index="clip_deleteMarked">Ezabatu markatutakoak</key>
+            <key index="clip_deleteMarkedWarning">Ziur markatutako fitxategi guztiak ezabatu nahi dituzula karpeta honetatik?</key>
+            <key index="displayThumbs">Erakutsi koadro txikiak</key>
+            <key index="c_file">Fitxategi izena</key>
+            <key index="c_size">Tamaina</key>
+            <key index="c_fileext">Mota</key>
+            <key index="c_tstamp">Data</key>
+            <key index="c_rw">RW</key>
+            <key index="files">fitxategiak</key>
+            <key index="mlang_labels_tablabel">Direktorioko fitxategien zerrenda</key>
+            <key index="mlang_labels_tabdescr">Hau Typo3-ko fitxategi administrazio sistema da. Zure saoi hasieran montatutako fitxategiak aukeratzea baimentzen dizu. Modulu honen bidez fitxategiak igo, kopiatu, mugitu eta ezabatu ditzazkezu zerbitzarian.</key>
+            <key index="mlang_tabs_tab">Fitxategi Zerrenda</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="clipBoard">Покажи clipboard-а</key>
+            <key index="clip_paste">Paste в съдържанието на clipboard-а</key>
+            <key index="clip_pasteInto">Paste в: Съдържанието на clipboard-а е вкаран в тази директория</key>
+            <key index="clip_markRecords">Маркирай всички/Не маркирай</key>
+            <key index="clip_selectMarked">Премества селекцията от файлове към clipboard-а</key>
+            <key index="clip_deleteMarked">Изтрива маркираните</key>
+            <key index="clip_deleteMarkedWarning">Сигурни ли сте, че искате да изтриете всички маркирани файлове от тази директория?</key>
+            <key index="displayThumbs">Показва миниатюрен изглед (thumbnails)</key>
+            <key index="c_file">Име на файла</key>
+            <key index="c_size">Големина</key>
+            <key index="c_fileext">Тип</key>
+            <key index="c_tstamp">Дата</key>
+            <key index="c_rw">RW</key>
+            <key index="files">файлове</key>
+            <key index="mlang_labels_tablabel">Списък на файловете в директорията</key>
+            <key index="mlang_labels_tabdescr">Това е административната файлова система в Typo3. Тя позволява да достъпите вашите файл mounts при влизане в системата. Чрез този модул можете да качвате, копирате, премествате и изтривате файлове на сървъра.</key>
+            <key index="mlang_tabs_tab">Списък на файловете</key>
+        </key>
+        <key index="br" type="array">
+            <key index="clipBoard">Mostrar área de transferência</key>
+            <key index="clip_paste">Colar conteúdo da área de transferência</key>
+            <key index="clip_pasteInto">Colar: Conteúdo da área de transferência é inserido nesta pasta</key>
+            <key index="clip_markRecords">Marcar todos/Desmarcar todos</key>
+            <key index="clip_selectMarked">Transferir a seleção de arquivos para a área de transferência</key>
+            <key index="clip_deleteMarked">Apagar marcados</key>
+            <key index="clip_deleteMarkedWarning">Tem certeza de que deseja apagar todos os arquivos marcados desta pasta?</key>
+            <key index="displayThumbs">Mostrar ícones</key>
+            <key index="c_file">Nome do arquivo</key>
+            <key index="c_size">Tamanho</key>
+            <key index="c_fileext">Tipo</key>
+            <key index="c_tstamp">Data</key>
+            <key index="c_rw">L/E</key>
+            <key index="files">arquivos</key>
+            <key index="mlang_labels_tablabel">Lista de arquivos no diretório</key>
+            <key index="mlang_labels_tabdescr">Este é o sistema de administração de arquivos do Typo3. Ele permite que você acesse seus arquivos de usuário. Através deste módulo você pode transferir, copiar, mover e apagar arquivos no servidor.</key>
+            <key index="mlang_tabs_tab">Lista de arquivos</key>
+        </key>
+        <key index="et" type="array">
+            <key index="clipBoard">Näita lõikelauda</key>
+            <key index="clip_paste">Kleebi lõikelaua sisu</key>
+            <key index="clip_pasteInto">Kleepimise info: Lõikelaua sisu lisati sellesse kausta</key>
+            <key index="clip_markRecords">Märgi kõik/Ära märgi</key>
+            <key index="clip_selectMarked">Teisalda valitud failid lõikelaule</key>
+            <key index="clip_deleteMarked">Kustuta märgitud</key>
+            <key index="clip_deleteMarkedWarning">Olete kindel, et soovite kustutada kõik märgitud failid sellest kaustast?</key>
+            <key index="displayThumbs">Näita pisiikoone</key>
+            <key index="c_file">Faili nimi</key>
+            <key index="c_size">Suurus</key>
+            <key index="c_fileext">Tüüp</key>
+            <key index="c_tstamp">Kuupäev</key>
+            <key index="c_rw">RW</key>
+            <key index="files">failid</key>
+            <key index="mlang_labels_tablabel">Failide loetelu kataloogis</key>
+            <key index="mlang_labels_tabdescr">See on failiadministreerimise süsteem Typo3-s. Selle kaudu saate laadida üles, kopeerida, liigutada ja kustutada faile serveris.</key>
+            <key index="mlang_tabs_tab">Failide nimekiri</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="clipBoard">إعرض ما في لوحة اللصق</key>
+            <key index="clip_paste">إلصق المحتويات في لوحة الصق</key>
+            <key index="clip_pasteInto">محتويات لوحة اللصق أدخلت في هذا الجدول</key>
+            <key index="clip_markRecords">تحديد الكل\ لا شئ</key>
+            <key index="clip_selectMarked">نقل الملفات المختارة إلى لوحة اللصق</key>
+            <key index="clip_deleteMarked">إزالة الإختيار</key>
+            <key index="clip_deleteMarkedWarning">هل تريد فعلا إزالة كل الملفات التي حددتهــا من هذا الجدول</key>
+            <key index="displayThumbs">عرض في شكل صور صغيرة</key>
+            <key index="c_file">إسم الملــف</key>
+            <key index="c_size">حجم</key>
+            <key index="c_fileext">نوع</key>
+            <key index="c_tstamp">تاريخ</key>
+            <key index="c_rw">صف</key>
+            <key index="files">ملفات</key>
+            <key index="mlang_labels_tablabel">قائمة الملفات في الجدول</key>
+            <key index="mlang_labels_tabdescr">هذا هو ملــف صيانة النظام في تيبو 3. إنه يسمح لك من ربط الملفات عند دخولك. خلال هذا الركن يمكنك إرسال بيانات إلى الحاسب المجمع أو نسخهــا أو نقـلها أو حذفـهــا من الحاسب المجمع.</key>
+            <key index="mlang_tabs_tab">قائمة الملــفات</key>
+        </key>
+        <key index="he" type="array">
+            <key index="clipBoard">הצג לוח גזירות</key>
+            <key index="clip_paste">הדבק תוכן לוח גזירות</key>
+            <key index="clip_pasteInto">הדבק בתוך: להשתיל תוכן לוח גזירות בתיקייה זו</key>
+            <key index="clip_markRecords">בחר הכל/בטל בחירה</key>
+            <key index="clip_selectMarked">העבר קבצים נבחרים ללוח גזירות</key>
+            <key index="clip_deleteMarked">מחק נבחרים</key>
+            <key index="clip_deleteMarkedWarning">האם הנך בטוח כי ברצונך למחוק כל הקבצים שבחרת מתיקייה זו?</key>
+            <key index="displayThumbs">הצג תמונות ממוזערות</key>
+            <key index="c_file">שם הקובץ</key>
+            <key index="c_size">גודל</key>
+            <key index="c_fileext">סוג</key>
+            <key index="c_tstamp">תאריך</key>
+            <key index="c_rw">RW</key>
+            <key index="files">קבצים</key>
+            <key index="mlang_labels_tablabel">רשימת הקבצים בתיקייה זו</key>
+            <key index="mlang_labels_tabdescr">זוהי מערכת ניהול קבצים ב-TYPO3. היא מאפרת לך גישה לרכיבי קבצים של כניסתך למערכת. דרך מודול זה הנך יכול להעלות, להעתיק, להזיז ולמחוק קבצים על השרת.</key>
+            <key index="mlang_tabs_tab">רשימת קבצים</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="clipBoard">Rādīt starpliktuvi</key>
+            <key index="clip_paste">Ievietot starpliktuves saturu</key>
+            <key index="clip_pasteInto">Starpliktuves saturs tika ievietots šajā folderī</key>
+            <key index="clip_markRecords">Atzīmēt visu/neko</key>
+            <key index="clip_selectMarked">Ievietot atzīmētos failus starpliktuvē</key>
+            <key index="clip_deleteMarked">Dzēst atzīmētos</key>
+            <key index="clip_deleteMarkedWarning">Vai tiešām gribat dzēst visus atzīmētos failus šajā folderī?</key>
+            <key index="displayThumbs">Rādīt sīkattēlus</key>
+            <key index="c_file">Nosaukums</key>
+            <key index="c_size">Izmērs</key>
+            <key index="c_fileext">Tips</key>
+            <key index="c_tstamp">Datums</key>
+            <key index="c_rw">RW</key>
+            <key index="files">faili</key>
+            <key index="mlang_labels_tablabel">Failu liste direktorijā</key>
+            <key index="mlang_labels_tabdescr">Šī ir TYPO3 failu administrēšanas sistēma. Tā ļauj jums manipulēt ar failiem. Ar ši moduļa palīdzību jūs varat augšuplādēt, kopēt, pārvietot un dzēst failus uz servera.</key>
+            <key index="mlang_tabs_tab">Faili</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="de" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="no" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="it" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="es" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="si" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="se" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="is" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="th" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="br" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="et" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="he" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="clipBoard" type="integer">249278403</key>
+            <key index="clip_paste" type="integer">25920339</key>
+            <key index="clip_pasteInto" type="integer">24767218</key>
+            <key index="clip_markRecords" type="integer">58652945</key>
+            <key index="clip_selectMarked" type="integer">231792509</key>
+            <key index="clip_deleteMarked" type="integer">126346891</key>
+            <key index="clip_deleteMarkedWarning" type="integer">236800089</key>
+            <key index="displayThumbs" type="integer">15222013</key>
+            <key index="c_file" type="integer">20254743</key>
+            <key index="c_size" type="integer">116837234</key>
+            <key index="c_fileext" type="integer">169845367</key>
+            <key index="c_tstamp" type="integer">71780721</key>
+            <key index="c_rw" type="integer">96918589</key>
+            <key index="files" type="integer">73111091</key>
+            <key index="mlang_labels_tablabel" type="integer">240946544</key>
+            <key index="mlang_labels_tabdescr" type="integer">48584464</key>
+            <key index="mlang_tabs_tab" type="integer">36854838</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

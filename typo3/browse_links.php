@@ -119,7 +119,7 @@ require_once (PATH_t3lib.'class.t3lib_browsetree.php');
 require_once (PATH_t3lib.'class.t3lib_foldertree.php');
 require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
-include ('sysext/lang/locallang_browse_links.php');
+$LANG->includeLLFile('EXT:lang/locallang_browse_links.xml');
 
 
 	// Include classes
@@ -2134,7 +2134,7 @@ class SC_browse_links {
 
 		$code.='
 			<div id="c-override">
-				<input type="checkbox" name="overwriteExistingFiles" value="1" /> '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:overwriteExistingFiles',1).'
+				<input type="checkbox" name="overwriteExistingFiles" value="1" /> '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles',1).'
 			</div>
 		';
 

@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">CSH for Pages table</key>
+        <key index="type">CSH</key>
+        <key index="fileId">EXT:lang/locallang_csh_pages.php</key>
+        <key index="labelContext" type="array">
+            <key index=".description"></key>
+            <key index=".details"></key>
+            <key index="title.description"></key>
+            <key index="title.syntax"></key>
+            <key index="doktype.description"></key>
+            <key index="doktype.details"></key>
+            <key index="TSconfig.description"></key>
+            <key index="TSconfig.details"></key>
+            <key index="TSconfig.syntax"></key>
+            <key index="php_tree_stop.description"></key>
+            <key index="storage_pid.description"></key>
+            <key index="is_siteroot.description"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index=".description">A 'Page' record usually represents a webpage in TYPO3. All pages has an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records.</key>
+            <key index=".details">Depending on the 'Type' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc.
+The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must 'belong' to a page. It's exactly like files and folders on your computers harddrive.
+The pages are organized in a tree structure which is not only a very handy way of organizing in general but also a optimal reflection of how you should organize the pages on your website. And thus you'll normally find that the page tree is a reflection of the website navigation itself.
+
+Technically all database elements has a field 'uid' which is a unique identification number. Further they must have a field 'pid' which holds the uid-number of the page (page id) to which they belong. If the 'pid' field is zero the record is found in the so called 'root'. Only administrators are allowed access to the root and furthermore table records must be configured to either belonging to a page or being found in the root.</key>
+            <key index="title.description">Enter the title of the page or folder.</key>
+            <key index="title.syntax">You must enter a page title. The field is required.</key>
+            <key index="doktype.description">Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</key>
+            <key index="doktype.details">The 'Standard' type represents a webpage.
+'SysFolder' represents a non-webpage - a folder acting as a storage for records of your choice.
+'Recycler' is a garbage bin.
+
+&lt;B&gt;Notice:&lt;/B&gt; Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options is not available for you!). And finally each type is configured to allow only certain table records in the page (SysFolder will allow any record if you have any problems).</key>
+            <key index="TSconfig.description">Page TypoScript configuration.</key>
+            <key index="TSconfig.details">Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
+However the same principle for entering the hierarchy of values is used here to configure various features in relation to the backend, functions in modules, the Rich Text Editor etc.
+The resulting 'TSconfig' for a page is actually an accumulation of all 'TSconfig' values from the root of the page tree and outwards to the current page. And thus all subpages are affected as well. A print of the page TSconfig is available from the 'Page TSconfig' menu in the 'Web&gt;Info' module (requires the extension &quot;info_pagetsconfig&quot; to be installed).
+</key>
+            <key index="TSconfig.syntax">Basic TypoScript syntax &lt;em&gt;without&lt;/em&gt; 'Conditions' and 'Constants'.
+
+It's recommended that only admin-users are allowed access to this field!</key>
+            <key index="php_tree_stop.description">[FILL IN]</key>
+            <key index="storage_pid.description">[FILL IN]</key>
+            <key index="is_siteroot.description">[FILL IN]</key>
+        </key>
+        <key index="dk" type="array">
+            <key index=".description">Et &quot;Side&quot; element repræsenterer normalt en webside i TYPO3. Alle sider har et ID nummer med hvilket man kan referere eller linke til siderne. Side-elementet indeholder ikke selv sidens indhold - til dette formål bør du oprette &quot;Indholdselementer&quot;.</key>
+            <key index=".details">Afhængigt af sidens &quot;Type&quot; så kan en side også repræsentere en indholdsfolder for database elementer i TYPO3. I sådan et tilfælde er siden ikke nødvendigvis tilgængelig som en webside men kun internt i sidetræet som et sted, hvor elementer så som brugere, tilmeldinger etc. kan gemmes.
+Side-tabellen er selve TYPO3s rygrad. Alle elementer (records) som kan redigeres med TYPO3 skal &quot;tilhøre&quot; en side. Det er præcis som med filer og mapper på din computers harddisk.
+Siderne er organiseret i en træstruktur som ikke blot er en vældig praktisk metode til strukturering i almindelighed men som også er en optimal reflektion af, hvordan du bør organisere siderne på dit website. Og således vil du erfare at side-træet normalt er en reflektion af websitets navigationsstruktur.
+
+Teknisk set har alle database elementer et felt, &quot;uid&quot;, som er et unikt identifikationsnummer. Derudover skal alle elementer have et &quot;pid&quot; felt, som indeholder uid-nummeret på den side (page id) som de tilhører. Hvis pid-feltet er nul, så tilhører elementet &quot;roden&quot; af sidetræet. Det er kun administratorer, som har adgang til roden af sidetræet og desuden skal en tabel konfigureres til at tilhøre enten roden eller et sted i sidetræets grene.</key>
+            <key index="title.description">Indtast titlen på siden eller mappen.</key>
+            <key index="title.syntax">Du skal indtaste en sidetitel. Dette felt er påkrævet.</key>
+            <key index="doktype.description">Vælg sidens type. Dette påvirker hvorvidt siden repræsenterer en synlig webside eller bruges til andre formål.</key>
+            <key index="doktype.details">&quot;Standard&quot; typen repræsenterer en webside.
+&quot;SysFolder&quot; repræsenterer en ikke-webside - en mappe som fungerer som opbevaringsplads for elementer efter dit valg.
+&quot;Recycler&quot; er en skraldespand.
+
+&lt;b&gt;Bemærk:&lt;/b&gt; Hver type har normalt et særligt ikon tilknyttet. Desuden kan visse typer være utilgængelige for en bruger (så du kan opleve at nogle muligheder ikke er tilgængelige for dig!). Og endeligt så er hver type sat op til kun at tillade visse tabel-elementer på siden. (SysFolder vil dog tillade et hvilken som helst element hvis du skulle få nogle problemer).</key>
+            <key index="TSconfig.description">TypoScript opsætningskode for siden.</key>
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+            <key index=".description">Et &quot;Side&quot; element representerer normalt en webside i TYPO3. Alle sider har et ID nummer som kan benyttes for å referere eller linke til sidene. Side-elementet inneholder ikke sidens innhold selv ? til dette formålet bør du opprette &quot;Innholdselementer&quot;.</key>
+            <key index=".details">Avhengig av sidens &quot;Type&quot; kan siden også være en innholdsmappe for database elementer i TYPO3. I slike tilfeller er ikke siden nødvendigvis tilgjengelig som en webside, men kun internt i sidetreet som et sted hvor elementer som brukere, innmeldinger etc. kan lagres.
+Side-tabellen er selve TYPO3s ryggrad. Alle element (records) som kan redigeres med TYPO3 skal &quot;tilhøre&quot; en side. Det er akkurat som med filer og mapper på din datamaskins harddisk.
+Sidene er organisert i en trestruktur som ikke bare er veldig praktisk metode for strukturering i alminnelighet, men som også er en optimal gjengivelse av hvordan du bør organisere sidene på webområdet ditt. På den måten vil du se at sidetreet normalt er en refleksjon av webområdets navigasjonstruktur.
+
+Teknisk sett har alle database elementer et felt, &quot;uid&quot;, som er et unikt identifikasjonsnummer. Utover dette må alle elementer ha et &quot;pid&quot; felt som inneholder uid-nummeret for den siden (page id) som de tilhører. Hvis pid-feltet er null tihører elementet &quot;roten&quot; av sidetreet. Det er kun administratorer som har tilgang til roten av sidetreet og videre må en tabell konfigureres til å tilhøre enten roten eller et sted i sidetreets grener.</key>
+            <key index="title.description">Skriv inn tittelen på siden eller mappen.</key>
+            <key index="title.syntax">Du må skrive inn en sidetittel. Dette feltet er påkrevd.</key>
+            <key index="doktype.description">Velg sidetype. Dette påvirker hvorvidt siden er en synlig webside eller brukes til andre formål.</key>
+            <key index="doktype.details">&quot;Standard&quot; typen er en webside.
+&quot;SysFolder&quot; er en ikke-webside ? en mappe som fungerer som oppbevaringsplass for valgfrie elementer.
+&quot;Papirkurv&quot; er også et valg.
+
+&lt;b&gt;Merk:&lt;/b&gt; Hver type har normalt et eget ikon tilknyttet. Dessuten kan visse typer være utilgjengelige for en bruker (så du kan oppleve at noen muligheter ikke er tilgjengelige for deg!). Hver type er satt opp til kun å tillate visse tabellelementer på siden. (SysFolder vil dog tillate et hvilket som helst element hvis du skulle få problemer).</key>
+            <key index="TSconfig.description">TypoScript konfigurasjonskode for siden.</key>
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+            <key index=".description">Une enregistrement 'Page' représente normalement une page sur votre site web. Toutes les pages ont un ID qui leur permet d'être référencées et d'en faire des liens. Une 'Page' ne contient pas directement le contenu (texte, image, ...). Pour cela vous devez créer des enregistrements que nous appelleront 'Contenu de page'.</key>
+            <key index="title.description">Entrez le titre de la page ou du dossier.</key>
+            <key index="title.syntax">Vous devez préciser un titre. Ce champs en obligatoire.</key>
+            <key index="doktype.description">Choisissez le type de page. Cette option va définir si votre page est un simple page visible sur votre site ou si elle va avoir une autre utilisation.</key>
+            <key index="doktype.details">le type 'Standard'  représente une page normal de votre site.
+'SysFolder' réprente une page qui n'apparaitra pas sur votre site. Elle sera a ranger d'autres pages.
+'Recycler' vous servira de corbeille.
+
+&lt;b&gt;Attention:&lt;/b&gt; Normalement, chaque page à une icône spécifique. De plus certains types ne sont pas disponible pour tous les utilisateurs. Et finalement certains types de page vont automatiquement limiter le contenu qu'elle supportent.</key>
+            <key index="TSconfig.description">Configuration de la page TypoScript</key>
+        </key>
+        <key index="es" type="array">
+            <key index=".description">Un registro ?Página? normalmente representa una página web en TYPO3. Todas las páginas contienen un número de identificación (id) por el cual pueden ser enlazadas y referenciadas. El registro ?Página? no contiene por si mismo el contenido de la página ? para este fin debes crear registros ?Contenido de página?.</key>
+            <key index=".details">Dependiendo del ?Tipo?, la página también puede representar un almacen general para elementos de base de datos en TYPO3. En ese caso no necesariamente está disponible como una página web, existirá internamente como un lugar para almacenar elementos como usuarios, subscripciones, etc...
+La tabla de páginas es la espina dorsal de TYPO3. Todos los registros editables por los módulos principales de TYPO3 deben ?pertenecer? a una página. Es exáctamente como las carpetas y ficheros de tu ordenador. Las páginas están organizadas en una estructura de árbol que no es tán solo una manera muy útil de organización en general sino también un reflejo óptimo de como debes organizar las páginas dentro del sitio web. Por tanto normalmente encontrarás que el árbol de páginas es un reflejo fiel de la propia navegación del sitio web.
+
+Técnicamente todos los elementos de la base de datos poseen un campo ?uid? el cual es un número único de identificación. Además, deben tener un campo ?pid? que contiene el número de identificación de la página (uid) a la que pertenecen. Si el campo ?pid? es cero el registro se encuentra en la llamada ?raíz?. Sólo los administradores pueden acceder a la raíz y por lo tanto todos los registros de las tablas deben estar configurados para pertenecer a una página o encontrarse en la raíz.</key>
+            <key index="title.description">Introduce el título de la página o carpeta.</key>
+            <key index="title.syntax">Debes introducir un título de página. El campo es obligatorio.</key>
+            <key index="doktype.description">Selecciona el tipo de página. Esto afecta a si la página representa una página visible en la web o si es utilizada para otros propósitos.</key>
+            <key index="doktype.details">El tipo ?Estándar? representa una página web.
+?Carpeta de sistema? representa una página interna, una carpeta que actúa de almacén de elementos. ?Papelera? es una papelera de reciclaje.
+
+&lt;b&gt;Nota:&lt;/b&gt; Cada tipo posee normalmente un icono distinto. Además, ciertos tipos pueden no estar disponibles para un operador (por lo que puede ser que no dispongas de todas estas opciones). Y finalmente cada tipo está configurado para permitir sólo ciertos registros en la página (?Carpeta del sistema? permitirá cualquier tipo de registro si tuvieras un problema).</key>
+            <key index="TSconfig.description">Configuración TypoScript de la página.</key>
+            <key index="TSconfig.details">Básicamente ?TypoScript? es un concepto para introducir valores en una estructura de árbol. Esto es así especialmente en relación con la creación de plantillas para sitios web de TYPO3.
+De cualquier manera el mismo principio para introducir la jerarquía de valores es usada aquí para configurar varias características en relación con el backend, funciones en módulos, el RTE, etc...
+El ?TSConfig? que resulta para una página es actualmente una acumulación de todos los valores ?TSConfig? desde la raíz del árbol de páginas hasta la página actual. Y también las subpáginas serán afectadas igualmente. Una vista del ?TSConfig? de la página está disponible desde el menú ?TSConfig de página? en el módulo ?Web&gt;Info? (requiere que la extensión ?info_pagetsconfig? esté instalada).</key>
+            <key index="TSconfig.syntax">Síntaxis de TypoScript básica &lt;em&gt;sin&lt;/em&gt; ?Condiciones? ni ?Constantes?.
+
+Es recomentado que sólo los usuarios ?Administradores? tengan acceso a este campo.</key>
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+            <key index=".description">'Sivu'-tietue esittää useimmiten kokonaista www-sivua Typo3ssa. Kaikilla sivuilla on ID-numero, jonka perusteella niihin voidaan linkittää ja viitata. 'Sivu'-tietueessa ei itsessään ole sisältöä, vaan tähän tarkoitukseen sinun on luotava 'Sivun sisältö' -tietueita.</key>
+            <key index=".details">'Tyyppi' (''Type') valinnasta riippuen sivu voi toimia myös yleisenä Typo3 tietokannan elementtien varastona. Tässä tapauksessa sivut eivät ole välttämättä varsinaisia www-sivuston sivuja vaan sisäisiä sivuja puurakenteessa jonne on talletettu tietoja, kuten käyttäjät, linkit, linkkiluokat tms.
+Sivutaulu on TYPO3n selkäranka. Kaikkien keskeisillä aliohjelmilla muokattavien tietojen TYPO3ssa on 'kuuluttavat' sivulle. Tilanne on saman kaltainen kuin tiedostot ja hakemistot oman tietokoneesi kovalevyllä.
+Sivut on järjestetty puurakenteeseen joka ei ole ainoastaan käytännöllinen menetelmä mutta  vastaa kuinka Sinun tulisi järjestää sivut  optimaalisesti www-sivustollesi. Näin huomaat normaalisti myös että puurakenne vastaa myös siirtymisiä www-sivustolla.
+
+Teknisesti kaikissa tietokannan elementeissä on 'uid' joka on yksilöllinen tunnus. Edelleen elementeillä tulee olla tieto 'pid' joka sisältää kunkin sivun 'uid'-tunnuksen jolle kukin elementti kuuluu. Jos 'pid' tieto on nolla, tietoa kutsutaan silloin ns. juureksi (root). Vain pääkäyttäjillä on oikeus juuren käsittelyyn. Lisäksi kaikkien taulun tietojen tulee olla asetettuja kuulumaan joko johonkin sivuun tai juureen.</key>
+            <key index="title.description">Anna sivun tai hakemiston nimi.</key>
+            <key index="title.syntax">Sinun tulee antaa nimi sivulle. Tämä on pakollinen tieto.</key>
+            <key index="doktype.description">Valitse sivun tyyppi. Tämän tarkoituksena on määrittää näkyykö sivu tavallisena web-sivuna vai käytetäänkö sitä johonkin muuhun tarkoitukseen.</key>
+            <key index="doktype.details">'Normaali'-tyyppi on tavallinen esitettävä www-sivu.
+'SysFolder' tarkoittaa ei-esitettävää sivua - se esittää hakemistoa jonne on tallennettu haluamiasi tietoja.
+'Recycler' tarkoittaa roskakoria.
+
+&lt;B&gt;Huomautus:&lt;/B&gt;Eri tyypeillä on yleensä erilaiset ikonit. Kaikki tyypit eivät myöskään ole käytössä kaikilla käyttäjillä (voit ehkä huomata sen nytkin!). Ja lopuksi, erilaiset tyypit on konfiguroitu käyttämään ainoastaan määrittyjä taulutietoja sivuilla (SysFolder mahdollistaa minkä tahansa tiedon jos Sinulla on ongelmia).</key>
+            <key index="TSconfig.description">Sivun TypoScript-asetukset.</key>
+            <key index="TSconfig.details">Periaatteessa 'TypoScript' on konsepti jolla annetaan arvoja puu-rakenteessa. Tämä tulee erityisesti esille luotaessa mallipohjia TYPO3 www-sivustoille.
+Kuitenkin samaa periaatetta käytetään kun annetaan arvoja hierarkkisesti konfiguroitaessa erilaisia ominaisuuksia taustatoiminnoille, apuohjelmien toiminnalle jne.
+Lopputuloksena syntyy sivulle 'TSconfig' joka on itse asiassa kaikkien arvojen summa juuresta kullekin sivulle asti. Myös ko. sivun alasivut saavat vaikutuksen ylemmistä. Sivun TSconfig tiedoista saa tulosteen valikosta 'Sivun TSconfig' ('Page TSconfig') 'Web&gt;Info' modulissa (lisäohjelma &quot;info_pagetsconfig&quot; tulee olla asennettuna).</key>
+            <key index="TSconfig.syntax">Perus TypoScript syntaksi &lt;em&gt;ilman&lt;/em&gt; 'Conditions' ja 'Constants'.
+
+Suositellaan vain admin-käyttäjille pääsyä tähän tietoon!</key>
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+            <key index=".description">A 'Page' record usually represents a webpage in TYPO3. All pages has an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records.</key>
+            <key index=".details">Depending on the 'Type' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc.
+The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must 'belong' to a page. It's exactly like files and folders on your computers harddrive.
+The pages are organized in a tree structure which is not only a very handy way of organizing in general but also a optimal reflection of how you should organize the pages on your website. And thus you'll normally find that the page tree is a reflection of the website navigation itself.
+
+Technically all database elements has a field 'uid' which is a unique identification number. Further they must have a field 'pid' which holds the uid-number of the page (page id) to which they belong. If the 'pid' field is zero the record is found in the so called 'root'. Only administrators are allowed access to the root and furthermore table records must be configured to either belonging to a page or being found in the root.</key>
+            <key index="title.description">Fyll i sidans eller katalogens namn.</key>
+            <key index="title.syntax">Sidan måste ha ett namn!</key>
+            <key index="doktype.description">Välj sidtyp. Detta påverkar huruvida sidan är en synlig websida eller om den används för annat bruk.</key>
+            <key index="doktype.details">The 'Standard' type represents a webpage.
+'SysFolder' represents a non-webpage - a folder acting as a storage for records of your choice.
+'Recycler' is a garbage bin.
+
+&lt;B&gt;Notice:&lt;/B&gt; Each type usually has a specific icon attached. Also certain types may not be available for a user (so you may experience that some of the options is not available for you!). And finally each type is configured to allow only certain table records in the page (SysFolder will allow any record if you have any problems).</key>
+            <key index="TSconfig.description">Sidans TypoScript-konfigurering.</key>
+            <key index="TSconfig.details">Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
+However the same principle for entering the hierarchy of values is used here to configure various features in relation to the backend, functions in modules, the Rich Text Editor etc.
+The resulting 'TSconfig' for a page is actually an accumulation of all 'TSconfig' values from the root of the page tree and outwards to the current page. And thus all subpages are affected as well. A print of the page TSconfig is available from the 'Page TSconfig' menu in the 'Web&gt;Info' module (requires the extension &quot;info_pagetsconfig&quot; to be installed).</key>
+            <key index="TSconfig.syntax">Basic TypoScript syntax &lt;em&gt;without&lt;/em&gt; 'Conditions' and 'Constants'.
+
+It's recommended that only admin-users are allowed access to this field!</key>
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+            <key index=".description">一个'页面'记录通常在TYPO3中显示一个网页.所有页面都有一个标识号通过它来连接和参考页面.'页面'记录本身不包含页面的内容-为此您应该创建'页面内容'记录.</key>
+            <key index=".details">根据网页的'类型',它也可能在TYPO3中为数据库元素显示一个常规存
+储. 在这种情况下它不必作为一个网页有效,而仅在网页树内部作为存
+储项的空间,例如用户, 签名等.
+页面表格在TYPO3中非常重要. 所有在TYPO3中被主流模块可编辑的记
+录都必须'属于'一个页面.这与您计算机硬盘中的文件和目录非常相象.
+页面被组织成树型结构,这样不但未常规组织提供非常便利的方法而且
+页最佳的反映出在您的网站上您应该如何组织页面.因而您将发现页面
+树是网页自身定位的一个反映.
+技术上所有的数据库元素都有一个'uid'域(唯一标识号).另外它们必须
+有一个 'pid'域,'pid'保存属于它的页面的uid号(页面id).如果在记录
+中发现的'pid'域为零,那么它就叫作'根'.只有管理员允许访问根并且
+表格记录必须设置为属于页面或者在根中能被发现的位置.</key>
+            <key index="title.description">输入页面或目录的标题.</key>
+            <key index="title.syntax">您必须输入一个页面标题. 此域是必须的.</key>
+            <key index="doktype.description">选择页面类型.这影响到页面是否显示一个可视网页或是用于其他目的.</key>
+            <key index="doktype.details">'标准'类型表示一网页.
+'SysFolder'表示为一非网页- 一个文件夹作为您选择的记录的存储器.
+'再循环'是一垃圾箱.
+&lt;B&gt;注意:&lt;/B&gt;每个类型通常会附上一个指定的图标.并且某些类型可能
+对用户不可用 (因此您可能会经历一些选项对您是不可用的!). 
+并且最后每种类型被配置仅允许页面中的某些表格记录(如果您有任何问题
+SysFolder将允许任何记录).</key>
+            <key index="TSconfig.description">页面TypoScript 配置.</key>
+            <key index="TSconfig.details">基本上'TypoScript'是一个呈现为树型结构,用于输入数值的概念.
+尤其是为TYPO3网站创建模板而著名.
+然而用来输入数值层次的相同原理在此用来配置与后端,模块中的
+功能,Rich Text 编辑器等相关的不同特性. 
+一个页面的'TSconfig'结果事实上是从页面树的根和至当前页面
+分支的所有'TSconfig'值的累计.因而所有子页面也同样受到影响.
+打印页面TSconfig可在'网页&gt;信息'模快中从'网页TSconfig'菜单内
+执行(所需的&quot;info_pagetsconfig被安装).</key>
+            <key index="TSconfig.syntax">基本TypoScript句法&lt;em&gt;无&lt;/em&gt; '条件'和'常量'.
+
+建议只有管理员用户允许访问此域!</key>
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+            <key index=".description">Zapis 'stranica' obično predstavlja web stranicu u TYPO3 sustavu. Sve stranice imaju id broj pomoću kojega mogu biti povezane i referencirane. Zapis 'Stranica' ne obuhvaća sam sadržaj već je za to potrebno kreirati zapis 'Sadržaj stranice'.</key>
+            <key index=".details">U zavisnosti od tipa stranice ona može predstavljati repozitorij raznih podatakovnih elemenata u TYPO3 sustavu. U tom slučaju nije nužno da predstavlja web stranicu već interno unutar stabla stranica može predstavljati mjesto za pohranu raznih podataka kao što su korisnici, pretplate i slično.
+Stranice su duboko ukorijenjene u TYPO3. Svi zapisi koji se mogu editirati iz glavnih TYPO3 modula moraju pripadati nekoj stranici. To je vrlo slično datotekama koje moraju pripadati pretincima.
+Stranice su organizirane u stablo što nije samo prikladan način organiziranja podataka već i uobičajen način organiziranja stanica unutar web sjedišta. Također, uobičajeno je da stablo stranica predstavlja i sam način organizacije navigacije.
+
+Tehnički gledano svi elementi baze imaju polje 'uid' koje predstavlja jedinstveni identifikacioni broj. Također moraju imati i polje 'pid' koji sadrži uid oznaku stranice kojoj određenmi element pripada. Ukoliko je 'pid' oznaka nula zapis senalazi u početnoj (root) stranici. Samo administraotri imaju dozvolu pristupa početnoj stranici i osim toga zapisi moraju biti konfigurirani tako da pripadaju nekoj od stranica ili biti u početnoj stranici.</key>
+            <key index="title.description">Unesite naslov stranice ili pretinca</key>
+            <key index="title.syntax">Obavezno je unjeti naslov stranice.</key>
+            <key index="doktype.description">Selektirajte tip stranice. Ovo ima utjecaj na sadržaj stranice, da li će biti web stranica ili iskorištena za neku drugu svrhu.</key>
+            <key index="doktype.details">Standardni tip predstavlja web stranicu.
+'SysFolder' (sistemski pretinac) predstavlja repozitorij - pretinac u koji možete spremiti razne zapise prema vlastitom izboru.
+'Recycler' predstavlja kanticu za smeće, to jest obrisani sadržaj.
+
+&lt;B&gt;Napomena:&lt;/B&gt; Svaki tip obično je specificiran određenom ikonom. Također, glavni tipovi mogu biti nedostupni za korisnika (tako da možete imati osjećaj da vam neke od opcija nisu dostupne!). I na kraju svaki tip stranice omogućava samo određene zapise na stranici (ukoliko imate bilo kakvih problema SysFolder omogućava svaki zapis).</key>
+            <key index="TSconfig.description">Stranica TypoScript konfiguracije.</key>
+            <key index="TSconfig.details">U osnovi 'TypoScript' je koncept za unos vrijednosti putem strukture stabla. Princip je poznat iz načina kreiranja predložaka za TYPO3 web sjedište.
+Također, ovdje se primjenjuje jednak princip hijerarhijskog unosa vrijednosti za potrebe konfiguriranja različitih značajki u odnosu na osnovu sustava (backend), funkcije modula, WYWIWYG editora i slično.
+Konačni 'TSconfig' stranice je rezultat akumuliranja svih 'TSconfig' vrijednosti od početne stranice stabla prema trenutnoj stranici. Na taj način sve prethodne stranice u hijerarhiji utječu na konfiguraciju. Ispis stranice TSconfig moguć je iz menija 'Stranica TSconfig' u 'Web&gt;Info' modulu (zahtijeva da bude instalirano proširenje &quot;info_pagetsconfig&quot;).</key>
+            <key index="TSconfig.syntax">Osnovna TypoScript sintaksa &lt;em&gt;bez&lt;/em&gt; 'uvjeta' i 'konstanti'.
+
+Preporučljivo je da samo korisnici s administratorskim dozvolama imaju pristup do ovog polja!</key>
+        </key>
+        <key index="hu" type="array">
+            <key index=".description">A 'Page' rekord általában egy weboldalt jelent a TYPO3-ban. Minden oldalnak van egy id-száma, amivel hivatkozni lehet rá. A 'Page' rekord nem tartalmazza az oldal tartalmát - ezért létre kell hozni 'Oldal tartalom' rekordokat.</key>
+            <key index=".details">Az oldal típusától függően ez is az adatbázis elemek tárolását
+képviseli a TYPO3-ban. Abban az esetben , ha nem szükséges
+az elérés weblapként, hanem csak belsőleg az oldalrendszeren
+belül olyan tárolási hely gyanánt, mint felhasználók,
+feliratkozások, stb.
+Az oldalak táblája adja a TYPO3 gerincét. A TYPO3-ban
+minden főáramú modul által szerkeszthető rekord egy oldalhoz
+'tartozik'. Pontosan úgy, mint a fájlok és könyvtárak a
+merevlemezen.
+Az oldalak egy faszerű struktúrába vannak rendezve, amely
+nemcsak könnyen kezelhetőséget biztosít, hanem egy
+optimális tükre annak, hogy hogyan kell az oldalakat
+szervezni a webhelyen belűl. És így rájöhetünk arra, hogy a
+fastruktúra magának a webhely navigációnak a
+visszatükröződése.
+
+Technikailag minden adatbázis elemnek van egy 'uid' azaz
+egyedi azonosító számot képviselő mezője. Továbbá ezek
+az elemeknek rendelkezniük kell egy 'pid' szülőazonosító
+mezővel, amely azonosítja azt az oldalt, ahova tartoznak.
+Ha egy 'pid' mező zérus, akkor a rekord az ún. 'gyökérben'
+található. A gyökérhez csak az adminisztrátorok férnek hozzá
+illetve a táblarekordokat úgy kell konfigurálni, hogy vagy egy
+oldalhoz vagy a gyökérhez tartozzanak.</key>
+            <key index="title.description">Add meg az oldal vagy könyvtár címét.</key>
+            <key index="title.syntax">Meg kell adnod egy oldalcímet. Ez a mező kötelező.</key>
+            <key index="doktype.description">Válaszd ki az oldal típusát. Ettől függ, hogy az oldal látható vagy egyéb célokra szolgál.</key>
+            <key index="doktype.details">A 'Standard' típus egy weboldalt képvisel, a 'SysFolder'
+- amely nem weboldal - egy olyan könyvtár, amely az általad
+kiválasztott rekordok kezelését végzi, a 'Recycler' pedig
+egy lomtár.
+
+&lt;B&gt;Figyelem:&lt;/B&gt; Minden típushoz egy speciális ikon van
+csatolva. Vannak bizonyos, felhasználók által el nem érhető
+típusok (a tapasztalat szerint olyanok, amit nem tudsz elérni).
+És végül minden típus úgy van konfigurálva, hogy csak
+az oldal bizonyos táblarekordjait engedélyezik (a SysFolder
+engedélyez bármely rekordot probléma esetén).</key>
+            <key index="TSconfig.description">Az oldal TypoScript beállítása.</key>
+            <key index="TSconfig.details">Alapjában a 'TypoScript' egy koncepció értékek elhelyezésére a
+fastruktúrában. Ez különösen jól ismert a TYPO3 weboldalak
+és a sablonkészítés kapcsolatában.
+Tehát ugyanaz az beviteli hierarchia alapelv használatos itt is,
+amely beállít számos elemet a backenddel kapcsolatban,
+műveleteket a modulokban, a Rich Text Editor, stb.
+Ez eredmény 'TSconfig' egy oldalra nézve az gyökértől az adott
+oldalig az összes oldal 'TSconfig' értékek halmozása. Így
+minden aloldal is érintve van. A TSconfig oldal nyomata
+elérhető az 'Oldal TSconfig' menüből, amely a 'Web&gt;Info'
+modulban található (szükséges az &quot;info_pagetsconfig&quot;
+kiterjesztés előzetes telepítése).</key>
+            <key index="TSconfig.syntax">Alap TypoScript szintaxis 'Feltételek' és 'Konnstansok' &lt;em&gt;nélkül&lt;/em&gt;.
+
+Javaslat: csak admin-felhasználóknak legyen engedélyezve a mező elérése!</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index=".description">在 TYPO3 中一個「網頁」記錄通常代表一個網頁。所有網頁都有一個編號，透過這個編號網頁可以被連結和參照。「網頁」記錄本身不含有網頁的內容 - 要達成這目的你應該建立「網頁內容」記錄。</key>
+            <key index=".details">視乎網頁的「種類」, 它也可以代表在 TYPO3 中一個普通的資料庫元件儲存。在這個情況下，它不須是一個可觀看的網頁，而只是網頁樹圖中內在作為儲存物件（使用者和訂閱等）的地方。
+網頁資料表是 TYPO3 的中樞。所有可以經 TYPO3 主模組修改的的記錄一定「屬於」一個網頁。就好像你的電腦硬碟中的資料夾和檔案一樣。
+網頁被組織成一個「樹圖」，它不單是一個非常方便的組織，也最有效反映你應該如何組織你網站的網頁。因此，通常你會發現網頁樹圖反映網站身的選單導向。
+技術上，所有的資料庫元件都有一個「UID」欄，它是獨一的「認證」編號。除此之外，它們一定有一個「PID」欄，它含有他們所屬的網頁的編號。假如「PID」欄是零，記錄就是在被稱為「根」中。只有管理員被許可存取根，而且資料表記錄一定要設定為屬於一個網頁或位於根中。</key>
+            <key index="title.description">輸入網頁或資料夾的名稱</key>
+            <key index="title.syntax">你必須要輸入一個網頁名稱。這欄是必須的。</key>
+            <key index="doktype.description">選擇網頁種類。這影響網頁是一個可觀看的網頁或是作為其他用途。</key>
+            <key index="doktype.details">「標準」類型代表一個網頁。
+「系統資料夾」代表一個非網頁 - 一個資料夾作為你選擇的記錄的儲存。
+「回收筒」是一個垃圾箱。
+
+&lt;B&gt;留意：&lt;/B&gt;每一類通常都附有一個特定的圖示。同時對某個用家可能不能使用某些種類（因此你可能經歷到你不能使用某些選項）。最後每一個類型被設定來容許只有某些資料表記錄存於網頁中（系統資料夾會容許任何記錄，假如你有任何問題）。</key>
+            <key index="TSconfig.description">網頁 TypoScript 設定。</key>
+            <key index="TSconfig.details">基本上　「TypoScript」是一個在樹圖中輸入數值的概念。特別是關係到為 TYPO3 網站建立樣版時。
+然而相同的原則適用於輸入數值系統以設定與後勤系統中不同的功能, 模組的功能, 多功能文字編輯器等。
+一個網頁的最終「TSconfig」實在是累積了從網頁樹圖的根頁至現有網頁的所有「TSconfig」數值。而因此所有副頁都被影響。你可以在「Web&gt;Info」（你需要安裝 &quot;info_pagetsconfig&quot; 延伸工具）模組中的「Page TSconfig」選單中到一個網頁的 「TSconfig」副本。</key>
+            <key index="TSconfig.syntax">基本的 TypoScript 語法 &lt;em&gt;沒有&lt;/em&gt;「條件」和「常值」。
+
+我們建議只有管理員級使用者才被許可存取這個欄目。</key>
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+            <key index=".description">Запис 'Страница' обикновенно представлява уеб страница в TYPO3. Всички страници имат id-номер по който могат да бъдат свързвани или референцирани. Записа 'Страница' не съдържа в себе си съдържанието на страницата - за тази цел трябва да създадете запис 'Съдържание на страницата'.</key>
+            <key index="title.description">Въведете заглавие на страницата или папката.</key>
+            <key index="title.syntax">Трябва да въведете заглавие на страницата. Полето е изискване.</key>
+            <key index="doktype.description">Изберете тип на страницата. Това засяга дали страницата ще представлява видима уеб страница или е се използва за други нужди.</key>
+            <key index="TSconfig.description">Конфигурация на TypoScript страницата.</key>
+            <key index="TSconfig.syntax">Основния TypoScript синтаксис &lt;em&gt;без&lt;/em&gt; 'Условия' and 'Константи'.
+
+Препоръчително е само Админ потребители да имат разрешен достъп до това поле!</key>
+        </key>
+        <key index="br" type="array">
+            <key index=".description">Um registro do tipo 'Página' normalmente representa uma página web no TYPO3. Todas as páginas possuem um número de identificação através do qual elas podem ser acessadas e referenciadas. O registro 'página' não armazena em si o conteúdo da página - para essa finalidade você deve criar registros do tipo 'Conteúdo de página'.</key>
+            <key index=".details">Dependendo do 'Tipo' da página, ela pode representar um armazém de elementos da base de dados do TYPO3. Neste caso, não estará necessariamente disponível como uma página web, mas apenas internamente na árvore de páginas, como um local para armazenar ítens como usuários, assinaturas, etc. A tabela de páginas é a estrutura básica no TYPO3. Todos os registros editáveis pelos módulos principais do TYPO3 precisam 'pertencer' a uma página. É exatamente como os arquivos e pastas do disco rígido de seu computador.
+As páginas são organizadas dentro de uma estrutura de árvore, a qual é não apenas uma forma bastante prática de organização de modo geral, mas também uma representação apropriada de como você deve organizar as páginas dentro do seu site. Desta forma, você perceberá que a árvore de páginas é uma representação da própria estrutura de navegação do site.
+
+Tecnicamente, todos os elementos do banco de dados possuem um campo 'uid', que contém um número de identificação único. Além disso, possuem também um campo 'pid', que contém o número de identificação da página à qual eles pertencem. Se o campo 'pid' é zero, o registro se encontra na chamada 'raiz'. Apenas usuários-administradores possuem acesso à raiz e portanto os registros precisam ser configurados, ou para pertencer a uma página, ou para serem encontrados na raiz.</key>
+            <key index="title.description">Digite o título da página ou pasta.</key>
+            <key index="title.syntax">Você precisa digitar um título para a página. Este campo é obrigatório.</key>
+            <key index="doktype.description">Selecione o tipo da página. Esta opção define se a página representa uma página web visível ou se é usada para outras finalidades.</key>
+            <key index="doktype.details">O tipo 'Padrão' representa uma página web. 'Pasta de Sistema' representa uma página não-web - uma pasta atuando como armazém de registros à sua escolha. 'Lixeira' representa um local para exclusão de registros.
+
+&lt;B&gt;Nota:&lt;/B&gt; Cada tipo normalmente possui um ícone específico. Além disso, certos tipos podem não estar disponíveis a todos os usuários (assim talvez algumas das opções podem não estar disponíveis para você!). E finalmente, cada tipo é configurado para permitir apenas certas opções de registros dentro da página (o tipo 'Pasta de Sistema' permitirá qualquer registro, caso você encontre algum problema).</key>
+            <key index="TSconfig.description">Configuração TypoScript da página.</key>
+            <key index="TSconfig.details">Basicamente, 'TypoScript' é um conceito para atribuir valores em uma estrutura de árvore. Este conceito é observado especialmente durante a criação de modelos para sites TYPO3.
+Entretanto, o mesmo princípio para atribuição da hierarquia de valores é usado aqui para configurar várias características em relação à administração do site, às funções dos módulos, ao editor Rich Text, etc. O 'TSconfig' resultante para a página é na verdade o acúmulo de todos os valores 'TSconfig' herdados desde a raiz do site até a página atual. E da mesma forma, todas as subpáginas serão afetadas também.
+Uma visualização do TSconfig da página está disponível no menu 'TSconfig da página', presente no módulo 'Web&gt;Info' (requer a instalação da extensão &quot;info_pagetsconfig&quot;).</key>
+            <key index="TSconfig.syntax">Sintaxe básica TypoScript &lt;em&gt;sem&lt;/em&gt; 'Condições' e 'Constantes'.
+
+É recomendado que apenas os usuários-administradores tenham acesso permitido a este campo!</key>
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+            <key index=".description">רשומה מסוג &quot;דף&quot; בדרך כלל מייצג דף אינטרנט ב-TYPO3. לכל הדפים יש מספר זהות לפיו ניתן לצור קישורים אליהם. רשומה מסוג &quot;דף&quot; לא מכילה תוכן דף בתוכה. בשביל זה עליך לצור רשומות מסוג &quot;תוכן דף&quot;.</key>
+            <key index=".details">תלוי בסוג של דף, זה יכול להוות מקום איחסון כללי לפרטי מאגר מידע ב-TYPO3. במקרה כזה, זה לא בהכרח זמין בתור דף אינטרנט, אלא פנימית, בתור מקום לאחסן פריטים כמו: משתמשים, כתובות וכו'. טבלת דפים היא &quot;עמוד השדרה&quot; ב-TYPO3. כל רשומות שניתנים לעריכה צריכים &quot;להשתייך&quot; לדף. זה בדיוק כמו קבצים ותיקיות על הדיסק הקשיח. דפים מסודרים בצורת עץ, שהיא לא רק צורה נוחה, אלא גם מראה איך עליך לסדר דפים באתר.
+טכנית, לכל הרכיבים במאגר מידע יש שדה &quot;uid&quot; שהוא מספר זיהוי ייחודי. בנוסף יש גם שדה &quot;pid&quot; שמכיל מספר uid של דף, אליו הוא שייך. אם pid הוא 0 - הרשומה נמצאת בשורש. רק מנהלים רשאים לגשת לשורש ועל כל רשומות להשתייך או לשורש או לדף.</key>
+            <key index="title.description">הכנס שם הדף או התיקייה</key>
+            <key index="title.syntax">עליך להזין שם הדף. השדה נדרש.</key>
+            <key index="doktype.description">בחר סוג הדף. זה מגדיר אם הדף מייצג דף אינטרנט או בשימוש לצרכים אחרים.</key>
+            <key index="doktype.details">סוג &quot;רגיל&quot; מייצג דף אינטרנט. &quot;SysFolder&quot; אינו מייצג דף אינטרנט, אלא תיקייה בה ניתן לאחסן רשומות שתבחר. &quot;סל מיחזור&quot; - הוא פח אשפה.
+&lt;b&gt;הערה:&lt;/b&gt;לכל סוג בדרך כלל יש סמל מוצמד. יכול להיות שסוגים מסוימים לא נגישים למשתמש. ולבסוף, כל סוג מוגדר כך, שהוא מאפשר רק רשומות מסוימות בדף (SysFolder יאפשר כל רשומה, אם יש לכם בעיה עם זה).</key>
+            <key index="TSconfig.description">תצורת TypoScript של דף.</key>
+            <key index="TSconfig.details">עקרונית, &quot;TypoScript&quot; היא שיטה לסדר ערכים בצורת עץ. זה ידוע בעיקר יחסית ליצירת תבניות לאתרי TYPO3. בכל זאת, באותו עיקרון לסדר ערכים משתמשים גם כדי להגדיר תכונות שונות בממשק האחורי, פעולות במודולים, Rich Text Editor, וכו' לבסוף, &quot;TSconfig&quot; של דף הינו בעצם אוסף של כל ארכי &quot;TSconfig&quot; מהשורש של עץ דפים ועד לדף נוכחי. לכן, כל תת-דפים מושפעים גם הם. הקוד של &quot;TSconfig&quot; ניתן לראות בתפריט -&quot;TSconfig של דף&quot;במודול &quot;אינטרנט-&gt;מידע&quot; (דורש תוספת &quot;info_pagetsconfig&quot; שתהיה מותקנת)</key>
+            <key index="TSconfig.syntax">תחביר TypoScript בסיסי &lt;em&gt;ללא&lt;/em&gt; &quot;Conditions&quot; ו-&quot;Constants&quot;.
+מומלץ שרק למנהלים תהיה גישה לשדה זה.</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index=".description">'Lapas' ieraksts iekš TYPO3 parasti reprezentē web lapu. Katrai lapai ir id numurs, kas viennozīmīgi identificē to. 'Lapas' ieraksts pats par sevi nesatur lapas saturu - šim mērķim jūs veidosiet 'Lapas satura' ierakstus.</key>
+            <key index="title.description">Ievadiet lapas vai foldera nosaukumu.</key>
+            <key index="title.syntax">Ievadiet lapas virsrakstu. Šis lauks ir obligāts.</key>
+            <key index="doktype.description">Izvēlieties lapas tipu. Tas nosaka to, vai lapa reprezentē redzamo weblapu, vai arī tiek lietota citiem mērķiem.</key>
+            <key index="TSconfig.description">Lapas TypoScript konfigurācija.</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+            <key index="php_tree_stop.description" type="integer">121439715</key>
+            <key index="storage_pid.description" type="integer">121439715</key>
+            <key index="is_siteroot.description" type="integer">121439715</key>
+        </key>
+        <key index="dk" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+        </key>
+        <key index="es" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="hu" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="br" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index=".details" type="integer">252489865</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="doktype.details" type="integer">31816484</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+            <key index="TSconfig.details" type="integer">227684797</key>
+            <key index="TSconfig.syntax" type="integer">6236841</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index=".description" type="integer">128485468</key>
+            <key index="title.description" type="integer">172593489</key>
+            <key index="title.syntax" type="integer">123260963</key>
+            <key index="doktype.description" type="integer">238659907</key>
+            <key index="TSconfig.description" type="integer">129650006</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

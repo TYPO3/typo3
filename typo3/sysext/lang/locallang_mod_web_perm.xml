@@ -1,0 +1,2276 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Web&gt;Access Module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_web_perm.php</key>
+        <key index="labelContext" type="array">
+            <key index="permissions"></key>
+            <key index="ch_permissions"></key>
+            <key index="Legend"></key>
+            <key index="Owner"></key>
+            <key index="Group"></key>
+            <key index="Everybody"></key>
+            <key index="Save"></key>
+            <key index="Abort"></key>
+            <key index="Edit"></key>
+            <key index="recursive"></key>
+            <key index="pages_affected"></key>
+            <key index="user_overview"></key>
+            <key index="Mode"></key>
+            <key index="Depth"></key>
+            <key index="levels"></key>
+            <key index="User"></key>
+            <key index="def"></key>
+            <key index="A_Granted"></key>
+            <key index="A_Denied"></key>
+            <numIndex index="1"></numIndex>
+            <numIndex index="16"></numIndex>
+            <numIndex index="2"></numIndex>
+            <numIndex index="4"></numIndex>
+            <numIndex index="8"></numIndex>
+            <key index="1_t"></key>
+            <key index="16_t"></key>
+            <key index="2_t"></key>
+            <key index="4_t"></key>
+            <key index="8_t"></key>
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_labels_tabdescr"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="permissions">Permissions</key>
+            <key index="ch_permissions">Change permissions</key>
+            <key index="Legend">Legend</key>
+            <key index="Owner">Owner</key>
+            <key index="Group">Group</key>
+            <key index="Everybody">Everybody</key>
+            <key index="Save">Save</key>
+            <key index="Abort">Abort</key>
+            <key index="Edit">EDIT</key>
+            <key index="recursive">Set recursively</key>
+            <key index="pages_affected">pages affected</key>
+            <key index="user_overview">User overview</key>
+            <key index="Mode">Mode</key>
+            <key index="Depth">Depth</key>
+            <key index="levels">levels</key>
+            <key index="User">User</key>
+            <key index="def">Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</key>
+            <key index="A_Granted">Access Granted</key>
+            <key index="A_Denied">Access Denied</key>
+            <numIndex index="1">Show page</numIndex>
+            <numIndex index="16">Edit content</numIndex>
+            <numIndex index="2">Edit page</numIndex>
+            <numIndex index="4">Delete page</numIndex>
+            <numIndex index="8">New pages</numIndex>
+            <key index="1_t">Show/Copy page and content.</key>
+            <key index="16_t">Change/Add/Delete/Move content.</key>
+            <key index="2_t">Change/Move page, eg. change pagetitle etc.</key>
+            <key index="4_t">Delete page and content.</key>
+            <key index="8_t">Create new pages under this page.</key>
+            <key index="mlang_labels_tablabel">Page editing permissions</key>
+            <key index="mlang_labels_tabdescr">Setting of page permissions is vital in order to control access to the pages for the backend users. You can assign a user and a group as owners of a page and set access permissions for each.</key>
+            <key index="mlang_tabs_tab">Access</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="permissions">Rettigheder</key>
+            <key index="ch_permissions">Ændre rettigheder</key>
+            <key index="Legend">Signatur-forklaring</key>
+            <key index="Owner">Ejer</key>
+            <key index="Group">Gruppe</key>
+            <key index="Everybody">Alle</key>
+            <key index="Save">Gem</key>
+            <key index="Abort">Annuller</key>
+            <key index="Edit">REDIGER</key>
+            <key index="recursive">Sæt værdi rekursivt</key>
+            <key index="pages_affected">sider berørt</key>
+            <key index="user_overview">Bruger-overblik</key>
+            <key index="Mode">Funktion</key>
+            <key index="Depth">Dybde</key>
+            <key index="levels">niveauer</key>
+            <key index="User">Bruger</key>
+            <key index="def">Definition: 'indhold' er records fra alle tabeller under en side, pånær records fra tabellen 'pages' (Sider).</key>
+            <key index="A_Granted">Adgang tilladt</key>
+            <key index="A_Denied">Adgang afvist</key>
+            <numIndex index="1">Vis side</numIndex>
+            <numIndex index="16">Rediger indhold</numIndex>
+            <numIndex index="2">Rediger side</numIndex>
+            <numIndex index="4">Slette side</numIndex>
+            <numIndex index="8">Nye sider</numIndex>
+            <key index="1_t">Vis/Kopiere siden samt indhold.</key>
+            <key index="16_t">Ændre/Tilføje/Slette/Flytte indhold.</key>
+            <key index="2_t">Ændre/Flytte siden. Fx. ændre sidetitel osv.</key>
+            <key index="4_t">Slette siden samt indhold.</key>
+            <key index="8_t">Oprette nye sider under denne side.</key>
+            <key index="mlang_labels_tablabel">Sideredigerings rettigheder</key>
+            <key index="mlang_labels_tabdescr">Opsætning af rettigheder er vigtigt for at kontrollere tilgangen til siderne for opdateringsbrugerne. Du kan opsætte en ejerbruger og -gruppe for en side og tilføje adgangsbetingelser for hver.</key>
+            <key index="mlang_tabs_tab">Adgang</key>
+        </key>
+        <key index="de" type="array">
+            <key index="permissions">Rechte</key>
+            <key index="ch_permissions">Ändere Rechte</key>
+            <key index="Legend">Legende</key>
+            <key index="Owner">Besitzer</key>
+            <key index="Group">Gruppe</key>
+            <key index="Everybody">Alle</key>
+            <key index="Save">Sichern</key>
+            <key index="Abort">Abbrechen</key>
+            <key index="Edit">BEARBEITEN</key>
+            <key index="recursive">Rekursiv anwenden</key>
+            <key index="pages_affected">Seiten betroffen</key>
+            <key index="user_overview">Benutzer-Übersicht</key>
+            <key index="Mode">Funktion</key>
+            <key index="Depth">Tiefe</key>
+            <key index="levels">Ebenen</key>
+            <key index="User">Benutzer</key>
+            <key index="def">Definition: 'Inhalt' sind alle Datensätze auf einer Seite - ausser Datensätze der Tabelle 'pages' (Pages).</key>
+            <key index="A_Granted">Zugriff erlaubt</key>
+            <key index="A_Denied">Zugriff verwehrt</key>
+            <numIndex index="1">Zeige Seite</numIndex>
+            <numIndex index="16">Bearbeite Inhalt</numIndex>
+            <numIndex index="2">Bearbeite Seite</numIndex>
+            <numIndex index="4">Lösche Seite</numIndex>
+            <numIndex index="8">Neue Seiten</numIndex>
+            <key index="1_t">Zeige/Kopiere Seite und Inhalt.</key>
+            <key index="16_t">Ändere/Hinzu/Lösche/Verschiebe Inhalt.</key>
+            <key index="2_t">Ändere/Verschiebe Seite, (Seitentitel etc.)</key>
+            <key index="4_t">Lösche Seite und Inhalt.</key>
+            <key index="8_t">Neue Seiten unter dieser Seite.</key>
+            <key index="mlang_labels_tablabel">Seiten-Bearbeitungsrechte</key>
+            <key index="mlang_labels_tabdescr">Das Setzen der Seitenzugriffsrechte ist elementar, um den Zugriff der Backend Benutzer auf die einzelnen Seiten zu steuern. Sie können einzelnen Benutzern und Benutzergruppen als Besitzer der Seite definieren und deren Zugriffsrechte festlegen.</key>
+            <key index="mlang_tabs_tab">Zugriff</key>
+        </key>
+        <key index="no" type="array">
+            <key index="permissions">Rettigheter</key>
+            <key index="ch_permissions">Endre Rettigheter</key>
+            <key index="Legend">Signatur forklaring</key>
+            <key index="Owner">Eier</key>
+            <key index="Group">Gruppe</key>
+            <key index="Everybody">Alle</key>
+            <key index="Save">Lagre</key>
+            <key index="Abort">Avbryt</key>
+            <key index="Edit">REDIGER</key>
+            <key index="recursive">Sett verdien rekursivt</key>
+            <key index="pages_affected">sider berørt</key>
+            <key index="user_overview">Brukeroversikt</key>
+            <key index="Mode">Modus</key>
+            <key index="Depth">Dybde</key>
+            <key index="levels">Nivå</key>
+            <key index="User">Bruker</key>
+            <key index="def">Definisjon: 'innhold' er verdier fra alle tabeller på siden - unntatt fra verdier fra tabell 'sider' (Sider).</key>
+            <key index="A_Granted">Tilgang gitt</key>
+            <key index="A_Denied">Tilgang ikke gitt</key>
+            <numIndex index="1">Vis side</numIndex>
+            <numIndex index="16">Endre innhold</numIndex>
+            <numIndex index="2">Rediger side</numIndex>
+            <numIndex index="4">Slette side</numIndex>
+            <numIndex index="8">Nye sider</numIndex>
+            <key index="1_t">Vis/kopier side og innhold</key>
+            <key index="16_t">Endre/Legg til/Slett/Flytt innhold.</key>
+            <key index="2_t">Endre/Flytt side, f.eks. endre sidetittel etc.</key>
+            <key index="4_t">Slett side og innhold</key>
+            <key index="8_t">Lag ny side under denne siden.</key>
+            <key index="mlang_labels_tablabel">Side redigerings rettigheter</key>
+            <key index="mlang_labels_tabdescr">Oppsettet av rettigheter er viktig for å kunne kontrollere adgangen til sidene for oppdateringsbrukerne. Du kan sette opp en eierbruker og -gruppe for en side og legge til adgangsbetingelser for hver.</key>
+            <key index="mlang_tabs_tab">Adgang</key>
+        </key>
+        <key index="it" type="array">
+            <key index="permissions">Permessi</key>
+            <key index="ch_permissions">Cambia permessi</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Proprietario</key>
+            <key index="Group">Gruppo</key>
+            <key index="Everybody">Tutti</key>
+            <key index="Save">Salva</key>
+            <key index="Abort">Annulla</key>
+            <key index="Edit">Modifica</key>
+            <key index="recursive">Imposta ricorsivamente</key>
+            <key index="pages_affected">Pagine coinvolte</key>
+            <key index="user_overview">Permessi per l'utente corrente</key>
+            <key index="Mode">Modo</key>
+            <key index="Depth">Profondità</key>
+            <key index="levels">livelli</key>
+            <key index="User">Utente</key>
+            <key index="def">Definizione: 'contenuto' sono i record presenti nelle tabelle in una pagina - a parte i record di tipo &quot;pagina&quot;.</key>
+            <key index="A_Granted">Accesso consentito</key>
+            <key index="A_Denied">Accesso negato</key>
+            <numIndex index="1">Mostra pagina</numIndex>
+            <numIndex index="16">Modifica il contenuto</numIndex>
+            <numIndex index="2">Modifica pagina</numIndex>
+            <numIndex index="4">Elimina pagina</numIndex>
+            <numIndex index="8">Nuove pagine</numIndex>
+            <key index="1_t">Mostra/Copia pagina e contenuto.</key>
+            <key index="16_t">Cambia/Aggiungi/Elimina/Sposta il contenuto.</key>
+            <key index="2_t">Cambia/Sposta pagina, ad esempio cambia il titolo etc..</key>
+            <key index="4_t">Elimina la pagina e il contenuto.</key>
+            <key index="8_t">Crea nuove pagine all'interno di questa.</key>
+            <key index="mlang_labels_tablabel">Permessi per la modifica della pagina</key>
+            <key index="mlang_labels_tabdescr">Impostare i permessi è di fondamentale importanza per il controllo degli accessi alle pagine da parte degli utenti amministratori (backend user). Puoi decidere il proprietario di una pagina ed impostare i permessi d'accesso per i gruppi di utenti.</key>
+            <key index="mlang_tabs_tab">Accesso</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="permissions">Droits d'accès</key>
+            <key index="ch_permissions">Modifier les droits d'accès</key>
+            <key index="Legend">Légende</key>
+            <key index="Owner">Propriétaire</key>
+            <key index="Group">Groupe</key>
+            <key index="Everybody">Tout le monde</key>
+            <key index="Save">Enregistrer</key>
+            <key index="Abort">Annuler</key>
+            <key index="Edit">Editer</key>
+            <key index="recursive">Appliquer recursivement</key>
+            <key index="pages_affected">pages affectées</key>
+            <key index="user_overview">Résumé de l'utilisateur</key>
+            <key index="Mode">Mode</key>
+            <key index="Depth">Profondeur</key>
+            <key index="levels">Niveaux</key>
+            <key index="User">Utilisateur</key>
+            <key index="def">Définition : le 'contenu' est constitué de tous les enregistrements d'une page, à l'exception des enregistrements de la table 'pages'.</key>
+            <key index="A_Granted">Accès autorisé</key>
+            <key index="A_Denied">Accès refusé</key>
+            <numIndex index="1">Visualiser la page</numIndex>
+            <numIndex index="16">Editer le contenu</numIndex>
+            <numIndex index="2">Editer la page</numIndex>
+            <numIndex index="4">Supprimer la page</numIndex>
+            <numIndex index="8">Créer de nouvelles pages</numIndex>
+            <key index="1_t">Visualiser / copier page et contenu.</key>
+            <key index="16_t">Modifier / Ajouter / Supprimer / Transférer contenu.</key>
+            <key index="2_t">Modifier / Transférer page, par ex. modifier le titre d'une page, etc.</key>
+            <key index="4_t">Supprimer page et contenu.</key>
+            <key index="8_t">Ajouter des pages sous cette page.</key>
+            <key index="mlang_labels_tablabel">Droits d'accès aux pages</key>
+            <key index="mlang_labels_tabdescr">Etablir les droits d'accès aux pages est crucial pour contrôler l'accès aux pages par les utilisateurs de l'arrière-plan. Préparez avec soin les droits d'accès que vous souhaitez accorder aux utilisateurs et groupes utilisateurs.</key>
+            <key index="mlang_tabs_tab">Accès</key>
+        </key>
+        <key index="es" type="array">
+            <key index="permissions">Permisos</key>
+            <key index="ch_permissions">Cambiar permisos</key>
+            <key index="Legend">Leyenda</key>
+            <key index="Owner">Dueño</key>
+            <key index="Group">Grupo</key>
+            <key index="Everybody">Todos</key>
+            <key index="Save">Guardar</key>
+            <key index="Abort">Abortar</key>
+            <key index="Edit">EDITAR</key>
+            <key index="recursive">Asignar recursivamente</key>
+            <key index="pages_affected">páginas afectadas</key>
+            <key index="user_overview">Resúmen de usuarios</key>
+            <key index="Mode">Modo</key>
+            <key index="Depth">Profundidad</key>
+            <key index="levels">niveles</key>
+            <key index="User">Ususario</key>
+            <key index="def">Definición: 'contenido' son los registros de todas las tablas en una página - excepto los registros de la tabla 'páginas' (Pages)</key>
+            <key index="A_Granted">Acceso concedido</key>
+            <key index="A_Denied">Acceso negado</key>
+            <numIndex index="1">Mostrar página</numIndex>
+            <numIndex index="16">Editar contenido</numIndex>
+            <numIndex index="2">Editar página</numIndex>
+            <numIndex index="4">Eliminar página</numIndex>
+            <numIndex index="8">Crear páginas</numIndex>
+            <key index="1_t">Mostrar/Copiar página y su contenido</key>
+            <key index="16_t">Cambiar/Agregar/Eliminar/Mover contenido</key>
+            <key index="2_t">Cambiar/Mover página, pe cambiar el título, etc.</key>
+            <key index="4_t">Eliminar página y contenido</key>
+            <key index="8_t">Crear nuevas páginas bajo esta página</key>
+            <key index="mlang_labels_tablabel">Edición de permisos de la página</key>
+            <key index="mlang_labels_tabdescr">El especificar los permisos de las páginas es primordial para el control de acceso a las páginas por parte de los usuarios del backend. Ud. puede asignar un usuario y grupo como dueños de la página y especificar los permisos de acceso para cada uno.</key>
+            <key index="mlang_tabs_tab">Acceso</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="permissions">Rechten</key>
+            <key index="ch_permissions">Wijzig rechten</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Eigenaar</key>
+            <key index="Group">Groep</key>
+            <key index="Everybody">Iedereen</key>
+            <key index="Save">Opslaan</key>
+            <key index="Abort">Afbreken</key>
+            <key index="Edit">BEWERKEN</key>
+            <key index="recursive">Plaats recursief</key>
+            <key index="pages_affected">Betreffende pagina's</key>
+            <key index="user_overview">Gebruikersoverzicht</key>
+            <key index="Mode">Modus</key>
+            <key index="Depth">Diepte</key>
+            <key index="levels">niveau's</key>
+            <key index="User">Gebruiker</key>
+            <key index="def">Definitie: 'inhoud' zijn records van alle tabellen op een pagina - behalve de records van een tabel 'pages' (Pagina's).</key>
+            <key index="A_Granted">Toegang verleend</key>
+            <key index="A_Denied">Toegang gewijgerd</key>
+            <numIndex index="1">Toon pagina</numIndex>
+            <numIndex index="16">Bewerk inhoud</numIndex>
+            <numIndex index="2">Bewerk pagina</numIndex>
+            <numIndex index="4">Verwijder pagina</numIndex>
+            <numIndex index="8">Nieuwe pagina's</numIndex>
+            <key index="1_t">Toon/Kopieer pagina en inhoud</key>
+            <key index="16_t">Wijzig/Verwijder/Verplaats inhoud of Voeg inhoud toe.</key>
+            <key index="2_t">Wijzigen/ Verplaatsen pagina, eg. wijzigen paginatitel etc.</key>
+            <key index="4_t">Verwijder pagina en inhoud</key>
+            <key index="8_t">Maak nieuwe pagina's onder deze pagina</key>
+            <key index="mlang_labels_tablabel">Rechten voor het bewerken van pagina's</key>
+            <key index="mlang_labels_tabdescr">De instelling van paginarechten is van vitaal belang om toegang te regelen voor de pagina's van de BeheerSitegebruikers. U kan een gebruiker en een groep de rechten van eigenaar van een pagina toekennen en toegangsrechten voor ieder bepalen.</key>
+            <key index="mlang_tabs_tab">Toegang</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="permissions">Přístupová práva</key>
+            <key index="ch_permissions">Změna přístupových práv</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Vlastník</key>
+            <key index="Group">Skupina</key>
+            <key index="Everybody">Každý</key>
+            <key index="Save">Uložit</key>
+            <key index="Abort">Zpět</key>
+            <key index="Edit">UPRAVIT</key>
+            <key index="recursive">Nastavit rekurzivně</key>
+            <key index="pages_affected">stránek ovlivněno</key>
+            <key index="user_overview">Přehled uživatele</key>
+            <key index="Mode">Mód</key>
+            <key index="Depth">Hloubka</key>
+            <key index="levels">úrovně</key>
+            <key index="User">Uživatel</key>
+            <key index="def">Definice: 'obsah' jsou záznamy ze všech tabulek na stránce - kromě tabulky 'pages' (Stránky).</key>
+            <key index="A_Granted">Přístup povolen</key>
+            <key index="A_Denied">Přístup zamítnut</key>
+            <numIndex index="1">Ukázat stránku</numIndex>
+            <numIndex index="16">Upravit obsah</numIndex>
+            <numIndex index="2">Upravit stránku</numIndex>
+            <numIndex index="4">Odstranit stránku</numIndex>
+            <numIndex index="8">Nové stránky</numIndex>
+            <key index="1_t">Ukázat/Kopírovat stránku a obsah.</key>
+            <key index="16_t">Změnit/Přidat/Odstranit/Přesunout obsah.</key>
+            <key index="2_t">Změnit/Přesunout stránku, např. změnit titul stránky atd.</key>
+            <key index="4_t">Odstranit stránku a obsah.</key>
+            <key index="8_t">Vytvořit novou stránku pod touto stránkou.</key>
+            <key index="mlang_labels_tablabel">Přístupová práva ke stránkám</key>
+            <key index="mlang_labels_tabdescr">Nastavení přístupových práv je zásadní pro kontrolu přístupu uživatelů backendu ke stránkám. Můžete přiřadit uživatele a skupinu jako vlastníky stránky a pro každého nastavit přístupová práva.</key>
+            <key index="mlang_tabs_tab">Přístup</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="permissions">Uprawnienia</key>
+            <key index="ch_permissions">Zmiana praw</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Właściciel</key>
+            <key index="Group">Grupa</key>
+            <key index="Everybody">Pozostali</key>
+            <key index="Save">Zapisz</key>
+            <key index="Abort">Anuluj</key>
+            <key index="Edit">EDYTUJ</key>
+            <key index="recursive">Rekursywnie</key>
+            <key index="pages_affected">strony</key>
+            <key index="user_overview">Użytkownik</key>
+            <key index="Mode">Tryb</key>
+            <key index="Depth">Głębokość</key>
+            <key index="levels">poziom(y)</key>
+            <key index="User">Użytkownik</key>
+            <key index="def">Opis: 'treść' jest rekordem z bazy umieszczonym na stronie.</key>
+            <key index="A_Granted">Prawo przyznane</key>
+            <key index="A_Denied">Brak prawa</key>
+            <numIndex index="1">Oglądanie strony</numIndex>
+            <numIndex index="16">Edycja zawartości</numIndex>
+            <numIndex index="2">Edycja właściwości</numIndex>
+            <numIndex index="4">Usuwanie strony</numIndex>
+            <numIndex index="8">Tworzenie podstrony</numIndex>
+            <key index="1_t">Pokaż/Kopiuj stronę i treść.</key>
+            <key index="16_t">Zmień/Dodaj/Usuń/Przenieś treść.</key>
+            <key index="2_t">Zmień właściwości strony, np. tytuł.</key>
+            <key index="4_t">Usuń stronę wraz z treścią.</key>
+            <key index="8_t">Dodaj nową podstronę.</key>
+            <key index="mlang_labels_tablabel">Uprawnienia dostępu do stron</key>
+            <key index="mlang_labels_tabdescr">Uprawnienia do stron są potrzebne, jeśli chcesz kontrolować prawa jakie mają poszczególni użytkownicy. Możesz przydzielać niezależnie prawa dla właściciela strony lub dla całej grupy.</key>
+            <key index="mlang_tabs_tab">Uprawnienia</key>
+        </key>
+        <key index="si" type="array">
+            <key index="permissions">Privilegiji</key>
+            <key index="ch_permissions">Spremeni privilegije</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Lastnik</key>
+            <key index="Group">Skupina</key>
+            <key index="Everybody">Vsakdo</key>
+            <key index="Save">Shrani</key>
+            <key index="Abort">Prekliči</key>
+            <key index="Edit">UREDI</key>
+            <key index="recursive">Nastavi rekurzivno</key>
+            <key index="pages_affected">upoštevanih strani</key>
+            <key index="user_overview">Uporabniški pregled</key>
+            <key index="Mode">Način</key>
+            <key index="Depth">Globina</key>
+            <key index="levels">nivojev</key>
+            <key index="User">Uporabnik</key>
+            <key index="def">Definicija: 'vsebina' so zapisi iz vseh tabel na strani - razen zapisi iz tabele 'strani' (Strani).</key>
+            <key index="A_Granted">Dostop omogočen</key>
+            <key index="A_Denied">Dostop zavrnjen</key>
+            <numIndex index="1">Uredi vsebino</numIndex>
+            <numIndex index="16">Uredi vsebino</numIndex>
+            <numIndex index="2">Uredi stran</numIndex>
+            <numIndex index="4">Izbriši stran</numIndex>
+            <numIndex index="8">Nove strani</numIndex>
+            <key index="1_t">Pokaži/Kopiraj stran in vsebino.</key>
+            <key index="16_t">Spremeni/Dodaj/Izbriši/Premakni vsebino.</key>
+            <key index="2_t">Spremeni/Premakni stran, npr. spremeni naslov strani itd.</key>
+            <key index="4_t">Izbriši stran in vsebino.</key>
+            <key index="8_t">Ustvari nove strani pod to stranjo.</key>
+            <key index="mlang_labels_tablabel">Privilegiji za urejanje</key>
+            <key index="mlang_labels_tabdescr">Z nastavitvijo privilegijev posameznim uporabnikom omogočite urejanje strani.</key>
+            <key index="mlang_tabs_tab">Dostop</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="permissions">Oikeudet</key>
+            <key index="ch_permissions">Oikeuksien muuttaminen</key>
+            <key index="Legend">Selite</key>
+            <key index="Owner">Omistaja</key>
+            <key index="Group">Ryhmä</key>
+            <key index="Everybody">Kuka tahansa</key>
+            <key index="Save">Tallenna</key>
+            <key index="Abort">Keskeytä</key>
+            <key index="Edit">MUOTOILE</key>
+            <key index="recursive">Aseta rekursiivisesti</key>
+            <key index="pages_affected">sivuihin vaikutettu</key>
+            <key index="user_overview">Yleistä käyttäjästä</key>
+            <key index="Mode">Moodi</key>
+            <key index="Depth">Syvyys</key>
+            <key index="levels">tasot</key>
+            <key index="User">Käyttäjä</key>
+            <key index="def">Määritelmä; 'sisältö' on tietueet kaikista tauluista sivulla - paitsi tietueet taulusta 'pages' (Pages)</key>
+            <key index="A_Granted">Oikeudet myönnetty</key>
+            <key index="A_Denied">Oikeudet kielletty</key>
+            <numIndex index="1">Näytä sivu</numIndex>
+            <numIndex index="16">Muotoile sisältöä</numIndex>
+            <numIndex index="2">Muotoile sivua</numIndex>
+            <numIndex index="4">Poista sivu</numIndex>
+            <numIndex index="8">Uusia sivuja</numIndex>
+            <key index="1_t">Näytä/Kopioi sivu ja sisältö</key>
+            <key index="16_t">Muotoile/Lisää/Poista/Siirrä sisältö</key>
+            <key index="2_t">Muuta/Siirrä sivu, esim. muuta sivun otsikkoa jne.</key>
+            <key index="4_t">Poista sivu ja sen sisältö</key>
+            <key index="8_t">Luo uusia sivuja tämän sivun alle</key>
+            <key index="mlang_labels_tablabel">Sivujen muotoilun oikeudet</key>
+            <key index="mlang_labels_tabdescr">Sivujen käyttöoikeuksien määrittely on tärkeää backend-käyttäjien oikeuksia valvottaessa. Voit osoittaa käyttäjiä ja ryhmiä tiettyjen sivujen omistajiksi sekä asettaa käyttöoikeuksia kullekin.</key>
+            <key index="mlang_tabs_tab">Pääsy käyttöön</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="permissions">İzinler</key>
+            <key index="ch_permissions">İzinleri değiştir</key>
+            <key index="Legend">Açıklama</key>
+            <key index="Owner">Sahip</key>
+            <key index="Group">Grup</key>
+            <key index="Everybody">Herkes</key>
+            <key index="Save">Kaydet</key>
+            <key index="Abort">İptal et</key>
+            <key index="Edit">DÜZELT</key>
+            <key index="recursive">Yinelemeli olarak kur</key>
+            <key index="pages_affected">etkilenen sayfalar</key>
+            <key index="user_overview">Kullanıcı genel görüntüsü</key>
+            <key index="Mode">Mod</key>
+            <key index="Depth">Derinlik</key>
+            <key index="levels">seviyeler</key>
+            <key index="User">Kullanıcı</key>
+            <key index="def">Tanım: 'içerik' sayfa üzerindeki tüm tabloların kayıtlarıdır - 'sayfa' (Sayfalar) tablosundaki kayıtlardan hariç.</key>
+            <key index="A_Granted">Erişim kabul edildi</key>
+            <key index="A_Denied">Erişim reddedildi</key>
+            <numIndex index="1">Sayfa göster</numIndex>
+            <numIndex index="16">İçerik düzenle</numIndex>
+            <numIndex index="2">Sayfa düzenle</numIndex>
+            <numIndex index="4">Sayfa sil</numIndex>
+            <numIndex index="8">Yeni sayfalar</numIndex>
+            <key index="1_t">Sayfa ve içeriği Göster/Kopyala.</key>
+            <key index="16_t">Değiştir/Ekle/Sil/Taşı içeriği.</key>
+            <key index="2_t">Sayfayı Değiştir/Taşı, sayfa başlığı değişikliği gibi vs.</key>
+            <key index="4_t">Sayfa ve içeriği sil.</key>
+            <key index="8_t">Bu sayfanın altında yeni sayfalar yarat.</key>
+            <key index="mlang_labels_tablabel">Sayfa düzenleme yetkileri</key>
+            <key index="mlang_labels_tabdescr">Sayfa izinlerinin atanması arkaplan kullanıcılarının sayfalarına erişimini kontrol etmek  açısından hayati önem taşıyor. Sayfanın sahipleri olarak bir kullanıcı ve bir grup atayabilir ve herbiri için erişim izinleri kurabilirsiniz.</key>
+            <key index="mlang_tabs_tab">Erişim</key>
+        </key>
+        <key index="se" type="array">
+            <key index="permissions">Rättigheter</key>
+            <key index="ch_permissions">Ändra rättigheterna</key>
+            <key index="Legend">Legend</key>
+            <key index="Owner">Ägare</key>
+            <key index="Group">Grupp</key>
+            <key index="Everybody">Vem som helst</key>
+            <key index="Save">Spara</key>
+            <key index="Abort">Avbryt</key>
+            <key index="Edit">ÄNDRA</key>
+            <key index="recursive">Ställ in rekursivt</key>
+            <key index="pages_affected">sidor som berörs</key>
+            <key index="user_overview">Översikt av användare</key>
+            <key index="Mode">Form</key>
+            <key index="Depth">Djup</key>
+            <key index="levels">nivåer</key>
+            <key index="User">Användare</key>
+            <key index="def">Definition: 'innehåll' är element från alla tabeller på en sida, undantaget de element fom finns i tabellen 'sidor' (Sidor).</key>
+            <key index="A_Granted">Åtkomst given</key>
+            <key index="A_Denied">Åtkomst nekad</key>
+            <numIndex index="1">Visa sida</numIndex>
+            <numIndex index="16">Ändra innehåll</numIndex>
+            <numIndex index="2">Ändra sida</numIndex>
+            <numIndex index="4">Radera sida</numIndex>
+            <numIndex index="8">Nya sidor</numIndex>
+            <key index="1_t">Visa/Kopiera sida och innehåll.</key>
+            <key index="16_t">Ändra/Sätt till/Radera/Flytta innehåll.</key>
+            <key index="2_t">Ändra/Flytta sida, dvs ändra sidans rubrik mm.</key>
+            <key index="4_t">Radera sida och innehåll.</key>
+            <key index="8_t">Skapa nya sidor efter denna sida.</key>
+            <key index="mlang_labels_tablabel">Rättigheter att ändra sidan</key>
+            <key index="mlang_labels_tabdescr">Det är viktigt att konfigurera användarrättigheter till sidorna. På så vis kan man kontrollera vilka användare kan ändra sidorna. Man kan ställa in att sidorna får ändras av en användare eller av en användargrupp.</key>
+            <key index="mlang_tabs_tab">Åtkomst</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="permissions">Permissões</key>
+            <key index="ch_permissions">Alterar permissões</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Proprietário</key>
+            <key index="Group">Grupo</key>
+            <key index="Everybody">Todos</key>
+            <key index="Save">Salvar</key>
+            <key index="Abort">Cancelar</key>
+            <key index="Edit">EDITAR</key>
+            <key index="recursive">Atribuir recursivamente</key>
+            <key index="pages_affected">páginas afectadas</key>
+            <key index="user_overview">Resumo do utilizador</key>
+            <key index="Mode">Modo</key>
+            <key index="Depth">Profundidade</key>
+            <key index="levels">níveis</key>
+            <key index="User">Utilizador</key>
+            <key index="def">Definição: 'conteúdo' são registros de todas as tabelas em uma página - exceto os  registros da tabela 'pages' (Páginas).</key>
+            <key index="A_Granted">Acesso permitido</key>
+            <key index="A_Denied">Acesso negado</key>
+            <numIndex index="1">Mostrar página</numIndex>
+            <numIndex index="16">Editar conteúdo</numIndex>
+            <numIndex index="2">Editar página</numIndex>
+            <numIndex index="4">Novas páginas</numIndex>
+            <numIndex index="8">Novas páginas</numIndex>
+            <key index="1_t">Mostrar/Copiar página e conteúdo.</key>
+            <key index="16_t">Alterar/Adicionar/Apagar/Mover conteúdo.</key>
+            <key index="2_t">Alterar/Mover página, isto é, mudar título da página, etc.</key>
+            <key index="4_t">Apagar página e conteúdo.</key>
+            <key index="8_t">Criar novas páginas sob esta página.</key>
+            <key index="mlang_labels_tablabel">Permissões de edição da página</key>
+            <key index="mlang_labels_tabdescr">Configurar as permissões da página é vital no sentido de controlar o acesso às páginas para os utilizadores do Gestor. Você pode atribuir um utilizador e um grupo como proprietário de uma página e configurar permisões de acesso para cada um.</key>
+            <key index="mlang_tabs_tab">Acesso</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="permissions">Права доступа</key>
+            <key index="ch_permissions">Изменить права доступа</key>
+            <key index="Legend">Легенда</key>
+            <key index="Owner">Владелец</key>
+            <key index="Group">Группа</key>
+            <key index="Everybody">Все</key>
+            <key index="Save">Сохранить</key>
+            <key index="Abort">Отменить</key>
+            <key index="Edit">РЕДАКТИРОВАНИЕ</key>
+            <key index="recursive">Установить рекурсивно</key>
+            <key index="pages_affected">страниц задействованно</key>
+            <key index="user_overview">Обзор пользователей</key>
+            <key index="Mode">Режим</key>
+            <key index="Depth">Глубина</key>
+            <key index="levels">уровн.</key>
+            <key index="User">Пользователь</key>
+            <key index="def">Определение: 'контент' -- это записи из всех таблиц на странице, кроме записей из таблицы 'pages'</key>
+            <key index="A_Granted">Доступ разрешен</key>
+            <key index="A_Denied">Доступ запрещен</key>
+            <numIndex index="1">Просмотреть страницу</numIndex>
+            <numIndex index="16">Редактировать контент</numIndex>
+            <numIndex index="2">Редактировать страницу</numIndex>
+            <numIndex index="4">Удалить страницу</numIndex>
+            <numIndex index="8">Новые страницы</numIndex>
+            <key index="1_t">Показать/Копировать страницу и ее контент.</key>
+            <key index="16_t">Изменить/Добавить/Удалить/Переместить контент.</key>
+            <key index="2_t">Изменить/Переместить страницу, например, изменить ее заголовок и пр.</key>
+            <key index="4_t">Удалить страницу и ее контент.</key>
+            <key index="8_t">Создать новые дочерние страницы.</key>
+            <key index="mlang_labels_tablabel">Права редактирования страницы</key>
+            <key index="mlang_labels_tabdescr">Установка прав на редактирование страницы необходима, чтобы контролировать доступ к странице для пользователей служебного интерфейса (backend users). Вы можете назначить владельцами страницы пользователя и группу и установить для них доступ.</key>
+            <key index="mlang_tabs_tab">Доступ</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="permissions">Drepturi</key>
+            <key index="ch_permissions">Schimba drepturi</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Proprietar</key>
+            <key index="Group">Grup</key>
+            <key index="Everybody">Toti</key>
+            <key index="Save">Salveaza</key>
+            <key index="Abort">Renunta</key>
+            <key index="Edit">EDITEAZA</key>
+            <key index="recursive">Seteaza recursiv</key>
+            <key index="pages_affected">pagini afectate</key>
+            <key index="user_overview">Afiseaza drepturi utilizator</key>
+            <key index="Mode">Mod</key>
+            <key index="Depth">Profunzime</key>
+            <key index="levels">nivele</key>
+            <key index="User">Utilizator</key>
+            <key index="def">Definitie: 'continutul' este reprezentat de inregistrarile din toate tabelele pentru o pagina, cu exceptia datelor din tabelul 'pages' (pagini).</key>
+            <key index="A_Granted">Acces permis</key>
+            <key index="A_Denied">Acces interzis</key>
+            <numIndex index="1">Afiseaza pagina</numIndex>
+            <numIndex index="16">Editeaza continut</numIndex>
+            <numIndex index="2">Editeaza pagina</numIndex>
+            <numIndex index="4">Sterge pagina</numIndex>
+            <numIndex index="8">Pagini noi</numIndex>
+            <key index="1_t">Afiseaza/Copie pagina si continutul</key>
+            <key index="16_t">Schimba/Adauga/Sterge/Muta continut</key>
+            <key index="2_t">Schimba/Muta pagina, ex. schimba titlul paginii</key>
+            <key index="4_t">Sterge pagina si continutul</key>
+            <key index="8_t">Creeaza pagini noi sub aceasta pagina</key>
+            <key index="mlang_labels_tablabel">Editeaza permisiunile paginii</key>
+            <key index="mlang_labels_tabdescr">Stabilirea drepturilor asupra paginii este vitala pentru a controla accesul la pagini al utilizatorilor backend. Puteti desemna un utilizator si un grup drept proprietar al paginii si se pot stabili drepturi pentru fiecare.</key>
+            <key index="mlang_tabs_tab">Acces</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="permissions">权限</key>
+            <key index="ch_permissions">更改权限</key>
+            <key index="Legend">图例</key>
+            <key index="Owner">所有者</key>
+            <key index="Group">组</key>
+            <key index="Everybody">所有人</key>
+            <key index="Save">存储</key>
+            <key index="Abort">中断</key>
+            <key index="Edit">编辑</key>
+            <key index="recursive">设置递归</key>
+            <key index="pages_affected">受影响页面</key>
+            <key index="user_overview">用户总览</key>
+            <key index="Mode">模式</key>
+            <key index="Depth">深度</key>
+            <key index="levels">层次</key>
+            <key index="User">用户</key>
+            <key index="def">定义: '内容'是页面上所有表格中的记录 ---- 除了表'pages'中的记录.</key>
+            <key index="A_Granted">允许存取</key>
+            <key index="A_Denied">拒绝存取</key>
+            <numIndex index="1">编辑内容</numIndex>
+            <numIndex index="16">编辑内容</numIndex>
+            <numIndex index="2">编辑页面</numIndex>
+            <numIndex index="4">新页面</numIndex>
+            <numIndex index="8">新页面</numIndex>
+            <key index="1_t">显示/复制页面与内容.</key>
+            <key index="16_t">修改/添加/删除/移动内容.</key>
+            <key index="2_t">修改/移动页面, 如修改页面标题等等.</key>
+            <key index="4_t">删除页面与内容.</key>
+            <key index="8_t">在该页下新建页面.</key>
+            <key index="mlang_labels_tablabel">页面编辑权限</key>
+            <key index="mlang_labels_tabdescr">设置页面权限对于控制后台用户对页面的存取意义重大. 您可以分配用户或用户组为某页的所有者并设顶存取权限.</key>
+            <key index="mlang_tabs_tab">存取</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="permissions">Prístupové práva</key>
+            <key index="ch_permissions">Zmeň prístupové práva</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Vlastník</key>
+            <key index="Group">Skupina</key>
+            <key index="Everybody">Každý</key>
+            <key index="Save">Uložiť</key>
+            <key index="Abort">Zruš</key>
+            <key index="Edit">Edituj</key>
+            <key index="recursive">Nastaviť rekurzívne</key>
+            <key index="pages_affected">ovplyvnené stránky</key>
+            <key index="user_overview">Prehľad užívateľa</key>
+            <key index="Mode">Mód</key>
+            <key index="Depth">Hĺbka</key>
+            <key index="levels">úrovne</key>
+            <key index="User">Užívateľ</key>
+            <key index="def">Definícia: 'obsah' sú záznamy zo všetkých tabuliek na stránke - okrem tabuľky 'stránky' (Pages).</key>
+            <key index="A_Granted">Prístup povolený</key>
+            <key index="A_Denied">Prístup zamietnutý</key>
+            <numIndex index="1">Zobraz stránku</numIndex>
+            <numIndex index="16">Edituj obsah</numIndex>
+            <numIndex index="2">Edituj stránku</numIndex>
+            <numIndex index="4">Odstráň stránku</numIndex>
+            <numIndex index="8">Nové stránky</numIndex>
+            <key index="1_t">Ukázať/Kopírovať stránku a obsah.</key>
+            <key index="16_t">Zmeniť/Pridať/Odstrániť/Presunúť obsah.</key>
+            <key index="2_t">Zmeniť/Presunúť stranu, napr. zmeniť titul stránky atď.</key>
+            <key index="4_t">Odstrániť stránku a obsah.</key>
+            <key index="8_t">Vytvoriť novú stránku pod touto stránkou.</key>
+            <key index="mlang_labels_tablabel">Prístupové práva ku stránkam</key>
+            <key index="mlang_labels_tabdescr">Nastavenie prístupových práv je potrebný pre kontrolu prístupu užívateľov backendu ku stránkam. Môžete priradiť užívateľa a skupinu ako vlastníkov stránky a nastaviť prístupové práva.</key>
+            <key index="mlang_tabs_tab">Prístup</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="permissions">Teisės</key>
+            <key index="ch_permissions">Pakeisti teises</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Savininkas</key>
+            <key index="Group">Grupė</key>
+            <key index="Everybody">Visiems</key>
+            <key index="Save">Išsaugoti</key>
+            <key index="Abort">Nutraukti</key>
+            <key index="Edit">REDAGUOTI</key>
+            <key index="recursive">Nustatyti rekursiškai</key>
+            <key index="pages_affected">paveikti puslapiai</key>
+            <key index="user_overview">Vartotojo apžvalga</key>
+            <key index="Mode">Režimas</key>
+            <key index="Depth">Gylis</key>
+            <key index="levels">lygiai</key>
+            <key index="User">Vartotojas</key>
+            <key index="def">Apibrėžimas: 'tyrinys' yra visų puslapio lentelių įrašai - išskyrus įrašus iš lentelės 'puslapiai' (Pages).</key>
+            <key index="A_Granted">Priėjimas leistas</key>
+            <key index="A_Denied">Priėjimas uždraustas</key>
+            <numIndex index="1">Rodyti puslapį</numIndex>
+            <numIndex index="16">Redaguoti turinį</numIndex>
+            <numIndex index="2">Redaguoti puslapį</numIndex>
+            <numIndex index="4">Ištrinti puslapį</numIndex>
+            <numIndex index="8">Nauji puslapiai</numIndex>
+            <key index="1_t">Rodyti/Kopijuoti puslapį ir turinį</key>
+            <key index="16_t">Pakeisti/Pridėti/Ištrinti/Perkelti turinį.</key>
+            <key index="2_t">Pakeisti/Perkelti puslapį, pvz. pakeisti puslapio antraštę ir pan.</key>
+            <key index="4_t">Ištrinti puslapį ir turinį.</key>
+            <key index="8_t">Sukurti naujus puslapius šiame puslapyje.</key>
+            <key index="mlang_labels_tablabel">Puslapio redagavimo teisės</key>
+            <key index="mlang_labels_tabdescr">Puslapio prieeigos teisių nustatymas yra būtinas backend vartotojų priėjimo kontrolei. Galite priskirti vartotoją ir grupę kaip puslapio savininką ir nustatyti teises kiekvienam atskirai.</key>
+            <key index="mlang_tabs_tab">Teisės</key>
+        </key>
+        <key index="is" type="array">
+            <key index="permissions">Heimildir</key>
+            <key index="ch_permissions">Breyta heimildum</key>
+            <key index="Group">Hopur</key>
+            <key index="Everybody">Allir</key>
+            <key index="Save">Vista</key>
+            <key index="Abort">Hætta við</key>
+            <key index="Edit">Breyta</key>
+            <key index="user_overview">Notendur yfirlit</key>
+            <key index="levels">stigum</key>
+            <key index="User">Notenda</key>
+            <key index="A_Granted">Aðgangur veitað</key>
+            <key index="A_Denied">Aðgangur neitað</key>
+            <key index="mlang_tabs_tab">Aðgangur</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="permissions">Ovlasti</key>
+            <key index="ch_permissions">Izmjeni ovlasti</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Vlasnik</key>
+            <key index="Group">Grupa</key>
+            <key index="Everybody">Svi</key>
+            <key index="Save">Snimi</key>
+            <key index="Abort">Odbaci</key>
+            <key index="Edit">EDIT</key>
+            <key index="recursive">Postavi rekurzivno</key>
+            <key index="pages_affected">obuhvaćene stranice</key>
+            <key index="user_overview">Pregled korisnika</key>
+            <key index="Mode">Mod</key>
+            <key index="Depth">Dubina</key>
+            <key index="levels">razine</key>
+            <key index="User">Korisnik</key>
+            <key index="def">Definicija: &quot;sadržaj&quot; su zapisi iz svih tabela na stranici - izuzev zapisa iz tabele &quot;pages&quot; (Pages).</key>
+            <key index="A_Granted">Pristup dozvoljen</key>
+            <key index="A_Denied">Pristup odbijen</key>
+            <numIndex index="1">Prikaži stranicu</numIndex>
+            <numIndex index="16">Izmjeni sadržaj</numIndex>
+            <numIndex index="2">Izmjeni stranicu</numIndex>
+            <numIndex index="4">Obriši stranicu</numIndex>
+            <numIndex index="8">Nove stranice</numIndex>
+            <key index="1_t">Prikaži/Kopiraj stranicu</key>
+            <key index="16_t">Promijeni/Dodaj/Obriši/Premjesti sadržaj</key>
+            <key index="2_t">Promijeni/Premjesti stranicu</key>
+            <key index="4_t">Obriši stranicu i sadržaj</key>
+            <key index="8_t">Napravi nove stranice pod ovom stranicom.</key>
+            <key index="mlang_labels_tablabel">Dozvole za uređivanje stranica.</key>
+            <key index="mlang_labels_tabdescr">Postavljanje ovlasti na stranice je ključno za kontroliranje pristupa stranicama za backend korisnike. Možete postaviti korisnika i grupu kao vlasnike stranice i postaviti dozvole pristupa za svakog.</key>
+            <key index="mlang_tabs_tab">Pristup</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="permissions">Jogosultság</key>
+            <key index="ch_permissions">Jogosultság megváltoztatása</key>
+            <key index="Legend">Történet</key>
+            <key index="Owner">Tulajdonos</key>
+            <key index="Group">Csoport</key>
+            <key index="Everybody">Mindenki</key>
+            <key index="Save">Mentés</key>
+            <key index="Abort">Megszakítás</key>
+            <key index="Edit">SZERKESZTÉS</key>
+            <key index="recursive">Rekurzív beállítás</key>
+            <key index="pages_affected">oldal érintett</key>
+            <key index="user_overview">Felhasználó áttekintés</key>
+            <key index="Mode">Mód</key>
+            <key index="Depth">Mélység</key>
+            <key index="levels">szint</key>
+            <key index="User">Felhasználó</key>
+            <key index="def">Definíció: a 'tartalom' az összes listából származó rekordok összessége - kivéve az 'oldalak' listából származóakat (Oldalak).</key>
+            <key index="A_Granted">Hozzáférés engedélyezve</key>
+            <key index="A_Denied">Hozzáférés megtagadva</key>
+            <numIndex index="1">Oldal mutatása</numIndex>
+            <numIndex index="16">Tartalom szerkesztésa</numIndex>
+            <numIndex index="2">Oldal szerkesztése</numIndex>
+            <numIndex index="4">Oldal törlése</numIndex>
+            <numIndex index="8">Új oldalak</numIndex>
+            <key index="1_t">Oldal és tartalom Mutatása/Másolása</key>
+            <key index="16_t">Tartalom Módosítása/Hozzáadása/Törlése/Mozgatása</key>
+            <key index="2_t">Oldal, pl. oldalcím, stb. Módosítása/Mozgatása</key>
+            <key index="4_t">Oldal és tartalom törlése</key>
+            <key index="8_t">Új oldalak létrehozása ezen oldal után</key>
+            <key index="mlang_labels_tablabel">Oldal szerkesztési jogok</key>
+            <key index="mlang_labels_tabdescr">Az oldalhozzáférések beállítása alapvetően fontos a backend felhasználók kezeléséhez. Minden oldalhoz hozzá lehet rendelni egy felhasználót vagy egy csoportot, és mindegyikhez be lehet állítani a jogosultságokat.</key>
+            <key index="mlang_tabs_tab">Hozzáférés</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="permissions">การอนุญาต</key>
+            <key index="ch_permissions">เปลี่ยนการอนุญาต</key>
+            <key index="Legend">ระวาง</key>
+            <key index="Owner">เจ้าของ</key>
+            <key index="Group">กลุ่ม</key>
+            <key index="Everybody">ทุกคน</key>
+            <key index="Save">บันทึก</key>
+            <key index="Abort">ออกจาก</key>
+            <key index="Edit">แก้ไข</key>
+            <key index="recursive">ตั้งทำซ้ำเรื่อยๆ</key>
+            <key index="pages_affected">หน้าที่มีผล</key>
+            <key index="user_overview">กล่าวนำผู้ใช้</key>
+            <key index="Mode">โหมด</key>
+            <key index="Depth">ความลึก</key>
+            <key index="levels">ระดับ</key>
+            <key index="User">ผู้ใช้</key>
+            <key index="def">คำจำกัดความ: 'เนือหา' คือระเบียนจากทุกตารางในหน้า ยกเว้นจากระเบียนจากตาราง 'หน้า'</key>
+            <key index="A_Granted">การเข้าถึงได้รับมอบ</key>
+            <key index="A_Denied">การเข้าถึงถูกปฏิเสธ</key>
+            <numIndex index="1">แสดงหน้า</numIndex>
+            <numIndex index="16">แก้ไขเนื้อหา</numIndex>
+            <numIndex index="2">แก้ไขหน้า</numIndex>
+            <numIndex index="4">ลบหน้า</numIndex>
+            <numIndex index="8">หน้าใหม่</numIndex>
+            <key index="1_t">แสดง/คัดลอก หน้าและเนื้อหา</key>
+            <key index="16_t">เปลี่ยน/เพิ่ม/ลบ/ย้าย เนื้อหา</key>
+            <key index="2_t">เปลี่ยน/ย้าย หน้า เช่นเปลี่ยนชื่อหน้า</key>
+            <key index="4_t">ลบหน้าและเนื้อหา</key>
+            <key index="8_t">สร้างหน้าใหม่ใต้หน้านี้</key>
+            <key index="mlang_labels_tablabel">หน้าแก้ไขการอนุญาต</key>
+            <key index="mlang_labels_tabdescr">ตั้งค่าการอนุญาตของหน้า สำคัญมากเพราะเป็นการควบคุมการเข้าถึงหน้า ของผู้ใช้ส่วนหลัง คุณสามารถมอบหมายผู้ใช้และกลุ่มใช้เป็นเจ้าของของหน้าและตั้งค่าการเข้าถึงให้แต่ละคน</key>
+            <key index="mlang_tabs_tab">การเข้าถึง</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="permissions">權限</key>
+            <key index="ch_permissions">更改權限</key>
+            <key index="Legend">圖標</key>
+            <key index="Owner">擁有者</key>
+            <key index="Group">群組</key>
+            <key index="Everybody">所有人</key>
+            <key index="Save">儲存</key>
+            <key index="Abort">關於</key>
+            <key index="Edit">修改</key>
+            <key index="recursive">設定重複性</key>
+            <key index="pages_affected">被影響的網頁</key>
+            <key index="user_overview">使用者概觀</key>
+            <key index="Mode">模式</key>
+            <key index="Depth">深度</key>
+            <key index="levels">層次</key>
+            <key index="User">使用者</key>
+            <key index="def">定義：「內容」是網頁上所有表格的記錄　－　’pages'表格中的記錄除外</key>
+            <key index="A_Granted">存取獲悉</key>
+            <key index="A_Denied">存取受拒</key>
+            <numIndex index="1">顯示網頁</numIndex>
+            <numIndex index="16">修改內容</numIndex>
+            <numIndex index="2">修改網頁</numIndex>
+            <numIndex index="4">刪除網頁</numIndex>
+            <numIndex index="8">新網頁</numIndex>
+            <key index="1_t">顯示／複製網頁和內容</key>
+            <key index="16_t">更改／加入／刪除／移動 內容</key>
+            <key index="2_t">更改／移動 網頁，例如：更改網頁標題</key>
+            <key index="4_t">刪除網頁及內容</key>
+            <key index="8_t">在此網頁之下建立新網頁</key>
+            <key index="mlang_labels_tablabel">網頁修改權限</key>
+            <key index="mlang_labels_tabdescr">網頁修改的權限的設定，對控制後勸使用者的存取是很重要的。你可以設定一個使用者或一個群組成為一個網頁的擁有者，並且設定存取權限</key>
+            <key index="mlang_tabs_tab">存取</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="permissions">Baimenak</key>
+            <key index="ch_permissions">Aldatu baimenak</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Jabea</key>
+            <key index="Group">Taldea</key>
+            <key index="Everybody">Guztiak</key>
+            <key index="Save">Gorde</key>
+            <key index="Abort">Utzi</key>
+            <key index="Edit">EDITATU</key>
+            <key index="recursive">Ezarri errekurtsiboki</key>
+            <key index="pages_affected">Ukituriko orriak</key>
+            <key index="user_overview">Erabiltzaile gainbegirada</key>
+            <key index="Mode">Modua</key>
+            <key index="Depth">Sakonera</key>
+            <key index="levels">mailak</key>
+            <key index="User">Erabiltzailea</key>
+            <key index="def">Definizioa: 'edukia' orriaren taula guztietako erregistroak dira, 'pages' taulako erregistroak ezik (Orriak)</key>
+            <key index="A_Granted">Sarrera baimendua</key>
+            <key index="A_Denied">Sarrera ukatua</key>
+            <numIndex index="1">Erakutsi orria</numIndex>
+            <numIndex index="16">Editatu edukia</numIndex>
+            <numIndex index="2">Editau orria</numIndex>
+            <numIndex index="4">Ezabatu orria</numIndex>
+            <numIndex index="8">Orri berriak</numIndex>
+            <key index="1_t">Erakutsi/Kopiatu orri eta edukia.</key>
+            <key index="16_t">Aldatu/Gehitu/Ezabatu/Mugitu edukia.</key>
+            <key index="2_t">Aldatu/Mugitu orria adibidez: orriaren izenburua, eta abar.</key>
+            <key index="4_t">Ezabatu orri eta edukia</key>
+            <key index="8_t">Sortu orri berriak honen azpian</key>
+            <key index="mlang_labels_tablabel">Orri edizio baimenak</key>
+            <key index="mlang_labels_tabdescr">Orri baimenen ezarpena ezinbestekoa da erabiltzaileen sarrera kudeatzeko. Zuk erabiltzile eta talde bat jabe gisa ezarri ditzazkezu eta bakoitzeko sarrera baimenak eman.</key>
+            <key index="mlang_tabs_tab">Sarrera</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="permissions">Позволения</key>
+            <key index="ch_permissions">Промени позволенията</key>
+            <key index="Legend">Легенда</key>
+            <key index="Owner">Собственик</key>
+            <key index="Group">Група</key>
+            <key index="Everybody">Всеки</key>
+            <key index="Save">Запази</key>
+            <key index="Abort">Отказ</key>
+            <key index="Edit">Редактиране</key>
+            <key index="recursive">Set recursively</key>
+            <key index="pages_affected">засегнати страници</key>
+            <key index="user_overview">Обзор на потребителя</key>
+            <key index="Mode">Метод</key>
+            <key index="Depth">Дълбочина</key>
+            <key index="levels">нива</key>
+            <key index="User">Потребител</key>
+            <key index="def">Определение: &quot;съдържание&quot; е запис от всички таблици в страницата-с изключение от записите от таблицата &quot;страници&quot; (Pages).</key>
+            <key index="A_Granted">Достъпа гарантиран</key>
+            <key index="A_Denied">Достъпа отказан</key>
+            <numIndex index="1">Показване на страницата</numIndex>
+            <numIndex index="16">Редактиране на съдържанието</numIndex>
+            <numIndex index="2">Редактиране на страницата</numIndex>
+            <numIndex index="4">Изтриване на страницата</numIndex>
+            <numIndex index="8">Нови страници</numIndex>
+            <key index="1_t">Показване/Копиране на страница и съдържание.</key>
+            <key index="16_t">Промени/Добави/Изтрии/Премести съдържание.</key>
+            <key index="2_t">Промени/Премести страницата, например: промяна на заглавието на страницата и др.</key>
+            <key index="4_t">Изтриване на страница и съдържание.</key>
+            <key index="8_t">Създаване на нови страници под тази страница.</key>
+            <key index="mlang_labels_tablabel">Позволения за редактирането на страницата</key>
+            <key index="mlang_labels_tabdescr">Настройките на позволенията за страницата са съществено важни за контрол на достъпа до страниците и backend потребителите. Можете да назначите потребител и група като собственици на страница и да се дадат на всеки, позволения за достъп.</key>
+            <key index="mlang_tabs_tab">Достъп</key>
+        </key>
+        <key index="br" type="array">
+            <key index="permissions">Permissões</key>
+            <key index="ch_permissions">Alterar permissões</key>
+            <key index="Legend">Legenda</key>
+            <key index="Owner">Proprietário</key>
+            <key index="Group">Grupo</key>
+            <key index="Everybody">Todos</key>
+            <key index="Save">Salvar</key>
+            <key index="Abort">Cancelar</key>
+            <key index="Edit">EDITAR</key>
+            <key index="recursive">Atribuir recursivamente</key>
+            <key index="pages_affected">páginas afetadas</key>
+            <key index="user_overview">Resumo do usuário</key>
+            <key index="Mode">Modo</key>
+            <key index="Depth">Profundidade</key>
+            <key index="levels">níveis</key>
+            <key index="User">Usuário</key>
+            <key index="def">Definição: 'conteúdo' são registros de todas as tabelas em uma página - exceto os registros da tabela 'pages' (Páginas).</key>
+            <key index="A_Granted">Acesso permitido</key>
+            <key index="A_Denied">Acesso negado</key>
+            <numIndex index="1">Mostrar página</numIndex>
+            <numIndex index="16">Editar conteúdo</numIndex>
+            <numIndex index="2">Editar página</numIndex>
+            <numIndex index="4">Apagar página</numIndex>
+            <numIndex index="8">Novas páginas</numIndex>
+            <key index="1_t">Mostrar/Copiar página e conteúdo.</key>
+            <key index="16_t">Alterar/Adicionar/Apagar/Mover conteúdo.</key>
+            <key index="2_t">Alterar/Mover página, ex: mudar título da página, etc.</key>
+            <key index="4_t">Apagar página e conteúdo.</key>
+            <key index="8_t">Criar novas páginas sob esta página.</key>
+            <key index="mlang_labels_tablabel">Permissões de edição da página</key>
+            <key index="mlang_labels_tabdescr">Configurar as permissões da página é vital no sentido de controlar o acesso às páginas para os usuários do Administrador. Você pode atribuir um usuário e um grupo como proprietários de uma página e configurar permisões de acesso para cada um.</key>
+            <key index="mlang_tabs_tab">Acesso</key>
+        </key>
+        <key index="et" type="array">
+            <key index="permissions">Õigused</key>
+            <key index="ch_permissions">Muuda õigusi</key>
+            <key index="Legend">Legend</key>
+            <key index="Owner">Omanik</key>
+            <key index="Group">Grupp</key>
+            <key index="Everybody">Kõik</key>
+            <key index="Save">Salvesta</key>
+            <key index="Abort">Katkesta</key>
+            <key index="Edit">REDIGEERI</key>
+            <key index="recursive">Sea rekrusiivselt</key>
+            <key index="pages_affected">mõjutatud leheküljed</key>
+            <key index="user_overview">Kasutaja ülevaade</key>
+            <key index="Mode">Olek</key>
+            <key index="Depth">Sügavus</key>
+            <key index="levels">taset</key>
+            <key index="User">Kasutaja</key>
+            <key index="def">Definitsioon: 'sisu' hõlmab kirjeid lehekülje kõigist tabelitest, välja arvatud kirjeid tabelist 'Leheküljed'.</key>
+            <key index="A_Granted">Juurdepääs lubatud</key>
+            <key index="A_Denied">Juurdepääs keelatud</key>
+            <numIndex index="1">Näita lehekülge</numIndex>
+            <numIndex index="16">Redigeeri sisu</numIndex>
+            <numIndex index="2">Redigeeri lehekülge</numIndex>
+            <numIndex index="4">Kustuta lehekülg</numIndex>
+            <numIndex index="8">Uued leheküljed</numIndex>
+            <key index="1_t">Näita/kopeeri lehekülg ja sisu</key>
+            <key index="16_t">Muuda/Lisa/Kustuta/Teisalda sisu</key>
+            <key index="2_t">Muuda/Teisalda lehekülg, nt muuda lehe pealkirja</key>
+            <key index="4_t">Kustuta lehekülg ja sisu</key>
+            <key index="8_t">Loo uued leheküljed selle lehe alla</key>
+            <key index="mlang_labels_tablabel">Lehekülje redigeerimise õigused</key>
+            <key index="mlang_labels_tabdescr">Lehele õiguste kogumi seadmine on tähtis kontrollimaks backend administreerimisliidese kasutajate ligipääsu antud lehele. Oo võimalik seada juurdepääsu õigusi nii üksikule kasutajale kui ka kasutajate grupile.</key>
+            <key index="mlang_tabs_tab">Juurdepääs</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="permissions">حقوق السماحية</key>
+            <key index="ch_permissions">تغيير حقوق السماحية</key>
+            <key index="Legend">الناشئ</key>
+            <key index="Owner">المالك</key>
+            <key index="Group">مجموعة</key>
+            <key index="Everybody">كل واحد</key>
+            <key index="Save">إحفظ</key>
+            <key index="Abort">إقطع</key>
+            <key index="Edit">تعديل</key>
+            <key index="recursive">ضبط الإسترجاع</key>
+            <key index="pages_affected">الصفحات التي تأثرت</key>
+            <key index="user_overview">عرض عام لحالة المستخدم</key>
+            <key index="Mode">الوظيفة</key>
+            <key index="Depth">العمق</key>
+            <key index="levels">المستويات</key>
+            <key index="User">المستخدم</key>
+            <key index="def">تعريف: المحتويات هي سجلات من كل الجداول على الصفحة و ليست السجلات من جدول الصفحات</key>
+            <key index="A_Granted">تم الإدخال</key>
+            <key index="A_Denied">لم يتم الإدخال</key>
+            <numIndex index="1">إعرض الصفحة</numIndex>
+            <numIndex index="16">تعديل المحتويات</numIndex>
+            <numIndex index="2">تعديل الصفحة</numIndex>
+            <numIndex index="4">إمسح الصفحة</numIndex>
+            <numIndex index="8">صفحات جديدة</numIndex>
+            <key index="1_t">عرض أو نسخ الصفحة  و محتوياتها</key>
+            <key index="16_t">تغيير أو إضافة أو مسح أو نقل المحتويات</key>
+            <key index="2_t">تغيير أو نقل الصفحة و كذلك تغيير عنوان الصفحة الخ...</key>
+            <key index="4_t">مسح صفحة و محتوياتها</key>
+            <key index="8_t">إنشاء صفحات جديدة تحت هذه الصفحة</key>
+            <key index="mlang_labels_tablabel">حقوق السماح بتعديل الصفحة</key>
+            <key index="mlang_labels_tabdescr">لابد من ضبط حقوق الدخول على صفحة كي يتمكن الناشئ للصفحة من تعديلها. و يكون ذلك عن طريق إنشاء مستخدم أو مجموعة كأصحاب أساسيين للصفحة</key>
+            <key index="mlang_tabs_tab">إدخال</key>
+        </key>
+        <key index="he" type="array">
+            <key index="permissions">הרשאות</key>
+            <key index="ch_permissions">שינוי הרשאות</key>
+            <key index="Legend">מקרא</key>
+            <key index="Owner">בעלים</key>
+            <key index="Group">קבוצה</key>
+            <key index="Everybody">כולם</key>
+            <key index="Save">שמירה</key>
+            <key index="Abort">ביטול</key>
+            <key index="Edit">עריכה</key>
+            <key index="recursive">קבע לחזור על עצמו</key>
+            <key index="pages_affected">דפים מושפעים</key>
+            <key index="user_overview">פרטים אודות משתמש</key>
+            <key index="Mode">אופן פעולה</key>
+            <key index="Depth">עומק</key>
+            <key index="levels">רמות</key>
+            <key index="User">משתמש</key>
+            <key index="def">הגדרה: &quot;תוכן&quot; הוא רשומות מכל הטבלאות על הדף - חוץ מרשומות בטבלה &quot;דפים&quot; (דפים)</key>
+            <key index="A_Granted">גישה מוענקת</key>
+            <key index="A_Denied">גישה נשללה</key>
+            <numIndex index="1">תצוגת דף</numIndex>
+            <numIndex index="16">ערוך תוכן</numIndex>
+            <numIndex index="2">ערוך דף</numIndex>
+            <numIndex index="4">מחק דף</numIndex>
+            <numIndex index="8">דפים חדשים</numIndex>
+            <key index="1_t">הצג/העתק דף ותוכן.</key>
+            <key index="16_t">שנה/הוסף/מחק/הזז תוכן.</key>
+            <key index="2_t">שנה/הזז דף, כגון שנה כותרת דף וכו'.</key>
+            <key index="4_t">מחק דף ותוכן.</key>
+            <key index="8_t">צור דפים חדשים תחת דף זה.</key>
+            <key index="mlang_labels_tablabel">הרשאות עריכה של דף</key>
+            <key index="mlang_labels_tabdescr">קביעת הרשאות של דף הכרחי כדי לשלוט על גישה לדפים למשתמשים אחוריים. הנך יכול להקצות משתמש וקבוצה בתור בעלים של דף ולקבוע הרשאות כניסה לכל אחד.</key>
+            <key index="mlang_tabs_tab">גישה</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="permissions">Tiesības</key>
+            <key index="ch_permissions">Mainīt tiesības</key>
+            <key index="Legend">Leģenda</key>
+            <key index="Owner">Īpašnieks</key>
+            <key index="Group">Grupa</key>
+            <key index="Everybody">Jebkurš</key>
+            <key index="Save">Saglabāt</key>
+            <key index="Abort">Atcelt</key>
+            <key index="Edit">LABOT</key>
+            <key index="recursive">Uzlikt rekursīvi</key>
+            <key index="pages_affected">Ietekmētās lapas</key>
+            <key index="user_overview">Lietotāja pārskats</key>
+            <key index="Mode">Mode</key>
+            <key index="Depth">Dziļums</key>
+            <key index="levels">līmeņi</key>
+            <key index="User">Lietotājs</key>
+            <key index="A_Granted">Pieeja dota</key>
+            <key index="A_Denied">Pieeja liegta</key>
+            <numIndex index="1">Rādīt lapu</numIndex>
+            <numIndex index="16">Labot saturu</numIndex>
+            <numIndex index="2">Labot lapu</numIndex>
+            <numIndex index="4">Dzēst lapu</numIndex>
+            <numIndex index="8">Jaunas lapas</numIndex>
+            <key index="1_t">Rādīt/kopēt lau un saturu.</key>
+            <key index="16_t">Labot/Pievienot/Dzēst/Pārvietot saturu.</key>
+            <key index="2_t">Mainīt lapas definīciju, pārvietot lapu</key>
+            <key index="4_t">Dzēst lapu un tās saturu.</key>
+            <key index="8_t">Veidot jaunas lapas zem šīs.</key>
+            <key index="mlang_labels_tablabel">Lapu labošanas tiesības</key>
+            <key index="mlang_tabs_tab">Pieeja</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="de" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="no" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="it" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="es" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="si" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="se" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="is" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="br" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="et" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="he" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="def" type="integer">262383439</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_labels_tabdescr" type="integer">115809010</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="permissions" type="integer">218680565</key>
+            <key index="ch_permissions" type="integer">210014620</key>
+            <key index="Legend" type="integer">162692626</key>
+            <key index="Owner" type="integer">191842862</key>
+            <key index="Group" type="integer">3749651</key>
+            <key index="Everybody" type="integer">2223491</key>
+            <key index="Save" type="integer">211601612</key>
+            <key index="Abort" type="integer">120043061</key>
+            <key index="Edit" type="integer">154624728</key>
+            <key index="recursive" type="integer">8697959</key>
+            <key index="pages_affected" type="integer">104651805</key>
+            <key index="user_overview" type="integer">52124806</key>
+            <key index="Mode" type="integer">105954913</key>
+            <key index="Depth" type="integer">108332394</key>
+            <key index="levels" type="integer">137816926</key>
+            <key index="User" type="integer">150585321</key>
+            <key index="A_Granted" type="integer">203576344</key>
+            <key index="A_Denied" type="integer">9809855</key>
+            <numIndex index="1" type="integer">256624387</numIndex>
+            <numIndex index="16" type="integer">102695873</numIndex>
+            <numIndex index="2" type="integer">66732081</numIndex>
+            <numIndex index="4" type="integer">220131191</numIndex>
+            <numIndex index="8" type="integer">146653009</numIndex>
+            <key index="1_t" type="integer">41719375</key>
+            <key index="16_t" type="integer">5382347</key>
+            <key index="2_t" type="integer">81453433</key>
+            <key index="4_t" type="integer">38381151</key>
+            <key index="8_t" type="integer">102802306</key>
+            <key index="mlang_labels_tablabel" type="integer">237456773</key>
+            <key index="mlang_tabs_tab" type="integer">200750040</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

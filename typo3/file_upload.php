@@ -52,7 +52,7 @@
 $BACK_PATH = '';
 require('init.php');
 require('template.php');
-include('sysext/lang/locallang_misc.php');
+$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 

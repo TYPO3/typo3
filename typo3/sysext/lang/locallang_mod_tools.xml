@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Tools module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_tools.php</key>
+        <key index="labelContext" type="array">
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel">Administration and maintenance tools</key>
+            <key index="mlang_tabs_tab">Tools</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel">Administrations- og vedligeholdelses-funktioner</key>
+            <key index="mlang_tabs_tab">Værktøjer</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel">Administrations-Funktionen</key>
+            <key index="mlang_tabs_tab">Tools</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel">Administrasjons- og vedlikeholds-funksjoner</key>
+            <key index="mlang_tabs_tab">Verktøy</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel">Tools per la manutenzione e l'amministrazione</key>
+            <key index="mlang_tabs_tab">Tools</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel">Outils d'administration et de maintenance</key>
+            <key index="mlang_tabs_tab">Outils</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel">Herramientas de administración y mantenimiento</key>
+            <key index="mlang_tabs_tab">Herramientas</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel">Beheer- en onderhoudswerkset</key>
+            <key index="mlang_tabs_tab">Werkset</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel">Nástroje pro správu</key>
+            <key index="mlang_tabs_tab">Nástroje</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel">Narzędzia administracyjne</key>
+            <key index="mlang_tabs_tab">Narzędzia</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel">Orodja za administracijo</key>
+            <key index="mlang_tabs_tab">Orodja</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel">Hallinnoinnin ja hoidon työkalut</key>
+            <key index="mlang_tabs_tab">Työkalut</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel">Yönetim ve bakım araçları</key>
+            <key index="mlang_tabs_tab">Araçlar</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel">Verktyg för administration och underhåll</key>
+            <key index="mlang_tabs_tab">Verktyg</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel">Ferramentas de administração e manutenção</key>
+            <key index="mlang_tabs_tab">Ferramentas</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel">Инструменты администрирования и обслуживания</key>
+            <key index="mlang_tabs_tab">Инструменты</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel">Instrumente pentru administrare si intretinere</key>
+            <key index="mlang_tabs_tab">Instrumente</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel">管理与维护工具</key>
+            <key index="mlang_tabs_tab">工具</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel">Nástroje pre správu a údržbu</key>
+            <key index="mlang_tabs_tab">Nástroje</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="mlang_labels_tablabel">Administravimo ir priežiūros įrankiai</key>
+            <key index="mlang_tabs_tab">Įrankiai</key>
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel">Stjórnun og umsjónar verkfæri</key>
+            <key index="mlang_tabs_tab">Verkfæri</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel">Alati za administraciju i održavanje</key>
+            <key index="mlang_tabs_tab">Alati</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel">Adminisztrációs és karbantartó eszközök</key>
+            <key index="mlang_tabs_tab">Eszközök</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="mlang_labels_tablabel">Aaqqissuinermut aserfallanneqarnermullu sakkussaq</key>
+            <key index="mlang_tabs_tab">Sakkussat</key>
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel">เตรื่องมือสำหรับบริหารและปรับปรุง</key>
+            <key index="mlang_tabs_tab">เครื่องมือ</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel">管理及維護工具</key>
+            <key index="mlang_tabs_tab">工具</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel">Administrazio eta mantentze tresnak</key>
+            <key index="mlang_tabs_tab">Tresnak</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel">Администрация и инструменти за поддръжка</key>
+            <key index="mlang_tabs_tab">Инструменти</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel">Ferramentas de administração e manutenção</key>
+            <key index="mlang_tabs_tab">Ferramentas</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel">Administreerimise ja hoolduse tööristad</key>
+            <key index="mlang_tabs_tab">Tööriistad</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel">وسائل الصيانة و المراقبة</key>
+            <key index="mlang_tabs_tab">الوسائل</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel">כלים לניהול ותחזוקה</key>
+            <key index="mlang_tabs_tab">כלים</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel">Administrācijas un apkalpošanas rīki</key>
+            <key index="mlang_tabs_tab">Rīki</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel" type="integer">137463765</key>
+            <key index="mlang_tabs_tab" type="integer">140664349</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

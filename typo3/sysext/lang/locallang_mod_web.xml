@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Web Module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_web.php</key>
+        <key index="labelContext" type="array">
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel">Webpages and databasecontent</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel">Websider og database-indhold</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel">Webseiten und Datenbankinhalt</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel">Websider og database-innhold</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel">Pagine web e contenuto database</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel">Pages web et éléments de contenu</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel">Páginas web y contenido de la base de datos</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel">Webpagina's en database-inhoud</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel">Webové stránky a obsah databáze</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel">Struktura witryny</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel">Spletne strani in vsebina</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel">WWW-sivut ja tietokannan sisältö</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel">Websayfaları ve veritabanı içeriği</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel">Web-sidor och databasinnehåll</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel">Páginas e conteúdo do banco de dados</key>
+            <key index="mlang_tabs_tab">Internet</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel">Веб-страницы и записи базы данных</key>
+            <key index="mlang_tabs_tab">Веб</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel">Pagini web si continutul bazelor de date</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel">网页与数据库内容</key>
+            <key index="mlang_tabs_tab">网站</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel">Webstránky a obsah databáze</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="mlang_labels_tablabel">Tinklapiai ir duomenų bazės turinys</key>
+            <key index="mlang_tabs_tab">Tinklapiai</key>
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel">Vefsíður og innihald gagnasafns</key>
+            <key index="mlang_tabs_tab">Vefur</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel">Web stranice i sadržaj baze podataka</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel">Weboldalak és tartalmaik</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="mlang_labels_tablabel">Nittartakkap qupperneri databasellu imai</key>
+            <key index="mlang_tabs_tab">Internet-i</key>
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel">หน้าเว็ปและฐานข้อมูลเนื้อหา</key>
+            <key index="mlang_tabs_tab">เว็ป</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel">網頁和資料庫內容</key>
+            <key index="mlang_tabs_tab">網站</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel">Webguneak eta datubasearen edukia</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel">Уеб страници и бази данни със съдържания</key>
+            <key index="mlang_tabs_tab">Уеб</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel">Páginas e conteúdo do banco de dados</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel">Veebilehed ja andmebaasi sisu</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel">صفحات الويب و بنك المعلومات</key>
+            <key index="mlang_tabs_tab">الويب</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel">דפי אינטרנט ותוכן מאגר מידע</key>
+            <key index="mlang_tabs_tab">אינטרנט</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel">Web lapas un datubāzes saturs</key>
+            <key index="mlang_tabs_tab">Web</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="de" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="no" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="it" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="es" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="si" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="se" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="is" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="gl" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="th" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="br" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="et" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="he" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="mlang_labels_tablabel" type="integer">100785561</key>
+            <key index="mlang_tabs_tab" type="integer">208541963</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

@@ -433,7 +433,7 @@ class language {
 				$LOCAL_LANG = $this->readLLXMLfile($baseFile.'.xml', $this->lang);
 			} elseif (@is_file($baseFile.'.php'))	{
 				include($baseFile.'.php');
-			}
+			} else die('Filereference, "'.$file.'", not found!');
 		}
 		return is_array($LOCAL_LANG)?$LOCAL_LANG:array();
 	}
@@ -454,7 +454,11 @@ class language {
 
 				// Cache file name:
 			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef));
-			$cacheFileName = PATH_site.'typo3temp/llxml/cache_llxml_'.t3lib_div::md5int($hashSource).'.'.$langKey.'.'.$origCharset.'.ser';
+			$cacheFileName = PATH_site.'typo3temp/llxml/'.
+							#str_replace('_','',ereg_replace('^.*\/','',dirname($fileRef))).
+							#'_'.basename($fileRef).
+							substr(basename($fileRef),10,15).
+							'_'.t3lib_div::md5int($hashSource).'.'.$langKey.'.'.$origCharset.'.cache';
 
 				// Check if cache file exists...
 			if (!@is_file($cacheFileName))	{	// ... if it doesn't, create content and write it:
@@ -478,7 +482,8 @@ class language {
 				}
 
 				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>$LOCAL_LANG);
-				t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
+				$res = t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
+				if ($res)	die('ERROR: '.$res);
 			} else {
 				$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
 				$LOCAL_LANG = $serContent['LOCAL_LANG'];

@@ -50,11 +50,11 @@
 
 
 unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
-include (PATH_typo3.'sysext/lang/locallang_mod_web_func.php');
-require_once (PATH_t3lib.'class.t3lib_scbase.php');
+require('conf.php');
+require($BACK_PATH.'init.php');
+require($BACK_PATH.'template.php');
+$LANG->includeLLFile('EXT:lang/locallang_mod_web_func.xml');
+require_once(PATH_t3lib.'class.t3lib_scbase.php');
 
 $BE_USER->modAccess($MCONF,1);
 

@@ -60,10 +60,10 @@
  */
 
 unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
-include (PATH_typo3.'sysext/lang/locallang_mod_web_perm.php');
+require('conf.php');
+require($BACK_PATH.'init.php');
+require($BACK_PATH.'template.php');
+$LANG->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
 require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 require_once (PATH_t3lib.'class.t3lib_page.php');
 

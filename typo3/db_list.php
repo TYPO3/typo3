@@ -61,7 +61,7 @@ unset($MCONF);
 require ('mod/web/list/conf.php');
 require ('init.php');
 require ('template.php');
-$LANG->includeLLFile('EXT:lang/locallang_mod_web_list.php');
+$LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
 require_once (PATH_t3lib.'class.t3lib_page.php');
 require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 require_once (PATH_t3lib.'class.t3lib_recordlist.php');

@@ -66,7 +66,7 @@
 
 require('init.php');
 require('template.php');
-include('sysext/lang/locallang_view_help.php');
+$LANG->includeLLFile('EXT:lang/locallang_view_help.xml');
 require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
 
 

@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <key index="meta" type="array">
+        <key index="description">Web&gt;Function Module labels</key>
+        <key index="type">module</key>
+        <key index="fileId">EXT:lang/locallang_mod_web_func.php</key>
+        <key index="labelContext" type="array">
+            <key index="title"></key>
+            <key index="clickAPage_content"></key>
+            <key index="mlang_labels_tablabel"></key>
+            <key index="mlang_labels_tabdescr"></key>
+            <key index="mlang_tabs_tab"></key>
+        </key>
+    </key>
+    <key index="data" type="array">
+        <key index="default" type="array">
+            <key index="title">Advanced functions</key>
+            <key index="clickAPage_content">Please click a page title in the page tree.</key>
+            <key index="mlang_labels_tablabel">Advanced functions</key>
+            <key index="mlang_labels_tabdescr">You'll find general export and import functions here. In addition this module contains specialized functions - wizards - usefull in specific situations. For instance you can batch create pages and perform sorting of pages.</key>
+            <key index="mlang_tabs_tab">Functions</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="title">Avancerede funktioner</key>
+            <key index="clickAPage_content">Klik på en sidetitel i sidetræet.</key>
+            <key index="mlang_labels_tablabel">Avancerede funktioner</key>
+            <key index="mlang_labels_tabdescr">Her vil du finde generelle eksport og import funktioner. Derudover indeholder dette modul specialiserede funktioner - guider - som er nyttige i særlige situationer. For eksempel kan du oprette mange sider i én arbejdsgang og udføre sortering af sider.</key>
+            <key index="mlang_tabs_tab">Funktioner</key>
+        </key>
+        <key index="de" type="array">
+            <key index="title">Erweiterte Funktionen</key>
+            <key index="clickAPage_content">Bitte klicken Sie auf einen Seitentitel im Seitenbaum.</key>
+            <key index="mlang_labels_tablabel">Erweiterte Funktionen</key>
+            <key index="mlang_labels_tabdescr">Hier finden Sie allgemeine Export- und Importfunktionen. Zusätzlich enthält dieses Modul spezielle Funktionen (Assistenten), welche in bestimmten Situationen sehr nützlich sind. Zum Beispiel können Seiten automatisiert angelegt und auch umsortiert werden.</key>
+            <key index="mlang_tabs_tab">Funktionen</key>
+        </key>
+        <key index="no" type="array">
+            <key index="title">Avanserte funksjoner</key>
+            <key index="clickAPage_content">Klikk på en sidetittel i sidetreet</key>
+            <key index="mlang_labels_tablabel">Avanserte funksjoner</key>
+            <key index="mlang_labels_tabdescr">Her finner du generelle eksport og import funksjoner. Videre inneholder modulen spesielle funksjoner ' guider ' som vil være nyttige i spesielle tilfeller. For eksempel kan du opprette mange sider i en operasjon og utføre sortering av sidene.</key>
+            <key index="mlang_tabs_tab">Funksjoner</key>
+        </key>
+        <key index="it" type="array">
+            <key index="title">Funzioni avanzate</key>
+            <key index="clickAPage_content">Clicca sul titolo di una pagina dell'albero delle pagine</key>
+            <key index="mlang_labels_tablabel">Funzioni avanzate</key>
+            <key index="mlang_labels_tabdescr">Nel modulo sono presenti funzioni per importare/esportare pagine e record in diversi formati. Sono anche presenti degli assistenti (wizard) molto utili in alcune situazioni, ad esempio quando è necessario creare velocemente un certo numero di pagine, o quando bisogna riordinarle.</key>
+            <key index="mlang_tabs_tab">Funzioni</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="title">Fonctions avancées</key>
+            <key index="clickAPage_content">Veuillez cliquer sur le titre de la page dans l'arborescence.</key>
+            <key index="mlang_labels_tablabel">Fonctions avancées</key>
+            <key index="mlang_labels_tabdescr">Vous trouverez ici les fonctions générales d'import/export. De plus, ce module contient des fonctions spécialisées - les assistants - utiles dans des situations spécifiques. Pour l'instant, vous pouvez créer des pages multiples et trier les pages.</key>
+            <key index="mlang_tabs_tab">Fonctions</key>
+        </key>
+        <key index="es" type="array">
+            <key index="title">Funciones avanzadas</key>
+            <key index="clickAPage_content">Por favor haga click sobre el título de una página en el arbol de páginas.</key>
+            <key index="mlang_labels_tablabel">Funciones avanzadas</key>
+            <key index="mlang_labels_tabdescr">Encontrarás funciones generales de importación y exportación. Adicionalmente este módulo contiene funciones especializadas - expertos - útiles en situaciones específicas. Por ejemplo puedes crear páginas por lotes y ejecutar su ordenamiento.</key>
+            <key index="mlang_tabs_tab">Funciones</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="title">Bijzondere functies</key>
+            <key index="clickAPage_content">Klik op een paginatitel in de paginastructuur.</key>
+            <key index="mlang_labels_tablabel">Bijzondere functies</key>
+            <key index="mlang_labels_tabdescr">Algemene export en import functies. Bovendien bevat deze module gespecialiseerde functies - wizards - die nuttig kunnen zijn in bepaalde situaties. Het is hier bijvoorbeeld mogelijk in een keer meerdere pagina's aan te maken en pagina's op verschillende manieren te sorteren.</key>
+            <key index="mlang_tabs_tab">Functies</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="title">Pokročilé funkce</key>
+            <key index="clickAPage_content">Prosím klikněte na název stránky ve stromu stránek.</key>
+            <key index="mlang_labels_tablabel">Pokročilé funkce</key>
+            <key index="mlang_labels_tabdescr">Zde najdete obecné funkce pro import a export. Navíc obsahuje tento modul specializované funkce - průvodce - užitečné při specifických situacích</key>
+            <key index="mlang_tabs_tab">Funkce</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="title">Funkcje zaawansowane</key>
+            <key index="clickAPage_content">Kliknij na tytuł w drzewie stron.</key>
+            <key index="mlang_labels_tablabel">Funkcje zaawansowane</key>
+            <key index="mlang_labels_tabdescr">Znajdziesz tutaj funkcje eksportu i importu danych. Ponadto moduł zawiera kilka funkcji specjalistycznych. Na przykład do automatycznego tworzenia lub sortowania stron.</key>
+            <key index="mlang_tabs_tab">Funkcje</key>
+        </key>
+        <key index="si" type="array">
+            <key index="title">Napredne funkcije</key>
+            <key index="clickAPage_content">Kliknite na naslov strani v drevesu strani</key>
+            <key index="mlang_labels_tablabel">Napredne funkcije</key>
+            <key index="mlang_labels_tabdescr">Tu najdete splošne funcije za izvoz in uvoz podatkov. Ta modul vsebuje tudi posebne funkcije - čarovnike - ki so uporabni naprimer za paketno dodajanje strani ali njihovo sortiranje.</key>
+            <key index="mlang_tabs_tab">Funkcije</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="title">Laajennetut toiminnot</key>
+            <key index="clickAPage_content">Näpsäytä sivun otsikkoa sivujen rakennepuussa vasemmalla</key>
+            <key index="mlang_labels_tablabel">Laajennetut toiminnot</key>
+            <key index="mlang_labels_tabdescr">Täältä löydät yleiset tuonti- ja vientitoiminnot. Lisäksi moduli sisältää erikoistoimintoja - ohjattuja toimintoja - käyttökelpoisia tiettyihin tilanteisiin. Voit esimerkiksi kerralla luoda joukon sivuja tai lajitella sivujen järjestystä.</key>
+            <key index="mlang_tabs_tab">Toiminnot</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="title">Gelişmiş fonksiyonlar</key>
+            <key index="clickAPage_content">Lütfen sayfa ağacı içinde bir safya başlığına tıklayınız.</key>
+            <key index="mlang_labels_tablabel">Gelişmiş fonksiyonlar</key>
+            <key index="mlang_labels_tabdescr">Burada genel export ve import fonksiyonları bulabileceksiniz. Buna ek olarak bu modül uzmanlaşmış fonksiyonları kapsar - sihirbazlar - spesifik durumlarda kullanımı. Örnek olarak bu özel fonksiyonlar toplu sayfa yaratılması için veya sayfaların sınıflandırılması için kullanılabilir.</key>
+            <key index="mlang_tabs_tab">Fonksiyonlar</key>
+        </key>
+        <key index="se" type="array">
+            <key index="title">Advancerade funktioner</key>
+            <key index="clickAPage_content">Klicka på sidans titel i sidträdet.</key>
+            <key index="mlang_labels_tablabel">Advancerade funktioner</key>
+            <key index="mlang_labels_tabdescr">Här finner du uppgifter om export- och importfunktionerna. Dessutom innehåller denna modul speciella funktioner som behövs vid olika situationer. Du kan t.ex. med en batch skapa eller sortera sidor.</key>
+            <key index="mlang_tabs_tab">Funktioner</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="title">Funções avançadas</key>
+            <key index="clickAPage_content">Por favor, clique em um título de página na árvore de páginas</key>
+            <key index="mlang_labels_tablabel">Funções avançadas</key>
+            <key index="mlang_labels_tabdescr">Você encontrará funções para importação e exportação aqui. Adicionalmente, este módulo contém funções especializadas - assistentes - úteis em situações específicas. Por exemplo, você pode criar páginas em lote e ordenar páginas.</key>
+            <key index="mlang_tabs_tab">Funções</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="title">Расширеные функции</key>
+            <key index="clickAPage_content">Щелкните на заголовок страницы в дереве</key>
+            <key index="mlang_labels_tablabel">Расширенные функции</key>
+            <key index="mlang_labels_tabdescr">Здесь находятся функции экспорта и импорта. Также этот модуль содержит особые функции -- помощники -- полезные в различных ситуациях. Например вы можете автоматизировать создание и сортировку страниц.</key>
+            <key index="mlang_tabs_tab">Функции</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="title">Functii avansate</key>
+            <key index="clickAPage_content">Va rugam apasati pe una din paginile din arbore.</key>
+            <key index="mlang_labels_tablabel">Functii avansate</key>
+            <key index="mlang_labels_tabdescr">Aici veti gasi functii pentru export si import. In plus, acest modul contine functii specializate - magicieni - utile in situatii specifice. De exemplu puteti crea un set de pagini si le puteti sorta.</key>
+            <key index="mlang_tabs_tab">Functii</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="title">高级功能</key>
+            <key index="clickAPage_content">请点击页面树上的标题.</key>
+            <key index="mlang_labels_tablabel">高级功能</key>
+            <key index="mlang_labels_tabdescr">您可以在这里找到通用的输出与导入功能. 另外该模块还包括特殊功能 ---- 向导, 在特殊条件下有用处. 例如您可以批量创建页面和执行页面排序.</key>
+            <key index="mlang_tabs_tab">功能</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="title">Pokročilé funkcie</key>
+            <key index="clickAPage_content">Klikni, prosím, na názov stránky v strome stránok.</key>
+            <key index="mlang_labels_tablabel">Pokročilé funkcie</key>
+            <key index="mlang_labels_tabdescr">Tu nájdeš základné funkcie na import a export. Tento modul obsahuje naviac špeciálne funkcie - sprievodcov -, užitočné v špecifických situáciach. Na okamžik môžeš prerušiť tvorbu stránok a môžeš usporiadať stránky.</key>
+            <key index="mlang_tabs_tab">Funkcie</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="title">Papildomos funkcijos</key>
+            <key index="clickAPage_content">Spustelkite puslapio antrašte puslapių medyje.</key>
+            <key index="mlang_labels_tablabel">Papildomos funkcijos</key>
+            <key index="mlang_labels_tabdescr">Čia jus rasite bendras importo ir eksporto funkcijas. Papildomi moduliai turi specializuotas funkcijas - burtininkus - kurie naudingi specifinėse situacijose. Pvz. jus galite sukurti krūva puslapių ir/ar vykdyti jų rušiavima.</key>
+            <key index="mlang_tabs_tab">Funkcijos</key>
+        </key>
+        <key index="is" type="array">
+            <key index="title">Háþróuð aðgerð</key>
+            <key index="clickAPage_content">Vinsamlegast smeltu á síðutitil í síðutrénu</key>
+            <key index="mlang_labels_tablabel">Háþróuð aðgerð</key>
+            <key index="mlang_labels_tabdescr">Hérna munt þú finna almennar út- og innflutnings aðgerðir. Þessar viðbætur eru líka með sérhæfða aðgerð - áfur -  nytsamur við ákveðnar aðstæður. Til dæmis getur þú búið til margar nýjar síður og framkvæmt flokkun á síðunum.</key>
+            <key index="mlang_tabs_tab">Aðgerðir</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="title">Napredne funkcije</key>
+            <key index="clickAPage_content">Molim kliknite na naslov stranice u stablu.</key>
+            <key index="mlang_labels_tablabel">Napredne funkcije</key>
+            <key index="mlang_labels_tabdescr">Ovdje ćete naći osnovne eksport i import funkcije. Stoviše, ovaj modul sadrži specijalizirane funkcije - čarobnjake korisne u specifičnim situacijama. Na primjer, možete napraviti stranice u &quot;batch-u&quot; ili sortirati stranice.</key>
+            <key index="mlang_tabs_tab">Funkcije</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="title">Egyéb műveletek</key>
+            <key index="clickAPage_content">Kattints az oldal címére az oldalfában.</key>
+            <key index="mlang_labels_tablabel">Egyéb műveletek</key>
+            <key index="mlang_labels_tabdescr">Itt találod az általános export és import funkciókat, és az egyéb speciális varázslókat.</key>
+            <key index="mlang_tabs_tab">Műveletek</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="title">ฟังชั่นชั้นสูง</key>
+            <key index="clickAPage_content">โปรดกดปุ่มชื่อหน้า ที่ต้นหน้า</key>
+            <key index="mlang_labels_tablabel">ฟังชั่นชั้นสูง</key>
+            <key index="mlang_labels_tabdescr">คุณจะเจอฟังชั่นส่งออกและนำเข้าที่นี่ นอกจากนี้โมดูลนี้ยังมี ฟังชั่นพิเศษ -ผู้ช่วยวิเศษ- มีประโยชน์ในสถานการณ์เฉพาะ เช่นคุณสามารสร้าง และการจัดลำดับหลายหน้าพร้อมกัน</key>
+            <key index="mlang_tabs_tab">ฟังชั่น</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="title">進階功能</key>
+            <key index="clickAPage_content">請點擊在網頁樹圖中的一個網頁名稱</key>
+            <key index="mlang_labels_tablabel">進階功能</key>
+            <key index="mlang_labels_tabdescr">在這裡你會發現常見的輸入和匯入功能。此外，這個模組包含獨特的功能　－　精靈　－　在某些情況下非常有用。例如你可以大量建立網頁和進行網頁分類。</key>
+            <key index="mlang_tabs_tab">功能</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="title">Funtzio aurreratuak</key>
+            <key index="clickAPage_content">Egin klik orri zuhaitzeko orri izenburu batean</key>
+            <key index="mlang_labels_tablabel">Funtzio aurreratuak</key>
+            <key index="mlang_labels_tabdescr">Esportazio eta inportazio funtzio orokorrak aurkituko dituzu hemen. Gainera modulu honek baditu funtzio espezializatuak - Morroiak - egoera berezietan erabiltzeko. Adibidez orriak errenkadan sortu ditzazkezu eta orriak ordenatu.</key>
+            <key index="mlang_tabs_tab">Funtzioak</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="title">Разширени функции</key>
+            <key index="clickAPage_content">Моля, натиснете заглавието на страницата в дървото .</key>
+            <key index="mlang_labels_tablabel">Разширени функции</key>
+            <key index="mlang_labels_tabdescr">Тук ще намерите основни експорт и импорт функции. В добавка този модул съдържа спеъиализирани функции - въведения - полезни в специфични ситуации. Например можете групово да създадете страници и да ги сортирате.</key>
+            <key index="mlang_tabs_tab">Функции</key>
+        </key>
+        <key index="br" type="array">
+            <key index="title">Funções avançadas</key>
+            <key index="clickAPage_content">Por favor, clique em um título de página na árvore de páginas.</key>
+            <key index="mlang_labels_tablabel">Funções avançadas</key>
+            <key index="mlang_labels_tabdescr">Você encontrará funções para importação e exportação aqui. Além disso, este módulo contém funções especializadas - assistentes - úteis em situações específicas. Por exemplo, você pode criar páginas em lote e ordenar páginas.</key>
+            <key index="mlang_tabs_tab">Funções</key>
+        </key>
+        <key index="et" type="array">
+            <key index="title">Advanced funktsioonid</key>
+            <key index="clickAPage_content">Palun klikkige lehekülje pealkirjale sisupuul.</key>
+            <key index="mlang_labels_tablabel">Advanced funktsioonid</key>
+            <key index="mlang_labels_tabdescr">Siit leiate peamised eksport ja import funktsioonid. Lisaks sisaldab see moodul erifunktsioone - viisardeid - mis on kasulikud kindlate olukordade puhul. Näiteks saate luua lehekülgi partii kaupa ja toestada lehekülgede sorteerimist.</key>
+            <key index="mlang_tabs_tab">Funktsioonid</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="title">وظائف متطورة</key>
+            <key index="clickAPage_content">من فضلك إضغك على عنوان الصفحة في قائمة الصفحات</key>
+            <key index="mlang_labels_tablabel">وظائف متطورة</key>
+            <key index="mlang_labels_tabdescr">هنا ستجد بصفة عامة وظــائف للتصدير و الإستيراد بالإضافة  إلى أن هذا المركب يحتوي على وظــائف خاصة و مساعد مفيدان جدا في مواقف معينة. على فكرة يمكنك إنشاء صفحات و عمل ترتيب لهــا</key>
+            <key index="mlang_tabs_tab">وظائف</key>
+        </key>
+        <key index="he" type="array">
+            <key index="title">פעולות מתקדמות</key>
+            <key index="clickAPage_content">נא הקלק על כותרת דף ברשימת דפים</key>
+            <key index="mlang_labels_tablabel">פעולות מתקדמות</key>
+            <key index="mlang_labels_tabdescr">כאן תמצא פעולות ייצוא וייבוא כלליות. בנוסף מודול זה מכיל פעולות מיוחדות - עזרים - שימושיים במצבים מסוימים. למשאל הנך יכול לצור קבוצה של דפים ולמיין דפים.</key>
+            <key index="mlang_tabs_tab">פעולות</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="title">Advancētas funkcijas</key>
+            <key index="clickAPage_content">Lūdzu uzklikšķiniet uz lapas virsraksta lapu kokā.</key>
+            <key index="mlang_labels_tablabel">Advancētas funkcijas</key>
+            <key index="mlang_tabs_tab">Funkcijas</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_hash" type="array">
+        <key index="default" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="dk" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="de" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="no" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="it" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="fr" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="es" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="nl" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="cz" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="pl" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="si" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="fi" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="tr" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="se" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="pt" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="ru" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="ro" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="ch" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="sk" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="lt" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="is" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="hr" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="hu" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="eu" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="bg" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="br" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="et" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="ar" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="he" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_labels_tabdescr" type="integer">178291472</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+            <key index="title" type="integer">155530193</key>
+            <key index="clickAPage_content" type="integer">74170385</key>
+            <key index="mlang_labels_tablabel" type="integer">155530193</key>
+            <key index="mlang_tabs_tab" type="integer">244559025</key>
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+    <key index="orig_text" type="array">
+        <key index="default" type="array">
+        </key>
+        <key index="dk" type="array">
+        </key>
+        <key index="de" type="array">
+        </key>
+        <key index="no" type="array">
+        </key>
+        <key index="it" type="array">
+        </key>
+        <key index="fr" type="array">
+        </key>
+        <key index="es" type="array">
+        </key>
+        <key index="nl" type="array">
+        </key>
+        <key index="cz" type="array">
+        </key>
+        <key index="pl" type="array">
+        </key>
+        <key index="si" type="array">
+        </key>
+        <key index="fi" type="array">
+        </key>
+        <key index="tr" type="array">
+        </key>
+        <key index="se" type="array">
+        </key>
+        <key index="pt" type="array">
+        </key>
+        <key index="ru" type="array">
+        </key>
+        <key index="ro" type="array">
+        </key>
+        <key index="ch" type="array">
+        </key>
+        <key index="sk" type="array">
+        </key>
+        <key index="lt" type="array">
+        </key>
+        <key index="is" type="array">
+        </key>
+        <key index="hr" type="array">
+        </key>
+        <key index="hu" type="array">
+        </key>
+        <key index="gl" type="array">
+        </key>
+        <key index="th" type="array">
+        </key>
+        <key index="gr" type="array">
+        </key>
+        <key index="hk" type="array">
+        </key>
+        <key index="eu" type="array">
+        </key>
+        <key index="bg" type="array">
+        </key>
+        <key index="br" type="array">
+        </key>
+        <key index="et" type="array">
+        </key>
+        <key index="ar" type="array">
+        </key>
+        <key index="he" type="array">
+        </key>
+        <key index="ua" type="array">
+        </key>
+        <key index="lv" type="array">
+        </key>
+        <key index="jp" type="array">
+        </key>
+        <key index="vn" type="array">
+        </key>
+    </key>
+</T3locallang>

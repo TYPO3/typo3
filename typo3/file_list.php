@@ -53,7 +53,7 @@ unset($MCONF);
 require ('mod/file/list/conf.php');
 require ('init.php');
 require ('template.php');
-require ('sysext/lang/locallang_mod_file_list.php');
+$LANG->includeLLFile('EXT:lang/locallang_mod_file_list.xml');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
 require_once (PATH_t3lib.'class.t3lib_recordlist.php');
