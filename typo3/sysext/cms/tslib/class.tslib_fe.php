@@ -475,7 +475,40 @@
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid='.intval($this->fe_user->user['uid']), array('is_online' => $GLOBALS['EXEC_TIME']));
 		}
 	}
+	
+	/**
+	 * Initializes the front-end user groups.
+	 *
+	 * @return	void
+	 */		
+	function initUserGroups() {
+			// Sets ->loginUser and ->gr_list based on front-end user status.
+		$this->fe_user->showHiddenRecords = $this->showHiddenRecords;		// This affects the hidden-flag selecting the fe_groups for the user!
+		// if (is_array($this->fe_user->user) && $this->fe_user->fetchGroupData())	{
+		$this->fe_user->fetchGroupData(); 	// no matter if we have an active user we try to fetch matching groups which can be set without an user.
+		if (is_array($this->fe_user->user) && count($this->fe_user->groupData['uid']))	{
+			$this->loginUser=1;	// global flag!
+			$this->gr_list = '0,-2';	// group -2 is not an existing group, but denotes a 'default' group when a user IS logged in. This is used to let elements be shown for all logged in users!
+			$gr_array = $this->fe_user->groupData['uid'];
+		} else {
+			$this->loginUser=0;
+			$this->gr_list = '0,-1';	// group -1 is not an existing group, but denotes a 'default' group when not logged in. This is used to let elements be hidden, when a user is logged in!
+			$gr_array = $this->fe_user->groupData['uid'];
+		}
 
+		// TYPO3_CONF_VARS']['FE']['IPmaskMountGroups']	moved to sysext/sv/class.tx_sv_auth.php service
+
+			// Clean up.
+		$gr_array = array_unique($gr_array);	// Make unique...
+		sort($gr_array);	// sort
+		if (count($gr_array))	{
+			$this->gr_list.=','.implode(',',$gr_array);
+		}	
+		
+		if ($this->fe_user->writeDevLog) 	t3lib_div::devLog('Valid usergroups for TSFE: '.$this->gr_list, 'tslib_fe');
+	}
+	
+	
 	/**
 	 * Provides ways to bypass the '?id=[xxx]&type=[xx]' format, using either PATH_INFO or virtual HTML-documents (using Apache mod_rewrite)
 	 *
@@ -648,35 +681,12 @@
 		$this->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$this->sys_page->init($this->showHiddenPage);
 
-			// Sets ->loginUser and ->gr_list based on front-end user status.
-		$this->fe_user->showHiddenRecords = $this->showHiddenRecords;		// This affects the hidden-flag selecting the fe_groups for the user!
-		if (is_array($this->fe_user->user) && $this->fe_user->fetchGroupData())	{
-			$this->loginUser=1;	// global flag!
-			$this->gr_list = '0,-2';	// group -2 is not an existing group, but denotes a 'default' group when a user IS logged in. This is used to let elements be shown for all logged in users!
-			$gr_array = $this->fe_user->groupData['uid'];
-		} else {
-			$this->loginUser=0;
-			$this->gr_list = '0,-1';	// group -1 is not an existing group, but denotes a 'default' group when not logged in. This is used to let elements be hidden, when a user is logged in!
-			$gr_array=array();
-		}
-
-			// ADD group-numbers if the IPmask matches.
-		if (is_array($this->TYPO3_CONF_VARS['FE']['IPmaskMountGroups']))	{
-			foreach($this->TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel)	{
-				if (t3lib_div::getIndpEnv('REMOTE_ADDR') && $IPel[0] && t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'),$IPel[0]))	{$gr_array[]=intval($IPel[1]);}
-			}
-		}
-
-			// Clean up.
-		$gr_array = array_unique($gr_array);	// Make unique...
-		sort($gr_array);	// sort
-		if (count($gr_array))	{
-			$this->gr_list.=','.implode(',',$gr_array);
-		}
+			// Set the valid usergroups for FE
+		$this->initUserGroups();
 
 			// Sets sys_page where-clause
-		$this->sys_page->where_hid_del.=' AND doktype<200 AND fe_group IN ('.$this->gr_list.')';
-
+		$this->setSysPageWhereClause();
+		
 			// Splitting $this->id by a period (.). First part is 'id' and second part - if exists - will overrule the &type param if given
 		$pParts = explode('.',$this->id);
 		$this->id = $pParts[0];	// Set it.
@@ -891,7 +901,7 @@
 	 * Returns true if enableFields does not disable the page record.
 	 * Takes notice of the ->showHiddenPage flag and uses SIM_EXEC_TIME for start/endtime evaluation
 	 *
-	 * @param	array		The page record to evaluate (needs fields; hidden, starttime, endtime, fe_group)
+	 * @param	array		The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
 	 * @return	boolean		True, if record is viewable.
 	 * @see tslib_cObj::getTreeList(), checkPagerecordForIncludeSection()
 	 */
@@ -899,16 +909,35 @@
 		if ((!$row['hidden'] || $this->showHiddenPage)
 			&& $row['starttime']<=$GLOBALS['SIM_EXEC_TIME']
 			&& ($row['endtime']==0 || $row['endtime']>$GLOBALS['SIM_EXEC_TIME'])
-			&& t3lib_div::inList($this->gr_list,$row['fe_group'])
+			&& $this->checkPageGroupAccess($row)
 		) {
 			return 1;
 		}
 	}
 
 	/**
+	 * Check group access against a page record
+	 *
+	 * @param	array		The page record to evaluate (needs field: fe_group)
+	 * @param	mixed		List of group id's (comma list or array). Default is $this->gr_list
+	 * @return	boolean		True, if group access is granted.
+	 * @access private
+	 */
+	function checkPageGroupAccess($row, $groupList=NULL) {
+		if(is_null($groupList)) {
+			$groupList = $this->gr_list;
+		}
+		if(!is_array($groupList)) {
+			$groupList = explode(',', $groupList);
+		}
+		$pageGroupList = explode(',', $row['fe_group']);
+		return count(array_intersect($groupList, $pageGroupList)) > 0;
+	}
+
+	/**
 	 * Checks page record for include section
 	 *
-	 * @param	array		The page record to evaluate (needs fields;extendToSubpages + hidden, starttime, endtime, fe_group)
+	 * @param	array		The page record to evaluate (needs fields: extendToSubpages + hidden, starttime, endtime, fe_group)
 	 * @return	boolean		Returns true if either extendToSubpages is not checked or if the enableFields does not disable the page record.
 	 * @access private
 	 * @see checkEnableFields(), tslib_cObj::getTreeList(), checkRootlineForIncludeSection()
@@ -963,6 +992,26 @@
 	}
 
 	/**
+	 * Sets sys_page where-clause
+	 *
+	 * @return	void
+	 * @access private
+	 */
+	 function setSysPageWhereClause() {
+		$this->sys_page->where_hid_del.=' AND doktype<200'.$this->getPagesGroupClause();
+	}
+
+	/**
+	 * Return where-clause for group access 
+	 *
+	 * @return	string 	Group where clause part
+	 * @access private
+	 */
+	 function getPagesGroupClause() {
+		return ' AND fe_group IN ('.$this->gr_list.')';
+	}
+	
+	/**
 	 * Looking up a domain record based on HTTP_HOST
 	 *
 	 * @param	boolean		If set, it looks "recursively" meaning that a domain like "123.456.typo3.com" would find a domain record like "typo3.com" if "123.456.typo3.com" or "456.typo3.com" did not exist.
@@ -1004,13 +1053,13 @@
 	 */
 	function pageNotFoundHandler($code, $header='', $reason='')	{
 			// Issue header in any case:
-		if ($header)	{ header($header); }
+		if ($header)	{header($header);}
 
 			// Create response:
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{
 			$this->printError('The page did not exist or was inaccessible.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
 			exit;
-		} elseif (t3lib_div::testInt($code))	{
+		} else if (t3lib_div::testInt($code))	{
 			$this->printError('Error '.$code.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
 			exit;
 		} elseif (t3lib_div::isFirstPartOfStr($code,'READFILE:')) {
@@ -1020,7 +1069,7 @@
 				$fileContent = str_replace('###CURRENT_URL###', t3lib_div::getIndpEnv('REQUEST_URI'), $fileContent);
 				$fileContent = str_replace('###REASON###', htmlspecialchars($reason), $fileContent);
 				echo $fileContent;
-			} else {
+		} else {
 				$this->printError('Configuration Error: 404 page "'.$readFile.'" could not be found.');
 			}
 			exit;
@@ -2474,9 +2523,9 @@ if (version == "n3") {
 		$out = '';
 		if ($titleChars)	{
 			$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
-			$out = ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
-			$out = ereg_replace('_*$','',$out);
-			$out = ereg_replace('^_*','',$out);
+			$out= ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
+			$out= ereg_replace('_*$','',$out);
+			$out= ereg_replace('^_*','',$out);
 			if ($out)	$out.='.';
 		}
 		$enc = '';
@@ -3011,6 +3060,7 @@ if (version == "n3") {
 
 			// Setting language key and split index:
 		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
+
 		$ls = explode('|',TYPO3_languages);
 		while(list($i,$v)=each($ls))	{
 			if ($v==$this->lang)	{$this->langSplitIndex=$i; break;}
