@@ -222,6 +222,7 @@
 	var $loginUser='';					// Global falg indicating that a front-end user is logged in. This is set only if a user really IS logged in. The group-list may show other groups (like added by IP filter or so) even though there is no user.
 	var $gr_list='';					// (RO=readonly) The group list, sorted numerically. Group '0,-1' is the default group, but other groups may be added by other means than a user being logged in though...
 	var $beUserLogin='';				// Flag that indicates if a Backend user is logged in!
+	var $loginAllowedInBranch = TRUE;	// Shows whether logins are allowed in branch
 
 		// PREVIEW
 	var $fePreview='';					// Flag indication that preview is active. This is based on the login of a backend user and whether the backend user has read access to the current page.
@@ -738,15 +739,14 @@
 		}
 
 			// Checks if user logins are blocked for a certain branch and if so, will unset user login and re-fetch ID.
-		if (is_array($this->fe_user->user))	{	// Only if there is a login will we run this...
-			if (!$this->checkIfLoginAllowedInBranch())	{
+		$this->loginAllowedInBranch = $this->checkIfLoginAllowedInBranch();
+		if (!$this->loginAllowedInBranch)	{	// Logins are not allowed:
+			if (is_array($this->fe_user->user))	{	// Only if there is a login will we run this...
 				unset($this->fe_user->user);
-
 					// Fetching the id again, now with the preview settings reset.
 				$this->fetch_the_id();
 			}
 		}
-
 
 			// Final cleaning.
 		$this->id = $this->contentPid = intval($this->id);	// Make sure it's an integer
@@ -2597,9 +2597,13 @@ if (version == "n3") {
 			// Getting status whether we can send cache control headers for proxy caching:
 		$doCache = $this->isStaticCacheble();
 
+			// This variable will be TRUE unless cache headers are configured to be sent ONLY if a branch does not allow logins and logins turns out to be allowed anyway...
+		$loginsDeniedCfg = !$this->config['config']['sendCacheHeaders_onlyWhenLoginDeniedInBranch'] || !$this->loginAllowedInBranch;
+
 			// Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
 		if ($doCache
-				&& !$this->beUserLogin)	{
+				&& !$this->beUserLogin
+				&& $loginsDeniedCfg)	{
 
 				// Build headers:
 			$headers = array(

@@ -1,3 +1,7 @@
+2005-03-10  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added feature that connects cache-control headers with whether user-logins are allowed in a branch or not. Makes mixing of cached and dynamic user-dependant content easier.
+
 2005-03-08  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* New feature for page records: Frontend Login Mode. Makes it possible to disable (and enable later) frontend logins for branches of the page tree. Disabling will make it look like no user is authenticated. This feature is very useful if you wish a highly performant website using cache control headers while specifying sections where user logins are accepted (for dynamic content)
