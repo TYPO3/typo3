@@ -207,7 +207,7 @@ $TYPO3_CONF_VARS = Array(
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '3.7.0RC1';
+$TYPO_VERSION = '3.7.0RC2';
 define('TYPO3_version', $TYPO_VERSION);
 
 // Database-variables are cleared!
