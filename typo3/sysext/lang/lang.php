@@ -125,6 +125,11 @@ class language {
 	 * @return	void		
 	 */
 	function init($lang,$altPath='')	{	
+
+			// Initialize the conversion object:
+		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
+		$this->charSetArray = $this->csConvObj->charSetArray;
+
 			// Internally setting the list of TYPO3 backend languages.
 		$this->langSplit=TYPO3_languages;
 
@@ -138,10 +143,6 @@ class language {
 				if ($this->charSetArray[$this->lang])	$this->charSet=$this->charSetArray[$this->lang];		// The charset if different from the default.
 			}
 		}
-
-			// Initialize the conversion object:
-		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
-		$this->charSetArray = $this->csConvObj->charSetArray;
 
 			// If a forced charset is used and different from the charset otherwise used:
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']!=$this->charSet)	{

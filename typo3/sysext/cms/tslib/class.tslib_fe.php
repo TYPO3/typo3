@@ -341,6 +341,14 @@
 		$this->uniqueString=md5(microtime());
 		
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
+		
+			// Call post processing function for constructor:
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc']))	{
+			$_params = array('pObj' => &$this);
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}		
 	}
 
 	/**
@@ -475,7 +483,7 @@
 	 * 1:      '[title].[id].[type].html'			- title is just for easy recognition in the logfile!; no practical use of the title for TYPO3.
 	 * 2:      '[id].[type].html'					- above, but title is omitted; no practical use of the title for TYPO3.
 	 * 3:      '[id].html'							- only id, type is set to the default, zero!
-	 * NOTE: In all case 'id' may be the uid-numer OR the page alias (if any)
+	 * NOTE: In all case 'id' may be the uid-number OR the page alias (if any)
 	 * 
 	 * @return	void		
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4
@@ -518,6 +526,14 @@
 				$this->absRefPrefix_force=1;
 #			}
 		}
+		
+			// Call post processing function for custom URL methods.
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc']))	{
+			$_params = array('pObj' => &$this);
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}			
 	}
 	
 	/**
@@ -601,6 +617,15 @@
 			// Final cleaning.
 		$this->id=$this->contentPid=intval($this->id);	// Make sure it's an integer
 		$this->type=intval($this->type);	// Make sure it's an integer
+
+		
+			// Call post processing function for id determination:
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc']))	{
+			$_params = array('pObj' => &$this);
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}			
 	}
 
 	/**

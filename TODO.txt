@@ -112,7 +112,7 @@ TCEforms:
 		- making copies of select fields etc - check that remapped records are OK treated (with foreign/neg_foreign + free string values)
 		- Letting one selectorbox set another hidden fields value apart from its own? [USE: When selecting a template, that also sets the DS value! (Thus a template is always selected!)]
 		- Exclude field selection better, in a tree?
-		- set the width of the selector field.
+		- set the width of the selector field 
 	- GROUP type:
 		- [file] allow the selection of files from the system to be added as REFERENCES, not copied! (Message-ID: <003f01c23503$8cdd69d0$55333bd4@comtech>, + notify "illuminatus")
 		- In the thumbnail list add the Edit and view icons as in the good old days.
@@ -122,6 +122,7 @@ TCEforms:
 		  - See JH mail: Message-ID: <C018FF617C61AB4588D15494126A5C0F23E410@Soulman.hanno-kirchhoff.de>
 		- IFRAME alternative for Element Browser.
 		- Like in CB: Copy image/reference from a record to clipboard, then insert that file/reference in another record again (Element Browser change).
+		- set the width of the selector field(s)
 	- INPUT type:
 		- having a selectorbox from which a default value can be selected (which is just transferred to the input field). Of course the selectorbox can have its content added by a PHP script.
 	- ? type:
@@ -197,6 +198,7 @@ Web>List:
 - Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". This should be reflected in the LISTING order (before ordered by the "sorting" column) OR maybe in a hierarchical display?
 - Support for tree-tables (that can be browsed).
 - Support for a "tree-group" -> a chain of tables which are displayed in a tree since each table has a config for a parent field in a former table. (Eg. DS: brand -> domain -> product).
+- Support for display of relations: Files, 1-M, M-M
 - FlexForm tree view / editing: 
 	- When a record contains a FlexForm the web>List module could display the fields inside in a nice tree structure which one could expand/collapse! Then by clicking "edit" for a brand you get an interface where you can edit *that branch* of the flexform! Brilliant way to manage large structures inside of flexforms!
 		- Can you picture it? That would be like expanding an XML document by a node-tree and add/edit/delete/rearrange any of the internal informational pieces!
@@ -722,6 +724,8 @@ So we are looking at two scenarios:
 3) Mapping of ONE typo3 user to MANY LDAP users...
 
 - Also have the possibility of local users: Thus 1) FIRST a lookup is done in LDAP, 2) THEN if this fails we look in the local mysql table. (Well, this solution is straight forward since a user must ALWAYS have a record in the local MySQL table...)
+
+- Make API so that other authentication solutions than LDAP can be used (eg. another MySQL table!)  [See Rene Fritz's prototype work with services...] 
 
 
 Also see:

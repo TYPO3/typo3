@@ -2540,6 +2540,8 @@ EXTENSION KEYS:
 	 * @return	[type]		...
 	 */
 	function tsStyleConfigForm($eKey,$info,$output=0,$script="",$addFields="")	{
+		global $TYPO3_CONF_VARS;
+		
 		$absPath = $this->getExtPath($eKey,$info);
 		$relPath = $this->typeRelPaths[$info["type"]].$eKey."/";
 
@@ -2557,11 +2559,21 @@ EXTENSION KEYS:
 			$arr = unserialize($GLOBALS["TYPO3_CONF_VARS"]["EXT"]["extConf"][$eKey]);
 			$arr = is_array($arr) ? $arr : array();
 			
+				// Call processing function for constants config and data before write and form rendering:
+			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/mod/tools/em/index.php']['tsStyleConfigForm']))	{
+				$_params = array('fields' => &$theConstants, 'data' => &$arr, 'extKey' => $eKey);
+				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/mod/tools/em/index.php']['tsStyleConfigForm'] as $_funcRef)	{
+					t3lib_div::callUserFunction($_funcRef,$_params,$this);
+				}
+				unset($_params);
+			}				
+
 			if ($GLOBALS["HTTP_POST_VARS"]["submit"])	{
 				$tsStyleConfig->ext_procesInput($GLOBALS["HTTP_POST_VARS"],array(),$theConstants,array());
 				$arr = $tsStyleConfig->ext_mergeIncomingWithExisting($arr);
 				$this->writeTsStyleConfig($eKey,$arr);
 			}
+
 			$tsStyleConfig->ext_setValueArray($theConstants,$arr);
 			
 			$MOD_MENU=array();

@@ -83,7 +83,7 @@ $TYPO3_CONF_VARS = Array(
 		'requiredExt' => 'cms,lang',			// String list: List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
 		'extCache' => 1,						// Int. 0,1,2: 0: ext-scripts (ext_localconf.php and ext_tables.php) are NOT cached, but included every time. 1: scripts cached to typo3conf/temp_CACHED_[sitePathHash]* (saves some milliseconds even with PHP-A), 2: scripts cached and prefix includes a hash based on the 'extList' string, 3: scripts cached to typo3conf/temp_CACHED_* (no hash included at all...)
 		'extList' => 'tsconfig_help,context_help,extra_page_cm_options,rte,impexp,sys_note,tstemplate,tstemplate_ceditor,tstemplate_info,tstemplate_objbrowser,tstemplate_analyzer,tstemplate_styler,func_wizards,wizard_crpages,wizard_sortpages,lowlevel,install,belog,beuser,phpmyadmin,aboutmodules,imagelist,setup,taskcenter,sys_notepad,taskcenter_recent,taskcenter_rootlist,info_pagetsconfig,viewpage',						// String list: List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
-		'extConf' => array(						// Config-options for extensions. Allow EM to handle this as well.
+		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
 //			'--key--' => array()
 		)
 	),
@@ -180,6 +180,9 @@ $TYPO3_CONF_VARS = Array(
 	'USER' => Array(		// Here you may define your own setup-vars for use in your include-scripts. (obsolete, make extension instead)
 	),
 	'SC_OPTIONS' => Array(		// Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself.
+	),
+	'EXTCONF' => Array (		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
+//		'--key--' => array()
 	)
 );
 

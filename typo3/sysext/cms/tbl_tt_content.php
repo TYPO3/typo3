@@ -873,7 +873,7 @@ $TCA['tt_content'] = Array (
 								<!-- Repeat an element like "xmlTitle" beneath for as many elements you like. Remember to name them uniquely  -->
 						      <xmlTitle>
 								<TCEforms>
-									<title>The Title:</title>
+									<label>The Title:</label>
 									<config>
 										<type>input</type>
 										<size>48</size>

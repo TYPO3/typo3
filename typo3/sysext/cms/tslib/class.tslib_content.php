@@ -4371,6 +4371,11 @@ class tslib_cObj {
 						$nkey = $this->getKey($key,$GLOBALS['TSFE']->tmpl->rootLine);
 						$retVal= $this->rootLineValue($nkey,'uid',stristr($key,'slide'));
 					break;
+					case 'levelfield':
+						$keyP=t3lib_div::trimExplode(',',$key);
+						$nkey = $this->getKey($keyP[0],$GLOBALS['TSFE']->tmpl->rootLine);
+						$retVal= $this->rootLineValue($nkey,$keyP[1],strtolower($keyP[2])=='slide');
+					break;
 					case 'fullrootline':
 						$keyP=t3lib_div::trimExplode(',',$key);
 						$fullKey = intval($keyP[0])-count($GLOBALS['TSFE']->tmpl->rootLine)+count($GLOBALS['TSFE']->rootLine);
@@ -4403,6 +4408,19 @@ class tslib_cObj {
 						switch((string)$key)	{
 							case 'parentRecordNumber':
 								$retVal = $this->parentRecordNumber;
+							break;
+						}
+					break;
+					case 'debug':
+						switch((string)$key)	{
+							case 'rootLine':
+								$retVal = t3lib_div::view_array($GLOBALS['TSFE']->tmpl->rootLine);
+							break;
+							case 'fullRootLine':
+								$retVal = t3lib_div::view_array($GLOBALS['TSFE']->rootLine);
+							break;
+							case 'data':
+								$retVal = t3lib_div::view_array($this->data);
 							break;
 						}
 					break;
@@ -6323,6 +6341,7 @@ class tslib_frameset {
 		$paramStr = '';
 		$name = $setup['obj'];
 
+		/*
 		if ($GLOBALS['TSFE']->config['config']['simulateStaticDocuments'])	{
 			$theCompURL='';
 			$theCompURL.=$GLOBALS['TSFE']->makeSimulFileName($GLOBALS['TSFE']->page['title'],
@@ -6340,9 +6359,16 @@ class tslib_frameset {
 			// Add absRefPrefix if exists.
 		$finalURL = $GLOBALS['TSFE']->absRefPrefix.$theCompURL.($setup['options']?'&'.$setup['options']:'').$GLOBALS['TSFE']->linkVars.$GLOBALS['TSFE']->getMethodUrlIdToken.($GLOBALS['TSFE']->no_cache?'&no_cache=1':'');
 		$finalURL = $GLOBALS['TSFE']->tmpl->removeQueryString($finalURL);
+		*/
+		
+			// From 3.6.0, use "linkData" for ALL links:
+		$LD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'',$GLOBALS['TSFE']->no_cache,'','',($setup['options']?'&'.$setup['options']:''), intval($typeNum));
+		$finalURL = $LD['totalURL'];
+		
+		
 		if ($setup['src']) {$paramStr.=' src="'.htmlspecialchars($setup['src']).'"';} else {$paramStr.=' src="'.htmlspecialchars($finalURL).'"';}
-		if ($setup['name']) {		$paramStr.=' name="'.$setup['name'].'"';	} else {$paramStr.=' name="'.$name.'"';}
-		if ($setup['params']) {	$paramStr.=' '.$setup['params'];	}
+		if ($setup['name']) {$paramStr.=' name="'.$setup['name'].'"';} else {$paramStr.=' name="'.$name.'"';}
+		if ($setup['params']) {$paramStr.=' '.$setup['params'];}
 		return $paramStr;
 	}
 

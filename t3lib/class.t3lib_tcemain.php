@@ -2243,13 +2243,9 @@ class t3lib_TCEmain	{
 				// Call post processing function for clear-cache:
 			global $TYPO3_CONF_VARS;
 			if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
-				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $funcRef)	{
-					$a = array(
-						'table' => $table,
-						'uid' => $uid,
-						'uid_page' => $uid_page
-					);
-					t3lib_div::callUserFunction($funcRef,$a,$this);
+				$_params = array('table' => $table,'uid' => $uid,'uid_page' => $uid_page);
+				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef)	{
+					t3lib_div::callUserFunction($_funcRef,$_params,$this);
 				}
 			}		
 		}
@@ -3679,9 +3675,9 @@ class t3lib_TCEmain	{
 		
 			// Call post processing function for clear-cache:
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']))	{
-			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $funcRef)	{
-				$a =array('cacheCmd'=>$cacheCmd);
-				t3lib_div::callUserFunction($funcRef,$a,$this);
+			$_params = array('cacheCmd'=>$cacheCmd);
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 		}		
 	}

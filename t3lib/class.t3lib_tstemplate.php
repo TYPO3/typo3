@@ -1201,6 +1201,8 @@ class t3lib_TStemplate	{
 	 * @see tslib_frameset::frameParams(), tslib_cObj::typoLink(), tslib_cObj::SEARCHRESULT(), TSpagegen::pagegenInit(), tslib_menu::link()
 	 */
 	function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')	{
+		global $TYPO3_CONF_VARS;
+		
 		$LD = Array();
 
 			// Overriding some fields in the page record and still preserves the values by adding them as parameters. Little strange function.
@@ -1218,7 +1220,7 @@ class t3lib_TStemplate	{
 			// Setting ID/alias:
 		if (!$script)	{$script = $GLOBALS['TSFE']->config['mainScript'];}
 		if ($page['alias'])	{
-			$LD['url']=$script.'?id='.$page['alias'];
+			$LD['url']=$script.'?id='.rawurlencode($page['alias']);
 		} else {
 			$LD['url']=$script.'?id='.$page['uid'];
 		}
@@ -1256,11 +1258,13 @@ class t3lib_TStemplate	{
 				list($LD['linkVars'], $remainLinkVars) = $GLOBALS['TSFE']->simulateStaticDocuments_pEnc_onlyP_proc($LD['linkVars']);
 			}
 			
-			$LD['url'].=$GLOBALS['TSFE']->makeSimulFileName($page['title'],
+			$LD['url'].=$GLOBALS['TSFE']->makeSimulFileName(
+							$page['title'],
 							$page['alias'] ? $page['alias'] : $page['uid'],
 							intval($typeNum),
 							$LD['linkVars'],
-							$LD['no_cache']?1:0);
+							$LD['no_cache']?1:0
+						);
 			
 			if ($flag_simulateStaticDocuments_pEnc)	{
 				$LD['linkVars']=$remainLinkVars;
@@ -1281,6 +1285,14 @@ class t3lib_TStemplate	{
 
 			// Compile the normal total url
 		$LD['totalURL']= $this->removeQueryString($LD['url'].$LD['type'].$LD['no_cache'].$LD['linkVars'].$GLOBALS['TSFE']->getMethodUrlIdToken).$LD['sectionIndex'];
+
+			// Call post processing function for link rendering:
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc']))	{
+			$_params = array('LD' => &$LD, 'args' => array($page,$oTarget,$no_cache,$script,$overrideArray,$addParams,$typeOverride));
+			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef,$_params,$this);
+			}
+		}		
 
 			// Return the LD-array	
 		return $LD;

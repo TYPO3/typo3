@@ -231,7 +231,7 @@ class SC_mod_web_perm_index {
 		
 				// If $this->edit then these functions are called in the end of the page...
 			if ($this->edit)	{
-				$this->doc->postCode= $this->doc->wrapScriptTags('
+				$this->doc->postCode.= $this->doc->wrapScriptTags('
 					setCheck("check[perms_user]","data[pages]['.$this->id.'][perms_user]");
 					setCheck("check[perms_group]","data[pages]['.$this->id.'][perms_group]");
 					setCheck("check[perms_everybody]","data[pages]['.$this->id.'][perms_everybody]");
@@ -240,7 +240,7 @@ class SC_mod_web_perm_index {
 		
 				// Draw the HTML page header.
 			$this->content.=$this->doc->startPage($LANG->getLL('permissions'));
-			$this->content.=$this->doc->header($LANG->getLL('permissions').($this->edit?': &nbsp;&nbsp;&nbsp;'.$LANG->getLL('Edit'):''));
+			$this->content.=$this->doc->header($LANG->getLL('permissions').($this->edit?': '.$LANG->getLL('Edit'):''));
 			$this->content.=$this->doc->spacer(5);
 			$this->content.=$this->doc->section('',
 				$this->doc->funcMenu(
@@ -262,15 +262,10 @@ class SC_mod_web_perm_index {
 					$this->doc->spacer(20).
 					$this->doc->section('',$this->doc->makeShortcutIcon('id,edit,return_id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
 			}
-		
-				// Add spacer in bottom:
-			$this->content.=$this->doc->spacer(10);
 		} else {
 				// If no access or if ID == zero
 			$this->content.=$this->doc->startPage($LANG->getLL('permissions'));
 			$this->content.=$this->doc->header($LANG->getLL('permissions'));
-			$this->content.=$this->doc->spacer(5);
-			$this->content.=$this->doc->spacer(10);
 		}
 
 			// Ending page:
