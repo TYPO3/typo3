@@ -114,12 +114,18 @@ class t3lib_cs {
 		// This tells the converter which charsets has two bytes per char:
 	var $twoByteSets=array(
 		'ucs-2'=>1,	// 2-byte Unicode
-		'utf-16'=>1	// 2-byte Unicode with surrogates
 	);
 
-		// This tells the converter which charset use the Extended Unix Code scheme:
+		// This tells the converter which charsets has four bytes per char:
+	var $fourByteSets=array(
+		'ucs-4'=>1,	// 4-byte Unicode
+		'utf-32'=>1,	// 4-byte Unicode (limited to the 21-bits of UTF-16)
+	);
+
+		// This tells the converter which charsets use a scheme like the Extended Unix Code:
 	var $eucBasedSets=array(
 		'gb2312'=>1,	// Chinese, simplified.
+		'big'=>1,	// Chinese, traditional.
 	);
 
 		// see	http://developer.apple.com/documentation/macos8/TextIntlSvcs/TextEncodingConversionManager/TEC1.5/TEC.b0.html
@@ -179,15 +185,20 @@ class t3lib_cs {
 		'macintosh' => 'macRoman',
 		'euc-cn' => 'gb2312',
 		'x-euc-cn' => 'gb2312',
+		'cp936' => 'gb2312',
+		'big-5' => 'big5',
+		'cp950' => 'big5',
+		'sjis' => 'shift_jis',
+		'shift-jis' => 'shift_jis',
+		'cp932' => 'shift_jis',
+		'utf7' => 'utf-7',
 		'utf8' => 'utf-8',
-		'utf-2' => 'utf-8',
-		'utf2' => 'utf-8',
+		'utf16' => 'utf-16',
+		'utf32' => 'utf-32',
+		'utf8' => 'utf-8',
+		'ucs2' => 'ucs-2',
+		'ucs4' => 'ucs-4',
 	);
-	/*
-		JIS X 0208 (euc-jp)
-		CNS 11643 (EUC-TW)
-		KS C 5601 (EUC-KR) 
-	*/
 
 		// TYPO3 specific: Array with the system charsets used for each system language in TYPO3:
 		// Empty values means "iso-8859-1"
@@ -632,6 +643,82 @@ class t3lib_cs {
 
 	/********************************************
 	 *
+	 * String operation functions
+	 *
+	 ********************************************/
+
+	/**
+	 * Cuts a string short at a given byte length.
+	 *
+	 * @param	string		character string
+	 * @param	integer		the byte length
+	 * @param	string		the character set
+	 * @return	string		the shortened string
+	 * @see mb_strcut()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */	
+	function strtrunc($string,$len,$charset)	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
+			return mb_strcut($string,0,$len,$charset);
+		} elseif ($charset == 'utf-8')	{
+			return utf8_strtrunc($string);
+		} elseif ($charset == 'shift_jis')	{
+			return euc_strtrunc($string,'shift_jis');
+		} elseif ($this->eucBasedSets[$charset])	{
+			return euc_strtrunc($string,$charset);
+		} elseif ($this->twoByteSets[$charset])	{
+			if ($len % 2)	$len--;		// don't cut at odd positions
+		} elseif ($this->fourByteSets[$charset])	{
+			$x = $len % 4;
+			$len -= $x;	// realign to position dividable by four
+		}
+		// treat everything else as single-byte encoding
+		return substr($string,0,$len);
+	}
+
+	/**
+	 *  Counts the number of characters.
+	 *
+	 * @param	string		character string
+	 * @param	string		the character set
+	 * @return	integer		the number of characters
+	 * @see strlen()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */	
+	function strlen($string,$charset)	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
+			return mb_strlen($string,$charset);
+		} elseif ($charset == 'utf-8')	{
+			return utf8_strlen($string);
+		} elseif ($charset == 'shift_jis')	{
+			return euc_strlen($string,'shift_jis');
+		} elseif ($this->eucBasedSets[$charset])	{
+			return euc_strlen($string,$charset);
+		} elseif ($this->twoByteSets[$charset])	{
+			return strlen($string)/2;
+		} elseif ($this->fourByteSets[$charset])	{
+			return strlen($string)/4;
+		}
+		// treat everything else as single-byte encoding
+		return strlen($string);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/********************************************
+	 *
 	 * UTF-8 String operation functions
 	 *
 	 ********************************************/
@@ -822,6 +909,96 @@ class t3lib_cs {
 
 		return $n;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/********************************************
+	 *
+	 * EUC String operation functions
+	 *
+	 * Extended Unix Code:
+	 *  ASCII compatible 7bit single bytes chars
+	 *  8bit two byte chars
+	 *
+	 * Shift-JIS is handled as a special case
+	 *
+	 ********************************************/
+
+	/**
+	 * Cuts a string in the EUC charset family short at a given byte length.
+	 *
+	 * @param	string		EUC multibyte character string
+	 * @param	integer		the byte length
+	 * @param	string		the charset
+	 * @return	string		the shortened string
+	 * @see mb_strcut()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */	
+	function euc_strtrunc($str,$len,$charset)	 {
+		if ($len <= 0)	return '';
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
+			return mb_strcut($str,0,$len,$charset);
+		}
+
+		$sjis = ($charset == 'shift_jis');
+		for ($i=0; $str{$i} && $i<$len; $i++) {
+			$c = ord($str{$i});
+			if ($sjis)	{
+				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
+			}
+			else	{
+				if ($c >= 0x80)	$i++;	// advance a double-byte char
+			}
+		}
+		if (!$str{$i})	return $str;	// string shorter than supplied length
+
+		if ($i>$len)
+			return substr($str,0,$len-1);	// we ended on a first byte
+		else
+			return substr($str,0,$len);
+        }
+
+	/**
+	 * Counts the number of characters of a string in the EUC charset family.
+	 *
+	 * @param	string		EUC multibyte character string
+	 * @param	string		the charset
+	 * @return	int		the number of characters
+	 * @see strlen()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function euc_strlen($str,$charset)	 {
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
+			return mb_strlen($str,$charset);
+		}
+
+		$sjis = ($charset == 'shift_jis');
+		$n=0;
+		for ($i=0; $str{$i}; $i++) {
+			$c = ord($str{$i});
+			if ($sjis)	{
+				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
+			}
+			else	{
+				if ($c >= 0x80)	$i++;	// advance a double-byte char
+			}
+
+			$n++;
+		}
+
+		return $n;
+        }
 
 }
 
