@@ -1,3 +1,7 @@
+Kasper Skårhøj
+	* Removed "mininews" from global extensions - that was an error in RC1
+	* Removed global extensions "beuser_tracking/ classic_welcome/ design_components/ tt_links/" from main distribtion. They are either obsolete or irrelevant and it has been considered responsible to remove them like this.
+
 2003-12-23  Robert Lemke  <rl@robertlemke.de>
 
 	* Added another TSconfig option for replacing the create new content wizard (-> templavoila). Only added a few lines.

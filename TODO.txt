@@ -518,30 +518,27 @@ typo3/ext/_____________________________________:
 OK		aboutmodules/
 		belog/		(2 / 500)
 		beuser/		(1 / 1300)
-OK		beuser_tracking/					-> move
-		classic_welcome/	(1/262) 		-> move
 		cms_plaintext_import/	(1/200)
 OK		conf_userts/
 OK		context_help/
 		css_styled_content/		(1/200)		[H]
-OK		design_components/		->move
-		direct_mail/		(3/2500)	[Peter Kuehn] + class.t3lib_htmlmail.php
+		direct_mail/		(3/2500)		[Peter Kuehn] + class.t3lib_htmlmail.php
 OK		direct_mail_subscription/
 XQCR:	extra_page_cm_options/
 -QCR:	extrep/
 		extrep_wizard/		(2/4500)		[H]
-OK		feuser_admin/
+		feuser_admin/						[testsite...] - XHTML
 		freesite/			(2/1600)
 XQCR:	func_wizards/
 		imagelist/			(1/250)
 		impexp/				(2/2000)		[H]
-		indexed_search/		(4/3500)		
+		indexed_search/		(4/3500)		[H] [testsite...]
 		info_pagetsconfig/	(1/200)
-OK		install/					+ class.t3lib_install.php / class.t3lib_superadmin.php
+OK		install/							+ class.t3lib_install.php / class.t3lib_superadmin.php
 		lowlevel/			(2/800)			[H]
 XQ-R:	metatags/
 		phpmyadmin/			(1/130)
-		plugin_mgm/			(1/300) ->move? remove?
+		plugin_mgm/			(1/300) 	->move? remove?
 		quickhelp/			(1/80)
 		rte/				(5/1900)		[H]
 OK		rte_conf/
@@ -560,7 +557,7 @@ OK		sys_workflows/
 		taskcenter_modules/		(1/100)
 		taskcenter_recent/		(1/150)
 		taskcenter_rootlist/	(1/50)
-		tipafriend/				(1/260)
+		tipafriend/				(1/260)		[testsite...]
 OK		tsconfig_help/
 OK		ts_language_de/
 OK		ts_language_dk/
@@ -573,15 +570,14 @@ OK		ts_language_no/
 		tstemplate_info/		(1/450)
 		tstemplate_objbrowser/	(1/500)
 		tstemplate_styler/		(1/1700)
-OK		tt_address/
+OK		tt_address/	
 		tt_board/				(3/1200)
-		tt_calender/			(1/170)
-		tt_guest/				(2/350)
-		tt_links/							->move / depreciated!
-		tt_news/				(1/750)
-		tt_poll/				(2/400)		[Rene F]
-		tt_products/			(5/2000)	[? Peter Kuehn]
-		tt_rating/				(3/550)		[Rene F]
+		tt_calender/			(1/170)		[testsite...]
+		tt_guest/				(2/350)		[testsite...]
+		tt_news/				(1/750)		[testsite...]
+		tt_poll/				(2/400)		[testsite...], [Rene F]
+		tt_products/			(5/2000)	[testsite...], [? Peter Kuehn]
+		tt_rating/				(3/550)		[testsite...], [Rene F]
 		viewpage/				(2/200)
 XQRC:	wizard_crpages/			
 XQRC:	wizard_sortpages/
