@@ -515,12 +515,12 @@ class t3lib_cs {
 				break;
 
 			case 'iconv':
-				$conv_str = iconv($str,$fromCS,$toCS.'//TRANSLIT');
+				$conv_str = iconv($fromCS,$toCS.'//TRANSLIT',$str);
 				if (false !== $conv_str)	return $conv_str;
 				break;
 
 			case 'recode':
-				$conv_str = recode_string($toCS.'..'.$fromCS,$str);
+				$conv_str = recode_string($fromCS.'..'.$toCS,$str);
 				if (false !== $conv_str)	return $conv_str;
 				break;
 			}
@@ -1154,6 +1154,17 @@ class t3lib_cs {
 		if ($i === false)	{	// $len outside actual string length
 			return $string;
 		} else	{
+			if ($len > 0)	{
+				if (isset($string{$i}))	{
+					return substr($string,0,$i).$crop;
+				}
+			} else {
+				if (isset($string{$i-1}))	{
+					return $crop.substr($string,$i);
+				}
+			}
+
+/*
 			if (abs($len)<$this->strlen($charset,$string))	{	// Has to use ->strlen() - otherwise multibyte strings ending with a multibyte char will return true here (which is not a catastrophe, but...)
 				if ($len > 0)	{
 					return substr($string,0,$i).$crop;
@@ -1161,6 +1172,7 @@ class t3lib_cs {
 					return $crop.substr($string,$i);
 				}
 			}
+*/
 		}
 		return $string;
 	}
@@ -1197,6 +1209,8 @@ class t3lib_cs {
 	/**
 	 * Translates all characters of a string into their respective case values.
 	 * Unlike strtolower() and strtoupper() this method is locale independent.
+	 * Note that the string length may change!
+	 * eg. lower case German "ß" (scharfes S) becomes uper case "SS"
 	 * Unit-tested by Kasper
 	 * Real case folding is language dependent, this method ignores this fact.
 	 *
@@ -1226,7 +1240,7 @@ class t3lib_cs {
 		$out = '';
 		$caseConv =& $this->caseFolding[$charset][$case];
 
-		for($i=0; strlen($string{$i}); $i++)	{
+		for($i=0; isset($string{$i}); $i++)	{
 			$c = $string{$i};
 			$cc = $caseConv[$c];
 			if ($cc)	{
@@ -1334,7 +1348,7 @@ class t3lib_cs {
 	 */
 	function utf8_strlen($str)	{
 		$n=0;
-		for($i=0; strlen($str{$i}); $i++)	{
+		for($i=0; isset($str{$i}); $i++)	{
 			$c = ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$n++;
@@ -1430,14 +1444,14 @@ class t3lib_cs {
 			$d = -1;
 		}
 
-		for( ; strlen($str{$i}) && $n<$p; $i+=$d)	{
+		for( ; isset($str{$i}) && $n<$p; $i+=$d)	{
 			$c = (int)ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$n++;
 			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
 				$n++;
 		}
-		if (!strlen($str{$i}))	return false; // offset beyond string length
+		if (!isset($str{$i}))	return false; // offset beyond string length
 
 		if ($pos >= 0)	{
 				// skip trailing multi-byte data bytes
@@ -1468,7 +1482,7 @@ class t3lib_cs {
 			elseif (($c & 0xC0) == 0xC0)	// multi-byte starting byte (11xxxxxx)
 				$n++;
 		}
-		if (!strlen($str{$i}))	return false; // offset beyond string length
+		if (!isset($str{$i}))	return false; // offset beyond string length
 
 		return $n;
 	}
@@ -1489,7 +1503,7 @@ class t3lib_cs {
 		$out = '';
 		$caseConv =& $this->caseFolding['utf-8'][$case];
 
-		for($i=0; strlen($str{$i}); $i++)	{
+		for($i=0; isset($str{$i}); $i++)	{
 			$c = ord($str{$i});
 			if (!($c & 0x80))	// single-byte (0xxxxxx)
 				$mbc = $str{$i};
@@ -1551,7 +1565,7 @@ class t3lib_cs {
 	 */
 	function euc_strtrunc($str,$len,$charset)	 {
 		$sjis = ($charset == 'shift_jis');
-		for ($i=0; strlen($str{$i}) && $i<$len; $i++) {
+		for ($i=0; isset($str{$i}) && $i<$len; $i++) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
@@ -1560,7 +1574,7 @@ class t3lib_cs {
 				if ($c >= 0x80)	$i++;	// advance a double-byte char
 			}
 		}
-		if (!strlen($str{$i}))	return $str;	// string shorter than supplied length
+		if (!isset($str{$i}))	return $str;	// string shorter than supplied length
 
 		if ($i>$len)
 			return substr($str,0,$len-1);	// we ended on a first byte
@@ -1606,7 +1620,7 @@ class t3lib_cs {
 	function euc_strlen($str,$charset)	 {
 		$sjis = ($charset == 'shift_jis');
 		$n=0;
-		for ($i=0; strlen($str{$i}); $i++) {
+		for ($i=0; isset($str{$i}); $i++) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i++;	// advance a double-byte char
@@ -1643,7 +1657,7 @@ class t3lib_cs {
 			$d = -1;
 		}
 
-		for ( ; strlen($str{$i}) && $n<$p; $i+=$d) {
+		for ( ; isset($str{$i}) && $n<$p; $i+=$d) {
 			$c = ord($str{$i});
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	$i+=$d;	// advance a double-byte char
@@ -1654,7 +1668,7 @@ class t3lib_cs {
 
 			$n++;
 		}
-		if (!strlen($str{$i}))	return false; // offset beyond string length
+		if (!isset($str{$i}))	return false; // offset beyond string length
 
 		if ($pos < 0)	$i++;	// correct offset
 
