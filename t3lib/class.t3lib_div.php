@@ -518,7 +518,7 @@ class t3lib_div {
 	 */
 	function fixed_lgd_cs($string,$chars)	{
 		if (is_object($GLOBALS['LANG']))	{
-			return $GLOBALS['LANG']->csConvObj->crop($this->charSet,$string,$chars,'...');
+			return $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet,$string,$chars,'...');
 		} else {
 			return t3lib_div::fixed_lgd($string, $chars);
 		}
