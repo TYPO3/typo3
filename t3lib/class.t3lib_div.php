@@ -881,7 +881,7 @@ class t3lib_div {
 	/**
 	 * Change umlaut characters to plain ASCII with normally two character target
 	 * Only known characters will be converted, so don't expect a result for any character.
-	 * Works only for western europe single-byte charsets!
+	 * (DEPRECIATED: Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!)
 	 *
 	 * ä => ae, Ö => Oe
 	 *

@@ -2992,7 +2992,13 @@ class tslib_cObj {
 				if ((string)$conf['char']!=''){$content=chr(intval($conf['char']));}
 				if ($conf['intval']){$content=intval($content);}
 				if ($conf['date']){$content=date($conf['date'], $content);}
-				if ($conf['strftime']){$content=strftime($conf['strftime'], $content);}
+				if ($conf['strftime']){
+					$content = strftime($conf['strftime'], $content);
+					$tmp_charset = $conf['strftime.']['charset'] ? $conf['strftime.']['charset'] : $GLOBALS['TSFE']->localeCharset;
+					if ($tmp_charset)	{
+						$content = $GLOBALS['TSFE']->csConv($content,$tmp_charset);
+					}
+				}
 				if ($conf['age']){$content=$this->calcAge(time()-$content,$conf['age']);}
 
 				if ($conf['case']){$content=$this->HTMLcaseshift($content, $conf['case']);}
@@ -3336,11 +3342,11 @@ class tslib_cObj {
 		do	{
 			if (!$inside)	{
 				$len = strcspn(substr($str,$pointer),'{');
-				$newVal.=substr($str,$pointer,$len);
+				$newVal.= substr($str,$pointer,$len);
 				$inside = 1;
 			} else {
 				$len = strcspn(substr($str,$pointer),'}')+1;
-				$newVal.=$this->getData(substr($str,$pointer+1,$len-2),$this->data);
+				$newVal.= $this->getData(substr($str,$pointer+1,$len-2),$this->data);
 				$inside = 0;
 			}
 			$pointer+=$len;
@@ -3385,9 +3391,9 @@ class tslib_cObj {
 	function substring($content,$options)	{
 		$options = t3lib_div::intExplode(',',$options.',');
 		if ($options[1])	{
-			return substr($content,$options[0],$options[1]);
+			return $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,$options[0],$options[1]);
 		} else {
-			return substr($content,$options[0]);
+			return $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,$options[0]);
 		}
 	}
 
@@ -3402,14 +3408,14 @@ class tslib_cObj {
 	 */
 	function crop($content,$options)	{
 		$options = explode('|',$options);
-		$chars=intval($options[0]);
-		$afterstring=trim($options[1]);
+		$chars = intval($options[0]);
+		$afterstring = trim($options[1]);
 		if ($chars)	{
 			if (strlen($content)>abs($chars))	{
 				if ($chars<0)	{
-					$content= $afterstring.substr($content,$chars);
+					$content = $afterstring.$GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,$chars);
 				} else {
-					$content= substr($content,0,$chars).$afterstring;
+					$content = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$content,0,$chars).$afterstring;
 				}
 			}
 		}
@@ -5319,12 +5325,14 @@ class tslib_cObj {
 		$case = strtolower($case);
 		switch($case)	{
 			case 'upper':
-				$theValue = strtoupper($theValue);
-				$theValue = strtr($theValue, $this->caseConvStrings[0], $this->caseConvStrings[1]);
+				$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset,$theValue,'toUpper');
+				#$theValue = strtoupper($theValue);
+				#$theValue = strtr($theValue, $this->caseConvStrings[0], $this->caseConvStrings[1]);
 			break;
 			case 'lower':
-				$theValue = strtolower($theValue);
-				$theValue = strtr($theValue, $this->caseConvStrings[1], $this->caseConvStrings[0]);
+				$theValue = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset,$theValue,'toLower');
+				#$theValue = strtolower($theValue);
+				#$theValue = strtr($theValue, $this->caseConvStrings[1], $this->caseConvStrings[0]);
 			break;
 		}
 		return $theValue;
@@ -5339,18 +5347,18 @@ class tslib_cObj {
 	 * @see caseshift()
 	 */
 	function HTMLcaseshift($theValue, $case)	{
-		$inside=0;
-		$newVal='';
-		$pointer=0;
+		$inside = 0;
+		$newVal = '';
+		$pointer = 0;
 		$totalLen = strlen($theValue);
 		do	{
 			if (!$inside)	{
 				$len = strcspn(substr($theValue,$pointer),'<');
-				$newVal.=$this->caseshift(substr($theValue,$pointer,$len),$case);
+				$newVal.= $this->caseshift(substr($theValue,$pointer,$len),$case);
 				$inside = 1;
 			} else {
 				$len = strcspn(substr($theValue,$pointer),'>')+1;
-				$newVal.=substr($theValue,$pointer,$len);
+				$newVal.= substr($theValue,$pointer,$len);
 				$inside = 0;
 			}
 			$pointer+=$len;

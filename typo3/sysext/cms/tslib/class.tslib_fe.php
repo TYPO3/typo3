@@ -292,10 +292,6 @@
 		// Page content render object
 	var $cObj ='';						// is instantiated object of tslib_cObj
 
-		// Character set (charset) conversion object:
-	var $csConvObj;						// An instance of the "t3lib_cs" class. May be used by any application.
-	var $defaultCharSet='iso-8859-1';	// The default charset used in the frontend if nothing else is set.
-
 		// CONTENT accumulation
 	var $content='';					// All page content is accumulated in this variable. See pagegen.php
 
@@ -304,11 +300,17 @@
 	var $scriptParseTime=0;
 	var $TCAloaded = 0;					// Set ONLY if the full TCA is loaded
 
+		// Character set (charset) conversion object:
+	var $csConvObj;						// An instance of the "t3lib_cs" class. May be used by any application.
+	var $defaultCharSet = 'iso-8859-1';	// The default charset used in the frontend if nothing else is set.
+	var $renderCharset='';				// Internal charset of the frontend during rendering: Defaults to "forceCharset" and if that is not set, to ->defaultCharSet
+	var $metaCharset='';				// Output charset of the websites content. This is the charset found in the header, meta tag etc. If different from $renderCharset a conversion happens before output to browser. Defaults to ->renderCharset if not set.
+	var $localeCharset='';				// Assumed charset of locale strings.
+
 		// LANG:
 	var $lang='';						// Set to the system language key (used on the site)
 	var $langSplitIndex=0;				// Set to the index number of the language key
 	var $labelsCharset='';				// Charset of the labels from locallang (based on $this->lang)
-	var $siteCharset='';				// Charset of the website.
 	var $convCharsetToFrom='';			// Set to the charsets to convert from/to IF there are any difference. Otherwise this stays a string
 	var $LL_labels_cache=array();
 	var $LL_files_cache=array();
@@ -1301,6 +1303,10 @@
 				exit;
 			}
 		}
+
+			// Initialize charset settings etc.
+		$this->initLLvars();
+
 			// No cache
 		if ($this->config['config']['no_cache'])	{$this->set_no_cache();}		// Set $this->no_cache true if the config.no_cache value is set!
 
@@ -1879,6 +1885,8 @@
 			setlocale(LC_CTYPE,$this->config['config']['locale_all']);
 			setlocale(LC_MONETARY,$this->config['config']['locale_all']);
 			setlocale(LC_TIME,$this->config['config']['locale_all']);
+
+			$this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
 		}
 
 			// Setting cache_timeout_default. May be overridden by PHP include scritps.
@@ -2176,9 +2184,9 @@ if (version == "n3") {
 			$this->content = str_replace($this->getMethodUrlIdToken, $this->fe_user->get_URL_ID, $this->content);
 		}
 
-			// Set header for charset-encoding if set. Added by RL 17.10.03
-		if ($this->config['config']['metaCharset'])	{
-			$headLine = 'Content-Type:text/html;charset='.trim($this->config['config']['metaCharset']);
+			// Set header for charset-encoding unless disabled
+		if (!$this->config['config']['disableCharsetHeader'])	{
+			$headLine = 'Content-Type:text/html;charset='.trim($this->metaCharset);
 			header ($headLine);
 		}
 
@@ -2436,10 +2444,10 @@ if (version == "n3") {
 		$titleChars = intval($this->config['config']['simulateStaticDocuments_addTitle']);
 		$out = '';
 		if ($titleChars)	{
-			$out = t3lib_div::convUmlauts($inTitle);
-			$out= ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
-			$out= ereg_replace('_*$','',$out);
-			$out= ereg_replace('^_*','',$out);
+			$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
+			$out = ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
+			$out = ereg_replace('_*$','',$out);
+			$out = ereg_replace('^_*','',$out);
 			if ($out)	$out.='.';
 		}
 		$enc = '';
@@ -2913,8 +2921,6 @@ if (version == "n3") {
 	 * @return	string		Label value, if any.
 	 */
 	function sL($input)	{
-		if (!$this->lang)	$this->initLLvars();
-
 		if (strcmp(substr($input,0,4),'LLL:'))	{
 			$t = explode('|',$input);
 			return $t[$this->langSplitIndex] ? $t[$this->langSplitIndex] : $t[0];
@@ -2973,20 +2979,22 @@ if (version == "n3") {
 	 * @return	void
 	 */
 	function initLLvars()	{
-		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
 
+			// Setting language key and split index:
+		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
 		$ls = explode('|',TYPO3_languages);
 		while(list($i,$v)=each($ls))	{
 			if ($v==$this->lang)	{$this->langSplitIndex=$i; break;}
 		}
 
 			// Setting charsets:
-		$this->siteCharset = $this->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['metaCharset'] ? $GLOBALS['TSFE']->config['config']['metaCharset'] : $GLOBALS['TSFE']->defaultCharSet);
+		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : ($this->TYPO3_CONF_VARS['BE']['forceCharset'] ? $this->TYPO3_CONF_VARS['BE']['forceCharset'] : $this->defaultCharSet));	// REndering charset of HTML page.
+		$this->metaCharset = $this->csConvObj->parse_charset($this->config['config']['metaCharset'] ? $this->config['config']['metaCharset'] : $this->renderCharset);	// Output charset of HTML page.
 		$this->labelsCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$this->lang] ? $this->csConvObj->charSetArray[$this->lang] : 'iso-8859-1');
-		if ($this->siteCharset != $this->labelsCharset)	{
+		if ($this->renderCharset != $this->labelsCharset)	{
 			$this->convCharsetToFrom = array(
 				'from' => $this->labelsCharset,
-				'to' => $this->siteCharset
+				'to' => $this->renderCharset
 			);
 		}
 	}
@@ -3001,13 +3009,11 @@ if (version == "n3") {
 	 * @param	string		String to convert charset for
 	 * @param	string		Optional "from" charset.
 	 * @return	string		Output string, converted if needed.
-	 * @see initLLvars(), t3lib_cs
+	 * @see t3lib_cs
 	 */
 	function csConv($str,$from='')	{
-		if (!$this->lang)	$this->initLLvars();
-
 		if ($from)	{
-			$output = $this->csConvObj->conv($str,$this->csConvObj->parse_charset($from),$this->siteCharset,1);
+			$output = $this->csConvObj->conv($str,$this->csConvObj->parse_charset($from),$this->renderCharset,1);
 			return $output ? $output : $str;
 		} elseif (is_array($this->convCharsetToFrom))	{
 			return $this->csConvObj->conv($str,$this->convCharsetToFrom['from'],$this->convCharsetToFrom['to'],1);

@@ -1,4 +1,10 @@
 2004-05-18  Kasper Skårhøj,,,  <kasper@typo3.com>
+	* Added t3lib_cs::specCharsToASCII() for converting special chars (like umlauts) to their double-byte alternatives in ASCII (like au, oe etc...). Function is NOT finished at all, only added so I could use it for the conversion of filenames in simulateStaticDocuments.
+	* TypoScript charset compatibility extended: tslib_cObj::caseshift(), tslib_cObj::substring(), tslib_cObj::crop() uses functions in t3lib_cs now. Also stdWrap.strftime will automatically convert localized string from locale charset (guessed by t3lib_cs) to renderCharset.
+	* !!! website charset is now taken from "forceCharset" by default (if found) and in any case the http-header with text/html and charset is sent UNLESS you disable it with "config.disableCharsetHeader=1". You will probably have to disable this header if you are using TYPO3 for XML feeds or wap-pages. 
+	* Added "config.renderCharset" option: This is the charset of the content while rendered in the frontend engine. If different from "metaCharset" a conversion must happen before output to browser. Both renderCharset and metaCharset takes their default values from TYPO3_CONF_VARS[BE][forceCharset] if found, otherwise they default to "iso-8859-1". Also "metaCharset" takes "renderCharset" as default - and if metaCharset is different from renderCharset a conversion will happen on output.
+
+2004-05-18  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Created new function, t3lib_div::fixed_lgd_cs(), which should be used in the backend wherever a string is shortend for visual display. This function will truncate the string according to the backend charset (which should of course be set by forceCharset to a fixed value). This new function has also been substituted numerous places in the source of course (hence all the script updates).
 

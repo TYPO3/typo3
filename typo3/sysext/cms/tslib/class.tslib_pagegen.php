@@ -314,7 +314,7 @@ function linkTo_UnCryptMailto(s)	{	//
 		} else $customContent='';
 
 			// Setting charset:
-		$theCharset = ($GLOBALS['TSFE']->config['config']['metaCharset'] ? $GLOBALS['TSFE']->config['config']['metaCharset'] : $GLOBALS['TSFE']->defaultCharSet);
+		$theCharset = $GLOBALS['TSFE']->metaCharset;
 
 			// Reset the content variables:
 		$GLOBALS['TSFE']->content='';

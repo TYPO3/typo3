@@ -480,6 +480,20 @@ class t3lib_cs {
 		return $cs ? $cs : 'iso-8859-1';
 	}
 
+
+
+
+
+
+
+
+
+	/********************************************
+	 *
+	 * Charset Conversion functions
+	 *
+	 ********************************************/
+
 	/**
 	 * Convert from one charset to another charset.
 	 *
@@ -1230,7 +1244,32 @@ class t3lib_cs {
 		return $out;
 	}
 
+	/**
+	 * Converts special chars (like ÆØÅæøå, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
+	 * CURRENTLY IT IS NOT FULLY IMPLEMENTED!!!
+	 *
+	 * @param	string		Character set of string
+	 * @param	string		Input string to convert
+	 * @return	string		The converted string
+	 */
+	function specCharsToASCII($charset,$string)	{
+		if ($charset == 'utf-8')	{
+			$pat  = array (
+				'/'.$this->utf8_encode('æ', 'iso-8859-1').'/',
+				'/'.$this->utf8_encode('ø', 'iso-8859-1').'/',
+				'/'.$this->utf8_encode('å', 'iso-8859-1').'/',
+				'/'.$this->utf8_encode('Æ', 'iso-8859-1').'/',
+				'/'.$this->utf8_encode('Ø', 'iso-8859-1').'/',
+				'/'.$this->utf8_encode('Å', 'iso-8859-1').'/',
+			);
+			$repl = array (	'ae',	'oe',	'aa', 'AE',     'OE',    'AA');
+			$string = preg_replace($pat,$repl,$string);
+		} else {
+			$string = t3lib_div::convUmlauts($string);
+		}
 
+		return $string;
+	}
 
 
 
