@@ -213,11 +213,14 @@ class user_feAdmin	{
 		$this->markerArray['###GC3###'] = $this->cObj->stdWrap($this->conf['color3'],$this->conf['color3.']);
 
 			// Initialize markerArray, setting FORM_URL and HIDDENFIELDS
-		$this->markerArray['###FORM_URL###'] = htmlspecialchars('index.php?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type.$this->nc.$this->conf['addParams']);
-		$this->markerArray['###BACK_URL###'] = htmlspecialchars($this->backURL);
-		$this->markerArray['###THE_PID###'] = htmlspecialchars($this->thePid);
-		$this->markerArray['###BACK_URL_ENC###'] = rawurlencode($this->markerArray['###BACK_URL###']);
+		$this->markerArray['###FORM_URL###'] = 'index.php?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type.$this->nc.$this->conf['addParams'];
 		$this->markerArray['###FORM_URL_ENC###'] = rawurlencode($this->markerArray['###FORM_URL###']);
+		$this->markerArray['###FORM_URL###'] = htmlspecialchars($this->markerArray['###FORM_URL###']);
+		$this->markerArray['###BACK_URL###'] = $this->backURL;
+		$this->markerArray['###BACK_URL_ENC###'] = rawurlencode($this->markerArray['###BACK_URL###']);
+		$this->markerArray['###BACK_URL###'] = htmlspecialchars($this->markerArray['###BACK_URL###']);
+
+		$this->markerArray['###THE_PID###'] = htmlspecialchars($this->thePid);
 		$this->markerArray['###REC_UID###'] = htmlspecialchars($this->recUid);
 		$this->markerArray['###AUTH_CODE###'] = htmlspecialchars($this->authCode);
 		$this->markerArray['###THIS_ID###'] = htmlspecialchars($GLOBALS['TSFE']->id);
