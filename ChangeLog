@@ -1,5 +1,9 @@
 2004-04-22  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added in RTE link box: Searched *into* Content ELements of type Text and Text w/Image after anchors (<a name="...">) and lists them as well with content elements to which an anchor link can be made.
+
+2004-04-22  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added configuration options for what level of pages cache is cleared when you edit a page header. You can not get children and grand-parents cleared as well. (TCEMAIN.clear..... in Page TSconfig)
 
 2004-04-21  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -1497,7 +1497,7 @@ class SC_browse_links {
 
 				// Look up tt_content elements from the expanded page:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'uid,header,hidden,starttime,endtime,fe_group,CType,colpos',
+							'uid,header,hidden,starttime,endtime,fe_group,CType,colpos,bodytext',
 							'tt_content',
 							'pid='.intval($expPageId).t3lib_BEfunc::deleteClause('tt_content'),
 							'',
@@ -1522,6 +1522,23 @@ class SC_browse_links {
 						$icon.
 						htmlspecialchars(t3lib_div::fixed_lgd($row['header'],$titleLen)).
 						'</a><br />';
+
+					// Finding internal anchor points:
+				if (t3lib_div::inList('text,textpic', $row['CType']))	{
+					$split = preg_split('/(<a[^>]+name=[\'"]?([^"\'>[:space:]]+)[\'"]?[^>]*>)/i', $row['bodytext'], -1, PREG_SPLIT_DELIM_CAPTURE);
+
+					foreach($split as $skey => $sval)	{
+						if (($skey%3)==2)	{
+								// Putting list element HTML together:
+							$sval = substr($sval,0,100);
+							$out.='<img'.t3lib_iconWorks::skinImg('','gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
+									'<img'.t3lib_iconWorks::skinImg('','gfx/ol/join'.($skey+3>count($split)?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
+									'<a href="#" onclick="return link_typo3Page(\''.$expPageId.'\',\'#'.rawurlencode($sval).'\');">'.
+									htmlspecialchars(' <A> '.$sval).
+									'</a><br />';
+						}
+					}
+				}
 			}
 		}
 		return $out;
