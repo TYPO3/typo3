@@ -1143,6 +1143,41 @@ class t3lib_TCEforms	{
 				// Register the required number of elements:
 			$this->requiredElements[$PA['itemFormElName']] = array($minitems,$maxitems,'imgName'=>$table.'_'.$row['uid'].'_'.$field);
 
+
+			if($config['treeView'] AND $config['foreign_table']) {
+				global $TCA, $LANG;
+
+				require_once(PATH_t3lib.'class.t3lib_treeview.php');
+				$treeViewObj = t3lib_div::makeInstance('t3lib_TCEforms_SelectTreeView');
+	
+				$treeViewObj->table = $config['foreign_table'];
+				$treeViewObj->init();
+				$treeViewObj->backPath = $this->backPath;
+				$treeViewObj->parentField = $TCA[$config['foreign_table']]['ctrl']['treeParentField'];
+				$treeViewObj->expandAll=1;
+				$treeViewObj->expandFirst=1;
+				$treeViewObj->ext_IconMode = '1'; // no context menu on icons
+				$treeViewObj->title = $LANG->sL($TCA[$config['foreign_table']]['ctrl']['title']);
+				$treeViewObj->TCEforms_itemFormElName = $PA['itemFormElName'];
+							
+				$treeContent=$treeViewObj->getBrowsableTree();
+				
+				#if ($this->docLarge)	$cols = round($cols*$this->form_largeComp);
+				#$width = ceil($cols*$this->form_rowsToStylewidth);
+				$width=240;
+				
+				$config['autoSizeMax'] = t3lib_div::intInRange($config['autoSizeMax'],0);
+				$height = $config['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;;
+					// hardcoded: 12 is the height of the font
+				$height=$height*13;	
+						
+				$divStyle = 'position:relative; left:0px; top:0px; height:'.$height.'px; width:'.$width.'px;border:solid 1px;overflow:auto;background:#fff;';			
+				$thumbnails='<div  name="'.$PA['itemFormElName'].'_selTree" style="'.htmlspecialchars($divStyle).'">';
+				$thumbnails.=$treeContent;
+				$thumbnails.='</div>';	
+							
+			} else {
+
 			$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
 
 				// Put together the select form with selected elements:
@@ -1151,6 +1186,15 @@ class t3lib_TCEforms	{
 				$thumbnails.= '<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
 			}
 			$thumbnails.= '</select>';
+				$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
+	
+					// Put together the select form with selected elements:
+				$thumbnails='<select style="width:200 px;" name="'.$PA['itemFormElName'].'_sel"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].'>';
+				foreach($selItems as $p)	{
+					$thumbnails.= '<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
+				}
+				$thumbnails.= '</select>';
+			}
 
 				// Perform modification of the selected items array:
 			$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
