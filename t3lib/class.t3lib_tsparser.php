@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -38,20 +38,20 @@
  *
  *
  *   80: class t3lib_TSparser
- *  132:     function parse($string,$matchObj='')
+ *  133:     function parse($string,$matchObj='')
  *  169:     function nextDivider()
  *  185:     function parseSub(&$setup)
- *  331:     function rollParseSub($string,&$setup)
- *  355:     function getVal($string,$setup)
- *  381:     function setVal($string,&$setup,$value,$wipeOut=0)
- *  416:     function error($err,$num=2)
- *  428:     function checkIncludeLines($string)
- *  472:     function checkIncludeLines_array($array)
+ *  337:     function rollParseSub($string,&$setup)
+ *  361:     function getVal($string,$setup)
+ *  387:     function setVal($string,&$setup,$value,$wipeOut=0)
+ *  433:     function error($err,$num=2)
+ *  445:     function checkIncludeLines($string)
+ *  489:     function checkIncludeLines_array($array)
  *
  *              SECTION: Syntax highlighting
- *  515:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)
- *  536:     function regHighLight($code,$pointer,$strlen=-1)
- *  554:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)
+ *  532:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)
+ *  553:     function regHighLight($code,$pointer,$strlen=-1)
+ *  571:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -72,7 +72,7 @@
 /**
  * The TypoScript parser
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_tstemplate, t3lib_matchcondition, t3lib_BEfunc::getPagesTSconfig(), t3lib_userAuthGroup::fetchGroupData(), t3lib_TStemplate::generateConfig()

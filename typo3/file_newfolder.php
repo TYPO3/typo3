@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,17 +30,17 @@
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   76: class SC_file_newfolder
- *  102:     function init()
+ *   74: class SC_file_newfolder
+ *  101:     function init()
  *  161:     function main()
- *  248:     function printContent()
+ *  257:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -67,7 +67,7 @@ require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 /**
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

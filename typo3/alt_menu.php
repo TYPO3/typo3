@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -41,7 +41,7 @@
  *   78: class SC_alt_menu
  *   89:     function init()
  *  105:     function main()
- *  177:     function printContent()
+ *  182:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -71,7 +71,7 @@ require_once ('class.alt_menu_functions.inc');
 /**
  * Script Class for rendering the vertical menu in the left side of the backend frameset
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * Revised for TYPO3 3.6 February/2004 by Kasper Skaarhoj
  * XHTML Compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -48,40 +48,40 @@
  *
  *              SECTION: Main functions
  *  214:     function defaultSet()
- *  268:     function make()
+ *  270:     function make()
  *
  *              SECTION: Output preparation
- *  370:     function setMenuItem($code,$label)
- *  384:     function error($str)
- *  395:     function headerParentDir($str)
- *  406:     function headerSiteDir($str)
+ *  372:     function setMenuItem($code,$label)
+ *  386:     function error($str)
+ *  397:     function headerParentDir($str)
+ *  408:     function headerSiteDir($str)
  *
  *              SECTION: Collection information
- *  438:     function initProcess()
- *  476:     function processSiteDir($path,$dir)
- *  518:     function includeLocalconf($localconf)
- *  542:     function connectToDatabase($siteInfo)
- *  564:     function getDBInfo($key)
+ *  440:     function initProcess()
+ *  478:     function processSiteDir($path,$dir)
+ *  520:     function includeLocalconf($localconf)
+ *  544:     function connectToDatabase($siteInfo)
+ *  566:     function getDBInfo($key)
  *
  *              SECTION: Content: Installation Overview
- *  614:     function makeTable()
+ *  616:     function makeTable()
  *
  *              SECTION: Content: Local extensions
- *  717:     function localExtensions()
- *  890:     function getExtensionInfo($path,$extKey,$k)
- *  943:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
- *  965:     function findMostRecent($fileArr,$extPath)
- *  983:     function removePrefixPathFromList($fileArr,$extPath)
+ *  719:     function localExtensions()
+ *  892:     function getExtensionInfo($path,$extKey,$k)
+ *  945:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
+ *  967:     function findMostRecent($fileArr,$extPath)
+ *  985:     function removePrefixPathFromList($fileArr,$extPath)
  *
  *              SECTION: Content: Other
- * 1020:     function singleSite($exp)
- * 1051:     function loginLog($DB)
- * 1089:     function log_getDetails($text,$data)
- * 1103:     function rmCachedFiles($exp)
- * 1136:     function menuContent($exp)
- * 1208:     function makeAdminLogin()
- * 1282:     function changeAdminPasswordsForm()
- * 1317:     function setNewPasswords()
+ * 1022:     function singleSite($exp)
+ * 1053:     function loginLog($DB)
+ * 1091:     function log_getDetails($text,$data)
+ * 1105:     function rmCachedFiles($exp)
+ * 1138:     function menuContent($exp)
+ * 1210:     function makeAdminLogin()
+ * 1284:     function changeAdminPasswordsForm()
+ * 1319:     function setNewPasswords()
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -126,7 +126,7 @@ function debug($p1,$p2='')	{
  * Super Admin class has functions for the administration of multiple TYPO3 sites in folders
  * NOTICE: Only compliant with single MySQL database usage per installation!
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

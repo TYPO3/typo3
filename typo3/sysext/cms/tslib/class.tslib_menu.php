@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,70 +35,72 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  141: class tslib_menu
- *  183:     function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber)
- *  294:     function makeMenu()
- *  774:     function includeMakeMenu($conf,$altSortField)
- *  791:     function procesItemStates($splitCount)
- *  978:     function link($key,$altTarget='',$typeOverride='')
- * 1032:     function subMenu($uid)
- * 1074:     function isNext($uid, $MPvar='')
- * 1089:     function isActive($uid, $MPvar='')
- * 1104:     function isCurrent($uid, $MPvar='')
- * 1119:     function isSubMenu($uid)
- * 1144:     function isItemState($kind,$key)
- * 1181:     function accessKey($title)
- * 1207:     function userProcess($mConfKey,$passVar)
- * 1222:     function setATagParts()
- * 1235:     function getPageTitle($title,$nav_title)
- * 1247:     function getMPvar($key)
+ *  143: class tslib_menu
+ *  187:     function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber)
+ *  313:     function makeMenu()
+ *  822:     function includeMakeMenu($conf,$altSortField)
+ *  838:     function filterMenuPages(&$data,$banUidArray,$spacer)
+ *  894:     function procesItemStates($splitCount)
+ * 1082:     function link($key,$altTarget='',$typeOverride='')
+ * 1142:     function subMenu($uid)
+ * 1184:     function isNext($uid, $MPvar='')
+ * 1205:     function isActive($uid, $MPvar='')
+ * 1226:     function isCurrent($uid, $MPvar='')
+ * 1241:     function isSubMenu($uid)
+ * 1266:     function isItemState($kind,$key)
+ * 1303:     function accessKey($title)
+ * 1329:     function userProcess($mConfKey,$passVar)
+ * 1344:     function setATagParts()
+ * 1357:     function getPageTitle($title,$nav_title)
+ * 1369:     function getMPvar($key)
+ * 1384:     function getDoktypeExcludeWhere()
  *
  *
- * 1283: class tslib_tmenu extends tslib_menu
- * 1292:     function generate()
- * 1308:     function writeMenu()
- * 1438:     function getBeforeAfter($pref)
- * 1468:     function addJScolorShiftFunction()
- * 1490:     function extProc_init()
- * 1501:     function extProc_RO($key)
- * 1512:     function extProc_beforeLinking($key)
- * 1524:     function extProc_afterLinking($key)
- * 1541:     function extProc_beforeAllWrap($item,$key)
- * 1552:     function extProc_finish()
+ * 1416: class tslib_tmenu extends tslib_menu
+ * 1425:     function generate()
+ * 1441:     function writeMenu()
+ * 1582:     function getBeforeAfter($pref)
+ * 1612:     function addJScolorShiftFunction()
+ * 1634:     function extProc_init()
+ * 1645:     function extProc_RO($key)
+ * 1656:     function extProc_beforeLinking($key)
+ * 1668:     function extProc_afterLinking($key)
+ * 1685:     function extProc_beforeAllWrap($item,$key)
+ * 1696:     function extProc_finish()
  *
  *
- * 1588: class tslib_gmenu extends tslib_menu
- * 1597:     function generate()
- * 1635:     function makeGifs($conf, $resKey)
- * 1832:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)
- * 1904:     function writeMenu()
- * 2002:     function extProc_init()
- * 2013:     function extProc_RO($key)
- * 2024:     function extProc_beforeLinking($key)
- * 2037:     function extProc_afterLinking($key)
- * 2053:     function extProc_beforeAllWrap($item,$key)
- * 2064:     function extProc_finish()
+ * 1732: class tslib_gmenu extends tslib_menu
+ * 1741:     function generate()
+ * 1779:     function makeGifs($conf, $resKey)
+ * 1984:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)
+ * 2056:     function writeMenu()
+ * 2173:     function extProc_init()
+ * 2184:     function extProc_RO($key)
+ * 2195:     function extProc_beforeLinking($key)
+ * 2208:     function extProc_afterLinking($key)
+ * 2225:     function extProc_beforeAllWrap($item,$key)
+ * 2236:     function extProc_finish()
  *
  *
- * 2098: class tslib_imgmenu extends tslib_menu
- * 2107:     function generate()
- * 2125:     function makeImageMap($conf)
- * 2294:     function writeMenu()
+ * 2270: class tslib_imgmenu extends tslib_menu
+ * 2279:     function generate()
+ * 2297:     function makeImageMap($conf)
+ * 2480:     function writeMenu()
  *
  *
- * 2337: class tslib_jsmenu extends tslib_menu
- * 2344:     function generate()
- * 2352:     function writeMenu()
- * 2413:     function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array())
+ * 2523: class tslib_jsmenu extends tslib_menu
+ * 2530:     function generate()
+ * 2538:     function writeMenu()
+ * 2599:     function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array())
  *
- * TOTAL FUNCTIONS: 42
+ * TOTAL FUNCTIONS: 44
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -133,7 +135,7 @@
  * $menu->makeMenu();
  * $content.=$menu->writeMenu();
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @see tslib_cObj::HMENU()
@@ -828,10 +830,10 @@ class tslib_menu {
 	/**
 	 * Checks if a page is OK to include in the final menu item array. Pages can be excluded if the doktype is wrong, if they are hidden in navigation, have a uid in the list of banned uids etc.
 	 *
-	 * @param	array	Array of menu items
-	 * @param	array	Array of page uids which are to be excluded
-	 * @param	boolean	If set, then the page is a spacer.
-	 * @return	boolean	Returns true if the page can be safely included.
+	 * @param	array		Array of menu items
+	 * @param	array		Array of page uids which are to be excluded
+	 * @param	boolean		If set, then the page is a spacer.
+	 * @return	boolean		Returns true if the page can be safely included.
 	 */
 	function filterMenuPages(&$data,$banUidArray,$spacer)	{
 
@@ -1406,7 +1408,7 @@ class tslib_menu {
 /**
  * Extension class creating text based menus
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=387&cHash=73a3116ab8
@@ -1722,7 +1724,7 @@ class tslib_tmenu extends tslib_menu {
 /**
  * Extension class creating graphic based menus (PNG or GIF files)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=384&cHash=93a7644cba
@@ -2260,7 +2262,7 @@ class tslib_gmenu extends tslib_menu {
 /**
  * ImageMap based menus
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=389&cHash=fcf18c5d9f
@@ -2513,7 +2515,7 @@ class tslib_imgmenu extends tslib_menu {
 /**
  * JavaScript/Selectorbox based menus
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=391&cHash=563435abbc

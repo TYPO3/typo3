@@ -30,7 +30,7 @@
  * $Id$
  *
  * @author	Christian Jul Jensen <christian@typo3.com>
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -42,32 +42,32 @@
  *  203:     function init($name,$table,$fieldList="")
  *  292:     function setAndCleanUpExternalLists($name,$list,$force="")
  *  308:     function procesData($qC="")
- *  416:     function cleanUpQueryConfig($queryConfig)
- *  473:     function getFormElements($subLevel=0,$queryConfig="",$parent="")
- *  560:     function printCodeArray($codeArr,$l=0)
- *  583:     function formatQ($str)
- *  596:     function mkOperatorSelect($name,$op,$draw,$submit)
- *  618:     function mkTypeSelect($name,$fieldName,$prepend="FIELD_")
- *  637:     function verifyType($fieldName)
- *  654:     function verifyComparison($comparison,$neg)
- *  673:     function mkFieldToInputSelect($name,$fieldName)
- *  694:     function mkTableSelect($name,$cur)
- *  716:     function mkCompSelect($name,$comparison,$neg)
- *  734:     function getSubscript($arr)
- *  749:     function initUserDef()
- *  758:     function userDef()
- *  767:     function userDefCleanUp($queryConfig)
- *  778:     function getQuery ($queryConfig,$pad="")
- *  808:     function getQuerySingle($conf,$first)
- *  829:     function cleanInputVal($conf,$suffix="")
- *  848:     function getUserDefQuery ($qcArr)
- *  856:     function updateIcon()
- *  865:     function getLabelCol()
- *  877:     function makeSelectorTable($modSettings,$enableList="table,fields,query,group,order,limit")
- *  981:     function getSelectQuery($qString="")
- * 1001:     function JSbottom($formname="forms[0]")
- * 1007:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
- * 1025:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
+ *  411:     function cleanUpQueryConfig($queryConfig)
+ *  468:     function getFormElements($subLevel=0,$queryConfig="",$parent="")
+ *  555:     function printCodeArray($codeArr,$l=0)
+ *  578:     function formatQ($str)
+ *  591:     function mkOperatorSelect($name,$op,$draw,$submit)
+ *  613:     function mkTypeSelect($name,$fieldName,$prepend="FIELD_")
+ *  632:     function verifyType($fieldName)
+ *  649:     function verifyComparison($comparison,$neg)
+ *  668:     function mkFieldToInputSelect($name,$fieldName)
+ *  689:     function mkTableSelect($name,$cur)
+ *  711:     function mkCompSelect($name,$comparison,$neg)
+ *  729:     function getSubscript($arr)
+ *  744:     function initUserDef()
+ *  753:     function userDef()
+ *  762:     function userDefCleanUp($queryConfig)
+ *  773:     function getQuery ($queryConfig,$pad="")
+ *  803:     function getQuerySingle($conf,$first)
+ *  824:     function cleanInputVal($conf,$suffix="")
+ *  843:     function getUserDefQuery ($qcArr)
+ *  851:     function updateIcon()
+ *  860:     function getLabelCol()
+ *  872:     function makeSelectorTable($modSettings,$enableList="table,fields,query,group,order,limit")
+ *  976:     function getSelectQuery($qString="")
+ *  996:     function JSbottom($formname="forms[0]")
+ * 1002:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
+ * 1020:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
  *
  * TOTAL FUNCTIONS: 30
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -88,7 +88,7 @@
  * Class for generating front end for building queries
  *
  * @author	Christian Jul Jensen <christian@typo3.com>
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

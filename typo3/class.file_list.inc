@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -41,18 +41,18 @@
  *  111:     function start($path,$pointer,$sort,$sortRev,$clipBoard=0)
  *  132:     function generateList()
  *  145:     function writeTop($path)
- *  204:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
- *  218:     function getTable($files,$dirs,$rowlist)
- *  306:     function formatDirList($items)
- *  369:     function linkWrapDir($code,$path)
- *  381:     function linkWrapFile($code,$path)
- *  395:     function listURL()
- *  405:     function dirData($theFile)
- *  430:     function formatFileList($items)
- *  504:     function isImage($ext)
- *  516:     function linkWrapSort($code,$path,$col)
- *  534:     function readDirectory($path,$type,$extList='')
- *  588:     function makeClip($theData)
+ *  203:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
+ *  217:     function getTable($files,$dirs,$rowlist)
+ *  305:     function formatDirList($items)
+ *  368:     function linkWrapDir($code,$path)
+ *  380:     function linkWrapFile($code,$path)
+ *  394:     function listURL()
+ *  404:     function dirData($theFile)
+ *  429:     function formatFileList($items)
+ *  503:     function isImage($ext)
+ *  515:     function linkWrapSort($code,$path,$col)
+ *  533:     function readDirectory($path,$type,$extList='')
+ *  587:     function makeClip($theData)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -67,7 +67,7 @@
 /**
  * Class for rendering of File>Filelist
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

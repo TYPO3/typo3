@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,43 +31,48 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  102: class t3lib_pageSelect
- *  120:     function init($show_hidden)
+ *  107: class t3lib_pageSelect
+ *  132:     function init($show_hidden)
  *
  *              SECTION: Selecting page records
- *  159:     function getPage($uid)
- *  174:     function getPage_noCheck($uid)
- *  189:     function getFirstWebPage($uid)
- *  206:     function getPageIdFromAlias($alias)
- *  222:     function getPageOverlay($pageInput,$lUid=-1)
+ *  171:     function getPage($uid)
+ *  187:     function getPage_noCheck($uid)
+ *  203:     function getFirstWebPage($uid)
+ *  221:     function getPageIdFromAlias($alias)
+ *  237:     function getPageOverlay($pageInput,$lUid=-1)
+ *  300:     function getRecordOverlay($table,$row,$sys_language_content,$OLmode='')
  *
  *              SECTION: Page related: Menu, Domain record, Root line
- *  301:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')
- *  335:     function getDomainStartPage($domain, $path='',$request_uri='')
- *  383:     function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
- *  495:     function getPathFromRootline($rl,$len=20)
- *  516:     function getExtURL($pagerow,$disable=0)
- *  540:     function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
+ *  396:     function getMenu($uid,$fields='*',$sortField='sorting',$addWhere='')
+ *  431:     function getDomainStartPage($domain, $path='',$request_uri='')
+ *  479:     function getRootLine($uid, $MP='', $ignoreMPerrors=FALSE)
+ *  597:     function getPathFromRootline($rl,$len=20)
+ *  618:     function getExtURL($pagerow,$disable=0)
+ *  642:     function getMountPointInfo($pageId, $pageRec=FALSE, $prevMountPids=array(), $firstPageUid=0)
  *
  *              SECTION: Selecting records in general
- *  615:     function checkRecord($table,$uid,$checkPage=0)
- *  645:     function getRawRecord($table,$uid,$fields='*')
- *  668:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  719:     function checkRecord($table,$uid,$checkPage=0)
+ *  750:     function getRawRecord($table,$uid,$fields='*')
+ *  774:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Caching and standard clauses
- *  719:     function getHash($hash,$expTime=0)
- *  742:     function storeHash($hash,$data,$ident)
- *  760:     function deleteClause($table)
- *  775:     function enableFields($table,$show_hidden=-1,$ignore_array=array())
+ *  826:     function getHash($hash,$expTime=0)
+ *  849:     function storeHash($hash,$data,$ident)
+ *  867:     function deleteClause($table)
+ *  886:     function enableFields($table,$show_hidden=-1,$ignore_array=array())
  *
- * TOTAL FUNCTIONS: 19
+ *              SECTION: Versioning Preview
+ *  954:     function fixVersioningPid($table,&$rr)
+ *  986:     function versionOL($table,&$row)
+ *
+ * TOTAL FUNCTIONS: 22
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -94,7 +99,7 @@
  * Mainly used in the frontend but also in some cases in the backend.
  * It's important to set the right $where_hid_del in the object so that the functions operate properly
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see tslib_fe::fetch_the_id()
@@ -286,11 +291,11 @@ class t3lib_pageSelect {
 	/**
 	 * Creates language-overlay for records in general (where translation is found in records from the same table)
 	 *
-	 * @param	string	Table name
-	 * @param	array	Record to overlay. Must containt uid, pid and $table]['ctrl']['languageField']
-	 * @param	integer	Pointer to the sys_language uid for content on the site.
-	 * @param	string	Overlay mode. If "hideNonTranslated" then records without translation will not be returned un-translated but unset (and return value is false)
-	 * @return	mixed	Returns the input record, possibly overlaid with a translation. But if $OLmode is "hideNonTranslated" then it will return false if no translation is found.
+	 * @param	string		Table name
+	 * @param	array		Record to overlay. Must containt uid, pid and $table]['ctrl']['languageField']
+	 * @param	integer		Pointer to the sys_language uid for content on the site.
+	 * @param	string		Overlay mode. If "hideNonTranslated" then records without translation will not be returned un-translated but unset (and return value is false)
+	 * @return	mixed		Returns the input record, possibly overlaid with a translation. But if $OLmode is "hideNonTranslated" then it will return false if no translation is found.
 	 */
 	function getRecordOverlay($table,$row,$sys_language_content,$OLmode='')	{
 		global $TCA;

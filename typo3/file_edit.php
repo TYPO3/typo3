@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant (except textarea field)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -39,9 +39,9 @@
  *
  *
  *   74: class SC_file_edit
- *   92:     function init()
- *  141:     function main()
- *  201:     function printContent()
+ *   93:     function init()
+ *  143:     function main()
+ *  206:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -67,7 +67,7 @@ require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 /**
  * Script Class for rendering the file editing screen
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

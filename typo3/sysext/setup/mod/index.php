@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  *
  * This module lets users viev and change their individual settings
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * Revised for TYPO3 3.7 6/2004 by Kasper Skårhøj
  * XHTML compatible.
  */
@@ -46,12 +46,12 @@
  *              SECTION: Rendering module
  *  215:     function init()
  *  247:     function main()
- *  392:     function printContent()
+ *  397:     function printContent()
  *
  *              SECTION: Helper functions
- *  421:     function getRealScriptUserObj()
- *  431:     function simulateUser()
- *  477:     function setLabel($str,$key='')
+ *  426:     function getRealScriptUserObj()
+ *  436:     function simulateUser()
+ *  482:     function setLabel($str,$key='')
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,7 +79,7 @@ require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 /**
  * Script class for the Setup module
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_setup
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
 /**
@@ -40,48 +40,48 @@
  *
  *  115: class t3lib_treeView
  *  267:     function init($clause='', $orderByFields='')
- *  294:     function setTreeName($treeName='')
- *  308:     function addField($field,$noCheck=0)
- *  322:     function reset()
+ *  298:     function setTreeName($treeName='')
+ *  312:     function addField($field,$noCheck=0)
+ *  326:     function reset()
  *
  *              SECTION: output
  *  346:     function getBrowsableTree()
- *  405:     function printTree($treeArr='')
+ *  407:     function printTree($treeArr='')
  *
  *              SECTION: rendering parts
- *  458:     function PMicon($row,$a,$c,$nextCount,$exp)
- *  480:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  502:     function wrapTitle($title,$row,$bank=0)
- *  515:     function wrapIcon($icon,$row)
- *  526:     function addTagAttributes($icon,$attr)
- *  538:     function wrapStop($str,$row)
+ *  460:     function PMicon($row,$a,$c,$nextCount,$exp)
+ *  482:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  504:     function wrapTitle($title,$row,$bank=0)
+ *  517:     function wrapIcon($icon,$row)
+ *  528:     function addTagAttributes($icon,$attr)
+ *  540:     function wrapStop($str,$row)
  *
  *              SECTION: tree handling
- *  566:     function expandNext($id)
- *  576:     function initializePositionSaving()
- *  603:     function savePosition()
+ *  568:     function expandNext($id)
+ *  578:     function initializePositionSaving()
+ *  605:     function savePosition()
  *
  *              SECTION: Functions that might be overwritten by extended classes
- *  632:     function getRootIcon($rec)
- *  645:     function getIcon($row)
- *  664:     function getTitleStr($row,$titleLen=30)
- *  676:     function getTitleAttrib($row)
- *  686:     function getId($row)
- *  696:     function getJumpToParam($row)
+ *  634:     function getRootIcon($rec)
+ *  647:     function getIcon($row)
+ *  666:     function getTitleStr($row,$titleLen=30)
+ *  678:     function getTitleAttrib($row)
+ *  688:     function getId($row)
+ *  698:     function getJumpToParam($row)
  *
  *              SECTION: tree data buidling
- *  729:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='')
+ *  731:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='')
  *
  *              SECTION: Data handling
- *  826:     function getCount($uid)
- *  853:     function getRootRecord($uid)
- *  866:     function getRecord($uid)
- *  883:     function getDataInit($parentId)
- *  913:     function getDataCount(&$res)
- *  930:     function getDataNext(&$res)
- *  958:     function getDataFree(&$res)
- *  978:     function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)
- * 1011:     function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
+ *  828:     function getCount($uid)
+ *  855:     function getRootRecord($uid)
+ *  868:     function getRecord($uid)
+ *  885:     function getDataInit($parentId)
+ *  915:     function getDataCount(&$res)
+ *  932:     function getDataNext(&$res)
+ *  960:     function getDataFree(&$res)
+ *  980:     function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)
+ * 1009:     function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -106,7 +106,7 @@ require_once (PATH_t3lib.'class.t3lib_div.php');
 /**
  * Base class for creating a browsable array/page/folder tree in HTML
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib

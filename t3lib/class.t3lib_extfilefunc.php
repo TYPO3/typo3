@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,31 +30,31 @@
  * $Id$
  * Revised for TYPO3 3.6 May/2004 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  104: class t3lib_extFileFunctions extends t3lib_basicFileFunctions
- *  148:     function start($fileCmds)
- *  178:     function init_actionPerms($setup)
- *  210:     function processData()
- *  267:     function printLogErrorMessages($redirect)
- *  325:     function findRecycler($theFile)
- *  354:     function writeLog($action,$error,$details_nr,$details,$data)
+ *  105: class t3lib_extFileFunctions extends t3lib_basicFileFunctions
+ *  149:     function start($fileCmds)
+ *  179:     function init_actionPerms($setup)
+ *  211:     function processData()
+ *  268:     function printLogErrorMessages($redirect='')
+ *  326:     function findRecycler($theFile)
+ *  355:     function writeLog($action,$error,$details_nr,$details,$data)
  *
  *              SECTION: File operation functions
- *  381:     function func_delete($cmds)
- *  448:     function func_copy($cmds)
- *  538:     function func_move($cmds)
- *  631:     function func_rename($cmds)
- *  677:     function func_newfolder($cmds)
- *  707:     function func_newfile($cmds)
- *  744:     function func_edit($cmds)
- *  776:     function func_upload($cmds)
- *  814:     function func_unzip($cmds)
+ *  382:     function func_delete($cmds)
+ *  449:     function func_copy($cmds)
+ *  539:     function func_move($cmds)
+ *  632:     function func_rename($cmds)
+ *  678:     function func_newfolder($cmds)
+ *  708:     function func_newfile($cmds)
+ *  745:     function func_edit($cmds)
+ *  777:     function func_upload($cmds)
+ *  815:     function func_unzip($cmds)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -98,7 +98,7 @@
  * You should never mount a ftp_space 'below' the webspace so that it reaches into the webspace. This is because if somebody unzips a zip-file in the ftp-space so that it reaches out into the webspace this will be a violation of the safety
  * For example this is a bad idea: you have an ftp-space that is '/www/' and a web-space that is '/www/htdocs/'
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -342,7 +342,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	}
 
 	/**
-	 * Logging actions
+	 * Logging file operations
 	 *
 	 * @param	integer		The action number. See the functions in the class for a hint. Eg. edit is '9', upload is '1' ...
 	 * @param	integer		The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -38,9 +38,9 @@
  *
  *
  *   66: class tx_funcwizards_webfunc extends t3lib_extobjbase
- *   79:     function init(&$pObj,$conf)
- *   93:     function modMenu()
- *  112:     function main()
+ *   78:     function init(&$pObj,$conf)
+ *   92:     function modMenu()
+ *  111:     function main()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -59,7 +59,7 @@ require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
  * The Wizard function in the Web>Info module
  * Creates a framework for adding wizard sub-sub-modules under the Wizard function in Web>Info
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_funcwizardswebfunc
  */

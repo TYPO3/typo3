@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,19 +31,20 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   80: class SC_wizard_rte
- *   98:     function init()
- *  122:     function main()
- *  273:     function printContent()
+ *   81: class SC_wizard_rte
+ *   99:     function init()
+ *  123:     function main()
+ *  279:     function printContent()
+ *  290:     function checkEditAccess($table,$uid)
  *
- * TOTAL FUNCTIONS: 3
+ * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -73,7 +74,7 @@ t3lib_BEfunc::lockRecords();
 /**
  * Script Class for rendering the full screen RTE display
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

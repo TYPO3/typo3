@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -41,9 +41,9 @@
  *  197:     function init(&$pObj,$conf)
  *  221:     function handleExternalFunctionValue()
  *  237:     function incLocalLang()
- *  250:     function checkExtObj()
- *  265:     function extObjContent()
- *  276:     function modMenu()
+ *  253:     function checkExtObj()
+ *  268:     function extObjContent()
+ *  279:     function modMenu()
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -137,7 +137,7 @@
  * For more information about this, please see the large example comment for the class t3lib_SCbase. This will show the principle of a 'level-1' connection.
  * The more advanced example - having two layers as it is done by the 'func_wizards' extension with the 'web_info' module - can be seen in the comment above.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_SCbase,tx_funcwizards_webfunc::init(), tx_funcwizards_webfunc, tx_wizardsortpages_webfunc_2

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  */
 /**
@@ -40,8 +40,8 @@
  *
  *   74: class t3lib_browseTree extends t3lib_treeView
  *   83:     function init($clause='')
- *  106:     function getTitleAttrib($row)
- *  118:     function wrapIcon($icon,$row)
+ *  107:     function getTitleAttrib($row)
+ *  119:     function wrapIcon($icon,$row)
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -65,7 +65,7 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
 /**
  * Extension class for the t3lib_treeView class, specially made for browsing pages
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
  * @see t3lib_treeView, t3lib_pageTree
  * @package TYPO3

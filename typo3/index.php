@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -39,19 +39,19 @@
  *
  *
  *   87: class SC_index
- *  120:     function init()
- *  151:     function main()
- *  237:     function printContent()
+ *  119:     function init()
+ *  150:     function main()
+ *  236:     function printContent()
  *
  *              SECTION: Various functions
- *  261:     function makeLoginForm()
- *  304:     function makeLogoutForm()
- *  346:     function wrapLoginForm($content)
- *  406:     function checkRedirect()
- *  449:     function makeInterfaceSelectorBox()
- *  503:     function makeCopyrightNotice()
- *  536:     function makeLoginBoxImage()
- *  575:     function makeLoginNews()
+ *  260:     function makeLoginForm()
+ *  306:     function makeLogoutForm()
+ *  348:     function wrapLoginForm($content)
+ *  408:     function checkRedirect()
+ *  453:     function makeInterfaceSelectorBox()
+ *  507:     function makeCopyrightNotice()
+ *  540:     function makeLoginBoxImage()
+ *  580:     function makeLoginNews()
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -80,7 +80,7 @@ require ('template.php');
 /**
  * Script Class for rendering the login form
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

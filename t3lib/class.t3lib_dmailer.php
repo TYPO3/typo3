@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -39,19 +39,19 @@
  *
  *   86: class t3lib_dmailer extends t3lib_htmlmail
  *   97:     function dmailer_prepare($row)
- *  145:     function dmailer_sendAdvanced($recipRow,$tableNameChar)
- *  216:     function dmailer_sendSimple($addressList)
- *  238:     function dmailer_getBoundaryParts($cArray,$userCategories)
- *  260:     function dmailer_masssend($query_info,$table,$mid)
- *  296:     function dmailer_masssend_list($query_info,$mid)
- *  357:     function shipOfMail($mid,$recipRow,$tKey)
- *  375:     function convertFields($recipRow)
- *  390:     function dmailer_setBeginEnd($mid,$key)
- *  414:     function dmailer_howManySendMails($mid,$rtbl='')
- *  428:     function dmailer_isSend($mid,$rid,$rtbl)
- *  440:     function dmailer_getSentMails($mid,$rtbl)
- *  459:     function dmailer_addToMailLog($mid,$rid,$size,$parsetime,$html)
- *  481:     function runcron()
+ *  147:     function dmailer_sendAdvanced($recipRow,$tableNameChar)
+ *  218:     function dmailer_sendSimple($addressList)
+ *  241:     function dmailer_getBoundaryParts($cArray,$userCategories)
+ *  263:     function dmailer_masssend($query_info,$table,$mid)
+ *  299:     function dmailer_masssend_list($query_info,$mid)
+ *  360:     function shipOfMail($mid,$recipRow,$tKey)
+ *  377:     function convertFields($recipRow)
+ *  392:     function dmailer_setBeginEnd($mid,$key)
+ *  416:     function dmailer_howManySendMails($mid,$rtbl='')
+ *  430:     function dmailer_isSend($mid,$rid,$rtbl)
+ *  442:     function dmailer_getSentMails($mid,$rtbl)
+ *  461:     function dmailer_addToMailLog($mid,$rid,$size,$parsetime,$html)
+ *  483:     function runcron()
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,7 +79,7 @@
 /**
  * Class, doing the sending of Direct-mails, eg. through a cron-job
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -96,7 +96,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 */
 	function dmailer_prepare($row)	{
 		$sys_dmail_uid = $row['uid'];
-		if($row["encoding"] == "base64") {			  
+		if($row["encoding"] == "base64") {
 		  $this->useBase64();
 		}
 		$this->theParts = unserialize($row['mailContent']);
@@ -363,7 +363,6 @@ class t3lib_dmailer extends t3lib_htmlmail {
 			$recipRow=$this->convertFields($recipRow);
 
 //			debug('->'.$recipRow['uid'],1);
-//			$recipRow['email']='kasper@typo3.com';
 			$rC=$this->dmailer_sendAdvanced($recipRow,$tKey);
 			$this->dmailer_addToMailLog($mid,$tKey.'_'.$recipRow['uid'],strlen($this->message),t3lib_div::milliseconds()-$pt,$rC);
 		}

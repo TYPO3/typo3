@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,20 +32,21 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML Compliant (almost)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   67: class SC_alt_main
- *   86:     function init()
- *  108:     function generateJScode()
- *  305:     function main()
- *  379:     function printContent()
+ *   71: class SC_alt_main
+ *   90:     function init()
+ *  112:     function generateJScode()
+ *  370:     function editPageHandling()
+ *  420:     function main()
+ *  494:     function printContent()
  *
- * TOTAL FUNCTIONS: 4
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -63,7 +64,7 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 /**
  * Script Class for rendering of the main frameset for the TYPO3 backend.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -289,7 +290,7 @@ class SC_alt_main {
 	 */
 	var currentlyHighLightedId = "";
 	var currentlyHighLighted_restoreValue = "";
-	function highlightModuleMenuItem(trId, mainModule)	{
+	function highlightModuleMenuItem(trId, mainModule)	{	//
 			// Get document object:
 		if (top.menu && top.menu.document)	{
 			var docObj = top.menu.document;
@@ -364,7 +365,7 @@ class SC_alt_main {
 	 * Checking if the "&edit" variable was sent so we can open for editing the page.
 	 * Code based on code from "alt_shortcut.php"
 	 *
-	 * @return void
+	 * @return	void
 	 */
 	function editPageHandling()	{
 		global $BE_USER;

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,79 +31,83 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  133: function fw($str)
+ *  137: function fw($str)
  *
  *
- *  157: class template
- *  212:     function template()
+ *  161: class template
+ *  216:     function template()
  *
  *              SECTION: EVALUATION FUNCTIONS
- *  284:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='')
- *  301:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')
- *  326:     function issueCommand($params,$rUrl='')
- *  341:     function isCMlayers()
- *  351:     function thisBlur()
- *  361:     function helpStyle()
- *  378:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))
- *  404:     function getFileheader($title,$path,$iconfile)
- *  419:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")
- *  452:     function makeShortcutUrl($gvList,$setList)
- *  473:     function formWidth($size=48,$textarea=0,$styleOverride='')
- *  498:     function formWidthText($size=48,$styleOverride='',$wrap='')
- *  515:     function redirectUrls($thisLocation='')
- *  539:     function formatTime($tstamp,$type)
- *  552:     function parseTime()
+ *  290:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)
+ *  307:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')
+ *  333:     function issueCommand($params,$rUrl='')
+ *  348:     function isCMlayers()
+ *  358:     function thisBlur()
+ *  368:     function helpStyle()
+ *  385:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))
+ *  411:     function getFileheader($title,$path,$iconfile)
+ *  426:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")
+ *  459:     function makeShortcutUrl($gvList,$setList)
+ *  480:     function formWidth($size=48,$textarea=0,$styleOverride='')
+ *  505:     function formWidthText($size=48,$styleOverride='',$wrap='')
+ *  522:     function redirectUrls($thisLocation='')
+ *  546:     function formatTime($tstamp,$type)
+ *  559:     function parseTime()
  *
  *              SECTION: PAGE BUILDING FUNCTIONS.
- *  585:     function startPage($title)
- *  660:     function endPage()
- *  689:     function header($text)
- *  710:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
- *  734:     function divider($dist)
- *  750:     function spacer($dist)
- *  769:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
- *  786:     function sectionBegin()
- *  807:     function sectionEnd()
- *  827:     function middle()
- *  836:     function endPageJS()
- *  853:     function docBodyTagBegin()
- *  863:     function docStyle()
- *  904:     function insertStylesAndJS($content)
- *  924:     function initCharset()
- *  936:     function generator()
+ *  592:     function startPage($title)
+ *  667:     function endPage()
+ *  696:     function header($text)
+ *  717:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
+ *  741:     function divider($dist)
+ *  757:     function spacer($dist)
+ *  776:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
+ *  793:     function sectionBegin()
+ *  814:     function sectionEnd()
+ *  834:     function middle()
+ *  843:     function endPageJS()
+ *  860:     function docBodyTagBegin()
+ *  870:     function docStyle()
+ *  912:     function insertStylesAndJS($content)
+ *  932:     function initCharset()
+ *  944:     function generator()
  *
  *              SECTION: OTHER ELEMENTS
- *  968:     function icons($type)
- *  997:     function t3Button($onClick,$label)
- * 1008:     function dfw($string)
- * 1018:     function rfw($string)
- * 1028:     function wrapInCData($string)
- * 1045:     function wrapScriptTags($string, $linebreak=TRUE)
- * 1082:     function table($arr)
- * 1122:     function menuTable($arr1,$arr2=array(), $arr3=array())
- * 1155:     function funcMenu($content,$menu)
- * 1173:     function clearCacheMenu($id,$addSaveOptions=0)
- * 1209:     function getContextMenuCode()
- * 1385:     function getTabMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')
+ *  977:     function icons($type, $styleAttribValue='')
+ * 1006:     function t3Button($onClick,$label)
+ * 1017:     function dfw($string)
+ * 1027:     function rfw($string)
+ * 1037:     function wrapInCData($string)
+ * 1054:     function wrapScriptTags($string, $linebreak=TRUE)
+ * 1092:     function table($arr, $layout='')
+ * 1134:     function menuTable($arr1,$arr2=array(), $arr3=array())
+ * 1167:     function funcMenu($content,$menu)
+ * 1185:     function clearCacheMenu($id,$addSaveOptions=0)
+ * 1221:     function getContextMenuCode()
+ * 1408:     function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
+ * 1438:     function getTabMenuRaw($menuItems)
+ * 1507:     function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)
+ * 1630:     function getDynTabMenuJScode()
+ * 1687:     function getVersionSelector($id,$noAction=FALSE)
  *
  *
- * 1497: class bigDoc extends template
+ * 1761: class bigDoc extends template
  *
  *
- * 1506: class noDoc extends template
+ * 1770: class noDoc extends template
  *
  *
- * 1515: class smallDoc extends template
+ * 1779: class smallDoc extends template
  *
  *
- * 1524: class mediumDoc extends template
+ * 1788: class mediumDoc extends template
  *
- * TOTAL FUNCTIONS: 45
+ * TOTAL FUNCTIONS: 49
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -150,7 +154,7 @@ function fw($str)	{
  *
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -1081,6 +1085,7 @@ $str.=$this->docBodyTagBegin().
 	 * Returns a table based on the input $arr
 	 *
 	 * @param	array		Multidim array with first levels = rows, second levels = cells
+	 * @param	array		If set, then this provides an alternative layout array instead of $this->tableLayout
 	 * @return	string		The HTML table.
 	 * @internal
 	 */
@@ -1423,6 +1428,13 @@ $str.=$this->docBodyTagBegin().
 		return $content;
 	}
 
+	/**
+	 * Creates the HTML content for the tab menu
+	 *
+	 * @param	array		Menu items for tabs
+	 * @return	string		Table HTML
+	 * @access private
+	 */
 	function getTabMenuRaw($menuItems)	{
 		$content='';
 
@@ -1482,14 +1494,15 @@ $str.=$this->docBodyTagBegin().
 	 * Creates a DYNAMIC tab-menu where the tabs are switched between with DHTML.
 	 * Should work in MSIE, Mozilla, Opera and Konqueror. On Konqueror I did find a serious problem: <textarea> fields loose their content when you switch tabs!
 	 *
-	 * @param	array	Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
-	 * @param	string	Identification string. This should be unique for every instance of a dynamic menu!
+	 * @param	array		Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
+	 * @param	string		Identification string. This should be unique for every instance of a dynamic menu!
 	 * @param	integer		If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
 	 * @param	boolean		If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
 	 * @param	integer		Character limit for a new row.
 	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
+	 * @param	boolean		If set, the tabs will span the full width of their position
 	 * @param	integer		Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
-	 * @return	string	JavaScript section for the HTML header.
+	 * @return	string		JavaScript section for the HTML header.
 	 */
 	function getDynTabMenu($menuItems,$identString,$toggle=0,$foldout=FALSE,$newRowCharLimit=50,$noWrap=1,$fullWidth=FALSE,$defaultTabIndex=1)	{
 		$content = '';
@@ -1612,7 +1625,7 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns dynamic tab menu header JS code.
 	 *
-	 * @return	string	JavaScript section for the HTML header.
+	 * @return	string		JavaScript section for the HTML header.
 	 */
 	function getDynTabMenuJScode()	{
 		return '

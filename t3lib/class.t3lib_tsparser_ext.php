@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,57 +30,58 @@
  * $Id$
  * Contains functions for the TS module in TYPO3 backend
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  103: class t3lib_tsparser_ext extends t3lib_TStemplate
- *  191:     function flattenSetup($setupArray, $prefix, $resourceFlag)
- *  218:     function substituteConstants($all)
- *  247:     function substituteCMarkers($all)
- *  269:     function generateConfig_constants()
- *  318:     function ext_getSetup($theSetup,$theKey)
- *  349:     function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")
- *  437:     function makeHtmlspecialchars($theValue)
- *  450:     function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)
- *  490:     function ext_getRootlineNumber($pid)
- *  508:     function ext_getTemplateHierarchyArr($arr,$depthData, $keyArray,$first=0)
- *  567:     function ext_process_hierarchyInfo($depthDataArr,&$pointer)
- *  598:     function ext_outputTS($config, $lineNumbers=0, $comments=0, $crop=0, $syntaxHL=0, $syntaxHLBlockmode=0)
- *  625:     function ext_fixed_lgd($string,$chars)
- *  641:     function ext_lnBreakPointWrap($ln,$str)
- *  654:     function ext_formatTS($input, $ln, $comments=1, $crop=0)
- *  693:     function ext_getFirstTemplate($id,$template_uid=0)
- *  712:     function ext_getAllTemplates($id)
- *  732:     function ext_compareFlatSetups($default)
- *  798:     function ext_categorizeEditableConstants($editConstArray)
- *  821:     function ext_getCategoryLabelArray()
- *  838:     function ext_getTypeData($type)
- *  879:     function ext_getTSCE_config($category)
- *  918:     function ext_getKeyImage($key)
- *  928:     function ext_getTSCE_config_image($imgConf)
- *  952:     function ext_resourceDims()
- *  982:     function ext_readDirResources($path)
- *  997:     function readDirectory($path,$type="file")
- * 1022:     function ext_fNandV($params)
- * 1040:     function ext_printFields($theConstants,$category)
+ *  104: class t3lib_tsparser_ext extends t3lib_TStemplate
+ *  192:     function flattenSetup($setupArray, $prefix, $resourceFlag)
+ *  219:     function substituteConstants($all)
+ *  248:     function substituteCMarkers($all)
+ *  270:     function generateConfig_constants()
+ *  319:     function ext_getSetup($theSetup,$theKey)
+ *  350:     function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")
+ *  445:     function lineNumberToScript($lnArr)
+ *  476:     function makeHtmlspecialchars($theValue)
+ *  489:     function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)
+ *  529:     function ext_getRootlineNumber($pid)
+ *  547:     function ext_getTemplateHierarchyArr($arr,$depthData, $keyArray,$first=0)
+ *  606:     function ext_process_hierarchyInfo($depthDataArr,&$pointer)
+ *  637:     function ext_outputTS($config, $lineNumbers=0, $comments=0, $crop=0, $syntaxHL=0, $syntaxHLBlockmode=0)
+ *  664:     function ext_fixed_lgd($string,$chars)
+ *  680:     function ext_lnBreakPointWrap($ln,$str)
+ *  693:     function ext_formatTS($input, $ln, $comments=1, $crop=0)
+ *  732:     function ext_getFirstTemplate($id,$template_uid=0)
+ *  751:     function ext_getAllTemplates($id)
+ *  771:     function ext_compareFlatSetups($default)
+ *  837:     function ext_categorizeEditableConstants($editConstArray)
+ *  860:     function ext_getCategoryLabelArray()
+ *  877:     function ext_getTypeData($type)
+ *  918:     function ext_getTSCE_config($category)
+ *  957:     function ext_getKeyImage($key)
+ *  967:     function ext_getTSCE_config_image($imgConf)
+ *  991:     function ext_resourceDims()
+ * 1021:     function ext_readDirResources($path)
+ * 1036:     function readDirectory($path,$type="file")
+ * 1061:     function ext_fNandV($params)
+ * 1079:     function ext_printFields($theConstants,$category)
  *
  *              SECTION: Processing input values
- * 1297:     function ext_regObjectPositions($constants)
- * 1312:     function ext_regObjects($pre)
- * 1357:     function ext_putValueInConf($key, $var)
- * 1380:     function ext_removeValueInConf($key)
- * 1396:     function ext_depthKeys($arr,$settings)
- * 1431:     function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)
- * 1558:     function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)
- * 1604:     function ext_prevPageWithTemplate($id,$perms_clause)
- * 1620:     function ext_setStar($val)
- * 1632:     function ext_detectAndFixExtensionPrefix($value)
+ * 1336:     function ext_regObjectPositions($constants)
+ * 1351:     function ext_regObjects($pre)
+ * 1396:     function ext_putValueInConf($key, $var)
+ * 1419:     function ext_removeValueInConf($key)
+ * 1435:     function ext_depthKeys($arr,$settings)
+ * 1470:     function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)
+ * 1597:     function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)
+ * 1643:     function ext_prevPageWithTemplate($id,$perms_clause)
+ * 1659:     function ext_setStar($val)
+ * 1671:     function ext_detectAndFixExtensionPrefix($value)
  *
- * TOTAL FUNCTIONS: 39
+ * TOTAL FUNCTIONS: 40
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -96,7 +97,7 @@ require_once(PATH_t3lib."class.t3lib_tstemplate.php");
 /**
  * TSParser extension class to t3lib_TStemplate
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -435,7 +436,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		return $HTML;
 	}
 
-
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$lnArr: ...
+	 * @return	[type]		...
+	 */
 	function lineNumberToScript($lnArr)	{
 		if (!is_array($this->lnToScript))	{
 			$this->lnToScript = array();

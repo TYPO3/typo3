@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -39,17 +39,17 @@
  *
  *
  *  102: class tslib_gifBuilder extends t3lib_stdGraphic
- *  126:     function start($conf,$data)
- *  274:     function gifBuild()
- *  297:     function make()
+ *  127:     function start($conf,$data)
+ *  296:     function gifBuild()
+ *  324:     function make()
  *
  *              SECTION: Various helper functions
- *  448:     function checkTextObj($conf)
- *  484:     function calcOffset($string)
- *  533:     function getResource($file,$fileArray)
- *  548:     function checkFile($file)
- *  559:     function fileName($pre)
- *  569:     function extension()
+ *  475:     function checkTextObj($conf)
+ *  552:     function calcOffset($string)
+ *  601:     function getResource($file,$fileArray)
+ *  616:     function checkFile($file)
+ *  627:     function fileName($pre)
+ *  637:     function extension()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,7 +94,7 @@
  * }
  * return $gifCreator->getImageDimensions($theImage);
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=377&cHash=e00ac666f3

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,39 +32,40 @@
  * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   89: class localRecordList extends recordList
- *  121:     function writeTop($row,$path)
- *  295:     function getTable($table,$id,$rowlist)
- *  476:     function renderListRow($table,$row,$cc,$titleCol,$thumbsCol)
- *  539:     function renderListHeader($table,$currentIdList)
+ *   90: class localRecordList extends recordList
+ *  122:     function writeTop($row)
+ *  296:     function getTable($table,$id,$rowlist)
+ *  539:     function renderListRow($table,$row,$cc,$titleCol,$thumbsCol,$indent=0)
+ *  603:     function renderListHeader($table,$currentIdList)
  *
  *              SECTION: Rendering of various elements
- *  678:     function makeControl($table,$row)
- *  852:     function makeClip($table,$row)
- *  921:     function fieldSelectBox($table,$formFields=1)
+ *  745:     function makeControl($table,$row)
+ *  937:     function makeClip($table,$row)
+ * 1006:     function makeLocalizationPanel($table,$row)
+ * 1061:     function fieldSelectBox($table,$formFields=1)
  *
  *              SECTION: Helper functions
- * 1000:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
- * 1011:     function clipNumPane()
- * 1025:     function addSortLink($code,$field,$table)
- * 1050:     function recPath($pid)
- * 1063:     function showNewRecLink($table)
- * 1073:     function makeReturnUrl()
+ * 1141:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
+ * 1152:     function clipNumPane()
+ * 1166:     function addSortLink($code,$field,$table)
+ * 1191:     function recPath($pid)
+ * 1204:     function showNewRecLink($table)
+ * 1214:     function makeReturnUrl()
  *
  *              SECTION: CSV related functions
- * 1097:     function initCSV()
- * 1119:     function addToCSV($row)
- * 1141:     function setCsvRow($csvRow)
- * 1152:     function outputCSV($prefix)
+ * 1239:     function initCSV()
+ * 1261:     function addToCSV($row)
+ * 1283:     function setCsvRow($csvRow)
+ * 1294:     function outputCSV($prefix)
  *
- * TOTAL FUNCTIONS: 17
+ * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -82,7 +83,7 @@
 /**
  * Class for rendering of Web>List module
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

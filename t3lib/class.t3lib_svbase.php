@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -37,49 +37,55 @@
  *
  *
  *
- *  121: class t3lib_svbase
+ *  127: class t3lib_svbase
  *
  *              SECTION: Get service meta information
- *  175:     function getServiceInfo()
- *  183:     function getServiceKey()
- *  191:     function getServiceTitle()
+ *  191:     function getServiceInfo()
+ *  199:     function getServiceKey()
+ *  207:     function getServiceTitle()
+ *  220:     function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE)
  *
  *              SECTION: Error handling
- *  212:     function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured')
- *  227:     function errorPull()
- *  239:     function getLastError()
- *  254:     function getLastErrorMsg()
- *  269:     function getErrorMsgArray()
- *  287:     function getLastErrorArray()
- *  296:     function resetErrors()
+ *  255:     function devLog($msg, $severity=0, $dataVar=FALSE)
+ *  269:     function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured')
+ *  284:     function errorPull()
+ *  296:     function getLastError()
+ *  311:     function getLastErrorMsg()
+ *  326:     function getErrorMsgArray()
+ *  344:     function getLastErrorArray()
+ *  353:     function resetErrors()
  *
  *              SECTION: General service functions
- *  316:     function checkExec($progList)
- *  338:     function deactivateService()
- *  344:     function available()
+ *  373:     function checkExec($progList)
+ *  395:     function deactivateService()
+ *  401:     function available()
  *
  *              SECTION: IO tools
- *  382:     function checkInputFile ($absFile)
- *  403:     function readFile ($absFile, $length=0)
- *  426:     function writeFile ($content, $absFile='')
+ *  439:     function checkInputFile ($absFile)
+ *  460:     function readFile ($absFile, $length=0)
+ *  485:     function writeFile ($content, $absFile='')
+ *  511:     function tempFile ($filePrefix)
+ *  529:     function registerTempFile ($absFile)
+ *  539:     function unlinkTempFiles ()
  *
  *              SECTION: IO input
- *  467:     function setInput ($content, $type='')
- *  481:     function setInputFile ($absFile, $type='')
- *  494:     function getInput ()
- *  509:     function getInputFile ($absFile='')
+ *  561:     function setInput ($content, $type='')
+ *  575:     function setInputFile ($absFile, $type='')
+ *  588:     function getInput ()
+ *  603:     function getInputFile ($createFile='')
  *
  *              SECTION: IO output
- *  534:     function setOutputFile ($absFile)
- *  544:     function getOutput ()
- *  558:     function getOutputFile ($absFile='')
+ *  628:     function setOutputFile ($absFile)
+ *  638:     function getOutput ()
+ *  652:     function getOutputFile ($absFile='')
  *
  *              SECTION: Service implementation
- *  582:     function init()
- *  601:     function reset()
- *  612:     function process($content='', $type='', $conf=array())
+ *  676:     function init()
+ *  700:     function reset()
+ *  715:     function __destruct()
+ *  721:     function process($content='', $type='', $conf=array())
  *
- * TOTAL FUNCTIONS: 26
+ * TOTAL FUNCTIONS: 32
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -162,15 +168,15 @@ class t3lib_svbase {
 	 */
 	var $outputFile = '';
 
-	 
+
 	/**
 	 * Temporary files which have to be deleted
 	 *
 	 * @private
 	 */
 	var $tempFiles = array();
-	 
-	 
+
+
 
 	/***************************************
 	 *
@@ -207,17 +213,17 @@ class t3lib_svbase {
 	 * Returns service configuration values from the $TYPO3_CONF_VARS['SVCONF'] array
 	 *
 	 * @param	string		Name of the config option
-	 * @return	mixed		Default configuration value for the service. Will be returned if no value found.
 	 * @param	boolean		If set the 'default' config will be return if no special config for this service is available (default: true)
-	 * @return	mixed		configuration value for the service 
+	 * @param	[type]		$includeDefaultConfig: ...
+	 * @return	mixed		configuration value for the service
 	 */
 	function getServiceOption($optionName, $defaultValue='', $includeDefaultConfig=TRUE) {
 		global $TYPO3_CONF_VARS;
-		
+
 		$config = NULL;
-		
+
 		$svOptions = $TYPO3_CONF_VARS['SVCONF'][$this->info['serviceType']];
-		
+
 		if(isset($svOptions[$this->info['serviceKey']][$optionName])) {
 			$config = $svOptions['default'][$optionName];
 		} elseif($includeDefaultConfig AND isset($svOptions['default'][$optionName])) {
@@ -241,7 +247,7 @@ class t3lib_svbase {
 	/**
 	 * Logs debug messages to t3lib_div::devLog()
 	 *
-	 * @param	string 		Debug message
+	 * @param	string		Debug message
 	 * @param	integer		Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
 	 * @param	array		Additional data you want to pass to the logger.
 	 * @return	void
@@ -251,8 +257,8 @@ class t3lib_svbase {
 			t3lib_div::devLog($msg, $this->info['serviceKey'], $severity, $dataVar);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Puts an error on the error stack. Calling without parameter adds a general error.
 	 *
@@ -498,7 +504,7 @@ function available()	{
 
 	/**
 	 * Create a temporary file.
-	 * 
+	 *
 	 * @param	string		File prefix.
 	 * @return	string		File name or FALSE
 	 */
@@ -516,17 +522,17 @@ function available()	{
 
 	/**
 	 * Register file which should be deleted afterwards.
-	 * 
+	 *
 	 * @param	string		File name with absolute path.
 	 * @return	void
 	 */
 	function registerTempFile ($absFile)	{
 		$this->tempFiles[] = $absFile;
 	}
-	
+
 	/**
 	 * Delete registered temporary files.
-	 * 
+	 *
 	 * @param	string		File name with absolute path.
 	 * @return	void
 	 */
@@ -535,9 +541,9 @@ function available()	{
 			t3lib_div::unlink_tempfile($absFile);
 		}
 		$this->tempFiles = array();
-	}	
-	
-	
+	}
+
+
 	/***************************************
 	 *
 	 *	 IO input
@@ -671,7 +677,7 @@ function available()	{
 		// do not work :-(  but will not hurt
 		register_shutdown_function(array(&$this, '__destruct'));
 		// look in makeInstanceService()
-		
+
 		$this->reset();
 
 			// check for external programs which are defined by $info['exec']
@@ -703,14 +709,14 @@ function available()	{
 
 	/**
 	 * Clean up the service.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function __destruct() {
 		$this->unlinkTempFiles();
 	}
-	
-	
+
+
 	/* every service type has it's own API
 	function process($content='', $type='', $conf=array())	{
 	}

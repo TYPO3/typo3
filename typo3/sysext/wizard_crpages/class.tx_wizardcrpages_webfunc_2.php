@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -38,9 +38,9 @@
  *
  *
  *   70: class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase
- *   79:     function modMenu()
- *   96:     function main()
- *  182:     function helpBubble()
+ *   78:     function modMenu()
+ *   95:     function main()
+ *  179:     function helpBubble()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -63,7 +63,7 @@ require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 /**
  * Creates the "Create pages" wizard
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_wizardcrpages
  */

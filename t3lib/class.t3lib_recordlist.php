@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,23 +31,25 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   78: class t3lib_recordList
- *  119:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')
- *  194:     function writeTop()
- *  202:     function writeBottom()
- *  221:     function fwd_rwd_nav($table='')
- *  254:     function fwd_rwd_HTML($type,$pointer,$table='')
- *  277:     function listURL()
- *  286:     function CBfunctions()
+ *   80: class t3lib_recordList
+ *  123:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')
+ *  198:     function writeTop()
+ *  206:     function writeBottom()
+ *  225:     function fwd_rwd_nav($table='')
+ *  258:     function fwd_rwd_HTML($type,$pointer,$table='')
+ *  282:     function listURL($altId='')
+ *  292:     function CBfunctions()
+ *  342:     function initializeLanguages()
+ *  408:     function languageFlag($sys_language_uid)
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -70,7 +72,7 @@
 /**
  * This class is the base for listing of database records and files in the modules Web>List and File>Filelist
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see typo3/db_list.php, typo3/file_list.php

@@ -30,7 +30,7 @@ This should probably not be disabled. But the point is that Typo3 is able to wor
 	'clearCacheOnLoad' => 1,
 	'lockType' => 'S',
 	'author' => 'Kasper Skaarhoj',
-	'author_email' => 'kasper@typo3.com',
+	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'CURBY SOFT Multimedie',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',

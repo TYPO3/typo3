@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,7 +34,7 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant output
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -45,15 +45,15 @@
  *  118:     function preinit()
  *  143:     function preprocess()
  *  200:     function init()
- *  248:     function main()
- *  346:     function editLoadedFunc()
- *  407:     function editPageIdFunc()
- *  450:     function printContent()
+ *  234:     function main()
+ *  335:     function editLoadedFunc()
+ *  396:     function editPageIdFunc()
+ *  438:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  478:     function mIconFilename($Ifilename,$backPath)
- *  491:     function getIcon($modName)
- *  515:     function itemLabel($inlabel,$modName,$M_modName='')
+ *  466:     function mIconFilename($Ifilename,$backPath)
+ *  479:     function getIcon($modName)
+ *  503:     function itemLabel($inlabel,$modName,$M_modName='')
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,7 +75,7 @@ require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 /**
  * Script Class for the shortcut frame, bottom frame of the backend frameset
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

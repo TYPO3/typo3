@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,19 +34,20 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   76: class SC_tce_file
- *   96:     function init()
- *  116:     function initClipboard()
- *  137:     function main()
+ *   77: class SC_tce_file
+ *   97:     function init()
+ *  117:     function initClipboard()
+ *  138:     function main()
+ *  164:     function finish()
  *
- * TOTAL FUNCTIONS: 3
+ * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -69,7 +70,7 @@ require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
 /**
  * Script Class, handling the calling of methods in the file admin classes.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

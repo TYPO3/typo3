@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -54,22 +54,22 @@
  *  507:     function checkTagTypeCounts($content,$blockTags='a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags='br,hr,img,input,area')
  *
  *              SECTION: Clean HTML code
- *  598:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())
- *  792:     function bidir_htmlspecialchars($value,$dir)
- *  814:     function prefixResourcePath($main_prefix,$content,$alternatives=array())
- *  882:     function prefixRelPath($prefix,$srcVal)
- *  900:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)
- *  931:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')
- *  948:     function unprotectTags($content,$tagList='')
- *  981:     function stripTagsExcept($value,$tagList)
- * 1004:     function caseShift($str,$flag,$cacheKey='')
- * 1028:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)
- * 1057:     function get_tag_attributes_classic($tag,$deHSC=0)
- * 1070:     function indentLines($content, $number=1, $indentChar="\t")
- * 1087:     function HTMLparserConfig($TSconfig,$keepTags=array())
- * 1211:     function XHTML_clean($content)
- * 1234:     function processTag($value,$conf,$endTag,$protected=0)
- * 1281:     function processContent($value,$dir,$conf)
+ *  600:     function HTMLcleaner($content, $tags=array(),$keepAll=0,$hSC=0,$addConfig=array())
+ *  796:     function bidir_htmlspecialchars($value,$dir)
+ *  818:     function prefixResourcePath($main_prefix,$content,$alternatives=array())
+ *  899:     function prefixRelPath($prefix,$srcVal)
+ *  917:     function cleanFontTags($value,$keepFace=0,$keepSize=0,$keepColor=0)
+ *  948:     function mapTags($value,$tags=array(),$ltChar='<',$ltChar2='<')
+ *  965:     function unprotectTags($content,$tagList='')
+ *  998:     function stripTagsExcept($value,$tagList)
+ * 1021:     function caseShift($str,$flag,$cacheKey='')
+ * 1045:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)
+ * 1074:     function get_tag_attributes_classic($tag,$deHSC=0)
+ * 1087:     function indentLines($content, $number=1, $indentChar="\t")
+ * 1104:     function HTMLparserConfig($TSconfig,$keepTags=array())
+ * 1228:     function XHTML_clean($content)
+ * 1250:     function processTag($value,$conf,$endTag,$protected=0)
+ * 1296:     function processContent($value,$dir,$conf)
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -99,7 +99,7 @@
  * Functions for parsing HTML.
  * You are encouraged to use this class in your own applications
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -572,8 +572,8 @@ class t3lib_parsehtml {
 	 * 		'allowedAttribs' =>   '0' (zero) = no attributes allowed, '[commalist of attributes]' = only allowed attributes. If blank, all attributes are allowed.
 	 * 		'fixAttrib' => Array(
 	 * 			'[attribute name]' => Array (
-	 *				'set' => Force the attribute value to this value.
-	 *				'unset' => Boolean: If set, the attribute is unset.
+	 * 				'set' => Force the attribute value to this value.
+	 * 				'unset' => Boolean: If set, the attribute is unset.
 	 * 				'default' => 	If no attribute exists by this name, this value is set as default value (if this value is not blank)
 	 * 				'always' => 	Boolean. If set, the attribute is always processed. Normally an attribute is processed only if it exists
 	 * 				'trim,intval,lower,upper' => 	All booleans. If any of these keys are set, the value is passed through the respective PHP-functions.

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -39,19 +39,19 @@
  *
  *
  *  175: class SC_wizard_forms
- *  202:     function init()
- *  238:     function main()
- *  254:     function printContent()
- *  263:     function formsWizard()
+ *  203:     function init()
+ *  242:     function main()
+ *  258:     function printContent()
+ *  267:     function formsWizard()
  *
  *              SECTION: Helper functions
- *  306:     function getConfigCode(&$row)
- *  378:     function getFormHTML($formCfgArray,$row)
- *  631:     function changeFunc()
- *  690:     function cfgArray2CfgString($cfgArr)
- *  765:     function cfgString2CfgArray($cfgStr)
- *  854:     function cleanT($tArr)
- *  872:     function formatCells($fArr)
+ *  310:     function getConfigCode(&$row)
+ *  381:     function getFormHTML($formCfgArray,$row)
+ *  660:     function changeFunc()
+ *  719:     function cfgArray2CfgString($cfgArr)
+ *  801:     function cfgString2CfgArray($cfgStr)
+ *  900:     function cleanT($tArr)
+ *  918:     function formatCells($fArr)
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -168,7 +168,7 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 /**
  * Script Class for rendering the Form Wizard
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,35 +29,37 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   80: class t3lib_install
+ *   83: class t3lib_install
+ *  111:     function t3lib_install()
  *
  *              SECTION: Writing to localconf.php
- *  118:     function setValueInLocalconfFile(&$line_array, $variable, $value)
- *  168:     function writeToLocalconf_control($inlines='')
- *  220:     function checkForBadString($string)
- *  233:     function slashValueForSingleDashes($value)
+ *  134:     function setValueInLocalconfFile(&$line_array, $variable, $value)
+ *  184:     function writeToLocalconf_control($inlines='')
+ *  236:     function checkForBadString($string)
+ *  249:     function slashValueForSingleDashes($value)
  *
  *              SECTION: SQL
- *  258:     function getFieldDefinitions_sqlContent($sqlContent)
- *  296:     function getFieldDefinitions_database()
- *  340:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
- *  385:     function getUpdateSuggestions($diffArr,$keyList='extra,diff')
- *  481:     function assembleFieldDefinition($row)
- *  510:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')
- *  550:     function getCreateTables($statements, $insertCountFlag=0)
- *  574:     function getTableInsertStatements($statements, $table)
- *  594:     function performUpdateQueries($arr,$keyArr)
- *  610:     function getListOfTables()
- *  626:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)
+ *  274:     function getFieldDefinitions_sqlContent($sqlContent)
+ *  318:     function getFieldDefinitions_sqlContent_parseTypes(&$total)
+ *  365:     function getFieldDefinitions_database()
+ *  409:     function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList='')
+ *  454:     function getUpdateSuggestions($diffArr,$keyList='extra,diff')
+ *  550:     function assembleFieldDefinition($row)
+ *  579:     function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')
+ *  619:     function getCreateTables($statements, $insertCountFlag=0)
+ *  643:     function getTableInsertStatements($statements, $table)
+ *  663:     function performUpdateQueries($arr,$keyArr)
+ *  679:     function getListOfTables()
+ *  695:     function generateUpdateDatabaseForm_checkboxes($arr,$label,$checked=1,$iconDis=0,$currentValue=array(),$cVfullMsg=0)
  *
- * TOTAL FUNCTIONS: 15
+ * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -74,7 +76,7 @@ require_once(PATH_t3lib.'class.t3lib_sqlparser.php');
 /**
  * Class to setup values in localconf.php and verify the TYPO3 DB tables/fields
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -102,7 +104,9 @@ class t3lib_install {
 
 
 	/**
-	 * Constructor
+	 * Constructor function
+	 *
+	 * @return	void
 	 */
 	function t3lib_install()	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize']>= 1 && $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize']<=5)	{
@@ -308,8 +312,8 @@ class t3lib_install {
 	 *
 	 * @param	array		Total array (from getFieldDefinitions_sqlContent())
 	 * @return	void
-	 * @see getFieldDefinitions_sqlContent()
 	 * @access private
+	 * @see getFieldDefinitions_sqlContent()
 	 */
 	function getFieldDefinitions_sqlContent_parseTypes(&$total)	{
 

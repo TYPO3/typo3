@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compatible.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -57,7 +57,7 @@
  *  227: class SC_move_el
  *  250:     function init()
  *  284:     function main()
- *  410:     function printContent()
+ *  416:     function printContent()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -89,7 +89,7 @@ require_once(PATH_t3lib.'class.t3lib_pagetree.php');
 /**
  * Local extension of the page tree class
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -120,7 +120,7 @@ class localPageTree extends t3lib_pageTree {
 /**
  * Extension of position map for pages
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -177,7 +177,7 @@ class ext_posMap_pages extends t3lib_positionMap {
 /**
  * Extension of position map for content elements
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -220,7 +220,7 @@ class ext_posMap_tt_content extends t3lib_positionMap {
 /**
  * Script Class for rendering the move-element wizard display
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,37 +33,37 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   93: class SC_alt_doc
- *  164:     function preInit()
- *  216:     function doProcessData()
- *  228:     function processData()
- *  345:     function init()
- *  424:     function main()
- *  481:     function printContent()
+ *   94: class SC_alt_doc
+ *  167:     function preInit()
+ *  219:     function doProcessData()
+ *  229:     function processData()
+ *  346:     function init()
+ *  432:     function main()
+ *  500:     function printContent()
  *
  *              SECTION: Sub-content functions, rendering specific parts of the module content.
- *  516:     function makeEditForm()
- *  680:     function makeButtonPanel()
- *  759:     function makeDocSel()
- *  798:     function makeCmenu()
- *  816:     function compileForm($panel,$docSel,$cMenu,$editForm)
- *  875:     function functionMenus()
- *  906:     function shortCutLink()
- *  937:     function tceformMessages()
+ *  535:     function makeEditForm()
+ *  717:     function makeButtonPanel()
+ *  796:     function makeDocSel()
+ *  838:     function makeCmenu()
+ *  859:     function compileForm($panel,$docSel,$cMenu,$editForm)
+ *  921:     function functionMenus()
+ *  952:     function shortCutLink()
+ *  983:     function tceformMessages()
  *
  *              SECTION: Other functions
- *  975:     function editRegularContentFromId()
- * 1002:     function compileStoreDat()
- * 1015:     function getNewIconMode($table,$key='saveDocNew')
- * 1028:     function closeDocument($code=0)
- * 1060:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
+ * 1021:     function editRegularContentFromId()
+ * 1048:     function compileStoreDat()
+ * 1061:     function getNewIconMode($table,$key='saveDocNew')
+ * 1074:     function closeDocument($code=0)
+ * 1106:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
  *
  * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -87,7 +87,7 @@ t3lib_BEfunc::lockRecords();
  * Script Class: Drawing the editing form for editing records in TYPO3.
  * Notice: It does NOT use tce_db.php to submit data to, rather it handles submissions itself
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

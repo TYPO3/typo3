@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,147 +32,149 @@
  * XHTML compliant
  * Usage counts are based on search 22/2 2003 through whole source including tslib/
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  207: class t3lib_div
+ *  209: class t3lib_div
  *
  *              SECTION: GET/POST Variables
- *  237:     function _GP($var)
- *  254:     function _GET($var='')
- *  269:     function _POST($var='')
- *  283:     function _GETset($inputGet,$key='')
- *  306:     function GPvar($var,$strip=0)
- *  322:     function setGPvars($list,$strip=0)
- *  338:     function GParrayMerged($var)
+ *  239:     function _GP($var)
+ *  257:     function _GET($var=NULL)
+ *  274:     function _POST($var=NULL)
+ *  290:     function _GETset($inputGet,$key='')
+ *  313:     function GPvar($var,$strip=0)
+ *  330:     function GParrayMerged($var)
  *
  *              SECTION: IMAGE FUNCTIONS
- *  382:     function gif_compress($theFile, $type)
- *  408:     function png_to_gif_by_imagemagick($theFile)
- *  432:     function read_png_gif($theFile,$output_png=0)
+ *  374:     function gif_compress($theFile, $type)
+ *  400:     function png_to_gif_by_imagemagick($theFile)
+ *  424:     function read_png_gif($theFile,$output_png=0)
  *
  *              SECTION: STRING FUNCTIONS
- *  481:     function fixed_lgd($string,$origChars,$preStr='...')
- *  506:     function fixed_lgd_pre($string,$chars)
- *  520:     function fixed_lgd_cs($string,$chars)
- *  537:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)
- *  556:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
- *  591:     function cmpIP($baseIP, $list)
- *  633:     function cmpFQDN($baseIP, $list)
- *  663:     function inList($in_list,$item)
- *  675:     function rmFromList($element,$list)
- *  693:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
- *  709:     function intval_positive($theInt)
- *  722:     function int_from_ver($verNumberStr)
- *  734:     function md5int($str)
- *  747:     function shortMD5($input, $len=10)
- *  758:     function uniqueList()
- *  778:     function split_fileref($fileref)
- *  815:     function dirname($path)
- *  831:     function modifyHTMLColor($color,$R,$G,$B)
- *  851:     function modifyHTMLColorAll($color,$all)
- *  862:     function rm_endcomma($string)
- *  875:     function danish_strtoupper($string)
- *  890:     function convUmlauts($str)
- *  903:     function testInt($var)
- *  915:     function isFirstPartOfStr($str,$partStr)
- *  931:     function formatSize($sizeInBytes,$labels='')
- *  966:     function convertMicrotime($microtime)
- *  980:     function splitCalc($string,$operators)
- * 1002:     function calcPriority($string)
- * 1042:     function calcParenthesis($string)
- * 1068:     function htmlspecialchars_decode($value)
- * 1083:     function deHSCentities($str)
- * 1096:     function slashJS($string,$extended=0,$char="'")
- * 1109:     function rawUrlEncodeJS($str)
- * 1121:     function rawUrlEncodeFP($str)
- * 1132:     function validEmail($email)
- * 1147:     function formatForTextarea($content)
+ *  473:     function fixed_lgd($string,$origChars,$preStr='...')
+ *  498:     function fixed_lgd_pre($string,$chars)
+ *  512:     function fixed_lgd_cs($string,$chars)
+ *  529:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)
+ *  548:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
+ *  583:     function cmpIP($baseIP, $list)
+ *  625:     function cmpFQDN($baseIP, $list)
+ *  655:     function inList($in_list,$item)
+ *  667:     function rmFromList($element,$list)
+ *  685:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)
+ *  701:     function intval_positive($theInt)
+ *  714:     function int_from_ver($verNumberStr)
+ *  726:     function md5int($str)
+ *  739:     function shortMD5($input, $len=10)
+ *  752:     function uniqueList($in_list, $secondParameter=NULL)
+ *  766:     function split_fileref($fileref)
+ *  803:     function dirname($path)
+ *  819:     function modifyHTMLColor($color,$R,$G,$B)
+ *  839:     function modifyHTMLColorAll($color,$all)
+ *  850:     function rm_endcomma($string)
+ *  863:     function danish_strtoupper($string)
+ *  878:     function convUmlauts($str)
+ *  891:     function testInt($var)
+ *  903:     function isFirstPartOfStr($str,$partStr)
+ *  919:     function formatSize($sizeInBytes,$labels='')
+ *  954:     function convertMicrotime($microtime)
+ *  968:     function splitCalc($string,$operators)
+ *  990:     function calcPriority($string)
+ * 1030:     function calcParenthesis($string)
+ * 1056:     function htmlspecialchars_decode($value)
+ * 1071:     function deHSCentities($str)
+ * 1084:     function slashJS($string,$extended=0,$char="'")
+ * 1097:     function rawUrlEncodeJS($str)
+ * 1109:     function rawUrlEncodeFP($str)
+ * 1120:     function validEmail($email)
+ * 1135:     function formatForTextarea($content)
  *
  *              SECTION: ARRAY FUNCTIONS
- * 1178:     function inArray($in_array,$item)
- * 1195:     function intExplode($delim, $string)
- * 1214:     function revExplode($delim, $string, $count=0)
- * 1234:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)
- * 1259:     function uniqueArray($valueArray)
- * 1281:     function removeArrayEntryByValue($array,$cmpValue)
- * 1309:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
- * 1336:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)
- * 1359:     function addSlashesOnArray(&$theArray)
- * 1383:     function stripSlashesOnArray(&$theArray)
- * 1405:     function slashArray($arr,$cmd)
- * 1421:     function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0)
- * 1450:     function array_merge($arr1,$arr2)
- * 1463:     function csvValues($row,$delim=',',$quote='"')
+ * 1166:     function inArray($in_array,$item)
+ * 1183:     function intExplode($delim, $string)
+ * 1202:     function revExplode($delim, $string, $count=0)
+ * 1222:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)
+ * 1244:     function uniqueArray($valueArray)
+ * 1256:     function removeArrayEntryByValue($array,$cmpValue)
+ * 1284:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
+ * 1311:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)
+ * 1334:     function addSlashesOnArray(&$theArray)
+ * 1358:     function stripSlashesOnArray(&$theArray)
+ * 1380:     function slashArray($arr,$cmd)
+ * 1397:     function array_merge_recursive_overrule($arr0,$arr1,$notAddKeys=0,$includeEmtpyValues=true)
+ * 1430:     function array_merge($arr1,$arr2)
+ * 1443:     function csvValues($row,$delim=',',$quote='"')
  *
  *              SECTION: HTML/XML PROCESSING
- * 1505:     function get_tag_attributes($tag)
- * 1542:     function split_tag_attributes($tag)
- * 1576:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
- * 1604:     function wrapJS($string, $linebreak=TRUE)
- * 1634:     function xml2tree($string,$depth=999)
- * 1720:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$parentTagName='')
- * 1803:     function xml2array($string,$NSprefix='')
- * 1891:     function xmlRecompileFromStructValArray($vals)
- * 1935:     function xmlGetHeaderAttribs($xmlData)
+ * 1485:     function get_tag_attributes($tag)
+ * 1522:     function split_tag_attributes($tag)
+ * 1556:     function implodeAttributes($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
+ * 1583:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)
+ * 1598:     function wrapJS($string, $linebreak=TRUE)
+ * 1628:     function xml2tree($string,$depth=999)
+ * 1714:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0, $options=array(),$parentTagName='')
+ * 1799:     function xml2array($string,$NSprefix='')
+ * 1901:     function xmlRecompileFromStructValArray($vals)
+ * 1945:     function xmlGetHeaderAttribs($xmlData)
  *
  *              SECTION: FILES FUNCTIONS
- * 1967:     function getURL($url)
- * 2009:     function writeFile($file,$content)
- * 2030:     function mkdir($theNewFolder)
- * 2046:     function get_dirs($path)
- * 2071:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')
- * 2125:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)
- * 2148:     function removePrefixPathFromList($fileArr,$prefixToRemove)
- * 2164:     function fixWindowsFilePath($theFile)
- * 2175:     function resolveBackPath($pathStr)
- * 2202:     function locationHeaderUrl($path)
+ * 1977:     function getURL($url)
+ * 2019:     function writeFile($file,$content)
+ * 2044:     function writeFileToTypo3tempDir($filepath,$content)
+ * 2087:     function mkdir($theNewFolder)
+ * 2107:     function get_dirs($path)
+ * 2132:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')
+ * 2186:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)
+ * 2209:     function removePrefixPathFromList($fileArr,$prefixToRemove)
+ * 2225:     function fixWindowsFilePath($theFile)
+ * 2237:     function resolveBackPath($pathStr)
+ * 2264:     function locationHeaderUrl($path)
  *
  *              SECTION: DEBUG helper FUNCTIONS
- * 2242:     function debug_ordvalue($string,$characters=100)
- * 2259:     function view_array($array_in)
- * 2287:     function print_array($array_in)
- * 2302:     function debug($var="",$brOrHeader=0)
+ * 2304:     function debug_ordvalue($string,$characters=100)
+ * 2321:     function view_array($array_in)
+ * 2349:     function print_array($array_in)
+ * 2364:     function debug($var="",$brOrHeader=0)
  *
  *              SECTION: SYSTEM INFORMATION
- * 2371:     function getThisUrl()
- * 2387:     function linkThisScript($getParams=array())
- * 2411:     function linkThisUrl($url,$getParams=array())
- * 2436:     function getIndpEnv($getEnvName)
- * 2626:     function milliseconds()
- * 2638:     function clientInfo($useragent='')
+ * 2433:     function getThisUrl()
+ * 2449:     function linkThisScript($getParams=array())
+ * 2473:     function linkThisUrl($url,$getParams=array())
+ * 2498:     function getIndpEnv($getEnvName)
+ * 2687:     function milliseconds()
+ * 2699:     function clientInfo($useragent='')
  *
  *              SECTION: TYPO3 SPECIFIC FUNCTIONS
- * 2726:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)
- * 2761:     function validPathStr($theFile)
- * 2772:     function isAbsPath($path)
- * 2783:     function isAllowedAbsPath($path)
- * 2800:     function verifyFilenameAgainstDenyPattern($filename)
- * 2818:     function upload_copy_move($source,$destination)
- * 2847:     function upload_to_tempfile($uploadedFileName)
- * 2865:     function unlink_tempfile($uploadedTempFileName)
- * 2881:     function tempnam($filePrefix)
- * 2894:     function stdAuthCode($uid_or_record,$fields='')
- * 2928:     function loadTCA($table)
- * 2948:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')
- * 2976:     function resolveAllSheetsInDS($dataStructArray)
- * 3005:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)
- * 3103:     function &getUserObj($classRef,$checkPrefix='user_',$silent=0)
- * 3161:     function &makeInstance($className)
- * 3173:     function makeInstanceClassName($className)
- * 3187:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')
- * 3232:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)
- * 3277:     function quoted_printable($string,$maxlen=76)
- * 3319:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
- * 3353:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')
- * 3380:     function freetypeDpiComp($font_size)
- * 3399:     function devLog($msg, $extKey, $severity=0, $dataVar=FALSE)
+ * 2786:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)
+ * 2822:     function validPathStr($theFile)
+ * 2833:     function isAbsPath($path)
+ * 2844:     function isAllowedAbsPath($path)
+ * 2861:     function verifyFilenameAgainstDenyPattern($filename)
+ * 2879:     function upload_copy_move($source,$destination)
+ * 2911:     function upload_to_tempfile($uploadedFileName)
+ * 2929:     function unlink_tempfile($uploadedTempFileName)
+ * 2945:     function tempnam($filePrefix)
+ * 2958:     function stdAuthCode($uid_or_record,$fields='')
+ * 2992:     function loadTCA($table)
+ * 3012:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')
+ * 3042:     function resolveAllSheetsInDS($dataStructArray)
+ * 3071:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)
+ * 3170:     function &getUserObj($classRef,$checkPrefix='user_',$silent=0)
+ * 3228:     function &makeInstance($className)
+ * 3240:     function makeInstanceClassName($className)
+ * 3254:     function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())
+ * 3315:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)
+ * 3360:     function quoted_printable($string,$maxlen=76)
+ * 3402:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')
+ * 3436:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')
+ * 3463:     function freetypeDpiComp($font_size)
+ * 3482:     function devLog($msg, $extKey, $severity=0, $dataVar=FALSE)
+ * 3503:     function arrayToLogString($arr, $valueList=array(), $valueLength=20)
  *
- * TOTAL FUNCTIONS: 113
+ * TOTAL FUNCTIONS: 115
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -200,7 +202,7 @@
  * So: Don't instantiate - call functions with "t3lib_div::" prefixed the function name.
  * So use t3lib_div::[method-name] to refer to the functions, eg. 't3lib_div::milliseconds()'
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -744,6 +746,7 @@ class t3lib_div {
 	 * Usage: 16
 	 *
 	 * @param	string		Accept multiple parameters wich can be comma-separated lists of values and arrays.
+	 * @param	mixed		$secondParameter: ...
 	 * @return	string		Returns the list without any duplicates of values, space around values are trimmed
 	 */
 	function uniqueList($in_list, $secondParameter=NULL)	{
@@ -1620,7 +1623,7 @@ class t3lib_div {
 	 * @param	string		XML data input
 	 * @param	integer		Number of element levels to resolve the XML into an array. Any further structure will be set as XML.
 	 * @return	mixed		The array with the parsed structure unless the XML parser returns with an error in which case the error message string is returned.
-	 * @author bisqwit at iki dot fi dot not dot for dot ads dot invalid / http://dk.php.net/xml_parse_into_struct + kasper@typo3.com
+	 * @author bisqwit at iki dot fi dot not dot for dot ads dot invalid / http://dk.php.net/xml_parse_into_struct + kasperYYYY@typo3.com
 	 */
 	function xml2tree($string,$depth=999) {
 		$parser = xml_parser_create();
@@ -3492,10 +3495,10 @@ class t3lib_div {
 	 * Converts a one dimensional array to a one line string which can be used for logging or debugging output
 	 * Example: "loginType: FE; refInfo: Array; HTTP_HOST: www.example.org; REMOTE_ADDR: 192.168.1.5; REMOTE_HOST:; security_level:; showHiddenRecords: 0;"
 	 *
-	 * @param	array	Data array which should be outputted
-	 * @param	mixed	List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
-	 * @param	integer	Long string values are shortened to this length. Default: 20
-	 * @return	string	Output string with key names and their value as string
+	 * @param	array		Data array which should be outputted
+	 * @param	mixed		List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
+	 * @param	integer		Long string values are shortened to this length. Default: 20
+	 * @return	string		Output string with key names and their value as string
 	 */
 	function arrayToLogString($arr, $valueList=array(), $valueLength=20) {
 		$str = '';

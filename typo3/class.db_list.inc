@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -40,23 +40,23 @@
  *
  *
  *   84: class recordList extends t3lib_recordList
- *  140:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)
- *  186:     function generateList()
- *  233:     function getSearchBox($formFields=1)
- *  276:     function showSysNotesForPage()
+ *  144:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)
+ *  195:     function generateList()
+ *  242:     function getSearchBox($formFields=1)
+ *  286:     function showSysNotesForPage()
  *
  *              SECTION: Various helper functions
- *  353:     function setDispFields()
- *  378:     function thumbCode($row,$table,$field)
- *  391:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')
- *  433:     function setTotalItems($queryParts)
- *  449:     function makeSearchString($table)
- *  488:     function linkWrapTable($table,$code)
- *  505:     function linkWrapItems($table,$uid,$code,$row)
- *  532:     function listURL($altId='',$table=-1,$exclList='')
- *  551:     function requestUri()
- *  562:     function makeFieldList($table,$dontCheckUser=0)
- *  601:     function getTreeObject($id,$depth,$perms_clause)
+ *  363:     function setDispFields()
+ *  388:     function thumbCode($row,$table,$field)
+ *  401:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')
+ *  443:     function setTotalItems($queryParts)
+ *  459:     function makeSearchString($table)
+ *  498:     function linkWrapTable($table,$code)
+ *  515:     function linkWrapItems($table,$uid,$code,$row)
+ *  578:     function listURL($altId='',$table=-1,$exclList='')
+ *  597:     function requestUri()
+ *  608:     function makeFieldList($table,$dontCheckUser=0)
+ *  648:     function getTreeObject($id,$depth,$perms_clause)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -76,7 +76,7 @@
 /**
  * Child class for rendering of Web > List (not the final class. see class.db_list_extra)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  * @see localRecordList

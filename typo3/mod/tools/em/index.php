@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,138 +29,135 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  196: class em_install_class extends t3lib_install
- *  203:     function em_install_class()
- *
- *
- *  220: class SC_mod_tools_em_index
+ *  191: class SC_mod_tools_em_index extends t3lib_SCbase
  *
  *              SECTION: Standard module initialization
- *  370:     function init()
- *  434:     function menuConfig()
- *  509:     function main()
- *  581:     function printContent()
+ *  341:     function init()
+ *  414:     function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)
+ *  428:     function menuConfig()
+ *  500:     function main()
+ *  572:     function printContent()
  *
  *              SECTION: Function Menu Applications
- *  608:     function extensionList_loaded()
- *  643:     function extensionList_installed()
- *  715:     function extensionList_import()
- *  885:     function alterSettings()
+ *  599:     function extensionList_loaded()
+ *  637:     function extensionList_installed()
+ *  707:     function extensionList_import()
+ *  868:     function alterSettings()
  *
  *              SECTION: Command Applications (triggered by GET var)
- *  931:     function importExtInfo($extRepUid)
- * 1032:     function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0)
- * 1192:     function showExtDetails($extKey)
+ *  915:     function importExtInfo($extRepUid)
+ * 1016:     function importExtFromRep($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0)
+ * 1184:     function showExtDetails($extKey)
  *
  *              SECTION: Application Sub-functions (HTML parts)
  * 1477:     function updatesForm($extKey,$extInfo,$notSilent=0,$script='',$addFields='')
  * 1508:     function extDumpTables($extKey,$extInfo)
  * 1575:     function getFileListOfExtension($extKey,$conf)
  * 1626:     function extDelete($extKey,$extInfo)
- * 1658:     function extUpdateEMCONF($extKey,$extInfo)
- * 1699:     function extBackup($extKey,$extInfo)
- * 1767:     function extBackup_dumpDataTablesLine($tablesArray,$extKey)
- * 1795:     function extInformationArray($extKey,$extInfo,$remote=0)
- * 1892:     function extInformationArray_dbReq($techInfo,$tableHeader=0)
- * 1905:     function extInformationArray_dbInst($dbInst,$current)
- * 1924:     function getRepositoryUploadForm($extKey,$extInfo)
+ * 1657:     function extUpdateEMCONF($extKey,$extInfo)
+ * 1677:     function extBackup($extKey,$extInfo)
+ * 1745:     function extBackup_dumpDataTablesLine($tablesArray,$extKey)
+ * 1773:     function extInformationArray($extKey,$extInfo,$remote=0)
+ * 1870:     function extInformationArray_dbReq($techInfo,$tableHeader=0)
+ * 1883:     function extInformationArray_dbInst($dbInst,$current)
+ * 1902:     function getRepositoryUploadForm($extKey,$extInfo)
  *
  *              SECTION: Extension list rendering
- * 2022:     function extensionListRowHeader($trAttrib,$cells,$import=0)
- * 2087:     function extensionListRow($extKey,$extInfo,$cells,$bgColorClass='',$inst_list=array(),$import=0,$altLinkUrl='')
+ * 2000:     function extensionListRowHeader($trAttrib,$cells,$import=0)
+ * 2065:     function extensionListRow($extKey,$extInfo,$cells,$bgColorClass='',$inst_list=array(),$import=0,$altLinkUrl='')
  *
  *              SECTION: Output helper functions
- * 2212:     function wrapEmail($str,$email)
- * 2225:     function helpCol($key)
- * 2239:     function labelInfo($str)
- * 2251:     function extensionTitleIconHeader($extKey,$extInfo,$align='top')
- * 2266:     function removeButton()
- * 2275:     function installButton()
- * 2284:     function noImportMsg()
+ * 2190:     function wrapEmail($str,$email)
+ * 2203:     function helpCol($key)
+ * 2217:     function labelInfo($str)
+ * 2229:     function extensionTitleIconHeader($extKey,$extInfo,$align='top')
+ * 2244:     function removeButton()
+ * 2253:     function installButton()
+ * 2262:     function noImportMsg()
  *
  *              SECTION: Read information about all available extensions
- * 2309:     function getInstalledExtensions()
- * 2336:     function getInstExtList($path,&$list,&$cat,$type)
- * 2370:     function getImportExtList($listArr)
- * 2422:     function setCat(&$cat,$listArrayPart,$extKey)
+ * 2287:     function getInstalledExtensions()
+ * 2314:     function getInstExtList($path,&$list,&$cat,$type)
+ * 2348:     function getImportExtList($listArr)
+ * 2400:     function setCat(&$cat,$listArrayPart,$extKey)
  *
  *              SECTION: Extension analyzing (detailed information)
- * 2484:     function makeDetailedExtensionAnalysis($extKey,$extInfo,$validity=0)
- * 2666:     function getClassIndexLocallangFiles($absPath,$table_class_prefix,$extKey)
- * 2737:     function modConfFileAnalysis($confFilePath)
- * 2765:     function serverExtensionMD5Array($extKey,$conf)
- * 2790:     function findMD5ArrayDiff($current,$past)
+ * 2462:     function makeDetailedExtensionAnalysis($extKey,$extInfo,$validity=0)
+ * 2644:     function getClassIndexLocallangFiles($absPath,$table_class_prefix,$extKey)
+ * 2715:     function modConfFileAnalysis($confFilePath)
+ * 2743:     function serverExtensionMD5Array($extKey,$conf)
+ * 2768:     function findMD5ArrayDiff($current,$past)
  *
  *              SECTION: File system operations
- * 2822:     function createDirsInPath($dirs,$extDirPath)
- * 2847:     function removeExtDirectory($removePath,$removeContentOnly=0)
- * 2908:     function clearAndMakeExtensionDir($importedData,$type)
- * 2961:     function removeCacheFiles()
- * 2981:     function extractDirsFromFileList($files)
- * 3007:     function getExtPath($extKey,$type)
+ * 2800:     function createDirsInPath($dirs,$extDirPath)
+ * 2825:     function removeExtDirectory($removePath,$removeContentOnly=0)
+ * 2887:     function clearAndMakeExtensionDir($importedData,$type)
+ * 2940:     function removeCacheFiles()
+ * 2960:     function extractDirsFromFileList($files)
+ * 2986:     function getExtPath($extKey,$type)
  *
  *              SECTION: Writing to "conf.php" and "localconf.php" files
- * 3039:     function writeTYPO3_MOD_PATH($confFilePath,$type,$mP)
- * 3076:     function writeNewExtensionList($newExtList)
- * 3099:     function writeTsStyleConfig($extKey,$arr)
- * 3121:     function updateLocalEM_CONF($extKey,$extInfo)
+ * 3018:     function writeTYPO3_MOD_PATH($confFilePath,$type,$mP)
+ * 3055:     function writeNewExtensionList($newExtList)
+ * 3078:     function writeTsStyleConfig($extKey,$arr)
+ * 3100:     function updateLocalEM_CONF($extKey,$extInfo)
  *
  *              SECTION: Compiling upload information, emconf-file etc.
- * 3159:     function construct_ext_emconf_file($extKey,$EM_CONF)
- * 3204:     function makeUploadArray($extKey,$conf)
- * 3271:     function getSerializedLocalLang($file,$content)
+ * 3138:     function construct_ext_emconf_file($extKey,$EM_CONF)
+ * 3183:     function makeUploadArray($extKey,$conf)
+ * 3250:     function getSerializedLocalLang($file,$content)
  *
  *              SECTION: Managing dependencies, conflicts, priorities, load order of extension keys
- * 3305:     function addExtToList($extKey,$instExtInfo)
- * 3367:     function removeExtFromList($extKey,$instExtInfo)
- * 3404:     function removeRequiredExtFromListArr($listArr)
- * 3419:     function managesPriorities($listArr,$instExtInfo)
+ * 3284:     function addExtToList($extKey,$instExtInfo)
+ * 3346:     function removeExtFromList($extKey,$instExtInfo)
+ * 3383:     function removeRequiredExtFromListArr($listArr)
+ * 3398:     function managesPriorities($listArr,$instExtInfo)
  *
  *              SECTION: System Update functions (based on extension requirements)
- * 3471:     function checkClearCache($extKey,$extInfo)
- * 3499:     function checkUploadFolder($extKey,$extInfo)
- * 3587:     function checkDBupdates($extKey,$extInfo,$infoOnly=0)
- * 3686:     function tsStyleConfigForm($extKey,$extInfo,$output=0,$script='',$addFields='')
+ * 3450:     function checkClearCache($extKey,$extInfo)
+ * 3477:     function checkUploadFolder($extKey,$extInfo)
+ * 3562:     function checkDBupdates($extKey,$extInfo,$infoOnly=0)
+ * 3661:     function tsStyleConfigForm($extKey,$extInfo,$output=0,$script='',$addFields='')
  *
  *              SECTION: Dumping database (MySQL compliant)
- * 3780:     function dumpTableAndFieldStructure($arr)
- * 3805:     function dumpStaticTables($tableList)
- * 3834:     function dumpHeader()
- * 3851:     function dumpTableHeader($table,$fieldKeyInfo,$dropTableIfExists=0)
- * 3890:     function dumpTableContent($table,$fieldStructure)
- * 3925:     function getTableAndFieldStructure($parts)
+ * 3755:     function dumpTableAndFieldStructure($arr)
+ * 3780:     function dumpStaticTables($tableList)
+ * 3809:     function dumpHeader()
+ * 3826:     function dumpTableHeader($table,$fieldKeyInfo,$dropTableIfExists=0)
+ * 3865:     function dumpTableContent($table,$fieldStructure)
+ * 3900:     function getTableAndFieldStructure($parts)
  *
  *              SECTION: TER Communication functions
- * 3973:     function fetchServerData($repositoryUrl)
- * 4002:     function decodeServerData($externalData,$stat=array())
- * 4028:     function decodeExchangeData($str)
- * 4050:     function makeUploadDataFromArray($uploadArray,$local_gzcompress=-1)
- * 4075:     function repTransferParams()
- * 4089:     function makeReturnUrl()
- * 4099:     function T3instID()
- * 4110:     function processRepositoryReturnData($TER_CMD)
+ * 3948:     function fetchServerData($repositoryUrl)
+ * 3978:     function decodeServerData($externalData,$stat=array())
+ * 4004:     function decodeExchangeData($str)
+ * 4026:     function makeUploadDataFromArray($uploadArray,$local_gzcompress=-1)
+ * 4051:     function repTransferParams()
+ * 4067:     function makeReturnUrl()
+ * 4077:     function T3instID()
+ * 4088:     function processRepositoryReturnData($TER_CMD)
  *
  *              SECTION: Various helper functions
- * 4154:     function listOrderTitle($listOrder,$key)
- * 4185:     function makeVersion($v,$mode)
- * 4197:     function renderVersion($v,$raise='')
- * 4234:     function ulFolder($extKey)
- * 4243:     function importAtAll()
- * 4254:     function importAsType($type,$lockType='')
- * 4274:     function deleteAsType($type)
- * 4292:     function getDocManual($extension_key,$loc='')
- * 4308:     function versionDifference($v1,$v2,$div=1)
- * 4320:     function first_in_array($str,$array,$caseInsensitive=FALSE)
- * 4337:     function includeEMCONF($path,$_EXTKEY)
+ * 4132:     function listOrderTitle($listOrder,$key)
+ * 4163:     function makeVersion($v,$mode)
+ * 4175:     function renderVersion($v,$raise='')
+ * 4212:     function ulFolder($extKey)
+ * 4221:     function importAtAll()
+ * 4232:     function importAsType($type,$lockType='')
+ * 4252:     function deleteAsType($type)
+ * 4270:     function getDocManual($extension_key,$loc='')
+ * 4286:     function versionDifference($v1,$v2,$div=1)
+ * 4298:     function first_in_array($str,$array,$caseInsensitive=FALSE)
+ * 4315:     function includeEMCONF($path,$_EXTKEY)
  *
- * TOTAL FUNCTIONS: 89
+ * TOTAL FUNCTIONS: 87
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -187,7 +184,7 @@ require_once(PATH_t3lib.'class.t3lib_scbase.php');
 /**
  * Module: Extension manager
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -409,6 +406,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * instead of overwriting it. That was necessary for including the Kickstarter as a submodule into the 'singleDetails'
 	 * selectorbox as well as in the main 'function' selectorbox.
 	 *
+	 * @param	string		Mod-setting array key
+	 * @param	string		Mod setting value, overriding the one in the key
+	 * @return	void
 	 * @see t3lib_SCbase::handleExternalFunctionValue()
 	 */
 	function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)	{

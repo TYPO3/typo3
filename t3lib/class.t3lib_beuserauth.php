@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @internal
  */
 /**
@@ -38,17 +38,18 @@
  *
  *
  *
- *   75: class t3lib_beUserAuth extends t3lib_userAuthGroup
- *  150:     function trackBeUser($flag)
- *  168:     function checkLockToIP()
- *  188:     function backendCheckLogin()
- *  218:     function backendSetUC()
- *  253:     function overrideUC()
- *  263:     function resetUC()
- *  276:     function emailAtLogin()
- *  328:     function veriCode()
+ *   76: class t3lib_beUserAuth extends t3lib_userAuthGroup
+ *  151:     function trackBeUser($flag)
+ *  169:     function checkLockToIP()
+ *  189:     function backendCheckLogin()
+ *  217:     function checkCLIuser()
+ *  241:     function backendSetUC()
+ *  277:     function overrideUC()
+ *  287:     function resetUC()
+ *  300:     function emailAtLogin()
+ *  352:     function veriCode()
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -68,7 +69,7 @@
  * t3lib_userauthgroup contains most of the functions used for checking permissions, authenticating users, setting up the user etc. This class is most interesting in terms of an API for user from outside.
  * This class contains the configuration of the database fields used plus some functions for the authentication process of backend users.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

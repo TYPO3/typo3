@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -56,42 +56,42 @@
  *              SECTION: Functions for listing, browsing, searching etc.
  *  428:     function pi_list_browseresults($showResultCount=1,$tableParams='')
  *  500:     function pi_list_searchBox($tableParams='')
- *  528:     function pi_list_modeSelector($items=array(),$tableParams='')
- *  566:     function pi_list_makelist($res,$tableParams='')
- *  601:     function pi_list_row($c)
- *  613:     function pi_list_header()
+ *  531:     function pi_list_modeSelector($items=array(),$tableParams='')
+ *  569:     function pi_list_makelist($res,$tableParams='')
+ *  604:     function pi_list_row($c)
+ *  616:     function pi_list_header()
  *
  *              SECTION: Stylesheet, CSS
- *  644:     function pi_getClassName($class)
- *  656:     function pi_classParam($class)
- *  670:     function pi_setClassStyle($class,$data,$selector='')
- *  681:     function pi_wrapInBaseClass($str)
+ *  647:     function pi_getClassName($class)
+ *  659:     function pi_classParam($class)
+ *  673:     function pi_setClassStyle($class,$data,$selector='')
+ *  684:     function pi_wrapInBaseClass($str)
  *
  *              SECTION: Frontend editing: Edit panel, edit icons
- *  730:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())
- *  772:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array())
+ *  733:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())
+ *  775:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array())
  *
  *              SECTION: Localization, locallang functions
- *  819:     function pi_getLL($key,$alt='',$hsc=FALSE)
- *  840:     function pi_loadLL()
+ *  822:     function pi_getLL($key,$alt='',$hsc=FALSE)
+ *  843:     function pi_loadLL()
  *
  *              SECTION: Database, queries
- *  905:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)
- *  997:     function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')
- * 1012:     function pi_getRecord($table,$uid,$checkPage=0)
- * 1023:     function pi_getPidList($pid_list,$recursive=0)
- * 1048:     function pi_prependFieldsWithTable($table,$fieldList)
- * 1068:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  908:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)
+ * 1000:     function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')
+ * 1015:     function pi_getRecord($table,$uid,$checkPage=0)
+ * 1026:     function pi_getPidList($pid_list,$recursive=0)
+ * 1051:     function pi_prependFieldsWithTable($table,$fieldList)
+ * 1071:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Various
- * 1112:     function pi_isOnlyFields($fList,$lowerThan=-1)
- * 1132:     function pi_autoCache($inArray)
- * 1163:     function pi_RTEcssText($str)
+ * 1115:     function pi_isOnlyFields($fList,$lowerThan=-1)
+ * 1135:     function pi_autoCache($inArray)
+ * 1166:     function pi_RTEcssText($str)
  *
  *              SECTION: FlexForms related functions
- * 1184:     function pi_initPIflexForm()
- * 1202:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')
- * 1219:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)
+ * 1187:     function pi_initPIflexForm()
+ * 1205:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')
+ * 1222:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)
  *
  * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -125,7 +125,7 @@
  * This class contains functions which assists these plugins in creating lists, searching, displaying menus, page-browsing (next/previous/1/2/3) and handling links.
  * Functions are all prefixed "pi_" which is reserved for this class. Those functions can of course be overridden in the extension classes (that is the point...)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */

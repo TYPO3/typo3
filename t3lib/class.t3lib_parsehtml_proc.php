@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
  * XHTML compatible.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @internal
  */
 /**
@@ -48,31 +48,31 @@
  *  231:     function RTE_transform($value,$specConf,$direction='rte',$thisConfig=array())
  *
  *              SECTION: Specific RTE TRANSFORMATION functions
- *  378:     function TS_images_db($value)
- *  519:     function TS_images_rte($value)
- *  553:     function TS_reglinks($value,$direction)
- *  587:     function TS_links_db($value)
- *  635:     function TS_links_rte($value)
- *  716:     function TS_preserve_db($value)
- *  740:     function TS_preserve_rte($value)
- *  761:     function TS_transform_db($value,$css=FALSE)
- *  872:     function TS_transform_rte($value,$css=0)
- *  943:     function TS_strip_db($value)
+ *  397:     function TS_images_db($value)
+ *  538:     function TS_images_rte($value)
+ *  572:     function TS_reglinks($value,$direction)
+ *  606:     function TS_links_db($value)
+ *  654:     function TS_links_rte($value)
+ *  735:     function TS_preserve_db($value)
+ *  759:     function TS_preserve_rte($value)
+ *  780:     function TS_transform_db($value,$css=FALSE)
+ *  891:     function TS_transform_rte($value,$css=0)
+ *  962:     function TS_strip_db($value)
  *
  *              SECTION: Generic RTE transformation, analysis and helper functions
- *  974:     function getURL($url)
- *  988:     function HTMLcleaner_db($content,$tagList='')
- * 1009:     function getKeepTags($direction='rte',$tagList='')
- * 1118:     function divideIntoLines($value,$count=5,$returnArray=FALSE)
- * 1222:     function setDivTags($value,$dT='p')
- * 1267:     function internalizeFontTags($value)
- * 1303:     function siteUrl()
- * 1313:     function rteImageStorageDir()
- * 1325:     function removeTables($value,$breakChar='<br />')
- * 1357:     function defaultTStagMapping($code,$direction='rte')
- * 1380:     function getWHFromAttribs($attribArray)
- * 1406:     function urlInfoForLinkTags($url)
- * 1465:     function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)
+ *  993:     function getURL($url)
+ * 1007:     function HTMLcleaner_db($content,$tagList='')
+ * 1028:     function getKeepTags($direction='rte',$tagList='')
+ * 1137:     function divideIntoLines($value,$count=5,$returnArray=FALSE)
+ * 1241:     function setDivTags($value,$dT='p')
+ * 1286:     function internalizeFontTags($value)
+ * 1322:     function siteUrl()
+ * 1332:     function rteImageStorageDir()
+ * 1344:     function removeTables($value,$breakChar='<br />')
+ * 1376:     function defaultTStagMapping($code,$direction='rte')
+ * 1399:     function getWHFromAttribs($attribArray)
+ * 1425:     function urlInfoForLinkTags($url)
+ * 1484:     function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)
  *
  * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -95,7 +95,7 @@ require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

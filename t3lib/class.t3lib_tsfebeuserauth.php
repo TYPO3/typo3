@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -73,9 +73,9 @@
  *  864:     function extGetLL($key)
  *
  *              SECTION: Frontend Editing
- *  907:     function extIsEditAction()
- *  925:     function extIsFormShown()
- *  941:     function extEditAction()
+ *  908:     function extIsEditAction()
+ *  926:     function extIsFormShown()
+ *  942:     function extEditAction()
  *
  * TOTAL FUNCTIONS: 25
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -96,7 +96,7 @@
  * TYPO3 backend user authentication in the TSFE frontend.
  * This includes mainly functions related to the Admin Panel
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,48 +30,51 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  112: class t3lib_userAuthGroup extends t3lib_userAuth
+ *  115: class t3lib_userAuthGroup extends t3lib_userAuth
  *
  *              SECTION: Permission checking functions:
- *  170:     function isAdmin()
- *  182:     function isMemberOfGroup($groupId)
- *  204:     function doesUserHaveAccess($row,$perms)
- *  221:     function isInWebMount($id,$readPerms='',$exitOnError=0)
- *  248:     function modAccess($conf,$exitOnError)
- *  284:     function getPagePermsClause($perms)
- *  310:     function calcPerms($row)
- *  333:     function isRTE()
- *  367:     function check ($type,$value)
- *  384:     function isPSet($lCP,$table,$type='')
- *  401:     function mayMakeShortcut()
+ *  176:     function isAdmin()
+ *  188:     function isMemberOfGroup($groupId)
+ *  210:     function doesUserHaveAccess($row,$perms)
+ *  227:     function isInWebMount($id,$readPerms='',$exitOnError=0)
+ *  254:     function modAccess($conf,$exitOnError)
+ *  290:     function getPagePermsClause($perms)
+ *  316:     function calcPerms($row)
+ *  339:     function isRTE()
+ *  373:     function check($type,$value)
+ *  390:     function checkAuthMode($table,$field,$value,$authMode)
+ *  456:     function checkLanguageAccess($langValue)
+ *  476:     function recordEditAccessInternals($table,$idOrRow)
+ *  541:     function isPSet($lCP,$table,$type='')
+ *  558:     function mayMakeShortcut()
  *
  *              SECTION: Miscellaneous functions
- *  429:     function getTSConfig($objectString,$config='')
- *  455:     function getTSConfigVal($objectString)
- *  467:     function getTSConfigProp($objectString)
- *  479:     function inList($in_list,$item)
- *  489:     function returnWebmounts()
- *  499:     function returnFilemounts()
+ *  586:     function getTSConfig($objectString,$config='')
+ *  612:     function getTSConfigVal($objectString)
+ *  624:     function getTSConfigProp($objectString)
+ *  636:     function inList($in_list,$item)
+ *  647:     function returnWebmounts()
+ *  657:     function returnFilemounts()
  *
  *              SECTION: Authentication methods
- *  529:     function fetchGroupData()
- *  648:     function fetchGroups($grList,$idList='')
- *  717:     function setCachedList($cList)
- *  737:     function addFileMount($title, $altTitle, $path, $webspace, $type)
- *  784:     function addTScomment($str)
+ *  687:     function fetchGroupData()
+ *  810:     function fetchGroups($grList,$idList='')
+ *  882:     function setCachedList($cList)
+ *  902:     function addFileMount($title, $altTitle, $path, $webspace, $type)
+ *  949:     function addTScomment($str)
  *
  *              SECTION: Logging
- *  831:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='')
- *  864:     function checkLogFailures($email, $secondsBack=3600, $max=3)
+ *  996:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='')
+ * 1029:     function checkLogFailures($email, $secondsBack=3600, $max=3)
  *
- * TOTAL FUNCTIONS: 24
+ * TOTAL FUNCTIONS: 27
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -105,7 +108,7 @@ require_once (PATH_t3lib.'class.t3lib_tsparser.php');
  * Actually this class is extended again by t3lib_beuserauth which is the actual backend user class that will be instantiated.
  * In fact the two classes t3lib_beuserauth and this class could just as well be one, single class since t3lib_userauthgroup is not - to my knowledge - used separately elsewhere. But for historical reasons they are two separate classes.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -42,17 +42,17 @@
  *  123:     function init()
  *  183:     function menuConfig()
  *  214:     function main()
- *  280:     function printContent()
+ *  291:     function printContent()
  *
  *              SECTION: Listing and Form rendering
- *  306:     function doEdit()
- *  440:     function notEdit()
+ *  317:     function doEdit()
+ *  454:     function notEdit()
  *
  *              SECTION: Helper functions
- *  619:     function printCheckBox($checkName,$num)
- *  630:     function printPerms($int)
- *  648:     function groupPerms($row,$firstGroup)
- *  665:     function getRecursiveSelect($id,$perms_clause)
+ *  647:     function printCheckBox($checkName,$num)
+ *  658:     function printPerms($int)
+ *  676:     function groupPerms($row,$firstGroup)
+ *  693:     function getRecursiveSelect($id,$perms_clause)
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -82,7 +82,7 @@ $BE_USER->modAccess($MCONF,1);
  * $this->depth 	: 	intval 1-3: decides the depth of the list
  * $this->mode		:	'perms' / '': decides if we view a user-overview or the permissions.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

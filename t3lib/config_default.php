@@ -11,7 +11,7 @@
  * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 
 if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');

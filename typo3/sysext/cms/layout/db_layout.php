@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +33,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -49,17 +49,17 @@
  *
  *  182: class SC_db_layout
  *  231:     function init()
- *  286:     function menuConfig()
- *  362:     function clearCache()
- *  377:     function main()
- *  475:     function renderQuickEdit()
- *  839:     function renderListContent()
- * 1104:     function printContent()
+ *  284:     function menuConfig()
+ *  366:     function clearCache()
+ *  381:     function main()
+ *  482:     function renderQuickEdit()
+ *  868:     function renderListContent()
+ * 1147:     function printContent()
  *
  *              SECTION: Other functions
- * 1131:     function getNumberOfHiddenElements()
- * 1144:     function local_linkThisScript($params)
- * 1156:     function exec_languageQuery($id)
+ * 1174:     function getNumberOfHiddenElements()
+ * 1187:     function local_linkThisScript($params)
+ * 1199:     function exec_languageQuery($id)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -99,7 +99,7 @@ t3lib_extMgm::isLoaded('cms',1);
 /**
  * Local extension of position map class
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -175,7 +175,7 @@ class ext_posMap extends t3lib_positionMap {
 /**
  * Script Class for Web > Layout module
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

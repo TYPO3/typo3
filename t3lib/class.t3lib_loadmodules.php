@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Modifications by Rene Fritz, 2001
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @internal
  */
 /**
@@ -43,10 +43,10 @@
  *   97:     function load($modulesArray,$BE_USER='')
  *  366:     function checkExtensionModule($name)
  *  385:     function checkMod($name, $fullpath)
- *  458:     function checkModAccess($name,$MCONF)
- *  481:     function parseModulesArray ($arr)
- *  511:     function cleanName ($str)
- *  522:     function getRelativePath($baseDir,$destDir)
+ *  465:     function checkModAccess($name,$MCONF)
+ *  488:     function parseModulesArray($arr)
+ *  517:     function cleanName ($str)
+ *  528:     function getRelativePath($baseDir,$destDir)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -71,7 +71,7 @@
  * 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
  * 		$this->loadModules->load($TBE_MODULES);
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

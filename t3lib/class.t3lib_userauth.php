@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -38,26 +38,26 @@
  *
  *
  *   89: class t3lib_userAuth
- *  158:     function start()
- *  260:     function check_authentication()
- *  412:     function redirect()
- *  425:     function logoff()
- *  440:     function gc()
- *  454:     function user_where_clause()
- *  468:     function ipLockClause()
- *  484:     function ipLockClause_remoteIPNumber($parts)
- *  505:     function hashLockClause()
- *  515:     function hashLockClause_getHashInt()
- *  527:     function writeUC($variable='')
- *  550:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
- *  559:     function checkLogFailures()
- *  568:     function unpack_uc($theUC='')
- *  584:     function pushModuleData($module,$data,$noSave=0)
- *  597:     function getModuleData($module,$type='')
- *  610:     function getSessionData($key)
- *  623:     function setAndSaveSessionData($key,$data)
- *  642:     function setBeUserByUid($uid)
- *  655:     function setBeUserByName($name)
+ *  159:     function start()
+ *  261:     function check_authentication()
+ *  413:     function redirect()
+ *  426:     function logoff()
+ *  441:     function gc()
+ *  455:     function user_where_clause()
+ *  469:     function ipLockClause()
+ *  487:     function ipLockClause_remoteIPNumber($parts)
+ *  508:     function hashLockClause()
+ *  519:     function hashLockClause_getHashInt()
+ *  535:     function writeUC($variable='')
+ *  558:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
+ *  567:     function checkLogFailures()
+ *  576:     function unpack_uc($theUC='')
+ *  592:     function pushModuleData($module,$data,$noSave=0)
+ *  605:     function getModuleData($module,$type='')
+ *  618:     function getSessionData($key)
+ *  631:     function setAndSaveSessionData($key,$data)
+ *  650:     function setBeUserByUid($uid)
+ *  663:     function setBeUserByName($name)
  *
  * TOTAL FUNCTIONS: 20
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -82,7 +82,7 @@
  *
  * See Inside TYPO3 for more information about the API of the class and internal variables.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

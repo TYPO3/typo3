@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -39,14 +39,14 @@
  *
  *  133: class t3lib_SCbase
  *  249:     function init()
- *  266:     function menuConfig()
- *  286:     function mergeExternalItems($modName,$menuKey,$menuArr)
- *  305:     function handleExternalFunctionValue($MM_key='function')
- *  322:     function getExternalItemConfig($modName,$menuKey,$value='')
- *  336:     function checkExtObj()
- *  350:     function checkSubExtObj()
- *  362:     function extObjHeader()
- *  371:     function extObjContent()
+ *  269:     function menuConfig()
+ *  292:     function mergeExternalItems($modName,$menuKey,$menuArr)
+ *  312:     function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)
+ *  330:     function getExternalItemConfig($modName,$menuKey,$value='')
+ *  344:     function checkExtObj()
+ *  358:     function checkSubExtObj()
+ *  370:     function extObjHeader()
+ *  379:     function extObjContent()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -125,7 +125,7 @@
  * Parent class for 'ScriptClasses' in backend modules.
  * See example comment above.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_extobjbase

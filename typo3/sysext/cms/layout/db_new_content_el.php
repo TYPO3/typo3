@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compatible.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -47,11 +47,11 @@
  *  152: class SC_db_new_content_el
  *  175:     function init()
  *  211:     function main()
- *  355:     function printContent()
+ *  358:     function printContent()
  *
  *              SECTION: OTHER FUNCTIONS:
- *  384:     function getWizardItems()
- *  394:     function wizardArray()
+ *  387:     function getWizardItems()
+ *  397:     function wizardArray()
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -93,7 +93,7 @@ require_once(PATH_t3lib.'class.t3lib_positionmap.php');
 /**
  * Local position map class
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -145,7 +145,7 @@ class ext_posMap extends t3lib_positionMap {
 /**
  * Script Class for the New Content element wizard
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

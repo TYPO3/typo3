@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,24 +32,27 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   85: class TSpagegen
- *   92:     function pagegenInit()
- *  216:     function getIncFiles()
- *  249:     function JSeventFunctions()
- *  283:     function renderContent()
- *  310:     function renderContentWithHeader($pageContent)
+ *   88: class TSpagegen
+ *   95:     function pagegenInit()
+ *  225:     function getIncFiles()
+ *  258:     function JSeventFunctions()
+ *  292:     function renderContent()
+ *  319:     function renderContentWithHeader($pageContent)
+ *
+ *              SECTION: Helper functions
+ *  754:     function inline2TempFile($str,$ext)
  *
  *
- *  674: class FE_loadDBGroup extends t3lib_loadDBGroup
+ *  808: class FE_loadDBGroup extends t3lib_loadDBGroup
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -78,7 +81,7 @@
  * The class is not instantiated as an objects but called directly with the "::" operator.
  * eg: TSpagegen::pagegenInit()
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -797,7 +800,7 @@ require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 /**
  * Class for fetching record relations for the frontend.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @see tslib_cObj::RECORDS()

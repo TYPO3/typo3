@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Rene Fritz	<r.fritz@colorcube.de>
  */
 /**
@@ -44,7 +44,7 @@
  *  130:     function register_tables_and_columns($requestedCols,$allowedCols)
  *  171:     function explodeCols($in)
  *  196:     function register_and_explode_search_string($sword)
- *  229:     function split($origSword, $specchars='+-', $delchars='+-.,')
+ *  229:     function split($origSword, $specchars='+-', $delchars='+.,-')
  *  272:     function quotemeta($str)
  *  288:     function build_search_query($endClause)
  *  374:     function build_search_query_for_searchwords()
@@ -80,7 +80,7 @@
 /**
  * Search class used for the content object SEARCHRESULT
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @see	tslib_cObj::SEARCHRESULT()

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,119 +35,129 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  182: class tslib_fe
- *  337:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
- *  368:     function connectToMySQL()
- *  404:     function sendRedirect()
+ *  192: class tslib_fe
+ *  356:     function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='',$MP='',$RDCT='')
+ *  387:     function connectToMySQL()
+ *  423:     function sendRedirect()
  *
  *              SECTION: Initializing, resolving page id
- *  442:     function initFEuser()
- *  496:     function checkAlternativeIdMethods()
- *  548:     function clear_preview()
- *  561:     function determineId()
- *  641:     function fetch_the_id()
- *  746:     function getPageAndRootline()
- *  808:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
- *  858:     function checkRootlineForIncludeSection()
- *  891:     function checkEnableFields($row)
- *  909:     function checkPagerecordForIncludeSection($row)
- *  921:     function setIDfromArgV()
- *  937:     function getPageAndRootlineWithDomain($domainStartPage)
- *  965:     function findDomainRecord($recursive=0)
- *  986:     function pageNotFoundHandler($code,$header='')
- * 1008:     function checkAndSetAlias()
- * 1023:     function idPartsAnalyze($str)
- * 1048:     function mergingWithGetVars($GET_VARS)
+ *  461:     function initFEuser()
+ *  501:     function initUserGroups()
+ *  549:     function checkAlternativeIdMethods()
+ *  601:     function clear_preview()
+ *  614:     function determineId()
+ *  720:     function fetch_the_id()
+ *  812:     function getPageAndRootline()
+ *  878:     function getPageShortcut($SC,$mode,$thisUid,$itera=20,$pageLog=array())
+ *  928:     function checkRootlineForIncludeSection()
+ *  961:     function checkEnableFields($row)
+ *  979:     function checkPageGroupAccess($row, $groupList=NULL)
+ *  998:     function checkPagerecordForIncludeSection($row)
+ * 1010:     function setIDfromArgV()
+ * 1026:     function getPageAndRootlineWithDomain($domainStartPage)
+ * 1053:     function setSysPageWhereClause()
+ * 1063:     function getPagesGroupClause()
+ * 1074:     function findDomainRecord($recursive=0)
+ * 1093:     function pageNotFoundAndExit($reason='')
+ * 1107:     function pageNotFoundHandler($code, $header='', $reason='')
+ * 1145:     function checkAndSetAlias()
+ * 1160:     function idPartsAnalyze($str)
+ * 1185:     function mergingWithGetVars($GET_VARS)
  *
  *              SECTION: Template and caching related functions.
- * 1096:     function makeCacheHash()
- * 1119:     function cHashParams($addQueryParams)
- * 1140:     function initTemplate()
- * 1152:     function getFromCache()
- * 1210:     function getHash()
- * 1230:     function getConfigArray()
+ * 1233:     function makeCacheHash()
+ * 1256:     function cHashParams($addQueryParams)
+ * 1277:     function initTemplate()
+ * 1289:     function getFromCache()
+ * 1347:     function getHash()
+ * 1367:     function getConfigArray()
  *
  *              SECTION: Further initialization and data processing
- * 1344:     function getCompressedTCarray()
- * 1381:     function includeTCA($TCAloaded=1)
- * 1407:     function settingLanguage()
- * 1447:     function checkDataSubmission()
- * 1474:     function fe_tce()
- * 1488:     function locDataCheck($locationData)
- * 1504:     function sendFormmail()
- * 1547:     function checkJumpUrl()
- * 1629:     function jumpUrl()
- * 1672:     function setUrlIdToken()
+ * 1485:     function getCompressedTCarray()
+ * 1539:     function includeTCA($TCAloaded=1)
+ * 1566:     function settingLanguage()
+ * 1656:     function settingLocale()
+ * 1681:     function checkDataSubmission()
+ * 1706:     function fe_tce()
+ * 1720:     function locDataCheck($locationData)
+ * 1736:     function sendFormmail()
+ * 1779:     function checkJumpUrl()
+ * 1861:     function jumpUrl()
+ * 1904:     function setUrlIdToken()
  *
  *              SECTION: Page generation; cache handling
- * 1715:     function isGeneratePage()
- * 1725:     function tempPageCacheContent()
- * 1756:     function realPageCacheContent()
- * 1778:     function setPageCacheContent($c,$d,$t)
- * 1800:     function clearPageCacheContent()
- * 1810:     function clearPageCacheContent_pidList($pidList)
- * 1821:     function setSysLastChanged()
+ * 1947:     function isGeneratePage()
+ * 1957:     function tempPageCacheContent()
+ * 1988:     function realPageCacheContent()
+ * 2018:     function setPageCacheContent($c,$d,$t)
+ * 2040:     function clearPageCacheContent()
+ * 2050:     function clearPageCacheContent_pidList($pidList)
+ * 2061:     function setSysLastChanged()
  *
  *              SECTION: Page generation; rendering and inclusion
- * 1857:     function generatePage_preProcessing()
- * 1893:     function generatePage_whichScript()
- * 1905:     function generatePage_postProcessing()
- * 1993:     function INTincScript()
- * 2054:     function INTincScript_loadJSCode()
- * 2095:     function isINTincScript()
- * 2104:     function isSearchIndexPage()
- * 2113:     function doXHTML_cleaning()
- * 2122:     function doLocalAnchorFix()
+ * 2097:     function generatePage_preProcessing()
+ * 2119:     function generatePage_whichScript()
+ * 2131:     function generatePage_postProcessing()
+ * 2223:     function INTincScript()
+ * 2283:     function INTincScript_loadJSCode()
+ * 2324:     function isINTincScript()
+ * 2333:     function doXHTML_cleaning()
+ * 2342:     function doLocalAnchorFix()
  *
  *              SECTION: Finished off; outputting, storing session data, statistics...
- * 2153:     function isOutputting()
- * 2164:     function processOutput()
- * 2230:     function isEXTincScript()
- * 2239:     function storeSessionData()
- * 2249:     function setParseTime()
- * 2261:     function statistics()
- * 2355:     function previewInfo()
- * 2376:     function beLoginLinkIPList()
+ * 2373:     function isOutputting()
+ * 2384:     function processOutput()
+ * 2450:     function isEXTincScript()
+ * 2459:     function storeSessionData()
+ * 2469:     function setParseTime()
+ * 2481:     function statistics()
+ * 2575:     function previewInfo()
+ * 2596:     function beLoginLinkIPList()
  *
  *              SECTION: Various internal API functions
- * 2431:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
- * 2478:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
- * 2506:     function getSimulFileName()
- * 2519:     function encryptEmail($string,$back=0)
- * 2538:     function codeString($string, $decode=FALSE)
- * 2564:     function roundTripCryptString($string)
- * 2584:     function checkFileInclude($incFile)
- * 2599:     function newCObj()
- * 2612:     function setAbsRefPrefix()
- * 2628:     function printError($label,$header='Error!')
- * 2639:     function updateMD5paramsRecord($hash)
- * 2650:     function tidyHTML($content)
- * 2676:     function prefixLocalAnchorsWithScript()
+ * 2651:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')
+ * 2698:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
+ * 2727:     function getSimulFileName()
+ * 2740:     function encryptEmail($string,$back=0)
+ * 2759:     function codeString($string, $decode=FALSE)
+ * 2785:     function roundTripCryptString($string)
+ * 2805:     function checkFileInclude($incFile)
+ * 2820:     function newCObj()
+ * 2833:     function setAbsRefPrefix()
+ * 2847:     function baseUrlWrap($url)
+ * 2866:     function printError($label,$header='Error!')
+ * 2877:     function updateMD5paramsRecord($hash)
+ * 2888:     function tidyHTML($content)
+ * 2914:     function prefixLocalAnchorsWithScript()
  *
  *              SECTION: Various external API functions - for use in plugins etc.
- * 2720:     function getStorageSiterootPids()
- * 2735:     function getPagesTSconfig()
- * 2768:     function setJS($key,$content='')
- * 2806:     function setCSS($key,$content)
- * 2821:     function make_seed()
- * 2834:     function uniqueHash($str='')
- * 2843:     function set_no_cache()
- * 2853:     function set_cache_timeout_default($seconds)
- * 2869:     function plainMailEncoded($email,$subject,$message,$headers='')
- * 2892:     function sL($input)
- * 2929:     function csConv($str,$from='')
- * 2948:     function readLLfile($fileRef)
- * 2963:     function getLLL($index,$LOCAL_LANG)
- * 2977:     function initLLvars()
+ * 2958:     function getStorageSiterootPids()
+ * 2973:     function getPagesTSconfig()
+ * 3006:     function setJS($key,$content='')
+ * 3044:     function setCSS($key,$content)
+ * 3059:     function make_seed()
+ * 3072:     function uniqueHash($str='')
+ * 3081:     function set_no_cache()
+ * 3091:     function set_cache_timeout_default($seconds)
+ * 3107:     function plainMailEncoded($email,$subject,$message,$headers='')
  *
- * TOTAL FUNCTIONS: 87
+ *              SECTION: Localization
+ * 3148:     function sL($input)
+ * 3177:     function readLLfile($fileRef)
+ * 3192:     function getLLL($index,$LOCAL_LANG)
+ * 3206:     function initLLvars()
+ * 3240:     function csConv($str,$from='')
+ * 3258:     function convOutputCharset($content,$label)
+ * 3271:     function convPOSTCharset()
+ *
+ * TOTAL FUNCTIONS: 95
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -175,7 +185,7 @@
 /**
  * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -1047,7 +1057,7 @@
 	/**
 	 * Return where-clause for group access
 	 *
-	 * @return	string 	Group where clause part
+	 * @return	string		Group where clause part
 	 * @access private
 	 */
 	 function getPagesGroupClause() {
@@ -1639,7 +1649,7 @@
 	}
 
 	/**
-	 * Setting locale
+	 * Setting locale for frontend rendering
 	 *
 	 * @return	void
 	 */
@@ -3241,9 +3251,9 @@ if (version == "n3") {
 	/**
 	 * Converts input string from renderCharset to metaCharset IF the two charsets are different.
 	 *
-	 * @param	string	Content to be converted.
-	 * @param	string	Label (just for fun, no function)
-	 * @return	string	Converted content string.
+	 * @param	string		Content to be converted.
+	 * @param	string		Label (just for fun, no function)
+	 * @return	string		Converted content string.
 	 */
 	function convOutputCharset($content,$label)	{
 		if ($this->renderCharset != $this->metaCharset)	{

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,21 +29,22 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   66: class tx_cms_webinfo_page extends t3lib_extobjbase
- *   73:     function modMenu()
- *  100:     function main()
+ *   65: class tx_cms_webinfo_lang extends t3lib_extobjbase
+ *   72:     function modMenu()
+ *   89:     function main()
+ *  156:     function renderL10nTable(&$tree)
+ *  320:     function getSystemLanguages()
+ *  342:     function getLangStatus($pageId, $langId)
+ *  369:     function getContentElementCount($pageId,$sysLang)
  *
- *
- *  191: class tx_cms_webinfo_hits extends tx_cms_webinfo_page
- *
- * TOTAL FUNCTIONS: 2
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -57,7 +58,7 @@ require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 /**
  * Class for displaying translation status of pages in the tree.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_cms
  */
@@ -149,8 +150,8 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	/**
 	 * Rendering the localization information table.
 	 *
-	 * @param	array	The Page tree data
-	 * @return	string	HTML for the localization information table.
+	 * @param	array		The Page tree data
+	 * @return	string		HTML for the localization information table.
 	 */
 	function renderL10nTable(&$tree)	{
 		global $LANG;
@@ -314,7 +315,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	/**
 	 * Selects all system languages (from sys_language)
 	 *
-	 * @return	array	System language records in an array.
+	 * @return	array		System language records in an array.
 	 */
 	function getSystemLanguages()	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -334,7 +335,9 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	/**
 	 * Get an alternative language record for a specific page / language
 	 *
-	 * @return	array	pages_languages_overlay record
+	 * @param	integer		Page ID to look up for.
+	 * @param	integer		Language UID to select for.
+	 * @return	array		pages_languages_overlay record
 	 */
 	function getLangStatus($pageId, $langId)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(

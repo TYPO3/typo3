@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -41,16 +41,16 @@
  *
  *   84: class SC_wizard_table
  *  112:     function init()
- *  150:     function main()
- *  166:     function printContent()
- *  175:     function tableWizard()
+ *  153:     function main()
+ *  169:     function printContent()
+ *  178:     function tableWizard()
  *
  *              SECTION: Helper functions
- *  214:     function getConfigCode($row)
- *  280:     function getTableHTML($cfgArr,$row)
- *  429:     function changeFunc()
- *  545:     function cfgArray2CfgString($cfgArr)
- *  576:     function cfgString2CfgArray($cfgStr,$cols)
+ *  217:     function getConfigCode($row)
+ *  282:     function getTableHTML($cfgArr,$row)
+ *  438:     function changeFunc()
+ *  554:     function cfgArray2CfgString($cfgArr)
+ *  585:     function cfgString2CfgArray($cfgStr,$cols)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -77,7 +77,7 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 /**
  * Script Class for rendering the Table Wizard
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +33,7 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -43,7 +43,7 @@
  *   75: class SC_alt_intro
  *   84:     function init()
  *   97:     function main()
- *  166:     function printContent()
+ *  150:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -68,7 +68,7 @@ $LANG->includeLLFile('EXT:lang/locallang_alt_intro.xml');
 /**
  * Script Class for the introduction screen, alias "About > Modules" which shows the description of each available module for the user.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -127,7 +127,7 @@ class SC_alt_intro {
 		$this->content.='<p class="c-features"><em>('.$LANG->getLL('endText').')</em></p>';
 		$this->content.='<hr />';
 
-			// Logged in user, eg: 'You're logged in as user: admin (Kasper Skaarhoj, kasper@typo3.com)'
+			// Logged in user, eg: 'You're logged in as user: admin (John Doe, john@doe.email)'
 		$this->content.='<p class="c-user">'.
 				htmlspecialchars($LANG->getLL('userInfo')).
 				sprintf(' <strong>%s</strong> (%s)',

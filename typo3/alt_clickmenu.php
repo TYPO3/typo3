@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,68 +39,71 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  125: class clickMenu
- *  157:     function init($item)
- *  200:     function doDisplayTopFrameCM()
+ *  128: class clickMenu
+ *  160:     function init($item)
+ *  203:     function doDisplayTopFrameCM()
  *
  *              SECTION: DATABASE
- *  228:     function printDBClickMenu($table,$uid)
- *  315:     function printNewDBLevel($table,$uid)
- *  352:     function externalProcessingOfDBMenuItems($menuItems)
- *  364:     function processingByExtClassArray($menuItems,$table,$uid)
- *  383:     function urlRefForCM($url,$retUrl='',$hideCM=1)
- *  400:     function DB_copycut($table,$uid,$type)
- *  429:     function DB_paste($table,$uid,$type,$elInfo)
- *  450:     function DB_info($table,$uid)
- *  466:     function DB_history($table,$uid)
- *  485:     function DB_perms($table,$uid,$rec)
- *  504:     function DB_db_list($table,$uid,$rec)
- *  523:     function DB_moveWizard($table,$uid,$rec)
- *  544:     function DB_newWizard($table,$uid,$rec)
- *  567:     function DB_editAccess($table,$uid)
- *  585:     function DB_editPageHeader($uid)
- *  603:     function DB_edit($table,$uid)
- *  645:     function DB_new($table,$uid)
- *  670:     function DB_hideUnhide($table,$rec,$hideField)
- *  694:     function DB_delete($table,$uid,$elInfo)
- *  715:     function DB_view($id,$anchor='')
+ *  231:     function printDBClickMenu($table,$uid)
+ *  318:     function printNewDBLevel($table,$uid)
+ *  355:     function externalProcessingOfDBMenuItems($menuItems)
+ *  367:     function processingByExtClassArray($menuItems,$table,$uid)
+ *  386:     function urlRefForCM($url,$retUrl='',$hideCM=1)
+ *  403:     function DB_copycut($table,$uid,$type)
+ *  432:     function DB_paste($table,$uid,$type,$elInfo)
+ *  453:     function DB_info($table,$uid)
+ *  469:     function DB_history($table,$uid)
+ *  488:     function DB_perms($table,$uid,$rec)
+ *  507:     function DB_db_list($table,$uid,$rec)
+ *  526:     function DB_moveWizard($table,$uid,$rec)
+ *  547:     function DB_newWizard($table,$uid,$rec)
+ *  570:     function DB_editAccess($table,$uid)
+ *  588:     function DB_editPageHeader($uid)
+ *  606:     function DB_edit($table,$uid)
+ *  648:     function DB_new($table,$uid)
+ *  673:     function DB_delete($table,$uid,$elInfo)
+ *  694:     function DB_view($id,$anchor='')
+ *  709:     function DB_tempMountPoint($page_id)
+ *  727:     function DB_hideUnhide($table,$rec,$hideField)
+ *  742:     function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')
  *
  *              SECTION: FILE
- *  744:     function printFileClickMenu($path)
- *  808:     function externalProcessingOfFileMenuItems($menuItems)
- *  822:     function FILE_launch($path,$script,$type,$image)
- *  841:     function FILE_copycut($path,$type)
- *  867:     function FILE_delete($path)
- *  889:     function FILE_paste($path,$target,$elInfo)
+ *  776:     function printFileClickMenu($path)
+ *  840:     function externalProcessingOfFileMenuItems($menuItems)
+ *  854:     function FILE_launch($path,$script,$type,$image)
+ *  874:     function FILE_copycut($path,$type)
+ *  900:     function FILE_delete($path)
+ *  922:     function FILE_paste($path,$target,$elInfo)
  *
  *              SECTION: COMMON
- *  929:     function printItems($menuItems,$item)
- *  981:     function printLayerJScode($menuItems)
- * 1019:     function wrapColorTableCM($str)
- * 1042:     function menuItemsForTopFrame($menuItems)
- * 1059:     function menuItemsForClickMenu($menuItems)
- * 1094:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)
- * 1118:     function excludeIcon($iconCode)
- * 1128:     function enableDisableItems($menuItems)
- * 1166:     function cleanUpSpacers($menuItems)
- * 1208:     function label($label)
- * 1217:     function isCMlayers()
- * 1227:     function frameLocation($str)
+ *  962:     function printItems($menuItems,$item)
+ * 1014:     function printLayerJScode($menuItems)
+ * 1052:     function wrapColorTableCM($str)
+ * 1075:     function menuItemsForTopFrame($menuItems)
+ * 1092:     function menuItemsForClickMenu($menuItems)
+ * 1126:     function addMenuItems($menuItems,$newMenuItems,$position='')
+ * 1202:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)
+ * 1226:     function excludeIcon($iconCode)
+ * 1236:     function enableDisableItems($menuItems)
+ * 1274:     function cleanUpSpacers($menuItems)
+ * 1316:     function label($label)
+ * 1325:     function isCMlayers()
+ * 1335:     function frameLocation($str)
  *
  *
- * 1252: class SC_alt_clickmenu
- * 1271:     function init()
- * 1369:     function main()
- * 1403:     function printContent()
+ * 1360: class SC_alt_clickmenu
+ * 1379:     function init()
+ * 1477:     function main()
+ * 1511:     function printContent()
  *
- * TOTAL FUNCTIONS: 43
+ * TOTAL FUNCTIONS: 46
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -117,7 +120,7 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 /**
  * Class for generating the click menu
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  * @internal
@@ -1349,7 +1352,7 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 /**
  * Script Class for the Context Sensitive Menu in TYPO3 (rendered in top frame, normally writing content dynamically to list frames).
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  * @see template::getContextMenuCode()

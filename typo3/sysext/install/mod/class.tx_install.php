@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Ingmar Schlecht <ingmars@web.de>
  */
 /**
@@ -37,99 +37,99 @@
  *
  *
  *
- *  154: class tx_install extends t3lib_install
- *  225:     function tx_install()
- *  303:     function checkPassword($uKey)
- *  364:     function init()
- *  529:     function stepOutput()
- *  781:     function checkTheConfig()
- *  812:     function typo3conf_edit()
- *  922:     function phpinformation()
+ *  156: class tx_install extends t3lib_install
+ *  227:     function tx_install()
+ *  307:     function checkPassword($uKey)
+ *  368:     function init()
+ *  533:     function stepOutput()
+ *  785:     function checkTheConfig()
+ *  816:     function typo3conf_edit()
+ *  926:     function phpinformation()
  *
  *              SECTION: typo3temp/ manager
- * 1025:     function typo3TempManager()
- * 1126:     function getSelectorOptions($deleteType,$tt="")
+ * 1029:     function typo3TempManager()
+ * 1149:     function getSelectorOptions($deleteType,$tt="")
  *
  *              SECTION: cleanup manager
- * 1158:     function cleanupManager()
+ * 1181:     function cleanupManager()
  *
  *              SECTION: CONFIGURATION FORM
- * 1226:     function generateConfigForm($type="")
- * 1298:     function getDefaultConfigArrayComments($string,$mainArray=array(),$commentArray=array())
+ * 1249:     function generateConfigForm($type="")
+ * 1321:     function getDefaultConfigArrayComments($string,$mainArray=array(),$commentArray=array())
  *
  *              SECTION: CHECK CONFIGURATION FUNCTIONS
- * 1351:     function checkConfiguration()
- * 1546:     function check_mail($cmd="")
- * 1569:     function checkExtensions()
- * 1632:     function checkDirs()
- * 1718:     function checkImageMagick($paths)
- * 1785:     function _checkImageMagickGifCapability($file)
- * 1827:     function _checkImageMagick_getVersion($file)
- * 1840:     function checkDatabase()
- * 1902:     function setupGeneral($cmd="")
- * 2069:     function writeToLocalconf_control($lines="")
- * 2092:     function outputExitBasedOnStep($content)
- * 2108:     function setLabelValueArray($arr,$type)
- * 2136:     function getFormElement($labels,$values,$fieldName,$default,$msg="")
- * 2156:     function getDatabaseList()
- * 2180:     function setupGeneralCalculate()
- * 2249:     function getGDPartOfPhpinfo()
- * 2268:     function isTTF($phpinfo="")
+ * 1374:     function checkConfiguration()
+ * 1571:     function check_mail($cmd="")
+ * 1594:     function checkExtensions()
+ * 1656:     function checkDirs()
+ * 1742:     function checkImageMagick($paths)
+ * 1810:     function _checkImageMagickGifCapability($file)
+ * 1852:     function _checkImageMagick_getVersion($file)
+ * 1865:     function checkDatabase()
+ * 1927:     function setupGeneral($cmd="")
+ * 2094:     function writeToLocalconf_control($lines="")
+ * 2117:     function outputExitBasedOnStep($content)
+ * 2133:     function setLabelValueArray($arr,$type)
+ * 2161:     function getFormElement($labels,$values,$fieldName,$default,$msg="")
+ * 2181:     function getDatabaseList()
+ * 2205:     function setupGeneralCalculate()
+ * 2274:     function getGDPartOfPhpinfo()
+ * 2293:     function isTTF($phpinfo="")
  *
  *              SECTION: ABOUT the isXXX functions.
- * 2317:     function isGD()
- * 2328:     function isGIF()
- * 2340:     function isJPG()
- * 2351:     function isPNG()
- * 2363:     function ImageTypes()
- * 2374:     function getGDSoftwareInfo()
- * 2386:     function generallyAboutConfiguration()
+ * 2342:     function isGD()
+ * 2353:     function isGIF()
+ * 2365:     function isJPG()
+ * 2376:     function isPNG()
+ * 2388:     function ImageTypes()
+ * 2399:     function getGDSoftwareInfo()
+ * 2411:     function generallyAboutConfiguration()
  *
  *              SECTION: IMAGE processing
- * 2446:     function checkTheImageProcessing()
- * 2925:     function isExtensionEnabled($ext, $headCode, $short)
- * 2941:     function displayTwinImage ($imageFile, $IMcommands=array(), $note="")
- * 3012:     function getTwinImageMessage($message, $label_1="", $label_2="")
- * 3028:     function formatImCmds($arr)
- * 3049:     function imagemenu()
+ * 2471:     function checkTheImageProcessing()
+ * 2950:     function isExtensionEnabled($ext, $headCode, $short)
+ * 2966:     function displayTwinImage ($imageFile, $IMcommands=array(), $note="")
+ * 3038:     function getTwinImageMessage($message, $label_1="", $label_2="")
+ * 3054:     function formatImCmds($arr)
+ * 3075:     function imagemenu()
  *
  *              SECTION: DATABASE analysing
- * 3091:     function checkTheDatabase()
- * 3677:     function isBackendAdminUser()
- * 3688:     function isStaticTemplates()
- * 3700:     function isBasicComplete($tLabel)
- * 3740:     function generateUpdateDatabaseForm($type, $arr_update, $arr_remove, $action_type)
- * 3770:     function getUpdateDbFormWrap($action_type, $content, $label="Write to database")
- * 3783:     function displayFields($arr, $pre=0, $label="")
- * 3808:     function displayFieldComp($arr, $arr_db)
- * 3850:     function displaySuggestions($arr, $excludeList="")
- * 3880:     function compareDatabaseAndTCA($FDsrc, $TCA, $onlyFields=0)
- * 3938:     function compareTCAandDatabase($TCA, $FDcomp)
- * 3972:     function suggestFieldDefinition($fieldInfo)
- * 4050:     function getItemArrayType($arr)
- * 4080:     function getItemBlobSize($len)
- * 4091:     function suggestTCAFieldDefinition($fieldName,$fieldInfo)
- * 4234:     function includeTCA()
+ * 3117:     function checkTheDatabase()
+ * 3703:     function isBackendAdminUser()
+ * 3714:     function isStaticTemplates()
+ * 3726:     function isBasicComplete($tLabel)
+ * 3766:     function generateUpdateDatabaseForm($type, $arr_update, $arr_remove, $action_type)
+ * 3796:     function getUpdateDbFormWrap($action_type, $content, $label="Write to database")
+ * 3809:     function displayFields($arr, $pre=0, $label="")
+ * 3834:     function displayFieldComp($arr, $arr_db)
+ * 3876:     function displaySuggestions($arr, $excludeList="")
+ * 3906:     function compareDatabaseAndTCA($FDsrc, $TCA, $onlyFields=0)
+ * 3964:     function compareTCAandDatabase($TCA, $FDcomp)
+ * 3998:     function suggestFieldDefinition($fieldInfo)
+ * 4076:     function getItemArrayType($arr)
+ * 4106:     function getItemBlobSize($len)
+ * 4117:     function suggestTCAFieldDefinition($fieldName,$fieldInfo)
+ * 4260:     function includeTCA()
  *
  *              SECTION: GENERAL FUNCTIONS
- * 4276:     function linkIt($url,$link="")
- * 4304:     function printSection($head, $short_string, $long_string, $type)
- * 4345:     function fw($str,$size=1)
- * 4358:     function fwheader($str)
- * 4369:     function wrapInCells($label,$content)
- * 4378:     function printAll()
- * 4397:     function outputWrapper($content)
- * 4450:     function menu()
- * 4472:     function stepHeader()
- * 4514:     function note123()
- * 4528:     function endNotes()
- * 4547:     function convertByteSize($bytes)
- * 4561:     function securityRisk()
- * 4579:     function alterPasswordForm()
- * 4595:     function messageBasicFinished()
- * 4617:     function setScriptName($type)
- * 4630:     function formWidth($size=48,$textarea=0,$styleOverride="")
- * 4651:     function formWidthText($size=48,$styleOverride="",$wrap="")
+ * 4302:     function linkIt($url,$link="")
+ * 4330:     function printSection($head, $short_string, $long_string, $type)
+ * 4371:     function fw($str,$size=1)
+ * 4384:     function fwheader($str)
+ * 4395:     function wrapInCells($label,$content)
+ * 4404:     function printAll()
+ * 4423:     function outputWrapper($content)
+ * 4476:     function menu()
+ * 4498:     function stepHeader()
+ * 4540:     function note123()
+ * 4554:     function endNotes()
+ * 4573:     function convertByteSize($bytes)
+ * 4587:     function securityRisk()
+ * 4605:     function alterPasswordForm()
+ * 4621:     function messageBasicFinished()
+ * 4643:     function setScriptName($type)
+ * 4656:     function formWidth($size=48,$textarea=0,$styleOverride="")
+ * 4677:     function formWidthText($size=48,$styleOverride="",$wrap="")
  *
  * TOTAL FUNCTIONS: 76
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -148,7 +148,7 @@ require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
 /**
  * Install Tool module
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Ingmar Schlecht <ingmars@web.de>
  * @package TYPO3
  * @subpackage tx_install

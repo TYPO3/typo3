@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -38,40 +38,40 @@
  *
  *
  *  107: class t3lib_TStemplate
- *  207:     function init()
- *  245:     function getCurrentPageData()
- *  262:     function matching($cc)
- *  286:     function start($theRootLine)
+ *  209:     function init()
+ *  247:     function getCurrentPageData()
+ *  264:     function matching($cc)
+ *  288:     function start($theRootLine)
  *
  *              SECTION: Fetching TypoScript code text for the Template Hierarchy
- *  401:     function runThroughTemplates($theRootLine,$start_template_uid=0)
- *  447:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')
- *  560:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)
- *  621:     function addExtensionStatics($idList,$templateID,$pid,$row)
- *  654:     function prependStaticExtra($subrow)
+ *  403:     function runThroughTemplates($theRootLine,$start_template_uid=0)
+ *  450:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')
+ *  565:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)
+ *  626:     function addExtensionStatics($idList,$templateID,$pid,$row)
+ *  659:     function prependStaticExtra($subrow)
  *
  *              SECTION: Parsing TypoScript code text from Template Records into PHP array
- *  690:     function generateConfig()
- *  853:     function procesIncludes()
- *  877:     function mergeConstantsFromPageTSconfig($constArray)
- *  906:     function flattenSetup($setupArray, $prefix, $resourceFlag)
- *  930:     function substituteConstants($all)
+ *  695:     function generateConfig()
+ *  859:     function procesIncludes()
+ *  883:     function mergeConstantsFromPageTSconfig($constArray)
+ *  912:     function flattenSetup($setupArray, $prefix, $resourceFlag)
+ *  936:     function substituteConstants($all)
  *
  *              SECTION: Various API functions, used from elsewhere in the frontend classes
- *  968:     function splitConfArray($conf,$splitCount)
- * 1045:     function getFileName($fileFromSetup)
- * 1102:     function extractFromResources($res,$file)
- * 1130:     function checkFile($name,$menuArr)
- * 1147:     function printTitle($title,$no_title=0,$titleFirst=0)
- * 1170:     function fileContent($fName)
- * 1190:     function wrap($content,$wrap)
- * 1204:     function removeQueryString($url)
- * 1220:     function sortedKeyList($setupArr)
+ *  974:     function splitConfArray($conf,$splitCount)
+ * 1051:     function getFileName($fileFromSetup)
+ * 1108:     function extractFromResources($res,$file)
+ * 1136:     function checkFile($name,$menuArr)
+ * 1153:     function printTitle($title,$no_title=0,$titleFirst=0)
+ * 1176:     function fileContent($fName)
+ * 1196:     function wrap($content,$wrap)
+ * 1210:     function removeQueryString($url)
+ * 1227:     function sortedKeyList($setupArr, $acceptOnlyProperties=FALSE)
  *
  *              SECTION: Functions for creating links
- * 1264:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')
- * 1383:     function getFromMPmap($pageId=0)
- * 1419:     function initMPmap_create($id,$MP_array=array(),$level=0)
+ * 1274:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')
+ * 1393:     function getFromMPmap($pageId=0)
+ * 1429:     function initMPmap_create($id,$MP_array=array(),$level=0)
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -99,7 +99,7 @@ require_once (PATH_t3lib.'class.t3lib_matchcondition.php');
 /**
  * Template object that is responsible for generating the TypoScript template based on template records.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see	t3lib_tsparser.php, t3lib_matchcondition.php

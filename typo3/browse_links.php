@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,82 +33,83 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  156: class TBE_browser_recordList extends localRecordList
- *  167:     function listURL($altId='',$table=-1,$exclList='')
- *  186:     function ext_addP()
- *  203:     function linkWrapItems($table,$uid,$code,$row)
- *  236:     function linkWrapTable($table,$code)
+ *  157: class TBE_browser_recordList extends localRecordList
+ *  168:     function listURL($altId='',$table=-1,$exclList='')
+ *  187:     function ext_addP()
+ *  204:     function linkWrapItems($table,$uid,$code,$row)
+ *  237:     function linkWrapTable($table,$code)
  *
  *
- *  253: class localPageTree extends t3lib_browseTree
- *  260:     function localPageTree()
- *  274:     function wrapTitle($title,$v,$ext_pArrPages='')
- *  289:     function printTree($treeArr='')
- *  339:     function ext_isLinkable($doktype,$uid)
- *  353:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  370:     function wrapIcon($icon,$row)
+ *  254: class localPageTree extends t3lib_browseTree
+ *  261:     function localPageTree()
+ *  275:     function wrapTitle($title,$v,$ext_pArrPages='')
+ *  290:     function printTree($treeArr='')
+ *  340:     function ext_isLinkable($doktype,$uid)
+ *  354:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  371:     function wrapIcon($icon,$row)
  *
  *
- *  389: class rtePageTree extends localPageTree
+ *  390: class rtePageTree extends localPageTree
  *
  *
- *  406: class TBE_PageTree extends localPageTree
- *  415:     function ext_isLinkable($doktype,$uid)
- *  427:     function wrapTitle($title,$v,$ext_pArrPages)
+ *  407: class TBE_PageTree extends localPageTree
+ *  416:     function ext_isLinkable($doktype,$uid)
+ *  428:     function wrapTitle($title,$v,$ext_pArrPages)
  *
  *
- *  453: class localFolderTree extends t3lib_folderTree
- *  463:     function wrapTitle($title,$v)
- *  478:     function ext_isLinkable($v)
- *  495:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  510:     function printTree($treeArr='')
+ *  454: class localFolderTree extends t3lib_folderTree
+ *  464:     function wrapTitle($title,$v)
+ *  479:     function ext_isLinkable($v)
+ *  496:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  511:     function printTree($treeArr='')
  *
  *
- *  576: class rteFolderTree extends localFolderTree
+ *  577: class rteFolderTree extends localFolderTree
  *
  *
- *  592: class TBE_FolderTree extends localFolderTree
- *  601:     function ext_isLinkable($v)
- *  614:     function wrapTitle($title,$v)
+ *  593: class TBE_FolderTree extends localFolderTree
+ *  602:     function ext_isLinkable($v)
+ *  615:     function wrapTitle($title,$v)
  *
  *
- *  635: class SC_browse_links
- *  728:     function init()
- *  983:     function main()
- * 1025:     function printContent()
+ *  636: class SC_browse_links
+ *  729:     function init()
+ *  984:     function main()
+ * 1026:     function printContent()
  *
  *              SECTION: Main functions
- * 1056:     function main_rte($wiz=0)
- * 1322:     function main_db()
- * 1366:     function main_file()
+ * 1057:     function main_rte($wiz=0)
+ * 1336:     function main_db()
+ * 1380:     function main_file()
  *
  *              SECTION: Record listing
- * 1474:     function expandPage()
- * 1536:     function TBE_expandPage($tables)
+ * 1489:     function expandPage()
+ * 1568:     function TBE_expandPage($tables)
  *
  *              SECTION: File listing
- * 1628:     function expandFolder($expandFolder=0,$extensionList='')
- * 1697:     function TBE_expandFolder($expandFolder=0,$extensionList='',$noThumbs=0)
- * 1815:     function TBE_dragNDrop($expandFolder=0,$extensionList='')
+ * 1661:     function expandFolder($expandFolder=0,$extensionList='')
+ * 1730:     function TBE_expandFolder($expandFolder=0,$extensionList='',$noThumbs=0)
+ * 1753:     function fileList($files, $folderName='', $noThumbs=0)
+ * 1870:     function TBE_dragNDrop($expandFolder=0,$extensionList='')
  *
  *              SECTION: Miscellaneous functions
- * 1942:     function isWebFolder($folder)
- * 1953:     function checkFolder($folder)
- * 1966:     function barheader($str)
- * 1983:     function getMsgBox($in_msg,$icon='icon_note')
- * 2005:     function printCurrentUrl($str)
- * 2025:     function parseCurUrl($href,$siteUrl)
- * 2087:     function uploadForm($path)
- * 2140:     function createFolder($path)
+ * 1997:     function isWebFolder($folder)
+ * 2008:     function checkFolder($folder)
+ * 2021:     function barheader($str)
+ * 2038:     function getMsgBox($in_msg,$icon='icon_note')
+ * 2060:     function printCurrentUrl($str)
+ * 2080:     function parseCurUrl($href,$siteUrl)
+ * 2142:     function uploadForm($path)
+ * 2195:     function createFolder($path)
  *
- * TOTAL FUNCTIONS: 37
+ * TOTAL FUNCTIONS: 38
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -149,7 +150,7 @@ require_once ('class.db_list_extra.inc');
 /**
  * Local version of the record list.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -246,7 +247,7 @@ class TBE_browser_recordList extends localRecordList {
 /**
  * Class which generates the page tree
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -382,7 +383,7 @@ class localPageTree extends t3lib_browseTree {
 /**
  * Page tree for the RTE - totally the same, no changes needed. (Just for the sake of beauty - or confusion... :-)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -399,7 +400,7 @@ class rtePageTree extends localPageTree {
 /**
  * For TBE record browser
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -446,7 +447,7 @@ class TBE_PageTree extends localPageTree {
  * Base extension class which generates the folder tree.
  * Used directly by the RTE.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -569,7 +570,7 @@ class localFolderTree extends t3lib_folderTree {
 /**
  * Folder tree for the RTE - totally the same, no changes needed. (Just for the sake of beauty - or confusion... :-)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -585,7 +586,7 @@ class rteFolderTree extends localFolderTree {
 /**
  * For TBE File Browser
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -628,7 +629,7 @@ class TBE_FolderTree extends localFolderTree {
 /**
  * Script class for the Element Browser window.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

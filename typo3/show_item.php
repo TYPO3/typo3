@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,23 +30,23 @@
  * $Id$
  * Revised for TYPO3 3.7 May/2004 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   81: class transferData extends t3lib_transferData
- *   98:     function regItem($table, $id, $field, $content)
+ *   82: class transferData extends t3lib_transferData
+ *   99:     function regItem($table, $id, $field, $content)
  *
  *
- *  132: class SC_show_item
- *  157:     function init()
- *  224:     function main()
- *  252:     function renderDBInfo()
- *  300:     function renderFileInfo($returnLinkTag)
- *  414:     function printContent()
+ *  133: class SC_show_item
+ *  158:     function init()
+ *  225:     function main()
+ *  253:     function renderDBInfo()
+ *  301:     function renderFileInfo($returnLinkTag)
+ *  416:     function printContent()
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,7 +75,7 @@ require_once(PATH_t3lib.'class.t3lib_transferdata.php');
 /**
  * Extension of transfer data class
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -126,7 +126,7 @@ class transferData extends t3lib_transferData	{
 /**
  * Script Class for showing information about an item.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

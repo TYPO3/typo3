@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -39,13 +39,13 @@
  *
  *   77: class t3lib_matchCondition
  *   91:     function match($string)
- *  303:     function testNumber($test,$value)
- *  325:     function matchWild($haystack,$needle)
- *  355:     function whichDevice($useragent)
- *  405:     function browserInfo($useragent)
- *  503:     function browserInfo_version($tmp)
- *  515:     function getGlobal($var,$inArr='')
- *  540:     function getGP_ENV_TSFE($var)
+ *  311:     function testNumber($test,$value)
+ *  333:     function matchWild($haystack,$needle)
+ *  363:     function whichDevice($useragent)
+ *  413:     function browserInfo($useragent)
+ *  511:     function browserInfo_version($tmp)
+ *  523:     function getGlobal($var,$inArr='')
+ *  548:     function getGP_ENV_TSFE($var)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -69,7 +69,7 @@
  * Used with the TypoScript parser.
  * Matches browserinfo, IPnumbers for use with templates
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_TStemplate::matching(), t3lib_TStemplate::generateConfig()

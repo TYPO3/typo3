@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,34 +32,35 @@
  * Revised for TYPO3 3.7 5/2004 by Kasper Skaarhoj
  * XHTML-trans compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   87: class SC_view_help
- *  110:     function init()
- *  130:     function main()
- *  158:     function printContent()
+ *   88: class SC_view_help
+ *  111:     function init()
+ *  131:     function main()
+ *  160:     function printContent()
  *
  *              SECTION: Rendering main modes
- *  181:     function render_TOC()
- *  280:     function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)
- *  311:     function render_TOC_makeTocList($tocArray)
- *  346:     function render_Table($table)
- *  391:     function render_Single($table,$field)
+ *  183:     function render_TOC()
+ *  292:     function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)
+ *  324:     function render_TOC_makeTocList($tocArray)
+ *  363:     function render_Table($table)
+ *  420:     function render_Single($table,$field)
  *
  *              SECTION: Rendering CSH items
- *  433:     function make_seeAlso($value,$anchorTable='')
- *  471:     function printImage($image,$descr)
- *  493:     function headerLine($str,$type=0)
- *  514:     function prepareContent($str)
- *  529:     function printItem($table,$field,$anchors=0)
- *  565:     function getTableFieldNames($table,$field)
+ *  463:     function make_seeAlso($value,$anchorTable='')
+ *  512:     function printImage($images,$descr)
+ *  547:     function headerLine($str,$type=0)
+ *  568:     function prepareContent($str)
+ *  583:     function printItem($table,$field,$anchors=0)
+ *  616:     function getTableFieldNames($table,$field)
+ *  639:     function getTableFieldLabel($table,$field='',$mergeToken=': ')
  *
- * TOTAL FUNCTIONS: 14
+ * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -80,7 +81,7 @@ require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
 /**
  * Script Class for rendering the Context Sensitive Help documents, either the single display in the small pop-up window or the full-table view in the larger window.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

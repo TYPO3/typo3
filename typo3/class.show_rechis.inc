@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML Compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -42,20 +42,20 @@
  *  106:     function recordHistory()
  *  124:     function main()
  *  155:     function displaySysHistoryEntry($sh_uid)
- *  215:     function revertToPreviousValues($element,$field)
- *  281:     function saveState($element,$sumUp)
- *  335:     function displayHistory($element)
+ *  219:     function revertToPreviousValues($element,$field)
+ *  285:     function saveState($element,$sumUp)
+ *  339:     function displayHistory($element)
  *
  *              SECTION: Various helper functions
- *  533:     function nextHisUid($element,$hisUid)
- *  579:     function compareChangesWithCurrent($element,$changeRec)
- *  624:     function readFieldTypes($table,$id)
- *  653:     function cmp($changeStatus,$oldRecord)
- *  676:     function removeFilefields($table,$dataArray)
- *  699:     function renderEntry($entry,$table)
- *  757:     function listHeader()
- *  801:     function linkPage($str,$inparams=array(),$anchor='')
- *  829:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)
+ *  540:     function nextHisUid($element,$hisUid)
+ *  586:     function compareChangesWithCurrent($element,$changeRec)
+ *  631:     function readFieldTypes($table,$id)
+ *  660:     function cmp($changeStatus,$oldRecord)
+ *  683:     function removeFilefields($table,$dataArray)
+ *  706:     function renderEntry($entry,$table)
+ *  766:     function listHeader()
+ *  810:     function linkPage($str,$inparams=array(),$anchor='')
+ *  838:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -76,7 +76,7 @@
 /**
  * Class for the record history display script (show_rechis.php)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

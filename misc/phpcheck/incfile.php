@@ -327,10 +327,10 @@ if (count($_GET) || $_SERVER["HTTP_REFERER"])	{
 	echo '<HR><a name="link1"></a>';
 	echo '<div style="border: 1px solid black; padding: 10px 10px 10px 10px;"><h3>What to do now?</h3>
 		<p>1) Click this link above once more: <a href="index.php?arg1,arg2,arg3&p1=parameter1&p2[key]='.substr(md5(time()),0,4).'#link1">Go to this page again.</a><BR>
-		2) Then save this HTML-page and send it to kasper@typo3.com with information about 1) which webserver (Apache/ISS), 2) Unix/Windows, 3) CGI or module (ISAPI)<br>
+		2) Then save this HTML-page and send it to kasperYYYY@typo3.com with information about 1) which webserver (Apache/ISS), 2) Unix/Windows, 3) CGI or module (ISAPI)<br>
 		2a) You might help us find any differences in your values to this <a href="reference.html" target="_blank">reference example</a> by comparing the values before you send the result (thanks).
 		<br>
-		3) If you are really advanced you try and click the link below here. With CGI-versions of servers it will most likely give an error page. If it does not, please send the output to me as well (save HTML-page and send to kasper@typo3.com). If you do this PATH_INFO test, please let me know.<br><br>
+		3) If you are really advanced you try and click the link below here. With CGI-versions of servers it will most likely give an error page. If it does not, please send the output to me as well (save HTML-page and send to kasperYYYY@typo3.com). If you do this PATH_INFO test, please let me know.<br><br>
 
 		4) For the really, really advanced folks, it might be interesting to see the output if you could place this link in the root of a domain. That means the index.php script will be executed from eg. "http://www.blablabla.com/" and not "http://www.blablabla.com/kaspers_test/" - it can make a difference.<br>
 		<br>

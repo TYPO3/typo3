@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,16 +39,16 @@
  *
  *
  *
- *   70: class SC_wizard_colorpicker
- *   98:     function init()
- *  177:     function main()
- *  230:     function printContent()
- *  241:     function frameSet()
+ *   75: class SC_wizard_colorpicker
+ *  103:     function init()
+ *  182:     function main()
+ *  234:     function printContent()
+ *  245:     function frameSet()
  *
  *              SECTION: Rendering of various color selectors
- *  300:     function colorMatrix()
- *  350:     function colorList()
- *  381:     function colorImage()
+ *  304:     function colorMatrix()
+ *  353:     function colorList()
+ *  383:     function colorImage()
  *  416:     function getIndex($im,$x,$y)
  *
  * TOTAL FUNCTIONS: 8

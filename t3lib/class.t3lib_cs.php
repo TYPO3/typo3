@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2003-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
  */
 /**
@@ -34,48 +34,56 @@
  *
  *
  *
- *  128: class t3lib_cs
- *  442:     function parse_charset($charset)
- *  460:     function get_locale_charset($locale)
- *  492:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
- *  529:     function utf8_encode($str,$charset)
- *  576:     function utf8_decode($str,$charset,$useEntityForNoChar=0)
- *  619:     function utf8_to_entities($str)
- *  652:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)
- *  686:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)
- *  736:     function UnumberToChar($cbyte)
- *  781:     function utf8CharToUnumber($str,$hex=0)
+ *  136: class t3lib_cs
+ *  502:     function parse_charset($charset)
+ *  521:     function get_locale_charset($locale)
+ *
+ *              SECTION: Charset Conversion functions
+ *  574:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
+ *  614:     function convArray(&$array,$fromCS,$toCS,$useEntityForNoChar=0)
+ *  631:     function utf8_encode($str,$charset)
+ *  678:     function utf8_decode($str,$charset,$useEntityForNoChar=0)
+ *  721:     function utf8_to_entities($str)
+ *  754:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)
+ *  788:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)
+ *  838:     function UnumberToChar($cbyte)
+ *  883:     function utf8CharToUnumber($str,$hex=0)
  *
  *              SECTION: Init functions
- *  824:     function initCharset($charset)
- *  885:     function initCaseFoldingUTF8()
- *  973:     function initCaseFolding($charset)
+ *  926:     function initCharset($charset)
+ *  988:     function initUnicodeData($mode=null)
+ * 1213:     function initCaseFolding($charset)
+ * 1275:     function initToASCII($charset)
  *
  *              SECTION: String operation functions
- * 1058:     function substr($charset,$string,$start,$len=null)
- * 1096:     function strlen($charset,$string)
- * 1124:     function crop($charset,$string,$len,$crop='')
- * 1165:     function strtrunc($charset,$string,$len)
- * 1197:     function conv_case($charset,$string,$case)
+ * 1346:     function substr($charset,$string,$start,$len=null)
+ * 1384:     function strlen($charset,$string)
+ * 1412:     function crop($charset,$string,$len,$crop='')
+ * 1465:     function strtrunc($charset,$string,$len)
+ * 1499:     function conv_case($charset,$string,$case)
+ * 1525:     function specCharsToASCII($charset,$string)
+ *
+ *              SECTION: Internal string operation functions
+ * 1565:     function sb_char_mapping($str,$charset,$mode,$opt='')
  *
  *              SECTION: Internal UTF-8 string operation functions
- * 1264:     function utf8_substr($str,$start,$len=null)
- * 1297:     function utf8_strlen($str)
- * 1318:     function utf8_strtrunc($str,$len)
- * 1340:     function utf8_strpos($haystack,$needle,$offset=0)
- * 1363:     function utf8_strrpos($haystack,$needle)
- * 1383:     function utf8_char2byte_pos($str,$pos)
- * 1424:     function utf8_byte2char_pos($str,$pos)
- * 1448:     function utf8_conv_case($str,$case)
+ * 1620:     function utf8_substr($str,$start,$len=null)
+ * 1653:     function utf8_strlen($str)
+ * 1674:     function utf8_strtrunc($str,$len)
+ * 1696:     function utf8_strpos($haystack,$needle,$offset=0)
+ * 1719:     function utf8_strrpos($haystack,$needle)
+ * 1739:     function utf8_char2byte_pos($str,$pos)
+ * 1780:     function utf8_byte2char_pos($str,$pos)
+ * 1803:     function utf8_char_mapping($str,$mode,$opt='')
  *
  *              SECTION: Internal EUC string operation functions
- * 1514:     function euc_strtrunc($str,$len,$charset)
- * 1543:     function euc_substr($str,$start,$charset,$len=null)
- * 1568:     function euc_strlen($str,$charset)
- * 1595:     function euc_char2byte_pos($str,$pos,$charset)
- * 1636:     function euc_conv_case($str,$case,$charset)
+ * 1879:     function euc_strtrunc($str,$len,$charset)
+ * 1908:     function euc_substr($str,$start,$charset,$len=null)
+ * 1933:     function euc_strlen($str,$charset)
+ * 1960:     function euc_char2byte_pos($str,$pos,$charset)
+ * 2001:     function euc_char_mapping($str,$charset,$mode,$opt='')
  *
- * TOTAL FUNCTIONS: 31
+ * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -120,7 +128,7 @@
 /**
  * Class for conversion between charsets
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
  * @package TYPO3
  * @subpackage t3lib
@@ -1132,7 +1140,7 @@ class t3lib_cs {
 						list($char,$translit) = t3lib_div::trimExplode(';', $line);
 						if (!$translit)	$omit["U+$char"] = 1;
 						$decomposition["U+$char"] = split(' ', $translit);
-						
+
 					}
 				}
 				fclose($fh);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -38,9 +38,9 @@
  *
  *
  *   67: class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase
- *   77:     function modMenu()
- *   94:     function main()
- *  173:     function wiz_linkOrder($title,$order)
+ *   75:     function modMenu()
+ *   92:     function main()
+ *  174:     function wiz_linkOrder($title,$order)
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -60,7 +60,7 @@ require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 /**
  * Creates the "Sort pages" wizard
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_wizardsortpages
  */

@@ -7,7 +7,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @see tslib_fe::includeTCA(), typo3/init.php
  */
 $temp_TYPO3_LOADED_EXT = $GLOBALS['TYPO3_LOADED_EXT'];

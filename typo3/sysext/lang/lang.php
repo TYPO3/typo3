@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. TYPO3 is free software;
@@ -21,28 +21,29 @@
  * $Id$
  * Revised for TYPO3 3.6.0
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   79: class language
- *  127:     function init($lang,$altPath='')
- *  172:     function addModuleLabels($arr,$prefix)
- *  198:     function hscAndCharConv($lStr,$hsc)
- *  213:     function makeEntities($str)
- *  230:     function JScharCode($str)
- *  249:     function getLL($index,$hsc=0)
- *  266:     function getLLL($index,$LOCAL_LANG,$hsc=0)
- *  286:     function sL($input,$hsc=0)
- *  330:     function loadSingleTableDescription($table)
- *  382:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)
- *  427:     function readLLfile($fileRef)
- *  441:     function localizedFileRef($fileRef)
+ *   80: class language
+ *  128:     function init($lang,$altPath='')
+ *  173:     function addModuleLabels($arr,$prefix)
+ *  199:     function hscAndCharConv($lStr,$hsc)
+ *  214:     function makeEntities($str)
+ *  231:     function JScharCode($str)
+ *  250:     function getLL($index,$hsc=0)
+ *  267:     function getLLL($index,$LOCAL_LANG,$hsc=0)
+ *  287:     function sL($input,$hsc=0)
+ *  331:     function loadSingleTableDescription($table)
+ *  383:     function includeLLFile($fileRef,$setGlobal=1,$mergeLocalOntoDefault=0)
+ *  428:     function readLLfile($fileRef)
+ *  449:     function readLLXMLfile($fileRef,$langKey)
+ *  548:     function localizedFileRef($fileRef)
  *
- * TOTAL FUNCTIONS: 12
+ * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -71,7 +72,7 @@
  * This class is normally instantiated as the global variable $LANG in typo3/template.php
  * It's only available in the backend and under certain circumstances in the frontend
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  * @see typo3/template.php, template

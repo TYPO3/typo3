@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,116 +36,122 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  162: class t3lib_BEfunc
+ *  168: class t3lib_BEfunc
  *
  *              SECTION: SQL-related, selecting records, searching
- *  182:     function deleteClause($table)
- *  205:     function getRecord($table,$uid,$fields='*',$where='')
- *  227:     function getRecordRaw($table,$where='',$fields='*')
- *  249:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *  281:     function searchQuery($searchWords,$fields,$table='')
- *  296:     function listQuery($field,$value)
- *  308:     function splitTable_Uid($str)
- *  323:     function getSQLselectableList($in_list,$tablename,$default_tablename)
- *  351:     function BEenableFields($table,$inv=0)
+ *  188:     function deleteClause($table)
+ *  211:     function getRecord($table,$uid,$fields='*',$where='')
+ *  233:     function getRecordRaw($table,$where='',$fields='*')
+ *  255:     function getRecordsByField($theTable,$theField,$theValue,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  286:     function fixVersioningPid($table,&$rr)
+ *  320:     function searchQuery($searchWords,$fields,$table='')
+ *  335:     function listQuery($field,$value)
+ *  347:     function splitTable_Uid($str)
+ *  362:     function getSQLselectableList($in_list,$tablename,$default_tablename)
+ *  390:     function BEenableFields($table,$inv=0)
  *
  *              SECTION: SQL-related, DEPRECIATED functions
- *  415:     function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
- *  437:     function DBcompileInsert($table,$fields_values)
- *  451:     function DBcompileUpdate($table,$where,$fields_values)
+ *  454:     function mm_query($select,$local_table,$mm_table,$foreign_table,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ *  476:     function DBcompileInsert($table,$fields_values)
+ *  490:     function DBcompileUpdate($table,$where,$fields_values)
  *
  *              SECTION: Page tree, TCA related
- *  480:     function BEgetRootLine($uid,$clause='')
- *  526:     function openPageTree($pid,$clearExpansion)
- *  571:     function getRecordPath($uid, $clause, $titleLimit, $fullTitleLimit=0)
- *  608:     function getExcludeFields()
- *  642:     function readPageAccess($id,$perms_clause)
- *  671:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)
- *  724:     function getTCAtypeValue($table,$rec)
- *  747:     function getSpecConfParts($str, $defaultExtras)
- *  777:     function getSpecConfParametersFromArray($pArr)
- *  803:     function getFlexFormDS($conf,$row,$table)
+ *  519:     function BEgetRootLine($uid,$clause='')
+ *  568:     function openPageTree($pid,$clearExpansion)
+ *  613:     function getRecordPath($uid, $clause, $titleLimit, $fullTitleLimit=0)
+ *  655:     function getExcludeFields()
+ *  685:     function getExplicitAuthFieldValues()
+ *  756:     function getSystemLanguages()
+ *  781:     function readPageAccess($id,$perms_clause)
+ *  810:     function getTCAtypes($table,$rec,$useFieldNameAsKey=0)
+ *  863:     function getTCAtypeValue($table,$rec)
+ *  886:     function getSpecConfParts($str, $defaultExtras)
+ *  916:     function getSpecConfParametersFromArray($pArr)
+ *  942:     function getFlexFormDS($conf,$row,$table)
  *
  *              SECTION: Caching related
- *  907:     function storeHash($hash,$data,$ident)
- *  927:     function getHash($hash,$expTime)
+ * 1048:     function storeHash($hash,$data,$ident)
+ * 1068:     function getHash($hash,$expTime)
  *
  *              SECTION: TypoScript related
- *  963:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)
- * 1014:     function updatePagesTSconfig($id,$pageTS,$TSconfPrefix,$impParams='')
- * 1069:     function implodeTSParams($p,$k='')
+ * 1104:     function getPagesTSconfig($id,$rootLine='',$returnPartArray=0)
+ * 1155:     function updatePagesTSconfig($id,$pageTS,$TSconfPrefix,$impParams='')
+ * 1210:     function implodeTSParams($p,$k='')
  *
  *              SECTION: Users / Groups related
- * 1106:     function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')
- * 1124:     function getGroupNames($fields='title,uid', $where='')
- * 1141:     function getListGroupNames($fields='title,uid')
- * 1160:     function blindUserNames($usernames,$groupArray,$excludeBlindedFlag=0)
- * 1193:     function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)
+ * 1247:     function getUserNames($fields='username,usergroup,usergroup_cached_list,uid',$where='')
+ * 1265:     function getGroupNames($fields='title,uid', $where='')
+ * 1282:     function getListGroupNames($fields='title,uid')
+ * 1301:     function blindUserNames($usernames,$groupArray,$excludeBlindedFlag=0)
+ * 1334:     function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)
  *
  *              SECTION: Output related
- * 1236:     function daysUntil($tstamp)
- * 1248:     function date($tstamp)
- * 1259:     function datetime($value)
- * 1271:     function time($value)
- * 1287:     function calcAge($seconds,$labels)
- * 1313:     function dateTimeAge($tstamp,$prefix=1,$date='')
- * 1331:     function titleAttrib($content='',$hsc=0)
- * 1344:     function titleAltAttrib($content)
- * 1368:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir='',$abs=0,$tparams='',$size='')
- * 1436:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')
- * 1453:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)
- * 1511:     function getRecordIconAltText($row,$table='pages')
- * 1545:     function getLabelFromItemlist($table,$col,$key)
- * 1571:     function getItemLabel($table,$col,$printAllWrap='')
- * 1596:     function getRecordTitle($table,$row,$prep=0)
- * 1632:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)
- * 1726:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)
- * 1750:     function getFileIcon($ext)
- * 1764:     function getCommonSelectFields($table,$prefix)
- * 1790:     function makeConfigForm($configArray,$defaults,$dataPrefix)
+ * 1377:     function daysUntil($tstamp)
+ * 1389:     function date($tstamp)
+ * 1400:     function datetime($value)
+ * 1412:     function time($value)
+ * 1428:     function calcAge($seconds,$labels = 'min|hrs|days|yrs')
+ * 1454:     function dateTimeAge($tstamp,$prefix=1,$date='')
+ * 1472:     function titleAttrib($content='',$hsc=0)
+ * 1485:     function titleAltAttrib($content)
+ * 1509:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir=NULL,$abs=0,$tparams='',$size='')
+ * 1578:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')
+ * 1595:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)
+ * 1654:     function getRecordIconAltText($row,$table='pages')
+ * 1691:     function getLabelFromItemlist($table,$col,$key)
+ * 1717:     function getItemLabel($table,$col,$printAllWrap='')
+ * 1742:     function getRecordTitle($table,$row,$prep=0)
+ * 1778:     function getProcessedValue($table,$col,$value,$fixed_lgd_chars=0,$defaultPassthrough=0)
+ * 1872:     function getProcessedValueExtra($table,$fN,$fV,$fixed_lgd_chars=0)
+ * 1896:     function getFileIcon($ext)
+ * 1910:     function getCommonSelectFields($table,$prefix)
+ * 1950:     function makeConfigForm($configArray,$defaults,$dataPrefix)
  *
  *              SECTION: Backend Modules API functions
- * 1865:     function helpTextIcon($table,$field,$BACK_PATH,$force=0)
- * 1886:     function helpText($table,$field,$BACK_PATH)
- * 1906:     function editOnClick($params,$backPath='',$requestUri='')
- * 1922:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='')
- * 1948:     function getModTSconfig($id,$TSref)
- * 1969:     function getFuncMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')
- * 1998:     function getFuncCheck($id,$elementName,$currentValue,$script='',$addparams='',$tagParams='')
- * 2018:     function getFuncInput($id,$elementName,$currentValue,$size=10,$script="",$addparams="")
- * 2034:     function unsetMenuItems($modTSconfig,$itemArray,$TSref)
- * 2057:     function getSetUpdateSignal($set='')
- * 2108:     function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type='', $dontValidateList='', $setDefaultList='')
+ * 2025:     function helpTextIcon($table,$field,$BACK_PATH,$force=0)
+ * 2047:     function helpText($table,$field,$BACK_PATH,$styleAttrib='')
+ * 2099:     function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')
+ * 2137:     function editOnClick($params,$backPath='',$requestUri='')
+ * 2155:     function viewOnClick($id,$backPath='',$rootLine='',$anchor='',$altUrl='',$addGetVars='')
+ * 2181:     function getModTSconfig($id,$TSref)
+ * 2202:     function getFuncMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')
+ * 2245:     function getFuncCheck($mainParams,$elementName,$currentValue,$script='',$addparams='',$tagParams='')
+ * 2270:     function getFuncInput($mainParams,$elementName,$currentValue,$size=10,$script="",$addparams="")
+ * 2291:     function unsetMenuItems($modTSconfig,$itemArray,$TSref)
+ * 2314:     function getSetUpdateSignal($set='')
+ * 2365:     function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type='', $dontValidateList='', $setDefaultList='')
  *
  *              SECTION: Core
- * 2183:     function lockRecords($table='',$uid=0,$pid=0)
- * 2212:     function isRecordLocked($table,$uid)
- * 2252:     function exec_foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')
- * 2333:     function getTCEFORM_TSconfig($table,$row)
- * 2380:     function getTSconfig_pidValue($table,$uid,$pid)
- * 2408:     function getPidForModTSconfig($table,$uid,$pid)
- * 2424:     function getTSCpid($table,$uid,$pid)
- * 2440:     function firstDomainRecord($rootLine)
- * 2462:     function getDomainStartPage($domain, $path='')
- * 2492:     function RTEsetup($RTEprop,$table,$field,$type='')
- * 2510:     function &RTEgetObj()
- * 2549:     function isModuleSetInTBE_MODULES($modName)
+ * 2440:     function lockRecords($table='',$uid=0,$pid=0)
+ * 2469:     function isRecordLocked($table,$uid)
+ * 2509:     function exec_foreign_table_where_query($fieldValue,$field='',$TSconfig=array(),$prefix='')
+ * 2590:     function getTCEFORM_TSconfig($table,$row)
+ * 2637:     function getTSconfig_pidValue($table,$uid,$pid)
+ * 2665:     function getPidForModTSconfig($table,$uid,$pid)
+ * 2681:     function getTSCpid($table,$uid,$pid)
+ * 2697:     function firstDomainRecord($rootLine)
+ * 2719:     function getDomainStartPage($domain, $path='')
+ * 2746:     function selectVersionsOfRecord($table, $uid, $fields='*')
+ * 2792:     function RTEsetup($RTEprop,$table,$field,$type='')
+ * 2810:     function &RTEgetObj()
+ * 2849:     function isModuleSetInTBE_MODULES($modName)
  *
  *              SECTION: Miscellaneous
- * 2598:     function typo3PrintError($header,$text,$js='',$head=1)
- * 2644:     function getPathType_web_nonweb($path)
- * 2656:     function ADMCMD_previewCmds($pageinfo)
- * 2678:     function processParams($params)
- * 2704:     function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')
+ * 2898:     function typo3PrintError($header,$text,$js='',$head=1)
+ * 2942:     function TYPO3_copyRightNotice()
+ * 2967:     function getPathType_web_nonweb($path)
+ * 2979:     function ADMCMD_previewCmds($pageinfo)
+ * 3001:     function processParams($params)
+ * 3027:     function getListOfBackendModules($name,$perms_clause,$backPath='',$script='index.php')
  *
- * TOTAL FUNCTIONS: 80
+ * TOTAL FUNCTIONS: 86
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -155,7 +161,7 @@
  * Standard functions available for the TYPO3 backend.
  * Don't instantiate - call functions with "t3lib_BEfunc::" prefixed the function name.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -2732,10 +2738,10 @@ class t3lib_BEfunc	{
 	/**
 	 * Select all versions of a record, ordered by version id (DESC)
 	 *
-	 * @param	string	Table name to select from
-	 * @param	integer	Record uid for which to find versions.
-	 * @param	string	Field list to select
-	 * @return	array	Array of versions of table/uid
+	 * @param	string		Table name to select from
+	 * @param	integer		Record uid for which to find versions.
+	 * @param	string		Field list to select
+	 * @return	array		Array of versions of table/uid
 	 */
 	function selectVersionsOfRecord($table, $uid, $fields='*')	{
 		global $TCA;

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -74,7 +74,7 @@ $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
  * Class for rendering the form fields.
  * Extending the TCEforms class
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -147,7 +147,7 @@ class formRender extends t3lib_TCEforms {
  * Child class for alternative rendering of form fields (when the secondary fields are shown in a little window rather than the top bar).
  * (Used if GET var "backRef" is not set, presuming a window is opened instead.)
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -216,7 +216,7 @@ class formRender_vert extends t3lib_TCEforms {
  * Script Class for rendering the palette form for TCEforms in some other frame (in top frame, horizontally)
  * It can also be called in a pop-up window in which case a vertically oriented set of form fields are rendered instead.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

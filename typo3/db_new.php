@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,7 +34,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -49,12 +49,12 @@
  *  128: class SC_db_new
  *  157:     function init()
  *  217:     function main()
- *  274:     function pagesOnly()
- *  289:     function regularNew()
- *  432:     function printContent()
- *  446:     function linkWrap($code,$table,$pid,$addContentTable=0)
- *  466:     function isTableAllowedForThisPage($pid_row, $checkTable)
- *  496:     function showNewRecLink($table,$allowedNewTables='')
+ *  269:     function pagesOnly()
+ *  287:     function regularNew()
+ *  442:     function printContent()
+ *  456:     function linkWrap($code,$table,$pid,$addContentTable=0)
+ *  476:     function isTableAllowedForThisPage($pid_row, $checkTable)
+ *  506:     function showNewRecLink($table,$allowedNewTables='')
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -83,7 +83,7 @@ require_once(PATH_t3lib.'class.t3lib_pagetree.php');
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -121,7 +121,7 @@ class localPageTree extends t3lib_pageTree {
 /**
  * Script class for 'db_new'
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

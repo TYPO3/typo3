@@ -1,3 +1,8 @@
+2004-09-14  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Updated my email address from "kasper@typo3.com" (which is closed and will stay that way) to "kasperYYYY@typo3.com" which programmers should be able to figure out...
+	* Updated all JavaDoc comments and function/class indexes in files, preparing for 3.7.0RC
+
 2004-09-13  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added CSH for Web>Info/Localization Overview

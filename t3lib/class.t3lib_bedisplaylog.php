@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -39,16 +39,16 @@
  *
  *
  *   81: class t3lib_BEDisplayLog
- *  100:     function initArray()
- *  117:     function getTimeLabel($code)
- *  132:     function getUserLabel($code)
- *  146:     function getTypeLabel($code)
- *  160:     function getActionLabel($code)
- *  178:     function getDetails($code,$text,$data,$sys_log_uid=0)
- *  210:     function reset()
- *  224:     function getErrorFormatting($sign)
- *  234:     function formatDetailsForList($row)
- *  251:     function stripPath($inArr)
+ *  102:     function initArray()
+ *  119:     function getTimeLabel($code)
+ *  134:     function getUserLabel($code)
+ *  148:     function getTypeLabel($code)
+ *  162:     function getActionLabel($code)
+ *  180:     function getDetails($code,$text,$data,$sys_log_uid=0)
+ *  212:     function reset()
+ *  226:     function getErrorFormatting($sign)
+ *  236:     function formatDetailsForList($row)
+ *  253:     function stripPath($inArr)
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -73,7 +73,7 @@
  * This class holds some functions used to display the sys_log table-content.
  * Used in the status-scripts and the log-module.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see tx_belog_webinfo, SC_mod_tools_log_index

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,24 +31,29 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   72: class localPageTree extends t3lib_browseTree
- *   79:     function localPageTree()
- *   90:     function wrapIcon($icon,&$row)
+ *   77: class localPageTree extends t3lib_browseTree
+ *   87:     function localPageTree()
+ *   98:     function wrapIcon($icon,&$row)
+ *  136:     function wrapStop($str,$row)
  *
  *
- *  131: class SC_alt_db_navframe
- *  147:     function init()
- *  235:     function main()
- *  263:     function printContent()
+ *  162: class SC_alt_db_navframe
+ *  180:     function init()
+ *  276:     function main()
+ *  327:     function printContent()
  *
- * TOTAL FUNCTIONS: 5
+ *              SECTION: Temporary DB mounts
+ *  354:     function initializeTemporaryDBmount()
+ *  383:     function settingTemporaryMountPoint($pageId)
+ *
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -64,7 +69,7 @@ require_once(PATH_t3lib.'class.t3lib_browsetree.php');
 /**
  * Extension class for the t3lib_browsetree class, specially made for browsing pages in the Web module
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  * @see class t3lib_browseTree
@@ -150,7 +155,7 @@ class localPageTree extends t3lib_browseTree {
 /**
  * Main script class for the page tree navigation frame
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -343,6 +348,8 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Getting temporary DB mount
+	 *
+	 * @return	void
 	 */
 	function initializeTemporaryDBmount(){
 		global $BE_USER;
@@ -369,6 +376,9 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Setting temporary page id as DB mount
+	 *
+	 * @param	integer		The page id to set as DB mount
+	 * @return	void
 	 */
 	function settingTemporaryMountPoint($pageId)	{
 		global $BE_USER;

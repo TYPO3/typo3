@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,69 +31,72 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  111: class tx_cms_layout extends recordList
+ *  114: class tx_cms_layout extends recordList
  *
  *              SECTION: Renderings
- *  173:     function getTable($table,$id)
- *  224:     function getTable_pages($id)
- *  358:     function getTable_tt_content($id)
- *  646:     function getTable_fe_users($id)
- *  672:     function getTable_sys_note($id)
- *  763:     function getTable_tt_board($id)
- *  843:     function getTable_tt_address($id)
- *  873:     function getTable_tt_links($id)
- *  899:     function getTable_tt_guest($id)
- *  914:     function getTable_tt_news($id)
- *  935:     function getTable_tt_calender($id)
- *  985:     function getTable_tt_products($id)
+ *  179:     function getTable($table,$id)
+ *  239:     function getTable_pages($id)
+ *  376:     function getTable_tt_content($id)
+ *  736:     function getTable_fe_users($id)
+ *  762:     function getTable_sys_note($id)
+ *  853:     function getTable_tt_board($id)
+ *  933:     function getTable_tt_address($id)
+ *  963:     function getTable_tt_links($id)
+ *  989:     function getTable_tt_guest($id)
+ * 1004:     function getTable_tt_news($id)
+ * 1025:     function getTable_tt_calender($id)
+ * 1075:     function getTable_tt_products($id)
  *
  *              SECTION: Generic listing of items
- * 1031:     function makeOrdinaryList($table, $id, $fList, $icon=0, $addWhere='')
- * 1110:     function dataFields($fieldArr,$table,$row,$out=array())
- * 1161:     function headerFields($fieldArr,$table,$out=array())
+ * 1121:     function makeOrdinaryList($table, $id, $fList, $icon=0, $addWhere='')
+ * 1200:     function dataFields($fieldArr,$table,$row,$out=array())
+ * 1251:     function headerFields($fieldArr,$table,$out=array())
  *
  *              SECTION: Additional functions; Pages
- * 1203:     function pages_getTree($theRows,$pid,$qWhere,$treeIcons,$depth)
- * 1235:     function pages_drawItem($row,$fieldArr)
+ * 1293:     function pages_getTree($theRows,$pid,$qWhere,$treeIcons,$depth)
+ * 1325:     function pages_drawItem($row,$fieldArr)
  *
  *              SECTION: Additional functions; Content Elements
- * 1345:     function tt_content_drawColHeader($colName,$editParams,$newParams)
- * 1395:     function tt_content_drawHeader($row,$space=0)
- * 1521:     function tt_content_drawItem($row)
- * 1668:     function infoGif($infoArr)
- * 1684:     function newContentElementOnClick($id,$colPos,$sys_language)
- * 1703:     function linkEditContent($str,$row,$isRTE=0)
- * 1736:     function languageSelector($id)
- * 1771:     function getResult($result)
+ * 1435:     function tt_content_drawColHeader($colName,$editParams,$newParams)
+ * 1487:     function tt_content_drawHeader($row,$space=0,$disableMoveAndNewButtons=FALSE,$langMode=FALSE)
+ * 1617:     function tt_content_drawItem($row, $isRTE=FALSE)
+ * 1780:     function getNonTranslatedTTcontentUids($defLanguageCount,$id,$lP)
+ * 1810:     function newLanguageButton($defLanguageCount,$lP)
+ * 1831:     function infoGif($infoArr)
+ * 1847:     function newContentElementOnClick($id,$colPos,$sys_language)
+ * 1865:     function linkEditContent($str,$row)
+ * 1883:     function linkRTEbutton($row)
+ * 1904:     function languageSelector($id)
+ * 1939:     function getResult($result)
  *
  *              SECTION: Additional functions; Message board items (tt_board)
- * 1840:     function tt_board_getTree($theRows,$parent,$pid,$qWhere,$treeIcons)
- * 1875:     function tt_board_drawItem($table,$row,$re)
+ * 2008:     function tt_board_getTree($theRows,$parent,$pid,$qWhere,$treeIcons)
+ * 2043:     function tt_board_drawItem($table,$row,$re)
  *
  *              SECTION: Various helper functions
- * 1922:     function numberOfRecords($table,$pid)
- * 1941:     function renderText($input)
- * 1955:     function getIcon($table,$row)
- * 1978:     function getProcessedValue($table,$fieldList,$row,&$info)
- * 1998:     function isDisabled($table,$row)
- * 2016:     function wordWrapper($content,$max=50,$char=' -')
- * 2033:     function noEditIcon($label='noEditItems')
- * 2042:     function cleanTableNames()
- * 2078:     function isRTEforField($table,$row,$field)
- * 2107:     function getSpecConfForField($table,$row,$field)
+ * 2090:     function numberOfRecords($table,$pid)
+ * 2109:     function renderText($input)
+ * 2123:     function getIcon($table,$row)
+ * 2146:     function getProcessedValue($table,$fieldList,$row,&$info)
+ * 2166:     function isDisabled($table,$row)
+ * 2184:     function wordWrapper($content,$max=50,$char=' -')
+ * 2201:     function noEditIcon($label='noEditItems')
+ * 2210:     function cleanTableNames()
+ * 2246:     function isRTEforField($table,$row,$field)
+ * 2275:     function getSpecConfForField($table,$row,$field)
  *
  *              SECTION: External renderings
- * 2144:     function getPageInfoBox($rec,$edit=0)
- * 2313:     function getTableMenu($id)
+ * 2312:     function getPageInfoBox($rec,$edit=0)
+ * 2481:     function getTableMenu($id)
  *
- * TOTAL FUNCTIONS: 39
+ * TOTAL FUNCTIONS: 42
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -104,7 +107,7 @@
 /**
  * Child class for the Web > Page module
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -1477,6 +1480,8 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	array		Record array
 	 * @param	integer		Amount of pixel space above the header.
+	 * @param	boolean		If set the buttons for creating new elements and moving up and down are not shown.
+	 * @param	boolean		If set, we are in language mode and flags will be shown for languages
 	 * @return	string		HTML table with the record header.
 	 */
 	function tt_content_drawHeader($row,$space=0,$disableMoveAndNewButtons=FALSE,$langMode=FALSE)	{
@@ -1872,8 +1877,8 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Adds a button to edit the row in RTE wizard
 	 *
-	 * @param	array	The row of tt_content element
-	 * @return	string	Button to click if you want to edit in RTE wizard.
+	 * @param	array		The row of tt_content element
+	 * @return	string		Button to click if you want to edit in RTE wizard.
 	 */
 	function linkRTEbutton($row)	{
 		$params = array();

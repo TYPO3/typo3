@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -53,42 +53,42 @@
  *  459:     function setContent()
  *  486:     function constructMixed ($boundary)
  *  525:     function constructHTML ($boundary)
- *  549:     function constructAlternative($boundary)
- *  570:     function constructHTML_media ($boundary)
- *  603:     function sendTheMail ()
- *  637:     function getBoundary()
- *  649:     function setPlain ($content)
- *  660:     function setHtml ($content)
- *  671:     function add_header ($header)
- *  682:     function add_message ($string)
- *  693:     function getContent($type)
- *  702:     function preview()
+ *  548:     function constructAlternative($boundary)
+ *  569:     function constructHTML_media ($boundary)
+ *  602:     function sendTheMail ()
+ *  664:     function getBoundary()
+ *  676:     function setPlain ($content)
+ *  687:     function setHtml ($content)
+ *  698:     function add_header ($header)
+ *  709:     function add_message ($string)
+ *  720:     function getContent($type)
+ *  729:     function preview()
  *
  *              SECTION: Functions for acquiring attachments, HTML, analyzing and so on  **
- *  730:     function fetchHTML($file)
- *  748:     function fetchHTMLMedia()
- *  769:     function extractMediaLinks()
- *  845:     function extractHyperLinks()
- *  894:     function extractFramesInfo()
- *  920:     function substMediaNamesInHTML($absolute)
- *  947:     function substHREFsInHTML()
- *  975:     function substHTTPurlsInPlainText($content)
- * 1015:     function fixRollOvers()
+ *  757:     function fetchHTML($file)
+ *  775:     function fetchHTMLMedia()
+ *  796:     function extractMediaLinks()
+ *  872:     function extractHyperLinks()
+ *  921:     function extractFramesInfo()
+ *  947:     function substMediaNamesInHTML($absolute)
+ *  974:     function substHREFsInHTML()
+ * 1002:     function substHTTPurlsInPlainText($content)
+ * 1042:     function fixRollOvers()
  *
  *              SECTION: File and URL-functions
- * 1062:     function makeBase64($inputstr)
- * 1073:     function getExtendedURL($url)
- * 1093:     function addUserPass($url)
- * 1108:     function getURL($url)
- * 1129:     function getStrippedURL($url)
- * 1150:     function getMimeType($url)
- * 1179:     function absRef($ref)
- * 1199:     function split_fileref($fileref)
- * 1226:     function extParseUrl($path)
- * 1241:     function tag_regex($tagArray)
- * 1263:     function get_tag_attributes($tag)
- * 1303:     function quoted_printable($string)
- * 1341:     function convertName($name)
+ * 1089:     function makeBase64($inputstr)
+ * 1100:     function getExtendedURL($url)
+ * 1120:     function addUserPass($url)
+ * 1135:     function getURL($url)
+ * 1156:     function getStrippedURL($url)
+ * 1177:     function getMimeType($url)
+ * 1206:     function absRef($ref)
+ * 1226:     function split_fileref($fileref)
+ * 1253:     function extParseUrl($path)
+ * 1268:     function tag_regex($tagArray)
+ * 1290:     function get_tag_attributes($tag)
+ * 1330:     function quoted_printable($string)
+ * 1368:     function convertName($name)
  *
  * TOTAL FUNCTIONS: 46
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -183,7 +183,7 @@
 /**
  * HTML mail class
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
