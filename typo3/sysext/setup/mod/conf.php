@@ -1,6 +1,6 @@
 <?php
 define('TYPO3_MOD_PATH', 'sysext/setup/mod/');
-$BACK_PATH = '../../../';
+$BACK_PATH='../../../';
 
 $MLANG['default']['tabs_images']['tab'] = 'setup.gif';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:setup/mod/locallang_mod.php';

@@ -87,6 +87,9 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Setari',
 	),
 	'ch' => Array (
+		'mlang_labels_tablabel' => '¸öÈËÓÃ»§ÉèÖÃ',
+		'mlang_labels_tabdescr' => 'Õâ¸öÄ£¿éÔÊĞíÄúÖÆ¶¨ÄúµÄºó¶ËÓÃ»§ÂÖÀª.ÔÚ´ËÄú¿ÉÒÔ¸ü¸ÄÄúµÄ¼¤»îÏµÍ³ÓïÑÔ, Ãû³ÆºÍemailµØÖ·. ÄúÒ²ÄÜÔÚÄúµÄÏµÍ³ÖĞÅäÖÃÆäËüÆÕÍ¨µÄÌØµã.',
+		'mlang_tabs_tab' => 'ÉèÖÃ',
 	),
 	'sk' => Array (
 		'mlang_labels_tablabel' => 'Uívate¾ské nastavenie',
@@ -136,6 +139,8 @@ $LOCAL_LANG = Array (
 	'ua' => Array (
 	),
 	'lv' => Array (
+		'mlang_labels_tablabel' => 'PersonÄ«gie lietotÄja uzstÄdÄ«jumi',
+		'mlang_tabs_tab' => 'UzstÄdÄ«jumi',
 	),
 	'jp' => Array (
 	),
