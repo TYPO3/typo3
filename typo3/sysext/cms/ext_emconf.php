@@ -2,9 +2,9 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "cms"
-# 
+#
 # Auto generated 08-06-2004 11:02
-# 
+#
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
 ########################################################################
@@ -19,7 +19,7 @@ This should probably not be disabled. But the point is that Typo3 is able to wor
 	'conflicts' => '',
 	'priority' => 'top',
 	'loadOrder' => '',
-	'TYPO3_version' => '0.0.3-0.0.3',
+	'TYPO3_version' => '3.7.0-',
 	'PHP_version' => '0.0.3-0.0.3',
 	'module' => 'layout',
 	'state' => 'stable',

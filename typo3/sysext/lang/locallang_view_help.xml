@@ -22,6 +22,7 @@
 			<label index="TOC_modules">Backend Modules</label>
 			<label index="TOC_tables">Database Tables</label>
 			<label index="TOC_extensions">Extensions</label>
+			<label index="TOC_glossary">Glossary</label>
 			<label index="TOC_other">Other</label>
 			<label index="close">Close</label>
 			<label index="title">TYPO3 Inline Help</label>

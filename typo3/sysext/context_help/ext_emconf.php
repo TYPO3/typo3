@@ -2,9 +2,9 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "context_help"
-# 
+#
 # Auto generated 06-06-2004 17:41
-# 
+#
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
 ########################################################################
@@ -18,7 +18,7 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
-	'TYPO3_version' => '0.0.1-0.0.1',
+	'TYPO3_version' => '3.7.0-',
 	'PHP_version' => '0.0.1-0.0.1',
 	'module' => '',
 	'state' => 'beta',

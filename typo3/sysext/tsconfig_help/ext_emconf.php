@@ -2,9 +2,9 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: "tsconfig_help"
-# 
+#
 # Auto generated 16-11-2004 17:18
-# 
+#
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
 ########################################################################
@@ -18,7 +18,7 @@ $EM_CONF[$_EXTKEY] = Array (
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
-	'TYPO3_version' => '-',
+	'TYPO3_version' => '3.7.0-',
 	'PHP_version' => '-',
 	'module' => '',
 	'state' => 'stable',

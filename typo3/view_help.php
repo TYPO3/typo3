@@ -69,8 +69,27 @@ require('init.php');
 require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_view_help.xml');
 require_once(PATH_t3lib.'class.t3lib_loadmodules.php');
+require_once(PATH_t3lib.'class.t3lib_parsehtml.php');
 
 
+class local_t3lib_parsehtml extends t3lib_parsehtml {
+
+	/**
+	 * Processing content between tags for HTML_cleaner
+	 *
+	 * @param	string		The value
+	 * @param	integer		Direction, either -1 or +1. 0 (zero) means no change to input value.
+	 * @param	mixed		Not used, ignore.
+	 * @return	string		The processed value.
+	 * @access private
+	 */
+	function processContent($value,$dir,$conf)	{
+		$value = $this->pObj->substituteGlossaryWords($value);
+
+		return $value;
+	}
+
+}
 
 
 
@@ -100,6 +119,7 @@ class SC_view_help {
 
 		// Internal, dynamic:
 	var $content;	// Content accumulation.
+	var $glossaryWords;		// Glossary words
 
 
 
@@ -138,8 +158,10 @@ class SC_view_help {
 		$this->content.= $TBE_TEMPLATE->startPage($LANG->getLL('title'));
 
 		if ($this->field=='*')	{ // If ALL fields is supposed to be shown:
+			$this->createGlossaryIndex();
 			$this->content.= $this->render_Table($this->table);
 		} elseif ($this->tfID) { // ... otherwise show only single field:
+			$this->createGlossaryIndex();
 			$this->content.= $this->render_Single($this->table,$this->field);
 		} else {	// Render Table Of Contents if nothing else:
 			$this->content.= $this->render_TOC();
@@ -231,6 +253,14 @@ class SC_view_help {
 			if (t3lib_div::isFirstPartOfStr($cshKey, 'xEXT_') && !isset($TCA[$cshKey]))	{
 				$LANG->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'extensions', $outputSections, $tocArray, $CSHkeys);
+			}
+		}
+
+			// Glossary
+		foreach($CSHkeys as $cshKey => $value)	{
+			if (t3lib_div::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($TCA[$cshKey]))	{
+				$LANG->loadSingleTableDescription($cshKey);
+				$this->render_TOC_el($cshKey, 'glossary', $outputSections, $tocArray, $CSHkeys);
 			}
 		}
 
@@ -326,7 +356,7 @@ class SC_view_help {
 		global $LANG;
 
 			// The Various manual sections:
-		$keys = explode(',', 'core,modules,tables,extensions,other');
+		$keys = explode(',', 'core,modules,tables,extensions,glossary,other');
 
 			// Create TOC bullet list:
 		$output = '';
@@ -396,6 +426,9 @@ class SC_view_help {
 			$output.= implode('<br />',$parts);
 		}
 
+			// Substitute glossary words:
+		$output = $this->substituteGlossaryWords_nonHTML($output);
+
 			// TOC link:
 		if (!$this->renderALL)	{
 			$tocLink = '<p class="c-nav"><a href="view_help.php">'.$LANG->getLL('goToToc',1).'</a></p>';
@@ -428,6 +461,9 @@ class SC_view_help {
 
 			// Render single item:
 		$output.= $this->printItem($table,$field);
+
+			// Substitute glossary words:
+		$output = $this->substituteGlossaryWords_nonHTML($output);
 
 			// Link to Full table description and TOC:
 		$getLLKey = $this->limitAccess ? 'fullDescription' : 'fullDescription_module';
@@ -648,6 +684,88 @@ class SC_view_help {
 					($field ? $mergeToken.ereg_replace(':$','', trim($LANG->sL($fieldName))):'');
 
 		return $labelStr;
+	}
+
+	/**
+	 * Creates glossary index in $this->glossaryWords
+	 *
+	 * @return	void
+	 * @todo: Implement some caching of this array - needed when the glossary grows to a large size!
+	 */
+	function createGlossaryIndex()	{
+		global $TCA_DESCR,$TCA,$LANG;
+
+			// Initialize:
+		$CSHkeys = array_flip(array_keys($TCA_DESCR));
+
+			// Glossary
+		foreach($CSHkeys as $cshKey => $value)	{
+			if (t3lib_div::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($TCA[$cshKey]))	{
+				$LANG->loadSingleTableDescription($cshKey);
+
+				if (is_array($TCA_DESCR[$cshKey]['columns']))	{
+
+						// Traverse table columns as listed in TCA_DESCR
+					reset($TCA_DESCR[$cshKey]['columns']);
+					while(list($field,$data) = each($TCA_DESCR[$cshKey]['columns']))	{
+						if ($field)	{
+							$this->glossaryWords[$cshKey.'.'.$field] = array(
+								'title' => trim($data['alttitle'] ? $data['alttitle'] : $cshKey),
+								'description' => $data['description'],
+							);
+						}
+					}
+				}
+			}
+		}
+#debug($this->glossaryWords);
+	}
+
+	/**
+	 * Substituting glossary words in the CSH
+	 *
+	 * @param	string		Input HTML string
+	 * @return	string		HTML with substituted words in.
+	 * @todo	It is certain that the substitution of words could be improved. This is just a basic implementation. Suggestions are welcome!
+	 */
+	function substituteGlossaryWords($code)	{
+		if (is_array($this->glossaryWords) && strlen(trim($code)))	{
+#debug(array($code),1);
+				// First, create unique list of words:
+			$substWords = array();
+			foreach($this->glossaryWords as $key => $value)	{
+				$word = strtolower($value['title']);	// Making word lowercase in order to filter out same words in different cases.
+
+				if ($word!=='')	{
+					$substWords[$word] = $value;
+					$substWords[$word]['key'] = $key;
+				}
+			}
+
+				// Substitute words:
+			foreach($substWords as $wordSet)	{
+				$parts = preg_split("/([^[:alnum:]]+)(".$wordSet['title'].")([^[:alnum:]]+)/", ' '.$code.' ', 2, PREG_SPLIT_DELIM_CAPTURE);
+				if (count($parts) == 5)	{
+					$parts[2] = '<a style="background-color: yellow; " href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode($wordSet['key']).'&back='.$this->tfID).'" title="'.htmlspecialchars($wordSet['description']).'">'.$parts[2].'</a>';
+#debug($parts,$word);
+#debug($wordSet['title']);
+					$code = substr(implode('',$parts),1,-1);
+
+						// Disable entry so it doesn't get used next time:
+					unset($this->glossaryWords[$wordSet['key']]);
+				}
+			}
+		}
+
+		return $code;
+	}
+
+	function substituteGlossaryWords_nonHTML($code) {
+		$htmlParser = t3lib_div::makeInstance('local_t3lib_parsehtml');
+		$htmlParser->pObj = &$this;
+		$code = $htmlParser->HTMLcleaner($code, array(), 1);
+
+		return $code;
 	}
 }
 
