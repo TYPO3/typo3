@@ -28,14 +28,32 @@
  * Document for viewing the online help texts, also known as TCA_DESCR.
  * See Inside TYPO3 for details.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   78: class SC_view_help 
+ *   93:     function init()	
+ *  111:     function main()	
+ *  166:     function printContent()	
+ *  177:     function make_seeAlso($value,$anchorTable='')	
+ *  215:     function printImage($image,$descr)	
+ *  237:     function headerLine($str,$type=0)	
+ *  258:     function prepareContent($str)	
+ *  273:     function printItem($table,$field,$anchors=0)	
+ *  309:     function getTableFieldNames($table,$field)	
+ *
+ * TOTAL FUNCTIONS: 9
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 require ('init.php');
 require ('template.php');
@@ -43,9 +61,20 @@ include ('sysext/lang/locallang_view_help.php');
 
 
 
-// ***************************
-// Script Class
-// ***************************
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_view_help {
 	var $allowedHTML = '<strong><em><b><i>';
 
@@ -58,6 +87,8 @@ class SC_view_help {
 	
 	/**
 	 * Initialize
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $LANG;
@@ -73,7 +104,9 @@ class SC_view_help {
 	}
 	
 	/**
-	 * Main 
+	 * Main
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
@@ -127,6 +160,8 @@ class SC_view_help {
 	
 	/**
 	 * Print output
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -134,7 +169,10 @@ class SC_view_help {
 	
 	/**
 	 * Make seeAlso links from $value
-	 * If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
+	 * 
+	 * @param	string		See-also input codes
+	 * @param	string		If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
+	 * @return	string		See-also links HTML
 	 */
 	function make_seeAlso($value,$anchorTable='')	{
 		global $TCA,$BE_USER;
@@ -169,6 +207,10 @@ class SC_view_help {
 	
 	/**
 	 * Will return an image tag with description in italics.
+	 * 
+	 * @param	string		Image file reference
+	 * @param	string		Description string
+	 * @return	string		Image HTML codes
 	 */
 	function printImage($image,$descr)	{
 		$absImagePath = t3lib_div::getFileAbsFileName($image,1,1);
@@ -187,6 +229,10 @@ class SC_view_help {
 
 	/**
 	 * Returns header
+	 * 
+	 * @param	string		Header text
+	 * @param	string		Header type (1, 0)
+	 * @return	string		The HTML for the header.
 	 */
 	function headerLine($str,$type=0)	{
 		switch($type)	{
@@ -205,6 +251,9 @@ class SC_view_help {
 	
 	/**
 	 * Returns prepared content
+	 * 
+	 * @param	string		Content to format.
+	 * @return	string		Formatted content.
 	 */
 	function prepareContent($str)	{
 		$str = $GLOBALS['LANG']->hscAndCharConv($str,0);
@@ -215,6 +264,11 @@ class SC_view_help {
 	/**
 	 * Prints a single $table/$field information piece
 	 * If $anchors is set, then seeAlso references to the same table will be page-anchors, not links.
+	 * 
+	 * @param	string		Table name
+	 * @param	string		Field name
+	 * @param	boolean		If anchors is to be shown.
+	 * @return	string		HTML content
 	 */
 	function printItem($table,$field,$anchors=0)	{
 		global $TCA_DESCR, $LANG, $TCA, $BE_USER;
@@ -247,6 +301,10 @@ class SC_view_help {
 	/**
 	 * Returns labels for $table and $field.
 	 * If $table is "_MOD_" prefixed, the part after "_MOD_" is returned (non-tables, fx. modules)
+	 * 
+	 * @param	string		Table name
+	 * @param	string		Field name
+	 * @return	array		Table and field labels in a numeric array
 	 */
 	function getTableFieldNames($table,$field)	{
 		global $TCA, $TCA_DESCR;

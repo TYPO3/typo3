@@ -32,12 +32,74 @@
  * Writing content back into a <div>-layer is necessary if we want individualized context menus with any specific content for any specific element.
  * Context menus can appear for either database elements or files 
  * The input to this script is basically the "&init" var which is divided by "|" - each part is a reference to table|uid|listframe-flag.
- * 
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
+ * $Id$ 
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *  122: class clickMenu 
+ *  147:     function init($item)	
+ *  182:     function doDisplayTopFrameCM()	
+ *
+ *              SECTION: DATABASE
+ *  210:     function printDBClickMenu($table,$uid)	
+ *  299:     function printNewDBLevel($table,$uid)	
+ *  338:     function externalProcessingOfDBMenuItems($menuItems)	
+ *  350:     function processingByExtClassArray($menuItems,$table,$uid)	
+ *  369:     function urlRefForCM($url,$retUrl='',$hideCM=1)	
+ *  386:     function DB_copycut($table,$uid,$type)	
+ *  409:     function DB_paste($table,$uid,$type,$elInfo)	
+ *  430:     function DB_info($table,$uid)	
+ *  446:     function DB_history($table,$uid)	
+ *  465:     function DB_perms($table,$uid,$rec)	
+ *  484:     function DB_db_list($table,$uid,$rec)	
+ *  503:     function DB_moveWizard($table,$uid,$rec)	
+ *  524:     function DB_newWizard($table,$uid,$rec)	
+ *  542:     function DB_editAccess($table,$uid)	
+ *  560:     function DB_editPageHeader($uid)	
+ *  578:     function DB_edit($table,$uid)	
+ *  617:     function DB_new($table,$uid)	
+ *  642:     function DB_hideUnhide($table,$rec,$hideField)	
+ *  666:     function DB_delete($table,$uid,$elInfo)	
+ *  687:     function DB_view($id,$anchor='')	
+ *
+ *              SECTION: FILE
+ *  716:     function printFileClickMenu($path)	
+ *  784:     function externalProcessingOfFileMenuItems($menuItems)	
+ *  798:     function FILE_launch($path,$script,$type,$image)	
+ *  817:     function FILE_copycut($path,$type)	
+ *  837:     function FILE_delete($path)	
+ *  859:     function FILE_paste($path,$target,$elInfo)	
+ *
+ *              SECTION: COMMON
+ *  899:     function printItems($menuItems,$item)	
+ *  930:     function printLayerJScode($menuItems)	
+ *  963:     function wrapColorTableCM($str)	
+ *  977:     function wrapColorTable($str)	
+ *  993:     function menuItemsForTopFrame($menuItems)	
+ * 1010:     function menuItemsForClickMenu($menuItems)	
+ * 1052:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)	
+ * 1073:     function excludeIcon($iconCode)	
+ * 1083:     function label($label)	
+ * 1092:     function isCMlayers()	
+ * 1102:     function frameLocation($str)	
+ *
+ *
+ * 1126: class SC_alt_clickmenu 
+ * 1138:     function init()	
+ * 1219:     function main()	
+ * 1259:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 42
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -48,12 +110,13 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.php');
 
 
 
-// ***************************
-// Script Classes
-// ***************************
 
 /**
  * Class for generating the click menu
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  * @internal
  */
 class clickMenu {
@@ -75,11 +138,11 @@ class clickMenu {
 	
 
 
-	/** 
+	/**
 	 * Initialize click menu
-	 *
-	 * @param	string	Input "item" GET var.
-	 * @return	string	The clickmenu HTML content
+	 * 
+	 * @param	string		Input "item" GET var.
+	 * @return	string		The clickmenu HTML content
 	 */
 	function init($item)	{
 			// Explode the incoming command:
@@ -111,10 +174,10 @@ class clickMenu {
 		}
 	}
 
-	/** 
+	/**
 	 * Returns true if the menu should (also?) be displayed in topframe, not just <div>-layers
-	 *
-	 * @return	boolean
+	 * 
+	 * @return	boolean		
 	 */
 	function doDisplayTopFrameCM()	{
 		return !$GLOBALS['SOBE']->doc->isCMlayers() || !$this->dontDisplayTopFrameCM;
@@ -137,12 +200,12 @@ class clickMenu {
 	 *
 	 ***************************************/
 
-	/** 
+	/**
 	 * Make 1st level clickmenu:
-	 *
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @return	string	HTML content
+	 * 
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @return	string		HTML content
 	 */
 	function printDBClickMenu($table,$uid)	{
 		global $TCA, $BE_USER;
@@ -226,12 +289,12 @@ class clickMenu {
 		);
 	}
 
-	/**  
+	/**
 	 * Make 2nd level clickmenu (only for DBmenus)
-	 *
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @return	string	HTML content
+	 * 
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @return	string		HTML content
 	 */
 	function printNewDBLevel($table,$uid)	{
 		global $TCA, $BE_USER;
@@ -266,23 +329,23 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Processing the $menuItems array (for extension classes) (DATABASE RECORDS)
-	 *
-	 * @param	array	$menuItems array for manipulation. 
-	 * @return	array	Processed $menuItems array 
+	 * 
+	 * @param	array		$menuItems array for manipulation.
+	 * @return	array		Processed $menuItems array
 	 */
 	function externalProcessingOfDBMenuItems($menuItems)	{
 		return $menuItems;
 	}
 
-	/** 
+	/**
 	 * Processing the $menuItems array by external classes (typ. adding items)
-	 *
-	 * @param	array	$menuItems array for manipulation. 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @return	array	Processed $menuItems array 
+	 * 
+	 * @param	array		$menuItems array for manipulation.
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @return	array		Processed $menuItems array
 	 */
 	function processingByExtClassArray($menuItems,$table,$uid)	{
 		if (is_array($this->extClassArray))	{
@@ -295,13 +358,13 @@ class clickMenu {
 		return $menuItems;
 	}
 
-	/** 
+	/**
 	 * Returning JavaScript for the onClick event linking to the input URL.
-	 *
-	 * @param	string	The URL relative to TYPO3_mainDir
-	 * @param	string	The return_url-parameter
-	 * @param	boolean	If set, the "hideCM()" will be called
-	 * @return	string	JavaScript for an onClick event.
+	 * 
+	 * @param	string		The URL relative to TYPO3_mainDir
+	 * @param	string		The return_url-parameter
+	 * @param	boolean		If set, the "hideCM()" will be called
+	 * @return	string		JavaScript for an onClick event.
 	 */
 	function urlRefForCM($url,$retUrl='',$hideCM=1)	{
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
@@ -311,13 +374,13 @@ class clickMenu {
 		return $editOnClick;
 	}
 
-	/** 
+	/**
 	 * Adding CM element for Clipboard "copy" and "cut"
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @param	string	Type: "copy" or "cut"
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @param	string		Type: "copy" or "cut"
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_copycut($table,$uid,$type)	{
@@ -331,14 +394,15 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for Clipboard "paste into"/"paste after"
 	 * NOTICE: $table and $uid should follow the special syntax for paste, see clipboard-class :: pasteUrl();
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record. NOTICE: Special syntax!
-	 * @param	string	Type: "into" or "after"
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record. NOTICE: Special syntax!
+	 * @param	string		Type: "into" or "after"
+	 * @param	array		Contains instructions about whether to copy or cut an element.
+	 * @return	array		Item array, element in $menuItems
 	 * @see t3lib_clipboard::pasteUrl()
 	 * @internal
 	 */
@@ -355,12 +419,12 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for Info
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_info($table,$uid)	{
@@ -371,12 +435,12 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for History
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_history($table,$uid)	{
@@ -389,13 +453,13 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for Permission setting
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @param	array	The "pages" record with "perms_*" fields inside.
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @param	array		The "pages" record with "perms_*" fields inside.
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_perms($table,$uid,$rec)	{
@@ -408,13 +472,13 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for DBlist
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @param	array	Record of the element (needs "pid" field if not pages-record)
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @param	array		Record of the element (needs "pid" field if not pages-record)
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_db_list($table,$uid,$rec)	{
@@ -427,13 +491,13 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for Moving wizard
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @param	array	Record. Needed for tt-content elements which will have the sys_language_uid sent
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @param	array		Record. Needed for tt-content elements which will have the sys_language_uid sent
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_moveWizard($table,$uid,$rec)	{
@@ -448,13 +512,13 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for Create new wizard (either db_new.php or db_new_content_el.php)
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @param	array	Record.
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @param	array		Record.
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_newWizard($table,$uid,$rec)	{
@@ -467,12 +531,12 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for Editing of the access related fields of a table (disable, starttime, endtime, fe_groups)
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_editAccess($table,$uid)	{
@@ -486,11 +550,11 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for edit page header
 	 * 
-	 * @param	integer	page uid to edit (PID)
-	 * @return	array	Item array, element in $menuItems
+	 * @param	integer		page uid to edit (PID)
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_editPageHeader($uid)	{
@@ -503,12 +567,12 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for regular editing of the element!
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_edit($table,$uid)	{
@@ -542,12 +606,12 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for regular Create new element
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_new($table,$uid)	{
@@ -566,13 +630,13 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for hide/unhide of the input record
 	 * 
-	 * @param	string	Table name
-	 * @param	array	Record
-	 * @param	string	Name of the hide field
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	array		Record
+	 * @param	string		Name of the hide field
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_hideUnhide($table,$rec,$hideField)	{
@@ -590,13 +654,13 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for Delete
 	 * 
-	 * @param	string	Table name
-	 * @param	integer	UID for the current record.
-	 * @param	array	Label for including in the confirmation message, EXT:lang/locallang_core.php:mess.delete
-	 * @return	array	Item array, element in $menuItems
+	 * @param	string		Table name
+	 * @param	integer		UID for the current record.
+	 * @param	array		Label for including in the confirmation message, EXT:lang/locallang_core.php:mess.delete
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_delete($table,$uid,$elInfo)	{
@@ -612,12 +676,12 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Adding CM element for View Page
 	 * 
-	 * @param	integer	Page uid (PID)
-	 * @param	string	Anchor, if any
-	 * @return	array	Item array, element in $menuItems
+	 * @param	integer		Page uid (PID)
+	 * @param	string		Anchor, if any
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function DB_view($id,$anchor='')	{
@@ -643,11 +707,11 @@ class clickMenu {
 	 *
 	 ***************************************/
 
-	/** 
+	/**
 	 * Make 1st level clickmenu:
-	 *
-	 * @param	string	The absolute path
-	 * @return	string	HTML content
+	 * 
+	 * @param	string		The absolute path
+	 * @return	string		HTML content
 	 */
 	function printFileClickMenu($path)	{
 		$menuItems=array();
@@ -711,24 +775,24 @@ class clickMenu {
 	}
 
 
-	/** 
+	/**
 	 * Processing the $menuItems array (for extension classes) (FILES)
-	 *
-	 * @param	array	$menuItems array for manipulation. 
-	 * @return	array	Processed $menuItems array 
+	 * 
+	 * @param	array		$menuItems array for manipulation.
+	 * @return	array		Processed $menuItems array
 	 */
 	function externalProcessingOfFileMenuItems($menuItems)	{
 		return $menuItems;
 	}
 
-	/** 
+	/**
 	 * Multi-function for adding an entry to the $menuItems array
-	 *
-	 * @param	string	Path to the file/directory (target)
-	 * @param	string	Script (eg. file_edit.php) to pass &target= to
-	 * @param	string	"type" is the code which fetches the correct label for the element from "cm."
-	 * @param	string	icon image-filename from "gfx/" (12x12 icon)
-	 * @return	array	Item array, element in $menuItems
+	 * 
+	 * @param	string		Path to the file/directory (target)
+	 * @param	string		Script (eg. file_edit.php) to pass &target= to
+	 * @param	string		"type" is the code which fetches the correct label for the element from "cm."
+	 * @param	string		icon image-filename from "gfx/" (12x12 icon)
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function FILE_launch($path,$script,$type,$image)	{
@@ -742,12 +806,12 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Returns element for copy or cut of files.
-	 *
-	 * @param	string	Path to the file/directory (target)
-	 * @param	string	Type: "copy" or "cut"
-	 * @return	array	Item array, element in $menuItems
+	 * 
+	 * @param	string		Path to the file/directory (target)
+	 * @param	string		Type: "copy" or "cut"
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function FILE_copycut($path,$type)	{
@@ -763,11 +827,11 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Creates element for deleting of target
-	 *
-	 * @param	string	Path to the file/directory (target)
-	 * @return	array	Item array, element in $menuItems
+	 * 
+	 * @param	string		Path to the file/directory (target)
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function FILE_delete($path)	{
@@ -783,13 +847,13 @@ class clickMenu {
 		);
 	}
 
-	/** 
+	/**
 	 * Creates element for pasting files.
-	 *
-	 * @param	string	Path to the file/directory (target)
-	 * @param	string	target - NOT USED.
-	 * @param	array	Various values for the labels.
-	 * @return	array	Item array, element in $menuItems
+	 * 
+	 * @param	string		Path to the file/directory (target)
+	 * @param	string		target - NOT USED.
+	 * @param	array		Various values for the labels.
+	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
 	function FILE_paste($path,$target,$elInfo)	{	
@@ -824,13 +888,13 @@ class clickMenu {
 	 *
 	 **************************************/
 
-	/** 
+	/**
 	 * Prints the items from input $menuItems array - both as topframe menu AND the JS section for writing to the div-layers. 
 	 * Of course the topframe menu will appear only if $this->doDisplayTopFrameCM() returns true
-	 *
-	 * @param	array	$menuItems array
-	 * @param	string	HTML code for the element which was clicked - shown in the end of the horizontal menu in topframe after the close-button.
-	 * @return	string	HTML code
+	 * 
+	 * @param	array		$menuItems array
+	 * @param	string		HTML code for the element which was clicked - shown in the end of the horizontal menu in topframe after the close-button.
+	 * @return	string		HTML code
 	 */
 	function printItems($menuItems,$item)	{
 		$out='';
@@ -857,11 +921,11 @@ class clickMenu {
 		return $out;
 	}
 
-	/** 
+	/**
 	 * Create the JavaScript section
 	 * 
-	 * @param	array	The $menuItems array to print
-	 * @return	string	The JavaScript section which will print the content of the CM to the div-layer in the target frame.
+	 * @param	array		The $menuItems array to print
+	 * @return	string		The JavaScript section which will print the content of the CM to the div-layer in the target frame.
 	 */
 	function printLayerJScode($menuItems)	{
 		$script='';
@@ -890,11 +954,11 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		return $script;
 	}
 
-	/** 
+	/**
 	 * Wrapping the input string in a table with background color 4 and a black border style.
-	 *
-	 * @param	string	
-	 * @return	string
+	 * 
+	 * @param	string		
+	 * @return	string		
 	 */
 	function wrapColorTableCM($str)	{
 		$str = '<table border="0" cellpadding="1" cellspacing="0" bgcolor="'.$GLOBALS['TBE_TEMPLATE']->bgColor4.'" style="border: solid 1px black;">
@@ -904,11 +968,11 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 	}
 
 
-	/** 
+	/**
 	 * Wrapping the input string in a table with background color 2 and a black border style.
-	 *
-	 * @param	string	
-	 * @return	string
+	 * 
+	 * @param	string		
+	 * @return	string		
 	 */
 	function wrapColorTable($str)	{
 		return '<table border="0" cellpadding="0" cellspacing="0" bgcolor="'.$GLOBALS['TBE_TEMPLATE']->bgColor2.'" style="border: solid 1px black;">
@@ -919,11 +983,12 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		</table>';
 	}
 
-	/** 
+	/**
 	 * Traverses the menuItems and generates an output array for implosion in the topframe horizontal menu
-	 *
-	 * @param	array	$menuItem array
-	 * @param	array	Array with HTML content to be imploded between <td>-tags
+	 * 
+	 * @param	array		$menuItem array
+	 * @param	array		Array with HTML content to be imploded between <td>-tags
+	 * @return	array		Array of menu items for top frame.
 	 */
 	function menuItemsForTopFrame($menuItems)	{
 		reset($menuItems);
@@ -935,11 +1000,12 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		return $out;
 	}
 
-	/** 
+	/**
 	 * Traverses the menuItems and generates an output array for implosion in the CM div-layers table.
-	 *
-	 * @param	array	$menuItem array
-	 * @param	array	Array with HTML content to be imploded between <td>-tags
+	 * 
+	 * @param	array		$menuItem array
+	 * @param	array		Array with HTML content to be imploded between <td>-tags
+	 * @return	array		array for implosion in the CM div-layers table.
 	 */
 	function menuItemsForClickMenu($menuItems)	{
 		reset($menuItems);
@@ -973,15 +1039,15 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		return $out;
 	}
 
-	/** 
+	/**
 	 * Creating an array with various elements for the clickmenu entry
-	 *
-	 * @param	string	The label, htmlspecialchar'ed already
-	 * @param	string	<img>-tag for the icon
-	 * @param	string	JavaScript onclick event for label/icon
-	 * @param	boolean ==1 and the element will NOT appear in clickmenus in the topframe (unless clickmenu is totally unavailable)! ==2 and the item will NEVER appear in top frame. (This is mostly for "less important" options since the top frame is not capable of holding so many elements horizontally)
-	 * @param	boolean	If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
-	 * @return	array	$menuItem entry with 6 numerical entries: [0] is the HTML for display of the element with link and icon an mouseover etc., [1]-[5] is simply the input params passed through!
+	 * 
+	 * @param	string		The label, htmlspecialchar'ed already
+	 * @param	string		<img>-tag for the icon
+	 * @param	string		JavaScript onclick event for label/icon
+	 * @param	boolean		==1 and the element will NOT appear in clickmenus in the topframe (unless clickmenu is totally unavailable)! ==2 and the item will NEVER appear in top frame. (This is mostly for "less important" options since the top frame is not capable of holding so many elements horizontally)
+	 * @param	boolean		If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
+	 * @return	array		$menuItem entry with 6 numerical entries: [0] is the HTML for display of the element with link and icon an mouseover etc., [1]-[5] is simply the input params passed through!
 	 */
 	function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)	{
 		$this->elCount++;
@@ -998,40 +1064,40 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		);
 	}
 
-	/** 
+	/**
 	 * Returns the input string IF not a user setting has disabled display of icons.
-	 *
-	 * @param	string	The icon-image tag
-	 * @return string	The icon-image tag prefixed with space char IF the icon should be printed at all due to user settings
+	 * 
+	 * @param	string		The icon-image tag
+	 * @return	string		The icon-image tag prefixed with space char IF the icon should be printed at all due to user settings
 	 */
 	function excludeIcon($iconCode)	{
 		return ($GLOBALS['BE_USER']->uc['noMenuMode'] && strcmp($GLOBALS['BE_USER']->uc['noMenuMode'],'icons')) ? '' : ' '.$iconCode;
 	}
 
-	/** 
+	/**
 	 * Get label from locallang_core.php:cm.*
-	 *
-	 * @param	string	The "cm."-suffix to get.
-	 * @return	string
+	 * 
+	 * @param	string		The "cm."-suffix to get.
+	 * @return	string		
 	 */
 	function label($label)	{
 		return $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.'.$label,1));
 	}
 
-	/** 
+	/**
 	 * Returns true if there should be writing to the div-layers (commands sent to clipboard MUST NOT write to div-layers)
-	 *
-	 * @return	boolean	
+	 * 
+	 * @return	boolean		
 	 */
 	function isCMlayers()	{
 		return $GLOBALS['SOBE']->doc->isCMlayers() && !t3lib_div::GPvar('CB');
 	}
 
-	/** 
+	/**
 	 * Appends ".location" to input string
-	 *
-	 * @param	string
-	 * @return	string
+	 * 
+	 * @param	string		
+	 * @return	string		
 	 */
 	function frameLocation($str)	{
 		return $str.'.location';
@@ -1050,8 +1116,12 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 
 
 
-/** 
+/**
  * Main Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 class SC_alt_clickmenu {
 	var $content='';				// Content accumulation
@@ -1060,8 +1130,10 @@ class SC_alt_clickmenu {
 	var $extClassArray=array();		// Internal array of classes for extending the clickmenu
 	var $dontDisplayTopFrameCM=0;	// If set, then the clickmenu will NOT display in the top frame.
 
-	/** 
+	/**
 	 * Constructor:
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH;
@@ -1106,22 +1178,21 @@ class SC_alt_clickmenu {
 	routImg =new Image(); 
 	routImg.src = "clear.gif";
 
-	function mo(c)	{
+	function mo(c)	{	//
 		var name="roimg_"+c;
 		document[name].src = roImg.src;
 		updateTime();
 	}
-	function mout(c)	{
+	function mout(c)	{	//
 		var name="roimg_"+c;
 		document[name].src = routImg.src;
 		updateTime();
 	}
-	function updateTime()	{
+	function updateTime()	{	//
 		date = new Date();
 		mo_timeout = Math.floor(date.getTime()/1000);
 	}	
-	
-	function timeout_func()	{
+	function timeout_func()	{	//
 		date = new Date();
 		if (Math.floor(date.getTime()/1000)-mo_timeout > '.$secs.')	{
 			hideCM();
@@ -1130,7 +1201,7 @@ class SC_alt_clickmenu {
 			window.setTimeout("timeout_func();",1*1000);
 		}
 	}
-	function hideCM()	{
+	function hideCM()	{	//
 		document.location="alt_topmenu_dummy.php";
 		return false;
 	}
@@ -1140,8 +1211,10 @@ class SC_alt_clickmenu {
 		');
 	}
 
-	/** 
+	/**
 	 * Main function - generating the click menu in whatever form it has.
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $HTTP_GET_VARS;
@@ -1178,8 +1251,10 @@ class SC_alt_clickmenu {
 		$this->content.= $clickMenu->init(t3lib_div::GPvar('item'));
 	}
 
-	/** 
+	/**
 	 * End page and output content.
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
@@ -1211,5 +1286,4 @@ while(list(,$INC_FILE)=each($SOBE->include_once))	{include_once($INC_FILE);}
 
 $SOBE->main();
 $SOBE->printContent();
-
 ?>

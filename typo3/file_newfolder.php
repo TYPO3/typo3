@@ -27,23 +27,51 @@
 /** 
  * Web>File: Create new folders in the filemounts
  *
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   75: class SC_file_newfolder 
+ *   91:     function init()	
+ *  145:     function main()	
+ *  186:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+
+
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
-
-
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-require_once (PATH_t3lib."class.t3lib_basicfilefunc.php");
-
-
-
-// ***************************
-// Script Classes
-// ***************************
 class SC_file_newfolder {
 	var $content;
 	var $number;
@@ -55,7 +83,11 @@ class SC_file_newfolder {
 	var $target;
 	var $doc;	
 
-		// Constructor:
+	/**
+	 * Constructor:
+	 * 
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -88,13 +120,13 @@ class SC_file_newfolder {
 		<script language="javascript" type="text/javascript">
 			var path = "'.$this->target.'";
 		
-			function reload(a)	{
+			function reload(a)	{	//
 				if (!changed || (changed && confirm("'.$LANG->sL("LLL:EXT:lang/locallang_core.php:mess.redraw").'")))	{
 					var params = "&target="+escape(path)+"&number="+a; 
 					document.location = "file_newfolder.php?"+params;
 				}
 			}
-			function backToList()	{
+			function backToList()	{	//
 				top.goToModule("file_list");
 			}
 			
@@ -104,6 +136,12 @@ class SC_file_newfolder {
 		';
 		$this->doc->form='<form action="tce_file.php" method="POST" name="editform">';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -139,6 +177,12 @@ class SC_file_newfolder {
 		$code.='<BR><input type="Submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile_submit").'">&nbsp;&nbsp;<input type="Submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.cancel").'" onClick="backToList(); return false;">';
 		$this->content.= $this->doc->section($LANG->sL("LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile"),$code);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		global $SOBE;
 

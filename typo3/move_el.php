@@ -27,58 +27,185 @@
 /** 
  * Move element wizard
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   89: class localPageTree extends t3lib_pageTree 
+ *   96:     function wrapIcon($icon,$row)	
+ *
+ *
+ *  118: class ext_posMap_pages extends t3lib_positionMap 
+ *  125:     function onClickEvent($pid)	
+ *  134:     function linkPageTitle($str,$rec)	
+ *  144:     function boldTitle($t_code,$dat,$id)	
+ *
+ *
+ *  167: class ext_posMap_tt_content extends t3lib_positionMap 
+ *  175:     function linkPageTitle($str,$rec)	
+ *  185:     function wrapRecordTitle($str,$row)	
+ *
+ *
+ *  209: class SC_move_el 
+ *  223:     function init()	
+ *  255:     function main()	
+ *  339:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 9
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
  
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_misc.php");
-require_once (PATH_t3lib."class.t3lib_page.php");
-require_once (PATH_t3lib."class.t3lib_positionmap.php");
-require_once (PATH_t3lib."class.t3lib_pagetree.php");
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_misc.php');
+require_once (PATH_t3lib.'class.t3lib_page.php');
+require_once (PATH_t3lib.'class.t3lib_positionmap.php');
+require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+/**
+ * Local extension of the page tree class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class localPageTree extends t3lib_pageTree {
+
+	/**
+	 * @param	[type]		$icon: ...
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function wrapIcon($icon,$row)	{
-		return substr($icon,0,-1).' title="id='.htmlspecialchars($row["uid"]).'">';
+		return substr($icon,0,-1).' title="id='.htmlspecialchars($row['uid']).'">';
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Extension of position map for pages
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class ext_posMap_pages extends t3lib_positionMap {
 	var $l_insertNewPageHere = "movePageToHere";
 	
+	/**
+	 * @param	[type]		$pid: ...
+	 * @return	[type]		...
+	 */
 	function onClickEvent($pid)	{
 		return 'document.location=\'tce_db.php?cmd[pages]['.$GLOBALS["SOBE"]->moveUid.']['.$this->moveOrCopy.']='.$pid.'&redirect='.rawurlencode($this->R_URI).'&prErr=1&uPT=1&vC='.$GLOBALS["BE_USER"]->veriCode().'\';return false;';
 	}
+
+	/**
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$rec: ...
+	 * @return	[type]		...
+	 */
 	function linkPageTitle($str,$rec)	{
 		return '<a href="'.t3lib_div::linkThisScript(array("uid"=>intval($rec["uid"]),"moveUid"=>$GLOBALS["SOBE"]->moveUid)).'">'.$str.'</a>';
 	}
+
+	/**
+	 * @param	[type]		$t_code: ...
+	 * @param	[type]		$dat: ...
+	 * @param	[type]		$id: ...
+	 * @return	[type]		...
+	 */
 	function boldTitle($t_code,$dat,$id)	{
 		return parent::boldTitle($t_code,$dat,$GLOBALS["SOBE"]->moveUid);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Extension of position map for content elements
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class ext_posMap_tt_content extends t3lib_positionMap {
 	var $dontPrintPageInsertIcons = 1;
 	
+	/**
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$rec: ...
+	 * @return	[type]		...
+	 */
 	function linkPageTitle($str,$rec)	{
 		$str = '<a href="'.t3lib_div::linkThisScript(array("uid"=>intval($rec["uid"]),"moveUid"=>$GLOBALS["SOBE"]->moveUid)).'">'.$str.'</a>';
 		return $str;
 	}
 
+	/**
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function wrapRecordTitle($str,$row)	{
 		if ($GLOBALS["SOBE"]->moveUid==$row["uid"])	$str = '<b>'.$str.'</b>';
 		return parent::wrapRecordTitle($str,$row);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_move_el {
 	var $content;
 	var $moveUid;
@@ -90,6 +217,9 @@ class SC_move_el {
 	var $doc;	
 	var $sys_language=0;
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 //debug($HTTP_GET_VARS);
@@ -116,6 +246,12 @@ class SC_move_el {
 		$this->R_URI=t3lib_div::GPvar("returnUrl");
 		$this->moveUid = t3lib_div::GPvar("moveUid") ? t3lib_div::GPvar("moveUid") : $this->page_id;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -194,6 +330,12 @@ class SC_move_el {
 			$this->content.=$this->doc->section($LANG->getLL("selectPositionOfElement").":",$code,0,1);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		global $SOBE;
 		$this->content.= $this->doc->middle();
@@ -203,8 +345,8 @@ class SC_move_el {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/move_el.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/move_el.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/move_el.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/move_el.php']);
 }
 
 
@@ -219,7 +361,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/move_
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_move_el");
+$SOBE = t3lib_div::makeInstance('SC_move_el');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -27,40 +27,75 @@
 /** 
  * Wizard to help make forms (fx. for tt_content elements) of type "form". 
  * 
+ * $Id$
+ * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   80: class SC_wizard_forms 
+ *   89:     function init()	
+ *  119:     function main()	
+ *  135:     function printContent()	
+ *
+ *              SECTION: OTHER FUNCTIONS:
+ *  158:     function changeFunc($cArr,$TABLE_c)	
+ *  218:     function cleanT($tArr)	
+ *  235:     function formatCells($fArr)	
+ *  251:     function tableWizard($P)	
+ *
+ * TOTAL FUNCTIONS: 7
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
  
 
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_wizards.php");
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_wizards.php');
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_wizard_forms {
 	var $include_once=array();
 	var $content;
 	var $P;
 	var $doc;	
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->P = t3lib_div::GPvar("P",1);
+		$this->P = t3lib_div::GPvar('P',1);
 		
-		$this->doc = t3lib_div::makeInstance("mediumDoc");
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='
 			<script language="javascript" type="text/javascript">
-				function jumpToUrl(URL,formEl)	{
+				function jumpToUrl(URL,formEl)	{	/
 					document.location = URL;
 				}
 			</script>
@@ -75,6 +110,12 @@ class SC_wizard_forms {
 			$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -85,13 +126,35 @@ class SC_wizard_forms {
 		}
 		$this->content.=$this->doc->endPage();
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		echo $this->content;
 	}
 	
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
+	
+	
+	
+	
+	
+	
+	
+	
+	/****************************
+	 *
+	 * OTHER FUNCTIONS:	
+	 *
+	 ***************************/
+	 
+	/**
+	 * @param	[type]		$cArr: ...
+	 * @param	[type]		$TABLE_c: ...
+	 * @return	[type]		...
+	 */
 	function changeFunc($cArr,$TABLE_c)	{
 		if ($TABLE_c["row_remove"])	{	
 			$kk = key($TABLE_c["row_remove"]);
@@ -145,6 +208,13 @@ class SC_wizard_forms {
 	
 		return $cArr;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$tArr: ...
+	 * @return	[type]		...
+	 */
 	function cleanT($tArr)	{
 		for($a=count($tArr);$a>0;$a--)	{
 			if (strcmp($tArr[$a-1],""))	{
@@ -155,6 +225,13 @@ class SC_wizard_forms {
 		}
 		return $tArr;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$fArr: ...
+	 * @return	[type]		...
+	 */
 	function formatCells($fArr)	{
 		reset($fArr);
 		$lines=array();
@@ -164,6 +241,13 @@ class SC_wizard_forms {
 		$lines[]='<tr><td nowrap><img src=clear.gif width=70 height=1></td><td></td></tr>';
 		return '<table border=0 cellpadding=0 cellspacing=0>'.implode("",$lines).'</table>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$P: ...
+	 * @return	[type]		...
+	 */
 	function tableWizard($P)	{
 		global $LANG, $HTTP_POST_VARS;
 		
@@ -450,8 +534,8 @@ class SC_wizard_forms {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_forms.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_forms.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_forms.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_forms.php']);
 }
 
 
@@ -466,7 +550,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizar
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_wizard_forms");
+$SOBE = t3lib_div::makeInstance('SC_wizard_forms');
 $SOBE->init();
 
 // Include files?

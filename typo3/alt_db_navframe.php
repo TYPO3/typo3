@@ -25,14 +25,32 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Page tree for the Web module
+ * Page navigation tree for the Web module
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant (almost)
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   72: class localPageTree extends t3lib_browseTree 
+ *   79:     function localPageTree() 
+ *   90:     function wrapIcon($icon,&$row)	
+ *
+ *
+ *  120: class SC_alt_db_navframe 
+ *  130:     function init()	
+ *  219:     function main()	
+ *  252:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
@@ -43,19 +61,32 @@ require_once (PATH_t3lib.'class.t3lib_browsetree.php');
 
 
 
-// ***************************
-// Script Classes
-// ***************************
 /**
  * Extension class for the t3lib_browsetree class, specially made for browsing pages in the Web module
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  * @see class t3lib_browseTree
  */
 class localPageTree extends t3lib_browseTree {
 
+	/**
+	 * Calls init functions
+	 * 
+	 * @return	void		
+	 */
 	function localPageTree() {
 		$this->init();
 	}
 
+	/**
+	 * Wrapping icon in browse tree
+	 * 
+	 * @param	string		Icon IMG code
+	 * @param	array		Data row for element.
+	 * @return	string		Page icon
+	 */
 	function wrapIcon($icon,&$row)	{
 			// If the record is locked, present a warning sign.
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked("pages",$row["uid"]))	{
@@ -81,6 +112,10 @@ class localPageTree extends t3lib_browseTree {
 
 /**
  * Main script class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 class SC_alt_db_navframe {
 	var $content;
@@ -89,6 +124,8 @@ class SC_alt_db_navframe {
 	
 	/**
 	 * Initialiation
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH;
@@ -118,8 +155,7 @@ class SC_alt_db_navframe {
 			// Setting JavaScript for menu.
 		$this->doc->JScode=$this->doc->wrapScriptTags(
 	($currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($currentSubScript).'");':'').'
-	
-	function jumpTo(id,linkObj)	{
+	function jumpTo(id,linkObj)	{	//
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
 
 		if (top.condensedMode)	{
@@ -131,14 +167,13 @@ class SC_alt_db_navframe {
 		'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
 		return false;
 	}
-	function refresh_nav()	{
+	function refresh_nav()	{	//
 		window.setTimeout("_refresh_nav();",0);
 	}
-	function _refresh_nav()	{
+	function _refresh_nav()	{	//
 		document.location="'.$this->pagetree->thisScript.'?unique='.time().'";
 	}
-
-    function hilight_row(old_rowid,new_rowid) {
+    function hilight_row(old_rowid,new_rowid) {	//
        if(document.all) {
          if(document.all.item(old_rowid)) {
            document.all.item(old_rowid).style.backgroundColor="";
@@ -178,6 +213,8 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Main function
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $LANG,$CLIENT;
@@ -209,6 +246,8 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Output tree.
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();

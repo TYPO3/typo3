@@ -30,30 +30,31 @@
  * This script lets users choose a new database element to create.
  * Includes a wizard mode for visually pointing out the position of new pages
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant (not with pages wizard yet... position map and other classes needs cleaning)
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   92: class localPageTree extends t3lib_pageTree 
- *  101:     function wrapIcon($icon,$row)	
- *  112:     function expandNext($id)	
+ *   90: class localPageTree extends t3lib_pageTree 
+ *   99:     function wrapIcon($icon,$row)	
+ *  110:     function expandNext($id)	
  *
  *
- *  125: class SC_db_new 
- *  151:     function init()	
- *  208:     function main()	
- *  265:     function pagesOnly()	
- *  281:     function regularNew()	
- *  414:     function printContent()	
- *  431:     function linkWrap($code,$table,$pid,$addContentTable=0)	
- *  451:     function isTableAllowedForThisPage($pid_row, $checkTable)	
- *  481:     function showNewRecLink($table,$allowedNewTables='')	
+ *  123: class SC_db_new 
+ *  149:     function init()	
+ *  206:     function main()	
+ *  263:     function pagesOnly()	
+ *  279:     function regularNew()	
+ *  412:     function printContent()	
+ *  426:     function linkWrap($code,$table,$pid,$addContentTable=0)	
+ *  446:     function isTableAllowedForThisPage($pid_row, $checkTable)	
+ *  476:     function showNewRecLink($table,$allowedNewTables='')	
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -78,9 +79,6 @@ require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 
 
 
-// ***************************
-// Script Classes
-// ***************************
 
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
@@ -94,9 +92,9 @@ class localPageTree extends t3lib_pageTree {
 	/**
 	 * Inserting uid-information in title-text for an icon
 	 * 
-	 * @param	[type]		$icon: ...
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
+	 * @param	string		Icon image
+	 * @param	array		Item row
+	 * @return	string		Wrapping icon image.
 	 */
 	function wrapIcon($icon,$row)	{
 		return substr($icon,0,-1).' title="id='.htmlspecialchars($row['uid']).'">';
@@ -106,8 +104,8 @@ class localPageTree extends t3lib_pageTree {
 	 * Determines whether to expand a branch or not.
 	 * Here the branch is expanded if the current id matches the global id for the listing/new
 	 * 
-	 * @param	[type]		$id: ...
-	 * @return	[type]		...
+	 * @param	integer		The ID
+	 * @return	boolean		Returns true if the IDs matches
 	 */
 	function expandNext($id)	{
 		return $id==$GLOBALS['SOBE']->id ? 1 : 0;
@@ -146,7 +144,7 @@ class SC_db_new {
 	/**
 	 * Constructor
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function init()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
@@ -203,7 +201,7 @@ class SC_db_new {
 	/**
 	 * Main processing
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function main()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
@@ -260,7 +258,7 @@ class SC_db_new {
 	/**
 	 * Creates the position map for pages wizard
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function pagesOnly()	{
 		global $LANG;
@@ -276,7 +274,7 @@ class SC_db_new {
 	/**
 	 * Create a regular new element (pages and records)
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function regularNew()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
@@ -409,24 +407,21 @@ class SC_db_new {
 	/**
 	 * Ending page output and echo'ing content to browser.
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function printContent()	{
-		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
-
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}
 
 	/**
 	 * Links the string $code to a create-new form for a record in $table created on page $pid
-	 * If $addContentTable is set, then a new contentTable record is created together with pages
 	 * 
-	 * @param	[type]		$code: ...
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$pid: ...
-	 * @param	[type]		$addContentTable: ...
-	 * @return	[type]		...
+	 * @param	string		Link string
+	 * @param	string		Table name (in which to create new record)
+	 * @param	integer		PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
+	 * @param	boolean		If $addContentTable is set, then a new contentTable record is created together with pages
+	 * @return	string		The link.
 	 */
 	function linkWrap($code,$table,$pid,$addContentTable=0)	{
 		$params = '&edit['.$table.']['.$pid.']=new'.
@@ -444,9 +439,9 @@ class SC_db_new {
 	/**
 	 * Returns true if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 * 
-	 * @param	[type]		$pid_row: ...
-	 * @param	[type]		$checkTable: ...
-	 * @return	[type]		...
+	 * @param	array		Record for parent page.
+	 * @param	string		Table name to check
+	 * @return	boolean		Returns true if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 */
 	function isTableAllowedForThisPage($pid_row, $checkTable)	{
 		global $TCA, $PAGES_TYPES;
@@ -474,9 +469,9 @@ class SC_db_new {
 	/**
 	 * Returns true if the $table tablename is found in $allowedNewTables (or if $allowedNewTables is empty)
 	 * 
-	 * @param	[type]		$table: ...
-	 * @param	[type]		$allowedNewTables: ...
-	 * @return	[type]		...
+	 * @param	string		Table name to test if in allowedTables
+	 * @param	array		Array of new tables that are allowed.
+	 * @return	boolean		Returns true if the $table tablename is found in $allowedNewTables (or if $allowedNewTables is empty)
 	 */
 	function showNewRecLink($table,$allowedNewTables='')	{
 		$allowedNewTables = is_array($allowedNewTables) ? $allowedNewTables : $this->allowedNewTables;

@@ -38,136 +38,110 @@
  *
  *
  *
- *  197: class t3lib_TCEforms	
- *  292:     function t3lib_TCEforms()	
- *  329:     function initDefaultBEmode()	
+ *  171: class t3lib_TCEforms	
+ *  266:     function t3lib_TCEforms()	
+ *  303:     function initDefaultBEmode()	
  *
  *              SECTION: Rendering the forms, fields etc
- *  375:     function getSoloField($table,$row,$theFieldToReturn)	
- *  414:     function getMainFields($table,$row,$depth=0)	
- *  541:     function getListedFields($table,$row,$list)	
- *  582:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	
- *  658:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	
- *  786:     function getSingleField_SW($table,$field,$row,&$PA)	
+ *  349:     function getSoloField($table,$row,$theFieldToReturn)	
+ *  388:     function getMainFields($table,$row,$depth=0)	
+ *  515:     function getListedFields($table,$row,$list)	
+ *  556:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	
+ *  632:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	
+ *  760:     function getSingleField_SW($table,$field,$row,&$PA)	
  *
  *              SECTION: Rendering of each TCEform field type
- *  857:     function getSingleField_typeInput($table,$field,$row,&$PA)	
- *  909:     function getSingleField_typeText($table,$field,$row,&$PA)	
- *  978:     function getSingleField_typeCheck($table,$field,$row,&$PA)	
- * 1037:     function getSingleField_typeRadio($table,$field,$row,&$PA)	
- * 1067:     function getSingleField_typeSelect($table,$field,$row,&$PA)	
- * 1225:     function getSingleField_typeGroup($table,$field,$row,&$PA)	
- * 1367:     function getSingleField_typeNone($table,$field,$row,&$PA)	
- * 1421:     function getSingleField_typeFlex($table,$field,$row,&$PA)	
- * 1522:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)	
- * 1541:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)	
- * 1571:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())	
- * 1722:     function getSingleField_typeUnknown($table,$field,$row,&$PA)	
- * 1737:     function getSingleField_typeUser($table,$field,$row,&$PA)	
+ *  831:     function getSingleField_typeInput($table,$field,$row,&$PA)	
+ *  883:     function getSingleField_typeText($table,$field,$row,&$PA)	
+ *  952:     function getSingleField_typeCheck($table,$field,$row,&$PA)	
+ * 1011:     function getSingleField_typeRadio($table,$field,$row,&$PA)	
+ * 1041:     function getSingleField_typeSelect($table,$field,$row,&$PA)	
+ * 1199:     function getSingleField_typeGroup($table,$field,$row,&$PA)	
+ * 1341:     function getSingleField_typeNone($table,$field,$row,&$PA)	
+ * 1395:     function getSingleField_typeFlex($table,$field,$row,&$PA)	
+ * 1496:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)	
+ * 1515:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)	
+ * 1545:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())	
+ * 1696:     function getSingleField_typeUnknown($table,$field,$row,&$PA)	
+ * 1711:     function getSingleField_typeUser($table,$field,$row,&$PA)	
  *
  *              SECTION: "Configuration" fetching/processing functions
- * 1769:     function getRTypeNum($table,$row)	
- * 1795:     function rearrange($fields)	
- * 1821:     function getExcludeElements($table,$row,$typeNum)	
- * 1869:     function getFieldsToAdd($table,$row,$typeNum)	
- * 1894:     function mergeFieldsWithAddedFields($fields,$fieldsToAdd)	
- * 1926:     function setTSconfig($table,$row,$field='')	
- * 1948:     function getSpecConfForField($table,$row,$field)	
- * 1968:     function getSpecConfFromString($extraString)    
+ * 1743:     function getRTypeNum($table,$row)	
+ * 1769:     function rearrange($fields)	
+ * 1795:     function getExcludeElements($table,$row,$typeNum)	
+ * 1843:     function getFieldsToAdd($table,$row,$typeNum)	
+ * 1868:     function mergeFieldsWithAddedFields($fields,$fieldsToAdd)	
+ * 1900:     function setTSconfig($table,$row,$field='')	
+ * 1922:     function getSpecConfForField($table,$row,$field)	
+ * 1942:     function getSpecConfFromString($extraString)    
  *
  *              SECTION: Form element helper functions
- * 2000:     function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')	
- * 2109:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)	
- * 2272:     function getIcon($icon)	
- * 2303:     function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)	
- * 2327:     function checkBoxParams($itemName,$thisValue,$c,$iCount,$addFunc='')	
- * 2341:     function elName($itemName)	
- * 2352:     function noTitle($str,$wrapParts=array())	
- * 2361:     function blur()	
- * 2374:     function getSingleHiddenField($table,$field,$row)	
- * 2396:     function formWidth($size=48,$textarea=0) 
- * 2418:     function formWidthText($size=48,$wrap='') 
- * 2433:     function formElStyle($type)	
- * 2451:     function insertDefStyle($type)	
+ * 1974:     function dbFileIcons($fName,$mode,$allowed,$itemArray,$selector='',$params=array(),$onFocus='')	
+ * 2083:     function renderWizards($itemKinds,$wizConf,$table,$row,$field,&$PA,$itemName,$specConf,$RTE=0)	
+ * 2246:     function getIcon($icon)	
+ * 2277:     function wrapOpenPalette($header,$table,$row,$palette,$retFunc=0)	
+ * 2301:     function checkBoxParams($itemName,$thisValue,$c,$iCount,$addFunc='')	
+ * 2315:     function elName($itemName)	
+ * 2326:     function noTitle($str,$wrapParts=array())	
+ * 2335:     function blur()	
+ * 2348:     function getSingleHiddenField($table,$field,$row)	
+ * 2370:     function formWidth($size=48,$textarea=0) 
+ * 2392:     function formWidthText($size=48,$wrap='') 
+ * 2407:     function formElStyle($type)	
+ * 2425:     function insertDefStyle($type)	
  *
  *              SECTION: Item-array manipulation functions (check/select/radio)
- * 2482:     function initItemArray($fieldValue)	
- * 2500:     function addItems($items,$iArray)	
- * 2522:     function procItems($items,$iArray,$config,$table,$row,$field)	
- * 2546:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)	
- * 2624:     function addSelectOptionsToItemArray_makeModuleData($value)	
- * 2646:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)	
+ * 2456:     function initItemArray($fieldValue)	
+ * 2474:     function addItems($items,$iArray)	
+ * 2496:     function procItems($items,$iArray,$config,$table,$row,$field)	
+ * 2520:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)	
+ * 2598:     function addSelectOptionsToItemArray_makeModuleData($value)	
+ * 2620:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)	
  *
  *              SECTION: Template functions
- * 2724:     function setFancyDesign()	
- * 2751:     function setNewBEDesign()	
- * 2805:     function intoTemplate($inArr,$altTemplate='')	
- * 2829:     function addUserTemplateMarkers($marker,$table,$field,$row,&$PA)	
- * 2840:     function wrapLabels($str)	
- * 2853:     function wrapTotal($c,$rec,$table)	
- * 2866:     function replaceTableWrap($arr,$rec,$table)	
- * 2888:     function wrapBorder(&$out_array,&$out_pointer)	
- * 2909:     function rplColorScheme($inTemplate)	
- * 2922:     function getDivider()	
- * 2932:     function printPalette($palArr)	
- * 2974:     function helpTextIcon($table,$field,$force=0)	
- * 2990:     function helpText($table,$field)	
- * 3012:     function setColorScheme($scheme)	
- * 3026:     function resetSchemes()	
- * 3037:     function storeSchemes()	
- * 3048:     function restoreSchemes()	
+ * 2698:     function setFancyDesign()	
+ * 2725:     function setNewBEDesign()	
+ * 2779:     function intoTemplate($inArr,$altTemplate='')	
+ * 2803:     function addUserTemplateMarkers($marker,$table,$field,$row,&$PA)	
+ * 2814:     function wrapLabels($str)	
+ * 2827:     function wrapTotal($c,$rec,$table)	
+ * 2840:     function replaceTableWrap($arr,$rec,$table)	
+ * 2862:     function wrapBorder(&$out_array,&$out_pointer)	
+ * 2883:     function rplColorScheme($inTemplate)	
+ * 2896:     function getDivider()	
+ * 2906:     function printPalette($palArr)	
+ * 2948:     function helpTextIcon($table,$field,$force=0)	
+ * 2964:     function helpText($table,$field)	
+ * 2986:     function setColorScheme($scheme)	
+ * 3000:     function resetSchemes()	
+ * 3011:     function storeSchemes()	
+ * 3022:     function restoreSchemes()	
  *
  *              SECTION: JavaScript related functions
- * 3078:     function JStop($formname='forms[0]')	
- * 3111:     function JSbottom($formname='forms[0]')	
- * 3175:     function TBE_EDITOR_loginRefreshed()	
- * 3181:     function TBE_EDITOR_checkLoginTimeout()	
- * 3189:     function TBE_EDITOR_setHiddenContent(RTEcontent,theField)	
- * 3194:     function TBE_EDITOR_fieldChanged_fName(fName,el)	
- * 3206:     function TBE_EDITOR_fieldChanged(table,uid,field,el)	
- * 3244:     function TBE_EDITOR_setOriginalFormFieldValue(theField)	
- * 3251:     function TBE_EDITOR_isFormChanged(noAlert)	
- * 3258:     function TBE_EDITOR_checkAndDoSubmit(sendAlert)	
- * 3264:     function TBE_EDITOR_checkSubmit(sendAlert)	
- * 3288:     function TBE_EDITOR_checkRange(el,lower,upper)	
- * 3296:     function TBE_EDITOR_initRequired()	
- * 3301:     function TBE_EDITOR_setImage(name,imgName)	
- * 3305:     function TBE_EDITOR_submitForm()	
- * 3310:     function typoSetup	()	
- * 3317:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	
- * 3331:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off, checkSetValue)	
- * 3347:     function TBE_EDITOR_split(theStr1, delim, index) 
- * 3361:     function TBE_EDITOR_palUrl(inData,fieldList,fieldNum,table,uid,isOnFocus) 
- * 3378:     function TBE_EDITOR_curSelected(theField)	
- * 3392:     function TBE_EDITOR_rawurlencode(str,maxlen)	
- * 3403:     function TBE_EDITOR_str_replace(match,replace,string)	
- * 3438:     function dbFileCon($formObj='document.forms[0]')	
- * 3447:     function setFormValueOpenBrowser (mode,params) 
- * 3460:     function setFormValueFromBrowseWin(fName,value,label)	
- * 3486:     function setHiddenFromList(fObjSel,fObjHid)	
- * 3494:     function setFormValueManipulate(fName,type)	
- * 3534:     function setFormValue_getFObj(fName)	
- * 3556:     function printNeededJSFunctions()	
- * 3575:     function printNeededJSFunctions_top()	
+ * 3052:     function JStop($formname='forms[0]')	
+ * 3085:     function JSbottom($formname='forms[0]')	
+ * 3392:     function dbFileCon($formObj='document.forms[0]')	
+ * 3506:     function printNeededJSFunctions()	
+ * 3525:     function printNeededJSFunctions_top()	
  *
  *              SECTION: Various helper functions
- * 3623:     function getDefaultRecord($table,$pid=0)	
- * 3660:     function getRecordPath($table,$rec)	
- * 3673:     function readPerms()	
- * 3687:     function sL($str)	
- * 3700:     function getLL($str)	
- * 3718:     function isPalettesCollapsed($table,$palette)	
- * 3733:     function isDisplayCondition($displayCond,$row)	
- * 3784:     function getTSCpid($table,$uid,$pid)	
- * 3798:     function doLoadTableDescr($table)	
- * 3810:     function getAvailableLanguages($onlyIsoCoded=1,$setDefault=1)	
+ * 3573:     function getDefaultRecord($table,$pid=0)	
+ * 3610:     function getRecordPath($table,$rec)	
+ * 3623:     function readPerms()	
+ * 3637:     function sL($str)	
+ * 3650:     function getLL($str)	
+ * 3668:     function isPalettesCollapsed($table,$palette)	
+ * 3683:     function isDisplayCondition($displayCond,$row)	
+ * 3734:     function getTSCpid($table,$uid,$pid)	
+ * 3748:     function doLoadTableDescr($table)	
+ * 3760:     function getAvailableLanguages($onlyIsoCoded=1,$setDefault=1)	
  *
  *
- * 3853: class t3lib_TCEforms_FE extends t3lib_TCEforms 
- * 3861:     function wrapLabels($str)	
- * 3871:     function printPalette($palArr)	
+ * 3803: class t3lib_TCEforms_FE extends t3lib_TCEforms 
+ * 3811:     function wrapLabels($str)	
+ * 3821:     function printPalette($palArr)	
  *
- * TOTAL FUNCTIONS: 108
+ * TOTAL FUNCTIONS: 82
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -407,7 +381,7 @@ class t3lib_TCEforms	{
 	 * 
 	 * @param	string		The table name
 	 * @param	array		The record from the table for which to render a field.
-	 * @param	[type]		$depth: ...
+	 * @param	integer		Depth level
 	 * @return	string		HTML output
 	 * @see getSoloField()
 	 */
@@ -3171,27 +3145,23 @@ class t3lib_TCEforms	{
 				var TBE_EDITOR_loadTime = 0;
 				var TBE_EDITOR_isChanged = 0;
 
-					//
-				function TBE_EDITOR_loginRefreshed()	{
+				function TBE_EDITOR_loginRefreshed()	{	//
 					var date = new Date();
 					TBE_EDITOR_loadTime = Math.floor(date.getTime()/1000);
 					if (top.busy && top.busy.loginRefreshed)	{top.busy.loginRefreshed();}
 				}
-					//
-				function TBE_EDITOR_checkLoginTimeout()	{
+				function TBE_EDITOR_checkLoginTimeout()	{	//
 					var date = new Date();
 					var theTime = Math.floor(date.getTime()/1000);
 					if (theTime > TBE_EDITOR_loadTime+'.intval($GLOBALS['BE_USER']->auth_timeout_field).'-10)	{
 						return true;
 					}
 				}
-					//
-				function TBE_EDITOR_setHiddenContent(RTEcontent,theField)	{
+				function TBE_EDITOR_setHiddenContent(RTEcontent,theField)	{	//
 					document.'.$formname.'[theField].value = RTEcontent;
 					alert(document.'.$formname.'[theField].value);
 				}
-					//
-				function TBE_EDITOR_fieldChanged_fName(fName,el)	{
+				function TBE_EDITOR_fieldChanged_fName(fName,el)	{	//
 					var idx='.(2+substr_count($this->prependFormFieldNames,'[')).';
 					var table = TBE_EDITOR_split(fName, "[", idx);
 					var uid = TBE_EDITOR_split(fName, "[", idx+1);
@@ -3202,8 +3172,7 @@ class t3lib_TCEforms	{
 					field = field.substr(0,field.length-1);
 					TBE_EDITOR_fieldChanged(table,uid,field,el);
 				}
-					//
-				function TBE_EDITOR_fieldChanged(table,uid,field,el)	{
+				function TBE_EDITOR_fieldChanged(table,uid,field,el)	{	//
 					var theField = "'.$this->prependFormFieldNames.'["+table+"]["+uid+"]["+field+"]";
 					TBE_EDITOR_isChanged = 1;
 
@@ -3240,28 +3209,24 @@ class t3lib_TCEforms	{
 					').'
 				}
 				'.($this->isPalettedoc?'
-					//
-				function TBE_EDITOR_setOriginalFormFieldValue(theField)	{
+				function TBE_EDITOR_setOriginalFormFieldValue(theField)	{	//
 					if ('.$this->isPalettedoc.' && '.$this->isPalettedoc.'.'.$formname.' && '.$this->isPalettedoc.'.'.$formname.'[theField]) {
 						'.$this->isPalettedoc.'.'.$formname.'[theField].value = document.'.$formname.'[theField].value;
 					}
 				}
 				':'').'
-					//
-				function TBE_EDITOR_isFormChanged(noAlert)	{
+				function TBE_EDITOR_isFormChanged(noAlert)	{	//
 					if (TBE_EDITOR_isChanged && !noAlert && confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.fieldsChanged')).'))	{
 						return 0;
 					}
 					return TBE_EDITOR_isChanged;
 				}
-					//
-				function TBE_EDITOR_checkAndDoSubmit(sendAlert)	{
+				function TBE_EDITOR_checkAndDoSubmit(sendAlert)	{	//
 					if (TBE_EDITOR_checkSubmit(sendAlert))	{
 						TBE_EDITOR_submitForm();
 					}
 				}
-					//
-				function TBE_EDITOR_checkSubmit(sendAlert)	{
+				function TBE_EDITOR_checkSubmit(sendAlert)	{	//
 					if (TBE_EDITOR_checkLoginTimeout() && confirm('.$GLOBALS['LANG']->JScharCode($this->getLL('m_refresh_login')).'))	{
 						vHWin=window.open(\''.$this->backPath.'login_frameset.php?\',\'relogin\',\'height=300,width=400,status=0,menubar=0\');
 						vHWin.focus();
@@ -3284,37 +3249,32 @@ class t3lib_TCEforms	{
 						return false;
 					}
 				}
-					//
-				function TBE_EDITOR_checkRange(el,lower,upper)	{
+				function TBE_EDITOR_checkRange(el,lower,upper)	{	//
 					if (el && el.length>=lower && el.length<=upper) {
 						return true;
 					} else {
 						return false;
 					}
 				}
-					//
-				function TBE_EDITOR_initRequired()	{
+				function TBE_EDITOR_initRequired()	{	//
 '.implode(chr(10),$reqLinesSet).'
 '.implode(chr(10),$reqRangeSet).'
 				}
-					//
-				function TBE_EDITOR_setImage(name,imgName)	{
+				function TBE_EDITOR_setImage(name,imgName)	{	//
 					if (document[name]) {document[name].src = eval(imgName+".src");}
 				}
-					//
-				function TBE_EDITOR_submitForm()	{
+				function TBE_EDITOR_submitForm()	{	//
 					'.($this->doSaveFieldName?'document.'.$this->formName."['".$this->doSaveFieldName."'].value=1;":'').'
 					document.'.$this->formName.'.submit();
 				}
-					//
-				function typoSetup	()	{
+				function typoSetup	()	{	//
 					this.passwordDummy = "********";
 					this.decimalSign = ".";
 				}
 				var TS = new typoSetup();
 				var evalFunc = new evalFunc();
-					//
-				function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{
+
+				function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	{	//
 					if (document.'.$formname.'[theField])	{
 						var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 						var theValue = document.'.$formname.'[theField].value;
@@ -3327,8 +3287,7 @@ class t3lib_TCEforms	{
 						}
 					}
 				}
-					//
-				function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off, checkSetValue)	{
+				function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off, checkSetValue)	{	//
 					if (document.'.$formname.'[theField])	{
 						var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 						if (checkbox_off)	{
@@ -3343,8 +3302,7 @@ class t3lib_TCEforms	{
 						typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue);
 					}
 				}
-					//
-				function TBE_EDITOR_split(theStr1, delim, index) {	
+				function TBE_EDITOR_split(theStr1, delim, index) {		//
 					var theStr = ""+theStr1;
 					var lengthOfDelim = delim.length;
 					sPos = -lengthOfDelim;
@@ -3357,8 +3315,7 @@ class t3lib_TCEforms	{
 					if(ePos == -1)	{ePos = theStr.length;}	
 					return (theStr.substring(sPos+lengthOfDelim,ePos));
 				}
-					//
-				function TBE_EDITOR_palUrl(inData,fieldList,fieldNum,table,uid,isOnFocus) {	
+				function TBE_EDITOR_palUrl(inData,fieldList,fieldNum,table,uid,isOnFocus) {		//
 					var url = "'.$this->backPath.'alt_palette.php?inData="+inData+"&formName='.rawurlencode($this->formName).'"+"&prependFormFieldNames='.rawurlencode($this->prependFormFieldNames).'";
 					var field = "";
 					var theField="";
@@ -3374,8 +3331,7 @@ class t3lib_TCEforms	{
 						vHWin.focus();
 					}
 				}
-					//
-				function TBE_EDITOR_curSelected(theField)	{
+				function TBE_EDITOR_curSelected(theField)	{	//
 					var fObjSel = document.'.$formname.'[theField];
 					var retVal="";
 					if (fObjSel && fObjSel.type=="select-multiple")	{
@@ -3388,8 +3344,7 @@ class t3lib_TCEforms	{
 					}
 					return retVal;
 				}
-					//
-				function TBE_EDITOR_rawurlencode(str,maxlen)	{
+				function TBE_EDITOR_rawurlencode(str,maxlen)	{	//
 					var output = str;
 					if (maxlen)	output = output.substr(0,200);
 					output = escape(output);
@@ -3399,8 +3354,7 @@ class t3lib_TCEforms	{
 					output = TBE_EDITOR_str_replace("@","%40", output);
 					return output;
 				}
-					//
-				function TBE_EDITOR_str_replace(match,replace,string)	{
+				function TBE_EDITOR_str_replace(match,replace,string)	{	//
 					var input = ""+string;
 					var matchStr = ""+match;
 					if (!matchStr)	{return string;}
@@ -3443,8 +3397,8 @@ class t3lib_TCEforms	{
 			// ***************
 		
 			var browserWin="";
-				//
-			function setFormValueOpenBrowser (mode,params) {
+
+			function setFormValueOpenBrowser (mode,params) {	//
 				var url = "'.$this->backPath.'browser.php?mode="+mode+"&bparams="+params;
 				if (!browserWin)	{
 					browserWin = window.open(url,"Typo3WinBrowser","height=350,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
@@ -3456,8 +3410,7 @@ class t3lib_TCEforms	{
 					browserWin.focus();
 				}
 			}
-				//
-			function setFormValueFromBrowseWin(fName,value,label)	{
+			function setFormValueFromBrowseWin(fName,value,label)	{	//
 				var formObj = setFormValue_getFObj(fName)
 				if (formObj)	{
 					fObj = formObj[fName+"_list"];
@@ -3482,16 +3435,14 @@ class t3lib_TCEforms	{
 					}
 				}
 			}
-				//
-			function setHiddenFromList(fObjSel,fObjHid)	{
+			function setHiddenFromList(fObjSel,fObjHid)	{	//
 				l=fObjSel.length;
 				fObjHid.value="";
 				for (a=0;a<l;a++)	{
 					fObjHid.value+=fObjSel.options[a].value+",";
 				}
 			}
-				//
-			function setFormValueManipulate(fName,type)	{
+			function setFormValueManipulate(fName,type)	{	//
 				var formObj = setFormValue_getFObj(fName)
 				if (formObj)	{
 					var localArray_V = new Array();
@@ -3530,8 +3481,7 @@ class t3lib_TCEforms	{
 					'.$this->TBE_EDITOR_fieldChanged_func.'
 				}
 			}
-				//
-			function setFormValue_getFObj(fName)	{
+			function setFormValue_getFObj(fName)	{	//
 				var formObj = '.$formObj.';
 				if (formObj)	{
 					if (formObj[fName] && formObj[fName+"_list"] && formObj[fName+"_list"].type=="select-multiple")	{

@@ -33,33 +33,57 @@
  * are NOT located in their actual module directories (fx. mod/web/list/) but in the 
  * backend root directory. This has some historical and practical causes.
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   87: class SC_db_list 
+ *  107:     function init()	
+ *  128:     function menuConfig()	
+ *  151:     function clearCache()	
+ *  164:     function main()	
+ *  342:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
  
 
 unset($MCONF);
-require ("mod/web/list/conf.php");
-require ("init.php");
-require ("template.php");
-$LANG->includeLLFile("EXT:lang/locallang_mod_web_list.php");
-require_once (PATH_t3lib."class.t3lib_page.php");
-require_once (PATH_t3lib."class.t3lib_pagetree.php");
-require_once (PATH_t3lib."class.t3lib_recordlist.php");
-require_once (PATH_t3lib."class.t3lib_clipboard.php");
-require_once ("class.db_list.inc");
-require_once ("class.db_list_extra.inc");
+require ('mod/web/list/conf.php');
+require ('init.php');
+require ('template.php');
+$LANG->includeLLFile('EXT:lang/locallang_mod_web_list.php');
+require_once (PATH_t3lib.'class.t3lib_page.php');
+require_once (PATH_t3lib.'class.t3lib_pagetree.php');
+require_once (PATH_t3lib.'class.t3lib_recordlist.php');
+require_once (PATH_t3lib.'class.t3lib_clipboard.php');
+require_once ('class.db_list.inc');
+require_once ('class.db_list_extra.inc');
 $BE_USER->modAccess($MCONF,1);
 
 t3lib_BEfunc::lockRecords();
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_db_list {
 	var $MCONF=array();
 	var $MOD_MENU=array();
@@ -77,21 +101,30 @@ class SC_db_list {
 	var $id;
 	var $doc;	
 
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
-		$this->MCONF = $GLOBALS["MCONF"];
-		$this->id = t3lib_div::GPvar("id");
+		$this->MCONF = $GLOBALS['MCONF'];
+		$this->id = t3lib_div::GPvar('id');
 
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
-		$this->pointer = t3lib_div::GPvar("pointer");
-		$this->imagemode = t3lib_div::GPvar("imagemode");
-		$this->table = t3lib_div::GPvar("table");
+		$this->pointer = t3lib_div::GPvar('pointer');
+		$this->imagemode = t3lib_div::GPvar('imagemode');
+		$this->table = t3lib_div::GPvar('table');
 		$this->menuConfig();
 
-		if (t3lib_div::GPvar("clear_cache") || t3lib_div::GPvar("cmd")=="delete")	{
-			$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
+		if (t3lib_div::GPvar('clear_cache') || t3lib_div::GPvar('cmd')=='delete')	{
+			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function menuConfig()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -109,6 +142,12 @@ class SC_db_list {
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET"), $this->MCONF["name"]);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function clearCache()	{
 		if (t3lib_div::GPvar("clear_cache"))	{
 			$tce = t3lib_div::makeInstance("t3lib_TCEmain");
@@ -116,6 +155,12 @@ class SC_db_list {
 			$tce->clear_cacheCmd($this->id);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -199,29 +244,29 @@ class SC_db_list {
 		
 		$this->doc->JScode='
 		<script language="javascript" type="text/javascript">
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL)	{	//
 //	alert("jumpToUrl: "+URL);
 				document.location = URL;
 				return false;
 			}
-			function jumpExt(URL,anchor)	{
+			function jumpExt(URL,anchor)	{	//
 				var anc = anchor?anchor:"";
 //	alert("jumpExt: "+URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc);
 				document.location = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
 				return false;
 			}
-			function jumpSelf(URL)	{
+			function jumpSelf(URL)	{	//
 //	alert("jumpSelf: "+URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:""));
 				document.location = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
 				return false;
 			}
 			'.$this->doc->redirectUrls($dblist->listURL()).'
 			'.$dblist->CBfunctions().'
-			function editRecords(table,idList,addParams,CBflag)	{
+			function editRecords(table,idList,addParams,CBflag)	{	//
 				document.location="'.$backPath.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI")).
 					'&edit["+table+"]["+idList+"]=edit"+addParams;
 			}
-			function editList(table,idList)	{
+			function editList(table,idList)	{	//
 				var list="";
 		
 					// Checking how many is checked, how many is not
@@ -288,19 +333,23 @@ class SC_db_list {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
-		
-//		echo strlen($this->content)."<BR>";
 	}
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/db_list.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/db_list.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/db_list.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/db_list.php']);
 }
 
 
@@ -315,7 +364,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/db_li
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_db_list");
+$SOBE = t3lib_div::makeInstance('SC_db_list');
 $SOBE->init();
 
 // Include files?

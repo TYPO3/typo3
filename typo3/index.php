@@ -26,7 +26,52 @@
 ***************************************************************/
 /** 
  * Login-screen of TYPO3.
+ * 
+ * $Id$
  *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   89: class SC_index 
+ *  107:     function init()	
+ *  141:     function main()	
+ *  152:     function makeLoginLogoutForm()	
+ *  294:     function makeStartHTML()	
+ *  359:     function printContent()	
+ *  366:     function doChallengeResponse() 
+ *
+ * TOTAL FUNCTIONS: 6
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+ 
+define('TYPO3_PROCEED_IF_NO_USER', 1);
+require ('init.php');
+require ('template.php');
+require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
  * GET vars:
  * u=	default username
  * p=	default password
@@ -36,22 +81,11 @@
  * commandLI
  * loginRefresh
  * interface
- *
+ * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
-
-define("TYPO3_PROCEED_IF_NO_USER", 1);
-require ("init.php");
-require ("template.php");
-require_once (PATH_t3lib."class.t3lib_loadmodules.php");
-
-
-// ***************************
-// Script Classes
-// ***************************
 class SC_index {
 	var $content;
 	
@@ -67,7 +101,9 @@ class SC_index {
 
 	/**
 	 * Initialize the login box. Will also react on a &L=OUT flag and exit.
-	 */ 
+	 * 
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$TYPO3_CONF_VARS;
 		
@@ -99,6 +135,8 @@ class SC_index {
 
 	/**
 	 * Main function - just calling subfunctions.
+	 * 
+	 * @return	[type]		...
 	 */
 	function main()	{
 		$this->content="";
@@ -108,6 +146,8 @@ class SC_index {
 
 	/**
 	 * Making the login/logout form
+	 * 
+	 * @return	[type]		...
 	 */
 	function makeLoginLogoutForm()	{
 		global $BE_USER,$TYPO3_CONF_VARS,$TBE_TEMPLATE;
@@ -248,6 +288,8 @@ class SC_index {
 	
 	/**
 	 * Make the HTML which will start the BE:
+	 * 
+	 * @return	[type]		...
 	 */
 	function makeStartHTML()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
@@ -311,6 +353,8 @@ class SC_index {
 	
 	/**
 	 * Output it all...
+	 * 
+	 * @return	[type]		...
 	 */
 	function printContent()	{
 		global $TBE_TEMPLATE;
@@ -337,8 +381,8 @@ class SC_index {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/index.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/index.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/index.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/index.php']);
 }
 
 
@@ -351,7 +395,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/index
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_index");
+$SOBE = t3lib_div::makeInstance('SC_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

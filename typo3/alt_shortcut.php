@@ -26,17 +26,38 @@
 ***************************************************************/
 /** 
  * Shortcut frame
- * 
  * Appears in the bottom frame of the backend frameset.
  * Provides links to registered shortcuts
  * If the 'cms' extension is loaded you will also have a field for entering page id/alias which will be found/edited
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant output
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   82: class SC_alt_shortcut 
+ *  105:     function preinit()	
+ *  122:     function preprocess()	
+ *  182:     function init()	
+ *  217:     function main()	
+ *  307:     function editLoadedFunc()	
+ *  360:     function editPageIdFunc()	
+ *  402:     function printContent()	
+ *
+ *              SECTION: OTHER FUNCTIONS:
+ *  430:     function mIconFilename($Ifilename,$backPath)	
+ *  443:     function getIcon($modName)	
+ *  467:     function itemLabel($inlabel,$modName,$M_modName='')	
+ *
+ * TOTAL FUNCTIONS: 10
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -48,9 +69,16 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_shortcut {
 	var $content;
 	var $loadModules;
@@ -71,6 +99,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Pre-initialization - setting input variables for storing shortcuts etc.
+	 * 
+	 * @return	void		
 	 */
 	function preinit()	{
 		global $TBE_MODULES;
@@ -86,6 +116,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Adding shortcuts, editing shortcuts etc.
+	 * 
+	 * @return	void		
 	 */
 	function preprocess()	{
 		global $BE_USER,$HTTP_POST_VARS;
@@ -144,6 +176,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Initialize (page output)
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $BACK_PATH;
@@ -153,34 +187,32 @@ class SC_alt_shortcut {
 		$this->doc->form='<form name="shForm" action="alt_shortcut.php" method="post">';
 		$this->doc->docType='xhtml_trans';
 		$this->doc->divClass='typo3-shortcut';
-		$this->doc->JScode.='
-		<script type="text/javascript">
-			'.$this->doc->wrapInCData('
-			function jump(url,modName,mainModName)	{
+		$this->doc->JScode.=$this->doc->wrapScriptTags('
+			function jump(url,modName,mainModName)	{	//
 				top.nextLoadModuleUrl = url;
 				top.goToModule(modName);
 			}
-			function editSh(uid)	{
+			function editSh(uid)	{	//
 				document.location="alt_shortcut.php?editShortcut="+uid;
 			}
-			function submitEditPage(id)	{
+			function submitEditPage(id)	{	//
 				document.location="alt_shortcut.php?editPage="+top.rawurlencode(id);
 			}
-			function loadEditId(id)	{
+			function loadEditId(id)	{	//
 				top.fsMod.recentIds["web"]=id;
 				if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
 					top.content.nav_frame.refresh_nav();
 				}
 				top.goToModule("web_layout");
 			}
-			').'
-		</script>
-		';
+			');
 		$this->content.=$this->doc->startPage('Shortcut frame');
 	}
 
 	/**
 	 * Main function, creating content in the frame
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER,$LANG;
@@ -269,6 +301,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Creates lines for the editing form.
+	 * 
+	 * @return	void		
 	 */
 	function editLoadedFunc()	{
 		global $BE_USER,$LANG;
@@ -320,6 +354,8 @@ class SC_alt_shortcut {
 	/**
 	 * If "editPage" value is sent to script and it points to an accessible page, the internal var $this->theEditRec is set to the page record which should be loaded.
 	 * Returns void
+	 * 
+	 * @return	void		
 	 */
 	function editPageIdFunc()	{
 		global $BE_USER,$LANG;
@@ -360,6 +396,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Output content
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
@@ -367,12 +405,27 @@ class SC_alt_shortcut {
 	}
 	
 
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
+
+
+
+
+
+
+
+
+
+	/***************************
+	 *
+	 * OTHER FUNCTIONS:	
+	 *
+	 ***************************/
 
 	/**
 	 * Returns relative filename for icon.
+	 * 
+	 * @param	string		$Ifilename: ...
+	 * @param	string		$backPath: ...
+	 * @return	void		
 	 */
 	function mIconFilename($Ifilename,$backPath)	{
 		if (t3lib_div::isAbsPath($Ifilename))	{
@@ -383,6 +436,9 @@ class SC_alt_shortcut {
 
 	/**
 	 * Returns icon for shortcut display
+	 * 
+	 * @param	string		Backend module name
+	 * @return	string		Icon file name
 	 */
 	function getIcon($modName)	{
 		global $LANG;
@@ -402,6 +458,11 @@ class SC_alt_shortcut {
 
 	/**
 	 * Returns title-label for icon
+	 * 
+	 * @param	string		In-label
+	 * @param	string		Backend module name (key)
+	 * @param	string		Backend module label (user defined?)
+	 * @return	string		Label for the shortcut item
 	 */
 	function itemLabel($inlabel,$modName,$M_modName='')	{
 		global $LANG;

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,7 +27,10 @@
 /** 
  * Wrapped for Kickstarter extension used with extension repository...
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 
 
@@ -37,7 +40,9 @@ require_once(t3lib_extMgm::extPath('extrep_wizard').'pi/class.tx_extrepwizard.ph
  * Wrapped for Kickstarter extension used with extension repository...
  * (Originally the Kickstarter was designed to run from the frontend of the typo3.org website rather than from the backend of TYPO3! This is why we have to wrap the frontend plugin class in this way to fit it into the backend!)
  * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 class em_kickstarter extends tx_extrepwizard {
 	

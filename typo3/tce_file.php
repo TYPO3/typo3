@@ -26,14 +26,32 @@
 ***************************************************************/
 /** 
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
- *
  * This script serves as the fileadministration part of the TYPO3 Core Engine.
  * Basically it includes two libraries which are used to manipulate files on the server.
  *
  * For syntax and API information, see the document 'TYPO3 Core APIs' 
  *
+ * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   77: class SC_tce_file 
+ *   88:     function init()	
+ *  103:     function initClipboard()	
+ *  124:     function main()	
+ *  157:     function finish()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */ 
+ 
 require ('init.php');
 require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');

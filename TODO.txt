@@ -332,6 +332,201 @@ NOTES
 
 
   
+******************************************
+APPENDIX 1: CLEANING UP FOR TYPO3 3.6.0
+******************************************
+Cleaning for 3.6 involves:
+- XHTML compliance
+- " to '
+- Commented functions
+
+1: Add comments
+ * NOTICE: This will also detect JavaScript functions, but if you place a comment line like "// ..." in the end of the function definition line they will not have the JavaDoc style comment added. Eg. "	function blabla()	{	//    "
+2: Write comments, organize them, add sections etc. (search [type])
+2a: Set "@access private"
+3: double to single quote (check for "\n")
+4: XHTML
+
+
+Status 27/10 (TYPO3 Core + extensions "cms" and "lang" in sysext/ (but without ext/)):
+- 2000 @param and @return tags in 800 functions still needs commenting (3800 tags in 1400 functions has already been done)
+- 50 scripts still needs cleaning for XHTML, comments and single-quotes
+
+---------------------------------------------------------------
+NOTES ABOUT WHICH SCRIPTS HAS BEEN CLEANED AND WHICH REMAINS:
+---------------------------------------------------------------
+Finished (XHTML, quotes, comments, revised-note), XQCR:
+(Indented scripts are still missing clean-up)
+
+t3lib________________________________________:
+XQCR: t3lib/class.t3lib_admin.php
+XQCR: t3lib/class.t3lib_arraybrowser.php
+-QCR: t3lib/class.t3lib_basicfilefunc.php
+XQCR: t3lib/class.t3lib_bedisplaylog.php
+XQCR: t3lib/class.t3lib_befunc.php
+XQCR: t3lib/class.t3lib_beuserauth.php
+XQCR: t3lib/class.t3lib_browsetree.php
+XQCR: t3lib/class.t3lib_clipboard.php
+-QC-: t3lib/class.t3lib_cs.php
+		t3lib/class.t3lib_diff.php
+XQCR: t3lib/class.t3lib_div.php
+		t3lib/class.t3lib_dmailer.php
+		t3lib/class.t3lib_exec.php		[Rene]
+		t3lib/class.t3lib_extfilefunc.php
+-QCR: t3lib/class.t3lib_extmgm.php
+-QCR: t3lib/class.t3lib_extobjbase.php
+		t3lib/class.t3lib_foldertree.php
+-QCR: t3lib/class.t3lib_formmail.php
+		t3lib/class.t3lib_fullsearch.php
+		t3lib/class.t3lib_htmlmail.php
+XQCR: t3lib/class.t3lib_iconworks.php
+		t3lib/class.t3lib_install.php
+-QCR: t3lib/class.t3lib_loaddbgroup.php
+-QCR: t3lib/class.t3lib_loadmodules.php
+-QCR: t3lib/class.t3lib_matchcondition.php
+		t3lib/class.t3lib_modsettings.php	[Rene]
+XQCR: t3lib/class.t3lib_page.php
+		t3lib/class.t3lib_pagetree.php
+XQCR: t3lib/class.t3lib_parsehtml.php
+		a.Q..: t3lib/class.t3lib_parsehtml_proc.php (45)
+		t3lib/class.t3lib_positionmap.php
+		t3lib/class.t3lib_querygenerator.php
+-QCR: t3lib/class.t3lib_readmail.php
+XQCR: t3lib/class.t3lib_recordlist.php
+-QCR: t3lib/class.t3lib_scbase.php
+-QCR: t3lib/class.t3lib_stdgraphic.php
+		t3lib/class.t3lib_superadmin.php
+		t3lib/class.t3lib_svbase.php		[Rene]
+-QCR: t3lib/class.t3lib_tceforms.php
+		t3lib/class.t3lib_tcemain.php
+XQCR: t3lib/class.t3lib_timetrack.php
+-QCR: t3lib/class.t3lib_transferdata.php
+		t3lib/class.t3lib_treeview.php
+XQCR: t3lib/class.t3lib_tsfebeuserauth.php
+-QCR: t3lib/class.t3lib_tsparser.php
+		t3lib/class.t3lib_tsparser_ext.php
+		t3lib/class.t3lib_tsstyleconfig.php
+-QCR: t3lib/class.t3lib_tstemplate.php
+XQCR: t3lib/class.t3lib_userauth.php
+XQCR: t3lib/class.t3lib_userauthgroup.php
+-QCR: t3lib/class.t3lib_xml.php
+
+-QCR: t3lib/config_default.php
+-QCR: t3lib/thumbs.php
+XQCR: template.php
+-QCR: t3lib/stddb/load_ext_tables.php
+-QCR: t3lib/stddb/tables.php
+-QCR: t3lib/stddb/tbl_be.php
+
+cms_______________________________________:
+XQCR: tslib/class.tslib_content.php
+XQCR: tslib/class.tslib_fe.php
+-QCR: tslib/class.tslib_fetce.php
+-QCR: tslib/class.tslib_feuserauth.php
+-QCR: tslib/class.tslib_gifbuilder.php
+XQCR: tslib/class.tslib_menu.php
+XQCR: tslib/class.tslib_pagegen.php
+XQCR: tslib/class.tslib_pibase.php
+XQC-: tslib/class.tslib_search.php
+XQCR: tslib/media/scripts/example_callfunction.php
+XQCR: tslib/media/scripts/example_itemArrayProcFunc.php
+XQCR: tslib/media/scripts/example_keepRollover.php
+XQ-R: tslib/media/scripts/example_languageMenu.php
+XQCR: tslib/media/scripts/example_typolinkpop.php
+XQCR: tslib/media/scripts/fe_adminLib.inc
+XQ-R: tslib/media/scripts/freesite_dummy_page_menu.php
+XQCR: tslib/media/scripts/gmenu_foldout.php
+XQCR: tslib/media/scripts/gmenu_layers.php
+-QCR: tslib/media/scripts/makeMenu_datedirectory.inc
+-QCR: tslib/media/scripts/makeMenu_keywords_updated.inc
+XQCR: tslib/media/scripts/plaintextLib.inc
+XQCR: tslib/media/scripts/postit.inc
+----: tslib/media/scripts/testscript.inc
+----: tslib/media/scripts/testscript_EXT.php
+----: tslib/media/scripts/testscript_INT.php
+XQCR: tslib/media/scripts/tmenu_layers.php
+XQCR: tslib/media/scripts/wapversionLib.inc
+XQCR: tslib/media/scripts/xmlversionLib.inc
+-Q-R: tslib/index_ts.php
+-Q-R: tslib/pagegen.php
+-Q-.: tslib/publish.php
+.QCR: tslib/showpic.php
+XQCR: web_info/class.tx_cms_webinfo.php
+
+lang___________________________________________:
+XQCR: lang.php
+
+
+
+typo3___________________________________________:
+XQCR: alt_clickmenu.php
+XQCR: alt_db_navframe.php
+		alt_doc.php		TODO: Check "redirect" GPvar for XSS hole!?
+		alt_doc_nodoc.php
+XQCR: alt_file_navframe.php
+XQCR: alt_intro.php
+XQCR: alt_main.php
+XQCR: alt_menu.php
+XQCR: alt_menu_sel.php
+XQCR: alt_mod_frameset.php
+		alt_palette.php
+XQCR: alt_shortcut.php
+XQCR: alt_toplogo.php
+XQCR: alt_topmenu_dummy.php
+		browse_links.php
+		browser.php
+XQCR: class.alt_menu_functions.inc
+		class.db_layout.inc
+		class.db_list.inc
+		class.db_list_extra.inc
+XQCR: class.file_list.inc
+		class.show_rechis.inc
+		db_layout.php
+		db_list.php
+XQCR: db_new.php
+		db_new_content_el.php
+default.htm
+default.html
+XQCR: dummy.php
+XQCR: file_edit.php
+XQCR: file_list.php
+		file_newfolder.php
+		file_rename.php
+		file_upload.php
+		index.php		TODO: Check "redirect" GPvar for XSS hole!?
+-QC-:	index_re.php
+-Q-R: init.php
+XQCR: listframe_loader.php
+		login_frameset.php
+-QC-:	logout.php		TODO: Check "redirect" GPvar for XSS hole!?
+		move_el.php
+		rte_cleaner.php
+		rte_select_image.php
+		rte_user.php
+		show_item.php
+XQCR: show_rechis.php
+		status_file.php
+-QCR:	tce_db.php
+-QCR: tce_file.php
+XQCR: template.php
+XQCR:	view_help.php
+		wizard_add.php
+		wizard_colorpicker.php		[Matthias]
+		wizard_edit.php
+		wizard_forms.php
+		wizard_list.php
+		wizard_rte.php
+		wizard_table.php
+		wizard_tsconfig.php
+
+
+XQCR: mod/help/about/index.php:		TODO: Modernize content
+		mod/tools/em/index.php
+XQCR: mod/web/info/index.php
+XQCR: mod/web/func/index.php
+		mod/web/perm/index.php
+
+  
 *******************
 APPENDIX 2: XHTML
 *******************

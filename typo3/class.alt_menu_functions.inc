@@ -26,19 +26,47 @@
 ***************************************************************/
 /** 
  * Class for generation of the module menu.
- *
  * Will make the the vertical, horizontal, selectorbox based menus AND the "about modules" display.
  * Basically it traverses the module structure and generates output based on that.
+ *
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ * XHTML compliant content
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   70: class alt_menu_functions 
+ *   91:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)	
+ *  340:     function mIconFile($Ifilename,$backPath)	
+ *  355:     function mIconFilename($Ifilename,$backPath)	
+ *  367:     function topButtons()	
+ *  380:     function wrapLinkWithAB($link)	
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
+ 
+
+
+
+
+
+
+
+/**
+ * Class with menu functions
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
- * XHTML compliant content
  */
-
- 
 class alt_menu_functions {
 
 		// Internal
@@ -47,15 +75,18 @@ class alt_menu_functions {
 	/**
 	 * Creates the menu of modules.
 	 * 
-	 * $theModules is the output from load_modules class ($this->loadModules->modules)
 	 * $descr determines the type of menu made:
-	 *		0 = Ordinary vertical menu
+	 * 		0 = Ordinary vertical menu
 	 * 		1 = Descriptions for 'About modules' display
 	 * 		2 = selector-box menu
-	 *		3 = topmenu - horizontal line of icons!
-	 *		4 = part of JavaScript switch contruct for alt_main.php frameset.
-	 * $dontLink == true will prevent the output from being linked with A-tags (used in the 'beuser' extension)
-	 * $backPath must be the 'backPath' to PATH_typo3 from where the the menu is displayed.
+	 * 		3 = topmenu - horizontal line of icons!
+	 * 		4 = part of JavaScript switch contruct for alt_main.php frameset.
+	 * 
+	 * @param	array		$theModules is the output from load_modules class ($this->loadModules->modules)
+	 * @param	boolean		$dontLink == true will prevent the output from being linked with A-tags (used in the 'beuser' extension)
+	 * @param	string		$backPath must be the 'backPath' to PATH_typo3 from where the the menu is displayed.
+	 * @param	integer		$descr determines the type of menu made (see above)
+	 * @return	string		The menu HTML
 	 */
 	function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)	{
 		global $LANG, $TBE_TEMPLATE;
@@ -300,6 +331,11 @@ class alt_menu_functions {
 	/**
 	 * Returns $Ifilename readable for script in PATH_typo3. 
 	 * That means absolute names are just returned while relative names are prepended with $backPath (pointing back to typo3/ dir)
+	 * 
+	 * @param	string		Icon filename
+	 * @param	string		Back path
+	 * @return	string		Result
+	 * @see mIconFilename()
 	 */
 	function mIconFile($Ifilename,$backPath)	{
 		if (t3lib_div::isAbsPath($Ifilename))	{
@@ -310,6 +346,11 @@ class alt_menu_functions {
 
 	/**
 	 * Returns relative filename to the $Ifilename (for use in img-tags)
+	 * 
+	 * @param	string		Icon filename
+	 * @param	string		Back path
+	 * @return	string		Result
+	 * @see mIconFile()
 	 */
 	function mIconFilename($Ifilename,$backPath)	{
 		if (t3lib_div::isAbsPath($Ifilename))	{
@@ -320,6 +361,8 @@ class alt_menu_functions {
 
 	/**
 	 * Returns logout button.
+	 * 
+	 * @return	string		
 	 */
 	function topButtons()	{
 		global $LANG;
@@ -330,6 +373,9 @@ class alt_menu_functions {
 
 	/**
 	 * Appends a '?' if there is none in the string already
+	 * 
+	 * @param	string		Link URL
+	 * @return	string		
 	 */
 	function wrapLinkWithAB($link)	{
 		if (!strstr($link,'?'))	{
@@ -342,5 +388,4 @@ class alt_menu_functions {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.alt_menu_functions.inc'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.alt_menu_functions.inc']);
 }
-
 ?>

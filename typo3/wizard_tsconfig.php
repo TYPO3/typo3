@@ -27,40 +27,105 @@
 /** 
  * Wizard for inserting TSconfig in form fields. (page,user or TS)
  * 
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   92: class ext_TSparser extends t3lib_tsparser_ext 
+ *   98:     function makeHtmlspecialchars($P)	
+ *
+ *
+ *  119: class SC_wizard_tsconfig 
+ *  129:     function init()	
+ *  228:     function main()	
+ *  251:     function printContent()	
+ *
+ *              SECTION: OTHER FUNCTIONS:
+ *  276:     function revertFromSpecialChars($str)	
+ *  288:     function getObjTree($whichman="")	
+ *  316:     function setObj(&$objTree,$strArr,$params)	
+ *  335:     function doLink($params)	
+ *  348:     function browseTSprop($mode,$show)	
+ *  401:     function removePointerObjects($objArray)	
+ *  421:     function linkToObj($str,$uid,$objString="")	
+ *  433:     function printTable($table,$objString,$objTree)	
+ *  499:     function linkProperty($str,$propertyVal,$prefix,$datatype)	
+ *
+ * TOTAL FUNCTIONS: 13
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
  
 
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_wizards.php");
-require_once (PATH_t3lib."class.t3lib_parsehtml.php");
-require_once (PATH_t3lib."class.t3lib_tstemplate.php");
-require_once (PATH_t3lib."class.t3lib_tsparser_ext.php");
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_wizards.php');
+require_once (PATH_t3lib.'class.t3lib_parsehtml.php');
+require_once (PATH_t3lib.'class.t3lib_tstemplate.php');
+require_once (PATH_t3lib.'class.t3lib_tsparser_ext.php');
 
 
 
 	
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+/**
+ * TypoScript parser extension class.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class ext_TSparser extends t3lib_tsparser_ext {
+
+	/**
+	 * @param	[type]		$P: ...
+	 * @return	[type]		...
+	 */
 	function makeHtmlspecialchars($P)	{
-		return $P["_LINK"];
+		return $P['_LINK'];
 	}
 }
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_wizard_tsconfig {
 	var $content;
 	var $P;
 	var $mode;
 	var $show;
 	var $doc;	
-	
+
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -89,14 +154,14 @@ class SC_wizard_tsconfig {
 			A:hover {color: '.$this->doc->bgColor2.'}
 		</style>
 		<script language="javascript" type="text/javascript">
-			function checkReference()	{
+			function checkReference()	{	//
 				if (window.opener && window.opener.document && window.opener.document.'.$this->P["formName"].' && window.opener.document.'.$this->P["formName"].'["'.$this->P["itemName"].'"] )	{
 					return window.opener.document.'.$this->P["formName"].'["'.$this->P["itemName"].'"];
 				} else {
 					close();
 				}
 			}
-			function setValue(input)	{
+			function setValue(input)	{	//
 				var field = checkReference();
 				if (field)	{
 					field.value=input+"\n"+field.value;
@@ -105,11 +170,11 @@ class SC_wizard_tsconfig {
 				}
 				close();
 			}
-			function getValue()	{
+			function getValue()	{	//
 				var field = checkReference();
 				if (field)	return field.value;
 			}
-			function mixerField(cmd,objString)	{
+			function mixerField(cmd,objString)	{	//
 				var temp;
 				switch(cmd)	{
 					case "Indent":
@@ -128,7 +193,7 @@ class SC_wizard_tsconfig {
 					break;
 				}
 			}
-			function str_replace(match,replace,string)	{
+			function str_replace(match,replace,string)	{	//
 				var input = ""+string;
 				var matchStr = ""+match;
 				if (!matchStr)	{return string;}
@@ -143,7 +208,7 @@ class SC_wizard_tsconfig {
 				output+=""+input.substr(pointer);
 				return output;
 			}
-			function jump(show,objString)	{
+			function jump(show,objString)	{	//
 				document.location = "'.t3lib_div::linkThisScript(array("show"=>"","objString"=>"")).'&show="+show+"&objString="+objString;
 			}
 		</script>
@@ -154,6 +219,12 @@ class SC_wizard_tsconfig {
 		$this->mode = t3lib_div::GPvar("mode");
 		$this->show = t3lib_div::GPvar("show");
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -171,6 +242,12 @@ class SC_wizard_tsconfig {
 			',0,1);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		global $SOBE;
 
@@ -178,14 +255,36 @@ class SC_wizard_tsconfig {
 		echo $this->content;
 	}
 	
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
+
+
+
+
+
+
+
+
+	/***************************
+	 *
+	 * OTHER FUNCTIONS:	
+	 *
+	 ***************************/
+	
+	/**
+	 * @param	[type]		$str: ...
+	 * @return	[type]		...
+	 */
 	function revertFromSpecialChars($str)	{
 		$str = str_replace("&gt;",">",$str);
 		$str = str_replace("&lt;","<",$str);
 		return $str;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$whichman: ...
+	 * @return	[type]		...
+	 */
 	function getObjTree($whichman="")	{
 		$hash = md5("WIZARD_TSCONFIG-objTree");
 	
@@ -205,6 +304,15 @@ class SC_wizard_tsconfig {
 		}
 		return $objTree;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$$objTree: ...
+	 * @param	[type]		$strArr: ...
+	 * @param	[type]		$params: ...
+	 * @return	[type]		...
+	 */
 	function setObj(&$objTree,$strArr,$params)	{
 		$key = current($strArr);
 		reset($strArr);
@@ -217,11 +325,26 @@ class SC_wizard_tsconfig {
 			$objTree[$key]["_LINK"]=$this->doLink($params);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$params: ...
+	 * @return	[type]		...
+	 */
 	function doLink($params)	{
 		$title = htmlspecialchars(trim($params[0]["title"])?trim($params[0]["title"]):"[GO]");
 		$str = $this->linkToObj($title,$params[0]["uid"],$params[1]);
 		return $str;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$mode: ...
+	 * @param	[type]		$show: ...
+	 * @return	[type]		...
+	 */
 	function browseTSprop($mode,$show)	{
 			$whichman="adminguide";
 			
@@ -268,6 +391,13 @@ class SC_wizard_tsconfig {
 			}
 		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$objArray: ...
+	 * @return	[type]		...
+	 */
 	function removePointerObjects($objArray)	{
 		reset($objArray);
 		while(list($k)=each($objArray))	{
@@ -279,9 +409,27 @@ class SC_wizard_tsconfig {
 	//	debug($objArray);
 		return $objArray;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$uid: ...
+	 * @param	[type]		$objString: ...
+	 * @return	[type]		...
+	 */
 	function linkToObj($str,$uid,$objString="")	{
 		return '<a href="#" onClick="jump(\''.rawurlencode($uid).'\',\''.rawurlencode($objString).'\');return false;">'.$str.'</a>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$objString: ...
+	 * @param	[type]		$objTree: ...
+	 * @return	[type]		...
+	 */
 	function printTable($table,$objString,$objTree)	{
 		if (is_array($table["rows"]))	{
 			$lines=array();
@@ -338,6 +486,16 @@ class SC_wizard_tsconfig {
 			return '<table border=0 cellpadding=0 cellspacing=1 width=500>'.implode("",$lines).'</table>';
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$propertyVal: ...
+	 * @param	[type]		$prefix: ...
+	 * @param	[type]		$datatype: ...
+	 * @return	[type]		...
+	 */
 	function linkProperty($str,$propertyVal,$prefix,$datatype)	{
 		$out="";
 		if (strstr($datatype,"boolean"))	{
@@ -356,8 +514,8 @@ class SC_wizard_tsconfig {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_tsconfig.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_tsconfig.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_tsconfig.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_tsconfig.php']);
 }
 
 
@@ -372,7 +530,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizar
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_wizard_tsconfig");
+$SOBE = t3lib_div::makeInstance('SC_wizard_tsconfig');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -26,12 +26,27 @@
 ***************************************************************/
 /** 
  * Main frameset of the TYPO3 backend
- * 
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
+ * $Id$ 
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ * XHTML Compliant (almost)
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   67: class SC_alt_main 
+ *   78:     function init()	
+ *   94:     function generateJScode()	
+ *  274:     function main()	
+ *  353:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 require ('init.php');
@@ -42,9 +57,13 @@ require_once ('class.alt_menu_functions.inc');
 
 
 
-// ***************************
-// Script Class
-// ***************************
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_main {
 	var $content;
 	var $mainJScode;
@@ -53,6 +72,8 @@ class SC_alt_main {
 	
 	/**
 	 * Initialization
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $TBE_MODULES;
@@ -67,6 +88,8 @@ class SC_alt_main {
 	
 	/**
 	 * Generates the JavaScript code for the frameset.
+	 * 
+	 * @return	void		
 	 */
 	function generateJScode()	{
 		global $BE_USER,$LANG;
@@ -79,7 +102,7 @@ class SC_alt_main {
 	/**
 	 * Function similar to PHPs  rawurlencode();
 	 */
-	function rawurlencode(str)	{
+	function rawurlencode(str)	{	//
 		var output = escape(str);
 		output = str_replace("*","%2A", output);
 		output = str_replace("+","%2B", output);
@@ -91,7 +114,7 @@ class SC_alt_main {
 	/**
 	 * String-replace function
 	 */
-	function str_replace(match,replace,string)	{
+	function str_replace(match,replace,string)	{	//
 		var input = ""+string;
 		var matchStr = ""+match;
 		if (!matchStr)	{return string;}
@@ -110,7 +133,7 @@ class SC_alt_main {
 	/**
 	 * TypoSetup object.
 	 */
-	function typoSetup	()	{
+	function typoSetup	()	{	//
 		this.PATH_typo3 = "'.$pt3.'";
 		this.username = "'.$BE_USER->user['username'].'";
 		this.uniqueID = "'.t3lib_div::shortMD5(uniqid('')).'";
@@ -120,31 +143,31 @@ class SC_alt_main {
 	/**
 	 * Functions for session-expiry detection:
 	 */
-	function busy()	{
+	function busy()	{	//
 		this.loginRefreshed = busy_loginRefreshed;
 		this.checkLoginTimeout = busy_checkLoginTimeout;
 		this.openRefreshWindow = busy_OpenRefreshWindow;
 		this.busyloadTime=0;
 		this.openRefreshW=0;
 	}
-	function busy_loginRefreshed()	{
+	function busy_loginRefreshed()	{	//
 		var date = new Date();
 		this.busyloadTime = Math.floor(date.getTime()/1000);
 		this.openRefreshW=0;
 	}
-	function busy_checkLoginTimeout()	{
+	function busy_checkLoginTimeout()	{	//
 		var date = new Date();
 		var theTime = Math.floor(date.getTime()/1000);
 		if (theTime > this.busyloadTime+'.intval($BE_USER->auth_timeout_field).'-10)	{
 			return true;
 		}
 	}
-	function busy_OpenRefreshWindow()	{
+	function busy_OpenRefreshWindow()	{	//
 		vHWin=window.open("login_frameset.php","relogin","height=350,width=600,status=0,menubar=0");
 		vHWin.focus();
 		this.openRefreshW=1;
 	}
-	function busy_checkLoginTimeout_timer()	{
+	function busy_checkLoginTimeout_timer()	{	//
 		if (busy.checkLoginTimeout())	{
 			if (!busy.openRefreshW && confirm('.$GLOBALS['LANG']->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.refresh_login')).'))	{
 				busy.openRefreshWindow();
@@ -156,7 +179,7 @@ class SC_alt_main {
 	/**
 	 * Launcing information window for records/files (fileref as "table" argument)
 	 */
-	function launchView(table,uid,bP)	{
+	function launchView(table,uid,bP)	{	//
 		var backPath= bP ? bP : "";
 		var thePreviewWindow="";
 		thePreviewWindow = window.open(TS.PATH_typo3+"show_item.php?table="+escape(table)+"&uid="+escape(uid),"ShowItem"+TS.uniqueID,"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
@@ -168,7 +191,7 @@ class SC_alt_main {
 	/**
 	 * Loads a URL in the topmenuFrame
 	 */
-	function loadTopMenu(url)	{
+	function loadTopMenu(url)	{	//
 		top.topmenuFrame.location = url;
 	}
 	
@@ -177,7 +200,7 @@ class SC_alt_main {
 	 * Used by the shortcut frame to set a "intermediate URL"
 	 */
 	var nextLoadModuleUrl="";
-	function getModuleUrl(inUrl)	{
+	function getModuleUrl(inUrl)	{	//
 		var nMU;
 		if (top.nextLoadModuleUrl)	{
 			nMU=top.nextLoadModuleUrl;
@@ -191,7 +214,7 @@ class SC_alt_main {
 	/**
 	 * Print properties of an object
 	 */
-	function debugObj(obj,name)	{
+	function debugObj(obj,name)	{	//
 		var acc;
 		for (i in obj) {
 			if (obj[i])	{
@@ -212,7 +235,7 @@ class SC_alt_main {
 	 * Function used to switch switch module.
 	 */
 	var currentModuleLoaded = "";
-	function goToModule(modName,cMR_flag)	{
+	function goToModule(modName,cMR_flag)	{	//
 		var cMR = 0;
 		if (cMR_flag)	cMR=1;
 	
@@ -230,7 +253,7 @@ class SC_alt_main {
 	 *		if (top.fsMod) top.fsMod.recentIds["web"] = "\'.intval($this->id).\'";
 	 * 		if (top.fsMod) top.fsMod.recentIds["file"] = "...(file reference/string)...";
 	 */
-	function fsModules()	{
+	function fsModules()	{	//
 		this.recentIds=new Array();
 		this.currentMainLoaded="";
 	}
@@ -245,6 +268,8 @@ class SC_alt_main {
 	
 	/**
 	 * Creates the header and frameset of the backend interface
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER,$TYPO3_CONF_VARS,$TYPO_VERSION;
@@ -322,6 +347,8 @@ class SC_alt_main {
 
 	/**
 	 * Outputs it all.
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -352,5 +379,4 @@ $SOBE = t3lib_div::makeInstance('SC_alt_main');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-
 ?>

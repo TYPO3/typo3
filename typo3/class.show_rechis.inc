@@ -27,16 +27,64 @@
 /** 
  * Class for the record history display script (show_rechis.php)
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   77: class recordHistory 
+ *   88:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)	
+ *  133:     function nextHisUid($element,$hisUid)	
+ *  167:     function compareChangesWithCurrent($element,$changeRec,$discardFileLists=0)	
+ *  203:     function readFieldTypes($table,$id)	
+ *  226:     function cmp($changeStatus,$oldRecord)	
+ *  245:     function revertToPreviousValues($element,$field)	
+ *  298:     function saveState($element,$sumUp)	
+ *  343:     function removeFilefields($table,$dataArray)	
+ *  363:     function displayHistory($element)	
+ *  487:     function renderEntry($entry,$table)	
+ *  537:     function displaySysHistoryEntry($sh_uid)	
+ *  573:     function listHeader()	
+ *  613:     function linkPage($str,$inparams=array(),$anchor="")	
+ *
+ * TOTAL FUNCTIONS: 13
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Class for the record history display script (show_rechis.php)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class recordHistory {
 	var $listType = 0;
 	var $maxSteps=20;
 	
+	
+	/**
+	 * @param	[type]		$element: ...
+	 * @param	[type]		$hisUid: ...
+	 * @param	[type]		$hisUid_Stop: ...
+	 * @return	[type]		...
+	 */
 	function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)	{
 		global $TCA;
 
@@ -74,6 +122,14 @@ class recordHistory {
 		}	
 		return $sumChangesArray;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$element: ...
+	 * @param	[type]		$hisUid: ...
+	 * @return	[type]		...
+	 */
 	function nextHisUid($element,$hisUid)	{
 		$elParts = explode(":",$element);
 		// Prev:
@@ -99,6 +155,15 @@ class recordHistory {
 
 		return array($prevUid,$nextUid);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$element: ...
+	 * @param	[type]		$changeRec: ...
+	 * @param	[type]		$discardFileLists: ...
+	 * @return	[type]		...
+	 */
 	function compareChangesWithCurrent($element,$changeRec,$discardFileLists=0)	{
 		global $TCA;
 
@@ -127,6 +192,14 @@ class recordHistory {
 		
 		return $newChangeRec;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$id: ...
+	 * @return	[type]		...
+	 */
 	function readFieldTypes($table,$id)	{
 		$res = mysql(TYPO3_db,"SELECT * FROM $table WHERE uid=".intval($id));
 			// Fetch the types of the fields.
@@ -142,6 +215,14 @@ class recordHistory {
 		}
 		return array($currentRecord,$cRecTypes);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$changeStatus: ...
+	 * @param	[type]		$oldRecord: ...
+	 * @return	[type]		...
+	 */
 	function cmp($changeStatus,$oldRecord)	{
 		reset($oldRecord);
 		$changes=array();
@@ -153,6 +234,14 @@ class recordHistory {
 		}
 		return $changes;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$element: ...
+	 * @param	[type]		$field: ...
+	 * @return	[type]		...
+	 */
 	function revertToPreviousValues($element,$field)	{
 		$sumUp = t3lib_div::GPvar("sumUp");
 
@@ -198,6 +287,14 @@ class recordHistory {
 			exit;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$element: ...
+	 * @param	[type]		$sumUp: ...
+	 * @return	[type]		...
+	 */
 	function saveState($element,$sumUp)	{
 		$elParts = explode(":",$element);
 
@@ -235,6 +332,14 @@ class recordHistory {
 		$query = t3lib_BEfunc::DBcompileInsert("sys_history",$fields_values);
 		$res = mysql(TYPO3_db,$query);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$dataArray: ...
+	 * @return	[type]		...
+	 */
 	function removeFilefields($table,$dataArray)	{
 		global $TCA;
 		if ($TCA[$table])	{
@@ -248,6 +353,13 @@ class recordHistory {
 		}
 		return $dataArray;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$element: ...
+	 * @return	[type]		...
+	 */
 	function displayHistory($element)	{
 		global $SOBE, $LANG, $TCA;
 		
@@ -364,6 +476,14 @@ class recordHistory {
 			return $SOBE->doc->section($LANG->getLL("changes"),$theCode,0,1);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$entry: ...
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function renderEntry($entry,$table)	{
 		global $SOBE, $LANG, $TCA;
 		$lines=array();
@@ -407,6 +527,13 @@ class recordHistory {
 		}
 		return $lines;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$sh_uid: ...
+	 * @return	[type]		...
+	 */
 	function displaySysHistoryEntry($sh_uid)	{
 		global $SOBE, $LANG, $TCA;
 
@@ -437,6 +564,12 @@ class recordHistory {
 		}
 		return $content;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function listHeader()	{
 		global $SOBE, $LANG, $TCA;
 
@@ -468,6 +601,15 @@ class recordHistory {
 		}
 		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$str: ...
+	 * @param	[type]		$inparams: ...
+	 * @param	[type]		$anchor: ...
+	 * @return	[type]		...
+	 */
 	function linkPage($str,$inparams=array(),$anchor="")	{
 		$params["sh_uid"]=t3lib_div::GPvar("sh_uid");
 		$params["sumUp"]=t3lib_div::GPvar("sumUp");
@@ -479,8 +621,7 @@ class recordHistory {
 	}
 }
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/class.show_rechis.inc"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/class.show_rechis.inc"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.show_rechis.inc'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.show_rechis.inc']);
 }
-
 ?>

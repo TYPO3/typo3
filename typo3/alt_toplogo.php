@@ -26,15 +26,26 @@
 ***************************************************************/
 /** 
  * Top logo frame
- *
  * Displays the logo in the top frame (upper left corner)
- * 
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant content
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   66: class SC_alt_toplogo 
+ *   74:     function main()	
+ *  106:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
@@ -43,14 +54,22 @@ require ('init.php');
 require ('template.php');
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_toplogo {
 	var $content;
 	
 	/**
 	 * Create content
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $TBE_TEMPLATE,$TBE_STYLES;
@@ -81,6 +100,8 @@ class SC_alt_toplogo {
 	
 	/**
 	 * Print output
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -107,5 +128,4 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_t
 $SOBE = t3lib_div::makeInstance('SC_alt_toplogo');
 $SOBE->main();
 $SOBE->printContent();
-
 ?>

@@ -27,12 +27,49 @@
 /** 
  * Include file extending t3lib_recordList
  *
+ * $Id$
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   73: class fileList extends t3lib_recordList 
+ *  110:     function start($path,$pointer,$sort,$sortRev,$clipBoard=0)	
+ *  131:     function generateList()	
+ *  144:     function writeTop($path)	
+ *  199:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')	
+ *  213:     function getTable($files,$dirs,$rowlist)	
+ *  305:     function formatDirList($items)	
+ *  369:     function linkWrapDir($code,$path)	
+ *  379:     function listURL()	
+ *  389:     function dirData($theFile)	
+ *  414:     function formatFileList($items)	
+ *  486:     function isImage($ext)	
+ *  498:     function linkWrapSort($code,$path,$col)	
+ *  516:     function readDirectory($path,$type,$extList='')	
+ *  570:     function makeClip($theData)	
+ *
+ * TOTAL FUNCTIONS: 14
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
+
+
+
+
+
+/**
+ * Class for rendering of File>Filelist
+ * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  */
-
 class fileList extends t3lib_recordList {
 	var $iLimit = 40;					// default Max items shown 
 	var $thumbs = 0;					// Boolean. Thumbnails on records containing files (pictures)
@@ -62,14 +99,14 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Initialization
-	 *
-	 * @param	string	The path to list
-	 * @param	integer	Pointer
-	 * @param	boolean	Sorting column
-	 * @param	boolean	Sorting direction
-	 * @param	boolean	Show clipboard flag
-	 * @return	void
-	 */	
+	 * 
+	 * @param	string		The path to list
+	 * @param	integer		Pointer
+	 * @param	boolean		Sorting column
+	 * @param	boolean		Sorting direction
+	 * @param	boolean		Show clipboard flag
+	 * @return	void		
+	 */
 	function start($path,$pointer,$sort,$sortRev,$clipBoard=0)	{
 		$this->counter=0;
 		$this->totalbytes=0;
@@ -88,9 +125,9 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Reading files and directories, counting elements and generating the list in ->HTMLcode
-	 *
-	 * @return void
-	 */	
+	 * 
+	 * @return	void		
+	 */
 	function generateList()	{
 		$this->dirs = $this->readDirectory($this->path,'dir');
 		$this->files = $this->readDirectory($this->path,'file');
@@ -100,10 +137,10 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Make the top of the list
-	 *
-	 * @param	string	The path to list.
-	 * @return	void
-	 */	
+	 * 
+	 * @param	string		The path to list.
+	 * @return	void		
+	 */
 	function writeTop($path)	{
 			// Makes the code for the foldericon in the top
 		$path = $GLOBALS['SOBE']->basicFF->is_directory($path);	// Cleaning name...
@@ -152,13 +189,13 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Wrapping input string in a link with clipboard command.
-	 *
-	 * @param	string	String to be linked - must be htmlspecialchar'ed / prepared before.
-	 * @param	string	table - NOT USED
-	 * @param	string	"cmd" value
-	 * @param	string	Warning for JS confirm message
-	 * @return	string	Linked string
-	 */	
+	 * 
+	 * @param	string		String to be linked - must be htmlspecialchar'ed / prepared before.
+	 * @param	string		table - NOT USED
+	 * @param	string		"cmd" value
+	 * @param	string		Warning for JS confirm message
+	 * @return	string		Linked string
+	 */
 	function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')	{
 		$onClickEvent = 'document.dblistForm.cmd.value=\''.$cmd.'\';document.dblistForm.submit();';
 		if ($warning)	$onClickEvent = 'if (confirm('.$GLOBALS['LANG']->JScharCode($warning).')){'.$onClickEvent.'}';
@@ -167,12 +204,12 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Returns a table with directories and files listed.
-	 *
-	 * @param	array	Files
-	 * @param	array	Directories
-	 * @param	string	List of rows to display horizontallyh
-	 * @return	string	HTML-table
-	 */	
+	 * 
+	 * @param	array		Files
+	 * @param	array		Directories
+	 * @param	string		List of rows to display horizontallyh
+	 * @return	string		HTML-table
+	 */
 	function getTable($files,$dirs,$rowlist)	{
 			// Adds the code of files/dirs
 		$out='';
@@ -260,11 +297,11 @@ class fileList extends t3lib_recordList {
 	}
 
 	/**
-	 * This returns tablerows for the directories in the array $items['sorting']. 
-	 *
-	 * @param	array	Items
-	 * @return	string	HTML table rows.
-	 */	
+	 * This returns tablerows for the directories in the array $items['sorting'].
+	 * 
+	 * @param	array		Items
+	 * @return	string		HTML table rows.
+	 */
 	function formatDirList($items)	{
 		$out='';
 
@@ -324,11 +361,11 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Wraps the directory-titles
-	 *
-	 * @param	string	String to be wrapped in links
-	 * @param	string	ID (path)
-	 * @return	string	HTML
-	 */	
+	 * 
+	 * @param	string		String to be wrapped in links
+	 * @param	string		ID (path)
+	 * @return	string		HTML
+	 */
 	function linkWrapDir($code,$path)	{
 		$href = $this->script.'?id='.rawurlencode($path);
 		return '<a href="'.htmlspecialchars($href).'">'.$code.'</a>';
@@ -336,19 +373,19 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Returns list URL
-	 *
-	 * @return	string	URL
-	 */	
+	 * 
+	 * @return	string		URL
+	 */
 	function listURL()	{
 		return $this->script.'?id='.rawurlencode($this->path).'&imagemode='.$this->thumbs;
 	}
 
 	/**
 	 * Returns some data specific for the directories...
-	 *
-	 * @param	array	File information array
-	 * @return	array	(title, icon, path)
-	 */	
+	 * 
+	 * @param	array		File information array
+	 * @return	array		(title, icon, path)
+	 */
 	function dirData($theFile)	{
 		$path = $theFile['path'].$theFile['file'].'/';
 		$webpath=t3lib_BEfunc::getPathType_web_nonweb($path);
@@ -369,11 +406,11 @@ class fileList extends t3lib_recordList {
 	}
 
 	/**
-	 * This returns tablerows for the files in the array $items['sorting']. 
-	 *
-	 * @param	array	Items
-	 * @return	string	HTML table rows.
-	 */	
+	 * This returns tablerows for the files in the array $items['sorting'].
+	 * 
+	 * @param	array		Items
+	 * @return	string		HTML table rows.
+	 */
 	function formatFileList($items)	{
 		$out='';
 
@@ -442,22 +479,22 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Returns true if $ext is an image-extension according to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-	 *
-	 * @param	string	file extension 
-	 * @return	boolean	
-	 */	
+	 * 
+	 * @param	string		file extension
+	 * @return	boolean		
+	 */
 	function isImage($ext)	{
 		return t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],strtolower($ext));
 	}
 
 	/**
 	 * Wraps the directory-titles ($code) in a link to file_list.php (id=$path) and sorting commands...
-	 *
-	 * @param	string	String to be wrapped
-	 * @param	string	ID (path)
-	 * @param	string	Sorting column
-	 * @return	string	HTML
-	 */	
+	 * 
+	 * @param	string		String to be wrapped
+	 * @param	string		ID (path)
+	 * @param	string		Sorting column
+	 * @return	string		HTML
+	 */
 	function linkWrapSort($code,$path,$col)	{
 		if ($this->sort==$col && !$this->sortRev)	{		// reverse sorting
 			$params='&SET[sort]='.$col.'&SET[reverse]=1';
@@ -470,12 +507,12 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Returns an array with file/dir items + a array with the sorted items
-	 *
-	 * @param	string	Path
-	 * @param	string	$type is the technical type; file,dir,link. empty is all kinds of stuff.
-	 * @param	string	$extList: List of fileextensions to select. If empty, all are selected.
-	 * @return	array	Array('files'=>array(), 'sorting'=>array());
-	 */	
+	 * 
+	 * @param	string		Path
+	 * @param	string		$type is the technical type; file,dir,link. empty is all kinds of stuff.
+	 * @param	string		$extList: List of fileextensions to select. If empty, all are selected.
+	 * @return	array		Array('files'=>array(), 'sorting'=>array());
+	 */
 	function readDirectory($path,$type,$extList='')	{
 		$items = Array('files'=>array(), 'sorting'=>array());
 		$path = $GLOBALS['SOBE']->basicFF->is_directory($path);	// Cleaning name...
@@ -526,10 +563,10 @@ class fileList extends t3lib_recordList {
 
 	/**
 	 * Creates the clipboard control pad
-	 *
-	 * @param	array
-	 * @return	string	HTML-table
-	 */	
+	 * 
+	 * @param	array		
+	 * @return	string		HTML-table
+	 */
 	function makeClip($theData)	{
 		$cells=array();
 		$fullIdent = $theData['path'].$theData['file'];
@@ -583,5 +620,4 @@ class fileList extends t3lib_recordList {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.file_list.inc'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.file_list.inc']);
 }
-
 ?>

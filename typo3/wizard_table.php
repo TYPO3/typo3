@@ -27,40 +27,73 @@
 /** 
  * Wizard to help make tables (eg. for tt_content elements) of type "table". 
  * Each line is a table row, each cell divided by a |
+ *
+ * $Id$
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   78: class SC_wizard_table 
+ *   87:     function init()	
+ *  117:     function main()	
+ *  133:     function printContent()	
+ *
+ *              SECTION: OTHER FUNCTIONS:
+ *  156:     function changeFunc($cArr,$TABLE_c)	
+ *  266:     function tableWizard($P)	
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
  
 
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_wizards.php");
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_wizards.php');
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_wizard_table {
 	var $include_once=array();
 	var $content;
 	var $P;
 	var $doc;	
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->P = t3lib_div::GPvar("P",1);
+		$this->P = t3lib_div::GPvar('P',1);
 		
-		$this->doc = t3lib_div::makeInstance("mediumDoc");
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='
 			<script language="javascript" type="text/javascript">
-				function jumpToUrl(URL,formEl)	{
+				function jumpToUrl(URL,formEl)	{	//
 					document.location = URL;
 				}
 			</script>
@@ -75,6 +108,12 @@ class SC_wizard_table {
 			$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -85,105 +124,127 @@ class SC_wizard_table {
 		}
 		$this->content.=$this->doc->endPage();
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		echo $this->content;
 	}
 	
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
+
+
+
+
+
+
+
+
+	/***************************
+	 *
+	 * OTHER FUNCTIONS:	
+	 *
+	 ***************************/
+	
+	/**
+	 * @param	[type]		$cArr: ...
+	 * @param	[type]		$TABLE_c: ...
+	 * @return	[type]		...
+	 */
 	function changeFunc($cArr,$TABLE_c)	{
-		if ($TABLE_c["col_remove"])	{	
-			$kk = key($TABLE_c["col_remove"]);
-			$cmd="col_remove";
-		} elseif ($TABLE_c["col_add"])	{	
-			$kk = key($TABLE_c["col_add"]);
-			$cmd="col_add";
-		} elseif ($TABLE_c["col_start"])	{	
-			$kk = key($TABLE_c["col_start"]);
-			$cmd="col_start";
-		} elseif ($TABLE_c["col_end"])	{	
-			$kk = key($TABLE_c["col_end"]);
-			$cmd="col_end";
-		} elseif ($TABLE_c["col_left"])	{	
-			$kk = key($TABLE_c["col_left"]);
-			$cmd="col_left";
-		} elseif ($TABLE_c["col_right"])	{	
-			$kk = key($TABLE_c["col_right"]);
-			$cmd="col_right";
-		} elseif ($TABLE_c["row_remove"])	{	
-			$kk = key($TABLE_c["row_remove"]);
-			$cmd="row_remove";
-		} elseif ($TABLE_c["row_add"])	{	
-			$kk = key($TABLE_c["row_add"]);
-			$cmd="row_add";
-		} elseif ($TABLE_c["row_top"])	{	
-			$kk = key($TABLE_c["row_top"]);
-			$cmd="row_top";
-		} elseif ($TABLE_c["row_bottom"])	{
-			$kk = key($TABLE_c["row_bottom"]);
-			$cmd="row_bottom";
-		} elseif ($TABLE_c["row_up"])	{	
-			$kk = key($TABLE_c["row_up"]);
-			$cmd="row_up";
-		} elseif ($TABLE_c["row_down"])	{	
-			$kk = key($TABLE_c["row_down"]);
-			$cmd="row_down";
+		if ($TABLE_c['col_remove'])	{	
+			$kk = key($TABLE_c['col_remove']);
+			$cmd='col_remove';
+		} elseif ($TABLE_c['col_add'])	{	
+			$kk = key($TABLE_c['col_add']);
+			$cmd='col_add';
+		} elseif ($TABLE_c['col_start'])	{	
+			$kk = key($TABLE_c['col_start']);
+			$cmd='col_start';
+		} elseif ($TABLE_c['col_end'])	{	
+			$kk = key($TABLE_c['col_end']);
+			$cmd='col_end';
+		} elseif ($TABLE_c['col_left'])	{	
+			$kk = key($TABLE_c['col_left']);
+			$cmd='col_left';
+		} elseif ($TABLE_c['col_right'])	{	
+			$kk = key($TABLE_c['col_right']);
+			$cmd='col_right';
+		} elseif ($TABLE_c['row_remove'])	{	
+			$kk = key($TABLE_c['row_remove']);
+			$cmd='row_remove';
+		} elseif ($TABLE_c['row_add'])	{	
+			$kk = key($TABLE_c['row_add']);
+			$cmd='row_add';
+		} elseif ($TABLE_c['row_top'])	{	
+			$kk = key($TABLE_c['row_top']);
+			$cmd='row_top';
+		} elseif ($TABLE_c['row_bottom'])	{
+			$kk = key($TABLE_c['row_bottom']);
+			$cmd='row_bottom';
+		} elseif ($TABLE_c['row_up'])	{	
+			$kk = key($TABLE_c['row_up']);
+			$cmd='row_up';
+		} elseif ($TABLE_c['row_down'])	{	
+			$kk = key($TABLE_c['row_down']);
+			$cmd='row_down';
 		}
 	
 		if ($cmd && t3lib_div::testInt($kk)) {
 	//			debug($cmd);
 	//			debug($cArr);
-			if (substr($cmd,0,4)=="row_")	{
+			if (substr($cmd,0,4)=='row_')	{
 				switch($cmd)	{
-					case "row_remove":
+					case 'row_remove':
 						unset($cArr[$kk]);
 					break;
-					case "row_add":
+					case 'row_add':
 						$cArr[$kk+1]=array();
 					break;
-					case "row_top":
+					case 'row_top':
 						$cArr[1]=$cArr[$kk];
 						unset($cArr[$kk]);
 					break;
-					case "row_bottom":
+					case 'row_bottom':
 						$cArr[10000000]=$cArr[$kk];
 						unset($cArr[$kk]);
 					break;
-					case "row_up":
+					case 'row_up':
 						$cArr[$kk-3]=$cArr[$kk];
 						unset($cArr[$kk]);
 					break;
-					case "row_down":
+					case 'row_down':
 						$cArr[$kk+3]=$cArr[$kk];
 						unset($cArr[$kk]);
 					break;
 				}
 				ksort($cArr);
 			}
-			if (substr($cmd,0,4)=="col_")	{
+			if (substr($cmd,0,4)=='col_')	{
 				reset($cArr);
 				while(list($cAK)=each($cArr))	{
 					switch($cmd)	{
-						case "col_remove":
+						case 'col_remove':
 							unset($cArr[$cAK][$kk]);
 						break;
-						case "col_add":
-							$cArr[$cAK][$kk+1]="";
+						case 'col_add':
+							$cArr[$cAK][$kk+1]='';
 						break;
-						case "col_start":
+						case 'col_start':
 							$cArr[$cAK][1]=$cArr[$cAK][$kk];
 							unset($cArr[$cAK][$kk]);
 						break;
-						case "col_end":
+						case 'col_end':
 							$cArr[$cAK][1000000]=$cArr[$cAK][$kk];
 							unset($cArr[$cAK][$kk]);
 						break;
-						case "col_left":
+						case 'col_left':
 							$cArr[$cAK][$kk-3]=$cArr[$cAK][$kk];
 							unset($cArr[$cAK][$kk]);
 						break;
-						case "col_right":
+						case 'col_right':
 							$cArr[$cAK][$kk+3]=$cArr[$cAK][$kk];
 							unset($cArr[$cAK][$kk]);
 						break;
@@ -193,25 +254,30 @@ class SC_wizard_table {
 			}
 	//			debug($cArr);
 		}
-		
-		
 		return $cArr;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$P: ...
+	 * @return	[type]		...
+	 */
 	function tableWizard($P)	{
 		global $LANG, $HTTP_POST_VARS;
 		
-		$TABLE_c = t3lib_div::GPvar("TABLE",1);
-		$row=t3lib_BEfunc::getRecord($P["table"],$P["uid"]);
+		$TABLE_c = t3lib_div::GPvar('TABLE',1);
+		$row=t3lib_BEfunc::getRecord($P['table'],$P['uid']);
 		if (!is_array($row))	{
-			t3lib_BEfunc::typo3PrintError ("Wizard Error","No reference to record",0);
+			t3lib_BEfunc::typo3PrintError ('Wizard Error','No reference to record',0);
 			exit;
 		}
 	
-		$inputStyle=isset($TABLE_c["textFields"]) ? $TABLE_c["textFields"] : 1;
-		$cols=$row["cols"];
+		$inputStyle=isset($TABLE_c['textFields']) ? $TABLE_c['textFields'] : 1;
+		$cols=$row['cols'];
 	
-		if (isset($TABLE_c["c"]))	{
-			$TABLE_c["c"] = $this->changeFunc($TABLE_c["c"],$TABLE_c);
+		if (isset($TABLE_c['c']))	{
+			$TABLE_c['c'] = $this->changeFunc($TABLE_c['c'],$TABLE_c);
 			$inLines=array();
 			
 			reset($TABLE_c["c"]);
@@ -332,8 +398,8 @@ class SC_wizard_table {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_table.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_table.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_table.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_table.php']);
 }
 
 
@@ -348,7 +414,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizar
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_wizard_table");
+$SOBE = t3lib_div::makeInstance('SC_wizard_table');
 $SOBE->init();
 
 // Include files?

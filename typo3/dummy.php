@@ -26,26 +26,52 @@
 ***************************************************************/
 /** 
  * Dummy document - displays nothing but background color.
+ *
+ * $Id$ 
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ * XHTML compliant content
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   68: class SC_dummy 
+ *   76:     function main()	
+ *   92:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+require ('init.php');
+require ('template.php');
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
- * XHTML compliant content
  */
-
-require ('init.php');
-require ('template.php');
-
-// ***************************
-// Script Classes
-// ***************************
 class SC_dummy {
 	var $content;
 	
 	/**
 	 * Create content
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $TBE_TEMPLATE;
@@ -60,6 +86,8 @@ class SC_dummy {
 	
 	/**
 	 * Print output
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -78,5 +106,4 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/dummy
 $SOBE = t3lib_div::makeInstance('SC_dummy');
 $SOBE->main();
 $SOBE->printContent();
-
 ?>

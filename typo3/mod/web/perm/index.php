@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*  (c) 1999-2003 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -27,23 +27,42 @@
 /** 
  * Module: Permission setting
  *
- * This module lets you view and change permissions for pages.
+ * $Id$
  *
- * variables:
- * $this->depth 	: 	intval 1-3: decides the depth of the list
- * $this->mode		:	"perms" / "": decides if we view a user-overview or the permissions.
- *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   86: class SC_mod_web_perm_index 
+ *  114:     function init()	
+ *  139:     function menuConfig()	
+ *  170:     function main()	
+ *  202:     function checkChange(checknames, varname)	
+ *  285:     function printContent()	
+ *
+ *              SECTION: OTHER FUNCTIONS:
+ *  313:     function doEdit()	
+ *  449:     function notEdit()	
+ *  599:     function printCheckBox($checkName,$num)	
+ *  609:     function printPerms($int)	
+ *  627:     function groupPerms($row,$firstGroup)	
+ *  644:     function getRecursiveSelect($id,$perms_clause)	
+ *
+ * TOTAL FUNCTIONS: 11
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
  
 unset($MCONF);
-require ("conf.php");
-require ($BACK_PATH."init.php");
-require ($BACK_PATH."template.php");
-include (PATH_typo3."sysext/lang/locallang_mod_web_perm.php");
-require_once (PATH_t3lib."class.t3lib_pagetree.php");
-require_once (PATH_t3lib."class.t3lib_page.php");
+require ('conf.php');
+require ($BACK_PATH.'init.php');
+require ($BACK_PATH.'template.php');
+include (PATH_typo3.'sysext/lang/locallang_mod_web_perm.php');
+require_once (PATH_t3lib.'class.t3lib_pagetree.php');
+require_once (PATH_t3lib.'class.t3lib_page.php');
 
 $BE_USER->modAccess($MCONF,1);
 
@@ -52,10 +71,21 @@ $BE_USER->modAccess($MCONF,1);
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+/**
+ * Script Class for the Web > Access module
+ * This module lets you view and change permissions for pages.
+ * 
+ * variables:
+ * $this->depth 	: 	intval 1-3: decides the depth of the list
+ * $this->mode		:	'perms' / '': decides if we view a user-overview or the permissions.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_mod_web_perm_index {
+
+		// Internal, dynamic:
 	var $MCONF=array();
 	var $MOD_MENU=array();
 	var $MOD_SETTINGS=array();
@@ -76,16 +106,21 @@ class SC_mod_web_perm_index {
 	var $editingAllowed;
 	var $id;
 
+	/**
+	 * Initialization
+	 * 
+	 * @return	void		
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
-		$this->MCONF = $GLOBALS["MCONF"];
+		$this->MCONF = $GLOBALS['MCONF'];
 
-		$this->id = intval(t3lib_div::GPvar("id"));
-		$this->mode = t3lib_div::GPvar("mode");
-		$this->depth = t3lib_div::GPvar("depth");
-		$this->edit = t3lib_div::GPvar("edit");
-		$this->return_id = t3lib_div::GPvar("return_id");
-		$this->lastEdited = t3lib_div::GPvar("lastEdited");
+		$this->id = intval(t3lib_div::GPvar('id'));
+		$this->mode = t3lib_div::GPvar('mode');
+		$this->depth = t3lib_div::GPvar('depth');
+		$this->edit = t3lib_div::GPvar('edit');
+		$this->return_id = t3lib_div::GPvar('return_id');
+		$this->lastEdited = t3lib_div::GPvar('lastEdited');
 		
 		
 		// **************************
@@ -95,6 +130,12 @@ class SC_mod_web_perm_index {
 		
 		$this->menuConfig();
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	void		
+	 */
 	function menuConfig()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -102,24 +143,30 @@ class SC_mod_web_perm_index {
 			// If array, then it's a selector box menu
 			// If empty string it's just a variable, that'll be saved. 
 			// Values NOT in this array will not be saved in the settings-array for the module.
-		$temp = $LANG->getLL("levels");
+		$temp = $LANG->getLL('levels');
 		$this->MOD_MENU = array(
-			"depth" => array(
-				1 => "1 ".$temp,
-				2 => "2 ".$temp,
-				3 => "3 ".$temp,
-				4 => "4 ".$temp,
-				10 => "10 ".$temp
+			'depth' => array(
+				1 => '1 '.$temp,
+				2 => '2 '.$temp,
+				3 => '3 '.$temp,
+				4 => '4 '.$temp,
+				10 => '10 '.$temp
 			),
-			"mode" => array(
-				0 => $LANG->getLL("user_overview"),
-				"perms" => $LANG->getLL("permissions")
+			'mode' => array(
+				0 => $LANG->getLL('user_overview'),
+				'perms' => $LANG->getLL('permissions')
 			)
 		);
 		
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET"), $this->MCONF["name"]);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	void		
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -147,7 +194,7 @@ class SC_mod_web_perm_index {
 		
 		
 				// The formtag
-			$this->doc->form='<form action="'.$BACK_PATH.'tce_db.php" method="POST" name="editform">';
+			$this->doc->form='<form action="'.$BACK_PATH.'tce_db.php" method="post" name="editform">';
 				// JavaScript
 			$this->doc->JScode = "
 		<script language='JavaScript' SRC='".$BACK_PATH."t3lib/jsfunc.updateform.js'></script>
@@ -162,7 +209,8 @@ class SC_mod_web_perm_index {
 				document.editform[varname].value = res | (checknames=='check[perms_user]'?1:0) ;
 				setCheck (checknames,varname);
 			}
-			function setCheck(checknames, varname)	{
+
+			function setCheck(checknames, varname)	{ 	//
 				if (document.editform[varname])	{
 					var res = document.editform[varname].value;
 					for (var a=1; a<=5; a++)	{
@@ -170,7 +218,8 @@ class SC_mod_web_perm_index {
 					}
 				}
 			}
-			function jumpToUrl(URL)	{
+
+			function jumpToUrl(URL)	{	//
 				document.location = URL;
 			}
 			
@@ -227,6 +276,12 @@ class SC_mod_web_perm_index {
 			$this->content.=$this->doc->spacer(10);
 		}
 	}
+
+	/**
+	 * Printing content
+	 * 
+	 * @return	void		
+	 */
 	function printContent()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -235,13 +290,26 @@ class SC_mod_web_perm_index {
 		echo $this->content;
 	}
 	
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
 
-		// *****************************
-		// Editing the permissions	($this->edit = true)
-		// *****************************
+
+
+
+
+
+
+
+
+	/*****************************
+	 *
+	 * OTHER FUNCTIONS:	
+	 *
+	 *****************************/
+
+	/**
+	 * Editing the permissions	($this->edit = true)
+	 * 
+	 * @return	[type]		...
+	 */
 	function doEdit()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -372,9 +440,12 @@ class SC_mod_web_perm_index {
 			$this->content.=$this->doc->section($LANG->getLL("Legend").':',$code);
 		}
 	}
-		// ******************************************
-		// Showing the permissions  ($this->edit = false)
-		// ******************************************
+	
+	/**
+	 * Showing the permissions  ($this->edit = false)
+	 * 
+	 * @return	[type]		...
+	 */
 	function notEdit()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 		$code.=$LANG->getLL("Depth").': ';
@@ -501,8 +572,6 @@ class SC_mod_web_perm_index {
 		$code.='</table>';	
 		$this->content.=$this->doc->section('',$code);
 		
-		
-
 		if ($BE_USER->uc["helpText"])	{
 			$legendText = "<b>".$LANG->getLL("1")."</b>: ".$LANG->getLL("1_t");
 			$legendText.= "<BR><b>".$LANG->getLL("16")."</b>: ".$LANG->getLL("16_t");
@@ -515,17 +584,29 @@ class SC_mod_web_perm_index {
 			$code.='<BR><BR><font color="green"><b>*</b></font>: '.$LANG->getLL("A_Granted");
 			$code.='<BR><font color="red"><b>x</b></font>: '.$LANG->getLL("A_Denied");
 
-//			$this->content.=$this->doc->divider(20);
 			$this->content.=$this->doc->spacer(20);
 			$this->content.=$this->doc->section($LANG->getLL("Legend").':',$code,0,1);
 		}
 	}
+
+	/**
+	 * Print a checkbox.
+	 * 
+	 * @param	[type]		$checkName: ...
+	 * @param	[type]		$num: ...
+	 * @return	string		HTML checkbox
+	 */
 	function printCheckBox($checkName,$num)	{
-		// Print a checkbox.
 		return '<input type="Checkbox" name="check['.$checkName.']['.$num.']" onClick="checkChange(\'check['.$checkName.']\', \'data[pages]['.$GLOBALS["SOBE"]->id.']['.$checkName.']\')"><BR>';
 	}
+
+	/**
+	 * Print a set of permissions
+	 * 
+	 * @param	[type]		$int: ...
+	 * @return	[type]		...
+	 */
 	function printPerms($int)	{
-		// Print a set of permissions
 		$str="";
 		$str.= (($int&1)?'*':'<font color="red">x</font>');
 		$str.= (($int&16)?'*':'<font color="red">x</font>');
@@ -535,8 +616,15 @@ class SC_mod_web_perm_index {
 		
 		return '<B><font color="green">'.$str.'</font></b>';
 	}
+
+	/**
+	 * Returns the permissions for a group based of the perms_groupid of $row. If the $row[perms_groupid] equals the $firstGroup[uid] then the function returns perms_everybody OR'ed with perms_group, else just perms_everybody
+	 * 
+	 * @param	[type]		$row: ...
+	 * @param	[type]		$firstGroup: ...
+	 * @return	[type]		...
+	 */
 	function groupPerms($row,$firstGroup)	{
-		// returns the permissions for a group based of the perms_groupid of $row. If the $row[perms_groupid] equals the $firstGroup[uid] then the function returns perms_everybody OR'ed with perms_group, else just perms_everybody
 		if (is_array($row))	{
 			$out=intval($row["perms_everybody"]);
 			if ($row["perms_groupid"] && $firstGroup["uid"]==$row["perms_groupid"])	{
@@ -545,36 +633,43 @@ class SC_mod_web_perm_index {
 			return $out;
 		}
 	}
+
+	/**
+	 * Finding tree and offer setting of values recursively.
+	 * 
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$perms_clause: ...
+	 * @return	[type]		...
+	 */
 	function getRecursiveSelect($id,$perms_clause)	{
-	// Finding tree and offer setting of values recursively.
-		$tree = t3lib_div::makeInstance("t3lib_pageTree");
-		$tree->init("AND ".$perms_clause);
-		$tree->addField("perms_userid",1);
+		$tree = t3lib_div::makeInstance('t3lib_pageTree');
+		$tree->init('AND '.$perms_clause);
+		$tree->addField('perms_userid',1);
 		$tree->makeHTML=0;
 		$tree->setRecs = 1;
 		$getLevels=3;
-		$tree->getTree($id,$getLevels,"");
+		$tree->getTree($id,$getLevels,'');
 	
-		if ($GLOBALS["BE_USER"]->user["uid"] && count($tree->ids_hierarchy))	{
+		if ($GLOBALS['BE_USER']->user['uid'] && count($tree->ids_hierarchy))	{
 			reset($tree->ids_hierarchy);
-			$label_recur = $GLOBALS["LANG"]->getLL("recursive");
-			$label_levels = $GLOBALS["LANG"]->getLL("levels");
-			$label_pA = $GLOBALS["LANG"]->getLL("pages_affected");
+			$label_recur = $GLOBALS['LANG']->getLL('recursive');
+			$label_levels = $GLOBALS['LANG']->getLL('levels');
+			$label_pA = $GLOBALS['LANG']->getLL('pages_affected');
 			$theIdListArr=array();
 			$opts='<option value=""></option>';
 			for ($a=$getLevels;$a>0;$a--)	{
 				if (is_array($tree->ids_hierarchy[$a]))	{
 					reset($tree->ids_hierarchy[$a]);
 					while(list(,$theId)=each($tree->ids_hierarchy[$a]))	{
-						if ($GLOBALS["BE_USER"]->isAdmin() || $GLOBALS["BE_USER"]->user["uid"]==$tree->recs[$theId]["perms_userid"])	{
+						if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->user['uid']==$tree->recs[$theId]['perms_userid'])	{
 							$theIdListArr[]=$theId;
 						}
 					}
 					$lKey = $getLevels-$a+1;
-					$opts.='<option value="'.htmlspecialchars(implode(",",$theIdListArr)).'">'.t3lib_div::deHSCentities(htmlspecialchars($label_recur.' '.$lKey.' '.$label_levels)).' ('.count($theIdListArr).' '.$label_pA.')</option>';
+					$opts.='<option value="'.htmlspecialchars(implode(',',$theIdListArr)).'">'.t3lib_div::deHSCentities(htmlspecialchars($label_recur.' '.$lKey.' '.$label_levels)).' ('.count($theIdListArr).' '.$label_pA.')</option>';
 				}
 			}
-			$theRecursiveSelect = '<BR><select name="mirror[pages]['.$id.']">'.$opts.'</select><BR><BR>';
+			$theRecursiveSelect = '<br /><select name="mirror[pages]['.$id.']">'.$opts.'</select><br /><br />';
 		} else {
 			$theRecursiveSelect = '';
 		}		
@@ -583,8 +678,8 @@ class SC_mod_web_perm_index {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/mod/web/perm/index.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/mod/web/perm/index.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/web/perm/index.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/web/perm/index.php']);
 }
 
 
@@ -599,13 +694,12 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/mod/w
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_mod_web_perm_index");
+$SOBE = t3lib_div::makeInstance('SC_mod_web_perm_index');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
 
-
-if ($TYPO3_CONF_VARS["BE"]["compressionLevel"])	{
-	new gzip_encode($TYPO3_CONF_VARS["BE"]["compressionLevel"]);
+if ($TYPO3_CONF_VARS['BE']['compressionLevel'])	{
+	new gzip_encode($TYPO3_CONF_VARS['BE']['compressionLevel']);
 }
 ?>

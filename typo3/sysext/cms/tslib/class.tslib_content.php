@@ -2578,8 +2578,7 @@ class tslib_cObj {
 	 * @param	array		Regular marker-array where the 'keys' are substituted in $content with their values
 	 * @param	array		Exactly like markContentArray only is whole subparts substituted and not only a single marker.
 	 * @param	array		An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
-	 * @param	string		The output content stream
-	 * @return	[type]		...
+	 * @return	string		The output content stream
 	 * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
 	function substituteMarkerArrayCached($content,$markContentArray=array(),$subpartContentArray=array(),$wrappedSubpartContentArray=array())	{

@@ -26,29 +26,65 @@
 ***************************************************************/
 /** 
  * Main form rendering script
- *
  * By sending certain parameters to this script you can bring up a form
  * which allows the user to edit the content of one or more database records.
+ *
+ * $Id$
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   88: class SC_alt_doc 
+ *  123:     function preInit()	
+ *  166:     function doProcessData()	
+ *  187:     function processData()	
+ *  289:     function init()	
+ *  363:     function main()	
+ *  415:     function printContent()	
+ *  427:     function editRegularContentFromId()	
+ *  449:     function makeEditForm()	
+ *  588:     function makeButtonPanel()	
+ *  635:     function makeDocSel()	
+ *  664:     function makeCmenu()	
+ *  682:     function compileForm($panel,$docSel,$cMenu,$editForm)	
+ *  712:     function compileStoreDat()	
+ *  724:     function functionMenus()	
+ *  741:     function shortCutLink()	
+ *  759:     function tceformMessages()	
+ *
+ *              SECTION: OTHER FUNCTIONS:
+ *  791:     function getNewIconMode($table,$key="saveDocNew")	
+ *  804:     function closeDocument($code=0)	
+ *  831:     function setDocument($currentDocFromHandlerMD5="",$retUrl="alt_doc_nodoc.php")	
+ *
+ * TOTAL FUNCTIONS: 19
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
+ 
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_alt_doc.php');
+require_once (PATH_t3lib.'class.t3lib_tceforms.php');
+
+t3lib_BEfunc::lockRecords();
+t3lib_div::setGPvars('defVals,overrideVals,columnsOnly',1);
+
+
+
+
+/**
+ * Script Class: Drawing the editing form for editing records in TYPO3.
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
-
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_alt_doc.php");
-require_once (PATH_t3lib."class.t3lib_tceforms.php");
-
-t3lib_BEfunc::lockRecords();
-t3lib_div::setGPvars("defVals,overrideVals,columnsOnly",1);
-
-
-
-// ***************************
-// Script Classes
-// ***************************
 class SC_alt_doc {
 	var $viewId;
 	var $generalPathOfForm;
@@ -81,22 +117,25 @@ class SC_alt_doc {
 	var $firstEl;
 	var $doc;	
 
+	/**
+	 * @return	[type]		...
+	 */
 	function preInit()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 		
-		$this->editconf = t3lib_div::GPvar("edit");
+		$this->editconf = t3lib_div::GPvar('edit');
 
-		$this->defVals=$GLOBALS["defVals"];
-		$this->overrideVals=$GLOBALS["overrideVals"];
-		$this->columnsOnly=$GLOBALS["columnsOnly"];
+		$this->defVals=$GLOBALS['defVals'];
+		$this->overrideVals=$GLOBALS['overrideVals'];
+		$this->columnsOnly=$GLOBALS['columnsOnly'];
 		
 		if (!is_array($this->defVals) && is_array($this->overrideVals))	{
 			$this->defVals = $this->overrideVals;	// Setting override values as default if defVals does not exist.
 		}
-		$this->retUrl = t3lib_div::GPvar("returnUrl")?t3lib_div::GPvar("returnUrl"):"dummy.php";
+		$this->retUrl = t3lib_div::GPvar('returnUrl')?t3lib_div::GPvar('returnUrl'):'dummy.php';
 		
 		// Make R_URL (request url)
-		$this->R_URL_parts = parse_url(t3lib_div::getIndpEnv("REQUEST_URI"));
+		$this->R_URL_parts = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 		$this->R_URL_getvars = $HTTP_GET_VARS;
 		
 		
@@ -104,74 +143,86 @@ class SC_alt_doc {
 		$this->compileStoreDat();
 		
 		$this->dontStoreDocumentRef=0;
-		$this->storeTitle="";
-		$this->JSrefreshCode="";
+		$this->storeTitle='';
+		$this->JSrefreshCode='';
 		
-		$this->docDat = $BE_USER->getModuleData("alt_doc.php","ses");
+		$this->docDat = $BE_USER->getModuleData('alt_doc.php','ses');
 		$this->docHandler = $this->docDat[0];
 		
-		if (t3lib_div::GPvar("closeDoc")>0)	{
-			$this->closeDocument(t3lib_div::GPvar("closeDoc"));
+		if (t3lib_div::GPvar('closeDoc')>0)	{
+			$this->closeDocument(t3lib_div::GPvar('closeDoc'));
 		}
 			// If NO vars are send to the script, try to read first document:
 		if (is_array($HTTP_GET_VARS) && count($HTTP_GET_VARS)<2 && !is_array($this->editconf))	{	// Added !is_array($this->editconf) because editConf must not be set either. Anyways I can't figure out when this situation here will apply...
 			$this->setDocument($this->docDat[1]);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function doProcessData()	{
 		global $HTTP_POST_VARS;
-#debug(array($HTTP_POST_VARS,$GLOBALS["HTTP_GET_VARS"]));
+#debug(array($HTTP_POST_VARS,$GLOBALS['HTTP_GET_VARS']));
 /*		debug(array(
-			"_savedok_x" => isset($HTTP_POST_VARS["_savedok_x"]),
-			"_saveandclosedok_x" => isset($HTTP_POST_VARS["_saveandclosedok_x"]),
-			"_savedokview_x" => isset($HTTP_POST_VARS["_savedokview_x"]),
-			"_savedoknew_x" => isset($HTTP_POST_VARS["_savedoknew_x"]),
-			"doSave" => t3lib_div::GPvar("doSave"),
+			'_savedok_x' => isset($HTTP_POST_VARS['_savedok_x']),
+			'_saveandclosedok_x' => isset($HTTP_POST_VARS['_saveandclosedok_x']),
+			'_savedokview_x' => isset($HTTP_POST_VARS['_savedokview_x']),
+			'_savedoknew_x' => isset($HTTP_POST_VARS['_savedoknew_x']),
+			'doSave' => t3lib_div::GPvar('doSave'),
 		));
 	*/	
 		
-		$out = t3lib_div::GPvar("doSave") || isset($HTTP_POST_VARS["_savedok_x"]) || isset($HTTP_POST_VARS["_saveandclosedok_x"]) || isset($HTTP_POST_VARS["_savedokview_x"]) || isset($HTTP_POST_VARS["_savedoknew_x"]);
+		$out = t3lib_div::GPvar('doSave') || isset($HTTP_POST_VARS['_savedok_x']) || isset($HTTP_POST_VARS['_saveandclosedok_x']) || isset($HTTP_POST_VARS['_savedokview_x']) || isset($HTTP_POST_VARS['_savedoknew_x']);
 		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function processData()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
-		t3lib_div::setGPvars("data,mirror,cacheCmd,redirect");
+		t3lib_div::setGPvars('data,mirror,cacheCmd,redirect');
 		
-		$this->data=$GLOBALS["data"];
-		$this->mirror=$GLOBALS["mirror"];
-		$this->cacheCmd=$GLOBALS["cacheCmd"];
-		$this->redirect=$GLOBALS["redirect"];
+		$this->data=$GLOBALS['data'];
+		$this->mirror=$GLOBALS['mirror'];
+		$this->cacheCmd=$GLOBALS['cacheCmd'];
+		$this->redirect=$GLOBALS['redirect'];
 
 		
 			// See tce_db.php for relevate options here:
 			// Only options related to $this->data submission are included here.
-		$tce = t3lib_div::makeInstance("t3lib_TCEmain");
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 	
-		if ($BE_USER->uc["neverHideAtCopy"])	{
+		if ($BE_USER->uc['neverHideAtCopy'])	{
 			$tce->neverHideAtCopy = 1;
 		}
 	
-		$TCAdefaultOverride = $BE_USER->getTSConfigProp("TCAdefaults");
+		$TCAdefaultOverride = $BE_USER->getTSConfigProp('TCAdefaults');
 		if (is_array($TCAdefaultOverride))	{
 			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
 	
 		$tce->debug=0;
-		$tce->disableRTE=t3lib_div::GPvar("_disableRTE");
+		$tce->disableRTE=t3lib_div::GPvar('_disableRTE');
 		$tce->start($this->data,array());
 		if (is_array($this->mirror))	{$tce->setMirror($this->mirror);}
 		
-		if (isset($this->data["pages"]))	{
-			t3lib_BEfunc::getSetUpdateSignal("updatePageTree");
+		if (isset($this->data['pages']))	{
+			t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 		}
 		
 		// ***************************
 		// Checking referer / executing
 		// ***************************
-		$refInfo=parse_url(t3lib_div::getIndpEnv("HTTP_REFERER"));
-		$httpHost = t3lib_div::getIndpEnv("TYPO3_HOST_ONLY");
-		if ($httpHost!=$refInfo["host"] && t3lib_div::GPvar("vC")!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS["SYS"]["doNotCheckReferer"])	{
-			$tce->log("",0,0,0,1,"Referer host '%s' and server host '%s' did not match and veriCode was not valid either!",1,array($refInfo["host"],$httpHost));
+		$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+		if ($httpHost!=$refInfo['host'] && t3lib_div::GPvar('vC')!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
+			$tce->log('',0,0,0,1,"Referer host '%s' and server host '%s' did not match and veriCode was not valid either!",1,array($refInfo["host"],$httpHost));
 			debug("Error: Referer host did not match with server host.");
 		} else {
 			$tce->process_uploads($GLOBALS["HTTP_POST_FILES"]);
@@ -229,8 +280,12 @@ class SC_alt_doc {
 			$this->closeDocument(abs(t3lib_div::GPvar("closeDoc")));
 		}
 	}
-	
-	
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -265,7 +320,7 @@ class SC_alt_doc {
 		$this->doc->form='<form action="'.$this->R_URI.'" method="post" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'" name="editform" onSubmit="'.$debugThing.'return TBE_EDITOR_checkSubmit(1);" autocomplete="off">';
 		$this->doc->JScode = '
 <script language="javascript" type="text/javascript">
-	function jumpToUrl(URL,formEl)	{
+	function jumpToUrl(URL,formEl)	{	//
 		if (!TBE_EDITOR_isFormChanged())	{
 			document.location = URL;
 		} else if (formEl && formEl.type=="checkbox") {
@@ -274,13 +329,13 @@ class SC_alt_doc {
 	}
 
 		// Object: TS:
-	function typoSetup	()	{
+	function typoSetup	()	{	//
 		this.uniqueID = "";
 	}
 	var TS = new typoSetup();
 
 		// Info view:
-	function launchView(table,uid,bP)	{
+	function launchView(table,uid,bP)	{	//
 		var backPath= bP ? bP : "";
 		var thePreviewWindow="";
 		thePreviewWindow = window.open(backPath+"show_item.php?table="+escape(table)+"&uid="+escape(uid),"ShowItem"+TS.uniqueID,"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");	
@@ -288,8 +343,7 @@ class SC_alt_doc {
 			thePreviewWindow.focus();
 		}
 	}
-	
-	function deleteRecord(table,id,url)	{
+	function deleteRecord(table,id,url)	{	//
 		if (confirm('.$GLOBALS['LANG']->JScharCode($LANG->getLL("deleteWarning")).'))	{	
 			document.location = "tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
 		}
@@ -300,6 +354,12 @@ class SC_alt_doc {
 </script>
 		'.$this->JSrefreshCode;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -346,12 +406,24 @@ class SC_alt_doc {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		global $SOBE;
 
 		//debug(array($this->content));
 		echo $this->content.$this->doc->endPage();
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function editRegularContentFromId()	{
 		if (t3lib_extMgm::isLoaded("cms"))	{
 			$query="SELECT uid FROM tt_content WHERE pid=".intval(t3lib_div::GPvar("editRegularContentFromId")).
@@ -368,6 +440,12 @@ class SC_alt_doc {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function makeEditForm()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -501,6 +579,12 @@ class SC_alt_doc {
 		}
 		return $editForm;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function makeButtonPanel()	{
 		global $TCA,$LANG;
 		$panel="";
@@ -542,6 +626,12 @@ class SC_alt_doc {
 		}
 		return $panel;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function makeDocSel()	{
 		global $BE_USER,$LANG;
 		// DOC-handler
@@ -565,6 +655,12 @@ class SC_alt_doc {
 		} else $docSel="";
 		return $docSel;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function makeCmenu()	{
 		global $SOBE;
 		
@@ -573,6 +669,16 @@ class SC_alt_doc {
 		} else $cMenu ="";
 		return $cMenu;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$panel: ...
+	 * @param	[type]		$docSel: ...
+	 * @param	[type]		$cMenu: ...
+	 * @param	[type]		$editForm: ...
+	 * @return	[type]		...
+	 */
 	function compileForm($panel,$docSel,$cMenu,$editForm)	{
 		global $LANG;
 		
@@ -597,12 +703,24 @@ class SC_alt_doc {
 
 		return $formContent;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function compileStoreDat()	{
 		global $HTTP_GET_VARS;
 		$this->storeArray = t3lib_div::compileSelectedGetVarsFromArray("edit,defVals,overrideVals,columnsOnly,disHelp,noView,editRegularContentFromId",$HTTP_GET_VARS);
 		$this->storeUrl = t3lib_div::implodeArrayForUrl("",$this->storeArray);
 		$this->storeUrlMd5 = md5($this->storeUrl);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function functionMenus()	{
 		global $BE_USER,$LANG;
 
@@ -614,6 +732,12 @@ class SC_alt_doc {
 		if ($BE_USER->isRTE())	$funcMenus.= "<BR>".t3lib_BEfunc::getFuncCheck("","SET[disableRTE]",$this->MOD_SETTINGS["disableRTE"],"alt_doc.php",t3lib_div::implodeArrayForUrl("",array_merge($this->R_URL_getvars,array("SET"=>"")))).$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.disableRTE");
 		return $funcMenus;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function shortCutLink()	{
 		global $SOBE,$BE_USER,$LANG;
 			// ShortCut
@@ -626,6 +750,12 @@ class SC_alt_doc {
 		}
 		return $content;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function tceformMessages()	{
 		if (count($this->tceforms->commentMessages))	{
 		$this->content.='
@@ -639,15 +769,38 @@ class SC_alt_doc {
 	}
 
 	
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
+
+
+
+
+
+
+
+
+	/***************************
+	 *
+	 * OTHER FUNCTIONS:	
+	 *
+	 ***************************/
+	 
+	/**
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$key: ...
+	 * @return	[type]		...
+	 */
 	function getNewIconMode($table,$key="saveDocNew")	{
 		global $BE_USER;
 		$TSconfig = $BE_USER->getTSConfig("options.".$key);
 		$output = trim(isset($TSconfig["properties"][$table]) ? $TSconfig["properties"][$table] : $TSconfig["value"]);
 		return $output;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$code: ...
+	 * @return	[type]		...
+	 */
 	function closeDocument($code=0)	{
 		global $BE_USER;
 		if (isset($this->docHandler[$this->storeUrlMd5]))	{
@@ -667,6 +820,14 @@ class SC_alt_doc {
 			$this->setDocument("",$this->retUrl);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$currentDocFromHandlerMD5: ...
+	 * @param	[type]		$retUrl: ...
+	 * @return	[type]		...
+	 */
 	function setDocument($currentDocFromHandlerMD5="",$retUrl="alt_doc_nodoc.php")	{
 		if (!t3lib_extMgm::isLoaded("cms") && !strcmp($retUrl,"alt_doc_nodoc.php"))	return;
 		
@@ -688,8 +849,8 @@ class SC_alt_doc {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_doc.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_doc.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc.php']);
 }
 
 
@@ -708,18 +869,18 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_d
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_alt_doc");
+$SOBE = t3lib_div::makeInstance('SC_alt_doc');
 
 // Preprocessing, storing data if submitted to
 $SOBE->preInit();
 if ($SOBE->doProcessData())	{
-	require_once (PATH_t3lib."class.t3lib_tcemain.php");
+	require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 	$SOBE->processData();
 } else {
-	require_once (PATH_t3lib."class.t3lib_loaddbgroup.php");
-	$BACK_PATH="";
+	require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+	$BACK_PATH='';
 }
-require_once (PATH_t3lib."class.t3lib_transferdata.php");
+require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 
 
 // Main:

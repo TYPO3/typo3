@@ -27,12 +27,26 @@
 /** 
  * Displays the vertical menu in the left most frame of TYPO3s backend
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML-trans compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   67: class SC_alt_menu 
+ *   75:     function init()	
+ *   88:     function main()	
+ *  160:     function removeCacheFiles()	
+ *  179:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -43,14 +57,20 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
 
 
-// ***************************
-// Script Class
-// ***************************
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_menu {
 
 	/**
 	 * Initialize
 	 * Loads the backend modules available for the logged in user.
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $TBE_MODULES;
@@ -62,6 +82,8 @@ class SC_alt_menu {
 
 	/**
 	 * Main content generated
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
@@ -132,6 +154,8 @@ class SC_alt_menu {
 
 	/**
 	 * Unlink (delete) cache files
+	 * 
+	 * @return	integer		The number of files deleted
 	 */
 	function removeCacheFiles()	{
 		$cacheFiles=t3lib_extMgm::currentCacheFiles();
@@ -149,6 +173,8 @@ class SC_alt_menu {
 
 	/**
 	 * Outputs the content
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;

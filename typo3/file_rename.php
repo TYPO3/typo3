@@ -27,24 +27,51 @@
 /** 
  * Web>File: Renaming files and folders
  *
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   75: class SC_file_rename 
+ *   90:     function init()	
+ *  126:     function backToList()	
+ *  139:     function main()	
+ *  166:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+
+
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
-
-
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-require_once (PATH_t3lib."class.t3lib_basicfilefunc.php");
-
-
-
-
-// ***************************
-// Script Classes
-// ***************************
 class SC_file_rename {
 	var $content;
 
@@ -55,7 +82,11 @@ class SC_file_rename {
 	var $target;
 	var $doc;	
 
-		// Constructor:
+	/**
+	 * Constructor:
+	 * 
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -99,6 +130,12 @@ class SC_file_rename {
 		';
 		$this->doc->form='<form action="tce_file.php" method="POST" name="editform">';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -120,6 +157,12 @@ class SC_file_rename {
 		
 		$this->content.= $this->doc->section("",$code);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		global $SOBE;
 

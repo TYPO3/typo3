@@ -27,31 +27,65 @@
 /** 
  * Wizard to list records
  * 
+ * $Id$
+ * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   72: class SC_wizard_list 
+ *   80:     function init()	
+ *   89:     function main()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
  
 
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_wizards.php");
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_wizards.php');
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_wizard_list {
 	var $P;
 	var $pid;
 	var $table;
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
-		$this->P = t3lib_div::GPvar("P",1);
+		$this->P = t3lib_div::GPvar('P',1);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 		
@@ -76,8 +110,8 @@ class SC_wizard_list {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_list.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_list.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_list.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_list.php']);
 }
 
 
@@ -92,7 +126,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizar
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_wizard_list");
+$SOBE = t3lib_div::makeInstance('SC_wizard_list');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

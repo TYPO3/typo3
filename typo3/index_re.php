@@ -33,13 +33,14 @@
  * 		RewriteRule   ^typo3$  typo3/index_re.php
  * ... and this document will redirect to the right script.
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
 
-define("TYPO3_PROCEED_IF_NO_USER", 1);
-require ("init.php");
-header("Location: ".t3lib_div::locationHeaderUrl(t3lib_div::getIndpEnv("TYPO3_REQUEST_DIR")."index.php"));
+define('TYPO3_PROCEED_IF_NO_USER', 1);
+require ('init.php');
+header('Location: '.t3lib_div::locationHeaderUrl(t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'));
 ?>

@@ -26,44 +26,80 @@
 ***************************************************************/
 /** 
  * Wizard to display the RTE in "full screen" mode
+ *
+ * $Id$
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   79: class SC_wizard_rte 
+ *   87:     function init()	
+ *  103:     function main()	
+ *  112:     function jumpToUrl(URL,formEl)	
+ *  203:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
  
 
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_wizards.php");
-require_once (PATH_t3lib."class.t3lib_tceforms.php");
-require_once (PATH_t3lib."class.t3lib_loaddbgroup.php");
-require_once (PATH_t3lib."class.t3lib_transferdata.php");
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_wizards.php');
+require_once (PATH_t3lib.'class.t3lib_tceforms.php');
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 
 t3lib_BEfunc::lockRecords();
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_wizard_rte {
 	var $content;
 	var $P;
 	var $doc;	
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->P = t3lib_div::GPvar("P",1);
+		$this->P = t3lib_div::GPvar('P',1);
 		
 		$this->doc = t3lib_div::makeInstance("mediumDoc");
 		$this->doc->divClass = '';	// Need to NOT have the page wrapped in DIV since if we do that we destroy the feature that the RTE spans the whole height of the page!!!
 		$this->doc->form='<form action="tce_db.php" method="POST" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'" name="editform" onSubmit="return TBE_EDITOR_checkSubmit(1);" autocomplete="off">';
 		$this->doc->backPath = $BACK_PATH;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -158,16 +194,21 @@ class SC_wizard_rte {
 			$this->content.=$this->doc->section($LANG->getLL("forms_title"),$GLOBALS["TBE_TEMPLATE"]->rfw($LANG->getLL("table_noData")),0,1);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
-		global $SOBE;
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_rte.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizard_rte.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_rte.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/wizard_rte.php']);
 }
 
 
@@ -182,7 +223,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/wizar
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_wizard_rte");
+$SOBE = t3lib_div::makeInstance('SC_wizard_rte');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

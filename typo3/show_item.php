@@ -27,54 +27,109 @@
 /** 
  * Shows information about a database or file item
  *
- * HTTP_GET_VARS:
- * $table	:		Record table (or filename)
- * $uid	:		Record uid  (or "" when filename)
+ * $Id$
  *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   79: class transferData extends t3lib_transferData	
+ *   95:     function regItem($table, $id, $field, $content)	
+ *
+ *
+ *  133: class SC_show_item 
+ *  151:     function init()	
+ *  220:     function main()	
+ *  349:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+ 
+$BACK_PATH='';
+require ($BACK_PATH.'init.php');
+require ($BACK_PATH.'template.php');
+require_once (PATH_t3lib.'class.t3lib_page.php');
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+require_once (PATH_t3lib.'class.t3lib_transferdata.php');
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Extension of transfer data class
+ * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
-
- 
- 
-$BACK_PATH="";
-require ($BACK_PATH."init.php");
-require ($BACK_PATH."template.php");
-require_once (PATH_t3lib."class.t3lib_page.php");
-require_once (PATH_t3lib."class.t3lib_loaddbgroup.php");
-require_once (PATH_t3lib."class.t3lib_transferdata.php");
-
-
-// ***************************
-// Script Classes
-// ***************************
 class transferData extends t3lib_transferData	{
-	var $formname = "loadform";
+	var $formname = 'loadform';
 	var $loading = 1;
 	
-
 		// Extra for show_item.php:
 	var $theRecord = Array();
 
+	/**
+	 * Register item function.
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$field: ...
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function regItem($table, $id, $field, $content)	{
 		t3lib_div::loadTCA($table);
-		$config = $GLOBALS["TCA"][$table]["columns"][$field]["config"];
-		switch($config["type"])	{
-			case "input":
-				if (isset($config["checkbox"]) && $content==$config["checkbox"])	{$content=""; break;}
-				if (t3lib_div::inList($config["eval"],"date"))	{$content = Date($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["ddmmyy"],$content); }
+		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+		switch($config['type'])	{
+			case 'input':
+				if (isset($config['checkbox']) && $content==$config['checkbox'])	{$content=''; break;}
+				if (t3lib_div::inList($config['eval'],'date'))	{$content = Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$content); }
 			break;
-			case "group":
+			case 'group':
 			break;
-			case "select":
-				
+			case 'select':
 			break;
 		}
 		$this->theRecord[$field]=$content;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * HTTP_GET_VARS:
+ * $table	:		Record table (or filename)
+ * $uid	:		Record uid  (or '' when filename)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_show_item {
 	var $include_once=array();
 	var $content;
@@ -90,11 +145,14 @@ class SC_show_item {
 	var $uid;
 	var $doc;	
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 		
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
-		$this->table = t3lib_div::GPvar("table");
+		$this->table = t3lib_div::GPvar('table');
 		$this->uid = t3lib_div::GPvar("uid");
 		
 		$this->access=0;
@@ -153,6 +211,12 @@ class SC_show_item {
 		$this->content.=$this->doc->header($LANG->sL("LLL:EXT:lang/locallang_core.php:show_item.php.viewItem"));
 		$this->content.=$this->doc->spacer(5);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 		
@@ -276,23 +340,23 @@ class SC_show_item {
 			}
 		}		
 	}
-	function printContent()	{
-		global $SOBE;
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
+	function printContent()	{
 		$this->content.=$this->doc->spacer(8);
 		$this->content.=$this->doc->middle();
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
-	
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/show_item.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/show_item.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/show_item.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/show_item.php']);
 }
 
 
@@ -307,7 +371,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/show_
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_show_item");
+$SOBE = t3lib_div::makeInstance('SC_show_item');
 $SOBE->init();
 
 // Include files?

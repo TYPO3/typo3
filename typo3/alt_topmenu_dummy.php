@@ -26,18 +26,29 @@
 ***************************************************************/
 /** 
  * Alternative top menu
- *
  * Displays a horizontal menu with the same items as the default left vertical menu
  * in the backend frameset. Only the icons are displayed and linked.
  * Will appear as the default document in the top frame if configured to appear.
  * This is the default menu used during "condensed mode"
- * 
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant content
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   72: class SC_alt_topmenu_dummy 
+ *   80:     function main()	
+ *  132:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -48,18 +59,26 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
 
 
-// ***************************
-// Script Class
-// ***************************
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_topmenu_dummy {
 	var $content;
 	
 	/**
 	 * Main function - making the menu happen.
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
-		global $TBE_MODULES,$TBE_TEMPLATE;
+		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES,$TBE_TEMPLATE;
 		
 			// IF noMenuMode is set to 'icons', then display menu instead of nothingness
 		if (!strcmp($BE_USER->uc['noMenuMode'],'icons'))	{
@@ -107,6 +126,8 @@ class SC_alt_topmenu_dummy {
 	
 	/**
 	 * Print output
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;

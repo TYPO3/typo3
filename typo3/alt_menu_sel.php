@@ -26,16 +26,27 @@
 ***************************************************************/
 /** 
  * Creates the selector-box menu.
- *
  * The selector-box menu is an alternative to the vertical default menu. 
  * If configured to appear it will be displayed in the top-frame.
  * 
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   66: class SC_alt_menu_sel 
+ *   74:     function main()	
+ *  104:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -45,16 +56,21 @@ require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
 
-
-// ***************************
-// Script Class
-// ***************************
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_menu_sel {
 	var $content;
 	
 	/**
 	 * Main function, making the selector box menu
-	 */ 
+	 * 
+	 * @return	void		
+	 */
 	function main()	{
 		global $TBE_MODULES,$TBE_TEMPLATE;
 		
@@ -82,7 +98,9 @@ class SC_alt_menu_sel {
 	
 	/**
 	 * Print output
-	 */ 
+	 * 
+	 * @return	void		
+	 */
 	function printContent()	{
 		echo $this->content;
 	}

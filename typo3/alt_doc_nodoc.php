@@ -27,47 +27,74 @@
 /** 
  * No-document script
  *
+ * $Id$
  *  
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   68: class SC_alt_doc_nodoc 
+ *   74:     function init()	
+ *   91:     function main()	
+ *  127:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_alt_doc.php");
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_alt_doc.php');
 
 
-if (t3lib_extMgm::isLoaded("taskcenter") && t3lib_extMgm::isLoaded("taskcenter_recent"))	{
-	require_once(t3lib_extMgm::extPath("taskcenter")."task/class.mod_user_task.php");
-	require_once(t3lib_extMgm::extPath("taskcenter_recent")."class.tx_taskcenterrecent.php");
+if (t3lib_extMgm::isLoaded('taskcenter') && t3lib_extMgm::isLoaded('taskcenter_recent'))	{
+	require_once(t3lib_extMgm::extPath('taskcenter').'task/class.mod_user_task.php');
+	require_once(t3lib_extMgm::extPath('taskcenter_recent').'class.tx_taskcenterrecent.php');
 }
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_doc_nodoc {
 	var $content;
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BACK_PATH;
 
-		$this->doc = t3lib_div::makeInstance("mediumDoc");
-		$this->doc->bodyTagMargins["x"]=5;
-		$this->doc->bodyTagMargins["y"]=5;
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc->bodyTagMargins['x']=5;
+		$this->doc->bodyTagMargins['y']=5;
 		$this->doc->backPath = $BACK_PATH;
 		
-		$this->content="";
-		$this->content.=$this->doc->startPage("TYPO3 Edit Document");
+		$this->content='';
+		$this->content.=$this->doc->startPage('TYPO3 Edit Document');
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
 		$msg=array();
-		$msg[]=$LANG->getLL("noDocuments_msg");
-		$a_wl = $BE_USER->check("modules","web_list");
-		$a_wp = t3lib_extMgm::isLoaded("cms") && $BE_USER->check("modules","web_layout");
+		$msg[]=$LANG->getLL('noDocuments_msg');
+		$a_wl = $BE_USER->check('modules','web_list');
+		$a_wp = t3lib_extMgm::isLoaded('cms') && $BE_USER->check('modules','web_layout');
 		if ($a_wl || $a_wp)	{
 			$msg_2 = array();
 			if ($a_wp)	{
@@ -91,14 +118,20 @@ class SC_alt_doc_nodoc {
 		
 		$this->content.=$this->doc->section($LANG->getLL("noDocuments"),implode(" ",$msg),0,1);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		echo $this->content.$this->doc->endPage();
 	}
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_doc_nodoc.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_doc_nodoc.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc_nodoc.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc_nodoc.php']);
 }
 
 
@@ -112,7 +145,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_d
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_alt_doc_nodoc");
+$SOBE = t3lib_div::makeInstance('SC_alt_doc_nodoc');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -27,11 +27,28 @@
 /** 
  * Web>File: File listing
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   78: class SC_file_list 
+ *  101:     function init()	
+ *  122:     function menuConfig()	
+ *  143:     function main()	
+ *  217:     function jumpToUrl(URL)	
+ *  265:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 5
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
 
 unset($MCONF);
 require ('mod/file/list/conf.php');
@@ -47,9 +64,17 @@ $BE_USER->modAccess($MCONF,1);
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_file_list {
 	var $MCONF=array();			// Module configuration
 	var $MOD_MENU=array();		
@@ -70,9 +95,9 @@ class SC_file_list {
 	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
-	 *
-	 * @return	void
-	 */	
+	 * 
+	 * @return	void		
+	 */
 	function init()	{
 		global $TYPO3_CONF_VARS,$FILEMOUNTS;
 			
@@ -92,8 +117,8 @@ class SC_file_list {
 	/**
 	 * Setting the menu/session variables
 	 * 
-	 * @return	void
-	 */	
+	 * @return	void		
+	 */
 	function menuConfig()	{
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
@@ -112,10 +137,9 @@ class SC_file_list {
 
 	/**
 	 * Main function, creating the listing
-	 *
-	 * @param	
-	 * @return	
-	 */	
+	 * 
+	 * @return	void		
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$HTTP_GET_VARS,$HTTP_POST_VARS,$TYPO3_CONF_VARS,$FILEMOUNTS;
 		
@@ -235,10 +259,10 @@ class SC_file_list {
 
 	/**
 	 * Ending page and outputting content from ->content
-	 */	
+	 * 
+	 * @return	void		
+	 */
 	function printContent()	{
-		global $SOBE;
-
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}

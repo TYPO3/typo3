@@ -27,13 +27,55 @@
 /** 
  * Include file extending recordList which extended t3lib_recordList
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   78: class localRecordList extends recordList 
+ *  103:     function writeTop($row,$path)	
+ *  202:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning="")	
+ *  216:     function getTable($table,$id,$rowlist)	
+ *  482:     function clipNumPane()	
+ *  494:     function addSortLink($code,$field,$table)	
+ *  511:     function makeControl($table,$row)	
+ *  639:     function makeClip($table,$row)	
+ *  693:     function fieldSelectBox($table,$formFields=1)	
+ *  741:     function initCSV()	
+ *  759:     function addToCSV($row)	
+ *  778:     function setCsvRow($csvRow)	
+ *  788:     function outputCSV($prefix)	
+ *  803:     function recPath($pid)	
+ *  816:     function showNewRecLink($table)	
+ *  825:     function makeReturnUrl()	
+ *
+ * TOTAL FUNCTIONS: 15
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- class localRecordList extends recordList {
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+/**
+ * Class for rendering of Web>List module
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
+class localRecordList extends recordList {
  	var $noControlPanels = 0;
 	var $showClipboard=0;
 	var $clipObj;
@@ -44,6 +86,20 @@
 	var $newWizards=0;
 	var $dontShowClipControlPanels=0;
 	
+
+
+
+
+
+
+
+
+
+	/**
+	 * @param	[type]		$row: ...
+	 * @param	[type]		$path: ...
+	 * @return	[type]		...
+	 */
 	function writeTop($row,$path)	{
 		global $LANG;
 		
@@ -133,11 +189,30 @@
 		$out.="</table>";
 		$this->HTMLcode.=$out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$string: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$cmd: ...
+	 * @param	[type]		$warning: ...
+	 * @return	[type]		...
+	 */
 	function linkClipboardHeaderIcon($string,$table,$cmd,$warning="")	{
 		$onClickEvent = 'document.dblistForm.cmd.value=\''.$cmd.'\';document.dblistForm.cmd_table.value=\''.$table.'\';document.dblistForm.submit();';
 		if ($warning)	$onClickEvent = 'if (confirm('.$GLOBALS['LANG']->JScharCode($warning).')){'.$onClickEvent.'}';
 		return '<a href="#" onClick="'.$onClickEvent.'return false;">'.$string.'</a>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$rowlist: ...
+	 * @return	[type]		...
+	 */
 	function getTable($table,$id,$rowlist)	{
 			// Adds the code of a single table
 		global $TCA;
@@ -398,9 +473,24 @@
 		}
 		return $out;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function clipNumPane()	{
 		return in_Array("_CLIPBOARD_",$this->fieldArray) && $this->clipObj->current!="normal";
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$code: ...
+	 * @param	[type]		$field: ...
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function addSortLink($code,$field,$table)	{
 		if ($field=="_CONTROL_")	return $code;
 		if ($field=="_CLIPBOARD_")	return $code;
@@ -410,6 +500,14 @@
 		($this->sortField==$field?'<img src="gfx/red'.($this->sortRev?"up":"down").'.gif" hspace=2 width="7" height="4" border="0">':'').
 		'</a>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function makeControl($table,$row)	{
 		global $TCA, $LANG;
 		if ($this->dontShowClipControlPanels)	return "";
@@ -530,6 +628,14 @@
 		
 		return '<table border=0 cellpadding=1 cellspacing=0 bgColor="'.$GLOBALS["SOBE"]->doc->bgColor4.'"><tr><td>'.implode("</td><td>",$cells).'</td></tr></table>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function makeClip($table,$row)	{
 		global $TCA;
 		if ($this->dontShowClipControlPanels)	return "";
@@ -576,6 +682,14 @@
 		}
 		return '<table border=0 cellpadding=1 cellspacing=0 bgColor="'.$GLOBALS["SOBE"]->doc->bgColor5.'"'.$w100.'><tr><td'.$w40.'>&nbsp;</td><td align=center>'.implode("</td><td>",$cells).'</td><td'.$w40.'>&nbsp;</td></tr></table>';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$formFields: ...
+	 * @return	[type]		...
+	 */
 	function fieldSelectBox($table,$formFields=1)	{
 		global $TCA;
 		t3lib_div::loadTCA($table);
@@ -618,6 +732,12 @@
 		';
 		return $content;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function initCSV()	{
 		$this->csvLines=array();
 		
@@ -629,6 +749,13 @@
 		$this->setCsvRow($csvRow);
 		$this->csvLines[]="";
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function addToCSV($row)	{
 		reset($this->fieldArray);
 		$csvRow=array();
@@ -641,9 +768,23 @@
 		}
 		$this->setCsvRow($csvRow);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$csvRow: ...
+	 * @return	[type]		...
+	 */
 	function setCsvRow($csvRow)	{
 		$this->csvLines[] = t3lib_div::csvValues($csvRow);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$prefix: ...
+	 * @return	[type]		...
+	 */
 	function outputCSV($prefix)	{
 		$filename=$prefix."_".date("dmy-Hi").".csv";
 		$mimeType = "application/octet-stream";
@@ -652,15 +793,35 @@
 		echo implode(chr(13).chr(10),$this->csvLines);
 		exit;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$pid: ...
+	 * @return	[type]		...
+	 */
 	function recPath($pid)	{
 		if (!isset($this->recPath_cache[$pid]))	{
 			$this->recPath_cache[$pid] = t3lib_BEfunc::getRecordPath ($pid,$this->perms_clause,20);
 		}
 		return $this->recPath_cache[$pid];
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function showNewRecLink($table)	{
 		return !count($this->allowedNewTables) || in_array($table,$this->allowedNewTables);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function makeReturnUrl()	{
 		return '&returnUrl='.rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI"));
 	}
@@ -668,8 +829,7 @@
 
  
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/class.db_list_extra.inc"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/class.db_list_extra.inc"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc']);
 }
-
 ?>

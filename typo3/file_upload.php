@@ -27,23 +27,53 @@
 /** 
  * Web>File: Upload of files
  *
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   77: class SC_file_upload 
+ *   92:     function init()	
+ *  149:     function main()	
+ *  182:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+
+
+$BACK_PATH='';
+require ('init.php');
+require ('template.php');
+include ('sysext/lang/locallang_misc.php');
+require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
-
-
-$BACK_PATH="";
-require ("init.php");
-require ("template.php");
-include ("sysext/lang/locallang_misc.php");
-require_once (PATH_t3lib."class.t3lib_basicfilefunc.php");
-
-
-// ***************************
-// Script Classes
-// ***************************
 class SC_file_upload {
 	var $content;
 	var $number;
@@ -56,6 +86,9 @@ class SC_file_upload {
 	var $target;
 	var $doc;	
 	
+	/**
+	 * @return	[type]		...
+	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -92,13 +125,13 @@ class SC_file_upload {
 		<script language="javascript" type="text/javascript">
 			var path = "'.$this->target.'";
 		
-			function reload(a)	{
+			function reload(a)	{	//
 				if (!changed || (changed && confirm("'.$LANG->sL("LLL:EXT:lang/locallang_core.php:mess.redraw").'")))	{
 					var params = "&target="+escape(path)+"&number="+a; 
 					document.location = "file_upload.php?"+params;
 				}
 			}
-			function backToList()	{
+			function backToList()	{	//
 				top.goToModule("file_list");
 			}
 			var changed = 0;
@@ -107,6 +140,12 @@ class SC_file_upload {
 		';
 		$this->doc->form='<form action="tce_file.php" method="POST" name="editform" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'">';
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -134,18 +173,18 @@ class SC_file_upload {
 		$code.='<BR><input type="Submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:file_upload.php.submit").'">&nbsp;&nbsp;<input type="Submit" value="'.$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.cancel").'" onClick="backToList(); return false;">';
 		$this->content.= $this->doc->section("",$code);
 	}
-	function printContent()	{
-		global $SOBE;
 
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
+	function printContent()	{
 		$this->content.= $this->doc->spacer(10);
 		$this->content.= $this->doc->middle();
 		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}
-	
-	// ***************************
-	// OTHER FUNCTIONS:	
-	// ***************************
 }
 
 // Include extension?

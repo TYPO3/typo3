@@ -27,12 +27,25 @@
 /**
  * Folder tree in the File main module.
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant (almost)
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   68: class SC_alt_file_navframe 
+ *   78:     function init()	
+ *  161:     function main()	
+ *  196:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -44,14 +57,13 @@ require_once (PATH_t3lib.'class.t3lib_foldertree.php');
 
 
 
-// ***************************
-// Script Classes
-// ***************************
 
-
-# require_once(t3lib_extMgm::extPath('cc_debug').'class.tx_ccdebug.php');
 /**
  * Main script class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
  */
 class SC_alt_file_navframe {
 	var $content;
@@ -60,6 +72,8 @@ class SC_alt_file_navframe {
 	
 	/**
 	 * Initialiation
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
@@ -84,7 +98,7 @@ class SC_alt_file_navframe {
 			// Setting JavaScript for menu.
 		$this->doc->JScode=$this->doc->wrapScriptTags(
 	($currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($currentSubScript).'");':'').'
-	function jumpTo(id,linkObj,intId)	{
+	function jumpTo(id,linkObj,intId)	{	//
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
 		if (top.condensedMode)	{
 			top.content.document.location=theUrl;
@@ -101,7 +115,7 @@ class SC_alt_file_navframe {
 		'.(!$CLIENT['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
 		return false;
 	}
-    function hilight_row(old_rowid,new_rowid) {
+    function hilight_row(old_rowid,new_rowid) {		//
        if(document.all) {
          if(document.all.item(old_rowid)) {
            document.all.item(old_rowid).style.backgroundColor="";
@@ -141,6 +155,8 @@ class SC_alt_file_navframe {
 	
 	/**
 	 * Main
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
@@ -174,6 +190,8 @@ class SC_alt_file_navframe {
 
 	/**
 	 * Output tree.
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();

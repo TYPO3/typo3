@@ -27,12 +27,55 @@
 /** 
  * Include file extending t3lib_recordList
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   79: class recordList extends t3lib_recordList 
+ *  124:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	
+ *  165:     function setDispFields()	
+ *  183:     function generateList()	
+ *  227:     function thumbCode($row,$table,$field)	
+ *  240:     function makeQuery($table, $id, $addWhere="",$fieldList="*")	
+ *  269:     function setTotalItems()	
+ *  288:     function makeSearchString($table)	
+ *  319:     function linkWrapTable($table,$code)	
+ *  337:     function linkWrapItems($table,$uid,$code,$row)	
+ *  356:     function listURL($altId="",$table=-1,$exclList="")	
+ *  375:     function requestUri()	
+ *  385:     function getSearchBox($formFields=1)	
+ *  432:     function makeFieldList($table,$dontCheckUser=0)	
+ *  464:     function getTreeObject($id,$depth,$perms_clause)	
+ *  482:     function showSysNotesForPage()	
+ *
+ * TOTAL FUNCTIONS: 15
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
+
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+/**
+ * Child class for rendering of Web > List (not the final class. see class.db_list_extra)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ * @see localRecordList
+ */
 class recordList extends t3lib_recordList {
 	var $thumbs = 0;						// Boolean. Thumbnails on records containing files (pictures)
 	var $itemsLimitPerTable = 20;			// default Max items shown per table in "multi-table mode", may be overridden by tables.php
@@ -69,6 +112,15 @@ class recordList extends t3lib_recordList {
 	var $duplicateStack=array();
 	
 
+	/**
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$pointer: ...
+	 * @param	[type]		$search: ...
+	 * @param	[type]		$levels: ...
+	 * @param	[type]		$showLimit: ...
+	 * @return	[type]		...
+	 */
 	function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	{
 			// Starts the list-generation.
 			// $id is the parent-id from which we generate the list
@@ -104,6 +156,12 @@ class recordList extends t3lib_recordList {
 			$this->pidSelect = "pid=".intval($id);
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function setDispFields()	{
 			// Display fields:
 		$dispFields = $GLOBALS["BE_USER"]->getModuleData("db_list.php/displayFields");
@@ -116,6 +174,12 @@ class recordList extends t3lib_recordList {
 		}
 		$this->setFields=$dispFields;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function generateList()	{
 			// For each table we wish to show, this->getTable is called.
 			// Finishes off with a stopper-gif
@@ -151,9 +215,28 @@ class recordList extends t3lib_recordList {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$row: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$field: ...
+	 * @return	[type]		...
+	 */
 	function thumbCode($row,$table,$field)	{
 		return t3lib_BEfunc::thumbCode($row,$table,$field,$this->backPath,$this->thumbScript);
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$addWhere: ...
+	 * @param	[type]		$fieldList: ...
+	 * @return	[type]		...
+	 */
 	function makeQuery($table, $id, $addWhere="",$fieldList="*")	{
 			// returns the SQL-query to select the records from a table $table with pid = $id
 			// Depends on the global var $perms_clause to exist!!
@@ -177,6 +260,12 @@ class recordList extends t3lib_recordList {
 //		debug($query,1);
 		return $query;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function setTotalItems()	{
 		$result = mysql(TYPO3_db,$this->temp_countQ);
 		if (mysql_error())	{
@@ -189,6 +278,13 @@ class recordList extends t3lib_recordList {
 		list($rCount) = mysql_fetch_row($result);
 		$this->totalItems = $rCount;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @return	[type]		...
+	 */
 	function makeSearchString($table)	{
 		global $TCA;
 		if ($TCA[$table] && $this->searchString)	{
@@ -212,6 +308,14 @@ class recordList extends t3lib_recordList {
 			}
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$code: ...
+	 * @return	[type]		...
+	 */
 	function linkWrapTable($table,$code)	{
 			// Returns the title (based on $code) of a table ($table) with the proper link around
 		if ($this->table!=$table)	{
@@ -220,6 +324,16 @@ class recordList extends t3lib_recordList {
 			return '<A HREF="'.$this->listURL("","","sortField,sortRev,table").'">'.$code.'</a>';
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$uid: ...
+	 * @param	[type]		$code: ...
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function linkWrapItems($table,$uid,$code,$row)	{
 			// Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for "pages"-records a link to the level of that record...)
 		if (!strcmp($code,"")) {$code="<i>[".$GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.php:labels.no_title")."]</i> - ".t3lib_BEfunc::getRecordTitle($table,$row);}
@@ -230,6 +344,15 @@ class recordList extends t3lib_recordList {
 			return $code;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$altId: ...
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$exclList: ...
+	 * @return	[type]		...
+	 */
 	function listURL($altId="",$table=-1,$exclList="")	{
 		return $this->script.
 			'?id='.(strcmp($altId,"")?$altId:$this->id).
@@ -243,9 +366,22 @@ class recordList extends t3lib_recordList {
 			((!$exclList || !t3lib_div::inList($exclList,"sortRev")) && $this->sortRev?"&sortRev=".rawurlencode($this->sortRev):"")
 			;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function requestUri()	{
 		return $this->listURL();
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$formFields: ...
+	 * @return	[type]		...
+	 */
 	function getSearchBox($formFields=1)	{
 		if ($GLOBALS["CLIENT"]["BROWSER"]=="net")	{
 //			$content.= '<img src=clear.gif width=1 height=100><BR>';
@@ -285,6 +421,14 @@ class recordList extends t3lib_recordList {
 		';
 		return $content;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$table: ...
+	 * @param	[type]		$dontCheckUser: ...
+	 * @return	[type]		...
+	 */
 	function makeFieldList($table,$dontCheckUser=0)	{
 		global $TCA,$BE_USER;
 		$fieldListArr = array();
@@ -308,6 +452,15 @@ class recordList extends t3lib_recordList {
 		}
 		return $fieldListArr;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @param	[type]		$id: ...
+	 * @param	[type]		$depth: ...
+	 * @param	[type]		$perms_clause: ...
+	 * @return	[type]		...
+	 */
 	function getTreeObject($id,$depth,$perms_clause)	{
 		$tree = t3lib_div::makeInstance("t3lib_pageTree");
 		$tree->init("AND ".$perms_clause);
@@ -320,6 +473,12 @@ class recordList extends t3lib_recordList {
 //		debug($tree->ids);
 		return $tree;
 	}
+
+	/**
+	 * [Describe function...]
+	 * 
+	 * @return	[type]		...
+	 */
 	function showSysNotesForPage()	{
 		global $TCA;
 
@@ -367,8 +526,7 @@ class recordList extends t3lib_recordList {
 }
 
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/class.db_list.inc"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/class.db_list.inc"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list.inc'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list.inc']);
 }
-
 ?>

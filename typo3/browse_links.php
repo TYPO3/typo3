@@ -28,96 +28,84 @@
  * Displays the page/file tree for browsing database records or files.
  * Used from TCEFORMS an other elements
  *
+ * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  151: class TBE_browser_recordList extends localRecordList 
- *  160:     function listURL($altId="",$table=-1,$exclList="")	
- *  179:     function ext_addP()	
- *  194:     function linkWrapItems($table,$uid,$code,$row)	
+ *  152: class TBE_browser_recordList extends localRecordList 
+ *  161:     function listURL($altId='',$table=-1,$exclList='')	
+ *  180:     function ext_addP()	
+ *  197:     function linkWrapItems($table,$uid,$code,$row)	
  *
  *
- *  224: class localPageTree extends t3lib_browseTree 
- *  232:     function wrapTitle($title,$v,$ext_pArrPages)	
- *  249:     function printTree($treeArr="")	
- *  277:     function ext_isLinkable($doktype,$uid)	
- *  291:     function PM_ATagWrap($icon,$cmd,$bMark="")	
- *  306:     function wrapIcon($icon,$row)	
+ *  233: class localPageTree extends t3lib_browseTree 
+ *  235:     function localPageTree() 
+ *  245:     function wrapTitle($title,$v,$ext_pArrPages)	
+ *  261:     function printTree($treeArr="")	
+ *  289:     function ext_isLinkable($doktype,$uid)	
+ *  303:     function PM_ATagWrap($icon,$cmd,$bMark="")	
+ *  318:     function wrapIcon($icon,$row)	
  *
  *
- *  322: class rtePageTree extends localPageTree 
+ *  334: class rtePageTree extends localPageTree 
  *
  *
- *  336: class TBE_PageTree extends localPageTree 
- *  343:     function ext_isLinkable($doktype,$uid)	
- *  355:     function wrapTitle($title,$v,$ext_pArrPages)	
+ *  348: class TBE_PageTree extends localPageTree 
+ *  355:     function ext_isLinkable($doktype,$uid)	
+ *  367:     function wrapTitle($title,$v,$ext_pArrPages)	
  *
  *
- *  378: class localFolderTree extends t3lib_browseTree 
- *  385:     function wrapTitle($title,$v)	
- *  400:     function printTree($treeArr="")	
- *  434:     function ext_isLinkable($v)	
- *  452:     function PM_ATagWrap($icon,$cmd,$bMark="")	
- *  466:     function ext_getRelFolder($path)	
+ *  390: class localFolderTree extends t3lib_folderTree 
+ *  397:     function wrapTitle($title,$v)	
+ *  412:     function printTree($treeArr="")	
+ *  446:     function ext_isLinkable($v)	
+ *  464:     function PM_ATagWrap($icon,$cmd,$bMark="")	
+ *  478:     function ext_getRelFolder($path)	
  *
  *
- *  483: class rteFolderTree extends localFolderTree 
+ *  495: class rteFolderTree extends localFolderTree 
  *
  *
- *  495: class TBE_FolderTree extends localFolderTree 
- *  502:     function ext_isLinkable($v)	
- *  515:     function wrapTitle($title,$v)	
+ *  507: class TBE_FolderTree extends localFolderTree 
+ *  514:     function ext_isLinkable($v)	
+ *  527:     function wrapTitle($title,$v)	
  *
  *
- *  535: class SC_browse_links 
- *  547:     function init()	
- *  611:     function setTarget(target)	
- *  616:     function setValue(value)	
- *  642:     function link_typo3Page(id,anchor)	
- *  648:     function link_folder(folder)	
- *  654:     function link_current()	
- *  665:     function checkReference()	
- *  673:     function updateValueInMainForm(input)	
- *  684:     function link_typo3Page(id,anchor)	
- *  690:     function link_folder(folder)	
- *  696:     function link_spec(theLink)	
- *  701:     function link_current()	
- *  711:     function jumpToUrl(URL,anchor)	
- *  733:     function launchView(url)	
- *  741:     function setReferences()	
- *  755:     function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	
- *  775:     function addElement(elName,elValue,altElValue,close)	
- *  795:     function main()	
- *  845:     function printContent()	
+ *  547: class SC_browse_links 
+ *  559:     function init()	
+ *  791:     function main()	
+ *  841:     function printContent()	
  *
- *              SECTION: OTHER FUNCTIONS:
- *  863:     function expandPage()	
- *  899:     function TBE_expandPage($tables)	
- * 1002:     function isWebFolder($folder)	
- * 1013:     function checkFolder($folder)	
+ *              SECTION: OTHER FUNCTIONS:	These functions are designed to display the records from a page
+ *  858:     function expandPage()	
+ *  894:     function TBE_expandPage($tables)	
+ *  997:     function isWebFolder($folder)	
+ * 1008:     function checkFolder($folder)	
  *
- *              SECTION: OTHER FUNCTIONS:
- * 1037:     function expandFolder($expandFolder=0,$extensionList="")	
- * 1080:     function TBE_expandFolder($expandFolder=0,$extensionList="")	
- * 1164:     function TBE_dragNDrop($expandFolder=0,$extensionList="")	
- * 1245:     function getMsgBox($in_msg,$icon="icon_note")	
+ *              SECTION: OTHER FUNCTIONS:	These functions are designed to display the files from a folder
+ * 1031:     function expandFolder($expandFolder=0,$extensionList="")	
+ * 1074:     function TBE_expandFolder($expandFolder=0,$extensionList="")	
+ * 1158:     function TBE_dragNDrop($expandFolder=0,$extensionList="")	
+ * 1239:     function getMsgBox($in_msg,$icon="icon_note")	
  *
  *              SECTION: Miscellaneous functions
- * 1266:     function barheader($str)	
- * 1276:     function printCurrentUrl($str)	
- * 1287:     function parseCurUrl($href,$siteUrl)	
- * 1348:     function uploadForm($path)	
- * 1370:     function createFolder($path)	
- * 1398:     function main_rte($content="",$wiz=0)	
- * 1564:     function main_db($content="")	
- * 1610:     function main_file($content="",$mode)	
+ * 1260:     function barheader($str)	
+ * 1270:     function printCurrentUrl($str)	
+ * 1281:     function parseCurUrl($href,$siteUrl)	
+ * 1342:     function uploadForm($path)	
+ * 1363:     function createFolder($path)	
+ * 1391:     function main_rte($content="",$wiz=0)	
+ * 1557:     function main_db($content="")	
+ * 1603:     function main_file($content="",$mode)	
  *
- * TOTAL FUNCTIONS: 52
+ * TOTAL FUNCTIONS: 37
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -631,13 +619,11 @@ class SC_browse_links {
 			var cur_href="'.($curUrlArray["href"]?$curUrlArray["href"]:"").'";
 			var cur_target="'.($this->setTarget?$this->setTarget:"").'";
 		
-				//
-			function setTarget(target)	{
+			function setTarget(target)	{	//
 				cur_target=target;
 				add_target="&curUrl[target]="+target;
 			}
-				//
-			function setValue(value)	{
+			function setValue(value)	{	//
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
 			}
@@ -662,20 +648,17 @@ class SC_browse_links {
 			$addPassOnParams.=t3lib_div::implodeArrayForUrl("P",$P2);
 		
 			$this->doc->JScode.='
-					//
-				function link_typo3Page(id,anchor)	{
+				function link_typo3Page(id,anchor)	{	//
 					updateValueInMainForm(id+(anchor?anchor:"")+" "+cur_target);
 					close();
 					return false;
 				}
-					//
-				function link_folder(folder)	{
+				function link_folder(folder)	{	//
 					updateValueInMainForm(folder+" "+cur_target);
 					close();
 					return false;
 				}
-					//
-				function link_current()	{
+				function link_current()	{	//
 					if (cur_href!="http://" && cur_href!="mailto:")	{
 						var setValue = cur_href+" "+cur_target;
 						if (setValue.substr(0,7)=="http://")	setValue = setValue.substr(7);
@@ -685,16 +668,14 @@ class SC_browse_links {
 					}
 					return false;
 				}
-					//
-				function checkReference()	{
+				function checkReference()	{	//
 					if (window.opener && window.opener.document && window.opener.document.'.$P["formName"].' && window.opener.document.'.$P["formName"].'["'.$P["itemName"].'"] )	{
 						return window.opener.document.'.$P["formName"].'["'.$P["itemName"].'"];
 					} else {
 						close();
 					}
 				}
-					//
-				function updateValueInMainForm(input)	{
+				function updateValueInMainForm(input)	{	//
 					var field = checkReference();
 					if (field)	{
 						field.value = input;
@@ -704,25 +685,21 @@ class SC_browse_links {
 			';
 		} else {
 			$this->doc->JScode.='
-					//
-				function link_typo3Page(id,anchor)	{
+				function link_typo3Page(id,anchor)	{	//
 					var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
 					self.parent.parent.renderPopup_addLink(theLink,cur_target);
 					return false;
 				}
-					//
-				function link_folder(folder)	{
+				function link_folder(folder)	{	//
 					var theLink = \''.$this->siteURL.'\'+folder;
 					self.parent.parent.renderPopup_addLink(theLink,cur_target);
 					return false;
 				}
-					//
-				function link_spec(theLink)	{
+				function link_spec(theLink)	{	//
 					self.parent.parent.renderPopup_addLink(theLink,cur_target);
 					return false;
 				}
-					//
-				function link_current()	{
+				function link_current()	{	//
 					if (cur_href!="http://" && cur_href!="mailto:")	{
 						self.parent.parent.renderPopup_addLink(cur_href,cur_target);	
 					}
@@ -731,8 +708,7 @@ class SC_browse_links {
 			';
 		}
 		$this->doc->JScode.='
-				//
-			function jumpToUrl(URL,anchor)	{
+			function jumpToUrl(URL,anchor)	{	//
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$act.'" : "";
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode='.$mode.'" : "";
 				var theLocation = URL+add_act+add_mode+add_href+add_target+add_params'.($addPassOnParams?'+"'.$addPassOnParams.'"':"").'+(anchor?anchor:"");
@@ -753,16 +729,14 @@ class SC_browse_links {
 			var elRef="";
 			var targetDoc="";
 		
-				//
-			function launchView(url)	{
+			function launchView(url)	{	//
 				var thePreviewWindow="";
 				thePreviewWindow = window.open("show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 				if (thePreviewWindow && thePreviewWindow.focus)	{
 					thePreviewWindow.focus();
 				}
 			}
-				//
-			function setReferences()	{
+			function setReferences()	{	//
 				if (parent.typoWin
 				&& parent.typoWin.content
 				&& parent.typoWin.content.document.editform
@@ -775,8 +749,7 @@ class SC_browse_links {
 					return false;
 				}
 			}
-				//
-			function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	{
+			function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	{	//
 				if (1=='.($pArr[0]&&!$pArr[1]&&!$pArr[2] ? 1 : 0).')	{
 					addElement(filename,table+"_"+uid,fp,close);
 				} else {
@@ -795,8 +768,7 @@ class SC_browse_links {
 				}
 				return false;
 			}
-				//
-			function addElement(elName,elValue,altElValue,close)	{
+			function addElement(elName,elValue,altElValue,close)	{	//
 				if (parent.typoWin && parent.typoWin.setFormValueFromBrowseWin)	{
 					parent.typoWin.setFormValueFromBrowseWin("'.$pArr[0].'",altElValue?altElValue:elValue,elName);
 					if (close)	{
@@ -875,8 +847,7 @@ class SC_browse_links {
 	
 	/******************************************************************
 	 *
-	 * OTHER FUNCTIONS:	
-	 * These functions are designed to display the records from a page
+	 * OTHER FUNCTIONS:	These functions are designed to display the records from a page
 	 * 
 	 ******************************************************************/
 	/**
@@ -1047,8 +1018,7 @@ class SC_browse_links {
 	
 	/******************************************************************
 	 *
-	 * OTHER FUNCTIONS:	
-	 * These functions are designed to display the files from a folder
+	 * OTHER FUNCTIONS:	These functions are designed to display the files from a folder
 	 * 
 	 ******************************************************************/
 	/**
@@ -1370,7 +1340,6 @@ class SC_browse_links {
 	 * @return	[type]		...
 	 */
 	function uploadForm($path)	{
-	//	debug($path);
 		$count=3;
 		$header = t3lib_div::isFirstPartOfStr($path,PATH_site)?substr($path,strlen(PATH_site)):$path;
 		$code=$this->barheader($GLOBALS["LANG"]->getLL("uploadImage").":");

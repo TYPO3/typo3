@@ -26,13 +26,25 @@
 ***************************************************************/
 /** 
  * Creates the frameset for 'Frameset modules' like Web>* and File>*
- * 
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant content (with exception of a few attributes for the <frameset> tags)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   63: class SC_alt_mod_frameset 
+ *   72:     function main()	
+ *  109:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 require ('init.php');
@@ -41,15 +53,21 @@ require ('template.php');
 
 
 
-// ***************************
-// Script Class
-// ***************************
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_mod_frameset {
 	var $content;
 	var $defaultWidth = 245;
 	
 	/**
 	 * Creates the header and frameset for the module/submodules
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER,$TBE_TEMPLATE;
@@ -85,6 +103,8 @@ class SC_alt_mod_frameset {
 
 	/**
 	 * Outputs it all.
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;

@@ -27,14 +27,27 @@
 /** 
  * Web>File: Editing documents
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
- *
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant (except textarea field)
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   75: class SC_file_edit 
+ *   89:     function init()	
+ *  127:     function backToList()	
+ *  139:     function main()	
+ *  191:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 $BACK_PATH='';
 require ('init.php');
@@ -42,9 +55,23 @@ require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 
-// ***************************
-// Script Classes
-// ***************************
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_file_edit {
 	var $content;
 	var $basicff;
@@ -56,9 +83,11 @@ class SC_file_edit {
 
 	/**
 	 * Initialize
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BACK_PATH,$TYPO3_CONF_VARS;
 		
 			// Setting target, which must be a file reference to a file within the mounts.
 		$this->target = t3lib_div::GPvar('target');
@@ -104,6 +133,8 @@ class SC_file_edit {
 
 	/**
 	 * Main
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER, $LANG, $TYPO3_CONF_VARS;
@@ -154,10 +185,10 @@ class SC_file_edit {
 
 	/**
 	 * Ends page and outputs content
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
-		global $SOBE;
-
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}

@@ -26,31 +26,65 @@
 ***************************************************************/
 /** 
  * Displays the secondary-options palette for the TCEFORMs wherever they are shown.
+ *
+ * $Id$
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   80: class formRender extends t3lib_TCEforms 
+ *   86:     function printPalette($palArr)	
+ *
+ *
+ *  112: class formRender_vert extends t3lib_TCEforms 
+ *  118:     function printPalette($palArr)	
+ *
+ *
+ *  147: class alt_palette_CMtemplate extends template 
+ *  152:     function docBodyTagBegin()	
+ *
+ *
+ *  164: class SC_alt_palette 
+ *  176:     function init()	
+ *  216:     function main()	
+ *  255:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 6
+ * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
 
 
-require ("init.php");
-require ("template.php");
-require_once (PATH_t3lib."class.t3lib_tceforms.php");
-require_once (PATH_t3lib."class.t3lib_transferdata.php");
-require_once (PATH_t3lib."class.t3lib_loaddbgroup.php");
-include ("sysext/lang/locallang_alt_doc.php");
+require ('init.php');
+require ('template.php');
+require_once (PATH_t3lib.'class.t3lib_tceforms.php');
+require_once (PATH_t3lib.'class.t3lib_transferdata.php');
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+include ('sysext/lang/locallang_alt_doc.php');
 
 
 
 
-// ***************************
-// Script Classes
-// ***************************
+/**
+ * Class for rendering the form fields.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class formRender extends t3lib_TCEforms {
+
+	/**
+	 * @param	[type]		$palArr: ...
+	 * @return	[type]		...
+	 */
 	function printPalette($palArr)	{
-		$out="";
+		$out='';
 		reset($palArr);
 		while(list(,$content)=each($palArr))	{
 			$iRow[]='<td valign=top nowrap><img name="req_'.$content["TABLE"].'_'.$content["ID"].'_'.$content["FIELD"].'" src="clear.gif" width=10 height=10 vspace=4><img name="cm_'.$content["TABLE"].'_'.$content["ID"].'_'.$content["FIELD"].'" src="clear.gif" width=7 height=10 vspace=4></td>
@@ -67,7 +101,20 @@ class formRender extends t3lib_TCEforms {
 		return $out;
 	}
 }
+
+/**
+ * Child class for alternative rendering of form fields (horizontally, despite name...)
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class formRender_vert extends t3lib_TCEforms {
+
+	/**
+	 * @param	[type]		$palArr: ...
+	 * @return	[type]		...
+	 */
 	function printPalette($palArr)	{
 		$out="";
 		reset($palArr);
@@ -89,11 +136,31 @@ class formRender_vert extends t3lib_TCEforms {
 		return $out;
 	}
 }
+
+/**
+ * Child class of the template class - for rendering special body tag.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class alt_palette_CMtemplate extends template {
+
+	/**
+	 * @return	[type]		...
+	 */
 	function docBodyTagBegin()	{
 		return '<BODY bgColor="'.$this->bgColor2.'" LINK="#000000" ALINK="#000000" VLINK="#000000" marginwidth="0" marginheight="8" topmargin=8 leftmargin=0 background="gfx/alt_topmenu_back_full.gif">'.$this->form;
 	}
 }
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_palette {
 	var $content;
 	var $backRef;
@@ -101,7 +168,11 @@ class SC_alt_palette {
 	var $formRef;
 	var $doc;	
 	
-		// Constructor:
+	/**
+	 * Constructor
+	 * 
+	 * @return	void		
+	 */
 	function init()	{
 		global $SOBE;
 
@@ -116,7 +187,7 @@ class SC_alt_palette {
 		$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
 			var serialNumber = "";
-			function timeout_func()	{
+			function timeout_func()	{	//
 				if ('.$this->backRef.' && '.$this->backRef.'.document && '.$this->formRef.')	{
 					if ('.$this->formRef.'["_serialNumber"])	{
 						if (serialNumber) {
@@ -128,7 +199,7 @@ class SC_alt_palette {
 					window.setTimeout("timeout_func();",1*1000);
 				} else closePal();
 			}
-			function closePal()	{
+			function closePal()	{	//
 				'.(t3lib_div::GPvar("backRef")?'document.location="alt_topmenu_dummy.php";':'close();').'
 			}
 			timeout_func();
@@ -136,6 +207,12 @@ class SC_alt_palette {
 		</script>
 		';		
 	}
+
+	/**
+	 * Main function
+	 * 
+	 * @return	void		
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -169,6 +246,12 @@ class SC_alt_palette {
 			$this->content.=$tceforms->printNeededJSFunctions_top().$formContent.$tceforms->printNeededJSFunctions();
 		}
 	}
+
+	/**
+	 * Print content
+	 * 
+	 * @return	void		
+	 */
 	function printContent()	{
 		global $SOBE;
 		echo $this->content.$this->doc->endPage();
@@ -176,8 +259,8 @@ class SC_alt_palette {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_palette.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_palette.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_palette.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_palette.php']);
 }
 
 
@@ -192,7 +275,7 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["typo3/alt_p
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance("SC_alt_palette");
+$SOBE = t3lib_div::makeInstance('SC_alt_palette');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

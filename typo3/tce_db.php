@@ -26,12 +26,31 @@
 ***************************************************************/
 /** 
  * TCE gateway (TYPO3 Core Engine) for database handling
- *
  * This script is a gateway for POST forms to class.t3lib_TCEmain that manipulates all information in the database!!
  * For syntax and API information, see the document 'TYPO3 Core APIs' 
  *
+ * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   77: class SC_tce_db 
+ *   94:     function init()	
+ *  143:     function initClipboard()	
+ *  163:     function main()	
+ *  198:     function finish()	
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+ 
+ 
 require ('init.php');
 require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');

@@ -26,8 +26,24 @@
 ***************************************************************/
 /** 
  * This is the frameset to the file/record browser window
- *
+ * 
+ * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   65: class SC_browser 
+ *   76:     function main()	
+ *  131:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 require ('init.php');
 require ('template.php');
@@ -47,6 +63,8 @@ require ('template.php');
  * @subpackage core
  */
 class SC_browser {
+
+		// Internal, dynamic
 	var $content;
 
 	/**
@@ -60,11 +78,8 @@ class SC_browser {
 
 			// Set doktype:
 		$GLOBALS["TBE_TEMPLATE"]->docType="xhtml_frames";
-		$GLOBALS["TBE_TEMPLATE"]->JScode= '
-			<script type="text/javascript">
-				  /*<![CDATA[*/
-				  	//
-				function closing()	{
+		$GLOBALS["TBE_TEMPLATE"]->JScode=$GLOBALS["TBE_TEMPLATE"]->wrapScriptTags('
+				function closing()	{	//
 					if (parent.typoWin)	{
 						if (parent.typoWin.clipBrd) {
 							parent.typoWin.focus();
@@ -75,8 +90,7 @@ class SC_browser {
 					}
 					close();
 				}
-					//
-				function setParams(mode,params)	{
+				function setParams(mode,params)	{	//
 					parent.content.document.location = "browse_links.php?mode="+mode+"&bparams="+params;
 				}
 			
@@ -88,16 +102,12 @@ class SC_browser {
 						close();
 					}
 				}
-				//alert(parent.typoWin);
 			
 				if (parent.typoWin)	{
 					window.typoWin = parent.typoWin;
 					theBrowser = parent.typoWin.theBrowser;
 				}
-
-				/*]]>*/
-			</script>
-		';
+		');
 		
 		$this->content.=$GLOBALS["TBE_TEMPLATE"]->startPage('TYPO3 Element Browser');
 

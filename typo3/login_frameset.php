@@ -29,17 +29,18 @@
  *
  * This script generates a login-frameset used when the used must relogin.
  *
+ * $Id$
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
- *
  */
 
 
 
 
-define("TYPO3_PROCEED_IF_NO_USER", 1);
-require ("init.php");
+define('TYPO3_PROCEED_IF_NO_USER', 1);
+require ('init.php');
 
 
 
@@ -51,7 +52,7 @@ require ("init.php");
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-	<title>TYPO3 <?php echo $TYPO_VERSION;?> Re-Login (<?php echo $TYPO3_CONF_VARS["SYS"]["sitename"];?>)</title>
+	<title>TYPO3 <?php echo htmlspecialchars($TYPO_VERSION);?> Re-Login (<?php echo htmlspecialchars($TYPO3_CONF_VARS['SYS']['sitename']);?>)</title>
 </head>
 <frameset rows="*,1" framespacing="0" frameborder="0" border="no">
 <frame name="login" src="index.php?loginRefresh=1" marginwidth="0" marginheight="0" frameborder="no" scrolling="no" noresize>

@@ -26,16 +26,28 @@
 ***************************************************************/
 /** 
  * 'About modules' script - the default start-up module.
- *
  * Will display the list of main- and sub-modules available to the user.
  * Each module will be show with description and a link to the module.
- * 
- * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage core
  *
+ * $Id$ 
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   75: class SC_alt_intro 
+ *   84:     function init()	
+ *   97:     function main()	
+ *  166:     function printContent()	
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
  
@@ -47,15 +59,27 @@ require_once ('class.alt_menu_functions.inc');
 include ('sysext/lang/locallang_alt_intro.php');
 
 
-// ***************************
-// Script Class
-// ***************************
+
+
+
+
+
+
+/**
+ * Script Class
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage core
+ */
 class SC_alt_intro {
 	var $loadModules;
 	var $content;
 	
-	/** 
+	/**
 	 * Initialization
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
 		global $TBE_MODULES;
@@ -65,8 +89,10 @@ class SC_alt_intro {
 		$this->loadModules->load($TBE_MODULES);
 	}
 
-	/** 
+	/**
 	 * Main content - displaying the module descriptions
+	 * 
+	 * @return	void		
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$TYPO3_CONF_VARS;
@@ -132,8 +158,10 @@ class SC_alt_intro {
 		$this->content.= $TBE_TEMPLATE->endPage();
 	}
 
-	/** 
+	/**
 	 * Prints output
+	 * 
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -161,5 +189,4 @@ $SOBE = t3lib_div::makeInstance('SC_alt_intro');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-
 ?>
