@@ -62,11 +62,7 @@ TCEmain:
 	- CHECK: copyAfterDuplFields - check it (tt_content).
 - RELATED: DBint/admin, logging-display, TCEforms, Web>List
 - IDEA: check for potential dangerous php-extension
-- Multiple DBs:
-	- The ability to configure "any" table to be stored in another database. 
-	- Think DBAL into this and also notice that joins could ONLY be done if tables are in the same DB! (since other databases could also be from non-MySQL dbs when the DBAL comes)
-	- Affects: Basically anywhere records are selected -> requires a check of $TCA[ctrl] for the table first before the query is done!
-	- Maybe this feature should wait till DBAL is implemented anyways.
+- TCEforms/TCEmain available for frontend?
 
 
 TCEmain/TCEforms for FlexForms:
@@ -207,6 +203,7 @@ Web>List:
 - FlexForm tree view / editing: 
 	- When a record contains a FlexForm the web>List module could display the fields inside in a nice tree structure which one could expand/collapse! Then by clicking "edit" for a brand you get an interface where you can edit *that branch* of the flexform! Brilliant way to manage large structures inside of flexforms!
 		- Can you picture it? That would be like expanding an XML document by a node-tree and add/edit/delete/rearrange any of the internal informational pieces!
+- Fikse copy/paste så at list-module reloader (løser også problemet med paste fra sidetræet/foldertræet?)
 
 File>List:
 - BUG: UNIX: "RW" flag looks only on the permissions for the USER - not the group. So even if PHP via the group of a file can delete it, it is reported that it cannot.
@@ -221,52 +218,21 @@ History/Undo:
 LDAP support:
 - See "APPENDIX: LDAP"
 
-DBAL:
-- Next step: Create PHP-test scripts which performs 98% of the SQL operations we need in TYPO3 and then let people try to implement this; We will then know about all the obstacles first-hand before we do any efforts to implement it.
-- See "APPENDIX: DBAL" for Kaspers internal notes on the subject + project description on TYPO3.org
-- "TCEmain/Multiple DBs" as well
-- MySQL practice: "Maybe it's a good idea to quote all table and column names in later versions of typo3 to avoid further problems like this one." (Message-ID: <mailman.1052907363.19535.typo3-english@lists.netfielders.de>) Also good for DBAL? + create API functions for making INSERT/UPDATE query strings.
-
 EM:
-- Code commenting
-- Display: Adding "back" buttons a few places.
 - Display: review-flag + link to review - cannot be overridden?
-- Display: Link to Introduction + other sections (typo3.org-API-script), getting started manual in doc/index.html (See extension "tstemplate_styler" which has a prototype!), homepage link
 - Display: After import, link to Install/Details.
-- Display: Clean up the red errors: Major / Minor errors, and make sure it does not report non-errors.
-- Display: Warning for extension of same classes?
 - Display: Better filtering, quicker listing
-- Feature: Specify preferred order of certain extensions.
-- Feature: Change order of loaded extensions
-- Feature: Dependencies includes minimum/max-version (Typo3, PHP, PHP-extensions, T3extensions)
 - Feature: [suggested by robert] resolving of dependencies like in apt-get (Debian package manager). Necessary extensions can be downloaded and installed automatically (idea: create dummy extension which depends on several extensions and acts like a package of extensions)
 - Feature: EM suggest clear-cache af scripts?
-- Feature: New category, "templates"
-- Feature: New review state: security-screened (light review, not quality oriented)
-- Feature: em_conf: "depreciated flag: Beskrivelse af, hvorfor den er depreciated"
 - Install: Select other repository URLS in selector box?
 - Install: Extensions which can point the import/export to a directory with import-files.
-- Install: Updates of plugin checks if there is a local manual.sxw file. If there is the manual is also downloaded. Maybe people can set a flag in the configuration that manuals should always be fetched. (Some of this is already implemented)
-- Install: Upgrade multiple extensions at a time.
-- Install: Upgrade single extension without getting full list from TER
-- Install: Import from online rep: search freetext, enter extension key etc...
 - Install: Getting from TER only already installed extensions.
 - Install: Flag: "Import ext"; "Show non-secure extensions" (show ALL ext., not only reviewed ones)
-- Install: Update button for an extension in the details view.
-- Install: After upload of extension then we should return to the "Information" view, not "Upload"
-- Install: At upgrade: That an extension can display the total changelog between the formerly installed version and the new one.
-- Install: Configuration for EM: Request most recent translations by default?
 - Upload: emconf.php should have the md5-part updated when upload to TER
-- CHECK: flag in [EXT] about if local/global extensions can be updated. (does it work?)
-- CHECK: Are single quotes accepted when writing the "conf.php" files?
 - CHECK: Better failure-tolerance when "fatal errors" occur in ext_localconf/ext_tables.php files!?
 - CHECK: Can Install Tool bypass including ext_localconf/ext_tables if there are errors in them?
 - BUG: EM-extMgm: caching af localconf + extTables configuration in ARRAY? Plus ?ndringer til API specs. (problem when those files includes classes etc... probably not possible)
-- BUG: Fix memory consumption problem.
-- BUG: backend shortcut links to EM pages does not carry the edit-file information. They should.
 - BUG: Clear cache files should remove ALL "temp_CACHED_*" files in typo3conf/ (not just the current two)
-- BUG: detection of single quotes in XCLASS and CONF.PHP file cases (and wherever a regex searches for code snippets!). 
-- BUG: MSIE4: Cannot make backup of extensions (and probably not export them either) because the header-mime-typen is not registered as it should be.
 - BUG: Download of extensions (compressed...) will sometimes NOT get the same MD5 key after being saved (with any browser it seems) as shown at the download link. Origin of error not know. Please help if you encounter the problem.
 - DOC: "Extension API" manual.sxw!
 - Check mailbox for more... ?
@@ -276,15 +242,10 @@ The REGEX-{} problem:
 - BUG: Regexs; "Warning: Unmatched \{ in /home/sites/site14/typo3_src-3.5b3/typo3/mod/tools/em/index.php on line 1983" which is a ereg with { WITHOUT preceeding slash! (Message-ID: <003c01c275aa$c0c60c10$e3a1a33e@pentiumriv4v9a>, Message-ID: <20030729082437.79900.qmail@web11305.mail.yahoo.com>)
 
 Install/Servers:
-- FIX: Check safe_mode? Check open_base_dir? (Message-ID: <B9B8E356.1CE0%typo3@ilveneto.net>)
 - FIX: To get PHP to handle PATH_INFO and PATH_TRANSLATED information correctly with this setup, the php parser should be compiled with the --enable-discard-path configure option. 
 - FIX: The "php_sapi_name()=="cgi"||php_sapi_name()=="isapi"" problems (Message-ID: <ADEEJCHPNMOFKAAOJJKKCEKMCAAA.martin.kokes@sitewell.cz>, Message-ID: <200304071146520757.0097D495@smtp.worldonline.dk>, Message-ID: <BACDA028.F428%daniel@typo3.com>)
-- CHECK: MD5 problem on Apache/Windows (Message-ID: <001901c26aeb$99db4c60$a9695651@NIGELJ>) - maybe OK now because of "rb" flag?
 - CHECK: Security: Can HTTP_SERVER_VARS be overridden from URL if global vars are enabled???
-- [Ask Michael Stucki for an overview of bugs...?]
 - TYPO3_PORT bug (Message-ID: <005f01c2df3f$4006db00$0100a8c0@knoell>)
-- BUG: open_base_dir problem with tempnam() (affects: tidy, diff, new resource textfiles created in Web>Template/Info, Indexer (using temp-name for input from pdftotext)
-	-> Renes t3lib_exec class useful here?
 
 Filepermissions of source:
 - Test that these permissions work OK:
@@ -384,14 +345,14 @@ XQCR: t3lib/class.t3lib_iconworks.php
 XQCR: t3lib/class.t3lib_page.php
 XQCR: t3lib/class.t3lib_pagetree.php
 XQCR: t3lib/class.t3lib_parsehtml.php
-		a.Q..: t3lib/class.t3lib_parsehtml_proc.php (45)
+XQCR: t3lib/class.t3lib_parsehtml_proc.php
 XQCR: t3lib/class.t3lib_positionmap.php
 		t3lib/class.t3lib_querygenerator.php
 -QCR: t3lib/class.t3lib_readmail.php
 XQCR: t3lib/class.t3lib_recordlist.php
 -QCR: t3lib/class.t3lib_scbase.php
 -QCR: t3lib/class.t3lib_stdgraphic.php
-		t3lib/class.t3lib_superadmin.php
+XQCR: t3lib/class.t3lib_superadmin.php
 		t3lib/class.t3lib_svbase.php		[Rene]
 -QCR: t3lib/class.t3lib_tceforms.php
 		t3lib/class.t3lib_tcemain.php
@@ -512,7 +473,7 @@ XQCR: wizard_table.php
 XQCR: wizard_tsconfig.php
 
 XQCR: mod/help/about/index.php:		TODO: Modernize content
-		mod/tools/em/index.php
+XQCR: mod/tools/em/index.php
 XQCR: mod/web/info/index.php
 XQCR: mod/web/func/index.php
 XQCR: mod/web/perm/index.php
@@ -529,7 +490,6 @@ OK		context_help/
 		direct_mail/		(3/2500)		[Peter Kuehn] + class.t3lib_htmlmail.php
 OK		direct_mail_subscription/
 XQCR:	extra_page_cm_options/
--QCR:	extrep/
 		extrep_wizard/		(2/4500)		[H]
 		feuser_admin/						[testsite...] - XHTML
 		freesite/			(2/1600)
@@ -631,6 +591,16 @@ Practical steps for creating XHTML compliance:
 
 
 
+
+
+*******************
+APPENDIX 2: Debugging / varoius
+*******************
+
+Teststring for XSS bugs and SQL injection:
+	>><b><i>asdf</i></b>-\-\\-\"-\'-"-'-
+
+debug_backtrace() - nice function for debug-output.
 
 
 *****************
@@ -739,91 +709,35 @@ So we are looking at two scenarios:
 
 - Also have the possibility of local users: Thus 1) FIRST a lookup is done in LDAP, 2) THEN if this fails we look in the local mysql table. (Well, this solution is straight forward since a user must ALWAYS have a record in the local MySQL table...)
 
-- Make API so that other authentication solutions than LDAP can be used (eg. another MySQL table!)  [See Rene Fritz's prototype work with services...] 
+- Make API so that other authentication solutions than LDAP can be used (eg. another MySQL table!)  [See Rene Fritz's prototype work with services...]
 
 
 Also see:
-- [Kasper] "LDAP" folder in Mailbox 
+- [Kasper] "LDAP" folder in Mailbox
 
 
 ********************
-APPENDIX: DBAL
+APPENDIX: DBAL (moved to TODO.txt of extension "dbal")
 ********************
-Issues:
-- Install tool, analysing SQL files, comparing, dumping etc. How? (MetaDatabase, MetaTables)
-- case-folding?
-- reserved words (uid!!) Which R-words?
-- LIMIT. selectLimit(x,x)
-- mysql_fetch_assoc substitute (seems to be there)
-- escaping chars with special function!!!
-- datatypes? Integer not there? LOB's a problem?
-- Internal functions: AVG, SUM, count
-- mysql_num_rows() = recordCount()
-- autoinc. of numbers with GenID()
-- how about joining?
-- ALTER TABLE syntax?
 
-Analysis:
-- SUPPORT: Core (+ 'cms') will support all DBs, extension MAY support a SUBSET of DBs only.
-- EM: MySQL will be the main supported database. sql-files for install tool follows MySQL syntax. Comparison can be done if ADOdb allows us to read table/field info (will need mapping of datatypes), updates may only be done if we support it. Not important. People CAN update manually with other DBs.
-- NAMING: Reserved words and case restrictions are a real problem. For now, lets call it unacceptable. Handling of this would include 1) conversion table in ADOdb for result set assoc. key mapping AND mapping of fields in the queries!
-- ESCAPING: Escaping characters will be very annoying because we'll have to pass an array first to stripslashes, then to add DB-specific slashes, then make Query. But we can for MySQL (and similar) bypass this...
-- LOBs: Working with LOBs seems to be extremely irritating, inserting them separately (In oracle)!! How are we knowing anyways that this is a LOB? Solution might be to bypass for MySQL and for problem DBs send the UPDATE/INSERT row (must be array then!!!) through a filter which returns new row plus a blob row for update afterwards.
-- AUTO-ID: Auto-incrementing is also a BIG irritation! Currently all inserts DO NOT set the id column!!! All insert statements must include the new, correct field (at least for the problem DB's like Oracle)
-- BTW: Escaping and BLOB handling seems to require the same for all INSERTs and UPDATEs: A field_array passed to function. Auto-id may relate to this (at least it will be required all places ...)
-- SQL: Will have to split up LIMIT selects. New escaping in SELECT queries. INSERT/UPDATE from field_arrays + processing, mysql_fetch_assoc() function "pandan"
-
-API:
-SELECT: 
-- Separate LIMIT from the rest. 
-- JOINS ? Functions like AVG, SUM?
-- Escaping of search strings
-
-UPDATE/INSERT:
-- Array passed to function if not MySQL
-  Function has: possible "autoincrement" field argument; If Oracle, auto-id is handled; If Oracle, BLOB-array is returned for separate insertion.
-
-
-ORACLE does not allow us to CHANGE existing fields into something else - only create new fields, otherwise we must export/import database.
-
-Other notes:
-- Datatypes to use for integers and others? Date/Time not a problem because typo3 uses integers.
-- AVG, SUM, COUNT - will they be there?
-- I'll need access to Oracle, MSSQL, PostGres - basically the databases we are going to connect to!!!
-- JOINS???
-- Having some lookup table (not TCA, because this is very individual from site to site) telling us which database (name+brand+server) a table is coming from, if not the default database. This also means that we will have an array of databases set up (one being default)!
-
-180303 / Oracle:
-- all fields/tablenames must be quoted
-- a quoted value cannot be inserted into an integerfield!!!
-
-
-insert... "kasper"
-
-Related issues: 
-- LPE: DB/DB sync.
-
-ORACLE / DB2:
-- u: db2admin
-- p: password
-
-Also see:
-- [Kasper] "DB Abstraction" folder in Mailbox 
 
 
 **********************
 APPENDIX: LPE
 *********************
-Syncronization:
+Also see:
+- [Kasper] "LPE" folder in Mailbox
+
+Syncronization (JH thoughts, general LPE):
 DB -> DB (1):
 - Production environment, which can dump configured set of tables to live server database and back. This is controlled from Production env.
 - Live server has two databases: One which accepts content from P (and is never written to) (P->L). One which ARE written to and is READ back by P (L->P).
 - The "P->L" database has a "backup" (db1, db2) where the "idle" database is the one being updated and after the update it's switched with the live db, which is now idle. The "L->P" database is not affected by this timing issue.
-- uploads/* dirs (and any files at all) might be syncronized by general rsync/ftp syncronization. Both ways? Primarily from P->L. Basically this sync. might take the whole sourcecode with it... 
+- uploads/* dirs (and any files at all) might be syncronized by general rsync/ftp syncronization. Both ways? Primarily from P->L. Basically this sync. might take the whole sourcecode with it...
 
 Req to T3:
 - That EACH table can be found in its own database (configurable). This means the TYPO3_db constant might have to be wasted? And not just another MySQL database - at another Database server or type (like Oracle). This is related to DBAL.
-- Q's: FTP-functions in php; How to syncronize? MySQL working across databases, connecting to more than one database? 
+- Q's: FTP-functions in php; How to syncronize? MySQL working across databases, connecting to more than one database?
 
 DB->HTML
 - Basically this is an rsync/ftp sync question which requires a set of static files.
@@ -833,57 +747,73 @@ Two situations:
 - Publish static for local server, using mod_rewrite to direct requests transparently (static/dynamic). So all *.html requests WILL be found, static or dynamically! (Static/Dynamic blend)
 - Publish static for FTP server. All *.html requests MUST exist. (Purely static, limitations acceptable.)
 
-A HTML-filename which contains parameters__________:
- - Two solutions: using base64 or md5/db to encode/store parameters, adding md5/base64 to html-filename (either the real staticly written filename or the "fake" one)
- - Examples:
-&tt_board_uid=233&cHash=alkdfjlaskdf
-&tx_mininews_pi1[pointer]=0&tx_mininews_pi1[sword]=asdf&tx_mininews_pi1[mode]=asdf
-+1/3 length:
-This_is_my_page.123.1.64WAoaFRW9BXWTlzZ0ow53Dx8PEgASxh9namzMWxYIBDMdGnDx8PEgASxh9namzMWxYIBDMdGn.html
+_____________________________________
+Server sync. extension, PLAN:
+Create an extension which syncronizes a set of tables to another database, using DBAL extension to determine handler for the remove tables
+- Use "tstamp" for update, "crdate" for inserts; does not dump full tables, only pushes updated content!
+- "Complete Sync": Feature for MD5 checking whole tables, thereby pushing content not based on timestamps but Md5 sum of content. This is if the timestamps are not getting updated correctly.
 
-This_is_my_page.123.1.m5abe83fd83e.html
-&tt_board_uid=233&blablabla=342&cHash=alkdfjlaskdf
+_______________________________________
+General Crawler ("crawler"):
+- Crawls pages on TYPO3 site by URLs (using PHP fetching)
+	Config:
+	- Preload queue
+		- with previous crawler session log
+		- page tree pages / single top page?
+			- For this; variable parameters, eg. "&lang=(dk|de)&cur=(Euro/DKK)&type=(0|1)" giving 3x2 combinations. Challenge; cHash?
+	- Set max-depth
+	- Adds GET parameter to identify operation (handler)?
+		- (re)index pages
+		- (re)cache pages
+		- Export as static HTML...
+	Session log:
+	- Identifies session by handler/id
+	- Can look up if a crawler has opened/closed/is-stalled etc.
+	- Multithreading crawlers (in IFRAMES or whatever)
+	- From session log we can read out the status-arrays of the threads and display in backend (handler shows as it likes.)
+	- Start / stop crawler session
 
-de dk
-This_is_my_page.123.1.m5abe83fd83e.html
-This_is_my_page.123.1.m5edf837afde.html
+__________________________________________-
+CACHE MANAGEMENT EXTENSION
 
-Management__________________:
-- Clear-all-static-pages button; Staticly written filenames are retrieved from database table where those filenames are stored when ever they are written to disk (includes TTL time etc)
-- Clear-page-cache might also clear-page-static files.
+- cache_pages -> API for adding key1/key2 custom content!
+- automatic clear-pages cache protection? (global flag)
+- Configuration: Configure "cache_" tables to clear when "Clear all cache"
+- "clear-cache" might not DELETE records but rather mark them "update-cache" or something like that... (would require the URL to be around...)
+- protect-flag which will disable the *automatic* clearing of page cache for a single page (in page header; expiry set to never -> setting flag in "cache_pages" table and records with that flag set cannot be flushed!)
+- "key1" and "key2" for granularity in caching!
+	-> used in manual clear-cache situations (cache mgm)
+	-> used in configurable clear-cache situations (clearing cache for a single document on TYPO3.org!)
+- "registerElement" per page for cache clearing (frontend scripts; function puts record reference in internal array and writes to disk only when cache table is written to! Flushes table with cache table also! Just like cache_pagessection)
+	-> For TV: ->registerElement('tt_content','uid'); when elements are NOT on the physical page
+	-> For 3dsplm: ->registerElement('bfs_brand','catia')
+	-> For 3dsplm: ->registerElement('bfs_skills','')	[saying that ANY bfs_skill changed will clear cache of front-page where all are shown.]
 
----------------------------------------
-General config:        
-    For each page-id:
-        &lang=   (dk|de)
-        &cur=     (Euro/DKK)
-        &type=     (1)
-            2x2 = 4  (here we have some limit applied!)
+cache-extension ("cachemgm")
+- in click menu, link to cache mgm
+- Web>Info "Cache overview":
+	- Overview of cached versions in tree (with stat like time, expiry, content size, parameter content, URL, key1/2) - standard categorizing, eg. [parameter1]:[param2]:[param3], page title!
+	- clear cache for page/section of page tree.
+- RE-generation of branches of this tree! (crawling the pages)
+- overview of cache_hash table.
+- overview of pages-section table.
+- tracking pages which are shown non-cached
 
-MAIN PAGE    &type=  (0|1|2|3)    4*4 = 16
-- Page 1    
-- Page 2    
-- Page 3    (Adresselist):    &tx_address_list[pointer]=    (0|1|2|3|4)    4*5 = 20 pages
-
-Various______________:
-- SearchEngine friendly / cachable URLs in board, products, tt_news
-- "Publish" funktionen brugte images_on_page. Genskab dette.
-
-THOUGHTS from Dassault work:
-# WriteToStatic function [Basically the static publishing system] (core feature: Kasper).
-  - writes static file IF simulateStaticDocument uses HTML *without* any parameters
-  - setting a "config.disableStaticCreation = 1" flag can disable it (for conditions situations)
-  - setting a value from PHP function (eg. if a search form needs to submit to the page) can disabled it
-  - registering the filename related to ID [and other parameters] so that "clear page cache" can also remove the file automatically.
-  - Also registeres: a) resources on the page (images/stylesheets), b) GET parameters from M5/B6 encryption.
-  - a browsing mechanism for creating static versions; could browse page, then show all links with checkboxes. Then checking of which links to follow and press button; browses the new pages. Then again checkboxes and so on. Which links were checked should be stored so that a process of publising could thus be followed automatically. This feature would include "clear files" function and also warn if a requested page was NOT written. (Problem; what if user-requests would generate the file? Possibly use a cookie or GET parameter or backend flag to request this.)
-  - includes an overview module showing all files and which pages they related to, possible "lost files" (those not registered in database) and "missing files" (in the database but not there).
-  - To create new versions doesn't have to REMOVE the existing! Just overwrite!
-
-Also see:
-- [Kasper] "LPE" folder in Mailbox 
-
-
+_____________________________________
+Static publishing ("staticpub" extension)
+- Writes static file (automatically) IF simulateStaticDocument uses HTML / Speaking URLs and allows caching of page
+	- root of the publishing dir MUST be hardcoded in TYPO3_CONF_VARS etc.; The extension has full power inside of this dir!
+	- Support for both speaking URLs (hierarchy of directories) and regular simulate static document types (flat dir)
+	- Using mod_rewrite to access static versions of documents.
+		- Checks existence of files
+		- Can bypass GET/QUERY string and POST requests!
+	- File location is tracked in a table tied to page-cache table uids - thus making a flush very easy
+	- File write should probably happen together with inserting cached version in database (system hook)
+- setting a "config.disableStaticCreation = 1" flag (in TS template) can disable it (for conditions situations)
+- Also registeres: a) resources on the page (images/stylesheets), b) GET parameters from M5/B6 encryption. (not used yet!)
+- Publishing can be done by remote-client requests (default) or using the general crawler (for re-caching pages)
+- Web>Info module "Static publishing": overview showing all files and which pages they are related to, possible "lost files" (those not registered in database) and "missing files" (in the database but not there).
+- To create new versions doesn't have to REMOVE the existing! Just overwrite!
 
 
 ******************************
@@ -900,7 +830,7 @@ To get rid of ImageMagick totally we need a GD with...:
 - masking
 - reduce colors / dithering
 - jpg quality control
-- 96 dpi / 72 dpi 
+- 96 dpi / 72 dpi
 - other effects?
 - Support for many file formats.
 This is currently implemented for GD2 by Kasper/Rene but the changes are not used. Just proof-of-concept. We are in contact with Pierre-Alain from the PHP-dev team about the issue and hope that his changes will make the future GDlib in PHP5 so powerful that ImageMagick is not needed anymore and most importantly: We can rely on a totally standard PHP installation available at any webhotel (in the future).

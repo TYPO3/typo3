@@ -1,3 +1,29 @@
+[RC2 note:
+As usual the changelog is not at all "complete" in terms of what has been changed. I regret this, but the tradeoff would be slower development if all details had to go in here which is why they don't.
+However all IMPORTANT changes that might break compatibility somewhere is always entered in the log with "!!!" prefixed.
+- kasper
+]
+
+- Modified how external URLs for pages are redirected to: In case the URL seems to be *relative* ("blabla/index.php", "?id=12..") the URL is prefixed with the site URL. Otherwise it won't work with "realurl" extension.
+- Added features in t3lib_div::callUserFunction(); You can not specify objects to be instantiated once and stored globally for reuse (simply change "->" to "->>") and you can additionally specify a class file to include as a prefix to the method/function reference.
+- Added a new constant "TYPO3_DLOG" which is tied to TYPO3_CONF_VARS[SYS][enable_DLOG] and t3lib_div::devLog function; the framework provides possibility of implementing logging calls all over the source code, both frontend and backend with a minimum loss of speed if no logging is asked for and with the possibility of better debugging/tracking for developers
+- Added some new options to array2xml to obtain XML creation from arrays which observes PHP data types and has options for better protection of tag names etc. Fixed a bug in the detection of binary data in arrays for base64 encoding as well.
+- Script "tslib/media/scripts/makeMenu_keywords_updated.inc has been removed since it was obsolete.
+- Fixed problem with references in FlexForms! Now all references gets correct when copying a page and images will also be copied.
+
+Generally:
+- Database Wrapper class "t3lib_DB" has been created, containing simple wrapper functions for MySQL and query building functions.
+
+!!! - tslib_content::getUpdateJS()		Is NEVER stripping off slashes now, please update your code in extensions if you rely on this (most unlikely)
+!!! - tslib_content::DBgetInsert() + tslib_content::DBgetUpdate() 	Will ALWAYS apply slashes to values in queries now (for security). If you use these functions in your extensions, please update your code to the new situation! (These two functions now use their counterparts in t3lib_DB class)
+!!! - IP locking has been added to user sessions: For backend this is DEFAULT (which means that users might experience to be logged out if their IP changes dynamically during a session!) and for frontend users it is disabled by default (but can be enabled from TYPO3_CONF_VARS)
+!!! - t3lib_BEfunc::DBcompileInsert() and t3lib_BEfunc::DBcompileUpdate() has been modified so they ALWAYS add slashes to values inserted in queries. (Further they are depreciated now since they just call their counterparts in t3lib_DB class.)
+- Implemented t3lib_DB class as a first step towards database abstraction. For now it contains wrapper functions that ALL code should use in the future.
+!!! - tslib_cObj::DBcompileInsert has been removed since it was obsolete.
+
+25/2:
+!!!- Removed global extension "Extrep"
+
 2004-03-19  Robert Lemke  <rl@robertlemke.de>
 
 - Fixed SQL statement (missing quotes) in t3lib_dmailer, reported by Martin Erichsen.
@@ -15,7 +41,7 @@ Made changes to class.tslib_content.php:
 
 
 Kasper Skårhøj, 6/2:
- - Added procession option to RTE, "proc.plainImageMode"
+ - Added processing option to RTE, "proc.plainImageMode"
  - Added options for select and group types in TCA to set the selector box style.
  - Added $altPageId parameter to function linkTP*() in tslib_pibase + pi_list_linkSingle()
  - Changed the order of <?xml> and <!DOCTYPE> in the frontend for XHTML around again. And added an option, "doctypeSwitch" which will reverse the order for those needing that. And finally the "doctype" option fed with a value that is not "xhtml_frames", "xhtml_trans" or "xhtml_strict" will be outputted AS the doctype! 
