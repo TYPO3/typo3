@@ -3959,7 +3959,7 @@ class t3lib_TCEforms	{
 						$fDat['details']||$fDat['syntax']||$fDat['image_descr']||$fDat['image']||$fDat['seeAlso']
 					).
 					'</td><td valign="top"><span class="typo3-TCEforms-helpText">'.
-					$GLOBALS['LANG']->hscAndCharConv($fDat['description'],0).
+					$GLOBALS['LANG']->hscAndCharConv($fDat['description'],1).
 					'</span></td></tr></table>';
 		}
 	}
