@@ -76,8 +76,6 @@
 		* @return void
 		*/
 		function mod_user_task_init($BE_USER) {
-			debug($BE_USER,'$BE_USER',__LINE__,__FILE__);
-
 			$this->BE_USER = $BE_USER;
 			$this->perms_clause = $this->BE_USER->getPagePermsClause(1);
 		}
@@ -101,8 +99,6 @@
 		* @return string  link (HTML) / name of module (regular string)
 		*/
 		function headLink($key, $dontLink = false, $params = '') {
-			debug($this->BE_USER->uc,'$this->BE_USER->uc',__LINE__,__FILE__);
-
 			$str = $GLOBALS['SOBE']->MOD_MENU['function'][$key];
 			if (!$dontLink) $str = '<a href="index.php?SET[function]='.$key.$params.'" onClick="this.blur();">'.htmlspecialchars($str).'</a>';
 			return $str;
@@ -191,7 +187,7 @@
 		* @return string	code that inserts the iframe (HTML)
 		*/
 		function urlInIframe($url) {
-			return '<iframe src="'.$url.'" width="100%" height="100%" style="width: 100%; height: 1200px; border: none;" />';
+			return '<iframe onLoad="this.height=this.contentDocument.height+30;" scrolling="auto" width="100%" src="'.$url.'" name="list_frame" style="border: none;" />';
 		}
 		 
 		 

@@ -69,7 +69,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 	 * @param	object		Parent object
 	 * @return	string		HTML for the task center overview listing.
 	 */
-	function overview_main(&$pObj)	{
+	function overview_main()	{
 
 			// Create preset links:
 		$presets = $this->getPresets();
@@ -85,13 +85,17 @@ class tx_impexp_modfunc1 extends mod_user_task {
 						<td>'.($presetCfg['user_uid']===$GLOBALS['BE_USER']->user['uid'] ? '[Own]' : '&nbsp;').'</td>
 					</tr>';
 			}
-			$presets = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding">'.implode('',$opt).'</table>';
+			if(sizeof($opt)>0) {
+				$presets = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding">'.implode('',$opt).'</table>';
+			} else {
+				$presets = '';
+			}
 
 			$icon = '<img src="'.$this->backPath.t3lib_extMgm::extRelPath('impexp').'export.gif" width="18" height="16" class="absmiddle" alt="" />';
-			$content.= $pObj->doc->section($icon.'&nbsp;'.$this->headLink('tx_impexp_modfunc1',0),$presets,1,1,0,1);
+			$config= $this->mkMenuConfig($icon.$this->headLink('tx_impexp_modfunc1',1),'',$presets);
 		}
 
-		return $content;
+		return $config;
 	}
 
 	/**

@@ -75,9 +75,8 @@
 		*/
 		function main() {
 			global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
-			debug($this->extClassConf, '$this->extClassConf', __LINE__, __FILE__);
-			debug($this->allExtClassConf, '$this->allExtClassConf', __LINE__, __FILE__);
-			 
+
+
 			/* Setup document template */
 			$this->doc = t3lib_div::makeInstance('noDoc');
 			$this->doc->docType = 'xhtml_trans';
@@ -103,9 +102,9 @@
 			/* content... */
 			$this->content = '';
 			$this->content .= $this->doc->startPage($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']]);
-			$this->content .= '<table style="width: 100%"><tr>';
+			$this->content .= '<table style="width: 100%;"><tr>';
 			$this->content .= '<td valign="top" style="width: 20%;">'.$this->getleftHeader().$this->getDynTabMenu().'</td>';
-			$this->content .= '<td valign="top">'.$mainContent.'</td>';
+			$this->content .= '<td valign="top" style="height:100%">'.$mainContent.'</td>';
 			$this->content .= '</tr></table>';
 		}
 
