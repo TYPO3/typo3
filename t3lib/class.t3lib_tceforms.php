@@ -175,7 +175,6 @@
 class t3lib_TCEforms	{
 
 		// variables not commented yet.... (do so...)
-	var $helpTextFontTag = '<font color="#333333">';
 	var $palFieldArr = array();
 	var $disableWizards = 0;
 	var $isPalettedoc = 0;
@@ -232,7 +231,9 @@ class t3lib_TCEforms	{
 	var $RTEcounter = 0;						// Counter that is incremented before an RTE is created. Can be used for unique ids etc.
 
 	var $colorScheme;							// Contains current color scheme
+	var $classScheme;							// Contains current class scheme
 	var $defColorScheme;						// Contains the default color scheme
+	var $defClassScheme;						// Contains the default class scheme
 	var $fieldStyle;							// Contains field style values
 	var $borderStyle;							// Contains border style values.
 
@@ -282,7 +283,7 @@ class t3lib_TCEforms	{
 			$this->commentMessages[] = 'RTE NOT ENABLED IN SYSTEM due to:'.chr(10).$this->RTEenabled_notReasons;
 		}
 
-			// Default color scheme
+			// Default color+class scheme
 		$this->defColorScheme = array(
 			$GLOBALS['SOBE']->doc->bgColor,	// Background for the field AND palette
 			t3lib_div::modifyHTMLColorAll($GLOBALS['SOBE']->doc->bgColor,-20),	// Background for the field header
@@ -290,12 +291,14 @@ class t3lib_TCEforms	{
 			'black',	// Field header font color
 			'#666666'	// Palette field header font color
 		);
+		$this->defColorScheme = array();
 
 			// Override / Setting defaults from TBE_STYLES array
 		$this->resetSchemes();
 
 			// Setting the current colorScheme to default.
 		$this->defColorScheme = $this->colorScheme;
+		$this->defClassScheme = $this->classScheme;
 	}
 
 	/**
@@ -995,7 +998,7 @@ class t3lib_TCEforms	{
 
 		$cols = intval($config['cols']);
 		if ($cols > 1)	{
-			$item.= '<table border="0" cellspacing="0" cellpadding="0">';
+			$item.= '<table border="0" cellspacing="0" cellpadding="0" class="typo3-TCEforms-checkboxArray">';
 			for ($c=0;$c<count($selItems);$c++) {
 				$p = $selItems[$c];
 				if(!($c%$cols))	{ $item.='<tr>'; }
@@ -1146,7 +1149,7 @@ class t3lib_TCEforms	{
 			$item.= '</select>';
 
 			if (count($selicons))	{
-				$item.='<table border="0" cellpadding="0" cellspacing="0">';
+				$item.='<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-selectIcons">';
 				$selicon_cols = intval($config['selicon_cols']);
 				if (!$selicon_cols)	$selicon_cols=count($selicons);
 				$sR = ceil(count($selicons)/$selicon_cols);
@@ -1406,7 +1409,7 @@ class t3lib_TCEforms	{
 	 */
 	function getSingleField_typeNone_render($config,$itemValue)	{
 
-		$divStyle = 'border:solid 1px '.t3lib_div::modifyHTMLColorAll($this->colorScheme[0],-30).';'.$this->defStyle.$this->formElStyle('text').' background-color: '.$this->colorScheme[0].'; overflow:auto;padding-left:1px;color:#555;';
+		$divStyle = 'border:solid 1px '.t3lib_div::modifyHTMLColorAll($this->colorScheme[0],-30).';'.$this->defStyle.$this->formElStyle('none').' background-color: '.$this->colorScheme[0].'; overflow:auto;padding-left:1px;color:#555;';
 		if ($config['rows']>1) {
 			if(!$config['pass_content']) {
 				$itemValue = nl2br(htmlspecialchars($itemValue));
@@ -1430,7 +1433,7 @@ class t3lib_TCEforms	{
 			$height=$rows*12;
 				// is colorScheme[0] the right value?
 			$item='
-				<div style="'.htmlspecialchars($divStyle.'height:'.$height.'px;width:'.$width.'px;').'">'.
+				<div style="'.htmlspecialchars($divStyle.'height:'.$height.'px;width:'.$width.'px;').'" class="'.htmlspecialchars($this->formElClass('none')).'">'.
 				$itemValue.
 				'</div>';
 		} else {
@@ -1444,7 +1447,7 @@ class t3lib_TCEforms	{
 			if ($this->docLarge)	$cols = round($cols*$this->form_largeComp);
 			$width = ceil($cols*$this->form_rowsToStylewidth);
 			$item = '
-				<div style="'.htmlspecialchars($divStyle.'width:'.$width.'px;').'">'.	// Had to remove "nobreak" since Mozilla crashed...!
+				<div style="'.htmlspecialchars($divStyle.'width:'.$width.'px;').'" class="'.htmlspecialchars($this->formElClass('none')).'">'.	// Had to remove "nobreak" since Mozilla crashed...!
 				(strcmp($itemValue,'') ? $itemValue : '&nbsp;').
 				'</div>';
 		}
@@ -1541,7 +1544,7 @@ class t3lib_TCEforms	{
 									$PA,
 									'[data]['.$sheet.']['.$lang.']'
 								);
-						$item.= '<table border="0" cellpadding="1" cellspacing="1">'.implode('',$tRows).'</table>';
+						$item.= '<table border="0" cellpadding="1" cellspacing="1" class="typo3-TCEforms-flexForm">'.implode('',$tRows).'</table>';
 
 			#			$item = '<div style=" position:absolute;">'.$item.'</div>';
 						//visibility:hidden;
@@ -1593,7 +1596,7 @@ class t3lib_TCEforms	{
 					'</td>';
 		}
 
-		return '<table border="0" cellpadding="0" cellspacing="2" style="padding: 1px 15px 0px 15px; border: 1px solid black;"><tr>'.implode('',$tCells).'</tr></table>';
+		return '<table border="0" cellpadding="0" cellspacing="2" class="typo3-TCEforms-flexForm-sheetMenu"><tr>'.implode('',$tCells).'</tr></table>';
 	}
 
 	/**
@@ -2253,7 +2256,7 @@ class t3lib_TCEforms	{
 		$item = $itemKinds[0];
 		$outArr = array();
 		$fName = '['.$table.']['.$row['uid'].']['.$field.']';
-		$md5ID = t3lib_div::shortmd5($itemName);
+		$md5ID = 'ID'.t3lib_div::shortmd5($itemName);
 
 			// traverse wizards:
 		if (is_array($wizConf) && !$this->disableWizards)	{
@@ -2376,7 +2379,7 @@ class t3lib_TCEforms	{
 										<td>'.
 											$colorBoxLinks[0].
 											'<img src="clear.gif" width="'.$dX.'" height="'.$dY.'"'.t3lib_BEfunc::titleAltAttrib(trim($iTitle.' '.$row[$field])).' border="0" />'.
-											$colorBoxLinks[0].
+											$colorBoxLinks[1].
 											'</td>
 									</tr>
 								</table>';
@@ -2553,7 +2556,7 @@ class t3lib_TCEforms	{
 	}
 
 	/**
-	 * Returns parameters to set the width for a <input>-element
+	 * Returns parameters to set the width for a <input>/<textarea>-element
 	 *
 	 * @param	integer		The abstract size value (1-48)
 	 * @param	boolean		If this is for a text area.
@@ -2569,6 +2572,11 @@ class t3lib_TCEforms	{
 			$pixels = ceil($size*$this->form_rowsToStylewidth);
 			$theStyle = 'width:'.$pixels.'px;'.$this->defStyle.$this->formElStyle($textarea?'text':'input');
 			$retVal = ' style="'.htmlspecialchars($theStyle).'"';
+
+			$class = $this->formElClass($textarea?'text':'input');
+			if ($class)	{
+				$retVal.= ' class="'.htmlspecialchars($class).'"';
+			}
 		}
 		return $retVal;
 	}
@@ -2595,30 +2603,62 @@ class t3lib_TCEforms	{
 	 *
 	 * @param	string		Field type (eg. "check", "radio", "select")
 	 * @return	string		CSS attributes
+	 * @see formElStyleClassValue()
 	 */
 	function formElStyle($type)	{
-		if ($GLOBALS['CLIENT']['FORMSTYLE'])	{	// If not setting the width by style-attribute
-			$style = $this->fieldStyle['all'];
-			if (isset($this->fieldStyle[$type]))	{
-				$style = $this->fieldStyle[$type];
-			}
-			if (trim($style))	{
-				return $style;
-			}
+		return $this->formElStyleClassValue($type);
+	}
+
+	/**
+	 * Get class attribute value for the current field type.
+	 *
+	 * @param	string		Field type (eg. "check", "radio", "select")
+	 * @return	string		CSS attributes
+	 * @see formElStyleClassValue()
+	 */
+	function formElClass($type)	{
+		return $this->formElStyleClassValue($type, TRUE);
+	}
+
+	/**
+	 * Get style CSS values for the current field type.
+	 *
+	 * @param	string		Field type (eg. "check", "radio", "select")
+	 * @param	boolean		If set, will return value only if prefixed with CLASS, otherwise must not be prefixed "CLASS"
+	 * @return	string		CSS attributes
+	 */
+	function formElStyleClassValue($type, $class=FALSE)	{
+			// Get value according to field:
+		if (isset($this->fieldStyle[$type]))	{
+			$style = trim($this->fieldStyle[$type]);
+		} else {
+			$style = trim($this->fieldStyle['all']);
+		}
+
+			// Check class prefixed:
+		if (substr($style,0,6)=='CLASS:')	{
+			return $class ? trim(substr($style,6)) : '';
+		} else {
+			return !$class ? $style : '';
 		}
 	}
 
 	/**
-	 * Return default "style" attribute line.
+	 * Return default "style" / "class" attribute line.
 	 *
 	 * @param	string		Field type (eg. "check", "radio", "select")
 	 * @return	string		CSS attributes
 	 */
 	function insertDefStyle($type)	{
-		if ($GLOBALS['CLIENT']['FORMSTYLE'])	{	// If not setting the width by style-attribute
-			$style = trim($this->defStyle.$this->formElStyle($type));
-			return $style?' style="'.htmlspecialchars($style).'"':'';
-		}
+		$out = '';
+
+		$style = trim($this->defStyle.$this->formElStyle($type));
+		$out.= $style?' style="'.htmlspecialchars($style).'"':'';
+
+		$class = $this->formElClass($type);
+		$out.= $class?' class="'.htmlspecialchars($class).'"':'';
+
+		return $out;
 	}
 
 
@@ -2881,71 +2921,45 @@ class t3lib_TCEforms	{
 	 ********************************************/
 
 	/**
-	 * Sets the fancy front-end design of the editor.
-	 * Frontend
-	 *
-	 * @return	void
-	 */
-	function setFancyDesign()	{
-		$this->fieldTemplate='
-	<tr>
-		<td nowrap="nowrap" bgcolor="#F6F2E6">###FIELD_HELP_ICON###<font face="verdana" size="1" color="black"><b>###FIELD_NAME###</b></font>###FIELD_HELP_TEXT###</td>
-	</tr>
-	<tr>
-		<td nowrap="nowrap" bgcolor="#ABBBB4"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="10" height="10" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="7" height="10" alt="" /><font face="verdana" size="1" color="black">###FIELD_ITEM###</font>###FIELD_PAL_LINK_ICON###</td>
-	</tr>	';
-
-		$this->totalWrap='<table border="0" cellpadding="1" cellspacing="0" bgcolor="black"><tr><td><table border="0" cellpadding="2" cellspacing="0">|</table></td></tr></table>';
-
-		$this->palFieldTemplate='
-	<tr>
-		<td nowrap="nowrap" bgcolor="#ABBBB4"><font face="verdana" size="1" color="black">###FIELD_PALETTE###</font></td>
-	</tr>	';
-		$this->palFieldTemplateHeader='
-	<tr>
-		<td nowrap="nowrap" bgcolor="#F6F2E6"><font face="verdana" size="1" color="black"><b>###FIELD_HEADER###</b></font></td>
-	</tr>	';
-	}
-
-	/**
 	 * Sets the design to the backend design.
 	 * Backend
 	 *
 	 * @return	void
 	 */
 	function setNewBEDesign()	{
-		$light=0;
 
+			// Wrapping all table rows for a particular record being edited:
 		$this->totalWrap='
-		<table border="0" cellspacing="0" cellpadding="0" width="'.($this->docLarge?440+150:440).'">'.
-			'<tr bgcolor="'.t3lib_div::modifyHTMLColorAll($GLOBALS['SOBE']->doc->bgColor2,$light).'">
+		<table border="0" cellspacing="0" cellpadding="0" width="'.($this->docLarge ? 440+150 : 440).'" class="typo3-TCEforms">'.
+			'<tr class="bgColor2">
 				<td>&nbsp;</td>
-				<td>###RECORD_ICON### <font color="#333366"><b>###TABLE_TITLE###</b></font> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
+				<td>###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
 			</tr>'.
 			'|'.
 			'<tr>
 				<td>&nbsp;</td>
-				<td><img src="clear.gif" width="'.($this->docLarge?440+150:440).'" height="1" alt="" /></td>
+				<td><img src="clear.gif" width="'.($this->docLarge ? 440+150 : 440).'" height="1" alt="" /></td>
 			</tr>
 		</table>';
 
+			// Wrapping a single field:
 		$this->fieldTemplate='
-			<tr ###BGCOLOR_HEAD###>
+			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
 				<td>###FIELD_HELP_ICON###</td>
-				<td width="99%"><font color="###FONTCOLOR_HEAD###"><b>###FIELD_NAME###</b></font>###FIELD_HELP_TEXT###</td>
+				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><b>###FIELD_NAME###</b></span>###FIELD_HELP_TEXT###</td>
 			</tr>
-			<tr ###BGCOLOR###>
+			<tr ###BGCOLOR######CLASSATTR_1###>
 				<td nowrap="nowrap"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="10" height="10" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="7" height="10" alt="" /></td>
 				<td valign="top">###FIELD_ITEM######FIELD_PAL_LINK_ICON###</td>
 			</tr>';
 
 		$this->palFieldTemplate='
-			<tr ###BGCOLOR###>
+			<tr ###BGCOLOR######CLASSATTR_1###>
 				<td>&nbsp;</td>
 				<td nowrap="nowrap" valign="top">###FIELD_PALETTE###</td>
 			</tr>';
 		$this->palFieldTemplateHeader='
-			<tr ###BGCOLOR_HEAD###>
+			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
 				<td>&nbsp;</td>
 				<td nowrap="nowrap" valign="top"><strong>###FIELD_HEADER###</strong></td>
 			</tr>';
@@ -3032,7 +3046,7 @@ class t3lib_TCEforms	{
 		global $TCA;
 		reset($arr);
 		while(list($k,$v)=each($arr))	{
-			$arr[$k]=str_replace('###ID_NEW_INDICATOR###',(strstr($rec['uid'],'NEW')?' <font color="red"><b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new',1).'</b></font>':' ['.$rec['uid'].']'),$arr[$k]);
+			$arr[$k]=str_replace('###ID_NEW_INDICATOR###',(strstr($rec['uid'],'NEW')?' <span class="typo3-TCEforms-newToken">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new',1).'</span>':' <span class="typo3-TCEforms-recUid">['.$rec['uid'].']</span>'),$arr[$k]);
 			$rLabel = trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$rec),40));
 			$arr[$k]=str_replace('###RECORD_LABEL###',htmlspecialchars($rLabel),$arr[$k]);
 			$arr[$k]=str_replace('###TABLE_TITLE###',htmlspecialchars($this->sL($TCA[$table]['ctrl']['title'])),$arr[$k]);
@@ -3055,6 +3069,7 @@ class t3lib_TCEforms	{
 			$tableAttribs='';
 			$tableAttribs.= $this->borderStyle[0] ? ' style="'.htmlspecialchars($this->borderStyle[0]).'"':'';
 			$tableAttribs.= $this->borderStyle[2] ? ' background="'.htmlspecialchars($this->backPath.$this->borderStyle[2]).'"':'';
+			$tableAttribs.= $this->borderStyle[3] ? ' class="'.htmlspecialchars($this->borderStyle[3]).'"':'';
 			if ($tableAttribs)	{
 				$tableAttribs='border="0" cellspacing="0" cellpadding="0" width="100%"'.$tableAttribs;
 				$out_array[$out_pointer] = str_replace('###CONTENT###',$out_array[$out_pointer],
@@ -3072,9 +3087,16 @@ class t3lib_TCEforms	{
 	 * @return	string
 	 */
 	function rplColorScheme($inTemplate)	{
+			// Colors:
 		$inTemplate = str_replace('###BGCOLOR###',$this->colorScheme[0]?' bgcolor="'.$this->colorScheme[0].'"':'',$inTemplate);
 		$inTemplate = str_replace('###BGCOLOR_HEAD###',$this->colorScheme[1]?' bgcolor="'.$this->colorScheme[1].'"':'',$inTemplate);
 		$inTemplate = str_replace('###FONTCOLOR_HEAD###',$this->colorScheme[3],$inTemplate);
+
+			// Classes:
+		$inTemplate = str_replace('###CLASSATTR_1###',$this->classScheme[0]?' class="'.$this->classScheme[0].'"':'',$inTemplate);
+		$inTemplate = str_replace('###CLASSATTR_2###',$this->classScheme[1]?' class="'.$this->classScheme[1].'"':'',$inTemplate);
+		$inTemplate = str_replace('###CLASSATTR_4###',$this->classScheme[3]?' class="'.$this->classScheme[3].'"':'',$inTemplate);
+
 		return $inTemplate;
 	}
 
@@ -3095,33 +3117,42 @@ class t3lib_TCEforms	{
 	 * @return	string		HTML output
 	 */
 	function printPalette($palArr)	{
-		$out='';
-		reset($palArr);
-		$bgColor=' bgcolor="'.$this->colorScheme[2].'"';
-		while(list(,$content)=each($palArr))	{
 
-			$hRow[]='<td'.$bgColor.'>&nbsp;</td><td nowrap="nowrap"'.$bgColor.'>'.
-						'<font color="'.$this->colorScheme[4].'">'.
+			// Init color/class attributes:
+		$ccAttr2 = $this->colorScheme[2] ? ' bgcolor="'.$this->colorScheme[2].'"' : '';
+		$ccAttr2.= $this->classScheme[2] ? ' class="'.$this->classScheme[2].'"' : '';
+		$ccAttr4 = $this->colorScheme[4] ? ' style="color:'.$this->colorScheme[4].'"' : '';
+		$ccAttr4.= $this->classScheme[4] ? ' class="'.$this->classScheme[4].'"' : '';
+
+			// Traverse palette fields and render them into table rows:
+		foreach($palArr as $content)	{
+			$hRow[]='<td'.$ccAttr2.'>&nbsp;</td>
+					<td nowrap="nowrap"'.$ccAttr2.'>'.
+						'<span'.$ccAttr4.'>'.
 							$content['NAME'].
-						'</font>'.
+						'</span>'.
 					'</td>';
 			$iRow[]='<td valign="top">'.
 						'<img name="req_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" width="10" height="10" vspace="4" alt="" />'.
 						'<img name="cm_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" width="7" height="10" vspace="4" alt="" />'.
-					'</td><td nowrap="nowrap" valign="top">'.
+					'</td>
+					<td nowrap="nowrap" valign="top">'.
 						$content['ITEM'].
 						$content['HELP_ICON'].
 					'</td>';
 		}
+
 			// Final wrapping into the table:
-		$out='<table border="0" cellpadding="0" cellspacing="0">
+		$out='<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-palette">
 			<tr>
 				<td><img src="clear.gif" width="'.intval($this->paletteMargin).'" height="1" alt="" /></td>'.
-					implode('',$hRow).'
+					implode('
+				',$hRow).'
 			</tr>
 			<tr>
 				<td></td>'.
-				implode('',$iRow).'
+					implode('
+				',$iRow).'
 			</tr>
 		</table>';
 
@@ -3161,10 +3192,9 @@ class t3lib_TCEforms	{
 						$field,
 						$fDat['details']||$fDat['syntax']||$fDat['image_descr']||$fDat['image']||$fDat['seeAlso']
 					).
-					'</td><td valign="top">'.
-					$this->helpTextFontTag.
+					'</td><td valign="top"><span class="typo3-TCEforms-helpText">'.
 					$GLOBALS['LANG']->hscAndCharConv($fDat['description'],0).
-					'</font></td></tr></table>';
+					'</span></td></tr></table>';
 		}
 	}
 
@@ -3175,11 +3205,21 @@ class t3lib_TCEforms	{
 	 * @return	void
 	 */
 	function setColorScheme($scheme)	{
-		$this->colorScheme=$this->defColorScheme;
+		$this->colorScheme = $this->defColorScheme;
+		$this->classScheme = $this->defClassScheme;
+
 		$parts = t3lib_div::trimExplode(',',$scheme);
-		while(list($key,$col)=each($parts))	{
-			if ($col)	$this->colorScheme[$key]=$col;
-			if ($col=='-')	$this->colorScheme[$key]='';
+		foreach($parts as $key => $col)	{
+				// Split for color|class:
+			list($color,$class) = t3lib_div::trimExplode('|',$col);
+
+				// Handle color values:
+			if ($color)	$this->colorScheme[$key] = $color;
+			if ($color=='-')	$this->colorScheme[$key] = '';
+
+				// Handle class values:
+			if ($class)	$this->classScheme[$key] = $class;
+			if ($class=='-')	$this->classScheme[$key] = '';
 		}
 	}
 
@@ -3200,6 +3240,7 @@ class t3lib_TCEforms	{
 	 * @return	void
 	 */
 	function storeSchemes()	{
+		$this->savedSchemes['classScheme'] = $this->classScheme;
 		$this->savedSchemes['colorScheme'] = $this->colorScheme;
 		$this->savedSchemes['fieldStyle'] = $this->fieldStyle;
 		$this->savedSchemes['borderStyle'] = $this->borderStyle;
@@ -3211,9 +3252,10 @@ class t3lib_TCEforms	{
 	 * @return	void
 	 */
 	function restoreSchemes()	{
-		$this->colorScheme=$this->savedSchemes['colorScheme'];
-		$this->fieldStyle=$this->savedSchemes['fieldStyle'];
-		$this->borderStyle=$this->savedSchemes['borderStyle'];
+		$this->classScheme = $this->savedSchemes['classScheme'];
+		$this->colorScheme = $this->savedSchemes['colorScheme'];
+		$this->fieldStyle = $this->savedSchemes['fieldStyle'];
+		$this->borderStyle = $this->savedSchemes['borderStyle'];
 	}
 
 
@@ -4052,6 +4094,33 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 		</table>';
 
 		return $out;
+	}
+
+	/**
+	 * Sets the fancy front-end design of the editor.
+	 * Frontend
+	 *
+	 * @return	void
+	 */
+	function setFancyDesign()	{
+		$this->fieldTemplate='
+	<tr>
+		<td nowrap="nowrap" bgcolor="#F6F2E6">###FIELD_HELP_ICON###<font face="verdana" size="1" color="black"><b>###FIELD_NAME###</b></font>###FIELD_HELP_TEXT###</td>
+	</tr>
+	<tr>
+		<td nowrap="nowrap" bgcolor="#ABBBB4"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="10" height="10" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="7" height="10" alt="" /><font face="verdana" size="1" color="black">###FIELD_ITEM###</font>###FIELD_PAL_LINK_ICON###</td>
+	</tr>	';
+
+		$this->totalWrap='<table border="0" cellpadding="1" cellspacing="0" bgcolor="black"><tr><td><table border="0" cellpadding="2" cellspacing="0">|</table></td></tr></table>';
+
+		$this->palFieldTemplate='
+	<tr>
+		<td nowrap="nowrap" bgcolor="#ABBBB4"><font face="verdana" size="1" color="black">###FIELD_PALETTE###</font></td>
+	</tr>	';
+		$this->palFieldTemplateHeader='
+	<tr>
+		<td nowrap="nowrap" bgcolor="#F6F2E6"><font face="verdana" size="1" color="black"><b>###FIELD_HEADER###</b></font></td>
+	</tr>	';
 	}
 }
 

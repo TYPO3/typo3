@@ -212,6 +212,11 @@ TABLE#typo3-tree TR TD IMG.c-recIcon { margin-right: 1px;}
 TABLE#typo3-tree { margin-bottom: 10px; width: 95%; }
 P.c-refresh IMG { vertical-align: middle;  margin-right: 7px; }
 
+/* TCEforms */
+TABLE.typo3-TCEforms SPAN.typo3-TCEforms-recHeader { font-weight: bold; color: #333366; }
+TABLE.typo3-TCEforms SPAN.typo3-TCEforms-newToken { font-weight: bold; color: #990000; }
+TABLE.typo3-TCEforms SPAN.typo3-TCEforms-helpText { color: #666666; }
+
 /* Element Browser / RTE link selection: */
 TABLE#typo3-curUrl { font-weight: bold; width: 100%; margin-bottom: 2px;}
 TABLE#typo3-RTElinkMenu TR TD { text-align: center; white-space: nowrap; width: 15%; font-weight: bold; }
