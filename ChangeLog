@@ -1,5 +1,9 @@
 2004-07-12  Ingmar Schlecht  <ingmars@web.de>
 
+	* Fixed bug #194: wizard_table.php, missing parameter 'backPath'
+
+2004-07-12  Ingmar Schlecht  <ingmars@web.de>
+
 	* Fixed bug #79: Extension manager: Removing extensions containing empty folders did not work
 	* Fixed bug: When removing an extension, typo3 tried to remove the extension directory twice
 
