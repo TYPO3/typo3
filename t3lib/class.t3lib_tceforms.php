@@ -906,11 +906,11 @@ class t3lib_TCEforms	{
 					$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$table,$field,$RTEtypeVal);
 					if (!$thisConfig['disabled'])	{
 						if (!$this->disableRTE)	{
-							$RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:380; width:'.$RTEWidth.';border:solid 0px;';
+							$RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:380px; width:'.$RTEWidth.'px;border:solid 0px;';
 							$rteURL = $this->backPath.$this->RTEpath.'rte.php?elementId='.$PA['itemFormElName'].'&pid='.$row['pid'].'&typeVal='.rawurlencode($RTEtypeVal).'&bgColor='.rawurlencode($this->colorScheme[0]).'&sC='.rawurlencode($PA['extra']).($this->tceFormsEditor?'&TCEformsEdit=1':'').'&formName='.rawurlencode($this->formName);
 							$item.='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';
 							$item.='<div id="cdiv'.count($this->RTEwindows).'" style="'.htmlspecialchars($RTEdivStyle).'">';
-							$item.='<iframe src="'.htmlspecialchars($rteURL).'" id="'.$PA['itemFormElName'].'_RTE" style="visibility: visible; position: absolute; left: 0px; top: 0px; height:100%; width:100%"></iframe>';
+							$item.='<iframe src="'.htmlspecialchars($rteURL).'" id="'.$PA['itemFormElName'].'_RTE" style="visibility: visible; position: absolute; left: 0px; top: 0px; height:100%; width:100%;"></iframe>';
 							$item.='</div>';
 
 							$altItem='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';

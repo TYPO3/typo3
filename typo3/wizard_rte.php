@@ -150,7 +150,8 @@ class SC_wizard_rte {
 			$tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 			$tceforms->initDefaultBEMode();	// Init...
 			$tceforms->disableWizards = 1;	// SPECIAL: Disables all wizards - we are NOT going to need them.
-			$tceforms->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
+#			$tceforms->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
+			$tceforms->RTEdivStyle = 'position:relative; left:0px; top:0px; height:600px; width:100%; border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
 			$tceforms->colorScheme[0]=$this->doc->bgColor;	// SPECIAL: Setting background color of the RTE to ordinary background
 		
 				// Fetching content of record:
