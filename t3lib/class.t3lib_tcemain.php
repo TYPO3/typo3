@@ -3276,10 +3276,6 @@ class t3lib_TCEmain	{
 		if ($TCA[$table] && $TCA[$table]['ctrl']['versioning'] && $id>0)	{
 			if ($this->doesRecordExist($table,$id,'show') && $this->doesRecordExist($table,$id,'edit'))	{
 
-					// WE DO NOT check if the record being versionized can be edited (based on page permissions) - all we need is "view" permissions - just like when making a copy
-					// BUT we check EDIT permissions when SWAPPING.
-					// Maybe one should implement "create new version" permissions?
-
 					// Select main record:
 				$row = $this->recordInfo($table,$id,'pid,t3ver_id');
 				if (is_array($row))	{
