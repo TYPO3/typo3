@@ -155,7 +155,7 @@ $LOCAL_LANG = Array (
 		'Depth' => 'Profondità',
 		'levels' => 'Livelli',
 		'User' => 'Utente',
-		'def' => 'Definizione:\'contenuto\' sono i records presenti nelle tabelle in una pagina - a parte i record di tipo "pagina.',
+		'def' => 'Definizione:\'contenuto\' sono i records presenti nelle tabelle in una pagina - a parte i record di tipo "pagina".',
 		'A_Granted' => 'Accesso consentito',
 		'A_Denied' => 'Accesso negato',
 		'1' => 'Mostra pagina',
@@ -666,6 +666,14 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'AÃ°gangur',
 	),
 	'hr' => Array (
+		'1' => 'Prikai stranicu',
+		'16' => 'Izmjeni sadraj',
+		'2' => 'Izmjeni stranicu',
+		'4' => 'Obriši stranicu',
+		'8' => 'Nove stranice',
+		'1_t' => 'Prikai/Kopiraj stranicu',
+		'16_t' => 'Promjeni/Dodaj/Obriši/Premjesti sadraj',
+		'2_t' => 'Promjeni/Premjesti stranisu',
 	),
 	'hu' => Array (
 	),

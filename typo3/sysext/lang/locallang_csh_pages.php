@@ -121,6 +121,27 @@ Suositellaan vain admin-käyttäjille pääsyä tähän tietoon!',
 	'is' => Array (
 	),
 	'hr' => Array (
+		'title.description' => 'Unesite naslov stranice ili pretinca',
+		'title.syntax' => 'Obavezno je unjeti naslov stranice.',
+		'.description' => 'Zapis \'stranica\' obièno predstavlja web stranicu u TYPO3 sustavu. Sve stranice imaju id broj pomoæu kojega mogu biti povezane i referencirane. Zapis \'Stranica\' ne obuhvaæa sam sadržaj veæ je za to potrebno kreirati zapis \'Sadržaj stranice\'.',
+		'.details' => 'U zavisnosti od tipa stranice ona može predstavljati repozitorij raznih podatakovnih elemenata u TYPO3 sustavu. U tom sluèaju nije nužno da predstavlja web stranicu veæ interno unutar stabla stranica može predstavljati mjesto za pohranu raznih podataka kao što su korisnici, pretplate i slièno.
+Stranice su duboko ukorijenjene u TYPO3. Svi zapisi koji se mogu editirati iz glavnih TYPO3 modula moraju pripadati nekoj stranici. To je vrlo slièno datotekama koje moraju pripadati pretincima.
+Stranice su organizirane u stablo što nije samo prikladan naèin organiziranja podataka veæ i uobièajen naèin organiziranja stanica unutar web sjedišta. Takoðer, uobièajeno je da stablo stranica predstavlja i sam naèin organizacije navigacije.
+
+Tehnièki gledano svi elementi baze imaju polje \'uid\' koje predstavlja jedinstveni identifikacioni broj. Takoðer moraju imati i polje \'pid\' koji sadrži uid oznaku stranice kojoj odreðenmi element pripada. Ukoliko je \'pid\' oznaka nula zapis senalazi u poèetnoj (root) stranici. Samo administraotri imaju dozvolu pristupa poèetnoj stranici i osim toga zapisi moraju biti konfigurirani tako da pripadaju nekoj od stranica ili biti u poèetnoj stranici.',
+		'doktype.description' => 'Selektirajte tip stranice. Ovo ima utjecaj na sadržaj stranice, da li æe biti web stranica ili iskorištena za neku drugu svrhu.',
+		'doktype.details' => 'Standardni tip predstavlja web stranicu.
+\'SysFolder\' (sistemski pretinac) predstavlja repozitorij - pretinac u koji možete spremiti razne zapise prema vlastitom izboru.
+\'Recycler\' predstavlja kanticu za smeæe, to jest obrisani sadržaj.
+
+<B>Napomena:</B> Svaki tip obièno je specificiran odreðenom ikonom. Takoðer, glavni tipovi mogu biti nedostupni za korisnika (tako da možete imati osjeæaj da vam neke od opcija nisu dostupne!). I na kraju svaki tip stranice omoguæava samo odreðene zapise na stranici (ukoliko imate bilo kakvih problema SysFolder omoguæava svaki zapis).',
+		'TSconfig.description' => 'Stranica TypoScript konfiguracije.',
+		'TSconfig.details' => 'U osnovi \'TypoScript\' je koncept za unos vrijednosti putem strukture stabla. Princip je poznat iz naèina kreiranja predložaka za TYPO3 web sjedište.
+Takoðer, ovdje se primjenjuje jednak princip hijerarhijskog unosa vrijednosti za potrebe konfiguriranja razlièitih znaèajki u odnosu na osnovu sustava (backend), funkcije modula, WYWIWYG editora i slièno. 
+Konaèni \'TSconfig\' stranice je rezultat akumuliranja svih \'TSconfig\' vrijednosti od poèetne stranice stabla prema trenutnoj stranici. Na taj naèin sve prethodne stranice u hijerarhiji utjeèu na konfiguraciju. Ispis stranice TSconfig moguæ je iz menija \'Stranica TSconfig\' u \'Web>Info\' modulu (zahtijeva da bude instalirano proširenje "info_pagetsconfig").',
+		'TSconfig.syntax' => 'Osnovna TypoScript sintaksa <em>bez</em> \'uvjeta\' i \'konstanti\'.
+
+Preporuèljivo je da samo korisnici s administratorskim dozvolama imaju pristup do ovog polja!',
 	),
 	'hu' => Array (
 	),

@@ -52,8 +52,6 @@ Your PHP-configuration may also impose other restrictions on you if safe-mode li
 		'.details' => 'Luomalla tiedostoasetus tiedon ja asettamalla sen viitteeksi Tausta käyttäjäjoukolla voit antaa käyttäjäoikeuksia tiedostoasetuksille File->List aliohjelmassa.
 Sinun tulee luoda vähintään yksi tiedostoasetus jossa hakemistona on \'_temp_\' jotta käyttäjä pystyvät myös viemään tiedostoja palvelimelle.
 Tiedostoasetuksella voidaan konfiguroida ,yös polku jonne käyttäjällä on FTP-oikeus. Muista vain asettaa tiedosto-oikeudetoikein siten että www-palvelinkäyttäjä (millä PHP toimii) on vähintäin luku oikeus FTP-hakemistoon.',
-		'_.seeAlso' => 'be_users,
-be_groups',
 		'title.description' => 'Anna tiedostoasetuksen (Filemount) nimi',
 		'path.description' => 'Anna tiedostoasetusten polku, joko relatiivinen tai absoluuttinen, riippuen BASE asetuksista.',
 		'path.details' => 'Jos Base on asetettu relatiiviseksi, voimassa oleva polku löytyy hakemiston fileadmin/ alta www-palvelimessa.
@@ -64,11 +62,9 @@ Jos BASE on absoluuttinen, on Sinun annettava absoluuttinen polku palvelimessa, 
 Jos Sinulla on ongelmia - erityisesti absoluuttisten asetusten kanssa - yrita asettaa jotain \'yksinkertaista\' kuten relatiivinen asetus fileadmin hakemiston sisällä. Jos tämätoimii oikein yritä asettaa absoluuttinen polku.
 
 Voi olla että myös PHP-asetukset aiheuttavat rajoituksia Sinulle. kuten esimerkikis safe-moodi asetukset. Käytä silloin relatiivisia asetuksia.',
-		'_path.seeAlso' => 'sys_filemounts:base',
 		'hidden.description' => 'Käytä tätä vaihtoehtoa poistaaksesi tiedostoasetukset väliaikaisesti.',
 		'hidden.details' => 'Kenelläkään taustkäyttäjälle ei ole enää oikeuksia tiedostoasetukseen. Tämä koskee myös \'Admin\'-käyttäjiä.',
 		'base.description' => 'Tällä päätellään onko PATH kentän tieto tunnistettava absoluuttiseksi vai relatiiviseksi poluksi fileadmin/ hakemiston alla olevaksi alihakemistoksi',
-		'_base.seeAlso' => 'sys_filemounts:path',
 	),
 	'tr' => Array (
 	),
@@ -89,6 +85,26 @@ Voi olla että myös PHP-asetukset aiheuttavat rajoituksia Sinulle. kuten esimerki
 	'is' => Array (
 	),
 	'hr' => Array (
+		'.description' => 'Poveznice (filemounts) opisuje putanju na poslužitelju, relativnu ili apsolutnu.',
+		'.details' => 'Kreiranjem zapisa poveznice i postavljenjem reference na nju unutar pozadinske grupe korisnika možemo dozvoliti korisnicima da koriste poveznicu unutar Datoteka>Popis (File>List) modula.
+Trebate kreirati i postaviti barem jednu poveznicu s pretincem \'_temp_\' ukoliko želite da korisnici mogu prenositi datoteke putem web preglednika.
+Poveznice takoðer mogu konfigurirati putanju tako da se može pristupati datotekama do kojih korisnici imaju FTP pristup. Nemojte zaboraviti postaviti dozvole nad datotekama tako da korisnik, pod èijim ovlastima je pokrenut web poslužitelj, može imati barem dozvolu èitanja.',
+		'_.seeAlso' => 'be_korisnici,
+be_grupe',
+		'title.description' => 'Unesite naslov za poveznicu',
+		'path.description' => 'Unesite putanju poveznice, relativnu ili apsolutnu u zavisnosti od postavljenje opcije BASE.',
+		'path.details' => 'Ukoliko je BASE opcija postavljena kao relativna onda putanja pokazuje na potpretinac "fileadmin/" web sjedišta. Tada morate unjeti potpretinac unutar "fileadmin/" kao putanju. Na primjer želite li povezati pristup do "fileadmin/user_uploads/all/" onda unesite vrijednost "user_uploads/all" kao vrijednost putanje.
+Ukoliko je BASE opcija postavljena kao apsolutna onda ptrbate unjeti apsolutnu putanju na poslužitelju, npr. "/home/ftp_upload" ili "C:/home/ftp_upload".
+
+<strong>Napomena:</strong> U svakom sluèaju budite sigurni da korisnik pod èijim ovlastima je pokrenut web poslužitelj ima <em>najmanje>7em> prava èitanja unesene putanje. Ukoliko nema tih prava povezani sadržaj neæe se pojaviti bez ikakvih upozorenja.
+Imate li problema - posebno s apsolutnim povezivanjem - pokušajete povezati nešto "jednostavnije" kao što je relativna ptanja unutar fileadmin pretinca. Ukoliko to radi ispravno probajte s apsolutnom putanjom.
+
+Vaša PHP konfiguracija takoðer može nametnuti odreðena ogranièenja ukoliko je safe-mod ili slièna znaèajka omoguæena. Tada koristite ralativnu putanju.',
+		'_path.seeAlso' => 'sys_filemounts:base',
+		'hidden.description' => 'Korištenjem ove opvije privremeno onemoguæavate poveznicu.',
+		'hidden.details' => 'Svi pozadinski korisnici koriste',
+		'base.description' => 'Odreðuje da li æe vrijednost PATH polja biti prepoznat kao apsolutni  put na poslužitelju ili relativni put u odnosu na fileadmin/ podpretinac web sjedišta.',
+		'_base.seeAlso' => 'sys_filemounts:path',
 	),
 	'hu' => Array (
 	),

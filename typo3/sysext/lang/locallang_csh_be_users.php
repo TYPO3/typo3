@@ -131,6 +131,48 @@ admin_guide.pdf|http://www.typo3.com/doclink.php?key=admin_guide.pdf
 	'is' => Array (
 	),
 	'hr' => Array (
+		'.description' => 'Forma za administraciju backend korisnika.',
+		'username.description' => 'Unesite korisnièko ime backend korisnika.',
+		'username.details' => 'Korisnièko ime je obavezno i mora biti uneseno malim slovima bez razmaka. Korisnièko ime mora biti jedinstveno. Ako nije uneseno jedinstveno korisnièko ime sustav æe mu automatski pridodati broj.',
+		'password.description' => 'Unesite zaporku za prethodno upisano korisnièko ime (Zaporka koju unesete <i> biti æe vidljiva</i> u polju za unos.',
+		'password.details' => 'Zaporka je obavezna. Poslužitelju se ne šalje vrijednost same zaporke, 
+veæ kod dobiven pomoæu MD5-hash algoritma. Ovaj se postupak poštuje 
+i kod administracije zaporke, kao i kod autentifikacije korisnika prilikom 
+pristupanja poslužitelju.
+Iako ovaj princip ne otkriva pravu vrijednost zaporke, on <i>nije</i> 
+isto što i stvarna enkripcija. Ako trebate najviši stupanj sigurnosti,
+potrebno je instalirati Typo3 backend na sigurni popslužitelj.
+Zaporka je pohranjena u bazu podataka u MD5-hash obliku, pa je nemoguæe
+iz te baze podataka otkriti izvornu zaporku.Zato u sluèaju \'izgubljenje zaporke\' 
+ona se mora zamijeniti novom korisnièkom zaporkom.',
+		'usergroup.description' => 'Dodijeli backend korisnièke grupe korisniku.',
+		'usergroup.details' => 'Backend korisnièke grupe odreðuju ovlasti koje æe backend korisnik 
+naslijediti. Zato, osim u sluèaju da korisnik ima \'admin\' ovlasti, 
+korisnik mora biti èlan jedne ili više korisnièkih grupa kako bi dobio
+potrebne ovlasti. Parametri ovlasti postavljeni u pojedinim korisnièkim 
+grupama se uglavnom zbrajaju.
+Prva (najviša) grupa u listi je grupa koja æe u pravilu bit vlasnik stranica 
+koje korisnik napravi.',
+		'db_mountpoints.description' => 'Dodijeli poèetne toèke zkorisnièkom stablu stranice.',
+		'db_mountpoints.details' => 'Stablo stranica koje koriste svi Web-podmoduli za navigaciju 
+mora imati odreðene poèetne toèke ulaska u stablo. Ovdje bi trebali
+upisati jednu ili više referenci na stranicu koja æe predstavljati novu
+korijen stranicu u stablu stranica. 
+To se naziva \'Poveznica baze podataka\' (DB poveznica).
+
+<strong>Primjedba</strong> Backend korisnièke grupe takoðer
+sadrže DB poveznice koje korisnik može naslijediti. U sluèaju da želite više 
+korisnika koji dijele jedno stablo stranice, trebate napraviti poveznicu stabla 
+stranice u backend korisnièkoj grupi koju æe korisnici naslijediti.',
+		'file_mountpoints.description' => 'Dodijeli poèetne toèke stablu datoteka',
+		'email.description' => 'Upišite email adresu korisnika.',
+		'email.details' => 'Ovu je adresu vrlo važno unijeti jer se na nju šalju sistemske poruke.
+<strong>Primjdba</strong> Korisnik može sam mijenjati adresu
+u Korisnik>Postavke modulu.',
+		'realName.description' => 'Unesi pravo ime korisnika, npr. Ivo Iviæ',
+		'realName.details' => '<strong>Primjdba</strong> Korisnik može sam mijenjati adresu u Korisnik>Postavke modulu.',
+		'disable.description' => 'Ova moguænost privremeno onemoguæava korisniku pristup.',
+		'admin.description' => '\'Admin\' korisnici imaju POTPUN pristup sustavu!',
 	),
 	'hu' => Array (
 	),

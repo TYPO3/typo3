@@ -189,6 +189,153 @@ In effect you can therefore have - say - a “stable” version of an extension inst
 	'is' => Array (
 	),
 	'hr' => Array (
+		'emconf_shy.alttitle' => 'Shy',
+		'emconf_shy.description' => 'Ako je postavljeno, ekstenzija æe u biti skrivena u EM-u, npr. jer se radi o uobièajenoj ekstenziji ili nije od veæe važnosti.',
+		'emconf_shy.details' => 'Koristite ovu zastavicu ako je mali interes za ekstenziju (to ne znaèi 
+da nije važna væ smo da nije èesto tražena...)
+Ne utjeèe na ukljuèenost ekstenzije, samo na prikaz u EM-u.
+Uobièajeno je opcija \'skriveno\' postavljena za sve ekstenzije koje
+su standardno uèitane u skladu s TYPO3_CONF_VARS.',
+		'emconf_category.alttitle' => 'Kategorija',
+		'emconf_category.description' => 'Kojoj kategoriji pripada ekstenzija',
+		'emconf_category.details' => '<b>be:</b> Backend (Uobièajeno backend orijentirana,
+ali nije modul)
+
+<b>modul:</b> Backend moduli (Kada je nešto modul
+ili se spaja sa modulom)
+
+<b>fe:</b> Frontend (Uobièajeno frontend orijentirana,
+ali nije "pravi" plugin)
+
+<b>plugin:</b> Frontend plugin-ovi (Plugin-ovi ubaèeni kao
+sadržajni elementi "Ubaci Plugin" metode)
+
+<b>razno:</b> Razne stvari (Kada se ne mogu drugdje smejstiti)
+
+<b>primjer:</b> Primjer ekstenzija (Koja služi kao primjer, itd.)',
+		'emconf_dependencies.alttitle' => 'Ovisnost o drugim ekstenzijama?',
+		'emconf_dependencies.description' => 'Ovo je lista kljuèeva ostalih ekstenzija o kojima ova ekstenzija ovisi i koje moraju biti uèitane PRIJE nje same.',
+		'emconf_dependencies.details' => 'EM æe obraditi tu ovisnost dok bude pisao popis ekstenzija u localconf.php.',
+		'emconf_conflicts.alttitle' => 'Konflikti s drugim ekstenzijama?',
+		'emconf_conflicts.description' => 'Popis kljuèeva onih ekstenzija s kojim dotièna ekstenzija dolazi u sukob (i zato nemože biti ukljuèena prije nego su ostale iskljuèene).',
+		'emconf_priority.alttitle' => 'Traženi prioritet uèitavanja',
+		'emconf_priority.description' => 'Ovo govori EM-u da pokuša upisati ekstenzije na vrh liste. Standardno je na kraj liste.',
+		'emconf_module.alttitle' => 'Ukljuèi backend module',
+		'emconf_module.description' => 'Ako neki poddirektoriji ekstenzije sadrže backend module, imena tih direktorija moraju ovdje biti popisana.',
+		'emconf_module.details' => 'Omoguæava EM-u informacije o postojanju modula, što je bitno jer EM mora osvježiti datoteku modula conf.php kako bi se valjano postavila TYPO3_MOD_PATH konstanta.',
+		'emconf_state.alttitle' => 'Status razvoja',
+		'emconf_state.description' => 'U kojem se statusu razvoja nalazi ekstenzija.',
+		'emconf_state.details' => '<b>alfa</b>
+Poèetni razvoj. Ne mora biti funkcionalna.
+
+<b>beta</b>
+Trenutno u razvoju. Djelomièno funkcionalna, ali nije završena.
+
+<b>stabilna</b>
+Stabilna, koristi se u produkciji.
+
+<b>experimentalna</b>
+Nepoznanica je da li æe uopæe biti stvarnih rezultata.
+Možda se radi samo o ideji.
+
+<b>test</b>
+Test ekstenzije, predstavljanje koncepata, itd.',
+		'emconf_internal.alttitle' => 'Interno podržan u jezgri sustava.',
+		'emconf_internal.description' => 'Ova zastavica ukazuje da ekstenzija posebno utjeèe na izvorni kod jezgre sustava.',
+		'emconf_internal.details' => 'U stvari ova zastavica bi trebala upozoravati na èinjenicu da 
+"ekstenzija nije mogla biti napisana bez izmjena u izvornom kodu sustava" 
+
+Ekstenzija nije interna samo zato jer upotrebljava TYPO3 opæe klase,
+npr. one iz t3lib/.
+Prave ne-interne ekstenzije obilježava èinjenica da su napisane 
+bez uvoðenja promjena u izvornom kodu jezgre sustava. One se
+uz svoje skripte u pretincu ekstenzije oslanjaju samo na postojeæe 
+klase u TYPO3 i/ili drugim ekstenzijama.',
+		'emconf_clearCacheOnLoad.alttitle' => 'Oèisti privremeni spremnik (cache) nakon instalacije.',
+		'emconf_clearCacheOnLoad.description' => 'Ako je postavljena, EM æe zahtijevati da se privremeni spremnik (cache) oèisti kada se ova ekstenzija instalira.',
+		'emconf_modify_tables.alttitle' => 'Postojeæi tablice su promijenjene',
+		'emconf_modify_tables.description' => 'Popis imena tablica koje ova ekstenzija samo mijenja, ne stvara ih.',
+		'emconf_modify_tables.details' => 'Tablice iz ove liste pronaðene u datoteci ekstenzije ext_tables.sql',
+		'.alttitle' => 'EM',
+		'.description' => 'Menadžer ekstenzijama (EM)',
+		'.details' => 'TYPO3 može se proširiti u bilo kojem smjeru bez gubitka 
+kompatibilnosti unazad. API za ekstenzije pruža moænu strukturu
+za lagano dodavanje, oduzimanje, instalaciju i razvoj takvih 
+ekstenzija u TYPO3 okruženju. To posebno omoguæava menadžer 
+ekstenzija EM unutat TYPO3.
+
+"Ekstenzije" su pojam koje u TYPO3 pokriva dva druga pojma, 
+plugin-ovi i moduli.
+
+Plugin je dio koji ima ulogu u samom web sjedištu. 
+Npr. oglasna ploèa, knjiga gostiju, duæan itd. Uobièajeno je sadržan
+unutar PHP klase i pozvan kroz USER ili USER_INT cObject 
+iz TypoScript-a. Plugin je ekstenzija u frontend-u.
+
+Modul je backend aplikacija koja ima vlastitu poziciju u administracijskom
+meniju. Zahtijeva prijavu na backend sustav i djeluje unutar strukture
+beckenda. Takoðer modulom možemo nazvati ako iskorištava
+bilo kakvu povezivost nekog postojeæeg modula, tj. ako se dodaje
+meniju funkcija postojeæih modula. Modul je ekstenzija u backend-u.',
+		'emconf_private.alttitle' => 'Privatno',
+		'emconf_private.description' => 'Ako je postavljeno, ova verzija se ne pokazuje u javnoj listi online repozitorij.',
+		'emconf_download_password.alttitle' => 'Download zaporke',
+		'emconf_download_password.description' => 'Dodatna zaporka je potrebna za download privatne ekstenzije.',
+		'emconf_type.alttitle' => 'Tip instalacije',
+		'emconf_type.description' => 'Tip instalacije',
+		'emconf_doubleInstall.alttitle' => 'Instalirana dva ili više puta?',
+		'emconf_doubleInstall.description' => 'Pokazuje ako je ekstenzija instalirana na više od jednog Sistemskog, Globalnog ili Lokalnog mjesta.',
+		'emconf_doubleInstall.details' => 'Kako ekstenzija može postojati na tri mjesta, Sistemsko, Globalno, Lokalno, ovo ukazuje nalaz li se ekstenzijai i na drugim mjestima osim trenutnog. U tom sluèaju obratite pažnju koja je ekstenzija uèitana!',
+		'emconf_rootfiles.alttitle' => 'Poèetne datoteke',
+		'emconf_rootfiles.description' => 'Popis datoteka u direktoriju ekstenzije. Ne prikazuje datoteka u poddirektorijima.',
+		'emconf_dbReq.alttitle' => 'Zahtjevi bazi podataka',
+		'emconf_dbReq.description' => 'Ako postoje prikazuje zahtjeve tablicama i poljima baze podataka.',
+		'emconf_dbReq.details' => 'Ovo æe iz datoteka ext_tables.sql i ext_tables_static+adt.sql proèitati i prikazati koje su tablice, polja i statièke tablice potrebne ovoj ekstenziji.',
+		'emconf_dbStatus.alttitle' => 'Status zahtjeva bazi podataka.',
+		'emconf_dbStatus.description' => 'Prikazuje trenutni status baze podataka s obzirom na zahtjeve ekstenzije.',
+		'emconf_dbStatus.details' => 'Ako se ekstenzija uèita pojaviti æe se poruka greške ako potrebna polja ili tablice nisu prisutni u bazi podataka.',
+		'emconf_flags.alttitle' => 'Zastavice',
+		'emconf_flags.description' => 'Popis posebnih kodova koji vam govore na koje dijelove TYPO3 sustava ekstenzija utjeèe.',
+		'emconf_flags.details' => 'Ovo je popis zastavica:
+
+<b>Module:</b> Pravi backend main/sub modul je pronaðen
+
+<b>Module+:</b> Ekstenzija dodaje samu sebe funkcijskom 
+meniju postojeæeg backend modula
+
+<b>loadTCA:</b> Ekstenzija sadrži funkcijski poziv prema 
+t3lib_div::loadTCA za uèitavanje tablice. To potencijalno može
+usporiti sistem zato jer je potpun opis tablice uvijek ukljuèen u
+samu tablicu. U svakom sluèaju vjerojatno postoji dobar razlog 
+za takav postupak Vjerojatno ekstenzija pokušava manipulirati 
+TCA-config za postojeæu tablicu kako bi je proširila.
+
+<b>TCA:</b> Ekstenzija sadrži konfiguraciju tablice u $TCA.
+
+<b>Plugin:</b> Ekstenzija dodaje frontend plugin listi pluginova 
+u Sadržajni Element tipa "Dodaj Plugin"
+
+<b>Plugin/ST43:</b> TypoScript kod za prikazivanje plugin-a 
+dodan je statièkom predlošku "Sadržaj (osnovni)". "Plugin" i 
+"Plugin/ST43" se obièno koriste zajedno.
+
+<b>Page-TSconfig:</b> Osnovna Stranica-TSconfig je dodana.
+
+<b>TS/Setup:</b> Osnovne TypoScript Postavke su dodane.
+
+<b>TS/Constants:</b> Osnovne TypoScript Konstante su dodane.',
+		'emconf_conf.description' => 'Pokazuje da li ekstenzija ima predložak za daljnju konfiguraciju',
+		'emconf_TSfiles.alttitle' => 'Statiène TypoScript datoteke',
+		'emconf_TSfiles.description' => 'Pokazuje koji TypoScript statiène datoteke mogu biti prisutne.',
+		'emconf_moduleNames.alttitle' => 'Imena Backend Modula',
+		'emconf_moduleNames.description' => 'Pokazuje koja su imena modula pronaðena unutar ekstenzije.',
+		'emconf_classNames.alttitle' => 'Imena PHP klasa',
+		'emconf_classNames.description' => 'Pokazuje koje su PHP klase pronaðene u .php i .inc datotekama.',
+		'emconf_errors.alttitle' => 'Greške',
+		'emconf_errors.description' => 'Prikazuje otkrivene ozbiljne greške u ekstenziji.',
+		'emconf_NSerrors.alttitle' => 'Greške pri imenovanju',
+		'emconf_NSerrors.description' => 'Odreðene konvencije imenovanja odnose se na ekstenzije. Ovdje se prikazuju pronaðena prekršenja.',
+		'emconf_NSerrors.details' => 'Konvencije imenovanja definirane su u "Inside TYPO3" dokumentu. Da bi se davanje imena maksimalno pojednostavilo, pokušajte izbjeæi "underscore" znak u vašim kljuèevima ekstenzija.',
 	),
 	'hu' => Array (
 	),

@@ -168,33 +168,19 @@ Would you like to save now in order to refresh the display?',
 	'ch' => 'EXT',
 	'sk' => 'EXT',
 	'lt' => 'EXT',
-	'is' => Array (
-	),
-	'hr' => Array (
-	),
-	'hu' => Array (
-	),
-	'gl' => Array (
-	),
-	'th' => Array (
-	),
-	'gr' => Array (
-	),
-	'hk' => Array (
-	),
-	'eu' => Array (
-	),
-	'bg' => Array (
-	),
-	'br' => Array (
-	),
-	'et' => Array (
-	),
-	'ar' => Array (
-	),
-	'he' => Array (
-	),
-	'ua' => Array (
-	),
+	'is' => 'EXT',
+	'hr' => 'EXT',
+	'hu' => 'EXT',
+	'gl' => 'EXT',
+	'th' => 'EXT',
+	'gr' => 'EXT',
+	'hk' => 'EXT',
+	'eu' => 'EXT',
+	'bg' => 'EXT',
+	'br' => 'EXT',
+	'et' => 'EXT',
+	'ar' => 'EXT',
+	'he' => 'EXT',
+	'ua' => 'EXT',
 );
 ?>

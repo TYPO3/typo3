@@ -45,6 +45,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Indietro',
 		'fullDescription' => 'Vedi descrizione completa',
 		'close' => 'Chiudi',
+		'title' => 'Typo3 Help Online',
 	),
 	'fr' => Array (
 		'details' => 'Dйtails',
@@ -210,6 +211,7 @@ $LOCAL_LANG = Array (
 		'goBack' => 'Върни се',
 		'fullDescription' => 'Виж пълно описание на таблицата',
 		'close' => 'Затвори',
+		'title' => 'TYPO3 онлайн помощ',
 	),
 	'br' => Array (
 		'details' => 'Detalhes',

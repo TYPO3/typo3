@@ -385,7 +385,7 @@ class language {
 	
 							// Detecting 'hidden' labels, converting to normal fieldname
 						if ($kParts[0]=='_')	$kParts[0]='';
-						if (substr($kParts[0],0,1)=='_')	{$kParts[0]=substr($kParts[0],1);}
+						if (substr($kParts[0],0,1)=='_')	{ $kParts[0] = substr($kParts[0],1); }
 	
 							// Add label:
 						switch((string)$kParts[2])	{
@@ -427,7 +427,7 @@ class language {
 				// Localized addition?
 			$lFileRef = $this->localizedFileRef($fileRef);
 			if ($lFileRef && (string)$LOCAL_LANG[$this->lang]=='EXT')	{
-				$llang = $this->readLLfile($fileRef);
+				$llang = $this->readLLfile($lFileRef);
 				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$llang);
 			}
 			
