@@ -1,4 +1,4 @@
-post-CVS checkout instructions:
+Post-CVS checkout instructions:
 
 If you check out the module "TYPO3core" from SourceForce CVS you will have to make a few symlinks in the
 checked out source before it will work for you. Follow these guidelines:
