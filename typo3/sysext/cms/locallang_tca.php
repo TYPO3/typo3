@@ -16,6 +16,7 @@ $LOCAL_LANG = Array (
 		'pages.layout.I.3' => 'Layout 3',
 		'pages.extendToSubpages' => 'Include subpages:',
 		'pages.nav_title' => 'Navigation title:',
+		'pages.nav_hide' => 'Hide in menu:',
 		'pages.subtitle' => 'Subtitle:',
 		'pages.target' => 'Target:',
 		'pages.alias' => 'Alias:',

@@ -378,6 +378,7 @@ CREATE TABLE pages (
   author tinytext NOT NULL,
   author_email varchar(80) DEFAULT '' NOT NULL,
   nav_title tinytext NOT NULL,
+  nav_hide tinyint(4) DEFAULT '0' NOT NULL,
   content_from_pid int(10) unsigned DEFAULT '0' NOT NULL,
   mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
   mount_pid_ol tinyint(4) DEFAULT '0' NOT NULL,

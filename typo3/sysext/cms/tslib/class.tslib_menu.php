@@ -433,7 +433,7 @@ class tslib_menu {
 							break;
 						}
 							// Get
-						$extraWhere = ' AND pages.doktype NOT IN (5,6)';
+						$extraWhere = ' AND pages.doktype NOT IN (5,6) AND pages.nav_hide=0';
 
 						if ($this->conf['special.']['excludeNoSearchPages']) {
 							$extraWhere.= ' AND pages.no_search=0';
@@ -488,7 +488,7 @@ class tslib_menu {
 							$depth=20;
 						}
 						$limit = t3lib_div::intInRange($this->conf['special.']['limit'],0,100);	// max number of items
-						$extraWhere = ' AND pages.uid!='.$value.' AND pages.doktype NOT IN (5,6)';
+						$extraWhere = ' AND pages.uid!='.$value.' AND pages.doktype NOT IN (5,6) AND pages.nav_hide=0';
 						if ($this->conf['special.']['excludeNoSearchPages']) {
 							$extraWhere.= ' AND pages.no_search=0';
 						}
@@ -716,7 +716,7 @@ class tslib_menu {
 				$uid = $data['uid'];
 				$spacer = (t3lib_div::inList($this->spacerIDList,$data['doktype'])?1:0);		// if item is a spacer, $spacer is set
 				if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
-					if (!t3lib_div::inList('5,6',$data['doktype']) && !t3lib_div::inArray($banUidArray,$uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
+					if (!t3lib_div::inList('5,6',$data['doktype']) && !$data['nav_hide'] && !t3lib_div::inArray($banUidArray,$uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
 						$c_b++;
 						if ($begin<=$c_b)	{		// If the beginning item has been reached.
 							$this->menuArr[$c] = $data;
@@ -1132,7 +1132,7 @@ class tslib_menu {
 
 		$recs = $this->sys_page->getMenu($uid,'uid,pid,doktype,mount_pid,mount_pid_ol');
 		foreach($recs as $theRec)	{
-			if (!t3lib_div::inList('5,6',$theRec['doktype']))	{	// If a menu item seems to be another type than 'Not in menu', then return true (there were items!)
+			if (!t3lib_div::inList('5,6',$theRec['doktype']) && !$theRec['nav_hide'])	{	// If a menu item seems to be another type than 'Not in menu', then return true (there were items!)
 				return TRUE;
 			}
 		}
@@ -2448,7 +2448,7 @@ class tslib_jsmenu extends tslib_menu {
 		foreach($menuItems as $uid => $data)	{
 			$spacer = (t3lib_div::inList($this->spacerIDList,$data['doktype'])?1:0);		// if item is a spacer, $spacer is set
 			if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
-				if (!t3lib_div::inList('5,6',$data['doktype']) && !t3lib_div::inArray($banUidArray,$uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
+				if (!t3lib_div::inList('5,6',$data['doktype']) && !$data['nav_hide'] && !t3lib_div::inArray($banUidArray,$uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
 					if ($count<$levels)	{
 						$addLines = $this->generate_level($levels,$count+1,$data['uid'],'',$MP_array);
 					} else {

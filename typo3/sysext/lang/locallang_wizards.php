@@ -43,6 +43,7 @@ $LOCAL_LANG = Array (
 		'forms_type_hidden' => 'Hidden value',
 		'forms_type_submit' => 'Submit Button',
 		'forms_type_property' => 'Property',
+		'forms_type_label' => 'Label',
 		'forms_required' => 'Required',
 		'forms_fieldName' => 'Field',
 		'forms_cols' => 'Columns',

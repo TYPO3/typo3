@@ -1214,18 +1214,22 @@ class t3lib_TStemplate	{
 	 * Call it like t3lib_TStemplate::sortedKeyList()
 	 *
 	 * @param	array		TypoScript array with numerical array in
+	 * @param	boolean		If set, then a value is not required - the properties alone will be enough.
 	 * @return	array		An array with all integer properties listed in numeric order.
 	 * @see tslib_cObj::cObjGet(), tslib_gifBuilder, tslib_imgmenu::makeImageMap()
 	 */
-	function sortedKeyList($setupArr)	{
-		$keyArr=Array();
+	function sortedKeyList($setupArr, $acceptOnlyProperties=FALSE)	{
+		$keyArr = Array();
+
 		reset($setupArr);
 		while(list($key,)=each($setupArr))	{
-			$ikey=intval($key);
-			if (!strcmp($ikey,$key))	{
-				$keyArr[]=$ikey;
+			$ikey = intval($key);
+			if (!strcmp($ikey,$key) || $acceptOnlyProperties)	{
+				$keyArr[] = $ikey;
 			}
 		}
+
+		$keyArr = array_unique($keyArr);
 		sort($keyArr);
 		return $keyArr;
 	}

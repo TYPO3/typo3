@@ -1,5 +1,13 @@
 2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added a checkbox to the page header in the "cms" extension called "Hide in menu". With this checkbox the page is excluded from menus on the totally same terms as doktype=5 ("Not in menu") does. The implementation is believed to be complete (although there might be some places overlooked). The checkbox renders the doktype 5 "Not in menu" obsolete; the idea is that the checkbox should be used in the future. Finally - if anyone read this far - I prophecise, that within two weeks from this moment someone will approach me and want to have a visual response to the "Hide in menu" checkbox in the icon; currently the page icon does NOT change it looks (and it would be very doubtful if we could justify making it change...).
+
+2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added new FORM cObject type, "label", which inserts a label instead of a field. Also fixed ordering problem when the "dataArray" attribute of FORM is used (now renders the form in the numerical order of the elements instead of order of appearance).
+
+2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Fixed incompatibility between Mount Points and property "overrideId" in menus.
 
 2004-04-19  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -1482,9 +1482,10 @@ class tslib_cObj {
 			}
 				// Adding the new dataArray config form:
 			if (is_array($conf['dataArray.'])) {	// dataArray is supplied
-				reset($conf['dataArray.']);
-				while(list($dAKey,$dAA)=each($conf['dataArray.']))	{
-					if (is_array($dAA) && !strcmp(intval($dAKey).'.',$dAKey))	{
+				$sKeyArray = t3lib_TStemplate::sortedKeyList($conf['dataArray.'], TRUE);
+				foreach($sKeyArray as $theKey)	{
+					$dAA = $conf['dataArray.'][$theKey.'.'];
+					if (is_array($dAA))	{
 						$temp=array();
 						list($temp[0])= explode('|',$dAA['label.'] ? $this->stdWrap($dAA['label'],$dAA['label.']) : $dAA['label']);
 						list($temp[1])= explode('|',$dAA['type']);
@@ -1710,9 +1711,12 @@ class tslib_cObj {
 								$confData['fieldname'], t3lib_div::deHSCentities(htmlspecialchars($value)));
 						}
 					break;
+					case 'label':
+						$fieldCode = nl2br(htmlspecialchars(trim($parts[2])));
+					break;
 					default:
-						$confData['type']='comment';
-						$fieldCode=trim($parts[2]).'&nbsp;';
+						$confData['type'] = 'comment';
+						$fieldCode = trim($parts[2]).'&nbsp;';
 					break;
 				}
 				if ($fieldCode)	{
@@ -1770,6 +1774,9 @@ class tslib_cObj {
 					}
 					if ($confData['type']=='radio' && $conf['RADIO.']['layout'])	{
 						$result = $conf['RADIO.']['layout'];
+					}
+					if ($confData['type']=='label' && $conf['LABEL.']['layout']) {
+						$result = $conf['LABEL.']['layout'];
 					}
 					$result = str_replace('###FIELD###',$fieldCode,$result);
 					$result = str_replace('###LABEL###',$labelCode,$result);

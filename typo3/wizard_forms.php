@@ -424,7 +424,7 @@ class SC_wizard_forms {
 						// Field type selector:
 					$opt=array();
 					$opt[]='<option value=""></option>';
-					$types = explode(',','input,textarea,select,check,radio,password,file,hidden,submit,property');
+					$types = explode(',','input,textarea,select,check,radio,password,file,hidden,submit,property,label');
 					foreach($types as $t)	{
 						$opt[]='
 								<option value="'.$t.'"'.($confData['type']==$t?' selected="selected"':'').'>'.$LANG->getLL('forms_type_'.$t,1).'</option>';
@@ -441,7 +441,7 @@ class SC_wizard_forms {
 					}
 
 						// Required checkbox:
-					if (!t3lib_div::inList('check,hidden,submit',$confData['type']))		{
+					if (!t3lib_div::inList('check,hidden,submit,label',$confData['type']))		{
 						$temp_cells[$LANG->getLL('forms_required')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][required]" value="1"'.($confData['required']?' checked="checked"':'').' title="'.$LANG->getLL('forms_required',1).'" />';
 					}
 
@@ -456,7 +456,9 @@ class SC_wizard_forms {
 					if ($this->special=='formtype_mail' && $confData['type']=='file')	{
 						$confData['fieldname'] = 'attachment'.(++$this->attachmentCounter);
 					}
-					$temp_cells[$LANG->getLL('forms_fieldName')]='<input type="text"'.$this->doc->formWidth(10).' name="FORMCFG[c]['.(($k+1)*2).'][fieldname]" value="'.htmlspecialchars($confData['fieldname']).'" title="'.$LANG->getLL('forms_fieldName',1).'" />';
+					if (!t3lib_div::inList('label',$confData['type']))	{
+						$temp_cells[$LANG->getLL('forms_fieldName')]='<input type="text"'.$this->doc->formWidth(10).' name="FORMCFG[c]['.(($k+1)*2).'][fieldname]" value="'.htmlspecialchars($confData['fieldname']).'" title="'.$LANG->getLL('forms_fieldName',1).'" />';
+					}
 
 						// Field configuration depending on the fields type:
 					switch((string)$confData['type'])	{

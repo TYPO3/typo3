@@ -172,6 +172,7 @@ class SC_alt_db_navframe {
 		$this->pagetree->addField('shortcut_mode');
 		$this->pagetree->addField('mount_pid');
 		$this->pagetree->addField('mount_pid_ol');
+		$this->pagetree->addField('nav_hide');
 		$this->pagetree->addField('url');
 
 			// Setting highlight mode:

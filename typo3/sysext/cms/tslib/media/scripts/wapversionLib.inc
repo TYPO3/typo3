@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -37,21 +37,21 @@
  *
  *
  *
- *  129: class user_wapversion 
- *  141:     function main_wapversion($content,$conf)	
- *  200:     function contentAbstract()	
- *  217:     function contentAll($chunkLgd=850)	
- *  277:     function cHeader($str)	
- *  291:     function cBodytext($str,$start=0,$max=0)	
- *  303:     function nl2br($str)	
- *  314:     function getContentResult($table) 
- *  329:     function bold($str)	
- *  339:     function paragraph($str)	
- *  349:     function line($str)	
- *  360:     function navLink($str,$pointer)	
- *  370:     function menuCurrentLevel($indent)	
- *  405:     function link($str,$id,$deck='')	
- *  421:     function cleanMenuArray($menu)	
+ *  129: class user_wapversion
+ *  141:     function main_wapversion($content,$conf)
+ *  200:     function contentAbstract()
+ *  217:     function contentAll($chunkLgd=850)
+ *  277:     function cHeader($str)
+ *  291:     function cBodytext($str,$start=0,$max=0)
+ *  303:     function nl2br($str)
+ *  314:     function getContentResult($table)
+ *  329:     function bold($str)
+ *  339:     function paragraph($str)
+ *  349:     function line($str)
+ *  360:     function navLink($str,$pointer)
+ *  370:     function menuCurrentLevel($indent)
+ *  405:     function link($str,$id,$deck='')
+ *  421:     function cleanMenuArray($menu)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -151,15 +151,15 @@ class user_wapversion {
 
 			// Creating back button:
 		$xmlObj->WAPback();
-		
+
 		$pageRec = $GLOBALS['TSFE']->page;
 		if ($GLOBALS['TSFE']->idParts[1])	{
 				// Creating content card:
 			$xmlObj->newLevel('card',1,array(
-				'id' => 'content', 
+				'id' => 'content',
 				'title' => ($conf['preTitle']?$conf['preTitle'].': ':'').$pageRec['title']
 			));
-			
+
 			$cParts = $this->contentAll();
 			$pointer = t3lib_div::intInRange($GLOBALS['TSFE']->idParts[1],1,10000);
 
@@ -168,16 +168,16 @@ class user_wapversion {
 			$msg.=$this->navLink(htmlspecialchars($conf['navLabels.']['up']),0).' ';
 			if ($pointer<count($cParts))	{$msg.=$this->navLink(htmlspecialchars($conf['navLabels.']['next']),$pointer+1).' ';}
 			$msg.= '['.$pointer.'/'.count($cParts).']<br/>';
-			
+
 			$xmlObj->lines[] = $this->paragraph($msg);
 			$xmlObj->lines[] = $this->paragraph($cParts[$pointer-1]);
 			$xmlObj->lines[] = $this->paragraph('<br/>'.$msg);
-			
+
 			$xmlObj->newLevel('card',0);
 		} else {
 				// Creating menu card:
 			$xmlObj->newLevel('card',1,array(
-				'id' => 'menu', 
+				'id' => 'menu',
 				'title' => ($conf['preTitle']?$conf['preTitle'].': ':'').$pageRec['title']
 			));
 			$xmlObj->lines[] = $this->contentAbstract();
@@ -244,8 +244,8 @@ class user_wapversion {
 				default:
 					$bodyText = '[Un-rendered element, '.$row['CType'].']';
 				break;
-			}	
-			
+			}
+
 				// Bodytext:
 			$get = $this->cBodytext($bodyText).'<br/>';
 			$diff = $chunkLgd - strlen($out[$idx]);
@@ -254,7 +254,7 @@ class user_wapversion {
 				$out[$idx].=$get;
 			} else {
 				$out[$idx].=$this->cBodytext($bodyText,0,$diff+$overlap).'<br/>';
-					
+
 				$safe=0;
 				do {
 					$idx++;
@@ -327,7 +327,7 @@ class user_wapversion {
 	 * @return	string		Processed output.
 	 */
 	function bold($str)	{
-		return strtoupper($str);	
+		return strtoupper($str);
 	}
 
 	/**
@@ -422,11 +422,11 @@ class user_wapversion {
 		reset($menu);
 		$newMenu=array();
 		while(list(,$data)=each($menu))	{
-			if ($data['doktype']!=5)	{
+			if ($data['doktype']!=5 && !$data['nav_hide'])	{
 				$newMenu[]=$data;
 			}
 		}
-		return $newMenu;	
+		return $newMenu;
 	}
 }
 
@@ -441,7 +441,7 @@ switch($id)	{
 				<timer value="35"/>
 				<p>
 					<img src="/images/logo.wbmp" alt="WAPPORTAL"/>
-					asf asdf asdf 
+					asf asdf asdf
 				</p>
 			</card>
 			<card id="Login" title="wapportal.dk" newcontext="true">
@@ -465,7 +465,7 @@ switch($id)	{
 			Dette er noget
 			<img src="/images/logo.wbmp" alt="WAPPORTAL"/>
 			 tekst.</p>
-			 
+
 		</card>
 		</wml>
 	break;

@@ -1473,9 +1473,10 @@ class t3lib_BEfunc	{
 				$parts[] = $LANG->sL($TCA['pages']['columns']['mount_pid_ol']['label']);
 			}
 		}
-		if ($row['hidden'])	$parts[]=$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.hidden');
-		if ($row['starttime'])	$parts[]=$LANG->sL($TCA['pages']['columns']['starttime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['starttime'],-1,'date');
-		if ($row['endtime'])	$parts[]=$LANG->sL($TCA['pages']['columns']['endtime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['endtime'],-1,'date');
+		if ($row['nav_hide'])	$parts[] = ereg_replace(':$','',$LANG->sL($TCA['pages']['columns']['nav_hide']['label']));
+		if ($row['hidden'])	$parts[] = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.hidden');
+		if ($row['starttime'])	$parts[] = $LANG->sL($TCA['pages']['columns']['starttime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['starttime'],-1,'date');
+		if ($row['endtime'])	$parts[] = $LANG->sL($TCA['pages']['columns']['endtime']['label']).' '.t3lib_BEfunc::dateTimeAge($row['endtime'],-1,'date');
 		if ($row['fe_group'])	{
 			if ($row['fe_group']<0)	{
 				$label = $LANG->sL(t3lib_BEfunc::getLabelFromItemlist('pages','fe_group',$row['fe_group']));

@@ -172,6 +172,13 @@ if (TYPO3_MODE=='BE')	{
 				'eval' => 'trim'
 			)
 		),
+		'nav_hide' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.nav_hide',
+			'config' => Array (
+				'type' => 'check'
+			)
+		),
 		'subtitle' => Array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.subtitle',
@@ -435,15 +442,15 @@ if (TYPO3_MODE=='BE')	{
 
 		// Totally overriding all type-settings:
 	$TCA['pages']['types'] = Array (
-		'1' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
-		'2' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
-		'3' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, url;;4;;3-3-3, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
-		'4' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, shortcut;;9;;3-3-3, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
-		'5' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, --div--, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
-		'7' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_title, --div--, mount_pid;;8;;3-3-3, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
+		'1' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
+		'2' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, abstract;;5;;3-3-3, keywords, description, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
+		'3' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, nav_hide, url;;;;3-3-3, urltype, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
+		'4' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;3;;2-2-2, nav_hide, shortcut;;;;3-3-3, shortcut_mode, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
+		'5' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
+		'7' => Array('showitem' => 'hidden;;;;1-1-1, doktype;;2;button, title;;3;;2-2-2, subtitle, nav_hide, nav_title, --div--, mount_pid;;;;3-3-3, mount_pid_ol, media;;;;4-4-4, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module, content_from_pid'),
 		'199' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2, TSconfig;;6;nowrap;5-5-5, storage_pid;;7'),
 		'254' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;LLL:EXT:lang/locallang_general.php:LGL.title;;;2-2-2, --div--, TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module'),
-		'255' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2, TSconfig;;6;nowrap;5-5-5, storage_pid;;7')
+		'255' => Array('showitem' => 'hidden;;;;1-1-1, doktype, title;;;;2-2-2')
 	);
 		// Merging palette settings:
 		// t3lib_div::array_merge() MUST be used - otherwise the keys will be re-numbered!
@@ -451,10 +458,7 @@ if (TYPO3_MODE=='BE')	{
 		'1' => Array('showitem' => 'starttime,endtime,fe_group,extendToSubpages'),
 		'2' => Array('showitem' => 'layout, lastUpdated, newUntil, no_search'),
 		'3' => Array('showitem' => 'alias, target, no_cache, cache_timeout'),
-		'4' => Array('showitem' => 'urltype'),
 		'5' => Array('showitem' => 'author,author_email'),
-		'8' => Array('showitem' => 'mount_pid_ol'),
-		'9' => Array('showitem' => 'shortcut_mode'),
 	));
 
 
