@@ -950,7 +950,7 @@ class t3lib_cs {
 		while (!feof($fh))	{
 			$line = fgets($fh);
 				// has a lot of info
-			list($char,,$cat,,,$decomp,,,$num,,,,$upper,$lower,$title,) = split(';', rtrim($line));
+			list($char,$name,$cat,,,$decomp,,,$num,,,,$upper,$lower,$title,) = split(';', rtrim($line));
 
 			$ord = hexdec($char);
 			if ($ord > 0xFFFF)	break;	// only process the BMP
@@ -969,6 +969,16 @@ class t3lib_cs {
 
 				case 'N':	// numeric value
 					if ($ord > 0x80 && $num != '')	$number["U+$char"] = $num;
+			}
+
+				// accented Latin letters without "official" decomposition
+			$match = array();
+			if (ereg('^LATIN (SMALL|CAPITAL) LETTER ([A-Z]) WITH',$name,$match) && !$decomp)	{
+				$c = ord($match[2]);
+				if ($match[1] == 'SMALL')	$c += 32;
+
+				$decomposition["U+$char"] = array(dechex($c));
+				continue;
 			}
 
 			$match = array();
@@ -1036,27 +1046,45 @@ class t3lib_cs {
 
 			// custom decompositions
 		$decomposition['U+00A5'] = array('0079','0065','006E');	// YEN SIGN => yen
+		$decomposition['U+00A6'] = array('007C');		// BROKEN BAR => |
+		$decomposition['U+00AB'] = array('003C','003C');	// LEFT-POINTING DOUBLE ANGLE QUOTATION MARK => <<
 		$decomposition['U+00A9'] = array('0028','0063','0029');	// COPYRIGHT SIGN => (c)
-		$decomposition['U+00AE'] = array('0028','0072','0029');	// REGISTERED SIGN => (R)
+		$decomposition['U+00AE'] = array('0028','0052','0029');	// REGISTERED SIGN => (R)
 		$decomposition['U+00B1'] = array('002B','002F','002D');	// PLUS-MINUS SIGN => +/-
 		$decomposition['U+00B5'] = array('0075');		// MICRO SIGN => u
-		$decomposition['U+00C4'] = array('0041','0045');	// LATIN CAPITAL LETTER A WITH DIAERESIS => AE
+		$decomposition['U+00B7'] = array('002A');		// MIDDLE DOT => *
+		$decomposition['U+00BB'] = array('003E','003E');	// RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK => <<
+		$decomposition['U+00C4'] = array('0041','0045');	// LATIN CAPITAL LETTER A WITH DIAERESIS => AE (German)
 		$decomposition['U+00C5'] = array('0041','0041');	// LATIN CAPITAL LETTER A WITH RING ABOVE => AA (Danish)
-		$decomposition['U+00C6'] = array('0041','0045');	// LATIN CAPITAL LETTER AE => AE
-		$decomposition['U+00D6'] = array('004F','0045');	// LATIN CAPITAL LETTER O WITH DIAERESIS => OE
+		$decomposition['U+00C6'] = array('0041','0045');	// LATIN CAPITAL LETTER AE => AE (Danish)
+		$decomposition['U+00D6'] = array('004F','0045');	// LATIN CAPITAL LETTER O WITH DIAERESIS => OE (German)
+		$decomposition['U+00D7'] = array('002A');		// MULTIPLICATION SIGN => *
 		$decomposition['U+00D8'] = array('004F','0045');	// LATIN CAPITAL LETTER O WITH STROKE => OE (Danish)
-		$decomposition['U+00DC'] = array('0055','0045');	// LATIN CAPITAL LETTER U WITH DIAERESIS => UE
-		$decomposition['U+00E4'] = array('0061','0065');	// LATIN SMALL LETTER A WITH DIAERESIS => ae
-		$decomposition['U+00E5'] = array('0061','0061');	// LATIN SMALL LETTER A WITH RING ABOVE => aa
+		$decomposition['U+00DC'] = array('0055','0045');	// LATIN CAPITAL LETTER U WITH DIAERESIS => UE (German)
+		$decomposition['U+00E4'] = array('0061','0065');	// LATIN SMALL LETTER A WITH DIAERESIS => ae (German)
+		$decomposition['U+00E5'] = array('0061','0061');	// LATIN SMALL LETTER A WITH RING ABOVE => aa (Danish)
 		$decomposition['U+00DF'] = array('0073','0073');	// LATIN SMALL LETTER SHARP S => ss (German)
-		$decomposition['U+00E6'] = array('0061','0065');	// LATIN SMALL LETTER AE => ae
-		$decomposition['U+00F6'] = array('006F','0065');	// LATIN SMALL LETTER O WITH DIAERESIS => oe
+		$decomposition['U+00E6'] = array('0061','0065');	// LATIN SMALL LETTER AE => ae (Danish)
+		$decomposition['U+00F6'] = array('006F','0065');	// LATIN SMALL LETTER O WITH DIAERESIS => oe (German)
+		$decomposition['U+00F7'] = array('002F');		// DIVISION SIGN => /
 		$decomposition['U+00F8'] = array('006F','0065');	// LATIN SMALL LETTER O WITH STROKE => oe (Danish)
-		$decomposition['U+00FC'] = array('0075','0065');	// LATIN SMALL LETTER U WITH DIAERESIS => ue
+		$decomposition['U+00FC'] = array('0075','0065');	// LATIN SMALL LETTER U WITH DIAERESIS => ue (German)
 		$decomposition['U+0152'] = array('004F','0045');	// LATIN CAPITAL LETTER OE => OE
 		$decomposition['U+0153'] = array('006F','0065');	// LATIN SMALL LETTER OE => oe
+		$decomposition['U+0192'] = array('0066');		// LATIN SMALL LETTER F WITH HOOK => f
 		$decomposition['U+02BC'] = array('0027');		// MODIFIER LETTER APOSTROPHE => '
 		$decomposition['U+02CA'] = array('0027');		// MODIFIER LETTER ACUTE ACCENT => '
+		$decomposition['U+2010'] = array('002D');		// HYPHEN => -
+		$decomposition['U+2013'] = array('002D');		// EN DASH => -
+		$decomposition['U+2014'] = array('002D');		// EM DASH => -
+		$decomposition['U+2018'] = array('0060');		// LEFT SINGLE QUOTATION MARK => `
+		$decomposition['U+2019'] = array('0027');		// RIGHT SINGLE QUOTATION MARK >= '
+		$decomposition['U+201C'] = array('0022');		// LEFT DOUBLE QUOTATION MARK => "
+		$decomposition['U+201D'] = array('0022');		// RIGHT DOUBLE QUOTATION MARK => "
+		$decomposition['U+201E'] = array('0022');		// DOUBLE LOW-9 QUOTATION MARK => "
+		$decomposition['U+2022'] = array('002A');		// BULLET => *
+		$decomposition['U+2039'] = array('003C');		// SINGLE LEFT-POINTING ANGLE QUOTATION MARK => <
+		$decomposition['U+203A'] = array('003E');		// SINGLE RIGHT-POINTING ANGLE QUOTATION MARK => >
 		$decomposition['U+2044'] = array('002F');		// FRACTION SLASH => /
 		$decomposition['U+20A0'] = array('0045','0055','0052');	// EURO-CURRENCY SIGN => EUR
 		$decomposition['U+20AC'] = array('0045','0055','0052');	// EURO-CURRENCY SIGN => EUR
@@ -1141,23 +1169,26 @@ class t3lib_cs {
 		}
 
 			// UTF-8 case folding is used as the base conversion table
-		if (!$this->initUnicodeData())	{
+		if (!$this->initUnicodeData('case'))	{
 			return false;
 		}
 
 		$nochar = chr($this->noCharByteVal);
 		foreach ($this->parsedCharsets[$charset]['local'] as $ci => $utf8)	{
 				// reconvert to charset (don't use chr() of numeric value, might be muli-byte)
-			$c = $this->conv($utf8, 'utf-8', $charset);
+			$c = $this->utf8_decode($utf8, $charset);
 
-			$cc = $this->conv($this->caseFolding['utf-8']['toUpper'][$utf8], 'utf-8', $charset);
-			if ($cc && $cc != $nochar)	$this->caseFolding[$charset]['toUpper'][$c] = $cc;
+				// $cc = $this->conv($this->caseFolding['utf-8']['toUpper'][$utf8], 'utf-8', $charset);
+			$cc = $this->utf8_decode($this->caseFolding['utf-8']['toUpper'][$utf8], $charset);
+			if ($cc != '' && $cc != $nochar)	$this->caseFolding[$charset]['toUpper'][$c] = $cc;
 
-			$cc = $this->conv($this->caseFolding['utf-8']['toLower'][$utf8], 'utf-8', $charset);
-			if ($cc && $cc != $nochar)	$this->caseFolding[$charset]['toLower'][$c] = $cc;
+				// $cc = $this->conv($this->caseFolding['utf-8']['toLower'][$utf8], 'utf-8', $charset);
+			$cc = $this->utf8_decode($this->caseFolding['utf-8']['toLower'][$utf8], $charset);
+			if ($cc != '' && $cc != $nochar)	$this->caseFolding[$charset]['toLower'][$c] = $cc;
 
-			$cc = $this->conv($this->caseFolding['utf-8']['toTitle'][$utf8], 'utf-8', $charset);
-			if ($cc && $cc != $nochar)	$this->caseFolding[$charset]['toTitle'][$c] = $cc;
+				// $cc = $this->conv($this->caseFolding['utf-8']['toTitle'][$utf8], 'utf-8', $charset);
+			$cc = $this->utf8_decode($this->caseFolding['utf-8']['toTitle'][$utf8], $charset);
+			if ($cc != '' && $cc != $nochar)	$this->caseFolding[$charset]['toTitle'][$c] = $cc;
 		}
 
 			// add the ASCII case table
@@ -1175,6 +1206,51 @@ class t3lib_cs {
 		return 3;
 	}
 
+	/**
+	 * This function initializes the to-ASCII conversion table for a charset other than UTF-8.
+	 * This function is automatically called by the ASCII transliteration functions.
+	 *
+	 * @param	string		Charset for which to initialize conversion.
+	 * @return	integer		Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
+	 * @access private
+	 */
+	function initToASCII($charset)	{
+			// Only process if the case table is not yet loaded:
+		if (is_array($this->toASCII[$charset]))	return 1;
+
+			// Use cached version if possible
+		$cacheFile = t3lib_div::getFileAbsFileName('typo3temp/csascii_'.$charset.'.tbl');
+		if ($cacheFile && @is_file($cacheFile))	{
+			$this->toASCII[$charset] = unserialize(t3lib_div::getUrl($cacheFile));
+			return 2;
+		}
+
+			// init UTF-8 conversion for this charset
+		if (!$this->initCharset($charset))	{
+			return false;
+		}
+
+			// UTF-8/ASCII transliteration is used as the base conversion table
+		if (!$this->initUnicodeData('ascii'))	{
+			return false;
+		}
+
+		$nochar = chr($this->noCharByteVal);
+		foreach ($this->parsedCharsets[$charset]['local'] as $ci => $utf8)	{
+				// reconvert to charset (don't use chr() of numeric value, might be muli-byte)
+			$c = $this->utf8_decode($utf8, $charset);
+
+			if (isset($this->toASCII['utf-8'][$utf8]))	{
+				$this->toASCII[$charset][$c] = $this->toASCII['utf-8'][$utf8];
+			}
+		}
+
+		if ($cacheFile)	{
+				t3lib_div::writeFile($cacheFile,serialize($this->toASCII[$charset]));
+		}
+
+		return 3;
+	}
 
 
 
@@ -1350,7 +1426,7 @@ class t3lib_cs {
 	 * Translates all characters of a string into their respective case values.
 	 * Unlike strtolower() and strtoupper() this method is locale independent.
 	 * Note that the string length may change!
-	 * eg. lower case German "ß" (scharfes S) becomes uper case "SS"
+	 * eg. lower case German "ß" (sharp S) becomes uper case "SS"
 	 * Unit-tested by Kasper
 	 * Real case folding is language dependent, this method ignores this fact.
 	 *
@@ -1371,7 +1447,7 @@ class t3lib_cs {
 			}
 		} elseif ($charset == 'utf-8')	{
 			return $this->utf8_conv_case($string,$case);
-		} elseif ($this->eucBasedSets[$charset])	{
+		} elseif (isset($this->eucBasedSets[$charset]))	{
 			return $this->euc_conv_case($string,$case,$charset);
 		}
 
@@ -1400,7 +1476,6 @@ class t3lib_cs {
 
 	/**
 	 * Converts special chars (like ÆØÅæøå, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
-	 * CURRENTLY IT IS  FULLY IMPLEMENTED ONLY FOR UTF-8!!!
 	 *
 	 * @param	string		Character set of string
 	 * @param	string		Input string to convert
@@ -1409,11 +1484,25 @@ class t3lib_cs {
 	function specCharsToASCII($charset,$string)	{
 		if ($charset == 'utf-8')	{
 			return $this->utf8_toASCII($string);
-		} else {
-			$string = t3lib_div::convUmlauts($string);
+		} elseif (isset($this->eucBasedSets[$charset]))	{
+			return $this->euc_toASCII($string,$charset);
 		}
 
-		return $string;
+		// treat everything else as single-byte encoding
+		if (!$this->initToASCII($charset))	return $string;	// do nothing
+		$out = '';
+		$ascii =& $this->toASCII[$charset];
+
+		for($i=0; isset($string{$i}); $i++)	{
+			$c = $string{$i};
+			if (isset($ascii[$c]))	{
+				$out .= $ascii[$c];
+			} else {
+				$out .= $c;
+			}
+		}
+
+		return $out;
 	}
 
 
@@ -1629,7 +1718,7 @@ class t3lib_cs {
 	 * @see strtolower(), strtoupper(), mb_convert_case()
 	 */
 	function utf8_conv_case($str,$case)	{
-		if (!$this->initUnicodeData())	return $str;	// do nothing
+		if (!$this->initUnicodeData('case'))	return $str;	// do nothing
 
 		$out = '';
 		$caseConv =& $this->caseFolding['utf-8'][$case];
@@ -1659,8 +1748,9 @@ class t3lib_cs {
 	 *
 	 * @param	string		Input string to convert
 	 * @return	string		The converted string
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
-	function utf8_toASCII(&$str)	{
+	function utf8_toASCII($str)	{
 		if (!$this->initUnicodeData('ascii'))	return $str;	// do nothing
 
 		$out = '';
@@ -1852,8 +1942,9 @@ class t3lib_cs {
 		$sjis = ($charset == 'shift_jis');
 		$out = '';
 		$caseConv =& $this->caseFolding[$charset][$case];
-		for($i=0; $mbc=$str{$i}; $i++)	{
-			$c = ord($str{$i});
+		for($i=0; isset($str{$i}); $i++)	{
+			$mbc = $str{$i};
+			$c = ord($mbc);
 
 			if ($sjis)	{
 				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	{	// a double-byte char
@@ -1868,9 +1959,8 @@ class t3lib_cs {
 				}
 			}
 
-			$cc = $caseConv[$mbc];
-			if ($cc)	{
-				$out .= $cc;
+			if (isset($caseConv[$mbc]))	{
+				$out .= $caseConv[$mbc];
 			} else {
 				$out .= $mbc;
 			}
@@ -1878,6 +1968,48 @@ class t3lib_cs {
 
 		return $out;
 	}
+
+	/**
+	 * Converts chars with accents, umlauts or composed to ASCII equivalents.
+	 *
+	 * @param	string		Input string to convert
+	 * @param	string		The charset
+	 * @return	string		The converted string
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */
+	function euc_toASCII($str,$charset)	{
+		if (!$this->initToASCII($charset))	return $str;	// do nothing
+
+		$sjis = ($charset == 'shift_jis');
+		$out = '';
+		$toASCII =& $this->toASCII[$charset];
+
+		for($i=0; isset($str{$i}); $i++)	{
+			$mbc = $str{$i};
+			$c = ord($mbc);
+			if ($sjis)	{
+				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	{	// a double-byte char
+					$mbc = substr($str,$i,2);
+					$i++;
+				}
+			}
+			else	{
+				if ($c >= 0x80)	{	// a double-byte char
+					$mbc = substr($str,$i,2);
+					$i++;
+				}
+			}
+
+			if (isset($toASCII[$mbc]))	{
+				$out .= $toASCII[$mbc];
+			} else {
+				$out .= $mbc;
+			}
+		}
+
+		return $out;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_cs.php'])	{
