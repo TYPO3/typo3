@@ -1,16 +1,5 @@
-TIRSDAG:
-- Improve lexer:
-	- See BASIC_LEXER from Oracle
-	- CJK hack from Zope.
-	- Test
-	- Implement in search query analysis.
-- TESTING with russian, danish, chinese, japanese etc...
-- CVS
-- split search words by new lexer function! (getSearchWords)
-
 ONSDAG:
 - Crawler
-
 
 TORSDAG / FREDAG:
 - Test / Koordinering.
@@ -21,15 +10,16 @@ Search test:
 - external media respect privacy of pages?
 - external media on multiple pages with DIFFERENT languages?
 - checkResume: Should it also check for gr_list "0,-1"?
-
+- case-sensitivity?
+- Warning: phash-row "114682730" didn't have a representation in the index_section table! on references page!
 Example på alternativ søgning!
 XHTML i frontend?
 
 Backend modules:
 - Proper skinning? / getLL? / XHTML
+
+Implement stop-word setting in: ""Top-20 words by count:" and a list seperate from that (in main module?)
 </diverse>
-
-
 
 Test kaniner (indexed search / caching?):
 	- 3DS

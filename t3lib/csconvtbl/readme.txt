@@ -162,8 +162,8 @@ http://www.microsoft.com/globaldev/reference/dbcs/932.htm
 
 gb2312.tbl
 Microsoft Windows Codepage : 936 (Simplified Chinese GBK)
-gb2312 936 Chinese Simplified (GB2312) 
-gb_2312-80 936 Chinese Simplified (GB2312) 
+gb2312 936 Chinese Simplified (GB2312)
+gb_2312-80 936 Chinese Simplified (GB2312)
 http://www.microsoft.com/globaldev/reference/dbcs/936.htm
 (Multibyte)
 Note: this is a MS-specific superset of the real GB2312

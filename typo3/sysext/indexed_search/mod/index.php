@@ -31,6 +31,34 @@
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   83: class SC_mod_tools_isearch_index
+ *   97:     function init()
+ *  110:     function jumpToUrl(URL)
+ *  133:     function menuConfig()
+ *  156:     function main()
+ *  193:     function printContent()
+ *
+ *              SECTION: OTHER FUNCTIONS:
+ *  217:     function getRecordsNumbers()
+ *  236:     function tableHead($str)
+ *  245:     function getPhashStat()
+ *  282:     function getPhashT3pages()
+ *  351:     function getPhashExternalDocs()
+ *  420:     function formatFeGroup($fegroup_recs)
+ *  436:     function formatCHash($arr)
+ *  451:     function getNumberOfSections($phash)
+ *  463:     function getNumberOfWords($phash)
+ *  475:     function getGrlistRecord($phash)
+ *  491:     function getNumberOfFulltext($phash)
+ *  502:     function getPhashTypes()
+ *  532:     function countUniqueTypes($item_type)
+ *
+ * TOTAL FUNCTIONS: 18
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 
@@ -63,6 +91,8 @@ class SC_mod_tools_isearch_index {
 
 	/**
 	 * Initialization
+	 *
+	 * @return	[type]		...
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -94,6 +124,12 @@ class SC_mod_tools_isearch_index {
 		debug(array_keys($indexer->external_parsers));
 		debug($indexer->internal_log);
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function menuConfig()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -111,6 +147,12 @@ class SC_mod_tools_isearch_index {
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP("SET"), $this->MCONF["name"], "ses");
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
@@ -142,6 +184,12 @@ class SC_mod_tools_isearch_index {
 			break;
 		}
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 
 		$this->content.=$this->doc->endPage();
@@ -164,7 +212,7 @@ class SC_mod_tools_isearch_index {
 	 ***************************/
 
 	/**
-	 *
+	 * @return	[type]		...
 	 */
 	function getRecordsNumbers()	{
 		$tables=explode(",","index_phash,index_words,index_rel,index_grlist,index_section,index_fulltext");
@@ -178,9 +226,22 @@ class SC_mod_tools_isearch_index {
 		}
 		return $recList;
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$str: ...
+	 * @return	[type]		...
+	 */
 	function tableHead($str)	{
 		return "<strong>".$str.":&nbsp;&nbsp;&nbsp;</strong>";
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function getPhashStat()	{
 		$recList = array();
 
@@ -212,6 +273,12 @@ class SC_mod_tools_isearch_index {
 
 		return $recList;
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function getPhashT3pages()	{
 		$recList[]=array(
 			$this->tableHead("id/type"),
@@ -275,6 +342,12 @@ class SC_mod_tools_isearch_index {
 		}
 		return $recList;
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function getPhashExternalDocs()	{
 		$recList[]=array(
 			$this->tableHead("Filename"),
@@ -337,6 +410,13 @@ class SC_mod_tools_isearch_index {
 		}
 		return $recList;
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$fegroup_recs: ...
+	 * @return	[type]		...
+	 */
 	function formatFeGroup($fegroup_recs)	{
 		reset($fegroup_recs);
 		$str = array();
@@ -346,6 +426,13 @@ class SC_mod_tools_isearch_index {
 		arsort($str);
 		return implode("|",$str);
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$arr: ...
+	 * @return	[type]		...
+	 */
 	function formatCHash($arr)	{
 		reset($arr);
 		$list=array();
@@ -354,16 +441,37 @@ class SC_mod_tools_isearch_index {
 		}
 		return implode("<BR>",$list);
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$phash: ...
+	 * @return	[type]		...
+	 */
 	function getNumberOfSections($phash)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_section', 'phash='.intval($phash));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$phash: ...
+	 * @return	[type]		...
+	 */
 	function getNumberOfWords($phash)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_rel', 'phash='.intval($phash));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$phash: ...
+	 * @return	[type]		...
+	 */
 	function getGrlistRecord($phash)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash='.intval($phash));
 		$allRows = array();
@@ -373,11 +481,24 @@ class SC_mod_tools_isearch_index {
 		}
 		return $allRows;
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$phash: ...
+	 * @return	[type]		...
+	 */
 	function getNumberOfFulltext($phash)	{
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_fulltext', 'phash='.intval($phash));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function getPhashTypes()	{
 		$recList=array();
 
@@ -401,6 +522,13 @@ class SC_mod_tools_isearch_index {
 
 		return $recList;
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$item_type: ...
+	 * @return	[type]		...
+	 */
 	function countUniqueTypes($item_type)	{
 			// TYPO3 pages, unique
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'item_type='.intval($item_type), 'phash_grouping');

@@ -35,43 +35,25 @@
  *
  *
  *
- *   91: class tx_indexedsearch_lexer
- *  105:     function tx_indexedsearch_lexer()
- *  117:     function split2Words($wordString)
+ *   73: class tx_indexedsearch_lexer
+ *  104:     function tx_indexedsearch_lexer()
+ *  115:     function split2Words($wordString)
  *
  *              SECTION: Helper functions
- *  176:     function utf8_ord(&$str, &$len, $pos=0, $hex=false)
- *  201:     function utf8_is_letter(&$str, &$len, $pos=0, $scan=false)
- *  284:     function get_word($charset, &$str, $pos=0)
+ *  178:     function addWords(&$words, &$wordString, $start, $len)
+ *  239:     function get_word(&$str, $pos=0)
+ *  264:     function utf8_is_letter(&$str, &$len, $pos=0)
+ *  328:     function charType($cp)
+ *  371:     function utf8_ord(&$str, &$len, $pos=0, $hex=false)
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
 
 
-/*
 
-DESCRIPTION OF (CJK) ALGORITHM
-
-  Continuous letters and numbers make up words.  Spaces and symbols
-  separate letters and numbers into words.  This is sufficient for
-  all western text.
-
-  CJK doesn't use spaces or separators to separate words, so the only
-  way to really find out what constitutes a word would be to have a
-  dictionary and advanced heuristics.  Instead, we form pairs from
-  consecutive characters, in such a way that searches will find only
-  characters that appear more-or-less the right sequence.  For example:
-
-    ABCDE => AB BC CD DE
-
-  This works okay since both the index and the search query is split
-  in the same manner, and since the set of characters is huge so the
-  extra matches are not significant.
-
-*/
 
 
 
@@ -90,11 +72,29 @@ DESCRIPTION OF (CJK) ALGORITHM
  */
 class tx_indexedsearch_lexer {
 
-	var $debug = FALSE;
+		// Debugging options:
+	var $debug = FALSE;		// If set, the debugString is filled with HTML output highlighting search / non-search words (for backend display)
 	var $debugString = '';
 
 	var $csObj;		// Charset class object , t3lib_cs
 
+
+		// Configuration of the lexer:
+	var $lexerConf = array(
+		'printjoins' => array(	// This is the Unicode numbers of chars that are allowed INSIDE a sequence of letter chars (alphanum + CJK)
+			0x2e,	// "."
+			0x2d,	// "-"
+			0x5f,	// "_"
+			0x3a,	// ":"
+			0x2f,	// "/"
+			0x2d,	// "-"
+			0x27,	// "'"
+		),
+		'casesensitive' => FALSE,	// Set, if case sensitive indexing is wanted.
+		'removeChars' => array(		// List of unicode numbers of chars that will be removed before words are returned (eg. "-")
+			0x2d	// "-"
+		)
+	);
 
 
 	/**
@@ -105,7 +105,6 @@ class tx_indexedsearch_lexer {
 	function tx_indexedsearch_lexer() {
 		$this->csObj = &t3lib_div::makeInstance('t3lib_cs');
 	}
-
 
 	/**
 	 * Splitting string into words.
@@ -120,7 +119,9 @@ class tx_indexedsearch_lexer {
 		$this->debugString = '';
 
 			// Then convert the string to lowercase:
-		$wordString = $this->csObj->conv_case('utf-8', $wordString, 'toLower');
+		if (!$this->lexerConf['casesensitive'])	{
+			$wordString = $this->csObj->conv_case('utf-8', $wordString, 'toLower');
+		}
 
 			// Now, splitting words:
 		$len = 0;
@@ -130,12 +131,14 @@ class tx_indexedsearch_lexer {
 		$this->debugString = '';
 
 		while(1)	{
-			list($start,$len) = $this->get_word('utf-8', $wordString, $pos);
+			list($start,$len) = $this->get_word($wordString, $pos);
 			if ($len)	{
-				$words[] = substr($wordString,$start,$len);
+
+				$this->addWords($words, $wordString,$start,$len);
 
 				if ($this->debug)	{
-					$this->debugString.= '<span style="color:red">'.htmlspecialchars(substr($wordString,$pos,$start-$pos)).'</span>'.htmlspecialchars(substr($wordString,$start,$len));
+					$this->debugString.= '<span style="color:red">'.htmlspecialchars(substr($wordString,$pos,$start-$pos)).'</span>'.
+										htmlspecialchars(substr($wordString,$start,$len));
 				}
 
 				$pos = $start+$len;
@@ -156,13 +159,207 @@ class tx_indexedsearch_lexer {
 
 
 
-
-
-	/************************************
+	/**********************************
 	 *
 	 * Helper functions
 	 *
-	 ************************************/
+	 ********************************/
+
+
+	/**
+	 * Add word to word- array
+	 * This function should be used to make sure CJK sequences are split up in the right way
+	 *
+	 * @param	array		Array of accumulated words
+	 * @param	string		Complete Input string from where to extract word
+	 * @param	integer		Start position of word in input string
+	 * @param	integer		The Length of the word string from start position
+	 * @return	void
+	 */
+	function addWords(&$words, &$wordString, $start, $len)	{
+
+			// Get word out of string:
+		$theWord = substr($wordString,$start,$len);
+
+			// Get next chars unicode number and find type:
+		$bc = 0;
+		$cp = $this->utf8_ord($theWord, $bc);
+		list($cType) = $this->charType($cp);
+
+			// If string is a CJK sequence we follow this algorithm:
+			/*
+				DESCRIPTION OF (CJK) ALGORITHM
+
+				Continuous letters and numbers make up words.  Spaces and symbols
+				separate letters and numbers into words.  This is sufficient for
+				all western text.
+
+				CJK doesn't use spaces or separators to separate words, so the only
+				way to really find out what constitutes a word would be to have a
+				dictionary and advanced heuristics.  Instead, we form pairs from
+				consecutive characters, in such a way that searches will find only
+				characters that appear more-or-less the right sequence.  For example:
+
+					ABCDE => AB BC CD DE
+
+				This works okay since both the index and the search query is split
+				in the same manner, and since the set of characters is huge so the
+				extra matches are not significant.
+
+				(Hint taken from ZOPEs chinese user group)
+
+				[Kasper: As far as I can see this will only work well with or-searches!]
+			*/
+		if ($cType == 'cjk')	{
+				// Find total string length:
+			$strlen = $this->csObj->utf8_strlen($theWord);
+
+				// Traverse string length and add words as pairs of two chars:
+			for ($a=0; $a<$strlen; $a++)	{
+				if ($strlen==1 || $a<$strlen-1)	{
+					$words[] = $this->csObj->utf8_substr($theWord, $a, 2);
+				}
+			}
+		} else {	// Normal "single-byte" chars:
+				// Remove chars:
+			foreach($this->lexerConf['removeChars'] as $skipJoin)	{
+				$theWord = str_replace($this->csObj->UnumberToChar($skipJoin),'',$theWord);
+			}
+				// Add word:
+			$words[] = $theWord;
+		}
+	}
+
+	/**
+	 * Get the first word in a given utf-8 string (initial non-letters will be skipped)
+	 *
+	 * @param	string		Input string (reference)
+	 * @param	integer		Starting position in input string
+	 * @return	array		0: start, 1: len or false if no word has been found
+	 */
+	function get_word(&$str, $pos=0)	{
+
+		$len=0;
+
+			// If return is true, a word was found starting at this position, so returning position and length:
+		if ($this->utf8_is_letter($str, $len, $pos))	{
+			return array($pos,$len);
+		}
+
+			// If the return value was false it means a sequence of non-word chars were found (or blank string) - so we will start another search for the word:
+		$pos += $len;
+		if ($str{$pos} == '')	return false;	// check end of string before looking for word of course.
+
+		$this->utf8_is_letter($str, $len, $pos);
+		return array($pos,$len);
+	}
+
+	/**
+	 * See if a character is a letter (or a string of letters or non-letters).
+	 *
+	 * @param	string		Input string (reference)
+	 * @param	integer		Byte-length of character sequence (reference, return value)
+	 * @param	integer		Starting position in input string
+	 * @return	boolean		letter (or word) found
+	 */
+	function utf8_is_letter(&$str, &$len, $pos=0)	{
+		global $cs;
+
+		$len = 0;
+		$bc = 0;
+		$cType = $cType_prev = false; // Letter type
+		$letter = true; // looking for a letter?
+
+		if ($str{$pos} == '')	return false;	// Return false on end-of-string at this stage
+
+		while(1) {
+
+				// If characters has been obtained we will know whether the string starts as a sequence of letters or not:
+			if ($len)	{
+				if ($letter)	{	// We are in a sequence of words
+					if (!$cType 	// The char was NOT a letter
+							|| ($cType_prev=='cjk' && t3lib_div::inList('num,alpha',$cType)) || ($cType=='cjk' && t3lib_div::inList('num,alpha',$cType_prev))	// ... or the previous and current char are from single-byte sets vs. asian CJK sets
+							)	{
+							// Check if the non-letter char is NOT a print-join char because then it signifies the end of the word.
+						if (!in_array($cp,$this->lexerConf['printjoins']))	{
+								// If a printjoin start length has been record, set that back now so the length is right (filtering out multiple end chars)
+							if ($printJoinLgd)	{
+								$len = $printJoinLgd;
+							}
+							#debug($cp);
+							return true;
+						} else {	// If a printJoin char is found, record the length if it has not been recorded already:
+							if (!$printJoinLgd)	$printJoinLgd = $len;
+						}
+					} else {	// When a true letter is found, reset printJoinLgd counter:
+						$printJoinLgd = 0;
+					}
+				}
+				elseif (!$letter && $cType)	{	// end of non-word reached
+					return false;
+				}
+			}
+			$len += $bc;	// add byte-length of last found character
+
+			if ($str{$pos} == '')	return $letter;	// end of string; return status of string till now
+
+				// Get next chars unicode number:
+			$cp = $this->utf8_ord($str,$bc,$pos);
+			$pos += $bc;
+
+				// Determine the type:
+			$cType_prev = $cType;
+			list($cType) = $this->charType($cp);
+			if ($cType)	{
+				continue;
+			}
+
+				// Setting letter to false if the first char was not a letter!
+			if (!$len)	$letter = false;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determine the type of character
+	 *
+	 * @param	integer		Unicode number to evaluate
+	 * @return	array		Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
+	 */
+	function charType($cp)	{
+
+			// Numeric?
+		if ($cp >= 0x30 && $cp <= 0x39)	{
+			return array('num');
+		}
+
+			// LOOKING for Alpha chars:
+		if (
+				($cp >= 0x41 && $cp <= 0x5A) ||		// Basic Latin: capital letters
+				($cp >= 0x61 && $cp <= 0x7A) ||		// small letters
+				($cp >= 0xC0 && $cp <= 0xFF && $cp != 0xD7 && $cp != 0xF7)	|| // Latin-1 Supplement (0x80-0xFF) excluding multiplication and division sign
+				($cp >= 0x100 && $cp < 0x280) ||	// Latin Extended-A and -B
+				($cp >= 0x370 && $cp < 0x400) ||	// Greek and Coptic
+				($cp >= 0x400 && $cp < 0x530) ||	// Cyrillic and Cyrillic Supplement
+				($cp >= 0x590 && $cp < 0x600) ||	// Hebrew
+				($cp >= 0x600 && $cp < 0x700) 		// Arabic
+			)	{
+			return array('alpha');
+		}
+
+			// Looking for CJK (Chinese / Japanese / Korean)
+			// Ranges are not certain - deducted from the translation tables in t3lib/csconvtbl/
+		if (
+				($cp >= 0x4E02 && $cp <= 0x9FA5) ||		// CJK UNIFIED IDEOGRAPH
+				($cp >= 0xAC02 && $cp <= 0xD79D) ||		// HANGUL SYLLABLE
+				($cp >= 0x3131 && $cp <= 0x318E) ||		// HANGUL LETTER
+				($cp >= 0x3041 && $cp <= 0x3093) ||		// HIRAGANA letters
+				($cp >= 0x30A1 && $cp <= 0x30F6)		// KATAKANA letters
+			)	{
+			return array('cjk');
+		}
+	}
 
 	/**
 	 * Converts a UTF-8 multibyte character to a UNICODE codepoint
@@ -187,114 +384,6 @@ class tx_indexedsearch_lexer {
 		}
 
 		return $hex ? 'x'.dechex($ord) : $ord;
-	}
-
-	/**
-	 * See if a character is a letter (or a string of letters or non-letters).
-	 *
-	 * @param	string		Input string (reference)
-	 * @param	integer		Byte-length of character sequence (reference, return value)
-	 * @param	integer		Starting position in input string
-	 * @param	boolean		If set will scan for a whole sequence of characters
-	 * @return	boolean		letter (or word) found
-	 */
-	function utf8_is_letter(&$str, &$len, $pos=0, $scan=false)	{
-		global $cs;
-
-		$len = 0;
-		$bc = 0;
-		$found = false; // found a letter
-		$letter = true; // looking for a letter?
-
-		if ($str{$pos} == '')	return false;
-
-		while(1) {
-			if ($len)	{
-				if ($scan)	{
-					if ($letter && !$found)	{	// end of word reached
-						return true;
-					}
-					elseif (!$letter && $found)	{	// end of non-word reached
-						return false;
-					}
-				}
-				else	{
-					return $found;	// report single letter status
-				}
-			}
-			$len += $bc;	// add byte-length of last found character
-			$found = false;
-
-			if ($str{$pos} == '')	return $letter;	// end of string
-
-			$cp = $this->utf8_ord($str,$bc,$pos);
-			$pos += $bc;
-
-			if ($cp >= 0x41 && $cp <= 0x5A ||	// Basic Latin: capital letters
-			    $cp >= 0x30 && $cp <= 0x39 ||	// Numbers
-				$cp >= 0x61 && $cp <= 0x7A)	{	//		small letters
-				$found = true;
-				continue;
-			}
-
-			if ($cp >= 0xC0 && $cp <= 0xFF)	{	// Latin-1 Supplement (0x80-0xFF)
-				// 0x80-0x9F are unassigned
-				// 0xA0-0xBF are non-letters
-
-				if ($cp != 0xD7 && $cp != 0xF7)	{	// multiplication and division sign
-					$found = true;
-					continue;
-				}
-			} elseif ($cp >= 0x100 && $cp < 0x280)	{	// Latin Extended-A and -B
-				$found = true;
-				continue;
-			} elseif ($cp >= 0x370 && $cp < 0x400)	{	// Greek and Coptic
-				$found = true;
-				continue;
-			} elseif ($cp >= 0x400 && $cp < 0x530)	{	// Cyrillic and Cyrillic Supplement
-				$found = true;
-				continue;
-			} elseif ($cp >= 0x590 && $cp < 0x600)	{	// Hebrew
-				$found = true;
-				continue;
-			} elseif ($cp >= 0x600 && $cp < 0x700)	{	// Arabic
-				$found = true;
-				continue;
-			}
-				// I dont't think we need to support these:
-				//  Latin Extended Additional
-				//  Greek Extended
-				//  Alphabetic Presentation Forms
-				//  Arabic Presentation Forms-A
-				//  Arabic Presentation Forms-B
-
-			if (!$len)	$letter = false;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Get the first word in a given string (initial non-letters will be skipped)
-	 *
-	 * @param	string		The charset
-	 * @param	string		Input string (reference)
-	 * @param	integer		Starting position in input string
-	 * @return	array		0: start, 1: len or false if no word has been found
-	 */
-	function get_word($charset, &$str, $pos=0)	{
-		if ($charset == 'utf-8')	{
-			$letters = $this->utf8_is_letter($str, $len, $pos, true);
-			if ($letters)	return array($pos,$len);	// word found
-
-			$pos += $len;
-			if ($str{$pos} == '')	return false;	// end of string
-
-			$this->utf8_is_letter($str, $len, $pos, true);
-			return array($pos,$len);
-		}
-
-		return false;
 	}
 }
 

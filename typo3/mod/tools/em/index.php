@@ -1438,7 +1438,7 @@ EXTENSION KEYS:
 						$this->content.=$this->doc->section('Extension files',$content,0,1);
 					break;
 					case 'updateModule':
-						$this->content.=$this->doc->section('Update:',$updateObj->main(),0,1);
+						$this->content.=$this->doc->section('Update:',is_object($updateObj) ? $updateObj->main() : 'No update object',0,1);
 					break;
 					default:
 						$this->extObjContent();

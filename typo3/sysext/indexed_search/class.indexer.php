@@ -84,37 +84,37 @@
  *
  *              SECTION: SQL; External media
  * 1387:     function submitFilePage($hash,$file,$subinfo,$ext,$mtime,$ctime,$size,$content_md5h,$contentParts)
- * 1445:     function submitFile_grlist($hash)
- * 1459:     function submitFile_section($hash)
- * 1473:     function removeOldIndexedFiles($phash)
+ * 1449:     function submitFile_grlist($hash)
+ * 1463:     function submitFile_section($hash)
+ * 1477:     function removeOldIndexedFiles($phash)
  *
  *              SECTION: SQL Helper functions
- * 1509:     function checkMtimeTstamp($mtime,$phash)
- * 1545:     function checkContentHash()
- * 1562:     function checkExternalDocContentHash($hashGr,$content_md5h)
- * 1576:     function is_grlist_set($phash_x)
- * 1589:     function update_grlist($phash,$phash_x)
- * 1604:     function updateTstamp($phash,$mtime=0)
- * 1620:     function updateParsetime($phash,$parsetime)
- * 1633:     function updateRootline()
- * 1648:     function getRootLineFields(&$fieldArr)
- * 1667:     function removeLoginpagesWithContentHash()
+ * 1513:     function checkMtimeTstamp($mtime,$phash)
+ * 1549:     function checkContentHash()
+ * 1566:     function checkExternalDocContentHash($hashGr,$content_md5h)
+ * 1580:     function is_grlist_set($phash_x)
+ * 1593:     function update_grlist($phash,$phash_x)
+ * 1608:     function updateTstamp($phash,$mtime=0)
+ * 1624:     function updateParsetime($phash,$parsetime)
+ * 1637:     function updateRootline()
+ * 1652:     function getRootLineFields(&$fieldArr)
+ * 1671:     function removeLoginpagesWithContentHash()
  *
  *              SECTION: SQL; Submitting words
- * 1702:     function checkWordList($wl)
- * 1739:     function submitWords($wl,$phash)
- * 1763:     function freqMap($freq)
+ * 1706:     function checkWordList($wl)
+ * 1743:     function submitWords($wl,$phash)
+ * 1767:     function freqMap($freq)
  *
  *              SECTION: Hashing
- * 1796:     function setT3Hashes()
- * 1822:     function setExtHashes($file,$subinfo=array())
- * 1846:     function md5inthash($str)
- * 1856:     function makeCHash($paramArray)
+ * 1800:     function setT3Hashes()
+ * 1826:     function setExtHashes($file,$subinfo=array())
+ * 1850:     function md5inthash($str)
+ * 1860:     function makeCHash($paramArray)
  *
  *              SECTION: Internal logging functions
- * 1898:     function log_push($msg,$key)
- * 1907:     function log_pull()
- * 1918:     function log_setTSlogMessage($msg, $errorNum=0)
+ * 1902:     function log_push($msg,$key)
+ * 1911:     function log_pull()
+ * 1922:     function log_setTSlogMessage($msg, $errorNum=0)
  *
  * TOTAL FUNCTIONS: 55
  * (This index is automatically created/updated by the extension "extdeveval")

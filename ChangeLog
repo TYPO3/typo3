@@ -1,3 +1,7 @@
+2005-02-15  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* The indexed-search lexer has been updated so it supports "printjoins" (characters like ' or - which are allowed inside of words) and there is also support for Chinese/Japanese/Korean (CJK) indexing/searching.
+
 2005-02-14  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Large number of updates to system extension indexed_search, in particular to the frontend search plugin which is now ready for implementation of templating engine by workgroup. still missing work on the lexer to support CJK content.

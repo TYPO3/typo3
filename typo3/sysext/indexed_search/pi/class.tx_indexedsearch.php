@@ -80,20 +80,20 @@
  * 1530:     function makeItemTypeIcon($it,$alt='',$specRowConf)
  * 1572:     function makeRating($row)
  * 1617:     function makeDescription($row,$noMarkup=0,$lgd=180)
- * 1643:     function markupSWpartsOfString($str)
- * 1713:     function makeTitle($row)
- * 1737:     function makeInfo($row,$tmplArray)
- * 1755:     function getSpecialConfigForRow($row)
- * 1779:     function makeLanguageIndication($row)
- * 1816:     function makeAccessIndication($id)
- * 1830:     function linkPage($id,$str,$row=array())
- * 1873:     function getRootLine($id,$pathMP='')
- * 1888:     function getFirstSysDomainRecordForPage($id)
- * 1901:     function getPathFromPageId($id,$pathMP='')
- * 1953:     function getMenu($id)
- * 1972:     function multiplePagesType($item_type)
- * 1982:     function utf8_to_currentCharset($str)
- * 1992:     function &hookRequest($functionName)
+ * 1647:     function markupSWpartsOfString($str)
+ * 1742:     function makeTitle($row)
+ * 1766:     function makeInfo($row,$tmplArray)
+ * 1791:     function getSpecialConfigForRow($row)
+ * 1815:     function makeLanguageIndication($row)
+ * 1852:     function makeAccessIndication($id)
+ * 1866:     function linkPage($id,$str,$row=array())
+ * 1909:     function getRootLine($id,$pathMP='')
+ * 1924:     function getFirstSysDomainRecordForPage($id)
+ * 1937:     function getPathFromPageId($id,$pathMP='')
+ * 1989:     function getMenu($id)
+ * 2008:     function multiplePagesType($item_type)
+ * 2018:     function utf8_to_currentCharset($str)
+ * 2028:     function &hookRequest($functionName)
  *
  * TOTAL FUNCTIONS: 45
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -151,7 +151,7 @@ class tx_indexedsearch extends tslib_pibase {
 	var $resultSections = array();			// Page tree sections for search result.
 	var $external_parsers = array();		// External parser objects
 	var $iconFileNameCache = array();		// Storage of icons....
-
+	var $lexerObj;							// Lexer object
 
 
 	/**
@@ -208,6 +208,12 @@ class tx_indexedsearch extends tslib_pibase {
 				}
 			}
 		}
+
+			// Init lexer (used to post-processing of search words)
+		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ?
+						$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] :
+						'EXT:indexed_search/class.lexer.php:&tx_indexedsearch_lexer';
+		$this->lexerObj = &t3lib_div::getUserObj($lexerObjRef);
 
 			// If "_sections" is set, this value overrides any existing value.
 		if ($this->piVars['_sections'])		$this->piVars['sections'] = $this->piVars['_sections'];
@@ -372,28 +378,62 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	array		Returns array with search words if any found
 	 */
 	function getSearchWords($defOp)	{
-
 			// Shorten search-word string to max 200 bytes (does NOT take multibyte charsets into account - but never mind, shortening the string here is only a run-away feature!)
 		$inSW = substr($this->piVars['sword'],0,200);
 
-			// Convert to UTF-8:
+			// Convert to UTF-8 + conv. entities (was also converted during indexing!)
 		$inSW = $GLOBALS['TSFE']->csConvObj->utf8_encode($inSW, $GLOBALS['TSFE']->metaCharset);
+		$inSW = $GLOBALS['TSFE']->csConvObj->entities_to_utf8($inSW,TRUE);
 
-		if ($this->piVars['type']==20)	{
-			return array(array('sword'=>trim($inSW), 'oper'=>'AND'));
+		if ($hookObj = &$this->hookRequest('getSearchWords'))	{
+			return $hookObj->getSearchWords_splitSWords($inSW, $defOp);
 		} else {
-			$search = t3lib_div::makeInstance('tslib_search');
-			$search->default_operator = $defOp==1 ? 'OR' : 'AND';
-			$search->operator_translate_table = $this->operator_translate_table;
-			$search->register_and_explode_search_string($inSW);
 
-			if (is_array($search->sword_array))	{
-				return $search->sword_array;
+			if ($this->piVars['type']==20)	{
+				return array(array('sword'=>trim($inSW), 'oper'=>'AND'));
+			} else {
+				$search = t3lib_div::makeInstance('tslib_search');
+				$search->default_operator = $defOp==1 ? 'OR' : 'AND';
+				$search->operator_translate_table = $this->operator_translate_table;
+				$search->register_and_explode_search_string($inSW);
+
+				if (is_array($search->sword_array))	{
+					return $this->procSearchWordsByLexer($search->sword_array);
+				}
 			}
 		}
 	}
 
+	/**
+	 * Post-process the search word array so it will match the words that was indexed (including case-folding if any)
+	 * If any words are splitted into multiple words (eg. CJK will be!) the operator of the main word will remain.
+	 *
+	 * @param	array		Search word array
+	 * @return	array		Search word array, processed through lexer
+	 */
+	function procSearchWordsByLexer($SWArr)	{
 
+			// Init output variable:
+		$newSWArr = array();
+
+			// Traverse the search word array:
+		foreach($SWArr as $wordDef)	{
+			if (!strstr($wordDef['sword'],' '))		{	// No space in word (otherwise it might be a sentense in quotes like "there is").
+					// SPlit the search word by lexer:
+				$res = $this->lexerObj->split2Words($wordDef['sword']);
+
+					// Traverse lexer result and add all words again:
+				foreach($res as $word)	{
+					$newSWArr[] = array('sword'=>$word, 'oper'=>$wordDef['oper']);
+				}
+			} else {
+				$newSWArr[] = $wordDef;
+			}
+		}
+
+			// Return result:
+		return $newSWArr;
+	}
 
 
 
@@ -694,7 +734,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$GLOBALS['TT']->push('SearchWord '.$sWord);
 
 				// Making the query for a single search word based on the search-type
-			$sWord = $GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$v['sword'],'toLower');	// lower-case all of them...
+			$sWord = $v['sword'];	// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$v['sword'],'toLower');	// lower-case all of them...
 
 			$theType = (string)$this->piVars['type'];
 			if (strstr($sWord,' '))	$theType = 20;	// If there are spaces in the search-word, make a full text search instead.
@@ -1103,7 +1143,7 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($newId)	{
 			foreach($sWArr as $val)	{
 				$insertFields = array(
-					'word' => $GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $val['sword'], 'toLower'),
+					'word' => $val['sword'],		// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $val['sword'], 'toLower'),
 					'index_stat_search_id' => $newId,
 					'tstamp' => $GLOBALS['EXEC_TIME']		// Time stamp
 				);
@@ -1276,7 +1316,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$out.='<tr '.$this->pi_classParam('title'.$tmplContent['CSSsuffix']).'>
 				<td width="16">'.$tmplContent['icon'].'</td>
 				<td width="95%" nowrap="nowrap"><p>'.
-					$row['phash'].' // '.
+					#$row['phash'].' // '.
 					$tmplContent['result_number'].': '.
 					$tmplContent['title'].
 					'</p></td>
@@ -1648,43 +1688,28 @@ class tx_indexedsearch extends tslib_pibase {
 
 			// Init:
 		$str = str_replace('&nbsp;',' ',t3lib_parsehtml::bidir_htmlspecialchars($str,-1));
+		$str = ereg_replace('[[:space:]]+',' ',$str);
 		$swForReg = array();
 
 			// Prepare search words for regex:
 		foreach($this->sWArr as $d)	{
 			$swForReg[] = quotemeta($d['sword']);
 		}
-		$regExString = implode('|',$swForReg);
-
-			// Build regex:
-		#$noAlph = '[^[:alnum:]]';
-		$theType = (string)$this->piVars['type'];
-		switch($theType)	{
-			case '1':
-			case '20':
-				// Nothing...
-			break;
-			case '2':
-				$regExString = $noAlph.'('.$regExString.')';
-			break;
-			case '3':
-				$regExString = '('.$regExString.')'.$noAlph;
-			break;
-			case '10':
-			break;
-			default:
-				$regExString = $noAlph.'('.$regExString.')'.$noAlph;
-			break;
-		}
+		$regExString = '('.implode('|',$swForReg).')';
 
 			// Split and combine:
-		$parts = preg_split("/".$regExString."/i", ' '.$str.' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
-
+		$parts = preg_split('/'.$regExString.'/i', ' '.$str.' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
+#debug($parts,$regExString);
 			// Constants:
+		$summaryMax = 300;
 		$postPreLgd = 60;
 		$postPreLgd_offset = 5;
-		$summaryMax = 300;
 		$divider = ' ... ';
+
+		$occurencies = (count($parts)-1)/2;
+		if ($occurencies)	{
+			$postPreLgd = t3lib_div::intInRange($summaryMax/$occurencies,$postPreLgd,$summaryMax/2);
+		}
 
 			// Variable:
 		$summaryLgd = 0;
@@ -1696,7 +1721,6 @@ class tx_indexedsearch extends tslib_pibase {
 
 					// Find length of the summary part:
 				$strLen = $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $parts[$k]);
-				$summaryLgd+= $strLen;
 				$output[$k] = $parts[$k];
 
 					// Possibly shorten string:
@@ -1715,6 +1739,7 @@ class tx_indexedsearch extends tslib_pibase {
 										ereg_replace('^[^[:space:]]+[[:space:]]','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],-($postPreLgd-$postPreLgd_offset)));
 					}
 				}
+				$summaryLgd+= $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $output[$k]);;
 
 					// Protect output:
 				$output[$k] = htmlspecialchars($output[$k]);

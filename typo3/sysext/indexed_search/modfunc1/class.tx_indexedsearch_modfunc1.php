@@ -71,13 +71,13 @@
  *
  *              SECTION: Indexing of configurations
  * 1275:     function extraIndexing()
- * 1384:     function indexExtUrlRecursively($url, $depth, $pageId, $rl, $cfgUid)
+ * 1386:     function indexExtUrlRecursively($url, $depth, $pageId, $rl, $cfgUid)
  *
  *              SECTION: SQL functions
- * 1441:     function removeIndexedPhashRow($phashList,$clearPageCache=1)
- * 1478:     function getGrListEntriesForPhash($phash,$gr_list)
- * 1498:     function processStopWords($stopWords)
- * 1518:     function processPageKeywords($pageKeywords, $pageUid)
+ * 1443:     function removeIndexedPhashRow($phashList,$clearPageCache=1)
+ * 1480:     function getGrListEntriesForPhash($phash,$gr_list)
+ * 1500:     function processStopWords($stopWords)
+ * 1520:     function processPageKeywords($pageKeywords, $pageUid)
  *
  * TOTAL FUNCTIONS: 32
  * (This index is automatically created/updated by the extension "extdeveval")
