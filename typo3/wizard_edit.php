@@ -88,8 +88,8 @@ class SC_wizard_edit {
 	 * @return	void		
 	 */
 	function init()	{
-		$this->P = t3lib_div::GPvar('P',1);
-		$this->doClose = t3lib_div::GPvar('doClose');		// Used for the return URL to alt_doc.php so that we can close the window.
+		$this->P = t3lib_div::_GP('P');
+		$this->doClose = t3lib_div::_GP('doClose');		// Used for the return URL to alt_doc.php so that we can close the window.
 	}
 
 	/**

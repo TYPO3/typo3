@@ -103,8 +103,8 @@ class SC_file_newfolder {
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 
 			// Initialize GPvars:
-		$this->number = t3lib_div::GPvar('number');
-		$this->target = t3lib_div::GPvar('target');
+		$this->number = t3lib_div::_GP('number');
+		$this->target = t3lib_div::_GP('target');
 			
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');

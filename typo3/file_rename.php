@@ -97,7 +97,7 @@ class SC_file_rename {
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 
 			// Initialize GPvars:
-		$this->target = t3lib_div::GPvar('target');
+		$this->target = t3lib_div::_GP('target');
 
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');

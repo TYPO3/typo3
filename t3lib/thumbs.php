@@ -132,8 +132,8 @@ class SC_t3lib_thumbs {
 		global $TYPO3_CONF_VARS;
 
 			// Setting GPvars:
-		$this->file = t3lib_div::GPvar('file');
-		$this->size = t3lib_div::GPvar('size');
+		$this->file = t3lib_div::_GP('file');
+		$this->size = t3lib_div::_GP('size');
 
 			// Image extension list is set:
 		$this->imageList = $TYPO3_CONF_VARS['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...

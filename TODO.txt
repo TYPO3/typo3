@@ -51,7 +51,7 @@ TCEmain:
 	- Permission management on selector box/radio button values 
 		- so certain "CType" / "Insert plugin" / "FlexForm datatypes" values could be blocked
 		- Could it be considered to implement some "access pool" where elements on any level (like here selectorboxes or for FlexForms elements/types there) could add their element by an API and then it would A) automatically be listed for groups access lists and B) automatically enforced.
-	- Permission management for translations?
+	- Permission management for translations? Users are allowed to edit certain languages? (Setup with general access list API?)
 	- Permissions on record-level
 	- CHECK: That permissions are properly evaluated (especially for moving content?)
 	- Security in tcemain: Uploaded/Attached files are allowed to be in ONLY a relative path OR in the "lockDir"!
@@ -647,7 +647,7 @@ Authors: Julle and Kasper.
 - Versioning (for single elements including single "pages" record) is based on 
 	- ONE element having an official position in the TYPO3 page tree, thus holding the official "uid" of the element! (If this element was deleted from the system, so are all versions of that element!)
 	- All versions of this one element being a) at pid "-1" and b) a field "real_id" pointing to the official UID
-	- Pages-versioninig: For all elements belonging to a version of a page; They are just copied and has no official new version or binding back to whatever element they came from. They just came along. And in fact, they could even have their own version history for them selves!
+	- Pages-versioning: For all elements belonging to a version of a page; They are just copied and has no official new version or binding back to whatever element they came from. They just came along. And in fact, they could even have their own version history for them selves!
 	- Backend user access to elements is based on the access restrictions for the official element. THis must be implemented on core level.
 - Tables supporting versioning will have these fields:
   - real_id	- Pointing back to official in-tree version
@@ -680,6 +680,15 @@ Authors: Julle and Kasper.
 	- Impact assesment: Low.
 	- Clean-up module (in templavoila?) could also track such things
 	- Problems for non-templavoila sites would be low.
+  - Swapping might need to exclude fields like "sorting" etc. Others could be imagined.
+  - copies: 
+    - What about a page alias?
+- Trunk/Branch: 
+    - Create version of single page (as above)
+	- Create version of page branch (1-... levels)
+		- Either create version of EACH page individually (like tagging in CVS)
+		- Or create single-point-of-reference so that pages INSIDE can be swapped, deleted and created (just like content elements can)
+			- Requirement: Intelligent swapping of "sub-element" ids that CAN be traced back to the original!
 	
 - Backend:
   - For single-editing of records we will show a version list from which to choose a version to edit (just like the delete button is also hidden at multi-edit)

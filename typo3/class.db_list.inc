@@ -150,11 +150,11 @@ class recordList extends t3lib_recordList {
 		$this->showLimit=t3lib_div::intInRange($showLimit,0,10000);
 		
 			// Setting GPvars:
-		$this->csvOutput = t3lib_div::GPvar('csv') ? TRUE : FALSE;
-		$this->sortField = t3lib_div::GPvar('sortField');
-		$this->sortRev = t3lib_div::GPvar('sortRev');
-		$this->displayFields = t3lib_div::GPvar('displayFields');
-		$this->duplicateField = t3lib_div::GPvar('duplicateField');
+		$this->csvOutput = t3lib_div::_GP('csv') ? TRUE : FALSE;
+		$this->sortField = t3lib_div::_GP('sortField');
+		$this->sortRev = t3lib_div::_GP('sortRev');
+		$this->displayFields = t3lib_div::_GP('displayFields');
+		$this->duplicateField = t3lib_div::_GP('duplicateField');
 		
 			// If thumbnails are disabled, set the "notfound" icon as default:
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{

@@ -91,7 +91,7 @@ class SC_alt_menu {
 		global $TBE_MODULES;
 		
 			// Setting GPvars:
-		$this->_clearCacheFiles = t3lib_div::GPvar('_clearCacheFiles');
+		$this->_clearCacheFiles = t3lib_div::_GP('_clearCacheFiles');
 
 			// Loads the backend modules available for the logged in user.
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
@@ -109,6 +109,7 @@ class SC_alt_menu {
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='vertical-menu';
 		$this->content.=$TBE_TEMPLATE->startPage('Vertical Backend Menu');
+		$backPath = $GLOBALS['BACK_PATH'];
 
 			// Printing the menu
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
@@ -116,6 +117,8 @@ class SC_alt_menu {
 		
 			// clear cache commands for Admins
 		if($BE_USER->isAdmin()) {
+			$functionsArray = $alt_menuObj->adminFunctions($backPath);
+			
 			$this->content.='
 			
 <!-- 
@@ -129,37 +132,21 @@ class SC_alt_menu {
 				// Table with those admin functions
 			$this->content.='
 				<table border="0" cellpadding="0" cellspacing="1" width="100%">';
-			
-				// Clearing of cache-files in typo3conf/ + menu
-			if ($TYPO3_CONF_VARS['EXT']['extCache'])	{
-				if ($this->_clearCacheFiles)	{
-					$this->removeCacheFiles();
-				}
-				$this->content.='
-					<tr>
-						<td valign="top" align="center"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/clear_cache_files_in_typo3c.gif','width="21" height="18"').' alt="" /></td>
-						<td><a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('_clearCacheFiles'=>1))).'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_allTypo3Conf',1).'</a></td>
-					</tr>';
 
-					// Divider
-				$this->content.='
+			$rows=array();			
+			foreach($functionsArray as $functionsArraySetup)	{
+				$rows[]='
 					<tr>
-						<td colspan="2"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/altmenuline.gif','width="105" height="3"').' alt="" /></td>
+						<td valign="top" align="center">'.$functionsArraySetup['icon'].'</td>
+						<td><a href="'.htmlspecialchars($functionsArraySetup['href']).'">'.htmlspecialchars($functionsArraySetup['title']).'</a></td>
 					</tr>';
 			}
-
-				// clear all page cache
-			$href = htmlspecialchars($this->backPath.'tce_db.php?vC='.$BE_USER->veriCode().
-						'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).
-						'&cacheCmd=all'
-					);
-			$this->content.='
-				<tr>
-					<td valign="top" align="center"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/clear_all_cache.gif','width="21" height="18"').' alt="" /></td>
-					<td><a href="'.$href.'">'.
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all',1).
-					'</a></td>
-				</tr>';
+			
+				// Imploding around the divider table row:
+			$this->content.=implode('
+					<tr>
+						<td colspan="2"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/altmenuline.gif','width="105" height="3"').' alt="" /></td>
+					</tr>',$rows);
 
 			$this->content.='
 				</table>';
@@ -181,25 +168,6 @@ class SC_alt_menu {
 
 			// End page:
 		$this->content.=$TBE_TEMPLATE->endPage();
-	}
-
-	/**
-	 * Unlink (delete) cache files
-	 * 
-	 * @return	integer		The number of files deleted
-	 */
-	function removeCacheFiles()	{
-		$cacheFiles=t3lib_extMgm::currentCacheFiles();
-		$out=0;
-		if (is_array($cacheFiles))	{
-			reset($cacheFiles);
-			while(list(,$cfile)=each($cacheFiles))	{
-				@unlink($cfile);
-				clearstatcache();
-				$out++;
-			}
-		}
-		return $out;
 	}
 
 	/**

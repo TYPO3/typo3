@@ -121,13 +121,13 @@ class SC_index {
 		global $BE_USER,$TYPO3_CONF_VARS;
 		
 			// GPvars:
-		$this->redirect_url = t3lib_div::GPvar('redirect_url');
-		$this->GPinterface = t3lib_div::GPvar('interface');
-		$this->u = t3lib_div::GPvar('u');							// preset username
-		$this->p = t3lib_div::GPvar('p');							// preset password
-		$this->L = t3lib_div::GPvar('L');							// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
-		$this->loginRefresh = t3lib_div::GPvar('loginRefresh');		// Login 
-		$this->commandLI = t3lib_div::GPvar('commandLI');			// Value of "Login" button. If set, the login button was pressed.
+		$this->redirect_url = t3lib_div::_GP('redirect_url');
+		$this->GPinterface = t3lib_div::_GP('interface');
+		$this->u = t3lib_div::_GP('u');							// preset username
+		$this->p = t3lib_div::_GP('p');							// preset password
+		$this->L = t3lib_div::_GP('L');							// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
+		$this->loginRefresh = t3lib_div::_GP('loginRefresh');		// Login 
+		$this->commandLI = t3lib_div::_GP('commandLI');			// Value of "Login" button. If set, the login button was pressed.
 
 			// Getting login labels:
 		$this->L_vars = explode('|',$TYPO3_CONF_VARS['BE']['loginLabels']);
@@ -518,7 +518,7 @@ class SC_index {
 					'<img src="gfx/loginlogo_transp.gif" width="75" height="19" alt="TYPO3 logo" align="left" />'.
 					'TYPO3 CMS'.($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']):'').
 					'</a>. '.
-					'Copyright &copy; 1998-2003 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
+					'Copyright &copy; 1998-2004 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
 					'Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details. '.
 					$warrantyNote.' '.
 					'This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. '.

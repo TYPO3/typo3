@@ -271,7 +271,7 @@ class t3lib_fullsearch {
 		$storeArray = $this->initStoreArray();
 		$storeQueryConfigs = unserialize($GLOBALS["SOBE"]->MOD_SETTINGS["storeQueryConfigs"]);
 
-		$storeControl = t3lib_div::GPvar("storeControl");
+		$storeControl = t3lib_div::_GP("storeControl");
 		$storeIndex = intval($storeControl["STORE"]);
 		$saveStoreArray=0;
 		$writeArray=array();
@@ -443,7 +443,7 @@ class t3lib_fullsearch {
 						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\'; 
 					}
 						// Downloads file:
-					if (t3lib_div::GPvar("download_file"))	{
+					if (t3lib_div::_GP("download_file"))	{
 						$filename="TYPO3_".$table."_export_".date("dmy-Hi").".csv";
 						$mimeType = "application/octet-stream";
 						Header("Content-Type: ".$mimeType);
@@ -478,7 +478,7 @@ class t3lib_fullsearch {
 						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\'; 
 					}
 						// Downloads file:
-					if (t3lib_div::GPvar("download_file"))	{
+					if (t3lib_div::_GP("download_file"))	{
 						$filename="TYPO3_".$table."_export_".date("dmy-Hi").".xml";
 						$mimeType = "application/octet-stream";
 						Header("Content-Type: ".$mimeType);
@@ -532,9 +532,9 @@ class t3lib_fullsearch {
 	 */
 	function search()	{
 		global $TCA;
-		$SET = t3lib_div::GPvar("SET",1);
+		$SET = t3lib_div::_GP("SET");
 		$swords = $SET["sword"];
-		// $GLOBALS["HTTP_POST_VARS"]["SET"]["sword"]
+
 		$limit=200;
 		$showAlways=0;
 		if ($swords)	{
@@ -597,7 +597,7 @@ class t3lib_fullsearch {
 			$out.='<td'.$TDparams.'>'.htmlspecialchars($fVnew).'</td>';
 		}
 		$params = '&edit['.$table.']['.$row["uid"].']=edit';
-		$out.='<td nowrap><A HREF="#" onClick="top.launchView(\''.$table.'\','.$row["uid"].',\''.$GLOBALS["BACK_PATH"].'\');return false;"><img src="'.$GLOBALS["BACK_PATH"].'gfx/zoom2.gif" width="12" height="12" alt="" /></a><A HREF="#" onClick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS["BACK_PATH"],t3lib_div::getIndpEnv("REQUEST_URI").t3lib_div::implodeArrayForUrl("SET",$GLOBALS["HTTP_POST_VARS"]["SET"])).'"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a></td>
+		$out.='<td nowrap><A HREF="#" onClick="top.launchView(\''.$table.'\','.$row["uid"].',\''.$GLOBALS["BACK_PATH"].'\');return false;"><img src="'.$GLOBALS["BACK_PATH"].'gfx/zoom2.gif" width="12" height="12" alt="" /></a><A HREF="#" onClick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS["BACK_PATH"],t3lib_div::getIndpEnv("REQUEST_URI").t3lib_div::implodeArrayForUrl("SET",t3lib_div::_POST("SET"))).'"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a></td>
 		</tr>
 		';
 		return $out;

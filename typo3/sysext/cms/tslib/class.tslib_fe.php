@@ -317,13 +317,13 @@
 	 * Also sets internal clientInfo array (browser information) and a unique string (->uniqueString) for this script instance; A md5 hash of the microtime()
 	 * 
 	 * @param	array		The global $TYPO3_CONF_VARS array. Will be set internally in ->TYPO3_CONF_VARS
-	 * @param	mixed		The value of t3lib_div::GPvar('id')
-	 * @param	integer		The value of t3lib_div::GPvar('type')
-	 * @param	boolean		The value of t3lib_div::GPvar('no_cache'), evaluated to 1/0
-	 * @param	string		The value of t3lib_div::GPvar('cHash')
-	 * @param	string		The value of t3lib_div::GPvar('jumpurl')
-	 * @param	string		The value of t3lib_div::GPvar('MP')
-	 * @param	string		The value of t3lib_div::GPvar('RDCT')
+	 * @param	mixed		The value of t3lib_div::_GP('id')
+	 * @param	integer		The value of t3lib_div::_GP('type')
+	 * @param	boolean		The value of t3lib_div::_GP('no_cache'), evaluated to 1/0
+	 * @param	string		The value of t3lib_div::_GP('cHash')
+	 * @param	string		The value of t3lib_div::_GP('jumpurl')
+	 * @param	string		The value of t3lib_div::_GP('MP')
+	 * @param	string		The value of t3lib_div::_GP('RDCT')
 	 * @return	void		
 	 * @see index_ts.php
 	 */
@@ -437,11 +437,11 @@
 		$this->fe_user = t3lib_div::makeInstance('tslib_feUserAuth');
 			
 		$this->fe_user->checkPid = $this->TYPO3_CONF_VARS['FE']['checkFeUserPid'];
-		$this->fe_user->checkPid_value = implode(',',t3lib_div::intExplode(',',t3lib_div::GPvar('pid')));	// List of pid's acceptable
+		$this->fe_user->checkPid_value = implode(',',t3lib_div::intExplode(',',t3lib_div::_GP('pid')));	// List of pid's acceptable
 
 			// Check if a session is transferred:
-		if (t3lib_div::GPvar('FE_SESSION_KEY'))	{
-			$fe_sParts = explode('-',t3lib_div::GPvar('FE_SESSION_KEY'));
+		if (t3lib_div::_GP('FE_SESSION_KEY'))	{
+			$fe_sParts = explode('-',t3lib_div::_GP('FE_SESSION_KEY'));
 			if (!strcmp(md5($fe_sParts[0].'/'.$this->TYPO3_CONF_VARS['SYS']['encryptionKey']), $fe_sParts[1]))	{	// If the session key hash check is OK:
 				$GLOBALS['HTTP_COOKIE_VARS'][$this->fe_user->name]=$fe_sParts[0];
 				$this->fe_user->forceSetCookie=1;
@@ -455,7 +455,7 @@
 		$this->fe_user->start();
 		$this->fe_user->unpack_uc('');
 		$this->fe_user->fetchSessionData();	// Gets session data
-		$recs = t3lib_div::GPvar('recs');
+		$recs = t3lib_div::_GP('recs');
 		if (is_array($recs))	{	// If any record registration is submitted, register the record.
 			$this->fe_user->record_registration($recs);
 		}
@@ -1038,8 +1038,14 @@
 	function mergingWithGetVars($GET_VARS)	{
 		if (is_array($GET_VARS))	{
 			t3lib_div::addSlashesOnArray($GET_VARS);		// Since TYPO3 expects input in GETVARS to be escaped we will have to do so with the merging parameters.
-			if (!is_array($GLOBALS['HTTP_GET_VARS']))	$GLOBALS['HTTP_GET_VARS'] = array();
-			$GLOBALS['HTTP_GET_VARS'] = $_GET = t3lib_div::array_merge_recursive_overrule($GLOBALS['HTTP_GET_VARS'],$GET_VARS);
+			$realGet = t3lib_div::_GET();		// Getting $_GET var, unescaped.
+			if (!is_array($realGet))	$realGet = array();
+			
+				// Merge new values on top:
+			$realGet = t3lib_div::array_merge_recursive_overrule($realGet,$GET_VARS);
+			
+				// Write values back to $_GET:
+			t3lib_div::_GETset($realGet);
 
 				// Setting these specifically (like in the init-function):
 			if (isset($GET_VARS['type']))		$this->type = $GET_VARS['type'];
@@ -1079,8 +1085,9 @@
 	 * @return	void		
 	 */
 	function makeCacheHash()	{
-		if ($this->cHash && is_array($GLOBALS['HTTP_GET_VARS']))	{
-			$pA = $this->cHashParams(t3lib_div::implodeArrayForUrl('',$GLOBALS['HTTP_GET_VARS']));
+		$GET = t3lib_div::_GET();
+		if ($this->cHash && is_array($GET))	{
+			$pA = $this->cHashParams(t3lib_div::implodeArrayForUrl('',$GET));
 			$this->cHash_array = $pA;
 			$cHash_calc = t3lib_div::shortMD5(serialize($this->cHash_array));
 			if ($cHash_calc!=$this->cHash)	{
@@ -1424,14 +1431,16 @@
 	 * @return	string		'email' if a formmail has been send, 'fe_tce' if front-end data submission (like forums, guestbooks) is send. '' if none.
 	 */
 	function checkDataSubmission()	{
-		if ($GLOBALS['HTTP_POST_VARS']['formtype_db'] || $GLOBALS['HTTP_POST_VARS']['formtype_mail'])	{
+		global $HTTP_POST_VARS;
+		
+		if ($HTTP_POST_VARS['formtype_db'] || $HTTP_POST_VARS['formtype_mail'])	{
 			$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')==$refInfo['host'] || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
-				if ($this->locDataCheck($GLOBALS['HTTP_POST_VARS']['locationData']))	{
+				if ($this->locDataCheck($HTTP_POST_VARS['locationData']))	{
 					$ret = '';
-					if ($GLOBALS['HTTP_POST_VARS']['formtype_mail'])	{
+					if ($HTTP_POST_VARS['formtype_mail'])	{
 						$ret = 'email';
-					} elseif ($GLOBALS['HTTP_POST_VARS']['formtype_db'] && is_array($GLOBALS['HTTP_POST_VARS']['data']))	{
+					} elseif ($HTTP_POST_VARS['formtype_db'] && is_array($HTTP_POST_VARS['data']))	{
 						$ret = 'fe_tce';
 					}
 					$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": Return value: '.$ret,0);
@@ -1450,7 +1459,7 @@
 	 */
 	function fe_tce()	{
 		$fe_tce = t3lib_div::makeInstance('tslib_feTCE');
-		$fe_tce->start($GLOBALS['HTTP_POST_VARS']['data'],$this->config['FEData.']);
+		$fe_tce->start(t3lib_div::_POST('data'),$this->config['FEData.']);
 		$fe_tce->includeScripts();
 	}
 
@@ -1481,7 +1490,7 @@
 	function sendFormmail()	{
 		$formmail = t3lib_div::makeInstance('t3lib_formmail');
 
-		$EMAIL_VARS = $GLOBALS['HTTP_POST_VARS'];
+		$EMAIL_VARS = t3lib_div::_POST();
 		unset($EMAIL_VARS['locationData']);
 		unset($EMAIL_VARS['formtype_mail']);
 
@@ -1499,8 +1508,8 @@
 	function checkJumpUrl()	{
 		global $TCA;
 		
-		$mid = t3lib_div::GPvar('mid');		// mail id, if direct mail link
-		$rid = t3lib_div::GPvar('rid');		// recipient id, if direct mail link
+		$mid = t3lib_div::_GP('mid');		// mail id, if direct mail link
+		$rid = t3lib_div::_GP('rid');		// recipient id, if direct mail link
 		if ((strcmp($this->jumpurl,'') && ((t3lib_div::getIndpEnv('HTTP_REFERER') || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) || $mid)) || ($this->jumpurl = $this->sys_page->getExtURL($this->page,$this->config['config']['disablePageExternalUrl'])))	{
 			if ($mid && is_array($TCA['sys_dmail']))	{	// Yes, it's OK if the link comes from a direct mail. AND sys_dmail module has installed the table, sys_dmail (and therefore we expect sys_dmail_maillog as well!)
 				$temp_recip=explode('_',$rid);
@@ -1570,20 +1579,20 @@
 	 */
 	function jumpUrl()	{
 		if ($this->jumpurl)	{
-			if (t3lib_div::GPvar('juSecure'))	{
+			if (t3lib_div::_GP('juSecure'))	{
 				$hArr = array(	
 					$this->jumpurl,
-					t3lib_div::GPvar('locationData'),
+					t3lib_div::_GP('locationData'),
 					$this->TYPO3_CONF_VARS['SYS']['encryptionKey']
 				);
 				$calcJuHash=t3lib_div::shortMD5(serialize($hArr));
-				$locationData = t3lib_div::GPvar('locationData');
-				$juHash = t3lib_div::GPvar('juHash');
+				$locationData = t3lib_div::_GP('locationData');
+				$juHash = t3lib_div::_GP('juHash');
 				if ($juHash == $calcJuHash)	{
 					if ($this->locDataCheck($locationData))	{
 						$this->jumpurl = rawurldecode($this->jumpurl);	// 211002 - goes with cObj->filelink() rawurlencode() of filenames so spaces can be allowed.
 						if (@is_file($this->jumpurl))	{
-							$mimeType = t3lib_div::GPvar('mimeType');
+							$mimeType = t3lib_div::_GP('mimeType');
 							$mimeType = $mimeType ? $mimeType : 'application/octet-stream';
 							Header('Content-Type: '.$mimeType);
 							Header('Content-Disposition: attachment; filename='.basename($this->jumpurl));
@@ -2093,7 +2102,7 @@ if (version == "n3") {
 			$GLOBALS['TT']->pull();
 		}
 
-/*		if ($this->beUserLogin && t3lib_div::GPvar('ADMCMD_view'))	{		// This is a try to change target=_top to target=_self if pages are shown in the Web>View module...
+/*		if ($this->beUserLogin && t3lib_div::_GP('ADMCMD_view'))	{		// This is a try to change target=_top to target=_self if pages are shown in the Web>View module...
 			$this->content = str_replace('target="_top"','target="_self"',$this->content);
 			$this->content = str_replace('target=_top','target="_self"',$this->content);
 		}*/
@@ -2144,7 +2153,7 @@ if (version == "n3") {
 			$GLOBALS['TT']->push('Stat');
 				if (t3lib_extMgm::isLoaded('sys_stat') && $this->config['config']['stat_mysql'])	{
 						// Jumpurl:
-					$sword = t3lib_div::GPvar('sword');
+					$sword = t3lib_div::_GP('sword');
 					if ($sword)	{
 						$jumpurl_msg='sword:'.$sword;
 					} elseif ($this->jumpurl) {
@@ -2164,8 +2173,8 @@ if (version == "n3") {
 					}
 				
 					$query ='INSERT INTO sys_stat SET ';
-					$query.='page_id="'.$this->id.'",';		// id
-					$query.='page_type="'.$this->type.'",';		// type
+					$query.='page_id="'.intval($this->id).'",';		// id
+					$query.='page_type="'.intval($this->type).'",';		// type
 					$query.='jumpurl="'.addslashes($jumpurl_msg).'",';		// jumpurl message
 					$query.='feuser_id="'.$this->fe_user->user['uid'].'",';		// fe_user id, integer
 					$query.='cookie="'.addslashes($this->fe_user->id).'",';		// cookie as set or retrieve. If people has cookies disabled this will vary all the time...

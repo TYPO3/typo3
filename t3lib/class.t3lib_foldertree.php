@@ -329,7 +329,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 			// PM action:
 			// (If an plus/minus icon has been clicked, the PM GET var is sent and we must update the stored positions in the tree):
-		$PM = explode('_',t3lib_div::GPvar('PM'));	// 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
+		$PM = explode('_',t3lib_div::_GP('PM'));	// 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
 		if (count($PM)==4 && $PM[3]==$this->treeName)	{
 			if (isset($this->MOUNTS[$hashMap[$PM[0]]]))	{
 				if ($PM[1])	{	// set

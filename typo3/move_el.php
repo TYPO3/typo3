@@ -252,13 +252,13 @@ class SC_move_el {
 
 		
 			// Setting internal vars:
-		$this->sys_language = intval(t3lib_div::GPvar('sys_language'));
-		$this->page_id=intval(t3lib_div::GPvar('uid'));
-		$this->table=t3lib_div::GPvar('table');
-		$this->R_URI=t3lib_div::GPvar('returnUrl');
-		$this->input_moveUid = t3lib_div::GPvar('moveUid');
+		$this->sys_language = intval(t3lib_div::_GP('sys_language'));
+		$this->page_id=intval(t3lib_div::_GP('uid'));
+		$this->table=t3lib_div::_GP('table');
+		$this->R_URI=t3lib_div::_GP('returnUrl');
+		$this->input_moveUid = t3lib_div::_GP('moveUid');
 		$this->moveUid = $this->input_moveUid ? $this->input_moveUid : $this->page_id;
-		$this->makeCopy = t3lib_div::GPvar('makeCopy');
+		$this->makeCopy = t3lib_div::_GP('makeCopy');
 			
 			// Select-pages where clause for read-access:
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);

@@ -131,7 +131,6 @@ while(list(,$temp_publish_id)=each($temp_publish_pages))	{
 		}
 	$TT->pull();
 }
-//debug($HTTP_POST_VARS);
 //debug($temp_publish_imagesTotal);
 //debug(array_unique($temp_publish_imagesTotal));
 

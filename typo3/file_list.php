@@ -104,12 +104,12 @@ class SC_file_list {
 		global $TYPO3_CONF_VARS,$FILEMOUNTS;
 			
 			// Setting GPvars:
-		$this->id = t3lib_div::GPvar('id');
-		$this->pointer = t3lib_div::GPvar('pointer');
-		$this->table = t3lib_div::GPvar('table');
-		$this->imagemode = t3lib_div::GPvar('imagemode');
-		$this->cmd = t3lib_div::GPvar('cmd');
-		$this->overwriteExistingFiles = t3lib_div::GPvar('overwriteExistingFiles');
+		$this->id = t3lib_div::_GP('id');
+		$this->pointer = t3lib_div::_GP('pointer');
+		$this->table = t3lib_div::_GP('table');
+		$this->imagemode = t3lib_div::_GP('imagemode');
+		$this->cmd = t3lib_div::_GP('cmd');
+		$this->overwriteExistingFiles = t3lib_div::_GP('overwriteExistingFiles');
 		
 			// Setting module name:
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -140,7 +140,7 @@ class SC_file_list {
 		);
 			
 			// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 	}
 
 	/**
@@ -149,7 +149,7 @@ class SC_file_list {
 	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$HTTP_GET_VARS,$HTTP_POST_VARS,$TYPO3_CONF_VARS,$FILEMOUNTS;
+		global $BE_USER,$LANG,$BACK_PATH,$TYPO3_CONF_VARS,$FILEMOUNTS;
 		
 			// Initialize the template object
 		$this->doc = t3lib_div::makeInstance('template');
@@ -173,8 +173,8 @@ class SC_file_list {
 			$filelist->clipObj->fileMode=1;
 			$filelist->clipObj->initializeClipboard();
 	
-			$CB = $HTTP_GET_VARS['CB'];
-			if ($this->cmd=='setCB') $CB['el'] = $filelist->clipObj->cleanUpCBC(array_merge($HTTP_POST_VARS['CBH'],$HTTP_POST_VARS['CBC']),'_FILE');
+			$CB = t3lib_div::_GET('CB');
+			if ($this->cmd=='setCB') $CB['el'] = $filelist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'),t3lib_div::_POST('CBC')),'_FILE');
 			if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';
 			$filelist->clipObj->setCmd($CB);
 			$filelist->clipObj->cleanCurrent();
@@ -182,7 +182,7 @@ class SC_file_list {
 			
 				// If the "cmd" was to delete files from the list (clipboard thing), do that:
 			if ($this->cmd=='delete')	{
-				$items = $filelist->clipObj->cleanUpCBC($HTTP_POST_VARS['CBC'],'_FILE',1);
+				$items = $filelist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),'_FILE',1);
 				if (count($items))	{
 						// Make command array:
 					$FILE=array();

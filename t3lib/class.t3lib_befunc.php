@@ -409,7 +409,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs.
-	 * @param	boolean		Set $slash=1 if values should be addslashes()'ed (default)
+	 * @param	boolean		Set $slash=1 if values should be addslashes()'ed (default). YOU SHOULD ALWAYS USE THIS!
 	 * @return	string		Full SQL query for INSERT
 	 */
 	function DBcompileInsert($table,$fields_values,$slash=1)	{

@@ -93,7 +93,7 @@ class SC_file_edit {
 		global $BACK_PATH,$TYPO3_CONF_VARS;
 		
 			// Setting target, which must be a file reference to a file within the mounts.
-		$this->target = $this->origTarget = t3lib_div::GPvar('target');
+		$this->target = $this->origTarget = t3lib_div::_GP('target');
 
 			// Creating file management object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');

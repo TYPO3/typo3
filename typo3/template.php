@@ -449,10 +449,9 @@ class template {
 	 * @see makeShortcutIcon()
 	 */
 	function makeShortcutUrl($gvList,$setList)	{
-		global $HTTP_GET_VARS;
-		
+		$GET = t3lib_div::_GET();
 		$storeArray = array_merge(
-			t3lib_div::compileSelectedGetVarsFromArray($gvList,$HTTP_GET_VARS),
+			t3lib_div::compileSelectedGetVarsFromArray($gvList,$GET),
 			array('SET'=>t3lib_div::compileSelectedGetVarsFromArray($setList,$GLOBALS['SOBE']->MOD_SETTINGS))
 		);
 		$storeUrl = t3lib_div::implodeArrayForUrl('',$storeArray);
@@ -522,7 +521,7 @@ class template {
 		));
 		
 		$out ="
-	var T3_RETURN_URL = '".str_replace('%20','',rawurlencode(t3lib_div::GPvar('returnUrl')))."';
+	var T3_RETURN_URL = '".str_replace('%20','',rawurlencode(t3lib_div::_GP('returnUrl')))."';
 	var T3_THIS_LOCATION = '".str_replace('%20','',rawurlencode($thisLocation))."';
 		";
 		return $out;
@@ -930,7 +929,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		<meta> tag with name "GENERATOR"
 	 */
 	function generator()	{
-		$str = 'TYPO3 '.$GLOBALS['TYPO_VERSION'].', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2003, extensions are copyright of their respective owners.';
+		$str = 'TYPO3 '.$GLOBALS['TYPO_VERSION'].', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2004, extensions are copyright of their respective owners.';
 		return '<meta name="GENERATOR" content="'.$str .'" />';
 	}
 

@@ -198,6 +198,8 @@ if (isset($HTTP_POST_VARS['GLOBALS']) || isset($HTTP_GET_VARS['GLOBALS']))	die('
 if (!get_magic_quotes_gpc())	{
 	t3lib_div::addSlashesOnArray($HTTP_GET_VARS);
 	t3lib_div::addSlashesOnArray($HTTP_POST_VARS);
+	$_GET = $HTTP_GET_VARS;
+	$_POST = $HTTP_POST_VARS;
 }
 
 

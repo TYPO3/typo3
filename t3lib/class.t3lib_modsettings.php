@@ -296,7 +296,7 @@ class t3lib_modSettings {
 		$storeArray = $this->initStoreArray();
 		$storeConfigs = unserialize($GLOBALS['SOBE']->MOD_SETTINGS[$this->prefix.'StoreConfigs']);
 #debug($storeConfigs);
-		$storeControl = t3lib_div::GPvar('storeControl');
+		$storeControl = t3lib_div::_GP('storeControl');
 		$storeIndex = intval($storeControl['STORE']);
 #debug($storeControl);
 		$saveStoreArray=0;

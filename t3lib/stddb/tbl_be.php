@@ -136,7 +136,7 @@ $TCA['be_users'] = Array (
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'sys_filemounts',
-				'foreign_table_where' => 'ORDER BY sys_filemounts.title',
+				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
 #				'type' => 'group',
 #				'internal_type' => 'db',
 #					'allowed' => 'sys_filemounts',
@@ -377,9 +377,12 @@ $TCA['be_groups'] = Array (
 		'file_mountpoints' => Array (
 			'label' => 'File Mounts:',
 			'config' => Array (
-				'type' => 'group',
-				'internal_type' => 'db',
-					'allowed' => 'sys_filemounts',
+				'type' => 'select',
+				'foreign_table' => 'sys_filemounts',
+				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
+#				'type' => 'group',
+#				'internal_type' => 'db',
+#					'allowed' => 'sys_filemounts',
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,

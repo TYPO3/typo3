@@ -1445,7 +1445,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			while(list($key,$var)=each($data))	{
 				if (isset($theConstants[$key]))	{
 					if ($this->ext_dontCheckIssetValues || isset($check[$key]))	{		// If checkbox is set, update the value
-						list($var) = explode(chr(10),stripslashes($var));	// exploding with linebreak, just to make sure that no multiline input is given!
+						list($var) = explode(chr(10),$var);	// exploding with linebreak, just to make sure that no multiline input is given!
 						$typeDat=$this->ext_getTypeData($theConstants[$key]["type"]);
 						switch($typeDat["type"])	{
 							case "int":
@@ -1477,7 +1477,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 							break;
 							case "wrap":
 								if (isset($Wdata[$key]))	{
-									$var.="|".stripslashes($Wdata[$key]);
+									$var.="|".$Wdata[$key];
 								}
 							break;
 							case "offset":

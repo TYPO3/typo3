@@ -679,7 +679,7 @@ class t3lib_transferData {
 					foreach($theExcludeFields as $theExcludeFieldsArrays)	{
 						foreach($elements as $eKey => $value)	{
 							if (!strcmp($theExcludeFieldsArrays[1],$value))	{
-								$dataAcc[$eKey]=rawurlencode($value).'|'.rawurlencode(ereg_replace(':$','',stripslashes($theExcludeFieldsArrays[0])));
+								$dataAcc[$eKey]=rawurlencode($value).'|'.rawurlencode(ereg_replace(':$','',$theExcludeFieldsArrays[0]));
 							}
 						}
 					}

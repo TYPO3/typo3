@@ -89,7 +89,7 @@ class alt_menu_functions {
 	 * @return	string		The menu HTML
 	 */
 	function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)	{
-		global $LANG, $TBE_TEMPLATE;
+		global $LANG, $TBE_TEMPLATE, $BE_USER;
 	
 			// Initialize vars:
 		$final='';
@@ -101,11 +101,11 @@ class alt_menu_functions {
 		$mJScmds=array();
 		$onBlur=$GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();' : '';
 	
-		$selectItems[] = '<option value="">[ MODULES ]</option>';
+		$selectItems[] = '<option value="">[ '.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.selMenu_modules',1).' ]</option>';
 		$mC=0;
 	
 			// Remove the 'doc' module?
-		if ($GLOBALS['BE_USER']->getTSConfigVal('options.disableDocModuleInAB'))	{
+		if ($BE_USER->getTSConfigVal('options.disableDocModuleInAB'))	{
 			unset($theModules['doc']);
 		}
 	
@@ -116,7 +116,7 @@ class alt_menu_functions {
 
 			$prefix='';
 			if ($moduleInfo['navFrameScript'])	{
-				if ($GLOBALS['BE_USER']->uc['condensedMode'])	{
+				if ($BE_USER->uc['condensedMode'])	{
 					$prefix=$moduleInfo['navFrameScript'].'?currentSubScript=';
 				} else {
 					$prefix='alt_mod_frameset.php?'.
@@ -234,7 +234,7 @@ class alt_menu_functions {
 						// If there is a script to link to (and linking is not disabled.
 					if ($link && !$dontLink)	{
 							// For condensed mode, send &cMR parameter to frameset script.
-						if ($addJS && $GLOBALS['BE_USER']->uc['condensedMode'])	{$addJS.=  "+(cMR?'&cMR=1':'')";}
+						if ($addJS && $BE_USER->uc['condensedMode'])	{$addJS.=  "+(cMR?'&cMR=1':'')";}
 
 							// Command for the selector box:
 						$JScmd = "
@@ -242,7 +242,7 @@ class alt_menu_functions {
 								top.fsMod.currentMainLoaded="'.$moduleName.'";';
 
 							// If there is a frameset script in place:
-						if (!$GLOBALS['BE_USER']->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
+						if (!$BE_USER->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
 							$JScmd = '
 								if (top.content.list_frame && top.fsMod.currentMainLoaded=="'.$moduleName.'") {
 									top.currentSubScript="'.$origLink.'";
@@ -266,7 +266,7 @@ class alt_menu_functions {
 					$subCode.='
 							<tr class="c-subitem-row">
 								<td></td>
-								<td align="center">'.(!$GLOBALS['BE_USER']->uc['hideSubmoduleIcons']?$imageCode:'').'</td>
+								<td align="center">'.(!$BE_USER->uc['hideSubmoduleIcons']?$imageCode:'').'</td>
 								<td class="c-subitem-label">'.$flabel.'</td>
 							</tr>';
 
@@ -337,6 +337,19 @@ class alt_menu_functions {
 
 			// selector-box menu
 		if ($descr==2)	{
+
+				// Add admin-functions for clearing caches:
+			if ($BE_USER->isAdmin())	{
+				$functionArray = $this->adminFunctions($backPath);
+				if (count($functionArray))	{
+					$selectItems[] = '<option value=""></option>';
+					foreach($functionArray as $fAoptions)	{
+						$selectItems[] = '<option value="'.htmlspecialchars("document.location='".$fAoptions['href']."';").'">[ '.htmlspecialchars($fAoptions['title']).' ]</option>';
+					}
+				}
+			}
+
+				// Logout item:
 			$selectItems[] = '<option value=""></option>';
 			$selectItems[] = '<option value="'.htmlspecialchars("top.location='logout.php';").'">[ '.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.logout',1).' ]</option>';
 			$final = '
@@ -400,6 +413,57 @@ class alt_menu_functions {
 			
 		$out.= '<form action="logout.php" target="_top"><input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.logout',1).'" /></form>';
 		return $out;
+	}
+
+	/**
+	 * Returns logout button.
+	 * 
+	 * @return	string		
+	 */
+	function adminButtons()	{
+		global $LANG;
+		
+		$functionArray = $this->adminFunctions('');
+
+		$icons=array();		
+		foreach($functionArray as $fAoptions)	{
+			$icons[]= '<a href="'.htmlspecialchars($fAoptions['href']).'">'.$fAoptions['icon'].'</a>';
+		}
+		
+		return implode('',$icons);
+	}
+
+	/**
+	 * Returns array with parts from which the admin functions can be constructed.
+	 * 
+	 * @param	string		Backpath.
+	 * @return	array	
+	 */
+	function adminFunctions($backPath)	{
+		global $LANG,$BE_USER,$TYPO3_CONF_VARS;
+
+		$functions=array();
+		
+			// Clearing of cache-files in typo3conf/ + menu
+		if ($TYPO3_CONF_VARS['EXT']['extCache'])	{
+			$title = $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_allTypo3Conf');
+			$functions[]=array(
+				'title' => $title,
+				'href' => $backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'&cacheCmd=temp_CACHED',
+				'icon' => '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/clear_cache_files_in_typo3c.gif','width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
+			);
+		}
+
+			// Clear all page cache
+		$title = $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all');
+		$functions[]=array(
+			'title' => $title,
+			'href' => $backPath.'tce_db.php?vC='.$BE_USER->veriCode().'&redirect='.rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')).'&cacheCmd=all',
+			'icon' => '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/clear_all_cache.gif','width="21" height="18"').' title="'.htmlspecialchars($title).'" alt="" />'
+		);
+
+			// Return functions
+		return $functions;
 	}
 
 	/**

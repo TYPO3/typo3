@@ -248,8 +248,8 @@ class t3lib_SCbase {
 	 */
 	function init()	{
 		$this->MCONF = $GLOBALS['MCONF'];
-		$this->id = intval(t3lib_div::GPvar('id'));
-		$this->CMD = t3lib_div::GPvar('CMD');
+		$this->id = intval(t3lib_div::_GP('id'));
+		$this->CMD = t3lib_div::_GP('CMD');
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->menuConfig();
 		$this->handleExternalFunctionValue();
@@ -270,7 +270,7 @@ class t3lib_SCbase {
 		$this->MOD_MENU['function'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['function'],'menu.function');
 
 			// CLEANSE 'function' SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 	}
 
 	/**
@@ -338,7 +338,7 @@ class t3lib_SCbase {
 			$this->extObj = t3lib_div::makeInstance($this->extClassConf['name']);
 			$this->extObj->init($this,$this->extClassConf);
 				// Re-write:
-			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
+			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 		}
 	}
 

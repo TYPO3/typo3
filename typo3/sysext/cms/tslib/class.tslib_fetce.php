@@ -93,7 +93,7 @@ class tslib_feTCE	{
 	 * Traverses the input data and fills in the array, $this->extScripts with references to files which are then included by includeScripts() (called AFTER start() in tslib_fe)
 	 * These scripts will then put the content into the database.
 	 * 
-	 * @param	array		Input data coming from POST vars, $GLOBALS['HTTP_POST_VARS']['data']
+	 * @param	array		Input data coming from typ. $_POST['data'] vars
 	 * @param	array		TypoScript configuration for the FEDATA object, $this->config['FEData.']
 	 * @return	void		
 	 * @see tslib_fe::fe_tce(), includeScripts()
@@ -186,7 +186,7 @@ class tslib_feTCE	{
 	 * @access private
 	 */
 	function checkDoublePostExist($table,$doublePostField,$key)	{
-		$query = 'SELECT count(*) FROM '.$table.' WHERE '.$doublePostField.'='.$key;
+		$query = 'SELECT count(*) FROM '.$table.' WHERE '.$doublePostField.'='.intval($key);
 		$res = mysql(TYPO3_db,$query);
 		echo mysql_error();
 		$row = mysql_fetch_row($res);
@@ -244,7 +244,7 @@ class tslib_feTCE	{
 		while(list($f,$v)=each($dataArr))	{
 			if (t3lib_div::inList($extraList,$f) || isset($GLOBALS['TCA'][$table]['columns'][$f]))	{
 				$fp[]=$f;
-				$vp[]=$v;
+				$vp[]=addslashes($v);
 			}
 		}
 		return $this->getInsert($table,$fp,$vp);
@@ -255,7 +255,7 @@ class tslib_feTCE	{
 	 * 
 	 * @param	string		Table name in which to insert the record
 	 * @param	array		Array with field names as values
-	 * @param	array		Array with field values as values - in the same order and number as $fp
+	 * @param	array		Array with field values as values - in the same order and number as $fp. MUST BE passed through addslashes() before!!
 	 * @return	string		The INSERT query.
 	 * @access private
 	 */

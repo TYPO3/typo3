@@ -124,10 +124,10 @@ class SC_mod_web_perm_index {
 		global $BE_USER,$BACK_PATH;
 
 			// Setting GPvars:
-		$this->id = intval(t3lib_div::GPvar('id'));
-		$this->edit = t3lib_div::GPvar('edit');
-		$this->return_id = t3lib_div::GPvar('return_id');
-		$this->lastEdited = t3lib_div::GPvar('lastEdited');
+		$this->id = intval(t3lib_div::_GP('id'));
+		$this->edit = t3lib_div::_GP('edit');
+		$this->return_id = t3lib_div::_GP('return_id');
+		$this->lastEdited = t3lib_div::_GP('lastEdited');
 		
 			// Module name;
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -203,7 +203,7 @@ class SC_mod_web_perm_index {
 		);
 		
 			// Clean up settings:
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 	}
 
 	/**

@@ -161,9 +161,9 @@ class SC_db_new {
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 
 			// Setting GPvars:
-		$this->id = intval(t3lib_div::GPvar('id'));	// The page id to operate from
-		$this->returnUrl = t3lib_div::GPvar('returnUrl');
-		$this->pagesOnly = t3lib_div::GPvar('pagesOnly');
+		$this->id = intval(t3lib_div::_GP('id'));	// The page id to operate from
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->pagesOnly = t3lib_div::_GP('pagesOnly');
 		
 			// Create instance of template class for output
 		$this->doc = t3lib_div::makeInstance('smallDoc');

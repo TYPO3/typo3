@@ -130,7 +130,12 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			reset($this->extAdminConfig['enable.']);
 			while(list($k,$v)=each($this->extAdminConfig['enable.']))	{
 				if ($v)	{
+						// Enable panel
 					$this->extAdmEnabled=1;
+					
+						// Init TSFE_EDIT variables:
+					$this->TSFE_EDIT = t3lib_div::_POST('TSFE_EDIT');
+
 					break;
 				}
 			}
@@ -358,7 +363,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			$out.=$this->extGetItem('edit_editNoPopup', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_editNoPopup]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[edit_editNoPopup]" value="1"'.($this->uc['TSFE_adminConfig']['edit_editNoPopup']?' checked="checked"':'').' />');
 
 			$out.=$this->extGetItem('', $this->ext_makeToolBar());
-			if (!t3lib_div::GPvar('ADMCMD_view'))	{
+			if (!t3lib_div::_GP('ADMCMD_view'))	{
 				$out.=$this->extGetItem('', '<a href="#" onclick="'.
 					htmlspecialchars('
 						if (parent.opener && parent.opener.top && parent.opener.top.TS)	{
@@ -683,9 +688,9 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @return	void		
 	 */
 	function extSaveFeAdminConfig()	{
-		if (is_array($GLOBALS['HTTP_POST_VARS']['TSFE_ADMIN_PANEL']))	{
+		$input = t3lib_div::_POST('TSFE_ADMIN_PANEL');
+		if (is_array($input))	{
 				// Setting
-			$input = $GLOBALS['HTTP_POST_VARS']['TSFE_ADMIN_PANEL'];
 			$this->uc['TSFE_adminConfig'] = array_merge(!is_array($this->uc['TSFE_adminConfig'])?array():$this->uc['TSFE_adminConfig'], $input);			// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
 			unset($this->uc['TSFE_adminConfig']['action']);
 			
@@ -894,15 +899,10 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see index_ts.php
 	 */
 	function extIsEditAction()	{
-		$TSFE_EDIT = $GLOBALS['HTTP_POST_VARS']['TSFE_EDIT'];
-		if (is_array($TSFE_EDIT))	{
-/*			$cmd=(string)$TSFE_EDIT['cmd'];
-			if ($cmd!="edit" && $cmd!='new')	{
-				return true;
-			}*/
-			if ($TSFE_EDIT['cancel'])	{
-				unset($TSFE_EDIT['cmd']);
-			} elseif (($cmd!='edit' || (is_array($TSFE_EDIT['data']) && ($TSFE_EDIT['update'] || $TSFE_EDIT['update_close']))) && $cmd!='new')	{
+		if (is_array($this->TSFE_EDIT))	{
+			if ($this->TSFE_EDIT['cancel'])	{
+				unset($this->TSFE_EDIT['cmd']);
+			} elseif (($cmd!='edit' || (is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']))) && $cmd!='new')	{
 					// $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sendt because of .keepGoing flag.
 				return true;
 			}
@@ -917,9 +917,8 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @see index_ts.php
 	 */
 	function extIsFormShown()	{
-		$TSFE_EDIT = $GLOBALS['HTTP_POST_VARS']['TSFE_EDIT'];
-		if (is_array($TSFE_EDIT))	{
-			$cmd=(string)$TSFE_EDIT['cmd'];
+		if (is_array($this->TSFE_EDIT))	{
+			$cmd=(string)$this->TSFE_EDIT['cmd'];
 			if ($cmd=='edit' || $cmd=='new')	{
 				return true;
 			}
@@ -936,14 +935,12 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	function extEditAction()	{
 		global $TCA;
 			// Commands:
-		$TSFE_EDIT = $GLOBALS['HTTP_POST_VARS']['TSFE_EDIT'];
-
-		list($table,$uid) = explode(':',$TSFE_EDIT['record']);
-		if ($TSFE_EDIT['cmd'] && $table && $uid && isset($TCA[$table]))	{
+		list($table,$uid) = explode(':',$this->TSFE_EDIT['record']);
+		if ($this->TSFE_EDIT['cmd'] && $table && $uid && isset($TCA[$table]))	{
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$recData=array();
 			$cmdData=array();
-			$cmd=$TSFE_EDIT['cmd'];
+			$cmd=$this->TSFE_EDIT['cmd'];
 			switch($cmd)	{
 				case 'hide':
 				case 'unhide':
@@ -1017,10 +1014,10 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			}
 		}
 			// Data:
-		if (($TSFE_EDIT['doSave'] || $TSFE_EDIT['update'] || $TSFE_EDIT['update_close']) && is_array($TSFE_EDIT['data']))	{
+		if (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data']))	{
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-			#	$tce->stripslashes_values=0; // This line is NOT needed because $TSFE_EDIT['data'] is already slashed and needs slashes stripped.
-			$tce->start($TSFE_EDIT['data'],Array());
+			$tce->stripslashes_values=0;
+			$tce->start($this->TSFE_EDIT['data'],Array());
 			$tce->process_uploads($GLOBALS['HTTP_POST_FILES']);
 			$tce->process_datamap();
 		}

@@ -179,15 +179,15 @@ class user_feAdmin	{
 		$this->templateCode = $this->conf['templateContent'] ? $this->conf['templateContent'] : $this->cObj->fileResource($this->conf['templateFile']);
 
 			// Getting the cmd var
-		$this->cmd = (string)t3lib_div::GPvar('cmd');
+		$this->cmd = (string)t3lib_div::_GP('cmd');
 			// Getting the preview var
-		$this->preview = (string)t3lib_div::GPvar('preview');
+		$this->preview = (string)t3lib_div::_GP('preview');
 			// backURL is a given URL to return to when login is performed
-		$this->backURL = t3lib_div::GPvar('backURL');
+		$this->backURL = t3lib_div::_GP('backURL');
 			// Uid to edit:
-		$this->recUid = t3lib_div::GPvar('rU');
+		$this->recUid = t3lib_div::_GP('rU');
 			// Authentication code:
-		$this->authCode = t3lib_div::GPvar('aC');
+		$this->authCode = t3lib_div::_GP('aC');
 			// get table
 		$this->theTable = $this->conf['table'];
 		
@@ -240,7 +240,7 @@ class user_feAdmin	{
 		);
 		
 			// Setting incoming data. Non-stripped
-		$fe=t3lib_div::GPvar('FE');
+		$fe=t3lib_div::_GP('FE');
 		$this->dataArr = $fe[$this->theTable];	// Incoming data.
 
 /*
@@ -262,7 +262,7 @@ class user_feAdmin	{
 		// *****************
 		// If data is submitted, we take care of it here.
 		// *******************
-		if ($this->cmd=='delete' && !$this->preview && !t3lib_div::GPvar('doNotSave'))	{	// Delete record if delete command is sent + the preview flag is NOT set.
+		if ($this->cmd=='delete' && !$this->preview && !t3lib_div::_GP('doNotSave'))	{	// Delete record if delete command is sent + the preview flag is NOT set.
 			$this->deleteRecord();
 		}
 			// If incoming data is seen...
@@ -281,7 +281,7 @@ class user_feAdmin	{
 		debug($this->preview);
 		*/
 				// if not preview and no failures, then set data...
-			if (!$this->failure && !$this->preview && !t3lib_div::GPvar('doNotSave'))	{	// doNotSave is a global var (eg a 'Cancel' submit button) that prevents the data from being processed
+			if (!$this->failure && !$this->preview && !t3lib_div::_GP('doNotSave'))	{	// doNotSave is a global var (eg a 'Cancel' submit button) that prevents the data from being processed
 				$this->save();
 			} else {
 				if ($this->conf['debug'])		debug($this->failure);
@@ -440,7 +440,7 @@ class user_feAdmin	{
 							$this->dataArr[$theField] = substr(md5(uniqid(microtime(),1)),0,intval($cmdParts[1]));
 						break;
 						case 'files':
-							if ($this->cmdKey=='create' && !t3lib_div::GPvar('doNotSave'))	{
+							if ($this->cmdKey=='create' && !t3lib_div::_GP('doNotSave'))	{
 								$this->processFiles($cmdParts,$theField);
 							} else unset($this->dataArr[$theField]);	// Fields with files cannot be edited - only created.
 						break;
@@ -1007,7 +1007,7 @@ class user_feAdmin	{
 	function displayCreateScreen()	{
 		if ($this->conf['create'])	{
 			$templateCode = $this->cObj->getSubpart($this->templateCode, ((!$GLOBALS['TSFE']->loginUser||$this->conf['create.']['noSpecialLoginForm'])?'###TEMPLATE_CREATE'.$this->previewLabel.'###':'###TEMPLATE_CREATE_LOGIN'.$this->previewLabel.'###'));
-			$failure = t3lib_div::GPvar('noWarnings')?'':$this->failure;
+			$failure = t3lib_div::_GP('noWarnings')?'':$this->failure;
 			if (!$failure)	$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELDS_WARNING###', '');
 
 			$templateCode = $this->removeRequired($templateCode,$failure);
@@ -1084,7 +1084,7 @@ class user_feAdmin	{
 
 		if ($this->conf['debug'])	debug('displayEditForm(): '.'###TEMPLATE_EDIT'.$this->previewLabel.'###',1);
 		$templateCode = $this->cObj->getSubpart($this->templateCode, '###TEMPLATE_EDIT'.$this->previewLabel.'###');
-		$failure = t3lib_div::GPvar('noWarnings')?'':$this->failure;
+		$failure = t3lib_div::_GP('noWarnings')?'':$this->failure;
 		if (!$failure)	{$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELDS_WARNING###', '');}
 
 		$templateCode = $this->removeRequired($templateCode,$failure);
@@ -1111,15 +1111,15 @@ class user_feAdmin	{
 		if ($this->conf['setfixed'])	{
 			$theUid = intval($this->recUid);
 			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,  $theUid);
-			$fD = t3lib_div::GPvar('fD');
-			$sFK = t3lib_div::GPvar('sFK');
+			$fD = t3lib_div::_GP('fD');
+			$sFK = t3lib_div::_GP('sFK');
 
 			$fieldArr=array();
 			if (is_array($fD) || $sFK=='DELETE')	{
 				if (is_array($fD))	{
 					reset($fD);
 					while(list($field,$value)=each($fD))	{
-						$origArr[$field]=stripslashes($value);
+						$origArr[$field]=$value;
 						$fieldArr[]=$field;
 					}
 				}
@@ -1366,10 +1366,10 @@ class user_feAdmin	{
 	 */
 	function sendInfoMail()	{
 		if ($this->conf['infomail'] && $this->conf['email.']['field'])	{
-			$fetch = t3lib_div::GPvar('fetch');
+			$fetch = t3lib_div::_GP('fetch');
 			if (isset($fetch))	{
 					// Getting infomail config.
-				$key= trim(t3lib_div::GPvar('key'));
+				$key= trim(t3lib_div::_GP('key'));
 				if (is_array($this->conf['infomail.'][$key.'.']))		{
 					$config = $this->conf['infomail.'][$key.'.'];
 				} else {
@@ -1602,7 +1602,7 @@ class user_feAdmin	{
 	/**
 	 * Returns true if authentication is OK based on the "aC" code which is a GET parameter set from outside with a hash string which must match some internal hash string.
 	 * This allows to authenticate editing without having a fe_users login
-	 * Uses $this->authCode which is set in init() by "t3lib_div::GPvar('aC');"
+	 * Uses $this->authCode which is set in init() by "t3lib_div::_GP('aC');"
 	 * 
 	 * @param	array		The data array for which to evaluate authentication
 	 * @return	boolean		True if authenticated OK

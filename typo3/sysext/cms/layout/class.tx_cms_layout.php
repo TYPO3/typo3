@@ -333,7 +333,7 @@ class tx_cms_layout extends recordList {
 								break;
 							}
 						} else {
-							$theData[$field] = '&nbsp;&nbsp;<b>'.$GLOBALS['LANG']->sL(stripslashes($TCA['pages']['columns'][$field]['label']),1).'</b>'.$eI;
+							$theData[$field] = '&nbsp;&nbsp;<b>'.$GLOBALS['LANG']->sL($TCA['pages']['columns'][$field]['label'],1).'</b>'.$eI;
 						}
 					break;
 				}

@@ -99,8 +99,8 @@ class SC_wizard_rte {
 		global $BACK_PATH;
 
 			// Setting GPvars:
-		$this->P = t3lib_div::GPvar('P',1);
-		$this->popView = t3lib_div::GPVar('popView');
+		$this->P = t3lib_div::_GP('P');
+		$this->popView = t3lib_div::_GP('popView');
 
 			// "Module name":
 		$this->MCONF['name']='xMOD_wizard_rte.php';		

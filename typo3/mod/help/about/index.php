@@ -103,7 +103,7 @@ class SC_mod_help_about_index {
 		<div align="center"><b>'.$LANG->getLL('welcome').'</b></div><br />
 		<br />
 		';
-		$minorText =sprintf($LANG->getLL('minor'), 'TYPO3 Ver. '.$TYPO_VERSION.', Copyright &#169; 1998-2003', 'Kasper Sk&#229;rh&#248;j');
+		$minorText =sprintf($LANG->getLL('minor'), 'TYPO3 Ver. '.$TYPO_VERSION.', Copyright &#169; 1998-2004', 'Kasper Sk&#229;rh&#248;j');
 		$content='
 		<div align="center">
 			<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#cccccc">

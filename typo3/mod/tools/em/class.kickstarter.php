@@ -52,7 +52,7 @@ class em_kickstarter extends tx_extrepwizard {
 	 * @return	void		
 	 */
 	function getPIdata() {
-		$this->piData = t3lib_div::GPvar($this->varPrefix,1);
+		$this->piData = t3lib_div::_GP($this->varPrefix);
 	}
 
 	/**

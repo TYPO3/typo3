@@ -342,7 +342,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				reset($data);
 				while(list($rec_id,$value)=each($data))	{
 					if ($value != $recs_array[$table][$rec_id])	{
-						$recs_array[$table][$rec_id] = stripslashes($value);
+						$recs_array[$table][$rec_id] = $value;
 						$change=1;
 					}
 				}

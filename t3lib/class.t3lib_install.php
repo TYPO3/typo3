@@ -255,9 +255,9 @@ class t3lib_install {
 			// ****************************
 			// Initializing incoming vars.
 			// ****************************
-		$this->INSTALL = t3lib_div::GPvar("TYPO3_INSTALL");
-		$this->mode = t3lib_div::GPvar("mode");
-		$this->step = t3lib_div::GPvar("step");
+		$this->INSTALL = t3lib_div::_GP("TYPO3_INSTALL");
+		$this->mode = t3lib_div::_GP("mode");
+		$this->step = t3lib_div::_GP("step");
 		if ($GLOBALS["HTTP_GET_VARS"]["TYPO3_INSTALL"]["type"])	$this->INSTALL["type"] = $GLOBALS["HTTP_GET_VARS"]["TYPO3_INSTALL"]["type"];
 
 		if ($this->step==3)	{
@@ -318,7 +318,7 @@ On behalf of PHP we regret this inconvenience.
 	 * @return	[type]		...
 	 */
 	function checkPassword($uKey)	{
-		$p = t3lib_div::GPvar("password");
+		$p = t3lib_div::_GP("password");
 
 		if ($p && md5($p)==$GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"])	{
 			$sKey = md5($GLOBALS["TYPO3_CONF_VARS"]["BE"]["installToolPassword"]."|".$uKey);
@@ -1211,11 +1211,11 @@ Number of files at a time:
 									$doit=1;
 									if ($k=="BE" && $vk=="installToolPassword")	{
 										if ($value)	{
-											if (isset($GLOBALS["HTTP_POST_VARS"]["installToolPassword_check"]) && (!t3lib_div::GPvar("installToolPassword_check") || strcmp(t3lib_div::GPvar("installToolPassword_check"),$value)))	{
+											if (isset($GLOBALS["HTTP_POST_VARS"]["installToolPassword_check"]) && (!t3lib_div::_GP("installToolPassword_check") || strcmp(t3lib_div::_GP("installToolPassword_check"),$value)))	{
 												$doit=0;
 												debug("ERROR: The two passwords did not match! The password was not changed.");
 											}
-											if (t3lib_div::GPvar("installToolPassword_md5"))	$value =md5($value);
+											if (t3lib_div::_GP("installToolPassword_md5"))	$value =md5($value);
 										} else $doit=0;
 									}
 									if ($doit && strcmp($GLOBALS["TYPO3_CONF_VARS"][$k][$vk],stripslashes($value)))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS["'.$k.'"]["'.$vk.'"]', $value);
@@ -1327,9 +1327,9 @@ Number of files at a time:
 			$this->message($ext, "Register globals disabled","
 				<i>register_globals=".ini_get("register_globals")."</i>
 				Incoming values by GET or POST method are not registered as globals. TYPO3 is designed to cope with that - actually we encourage that setting - but you should be aware if your included PHP-scripts (or TypoScript configurations) are compatible with this setting.
-				You should always use the function t3lib_div::GPvar(\"<i>[the_var_name_from_GET_or_POST]</i>\") to retrieve values passed to your script from outside.
+				You should always use the function t3lib_div::_GP(\"<i>[the_var_name_from_GET_or_POST]</i>\") to retrieve values passed to your script from outside.
 			",1);
-		} else $this->message($ext, "Register globals enabled","You should always use the function t3lib_div::GPvar(\"<i>[the_var_name_from_GET_or_POST]</i>\") to retrieve values passed to your script from outside.",1);
+		} else $this->message($ext, "Register globals enabled","You should always use the function t3lib_div::_GP(\"<i>[the_var_name_from_GET_or_POST]</i>\") to retrieve values passed to your script from outside.",1);
 		if (!ini_get("magic_quotes_gpc"))	{
 			$this->message($ext, "magic_quotes_gpc","
 				<i>magic_quotes_gpc=".ini_get("magic_quotes_gpc")."</i>
@@ -2306,7 +2306,7 @@ Number of files at a time:
 		$text_color = imagecolorallocate ($im, 233, 14, 91);
 
 		$test = @imagettftext($im, t3lib_div::freetypeDpiComp(20), 0, 10, 20, $text_color, PATH_t3lib."/fonts/verdana.ttf", "Testing Truetype support");
-		if (t3lib_div::GPvar("testingTrueTypeSupport"))	{
+		if (t3lib_div::_GP("testingTrueTypeSupport"))	{
 			if ($this->isGIF())	{
 				header ("Content-type: image/gif");
 				imagegif ($im);
@@ -3456,8 +3456,8 @@ Number of files at a time:
 							$this->message($tLabel,"Imported ALL","
 								Queries: ".$r."
 							",1,1);
-							if (t3lib_div::GPvar("goto_step"))	{
-								$this->action.="&step=".t3lib_div::GPvar("goto_step");
+							if (t3lib_div::_GP("goto_step"))	{
+								$this->action.="&step=".t3lib_div::_GP("goto_step");
 								Header("Location: ".t3lib_div::locationHeaderUrl($this->action));
 								exit;
 							}
@@ -3518,7 +3518,7 @@ Number of files at a time:
 									<HR>
 									';
 								}
-								$content.='<input type="checkbox" name="TYPO3_INSTALL[database_import_all]" value="1"'.($this->mode=="123"||t3lib_div::GPvar("presetWholeTable")?" checked":"").'>'.$this->fw("Import the whole file '".basename($actionParts[1])."' directly (ignores selections above):").'<BR>
+								$content.='<input type="checkbox" name="TYPO3_INSTALL[database_import_all]" value="1"'.($this->mode=="123"||t3lib_div::_GP("presetWholeTable")?" checked":"").'>'.$this->fw("Import the whole file '".basename($actionParts[1])."' directly (ignores selections above):").'<BR>
 	
 								';
 								$form = $this->getUpdateDbFormWrap($action_type, $content);

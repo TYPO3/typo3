@@ -851,7 +851,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$fields_values['event_pid']=intval($event_pid);
 			$fields_values['NEWid']=$NEWid;
 			
-			$query = t3lib_BEfunc::DBcompileInsert('sys_log',$fields_values,1);
+			$query = t3lib_BEfunc::DBcompileInsert('sys_log',$fields_values);
 
 			mysql(TYPO3_db,$query);
 			return mysql_insert_id();

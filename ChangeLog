@@ -1,3 +1,12 @@
+Kasper Skårhøj, 6/2:
+ - Added procession option to RTE, "proc.plainImageMode"
+ - Added options for select and group types in TCA to set the selector box style.
+ - Added $altPageId parameter to function linkTP*() in tslib_pibase + pi_list_linkSingle()
+ - Changed the order of <?xml> and <!DOCTYPE> in the frontend for XHTML around again. And added an option, "doctypeSwitch" which will reverse the order for those needing that. And finally the "doctype" option fed with a value that is not "xhtml_frames", "xhtml_trans" or "xhtml_strict" will be outputted AS the doctype! 
+ - Implemented checkbox for show thumbnails in Element browser/file and RTE select image dialog.
+ - Implemented pop-up window size selector in link wizard
+
+
 Kasper Skårhøj
 	* Removed "mininews" from global extensions - that was an error in RC1
 	* Removed global extensions "beuser_tracking/ classic_welcome/ design_components/ tt_links/" from main distribtion. They are either obsolete or irrelevant and it has been considered responsible to remove them like this.

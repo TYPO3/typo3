@@ -466,7 +466,7 @@ class t3lib_TStemplate	{
 				// This feature allows us a hack to test/demonstrate various included templates on the same set of content bearing pages. Used by the "freesite" extension.
 			$basedOn_hackFeature = explode('=',$row['basedOn']);
 			if ($basedOn_hackFeature[0]=='EXTERNAL_BASED_ON_TEMPLATE_ID' && $basedOn_hackFeature[1])		{	
-				$id=intval($GLOBALS['HTTP_GET_VARS'][$basedOn_hackFeature[1]]);
+				$id=intval(t3lib_div::_GET($basedOn_hackFeature[1]));
 				if ($id && !t3lib_div::inList($idList,'sys_'.$id))	{	// if $id is not allready included ...
 					$res = mysql(TYPO3_db, 'SELECT * FROM sys_template WHERE uid='.$id.' '.$this->whereClause);
 					echo mysql_error();

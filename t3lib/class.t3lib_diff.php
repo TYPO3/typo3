@@ -68,6 +68,7 @@ class t3lib_diff {
 
 		// External, static:
 	var $stripTags = 0;			// If set, the HTML tags are stripped from the input strings first.
+	var $diffOptions = '';		// Diff options. eg "--unified=3"
 	
 		// Internal, dynamic:
 	var $clearBufferIdx=0;		// This indicates the number of times the function addClearBuffer has been called - and used to detect the very first call...
@@ -165,7 +166,7 @@ class t3lib_diff {
 			$file2 = t3lib_div::tempnam('diff2_');
 			t3lib_div::writeFile($file2,$str2);
 				// Perform diff.
-			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$file1.' '.$file2;
+			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$this->diffOptions.' '.$file1.' '.$file2;
 			exec($cmd,$res);
 
 			unlink($file1);

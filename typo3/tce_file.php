@@ -96,11 +96,11 @@ class SC_tce_file {
 	function init()	{
 	
 			// GPvars:
-		$this->file = t3lib_div::GPvar('file');
-		$this->redirect = t3lib_div::GPvar('redirect');
-		$this->CB = t3lib_div::GPvar('CB');
-		$this->overwriteExistingFiles = t3lib_div::GPvar('overwriteExistingFiles');
-		$this->vC = t3lib_div::GPvar('vC');
+		$this->file = t3lib_div::_GP('file');
+		$this->redirect = t3lib_div::_GP('redirect');
+		$this->CB = t3lib_div::_GP('CB');
+		$this->overwriteExistingFiles = t3lib_div::_GP('overwriteExistingFiles');
+		$this->vC = t3lib_div::_GP('vC');
 		
 			// If clipboard is set, then include the clipboard class:
 		if (is_array($this->CB))	{

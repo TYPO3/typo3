@@ -98,8 +98,8 @@ class SC_view_help {
 		global $LANG;
 		
 			// Setting GPvars:
-		$this->tfID = t3lib_div::GPvar('tfID');
-		$this->back = t3lib_div::GPvar('back');
+		$this->tfID = t3lib_div::_GP('tfID');
+		$this->back = t3lib_div::_GP('back');
 
 			// Set internal table/field to the parts of "tfID" incoming var.
 		list($this->table,$this->field)=explode('.',$this->tfID);
@@ -293,7 +293,7 @@ class SC_view_help {
 				// Making item:
 			$out= '<a name="'.$table.'.'.$field.'"></a>
 					'.
-					$this->headerLine($LANG->sL($tableName).': '.($field?ereg_replace(':$','',stripslashes(trim($LANG->sL($fieldName)))):''),1).
+					$this->headerLine($LANG->sL($tableName).': '.($field?ereg_replace(':$','',trim($LANG->sL($fieldName))):''),1).
 					$this->prepareContent($TCA_DESCR[$table]['columns'][$field]['description']).
 					($TCA_DESCR[$table]['columns'][$field]['details'] ? $this->headerLine($LANG->getLL('details').':').$this->prepareContent($TCA_DESCR[$table]['columns'][$field]['details']) : '').
 					($TCA_DESCR[$table]['columns'][$field]['syntax'] ? $this->headerLine($LANG->getLL('syntax').':').$this->prepareContent($TCA_DESCR[$table]['columns'][$field]['syntax']) : '').

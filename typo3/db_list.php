@@ -130,18 +130,18 @@ class SC_db_list {
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 
 			// GPvars:
-		$this->id = t3lib_div::GPvar('id');
-		$this->pointer = t3lib_div::GPvar('pointer');
-		$this->imagemode = t3lib_div::GPvar('imagemode');
-		$this->table = t3lib_div::GPvar('table');
-		$this->search_field = t3lib_div::GPvar('search_field');
-		$this->search_levels = t3lib_div::GPvar('search_levels');
-		$this->showLimit = t3lib_div::GPvar('showLimit');
-		$this->returnUrl = t3lib_div::GPvar('returnUrl');
+		$this->id = t3lib_div::_GP('id');
+		$this->pointer = t3lib_div::_GP('pointer');
+		$this->imagemode = t3lib_div::_GP('imagemode');
+		$this->table = t3lib_div::_GP('table');
+		$this->search_field = t3lib_div::_GP('search_field');
+		$this->search_levels = t3lib_div::_GP('search_levels');
+		$this->showLimit = t3lib_div::_GP('showLimit');
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
 
-		$this->clear_cache = t3lib_div::GPvar('clear_cache');
-		$this->cmd = t3lib_div::GPvar('cmd');
-		$this->cmd_table = t3lib_div::GPvar('cmd_table');
+		$this->clear_cache = t3lib_div::_GP('clear_cache');
+		$this->cmd = t3lib_div::_GP('cmd');
+		$this->cmd_table = t3lib_div::_GP('cmd_table');
 		
 			// Initialize menu
 		$this->menuConfig();
@@ -169,7 +169,7 @@ class SC_db_list {
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 		
 			// Clean up settings:
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 	}
 
 	/**
@@ -180,6 +180,7 @@ class SC_db_list {
 	function clearCache()	{
 		if ($this->clear_cache)	{
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			$tce->stripslashes_values=0;
 			$tce->start(Array(),Array());
 			$tce->clear_cacheCmd($this->id);
 		}
@@ -191,7 +192,7 @@ class SC_db_list {
 	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT;
+		global $BE_USER,$LANG,$BACK_PATH,$CLIENT;
 
 			// Start document template object:
 		$this->doc = t3lib_div::makeInstance('template');
@@ -222,11 +223,11 @@ class SC_db_list {
 		$dblist->clipObj->initializeClipboard();	// Initialize - reads the clipboard content from the user session
 
 			// Clipboard actions are handled:
-		$CB = $HTTP_GET_VARS['CB'];	// CB is the clipboard command array
+		$CB = t3lib_div::_GET('CB');	// CB is the clipboard command array
 		if ($this->cmd=='setCB') {
 				// CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked. By merging we get a full array of checked/unchecked elements
 				// This is set to the 'el' array of the CB after being parsed so only the table in question is registered.
-			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge($HTTP_POST_VARS['CBH'],$HTTP_POST_VARS['CBC']),$this->cmd_table);
+			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'),t3lib_div::_POST('CBC')),$this->cmd_table);
 		}
 		if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';	// If the clipboard is NOT shown, set the pad to 'normal'.
 		$dblist->clipObj->setCmd($CB);		// Execute commands.
@@ -245,7 +246,7 @@ class SC_db_list {
 				// Deleting records...:
 				// Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
 			if ($this->cmd=='delete')	{
-				$items = $dblist->clipObj->cleanUpCBC($HTTP_POST_VARS['CBC'],$this->cmd_table,1);
+				$items = $dblist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),$this->cmd_table,1);
 				if (count($items))	{
 					$cmd=array();
 					reset($items);
@@ -254,6 +255,7 @@ class SC_db_list {
 						$cmd[$iKParts[0]][$iKParts[1]]['delete']=1;
 					}
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+					$tce->stripslashes_values=0;
 					$tce->start(array(),$cmd);
 					$tce->process_cmdmap();
 		

@@ -106,6 +106,7 @@ class SC_alt_topmenu_dummy {
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-topMenu">
 					<tr>
 						<td class="c-menu">'.$alt_menuObj->topMenu($loadModules->modules,0,'',3).'</td>
+						'.($BE_USER->isAdmin() ? '<td class="c-admin">'.$alt_menuObj->adminButtons().'</td>' : '').'
 						<td class="c-logout">'.$alt_menuObj->topButtons().'</td>
 					</tr>
 				</table>';

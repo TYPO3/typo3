@@ -237,18 +237,18 @@ class SC_db_layout {
 		$this->backPath = $GLOBALS['BACK_PATH'];
 
 			// GPvars:
-		$this->id = intval(t3lib_div::GPvar('id'));
-		$this->pointer = t3lib_div::GPvar('pointer');
-		$this->imagemode = t3lib_div::GPvar('imagemode');
+		$this->id = intval(t3lib_div::_GP('id'));
+		$this->pointer = t3lib_div::_GP('pointer');
+		$this->imagemode = t3lib_div::_GP('imagemode');
 
-		$this->clear_cache = t3lib_div::GPvar('clear_cache');
-		$this->popView = t3lib_div::GPVar('popView');
-		$this->edit_record = t3lib_div::GPvar('edit_record');
-		$this->new_unique_uid = t3lib_div::GPvar('new_unique_uid');
-		$this->search_field = t3lib_div::GPvar('search_field');
-		$this->search_levels = t3lib_div::GPvar('search_levels');
-		$this->showLimit = t3lib_div::GPvar('showLimit');
-		$this->returnUrl = t3lib_div::GPvar('returnUrl');
+		$this->clear_cache = t3lib_div::_GP('clear_cache');
+		$this->popView = t3lib_div::_GP('popView');
+		$this->edit_record = t3lib_div::_GP('edit_record');
+		$this->new_unique_uid = t3lib_div::_GP('new_unique_uid');
+		$this->search_field = t3lib_div::_GP('search_field');
+		$this->search_levels = t3lib_div::_GP('search_levels');
+		$this->showLimit = t3lib_div::_GP('showLimit');
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
 
 			// Load page info array:
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
@@ -354,7 +354,7 @@ class SC_db_layout {
 		}
 		
 			// Clean up settings
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 	}
 
 	/**
@@ -365,6 +365,7 @@ class SC_db_layout {
 	function clearCache()	{
 		if ($this->clear_cache)	{
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			$tce->stripslashes_values=0;
 			$tce->start(Array(),Array());
 			$tce->clear_cacheCmd($this->id);
 		}
@@ -590,7 +591,7 @@ class SC_db_layout {
 	
 			// Setting up the Return URL for coming back to THIS script (if links take the user to another script)	
 		$R_URL_parts = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
-		$R_URL_getvars = $GLOBALS['HTTP_GET_VARS'];
+		$R_URL_getvars = t3lib_div::_GET();
 	
 		unset($R_URL_getvars['popView']);
 		unset($R_URL_getvars['new_unique_uid']);

@@ -155,8 +155,8 @@ class clickMenu {
 	function init($item)	{
 
 			// Setting GPvars:
-		$this->cmLevel = intval(t3lib_div::GPvar('cmLevel'));
-		$this->CB = t3lib_div::GPvar('CB');
+		$this->cmLevel = intval(t3lib_div::_GP('cmLevel'));
+		$this->CB = t3lib_div::_GP('CB');
 
 
 			// Explode the incoming command:
@@ -1170,8 +1170,8 @@ class SC_alt_clickmenu {
 		global $BE_USER,$BACK_PATH;
 		
 			// Setting GPvars:
-		$this->backPath = t3lib_div::GPvar('backPath');
-		$this->item = t3lib_div::GPvar('item');
+		$this->backPath = t3lib_div::_GP('backPath');
+		$this->item = t3lib_div::_GP('item');
 
 			// Setting pseudo module name
 		$this->MCONF['name']='xMOD_alt_clickmenu.php';
@@ -1258,7 +1258,6 @@ class SC_alt_clickmenu {
 	 * @return	void		
 	 */
 	function main()	{
-		global $HTTP_GET_VARS;
 
 			// Initialize Clipboard object:
 		$clipObj = t3lib_div::makeInstance('t3lib_clipboard');
@@ -1266,7 +1265,8 @@ class SC_alt_clickmenu {
 		$clipObj->lockToNormal();	// This locks the clipboard to the Normal for this request.
 		
 			// Update clipboard if some actions are sent.
-		$CB = $HTTP_GET_VARS['CB'];
+		$CB = t3lib_div::_GET('CB');
+		
 		$clipObj->setCmd($CB);
 		$clipObj->cleanCurrent();
 		$clipObj->endClipboard();	// Saves

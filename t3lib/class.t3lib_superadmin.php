@@ -184,7 +184,7 @@ class t3lib_superadmin {
 		$content = $this->initProcess();
 		
 			// Output mode:
-		$mode=t3lib_div::GPvar("show");
+		$mode=t3lib_div::_GP("show");
 //debug($GLOBALS["HTTP_GET_VARS"]);
 		switch($mode)	{
 			case "menu":
@@ -200,7 +200,7 @@ class t3lib_superadmin {
 				$lines[]='';
 				$content = '<font>'.implode("<BR>",$lines).'</font>';
 				$content.= '<HR>';
-				$content.=$this->menuContent(t3lib_div::GPvar("exp"));
+				$content.=$this->menuContent(t3lib_div::_GP("exp"));
 				return '<h2><nobr><div align="center">TYPO3<BR>Super Admin</div></nobr></h2>'.$content;
 			break;
 			case "all":
@@ -216,10 +216,10 @@ class t3lib_superadmin {
 				'<h2>Change TBE Admin Passwords:</h2>'.$this->changeAdminPasswordsForm()."<BR><HR><BR>";
 			break;
 			case "info":
-				return '<h1>Single site details</h1>'.$this->singleSite(t3lib_div::GPvar("exp"))."<BR>";
+				return '<h1>Single site details</h1>'.$this->singleSite(t3lib_div::_GP("exp"))."<BR>";
 			break;
 			case "rmTempCached":
-				return '<h1>Removing temp_CACHED_*.php files</h1>'.$this->rmCachedFiles(t3lib_div::GPvar("exp"))."<BR>";
+				return '<h1>Removing temp_CACHED_*.php files</h1>'.$this->rmCachedFiles(t3lib_div::_GP("exp"))."<BR>";
 			break;
 			case "localext":	
 				return '<h1>Local Extensions Found:</h1>'.$this->localExtensions()."<BR>";
@@ -239,7 +239,7 @@ class t3lib_superadmin {
 	 */
 	function setMenuItem($code,$label)	{
 		$out = '<a HREF="'.$this->scriptName.'?type=menu&show=menu&exp='.$code.'" target="TSAmenu">'.$label.'</a>';	
-		if ($code==t3lib_div::GPvar("exp"))	{
+		if ($code==t3lib_div::_GP("exp"))	{
 			$out = '<font color=red>&gt;&gt;</font>'.$out;
 		}
 		return $out;
@@ -999,10 +999,10 @@ class t3lib_superadmin {
 	 * @return	[type]		...
 	 */
 	function setNewPasswords()	{
-		$whichFields = t3lib_div::GPvar("SETFIELDS");
+		$whichFields = t3lib_div::_GP("SETFIELDS");
 
-		$pass = trim(t3lib_div::GPvar("NEWPASS"));
-		$passMD5 = t3lib_div::GPvar("NEWPASS_md5");
+		$pass = trim(t3lib_div::_GP("NEWPASS"));
+		$passMD5 = t3lib_div::_GP("NEWPASS_md5");
 		$updatedFlag=0;
 		if ($pass || $passMD5)	{
 			$pass = $passMD5 ? $passMD5 : md5($pass);
@@ -1051,7 +1051,7 @@ TD {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px}
 </style>
 ';
 
-		switch(t3lib_div::GPvar("type"))	{
+		switch(t3lib_div::_GP("type"))	{
 			case "phpinfo":
 				phpinfo();
 			break;

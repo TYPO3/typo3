@@ -729,37 +729,43 @@ class SC_browse_links {
 		global $BE_USER,$BACK_PATH;
 
 			// Main GPvars:
-		$this->pointer = t3lib_div::GPvar('pointer');
-		$this->bparams = t3lib_div::GPvar('bparams');
-		$this->P = t3lib_div::GPvar('P',1);
-		$this->RTEtsConfigParams = t3lib_div::GPvar('RTEtsConfigParams');
-		$this->expandPage = t3lib_div::GPvar('expandPage');
-		$this->expandFolder = t3lib_div::GPvar('expandFolder');
-		$this->PM = t3lib_div::GPvar('PM');
+		$this->pointer = t3lib_div::_GP('pointer');
+		$this->bparams = t3lib_div::_GP('bparams');
+		$this->P = t3lib_div::_GP('P');
+		$this->RTEtsConfigParams = t3lib_div::_GP('RTEtsConfigParams');
+		$this->expandPage = t3lib_div::_GP('expandPage');
+		$this->expandFolder = t3lib_div::_GP('expandFolder');
+		$this->PM = t3lib_div::_GP('PM');
 		
-			// Site URL			
-		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');	// Current site url
-
-			// CurrentUrl - the current link url must be passed around if it exists
-		$this->curUrlArray = t3lib_div::GPvar('curUrl',1);
-		if ($this->curUrlArray['all'])	{
-			$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
-		}
-		$this->curUrlInfo=$this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
-
-			// Determine nature of current url:
-		$this->act=t3lib_div::GPvar('act');
-		if (!$this->act)	{
-			$this->act=$this->curUrlInfo['act'];
-		}
-		
-		$this->mode=t3lib_div::GPvar('mode');
+			// Find "mode"		
+		$this->mode=t3lib_div::_GP('mode');
 		if (!$this->mode)	{
 			$this->mode='rte';
 		}
 
-		
-		
+			// Site URL			
+		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');	// Current site url
+
+			// CurrentUrl - the current link url must be passed around if it exists
+		if ($this->mode=='wizard')	{
+			$currentLinkParts = t3lib_div::trimExplode(' ',$this->P['currentValue']);
+			$this->curUrlArray = array(
+				'target' => $currentLinkParts[1]
+			);
+			$this->curUrlInfo=$this->parseCurUrl($this->siteURL.'?id='.$currentLinkParts[0],$this->siteURL);
+		} else {
+			$this->curUrlArray = t3lib_div::_GP('curUrl');
+			if ($this->curUrlArray['all'])	{
+				$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
+			}
+			$this->curUrlInfo=$this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
+		}
+
+			// Determine nature of current url:
+		$this->act=t3lib_div::_GP('act');
+		if (!$this->act)	{
+			$this->act=$this->curUrlInfo['act'];
+		}
 
 			// Rich Text Editor specific configuration:
 		$addPassOnParams='';
@@ -796,7 +802,7 @@ class SC_browse_links {
 		
 			function setTarget(target)	{	//
 				cur_target=target;
-				add_target="&curUrl[target]="+target;
+				add_target="&curUrl[target]="+escape(target);
 			}
 			function setValue(value)	{	//
 				cur_href=value;
@@ -954,7 +960,7 @@ class SC_browse_links {
 		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
 
 			// Debugging:
-/*		debug(array(
+		if (FALSE) debug(array(
 			'pointer' => $this->pointer,
 			'act' => $this->act,
 			'mode' => $this->mode,
@@ -966,7 +972,7 @@ class SC_browse_links {
 			'expandPage' => $this->expandPage,
 			'expandFolder' => $this->expandFolder,
 			'PM' => $this->PM,
-		),'Internal variables of Script Class:');	*/
+		),'Internal variables of Script Class:');
 	}
 
 	/**
@@ -1244,21 +1250,54 @@ class SC_browse_links {
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
 						<tr>
 							<td>'.$GLOBALS['LANG']->getLL('target',1).':</td>
-							<td><input type="text" name="ltarget" onchange="setTarget(this.value);" value="'.htmlspecialchars($this->setTarget).'"'.$this->doc->formWidth(20).' /></td>
+							<td><input type="text" name="ltarget" onchange="setTarget(this.value);" value="'.htmlspecialchars($this->setTarget).'"'.$this->doc->formWidth(10).' /></td>
 							<td>
 								<select name="ltarget_type" onchange="setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
 									<option></option>
 									<option value="_top">'.$GLOBALS['LANG']->getLL('top',1).'</option>
 									<option value="_blank">'.$GLOBALS['LANG']->getLL('newWindow',1).'</option>
 								</select>
-							</td>';
+							</td>
+							<td>';
 				
 			if (($this->curUrlInfo['act']=="page" || $this->curUrlInfo['act']=='file') && $this->curUrlArray['href'])	{
 				$ltarget.='
-							<td><input type="submit" value="'.$GLOBALS['LANG']->getLL('update',1).'" onclick="return link_current();" /></td>';
+							<input type="submit" value="'.$GLOBALS['LANG']->getLL('update',1).'" onclick="return link_current();" />';
 			}
 			
-			$ltarget.='
+			$selectJS = '
+				if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
+					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+"x"+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
+					setTarget(document.ltargetform.ltarget.value);
+					document.ltargetform.popup_width.selectedIndex=0;
+					document.ltargetform.popup_height.selectedIndex=0;
+				}
+			';
+			
+			$ltarget.='		</td>
+						</tr>
+						<tr>
+							<td>'.$GLOBALS['LANG']->getLL('target_popUpWindow',1).':</td>
+							<td colspan="3">
+								<select name="popup_width" onchange="'.htmlspecialchars($selectJS).'">
+									<option value="0">'.$GLOBALS['LANG']->getLL('target_popUpWindow_width',1).'</option>
+									<option value="300">300</option>
+									<option value="400">400</option>
+									<option value="500">500</option>
+									<option value="600">600</option>
+									<option value="700">700</option>
+									<option value="800">800</option>
+								</select>
+								x
+								<select name="popup_height" onchange="'.htmlspecialchars($selectJS).'">
+									<option value="0">'.$GLOBALS['LANG']->getLL('target_popUpWindow_height',1).'</option>
+									<option value="200">200</option>
+									<option value="300">300</option>
+									<option value="400">400</option>
+									<option value="500">500</option>
+									<option value="600">600</option>
+								</select>
+							</td>
 						</tr>
 					</table>
 				</form>';
@@ -1340,7 +1379,7 @@ class SC_browse_links {
 		if (!$path || !@is_dir($path))	{
 			$path = $fileProcessor->findTempFolder().'/';	// The closest TEMP-path is found
 		}
-		if ($path!="/" && @is_dir($path))	{
+		if ($path!='/' && @is_dir($path))	{
 			$uploadForm=$this->uploadForm($path);
 			$createFolder=$this->createFolder($path);
 		} else {
@@ -1349,7 +1388,20 @@ class SC_browse_links {
 		}
 		if ($BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB'))	$content.=$uploadForm;
 	
+			// Getting flag for showing/not showing thumbnails:
+		$noThumbs = $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInEB');
 	
+		if (!$noThumbs)	{
+				// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
+			$_MOD_MENU = array('displayThumbs' => '');
+			$_MCONF['name']='file_list';
+			$_MOD_SETTINGS = t3lib_BEfunc::getModuleData($_MOD_MENU, t3lib_div::_GP('SET'), $_MCONF['name']);
+			$addParams = '&act='.$this->act.'&mode='.$this->mode.'&expandFolder='.rawurlencode($path).'&bparams='.rawurlencode($this->bparams);
+			$thumbNailCheck = t3lib_BEfunc::getFuncCheck('','SET[displayThumbs]',$_MOD_SETTINGS['displayThumbs'],'browse_links.php',$addParams).' '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs',1);
+		} else {
+			$thumbNailCheck='';
+		}
+		
 			// Create folder tree:
 		$foldertree = t3lib_div::makeInstance('TBE_FolderTree');
 		$foldertree->script='browse_links.php';
@@ -1361,7 +1413,7 @@ class SC_browse_links {
 		if ($this->mode=='filedrag')	{
 			$files = $this->TBE_dragNDrop($foldertree->specUIDmap[$specUid],$pArr[3]);
 		} else {
-			$files = $this->TBE_expandFolder($foldertree->specUIDmap[$specUid],$pArr[3]);
+			$files = $this->TBE_expandFolder($foldertree->specUIDmap[$specUid],$pArr[3],$noThumbs?$noThumbs:!$_MOD_SETTINGS['displayThumbs']);
 		}
 
 			// Putting the parts together, side by side:		
@@ -1377,6 +1429,7 @@ class SC_browse_links {
 				</tr>
 			</table>
 			';
+		$content.=$thumbNailCheck;
 	
 			// Adding create folder + upload forms if applicable:
 		if (!$BE_USER->getTSConfigVal('options.uploadFieldsInTopOfEB'))	$content.=$uploadForm;
@@ -1531,10 +1584,10 @@ class SC_browse_links {
 			$dblist->noControlPanels=1;
 			$dblist->tableList=implode(',',$tablesArr);
 	
-			$dblist->start($id,t3lib_div::GPvar('table'),$pointer,
-				t3lib_div::GPvar('search_field'),
-				t3lib_div::GPvar('search_levels'),
-				t3lib_div::GPvar('showLimit')
+			$dblist->start($id,t3lib_div::_GP('table'),$pointer,
+				t3lib_div::_GP('search_field'),
+				t3lib_div::_GP('search_levels'),
+				t3lib_div::_GP('showLimit')
 			);
 			$dblist->setDispFields();
 			$dblist->generateList($id,$table);
@@ -1638,9 +1691,10 @@ class SC_browse_links {
 	 * 
 	 * @param	string		The folder path to expand
 	 * @param	string		List of fileextensions to show
+	 * @param	boolean		Whether to show thumbnails or not. It set, no thumbnails are shown.
 	 * @return	string		HTML output
 	 */
-	function TBE_expandFolder($expandFolder=0,$extensionList='')	{
+	function TBE_expandFolder($expandFolder=0,$extensionList='',$noThumbs=0)	{
 		global $LANG;
 		
 		$expandFolder = $expandFolder ? $expandFolder : $this->expandFolder;
@@ -1665,9 +1719,6 @@ class SC_browse_links {
 				$imgObj->init();
 				$imgObj->mayScaleUp=0;
 				$imgObj->tempPath=PATH_site.$imgObj->tempPath;
-		
-					// Getting flag for showing/not showing thumbnails:
-				$noThumbs = $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInEB');
 		
 					// Traverse the file list:
 				$lines=array();
@@ -1804,7 +1855,7 @@ class SC_browse_links {
 							$icon = '<img'.t3lib_iconWorks::skinImg('','gfx/fileicons/'.$ficon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
 							$filenameAndIcon=$icon.htmlspecialchars(t3lib_div::fixed_lgd(basename($filepath),$titleLen));
 		
-							if (t3lib_div::GPvar('noLimit'))	{
+							if (t3lib_div::_GP('noLimit'))	{
 								$maxW=10000;
 								$maxH=10000;
 							} else {
@@ -2063,6 +2114,13 @@ class SC_browse_links {
 		$redirectValue = 'browse_links.php?act='.$this->act.'&mode='.$this->mode.'&expandFolder='.rawurlencode($path).'&bparams='.rawurlencode($this->bparams);
 		$code.='<input type="hidden" name="redirect" value="'.htmlspecialchars($redirectValue).'" />'.
 				'<input type="submit" name="submit" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit',1).'" />';
+				
+		$code.='
+			<div id="c-override">
+				<input type="checkbox" name="overwriteExistingFiles" value="1" /> '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:overwriteExistingFiles',1).'
+			</div>
+		';
+				
 				
 		$code.='</td>
 					</tr>

@@ -247,11 +247,11 @@ class SC_alt_palette {
 	function init()	{
 
 			// Setting GPvars, etc.
-		$this->formName = t3lib_div::GPvar('formName');
-		$this->GPbackref = t3lib_div::GPvar('backRef');
-		$this->inData = t3lib_div::GPvar('inData');
-		$this->prependFormFieldNames = t3lib_div::GPvar('prependFormFieldNames');
-		$this->rec = t3lib_div::GPvar('rec',1);
+		$this->formName = t3lib_div::_GP('formName');
+		$this->GPbackref = t3lib_div::_GP('backRef');
+		$this->inData = t3lib_div::_GP('inData');
+		$this->prependFormFieldNames = t3lib_div::_GP('prependFormFieldNames');
+		$this->rec = t3lib_div::_GP('rec');
 		
 			// Making references:
 		$this->backRef = $this->GPbackref ? $this->GPbackref : 'window.opener';

@@ -147,11 +147,11 @@ class SC_wizard_tsconfig {
 		t3lib_extMgm::isLoaded('tsconfig_help',1);
 
 			// Init GPvars:
-		$this->P = t3lib_div::GPvar('P',1);
-		$this->mode = t3lib_div::GPvar('mode');
-		$this->show = t3lib_div::GPvar('show');
-		$this->objString = t3lib_div::GPvar('objString');
-		$this->onlyProperty = t3lib_div::GPvar('onlyProperty');
+		$this->P = t3lib_div::_GP('P');
+		$this->mode = t3lib_div::_GP('mode');
+		$this->show = t3lib_div::_GP('show');
+		$this->objString = t3lib_div::_GP('objString');
+		$this->onlyProperty = t3lib_div::_GP('onlyProperty');
 
 			// Preparing some JavaScript code:
 		if (!is_array($this->P['fieldChangeFunc']))	$this->P['fieldChangeFunc']=array();

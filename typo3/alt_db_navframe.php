@@ -148,8 +148,8 @@ class SC_alt_db_navframe {
 		global $BE_USER,$BACK_PATH;
 
 			// Setting GPvars:
-		$this->currentSubScript = t3lib_div::GPvar('currentSubScript');
-		$this->cMR = t3lib_div::GPvar('cMR');
+		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
+		$this->cMR = t3lib_div::_GP('cMR');
 		
 			// Create page tree object:
 		$this->pagetree = t3lib_div::makeInstance('localPageTree');

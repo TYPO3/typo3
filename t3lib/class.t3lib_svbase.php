@@ -342,7 +342,7 @@ class t3lib_svbase {
 
 /**
 function available()	{
-	global $AB,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+	global $AB,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 	// check if the service is available at runtime
 	// the sense of this method is that the service might need some more information to check the availablity

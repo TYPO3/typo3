@@ -119,6 +119,8 @@ if (!get_magic_quotes_gpc())	{
 	$TT->push('Add slashes to GET/POST arrays','');
 	t3lib_div::addSlashesOnArray($HTTP_GET_VARS);
 	t3lib_div::addSlashesOnArray($HTTP_POST_VARS);
+	$_GET = $HTTP_GET_VARS;
+	$_POST = $HTTP_POST_VARS;
 	$TT->pull();
 }
 
@@ -129,13 +131,13 @@ if (!get_magic_quotes_gpc())	{
 $temp_TSFEclassName=t3lib_div::makeInstanceClassName('tslib_fe');
 $TSFE = new $temp_TSFEclassName(
 		$TYPO3_CONF_VARS, 
-		t3lib_div::GPvar('id'), 
-		t3lib_div::GPvar('type'), 
-		t3lib_div::GPvar('no_cache'), 
-		t3lib_div::GPvar('cHash'), 
-		t3lib_div::GPvar('jumpurl'),
-		t3lib_div::GPvar('MP'),
-		t3lib_div::GPvar('RDCT')
+		t3lib_div::_GP('id'), 
+		t3lib_div::_GP('type'), 
+		t3lib_div::_GP('no_cache'), 
+		t3lib_div::_GP('cHash'), 
+		t3lib_div::_GP('jumpurl'),
+		t3lib_div::_GP('MP'),
+		t3lib_div::_GP('RDCT')
 	);
 $TSFE->connectToMySQL();
 if ($TSFE->RDCT)	{$TSFE->sendRedirect();}
@@ -190,16 +192,16 @@ if ($HTTP_COOKIE_VARS['be_typo_user']) {		// If the backend cookie is set, we pr
 				$TSFE->displayEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayIcons');
 				$TSFE->displayFieldEditIcons = $BE_USER->extGetFeAdminValue('edit', 'displayFieldIcons');
 	
-				if (t3lib_div::GPvar('ADMCMD_editIcons'))	{
+				if (t3lib_div::_GP('ADMCMD_editIcons'))	{
 					$TSFE->displayFieldEditIcons=1;
 					$BE_USER->uc['TSFE_adminConfig']['edit_editNoPopup']=1;
 				}
-				if (t3lib_div::GPvar('ADMCMD_simUser'))	{
-					$BE_USER->uc['TSFE_adminConfig']['preview_simulateUserGroup']=intval(t3lib_div::GPvar('ADMCMD_simUser'));
+				if (t3lib_div::_GP('ADMCMD_simUser'))	{
+					$BE_USER->uc['TSFE_adminConfig']['preview_simulateUserGroup']=intval(t3lib_div::_GP('ADMCMD_simUser'));
 					$BE_USER->ext_forcePreview=1;
 				}
-				if (t3lib_div::GPvar('ADMCMD_simTime'))	{
-					$BE_USER->uc['TSFE_adminConfig']['preview_simulateDate']=intval(t3lib_div::GPvar('ADMCMD_simTime'));
+				if (t3lib_div::_GP('ADMCMD_simTime'))	{
+					$BE_USER->uc['TSFE_adminConfig']['preview_simulateDate']=intval(t3lib_div::_GP('ADMCMD_simTime'));
 					$BE_USER->ext_forcePreview=1;
 				}
 	

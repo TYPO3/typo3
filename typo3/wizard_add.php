@@ -104,8 +104,8 @@ class SC_wizard_add {
 	function init()	{
 
 			// Init GPvars:
-		$this->P = t3lib_div::GPvar('P',1);
-		$this->returnEditConf = t3lib_div::GPvar('returnEditConf');
+		$this->P = t3lib_div::_GP('P');
+		$this->returnEditConf = t3lib_div::_GP('returnEditConf');
 
 			// Get this record
 		$origRow = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
@@ -168,6 +168,7 @@ class SC_wizard_add {
 					// If that record was found (should absolutely be...), then init TCEmain and set, prepend or append the record
 				if (is_array($current))	{
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+					$tce->stripslashes_values=0;
 					$data=array();
 					$addEl = $this->table.'_'.$this->id;
 					switch((string)$this->P['params']['setValue'])	{
@@ -187,7 +188,6 @@ class SC_wizard_add {
 					
 						// Submit the data:
 					$tce->start($data,array());
-					$tce->stripslashes_values=0;
 					$tce->process_datamap();
 				}
 			}

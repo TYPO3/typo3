@@ -167,7 +167,7 @@ function linkTo_UnCryptMailto(s)	{	//
 		if ($GLOBALS['TSFE']->config['config']['setJS_openPic'])	$GLOBALS['TSFE']->setJS('openPic');
 		
 		$GLOBALS['TSFE']->sWordRegEx='';
-		$GLOBALS['TSFE']->sWordList = t3lib_div::GPvar('sword_list');
+		$GLOBALS['TSFE']->sWordList = t3lib_div::_GP('sword_list');
 		if (is_array($GLOBALS['TSFE']->sWordList))	{
 			$standAlone = trim(''.$GLOBALS['TSFE']->config['config']['sword_standAlone']);
 			$noMixedCase = trim(''.$GLOBALS['TSFE']->config['config']['sword_noMixedCase']);
@@ -194,11 +194,12 @@ function linkTo_UnCryptMailto(s)	{	//
 			reset($linkVarArr);
 			while(list(,$val)=each($linkVarArr))	{
 				$val=trim($val);
-				if ($val && isset($GLOBALS['HTTP_GET_VARS'][$val]))	{
-					if (!is_array($GLOBALS['HTTP_GET_VARS'][$val]))	{
-						$GLOBALS['TSFE']->linkVars.='&'.$val.'='.rawurlencode($GLOBALS['HTTP_GET_VARS'][$val]);
+				$GET = t3lib_div::_GET();
+				if ($val && isset($GET[$val]))	{
+					if (!is_array($GET[$val]))	{
+						$GLOBALS['TSFE']->linkVars.='&'.$val.'='.rawurlencode($GET[$val]);
 					} else {
-						$GLOBALS['TSFE']->linkVars.=t3lib_div::implodeArrayForUrl($val,$GLOBALS['HTTP_GET_VARS'][$val]);
+						$GLOBALS['TSFE']->linkVars.=t3lib_div::implodeArrayForUrl($val,$GET[$val]);
 					}
 				}
 			}
@@ -319,33 +320,51 @@ function linkTo_UnCryptMailto(s)	{	//
 		$GLOBALS['TSFE']->content='';
 
 			// Setting document type:
-		switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
-			case 'xhtml_trans':
-				$GLOBALS['TSFE']->content.='<!DOCTYPE html 
+		$docTypeParts=array();
+		if ($GLOBALS['TSFE']->config['config']['doctype'])	{
+			switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
+				case 'xhtml_trans':
+		 			$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<?xml version="1.0" encoding="'.$theCharset.'"?>
-';
-			break;
-			case 'xhtml_frames':
-				$GLOBALS['TSFE']->content.='<!DOCTYPE html 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+				break;
+				case 'xhtml_strict':
+		 			$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+				break;
+				case 'xhtml_frames':
+		 			$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-<?xml version="1.0" encoding="'.$theCharset.'"?>
-';
-			break;
-			default:
-				$GLOBALS['TSFE']->content.='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
-			break;
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
+				break;
+				default:
+			$docTypeParts[]=$GLOBALS['TSFE']->config['config']['doctype'];
+				break;
+			}
+		} else {
+			$docTypeParts[]='<!DOCTYPE html 
+	PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
 		}
+		
+			// Swap XML and doctype order around (for MSIE / Opera standards compliance)
+		if ($GLOBALS['TSFE']->config['config']['doctypeSwitch'])	{
+			$docTypeParts = array_reverse($docTypeParts);
+		}
+		
+			// Adding doctype parts:
+		$GLOBALS['TSFE']->content.=implode(chr(10),$docTypeParts).chr(10);
 		
 		$GLOBALS['TSFE']->content.='
 <html>
 <head>
 <!-- '.($customContent?$customContent.chr(10):'').'
 	This website is brought to you by TYPO3 - get.content.right
-	TYPO3 is a free open source Content Management Framework
-	created by Kasper Skaarhoej and licensed under GNU/GPL.
+	TYPO3 is a free open source Content Management Framework created by Kasper Skaarhoj and licensed under GNU/GPL.
+	TYPO3 is copyright 1998-2004 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
 	Information and contribution at http://www.typo3.com
 -->
 ';
@@ -633,7 +652,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/class
 // ********************************************************
 // Includes the search-class if $sword and $scols are set.
 // ********************************************************
-if (t3lib_div::GPvar('sword') && t3lib_div::GPvar('scols'))	{
+if (t3lib_div::_GP('sword') && t3lib_div::_GP('scols'))	{
 	require_once(PATH_tslib.'class.tslib_search.php');
 }
 

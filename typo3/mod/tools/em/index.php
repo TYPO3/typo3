@@ -274,7 +274,7 @@ class SC_mod_tools_em_index {
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 #sleep(10);
 
@@ -291,7 +291,7 @@ class SC_mod_tools_em_index {
 
 
 		$this->MCONF = $GLOBALS["MCONF"];
-		$this->CMD=t3lib_div::GPvar("CMD",1);
+		$this->CMD=t3lib_div::_GP("CMD");
 		$this->menuConfig();
 		$this->gzcompress = function_exists('gzcompress');
 		if ($TYPO3_CONF_VARS["EXT"]["em_devVerUpdate"])	$this->versionDiffFactor=1;
@@ -331,7 +331,7 @@ class SC_mod_tools_em_index {
 	 * @return	[type]		...
 	 */
 	function menuConfig()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
@@ -390,7 +390,7 @@ class SC_mod_tools_em_index {
 		}
 		
 			// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET",1), $this->MCONF["name"]);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP("SET"), $this->MCONF["name"]);
 		if ($this->MOD_SETTINGS["function"]==2)	{
 				// If listing from online repository, certain items are removed though:
 			unset($this->MOD_MENU["listOrder"]["type"]);
@@ -398,7 +398,7 @@ class SC_mod_tools_em_index {
 			unset($this->MOD_MENU["display_details"][3]);
 			unset($this->MOD_MENU["display_details"][4]);
 			unset($this->MOD_MENU["display_details"][5]);
-			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET",1), $this->MCONF["name"]);
+			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP("SET"), $this->MCONF["name"]);
 		}
 	}
 
@@ -408,7 +408,7 @@ class SC_mod_tools_em_index {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 		$this->content.=$this->doc->startPage('Extension Manager');
 		$this->content.=$this->doc->header('Extension Manager');
@@ -466,8 +466,6 @@ class SC_mod_tools_em_index {
 			}
 		}
 
-//debug($GLOBALS['HTTP_GET_VARS']);
-			
 		if ($BE_USER->mayMakeShortcut())	{
 			$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('','function',$this->MCONF['name']));
 		}
@@ -567,7 +565,7 @@ class SC_mod_tools_em_index {
 	function extensionList_import()	{
 		global $TYPO3_LOADED_EXT;
 
-		$listRemote = t3lib_div::GPvar('ter_connect');
+		$listRemote = t3lib_div::_GP('ter_connect');
 		
 		if ($listRemote)	{
 			list($inst_list,$inst_cat)=$this->getInstalledExtensions();
@@ -1117,7 +1115,7 @@ EXTENSION KEYS:
 								$this->content.=$this->doc->section("Installing ".$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(": Database needs to be updated"),$updates,1,1,1,1);
 							}
 						}
-						if (!$updates || t3lib_div::GPvar("_do_install")) {
+						if (!$updates || t3lib_div::_GP("_do_install")) {
 							$this->writeNewExtensionList($newExtList);
 		
 		
@@ -1129,7 +1127,7 @@ EXTENSION KEYS:
 							
 							<em>(".$content.")</em>",0,1);
 							*/
-							if ($this->CMD["clrCmd"] || t3lib_div::GPvar("_clrCmd"))	{
+							if ($this->CMD["clrCmd"] || t3lib_div::_GP("_clrCmd"))	{
 								$vA = array("CMD"=>"");
 							} else {
 								$vA = array("CMD"=>Array("showExt"=>$extKey));
@@ -1158,7 +1156,7 @@ EXTENSION KEYS:
 						if (filesize($editFile)<($this->kbMax*1024))	{
 							$outCode="";
 							$info="";
-							$submittedContent = t3lib_div::GPvar("edit",1);
+							$submittedContent = t3lib_div::_GP("edit");
 							$saveFlag=0;
 							if(isset($submittedContent["file"]))	{
 								$info.=$GLOBALS["TBE_TEMPLATE"]->rfw("<br /><strong>File saved.</strong>")."<br />";
@@ -1235,7 +1233,7 @@ EXTENSION KEYS:
 						}
 					break;
 					case "upload":
-						$TER_CMD = t3lib_div::GPvar("TER_CMD",1);
+						$TER_CMD = t3lib_div::_GP("TER_CMD");
 						if (is_array($TER_CMD))	{
 							$msg = $this->processRepositoryReturnData($TER_CMD);
 							if ($msg)	{
@@ -2176,12 +2174,12 @@ EXTENSION KEYS:
 	function addClearCacheFiles()	{
 		global $TYPO3_CONF_VARS;
 		if ($TYPO3_CONF_VARS["EXT"]["extCache"])	{
-			if (t3lib_div::GPvar("_clearCacheFiles"))	{
+			if (t3lib_div::_GP("_clearCacheFiles"))	{
 				$this->removeCacheFiles();
 				header("Location: ".t3lib_div::linkThisScript(array("_clearCacheFiles"=>0,"_cache_files_are_removed"=>1)));
 			} else {
 				$content="";
-				if (t3lib_div::GPvar("_cache_files_are_removed"))	$content.=$GLOBALS["TBE_TEMPLATE"]->rfw("Cache files was removed.").'<br /><br />';
+				if (t3lib_div::_GP("_cache_files_are_removed"))	$content.=$GLOBALS["TBE_TEMPLATE"]->rfw("Cache files was removed.").'<br /><br />';
 				$content.='Click here to <a href="'.t3lib_div::linkThisScript(array("_clearCacheFiles"=>1)).'"><strong>clear cache files in typo3conf/</strong></a>';
 				$this->content.=$this->doc->spacer(20);
 				$this->content.=$this->doc->section("Clear cache files",$content,0,1);	
@@ -2560,7 +2558,7 @@ EXTENSION KEYS:
 
 			$tsStyleConfig->ext_loadResources($absPath."res/");
 
-			$arr = unserialize($GLOBALS["TYPO3_CONF_VARS"]["EXT"]["extConf"][$eKey]);
+			$arr = unserialize($TYPO3_CONF_VARS["EXT"]["extConf"][$eKey]);
 			$arr = is_array($arr) ? $arr : array();
 			
 				// Call processing function for constants config and data before write and form rendering:
@@ -2572,8 +2570,8 @@ EXTENSION KEYS:
 				unset($_params);
 			}				
 
-			if ($GLOBALS["HTTP_POST_VARS"]["submit"])	{
-				$tsStyleConfig->ext_procesInput($GLOBALS["HTTP_POST_VARS"],array(),$theConstants,array());
+			if (t3lib_div::_POST("submit"))	{
+				$tsStyleConfig->ext_procesInput(t3lib_div::_POST(),array(),$theConstants,array());
 				$arr = $tsStyleConfig->ext_mergeIncomingWithExisting($arr);
 				$this->writeTsStyleConfig($eKey,$arr);
 			}
@@ -2582,7 +2580,7 @@ EXTENSION KEYS:
 			
 			$MOD_MENU=array();
 			$MOD_MENU["constant_editor_cat"] = $tsStyleConfig->ext_getCategoriesForModMenu();
-			$MOD_SETTINGS = t3lib_BEfunc::getModuleData($MOD_MENU, t3lib_div::GPvar("SET",1), "xMod_test");
+			$MOD_SETTINGS = t3lib_BEfunc::getModuleData($MOD_MENU, t3lib_div::_GP("SET"), "xMod_test");
 			
 				// Resetting the menu (stop)
 			if (count($MOD_MENU)>1)	{
@@ -2789,7 +2787,7 @@ EXTENSION KEYS:
 	 */
 	function checkClearCache($eKey,$info)	{
 		if ($info["EM_CONF"]["clearCacheOnLoad"])	{
-			if (t3lib_div::GPvar("_clear_all_cache"))	{
+			if (t3lib_div::_GP("_clear_all_cache"))	{
 				$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 				$tce->start(Array(),Array());
 				$tce->clear_cacheCmd("all");
@@ -2813,7 +2811,7 @@ EXTENSION KEYS:
 		$instObj = new em_install_class;
 		$uploadFolder = PATH_site.$this->ulFolder($eKey);
 		if ($info["EM_CONF"]["uploadfolder"] && !@is_dir($uploadFolder))	{
-			if (t3lib_div::GPvar("_uploadfolder"))	{
+			if (t3lib_div::_GP("_uploadfolder"))	{
 				mkdir(ereg_replace('\/$','',$uploadFolder), 0777);
 				$indexContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <HTML>
@@ -2836,7 +2834,7 @@ EXTENSION KEYS:
 	 		$createDirs = array_unique(t3lib_div::trimExplode(",",$info["EM_CONF"]["createDirs"],1));
 			while(list(,$crDir)=each($createDirs))	{
 				if (!@is_dir(PATH_site.$crDir))	{
-					if (t3lib_div::GPvar("_createDir_".md5($crDir)))	{
+					if (t3lib_div::_GP("_createDir_".md5($crDir)))	{
 						$crDirStart="";
 						$dirs_in_path=explode("/",ereg_replace("/$","",$crDir));
 						while(list(,$dirP)=each($dirs_in_path))	{
@@ -2886,7 +2884,7 @@ EXTENSION KEYS:
 
 			// Getting statement array from
 		$instObj = new em_install_class;
-		$instObj->INSTALL = t3lib_div::GPvar("TYPO3_INSTALL",1);
+		$instObj->INSTALL = t3lib_div::_GP("TYPO3_INSTALL");
 		$dbStatus=array();
 #		$instObj->mysqlVersion = "3.23";
 

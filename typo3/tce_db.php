@@ -108,20 +108,21 @@ class SC_tce_db {
 		global $BE_USER;
 
 			// GPvars:
-		$this->flags = t3lib_div::GPvar('flags');
-		$this->data = t3lib_div::GPvar('data');
-		$this->cmd = t3lib_div::GPvar('cmd');
-		$this->mirror = t3lib_div::GPvar('mirror');
-		$this->cacheCmd = t3lib_div::GPvar('cacheCmd');
-		$this->redirect = t3lib_div::GPvar('redirect');
-		$this->prErr = t3lib_div::GPvar('prErr');
-		$this->_disableRTE = t3lib_div::GPvar('_disableRTE');
-		$this->CB = t3lib_div::GPvar('CB');
-		$this->vC = t3lib_div::GPvar('vC');
-		$this->uPT = t3lib_div::GPvar('uPT');
+		$this->flags = t3lib_div::_GP('flags');
+		$this->data = t3lib_div::_GP('data');
+		$this->cmd = t3lib_div::_GP('cmd');
+		$this->mirror = t3lib_div::_GP('mirror');
+		$this->cacheCmd = t3lib_div::_GP('cacheCmd');
+		$this->redirect = t3lib_div::_GP('redirect');
+		$this->prErr = t3lib_div::_GP('prErr');
+		$this->_disableRTE = t3lib_div::_GP('_disableRTE');
+		$this->CB = t3lib_div::_GP('CB');
+		$this->vC = t3lib_div::_GP('vC');
+		$this->uPT = t3lib_div::_GP('uPT');
 		
 			// Creating TCEmain object
 		$this->tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$this->tce->stripslashes_values=0;
 		
 			// Configuring based on user prefs.
 		if ($BE_USER->uc['recursiveDelete'])	{
@@ -196,7 +197,7 @@ class SC_tce_db {
 				// Execute actions:
 			$this->tce->process_datamap();
 			$this->tce->process_cmdmap();
-			
+
 				// Clearing cache:
 			$this->tce->clear_cacheCmd($this->cacheCmd);
 			

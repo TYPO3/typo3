@@ -535,7 +535,7 @@ class t3lib_matchCondition {
 			if ($k)	{
 				switch((string)trim($vars[0]))	{
 					case 'GP':
-						$val = t3lib_div::GPvar($k);
+						$val = t3lib_div::_GP($k);
 					break;
 					case 'TSFE':
 						$val = $GLOBALS['TSFE']->$k;

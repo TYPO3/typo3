@@ -86,8 +86,8 @@ class SC_alt_file_navframe {
 		global $BE_USER,$BACK_PATH,$CLIENT;
 
 			// Setting GPvars:
-		$this->currentSubScript = t3lib_div::GPvar('currentSubScript');
-		$this->cMR = t3lib_div::GPvar('cMR');
+		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
+		$this->cMR = t3lib_div::_GP('cMR');
 		
 			// Create folder tree object:
 		$this->foldertree = t3lib_div::makeInstance('t3lib_folderTree');

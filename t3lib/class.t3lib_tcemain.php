@@ -193,7 +193,7 @@ class t3lib_TCEmain	{
 	var $neverHideAtCopy = 0;		// Boolean. If set, then the "hideAtCopy" flag for tables will be ignored.
 	var $reverseOrder=0;			// boolean. If set, the dataarray is reversed in the order, which is a nice thing if you're creating a whole new bunch of records.
 	var $copyWhichTables = "*";		// This list of tables decides which tables will be copied. If empty then none will. If "*" then all will (that the user has permission to of course)
-	var $stripslashes_values=1;		// If set, incoming values in the data-array have their slashes stripped. This is default, because tce_main expects HTTP_POST_VARS and HTTP_GET_VARS to be slashed (which is probably done in init.php). If you supply your own data to the data-array, you can just unset this flag and slashes will not be stripped then.
+	var $stripslashes_values=1;		// If set, incoming values in the data-array have their slashes stripped. This is default, because tce_main expects HTTP_POST_VARS and HTTP_GET_VARS to be slashed (which is probably done in init.php). If you supply your own data to the data-array, you can just unset this flag and slashes will not be stripped then. NOTICE: This flag may be set false by default in the future! ALWAYS supply a stripped (normalized values) array for data!!!!
 	var $storeLogMessages=1;		// If set, the default log-messages will be stored. This should not be necessary if the locallang-file for the log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
 	var $enableLogging=1;			// If set, actions are logged.
 
@@ -1608,7 +1608,7 @@ class t3lib_TCEmain	{
 			}
 			
 				// Temporary fix to delete elements:
-			$deleteCMDs=t3lib_div::GPvar('_DELETE_FLEX_FORMdata');
+			$deleteCMDs=t3lib_div::_GP('_DELETE_FLEX_FORMdata');
 			
 			if (is_array($deleteCMDs[$table][$id][$field]['data']))	{
 				$arrValue = t3lib_div::xml2array($xmlValue);
@@ -3673,6 +3673,11 @@ class t3lib_TCEmain	{
 					$res = mysql(TYPO3_db,"DELETE FROM cache_hash");
 				}
 			break;
+			case "temp_CACHED":
+				if ($this->admin && $TYPO3_CONF_VARS['EXT']['extCache'])	{
+					$this->removeCacheFiles();
+				}
+			break;
 		}
 			// Clear cache for a page ID!
 		if (t3lib_div::testInt($cacheCmd))	{
@@ -3689,6 +3694,26 @@ class t3lib_TCEmain	{
 			}
 		}		
 	}
+
+	/**
+	 * Unlink (delete) typo3conf/temp_CACHED_*.php cache files
+	 * 
+	 * @return	integer		The number of files deleted
+	 */
+	function removeCacheFiles()	{
+		$cacheFiles=t3lib_extMgm::currentCacheFiles();
+		$out=0;
+		if (is_array($cacheFiles))	{
+			reset($cacheFiles);
+			while(list(,$cfile)=each($cacheFiles))	{
+				@unlink($cfile);
+				clearstatcache();
+				$out++;
+			}
+		}
+
+		return $out;
+	}	
 }
 
 

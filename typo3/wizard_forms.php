@@ -203,9 +203,9 @@ class SC_wizard_forms {
 		global $BACK_PATH,$HTTP_POST_VARS;
 
 			// GPvars:
-		$this->P = t3lib_div::GPvar('P',1);
-		$this->special = t3lib_div::GPvar('special');
-		$this->FORMCFG = t3lib_div::GPvar('FORMCFG',1);
+		$this->P = t3lib_div::_GP('P');
+		$this->special = t3lib_div::_GP('special');
+		$this->FORMCFG = t3lib_div::_GP('FORMCFG');
 
 			// Document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');

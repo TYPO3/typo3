@@ -122,7 +122,7 @@ class transferData extends t3lib_transferData	{
 /**
  * Script Class
  * 
- * HTTP_GET_VARS:
+ * GPvars:
  * $table	:		Record table (or filename)
  * $uid	:		Record uid  (or '' when filename)
  * 
@@ -149,11 +149,11 @@ class SC_show_item {
 	 * @return	[type]		...
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
-		$this->table = t3lib_div::GPvar('table');
-		$this->uid = t3lib_div::GPvar("uid");
+		$this->table = t3lib_div::_GP('table');
+		$this->uid = t3lib_div::_GP("uid");
 		
 		$this->access=0;
 		$this->type="";
@@ -218,10 +218,10 @@ class SC_show_item {
 	 * @return	[type]		...
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		
 		if ($this->access)	{
-			$returnLinkTag = t3lib_div::GPvar("returnUrl") ? '<a href="'.t3lib_div::GPvar("returnUrl").'" class="typo3-goBack">' : '<a href="#" onClick="window.close();">';
+			$returnLinkTag = t3lib_div::_GP("returnUrl") ? '<a href="'.t3lib_div::_GP("returnUrl").'" class="typo3-goBack">' : '<a href="#" onClick="window.close();">';
 			
 			if ($this->type=="db")	{
 				$code=$this->doc->getHeader($this->table,$this->row,$this->pageinfo["_thePath"],1).'<br />';
@@ -236,7 +236,7 @@ class SC_show_item {
 					if ($TCA[$this->table]["columns"][$name])	{
 						if (!$TCA[$this->table]["columns"][$name]["exclude"] || $GLOBALS["BE_USER"]->check("non_exclude_fields",$this->table.":".$name))	{		
 							$i++;
-							$codeArr[$i][]=stripslashes($LANG->sL(t3lib_BEfunc::getItemLabel($this->table,$name)));
+							$codeArr[$i][]=$LANG->sL(t3lib_BEfunc::getItemLabel($this->table,$name));
 							$codeArr[$i][]=t3lib_BEfunc::getProcessedValue($this->table,$name,$this->row[$name]);
 						}
 					}
@@ -334,7 +334,7 @@ class SC_show_item {
 				}
 			}
 		
-			if (t3lib_div::GPvar("returnUrl"))	{
+			if (t3lib_div::_GP("returnUrl"))	{
 				$this->content.=$this->doc->section('','<br />'.$returnLinkTag.'<strong>&lt; '.$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.goBack").'</strong></a>');
 			}
 		}		

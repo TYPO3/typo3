@@ -88,15 +88,12 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * [html_enabled]:		If mail is sent as html
 	 * [quoted_printable]:	if set, quoted-printable will be used instead of base 64
 	 * 
-	 * @param	array		Contains values for the field names listed above
+	 * @param	array		Contains values for the field names listed above (with slashes removed if from POSt input)
 	 * @param	boolean		Whether to base64 encode the mail content
 	 * @return	void		
 	 */
 	function start($V,$base64=1)	{
 		if ($base64 && !$V['quoted_printable'])	{$this->useBase64();}
-		if (is_array($V))	{
-			t3lib_div::stripSlashesOnArray($V);
-		}
 		
 		if (isset($V['recipient']))	{
 				// Sets the message id

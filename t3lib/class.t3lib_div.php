@@ -39,131 +39,135 @@
  *
  *
  *
- *  198: class t3lib_div 
+ *  202: class t3lib_div 
  *
- *              SECTION: BASIC FUNCTIONS
- *  220:     function milliseconds()	
- *  234:     function setGPvars($list,$strip=0)	
- *  252:     function GPvar($var,$strip=0)	
- *  268:     function GParrayMerged($var)	
- *  284:     function clientInfo($useragent='')	
+ *              SECTION: IO Variables
+ *  224:     function _GP($var)	
+ *  238:     function _GET($var='')	
+ *  252:     function _POST($var='')	
+ *  264:     function _GETset($inputGet)	
+ *  282:     function GPvar($var,$strip=0)	
+ *  299:     function setGPvars($list,$strip=0)	
+ *  316:     function GParrayMerged($var)	
  *
  *              SECTION: IMAGE FUNCTIONS
- *  371:     function gif_compress($theFile, $type)	
- *  399:     function png_to_gif_by_imagemagick($theFile)	
- *  423:     function read_png_gif($theFile,$output_png=0)	
+ *  361:     function gif_compress($theFile, $type)	
+ *  389:     function png_to_gif_by_imagemagick($theFile)	
+ *  413:     function read_png_gif($theFile,$output_png=0)	
  *
  *              SECTION: STRING FUNCTIONS
- *  472:     function fixed_lgd($string,$chars,$preStr='...')	
- *  494:     function fixed_lgd_pre($string,$chars)	
- *  508:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)	
- *  528:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)	
- *  564:     function cmpIP($baseIP, $list)	
- *  611:     function inList($in_list,$item)	
- *  624:     function rmFromList($element,$list)	
- *  643:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)	
- *  660:     function intval_positive($theInt)	
- *  674:     function int_from_ver($verNumberStr)	
- *  687:     function md5int($str)	
- *  699:     function uniqueList($in_list)	
- *  712:     function split_fileref($fileref)	
- *  749:     function dirname($path)	
- *  766:     function modifyHTMLColor($color,$R,$G,$B)	
- *  787:     function modifyHTMLColorAll($color,$all)	
- *  799:     function rm_endcomma($string)	
- *  812:     function danish_strtoupper($string)	
- *  827:     function convUmlauts($str)	
- *  842:     function shortMD5($input, $len=10)	
- *  854:     function testInt($var)	
- *  867:     function isFirstPartOfStr($str,$partStr)	
- *  884:     function formatSize($sizeInBytes,$labels='')	
- *  920:     function convertMicrotime($microtime)	
- *  934:     function splitCalc($string,$operators)	
- *  956:     function calcPriority($string)	
- *  996:     function calcParenthesis($string)	
- * 1023:     function htmlspecialchars_decode($value)	
- * 1037:     function deHSCentities($str)	
- * 1050:     function slashJS($string,$extended=0,$char="'")	
- * 1064:     function rawUrlEncodeJS($str)	
- * 1075:     function rawUrlEncodeFP($str)	
- * 1087:     function validEmail($email)	
- * 1102:     function formatForTextarea($content)	
+ *  462:     function fixed_lgd($string,$chars,$preStr='...')	
+ *  484:     function fixed_lgd_pre($string,$chars)	
+ *  498:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)	
+ *  518:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)	
+ *  554:     function cmpIP($baseIP, $list)	
+ *  601:     function inList($in_list,$item)	
+ *  614:     function rmFromList($element,$list)	
+ *  633:     function intInRange($theInt,$min,$max=2000000000,$zeroValue=0)	
+ *  650:     function intval_positive($theInt)	
+ *  664:     function int_from_ver($verNumberStr)	
+ *  677:     function md5int($str)	
+ *  689:     function uniqueList($in_list)	
+ *  702:     function split_fileref($fileref)	
+ *  739:     function dirname($path)	
+ *  756:     function modifyHTMLColor($color,$R,$G,$B)	
+ *  777:     function modifyHTMLColorAll($color,$all)	
+ *  789:     function rm_endcomma($string)	
+ *  802:     function danish_strtoupper($string)	
+ *  817:     function convUmlauts($str)	
+ *  832:     function shortMD5($input, $len=10)	
+ *  844:     function testInt($var)	
+ *  857:     function isFirstPartOfStr($str,$partStr)	
+ *  874:     function formatSize($sizeInBytes,$labels='')	
+ *  910:     function convertMicrotime($microtime)	
+ *  924:     function splitCalc($string,$operators)	
+ *  946:     function calcPriority($string)	
+ *  986:     function calcParenthesis($string)	
+ * 1013:     function htmlspecialchars_decode($value)	
+ * 1027:     function deHSCentities($str)	
+ * 1040:     function slashJS($string,$extended=0,$char="'")	
+ * 1054:     function rawUrlEncodeJS($str)	
+ * 1065:     function rawUrlEncodeFP($str)	
+ * 1077:     function validEmail($email)	
+ * 1093:     function formatForTextarea($content)	
  *
  *              SECTION: ARRAY FUNCTIONS
- * 1134:     function inArray($in_array,$item)	
- * 1152:     function intExplode($delim, $string)	
- * 1172:     function revExplode($delim, $string, $count=0)	
- * 1193:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)	
- * 1218:     function uniqueArray($valueArray)	
- * 1241:     function removeArrayEntryByValue($array,$cmpValue)	
- * 1270:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	
- * 1298:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)	
- * 1322:     function addSlashesOnArray(&$theArray)	
- * 1347:     function stripSlashesOnArray(&$theArray)	
- * 1370:     function slashArray($arr,$cmd)	
- * 1387:     function array_merge_recursive_overrule ($arr0,$arr1,$notAddKeys=0) 
- * 1417:     function array_merge($arr1,$arr2)	
- * 1431:     function csvValues($row,$delim=',',$quote='"')	
+ * 1125:     function inArray($in_array,$item)	
+ * 1143:     function intExplode($delim, $string)	
+ * 1163:     function revExplode($delim, $string, $count=0)	
+ * 1184:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)	
+ * 1209:     function uniqueArray($valueArray)	
+ * 1232:     function removeArrayEntryByValue($array,$cmpValue)	
+ * 1261:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	
+ * 1289:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)	
+ * 1313:     function addSlashesOnArray(&$theArray)	
+ * 1338:     function stripSlashesOnArray(&$theArray)	
+ * 1361:     function slashArray($arr,$cmd)	
+ * 1378:     function array_merge_recursive_overrule ($arr0,$arr1,$notAddKeys=0) 
+ * 1408:     function array_merge($arr1,$arr2)	
+ * 1422:     function csvValues($row,$delim=',',$quote='"')	
  *
  *              SECTION: HTML/XML PROCESSING
- * 1474:     function get_tag_attributes($tag)	
- * 1512:     function split_tag_attributes($tag)	
- * 1547:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	
- * 1575:     function wrapJS($string, $linebreak=TRUE) 
- * 1604:     function xml2tree($string,$depth=999) 
- * 1687:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0)	
- * 1745:     function xml2array($string,$NSprefix='') 
- * 1804:     function xmlRecompileFromStructValArray($vals)	
- * 1847:     function xmlGetHeaderAttribs($xmlData)	
+ * 1465:     function get_tag_attributes($tag)	
+ * 1503:     function split_tag_attributes($tag)	
+ * 1538:     function implodeParams($arr,$xhtmlSafe=FALSE,$dontOmitBlankAttribs=FALSE)	
+ * 1566:     function wrapJS($string, $linebreak=TRUE) 
+ * 1595:     function xml2tree($string,$depth=999) 
+ * 1678:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0)	
+ * 1736:     function xml2array($string,$NSprefix='') 
+ * 1795:     function xmlRecompileFromStructValArray($vals)	
+ * 1838:     function xmlGetHeaderAttribs($xmlData)	
  *
  *              SECTION: FILES FUNCTIONS
- * 1880:     function getURL($url)	
- * 1923:     function writeFile($file,$content)	
- * 1944:     function get_dirs($path)	
- * 1970:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	
- * 2015:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	
- * 2037:     function removePrefixPathFromList($fileArr,$prefixToRemove)	
- * 2055:     function fixWindowsFilePath($theFile)	
- * 2065:     function resolveBackPath($pathStr)	
- * 2093:     function locationHeaderUrl($path)	
+ * 1871:     function getURL($url)	
+ * 1914:     function writeFile($file,$content)	
+ * 1937:     function get_dirs($path)	
+ * 1963:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	
+ * 2008:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	
+ * 2030:     function removePrefixPathFromList($fileArr,$prefixToRemove)	
+ * 2048:     function fixWindowsFilePath($theFile)	
+ * 2058:     function resolveBackPath($pathStr)	
+ * 2086:     function locationHeaderUrl($path)	
  *
  *              SECTION: DEBUG helper FUNCTIONS
- * 2133:     function debug_ordvalue($string,$characters=100)	
- * 2150:     function view_array($array_in)	
- * 2178:     function print_array($array_in)	
- * 2194:     function debug($var="",$brOrHeader=0)	
+ * 2126:     function debug_ordvalue($string,$characters=100)	
+ * 2143:     function view_array($array_in)	
+ * 2171:     function print_array($array_in)	
+ * 2187:     function debug($var="",$brOrHeader=0)	
  *
  *              SECTION: SYSTEM INFORMATION
- * 2263:     function getThisUrl()	
- * 2280:     function linkThisScript($getParams=array())	
- * 2302:     function linkThisUrl($url,$getParams=array())	
- * 2322:     function getIndpEnv($getEnvName)	
+ * 2256:     function getThisUrl()	
+ * 2273:     function linkThisScript($getParams=array())	
+ * 2295:     function linkThisUrl($url,$getParams=array())	
+ * 2315:     function getIndpEnv($getEnvName)	
+ * 2499:     function milliseconds()	
+ * 2512:     function clientInfo($useragent='')	
  *
  *              SECTION: TYPO3 SPECIFIC FUNCTIONS
- * 2536:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)	
- * 2571:     function validPathStr($theFile)	
- * 2583:     function isAbsPath($path)	
- * 2595:     function isAllowedAbsPath($path)	
- * 2613:     function verifyFilenameAgainstDenyPattern($filename)	
- * 2630:     function upload_copy_move($source,$destination)	
- * 2655:     function upload_to_tempfile($uploadedFileName)	
- * 2669:     function unlink_tempfile($uploadedTempFileName)	
- * 2682:     function tempnam($filePrefix)	
- * 2695:     function stdAuthCode($uid_or_record,$fields='')	
- * 2729:     function loadTCA($table)	
- * 2748:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	
- * 2776:     function resolveAllSheetsInDS($dataStructArray)	
- * 2805:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	
- * 2845:     function makeInstance($className)	
- * 2863:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	
- * 2902:     function makeInstanceClassName($className)	
- * 2922:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)	
- * 2969:     function quoted_printable($string,$maxlen=76)	
- * 3012:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	
- * 3047:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')	
- * 3070:     function freetypeDpiComp($font_size)	
+ * 2601:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)	
+ * 2637:     function validPathStr($theFile)	
+ * 2649:     function isAbsPath($path)	
+ * 2661:     function isAllowedAbsPath($path)	
+ * 2679:     function verifyFilenameAgainstDenyPattern($filename)	
+ * 2697:     function upload_copy_move($source,$destination)	
+ * 2725:     function upload_to_tempfile($uploadedFileName)	
+ * 2742:     function unlink_tempfile($uploadedTempFileName)	
+ * 2757:     function tempnam($filePrefix)	
+ * 2770:     function stdAuthCode($uid_or_record,$fields='')	
+ * 2804:     function loadTCA($table)	
+ * 2823:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	
+ * 2851:     function resolveAllSheetsInDS($dataStructArray)	
+ * 2880:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	
+ * 2920:     function makeInstance($className)	
+ * 2938:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	
+ * 2977:     function makeInstanceClassName($className)	
+ * 2997:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)	
+ * 3044:     function quoted_printable($string,$maxlen=76)	
+ * 3087:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	
+ * 3122:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')	
+ * 3145:     function freetypeDpiComp($font_size)	
  *
- * TOTAL FUNCTIONS: 104
+ * TOTAL FUNCTIONS: 108
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -203,38 +207,68 @@ class t3lib_div {
 
 	/*************************
 	 *
-	 * BASIC FUNCTIONS
+	 * IO Variables
 	 *
 	 *************************/
 
 
 	/**
-	 * milliseconds
+	 * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST (that is equalent to 'GP' order)
+	 * Strips slashes from all output, both strings and arrays.
+	 * This function substitutes t3lib_div::GPvar()
 	 * 
-	 * microtime recalculated to t3lib_div::milliseconds(1/1000 sec)
-	 * 
-	 * Usage: 39
-	 * 
-	 * @return	integer		
+	 * @param	string		GET/POST var to return
+	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
+	 * @see GPvar()
 	 */
-	function milliseconds()	{
-		$p=explode(' ',microtime());
-		return round(($p[0]+$p[1])*1000);
+	function _GP($var)	{
+		$value = isset($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : $GLOBALS['HTTP_GET_VARS'][$var];
+		if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
+		return $value;
 	}
-	
+
 	/**
-	 * Sets global variables from HTTP_POST_VARS or HTTP_GET_VARS
+	 * Returns the global GET array (or value from) normalized to contain un-escaped values.
+	 * ALWAYS use this API function to acquire the GET variables!
 	 * 
-	 * Usage: 9
+	 * @param	string		Optional pointer to value in GET array (basically name of GET var)
+	 * @return	mixed		If $var is set it returns the value of $HTTP_GET_VARS[$var]. If $var is blank or zero, returns $HTTP_GET_VARS itself. In any case *slashes are stipped from the output!*
+	 * @see _POST(), _GP(), _GETset()
+	 */
+	function _GET($var='')	{
+		$getA = $GLOBALS['HTTP_GET_VARS'];
+		if (is_array($getA))	t3lib_div::stripSlashesOnArray($getA);	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
+		return $var ? $getA[$var] : $getA;
+	}
+
+	/**
+	 * Returns the global POST array (or value from) normalized to contain un-escaped values.
+	 * ALWAYS use this API function to acquire the POST variables!
 	 * 
-	 * @param	string		List of GET/POST var keys to set globally
-	 * @param	boolean		If set, values are passed through stripslashes()
+	 * @param	string		Optional pointer to value in POST array (basically name of POST var)
+	 * @return	mixed		If $var is set it returns the value of $HTTP_POST_VARS[$var]. If $var is blank or zero, returns $HTTP_POST_VARS itself. In any case *slashes are stipped from the output!*
+	 * @see _GET(), _GP()
+	 */
+	function _POST($var='')	{
+		$postA = $GLOBALS['HTTP_POST_VARS'];
+		if (is_array($postA))	t3lib_div::stripSlashesOnArray($postA);	// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
+		return $var ? $postA[$var] : $postA;
+	}
+
+	/**
+	 * Writes input value to $HTTP_GET_VARS / $_GET
+	 * 
+	 * @param	array		Array to write to $HTTP_GET_VARS / $_GET. Values should NOT be escaped at input time (but will be escaped before writing according to TYPO3 standards).
+	 * @param	string		Alternative key; If set, this will not set the WHOLE GET array, but only the key in it specified by this value!
 	 * @return	void		
 	 */
-	function setGPvars($list,$strip=0)	{
-		$vars = t3lib_div::trimExplode(',',$list,1);
-		while(list(,$var)=each($vars))	{
-			$GLOBALS[$var] = t3lib_div::GPvar($var,$strip);
+	function _GETset($inputGet,$key='')	{
+		if (!strcmp($key,''))	{
+			if (is_array($inputGet))	{ t3lib_div::addSlashesOnArray($inputGet); } else { $inputGet = addslashes($inputGet); }
+			$GLOBALS['HTTP_GET_VARS'][$key] = $_GET[$key] = $inputGet;
+		} else {
+			t3lib_div::addSlashesOnArray($inputGet);	// ADDS slashes since TYPO3 standard currently is that slashes MUST be applied (regardless of magic_quotes setting).
+			$GLOBALS['HTTP_GET_VARS'] = $_GET = $inputGet;
 		}
 	}
 
@@ -248,12 +282,31 @@ class t3lib_div {
 	 * @param	string		GET/POST var to return
 	 * @param	boolean		If set, values are stripped of return values that are *arrays!* - string/integer values returned are always strip-slashed()
 	 * @return	mixed		POST var named $var and if not set, the GET var of the same name.
+	 * @depreciated		Use t3lib_div::_GP instead (ALWAYS delivers a value with un-escaped values!)
+	 * @see _GP()
 	 */
 	function GPvar($var,$strip=0)	{
 		$value = isset($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : $GLOBALS['HTTP_GET_VARS'][$var];
 		if (isset($value) && is_string($value))	{$value=stripslashes($value);}	// Originally check '&& get_magic_quotes_gpc() ' but the values of HTTP_GET_VARS are always slashed regardless of get_magic_quotes_gpc() because HTTP_POST/GET_VARS are run through addSlashesOnArray in the very beginning of index_ts.php eg.
 		if ($strip && isset($value) && is_array($value)) {t3lib_div::stripSlashesOnArray($value);}
 		return $value;
+	}
+
+	/**
+	 * Sets global variables from HTTP_POST_VARS or HTTP_GET_VARS
+	 * 
+	 * Usage: 9
+	 * 
+	 * @param	string		List of GET/POST var keys to set globally
+	 * @param	boolean		If set, values are passed through stripslashes()
+	 * @return	void		
+	 * @depreciated
+	 */
+	function setGPvars($list,$strip=0)	{
+		$vars = t3lib_div::trimExplode(',',$list,1);
+		while(list(,$var)=each($vars))	{
+			$GLOBALS[$var] = t3lib_div::GPvar($var,$strip);
+		}
 	}
 
 	/**
@@ -264,6 +317,7 @@ class t3lib_div {
 	 * @param	string		Key (variable name) from GET or POST vars
 	 * @return	array		Returns the GET vars merged recursively onto the POST vars.
 	 * @ignore
+	 * @depreciated
 	 */
 	function GParrayMerged($var)	{
 		$postA = is_array($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : array();
@@ -271,64 +325,6 @@ class t3lib_div {
 		$mergedA = t3lib_div::array_merge_recursive_overrule($getA,$postA);
 		t3lib_div::stripSlashesOnArray($mergedA);
 		return $mergedA;
-	}
-
-	/**
-	 * Client Browser Information
-	 * 
-	 * Usage: 4
-	 * 
-	 * @param	string		Alternative User Agent string (if empty, t3lib_div::getIndpEnv('HTTP_USER_AGENT') is used)
-	 * @return	array		Parsed information about the HTTP_USER_AGENT in categories BROWSER, VERSION, SYSTEM and FORMSTYLE
-	 */
-	function clientInfo($useragent='')	{
-		if (!$useragent) $useragent=t3lib_div::getIndpEnv('HTTP_USER_AGENT');
-
-		$bInfo=array();
-			// Which browser?
-		if (strstr($useragent,'Konqueror'))	{
-			$bInfo['BROWSER']= 'konqu';
-		} elseif (strstr($useragent,'Opera'))	{
-			$bInfo['BROWSER']= 'opera';
-		} elseif (strstr($useragent,'MSIE 4') || strstr($useragent,'MSIE 5') || strstr($useragent,'MSIE 6'))	{
-			$bInfo['BROWSER']= 'msie';
-		} elseif (strstr($useragent,'Mozilla/4') || strstr($useragent,'Mozilla/5'))	{
-			$bInfo['BROWSER']='net';
-		}
-		if ($bInfo['BROWSER'])	{
-				// Browser version
-			switch($bInfo['BROWSER'])	{
-				case 'net':
-					$bInfo['VERSION']= doubleval(substr($useragent,8));
-					if (strstr($useragent,'Netscape6/')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape6/'),10));}
-					if (strstr($useragent,'Netscape/7')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape/7'),9));}
-				break;
-				case 'msie':
-					$tmp = strstr($useragent,'MSIE');
-					$bInfo['VERSION'] = doubleval(substr($tmp,4));
-				break;
-				case 'opera':
-					$tmp = strstr($useragent,'Opera');
-					$bInfo['VERSION'] = doubleval(substr($tmp,5));
-				break;
-				case 'konqu':
-					$tmp = strstr($useragent,'Konqueror/');
-					$bInfo['VERSION'] = doubleval(substr($tmp,10));
-				break;
-			}
-				// Client system
-			if (strstr($useragent,'Win'))	{
-				$bInfo['SYSTEM'] = 'win';
-			} elseif (strstr($useragent,'Mac'))	{
-				$bInfo['SYSTEM'] = 'mac';
-			} elseif (strstr($useragent,'Linux') || strstr($useragent,'X11') || strstr($useragent,'SGI') || strstr($useragent,' SunOS ') || strstr($useragent,' HP-UX '))	{
-				$bInfo['SYSTEM'] = 'unix';
-			}
-		}
-			// Is true if the browser supports css to format forms, especially the width
-		$bInfo['FORMSTYLE']=($bInfo['BROWSER']=='msie' || ($bInfo['BROWSER']=='net'&&$bInfo['VERSION']>=5) || $bInfo['BROWSER']=='opera' || $bInfo['BROWSER']=='konqu');
-
-		return $bInfo;
 	}
 
 	
@@ -1085,8 +1081,9 @@ class t3lib_div {
 	 * @return	boolean		Returns true if the $email address (input string) is valid; Has a "@", domain name with at least one period and only allowed a-z characters.
 	 */
 	function validEmail($email)	{
+		$email = trim ($email);
 		if (strstr($email,' '))	 return FALSE;
-		return ereg('^[A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]*[\.].[A-Za-z0-9]*$',$email) ? TRUE : FALSE;
+		return ereg('^[A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]+[\.].[A-Za-z0-9]+$',$email) ? TRUE : FALSE;
 	}
 
 	/**
@@ -1292,17 +1289,17 @@ class t3lib_div {
 	 * 
 	 * @param	string		List of variable/key names
 	 * @param	array		Array from where to get values based on the keys in $varList
-	 * @param	boolean		If set, then t3lib_div::GPvar() is used to fetch the value if not found (isset) in the $getArray
+	 * @param	boolean		If set, then t3lib_div::_GP() is used to fetch the value if not found (isset) in the $getArray
 	 * @return	array		Output array with selected variables.
 	 */
 	function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)	{
 		$keys = t3lib_div::trimExplode(',',$varList,1);
 		$outArr=array();
-		while(list(,$v)=each($keys))	{
+		foreach($keys as $v)	{
 			if (isset($getArray[$v]))	{
 				$outArr[$v]=$getArray[$v];
 			} elseif ($GPvarAlt) {
-				$outArr[$v]=t3lib_div::GPvar($v);
+				$outArr[$v]=t3lib_div::_GP($v);
 			}
 		}
 		return $outArr;
@@ -1926,7 +1923,9 @@ class t3lib_div {
 			fclose( $fd );
 			
 				// Setting file system mode of file:
-			if (@is_file($file) && TYPO3_OS!='WIN')	{ @chmod ($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])); }
+			if (@is_file($file) && TYPO3_OS!='WIN')	{ 
+				@chmod ($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])); 
+			}
 			
 			return true;
 		}
@@ -2279,14 +2278,16 @@ class t3lib_div {
 	 */
 	function linkThisScript($getParams=array())	{	
 		$parts = t3lib_div::getIndpEnv('SCRIPT_NAME');
-		$params = $GLOBALS['HTTP_GET_VARS'];
-		reset($getParams);
-		while(list($k,$v)=each($getParams))	{
+		$params = t3lib_div::_GET();
+
+		foreach($getParams as $k => $v)	{
 			if (strcmp($v,''))	{
 				$params[$k]=$v;
 			} else unset($params[$k]);
 		}
+
 		$pString = t3lib_div::implodeArrayForUrl('',$params);
+
 		return $pString ? $parts.'?'.ereg_replace('^&','',$pString) : $parts;
 	}
 
@@ -2494,6 +2495,78 @@ class t3lib_div {
 		}
 	}
 
+	/**
+	 * milliseconds
+	 * 
+	 * microtime recalculated to t3lib_div::milliseconds(1/1000 sec)
+	 * 
+	 * Usage: 39
+	 * 
+	 * @return	integer		
+	 */
+	function milliseconds()	{
+		$p=explode(' ',microtime());
+		return round(($p[0]+$p[1])*1000);
+	}
+
+	/**
+	 * Client Browser Information
+	 * 
+	 * Usage: 4
+	 * 
+	 * @param	string		Alternative User Agent string (if empty, t3lib_div::getIndpEnv('HTTP_USER_AGENT') is used)
+	 * @return	array		Parsed information about the HTTP_USER_AGENT in categories BROWSER, VERSION, SYSTEM and FORMSTYLE
+	 */
+	function clientInfo($useragent='')	{
+		if (!$useragent) $useragent=t3lib_div::getIndpEnv('HTTP_USER_AGENT');
+
+		$bInfo=array();
+			// Which browser?
+		if (strstr($useragent,'Konqueror'))	{
+			$bInfo['BROWSER']= 'konqu';
+		} elseif (strstr($useragent,'Opera'))	{
+			$bInfo['BROWSER']= 'opera';
+		} elseif (strstr($useragent,'MSIE 4') || strstr($useragent,'MSIE 5') || strstr($useragent,'MSIE 6'))	{
+			$bInfo['BROWSER']= 'msie';
+		} elseif (strstr($useragent,'Mozilla/4') || strstr($useragent,'Mozilla/5'))	{
+			$bInfo['BROWSER']='net';
+		}
+		if ($bInfo['BROWSER'])	{
+				// Browser version
+			switch($bInfo['BROWSER'])	{
+				case 'net':
+					$bInfo['VERSION']= doubleval(substr($useragent,8));
+					if (strstr($useragent,'Netscape6/')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape6/'),10));}
+					if (strstr($useragent,'Netscape/7')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape/7'),9));}
+				break;
+				case 'msie':
+					$tmp = strstr($useragent,'MSIE');
+					$bInfo['VERSION'] = doubleval(substr($tmp,4));
+				break;
+				case 'opera':
+					$tmp = strstr($useragent,'Opera');
+					$bInfo['VERSION'] = doubleval(substr($tmp,5));
+				break;
+				case 'konqu':
+					$tmp = strstr($useragent,'Konqueror/');
+					$bInfo['VERSION'] = doubleval(substr($tmp,10));
+				break;
+			}
+				// Client system
+			if (strstr($useragent,'Win'))	{
+				$bInfo['SYSTEM'] = 'win';
+			} elseif (strstr($useragent,'Mac'))	{
+				$bInfo['SYSTEM'] = 'mac';
+			} elseif (strstr($useragent,'Linux') || strstr($useragent,'X11') || strstr($useragent,'SGI') || strstr($useragent,' SunOS ') || strstr($useragent,' HP-UX '))	{
+				$bInfo['SYSTEM'] = 'unix';
+			}
+		}
+			// Is true if the browser supports css to format forms, especially the width
+		$bInfo['FORMSTYLE']=($bInfo['BROWSER']=='msie' || ($bInfo['BROWSER']=='net'&&$bInfo['VERSION']>=5) || $bInfo['BROWSER']=='opera' || $bInfo['BROWSER']=='konqu');
+
+		return $bInfo;
+	}
+
 	
 	
 
@@ -2567,6 +2640,7 @@ class t3lib_div {
 	 * 
 	 * @param	string		Filepath to evaluate
 	 * @return	boolean		True, if no '//', '..' or '\' is in the $theFile
+	 * @todo	Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded ?
 	 */
 	function validPathStr($theFile)	{
 		if (!strstr($theFile,'//') && !strstr($theFile,'..') && !strstr($theFile,'\\'))	return true;

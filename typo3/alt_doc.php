@@ -162,17 +162,17 @@ class SC_alt_doc {
 	 * @return	void		
 	 */
 	function preInit()	{
-		global $BE_USER,$HTTP_GET_VARS;
+		global $BE_USER;
 		
 			// Setting GPvars:
-		$this->editconf = t3lib_div::GPvar('edit');
-		$this->defVals = t3lib_div::GPvar('defVals',1);
-		$this->overrideVals = t3lib_div::GPvar('overrideVals',1);
-		$this->columnsOnly = t3lib_div::GPvar('columnsOnly',1);
-		$this->returnUrl = t3lib_div::GPvar('returnUrl');
-		$this->closeDoc = t3lib_div::GPvar('closeDoc');
-		$this->doSave = t3lib_div::GPvar('doSave');
-		$this->returnEditConf = t3lib_div::GPvar('returnEditConf');
+		$this->editconf = t3lib_div::_GP('edit');
+		$this->defVals = t3lib_div::_GP('defVals');
+		$this->overrideVals = t3lib_div::_GP('overrideVals');
+		$this->columnsOnly = t3lib_div::_GP('columnsOnly');
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->closeDoc = t3lib_div::_GP('closeDoc');
+		$this->doSave = t3lib_div::_GP('doSave');
+		$this->returnEditConf = t3lib_div::_GP('returnEditConf');
 		
 			// Setting override values as default if defVals does not exist.
 		if (!is_array($this->defVals) && is_array($this->overrideVals))	{
@@ -184,8 +184,7 @@ class SC_alt_doc {
 		
 			// Make R_URL (request url) based on input GETvars:
 		$this->R_URL_parts = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
-		$this->R_URL_getvars = $HTTP_GET_VARS;
-		
+		$this->R_URL_getvars = t3lib_div::_GET();
 		
 			// MAKE url for storing
 		$this->compileStoreDat();
@@ -204,7 +203,7 @@ class SC_alt_doc {
 		}
 		
 			// If NO vars are sent to the script, try to read first document:
-		if (is_array($HTTP_GET_VARS) && count($HTTP_GET_VARS)<2 && !is_array($this->editconf))	{	// Added !is_array($this->editconf) because editConf must not be set either. Anyways I can't figure out when this situation here will apply...
+		if (is_array($this->R_URL_getvars) && count($this->R_URL_getvars)<2 && !is_array($this->editconf))	{	// Added !is_array($this->editconf) because editConf must not be set either. Anyways I can't figure out when this situation here will apply...
 			$this->setDocument($this->docDat[1]);
 		}
 	}
@@ -227,20 +226,21 @@ class SC_alt_doc {
 	 * @return	void		
 	 */
 	function processData()	{
-		global $BE_USER,$HTTP_GET_VARS,$HTTP_POST_VARS,$TYPO3_CONF_VARS;
+		global $BE_USER,$HTTP_POST_VARS,$TYPO3_CONF_VARS;
 
 			// GPvars specifically for processing:
-		$this->data = t3lib_div::GPvar('data');
-		$this->mirror = t3lib_div::GPvar('mirror');
-		$this->cacheCmd = t3lib_div::GPvar('cacheCmd');
-		$this->redirect = t3lib_div::GPvar('redirect');
-		$this->disableRTE = t3lib_div::GPvar('_disableRTE');
-		$this->returnNewPageId = t3lib_div::GPvar('returnNewPageId');
-		$this->vC = t3lib_div::GPvar('vC');
+		$this->data = t3lib_div::_GP('data');
+		$this->mirror = t3lib_div::_GP('mirror');
+		$this->cacheCmd = t3lib_div::_GP('cacheCmd');
+		$this->redirect = t3lib_div::_GP('redirect');
+		$this->disableRTE = t3lib_div::_GP('_disableRTE');
+		$this->returnNewPageId = t3lib_div::_GP('returnNewPageId');
+		$this->vC = t3lib_div::_GP('vC');
 
 			// See tce_db.php for relevate options here:
 			// Only options related to $this->data submission are included here.
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$tce->stripslashes_values=0;
 	
 			// Setting default values specific for the user:
 		$TCAdefaultOverride = $BE_USER->getTSConfigProp('TCAdefaults');
@@ -291,11 +291,9 @@ class SC_alt_doc {
 				
 					// Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
 				$this->R_URL_getvars['edit']=$this->editconf;
-				$HTTP_GET_VARS['edit']=$this->editconf;		// Just a note: Setting HTTP_GET_VARS here IS used by compileStoreDat() at the moment - but even if that is changed, the making of shortcuts on the buttom of the page will still look up values in HTTP_GET_VARS to make the shortcut. So I suppose the setting of HTTP_GET_VARS should be maintained.
 					
 					// Unsetting default values since we don't need them anymore.
 				unset($this->R_URL_getvars['defVals']);
-				unset($HTTP_GET_VARS['defVals']);
 				
 					// Re-compile the store* values since editconf changed...
 				$this->compileStoreDat();
@@ -323,7 +321,6 @@ class SC_alt_doc {
 				
 					// Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
 				$this->R_URL_getvars['edit']=$this->editconf;
-				$HTTP_GET_VARS['edit']=$this->editconf;
 				
 					// Re-compile the store* values since editconf changed...
 				$this->compileStoreDat();
@@ -349,12 +346,12 @@ class SC_alt_doc {
 		global $BE_USER,$LANG,$BACK_PATH,$HTTP_POST_VARS;
 
 			// Setting more GPvars:
-		$this->popViewId = t3lib_div::GPVar('popViewId');
-		$this->viewUrl = t3lib_div::GPvar('viewUrl');		
-		$this->editRegularContentFromId = t3lib_div::GPvar('editRegularContentFromId');
-		$this->recTitle = t3lib_div::GPvar('recTitle');
-		$this->disHelp = t3lib_div::GPvar('disHelp');
-		$this->noView = t3lib_div::GPvar('noView');
+		$this->popViewId = t3lib_div::_GP('popViewId');
+		$this->viewUrl = t3lib_div::_GP('viewUrl');		
+		$this->editRegularContentFromId = t3lib_div::_GP('editRegularContentFromId');
+		$this->recTitle = t3lib_div::_GP('recTitle');
+		$this->disHelp = t3lib_div::_GP('disHelp');
+		$this->noView = t3lib_div::_GP('noView');
 
 			// Set other internal variables:		
 		$this->R_URL_getvars['returnUrl']=$this->retUrl;
@@ -374,7 +371,7 @@ class SC_alt_doc {
 		$this->MCONF['name']='xMOD_alt_doc.php';
 
 			// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET',1), $this->MCONF['name']);
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
 			// Create an instance of the document template object
 		$this->doc = t3lib_div::makeInstance('bigDoc');
@@ -996,12 +993,9 @@ class SC_alt_doc {
 	 * 
 	 * @return	void		
 	 * @see makeDocSel()
-	 * @todo	Check if $HTTP_GET_VARS should not be used, but rather the internal variables (eg. $this->R_URL_getvars) holding the same values...?
 	 */
 	function compileStoreDat()	{
-		global $HTTP_GET_VARS;
-
-		$this->storeArray = t3lib_div::compileSelectedGetVarsFromArray('edit,defVals,overrideVals,columnsOnly,disHelp,noView,editRegularContentFromId',$HTTP_GET_VARS);
+		$this->storeArray = t3lib_div::compileSelectedGetVarsFromArray('edit,defVals,overrideVals,columnsOnly,disHelp,noView,editRegularContentFromId',$this->R_URL_getvars);
 		$this->storeUrl = t3lib_div::implodeArrayForUrl('',$this->storeArray);
 		$this->storeUrlMd5 = md5($this->storeUrl);
 	}

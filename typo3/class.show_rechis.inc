@@ -106,13 +106,13 @@ class recordHistory {
 	function recordHistory()	{
 		
 			// GPvars:
-		$this->sh_uid = t3lib_div::GPvar('sh_uid');	
-		$this->element = t3lib_div::GPvar('element');
-		$this->saveState = t3lib_div::GPvar('saveState');
-		$this->returnUrl = t3lib_div::GPvar('returnUrl');
-		$this->revert = t3lib_div::GPvar('revert');
-		$this->sumUp = t3lib_div::GPvar('sumUp');
-		$this->doReturn = t3lib_div::GPvar('doReturn');
+		$this->sh_uid = t3lib_div::_GP('sh_uid');	
+		$this->element = t3lib_div::_GP('element');
+		$this->saveState = t3lib_div::_GP('saveState');
+		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->revert = t3lib_div::_GP('revert');
+		$this->sumUp = t3lib_div::_GP('sumUp');
+		$this->doReturn = t3lib_div::_GP('doReturn');
 	}
 
 	/**

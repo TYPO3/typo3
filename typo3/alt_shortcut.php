@@ -119,16 +119,16 @@ class SC_alt_shortcut {
 		global $TBE_MODULES;
 
 			// Setting GPvars:
-		$this->modName = t3lib_div::GPvar('modName');
-		$this->M_modName = t3lib_div::GPvar('motherModName');
-		$this->URL = t3lib_div::GPvar('URL');
-		$this->editSC = t3lib_div::GPvar('editShortcut');
+		$this->modName = t3lib_div::_GP('modName');
+		$this->M_modName = t3lib_div::_GP('motherModName');
+		$this->URL = t3lib_div::_GP('URL');
+		$this->editSC = t3lib_div::_GP('editShortcut');
 		
-		$this->deleteCategory = t3lib_div::GPvar('deleteCategory');
-		$this->editPage = t3lib_div::GPvar('editPage');
-		$this->editName = t3lib_div::GPvar('editName');
-		$this->editGroup = t3lib_div::GPvar('editGroup');
-		$this->whichItem = t3lib_div::GPvar('whichItem');
+		$this->deleteCategory = t3lib_div::_GP('deleteCategory');
+		$this->editPage = t3lib_div::_GP('editPage');
+		$this->editName = t3lib_div::_GP('editName');
+		$this->editGroup = t3lib_div::_GP('editGroup');
+		$this->whichItem = t3lib_div::_GP('whichItem');
 
 			// Creating modules object
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
@@ -161,13 +161,13 @@ class SC_alt_shortcut {
 			// Deleting shortcuts:
 		if (strcmp($this->deleteCategory,''))	{
 			if (t3lib_div::testInt($this->deleteCategory))	{
-				$q = 'DELETE FROM sys_be_shortcuts WHERE sc_group='.$this->deleteCategory.$addUSERWhere;
+				$q = 'DELETE FROM sys_be_shortcuts WHERE sc_group='.intval($this->deleteCategory).$addUSERWhere;
 				$res=mysql(TYPO3_db,$q);
 			}
 		}
 		
 			// If other changes in post-vars:
-		if ($HTTP_POST_VARS)	{
+		if (is_array($HTTP_POST_VARS))	{
 				// Saving:
 			if (isset($HTTP_POST_VARS['_savedok_x']) || isset($HTTP_POST_VARS['_saveclosedok_x']))	{
 				$fields_values=array();

@@ -1789,7 +1789,7 @@ class tslib_cObj {
 			// location data:
 		if ($conf['locationData'])	{
 			if ($conf['locationData']=='HTTP_POST_VARS' && isset($GLOBALS['HTTP_POST_VARS']['locationData']))	{
-				$locationData = $GLOBALS['HTTP_POST_VARS']['locationData'];
+				$locationData = t3lib_div::_POST('locationData');
 			} else {
 				$locationData = $GLOBALS['TSFE']->id.':'.$this->currentRecord;	// locationData is [hte page id]:[tablename]:[uid of record]. Indicates on which page the record (from tablename with uid) is shown. Used to check access.
 			}
@@ -1845,16 +1845,16 @@ class tslib_cObj {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=368&cHash=d00731cd7b
 	 */
 	function SEARCHRESULT($conf)	{
-		if (t3lib_div::GPvar('sword') && t3lib_div::GPvar('scols'))	{
+		if (t3lib_div::_GP('sword') && t3lib_div::_GP('scols'))	{
 			$search = t3lib_div::makeInstance('tslib_search');
-			$search->register_and_explode_search_string(stripSlashes(t3lib_div::GPvar('sword')));
-			$search->register_tables_and_columns(t3lib_div::GPvar('scols'),$conf['allowedCols']);
+			$search->register_and_explode_search_string(t3lib_div::_GP('sword'));
+			$search->register_tables_and_columns(t3lib_div::_GP('scols'),$conf['allowedCols']);
 				// depth		
 			$depth=100;
 				// the startId is found
 			$theStartId=0;
-			if (t3lib_div::testInt(t3lib_div::GPvar('stype')))	{
-				$temp_theStartId=t3lib_div::GPvar('stype');
+			if (t3lib_div::testInt(t3lib_div::_GP('stype')))	{
+				$temp_theStartId=t3lib_div::_GP('stype');
 				$rootLine = $GLOBALS['TSFE']->sys_page->getRootLine($temp_theStartId);
 					// The page MUST have a rootline with the Level0-page of the current site inside!!
 				while(list(,$val)=each($rootLine))	{
@@ -1862,12 +1862,12 @@ class tslib_cObj {
 						$theStartId=$temp_theStartId;
 					}
 				}
-			} else if (t3lib_div::GPvar('stype'))	{
-				if (substr(t3lib_div::GPvar('stype'),0,1)=='L')	{
-					$pointer = intval(substr(t3lib_div::GPvar('stype'),1));
+			} else if (t3lib_div::_GP('stype'))	{
+				if (substr(t3lib_div::_GP('stype'),0,1)=='L')	{
+					$pointer = intval(substr(t3lib_div::_GP('stype'),1));
 					$theRootLine = $GLOBALS['TSFE']->tmpl->rootLine;
 						// location Data:
-					$locDat_arr = explode(':',$GLOBALS['HTTP_POST_VARS']['locationData']);
+					$locDat_arr = explode(':',t3lib_div::_POST('locationData'));
 					$pId = intval($locDat_arr[0]);
 					if ($pId)	{
 						$altRootLine = $GLOBALS['TSFE']->sys_page->getRootLine($pId);
@@ -1908,13 +1908,13 @@ class tslib_cObj {
 #debug($search->query);
 
 				// count...
-			if (t3lib_div::testInt(t3lib_div::GPvar('scount')))	{
-				$search->res_count=t3lib_div::GPvar('scount');
+			if (t3lib_div::testInt(t3lib_div::_GP('scount')))	{
+				$search->res_count=t3lib_div::_GP('scount');
 			} else {
 				$search->count_query();
 			}
 				// range
-			$spointer = intval(t3lib_div::GPvar('spointer'));
+			$spointer = intval(t3lib_div::_GP('spointer'));
 			if (isset($conf['range']))	{
 				$theRange = intval($conf['range']);
 			} else {
@@ -1938,9 +1938,9 @@ class tslib_cObj {
 				$LD=$GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,$conf['target'],1,'');
 				$targetPart = $LD['target'] ? ' target="'.$LD['target'].'"' : '';
 				$urlParams = $this->URLqMark($LD['totalURL'],
-						'&sword='.rawurlencode(t3lib_div::GPvar('sword')).
-						'&scols='.rawurlencode(t3lib_div::GPvar('scols')).
-						'&stype='.rawurlencode(t3lib_div::GPvar('stype')).
+						'&sword='.rawurlencode(t3lib_div::_GP('sword')).
+						'&scols='.rawurlencode(t3lib_div::_GP('scols')).
+						'&stype='.rawurlencode(t3lib_div::_GP('stype')).
 						'&scount='.$total);
 					// substitution:
 				$result= $this->cObjGetSingle($conf['layout'],$conf['layout.'], 'layout');
@@ -2322,7 +2322,7 @@ class tslib_cObj {
 		if (!$GLOBALS['TSFE']->no_cache || (!isset($GLOBALS['HTTP_POST_VARS'][$fieldName]) && !isset($GLOBALS['HTTP_GET_VARS'][$fieldName])) || $noValueInsert)	{
 			return $defaultVal;
 		} else {
-			return t3lib_div::GPvar($fieldName);
+			return t3lib_div::_GP($fieldName);
 		}
 	}
 
@@ -4339,7 +4339,7 @@ class tslib_cObj {
 			if ((string)$key!='')	{
 				switch(strtolower(trim($parts[0])))	{
 					case 'gpvar':
-						$retVal= t3lib_div::GPvar($key);
+						$retVal= t3lib_div::_GP($key);
 					break;
 					case 'tsfe':
 						$retVal= $GLOBALS['TSFE']->$key;
@@ -5345,7 +5345,7 @@ class tslib_cObj {
 			if (is_array($value))	{
 				reset($value);
 				while(list(,$Nvalue)=each($value))	{
-					$Nvalue = stripslashes($Nvalue);
+					$Nvalue = stripslashes($Nvalue);	// Oups, double stripping?
 					if ($stripSlashes)	{$Nvalue = stripslashes($Nvalue);}
 					$JSPart.="
 	updateForm('".$formName."','".$arrPrefix."[".$fKey."][]',unescape('".rawurlencode($Nvalue)."'))";
@@ -5430,7 +5430,7 @@ class tslib_cObj {
 	 * @param	integer		The UID of the record from $table which we are going to update
 	 * @param	array		The data array where key/value pairs are fieldnames/values for the record to update.
 	 * @param	string		Comma list of fieldnames which are allowed to be updated. Only values from the data record for fields in this list will be updated!!
-	 * @param	boolean		If set, then all the values are passed through addslashes() before being added to the query string.
+	 * @param	boolean		If set, then all the values are passed through addslashes() before being added to the query string. YOU SHOULD ALWAYS USE THIS!
 	 * @return	string		The query, ready to execute.
 	 * @see DBgetInsert(), DBgetDelete(), user_feAdmin
 	 */
@@ -5466,7 +5466,7 @@ class tslib_cObj {
 	 * @param	integer		The PID value for the record to insert
 	 * @param	array		The data array where key/value pairs are fieldnames/values for the record to insert
 	 * @param	string		Comma list of fieldnames which are allowed to be inserted. Only values from the data record for fields in this list will be inserted!!
-	 * @param	boolean		If set, then all the values are passed through addslashes() before being added to the query string.
+	 * @param	boolean		If set, then all the values are passed through addslashes() before being added to the query string. YOU SHOULD ALWAYS USE THIS!
 	 * @return	string		The query, ready to execute.
 	 * @see DBgetUpdate(), DBgetDelete(), DBcompileInsert(), user_feAdmin
 	 */
@@ -5494,7 +5494,8 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Compiles a raw INSERT sql query, no questions asked.
+	 * Compiles a raw INSERT sql query, no questions asked. 
+	 * You MUST make sure that values are addslashes() before!
 	 * 
 	 * @param	string		The table name for the query.
 	 * @param	array		Array of fieldnames
@@ -5999,8 +6000,9 @@ class tslib_cObj {
 			$blackLine = $conf['line']?'<img src="clear.gif" width="1" height="'.intval($conf['line']).'" alt="" /><br /><table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="black" style="border: 0px;"><tr style="border: 0px;"><td style="border: 0px;"><img src="clear.gif" width="1" height="1" alt="" /></td></tr></table><br />':'';
 
 			$theCmd='';
-			if (is_array($GLOBALS['HTTP_POST_VARS']['TSFE_EDIT']) && $GLOBALS['HTTP_POST_VARS']['TSFE_EDIT']['record']==$currentRecord && !$GLOBALS['HTTP_POST_VARS']['TSFE_EDIT']['update_close'])	{
-				$theCmd =$GLOBALS['HTTP_POST_VARS']['TSFE_EDIT']['cmd'];
+			$TSFE_EDIT = t3lib_div::_POST('TSFE_EDIT');
+			if (is_array($TSFE_EDIT) && $TSFE_EDIT['record']==$currentRecord && !$TSFE_EDIT['update_close'])	{
+				$theCmd =$TSFE_EDIT['cmd'];
 			}
 			
 			switch($theCmd)	{
@@ -6019,7 +6021,7 @@ class tslib_cObj {
 					$tceforms->helpTextFontTag='<font face="verdana,sans-serif" color="#333333" size="1">';
 			
 					$trData = t3lib_div::makeInstance('t3lib_transferData');
-					$trData->defVals = t3lib_div::GPvar('defVals',1);		// Added without testing - should provide ability to submit default values in frontend editing, in-page.
+					$trData->defVals = t3lib_div::_GP('defVals');		// Added without testing - should provide ability to submit default values in frontend editing, in-page.
 					$trData->fetchRecord($table,	($theCmd=='new'?$newUid:$dataArr['uid']), ($theCmd=='new'?'new':'') );
 					reset($trData->regTableItems_data);
 					$processedDataArr = current($trData->regTableItems_data);
@@ -6145,7 +6147,7 @@ class tslib_cObj {
 			$style = $conf['styleAttribute'] ? ' style="'.htmlspecialchars($conf['styleAttribute']).'"' : '';
 			$iconTitle = $this->stdWrap($conf['iconTitle'],$conf['iconTitle.']);
 			$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img src="t3lib/gfx/edit_fe.gif" width="11" height="12" border="0" align="top" title="'.t3lib_div::deHSCentities(htmlspecialchars($iconTitle)).'"'.$style.' class="frontEndEditIcons" alt="" />';
-			$nV=t3lib_div::GPvar('ADMCMD_view')?1:0;
+			$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
 			$icon = $this->editPanelLinkWrap_doWrap($iconImg,TYPO3_mainDir.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&columnsOnly='.rawurlencode($fieldList).'&noView='.$nV.$addUrlParamStr,implode(':',$rParts));
 			if ($conf['beforeLastTag']<0)	{
 				$content=$icon.$content;
@@ -6179,7 +6181,7 @@ class tslib_cObj {
 	 */
 	function editPanelLinkWrap($string,$formName,$cmd,$currentRecord='',$confirm='')	{
 		$eFONPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'];
-		$nV=t3lib_div::GPvar('ADMCMD_view')?1:0;
+		$nV=t3lib_div::_GP('ADMCMD_view')?1:0;
 		if ($cmd=='edit' && !$eFONPage)	{
 			$rParts = explode(':',$currentRecord);
 			$out=$this->editPanelLinkWrap_doWrap($string,TYPO3_mainDir.'alt_doc.php?edit['.$rParts[0].']['.$rParts[1].']=edit&noView='.$nV,$currentRecord);

@@ -114,17 +114,17 @@ class SC_tslib_showpic {
 	 */
 	function init()	{
 			// Loading internal vars with the GET/POST parameters from outside:		
-		$this->file = t3lib_div::GPvar('file');
-		$this->width = t3lib_div::GPvar('width');
-		$this->height = t3lib_div::GPvar('height');
-		$this->sample = t3lib_div::GPvar('sample');
-		$this->alternativeTempPath = t3lib_div::GPvar('alternativeTempPath');
-		$this->effects = t3lib_div::GPvar('effects');
-		$this->frame = t3lib_div::GPvar('frame');
-		$this->bodyTag = t3lib_div::GPvar('bodyTag');
-		$this->title = t3lib_div::GPvar('title');
-		$this->wrap = t3lib_div::GPvar('wrap');
-		$this->md5 = t3lib_div::GPvar('md5');
+		$this->file = t3lib_div::_GP('file');
+		$this->width = t3lib_div::_GP('width');
+		$this->height = t3lib_div::_GP('height');
+		$this->sample = t3lib_div::_GP('sample');
+		$this->alternativeTempPath = t3lib_div::_GP('alternativeTempPath');
+		$this->effects = t3lib_div::_GP('effects');
+		$this->frame = t3lib_div::_GP('frame');
+		$this->bodyTag = t3lib_div::_GP('bodyTag');
+		$this->title = t3lib_div::_GP('title');
+		$this->wrap = t3lib_div::_GP('wrap');
+		$this->md5 = t3lib_div::_GP('md5');
 		
 		// ***********************
 		// Check parameters

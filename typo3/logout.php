@@ -72,7 +72,7 @@ class SC_logout {
 		$BE_USER->writelog(255,2,0,1,'User %s logged out from TYPO3 Backend',Array($BE_USER->user['username']));	// Logout written to log
 		$BE_USER->logoff();
 
-		header('Location: '.t3lib_div::locationHeaderUrl(t3lib_div::GPvar('redirect')?t3lib_div::GPvar('redirect'):'index.php'));
+		header('Location: '.t3lib_div::locationHeaderUrl(t3lib_div::_GP('redirect')?t3lib_div::_GP('redirect'):'index.php'));
 	}
 }
 

@@ -208,6 +208,7 @@ class t3lib_TCEforms	{
 	var $charsPerRow=40;				// The number of chars expected per row when the height of a text area field is automatically calculated based on the number of characters found in the field content.
 	var $maxTextareaWidth=48;			// The maximum abstract value for textareas
 	var $maxInputWidth=48;				// The maximum abstract value for input fields
+	var $defaultMultipleSelectorStyle='width:250px;';	// Default style for the selector boxes used for multiple items in "select" and "group" types.
 
 	
 		// INTERNAL, static
@@ -1145,13 +1146,6 @@ class t3lib_TCEforms	{
 
 			$sOnChange = 'setFormValueFromBrowseWin(\''.$PA['itemFormElName'].'\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); '.implode('',$PA['fieldChangeFunc']);
 
-				// Put together the select form with selected elements:
-			$thumbnails='<select style="width:200 px;" name="'.$PA['itemFormElName'].'_sel"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].'>';
-			foreach($selItems as $p)	{
-				$thumbnails.= '<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
-			}
-			$thumbnails.= '</select>';
-
 				// Perform modification of the selected items array:
 			$itemArray = t3lib_div::trimExplode(',',$PA['itemFormElValue'],1);
 			foreach($itemArray as $tk => $tv) {
@@ -1163,10 +1157,20 @@ class t3lib_TCEforms	{
 				}
 				$itemArray[$tk]=implode('|',$tvP);
 			}
+
+				// Put together the select form with selected elements:
+			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="'.htmlspecialchars($config['itemListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"';
+			$size = $config['autoSizeMax'] ? t3lib_div::intInRange(count($itemArray)+1,t3lib_div::intInRange($size,1),$config['autoSizeMax']) : $size;
+			$thumbnails='<select name="'.$PA['itemFormElName'].'_sel"'.$this->insertDefStyle('select').($size?' size="'.$size.'"':'').' onchange="'.htmlspecialchars($sOnChange).'"'.$PA['onFocus'].$selector_itemListStyle.'>';
+			foreach($selItems as $p)	{
+				$thumbnails.= '<option value="'.htmlspecialchars($p[1]).'">'.htmlspecialchars($p[0]).'</option>';
+			}
+			$thumbnails.= '</select>';
 			
 			$params=array(
 				'size' => $size,
 				'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
+				'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
 				'dontShowMoveIcons' => ($maxitems<=1),
 				'info' => '',
 				'headers' => array(
@@ -1257,6 +1261,7 @@ class t3lib_TCEforms	{
 				'size' => $size,
 				'dontShowMoveIcons' => ($maxitems<=1),
 				'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
+				'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
 				'info' => $info,
 				'thumbnails' => $thumbsnail
 			);
@@ -1315,6 +1320,7 @@ class t3lib_TCEforms	{
 				'size' => $size,
 				'dontShowMoveIcons' => ($maxitems<=1),
 				'autoSizeMax' => t3lib_div::intInRange($config['autoSizeMax'],0),
+				'style' => isset($config['selectedListStyle']) ? ' style="'.htmlspecialchars($config['selectedListStyle']).'"' : ' style="'.$this->defaultMultipleSelectorStyle.'"',
 				'info' => $info,
 				'thumbnails' => $thumbsnail
 			);
@@ -1457,7 +1463,7 @@ class t3lib_TCEforms	{
 					
 						// Render sheet:
 					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el']))		{
-						$cmdData = t3lib_div::GPvar('flexFormsCmdData',1);
+						$cmdData = t3lib_div::_GP('flexFormsCmdData');
 						$lang = 'l'.$lKey;	// Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						$PA['_valLang'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : 'DEF';	// Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						
@@ -2020,7 +2026,7 @@ class t3lib_TCEforms	{
 			// Create selector box of the options
 		if (!$selector)	{
 			$sSize = $params['autoSizeMax'] ? t3lib_div::intInRange($itemArrayC+1,t3lib_div::intInRange($params['size'],1),$params['autoSizeMax']) : $params['size'];
-			$selector = '<select size="'.$sSize.'"'.$this->insertDefStyle('group').' multiple="multiple" name="'.$fName.'_list" style="width:200px;"'.$onFocus.'>'.implode('',$opt).'</select>';
+			$selector = '<select size="'.$sSize.'"'.$this->insertDefStyle('group').' multiple="multiple" name="'.$fName.'_list" '.$onFocus.$params['style'].'>'.implode('',$opt).'</select>';
 		}
 		
 			

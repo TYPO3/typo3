@@ -113,8 +113,8 @@ class SC_wizard_table {
 		global $BACK_PATH,$HTTP_POST_VARS;
 
 			// GPvars:
-		$this->P = t3lib_div::GPvar('P',1);
-		$this->TABLECFG = t3lib_div::GPvar('TABLE',1);
+		$this->P = t3lib_div::_GP('P');
+		$this->TABLECFG = t3lib_div::_GP('TABLE');
 
 			// Textareas or input fields:
 		$this->inputStyle=isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;

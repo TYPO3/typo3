@@ -91,9 +91,9 @@ class SC_wizard_list {
 	 * @return	void		
 	 */
 	function init()	{
-		$this->P = t3lib_div::GPvar('P',1);
-		$this->table = t3lib_div::GPvar('table');
-		$this->id = t3lib_div::GPvar('id');
+		$this->P = t3lib_div::_GP('P');
+		$this->table = t3lib_div::_GP('table');
+		$this->id = t3lib_div::_GP('id');
 	}
 
 	/**

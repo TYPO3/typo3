@@ -77,8 +77,8 @@ class SC_browser {
 	function main()	{
 		
 			// Setting GPvars:
-		$mode =t3lib_div::GPvar('mode');
-		$bparams = t3lib_div::GPvar('bparams');
+		$mode =t3lib_div::_GP('mode');
+		$bparams = t3lib_div::_GP('bparams');
 		
 
 			// Set doktype:

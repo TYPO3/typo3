@@ -286,16 +286,17 @@ class tslib_pibase {
 	 * 
 	 * @param	string		The content string to wrap in <a> tags
 	 * @param	array		Array with URL parameters as key/value pairs. They will be "imploded" and added to the list of parameters defined in the plugins TypoScript property "parent.addParams" plus $this->pi_moreParams.
-	 * @param	boolean		If $cache is set, the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
+	 * @param	boolean		If $cache is set (0/1), the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
+	 * @param	integer		Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return	string		The input string wrapped in <a> tags
 	 * @see pi_linkTP_keepPIvars(), tslib_cObj::typoLink()
 	 */
-	function pi_linkTP($str,$urlParameters=array(),$cache=0)	{
+	function pi_linkTP($str,$urlParameters=array(),$cache=0,$altPageId=0)	{
 		$conf=array();
-		$conf['useCacheHash']=$this->pi_USER_INT_obj?0:$cache;
-		$conf['no_cache']=$this->pi_USER_INT_obj?0:!$cache;
-		$conf['parameter']=$this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id;
-		$conf['additionalParams']=$this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',$urlParameters,'',1).$this->pi_moreParams;
+		$conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
+		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
+		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id);
+		$conf['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',$urlParameters,'',1).$this->pi_moreParams;
 		
 		return $this->cObj->typoLink($str, $conf);
 	}
@@ -309,10 +310,11 @@ class tslib_pibase {
 	 * @param	array		Array of values to override in the current piVars. Contrary to pi_linkTP the keys in this array must correspond to the real piVars array and therefore NOT be prefixed with the $this->prefixId string. Further, if a value is a blank string it means the piVar key will not be a part of the link (unset)
 	 * @param	boolean		If $cache is set, the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
 	 * @param	boolean		If set, then the current values of piVars will NOT be preserved anyways... Practical if you want an easy way to set piVars without having to worry about the prefix, "tx_xxxxx[]"
+	 * @param	integer		Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return	string		The input string wrapped in <a> tags
 	 * @see pi_linkTP()
 	 */
-	function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0)	{
+	function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)	{
 		if (is_array($this->piVars) && is_array($overrulePIvars) && !$clearAnyway)	{
 			$piVars = $this->piVars;
 			unset($piVars['DATA']);
@@ -321,7 +323,7 @@ class tslib_pibase {
 				$cache = $this->pi_autoCache($overrulePIvars);
 			}
 		}
-		$res = $this->pi_linkTP($str,Array($this->prefixId=>$overrulePIvars),$cache);
+		$res = $this->pi_linkTP($str,Array($this->prefixId=>$overrulePIvars),$cache,$altPageId);
 		return $res;
 	}
 
@@ -332,11 +334,12 @@ class tslib_pibase {
 	 * @param	array		See pi_linkTP_keepPIvars
 	 * @param	boolean		See pi_linkTP_keepPIvars
 	 * @param	boolean		See pi_linkTP_keepPIvars
+	 * @param	integer		See pi_linkTP_keepPIvars
 	 * @return	string		The URL ($this->cObj->lastTypoLinkUrl)
 	 * @see pi_linkTP_keepPIvars()
 	 */
-	function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0)	{
-		$this->pi_linkTP_keepPIvars('|',$overrulePIvars,$cache,$clearAnyway);
+	function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)	{
+		$this->pi_linkTP_keepPIvars('|',$overrulePIvars,$cache,$clearAnyway,$altPageId);
 		return $this->cObj->lastTypoLinkUrl;
 	}
 
@@ -349,19 +352,20 @@ class tslib_pibase {
 	 * @param	boolean		See pi_linkTP_keepPIvars
 	 * @param	array		Array of values to override in the current piVars. Same as $overrulePIvars in pi_linkTP_keepPIvars
 	 * @param	boolean		If true, only the URL is returned, not a full link
+	 * @param	integer		Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return	string		The input string wrapped in <a> tags
 	 * @see pi_linkTP(), pi_linkTP_keepPIvars()
 	 */
-	function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE)	{
+	function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE,$altPageId=0)	{
 		if ($this->prefixId)	{
 			if ($cache)	{
 				$overrulePIvars=$uid?array('showUid'=>$uid):Array();
 				$overrulePIvars=array_merge($overrulePIvars,$mergeArr);
-				$str = $this->pi_linkTP($str,Array($this->prefixId=>$overrulePIvars),$cache);
+				$str = $this->pi_linkTP($str,Array($this->prefixId=>$overrulePIvars),$cache,$altPageId);
 			} else {
 				$overrulePIvars=array('showUid'=>$uid?$uid:'');
 				$overrulePIvars=array_merge($overrulePIvars,$mergeArr);
-				$str = $this->pi_linkTP_keepPIvars($str,$overrulePIvars,$cache);
+				$str = $this->pi_linkTP_keepPIvars($str,$overrulePIvars,$cache,0,$altPageId);
 			}
 			
 				// If urlOnly flag, return only URL as it has recently be generated.
