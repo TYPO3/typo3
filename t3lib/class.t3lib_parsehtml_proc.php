@@ -638,6 +638,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			// Split content by the TYPO3 pseudo tag "<LINK>":
 		$blockSplit = $this->splitIntoBlock('link',$value,1);
 		foreach($blockSplit as $k => $v)	{
+			$error = '';
 			if ($k%2)	{	// block:
 				$tagCode = t3lib_div::trimExplode(' ',trim(substr($this->getFirstTag($v),0,-1)),1);
 				$link_param = $tagCode[1];
