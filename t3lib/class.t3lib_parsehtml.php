@@ -349,11 +349,14 @@ class t3lib_parsehtml {
 	 * Returns the NAME of the first tag in $str
 	 * 
 	 * @param	string		HTML tag (The element name MUST be separated from the attributes by a space character! Just *whitespace* will not do)
+	 * @param	boolean		If set, then the tag is NOT converted to uppercase by case is preserved.
 	 * @return	string		Tag name in upper case
 	 * @see getFirstTag()
 	 */
-	function getFirstTagName($str)	{
-		list($tag) = split('[[:space:]]',substr(strtoupper(trim($this->getFirstTag($str))),1,-1), 2);
+	function getFirstTagName($str,$preserveCase=FALSE)	{
+		list($tag) = split('[[:space:]]',substr(trim($this->getFirstTag($str)),1,-1), 2);
+		if (!$preserveCase)	$tag = strtoupper($tag);
+			
 		return trim($tag);
 	}
 	

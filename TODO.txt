@@ -73,6 +73,8 @@ TCEmain/TCEforms for FlexForms:
 - Affects: "lowlevel" ext/DBint , "impexp" extension. Must/Should be extended.
 - Permissions handled per-field in FlexForms?
 - What to do if data structure was not found? (Both TCEmain, TCEforms, templavoila_pi1, t3lib_transferdata) 
+- block the creation of FlexForm in FlexForm inside TCEforms.
+- ['pi_flexform']['config']['ds'] must be set to some default message making sense!
 - TCEmain features:
 	- caching of references/files in meta data (for analysis tools)?
 	- mapping values to a plain-text search field(s)  
@@ -86,7 +88,7 @@ TCEmain/TCEforms for FlexForms:
 	- NiceToHave: Attaching an image to the Data Structure. This image is a preview of what the data structure can create. When rolling over the image you can have the form fields highlighted which affects the area. (by a red border or so...)
 		- visual: Table with condition in top header, condition value column + block column. Not user supplied. -> OR just a selector box deciding what is shown below!? (possibly "ALL")
 	- Displaying partial branch of the data structure (and to a certain level)
-	
+	- FlexForms cannot be possible if the record is not saved? No, should be ok, BUT a data source can of course not be referenced from another field since that fields value is NOT actually there! So only for fixed references to flex form definitions can this be done.
 		
 TCEforms:
 - Support for other backend charsets / right-aligned charsets!?
