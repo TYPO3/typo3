@@ -41,24 +41,24 @@
  *
  *              SECTION: Getting record content, ready for display in TCEforms
  *  135:     function fetchRecord($table,$idList,$operation)	
- *  221:     function renderRecord($table, $id, $pid, $row)	
- *  288:     function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)	
- *  318:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
- *  369:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
- *  431:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	
+ *  221:     function renderRecord($table, $id, $pid, $row)
+ *  288:     function renderRecord_SW($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  318:     function renderRecord_groupProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  369:     function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
+ *  431:     function renderRecord_flexProc($data,$fieldConfig,$TSconfig,$table,$row,$field)
  *  460:     function renderRecord_typesProc($totalRecordContent,$types_fieldConfig,$tscPID,$table,$pid)	
  *
  *              SECTION: FlexForm processing functions
- *  544:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)	
- *  573:     function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)		
+ *  544:     function renderRecord_flexProc_procInData($dataPart,$dataStructArray,$pParams)
+ *  573:     function renderRecord_flexProc_procInData_travDS(&$dataValues,$DSelements,$pParams)
  *
  *              SECTION: Selector box processing functions
  *  648:     function selectAddSpecial($dataAcc, $elements, $specialKey)	
- *  728:     function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)	
- *  781:     function getDataIdList($elements, $fieldConfig, $row)	
- *  804:     function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)	
+ *  728:     function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)
+ *  781:     function getDataIdList($elements, $fieldConfig, $row)
+ *  804:     function procesItemArray($selItems,$config,$fieldTSConfig,$table,$row,$field)
  *  819:     function addItems($items,$iArray)	
- *  841:     function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)	
+ *  841:     function procItems($items,$itemsProcFuncTSconfig,$config,$table,$row,$field)
  *
  *              SECTION: Helper functions
  *  876:     function lockRecord($table, $id, $pid=0)	
@@ -368,7 +368,7 @@ class t3lib_transferData {
 	 */
 	function renderRecord_selectProc($data,$fieldConfig,$TSconfig,$table,$row,$field)	{
 		global $TCA;
-		
+
 			// Initialize:
 		$elements = t3lib_div::trimExplode(',',$data,1);	// Current data set.
 		$dataAcc=array();	// New data set, ready for interface (list of values, rawurlencoded)
@@ -405,7 +405,7 @@ class t3lib_transferData {
 				// Getting the data
 				$dataIds = $this->getDataIdList($elements, $fieldConfig, $row);
 
-				if (!count($dataIds))	$dataIds=array(0);
+				if (!count($dataIds))	$dataIds = array(0);
 				$dataAcc[]=$dataIds[0];
 			} else {
 				$dataAcc[]=$elements[0];
@@ -416,7 +416,8 @@ class t3lib_transferData {
 	}
 	
 	/**
-	 * Processing of the data value in case the field type is "select"
+	 * Processing of the data value in case the field type is "flex"
+	 * MUST NOT be called in case of already INSIDE a flexform!
 	 *
 	 * @param	string		The field value
 	 * @param	array		TCA field config
@@ -602,15 +603,17 @@ class t3lib_transferData {
 				} else {
 					if (is_array($dsConf['TCEforms']['config']) && is_array($dataValues[$key]))	{
 						foreach($dataValues[$key] as $vKey => $data)	{
-							list($CVtable,$CVrow,$CVfield) = $pParams;
 
+								// $data,$fieldConfig,$TSconfig,$table,$row,$field
+							list(,,$CVTSconfig,$CVtable,$CVrow,$CVfield) = $pParams;
+;
 								// Set default value:
 							if (!isset($dataValues[$key][$vKey]))	{
 								$dataValues[$key][$vKey] = $dsConf['TCEforms']['config']['default'];
 							}
-							
+
 								// Process value:
-							$dataValues[$key][$vKey] = $this->renderRecord_SW($dataValues[$key][$vKey],$dsConf['TCEforms'],array(),$CVtable,$CVrow,'');
+							$dataValues[$key][$vKey] = $this->renderRecord_SW($dataValues[$key][$vKey],$dsConf['TCEforms'],$CVTSconfig,$CVtable,$CVrow,'');
 						}			
 					}
 				}
@@ -727,7 +730,7 @@ class t3lib_transferData {
 	 */
 	function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row)	{
 		global $TCA;
-		
+
 			// Init:
 		$recordList = Array();
 
@@ -749,7 +752,7 @@ class t3lib_transferData {
 			// Now, get the data from loadDBgroup based on the input list of values.
 		$dataIds = $this->getDataIdList($elements, $fieldConfig, $row);
 		if ($fieldConfig['config']['MM'])	$dataAcc=array();	// Reset, if MM (which cannot bear anything but real relations!)
-		
+
 			// After this we can traverse the loadDBgroup values and match values with the list of possible values in $recordList:
 		foreach($dataIds as $theId)	{
 			if (isset($recordList[$theId]))	{

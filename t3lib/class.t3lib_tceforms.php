@@ -48,20 +48,20 @@
  *  515:     function getListedFields($table,$row,$list)	
  *  556:     function getPaletteFields($table,$row,$palette,$header='',$itemList='',$collapsedHeader='')	
  *  632:     function getSingleField($table,$field,$row,$altName='',$palette=0,$extra='',$pal=0)	
- *  760:     function getSingleField_SW($table,$field,$row,&$PA)	
+ *  760:     function getSingleField_SW($table,$field,$row,&$PA)
  *
  *              SECTION: Rendering of each TCEform field type
  *  831:     function getSingleField_typeInput($table,$field,$row,&$PA)	
  *  883:     function getSingleField_typeText($table,$field,$row,&$PA)	
  *  986:     function getSingleField_typeCheck($table,$field,$row,&$PA)	
  * 1045:     function getSingleField_typeRadio($table,$field,$row,&$PA)	
- * 1075:     function getSingleField_typeSelect($table,$field,$row,&$PA)	
+ * 1075:     function getSingleField_typeSelect($table,$field,$row,&$PA)
  * 1236:     function getSingleField_typeGroup($table,$field,$row,&$PA)	
  * 1380:     function getSingleField_typeNone($table,$field,$row,&$PA)	
  * 1434:     function getSingleField_typeFlex($table,$field,$row,&$PA)	
  * 1535:     function getSingleField_typeFlex_langMenu($languages,$elName,$selectedLanguage,$multi=1)	
  * 1554:     function getSingleField_typeFlex_sheetMenu($sArr,$elName,$sheetKey)	
- * 1584:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())	
+ * 1584:     function getSingleField_typeFlex_draw($dataStruct,$editData,$cmdData,$table,$field,$row,&$PA,$formPrefix='',$level=0,$tRows=array())
  * 1734:     function getSingleField_typeUnknown($table,$field,$row,&$PA)	
  * 1749:     function getSingleField_typeUser($table,$field,$row,&$PA)	
  *
@@ -71,7 +71,7 @@
  * 1835:     function getExcludeElements($table,$row,$typeNum)	
  * 1883:     function getFieldsToAdd($table,$row,$typeNum)	
  * 1908:     function mergeFieldsWithAddedFields($fields,$fieldsToAdd)	
- * 1940:     function setTSconfig($table,$row,$field='')	
+ * 1940:     function setTSconfig($table,$row,$field='')
  * 1962:     function getSpecConfForField($table,$row,$field)	
  * 1982:     function getSpecConfFromString($extraString)    
  *
@@ -91,11 +91,11 @@
  * 2465:     function insertDefStyle($type)	
  *
  *              SECTION: Item-array manipulation functions (check/select/radio)
- * 2496:     function initItemArray($fieldValue)	
+ * 2496:     function initItemArray($fieldValue)
  * 2514:     function addItems($items,$iArray)	
  * 2536:     function procItems($items,$iArray,$config,$table,$row,$field)	
- * 2560:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)	
- * 2638:     function addSelectOptionsToItemArray_makeModuleData($value)	
+ * 2560:     function addSelectOptionsToItemArray($items,$fieldValue,$TSconfig,$field)
+ * 2638:     function addSelectOptionsToItemArray_makeModuleData($value)
  * 2660:     function foreignTable($items,$fieldValue,$TSconfig,$field,$pFFlag=0)	
  *
  *              SECTION: Template functions
@@ -1933,7 +1933,7 @@ class t3lib_TCEforms	{
 	 *
 	 * @param	string		The table name
 	 * @param	array		The table row (Should at least contain the "uid" value, even if "NEW..." string. The "pid" field is important as well, and negative values will be intepreted as pointing to a record from the same table.)
-	 * @param	string		Optionally you can specify the field name as well. If that case the TSconfig for the field is returned.
+	 * @param	string		Optionally you can specify the field name as well. In that case the TSconfig for the field is returned.
 	 * @return	mixed		The TSconfig values (probably in an array)
 	 * @see t3lib_BEfunc::getTCEFORM_TSconfig()
 	 */
