@@ -2486,7 +2486,8 @@ if (version == "n3") {
 		if ($this->config['config']['stat'] &&
 				(!strcmp('',$this->config['config']['stat_typeNumList']) || t3lib_div::inList(str_replace(' ','',$this->config['config']['stat_typeNumList']), $this->type)) &&
 				(!$this->config['config']['stat_excludeBEuserHits'] || !$this->beUserLogin) &&
-				(!$this->config['config']['stat_excludeIPList'] || !t3lib_div::inList(str_replace(' ','',$this->config['config']['stat_excludeIPList']), t3lib_div::getIndpEnv('REMOTE_ADDR')))) {
+				(!$this->config['config']['stat_excludeIPList'] || !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'),str_replace(' ','',$this->config['config']['stat_excludeIPList'])))) {
+
 			$GLOBALS['TT']->push('Stat');
 				if (t3lib_extMgm::isLoaded('sys_stat') && $this->config['config']['stat_mysql'])	{
 

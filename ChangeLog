@@ -1,5 +1,9 @@
 2004-11-15  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Using "t3lib_div::cmpIP" for evaluating the list of "config.stat_excludeIPList" 
+
+2004-11-15  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Merged all changes from "TYPO3_3-7" branch
 	* Changed to version 3.8.0-dev
 
