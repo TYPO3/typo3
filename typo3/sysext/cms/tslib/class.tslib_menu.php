@@ -42,62 +42,61 @@
  *
  *
  *
- *  140: class tslib_menu 
- *  183:     function start($tmpl,$sys_page,$id,$conf,$menuNumber)	
- *  232:     function makeMenu()	
- *  664:     function includeMakeMenu($conf,$altSortField)	
- *  681:     function procesItemStates($splitCount)	
- *  864:     function subMenu($uid,$mount_point=0)	
- *  906:     function link($key,$altTarget='',$typeOverride='') 
- *  962:     function isActive($uid)	
- *  973:     function isCurrent($uid)	
- *  986:     function isSubMenu($uid,$mount_point=0)	
- * 1010:     function isItemState($kind,$key)	
- * 1047:     function accessKey($title)	
- * 1073:     function userProcess($mConfKey,$passVar)	
- * 1088:     function setATagParts()	
- * 1101:     function getPageTitle($title,$nav_title)	
+ *  139: class tslib_menu 
+ *  182:     function start($tmpl,$sys_page,$id,$conf,$menuNumber)	
+ *  231:     function makeMenu()	
+ *  663:     function includeMakeMenu($conf,$altSortField)	
+ *  680:     function procesItemStates($splitCount)	
+ *  863:     function subMenu($uid,$mount_point=0)	
+ *  905:     function link($key,$altTarget='',$typeOverride='') 
+ *  961:     function isActive($uid)	
+ *  972:     function isCurrent($uid)	
+ *  985:     function isSubMenu($uid,$mount_point=0)	
+ * 1009:     function isItemState($kind,$key)	
+ * 1046:     function accessKey($title)	
+ * 1072:     function userProcess($mConfKey,$passVar)	
+ * 1087:     function setATagParts()	
+ * 1100:     function getPageTitle($title,$nav_title)	
  *
  *
- * 1132: class tslib_tmenu extends tslib_menu 
- * 1141:     function generate()	
- * 1157:     function writeMenu()	
- * 1287:     function getBeforeAfter($pref)	
- * 1317:     function addJScolorShiftFunction()	
- * 1319:     function changeBGcolor(id,color) 
- * 1339:     function extProc_init()	
- * 1350:     function extProc_RO($key)	
- * 1361:     function extProc_beforeLinking($key)	
- * 1373:     function extProc_afterLinking($key)	
- * 1390:     function extProc_beforeAllWrap($item,$key)	
- * 1401:     function extProc_finish()	
+ * 1131: class tslib_tmenu extends tslib_menu 
+ * 1140:     function generate()	
+ * 1156:     function writeMenu()	
+ * 1286:     function getBeforeAfter($pref)	
+ * 1316:     function addJScolorShiftFunction()	
+ * 1338:     function extProc_init()	
+ * 1349:     function extProc_RO($key)	
+ * 1360:     function extProc_beforeLinking($key)	
+ * 1372:     function extProc_afterLinking($key)	
+ * 1389:     function extProc_beforeAllWrap($item,$key)	
+ * 1400:     function extProc_finish()	
  *
  *
- * 1437: class tslib_gmenu extends tslib_menu 
- * 1446:     function generate()	
- * 1484:     function makeGifs($conf, $resKey)	
- * 1681:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	
- * 1753:     function writeMenu()	
- * 1851:     function extProc_init()	
- * 1862:     function extProc_RO($key)	
- * 1873:     function extProc_beforeLinking($key)	
- * 1886:     function extProc_afterLinking($key)	
- * 1903:     function extProc_beforeAllWrap($item,$key)	
- * 1914:     function extProc_finish()	
+ * 1436: class tslib_gmenu extends tslib_menu 
+ * 1445:     function generate()	
+ * 1483:     function makeGifs($conf, $resKey)	
+ * 1680:     function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	
+ * 1752:     function writeMenu()	
+ * 1850:     function extProc_init()	
+ * 1861:     function extProc_RO($key)	
+ * 1872:     function extProc_beforeLinking($key)	
+ * 1885:     function extProc_afterLinking($key)	
+ * 1902:     function extProc_beforeAllWrap($item,$key)	
+ * 1913:     function extProc_finish()	
  *
  *
- * 1948: class tslib_imgmenu extends tslib_menu 
- * 1957:     function generate()	
- * 1975:     function makeImageMap($conf)	
- * 2136:     function writeMenu()	
+ * 1947: class tslib_imgmenu extends tslib_menu 
+ * 1956:     function generate()	
+ * 1974:     function makeImageMap($conf)	
+ * 2143:     function writeMenu()	
  *
  *
- * 2179: class tslib_jsmenu extends tslib_menu 
- * 2186:     function generate()	
- * 2194:     function writeMenu()	
- * 2254:     function generate_level($levels,$count,$pid,$menuItemArray='')	
+ * 2186: class tslib_jsmenu extends tslib_menu 
+ * 2193:     function generate()	
+ * 2201:     function writeMenu()	
+ * 2261:     function generate_level($levels,$count,$pid,$menuItemArray='')	
  *
- * TOTAL FUNCTIONS: 41
+ * TOTAL FUNCTIONS: 40
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -175,7 +174,7 @@ class tslib_menu {
 	 * @param	object		The $GLOBALS['TSFE']->tmpl object
 	 * @param	object		The $GLOBALS['TSFE']->sys_page object
 	 * @param	integer		A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
-	 * @param	Array		The TypoScript configuration for the HMENU cObject
+	 * @param	array		The TypoScript configuration for the HMENU cObject
 	 * @param	integer		Menu number; 1,2,3. Should probably be '1'
 	 * @return	boolean		Returns true on success
 	 * @see tslib_cObj::HMENU()
@@ -1135,7 +1134,7 @@ class tslib_tmenu extends tslib_menu {
 	 * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
 	 * Sets the result for the new "normal state" in $this->result
 	 * 
-	 * @return	Void		
+	 * @return	void		
 	 * @see tslib_menu::procesItemStates()
 	 */
 	function generate()	{
@@ -1316,7 +1315,7 @@ class tslib_tmenu extends tslib_menu {
 	 */
 	function addJScolorShiftFunction()	{
 		$GLOBALS['TSFE']->additionalJavaScript['TMENU:changeBGcolor()']='
-			function changeBGcolor(id,color) {
+			function changeBGcolor(id,color) {	//
 				if (document.getElementById && document.getElementById(id))	{
 					document.getElementById(id).style.background = color;
 					return true;
@@ -2017,6 +2016,14 @@ class tslib_imgmenu extends tslib_menu {
 										// check links
 										
 									$LD = $this->tmpl->linkData($this->menuArr[$key],$this->mconf['target'],'','',array(),'',$this->mconf['forceTypeValue']);
+
+										// Overriding URL / Target if set to do so:
+									if ($this->menuArr[$key]['_OVERRIDE_HREF'])	{
+										$LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
+										if ($this->menuArr[$key]['_OVERRIDE_TARGET'])	$LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
+									}
+
+										// Setting target/url:
 									if ($theValArr['imgMap.']['url']=='')	{
 										$theValArr['imgMap.']['url'] = $LD['totalURL'];
 									}

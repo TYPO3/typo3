@@ -37,8 +37,8 @@
  *
  *
  *
- *   61: class SC_logout 
- *   68:     function logout()	
+ *   62: class SC_logout 
+ *   69:     function logout()	
  *
  * TOTAL FUNCTIONS: 1
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -52,7 +52,8 @@ require ('init.php');
 
 
 /**
- * Script Class
+ * Script Class for logging a user out. 
+ * Does not display any content, just calls the logout-function for the current user and then makes a redirect.
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
@@ -61,7 +62,7 @@ require ('init.php');
 class SC_logout {
 
 	/**
-	 * Logout
+	 * Performs the logout processing
 	 * 
 	 * @return	void		
 	 */

@@ -189,7 +189,7 @@ class t3lib_extobjbase {
 
 
 	/**
-	 * Initialize
+	 * Initialize the object
 	 * 
 	 * @param	object		A reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
 	 * @param	array		The configuration set for this module - from global array TBE_MODULES_EXT

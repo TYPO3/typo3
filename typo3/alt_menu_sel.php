@@ -40,9 +40,9 @@
  *
  *
  *
- *   66: class SC_alt_menu_sel 
- *   74:     function main()	
- *  104:     function printContent()	
+ *   73: class SC_alt_menu_sel 
+ *   81:     function main()	
+ *  107:     function printContent()	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -56,8 +56,15 @@ require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 require_once ('class.alt_menu_functions.inc');
 
+
+
+
+
+
+
+
 /**
- * Script Class
+ * Script Class for rendering the selector box menu
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
@@ -81,12 +88,8 @@ class SC_alt_menu_sel {
 			// Start page
 		$TBE_TEMPLATE->form = '<form action="">';
 		$TBE_TEMPLATE->docType = 'xhtml_trans';
-		$TBE_TEMPLATE->inDocStyles = 'BODY {background-color: '.$TBE_TEMPLATE->bgColor2.';}';
 
 		$this->content.=$TBE_TEMPLATE->startPage('Selector box menu');
-
-			// Space down
-		$this->content.='<img src="clear.gif" width="1" height="5" alt="" /><br />';
 
 			// Make menu and add it:
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
@@ -97,7 +100,7 @@ class SC_alt_menu_sel {
 	}
 	
 	/**
-	 * Print output
+	 * Outputting the accumulated content to screen
 	 * 
 	 * @return	void		
 	 */

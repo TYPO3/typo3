@@ -52,7 +52,7 @@ class SC_wizard_colorpicker {
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
-		$this->P = t3lib_div::GPvar("P",1);
+		$this->P = t3lib_div::GPvar('P',1);
 		
 		unset($this->P["fieldChangeFunc"]["alert"]);
 		reset($this->P["fieldChangeFunc"]);

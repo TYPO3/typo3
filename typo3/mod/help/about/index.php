@@ -134,7 +134,7 @@ class SC_mod_help_about_index {
 	}
 
 	/**
-	 * Prints output
+	 * Outputting the accumulated content to screen
 	 * 
 	 * @return	void		
 	 */

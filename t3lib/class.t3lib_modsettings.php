@@ -260,7 +260,7 @@ class t3lib_modSettings {
 			}
 		}
 
-		$TDparams=' nowrap bgcolor="'.$GLOBALS['TBE_TEMPLATE']->bgColor4.'"';
+		$TDparams=' nowrap="nowrap" class="bgColor4"';
 		$tmpCode='
 		<table border=0 cellpadding=3 cellspacing=1 width="100%">
 		<tr'.$TDparams.'>

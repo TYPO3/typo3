@@ -41,7 +41,7 @@
  *
  *   66: class SC_alt_toplogo 
  *   74:     function main()	
- *  106:     function printContent()	
+ *  105:     function printContent()	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -57,7 +57,7 @@ require ('template.php');
 
 
 /**
- * Script Class
+ * Script Class for rendering of the logo frame content in upper left corner of the TYPO3 backend frameset
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
@@ -67,7 +67,7 @@ class SC_alt_toplogo {
 	var $content;
 	
 	/**
-	 * Create content
+	 * Create content with the logo
 	 * 
 	 * @return	void		
 	 */
@@ -76,7 +76,6 @@ class SC_alt_toplogo {
 
 			// Start page
 		$TBE_TEMPLATE->docType = 'xhtml_trans';
-		$TBE_TEMPLATE->inDocStyles = 'BODY {background-color: '.$TBE_TEMPLATE->bgColor2.';}';
 
 		$this->content.=$TBE_TEMPLATE->startPage('Logo frame');
 
@@ -90,7 +89,7 @@ class SC_alt_toplogo {
 				'</a>';
 		} else {
 			$this->content.='<a href="http://www.typo3.com/" target="_blank" onclick="'.$TBE_TEMPLATE->thisBlur().'">'.
-				'<img src="gfx/alt_backend_logo.gif" width="117" height="32" border="0" title="TYPO3 Content Management Framework" alt="" />'.
+				'<img'.t3lib_iconWorks::skinImg('','gfx/alt_backend_logo.gif','width="117" height="32"').' title="TYPO3 Content Management Framework" alt="" />'.
 				'</a>';
 		}
 
@@ -99,7 +98,7 @@ class SC_alt_toplogo {
 	}
 	
 	/**
-	 * Print output
+	 * Outputting the accumulated content to screen
 	 * 
 	 * @return	void		
 	 */

@@ -37,14 +37,13 @@
  *
  *
  *
- *   78: class SC_file_list 
- *  101:     function init()	
- *  122:     function menuConfig()	
- *  143:     function main()	
- *  217:     function jumpToUrl(URL)	
- *  265:     function printContent()	
+ *   77: class SC_file_list 
+ *  103:     function init()	
+ *  130:     function menuConfig()	
+ *  151:     function main()	
+ *  274:     function printContent()	
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -69,7 +68,7 @@ $BE_USER->modAccess($MCONF,1);
 
 
 /**
- * Script Class
+ * Script Class for creating the list of files in the File > Filelist module
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
@@ -80,16 +79,19 @@ class SC_file_list {
 	var $MOD_MENU=array();		
 	var $MOD_SETTINGS=array();
 
-		// GET vars set:
-	var $id;		// "id" -> the path to list.
-	var $pointer;	// Pointer to listing
-	var $table;		// "Table"
-	var $imagemode;	// Thumbnail mode.
 
+		// Internal:
 	var $content;	// Accumulated HTML output
 	var $basicFF;	// File operation object (t3lib_basicFileFunctions)
 	var $doc;		// Template object
 
+		// Internal, static: GPvars:
+	var $id;		// "id" -> the path to list.
+	var $pointer;	// Pointer to listing
+	var $table;		// "Table"
+	var $imagemode;	// Thumbnail mode.
+	var $cmd;
+	var $overwriteExistingFiles;
 	
 	
 	/**
@@ -101,12 +103,18 @@ class SC_file_list {
 	function init()	{
 		global $TYPO3_CONF_VARS,$FILEMOUNTS;
 			
-		$this->MCONF = $GLOBALS['MCONF'];
-
+			// Setting GPvars:
 		$this->id = t3lib_div::GPvar('id');
 		$this->pointer = t3lib_div::GPvar('pointer');
 		$this->table = t3lib_div::GPvar('table');
 		$this->imagemode = t3lib_div::GPvar('imagemode');
+		$this->cmd = t3lib_div::GPvar('cmd');
+		$this->overwriteExistingFiles = t3lib_div::GPvar('overwriteExistingFiles');
+		
+			// Setting module name:
+		$this->MCONF = $GLOBALS['MCONF'];
+
+			// File operation object:
 		$this->basicFF = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->basicFF->init($FILEMOUNTS,$TYPO3_CONF_VARS['BE']['fileExtensions']);
 		
@@ -166,14 +174,14 @@ class SC_file_list {
 			$filelist->clipObj->initializeClipboard();
 	
 			$CB = $HTTP_GET_VARS['CB'];
-			if (t3lib_div::GPvar('cmd')=='setCB') $CB['el'] = $filelist->clipObj->cleanUpCBC(array_merge($HTTP_POST_VARS['CBH'],$HTTP_POST_VARS['CBC']),'_FILE');
+			if ($this->cmd=='setCB') $CB['el'] = $filelist->clipObj->cleanUpCBC(array_merge($HTTP_POST_VARS['CBH'],$HTTP_POST_VARS['CBC']),'_FILE');
 			if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';
 			$filelist->clipObj->setCmd($CB);
 			$filelist->clipObj->cleanCurrent();
 			$filelist->clipObj->endClipboard();	// Saves
 			
 				// If the "cmd" was to delete files from the list (clipboard thing), do that:
-			if (t3lib_div::GPvar('cmd')=='delete')	{
+			if ($this->cmd=='delete')	{
 				$items = $filelist->clipObj->cleanUpCBC($HTTP_POST_VARS['CBC'],'_FILE',1);
 				if (count($items))	{
 						// Make command array:
@@ -187,13 +195,11 @@ class SC_file_list {
 					$fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
 					$fileProcessor->init($FILEMOUNTS, $TYPO3_CONF_VARS['BE']['fileExtensions']);
 					$fileProcessor->init_actionPerms($BE_USER->user['fileoper_perms']);
-					$fileProcessor->dontCheckForUnique = t3lib_div::GPvar('overwriteExistingFiles') ? 1 : 0;
+					$fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 					$fileProcessor->start($FILE);
 					$fileProcessor->processData();
 					
-						// Redirect to the status file.
-					Header('Location: '.t3lib_div::locationHeaderUrl('status_file.php'));
-					exit;
+					$fileProcessor->printLogErrorMessages();
 				}
 			}
 		
@@ -214,7 +220,7 @@ class SC_file_list {
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 
 			if (top.fsMod) top.fsMod.recentIds["file"] = unescape("'.rawurlencode($this->id).'");
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL)	{	//
 				document.location = URL;
 			}
 
@@ -231,9 +237,9 @@ class SC_file_list {
 				// Create output
 			$this->content='';
 			$this->content.=$this->doc->startPage($LANG->getLL('files'));
-			$this->content.= '<form action="'.$filelist->listURL().'" method="post" name="dblistForm">';
+			$this->content.= '<form action="'.htmlspecialchars($filelist->listURL()).'" method="post" name="dblistForm">';
 			$this->content.= $filelist->HTMLcode;
-			$this->content.= '<input type="hidden" name="cmd"></form>';
+			$this->content.= '<input type="hidden" name="cmd" /></form>';
 			
 			if ($filelist->HTMLcode)	{	// Making search form:
 					// Add "display thumbnails" checkbox:
@@ -248,22 +254,25 @@ class SC_file_list {
 
 				// Add shortcut
 			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->doc->makeShortcutIcon('pointer,id,target,table',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
+				$this->content.='<br /><br />'.$this->doc->makeShortcutIcon('pointer,id,target,table',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
 			}
 		} else {
 				// Create output - no access (no warning though)
 			$this->content='';
 			$this->content.=$this->doc->startPage($LANG->getLL('files'));
 		}
+
+			// Ending page:
+		$this->content.= $this->doc->endPage();
 	}
 
 	/**
-	 * Ending page and outputting content from ->content
+	 * Outputting the accumulated content to screen
 	 * 
 	 * @return	void		
 	 */
 	function printContent()	{
-		$this->content.= $this->doc->endPage();
+
 		echo $this->content;
 	}
 }

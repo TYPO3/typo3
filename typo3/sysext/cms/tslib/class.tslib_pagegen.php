@@ -39,20 +39,17 @@
  *
  *
  *
- *   88: class TSpagegen 
- *   95:     function pagegenInit()	
- *  134:     function UnCryptMailto(s) 
- *  145:     function linkTo_UnCryptMailto(s)	
- *  218:     function getIncFiles()	
- *  251:     function JSeventFunctions()	
- *  285:     function renderContent()	
- *  312:     function renderContentWithHeader($pageContent)	
- *  535:     function blurLink(theObject)	
+ *   85: class TSpagegen 
+ *   92:     function pagegenInit()	
+ *  215:     function getIncFiles()	
+ *  248:     function JSeventFunctions()	
+ *  282:     function renderContent()	
+ *  309:     function renderContentWithHeader($pageContent)	
  *
  *
- *  604: class FE_loadDBGroup extends t3lib_loadDBGroup	
+ *  610: class FE_loadDBGroup extends t3lib_loadDBGroup	
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -131,7 +128,7 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->spamProtectEmailAddresses)	{
 			$GLOBALS['TSFE']->additionalJavaScript['UnCryptMailto()']='
   // JS function for uncrypting spam-protected emails:
-function UnCryptMailto(s) {
+function UnCryptMailto(s) {	//
 	var n=0;
 	var r="";
 	for(var i=0; i < s.length; i++) { 
@@ -142,7 +139,7 @@ function UnCryptMailto(s) {
 	return r;
 }
   // JS function for uncrypting spam-protected emails:
-function linkTo_UnCryptMailto(s)	{
+function linkTo_UnCryptMailto(s)	{	//
 	location.href=UnCryptMailto(s);
 }
 		';
@@ -382,7 +379,7 @@ function linkTo_UnCryptMailto(s)	{
 			$ss=$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
 			if ($ss) {
 				$GLOBALS['TSFE']->content.='
-<link rel="stylesheet" href="'.$ss.'" />';
+	<link rel="stylesheet" href="'.htmlspecialchars($ss).'" />';
 			}
 		}
 		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.'])) {
@@ -392,7 +389,10 @@ function linkTo_UnCryptMailto(s)	{
 					$ss=$GLOBALS['TSFE']->tmpl->getFileName($iCSSfile);
 					if ($ss) {
 						$GLOBALS['TSFE']->content.='
-<link rel="stylesheet" href="'.$ss.'" />';
+	<link rel="stylesheet" href="'.htmlspecialchars($ss).'"'.
+			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title'] ? ' title="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['title']).'"' : '').
+			($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media'] ? ' media="'.htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$k2.'.']['media']).'"' : '').
+			' />';
 					}
 				}
 			}
@@ -532,7 +532,7 @@ INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
 	var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
 	if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror") {version = "n3";} else {version = "n2";}
 		// Blurring links:
-	function blurLink(theObject)	{
+	function blurLink(theObject)	{	//
 		if (msie4)	{theObject.blur();}
 	}
 // -->
@@ -601,6 +601,15 @@ if (t3lib_div::GPvar('sword') && t3lib_div::GPvar('scols'))	{
 // LoadDBGroup
 // ************
 require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
+
+/**
+ * Class for fetching record relations for the frontend.
+ * 
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
+ * @see tslib_cObj::RECORDS()
+ */
 class FE_loadDBGroup extends t3lib_loadDBGroup	{
 	var $fromTC = 0;		// Means the not only uid and label-field is returned, but everything
 }

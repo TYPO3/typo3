@@ -36,26 +36,27 @@
  *
  *
  *
- *  122: class t3lib_extFileFunctions extends t3lib_basicFileFunctions	
- *  156:     function start($data)	
- *  182:     function init_actionPerms($setup)	
- *  215:     function mapData($inputArray)		
- *  224:     function processData()	
- *  276:     function findRecycler($theFile)	
+ *  123: class t3lib_extFileFunctions extends t3lib_basicFileFunctions	
+ *  157:     function start($data)	
+ *  183:     function init_actionPerms($setup)	
+ *  216:     function mapData($inputArray)		
+ *  225:     function processData()	
+ *  274:     function printLogErrorMessages($redirect)	
+ *  312:     function findRecycler($theFile)	
  *
  *              SECTION: File operation functions
- *  318:     function func_upload($cmds)	
- *  359:     function func_copy($cmds)	
- *  449:     function func_move($cmds)	
- *  540:     function func_delete($cmds)	
- *  606:     function func_rename($cmds)	
- *  654:     function func_newfolder($cmds)	
- *  687:     function func_unzip($cmds)	
- *  722:     function func_newfile($cmds)	
- *  760:     function func_edit($cmds)	
- *  809:     function writeLog($action,$error,$details_nr,$details,$data)	
+ *  354:     function func_upload($cmds)	
+ *  395:     function func_copy($cmds)	
+ *  485:     function func_move($cmds)	
+ *  576:     function func_delete($cmds)	
+ *  642:     function func_rename($cmds)	
+ *  690:     function func_newfolder($cmds)	
+ *  723:     function func_unzip($cmds)	
+ *  758:     function func_newfile($cmds)	
+ *  796:     function func_edit($cmds)	
+ *  845:     function writeLog($action,$error,$details_nr,$details,$data)	
  *
- * TOTAL FUNCTIONS: 15
+ * TOTAL FUNCTIONS: 16
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -224,6 +225,8 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	function processData()	{
 		if (!$this->isInit) return false;
 		if (is_array($this->datamap))	{
+			t3lib_div::stripSlashesOnArray($this->datamap);
+		
 			reset($this->datamap);
 			while (list($action, $content) = each($this->datamap))	{
 				if (is_array($content))	{
@@ -262,6 +265,39 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 				}
 			}
 		}
+	}
+	
+	/**
+	 * @param	[type]		$redirect: ...
+	 * @return	[type]		...
+	 */
+	function printLogErrorMessages($redirect)	{
+		if ($redirect)	{
+			header('Location: '.t3lib_div::locationHeaderUrl($redirect));
+			exit;
+		}
+	
+	
+		#t3lib_BEfunc::getSetUpdateSignal('updateFolderTree');
+		
+		echo '
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>File Status script</title>
+</head>
+<body bgcolor="#F7F3EF">
+
+<script language="javascript" type="text/javascript">
+if (top.busy)	{
+	top.busy.loginRefreshed();
+}
+top.goToModule("file_list");
+</script>
+</body>
+</html>		
+		';
+	exit;
 	}
 
 	/**

@@ -42,10 +42,10 @@
  *
  *   70: class alt_menu_functions 
  *   91:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)	
- *  340:     function mIconFile($Ifilename,$backPath)	
- *  355:     function mIconFilename($Ifilename,$backPath)	
- *  367:     function topButtons()	
- *  380:     function wrapLinkWithAB($link)	
+ *  368:     function mIconFile($Ifilename,$backPath)	
+ *  383:     function mIconFilename($Ifilename,$backPath)	
+ *  395:     function topButtons()	
+ *  408:     function wrapLinkWithAB($link)	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -115,12 +115,12 @@ class alt_menu_functions {
 			$mC++;
 
 			$prefix='';
-			if ($moduleInfo["navFrameScript"])	{
+			if ($moduleInfo['navFrameScript'])	{
 				if ($GLOBALS['BE_USER']->uc['condensedMode'])	{
-					$prefix=$moduleInfo["navFrameScript"].'?currentSubScript=';
+					$prefix=$moduleInfo['navFrameScript'].'?currentSubScript=';
 				} else {
 					$prefix='alt_mod_frameset.php?'.
-						'&nav='.$moduleInfo["navFrameScript"].
+						'&nav='.rawurlencode($moduleInfo['navFrameScript']).
 						'&script=';
 				}
 				$this->fsMod[]='fsMod.recentIds["'.$moduleName.'"]="";';
@@ -148,13 +148,13 @@ class alt_menu_functions {
 				// Creating image icon
 			$image = @getimagesize($this->mIconFile($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath));
 			$imageCode='';
-			$descr3_title = t3lib_BEfunc::titleAttrib($LANG->moduleLabels['tabs'][$moduleKey].' ');
+			$descr3_title = $LANG->moduleLabels['tabs'][$moduleKey].' ';
 			if ($image)	{
 				$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath);
-				$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' align="top" alt="" />';
-				$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' align="top" border="0"'.$descr3_title.' alt="" />';
+				$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' alt="" />';
+				$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 			} else {
-				$descr3_imageCode = '<img src="'.$backPath.'gfx/dummy_module.gif" width="14" height="12" align="top" border="0"'.$descr3_title.' alt="" />';
+				$descr3_imageCode = '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/dummy_module.gif','width="14" height="12"').' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 			}
 			
 				// Creating the various links:
@@ -173,20 +173,16 @@ class alt_menu_functions {
 			$label='&nbsp;<b>'.$label.'</b>&nbsp;';
 			
 				// Creating a main item for the vertical menu (descr=0)
-			$modItemCode=$imageCode.$label;
-			$modItemCode='<div class="typo3-mainmenu-inner">'.$modItemCode.'</div>';
-			$modItemCode='<tr>
-				<td colspan="3" class="typo3-mainmenu-outer">'.$modItemCode.'</td>
-				</tr>';
-			$menuCode.=$modItemCode;
+			$menuCode.='
+						<tr class="c-mainitem">
+							<td colspan="3">'.$imageCode.'<span class="c-label">'.$label.'</span></td>
+						</tr>';
 
 				// Code for "About modules"
-			$descrCode.='<tr>
-				<td colspan="3"><img src="clear.gif" width="1" height="10" alt="" /></td>
-				</tr>';
-			$descrCode.='<tr>
-				<td colspan="3" class="typo3-aboutmod-outer" bgcolor="'.$TBE_TEMPLATE->bgColor4.'" nowrap="nowrap">'.$imageCode.$label.'</td>
-				</tr>';
+			$descrCode.='
+						<tr class="c-mainitem bgColor4">
+							<td colspan="3">'.$imageCode.$label.'</td>
+						</tr>';
 
 
 
@@ -197,7 +193,16 @@ class alt_menu_functions {
 				reset($moduleInfo['sub']);
 				$c=0;
 				while(list($subName,$subInfo)=each($moduleInfo['sub']))	{
-					if ($c==0)		$subCode.='<tr><td colspan="3"><img src="clear.gif" width="1" height="2" alt="" /></td></tr>';
+					if ($c==0)		{
+						$subCode.='
+								<tr class="c-first">
+									<td colspan="3"></td>
+								</tr>';
+						$descrCode.='
+								<tr class="c-first">
+									<td colspan="3"></td>
+								</tr>';
+					}
 
 					$link = $subInfo['script'];
 					$subKey = $moduleName.'_'.$subName.'_tab';
@@ -205,25 +210,25 @@ class alt_menu_functions {
 						// Creating image icon
 					$image = @getimagesize($this->mIconFile($LANG->moduleLabels['tabs_images'][$subKey],$backPath));
 					$imageCode='';
-					$descr3_title = t3lib_BEfunc::titleAttrib($LANG->moduleLabels['tabs'][$subKey].': '.$LANG->moduleLabels['labels'][$subKey.'label']);
+					$descr3_title = $LANG->moduleLabels['tabs'][$subKey].': '.$LANG->moduleLabels['labels'][$subKey.'label'];
 					if ($image)	{
 						$Ifilename = $this->mIconFilename($LANG->moduleLabels['tabs_images'][$subKey],$backPath);
-						$imageCode = '<img src="'.$Ifilename.'" '.$image[3].t3lib_BEfunc::titleAttrib($LANG->moduleLabels['labels'][$subKey.'label'].' ').' alt="" />';
-						$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' align="top" border="0"'.$descr3_title.' alt="" />';
+						$imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'" alt="" />';
+						$descr3_imageCode = '<img src="'.$Ifilename.'" '.$image[3].' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 					} else {
-						$descr3_imageCode = '<img src="'.$backPath.'gfx/dummy_module.gif" width="14" height="12" align="top" border="0"'.$descr3_title.' alt="" />';
+						$descr3_imageCode = '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/dummy_module.gif','width="14" height="12"').' title="'.htmlspecialchars($descr3_title).'" alt="" />';
 					}
 					
 						// Label for submodule:
 					$label = $LANG->moduleLabels['tabs'][$subKey];
 					$label_descr = ' title="'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'"';
-					$flabel = $label;
+					$flabel = htmlspecialchars($label);
 					$origLink = $link;
 					if ($link && $prefix)	$link=$prefix.rawurlencode($link);
 					
 						// Setting additional JavaScript if frameset script:
 					$addJS = '';
-					if ($moduleInfo["navFrameScript"])	{$addJS="+'&id='+top.rawurlencode(top.fsMod.recentIds['".$moduleName."'])";}
+					if ($moduleInfo['navFrameScript'])	{$addJS="+'&id='+top.rawurlencode(top.fsMod.recentIds['".$moduleName."'])";}
 					
 						// If there is a script to link to (and linking is not disabled.
 					if ($link && !$dontLink)	{
@@ -231,10 +236,10 @@ class alt_menu_functions {
 						if ($addJS && $GLOBALS['BE_USER']->uc['condensedMode'])	{$addJS.=  "+(cMR?'&cMR=1':'')";}
 
 							// Command for the selector box:
-						$JScmd = "top.content.location=top.getModuleUrl(top.TS.PATH_typo3+'".$this->wrapLinkWithAB($link)."'".$addJS.");";
+						$JScmd = "top.content.location=top.getModuleUrl(top.TS.PATH_typo3+'".$this->wrapLinkWithAB($link)."'".$addJS.');';
 
 							// If there is a frameset script in place:
-						if (!$GLOBALS['BE_USER']->uc['condensedMode'] && $moduleInfo["navFrameScript"])	{
+						if (!$GLOBALS['BE_USER']->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
 							$JScmd = '
 								if (top.content.list_frame && top.fsMod.currentMainLoaded=="'.$moduleName.'") {
 									top.currentSubScript="'.$origLink.'";
@@ -248,71 +253,94 @@ class alt_menu_functions {
 									top.fsMod.currentMainLoaded="'.$moduleName.'";
 								}';
 						}
-#						$selectItems[] = '<option value="'.htmlspecialchars($JScmd).'">'.htmlspecialchars("- ".$label).'</option>';
-						$selectItems[] = '<option value="top.goToModule(\''.$moduleName."_".$subName.'\');">'.htmlspecialchars("- ".$label).'</option>';
-						$onClickString = htmlspecialchars('top.goToModule(\''.$moduleName."_".$subName.'\');'.$onBlur.'return false;');
-						$flabel='<a href="#" onclick="'.$onClickString.'"'.$label_descr.'>'.$label.'</a>';
+						$selectItems[] = '<option value="top.goToModule(\''.$moduleName.'_'.$subName.'\');">'.htmlspecialchars('- '.$label).'</option>';
+						$onClickString = htmlspecialchars('top.goToModule(\''.$moduleName.'_'.$subName.'\');'.$onBlur.'return false;');
+						$flabel='<a href="#" onclick="'.$onClickString.'"'.$label_descr.'>'.htmlspecialchars($label).'</a>';
 						$mIcons[]='<a href="#" onclick="'.$onClickString.'"'.$label_descr.'>'.$descr3_imageCode.'</a>';
-						$mJScmds[]="case '".$moduleName."_".$subName."': \n ".$JScmd." \n break;";
+						$mJScmds[]="case '".$moduleName.'_'.$subName."': \n ".$JScmd." \n break;";
 					} 
 					
-					$subCode.='<tr class="typo3-submenu">
-						<td></td>
-						<td valign="top" align="center">'.(!$GLOBALS['BE_USER']->uc['hideSubmoduleIcons']?$imageCode:"").'</td>
-						<td class="typo3-submenu-label">'.$flabel.'</td>
-					</tr>';
+					$subCode.='
+							<tr class="c-subitem-row">
+								<td></td>
+								<td align="center">'.(!$GLOBALS['BE_USER']->uc['hideSubmoduleIcons']?$imageCode:'').'</td>
+								<td class="c-subitem-label">'.$flabel.'</td>
+							</tr>';
 
 						// For "About modules":
 					$descrCode.='
-					<tr>
-						<td colspan="3"><img src="clear.gif" width="1" height="5" alt="" /></td>
-					</tr>';
-					$descrCode.='
-					<tr>
-						<td valign="top" align="center">'.$imageCode.'</td>
-						<td valign="top" nowrap="nowrap">'.$flabel.'&nbsp;&nbsp;</td>
-						<td valign="top"><strong>'.$LANG->moduleLabels['labels'][$subKey.'label'].'</strong><br />'.$LANG->moduleLabels['labels'][$subKey.'descr'].'</td>
-					</tr>';
+							<tr class="c-subitem-row">
+								<td align="center">'.$imageCode.'</td>
+								<td>'.$flabel.'&nbsp;&nbsp;</td>
+								<td><strong>'.htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']).'</strong><br />'.$LANG->moduleLabels['labels'][$subKey.'descr'].'</td>
+							</tr>';
 
 						// Possibly adding a divider line
 					$c++;
 					if ($c<count($moduleInfo['sub']))	{
 							// Divider
-						$subCode.='<tr class="typo3-submenu-divrow">
-							<td><img src="clear.gif" width="5" height="1" alt="" /></td>
-							<td colspan="2"><img src="gfx/altmenuline.gif" width="105" height="3" alt="" /></td>
-						</tr>';
-					} else {
-							// Space:
-						$subCode.='<tr class="typo3-submenu-endrow">
-							<td colspan="3"><img src="clear.gif" width="1" height="4" alt="" /></td>
-						</tr>';
+						$subCode.='
+							<tr class="c-divrow">
+								<td colspan="3"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/altmenuline.gif','width="105" height="3"').' alt="" /></td>
+							</tr>';
 					}
 				}
-				if (count($theModules)>$mC)	$mIcons[]='<img src="'.$backPath.'gfx/acm_spacer2.gif" width="8" height="12" hspace="3" align="top" alt="" />';
-			} else {
-				$subCode.='<tr><td colspan="3"><img src="clear.gif" width="1" height="2" alt="" /></td></tr>';
+					// Spacer gif for top menu:
+				if (count($theModules)>$mC)	{
+					$mIcons[]='<img src="'.$backPath.'gfx/acm_spacer2.gif" width="8" height="12" hspace="3" alt="" />';
+				}
 			}
-
+			
+				// Add spacers after each main section:
+			$subCode.='
+					<tr class="c-endrow">
+						<td colspan="3"></td>
+					</tr>';
+			$descrCode.='
+					<tr class="c-endrow">
+						<td colspan="3"></td>
+					</tr>';
+					
+				// Add sub-code:
 			$menuCode.=$subCode;
 		}
 		
 			// $descr==0:	Ordinary vertical menu
 		if ($menuCode)	{
-			$final = '<table border="0" cellpadding="0" cellspacing="0" width="1">'.$menuCode.'</table>';
+			$final = '
+			
+			
+				<!-- 
+					Vertical module menu, shown in left frame of backend.
+				-->
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-vmenu">
+					'.$menuCode.'
+				</table>';
 		}
 
 			// Output for the "About modules" module
 		if ($descr==1)	{
-			$descrCode = '<table border="0" cellpadding="0" cellspacing="0">'.$descrCode.'</table>';
+			$descrCode = '
+			
+			
+				<!-- 
+					Listing of modules, for Help > About modules
+				-->
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-about-modules">
+					'.$descrCode.'
+				</table>';
 			$final = $descrCode;
 		}
 
 			// selector-box menu
 		if ($descr==2)	{
 			$selectItems[] = '<option value=""></option>';
-			$selectItems[] = '<option value="'.htmlspecialchars("top.location='logout.php';").'">[ LOGOUT ]</option>';
-			$final = '<select name="menuselector" onchange="eval(this.options[this.selectedIndex].value);">'.implode('',$selectItems).'</select>';
+			$selectItems[] = '<option value="'.htmlspecialchars("top.location='logout.php';").'">[ '.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.logout',1).' ]</option>';
+			$final = '
+				<select name="menuselector" onchange="eval(this.options[this.selectedIndex].value);">
+					'.implode('
+					',$selectItems).'
+				</select>';
 		}
 			// topmenu - horizontal line of icons!
 		if ($descr==3)	{
@@ -367,7 +395,7 @@ class alt_menu_functions {
 	function topButtons()	{
 		global $LANG;
 			
-		$out.= '<form action="logout.php" target="_top" style="margin: 0 0 0 0;"><input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.logout',1).'" /></form>';
+		$out.= '<form action="logout.php" target="_top"><input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.logout',1).'" /></form>';
 		return $out;
 	}
 

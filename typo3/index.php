@@ -28,6 +28,8 @@
  * Login-screen of TYPO3.
  * 
  * $Id$
+ * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
+ * XHTML compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -36,24 +38,30 @@
  *
  *
  *
- *   89: class SC_index 
- *  107:     function init()	
- *  141:     function main()	
- *  152:     function makeLoginLogoutForm()	
- *  294:     function makeStartHTML()	
- *  359:     function printContent()	
- *  366:     function doChallengeResponse() 
+ *   87: class SC_index 
+ *  120:     function init()	
+ *  151:     function main()	
+ *  237:     function printContent()	
  *
- * TOTAL FUNCTIONS: 6
+ *              SECTION: Various functions
+ *  261:     function makeLoginForm()	
+ *  304:     function makeLogoutForm()	
+ *  346:     function wrapLoginForm($content)	
+ *  406:     function checkRedirect()	
+ *  449:     function makeInterfaceSelectorBox()	
+ *  503:     function makeCopyrightNotice()	
+ *  536:     function makeLoginBoxImage()	
+ *  574:     function makeLoginNews()	
+ *
+ * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
+
+
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 require ('init.php');
 require ('template.php');
-require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 
 
 
@@ -70,313 +78,539 @@ require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
 
 
 /**
- * Script Class
- * 
- * GET vars:
- * u=	default username
- * p=	default password
- * L=	'OUT' = logout
- * redirect_url=	URL to redirect to instead of starting the TBE
- * 
- * commandLI
- * loginRefresh
- * interface
+ * Script Class for rendering the login form
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_index {
-	var $content;
 	
-	var $loadModules;
-	var $redirect_url;
-	var $redirect_url_input;
-	var $GPinterface;
-	var $u;
-	var $p;
-	var $L;
-	var $L_vars;
-	var $interfaceSelector;
+		// Internal, GPvars:
+	var $redirect_url;			// GPvar: redirect_url; The URL to redirect to after login.
+	var $GPinterface;			// GPvar: Defines which interface to load (from interface selector)
+	var $u;						// GPvar: preset username
+	var $p;						// GPvar: preset password
+	var $L;						// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
+	var $loginRefresh;			// Login-refresh boolean; The backend will call this script with this value set when the login is close to being expired and the form needs to be redrawn.
+	var $commandLI;				// Value of forms submit button for login.
+	
+		// Internal, static:
+	var $redirectToURL;			// Set to the redirect URL of the form (may be redirect_url or "alt_main.php")
+	var $L_vars;				// Set to the labels used for the login screen.
+	
+		// Internal, dynamic:
+	var $interfaceSelector;		// If set tru, if there is a redirect URL
+	var $content;				// Content accumulation
+
+	var $interfaceSelector;			// A selector box for selecting value for "interface" may be rendered into this variable
+	var $interfaceSelector_jump;	// A selector box for selecting value for "interface" may be rendered into this variable - this will have an onchange action which will redirect the user to the selected interface right away
+	var $interfaceSelector_hidden;	// A hidden field, if the interface is not set.
+
+
+
+
+
 
 	/**
 	 * Initialize the login box. Will also react on a &L=OUT flag and exit.
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function init()	{
 		global $BE_USER,$TYPO3_CONF_VARS;
 		
-		// ******************************
-		// Registering Global Vars
-		// ******************************
-			// URL to redirect to.
-		$this->redirect_url = t3lib_div::GPvar("redirect_url");
-		$this->redirect_url_input = $this->redirect_url ? 1 : 0;	
-		$this->GPinterface = t3lib_div::GPvar("interface");
-		$this->L_vars = explode("|",$TYPO3_CONF_VARS["BE"]["loginLabels"]);
+			// GPvars:
+		$this->redirect_url = t3lib_div::GPvar('redirect_url');
+		$this->GPinterface = t3lib_div::GPvar('interface');
+		$this->u = t3lib_div::GPvar('u');							// preset username
+		$this->p = t3lib_div::GPvar('p');							// preset password
+		$this->L = t3lib_div::GPvar('L');							// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
+		$this->loginRefresh = t3lib_div::GPvar('loginRefresh');		// Login 
+		$this->commandLI = t3lib_div::GPvar('commandLI');			// Value of "Login" button. If set, the login button was pressed.
+
+			// Getting login labels:
+		$this->L_vars = explode('|',$TYPO3_CONF_VARS['BE']['loginLabels']);
+
+			// Setting the redirect URL to "alt_main.php" if no alternative input is given:
+		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'alt_main.php';	
 		
-			// Only change redirect_url if it has not been set from outside...
-		if (!$this->redirect_url_input)	{$this->redirect_url="alt_main.php";}	
-		
-		$this->u = t3lib_div::GPvar("u");		// preset username
-		$this->p = t3lib_div::GPvar("p");		// preset password
-		$this->L = t3lib_div::GPvar("L");		// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
-		
-		// *********
-		// Logout?
-		// *********
-		if ($this->L=="OUT" && is_object($BE_USER))	{
+			// Logout?
+		if ($this->L=='OUT' && is_object($BE_USER))	{
 			$BE_USER->logoff();
-			if ($this->redirect_url)	header("Location: ".t3lib_div::locationHeaderUrl($this->redirect_url));
+			if ($this->redirect_url)	header('Location: '.t3lib_div::locationHeaderUrl($this->redirect_url));
 			exit;
 		}
 	}
 
 	/**
-	 * Main function - just calling subfunctions.
+	 * Main function - creating the login/logout form
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function main()	{
-		$this->content="";
-		$this->content.=$this->makeLoginLogoutForm();
-		$this->content.=$this->makeStartHTML();
+		global $TBE_TEMPLATE, $TYPO3_CONF_VARS, $BE_USER;
+
+			// Initialize template object:
+		$TBE_TEMPLATE->docType='xhtml_trans';
+
+			// Set JavaScript for creating a MD5 hash of the password:
+		$TBE_TEMPLATE->JScode.='
+			<script type="text/javascript" src="md5.js"></script>
+			'.$TBE_TEMPLATE->wrapScriptTags('
+				function doChallengeResponse() {	// 
+					password = document.loginform.p_field.value;
+					if (password)	{
+						password = MD5(password);	// this makes it superchallenged!!
+						str = document.loginform.username.value+":"+password+":"+document.loginform.challenge.value;
+						document.loginform.userident.value = MD5(str);
+						document.loginform.p_field.value = "";
+						return true;
+					}
+				}
+			');
+
+
+			// Checking, if we should make a redirect.
+			// Might set JavaScript in the header to close window.
+		$this->checkRedirect();
+		
+			// Creating form based on whether there is a login or not:		
+		if (!$BE_USER->user['uid'])	{
+			$TBE_TEMPLATE->form = '
+				<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse();">
+				<input type="hidden" name="login_status" value="login" />
+				';
+			$loginForm = $this->makeLoginForm();
+		} else {
+			$TBE_TEMPLATE->form = '
+				<form action="index.php" method="post" name="loginform">
+				<input type="hidden" name="login_status" value="logout" />
+				';
+			$loginForm = $this->makeLogoutForm();
+		}
+
+
+			// Starting page:		
+		$this->content.=$TBE_TEMPLATE->startPage('TYPO3 Login: '.$TYPO3_CONF_VARS['SYS']['sitename']);
+			
+			// Add login form:
+		$this->content.=$this->wrapLoginForm($loginForm);
+
+			// Initialize interface selectors:			
+		$this->makeInterfaceSelectorBox();
+
+			// Ending form:
+		$this->content.= '
+			<input type="hidden" name="userident" value="" />
+			<input type="hidden" name="challenge" value="'.md5(uniqid('')).'" />
+			<input type="hidden" name="redirect_url" value="'.htmlspecialchars($this->redirectToURL).'" />
+			<input type="hidden" name="loginRefresh" value="'.htmlspecialchars($this->loginRefresh).'" />
+			'.$this->interfaceSelector_hidden.'
+			';
+
+			// This moves focus to the right input field:
+		$this->content.=$TBE_TEMPLATE->wrapScriptTags('
+		
+				// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
+			if (parent.opener && parent.opener.TS && parent.opener.TS.username)	{
+				document.loginform.username.value = parent.opener.TS.username;
+			}
+
+				// If for some reason there already is a username in the username for field, move focus to the password field:
+			if (document.loginform.username && document.loginform.username.value == "") {
+				document.loginform.username.focus();
+			} else {
+				document.loginform.p_field.focus();
+			}
+		');
+
+			// End page:
+		$this->content.=$TBE_TEMPLATE->endPage();
+	}
+		
+	/**
+	 * Outputting the accumulated content to screen
+	 * 
+	 * @return	void		
+	 */
+	function printContent()	{
+
+		echo $this->content;
+	}
+	
+	
+	
+	
+	
+
+
+
+	/*****************************
+	 *
+	 * Various functions
+	 *
+	 ******************************/
+
+	/**
+	 * Creates the login form
+	 * This is drawn when NO login exists.
+	 * 
+	 * @return	string		HTML output
+	 */
+	function makeLoginForm()	{
+
+		$content.='
+		
+							<!-- 
+								Login form:
+							-->
+							<table cellspacing="0" cellpadding="0" border="0" id="logintable">
+									<tr>
+										<td colspan="2"><h2>'.htmlspecialchars($this->L_vars[6]).'</h2></td>
+									</tr>
+									<tr class="c-username">
+										<td><p class="c-username">'.htmlspecialchars($this->L_vars[0]).':</p></td>
+										<td><input type="text" name="username" value="'.htmlspecialchars($this->u).'" class="c-username" /></td>
+									</tr>
+									<tr class="c-password">
+										<td><p class="c-password">'.htmlspecialchars($this->L_vars[1]).':</p></td>
+										<td><input type="password" name="p_field" value="'.htmlspecialchars($this->p).'" class="c-password" /></td>
+									</tr>'.($this->interfaceSelector && !$this->loginRefresh ? '
+									<tr class="c-interfaceselector">
+										<td><p class="c-interfaceselector">'.htmlspecialchars($this->L_vars[2]).':</p></td>
+										<td>'.$this->interfaceSelector.'</td>
+									</tr>' : '' ).'
+									<tr class="c-submit">
+										<td></td>
+										<td><input type="submit" name="commandLI" value="'.htmlspecialchars($this->L_vars[3]).'" class="c-submit" /></td>
+									</tr>
+									<tr class="c-info">
+										<td></td>
+										<td><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
+									</tr>
+								</table>';
+										
+			// Return content:
+		return $content;
+	}	
+	
+	/**
+	 * Creates the logout form
+	 * This is drawn if a user login already exists.
+	 * 
+	 * @return	string		HTML output
+	 */
+	function makeLogoutForm()	{
+		global $BE_USER;
+	
+
+		$content.='
+		
+							<!-- 
+								Login form:
+							-->
+							<table cellspacing="0" cellpadding="0" border="0" id="logintable">
+									<tr>
+										<td></td>
+										<td><h2>'.htmlspecialchars($this->L_vars[6]).'</h2></td>
+									</tr>
+									<tr class="c-username">
+										<td><p class="c-username">'.htmlspecialchars($this->L_vars[0]).':</p></td>
+										<td><p class="c-username-current">'.htmlspecialchars($BE_USER->user['username']).'</p></td>
+									</tr>'.($this->interfaceSelector_jump ? '
+									<tr class="c-interfaceselector">
+										<td><p class="c-interfaceselector">'.htmlspecialchars($this->L_vars[2]).':</p></td>
+										<td>'.$this->interfaceSelector_jump.'</td>
+									</tr>' : '' ).'
+									<tr class="c-submit">
+										<td><input type="hidden" name="p_field" value="" /></td>
+										<td><input type="submit" name="commandLO" value="'.htmlspecialchars($this->L_vars[4]).'" class="c-submit" /></td>
+									</tr>
+									<tr class="c-info">
+										<td></td>
+										<td><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
+									</tr>
+								</table>';
+						
+			// Return content:				
+		return $content;				
 	}
 
 	/**
-	 * Making the login/logout form
+	 * Wrapping the login form table in another set of tables etc:
 	 * 
-	 * @return	[type]		...
+	 * @param	string		HTML content for the login form
+	 * @return	string		The HTML for the page.
 	 */
-	function makeLoginLogoutForm()	{
-		global $BE_USER,$TYPO3_CONF_VARS,$TBE_TEMPLATE;
+	function wrapLoginForm($content)	{
+	
+			// Logo:
+		$logo = $GLOBALS['TBE_STYLES']['logo_login'] ? 
+					'<img src="'.htmlspecialchars($GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login']).'" alt="" />' : 
+					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="333" height="43"').' alt="" />';
+	
+			// Login box image:
+		$loginboxImage = $this->makeLoginBoxImage();
 
-		$TBE_TEMPLATE->bgColor="#CCCCCC";
-		
-		// Code for the challenged form.
-		$challenge = md5(uniqid(""));
-		
+			// Compile the page content:
 		$content='
-		<div align="center">
-		<form action="index.php" method="POST" name="loginform" autocomplete="off">
-		<table border=0 cellspacing=2 cellpadding=10 width="100%">
-		<tr>
-			<td bgcolor="'.$TBE_TEMPLATE->bgColor2.'" align="center">
-				<table border=0 cellspacing=0 cellpadding=2>
-					<tr>
-						<td><img src="clear.gif" width=1 height=1 hspace=35></td>
-						<td><img src="clear.gif" width=1 height=1 hspace=5></td>
-						<td><img src="clear.gif" width=1 height=1 hspace=25></td>
-					</tr>
-		';
 		
-			// MAKING interface selector:
-		$this->interfaceSelector = "";
-		$interfaceHidden="";
-		$interfaceSelector_jump = "";
-		if ($TYPO3_CONF_VARS["BE"]["interfaces"] && !$this->redirect_url_input)	{
-			$parts = t3lib_div::trimExplode(",",$TYPO3_CONF_VARS["BE"]["interfaces"]);
-			if (count($parts)>1)	{
-				$tempLabels=explode(",",$this->L_vars[5]);
-				$labels=array();
-				$labels["backend"]=$tempLabels[0];
-				$labels["frontend"]=$tempLabels[1];
+		<!--
+			Wrapper table for the login form:
+		-->
+		<table cellspacing="0" cellpadding="0" border="0" id="wrapper">
+			<tr>
+				<td class="c-wrappercell" align="center">
 				
-				$jumpScript=array();
-				$jumpScript["backend"]="alt_main.php";
-				$jumpScript["frontend"]="../";
+					<!--
+						Login form image:
+					-->
+					<div id="loginimage">
+											'.$logo.'
+					</div>					
 				
-				reset($parts);
-				while(list(,$valueStr)=each($parts))	{
-					$this->interfaceSelector.='<option value="'.$valueStr.'">'.htmlspecialchars($labels[$valueStr]).'</option>';
-					$interfaceSelector_jump.='<option value="'.$jumpScript[$valueStr].'">'.htmlspecialchars($labels[$valueStr]).'</option>';
-				}
-				$this->interfaceSelector='<select name="interface">'.$this->interfaceSelector.'</select>';
-				$interfaceSelector_jump='<select name="interface" onChange="document.location=this.options[this.selectedIndex].value;">'.$interfaceSelector_jump.'</select>';
-			} elseif (!$this->redirect_url_input) {
-				$interfaceHidden='<input type="hidden" name="interface" value="'.trim($TYPO3_CONF_VARS["BE"]["interfaces"]).'">';
-				$this->GPinterface=trim($TYPO3_CONF_VARS["BE"]["interfaces"]);
-			}
-		}
+					<!--
+						Login form wrapper:
+					-->
+					<table cellspacing="0" cellpadding="0" border="0" id="loginwrapper">
+						<tr>
+							<td>'.$loginboxImage.'</td>
+							<td>
+								'.$content.'
+							</td>
+						</tr>
+					</table>
+					
+					<!--
+						Copy right notice:
+					-->
+					<div id="copyrightnotice">
+						'.$this->makeCopyrightNotice().'
+					</div>
+					
+					'.$this->makeLoginNews().'
+				</td>
+			</tr>
+		</table>';
 
-			// COPYRIGHT notice
-		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["loginCopyrightWarrantyProvider"]));
-		$loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["loginCopyrightWarrantyURL"]));
-		
-		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10)	{
-			$warrantyNote='Warranty is supplied by '.$loginCopyrightWarrantyProvider.'; <a href="'.$loginCopyrightWarrantyURL.'" target="_blank">click for details.</a>';
-		} else {
-			$warrantyNote='TYPO3 comes with ABSOLUTELY NO WARRANTY; <a href="http://typo3.com/1316.0.html" target="_blank">click for details.</a>';
-		}
-		
-			// No user session:
-		if (!$BE_USER->user["uid"])	{
-			$content.='
-					<tr>
-						<td nowrap="nowrap"><font face="VERDANA,ARIAL,SANS-SERIF" size="2"><b>'.$this->L_vars[0].':</b></font></td>
-						<td></td>
-						<td nowrap="nowrap"><input type="Text" name="username" value="'.$this->u.'"'.$TBE_TEMPLATE->formWidth(10).' onBlur="if(parent.typoWin && parent.typoWin.TS){this.value=parent.typoWin.TS.username;}"></td>
-					</tr>
-					<tr>
-						<td nowrap="nowrap"><font face="VERDANA,ARIAL,SANS-SERIF" size="2"><b>'.$this->L_vars[1].':</b></font></td>
-						<td></td>
-						<td nowrap="nowrap"><input type="password" name="p_field" value="'.$this->p.'"'.$TBE_TEMPLATE->formWidth(10).'></td>
-					</tr>';
-			if ($this->interfaceSelector && !t3lib_div::GPvar("loginRefresh"))	{
-					$content.='<tr>
-							<td nowrap="nowrap"><font face="VERDANA,ARIAL,SANS-SERIF" size="2"><b>'.$this->L_vars[2].':</b></font></td>
-							<td></td>
-							<td nowrap="nowrap">'.$this->interfaceSelector.'</td>
-						</tr>';
-			}
-			$content.='<tr>
-						<td nowrap="nowrap"></td>
-						<td></td>
-						<td nowrap="nowrap"><input type="submit" name="commandLI" value="'.$this->L_vars[3].'" onClick="document.loginform.login_status.value=\'login\';doChallengeResponse();"></td>
-					</tr>
-			';
-			$content.='<tr>
-						<td colspan=3 align="center"><font face="VERDANA,ARIAL,SANS-SERIF" size="1" color="#666666">'.$this->L_vars[7].'</font></td>
-					</tr>
-			';
-		} else {	// If there is a user session already:
-			if ($interfaceSelector_jump)	{
-			$content.='<tr>
-							<td nowrap="nowrap"><font face="VERDANA,ARIAL,SANS-SERIF" size="2"><b>'.$this->L_vars[2].':</b></font></td>
-							<td></td>
-							<td nowrap="nowrap">'.$interfaceSelector_jump.'</td>
-						</tr>';
-			$content.='<tr>
-							<td colspan=3>&nbsp;</td>
-						</tr>';
-			}
-			$content.='
-					<tr>
-						<td nowrap="nowrap"><B><font face="VERDANA,ARIAL,SANS-SERIF" size="2">&nbsp;&nbsp;'.$BE_USER->user["username"].'&nbsp;&nbsp;</font></b></td>
-						<td></td>
-						<td nowrap="nowrap"><input type="hidden" name="p_field" value=""><input type="Submit" name="commandLO" value="'.$this->L_vars[4].'" onClick="document.loginform.p_field.value=\'\'; document.loginform.login_status.value=\'logout\';"></td>
-					</tr>
-			';
-		}
-		
-			// Ending form:
-		$content.='
-				</table>
-			</td>
-		</tr>
-		</table>
-
-		
-		<div align="left" style="text-align:left;font-family: verdana,arial,helvetica; font-size:10px; margin-top:10px; width:500px;"><a href="http://typo3.com/" target="_blank"><img src="gfx/loginlogo_transp.gif" width="75" vspace=2 height="19" alt="TYPO3 logo" border="0" align="left">TYPO3 CMS'.($GLOBALS["TYPO3_CONF_VARS"]["SYS"]["loginCopyrightShowVersion"]?' ver. '.htmlspecialchars($GLOBALS["TYPO_VERSION"]):'').'</a>. Copyright &copy; 1998-2003 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details. 
-		'.strip_tags($warrantyNote,'<a>').' This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. Obstructing the appearance of this notice is prohibited by law.
-		</div>
-		
-		<input type="Hidden" name="userident" value="">
-		<input type="Hidden" name="challenge" value="'.$challenge.'">
-		<input type="Hidden" name="redirect_url" value="'.htmlspecialchars($this->redirect_url).'">
-		<input type="Hidden" name="loginRefresh" value="'.t3lib_div::GPvar("loginRefresh").'">
-		<input type="Hidden" name="login_status" value="">
-		'.$interfaceHidden.'
-		</form>
-		</div>
-		';
-		
-			// This returns the login form.
+			// Return content:		
 		return $content;
 	}
 	
 	/**
-	 * Make the HTML which will start the BE:
+	 * Checking, if we should perform some sort of redirection OR closing of windows.
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
-	function makeStartHTML()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
-		global $TBE_MODULES,$TBE_TEMPLATE;
+	function checkRedirect()	{
+		global $BE_USER,$TBE_TEMPLATE;
 
-		$content="";;
-
-			// This should output the username by default into the re-login form
-		if (!$BE_USER->user["uid"])	{
-			$content.='
-			<script language="javascript" type="text/javascript">
-			  if (parent.typoWin && parent.typoWin.TS)	{
-				  document.loginform.username.value = parent.typoWin.TS.username;
-			  }
-			  if (document.loginform.username.value == "") {
-			    document.loginform.username.focus();
-			  } else {
-			    document.loginform.p_field.focus();
-			  }
-			</script>
-			';
-		}
-		
-		// If a users is logged in:
-		// AND if either the login is just done (commandLI) or a loginRefresh is done or the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
-		if ($BE_USER->user["uid"] && (t3lib_div::GPvar("commandLI") || t3lib_div::GPvar("loginRefresh") || !$this->interfaceSelector))	{
+			// Do redirect:
+			// If a user is logged in AND a) if either the login is just done (commandLI) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
+		if ($BE_USER->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector))	{
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
-			if (!$GLOBALS["HTTP_COOKIE_VARS"][$BE_USER->name])	{
-				t3lib_BEfunc::typo3PrintError ("Login-error","Yeah, that's a classic. No cookies, no TYPO3.<BR><BR>Please accept cookies from TYPO3 - otherwise you'll not be able to use the system.",0);
+			if (!$GLOBALS['HTTP_COOKIE_VARS'][$BE_USER->name])	{
+				t3lib_BEfunc::typo3PrintError ('Login-error',"Yeah, that's a classic. No cookies, no TYPO3.<br /><br />Please accept cookies from TYPO3 - otherwise you'll not be able to use the system.",0);
 				exit;
 			}
 
-				// based on specific setting of interface we set the redirect script:
+				// Based on specific setting of interface we set the redirect script:
 			switch ($this->GPinterface)	{
-				case "backend":
-					$this->redirect_url = "alt_main.php";
+				case 'backend':
+					$this->redirectToURL = 'alt_main.php';
 				break;
-				case "frontend":
-					$this->redirect_url = "../";
+				case 'frontend':
+					$this->redirectToURL = '../';
 				break;
 			}
 
 				// If there is a redirect URL AND if loginRefresh is not set...
-			if ($this->redirect_url && !t3lib_div::GPvar("loginRefresh"))	{
-				header("Location: ".t3lib_div::locationHeaderUrl($this->redirect_url));
+			if (!$this->loginRefresh)	{
+				header('Location: '.t3lib_div::locationHeaderUrl($this->redirectToURL));
 				exit;
 			} else {
-				$content.='
-				<script language="javascript" type="text/javascript">
-					if (parent.typoWin && parent.typoWin.busy) {
-						parent.typoWin.busy.loginRefreshed();
+				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
+					if (parent.opener && parent.opener.busy)	{		
+						parent.opener.busy.loginRefreshed();
 						parent.close();
 					}
-				</script>
-				';
+				');
 			}
 		}
-		return $content;
+	}
+
+	/**
+	 * Making interface selector:
+	 * 
+	 * @return	void		
+	 */
+	function makeInterfaceSelectorBox()	{
+		global $TYPO3_CONF_VARS;
+
+			// Reset variables:
+		$this->interfaceSelector = '';
+		$this->interfaceSelector_hidden='';
+		$this->interfaceSelector_jump = '';
+		
+			// If interfaces are defined AND no input redirect URL in GET vars:
+		if ($TYPO3_CONF_VARS['BE']['interfaces'] && !$this->redirect_url)	{
+			$parts = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['BE']['interfaces']);
+			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
+			
+					// Initialize:
+				$tempLabels=explode(',',$this->L_vars[5]);
+				$labels=array();
+				$labels['backend']=$tempLabels[0];
+				$labels['frontend']=$tempLabels[1];
+				
+				$jumpScript=array();
+				$jumpScript['backend']='alt_main.php';
+				$jumpScript['frontend']='../';
+				
+					// Traverse the interface keys:
+				foreach($parts as $valueStr)	{
+					$this->interfaceSelector.='
+							<option value="'.htmlspecialchars($valueStr).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
+					$this->interfaceSelector_jump.='
+							<option value="'.htmlspecialchars($jumpScript[$valueStr]).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
+				}
+				$this->interfaceSelector='
+						<select name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
+						</select>';
+				$this->interfaceSelector_jump='
+						<select name="interface" class="c-interfaceselector" onchange="document.location=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
+						</select>';
+
+			} else {	// If there is only ONE interface value set:
+
+				$this->interfaceSelector_hidden='<input type="hidden" name="interface" value="'.trim($TYPO3_CONF_VARS['BE']['interfaces']).'" />';
+			}
+		}
 	}
 	
 	/**
-	 * Output it all...
+	 * COPYRIGHT notice
 	 * 
-	 * @return	[type]		...
+	 * Warning:
+	 * DO NOT prevent this notice from being shown in ANY WAY. 
+	 * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
+	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
+	 * 
+	 * @return	string		Text/Image (HTML) for copyright notice.
 	 */
-	function printContent()	{
-		global $TBE_TEMPLATE;
+	function makeCopyrightNotice()	{
 
-		echo $TBE_TEMPLATE->startPage("TYPO3 Login");
-		echo '
-		<script language="javascript" type="text/javascript" src="md5.js"></script>
-		<script language="javascript" type="text/javascript">
-		  function doChallengeResponse() {
-		  	password = document.loginform.p_field.value;
-			if (password)	{
-				password = MD5(password);	// this makes it superchallenged!!
-			    str = document.loginform.username.value+":"+password+":"+document.loginform.challenge.value;
-			    document.loginform.userident.value = MD5(str);
-			    document.loginform.p_field.value = "";
-			    document.loginform.submit();
-			}
-		  }
-		</script>';
+			// Get values from TYPO3_CONF_VARS:
+		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
+		$loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyURL']));
 		
-		t3lib_BEfunc::typo3PrintError ($this->L_vars[6],$this->content,"",0);
-		echo $TBE_TEMPLATE->endPage();
+			// Make warranty note:
+		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10)	{
+			$warrantyNote='Warranty is supplied by '.htmlspecialchars($loginCopyrightWarrantyProvider).'; <a href="'.htmlspecialchars($loginCopyrightWarrantyURL).'" target="_blank">click for details.</a>';
+		} else {
+			$warrantyNote='TYPO3 comes with ABSOLUTELY NO WARRANTY; <a href="http://typo3.com/1316.0.html" target="_blank">click for details.</a>';
+		}	
+ 
+			// Compile full copyright notice:
+		$copyrightNotice = '<a href="http://typo3.com/" target="_blank">'.
+					'<img src="gfx/loginlogo_transp.gif" width="75" height="19" alt="TYPO3 logo" align="left" />'.
+					'TYPO3 CMS'.($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']):'').
+					'</a>. '.
+					'Copyright &copy; 1998-2003 Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective owners. '.
+					'Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details. '.
+					$warrantyNote.' '.
+					'This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. '.
+					'Obstructing the appearance of this notice is prohibited by law.';
+					
+			// Return notice:
+		return $copyrightNotice;
+	}
+
+	/**
+	 * Returns the login box image, whether the default or an image from the rotation folder.
+	 * 
+	 * @return	string		HTML image tag.
+	 */
+	function makeLoginBoxImage()	{
+		$loginboxImage = '';
+		if ($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'])	{		// Look for rotation image folder:
+			$absPath = t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder']);
+			
+				// Get rotation folder:
+			$dir = t3lib_div::getFileAbsFileName($absPath);
+			if ($dir && @is_dir($dir))	{
+
+					// Get files for rotation into array:
+				$files = t3lib_div::getFilesInDir($dir,'png,jpg,gif');
+				
+					// Pick random file:
+				srand((float) microtime() * 10000000);
+				$randImg = array_rand($files, 1);
+				
+					// Get size of random file:
+				$imgSize = @getimagesize($dir.$files[$randImg]);
+
+					// Create image tag:				
+				if (is_array($imgSize))	{
+					$loginboxImage = '<img src="'.htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'].$files[$randImg]).'" '.$imgSize[3].' id="loginbox-image" alt="" />';
+				}
+			}
+		} else {	// If no rotation folder configured, print default image:
+			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/loginbox_image.jpg','width="200" height="133"').' id="loginbox-image" alt="" />';
+		}
+		
+			// Return image tag:
+		return $loginboxImage;
+	}
+	
+	/**
+	 * Make login news - renders the HTML content for a list of news shown under the login form. News data is added through $TYPO3_CONF_VARS
+	 * 
+	 * @return	string		HTML content
+	 * @credits			Idea by Jan-Hendrik Heuing
+	 */
+	function makeLoginNews()	{
+	
+			// Reset output variable:
+		$newsContent= '';
+		
+			// Traverse news array IF there are records in it:
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']))	{
+			foreach($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItem)	{
+				$newsContent.='
+						<tr>
+							<td class="c-date">'.htmlspecialchars($newsItem['date']).'</td>
+							<td class="c-header">'.htmlspecialchars($newsItem['header']).'</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class="c-content">'.trim($newsItem['content']).'</td>
+						</tr>
+						<tr class="c-spacer">
+							<td colspan="2"></td>
+						</tr>
+				';
+			}
+			
+				// Wrap in a table:
+			$newsContent= '
+			
+					<!--
+						Login screen news:
+					-->
+					<div id="loginNews">
+					<h2>'.htmlspecialchars($this->L_vars[8]).'</h2>
+					<table border="0" cellpadding="0" cellspacing="0">
+						'.$newsContent.'
+					</table>
+					</div>
+			';
+		}
+		
+			// Return content:
+		return $newsContent;
 	}
 }
 

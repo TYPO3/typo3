@@ -38,12 +38,12 @@
  *
  *
  *  110: class SC_t3lib_thumbs 
- *  128:     function init()	
- *  155:     function main()	
+ *  131:     function init()	
+ *  161:     function main()	
  *
  *              SECTION: OTHER FUNCTIONS:
- *  258:     function errorGif($l1,$l2,$l3)	
- *  310:     function fontGif($font)	
+ *  264:     function errorGif($l1,$l2,$l3)	
+ *  316:     function fontGif($font)	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -114,11 +114,14 @@ class SC_t3lib_thumbs {
 	var $output = '';
 	var $sizeDefault='56x56';
 
-	var $file;		// Holds the input filename (GET: file)
-	var $size;		// Holds the input size (GET: size)
 	var $imageList;	// Coming from $TYPO3_CONF_VARS['GFX']['imagefile_ext']
 	var $input;		// Contains the absolute path to the file for which to make a thumbnail (after init())
 
+		// Internal, static: GPvar:
+	var $file;		// Holds the input filename (GET: file)
+	var $size;		// Holds the input size (GET: size)
+	
+	
 	/**
 	 * Initialize; reading parameters with GPvar and checking file path
 	 * Results in internal var, $this->input, being set to the absolute path of the file for which to make the thumbnail.
@@ -126,13 +129,16 @@ class SC_t3lib_thumbs {
 	 * @return	void		
 	 */
 	function init()	{
-		global $TYPO3_CONF_VARS,$HTTP_GET_VARS;
+		global $TYPO3_CONF_VARS;
 
-		$this->imageList = $TYPO3_CONF_VARS['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
+			// Setting GPvars:
 		$this->file = t3lib_div::GPvar('file');
 		$this->size = t3lib_div::GPvar('size');
+
+			// Image extension list is set:
+		$this->imageList = $TYPO3_CONF_VARS['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
 		
-		// if the filereference $this->file is relative, we correct the path
+			// if the filereference $this->file is relative, we correct the path
 		if (substr($this->file,0,3)=='../')	{
 			$this->input = PATH_site.ereg_replace('^\.\./','',$this->file);
 		} else {

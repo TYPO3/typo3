@@ -37,38 +37,39 @@
  *
  *
  *
- *  102: class t3lib_TStemplate	
- *  200:     function init()	
- *  238:     function getCurrentPageData()	
- *  255:     function matching($cc)	
- *  279:     function start($theRootLine)	
+ *  103: class t3lib_TStemplate	
+ *  203:     function init()	
+ *  241:     function getCurrentPageData()	
+ *  258:     function matching($cc)	
+ *  282:     function start($theRootLine)	
  *
  *              SECTION: Fetching TypoScript code text for the Template Hierarchy
- *  388:     function runThroughTemplates($theRootLine,$start_template_uid=0)	
- *  430:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')	
- *  543:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)	
- *  604:     function addExtensionStatics($idList,$templateID,$pid,$row) 
- *  637:     function prependStaticExtra($subrow)	
+ *  391:     function runThroughTemplates($theRootLine,$start_template_uid=0)	
+ *  436:     function processTemplate($row, $idList,$pid,$templateID='',$templateParent='')	
+ *  549:     function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)	
+ *  610:     function addExtensionStatics($idList,$templateID,$pid,$row) 
+ *  643:     function prependStaticExtra($subrow)	
  *
  *              SECTION: Parsing TypoScript code text from Template Records into PHP array
- *  673:     function generateConfig()	
- *  834:     function procesIncludes()	
- *  860:     function flattenSetup($setupArray, $prefix, $resourceFlag)	
- *  884:     function substituteConstants($all)	
+ *  679:     function generateConfig()	
+ *  842:     function procesIncludes()	
+ *  866:     function mergeConstantsFromPageTSconfig($constArray)	
+ *  895:     function flattenSetup($setupArray, $prefix, $resourceFlag)	
+ *  919:     function substituteConstants($all)	
  *
  *              SECTION: Various API functions, used from elsewhere in the frontend classes
- *  934:     function splitConfArray($conf,$splitCount)	
- * 1000:     function getFileName($fileFromSetup)	
- * 1057:     function extractFromResources($res,$file)	
- * 1085:     function checkFile($name,$menuArr)	
- * 1102:     function printTitle($title,$no_title=0,$titleFirst=0)	
- * 1125:     function fileContent($fName)	
- * 1145:     function wrap($content,$wrap)	
- * 1168:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')	
- * 1261:     function removeQueryString($url)	
- * 1277:     function sortedKeyList($setupArr)	
+ *  969:     function splitConfArray($conf,$splitCount)	
+ * 1035:     function getFileName($fileFromSetup)	
+ * 1092:     function extractFromResources($res,$file)	
+ * 1120:     function checkFile($name,$menuArr)	
+ * 1137:     function printTitle($title,$no_title=0,$titleFirst=0)	
+ * 1160:     function fileContent($fName)	
+ * 1180:     function wrap($content,$wrap)	
+ * 1203:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')	
+ * 1296:     function removeQueryString($url)	
+ * 1312:     function sortedKeyList($setupArr)	
  *
- * TOTAL FUNCTIONS: 23
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -858,9 +859,9 @@ class t3lib_TStemplate	{
 	/**
 	 * Loads Page TSconfig until the outermost template record and parses the configuration - if TSFE.constants object path is found it is merged with the default data in here!
 	 * 
-	 * @todo	Apply caching to the parsed Page TSconfig. This is done in the other similar functions for both frontend and backend. However, since this functions works for BOTH frontend and backend we will have to either write our own local caching function or (more likely) detect if we are in FE or BE and use caching functions accordingly. Not having caching affects mostly the backend modules inside the "Template" module since the overhead in the frontend is only seen when TypoScript templates are parsed anyways (after which point they are cached anyways...)
 	 * @param	array		Constants array, default input.
 	 * @return	array		Constants array, modified
+	 * @todo	Apply caching to the parsed Page TSconfig. This is done in the other similar functions for both frontend and backend. However, since this functions works for BOTH frontend and backend we will have to either write our own local caching function or (more likely) detect if we are in FE or BE and use caching functions accordingly. Not having caching affects mostly the backend modules inside the "Template" module since the overhead in the frontend is only seen when TypoScript templates are parsed anyways (after which point they are cached anyways...)
 	 */
 	function mergeConstantsFromPageTSconfig($constArray)	{
 		$TSdataArray = array();

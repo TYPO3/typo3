@@ -213,7 +213,7 @@ class user_plaintext {
 	}
 
 	/**
-	 * Creates a shortcut
+	 * Creates a shortcut ("Insert Records")
 	 * 
 	 * @return	string		Content
 	 */
@@ -233,7 +233,7 @@ class user_plaintext {
 	}
 
 	/**
-	 * Creates a header
+	 * Creates a header (used for most elements)
 	 * 
 	 * @return	string		Content
 	 * @see renderHeader()
@@ -244,7 +244,7 @@ class user_plaintext {
 	}
 
 	/**
-	 * Get images
+	 * Get images found in the "image" field of "tt_content"
 	 * 
 	 * @return	string		Content
 	 */
@@ -254,7 +254,7 @@ class user_plaintext {
 	}
 
 	/**
-	 * Parsing the bodytext field content, removing typical entities and <br> tags.
+	 * Parsing the bodytext field content, removing typical entities and <br /> tags.
 	 * 
 	 * @param	string		Field content from "bodytext"
 	 * @return	string		Processed content
@@ -461,7 +461,7 @@ class user_plaintext {
 	 * Subfunction for breakTable(): Adds a divider line between table rows.
 	 * 
 	 * @param	array		Some information about sizes
-	 * @param	string		Empty.
+	 * @param	string		Empty string.
 	 * @param	string		Character to use for the divider line, typically "-"
 	 * @param	string		Join character, typically "+"
 	 * @param	integer		Number of table columns

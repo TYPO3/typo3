@@ -149,7 +149,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 <div class="clSub" id="divSub'.($key+1).'">
 		'.$this->WMsubmenu.'
 </div>
-</div>';		// Originally a <BR> between the div-tags, but it seemed to break stuff.
+</div>';		// Originally a <br /> between the div-tags, but it seemed to break stuff.
 	}
 
 	/**

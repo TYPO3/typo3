@@ -39,14 +39,14 @@
  *
  *
  *   75: class t3lib_beUserAuth extends t3lib_userAuthGroup 
- *  149:     function trackBeUser($flag)	
- *  162:     function checkLockToIP()	
- *  182:     function backendCheckLogin()	
- *  207:     function backendSetUC()	
- *  242:     function overrideUC()	
- *  252:     function resetUC()	
- *  265:     function emailAtLogin()	
- *  317:     function veriCode()	
+ *  150:     function trackBeUser($flag)	
+ *  163:     function checkLockToIP()	
+ *  183:     function backendCheckLogin()	
+ *  208:     function backendSetUC()	
+ *  243:     function overrideUC()	
+ *  253:     function resetUC()	
+ *  266:     function emailAtLogin()	
+ *  318:     function veriCode()	
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -141,8 +141,9 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	
 	/**
 	 * If flag is set and the extensions 'beuser_tracking' is loaded, this will insert a table row with the REQUEST_URI of current script - thus tracking the scripts the backend users uses...
+	 * This function works ONLY with the "beuser_tracking" extension and is depreciated since it does nothing useful.
 	 * 
-	 * @param	boolean		
+	 * @param	boolean		Activate insertion of the URL.
 	 * @return	void		
 	 * @access private
 	 */

@@ -34,6 +34,8 @@
  * backend root directory. This has some historical and practical causes.
  *
  * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ * XHTML compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -42,12 +44,12 @@
  *
  *
  *
- *   87: class SC_db_list 
- *  107:     function init()	
- *  128:     function menuConfig()	
- *  151:     function clearCache()	
- *  164:     function main()	
- *  342:     function printContent()	
+ *   89: class SC_db_list 
+ *  125:     function init()	
+ *  160:     function menuConfig()	
+ *  180:     function clearCache()	
+ *  193:     function main()	
+ *  402:     function printContent()	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -78,218 +80,250 @@ t3lib_BEfunc::lockRecords();
 
 
 /**
- * Script Class
+ * Script Class for the Web > List module; rendering the listing of records on a page
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_db_list {
-	var $MCONF=array();
-	var $MOD_MENU=array();
-	var $MOD_SETTINGS=array();
 
-	var $include_once=array();
-	var $content;
-	
-	var $perms_clause;
-	var $modTSconfig;
-	var $pointer;
-	var $pageinfo;
-	var $imagemode;
-	var $table;
-	var $id;
-	var $doc;	
+		// Internal, GPvars:
+	var $id;					// Page Id for which to make the listing
+	var $pointer;				// Pointer - for browsing list of records.
+	var $imagemode;				// Thumbnails or not
+	var $table;					// Which table to make extended listing for
+	var $search_field;			// Search-fields
+	var $search_levels;			// Search-levels
+	var $showLimit;				// Show-limit
+	var $returnUrl;				// Return URL
+
+	var $clear_cache;			// Clear-cache flag - if set, clears page cache for current id.
+	var $cmd;					// Command: Eg. "delete" or "setCB" (for TCEmain / clipboard operations)
+	var $cmd_table;				// Table on which the cmd-action is performed.
+
+		// Internal, static:
+	var $perms_clause;			// Page select perms clause
+	var $modTSconfig;			// Module TSconfig
+	var $pageinfo;				// Current ids page record
+	var $doc;					// Document template object
+
+	var $MCONF=array();			// Module configuration
+	var $MOD_MENU=array();		// Menu configuration
+	var $MOD_SETTINGS=array();	// Module settings (session variable)
+	var $include_once=array();	// Array, where files to include is accumulated in the init() function
+
+		// Internal, dynamic:
+	var $content;				// Module output accumulation
+		
 
 	/**
-	 * @return	[type]		...
+	 * Initializing the module
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER;
+		
+			// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
-		$this->id = t3lib_div::GPvar('id');
-
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
+
+			// GPvars:
+		$this->id = t3lib_div::GPvar('id');
 		$this->pointer = t3lib_div::GPvar('pointer');
 		$this->imagemode = t3lib_div::GPvar('imagemode');
 		$this->table = t3lib_div::GPvar('table');
+		$this->search_field = t3lib_div::GPvar('search_field');
+		$this->search_levels = t3lib_div::GPvar('search_levels');
+		$this->showLimit = t3lib_div::GPvar('showLimit');
+		$this->returnUrl = t3lib_div::GPvar('returnUrl');
+
+		$this->clear_cache = t3lib_div::GPvar('clear_cache');
+		$this->cmd = t3lib_div::GPvar('cmd');
+		$this->cmd_table = t3lib_div::GPvar('cmd_table');
+		
+			// Initialize menu
 		$this->menuConfig();
 
-		if (t3lib_div::GPvar('clear_cache') || t3lib_div::GPvar('cmd')=='delete')	{
+			// Inclusions?
+		if ($this->clear_cache || $this->cmd=='delete')	{
 			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
 	}
 
 	/**
-	 * [Describe function...]
+	 * Initialize function menu array
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function menuConfig()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
 
 			// MENU-ITEMS:
-			// If array, then it's a selector box menu
-			// If empty string it's just a variable, that'll be saved. 
-			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
-			"bigControlPanel" => "",
-			"clipBoard" => ""
+			'bigControlPanel' => '',
+			'clipBoard' => ''
 		);
-			
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,"mod.".$this->MCONF["name"]);
+
+			// Loading module configuration:			
+		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 		
-			// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar("SET"), $this->MCONF["name"]);
+			// Clean up settings:
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::GPvar('SET'), $this->MCONF['name']);
 	}
 
 	/**
-	 * [Describe function...]
+	 * Clears page cache for the current id, $this->id
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function clearCache()	{
-		if (t3lib_div::GPvar("clear_cache"))	{
-			$tce = t3lib_div::makeInstance("t3lib_TCEmain");
+		if ($this->clear_cache)	{
+			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->start(Array(),Array());
 			$tce->clear_cacheCmd($this->id);
 		}
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main function, starting the rendering of the list.
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT;
 
-		$this->doc = t3lib_div::makeInstance("template");
+			// Start document template object:
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
-
+		$this->doc->docType='xhtml_trans';
 		
+			// Loading current page record and checking access:
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		
-		$dblist = t3lib_div::makeInstance("localRecordList");
+			// Initialize the dblist object:
+		$dblist = t3lib_div::makeInstance('localRecordList');
 		$dblist->backPath = $BACK_PATH;
 		$dblist->calcPerms = $BE_USER->calcPerms($this->pageinfo);
-		$dblist->thumbs = $BE_USER->uc["thumbnailsByDefault"];
-		$dblist->returnUrl=t3lib_div::GPvar("returnUrl");
-		$dblist->allFields = ($this->MOD_SETTINGS["bigControlPanel"] || $this->table) ? 1 : 0;
+		$dblist->thumbs = $BE_USER->uc['thumbnailsByDefault'];
+		$dblist->returnUrl=$this->returnUrl;
+		$dblist->allFields = ($this->MOD_SETTINGS['bigControlPanel'] || $this->table) ? 1 : 0;
 		$dblist->showClipboard = 1;
-		$dblist->disableSingleTableView = $this->modTSconfig["properties"]["disableSingleTableView"];
-		$dblist->alternateBgColors=$this->modTSconfig["properties"]["alternateBgColors"]?1:0;
-		$dblist->allowedNewTables = t3lib_div::trimExplode(",",$this->modTSconfig["properties"]["allowedNewTables"],1);
-		$dblist->newWizards=$this->modTSconfig["properties"]["newWizards"]?1:0;
+		$dblist->disableSingleTableView = $this->modTSconfig['properties']['disableSingleTableView'];
+		$dblist->alternateBgColors=$this->modTSconfig['properties']['alternateBgColors']?1:0;
+		$dblist->allowedNewTables = t3lib_div::trimExplode(',',$this->modTSconfig['properties']['allowedNewTables'],1);
+		$dblist->newWizards=$this->modTSconfig['properties']['newWizards']?1:0;
 
-			// ***********************
-			// CLipboard things...	
-			// ***********************
-		$dblist->clipObj = t3lib_div::makeInstance("t3lib_clipboard");		// Start clipboard
+
+
+			// Clipboard is initialized:
+		$dblist->clipObj = t3lib_div::makeInstance('t3lib_clipboard');		// Start clipboard
 		$dblist->clipObj->initializeClipboard();	// Initialize - reads the clipboard content from the user session
 
-			$CB = $HTTP_GET_VARS["CB"];	// CB is the clipboard command array
-			if (t3lib_div::GPvar("cmd")=="setCB") {
-					// CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked. By merging we get a full array of checked/unchecked elements
-					// This is set to the "el" array of the CB after being parsed so only the table in question is registered.
-				$CB["el"] = $dblist->clipObj->cleanUpCBC(array_merge($HTTP_POST_VARS["CBH"],$HTTP_POST_VARS["CBC"]),t3lib_div::GPvar("cmd_table"));
-			}
-			if (!$this->MOD_SETTINGS["clipBoard"])	$CB["setP"]="normal";	// If the clipboard is NOT shown, set the pad to "normal".
-			$dblist->clipObj->setCmd($CB);		// Execute commands.
-			$dblist->clipObj->cleanCurrent();	// Clean up pad
-			$dblist->clipObj->endClipboard();	// Save the clipboard content
-		
-		
-			// This flag will prevent the 
+			// Clipboard actions are handled:
+		$CB = $HTTP_GET_VARS['CB'];	// CB is the clipboard command array
+		if ($this->cmd=='setCB') {
+				// CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked. By merging we get a full array of checked/unchecked elements
+				// This is set to the 'el' array of the CB after being parsed so only the table in question is registered.
+			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge($HTTP_POST_VARS['CBH'],$HTTP_POST_VARS['CBC']),$this->cmd_table);
+		}
+		if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';	// If the clipboard is NOT shown, set the pad to 'normal'.
+		$dblist->clipObj->setCmd($CB);		// Execute commands.
+		$dblist->clipObj->cleanCurrent();	// Clean up pad
+		$dblist->clipObj->endClipboard();	// Save the clipboard content
+	
+			// This flag will prevent the clipboard panel in being shown.
 			// It is set, if the clickmenu-layer is active AND the extended view is not enabled.
-		$dblist->dontShowClipControlPanels = $CLIENT["FORMSTYLE"] && !$this->MOD_SETTINGS["bigControlPanel"] && $dblist->clipObj->current=="normal" && !$BE_USER->uc["disableCMlayers"] && !$this->modTSconfig["properties"]["showClipControlPanelsDespiteOfCMlayers"];
+		$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current=='normal' && !$BE_USER->uc['disableCMlayers'] && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 		
 		
 		
+			// If there is access to the page, then render the list contents and set up the document template object:
 		if ($access)	{
 		
+				// Deleting records...:
 				// Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
-			if (t3lib_div::GPvar("cmd")=="delete")	{
-				$items = $dblist->clipObj->cleanUpCBC($HTTP_POST_VARS["CBC"],t3lib_div::GPvar("cmd_table"),1);
+			if ($this->cmd=='delete')	{
+				$items = $dblist->clipObj->cleanUpCBC($HTTP_POST_VARS['CBC'],$this->cmd_table,1);
 				if (count($items))	{
 					$cmd=array();
 					reset($items);
 					while(list($iK)=each($items))	{
-						$iKParts = explode("|",$iK);
-						$cmd[$iKParts[0]][$iKParts[1]]["delete"]=1;
+						$iKParts = explode('|',$iK);
+						$cmd[$iKParts[0]][$iKParts[1]]['delete']=1;
 					}
-					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
+					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->start(array(),$cmd);
 					$tce->process_cmdmap();
 		
-					if (isset($cmd["pages"]))	{
-						t3lib_BEfunc::getSetUpdateSignal("updatePageTree");
+					if (isset($cmd['pages']))	{
+						t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 					}
 		
-					$tce->printLogErrorMessages(t3lib_div::getIndpEnv("REQUEST_URI"));
+					$tce->printLogErrorMessages(t3lib_div::getIndpEnv('REQUEST_URI'));
 				}
 			}
 		
+				// Initialize the listing object, dblist, for rendering the list:
 			$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
-			$dblist->start($this->id,$this->table,$this->pointer,
-				t3lib_div::GPvar("search_field"),
-				t3lib_div::GPvar("search_levels"),
-				t3lib_div::GPvar("showLimit")
-			);
+			$dblist->start($this->id,$this->table,$this->pointer,$this->search_field,$this->search_levels,$this->showLimit);
 			$dblist->setDispFields();
-			$dblist->writeTop($this->pageinfo,t3lib_BEfunc::getRecordPath (intval($this->pageinfo["uid"]),$this->perms_clause,15));
+				
+				// Render the page header:
+			$dblist->writeTop($this->pageinfo,t3lib_BEfunc::getRecordPath (intval($this->pageinfo['uid']),$this->perms_clause,15));
+			
+				// Render the list of tables:
 			$dblist->generateList($this->id,$this->table);
+			
+				// Write the bottom of the page:
 			$dblist->writeBottom();
 		
-		$this->doc->JScode='
-		<script language="javascript" type="text/javascript">
-			function jumpToUrl(URL)	{	//
-//	alert("jumpToUrl: "+URL);
-				document.location = URL;
-				return false;
-			}
-			function jumpExt(URL,anchor)	{	//
-				var anc = anchor?anchor:"";
-//	alert("jumpExt: "+URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc);
-				document.location = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
-				return false;
-			}
-			function jumpSelf(URL)	{	//
-//	alert("jumpSelf: "+URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:""));
-				document.location = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
-				return false;
-			}
-			'.$this->doc->redirectUrls($dblist->listURL()).'
-			'.$dblist->CBfunctions().'
-			function editRecords(table,idList,addParams,CBflag)	{	//
-				document.location="'.$backPath.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI")).
-					'&edit["+table+"]["+idList+"]=edit"+addParams;
-			}
-			function editList(table,idList)	{	//
-				var list="";
-		
-					// Checking how many is checked, how many is not
-				var pointer=0;
-				var pos = idList.indexOf(",");
-				while (pos!=-1)	{
-					if (cbValue(table+"|"+idList.substr(pointer,pos-pointer))) {
-						list+=idList.substr(pointer,pos-pointer)+",";
-					}
-					pointer=pos+1;
-					pos = idList.indexOf(",",pointer);
+				// Add JavaScript functions to the page:
+			$this->doc->JScode=$this->doc->wrapScriptTags('
+				function jumpToUrl(URL)	{	//
+					document.location = URL;
+					return false;
 				}
-				if (cbValue(table+"|"+idList.substr(pointer))) {
-					list+=idList.substr(pointer)+",";
+				function jumpExt(URL,anchor)	{	//
+					var anc = anchor?anchor:"";
+					document.location = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
+					return false;
 				}
-		
-				return list ? list : idList;
-			}
+				function jumpSelf(URL)	{	//
+					document.location = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
+					return false;
+				}
+				'.$this->doc->redirectUrls($dblist->listURL()).'
+				'.$dblist->CBfunctions().'
+				function editRecords(table,idList,addParams,CBflag)	{	//
+					document.location="'.$backPath.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
+						'&edit["+table+"]["+idList+"]=edit"+addParams;
+				}
+				function editList(table,idList)	{	//
+					var list="";
 			
-			if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
-		</script>
-		';
+						// Checking how many is checked, how many is not
+					var pointer=0;
+					var pos = idList.indexOf(",");
+					while (pos!=-1)	{
+						if (cbValue(table+"|"+idList.substr(pointer,pos-pointer))) {
+							list+=idList.substr(pointer,pos-pointer)+",";
+						}
+						pointer=pos+1;
+						pos = idList.indexOf(",",pointer);
+					}
+					if (cbValue(table+"|"+idList.substr(pointer))) {
+						list+=idList.substr(pointer)+",";
+					}
+			
+					return list ? list : idList;
+				}
+				
+				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
+			');
 
+				// Setting up the context sensitive menu:
 			$CMparts=$this->doc->getContextMenuCode();
 			$this->doc->bodyTagAdditions = $CMparts[1];
 			$this->doc->JScode.=$CMparts[0];
@@ -297,52 +331,75 @@ class SC_db_list {
 		} // access
 		
 		
+			
+			// Begin to compile the whole page, starting out with page header:
+		$this->content='';
+		$this->content.=$this->doc->startPage('DB list');
+		$this->content.= '<form action="'.htmlspecialchars($dblist->listURL()).'" method="post" name="dblistForm">';
 		
-		$this->content="";
-		$this->content.=$this->doc->startPage("DB list");
-		$this->content.= '<form action="'.$dblist->listURL().'" method="POST" name="dblistForm">';
+			// Add listing HTML code:
 		$this->content.= $dblist->HTMLcode;
-		$this->content.= '<input type="hidden" name="cmd_table"><input type="hidden" name="cmd"></form>';
+		$this->content.= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
 		
-		if ($dblist->HTMLcode)	{	// Making search form:
-			if ($dblist->table)	{	// Making search form:
-				$sBoxPre = $dblist->spaceSearchBoxFromLeft;
-				$dblist->spaceSearchBoxFromLeft=$sBoxPre;
+
+			// If a listing was produced, create the page footer with search form etc:			
+		if ($dblist->HTMLcode)	{
+				
+				// Making field select box (when extended view for a single table is enabled):
+			if ($dblist->table)	{
 				$this->content.=$dblist->fieldSelectBox($dblist->table);
-				$dblist->spaceSearchBoxFromLeft=$sBoxPre;
-				$this->content.="";
 			}
-		
-			$this->content.='<form action="" method="POST">';
-			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,"SET[bigControlPanel]",$this->MOD_SETTINGS["bigControlPanel"],"db_list.php","")." ".$LANG->getLL("largeControl")."<BR>";
-			if ($dblist->showClipboard)	$this->content.=t3lib_BEfunc::getFuncCheck($this->id,"SET[clipBoard]",$this->MOD_SETTINGS["clipBoard"],"db_list.php","").' '.$LANG->getLL("showClipBoard");
+
+				// Adding checkbox options for extended listing and clipboard display:
+			$this->content.='<form action="" method="post">';
+			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php','').' '.$LANG->getLL('largeControl',1).'<br />';
+			if ($dblist->showClipboard)	{
+				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php','').' '.$LANG->getLL('showClipBoard',1);
+			}
 			$this->content.='</form>';
 		
-				// Printing clipboard if selected for.
-			if ($this->MOD_SETTINGS["clipBoard"] && $dblist->showClipboard)	$this->content.=$dblist->clipObj->printClipboard();
-		
+				// Printing clipboard if enabled:
+			if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard)	{
+				$this->content.=$dblist->clipObj->printClipboard();
+			}
+
+				// Link for creating new records:		
+			if (!$this->modTSconfig['properties']['noCreateRecordsLink']) 	{
+				$this->content.='
+					
+					<!--
+						Link for creating a new record:
+					-->
+					<div id="typo3-newRecordLink">
+					<a href="'.htmlspecialchars('db_new.php?id='.$this->id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+								'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="" />'.
+								$LANG->getLL('newRecordGeneral',1).
+								'</a>
+					</div>';
+			}
 			
-			if (!$this->modTSconfig["properties"]["noCreateRecordsLink"]) 	$this->content.='<a href="db_new.php?id='.$this->id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI")).'"><img src="gfx/new_el.gif" width="11" height="12" hspace=4 border="0" align=top><strong>'.$LANG->getLL("newRecordGeneral").'</strong></a><BR><BR>';
+				// Search box:
 			$this->content.=$dblist->getSearchBox();
-			$this->content.="<BR>".$dblist->showSysNotesForPage();
+			
+				// Display sys-notes, if any are found:
+			$this->content.=$dblist->showSysNotesForPage();
 		
-		
-			// ShortCut
+				// ShortCut:
 			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->doc->makeShortcutIcon("id,imagemode,pointer,table,search_field,search_levels,showLimit,sortField,sortRev",implode(",",array_keys($this->MOD_MENU)),$this->MCONF["name"]);
+				$this->content.='<br/>'.$this->doc->makeShortcutIcon('id,imagemode,pointer,table,search_field,search_levels,showLimit,sortField,sortRev',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
 			}
 		}
+
+			// Finally, close off the page:
+		$this->content.= $this->doc->endPage();
 	}
 
 	/**
-	 * [Describe function...]
+	 * Outputting the accumulated content to screen
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function printContent()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
-
-		$this->content.= $this->doc->endPage();
 		echo $this->content;
 	}
 }

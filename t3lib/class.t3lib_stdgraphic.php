@@ -459,16 +459,16 @@ class t3lib_stdGraphic	{
 	 * 
 	 * For parameters, see PHP function "imagecopyresized()"
 	 * 
-	 * @param	pointer		
-	 * @param	pointer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
-	 * @param	integer		
+	 * @param	pointer		see PHP function "imagecopyresized()"
+	 * @param	pointer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param	integer		see PHP function "imagecopyresized()"
 	 * @return	void		
 	 * @access private
 	 * @see t3lib_iconWorks::imagecopyresized()
@@ -2219,7 +2219,7 @@ class t3lib_stdGraphic	{
 	 * 
 	 * @param	pointer		The GDlib image resource pointer
 	 * @param	string		The filename to write to
-	 * @return	?		The output of either imageGif or imagePng based on whether the $this->gifExtension was set to "gif" or "png"
+	 * @return	mixed		The output of either imageGif or imagePng based on whether the $this->gifExtension was set to "gif" or "png"
 	 * @see maskImageOntoImage(), scale(), output()
 	 */
 	function ImageGif($destImg, $theImage)	{

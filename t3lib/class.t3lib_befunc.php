@@ -97,7 +97,7 @@
  * 1280:     function titleAltAttrib($content)	
  * 1305:     function thumbCode($row,$table,$field,$backPath,$thumbScript='',$uploaddir='',$abs=0,$tparams='',$size='')	
  * 1374:     function getThumbNail($thumbScript,$theFile,$tparams='',$size='')	
- * 1392:     function titleAttribForPages ($row,$perms_clause='',$includeAttrib=1)	
+ * 1392:     function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)	
  * 1447:     function getRecordIconAltText($row,$table='pages')	
  * 1482:     function getLabelFromItemlist($table,$col,$key)	
  * 1509:     function getItemLabel($table,$col,$printAllWrap='')	
@@ -303,7 +303,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 1
 	 * 
-	 * @param	string		
+	 * @param	string		[tablename]_[uid] string to explode
 	 * @return	array		
 	 */
 	function splitTable_Uid($str)	{
@@ -425,7 +425,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 15
 	 * 
-	 * @param	string		Tablename
+	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1"
 	 * @param	array		Field values as key=>value pairs.
 	 * @param	boolean		Set $slash=1 if values should be addslashes()'ed (default)
@@ -466,7 +466,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 13
 	 * 
-	 * @param	integer		Page id
+	 * @param	integer		Page id for which to create the root line.
 	 * @param	string		$clause can be used to select other criteria. It would typically be where-clauses that stops the proces if we meet a page, the user has no reading access to.
 	 * @return	array		Root line array, all the way to the page tree root (or as far as $clause allows!)
 	 */
@@ -512,7 +512,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 23
 	 * 
-	 * @param	integer		Page uid
+	 * @param	integer		Page uid for which to create record path
 	 * @param	string		$clause is additional where clauses, eg. "
 	 * @param	integer		Title limit
 	 * @return	string		Path of record
@@ -573,7 +573,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 21
 	 * 
-	 * @param	integer		Page uid
+	 * @param	integer		Page uid for which to check read-access
 	 * @param	string		$perms_clause is typically a value generated with $BE_USER->getPagePermsClause(1);
 	 * @return	array		Returns page record if OK, otherwise false.
 	 */
@@ -673,7 +673,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 3
 	 * 
-	 * @param	string		
+	 * @param	string		Content from the "types" configuration of TCA (the special configuration) - see description of function
 	 * @return	array		
 	 */
 	function getSpecConfParts($str)	{
@@ -698,7 +698,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 6
 	 * 
-	 * @param	array		
+	 * @param	array		Array of "[key]=[value]" strings to convert.
 	 * @return	array		
 	 */
 	function getSpecConfParametersFromArray($pArr)	{
@@ -877,7 +877,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 26 (spec. in ext info_pagetsconfig)
 	 * 
-	 * @param	integer		Page uid
+	 * @param	integer		Page uid for which to create Page TSconfig
 	 * @param	array		If $rootLine is an array, that is used as rootline, otherwise rootline is just calculated
 	 * @param	boolean		If $returnPartArray is set, then the array with accumulated Page TSconfig is returned non-parsed. Otherwise the output will be parsed by the TypoScript parser.
 	 * @return	array		Page TSconfig
@@ -928,8 +928,8 @@ class t3lib_BEfunc	{
 	 * 
 	 * @param	integer		Page id
 	 * @param	array		Page TS array to write
-	 * @param	string		Prefix
-	 * @param	array		
+	 * @param	string		Prefix for object paths
+	 * @param	array		[Description needed.]
 	 * @return	void		
 	 * @internal
 	 * @see implodeTSParams(), getPagesTSconfig()
@@ -986,7 +986,7 @@ class t3lib_BEfunc	{
 	 * Usage: 3
 	 * 
 	 * @param	array		TypoScript structure
-	 * @param	string		
+	 * @param	string		Prefix string
 	 * @return	array		Imploded TypoScript objectstring/values
 	 */
 	function implodeTSParams($p,$k='')	{
@@ -1115,9 +1115,9 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 2 (module web_perm)
 	 * 
-	 * @param	array		
-	 * @param	array		
-	 * @param	boolean		
+	 * @param	array		Group names
+	 * @param	array		Group names (reference)
+	 * @param	boolean		If $excludeBlindedFlag is set, then these records are unset from the array $usernames
 	 * @return	array		
 	 */
 	function blindGroupNames($groups,$groupArray,$excludeBlindedFlag=0)	{
@@ -1255,15 +1255,15 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns either title='' or alt='' attribute. This depends on the client browser and whether it supports title='' or not (which is the default)
 	 * If no $content is given only the attribute name is returned.
-	 * If $hsc is set, then content of the attribute is htmlspecialchar()'ed (which is good for XHTML and other reasons...)
 	 * The returned attribute with content will have a leading space char.
 	 * Warning: Be careful to submit empty $content var - that will return just the attribute name!
 	 * 
 	 * Usage: 203
 	 * 
-	 * @param	string		
-	 * @param	boolean		
+	 * @param	string		String to set as title-attribute. If no $content is given only the attribute name is returned.
+	 * @param	boolean		If $hsc is set, then content of the attribute is htmlspecialchar()'ed (which is good for XHTML and other reasons...)
 	 * @return	string		
+	 * @depreciated		The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
 	 */
 	function titleAttrib($content='',$hsc=0)	{
 		global $CLIENT;
@@ -1274,7 +1274,7 @@ class t3lib_BEfunc	{
 	/**
 	 * Returns alt="" and title="" attributes with the value of $content.
 	 * 
-	 * @param	string		
+	 * @param	string		Value for 'alt' and 'title' attributes (will be htmlspecialchars()'ed before output)
 	 * @return	string		
 	 */
 	function titleAltAttrib($content)	{
@@ -1349,7 +1349,7 @@ class t3lib_BEfunc	{
 					$params .= $size?'&size='.$size:'';
 					$url = $thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
 					$onClick='top.launchView(\''.$theFile.'\',\'\',\''.$backPath.'\');return false;';
-					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.$backPath.$url.'" hspace="2" border="0" title="'.trim($theFile).'"'.$tparams.' alt="" /></a> ';
+					$thumbData.='<a href="#" onclick="'.htmlspecialchars($onClick).'"><img src="'.htmlspecialchars($backPath.$url).'" hspace="2" border="0" title="'.trim($theFile).'"'.$tparams.' alt="" /></a> ';
 				} else {
 					$icon = t3lib_BEfunc::getFileIcon($ext);
 					$url = 'gfx/fileicons/'.$icon;
@@ -1389,7 +1389,7 @@ class t3lib_BEfunc	{
 	 * @param	boolean		If $includeAttrib is set, then the 'title=""' attribute is wrapped about the return value, which is in any case htmlspecialchar()'ed already
 	 * @return	string		
 	 */
-	function titleAttribForPages ($row,$perms_clause='',$includeAttrib=1)	{
+	function titleAttribForPages($row,$perms_clause='',$includeAttrib=1)	{
 		global $TCA,$LANG;
 		$parts=array();
 		$parts[] = 'id='.$row['uid'];
@@ -1430,7 +1430,7 @@ class t3lib_BEfunc	{
 			$parts[]=$LANG->sL($TCA['pages']['columns']['fe_group']['label']).' '.$label;
 		}
 		$out = htmlspecialchars(implode(' - ',$parts));
-		return $includeAttrib ? t3lib_BEfunc::titleAttrib().'="'.$out.'"' : $out;
+		return $includeAttrib ? 'title="'.$out.'"' : $out;
 	}
 
 	/**
@@ -1503,7 +1503,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * @param	string		Table name, present in $TCA
 	 * @param	string		Field name
-	 * @param	string		Wrap
+	 * @param	string		Wrap value - set function description
 	 * @return	string		
 	 */
 	function getItemLabel($table,$col,$printAllWrap='')	{
@@ -1529,7 +1529,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * @param	string		Table name, present in TCA
 	 * @param	array		Row from table
-	 * @param	boolean		If set, result is prepared for output: The output is cropped to a limited lenghty (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized)
+	 * @param	boolean		If set, result is prepared for output: The output is cropped to a limited lenght (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized). Further, the output is htmlspecialchars()'ed
 	 * @return	string		
 	 */
 	function getRecordTitle($table,$row,$prep=0)	{
@@ -1548,7 +1548,7 @@ class t3lib_BEfunc	{
 			}
 			if ($prep) 	{
 				$t=htmlspecialchars(t3lib_div::fixed_lgd($t,$GLOBALS['BE_USER']->uc['titleLen']));
-				if (!strcmp(trim($t),''))	$t='<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').']</em>';
+				if (!strcmp(trim($t),''))	$t='<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>';
 			}
 			return $t;
 		}
@@ -1701,7 +1701,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * @param	string		Table name, present in TCA
 	 * @param	string		Table prefix
-	 * @return	strign		List of fields.
+	 * @return	string		List of fields.
 	 */
 	function getCommonSelectFields($table,$prefix)	{
 		global $TCA;
@@ -1812,7 +1812,7 @@ class t3lib_BEfunc	{
 		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && ($BE_USER->uc['edit_showFieldHelp']=='icon' || $force))	{
 			$onClick = 'vHWin=window.open(\''.$BACK_PATH.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 			return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-					'<img src="'.$BACK_PATH.'gfx/helpbubble.gif" width="14" height="14" hspace="2" border="0" align="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
+					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
 					'</a>';
 		}
 	}
@@ -1979,8 +1979,8 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 4
 	 * 
-	 * @param	array		
-	 * @param	array		
+	 * @param	array		Module TS config array
+	 * @param	array		Array of items from which to remove items.
 	 * @param	string		$TSref points to the "object string" in $modTSconfig
 	 * @return	array		The modified $itemArray is returned.
 	 */
@@ -2005,7 +2005,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 11
 	 * 
-	 * @param	boolean		
+	 * @param	string		Whether to set or clear the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set.
 	 * @return	string		HTML code (<script> section)
 	 */
 	function getSetUpdateSignal($set='')	{
@@ -2023,6 +2023,7 @@ class t3lib_BEfunc	{
 				while(list(,$v)=each($l))	{
 					switch($v)	{
 						case 'updatePageTree':
+						case 'updateFolderTree':
 							$out.='
 					<script type="text/javascript">
 					/*<![CDATA[*/
@@ -2490,8 +2491,8 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 19
 	 * 
-	 * @param	string		Header
-	 * @param	string		Content
+	 * @param	string		Header string
+	 * @param	string		Content string
 	 * @param	boolean		Will return an alert() with the content of header and text.
 	 * @param	boolean		Print header.
 	 * @return	void		
@@ -2506,12 +2507,12 @@ class t3lib_BEfunc	{
 				<head>
 					<title>Error!</title>
 				</head>
-				<body bgcolor="#cccccc" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">':'';
+				<body bgcolor="white" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">':'';
 			echo '<div align="center">
 					<table border="0" cellspacing="0" cellpadding="0" width="333">
 						<tr>
 							<td align="center">'.
-								($GLOBALS["TBE_STYLES"]["logo_login"]?'<img src="'.$GLOBALS["BACK_PATH"].$GLOBALS["TBE_STYLES"]["logo_login"].'" alt="" />':'<img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/typo3logo.gif" width="333" height="43" vspace="10" />').
+								($GLOBALS['TBE_STYLES']['logo_login']?'<img src="'.$GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login'].'" alt="" />':'<img src="'.$GLOBALS['BACK_PATH'].'gfx/typo3logo.gif" width="333" height="43" vspace="10" />').
 							'</td>
 						</tr>
 						<tr>
@@ -2540,7 +2541,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 4
 	 * 
-	 * @param	string		Path
+	 * @param	string		Path to evaluate
 	 * @return	boolean		
 	 */
 	function getPathType_web_nonweb($path)	{
@@ -2576,7 +2577,7 @@ class t3lib_BEfunc	{
 	 * 
 	 * Usage: 1
 	 * 
-	 * @param	string		
+	 * @param	string		String of parameters on multiple lines to parse into key-value pairs (see function description)
 	 * @return	array		
 	 */
 	function processParams($params)	{
@@ -2614,7 +2615,10 @@ class t3lib_BEfunc	{
 		$theRows=array();
 		while($row=mysql_fetch_assoc($res))	{
 			$theRows[]=$row;
-			$out.='<nobr><a href="'.htmlspecialchars($script.'?id='.$row['uid']).'"><img src="'.$backPath.t3lib_iconWorks::getIcon('pages',$row).'" width="18" height="16" border="0" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($row['uid'],$perms_clause,20)).'" align="top" alt="" />'.$row['title'].'</a></nobr><br />';
+			$out.='<span class="nobr"><a href="'.htmlspecialchars($script.'?id='.$row['uid']).'">'.
+					t3lib_iconWorks::getIconImage('pages',$row,$backPath,'title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($row['uid'],$perms_clause,20)).'" align="top"').
+					htmlspecialchars($row['title']).
+					'</a></span><br />';
 		}
 		return array('rows'=>$theRows,'list'=>$out);
 	}	

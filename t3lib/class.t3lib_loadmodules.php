@@ -43,10 +43,10 @@
  *   97:     function load($modulesArray,$BE_USER='')	
  *  366:     function checkExtensionModule($name)	
  *  385:     function checkMod($name, $fullpath)	
- *  445:     function checkModAccess($name,$MCONF)	
- *  468:     function parseModulesArray ($arr)	
- *  498:     function cleanName ($str)	
- *  509:     function getRelativePath($baseDir,$destDir)
+ *  458:     function checkModAccess($name,$MCONF)	
+ *  481:     function parseModulesArray ($arr)	
+ *  511:     function cleanName ($str)	
+ *  522:     function getRelativePath($baseDir,$destDir)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -394,7 +394,20 @@ class t3lib_loadModules {
 						// $MLANG['default']['tabs_images']['tab'] is for modules the reference to the module icon.
 						// Here the path is transformed to an absolute reference.
 					if ($MLANG['default']['tabs_images']['tab'])	{
-						$MLANG['default']['tabs_images']['tab']=$this->getRelativePath(PATH_typo3,$fullpath.'/'.$MLANG['default']['tabs_images']['tab']);
+						
+							// Initializing search for alternative icon:
+						$altIconKey = 'MOD:'.$name.'/'.$MLANG['default']['tabs_images']['tab'];		// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
+						$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
+
+							// Setting icon, either default or alternative:
+						if ($altIconAbsPath && @is_file($altIconAbsPath))	{
+							$MLANG['default']['tabs_images']['tab']=$this->getRelativePath(PATH_typo3,$altIconAbsPath);
+						} else {
+								// Setting default icon:
+							$MLANG['default']['tabs_images']['tab']=$this->getRelativePath(PATH_typo3,$fullpath.'/'.$MLANG['default']['tabs_images']['tab']);
+						}
+			
+							// Finally, setting the icon with correct path:
 						if (substr($MLANG['default']['tabs_images']['tab'],0,3)=='../')	{
 							$MLANG['default']['tabs_images']['tab'] = PATH_site.substr($MLANG['default']['tabs_images']['tab'],3);
 						} else {
@@ -492,7 +505,7 @@ class t3lib_loadModules {
 	/**
 	 * The $str is cleaned so that it contains alphanumerical characters only. Modules must only consist of these characters
 	 * 
-	 * @param	string		
+	 * @param	string		String to clean up
 	 * @return	string		
 	 */
 	function cleanName ($str)	{

@@ -3596,10 +3596,10 @@ class t3lib_TCEmain	{
 
 			$content.=$error_doc->startPage("tce_db.php Error output");
 			
-			$lines[]='<tr bgColor="'.$error_doc->bgColor5.'"><td colspan=2 align=center><strong>Errors:</strong></td></tr>';
+			$lines[]='<tr class="bgColor5"><td colspan=2 align=center><strong>Errors:</strong></td></tr>';
 			reset($errorJS);
 			while(list(,$line)=each($errorJS))	{
-				$lines[]='<tr bgColor="'.$error_doc->bgColor4.'"><td valign=top><img src="gfx/icon_fatalerror.gif" width="18" height="16"></td><td>'.$line.'</td></tr>';
+				$lines[]='<tr class="bgColor4"><td valign=top><img'.t3lib_iconWorks::skinImg('','gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td><td>'.$line.'</td></tr>';
 			}
 			
 			$lines[]='<tr><td colspan=2 align=center><BR><form action=""><input type="submit" value="Continue" onClick="document.location=\''.$redirect.'\';return false;"></form></td></tr>';

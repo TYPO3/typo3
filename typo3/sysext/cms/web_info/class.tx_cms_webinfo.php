@@ -42,7 +42,7 @@
  *  100:     function main()	
  *
  *
- *  192: class tx_cms_webinfo_hits extends tx_cms_webinfo_page 
+ *  191: class tx_cms_webinfo_hits extends tx_cms_webinfo_page 
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -52,7 +52,7 @@
 require_once(PATH_t3lib.'class.t3lib_pagetree.php');
 require_once(PATH_t3lib.'class.t3lib_recordlist.php');
 require_once(PATH_typo3.'class.db_list.inc');
-require_once(PATH_typo3.'class.db_layout.inc');
+require_once(t3lib_extMgm::extPath('cms').'layout/class.tx_cms_layout.php');
 require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 
 
@@ -100,10 +100,9 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 	function main()	{
 		global $BACK_PATH,$LANG,$SOBE;
 	
-		$dblist = t3lib_div::makeInstance('recordList_layout');
+		$dblist = t3lib_div::makeInstance('tx_cms_layout');
 		$dblist->backPath = $BACK_PATH;
 		$dblist->thumbs = 0;
-		$dblist->headLineCol = $this->pObj->doc->bgColor2;
 		$dblist->script = 'index.php';
 		$dblist->showIcon = 0;
 		$dblist->setLMargin=0;

@@ -37,24 +37,23 @@
  *
  *
  *
- *   81: class t3lib_TSparser 
- *  133:     function parse($string,$matchObj='')	
- *  170:     function nextDivider()	
- *  186:     function parseSub(&$setup)	
- *  332:     function rollParseSub($string,&$setup)	
- *  356:     function getVal($string,$setup)	
- *  382:     function setVal($string,&$setup,$value,$wipeOut=0)	
- *  417:     function error($err,$num=2)	
- *  429:     function checkIncludeLines($string)	
- *  473:     function checkIncludeLines_array($array)	
+ *   80: class t3lib_TSparser 
+ *  132:     function parse($string,$matchObj='')	
+ *  169:     function nextDivider()	
+ *  185:     function parseSub(&$setup)	
+ *  331:     function rollParseSub($string,&$setup)	
+ *  355:     function getVal($string,$setup)	
+ *  381:     function setVal($string,&$setup,$value,$wipeOut=0)	
+ *  416:     function error($err,$num=2)	
+ *  428:     function checkIncludeLines($string)	
+ *  472:     function checkIncludeLines_array($array)	
  *
  *              SECTION: Syntax highlighting
- *  516:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)	
- *  537:     function regHighLight($code,$pointer,$strlen=-1)	
- *  555:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)	
- *  606:     function xmlToTypoScriptStruct($xmlInput)	
+ *  515:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)	
+ *  536:     function regHighLight($code,$pointer,$strlen=-1)	
+ *  554:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)	
  *
- * TOTAL FUNCTIONS: 13
+ * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -580,8 +579,6 @@ class t3lib_TSparser {
 			if (strlen(substr($value,$start)))	$lineC.=$this->highLightStyles['ignored'][0].htmlspecialchars(substr($value,$start)).$this->highLightStyles['ignored'][1];
 
 			if ($errA[$rawP])	{
-#				$lineC.=$this->highLightStyles['error'][0].htmlspecialchars(trim(substr($value,$start))).$this->highLightStyles['error'][1].
-#				$start=strlen($value);
 				$lineC.=$this->highLightStyles['error'][0].'<strong> - ERROR:</strong> '.htmlspecialchars(implode(';',$errA[$rawP])).$this->highLightStyles['error'][1];
 			}
 			
@@ -600,16 +597,6 @@ class t3lib_TSparser {
 		
 		return '<pre class="ts-hl">'.implode(chr(10),$lines).'</pre>';
 	}
-	
-	
-/*	
-	function xmlToTypoScriptStruct($xmlInput)	{
-		$res = t3lib_div::xml2tree($xmlInput);
-		if (is_array($res))	{
-			$this->xmlToTypoScriptSetup($res);
-		} else return 'XML parser error: '.$res;
-	}
-*/
 }
 
 

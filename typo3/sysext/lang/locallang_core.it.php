@@ -73,7 +73,7 @@ Vuoi chiudere lo stesso?',
 			"mess.delete" => 'Sei sicuro di voler cancellare "%s"?',
 			"mess.permChanges" => 'Hai cambiato alcuni permessi.
 Per vedere i cambiamenti chiudi TYPO3 e rilancialo!',
-			"mess.gettingTree" => 'Ricerca dei file dal server.. <BR>Attendere prego ...',
+			"mess.gettingTree" => 'Ricerca dei file dal server.. <br />Attendere prego ...',
 			"mess.move_into" => 'Muovi "%s" in "%s"',
 			"mess.move_after" => 'Muovi "%s" dopo "%s"',
 			"mess.copy_into" => 'Copia "%s" in "%s"',

@@ -316,7 +316,7 @@ class t3lib_parsehtml {
 	 * Removes the first and last tag in the string
 	 * Anything before and after the first and last tags respectively is also removed
 	 * 
-	 * @param	string		
+	 * @param	string		String to process
 	 * @return	string		
 	 */
 	function removeFirstAndLastTag($str)	{
@@ -335,7 +335,7 @@ class t3lib_parsehtml {
 	 * Returns the first tag in $str
 	 * Actually everything from the begining of the $str is returned, so you better make sure the tag is the first thing...
 	 * 
-	 * @param	string		
+	 * @param	string		HTML string with tags
 	 * @return	string		
 	 */
 	function getFirstTag($str)	{
@@ -655,9 +655,10 @@ class t3lib_parsehtml {
 	 * @param	string		The tag or attributes
 	 * @return	array		
 	 * @access private
+	 * @see t3lib_div::split_tag_attributes()
 	 */
 	function split_tag_attributes($tag)	{
-		$tag_tmp = trim(eregi_replace ('^[ ]*<[^ ]*','',$tag));
+		$tag_tmp = trim(eregi_replace ('^<[^[:space:]]*','',trim($tag)));
 			// Removes any > in the end of the string
 		$tag_tmp = trim(eregi_replace ('>$','',$tag_tmp));
 
@@ -675,7 +676,7 @@ class t3lib_parsehtml {
 				$metaValue[]='';
 				$tag_tmp = trim(substr($tag_tmp,1));		// Removes = chars.
 			} else {
-				// There are '' around the value. We look for the next ' ' or '>'
+					// There are '' around the value. We look for the next ' ' or '>'
 				$reg = split('[[:space:]=]',$tag_tmp,2);
 				$value[] = trim($reg[0]);
 				$metaValue[]='';
@@ -708,7 +709,7 @@ class t3lib_parsehtml {
 	/**
 	 * Prefixes the relative paths of hrefs/src/action in the tags [td,table,body,img,input,form,link,script,a] in the $content with the $main_prefix or and alternative given by $alternatives
 	 * 
-	 * @param	string		Prefix
+	 * @param	string		Prefix string
 	 * @param	string		HTML content
 	 * @param	array		Array with alternative prefixes for certain of the tags. key=>value pairs where the keys are the tag element names in uppercase
 	 * @return	string		Processed HTML content
@@ -776,7 +777,7 @@ class t3lib_parsehtml {
 	/**
 	 * Internal sub-function for ->prefixResourcePath()
 	 * 
-	 * @param	string		Prefix
+	 * @param	string		Prefix string
 	 * @param	string		Relative path/URL
 	 * @return	string		Output path, prefixed if no scheme in input string
 	 * @access private
@@ -895,11 +896,11 @@ class t3lib_parsehtml {
 	}
 	
 	/**
-	 * Internal function
+	 * Internal function for case shifting of a string or whole array
 	 * 
-	 * @param	string		Input string
-	 * @param	boolean		
-	 * @param	string		
+	 * @param	mixed		Input string/array
+	 * @param	boolean		If $str is a string AND this boolean is true, the string is returned in uppercase
+	 * @param	string		Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
 	 * @return	string		Output string, processed
 	 * @access private
 	 */
@@ -965,14 +966,14 @@ class t3lib_parsehtml {
 	 * Converts TSconfig into an array for the HTMLcleaner function.
 	 * 
 	 * @param	array		TSconfig for HTMLcleaner
-	 * @param	array		?
+	 * @param	array		Array of tags to keep (?)
 	 * @return	array		
 	 * @access private
 	 */
 	function HTMLparserConfig($TSconfig,$keepTags=array())	{
 			// Allow tags (base list, merged with incoming array)
 		$alTags = array_flip(t3lib_div::trimExplode(',',strtolower($TSconfig['allowTags']),1));
-		$keepTags = array_merge($alTags,$keepTags);		// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+		$keepTags = array_merge($alTags,$keepTags);
 
 			// Set config properties.
 		if (is_array($TSconfig['tags.']))	{
@@ -1073,7 +1074,7 @@ class t3lib_parsehtml {
 	 * 			- Minimized values not allowed: Must do this: selected="selected"
 	 * 			
 	 * 			What it does at this point:
-	 * 			- All tags (img,br,hr) is ended with "/>" - others?
+	 * 			- All tags (frame,base,meta,link + img,br,hr,area,input) is ended with "/>" - others?
 	 * 			- Lowercase for elements and attributes
 	 * 			- All attributes in quotes
 	 * 			- Add "alt" attribute to img-tags if it's not there already.
@@ -1096,12 +1097,13 @@ class t3lib_parsehtml {
 
 	/**
 	 * Processing all tags themselves
+	 * (Some additions by Sacha Vorbeck)
 	 * 
-	 * @param	string		TAG
+	 * @param	string		Tag to process
 	 * @param	array		Configuration array passing instructions for processing. If count()==0, function will return value unprocessed. See source code for details
 	 * @param	boolean		Is endtag, then set this.
 	 * @param	boolean		If set, just return value straight away
-	 * @return	strin		Processed value.
+	 * @return	string		Processed value.
 	 * @access private
 	 */
 	function processTag($value,$conf,$endTag,$protected=0)	{
@@ -1121,6 +1123,7 @@ class t3lib_parsehtml {
 					// Process attributes
 				$tagAttrib = $this->get_tag_attributes($tagP);
 				if (!strcmp($tagName,'img') && !isset($tagAttrib[0]['alt']))		$tagAttrib[0]['alt']='';	// Set alt attribute for all images (not XHTML though...)
+				if (!strcmp($tagName,'script') && !isset($tagAttrib[0]['type']))	$tagAttrib[0]['type']='text/javascript';	// Set type attribute for all script-tags
 				$outA=array();
 				reset($tagAttrib[0]);
 				while(list($attrib_name,$attrib_value)=each($tagAttrib[0]))	{
@@ -1129,7 +1132,7 @@ class t3lib_parsehtml {
 				}
 				$newTag='<'.trim($tagName.' '.implode(' ',$outA));
 					// All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'
-				if (t3lib_div::inList('img,br,hr',$tagName) || substr($value,-2)=='/>')	{
+				if (t3lib_div::inList('img,br,hr,meta,link,base,area,input',$tagName) || substr($value,-2)=='/>')	{
 					$newTag.=' />';
 				} else {
 					$newTag.='>';

@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /** 
- * Dev-script: Update of TSoptions
+ * Dev-script: Display of phpinfo()
  *
  * $Id$
  *
@@ -40,14 +40,14 @@ die("<strong>This script is for typo3 development and maintenance only. You'll p
 
 
 
-$BACK_PATH="../";
-if (isset($HTTP_GET_VARS["noInit"]) && $HTTP_GET_VARS["noInit"])	{
-	include_once($BACK_PATH."t3lib/class.t3lib_div.php");
+$BACK_PATH='../';
+if (isset($HTTP_GET_VARS['noInit']) && $HTTP_GET_VARS['noInit'])	{
+	include_once($BACK_PATH.'t3lib/class.t3lib_div.php');
 } else {
-	define("TYPO3_PROCEED_IF_NO_USER", 1);
-	define("TYPO3_MOD_PATH", "dev/");
-	require ($BACK_PATH."init.php");
-	require ($BACK_PATH."template.php");
+	define('TYPO3_PROCEED_IF_NO_USER', 1);
+	define('TYPO3_MOD_PATH', 'dev/');
+	require ($BACK_PATH.'init.php');
+	require ($BACK_PATH.'template.php');
 }
 
 
@@ -56,35 +56,35 @@ phpinfo();
 
 
 $getEnvArray = array();
-$gE_keys = explode(",","QUERY_STRING,HTTP_ACCEPT,HTTP_ACCEPT_ENCODING,HTTP_ACCEPT_LANGUAGE,HTTP_CONNECTION,HTTP_COOKIE,HTTP_HOST,HTTP_USER_AGENT,REMOTE_ADDR,REMOTE_HOST,REMOTE_PORT,SERVER_ADDR,SERVER_ADMIN,SERVER_NAME,SERVER_PORT,SERVER_SIGNATURE,SERVER_SOFTWARE,GATEWAY_INTERFACE,SERVER_PROTOCOL,REQUEST_METHOD,SCRIPT_NAME,PATH_TRANSLATED,HTTP_REFERER,PATH_INFO");
+$gE_keys = explode(',','QUERY_STRING,HTTP_ACCEPT,HTTP_ACCEPT_ENCODING,HTTP_ACCEPT_LANGUAGE,HTTP_CONNECTION,HTTP_COOKIE,HTTP_HOST,HTTP_USER_AGENT,REMOTE_ADDR,REMOTE_HOST,REMOTE_PORT,SERVER_ADDR,SERVER_ADMIN,SERVER_NAME,SERVER_PORT,SERVER_SIGNATURE,SERVER_SOFTWARE,GATEWAY_INTERFACE,SERVER_PROTOCOL,REQUEST_METHOD,SCRIPT_NAME,PATH_TRANSLATED,HTTP_REFERER,PATH_INFO');
 while(list(,$k)=each($gE_keys))	{
 	$getEnvArray[$k] = getenv($k);
 }
-echo "<h3>getenv()</h3>";
+echo '<h3>getenv()</h3>';
 t3lib_div::print_array($getEnvArray);
 
 echo '<h3>$GLOBALS["HTTP_ENV_VARS"]</h3>';
-t3lib_div::print_array($GLOBALS["HTTP_ENV_VARS"]);
+t3lib_div::print_array($GLOBALS['HTTP_ENV_VARS']);
 
 echo '<h3>$GLOBALS["HTTP_SERVER_VARS"]</h3>';
-t3lib_div::print_array($GLOBALS["HTTP_SERVER_VARS"]);
+t3lib_div::print_array($GLOBALS['HTTP_SERVER_VARS']);
 
 echo '<h3>$GLOBALS["HTTP_COOKIE_VARS"]</h3>';
-t3lib_div::print_array($GLOBALS["HTTP_COOKIE_VARS"]);
+t3lib_div::print_array($GLOBALS['HTTP_COOKIE_VARS']);
 
 echo '<h3>$GLOBALS["HTTP_GET_VARS"]</h3>';
-t3lib_div::print_array($GLOBALS["HTTP_GET_VARS"]);
+t3lib_div::print_array($GLOBALS['HTTP_GET_VARS']);
 		
 
 $constants=array();
-$constants["TYPO3_OS"] = array(TYPO3_OS,defined("TYPO3_OS")?"":"NOT DEFINED!");
-$constants["PATH_thisScript"] = array(PATH_thisScript,defined("PATH_thisScript")?"":"NOT DEFINED!");
-$constants["TYPO3_mainDir"] = array(TYPO3_mainDir,defined("TYPO3_mainDir")?"":"NOT DEFINED!");
-$constants["PATH_typo3"] = array(PATH_typo3,defined("PATH_typo3")?"":"NOT DEFINED!");
-$constants["PATH_typo3_mod"] = array(PATH_typo3_mod,defined("PATH_typo3_mod")?"":"NOT DEFINED!");
-$constants["PATH_site"] = array(PATH_site,defined("PATH_site")?"":"NOT DEFINED!");
-$constants["PATH_t3lib"] = array(PATH_t3lib,defined("PATH_t3lib")?"":"NOT DEFINED!");
-$constants["PATH_typo3conf"] = array(PATH_typo3conf,defined("PATH_typo3conf")?"":"NOT DEFINED!");
+$constants['TYPO3_OS'] = array(TYPO3_OS,defined('TYPO3_OS')?'':'NOT DEFINED!');
+$constants['PATH_thisScript'] = array(PATH_thisScript,defined('PATH_thisScript')?'':'NOT DEFINED!');
+$constants['TYPO3_mainDir'] = array(TYPO3_mainDir,defined('TYPO3_mainDir')?'':'NOT DEFINED!');
+$constants['PATH_typo3'] = array(PATH_typo3,defined('PATH_typo3')?'':'NOT DEFINED!');
+$constants['PATH_typo3_mod'] = array(PATH_typo3_mod,defined('PATH_typo3_mod')?'':'NOT DEFINED!');
+$constants['PATH_site'] = array(PATH_site,defined('PATH_site')?'':'NOT DEFINED!');
+$constants['PATH_t3lib'] = array(PATH_t3lib,defined('PATH_t3lib')?'':'NOT DEFINED!');
+$constants['PATH_typo3conf'] = array(PATH_typo3conf,defined('PATH_typo3conf')?'':'NOT DEFINED!');
 
 echo '<h3>Constants</h3>';
 t3lib_div::print_array($constants);

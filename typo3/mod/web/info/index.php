@@ -39,12 +39,11 @@
  *
  *
  *
- *   71: class SC_mod_web_info_index extends t3lib_SCbase 
- *   83:     function main()	
- *  113:     function jumpToUrl(URL)	
- *  164:     function printContent()	
+ *   70: class SC_mod_web_info_index extends t3lib_SCbase 
+ *   82:     function main()	
+ *  163:     function printContent()	
  *
- * TOTAL FUNCTIONS: 3
+ * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -110,7 +109,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 				// JavaScript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
-				function jumpToUrl(URL)	{
+				function jumpToUrl(URL)	{	//
 					document.location = URL;
 				}
 			');
@@ -120,7 +119,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			');
 		
 
-			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br>'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
+			$headerSection = $this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path',1).': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
 		
 				// Draw the header.
 			$this->doc->form='<form action="" method="post">';
@@ -162,7 +161,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	 * @return	void		
 	 */
 	function printContent()	{
-		$this->content.=$this->doc->middle();
+
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}

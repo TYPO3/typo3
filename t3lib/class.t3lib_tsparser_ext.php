@@ -42,8 +42,8 @@
  *  218:     function substituteConstants($all)	
  *  247:     function substituteCMarkers($all)	
  *  269:     function generateConfig_constants()	
- *  317:     function ext_getSetup($theSetup,$theKey)	
- *  348:     function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")	
+ *  318:     function ext_getSetup($theSetup,$theKey)	
+ *  349:     function ext_getObjTree($arr, $depth_in, $depthData, $parentType="",$parentValue="")	
  *  437:     function makeHtmlspecialchars($theValue)
  *  450:     function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)		
  *  490:     function ext_getRootlineNumber($pid)	
@@ -53,32 +53,32 @@
  *  625:     function ext_fixed_lgd($string,$chars)	
  *  641:     function ext_lnBreakPointWrap($ln,$str)	
  *  654:     function ext_formatTS($input, $ln, $comments=1, $crop=0)	
- *  702:     function ext_getFirstTemplate($id,$template_uid=0)		
- *  722:     function ext_getAllTemplates($id)		
- *  743:     function ext_compareFlatSetups($default)	
- *  809:     function ext_categorizeEditableConstants($editConstArray)	
- *  832:     function ext_getCategoryLabelArray()	
- *  849:     function ext_getTypeData($type)	
- *  890:     function ext_getTSCE_config($category)	
- *  929:     function ext_getKeyImage($key)	
- *  939:     function ext_getTSCE_config_image($imgConf)	
- *  963:     function ext_resourceDims()	
- *  993:     function ext_readDirResources($path)	
- * 1008:     function readDirectory($path,$type="file")	
- * 1033:     function ext_fNandV($params)	
- * 1051:     function ext_printFields($theConstants,$category)	
+ *  693:     function ext_getFirstTemplate($id,$template_uid=0)		
+ *  713:     function ext_getAllTemplates($id)		
+ *  734:     function ext_compareFlatSetups($default)	
+ *  800:     function ext_categorizeEditableConstants($editConstArray)	
+ *  823:     function ext_getCategoryLabelArray()	
+ *  840:     function ext_getTypeData($type)	
+ *  881:     function ext_getTSCE_config($category)	
+ *  920:     function ext_getKeyImage($key)	
+ *  930:     function ext_getTSCE_config_image($imgConf)	
+ *  954:     function ext_resourceDims()	
+ *  984:     function ext_readDirResources($path)	
+ *  999:     function readDirectory($path,$type="file")	
+ * 1024:     function ext_fNandV($params)	
+ * 1042:     function ext_printFields($theConstants,$category)	
  *
  *              SECTION: Processing input values
- * 1308:     function ext_regObjectPositions($constants)	
- * 1323:     function ext_regObjects($pre)	
- * 1368:     function ext_putValueInConf($key, $var)	
- * 1391:     function ext_removeValueInConf($key)	
- * 1407:     function ext_depthKeys($arr,$settings)	
- * 1442:     function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)	
- * 1569:     function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)	
- * 1610:     function ext_prevPageWithTemplate($id,$perms_clause)	
- * 1626:     function ext_setStar($val)	
- * 1638:     function ext_detectAndFixExtensionPrefix($value)	
+ * 1299:     function ext_regObjectPositions($constants)	
+ * 1314:     function ext_regObjects($pre)	
+ * 1359:     function ext_putValueInConf($key, $var)	
+ * 1382:     function ext_removeValueInConf($key)	
+ * 1398:     function ext_depthKeys($arr,$settings)	
+ * 1433:     function ext_procesInput($http_post_vars,$http_post_files,$theConstants,$tplRow)	
+ * 1560:     function upload_copy_file($typeDat,&$tplRow,$theRealFileName,$tmp_name)	
+ * 1601:     function ext_prevPageWithTemplate($id,$perms_clause)	
+ * 1617:     function ext_setStar($val)	
+ * 1629:     function ext_detectAndFixExtensionPrefix($value)	
  *
  * TOTAL FUNCTIONS: 39
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -385,11 +385,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$PM = is_array($arr[$key."."]) && !$this->ext_noPMicons ? ($deeper ? "minus":"plus") : "join";
 	
 				$HTML.=$depthData;
-				$theIcon='<IMG src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>';
+				$theIcon='<img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />';
 				if ($PM=="join")	{
 					$HTML.=$theIcon;
 				} else {
-					$HTML.='<a name="'.$goto.'" href="index.php?id='.$GLOBALS["SOBE"]->id.'&tsbr['.$depth.']='.($deeper?0:1).'#'.$goto.'">'.$theIcon.'</a>';
+					$aHref='index.php?id='.$GLOBALS["SOBE"]->id.'&tsbr['.$depth.']='.($deeper?0:1).'#'.$goto;
+					$HTML.='<a name="'.$goto.'" href="'.htmlspecialchars($aHref).'">'.$theIcon.'</a>';
 				}
 	
 				$label = $key;
@@ -397,19 +398,17 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 					$label='<font color="#666666">'.$label.'</font>';
 				} else {
 					if ($this->linkObjects)	{
-						$label = '<a href="index.php?id='.$GLOBALS["SOBE"]->id.'&sObj='.$depth.'">'.$label.'</a>';
+						$aHref = 'index.php?id='.$GLOBALS["SOBE"]->id.'&sObj='.$depth;
+						$label = '<a href="'.htmlspecialchars($aHref).'">'.$label.'</a>';
 					}
 				}
-	//			if (!isset($validate_info[$key]))	{
-	//				$HTML.='<font color="red">['.$label.']</font>';
-	//			} else {
-					$HTML.="[".$label."]";
-	//			}
+
+				$HTML.="[".$label."]";
+
 				if (isset($arr[$key]))	{
 					$theValue = $arr[$key];
 					if ($this->fixedLgd)	{
 						$imgBlocks = ceil(1+strlen($depthData)/77);
-	//					debug($imgBlocks);
 						$lgdChars = 68-ceil(strlen("[".$key."]")*0.8)-$imgBlocks*3;
 						$theValue = $this->ext_fixed_lgd($theValue,$lgdChars);
 					}
@@ -419,10 +418,10 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						$HTML.="=<b>".$this->makeHtmlspecialchars($theValue)."</b>";
 					}
 				}
-				$HTML.="<BR>";
+				$HTML.="<br />";
 					
 				if ($deeper)	{
-					$HTML.=$this->ext_getObjTree($arr[$key."."], $depth, $depthData.'<IMG src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top">', $validate_info[$key], $arr[$key]);
+					$HTML.=$this->ext_getObjTree($arr[$key."."], $depth, $depthData.'<img src="'.$GLOBALS["BACK_PATH"].'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />', $validate_info[$key], $arr[$key]);
 				}
 			}
 		}
@@ -572,8 +571,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$row = $this->hierarchyInfo[$pointer];
 
 			$depthDataArr[$row['templateID']]=$row;
-			$depthDataArr[$row['templateID']]["bgcolor_setup"] = isset($this->clearList_setup_temp[$row['templateID']])?' bgColor="'.$GLOBALS["SOBE"]->doc->bgColor5.'"':'';
-			$depthDataArr[$row['templateID']]["bgcolor_const"] = isset($this->clearList_const_temp[$row['templateID']])?' bgColor="'.$GLOBALS["SOBE"]->doc->bgColor5.'"':'';
+			$depthDataArr[$row['templateID']]["bgcolor_setup"] = isset($this->clearList_setup_temp[$row['templateID']])?' class="bgColor5"':'';
+			$depthDataArr[$row['templateID']]["bgcolor_const"] = isset($this->clearList_const_temp[$row['templateID']])?' class="bgColor5"':'';
 			unset($this->clearList_setup_temp[$row['templateID']]);
 			unset($this->clearList_const_temp[$row['templateID']]);
 			$this->templateTitles[$row['templateID']]=$row["title"];
@@ -672,24 +671,15 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$cArr[$k] = '<font color="green"><b>'.$cArr[$k].'</b></font>';
 			} elseif ($firstChar=="/" || $firstChar=="#")	{
 				if ($comments)	{
-					$cArr[$k] = '<font color="#666666">'.$cArr[$k].'</font>';
+					$cArr[$k] = '<span class="typo3-dimmed">'.$cArr[$k].'</span>';
 				} else {
 					unset($cArr[$k]);
 				}
 			}
 
-/*			if (ereg('\{\$[^\}]*\}',$v,$reg))	{
-				while(list(,$f)=each($reg))	{
-				debug($reg);
-					if ($f)	{
-						$cArr[$k] = str_replace(htmlspecialchars($f),'<font color="green"><b>'.htmlspecialchars($f).'</b></font>',$cArr[$k]);
-//						debug($f);
-					}
-				}
-			}*/
+
 		}
 		$output = implode($cArr, "<BR>")."<BR>";
-//		$output = '<font face=verdana size=1 color=maroon>'.$output.'</font>';
 		return $output;
 	}
 
@@ -1067,7 +1057,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						$subcat=$params["subcat_name"];
 						$subcat_name = $params["subcat_name"] ? $this->subCategories[$params["subcat_name"]][0] : "Others";
 						$output.='<tr>';
-						$output.='<td colspan=2 bgColor="'.$GLOBALS["SOBE"]->doc->bgColor4.'"><div align="center"><b>'.$subcat_name.'</b></div></td>';
+						$output.='<td colspan=2 class="bgColor4"><div align="center"><b>'.$subcat_name.'</b></div></td>';
 						$output.='</tr>';
 					}
 
@@ -1242,7 +1232,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 										}
 #debug($copyFile);
 										if ($copyFile && @is_file($copyFile))	{
-											$p_field.='<img src=clear.gif width=20 height=1><img src="'.$GLOBALS["BACK_PATH"].'gfx/clip_copy.gif" width="12" height="12" border="0"><input type="Checkbox" name="_copyResource['.$params["name"].']" value="'.htmlspecialchars($copyFile).'" onClick="uFormUrl('.$aname.');if (this.checked) {alert(unescape(\''.rawurlencode(sprintf("This will make a copy of the current file, '%s'. Do you really want that?",$params["value"])).'\'));}">';
+											$p_field.='<img src="clear.gif" width="20" height="1" alt="" /><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/clip_copy.gif','width="12" height="12"').' border="0" alt="" /><input type="Checkbox" name="_copyResource['.$params["name"].']" value="'.htmlspecialchars($copyFile).'" onClick="uFormUrl('.$aname.');if (this.checked) {alert(unescape(\''.rawurlencode(sprintf("This will make a copy of the current file, '%s'. Do you really want that?",$params["value"])).'\'));}">';
 										}
 											// Upload?
 										$p_field.='<BR>';
@@ -1260,11 +1250,11 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						if ($typeDat["type"]=="color" && substr($params["value"],0,2)!='{$')	{
 							$p_field='<table border=0 cellpadding=0 cellspacing=0><tr><td nowrap>'.$p_field.'</td><td>&nbsp;</td><td bgcolor="'.$params["value"].'"><img src="clear.gif" width=50 height=10></td></tr></table>';
 						} else {
-							$p_field='<nobr>'.$p_field.'</nobr><br>';
+							$p_field='<span class="nobr">'.$p_field.'</span><br />';
 						}
 	
-						$p_name = '<font color="#666666">['.$params["name"].']</font><BR>';
-						$p_dlabel='<font color="#666666"><b>Default:</b> '.htmlspecialchars($params["default_value"]).'</font><BR>';			
+						$p_name = '<span class="typo3-dimmed">['.$params["name"].']</span><BR>';
+						$p_dlabel='<span class="typo3-dimmed"><b>Default:</b> '.htmlspecialchars($params["default_value"]).'</span><BR>';			
 						$p_label = '<b>'.htmlspecialchars($head).'</b>';
 						$p_descrip = $body ? htmlspecialchars($body)."<BR>" : "";
 						

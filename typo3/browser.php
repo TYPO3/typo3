@@ -29,6 +29,7 @@
  * 
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * XHTML-frames compatible.
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -37,9 +38,9 @@
  *
  *
  *
- *   65: class SC_browser 
- *   76:     function main()	
- *  131:     function printContent()	
+ *   66: class SC_browser 
+ *   77:     function main()	
+ *  121:     function printContent()	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -74,47 +75,36 @@ class SC_browser {
 	 * @return	void		
 	 */
 	function main()	{
+		
+			// Setting GPvars:
 		$mode =t3lib_div::GPvar('mode');
+		$bparams = t3lib_div::GPvar('bparams');
+		
 
 			// Set doktype:
-		$GLOBALS["TBE_TEMPLATE"]->docType="xhtml_frames";
-		$GLOBALS["TBE_TEMPLATE"]->JScode=$GLOBALS["TBE_TEMPLATE"]->wrapScriptTags('
+		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
+		$GLOBALS['TBE_TEMPLATE']->JScode=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 				function closing()	{	//
-					if (parent.typoWin)	{
-						if (parent.typoWin.clipBrd) {
-							parent.typoWin.focus();
-							parent.typoWin.clipBrd.detachBrowser();
-						} else {
-							parent.typoWin.browserWin="";
-						}
-					}
 					close();
 				}
 				function setParams(mode,params)	{	//
 					parent.content.document.location = "browse_links.php?mode="+mode+"&bparams="+params;
 				}
-			
-				if (!parent.typoWin)	{
-					if (window.opener)	{
-						parent.typoWin=window.opener;
-					} else {
-						alert("ERROR: Sorry, no link to main window... Closing");	// clipboard is opened
-						close();
-					}
-				}
-			
-				if (parent.typoWin)	{
-					window.typoWin = parent.typoWin;
-					theBrowser = parent.typoWin.theBrowser;
+				if (!window.opener)	{
+					alert("ERROR: Sorry, no link to main window... Closing");
+					close();
 				}
 		');
 		
-		$this->content.=$GLOBALS["TBE_TEMPLATE"]->startPage('TYPO3 Element Browser');
+		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
+
+			// URL for the inner main frame:
+		$url = 'browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode($bparams);
 
 			// Create the frameset for the window:
 		$this->content.='
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0" onunload="closing();">
-				<frame name="content" src="'.htmlspecialchars('browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode(t3lib_div::GPvar('bparams'))).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" onblur="closing();" />
+				<frame name="content" src="'.htmlspecialchars($url).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" onblur="closing();" />
 				<frame name="menu" src="dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		';

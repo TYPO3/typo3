@@ -219,7 +219,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 		// extends:
 	function ext_getKeyImage($key)	{
-		return '<img src="'.$this->ext_backPath.'gfx/rednumbers/'.$key.'.gif" align="top" hspace=2>';
+		return '<img'.t3lib_iconWorks::skinImg($this->ext_backPath,'gfx/rednumbers/'.$key.'.gif','').' hspace="2" align="top" alt="" />';
 	}
 
 	/**

@@ -28,6 +28,8 @@
  * Wizard to display the RTE in "full screen" mode
  *
  * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ * XHTML compliant
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -36,13 +38,12 @@
  *
  *
  *
- *   79: class SC_wizard_rte 
- *   87:     function init()	
- *  103:     function main()	
- *  112:     function jumpToUrl(URL,formEl)	
- *  203:     function printContent()	
+ *   80: class SC_wizard_rte 
+ *   98:     function init()	
+ *  122:     function main()	
+ *  273:     function printContent()	
  *
- * TOTAL FUNCTIONS: 4
+ * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -70,46 +71,66 @@ t3lib_BEfunc::lockRecords();
 
 
 /**
- * Script Class
+ * Script Class for rendering the full screen RTE display
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_wizard_rte {
-	var $content;
-	var $P;
-	var $doc;	
 	
+		// Internal, dynamic:
+	var $doc;					// Document template object
+	var $content;				// Content accumulation for the module.
+
+		// Internal, static: GPvars
+	var $P;						// Wizard parameters, coming from TCEforms linking to the wizard.
+	var $popView;				// If set, launch a new window with the current records pid.
+	
+	
+
+
 	/**
-	 * @return	[type]		...
+	 * Initialization of the class
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BACK_PATH;
 
+			// Setting GPvars:
 		$this->P = t3lib_div::GPvar('P',1);
+		$this->popView = t3lib_div::GPVar('popView');
+
+			// "Module name":
+		$this->MCONF['name']='xMOD_wizard_rte.php';		
 		
-		$this->doc = t3lib_div::makeInstance("mediumDoc");
+			// Starting the document template object:
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc->docType = 'xhtml_trans';
 		$this->doc->divClass = '';	// Need to NOT have the page wrapped in DIV since if we do that we destroy the feature that the RTE spans the whole height of the page!!!
-		$this->doc->form='<form action="tce_db.php" method="POST" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'" name="editform" onSubmit="return TBE_EDITOR_checkSubmit(1);" autocomplete="off">';
+		$this->doc->form='<form action="tce_db.php" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR_checkSubmit(1);">';
 		$this->doc->backPath = $BACK_PATH;
+
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main function, rendering the document with the iframe with the RTE in.
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG;
 
-		if ($this->P["table"] && $this->P["field"] && $this->P["uid"])	{
+			// If all parameters are available:
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'])	{
+
 				// Getting the raw record (we need only the pid-value from here...)
-			$rawRec = t3lib_BEfunc::getRecord($this->P["table"],$this->P["uid"]);
+			$rawRec = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 			
-			$this->doc->JScode = '
-				<script language="javascript" type="text/javascript">
-					function jumpToUrl(URL,formEl)	{
+				// Setting JavaScript, including the pid value for viewing:
+			$this->doc->JScode = $this->doc->wrapScriptTags('
+					function jumpToUrl(URL,formEl)	{	//
 						if (document.editform)	{
 							if (!TBE_EDITOR_isFormChanged())	{
 								document.location = URL;
@@ -118,90 +139,138 @@ class SC_wizard_rte {
 							}
 						} else document.location = URL;
 					}
-				'.(t3lib_div::GPVar("popView") ? t3lib_BEfunc::viewOnClick($rawRec["pid"],"",t3lib_BEfunc::BEgetRootLine($rawRec["pid"])) : '').'		
-				</script>
-			';
+				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'],'',t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'		
+			');
 			
-			$this->content.=$this->doc->startPage("");
+				// Create page HTML header:
+			$this->content.=$this->doc->startPage('');
 
 
-			$tceforms = t3lib_div::makeInstance("t3lib_TCEforms");
+				// Initialize TCeforms - for rendering the field:
+			$tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 			$tceforms->initDefaultBEMode();	// Init...
 			$tceforms->disableWizards = 1;	// SPECIAL: Disables all wizards - we are NOT going to need them.
-			$tceforms->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%;border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
+			$tceforms->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
 			$tceforms->colorScheme[0]=$this->doc->bgColor;	// SPECIAL: Setting background color of the RTE to ordinary background
 		
-				// Fetching content of record
-			$trData = t3lib_div::makeInstance("t3lib_transferData");
+				// Fetching content of record:
+			$trData = t3lib_div::makeInstance('t3lib_transferData');
 			$trData->lockRecords=1;
-			$trData->fetchRecord($this->P["table"],$this->P["uid"],"");
+			$trData->fetchRecord($this->P['table'],$this->P['uid'],'');
 		
 				// Getting the processed record content out:
 			reset($trData->regTableItems_data);
 			$rec = current($trData->regTableItems_data);
-			$rec["uid"] = $this->P["uid"];
-			$rec["pid"] = $rawRec["pid"];
-		
+			$rec['uid'] = $this->P['uid'];
+			$rec['pid'] = $rawRec['pid'];
 		
 				// Making the toolbar:
-			$closeUrl = $this->P["returnUrl"];
-		//	$R_URI=t3lib_div::getIndpEnv("REQUEST_URI");
-			$R_URI=t3lib_div::linkThisScript(array("popView"=>""));
+			$closeUrl = $this->P['returnUrl'];
+			$R_URI=t3lib_div::linkThisScript(array('popView'=>''));
 		
+				// Getting settings for the undo button:
 			$undoButton=0;
-			$undoQuery="SELECT tstamp FROM sys_history WHERE tablename='".$this->P["table"]."' AND recuid='".$this->P["uid"]."' ORDER BY tstamp DESC LIMIT 1";
+			$undoQuery='SELECT tstamp FROM sys_history WHERE tablename="'.addslashes($this->P['table']).'" AND recuid="'.addslashes($this->P['uid']).'" ORDER BY tstamp DESC LIMIT 1';
 			$undoRes = mysql(TYPO3_db,$undoQuery);
 			if ($undoButtonR = mysql_fetch_assoc($undoRes))	{
 				$undoButton=1;
 			}
 		
-		
 				// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{
-				$this->MCONF["name"]="xMOD_wizard_rte.php";
-				$sCut = $this->doc->makeShortcutIcon("P","",$this->MCONF["name"],1);
-			} else $sCut ="";
+				$sCut = $this->doc->makeShortcutIcon('P','',$this->MCONF['name'],1);
+			} else {
+				$sCut ='';
+			}
 		
-			$toolBar=''.
-		//		'<input type="image" border=0 name="savedok" src="gfx/savedok.gif" hspace=2 width="21" height="16"'.t3lib_BEfunc::titleAttrib($LANG->sL("LLL:EXT:lang/locallang_core.php:rm.saveDoc"),1).' align=top>'.
-				'<a href="#" onClick="TBE_EDITOR_checkAndDoSubmit(1); return false;"><img border=0 src="gfx/savedok.gif" hspace=2 width="21" height="16"'.t3lib_BEfunc::titleAttrib($LANG->sL("LLL:EXT:lang/locallang_core.php:rm.saveDoc"),1).' align=top></a>'.
-				(t3lib_extMgm::isLoaded("cms")?'<a href="#" onClick="document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR_checkAndDoSubmit(1); return false;"><img border=0 src="gfx/savedokshow.gif" hspace=2 width="21" height="16"'.t3lib_BEfunc::titleAttrib($LANG->sL("LLL:EXT:lang/locallang_core.php:rm.saveDocShow"),1).' align=top></a>':'').
-				'<a href="#" onClick="jumpToUrl(unescape(\''.rawurlencode($closeUrl).'\')); return false;"><img border=0 src="gfx/closedok.gif" hspace=2 width="21" height="16"'.t3lib_BEfunc::titleAttrib($LANG->sL("LLL:EXT:lang/locallang_core.php:rm.closeDoc"),1).' align=top></a>'.
-				($undoButton ? '<a href="#" onClick="document.location=\'show_rechis.php?element='.rawurlencode($this->P["table"].':'.$this->P["uid"]).'&revert='.rawurlencode("field:".$this->P["field"]).'&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;"><img border=0 src="gfx/undo.gif" hspace=2 width="21" height="16"'.t3lib_BEfunc::titleAttrib(sprintf($LANG->getLL("rte_undoLastChange"),t3lib_BEfunc::calcAge(time()-$undoButtonR["tstamp"],$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears"))),1).'" align=top></a>' : '').
-				'';
+		
+				// Make Toolbar of buttons:
+			$toolBarButtons=array();
+
+				// Save:
+			$toolBarButtons[]=
+				'<a href="#" onclick="TBE_EDITOR_checkAndDoSubmit(1); return false;">'.
+				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" alt="" />'.
+				'</a>';
+
+				// Save/View:
+			if (t3lib_extMgm::isLoaded('cms'))	{
+				$toolBarButtons[]=
+					'<a href="#" onclick="'.htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR_checkAndDoSubmit(1); return false;').'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedokshow.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" alt="" />'.
+					'</a>'; 
+			}
+				// Close:
+			$toolBarButtons[]=
+					'<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($closeUrl).'\')); return false;').'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
+					'</a>';
 			
-			$panel = $toolBar;
+				// Undo/Revert:
+			if ($undoButton)	{
+				$toolBarButtons[]=
+					'<a href="#" onclick="'.htmlspecialchars('document.location=\'show_rechis.php?element='.rawurlencode($this->P['table'].':'.$this->P['uid']).'&revert='.rawurlencode('field:'.$this->P['field']).'&sumUp=-1&returnUrl='.rawurlencode($R_URI).'\'; return false;').'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/undo.gif','width="21" height="16"').' class="c-inputButton" title="'.htmlspecialchars(sprintf($LANG->getLL('rte_undoLastChange'),t3lib_BEfunc::calcAge(time()-$undoButtonR['tstamp'],$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))).'" alt="" />'.
+					'</a>';
+			}
+
+			$panel = '<span class="c-saveButtons">'.implode('',$toolBarButtons).'</span>';
+
+						
+				// TSconfig, setting width:
+			$fieldTSConfig = $tceforms->setTSconfig($this->P['table'],$rec,$this->P['field']);
+			if (strcmp($fieldTSConfig['RTEfullScreenWidth'],''))	{
+				$width=$fieldTSConfig['RTEfullScreenWidth'];
+			} else {
+				$width='500';
+			}
 		
-			$fieldTSConfig = $tceforms->setTSconfig($this->P["table"],$rec,$this->P["field"]);
-			if (strcmp($fieldTSConfig["RTEfullScreenWidth"],""))	{
-				$width=$fieldTSConfig["RTEfullScreenWidth"];
-			} else $width="500"; //$width="100%";
+				// Get the form field and wrap it in the table with the buttons:
+			$formContent = $tceforms->getSoloField($this->P['table'],$rec,$this->P['field']);
+			$formContent = '
+
 		
-			$formContent = $tceforms->getSoloField($this->P["table"],$rec,$this->P["field"]);
-			$formContent = '<table border=0 cellpadding=0 cellspacing=0 width="'.$width.'" height="98%">
-				<tr><td>'.$panel.'</td><td align="right">'.$sCut.'</td><td></td></tr>
-				<tr height="98%"><td width="'.$width.'" colspan=2>'.$formContent.'</td><td></td></tr>
-			</table>';
+			<!--
+				RTE wizard:
+			-->
+				<table border="0" cellpadding="0" cellspacing="0" width="'.$width.'" height="98%" id="typo3-rtewizard">
+					<tr>
+						<td>'.$panel.'</td>
+						<td align="right">'.$sCut.'</td>
+						<td></td>
+					</tr>
+					<tr height="98%">
+						<td width="'.$width.'" colspan="2">'.$formContent.'</td>
+						<td></td>
+					</tr>
+				</table>';
 		
-			$formContent.= '<input type="hidden" name="redirect" value="'.htmlspecialchars($R_URI).'">
-						<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'">';
+				// Adding hidden fields:
+			$formContent.= '<input type="hidden" name="redirect" value="'.htmlspecialchars($R_URI).'" />
+						<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
 			
-		//	debug(array($formContent));
-			
-			$this->content.=$tceforms->printNeededJSFunctions_top().$formContent.$tceforms->printNeededJSFunctions();
+
+				// Finally, add the whole setup:
+			$this->content.=
+				$tceforms->printNeededJSFunctions_top().
+				$formContent.
+				$tceforms->printNeededJSFunctions();
 		} else {
-			$this->content.=$this->doc->startPage("");
-			$this->content.=$this->doc->section($LANG->getLL("forms_title"),$GLOBALS["TBE_TEMPLATE"]->rfw($LANG->getLL("table_noData")),0,1);
+				// ERROR:
+			$this->content.=$this->doc->startPage('');
+			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
 		}
+
+			// Ending page:
+		$this->content.=$this->doc->endPage();
 	}
 
 	/**
-	 * [Describe function...]
+	 * Outputting the accumulated content to screen
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function printContent()	{
-		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}
 }

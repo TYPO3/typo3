@@ -417,7 +417,7 @@ class t3lib_basicFileFunctions	{
 	 * @return	string		Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_'
 	 */
 	function cleanFileName($fileName)	{
-		$theNewName = ereg_replace('[^\.[:alnum:]_-]','_',trim($fileName));
+		$theNewName = ereg_replace('[^.[:alnum:]_-]','_',trim($fileName));
 		return $theNewName;
 	}
 

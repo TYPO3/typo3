@@ -46,10 +46,10 @@
  *  512:     function UnumberToChar($cbyte)	
  *  556:     function utf8CharToUnumber($str,$hex=0)	
  *  585:     function utf8_strtrunc($str,$len)	
- *  624:     function utf_strlen($str)	
- *  637:     function utf_substr($str,$start,$len=0)	
- *  651:     function utf_strpos($haystack,$needle,$offset=0)	
- *  664:     function utf_strrpos($haystack,$needle,$offset=0)	
+ *  625:     function utf_strlen($str)	
+ *  638:     function utf_substr($str,$start,$len=0)	
+ *  652:     function utf_strpos($haystack,$needle,$offset=0)	
+ *  665:     function utf_strrpos($haystack,$needle,$offset=0)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -187,7 +187,7 @@ class t3lib_cs {
 
 
 	/**
-	 * Normalize
+	 * Normalize - changes input character set to lowercase letters.
 	 * 
 	 * @param	string		Input charset
 	 * @return	string		Normalized charset
@@ -609,12 +609,13 @@ class t3lib_cs {
 
 
 
+	/********************************************
+	 *
+	 * String operation functions
+	 *
+	 ********************************************/
 
-
-
-
-
-	// a few stubs of possibly useful functions, which may be impmeneted in PHP
+	// a few stubs of possibly useful functions, which may be implemented in PHP
 
 	/**
 	 * @param	[type]		$str: ...

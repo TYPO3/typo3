@@ -67,7 +67,7 @@ class em_kickstarter extends tx_extrepwizard {
 	}
 
 	/**
-	 * Font wrap function
+	 * Font wrap function; Wrapping input string in a <span> tag with font family and font size set
 	 * 
 	 * @param	string		Input value
 	 * @return	string		Wrapped input value.
@@ -77,7 +77,7 @@ class em_kickstarter extends tx_extrepwizard {
 	}
 
 	/**
-	 * [Not active...]
+	 * [Not active... - do not use]
 	 * 
 	 * @return	void		
 	 */

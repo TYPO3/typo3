@@ -109,7 +109,7 @@ class t3lib_arrayBrowser	{
 
 
 			$HTML.=$depthData;
-			$theIcon='<img src="'.$GLOBALS['BACK_PATH'].'t3lib/gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border="0" alt="" />';
+			$theIcon='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" border="0" alt="" />';
 			if ($PM=='join')	{
 				$HTML.=$theIcon;
 			} else {
@@ -136,7 +136,7 @@ class t3lib_arrayBrowser	{
 			$HTML.='<br />';
 				
 			if ($deeper)	{
-				$HTML.=$this->tree($arr[$key], $depth, $depthData.'<img src="'.$GLOBALS['BACK_PATH'].'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />');
+				$HTML.=$this->tree($arr[$key], $depth, $depthData.'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/'.$LN.'.gif','width="18" height="16"').' align="top" alt="" />');
 			}
 		}
 		return $HTML;

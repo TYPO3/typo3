@@ -33,6 +33,8 @@
  * Context menus can appear for either database elements or files 
  * The input to this script is basically the "&init" var which is divided by "|" - each part is a reference to table|uid|listframe-flag.
  *
+ * If you want to integrate a context menu in your scripts, please see template::getContextMenuCode()
+ *
  * $Id$ 
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
@@ -44,60 +46,59 @@
  *
  *
  *
- *  122: class clickMenu 
- *  147:     function init($item)	
- *  182:     function doDisplayTopFrameCM()	
+ *  123: class clickMenu 
+ *  154:     function init($item)	
+ *  194:     function doDisplayTopFrameCM()	
  *
  *              SECTION: DATABASE
- *  210:     function printDBClickMenu($table,$uid)	
- *  299:     function printNewDBLevel($table,$uid)	
- *  338:     function externalProcessingOfDBMenuItems($menuItems)	
- *  350:     function processingByExtClassArray($menuItems,$table,$uid)	
- *  369:     function urlRefForCM($url,$retUrl='',$hideCM=1)	
- *  386:     function DB_copycut($table,$uid,$type)	
- *  409:     function DB_paste($table,$uid,$type,$elInfo)	
- *  430:     function DB_info($table,$uid)	
- *  446:     function DB_history($table,$uid)	
- *  465:     function DB_perms($table,$uid,$rec)	
- *  484:     function DB_db_list($table,$uid,$rec)	
- *  503:     function DB_moveWizard($table,$uid,$rec)	
- *  524:     function DB_newWizard($table,$uid,$rec)	
- *  542:     function DB_editAccess($table,$uid)	
- *  560:     function DB_editPageHeader($uid)	
- *  578:     function DB_edit($table,$uid)	
- *  617:     function DB_new($table,$uid)	
- *  642:     function DB_hideUnhide($table,$rec,$hideField)	
- *  666:     function DB_delete($table,$uid,$elInfo)	
- *  687:     function DB_view($id,$anchor='')	
+ *  222:     function printDBClickMenu($table,$uid)	
+ *  309:     function printNewDBLevel($table,$uid)	
+ *  346:     function externalProcessingOfDBMenuItems($menuItems)	
+ *  358:     function processingByExtClassArray($menuItems,$table,$uid)	
+ *  377:     function urlRefForCM($url,$retUrl='',$hideCM=1)	
+ *  394:     function DB_copycut($table,$uid,$type)	
+ *  417:     function DB_paste($table,$uid,$type,$elInfo)	
+ *  438:     function DB_info($table,$uid)	
+ *  454:     function DB_history($table,$uid)	
+ *  473:     function DB_perms($table,$uid,$rec)	
+ *  492:     function DB_db_list($table,$uid,$rec)	
+ *  511:     function DB_moveWizard($table,$uid,$rec)	
+ *  532:     function DB_newWizard($table,$uid,$rec)	
+ *  550:     function DB_editAccess($table,$uid)	
+ *  568:     function DB_editPageHeader($uid)	
+ *  586:     function DB_edit($table,$uid)	
+ *  625:     function DB_new($table,$uid)	
+ *  650:     function DB_hideUnhide($table,$rec,$hideField)	
+ *  674:     function DB_delete($table,$uid,$elInfo)	
+ *  695:     function DB_view($id,$anchor='')	
  *
  *              SECTION: FILE
- *  716:     function printFileClickMenu($path)	
- *  784:     function externalProcessingOfFileMenuItems($menuItems)	
- *  798:     function FILE_launch($path,$script,$type,$image)	
- *  817:     function FILE_copycut($path,$type)	
- *  837:     function FILE_delete($path)	
- *  859:     function FILE_paste($path,$target,$elInfo)	
+ *  724:     function printFileClickMenu($path)	
+ *  788:     function externalProcessingOfFileMenuItems($menuItems)	
+ *  802:     function FILE_launch($path,$script,$type,$image)	
+ *  821:     function FILE_copycut($path,$type)	
+ *  841:     function FILE_delete($path)	
+ *  863:     function FILE_paste($path,$target,$elInfo)	
  *
  *              SECTION: COMMON
- *  899:     function printItems($menuItems,$item)	
- *  930:     function printLayerJScode($menuItems)	
- *  963:     function wrapColorTableCM($str)	
- *  977:     function wrapColorTable($str)	
- *  993:     function menuItemsForTopFrame($menuItems)	
- * 1010:     function menuItemsForClickMenu($menuItems)	
- * 1052:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)	
- * 1073:     function excludeIcon($iconCode)	
- * 1083:     function label($label)	
- * 1092:     function isCMlayers()	
- * 1102:     function frameLocation($str)	
+ *  903:     function printItems($menuItems,$item)	
+ *  945:     function printLayerJScode($menuItems)	
+ *  980:     function wrapColorTableCM($str)	
+ *  995:     function menuItemsForTopFrame($menuItems)	
+ * 1012:     function menuItemsForClickMenu($menuItems)	
+ * 1047:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)	
+ * 1071:     function excludeIcon($iconCode)	
+ * 1081:     function label($label)	
+ * 1090:     function isCMlayers()	
+ * 1100:     function frameLocation($str)	
  *
  *
- * 1126: class SC_alt_clickmenu 
- * 1138:     function init()	
- * 1219:     function main()	
- * 1259:     function printContent()	
+ * 1125: class SC_alt_clickmenu 
+ * 1143:     function init()	
+ * 1226:     function main()	
+ * 1266:     function printContent()	
  *
- * TOTAL FUNCTIONS: 42
+ * TOTAL FUNCTIONS: 41
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -120,21 +121,27 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.php');
  * @internal
  */
 class clickMenu {
-	var $backPath='';
-	var $elCount=0;
+
+		// Internal, static: GPvar:
+	var $cmLevel=0;				// Defines if the click menu is first level or second. Second means the click menu is triggered from another menu.
+	var $CB;					// Clipboard array (submitted by eg. pressing the paste button)
+
+		// Internal, static:
+	var $backPath='';			// Backpath for scripts/images.
 	var $listFrame=0;			// If set, the calling document should be in the listframe of a frameset.
-	var $isDBmenu=0;			// If set, the menu is about databsae records, not files. (set if part 2 [1] of the item-var is NOT blank)
-	var $alwaysContentFrame=0;
-	var $iParts=array();
-	var $disabledItems=array();
-	var $editPageIconSet=0;
-	var $dontDisplayTopFrameCM=0;
-	var $leftIcons=0;
-	var $cmLevel=0;
-	var $extClassArray=array();
-	
-	var $editOK=0;
-	var $rec=array();
+	var $isDBmenu=0;			// If set, the menu is about database records, not files. (set if part 2 [1] of the item-var is NOT blank)
+	var $alwaysContentFrame=0;	// If true, the "content" frame is always used for reference (when condensed mode is enabled)
+	var $iParts=array();		// Stores the parts of the input $item string, splitted by "|"
+	var $disabledItems=array();	// Contains list of keywords of items to disable in the menu
+	var $dontDisplayTopFrameCM=0;	// If true, the context sensitive menu will not appear in the top frame, only as a layer.
+	var $leftIcons=0;			// If true, Show icons on the left.
+	var $extClassArray=array();		// Array of classes to be used for user processing of the menu content. This is for the API of adding items to the menu from outside.
+
+		// Internal, dynamic:	
+	var $elCount=0;				// Counter for elements in the menu. Used to number the name / id of the mouse-over icon.
+	var $editPageIconSet=0;		// Set, when edit icon is drawn.
+	var $editOK=0;				// Set to true, if editing of the element is OK.
+	var $rec=array();			
 	
 
 
@@ -145,6 +152,12 @@ class clickMenu {
 	 * @return	string		The clickmenu HTML content
 	 */
 	function init($item)	{
+
+			// Setting GPvars:
+		$this->cmLevel = intval(t3lib_div::GPvar('cmLevel'));
+		$this->CB = t3lib_div::GPvar('CB');
+
+
 			// Explode the incoming command:
 		$this->iParts = explode('|',$item);
 
@@ -158,7 +171,6 @@ class clickMenu {
 		$this->leftIcons = $GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.leftIcons');
 
 			// &cmLevel flag detected (2nd level menu)
-		$this->cmLevel = intval(t3lib_div::GPvar('cmLevel'));
 		if (!$this->cmLevel)	{
 				// Make 1st level clickmenu:
 			if ($this->isDBmenu)	{
@@ -281,11 +293,9 @@ class clickMenu {
 		
 			// Return the printed elements:
 		return $this->printItems($menuItems,
-			$this->wrapColorTable(
-				$root?
-				'<img src="'.$this->backPath.'gfx/i/_icon_website.gif" width="18" height="16" hspace="5" border="0" align="absmiddle" alt="" /><strong>'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'</strong>':
-				t3lib_iconWorks::getIconImage($table,$this->rec,$this->backPath,' hspace="5" align="absmiddle"'.t3lib_BEfunc::titleAttrib(t3lib_BEfunc::getRecordIconAltText($this->rec,$table))).'<strong>'.t3lib_BEfunc::getRecordTitle($table,$this->rec,1).'</strong>'
-			)
+			$root?
+			'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' class="absmiddle" alt="" />'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']):
+			t3lib_iconWorks::getIconImage($table,$this->rec,$this->backPath,' class="absmiddle" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($this->rec,$table)).'"').t3lib_BEfunc::getRecordTitle($table,$this->rec,1)
 		);
 	}
 
@@ -321,11 +331,9 @@ class clickMenu {
 			// Return the printed elements:
 		if (!is_array($menuItems))	$menuItems=array();
 		return $this->printItems($menuItems,
-			$this->wrapColorTable(
-				$root?
-				'<img src="'.$this->backPath.'gfx/i/_icon_website.gif" width="18" height="16" hspace=5 border="0" align="absmiddle" alt="" /><strong>'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']).'</strong>':
-				t3lib_iconWorks::getIconImage($table,$this->rec,$this->backPath,' hspace="5" align="absmiddle"'.t3lib_BEfunc::titleAttrib(t3lib_BEfunc::getRecordIconAltText($this->rec,$table))).'<strong>'.t3lib_BEfunc::getRecordTitle($table,$this->rec,1).'</strong>'
-			)
+			$root?
+			'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' class="absmiddle" alt="" />'.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']):
+			t3lib_iconWorks::getIconImage($table,$this->rec,$this->backPath,' class="absmiddle" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($this->rec,$table)).'"').t3lib_BEfunc::getRecordTitle($table,$this->rec,1)
 		);
 	}
 
@@ -389,7 +397,7 @@ class clickMenu {
 		}	
 		return $this->linkItem(
 			$this->label($type),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif" width="12" height="12" border=0 align=top>'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
 			"top.loadTopMenu('".$this->clipObj->selUrlDB($table,$uid,($type=='copy'?1:0),($isSel==$type))."');return false;"
 		);
 	}
@@ -414,7 +422,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label('paste'.$type),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/clip_paste'.$type.'.gif" width="12" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_paste'.$type.'.gif','width="12" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
 	}
@@ -430,7 +438,7 @@ class clickMenu {
 	function DB_info($table,$uid)	{
 		return $this->linkItem(
 			$this->label('info'),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/zoom2.gif" width="12" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' alt="" />'),
 			"top.launchView('".$table."', '".$uid."'); return hideCM();"			
 		);
 	}
@@ -447,7 +455,7 @@ class clickMenu {
 		$url = 'show_rechis.php?element='.rawurlencode($table.':'.$uid);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_history')),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/history2.gif" width="13" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/history2.gif','width="13" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
@@ -466,7 +474,7 @@ class clickMenu {
 		$url = 'mod/web/perm/index.php?id='.$uid.($rec['perms_userid']==$GLOBALS['BE_USER']->user['uid']||$GLOBALS['BE_USER']->isAdmin()?'&return_id='.$uid.'&edit=1':'');
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_perms')),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/perm.gif" width="7" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/perm.gif','width="7" height="12"').' alt="" />'),
 			$this->urlRefForCM($url),
 			0
 		);
@@ -485,7 +493,7 @@ class clickMenu {
 		$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'db_list.php?table='.($table=='pages'?'':$table).'&id='.($table=='pages'?$uid:$rec['pid']);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_db_list')),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/list.gif" width="11" height="11" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/list.gif','width="11" height="11"').' alt="" />'),
 			"top.nextLoadModuleUrl='".$url."';top.goToModule('web_list',1);",
 			0
 		);
@@ -506,14 +514,14 @@ class clickMenu {
 				
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_moveWizard'.($table=='pages'?'_page':''))),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/move_'.($table=='pages'?'page':'record').'.gif" width="11" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/move_'.($table=='pages'?'page':'record').'.gif','width="11" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
 	}
 
 	/**
-	 * Adding CM element for Create new wizard (either db_new.php or db_new_content_el.php)
+	 * Adding CM element for Create new wizard (either db_new.php or sysext/cms/layout/db_new_content_el.php)
 	 * 
 	 * @param	string		Table name
 	 * @param	integer		UID for the current record.
@@ -522,10 +530,10 @@ class clickMenu {
 	 * @internal
 	 */
 	function DB_newWizard($table,$uid,$rec)	{
-		$url = ($table=='pages') ? 'db_new.php?id='.$uid.'&pagesOnly=1' : 'db_new_content_el.php?id='.$rec['pid'].'&sys_language_uid='.intval($rec['sys_language_uid']);
+		$url = ($table=='pages' || !t3lib_extMgm::isLoaded('cms')) ? 'db_new.php?id='.$uid.'&pagesOnly=1' : 'sysext/cms/layout/db_new_content_el.php?id='.$rec['pid'].'&sys_language_uid='.intval($rec['sys_language_uid']);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_newWizard')),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/new_'.($table=='pages'?'page':'record').'.gif" width="'.($table=='pages'?'13':'16').'" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'?'page':'record').'.gif','width="'.($table=='pages'?'13':'16').'" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
@@ -544,7 +552,7 @@ class clickMenu {
 		$url = 'alt_doc.php?edit['.$table.']['.$uid.']=edit'.$addParam;
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editAccess')),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/editaccess.gif" width="12" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/editaccess.gif','width="12" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			1	// no top frame CM!
 		);
@@ -561,7 +569,7 @@ class clickMenu {
 		$url = 'alt_doc.php?edit[pages]['.$uid.']=edit';
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editPageHeader')),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/edit2.gif" width="11" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			1	// no top frame CM!
 		);
@@ -581,13 +589,13 @@ class clickMenu {
 		$editOnClick='';
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 		$addParam='';
-		$theIcon = 'gfx/edit2.gif" width="11" height="12"';
+		$theIcon = t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"');
 		if (
 				$this->iParts[0]=='pages' && 
 				$this->iParts[1] && 
 				$GLOBALS['BE_USER']->check('modules','web_layout')
 			)	{
-			$theIcon = 'gfx/edit_page.gif" width="12" height="12"';
+			$theIcon = t3lib_iconWorks::skinImg($this->backPath,'gfx/edit_page.gif','width="12" height="12"');
 			$this->editPageIconSet=1;
 			if ($BE_USER->uc['classicPageEditMode'] || !t3lib_extMgm::isLoaded('cms'))	{
 				$addParam='&editRegularContentFromId='.intval($this->iParts[1]);
@@ -601,7 +609,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label('edit'),
-			$this->excludeIcon('<img src="'.$this->backPath.$theIcon.' border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.$theIcon.' alt="" />'),
 			$editOnClick.'return hideCM();'
 		);
 	}
@@ -625,7 +633,7 @@ class clickMenu {
 			
 		return $this->linkItem(
 			$this->label('new'),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/new_'.($table=='pages'&&$this->listFrame?'page':'el').'.gif" width="'.($table=='pages'?'13':'11').'" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'&&$this->listFrame?'page':'el').'.gif','width="'.($table=='pages'?'13':'11').'" height="12"').' alt="" />'),
 			$editOnClick.'return hideCM();'
 		);
 	}
@@ -634,7 +642,7 @@ class clickMenu {
 	 * Adding CM element for hide/unhide of the input record
 	 * 
 	 * @param	string		Table name
-	 * @param	array		Record
+	 * @param	array		Record array
 	 * @param	string		Name of the hide field
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
@@ -648,7 +656,7 @@ class clickMenu {
 
 		return $this->linkItem(
 			$this->label(($rec[$hideField]?'un':'').'hide'),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/button_'.($rec[$hideField]?'un':'').'hide.gif" width="11" height="10" vspace="1" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_'.($rec[$hideField]?'un':'').'hide.gif','width="11" height="10"').' alt="" />'),
 			$editOnClick.'return false;',
 			1
 		);
@@ -671,7 +679,7 @@ class clickMenu {
 
 		return $this->linkItem(
 			$this->label('delete'),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/garbage.gif" width="11" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
 	}
@@ -687,7 +695,7 @@ class clickMenu {
 	function DB_view($id,$anchor='')	{
 		return $this->linkItem(
 			$this->label('view'),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/zoom.gif" width="12" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom.gif','width="12" height="12"').' alt="" />'),
 			t3lib_BEfunc::viewOnClick($id,$this->backPath,t3lib_BEfunc::BEgetRootLine($id),$anchor).'return hideCM();'
 		);
 	}
@@ -720,7 +728,7 @@ class clickMenu {
 			$fI = pathinfo($path);
 			$icon = is_dir($path) ? 'folder.gif' : t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
 			$size=' ('.t3lib_div::formatSize(filesize($path)).'bytes)';
-			$icon = '<img src="'.$this->backPath.'gfx/fileicons/'.$icon.'" width="18" height="16" border="0" hspace="5"'.t3lib_BEfunc::titleAttrib($fI['basename'].$size,1).' align="absmiddle" alt="" />';
+			$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$icon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
 
 				// edit
 			if (!in_array('edit',$this->disabledItems) && is_file($path) && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],$fI['extension'])) $menuItems['edit']=$this->FILE_launch($path,'file_edit.php','edit','edit_file.gif');
@@ -767,11 +775,7 @@ class clickMenu {
 		$menuItems = $this->externalProcessingOfFileMenuItems($menuItems);
 
 			// Return the printed elements:
-		return $this->printItems($menuItems,
-			$this->wrapColorTable(
-				$icon.'<strong>'.basename($path).'</strong>'
-			)
-		);
+		return $this->printItems($menuItems,$icon.basename($path));
 	}
 
 
@@ -801,7 +805,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label($type),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/'.$image.'" width="12" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
 			$editOnClick.'return hideCM();'
 		);
 	}
@@ -822,7 +826,7 @@ class clickMenu {
 		}	
 		return $this->linkItem(
 			$this->label($type),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif" width="12" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
 			"top.loadTopMenu('".$this->clipObj->selUrlFile($path,($type=='copy'?1:0),($isSel==$type))."');return false;"
 		);
 	}
@@ -842,7 +846,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label('delete'),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/garbage.gif" width="11" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
 	}
@@ -865,7 +869,7 @@ class clickMenu {
 		
 		return $this->linkItem(
 			$this->label('pasteinto'),
-			$this->excludeIcon('<img src="'.$this->backPath.'gfx/clip_pasteinto.gif" width="12" height="12" border="0" align="top" alt="" />'),
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_pasteinto.gif','width="12" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
 	}
@@ -901,18 +905,29 @@ class clickMenu {
 
 			// Adding topframe part (horizontal clickmenu)
 		if ($this->doDisplayTopFrameCM())	{
-			$out.= '<img src="clear.gif" width="1" height="10" alt="" /><br />
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td nowrap="nowrap" valign="top">'.
-						implode('</td><td valign="top"><img src="'.$this->backPath.'gfx/acm_spacer2.gif" width="8" height="12" alt="" /></td><td nowrap="nowrap" valign="top">',$this->menuItemsForTopFrame($menuItems)).
-					'</td>
-					<td><img src="clear.gif" width="10" height="1" alt="" /></td>
-					<td nowrap="nowrap" valign="top"><a href="#" onclick="hideCM();return false;"><img src="'.$this->backPath.'gfx/close_12h.gif" width="11" height="12" vspace="2" hspace="5" border="0"'.t3lib_BEfunc::titleAttrib($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close'),1).' alt="" /></a></td>
-					<td>'.$item.'</td>
-				</tr>
-			</table>
-			<br /><br />';
+			$out.= '
+			
+				<!--
+					Table, which contains the click menu when shown in the top frame of the backend:
+				-->
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-CSM-top">
+					<tr>
+							
+							<!-- Items: -->
+						<td class="c-item">'.
+							implode('</td>
+						<td><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/acm_spacer2.gif','width="8" height="12"').' alt="" /></td>
+						<td class="c-item">',$this->menuItemsForTopFrame($menuItems)).
+						'</td>
+						
+							<!-- Close button: -->
+						<td class="c-closebutton"><a href="#" onclick="hideCM();return false;"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/close_12h.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close',1).'" alt="" /></a></td>
+						
+							<!-- The item of the clickmenu: -->
+						<td class="c-itemicon">'.$item.'</td>
+					</tr>
+				</table>
+			';
 		}
 			// Adding JS part:
 		$out.=$this->printLayerJScode($menuItems);
@@ -934,9 +949,10 @@ class clickMenu {
 			if ($this->alwaysContentFrame)	$frameName='';
 
 				// Create the table displayed in the clickmenu layer:			
-			$CMtable = '<table border="0" cellpadding="0" cellspacing="0" bgcolor="'.$GLOBALS['TBE_TEMPLATE']->bgColor4.'">'.
-						implode('',$this->menuItemsForClickMenu($menuItems)).
-						'</table>';
+			$CMtable = '
+				<table border="0" cellpadding="0" cellspacing="0" class="typo3-CSM bgColor4">
+					'.implode('',$this->menuItemsForClickMenu($menuItems)).'
+				</table>';
 
 				// Wrap the inner table in another table to create outer border:
 			$CMtable = $this->wrapColorTableCM($CMtable);
@@ -956,31 +972,17 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 
 	/**
 	 * Wrapping the input string in a table with background color 4 and a black border style.
+	 * For the pop-up menu
 	 * 
-	 * @param	string		
+	 * @param	string		HTML content to wrap in table.
 	 * @return	string		
 	 */
 	function wrapColorTableCM($str)	{
-		$str = '<table border="0" cellpadding="1" cellspacing="0" bgcolor="'.$GLOBALS['TBE_TEMPLATE']->bgColor4.'" style="border: solid 1px black;">
-			<tr><td>'.$str.'</td></tr>
-		</table>';
+		$str = '<table border="0" cellspacing="0" class="typo3-CSM-wrapperCM">
+				<tr><td class="c-aa">'.$str.'</td><td class="c-ab"></td></tr>
+				<tr><td class="c-ba"></td><td class="c-bb"></td></tr>
+			</table>';
 		return $str;
-	}
-
-
-	/**
-	 * Wrapping the input string in a table with background color 2 and a black border style.
-	 * 
-	 * @param	string		
-	 * @return	string		
-	 */
-	function wrapColorTable($str)	{
-		return '<table border="0" cellpadding="0" cellspacing="0" bgcolor="'.$GLOBALS['TBE_TEMPLATE']->bgColor2.'" style="border: solid 1px black;">
-			<tr>
-				<td>'.$str.'</td>
-				<td><img src=clear.gif width=10 height=1></td>
-			</tr>
-		</table>';
 	}
 
 	/**
@@ -1012,8 +1014,9 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		$out=array();
 		while(list($cc,$i)=each($menuItems))	{
 			if (is_string($i) && $i=='spacer')	{	// MAKE horizontal spacer
-				$out[]='<tr style="background:'.$GLOBALS['TBE_TEMPLATE']->bgColor2.'">
-					<td colspan="4"><img src="clear.gif" width="1" height="1" alt="" /></td>
+				$out[]='
+					<tr class="bgColor2">
+						<td colspan="2"><img src="clear.gif" width="1" height="1" alt="" /></td>
 					</tr>';
 			} else {	// Just make normal element:
 				$onClick=$i[3];
@@ -1022,18 +1025,10 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 				$onClick=eregi_replace('hideCM\(\);','',$onClick);
 				if (!$i[5])	$onClick.='hideEmpty();';
 				
-				$out[]='<tr onclick="'.htmlspecialchars($onClick).'" style="cursor:hand;" onmouseover="this.bgColor=\''.$GLOBALS['TBE_TEMPLATE']->bgColor5.'\';" onmouseout="this.bgColor=\'\';">'.
-					(!$this->leftIcons?'
-					<td nowrap="nowrap">&nbsp;'.$i[1].'</td>
-					<td><img src="clear.gif" width="20" height="14" alt="" /></td>
-					<td align="center">'.$i[2].'</td>
-					<td>&nbsp;</td>'
-						:
-					'<td><img src="clear.gif" width="2" height="14" alt="" /></td>
-					<td align="center">'.$i[2].'</td>
-					<td nowrap="nowrap">&nbsp;'.$i[1].'</td>
-					<td>&nbsp;</td>').
-				'</tr>';
+				$out[]='
+					<tr class="typo3-CSM-itemRow" onclick="'.htmlspecialchars($onClick).'" onmouseover="this.bgColor=\''.$GLOBALS['TBE_TEMPLATE']->bgColor5.'\';" onmouseout="this.bgColor=\'\';">
+						'.(!$this->leftIcons?'<td class="typo3-CSM-item">'.$i[1].'</td><td align="center">'.$i[2].'</td>' : '<td align="center">'.$i[2].'</td><td class="typo3-CSM-item">'.$i[1].'</td>').'
+					</tr>';
 			}
 		}
 		return $out;
@@ -1051,8 +1046,11 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 	 */
 	function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)	{
 		$this->elCount++;
+		
+		$WHattribs = t3lib_iconWorks::skinImg($BACK_PATH,'gfx/content_client.gif','width="7" height="10"',2);
+		
 		return array(
-			'<img src="clear.gif" width="7" height="10" align="top" hspace="1" name="roimg_'.$this->elCount.'" alt="" />'.
+			'<img src="clear.gif" '.$WHattribs.' class="c-roimg" name="roimg_'.$this->elCount.'" alt="" />'.
 				'<a href="#" onclick="'.htmlspecialchars($onClick).'" onmouseover="mo('.$this->elCount.');" onmouseout="mout('.$this->elCount.');">'.
 				$str.$icon.
 				'</a>',
@@ -1090,13 +1088,13 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 	 * @return	boolean		
 	 */
 	function isCMlayers()	{
-		return $GLOBALS['SOBE']->doc->isCMlayers() && !t3lib_div::GPvar('CB');
+		return $GLOBALS['SOBE']->doc->isCMlayers() && !$this->CB;
 	}
 
 	/**
 	 * Appends ".location" to input string
 	 * 
-	 * @param	string		
+	 * @param	string		Input string, probably a JavaScript document reference
 	 * @return	string		
 	 */
 	function frameLocation($str)	{
@@ -1117,13 +1115,20 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 
 
 /**
- * Main Script Class
+ * Script Class for the Context Sensitive Menu in TYPO3 (rendered in top frame, normally writing content dynamically to list frames).
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
+ * @see template::getContextMenuCode()
  */
 class SC_alt_clickmenu {
+	
+		// Internal, static: GPvar:
+	var $backPath;					// Back path.
+	var $item;						// Definition of which item the click menu should be made for.
+
+		// Internal:
 	var $content='';				// Content accumulation
 	var $doc;						// Template object 
 	var $includeOnce=array();		// Files to include_once() - set in init() function
@@ -1132,12 +1137,16 @@ class SC_alt_clickmenu {
 	var $backPath='';
 
 	/**
-	 * Constructor:
+	 * Constructor function for script class.
 	 * 
 	 * @return	void		
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH;
+		
+			// Setting GPvars:
+		$this->backPath = t3lib_div::GPvar('backPath');
+		$this->item = t3lib_div::GPvar('item');
 
 			// Setting pseudo module name
 		$this->MCONF['name']='xMOD_alt_clickmenu.php';
@@ -1155,22 +1164,20 @@ class SC_alt_clickmenu {
 
 			// Traversing that array and setting files for inclusion:
 		if (is_array($this->extClassArray))	{
-			reset($this->extClassArray);
-			while(list(,$extClassConf)=each($this->extClassArray))	{
-				if ($extClassConf['path'])	$this->includeOnce[]=$extClassConf['path'];
+			foreach($this->extClassArray as $extClassConf)	{
+				if ($extClassConf['path'])	$this->include_once[]=$extClassConf['path'];
 			}
 		}
 
 			// Initialize template object
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType='xhtml_trans';
-		$this->doc->inDocStyles = 'BODY {background-color: '.$this->doc->bgColor2.'; background-image: url(gfx/alt_topmenu_back_full.gif)}';
-		$this->doc->backPath = $this->backPath;
+		$this->doc->backPath = $BACK_PATH;
 		
 			// Setting mode for display and background image in the top frame
 		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
 		if ($this->dontDisplayTopFrameCM)	{
-			$this->doc->inDocStyles = 'BODY {background-color: '.$this->doc->bgColor2.'; background-image: url(gfx/alt_topmenu_back_dummy.gif)}';
+			$this->doc->bodyTagId.= '-notop';
 		}
 
 			// Setting clickmenu timeout		
@@ -1182,7 +1189,7 @@ class SC_alt_clickmenu {
 	var mo_timeout = Math.floor(date.getTime()/1000);
 
 	roImg =new Image(); 
-	roImg.src = "gfx/content_client.gif";
+	roImg.src = "'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/content_client.gif','width="7" height="10"',1).'";
 
 	routImg =new Image(); 
 	routImg.src = "clear.gif";
@@ -1248,12 +1255,17 @@ class SC_alt_clickmenu {
 		$clickMenu->dontDisplayTopFrameCM = $this->dontDisplayTopFrameCM;
 		$clickMenu->backPath = $this->backPath;
 		
+			// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
+		$inputBP = explode('|',$this->backPath);
+		if (count($inputBP)==2 && $inputBP[1]==md5($inputBP[0].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+			$clickMenu->backPath = $inputBP[0];
+		}
 
 			// Start page 
 		$this->content.=$this->doc->startPage('Context Sensitive Menu');
 		
 			// Set content of the clickmenu with the incoming var, "item"
-		$this->content.= $clickMenu->init(t3lib_div::GPvar('item'));
+		$this->content.= $clickMenu->init($this->item);
 	}
 
 	/**

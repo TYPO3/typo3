@@ -28,6 +28,8 @@
  * Contains class which has functions that generates a difference output of a content string
  *
  * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ * XHTML Compliant  
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -36,12 +38,12 @@
  *
  *
  *
- *   65: class t3lib_diff 
- *   74:     function getDiff($str1,$str2)	
- *   99:     function explodeStringIntoWords($str)	
- *  119:     function tagSpace($str,$rev=0)	
- *  134:     function makeDiffDisplay($str1,$str2)	
- *  206:     function addClearBuffer($clearBuffer,$last=0)	
+ *   67: class t3lib_diff 
+ *   85:     function makeDiffDisplay($str1,$str2)	
+ *  159:     function getDiff($str1,$str2)	
+ *  186:     function addClearBuffer($clearBuffer,$last=0)	
+ *  202:     function explodeStringIntoWords($str)	
+ *  223:     function tagSpace($str,$rev=0)	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -63,73 +65,22 @@
  * @subpackage t3lib
  */
 class t3lib_diff {
-	var $stripTags = 0;
-	var $clearBufferIdx=0;
+
+		// External, static:
+	var $stripTags = 0;			// If set, the HTML tags are stripped from the input strings first.
+	
+		// Internal, dynamic:
+	var $clearBufferIdx=0;		// This indicates the number of times the function addClearBuffer has been called - and used to detect the very first call...
+	
+	
+	
 	
 	/**
-	 * @param	[type]		$str1: ...
-	 * @param	[type]		$str2: ...
-	 * @return	[type]		...
-	 */
-	function getDiff($str1,$str2)	{
-		if (TYPO3_OS!='WIN')	{
-				// Create file 1 and write string
-			$file1 = tempnam('','');
-			t3lib_div::writeFile($file1,$str1);
-				// Create file 2 and write string
-			$file2 = tempnam('','');
-			t3lib_div::writeFile($file2,$str2);
-				// Perform diff.
-			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$file1.' '.$file2;
-			exec($cmd,$res);
-	
-			unlink($file1);
-			unlink($file2);
-			
-			return $res;
-		}
-	}
-
-	/**
-	 * [Describe function...]
+	 * This will produce a color-marked-up diff output in HTML from the input strings.
 	 * 
-	 * @param	[type]		$str: ...
-	 * @return	[type]		...
-	 */
-	function explodeStringIntoWords($str)	{
-		$strArr = t3lib_div::trimExplode(chr(10),$str);
-		$outArray=array();
-		reset($strArr);
-		while(list(,$lineOfWords)=each($strArr))	{
-			$allWords = t3lib_div::trimExplode(' ',$lineOfWords,1);
-			$outArray = array_merge($outArray,$allWords);
-			$outArray[]='';
-			$outArray[]='';
-		}
-		return $outArray;
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$str: ...
-	 * @param	[type]		$rev: ...
-	 * @return	[type]		...
-	 */
-	function tagSpace($str,$rev=0)	{
-		if ($rev)	{
-			return str_replace(' &lt;','&lt;',str_replace('&gt; ','&gt;',$str));
-		} else {
-			return str_replace('<',' <',str_replace('>','> ',$str));
-		}
-	}
-
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$str1: ...
-	 * @param	[type]		$str2: ...
-	 * @return	[type]		...
+	 * @param	string		String 1
+	 * @param	string		String 2
+	 * @return	string		Formatted output.
 	 */
 	function makeDiffDisplay($str1,$str2)	{
 		if ($this->stripTags)	{
@@ -172,10 +123,10 @@ class t3lib_diff {
 					$outString.=$this->addClearBuffer($clearBuffer);
 					$clearBuffer='';
 					if (is_array($diffResArray[$a+1]['old']))	{
-						$outString.='<font color="red">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['old'])).'</font> ';
+						$outString.='<span class="diff-r">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['old'])).'</span> ';
 					}
 					if (is_array($diffResArray[$a+1]['new']))	{
-						$outString.='<font color="green">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['new'])).'</font> ';
+						$outString.='<span class="diff-g">'.htmlspecialchars(implode(' ',$diffResArray[$a+1]['new'])).'</span> ';
 					}
 					$chInfParts = explode(',',$diffResArray[$a+1]['changeInfo']);
 					if (!strcmp($chInfParts[0],$a+1))	{
@@ -197,11 +148,40 @@ class t3lib_diff {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Produce a diff (with the "diff" application on unix) between two strings
+	 * The function will write the two input strings to temporary files, then execute the diff program, delete the temp files and return the result.
 	 * 
-	 * @param	[type]		$clearBuffer: ...
-	 * @param	[type]		$last: ...
-	 * @return	[type]		...
+	 * @param	string		String 1
+	 * @param	string		String 2
+	 * @return	array		The result from the exec() function call.
+	 * @access private
+	 */
+	function getDiff($str1,$str2)	{
+		if (TYPO3_OS!='WIN')	{
+				// Create file 1 and write string
+			$file1 = tempnam('','');
+			t3lib_div::writeFile($file1,$str1);
+				// Create file 2 and write string
+			$file2 = tempnam('','');
+			t3lib_div::writeFile($file2,$str2);
+				// Perform diff.
+			$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'].' '.$file1.' '.$file2;
+			exec($cmd,$res);
+	
+			unlink($file1);
+			unlink($file2);
+			
+			return $res;
+		}
+	}
+	
+	/**
+	 * Will bring down the length of strings to < 150 chars if they were longer than 200 chars. This done by preserving the 70 first and last chars and concatenate those strings with "..." and a number indicating the string length
+	 * 
+	 * @param	string		The input string.
+	 * @param	boolean		If set, it indicates that the string should just end with ... (thus no "complete" ending)
+	 * @return	string		Processed string.
+	 * @access private
 	 */
 	function addClearBuffer($clearBuffer,$last=0)	{
 		if (strlen($clearBuffer)>200)	{
@@ -209,6 +189,43 @@ class t3lib_diff {
 		}
 		$this->clearBufferIdx++;
 		return $clearBuffer;
+	}
+
+	/**
+	 * Explodes the input string into words.
+	 * This is done by splitting first by lines, then by space char. Each word will be in stored as a value in an array. Lines will be indicated by two subsequent empty values.
+	 * 
+	 * @param	string		The string input
+	 * @return	array		Array with words.
+	 * @access private
+	 */
+	function explodeStringIntoWords($str)	{
+		$strArr = t3lib_div::trimExplode(chr(10),$str);
+		$outArray=array();
+		reset($strArr);
+		while(list(,$lineOfWords)=each($strArr))	{
+			$allWords = t3lib_div::trimExplode(' ',$lineOfWords,1);
+			$outArray = array_merge($outArray,$allWords);
+			$outArray[]='';
+			$outArray[]='';
+		}
+		return $outArray;
+	}
+
+	/**
+	 * Adds a space character before and after HTML tags (more precisely any found < or >)
+	 * 
+	 * @param	string		String to process
+	 * @param	boolean		If set, the < > searched for will be &lt; and &gt;
+	 * @return	string		Processed string
+	 * @access private
+	 */
+	function tagSpace($str,$rev=0)	{
+		if ($rev)	{
+			return str_replace(' &lt;','&lt;',str_replace('&gt; ','&gt;',$str));
+		} else {
+			return str_replace('<',' <',str_replace('>','> ',$str));
+		}
 	}
 }
 

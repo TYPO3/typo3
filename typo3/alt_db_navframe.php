@@ -43,10 +43,10 @@
  *   90:     function wrapIcon($icon,&$row)	
  *
  *
- *  120: class SC_alt_db_navframe 
- *  130:     function init()	
- *  219:     function main()	
- *  252:     function printContent()	
+ *  131: class SC_alt_db_navframe 
+ *  147:     function init()	
+ *  237:     function main()	
+ *  265:     function printContent()	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -89,19 +89,19 @@ class localPageTree extends t3lib_browseTree {
 	 */
 	function wrapIcon($icon,&$row)	{
 			// If the record is locked, present a warning sign.
-		if ($lockInfo=t3lib_BEfunc::isRecordLocked("pages",$row["uid"]))	{
-			$aOnClick = 'alert('.$GLOBALS['LANG']->JScharCode($lockInfo["msg"]).');return false;';
+		if ($lockInfo=t3lib_BEfunc::isRecordLocked('pages',$row['uid']))	{
+			$aOnClick = 'alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;';
 			$lockIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-				'<img src="gfx/recordlock_warning3.gif" width="17" height="12" vspace=2 border="0" align=top'.t3lib_BEfunc::titleAttrib($lockInfo["msg"]).' alt="" />'.
+				'<img'.t3lib_iconWorks::skinImg('','gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
 				'</a>';
 		} else $lockIcon="";
 
 			// Add title attribute to input icon tag
-		$thePageIcon = substr($icon,0,-1).' '.$this->titleAttrib.'="'.$this->getTitleAttrib($row).'" border="0" />';
+		$thePageIcon = $this->addTagAttributes($icon, $this->titleAttrib.'="'.$this->getTitleAttrib($row).'"');
 
 			// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode)	{
-			$thePageIcon = $GLOBALS["TBE_TEMPLATE"]->wrapClickMenuOnIcon($thePageIcon,'pages',$row['uid'],0);
+			$thePageIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($thePageIcon,'pages',$row['uid'],0);
 		} elseif (!strcmp($this->ext_IconMode,'titlelink'))	{
 			$aOnClick = 'return jumpTo('.$this->getJumpToParm($row).',this,\''.$this->treeName.'\');';
 			$thePageIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$thePageIcon.'</a>';
@@ -110,26 +110,48 @@ class localPageTree extends t3lib_browseTree {
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
 /**
- * Main script class
+ * Main script class for the page tree navigation frame
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_alt_db_navframe {
+
+		// Internal:
 	var $content;
 	var $pagetree;
 	var $doc;	
 	
+		// Internal, static: GPvar:
+	var $currentSubScript;
+	var $cMR;
+
 	/**
-	 * Initialiation
+	 * Initialiation of the class
 	 * 
 	 * @return	void		
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH;
 
+			// Setting GPvars:
+		$this->currentSubScript = t3lib_div::GPvar('currentSubScript');
+		$this->cMR = t3lib_div::GPvar('cMR');
+		
+			// Create page tree object:
 		$this->pagetree = t3lib_div::makeInstance('localPageTree');
 		$this->pagetree->ext_IconMode = $BE_USER->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
 		$this->pagetree->thisScript = 'alt_db_navframe.php';
@@ -139,23 +161,24 @@ class SC_alt_db_navframe {
 		$this->pagetree->addField('mount_pid');
 		$this->pagetree->addField('url');
 
-		$currentSubScript = t3lib_div::GPvar('currentSubScript');
-
+			// Setting highlight mode:
 		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
 
 			// Create template object:
 		$this->doc = t3lib_div::makeInstance('template');
 
-			// Hmmm, setting "xhtml_trans" for the page will unfortunately break the Context Sensitive menu in Mozilla! But apart from that - and duplicate ID's for same page in different  mounts - the document checks out well as XHTML
-#		$this->doc->docType='xhtml_trans';
+			// Hmmm, setting "xhtml_trans" for the page will unfortunately break the Context Sensitive menu in Mozilla! But apart from that - and duplicate ID's for same page in different mounts - the document checks out well as XHTML
+		$this->doc->docType='xhtml_trans';
 
 			// Setting backPath
 		$this->doc->backPath = $BACK_PATH;
 
 			// Setting JavaScript for menu.
 		$this->doc->JScode=$this->doc->wrapScriptTags(
-	($currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($currentSubScript).'");':'').'
-	function jumpTo(id,linkObj)	{	//
+	($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
+	
+		// Function, loading the list frame from navigation tree:
+	function jumpTo(id,linkObj,highLightID)	{	//
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
 
 		if (top.condensedMode)	{
@@ -163,45 +186,40 @@ class SC_alt_db_navframe {
 		} else {
 			parent.list_frame.document.location=theUrl;
 		}
-        '.($this->doHighlight?'hilight_row("pages"+top.fsMod.recentIds["web"],"pages"+id);':'').'
+		
+		'.($this->doHighlight?'hilight_row("web",highLightID);':'').'
+		
 		'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) {linkObj.blur();}').'
 		return false;
 	}
+	
+		// Call this function, refresh_nav(), from another script in the backend if you want to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
+		// See t3lib_BEfunc::getSetUpdateSignal()
 	function refresh_nav()	{	//
 		window.setTimeout("_refresh_nav();",0);
 	}
 	function _refresh_nav()	{	//
 		document.location="'.$this->pagetree->thisScript.'?unique='.time().'";
 	}
-    function hilight_row(old_rowid,new_rowid) {	//
-       if(document.all) {
-         if(document.all.item(old_rowid)) {
-           document.all.item(old_rowid).style.backgroundColor="";
-         }
-         if(document.all.item(new_rowid)) {
-          document.all.item(new_rowid).style.backgroundColor="'.
-		  	t3lib_div::modifyHTMLColorAll($this->doc->bgColor,-20).
-			'";
-         }
-       } else {
-         if(document.getElementsByName) {
-           old_row_obj = document.getElementsByName(old_rowid)[0];
-           new_row_obj = document.getElementsByName(new_rowid)[0];
-           bgc = document.createAttribute("bgcolor");
-           bgc.value="'.
-		  	t3lib_div::modifyHTMLColorAll($this->doc->bgColor,-20).
-			'";
-           if(old_row_obj) {
-             old_row_obj.removeAttribute("bgcolor");
-           }
-           if(new_row_obj) {
-             new_row_obj.setAttributeNode(bgc);
-           }
-         }
-       }
-    }
 	
-	'.(t3lib_div::GPvar('cMR')?"jumpTo(top.fsMod.recentIds['web'],'');":"").';
+		// Highlighting rows in the page tree:
+	function hilight_row(frameSetModule,highLightID) {	//
+
+			// Remove old:
+		theObj = document.getElementById(top.fsMod.navFrameHighlightedID[frameSetModule]);
+		if (theObj)	{
+			theObj.style.backgroundColor="";
+		}
+		
+			// Set new:
+		top.fsMod.navFrameHighlightedID[frameSetModule] = highLightID;
+		theObj = document.getElementById(highLightID);
+		if (theObj)	{
+			theObj.style.backgroundColor="'.t3lib_div::modifyHTMLColorAll($this->doc->bgColor,-20).'";
+		}
+	}
+	
+	'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').';
 		');
 
 			// Click menu code is added:
@@ -212,7 +230,7 @@ class SC_alt_db_navframe {
 	}
 
 	/**
-	 * Main function
+	 * Main function, rendering the browsable page tree
 	 * 
 	 * @return	void		
 	 */
@@ -221,31 +239,26 @@ class SC_alt_db_navframe {
 
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
-		/*
-		if ($CLIENT['BROWSER']=='konqu')	{
-				// Where <nobr> does not work, this will secure non-breaks in lines:
-			$tree = '<table border=0 cellspacing=0 cellpadding=0><tr><td nowrap>'.$tree.'</td></tr></table>';
-		}
-		*/
 
 		$this->content='';
 		$this->content.=$this->doc->startPage('Page tree');
 		$this->content.=$tree;
-		$this->content.='<br />
-			<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'">'.
-			'<img src="gfx/refresh_n.gif" width="14" hspace="2" height="14" hspace="4" border="0" align="top" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.
-			$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a>
-			<br /><br />';
+		$this->content.='
+			<p class="c-refresh">
+				<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'">'.
+				'<img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.
+				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a>
+			</p>
+			<br />';
 
 			// Adding highlight - JavaScript
 		if ($this->doHighlight)	$this->content .=$this->doc->wrapScriptTags('
-			rowid="pages"+top.fsMod.recentIds["web"];
-			hilight_row("",rowid);
+			hilight_row("",top.fsMod.navFrameHighlightedID["web"]);
 		');
 	}
 
 	/**
-	 * Output tree.
+	 * Outputting the accumulated content to screen
 	 * 
 	 * @return	void		
 	 */

@@ -25,7 +25,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Old value',
 		'newValue' => 'New value',
 		'currentValue' => 'Current value',
-		'differenceMsg' => 'In the Difference column the <font color=green>green colored text</font> are new changes and the <font color=red>red colored text</font> are the old values which were removed.',
+		'differenceMsg' => 'In the Difference column the <span class="diff-g">green colored text</span> are new changes and the <span class="diff-r">red colored text</span> are the old values which were removed.',
 		'difference' => 'Difference',
 	),
 	'dk' => Array (
@@ -51,7 +51,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Gammelt indhold',
 		'newValue' => 'Nyt indhold',
 		'currentValue' => 'Nuværende indhold',
-		'differenceMsg' => 'I \'Ændringer\'-kolonnen betyder den <font color=green>grønt farvede tekst</font> at det er en ny ændring og den <font color=red>rødt farvede tekst</font> at det er gammelt indhold, som er blevet fjernet.',
+		'differenceMsg' => 'I \'Ændringer\'-kolonnen betyder den <span class="diff-g">grønt farvede tekst</span> at det er en ny ændring og den <span class="diff-r">rødt farvede tekst</span> at det er gammelt indhold, som er blevet fjernet.',
 		'difference' => 'Ændringer',
 	),
 	'de' => Array (
@@ -77,7 +77,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Alter Wert',
 		'newValue' => 'Neuer Wert',
 		'currentValue' => 'Aktueller Wert',
-		'differenceMsg' => 'In der Unterschiede Spalte sind alle <font color=green>grün eingefärbten Texte</font> Änderungen und alle <font color=red>rot gefärbten Texte</font> die alten entfernten Werte.',
+		'differenceMsg' => 'In der Unterschiede Spalte sind alle <span class="diff-g">grün eingefärbten Texte</span> Änderungen und alle <span class="diff-r">rot gefärbten Texte</span> die alten entfernten Werte.',
 		'difference' => 'Unterschiede',
 	),
 	'no' => Array (
@@ -103,7 +103,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Tidligere innhold',
 		'newValue' => 'Nytt innhold',
 		'currentValue' => 'Nåværende innhold',
-		'differenceMsg' => 'I \'Endringer\'-kolonnen angir <font color=green>grønn tekst</font> en ny endring, <font color=red>rød tekst</font> angir tidligere innholdt som har blitt fjernet.',
+		'differenceMsg' => 'I \'Endringer\'-kolonnen angir <span class="diff-g">grønn tekst</span> en ny endring, <span class="diff-r">rød tekst</span> angir tidligere innholdt som har blitt fjernet.',
 		'difference' => 'Forskjell',
 	),
 	'it' => Array (
@@ -129,7 +129,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Vecchio valore',
 		'newValue' => 'Nuovo valore',
 		'currentValue' => 'Valore corrente',
-		'differenceMsg' => 'Nella colonna Differenze i <font color=green>testi in verde</font> sono i nuovi cambiamenti e i <font color=red>testi in rosso</font> sono i vecchi valori che sono stati rimossi.',
+		'differenceMsg' => 'Nella colonna Differenze i <span class="diff-g">testi in verde</span> sono i nuovi cambiamenti e i <span class="diff-r">testi in rosso</span> sono i vecchi valori che sono stati rimossi.',
 		'difference' => 'Differenze',
 	),
 	'fr' => Array (
@@ -155,7 +155,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Ancienne valeur',
 		'newValue' => 'Nouvelle valeur',
 		'currentValue' => 'Valeur courante',
-		'differenceMsg' => 'Dans les différentes colonnes <font color=green>les textes en vert</font> représente les nouveau changement et les <font color=red>textes en rouge</font> les anciennes valeurs supprimées',
+		'differenceMsg' => 'Dans les différentes colonnes <span class="diff-g">les textes en vert</span> représente les nouveau changement et les <span class="diff-r">textes en rouge</span> les anciennes valeurs supprimées',
 		'difference' => 'Différence',
 	),
 	'es' => Array (
@@ -181,7 +181,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Valor anterior',
 		'newValue' => 'Valor nuevo',
 		'currentValue' => 'Valor actual',
-		'differenceMsg' => 'En la columna Diferencia el <font color=green>texto color verde</font> son los nuevos cambios y el <font color=red>texto color rojo</font> son los valores anteriores que fueron eliminados.',
+		'differenceMsg' => 'En la columna Diferencia el <span class="diff-g">texto color verde</span> son los nuevos cambios y el <span class="diff-r">texto color rojo</span> son los valores anteriores que fueron eliminados.',
 		'difference' => 'Diferencia',
 	),
 	'nl' => Array (
@@ -207,7 +207,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Oude waarde',
 		'newValue' => 'Nieuwe waarde',
 		'currentValue' => 'Huidige waarde',
-		'differenceMsg' => 'In de verschilkolom geeft de <font color=green>groen gekleurde tekst</font> nieuwe wijzigingen aan en de <font color=red>rood gekleurde tekst</font> oude waardes die zijn verwijderd.',
+		'differenceMsg' => 'In de verschilkolom geeft de <span class="diff-g">groen gekleurde tekst</span> nieuwe wijzigingen aan en de <span class="diff-r">rood gekleurde tekst</span> oude waardes die zijn verwijderd.',
 		'difference' => 'Verschil',
 	),
 	'cz' => Array (
@@ -233,7 +233,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Stará hodnota',
 		'newValue' => 'Nová hodnota',
 		'currentValue' => 'Souèasná hodnota',
-		'differenceMsg' => 'V sloupci Rozdíl <font color=green>zelenı text</font> jsou nové zmìny a <font color=red>èervenı text</font> jsou staré hodnoty, které byly odstranìny.',
+		'differenceMsg' => 'V sloupci Rozdíl <span class="diff-g">zelenı text</span> jsou nové zmìny a <span class="diff-r">èervenı text</span> jsou staré hodnoty, které byly odstranìny.',
 		'difference' => 'Rozdíl',
 	),
 	'pl' => Array (
@@ -259,7 +259,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Stara warto¶æ',
 		'newValue' => 'Nowa warto¶æ',
 		'currentValue' => 'Bie¿±ca warto¶æ',
-		'differenceMsg' => 'W kolumnie Ró¿nice na <font color=green>zielono</font> uwidoczniono nowe warto¶ci, które zast±pi³y uwidocznione na <font color=red>czarwono</font> poprzednie warto¶ci.',
+		'differenceMsg' => 'W kolumnie Ró¿nice na <span class="diff-g">zielono</span> uwidoczniono nowe warto¶ci, które zast±pi³y uwidocznione na <span class="diff-r">czarwono</span> poprzednie warto¶ci.',
 		'difference' => 'Ró¿nice',
 	),
 	'si' => Array (
@@ -284,7 +284,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Stara vrednost',
 		'newValue' => 'Nova vrednost',
 		'currentValue' => 'Trenutna vrednost',
-		'differenceMsg' => 'V stolpcu razlik so <font color=green>nove spremembe</font> obarvane zeleno, <font color=red>stare vrednosti</font> pa so rdeèe.',
+		'differenceMsg' => 'V stolpcu razlik so <span class="diff-g">nove spremembe</span> obarvane zeleno, <span class="diff-r">stare vrednosti</span> pa so rdeèe.',
 		'difference' => 'Razlika',
 	),
 	'fi' => Array (
@@ -310,7 +310,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Vanha arvo',
 		'newValue' => 'Uusi arvo',
 		'currentValue' => 'Nykyinen arvo',
-		'differenceMsg' => 'Erot sarakkeen <font color=green>vihreä teksti</font> ovat uudet arvot ja <font color=red>punainen teksti</font> ovat poistettavat arvot.',
+		'differenceMsg' => 'Erot sarakkeen <span class="diff-g">vihreä teksti</span> ovat uudet arvot ja <span class="diff-r">punainen teksti</span> ovat poistettavat arvot.',
 		'difference' => 'Erot',
 	),
 	'tr' => Array (
@@ -336,7 +336,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Eski değer',
 		'newValue' => 'Yeni değer',
 		'currentValue' => 'Güncel değer',
-		'differenceMsg' => 'Farklı sütunda <font color=green>yeşil renkli text</font> yeni değişiklikler ve <font color=red>kırmızı renkli text</font> kaldırılmış olan eski değerler bulunmaktadır.',
+		'differenceMsg' => 'Farklı sütunda <span class="diff-g">yeşil renkli text</span> yeni değişiklikler ve <span class="diff-r">kırmızı renkli text</span> kaldırılmış olan eski değerler bulunmaktadır.',
 		'difference' => 'Farklı olan',
 	),
 	'se' => Array (
@@ -362,7 +362,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Gammalt värde',
 		'newValue' => 'Nytt värde',
 		'currentValue' => 'Nuvarande värde',
-		'differenceMsg' => 'I ändringskolumnen visar <font color=green>grön text</font> ändringar och<font color=red> röd text</font> är de gamla värdena som avlägsnades.',
+		'differenceMsg' => 'I ändringskolumnen visar <span class="diff-g">grön text</span> ändringar och<span class="diff-r"> röd text</span> är de gamla värdena som avlägsnades.',
 		'difference' => 'Ändringar',
 	),
 	'pt' => Array (
@@ -388,7 +388,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Valor anterior',
 		'newValue' => 'Novo valor',
 		'currentValue' => 'Valor actual',
-		'differenceMsg' => 'Na coluna de diferenças <font color=green>texto em verde</font> são novas alterações <font color=red>textos em vermelho</font> são os valores antigos que foram removidos.',
+		'differenceMsg' => 'Na coluna de diferenças <span class="diff-g">texto em verde</span> são novas alterações <span class="diff-r">textos em vermelho</span> são os valores antigos que foram removidos.',
 		'difference' => 'Diferença',
 	),
 	'ru' => Array (
@@ -414,7 +414,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => 'Ñòàğîå çíà÷åíèå',
 		'newValue' => 'Íîâîå çíà÷åíèå',
 		'currentValue' => 'Òåêóùåå çíà÷åíèå',
-		'differenceMsg' => 'Â ñòîëáöå Ğàçëè÷èÿ <font color=green> òåêñòîì çåëåíîãî öâåòà </font> ïîìå÷åíû íîâûå èçìåíåíèÿ, à <font color=red> òåêñòîì êğàñíîãî öâåòà </font> ïîìå÷åíû ñòàğûå çíà÷åíèÿ, êîòîğûå áûëè óäàëåíû.',
+		'differenceMsg' => 'Â ñòîëáöå Ğàçëè÷èÿ <span class="diff-g"> òåêñòîì çåëåíîãî öâåòà </span> ïîìå÷åíû íîâûå èçìåíåíèÿ, à <span class="diff-r"> òåêñòîì êğàñíîãî öâåòà </span> ïîìå÷åíû ñòàğûå çíà÷åíèÿ, êîòîğûå áûëè óäàëåíû.',
 		'difference' => 'Ğàçëè÷èÿ',
 	),
 	'ro' => Array (
@@ -442,7 +442,7 @@ $LOCAL_LANG = Array (
 		'oldValue' => '¾ÉÖµ',
 		'newValue' => 'ĞÂÖµ',
 		'currentValue' => 'µ±Ç°Öµ',
-		'differenceMsg' => 'ÔÚ²»Í¬µÄÀ¸Ä¿ÖĞ<font color=green>ÂÌÉ«ÎÄ×Ö</font>´ú±íĞÂĞŞ¸ÄµÄ¶ø<font color=red>ºìÉ«ÎÄ×Ö</font>Ôò´ú±í±»ÒÆ³ıµÄ¾ÉÖµ.',
+		'differenceMsg' => 'ÔÚ²»Í¬µÄÀ¸Ä¿ÖĞ<span class="diff-g">ÂÌÉ«ÎÄ×Ö</span>´ú±íĞÂĞŞ¸ÄµÄ¶ø<span class="diff-r">ºìÉ«ÎÄ×Ö</span>Ôò´ú±í±»ÒÆ³ıµÄ¾ÉÖµ.',
 		'difference' => 'Çø±ğ',
 	),
 	'sk' => Array (

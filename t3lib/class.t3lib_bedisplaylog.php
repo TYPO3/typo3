@@ -109,7 +109,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get time label
+	 * Get time label for log listing
 	 * 
 	 * @param	integer		Timestamp to display
 	 * @return	string		If the timestamp was also shown last time, then "." is returned. Otherwise the new timestamp formatted with ->doc->formatTime()
@@ -124,7 +124,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get user name label
+	 * Get user name label for log listing
 	 * 
 	 * @param	integer		be_user uid
 	 * @return	string		If username is different from last username then the username, otherwise "."
@@ -138,7 +138,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get type label
+	 * Get type label for log listing
 	 * 
 	 * @param	string		Key for the type label in locallang
 	 * @return	string		If labe is different from last type label then the label is returned, otherwise "."
@@ -152,7 +152,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Get action label
+	 * Get action label for log listing
 	 * 
 	 * @param	string		Key for the action label in locallang
 	 * @return	string		If labe is different from last action label then the label is returned, otherwise "."
@@ -204,7 +204,7 @@ class t3lib_BEDisplayLog {
 	}
 
 	/**
-	 * Reset
+	 * Reset all internal "last..." variables to blank string.
 	 * 
 	 * @return	void		
 	 */
@@ -245,7 +245,7 @@ class t3lib_BEDisplayLog {
 	 * For all entries in the $inArray (expected to be filepaths) the basename is extracted and set as value (if $this->stripPath is set)
 	 * This is done for log-entries from the FILE modules
 	 * 
-	 * @param	array		
+	 * @param	array		Array of file paths
 	 * @return	array		
 	 * @see formatDetailsForList()
 	 */

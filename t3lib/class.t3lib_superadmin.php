@@ -538,7 +538,7 @@ class t3lib_superadmin {
 			
 			$extensionKeysCollect = array_unique($extensionKeysCollect);
 			asort($extensionKeysCollect);
-			$out.='<form><textarea cols="80" rows="10">'.implode(chr(10),$extensionKeysCollect).'</textarea></form>';
+			$out.='<form action=""><textarea cols="80" rows="10">'.implode(chr(10),$extensionKeysCollect).'</textarea></form>';
 
 			$out.='<BR><h3>User extensions:</h3><table border=1>'.implode("",$rows["user"]).'</table>';
 		}

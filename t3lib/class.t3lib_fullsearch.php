@@ -133,7 +133,7 @@ class t3lib_fullsearch {
 			}
 		}
 
-		$TDparams=' nowrap bgcolor="'.$GLOBALS["TBE_TEMPLATE"]->bgColor4.'"';
+		$TDparams=' nowrap="nowrap" class="bgColor4"';
 		$tmpCode='
 		<table border=0 cellpadding=3 cellspacing=1>
 		<tr'.$TDparams.'><td><select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">'.implode(chr(10),$opt).'</select><input type="submit" name="storeControl[LOAD]" value="Load"></td></tr>		
@@ -522,7 +522,7 @@ class t3lib_fullsearch {
 	 * @return	[type]		...
 	 */
 	function tableWrap($str)	{
-		return '<table border=0 cellpadding=10 cellspacing=0 bgcolor="'.$GLOBALS["TBE_TEMPLATE"]->bgColor4.'"><tr><td nowrap><pre>'.$str.'</pre></td></tr></table>';
+		return '<table border=0 cellpadding=10 cellspacing=0 class="bgColor4"><tr><td nowrap><pre>'.$str.'</pre></td></tr></table>';
 	}
 
 	/**
@@ -589,7 +589,7 @@ class t3lib_fullsearch {
 	 * @return	[type]		...
 	 */
 	function resultRowDisplay($row,$conf,$table)	{
-		$out='<tr bgcolor="'.$GLOBALS["SOBE"]->doc->bgColor4.'">';
+		$out='<tr class="bgColor4">';
 		reset($row);
 		while(list($fN,$fV)=each($row))	{
 			$TDparams = " nowrap";
@@ -597,7 +597,7 @@ class t3lib_fullsearch {
 			$out.='<td'.$TDparams.'>'.htmlspecialchars($fVnew).'</td>';
 		}
 		$params = '&edit['.$table.']['.$row["uid"].']=edit';
-		$out.='<td nowrap><A HREF="#" onClick="top.launchView(\''.$table.'\','.$row["uid"].',\''.$GLOBALS["BACK_PATH"].'\');return false;"><img src="'.$GLOBALS["BACK_PATH"].'gfx/zoom2.gif" width="12" height="12" border="0" alt=""></a><A HREF="#" onClick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS["BACK_PATH"],t3lib_div::getIndpEnv("REQUEST_URI").t3lib_div::implodeArrayForUrl("SET",$GLOBALS["HTTP_POST_VARS"]["SET"])).'"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a></td>
+		$out.='<td nowrap><A HREF="#" onClick="top.launchView(\''.$table.'\','.$row["uid"].',\''.$GLOBALS["BACK_PATH"].'\');return false;"><img src="'.$GLOBALS["BACK_PATH"].'gfx/zoom2.gif" width="12" height="12" alt="" /></a><A HREF="#" onClick="'.t3lib_BEfunc::editOnClick($params,$GLOBALS["BACK_PATH"],t3lib_div::getIndpEnv("REQUEST_URI").t3lib_div::implodeArrayForUrl("SET",$GLOBALS["HTTP_POST_VARS"]["SET"])).'"><img src="'.$GLOBALS["BACK_PATH"].'gfx/edit2.gif" width="11" height="12" border="0" alt=""></a></td>
 		</tr>
 		';
 		return $out;
@@ -612,7 +612,7 @@ class t3lib_fullsearch {
 	 * @return	[type]		...
 	 */
 	function resultRowTitles($row,$conf,$table)	{
-		$out='<tr bgcolor="'.$GLOBALS["SOBE"]->doc->bgColor5.'">';
+		$out='<tr class="bgColor5">';
 		reset($row);
 		while(list($fN,$fV)=each($row))	{
 			if (strlen($fV)<50)		{$TDparams = " nowrap";} else {$TDparams = "";}

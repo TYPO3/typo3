@@ -1344,7 +1344,7 @@ class user_feAdmin	{
 	 *****************************************/
 
 	/**
-	 * Sends info mail
+	 * Sends info mail to user
 	 * 
 	 * @return	string		HTML content message
 	 * @see init(),compileMail(), sendMail()
@@ -1501,7 +1501,7 @@ class user_feAdmin	{
 	 * 
 	 * @param	string		The message content. If blank, no email is sent.
 	 * @param	string		Comma list of recipient email addresses
-	 * @param	string		IGNORE
+	 * @param	string		IGNORE this parameter
 	 * @param	string		"From" email address
 	 * @param	string		Optional "From" name
 	 * @param	string		Optional "Reply-To" header email address.

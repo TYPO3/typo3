@@ -42,11 +42,12 @@
  *
  *
  *
- *   72: class SC_alt_topmenu_dummy 
- *   80:     function main()	
- *  132:     function printContent()	
+ *   74: class SC_alt_topmenu_dummy 
+ *   82:     function main()	
+ *  126:     function dummyContent()	
+ *  142:     function printContent()	
  *
- * TOTAL FUNCTIONS: 2
+ * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -63,7 +64,8 @@ require_once ('class.alt_menu_functions.inc');
 
 
 /**
- * Script Class
+ * Script Class for rendering the topframe dummy view.
+ * In the case where TYPO3 backend is configured to show the menu in the top frame this class will render the horizontal line of module icons in the top frame.
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
@@ -82,6 +84,7 @@ class SC_alt_topmenu_dummy {
 		
 			// IF noMenuMode is set to 'icons', then display menu instead of nothingness
 		if (!strcmp($BE_USER->uc['noMenuMode'],'icons'))	{
+		
 				// Loading the modules for this backend user:
 			$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 			$loadModules->load($TBE_MODULES);
@@ -91,41 +94,48 @@ class SC_alt_topmenu_dummy {
 
 				// Start page
 			$TBE_TEMPLATE->docType = 'xhtml_trans';
-			$TBE_TEMPLATE->inDocStyles = 'BODY {background-color: '.$TBE_TEMPLATE->bgColor2.'; background-image: url(gfx/alt_topmenu_back_full.gif)}';
+			$TBE_TEMPLATE->bodyTagId.= '-iconmenu';
 			$this->content.=$TBE_TEMPLATE->startPage('Top frame icon menu');
 	
 				// Make menu and add it:
-			$this->content.='<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="clear.gif" width="6" height="10" alt="" /></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>'.$alt_menuObj->topMenu($loadModules->modules,0,'',3).'</td>
-					<td><img src="clear.gif" width="20" height="1" alt="" /></td>
-					<td>'.$alt_menuObj->topButtons().'</td>
-				</tr>
-			</table>';
+			$this->content.='
+
+				<!--
+				  Alternative module menu made of icons, displayed in top frame:
+				-->
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-topMenu">
+					<tr>
+						<td class="c-menu">'.$alt_menuObj->topMenu($loadModules->modules,0,'',3).'</td>
+						<td class="c-logout">'.$alt_menuObj->topButtons().'</td>
+					</tr>
+				</table>';
 
 				// End page:
 			$this->content.=$TBE_TEMPLATE->endPage();
 		} else {
-
-				// Start page
-			$TBE_TEMPLATE->docType = 'xhtml_trans';
-			$TBE_TEMPLATE->inDocStyles = 'BODY {background-color: '.$TBE_TEMPLATE->bgColor2.'; background-image: url(gfx/alt_topmenu_back_dummy.gif)}';
-			$this->content.=$TBE_TEMPLATE->startPage('Top frame icon menu');
-
-				// End page:
-			$this->content.=$TBE_TEMPLATE->endPage();
+				// Make dummy content:
+			$this->dummyContent();
 		}
 	}
 	
 	/**
-	 * Print output
+	 * Creates the dummy content of the top frame if no menu - which is a blank page.
+	 * 
+	 * @return	void		
+	 */
+	function dummyContent()	{
+		global $TBE_TEMPLATE;
+		
+			// Start page
+		$TBE_TEMPLATE->docType = 'xhtml_trans';
+		$this->content.=$TBE_TEMPLATE->startPage('Top frame dummy display');
+
+			// End page:
+		$this->content.=$TBE_TEMPLATE->endPage();
+	}
+	
+	/**
+	 * Outputting the accumulated content to screen
 	 * 
 	 * @return	void		
 	 */

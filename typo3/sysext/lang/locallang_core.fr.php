@@ -73,7 +73,7 @@ $LOCAL_LANG['fr'] = Array (
 			"mess.delete" => 'Souhaitez-vous supprimer "%s" ?',
 			"mess.permChanges" => 'Certains de vos droits d\'accès ont été modifiés.
  Veuillez quitter l\'application et vous connecter à nouveau pour mettre à jour d\'interface.',
-			"mess.gettingTree" => "Veuillez patienter durant<BR>la mise à jour de l'arborescence<BR>depuis le serveur",
+			"mess.gettingTree" => "Veuillez patienter durant<br />la mise à jour de l'arborescence<br />depuis le serveur",
 			"mess.move_into" => 'Déplacer "%s" vers "%s"?',
 			"mess.move_after" => 'Déplacer "%s" après "%s"?',
 			"mess.copy_into" => 'Copier "%s" vers "%s"?',

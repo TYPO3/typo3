@@ -218,7 +218,7 @@ class t3lib_xml {
 	 * Takes a MySQL result for $table and traverses it, adding rows
 	 * 
 	 * @param	string		Tablename
-	 * @param	resource		MySQL resource pointer, should be reset
+	 * @param	pointer		MySQL resource pointer, should be reset
 	 * @return	void		
 	 */
 	function renderRecords($table,$res) {

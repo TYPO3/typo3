@@ -54,7 +54,7 @@
  *  332:     function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function')	
  *  349:     function addPageTSConfig($content)	
  *  362:     function addUserTSConfig($content)	
- *  375:     function addLLrefForTCAdescr($tca_descr_key,$file_ref)	
+ *  376:     function addLLrefForTCAdescr($tca_descr_key,$file_ref)	
  *
  *              SECTION: Adding SERVICES features
  *  418:     function addService($extKey, $serviceType, $serviceKey, $info)	
@@ -64,21 +64,21 @@
  *              SECTION: Adding FRONTEND features
  *  588:     function addPlugin($itemArray,$type='list_type')	
  *  612:     function addPiFlexFormValue($piKeyToMatch,$value)	
- *  630:     function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	
- *  660:     function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)	
- *  734:     function addStaticFile($extKey,$path,$title)	
- *  752:     function addTypoScriptSetup($content)	
- *  765:     function addTypoScriptConstants($content)	
- *  781:     function addTypoScript($key,$type,$content,$afterStaticUid=0)	
+ *  631:     function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	
+ *  661:     function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)	
+ *  735:     function addStaticFile($extKey,$path,$title)	
+ *  753:     function addTypoScriptSetup($content)	
+ *  766:     function addTypoScriptConstants($content)	
+ *  782:     function addTypoScript($key,$type,$content,$afterStaticUid=0)	
  *
  *              SECTION: INTERNAL EXTENSION MANAGEMENT:
- *  843:     function typo3_loadExtensions()	
- *  922:     function _makeIncludeHeader($key,$file)	
- *  942:     function isCacheFilesAvailable($cacheFilePrefix)	
- *  954:     function isLocalconfWritable()	
- *  966:     function cannotCacheFilesWritable($cacheFilePrefix)	
- *  989:     function currentCacheFiles()	
- * 1011:     function writeCacheFiles($extensions,$cacheFilePrefix)	
+ *  844:     function typo3_loadExtensions()	
+ *  923:     function _makeIncludeHeader($key,$file)	
+ *  943:     function isCacheFilesAvailable($cacheFilePrefix)	
+ *  955:     function isLocalconfWritable()	
+ *  967:     function cannotCacheFilesWritable($cacheFilePrefix)	
+ *  990:     function currentCacheFiles()	
+ * 1012:     function writeCacheFiles($extensions,$cacheFilePrefix)	
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -324,8 +324,8 @@ class t3lib_extMgm {
 	 * @param	string		Module name
 	 * @param	string		Class name
 	 * @param	string		Class path
-	 * @param	string		Title
-	 * @param	string		
+	 * @param	string		Title of module
+	 * @param	string		Menu array key - default is "function"
 	 * @return	void		
 	 * @see t3lib_SCbase::mergeExternalItems()
 	 */
@@ -343,7 +343,7 @@ class t3lib_extMgm {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_locallang.php FILES
 	 * 
-	 * @param	string		
+	 * @param	string		Page TSconfig content
 	 * @return	void		
 	 */
 	function addPageTSConfig($content)	{
@@ -356,7 +356,7 @@ class t3lib_extMgm {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_locallang.php FILES
 	 * 
-	 * @param	string		
+	 * @param	string		User TSconfig content
 	 * @return	void		
 	 */
 	function addUserTSConfig($content)	{
@@ -367,9 +367,10 @@ class t3lib_extMgm {
 	/**
 	 * Adds a reference to a locallang file with TCA_DESCR labels
 	 * FOR USE IN ext_tables.php FILES
+	 * eg. t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:lang/locallang_csh_pages.php'); for the pages table or t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout','EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
 	 * 
-	 * @param	string		
-	 * @param	string		
+	 * @param	string		Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
+	 * @param	string		File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.php"
 	 * @return	void		
 	 */
 	function addLLrefForTCAdescr($tca_descr_key,$file_ref)	{
@@ -385,7 +386,6 @@ class t3lib_extMgm {
 		}
 	}
 
-	
 	
 	
 	
@@ -582,7 +582,7 @@ class t3lib_extMgm {
 	 * FOR USE IN ext_tables.php FILES
 	 * 
 	 * @param	array		Item Array
-	 * @param	string		Type
+	 * @param	string		Type (eg. "list_type") - basically a field from "tt_content" table
 	 * @return	void		
 	 */
 	function addPlugin($itemArray,$type='list_type')	{
@@ -620,11 +620,12 @@ class t3lib_extMgm {
 
 	/**
 	 * Adds the $table tablename to the list of tables allowed to be includes by content element type "Insert records"
+	 * By using $content_table and $content_field you can also use the function for other tables.
 	 * FOR USE IN ext_tables.php FILES
 	 * 
-	 * @param	string		Table name
-	 * @param	[type]		$content_table: ...
-	 * @param	[type]		$content_field: ...
+	 * @param	string		Table name to allow for "insert record"
+	 * @param	string		Table name TO WHICH the $table name is applied. See $content_field as well.
+	 * @param	string		Field name in the database $content_table in which $table is allowed to be added as a reference ("Insert Record")
 	 * @return	void		
 	 */
 	function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	{
@@ -746,7 +747,7 @@ tt_content.'.$key.$prefix.' {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_locallang.php FILES
 	 * 
-	 * @param	string		TypoScript
+	 * @param	string		TypoScript Setup string
 	 * @return	void		
 	 */
 	function addTypoScriptSetup($content)	{
@@ -759,7 +760,7 @@ tt_content.'.$key.$prefix.' {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_locallang.php FILES
 	 * 
-	 * @param	string		
+	 * @param	string		TypoScript Constants string
 	 * @return	void		
 	 */
 	function addTypoScriptConstants($content)	{
@@ -935,7 +936,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	/**
 	 * Returns true if both the localconf and tables cache file exists (with $cacheFilePrefix)
 	 * 
-	 * @param	string		
+	 * @param	string		Prefix of the cache file to check
 	 * @return	boolean		
 	 * @internal
 	 */
@@ -959,7 +960,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * Returns an error string if typo3conf/ or cache-files with $cacheFilePrefix are NOT writable
 	 * Returns false if no problem.
 	 * 
-	 * @param	string		
+	 * @param	string		Prefix of the cache file to check
 	 * @return	string		
 	 * @internal
 	 */
@@ -1003,8 +1004,8 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * Compiles/Creates the two cache-files in typo3conf/ based on $cacheFilePrefix
 	 * Returns a array with the key "_CACHEFILE" set to the $cacheFilePrefix value
 	 * 
-	 * @param	array		
-	 * @param	string		
+	 * @param	array		Extension information array
+	 * @param	string		Prefix for the cache files
 	 * @return	array		
 	 * @internal
 	 */

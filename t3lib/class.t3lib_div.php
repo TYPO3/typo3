@@ -72,92 +72,92 @@
  *  767:     function modifyHTMLColorAll($color,$all)	
  *  779:     function rm_endcomma($string)	
  *  792:     function danish_strtoupper($string)	
- *  806:     function convUmlauts($str)	
- *  821:     function shortMD5($input, $len=10)	
- *  833:     function testInt($var)	
- *  846:     function isFirstPartOfStr($str,$partStr)	
- *  862:     function formatSize($sizeInBytes)	
- *  884:     function convertMicrotime($microtime)	
- *  898:     function splitCalc($string,$operators)	
- *  920:     function calcPriority($string)	
- *  960:     function calcParenthesis($string)	
- *  987:     function htmlspecialchars_decode($value)	
- * 1001:     function deHSCentities($str)	
- * 1014:     function slashJS($string,$extended=0,$char="'")	
- * 1028:     function rawUrlEncodeJS($str)	
- * 1040:     function validEmail($email)	
- * 1055:     function formatForTextarea($content)	
+ *  807:     function convUmlauts($str)	
+ *  822:     function shortMD5($input, $len=10)	
+ *  834:     function testInt($var)	
+ *  847:     function isFirstPartOfStr($str,$partStr)	
+ *  863:     function formatSize($sizeInBytes)	
+ *  885:     function convertMicrotime($microtime)	
+ *  899:     function splitCalc($string,$operators)	
+ *  921:     function calcPriority($string)	
+ *  961:     function calcParenthesis($string)	
+ *  988:     function htmlspecialchars_decode($value)	
+ * 1002:     function deHSCentities($str)	
+ * 1015:     function slashJS($string,$extended=0,$char="'")	
+ * 1029:     function rawUrlEncodeJS($str)	
+ * 1041:     function validEmail($email)	
+ * 1056:     function formatForTextarea($content)	
  *
  *              SECTION: ARRAY FUNCTIONS
- * 1087:     function inArray($in_array,$item)	
- * 1105:     function intExplode($delim, $string)	
- * 1125:     function revExplode($delim, $string, $count=0)	
- * 1146:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)	
- * 1171:     function uniqueArray($valueArray)	
- * 1194:     function removeArrayEntryByValue($array,$cmpValue)	
- * 1223:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	
- * 1251:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)	
- * 1275:     function addSlashesOnArray(&$theArray)	
- * 1300:     function stripSlashesOnArray(&$theArray)	
- * 1323:     function slashArray($arr,$cmd)	
- * 1340:     function array_merge_recursive_overrule ($arr0,$arr1,$notAddKeys=0) 
- * 1370:     function array_merge($arr1,$arr2)	
- * 1384:     function csvValues($row,$delim=',',$quote='"')	
+ * 1088:     function inArray($in_array,$item)	
+ * 1106:     function intExplode($delim, $string)	
+ * 1126:     function revExplode($delim, $string, $count=0)	
+ * 1147:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)	
+ * 1172:     function uniqueArray($valueArray)	
+ * 1195:     function removeArrayEntryByValue($array,$cmpValue)	
+ * 1224:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	
+ * 1252:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)	
+ * 1276:     function addSlashesOnArray(&$theArray)	
+ * 1301:     function stripSlashesOnArray(&$theArray)	
+ * 1324:     function slashArray($arr,$cmd)	
+ * 1341:     function array_merge_recursive_overrule ($arr0,$arr1,$notAddKeys=0) 
+ * 1371:     function array_merge($arr1,$arr2)	
+ * 1385:     function csvValues($row,$delim=',',$quote='"')	
  *
  *              SECTION: HTML/XML PROCESSING
- * 1427:     function get_tag_attributes($tag)	
- * 1465:     function split_tag_attributes($tag)	
- * 1499:     function implodeParams($arr,$xhtmlSafe=0)	
- * 1527:     function wrapJS($string, $linebreak=TRUE) 
- * 1556:     function xml2tree($string,$depth=999) 
- * 1639:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0)	
- * 1697:     function xml2array($string,$NSprefix='') 
- * 1756:     function xmlRecompileFromStructValArray($vals)	
- * 1799:     function xmlGetHeaderAttribs($xmlData)	
+ * 1428:     function get_tag_attributes($tag)	
+ * 1466:     function split_tag_attributes($tag)	
+ * 1500:     function implodeParams($arr,$xhtmlSafe=0)	
+ * 1528:     function wrapJS($string, $linebreak=TRUE) 
+ * 1557:     function xml2tree($string,$depth=999) 
+ * 1640:     function array2xml($array,$NSprefix='',$level=0,$docTag='phparray',$spaceInd=0)	
+ * 1698:     function xml2array($string,$NSprefix='') 
+ * 1757:     function xmlRecompileFromStructValArray($vals)	
+ * 1800:     function xmlGetHeaderAttribs($xmlData)	
  *
  *              SECTION: FILES FUNCTIONS
- * 1831:     function getURL($url)	
- * 1874:     function writeFile($file,$content)	
- * 1892:     function get_dirs($path)	
- * 1918:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	
- * 1963:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	
- * 1985:     function removePrefixPathFromList($fileArr,$prefixToRemove)	
- * 2004:     function upload_copy_move($source,$destination)	
- * 2022:     function fixWindowsFilePath($theFile)	
- * 2032:     function resolveBackPath($pathStr)	
- * 2060:     function locationHeaderUrl($path)	
+ * 1832:     function getURL($url)	
+ * 1875:     function writeFile($file,$content)	
+ * 1893:     function get_dirs($path)	
+ * 1919:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	
+ * 1964:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	
+ * 1986:     function removePrefixPathFromList($fileArr,$prefixToRemove)	
+ * 2005:     function upload_copy_move($source,$destination)	
+ * 2023:     function fixWindowsFilePath($theFile)	
+ * 2033:     function resolveBackPath($pathStr)	
+ * 2061:     function locationHeaderUrl($path)	
  *
  *              SECTION: DEBUG helper FUNCTIONS
- * 2100:     function debug_ordvalue($string,$characters=100)	
- * 2117:     function view_array($array_in)	
- * 2144:     function print_array($array_in)	
- * 2160:     function debug($var="",$brOrHeader=0)	
+ * 2101:     function debug_ordvalue($string,$characters=100)	
+ * 2118:     function view_array($array_in)	
+ * 2146:     function print_array($array_in)	
+ * 2162:     function debug($var="",$brOrHeader=0)	
  *
  *              SECTION: SYSTEM INFORMATION
- * 2229:     function getThisUrl()	
- * 2246:     function linkThisScript($getParams=array())	
- * 2268:     function linkThisUrl($url,$getParams=array())	
- * 2288:     function getIndpEnv($getEnvName)	
+ * 2231:     function getThisUrl()	
+ * 2248:     function linkThisScript($getParams=array())	
+ * 2270:     function linkThisUrl($url,$getParams=array())	
+ * 2290:     function getIndpEnv($getEnvName)	
  *
  *              SECTION: TYPO3 SPECIFIC FUNCTIONS
- * 2502:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)	
- * 2537:     function validPathStr($theFile)	
- * 2549:     function isAbsPath($path)	
- * 2561:     function isAllowedAbsPath($path)	
- * 2579:     function verifyFilenameAgainstDenyPattern($filename)	
- * 2596:     function stdAuthCode($uid_or_record,$fields='')	
- * 2630:     function loadTCA($table)	
- * 2649:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	
- * 2677:     function resolveAllSheetsInDS($dataStructArray)	
- * 2706:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	
- * 2746:     function makeInstance($className)	
- * 2764:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	
- * 2799:     function makeInstanceClassName($className)	
- * 2819:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)	
- * 2866:     function quoted_printable($string,$maxlen=76)	
- * 2908:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	
- * 2943:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')	
- * 2966:     function freetypeDpiComp($font_size)	
+ * 2504:     function getFileAbsFileName($filename,$onlyRelative=1,$relToTYPO3_mainDir=0)	
+ * 2539:     function validPathStr($theFile)	
+ * 2551:     function isAbsPath($path)	
+ * 2563:     function isAllowedAbsPath($path)	
+ * 2581:     function verifyFilenameAgainstDenyPattern($filename)	
+ * 2598:     function stdAuthCode($uid_or_record,$fields='')	
+ * 2632:     function loadTCA($table)	
+ * 2651:     function resolveSheetDefInDS($dataStructArray,$sheet='sDEF')	
+ * 2679:     function resolveAllSheetsInDS($dataStructArray)	
+ * 2708:     function callUserFunction($funcName,&$params,&$ref,$checkPrefix='user_',$silent=0)	
+ * 2748:     function makeInstance($className)	
+ * 2766:     function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	
+ * 2801:     function makeInstanceClassName($className)	
+ * 2821:     function plainMailEncoded($email,$subject,$message,$headers='',$enc='',$charset='ISO-8859-1',$dontEncodeSubject=0)	
+ * 2868:     function quoted_printable($string,$maxlen=76)	
+ * 2911:     function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	
+ * 2946:     function makeRedirectUrl($inUrl,$l=0,$index_script_url='')	
+ * 2969:     function freetypeDpiComp($font_size)	
  *
  * TOTAL FUNCTIONS: 100
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -586,7 +586,7 @@ class t3lib_div {
 	 * 
 	 * @param	string		$in_list 	comma-separated list of items (string)
 	 * @param	string		$item 	item to check for
-	 * @return	bool		true if $item is in $in_list
+	 * @return	boolean		true if $item is in $in_list
 	 */
 	function inList($in_list,$item)	{
 		return strstr(','.$in_list.',', ','.$item.',');
@@ -634,7 +634,7 @@ class t3lib_div {
 	 * 
 	 * Usage: 1
 	 * 
-	 * @param	integer		
+	 * @param	integer		Integer string to process
 	 * @return	integer		
 	 */
 	function intval_positive($theInt)	{
@@ -773,7 +773,7 @@ class t3lib_div {
 	 * 
 	 * Usage: 4
 	 * 
-	 * @param	string		
+	 * @param	string		String from which the comma in the end (if any) will be removed.
 	 * @return	string		
 	 */
 	function rm_endcomma($string)	{
@@ -782,10 +782,10 @@ class t3lib_div {
 
 	/**
 	 * strtoupper which converts danish (and other characters) characters as well
-	 * (Depreciated, use PHP function with locale settings instead)
+	 * (Depreciated, use PHP function with locale settings instead or for HTML output, wrap your content in <span class="uppercase">...</span>)
 	 * Usage: 4
 	 * 
-	 * @param	string		
+	 * @param	string		String to process
 	 * @return	string		
 	 * @ignore
 	 */
@@ -795,12 +795,13 @@ class t3lib_div {
 	}
 
 	/**
-	 * change umlaut characters to plain ASCII with normally two character target
+	 * Change umlaut characters to plain ASCII with normally two character target
 	 * Only known characters will be converted, so don't expect a result for any character.
+	 * Works only for western europe single-byte charsets!
 	 * 
 	 * ä => ae, Ö => Oe
 	 * 
-	 * @param	string		
+	 * @param	string		String to convert.
 	 * @return	string		
 	 */
 	function convUmlauts($str)	{
@@ -856,7 +857,7 @@ class t3lib_div {
 	 * 
 	 * Usage: 54
 	 * 
-	 * @param	integer		Bytes
+	 * @param	integer		Number of bytes to format.
 	 * @return	string		Formatted representation of the byte number, for output.
 	 */
 	function formatSize($sizeInBytes)	{
@@ -1022,7 +1023,7 @@ class t3lib_div {
 	 * 
 	 * Usage: 8
 	 * 
-	 * @param	string		
+	 * @param	string		String to raw-url-encode with spaces preserved
 	 * @return	string		Rawurlencoded result of input string, but with all %20 (space chars) converted to real spaces.
 	 */
 	function rawUrlEncodeJS($str)	{
@@ -1163,7 +1164,7 @@ class t3lib_div {
 	 * (Depreciated, use PHP function array_unique instead)
 	 * Usage: 2
 	 * 
-	 * @param	array		
+	 * @param	array		Array of values to make unique
 	 * @return	array		
 	 * @ignore
 	 * @depreciated
@@ -1187,7 +1188,7 @@ class t3lib_div {
 	 * 
 	 * Usage: 2
 	 * 
-	 * @param	array		
+	 * @param	array		Array containing the values
 	 * @param	string		Value to search for and if found remove array entry where found.
 	 * @return	array		Output array with entries removed if search string is found
 	 */
@@ -1463,7 +1464,7 @@ class t3lib_div {
 	 * @internal
 	 */
 	function split_tag_attributes($tag)	{
-		$tag_tmp = trim(eregi_replace ('^[ ]*<[^ ]*','',$tag));
+		$tag_tmp = trim(eregi_replace ('^<[^[:space:]]*','',trim($tag)));
 			// Removes any > in the end of the string
 		$tag_tmp = trim(eregi_replace ('>$','',$tag_tmp));
 
@@ -1477,7 +1478,7 @@ class t3lib_div {
 				$value[] = '=';
 				$tag_tmp = trim(substr($tag_tmp,1));		// Removes = chars.
 			} else {
-				// There are '' around the value. We look for the next ' ' or '>'
+					// There are '' around the value. We look for the next ' ' or '>'
 				$reg = split('[[:space:]=]',$tag_tmp,2);
 				$value[] = trim($reg[0]);
 				$tag_tmp = trim(substr($tag_tmp,strlen($reg[0]),1).$reg[1]);
@@ -1621,7 +1622,7 @@ class t3lib_div {
 	/**
 	 * Converts a PHP array into an XML file.
 	 * The XML output is optimized for readability since associative keys are used as fieldnames. 
-	 * This also means that only alphanumeric characters are allowed in the tag names
+	 * This also means that only alphanumeric characters are allowed in the tag names AND only keys NOT starting with numbers (so watch your usage of keys!)
 	 * Numeric keys are converted to "n"+int (which means you should not use this kind of associative key otherwise)
 	 * The function handles input values from the PHP array in a binary-safe way; All characters below 32 (except 9,10,13) will trigger the content to be converted to a base64-string
 	 * The PHP variable type of the data is NOT preserved; integers will become strings, but arrays will stay arrays of course.
@@ -2016,7 +2017,7 @@ class t3lib_div {
 	 * 
 	 * Usage: 2
 	 * 
-	 * @param	string		
+	 * @param	string		File path to process
 	 * @return	string		
 	 */
 	function fixWindowsFilePath($theFile)	{
@@ -2026,7 +2027,7 @@ class t3lib_div {
 	/**
 	 * Resolves "../" sections in the input path string
 	 * 
-	 * @param	string		
+	 * @param	string		File path in which "/../" is resolved
 	 * @return	string		
 	 */
 	function resolveBackPath($pathStr)	{
@@ -2054,7 +2055,7 @@ class t3lib_div {
 	 * 
 	 * Usage: 31
 	 * 
-	 * @param	string		
+	 * @param	string		URL / path to prepend full URL addressing to.
 	 * @return	string		
 	 */
 	function locationHeaderUrl($path)	{
@@ -2111,7 +2112,7 @@ class t3lib_div {
 	 * Returns false if $array_in is not an array
 	 * Usage: 27
 	 * 
-	 * @param	array		
+	 * @param	array		Array to view
 	 * @return	string		HTML output
 	 */
 	function view_array($array_in)	{
@@ -2137,9 +2138,10 @@ class t3lib_div {
 	 * Prints an array
 	 * Usage: 28
 	 * 
-	 * @param	array		
+	 * @param	array		Array to print visually (in a table).
 	 * @return	void		
 	 * @internal
+	 * @see view_array()
 	 */
 	function print_array($array_in)	{
 		echo t3lib_div::view_array($array_in);
@@ -2797,9 +2799,9 @@ class t3lib_div {
 	 * @return	string		Final class name to instantiate with "new [classname]"
 	 */
 	function makeInstanceClassName($className)	{
-		return class_exists('ux_'.$className)?'ux_'.$className:$className;
+		return class_exists('ux_'.$className)?t3lib_div::makeInstanceClassName('ux_'.$className):$className;
 	}
-
+	
 	/**
 	 * Simple substitute for the PHP function mail().
 	 * The fifth parameter, $enc, will allow you to specify 'base64' encryption for the output (set $enc=base64)
@@ -2891,7 +2893,7 @@ class t3lib_div {
 			$newVal = ereg_replace(chr(9).'$','=09',$newVal);		// replaces a possible TAB-character at the end of a line
 			$newString.=$newVal.chr(13).chr(10);
 		}
-		return $newString;
+		return ereg_replace(chr(13).chr(10).'$','',$newString);
 	}
 
 	/**
@@ -2902,8 +2904,9 @@ class t3lib_div {
 	 * 
 	 * @param	string		Message content
 	 * @param	string		URL mode; "76" or "all"
-	 * @param	string		
+	 * @param	string		URL of index script (see makeRedirectUrl())
 	 * @return	string		Processed message content
+	 * @see makeRedirectUrl()
 	 */
 	function substUrlsInPlainText($message,$urlmode='76',$index_script_url='')	{
 			// Substitute URLs with shorter links:
@@ -2924,7 +2927,7 @@ class t3lib_div {
 				$urlSplit[$c]=$newURL.substr($v,strlen($newParts[0]));
 			}
 		}
-#debug($urlSplit);
+
 		$message=implode('',$urlSplit);
 		return $message;
 	}
@@ -2936,7 +2939,7 @@ class t3lib_div {
 	 * 
 	 * @param	string		Input URL
 	 * @param	integer		URL string length limit
-	 * @param	string		
+	 * @param	string		URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplyed it will default to t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR')
 	 * @return	string		Processed URL
 	 * @internal
 	 */

@@ -59,7 +59,7 @@ require ('template.php');
 
 
 /**
- * Script Class
+ * Script Class for redirecting shortcut actions to the correct script
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3

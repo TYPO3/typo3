@@ -59,7 +59,7 @@
 
 
 /**
- * Formmail class
+ * Formmail class, used by the TYPO3 "cms" extension (default frontend) to send email forms.
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3

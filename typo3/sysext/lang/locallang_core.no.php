@@ -81,7 +81,7 @@ Vil du likevel lukke det?',
 			"mess.delete" => 'Er du sikker på, at du vil slette "%s"?',
 			"mess.permChanges" => 'Der er blitt endret på dine rettigheter.
 Du bør lukke og åpne TYPO3 på nytt for at oppdatere interfacen med endrigene!',
-			"mess.gettingTree" => 'Henter treet fra serveren<BR>Venligst vent...',
+			"mess.gettingTree" => 'Henter treet fra serveren<br />Venligst vent...',
 			"mess.move_into" => 'Flytt "%s" inn i "%s"?',
 			"mess.move_after" => 'Flytt "%s" til posisjonen etter "%s"?',
 			"mess.copy_into" => 'Kopier "%s" inn i "%s"?',

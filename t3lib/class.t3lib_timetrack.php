@@ -45,19 +45,19 @@
  *  157:     function push($tslabel, $value='')	
  *  182:     function pull($content='')	
  *  200:     function setTSlogMessage($content,$num=0)	
- *  215:     function setTSselectQuery($query,$msg)	
- *  228:     function incStackPointer()	
- *  239:     function decStackPointer()	
- *  249:     function mtime()	
- *  259:     function convertMicrotime($microtime)	
+ *  214:     function setTSselectQuery($query,$msg)	
+ *  227:     function incStackPointer()	
+ *  238:     function decStackPointer()	
+ *  248:     function mtime()	
+ *  258:     function convertMicrotime($microtime)	
  *
  *              SECTION: Printing the parsing time information (for Admin Panel)
- *  292:     function printTSlog()	
- *  437:     function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')	
- *  501:     function fixCLen($c,$v)	
- *  517:     function fw($str)	
- *  531:     function createHierarchyArray(&$arr,$pointer,$uniqueId)	
- *  550:     function debug_typo3PrintError($header,$text,$js)	
+ *  291:     function printTSlog()	
+ *  436:     function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='')	
+ *  500:     function fixCLen($c,$v)	
+ *  516:     function fw($str)	
+ *  530:     function createHierarchyArray(&$arr,$pointer,$uniqueId)	
+ *  549:     function debug_typo3PrintError($header,$text,$js)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -205,11 +205,10 @@ class t3lib_timeTrack {
 	}
 
 	/**
-	 * Set TSselectQuery.
-	 * Apparently not used anywhere?
+	 * Set TSselectQuery - for messages in TypoScript debugger.
 	 * 
-	 * @param	string		Query
-	 * @param	string		Message
+	 * @param	string		Query string
+	 * @param	string		Message/Label to attach
 	 * @return	void		
 	 */
 	function setTSselectQuery($query,$msg)	{
@@ -284,7 +283,7 @@ class t3lib_timeTrack {
 	 *******************************************/
 
 	/**
-	 * Print TSlog
+	 * Print TypoScript parsing log
 	 * 
 	 * @return	string		HTML table with the information about parsing times.
 	 * @see t3lib_tsfeBeUserAuth::extGetCategory_tsdebug()
@@ -522,8 +521,8 @@ class t3lib_timeTrack {
 	 * Helper function for internal data manipulation
 	 * 
 	 * @param	array		Array (passed by reference) and modified
-	 * @param	integer		
-	 * @param	string		
+	 * @param	integer		Pointer value
+	 * @param	string		Unique ID string
 	 * @return	void		
 	 * @access private
 	 * @see printTSlog()
@@ -556,7 +555,7 @@ class t3lib_timeTrack {
 					<head>
 						<title>Error!</title>
 					</head>
-					<body bgcolor="#cccccc">
+					<body bgcolor="white">
 						<div align="center">
 							<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#cccccc">
 								<tr>

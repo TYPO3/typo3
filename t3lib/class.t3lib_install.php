@@ -540,7 +540,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 	function stepOutput()	{
 		$this->checkTheConfig();
 		$error_missingConnect='<br>
-			'.$this->fontTag2.'<img src="../t3lib/gfx/icon_fatalerror.gif" width=18 height=16 align=absmiddle>
+			'.$this->fontTag2.'<img src="../t3lib/gfx/icon_fatalerror.gif" width=18 height=16 class="absmiddle">
 			There is no connection to the database!<br>
 			(Username: <i>'.TYPO3_db_username.'</i>, Password: <i>'.TYPO3_db_password.'</i>, Host: <i>'.TYPO3_db_host.'</i>).<BR>
 			<br>
@@ -549,7 +549,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 			<br>
 		';
 		$error_missingDB='<br>
-			'.$this->fontTag2.'<img src="../t3lib/gfx/icon_fatalerror.gif" width=18 height=16 align=absmiddle>
+			'.$this->fontTag2.'<img src="../t3lib/gfx/icon_fatalerror.gif" width=18 height=16 class="absmiddle">
 			There is no access to the database (<i>'.TYPO3_db.'</i>)!<br>
 			<br>
 			<strong>Go to Step 2</strong> and select an accessible database!</font>
@@ -561,7 +561,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 		$dbInfo='
 					<table border=0 cellpadding=1 cellspacing=0>
 					   	<tr>
-					   		<td valign="top" nowrap colspan=2 align=center>'.$this->fontTag2.'<strong><img src="../t3lib/gfx/icon_note.gif" hspace=5 width=18 height=16 align=absmiddle>Database summary:</strong></font></td>
+					   		<td valign="top" nowrap colspan=2 align=center>'.$this->fontTag2.'<strong><img src="../t3lib/gfx/icon_note.gif" hspace=5 width=18 height=16 class="absmiddle">Database summary:</strong></font></td>
 						</tr>
 					   	<tr>
 					   		<td valign="top" nowrap>'.$this->fontTag1.'Username:</font></td>
@@ -586,7 +586,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 					</table>
 		';
 		$error_emptyDB='<br>
-			'.$this->fontTag2.'<img src="../t3lib/gfx/icon_fatalerror.gif" width=18 height=16 align=absmiddle>
+			'.$this->fontTag2.'<img src="../t3lib/gfx/icon_fatalerror.gif" width=18 height=16 class="absmiddle">
 			The database is still empty. There are no tables!<br>
 			<br>
 			<strong>Go to Step 3</strong> and import a database!</font>
@@ -759,7 +759,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv("REMOTE_ADDR")."' (".t3lib_div::getIndp
 							'.nl2br($this->messageBasicFinished()).'
 							<br>
 							<hr>
-							<div align="center"><strong><img src="../t3lib/gfx/icon_warning.gif" hspace=5 width=18 height=16 align=absmiddle>IMPORTANT</strong></div><br>
+							<div align="center"><strong><img src="../t3lib/gfx/icon_warning.gif" hspace=5 width=18 height=16 class="absmiddle">IMPORTANT</strong></div><br>
 							<font size=1>'.nl2br($this->securityRisk()).'
 							<br>
 							<strong>Enter <a href="'.$this->scriptSelf.'">"Normal" mode for the Install Tool</a> to change this!</strong><br>
@@ -3049,7 +3049,7 @@ Number of files at a time:
 		if (count($out))	{
 			$col = t3lib_div::intInRange(count($out),2,10);
 			$outputStr = '<textarea cols=40 rows='.$col.' wrap="off">'.htmlspecialchars(implode($out,chr(10))).'</textarea>';
-			return "<form>".$outputStr."</form>";
+			return '<form action="">'.$outputStr.'</form>';
 		};
 	}
 
@@ -4848,9 +4848,9 @@ A:hover {color: #000066}
 		
 		':'').'
 	</head>
-	<body bgcolor="#cccccc" alink="maroon" link="maroon" vlink="maroon">'.$this->contentBeforeTable.'
+	<body bgcolor="white" alink="maroon" link="maroon" vlink="maroon">'.$this->contentBeforeTable.'
 		<div align="center">
-		<table border=0 cellspacing=0 cellpadding=0 width=333 bgcolor="#cccccc">
+		<table border=0 cellspacing=0 cellpadding=0 width=333 bgcolor="white">
 		<tr>
 			<td><img src="'.$this->backPath.'t3lib/gfx/typo3logo.gif" width=333 height=43 vspace=10 hspace=50></td>
 		</tr>

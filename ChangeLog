@@ -23,6 +23,10 @@ PHP:
 !!! Function t3lib_div::imagefinder, t3lib_div::linkfinder, t3lib_div::getStrippedURL, t3lib_div::getMimeType, t3lib_div::debug_white_space, t3lib_div::debug_code, t3lib_div::parsetime, t3lib_div::hardspace, t3lib_div::break_text, t3lib_div::unbreak_text removed
 !!! The font files "arial.ttf" and "verdana.ttf" has been removed from the folder t3lib/fonts/ and substituted with similar typefaces, "nimbus.ttf" and "vera.ttf" respectively.
 !!! The script "t3lib/formmail.php" has been removed. Was not used and didn't work anyways.
+!!! The classes t3lib_pagetree and t3lib_browsetree has been divided into four new classes (folder,page,browse + treeview) - and as a rule of thumb, the API has been modified so much that you should rather check all you applications using these classes in DETAIL! Consider it a reimplementation.
+!!! The three rte_*.php scripts in TYPO3 core has been moved TO the "rte" extension! This also means that any extension classes must have updated their XCLASS registration keys to the new file positions.
+!!! status_file.php is gone...
+!!! The typo3/ scripts db_new_content_el.php and db_layout.php has been moved into the sysext/cms/layout/ folder. Further, the classes have been remodelled a lot. If you link to these scripts or extend their classes in your applications, you should observe the compatibility!
 Charsets:
 - A new class "t3lib_cs" has been added. It contains homemade functions for conversion to and from a list of charsets (conversion tables found in t3lib/csconvtbl/). The conversion could be speeded up enourmously by using PHP functions but I simply didn't find any that could be used. By time we can substitute the PHP-processing with internal PHP functions if possible.
 - In TYPO3_CONF_VARS we can now set up a system charset. [BE][forceCharset] This is used a) for storage of information and b) for whole backend. Default is that charset of the current user (as always), but clearly recommended is "UTF-8"!!!

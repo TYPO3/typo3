@@ -59,7 +59,7 @@ require ('template.php');
 
 
 /**
- * Script Class
+ * Script Class, creating the content for the dummy script - which is just blank output.
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
@@ -69,7 +69,7 @@ class SC_dummy {
 	var $content;
 	
 	/**
-	 * Create content
+	 * Create content for the dummy script - outputting a blank page.
 	 * 
 	 * @return	void		
 	 */
@@ -85,7 +85,7 @@ class SC_dummy {
 	}
 	
 	/**
-	 * Print output
+	 * Outputting the accumulated content to screen
 	 * 
 	 * @return	void		
 	 */

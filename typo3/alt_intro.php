@@ -66,7 +66,7 @@ include ('sysext/lang/locallang_alt_intro.php');
 
 
 /**
- * Script Class
+ * Script Class for the introduction screen, alias "About > Modules" which shows the description of each available module for the user.
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
@@ -77,7 +77,7 @@ class SC_alt_intro {
 	var $content;
 	
 	/**
-	 * Initialization
+	 * Initialization of script class
 	 * 
 	 * @return	void		
 	 */
@@ -101,9 +101,7 @@ class SC_alt_intro {
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 			
 		$TBE_TEMPLATE->docType='xhtml_trans';
-		$TBE_TEMPLATE->inDocStyles.='
-		DIV.typo3-def{width:600px;}
-		';
+		$TBE_TEMPLATE->divClass=$TBE_TEMPLATE->bodyTagId;
 		$this->content.=$TBE_TEMPLATE->startPage('About modules');
 
 			
@@ -116,7 +114,7 @@ class SC_alt_intro {
 		} else {
 			$warrantyNote='TYPO3 comes with ABSOLUTELY NO WARRANTY; <a href="http://typo3.com/1316.0.html" target="_blank">click for details.</a>';
 		}
-		$cNotice='<a href="http://typo3.com/" target="_blank"><img src="gfx/loginlogo_transp.gif" width="75" vspace="2" height="19" alt="TYPO3 logo" border="0" align="left" />TYPO3 CMS ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']).'</a>. Copyright &copy; 1998-2003 Kasper Sk&aring;rh&oslash;j. Extensions are copyright of their respective owners. Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details.
+		$cNotice='<a href="http://typo3.com/" target="_blank"><img src="gfx/loginlogo_transp.gif" width="75" vspace="2" height="19" alt="TYPO3 logo" align="left" />TYPO3 CMS ver. '.htmlspecialchars($GLOBALS['TYPO_VERSION']).'</a>. Copyright &copy; 1998-2003 Kasper Sk&aring;rh&oslash;j. Extensions are copyright of their respective owners. Go to <a href="http://typo3.com/" target="_blank">http://typo3.com/</a> for details.
 		'.strip_tags($warrantyNote,'<a>').' This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. Obstructing the appearance of this notice is prohibited by law.';
 
 
@@ -142,24 +140,26 @@ class SC_alt_intro {
 		$this->content.='<br />';
 
 			// end text: 'Features may vary depending on your website and permissions'
-		$this->content.='<p><em>('.$LANG->getLL('endText').')</em></p>';
+		$this->content.='<p class="c-features"><em>('.$LANG->getLL('endText').')</em></p>';
 		$this->content.='<hr />';
 
 			// Logged in user, eg: 'You're logged in as user: admin (Kasper Skaarhoj, kasper@typo3.com)'
-		$this->content.='<p>'.
+		$this->content.='<p class="c-user">'.
 				htmlspecialchars($LANG->getLL('userInfo')).
 				sprintf(' <strong>%s</strong> (%s)',
 						$BE_USER->user['username'],
 						(implode(', ',array($BE_USER->user['realName'],$BE_USER->user['email'])))
 						).
-				'</p>';
+				'</p>
+				<br />
+				<br />';
 
 			// End page
 		$this->content.= $TBE_TEMPLATE->endPage();
 	}
 
 	/**
-	 * Prints output
+	 * Outputting the accumulated content to screen
 	 * 
 	 * @return	void		
 	 */

@@ -6,7 +6,13 @@ if (!is_object($TSFE)) die ('Error: No parent object present.');
 
 
 
- 
+/**
+ * Printing current time dynamically
+ * 
+ * @param	string		Content (ignore)
+ * @param	array		TypoScript configuration passed
+ * @return	string		Current time wrapped in <font> tags with red color
+ */
 function user_printTimeExt($content,$conf)	{
 	return '<font color="red">Dynamic time: '.date('H:i:s').'</font><br />';
 }

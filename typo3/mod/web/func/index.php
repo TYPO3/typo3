@@ -39,12 +39,11 @@
  *
  *
  *
- *   72: class SC_mod_web_func_index extends t3lib_SCbase 
- *   85:     function main()	
- *  104:     function jumpToUrl(URL)	
- *  159:     function printContent()	
+ *   71: class SC_mod_web_func_index extends t3lib_SCbase 
+ *   84:     function main()	
+ *  158:     function printContent()	
  *
- * TOTAL FUNCTIONS: 3
+ * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -101,7 +100,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 				// JavaScript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
-				function jumpToUrl(URL)	{
+				function jumpToUrl(URL)	{	//
 					document.location = URL;
 				}
 			');
@@ -157,7 +156,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 	 * @return	void		
 	 */
 	function printContent()	{
-		$this->content.=$this->doc->middle();
+
 		$this->content.=$this->doc->endPage();
 		echo $this->content;
 	}

@@ -38,19 +38,16 @@
  *
  *
  *
- *   81: class t3lib_recordList 
- *  123:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	
- *  195:     function writeTop()	
- *  203:     function writeBottom()	
- *  216:     function fwd_rwd_nav($table='')	
- *  249:     function fwd_rwd_HTML($type,$pointer,$table='')	
- *  272:     function listURL()	
- *  281:     function CBfunctions()	
- *  284:     function checkOffCB(listOfCBnames)	
- *  313:     function cbValue(CBname)	
- *  318:     function setcbValue(CBname,flag)	
+ *   78: class t3lib_recordList 
+ *  119:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	
+ *  193:     function writeTop()	
+ *  201:     function writeBottom()	
+ *  220:     function fwd_rwd_nav($table='')	
+ *  253:     function fwd_rwd_HTML($type,$pointer,$table='')	
+ *  276:     function listURL()	
+ *  285:     function CBfunctions()	
  *
- * TOTAL FUNCTIONS: 10
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -79,6 +76,7 @@
  * @see typo3/db_list.php, typo3/file_list.php
  */
 class t3lib_recordList {
+
 		// Used in this class:
 	var $iLimit = 10;						// default Max items shown 
 	var $leftMargin = 0;					// OBSOLETE - NOT USED ANYMORE. leftMargin
@@ -91,8 +89,6 @@ class t3lib_recordList {
 
 		// Not used in this class - but maybe extension classes...
 	var $fixedL = 50;						// Max length of strings
-	var $headLineCol = '#dddddd';			// Head line color
-	var $subHeadLineCol = '#eeeeee';
 	var $script = '';
 	var $thumbScript = 'thumbs.php';
 	var $setLMargin=1;						// Set to zero, if you don't want a left-margin with addElement function	
@@ -125,21 +121,22 @@ class t3lib_recordList {
 
 			// Start up:		
 		$out='
+		<!-- Element, begin: -->
 		<tr>';
 			// Show icon and lines
 		if ($this->showIcon)	{
 			$out.='
-			<td valign="top" align="left" nowrap="nowrap"'.$tdParams.'>';
+			<td nowrap="nowrap"'.$tdParams.'>';
 			
 			if (!$h)	{
-				$out.='<img src="'.$this->backPath.'t3lib/gfx/ol/halfline.gif" width="18" height="8" alt="" />';
+				$out.='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
 			} else {
 				for ($a=0;$a<$h;$a++)	{
 					if (!$a)	{
-						$out.= $altLine ? $altLine : '<img src="'.$this->backPath.'t3lib/gfx/ol/line.gif" width="18" height="16" alt="" />';
+						$out.= $altLine ? $altLine : '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />';
 						if ($icon)	$out.= $icon;
 					} else {
-						$out.= $altLine ? $altLine :'<br /><img src="'.$this->backPath.'t3lib/gfx/ol/line.gif" width="18" height="16" alt="" />';
+						$out.= $altLine ? $altLine :'<br /><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />';
 					}
 				}
 			}
@@ -161,7 +158,7 @@ class t3lib_recordList {
 			if (isset($data[$vKey]))	{
 				if ($lastKey)	{	
 					$out.='
-						<td valign="top"'.
+						<td'.
 						$noWrap.
 						$tdP[($ccount%2)].
 						$colsp.
@@ -177,7 +174,8 @@ class t3lib_recordList {
 			}
 			if ($c>1)	{$colsp=' colspan="'.$c.'"';} else {$colsp='';}
 		}
-		if ($lastKey)	{	$out.='<td valign="top"'.$noWrap.$tdP[($ccount%2)].$colsp.$this->addElement_tdParams[$lastKey].'>'.$data[$lastKey].'</td>';	}
+		if ($lastKey)	{	$out.='
+						<td'.$noWrap.$tdP[($ccount%2)].$colsp.$this->addElement_tdParams[$lastKey].'>'.$data[$lastKey].'</td>';	}
 
 			// End row
 		$out.='
@@ -201,10 +199,16 @@ class t3lib_recordList {
 	 * @return	void		
 	 */
 	function writeBottom()	{
-		$this->HTMLcode.='<table border="0" cellpadding="0" cellspacing="0">';
-		$theIcon='<img src="'.$this->backPath.'t3lib/gfx/ol/stopper.gif" width="18" height="16" alt="" />';
+		$this->HTMLcode.='
+		
+		<!--
+			End of list table:
+		-->
+		<table border="0" cellpadding="0" cellspacing="0">';
+		$theIcon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/stopper.gif','width="18" height="16"').' alt="" />';
 		$this->HTMLcode.=$this->addElement(1,'','','',$this->leftMargin,$theIcon);
-		$this->HTMLcode.='</table>';	
+		$this->HTMLcode.='
+		</table>';	
 	}
 	
 	/**
@@ -251,14 +255,14 @@ class t3lib_recordList {
 		switch($type)	{
 			case 'fwd':
 				$href = $this->listURL().'&pointer='.($pointer-$this->iLimit).$tParam;
-				return '&nbsp;<a href="'.htmlspecialchars($href).'">'.
-						'<img src="'.$this->backPath.'gfx/pilup.gif" width="14" height="14" valign="top" border="0" alt="" />'.
+				return '<a href="'.htmlspecialchars($href).'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pilup.gif','width="14" height="14"').' alt="" />'.
 						'</a> <i>[1 - '.$pointer.']</i>';
 			break;
 			case 'rwd':
 				$href = $this->listURL().'&pointer='.$pointer.$tParam;
-				return '&nbsp;<a href="'.htmlspecialchars($href).'">'.
-						'<img src="'.$this->backPath.'gfx/pildown.gif" width="14" height="14" valign="top" border="0" alt="" />'.
+				return '<a href="'.htmlspecialchars($href).'">'.
+						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pildown.gif','width="14" height="14"').' alt="" />'.
 						'</a> <i>['.($pointer+1).' - '.$this->totalItems.']</i>';
 			break;
 		}
@@ -281,7 +285,7 @@ class t3lib_recordList {
 	function CBfunctions()	{
 		return '
 		// checkOffCB()
-	function checkOffCB(listOfCBnames)	{
+	function checkOffCB(listOfCBnames)	{	//
 		var notChecked=0;
 		var total=0;
 		
@@ -310,12 +314,12 @@ class t3lib_recordList {
 		setcbValue(listOfCBnames.substr(pointer),flag);
 	}
 		// cbValue()
-	function cbValue(CBname)	{
+	function cbValue(CBname)	{	//
 		var CBfullName = "CBC["+CBname+"]";
 		return (document.dblistForm[CBfullName] && document.dblistForm[CBfullName].checked ? 1 : 0);
 	}
 		// setcbValue()
-	function setcbValue(CBname,flag)	{
+	function setcbValue(CBname,flag)	{	//
 		CBfullName = "CBC["+CBname+"]";
 		document.dblistForm[CBfullName].checked = flag ? "on" : 0;
 	}

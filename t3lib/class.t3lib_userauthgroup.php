@@ -557,14 +557,14 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			if ($this->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])	{	
 				$this->addFileMount($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '', PATH_site.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], 0, '');
 			}
-
+			
 				// If userHomePath is set, we attempt to mount it
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'])	{
 					// First try and mount with [uid]_[username]
-				$didMount=$this->addFileMount($this->user['username'], '', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].$this->user['uid'].'_'.$this->user['username'], 0, 'user');
+				$didMount=$this->addFileMount($this->user['username'], '',$GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].$this->user['uid'].'_'.$this->user['username'].$GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'], 0, 'user');
 				if (!$didMount)	{
 						// If that failed, try and mount with only [uid]
-					$this->addFileMount($this->user['username'], '', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].$this->user['uid'], 0, 'user');
+					$this->addFileMount($this->user['username'], '', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'].$this->user['uid'].$GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'], 0, 'user');
 				}
 			}
 
@@ -733,7 +733,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		$altTitle will be the (root)name of the filemount IF $title is not true (blank or zero)
 	 * @param	string		$path is the path which should be mounted. Will accept backslash in paths on windows servers (will substituted with forward slash). The path should be 1) relative to TYPO3_CONF_VARS[BE][fileadminDir] if $webspace is set, otherwise absolute.
 	 * @param	boolean		If $webspace is set, the $path is relative to 'fileadminDir' in TYPO3_CONF_VARS, otherwise $path is absolute. 'fileadminDir' must be set to allow mounting of relative paths.
-	 * @param	string		
+	 * @param	string		Type of filemount; Can be blank (regular) or "user" / "group" (for user and group filemounts presumably). Probably sets the icon first and foremost.
 	 * @return	boolean		Returns "1" if the requested filemount was mounted, otherwise no return value.
 	 * @access private
 	 */
@@ -824,9 +824,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	integer		$details_nr: The message number. Specific for each $type and $action. in the future this will make it possible to translate errormessages to other languages
 	 * @param	string		$details: Default text that follows the message
 	 * @param	array		$data: Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed the details-text...
-	 * @param	string		$tablename: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. Used in status.php to update the interface.
-	 * @param	integer		$recuid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. Used in status.php to update the interface.
-	 * @param	integer		$recpid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. Used in status.php to update the interface.
+	 * @param	string		$tablename: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @param	integer		$recuid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @param	integer		$recpid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @param	integer		$event_pid: The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param	string		$NEWid: NEWid string
 	 * @return	void		

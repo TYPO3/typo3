@@ -527,15 +527,15 @@ class t3lib_queryGenerator	{
 			}
 			if($fType != "ignore") {
 				$lineHTML .= $this->updateIcon();
-				$lineHTML .= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/garbage.gif" align="absmiddle" width="11" height="12" hspace=3 vspace=3 title="Remove condition" name="qG_del'.$subscript.'">';
-				$lineHTML .= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/add.gif" align="absmiddle" width="12" height="12" hspace=3 vspace=3 title="Add condition" name="qG_ins'.$subscript.'">';
-				if($c!=0) $lineHTML.= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/pil2up.gif" align="absmiddle" width="12" height="7" hspace=3 vspace=3 title="Move up" name="qG_up'.$subscript.'">';
+				$lineHTML .= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/garbage.gif" class="absmiddle" width="11" height="12" hspace=3 vspace=3 title="Remove condition" name="qG_del'.$subscript.'">';
+				$lineHTML .= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/add.gif" class="absmiddle" width="12" height="12" hspace=3 vspace=3 title="Add condition" name="qG_ins'.$subscript.'">';
+				if($c!=0) $lineHTML.= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/pil2up.gif" class="absmiddle" width="12" height="7" hspace=3 vspace=3 title="Move up" name="qG_up'.$subscript.'">';
 
 				if($c!=0 && $fType!="newlevel") {
-					$lineHTML.= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/pil2right.gif" align="absmiddle" height="12" width="7" hspace=3 vspace=3 title="New level" name="qG_nl'.$subscript.'">';
+					$lineHTML.= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/pil2right.gif" class="absmiddle" height="12" width="7" hspace=3 vspace=3 title="New level" name="qG_nl'.$subscript.'">';
 				}
 				if($fType=="newlevel") {
-					$lineHTML.= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/pil2left.gif" align="absmiddle" height="12" width="7" hspace=3 vspace=3 title="Collapse new level" name="qG_remnl'.$subscript.'">';
+					$lineHTML.= '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/pil2left.gif" class="absmiddle" height="12" width="7" hspace=3 vspace=3 title="Collapse new level" name="qG_remnl'.$subscript.'">';
 				}
 
 				$codeArr[$arrCount]["html"] = $lineHTML;
@@ -672,7 +672,7 @@ class t3lib_queryGenerator	{
 	 */
 	function mkFieldToInputSelect($name,$fieldName)	{
 		$out='<input type="Text" value="'.htmlspecialchars($fieldName).'" name="'.$name.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth().'>'.$this->updateIcon();
-		$out.='<a href="#" onClick="document.forms[0][\''.$name.'\'].value=\'\';return false;"><img src="'.$GLOBALS["BACK_PATH"].'gfx/garbage.gif" align="absmiddle" width="11" height="12" hspace=3 vspace=3 title="Clear list" border=0></a>';
+		$out.='<a href="#" onClick="document.forms[0][\''.$name.'\'].value=\'\';return false;"><img src="'.$GLOBALS["BACK_PATH"].'gfx/garbage.gif" class="absmiddle" width="11" height="12" hspace=3 vspace=3 title="Clear list" border=0></a>';
 		$out.='<BR><select name="_fieldListDummy" size=5 onChange="document.forms[0][\''.$name.'\'].value+=\',\'+this.value">';
 		reset($this->fields);
 		while(list($key,)=each($this->fields)) {
@@ -854,7 +854,7 @@ class t3lib_queryGenerator	{
 	 * @return	[type]		...
 	 */
 	function updateIcon()	{
-		return '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/refresh_n.gif" align="absmiddle" width="14" height="14" hspace=3 vspace=3 title="Update" name="just_update">';
+		return '<input type="image" border=0 src="'.$GLOBALS["BACK_PATH"].'gfx/refresh_n.gif" class="absmiddle" width="14" height="14" hspace=3 vspace=3 title="Update" name="just_update">';
 	}
 
 	/**
@@ -877,7 +877,7 @@ class t3lib_queryGenerator	{
 	function makeSelectorTable($modSettings,$enableList="table,fields,query,group,order,limit")	{
 		$enableArr=explode(",",$enableList);
 			// Make output
-		$TDparams = ' bgColor="'.$GLOBALS["TBE_TEMPLATE"]->bgColor5.'" nowrap';;
+		$TDparams = ' class="bgColor5" nowrap';
 		
 		if (in_array("table",$enableArr))	{
 			$out='

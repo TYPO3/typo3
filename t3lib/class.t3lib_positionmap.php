@@ -28,6 +28,8 @@
  * Contains class for creating a position map.
  *
  * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ * XHTML compliant (should be)
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -36,27 +38,30 @@
  *
  *
  *
- *   79: class t3lib_positionMap 
- *  101:     function positionTree($id,$pageinfo,$perms_clause,$R_URI)	
- *  184:     function JSimgFunc($prefix='')	
- *  193:     function changeImg(name,d)	
- *  213:     function boldTitle($t_code,$dat,$id)	
- *  225:     function onClickEvent($pid,$newPagePID)	
- *  242:     function insertlabel()	
- *  252:     function linkPageTitle($str,$rec)	
- *  260:     function checkNewPageInPid($pid)	
- *  273:     function getModConfig($pid)	
- *  287:     function insertQuadLines($codes,$allBlank=0)	
- *  317:     function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)	
- *  347:     function printRecordMap($lines,$colPosArray)	
- *  367:     function wrapColumnHeader($str,$vv)	
- *  379:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)	
- *  392:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
- *  410:     function wrapRecordHeader($str,$row)	
- *  418:     function getRecordHeader($row)	
- *  429:     function wrapRecordTitle($str,$row)	
+ *   85: class t3lib_positionMap 
  *
- * TOTAL FUNCTIONS: 18
+ *              SECTION: Page position map:
+ *  132:     function positionTree($id,$pageinfo,$perms_clause,$R_URI)	
+ *  246:     function JSimgFunc($prefix='')	
+ *  276:     function boldTitle($t_code,$dat,$id)	
+ *  290:     function onClickEvent($pid,$newPagePID)	
+ *  309:     function insertlabel()	
+ *  321:     function linkPageTitle($str,$rec)	
+ *  332:     function checkNewPageInPid($pid)	
+ *  348:     function getModConfig($pid)	
+ *  364:     function insertQuadLines($codes,$allBlank=0)	
+ *
+ *              SECTION: Content element positioning:
+ *  402:     function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)	
+ *  434:     function printRecordMap($lines,$colPosArray)	
+ *  472:     function wrapColumnHeader($str,$vv)	
+ *  486:     function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)	
+ *  503:     function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) 
+ *  523:     function wrapRecordHeader($str,$row)	
+ *  533:     function getRecordHeader($row)	
+ *  546:     function wrapRecordTitle($str,$row)	
+ *
+ * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -70,62 +75,99 @@
  
  
 /**
- * Position map class.
+ * Position map class - generating a page tree / content element list which links for inserting (copy/move) of records. 
+ * Used for pages / tt_content element wizards of various kinds.
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_positionMap {
-	var $getModConfigCache=array();
-	var $checkNewPageCache=Array();
-	
-	var $R_URI='';
-	var $elUid='';
-	var $moveUid='';
+
+		// EXTERNAL, static:	
 	var $moveOrCopy='move';
-	var $l_insertNewPageHere = 'insertNewPageHere';
-	var $l_insertNewRecordHere = 'insertNewRecordHere';
 	var $dontPrintPageInsertIcons=0;
 	var $backPath='';
+	var $depth=2; 		// How deep the position page tree will go.
+	var $cur_sys_language;	// Can be set to the sys_language uid to select content elements for.
+
+
+		// INTERNAL, dynamic:
+	var $R_URI='';			// Request uri
+	var $elUid='';			// Element id.
+	var $moveUid='';		// tt_content element uid to move.
+
+		// Caching arrays:
+	var $getModConfigCache=array();
+	var $checkNewPageCache=Array();
+
+		// Label keys:
+	var $l_insertNewPageHere = 'insertNewPageHere';
+	var $l_insertNewRecordHere = 'insertNewRecordHere';
+
 	var $modConfigStr='mod.web_list.newPageWiz';
-	var $cur_sys_language;
+
+
+
+
+
+	
+	
+	/*************************************
+	 *
+	 * Page position map:
+	 *
+	 **************************************/
 
 	/**
-	 * @param	[type]		$id: ...
-	 * @param	[type]		$pageinfo: ...
-	 * @param	[type]		$perms_clause: ...
-	 * @param	[type]		$R_URI: ...
-	 * @return	[type]		...
+	 * Creates a "position tree" based on the page tree.
+	 * Notice: A class, "localPageTree" must exist and probably it is an extension class of the t3lib_pageTree class. See "db_new.php" in the core for an example.
+	 * 
+	 * @param	integer		Current page id
+	 * @param	array		Current page record.
+	 * @param	string		Page selection permission clause.
+	 * @param	string		Current REQUEST_URI
+	 * @return	string		HTML code for the tree.
 	 */
 	function positionTree($id,$pageinfo,$perms_clause,$R_URI)	{
 		global $LANG;
+		
+			// Make page tree object:
 		$t3lib_pageTree = t3lib_div::makeInstance('localPageTree');
 		$t3lib_pageTree->init(' AND '.$perms_clause);
 		$t3lib_pageTree->addField('pid');
+
+			// Initialize variables:
 		$this->R_URI = $R_URI;
 		$this->elUid = $id;
 	
-		$depth=2;
-		$t3lib_pageTree->getTree($pageinfo['pid'], $depth);
+			// Create page tree, in $this->depth levels.
+		$t3lib_pageTree->getTree($pageinfo['pid'], $this->depth);
 		if (!$this->dontPrintPageInsertIcons)	$code.=$this->JSimgFunc();
-		reset($t3lib_pageTree->tree);
-	
+		
+			// Initialize variables:
 		$saveBlankLineState=array();
 		$saveLatestUid=array();
-		$latestInvDepth=$depth;
-	
-		while(list($cc,$dat)=each($t3lib_pageTree->tree))	{
+		$latestInvDepth=$this->depth;
+
+			// Traverse the tree:
+		foreach($t3lib_pageTree->tree as $cc => $dat)	{
+		
 				// Make link + parameters.
 			$latestInvDepth=$dat['invertedDepth'];
 			$saveLatestUid[$latestInvDepth]=$dat;
 			if (isset($t3lib_pageTree->tree[$cc-1]))	{
 				$prev_dat = $t3lib_pageTree->tree[$cc-1];
+				
 					// If current page, subpage?
 				if ($prev_dat['row']['uid']==$id)	{
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth']>$t3lib_pageTree->tree[$cc]['invertedDepth']))	{	// 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
-//						$params='&edit[pages]['.$id.']=new&returnNewPageId=1';
-						$code.='<nobr>'.$this->insertQuadLines($dat['blankLineCode']).'<img src=clear.gif width=18 height=8 align=top><a href="#" onClick="'.$this->onClickEvent($id,$id,1).'" onmouseover="changeImg(\'mImgSubpage'.$cc.'\',0);" onmouseout="changeImg(\'mImgSubpage'.$cc.'\',1);"><img name="mImgSubpage'.$cc.'" src="gfx/newrecord_marker_d.gif" width="281" height="8" border="0" title="'.$this->insertlabel().'" align=top></a><nobr><BR>';
+						$code.='<span class="nobr">'.
+							$this->insertQuadLines($dat['blankLineCode']).
+							'<img src="clear.gif" width="18" height="8" align="top" alt="" />'.
+							'<a href="#" onclick="'.htmlspecialchars($this->onClickEvent($id,$id,1)).'" onmouseover="'.htmlspecialchars('changeImg(\'mImgSubpage'.$cc.'\',0);').'" onmouseout="'.htmlspecialchars('changeImg(\'mImgSubpage'.$cc.'\',1);').'">'.
+							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/newrecord_marker_d.gif','width="281" height="8"').' name="mImgSubpage'.$cc.'" border="0" align="top" title="'.$this->insertlabel().'" alt="" />'.
+							'</a></span><br />';
 					}
 				}
 					
@@ -135,8 +177,12 @@ class t3lib_positionMap {
 					// First of all the previous level should have an icon:
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($prev_dat['row']['pid']))	{
 						$prevPid = (-$prev_dat['row']['uid']);
-//						$params='&edit[pages]['.$prevPid.']=new&returnNewPageId=1';
-						$code.='<nobr>'.$this->insertQuadLines($dat['blankLineCode']).'<img src=clear.gif width=18 height=1 align=top><a href="#" onClick="'.$this->onClickEvent($prevPid,$prev_dat['row']['pid'],2).'" onmouseover="changeImg(\'mImgAfter'.$cc.'\',0);" onmouseout="changeImg(\'mImgAfter'.$cc.'\',1);"><img name="mImgAfter'.$cc.'" src="gfx/newrecord_marker_d.gif" width="281" height="8" border="0" title="'.$this->insertlabel().'" align=top></a><nobr><BR>';
+						$code.='<span class="nobr">'.
+							$this->insertQuadLines($dat['blankLineCode']).
+							'<img src="clear.gif" width="18" height="1" align="top" alt="" />'.
+							'<a href="#" onclick="'.htmlspecialchars($this->onClickEvent($prevPid,$prev_dat['row']['pid'],2)).'" onmouseover="'.htmlspecialchars('changeImg(\'mImgAfter'.$cc.'\',0);').'" onmouseout="'.htmlspecialchars('changeImg(\'mImgAfter'.$cc.'\',1);').'">'.
+							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/newrecord_marker_d.gif','width="281" height="8"').' name="mImgAfter'.$cc.'" border="0" align="top" title="'.$this->insertlabel().'" alt="" />'.
+							'</a></span><br />';
 					}
 	
 					// Then set the current prevPid
@@ -148,12 +194,18 @@ class t3lib_positionMap {
 				$prevPid = $dat['row']['pid'];	// First in the tree
 			}
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid']))	{
-//				$params='&edit[pages]['.$prevPid.']=new&returnNewPageId=1';
-				$code.='<nobr>'.$this->insertQuadLines($dat['blankLineCode']).'<a href="#" onClick="'.$this->onClickEvent($prevPid,$dat['row']['pid'],3).'" onmouseover="changeImg(\'mImg'.$cc.'\',0);" onmouseout="changeImg(\'mImg'.$cc.'\',1);"><img name="mImg'.$cc.'" src="gfx/newrecord_marker_d.gif" width="281" height="8" border="0" title="'.$this->insertlabel().'" align=top></a><nobr><BR>';
+				$code.='<span class="nobr">'.
+					$this->insertQuadLines($dat['blankLineCode']).
+					'<a href="#" onclick="'.htmlspecialchars($this->onClickEvent($prevPid,$dat['row']['pid'],3)).'" onmouseover="'.htmlspecialchars('changeImg(\'mImg'.$cc.'\',0);').'" onmouseout="'.htmlspecialchars('changeImg(\'mImg'.$cc.'\',1);').'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/newrecord_marker_d.gif','width="281" height="8"').' name="mImg'.$cc.'" border="0" align="top" title="'.$this->insertlabel().'" alt="" />'.
+					'</a></span><br />';
 			}
 	
 				// The line with the icon and title:
-			$t_code='<nobr>'.$dat['HTML'].$this->linkPageTitle($this->boldTitle(htmlspecialchars(t3lib_div::fixed_lgd($dat['row']['title'],$BE_USER->uc['titleLen'])),$dat,$id),$dat['row']).'<nobr><BR>';
+			$t_code='<span class="nobr">'.
+				$dat['HTML'].
+				$this->linkPageTitle($this->boldTitle(htmlspecialchars(t3lib_div::fixed_lgd($dat['row']['title'],$BE_USER->uc['titleLen'])),$dat,$id),$dat['row']).
+				'</span><br />';
 			$code.=$t_code;
 		}
 		
@@ -161,16 +213,24 @@ class t3lib_positionMap {
 		$prev_dat = end($t3lib_pageTree->tree);
 		if ($prev_dat['row']['uid']==$id)	{
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id))	{
-//				$params='&edit[pages]['.$id.']=new&returnNewPageId=1';
-				$code.='<nobr>'.$this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'],1).'<img src=clear.gif width=18 height=8 align=top><a href="#" onClick="'.$this->onClickEvent($id,$id,4).'" onmouseover="changeImg(\'mImgSubpage'.$cc.'\',0);" onmouseout="changeImg(\'mImgSubpage'.$cc.'\',1);"><img name="mImgSubpage'.$cc.'" src="gfx/newrecord_marker_d.gif" width="281" height="8" border="0" title="'.$this->insertlabel().'" align=top></a><nobr><BR>';
+				$code.='<span class="nobr">'.
+					$this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'],1).
+					'<img src="clear.gif" width="18" height="8" align="top" alt="" />'.
+					'<a href="#" onclick="'.$this->onClickEvent($id,$id,4).'" onmouseover="'.htmlspecialchars('changeImg(\'mImgSubpage'.$cc.'\',0);').'" onmouseout="'.htmlspecialchars('changeImg(\'mImgSubpage'.$cc.'\',1);').'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/newrecord_marker_d.gif','width="281" height="8"').' name="mImgSubpage'.$cc.'" border="0" align="top" title="'.$this->insertlabel().'" alt="" />'.
+					'</a></span><br />';
 			}
 		}
 	
-		for ($a=$latestInvDepth;$a<=$depth;$a++)	{
+		for ($a=$latestInvDepth;$a<=$this->depth;$a++)	{
 			$dat = $saveLatestUid[$a];
 			$prevPid = (-$dat['row']['uid']);
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid']))	{
-				$code.='<nobr>'.$this->insertQuadLines($dat['blankLineCode'],1).'<a href="#" onClick="'.$this->onClickEvent($prevPid,$dat['row']['pid'],5).'" onmouseover="changeImg(\'mImgEnd'.$a.'\',0);" onmouseout="changeImg(\'mImgEnd'.$a.'\',1);"><img name="mImgEnd'.$a.'" src="gfx/newrecord_marker_d.gif" width="281" height="8" border="0" title="'.$this->insertlabel().'" align=top></a><nobr><BR>';
+				$code.='<span class="nobr">'.
+					$this->insertQuadLines($dat['blankLineCode'],1).
+					'<a href="#" onclick="'.htmlspecialchars($this->onClickEvent($prevPid,$dat['row']['pid'],5)).'" onmouseover="'.htmlspecialchars('changeImg(\'mImgEnd'.$a.'\',0);').'" onmouseout="'.htmlspecialchars('changeImg(\'mImgEnd'.$a.'\',1);').'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/newrecord_marker_d.gif','width="281" height="8"').' name="mImgEnd'.$a.'" border="0" align="top" title="'.$this->insertlabel().'" alt="" />'.
+					'</a></span><br />';
 			}
 		}
 	
@@ -178,19 +238,21 @@ class t3lib_positionMap {
 	}
 
 	/**
-	 * @param	[type]		$prefix: ...
-	 * @return	[type]		...
+	 * Creates the JavaScritp for insert new-record rollover image
+	 * 
+	 * @param	string		Insert record image prefix.
+	 * @return	string		<script> section
 	 */
 	function JSimgFunc($prefix='')	{
-		$code.='
-		<script language="javascript" type="text/javascript">
+		$code.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+		
 			var img_newrecord_marker=new Image(); 
-			img_newrecord_marker.src = "gfx/newrecord'.$prefix.'_marker.gif";
+			img_newrecord_marker.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/newrecord'.$prefix.'_marker.gif','',1).'";
 	
 			var img_newrecord_marker_d=new Image(); 
-			img_newrecord_marker_d.src = "gfx/newrecord'.$prefix.'_marker_d.gif";
+			img_newrecord_marker_d.src = "'.t3lib_iconWorks::skinImg($this->backPath,'gfx/newrecord'.$prefix.'_marker_d.gif','',1).'";
 	
-			function changeImg(name,d)	{
+			function changeImg(name,d)	{	//
 				if (document[name]) {
 					if (d)	{
 						document[name].src = img_newrecord_marker_d.src;
@@ -199,16 +261,17 @@ class t3lib_positionMap {
 					}
 				}
 			}
-		</script>
-		';
+		');
 		return $code;
 	}
 
 	/**
-	 * @param	[type]		$t_code: ...
-	 * @param	[type]		$dat: ...
-	 * @param	[type]		$id: ...
-	 * @return	[type]		...
+	 * Wrap $t_code in bold IF the $dat uid matches $id
+	 * 
+	 * @param	string		Title string
+	 * @param	array		Infomation array with record array inside.
+	 * @param	integer		The current id.
+	 * @return	string		The title string.
 	 */
 	function boldTitle($t_code,$dat,$id)	{
 		if ($dat['row']['uid']==$id)	{
@@ -218,16 +281,18 @@ class t3lib_positionMap {
 	}
 
 	/**
-	 * @param	[type]		$pid: ...
-	 * @param	[type]		$newPagePID: ...
-	 * @return	[type]		...
+	 * Creates the onclick event for the insert-icons.
+	 * 
+	 * @param	integer		The pid.
+	 * @param	integer		New page id.
+	 * @return	string		Onclick attribute content
 	 */
 	function onClickEvent($pid,$newPagePID)	{
 		$TSconfigProp = $this->getModConfig($newPagePID);
 		
 		if ($TSconfigProp['useTemplaVoila'])	{
 			if (t3lib_extMgm::isLoaded('templavoila'))	{
-				$onclick = "document.location='".t3lib_extMgm::extRelPath('templavoila')."mod1/index.php?cmd=crPage&positionPid=".$pid."';";
+				$onclick = "document.location='".t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?cmd=crPage&positionPid='.$pid."';";
 				return $onclick;
 			}
 		}
@@ -237,25 +302,32 @@ class t3lib_positionMap {
 	}
 
 	/**
-	 * @return	[type]		...
+	 * Get label, htmlspecialchars()'ed
+	 * 
+	 * @return	string		The localized label for "insert new page here"
 	 */
 	function insertlabel()	{
 		global $LANG;
-		return $LANG->getLL($this->l_insertNewPageHere);
+		return $LANG->getLL($this->l_insertNewPageHere,1);
 	}
 
 	/**
-	 * @param	[type]		$str: ...
-	 * @param	[type]		$rec: ...
-	 * @return	[type]		...
+	 * Wrapping page title.
+	 * 
+	 * @param	string		Page title.
+	 * @param	array		Page record (?)
+	 * @return	string		Wrapped title.
 	 */
 	function linkPageTitle($str,$rec)	{
 		return $str;
 	}
 
 	/**
-	 * @param	[type]		$pid: ...
-	 * @return	[type]		...
+	 * Checks if the user has permission to created pages inside of the $pid page.
+	 * Uses caching so only one regular lookup is made - hence you can call the function multiple times without worrying about performance.
+	 * 
+	 * @param	integer		Page id for which to test.
+	 * @return	boolean		
 	 */
 	function checkNewPageInPid($pid)	{
 		global $BE_USER;
@@ -267,8 +339,11 @@ class t3lib_positionMap {
 	}
 
 	/**
-	 * @param	[type]		$pid: ...
-	 * @return	[type]		...
+	 * Returns module configuration for a pid.
+	 * 
+	 * @param	integer		Page id for which to get the module configuration.
+	 * @return	array		The properties of teh module configuration for the page id.
+	 * @see onClickEvent()
 	 */
 	function getModConfig($pid)	{
 		global $BE_USER;
@@ -280,9 +355,11 @@ class t3lib_positionMap {
 	}
 
 	/**
-	 * @param	[type]		$codes: ...
-	 * @param	[type]		$allBlank: ...
-	 * @return	[type]		...
+	 * Insert half/quad lines.
+	 * 
+	 * @param	string		keywords for which lines to insert.
+	 * @param	boolean		If true all lines are just blank clear.gifs
+	 * @return	string		HTML content.
 	 */
 	function insertQuadLines($codes,$allBlank=0)	{
 		$codeA = t3lib_div::trimExplode(',',$codes.",line",1);
@@ -290,9 +367,9 @@ class t3lib_positionMap {
 		$lines=array();
 		while(list(,$code)=each($codeA))	{
 			if ($code=="blank" || $allBlank)	{
-				$lines[]='<img src="clear.gif" width="18" height="8" align=top>';
+				$lines[]='<img src="clear.gif" width="18" height="8" align="top" alt="" />';
 			} else {
-				$lines[]='<img src="gfx/ol/halfline.gif" width="18" height="8" align="top">';
+				$lines[]='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' align="top" alt="" />';
 			}
 		}
 		return implode('',$lines);
@@ -306,13 +383,21 @@ class t3lib_positionMap {
 
 
 
+	/*************************************
+	 *
+	 * Content element positioning:
+	 *
+	 **************************************/
+
 	/**
-	 * @param	[type]		$pid: ...
-	 * @param	[type]		$moveUid: ...
-	 * @param	[type]		$colPosList: ...
-	 * @param	[type]		$showHidden: ...
-	 * @param	[type]		$R_URI: ...
-	 * @return	[type]		...
+	 * Creates HTML for inserting/moving content elements.
+	 * 
+	 * @param	integer		page id onto which to insert content element.
+	 * @param	integer		Move-uid (tt_content element uid?)
+	 * @param	string		List of columns to show
+	 * @param	boolean		If not set, then hidden/starttime/endtime records are filtered out.
+	 * @param	string		Request URI
+	 * @return	string		HTML
 	 */
 	function printContentElementColumns($pid,$moveUid,$colPosList,$showHidden,$R_URI)	{
 		$this->R_URI = $R_URI;
@@ -340,54 +425,80 @@ class t3lib_positionMap {
 	}
 
 	/**
-	 * @param	[type]		$lines: ...
-	 * @param	[type]		$colPosArray: ...
-	 * @return	[type]		...
+	 * Creates the table with the content columns
+	 * 
+	 * @param	array		Array with arrays of lines for each column
+	 * @param	array		Column position array
+	 * @return	string		HTML
 	 */
 	function printRecordMap($lines,$colPosArray)	{
 		$row1='';
 		$row2='';
-		reset($colPosArray);
-		while(list($kk,$vv)=each($colPosArray))	{
-			$row1.='<td align=center width="'.round(100/count($colPosArray)).'%"><strong>'.$this->wrapColumnHeader(t3lib_div::danish_strtoupper($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','colPos',$vv))),$vv).'</strong></td>';
-			$row2.='<td valign=top nowrap>'.implode('<BR>',$lines[$kk]).'</td>';
+		$count = t3lib_div::intInRange(count($colPosArray),1);
+		
+			// Traverse the columns here:
+		foreach($colPosArray as $kk => $vv)	{
+			$row1.='<td align="center" width="'.round(100/$count).'%"><span class="uppercase"><strong>'.
+					$this->wrapColumnHeader($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','colPos',$vv),1),$vv).
+					'</strong></span></td>';
+			$row2.='<td valign="top" nowrap="nowrap">'.
+					implode('<br />',$lines[$kk]).
+					'</td>';
 		}
-		$table = '<table border=0 cellpadding=0 cellspacing=1>
-			<tr bgColor="'.$GLOBALS['SOBE']->doc->bgColor5.'">'.$row1.'</tr>
+		
+		$table = '
+		
+		<!--
+			Map of records in columns: 
+		-->
+		<table border="0" cellpadding="0" cellspacing="1" id="typo3-ttContentList">
+			<tr class="bgColor5">'.$row1.'</tr>
 			<tr>'.$row2.'</tr>
-		</table>';
+		</table>
+		
+		';
+		
 		return $this->JSimgFunc('2').$table;
 	}
 
 	/**
-	 * @param	[type]		$str: ...
-	 * @param	[type]		$vv: ...
-	 * @return	[type]		...
+	 * Wrapping the column header
+	 * 
+	 * @param	string		Header value
+	 * @param	string		Column info.
+	 * @return	string		
+	 * @see printRecordMap()
 	 */
 	function wrapColumnHeader($str,$vv)	{
 		return $str;
 	}
 
 	/**
-	 * @param	[type]		$row: ...
-	 * @param	[type]		$vv: ...
-	 * @param	[type]		$kk: ...
-	 * @param	[type]		$moveUid: ...
-	 * @param	[type]		$pid: ...
-	 * @return	[type]		...
+	 * Creates a linked position icon.
+	 * 
+	 * @param	array		Element row.
+	 * @param	string		Column position value.
+	 * @param	integer		Column key.
+	 * @param	integer		Move uid
+	 * @param	integer		PID value.
+	 * @return	string		
 	 */
 	function insertPositionIcon($row,$vv,$kk,$moveUid,$pid)	{
 		$cc = hexdec(substr(md5($row['uid'].'-'.$vv.'-'.$kk),0,4));
-		return '<a href="#" onClick="'.$this->onClickInsertRecord($row,$vv,$moveUid,$pid,$this->cur_sys_language).'" onmouseover="changeImg(\'mImg'.$cc.'\',0);" onmouseout="changeImg(\'mImg'.$cc.'\',1);"><img name="mImg'.$cc.'" src="gfx/newrecord2_marker_d.gif" width="100" height="8" border="0" title="'.$GLOBALS['LANG']->getLL($this->l_insertNewRecordHere).'" align=top></a>';
+		return '<a href="#" onclick="'.htmlspecialchars($this->onClickInsertRecord($row,$vv,$moveUid,$pid,$this->cur_sys_language)).'" onmouseover="'.htmlspecialchars('changeImg(\'mImg'.$cc.'\',0);').'" onmouseout="'.htmlspecialchars('changeImg(\'mImg'.$cc.'\',1);').'">'.
+			'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/newrecord2_marker_d.gif','width="100" height="8"').' name="mImg'.$cc.'" border="0" align="top" title="'.$GLOBALS['LANG']->getLL($this->l_insertNewRecordHere,1).'" alt="" />'.
+			'</a>';
 	}
 
 	/**
-	 * @param	[type]		$row: ...
-	 * @param	[type]		$vv: ...
-	 * @param	[type]		$moveUid: ...
-	 * @param	[type]		$pid: ...
-	 * @param	[type]		$sys_lang: ...
-	 * @return	[type]		...
+	 * Create on-click event value.
+	 * 
+	 * @param	array		The record.
+	 * @param	string		Column position value.
+	 * @param	integer		Move uid
+	 * @param	integer		PID value.
+	 * @param	integer		System language (not used currently)
+	 * @return	string		
 	 */
 	function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) {
 		$table='tt_content';
@@ -403,31 +514,37 @@ class t3lib_positionMap {
 	}
 
 	/**
-	 * @param	[type]		$str: ...
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
+	 * Wrapping the record header  (from getRecordHeader())
+	 * 
+	 * @param	string		HTML content
+	 * @param	array		Record array.
+	 * @return	string		HTML content
 	 */
 	function wrapRecordHeader($str,$row)	{
 		return $str;
 	}
 
 	/**
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
+	 * Create record header (includes teh record icon, record title etc.)
+	 * 
+	 * @param	array		Record row.
+	 * @return	string		HTML
 	 */
 	function getRecordHeader($row)	{
-		$line = t3lib_iconWorks::getIconImage('tt_content',$row,$this->backPath,t3lib_BEfunc::titleAttrib(t3lib_BEfunc::getRecordIconAltText($row,'tt_content'),1).' align=top');
+		$line = t3lib_iconWorks::getIconImage('tt_content',$row,$this->backPath,' align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($row,'tt_content')).'"');
 		$line.= t3lib_BEfunc::getRecordTitle('tt_content',$row,1);
 		return $this->wrapRecordTitle($line,$row);
 	}
 
 	/**
-	 * @param	[type]		$str: ...
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
+	 * Wrapping the title of the record.
+	 * 
+	 * @param	string		The title value.
+	 * @param	array		The record row.
+	 * @return	string		Wrapped title string.
 	 */
 	function wrapRecordTitle($str,$row)	{
-		return '<a href="'.t3lib_div::linkThisScript(array('uid'=>intval($row['uid']),'moveUid'=>'')).'">'.$str.'</a>';
+		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($row['uid']),'moveUid'=>''))).'">'.$str.'</a>';
 	}
 }
 

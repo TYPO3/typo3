@@ -84,7 +84,7 @@ Vil du stadig lukke det?',
 			"mess.deleteClip" => 'Er du sikker på, at du vil slette ALLE elementer (%s) på klippebordet?',
 			"mess.permChanges" => 'Der er blevet ændret på dine rettigheder.
 Du bør lukke og genåbne TYPO3 for at opdatere interfacet med ændringerne!',
-			"mess.gettingTree" => 'Henter træet fra serveren<BR>Vent venligst...',
+			"mess.gettingTree" => 'Henter træet fra serveren<br />Vent venligst...',
 			"mess.move_into" => 'Flyt "%s" ind i "%s"?',
 			"mess.move_after" => 'Flyt "%s" til positionen efter "%s"?',
 			"mess.copy_into" => 'Kopier "%s" ind i "%s"?',

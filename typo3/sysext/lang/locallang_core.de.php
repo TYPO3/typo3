@@ -83,7 +83,7 @@ Wollen Sie es wirklich schliessen?',
 			"mess.delete" => 'Soll "%s" wirklich gelöscht werden?',
 			"mess.permChanges" => 'Ihre Rechte wurden geändert.
 Bitte Schliessen Sie TYPO3 und loggen Sie sich neu ein!',
-	        "gettingTree" => 'Daten werden vom<BR>Server geholt.<BR>Bitte warten...',
+	        "gettingTree" => 'Daten werden vom<br />Server geholt.<br />Bitte warten...',
 			"mess.move_into" => 'Verschiebe "%s" into "%s"?',
 			"mess.move_after" => 'Verschiebe "%s" to after "%s"?',
 			"mess.copy_into" => 'Kopiere "%s" into "%s"?',

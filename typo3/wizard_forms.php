@@ -25,9 +25,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /** 
- * Wizard to help make forms (fx. for tt_content elements) of type "form". 
+ * Wizard to help make forms (fx. for tt_content elements) of type 'form'. 
  * 
  * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
+ * XHTML compliant
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -36,18 +38,22 @@
  *
  *
  *
- *   80: class SC_wizard_forms 
- *   89:     function init()	
- *  119:     function main()	
- *  135:     function printContent()	
+ *  175: class SC_wizard_forms 
+ *  202:     function init()	
+ *  238:     function main()	
+ *  254:     function printContent()	
+ *  263:     function formsWizard()	
  *
- *              SECTION: OTHER FUNCTIONS:
- *  158:     function changeFunc($cArr,$TABLE_c)	
- *  218:     function cleanT($tArr)	
- *  235:     function formatCells($fArr)	
- *  251:     function tableWizard($P)	
+ *              SECTION: Helper functions
+ *  306:     function getConfigCode(&$row)	
+ *  378:     function getFormHTML($formCfgArray,$row)	
+ *  631:     function changeFunc()	
+ *  690:     function cfgArray2CfgString($cfgArr)	
+ *  765:     function cfgString2CfgArray($cfgStr)	
+ *  854:     function cleanT($tArr)	
+ *  872:     function formatCells($fArr)	
  *
- * TOTAL FUNCTIONS: 7
+ * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -71,153 +77,783 @@ include ('sysext/lang/locallang_wizards.php');
 
 
 /**
- * Script Class
+ * API comments:
+ *  
+ * The form wizard can help you to create forms - it allows you to create almost any kind of HTML form elements and in any order and amount.
+ * 
+ * The format for the resulting configuration code can be either a line-based configuration. That can look like this:
+ * 
+ * Your name: | *name=input | (input your name here!)
+ * Your Email: | *email=input
+ * Your address: | address=textarea,40,10
+ * Your Haircolor: | hair=radio | 
+ * upload | attachment=file
+ *  | quoted_printable=hidden | 0
+ *  | formtype_mail=submit | Send form
+ *  | html_enabled=hidden
+ *  | subject=hidden | This is the subject
+ * 
+ *  
+ * Alternatively it can be XML. The same configuration from above looks like this in XML:
+ * 
+ * <T3FormWizard>
+ * 	<n2>
+ * 		<type>input</type>
+ * 		<label>Your name:</label>
+ * 		<required>1</required>
+ * 		<fieldname>name</fieldname>
+ * 		<size></size>
+ * 		<max></max>
+ * 		<default>(input your name here!)</default>
+ * 	</n2>
+ * 	<n4>
+ * 		<type>input</type>
+ * 		<label>Your Email:</label>
+ * 		<required>1</required>
+ * 		<fieldname>email</fieldname>
+ * 		<size></size>
+ * 		<max></max>
+ * 		<default></default>
+ * 	</n4>
+ * 	<n6>
+ * 		<type>textarea</type>
+ * 		<label>Your address:</label>
+ * 		<fieldname>address</fieldname>
+ * 		<cols>40</cols>
+ * 		<rows>10</rows>
+ * 		<default></default>
+ * 	</n6>
+ * 	<n8>
+ * 		<type>radio</type>
+ * 		<label>Your Haircolor:</label>
+ * 		<fieldname>hair</fieldname>
+ * 		<options></options>
+ * 	</n8>
+ * 	<n10>
+ * 		<type>file</type>
+ * 		<label>upload</label>
+ * 		<fieldname>attachment</fieldname>
+ * 		<size></size>
+ * 	</n10>
+ * 	<n12>
+ * 		<type>hidden</type>
+ * 		<label></label>
+ * 		<fieldname>quoted_printable</fieldname>
+ * 		<default>0</default>
+ * 	</n12>
+ * 	<n2000>
+ * 		<fieldname>formtype_mail</fieldname>
+ * 		<type>submit</type>
+ * 		<default>Send form</default>
+ * 	</n2000>
+ * 	<n2002>
+ * 		<fieldname>html_enabled</fieldname>
+ * 		<type>hidden</type>
+ * 	</n2002>
+ * 	<n2004>
+ * 		<fieldname>subject</fieldname>
+ * 		<type>hidden</type>
+ * 		<default>This is the subject</default>
+ * 	</n2004>
+ * 	<n20>
+ * 		<content></content>
+ * 	</n20>
+ * </T3FormWizard>
+ * 
+ * 
+ * The XML/phpArray structure is the internal format of the wizard.
+ */
+  
+
+/**
+ * Script Class for rendering the Form Wizard
  * 
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_wizard_forms {
-	var $include_once=array();
-	var $content;
-	var $P;
-	var $doc;	
 	
+		// Internal, dynamic:
+	var $doc;					// Document template object
+	var $content;				// Content accumulation for the module.
+	var $include_once=array();	// List of files to include.
+
+
+		// Internal, static:
+	var $xmlStorage=0;			// If set, the string version of the content is interpreted/written as XML instead of the original linebased kind. This variable still needs binding to the wizard parameters - but support is ready!
+
+
+		// Internal, static: GPvars
+	var $P;						// Wizard parameters, coming from TCEforms linking to the wizard.
+	var $FORMCFG;				// The array which is constantly submitted by the multidimensional form of this wizard.
+	var $special;				// Indicates if the form is of a dedicated type, like "formtype_mail" (for tt_content element "Form")
+
+
+
+
+
+
 	/**
-	 * @return	[type]		...
+	 * Initialization the class
+	 * 
+	 * @return	void		
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $BACK_PATH,$HTTP_POST_VARS;
 
+			// GPvars:
 		$this->P = t3lib_div::GPvar('P',1);
-		
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->backPath = $BACK_PATH;
-		$this->doc->JScode='
-			<script language="javascript" type="text/javascript">
-				function jumpToUrl(URL,formEl)	{	/
-					document.location = URL;
-				}
-			</script>
-		';
-		
-		list($rUri) = explode("#",t3lib_div::getIndpEnv("REQUEST_URI"));
-		$this->doc->form ='<form action="'.$rUri.'" method="POST" name="wizardForm">';
-		
-		$this->content.=$this->doc->startPage("Table");
+		$this->special = t3lib_div::GPvar('special');
+		$this->FORMCFG = t3lib_div::GPvar('FORMCFG',1);
 
-		if ($HTTP_POST_VARS["savedok_x"] || $HTTP_POST_VARS["saveandclosedok_x"])	{
-			$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
+			// Document template object:
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc->docType = 'xhtml_trans';
+		$this->doc->backPath = $BACK_PATH;
+		$this->doc->JScode=$this->doc->wrapScriptTags('
+			function jumpToUrl(URL,formEl)	{	//
+				document.location = URL;
+			}
+		');
+		
+			// Setting form tag:
+		list($rUri) = explode('#',t3lib_div::getIndpEnv('REQUEST_URI'));
+		$this->doc->form ='<form action="'.htmlspecialchars($rUri).'" method="post" name="wizardForm">';
+		
+			// Start page:
+		$this->content=$this->doc->startPage('Form Wizard');
+
+			// If save command found, include tcemain:
+		if ($HTTP_POST_VARS['savedok_x'] || $HTTP_POST_VARS['saveandclosedok_x'])	{
+			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main function for rendering the form wizard HTML
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+		global $LANG;
 
-		if ($this->P["table"] && $this->P["field"] && $this->P["uid"])	{
-			$this->content.=$this->doc->section($LANG->getLL("forms_title"),$this->tableWizard($this->P),0,1);
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'])	{
+			$this->content.=$this->doc->section($LANG->getLL('forms_title'),$this->formsWizard(),0,1);
 		} else {
-			$this->content.=$this->doc->section($LANG->getLL("forms_title"),$GLOBALS["TBE_TEMPLATE"]->rfw($LANG->getLL("table_noData")),0,1);
+			$this->content.=$this->doc->section($LANG->getLL('forms_title'),'<span class="typo3-red">'.$LANG->getLL('table_noData',1).'</span>',0,1);
 		}
 		$this->content.=$this->doc->endPage();
 	}
 
 	/**
-	 * [Describe function...]
+	 * Outputting the accumulated content to screen
 	 * 
-	 * @return	[type]		...
+	 * @return	void		
 	 */
 	function printContent()	{
 		echo $this->content;
 	}
 	
+	/**
+	 * Draws the form wizard content
+	 * 
+	 * @return	string		HTML content for the form.
+	 */
+	function formsWizard()	{
+		
+			// First, check the references by selecting the record:
+		$row=t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+		if (!is_array($row))	{
+			t3lib_BEfunc::typo3PrintError ('Wizard Error','No reference to record',0);
+			exit;
+		}
+
+			// This will get the content of the form configuration code field to us - possibly cleaned up, saved to database etc. if the form has been submitted in the meantime.
+		$formCfgArray = $this->getConfigCode($row);
+
+			// Generation of the Form Wizards HTML code:		
+		$content = $this->getFormHTML($formCfgArray,$row);
+		
+			// Return content:
+		return $content;
+	}
+
 	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 	/****************************
 	 *
-	 * OTHER FUNCTIONS:	
+	 * Helper functions
 	 *
 	 ***************************/
+
+	/**
+	 * Will get and return the configuration code string
+	 * Will also save (and possibly redirect/exit) the content if a save button has been pressed
+	 * 
+	 * @param	array		Current parent record row (passed by value!)
+	 * @return	array		Configuration Array
+	 * @access private
+	 */
+	function getConfigCode(&$row)	{
+		global $HTTP_POST_VARS;
+		
+			// If some data has been submitted, then construct 
+		if (isset($this->FORMCFG['c']))	{
+			
+				// Process incoming:
+			$this->changeFunc();
+			
+				// Convert to string (either line based or XML):
+			if ($this->xmlStorage)	{
+					// Convert the input array to XML:
+				$bodyText = t3lib_div::array2xml($this->FORMCFG['c'],'',0,'T3FormWizard');
+
+					// Setting cfgArr directly from the input:
+				$cfgArr = $this->FORMCFG['c'];
+			} else {
+					// Convert the input array to a string of configuration code:
+				$bodyText = $this->cfgArray2CfgString($this->FORMCFG['c']);
+
+					// Create cfgArr from the string based configuration - that way it is cleaned up and any incompatibilities will be removed!
+				$cfgArr = $this->cfgString2CfgArray($bodyText);
+			}
+					
+				// If a save button has been pressed, then save the new field content:
+			if ($HTTP_POST_VARS['savedok_x'] || $HTTP_POST_VARS['saveandclosedok_x'])	{
+			
+					// Make TCEmain object:
+				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+				$tce->stripslashes_values=0;
+				
+					// Put content into the data array:
+				$data=array();
+				$data[$this->P['table']][$this->P['uid']][$this->P['field']]=$bodyText;
+				if ($this->special=='formtype_mail')	{
+					$data[$this->P['table']][$this->P['uid']]['subheader']=$this->FORMCFG['recipient'];
+				}
+	
+					// Perform the update:
+				$tce->start($data,array());
+				$tce->process_datamap();
+	
+					// Re-load the record content:
+				$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+				
+					// If the save/close button was pressed, then redirect the screen:
+				if ($HTTP_POST_VARS['saveandclosedok_x'])	{
+					header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
+					exit;
+				}
+			}
+		} else {	// If nothing has been submitted, load the $bodyText variable from the selected database row:
+			if ($this->xmlStorage)	{
+				$cfgArr = t3lib_div::xml2array($row[$this->P['field']]);
+			} else {	// Regular linebased form configuration:
+				$cfgArr = $this->cfgString2CfgArray($row[$this->P['field']]);
+			}
+			$cfgArr = is_array($cfgArr) ? $cfgArr : array();
+		}
+		
+			// Return configuration code:
+		return $cfgArr;
+	}
+	
+	/**
+	 * Creates the HTML for the Form Wizard:
+	 * 
+	 * @param	string		Form config array
+	 * @param	array		Current parent record array
+	 * @return	string		HTML for the form wizard
+	 * @access private
+	 */
+	function getFormHTML($formCfgArray,$row)	{
+		global $LANG;
+	
+			// Initialize variables:
+		$specParts=array();
+		$hiddenFields=array();
+		$tRows=array();
+		
+			// Set header row:
+		$cells=array($LANG->getLL('forms_preview',1).':',
+						$LANG->getLL('forms_element',1).':',
+						$LANG->getLL('forms_config',1).':',
+		);
+		$tRows[]='
+			<tr class="bgColor2" id="typo3-formWizardHeader">
+				<td>&nbsp;</td>
+				<td>'.implode('</td>
+				<td>',$cells).'</td>
+			</tr>';
+	
+			// Traverse the number of form elements:
+		$k=0;
+		foreach($formCfgArray as $confData)	{
+		
+				// Initialize:
+			$cells=array();
+	
+				// If there is a configuration line which is active, then render it:
+			if (!isset($confData['comment'])) {
+				
+					// Special parts:
+				if ($this->special=='formtype_mail' && t3lib_div::inList('formtype_mail,subject,html_enabled',$confData['fieldname']))	{
+					$specParts[$confData['fieldname']]=$confData['default'];
+				} else {
+
+						// Render title/field preview COLUMN
+					$cells[]=$confData['type']!='hidden' ? '<strong>'.htmlspecialchars($confData['label']).'</strong>' : '';
+					
+
+						// Render general type/title COLUMN:
+					$temp_cells=array();
+					
+						// Field type selector:
+					$opt=array();
+					$opt[]='<option value=""></option>';
+					$types = explode(',','input,textarea,select,check,radio,password,file,hidden,submit');
+					foreach($types as $t)	{
+						$opt[]='
+								<option value="'.$t.'"'.($confData['type']==$t?' selected="selected"':'').'>'.$LANG->getLL('forms_type_'.$t,1).'</option>';
+					}
+					$temp_cells[$LANG->getLL('forms_type')]='
+							<select name="FORMCFG[c]['.(($k+1)*2).'][type]">
+								'.implode('
+								',$opt).'
+							</select>';
+
+						// Title field:
+					if (!t3lib_div::inList('hidden,submit',$confData['type']))	{
+						$temp_cells[$LANG->getLL('forms_label')]='<input type="text"'.$this->doc->formWidth(15).' name="FORMCFG[c]['.(($k+1)*2).'][label]" value="'.htmlspecialchars($confData['label']).'" />';
+					}
+					
+						// Required checkbox:
+					if (!t3lib_div::inList(',hidden,submit',$confData['type']))		{
+						$temp_cells[$LANG->getLL('forms_required')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][required]" value="1"'.($confData['required']?' checked="checked"':'').' title="'.$LANG->getLL('forms_required',1).'" />';
+					}
+
+						// Put sub-items together into table cell:
+					$cells[]=$this->formatCells($temp_cells);
+
+
+						// Render specific field configuration COLUMN:
+					$temp_cells=array();
+					
+						// Fieldname
+					$temp_cells[$LANG->getLL('forms_fieldName')]='<input type="text"'.$this->doc->formWidth(10).' name="FORMCFG[c]['.(($k+1)*2).'][fieldname]" value="'.htmlspecialchars($confData['fieldname']).'" title="'.$LANG->getLL('forms_fieldName',1).'" />';
+
+						// Field configuration depending on the fields type:
+					switch((string)$confData['type'])	{
+						case 'textarea':
+							$temp_cells[$LANG->getLL('forms_cols')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][cols]" value="'.htmlspecialchars($confData['cols']).'" title="'.$LANG->getLL('forms_cols',1).'" />';
+							$temp_cells[$LANG->getLL('forms_rows')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][rows]" value="'.htmlspecialchars($confData['rows']).'" title="'.$LANG->getLL('forms_rows',1).'" />';
+							$temp_cells[$LANG->getLL('forms_extra')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][extra]" value="OFF"'.($confData['extra']=='OFF'?' checked="checked"':'').' title="'.$LANG->getLL('forms_extra',1).'" />';
+						break;
+						case 'input':
+						case 'password':
+							$temp_cells[$LANG->getLL('forms_size')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][size]" value="'.htmlspecialchars($confData['size']).'" title="'.$LANG->getLL('forms_size',1).'" />';
+							$temp_cells[$LANG->getLL('forms_max')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][max]" value="'.htmlspecialchars($confData['max']).'" title="'.$LANG->getLL('forms_max',1).'" />';
+						break;
+						case 'file':
+							$temp_cells[$LANG->getLL('forms_size')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][size]" value="'.htmlspecialchars($confData['size']).'" title="'.$LANG->getLL('forms_size',1).'" />';
+						break;
+						case 'select':
+							$temp_cells[$LANG->getLL('forms_size')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][size]" value="'.htmlspecialchars($confData['size']).'" title="'.$LANG->getLL('forms_size',1).'" />';
+							$temp_cells[$LANG->getLL('forms_autosize')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][autosize]" value="1"'.($confData['autosize']?' checked="checked"':'').' title="'.$LANG->getLL('forms_autosize',1).'" />';
+							$temp_cells[$LANG->getLL('forms_multiple')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][multiple]" value="1"'.($confData['multiple']?' checked="checked"':'').' title="'.$LANG->getLL('forms_multiple',1).'" />';
+						break;
+					}
+		
+						// Default data
+					if ($confData['type']=='select' || $confData['type']=='radio')	{
+						$temp_cells[$LANG->getLL('forms_options')]='<textarea '.$this->doc->formWidthText(15).' rows="4" name="FORMCFG[c]['.(($k+1)*2).'][options]" title="'.$LANG->getLL('forms_options',1).'">'.t3lib_div::formatForTextarea($confData['default']).'</textarea>';
+					} elseif ($confData['type']=='check')	{
+						$temp_cells[$LANG->getLL('forms_checked')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][default]" value="1"'.(trim($confData['default'])?' checked="checked"':'').' title="'.$LANG->getLL('forms_checked',1).'" />';
+					} elseif ($confData['type'] && $confData['type']!='file') {
+						$temp_cells[$LANG->getLL('forms_default')]='<input type="text"'.$this->doc->formWidth(15).' name="FORMCFG[c]['.(($k+1)*2).'][default]" value="'.htmlspecialchars($confData['default']).'" title="'.$LANG->getLL('forms_default',1).'" />';
+					}
+		
+					$cells[]=$confData['type']?$this->formatCells($temp_cells):'';
+		
+						// CTRL panel for an item (move up/down/around):
+					$ctrl='';
+					$onClick="document.wizardForm.action+='#ANC_".(($k+1)*2-2)."';";
+					$onClick=' onclick="'.htmlspecialchars($onClick).'"';
+	
+					$brTag=$inputStyle?'':'<br />';
+					if ($k!=0)	{
+						$ctrl.='<input type="image" name="FORMCFG[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$LANG->getLL('table_up',1).'" />'.$brTag;
+					} else {
+						$ctrl.='<input type="image" name="FORMCFG[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$LANG->getLL('table_bottom',1).'" />'.$brTag;
+					}
+					$ctrl.='<input type="image" name="FORMCFG[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$LANG->getLL('table_removeRow',1).'" />'.$brTag;
+					if (($k+1)!=count($tLines))	{
+						$ctrl.='<input type="image" name="FORMCFG[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$LANG->getLL('table_down',1).'" />'.$brTag;
+					} else {
+						$ctrl.='<input type="image" name="FORMCFG[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_down.gif','').$onClick.' title="'.$LANG->getLL('table_top',1).'" />'.$brTag;
+					}
+					$ctrl.='<input type="image" name="FORMCFG[row_add]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').$onClick.' title="'.$LANG->getLL('table_addRow',1).'" />'.$brTag;
+			
+					$ctrl='<span class="c-wizButtonsV">'.$ctrl.'</span>';
+			
+						// Finally, put together the full row from the generated content above:
+					$bgC = $confData['type']?' class="bgColor5"':'';
+					$tRows[]='
+						<tr'.$bgC.'>
+							<td><a name="ANC_'.(($k+1)*2).'"></a>'.$ctrl.'</td>
+							<td class="bgColor4">'.implode('</td>
+							<td valign="top">',$cells).'</td>
+						</tr>';
+				}
+			} else {
+				$hiddenFields[]='<input type="hidden" name="FORMCFG[c]['.(($k+1)*2).'][comment]" value="'.htmlspecialchars($confData['comment']).'" />';
+			}
+
+				// Increment counter:
+			$k++;
+		}
+	
+			// If the form is of the special type "formtype_mail" (used for tt_content elements):
+		if ($this->special=='formtype_mail')	{
+
+				// Blank spacer:
+			$tRows[]='
+				<tr>
+					<td colspan="4">&nbsp;</td>
+				</tr>';
+
+				// Header:
+			$tRows[]='
+				<tr>
+					<td colspan="2" class="bgColor2">&nbsp;</td>
+					<td colspan="2" class="bgColor2"><strong>'.$LANG->getLL('forms_special_eform',1).':</strong></td>
+				</tr>';
+
+				// "FORM type":
+			$tRows[]='
+				<tr class="bgColor5">
+					<td>&nbsp;</td>
+					<td class="bgColor4">&nbsp;</td>
+					<td>'.$LANG->getLL('forms_eform_formtype_mail',1).':</td>
+					<td>
+						<input type="hidden" name="FORMCFG[c]['.(1000*2).'][fieldname]" value="formtype_mail" />
+						<input type="hidden" name="FORMCFG[c]['.(1000*2).'][type]" value="submit" />
+						<input type="text"'.$this->doc->formWidth(15).' name="FORMCFG[c]['.(1000*2).'][default]" value="'.htmlspecialchars($specParts['formtype_mail']).'" />
+					</td>
+				</tr>';
+
+				// "Send HTML mail":
+			$tRows[]='
+				<tr class="bgColor5">
+					<td>&nbsp;</td>
+					<td class="bgColor4">&nbsp;</td>
+					<td>'.$LANG->getLL('forms_eform_html_enabled',1).':</td>
+					<td>
+						<input type="hidden" name="FORMCFG[c]['.(1001*2).'][fieldname]" value="html_enabled" />
+						<input type="hidden" name="FORMCFG[c]['.(1001*2).'][type]" value="hidden" />
+						<input type="checkbox" name="FORMCFG[c]['.(1001*2).'][default]" value="1"'.($specParts['html_enabled']?' checked="checked"':'').' />
+					</td>
+				</tr>';
+
+				// "Subject":
+			$tRows[]='
+				<tr class="bgColor5">
+					<td>&nbsp;</td>
+					<td class="bgColor4">&nbsp;</td>
+					<td>'.$LANG->getLL('forms_eform_subject',1).':</td>
+					<td>
+						<input type="hidden" name="FORMCFG[c]['.(1002*2).'][fieldname]" value="subject" />
+						<input type="hidden" name="FORMCFG[c]['.(1002*2).'][type]" value="hidden" />
+						<input type="text"'.$this->doc->formWidth(15).' name="FORMCFG[c]['.(1002*2).'][default]" value="'.htmlspecialchars($specParts['subject']).'" />
+					</td>
+				</tr>';
+				
+				// Recipient:
+			$tRows[]='
+				<tr class="bgColor5">
+					<td>&nbsp;</td>
+					<td class="bgColor4">&nbsp;</td>
+					<td>'.$LANG->getLL('forms_eform_recipient',1).':</td>
+					<td>
+						<input type="text"'.$this->doc->formWidth(15).' name="FORMCFG[recipient]" value="'.htmlspecialchars($row['subheader']).'" />
+					</td>
+				</tr>';
+		}
+		
+			// Implode all table rows into a string, wrapped in table tags.
+		$content = '
+		
+			<!--
+				Form wizard
+			-->
+			<table border="0" cellpadding="1" cellspacing="1" id="typo3-formwizard">
+				'.implode('',$tRows).'
+			</table>';
+		
+			// Add saving buttons in the bottom:
+		$content.= '
+		
+			<!--
+				Save buttons:
+			-->
+			<div id="c-saveButtonPanel">';
+		$content.= '<input type="image" class="c-inputButton" name="savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
+		$content.= '<input type="image" class="c-inputButton" name="saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
+		$content.= '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($this->P['returnUrl']).'\')); return false;').'">'.
+					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
+					'</a>';
+		$content.= '<input type="image" class="c-inputButton" name="_refresh"'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','').' title="'.$LANG->getLL('forms_refresh',1).'" />
+			</div>
+		';
+
+			// Add hidden fields:
+		$content.= implode('',$hiddenFields);
+		
+			// Return content:
+		return $content;
+	}	
 	 
 	/**
-	 * @param	[type]		$cArr: ...
-	 * @param	[type]		$TABLE_c: ...
-	 * @return	[type]		...
+	 * Detects if a control button (up/down/around/delete) has been pressed for an item and accordingly it will manipulate the internal FORMCFG array
+	 * 
+	 * @return	void		
+	 * @access private
 	 */
-	function changeFunc($cArr,$TABLE_c)	{
-		if ($TABLE_c["row_remove"])	{	
-			$kk = key($TABLE_c["row_remove"]);
-			$cmd="row_remove";
-		} elseif ($TABLE_c["row_add"])	{	
-			$kk = key($TABLE_c["row_add"]);
-			$cmd="row_add";
-		} elseif ($TABLE_c["row_top"])	{	
-			$kk = key($TABLE_c["row_top"]);
-			$cmd="row_top";
-		} elseif ($TABLE_c["row_bottom"])	{	
-			$kk = key($TABLE_c["row_bottom"]);
-			$cmd="row_bottom";
-		} elseif ($TABLE_c["row_up"])	{	
-			$kk = key($TABLE_c["row_up"]);
-			$cmd="row_up";
-		} elseif ($TABLE_c["row_down"])	{	
-			$kk = key($TABLE_c["row_down"]);
-			$cmd="row_down";
+	function changeFunc()	{
+		if ($this->FORMCFG['row_remove'])	{	
+			$kk = key($this->FORMCFG['row_remove']);
+			$cmd='row_remove';
+		} elseif ($this->FORMCFG['row_add'])	{	
+			$kk = key($this->FORMCFG['row_add']);
+			$cmd='row_add';
+		} elseif ($this->FORMCFG['row_top'])	{	
+			$kk = key($this->FORMCFG['row_top']);
+			$cmd='row_top';
+		} elseif ($this->FORMCFG['row_bottom'])	{	
+			$kk = key($this->FORMCFG['row_bottom']);
+			$cmd='row_bottom';
+		} elseif ($this->FORMCFG['row_up'])	{	
+			$kk = key($this->FORMCFG['row_up']);
+			$cmd='row_up';
+		} elseif ($this->FORMCFG['row_down'])	{	
+			$kk = key($this->FORMCFG['row_down']);
+			$cmd='row_down';
 		}
 	
 		if ($cmd && t3lib_div::testInt($kk)) {
-			if (substr($cmd,0,4)=="row_")	{
+			if (substr($cmd,0,4)=='row_')	{
 				switch($cmd)	{
-					case "row_remove":
-						unset($cArr[$kk]);
+					case 'row_remove':
+						unset($this->FORMCFG['c'][$kk]);
 					break;
-					case "row_add":
-						$cArr[$kk+1]=array();
+					case 'row_add':
+						$this->FORMCFG['c'][$kk+1]=array();
 					break;
-					case "row_top":
-						$cArr[1]=$cArr[$kk];
-						unset($cArr[$kk]);
+					case 'row_top':
+						$this->FORMCFG['c'][1]=$this->FORMCFG['c'][$kk];
+						unset($this->FORMCFG['c'][$kk]);
 					break;
-					case "row_bottom":
-						$cArr[1000000]=$cArr[$kk];
-						unset($cArr[$kk]);
+					case 'row_bottom':
+						$this->FORMCFG['c'][1000000]=$this->FORMCFG['c'][$kk];
+						unset($this->FORMCFG['c'][$kk]);
 					break;
-					case "row_up":
-						$cArr[$kk-3]=$cArr[$kk];
-						unset($cArr[$kk]);
+					case 'row_up':
+						$this->FORMCFG['c'][$kk-3]=$this->FORMCFG['c'][$kk];
+						unset($this->FORMCFG['c'][$kk]);
 					break;
-					case "row_down":
-						$cArr[$kk+3]=$cArr[$kk];
-						unset($cArr[$kk]);
+					case 'row_down':
+						$this->FORMCFG['c'][$kk+3]=$this->FORMCFG['c'][$kk];
+						unset($this->FORMCFG['c'][$kk]);
 					break;
 				}
-				ksort($cArr);
+				ksort($this->FORMCFG['c']);
 			}
 		}
-	
-		return $cArr;
 	}
 
 	/**
-	 * [Describe function...]
+	 * Converts the input array to a configuration code string
 	 * 
-	 * @param	[type]		$tArr: ...
-	 * @return	[type]		...
+	 * @param	array		Array of form configuration (follows the input structure from the form wizard POST form)
+	 * @return	string		The array converted into a string with line-based configuration.
+	 * @see cfgString2CfgArray()
+	 */
+	function cfgArray2CfgString($cfgArr)	{
+	
+			// Initialize:
+		$inLines=array();
+		
+			// Traverse the elements of the form wizard and transform the settings into configuration code.
+		foreach($cfgArr as $vv)	{
+			if ($vv['comment'])	{	// If "content" is found, then just pass it over.
+				$inLines[]=trim($vv['comment']);
+			} else {	// Begin to put together the single-line configuration code of this field:
+
+					// Reset:
+				$thisLine=array();
+
+					// Set Label:
+				$thisLine[0]=str_replace('|','',$vv['label']);
+
+					// Set Type:
+				if ($vv['type'])	{
+					$thisLine[1]=($vv['required']?'*':'').str_replace(',','',($vv['fieldname']?$vv['fieldname'].'=':'').$vv['type']);
+						
+						// Default:
+					$tArr=array('','','','','','');
+					switch((string)$vv['type'])	{
+						case 'textarea':
+							if (intval($vv['cols']))	$tArr[0]=intval($vv['cols']);
+							if (intval($vv['rows']))	$tArr[1]=intval($vv['rows']);
+							if (trim($vv['extra']))		$tArr[2]=trim($vv['extra']);
+						break;
+						case 'input':
+						case 'password':
+							if (intval($vv['size']))	$tArr[0]=intval($vv['size']);
+							if (intval($vv['max']))		$tArr[1]=intval($vv['max']);
+						break;
+						case 'file':
+							if (intval($vv['size']))	$tArr[0]=intval($vv['size']);
+						break;
+						case 'select':
+							if (intval($vv['size']))	$tArr[0]=intval($vv['size']);
+							if ($vv['autosize'])	$tArr[0]='auto';
+							if ($vv['multiple'])	$tArr[1]='m';
+						break;
+					}
+					$tArr = $this->cleanT($tArr);
+					if (count($tArr))	$thisLine[1].=','.implode(',',$tArr);
+					
+					$thisLine[1]=str_replace('|','',$thisLine[1]);
+		
+						// Default:
+					if ($vv['type']=='select' || $vv['type']=='radio')	{
+						$thisLine[2]=str_replace(chr(10),', ',str_replace(',','',$vv['options']));
+					} elseif ($vv['type']=='check')	{
+						if ($vv['checked'])	$thisLine[2]=1;
+					} elseif (strcmp(trim($vv['default']),'')) {
+						$thisLine[2]=$vv['default'];
+					}
+					if (isset($thisLine[2]))		$thisLine[2]=str_replace('|','',$thisLine[2]);
+				}
+					
+					// Compile the final line:
+				$inLines[]=ereg_replace("[\n\r]*",'',implode(' | ',$thisLine));
+			}
+		}
+		
+			// Finally, implode the lines into a string, and return it:
+		return implode(chr(10),$inLines);	
+	}
+	
+	/**
+	 * Converts the input configuration code string into an array
+	 * 
+	 * @param	string		Configuration code
+	 * @return	array		Configuration array
+	 * @see cfgArray2CfgString()
+	 */
+	function cfgString2CfgArray($cfgStr)	{
+		
+			// Traverse the number of form elements:
+		$tLines=explode(chr(10),$cfgStr);
+		foreach($tLines as $k => $v)	{
+		
+				// Initialize:
+			$confData=array();
+			$val=trim($v);
+
+				// Accept a line as configuration if a) it is blank(! - because blank lines indicates new, unconfigured fields) or b) it is NOT a comment.
+			if (!$val || strcspn($val,'#/')) {
+			
+					// Split:
+				$parts = t3lib_div::trimExplode('|',$val);
+
+					// Label:
+				$confData['label'] = trim($parts[0]);
+				
+					// Field:
+				$fParts = t3lib_div::trimExplode(',',$parts[1]);
+				$fParts[0]=trim($fParts[0]);
+				if (substr($fParts[0],0,1)=='*')	{
+					$confData['required'] = 1;
+					$fParts[0] = substr($fParts[0],1);
+				}
+				
+				$typeParts = t3lib_div::trimExplode('=',$fParts[0]);
+				$confData['type'] = trim(strtolower(end($typeParts)));
+				
+				if ($confData['type'])	{
+					if (count($typeParts)==1)	{
+						$confData['fieldname'] = substr(ereg_replace('[^a-zA-Z0-9_]','',str_replace(' ','_',trim($parts[0]))),0,30);
+	
+							// Attachment names...
+						if ($confData['type']=='file')	{
+							$confData['fieldname']='attachment'.$attachmentCounter;
+							$attachmentCounter=intval($attachmentCounter)+1;
+						}
+					} else {
+						$confData['fieldname'] = str_replace(' ','_',trim($typeParts[0]));
+					}
+					
+					$confData['default'] = implode(chr(10),t3lib_div::trimExplode(',',$parts[2]));
+	
+						// Field configuration depending on the fields type:
+					switch((string)$confData['type'])	{
+						case 'textarea':
+							$confData['cols'] = $fParts[1];
+							$confData['rows'] = $fParts[2];
+							$confData['extra'] = strtoupper($fParts[3])=='OFF' ? 'OFF' : '';
+						break;
+						case 'input':
+						case 'password':
+							$confData['size'] = $fParts[1];
+							$confData['max'] = $fParts[2];
+						break;
+						case 'file':
+							$confData['size'] = $fParts[1];
+						break;
+						case 'select':
+							$confData['size'] = intval($fParts[1])?$fParts[1]:'';
+							$confData['autosize'] = strtolower(trim($fParts[1]))=='auto' ? 1 : 0;
+							$confData['multiple'] = strtolower(trim($fParts[2]))=='m' ? 1 : 0;
+						break;
+					}
+				}
+			} else {
+					// No configuration, only a comment:
+				$confData=array(
+					'comment' => $val
+				);
+			}			
+			
+				// Adding config array:
+			$cfgArr[]=$confData;
+		}
+		
+			// Return cfgArr
+		return $cfgArr;
+	}
+	
+	/**
+	 * Removes any "trailing elements" in the array which consists of whitespace (little like trim() does for strings, so this does for arrays)
+	 * 
+	 * @param	array		Single dim array
+	 * @return	array		Processed array
+	 * @access private
 	 */
 	function cleanT($tArr)	{
 		for($a=count($tArr);$a>0;$a--)	{
-			if (strcmp($tArr[$a-1],""))	{
+			if (strcmp($tArr[$a-1],''))	{
 				break;
 			} else {
 				unset($tArr[$a-1]);
@@ -227,309 +863,36 @@ class SC_wizard_forms {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Wraps items in $fArr in table cells/rows, displaying them vertically.
 	 * 
-	 * @param	[type]		$fArr: ...
-	 * @return	[type]		...
+	 * @param	array		Array of label/HTML pairs.
+	 * @return	string		HTML table
+	 * @access private
 	 */
 	function formatCells($fArr)	{
-		reset($fArr);
-		$lines=array();
-		while(list($l,$c)=each($fArr))	{
-			$lines[]='<tr><td nowrap>'.htmlspecialchars($l.":").'&nbsp;</td><td>'.$c.'</td></tr>';
-		}
-		$lines[]='<tr><td nowrap><img src=clear.gif width=70 height=1></td><td></td></tr>';
-		return '<table border=0 cellpadding=0 cellspacing=0>'.implode("",$lines).'</table>';
-	}
 
-	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$P: ...
-	 * @return	[type]		...
-	 */
-	function tableWizard($P)	{
-		global $LANG, $HTTP_POST_VARS;
-		
-		$TABLE_c = t3lib_div::GPvar("TABLE",1);
-		$row=t3lib_BEfunc::getRecord($P["table"],$P["uid"]);
-		if (!is_array($row))	{
-			t3lib_BEfunc::typo3PrintError ("Wizard Error","No reference to record",0);
-			exit;
-		}
-		
-		$special=t3lib_div::GPvar("special");
-	
-		if (isset($TABLE_c["c"]))	{
-			$TABLE_c["c"] = $this->changeFunc($TABLE_c["c"],$TABLE_c);
-			$inLines=array();
-			
-			reset($TABLE_c["c"]);
-			while(list($a,$vv)=each($TABLE_c["c"]))	{
-				if ($vv["content"])	{
-					$inLines[]=trim($vv["content"]);
-				} else {
-					$thisLine=array();
-						// Label:
-					$thisLine[0]=str_replace("|","",$vv["label"]);
-	
-						// Type:
-					if ($vv["type"])	{
-						$thisLine[1]=($vv["required"]?"*":"").str_replace(",","",($vv["fieldname"]?$vv["fieldname"]."=":"").$vv["type"]);
-							// Default:
-						$tArr=array("","","","","","");
-						switch((string)$vv["type"])	{
-							case "textarea":
-								if (intval($vv["cols"]))	$tArr[0]=intval($vv["cols"]);
-								if (intval($vv["rows"]))	$tArr[1]=intval($vv["rows"]);
-								if (trim($vv["extra"]))		$tArr[2]=trim($vv["extra"]);
-							break;
-							case "input":
-							case "password":
-								if (intval($vv["size"]))	$tArr[0]=intval($vv["size"]);
-								if (intval($vv["max"]))		$tArr[1]=intval($vv["max"]);
-							break;
-							case "file":
-								if (intval($vv["size"]))	$tArr[0]=intval($vv["size"]);
-							break;
-							case "select":
-								if (intval($vv["size"]))	$tArr[0]=intval($vv["size"]);
-								if ($vv["autosize"])	$tArr[0]="auto";
-								if ($vv["multiple"])	$tArr[1]="m";
-							break;
-						}
-						$tArr = $this->cleanT($tArr);
-						if (count($tArr))	$thisLine[1].=",".implode(",",$tArr);
-						
-						$thisLine[1]=str_replace("|","",$thisLine[1]);
-			
-			
-			
-							// Default:
-						if ($vv["type"]=="select" || $vv["type"]=="radio")	{
-							$thisLine[2]=str_replace(chr(10),", ",str_replace(",","",$vv["options"]));
-						} elseif ($vv["type"]=="check")	{
-							if ($vv["checked"])	$thisLine[2]=1;
-						} elseif (strcmp(trim($vv["default"]),"")) {
-							$thisLine[2]=$vv["default"];
-						}
-						if (isset($thisLine[2]))		$thisLine[2]=str_replace("|","",$thisLine[2]);
-					}
-						// Compile line:
-					$inLines[]=ereg_replace("[\n\r]*","",implode(" | ",$thisLine));
-				}
-			}
-			$bodyText = implode(chr(10),$inLines);
-	//debug(array($bodyText));
-	
-	
-	
-			if ($HTTP_POST_VARS["savedok_x"] || $HTTP_POST_VARS["saveandclosedok_x"])	{
-				$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-				$tce->stripslashes_values=0;
-				$data=array();
-				$data[$P["table"]][$P["uid"]][$P["field"]]=$bodyText;
-				if ($special=="formtype_mail")	{
-					$data[$P["table"]][$P["uid"]]["subheader"]=$TABLE_c["recipient"];
-				}
-	
-	//debug($data);
-				$tce->start($data,array());
-				$tce->process_datamap();
-	
-				$row=t3lib_BEfunc::getRecord($P["table"],$P["uid"]);
-				if ($HTTP_POST_VARS["saveandclosedok_x"])	{
-					header("Location: ".t3lib_div::locationHeaderUrl($P["returnUrl"]));
-					exit;
-				}
-			}
-		} else {
-			$bodyText = $row["bodytext"];
-		}
-	//$bodyText = $row["bodytext"];
-	
-		
-		$specParts=array();
-		$hiddenFields=array();
-		$tRows=array();
-		$cells=array(
-			'<strong>'.$LANG->getLL("forms_preview").':</strong>',
-			'<strong>'.$LANG->getLL("forms_element").':</strong>',
-			'<strong>'.$LANG->getLL("forms_config").':</strong>',
-		);
-		$tRows[]='<tr bgColor="'.$this->doc->bgColor2.'"><td>&nbsp;</td><td nowrap>'.implode('</td><td nowrap valign=top>',$cells).'</td></tr>';
-	
-		$tLines=explode(chr(10),$bodyText);
-	//debug($tLines);
-		reset($tLines);
-		while(list($k,$v)=each($tLines))	{
-			$cells=array();
-			$confData=array();
-	
-			$val=trim($v);
-			$parts = t3lib_div::trimExplode("|",$val);
-	
-			if (!trim($val) || strcspn($val,"#/")) {	// $val && 
-					// label:
-				$confData["label"] = trim($parts[0]);
-					// field:
-				$fParts = t3lib_div::trimExplode(",",$parts[1]);
-				$fParts[0]=trim($fParts[0]);
-				if (substr($fParts[0],0,1)=="*")	{
-					$confData["required"]=1;
-					$fParts[0] = substr($fParts[0],1);
-				}
-				$typeParts = t3lib_div::trimExplode("=",$fParts[0]);
-				$confData["type"] = trim(strtolower(end($typeParts)));
-				if (count($typeParts)==1)	{
-					$confData["fieldname"] = substr(ereg_replace("[^a-zA-Z0-9_]","",str_replace(" ","_",trim($parts[0]))),0,30);
-	/*				if (strtolower($confData["fieldname"])=="email")	{$confData["fieldname"]="email";}
-						// Duplicate fieldnames resolved
-					if (isset($fieldname_hashArray[md5($confData["fieldname"])]))	{
-						$confData["fieldname"].="_".$cc;
-					}
-					$fieldname_hashArray[md5($confData["fieldname"])]=$confData["fieldname"];
-	*/
-						// Attachment names...
-					if ($confData["type"]=="file")	{
-						$confData["fieldname"]="attachment".$attachmentCounter;
-						$attachmentCounter=intval($attachmentCounter)+1;
-					}
-				} else {
-					$confData["fieldname"] = str_replace(" ","_",trim($typeParts[0]));
-				}
-	
-				if ($special=="formtype_mail" && t3lib_div::inList("formtype_mail,subject,html_enabled",$confData["fieldname"]))	{
-					$specParts[$confData["fieldname"]]=$parts[2];
-				} else {
-						// Render title/field preview
-					$cells[]=$confData["type"]!="hidden" ? '<strong>'.htmlspecialchars($confData["label"]).'</strong>' : '';
-					
-					$temp_cells=array();
-						// Field type
-					$opt=array();
-					$opt[]='<option value=""></option>';
-					$types = explode(",","input,textarea,select,check,radio,password,file,hidden,submit");
-					while(list(,$t)=each($types))	{
-						$opt[]='<option value="'.$t.'"'.($confData["type"]==$t?" SELECTED":"").'>'.htmlspecialchars($LANG->getLL("forms_type_".$t)).'</option>';
-					}
-					$temp_cells[$LANG->getLL("forms_type")]='<select name="TABLE[c]['.(($k+1)*2).'][type]">'.implode("",$opt).'</select>';
-						// Title field
-					$temp_cells[$LANG->getLL("forms_label")]='<input type="text"'.$this->doc->formWidth(15).' name="TABLE[c]['.(($k+1)*2).'][label]" value="'.htmlspecialchars($confData["label"]).'">';
-						// Required
-					if (!t3lib_div::inList(",hidden,submit",$confData["type"]))		$temp_cells[$LANG->getLL("forms_required")]='<input type="checkbox" name="TABLE[c]['.(($k+1)*2).'][required]" value="1"'.($confData["required"]?" CHECKED":"").t3lib_BEfunc::titleAttrib($LANG->getLL("forms_required"),1).'>';
-					
-					$cells[]=$this->formatCells($temp_cells);
-					$temp_cells=array();
-					
-						// Fieldname
-					$temp_cells[$LANG->getLL("forms_fieldName")]='<input type="text"'.$this->doc->formWidth(10).' name="TABLE[c]['.(($k+1)*2).'][fieldname]" value="'.htmlspecialchars($confData["fieldname"]).'"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_fieldName"),1).'>';
-					switch((string)$confData["type"])	{
-						case "textarea":
-							$temp_cells[$LANG->getLL("forms_cols")]='<input type="text"'.$this->doc->formWidth(5).' name="TABLE[c]['.(($k+1)*2).'][cols]" value="'.htmlspecialchars($fParts[1]).'"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_cols"),1).'>';
-							$temp_cells[$LANG->getLL("forms_rows")]='<input type="text"'.$this->doc->formWidth(5).' name="TABLE[c]['.(($k+1)*2).'][rows]" value="'.htmlspecialchars($fParts[2]).'"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_rows"),1).'>';
-							$temp_cells[$LANG->getLL("forms_extra")]='<input type="checkbox" name="TABLE[c]['.(($k+1)*2).'][extra]" value="OFF"'.(strtoupper($fParts[3])=="OFF"?" CHECKED":"").t3lib_BEfunc::titleAttrib($LANG->getLL("forms_extra"),1).'>';
-						break;
-						case "input":
-						case "password":
-							$temp_cells[$LANG->getLL("forms_size")]='<input type="text"'.$this->doc->formWidth(5).' name="TABLE[c]['.(($k+1)*2).'][size]" value="'.htmlspecialchars($fParts[1]).'"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_size"),1).'>';
-							$temp_cells[$LANG->getLL("forms_max")]='<input type="text"'.$this->doc->formWidth(5).' name="TABLE[c]['.(($k+1)*2).'][max]" value="'.htmlspecialchars($fParts[2]).'"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_max"),1).'>';
-						break;
-						case "file":
-							$temp_cells[$LANG->getLL("forms_size")]='<input type="text"'.$this->doc->formWidth(5).' name="TABLE[c]['.(($k+1)*2).'][size]" value="'.htmlspecialchars($fParts[1]).'"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_size"),1).'>';
-						break;
-						case "select":
-							$temp_cells[$LANG->getLL("forms_size")]='<input type="text"'.$this->doc->formWidth(5).' name="TABLE[c]['.(($k+1)*2).'][size]" value="'.htmlspecialchars(intval($fParts[1])?$fParts[1]:"").'"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_size"),1).'>';
-							$temp_cells[$LANG->getLL("forms_autosize")]='<input type="checkbox" name="TABLE[c]['.(($k+1)*2).'][autosize]" value="1"'.(strtolower(trim($fParts[1]))=="auto"?" CHECKED":"").t3lib_BEfunc::titleAttrib($LANG->getLL("forms_autosize"),1).'>';
-							$temp_cells[$LANG->getLL("forms_multiple")]='<input type="checkbox" name="TABLE[c]['.(($k+1)*2).'][multiple]" value="1"'.(strtolower(trim($fParts[2]))=="m"?" CHECKED":"").t3lib_BEfunc::titleAttrib($LANG->getLL("forms_multiple"),1).'>';
-						break;
-					}
-		
-						// Default data
-					if ($confData["type"]=="select" || $confData["type"]=="radio")	{
-						$temp_cells[$LANG->getLL("forms_options")]='<textarea '.$this->doc->formWidthText(15).' rows="4" name="TABLE[c]['.(($k+1)*2).'][options]"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_options"),1).'>'.t3lib_div::formatForTextarea(implode(chr(10),t3lib_div::trimExplode(",",$parts[2]))).'</textarea>';
-					} elseif ($confData["type"]=="check")	{
-						$temp_cells[$LANG->getLL("forms_checked")]='<input type="checkbox" name="TABLE[c]['.(($k+1)*2).'][default]" value="1"'.(trim($parts[2])?" CHECKED":"").t3lib_BEfunc::titleAttrib($LANG->getLL("forms_checked"),1).'>';
-					} elseif ($confData["type"] && $confData["type"]!="file") {
-						$temp_cells[$LANG->getLL("forms_default")]='<input type="text"'.$this->doc->formWidth(15).' name="TABLE[c]['.(($k+1)*2).'][default]" value="'.htmlspecialchars($parts[2]).'"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_default"),1).'>';
-					}
-		
-					$cells[]=$confData["type"]?$this->formatCells($temp_cells):"";
-		
-						// CTRL panel:
-					$ctrl="";
-					$onClick="document.wizardForm.action+='#ANC_".(($k+1)*2-2)."';";
-					$onClick=' onClick="'.$onClick.'"';
-	
-					$brTag=$inputStyle?"":"<BR>";
-					if ($k!=0)	{
-						$ctrl.='<input type="image" name="TABLE[row_up]['.(($k+1)*2).']" src="gfx/pil2up.gif" width="12" vspace=2 height="7" hspace=1 border="0"'.$onClick.t3lib_BEfunc::titleAttrib($LANG->getLL("table_up")).'>'.$brTag;
-					} else {
-						$ctrl.='<input type="image" name="TABLE[row_bottom]['.(($k+1)*2).']" src="gfx/turn_up.gif" width="11" vspace=2 height="9" hspace=1 border="0"'.$onClick.t3lib_BEfunc::titleAttrib($LANG->getLL("table_bottom")).'>'.$brTag;
-					}
-					$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']" src="gfx/garbage.gif" width="11" height="12" border="0"'.$onClick.t3lib_BEfunc::titleAttrib($LANG->getLL("table_removeRow")).'>'.$brTag;
-					if (($k+1)!=count($tLines))	{
-						$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']" src="gfx/pil2down.gif" width="12" vspace=2 height="7" hspace=1 border="0"'.$onClick.t3lib_BEfunc::titleAttrib($LANG->getLL("table_down")).'>'.$brTag;
-					} else {
-						$ctrl.='<input type="image" name="TABLE[row_top]['.(($k+1)*2).']" src="gfx/turn_down.gif" width="11" vspace=2 height="9" hspace=1 border="0"'.$onClick.t3lib_BEfunc::titleAttrib($LANG->getLL("table_top")).'>'.$brTag;
-					}
-					$ctrl.='<input type="image" name="TABLE[row_add]['.(($k+1)*2).']" src="gfx/add.gif" width="12" height="12" border="0"'.$onClick.t3lib_BEfunc::titleAttrib($LANG->getLL("table_addRow")).'>'.$brTag;
-			
-					$bgC = $confData["type"]?' bgColor="'.$this->doc->bgColor5.'"':'';
-					$tRows[]='<tr'.$bgC.'><td><a name="ANC_'.(($k+1)*2).'"></a>'.$ctrl.'</td><td bgColor="'.$this->doc->bgColor4.'">'.implode('</td><td valign=top>',$cells).'</td></tr>';
-				}
-			} else {
-				$hiddenFields[]='<input type="hidden" name="TABLE[c]['.(($k+1)*2).'][content]" value="'.htmlspecialchars(trim($v)).'">';
-			}
-		}
-	
-		if ($special=="formtype_mail")	{
-	//debug($specParts);
-				// SUbject
-			$tRows[]='<tr><td colspan=4>&nbsp;</td></tr>';
-				// SUbject
-			$tRows[]='<tr><td colspan=2 bgColor="'.$this->doc->bgColor2.'">&nbsp;</td><td colspan=2 bgColor="'.$this->doc->bgColor2.'"><strong>'.htmlspecialchars($LANG->getLL("forms_special_eform")).':</strong></td></tr>';
-				// SUbject
-			$tRows[]='<tr bgColor="'.$this->doc->bgColor5.'">
-				<td>&nbsp;</td>
-				<td bgColor="'.$this->doc->bgColor4.'">&nbsp;</td>
-				<td>'.$LANG->getLL("forms_eform_formtype_mail").':</td>
-				<td><input type="hidden" name="TABLE[c]['.(1000*2).'][fieldname]" value="formtype_mail"><input type="hidden" name="TABLE[c]['.(1000*2).'][type]" value="submit"><input type="text"'.$this->doc->formWidth(15).' name="TABLE[c]['.(1000*2).'][default]" value="'.htmlspecialchars($specParts["formtype_mail"]).'"></td>
-				</tr>';
-			$tRows[]='<tr bgColor="'.$this->doc->bgColor5.'">
-				<td>&nbsp;</td>
-				<td bgColor="'.$this->doc->bgColor4.'">&nbsp;</td>
-				<td>'.$LANG->getLL("forms_eform_html_enabled").':</td>
-				<td><input type="hidden" name="TABLE[c]['.(1001*2).'][fieldname]" value="html_enabled"><input type="hidden" name="TABLE[c]['.(1001*2).'][type]" value="hidden"><input type="checkbox" name="TABLE[c]['.(1001*2).'][default]" value="1"'.($specParts["html_enabled"]?" CHECKED":"").'></td>
-				</tr>';
-			$tRows[]='<tr bgColor="'.$this->doc->bgColor5.'">
-				<td>&nbsp;</td>
-				<td bgColor="'.$this->doc->bgColor4.'">&nbsp;</td>
-				<td>'.$LANG->getLL("forms_eform_subject").':</td>
-				<td><input type="hidden" name="TABLE[c]['.(1002*2).'][fieldname]" value="subject"><input type="hidden" name="TABLE[c]['.(1002*2).'][type]" value="hidden"><input type="text"'.$this->doc->formWidth(15).' name="TABLE[c]['.(1002*2).'][default]" value="'.htmlspecialchars($specParts["subject"]).'"></td>
-				</tr>';
-			$tRows[]='<tr bgColor="'.$this->doc->bgColor5.'">
-				<td>&nbsp;</td>
-				<td bgColor="'.$this->doc->bgColor4.'">&nbsp;</td>
-				<td>'.$LANG->getLL("forms_eform_recipient").':</td>
-				<td><input type="text"'.$this->doc->formWidth(15).' name="TABLE[recipient]" value="'.htmlspecialchars($row["subheader"]).'"></td>
+			// Traverse the elements in $fArr and wrap them in table cells:
+		$lines=array();
+		foreach($fArr as $l => $c)	{
+			$lines[]='
+				<tr>
+					<td nowrap="nowrap">'.htmlspecialchars($l.':').'&nbsp;</td>
+					<td>'.$c.'</td>
 				</tr>';
 		}
-		
-		
-			// 
-		$content = '<table border=0 cellpadding=1 cellspacing=1>'.implode("",$tRows).'</table>';
-		
-		$closeUrl = $P["returnUrl"];
-	
-		$content.= '<BR>';
-		$content.= '<input type="image" border=0 name="savedok" src="gfx/savedok.gif" hspace=2 width="21" height="16"'.t3lib_BEfunc::titleAttrib($LANG->sL("LLL:EXT:lang/locallang_core.php:rm.saveDoc"),1).' align=top>';
-		$content.= '<input type="image" border=0 name="saveandclosedok" src="gfx/saveandclosedok.gif" hspace=2 width="21" height="16"'.t3lib_BEfunc::titleAttrib($LANG->sL("LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc"),1).' align=top>';
-		$content.= '<a href="#" onClick="jumpToUrl(unescape(\''.rawurlencode($closeUrl).'\')); return false;"><img border=0 src="gfx/closedok.gif" hspace=2 width="21" height="16"'.t3lib_BEfunc::titleAttrib($LANG->sL("LLL:EXT:lang/locallang_core.php:rm.closeDoc"),1).' align=top></a>';
-		$content.= '<input type="image" name="_refresh" src="gfx/refresh_n.gif" width="14" height="14" hspace=10 border="0"'.t3lib_BEfunc::titleAttrib($LANG->getLL("forms_refresh")).'>';
-		$content.= implode("",$hiddenFields);
-		
-		return $content;
+
+			// Add a cell which will set a minimum width:
+		$lines[]='
+			<tr>
+				<td nowrap="nowrap"><img src="clear.gif" width="70" height="1" alt="" /></td>
+				<td></td>
+			</tr>';
+
+			// Wrap in table and return:		
+		return '
+			<table border="0" cellpadding="0" cellspacing="0">
+				'.implode('',$lines).'
+			</table>';
 	}
 }
 

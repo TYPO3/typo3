@@ -58,13 +58,13 @@
  * page.10.1 = TMENU
  * page.10.1.expAll = 1
  * page.10.1.NO {
- *   allWrap = | <BR>
+ *   allWrap = | <br />
  *   linkWrap = <b>|</b>
  * }
  * page.10.2 = TMENU
  * page.10.2.itemArrayProcFunc = user_itemArrayProcFuncTest
  * page.10.2.NO {
- *   allWrap = | <BR>
+ *   allWrap = | <br />
  *   linkWrap = <b> - |</b>
  * }
  * 
