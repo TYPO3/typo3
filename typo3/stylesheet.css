@@ -58,6 +58,15 @@ A {
 	text-decoration: none;
 }
 
+/* horizontal ruler */
+HR, DIV.hr {
+	height: 1px;
+	color: #ddd;
+	background-color: #ddd;
+	border-top: 1px solid #7a7a7a;
+	border-bottom: 1px solid #000;
+}
+
 
 /* Dimmed span tag color (disabled) */
 .typo3-dimmed {color: #666666;}

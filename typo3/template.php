@@ -168,12 +168,14 @@ class template {
 	var $backPath = '';	// 'backPath' pointing back to the PATH_typo3
 	var $form='';		// This can be set to the HTML-code for a formtag. Useful when you need a form to span the whole page; Inserted exactly after the body-tag.
 	var $JScode='';		// Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
+	var $JScodeArray=array();		// Similar to $JScode but for use as array with assioziative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
 	var $postCode='';	// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
 	var $docType='';	// Doc-type used in the header. Default is HTML 3.2. You can also set it to 'xhtml_strict', 'xhtml_trans', or 'xhtml_frames'.
 
 		// Other vars you can change, but less frequently used:
 	var $bodyTagAdditions='';	// You can add additional attributes to the body-tag through this variable.
 	var $inDocStyles='';		// Additional CSS styles which will be added to the <style> section in the header
+	var $inDocStylesArray=array();		// Like $inDocStyles but for use as array with assioziative keys to prevent double inclusion of css code
 	var $form_rowsToStylewidth = 9.58;	// Multiplication factor for formWidth() input size (default is 48* this value).
 	var $form_largeComp = 1.33;		// Compensation for large documents (used in class.t3lib_tceforms.php)
 	var $endJS=1;		// If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object. 
@@ -190,7 +192,7 @@ class template {
 	var $styleSheetFile = 'stylesheet.css';	// Filename of stylesheet (relative to PATH_typo3)
 	var $styleSheetFile2 = '';	// Filename of stylesheet #2 - linked to right after the $this->styleSheetFile script (relative to PATH_typo3)
 	var $backGroundImage = '';		// Background image of page (relative to PATH_typo3)
-	
+
 		// DEV:	
 	var $parseTimeFlag = 0;		// Will output the parsetime of the scripts in milliseconds (for admin-users). Set this to false when releasing TYPO3. Only for dev.
 	
@@ -599,8 +601,12 @@ class template {
 	<title>'.htmlspecialchars($title).'</title>
 	'.$this->docStyle().'
 	'.$this->JScode.'
+	'.$this->wrapScriptTags(implode("\n", $this->JScodeArray)).'
+	<!--###POSTJSMARKER###-->
 </head>
 ';
+		$this->JScode='';
+		$this->JScodeArray=array();
 
 		if ($this->docType=='xhtml_frames')	{
 			return $str;
@@ -683,7 +689,7 @@ trim($this->form);
 	 * Inserts a divider image
 	 * Ends a section (if open) before inserting the image
 	 * 
-	 * @param	integer		The padding-top/-bottom of the <hr> ruler.
+	 * @param	integer		The margin-top/-bottom of the <hr> ruler.
 	 * @return	string		HTML content
 	 */
 	function divider($dist)	{
@@ -691,15 +697,15 @@ trim($this->form);
 		$str='
 
 	<!-- DIVIDER -->
-	<hr style="padding-top: '.$dist.'px; padding-bottom: '.$dist.'px;" />
+	<hr style="margin-top: '.$dist.'px; margin-bottom: '.$dist.'px;" />
 ';
 		return $this->sectionEnd().$str;
 	}
 
 	/**
 	 * Returns a blank <div>-section with a height
-	 * 
-	 * @param	integer		Padding-top for the div-section
+	 *
+	 * @param	integer		Padding-top for the div-section (should be margin-top but konquorer (3.1) don't like it :-(
 	 * @return	string		HTML content
 	 */
 	function spacer($dist)	{
@@ -816,10 +822,13 @@ trim($this->form);
 
 	/**
 	 * Outputting document style
-	 * 
+	 *
 	 * @return	string		HTML style section/link tags
 	 */
 	function docStyle()	{
+		$this->inDocStylesArray[] = $this->inDocStyles;
+		$inDocStyles = "\n".implode("\n", $this->inDocStylesArray);
+
 			// The default color scheme should also in full be represented in the stylesheet.
 		$style='
 		'.($this->styleSheetFile?'<link rel="stylesheet" type="text/css" href="'.$this->backPath.$this->styleSheetFile.'" />':'').'
@@ -830,11 +839,33 @@ trim($this->form);
 				H2 {background-color: '.$this->bgColor2.';}
 				H3 {background-color: '.$this->bgColor6.';}
 				BODY {background-color: '.$this->bgColor.';'.$this->getBackgroundImage(1).'}
-				'.$this->inDocStyles.'
+				'.$inDocStyles.'
+				/*###POSTCSSMARKER###*/
 			/*]]>*/
 		</style>
 ';
+		$this->inDocStyles='';
+		$this->inDocStylesArray=array();
+
 		return $style;
+	}
+
+	/**
+	 * insert post rendering document style into already rendered content
+	 *
+	 * @return	string		content with inserted styles
+	 */
+	function insertStylesAndJS($content)	{
+			// insert accumulated CSS
+		$this->inDocStylesArray[] = $this->inDocStyles;
+		$styles = "\n".implode("\n", $this->inDocStylesArray);
+		$content = str_replace('/*###POSTCSSMARKER###*/',$styles,$content);
+
+			// insert accumulated JS
+		$jscode = $this->JScode."\n".$this->wrapScriptTags(implode("\n", $this->JScodeArray));
+		$content = str_replace('<!--###POSTJSMARKER###-->',$jscode,$content);
+
+		return $content;
 	}
 
 	/**
@@ -953,7 +984,7 @@ trim($this->form);
 	function rfw($string)	{
 		return '<span class="typo3-red">'.$string.'</span>';
 	}
-	
+
 	/**
 	 * Returns string wrapped in CDATA "tags" for XML / XHTML (wrap content of <script> and <style> sections in those!)
 	 * 
@@ -970,18 +1001,30 @@ trim($this->form);
 	
 	/**
 	 * Wraps the input string in script tags.
-	 * 
+	 * Automatic re-identing of the JS code is done by using the first line as ident reference.
+	 * This is nice for identing JS code with PHP code on the same level.
+	 *
 	 * @param	string		Input string
+	 * @param	boolean		Wrap script element in linebreaks? Default is TRUE.
 	 * @return	string		Output string
 	 */
-	function wrapScriptTags($string)	{
-		$string = '
-<script type="text/javascript">
+	function wrapScriptTags($string, $linebreak=TRUE)	{
+		if(trim($string)) {
+				// <script wrapped in nl?
+			$cr = $linebreak? "\n" : '';
+
+				// remove nl from the beginning
+			$string = preg_replace ('/^\n+/', '', $string);
+				// re-ident to one tab using the first line as reference
+			if(preg_match('/^(\t+)/',$string,$match)) {
+				$string = str_replace($match[1],"\t", $string);
+			}
+			$string = $cr.'<script type="text/javascript">
 /*<![CDATA[*/
-	'.$string.'
+'.$string.'
 /*]]>*/
-</script>
-	';
+</script>'.$cr;
+		}
 		return trim($string);
 	}
 
@@ -1249,6 +1292,122 @@ trim($this->form);
 			);
 		} else return array('','','');
 	}
+
+
+
+
+	/**
+	 * creates a tab menu from an array definition
+	 *
+	 * Returns a tab menu for a module
+	 * Requires the JS function jumpToUrl() to be available
+	 *
+	 *
+	 * @param	string		$id is the "&id=" parameter value to be sent to the module
+	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
+	 * @param	string		$currentValue is the value to be selected currently.
+	 * @param	array		$menuItems is an array with the menu items for the selector box
+	 * @param	string		$script is the script to send the &id to, if empty it's automatically found
+	 * @param	string		$addParams is additional parameters to pass to the script.
+	 * @return	string		HTML code for tab menu
+	 * @author	René Fritz <r.fritz@colorcube.de>
+	 */
+	function getTabMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
+		$content='';
+
+		if (is_array($menuItems))	{
+			if (!$script) {basename(PATH_thisScript);}
+			$options='';
+
+			$count = count($menuItems);
+			$widthLeft = 1;
+			$addToAct = 5;
+
+			$widthRight = max (1,floor(30-pow($count,1.72)));
+			$widthTabs = 100 - $widthRight - $widthLeft;
+			$widthNo = floor(($widthTabs - $addToAct)/$count);
+			$addToAct = max ($addToAct,$widthTabs-($widthNo*$count));
+			$widthAct = $widthNo + $addToAct;
+			$widthRight = 100 - ($widthLeft + ($count*$widthNo) + $addToAct);
+
+			$first=true;
+			foreach($menuItems as $value => $label) {
+				$isActive = !strcmp($currentValue,$value);
+				$class = $isActive ? "tabact" : "tab";
+				$width = $isActive ? $widthAct : $widthNo;
+
+				$label = t3lib_div::deHSCentities(htmlspecialchars($label));
+				$link = htmlspecialchars($script.'?id='.rawurlencode($id).$addparams.'&'.$elementName.'='.$value);
+				if($first) {
+					$options .= "\n\t".'<td width="'.$width.'%" class="'.$class.'" style="border-left: solid #000 1px;"><a href="'.$link.'" class="'.$class.'" style="padding-left:5px;padding-right:2px;">'.$label.'</a></td>';
+				} else {
+					$options .= "\n\t".'<td width="'.$width.'%" class="'.$class.'"><a href="'.$link.'" class="'.$class.'">'.$label.'</a></td>';
+				}
+				$first=false;
+			}
+
+			if ($options)	{
+				$content .= "\n\t".'<!-- Tab menu -->';
+				$content .= "\n\t".'<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>';
+				$content .= "\n\t".'<td width="'.$widthLeft.'%">&nbsp;</td>';
+
+				$content .= $options;
+
+				$content .= "\n\t".'<td width="'.$widthRight.'%">&nbsp;</td>';
+				$content .= "\n\t".'</tr></table>';
+				$content .= '<div class="hr" style="display:block;margin:0px;padding:0px;"></div';
+			}
+
+				// include CSS
+			$actBgColor = t3lib_div::modifyHTMLcolor($this->bgColor6,0,0,0);
+			$lgBgColor = t3lib_div::modifyHTMLcolor($this->bgColor5,25,25,25);
+			$hoverBgColor = t3lib_div::modifyHTMLcolor($this->bgColor6,15,15,15);
+
+			$this->inDocStylesArray['getTabMenu'] = '
+				td.tabact {
+					border: solid black 1px;
+					background: '.$actBgColor.';
+					color:#000;
+				}
+				td.tabact>a {
+					color:#000;
+				}
+				td.tab {
+					border: solid #555 1px;
+					border-left: solid #aaa 3px;
+					background: '.$lgBgColor.';
+					color:grey;
+				}
+				td.tab, td.tabact {
+					border-bottom: none;
+					border-radius: 3px;
+					-moz-border-radius: 3px;
+				}
+				a.tab, a.tabact {
+					color:grey;
+					text-decoration:none;
+					display: block;
+					width:auto;
+					padding:2px;
+					padding-left:3px;
+					padding-right:5px;
+				}
+				a.tabact {
+					padding-left:10px;
+					padding-right:10px;
+				}
+				a.tab:hover,a.tabact:hover {
+					color:black;
+					background: '.$hoverBgColor.';
+					text-decoration:none;
+					cursor: pointer;
+				}';
+		}
+		return $content;
+
+	}
+
+
 }
 
 
