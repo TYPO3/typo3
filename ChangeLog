@@ -1,5 +1,10 @@
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added full safety for the internal TYPO3 formmail; email addresses in the fields "recipient" and "recipient_copy" are encrypted in the transfer and the "formmail" interface is safe for spam-misuse (since a proper recipient address cannot be forged automatically). 
+!!!If someone are using the "formmail" API from other renderers than the FORM cObject in TypoScript you will have to set the recipient address to the encrypted value by default OR alternatively disabled the check by TYPO3_CONF_VARS[FE][strictFormmail] = FALSE
+
+2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added Jens Ellerbrocks suggestion for "postUserFuncInt" in stdWrap.
 
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>

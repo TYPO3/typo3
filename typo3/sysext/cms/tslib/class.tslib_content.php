@@ -150,7 +150,7 @@
  * 5059:     function HTMLcaseshift($theValue, $case)	
  * 5088:     function bytes($sizeInBytes,$labels)	
  * 5099:     function calcAge($seconds,$labels)	
- * 5130:     function sendNotifyEmail($msg, $recipients, $cc, $email_from, $email_fromName='', $replyTo='')	
+ * 5130:     function sendNotifyEmail($msg, $recipients, $cc, $email_from, $email_fromName='', $replyTo='')
  * 5157:     function URLqMark($url,$params)	
  * 5173:     function checkEmail($email)	
  * 5185:     function clearTSProperties($TSArr,$propList)	
@@ -1677,9 +1677,12 @@ class tslib_cObj {
 						$fieldCode=$option;
 					break;
 					case 'hidden':
-						$value=trim($parts[2]);
+						$value = trim($parts[2]);
+						if (strlen($value) && $confData['fieldname']=='recipient_copy')	{
+							$value = $GLOBALS['TSFE']->codeString($value);
+						}
 						$hiddenfields.=sprintf('<input type="hidden" name="%s" value="%s" />',
-							$confData['fieldname'], $value);
+							$confData['fieldname'], htmlspecialchars($value));
 					break;
 					case 'property':
 						if (t3lib_div::inList('type,locationData,goodMess,badMess',$confData['fieldname']))	{
@@ -1775,12 +1778,13 @@ class tslib_cObj {
 			$action=$LD_A['totalURL'];
 		}
 
-			// copyemail:
+			// Recipient:
 		$theEmail = $this->stdWrap($conf['recipient'], $conf['recipient.']);
 		if ($theEmail)	{
+			$theEmail = $GLOBALS['TSFE']->codeString($theEmail);
 			$hiddenfields.='<input type="hidden" name="recipient" value="'.htmlspecialchars($theEmail).'" />';
 		}
-		
+
 			// location data:
 		if ($conf['locationData'])	{
 			if ($conf['locationData']=='HTTP_POST_VARS' && isset($GLOBALS['HTTP_POST_VARS']['locationData']))	{
@@ -1794,9 +1798,12 @@ class tslib_cObj {
 			// hidden fields:
 		if (is_array($conf['hiddenFields.']))	{
 			reset($conf['hiddenFields.']);
-			while(list($hF_key,$hF_conf)=each($conf['hiddenFields.']))	{
+			while(list($hF_key,$hF_conf) = each($conf['hiddenFields.']))	{
 				if (substr($hF_key,-1)!='.')	{
 					$hF_value = $this->cObjGetSingle($hF_conf,$conf['hiddenFields.'][$hF_key.'.'],'hiddenfields');
+					if (strlen($value) && $hF_key=='recipient_copy')	{
+						$hF_value = $GLOBALS['TSFE']->codeString($hF_value);
+					}
 					$hiddenfields.='<input type="hidden" name="'.$hF_key.'" value="'.htmlspecialchars($hF_value).'" />';
 				}
 			}

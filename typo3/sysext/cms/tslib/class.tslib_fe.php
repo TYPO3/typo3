@@ -1438,7 +1438,7 @@
 		global $HTTP_POST_VARS;
 		
 		if ($HTTP_POST_VARS['formtype_db'] || $HTTP_POST_VARS['formtype_mail'])	{
-			$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+			$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')==$refInfo['host'] || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 				if ($this->locDataCheck($HTTP_POST_VARS['locationData']))	{
 					$ret = '';
@@ -1497,6 +1497,23 @@
 		$EMAIL_VARS = t3lib_div::_POST();
 		unset($EMAIL_VARS['locationData']);
 		unset($EMAIL_VARS['formtype_mail']);
+
+		$integrityCheck = $this->TYPO3_CONF_VARS['FE']['strictFormmail'];
+
+			// Check recipient field:
+		$encodedFields = explode(',','recipient,recipient_copy');	// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
+		foreach($encodedFields as $fieldKey)	{
+			if (strlen($EMAIL_VARS[$fieldKey]))	{
+				if ($res = $this->codeString($EMAIL_VARS[$fieldKey], TRUE))	{	// Decode...
+					$EMAIL_VARS[$fieldKey] = $res;	// Set value if OK
+				} elseif ($integrityCheck)	{	// Otherwise abort:
+					$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. Sending formmail aborted due to security reasons!',3);
+					return FALSE;
+				} else {
+					$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field ('.$fieldKey.') which could not be decoded to a valid string. The security level accepts this, but you should consider a correct coding though!',2);
+				}
+			}
+		}
 
 			// Hook for preprocessing of the content for formmails:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass']))	{
@@ -2494,9 +2511,59 @@ if (version == "n3") {
 		$out = '';
 		for ($a=0; $a<strlen($string); $a++)	{
 			$charValue = ord(substr($string,$a,1));
-			$charValue+= intval($GLOBALS['TSFE']->spamProtectEmailAddresses)*($back?-1:1);
+			$charValue+= intval($this->spamProtectEmailAddresses)*($back?-1:1);
 			$out.= chr($charValue);
 		}
+		return $out;
+	}
+
+	/**
+	 * En/decodes strings with lightweight encryption and a hash containing the server encryptionKey (salt)
+	 * Can be used for authentication of information sent from server generated pages back to the server to establish that the server generated the page. (Like hidden fields with recipient mail addresses)
+	 * Encryption is mainly to avoid spam-bots to pick up information.
+	 *
+	 * @param	string		Input string to en/decode
+	 * @param	boolean		If set, string is decoded, not encoded.
+	 * @return	string		encoded/decoded version of $string
+	 */
+	function codeString($string, $decode=FALSE)	{
+
+		if ($decode) {
+			list($md5Hash, $str) = explode(':',$string,2);
+			$newHash = substr(md5($this->TYPO3_CONF_VARS['SYS']['encryptionKey'].':'.$str),0,10);
+			if (!strcmp($md5Hash, $newHash))	{
+				$str = base64_decode($str);
+				$str = $this->roundTripCryptString($str);
+				return $str;
+			} else return FALSE;	// Decoding check failed! Original string not produced by this server!
+		} else {
+			$str = $string;
+			$str = $this->roundTripCryptString($str);
+			$str = base64_encode($str);
+			$newHash = substr(md5($this->TYPO3_CONF_VARS['SYS']['encryptionKey'].':'.$str),0,10);
+			return $newHash.':'.$str;
+		}
+	}
+
+	/**
+	 * En/decodes strings with lightweight encryption and a hash containing the server encryptionKey (salt)
+	 * Can be used for authentication of information sent from server generated pages back to the server to establish that the server generated the page. (Like hidden fields with recipient mail addresses)
+	 * Encryption is mainly to avoid spam-bots to pick up information.
+	 *
+	 * @param	string		Input string to en/decode
+	 * @param	boolean		If set, string is decoded, not encoded.
+	 * @return	string		encoded/decoded version of $string
+	 */
+	function roundTripCryptString($string)	{
+		$out = '';
+		$strLen = strlen($string);
+		$cryptLen = strlen($this->TYPO3_CONF_VARS['SYS']['encryptionKey']);
+
+		for ($a=0; $a < $strLen; $a++)	{
+			$xorVal = $cryptLen>0 ? ord($this->TYPO3_CONF_VARS['SYS']['encryptionKey']{($a%$cryptLen)}) : 255;
+			$out.= chr(ord($string{$a}) ^ $xorVal);
+		}
+
 		return $out;
 	}
 

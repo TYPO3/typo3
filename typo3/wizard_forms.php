@@ -178,6 +178,7 @@ class SC_wizard_forms {
 	var $doc;					// Document template object
 	var $content;				// Content accumulation for the module.
 	var $include_once=array();	// List of files to include.
+	var $attachmentCounter = 0;	// Used to numerate attachments automatically.
 
 
 		// Internal, static:
@@ -410,7 +411,7 @@ class SC_wizard_forms {
 				
 					// Special parts:
 				if ($this->special=='formtype_mail' && t3lib_div::inList('formtype_mail,subject,html_enabled',$confData['fieldname']))	{
-					$specParts[$confData['fieldname']]=$confData['default'];
+					$specParts[$confData['fieldname']] = $confData['default'];
 				} else {
 
 						// Render title/field preview COLUMN
@@ -452,6 +453,9 @@ class SC_wizard_forms {
 					$temp_cells=array();
 					
 						// Fieldname
+					if ($this->special=='formtype_mail' && $confData['type']=='file')	{
+						$confData['fieldname'] = 'attachment'.(++$this->attachmentCounter);
+					}
 					$temp_cells[$LANG->getLL('forms_fieldName')]='<input type="text"'.$this->doc->formWidth(10).' name="FORMCFG[c]['.(($k+1)*2).'][fieldname]" value="'.htmlspecialchars($confData['fieldname']).'" title="'.$LANG->getLL('forms_fieldName',1).'" />';
 
 						// Field configuration depending on the fields type:
@@ -808,8 +812,16 @@ class SC_wizard_forms {
 						$confData['fieldname'] = str_replace(' ','_',trim($typeParts[0]));
 					}
 					
-					$confData['default'] = implode(chr(10),t3lib_div::trimExplode(',',$parts[2]));
-	
+					switch((string)$confData['type'])	{
+						case 'select':
+						case 'radio':
+							$confData['default'] = implode(chr(10),t3lib_div::trimExplode(',',$parts[2]));
+						break;
+						default:
+							$confData['default'] = trim($parts[2]);
+						break;
+					}
+
 						// Field configuration depending on the fields type:
 					switch((string)$confData['type'])	{
 						case 'textarea':
@@ -842,7 +854,7 @@ class SC_wizard_forms {
 				// Adding config array:
 			$cfgArr[]=$confData;
 		}
-		
+
 			// Return cfgArr
 		return $cfgArr;
 	}
