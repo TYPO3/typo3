@@ -1,7 +1,7 @@
 <?php
 
 /**
-  V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+  V4.60 24 Jan 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -9,6 +9,9 @@
   Set tabs to 4 for best viewing.
  
 */
+
+// security - hide paths
+if (!defined('ADODB_DIR')) die();
 
 class ADODB2_sybase extends ADODB_DataDict {
 	var $databaseType = 'sybase';
@@ -78,7 +81,7 @@ class ADODB2_sybase extends ADODB_DataDict {
 		foreach($lines as $v) {
 			$f[] = "\n $v";
 		}
-		$s .= implode(',',$f);
+		$s .= implode(', ',$f);
 		$sql[] = $s;
 		return $sql;
 	}
@@ -97,14 +100,14 @@ class ADODB2_sybase extends ADODB_DataDict {
 	
 	function DropColumnSQL($tabname, $flds)
 	{
-		$tabname = $this->TableName ($tabname);
+		$tabname = $this->TableName($tabname);
 		if (!is_array($flds)) $flds = explode(',',$flds);
 		$f = array();
 		$s = "ALTER TABLE $tabname";
 		foreach($flds as $v) {
-			$f[] = "\n$this->dropCol $v";
+			$f[] = "\n$this->dropCol ".$this->NameQuote($v);
 		}
-		$s .= implode(',',$f);
+		$s .= implode(', ',$f);
 		$sql[] = $s;
 		return $sql;
 	}

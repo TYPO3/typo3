@@ -1,12 +1,15 @@
 <?php
 /*
- @version V4.22 15 Apr 2004 (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+ @version V4.60 24 Jan 2005 (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
  Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
  Contribution by Frank M. Kromann <frank@frontbase.com>. 
   Set tabs to 8.
 */ 
+
+// security - hide paths
+if (!defined('ADODB_DIR')) die();
 
 if (! defined("_ADODB_FBSQL_LAYER")) {
  define("_ADODB_FBSQL_LAYER", 1 );
@@ -167,9 +170,10 @@ class ADORecordSet_fbsql extends ADORecordSet{
 		}
 		switch ($mode) {
 		case ADODB_FETCH_NUM: $this->fetchMode = FBSQL_NUM; break;
-		default:
-		case ADODB_FETCH_BOTH: $this->fetchMode = FBSQL_BOTH; break;
 		case ADODB_FETCH_ASSOC: $this->fetchMode = FBSQL_ASSOC; break;
+		case ADODB_FETCH_BOTH: 
+		default:
+		$this->fetchMode = FBSQL_BOTH; break;
 		}
 		return $this->ADORecordSet($queryID);
 	}

@@ -1,6 +1,6 @@
 <?php
 /*
-	V4.22 15 Apr 2004 
+	V4.50 6 July 2004 
 	
 	Run multiple copies of this php script at the same time
 	to test unique generation of id's in multiuser mode

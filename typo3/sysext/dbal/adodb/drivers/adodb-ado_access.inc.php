@@ -1,18 +1,22 @@
 <?php
 /* 
-V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.60 24 Jan 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
 Released under both BSD license and Lesser GPL library license. 
 Whenever there is any discrepancy between the two licenses, 
 the BSD license will take precedence. See License.txt. 
 Set tabs to 4 for best viewing.
   
-  Latest version is available at http://php.weblogs.com/
+  Latest version is available at http://adodb.sourceforge.net
   
 	Microsoft Access ADO data driver. Requires ADO and ODBC. Works only on MS Windows.
 */
 
+// security - hide paths
+if (!defined('ADODB_DIR')) die();
+
 if (!defined('_ADODB_ADO_LAYER')) {
-	include(ADODB_DIR."/drivers/adodb-ado.inc.php");
+	if (PHP_VERSION >= 5) include(ADODB_DIR."/drivers/adodb-ado5.inc.php");
+	else include(ADODB_DIR."/drivers/adodb-ado.inc.php");
 }
 
 class  ADODB_ado_access extends ADODB_ado {	
@@ -30,6 +34,10 @@ class  ADODB_ado_access extends ADODB_ado {
 	}
 	
 	function BeginTrans() { return false;}
+	
+	function CommitTrans() { return false;}
+	
+	function RollbackTrans() { return false;}
 
 }
 

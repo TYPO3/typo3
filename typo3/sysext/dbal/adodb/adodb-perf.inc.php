@@ -1,12 +1,12 @@
 <?php
 /* 
-V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.60 24 Jan 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
   Set tabs to 4 for best viewing.
   
-  Latest version is available at http://php.weblogs.com/
+  Latest version is available at http://adodb.sourceforge.net
   
   Library for basic performance monitoring and tuning.
   
@@ -19,6 +19,12 @@ V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights rese
 if (!defined(ADODB_DIR)) include_once(dirname(__FILE__).'/adodb.inc.php');
 include_once(ADODB_DIR.'/tohtml.inc.php');
 
+
+// avoids localization problems where , is used instead of .
+function adodb_round($n,$prec)
+{
+	return number_format($n, $prec, '.', '');
+}
 
 /* return microtime value as a float */
 function adodb_microtime()
@@ -74,7 +80,7 @@ global $HTTP_SERVER_VARS;
 			if (isset($HTTP_SERVER_VARS['PHP_SELF'])) $tracer .= '<br>'.$HTTP_SERVER_VARS['PHP_SELF'];
 		//$tracer .= (string) adodb_backtrace(false);
 		
-		$tracer = substr($tracer,0,500);
+		$tracer = (string) substr($tracer,0,500);
 		
 		if (is_array($inputarr)) {
 			if (is_array(reset($inputarr))) $params = 'Array sizeof='.sizeof($inputarr);
@@ -89,13 +95,15 @@ global $HTTP_SERVER_VARS;
 		
 		if (is_array($sql)) $sql = $sql[0];
 		$arr = array('b'=>trim(substr($sql,0,230)),
-					'c'=>substr($sql,0,3900), 'd'=>$params,'e'=>$tracer,'f'=>round($time,6));
+					'c'=>substr($sql,0,3900), 'd'=>$params,'e'=>$tracer,'f'=>adodb_round($time,6));
 		//var_dump($arr);
 		$saved = $conn->debug;
 		$conn->debug = 0;
 		
+		$d = $conn->sysTimeStamp;
+		if (empty($d)) $d = date("'Y-m-d H:i:s'");
 		if ($conn->dataProvider == 'oci8' && $dbT != 'oci8po') {
-			$isql = "insert into $perf_table values($conn->sysTimeStamp,:b,:c,:d,:e,:f)";
+			$isql = "insert into $perf_table values($d,:b,:c,:d,:e,:f)";
 		} else if ($dbT == 'odbc_mssql' || $dbT == 'informix') {
 			$timer = $arr['f'];
 			if ($dbT == 'informix') $sql2 = substr($sql2,0,230);
@@ -105,12 +113,13 @@ global $HTTP_SERVER_VARS;
 			$params = $conn->qstr($arr['d']);
 			$tracer = $conn->qstr($arr['e']);
 			
-			$isql = "insert into $perf_table (created,sql0,sql1,params,tracer,timer) values($conn->sysTimeStamp,$sql1,$sql2,$params,$tracer,$timer)";
+			$isql = "insert into $perf_table (created,sql0,sql1,params,tracer,timer) values($d,$sql1,$sql2,$params,$tracer,$timer)";
 			if ($dbT == 'informix') $isql = str_replace(chr(10),' ',$isql);
 			$arr = false;
 		} else {
-			$isql = "insert into $perf_table (created,sql0,sql1,params,tracer,timer) values( $conn->sysTimeStamp,?,?,?,?,?)";
+			$isql = "insert into $perf_table (created,sql0,sql1,params,tracer,timer) values( $d,?,?,?,?,?)";
 		}
+
 		$ok = $conn->Execute($isql,$arr);
 		$conn->debug = $saved;
 		
@@ -132,7 +141,7 @@ global $HTTP_SERVER_VARS;
 				timer decimal(16,6))");
 			}
 			if (!$ok) {
-				ADOConnection::outp( "<b>LOGSQL Insert Failed</b>: $isql<br>$err2</br>");
+				ADOConnection::outp( "<p><b>LOGSQL Insert Failed</b>: $isql<br>$err2</p>");
 				$conn->_logsql = false;
 			}
 		}
@@ -373,6 +382,7 @@ Committed_AS:   348732 kB
 			
 			$save = $ADODB_FETCH_MODE;
 			$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+			if ($this->conn->fetchMode !== false) $savem = $this->conn->SetFetchMode(false);
 			//$this->conn->debug=1;
 			$rs =& $this->conn->SelectLimit(
 			"select avg(timer) as avg_timer,$sql1,count(*),max(timer) as max_timer,min(timer) as min_timer
@@ -381,6 +391,7 @@ Committed_AS:   348732 kB
 				and (tracer is null or tracer not like 'ERROR:%')
 				group by sql1
 				order by 1 desc",$numsql);
+			if (isset($savem)) $this->conn->SetFetchMode($savem);
 			$ADODB_FETCH_MODE = $save;
 			$this->conn->fnExecute = $saveE;
 			
@@ -402,7 +413,7 @@ Committed_AS:   348732 kB
 					$suffix = ' ... <i>String too long for GET parameter: '.strlen($prefix).'</i>';
 					$prefix = '';
 				}
-				$s .= "<tr><td>".round($rs->fields[0],6)."<td align=right>".$rs->fields[2]."<td><font size=-1>".$prefix.htmlspecialchars($sql).$suffix."</font>".
+				$s .= "<tr><td>".adodb_round($rs->fields[0],6)."<td align=right>".$rs->fields[2]."<td><font size=-1>".$prefix.htmlspecialchars($sql).$suffix."</font>".
 					"<td>".$rs->fields[3]."<td>".$rs->fields[4]."</tr>";
 				$rs->MoveNext();
 			}
@@ -450,6 +461,8 @@ Committed_AS:   348732 kB
 			$sql1 = $this->sql1;
 			$save = $ADODB_FETCH_MODE;
 			$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+			if ($this->conn->fetchMode !== false) $savem = $this->conn->SetFetchMode(false);
+			
 			$rs =& $this->conn->SelectLimit(
 			"select sum(timer) as total,$sql1,count(*),max(timer) as max_timer,min(timer) as min_timer
 				from $perf_table
@@ -457,7 +470,7 @@ Committed_AS:   348732 kB
 				and (tracer is null or tracer not like 'ERROR:%')
 				group by sql1
 				order by 1 desc",$numsql);
-			
+			if (isset($savem)) $this->conn->SetFetchMode($savem);
 			$this->conn->fnExecute = $saveE;
 			$ADODB_FETCH_MODE = $save;
 			if (!$rs) return "<p>$this->helpurl. ".$this->conn->ErrorMsg()."</p>";
@@ -478,7 +491,7 @@ Committed_AS:   348732 kB
 					$prefix = '';
 					$suffix = '';
 				}
-				$s .= "<tr><td>".round($rs->fields[0],6)."<td align=right>".$rs->fields[2]."<td><font size=-1>".$prefix.htmlspecialchars($sql).$suffix."</font>".
+				$s .= "<tr><td>".adodb_round($rs->fields[0],6)."<td align=right>".$rs->fields[2]."<td><font size=-1>".$prefix.htmlspecialchars($sql).$suffix."</font>".
 					"<td>".$rs->fields[3]."<td>".$rs->fields[4]."</tr>";
 				$rs->MoveNext();
 			}
@@ -616,7 +629,7 @@ Committed_AS:   348732 kB
 	
 	if  (empty($HTTP_GET_VARS['hidem']))
 	echo "<table border=1 width=100% bgcolor=lightyellow><tr><td colspan=2>
-	<b><a href=http://php.weblogs.com/adodb?perf=1>ADOdb</a> Performance Monitor</b> <font size=1>for $app</font></tr><tr><td>
+	<b><a href=http://adodb.sourceforge.net/?perf=1>ADOdb</a> Performance Monitor</b> <font size=1>for $app</font></tr><tr><td>
 	<a href=?do=stats><b>Performance Stats</b></a> &nbsp; <a href=?do=viewsql><b>View SQL</b></a>
 	 &nbsp; <a href=?do=tables><b>View Tables</b></a> &nbsp; <a href=?do=poll><b>Poll Stats</b></a>",
 	 $allowsql ? ' &nbsp; <a href=?do=dosql><b>Run SQL</b></a>' : '',
@@ -628,7 +641,7 @@ Committed_AS:   348732 kB
 		default:
 		case 'stats':
 			echo $this->HealthCheck();
-			$this->conn->debug=1;
+			//$this->conn->debug=1;
 			echo $this->CheckMemory();
 			break;
 		case 'poll':
@@ -673,6 +686,7 @@ Committed_AS:   348732 kB
 		set_time_limit(0);
 		sleep($secs);
 		while (1) {
+
 			$arr =& $this->PollParameters();
 			
 			$hits   = sprintf('%2.2f',$arr[0]);
@@ -692,6 +706,8 @@ Committed_AS:   348732 kB
 			$cnt += 1;
 			echo date('H:i:s').'  '.$osval."$hits  $sess $reads $writes\n";
 			flush();
+			
+			if (connection_aborted()) return;
 			
 			sleep($secs);
 			$arro = $arr;

@@ -1,15 +1,20 @@
 <?php
+
+// security - hide paths
+if (!defined('ADODB_DIR')) die();
+
 global $ADODB_INCLUDED_CSV;
 $ADODB_INCLUDED_CSV = 1;
 
 /* 
-  V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+
+  V4.60 24 Jan 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
   Set tabs to 4 for best viewing.
   
-  Latest version is available at http://php.weblogs.com/
+  Latest version is available at http://adodb.sourceforge.net
   
   Library for CSV serialization. This is used by the csv/proxy driver and is the 
   CacheExecute() serialization format. 
@@ -62,10 +67,15 @@ $ADODB_INCLUDED_CSV = 1;
 			$o =& $rs->FetchField($i);
 			$flds[] = $o;
 		}
-		
-		$rs =& new ADORecordSet_array();
-		$rs->InitArrayFields($rows,$flds);
-		return $line.serialize($rs);
+	
+		$savefetch = isset($rs->adodbFetchMode) ? $rs->adodbFetchMode : $rs->fetchMode;
+		$class = $rs->connection->arrayClass;
+		$rs2 =& new $class();
+		$rs2->sql = $rs->sql;
+		$rs2->oldProvider = $rs->dataProvider; 
+		$rs2->InitArrayFields($rows,$flds);
+		$rs2->fetchMode = $savefetch;
+		return $line.serialize($rs2);
 	}
 
 	
@@ -80,10 +90,10 @@ $ADODB_INCLUDED_CSV = 1;
 *			error occurred in sql INSERT/UPDATE/DELETE, 
 *			empty recordset is returned
 */
-	function &csv2rs($url,&$err,$timeout=0)
+	function &csv2rs($url,&$err,$timeout=0, $rsclass='ADORecordSet_array')
 	{
 		$err = false;
-		$fp = @fopen($url,'r');
+		$fp = @fopen($url,'rb');
 		if (!$fp) {
 			$err = $url.' file/URL not found';
 			return false;
@@ -117,11 +127,12 @@ $ADODB_INCLUDED_CSV = 1;
 						$err = " Illegal Timeout $timeout ";
 						return false;
 					}
+					
+					$rs =& new $rsclass($val=true);
 					$rs->fields = array();
 					$rs->timeCreated = $meta[1];
-					$rs =& new ADORecordSet($val=true);
 					$rs->EOF = true;
-					$rs->_numOfFields=0;
+					$rs->_numOfFields = 0;
 					$rs->sql = urldecode($meta[2]);
 					$rs->affectedrows = (integer)$meta[3];
 					$rs->insertid = $meta[4];	
@@ -179,14 +190,18 @@ $ADODB_INCLUDED_CSV = 1;
 					$MAXSIZE = 128000;
 					
 					$text = fread($fp,$MAXSIZE);
-					if (strlen($text) === $MAXSIZE) {
+					if (strlen($text)) {
 						while ($txt = fread($fp,$MAXSIZE)) {
 							$text .= $txt;
 						}
 					}
 					fclose($fp);
-					@$rs = unserialize($text);
+					$rs = unserialize($text);
 					if (is_object($rs)) $rs->timeCreated = $ttl;
+					else {
+						$err = "Unable to unserialize recordset";
+						//echo htmlspecialchars($text),' !--END--!<p>';
+					}
 					return $rs;
 				}
 				
@@ -236,9 +251,61 @@ $ADODB_INCLUDED_CSV = 1;
 			if (get_magic_quotes_runtime()) $err .= ". Magic Quotes Runtime should be disabled!";
 			return false;
 		}
-		$rs =& new ADORecordSet_array();
+		$rs =& new $rsclass();
 		$rs->timeCreated = $ttl;
 		$rs->InitArrayFields($arr,$flds);
 		return $rs;
+	}
+	
+
+	/**
+	* Save a file $filename and its $contents (normally for caching) with file locking
+	*/
+	function adodb_write_file($filename, $contents,$debug=false)
+	{ 
+	# http://www.php.net/bugs.php?id=9203 Bug that flock fails on Windows
+	# So to simulate locking, we assume that rename is an atomic operation.
+	# First we delete $filename, then we create a $tempfile write to it and 
+	# rename to the desired $filename. If the rename works, then we successfully 
+	# modified the file exclusively.
+	# What a stupid need - having to simulate locking.
+	# Risks:
+	# 1. $tempfile name is not unique -- very very low
+	# 2. unlink($filename) fails -- ok, rename will fail
+	# 3. adodb reads stale file because unlink fails -- ok, $rs timeout occurs
+	# 4. another process creates $filename between unlink() and rename() -- ok, rename() fails and  cache updated
+		if (strncmp(PHP_OS,'WIN',3) === 0) {
+			// skip the decimal place
+			$mtime = substr(str_replace(' ','_',microtime()),2); 
+			// getmypid() actually returns 0 on Win98 - never mind!
+			$tmpname = $filename.uniqid($mtime).getmypid();
+			if (!($fd = fopen($tmpname,'a'))) return false;
+			$ok = ftruncate($fd,0);			
+			if (!fwrite($fd,$contents)) $ok = false;
+			fclose($fd);
+			chmod($tmpname,0644);
+			// the tricky moment
+			@unlink($filename);
+			if (!@rename($tmpname,$filename)) {
+				unlink($tmpname);
+				$ok = false;
+			}
+			if (!$ok) {
+				if ($debug) ADOConnection::outp( " Rename $tmpname ".($ok? 'ok' : 'failed'));
+			}
+			return $ok;
+		}
+		if (!($fd = fopen($filename, 'a'))) return false;
+		if (flock($fd, LOCK_EX) && ftruncate($fd, 0)) {
+			$ok = fwrite( $fd, $contents );
+			fclose($fd);
+			chmod($filename,0644);
+		}else {
+			fclose($fd);
+			if ($debug)ADOConnection::outp( " Failed acquiring lock for $filename<br>\n");
+			$ok = false;
+		}
+	
+		return $ok;
 	}
 ?>

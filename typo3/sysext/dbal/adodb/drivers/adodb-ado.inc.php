@@ -1,19 +1,24 @@
 <?php
 /* 
-V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.60 24 Jan 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
 Set tabs to 4 for best viewing.
   
-  Latest version is available at http://php.weblogs.com/
+  Latest version is available at http://adodb.sourceforge.net
   
 	Microsoft ADO data driver. Requires ADO. Works only on MS Windows.
 */
-  define("_ADODB_ADO_LAYER", 1 );
+
+// security - hide paths
+if (!defined('ADODB_DIR')) die();
+	
+define("_ADODB_ADO_LAYER", 1 );
 /*--------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------*/
-  
+
+	
 class ADODB_ado extends ADOConnection {
 	var $databaseType = "ado";	
 	var $_bindInputArray = false;
@@ -167,7 +172,7 @@ class ADODB_ado extends ADOConnection {
 	function &MetaColumns($table)
 	{
 		$table = strtoupper($table);
-		$arr= array();
+		$arr = array();
 		$dbc = $this->_connectionID;
 		
 		$adors=@$dbc->OpenSchema(4);//tables
@@ -191,8 +196,8 @@ class ADODB_ado extends ADOConnection {
 			}
 			$adors->Close();
 		}
-		
-		return $arr;
+		$false = false;
+		return empty($arr) ? $false : $arr;
 	}
 	
 
@@ -203,6 +208,7 @@ class ADODB_ado extends ADOConnection {
 	{
 		
 		$dbc = $this->_connectionID;
+		$false = false;
 		
 	//	return rs	
 		if ($inputarr) {
@@ -225,21 +231,19 @@ class ADODB_ado extends ADOConnection {
 			$p = false;
 			$rs = $oCmd->Execute();
 			$e = $dbc->Errors;
-			if ($dbc->Errors->Count > 0) return false;
+			if ($dbc->Errors->Count > 0) return $false;
 			return $rs;
 		}
 		
 		$rs = @$dbc->Execute($sql,$this->_affectedRows, $this->_execute_option);
-		/*
-			$rs =  new COM('ADODB.Recordset');
-			if ($rs) {
-				$rs->Open ($sql, $dbc, $this->_cursor_type,$this->_lock_type, $this->_execute_option);							
-			}
-		*/
-		if ($dbc->Errors->Count > 0) return false;
-		if (! $rs) return false;
+
+		if ($dbc->Errors->Count > 0) return $false;
+		if (! $rs) return $false;
 		
-		if ($rs->State == 0) return true; // 0 = adStateClosed means no records returned
+		if ($rs->State == 0) {
+			$true = true;
+			return $true; // 0 = adStateClosed means no records returned
+		}
 		return $rs;
 	}
 
@@ -545,11 +549,15 @@ class ADORecordSet_ado extends ADORecordSet {
 		
 		if ($this->hideErrors)  $olde = error_reporting(E_ERROR|E_CORE_ERROR);// sometimes $f->value be null
 		for ($i=0,$max = $this->_numOfFields; $i < $max; $i++) {
-
+			//echo "<p>",$t,' ';var_dump($f->value); echo '</p>';
 			switch($t) {
 			case 135: // timestamp
 				if (!strlen((string)$f->value)) $this->fields[] = false;
-				else $this->fields[] = adodb_date('Y-m-d H:i:s',(float)$f->value);
+				else {
+					if (!is_numeric($f->value)) $val = variant_date_to_timestamp($f->value);
+					else $val = $f->value;
+					$this->fields[] = adodb_date('Y-m-d H:i:s',$val);
+				}
 				break;			
 			case 133:// A date value (yyyymmdd) 
 				if ($val = $f->value) {
@@ -559,7 +567,13 @@ class ADORecordSet_ado extends ADORecordSet {
 				break;
 			case 7: // adDate
 				if (!strlen((string)$f->value)) $this->fields[] = false;
-				else $this->fields[] = adodb_date('Y-m-d',(float)$f->value);
+				else {
+					if (!is_numeric($f->value)) $val = variant_date_to_timestamp($f->value);
+					else $val = $f->value;
+					
+					if (($val % 86400) == 0) $this->fields[] = adodb_date('Y-m-d',$val);
+					else $this->fields[] = adodb_date('Y-m-d H:i:s',$val);
+				}
 				break;
 			case 1: // null
 				$this->fields[] = false;

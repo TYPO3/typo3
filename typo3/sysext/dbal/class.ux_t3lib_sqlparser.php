@@ -88,6 +88,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		return $query;
 	}
 
+
 	function compileINSERT($components)	{
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
@@ -113,7 +114,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$query = 'DROP TABLE'.($components['ifExists']?' IF EXISTS':'').' '.$components['TABLE'];
 			break;
 			case 'adodb':
-				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->DropTableSQL($components['TABLE']);
+				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->DropTableSQL('`'.$components['TABLE'].'`');
 			break;
 		}
 		echo '<!-- ';var_dump($query);echo ' -->'.chr(10);
@@ -156,7 +157,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				}
 
 				// Fetch table/index generation query:
-				$query = array_merge($GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->CreateTableSQL($components['TABLE'],implode(','.chr(10), $fieldsKeys)), $indexKeys);
+				$query = array_merge($GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->CreateTableSQL('`'.$components['TABLE'].'`',implode(','.chr(10), $fieldsKeys)), $indexKeys);
 			break;
 		}
 
@@ -174,10 +175,10 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 			case 'adodb':
 				switch(strtoupper(str_replace(array(" ","\n","\r","\t"),'',$components['action'])))	{
 					case 'ADD':
-						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL($components['TABLE'],'`'.$components['FIELD'].'` '.$this->compileFieldCfg($components['definition']));
+						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL('`'.$components['TABLE'].'`','`'.$components['FIELD'].'` '.$this->compileFieldCfg($components['definition']));
 					break;
 					case 'CHANGE':
-						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AlterColumnSQL($components['TABLE'],'`'.$components['FIELD'].'` '.$this->compileFieldCfg($components['definition']));
+						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AlterColumnSQL('`'.$components['TABLE'].'`','`'.$components['FIELD'].'` '.$this->compileFieldCfg($components['definition']));
 					break;
 					case 'DROP':
 					case 'DROPKEY':
@@ -229,7 +230,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 						continue;
 					}
 					if($featureDef['keyword'] == 'auto_increment') {
-						// $cfg.=' AUTO'; removed as we handle auto_increment different now
+						//$cfg.=' AUTO'; removed as we handle auto_increment different now
 						continue;
 					}
 					if($featureDef['keyword'] == 'NOT NULL') {

@@ -1,16 +1,19 @@
 <?php
 /* 
-V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.60 24 Jan 2005  (c) 2000-2005 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
   Set tabs to 4 for best viewing.
   
-  Latest version is available at http://php.weblogs.com/
+  Latest version is available at http://adodb.sourceforge.net
   
   Library for basic performance monitoring and tuning 
   
 */
+
+// security - hide paths
+if (!defined('ADODB_DIR')) die();
 
 class perf_oci8 extends ADODB_perf{
 	
@@ -78,7 +81,7 @@ AND    b.name = 'sorts (memory)'",
 			'db_cache_size' ),
 		'shared pool size' => array('DATAC',
 			"select value from v\$parameter where name = 'shared_pool_size'",
-			'shared_pool_size, which holds shared cursors, stored procedures and similar shared structs' ),
+			'shared_pool_size, which holds shared sql, stored procedures, dict cache and similar shared structs' ),
 		'java pool size' => array('DATAJ',
 			"select value from v\$parameter where name = 'java_pool_size'",
 			'java_pool_size' ),
@@ -104,7 +107,7 @@ AND    b.name = 'sorts (memory)'",
 			"select round((1-bytes/sgasize)*100, 2)
 			from (select sum(bytes) sgasize from sys.v_\$sgastat) s, sys.v_\$sgastat f
 			where name = 'free memory' and pool = 'shared pool'",
-		'Percentage of data cache actually in use - too low is bad, too high is worse'),
+		'Percentage of data cache actually in use - should be over 85%'),
 		
 		'shared pool utilization ratio' => array('RATIOU',
 		'select round((sga.bytes/p.value)*100,2)
@@ -120,7 +123,7 @@ AND    b.name = 'sorts (memory)'",
 		'Percentage of large_pool actually in use - too low is bad, too high is worse'),
 		'sort buffer size' => array('CACHE',
 			"select value from v\$parameter where name='sort_area_size'",
-			'sort_area_size (per query), uses memory in pga' ),
+			'max in-mem sort_area_size (per query), uses memory in pga' ),
 
 		'pga usage at peak' => array('RATIOU',
 		'=PGA','Mb utilization at peak transactions (requires Oracle 9i+)'),
@@ -141,15 +144,18 @@ AND    b.name = 'sorts (memory)'",
 		'cursor sharing' => array('CURSOR',
 			"select value from v\$parameter where name = 'cursor_sharing'",
 			'Cursor reuse strategy. Recommended is FORCE (8i+) or SIMILAR (9i+). See <a href=http://www.praetoriate.com/oracle_tips_cursor_sharing.htm>cursor_sharing</a>.'),
-			
+		/*
+		'cursor reuse' => array('CURSOR',
+			"select count(*) from (select sql_text_wo_constants, count(*)
+  from t1
+ group by sql_text_wo_constants
+having count(*) > 100)",'These are sql statements that should be using bind variables'),*/
 		'index cache cost' => array('COST',
 			"select value from v\$parameter where name = 'optimizer_index_caching'",
-			'% of indexed data blocks expected in the cache.
-			Recommended is 20-80. Default is 0. See <a href=http://www.dba-oracle.com/oracle_tips_cbo_part1.htm>optimizer_index_caching</a>.'),
-		
+			'=WarnIndexCost'),
 		'random page cost' => array('COST',
 			"select value from v\$parameter where name = 'optimizer_index_cost_adj'",
-			'Recommended is 10-50 for TP, and 50 for data warehouses. Default is 100. See <a href=http://www.dba-oracle.com/oracle_tips_cost_adj.htm>optimizer_index_cost_adj</a>. '),		
+			'=WarnPageCost'),
 		
 		false
 		
@@ -164,6 +170,23 @@ AND    b.name = 'sorts (memory)'",
 		$this->conn =& $conn;
 	}
 	
+	function WarnPageCost($val)
+	{
+		if ($val == 100) $s = '<font color=red><b>Too High</b>. </font>';
+		else $s = '';
+		
+		return $s.'Recommended is 20-50 for TP, and 50 for data warehouses. Default is 100. See <a href=http://www.dba-oracle.com/oracle_tips_cost_adj.htm>optimizer_index_cost_adj</a>. ';
+	}
+	
+	function WarnIndexCost($val)
+	{
+		if ($val == 0) $s = '<font color=red><b>Too Low</b>. </font>';
+		else $s = '';
+		
+		return $s.'Percentage of indexed data blocks expected in the cache.
+			Recommended is 20 (fast disk array) to 50 (slower hard disks). Default is 0.
+			 See <a href=http://www.dba-oracle.com/oracle_tips_cbo_part1.htm>optimizer_index_caching</a>.';
+		}
 	
 	function PGA()
 	{
