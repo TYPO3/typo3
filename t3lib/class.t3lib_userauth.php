@@ -281,7 +281,7 @@ class t3lib_userAuth {
 				if (!$this->getMethodEnabled && ($httpHost!=$refInfo['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']))	{
 					die('Error: This host address ("'.$httpHost.'") and the referer host ("'.$refInfo['host'].'") mismatches!<br />
 						It\'s possible that the environment variable HTTP_REFERER is not passed to the script because of a proxy.<br />
-						The site administrator can disable this check in the configuration (flag: TYPO3_CONF_VARS[SYS][doNotCheckReferer]).');
+						The site administrator can disable this check in the "All Configuration" section of the Install Tool (flag: TYPO3_CONF_VARS[SYS][doNotCheckReferer]).');
 				}
 				if ($F_uident && $F_uname)	{
 

@@ -1,5 +1,9 @@
 2004-08-20  Ingmar Schlecht  <ingmars@web.de>
 
+ * Marginally changed the error message in t3lib_userauth appearing when the HTTP_REFERER mismatched.
+
+2004-08-20  Ingmar Schlecht  <ingmars@web.de>
+
  * Fixed bugs #218 and #220: Install tool erroneously complained about low memory_limit
 
 2004-08-20  Ingmar Schlecht  <ingmars@web.de>
