@@ -1,5 +1,9 @@
 2004-09-19  Ingmar Schlecht  <ingmars@web.de>
 
+	* Changed <meta name="generator" content="TYPO3 3.6 CMS" /> tag in class.tslib_pagegen.php to reflect version 3.7. Should be changed to something dynamic in the future! (see bug #0000318)
+
+2004-09-19  Ingmar Schlecht  <ingmars@web.de>
+
 	* Fixed bug #0000365: Made comparing md5 hashes of t3x files in mod/tools/em/index.php ignore leading whitespaces. Patch by Martin T. Kutschker <Martin-no5pam-Kutschker@blackbox.n0spam.net>
 
 2004-09-17  Ingmar Schlecht  <ingmars@web.de>
