@@ -630,6 +630,8 @@ class t3lib_cs {
 	 */
 	function utf8_encode($str,$charset)	{
 
+		if ($charset === 'utf-8')	return $str;
+
 			// Charset is case-insensitive.
 		if ($this->initCharset($charset))	{	// Parse conv. table if not already...
 			$strLen = strlen($str);
@@ -647,21 +649,20 @@ class t3lib_cs {
 					} else $outStr.=chr($this->noCharByteVal);	// No char exists
 					$a++;
 				} elseif ($ord>127)	{	// If char has value over 127 it's a multibyte char in UTF-8
-					if (isset($this->eucBasedSets[$charset]))	{	// EUC uses two-bytes above 127; we get both and advance pointer and make $ord a 16bit int.
+					if ($charset == 'shift_jis' && ($ord <160 || $ord>223))	{	// Shift-JIS is like EUC, but chars between 160 and 223 are single byte
 						$a++;
-						$ord2=ord(substr($str,$a,1));
+						$ord2 = ord(substr($str,$a,1));
 						$ord = $ord*256+$ord2;
-					}
-					elseif ($charset == 'shift_jis' && ($ord <160 || $ord>223))	{	// Shift-JIS is like EUC, but chars between 160 and 223 are single byte
+					} elseif (isset($this->eucBasedSets[$charset]))	{	// EUC uses two-bytes above 127; we get both and advance pointer and make $ord a 16bit int.
 						$a++;
-						$ord2=ord(substr($str,$a,1));
+						$ord2 = ord(substr($str,$a,1));
 						$ord = $ord*256+$ord2;
 					}
 
 					if (isset($this->parsedCharsets[$charset]['local'][$ord]))	{	// If the local char-number was found in parsed conv. table then we use that, otherwise 127 (no char?)
-						$outStr.=$this->parsedCharsets[$charset]['local'][$ord];
-					} else $outStr.=chr($this->noCharByteVal);	// No char exists
-				} else $outStr.=$chr;	// ... otherwise it's just ASCII 0-127 and one byte. Transparent
+						$outStr.= $this->parsedCharsets[$charset]['local'][$ord];
+					} else $outStr.= chr($this->noCharByteVal);	// No char exists
+				} else $outStr.= $chr;	// ... otherwise it's just ASCII 0-127 and one byte. Transparent
 			}
 			return $outStr;
 		}

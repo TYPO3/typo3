@@ -566,8 +566,10 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>Title</td>';
 				$lines[] = '<td bgcolor="red">'.$this->printRemoveIndexed(implode(',',$this->allPhashListed),'Clear ALL phash-rows below!').'</td>';
-				$lines[] = '<td>Content</td>';
-				$lines[] = '<td>Words</td>';
+				$lines[] = '<td>Content<br/>
+							<img src="clear.gif" width="300" height="1" alt="" /></td>';
+				$lines[] = '<td>Words<br/>
+							<img src="clear.gif" width="300" height="1" alt="" /></td>';
 			break;
 			default:
 				$lines[] = '<td>&nbsp;</td>';
@@ -1147,6 +1149,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 */
 	function utf8_to_currentCharset($string)	{
 		global $LANG;
+
 		if ($LANG->charSet != 'utf-8')	{
 			$string = $LANG->csConvObj->utf8_decode($string, $LANG->charSet, TRUE);
 		}

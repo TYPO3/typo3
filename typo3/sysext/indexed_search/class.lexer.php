@@ -144,7 +144,6 @@ class tx_indexedsearch_lexer {
 				$pos = $start+$len;
 			} else break;
 		}
-
 		return $words;
 	}
 

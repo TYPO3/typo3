@@ -21,6 +21,8 @@ Backend modules:
 Implement stop-word setting in: ""Top-20 words by count:" and a list seperate from that (in main module?)
 </diverse>
 
+Unittest for t3lib_cs converting Euc/shift_jis
+
 Test kaniner (indexed search / caching?):
 	- 3DS
 	- Metropol

@@ -1072,6 +1072,7 @@ class tx_indexedsearch_indexer {
 		reset($contentArr);
 		while(list($key,)=each($contentArr)) {
 			if (strlen($contentArr[$key]))	{
+
 				if ($charset!=='utf-8')	{
 					$contentArr[$key] = $this->csObj->utf8_encode($contentArr[$key], $charset);
 				}
@@ -1117,7 +1118,8 @@ class tx_indexedsearch_indexer {
 		$maxL = t3lib_div::intInRange($this->conf['index_descrLgd'],0,255,200);
 		if ($maxL)	{
 				// Takes the quadruple lenght first, because whitespace and entities may be removed and thus shorten the string more yet.
-			$bodyDescription = implode(' ',split('[[:space:],]+',substr(trim($contentArr['body']),0,$maxL*4)));
+	#		$bodyDescription = implode(' ',split('[[:space:],]+',substr(trim($contentArr['body']),0,$maxL*4)));
+			$bodyDescription = str_replace(array(' ',"\t","\r","\n"),' ',$contentArr['body']);
 
 				// Shorten the string:
 			$bodyDescription = $this->csObj->strtrunc('utf-8', $bodyDescription, $maxL);
