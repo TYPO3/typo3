@@ -1,5 +1,9 @@
 2004-09-13  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added CSH for Web>Info/Localization Overview
+
+2004-09-13  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Changed little more in uniqueList, among others that a fixed number of paramters are supported only now!
 
 2004-09-13  Michael Stucki  <mundaun@gmx.ch>
