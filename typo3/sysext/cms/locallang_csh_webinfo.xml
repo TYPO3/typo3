@@ -76,6 +76,26 @@ Will show the total number of page hits/sessions within main sections of a websi
 			<label index="_func_hits.image">EXT:cms/cshimages/pagetree_overview_2.png</label>
 			<label index="lang.alttitle">Localization overview</label>
 			<label index="lang.description">Gives an overview of which pages in the page tree are translated to the system languages installed.</label>
+			<label index="lang.details">The overview uses colors to signal the availability and fall back situation for a given page. Here is a description for each color code:
+&lt;b&gt;Green background:&lt;/b&gt; Page is translated and viewable in this language. For translations it means that an active page overlay record is present.
+&lt;b&gt;Red background:&lt;/b&gt; Page &lt;em&gt;cannot&lt;/em&gt; be viewed in this language and you will see an error message if you try. Menus should automatically filter out links to pages with this translation.
+&lt;b&gt;Gray background (not available for default language):&lt;/b&gt; Page will fall back to the specified fallback mode for content. Depends on configuration. (sys_language_mode = content_fallback is recommended for most flexible fallback, sys_language_mode = strict will prevent this and issue an error instead!)
+
+&lt;b&gt;The pages &quot;Localization settings:&quot;&lt;/b&gt;
+It is the &quot;Localization settings&quot; of the page record that determines the modes above. In the column of the default translation each of these settings are represented by a &quot;N&quot; (Hide page if no translation for current language exists) or a &quot;D&quot; (Hide default translation of page). 
+As you can see the page &quot;Startpage&quot; has the N flag set and therefore any access to the german version of that page will be blocked with an error message because there is no translation in german. By default &quot;german access&quot; to a non-translated page will just show the english content.
+There is also a page with the D flag (&quot;[Dummy]&quot;). The D flag means that the page is only available in one of the translations, in this case Danish. So any attempt to access the page in the default language or german will show an error message.
+
+So, when the &quot;Localization settings&quot; checkboxes for a page are used, you will get an error message when you try to request a page which has been blocked. This is a feature. The trick is not to create links to those pages.
+
+Menus generated from HMENU objects will always take &quot;sys_language&quot; into account and display only pages which can be accessed for that language. But combined with the &quot;localization settings&quot; of pages which may block page access this becomes a problem with pages which are &lt;em&gt;not&lt;/em&gt; translated (has gray background); You might get menu items which links to non-accessible pages.
+The problem basically is that &quot;&amp;L=xx&quot; is different from internal &quot;sys_language&quot;. You would like to avoid that and to do so you should configure &quot;sys_language_mode&quot; to &quot;content_fallback&quot;. If you do that sys_language will &lt;em&gt;always&lt;/em&gt; follow what &quot;&amp;L=&quot; instructs it to and your menus will be right. At the same time you will get the default content displayed if no translation exists (because content selection falls back).
+
+Finally, the number found in each column tells you how many content elements are found in the specified language.</label>
+			<label index="_lang.image">EXT:cms/cshimages/localizationoverview.png,
+EXT:cms/cshimages/localizationoverview1.png</label>
+			<label index="lang.image_descr">Localization overview in the Web&gt;Info module. Use the buttons to edit, view and create new page translation headers. Use the regular page module to put localized content on the pages.
+The &quot;Localization settings&quot; that affect availability of pages in the various languages.</label>
 		</languageKey>
 		<languageKey index="dk">EXT:csh_dk/cms/dk.locallang_csh_webinfo.xml</languageKey>
 		<languageKey index="de" type="array">
