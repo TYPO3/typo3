@@ -1187,9 +1187,9 @@ trim($this->form);
 				}
 					// outsideLayer(level)
 				function outsideLayer(level)	{
-					return GLV_x+GLV_gap-GLV_curLayerX[level] <0 || 
-							GLV_y+GLV_gap-GLV_curLayerY[level] <0 || 
-							GLV_curLayerX[level]+GLV_curLayerWidth[level]+GLV_gap-GLV_x <0 || 
+					return GLV_x+GLV_gap-GLV_curLayerX[level] <0 ||
+							GLV_y+GLV_gap-GLV_curLayerY[level] <0 ||
+							GLV_curLayerX[level]+GLV_curLayerWidth[level]+GLV_gap-GLV_x <0 ||
 							GLV_curLayerY[level]+GLV_curLayerHeight[level]+GLV_gap-GLV_y <0;
 				}
 					// setLayerObj(html,level)
@@ -1202,8 +1202,10 @@ trim($this->form);
 						tempLayerObj.height= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op?this.css.pixelHeight:0;
 						tempLayerObj.width= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetWidth:bw.ns4?this.ref.width:bw.op?this.css.pixelWidth:0;
 
-						tempLayerObjCss.left = GLV_curLayerX[level] = GLV_x;
-						tempLayerObjCss.top = GLV_curLayerY[level] = GLV_y;
+						GLV_curLayerX[level] = GLV_x;
+						GLV_curLayerY[level] = GLV_y;
+						tempLayerObjCss.left = GLV_x+"px";
+						tempLayerObjCss.top = GLV_y+"px";
 						tempLayerObjCss.visibility = "visible";
 
 						GLV_isVisible[level]=1;
