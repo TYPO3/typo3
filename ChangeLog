@@ -1,5 +1,9 @@
 2004-03-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed problem in Extension Manager where files and directories was not written with correct permissions. I also added t3lib_div::mkdir() general function for creating directories.
+
+2004-03-23  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Fixed bug that page tree didn't unfold when entering page id in the shortcut frame.
 
 2004-03-23  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -102,7 +102,7 @@
  *
  *              SECTION: File system operations
  * 2822:     function createDirsInPath($dirs,$extDirPath)	
- * 2847:     function removeExtDirectory($removePath,$removeContentOnly=0)	
+ * 2847:     function removeExtDirectory($removePath,$removeContentOnly=0)
  * 2908:     function clearAndMakeExtensionDir($importedData,$type)	
  * 2961:     function removeCacheFiles()	
  * 2981:     function extractDirsFromFileList($files)	
@@ -1123,10 +1123,10 @@ EXTENSION KEYS:
 										} elseif (md5(t3lib_div::getUrl($extDirPath.$theFile)) != $fileData['content_md5']) {
 											$content.='Error: File "'.$extDirPath.$theFile.'" MD5 was different from the original files MD5 - so the file is corrupted!<br />';
 										} elseif (TYPO3_OS!='WIN') {
-											chmod ($extDirPath.$theFile, 0755);   
+											#chmod ($extDirPath.$theFile, 0755);	# SHOULD NOT do that here since writing the file should already have set adequate permissions!
 										}
 									}
-									
+
 										// No content, no errors. Create success output here:
 									if (!$content)	{
 										$content='SUCCESS: '.$extDirPath.'<br />';
@@ -1153,7 +1153,7 @@ EXTENSION KEYS:
 										$EM_CONF['_md5_values_when_last_written'] = serialize($sEMD5A);
 										$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
 										t3lib_div::writeFile($extDirPath.'ext_emconf.php',$emConfFile);
-		
+
 										$content.='ext_emconf.php: '.$extDirPath.'ext_emconf.php<br />';
 										$content.='Type: '.$loc.'<br />';
 										
@@ -2827,7 +2827,7 @@ EXTENSION KEYS:
 				foreach($allDirs as $dirParts)	{
 					$root.=$dirParts.'/';
 					if (!is_dir($extDirPath.$root))	{
-						@mkdir(ereg_replace('\/$','',$extDirPath.$root), 0777);
+						t3lib_div::mkdir($extDirPath.$root);
 						if (!@is_dir($extDirPath.$root))	{
 							return 'Error: The directory "'.$extDirPath.$root.'" could not be created...';
 						}
@@ -2840,7 +2840,7 @@ EXTENSION KEYS:
 	/**
 	 * Removes the extension directory (including content)
 	 *
-	 * @param	string		Extension directory to remove.
+	 * @param	string		Extension directory to remove (with trailing slash)
 	 * @param	boolean		If set, will leave the extension directory
 	 * @return	boolean		False on success, otherwise error string.
 	 */
@@ -2852,8 +2852,9 @@ EXTENSION KEYS:
 			(t3lib_div::isFirstPartOfStr($removePath,PATH_site.$this->typePaths['S']) && $this->systemInstall) ||
 			t3lib_div::isFirstPartOfStr($removePath,PATH_site.'fileadmin/_temp_/'))		// Playing-around directory...
 			) {
-			
-			$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),$removePath,'',1);
+
+				// All files in extension directory:
+			$fileArr = t3lib_div::getAllFilesAndFoldersInPath(array(),$removePath);
 			if (is_array($fileArr))	{
 
 					// Remove files in dirs:
@@ -2866,7 +2867,7 @@ EXTENSION KEYS:
 								$errors[] = 'Error: "'.$removeFile.'" could not be deleted!';
 							}
 						} else $errors[] = 'Error: "'.$removeFile.'" was either not a file, or it was equal to the removed directory or simply outside the removed directory "'.$removePath.'"!';
-					} else $errors[] = 'Error: "'.$removeFile.'" was a directory! Strange!';
+					}
 				}
 
 					// Remove directories:
@@ -2918,7 +2919,7 @@ EXTENSION KEYS:
 				
 					// Creates the typo3conf/ext/ directory if it does NOT already exist:
 				if ((string)$type=='L' && !@is_dir($path))	{
-					mkdir(ereg_replace('\/$','',$path), 0777);
+					t3lib_div::mkdir($path);
 				}
 			break;
 			default:
@@ -2947,7 +2948,7 @@ EXTENSION KEYS:
 			}
 
 				// We go create...
-			@mkdir(ereg_replace('\/$','',$extDirPath), 0777);
+			t3lib_div::mkdir($extDirPath);
 			if (!is_dir($extDirPath))	return 'ERROR: Could not create extension directory "'.$extDirPath.'"';
 			return array($extDirPath);
 		} else return 'ERROR: The extension install path "'.$path.'" was not a directory.';
@@ -3253,13 +3254,13 @@ EXTENSION KEYS:
 						$uploadArray['FILES'][$relFileName]['content_md5'] = md5($uploadArray['FILES'][$relFileName]['content']);
 					}
 				}
-				
+
 					// Return upload-array:
 				return $uploadArray;
 			} else return 'Error: Total size of uncompressed upload ('.$totalSize.') exceeds '.t3lib_div::formatSize($this->maxUploadSize);
 		}
 	}
-	
+
 	/**
 	 * Include a locallang file and return the $LOCAL_LANG array serialized.
 	 *
@@ -3505,7 +3506,7 @@ EXTENSION KEYS:
 		$uploadFolder = PATH_site.$this->ulFolder($extKey);
 		if ($extInfo['EM_CONF']['uploadfolder'] && !@is_dir($uploadFolder))	{
 			if (t3lib_div::_POST('_uploadfolder'))	{	// CREATE dir:
-				mkdir(ereg_replace('\/$','',$uploadFolder), 0777);
+				t3lib_div::mkdir($uploadFolder);
 				$indexContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <HTML>
 <HEAD>
@@ -3541,7 +3542,7 @@ EXTENSION KEYS:
 							if (strcmp($dirP,''))	{
 								$crDirStart.= $dirP.'/';
 								if (!@is_dir(PATH_site.$crDirStart))	{
-									mkdir(ereg_replace('\/$', '', PATH_site.$crDirStart), 0777);
+									t3lib_div::mkdir(PATH_site.$crDirStart);
 									$finalDir = PATH_site.$crDirStart;
 								}
 							} else {

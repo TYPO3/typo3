@@ -120,10 +120,10 @@
  *
  *              SECTION: FILES FUNCTIONS
  * 1938:     function getURL($url)	
- * 1981:     function writeFile($file,$content)	
+ * 1981:     function writeFile($file,$content)
  * 2004:     function get_dirs($path)	
  * 2030:     function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	
- * 2075:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	
+ * 2075:     function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)
  * 2097:     function removePrefixPathFromList($fileArr,$prefixToRemove)	
  * 2114:     function fixWindowsFilePath($theFile)	
  * 2124:     function resolveBackPath($pathStr)	
@@ -1985,10 +1985,24 @@ class t3lib_div {
 
 				// Setting file system mode of file:
 			if (@is_file($file) && TYPO3_OS!='WIN')	{
-				@chmod ($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
+				chmod($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
 			}
 
 			return true;
+		}
+	}
+
+	/**
+	 * Wrapper function for mkdir, setting folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']
+	 *
+	 * @param	string		Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
+	 * @return	boolean		TRUE if @mkdir went well!
+	 */
+	function mkdir($theNewFolder)	{
+		$theNewFolder = ereg_replace('\/$','',$theNewFolder);
+		if (mkdir($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']))){
+			chmod($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])); //added this line, because the mode at 'mkdir' has a strange behaviour sometimes
+			return TRUE;
 		}
 	}
 
@@ -2028,12 +2042,16 @@ class t3lib_div {
 	 * @return	array		Array of the files found
 	 */
 	function getFilesInDir($path,$extensionList='',$prependPath=0,$order='')	{
-		$filearray=array();
-		$sortarray=array();
-		if ($path)	{
-			$path = ereg_replace('/$','',$path);
+
+			// Initialize variabels:
+		$filearray = array();
+		$sortarray = array();
+		$path = ereg_replace('\/$','',$path);
+
+			// Find files+directories:
+		if (@is_dir($path))	{
 			$extensionList = strtolower($extensionList);
-			$d = @dir($path);
+			$d = dir($path);
 			if (is_object($d))	{
 				while($entry=$d->read()) {
 					if (@is_file($path.'/'.$entry))	{
@@ -2047,8 +2065,10 @@ class t3lib_div {
 					}
 				}
 				$d->close();
-			} else return 'error';
+			} else return 'error opening path: "'.$path.'"';
 		}
+
+			// Sort them:
 		if ($order) {
 			asort($sortarray);
 			reset($sortarray);
@@ -2058,6 +2078,8 @@ class t3lib_div {
 			}
 			$filearray=$newArr;
 		}
+
+			// Return result
 		reset($filearray);
 		return $filearray;
 	}
@@ -2066,15 +2088,15 @@ class t3lib_div {
 	 * Recursively gather all files and folders of a path.
 	 *
 	 * @param	array		$fileArr: Empty input array (will have files added to it)
-	 * @param	string		$path: The path to read recursively from (absolute)
+	 * @param	string		$path: The path to read recursively from (absolute) (include trailing slash!)
 	 * @param	string		$extList: Comma list of file extensions: Only files with extensions in this list (if applicable) will be selected.
 	 * @param	boolean		$regDirs: If set, directories are also included in output.
 	 * @param	integer		$recursivityLevels: The number of levels to dig down...
 	 * @return	array		An array with the found files/directories.
 	 */
 	function getAllFilesAndFoldersInPath($fileArr,$path,$extList='',$regDirs=0,$recursivityLevels=99)	{
-		if ($regDirs)	$fileArr[]=$path;
-		$fileArr = array_merge($fileArr,t3lib_div::getFilesInDir($path,$extList,1,1));
+		if ($regDirs)	$fileArr[] = $path;
+		$fileArr = array_merge($fileArr, t3lib_div::getFilesInDir($path,$extList,1,1));
 
 		$dirs = t3lib_div::get_dirs($path);
 		if (is_array($dirs) && $recursivityLevels>0)	{
@@ -2776,7 +2798,7 @@ class t3lib_div {
 
 			// Setting file system mode of file:
 		if (@is_file($destination) && TYPO3_OS!='WIN')	{
-			@chmod ($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
+			chmod($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
 		}
 
 			// If here the file is copied and the temporary $source is still around, so when returning false the user can try unlink to delete the $source

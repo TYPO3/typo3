@@ -117,7 +117,7 @@
  *
  *              SECTION: Various internal API functions
  * 2342:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	
- * 2389:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	
+ * 2389:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
  * 2417:     function getSimulFileName()	
  * 2430:     function encryptEmail($string,$back=0)	
  * 2447:     function checkFileInclude($incFile)	
@@ -1253,7 +1253,7 @@
 					}
 						// if .simulateStaticDocuments was not present, the default value will rule.
 					if (!isset($this->config['config']['simulateStaticDocuments']))	{
-						$this->config['config']['simulateStaticDocuments']=$this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments'];
+						$this->config['config']['simulateStaticDocuments'] = $this->TYPO3_CONF_VARS['FE']['simulateStaticDocuments'];
 					}
 		
 							// Processing for the config_array:

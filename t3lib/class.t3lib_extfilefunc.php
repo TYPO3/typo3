@@ -730,8 +730,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 						$theNewFolder = $theTarget.'/'.$theFolder;
 						if ($this->checkPathAgainstMounts($theNewFolder))	{
 							if (!@file_exists($theNewFolder))	{
-								if (@mkdir($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']))){
-									@chmod($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])); //added this line, because the mode at 'mkdir' has a strange behaviour sometimes
+								if (t3lib_div::mkdir($theNewFolder)){
 									$this->writelog(6,0,1,"Directory '%s' created in '%s'",Array($theFolder,$theTarget.'/'));
 									return $theNewFolder;
 								} else $this->writelog(6,1,100,"Directory '%s' not created. Write-permission problem in '%s'?",Array($theFolder,$theTarget.'/'));
