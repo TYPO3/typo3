@@ -282,6 +282,9 @@ class t3lib_positionMap {
 
 	/**
 	 * Creates the onclick event for the insert-icons.
+	 *
+	 * TSconfig mod.web_list.newPageWiz.overrideWithExtension may contain an extension which provides a module
+	 * to be used instead of the normal create new page wizard.
 	 * 
 	 * @param	integer		The pid.
 	 * @param	integer		New page id.
@@ -290,9 +293,9 @@ class t3lib_positionMap {
 	function onClickEvent($pid,$newPagePID)	{
 		$TSconfigProp = $this->getModConfig($newPagePID);
 		
-		if ($TSconfigProp['useTemplaVoila'])	{
-			if (t3lib_extMgm::isLoaded('templavoila'))	{
-				$onclick = "document.location='".t3lib_extMgm::extRelPath('templavoila').'mod1/index.php?cmd=crPage&positionPid='.$pid."';";
+		if ($TSconfigProp['overrideWithExtension'])	{
+			if (t3lib_extMgm::isLoaded($TSconfigProp['overrideWithExtension']))	{
+				$onclick = "document.location='".t3lib_extMgm::extRelPath($TSconfigProp['overrideWithExtension']).'mod1/index.php?cmd=crPage&positionPid='.$pid."';";
 				return $onclick;
 			}
 		}
@@ -346,7 +349,6 @@ class t3lib_positionMap {
 	 * @see onClickEvent()
 	 */
 	function getModConfig($pid)	{
-		global $BE_USER;
 		if (!isset($this->getModConfigCache[$pid]))	{
 				// Acquiring TSconfig for this PID:
 			$this->getModConfigCache[$pid] = t3lib_BEfunc::getModTSconfig($pid,$this->modConfigStr);
