@@ -1,5 +1,9 @@
 2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed spam-protection of email adresses inserted by "mailto:..." in text.
+
+2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Fixed another small bug in detection of simulateStaticDocuments.
 
 2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>

@@ -119,7 +119,7 @@
  * 2342:     function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	
  * 2389:     function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)
  * 2417:     function getSimulFileName()	
- * 2430:     function encryptEmail($string,$back=0)	
+ * 2430:     function encryptEmail($string,$back=0)
  * 2447:     function checkFileInclude($incFile)	
  * 2462:     function newCObj()	
  * 2475:     function setAbsRefPrefix()	
@@ -2469,11 +2469,11 @@ if (version == "n3") {
 	 * @return	string		encoded/decoded version of $string
 	 */
 	function encryptEmail($string,$back=0)	{
-		$out='';
-		for ($a=0;$a<strlen($string);$a++)	{
+		$out = '';
+		for ($a=0; $a<strlen($string); $a++)	{
 			$charValue = ord(substr($string,$a,1));
-			$charValue+=intval($GLOBALS['TSFE']->spamProtectEmailAddresses)*($back?-1:1);
-			$out.=chr($charValue);
+			$charValue+= intval($GLOBALS['TSFE']->spamProtectEmailAddresses)*($back?-1:1);
+			$out.= chr($charValue);
 		}
 		return $out;
 	}
@@ -2486,7 +2486,7 @@ if (version == "n3") {
 	 * @see tslib_cObj::PHP_SCRIPT(), tslib_feTCE::includeScripts(), tslib_menu::includeMakeMenu()
 	 */
 	function checkFileInclude($incFile)	{
-		return !$GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] 
+		return !$GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude']
 			|| substr($incFile,0,14)=='media/scripts/'
 			|| substr($incFile,0,4+strlen(TYPO3_mainDir))==TYPO3_mainDir.'ext/'
 			|| substr($incFile,0,7+strlen(TYPO3_mainDir))==TYPO3_mainDir.'sysext/'
