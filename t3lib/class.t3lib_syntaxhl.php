@@ -79,7 +79,7 @@ class t3lib_syntaxhl {
 	var $htmlParse;			// Parse object.
 	
 		// External, static:
-	var $wrapTags = array(
+	var $DS_wrapTags = array(
 		'T3DataStructure' => array('<span style="font-weight: bold;">','</span>'),
 		'type' => array('<span style="font-weight: bold; color: #000080;">','</span>'),
 		'section' => array('<span style="font-weight: bold; color: #000080;">','</span>'),
@@ -100,6 +100,41 @@ class t3lib_syntaxhl {
 		'langChildren' => array('<span style="color: #000080;">','</span>'),
 	);
 
+	var $FF_wrapTags = array(
+		'T3FlexForms' => array('<span style="font-weight: bold;">','</span>'),
+		'meta' => array('<span style="font-weight: bold; color: #800080;">','</span>'),
+		'data' => array('<span style="font-weight: bold; color: #800080;">','</span>'),
+		'_unknown' => array('<span style="font-style: italic; color: #666666;">','</span>'),
+		
+
+		'sDEF'  => array('<span style="font-weight: bold; color: #008000;">','</span>'),
+		'level:sheet' => array('<span style="font-weight: bold; color: #008000;">','</span>'),
+
+		'lDEF'  => array('<span style="font-weight: bold; color: #000080;">','</span>'),
+		'level:language' => array('<span style="font-weight: bold; color: #000080;">','</span>'),
+
+		'level:fieldname' => array('<span style="font-weight: bold; color: #666666;">','</span>'),
+
+		'vDEF'  => array('<span style="font-weight: bold; color: #800000;">','</span>'),
+		'level:value' => array('<span style="font-weight: bold; color: #800000;">','</span>'),
+
+		'currentSheetId' => array('<span style="color: #000080;">','</span>'),
+		'currentLangId' => array('<span style="color: #000080;">','</span>'),
+	);
+
+
+
+
+
+
+
+
+	/*************************************
+	 *
+	 * Markup of Data Structure, <T3DataStructure>
+	 *
+	 *************************************/	
+
 	/**
 	 * Makes syntax highlighting of a Data Structure, <T3DataStructure>
 	 * 
@@ -116,13 +151,199 @@ class t3lib_syntaxhl {
 				// Highlighting source:
 			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');	// Init parser object
 			$struct = $this->splitXMLbyTags(implode(',',$completeTagList),$str);	// Split the XML by the found tags, recursively into LARGE array.
-			$markUp = $this->markUpRecursively($struct);	// Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML. 
+			$markUp = $this->highLight_DS_markUpRecursively($struct);	// Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML. 
 
 				// Return content:
 			return $markUp;
 		} else $error = 'ERROR: The input content failed XML parsing: '.$DS;
 		return $error;
 	}
+	
+	/**
+	 * Making syntax highlighting of the parsed Data Structure XML.
+	 * Called recursively.
+	 * 
+	 * @param	array		The structure, see splitXMLbyTags()
+	 * @param	string		Parent tag.
+	 * @param	string		"Application" - used to denote if we are 'inside' a section
+	 * @return	string		HTML
+	 */
+	function highLight_DS_markUpRecursively($struct,$parent='',$app='')	{
+		$output='';
+		foreach($struct as $k => $v)	{
+			if ($k%2)	{
+				$nextApp = $app;
+				$wrap = array('','');
+				
+				switch($app)	{
+					case 'TCEforms':
+					case 'tx_templavoila':
+						$wrap = $this->DS_wrapTags['_applicationContents'];
+					break;
+					case 'el':
+					default:
+						if ($parent=='el')	{
+							$wrap = $this->DS_wrapTags['parent:el'];
+							$nextApp = 'el';
+						} elseif ($parent=='sheets')	{
+							$wrap = $this->DS_wrapTags['parent:sheets'];
+						} else {
+							$wrap = $this->DS_wrapTags[$v['tagName']];
+							$nextApp = '';
+						}
+				
+							// If no wrap defined, us "unknown" definition
+						if (!is_array($wrap))	{
+							$wrap = $this->DS_wrapTags['_unknown'];
+						}
+						
+							// Check for application sections in the XML:
+						if ($app=='el' || $parent=='ROOT')	{
+							switch($v['tagName'])	{
+								case 'TCEforms':
+								case 'tx_templavoila':
+									$nextApp = $v['tagName'];
+									$wrap = $this->DS_wrapTags['_applicationTag'];
+								break;
+							}
+						}
+					break;
+				}
+
+				$output.=$wrap[0].htmlspecialchars($v['tag']).$wrap[1];
+				$output.=$this->highLight_DS_markUpRecursively($v['sub'],$v['tagName'],$nextApp);
+				$output.=$wrap[0].htmlspecialchars('</'.$v['tagName'].'>').$wrap[1];
+			} else {
+				$output.=htmlspecialchars($v);
+			}
+		}
+		
+		return $output;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*************************************
+	 *
+	 * Markup of Data Structure, <T3FlexForms>
+	 *
+	 *************************************/	
+
+	/**
+	 * Makes syntax highlighting of a FlexForm Data, <T3FlexForms>
+	 * 
+	 * @param	string		Data Structure XML, must be valid since it's parsed.
+	 * @return	string		HTML code with highlighted content. Must be wrapped in <PRE> tags
+	 */
+	function highLight_FF($str)	{
+		
+			// Parse DS to verify that it is valid:
+		$DS = t3lib_div::xml2array($str);
+		if (is_array($DS))	{
+			$completeTagList = array_unique($this->getAllTags($str));	// Complete list of tags in DS
+			
+				// Highlighting source:
+			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');	// Init parser object
+			$struct = $this->splitXMLbyTags(implode(',',$completeTagList),$str);	// Split the XML by the found tags, recursively into LARGE array.
+			$markUp = $this->highLight_FF_markUpRecursively($struct);	// Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML. 
+
+				// Return content:
+			return $markUp;
+		} else $error = 'ERROR: The input content failed XML parsing: '.$DS;
+		return $error;
+	}
+	
+	/**
+	 * Making syntax highlighting of the parsed FlexForm XML.
+	 * Called recursively.
+	 * 
+	 * @param	array		The structure, see splitXMLbyTags()
+	 * @param	string		Parent tag.
+	 * @param	string		"Application" - used to denote if we are 'inside' a section
+	 * @return	string		HTML
+	 */
+	function highLight_FF_markUpRecursively($struct,$parent='',$app='')	{
+		$output='';
+
+			// Setting levels:
+		if ($parent=='data')	{
+			$app='sheet';
+		} elseif($app=='sheet')	{
+			$app='language';
+		} elseif($app=='language')	{
+			$app='fieldname';
+		} elseif($app=='fieldname')	{
+			$app='value';
+		}
+		
+			// Traverse structure:		
+		foreach($struct as $k => $v)	{
+			if ($k%2)	{
+				$wrap = array('','');
+
+					// Default wrap:				
+				$wrap = $this->FF_wrapTags[$v['tagName']];
+				
+					// If no wrap defined, us "unknown" definition
+				if (!is_array($wrap))	{
+					switch($app)	{
+						case 'sheet':
+						case 'language':
+						case 'fieldname':
+						case 'value':
+							$wrap = $this->FF_wrapTags['level:'.$app];
+						break;
+						default:
+							$wrap = $this->FF_wrapTags['_unknown'];
+						break;
+					}
+				}
+
+				$output.=$wrap[0].htmlspecialchars($v['tag']).$wrap[1];
+				$output.=$this->highLight_FF_markUpRecursively($v['sub'],$v['tagName'],$app);
+				$output.=$wrap[0].htmlspecialchars('</'.$v['tagName'].'>').$wrap[1];
+			} else {
+				$output.=htmlspecialchars($v);
+			}
+		}
+		
+		return $output;
+	}
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+
+	/*************************************
+	 *
+	 * Various
+	 *
+	 *************************************/	
 	
 	/**
 	 * Returning all tag names found in XML/HTML input string
@@ -178,67 +399,6 @@ class t3lib_syntaxhl {
 		}
 		
 		return $struct;
-	}
-
-	/**
-	 * Making syntax highlighting of the parsed Data Structure XML.
-	 * Called recursively.
-	 * 
-	 * @param	array		The structure, see splitXMLbyTags()
-	 * @param	string		Parent tag.
-	 * @param	string		"Application" - used to denote if we are 'inside' a sectionl
-	 * @return	string		HTML
-	 */
-	function markUpRecursively($struct,$parent='',$app='')	{
-		$output='';
-		foreach($struct as $k => $v)	{
-			if ($k%2)	{
-				$nextApp = $app;
-				$innerWrap = $wrap = array('','');
-				
-				switch($app)	{
-					case 'TCEforms':
-					case 'tx_templavoila':
-						$wrap = $this->wrapTags['_applicationContents'];
-					break;
-					case 'el':
-					default:
-						if ($parent=='el')	{
-							$wrap = $this->wrapTags['parent:el'];
-							$nextApp = 'el';
-						} elseif ($parent=='sheets')	{
-							$wrap = $this->wrapTags['parent:sheets'];
-						} else {
-							$wrap = $this->wrapTags[$v['tagName']];
-							$nextApp = '';
-						}
-				
-						if (!is_array($wrap))	{
-							$wrap = $this->wrapTags['_unknown'];
-						}
-						
-						if ($app=='el' || $parent=='ROOT')	{
-							switch($v['tagName'])	{
-								case 'TCEforms':
-								case 'tx_templavoila':
-									$nextApp = $v['tagName'];
-									$wrap = $this->wrapTags['_applicationTag'];
-									#$innerWrap = $this->wrapTags['_applicationContents'];
-								break;
-							}
-						}
-					break;
-				}
-
-				$output.=$wrap[0].htmlspecialchars($v['tag']).$wrap[1];
-				$output.=$innerWrap[0].$this->markUpRecursively($v['sub'],$v['tagName'],$nextApp).$innerWrap[1];
-				$output.=$wrap[0].htmlspecialchars('</'.$v['tagName'].'>').$wrap[1];
-			} else {
-				$output.=htmlspecialchars($v);
-			}
-		}
-		
-		return $output;
 	}
 }
 
