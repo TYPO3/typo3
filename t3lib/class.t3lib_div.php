@@ -740,6 +740,7 @@ class t3lib_div {
 
 	/**
 	 * Takes comma-separated lists and arrays and removes all duplicates
+	 * If a value in the list is trim(empty), the value is ignored.
 	 * Usage: 16
 	 *
 	 * @param	string		Accept multiple parameters wich can be comma-separated lists of values and arrays.
@@ -751,7 +752,7 @@ class t3lib_div {
 		$arg_list = func_get_args();
 		foreach ($arg_list as $in_list)	{
 			if (!is_array($in_list))	{
-				$in_list = explode(',',$in_list);
+				$in_list = t3lib_div::trimExplode(',',$in_list,1);
 			}
 			$listArray = array_merge($listArray,$in_list);
 		}

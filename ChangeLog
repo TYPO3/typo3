@@ -1,3 +1,7 @@
+2004-09-13  Michael Stucki  <mundaun@gmx.ch>
+
+	* Fixed bug in t3lib_div::uniqueList that was caused when t3lib_div::uniqueArray was replaced with array_unique. Obviously array_unique doesn't remove empty values from the array but t3lib_div::uniqueArray did! Please take care of this if you still use this deprecated function in your extension!
+
 2004-09-11  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Updated changelog for 09/09
