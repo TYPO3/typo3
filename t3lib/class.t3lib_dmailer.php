@@ -193,7 +193,6 @@ class t3lib_dmailer extends t3lib_htmlmail {
 			} else $this->theParts['plain']['content'] = '';
 
 				// Set content
-			$this->messageid = $uniqMsgId;
 			$this->Xid = $midRidId.'-'.md5($midRidId);
 			$this->returnPath = str_replace('###XID###',$midRidId,$this->dmailer['sys_dmail_rec']['return_path']);
 			
