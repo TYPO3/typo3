@@ -1442,7 +1442,7 @@ class t3lib_div {
 				} else {
 					if ($includeEmtpyValues OR $val) {
 						$arr0[$key] = $val;
-					}
+					} 
 				}
 			}
 		}
@@ -1574,7 +1574,7 @@ class t3lib_div {
 		if (is_array($value))	reset($value);
 		return $value;
 	}
-
+	
 	/**
 	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
 	 * Usage: 14
@@ -3261,29 +3261,45 @@ class t3lib_div {
 	 *
 	 * @param	string		Type of service (service key).
 	 * @param	string		Sub type like file extensions or similar. Defined by the service.
-	 * @param	string		List of service keys which should be exluded in the search for a service.
+	 * @param	mixed		List of service keys which should be exluded in the search for a service. Array or comma list.
 	 * @return	object		The service object or an array with error info's.
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
-	function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys='')	{
-		global $T3_SERVICES, $TYPO3_CONF_VARS;
+	function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())	{
+		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 
 		$error = FALSE;
 
+		if (!is_array($excludeServiceKeys) ) {
+			$excludeServiceKeys = t3lib_div::trimExplode(',', $excludeServiceKeys, 1);
+		}
 		while ($info = t3lib_extMgm::findService($serviceType, $serviceSubType, $excludeServiceKeys))	{
 
-			if (@is_file($info['classFile'])) {
+				// Check persistent object and if found, call directly and exit.
+			if (is_object($GLOBALS['T3_VAR']['makeInstanceService'][$info['className']]))	{
+					// reset service and return object
+				$T3_VAR['makeInstanceService'][$info['className']]->reset();
+				return $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']];
+				
+				// include file and create object
+			} elseif (@is_file($info['classFile'])) {
 				require_once ($info['classFile']);
 				$obj = t3lib_div::makeInstance($info['className']);
 				if (is_object($obj)) {
 					if(!@is_callable(array($obj,'init')))	{
-// use silent logging???
+							// use silent logging??? I don't think so.
 						die ('Broken service:'.t3lib_div::view_array($info));
 					}
+					$obj->info = $info;
 					if ($obj->init()) { // service available?
+	
+							// create persistent object
+						$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
 
-						$obj->info = $info;
-						return $obj; // objects are passed always as reference - right?
+							// needed to delete temp files
+						register_shutdown_function(array(&$obj, '__destruct'));			
+									
+						return $obj; // object is passed as reference by funtion definition
 					}
 					$error = $obj->getLastErrorArray();
 					unset($obj);
