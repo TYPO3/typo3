@@ -353,7 +353,7 @@ class SC_wizard_table {
 			foreach($firstRow as $temp)	{
 				$ctrl='';
 				if ($a!=0)	{
-					$ctrl.='<input type="image" name="TABLE[col_left]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg('','gfx/pil2left.gif','').' title="'.$LANG->getLL('table_left',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_left]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2left.gif','').' title="'.$LANG->getLL('table_left',1).'" />';
 				} else {
 					$ctrl.='<input type="image" name="TABLE[col_end]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_left.gif','').' title="'.$LANG->getLL('table_end',1).'" />';
 				}
