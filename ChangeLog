@@ -1,6 +1,10 @@
 2004-07-20  Jan-Erik Revsbech <revsbech@fys.ku.dk>
 	* Fixed bug related to messageID Bug 174/102: Incorrect messageid contains double tagt <<THEMESSAGEID>> instead of <THEMESSAGEID>.
 	
+2004-07-12  Michael Stucki  <mundaun@gmx.ch>
+
+	* Released TYPO3 3.6.2
+
 2004-07-12  Ingmar Schlecht  <ingmars@web.de>
 
 	* Fixed bug #167 and #206: IE does not display the image in the showpic.php popups if extension RealURL is used. Thanks to martin@beryllium.net for the patch.
