@@ -179,6 +179,9 @@ class SC_file_edit {
 				</div>
 				<br />';
 
+				// CSH:
+			$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH'],'|<br/>');
+
 				// Make shortcut:
 			if ($BE_USER->mayMakeShortcut())	{
 				$this->MCONF['name']='xMOD_file_edit.php';

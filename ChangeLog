@@ -1,5 +1,9 @@
 2004-05-28  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added new CSH entries at various places using a new method in t3lib_BEfunc. The CSH entries are still empty and needs to be completed.
+
+2004-05-28  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added visual response to backend module selection in the menus; The class attribute of the menu items is changed when a module is selected. The default stylesheet is modified so this results in the current module being highlighted in the menu.
 
 2004-05-27  Kasper Skårhøj,,,  <kasper@typo3.com>

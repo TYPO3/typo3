@@ -399,6 +399,7 @@ BODY#typo3-db-new-php A IMG { margin-right: 5px; }
 BODY#typo3-db-new-php A { text-decoration: none; }
 BODY#typo3-db-new-php IMG.c-helpImg { margin-left: 20px; text-align: right; }
 BODY#typo3-db-new-php DIV#typo3-newPageLink { margin-top: 20px; }
+BODY#typo3-db-new-php  TABLE#typo3-newRecord TR TD { padding-right: 20px;}
 
 /* Extension Manager */
 BODY#typo3-mod-tools-em-index-php .em-private {background-color: #F6CA96;}
@@ -447,6 +448,11 @@ A.typo3-goBack {
 }
 A.typo3-goBack IMG { margin-right: 5px; vertical-align: middle; }
 SPAN.typo3-moduleHeader IMG { vertical-align: middle; margin-right: 4px; }
+
+/* TYPO3 CSH */
+TABLE.typo3-csh-inline { width: 100%; border: solid 1px #6f3833; background-color: #af8883; margin: 5px 0px 20px 0px; }
+TABLE.typo3-csh-inline TR TD H4 { margin-top: 0px; margin-bottom: 0px; }
+IMG.typo3-csh-icon { vertical-align: middle; cursor: help; }
 
 
 

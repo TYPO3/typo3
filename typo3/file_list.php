@@ -241,6 +241,9 @@ class SC_file_list {
 			$this->content.= $filelist->HTMLcode;
 			$this->content.= '<input type="hidden" name="cmd" /></form>';
 
+				// FileList Module CSH:
+			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'],'<br/>|');
+
 			if ($filelist->HTMLcode)	{	// Making listing options:
 
 				$this->content.='
@@ -260,10 +263,14 @@ class SC_file_list {
 				$this->content.='
 					</div>
 				';
+				$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_options', $GLOBALS['BACK_PATH']);
 
 
 					// Set clipboard:
-				if ($this->MOD_SETTINGS['clipBoard'])	$this->content.=$filelist->clipObj->printClipboard();
+				if ($this->MOD_SETTINGS['clipBoard'])	{
+					$this->content.=$filelist->clipObj->printClipboard();
+					$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_clipboard', $GLOBALS['BACK_PATH']);
+				}
 			}
 
 				// Add shortcut

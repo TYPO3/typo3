@@ -302,7 +302,10 @@ class SC_alt_shortcut {
 					($this->editError?'&nbsp;<strong><span class="typo3-red">'.htmlspecialchars($this->editError).'</span></strong>':'').
 					(is_array($this->theEditRec)?'&nbsp;<strong>'.$LANG->getLL('shortcut_loadEdit',1).' \''.t3lib_BEfunc::getRecordTitle('pages',$this->theEditRec,1).'\'</strong> ('.htmlspecialchars($this->editPath).')':'').
 					'</td>';
-		} else $editIdCode='';
+		} else $editIdCode = '';
+
+			// Adding CSH:
+		$editIdCode.= '<td>&nbsp;'.t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'shortcuts', $GLOBALS['BACK_PATH'],'',TRUE).'</td>';
 
 		$this->content.='
 

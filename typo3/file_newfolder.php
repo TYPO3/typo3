@@ -206,6 +206,10 @@ class SC_file_newfolder {
 				<input type="hidden" name="redirect" value="'.htmlspecialchars($this->returnUrl).'" />
 			</div>
 			';
+
+			// CSH:
+		$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_newfolder', $GLOBALS['BACK_PATH'],'<br/>');
+
 		$this->content.= $this->doc->section('',$code);
 
 
@@ -234,6 +238,9 @@ class SC_file_newfolder {
 				<input type="hidden" name="redirect" value="'.htmlspecialchars($this->returnUrl).'" />
 			</div>
 			';
+
+			// CSH:
+		$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_newfile', $GLOBALS['BACK_PATH'],'<br/>');
 
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile'),$code);

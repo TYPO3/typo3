@@ -146,6 +146,9 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 
 
 
+				// Info Module CSH:
+			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'info_module', $GLOBALS['BACK_PATH'],'<br/>|');
+
 				// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{
 				$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));

@@ -419,6 +419,9 @@ class SC_mod_web_perm_index {
 		$this->content.=$this->doc->divider(5);
 		$this->content.=$this->doc->section($LANG->getLL('permissions').':',$code);
 
+			// CSH for permissions setting
+		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'perm_module_setting', $GLOBALS['BACK_PATH'],'<br/><br/>');
+
 			// Adding help text:
 		if ($BE_USER->uc['helpText'])	{
 			$this->content.=$this->doc->divider(20);
@@ -569,6 +572,8 @@ class SC_mod_web_perm_index {
 			// Adding the content as a section:
 		$this->content.=$this->doc->section('',$code);
 
+			// CSH for permissions setting
+		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH'],'<br/>|');
 
 			// Creating legend table:
 		$legendText = '<b>'.$LANG->getLL('1',1).'</b>: '.$LANG->getLL('1_t',1);

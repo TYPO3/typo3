@@ -194,8 +194,12 @@ class recordHistory {
 				<table border="0" cellpadding="2" cellspacing="2" id="typo3-history-item">
 					'.implode('',$lines).'
 				</table>';
+
 			$theCode.='
 				<br /><img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.$LANG->getLL('differenceMsg').'<br /><br />';
+
+				// Add CSH:
+			$theCode.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'history_entry', $GLOBALS['BACK_PATH'],'');
 
 				// Create the module section:
 			$content.=$SOBE->doc->section($LANG->getLL('changes'),$theCode,0,1);
@@ -501,7 +505,10 @@ class recordHistory {
 				</table>';
 
 				// Add message about the difference view.
-			$theCode.='<br /><img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.$LANG->getLL('differenceMsg').'<br /><br />';
+			$theCode.= '<br /><img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.$LANG->getLL('differenceMsg').'<br /><br />';
+
+				// Add CSH:
+			$theCode.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'history_'.($this->sumUp ? 'sum' : 'log'), $GLOBALS['BACK_PATH'],'');
 
 				// Add the whole content as a module section:
 			return $SOBE->doc->section($LANG->getLL('changes'),$theCode,0,1);

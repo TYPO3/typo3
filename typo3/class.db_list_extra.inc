@@ -388,6 +388,9 @@ class localRecordList extends recordList {
 				$theData[$titleCol] = $this->linkWrapTable($table,'<span class="c-table">'.$GLOBALS['LANG']->sL($TCA[$table]['ctrl']['title'],1).'</span> ('.$this->totalItems.') <img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/'.($this->table?'minus':'plus').'bullet_list.gif','width="18" height="12"').' hspace="10" class="absmiddle" title="'.$GLOBALS['LANG']->getLL(!$this->table?'expandView':'contractView',1).'" alt="" />');
 			}
 
+				// CSH:
+			$theData[$titleCol].= t3lib_BEfunc::cshItem($table,'',$this->backPath);
+
 			if ($LOISmode)	{
 				$out.='
 					<tr>
@@ -397,7 +400,7 @@ class localRecordList extends recordList {
 				if ($GLOBALS['BE_USER']->uc["edit_showFieldHelp"])	{
 					$GLOBALS['LANG']->loadSingleTableDescription($table);
 					if (isset($GLOBALS['TCA_DESCR'][$table]['columns']['']))	{
-						$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$table.'.\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
+						$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$table.'.\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 						$out.='
 					<tr>
 						<td class="c-tableDescription">'.t3lib_BEfunc::helpTextIcon($table,'',$this->backPath,TRUE).$GLOBALS['TCA_DESCR'][$table]['columns']['']['description'].'</td>

@@ -154,12 +154,14 @@ class SC_view_help {
 			$this->content.=$this->printItem($this->table,$this->field);
 
 				// Link to Full table description:
-			$onClick = 'vHWin=window.open(\'view_help.php?tfID='.rawurlencode($this->table.'.*').'&ONLY='.$LANG->lang.'\',\'fullHelpWindow\',\'width=600,scrollbars=1,status=1,menubar=1,location=1,resizable=1,toolbar=1\');vHWin.focus();return false;';
+		#	$onClick = 'vHWin=window.open(\'view_help.php?tfID='.rawurlencode($this->table.'.*').'&ONLY='.$LANG->lang.'\',\'fullHelpWindow\',\'width=600,scrollbars=1,status=1,menubar=1,location=1,resizable=1,toolbar=1\');vHWin.focus();return false;';
+			$onClick = 'document.location = \'view_help.php?tfID='.rawurlencode($this->table.'.*').'&ONLY='.$LANG->lang.'\';return false;';
 			$this->content.='<br /><p><a href="#" onclick="'.htmlspecialchars($onClick).'">'.htmlspecialchars($LANG->getLL('fullDescription')).'</a></p>';
 		}
 
 			// Print close-button:
-		$this->content.='<br /><form action=""><input type="submit" value="'.htmlspecialchars($LANG->getLL('close')).'" onclick="self.close(); return false;" /></form>';
+		$this->content.='<br /><form action=""><input type="submit" value="'.htmlspecialchars($LANG->getLL('close')).'" onclick="self.close(); return false;" /></form>
+			<br/>';
 
 			// End page:
 		$this->content.=$TBE_TEMPLATE->endPage();

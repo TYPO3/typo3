@@ -176,6 +176,9 @@ class SC_file_rename {
 			</div>
 		';
 
+			// CSH:
+		$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_rename', $GLOBALS['BACK_PATH'],'<br/>');
+
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section('',$code);
 

@@ -112,7 +112,8 @@ class SC_alt_menu {
 
 			// Printing the menu
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
-		$this->content.=$alt_menuObj->topMenu($this->loadModules->modules);
+		$this->content.= $alt_menuObj->topMenu($this->loadModules->modules);
+		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'menu_modules', $GLOBALS['BACK_PATH']);
 
 			// clear cache commands for Admins
 		if($BE_USER->isAdmin()) {
@@ -126,7 +127,10 @@ class SC_alt_menu {
 <div id="typo3-alt-menu-php-adminFunc">';
 
 				// Header: Admin functions
-			$this->content.='<h2 class="bgColor5">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.adminFunctions',1).'</h2>';
+			$this->content.=
+				'<h2 class="bgColor5">'.
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.adminFunctions',1).
+				'</h2>';
 
 				// Table with those admin functions
 			$this->content.='
@@ -149,6 +153,7 @@ class SC_alt_menu {
 
 			$this->content.='
 				</table>';
+			$this->content.=t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'menu_adminFunction', $GLOBALS['BACK_PATH']);
 			$this->content.='
 </div>
 ';

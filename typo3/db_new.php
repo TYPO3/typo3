@@ -166,7 +166,7 @@ class SC_db_new {
 		$this->pagesOnly = t3lib_div::_GP('pagesOnly');
 
 			// Create instance of template class for output
-		$this->doc = t3lib_div::makeInstance('smallDoc');
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->JScode='';
@@ -241,11 +241,6 @@ class SC_db_new {
 			';
 			$this->R_URI=$this->returnUrl;
 
-				// If CSH is enabled (Context Sensitive Help), load descriptions for 'pages' in any case:
-			if ($BE_USER->uc['edit_showFieldHelp'])	{
-				$LANG->loadSingleTableDescription('pages');
-			}
-
 				// GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
 			if (!$this->pagesOnly)	{	// Regular new element:
 				$this->regularNew();
@@ -279,6 +274,9 @@ class SC_db_new {
 			<h3>'.htmlspecialchars($LANG->getLL('selectPosition')).':</h3>
 		';
 		$this->code.= $posMap->positionTree($this->id,$this->pageinfo,$this->perms_clause,$this->R_URI);
+
+				// Add CSH:
+		$this->code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_pages', $GLOBALS['BACK_PATH'],'<br/>');
 	}
 
 	/**
@@ -287,42 +285,44 @@ class SC_db_new {
 	 * @return	void
 	 */
 	function regularNew()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
+		global $BE_USER,$LANG,$BACK_PATH,$TCA;
+
+		$doNotShowFullDescr = FALSE;
 
 			// Slight spacer from header:
 		$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" /><br />';
+
+			// Initialize array for accumulating table rows:
+		$tRows = array();
 
 			// New pages INSIDE this pages
 		if ($this->newPagesInto && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $BE_USER->check('tables_modify','pages'))	{
 
 				// Create link to new page inside:
-			$t='pages';
-			$v=$TCA[$t];
-			$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
-							$this->linkWrap(
-							'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/'.($v['ctrl']['iconfile'] ? $v['ctrl']['iconfile'] : $t.'.gif'),'width="18" height="16"').' alt="" />'.
+			$t = 'pages';
+			$v = $TCA[$t];
+			$rowContent = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
+					$this->linkWrap(
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/'.($v['ctrl']['iconfile'] ? $v['ctrl']['iconfile'] : $t.'.gif'),'width="18" height="16"').' alt="" />'.
 							$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.inside',1).')',
 						$t,
-						$this->id);
-
-				// Link to CSH:
-			if (isset($TCA_DESCR[$t]['columns']['']))	{
-				$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$t.'.\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
-				$this->code.='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' class="c-helpImg" align="right"'.$this->doc->helpStyle().' alt="" />'.
-							'</a>';
-			}
-			$this->code.='<br />
-			';
+						$this->id).'<br/>';
 
 				// Link to page-wizard:
-			$this->code.='<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' alt="" />'.
+			$rowContent.= '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' alt="" />'.
 				'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly'=>1))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_page.gif','width="13" height="12"').' alt="" /> '.
 				htmlspecialchars($LANG->getLL('clickForWizard')).
-				'</a><br />
-				';
-			$this->code.='<img'.t3lib_iconWorks::skinImg('','gfx/ol/halfline.gif','width="18" height="8"').' alt="" /><br />
+				'</a>';
+				// Half-line:
+			$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg('','gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
+
+				// Compile table row:
+			$tRows[]='
+				<tr>
+					<td nowrap="nowrap">'.$rowContent.'</td>
+					<td>'.t3lib_BEfunc::cshItem($t,'',$GLOBALS['BACK_PATH'],'',$doNotShowFullDescr).'</td>
+				</tr>
 			';
 		}
 
@@ -338,25 +338,12 @@ class SC_db_new {
 							)	{
 
 							// Create new link for record:
-						$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
+						$rowContent = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/join.gif','width="18" height="16"').' alt="" />'.
 								$this->linkWrap(
 								t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
 								$LANG->sL($v['ctrl']['title'],1)
 							,$t
 							,$this->id);
-
-							// Create CSH link for table:
-						if ($BE_USER->uc['edit_showFieldHelp'])	{
-							$LANG->loadSingleTableDescription($t);
-							if (isset($TCA_DESCR[$t]['columns']['']))	{
-								$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$t.'.\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
-								$this->code.='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' class="c-helpImg" align="right"'.$this->doc->helpStyle().' alt="" />'.
-									'</a>';
-							}
-						}
-						$this->code.='<br />
-						';
 
 							// If the table is 'tt_content' (from "cms" extension), create link to wizard
 						if ($t=='tt_content')	{
@@ -366,15 +353,25 @@ class SC_db_new {
 							$pathToWizard = (t3lib_extMgm::isLoaded($overrideExt)) ? (t3lib_extMgm::extRelPath($overrideExt).'mod1/db_new_content_el.php') : 'sysext/cms/layout/db_new_content_el.php';
 
 							$href = $pathToWizard.'?id='.$this->id.'&returnUrl='.rawurlencode($this->R_URI);
-							$this->code.='<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
+							$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
 										'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' alt="" />'.
 										'<a href="'.htmlspecialchars($href).'"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_record.gif','width="16" height="12"').' alt="" /> '.
 										htmlspecialchars($LANG->getLL('clickForWizard')).
-										'</a><br />
-										';
-							$this->code.='<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" /><br />
-										';
+										'</a>';
+
+								// Half-line added:
+							$rowContent.= '<br /><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
 						}
+
+
+							// Compile table row:
+						$tRows[] = '
+				<tr>
+					<td nowrap="nowrap">'.$rowContent.'</td>
+					<td>'.t3lib_BEfunc::cshItem($t,'',$GLOBALS['BACK_PATH'],'',$doNotShowFullDescr).'</td>
+				</tr>
+			';
+
 					}
 				}
 			}
@@ -384,28 +381,38 @@ class SC_db_new {
 		if ($this->newPagesAfter && $this->isTableAllowedForThisPage($this->pidInfo,'pages') && $BE_USER->check('tables_modify','pages'))	{
 
 				// Create link to new page after
-			$t='pages';
-			$v=$TCA[$t];
-			$this->code.=$this->linkWrap(
+			$t = 'pages';
+			$v = $TCA[$t];
+			$rowContent = $this->linkWrap(
 					t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'').
 						$LANG->sL($v['ctrl']['title'],1).' ('.$LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1).')',
 					'pages',
 					-$this->id
 				);
 
-				// Link to CSH for pages table:
-			if (isset($TCA_DESCR[$t]['columns']['']))	{
-				$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$t.'.\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
-				$this->code.='<a href="#" onclick="'.htmlspecialchars($onCLick).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/helpbubble.gif','width="14" height="14"').' class="c-helpImg" align="right"'.$this->doc->helpStyle().' alt="" />'.
-							'</a>';
-			}
-			$this->code.='<br />
+				// Compile table row:
+			$tRows[] = '
+				<tr>
+					<td nowrap="nowrap">'.$rowContent.'</td>
+					<td>'.t3lib_BEfunc::cshItem($t,'',$GLOBALS['BACK_PATH'],'',$doNotShowFullDescr).'</td>
+				</tr>
 			';
 		} else {
-			$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/stopper.gif','width="18" height="16"').' alt="" /><br />
+				// Compile table row:
+			$tRows[]='
+				<tr>
+					<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/stopper.gif','width="18" height="16"').' alt="" /></td>
+					<td></td>
+				</tr>
 			';
 		}
+
+			// Make table:
+		$this->code.='
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-newRecord">
+			'.implode('',$tRows).'
+			</table>
+		';
 
 			// Create a link to the new-pages wizard.
 		if ($this->showNewRecLink('pages'))	{
@@ -422,6 +429,9 @@ class SC_db_new {
 				</div>
 				';
 		}
+
+			// Add CSH:
+		$this->code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_regular', $GLOBALS['BACK_PATH'],'<br/>');
 	}
 
 	/**

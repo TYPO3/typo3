@@ -345,6 +345,9 @@ class SC_db_list {
 		$this->content.= $dblist->HTMLcode;
 		$this->content.= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
 
+			// List Module CSH:
+		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_module', $GLOBALS['BACK_PATH'],'<br/>|');
+
 
 			// If a listing was produced, create the page footer with search form etc:
 		if ($dblist->HTMLcode)	{
@@ -362,17 +365,20 @@ class SC_db_list {
 					-->
 					<div id="typo3-listOptions">
 						<form action="" method="post">';
-				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php','').' '.$LANG->getLL('largeControl',1).'<br />';
-				if ($dblist->showClipboard)	{
-					$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php','').' '.$LANG->getLL('showClipBoard',1);
-				}
-				$this->content.='
+
+			$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php','').' '.$LANG->getLL('largeControl',1).'<br />';
+			if ($dblist->showClipboard)	{
+				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php','').' '.$LANG->getLL('showClipBoard',1);
+			}
+			$this->content.='
 						</form>
 					</div>';
+			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_options', $GLOBALS['BACK_PATH']);
 
 				// Printing clipboard if enabled:
 			if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard)	{
-				$this->content.=$dblist->clipObj->printClipboard();
+				$this->content.= $dblist->clipObj->printClipboard();
+				$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_clipboard', $GLOBALS['BACK_PATH']);
 			}
 
 				// Link for creating new records:

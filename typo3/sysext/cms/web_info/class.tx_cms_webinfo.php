@@ -101,6 +101,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 		global $BACK_PATH,$LANG,$SOBE;
 
 		$dblist = t3lib_div::makeInstance('tx_cms_layout');
+		$dblist->descrTable = '_MOD_'.$GLOBALS['MCONF']['name'];
 		$dblist->backPath = $BACK_PATH;
 		$dblist->thumbs = 0;
 		$dblist->script = 'index.php';
@@ -136,8 +137,11 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			$dblist->generateList();
 
 
-			$theOutput.=$this->pObj->doc->section($LANG->getLL('hits_title'),
-				$h_func.$header.$dblist->HTMLcode,
+			$theOutput.= $this->pObj->doc->section($LANG->getLL('hits_title'),
+				t3lib_BEfunc::cshItem($dblist->descrTable,'stat',$GLOBALS['BACK_PATH'],'|<br/>').	// CSH
+					$h_func.
+					$header.
+					$dblist->HTMLcode,
 				0,
 				1
 			);
@@ -146,8 +150,12 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 
 			$dblist->start($this->pObj->id,'pages',0);
 			$dblist->generateList();
+
+				// CSH
 			$theOutput.=$this->pObj->doc->section($LANG->getLL('page_title'),
-				$h_func.$dblist->HTMLcode,
+				t3lib_BEfunc::cshItem($dblist->descrTable,'',$GLOBALS['BACK_PATH'],'|<br/>').	// CSH
+					$h_func.
+					$dblist->HTMLcode,
 				0,
 				1
 			);

@@ -3183,7 +3183,7 @@ class t3lib_TCEforms	{
 	 */
 	function helpTextIcon($table,$field,$force=0)	{
 		if ($this->globalShowHelp && $GLOBALS['TCA_DESCR'][$table]['columns'][$field] && (($this->edit_showFieldHelp=='icon'&&!$this->doLoadTableDescr($table)) || $force))	{
-			$aOnClick = 'vHWin=window.open(\''.$this->backPath.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
+			$aOnClick = 'vHWin=window.open(\''.$this->backPath.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
 					'</a>';

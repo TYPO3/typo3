@@ -334,6 +334,9 @@ class SC_move_el {
 
 						// Create the position tree:
 					$code.= $posMap->positionTree($this->page_id,$pageinfo,$this->perms_clause,$this->R_URI);
+
+						// CSH for move-pages:
+					$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'],'<br/>|');
 				}
 			}
 
@@ -389,6 +392,9 @@ class SC_move_el {
 
 						// Create the position tree (for pages):
 					$code.= $posMap->positionTree($this->page_id,$pageinfo,$this->perms_clause,$this->R_URI);
+
+						// CSH for move-content-elements:
+					$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_ce', $GLOBALS['BACK_PATH'],'<br/>|');
 				}
 			}
 

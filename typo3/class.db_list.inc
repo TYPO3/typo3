@@ -266,6 +266,7 @@ class recordList extends t3lib_recordList {
 					</tr>
 				</table>
 			'.$formElements[1];
+		$content.=t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['BACK_PATH'],'|<br/>');
 		return $content;
 	}
 

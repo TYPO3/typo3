@@ -475,11 +475,15 @@ class SC_alt_doc {
 
 				$formContent = $this->compileForm($panel,$docSel,$cMenu,$editForm);
 
-				$this->content.=$this->tceforms->printNeededJSFunctions_top().
-								$formContent.
-								$this->tceforms->printNeededJSFunctions();
-				$this->content.=$this->functionMenus();
-				$this->content.=$this->shortCutLink();
+				$this->content.= $this->tceforms->printNeededJSFunctions_top().
+									$formContent.
+									$this->tceforms->printNeededJSFunctions();
+				$this->content.= $this->functionMenus();
+
+					// Add CSH:
+				$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms', $GLOBALS['BACK_PATH'],'<br/>|');
+
+				$this->content.= $this->shortCutLink();
 
 				$this->tceformMessages();
 			}

@@ -125,6 +125,7 @@ class tx_cms_layout extends recordList {
 	var $doEdit=1;							// If true, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
 	var $agePrefixes = ' min| hrs| days| yrs';	// Age prefixes for displaying times. May be set externally to localized values.
 	var $externalTables = array();			// Array of tables which is configured to be listed by the Web > Page module in addition to the default tables.
+	var $descrTable;						// "Pseudo" Description -table name
 
 		// External, static: Configuration of tt_content element display:
 	var $tt_contentConfig = Array (
@@ -305,7 +306,7 @@ class tx_cms_layout extends recordList {
 
 				// Header line is drawn
 			$theData = Array();
-			$editIdList=implode(',',$editUids);
+			$editIdList = implode(',', $editUids);
 
 				// Traverse fields (as set above) in order to create header values:
 			foreach($this->fieldArray as $field)	{
@@ -348,14 +349,17 @@ class tx_cms_layout extends recordList {
 			}
 
 				// Start table:
-			$this->oddColumnsTDParams='';
-			$out='
+			$this->oddColumnsTDParams = '';
+
+				// CSH:
+			$out = t3lib_BEfunc::cshItem($this->descrTable,'func_'.$pKey,$GLOBALS['BACK_PATH']).
+				'
 				<table border="0" cellpadding="0" cellspacing="0" class="typo3-page-pages">
 					'.$this->addelement(1,'',$theData,' class="c-headLine"',20).
 					$out.'
 				</table>';
 		}
-		$this->oddColumnsTDParams='';
+		$this->oddColumnsTDParams = '';
 		return $out;
 	}
 
@@ -466,6 +470,9 @@ class tx_cms_layout extends recordList {
 						<tr>'.$out.'
 						</tr>
 					</table>';
+
+					// CSH:
+				$out.= t3lib_BEfunc::cshItem($this->descrTable,'columns_multi',$GLOBALS['BACK_PATH']);
 			}
 
 				// If language mode, then make another presentation:
@@ -531,6 +538,9 @@ class tx_cms_layout extends recordList {
 					<table border="0" cellpadding="0" cellspacing="0" width="480" class="typo3-page-langMode">
 						'.$out.'
 					</table>';
+
+					// CSH:
+				$out.= t3lib_BEfunc::cshItem($this->descrTable,'language_list',$GLOBALS['BACK_PATH']);
 			}
 		} else {		// SINGLE column mode (columns shown beneath each other):
 
@@ -622,6 +632,9 @@ class tx_cms_layout extends recordList {
 				<table border="0" cellpadding="0" cellspacing="0" width="400" class="typo3-page-columnsMode">
 					'.$out.'
 				</table>';
+
+				// CSH:
+			$out.= t3lib_BEfunc::cshItem($this->descrTable,'columns_single',$GLOBALS['BACK_PATH']);
 		}
 
 
@@ -632,7 +645,7 @@ class tx_cms_layout extends recordList {
 			$bArray[1]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."move_el.php?table=pages&uid=".$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('move_page'));
 			$bArray[2]=$GLOBALS['SOBE']->doc->t3Button("document.location='".$this->backPath."db_new.php?id=".$id.'&pagesOnly=1&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPage2'));
 			if ($this->ext_function==1) $bArray[3]=$GLOBALS['SOBE']->doc->t3Button("document.location='db_new_content_el.php?id=".$id.'&sys_language_uid='.$GLOBALS['SOBE']->current_sys_language.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))."';",$GLOBALS['LANG']->getLL('newPageContent2'));
-			$out='
+			$out = '
 				<table border="0" cellpadding="4" cellspacing="0" class="typo3-page-buttons">
 					<tr>
 						<td>'.implode('</td>
@@ -640,7 +653,8 @@ class tx_cms_layout extends recordList {
 					</tr>
 				</table>
 				<img src="clear.gif" width="1" height="5" alt="" /><br />
-				'.$out;
+				'.t3lib_BEfunc::cshItem($this->descrTable,'button_panel',$GLOBALS['BACK_PATH']).	// CSH
+				$out;
 		}
 
 			// Return content:

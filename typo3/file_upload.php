@@ -217,6 +217,9 @@ class SC_file_upload {
 			</div>
 		';
 
+			// CSH:
+		$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_upload', $GLOBALS['BACK_PATH'],'<br/>');
+
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section('',$code);
 

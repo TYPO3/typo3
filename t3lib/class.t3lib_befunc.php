@@ -1865,9 +1865,9 @@ class t3lib_BEfunc	{
 	function helpTextIcon($table,$field,$BACK_PATH,$force=0)	{
 		global $TCA_DESCR,$BE_USER;
 		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && ($BE_USER->uc['edit_showFieldHelp']=='icon' || $force))	{
-			$onClick = 'vHWin=window.open(\''.$BACK_PATH.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=300,width=250,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
+			$onClick = 'vHWin=window.open(\''.$BACK_PATH.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 			return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />'.
+					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="typo3-csh-icon" alt="" />'.
 					'</a>';
 		}
 	}
@@ -1881,15 +1881,77 @@ class t3lib_BEfunc	{
 	 * @param	string		Table name
 	 * @param	string		Field name
 	 * @param	string		Back path
+	 * @param	string		Additional style-attribute content for wrapping table
 	 * @return	string		HTML content for help text
 	 */
-	function helpText($table,$field,$BACK_PATH)	{
+	function helpText($table,$field,$BACK_PATH,$styleAttrib='')	{
 		global $TCA_DESCR,$BE_USER;
 		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && $BE_USER->uc['edit_showFieldHelp']=='text')	{
 			$fDat = $TCA_DESCR[$table]['columns'][$field];
-			return '<table border="0" cellpadding="2" cellspacing="0" width="90%"><tr><td valign="top" width="14">'.t3lib_BEfunc::helpTextIcon($table,$field,$BACK_PATH,
-				$fDat['details']||$fDat['syntax']||$fDat['image_descr']||$fDat['image']||$fDat['seeAlso']
-				).'</td><td valign="top">'.$fDat['description'].'</td></tr></table>';
+
+				// Get Icon:
+			$editIcon = t3lib_BEfunc::helpTextIcon(
+									$table,
+									$field,
+									$BACK_PATH,
+									TRUE
+								);
+				// Add title?
+			$text =
+					($fDat['alttitle'] ? '<h4>'.$fDat['alttitle'].'</h4>' : '').
+					$fDat['description'];
+
+				// Additional styles?
+			$params = $styleAttrib ? ' style="'.$styleAttrib.'"' : '';
+
+				// Compile table with CSH information:
+			return '<table border="0" cellpadding="2" cellspacing="0" class="typo3-csh-inline"'.$params.'>
+						<tr>
+							<td valign="top" width="14">'.$editIcon.'</td>
+							<td valign="top">'.$text.'</td>
+						</tr>
+					</table>';
+		}
+	}
+
+	/**
+	 * API for getting CSH icons/text for use in backend modules.
+	 * TCA_DESCR will be loaded if it isn't already
+	 * Usage: ?
+	 *
+	 * @param	string		Table name ('_MOD_'+module name)
+	 * @param	string		Field name (CSH locallang main key)
+	 * @param	string		Back path
+	 * @param	string		Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
+	 * @param	boolean		If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
+	 * @param	string		Additional style-attribute content for wrapping table (full text mode only)
+	 * @return	string		HTML content for help text
+	 * @see helpText(), helpTextIcon()
+	 */
+	function cshItem($table,$field,$BACK_PATH,$wrap='',$onlyIconMode=FALSE, $styleAttrib='')	{
+		global $TCA_DESCR, $LANG, $BE_USER;
+		if ($BE_USER->uc['edit_showFieldHelp'])	{
+			$LANG->loadSingleTableDescription($table);
+
+			if (is_array($TCA_DESCR[$table]))	{
+					// Creating CSH icon and short description:
+				$fullText = t3lib_BEfunc::helpText($table,$field,$BACK_PATH,$styleAttrib);
+				$icon = t3lib_BEfunc::helpTextIcon($table,$field,$BACK_PATH,$onlyIconMode);
+
+				if ($fullText && !$onlyIconMode)	{
+					$output = $fullText;
+				} else {
+					#$output = '<span style="position:absolute; filter: alpha(opacity=50); -moz-opacity: 0.50;">'.$icon.'</span>';
+					$output = $icon;
+
+					if ($output && $wrap)	{
+						$wrParts = explode('|',$wrap);
+						$output = $wrParts[0].$output.$wrParts[1];
+					}
+				}
+
+				return $output;
+			}
 		}
 	}
 

@@ -274,9 +274,6 @@ class SC_db_layout {
 
 			// CSH / Descriptions:
 		$this->descrTable = '_MOD_'.$this->MCONF['name'];
-		if ($BE_USER->uc['edit_showFieldHelp'])	{
-			$LANG->loadSingleTableDescription($this->descrTable);
-		}
 	}
 
 	/**
@@ -464,6 +461,9 @@ class SC_db_layout {
 			');
 			$this->content=$this->doc->startPage($LANG->getLL('title'));
 			$this->content.=$this->doc->section($LANG->getLL('clickAPage_header'),$LANG->getLL('clickAPage_content'),0,1);
+
+			$this->content.= t3lib_BEfunc::cshItem($this->descrTable,'',$BACK_PATH,'<br/><br/>');
+
 			$this->content.=$this->doc->endPage();
 		}
 	}
@@ -660,10 +660,12 @@ class SC_db_layout {
 				'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' class="c-inputButton" title="'.$LANG->getLL('editPageHeader',1).'" alt="" />'.
 				'</a>';
 		$toolBar.='<img src="clear.gif" width="15" height="1" align="top" alt="" />';
-		$toolBar.=t3lib_BEfunc::helpTextIcon($this->descrTable,'quickEdit',$BACK_PATH);
+
+			// CSH:
+		$toolBar.= t3lib_BEfunc::cshItem($this->descrTable,'quickEdit',$BACK_PATH,'',FALSE,'margin-top: 0px; margin-bottom: 0px;');
 
 			// Setting page header:
-		$hS2='
+		$hS2 = '
 			<table border="0" cellpadding="0" cellspacing="0" width="460">
 				<tr>
 					<td valign="top" width="99%">'.$this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath'],0,explode('|','<a href="'.htmlspecialchars($this->local_linkThisScript(array('edit_record'=>'pages:'.$this->id))).'">|</a>')).'</td>
@@ -676,7 +678,7 @@ class SC_db_layout {
 					<td></td>
 				</tr>
 				<tr>
-					<td colspan="3" class="bgColor4">'.t3lib_BEfunc::helpText($this->descrTable,'quickEdit',$BACK_PATH).$toolBar.'</td>
+					<td colspan="3" class="bgColor4">'.$toolBar.'</td>
 				</tr>
 			</table>';
 
@@ -808,10 +810,10 @@ class SC_db_layout {
 			$posMap->backPath = $BACK_PATH;
 			$posMap->cur_sys_language=$this->current_sys_language;
 
-			$HTMLcode='';
-			$HTMLcode.=t3lib_BEfunc::helpTextIcon($this->descrTable,'quickEdit_selElement',$BACK_PATH).
-							t3lib_BEfunc::helpText($this->descrTable,'quickEdit_selElement',$BACK_PATH).
-							'<br />';
+			$HTMLcode = '';
+
+				// CSH:
+			$HTMLcode.= t3lib_BEfunc::cshItem($this->descrTable,'quickEdit_selElement',$BACK_PATH,'|<br/>');
 
 			$HTMLcode.=$posMap->printContentElementColumns($this->id,$eRParts[1],$this->colPosList,$this->MOD_SETTINGS['tt_content_showHidden'],$R_URI);
 
@@ -858,6 +860,7 @@ class SC_db_layout {
 		$dblist->backPath = $BACK_PATH;
 		$dblist->thumbs = $this->imagemode;
 		$dblist->no_noWrap = 1;
+		$dblist->descrTable = $this->descrTable;
 
 		$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
 		$dblist->script = 'db_layout.php';
@@ -1021,9 +1024,9 @@ class SC_db_layout {
 		$toolBar.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$BACK_PATH)).'">'.
 					'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' hspace="2" vspace="2" align="top" title="'.$LANG->getLL('editPageHeader',1).'" alt="" />'.
 					'</a>';
+
 			// Add CSH (Context Sensitive Help) icon to tool bar:
-		$hT = trim(t3lib_BEfunc::helpText($this->descrTable,'columns',$BACK_PATH));
-		$toolBar.=$hT?$hT.'<br />':t3lib_BEfunc::helpTextIcon($this->descrTable,'columns',$BACK_PATH);
+		$toolBar.= t3lib_BEfunc::cshItem($this->descrTable,'columns_'.$this->MOD_SETTINGS['function'],$BACK_PATH,'',FALSE,'margin-top: 0px; margin-bottom: 0px;');
 
 			// Wrap the toolbar into a table:
 		$headerSection.='

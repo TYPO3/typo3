@@ -252,16 +252,17 @@ class SC_alt_db_navframe {
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
 
-		$this->content='';
-		$this->content.=$this->doc->startPage('Page tree');
-		$this->content.=$tree;
-		$this->content.='
+		$this->content = '';
+		$this->content.= $this->doc->startPage('Page tree');
+		$this->content.= $tree;
+		$this->content.= '
 			<p class="c-refresh">
 				<a href="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'">'.
 				'<img'.t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'" alt="" />'.
 				$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1).'</a>
 			</p>
 			<br />';
+		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH']);
 
 			// Adding highlight - JavaScript
 		if ($this->doHighlight)	$this->content .=$this->doc->wrapScriptTags('
