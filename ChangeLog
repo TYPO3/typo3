@@ -1,5 +1,9 @@
 2004-11-15  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Fixed view_help.php so translators of llXML can see all tables listed.
+
+2004-11-15  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Using "t3lib_div::cmpIP" for evaluating the list of "config.stat_excludeIPList" 
 
 2004-11-15  Kasper Skårhøj,,,  <kasper@typo3.com>

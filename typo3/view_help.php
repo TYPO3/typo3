@@ -119,8 +119,9 @@ class SC_view_help {
 			// Set internal table/field to the parts of "tfID" incoming var.
 		list($this->table,$this->field) = explode('.',$this->tfID);
 
-			// limitAccess is checked if the $this->table really IS a table.
-		$this->limitAccess = isset($TCA[$this->table]) ? TRUE : FALSE;
+			// limitAccess is checked if the $this->table really IS a table (and if the user is NOT a translator who should see all!)
+		$showAllToUser = t3lib_BEfunc::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules','txllxmltranslateM1');
+		$this->limitAccess = isset($TCA[$this->table]) ? !$showAllToUser : FALSE;
 	}
 
 	/**

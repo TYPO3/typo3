@@ -967,44 +967,44 @@ Numbers in format: (New / Changed)
 - fr [French]		0/7
 - es [Spanish]		1/3
 - nl [Dutch]		0/0
-- cz [Czech]		111/23 (inactive!)
+- cz [Czech]		111/23 (inactive!)	- 11/15: same
 - pl [Polish]		0/0
-- si [Slovenian]	98/19 (inactive!)
+- si [Slovenian]	98/19 (inactive!)	- 11/15: same
 - fi [Finnish]		0/0
 - tr [Turkish]		0/0
 - se [Swedish]		0/0
-- pt [Portuguese]	127/23 (inactive!)
+- pt [Portuguese]	127/23 (inactive!)  - 11/15: same
 - ru [Russian]		0/0
-- ro [Romanian]		7/19	(inactive??)
-- ch [Chinese (Simpl)]	141/21	(inactive??)
-- sk [Slovak]		106/21	(inactive??)
-- lt [Lithuanian]	5/7
-- is [Icelandic]	483/9	(inactive!)
-- hr [Croatian]		76/25	(inactive!)
+- ro [Romanian]		7/19	(inactive??)   - 11/15: same
+- ch [Chinese (Simpl)]	141/21	(inactive??)  - 11/15: same
+- sk [Slovak]		106/21	(inactive??)	- 11/15: same
+- lt [Lithuanian]	5/7   - 11/15: 1/0
+- is [Icelandic]	483/9	(inactive!)  - 11/15: same
+- hr [Croatian]		76/25	(inactive!)  - 11/15: same
 - hu [Hungarian]	0/0
-- gl [Greenlandic]	890/1	(inactive!)
-- th [Thai]			6/21
-- gr [Greek]		1121/0	(inactive!)
-- hk [Chinese (Trad)]	72/1
-- eu [Basque]		797/8	(inactive!)
-- bg [Bulgarian]	192/18	(inactive!)
-- br [Brazilian Portuguese]	6/0
-- et [Estonian]		137/25	(inactive!)
-- ar [Arabic]		550/10	(inactive!)
-- he [Hebrew]		12/0
-- ua [Ukrainian]	679/11	(inactive!)
-- lv [Latvian]		170/15	(inactive!)
-- jp [Japanese]		1120/0	(inactive!)
-- vn [Vietnamese]	1104/0	(inactive!)
-- ca [Catalan]		1121/0	(inactive!)
-- ba [Bosnian]		789/0
-- kr [Korean]		1121/0	(inactive!)
+- gl [Greenlandic]	890/1	(inactive!)  - 11/15: same
+- th [Thai]			6/21     - 11/15: 0/0
+- gr [Greek]		1121/0	(inactive!)  - 11/15: same
+- hk [Chinese (Trad)]	72/1   - 11/15: 41/1
+- eu [Basque]		797/8	(inactive!)  - 11/15: same
+- bg [Bulgarian]	192/18	(inactive!) - 11/15: same
+- br [Brazilian Portuguese]	6/0       - 11/15: same
+- et [Estonian]		137/25	(inactive!) - 11/15: same
+- ar [Arabic]		550/10	(inactive!)	- 11/15: same
+- he [Hebrew]		12/0		- 11/15: same
+- ua [Ukrainian]	679/11	(inactive!) - 11/15: same
+- lv [Latvian]		170/15	(inactive!) - 11/15: same
+- jp [Japanese]		1120/0	(inactive!) - 11/15: same
+- vn [Vietnamese]	1104/0	(inactive!) - 11/15: same
+- ca [Catalan]		1121/0	(inactive!) - 11/15: same
+- ba [Bosnian]		789/0		- 11/15 : 0/0!
+- kr [Korean]		1121/0	(inactive!)	- 11/15: same
 
 
 
 Same password:
 
- 	no  	 	 	f4e72bc32f2c636059d5f3ba44323921  	Norwegian
+	no		 	f4e72bc32f2c636059d5f3ba44323921  	Norwegian
 	pt 			f4e72bc32f2c636059d5f3ba44323921 	Portuguese
 	gr 			f4e72bc32f2c636059d5f3ba44323921 	Greek
 	jp 			f4e72bc32f2c636059d5f3ba44323921 	Japanese
@@ -1025,6 +1025,5 @@ Same password:
 	bg 			f4e72bc32f2c636059d5f3ba44323921 	Bulgarian
 	br 			f4e72bc32f2c636059d5f3ba44323921 	Brazilian Portuguese
 	et 			f4e72bc32f2c636059d5f3ba44323921 	Estonian
-	he 			f4e72bc32f2c636059d5f3ba44323921 	Hebrew
 	ua 			f4e72bc32f2c636059d5f3ba44323921 	Ukrainian
 
