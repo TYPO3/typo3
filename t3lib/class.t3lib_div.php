@@ -2503,10 +2503,10 @@ class t3lib_div {
 #		if ($getEnvName=='HTTP_REFERER')	return '';
 		switch((string)$getEnvName)	{
 			case 'SCRIPT_NAME':
-				return php_sapi_name()=='cgi' ? $HTTP_SERVER_VARS['PATH_INFO'] : $HTTP_SERVER_VARS['SCRIPT_NAME'];
+				return (php_sapi_name()=='cgi'||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_INFO']?$HTTP_SERVER_VARS['ORIG_PATH_INFO']:$HTTP_SERVER_VARS['PATH_INFO']) ? ($HTTP_SERVER_VARS['ORIG_PATH_INFO']?$HTTP_SERVER_VARS['ORIG_PATH_INFO']:$HTTP_SERVER_VARS['PATH_INFO']) : ($HTTP_SERVER_VARS['ORIG_SCRIPT_NAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_NAME']:$HTTP_SERVER_VARS['SCRIPT_NAME']);
 			break;
 			case 'SCRIPT_FILENAME':
-				return str_replace('//','/', str_replace('\\','/', php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ? $HTTP_SERVER_VARS['PATH_TRANSLATED']:$HTTP_SERVER_VARS['SCRIPT_FILENAME']));
+				return str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED'])? ($HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']?$HTTP_SERVER_VARS['ORIG_PATH_TRANSLATED']:$HTTP_SERVER_VARS['PATH_TRANSLATED']):($HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']?$HTTP_SERVER_VARS['ORIG_SCRIPT_FILENAME']:$HTTP_SERVER_VARS['SCRIPT_FILENAME'])));
 			break;
 			case 'REQUEST_URI':
 				// Typical application of REQUEST_URI is return urls, forms submitting to itselt etc. Eg:	returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))
@@ -2520,7 +2520,7 @@ class t3lib_div {
 					// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
 					// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'php_sapi_name()=='cgi'' might be a better check. Right now strcmp($HTTP_SERVER_VARS['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return false for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of php_sapi_name()=='cgi' (see above)
 //				if (strcmp($HTTP_SERVER_VARS['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) && count(explode('/',$HTTP_SERVER_VARS['PATH_INFO']))>1)	{
-				if (php_sapi_name()!='cgi')	{
+				if (php_sapi_name()!='cgi'&&php_sapi_name()!='cgi-fcgi')	{
 					return $HTTP_SERVER_VARS['PATH_INFO'];
 				} else return '';
 			break;
@@ -2584,7 +2584,7 @@ class t3lib_div {
 				return substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 			break;
 			case 'TYPO3_SSL':
-				return ($HTTP_SERVER_VARS['SSL_SESSION_ID'] || $HTTP_SERVER_VARS['HTTPS']) ? TRUE : FALSE;
+				return $HTTP_SERVER_VARS['SSL_SESSION_ID'] || !strcmp($HTTP_SERVER_VARS['HTTPS'],'on') ? TRUE : FALSE;
 			break;
 			case '_ARRAY':
 				$out = array();
