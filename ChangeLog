@@ -1,22 +1,27 @@
+2005-03-29  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* TYPO3 seems to prefer "mediumblob" instead of "MEDIUMBLOB", thus I changed that in typo3/sysext/cms/ext_tables.sql
+	* Added hook in tslib_fe
+
 2005-03-28  Michael Stucki  <michael@typo3.org>
 
- * Corrected a typo in fe_adminLib.inc (Ingmar watch this!)
+	* Corrected a typo in fe_adminLib.inc (Ingmar watch this!)
 
 2005-03-28  Ingmar Schlecht  <ingmar@typo3.org>
 
- * Fixed bug #0000341: Changed table definition of "fe_session_data" so field "content" is MEDIUMBLOB instead of BLOB
- * Fixed bug #0000890: fe_adminLib.inc procesSetFixed does not support userFunc_afterSave
- * Fixed bug #0000316: Backend typo3/template.php output spurious </body> tag for doctype xhtml_frames
- * Added two hooks to t3lib_userauthgroup for Sebastian Kurfuerst's ACL implementation
- * New feature #0000341: New option "ascii" for spamProtectEmailAddresses (very cool, because it doesn't need JavaScript! Thanks to Karsten Dambekalns
+	* Fixed bug #0000341: Changed table definition of "fe_session_data" so field "content" is MEDIUMBLOB instead of BLOB
+	* Fixed bug #0000890: fe_adminLib.inc procesSetFixed does not support userFunc_afterSave
+	* Fixed bug #0000316: Backend typo3/template.php output spurious </body> tag for doctype xhtml_frames
+	* Added two hooks to t3lib_userauthgroup for Sebastian Kurfuerst's ACL implementation
+	* New feature #0000341: New option "ascii" for spamProtectEmailAddresses (very cool, because it doesn't need JavaScript! Thanks to Karsten Dambekalns)
 
 2005-03-25  Michael Stucki  <michael@typo3.org>
 
- * Added two hooks for tx_timtaw, written by Sebastian Kurfuerst
- * FORM object is finally able to create a reset button (closes #0000743, thanks to Michael Scharkow)
- * FE editing: Up/Down buttons in panel did not work (closes #0000849, thanks to Peter Niederlag for pointing me on this)
- * typeNum 0 is now set automatically by default: If a page object has no typeNum and typeNum '0' is not defined, TYPO3 will automatically do that now
- * Renamed admin function links in the left down corner of the BE (closes #0000025)
+	* Added two hooks for tx_timtaw, written by Sebastian Kurfuerst
+	* FORM object is finally able to create a reset button (closes #0000743, thanks to Michael Scharkow)
+	* FE editing: Up/Down buttons in panel did not work (closes #0000849, thanks to Peter Niederlag for pointing me on this)
+	* typeNum 0 is now set automatically by default: If a page object has no typeNum and typeNum '0' is not defined, TYPO3 will automatically do that now
+	* Renamed admin function links in the left down corner of the BE (closes #0000025)
 	* EM: Display privacy message before connecting to the online repository
 
 2005-03-16  Ingmar Schlecht  <ingmar@typo3.org>
