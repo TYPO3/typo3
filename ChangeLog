@@ -1,3 +1,11 @@
+2004-08-22  Ingmar Schlecht  <ingmars@web.de>
+
+	* Changed the way how the EM and the Kickstarter interact
+		-> Removed all hardcoded references to the Kickstarter from the index.php of the EM and changed it to be extendable using the "Integrate into existing modules" functionality.
+		-> Removed the file typo3/mod/tools/em/class.kickstarter.php
+		The new version of the Kickstarter that uses these new ways of interaction has the new extension key 'kickstarter' and is already available from typo3xdev CVS.
+		The old version of the Kickstarter having the key 'extrep_wizard' is not used anymore.
+
 2004-08-21  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added support for backend initialization in PHP shell scripts. Interesting for deamons, cronjobs etc where you want a PHP script to run from shell but with a full backend environment. Documented in next version of Inside TYPO3.

@@ -52,7 +52,6 @@
  *  608:     function extensionList_loaded()
  *  643:     function extensionList_installed()
  *  715:     function extensionList_import()
- *  868:     function kickstarter()
  *  885:     function alterSettings()
  *
  *              SECTION: Command Applications (triggered by GET var)
@@ -66,7 +65,6 @@
  * 1575:     function getFileListOfExtension($extKey,$conf)
  * 1626:     function extDelete($extKey,$extInfo)
  * 1658:     function extUpdateEMCONF($extKey,$extInfo)
- * 1678:     function extMakeNewFromFramework($extKey,$extInfo)
  * 1699:     function extBackup($extKey,$extInfo)
  * 1767:     function extBackup_dumpDataTablesLine($tablesArray,$extKey)
  * 1795:     function extInformationArray($extKey,$extInfo,$remote=0)
@@ -178,11 +176,7 @@ $BE_USER->modAccess($MCONF,1);
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 require_once(PATH_t3lib.'class.t3lib_install.php');
 require_once(PATH_t3lib.'class.t3lib_tsstyleconfig.php');
-
-	// Include kickstarter wrapped class if extension "extrep_wizard" turns out to be loaded!
-if (t3lib_extMgm::isLoaded('extrep_wizard'))	{
-	require('./class.kickstarter.php');
-}
+require_once(PATH_t3lib.'class.t3lib_scbase.php');
 
 
 
@@ -197,7 +191,7 @@ if (t3lib_extMgm::isLoaded('extrep_wizard'))	{
  * @package TYPO3
  * @subpackage core
  */
-class SC_mod_tools_em_index {
+class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Internal, static:
 	var $versionDiffFactor = 1000;		// This means that version difference testing for import is detected for sub-versions only, not dev-versions. Default: 1000
@@ -405,6 +399,24 @@ class SC_mod_tools_em_index {
 		$this->fe_user['username'] = $this->MOD_SETTINGS['fe_u'];
 		$this->fe_user['password'] = $this->MOD_SETTINGS['fe_p'];
 		$this->fe_user['uploadPass'] = $this->MOD_SETTINGS['fe_up'];
+		parent::init();
+		$this->handleExternalFunctionValue('singleDetails');
+	}
+
+	/**
+	 * This function is a copy of the same function in t3lib_SCbase with one modification:
+	 * In contrast to t3lib_SCbase::handleExternalFunctionValue() this function merges the $this->extClassConf array
+	 * instead of overwriting it. That was necessary for including the Kickstarter as a submodule into the 'singleDetails'
+	 * selectorbox as well as in the main 'function' selectorbox.
+	 *
+	 * @see t3lib_SCbase::handleExternalFunctionValue()
+	 */
+	function handleExternalFunctionValue($MM_key='function', $MS_value=NULL)	{
+		$MS_value = is_null($MS_value) ? $this->MOD_SETTINGS[$MM_key] : $MS_value;
+		$this->extClassConf = array_merge($this->getExternalItemConfig($this->MCONF['name'],$MM_key,$MS_value),$this->extClassConf);
+		if (is_array($this->extClassConf) && $this->extClassConf['path'])	{
+			$this->include_once[]=$this->extClassConf['path'];
+		}
 	}
 
 	/**
@@ -421,7 +433,6 @@ class SC_mod_tools_em_index {
 				0 => 'Loaded extensions',
 				1 => 'Available extensions to install',
 				2 => 'Import extensions from online repository',
-				4 => 'Make new extension',
 				3 => 'Settings',
 			),
 			'listOrder' => array(
@@ -455,17 +466,14 @@ class SC_mod_tools_em_index {
 			'fe_p' => '',
 			'fe_up' => '',
 		);
-
+		
+		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'],'singleDetails',$this->MOD_MENU['singleDetails']);
+		
 			// page/be_user TSconfig settings and blinding of menu-items
 		if (!$BE_USER->getTSConfigVal('mod.'.$this->MCONF['name'].'.allowTVlisting'))	{
 			unset($this->MOD_MENU['display_details'][3]);
 			unset($this->MOD_MENU['display_details'][4]);
 			unset($this->MOD_MENU['display_details'][5]);
-		}
-
-			// Remove kickstarter if extension is not loaded:
-		if (!t3lib_extMgm::isLoaded('extrep_wizard'))	{
-			unset($this->MOD_MENU['function'][4]);
 		}
 
 			// CLEANSE SETTINGS
@@ -480,6 +488,7 @@ class SC_mod_tools_em_index {
 			unset($this->MOD_MENU['display_details'][5]);
 			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 		}
+		parent::menuConfig();
 	}
 
 	/**
@@ -525,25 +534,25 @@ class SC_mod_tools_em_index {
 			$this->content.=$this->doc->section('','<span class="nobr">'.$menu.'</span>');
 			$this->content.=$this->doc->spacer(10);
 
-			switch($this->MOD_SETTINGS['function'])	{
-				case 0:
+			switch((string)$this->MOD_SETTINGS['function'])	{
+				case '0':
 						// Lists loaded (installed) extensions
 					$this->extensionList_loaded();
 				break;
-				case 1:
+				case '1':
 						// Lists the installed (available) extensions
 					$this->extensionList_installed();
 				break;
-				case 2:
+				case '2':
 						// Lists the extensions available from online rep.
 					$this->extensionList_import();
 				break;
-				case 3:
+				case '3':
 						// Lists the extensions available from online rep.
 					$this->alterSettings();
 				break;
-				case 4:
-					$this->kickstarter();
+				default:
+					$this->extObjContent();
 				break;
 			}
 		}
@@ -848,25 +857,6 @@ EXTENSION KEYS:
 
 		$this->content.=$this->doc->spacer(20);
 		$this->content.=$this->doc->section('Upload extension file directly (.t3x):',$content,0,1);
-	}
-
-	/**
-	 * Making of new extensions with the kickstarter
-	 *
-	 * @return	void
-	 */
-	function kickstarter()	{
-		$kickstarter = t3lib_div::makeInstance('em_kickstarter');
-		$kickstarter->getPIdata();
-		$kickstarter->color = array($this->doc->bgColor5,$this->doc->bgColor4,$this->doc->bgColor);
-		$kickstarter->siteBackPath = $this->doc->backPath.'../';
-		$kickstarter->pObj = &$this;
-		$kickstarter->EMmode = 1;
-
-		$content = $kickstarter->mgm_wizard();
-		$this->content.='</form>'.
-			t3lib_BEfunc::cshItem('_MOD_tools_em', 'makenew', $GLOBALS['BACK_PATH'],'|<br/>').
-			$this->doc->section('Kickstarter wizard',$content,0,1).'<form>';
 	}
 
 	/**
@@ -1435,9 +1425,6 @@ EXTENSION KEYS:
 
 						$content = $this->extUpdateEMCONF($extKey,$list[$extKey]);
 						$this->content.=$this->doc->section('Update EM_CONF',$content,0,1);
-
-						$content = $this->extMakeNewFromFramework($extKey,$list[$extKey]);
-						if ($content)	$this->content.=$this->doc->section('Make new extension',$content,0,1);
 					break;
 					case 'dump':
 						$this->extDumpTables($extKey,$list[$extKey]);
@@ -1451,6 +1438,9 @@ EXTENSION KEYS:
 					break;
 					case 'updateModule':
 						$this->content.=$this->doc->section('Update:',$updateObj->main(),0,1);
+					break;
+					default:
+						$this->extObjContent();
 					break;
 				}
 			}
@@ -1672,27 +1662,6 @@ EXTENSION KEYS:
 			$content.= '<a href="#" onclick="'.htmlspecialchars($onClick).' return false;"><strong>Update extension EM_CONF file</strong> (in the "'.$this->typeLabels[$extInfo['type']].'" location "'.substr($absPath,strlen(PATH_site)).'")!</a>';
 			$content.= '<br /><br />If files are changed, added or removed to an extension this is normally detected and displayed so you know that this extension has been locally altered and may need to be uploaded or at least not overridden.<br />
 						Updating this file will first of all reset this registration.';
-			return $content;
-		}
-	}
-
-	/**
-	 * Reload in Kickstarter Wizard
-	 *
-	 * @param	string		Extension key
-	 * @param	array		Extension information array
-	 * @return	string		HTML content
-	 */
-	function extMakeNewFromFramework($extKey,$extInfo)	{
-		$absPath = $this->getExtPath($extKey,$extInfo['type']);
-		if (isset($this->MOD_MENU['function'][4]) && @is_file($absPath.'doc/wizard_form.dat'))	{
-			$content = "The file '".substr($absPath."doc/wizard_form.dat",strlen(PATH_site))."' contains the data which this extension was originally made from with the 'Kickstarter' wizard.<br />Pressing this button will allow you to create another extension based on the that framework.<br /><br />";
-			$content.= '</form>
-				<form action="index.php?SET[function]=4" method="post">
-					<input type="submit" value="Start new" />
-					<input type="hidden" name="tx_extrep[wizArray_ser]" value="'.base64_encode(t3lib_div::getUrl($absPath.'doc/wizard_form.dat')).'" />
-				</form>
-			<form>';
 			return $content;
 		}
 	}
@@ -4365,6 +4334,10 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/mod/t
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_tools_em_index');
 $SOBE->init();
+foreach($SOBE->include_once as $INC_FILE) {
+    include_once($INC_FILE);    
+}
+$SOBE->checkExtObj();
 $SOBE->main();
 $SOBE->printContent();
 ?>
