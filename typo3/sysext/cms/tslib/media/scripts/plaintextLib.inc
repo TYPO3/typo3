@@ -619,7 +619,7 @@ class user_plaintext {
 		} elseif (substr($theLink,0,4)!='http')	{
 			$theLink=$this->siteUrl.$theLink;
 		}
-		return $this->cObj->getCurrentVal().' (Link: '.$theLink.')';
+		return $this->cObj->getCurrentVal().' (Link: '.$theLink.' )';
 	}
 
 	/**
