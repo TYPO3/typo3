@@ -97,7 +97,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 		if (isset($V['recipient']))	{
 				// Sets the message id
-			$this->messageid = '<'.md5(microtime()).'@domain.tld>';
+			$this->messageid = md5(microtime()).'@domain.tld';
 
 			$this->subject = ($V['subject']) ? $V['subject'] : 'Formmail on '.t3lib_div::getIndpEnv('HTTP_HOST');
 			$this->from_email = ($V['from_email']) ? $V['from_email'] : (($V['email'])?$V['email']:'');
