@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,12 +24,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains an extension class specifically for authentication/initialization of backend users in TYPO3
  *
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -37,39 +37,39 @@
  *
  *
  *
- *  112: class t3lib_userAuthGroup extends t3lib_userAuth 
+ *  112: class t3lib_userAuthGroup extends t3lib_userAuth
  *
  *              SECTION: Permission checking functions:
- *  170:     function isAdmin()	
- *  182:     function isMemberOfGroup($groupId)	
+ *  170:     function isAdmin()
+ *  182:     function isMemberOfGroup($groupId)
  *  204:     function doesUserHaveAccess($row,$perms)
- *  221:     function isInWebMount($id,$readPerms='',$exitOnError=0)	
- *  248:     function modAccess($conf,$exitOnError)	
- *  284:     function getPagePermsClause($perms)	
- *  310:     function calcPerms($row)	
- *  332:     function isRTE()
- *  358:     function check ($type,$value)	
- *  375:     function isPSet($lCP,$table,$type='')	
- *  392:     function mayMakeShortcut()	
+ *  221:     function isInWebMount($id,$readPerms='',$exitOnError=0)
+ *  248:     function modAccess($conf,$exitOnError)
+ *  284:     function getPagePermsClause($perms)
+ *  310:     function calcPerms($row)
+ *  333:     function isRTE()
+ *  367:     function check ($type,$value)
+ *  384:     function isPSet($lCP,$table,$type='')
+ *  401:     function mayMakeShortcut()
  *
  *              SECTION: Miscellaneous functions
- *  420:     function getTSConfig($objectString,$config='')	
- *  446:     function getTSConfigVal($objectString)	
- *  458:     function getTSConfigProp($objectString)	
- *  470:     function inList($in_list,$item)	
- *  480:     function returnWebmounts()	
- *  490:     function returnFilemounts()	
+ *  429:     function getTSConfig($objectString,$config='')
+ *  455:     function getTSConfigVal($objectString)
+ *  467:     function getTSConfigProp($objectString)
+ *  479:     function inList($in_list,$item)
+ *  489:     function returnWebmounts()
+ *  499:     function returnFilemounts()
  *
  *              SECTION: Authentication methods
- *  520:     function fetchGroupData()	
- *  640:     function fetchGroups($grList,$idList='')	
- *  709:     function setCachedList($cList)	
- *  729:     function addFileMount($title, $altTitle, $path, $webspace, $type)	
- *  776:     function addTScomment($str)	
+ *  529:     function fetchGroupData()
+ *  648:     function fetchGroups($grList,$idList='')
+ *  717:     function setCachedList($cList)
+ *  737:     function addFileMount($title, $altTitle, $path, $webspace, $type)
+ *  784:     function addTScomment($str)
  *
  *              SECTION: Logging
- *  823:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='') 
- *  856:     function checkLogFailures($email, $secondsBack=3600, $max=3)	
+ *  831:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='',$event_pid=-1,$NEWid='')
+ *  864:     function checkLogFailures($email, $secondsBack=3600, $max=3)
  *
  * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -77,7 +77,7 @@
  */
 
 	// Need this for parsing User TSconfig
-require_once (PATH_t3lib.'class.t3lib_tsparser.php'); 
+require_once (PATH_t3lib.'class.t3lib_tsparser.php');
 
 
 
@@ -139,7 +139,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	var $userTS = array();				// Contains the parsed user TSconfig
 	var $userTSUpdated=0;				// Set internally if the user TSconfig was parsed and needs to be cached.
 	var $userTS_dontGetCached=0;		// Set this from outside if you want the user TSconfig to ALWAYS be parsed and not fetched from cache.
-	
+
 	var $RTE_errors = array();			// RTE availability errors collected.
 
 
@@ -147,7 +147,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 
 
-	
+
 
 
 
@@ -170,7 +170,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function isAdmin()	{
 		return (($this->user['admin']&1) ==1);
 	}
-	
+
 	/**
 	 * Returns true if the current user is a member of group $groupId
 	 * $groupId must be set. $this->groupList must contain groups
@@ -185,7 +185,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			return $this->inList($this->groupList, $groupId);
 		}
 	}
-	
+
 	/**
 	 * Checks if the permissions is granted based on a page-record ($row) and $perms (binary and'ed)
 	 *
@@ -205,7 +205,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		$userPerms = $this->calcPerms($row);
 		return ($userPerms & $perms)==$perms;
 	}
-	
+
 	/**
 	 * Checks if the page id, $id, is found within the webmounts set up for the user.
 	 * This should ALWAYS be checked for any page id a user works with, whether it's about reading, writing or whatever.
@@ -237,7 +237,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			exit;
 		}
 	}
-	
+
 	/**
 	 * Checks access to a backend module with the $MCONF passed as first argument
 	 *
@@ -266,7 +266,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			exit;
 		} else return $acs;
 	}
-	
+
 	/**
 	 * Returns a WHERE-clause for the pages-table where user permissions according to input argument, $perms, is validated.
 	 * $perms is the 'mask' used to select. Fx. if $perms is 1 then you'll get all pages that a user can actually see!
@@ -298,7 +298,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			return ' 1=0';
 		}
 	}
-	
+
 	/**
 	 * Returns a combined binary representation of the current users permissions for the page-record, $row.
 	 * The perms for user, group and everybody is OR'ed together (provided that the page-owner is the user and for the groups that the user is a member of the group
@@ -309,8 +309,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	function calcPerms($row)	{
 		if ($this->isAdmin()) {return 31;}		// Return 31 for admin users.
-		
-		$out=0;	
+
+		$out=0;
 		if (isset($row['perms_userid']) && isset($row['perms_user']) && isset($row['perms_groupid']) && isset($row['perms_group']) && isset($row['perms_everybody']) && isset($this->groupList))	{
 			if ($this->user['uid']==$row['perms_userid'])	{
 				$out|=$row['perms_user'];
@@ -392,7 +392,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			return $lCP & 16;
 		}
 	}
-	
+
 	/**
 	 * Returns true if the BE_USER is allowed to *create* shortcuts in the backend modules
 	 *
@@ -402,15 +402,15 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		return $this->getTSConfigVal('options.shortcutFrame') && !$this->getTSConfigVal('options.mayNotCreateEditShortcuts');
 	}
 
-	
-	
-	
 
 
 
 
 
-	
+
+
+
+
 	/*************************************
 	 *
 	 * Miscellaneous functions
@@ -444,7 +444,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		}
 		return $TSConf;
 	}
-	
+
 	/**
 	 * Returns the "value" of the $objectString from the BE_USERS "User TSconfig" array
 	 *
@@ -456,7 +456,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		$TSConf = $this->getTSConfig($objectString);
 		return $TSConf['value'];
 	}
-	
+
 	/**
 	 * Returns the "properties" of the $objectString from the BE_USERS "User TSconfig" array
 	 *
@@ -468,7 +468,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		$TSConf = $this->getTSConfig($objectString);
 		return $TSConf['properties'];
 	}
-	
+
 	/**
 	 * Returns true if $item is in $in_list
 	 *
@@ -479,7 +479,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function inList($in_list,$item)	{
 		return strstr(','.$in_list.',', ','.$item.',');
 	}
-	
+
 	/**
 	 * Returns an array with the webmounts.
 	 * If no webmounts, and empty array is returned.
@@ -489,7 +489,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function returnWebmounts()	{
 		return (string)($this->groupData['webmounts'])!='' ? explode(',',$this->groupData['webmounts']) : Array();
 	}
-	
+
 	/**
 	 * Returns an array with the filemounts for the user. Each filemount is represented with an array of a "name", "path" and "type".
 	 * If no filemounts an empty array is returned.
@@ -499,25 +499,25 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function returnFilemounts()	{
 		return $this->groupData['filemounts'];
 	}
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 	/*************************************
 	 *
 	 * Authentication methods
 	 *
 	 *************************************/
-	
-	
+
+
 	/**
 	 * Initializes a lot of stuff like the access-lists, database-mountpoints and filemountpoints
 	 * This method is called by ->backendCheckLogin() (from extending class t3lib_beuserauth) if the backend user login has verified OK.
@@ -531,13 +531,13 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				// Get lists for the be_user record and set them as default/primary values.
 			$this->dataLists['modList'] = $this->user['userMods'];					// Enabled Backend Modules
-			$this->dataLists['webmount_list'] = $this->user['db_mountpoints'];		// Database mountpoints	
+			$this->dataLists['webmount_list'] = $this->user['db_mountpoints'];		// Database mountpoints
 			$this->dataLists['filemount_list'] = $this->user['file_mountpoints'];	// File mountpoints
 
 				// Setting default User TSconfig:
 			$this->TSdataArray[]=$this->addTScomment('From $GLOBALS["TYPO3_CONF_VARS"]["BE"]["defaultUserTSconfig"]:').
 									$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
-		
+
 				// Default TSconfig for admin-users
 			if ($this->isAdmin())	{
 				$this->TSdataArray[]=$this->addTScomment('"admin" user presets:').'
@@ -562,10 +562,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				// FILE MOUNTS:
 				// Admin users has the base fileadmin dir mounted
-			if ($this->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])	{	
+			if ($this->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])	{
 				$this->addFileMount($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '', PATH_site.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], 0, '');
 			}
-			
+
 				// If userHomePath is set, we attempt to mount it
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'])	{
 					// First try and mount with [uid]_[username]
@@ -618,7 +618,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					$this->addFileMount($row['title'], $row['path'], $row['path'], $row['base']?1:0, '');
 				}
 			}
-			
+
 				// The lists are cleaned for duplicates
 			$this->groupData['webmounts'] = t3lib_div::uniqueList($this->dataLists['webmount_list']);
 			$this->groupData['pagetypes_select'] = t3lib_div::uniqueList($this->dataLists['pagetypes_select']);
@@ -629,13 +629,13 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				// populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
 			$this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
-			
+
 				// Finally this is the list of group_uid's in the order they are parsed (including subgroups!) and without duplicates (duplicates are presented with their last entrance in the list, which thus reflects the order of the TypoScript in TSconfig)
 			$this->groupList = implode(',',$this->userGroupsUID);
 			$this->setCachedList($this->groupList);
 		}
 	}
-	
+
 	/**
 	 * Fetches the group records, subgroups and fills internal arrays.
 	 * Function is called recursively to fetch subgroups
@@ -655,7 +655,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$this->userGroups[$row['uid']] = $row;
 		}
-		
+
 			// Traversing records in the correct order
 		$include_staticArr = t3lib_div::intExplode(',',$grList);
 		reset($include_staticArr);
@@ -677,10 +677,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 					// Mount group database-mounts
 				if (($this->user['options']&1) == 1)	{	$this->dataLists['webmount_list'].= ','.$row['db_mountpoints'];	}
-	
+
 					// Mount group file-mounts
 				if (($this->user['options']&2) == 2)	{	$this->dataLists['filemount_list'].= ','.$row['file_mountpoints'];	}
-	
+
 					// Mount group home-dirs
 				if (($this->user['options']&2) == 2)	{
 						// If groupHomePath is set, we attempt to mount it
@@ -703,9 +703,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Updates the field be_users.usergroup_cached_list if the groupList of the user has changed/is different from the current list.
 	 * The field "usergroup_cached_list" contains the list of groups which the user is a member of. After authentication (where these functions are called...) one can depend on this list being a representation of the exact groups/subgroups which the BE_USER has membership with.
@@ -746,10 +746,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			// If the path is true and validates as a valid path string:
 		if ($path && t3lib_div::validPathStr($path))	{
 				// these lines remove all slashes and dots before and after the path
-			$path=ereg_replace('^[\/\. ]*','',$path);	
+			$path=ereg_replace('^[\/\. ]*','',$path);
 			$path=trim(ereg_replace('[\/\. ]*$','',$path));
-			
-				
+
+
 			if ($path)	{	// there must be some chars in the path
 				$fdir=PATH_site.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];	// fileadmin dir, absolute
 				if ($webspace)	{
@@ -774,7 +774,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 		}
 	}
-	
+
 	/**
 	 * Creates a TypoScript comment with the string text inside.
 	 *
@@ -783,7 +783,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	function addTScomment($str)	{
 		$delimiter = '# ***********************************************';
-		
+
 		$out = $delimiter.chr(10);
 		$lines = t3lib_div::trimExplode(chr(10),$str);
 		foreach($lines as $v)	{
@@ -792,18 +792,18 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		$out.= $delimiter.chr(10);
 		return $out;
 	}
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 	/************************************
 	 *
 	 * Logging
@@ -846,11 +846,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			'event_pid' => intval($event_pid),
 			'NEWid' => $NEWid
 		);
-			
+
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_log', $fields_values);
 		return $GLOBALS['TYPO3_DB']->sql_insert_id();
 	}
-	
+
 	/**
 	 * Sends a warning to $email if there has been a certain amount of failed logins during a period.
 	 * If a login fails, this function is called. It will look up the sys_log to see if there has been more than $max failed logins the last $secondsBack seconds (default 3600). If so, an email with a warning is sent to $email.
@@ -864,11 +864,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function checkLogFailures($email, $secondsBack=3600, $max=3)	{
 		if ($email)	{
 
-				// get last flag set in the log for sending 
+				// get last flag set in the log for sending
 			$theTimeBack = time()-$secondsBack;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'tstamp', 
-							'sys_log', 
+							'tstamp',
+							'sys_log',
 							'type=255 AND action=4 AND tstamp>'.intval($theTimeBack),
 							'',
 							'tstamp DESC',
@@ -877,11 +877,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			if ($testRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$theTimeBack = $testRow['tstamp'];
 			}
-			
+
 				// Check for more than $max number of error failures with the last period.
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'*', 
-							'sys_log', 
+							'*',
+							'sys_log',
 							'type=255 AND action=3 AND error!=0 AND tstamp>'.intval($theTimeBack),
 							'',
 							'tstamp'

@@ -2,7 +2,7 @@
  The TYPO3 licensing conditions
  2003, Kasper Skårhøj (kasper@typo3.com)
  Document version 2.00, 24-02-2003
---------------------------------- 
+---------------------------------
 
 The TYPO3 project is free software under the terms of the GNU General Public License.
 The GNU/GPL license is found in the file GPL.txt

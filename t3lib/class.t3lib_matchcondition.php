@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class for Matching TypoScript conditions
  *
  * $Id$
@@ -37,15 +37,15 @@
  *
  *
  *
- *   77: class t3lib_matchCondition 
- *   91:     function match($string)	
- *  303:     function testNumber($test,$value) 
- *  325:     function matchWild($haystack,$needle)	
- *  355:     function whichDevice($useragent)	
- *  405:     function browserInfo($useragent)	
- *  503:     function browserInfo_version($tmp)	
- *  515:     function getGlobal($var,$inArr='') 
- *  540:     function getGP_ENV_TSFE($var) 
+ *   77: class t3lib_matchCondition
+ *   91:     function match($string)
+ *  303:     function testNumber($test,$value)
+ *  325:     function matchWild($haystack,$needle)
+ *  355:     function whichDevice($useragent)
+ *  405:     function browserInfo($useragent)
+ *  503:     function browserInfo_version($tmp)
+ *  515:     function getGlobal($var,$inArr='')
+ *  540:     function getGP_ENV_TSFE($var)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,7 +79,7 @@ class t3lib_matchCondition {
 	var $matchAll=0;					// If set all is matched!
 
 	var $altRootLine=array();
-		
+
 	/**
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
 	 *
@@ -94,7 +94,7 @@ class t3lib_matchCondition {
 		if (count($this->matchAlternative))	{
 			return in_array($string,$this->matchAlternative);
 		}
-	
+
 		if (!$this->browserInfoArray)	{
 			$this->browserInfoArray = $this->browserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
 		}
@@ -256,7 +256,7 @@ class t3lib_matchCondition {
 					while(list(,$test)=each($values))	{
 						$test = trim($test);
 						if ($test==$theRLC)	{	return true;	}
-					}					
+					}
 				break;
 				case 'PIDupinRootline':
 				case 'PIDinRootline':
@@ -278,7 +278,7 @@ class t3lib_matchCondition {
 					$funcName=trim($values[0]);
 					$funcValue = t3lib_div::trimExplode(',',$values[1]);
 					$pre = $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['userFuncClassPrefix'];
-					if ($pre && 
+					if ($pre &&
 						!t3lib_div::isFirstPartOfStr(trim($funcName),$pre) &&
 						!t3lib_div::isFirstPartOfStr(trim($funcName),'tx_')
 						)	{
@@ -309,7 +309,7 @@ class t3lib_matchCondition {
 			case '>':
 				if (doubleval(substr($test,1))<$value)	return true;
 			break;
-			default:		
+			default:
 				if (trim(substr($test,1))==$value)	return true;
 			break;
 		}
@@ -353,24 +353,24 @@ class t3lib_matchCondition {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=296&cHash=a8ae66c7d6
 	 */
 	function whichDevice($useragent)	{
-		$agent=strtolower(trim($useragent)); 
+		$agent=strtolower(trim($useragent));
 			// pda
-		if(	strstr($agent, 'avantgo'))	{ 
+		if(	strstr($agent, 'avantgo'))	{
 			return 'pda';
 		}
 
 			// wap
-		$browser=substr($agent,0,4); 
-		$wapviwer=substr(stristr($agent,'wap'),0,3); 
-		if(	$wapviwer=='wap' || 
-			$browser=='noki' || 
-			$browser== 'eric' || 
-			$browser== 'r380' || 
-			$browser== 'up.b' || 
-			$browser== 'winw' || 
+		$browser=substr($agent,0,4);
+		$wapviwer=substr(stristr($agent,'wap'),0,3);
+		if(	$wapviwer=='wap' ||
+			$browser=='noki' ||
+			$browser== 'eric' ||
+			$browser== 'r380' ||
+			$browser== 'up.b' ||
+			$browser== 'winw' ||
 			$browser== 'wapa')	{
 				return 'wap';
-		} 
+		}
 
 			// grabber
 		if(	strstr($agent, 'g.r.a.b.') ||
@@ -379,8 +379,8 @@ class t3lib_matchCondition {
 			strstr($agent, 'teleport') ||
 			strstr($agent, 'webcopier'))	{
 			return 'grabber';
-		} 
-		
+		}
+
 			// robots
 		if(	strstr($agent, 'crawler') ||
 			strstr($agent, 'spider') ||
@@ -390,7 +390,7 @@ class t3lib_matchCondition {
 			strstr($agent, 'altavista') ||
 			strstr($agent, 'diibot'))	{
 			return 'robot';
-		} 
+		}
 	}
 
 	/**
@@ -476,7 +476,7 @@ class t3lib_matchCondition {
 					$browserInfo['system']='winNT';
 				} elseif (strstr($useragent,'Win16') || strstr($useragent,'Windows 311'))	{
 					$browserInfo['system']='win311';
-				}			
+				}
 			} elseif (strstr($useragent,'Mac'))	{
 				$browserInfo['system']='mac';
 				// unixes
@@ -517,7 +517,7 @@ class t3lib_matchCondition {
 		$c = count($vars);
 		$k = trim($vars[0]);
 		$theVar = is_array($inArr) ? $inArr[$k] : $GLOBALS[$k];
-		
+
 		for ($a=1;$a<$c;$a++) {
 			if (!isset($theVar))	{break;}
 			$theVar = $theVar[trim($vars[$a])];
@@ -573,7 +573,7 @@ class t3lib_matchCondition {
 			}
 		}
 		return $val;
-	}		
+	}
 }
 
 

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Form-data processing
  * included from index_ts.php
  *
@@ -38,37 +38,37 @@
  *
  *
  *
- *   83: class tslib_feTCE	
- *  100:     function start($data,$FEData)	
- *  187:     function checkDoublePostExist($table,$doublePostField,$key)	
- *  200:     function calcDoublePostKey($array)	
- *  212:     function includeScripts()	
- *  232:     function execNEWinsert($table, $dataArr)	
- *  258:     function clear_cacheCmd($cacheCmd)	
- *  274:     function getConf($table)	
+ *   83: class tslib_feTCE
+ *  100:     function start($data,$FEData)
+ *  187:     function checkDoublePostExist($table,$doublePostField,$key)
+ *  200:     function calcDoublePostKey($array)
+ *  212:     function includeScripts()
+ *  232:     function execNEWinsert($table, $dataArr)
+ *  258:     function clear_cacheCmd($cacheCmd)
+ *  274:     function getConf($table)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Form-data processing class.
@@ -234,16 +234,16 @@ class tslib_feTCE	{
 		if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['tstamp']; $dataArr[$field]=time(); $extraList.=','.$field;}
 		if ($GLOBALS['TCA'][$table]['ctrl']['crdate'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['crdate']; $dataArr[$field]=time(); $extraList.=','.$field;}
 		if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['cruser_id']; $dataArr[$field]=0; $extraList.=','.$field;}
-		
+
 		unset($dataArr['uid']);	// uid can never be set
 		$insertFields = array();
-		
+
 		foreach($dataArr as $f => $v)	{
 			if (t3lib_div::inList($extraList,$f) || isset($GLOBALS['TCA'][$table]['columns'][$f]))	{
 				$insertFields[$f] = $v;
 			}
 		}
-		
+
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $insertFields);
 	}
 

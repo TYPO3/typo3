@@ -22,9 +22,9 @@ TCEmain:
 	- Implement field evaluation in TCEmain: Evaluate min/max? Checking references exists?
 	- Implement a feature, "max_number_of_records_in_pid" which means the TCEmain will check if a number of records of a kind has been exceeded for the page.
 	- "Pattern-control" for relation fields? (See "APPENDIX: PATTERN-control") Probably create an API by which you can do your own evaluating, return true/false, return an error message.
-	- pre and post processing by user functions of the data? (Message-ID: <C018FF617C61AB4588D15494126A5C0F23E431@Soulman.hanno-kirchhoff.de>) 
+	- pre and post processing by user functions of the data? (Message-ID: <C018FF617C61AB4588D15494126A5C0F23E431@Soulman.hanno-kirchhoff.de>)
 	- "Tree-tables": Adding TCA-feature which can describe a field being a internal_pid for the table so tables can be listed as a tree in Web>List (and for TCEmain this means that copying an element). "parent" items. Rene needs this for "categories". See (Message-Id: <200212201257.24705.r.fritz@colorcube.de>)
-	- Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". But copy/cut operations must understand this. And Web>List should reflect this as categorizing. 
+	- Support for "grouping": - eg. tt_content elements are grouped by "column" + "language". But copy/cut operations must understand this. And Web>List should reflect this as categorizing.
 	- "child records" - records which MUST be related to another table - and will be moved along with the main record if moved.
 	- Implement *real* record locking?
 		- Configure on a per-table basis
@@ -33,29 +33,29 @@ TCEmain:
 	- If an input value in the data array is NOT a string/integer but an array then just serialize this array and store (thus allowing customly build forms from PHP scripts to submit hierarchical information)
 		- Could be solved by PRE-processing of content in user functions!
 	- Implement "last_edited_by" field saving the BE-user UID just like tstamps are... (JH asked)
-	- Transformation API: Implement the possibility of custom to/from transformations for the "user" type (or any field?) 
+	- Transformation API: Implement the possibility of custom to/from transformations for the "user" type (or any field?)
 		- Custom transformations for RTE fields/API?
-	- Selector box type: 
+	- Selector box type:
 		- MM support for strings
 	- Support for MM-records which does NOT get deleted, but is kept... and then support for having data in those!!
 	- Support that the content of a single field can be stored in an external file instead.
 	- Support that a list of fields can be stored in an external XML file instead.
 - VERSIONING:
 	- Swapping API: A page can be copied for making modifications. Afterwards swapped with the original (page/tt_content uids preserved if possible). The original page is stored in archive of some kind.
-- LOGGING: 
+- LOGGING:
 	- Finish the logging of TCEmain actions (delete/copy) + finally define the API to the "sys_log" table!
-- CLEAN_UP: 
+- CLEAN_UP:
 	- Implement kill/restore of "deleted" records.
 	- Remove references to records when deleting totally (or also deleted-to-recycler records? Maybe "deleted-to-recycler" references are important to remove in order to make sure "recycler" records are not selected!) (refs to MM for both tables/files)
-- PERMISSIONS: 
-	- Permission management on selector box/radio button values 
+- PERMISSIONS:
+	- Permission management on selector box/radio button values
 		- so certain "CType" / "Insert plugin" / "FlexForm datatypes" values could be blocked
 		- Could it be considered to implement some "access pool" where elements on any level (like here selectorboxes or for FlexForms elements/types there) could add their element by an API and then it would A) automatically be listed for groups access lists and B) automatically enforced.
 	- Permission management for translations? Users are allowed to edit certain languages? (Setup with general access list API?)
 	- Permissions on record-level
 	- CHECK: That permissions are properly evaluated (especially for moving content?)
 	- Security in tcemain: Uploaded/Attached files are allowed to be in ONLY a relative path OR in the "lockDir"!
-- BUG: 
+- BUG:
 	- if a file is uploaded (directly in the form) and there is an upper limit to the number of files which is then exceeded, the uploaded file is STILL copied to the upload folder and will thus be listed as "Files with no references at all (delete them!):"
 	- TCEmain: If there is a comma in the filename supplied as an uploaded file it will confuse the handling of files because the comma is also used to split the filename from each other. (29/04/2003). This is a problem with Inter-Photo Netprint where files uploaded by FTP with comma in the name will not be attached as they should. I think the solution should be found in TCEmain so any filename can be supplied as uploaded.
 	- CHECK: hideAtCopy - does it work??
@@ -68,16 +68,16 @@ TCEmain:
 TCEmain/TCEforms for FlexForms:
 - Affects: "lowlevel" ext/DBint , "impexp" extension. Must/Should be extended.
 - Permissions handled per-field in FlexForms?
-- What to do if data structure was not found? (Both TCEmain, TCEforms, templavoila_pi1, t3lib_transferdata) 
+- What to do if data structure was not found? (Both TCEmain, TCEforms, templavoila_pi1, t3lib_transferdata)
 - block the creation of FlexForm in FlexForm inside TCEforms.
 - ['pi_flexform']['config']['ds'] must be set to some default message making sense!
 - TCEmain features:
 	- caching of references/files in meta data (for analysis tools)?
-	- mapping values to a plain-text search field(s)  
+	- mapping values to a plain-text search field(s)
 	- Offering API functions for add/delete/move/copy
 	- Cleaning the original data in field since this may have an invalid structure if the data structure has changed in the meantime.
 	- Possibility to write the XML data values into a table instead (see Marc Schlingers idea, stored on paper in my red organizer).
-- TCEforms: 
+- TCEforms:
 	- Support for checkboxes which can expand/collapse sections/containers? fold-in, fold-out, passing a list of fields to show (with sub-levels for horizontal display).
 	- Visual interface for forms, DHTML for sheets etc, various sheet modes, language menu form.
 	- Fix the JavaScript in TCEform which keeps track of REG/CM images and required values etc. These things does not work for flex forms yet!
@@ -89,8 +89,8 @@ TCEmain/TCEforms for FlexForms:
 	- If you have a multiple selector field (or checkbox array) an array of objects could be forced to reflect exactly the fieldnames there 1-1 thus giving us configuration option possibilities per field! For newloginbox extension: You set up a selector box with multiple choice where you can select fields from the fe_users table to display. In an array of elements in the DS you configure that the VALUE of that field is dictating that the same number of objects should be shown for configuration of each field. A "hidden" value would point each object to which value from the field it was for! The same would be very useful for M-M lists of records.
 	- Implement "<displayCond>EXT:templavoila:LOADED:true</displayCond>" for flexforms. (needed for mininews!!)
 	- Implement CSH for FF fields.
-		
-		
+
+
 TCEforms:
 - Support for other backend charsets / right-aligned charsets!?
 - FEATURES:
@@ -112,7 +112,7 @@ TCEforms:
 		- making copies of select fields etc - check that remapped records are OK treated (with foreign/neg_foreign + free string values)
 		- Letting one selectorbox set another hidden fields value apart from its own? [USE: When selecting a template, that also sets the DS value! (Thus a template is always selected!)]
 		- Exclude field selection better, in a tree?
-		- set the width of the selector field 
+		- set the width of the selector field
 		- BUG: itemsArrayProcFunc only active IF there is an array! Shouldn't it be in any case?
 	- GROUP type:
 		- [file] allow the selection of files from the system to be added as REFERENCES, not copied! (Message-ID: <003f01c23503$8cdd69d0$55333bd4@comtech>, + notify "illuminatus")
@@ -127,11 +127,11 @@ TCEforms:
 	- INPUT type:
 		- having a selectorbox from which a default value can be selected (which is just transferred to the input field). Of course the selectorbox can have its content added by a PHP script.
 	- ? type:
-		- "Inverse relations"/"Foreign relations": A "Pseudo field", which lists records REFERING TO this record (foreign relations, eg. many small price-records belonging to ONE shop-article). Possibly this could also EDIT those references (attaching/adding new, removing old, no manual ordering though! - This is what RENE is doing (Message-Id: <E17LO4D-0002hj-00@cube.colorcube>) 
+		- "Inverse relations"/"Foreign relations": A "Pseudo field", which lists records REFERING TO this record (foreign relations, eg. many small price-records belonging to ONE shop-article). Possibly this could also EDIT those references (attaching/adding new, removing old, no manual ordering though! - This is what RENE is doing (Message-Id: <E17LO4D-0002hj-00@cube.colorcube>)
 	- TRANSLATION:
 		- Concept for translation of other language versions simultaneously? (Showing the default/any language side-by-side?)
 		- Would require UTF-8 display in backend.
-		- Support for "original/translation" relationships: 
+		- Support for "original/translation" relationships:
 		  - The idea is that a) one field from a record is configured in [ctrl] to hold the sys_language (0=default, x=translation of default) value AND b) another field is configured to keep a reference back to the original element (for the translated records)
 		    - If the record is "default" then ALL fields are shown.
 		    - If the record is "translated" then SOME fields are disabled for editing (as configured) BUT shown in the form for information (the value from the original).
@@ -170,7 +170,7 @@ Wizards:
 - Finish the colorpicker! Some other person can be in charge of this (See "APPENDIX: Colorpicker")
 - Add wizard icon to TSconfig and Setup/Constants fields for immediate syntax highlighting (in popup window)
 - Add wizard icon to see/clean up FlexForm data?
-- wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter K?hn). 
+- wizard_add, _edit and _list can be used fantastic to lead the user through multiple 1:n relations but than he starts to be confused if the records he created apear somewhere else, tries to edit them directly there, relations get lost, phone rings. (Peter K?hn).
 - forms and table wizards should be configurable for making XML structures alternatively to the currently formatting (programming wise ok, needs implementation)
 
 Interface:
@@ -200,7 +200,7 @@ Web>List:
 - Support for tree-tables (that can be browsed).
 - Support for a "tree-group" -> a chain of tables which are displayed in a tree since each table has a config for a parent field in a former table. (Eg. DS: brand -> domain -> product).
 - Support for display of relations: Files, 1-M, M-M
-- FlexForm tree view / editing: 
+- FlexForm tree view / editing:
 	- When a record contains a FlexForm the web>List module could display the fields inside in a nice tree structure which one could expand/collapse! Then by clicking "edit" for a brand you get an interface where you can edit *that branch* of the flexform! Brilliant way to manage large structures inside of flexforms!
 		- Can you picture it? That would be like expanding an XML document by a node-tree and add/edit/delete/rearrange any of the internal informational pieces!
 - Fikse copy/paste så at list-module reloader (løser også problemet med paste fra sidetræet/foldertræet?)
@@ -209,8 +209,8 @@ File>List:
 - BUG: UNIX: "RW" flag looks only on the permissions for the USER - not the group. So even if PHP via the group of a file can delete it, it is reported that it cannot.
 
 History/Undo:
-- Must present a page/content element view, so a page with content elements can be restored as a whole 
-- Undo must be able to restore attached files as well 
+- Must present a page/content element view, so a page with content elements can be restored as a whole
+- Undo must be able to restore attached files as well
 - Should be possible to disable for certain tables (can it be done already with TSconfig?)
 - Delete saved states (and save whole record content).
 - Need to implement the diff-feature for windows as well (that is; set configuration)
@@ -242,7 +242,7 @@ The REGEX-{} problem:
 - BUG: Regexs; "Warning: Unmatched \{ in /home/sites/site14/typo3_src-3.5b3/typo3/mod/tools/em/index.php on line 1983" which is a ereg with { WITHOUT preceeding slash! (Message-ID: <003c01c275aa$c0c60c10$e3a1a33e@pentiumriv4v9a>, Message-ID: <20030729082437.79900.qmail@web11305.mail.yahoo.com>)
 
 Install/Servers:
-- FIX: To get PHP to handle PATH_INFO and PATH_TRANSLATED information correctly with this setup, the php parser should be compiled with the --enable-discard-path configure option. 
+- FIX: To get PHP to handle PATH_INFO and PATH_TRANSLATED information correctly with this setup, the php parser should be compiled with the --enable-discard-path configure option.
 - FIX: The "php_sapi_name()=="cgi"||php_sapi_name()=="isapi"" problems (Message-ID: <ADEEJCHPNMOFKAAOJJKKCEKMCAAA.martin.kokes@sitewell.cz>, Message-ID: <200304071146520757.0097D495@smtp.worldonline.dk>, Message-ID: <BACDA028.F428%daniel@typo3.com>)
 - CHECK: Security: Can HTTP_SERVER_VARS be overridden from URL if global vars are enabled???
 - TYPO3_PORT bug (Message-ID: <005f01c2df3f$4006db00$0100a8c0@knoell>)
@@ -273,7 +273,7 @@ NOTES
 
 
 
-  
+
 ******************************************
 APPENDIX 1: CLEANING UP FOR TYPO3 3.6.0
 ******************************************
@@ -512,12 +512,12 @@ OK		skin1/
 OK		static_file_edit/
 		sys_action/			(1/400)
 		sys_messages/		(1/450)
-OK		sys_note/		
+OK		sys_note/
 		sys_notepad/		(1/130)
 OK		sys_stat/
-		sys_todos/			(1/1100)		
-OK		sys_workflows/		
-		taskcenter/			(4/400)			
+		sys_todos/			(1/1100)
+OK		sys_workflows/
+		taskcenter/			(4/400)
 		taskcenter_modules/		(1/100)
 		taskcenter_recent/		(1/150)
 		taskcenter_rootlist/	(1/50)
@@ -534,7 +534,7 @@ OK		ts_language_no/
 		tstemplate_info/		(1/450)
 		tstemplate_objbrowser/	(1/500)
 		tstemplate_styler/		(1/1700)
-OK		tt_address/	
+OK		tt_address/
 		tt_board/				(3/1200)
 		tt_calender/			(1/170)		[testsite...]
 		tt_guest/				(2/350)		[testsite...]
@@ -543,7 +543,7 @@ OK		tt_address/
 		tt_products/			(5/2000)	[testsite...], [? Peter Kuehn]
 		tt_rating/				(3/550)		[testsite...], [Rene F]
 		viewpage/				(2/200)
-XQRC:	wizard_crpages/			
+XQRC:	wizard_crpages/
 XQRC:	wizard_sortpages/
 
 32,5 K Codes lines....
@@ -614,7 +614,7 @@ Authors: Julle and Kasper.
 	  - tt_content
 	  - pages_lang_overlay
 
-- Versioning (for single elements including single "pages" record) is based on 
+- Versioning (for single elements including single "pages" record) is based on
 	- ONE element having an official position in the TYPO3 page tree, thus holding the official "uid" of the element! (If this element was deleted from the system, so are all versions of that element!)
 	- All versions of this one element being a) at pid "-1" and b) a field "real_id" pointing to the official UID
 	- Pages-versioning: For all elements belonging to a version of a page; They are just copied and has no official new version or binding back to whatever element they came from. They just came along. And in fact, they could even have their own version history for them selves!
@@ -651,15 +651,15 @@ Authors: Julle and Kasper.
 	- Clean-up module (in templavoila?) could also track such things
 	- Problems for non-templavoila sites would be low.
   - Swapping might need to exclude fields like "sorting" etc. Others could be imagined.
-  - copies: 
+  - copies:
     - What about a page alias?
-- Trunk/Branch: 
+- Trunk/Branch:
     - Create version of single page (as above)
 	- Create version of page branch (1-... levels)
 		- Either create version of EACH page individually (like tagging in CVS)
 		- Or create single-point-of-reference so that pages INSIDE can be swapped, deleted and created (just like content elements can)
 			- Requirement: Intelligent swapping of "sub-element" ids that CAN be traced back to the original!
-	
+
 - Backend:
   - For single-editing of records we will show a version list from which to choose a version to edit (just like the delete button is also hidden at multi-edit)
   - In list-module we might display a) an icon to a version selector (where diff-ing could be done, swapping performed etc.), b) show archive versions as children in the listing.
@@ -844,15 +844,15 @@ Notes:
 imagecopymerge
 
 jonny at sanriowasteland dot net
-29-Sep-2002 06:36 
- 
-If you need to merge 2 png's (or  presumably 2 gifs) with different color palettes, I have found this is the function to use.  Just set pct to 99, and you are rocking.  With pct set to 100, or imagecopy for that matter, the palette seems to go wonky.  (It probably just uses the palette of the source image. but don't quote me on that).
- 
- 
-Also see:
-- [Kasper] "ImageManipulation" folder in Mailbox 
+29-Sep-2002 06:36
 
- 
+If you need to merge 2 png's (or  presumably 2 gifs) with different color palettes, I have found this is the function to use.  Just set pct to 99, and you are rocking.  With pct set to 100, or imagecopy for that matter, the palette seems to go wonky.  (It probably just uses the palette of the source image. but don't quote me on that).
+
+
+Also see:
+- [Kasper] "ImageManipulation" folder in Mailbox
+
+
 ******************************
 APPENDIX: Idea about "Roles"
 ******************************
@@ -883,7 +883,7 @@ SITE-CRAWLER:
 BACKEND TOOLS:
 - Global search and replace of records (Rene F?)
 - Export the complete typo3 site/database, in a big file like mycompletesite.t3d
-  
+
 
 **************************************
 APPENDIX: PATTERN-control
@@ -896,26 +896,26 @@ APPENDIX: PATTERN-control
 
 
 **************************************
-Rapport of "deleted"-check in typoscripts (190500) 
+Rapport of "deleted"-check in typoscripts (190500)
 **************************************
-TYPO3: 
+TYPO3:
 - "deleted"-field must be set manually in userauth for user-tables!
-Hardcoding: 
-- "pages" in load_tree.php 
-- "sys_filemounts" in userauth_group 
-- "user-group tables" in userauth_groups 
-- "pages" in ti_inc.php 
-- "pages" in transferdata.php 
+Hardcoding:
+- "pages" in load_tree.php
+- "sys_filemounts" in userauth_group
+- "user-group tables" in userauth_groups
+- "pages" in ti_inc.php
+- "pages" in transferdata.php
 
-TypoScript: 
-- sys_domain is NOT checked for deleted in "page.php" 
-- getForeignRecords() (page.php) does not check for deleted!!! (this is even not used any more!! 
-Hardcoding: 
-- "pages" in page.php 
-- "pages" in t_search.php 
-- "pages" in index_ts.php (caching) 
-- "sys_template" in t_template.php 
-- "fe_groups" in index_ts.php 
+TypoScript:
+- sys_domain is NOT checked for deleted in "page.php"
+- getForeignRecords() (page.php) does not check for deleted!!! (this is even not used any more!!
+Hardcoding:
+- "pages" in page.php
+- "pages" in t_search.php
+- "pages" in index_ts.php (caching)
+- "sys_template" in t_template.php
+- "fe_groups" in index_ts.php
 
 
 **************************************
@@ -923,10 +923,10 @@ Bugs, considerations, notes
 **************************************
 - mail() hangs in 90 second (approx) if computer is not on the net! (deliver to mail-server)
 - REWRITE of files when they already exists? shortMD5 is guilty?
-- "Fields not properly updated:" - error: Varchar(xx) cannot included spaces AFTER the last character and therefore TYPO3 interface reports an error. Solve this error by setting "eval" to "trim" in $TCA for inputfields of the type VARCHAR. 
-- mysql_query() function should not be used I think as this queries the current database. mysql() should be used instead. 
-- JavaScript: escape() doesn't rawurlencode the "+"-character. This can be a problem, eg. when trying to rename files with a plus in the name. I have made an alternative escape-function. 
-- PDF-files over 600 k are not rendered by ImageMagick. Less than 270 is! How come and is this true. Number of pages? 
+- "Fields not properly updated:" - error: Varchar(xx) cannot included spaces AFTER the last character and therefore TYPO3 interface reports an error. Solve this error by setting "eval" to "trim" in $TCA for inputfields of the type VARCHAR.
+- mysql_query() function should not be used I think as this queries the current database. mysql() should be used instead.
+- JavaScript: escape() doesn't rawurlencode the "+"-character. This can be a problem, eg. when trying to rename files with a plus in the name. I have made an alternative escape-function.
+- PDF-files over 600 k are not rendered by ImageMagick. Less than 270 is! How come and is this true. Number of pages?
 - When GDlib is disabled it can be very confusing that record icons does not change their look according to hidden/starttime/endtime etc...
 - many files in typo3temp/ slows down processing. Eg. a image resize with 33.000 files in typo3temp/ took 3 seconds where it would take 40 ms when the folder is clean. (on linux)
 

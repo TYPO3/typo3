@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class for display of backend log
  *
  * $Id$
@@ -38,17 +38,17 @@
  *
  *
  *
- *   81: class t3lib_BEDisplayLog 
- *  100:     function initArray()	
- *  117:     function getTimeLabel($code)	
- *  132:     function getUserLabel($code)	
- *  146:     function getTypeLabel($code)	
- *  160:     function getActionLabel($code)	
- *  178:     function getDetails($code,$text,$data,$sys_log_uid=0)	
- *  210:     function reset()	
- *  224:     function getErrorFormatting($sign)	
- *  234:     function formatDetailsForList($row)	
- *  251:     function stripPath($inArr)	
+ *   81: class t3lib_BEDisplayLog
+ *  100:     function initArray()
+ *  117:     function getTimeLabel($code)
+ *  132:     function getUserLabel($code)
+ *  146:     function getTypeLabel($code)
+ *  160:     function getActionLabel($code)
+ *  178:     function getDetails($code,$text,$data,$sys_log_uid=0)
+ *  210:     function reset()
+ *  224:     function getErrorFormatting($sign)
+ *  234:     function formatDetailsForList($row)
+ *  251:     function stripPath($inArr)
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -83,7 +83,7 @@ class t3lib_BEDisplayLog {
 	var $lastUserLabel='';
 	var $lastTypeLabel='';
 	var $lastActionLabel='';
-	
+
 	var $detailsOn = 1;	// If detailsOn, %s is substituted with values from the data-array (see getDetails())
 	var $stripPath = 1;	// This strips the path from any value in the data-array when the data-array is parsed through stripPath()
 	var $errorSign = Array(
@@ -120,7 +120,7 @@ class t3lib_BEDisplayLog {
 			$this->lastTimeLabel=$t;
 			return $t;
 		} else return '.';
-		
+
 	}
 
 	/**
@@ -190,7 +190,7 @@ class t3lib_BEDisplayLog {
 				$text = str_replace('%s','',$text);
 			}
 		}
-		
+
 			// Finding the history for the record
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,fieldlist', 'sys_history', 'sys_log_uid='.intval($sys_log_uid));
 		$newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
@@ -253,7 +253,7 @@ class t3lib_BEDisplayLog {
 			while(list($key,$val)=each($inArr))	{
 				$inArr[$key]=basename($val);
 			}
-		}	
+		}
 		return $inArr;
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
@@ -37,25 +37,25 @@
  *
  *
  *
- *   87: class t3lib_readmail 
+ *   87: class t3lib_readmail
  *
  *              SECTION: FUNCTIONS for the Dmailer
- *  122:     function find_MIDfromReturnPath($to)	
- *  142:     function find_XTypo3MID($content)	
+ *  122:     function find_MIDfromReturnPath($to)
+ *  142:     function find_XTypo3MID($content)
  *
  *              SECTION: General
- *  188:     function getMessage($mailParts)	
- *  213:     function getTextContent($content)	
- *  228:     function getMailBoundaryParts($boundary,$content)	
- *  248:     function getCType($str)	
- *  271:     function analyseReturnError($c)	
- *  326:     function decodeHeaderString($str)	
- *  354:     function extractNameEmail($str)	
- *  383:     function getContentTypeData($contentTypeStr)	
- *  406:     function makeUnixDate($dateStr)	
- *  429:     function getGMToffset($GMT)	
- *  443:     function extractMailHeader($content,$limit=0)	
- *  474:     function fullParse($content)	
+ *  188:     function getMessage($mailParts)
+ *  213:     function getTextContent($content)
+ *  228:     function getMailBoundaryParts($boundary,$content)
+ *  248:     function getCType($str)
+ *  271:     function analyseReturnError($c)
+ *  326:     function decodeHeaderString($str)
+ *  354:     function extractNameEmail($str)
+ *  383:     function getContentTypeData($contentTypeStr)
+ *  406:     function makeUnixDate($dateStr)
+ *  429:     function getGMToffset($GMT)
+ *  443:     function extractMailHeader($content,$limit=0)
+ *  474:     function fullParse($content)
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -306,15 +306,15 @@ class t3lib_readmail {
 			if (eregi('Unknown Recipient|Delivery failed 550|Receiver not found|User not listed|recipient problem|Delivery to the following recipients failed|User unknown|recipient name is not recognized',$cp['reason_text']))	{
 				$cp['reason']=550;	// 550 Invalid recipient, User unknown
 			} elseif (eregi('over quota|mailbox full',$cp['reason_text']))	{
-				$cp['reason']=551;	
+				$cp['reason']=551;
 			} elseif (eregi('Error in Header',$cp['reason_text']))	{
-				$cp['reason']=554;	
+				$cp['reason']=554;
 			} else {
 				$cp['reason']=-1;
 			}
 		}
 
-		return $cp;	
+		return $cp;
 	}
 
 	/**
@@ -344,7 +344,7 @@ class t3lib_readmail {
 		}
 		return implode('',$parts);
 	}
-	
+
 	/**
 	 * Extracts name/email parts from a header field (like 'To:' or 'From:' with name/email mixed up.
 	 *
@@ -353,7 +353,7 @@ class t3lib_readmail {
 	 */
 	function extractNameEmail($str)	{
 		$outArr=array();
-		
+
 			// Email:
 		$reg='';
 		ereg('<([^>]*)>',$str,$reg);
@@ -372,8 +372,8 @@ class t3lib_readmail {
 			}
 		}
 		return $outArr;
-	}	
-	
+	}
+
 	/**
 	 * Returns the data from the 'content-type' field. That is the boundary, charset and mime-type
 	 *
@@ -384,7 +384,7 @@ class t3lib_readmail {
 		$outValue=array();
 		$cTypeParts = t3lib_div::trimExplode(';',$contentTypeStr,1);
 		$outValue['_MIME_TYPE']=$cTypeParts[0];	// content type, first value is supposed to be the mime-type, whatever after the first is something else.
-			
+
 		reset($cTypeParts);
 		next($cTypeParts);
 		while(list(,$v)=Each($cTypeParts))	{
@@ -396,7 +396,7 @@ class t3lib_readmail {
 		}
 		return $outValue;
 	}
-	
+
 	/**
 	 * Makes a UNIX-date based on the timestamp in the 'Date' header field.
 	 *
@@ -406,7 +406,7 @@ class t3lib_readmail {
 	function makeUnixDate($dateStr)	{
 		$dateParts=explode(',',$dateStr);
 		$dateStr=count($dateParts)>1 ? $dateParts[1] : $dateParts[0];
-		
+
 		$spaceParts = t3lib_div::trimExplode(' ',$dateStr,1);
 
 		$spaceParts[1]=$this->dateAbbrevs[strtoupper($spaceParts[1])];
@@ -415,10 +415,10 @@ class t3lib_readmail {
 
 		$offset = $this->getGMToffset($spaceParts[4]);
 		$timeStamp-=($offset*60);	// Compensates for GMT by subtracting the number of seconds which the date is offset from serverTime
-		
+
 		return $timeStamp;
 	}
-	
+
 	/**
 	 * Parsing the GMT offset value from a mail timestamp.
 	 *
@@ -432,7 +432,7 @@ class t3lib_readmail {
 		$GMToffset-=$this->serverGMToffsetMinutes;
 		return $GMToffset;
 	}
-	
+
 	/**
 	 * This returns the mail header items in an array with associative keys and the mail body part in another CONTENT field
 	 *
@@ -442,7 +442,7 @@ class t3lib_readmail {
 	 */
 	function extractMailHeader($content,$limit=0)	{
 		if ($limit)	$content = substr($content,0,$limit);
-		
+
 		$lines=explode(chr(10),ltrim($content));
 		$headers=array();
 		$p='';
@@ -493,7 +493,7 @@ class t3lib_readmail {
 		}
 			// Decode date from human-readable format to unix-time (includes compensation for GMT CET)
 		$mailParts['_DATE']=$this->makeUnixDate($mailParts['date']);
-		
+
 			// Transfer encodings of body content
 		switch(strtolower($mailParts['content-transfer-encoding']))	{
 			case 'quoted-printable':
@@ -503,7 +503,7 @@ class t3lib_readmail {
 				$mailParts['CONTENT']=base64_decode($mailParts['CONTENT']);
 			break;
 		}
-		
+
 			// Content types
 		$mailParts['_CONTENT_TYPE_DAT']=$this->getContentTypeData($mailParts['content-type']);
 

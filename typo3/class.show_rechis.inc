@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,12 +24,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Class for the record history display script (show_rechis.php)
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
- * XHTML Compliant  
+ * XHTML Compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -38,24 +38,24 @@
  *
  *
  *
- *   83: class recordHistory 
- *  106:     function recordHistory()	
- *  124:     function main()	
- *  155:     function displaySysHistoryEntry($sh_uid)	
- *  215:     function revertToPreviousValues($element,$field)	
- *  281:     function saveState($element,$sumUp)	
- *  335:     function displayHistory($element)	
+ *   83: class recordHistory
+ *  106:     function recordHistory()
+ *  124:     function main()
+ *  155:     function displaySysHistoryEntry($sh_uid)
+ *  215:     function revertToPreviousValues($element,$field)
+ *  281:     function saveState($element,$sumUp)
+ *  335:     function displayHistory($element)
  *
  *              SECTION: Various helper functions
- *  533:     function nextHisUid($element,$hisUid)	
- *  579:     function compareChangesWithCurrent($element,$changeRec)	
- *  624:     function readFieldTypes($table,$id)	
- *  653:     function cmp($changeStatus,$oldRecord)	
- *  676:     function removeFilefields($table,$dataArray)	
- *  699:     function renderEntry($entry,$table)	
- *  757:     function listHeader()	
- *  801:     function linkPage($str,$inparams=array(),$anchor='')	
- *  829:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)	
+ *  533:     function nextHisUid($element,$hisUid)
+ *  579:     function compareChangesWithCurrent($element,$changeRec)
+ *  624:     function readFieldTypes($table,$id)
+ *  653:     function cmp($changeStatus,$oldRecord)
+ *  676:     function removeFilefields($table,$dataArray)
+ *  699:     function renderEntry($entry,$table)
+ *  757:     function listHeader()
+ *  801:     function linkPage($str,$inparams=array(),$anchor='')
+ *  829:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -81,13 +81,13 @@
  * @subpackage core
  */
 class recordHistory {
-		
+
 		// External, static:
 	var $maxSteps=20;		// Maximum number of sys_history steps to show.
-	
+
 		// Internal, dynamic:
 	var $listType = 0;		// This value determines the kind of list build. The variable is used as a parameter from some functions.
-	
+
 		// Internal, static. GPvars:
 	var $sh_uid;			//	sh_uid is the id-number of the sys_history log item to SHOW
 	var $element;			// Element reference, syntax [tablename]:[uid]
@@ -104,9 +104,9 @@ class recordHistory {
 	 * @return	void
 	 */
 	function recordHistory()	{
-		
+
 			// GPvars:
-		$this->sh_uid = t3lib_div::_GP('sh_uid');	
+		$this->sh_uid = t3lib_div::_GP('sh_uid');
 		$this->element = t3lib_div::_GP('element');
 		$this->saveState = t3lib_div::_GP('saveState');
 		$this->returnUrl = t3lib_div::_GP('returnUrl');
@@ -130,7 +130,7 @@ class recordHistory {
 		if ($this->sh_uid)	{
 			$content.=$this->displaySysHistoryEntry($this->sh_uid);
 		}
-		
+
 			// If link to element:
 		if ($this->element)	{
 			if ($this->revert && $this->sumUp)	{
@@ -140,12 +140,12 @@ class recordHistory {
 				$content.=$this->saveState($this->element,$this->saveState);
 			}
 			$content.=$this->displayHistory($this->element);
-		}	
-		
+		}
+
 			// Return content variable:
 		return $content;
 	}
-	
+
 	/**
 	 * Displays a specific entry from the sys_history table
 	 *
@@ -159,9 +159,9 @@ class recordHistory {
  		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'uid='.intval($sh_uid));
 		$newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
-			// If an entry was found:		
+			// If an entry was found:
 		if (is_array($newRow))	{
-		
+
 				// Init:
 			$this->listType=0;
 			$lines=array();
@@ -184,11 +184,11 @@ class recordHistory {
 				// Get the entry data and add it:
 			$historyData = unserialize($newRow['history_data']);
 			$lines = array_merge($lines,$this->renderEntry($historyData,$newRow['tablename']));
-			
+
 				// Combine all content into a table for layout:
 			$theCode='
-			
-				<!-- 
+
+				<!--
 					History for item:
 				-->
 				<table border="0" cellpadding="2" cellspacing="2" id="typo3-history-item">
@@ -196,7 +196,7 @@ class recordHistory {
 				</table>';
 			$theCode.='
 				<br /><img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.$LANG->getLL('differenceMsg').'<br /><br />';
-			
+
 				// Create the module section:
 			$content.=$SOBE->doc->section($LANG->getLL('changes'),$theCode,0,1);
 		}
@@ -219,9 +219,9 @@ class recordHistory {
 		$redirect = intval($this->doReturn);
 		if ($sumUp==-1)	{	// Undo/Redo
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'uid', 
-						'sys_history', 
-						'sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'" 
+						'uid',
+						'sys_history',
+						'sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
 							AND sys_history.recuid='.intval($elParts[1]),
 						'',
 						'uid DESC',
@@ -246,14 +246,14 @@ class recordHistory {
 				}
 					// Removing fields:
 				$data = $this->removeFilefields($elParts[0],$data);
-				
+
 					// If there are fields to write:
 				if (count($data))	{
 
 						// Setting data right:
 					$inData=array();
 					$inData[$elParts[0]][$elParts[1]]=$data;
-					
+
 						// Writes the data:
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
@@ -281,15 +281,15 @@ class recordHistory {
 	function saveState($element,$sumUp)	{
 		$elParts = explode(':',$element);
 
-			// Find the changes since $sumUp sys_history uid			
+			// Find the changes since $sumUp sys_history uid
 		$changeRec = $this->getChangesSinceRecord($element,$sumUp);
 
 			// Select most recent sys_history record for the element:
 		$lastestData = array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'history_data', 
-					'sys_history', 
-					'sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'" 
+					'history_data',
+					'sys_history',
+					'sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
 						AND sys_history.recuid='.intval($elParts[1]),
 					'',
 					'uid DESC',
@@ -311,7 +311,7 @@ class recordHistory {
 
 			// Update log:
 		$updateID = $GLOBALS['BE_USER']->writelog(3,1,0,1,'Saved state','');
-		
+
 			// Create query for inserting into sys_history table:
 		$fields_values = array(
 			'history_data' => serialize($historyRecords),
@@ -334,30 +334,30 @@ class recordHistory {
 	 */
 	function displayHistory($element)	{
 		global $SOBE, $LANG, $TCA;
-		
+
 			// Initialize:
 		$elParts = explode(':',$element);
 		$table = $elParts[0];
-		
+
 			// If table is found in $TCA:
 		if ($TCA[$table])	{
-		
+
 				// Counting number of states:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'count(*)', 
-						'sys_history,sys_log', 
+						'count(*)',
+						'sys_history,sys_log',
 						'sys_history.sys_log_uid=sys_log.uid
-							AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'" 
+							AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'"
 							AND sys_history.recuid='.intval($elParts[1])
 					);
 			list($Rcount) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
 				// Selecting the $this->maxSteps most recent states:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'sys_history.*,sys_log.userid', 
-						'sys_history,sys_log', 
+						'sys_history.*,sys_log.userid',
+						'sys_history,sys_log',
 						'sys_history.sys_log_uid=sys_log.uid
-							AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'" 
+							AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'"
 							AND sys_history.recuid='.intval($elParts[1]),
 						'',
 						'uid',
@@ -390,8 +390,8 @@ class recordHistory {
 					debug('ERROR: [displayHistory]');
 				}
 			}
-		
-				
+
+
 			$lines=array();
 			$darkerBgColor_interM = '#cccccc';
 			if ($this->sumUp)	{	// Show details for a single point in the list:
@@ -405,9 +405,9 @@ class recordHistory {
 
 					// Get the previous/next uids:
 				list($prevHisUid,$nextHisUid) = $this->nextHisUid($element,$this->sumUp);
-				
+
 					// Create the set of navigation links:
-				$linkPack = 
+				$linkPack =
 					($prevHisUid ? $this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/pilup.gif','width="14" height="14"').' title="'.$LANG->getLL('prev',1).'" alt="" />', array('sumUp'=>$prevHisUid)) : '').	// previous
 					($nextHisUid ? $this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/pildown.gif','width="14" height="14"').' title="'.$LANG->getLL('next',1).'" alt="" />', array('sumUp'=>$nextHisUid)) : '').	// next
 					'<br />'.$this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/history2.gif','width="13" height="12"').' title="'.$LANG->getLL('historyList',1).'" alt="" />', array('sumUp'=>''), 'uid_'.$this->sumUp).	// back to list
@@ -415,23 +415,23 @@ class recordHistory {
 
 					// Traverse changelog array:
 				foreach($changeLog as $entry)	{
-					
+
 						// Set user-names:
 					if (!is_array($entry['userList']))	$entry['userList']=array();
 					foreach($entry['userList'] as $uLk => $uV)	{
 						$entry['userList'][$uLk]=$be_users[$uV]['username'];
 					}
-					
+
 						// Add the header:
 					$theTime = t3lib_BEfunc::datetime($entry['tstamp']).', '.t3lib_BEfunc::calcAge(time()-$entry['tstamp'],$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears'));
 					$lines[]='
 						<tr class="bgColor4-20">
 							<td valign="top">'.$linkPack.'</td>
 							<td colspan="4"><b>'.$LANG->getLL('time',1).':</b> '.htmlspecialchars($theTime).' &nbsp; - &nbsp; <b>'.$LANG->getLL('changeCount',1).':</b> '.$entry['counter'].'<br />
-								<b>'.$LANG->getLL('users',1).':</b> '.implode(', ',$entry['userList']).' 
+								<b>'.$LANG->getLL('users',1).':</b> '.implode(', ',$entry['userList']).'
 							</td>
 						</tr>';
-					
+
 						// Add content:
 					if (isset($entry['oldRecord']) && isset($entry['newRecord']))	{	// If there ARE differences to show, then add lines for each changed field:
 						$lines = array_merge($lines,$this->renderEntry($entry,$table));
@@ -451,7 +451,7 @@ class recordHistory {
 
 					// Traverse changelog array:
 				foreach($changeLog as $c => $entry)	{
-				
+
 						// Add spacer line:
 					$lines[]='
 						<tr>
@@ -460,7 +460,7 @@ class recordHistory {
 
 						// Anchor to latest entry:
 					$lastAnchor = ($c+1==count($changeLog)?'<a name="latest"></a>':'');
-						
+
 						// Render state header:
 					if ($entry['uid'])	{	// This state was made by the backend:
 						$theTime = $this->linkPage(t3lib_BEfunc::datetime($entry['tstamp']),array('sh_uid'=>$entry['uid'],'element'=>''));
@@ -489,26 +489,26 @@ class recordHistory {
 					$lines = array_merge($lines,$this->renderEntry($entry,$table));
 				}
 			}
-			
+
 				// Finally, put it all together:
 			$theCode='
-			
-				<!-- 
+
+				<!--
 					Item history (either list or single):
 				-->
 				<table border="0" cellpadding="2" cellspacing="2" id="typo3-history">
 					'.implode('',$lines).'
 				</table>';
-			
+
 				// Add message about the difference view.
 			$theCode.='<br /><img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.$LANG->getLL('differenceMsg').'<br /><br />';
-			
+
 				// Add the whole content as a module section:
 			return $SOBE->doc->section($LANG->getLL('changes'),$theCode,0,1);
 		}
-	}	
-	
-	
+	}
+
+
 
 
 
@@ -535,10 +535,10 @@ class recordHistory {
 
 			// Prev:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'uid', 
-					'sys_history', 
-					'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'" 
-						AND recuid='.intval($elParts[1]).' 
+					'uid',
+					'sys_history',
+					'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
+						AND recuid='.intval($elParts[1]).'
 						AND uid<'.intval($hisUid),
 					'',
 					'uid DESC',
@@ -550,10 +550,10 @@ class recordHistory {
 
 			// Next:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'uid', 
-					'sys_history', 
+					'uid',
+					'sys_history',
 					'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
-						AND recuid='.intval($elParts[1]).' 
+						AND recuid='.intval($elParts[1]).'
 						AND uid>'.intval($hisUid),
 					'',
 					'uid',
@@ -583,16 +583,16 @@ class recordHistory {
 		$sumChangesArray=array();
 		$elParts = explode(':',$element);
 		$newChangeRec=array();
-		
+
 			// If tablename is found in $TCA:
 		if ($TCA[$elParts[0]])	{
-		
+
 				// Select current record content of element:
 			$currentRecord = t3lib_BEfunc::getRecord($elParts[0],$elParts[1]);
 
 				// If that is found and the "changes" entry of the $changeRec is an array, then proceed:
 			if (is_array($currentRecord) && is_array($changeRec['changes']))	{
-					
+
 					// For each entry in "changes" we compare the field content with the current and if there is a difference, it is tracked in the array $newChangeRec
 				foreach($changeRec['changes'] as $fN => $fV)	{
 					if (strcmp($fV,$currentRecord[$fN]))	{
@@ -607,8 +607,8 @@ class recordHistory {
 			} else {
 				return false;	// No arrays, possibly no record
 			}
-		}	
-		
+		}
+
 			// Returns the array of changes detected:
 		return $newChangeRec;
 	}
@@ -622,7 +622,7 @@ class recordHistory {
 	 * @access private
 	 */
 	function readFieldTypes($table,$id)	{
-			
+
 			// Select record:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($id));
 
@@ -636,7 +636,7 @@ class recordHistory {
 				$c++;
 			}
 		}
-		
+
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return array($currentRecord,$cRecTypes);
@@ -651,10 +651,10 @@ class recordHistory {
 	 * @access private
 	 */
 	function cmp($changeStatus,$oldRecord)	{
-	
+
 			// Initialize:
 		$changes=array();
-		
+
 			// Traverse $oldRecord
 		foreach($oldRecord as $fN => $fV)	{
 			if (isset($changeStatus[$fN]) && strcmp($fV,$changeStatus[$fN]))	{
@@ -675,10 +675,10 @@ class recordHistory {
 	 */
 	function removeFilefields($table,$dataArray)	{
 		global $TCA;
-		
+
 		if ($TCA[$table])	{
 			t3lib_div::loadTCA($table);
-			
+
 			foreach($TCA[$table]['columns'] as $field => $config)	{
 				if ($config['config']['type']=='group' && $config['config']['internal_type']=='file')	{
 					unset($dataArray[$field]);
@@ -701,7 +701,7 @@ class recordHistory {
 
 		$lines=array();
  		if (is_array($entry['newRecord']))	{
-				
+
 			$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
 
 			$fieldsToDisplay = array_keys($entry['newRecord']);
@@ -764,7 +764,7 @@ class recordHistory {
 						<td>'.$LANG->getLL('fieldName',1).':</td>
 						<td>'.$LANG->getLL('difference',1).':</td>
 						<td>&nbsp;</td>
-					</tr>';	
+					</tr>';
 			break;
 			case 2:
 				$out='
@@ -774,7 +774,7 @@ class recordHistory {
 						<td>'.$this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/history.gif','width="13" height="12"').' title="'.$LANG->getLL('revertAllFields',1).'" alt="" />', array('revert'=>'ALL_FIELDS')).'</td>
 						<td>'.$LANG->getLL('currentValue',1).':</td>
 						<td>'.$LANG->getLL('difference',1).':</td>
-					</tr>';	
+					</tr>';
 			break;
 			default:
 				$out='
@@ -783,7 +783,7 @@ class recordHistory {
 						<td>'.$LANG->getLL('oldValue',1).':</td>
 						<td>'.$LANG->getLL('newValue',1).':</td>
 						<td>'.$LANG->getLL('difference',1).':</td>
-					</tr>';	
+					</tr>';
 			break;
 		}
 		return $out;
@@ -805,18 +805,18 @@ class recordHistory {
 		$params['sumUp']=$this->sumUp;
 		$params['element']=$this->element;
 		$params['returnUrl']=$this->returnUrl;
-		
+
 			// Mergin overriding values:
 		$params = array_merge($params,$inparams);
-		
+
 			// Make the link:
 		$Ahref = 'show_rechis.php?'.t3lib_div::implodeArrayForUrl('',$params).($anchor?'#'.$anchor:'');
 		$link = '<a href="'.htmlspecialchars($Ahref).'">'.$str.'</a>';
-		
+
 			// Return link:
 		return $link;
 	}
-	
+
 	/**
 	 * This creates an array with the sum of differences between two points in the sys_history
 	 *
@@ -833,25 +833,25 @@ class recordHistory {
 		$sumChangesArray=array();
 		$sumChangesArray['changes']=array();
 		$elParts = explode(':',$element);
-		
+
 			// If there is a table by the requested name:
 		if ($TCA[$elParts[0]])	{
 			$times = array();
-				
+
 				// Create query for selecting sys_history records in time interval:
 			$addWhere = ' AND sys_history.uid>='.$hisUid;
 			if ($hisUid_Stop)	$addWhere.= ' AND sys_history.uid<='.$hisUid_Stop;
 				// Make query:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'sys_history.*,sys_log.userid', 
-							'sys_history,sys_log', 
+							'sys_history.*,sys_log.userid',
+							'sys_history,sys_log',
 							'sys_history.sys_log_uid=sys_log.uid
-								AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'" 
+								AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
 								AND sys_history.recuid='.intval($elParts[1]).$addWhere,
 							'',
 							'uid DESC'
 						);
-			
+
 				// Travese results:
 			while ($newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$hisDat = unserialize($newRow['history_data']);
@@ -863,9 +863,9 @@ class recordHistory {
 				} else {
 					debug('ERROR!');
 				}
-				
+
 			}
-		}	
+		}
 		return $sumChangesArray;
 	}
 }

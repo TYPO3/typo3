@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Web>File: Create new folders in the filemounts
  *
  * $Id$
@@ -37,16 +37,16 @@
  *
  *
  *
- *   76: class SC_file_newfolder 
- *  102:     function init()	
- *  161:     function main()	
- *  248:     function printContent()	
+ *   76: class SC_file_newfolder
+ *  102:     function init()
+ *  161:     function main()
+ *  248:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 $BACK_PATH='';
@@ -74,7 +74,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
  * @subpackage core
  */
 class SC_file_newfolder {
-	
+
 		// External, static:
 	var $folderNumber=10;
 
@@ -86,13 +86,13 @@ class SC_file_newfolder {
 	var $title;			// Name of the filemount
 
 		// Internal, static (GPVar):
-	var $number;		
+	var $number;
 	var $target;		// Set with the target path inputted in &target
 
-		// Internal, dynamic:	
+		// Internal, dynamic:
 	var $content;		// Accumulating content
-	
-	
+
+
 
 	/**
 	 * Constructor function for class
@@ -105,32 +105,32 @@ class SC_file_newfolder {
 			// Initialize GPvars:
 		$this->number = t3lib_div::_GP('number');
 		$this->target = t3lib_div::_GP('target');
-			
+
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
-		
+
 			// Cleaning and checking target
-		$this->target=$this->basicff->is_directory($this->target);		
+		$this->target=$this->basicff->is_directory($this->target);
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
 		if (!$this->target || !$key)	{
 			t3lib_BEfunc::typo3PrintError ('Parameter Error','Target was not a directory!','');
 			exit;
 		}
-		
+
 			// Finding the icon
 		switch($GLOBALS['FILEMOUNTS'][$key]['type'])	{
 			case 'user':	$this->icon = 'gfx/i/_icon_ftp_user.gif';	break;
 			case 'group':	$this->icon = 'gfx/i/_icon_ftp_group.gif';	break;
 			default:		$this->icon = 'gfx/i/_icon_ftp.gif';	break;
 		}
-		
+
 			// Relative path to filemount, $key:
 		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
-		
+
 			// Setting title:
 		$this->title = $GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
-		
+
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('smallDoc');
 		$this->doc->docType = 'xhtml_trans';
@@ -138,17 +138,17 @@ class SC_file_newfolder {
 		$this->doc->form='<form action="tce_file.php" method="post" name="editform">';
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			var path = "'.$this->target.'";
-		
+
 			function reload(a)	{	//
 				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
-					var params = "&target="+escape(path)+"&number="+a; 
+					var params = "&target="+escape(path)+"&number="+a;
 					document.location = "file_newfolder.php?"+params;
 				}
 			}
 			function backToList()	{	//
 				top.goToModule("file_list");
 			}
-			
+
 			var changed = 0;
 		');
 	}
@@ -168,7 +168,7 @@ class SC_file_newfolder {
 		$this->content.=$this->doc->spacer(5);
 		$this->content.=$this->doc->section('',$this->doc->getFileheader($this->title,$this->shortPath,$this->icon));
 		$this->content.=$this->doc->divider(5);
-		
+
 
 			// Making the selector box for the number of concurrent folder-creations
 		$this->number = t3lib_div::intInRange($this->number,1,10);
@@ -183,7 +183,7 @@ class SC_file_newfolder {
 				</select>
 			</div>
 			';
-		
+
 			// Making the number of new-folder boxes needed:
 		$code.='
 			<div id="c-createFolders">
@@ -197,16 +197,16 @@ class SC_file_newfolder {
 		$code.='
 			</div>
 		';
-		
+
 			// Making submit button for folder creation:
 		$code.='
 			<div id="c-submitFolders">
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.submit',1).'" />
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
-			</div>				
+			</div>
 			';
 		$this->content.= $this->doc->section('',$code);
-		
+
 
 
 			// Add spacer:
@@ -222,9 +222,9 @@ class SC_file_newfolder {
 				<p>['.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext']).']</p>
 				<input'.$this->doc->formWidth(20).' type="text" name="file[newfile][0][data]" onchange="changed=true;" />
 				<input type="hidden" name="file[newfile][0][target]" value="'.htmlspecialchars($this->target).'" />
-			</div>	
+			</div>
 			';
-				
+
 			// Submit button for creation of a new file:
 		$code.='
 			<div id="c-submitFiles">
@@ -232,7 +232,7 @@ class SC_file_newfolder {
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
 			</div>
 			';
-				
+
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile'),$code);
 

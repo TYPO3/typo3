@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,12 +24,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class which has functions that generates a difference output of a content string
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
- * XHTML Compliant  
+ * XHTML Compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -38,12 +38,12 @@
  *
  *
  *
- *   67: class t3lib_diff 
- *   86:     function makeDiffDisplay($str1,$str2)	
- *  160:     function getDiff($str1,$str2)	
- *  187:     function addClearBuffer($clearBuffer,$last=0)	
- *  203:     function explodeStringIntoWords($str)	
- *  224:     function tagSpace($str,$rev=0)	
+ *   67: class t3lib_diff
+ *   86:     function makeDiffDisplay($str1,$str2)
+ *  160:     function getDiff($str1,$str2)
+ *  187:     function addClearBuffer($clearBuffer,$last=0)
+ *  203:     function explodeStringIntoWords($str)
+ *  224:     function tagSpace($str,$rev=0)
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -69,13 +69,13 @@ class t3lib_diff {
 		// External, static:
 	var $stripTags = 0;			// If set, the HTML tags are stripped from the input strings first.
 	var $diffOptions = '';		// Diff options. eg "--unified=3"
-	
+
 		// Internal, dynamic:
 	var $clearBufferIdx=0;		// This indicates the number of times the function addClearBuffer has been called - and used to detect the very first call...
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * This will produce a color-marked-up diff output in HTML from the input strings.
 	 *
@@ -112,7 +112,7 @@ class t3lib_diff {
 					$diffResArray[$c]['new'][]=substr($lValue,2);
 				}
 			}
-			
+
 			$outString='';
 			$clearBuffer='';
 			for ($a=-1;$a<count($str1Lines);$a++)	{
@@ -139,7 +139,7 @@ class t3lib_diff {
 				}
 			}
 			$outString.=$this->addClearBuffer($clearBuffer,1);
-			
+
 			$outString = str_replace('  ',chr(10),$outString);
 			if (!$this->stripTags)	{
 				$outString = $this->tagSpace($outString,1);
@@ -171,11 +171,11 @@ class t3lib_diff {
 
 			unlink($file1);
 			unlink($file2);
-			
+
 			return $res;
 		}
 	}
-	
+
 	/**
 	 * Will bring down the length of strings to < 150 chars if they were longer than 200 chars. This done by preserving the 70 first and last chars and concatenate those strings with "..." and a number indicating the string length
 	 *

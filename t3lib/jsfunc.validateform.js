@@ -7,7 +7,7 @@
 *
 *
 *  Copyright notice
-* 
+*
 *  (c) 1998-2003 Kasper Skaarhoj
 *  All rights reserved
 *
@@ -15,11 +15,11 @@
 *  Kasper Skaarhoj <kasper@typo3.com> together with TYPO3
 *
 *  Released under GNU/GPL (see license file in tslib/)
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-* 
+*
 *  This copyright notice MUST APPEAR in all copies of this script
 ***************************************************************/
 
@@ -103,6 +103,6 @@ function split(theStr1, delim, index) {
 		if (sPos==-1)	{return null;}
 	}
 	ePos = theStr.indexOf(delim, sPos+lengthOfDelim);
-	if(ePos == -1)	{ePos = theStr.length;}	
+	if(ePos == -1)	{ePos = theStr.length;}
 	return (theStr.substring(sPos+lengthOfDelim,ePos));
 }

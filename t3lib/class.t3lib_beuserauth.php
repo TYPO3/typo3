@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class for TYPO3 backend user authentication
  *
  * $Id$
@@ -38,22 +38,22 @@
  *
  *
  *
- *   75: class t3lib_beUserAuth extends t3lib_userAuthGroup 
- *  151:     function trackBeUser($flag)	
- *  169:     function checkLockToIP()	
- *  189:     function backendCheckLogin()	
- *  219:     function backendSetUC()	
- *  254:     function overrideUC()	
- *  264:     function resetUC()	
- *  277:     function emailAtLogin()	
- *  329:     function veriCode()	
+ *   75: class t3lib_beUserAuth extends t3lib_userAuthGroup
+ *  150:     function trackBeUser($flag)
+ *  168:     function checkLockToIP()
+ *  188:     function backendCheckLogin()
+ *  218:     function backendSetUC()
+ *  253:     function overrideUC()
+ *  263:     function resetUC()
+ *  276:     function emailAtLogin()
+ *  328:     function veriCode()
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 
 
@@ -82,7 +82,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $userid_column = 'uid'; 					// Column for user-id
 	var $lastLogin_column = 'lastlogin';
 	var $notifyHeader = 'From: TYPO3 Login notify <no_reply@no_reply.no_reply>';
-	
+
 	var $enablecolumns = Array (
 		'rootLevel' => 1,
 		'deleted' => 'deleted',
@@ -90,7 +90,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'starttime' => 'starttime',
 		'endtime' => 'endtime'
 	);
-	
+
 	var $formfield_uname = 'username'; 			// formfield with login-name
 	var $formfield_uident = 'userident'; 		// formfield with password
 	var $formfield_chalvalue = 'challenge';		// formfield with a unique value which is used to encrypt the password and username
@@ -99,9 +99,9 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 
 	var $writeStdLog = 1;					// Decides if the writelog() function is called at login and logout
 	var $writeAttemptLog = 1;				// If the writelog() functions is called if a login-attempt has be tried without success
-	
+
 	var $auth_include = '';						// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
-	
+
 	var $auth_timeout_field = 6000;				// if > 0 : session-timeout in seconds. if false/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
 	var $lifetime = 0;                  		// 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
 
@@ -138,7 +138,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'navFrameResizable' => 0,
 	);
 
-	
+
 	/**
 	 * If flag is set and the extensions 'beuser_tracking' is loaded, this will insert a table row with the REQUEST_URI of current script - thus tracking the scripts the backend users uses...
 	 * This function works ONLY with the "beuser_tracking" extension and is depreciated since it does nothing useful.
@@ -154,7 +154,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 				'tstamp' => time(),
 				'script' => t3lib_div::getIndpEnv('REQUEST_URI')
 			);
-			
+
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_trackbeuser', $insertFields);
 		}
 	}
@@ -192,7 +192,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 				exit;
 			}
 		} else {	// ...and if that's the case, call these functions
-			$this->fetchGroupData();	//	The groups are fetched and ready for permission checking in this initialization.	Tables.php must be read before this because stuff like the modules has impact in this 
+			$this->fetchGroupData();	//	The groups are fetched and ready for permission checking in this initialization.	Tables.php must be read before this because stuff like the modules has impact in this
 			if ($this->checkLockToIP())	{
 				if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] || $this->isAdmin())	{
 					$this->backendSetUC();		// Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
@@ -279,7 +279,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 			$subject = 'At "'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].'"'.
 						' from '.t3lib_div::getIndpEnv('REMOTE_ADDR').
 						(t3lib_div::getIndpEnv('REMOTE_HOST') ? ' ('.t3lib_div::getIndpEnv('REMOTE_HOST').')' : '');
-			$msg = sprintf ('User "%s" logged in from %s (%s) at "%s" (%s)', 
+			$msg = sprintf ('User "%s" logged in from %s (%s) at "%s" (%s)',
 				$this->user['username'],
 				t3lib_div::getIndpEnv('REMOTE_ADDR'),
 				t3lib_div::getIndpEnv('REMOTE_HOST'),

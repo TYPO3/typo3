@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,13 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Module: Web>List
- * 
+ *
  * Listing database records from the tables configured in $TCA as they are related to the current page or root.
  *
  * Notice: This module and Web>Page (db_layout.php) module has a special status since they
- * are NOT located in their actual module directories (fx. mod/web/list/) but in the 
+ * are NOT located in their actual module directories (fx. mod/web/list/) but in the
  * backend root directory. This has some historical and practical causes.
  *
  * $Id$
@@ -44,18 +44,18 @@
  *
  *
  *
- *   89: class SC_db_list 
- *  125:     function init()	
- *  160:     function menuConfig()	
- *  180:     function clearCache()	
- *  194:     function main()	
- *  412:     function printContent()	
+ *   89: class SC_db_list
+ *  125:     function init()
+ *  160:     function menuConfig()
+ *  180:     function clearCache()
+ *  194:     function main()
+ *  412:     function printContent()
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 unset($MCONF);
 require ('mod/web/list/conf.php');
@@ -115,7 +115,7 @@ class SC_db_list {
 
 		// Internal, dynamic:
 	var $content;				// Module output accumulation
-		
+
 
 	/**
 	 * Initializing the module
@@ -124,7 +124,7 @@ class SC_db_list {
 	 */
 	function init()	{
 		global $BE_USER;
-		
+
 			// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
@@ -142,7 +142,7 @@ class SC_db_list {
 		$this->clear_cache = t3lib_div::_GP('clear_cache');
 		$this->cmd = t3lib_div::_GP('cmd');
 		$this->cmd_table = t3lib_div::_GP('cmd_table');
-		
+
 			// Initialize menu
 		$this->menuConfig();
 
@@ -165,9 +165,9 @@ class SC_db_list {
 			'clipBoard' => ''
 		);
 
-			// Loading module configuration:			
+			// Loading module configuration:
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
-		
+
 			// Clean up settings:
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 	}
@@ -198,11 +198,11 @@ class SC_db_list {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType='xhtml_trans';
-		
+
 			// Loading current page record and checking access:
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
-		
+
 			// Initialize the dblist object:
 		$dblist = t3lib_div::makeInstance('localRecordList');
 		$dblist->backPath = $BACK_PATH;
@@ -233,16 +233,16 @@ class SC_db_list {
 		$dblist->clipObj->setCmd($CB);		// Execute commands.
 		$dblist->clipObj->cleanCurrent();	// Clean up pad
 		$dblist->clipObj->endClipboard();	// Save the clipboard content
-	
+
 			// This flag will prevent the clipboard panel in being shown.
 			// It is set, if the clickmenu-layer is active AND the extended view is not enabled.
 		$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current=='normal' && !$BE_USER->uc['disableCMlayers'] && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
-		
-		
-		
+
+
+
 			// If there is access to the page, then render the list contents and set up the document template object:
 		if ($access)	{
-		
+
 				// Deleting records...:
 				// Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
 			if ($this->cmd=='delete')	{
@@ -258,29 +258,29 @@ class SC_db_list {
 					$tce->stripslashes_values=0;
 					$tce->start(array(),$cmd);
 					$tce->process_cmdmap();
-		
+
 					if (isset($cmd['pages']))	{
 						t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 					}
-		
+
 					$tce->printLogErrorMessages(t3lib_div::getIndpEnv('REQUEST_URI'));
 				}
 			}
-		
+
 				// Initialize the listing object, dblist, for rendering the list:
 			$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
 			$dblist->start($this->id,$this->table,$this->pointer,$this->search_field,$this->search_levels,$this->showLimit);
 			$dblist->setDispFields();
-				
+
 				// Render the page header:
 			$dblist->writeTop($this->pageinfo);
 
 				// Render the list of tables:
 			$dblist->generateList($this->id,$this->table);
-			
+
 				// Write the bottom of the page:
 			$dblist->writeBottom();
-		
+
 				// Add JavaScript functions to the page:
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 				function jumpToUrl(URL)	{	//
@@ -304,7 +304,7 @@ class SC_db_list {
 				}
 				function editList(table,idList)	{	//
 					var list="";
-			
+
 						// Checking how many is checked, how many is not
 					var pointer=0;
 					var pos = idList.indexOf(",");
@@ -318,10 +318,10 @@ class SC_db_list {
 					if (cbValue(table+"|"+idList.substr(pointer))) {
 						list+=idList.substr(pointer)+",";
 					}
-			
+
 					return list ? list : idList;
 				}
-				
+
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 			');
 
@@ -331,22 +331,22 @@ class SC_db_list {
 			$this->doc->JScode.=$CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
 		} // access
-		
-		
-			
+
+
+
 			// Begin to compile the whole page, starting out with page header:
 		$this->content='';
 		$this->content.=$this->doc->startPage('DB list');
 		$this->content.= '<form action="'.htmlspecialchars($dblist->listURL()).'" method="post" name="dblistForm">';
-		
+
 			// Add listing HTML code:
 		$this->content.= $dblist->HTMLcode;
 		$this->content.= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
-		
 
-			// If a listing was produced, create the page footer with search form etc:			
+
+			// If a listing was produced, create the page footer with search form etc:
 		if ($dblist->HTMLcode)	{
-				
+
 				// Making field select box (when extended view for a single table is enabled):
 			if ($dblist->table)	{
 				$this->content.=$dblist->fieldSelectBox($dblist->table);
@@ -354,7 +354,7 @@ class SC_db_list {
 
 				// Adding checkbox options for extended listing and clipboard display:
 			$this->content.='
-					
+
 					<!--
 						Listing options for clipboard and thumbnails
 					-->
@@ -367,16 +367,16 @@ class SC_db_list {
 				$this->content.='
 						</form>
 					</div>';
-		
+
 				// Printing clipboard if enabled:
 			if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard)	{
 				$this->content.=$dblist->clipObj->printClipboard();
 			}
 
-				// Link for creating new records:		
+				// Link for creating new records:
 			if (!$this->modTSconfig['properties']['noCreateRecordsLink']) 	{
 				$this->content.='
-					
+
 					<!--
 						Link for creating a new record:
 					-->
@@ -387,13 +387,13 @@ class SC_db_list {
 								'</a>
 					</div>';
 			}
-			
+
 				// Search box:
 			$this->content.=$dblist->getSearchBox();
-			
+
 				// Display sys-notes, if any are found:
 			$this->content.=$dblist->showSysNotesForPage();
-		
+
 				// ShortCut:
 			if ($BE_USER->mayMakeShortcut())	{
 				$this->content.='<br/>'.$this->doc->makeShortcutIcon('id,imagemode,pointer,table,search_field,search_levels,showLimit,sortField,sortRev',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);

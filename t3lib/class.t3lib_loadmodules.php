@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * This document provides a class that loads the modules for the TYPO3 interface.
  *
  * $Id$
@@ -39,13 +39,13 @@
  *
  *
  *
- *   78: class t3lib_loadModules 
- *   97:     function load($modulesArray,$BE_USER='')	
- *  366:     function checkExtensionModule($name)	
- *  385:     function checkMod($name, $fullpath)	
- *  458:     function checkModAccess($name,$MCONF)	
- *  481:     function parseModulesArray ($arr)	
- *  511:     function cleanName ($str)	
+ *   78: class t3lib_loadModules
+ *   97:     function load($modulesArray,$BE_USER='')
+ *  366:     function checkExtensionModule($name)
+ *  385:     function checkMod($name, $fullpath)
+ *  458:     function checkModAccess($name,$MCONF)
+ *  481:     function parseModulesArray ($arr)
+ *  511:     function cleanName ($str)
  *  522:     function getRelativePath($baseDir,$destDir)
  *
  * TOTAL FUNCTIONS: 7
@@ -78,12 +78,12 @@
 class t3lib_loadModules {
 	var $modules = Array();		// After the init() function this array will contain the structure of available modules for the backend user.
 	var $absPathArray=array();	// Array with paths pointing to the location of modules from extensions
-	
+
 	var $modListGroup= Array();		// this array will hold the elements that should go into the select-list of modules for groups...
 	var $modListUser= Array();		// this array will hold the elements that should go into the select-list of modules for users...
 
 	var $BE_USER='';	// The backend user for use internally
-	
+
 
 	/**
 	 * Init.
@@ -103,7 +103,7 @@ class t3lib_loadModules {
 		}
 
 			/*
-			
+
 			 $modulesArray might look like this when entering this function.
 			 Notice the two modules added by extensions - they have a path attached
 
@@ -111,8 +111,8 @@ class t3lib_loadModules {
 			(
 			    [web] => list,info,perm,func
 			    [file] => list
-			    [doc] => 
-			    [user] => 
+			    [doc] =>
+			    [user] =>
 			    [tools] => em,install,txphpmyadmin
 			    [help] => about
 			    [_PATHS] => Array
@@ -120,17 +120,17 @@ class t3lib_loadModules {
 			            [tools_install] => /www/htdocs/typo3/32/coreinstall/typo3/ext/install/mod/
 			            [tools_txphpmyadmin] => /www/htdocs/typo3/32/coreinstall/typo3/ext/phpmyadmin/modsub/
 			        )
-			
+
 			)
-			 
+
 			 */
-			// 
+			//
 		$this->absPathArray = $modulesArray['_PATHS'];
 		unset($modulesArray['_PATHS']);
 
 			/*
 				With the above data for modules the result of this function call will be:
-				
+
 				Array
 				(
 				    [web] => Array
@@ -140,12 +140,12 @@ class t3lib_loadModules {
 				            [2] => perm
 				            [3] => func
 				        )
-				
+
 				    [file] => Array
 				        (
 				            [0] => list
 				        )
-				
+
 				    [doc] => 1
 				    [user] => 1
 				    [tools] => Array
@@ -154,13 +154,13 @@ class t3lib_loadModules {
 				            [1] => install
 				            [2] => txphpmyadmin
 				        )
-				
+
 				    [help] => Array
 				        (
 				            [0] => about
 				        )
-				
-				)							
+
+				)
 			*/
 		$theMods = $this->parseModulesArray($modulesArray);
 
@@ -174,14 +174,14 @@ class t3lib_loadModules {
 		$paths=array();
 		$paths['defMods'] = PATH_typo3.'mod/';	// Path of static modules
 		$paths['userMods'] = PATH_typo3.'../typo3conf/';  // local modules (maybe frontend specific)
-		
+
 			// Traverses the module setup and creates the internal array $this->modules
 		while(list($mods,$subMod)=each($theMods))	{
 			unset ($path);
 
 			$extModRelPath = $this->checkExtensionModule($mods);
 			if ($extModRelPath)	{	// EXTENSION module:
-				$theMainMod = $this->checkMod($mods,PATH_site.$extModRelPath);	
+				$theMainMod = $this->checkMod($mods,PATH_site.$extModRelPath);
 				if (is_array($theMainMod) || $theMainMod!='notFound')	{
 					$path = 1;	// ... just so it goes on... submodules cannot be within this path!
 				}
@@ -202,7 +202,7 @@ class t3lib_loadModules {
 				// if $theMainMod is not set (false) there is no access to the module !(?)
 			if ($theMainMod && isset($path))	{
 				$this->modules[$mods]=$theMainMod;
-				
+
 					// SUBMODULES - if any - are loaded (The 'doc' module cannot have submodules...)
 				if ($mods!='doc' && is_array($subMod))	{
 					while(list(,$valsub)=each($subMod))	{
@@ -219,7 +219,7 @@ class t3lib_loadModules {
 								$this->modules[$mods]['sub'][$valsub]=$theTempSubMod;
 							} elseif ($path == $paths['defMods'])	{		// If the submodule did not exist in the default module path, then check if there is a submodule in the submodule path!
 								$theTempSubMod=$this->checkMod($mods.'_'.$valsub,$paths['userMods'].$mods.'/'.$valsub);
-								if (is_array($theTempSubMod))	{	
+								if (is_array($theTempSubMod))	{
 									$this->modules[$mods]['sub'][$valsub]=$theTempSubMod;
 								}
 							}
@@ -237,7 +237,7 @@ class t3lib_loadModules {
 	/*
 		At this point $this->modules should look like this:
 		Only modules which were accessible to the $BE_USER is listed in this array.
-	
+
 		Array
 		(
 		    [web] => Array
@@ -252,29 +252,29 @@ class t3lib_loadModules {
 		                            [name] => web_list
 		                            [script] => mod/web/list/../../../db_list.php
 		                        )
-		
+
 		                    [info] => Array
 		                        (
 		                            [name] => web_info
 		                            [script] => mod/web/info/index.php
 		                        )
-		
+
 		                    [perm] => Array
 		                        (
 		                            [name] => web_perm
 		                            [script] => mod/web/perm/index.php
 		                        )
-		
+
 		                    [func] => Array
 		                        (
 		                            [name] => web_func
 		                            [script] => mod/web/func/index.php
 		                        )
-		
+
 		                )
-		
+
 		        )
-		
+
 		    [file] => Array
 		        (
 		            [name] => file
@@ -286,24 +286,24 @@ class t3lib_loadModules {
 		                            [name] => file_list
 		                            [script] => mod/file/list/../../../file_list.php
 		                        )
-		
+
 		                )
-		
+
 		        )
-		
+
 		    [doc] => Array
 		        (
 		            [name] => doc
 		            [script] => mod/doc/../../alt_doc.php
 		        )
-		
+
 		    [user] => Array
 		        (
 		            [name] => user
 		            [script] => dummy.php
 		            [defaultMod] => task
 		        )
-		
+
 		    [tools] => Array
 		        (
 		            [name] => tools
@@ -315,23 +315,23 @@ class t3lib_loadModules {
 		                            [name] => tools_em
 		                            [script] => mod/tools/em/index.php
 		                        )
-		
+
 		                    [install] => Array
 		                        (
 		                            [name] => tools_install
 		                            [script] => ext/install/mod/../../../install/index.php
 		                        )
-		
+
 		                    [txphpmyadmin] => Array
 		                        (
 		                            [name] => tools_txphpmyadmin
 		                            [script] => ext/phpmyadmin/modsub/index.php
 		                        )
-		
+
 		                )
-		
+
 		        )
-		
+
 		    [help] => Array
 		        (
 		            [name] => help
@@ -344,13 +344,13 @@ class t3lib_loadModules {
 		                            [name] => help_about
 		                            [script] => mod/help/about/index.php
 		                        )
-		
+
 		                )
-		
+
 		        )
-		
-		)	
-	
+
+		)
+
 	*/
 
 #debug($this->modules);
@@ -365,7 +365,7 @@ class t3lib_loadModules {
 	 */
 	function checkExtensionModule($name)	{
 		global $TYPO3_LOADED_EXT;
-		
+
 		if (isset($this->absPathArray[$name]))	{
 			return ereg_replace ('\/$', '', substr($this->absPathArray[$name],strlen(PATH_site)));
 		}
@@ -394,7 +394,7 @@ class t3lib_loadModules {
 						// $MLANG['default']['tabs_images']['tab'] is for modules the reference to the module icon.
 						// Here the path is transformed to an absolute reference.
 					if ($MLANG['default']['tabs_images']['tab'])	{
-						
+
 							// Initializing search for alternative icon:
 						$altIconKey = 'MOD:'.$name.'/'.$MLANG['default']['tabs_images']['tab'];		// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
 						$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
@@ -406,7 +406,7 @@ class t3lib_loadModules {
 								// Setting default icon:
 							$MLANG['default']['tabs_images']['tab']=$this->getRelativePath(PATH_typo3,$fullpath.'/'.$MLANG['default']['tabs_images']['tab']);
 						}
-			
+
 							// Finally, setting the icon with correct path:
 						if (substr($MLANG['default']['tabs_images']['tab'],0,3)=='../')	{
 							$MLANG['default']['tabs_images']['tab'] = PATH_site.substr($MLANG['default']['tabs_images']['tab'],3);
@@ -427,7 +427,7 @@ class t3lib_loadModules {
 						$GLOBALS['LANG']->addModuleLabels($MLANG[$GLOBALS['LANG']->lang],$name.'_');
 					}
 				}
-			
+
 					// Default script setup
 				if ($MCONF['script'] && @file_exists($path.'/'.$MCONF['script']))	{
 					$modconf['script']= $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['script']);
@@ -525,23 +525,23 @@ class t3lib_loadModules {
 		if ($baseDir == $destDir){
 			return './';
 		}
-		
+
 		$baseDir = ereg_replace ('^/', '', $baseDir); 	// remove beginning
 		$destDir = ereg_replace ('^/', '', $destDir);
-		
+
 		$found = true;
 		$slash_pos=0;
-		
+
 		do {
 			$slash_pos = strpos ($destDir, '/');
-			if (substr($destDir, 0, $slash_pos) == substr($baseDir, 0, $slash_pos)){ 
+			if (substr($destDir, 0, $slash_pos) == substr($baseDir, 0, $slash_pos)){
 				$baseDir = substr($baseDir, $slash_pos+1);
-				$destDir = substr($destDir, $slash_pos+1); 
+				$destDir = substr($destDir, $slash_pos+1);
 			} else {
 				$found = false;
 			}
 		} while($found == true);
-		
+
 		$slashes = strlen ($baseDir) - strlen (str_replace('/', '', $baseDir));
 		for($i=0;$i < $slashes;$i++)	{
 			$destDir = '../'.$destDir;

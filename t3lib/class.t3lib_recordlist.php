@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Library with a single function addElement that returns tablerows based on some input.
  *
  * $Id$
@@ -38,14 +38,14 @@
  *
  *
  *
- *   78: class t3lib_recordList 
- *  119:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	
- *  194:     function writeTop()	
- *  202:     function writeBottom()	
- *  221:     function fwd_rwd_nav($table='')	
- *  254:     function fwd_rwd_HTML($type,$pointer,$table='')	
- *  277:     function listURL()	
- *  286:     function CBfunctions()	
+ *   78: class t3lib_recordList
+ *  119:     function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')
+ *  194:     function writeTop()
+ *  202:     function writeBottom()
+ *  221:     function fwd_rwd_nav($table='')
+ *  254:     function fwd_rwd_HTML($type,$pointer,$table='')
+ *  277:     function listURL()
+ *  286:     function CBfunctions()
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -78,12 +78,12 @@
 class t3lib_recordList {
 
 		// Used in this class:
-	var $iLimit = 10;						// default Max items shown 
+	var $iLimit = 10;						// default Max items shown
 	var $leftMargin = 0;					// OBSOLETE - NOT USED ANYMORE. leftMargin
 	var $showIcon = 1;
 	var $no_noWrap = 0;
 	var $oddColumnsTDParams ='';			// If set this is <td>-params for odd columns in addElement. Used with db_layout / pages section
-	var $backPath='';	
+	var $backPath='';
 	var $fieldArray = Array();				// Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
 	var $addElement_tdParams=array();		// Keys are fieldnames and values are td-parameters to add in addElement();
 
@@ -91,7 +91,7 @@ class t3lib_recordList {
 	var $fixedL = 50;						// Max length of strings
 	var $script = '';
 	var $thumbScript = 'thumbs.php';
-	var $setLMargin=1;						// Set to zero, if you don't want a left-margin with addElement function	
+	var $setLMargin=1;						// Set to zero, if you don't want a left-margin with addElement function
 
 	var $counter=0;							// Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
 	var $totalItems = '';					// This could be set to the total number of items. Used by the fwd_rew_navigation...
@@ -103,7 +103,7 @@ class t3lib_recordList {
 
 
 
-	
+
 	/**
 	 * Returns a table-row with the content from the fields in the input data array.
 	 * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
@@ -119,7 +119,7 @@ class t3lib_recordList {
 	function addElement($h,$icon,$data,$tdParams='',$lMargin='',$altLine='')	{
 		$noWrap = ($this->no_noWrap) ? '' : ' nowrap="nowrap"';
 
-			// Start up:		
+			// Start up:
 		$out='
 		<!-- Element, begin: -->
 		<tr>';
@@ -127,7 +127,7 @@ class t3lib_recordList {
 		if ($this->showIcon)	{
 			$out.='
 			<td nowrap="nowrap"'.$tdParams.'>';
-			
+
 			if (!$h)	{
 #				$out.='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" />';
 				$out.='<img src="clear.gif" width="1" height="8" alt="" />';
@@ -145,7 +145,7 @@ class t3lib_recordList {
 			';
 		}
 
-			// Init rendering.		
+			// Init rendering.
 		$colsp='';
 		$lastKey='';
 		$c=0;
@@ -157,14 +157,14 @@ class t3lib_recordList {
 		reset($this->fieldArray);
 		while(list(,$vKey)=each($this->fieldArray))	{
 			if (isset($data[$vKey]))	{
-				if ($lastKey)	{	
+				if ($lastKey)	{
 					$out.='
 						<td'.
 						$noWrap.
 						$tdP[($ccount%2)].
 						$colsp.
 						$this->addElement_tdParams[$lastKey].
-						'>'.$data[$lastKey].'</td>';	
+						'>'.$data[$lastKey].'</td>';
 				}
 				$lastKey=$vKey;
 				$c=1;
@@ -185,7 +185,7 @@ class t3lib_recordList {
 			// Return row.
 		return $out;
 	}
-	
+
 	/**
 	 * Dummy function, used to write the top of a table listing.
 	 *
@@ -193,7 +193,7 @@ class t3lib_recordList {
 	 */
 	function writeTop()	{
 	}
-	
+
 	/**
 	 * Finishes the list with the "stopper"-gif, adding the HTML code for that item to the internal ->HTMLcode string
 	 *
@@ -201,7 +201,7 @@ class t3lib_recordList {
 	 */
 	function writeBottom()	{
 		$this->HTMLcode.='
-		
+
 		<!--
 			End of list table:
 		-->
@@ -209,9 +209,9 @@ class t3lib_recordList {
 		$theIcon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/stopper.gif','width="18" height="16"').' alt="" />';
 		$this->HTMLcode.=$this->addElement(1,'','','',$this->leftMargin,$theIcon);
 		$this->HTMLcode.='
-		</table>';	
+		</table>';
 	}
-	
+
 	/**
 	 * Creates a forward/reverse button based on the status of ->eCounter, ->firstElementNumber, ->iLimit
 	 *
@@ -239,9 +239,9 @@ class t3lib_recordList {
 			}
 			return Array(0,$code);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Creates the button with link to either forward or reverse
 	 *
@@ -268,7 +268,7 @@ class t3lib_recordList {
 			break;
 		}
 	}
-	
+
 	/**
 	 * Returning "listURL" - the script with parameters to which forward/backward requests are sent
 	 *
@@ -277,7 +277,7 @@ class t3lib_recordList {
 	function listURL()	{
 		return 'dummy.php?';
 	}
-	
+
 	/**
 	 * Returning JavaScript for ClipBoard functionality.
 	 *
@@ -289,7 +289,7 @@ class t3lib_recordList {
 	function checkOffCB(listOfCBnames)	{	//
 		var notChecked=0;
 		var total=0;
-		
+
 			// Checking how many is checked, how many is not
 		var pointer=0;
 		var pos = listOfCBnames.indexOf(",");
@@ -302,7 +302,7 @@ class t3lib_recordList {
 		if (!cbValue(listOfCBnames.substr(pointer))) notChecked++;
 		total++;
 
-			// Setting the status...		
+			// Setting the status...
 		var flag = notChecked*2>total;
 		pointer=0;
 		pos = listOfCBnames.indexOf(",");
@@ -324,8 +324,8 @@ class t3lib_recordList {
 		CBfullName = "CBC["+CBname+"]";
 		document.dblistForm[CBfullName].checked = flag ? "on" : 0;
 	}
-		
-		';	
+
+		';
 	}
 }
 

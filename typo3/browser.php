@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -26,7 +26,7 @@
 ***************************************************************/
 /**
  * This is the frameset to the file/record browser window
- * 
+ *
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
  * XHTML-frames compatible.
@@ -38,9 +38,9 @@
  *
  *
  *
- *   66: class SC_browser 
- *   77:     function main()	
- *  121:     function printContent()	
+ *   66: class SC_browser
+ *   77:     function main()
+ *  121:     function printContent()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,11 +75,11 @@ class SC_browser {
 	 * @return	void
 	 */
 	function main()	{
-		
+
 			// Setting GPvars:
 		$mode =t3lib_div::_GP('mode');
 		$bparams = t3lib_div::_GP('bparams');
-		
+
 
 			// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
@@ -95,7 +95,7 @@ class SC_browser {
 					close();
 				}
 		');
-		
+
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
 
 			// URL for the inner main frame:

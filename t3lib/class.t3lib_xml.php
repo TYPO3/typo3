@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class for creating XML output from records
  *
  * $Id$
@@ -37,24 +37,24 @@
  *
  *
  *
- *   86: class t3lib_xml 
- *  102:     function t3lib_xml($topLevelName)	
- *  113:     function setRecFields($table,$list)	
- *  122:     function getResult()	
- *  132:     function WAPHeader()	
- *  144:     function renderHeader()	
- *  155:     function renderFooter()	
- *  167:     function newLevel($name,$beginEndFlag=0,$params=array())	
- *  192:     function output($content)	
- *  208:     function indent($b)	
- *  224:     function renderRecords($table,$res) 
- *  237:     function addRecord($table,$row)	
- *  255:     function getRowInXML($table,$row)	
- *  271:     function utf8($content)	
- *  281:     function substNewline($string)	
- *  292:     function fieldWrap($field,$value)	
- *  301:     function WAPback()	
- *  315:     function addLine($str)	
+ *   86: class t3lib_xml
+ *  102:     function t3lib_xml($topLevelName)
+ *  113:     function setRecFields($table,$list)
+ *  122:     function getResult()
+ *  132:     function WAPHeader()
+ *  144:     function renderHeader()
+ *  155:     function renderFooter()
+ *  167:     function newLevel($name,$beginEndFlag=0,$params=array())
+ *  192:     function output($content)
+ *  208:     function indent($b)
+ *  224:     function renderRecords($table,$res)
+ *  237:     function addRecord($table,$row)
+ *  255:     function getRowInXML($table,$row)
+ *  271:     function utf8($content)
+ *  281:     function substNewline($string)
+ *  292:     function fieldWrap($field,$value)
+ *  301:     function WAPback()
+ *  315:     function addLine($str)
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -86,7 +86,7 @@
 class t3lib_xml {
 	var $topLevelName = 'typo3_test';	// Top element name
 	var $XML_recFields = array();		// Contains a list of fields for each table which should be presented in the XML output
-	
+
 	var $XMLIndent=0;
 	var $Icode='';
 	var $XMLdebug=0;
@@ -292,7 +292,7 @@ class t3lib_xml {
 	function fieldWrap($field,$value)	{
 		return '<'.$field.'>'.$value.'</'.$field.'>';
 	}
-	
+
 	/**
 	 * Creates the BACK button for WAP documents
 	 *

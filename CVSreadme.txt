@@ -5,7 +5,7 @@ checked out source before it will work for you. Follow these guidelines:
 
 
 - Go to the module directory (default is "TYPO3core")
-- Create symlink for tslib:	
+- Create symlink for tslib:
 	ln -s typo3/sysext/cms/tslib
 - Go to typo3/ folder:
 	cd typo3/
@@ -18,7 +18,7 @@ checked out source before it will work for you. Follow these guidelines:
 - Create two symlinks to fonts:
 	ln -s vera.ttf verdana.ttf
 	ln -s nimbus.ttf arial.ttf
-	
+
 OR
 
 - Go to the module directory (default is "TYPO3core")

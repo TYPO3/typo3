@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -26,7 +26,7 @@
 ***************************************************************/
 /**
  * Generating plain text content of content elements for Direct Mails
- * 
+ *
  * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
@@ -37,57 +37,57 @@
  *
  *
  *
- *  123: class user_plaintext 
- *  137:     function main_plaintext($content,$conf)	
- *  209:     function getMenuSitemap()	
- *  220:     function getShortcut()	
- *  231:     function getHTML($str=array())	
- *  241:     function getHeader()	
- *  251:     function getImages()	
- *  262:     function parseBody($str)	
- *  284:     function renderUploads($str,$upload_path='uploads/media/')	
- *  302:     function renderHeader($str,$type=0)	
- *  353:     function pad($lines,$preLineChar,$len)	
- *  369:     function breakContent($str)	
- *  385:     function breakBulletlist($str)	
- *  416:     function breakTable($str)	
- *  472:     function addDiv($messure,$content,$divChar,$joinChar,$cols)	
- *  488:     function traverseTable($tableLines)	
- *  515:     function renderImages($str,$links,$caption,$upload_path='uploads/pics/')	
- *  554:     function getLink($ll)	
- *  571:     function breakLines($str,$implChar="\n",$charWidth=0)	
- *  583:     function getString($str)	
- *  595:     function userProcess($mConfKey,$passVar)	
- *  613:     function atag_to_http($content,$conf)	
- *  632:     function typolist($content,$conf)	
- *  647:     function typohead($content,$conf)	
- *  666:     function typocode($content,$conf)	
+ *  123: class user_plaintext
+ *  137:     function main_plaintext($content,$conf)
+ *  209:     function getMenuSitemap()
+ *  220:     function getShortcut()
+ *  231:     function getHTML($str=array())
+ *  241:     function getHeader()
+ *  251:     function getImages()
+ *  262:     function parseBody($str)
+ *  284:     function renderUploads($str,$upload_path='uploads/media/')
+ *  302:     function renderHeader($str,$type=0)
+ *  353:     function pad($lines,$preLineChar,$len)
+ *  369:     function breakContent($str)
+ *  385:     function breakBulletlist($str)
+ *  416:     function breakTable($str)
+ *  472:     function addDiv($messure,$content,$divChar,$joinChar,$cols)
+ *  488:     function traverseTable($tableLines)
+ *  515:     function renderImages($str,$links,$caption,$upload_path='uploads/pics/')
+ *  554:     function getLink($ll)
+ *  571:     function breakLines($str,$implChar="\n",$charWidth=0)
+ *  583:     function getString($str)
+ *  595:     function userProcess($mConfKey,$passVar)
+ *  613:     function atag_to_http($content,$conf)
+ *  632:     function typolist($content,$conf)
+ *  647:     function typohead($content,$conf)
+ *  666:     function typocode($content,$conf)
  *
  * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Alternative rendering of content elements for Plain Text emails. That means text-only output. No HTML at all. Used by the Direct Mail extension.
  * Normally the plain text output should appear with type=99.
@@ -124,7 +124,7 @@ class user_plaintext {
 	var $cObj;
 	var $conf=array();
 	var $charWidth=76;
-	
+
 	/**
 	 * Main function, called from TypoScript
 	 * A content object that renders "tt_content" records. See the comment to this class for TypoScript example of how to trigger it.
@@ -195,7 +195,7 @@ class user_plaintext {
 
 		$lines[]='';	// First break.
 		$content = implode(chr(10),$lines);
-		
+
 			// User processing:
 		$content=$this->userProcess('userProc',$content);
 		return $content;
@@ -307,19 +307,19 @@ class user_plaintext {
 			if (!$type)	$type=$defaultType;
 			if ($type!=6)	{	// not hidden
 				$tConf = $hConf[$type.'.'];
-		
+
 				$lines=array();
-		
+
 				$blanks = t3lib_div::intInRange($tConf['preBlanks'],0,1000);
 				if ($blanks)	{
-					$lines[]=str_pad('', $blanks-1, chr(10)); 
+					$lines[]=str_pad('', $blanks-1, chr(10));
 				}
-				
+
 				$lines=$this->pad($lines,$tConf['preLineChar'],$tConf['preLineLen']);
-	
+
 				$blanks = t3lib_div::intInRange($tConf['preLineBlanks'],0,1000);
 				if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
-	
+
 				if ($this->cObj->data['date'])		{$lines[] = $this->getString($hConf['datePrefix']).date($hConf['date']?$hConf['date']:'d-m-Y',$this->cObj->data['date']);}
 				$prefix='';
 				$str=$this->getString($tConf['prefix']).$str;
@@ -328,17 +328,17 @@ class user_plaintext {
 				if ($this->cObj->data['header_position']=='center')	{$prefix=str_pad(' ',floor(($this->charWidth-strlen($str))/2));}
 				$lines[]=$this->cObj->stdWrap($prefix.$str,$tConf['stdWrap.']);
 				if ($this->cObj->data['header_link'])		{$lines[] = $this->getString($hConf['linkPrefix']).$this->getLink($this->cObj->data['header_link']);}
-		
+
 				$blanks = t3lib_div::intInRange($tConf['postLineBlanks'],0,1000);
 				if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
-	
+
 				$lines=$this->pad($lines,$tConf['postLineChar'],$tConf['postLineLen']);
-		
+
 				$blanks = t3lib_div::intInRange($tConf['postBlanks'],0,1000);
 				if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
 				return implode(chr(10),$lines);
 			}
-		}		
+		}
 	}
 
 	/**
@@ -354,7 +354,7 @@ class user_plaintext {
 		$strPad = t3lib_div::intInRange($len,0,1000);
 		$strPadChar = $preLineChar?$preLineChar:'-';
 		if ($strPad)	{
-			$lines[]=str_pad('', $strPad, $strPadChar); 
+			$lines[]=str_pad('', $strPad, $strPadChar);
 		}
 		return $lines;
 	}
@@ -387,7 +387,7 @@ class user_plaintext {
 		$type=t3lib_div::intInRange($type,0,3);
 
 		$tConf = $this->conf['bulletlist.'][$type.'.'];
-		
+
 		$cParts = explode(chr(10),$str);
 		reset($cParts);
 		$lines=array();
@@ -398,7 +398,7 @@ class user_plaintext {
 			$bLen=strlen($bullet);
 			$bullet = substr(str_replace('#',$c,$bullet),0,$bLen);
 			$secondRow = substr($tConf['secondRow']?$this->getString($tConf['secondRow']):str_pad('',strlen($bullet),' '),0,$bLen);
-			
+
 			$lines[]=$bullet.$this->breakLines($substrs,chr(10).$secondRow,$this->charWidth-$bLen);
 
 			$blanks = t3lib_div::intInRange($tConf['blanks'],0,1000);
@@ -424,20 +424,20 @@ class user_plaintext {
 			if (trim($substrs))	{
 				$lineParts=explode('|',$substrs);
 				if (!$cols)	$cols=count($lineParts);
-				
+
 				for ($a=0;$a<$cols;$a++)	{
-					$jdu = explode(chr(10),$this->breakLines($lineParts[$a],chr(10),ceil($this->charWidth/$cols)));				
+					$jdu = explode(chr(10),$this->breakLines($lineParts[$a],chr(10),ceil($this->charWidth/$cols)));
 					$lines[$c][$a]=$jdu;
 				}
 			}
 		}
 		$messure = $this->traverseTable($lines);
-		
-		
+
+
 		$divChar='-';
 		$joinChar='+';
 		$colChar='|';
-		
+
 		// Make table:
 		$outLines = array();
 		$outLines[]=$this->addDiv($messure,'',$divChar,$joinChar,$cols);
@@ -499,7 +499,7 @@ class user_plaintext {
 				if (count($vv)>intval($maxLines[$k]))	$maxLines[$k]=count($vv);
 			}
 		}
-		return array($maxLen,$maxLines); 
+		return array($maxLen,$maxLines);
 	}
 
 	/**
@@ -526,7 +526,7 @@ class user_plaintext {
 				} else {
 					$ll=$linksArr[0];
 				}
-				
+
 				$theLink = $this->getLink($ll);
 				if ($theLink)	{$lines[]=$this->getString($this->conf['images.']['linkPrefix']).$theLink;}
 			}
@@ -541,7 +541,7 @@ class user_plaintext {
 			if ($cHeader)		$lines[]=$cHeader;
 			$lines[]=$this->breakContent($caption);
 		}
-		
+
 		return implode(chr(10),$lines);
 	}
 
@@ -556,9 +556,9 @@ class user_plaintext {
 		if (substr($theLink,0,4)!='http')	{
 			$theLink=$this->siteUrl.$theLink;
 		}
-		return $theLink;		
+		return $theLink;
 	}
-	
+
 	/**
 	 * Breaking lines into fixed length lines, using t3lib_div::breakLinesForEmail()
 	 *
@@ -629,7 +629,7 @@ class user_plaintext {
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
 	 */
-	function typolist($content,$conf)	{	
+	function typolist($content,$conf)	{
 		$this->conf = $this->cObj->mergeTSRef($conf,'bulletlist');
 		$this->siteUrl=$conf['siteUrl'];
 		$str = trim($this->cObj->getCurrentVal());
@@ -644,7 +644,7 @@ class user_plaintext {
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
 	 */
-	function typohead($content,$conf)	{	
+	function typohead($content,$conf)	{
 		$this->conf = $this->cObj->mergeTSRef($conf,'header');
 
 		$this->siteUrl=$conf['siteUrl'];
@@ -663,7 +663,7 @@ class user_plaintext {
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
 	 */
-	function typocode($content,$conf)	{	
+	function typocode($content,$conf)	{
 			// Nothing is really done here...
 		$this->conf = $conf;
 		$this->siteUrl=$conf['siteUrl'];

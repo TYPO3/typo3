@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Class for displaying an array as a tree
  *
  * $Id$
@@ -38,11 +38,11 @@
  *
  *
  *
- *   75: class t3lib_arrayBrowser	
- *   91:     function tree($arr, $depth_in, $depthData)	
- *  154:     function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray)		
- *  186:     function fixed_lgd($string,$chars)	
- *  203:     function depthKeys($arr,$settings)	
+ *   75: class t3lib_arrayBrowser
+ *   91:     function tree($arr, $depth_in, $depthData)
+ *  154:     function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray)
+ *  186:     function fixed_lgd($string,$chars)
+ *  203:     function depthKeys($arr,$settings)
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,9 +75,9 @@
 class t3lib_arrayBrowser	{
 	var $depthKeys = array();		// Array defining which keys to expand. Typically set from outside from some session variable - otherwise the array will collapse.
 	var $searchKeys = array();		// After calling the getSearchKeys function this array is populated with the key-positions in the array which contains values matching the search.
-	var $fixedLgd=1;				// If set, the values are truncated with "..." appended if longer than a certain length. 
+	var $fixedLgd=1;				// If set, the values are truncated with "..." appended if longer than a certain length.
 	var $regexMode=0;				// If set, search for string with regex, otherwise stristr()
-	
+
 	/**
 	 * Make browsable tree
 	 * Before calling this function you may want to set some of the internal vars like depthKeys, regexMode and fixedLgd. For examples see SC_mod_tools_config_index::main()
@@ -93,7 +93,7 @@ class t3lib_arrayBrowser	{
 		$a=0;
 
 		if ($depth_in)	{$depth_in = $depth_in.'.';}
-		
+
 		$c=count($arr);
 		reset($arr);
 		while (list($key,)=each($arr))	{
@@ -132,9 +132,9 @@ class t3lib_arrayBrowser	{
 				} else {
 					$HTML.='=<b>'.htmlspecialchars($theValue).'</b>';
 				}
-			} 
+			}
 			$HTML.='<br />';
-				
+
 			if ($deeper)	{
 				$HTML.=$this->tree($arr[$key], $depth, $depthData.'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/'.$LN.'.gif','width="18" height="16"').' align="top" alt="" />');
 			}
@@ -158,13 +158,13 @@ class t3lib_arrayBrowser	{
 		while (list($key,)=each($keyArr))	{
 			$depth=$depth_in.$key;
 			$deeper = is_array($keyArr[$key]);
-			
+
 			if ($this->regexMode)	{
 				if (ereg($searchString,$keyArr[$key]))	{	$this->searchKeys[$depth]=1;	}
 			} else {
 				if (stristr($keyArr[$key],$searchString))	{	$this->searchKeys[$depth]=1;	}
 			}
-			
+
 			if ($deeper)	{
 				$cS = count($this->searchKeys);
 				$keyArray = $this->getSearchKeys($keyArr[$key], $depth, $searchString, $keyArray);
@@ -172,7 +172,7 @@ class t3lib_arrayBrowser	{
 					$keyArray[$depth]=1;
 				}
 			}
-		}	
+		}
 		return $keyArray;
 	}
 

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Generate a page-tree, non-browsable.
  *
  * $Id$
@@ -38,19 +38,19 @@
  *
  *
  *
- *   78: class t3lib_pageTree extends t3lib_treeView	
- *   90:     function init($clause='')	
- *  106:     function expandNext($id)	
- *  123:     function PMicon($row,$a,$c,$nextCount,$exp)	
- *  138:     function initializePositionSaving()	
+ *   78: class t3lib_pageTree extends t3lib_treeView
+ *   90:     function init($clause='')
+ *  106:     function expandNext($id)
+ *  123:     function PMicon($row,$a,$c,$nextCount,$exp)
+ *  138:     function initializePositionSaving()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
- 
+
+
+
 
 
 
@@ -79,7 +79,7 @@ class t3lib_pageTree extends t3lib_treeView	{
 	var $fieldArray = Array('uid','title','doktype','php_tree_stop');
 	var $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
 	var $setRecs = 0;
-	
+
 	/**
 	 * Init function
 	 * REMEMBER to feed a $clause which will filter out non-readable pages!
@@ -126,7 +126,7 @@ class t3lib_pageTree extends t3lib_treeView	{
 		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' alt="" />';
 		return $icon;
 	}
-	
+
 
 	/**
 	 * Get stored tree structure AND updating it if needed according to incoming PM GET var.

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,13 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Wizard to display the RTE in "full screen" mode
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -38,17 +38,17 @@
  *
  *
  *
- *   80: class SC_wizard_rte 
- *   98:     function init()	
- *  122:     function main()	
- *  273:     function printContent()	
+ *   80: class SC_wizard_rte
+ *   98:     function init()
+ *  122:     function main()
+ *  273:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 $BACK_PATH='';
 require ('init.php');
@@ -78,7 +78,7 @@ t3lib_BEfunc::lockRecords();
  * @subpackage core
  */
 class SC_wizard_rte {
-	
+
 		// Internal, dynamic:
 	var $doc;					// Document template object
 	var $content;				// Content accumulation for the module.
@@ -86,8 +86,8 @@ class SC_wizard_rte {
 		// Internal, static: GPvars
 	var $P;						// Wizard parameters, coming from TCEforms linking to the wizard.
 	var $popView;				// If set, launch a new window with the current records pid.
-	
-	
+
+
 
 
 	/**
@@ -103,8 +103,8 @@ class SC_wizard_rte {
 		$this->popView = t3lib_div::_GP('popView');
 
 			// "Module name":
-		$this->MCONF['name']='xMOD_wizard_rte.php';		
-		
+		$this->MCONF['name']='xMOD_wizard_rte.php';
+
 			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->docType = 'xhtml_trans';
@@ -127,7 +127,7 @@ class SC_wizard_rte {
 
 				// Getting the raw record (we need only the pid-value from here...)
 			$rawRec = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
-			
+
 				// Setting JavaScript, including the pid value for viewing:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 					function jumpToUrl(URL,formEl)	{	//
@@ -139,9 +139,9 @@ class SC_wizard_rte {
 							}
 						} else document.location = URL;
 					}
-				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'],'',t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'		
+				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'],'',t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'
 			');
-			
+
 				// Create page HTML header:
 			$this->content.=$this->doc->startPage('');
 
@@ -163,32 +163,32 @@ class SC_wizard_rte {
 			$trData = t3lib_div::makeInstance('t3lib_transferData');
 			$trData->lockRecords=1;
 			$trData->fetchRecord($this->P['table'],$this->P['uid'],'');
-		
+
 				// Getting the processed record content out:
 			reset($trData->regTableItems_data);
 			$rec = current($trData->regTableItems_data);
 			$rec['uid'] = $this->P['uid'];
 			$rec['pid'] = $rawRec['pid'];
-		
+
 				// Making the toolbar:
 			$closeUrl = $this->P['returnUrl'];
 			$R_URI=t3lib_div::linkThisScript(array('popView'=>''));
-		
+
 				// Getting settings for the undo button:
 			$undoButton = 0;
 			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($this->P['table'], 'sys_history').'" AND recuid="'.$GLOBALS['TYPO3_DB']->quoteStr($this->P['uid'], 'sys_history').'"', '', 'tstamp DESC', '1');
 			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
 				$undoButton = 1;
 			}
-		
+
 				// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{
 				$sCut = $this->doc->makeShortcutIcon('P','',$this->MCONF['name'],1);
 			} else {
 				$sCut ='';
 			}
-		
-		
+
+
 				// Make Toolbar of buttons:
 			$toolBarButtons=array();
 
@@ -203,14 +203,14 @@ class SC_wizard_rte {
 				$toolBarButtons[]=
 					'<a href="#" onclick="'.htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR_checkAndDoSubmit(1); return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedokshow.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" alt="" />'.
-					'</a>'; 
+					'</a>';
 			}
 				// Close:
 			$toolBarButtons[]=
 					'<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($closeUrl).'\')); return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
 					'</a>';
-			
+
 				// Undo/Revert:
 			if ($undoButton)	{
 				$toolBarButtons[]=
@@ -221,7 +221,7 @@ class SC_wizard_rte {
 
 			$panel = '<span class="c-saveButtons">'.implode('',$toolBarButtons).'</span>';
 
-						
+
 				// TSconfig, setting width:
 			$fieldTSConfig = $tceforms->setTSconfig($this->P['table'],$rec,$this->P['field']);
 			if (strcmp($fieldTSConfig['RTEfullScreenWidth'],''))	{
@@ -229,12 +229,12 @@ class SC_wizard_rte {
 			} else {
 				$width='500';
 			}
-		
+
 				// Get the form field and wrap it in the table with the buttons:
 			$formContent = $tceforms->getSoloField($this->P['table'],$rec,$this->P['field']);
 			$formContent = '
 
-		
+
 			<!--
 				RTE wizard:
 			-->
@@ -249,11 +249,11 @@ class SC_wizard_rte {
 						<td></td>
 					</tr>
 				</table>';
-		
+
 				// Adding hidden fields:
 			$formContent.= '<input type="hidden" name="redirect" value="'.htmlspecialchars($R_URI).'" />
 						<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />';
-			
+
 
 				// Finally, add the whole setup:
 			$this->content.=

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,13 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Wizard to list records from a page id.
- * 
+ *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -38,16 +38,16 @@
  *
  *
  *
- *   74: class SC_wizard_list 
- *   93:     function init()	
- *  105:     function main()	
+ *   74: class SC_wizard_list
+ *   93:     function init()
+ *  105:     function main()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 $BACK_PATH='';
 require ('init.php');
@@ -75,7 +75,7 @@ class SC_wizard_list {
 
 		// Internal, static:
 	var $pid;					// PID
-	
+
 		// Internal, static: GPvars
 	var $P;						// Wizard parameters, coming from TCEforms linking to the wizard.
 	var $table;					// Table to show, if none, then all tables are listed in list module.
@@ -106,15 +106,15 @@ class SC_wizard_list {
 
 			// Get this record
 		$origRow = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
-		
+
 			// Get TSconfig for it.
 		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($this->table,is_array($origRow)?$origRow:array('pid'=>$this->P['pid']));
-			
+
 			// Set [params][pid]
 		if (substr($this->P['params']['pid'],0,3)=='###' && substr($this->P['params']['pid'],-3)=='###')	{
 			$this->pid = intval($TSconfig['_'.substr($this->P['params']['pid'],3,-3)]);
 		} else $this->pid = intval($this->P['params']['pid']);
-		
+
 			// Make redirect:
 		if (!strcmp($this->pid,'') || strcmp($this->id,''))	{	// If pid is blank OR if id is set, then return...
 			header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));

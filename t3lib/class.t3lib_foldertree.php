@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -38,16 +38,16 @@
  *
  *
  *
- *   81: class t3lib_folderTree extends t3lib_treeView  
- *   88:     function t3lib_folderTree()	
- *  106:     function wrapIcon($icon,$row)	
- *  126:     function getId($v) 
- *  136:     function getJumpToParm($v) 
- *  148:     function getTitleStr($row,$titleLen=30)	
- *  158:     function getBrowsableTree()	
- *  221:     function getFolderTree($files_path, $depth=999, $depthData='')	
- *  301:     function getCount($files_path)	
- *  317:     function initializePositionSaving()	
+ *   81: class t3lib_folderTree extends t3lib_treeView
+ *   88:     function t3lib_folderTree()
+ *  106:     function wrapIcon($icon,$row)
+ *  126:     function getId($v)
+ *  136:     function getJumpToParm($v)
+ *  148:     function getTitleStr($row,$titleLen=30)
+ *  158:     function getBrowsableTree()
+ *  221:     function getFolderTree($files_path, $depth=999, $depthData='')
+ *  301:     function getCount($files_path)
+ *  317:     function initializePositionSaving()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -94,7 +94,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 		$this->titleAttrib=''; //don't apply any title
 		$this->domIdPrefix = 'folder';
 	}
-	
+
 	/**
 	 * Wrapping the folder icon
 	 *
@@ -192,7 +192,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 				$row['path']=$val['path'];
 				$row['uid']=$specUID;
 				$row['title']=$val['name'];
-				
+
 				// Add the root of the mount to ->tree
 			$this->tree[]=array('HTML'=>$firstHtml,'row'=>$row,'bank'=>$this->bank);
 
@@ -253,8 +253,8 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 				if ($depth>1 && $this->expandNext($specUID))	{
 					$nextCount=$this->getFolderTree(
-						$path, 
-						$depth-1, 
+						$path,
+						$depth-1,
 						$this->makeHTML ? $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' alt="" />' : ''
 					);
 					$exp=1;		// Set "did expand" flag
@@ -262,7 +262,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 					$nextCount=$this->getCount($path);
 					$exp=0;		// Clear "did expand" flag
 				}
-	
+
 					// Set HTML-icons, if any:
 				if ($this->makeHTML)	{
 					$HTML=$depthData.$this->PMicon($row,$a,$c,$nextCount,$exp);
@@ -283,7 +283,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 					// Finally, add the row/HTML content to the ->tree array in the reserved key.
 				$this->tree[$treeKey] = Array(
-					'row'=>$row, 
+					'row'=>$row,
 					'HTML'=>$HTML,
 					'bank'=>$this->bank
 				);
@@ -307,7 +307,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 		}
 		return $c;
 	}
-	
+
 	/**
 	 * Get stored tree structure AND updating it if needed according to incoming PM GET var.
 	 *
@@ -340,9 +340,9 @@ class t3lib_folderTree extends t3lib_treeView  {
 				}
 			}
 		}
-	}	
+	}
 }
- 
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_foldertree.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_foldertree.php']);
 }

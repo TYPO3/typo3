@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
@@ -37,57 +37,57 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  119: function debug($p1,$p2='')	
+ *  119: function debug($p1,$p2='')
  *
  *
- *  133: class t3lib_superadmin 
+ *  133: class t3lib_superadmin
  *
  *              SECTION: Initialize stuff
- *  179:     function t3lib_superadmin()	
- *  191:     function init($parentDirs)	
+ *  179:     function t3lib_superadmin()
+ *  191:     function init($parentDirs)
  *
  *              SECTION: Main functions
- *  214:     function defaultSet()	
- *  268:     function make()	
+ *  214:     function defaultSet()
+ *  268:     function make()
  *
  *              SECTION: Output preparation
- *  370:     function setMenuItem($code,$label)	
- *  384:     function error($str)	
- *  395:     function headerParentDir($str)	
- *  406:     function headerSiteDir($str)	
+ *  370:     function setMenuItem($code,$label)
+ *  384:     function error($str)
+ *  395:     function headerParentDir($str)
+ *  406:     function headerSiteDir($str)
  *
  *              SECTION: Collection information
- *  438:     function initProcess()	
- *  476:     function processSiteDir($path,$dir)	
- *  518:     function includeLocalconf($localconf)	
- *  542:     function connectToDatabase($siteInfo)	
- *  564:     function getDBInfo($key)	
+ *  438:     function initProcess()
+ *  476:     function processSiteDir($path,$dir)
+ *  518:     function includeLocalconf($localconf)
+ *  542:     function connectToDatabase($siteInfo)
+ *  564:     function getDBInfo($key)
  *
  *              SECTION: Content: Installation Overview
- *  614:     function makeTable()	
+ *  614:     function makeTable()
  *
  *              SECTION: Content: Local extensions
- *  717:     function localExtensions()	
- *  890:     function getExtensionInfo($path,$extKey,$k)	
- *  939:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
- *  961:     function findMostRecent($fileArr,$extPath)
- *  979:     function removePrefixPathFromList($fileArr,$extPath)
+ *  717:     function localExtensions()
+ *  890:     function getExtensionInfo($path,$extKey,$k)
+ *  943:     function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)
+ *  965:     function findMostRecent($fileArr,$extPath)
+ *  983:     function removePrefixPathFromList($fileArr,$extPath)
  *
  *              SECTION: Content: Other
- * 1016:     function singleSite($exp)	
- * 1047:     function loginLog($DB)	
- * 1085:     function log_getDetails($text,$data)	
- * 1099:     function rmCachedFiles($exp)	
- * 1132:     function menuContent($exp)	
- * 1204:     function makeAdminLogin()	
- * 1278:     function changeAdminPasswordsForm()	
- * 1313:     function setNewPasswords()	
+ * 1020:     function singleSite($exp)
+ * 1051:     function loginLog($DB)
+ * 1089:     function log_getDetails($text,$data)
+ * 1103:     function rmCachedFiles($exp)
+ * 1136:     function menuContent($exp)
+ * 1208:     function makeAdminLogin()
+ * 1282:     function changeAdminPasswordsForm()
+ * 1317:     function setNewPasswords()
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 
@@ -97,12 +97,12 @@
 
 
 // *******************************
-// Set error reporting 
+// Set error reporting
 // *******************************
-error_reporting (E_ALL ^ E_NOTICE); 
-define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation. 
- 
- 
+error_reporting (E_ALL ^ E_NOTICE);
+define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
+
+
 // Dependency:
 include_once('./typo3_src/t3lib/class.t3lib_div.php');
 include_once('./typo3_src/t3lib/class.t3lib_db.php');
@@ -147,7 +147,7 @@ class t3lib_superadmin {
 	var $parentDirs = array();			// Configured directories to search
 	var $globalSiteInfo = array();		// Array with information about found TYPO3 installations
 
-	var $currentUrl = ''; 
+	var $currentUrl = '';
 	var $mapDBtoKey = array();
 	var $collectAdminPasswords = array();
 	var $changeAdminPasswords = array();
@@ -157,8 +157,8 @@ class t3lib_superadmin {
 	var $full = 0;	// If set, the full information array per site is printed.
 
 	var $noCVS = 0;	// See tools/em/index.php....
-	
-	
+
+
 
 
 
@@ -181,7 +181,7 @@ class t3lib_superadmin {
 		$this->type = t3lib_div::_GP('type');
 		$this->exp = t3lib_div::_GP('exp');
 	}
-	 
+
 	/**
 	 * Initialize with configuration - from the 'superadmin.php' script. See misc/superadmin.php for example.
 	 *
@@ -194,11 +194,11 @@ class t3lib_superadmin {
 
 
 
-	
-	
-	
-	
-	
+
+
+
+
+
 	/**************************
 	 *
 	 * Main functions
@@ -212,7 +212,7 @@ class t3lib_superadmin {
 	 * @return	void
 	 */
 	function defaultSet()	{
-	
+
 			// Creating content based on "type" variable:
 		switch($this->type)	{
 			case 'phpinfo':
@@ -236,12 +236,12 @@ class t3lib_superadmin {
 	<title>TYPO3 Super Admin</title>
 </head>
 <body>
-<?php 
+<?php
 	echo $this->make();
 ?>
 </body>
 </html>
-<?php 
+<?php
 			break;
 			default:
 ?>
@@ -255,7 +255,7 @@ class t3lib_superadmin {
     <frame name="TSApage" src="superadmin.php?type=page" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
 </frameset>
 </html>
-<?php	
+<?php
 			break;
 		}
 	}
@@ -266,10 +266,10 @@ class t3lib_superadmin {
 	 * @return	string		HTML content.
 	 */
 	function make()	{
-	
+
 			// Creating information about the sites found:
 		$content = $this->initProcess();
-		
+
 			// Output mode:
 		switch($this->show)	{
 			case 'menu':
@@ -302,19 +302,19 @@ class t3lib_superadmin {
 				$this->makeTable();
 				return $content.'
 					<h1>Admin options:</h1>
-					
+
 					<h2>Admin logins:</h2>
 					'.$this->makeAdminLogin().'
 					<br /><hr /><br />
-					
+
 					<h2>TBE Admin Passwords:</h2>
 					'.t3lib_div::view_array($this->collectAdminPasswords).'
-					<br /><hr /><br />	
-					
+					<br /><hr /><br />
+
 					<h2>Install Tool Passwords:</h2>
 					'.t3lib_div::view_array($this->collectInstallPasswords).'
 					<br /><hr /><br />
-					
+
 					<h2>Change TBE Admin Passwords:</h2>
 					'.$this->changeAdminPasswordsForm().'
 					<br /><hr /><br />';
@@ -331,7 +331,7 @@ class t3lib_superadmin {
 					'.$this->rmCachedFiles($this->exp).
 					'<br />';
 			break;
-			case 'localext':	
+			case 'localext':
 				return '
 					<h1>Local Extensions Found:</h1>
 					'.$this->localExtensions().
@@ -344,16 +344,16 @@ class t3lib_superadmin {
 			break;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 	/********************************
 	 *
 	 * Output preparation
@@ -368,7 +368,7 @@ class t3lib_superadmin {
 	 * @return	string		Wrapped value
 	 */
 	function setMenuItem($code,$label)	{
-		$out = '<a href="'.htmlspecialchars($this->scriptName.'?type=page&show=menu&exp='.$code).'" target="TSAmenu">'.htmlspecialchars($label).'</a>';	
+		$out = '<a href="'.htmlspecialchars($this->scriptName.'?type=page&show=menu&exp='.$code).'" target="TSAmenu">'.htmlspecialchars($label).'</a>';
 		if ($code==$this->exp)	{
 			$out = '<span style="color:red;">&gt;&gt;</span>'.$out;
 		}
@@ -414,16 +414,16 @@ class t3lib_superadmin {
 
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 	/********************************
 	 *
 	 * Collection information
@@ -437,7 +437,7 @@ class t3lib_superadmin {
 	 */
 	function initProcess()	{
 		$content = '';
-		
+
 		foreach($this->parentDirs as $k => $v)	{
 			$dir = ereg_replace('/$','',$v['dir']);
 			$baseUrl=ereg_replace('/$','',$v['url']);
@@ -462,7 +462,7 @@ class t3lib_superadmin {
 
 		return $content;
 	}
-	
+
 	/**
 	 * Creating information array for a specific TYPO3 installation
 	 * Information about site is stored in ->globalSiteInfo array
@@ -495,7 +495,7 @@ class t3lib_superadmin {
 				} else {
 					$out = $conMsg;
 				}
-				
+
 					// Show details:
 				if ($this->full)	{
 					$out.=t3lib_div::view_array($this->globalSiteInfo[$key]);
@@ -527,7 +527,7 @@ class t3lib_superadmin {
 		$siteInfo['installToolPassword'] = $TYPO3_CONF_VARS['BE']['installToolPassword'];
 		$siteInfo['warningEmailAddress'] = $TYPO3_CONF_VARS['BE']['warning_email_addr'];
 		$siteInfo['warningMode'] = $TYPO3_CONF_VARS['BE']['warning_mode'];
-		
+
 		$this->globalSiteInfo[md5($localconf)] = array('siteInfo'=>$siteInfo,'TYPO3_CONF_VARS'=>$TYPO3_CONF_VARS);
 		return $siteInfo;
 	}
@@ -672,10 +672,10 @@ class t3lib_superadmin {
 				// Install
 			$info[] = htmlspecialchars($all['siteInfo']['installToolPassword']);
 			$this->collectInstallPasswords[$all['siteInfo']['installToolPassword']][] = $all['siteInfo']['SA_PATH'].' - '.$all['siteInfo']['sitename'].' - ('.$all['siteInfo']['TYPO3_db'].')';
-			
+
 			$info[] = htmlspecialchars($all['siteInfo']['warningEmailAddress']);
 			$info[] = htmlspecialchars($all['siteInfo']['warningMode']);
-			
+
 				// compile
 			$mainArrRows[] = '
 				<tr>
@@ -723,7 +723,7 @@ class t3lib_superadmin {
 				$extDir = $all['siteInfo']['SA_PATH'].'/typo3conf/ext/';
 				if (@is_dir($extDir))	{
 					$this->extensionInfoArray['site'][$k] = array();
-					
+
 						// Get extensions in local directory
 					$extensions=t3lib_div::get_dirs($extDir);
 					if (is_array($extensions))	{
@@ -736,8 +736,8 @@ class t3lib_superadmin {
 					}
 				}
 			}
-		}	
-		
+		}
+
 			// Display results:
 		$out='';
 		$headerRow = '
@@ -754,7 +754,7 @@ class t3lib_superadmin {
 						<td>CGL compliance</td>
 					</tr>
 					';
-		
+
 			// PER EXTENSION:
 		if (is_array($this->extensionInfoArray['ext']))	{
 			$extensionKeysCollect=array();
@@ -765,7 +765,7 @@ class t3lib_superadmin {
 				'reg'=>array(),
 				'user'=>array()
 			);
-			
+
 			foreach($this->extensionInfoArray['ext'] as $extKey => $instances)	{
 				$mtimes = array();
 
@@ -787,11 +787,11 @@ class t3lib_superadmin {
 					} else {
 						$bgCol = ' style="color: #999999; font-style: italic;"';
 					}
-	
+
 						// Make row:
 					$type = substr($extKey,0,5)!='user_' ? 'reg' : 'user';
 					if ($type=='reg')	$extensionKeysCollect[] = $extKey;
-					
+
 					if (!is_array($eInfo))	{
 							// Standard listing:
 						$rows[$type][] = '
@@ -827,7 +827,7 @@ class t3lib_superadmin {
 			$out.='
 				<h3>Registered extensions:</h3>
 				<table border="1">'.$headerRow.implode('',$rows['reg']).'</table>';
-			
+
 				// List of those extension keys in a form field:
 			$extensionKeysCollect = array_unique($extensionKeysCollect);
 			asort($extensionKeysCollect);
@@ -838,7 +838,7 @@ class t3lib_superadmin {
 				<h3>User extensions:</h3>
 				<table border="1">'.$headerRow.implode('',$rows['user']).'</table>';
 		}
-		
+
 			// PER SITE:
 		if (is_array($this->extensionInfoArray['site']))	{
 			$rows = array();
@@ -854,7 +854,7 @@ class t3lib_superadmin {
 					} else {
 						$bgCol = ' style="color: #999999; font-style: italic;"';
 					}
-	
+
 						// Make row:
 					$rows[] = '
 					<tr>
@@ -874,7 +874,7 @@ class t3lib_superadmin {
 				<h3>Sites:</h3>
 				<table border="1">'.implode('',$rows).'</table>';
 		}
-		
+
 			// Return content
 		return $out;
 	}
@@ -892,7 +892,7 @@ class t3lib_superadmin {
 		if (@is_file($file))	{
 			$_EXTKEY = $extKey;
 			include($file);
-			
+
 			$eInfo = array();
 				// Info from emconf:
 			$eInfo['title'] = $EM_CONF[$extKey]['title'];
@@ -943,7 +943,7 @@ class t3lib_superadmin {
 	function getAllFilesAndFoldersInPath($fileArr,$extPath,$extList='',$regDirs=0)	{
 		if ($regDirs)	$fileArr[] = $extPath;
 		$fileArr = array_merge($fileArr,t3lib_div::getFilesInDir($extPath,$extList,1,1));
-		
+
 		$dirs = t3lib_div::get_dirs($extPath);
 		if (is_array($dirs))	{
 			foreach($dirs as $subdirs)	{
@@ -1019,14 +1019,14 @@ class t3lib_superadmin {
 	 */
 	function singleSite($exp)	{
 		$all = $this->globalSiteInfo[$exp];
-		
+
 			// General information:
 		$content = '
 			<h2>'.htmlspecialchars($all['siteInfo']['sitename'].' (DB: '.$all['siteInfo']['TYPO3_db']).')</h2>
 			<hr />
-		
+
 			<h3>Main details:</h3>
-			
+
 			LINKS: <a href="'.htmlspecialchars($all['siteInfo']['URL']).'" target="'.$this->targetWindow.'">Site</a> / <a href="'.htmlspecialchars($all['siteInfo']['ADMIN_URL']).'" target="'.$this->targetWindowAdmin.'">Admin</a> / <a href="'.htmlspecialchars($all['siteInfo']['INSTALL_URL']).'" target="'.$this->targetWindowInstall.'">Install</a>
 			<br /><br />';
 
@@ -1041,7 +1041,7 @@ class t3lib_superadmin {
 			// Return content
 		return $content;
 	}
-	
+
 	/**
 	 * Get last-login log for database.
 	 *
@@ -1052,17 +1052,17 @@ class t3lib_superadmin {
 			// Non-admin users
 			//1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent
 		$query = $GLOBALS['TYPO3_DB']->SELECTquery(
-						'sys_log.*, be_users.username  AS username, be_users.admin AS admin', 
-						'sys_log,be_users', 
+						'sys_log.*, be_users.username  AS username, be_users.admin AS admin',
+						'sys_log,be_users',
 						'be_users.uid=sys_log.userid AND sys_log.type=255 AND sys_log.tstamp > '.(time()-(60*60*24*30)),
 						'',
 						'sys_log.tstamp DESC'
 					);
 		$res = mysql($DB,$query);
-		
+
 		$dayRef = '';
 		$lines = array();
-		
+
 		while($row = mysql_fetch_assoc($res))	{
 			$day = date('d-m-Y',$row['tstamp']);
 			if ($dayRef!=$day)	{
@@ -1073,7 +1073,7 @@ class t3lib_superadmin {
 			$theLine = date('H:i',$row['tstamp']).':   '.str_pad(substr($row['username'],0,10),10).'    '.$this->log_getDetails($row['details'],unserialize($row['log_data']));
 			$theLine = htmlspecialchars($theLine);
 			$lines[]= $row['admin'] ? '<span class="redclass">'.$theLine.'</span>' : $theLine;
-			
+
 			// debug($row);
 		}
 		return '<pre>'.implode(chr(10),$lines).'</pre>';
@@ -1110,7 +1110,7 @@ class t3lib_superadmin {
 		$path = $all['siteInfo']['SA_PATH'].'/typo3conf/';
 		if (@is_dir($path))	{
 			$filesInDir = t3lib_div::getFilesInDir($path,'php',1);
-			
+
 			foreach($filesInDir as $kk => $vv)	{
 				if (t3lib_div::isFirstPartOfStr(basename($vv),'temp_CACHED_'))	{
 					if (strstr(basename($vv),'ext_localconf.php') || strstr(basename($vv),'ext_tables.php'))	{
@@ -1123,7 +1123,7 @@ class t3lib_superadmin {
 		} else {
 			$content.= $this->error('ERROR: '.$path.' was not a directory!');
 		}
-		
+
 		return $content;
 	}
 
@@ -1135,11 +1135,11 @@ class t3lib_superadmin {
 	 */
 	function menuContent($exp)	{
 		if ($exp)	{
-		
+
 				// Initialize:
 			$lines = array();
 			$head = '';
-			
+
 			foreach($this->globalSiteInfo as $k => $all)	{
 
 					// Setting section header, if needed.
@@ -1148,7 +1148,7 @@ class t3lib_superadmin {
 						<h4 style="white-space: nowrap;">'.htmlspecialchars(t3lib_div::fixed_lgd_pre($all['siteInfo']['MAIN_DIR'],18)).'</h4>';
 					$head = $all['siteInfo']['MAIN_DIR'];	// Set new head...
 				}
-				
+
 					// Display mode:
 				switch($exp)	{
 					case 'update':
@@ -1158,13 +1158,13 @@ class t3lib_superadmin {
 						$lines[] = '
 							<hr />
 							<b>'.htmlspecialchars($label).'</b> ('.htmlspecialchars(substr($all['siteInfo']['SA_PATH'],strlen($all['siteInfo']['MAIN_DIR'])+1)).')<br />';
-						
+
 								// To avoid "visited links" display on next hit:
 							$tempVal='&_someUniqueValue='.time();
 
 								// Add links for update:
 							$url = $this->scriptName.'?type=page&show=rmTempCached&exp='.$k.$tempVal;
-							$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">Remove temp_CACHED files</a></span>';	
+							$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">Remove temp_CACHED files</a></span>';
 
 							$url = $all['siteInfo']['INSTALL_URL'].'index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=import|CURRENT_STATIC'."&presetWholeTable=1".$tempVal.'#bottom';
 							$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">CURRENT_STATIC</a></span>';
@@ -1188,15 +1188,15 @@ class t3lib_superadmin {
 					case 'info':
 							// item
 						$label = $all['siteInfo']['sitename'] ? $all['siteInfo']['sitename'] : '(DB: '.$all['siteInfo']['TYPO3_db'].')';
-						
+
 						$url = $this->scriptName.'?type=page&show=info&exp='.$k;
-						$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">'.htmlspecialchars($label).'</a> ('.htmlspecialchars(substr($all['siteInfo']['SA_PATH'],strlen($all['siteInfo']['MAIN_DIR'])+1)).'/)</span>';	
+						$lines[] = '<span style="white-space: nowrap;"><a href="'.htmlspecialchars($url).'" target="TSApage">'.htmlspecialchars($label).'</a> ('.htmlspecialchars(substr($all['siteInfo']['SA_PATH'],strlen($all['siteInfo']['MAIN_DIR'])+1)).'/)</span>';
 					break;
 				}
-			}	
-			
+			}
+
 				// Return result.
-			return implode('<br />',$lines).'<br />';	
+			return implode('<br />',$lines).'<br />';
 		}
 	}
 
@@ -1206,11 +1206,11 @@ class t3lib_superadmin {
 	 * @return	string		HTML table
 	 */
 	function makeAdminLogin()	{
-	
+
 			// Initialize:
 		$lines = array();
 		$head = '';
-		
+
 			// Traverse installations found:
 		foreach($this->globalSiteInfo as $k => $all)	{
 
@@ -1228,12 +1228,12 @@ class t3lib_superadmin {
 				// item
 			$label = $all['siteInfo']['sitename'] ? $all['siteInfo']['sitename'] : '(DB: '.$all['siteInfo']['TYPO3_db'].')';
 			$unique = md5(microtime());
-			
+
 			$opts = array();
 			$defUName = '';
 
 			if (is_array($all['siteInfo']['ADMINS']))	{
-			
+
 				foreach($all['siteInfo']['ADMINS'] as $vArr)	{
 					$chalVal = md5($vArr['username'].':'.$vArr['password'].':'.$unique);
 					$opts[] = '<option value="'.$chalVal.'">'.htmlspecialchars($vArr['username'].($vArr['disable']?' [DISABLED]':'')).'</option>';
@@ -1252,7 +1252,7 @@ class t3lib_superadmin {
 					('.$defUName.')<br />
 					<input type="hidden" name="userident" value="'.$chalVal.'" />';
 			}
-			
+
 			$form='
 			<form name="'.$k.'" action="'.$all['siteInfo']['ADMIN_URL'].'index.php" target="EXTERnalWindow" method="post">
 				<input type="submit" name="submit" value="Login" />
@@ -1262,16 +1262,16 @@ class t3lib_superadmin {
 				<input type="hidden" name="login_status" value="login" />
 				'.trim($userident).'
 			</form>';
-			
+
 			$lines[] = '
 				<tr>
 					<td><strong>'.htmlspecialchars($label).'</strong></td>
 					<td nowrap="nowrap">'.trim($form).'</td>
 				</tr>';
-		}	
-		
+		}
+
 			// Return login table:
-		return '<table border="1" cellpadding="5" cellspacing="1">'.implode('',$lines).'</table>';	
+		return '<table border="1" cellpadding="5" cellspacing="1">'.implode('',$lines).'</table>';
 	}
 
 	/**
@@ -1285,7 +1285,7 @@ class t3lib_superadmin {
 		foreach($this->changeAdminPasswords as $k => $p)	{
 			$content.='
 				<h3>'.$k.'</h3>';
-				
+
 			foreach($p as $kk => $pp)	{
 				$content.= '<span style="white-space: nowrap;">';
 				$content.= '<input type="checkbox" name="SETFIELDS[]" value="'.$pp.'" /> '.$pp.' - ';
@@ -1293,7 +1293,7 @@ class t3lib_superadmin {
 				$content.= '</span><br />';
 			}
 		}
-		
+
 		$content.='New password: <input type="text" name="NEWPASS" /><br />';
 		$content.='New password (md5): <input type="text" name="NEWPASS_md5" /><br />
 			(This overrules any plain password above!)
@@ -1304,7 +1304,7 @@ class t3lib_superadmin {
 		<input type="submit" name="Set" />
 		</form>
 		';
-		
+
 		return $content;
 	}
 
@@ -1322,7 +1322,7 @@ class t3lib_superadmin {
 		$updatedFlag = 0;
 		if (($pass || $passMD5) && is_array($whichFields))	{
 			$pass = $passMD5 ? $passMD5 : md5($pass);
-			
+
 			foreach($whichFields as $values)	{
 				$parts = explode(':',$values);
 				if (count($parts)>2)	{
@@ -1332,10 +1332,10 @@ class t3lib_superadmin {
 						if (!$error)	{
 							$DB = $this->globalSiteInfo[$key]['siteInfo']['TYPO3_db'];
 							$content.='<h3>Updating '.$DB.':</h3>';
-							
+
 							$query = $GLOBALS['TYPO3_DB']->UPDATEquery(
-													'be_users', 
-													'uid='.intval($parts[1]).' AND username="'.addslashes($parts[2]).'" AND admin!=0', 
+													'be_users',
+													'uid='.intval($parts[1]).' AND username="'.addslashes($parts[2]).'" AND admin!=0',
 													array('password' => $pass)
 												);	// username/admin are added to security. But they are certainly redundant!!
 							mysql($DB,$query);
@@ -1347,7 +1347,7 @@ class t3lib_superadmin {
 				}
 			}
 		}
-		
+
 		$this->initProcess();
 		return $content;
 	}

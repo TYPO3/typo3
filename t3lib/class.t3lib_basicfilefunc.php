@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class with basic file management functions
  *
  * $Id$
@@ -37,36 +37,36 @@
  *
  *
  *
- *   80: class t3lib_basicFileFunctions	
+ *   80: class t3lib_basicFileFunctions
  *
  *              SECTION: Checking functions
- *  132:     function init($mounts, $f_ext)	
- *  149:     function getTotalFileInfo($wholePath)	
- *  169:     function is_allowed($iconkey,$type)	
- *  194:     function checkIfFullAccess($theDest)	
- *  208:     function is_webpath($path)	
- *  228:     function checkIfAllowed($ext, $theDest, $filename='')	
- *  238:     function checkFileNameLen($fileName)	
- *  248:     function is_directory($theDir)	
- *  265:     function isPathValid($theFile)	
- *  280:     function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)	
- *  323:     function checkPathAgainstMounts($thePath)	
- *  341:     function blindPath($thePath)	
- *  357:     function findTempFolder()	
+ *  132:     function init($mounts, $f_ext)
+ *  149:     function getTotalFileInfo($wholePath)
+ *  169:     function is_allowed($iconkey,$type)
+ *  194:     function checkIfFullAccess($theDest)
+ *  208:     function is_webpath($path)
+ *  228:     function checkIfAllowed($ext, $theDest, $filename='')
+ *  238:     function checkFileNameLen($fileName)
+ *  248:     function is_directory($theDir)
+ *  265:     function isPathValid($theFile)
+ *  280:     function getUniqueName($theFile, $theDest, $dontCheckForUnique=0)
+ *  323:     function checkPathAgainstMounts($thePath)
+ *  341:     function blindPath($thePath)
+ *  357:     function findTempFolder()
  *
  *              SECTION: Cleaning functions
- *  386:     function cleanDirectoryName($theDir)	
- *  396:     function rmDoubleSlash($string)	
- *  406:     function slashPath($path)	
- *  419:     function cleanFileName($fileName)	
- *  430:     function formatSize($sizeInBytes)	
+ *  386:     function cleanDirectoryName($theDir)
+ *  396:     function rmDoubleSlash($string)
+ *  406:     function slashPath($path)
+ *  419:     function cleanFileName($fileName)
+ *  430:     function formatSize($sizeInBytes)
  *
  * TOTAL FUNCTIONS: 18
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 
 /**
@@ -87,11 +87,11 @@ class t3lib_basicFileFunctions	{
 		// internal
 	var $f_ext = Array();			// See comment in header
 	var $mounts = Array();			// See comment in header
-	var $webPath ='';				// Set to DOCUMENT_ROOT. 
+	var $webPath ='';				// Set to DOCUMENT_ROOT.
 	var $isInit=0;					// Set to true after start();
 
-	
-	
+
+
 	/**********************************
 	 *
 	 * Checking functions
@@ -134,7 +134,7 @@ class t3lib_basicFileFunctions	{
 		$this->f_ext['webspace']['deny'] = t3lib_div::uniqueList(strtolower($f_ext['webspace']['deny']));
 		$this->f_ext['ftpspace']['allow'] = t3lib_div::uniqueList(strtolower($f_ext['ftpspace']['allow']));
 		$this->f_ext['ftpspace']['deny'] = t3lib_div::uniqueList(strtolower($f_ext['ftpspace']['deny']));
-		
+
 		$this->mounts = $mounts;
 		$this->webPath = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 		$this->isInit=1;
@@ -155,7 +155,7 @@ class t3lib_basicFileFunctions	{
 		$info['owner']=@fileowner($wholePath);
 		$info['perms']=@fileperms($wholePath);
 		$info['writeable'] = ($info['perms']&2 || ($theuser==$info['owner'] && $info['perms']&128));
-		$info['readable'] = ($info['perms']&4 || ($theuser==$info['owner'] && $info['perms']&256));	
+		$info['readable'] = ($info['perms']&4 || ($theuser==$info['owner'] && $info['perms']&256));
 		return $info;
 	}
 
@@ -205,7 +205,7 @@ class t3lib_basicFileFunctions	{
 	 * @param	string		Absolute path to check
 	 * @return	boolean
 	 */
-	function is_webpath($path)	{		
+	function is_webpath($path)	{
 		if ($this->isInit)	{
 			$testPath = $this->slashPath($path);
 			$testPathWeb = $this->slashPath($this->webPath);
@@ -226,7 +226,7 @@ class t3lib_basicFileFunctions	{
 	 * @return	boolean		True if extension/filename is allowed
 	 */
 	function checkIfAllowed($ext, $theDest, $filename='')	{
-		return t3lib_div::verifyFilenameAgainstDenyPattern($filename) && $this->is_allowed($ext,($this->is_webpath($theDest)?'webspace':'ftpspace'));	
+		return t3lib_div::verifyFilenameAgainstDenyPattern($filename) && $this->is_allowed($ext,($this->is_webpath($theDest)?'webspace':'ftpspace'));
 	}
 
 	/**
@@ -406,9 +406,9 @@ class t3lib_basicFileFunctions	{
 	function slashPath($path)	{
 		if (substr($path,-1)!='/')	{
 			return $path.'/';
-		} 
+		}
 		return $path;
-	}	
+	}
 
 	/**
 	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_'

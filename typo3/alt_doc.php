@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Main form rendering script
  * By sending certain parameters to this script you can bring up a form
  * which allows the user to edit the content of one or more database records.
@@ -32,7 +32,7 @@
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -40,37 +40,37 @@
  *
  *
  *
- *   93: class SC_alt_doc 
- *  164:     function preInit()	
- *  216:     function doProcessData()	
- *  228:     function processData()	
- *  345:     function init()	
- *  424:     function main()	
- *  481:     function printContent()	
+ *   93: class SC_alt_doc
+ *  164:     function preInit()
+ *  216:     function doProcessData()
+ *  228:     function processData()
+ *  345:     function init()
+ *  424:     function main()
+ *  481:     function printContent()
  *
  *              SECTION: Sub-content functions, rendering specific parts of the module content.
  *  516:     function makeEditForm()
- *  680:     function makeButtonPanel()	
- *  759:     function makeDocSel()	
- *  798:     function makeCmenu()	
- *  816:     function compileForm($panel,$docSel,$cMenu,$editForm)	
- *  875:     function functionMenus()	
- *  906:     function shortCutLink()	
+ *  680:     function makeButtonPanel()
+ *  759:     function makeDocSel()
+ *  798:     function makeCmenu()
+ *  816:     function compileForm($panel,$docSel,$cMenu,$editForm)
+ *  875:     function functionMenus()
+ *  906:     function shortCutLink()
  *  937:     function tceformMessages()
  *
  *              SECTION: Other functions
- *  975:     function editRegularContentFromId()	
- * 1002:     function compileStoreDat()	
- * 1015:     function getNewIconMode($table,$key='saveDocNew')	
- * 1028:     function closeDocument($code=0)	
- * 1060:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')	
+ *  975:     function editRegularContentFromId()
+ * 1002:     function compileStoreDat()
+ * 1015:     function getNewIconMode($table,$key='saveDocNew')
+ * 1028:     function closeDocument($code=0)
+ * 1060:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')
  *
  * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 require ('init.php');
 require ('template.php');
 include ('sysext/lang/locallang_alt_doc.php');
@@ -147,15 +147,15 @@ class SC_alt_doc {
 	var $tceforms;			// Contains the instance of TCEforms class.
 	var $generalPathOfForm;	// Contains the root-line path of the currently edited record(s) - for display.
 
-	
-		// Internal, dynamic:	
+
+		// Internal, dynamic:
 	var $dontStoreDocumentRef;	// Used internally to disable the storage of the document reference (eg. new records)
-	
-	
-	
-	
-	
-					
+
+
+
+
+
+
 
 	/**
 	 * First initialization.
@@ -164,7 +164,7 @@ class SC_alt_doc {
 	 */
 	function preInit()	{
 		global $BE_USER;
-		
+
 			// Setting GPvars:
 		$this->editconf = t3lib_div::_GP('edit');
 		$this->defVals = t3lib_div::_GP('defVals');
@@ -174,26 +174,26 @@ class SC_alt_doc {
 		$this->closeDoc = t3lib_div::_GP('closeDoc');
 		$this->doSave = t3lib_div::_GP('doSave');
 		$this->returnEditConf = t3lib_div::_GP('returnEditConf');
-		
+
 			// Setting override values as default if defVals does not exist.
 		if (!is_array($this->defVals) && is_array($this->overrideVals))	{
 			$this->defVals = $this->overrideVals;
 		}
-		
+
 			// Setting return URL
 		$this->retUrl = $this->returnUrl ? $this->returnUrl : 'dummy.php';
-		
+
 			// Make R_URL (request url) based on input GETvars:
 		$this->R_URL_parts = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 		$this->R_URL_getvars = t3lib_div::_GET();
-		
+
 			// MAKE url for storing
 		$this->compileStoreDat();
-		
+
 			// Initialize more variables.
 		$this->dontStoreDocumentRef=0;
 		$this->storeTitle='';
-		
+
 			// Get session data for the module:
 		$this->docDat = $BE_USER->getModuleData('alt_doc.php','ses');
 		$this->docHandler = $this->docDat[0];
@@ -216,7 +216,7 @@ class SC_alt_doc {
 	 */
 	function doProcessData()	{
 		global $HTTP_POST_VARS;
-		
+
 		$out = $this->doSave || isset($HTTP_POST_VARS['_savedok_x']) || isset($HTTP_POST_VARS['_saveandclosedok_x']) || isset($HTTP_POST_VARS['_savedokview_x']) || isset($HTTP_POST_VARS['_savedoknew_x']);
 		return $out;
 	}
@@ -242,13 +242,13 @@ class SC_alt_doc {
 			// Only options related to $this->data submission are included here.
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values=0;
-	
+
 			// Setting default values specific for the user:
 		$TCAdefaultOverride = $BE_USER->getTSConfigProp('TCAdefaults');
 		if (is_array($TCAdefaultOverride))	{
 			$tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
-	
+
 			// Setting internal vars:
 		if ($BE_USER->uc['neverHideAtCopy'])	{	$tce->neverHideAtCopy = 1;	}
 		$tce->debug=0;
@@ -257,12 +257,12 @@ class SC_alt_doc {
 			// Loading TCEmain with data:
 		$tce->start($this->data,array());
 		if (is_array($this->mirror))	{	$tce->setMirror($this->mirror);	}
-		
+
 			// If pages are being edited, we set an instruction about updating the page tree after this operation.
 		if (isset($this->data['pages']))	{
 			t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 		}
-		
+
 
 			// Checking referer / executing
 		$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
@@ -275,13 +275,13 @@ class SC_alt_doc {
 				// Perform the saving operation with TCEmain:
 			$tce->process_uploads($GLOBALS['HTTP_POST_FILES']);
 			$tce->process_datamap();
-			
+
 				// If there was saved any new items, load them:
 			if (count($tce->substNEWwithIDs_table))	{
 
 					// Resetting editconf:
-				$this->editconf = array();	
-				
+				$this->editconf = array();
+
 					// Traverse all new records and forge the content of ->editconf so we can continue to EDIT these records!
 				foreach($tce->substNEWwithIDs_table as $nKey => $nTable)	{
 					$this->editconf[$nTable][$tce->substNEWwithIDs[$nKey]]='edit';
@@ -289,17 +289,17 @@ class SC_alt_doc {
 						$this->retUrl.='&id='.$tce->substNEWwithIDs[$nKey];
 					}
 				}
-				
+
 					// Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
 				$this->R_URL_getvars['edit']=$this->editconf;
-					
+
 					// Unsetting default values since we don't need them anymore.
 				unset($this->R_URL_getvars['defVals']);
-				
+
 					// Re-compile the store* values since editconf changed...
 				$this->compileStoreDat();
 			}
-				
+
 				// If a document is saved and a new one is created right after.
 			if (isset($HTTP_POST_VARS['_savedoknew_x']) && is_array($this->editconf))	{
 
@@ -307,29 +307,29 @@ class SC_alt_doc {
 				reset($this->editconf);
 				$nTable=key($this->editconf);
 
-					// Finding the first id, getting the records pid+uid				
+					// Finding the first id, getting the records pid+uid
 				reset($this->editconf[$nTable]);
 				$nUid=key($this->editconf[$nTable]);
 				$nRec = t3lib_BEfunc::getRecord($nTable,$nUid,'pid,uid');
-	
+
 					// Setting a blank editconf array for a new record:
 				$this->editconf=array();
 				if ($this->getNewIconMode($nTable)=='top')	{
-					$this->editconf[$nTable][$nRec['pid']]='new';	
+					$this->editconf[$nTable][$nRec['pid']]='new';
 				} else {
-					$this->editconf[$nTable][-$nRec['uid']]='new';	
+					$this->editconf[$nTable][-$nRec['uid']]='new';
 				}
-				
+
 					// Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
 				$this->R_URL_getvars['edit']=$this->editconf;
-				
+
 					// Re-compile the store* values since editconf changed...
 				$this->compileStoreDat();
 			}
-	
+
 			$tce->printLogErrorMessages(
-				isset($HTTP_POST_VARS['_saveandclosedok_x']) ? 
-				$this->retUrl : 
+				isset($HTTP_POST_VARS['_saveandclosedok_x']) ?
+				$this->retUrl :
 				$this->R_URL_parts['path'].'?'.t3lib_div::implodeArrayForUrl('',$this->R_URL_getvars)	// popView will not be invoked here, because the information from the submit button for save/view will be lost .... But does it matter if there is an error anyways?
 			);
 		}
@@ -348,19 +348,19 @@ class SC_alt_doc {
 
 			// Setting more GPvars:
 		$this->popViewId = t3lib_div::_GP('popViewId');
-		$this->viewUrl = t3lib_div::_GP('viewUrl');		
+		$this->viewUrl = t3lib_div::_GP('viewUrl');
 		$this->editRegularContentFromId = t3lib_div::_GP('editRegularContentFromId');
 		$this->recTitle = t3lib_div::_GP('recTitle');
 		$this->disHelp = t3lib_div::_GP('disHelp');
 		$this->noView = t3lib_div::_GP('noView');
 
-			// Set other internal variables:		
+			// Set other internal variables:
 		$this->R_URL_getvars['returnUrl']=$this->retUrl;
 		$this->R_URI = $this->R_URL_parts['path'].'?'.t3lib_div::implodeArrayForUrl('',$this->R_URL_getvars);
-	
+
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
-			// If empty string it's just a variable, that'll be saved. 
+			// If empty string it's just a variable, that'll be saved.
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'showPalettes' => '',
@@ -368,7 +368,7 @@ class SC_alt_doc {
 			'disableRTE' => ''
 		);
 
-			// Setting virtual document name		
+			// Setting virtual document name
 		$this->MCONF['name']='xMOD_alt_doc.php';
 
 			// CLEANSE SETTINGS
@@ -391,24 +391,24 @@ class SC_alt_doc {
 					formEl.checked = formEl.checked ? 0 : 1;
 				}
 			}
-		
+
 				// Object: TS:
 			function typoSetup	()	{	//
 				this.uniqueID = "";
 			}
 			var TS = new typoSetup();
-		
+
 				// Info view:
 			function launchView(table,uid,bP)	{	//
 				var backPath= bP ? bP : "";
 				var thePreviewWindow="";
-				thePreviewWindow = window.open(backPath+"show_item.php?table="+escape(table)+"&uid="+escape(uid),"ShowItem"+TS.uniqueID,"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");	
+				thePreviewWindow = window.open(backPath+"show_item.php?table="+escape(table)+"&uid="+escape(uid),"ShowItem"+TS.uniqueID,"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 				if (thePreviewWindow && thePreviewWindow.focus)	{
 					thePreviewWindow.focus();
 				}
 			}
 			function deleteRecord(table,id,url)	{	//
-				if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).'))	{	
+				if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning')).'))	{
 					document.location = "tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC='.$BE_USER->veriCode().'&prErr=1&uPT=1";
 				}
 				return false;
@@ -428,10 +428,10 @@ class SC_alt_doc {
 			// Starting content accumulation:
 		$this->content='';
 		$this->content.=$this->doc->startPage('TYPO3 Edit Document');
-		
+
 			// Begin edit:
 		if (is_array($this->editconf))	{
-		
+
 				// Initialize TCEforms (rendering the forms)
 			$this->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
 			$this->tceforms->initDefaultBEMode();
@@ -465,7 +465,7 @@ class SC_alt_doc {
 				$panel = $this->makeButtonPanel();
 				$docSel = $this->makeDocSel();
 				$cMenu = $this->makeCmenu();
-		
+
 				$formContent = $this->compileForm($panel,$docSel,$cMenu,$editForm);
 
 				$this->content.=$this->tceforms->printNeededJSFunctions_top().
@@ -473,7 +473,7 @@ class SC_alt_doc {
 								$this->tceforms->printNeededJSFunctions();
 				$this->content.=$this->functionMenus();
 				$this->content.=$this->shortCutLink();
-				
+
 				$this->tceformMessages();
 			}
 		}
@@ -499,7 +499,7 @@ class SC_alt_doc {
 
 
 
-	
+
 
 
 
@@ -513,7 +513,7 @@ class SC_alt_doc {
 	 * Sub-content functions, rendering specific parts of the module content.
 	 *
 	 ***************************/
-	 
+
 	/**
 	 * Creates the editing form with TCEforms, based on the input from GPvars.
 	 *
@@ -532,27 +532,27 @@ class SC_alt_doc {
 			// Traverse the GPvar edit array
 		foreach($this->editconf as $table => $conf)	{	// Tables:
 			if (is_array($conf) && $TCA[$table] && $BE_USER->check('tables_modify',$table))	{
-			
+
 					// Traverse the keys/comments of each table (keys can be a commalist of uids)
 				foreach($conf as $cKey => $cmd)	{
-					if ($cmd=='edit' || $cmd=='new')	{		
-					
+					if ($cmd=='edit' || $cmd=='new')	{
+
 							// Get the ids:
 						$ids = t3lib_div::trimExplode(',',$cKey,1);
-						
+
 							// Traverse the ids:
 						foreach($ids as $theUid)	{
-						
+
 								// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
 								// First, resetting flags.
 							$hasAccess = 1;
 							$deleteAccess=0;
 							$this->viewId=0;
-							
+
 								// If the command is to create a NEW record...:
 							if ($cmd=='new')	{
 								if (intval($theUid))	{		// NOTICE: the id values in this case points to the page uid onto which the record should be create OR (if the id is negativ) to a record from the same table AFTER which to create the record.
-								
+
 										// Find parent page on which the new record reside
 									if ($theUid<0)	{	// Less than zero - find parent page
 										$calcPRec=t3lib_BEfunc::getRecord($table,abs($theUid));
@@ -560,7 +560,7 @@ class SC_alt_doc {
 									} else {	// always a page
 										$calcPRec=t3lib_BEfunc::getRecord('pages',abs($theUid));
 									}
-									
+
 										// Now, calculate whether the user has access to creating new records on this position:
 									if (is_array($calcPRec))	{
 										$CALC_PERMS = $BE_USER->calcPerms($calcPRec);	// Permissions for the parent page
@@ -590,9 +590,9 @@ class SC_alt_doc {
 									}
 								} else $hasAccess=0;
 							}
-							
+
 							// AT THIS POINT we have checked the access status of the editing/creation of records and we can now proceed with creating the form elements:
-							
+
 							if ($hasAccess)	{
 								$prevPageID = is_object($trData)?$trData->prevPageID:'';
 								$trData = t3lib_div::makeInstance('t3lib_transferData');
@@ -613,10 +613,10 @@ class SC_alt_doc {
 								if ($cmd=='new')	{
 									$rec['pid'] = $theUid=='prev'?$thePrevUid:$theUid;
 								}
-								
+
 									// Now, render the form:
 								if (is_array($rec))	{
-								
+
 										// Setting visual path / title of form:
 									$this->generalPathOfForm = $this->tceforms->getRecordPath($table,$rec);
 									if (!$this->storeTitle)	{
@@ -664,7 +664,7 @@ class SC_alt_doc {
 										// Combine it all:
 									$editForm.= $lockIcon.$panel;
 								}
-								
+
 								$thePrevUid = $rec['uid'];
 							} else {
 								$this->errorC++;
@@ -687,28 +687,28 @@ class SC_alt_doc {
 		global $TCA,$LANG;
 
 		$panel='';
-		
+
 			// Render SAVE type buttons:
 			// The action of each button is decided by its name attribute. (See doProcessData())
 		if (!$this->errorC && !$TCA[$this->firstEl['table']]['ctrl']['readOnly'])	{
-				
+
 				// SAVE button:
 			$panel.= '<input type="image" class="c-inputButton" name="_savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
-				
+
 				// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && t3lib_extMgm::isLoaded('cms')) {
 				$panel.= '<input type="image" class="c-inputButton" name="_savedokview"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedokshow.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow',1).'" />';
 			}
-				
+
 				// SAVE / NEW button:
 			if (count($this->elementsData)==1 && $this->getNewIconMode($this->firstEl['table'])) {
 				$panel.= '<input type="image" class="c-inputButton" name="_savedoknew"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedoknew.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveNewDoc',1).'" />';
 			}
-			
+
 				// SAVE / CLOSE
 			$panel.= '<input type="image" class="c-inputButton" name="_saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
 		}
-			
+
 			// CLOSE button:
 		$panel.= '<a href="#" onclick="document.editform.closeDoc.value=1; document.editform.submit(); return false;">'.
 				'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
@@ -725,7 +725,7 @@ class SC_alt_doc {
 							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/deletedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->getLL('deleteItem',1).'" alt="" />'.
 							'</a>';
 				}
-			
+
 					// Undo:
 				$undoButton = 0;
 				$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($this->firstEl['table'], 'sys_history').'" AND recuid="'.intval($this->firstEl['uid']).'"', '', 'tstamp DESC', '1');
@@ -744,7 +744,7 @@ class SC_alt_doc {
 							'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/history2.gif','width="13" height="12"').' class="c-inputButton" alt="" />'.
 							'</a>';
 				}
-				
+
 					// If only SOME fields are shown in the form, this will link the user to the FULL form:
 				if ($this->columnsOnly)	{
 					$panel.= '<a href="'.htmlspecialchars($this->R_URI.'&columnsOnly=').'">'.
@@ -821,8 +821,8 @@ class SC_alt_doc {
 	 */
 	function compileForm($panel,$docSel,$cMenu,$editForm)	{
 		global $LANG;
-		
-			
+
+
 		$formContent='';
 		$formContent.='
 
@@ -841,8 +841,8 @@ class SC_alt_doc {
 				</tr>
 			</table>
 			<img src="clear.gif" width="1" height="4" alt="" /><br />
-			
-			
+
+
 
 
 			<!--
@@ -856,11 +856,11 @@ class SC_alt_doc {
 			<!--
 			 	Saving buttons (same as in top)
 			-->
-			
+
 			'.$panel.
 			'<input type="hidden" name="returnUrl" value="'.htmlspecialchars($this->retUrl).'" />
 			<input type="hidden" name="viewUrl" value="'.htmlspecialchars($this->viewUrl).'" />';
-		
+
 		if ($this->returnNewPageId)	{
 			$formContent.='<input type="hidden" name="returnNewPageId" value="1" />';
 		}
@@ -882,7 +882,7 @@ class SC_alt_doc {
 		global $BE_USER,$LANG;
 
 		$funcMenus = '';
-		
+
 			// Show palettes:
 		$funcMenus.= '<br /><br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>'')))).$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1);
 
@@ -890,14 +890,14 @@ class SC_alt_doc {
 		if ($BE_USER->uc['edit_showFieldHelp']!='text') {
 			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[showDescriptions]',$this->MOD_SETTINGS['showDescriptions'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>'')))).$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions',1);
 		}
-			
+
 			// Show disable RTE checkbox:
 		if ($BE_USER->isRTE())	{
 			$funcMenus.= '<br />'.t3lib_BEfunc::getFuncCheck('','SET[disableRTE]',$this->MOD_SETTINGS['disableRTE'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>'')))).$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.disableRTE',1);
 		}
-		
+
 		return '
-								
+
 				<!--
 				 	Function menus (checkboxes for selecting options):
 				-->
@@ -911,7 +911,7 @@ class SC_alt_doc {
 	 */
 	function shortCutLink()	{
 		global $BE_USER,$LANG;
-		
+
 			// ShortCut
 		if ($this->returnUrl!='close.html')	{
 			$content.='<br /><br />';
@@ -928,7 +928,7 @@ class SC_alt_doc {
 					'</a>';
 		}
 		return '
-								
+
 				<!--
 				 	Shortcut link:
 				-->
@@ -972,7 +972,7 @@ class SC_alt_doc {
 	 * Other functions
 	 *
 	 ***************************/
-	 
+
 	/**
 	 * Function, which populates the internal editconf array with editing commands for all tt_content elements from the normal column in normal language from the page pointed to by $this->editRegularContentFromId
 	 *
@@ -981,12 +981,12 @@ class SC_alt_doc {
 	function editRegularContentFromId()	{
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'uid', 
-						'tt_content', 
+						'uid',
+						'tt_content',
 						'pid='.intval($this->editRegularContentFromId).
 							t3lib_BEfunc::deleteClause('tt_content').
 							' AND colPos=0 AND sys_language_uid=0',
-						'', 
+						'',
 						'sorting'
 					);
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
@@ -1033,14 +1033,14 @@ class SC_alt_doc {
 	 */
 	function closeDocument($code=0)	{
 		global $BE_USER;
-		
+
 			// If current document is found in docHandler, then unset it, possibly unset it ALL and finally, write it to the session data:
 		if (isset($this->docHandler[$this->storeUrlMd5]))	{
 			unset($this->docHandler[$this->storeUrlMd5]);
 			if ($code=='3')	$this->docHandler=array();
 			$BE_USER->pushModuleData('alt_doc.php',array($this->docHandler,$this->docDat[1]));
 		}
-		
+
 			// If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by other scripts, like wizard_add, to know which records was created or so...)
 		if ($this->returnEditConf && $this->retUrl!='dummy.php')	{
 			$this->retUrl.='&returnEditConf='.rawurlencode(serialize($this->editconf));
@@ -1065,7 +1065,7 @@ class SC_alt_doc {
 	 */
 	function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')	{
 		if (!t3lib_extMgm::isLoaded('cms') && !strcmp($retUrl,'alt_doc_nodoc.php'))	return;
-		
+
 		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler))	{
 			if (isset($this->docHandler[$currentDocFromHandlerMD5]))	{
 				$setupArr=$this->docHandler[$currentDocFromHandlerMD5];

@@ -7,7 +7,7 @@
 *
 *
 *  Copyright notice
-* 
+*
 *  (c) 1998-2003 Kasper Skaarhoj
 *  All rights reserved
 *
@@ -15,11 +15,11 @@
 *  Kasper Skaarhoj <kasper@typo3.com> together with TYPO3
 *
 *  Released under GNU/GPL (see license file in tslib/)
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-* 
+*
 *  This copyright notice MUST APPEAR in all copies of this script
 ***************************************************************/
 
@@ -39,7 +39,7 @@ function evalFunc()	{
 	this.outputObjValue = evalFunc_outputObjValue;
 	this.split = evalFunc_splitStr;
 	this.pol = evalFunc_pol;
-		
+
 	this.ltrim = evalFunc_ltrim;
 	this.btrim = evalFunc_btrim;
 	var today = new Date();
@@ -157,7 +157,7 @@ function evalFunc_parseDouble(value)	{
 	}
 	dec = this.getNumChars(dec)+'00';
 	theVal=this.parseInt(this.noSpace(theVal))+TS.decimalSign+dec.substr(0,2);
-	
+
 	return theVal;
 }
 function evalFunc_noSpace(value)	{
@@ -245,7 +245,7 @@ function evalFunc_input(type,inVal)	{
 	var theCmd = value.substr(0,1);
 	value = this.caseSwitch(type,value);
 	if (value=="") {
-		return "";	
+		return "";
 		return 0;	// Why would I ever return a zero??? (20/12/01)
 	}
 	switch (type)	{
@@ -459,7 +459,7 @@ function evalFunc_dummy (evallist,is_in,checkbox,checkboxValue) {
 	this.checkboxValue = checkboxValue;
 	this.checkbox = checkbox;
 }
-function evalFunc_splitStr(theStr1, delim, index) {	
+function evalFunc_splitStr(theStr1, delim, index) {
 	var theStr = ''+theStr1;
 	var lengthOfDelim = delim.length;
 	sPos = -lengthOfDelim;
@@ -469,7 +469,7 @@ function evalFunc_splitStr(theStr1, delim, index) {
 		if (sPos==-1)	{return null;}
 	}
 	ePos = theStr.indexOf(delim, sPos+lengthOfDelim);
-	if(ePos == -1)	{ePos = theStr.length;}	
+	if(ePos == -1)	{ePos = theStr.length;}
 	return (theStr.substring(sPos+lengthOfDelim,ePos));
 }
 

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Web>File: File listing
  *
  * $Id$
@@ -37,17 +37,17 @@
  *
  *
  *
- *   77: class SC_file_list 
- *  103:     function init()	
- *  130:     function menuConfig()	
- *  151:     function main()	
- *  288:     function printContent()	
+ *   77: class SC_file_list
+ *  103:     function init()
+ *  130:     function menuConfig()
+ *  151:     function main()
+ *  288:     function printContent()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 unset($MCONF);
 require ('mod/file/list/conf.php');
@@ -76,7 +76,7 @@ $BE_USER->modAccess($MCONF,1);
  */
 class SC_file_list {
 	var $MCONF=array();			// Module configuration
-	var $MOD_MENU=array();		
+	var $MOD_MENU=array();
 	var $MOD_SETTINGS=array();
 
 
@@ -92,8 +92,8 @@ class SC_file_list {
 	var $imagemode;	// Thumbnail mode.
 	var $cmd;
 	var $overwriteExistingFiles;
-	
-	
+
+
 	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
@@ -102,7 +102,7 @@ class SC_file_list {
 	 */
 	function init()	{
 		global $TYPO3_CONF_VARS,$FILEMOUNTS;
-			
+
 			// Setting GPvars:
 		$this->id = t3lib_div::_GP('id');
 		$this->pointer = t3lib_div::_GP('pointer');
@@ -110,14 +110,14 @@ class SC_file_list {
 		$this->imagemode = t3lib_div::_GP('imagemode');
 		$this->cmd = t3lib_div::_GP('cmd');
 		$this->overwriteExistingFiles = t3lib_div::_GP('overwriteExistingFiles');
-		
+
 			// Setting module name:
 		$this->MCONF = $GLOBALS['MCONF'];
 
 			// File operation object:
 		$this->basicFF = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->basicFF->init($FILEMOUNTS,$TYPO3_CONF_VARS['BE']['fileExtensions']);
-		
+
 			// Configure the "menu" - which is used internally to save the values of sorting, displayThumbs etc.
 		$this->menuConfig();
 	}
@@ -130,7 +130,7 @@ class SC_file_list {
 	function menuConfig()	{
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
-			// If empty string it's just a variable, that'll be saved. 
+			// If empty string it's just a variable, that'll be saved.
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'sort' => '',
@@ -138,7 +138,7 @@ class SC_file_list {
 			'displayThumbs' => '',
 			'clipBoard' => ''
 		);
-			
+
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 	}
@@ -150,16 +150,16 @@ class SC_file_list {
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TYPO3_CONF_VARS,$FILEMOUNTS;
-		
+
 			// Initialize the template object
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
-		
+
 			// Validating the input "id" (the path, directory!) and checking it against the mounts of the user.
 		$this->id = $this->basicFF->is_directory($this->id);
 		$access = $this->id && $this->basicFF->checkPathAgainstMounts($this->id.'/');
-		
+
 			// There there was access to this file path, continue, make the list
 		if ($access)	{
 
@@ -167,19 +167,19 @@ class SC_file_list {
 			$filelist = t3lib_div::makeInstance('fileList');
 			$filelist->backPath = $BACK_PATH;
 			$filelist->thumbs = $this->MOD_SETTINGS['displayThumbs']?1:$BE_USER->uc['thumbnailsByDefault'];
-			
+
 				// Create clipboard object and initialize that
 			$filelist->clipObj = t3lib_div::makeInstance('t3lib_clipboard');
 			$filelist->clipObj->fileMode=1;
 			$filelist->clipObj->initializeClipboard();
-	
+
 			$CB = t3lib_div::_GET('CB');
 			if ($this->cmd=='setCB') $CB['el'] = $filelist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'),t3lib_div::_POST('CBC')),'_FILE');
 			if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';
 			$filelist->clipObj->setCmd($CB);
 			$filelist->clipObj->cleanCurrent();
 			$filelist->clipObj->endClipboard();	// Saves
-			
+
 				// If the "cmd" was to delete files from the list (clipboard thing), do that:
 			if ($this->cmd=='delete')	{
 				$items = $filelist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),'_FILE',1);
@@ -198,11 +198,11 @@ class SC_file_list {
 					$fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 					$fileProcessor->start($FILE);
 					$fileProcessor->processData();
-					
+
 					$fileProcessor->printLogErrorMessages();
 				}
 			}
-		
+
 				// Start up filelisting object, include settings.
 			$this->pointer = t3lib_div::intInRange($this->pointer,0,100000);
 			$filelist->start($this->id,$this->pointer,$this->MOD_SETTINGS['sort'],$this->MOD_SETTINGS['reverse'],$this->MOD_SETTINGS['clipBoard']);
@@ -215,7 +215,7 @@ class SC_file_list {
 
 				// Write the footer
 			$filelist->writeBottom();
-		
+
 				// Set top JavaScript:
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 
@@ -232,19 +232,19 @@ class SC_file_list {
 			$this->doc->bodyTagAdditions = $CMparts[1];
 			$this->doc->JScode.=$CMparts[0];
 			$this->doc->postCode.= $CMparts[2];
-		
-						
+
+
 				// Create output
 			$this->content='';
 			$this->content.=$this->doc->startPage($LANG->getLL('files'));
 			$this->content.= '<form action="'.htmlspecialchars($filelist->listURL()).'" method="post" name="dblistForm">';
 			$this->content.= $filelist->HTMLcode;
 			$this->content.= '<input type="hidden" name="cmd" /></form>';
-			
+
 			if ($filelist->HTMLcode)	{	// Making listing options:
 
 				$this->content.='
-				
+
 					<!--
 						Listing options for clipboard and thumbnails
 					-->
@@ -253,10 +253,10 @@ class SC_file_list {
 
 					// Add "display thumbnails" checkbox:
 				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','').' '.$LANG->getLL('displayThumbs',1).'<br />';
-	
+
 					// Add clipboard button
 				$this->content.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'file_list.php','').' '.$LANG->getLL('clipBoard',1);
-					
+
 				$this->content.='
 					</div>
 				';

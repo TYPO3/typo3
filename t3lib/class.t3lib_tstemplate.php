@@ -70,8 +70,8 @@
  *
  *              SECTION: Functions for creating links
  * 1264:     function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')
- * 1385:     function getFromMPmap($pageId=0)
- * 1422:     function initMPmap_create($id,$MP_array=array(),$level=0)
+ * 1383:     function getFromMPmap($pageId=0)
+ * 1419:     function initMPmap_create($id,$MP_array=array(),$level=0)
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")

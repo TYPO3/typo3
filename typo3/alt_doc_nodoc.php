@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,14 +24,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * No-document script
  * This is used by eg. the Doc module if no documents is registered as "open" (a concept which is better known from the "classic backend"...)
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
- *  
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -39,10 +39,10 @@
  *
  *
  *
- *   72: class SC_alt_doc_nodoc 
- *   84:     function init()	
- *  108:     function main()	
- *  168:     function printContent()	
+ *   72: class SC_alt_doc_nodoc
+ *   84:     function init()
+ *  108:     function main()
+ *  168:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -70,12 +70,12 @@ if (t3lib_extMgm::isLoaded('taskcenter') && t3lib_extMgm::isLoaded('taskcenter_r
  * @subpackage core
  */
 class SC_alt_doc_nodoc {
-	
+
 		// Internal:
 	var $doc;			// Document template object
 	var $content;		// Content accumulation
 	var $loadModules;	// Object for backend modules.
-	
+
 	/**
 	 * Constructor, initialize.
 	 *
@@ -90,7 +90,7 @@ class SC_alt_doc_nodoc {
 		$this->doc->bodyTagMargins['x']=5;
 		$this->doc->bodyTagMargins['y']=5;
 		$this->doc->backPath = $BACK_PATH;
-		
+
 			// Start the page:
 		$this->content='';
 		$this->content.=$this->doc->startPage('TYPO3 Edit Document');
@@ -109,18 +109,18 @@ class SC_alt_doc_nodoc {
 		global $BE_USER,$LANG,$BACK_PATH;
 
 		$msg=array();
-		
+
 			// Add a message, telling that no documents were open...
 		$msg[]='<p>'.$LANG->getLL('noDocuments_msg',1).'</p><br />';
 
 			// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($BE_USER->getTSConfigVal('options.overridePageModule'));
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
-		
+
 			// Perform some acccess checks:
 		$a_wl = $BE_USER->check('modules','web_list');
 		$a_wp = t3lib_extMgm::isLoaded('cms') && $BE_USER->check('modules',$pageModule);
-		
+
 
 			// Finding module images: PAGE
 		$imgFile = $LANG->moduleLabels['tabs_images']['web_layout_tab'];
@@ -132,7 +132,7 @@ class SC_alt_doc_nodoc {
 		$imgInfo = @getimagesize($imgFile);
 		$img_web_list = is_array($imgInfo) ? '<img src="../'.substr($imgFile,strlen(PATH_site)).'" '.$image[3].' alt="" />' : '';
 
-		
+
 			// If either the Web>List OR Web>Page module are active, show the little message with links to those modules:
 		if ($a_wl || $a_wp)	{
 			$msg_2 = array();
@@ -145,7 +145,7 @@ class SC_alt_doc_nodoc {
 			}
 			$msg[]='<p>'.sprintf($LANG->getLL('noDocuments_msg2',1),implode(' ',$msg_2)).'</p><br />';
 		}
-		
+
 			// If the task center is loaded and the module of recent documents is, then display the list of the most recently edited documents:
 		if ($BE_USER->check('modules','user_task') && t3lib_extMgm::isLoaded('taskcenter_recent'))	{
 			$modObj = t3lib_div::makeInstance('tx_taskcenterrecent');
@@ -155,7 +155,7 @@ class SC_alt_doc_nodoc {
 
 			$msg[]='<p>'.$LANG->getLL('noDocuments_msg3',1).'</p><br />'.$modObj->_renderRecent();
 		}
-		
+
 			// Adding the content:
 		$this->content.=$this->doc->section($LANG->getLL('noDocuments'),implode(' ',$msg),0,1);
 	}

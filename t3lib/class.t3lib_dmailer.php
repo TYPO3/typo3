@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Class, doing the sending of Direct-mails, eg. through a cron-job
  * Belongs to/See "direct_mail" extension.
  *
@@ -37,21 +37,21 @@
  *
  *
  *
- *   86: class t3lib_dmailer extends t3lib_htmlmail 
- *   97:     function dmailer_prepare($row)	
- *  145:     function dmailer_sendAdvanced($recipRow,$tableNameChar)	
- *  217:     function dmailer_sendSimple($addressList)	
- *  239:     function dmailer_getBoundaryParts($cArray,$userCategories)	
- *  261:     function dmailer_masssend($query_info,$table,$mid)	
- *  297:     function dmailer_masssend_list($query_info,$mid)	
- *  358:     function shipOfMail($mid,$recipRow,$tKey)	
- *  376:     function convertFields($recipRow)	
- *  391:     function dmailer_setBeginEnd($mid,$key)	
- *  415:     function dmailer_howManySendMails($mid,$rtbl='')	
- *  429:     function dmailer_isSend($mid,$rid,$rtbl)	
- *  441:     function dmailer_getSentMails($mid,$rtbl)	
- *  460:     function dmailer_addToMailLog($mid,$rid,$size,$parsetime,$html)	
- *  482:     function runcron()	
+ *   86: class t3lib_dmailer extends t3lib_htmlmail
+ *   97:     function dmailer_prepare($row)
+ *  145:     function dmailer_sendAdvanced($recipRow,$tableNameChar)
+ *  216:     function dmailer_sendSimple($addressList)
+ *  238:     function dmailer_getBoundaryParts($cArray,$userCategories)
+ *  260:     function dmailer_masssend($query_info,$table,$mid)
+ *  296:     function dmailer_masssend_list($query_info,$mid)
+ *  357:     function shipOfMail($mid,$recipRow,$tKey)
+ *  375:     function convertFields($recipRow)
+ *  390:     function dmailer_setBeginEnd($mid,$key)
+ *  414:     function dmailer_howManySendMails($mid,$rtbl='')
+ *  428:     function dmailer_isSend($mid,$rid,$rtbl)
+ *  440:     function dmailer_getSentMails($mid,$rtbl)
+ *  459:     function dmailer_addToMailLog($mid,$rid,$size,$parsetime,$html)
+ *  481:     function runcron()
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -63,17 +63,17 @@
 /**
  *
  * SETTING UP a cron job on a UNIX box for distribution:
- * 
+ *
  * Write at the shell:
- * 
+ *
  * crontab -e
- * 
- * 
+ *
+ *
  * Then enter this line follow by a line-break:
- * 
+ *
  * * * * * /www/[path-to-your-typo3-site]/typo3/mod/web/dmail/dmailerd.phpcron
- * 
- * Every minute the cronjob checks if there are mails in the queue. 
+ *
+ * Every minute the cronjob checks if there are mails in the queue.
  * If there are mails, 100 is sent at a time per job.
  */
 /**
@@ -114,7 +114,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 		$this->dmailer['messageID'] = $this->messageid;
 		$this->dmailer['sys_dmail_uid'] = $sys_dmail_uid;
 		$this->dmailer['sys_dmail_rec'] = $row;
-	
+
 		$this->dmailer['boundaryParts_html'] = explode($this->dmailer['sectionBoundary'], '_END-->'.$this->dmailer['html_content']);
 		while(list($bKey,$bContent)=each($this->dmailer['boundaryParts_html']))	{
 			$this->dmailer['boundaryParts_html'][$bKey] = explode('-->',$bContent,2);
@@ -130,7 +130,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 		while(list($bKey,$bContent)=each($this->dmailer['boundaryParts_plain']))	{
 			$this->dmailer['boundaryParts_plain'][$bKey] = explode('-->',$bContent,2);
 		}
-		
+
 		$this->flag_html = $this->theParts['html']['content'] ? 1 : 0;
 		$this->flag_plain = $this->theParts['plain']['content'] ? 1 : 0;
 	}
@@ -168,7 +168,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 				$this->theParts['html']['content'] = $this->encodeMsg($tempContent_HTML);
 				$returnCode|=1;
 			} else $this->theParts['html']['content'] = '';
-	
+
 				// Plain
 			if ($this->flag_plain)		{
 				$tempContent_Plain = $this->dmailer_getBoundaryParts($this->dmailer['boundaryParts_plain'],$recipRow['module_sys_dmail_category']);
@@ -183,7 +183,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 				$tempContent_Plain = str_replace('###SYS_TABLE_NAME###', $tableNameChar, $tempContent_Plain);	// Put in the tablename of the userinformation
 				$tempContent_Plain = str_replace('###SYS_MAIL_ID###', $this->dmailer['sys_dmail_uid'], $tempContent_Plain);	// Put in the uid of the mail-record
 				$tempContent_Plain = str_replace('###SYS_AUTHCODE###', $authCode, $tempContent_Plain);
-				
+
 				if (trim($this->dmailer['sys_dmail_rec']['long_link_rdct_url']))	{
 					$tempContent_Plain = t3lib_div::substUrlsInPlainText($tempContent_Plain,$this->dmailer['sys_dmail_rec']['long_link_mode']?'all':'76',trim($this->dmailer['sys_dmail_rec']['long_link_rdct_url']));
 				}
@@ -195,12 +195,12 @@ class t3lib_dmailer extends t3lib_htmlmail {
 				// Set content
 			$this->Xid = $midRidId.'-'.md5($midRidId);
 			$this->returnPath = str_replace('###XID###',$midRidId,$this->dmailer['sys_dmail_rec']['return_path']);
-			
+
 			$this->part=0;
 			$this->setHeaders();
 			$this->setContent();
 			$this->setRecipient($recipRow['email']);
-			
+
 			$this->message = str_replace($this->dmailer['messageID'], $uniqMsgId, $this->message);	// Put in the unique message id in whole message body
 			$this->sendtheMail();
 		}
@@ -220,7 +220,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 		if ($this->theParts['plain']['content'])		{
 			$this->theParts['plain']['content'] = $this->encodeMsg($this->dmailer_getBoundaryParts($this->dmailer['boundaryParts_plain'],-1));
 		} else $this->theParts['plain']['content'] = '';
-		
+
 		$this->setHeaders();
 		$this->setContent();
 		$this->setRecipient($addressList);
@@ -358,7 +358,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 		if (!$this->dmailer_isSend($mid,$recipRow['uid'],$tKey))	{
 			$pt = t3lib_div::milliseconds();
 			$recipRow=$this->convertFields($recipRow);
-			
+
 //			debug('->'.$recipRow['uid'],1);
 //			$recipRow['email']='kasper@typo3.com';
 			$rC=$this->dmailer_sendAdvanced($recipRow,$tKey);
@@ -458,7 +458,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 	 */
 	function dmailer_addToMailLog($mid,$rid,$size,$parsetime,$html)	{
 		$temp_recip = explode('_',$rid);
-		
+
 		$insertFields = array(
 			'mid' => intval($mid),
 			'rtbl' => $temp_recip[0],
@@ -469,7 +469,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 			'parsetime' => $parsetime,
 			'html_sent' => intval($html)
 		);
-		
+
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_dmail_maillog', $insertFields);
 	}
 
@@ -486,7 +486,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 			die ($GLOBALS['TYPO3_DB']->sql_error());
 		}
 		$this->logArray[]='Invoked at '.date('h:i:s d-m-Y');
-		
+
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$this->logArray[]='sys_dmail record '.$row['uid'].", '".$row['subject']."' processed...";
 			$this->dmailer_prepare($row);
@@ -498,7 +498,7 @@ class t3lib_dmailer extends t3lib_htmlmail {
 				$finished = $this->dmailer_masssend($query_info,'fe_users',$row['uid']);
 			}*/
 			$finished = $this->dmailer_masssend_list($query_info,$row['uid']);
-			
+
 			if ($finished)	{$this->dmailer_setBeginEnd($row['uid'],'end');}
 		} else {
 			$this->logArray[]='Nothing to do.';

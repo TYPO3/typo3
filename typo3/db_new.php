@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -41,29 +41,29 @@
  *
  *
  *
- *   90: class localPageTree extends t3lib_pageTree 
- *   99:     function wrapIcon($icon,$row)	
- *  110:     function expandNext($id)	
+ *   90: class localPageTree extends t3lib_pageTree
+ *   99:     function wrapIcon($icon,$row)
+ *  110:     function expandNext($id)
  *
  *
- *  128: class SC_db_new 
- *  157:     function init()	
- *  217:     function main()	
- *  274:     function pagesOnly()	
- *  289:     function regularNew()	
- *  432:     function printContent()	
- *  446:     function linkWrap($code,$table,$pid,$addContentTable=0)	
- *  466:     function isTableAllowedForThisPage($pid_row, $checkTable)	
- *  496:     function showNewRecLink($table,$allowedNewTables='')	
+ *  128: class SC_db_new
+ *  157:     function init()
+ *  217:     function main()
+ *  274:     function pagesOnly()
+ *  289:     function regularNew()
+ *  432:     function printContent()
+ *  446:     function linkWrap($code,$table,$pid,$addContentTable=0)
+ *  466:     function isTableAllowedForThisPage($pid_row, $checkTable)
+ *  496:     function showNewRecLink($table,$allowedNewTables='')
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
 
- 
+
+
+
 $BACK_PATH='';
 require ('init.php');
 require ('template.php');
@@ -137,7 +137,7 @@ class SC_db_new {
 	var $allowedNewTables_pid;
 	var $code;
 	var $R_URI;
-	
+
 		// Internal, static: GPvar
 	var $id;			// see init()
 	var $returnUrl;		// Return url.
@@ -146,9 +146,9 @@ class SC_db_new {
 		// Internal
 	var $perms_clause;	// see init()
 	var $doc;			// see init()
-	var $content;		// Accumulated HTML output 
+	var $content;		// Accumulated HTML output
 
-	
+
 	/**
 	 * Constructor function for the class
 	 *
@@ -164,35 +164,35 @@ class SC_db_new {
 		$this->id = intval(t3lib_div::_GP('id'));	// The page id to operate from
 		$this->returnUrl = t3lib_div::_GP('returnUrl');
 		$this->pagesOnly = t3lib_div::_GP('pagesOnly');
-		
+
 			// Create instance of template class for output
 		$this->doc = t3lib_div::makeInstance('smallDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->JScode='';
-		
+
 			// Creating content
 		$this->content='';
 		$this->content.=$this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
 		$this->content.=$this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
-		
+
 			// Id a positive id is supplied, ask for the page record with permission information contained:
 		if ($this->id > 0)	{
 			$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		}
-		
+
 			// If a page-record was returned, the user had read-access to the page.
 		if ($this->pageinfo['uid'])	{
 				// Get record of parent page
 			$this->pidInfo=t3lib_BEfunc::getRecord('pages',$this->pageinfo['pid']);
 				// Checking the permissions for the user with regard to the parent page: Can he create new pages, new content record, new page after?
-			if ($BE_USER->doesUserHaveAccess($this->pageinfo,8))	{	
+			if ($BE_USER->doesUserHaveAccess($this->pageinfo,8))	{
 				$this->newPagesInto=1;
 			}
 			if ($BE_USER->doesUserHaveAccess($this->pageinfo,16))	{
 				$this->newContentInto=1;
 			}
-		
+
 			if (($BE_USER->isAdmin()||is_array($this->pidInfo)) && $BE_USER->doesUserHaveAccess($this->pidInfo,8))	{
 				$this->newPagesAfter=1;
 			}
@@ -222,11 +222,11 @@ class SC_db_new {
 				// Acquiring TSconfig for this module/current page:
 			$this->web_list_modTSconfig = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
 			$this->allowedNewTables = t3lib_div::trimExplode(',',$this->web_list_modTSconfig['properties']['allowedNewTables'],1);
-		
+
 				// Acquiring TSconfig for this module/parent page:
 			$this->web_list_modTSconfig_pid = t3lib_BEfunc::getModTSconfig($this->pageinfo['pid'],'mod.web_list');
 			$this->allowedNewTables_pid = t3lib_div::trimExplode(',',$this->web_list_modTSconfig_pid['properties']['allowedNewTables'],1);
-		
+
 				// More init:
 			if (!$this->showNewRecLink('pages'))	{
 				$this->newPagesInto=0;
@@ -234,25 +234,25 @@ class SC_db_new {
 			if (!$this->showNewRecLink('pages',$this->allowedNewTables_pid))	{
 				$this->newPagesAfter=0;
 			}
-		
-		
+
+
 				// Set header-HTML and return_url
 			$this->code=$this->doc->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />
 			';
 			$this->R_URI=$this->returnUrl;
-		
+
 				// If CSH is enabled (Context Sensitive Help), load descriptions for 'pages' in any case:
 			if ($BE_USER->uc['edit_showFieldHelp'])	{
 				$LANG->loadSingleTableDescription('pages');
 			}
-		
+
 				// GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
 			if (!$this->pagesOnly)	{	// Regular new element:
 				$this->regularNew();
 			} elseif ($this->showNewRecLink('pages')) {	// Pages only wizard
 				$this->pagesOnly();
 			}
-		
+
 				// Create go-back link.
 			if ($this->R_URI)	{
 				$this->code.='<br />
@@ -291,7 +291,7 @@ class SC_db_new {
 
 			// Slight spacer from header:
 		$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/halfline.gif','width="18" height="8"').' alt="" /><br />';
-	
+
 			// New pages INSIDE this pages
 		if ($this->newPagesInto && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $BE_USER->check('tables_modify','pages'))	{
 
@@ -330,10 +330,10 @@ class SC_db_new {
 		if ($this->newContentInto)	{
 			if (is_array($TCA))	{
 				foreach($TCA as $t => $v)	{
-					if ($t!='pages' 
+					if ($t!='pages'
 							&& $this->showNewRecLink($t)
-							&& $this->isTableAllowedForThisPage($this->pageinfo, $t) 
-							&& $BE_USER->check('tables_modify',$t) 
+							&& $this->isTableAllowedForThisPage($this->pageinfo, $t)
+							&& $BE_USER->check('tables_modify',$t)
 							&& (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel']==-1)
 							)	{
 
@@ -364,7 +364,7 @@ class SC_db_new {
 								// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
 							$pathToWizard = (t3lib_extMgm::isLoaded($overrideExt)) ? (t3lib_extMgm::extRelPath($overrideExt).'mod1/db_new_content_el.php') : 'sysext/cms/layout/db_new_content_el.php';
-							
+
 							$href = $pathToWizard.'?id='.$this->id.'&returnUrl='.rawurlencode($this->R_URI);
 							$this->code.='<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
 										'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/joinbottom.gif','width="18" height="16"').' alt="" />'.
@@ -406,11 +406,11 @@ class SC_db_new {
 			$this->code.='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/stopper.gif','width="18" height="16"').' alt="" /><br />
 			';
 		}
-		
+
 			// Create a link to the new-pages wizard.
 		if ($this->showNewRecLink('pages'))	{
 			$this->code.='
-				
+
 				<!--
 					Link; create new page:
 				-->
@@ -445,9 +445,9 @@ class SC_db_new {
 	 */
 	function linkWrap($code,$table,$pid,$addContentTable=0)	{
 		$params = '&edit['.$table.']['.$pid.']=new'.
-			($table=='pages' 
-				&& $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] 
-				&& isset($GLOBALS['TCA'][$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']]) 
+			($table=='pages'
+				&& $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']
+				&& isset($GLOBALS['TCA'][$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']])
 				&& $addContentTable	?
 				'&edit['.$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'].'][prev]=new&returnNewPageId=1'	:
 				''

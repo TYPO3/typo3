@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Document for viewing the online help texts, also known as TCA_DESCR.
  * See Inside TYPO3 for details.
  *
@@ -39,16 +39,16 @@
  *
  *
  *
- *   78: class SC_view_help 
- *   97:     function init()	
- *  119:     function main()	
- *  173:     function printContent()	
- *  184:     function make_seeAlso($value,$anchorTable='')	
- *  222:     function printImage($image,$descr)	
- *  244:     function headerLine($str,$type=0)	
- *  265:     function prepareContent($str)	
- *  280:     function printItem($table,$field,$anchors=0)	
- *  316:     function getTableFieldNames($table,$field)	
+ *   78: class SC_view_help
+ *   97:     function init()
+ *  119:     function main()
+ *  173:     function printContent()
+ *  184:     function make_seeAlso($value,$anchorTable='')
+ *  222:     function printImage($image,$descr)
+ *  244:     function headerLine($str,$type=0)
+ *  265:     function prepareContent($str)
+ *  280:     function printItem($table,$field,$anchors=0)
+ *  316:     function getTableFieldNames($table,$field)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -84,11 +84,11 @@ class SC_view_help {
 	var $limitAccess;	// If set access to fields and tables is checked. Should be done for true database tables.
 	var $table;			// The "table" key
 	var $field;			// The "field" key
-	
+
 		// Internal, static: GPvar:
 	var $tfID;			// Table/FIeld id.
 	var $back;			// Back (previous tfID)
-	
+
 	/**
 	 * Initialize the class for various input etc.
 	 *
@@ -96,7 +96,7 @@ class SC_view_help {
 	 */
 	function init()	{
 		global $LANG;
-		
+
 			// Setting GPvars:
 		$this->tfID = t3lib_div::_GP('tfID');
 		$this->back = t3lib_div::_GP('back');
@@ -106,11 +106,11 @@ class SC_view_help {
 
 			// Load descriptions for table $this->table
 		$LANG->loadSingleTableDescription($this->table);
-		
+
 			// limitAccess is checked if the $this->table really IS a table.
 		$this->limitAccess = !isset($TCA[$this->table]) ? 0 : 1;
 	}
-	
+
 	/**
 	 * Main function, rendering the display
 	 *
@@ -118,13 +118,13 @@ class SC_view_help {
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$TCA_DESCR,$TCA,$TBE_TEMPLATE;
-		
+
 			// Start HTML output accumulation:
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='typo3-view-help';
 		$this->content.=$TBE_TEMPLATE->startPage($LANG->getLL('title'));
 
-			// If ALL fields is supposed to be shown:		
+			// If ALL fields is supposed to be shown:
 		if ($this->field=='*')	{
 				// Load table TCA
 			t3lib_div::loadTCA($this->table);
@@ -145,11 +145,11 @@ class SC_view_help {
 						}
 					}
 				}
-				
+
 				if (!strcmp($parts,""))	unset($parts[0]);
 				$this->content.= implode('<br />',$parts);
 			}
-		} else {	
+		} else {
 				// ... otherwise show only single field:
 			$this->content.=$this->printItem($this->table,$this->field);
 
@@ -164,7 +164,7 @@ class SC_view_help {
 			// End page:
 		$this->content.=$TBE_TEMPLATE->endPage();
 	}
-	
+
 	/**
 	 * Outputting the accumulated content to screen
 	 *
@@ -173,7 +173,7 @@ class SC_view_help {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Make seeAlso links from $value
 	 *
@@ -196,7 +196,7 @@ class SC_view_help {
 				if (substr($iPUrl[1],0,4)=='http')	{
 					$lines[]='<a href="'.htmlspecialchars($iPUrl[1]).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
 				} else {
-					// "table" reference	
+					// "table" reference
 					t3lib_div::loadTCA($iP[0]);
 					if (!isset($TCA[$iP[0]]) || (is_array($TCA[$iP[0]]['columns'][$iP[1]]) && (!$this->limitAccess || ($BE_USER->check('tables_select',$iP[0]) && (!$TCA[$iP[0]]['columns'][$iP[1]]['exclude'] || $BE_USER->check('non_exclude_fields',$iP[0].':'.$iP[1]))))))	{	// Checking read access:
 						list($tableName,$fieldName) = $this->getTableFieldNames($iP[0],$iP[1]);
@@ -211,7 +211,7 @@ class SC_view_help {
 		}
 		return implode('<br />',$lines);
 	}
-	
+
 	/**
 	 * Will return an image tag with description in italics.
 	 *
@@ -252,10 +252,10 @@ class SC_view_help {
 				';
 			break;
 		}
-		
+
 		return $str;
 	}
-	
+
 	/**
 	 * Returns prepared content
 	 *
@@ -267,7 +267,7 @@ class SC_view_help {
 		return '<p>'.nl2br(trim(strip_tags($str,$this->allowedHTML))).'</p>
 		';
 	}
-	
+
 	/**
 	 * Prints a single $table/$field information piece
 	 * If $anchors is set, then seeAlso references to the same table will be page-anchors, not links.
@@ -286,7 +286,7 @@ class SC_view_help {
 		if ($table && (!$field || is_array($TCA_DESCR[$table]['columns'][$field])))	{
 				// Make seeAlso references.
 			$seeAlsoRes = $this->make_seeAlso($TCA_DESCR[$table]['columns'][$field]['seeAlso'],$anchors?$table:'');
-			
+
 				// Get Human Readable table and field labels
 			list($tableName,$fieldName) = $this->getTableFieldNames($table,$field);
 
@@ -304,7 +304,7 @@ class SC_view_help {
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * Returns labels for $table and $field.
 	 * If $table is "_MOD_" prefixed, the part after "_MOD_" is returned (non-tables, fx. modules)
@@ -315,11 +315,11 @@ class SC_view_help {
 	 */
 	function getTableFieldNames($table,$field)	{
 		global $TCA, $TCA_DESCR;
-			$tableName = is_array($TCA_DESCR[$table]['columns']['']) && $TCA_DESCR[$table]['columns']['']['alttitle'] ? 
-							$TCA_DESCR[$table]['columns']['']['alttitle'] : 
+			$tableName = is_array($TCA_DESCR[$table]['columns']['']) && $TCA_DESCR[$table]['columns']['']['alttitle'] ?
+							$TCA_DESCR[$table]['columns']['']['alttitle'] :
 							(isset($TCA[$table]) ? $TCA[$table]['ctrl']['title'] : ereg_replace('^_MOD_','',$table));
-			$fieldName = is_array($TCA_DESCR[$table]['columns'][$field]) && $TCA_DESCR[$table]['columns'][$field]['alttitle'] ? 
-							$TCA_DESCR[$table]['columns'][$field]['alttitle'] : 
+			$fieldName = is_array($TCA_DESCR[$table]['columns'][$field]) && $TCA_DESCR[$table]['columns'][$field]['alttitle'] ?
+							$TCA_DESCR[$table]['columns'][$field]['alttitle'] :
 							(isset($TCA[$table])&&isset($TCA[$table]['columns'][$field]) ? $TCA[$table]['columns'][$field]['label'] : $field);
 		return array($tableName,$fieldName);
 	}

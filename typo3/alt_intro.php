@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,12 +24,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * 'About modules' script - the default start-up module.
  * Will display the list of main- and sub-modules available to the user.
  * Each module will be show with description and a link to the module.
  *
- * $Id$ 
+ * $Id$
  * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
  * XHTML compliant
  *
@@ -40,17 +40,17 @@
  *
  *
  *
- *   75: class SC_alt_intro 
- *   84:     function init()	
- *   97:     function main()	
- *  166:     function printContent()	
+ *   75: class SC_alt_intro
+ *   84:     function init()
+ *   97:     function main()
+ *  166:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 require ('init.php');
 require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
@@ -75,7 +75,7 @@ include ('sysext/lang/locallang_alt_intro.php');
 class SC_alt_intro {
 	var $loadModules;
 	var $content;
-	
+
 	/**
 	 * Initialization of script class
 	 *
@@ -97,18 +97,18 @@ class SC_alt_intro {
 	function main()	{
 		global $BE_USER,$LANG,$TYPO3_CONF_VARS;
 		global $TBE_TEMPLATE,$TYPO_VERSION;
-		
+
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
-			
+
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass=$TBE_TEMPLATE->bodyTagId;
 		$this->content.=$TBE_TEMPLATE->startPage('About modules');
 
-			
+
 			// COPYRIGHT NOTICE:
 		$loginCopyrightWarrantyProvider = strip_tags(trim($TYPO3_CONF_VARS['SYS']['loginCopyrightWarrantyProvider']));
 		$loginCopyrightWarrantyURL = strip_tags(trim($TYPO3_CONF_VARS['SYS']['loginCopyrightWarrantyURL']));
-		
+
 		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10)	{
 			$warrantyNote='Warranty is supplied by '.htmlspecialchars($loginCopyrightWarrantyProvider).'; <a href="'.htmlspecialchars($loginCopyrightWarrantyURL).'" target="_blank">click for details.</a>';
 		} else {
@@ -131,9 +131,9 @@ class SC_alt_intro {
 			$cNotice,
 			$LANG->getLL('introtext2')
 			);
-		
 
-		
+
+
 
 			// Printing the description of the modules available
 		$this->content.=$alt_menuObj->topMenu($this->loadModules->modules,0,'',1);

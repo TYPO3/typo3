@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -40,19 +40,19 @@
  *
  *
  *
- *   88: class tslib_search 
- *  130:     function register_tables_and_columns($requestedCols,$allowedCols)	
- *  171:     function explodeCols($in)	
- *  196:     function register_and_explode_search_string($sword)	
- *  229:     function split($origSword, $specchars='+-')	
- *  260:     function quotemeta($str)	
- *  274:     function build_search_query($endClause) 
- *  360:     function build_search_query_for_searchwords()	
- *  402:     function get_operator($operator)	
- *  425:     function count_query() 
- *  438:     function execute_query() 
- *  451:     function get_searchwords()	
- *  466:     function get_searchwordsArray()	
+ *   88: class tslib_search
+ *  130:     function register_tables_and_columns($requestedCols,$allowedCols)
+ *  171:     function explodeCols($in)
+ *  196:     function register_and_explode_search_string($sword)
+ *  229:     function split($origSword, $specchars='+-', $delchars='+-.,')
+ *  272:     function quotemeta($str)
+ *  288:     function build_search_query($endClause)
+ *  374:     function build_search_query_for_searchwords()
+ *  416:     function get_operator($operator)
+ *  439:     function count_query()
+ *  452:     function execute_query()
+ *  465:     function get_searchwords()
+ *  480:     function get_searchwordsArray()
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -60,23 +60,23 @@
  */
 
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Search class used for the content object SEARCHRESULT
  *
@@ -114,9 +114,9 @@ class tslib_search {
 	var $res_offset = 0;	// How many rows to offset from the beginning
 	var $res_shows = 20;	// How many results to show (0 = no limit)
 	var $res_count;			// Intern: How many results, there was last time (with the exact same searchstring.
-	
+
 	var $pageIdList='';		// List of pageIds.
-	
+
 	var $listOfSearchFields ='';
 
 	/**
@@ -130,7 +130,7 @@ class tslib_search {
 	function register_tables_and_columns($requestedCols,$allowedCols)	{
 		$rCols=$this->explodeCols($requestedCols);
 		$aCols=$this->explodeCols($allowedCols);
-		
+
 		foreach ($rCols as $k => $v)	{
 			$rCols[$k]=trim($v);
 			if (in_array($rCols[$k], $aCols))	{
@@ -286,7 +286,7 @@ class tslib_search {
 	 * @see	tslib_cObj::SEARCHRESULT()
 	 */
 	function build_search_query($endClause) {
-			
+
 		if (is_array($this->tables))	{
 			$tables = $this->tables;
 			$primary_table = '';
@@ -307,7 +307,7 @@ class tslib_search {
 					'ORDERBY' => '',
 					'LIMIT' => '',
 				);
-			
+
 					// Find tables / field names to select:
 				$fieldArray = array();
 				$tableArray = array();
@@ -322,10 +322,10 @@ class tslib_search {
 				}
 				$this->queryParts['SELECT'] = implode(',',$fieldArray);
 				$this->queryParts['FROM'] = implode(',',$tableArray);
-				
+
 					// Set join WHERE parts:
 				$whereArray = array();
-				
+
 				$primary_table_and_key = $primary_table.'.'.$tables[$primary_table]['primary_key'];
 				$primKeys = Array();
 				foreach($tables as $key => $val)	{
@@ -352,7 +352,7 @@ class tslib_search {
 
 					// Implode where clauses:
 				$this->queryParts['WHERE'] = implode(' AND ',$whereArray);
-				
+
 					// Group by settings:
 				if ($this->group_by)	{
 					if ($this->group_by == 'PRIMARY_KEY')	{
@@ -375,7 +375,7 @@ class tslib_search {
 
 		if (is_array($this->sword_array))	{
 			$main_query_part = array();
-			
+
 			foreach($this->sword_array as $key => $val)	{
 				$s_sword = $this->sword_array[$key]['sword'];
 
@@ -398,7 +398,7 @@ class tslib_search {
 					$main_query_part[] = '('.implode(' OR ',$sub_query_part).')';
 				}
 			}
-			
+
 			if (count($main_query_part))	{
 				unset($main_query_part[0]);	// Remove first part anyways.
 				return implode(' ',$main_query_part);
@@ -485,7 +485,7 @@ class tslib_search {
 		}
 		return $swords;
 	}
-}	   
+}
 
 
 

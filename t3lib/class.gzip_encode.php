@@ -9,7 +9,7 @@
 // It will calculate the effects of this class on a page.
 // compression level, cpu time, download time, etc
 
-// Note: this may better for some sites: 
+// Note: this may better for some sites:
 // http://www.remotecommunications.com/apache/mod_gzip/
 // I've read that the above doesn't work with php output.
 
@@ -18,12 +18,12 @@ class gzip_encode {
      * gzip_encode - a class to gzip encode php output
      *
      * By Sandy McArthur, Jr. <Leknor@Leknor.com>
-     * 
+     *
      * Copyright 2001 (c) All Rights Reserved, All Responsibility Yours.
      *
      * This code is released under the GNU LGPL Go read it over here:
      * http://www.gnu.org/copyleft/lesser.html
-     * 
+     *
      * I do make one optional request, I would like an account on or a
      * copy of where this code is used. If that is not possible then
      * an email would be cool.
@@ -203,7 +203,7 @@ class gzip_encode {
 
 	echo $gzdata;
     }
-   
+
 
     /*
      * gzip_accepted() - Test headers for Accept-Encoding: gzip
@@ -311,7 +311,7 @@ class gzip_encode {
 	ereg("averag(es|e): ([0-9][.][0-9][0-9]), ([0-9][.][0-9][0-9]), ([0-9][.][0-9][0-9]*)", $buffer, $load);
 
 	return max((float)$load[2], (float)$load[3], (float)$load[4]);
-    } 
+    }
 }
 
 ?>

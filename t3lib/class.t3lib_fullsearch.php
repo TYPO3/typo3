@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
  * However the class has a general principle in it which may be used in the web/export module.
  *
@@ -37,29 +37,29 @@
  *
  *
  *
- *   83: class t3lib_fullsearch 
- *   98:     function form()	
- *  112:     function makeStoreControl()	
- *  151:     function initStoreArray()	
- *  171:     function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)	
- *  188:     function addToStoreQueryConfigs($storeQueryConfigs,$index)	
- *  204:     function saveQueryInAction($uid)	
- *  251:     function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)	
- *  267:     function procesStoreControl()	
- *  339:     function queryMaker()	
- *  402:     function getQueryResultCode($mQ,$res,$table)	
- *  509:     function csvValues($row,$delim=",",$quote='"')	
- *  519:     function tableWrap($str)	
- *  528:     function search()	
- *  583:     function resultRowDisplay($row,$conf,$table)	
- *  606:     function resultRowTitles($row,$conf,$table)	
+ *   83: class t3lib_fullsearch
+ *   98:     function form()
+ *  112:     function makeStoreControl()
+ *  151:     function initStoreArray()
+ *  171:     function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)
+ *  188:     function addToStoreQueryConfigs($storeQueryConfigs,$index)
+ *  204:     function saveQueryInAction($uid)
+ *  251:     function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)
+ *  267:     function procesStoreControl()
+ *  339:     function queryMaker()
+ *  402:     function getQueryResultCode($mQ,$res,$table)
+ *  509:     function csvValues($row,$delim=",",$quote='"')
+ *  519:     function tableWrap($str)
+ *  528:     function search()
+ *  583:     function resultRowDisplay($row,$conf,$table)
+ *  606:     function resultRowTitles($row,$conf,$table)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 
 
@@ -85,7 +85,7 @@ class t3lib_fullsearch {
 	var $downloadScript = "index.php";
 	var $formW=48;
 	var $noDownloadB=0;
-	
+
 
 
 
@@ -100,7 +100,7 @@ class t3lib_fullsearch {
 		Search Word:<BR>
 		<input type="text" name="SET[sword]" value="'.htmlspecialchars($GLOBALS["SOBE"]->MOD_SETTINGS["sword"]).'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(20).'><input type="submit" name="submit" value="Search All Records">
 		';
-		
+
 		return $out;
 	}
 
@@ -113,14 +113,14 @@ class t3lib_fullsearch {
 			// Load/Save
 		$storeArray = $this->initStoreArray();
 		$cur="";
-		
+
 			// Store Array:
 		$opt=array();
 		reset($storeArray);
 		while(list($k,$v)=each($storeArray))	{
 			$opt[]='<option value="'.$k.'"'.(!strcmp($cur,$v)?" selected":"").'>'.htmlspecialchars($v).'</option>';
 		}
-		
+
 			// Actions:
 		if (t3lib_extMgm::isLoaded("sys_action"))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', 'type=2', '', 'title');
@@ -136,11 +136,11 @@ class t3lib_fullsearch {
 		$TDparams=' nowrap="nowrap" class="bgColor4"';
 		$tmpCode='
 		<table border=0 cellpadding=3 cellspacing=1>
-		<tr'.$TDparams.'><td><select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">'.implode(chr(10),$opt).'</select><input type="submit" name="storeControl[LOAD]" value="Load"></td></tr>		
+		<tr'.$TDparams.'><td><select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">'.implode(chr(10),$opt).'</select><input type="submit" name="storeControl[LOAD]" value="Load"></td></tr>
 		<tr'.$TDparams.'><td nowrap><input name="storeControl[title]" value="" type="text" max=80'.$GLOBALS["SOBE"]->doc->formWidth().'><input type="submit" name="storeControl[SAVE]" value="Save" onClick="if (document.forms[0][\'storeControl[STORE]\'].options[document.forms[0][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing query in this action?\');"><input type="submit" name="storeControl[REMOVE]" value="Remove"></td></tr>
 		</table>
 		';
-		return $tmpCode;	
+		return $tmpCode;
 	}
 
 	/**
@@ -154,7 +154,7 @@ class t3lib_fullsearch {
 		);
 
 		$savedStoreArray = unserialize($GLOBALS["SOBE"]->MOD_SETTINGS["storeArray"]);
-		
+
 		if (is_array($savedStoreArray))	{
 			$storeArray = array_merge($storeArray,$savedStoreArray);
 		}
@@ -209,19 +209,19 @@ class t3lib_fullsearch {
 			while(list(,$k)=each($keyArr))	{
 				$saveArr[$k]=$GLOBALS["SOBE"]->MOD_SETTINGS[$k];
 			}
-	
+
 			$qOK = 0;
-				// Show query				
+				// Show query
 			if ($saveArr["queryTable"])	{
 				$qGen = t3lib_div::makeInstance("t3lib_queryGenerator");
 				$qGen->init("queryConfig",$saveArr["queryTable"]);
 				$qGen->makeSelectorTable($saveArr);
-				
+
 				$qGen->enablePrefix=1;
 				$qString = $qGen->getQuery($qGen->queryConfig);
 				$qCount = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString.t3lib_BEfunc::deleteClause($qGen->table));
 				$qSelect = $qGen->getSelectQuery($qString);
-	
+
 				$res = @$GLOBALS['TYPO3_DB']->sql(TYPO3_db,$qCount);
 				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
 					$dA = array();
@@ -359,11 +359,11 @@ class t3lib_fullsearch {
 			// Make form elements:
 		if ($qGen->table && is_array($TCA[$qGen->table]))	{
 			if ($mQ)	{
-					// Show query				
+					// Show query
 				$qGen->enablePrefix=1;
 				$qString = $qGen->getQuery($qGen->queryConfig);
 //				debug($qGen->queryConfig);
-		
+
 				switch($mQ)	{
 					case "count":
 						$qExplain = $GLOBALS['TYPO3_DB']->SELECTquery('count(*)', $qGen->table, $qString.t3lib_BEfunc::deleteClause($qGen->table));
@@ -387,7 +387,7 @@ class t3lib_fullsearch {
 					$output.=$GLOBALS["SOBE"]->doc->section($cPR["header"],$cPR["content"],0,1);
 				}
 			}
-		}		
+		}
 		return $output;
 	}
 
@@ -435,7 +435,7 @@ class t3lib_fullsearch {
 				if (count($rowArr))	{
 					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS["SOBE"]->doc->formWidthText($this->formW,"","off").'>'.t3lib_div::formatForTextarea(implode(chr(10),$rowArr)).'</textarea>';
 					if (!$this->noDownloadB)	{
-						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\'; 
+						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
 					}
 						// Downloads file:
 					if (t3lib_div::_GP("download_file"))	{
@@ -470,7 +470,7 @@ class t3lib_fullsearch {
 					$xmlData=$xmlObj->getResult();
 					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS["SOBE"]->doc->formWidthText($this->formW,"","off").'>'.t3lib_div::formatForTextarea($xmlData).'</textarea>';
 					if (!$this->noDownloadB)	{
-						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\'; 
+						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="document.location=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
 					}
 						// Downloads file:
 					if (t3lib_div::_GP("download_file"))	{
@@ -538,7 +538,7 @@ class t3lib_fullsearch {
 					// Get fields list
 				t3lib_div::loadTCA($table);
 				$conf=$TCA[$table];
-				
+
 				reset($conf["columns"]);
 				$list=array();
 				while(list($field,)=each($conf["columns"]))	{
@@ -546,7 +546,7 @@ class t3lib_fullsearch {
 				}
 					// Get query
 				$qp = $GLOBALS['TYPO3_DB']->searchQuery(array($swords), $list, $table);
-				
+
 					// Count:
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $qp.t3lib_BEfunc::deleteClause($table));
 				list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
@@ -554,7 +554,7 @@ class t3lib_fullsearch {
 						// Output header:
 					$out.="<strong>TABLE:</strong> ".$GLOBALS["LANG"]->sL($conf["ctrl"]["title"])."<BR>";
 					$out.="<strong>Results:</strong> ".$count."<BR>";
-	
+
 						// Show to limit
 					if ($count)	{
 						$rowArr = array();

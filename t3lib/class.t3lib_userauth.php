@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains a base class for authentication of users in TYPO3, both frontend and backend.
  *
  * $Id$
@@ -37,24 +37,24 @@
  *
  *
  *
- *   86: class t3lib_userAuth 
- *  155:     function start() 
- *  255:     function check_authentication() 
- *  406:     function redirect() 
- *  419:     function logoff() 
- *  434:     function gc() 
- *  448:     function user_where_clause()	
- *  462:     function ipLockClause()
- *  478:     function writeUC($variable='')	
- *  501:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)	
- *  510:     function checkLogFailures()	
- *  519:     function unpack_uc($theUC='') 
- *  535:     function pushModuleData($module,$data,$noSave=0)	
- *  548:     function getModuleData($module,$type='')	
- *  561:     function getSessionData($key)	
- *  574:     function setAndSaveSessionData($key,$data)	
- *  593:     function setBeUserByUid($uid)	
- *  606:     function setBeUserByName($name)	
+ *   86: class t3lib_userAuth
+ *  155:     function start()
+ *  256:     function check_authentication()
+ *  407:     function redirect()
+ *  420:     function logoff()
+ *  435:     function gc()
+ *  449:     function user_where_clause()
+ *  463:     function ipLockClause()
+ *  481:     function writeUC($variable='')
+ *  504:     function writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid)
+ *  513:     function checkLogFailures()
+ *  522:     function unpack_uc($theUC='')
+ *  538:     function pushModuleData($module,$data,$noSave=0)
+ *  551:     function getModuleData($module,$type='')
+ *  564:     function getSessionData($key)
+ *  577:     function setAndSaveSessionData($key,$data)
+ *  596:     function setBeUserByUid($uid)
+ *  609:     function setBeUserByName($name)
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -102,7 +102,7 @@ class t3lib_userAuth {
 		'endtime' => '',
 		'deleted' => ''
 	);
-	
+
 	var $formfield_uname = ''; 			// formfield with login-name
 	var $formfield_uident = ''; 		// formfield with password
 	var $formfield_chalvalue = '';		// formfield with a unique value which is used to encrypt the password and username
@@ -110,7 +110,7 @@ class t3lib_userAuth {
 	var $security_level = '';			// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
 	var $auth_include = '';				// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
-	
+
 	var $auth_timeout_field = 0;		// if > 0 : session-timeout in seconds. if false/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
 	var $lifetime = 0;                  // 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
 	var $gc_time  = 24;               	// GarbageCollection. Purge all session data older than $gc_time hours.
@@ -119,16 +119,16 @@ class t3lib_userAuth {
 	var $writeAttemptLog = 0;				// If the writelog() functions is called if a login-attempt has be tried without success
 	var $sendNoCacheHeaders = 1;		// If this is set, headers is sent to assure, caching is NOT done
 	var $getFallBack = 0;				// If this is set, authentication is also accepted by the HTTP_GET_VARS. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
-	var $hash_length = 32;				// The ident-hash is normally 32 characters and should be! But if you are making sites for WAP-devices og other lowbandwidth stuff, you may shorten the length. Never let this value drop below 6. A length of 6 would give you more than 16 mio possibilities. 
+	var $hash_length = 32;				// The ident-hash is normally 32 characters and should be! But if you are making sites for WAP-devices og other lowbandwidth stuff, you may shorten the length. Never let this value drop below 6. A length of 6 would give you more than 16 mio possibilities.
 	var $getMethodEnabled = 0;			// Setting this flag true lets user-authetication happen from GET_VARS if POST_VARS are not set. Thus you may supply username/password from the URL.
 	var $lockIP = 1;					// If set, will lock the session to the users IP address.
-	
+
 	var $warningEmail = '';				// warning -emailaddress:
 	var $warningPeriod = 3600;			// Period back in time (in seconds) in which number of failed logins are collected
 	var $warningMax = 3;				// The maximum accepted number of warnings before an email is sent
 	var $checkPid=1;					// If set, the user-record must $checkPid_value as pid
 	var $checkPid_value=0;				// The pid, the user-record must have as page-id
-	
+
 		// Internals
 	var $id;							// Internal: Will contain session_id (MD5-hash)
 	var $cookieId;						// Internal: Will contain the session_id gotten from cookie or GET method. This is used in statistics as a reliable cookie (one which is known to come from HTTP_COOKIE_VARS).
@@ -136,10 +136,10 @@ class t3lib_userAuth {
 
 	var $user;							// Internal: Will contain user- AND session-data from database (joined tables)
 	var $get_URL_ID = '';				// Internal: Will will be set to the url--ready (eg. '&login=ab7ef8d...') GET-auth-var if getFallBack is true. Should be inserted in links!
-	
+
 	var $forceSetCookie=0;				// Will force the session cookie to be set everytime (liftime must be 0)
 	var $dontSetCookie=0;				// Will prevent the setting of the session cookie (takes precedence over forceSetCookie.
-	
+
 
 	/**
 	 * Starts a user session
@@ -154,7 +154,7 @@ class t3lib_userAuth {
 	 */
 	function start() {
 		global $HTTP_COOKIE_VARS, $HTTP_GET_VARS;
-		
+
 			// Init vars.
 		$mode='';
 		$new_id = false;				// Default: not a new session
@@ -162,13 +162,13 @@ class t3lib_userAuth {
 		$this->hash_length = t3lib_div::intInRange($this->hash_length,6,32);
 
 			// If fallback to get mode....
-		if (!$id && $this->getFallBack && $this->get_name)	{	
+		if (!$id && $this->getFallBack && $this->get_name)	{
 			$id = isset($HTTP_GET_VARS[$this->get_name]) ? t3lib_div::_GET($this->get_name) : '';
 			if (strlen($id)!=$this->hash_length)	$id='';
 			$mode='get';
 		}
 		$this->cookieId = $id;
-		
+
 		if (!$id)	{					// If new session...
     		$id = substr(md5(uniqid('')),0,$this->hash_length);		// New random session-$id is made
 			$new_id = true;				// New session
@@ -179,12 +179,12 @@ class t3lib_userAuth {
 			$this->get_URL_ID = '&'.$this->get_name.'='.$id;
 		}
 		$this->user = '';				// Make certain that NO user is set initially
-		
+
 			// Setting cookies
         if (($new_id || $this->forceSetCookie) && $this->lifetime==0 ) {		// If new session and the cookie is a sessioncookie, we need to set it only once!
           if (!$this->dontSetCookie)	SetCookie($this->name, $id, 0, '/');		// Cookie is set
         }
-        if ($this->lifetime > 0) {		// If it is NOT a session-cookie, we need to refresh it. 
+        if ($this->lifetime > 0) {		// If it is NOT a session-cookie, we need to refresh it.
           if (!$this->dontSetCookie)	SetCookie($this->name, $id, time()+$this->lifetime, '/');
         }
 
@@ -193,15 +193,15 @@ class t3lib_userAuth {
 			$this->check_authentication();
 		}
 		unset($this->user);				// Make certain that NO user is set initially. ->check_authentication may have set a session-record which will provide us with a user record in the next section:
-		
-		
+
+
 			// The session_id is used to find user in the database. Two tables are joined: The session-table with user_id of the session and the usertable with its primary key
 		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'*', 
-						$this->session_table.','.$this->user_table, 
-						$this->session_table.'.ses_id = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'" 
-							AND '.$this->session_table.'.ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'" 
-							AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.' 
+						'*',
+						$this->session_table.','.$this->user_table,
+						$this->session_table.'.ses_id = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'"
+							AND '.$this->session_table.'.ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"
+							AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.'
 							'.$this->ipLockClause().'
 							'.$this->user_where_clause()
 					);
@@ -216,7 +216,7 @@ class t3lib_userAuth {
 				// Option later on: We could check that last update was at least x seconds ago in order not to update twice in a row if one script redirects to another...
 			if ($timeout>0 && ($GLOBALS['EXEC_TIME'] < ($this->user['ses_tstamp']+$timeout)))	{
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-											$this->session_table, 
+											$this->session_table,
 											'ses_id="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'"
 												AND ses_name="'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"',
 											array('ses_tstamp' => $GLOBALS['EXEC_TIME'])
@@ -224,14 +224,14 @@ class t3lib_userAuth {
 					$this->user['ses_tstamp'] = $GLOBALS['EXEC_TIME'];	// Make sure that the timestamp is also updated in the array
 			} else {
 				$this->user = '';
-				$this->logoff();		// delete any user set...			
+				$this->logoff();		// delete any user set...
 			}
 		} else {
 			$this->logoff();		// delete any user set...
 		}
 
 		$this->redirect();		// If any redirection (inclusion of file) then it will happen in this function
-				
+
 			// Set all posible headers that could ensure that the script is not cached on the client-side
 		if ($this->sendNoCacheHeaders)	{
 			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -280,15 +280,15 @@ class t3lib_userAuth {
 				if ($F_uident && $F_uname)	{
 
 						// Reset this flag
-					$loginFailure=0; 
+					$loginFailure=0;
 
 						// delete old user session if any
-					$this->logoff();		
+					$this->logoff();
 
 						// Look up the new user by the username:
 					$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-									'*', 
-									$this->user_table, 
+									'*',
+									$this->user_table,
 									($this->checkPid ? 'pid IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($this->checkPid_value).') AND ' : '').
 										$this->username_column.'="'.$GLOBALS['TYPO3_DB']->quoteStr($F_uname, $this->user_table).'" '.
 										$this->user_where_clause()
@@ -301,7 +301,7 @@ class t3lib_userAuth {
 
 							// Default: not OK - will be set true if password matches in the comparison hereafter
 						$OK = false;
-	
+
 							// check the password
 						switch ($this->security_level)	{
 							case 'superchallenged':		// If superchallenged the password in the database ($tempuser[$this->userident_column]) must be a md5-hash of the original password.
@@ -328,7 +328,7 @@ class t3lib_userAuth {
 										Array(t3lib_div::getIndpEnv('REMOTE_ADDR'),t3lib_div::getIndpEnv('REMOTE_HOST'),$F_uname,$this->user['lockToDomain'],t3lib_div::getIndpEnv('HTTP_HOST')));
 								}
 								$loginFailure=1;
-							} else {	
+							} else {
 									// The loginsession is started.
 								$this->loginSessionStarted = 1;
 
@@ -345,8 +345,8 @@ class t3lib_userAuth {
 									// Updating column carrying information about last login.
 								if ($this->lastLogin_column)	{
 									$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-															$this->user_table, 
-															$this->userid_column.'="'.$GLOBALS['TYPO3_DB']->quoteStr($tempuser[$this->userid_column], $this->user_table).'"', 
+															$this->user_table,
+															$this->userid_column.'="'.$GLOBALS['TYPO3_DB']->quoteStr($tempuser[$this->userid_column], $this->user_table).'"',
 															array($this->lastLogin_column => $GLOBALS['EXEC_TIME'])
 														);
 								}
@@ -354,9 +354,9 @@ class t3lib_userAuth {
 								if ($this->writeStdLog) {
 									$this->writelog(255,1,0,1,
 										'User %s logged in from %s (%s)',
-										Array($this->user['username'],t3lib_div::getIndpEnv('REMOTE_ADDR'),t3lib_div::getIndpEnv('REMOTE_HOST')));	
+										Array($this->user['username'],t3lib_div::getIndpEnv('REMOTE_ADDR'),t3lib_div::getIndpEnv('REMOTE_HOST')));
 								}
-							}						
+							}
 						} else {
 								// Failed login attempt (wrong password) - write that to the log!
 							if ($this->writeAttemptLog) {
@@ -373,13 +373,13 @@ class t3lib_userAuth {
 						if ($this->writeAttemptLog) {
 							$this->writelog(255,3,3,2,
 								"Login-attempt from %s (%s), username '%s' not found!!",
-								Array(t3lib_div::getIndpEnv('REMOTE_ADDR'),t3lib_div::getIndpEnv('REMOTE_HOST'),$F_uname));	// Logout written to log						
+								Array(t3lib_div::getIndpEnv('REMOTE_ADDR'),t3lib_div::getIndpEnv('REMOTE_HOST'),$F_uname));	// Logout written to log
 						}
 						$loginFailure=1;
 					}
-					
+
 						// If there were a login failure, check to see if a warning email should be sent:
-					if ($loginFailure)	{ 
+					if ($loginFailure)	{
 						$this->checkLogFailures($this->warningEmail, $this->warningPeriod, $this->warningMax);
 					}
 				}
@@ -392,7 +392,7 @@ class t3lib_userAuth {
 				if ($this->writeStdLog) 	$this->writelog(255,2,0,2,'User %s logged out',Array($this->user['username']));	// Logout written to log
 				$this->logoff();
 
-					// Return "logout" - since this was the $F_status				
+					// Return "logout" - since this was the $F_status
 				return 'logout';
 			break;
 		}
@@ -420,7 +420,7 @@ class t3lib_userAuth {
 	function logoff() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					$this->session_table,
-					'ses_id = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'" 
+					'ses_id = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, $this->session_table).'"
 						AND ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"'
 				);
 		$this->user = "";
@@ -435,7 +435,7 @@ class t3lib_userAuth {
 	function gc() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					$this->session_table,
-					'ses_tstamp < '.intval(time()-($this->gc_time*60*60)).' 
+					'ses_tstamp < '.intval(time()-($this->gc_time*60*60)).'
 						AND ses_name = "'.$GLOBALS['TYPO3_DB']->quoteStr($this->name, $this->session_table).'"'
 				);
 	}
@@ -481,7 +481,7 @@ class t3lib_userAuth {
 	function writeUC($variable='')	{
 		if (is_array($this->user) && $this->user['uid'])	{
 			if (!is_array($variable)) { $variable = $this->uc; }
-			
+
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->user_table, 'uid='.intval($this->user['uid']), array('uc' => serialize($variable)));
 		}
 	}
@@ -578,7 +578,7 @@ class t3lib_userAuth {
 		$sesDat = unserialize($this->user['ses_data']);
 		$sesDat[$key] = $data;
 		$this->user['ses_data'] = serialize($sesDat);
-		
+
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->session_table, 'ses_id="'.$GLOBALS['TYPO3_DB']->quoteStr($this->user['ses_id'], $this->session_table).'"', array('ses_data' => $this->user['ses_data']));
 	}
 

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,14 +24,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains the initialization of global TYPO3 variables among which $TCA is the most significant.
  *
  * The list in order of apperance is: $PAGES_TYPES, $ICON_TYPES, $LANG_GENERAL_LABELS, $TCA, $TBE_MODULES, $TBE_STYLES, $FILEICONS
  * These variables are first of all used in the backend but to some degree in the frontend as well. (See references)
  * See the document "Inside TYPO3" for a description of each variable in addition to the comment associated with each.
  *
- * This file is included from "typo3/init.php" (backend) and "index_ts.php" (frontend) as the first file of a three-fold inclusion session (see references): 
+ * This file is included from "typo3/init.php" (backend) and "index_ts.php" (frontend) as the first file of a three-fold inclusion session (see references):
  * 1) First this script is included (unless the constant "TYPO3_tables_script" instructs another filename to substitute it, see t3lib/config_default.php); This should initialize the variables shown above.
  * 2) Then either the "typo3conf/temp_CACHED_??????_ext_tables.php" cache file OR "stddb/load_ext_tables.php" is included in order to let extensions add/modify these variables as they desire.
  * 3) Finally if the constant "TYPO3_extTableDef_script" defines a file name from typo3conf/ it is included, also for overriding values (the old-school way before extensions came in). See config_default.php
@@ -48,8 +48,8 @@
  * @see tslib_fe::includeTCA(), typo3/init.php, t3lib/stddb/load_ext_tables.php
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=262&cHash=4f12caa011
  */
- 
- 
+
+
 /**
  * $PAGES_TYPES defines the various types of pages (field: doktype) the system can handle and what restrictions may apply to them.
  * Here you can set the icon and especially you can define which tables are allowed on a certain pagetype (doktype)
@@ -123,12 +123,12 @@ $LANG_GENERAL_LABELS = array(
  *
  * NOTE: The (default) icon for a table is defined 1) as a giffile named 'gfx/i/[tablename].gif' or 2) as the value of [table][ctrl][iconfile]
  * NOTE: [table][ctrl][rootLevel] goes NOT for pages. Apart from that if rootLevel is true, records can ONLY be created on rootLevel. If it's false records can ONLY be created OUTSIDE rootLevel
- */ 
+ */
 $TCA = array();
 
 /**
- * Table "pages": 
- * The mandatory pages table. The backbone of the TYPO3 page tree structure. 
+ * Table "pages":
+ * The mandatory pages table. The backbone of the TYPO3 page tree structure.
  * All other records configured in $TCA must have a field, "pid", which relates the record to a page record's "uid" field.
  * Must be COMPLETELY configured in tables.php
  */
@@ -151,13 +151,13 @@ $TCA['pages'] = Array (
 		'maxDBListItems' => 30,
 		'maxSingleDBListItems' => 50
 	),
-	'columns' => Array (	
+	'columns' => Array (
 		'doktype' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.type',
 			'config' => Array (
-				'type' => 'select',	
-				'items' => Array (	
+				'type' => 'select',
+				'items' => Array (
 					Array('LLL:EXT:lang/locallang_tca.php:doktype.I.0', '1'),
 					Array('LLL:EXT:lang/locallang_tca.php:doktype.I.1', '254'),
 					Array('LLL:EXT:lang/locallang_tca.php:doktype.I.2', '255')
@@ -168,14 +168,14 @@ $TCA['pages'] = Array (
 		'title' => Array (
 			'label' => 'LLL:EXT:lang/locallang_tca.php:title',
 			'config' => Array (
-				'type' => 'input',	
+				'type' => 'input',
 				'size' => '30',
 				'max' => '256',
 				'eval' => 'required'
 			)
 		),
 		'TSconfig' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'TSconfig:',
 			'config' => Array (
 				'type' => 'text',
@@ -194,21 +194,21 @@ $TCA['pages'] = Array (
 			)
 		),
 		'php_tree_stop' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:php_tree_stop',
 			'config' => Array (
 				'type' => 'check'
 			)
 		),
 		'is_siteroot' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:is_siteroot',
 			'config' => Array (
 				'type' => 'check'
 			)
 		),
 		'storage_pid' => Array (
-			'exclude' => 1,	
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:storage_pid',
 			'config' => Array (
 				'type' => 'group',
@@ -222,7 +222,7 @@ $TCA['pages'] = Array (
 		),
 		'tx_impexp_origuid' => Array('config'=>array('type'=>'passthrough')),
 	),
-	'types' => Array (					
+	'types' => Array (
 		'1' => Array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7'),
 		'254' => Array('showitem' => 'doktype, title;LLL:EXT:lang/locallang_general.php:LGL.title, TSconfig;;6;nowrap, storage_pid;;7'),
 		'255' => Array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7')
@@ -234,7 +234,7 @@ $TCA['pages'] = Array (
 );
 
 /**
- * Table "be_users": 
+ * Table "be_users":
  * Backend Users for TYPO3.
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
  */
@@ -267,7 +267,7 @@ $TCA['be_users'] = Array (
 );
 
 /**
- * Table "be_groups": 
+ * Table "be_groups":
  * Backend Usergroups for TYPO3.
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
  */
@@ -297,7 +297,7 @@ $TCA['be_groups'] = Array (
 );
 
 /**
- * Table "sys_filemounts": 
+ * Table "sys_filemounts":
  * Defines filepaths on the server which can be mounted for users so they can upload and manage files online by eg. the Filelist module
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
  */
@@ -320,8 +320,8 @@ $TCA['sys_filemounts'] = Array (
 );
 
 
- 
- 
+
+
 
 
 

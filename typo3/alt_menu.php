@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Displays the vertical menu in the left most frame of TYPO3s backend
  *
  * $Id$
@@ -38,17 +38,17 @@
  *
  *
  *
- *   78: class SC_alt_menu 
- *   89:     function init()	
- *  105:     function main()	
- *  177:     function printContent()	
+ *   78: class SC_alt_menu
+ *   89:     function init()
+ *  105:     function main()
+ *  177:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 require ('init.php');
 require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_loadmodules.php');
@@ -88,7 +88,7 @@ class SC_alt_menu {
 	 */
 	function init()	{
 		global $TBE_MODULES;
-		
+
 			// Setting GPvars:
 		$this->_clearCacheFiles = t3lib_div::_GP('_clearCacheFiles');
 
@@ -104,7 +104,7 @@ class SC_alt_menu {
 	 */
 	function main()	{
 		global $BE_USER,$TYPO3_CONF_VARS,$TBE_TEMPLATE,$TYPO_VERSION;
-		
+
 		$TBE_TEMPLATE->docType='xhtml_trans';
 		$TBE_TEMPLATE->divClass='vertical-menu';
 		$this->content.=$TBE_TEMPLATE->startPage('Vertical Backend Menu');
@@ -113,18 +113,18 @@ class SC_alt_menu {
 			// Printing the menu
 		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
 		$this->content.=$alt_menuObj->topMenu($this->loadModules->modules);
-		
+
 			// clear cache commands for Admins
 		if($BE_USER->isAdmin()) {
 			$functionsArray = $alt_menuObj->adminFunctions($backPath);
-			
+
 			$this->content.='
-			
-<!-- 
+
+<!--
   Menu with admin functions: Clearing cache:
 -->
 <div id="typo3-alt-menu-php-adminFunc">';
-				
+
 				// Header: Admin functions
 			$this->content.='<h2 class="bgColor5">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.adminFunctions',1).'</h2>';
 
@@ -132,7 +132,7 @@ class SC_alt_menu {
 			$this->content.='
 				<table border="0" cellpadding="0" cellspacing="1" width="100%">';
 
-			$rows=array();			
+			$rows=array();
 			foreach($functionsArray as $functionsArraySetup)	{
 				$rows[]='
 					<tr>
@@ -140,7 +140,7 @@ class SC_alt_menu {
 						<td><a href="'.htmlspecialchars($functionsArraySetup['href']).'">'.htmlspecialchars($functionsArraySetup['title']).'</a></td>
 					</tr>';
 			}
-			
+
 				// Imploding around the divider table row:
 			$this->content.=implode('
 					<tr>
@@ -156,9 +156,9 @@ class SC_alt_menu {
 
 			// Printing bottons (logout button)
 		$this->content.='
-		
 
-<!-- 
+
+<!--
   Logout button / username
 -->
 <div id="typo3-alt-menu-php-logininfo">'.$alt_menuObj->topButtons().

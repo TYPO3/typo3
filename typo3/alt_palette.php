@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,13 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Displays the secondary-options palette for the TCEFORMs wherever they are shown.
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -38,18 +38,18 @@
  *
  *
  *
- *   81: class formRender extends t3lib_TCEforms 
- *   91:     function printPalette($palArr)	
+ *   81: class formRender extends t3lib_TCEforms
+ *   91:     function printPalette($palArr)
  *
  *
- *  154: class formRender_vert extends t3lib_TCEforms 
- *  163:     function printPalette($palArr)	
+ *  154: class formRender_vert extends t3lib_TCEforms
+ *  163:     function printPalette($palArr)
  *
  *
- *  223: class SC_alt_palette 
- *  247:     function init()	
- *  301:     function main()	
- *  341:     function printContent()	
+ *  223: class SC_alt_palette
+ *  247:     function init()
+ *  301:     function main()
+ *  341:     function printContent()
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -90,7 +90,7 @@ class formRender extends t3lib_TCEforms {
 	 */
 	function printPalette($palArr)	{
 		$out='';
-		
+
 			// For each element on the palette, write a few table cells with the field name, content and control images:
 		foreach($palArr as $content)	{
 			$iRow[]='
@@ -105,12 +105,12 @@ class formRender extends t3lib_TCEforms {
 					$content['ITEM'].$content['HELP_ICON'].
 				'</td>';
 		}
-		
+
 			// Finally, wrap it all in a table:
 		$out='
-		
-		
-		
+
+
+
 			<!--
 				TCEforms palette, rendered in top frame.
 			-->
@@ -122,9 +122,9 @@ class formRender extends t3lib_TCEforms {
 				implode('',$iRow).'
 				</tr>
 			</table>
-			
+
 			';
-		
+
 			// Return the result:
 		return $out;
 	}
@@ -179,7 +179,7 @@ class formRender_vert extends t3lib_TCEforms {
 					<td nowrap="nowrap" valign="top">'.$content['ITEM'].$content['HELP_ICON'].'</td>
 				</tr>';
 		}
-		
+
 			// Adding the close button:
 		$iRow[]='
 			<tr>
@@ -190,13 +190,13 @@ class formRender_vert extends t3lib_TCEforms {
 					<input type="submit" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close',1).'" onclick="closePal(); return false;" />
 				</td>
 			</tr>';
-		
+
 			// Finally, wrap it all in a table:
 		$out='
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-TCEforms-palette-vert">
 				'.implode('',$iRow).'
 			</table>';
-		
+
 			// Return content:
 		return $out;
 	}
@@ -228,7 +228,7 @@ class SC_alt_palette {
 	var $formRef;		// String, which is the reference to the form.
 	var $doc;			// Template object.
 
-		// Internal, static: GPvar:	
+		// Internal, static: GPvar:
 	var $formName;			// Form name
 	var $GPbackref;			// The value of the original backRef GPvar (not necessarily the same as $this->backRef)
 	var $inData;			// Contains tablename, uid and palette number
@@ -252,7 +252,7 @@ class SC_alt_palette {
 		$this->inData = t3lib_div::_GP('inData');
 		$this->prependFormFieldNames = t3lib_div::_GP('prependFormFieldNames');
 		$this->rec = t3lib_div::_GP('rec');
-		
+
 			// Making references:
 		$this->backRef = $this->GPbackref ? $this->GPbackref : 'window.opener';
 #		$this->backRef = 'top.content.list_frame.view_frame';
@@ -266,7 +266,7 @@ class SC_alt_palette {
 		$this->doc->form='<form action="#" method="post" name="'.htmlspecialchars($this->formName).'" onsubmit="return false;">';
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->backPath = '';
-		
+
 			// In case the palette is opened in a SEPARATE window (as the case is with frontend editing) then another body-tag id should be used (so we don't get the background image for the palette shown!)
 		if (!$this->GPbackref)	$this->doc->bodyTagId.= '-vert';
 
@@ -290,7 +290,7 @@ class SC_alt_palette {
 			}
 			timeout_func();
 			onBlur="alert();";
-		');		
+		');
 	}
 
 	/**
@@ -302,32 +302,32 @@ class SC_alt_palette {
 
 		$this->content='';
 		$this->content.=$this->doc->startPage('TYPO3 Edit Palette');
-		
+
 		$inData = explode(':',$this->inData);
-		
+
 			// Begin edit:
 		if (is_array($inData) && count($inData)==3)	{
-			
+
 				// Create the TCEforms object:
 			$tceforms = $this->GPbackref ? new formRender() : new formRender_vert();
 			$tceforms->initDefaultBEMode();
 			$tceforms->palFieldTemplate='###FIELD_PALETTE###';
 			$tceforms->palettesCollapsed=0;
 			$tceforms->isPalettedoc=$this->backRef;
-		
+
 			$tceforms->formName = $this->formName;
 			$tceforms->prependFormFieldNames = $this->prependFormFieldNames;
-			
+
 				// Initialize other data:
 			$table=$inData[0];
 			$theUid=$inData[1];
 			$thePalNum = $inData[2];
 			$this->rec['uid']=$theUid;
-			
+
 				// Getting the palette fields rendered:
 			$panel.=$tceforms->getPaletteFields($table,$this->rec,$thePalNum,'',implode(',',array_keys($this->rec)));
 			$formContent=$panel;
-		
+
 				// Add all the content, including JavaScript as needed.
 			$this->content.=$tceforms->printNeededJSFunctions_top().$formContent.$tceforms->printNeededJSFunctions();
 		}

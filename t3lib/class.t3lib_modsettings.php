@@ -5,7 +5,7 @@
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
@@ -38,18 +38,18 @@
  *
  *
  *
- *  104: class t3lib_modSettings 
- *  114:     function init($prefix='',$storeList='')	
- *  123:     function setStoreList($storeList)	
- *  132:     function addToStoreList($storeList)	
- *  144:     function addToStoreListFromPrefix ($prefix='') 
- *  167:     function initStoreArray()	
- *  187:     function cleanStoreConfigs($storeConfigs,$storeArray)	
- *  204:     function addToStoreConfigs($storeConfigs,$index)	
- *  222:     function loadStoreConfigs($storeConfigs,$storeIndex,$writeArray)	
- *  238:     function getStoreControl($show='load,remove,save')	
- *  294:     function procesStoreControl($mconfName='')	
- *  374:     function saveQueryInAction($uid)	
+ *  104: class t3lib_modSettings
+ *  114:     function init($prefix='',$storeList='')
+ *  123:     function setStoreList($storeList)
+ *  132:     function addToStoreList($storeList)
+ *  144:     function addToStoreListFromPrefix ($prefix='')
+ *  167:     function initStoreArray()
+ *  187:     function cleanStoreConfigs($storeConfigs,$storeArray)
+ *  204:     function addToStoreConfigs($storeConfigs,$index)
+ *  222:     function loadStoreConfigs($storeConfigs,$storeIndex,$writeArray)
+ *  238:     function getStoreControl($show='load,remove,save')
+ *  294:     function procesStoreControl($mconfName='')
+ *  374:     function saveQueryInAction($uid)
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -65,33 +65,33 @@
 
 /**
  * usage inside of scbase class
- * 
+ *
  * ....
- * 
+ *
  * $this->MOD_MENU = array(
  * 	'function' => array(
  * 		'xxx ...
  * 	),
  * 	'tx_dam_selectStoreArray' => '',
  * 	'tx_dam_selectStoreConfigs' => '',
- * 
+ *
  * ....
- * 
- * 
+ *
+ *
  * function main()	{
  * 	// reStore settings
  * $store = t3lib_div::makeInstance('t3lib_modSettings');
  * $store->init('tx_dam_select');
  * $store->addToStoreListFromPrefix('tx_dam_select');
  * $storeMsg=$store->procesStoreControl();
- * 
+ *
  * 	// show control panel
  * $this->content.= $this->doc->section('store',$store->makeStoreControl(),0,1);
  * if ($storeMsg)	{
  * 	$this->content.= $this->doc->section('','<strong>'.$storeMsg.'</strong>');
  * }
  */
- 
+
 /**
  * Manage storing and restoring of $GLOBALS['SOBE']->MOD_SETTINGS settings.
  * Provides a presets box for BE modules.

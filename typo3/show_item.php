@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Shows information about a database or file item
  *
  * $Id$
@@ -36,21 +36,21 @@
  *
  *
  *
- *   79: class transferData extends t3lib_transferData	
- *   95:     function regItem($table, $id, $field, $content)	
+ *   79: class transferData extends t3lib_transferData
+ *   95:     function regItem($table, $id, $field, $content)
  *
  *
- *  133: class SC_show_item 
- *  151:     function init()	
- *  220:     function main()	
- *  348:     function printContent()	
+ *  133: class SC_show_item
+ *  151:     function init()
+ *  220:     function main()
+ *  348:     function printContent()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
+
+
 $BACK_PATH='';
 require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
@@ -79,7 +79,7 @@ require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 class transferData extends t3lib_transferData	{
 	var $formname = 'loadform';
 	var $loading = 1;
-	
+
 		// Extra for show_item.php:
 	var $theRecord = Array();
 
@@ -143,18 +143,18 @@ class SC_show_item {
 	var $row;
 	var $table;
 	var $uid;
-	var $doc;	
-	
+	var $doc;
+
 	/**
 	 * @return	[type]		...
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-		
+
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 		$this->table = t3lib_div::_GP('table');
 		$this->uid = t3lib_div::_GP("uid");
-		
+
 		$this->access=0;
 		$this->type="";
 		if (isset($TCA[$this->table]) && $BE_USER->check("tables_select",$this->table))	{
@@ -173,8 +173,8 @@ class SC_show_item {
 						$this->access = is_array($this->pageinfo) ? 1 : 0;
 					}
 				}
-				
-				
+
+
 				$treatData = t3lib_div::makeInstance("t3lib_transferData");
 				$treatData->renderRecord($this->table, $this->uid, 0, $this->row);
 				$cRow = $treatData->theRecord;
@@ -195,8 +195,8 @@ class SC_show_item {
 				$this->include_once[]=PATH_t3lib."class.t3lib_stdgraphic.php";
 			}
 		}
-		
-		
+
+
 		$this->doc = t3lib_div::makeInstance("smallDoc");
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->tableLayout = Array (
@@ -205,8 +205,8 @@ class SC_show_item {
 				"defCol" => Array('<TD><img src="'.$this->backPath.'clear.gif" width=15 height=1></td><td valign="top">','</td>')
 			)
 		);
-		
-		
+
+
 		$this->content.=$this->doc->startPage($LANG->sL("LLL:EXT:lang/locallang_core.php:show_item.php.viewItem"));
 		$this->content.=$this->doc->header($LANG->sL("LLL:EXT:lang/locallang_core.php:show_item.php.viewItem"));
 		$this->content.=$this->doc->spacer(5);
@@ -219,22 +219,22 @@ class SC_show_item {
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-		
+
 		if ($this->access)	{
 			$returnLinkTag = t3lib_div::_GP("returnUrl") ? '<a href="'.t3lib_div::_GP("returnUrl").'" class="typo3-goBack">' : '<a href="#" onClick="window.close();">';
-			
+
 			if ($this->type=="db")	{
 				$code=$this->doc->getHeader($this->table,$this->row,$this->pageinfo["_thePath"],1).'<br />';
 				$this->content.=$this->doc->section('',$code);
-		
+
 				$codeArr=Array();
 				$i=0;
-		
+
 				$fieldList=explode(",",$TCA[$this->table]["interface"]["showRecordFieldList"]);
 				while(list(,$name)=each($fieldList))	{
 					$name=trim($name);
 					if ($TCA[$this->table]["columns"][$name])	{
-						if (!$TCA[$this->table]["columns"][$name]["exclude"] || $GLOBALS["BE_USER"]->check("non_exclude_fields",$this->table.":".$name))	{		
+						if (!$TCA[$this->table]["columns"][$name]["exclude"] || $GLOBALS["BE_USER"]->check("non_exclude_fields",$this->table.":".$name))	{
 							$i++;
 							$codeArr[$i][]=$LANG->sL(t3lib_BEfunc::getItemLabel($this->table,$name));
 							$codeArr[$i][]=htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table,$name,$this->row[$name]));
@@ -243,7 +243,7 @@ class SC_show_item {
 				}
 				$this->content.=$this->doc->section('',$this->doc->table($codeArr));
 				$this->content.=$this->doc->divider(2);
-				
+
 				$code="";
 				$code.='Path: '.t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],48).'<br />';
 				$code.='Table: '.$LANG->sL($TCA[$this->table]["ctrl"]["title"]).' ('.$this->table.') - UID: '.$this->uid.'<br />';
@@ -251,14 +251,14 @@ class SC_show_item {
 			}
 			if ($this->type=="file")	{
 				$imgInfo="";
-		
+
 				$imgObj = t3lib_div::makeInstance("t3lib_stdGraphic");
 				$imgObj->init();
 				$imgObj->mayScaleUp=0;
 				$imgObj->tempPath=PATH_site.$imgObj->tempPath;
-		
-				$imgInfo = $imgObj->getImageDimensions($this->file);		
-		
+
+				$imgInfo = $imgObj->getImageDimensions($this->file);
+
 				$fI = t3lib_div::split_fileref($this->file);
 				$ext = $fI["fileext"];
 		//		debug($fI);
@@ -273,20 +273,20 @@ class SC_show_item {
 					$code.='<br />';
 					$code.='<b>'.$LANG->sL("LLL:EXT:lang/locallang_core.php:show_item.php.dimensions").':</b> '.$imgInfo[0].'x'.$imgInfo[1].' pixels';
 					$this->content.=$this->doc->section('',$code);
-		
+
 					$this->content.=$this->doc->divider(2);
-			
+
 					$imgInfo = $imgObj->imageMagickConvert($this->file,"web","346","200m","","","",1);
 					$imgInfo[3] = "../".substr($imgInfo[3],strlen(PATH_site));
 					$code= '<br /><div align="center">'.$returnLinkTag.$imgObj->imgTag($imgInfo).'</a></div>';
 					$this->content.=$this->doc->section('',$code);
 				} else {
 					$code="";
-					$icon = t3lib_BEfunc::getFileIcon($ext);	
+					$icon = t3lib_BEfunc::getFileIcon($ext);
 					$url = 'gfx/fileicons/'.$icon;
 					$code.='<a href="../'.substr($this->file,strlen(PATH_site)).'" target="_blank"><img src="'.$url.'" width=18 height=16 align="top" border=0> <b>File:</b> '.$fI["file"].'</a> &nbsp;&nbsp;<b>Size:</b> '.t3lib_div::formatSize(@filesize($this->file)).'<br />';
 					$this->content.=$this->doc->section('',$code);
-		
+
 					$lowerFilename = strtolower($this->file);
 					if (TYPO3_OS!="WIN" && !$GLOBALS["TYPO3_CONF_VARS"]["BE"]["disable_exec_function"])	{
 						if ($ext=="zip")	{
@@ -333,11 +333,11 @@ class SC_show_item {
 					}
 				}
 			}
-		
+
 			if (t3lib_div::_GP("returnUrl"))	{
 				$this->content.=$this->doc->section('','<br />'.$returnLinkTag.'<strong>&lt; '.$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.goBack").'</strong></a>');
 			}
-		}		
+		}
 	}
 
 	/**

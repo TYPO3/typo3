@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,9 +24,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Generating gif/png-files from TypoScript
- * Used by the menu-objects and imgResource in TypoScript. 
+ * Used by the menu-objects and imgResource in TypoScript.
  *
  * $Id$
  * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
@@ -38,18 +38,18 @@
  *
  *
  *
- *  102: class tslib_gifBuilder extends t3lib_stdGraphic 
- *  126:     function start($conf,$data)	
- *  274:     function gifBuild()	
- *  297:     function make()	
+ *  102: class tslib_gifBuilder extends t3lib_stdGraphic
+ *  126:     function start($conf,$data)
+ *  274:     function gifBuild()
+ *  297:     function make()
  *
  *              SECTION: Various helper functions
- *  448:     function checkTextObj($conf)	
- *  484:     function calcOffset($string)	
- *  533:     function getResource($file,$fileArray)	
- *  548:     function checkFile($file)	
- *  559:     function fileName($pre)	
- *  569:     function extension() 
+ *  448:     function checkTextObj($conf)
+ *  484:     function calcOffset($string)
+ *  533:     function getResource($file,$fileArray)
+ *  548:     function checkFile($file)
+ *  559:     function fileName($pre)
+ *  569:     function extension()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -111,7 +111,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	var $data = Array();		// This is the array from which data->field: [key] is fetched. So this is the current record!
 	var $objBB = Array();
 	var $myClassName = 'gifbuilder';
-	
+
 	/**
 	 * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
 	 * Modifies the ->setup, ->objBB internal arrays
@@ -124,7 +124,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @see tslib_cObj::getImgResource(), tslib_gmenu::makeGifs(), tslib_gmenu::findLargestDims()
 	 */
 	function start($conf,$data)	{
-	
+
 		if (is_array($conf))	{
 			$this->setup = $conf;
 			$this->data = $data;
@@ -139,7 +139,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				$this->setup['backColor'] = trim($cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.']));
 			}
 			if (!$this->setup['backColor'])	{$this->setup['backColor']='white';}
-			
+
 				// Transparent GIFs
 				// not working with reduceColors
 				// there's an option for IM: -transparent colors
@@ -153,11 +153,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			if (!$this->setup['XY'])	{$this->setup['XY']='120,50';}
 
 
-				// Checking TEXT and IMAGE objects for files. If any errors the objects are cleared. 
+				// Checking TEXT and IMAGE objects for files. If any errors the objects are cleared.
 				// The Bounding Box for the objects is stored in an array
 			foreach($sKeyArray as $theKey) {
 				$theValue=$this->setup[$theKey];
-			
+
 				if (intval($theKey) && $conf=$this->setup[$theKey.'.'])	{
 						// Swipes through TEXT and IMAGE-objects
 					switch($theValue)	{
@@ -250,7 +250,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$XY = t3lib_div::intExplode(',',$this->setup['XY']);
 			$maxWidth = intval($this->setup['maxWidth']);
 			$maxHeight = intval($this->setup['maxHeight']);
-			
+
 			$XY[0] = t3lib_div::intInRange($XY[0],1, $maxWidth?$maxWidth:2000);
 			$XY[1] = t3lib_div::intInRange($XY[1],1, $maxHeight?$maxHeight:2000);
 			$this->XY = $XY;
@@ -304,7 +304,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		$this->h = $XY[1];
 
 			// backColor is set
-		$cols=$this->convertColor($this->setup['backColor']);		
+		$cols=$this->convertColor($this->setup['backColor']);
 		ImageColorAllocate($this->im, $cols[0],$cols[1],$cols[2]);
 
 			// Traverse the GIFBUILDER objects an render each one:
@@ -324,7 +324,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							}
 						break;
 
-							// Text 
+							// Text
 						case 'TEXT':
 							if (!$conf['hide'])	{
 								if (is_array($conf['shadow.']))	{
@@ -384,8 +384,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						break;
 					}
 				}
-			}			
-		}	
+			}
+		}
 			// Auto transparent background is set
 		if ($this->setup['transparentBackground'])	{
 			imagecolortransparent($this->im, imagecolorat($this->im, 0, 0));
@@ -400,7 +400,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				} else {
 					$colIndex = ImageColorExact ($this->im, $cols[0],$cols[1],$cols[2]);
 				}
-				if ($colIndex > -1) {	
+				if ($colIndex > -1) {
 					ImageColorTransparent($this->im, $colIndex);
 				} else {
 					ImageColorTransparent($this->im, ImageColorAllocate($this->im, $cols[0],$cols[1],$cols[2]));
@@ -410,30 +410,30 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/*********************************************
 	 *
 	 * Various helper functions
 	 *
 	 ********************************************/
-	
-	
+
+
 	/**
 	 * Initializing/Cleaning of TypoScript properties for TEXT GIFBUILDER objects
 	 *

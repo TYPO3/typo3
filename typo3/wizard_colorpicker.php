@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,16 +24,16 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Color picker wizard
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
  *
  */
 
- 
+
 
 $BACK_PATH="";
 require ("init.php");
@@ -47,13 +47,13 @@ require ("template.php");
 class SC_wizard_colorpicker {
 	var $content;
 	var $P;
-	var $doc;	
-	
+	var $doc;
+
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 		$this->P = t3lib_div::_GP('P');
-		
+
 		unset($this->P["fieldChangeFunc"]["alert"]);
 		reset($this->P["fieldChangeFunc"]);
 		$update="";
@@ -61,8 +61,8 @@ class SC_wizard_colorpicker {
 			$update.= "
 			window.opener.".$v;
 		}
-		
-		
+
+
 		$this->doc = t3lib_div::makeInstance("template");
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='
@@ -114,8 +114,8 @@ class SC_wizard_colorpicker {
 			}
 		</script>
 		';
-		
-		
+
+
 		$this->content.=$this->doc->startPage("Color Picker");
 	}
 
@@ -131,11 +131,11 @@ class SC_wizard_colorpicker {
 		<form action="">
 		<input type="text" name="test" onChange="setValue(this.value);">
 		</form>
-		
+
 		<script language="javascript" type="text/javascript">
 			document.forms[0].test.value = getValue();
 		</script>
-		
+
 		';
 		$this->content.=$this->doc->endPage();
 	}

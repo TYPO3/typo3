@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains the TypoScript parser class
  *
  * $Id$
@@ -37,38 +37,38 @@
  *
  *
  *
- *   80: class t3lib_TSparser 
- *  132:     function parse($string,$matchObj='')	
- *  169:     function nextDivider()	
- *  185:     function parseSub(&$setup)	
- *  331:     function rollParseSub($string,&$setup)	
- *  355:     function getVal($string,$setup)	
- *  381:     function setVal($string,&$setup,$value,$wipeOut=0)	
- *  416:     function error($err,$num=2)	
- *  428:     function checkIncludeLines($string)	
- *  472:     function checkIncludeLines_array($array)	
+ *   80: class t3lib_TSparser
+ *  132:     function parse($string,$matchObj='')
+ *  169:     function nextDivider()
+ *  185:     function parseSub(&$setup)
+ *  331:     function rollParseSub($string,&$setup)
+ *  355:     function getVal($string,$setup)
+ *  381:     function setVal($string,&$setup,$value,$wipeOut=0)
+ *  416:     function error($err,$num=2)
+ *  428:     function checkIncludeLines($string)
+ *  472:     function checkIncludeLines_array($array)
  *
  *              SECTION: Syntax highlighting
- *  515:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)	
- *  536:     function regHighLight($code,$pointer,$strlen=-1)	
- *  554:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)	
+ *  515:     function doSyntaxHighlight($string,$lineNum='',$highlightBlockMode=0)
+ *  536:     function regHighLight($code,$pointer,$strlen=-1)
+ *  554:     function syntaxHighlight_print($lineNumDat,$highlightBlockMode)
  *
  * TOTAL FUNCTIONS: 12
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
 /**
  * The TypoScript parser
  *
@@ -111,7 +111,7 @@ class t3lib_TSparser {
 		'objstr' 			=> array('<span class="ts-objstr">','</span>'),	// The object string of a line
 		'value_copy' 		=> array('<span class="ts-value_copy">','</span>'),	// The value when the copy syntax (<) is used; that means the object reference
 		'value_unset' 		=> array('<span class="ts-value_unset">','</span>'),	// The value when an object is unset. Should not exist.
-		'ignored'			=> array('<span class="ts-ignored">','</span>'),	// The "rest" of a line which will be ignored. 
+		'ignored'			=> array('<span class="ts-ignored">','</span>'),	// The "rest" of a line which will be ignored.
 		'default' 			=> array('<span class="ts-default">','</span>'),	// The default style if none other is applied.
 		'comment' 			=> array('<span class="ts-comment">','</span>'),	// Comment lines
 		'condition'			=> array('<span class="ts-condition">','</span>'),	// Conditions
@@ -121,7 +121,7 @@ class t3lib_TSparser {
 	var $highLightBlockStyles = '';		// Additional attributes for the <span> tags for a blockmode line
 	var $highLightBlockStyles_basecolor = '#cccccc';		// The hex-HTML color for the blockmode
 
-	
+
 	/**
 	 * Start parsing the input TypoScript text piece. The result is stored in $this->setup
 	 *
@@ -132,11 +132,11 @@ class t3lib_TSparser {
 	function parse($string,$matchObj='')	{
 		$this->raw = explode(chr(10),$string);
 		$this->rawP = 0;
-		
+
 		$pre = '[GLOBAL]';
 		while($pre)	{
 			if ($this->breakPointLN && $pre=='[_BREAK]')	{
-				$this->error('Breakpoint at '.($this->lineNumberOffset+$this->rawP-2).': Line content was "'.$this->raw[$this->rawP-2].'"',1);	
+				$this->error('Breakpoint at '.($this->lineNumberOffset+$this->rawP-2).': Line content was "'.$this->raw[$this->rawP-2].'"',1);
 				break;
 			}
 
@@ -198,14 +198,14 @@ class t3lib_TSparser {
 			if (!$this->multiLineEnabled && substr($line,0,2)=='/*')	{
 				$this->commentSet=1;
 			}
-				
+
 			if (!$this->commentSet && ($line || $this->multiLineEnabled))	{	// If $this->multiLineEnabled we will go and get the line values here because we know, the first if() will be true.
 				if ($this->multiLineEnabled) {	// If multiline is enabled. Escape by ')'
 					if (substr($line,0,1)==')')	{	// Multiline ends...
 						if ($this->syntaxHighLight)	$this->regHighLight("operator",$lineP,strlen($line)-1);
 						$this->multiLineEnabled=0;	// Disable multiline
 						$theValue = implode($this->multiLineValue,chr(10));
-						if (strstr($this->multiLineObject,'.'))	{	
+						if (strstr($this->multiLineObject,'.'))	{
 							$this->setVal($this->multiLineObject,$setup,array($theValue));	// Set the value deeper.
 						} else {
 							$setup[$this->multiLineObject] = $theValue;	// Set value regularly
@@ -232,7 +232,7 @@ class t3lib_TSparser {
 						if ($this->syntaxHighLight)	$this->regHighLight("objstr",$lineP,strlen(substr($line,$varL)));
 						if ($objStrName)	{
 							if ($this->strict && eregi('[^[:alnum:]_\.-]',$objStrName,$r))	{
-								$this->error('Line '.($this->lineNumberOffset+$this->rawP-1).': Object Name String, "'.htmlspecialchars($objStrName).'" contains invalid character "'.$r[0].'". Must be alphanumeric or one of: "_-."'); 
+								$this->error('Line '.($this->lineNumberOffset+$this->rawP-1).': Object Name String, "'.htmlspecialchars($objStrName).'" contains invalid character "'.$r[0].'". Must be alphanumeric or one of: "_-."');
 							} else {
 								$line = ltrim(substr($line,$varL));
 								if ($this->syntaxHighLight)	{
@@ -311,7 +311,7 @@ class t3lib_TSparser {
 					}
 				}
 			}
-			
+
 				// Unset comment
 			if ($this->commentSet)	{
 				if ($this->syntaxHighLight)	$this->regHighLight("comment",	$lineP);
@@ -478,7 +478,7 @@ class t3lib_TSparser {
 	}
 
 
-	
+
 
 
 
@@ -517,7 +517,7 @@ class t3lib_TSparser {
 		$this->highLightData=array();
 		$this->error=array();
 		$string = str_replace(chr(13),'',$string);		// This is done in order to prevent empty <span>..</span> sections around chr(13) content. Should not do anything but help lessen the amount of HTML code.
-		
+
 		$this->parse($string);
 
 		return $this->syntaxHighlight_print($lineNum,$highlightBlockMode);
@@ -581,7 +581,7 @@ class t3lib_TSparser {
 			if ($errA[$rawP])	{
 				$lineC.=$this->highLightStyles['error'][0].'<strong> - ERROR:</strong> '.htmlspecialchars(implode(';',$errA[$rawP])).$this->highLightStyles['error'][1];
 			}
-			
+
 			if ($highlightBlockMode && $this->highLightData_bracelevel[$rawP])	{
 				$lineC = str_pad('',$this->highLightData_bracelevel[$rawP]*2,' ',STR_PAD_LEFT).'<span style="'.$this->highLightBlockStyles.($this->highLightBlockStyles_basecolor?'background-color: '.t3lib_div::modifyHTMLColorAll($this->highLightBlockStyles_basecolor,-$this->highLightData_bracelevel[$rawP]*16):'').'">'.(strcmp($lineC,'')?$lineC:'&nbsp;').'</span>';
 			}
@@ -590,11 +590,11 @@ class t3lib_TSparser {
 				$lineNum = $rawP+$lineNumDat[0];
 				$lineC = $this->highLightStyles['linenum'][0].str_pad($lineNum,4,' ',STR_PAD_LEFT).':'.$this->highLightStyles['linenum'][1].' '.$lineC;
 			}
-			
+
 
 			$lines[] = $lineC;
 		}
-		
+
 		return '<pre class="ts-hl">'.implode(chr(10),$lines).'</pre>';
 	}
 }

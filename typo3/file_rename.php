@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Web>File: Renaming files and folders
  *
  * $Id$
@@ -37,16 +37,16 @@
  *
  *
  *
- *   75: class SC_file_rename 
- *   96:     function init()	
- *  148:     function main()	
- *  189:     function printContent()	
+ *   75: class SC_file_rename
+ *   96:     function init()
+ *  148:     function main()
+ *  189:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 $BACK_PATH='';
@@ -73,7 +73,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
  * @subpackage core
  */
 class SC_file_rename {
-	
+
 		// Internal, static:
 	var $doc;			// Template object.
 	var $basicff;		// Instance of "t3lib_basicFileFunctions"
@@ -84,10 +84,10 @@ class SC_file_rename {
 		// Internal, static (GPVar):
 	var $target;		// Set with the target path inputted in &target
 
-		// Internal, dynamic:	
+		// Internal, dynamic:
 	var $content;		// Accumulating content
-		
-	
+
+
 	/**
 	 * Constructor function for class
 	 *
@@ -102,7 +102,7 @@ class SC_file_rename {
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
-		
+
 			// Cleaning and checking target
 		if (@file_exists($this->target))	{
 			$this->target=$this->basicff->cleanDirectoryName($this->target);		// Cleaning and checking target (file or dir)
@@ -121,13 +121,13 @@ class SC_file_rename {
 			case 'group':	$this->icon = 'gfx/i/_icon_ftp_group.gif';	break;
 			default:		$this->icon = 'gfx/i/_icon_ftp.gif';	break;
 		}
-		
+
 			// Relative path to filemount, $key:
 		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
-		
+
 			// Setting title:
 		$this->title = $GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
-		
+
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('smallDoc');
 		$this->doc->docType = 'xhtml_trans';
@@ -155,17 +155,17 @@ class SC_file_rename {
 		$this->content.=$this->doc->spacer(5);
 		$this->content.=$this->doc->section('',$this->doc->getFileheader($this->title,$this->shortPath,$this->icon));
 		$this->content.=$this->doc->divider(5);
-		
-		
+
+
 			// Making the formfields for renaming:
 		$code='
-			
+
 			<div id="c-rename">
 				<input type="text" name="file[rename][0][data]" value="'.htmlspecialchars(basename($this->shortPath)).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />
 				<input type="hidden" name="file[rename][0][target]" value="'.htmlspecialchars($this->target).'" />
 			</div>
 		';
-		
+
 			// Making submit button:
 		$code.='
 			<div id="c-submit">
@@ -173,7 +173,7 @@ class SC_file_rename {
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
 			</div>
 		';
-		
+
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section('',$code);
 
@@ -188,7 +188,7 @@ class SC_file_rename {
 	 */
 	function printContent()	{
 
-		echo $this->content;	
+		echo $this->content;
 	}
 }
 

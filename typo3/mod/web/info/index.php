@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,13 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Module: Web>Info
  * Presents various page related information from extensions
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
- * XHTML compliant 
+ * XHTML compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -39,9 +39,9 @@
  *
  *
  *
- *   70: class SC_mod_web_info_index extends t3lib_SCbase 
- *   82:     function main()	
- *  169:     function printContent()	
+ *   70: class SC_mod_web_info_index extends t3lib_SCbase
+ *   82:     function main()
+ *  169:     function printContent()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -81,18 +81,18 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH;
-		
+
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
-		
+
 		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
 			$this->CALC_PERMS = $BE_USER->calcPerms($this->pageinfo);
 			if ($BE_USER->user['admin'] && !$this->id)	{
 				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
 			}
-		
+
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
 			$this->doc->backPath = $BACK_PATH;
 			$this->doc->tableLayout = Array (
@@ -105,7 +105,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top">','</td>')
 				)
 			);
-				
+
 				// JavaScript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
@@ -117,7 +117,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 				script_ended = 1;
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 			');
-		
+
 
 				// Setting up the context sensitive menu:
 			$CMparts=$this->doc->getContextMenuCode();
@@ -136,26 +136,26 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->content.=$this->doc->spacer(5);
 			$this->content.=$this->doc->section('',$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
 			$this->content.=$this->doc->divider(5);
-		
-			
+
+
 
 
 			$this->extObjContent();
 
 
-		
-		
+
+
 				// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{
 				$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
 			}
-		
+
 			$this->content.=$this->doc->spacer(10);
 		} else {
 				// If no access or if ID == zero
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
 			$this->doc->backPath = $BACK_PATH;
-		
+
 			$this->content.=$this->doc->startPage($LANG->getLL('title'));
 			$this->content.=$this->doc->header($LANG->getLL('title'));
 			$this->content.=$this->doc->spacer(5);

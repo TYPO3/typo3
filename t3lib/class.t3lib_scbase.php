@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains the parent class for 'ScriptClasses' in backend modules.
  *
  * $Id$
@@ -37,16 +37,16 @@
  *
  *
  *
- *  133: class t3lib_SCbase 
- *  249:     function init()	
- *  266:     function menuConfig()	
- *  286:     function mergeExternalItems($modName,$menuKey,$menuArr)	
- *  305:     function handleExternalFunctionValue($MM_key='function')	
- *  322:     function getExternalItemConfig($modName,$menuKey,$value='')	
- *  336:     function checkExtObj()	
- *  350:     function checkSubExtObj()	
- *  362:     function extObjHeader()	
- *  371:     function extObjContent()	
+ *  133: class t3lib_SCbase
+ *  249:     function init()
+ *  266:     function menuConfig()
+ *  286:     function mergeExternalItems($modName,$menuKey,$menuArr)
+ *  305:     function handleExternalFunctionValue($MM_key='function')
+ *  322:     function getExternalItemConfig($modName,$menuKey,$value='')
+ *  336:     function checkExtObj()
+ *  350:     function checkSubExtObj()
+ *  362:     function extObjHeader()
+ *  371:     function extObjContent()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -69,11 +69,11 @@
 
 /**
  * EXAMPLE PROTOTYPE
- * 
+ *
  * As for examples there are lots of them if you search for classes which extends 't3lib_SCbase'.
  * However you can see a prototype example of how a module might use this class in an index.php file typically hosting a backend module.
  * NOTICE: This example only outlines the basic structure of how this class is used. You should consult the documentation and other real-world examples for some actual things to do when building modules.
- *  
+ *
  * 		  // TYPICAL 'HEADER' OF A BACKEND MODULE:
  * 		unset($MCONF);
  * 		require ('conf.php');
@@ -82,7 +82,7 @@
  * 		$LANG->includeLLFile('EXT:prototype/locallang.php');
  * 		require_once(PATH_t3lib.'class.t3lib_scbase.php');		// NOTICE THE INCLUSION OF t3lib_SCbase
  * 		$BE_USER->modAccess($MCONF,1);
- * 		
+ *
  * 			// SC_mod_prototype EXTENDS THE CLASS t3lib_SCbase with a main() and printContent() function:
  * 		class SC_mod_prototype extends t3lib_SCbase {
  * 				// MAIN FUNCTION - HERE YOU CREATE THE MODULE CONTENT IN $this->content
@@ -99,22 +99,22 @@
  * 				echo $this->content;
  * 			}
  * 		}
- * 		
+ *
  * 			// CHECKING IF THERE ARE AN EXTENSION CLASS CONFIGURED FOR THIS CLASS:
  * 		if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/prototype/index.php'])	{
  * 			include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/prototype/index.php']);
  * 		}
- * 		
+ *
  * 		  // MAKE INSTANCE OF THE SCRIPT CLASS AND CALL init()
  * 		$SOBE = t3lib_div::makeInstance('SC_mod_prototype');
  * 		$SOBE->init();
- * 		
+ *
  * 		  // AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE
  * 		foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
- * 		
+ *
  * 		  // THEN WE WILL CHECK IF THERE IS A 'SUBMODULE' REGISTERED TO BE INITIALIZED AS WELL:
  * 		$SOBE->checkExtObj();
- * 		
+ *
  * 		  // THEN WE CALL THE main() METHOD AND THIS SHOULD SPARK THE CREATION OF THE MODULE OUTPUT.
  * 		$SOBE->main();
  * 		  // FINALLY THE printContent() FUNCTION WILL OUTPUT THE ACCUMULATED CONTENT
@@ -159,7 +159,7 @@ class t3lib_SCbase {
 
 
 	/**
-	 * The module menu items array. Each key represents a key for which values can range between the items in the array of that key. 
+	 * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
 	 * @see init()
 	 */
 	var $MOD_MENU= Array (
@@ -171,13 +171,13 @@ class t3lib_SCbase {
 	 * @see $MOD_MENU
 	 */
 	var $MOD_SETTINGS=array();
-	
+
 	/**
 	 * Module TSconfig based on PAGE TSconfig / USER TSconfig
 	 * @see menuConfig()
 	 */
 	var $modTSconfig;
-	
+
 	/**
 	 * If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
 	 * Can be set from extension classes of this class before the init() function is called.
@@ -185,15 +185,15 @@ class t3lib_SCbase {
 	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
 	 */
 	var $modMenu_type = '';
-	
+
 	/**
 	 * dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
 	 * Can be set from extension classes of this class before the init() function is called.
-	 * 
+	 *
 	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
 	 */
 	var $modMenu_dontValidateList = '';
-	
+
 	/**
 	 * List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
 	 * Can be set from extension classes of this class before the init() function is called.
@@ -206,31 +206,31 @@ class t3lib_SCbase {
 	 * Contains module configuration parts from TBE_MODULES_EXT if found
 	 *
 	 * @see handleExternalFunctionValue()
-	 */ 
+	 */
 	var $extClassConf;
 
 	/**
 	 * Contains absolute paths to class files to include from the global scope. This is done in the module index.php files after calling the init() function
 	 *
 	 * @see handleExternalFunctionValue()
-	 */ 
+	 */
 	var $include_once=array();
 
 	/**
 	 * Generally used for accumulating the output content of backend modules
-	 */ 
+	 */
 	var $content='';
 
 	/**
 	 * Generally used to hold an instance of the 'template' class from typo3/template.php
-	 */ 
-	var $doc;	
+	 */
+	var $doc;
 
 	/**
 	 * May contain an instance of a 'Function menu module' which connects to this backend module.
 	 *
 	 * @see checkExtObj()
-	 */ 
+	 */
 	var $extObj;
 
 

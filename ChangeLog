@@ -9,7 +9,7 @@ Fixed bugs in Mount Points / Status:
 - Fixed support for correct MP-vars for any entryLevel number for HMENU
 - Added option to overlay the mount point with the mounted page; This means the mount point gets substituted with the mounted page and not only the subpages of the mounted page. This is called "Overlay" mode. Can be set on a per-mount level (checkbox in the pages record). Only doktypes < 200 can be mounted in overlay mode.
 - Checked consistency of exclude pages/hidden/starttime/endtime and found it to be ok.
-- HMENU special types supported: 
+- HMENU special types supported:
 	rootline : full support
 	list,directory : Supported, but only if the ID values supplied are in the main rootline of the site. The pages in the menus are allowed to be mount points of course. If the supplied IDs are outside the rootline they will loose their connection to the rootline unless "config.MP_mapRootPoints" is configured to supply some mapping.
 	browse : Not supported: Didn't have time to do it, but should be possible to implement technically.
@@ -41,7 +41,7 @@ Fixed bugs in Mount Points / Status:
 
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
 
-	* Added full safety for the internal TYPO3 formmail; email addresses in the fields "recipient" and "recipient_copy" are encrypted in the transfer and the "formmail" interface is safe for spam-misuse (since a proper recipient address cannot be forged automatically). 
+	* Added full safety for the internal TYPO3 formmail; email addresses in the fields "recipient" and "recipient_copy" are encrypted in the transfer and the "formmail" interface is safe for spam-misuse (since a proper recipient address cannot be forged automatically).
 !!!If someone are using the "formmail" API from other renderers than the FORM cObject in TypoScript you will have to set the recipient address to the encrypted value by default OR alternatively disabled the check by TYPO3_CONF_VARS[FE][strictFormmail] = FALSE
 
 2004-04-01  Kasper Skårhøj,,,  <kasper@typo3.com>
@@ -86,7 +86,7 @@ Fixed bugs in Mount Points / Status:
 
 2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
 
-	* Fixed an error for form wizard (and others...) where the return URL would be wrong if the wizard was activated right after having saved a new record (would like back to a new record again). 
+	* Fixed an error for form wizard (and others...) where the return URL would be wrong if the wizard was activated right after having saved a new record (would like back to a new record again).
 	* Further, I added the option of xmlOutput from the table and form wizards. This option is configured in the wizard setup. There is NO frontend rendering supporting the XML format yet. But it might be very handy (and recommended) for other applications wanting to use the table and formwizards.
 
 2004-03-31  Kasper Skårhøj,,,  <kasper@typo3.com>
@@ -103,8 +103,8 @@ Fixed bugs in Mount Points / Status:
 
 2004-03-24  Kasper Skårhøj,,,  <kasper@typo3.com>
 
-	* Added RTE API and changed the "rte" extension to use that. 
-	* Added t3lib_div::getUserObj() which returns an OBJECT , instead of executing a method call like callUserFunc() does. 
+	* Added RTE API and changed the "rte" extension to use that.
+	* Added t3lib_div::getUserObj() which returns an OBJECT , instead of executing a method call like callUserFunc() does.
 
 2004-03-23  Kasper Skårhøj,,,  <kasper@typo3.com>
 
@@ -151,7 +151,7 @@ Generally:
 
 2004-02-12  Robert Lemke  <rl@robertlemke.de>
 
-	* 
+	*
 Made changes to class.tslib_content.php:
 - added function getAltParam () which acts as an abstraction method / API creating alt and title parameters for img tags
 - added a new TypoScript configuration property: "titleText" (string / stdWrp) similar to "altText". If only altText is specified, it will also be used for the "title" parameter
@@ -164,7 +164,7 @@ Kasper Skårhøj, 6/2:
  - Added processing option to RTE, "proc.plainImageMode"
  - Added options for select and group types in TCA to set the selector box style.
  - Added $altPageId parameter to function linkTP*() in tslib_pibase + pi_list_linkSingle()
- - Changed the order of <?xml> and <!DOCTYPE> in the frontend for XHTML around again. And added an option, "doctypeSwitch" which will reverse the order for those needing that. And finally the "doctype" option fed with a value that is not "xhtml_frames", "xhtml_trans" or "xhtml_strict" will be outputted AS the doctype! 
+ - Changed the order of <?xml> and <!DOCTYPE> in the frontend for XHTML around again. And added an option, "doctypeSwitch" which will reverse the order for those needing that. And finally the "doctype" option fed with a value that is not "xhtml_frames", "xhtml_trans" or "xhtml_strict" will be outputted AS the doctype!
  - Implemented checkbox for show thumbnails in Element browser/file and RTE select image dialog.
  - Implemented pop-up window size selector in link wizard
 
@@ -209,7 +209,7 @@ PHP:
 !!! The global var $AB has been removed (since the "alternative backend" is now THE backend and the classic is totally gone. If you use this var, you can safely expect $AB's value to be TRUE and therefore remove all code which would excute if it was FALSE.
 !!! Removed what looked like unused functions and variables in the backend frameset JavaScript.
 !!! Change db_list_frame and file_list_frame to just "list_frame".
-!!! Cleaned up a lot in the template-class. 
+!!! Cleaned up a lot in the template-class.
 !!! dfw() and rfw() functions must be substituted with $GLOBALS["TBE_TEMPLATE"]->dfw() / ->rfw()
 !!! fw() is highly depreciated (and does NOT wrap strings anymore!)
 !!! if (top.theMenu) top.theMenu.recentuid

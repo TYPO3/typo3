@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -38,17 +38,17 @@
  *
  *
  *
- *   68: class SC_alt_file_navframe 
- *   85:     function init()	
- *  168:     function main()	
- *  196:     function printContent()	
+ *   68: class SC_alt_file_navframe
+ *   85:     function init()
+ *  168:     function main()
+ *  196:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 $BACK_PATH='';
 require ('init.php');
 require ('template.php');
@@ -71,12 +71,12 @@ class SC_alt_file_navframe {
 	var $content;		// Content accumulates in this variable.
 	var $foldertree;	// Folder tree object.
 	var $doc;			// Template object.
-	
+
 		// Internal, static: GPvar:
 	var $currentSubScript;
 	var $cMR;
-	
-	
+
+
 	/**
 	 * Initialiation of the script class
 	 *
@@ -88,15 +88,15 @@ class SC_alt_file_navframe {
 			// Setting GPvars:
 		$this->currentSubScript = t3lib_div::_GP('currentSubScript');
 		$this->cMR = t3lib_div::_GP('cMR');
-		
+
 			// Create folder tree object:
 		$this->foldertree = t3lib_div::makeInstance('t3lib_folderTree');
 		$this->foldertree->ext_IconMode = $BE_USER->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
 		$this->foldertree->thisScript = 'alt_file_navframe.php';
-		
+
 			// Setting highlight mode:
 		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
-		
+
 			// Create template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->docType='xhtml_trans';
@@ -107,7 +107,7 @@ class SC_alt_file_navframe {
 			// Setting JavaScript for menu.
 		$this->doc->JScode=$this->doc->wrapScriptTags(
 	($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
-	
+
 		// Function, loading the list frame from navigation tree:
 	function jumpTo(id,linkObj,highLightID)	{	//
 		var theUrl = top.TS.PATH_typo3+top.currentSubScript+"?id="+id;
@@ -123,7 +123,7 @@ class SC_alt_file_navframe {
 		return false;
 	}
 
-	
+
 		// Call this function, refresh_nav(), from another script in the backend if you want to refresh the navigation frame (eg. after having changed a page title or moved pages etc.)
 		// See t3lib_BEfunc::getSetUpdateSignal()
 	function refresh_nav()	{	//
@@ -132,7 +132,7 @@ class SC_alt_file_navframe {
 	function _refresh_nav()	{	//
 		document.location="'.$this->pagetree->thisScript.'?unique='.time().'";
 	}
-	
+
 		// Highlighting rows in the folder tree:
 	function hilight_row(frameSetModule,highLightID) {	//
 
@@ -141,7 +141,7 @@ class SC_alt_file_navframe {
 		if (theObj)	{
 			theObj.style.backgroundColor="";
 		}
-		
+
 			// Set new:
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highLightID;
 		theObj = document.getElementById(highLightID);
@@ -159,7 +159,7 @@ class SC_alt_file_navframe {
 		$this->doc->JScode.=$CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
 	}
-	
+
 	/**
 	 * Main function, rendering the folder tree
 	 *

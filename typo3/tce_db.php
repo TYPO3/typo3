@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,14 +24,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * TCE gateway (TYPO3 Core Engine) for database handling
  * This script is a gateway for POST forms to class.t3lib_TCEmain that manipulates all information in the database!!
- * For syntax and API information, see the document 'TYPO3 Core APIs' 
+ * For syntax and API information, see the document 'TYPO3 Core APIs'
  *
  * $Id$
  * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -39,18 +39,18 @@
  *
  *
  *
- *   80: class SC_tce_db 
- *  107:     function init()	
- *  161:     function initClipboard()	
- *  181:     function main()	
- *  217:     function finish()	
+ *   80: class SC_tce_db
+ *  107:     function init()
+ *  161:     function initClipboard()
+ *  181:     function main()
+ *  217:     function finish()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
+
+
 require ('init.php');
 require ('template.php');
 require_once (PATH_t3lib.'class.t3lib_tcemain.php');
@@ -78,7 +78,7 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
  * @subpackage core
  */
 class SC_tce_db {
-	
+
 		// Internal, static: GPvar
 	var $flags;
 	var $data;
@@ -92,7 +92,7 @@ class SC_tce_db {
 	var $vC;
 	var $uPT;
 
-		// Internal, dynamic:	
+		// Internal, dynamic:
 	var $include_once=array();		// Files to include after init() function is called:
 	var $tce;						// TCEmain object
 
@@ -123,7 +123,7 @@ class SC_tce_db {
 			// Creating TCEmain object
 		$this->tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$this->tce->stripslashes_values=0;
-		
+
 			// Configuring based on user prefs.
 		if ($BE_USER->uc['recursiveDelete'])	{
 			$this->tce->deleteTree = 1;	// True if the delete Recursive flag is set.
@@ -134,17 +134,17 @@ class SC_tce_db {
 		if ($BE_USER->uc['neverHideAtCopy'])	{
 			$this->tce->neverHideAtCopy = 1;
 		}
-		
+
 		$TCAdefaultOverride = $BE_USER->getTSConfigProp('TCAdefaults');
 		if (is_array($TCAdefaultOverride))	{
 			$this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
-		
+
 			// Reverse order.
 		if ($this->flags['reverseOrder'])	{
 			$this->tce->reverseOrder=1;
 		}
-		
+
 		$this->tce->disableRTE = $this->_disableRTE;
 
 			// Clipboard?
@@ -184,7 +184,7 @@ class SC_tce_db {
 			// LOAD TCEmain with data and cmd arrays:
 		$this->tce->start($this->data,$this->cmd);
 		if (is_array($this->mirror))	{$this->tce->setMirror($this->mirror);}
-		
+
 			// Checking referer / executing
 		$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
@@ -193,14 +193,14 @@ class SC_tce_db {
 		} else {
 				// Register uploaded files
 			$this->tce->process_uploads($GLOBALS['HTTP_POST_FILES']);
-			
+
 				// Execute actions:
 			$this->tce->process_datamap();
 			$this->tce->process_cmdmap();
 
 				// Clearing cache:
 			$this->tce->clear_cacheCmd($this->cacheCmd);
-			
+
 				// Update page tree?
 			if ($this->uPT && (isset($this->data['pages'])||isset($this->cmd['pages'])))	{
 				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
@@ -223,7 +223,7 @@ class SC_tce_db {
 		if ($this->redirect && !$this->tce->debug) {
 			Header('Location: '.t3lib_div::locationHeaderUrl($this->redirect));
 		}
-	}	
+	}
 }
 
 // Include extension?

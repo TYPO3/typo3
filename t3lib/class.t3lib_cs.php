@@ -1,19 +1,19 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2003-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the Typo3 project. The Typo3 project is 
+*  This script is part of the Typo3 project. The Typo3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,8 +21,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
- * Class for conversion between charsets. 
+/**
+ * Class for conversion between charsets.
  *
  * $Id$
  *
@@ -34,28 +34,39 @@
  *
  *
  *
- *  108: class t3lib_cs 
- *  237:     function parse_charset($charset)	
- *  254:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
- *  288:     function utf8_encode($str,$charset)	
- *  329:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
- *  377:     function utf8_to_entities($str)	
- *  410:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
- *  441:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
- *  482:     function initCharset($charset)	
- *  553:     function UnumberToChar($cbyte)	
- *  597:     function utf8CharToUnumber($str,$hex=0)	
+ *  119: class t3lib_cs
+ *  261:     function parse_charset($charset)
+ *  278:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)
+ *  312:     function utf8_encode($str,$charset)
+ *  359:     function utf8_decode($str,$charset,$useEntityForNoChar=0)
+ *  407:     function utf8_to_entities($str)
+ *  440:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)
+ *  474:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)
+ *  515:     function initCharset($charset)
+ *  586:     function UnumberToChar($cbyte)
+ *  630:     function utf8CharToUnumber($str,$hex=0)
+ *
+ *              SECTION: String operation functions
+ *  682:     function strtrunc($charset,$string,$len)
+ *  716:     function substr($charset,$str,$start,$len=null)
+ *  755:     function strlen($charset,$string)
  *
  *              SECTION: UTF-8 String operation functions
- *  648:     function utf8_strtrunc($str,$len)	
- *  680:     function utf8_substr($str,$start,$len=null)	
- *  719:     function utf8_strlen($str)	
- *  745:     function utf8_strpos($haystack,$needle,$offset=0)	
- *  768:     function utf8_strrpos($haystack,$needle)	
- *  787:     function utf8_char2byte_pos($str,$pos)	
- *  812:     function utf8_byte2char_pos($str,$pos)	
+ *  803:     function utf8_strtrunc($str,$len)
+ *  831:     function utf8_substr($str,$start,$len=null)
+ *  857:     function utf8_strlen($str)
+ *  879:     function utf8_strpos($haystack,$needle,$offset=0)
+ *  902:     function utf8_strrpos($haystack,$needle)
+ *  921:     function utf8_char2byte_pos($str,$pos)
+ *  946:     function utf8_byte2char_pos($str,$pos)
  *
- * TOTAL FUNCTIONS: 17
+ *              SECTION: EUC String operation functions
+ *  994:     function euc_strtrunc($str,$len,$charset)
+ * 1028:     function euc_substr($str,$start,$charset,$len=null)
+ * 1055:     function euc_strlen($str,$charset)
+ * 1082:     function euc_char2byte_pos($str,$pos,$charset)
+ *
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -107,8 +118,8 @@
  */
 class t3lib_cs {
 	var $noCharByteVal=127;		// ASCII Value for chars with no equalent.
-		
-		// This is the array where parsed conversion tables are stored (cached)	
+
+		// This is the array where parsed conversion tables are stored (cached)
 	var $parsedCharsets=array();
 
 		// This tells the converter which charsets has two bytes per char:
@@ -300,7 +311,7 @@ class t3lib_cs {
 	 */
 	function utf8_encode($str,$charset)	{
 
-			// Charset is case-insensitive. 
+			// Charset is case-insensitive.
 		if ($this->initCharset($charset))	{	// Parse conv. table if not already...
 			$strLen = strlen($str);
 			$outStr='';
@@ -347,7 +358,7 @@ class t3lib_cs {
 	 */
 	function utf8_decode($str,$charset,$useEntityForNoChar=0)	{
 
-			// Charset is case-insensitive. 
+			// Charset is case-insensitive.
 		if ($this->initCharset($charset))	{	// Parse conv. table if not already...
 			$strLen = strlen($str);
 			$outStr='';
@@ -376,7 +387,7 @@ class t3lib_cs {
 							$mByte = $this->parsedCharsets[$charset]['utf8'][$buf];	// The local number
 							if ($mByte>255)	{	// If the local number is greater than 255 we will need to split the byte (16bit word assumed) in two chars.
 								$outStr.= chr(($mByte >> 8) & 255).chr($mByte & 255);
-							} else $outStr.= chr($mByte);	
+							} else $outStr.= chr($mByte);
 						} elseif ($useEntityForNoChar) {	// Create num entity:
 							$outStr.='&#'.$this->utf8CharToUnumber($buf,1).';';
 						} else $outStr.=chr($this->noCharByteVal);	// No char exists
@@ -410,15 +421,15 @@ class t3lib_cs {
 							$buf.=substr($str,$a,1);	// ... and add the next char.
 						} else break;
 					}
-					
+
 					$outStr.='&#'.$this->utf8CharToUnumber($buf,1).';';
 				} else $outStr.=chr($this->noCharByteVal);	// No char exists (MIDDLE of MB sequence!)
 			} else $outStr.=$chr;	// ... otherwise it's just ASCII 0-127 and one byte. Transparent
 		}
-		
+
 		return $outStr;
 	}
-	
+
 	/**
 	 * Converts numeric entities (UNICODE, eg. decimal (&#1234;) or hexadecimal (&#x1b;)) to UTF-8 multibyte chars
 	 *
@@ -448,10 +459,10 @@ class t3lib_cs {
 				}
 			}
 		}
-		
+
 		return implode('',$parts);
 	}
-	
+
 	/**
 	 * Converts all chars in the input UTF-8 string into integer numbers returned in an array
 	 *
@@ -482,12 +493,12 @@ class t3lib_cs {
 							$buf.=substr($str,$a,1);	// ... and add the next char.
 						} else break;
 					}
-					
+
 					$outArr[]=$retChar?$buf:$this->utf8CharToUnumber($buf);
 				} else $outArr[]=$retChar?chr($this->noCharByteVal):$this->noCharByteVal;	// No char exists (MIDDLE of MB sequence!)
 			} else $outArr[]=$retChar?chr($ord):$ord;	// ... otherwise it's just ASCII 0-127 and one byte. Transparent
 		}
-		
+
 		return $outArr;
 	}
 
@@ -507,7 +518,7 @@ class t3lib_cs {
 
 				// Conversion table filename:
 			$charsetConvTableFile = PATH_t3lib.'csconvtbl/'.$charset.'.tbl';
-			
+
 				// If the conversion table is found:
 			if ($charset && t3lib_div::validPathStr($charsetConvTableFile) && @is_file($charsetConvTableFile))	{
 					// Cache file for charsets:
@@ -517,18 +528,18 @@ class t3lib_cs {
 					$this->parsedCharsets[$charset]=unserialize(t3lib_div::getUrl($cacheFile));
 				} else {
 						// Parse conversion table into lines:
-					$lines=t3lib_div::trimExplode(chr(10),t3lib_div::getUrl($charsetConvTableFile),1);	
+					$lines=t3lib_div::trimExplode(chr(10),t3lib_div::getUrl($charsetConvTableFile),1);
 						// Initialize the internal variable holding the conv. table:
-					$this->parsedCharsets[$charset]=array('local'=>array(),'utf8'=>array());	
+					$this->parsedCharsets[$charset]=array('local'=>array(),'utf8'=>array());
 						// traverse the lines:
 					$detectedType='';
 					foreach($lines as $value)	{
 						if (trim($value) && substr($value,0,1)!='#')	{	// Comment line or blanks are ignored.
-							
+
 								// Detect type if not done yet: (Done on first real line)
 								// The "whitespaced" type is on the syntax 	"0x0A	0x000A	#LINE FEED" 	while 	"ms-token" is like 		"B9 = U+00B9 : SUPERSCRIPT ONE"
 							if (!$detectedType)		$detectedType = ereg('[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+',$value) ? 'whitespaced' : 'ms-token';
-							
+
 							if ($detectedType=='ms-token')	{
 								list($hexbyte,$utf8) = split('=|:',$value,3);
 							} elseif ($detectedType=='whitespaced')	{
@@ -574,7 +585,7 @@ class t3lib_cs {
 	 */
 	function UnumberToChar($cbyte)	{
 		$str='';
-		
+
 		if ($cbyte < 0x80) {
 			$str.=chr($cbyte);
 		} else if ($cbyte < 0x800) {
@@ -607,7 +618,7 @@ class t3lib_cs {
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * Converts a UTF-8 Multibyte character to a UNICODE number
 	 *
@@ -618,7 +629,7 @@ class t3lib_cs {
 	 */
 	function utf8CharToUnumber($str,$hex=0)	{
 		$ord=ord(substr($str,0,1));	// First char
-		
+
 		if (($ord & 192) == 192)	{	// This verifyes that it IS a multi byte string
 			$binBuf='';
 			for ($b=0;$b<8;$b++)	{	// for each byte in multibyte string...
@@ -631,7 +642,7 @@ class t3lib_cs {
 
 			$int = bindec($binBuf);
 		} else $int = $ord;
-		
+
 		return $hex ? 'x'.dechex($int) : $int;
 	}
 
@@ -667,7 +678,7 @@ class t3lib_cs {
 	 * @return	string		the shortened string
 	 * @see mb_strcut()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */	
+	 */
 	function strtrunc($charset,$string,$len)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strcut($string,0,$len,$charset);
@@ -721,7 +732,7 @@ class t3lib_cs {
 		} elseif ($charset == 'shift_jis')	{
 			return $this->euc_substr($string,$start,$len,'shift_jis');
 		} elseif ($this->eucBasedSets[$charset])	{
-			return $this->euc_substr($string,$start,$len);		
+			return $this->euc_substr($string,$start,$len);
 		} elseif ($this->twoByteSets[$charset])	{
 			return substr($string,$start*2,$len*2);
 		} elseif ($this->fourByteSets[$charset])	{
@@ -733,14 +744,14 @@ class t3lib_cs {
 	}
 
 	/**
-	 *  Counts the number of characters.
+	 * Counts the number of characters.
 	 *
 	 * @param	string		the character set
 	 * @param	string		character string
 	 * @return	integer		the number of characters
 	 * @see strlen()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */	
+	 */
 	function strlen($charset,$string)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring')	{
 			return mb_strlen($string,$charset);
@@ -979,7 +990,7 @@ class t3lib_cs {
 	 * @return	string		the shortened string
 	 * @see mb_strcut()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 */	
+	 */
 	function euc_strtrunc($str,$len,$charset)	 {
 		if ($len <= 0)	return '';
 
@@ -1010,9 +1021,9 @@ class t3lib_cs {
 	 * @param	string		EUC multibyte character string
 	 * @param	int		start position (character position)
 	 * @param	int		length (in characters)
+	 * @param	[type]		$len: ...
 	 * @return	string		the substring
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 *
 	 */
 	function euc_substr($str,$start,$charset,$len=null)	{
 		if ($len===0)	return '';

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Web>File: Upload of files
  *
  * $Id$
@@ -37,16 +37,16 @@
  *
  *
  *
- *   78: class SC_file_upload 
- *  103:     function init()	
- *  161:     function main()	
- *  230:     function printContent()	
+ *   78: class SC_file_upload
+ *  103:     function init()
+ *  161:     function main()
+ *  230:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 $BACK_PATH='';
@@ -76,7 +76,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
  * @subpackage core
  */
 class SC_file_upload {
-	
+
 		// External, static:
 	var $uploadNumber=10;
 
@@ -88,13 +88,13 @@ class SC_file_upload {
 	var $title;			// Name of the filemount
 
 		// Internal, static (GPVar):
-	var $number;		
+	var $number;
 	var $target;		// Set with the target path inputted in &target
 
-		// Internal, dynamic:	
+		// Internal, dynamic:
 	var $content;		// Accumulating content
-	
-		
+
+
 	/**
 	 * Constructor for initializing the class
 	 *
@@ -110,7 +110,7 @@ class SC_file_upload {
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->basicff->init($GLOBALS['FILEMOUNTS'],$TYPO3_CONF_VARS['BE']['fileExtensions']);
-		
+
 			// Cleaning and checking target
 		$this->target=$this->basicff->is_directory($this->target);		// Cleaning and checking target
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
@@ -125,13 +125,13 @@ class SC_file_upload {
 			case 'group':	$this->icon = 'gfx/i/_icon_ftp_group.gif';	break;
 			default:		$this->icon = 'gfx/i/_icon_ftp.gif';	break;
 		}
-		
+
 			// Relative path to filemount, $key:
 		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
-		
+
 			// Setting title:
 		$this->title = $GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
-		
+
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('smallDoc');
 		$this->doc->docType = 'xhtml_trans';
@@ -139,10 +139,10 @@ class SC_file_upload {
 		$this->doc->form='<form action="tce_file.php" method="post" name="editform" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'">';
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			var path = "'.$this->target.'";
-		
+
 			function reload(a)	{	//
 				if (!changed || (changed && confirm('.$LANG->JScharCode($LANG->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')).')))	{
-					var params = "&target="+escape(path)+"&number="+a; 
+					var params = "&target="+escape(path)+"&number="+a;
 					document.location = "file_upload.php?"+params;
 				}
 			}
@@ -168,7 +168,7 @@ class SC_file_upload {
 		$this->content.=$this->doc->spacer(5);
 		$this->content.=$this->doc->section('',$this->doc->getFileheader($this->title,$this->shortPath,$this->icon));
 		$this->content.=$this->doc->divider(5);
-		
+
 
 			// Making the selector box for the number of concurrent uploads
 		$this->number = t3lib_div::intInRange($this->number,1,10);
@@ -183,14 +183,14 @@ class SC_file_upload {
 				</select>
 			</div>
 			';
-		
+
 			// Make checkbox for "overwrite"
 		$code.='
 			<div id="c-override">
 				<input type="checkbox" name="overwriteExistingFiles" value="1" /> '.$LANG->getLL('overwriteExistingFiles',1).'
 			</div>
 			';
-		
+
 			// Produce the number of upload-fields needed:
 		$code.='
 			<div id="c-upload">
@@ -206,7 +206,7 @@ class SC_file_upload {
 		$code.='
 			</div>
 		';
-		
+
 			// Submit button:
 		$code.='
 			<div id="c-submit">
@@ -214,7 +214,7 @@ class SC_file_upload {
 				<input type="submit" value="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1).'" onclick="backToList(); return false;" />
 			</div>
 		';
-	
+
 			// Add the HTML as a section:
 		$this->content.= $this->doc->section('',$code);
 

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,9 +24,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Login-screen of TYPO3.
- * 
+ *
  * $Id$
  * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
  * XHTML compliant
@@ -38,20 +38,20 @@
  *
  *
  *
- *   87: class SC_index 
- *  120:     function init()	
- *  151:     function main()	
- *  237:     function printContent()	
+ *   87: class SC_index
+ *  120:     function init()
+ *  151:     function main()
+ *  237:     function printContent()
  *
  *              SECTION: Various functions
- *  261:     function makeLoginForm()	
- *  304:     function makeLogoutForm()	
- *  346:     function wrapLoginForm($content)	
- *  406:     function checkRedirect()	
- *  449:     function makeInterfaceSelectorBox()	
- *  503:     function makeCopyrightNotice()	
- *  536:     function makeLoginBoxImage()	
- *  575:     function makeLoginNews()	
+ *  261:     function makeLoginForm()
+ *  304:     function makeLogoutForm()
+ *  346:     function wrapLoginForm($content)
+ *  406:     function checkRedirect()
+ *  449:     function makeInterfaceSelectorBox()
+ *  503:     function makeCopyrightNotice()
+ *  536:     function makeLoginBoxImage()
+ *  575:     function makeLoginNews()
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -85,7 +85,7 @@ require ('template.php');
  * @subpackage core
  */
 class SC_index {
-	
+
 		// Internal, GPvars:
 	var $redirect_url;			// GPvar: redirect_url; The URL to redirect to after login.
 	var $GPinterface;			// GPvar: Defines which interface to load (from interface selector)
@@ -94,11 +94,11 @@ class SC_index {
 	var $L;						// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
 	var $loginRefresh;			// Login-refresh boolean; The backend will call this script with this value set when the login is close to being expired and the form needs to be redrawn.
 	var $commandLI;				// Value of forms submit button for login.
-	
+
 		// Internal, static:
 	var $redirectToURL;			// Set to the redirect URL of the form (may be redirect_url or "alt_main.php")
 	var $L_vars;				// Set to the labels used for the login screen.
-	
+
 		// Internal, dynamic:
 	var $interfaceSelector;		// If set tru, if there is a redirect URL
 	var $content;				// Content accumulation
@@ -119,22 +119,22 @@ class SC_index {
 	 */
 	function init()	{
 		global $BE_USER,$TYPO3_CONF_VARS;
-		
+
 			// GPvars:
 		$this->redirect_url = t3lib_div::_GP('redirect_url');
 		$this->GPinterface = t3lib_div::_GP('interface');
 		$this->u = t3lib_div::_GP('u');							// preset username
 		$this->p = t3lib_div::_GP('p');							// preset password
 		$this->L = t3lib_div::_GP('L');							// If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
-		$this->loginRefresh = t3lib_div::_GP('loginRefresh');		// Login 
+		$this->loginRefresh = t3lib_div::_GP('loginRefresh');		// Login
 		$this->commandLI = t3lib_div::_GP('commandLI');			// Value of "Login" button. If set, the login button was pressed.
 
 			// Getting login labels:
 		$this->L_vars = explode('|',$TYPO3_CONF_VARS['BE']['loginLabels']);
 
 			// Setting the redirect URL to "alt_main.php" if no alternative input is given:
-		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'alt_main.php';	
-		
+		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'alt_main.php';
+
 			// Logout?
 		if ($this->L=='OUT' && is_object($BE_USER))	{
 			$BE_USER->logoff();
@@ -158,7 +158,7 @@ class SC_index {
 		$TBE_TEMPLATE->JScode.='
 			<script type="text/javascript" src="md5.js"></script>
 			'.$TBE_TEMPLATE->wrapScriptTags('
-				function doChallengeResponse() {	// 
+				function doChallengeResponse() {	//
 					password = document.loginform.p_field.value;
 					if (password)	{
 						password = MD5(password);	// this makes it superchallenged!!
@@ -175,10 +175,10 @@ class SC_index {
 			// Might set JavaScript in the header to close window.
 		$this->checkRedirect();
 
-			// Initialize interface selectors:			
+			// Initialize interface selectors:
 		$this->makeInterfaceSelectorBox();
-		
-			// Creating form based on whether there is a login or not:		
+
+			// Creating form based on whether there is a login or not:
 		if (!$BE_USER->user['uid'])	{
 			$TBE_TEMPLATE->form = '
 				<form action="index.php" method="post" name="loginform" onsubmit="doChallengeResponse();">
@@ -194,9 +194,9 @@ class SC_index {
 		}
 
 
-			// Starting page:		
+			// Starting page:
 		$this->content.=$TBE_TEMPLATE->startPage('TYPO3 Login: '.$TYPO3_CONF_VARS['SYS']['sitename']);
-			
+
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
 
@@ -211,7 +211,7 @@ class SC_index {
 
 			// This moves focus to the right input field:
 		$this->content.=$TBE_TEMPLATE->wrapScriptTags('
-		
+
 				// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
 			if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
 				document.loginform.username.value = parent.opener.TS.username;
@@ -228,7 +228,7 @@ class SC_index {
 			// End page:
 		$this->content.=$TBE_TEMPLATE->endPage();
 	}
-		
+
 	/**
 	 * Outputting the accumulated content to screen
 	 *
@@ -238,11 +238,11 @@ class SC_index {
 
 		echo $this->content;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 
 
 
@@ -261,8 +261,8 @@ class SC_index {
 	function makeLoginForm()	{
 
 		$content.='
-		
-							<!-- 
+
+							<!--
 								Login form:
 							-->
 							<table cellspacing="0" cellpadding="0" border="0" id="logintable">
@@ -290,11 +290,11 @@ class SC_index {
 										<td><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
 									</tr>
 								</table>';
-										
+
 			// Return content:
 		return $content;
-	}	
-	
+	}
+
 	/**
 	 * Creates the logout form
 	 * This is drawn if a user login already exists.
@@ -303,11 +303,11 @@ class SC_index {
 	 */
 	function makeLogoutForm()	{
 		global $BE_USER;
-	
+
 
 		$content.='
-		
-							<!-- 
+
+							<!--
 								Login form:
 							-->
 							<table cellspacing="0" cellpadding="0" border="0" id="logintable">
@@ -332,9 +332,9 @@ class SC_index {
 										<td><p class="c-info">'.htmlspecialchars($this->L_vars[7]).'</p></td>
 									</tr>
 								</table>';
-						
-			// Return content:				
-		return $content;				
+
+			// Return content:
+		return $content;
 	}
 
 	/**
@@ -344,32 +344,32 @@ class SC_index {
 	 * @return	string		The HTML for the page.
 	 */
 	function wrapLoginForm($content)	{
-	
+
 			// Logo:
-		$logo = $GLOBALS['TBE_STYLES']['logo_login'] ? 
-					'<img src="'.htmlspecialchars($GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login']).'" alt="" />' : 
+		$logo = $GLOBALS['TBE_STYLES']['logo_login'] ?
+					'<img src="'.htmlspecialchars($GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login']).'" alt="" />' :
 					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="333" height="43"').' alt="" />';
-	
+
 			// Login box image:
 		$loginboxImage = $this->makeLoginBoxImage();
 
 			// Compile the page content:
 		$content='
-		
+
 		<!--
 			Wrapper table for the login form:
 		-->
 		<table cellspacing="0" cellpadding="0" border="0" id="wrapper">
 			<tr>
 				<td class="c-wrappercell" align="center">
-				
+
 					<!--
 						Login form image:
 					-->
 					<div id="loginimage">
 											'.$logo.'
-					</div>					
-				
+					</div>
+
 					<!--
 						Login form wrapper:
 					-->
@@ -381,23 +381,23 @@ class SC_index {
 							</td>
 						</tr>
 					</table>
-					
+
 					<!--
 						Copy right notice:
 					-->
 					<div id="copyrightnotice">
 						'.$this->makeCopyrightNotice().'
 					</div>
-					
+
 					'.$this->makeLoginNews().'
 				</td>
 			</tr>
 		</table>';
 
-			// Return content:		
+			// Return content:
 		return $content;
 	}
-	
+
 	/**
 	 * Checking, if we should perform some sort of redirection OR closing of windows.
 	 *
@@ -432,7 +432,7 @@ class SC_index {
 				exit;
 			} else {
 				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
-					if (parent.opener && parent.opener.busy)	{		
+					if (parent.opener && parent.opener.busy)	{
 						parent.opener.busy.loginRefreshed();
 						parent.close();
 					}
@@ -453,22 +453,22 @@ class SC_index {
 		$this->interfaceSelector = '';
 		$this->interfaceSelector_hidden='';
 		$this->interfaceSelector_jump = '';
-#debug($this->redirect_url);		
+#debug($this->redirect_url);
 			// If interfaces are defined AND no input redirect URL in GET vars:
 		if ($TYPO3_CONF_VARS['BE']['interfaces'] && !$this->redirect_url)	{
 			$parts = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['BE']['interfaces']);
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
-			
+
 					// Initialize:
 				$tempLabels=explode(',',$this->L_vars[5]);
 				$labels=array();
 				$labels['backend']=$tempLabels[0];
 				$labels['frontend']=$tempLabels[1];
-				
+
 				$jumpScript=array();
 				$jumpScript['backend']='alt_main.php';
 				$jumpScript['frontend']='../';
-				
+
 					// Traverse the interface keys:
 				foreach($parts as $valueStr)	{
 					$this->interfaceSelector.='
@@ -489,7 +489,7 @@ class SC_index {
 			}
 		}
 	}
-	
+
 	/**
 	 * COPYRIGHT notice
 	 *
@@ -505,14 +505,14 @@ class SC_index {
 			// Get values from TYPO3_CONF_VARS:
 		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
 		$loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyURL']));
-		
+
 			// Make warranty note:
 		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10)	{
 			$warrantyNote='Warranty is supplied by '.htmlspecialchars($loginCopyrightWarrantyProvider).'; <a href="'.htmlspecialchars($loginCopyrightWarrantyURL).'" target="_blank">click for details.</a>';
 		} else {
 			$warrantyNote='TYPO3 comes with ABSOLUTELY NO WARRANTY; <a href="http://typo3.com/1316.0.html" target="_blank">click for details.</a>';
-		}	
- 
+		}
+
 			// Compile full copyright notice:
 		$copyrightNotice = '<a href="http://typo3.com/" target="_blank">'.
 					'<img src="gfx/loginlogo_transp.gif" width="75" height="19" alt="TYPO3 logo" align="left" />'.
@@ -523,7 +523,7 @@ class SC_index {
 					$warrantyNote.' '.
 					'This is free software, and you are welcome to redistribute it under certain conditions; <a href="http://typo3.com/1316.0.html" target="_blank">click for details</a>. '.
 					'Obstructing the appearance of this notice is prohibited by law.';
-					
+
 			// Return notice:
 		return $copyrightNotice;
 	}
@@ -537,22 +537,22 @@ class SC_index {
 		$loginboxImage = '';
 		if ($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'])	{		// Look for rotation image folder:
 			$absPath = t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder']);
-			
+
 				// Get rotation folder:
 			$dir = t3lib_div::getFileAbsFileName($absPath);
 			if ($dir && @is_dir($dir))	{
 
 					// Get files for rotation into array:
 				$files = t3lib_div::getFilesInDir($dir,'png,jpg,gif');
-				
+
 					// Pick random file:
 				srand((float) microtime() * 10000000);
 				$randImg = array_rand($files, 1);
-				
+
 					// Get size of random file:
 				$imgSize = @getimagesize($dir.$files[$randImg]);
 
-					// Create image tag:				
+					// Create image tag:
 				if (is_array($imgSize))	{
 					$loginboxImage = '<img src="'.htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'].$files[$randImg]).'" '.$imgSize[3].' id="loginbox-image" alt="" />';
 				}
@@ -561,11 +561,11 @@ class SC_index {
 			$imagecopy = 'Photo: &copy; 2004 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
 			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/loginbox_image_360rc2.jpg','width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
-		
+
 			// Return image tag:
 		return $loginboxImage;
 	}
-	
+
 	/**
 	 * Make login news - renders the HTML content for a list of news shown under the login form. News data is added through $TYPO3_CONF_VARS
 	 *
@@ -573,10 +573,10 @@ class SC_index {
 	 * @credits			Idea by Jan-Hendrik Heuing
 	 */
 	function makeLoginNews()	{
-	
+
 			// Reset output variable:
 		$newsContent= '';
-		
+
 			// Traverse news array IF there are records in it:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']))	{
 			foreach($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItem)	{
@@ -594,10 +594,10 @@ class SC_index {
 						</tr>
 				';
 			}
-			
+
 				// Wrap in a table:
 			$newsContent= '
-			
+
 					<!--
 						Login screen news:
 					-->
@@ -609,7 +609,7 @@ class SC_index {
 					</div>
 			';
 		}
-		
+
 			// Return content:
 		return $newsContent;
 	}

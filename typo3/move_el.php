@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,8 +24,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
- * Move element wizard: 
+/**
+ * Move element wizard:
  * Moving pages or content elements (tt_content) around in the system via a page tree navigation.
  *
  * $Id$
@@ -39,32 +39,32 @@
  *
  *
  *
- *   96: class localPageTree extends t3lib_pageTree 
- *  105:     function wrapIcon($icon,$row)	
+ *   96: class localPageTree extends t3lib_pageTree
+ *  105:     function wrapIcon($icon,$row)
  *
  *
- *  127: class ext_posMap_pages extends t3lib_positionMap 
- *  137:     function onClickEvent($pid,$newPagePID)	
- *  148:     function linkPageTitle($str,$rec)	
- *  161:     function boldTitle($t_code,$dat,$id)	
+ *  127: class ext_posMap_pages extends t3lib_positionMap
+ *  137:     function onClickEvent($pid,$newPagePID)
+ *  148:     function linkPageTitle($str,$rec)
+ *  161:     function boldTitle($t_code,$dat,$id)
  *
  *
- *  184: class ext_posMap_tt_content extends t3lib_positionMap 
- *  194:     function linkPageTitle($str,$rec)	
- *  206:     function wrapRecordTitle($str,$row)	
+ *  184: class ext_posMap_tt_content extends t3lib_positionMap
+ *  194:     function linkPageTitle($str,$rec)
+ *  206:     function wrapRecordTitle($str,$row)
  *
  *
- *  227: class SC_move_el 
- *  250:     function init()	
- *  284:     function main()	
- *  410:     function printContent()	
+ *  227: class SC_move_el
+ *  250:     function init()
+ *  284:     function main()
+ *  410:     function printContent()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 $BACK_PATH='';
 require ('init.php');
 require ('template.php');
@@ -126,7 +126,7 @@ class localPageTree extends t3lib_pageTree {
  */
 class ext_posMap_pages extends t3lib_positionMap {
 	var $l_insertNewPageHere = 'movePageToHere';
-	
+
 	/**
 	 * Creates the onclick event for the insert-icons.
 	 *
@@ -183,7 +183,7 @@ class ext_posMap_pages extends t3lib_positionMap {
  */
 class ext_posMap_tt_content extends t3lib_positionMap {
 	var $dontPrintPageInsertIcons = 1;
-	
+
 	/**
 	 * Wrapping page title.
 	 *
@@ -234,11 +234,11 @@ class SC_move_el {
 	var $input_moveUid;
 	var $moveUid;
 	var $makeCopy;
-	
+
 	var $doc;				// Backend template object.
 	var $perms_clause;		// Pages-select clause
 
-		// Internal, dynamic:	
+		// Internal, dynamic:
 	var $content;			// Content for module accumulated here.
 
 
@@ -250,7 +250,7 @@ class SC_move_el {
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH;
 
-		
+
 			// Setting internal vars:
 		$this->sys_language = intval(t3lib_div::_GP('sys_language'));
 		$this->page_id=intval(t3lib_div::_GP('uid'));
@@ -259,16 +259,16 @@ class SC_move_el {
 		$this->input_moveUid = t3lib_div::_GP('moveUid');
 		$this->moveUid = $this->input_moveUid ? $this->input_moveUid : $this->page_id;
 		$this->makeCopy = t3lib_div::_GP('makeCopy');
-			
+
 			// Select-pages where clause for read-access:
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
-		
-			// Starting the document template object:		
+
+			// Starting the document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->docType= 'xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->JScode='';
-		
+
 			// Starting document content (header):
 		$this->content='';
 		$this->content.=$this->doc->startPage($LANG->getLL('movingElement'));
@@ -288,23 +288,23 @@ class SC_move_el {
 
 				// Get record for element:
 			$elRow = t3lib_BEfunc::getRecord($this->table,$this->moveUid);
-			
+
 				// Headerline: Icon, record title:
 			$hline = t3lib_iconWorks::getIconImage($this->table,$elRow,$BACK_PATH,' id="c-recIcon" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,$this->table)).'"');
 			$hline.= t3lib_BEfunc::getRecordTitle($this->table,$elRow,1);
-			
+
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$onClick = 'document.location=\''.t3lib_div::linkThisScript(array('makeCopy'=>!$this->makeCopy)).'\';';
 			$hline.= '<br /><input type="hidden" name="makeCopy" value="0" /><input type="checkbox" name="makeCopy" value="1"'.($this->makeCopy?' checked="checked"':'').' onclick="'.htmlspecialchars($onClick).'" />'.
 				$LANG->getLL('makeCopy',1);
-			
+
 				// Add the header-content to the module content:
 			$this->content.=$this->doc->section($LANG->getLL('moveElement').':',$hline,0,1);
 			$this->content.=$this->doc->spacer(20);
-		
+
 				// Reset variable to pick up the module content in:
 			$code='';
-			
+
 				// IF the table is "pages":
 			if ((string)$this->table=='pages')	{
 					// Get page record (if accessible):
@@ -336,34 +336,34 @@ class SC_move_el {
 					$code.= $posMap->positionTree($this->page_id,$pageinfo,$this->perms_clause,$this->R_URI);
 				}
 			}
-		
+
 				// IF the table is "tt_content":
 			if ((string)$this->table=='tt_content')	{
-					
+
 					// First, get the record:
 				$tt_content_rec = t3lib_BEfunc::getRecord('tt_content',$this->moveUid);
-				
-					// ?	
+
+					// ?
 				if (!$this->input_moveUid)	$this->page_id = $tt_content_rec['pid'];
-		
+
 					// Checking if the parent page is readable:
 				$pageinfo = t3lib_BEfunc::readPageAccess($this->page_id,$this->perms_clause);
 				if (is_array($pageinfo) && $BE_USER->isInWebMount($pageinfo['pid'],$this->perms_clause))	{
-						
+
 						// Initialize the position map:
 					$posMap = t3lib_div::makeInstance('ext_posMap_tt_content');
 					$posMap->moveOrCopy = $this->makeCopy?'copy':'move';
 					$posMap->cur_sys_language = $this->sys_language;
-		
+
 						// Headerline for the parent page: Icon, record title:
 					$hline = t3lib_iconWorks::getIconImage('pages',$pageinfo,$BACK_PATH,' title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($pageinfo,'pages')).'"');
 					$hline.= t3lib_BEfunc::getRecordTitle('pages',$pageinfo,1);
-		
+
 						// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 					$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->page_id,'mod.SHARED');		// SHARED page-TSconfig settings.
 					$colPosList = strcmp(trim($modTSconfig_SHARED['properties']['colPos_list']),'') ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
 					$colPosList = implode(',',array_unique(t3lib_div::intExplode(',',$colPosList)));		// Removing duplicates, if any
-		
+
 						// Adding parent page-header and the content element columns from position-map:
 					$code=$hline.'<br />';
 					$code.=$posMap->printContentElementColumns($this->page_id,$this->moveUid,$colPosList,1,$this->R_URI);
@@ -392,7 +392,7 @@ class SC_move_el {
 				}
 			}
 
-				// IF a return-url is given, print the go-back link:		
+				// IF a return-url is given, print the go-back link:
 			if ($this->R_URI)	{
 				$code.='<br /><br /><a href="'.htmlspecialchars($this->R_URI).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.$LANG->getLL('goBack',1).'</a>';
 			}

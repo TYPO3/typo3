@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,20 +24,20 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * TYPO3 Backend initialization
  *
- * This script is called by every backend script. 
+ * This script is called by every backend script.
  * The script authenticates the backend user.
  * In addition this script also initializes the database and other stuff by including the script localconf.php
- * 
+ *
  * IMPORTANT:
  * This script exits if no user is logged in!
- * If you want the script to return even if no user is logged in, 
- * you must define the constant TYPO3_PROCEED_IF_NO_USER=1 
+ * If you want the script to return even if no user is logged in,
+ * you must define the constant TYPO3_PROCEED_IF_NO_USER=1
  * before you include this script.
  *
- * 
+ *
  * This script does the following:
  * - extracts and defines path's
  * - includes certain libraries
@@ -46,7 +46,7 @@
  * - includes tables.php that sets more values and possibly overrides others
  * - load the groupdata for the user and set filemounts / webmounts
  *
- * For a detailed description of this script, the scope of constants and variables in it, 
+ * For a detailed description of this script, the scope of constants and variables in it,
  * please refer to the document "Inside TYPO3"
  *
  * $Id$
@@ -59,9 +59,9 @@
 
 
 // *******************************
-// Set error reporting 
+// Set error reporting
 // *******************************
-error_reporting (E_ALL ^ E_NOTICE); 
+error_reporting (E_ALL ^ E_NOTICE);
 
 
 // *******************************
@@ -70,7 +70,7 @@ error_reporting (E_ALL ^ E_NOTICE);
 define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
 define('TYPO3_MODE','BE');
 define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', php_sapi_name()=='cgi'||php_sapi_name()=='isapi'||php_sapi_name()=='cgi-fcgi' ? $HTTP_SERVER_VARS['PATH_TRANSLATED']:$HTTP_SERVER_VARS['SCRIPT_FILENAME'])));
-define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation. 
+define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
 
 
 // *******************************
@@ -83,7 +83,7 @@ if (substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{
 	if (defined('TYPO3_MOD_PATH'))	{
 		if (substr($temp_path,-strlen(TYPO3_MOD_PATH))==TYPO3_MOD_PATH)	{
 			$temp_path=substr($temp_path,0,-strlen(TYPO3_MOD_PATH));
-			$temp_modPath=TYPO3_MOD_PATH;	
+			$temp_modPath=TYPO3_MOD_PATH;
 		} elseif (substr(TYPO3_MOD_PATH,0,13)=='../typo3conf/' && (substr(TYPO3_MOD_PATH,3)==substr($temp_path,-strlen(substr(TYPO3_MOD_PATH,3))))) {
 			$temp_path = substr($temp_path,0,-strlen(substr(TYPO3_MOD_PATH,3))).TYPO3_mainDir;
 			$temp_modPath=TYPO3_MOD_PATH;
@@ -97,8 +97,8 @@ if (substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{
 // OUTPUT error message and exit if there are problems with the path. Otherwise define constants and continue.
 if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	// This must be the case in order to proceed
 	echo ('Error in init.php: Path to TYPO3 main dir could not be resolved correctly. <br /><br />
-		This happens if the last '.strlen(TYPO3_mainDir).' characters of this path, '.$temp_path.', (\$temp_path) is NOT "'.TYPO3_mainDir.'" for some reason. <br /> 
-		You may have a strange server configuration. 
+		This happens if the last '.strlen(TYPO3_mainDir).' characters of this path, '.$temp_path.', (\$temp_path) is NOT "'.TYPO3_mainDir.'" for some reason. <br />
+		You may have a strange server configuration.
 		Or maybe you didn\'t set constant TYPO3_MOD_PATH in your module?');
 	echo '<br /><strong>If you expect any help from anybody on this issue, you should save this page as an html document and send it along with your request for help!</strong>';
 	if (strstr($temp_path,'typo3_src'))	{
@@ -118,10 +118,10 @@ if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	/
 	phpinfo();
 	exit;
 } else {
-	define('PATH_typo3', $temp_path);			// Abs. path of the TYPO3 admin dir (PATH_site + TYPO3_mainDir).	
+	define('PATH_typo3', $temp_path);			// Abs. path of the TYPO3 admin dir (PATH_site + TYPO3_mainDir).
 	define('PATH_typo3_mod', $temp_modPath);	// Relative path (from the PATH_typo3) to a properly configured module
 	define('PATH_site', substr(PATH_typo3,0,-strlen(TYPO3_mainDir)));	// Abs. path to directory with the frontend (one above the admin-dir)
-	define('PATH_t3lib', PATH_typo3.'t3lib/');			// Abs. path to t3lib/ (general TYPO3 library) within the TYPO3 admin dir 
+	define('PATH_t3lib', PATH_typo3.'t3lib/');			// Abs. path to t3lib/ (general TYPO3 library) within the TYPO3 admin dir
 	define('PATH_typo3conf', PATH_site.'typo3conf/');	// Abs. TYPO3 configuration path (local, not part of source)
 }
 
@@ -254,7 +254,7 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 	include (PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_tables.php');
 } else {
 	include (PATH_t3lib.'stddb/load_ext_tables.php');
-}	
+}
 	// extScript
 if (TYPO3_extTableDef_script)	{
 	include (PATH_typo3conf.TYPO3_extTableDef_script);
@@ -263,7 +263,7 @@ if (TYPO3_extTableDef_script)	{
 // *******************************
 // BackEnd User authentication
 // *******************************
-/* 
+/*
 	NOTICE:
 	if constant TYPO3_PROCEED_IF_NO_USER is defined true (in the mainscript), this script will return even though a user did not log in!
 */

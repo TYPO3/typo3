@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -36,14 +36,14 @@
  */
 
 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
 /**
  * This function basically adds the parent page to the sublevel but only if the sublevel is empty!
  * It is also used to demonstrate the menu state items
@@ -86,8 +86,8 @@ function user_itemArrayProcFuncTest($menuArr,$conf)	{
 		if (!count($menuArr))	{		// There must be no menu items if we add the parent page to the submenu:
 			$parentPageId = $conf['parentObj']->id;	// id of the parent page
 			$parentPageRow = $GLOBALS['TSFE']->sys_page->getPage($parentPageId);	// ... and get the record...
-			if (is_array($parentPageRow))	{	// ... and if that page existed (a row was returned) then add it! 
-				$menuArr[]=$parentPageRow;	
+			if (is_array($parentPageRow))	{	// ... and if that page existed (a row was returned) then add it!
+				$menuArr[]=$parentPageRow;
 			}
 		}
 	}
@@ -105,7 +105,7 @@ function user_itemArrayProcFuncTest($menuArr,$conf)	{
 function user_IProcFuncTest($I,$conf)	{
 	$itemRow = $conf['parentObj']->menuArr[$I['key']];
 
-		// Setting the document status content to the value of the page title on mouse over	
+		// Setting the document status content to the value of the page title on mouse over
 	$I['linkHREF']['onMouseover'].='extraRollover(\''.rawurlencode($itemRow['title']).'\');';
 	$conf['parentObj']->I = $I;
 	$conf['parentObj']->setATagParts();

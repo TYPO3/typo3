@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Module: Permission setting
  *
  * $Id$
@@ -38,27 +38,27 @@
  *
  *
  *
- *   89: class SC_mod_web_perm_index 
- *  123:     function init()	
- *  183:     function menuConfig()	
- *  214:     function main()	
- *  280:     function printContent()	
+ *   89: class SC_mod_web_perm_index
+ *  123:     function init()
+ *  183:     function menuConfig()
+ *  214:     function main()
+ *  280:     function printContent()
  *
  *              SECTION: Listing and Form rendering
- *  306:     function doEdit()	
- *  440:     function notEdit()	
+ *  306:     function doEdit()
+ *  440:     function notEdit()
  *
  *              SECTION: Helper functions
- *  619:     function printCheckBox($checkName,$num)	
- *  630:     function printPerms($int)	
- *  648:     function groupPerms($row,$firstGroup)	
- *  665:     function getRecursiveSelect($id,$perms_clause)	
+ *  619:     function printCheckBox($checkName,$num)
+ *  630:     function printPerms($int)
+ *  648:     function groupPerms($row,$firstGroup)
+ *  665:     function getRecursiveSelect($id,$perms_clause)
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
@@ -98,7 +98,7 @@ class SC_mod_web_perm_index {
 
 	var $MOD_MENU=array();		// Module menu
 	var $MOD_SETTINGS=array();	// Module settings, cleansed.
-	
+
 	var $perms_clause;			// Page select permissions
 	var $pageinfo;				// Current page record
 
@@ -128,14 +128,14 @@ class SC_mod_web_perm_index {
 		$this->edit = t3lib_div::_GP('edit');
 		$this->return_id = t3lib_div::_GP('return_id');
 		$this->lastEdited = t3lib_div::_GP('lastEdited');
-		
+
 			// Module name;
 		$this->MCONF = $GLOBALS['MCONF'];
 
-			// Page select clause:		
+			// Page select clause:
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 
-			// Initializing document template object:		
+			// Initializing document template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->docType = 'xhtml_trans';
@@ -171,7 +171,7 @@ class SC_mod_web_perm_index {
 		$this->doc->JScode.=$CMparts[0];
 		$this->doc->postCode.= $CMparts[2];
 
-			// Set up menus:		
+			// Set up menus:
 		$this->menuConfig();
 	}
 
@@ -185,7 +185,7 @@ class SC_mod_web_perm_index {
 
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
-			// If empty string it's just a variable, that'll be saved. 
+			// If empty string it's just a variable, that'll be saved.
 			// Values NOT in this array will not be saved in the settings-array for the module.
 		$temp = $LANG->getLL('levels');
 		$this->MOD_MENU = array(
@@ -201,7 +201,7 @@ class SC_mod_web_perm_index {
 				'perms' => $LANG->getLL('permissions')
 			)
 		);
-		
+
 			// Clean up settings:
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 	}
@@ -218,17 +218,17 @@ class SC_mod_web_perm_index {
 			// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
-		
+
 			// Checking access:
 		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
 			if ($BE_USER->user['admin'] && !$this->id)	{
 				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
 			}
-		
+
 				// This decides if the editform can and will be drawn:
-			$this->editingAllowed = ($this->pageinfo['perms_userid']==$BE_USER->user['uid'] || $BE_USER->isAdmin()); 
-			$this->edit = $this->edit && $this->editingAllowed;	
-		
+			$this->editingAllowed = ($this->pageinfo['perms_userid']==$BE_USER->user['uid'] || $BE_USER->isAdmin());
+			$this->edit = $this->edit && $this->editingAllowed;
+
 				// If $this->edit then these functions are called in the end of the page...
 			if ($this->edit)	{
 				$this->doc->postCode.= $this->doc->wrapScriptTags('
@@ -237,7 +237,7 @@ class SC_mod_web_perm_index {
 					setCheck("check[perms_everybody]","data[pages]['.$this->id.'][perms_everybody]");
 				');
 			}
-		
+
 				// Draw the HTML page header.
 			$this->content.=$this->doc->startPage($LANG->getLL('permissions'));
 			$this->content.=$this->doc->header($LANG->getLL('permissions').($this->edit?': '.$LANG->getLL('Edit'):''));
@@ -257,7 +257,7 @@ class SC_mod_web_perm_index {
 			} else {
 				$this->doEdit();
 			}
-		
+
 				// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{
 				$this->content.=
@@ -283,7 +283,7 @@ class SC_mod_web_perm_index {
 
 		echo $this->content;
 	}
-	
+
 
 
 
@@ -317,7 +317,7 @@ class SC_mod_web_perm_index {
 		$be_group_Array_o = $be_group_Array = t3lib_BEfunc::getGroupNames();
 		if (!$GLOBALS['BE_USER']->isAdmin())		$be_group_Array = t3lib_BEfunc::blindGroupNames($be_group_Array_o,$groupArray,1);
 		$firstGroup = $groupArray[0] ? $be_group_Array[$groupArray[0]] : '';	// data of the first group, the user is member of
-	
+
 
 			// Owner selector:
 		$options='';
@@ -338,7 +338,7 @@ class SC_mod_web_perm_index {
 			</select>';
 
 		$this->content.=$this->doc->section($LANG->getLL('Owner').':',$selector);
-		
+
 
 			// Group selector:
 		$options='';
@@ -405,7 +405,7 @@ class SC_mod_web_perm_index {
 				</tr>
 			</table>
 			<br />
-	
+
 			<input type="hidden" name="data[pages]['.$this->id.'][perms_user]" value="'.$this->pageinfo['perms_user'].'" />
 			<input type="hidden" name="data[pages]['.$this->id.'][perms_group]" value="'.$this->pageinfo['perms_group'].'" />
 			<input type="hidden" name="data[pages]['.$this->id.'][perms_everybody]" value="'.$this->pageinfo['perms_everybody'].'" />
@@ -427,12 +427,12 @@ class SC_mod_web_perm_index {
 			$legendText.= '<br /><b>'.$LANG->getLL('2',1).'</b>: '.$LANG->getLL('2_t',1);
 			$legendText.= '<br /><b>'.$LANG->getLL('4',1).'</b>: '.$LANG->getLL('4_t',1);
 			$legendText.= '<br /><b>'.$LANG->getLL('8',1).'</b>: '.$LANG->getLL('8_t',1);
-			
+
 			$code=$legendText.'<br /><br />'.$LANG->getLL('def',1);
 			$this->content.=$this->doc->section($LANG->getLL('Legend',1).':',$code);
 		}
 	}
-	
+
 	/**
 	 * Showing the permissions in a tree ($this->edit = false)
 	 * (Adding content to internal content variable)
@@ -450,10 +450,10 @@ class SC_mod_web_perm_index {
 		if (!$GLOBALS['BE_USER']->isAdmin())		$be_group_Array = t3lib_BEfunc::blindGroupNames($be_group_Array,$groupArray,0);
 
 			// Length of strings:
-		$tLen= ($this->MOD_SETTINGS['mode']=='perms' ? 20 : 30); 
+		$tLen= ($this->MOD_SETTINGS['mode']=='perms' ? 20 : 30);
 
 
-			// Selector for depth:					
+			// Selector for depth:
 		$code.=$LANG->getLL('Depth').': ';
 		$code.=t3lib_BEfunc::getFuncMenu($this->id,'SET[depth]',$this->MOD_SETTINGS['depth'],$this->MOD_MENU['depth']);
 		$this->content.=$this->doc->section('',$code);
@@ -462,7 +462,7 @@ class SC_mod_web_perm_index {
 			// Initialize tree object:
 		$tree = t3lib_div::makeInstance('t3lib_pageTree');
 		$tree->init('AND '.$this->perms_clause);
-		
+
 		$tree->addField('perms_user',1);
 		$tree->addField('perms_group',1);
 		$tree->addField('perms_everybody',1);
@@ -472,14 +472,14 @@ class SC_mod_web_perm_index {
 		$tree->addField('fe_group');
 		$tree->addField('starttime');
 		$tree->addField('endtime');
-	
+
 			// Creating top icon; the current page
 		$HTML=t3lib_iconWorks::getIconImage('pages',$this->pageinfo,$BACK_PATH,'align="top"');
 		$tree->tree[]=Array('row'=>$this->pageinfo,'HTML'=>$HTML);
-		
+
 			// Create the tree from $this->id:
 		$tree->getTree($this->id,$this->MOD_SETTINGS['depth'],'');
-		
+
 			// Make header of table:
 		$code='';
 		if ($this->MOD_SETTINGS['mode']=='perms')	{
@@ -510,19 +510,19 @@ class SC_mod_web_perm_index {
 				// Background colors:
 			if ($this->lastEdited==$data['row']['uid'])	{$bgCol = ' class="bgColor-20"';} else {$bgCol = '';}
 			$lE_bgCol = $bgCol;
-				
+
 				// User/Group names:
 			$userN = $be_user_Array[$data['row']['perms_userid']] ? $be_user_Array[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ? '<i>['.$data['row']['perms_userid'].']!</i>' : '');
 			$groupN = $be_group_Array[$data['row']['perms_groupid']] ? $be_group_Array[$data['row']['perms_groupid']]['title']  : ($data['row']['perms_groupid'] ? '<i>['.$data['row']['perms_groupid'].']!</i>' : '');
 			$groupN=t3lib_div::fixed_lgd($groupN,20);
-			
+
 				// Seeing if editing of permissions are allowed for that page:
 			$editPermsAllowed=($data['row']['perms_userid']==$BE_USER->user['uid'] || $BE_USER->isAdmin());
-			
+
 				// First column:
 			$cells[]='
 					<td align="left" nowrap="nowrap"'.$bgCol.'>'.$data['HTML'].htmlspecialchars(t3lib_div::fixed_lgd($data['row']['title'],$tLen)).'&nbsp;</td>';
-				
+
 				// "Edit permissions" -icon
 			if ($editPermsAllowed && $data['row']['uid'])	{
 				$aHref = 'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.$data['row']['uid'].'&return_id='.$this->id.'&edit=1';
@@ -538,24 +538,24 @@ class SC_mod_web_perm_index {
 				$cells[]='
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['uid']?$this->printPerms($data['row']['perms_user']).' '.$userN:'').'</td>
-	
+
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['uid']?$this->printPerms($data['row']['perms_group']).' '.$groupN:'').'</td>
-	
+
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['uid']?' '.$this->printPerms($data['row']['perms_everybody']):'').'</td>
 				';
 			} else {
 				$cells[]='
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>';
-				
+
 				if ($BE_USER->user['uid']==$data['row']['perms_userid'])	{$bgCol = ' class="bgColor-20"';} else {$bgCol = $lE_bgCol;}
 				$cells[]='
 					<td'.$bgCol.' nowrap="nowrap" align="center">'.($data['row']['uid']?$owner.$this->printPerms($BE_USER->calcPerms($data['row'])):'').'</td>';
 				$bgCol = $lE_bgCol;
 			}
 
-				// Compile table row:			
+				// Compile table row:
 			$code.='
 				<tr>
 					'.implode('
@@ -564,19 +564,19 @@ class SC_mod_web_perm_index {
 		}
 
 			// Wrap rows in table tags:
-		$code='<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList">'.$code.'</table>';	
-			
+		$code='<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList">'.$code.'</table>';
+
 			// Adding the content as a section:
 		$this->content.=$this->doc->section('',$code);
-		
-			
+
+
 			// Creating legend table:
 		$legendText = '<b>'.$LANG->getLL('1',1).'</b>: '.$LANG->getLL('1_t',1);
 		$legendText.= '<br /><b>'.$LANG->getLL('16',1).'</b>: '.$LANG->getLL('16_t',1);
 		$legendText.= '<br /><b>'.$LANG->getLL('2',1).'</b>: '.$LANG->getLL('2_t',1);
 		$legendText.= '<br /><b>'.$LANG->getLL('4',1).'</b>: '.$LANG->getLL('4_t',1);
 		$legendText.= '<br /><b>'.$LANG->getLL('8',1).'</b>: '.$LANG->getLL('8_t',1);
-		
+
 		$code='<table border="0" id="typo3-legendTable">
 			<tr>
 				<td valign="top"><img src="legend.gif" width="86" height="75" alt="" /></td>
@@ -636,7 +636,7 @@ class SC_mod_web_perm_index {
 		$str.= (($int&2)?'*':'<span class="perm-denied">x</span>');
 		$str.= (($int&4)?'*':'<span class="perm-denied">x</span>');
 		$str.= (($int&8)?'*':'<span class="perm-denied">x</span>');
-		
+
 		return '<span class="perm-allowed">'.$str.'</span>';
 	}
 
@@ -665,7 +665,7 @@ class SC_mod_web_perm_index {
 	 * @return	string		Select form element for recursive levels (if any levels are found)
 	 */
 	function getRecursiveSelect($id,$perms_clause)	{
-	
+
 			// Initialize tree object:
 		$tree = t3lib_div::makeInstance('t3lib_pageTree');
 		$tree->init('AND '.$perms_clause);
@@ -673,12 +673,12 @@ class SC_mod_web_perm_index {
 		$tree->makeHTML=0;
 		$tree->setRecs = 1;
 
-			// Make tree:		
+			// Make tree:
 		$tree->getTree($id,$this->getLevels,'');
-	
+
 			// If there are a hierarchy of page ids, then...
 		if ($GLOBALS['BE_USER']->user['uid'] && count($tree->ids_hierarchy))	{
-		
+
 				// Init:
 			$label_recur = $GLOBALS['LANG']->getLL('recursive');
 			$label_levels = $GLOBALS['LANG']->getLL('levels');
@@ -686,7 +686,7 @@ class SC_mod_web_perm_index {
 			$theIdListArr=array();
 			$opts='
 						<option value=""></option>';
-			
+
 				// Traverse the number of levels we want to allow recursive setting of permissions for:
 			for ($a=$this->getLevels;$a>0;$a--)	{
 				if (is_array($tree->ids_hierarchy[$a]))	{
@@ -702,18 +702,18 @@ class SC_mod_web_perm_index {
 							'</option>';
 				}
 			}
-			
+
 				// Put the selector box together:
 			$theRecursiveSelect = '<br />
 					<select name="mirror[pages]['.$id.']">
 						'.$opts.'
 					</select>
-				
+
 				<br /><br />';
 		} else {
 			$theRecursiveSelect = '';
-		}		
-		
+		}
+
 			// Return selector box element:
 		return $theRecursiveSelect;
 	}

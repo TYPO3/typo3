@@ -80,18 +80,18 @@
  *  997:     function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')
  * 1012:     function pi_getRecord($table,$uid,$checkPage=0)
  * 1023:     function pi_getPidList($pid_list,$recursive=0)
- * 1047:     function pi_prependFieldsWithTable($table,$fieldList)
- * 1067:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')
+ * 1048:     function pi_prependFieldsWithTable($table,$fieldList)
+ * 1068:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')
  *
  *              SECTION: Various
- * 1111:     function pi_isOnlyFields($fList,$lowerThan=-1)
- * 1131:     function pi_autoCache($inArray)
- * 1162:     function pi_RTEcssText($str)
+ * 1112:     function pi_isOnlyFields($fList,$lowerThan=-1)
+ * 1132:     function pi_autoCache($inArray)
+ * 1163:     function pi_RTEcssText($str)
  *
  *              SECTION: FlexForms related functions
- * 1183:     function pi_initPIflexForm()
- * 1201:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')
- * 1218:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)
+ * 1184:     function pi_initPIflexForm()
+ * 1202:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')
+ * 1219:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)
  *
  * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")

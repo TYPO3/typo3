@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class for icon generation in the backend
  *
  * $Id$
@@ -38,16 +38,16 @@
  *
  *
  *
- *   85: class t3lib_iconWorks	
- *   99:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=FALSE)	
- *  116:     function getIcon($table,$row=array(),$shaded=FALSE)	
- *  251:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)	
+ *   85: class t3lib_iconWorks
+ *   99:     function getIconImage($table,$row=array(),$backPath,$params='',$shaded=FALSE)
+ *  116:     function getIcon($table,$row=array(),$shaded=FALSE)
+ *  251:     function skinImg($backPath,$src,$wHattribs='',$outputMode=0)
  *
  *              SECTION: Other functions
- *  325:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)	
- *  441:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	
- *  474:     function imagecreatefrom($file)	
- *  491:     function imagemake($im, $path)	
+ *  325:     function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)
+ *  441:     function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
+ *  474:     function imagecreatefrom($file)
+ *  491:     function imagemake($im, $path)
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -83,7 +83,7 @@
  * @subpackage t3lib
  */
 class t3lib_iconWorks	{
-	
+
 	/**
 	 * Returns an icon image tag, 18x16 pixels, based on input information.
 	 * This function is recommended to use in your backend modules.
@@ -138,14 +138,14 @@ class t3lib_iconWorks	{
 		if (!strstr($iconfile,'/'))	{
 			$iconfile = 'gfx/i/'.$iconfile;
 		}
-		
+
 			// Setting the absolute path where the icon should be found as a file:
 		if (substr($iconfile,0,3)=='../')	{
 			$absfile=PATH_site.substr($iconfile,3);
 		} else {
 			$absfile=PATH_typo3.$iconfile;
 		}
-		
+
 			// Initializing variables, all booleans except otherwise stated:
 		$hidden = FALSE;
 		$timing = FALSE;
@@ -155,12 +155,12 @@ class t3lib_iconWorks	{
 		$protectSection = FALSE;	// Set, if a page-record (only pages!) has the extend-to-subpages flag set.
 		$noIconFound = $row['_NO_ICON_FOUND'] ? TRUE : FALSE;
 		// + $shaded which is also boolean!
-		
+
 			// Icon state based on "enableFields":
 		if (is_array($TCA[$table]['ctrl']['enablecolumns']))	{
 			$enCols = $TCA[$table]['ctrl']['enablecolumns'];
 				// If "hidden" is enabled:
-			if ($enCols['disabled'])	{ if ($row[$enCols['disabled']]) { $hidden = TRUE; }}	
+			if ($enCols['disabled'])	{ if ($row[$enCols['disabled']]) { $hidden = TRUE; }}
 				// If a "starttime" is set and higher than current time:
 			if ($enCols['starttime'])	{ if (time() < intval($row[$enCols['starttime']]))	{ $timing = TRUE; }}
 				// If an "endtime" is set:
@@ -168,10 +168,10 @@ class t3lib_iconWorks	{
 				if (intval($row[$enCols['endtime']]) > 0)	{
 					if (intval($row[$enCols['endtime']]) < time())	{
 						$timing = TRUE;	// End-timing applies at this point.
-					} else {	
+					} else {
 						$futuretiming = TRUE;		// End-timing WILL apply in the future for this element.
 					}
-				} 
+				}
 			}
 				// If a user-group field is set:
 			if ($enCols['fe_group'])	{
@@ -179,7 +179,7 @@ class t3lib_iconWorks	{
 				if ($user && $doNotRenderUserGroupNumber)	$user=100;	// Limit for user number rendering!
 			}
 		}
-		
+
 			// If "deleted" flag is set (only when listing records which are also deleted!)
 		if ($col=$row[$TCA[$table]['ctrl']['delete']])	{
 			$deleted = TRUE;
@@ -188,7 +188,7 @@ class t3lib_iconWorks	{
 		if ($table=='pages' && $row['extendToSubpages'] && ($hidden || $timing || $futuretiming || $user))	{
 			$protectSection = TRUE;
 		}
-		
+
 			// If ANY of the booleans are set it means we have to alter the icon:
 		if ($hidden || $timing || $futuretiming || $user || $deleted || $shaded || $noIconFound)	{
 			$flags='';
@@ -205,7 +205,7 @@ class t3lib_iconWorks	{
 				if (!$string && $futuretiming) {
 					$string='futuretiming';
 				}
-				
+
 				$flags.=
 					($hidden ? 'h' : '').
 					($timing ? 't' : '').
@@ -214,7 +214,7 @@ class t3lib_iconWorks	{
 					($protectSection ? 'p' : '').
 					($shaded ? 's' : '');
 			}
-			
+
 				// Create tagged icon file name:
 			$iconFileName_stateTagged = ereg_replace('.([[:alnum:]]+)$','__'.$flags.'.\1',basename($iconfile));
 
@@ -236,7 +236,7 @@ class t3lib_iconWorks	{
 			return $iconfile;
 		}
 	}
-	
+
 	/**
 	 * Returns the src=... for the input $src value OR any alternative found in $TBE_STYLES['skinImg']
 	 * Used for skinning the TYPO3 backend with an alternative set of icons
@@ -253,31 +253,31 @@ class t3lib_iconWorks	{
 			// Setting source key. If the icon is refered to inside an extension, we homogenize the prefix to "ext/":
 		$srcKey = ereg_replace('^(\.\.\/typo3conf\/ext|sysext|ext)\/','ext/',$src);
 #if ($src!=$srcKey)debug(array($src,$srcKey));
-		
+
 			// LOOKING for alternative icons:
 		if ($GLOBALS['TBE_STYLES']['skinImg'][$srcKey])	{	// Slower or faster with is_array()? Could be used.
 			list($src,$wHattribs) = $GLOBALS['TBE_STYLES']['skinImg'][$srcKey];
 		} elseif ($GLOBALS['TBE_STYLES']['skinImgAutoCfg'])	{	// Otherwise, test if auto-detection is enabled:
-		
+
 				// Search for alternative icon automatically:
 			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
 			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;	// Scaling factor
 			$lookUpName = $fExt ? ereg_replace('\.[[:alnum:]]+$','',$srcKey).'.'.$fExt : $srcKey;	// Set filename to look for
-			
+
 				// If file is found:
 			if (@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName))	{	// If there is a file...
 				$iInfo = @getimagesize($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName);	// Get width/height:
-				
+
 					// Set $src and $wHattribs:
 				$src = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'].$lookUpName;
 				$wHattribs = 'width="'.round($iInfo[0]*$scaleFactor).'" height="'.round($iInfo[1]*$scaleFactor).'"';
 			}
-			
+
 				// In anycase, set currect src / wHattrib - this way we make sure that an entry IS found next time we hit the function, regardless of whether it points to a alternative icon or just the current.
 			$GLOBALS['TBE_STYLES']['skinImg'][$srcKey] = array($src,$wHattribs);		// Set default...
 		}
-	
-			// DEBUG: This doubles the size of all icons - for testing/debugging:	
+
+			// DEBUG: This doubles the size of all icons - for testing/debugging:
 #		if (ereg('^width="([0-9]+)" height="([0-9]+)"$',$wHattribs,$reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
 
 			// Return icon source/wHattributes:
@@ -293,8 +293,8 @@ class t3lib_iconWorks	{
 			break;
 		}
 	}
-	
-	
+
+
 
 
 
@@ -326,8 +326,8 @@ class t3lib_iconWorks	{
 		$iconFileName = 'icon_'.t3lib_div::shortMD5($iconfile.'|'.$mode.'|-'.$user.'|'.$protectSection).'_'.$iconFileName_stateTagged.'.'.($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']?'png':'gif');
 		$mainpath = '../typo3temp/'.$iconFileName;
 		$path = PATH_site.'typo3temp/'.$iconFileName;
-		
-			
+
+
 		if (@file_exists(PATH_typo3.'icons/'.$iconFileName))	{	// Returns if found in typo3/icons/
 			return 'icons/'.$iconFileName;
 		} elseif (@file_exists($path))	{	// Returns if found in ../typo3temp/icons/
@@ -335,7 +335,7 @@ class t3lib_iconWorks	{
 		} else {	// Makes icon:
 			if (@file_exists($absFile))	{
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'])	{
-				
+
 						// Create image pointer, if possible:
 					$im = t3lib_iconworks::imagecreatefrom($absFile);
 					if ($im<0)	return $iconfile;
@@ -355,11 +355,11 @@ class t3lib_iconWorks	{
 						if ($user < 100)	{	// Apply user number only if lower than 100
 							$black = ImageColorAllocate($im, 0,0,0);
 							imagefilledrectangle($im, 0,0,(($user>10)?9:5),8,$black);
-							
+
 							$white = ImageColorAllocate($im, 255,255,255);
 							imagestring($im, 1, 1, 1, $user, $white);
 						}
-		
+
 						$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_group.gif');
 						if ($ol_im<0)	return $iconfile;
 
@@ -398,7 +398,7 @@ class t3lib_iconWorks	{
 						if ($ol_im<0)	return $iconfile;
 						t3lib_iconworks::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
 					}
-					
+
 						// Create the image as file, destroy GD image and return:
 					@t3lib_iconWorks::imagemake($im, $path);
 					t3lib_div::gif_compress($path, 'IM');
@@ -412,7 +412,7 @@ class t3lib_iconWorks	{
 			}
 		}
 	}
-	
+
 	/**
 	 * The necessity of using this function for combining two images if GD is version 2 is that
 	 * 	GD2 cannot manage to combine two indexed-color images without totally spoiling everything.
@@ -445,7 +445,7 @@ class t3lib_iconWorks	{
 						($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename']?$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename']:'combine').
 						' -compose over ';
 				$tempBaseName = PATH_site.'typo3temp/ICRZ_'.md5(uniqid('.'));
-				
+
 				ImagePng($im, $tempBaseName.'_im.png');
 				ImagePng($cpImg, $tempBaseName.'_cpImg.png');
 				exec($cmd.

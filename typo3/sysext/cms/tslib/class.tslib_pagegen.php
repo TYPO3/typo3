@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Libraries for pagegen.php
  * The script "pagegen.php" is included by "index_ts.php" when a page is not cached but needs to be rendered.
  *
@@ -39,22 +39,22 @@
  *
  *
  *
- *   85: class TSpagegen 
- *   92:     function pagegenInit()	
- *  216:     function getIncFiles()	
- *  249:     function JSeventFunctions()	
- *  283:     function renderContent()	
- *  310:     function renderContentWithHeader($pageContent)	
+ *   85: class TSpagegen
+ *   92:     function pagegenInit()
+ *  216:     function getIncFiles()
+ *  249:     function JSeventFunctions()
+ *  283:     function renderContent()
+ *  310:     function renderContentWithHeader($pageContent)
  *
  *
- *  672: class FE_loadDBGroup extends t3lib_loadDBGroup	
+ *  674: class FE_loadDBGroup extends t3lib_loadDBGroup
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 
 
@@ -115,7 +115,7 @@ class TSpagegen {
 				$GLOBALS['TSFE']->pEncAllowedParamNames[$temp_p]=1;
 			}
 		}
-		
+
 
 			// Global vars...
 		$GLOBALS['TSFE']->indexedDocTitle = $GLOBALS['TSFE']->page['title'];
@@ -131,10 +131,10 @@ class TSpagegen {
 function UnCryptMailto(s) {	//
 	var n=0;
 	var r="";
-	for(var i=0; i < s.length; i++) { 
-		n=s.charCodeAt(i); 
+	for(var i=0; i < s.length; i++) {
+		n=s.charCodeAt(i);
 		if (n>=8364) {n = 128;}
-		r += String.fromCharCode(n-('.$GLOBALS['TSFE']->spamProtectEmailAddresses.')); 
+		r += String.fromCharCode(n-('.$GLOBALS['TSFE']->spamProtectEmailAddresses.'));
 	}
 	return r;
 }
@@ -145,33 +145,33 @@ function linkTo_UnCryptMailto(s)	{	//
 		';
 		}
 
-		
+
 		$GLOBALS['TSFE']->absRefPrefix = trim(''.$GLOBALS['TSFE']->config['config']['absRefPrefix']);
-		if ((!strcmp($GLOBALS['TSFE']->config['config']['simulateStaticDocuments'],'PATH_INFO') || $GLOBALS['TSFE']->absRefPrefix_force) 
+		if ((!strcmp($GLOBALS['TSFE']->config['config']['simulateStaticDocuments'],'PATH_INFO') || $GLOBALS['TSFE']->absRefPrefix_force)
 				&& !$GLOBALS['TSFE']->absRefPrefix)	{
-			$GLOBALS['TSFE']->absRefPrefix=t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/'; 
+			$GLOBALS['TSFE']->absRefPrefix=t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 		}		// Force absRefPrefix to this value is PATH_INFO is used.
-		
+
 		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset'])	{
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'_top',$GLOBALS['TSFE']->no_cache,'');
 			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.document.location="'.$tdlLD['totalURL'].'"';
-		}		
-		$GLOBALS['TSFE']->compensateFieldWidth = ''.$GLOBALS['TSFE']->config['config']['compensateFieldWidth'];  
-		$GLOBALS['TSFE']->lockFilePath = ''.$GLOBALS['TSFE']->config['config']['lockFilePath'];  
+		}
+		$GLOBALS['TSFE']->compensateFieldWidth = ''.$GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
+		$GLOBALS['TSFE']->lockFilePath = ''.$GLOBALS['TSFE']->config['config']['lockFilePath'];
 		$GLOBALS['TSFE']->lockFilePath = $GLOBALS['TSFE']->lockFilePath ? $GLOBALS['TSFE']->lockFilePath : 'fileadmin/';
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'] = isset($GLOBALS['TSFE']->config['config']['noScaleUp']) ? ''.$GLOBALS['TSFE']->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
 		$GLOBALS['TSFE']->TYPO3_CONF_VARS['GFX']['im_noScaleUp'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
-		
+
 		$GLOBALS['TSFE']->ATagParams = trim($GLOBALS['TSFE']->config['config']['ATagParams']) ? ' '.trim($GLOBALS['TSFE']->config['config']['ATagParams']) : '';
 		if ($GLOBALS['TSFE']->config['config']['setJS_mouseOver'])	$GLOBALS['TSFE']->setJS('mouseOver');
 		if ($GLOBALS['TSFE']->config['config']['setJS_openPic'])	$GLOBALS['TSFE']->setJS('openPic');
-		
+
 		$GLOBALS['TSFE']->sWordRegEx='';
 		$GLOBALS['TSFE']->sWordList = t3lib_div::_GP('sword_list');
 		if (is_array($GLOBALS['TSFE']->sWordList))	{
 			$standAlone = trim(''.$GLOBALS['TSFE']->config['config']['sword_standAlone']);
 			$noMixedCase = trim(''.$GLOBALS['TSFE']->config['config']['sword_noMixedCase']);
-		
+
 			$space = ($standAlone) ? '[[:space:]]' : '';
 			reset($GLOBALS['TSFE']->sWordList);
 			while (list($key,$val) = each($GLOBALS['TSFE']->sWordList))	{
@@ -185,7 +185,7 @@ function linkTo_UnCryptMailto(s)	{	//
 			}
 			$GLOBALS['TSFE']->sWordRegEx = ereg_replace('\|$','',$GLOBALS['TSFE']->sWordRegEx);
 		}
-		
+
 			// linkVars
 		$GLOBALS['TSFE']->linkVars = ''.$GLOBALS['TSFE']->config['config']['linkVars'];
 		if ($GLOBALS['TSFE']->linkVars)	{
@@ -223,7 +223,7 @@ function linkTo_UnCryptMailto(s)	{	//
 				$incFilesArray[] = $incFile;
 			}
 		}
-		
+
 		if (is_array($GLOBALS['TSFE']->pSetup['includeLibs.']))	{$incLibs=$GLOBALS['TSFE']->pSetup['includeLibs.'];} else {$incLibs=array();}
 		if (is_array($GLOBALS['TSFE']->tmpl->setup['includeLibs.']))	{$incLibs+=$GLOBALS['TSFE']->tmpl->setup['includeLibs.'];}	// toplevel 'includeLibs' is added to the PAGE.includeLibs. In that way, PAGE-libs get first priority, because if the key already exist, it's not altered. (Due to investigation by me)
 		if (count($incLibs))	{
@@ -240,7 +240,7 @@ function linkTo_UnCryptMailto(s)	{	//
 		}
 		return $incFilesArray;
 	}
-	
+
 	/**
 	 * Processing JavaScript handlers
 	 *
@@ -288,19 +288,19 @@ function linkTo_UnCryptMailto(s)	{	//
 
 			if ($GLOBALS['TSFE']->pSetup['wrap'])	{$pageContent = $GLOBALS['TSFE']->cObj->wrap($pageContent, $GLOBALS['TSFE']->pSetup['wrap']);}
 			if ($GLOBALS['TSFE']->pSetup['stdWrap.'])	{$pageContent = $GLOBALS['TSFE']->cObj->stdWrap($pageContent, $GLOBALS['TSFE']->pSetup['stdWrap.']);}
-		
+
 			// PAGE HEADER (after content - maybe JS is inserted!
-		
+
 			// if 'disableAllHeaderCode' is set, all the header-code is discarded!
 		if ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'])	{
 			$GLOBALS['TSFE']->content=$pageContent;
-		} else {			
+		} else {
 			TSpagegen::renderContentWithHeader($pageContent);
 		}
 		$GLOBALS['TT']->pull($GLOBALS['TT']->LR?$GLOBALS['TSFE']->content:'');
 		$GLOBALS['TT']->decStackPointer();
 	}
-	
+
 	/**
 	 * Rendering normal HTML-page with header by wrapping the generated content ($pageContent) in body-tags and setting the header accordingly.
 	 *
@@ -313,9 +313,9 @@ function linkTo_UnCryptMailto(s)	{	//
 			$customContent = chr(10).$customContent;
 		} else $customContent='';
 
-			// Setting charset:		
+			// Setting charset:
 		$theCharset = ($GLOBALS['TSFE']->config['config']['metaCharset'] ? $GLOBALS['TSFE']->config['config']['metaCharset'] : $GLOBALS['TSFE']->defaultCharSet);
-		
+
 			// Reset the content variables:
 		$GLOBALS['TSFE']->content='';
 
@@ -370,20 +370,20 @@ function linkTo_UnCryptMailto(s)	{	//
 	Information and contribution at http://www.typo3.com
 -->
 ';
-		
+
 
 		if ($GLOBALS['TSFE']->config['config']['baseURL']) {
 			$ss = intval($GLOBALS['TSFE']->config['config']['baseURL']) ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : $GLOBALS['TSFE']->config['config']['baseURL'];
 			$GLOBALS['TSFE']->content.='
 <base href="'.htmlspecialchars($ss).'" />';
 		}
-		
+
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
 			$ss=$path.$GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
 			$GLOBALS['TSFE']->content.='
 <link rel="SHORTCUT ICON" href="'.htmlspecialchars($ss).'" />';
 		}
-		
+
 		/** CSS STYLESHEET handling: */
 		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
 			$temp_styleLines=array();
@@ -431,7 +431,7 @@ function linkTo_UnCryptMailto(s)	{	//
 		// Stylesheets
 		$style='';
 		$style.=trim($GLOBALS['TSFE']->pSetup['CSS_inlineStyle']).chr(10);
-		
+
 		if ($GLOBALS['TSFE']->pSetup['insertClassesFromRTE'])	{
 			$pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
 			$RTEclasses = $pageTSConfig['RTE.']['classes.'];
@@ -456,7 +456,7 @@ function linkTo_UnCryptMailto(s)	{	//
 				}
 			}
 		}
-		
+
 			// Setting body tag margins in CSS:
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']) && $GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS'])	{
 			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
@@ -481,7 +481,7 @@ A:hover {'.trim($GLOBALS['TSFE']->pSetup['hoverStyle']).'}';
 		if ($GLOBALS['TSFE']->pSetup['smallFormFields'])	{
 			$style.='
 SELECT {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
-TEXTAREA  {  font-family: Verdana, Arial, Helvetica; font-size: 10px} 
+TEXTAREA  {  font-family: Verdana, Arial, Helvetica; font-size: 10px}
 INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
 		}
 		if ($GLOBALS['TSFE']->pSetup['adminPanelStyles'])	{
@@ -493,12 +493,12 @@ TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #9BA1A8; 
 TABLE.typo3-adminPanel TR.typo3-adminPanel-itemHRow TD { background-color: #ABBBB4; }
 TABLE.typo3-adminPanel TABLE, TABLE.typo3-adminPanel TD { border: 0px; }
 TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 10px; color: black; }
-TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }			
+TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }
 TABLE.typo3-editPanel { border: 1px solid black; background-color: #F6F2E6; }
 TABLE.typo3-editPanel TD { border: 0px; }
 			';
 		}
-		
+
 		if (trim($style))	{
 		$GLOBALS['TSFE']->content.='
 <style type="text/css">
@@ -508,7 +508,7 @@ TABLE.typo3-editPanel TD { border: 0px; }
 	/*]]>*/
 </style>';
 		}
-	
+
 
 
 
@@ -527,14 +527,14 @@ TABLE.typo3-editPanel TD { border: 0px; }
 		if ($GLOBALS['TSFE']->config['config']['titleTagFunction'])	{
 			$titleTagContent = $GLOBALS['TSFE']->cObj->callUserFunction($GLOBALS['TSFE']->config['config']['titleTagFunction'], array(), $titleTagContent);
 		}
-		
+
 		$GLOBALS['TSFE']->content.='
 <title>'.htmlspecialchars($titleTagContent).'</title>';
 		$GLOBALS['TSFE']->content.='
 <meta http-equiv="Content-Type" content="text/html; charset='.$theCharset.'" />';
 		$GLOBALS['TSFE']->content.='
 <meta name="generator" content="TYPO3 3.6 CMS" />';
-		
+
 		$conf=$GLOBALS['TSFE']->pSetup['meta.'];
 		if (is_array($conf))	{
 			reset($conf);
@@ -554,13 +554,13 @@ TABLE.typo3-editPanel TD { border: 0px; }
 				}
 			}
 		}
-	
+
 		unset($GLOBALS['TSFE']->additionalHeaderData['JSCode']);
 		unset($GLOBALS['TSFE']->additionalHeaderData['JSImgCode']);
-	
+
 		if (is_array($GLOBALS['TSFE']->config['INTincScript']))	{
 				// Storing the JSCode and JSImgCode vars...
-			$GLOBALS['TSFE']->additionalHeaderData['JSCode'] = $GLOBALS['TSFE']->JSCode;	
+			$GLOBALS['TSFE']->additionalHeaderData['JSCode'] = $GLOBALS['TSFE']->JSCode;
 			$GLOBALS['TSFE']->additionalHeaderData['JSImgCode'] = $GLOBALS['TSFE']->JSImgCode;
 			$GLOBALS['TSFE']->config['INTincScript_ext']['divKey']= $GLOBALS['TSFE']->uniqueHash();
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalHeaderData']	= $GLOBALS['TSFE']->additionalHeaderData;	// Storing the header-data array
@@ -600,7 +600,7 @@ TABLE.typo3-editPanel TD { border: 0px; }
 			$GLOBALS['TSFE']->content.=$fs->make($GLOBALS['TSFE']->pSetup['frameSet.']);
 			$GLOBALS['TSFE']->content.= chr(10).'<noframes>'.chr(10);
 		}
-		
+
 			// Bodytag:
 		$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'],$GLOBALS['TSFE']->pSetup['bodyTagCObject.'],'bodyTagCObject') : '';
 		if (!$defBT)	$defBT = $GLOBALS['TSFE']->defaultBodyTag;
@@ -608,7 +608,7 @@ TABLE.typo3-editPanel TD { border: 0px; }
 		if ($bgImg=$GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'],$GLOBALS['TSFE']->pSetup['bgImg.']))	{
 			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' background="'.$GLOBALS["TSFE"]->absRefPrefix.$bgImg[3].'">';
 		}
-		
+
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']))	{
 			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
 			if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS'])	{
@@ -617,25 +617,25 @@ TABLE.typo3-editPanel TD { border: 0px; }
 				$bodyTag = ereg_replace('>$','',trim($bodyTag)).' leftmargin="'.$margins.'" topmargin="'.$margins.'" marginwidth="'.$margins.'" marginheight="'.$margins.'">';
 			}
 		}
-		
+
 		if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']))	{
 			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' '.trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']).'>';
 		}
-		
+
 		if (count($JSef[1]))	{	// Event functions:
 			$bodyTag = ereg_replace('>$','',trim($bodyTag)).' '.trim(implode(' ',$JSef[1])).'>';
 		}
-		
 
-		// Div-sections			
+
+		// Div-sections
 		$GLOBALS['TSFE']->content.= chr(10).$bodyTag;
 		if ($GLOBALS['TSFE']->divSection)	{
 			$GLOBALS['TSFE']->content.=	chr(10).$GLOBALS['TSFE']->divSection;
 		}
-		
+
 		// Page content
 		$GLOBALS['TSFE']->content.=chr(10).$pageContent;
-		
+
 		// Ending page
 		$GLOBALS['TSFE']->content.= chr(10).'</body>';
 		if ($GLOBALS['TSFE']->pSetup['frameSet.'])	{

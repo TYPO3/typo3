@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2002-2004 René Fritz (r.fritz@colorcube.de)
 *  All rights reserved
 *
@@ -33,15 +33,15 @@
  *
  *
  *
- *   81: class t3lib_exec 
- *   91:     function checkCommand($cmd, $handler='')	
- *  162:     function getCommand($cmd, $handler='', $handlerOpt='')	
- *  191:     function addPaths($paths)	
- *  201:     function _getPaths()	
- *  269:     function _init()	
- *  285:     function _initPaths($paths='')	
- *  340:     function _getOS()	
- *  351:     function _fixPath($path)	
+ *   81: class t3lib_exec
+ *   91:     function checkCommand($cmd, $handler='')
+ *  162:     function getCommand($cmd, $handler='', $handlerOpt='')
+ *  191:     function addPaths($paths)
+ *  201:     function _getPaths()
+ *  269:     function _init()
+ *  285:     function _initPaths($paths='')
+ *  340:     function _getOS()
+ *  351:     function _fixPath($path)
  *
  * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -107,7 +107,7 @@ class t3lib_exec {
 		if (isset($GLOBALS['t3lib_exec']['apps'][$cmd]['valid'])) {
 			return false;
 		}
-		
+
 		reset($GLOBALS['t3lib_exec']['paths']);
 		foreach($GLOBALS['t3lib_exec']['paths'] as $path => $validPath) {
 				// ignore invalid (false) paths
@@ -150,7 +150,7 @@ class t3lib_exec {
 
 		return false;
 	}
-	
+
 	/**
 	 * returns a command string for exec(), system()
 	 *
@@ -223,7 +223,7 @@ class t3lib_exec {
 		}
 
 
-		
+
 
 # ???? t3lib_div::getIndpEnv('REQUEST_URI');
 

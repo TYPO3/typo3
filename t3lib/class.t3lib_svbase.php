@@ -1,19 +1,19 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the Typo3 project. The Typo3 project is 
+*  This script is part of the Typo3 project. The Typo3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
 *
@@ -37,53 +37,53 @@
  *
  *
  *
- *  121: class t3lib_svbase 
+ *  121: class t3lib_svbase
  *
  *              SECTION: Get service meta information
- *  175:     function getServiceInfo() 
- *  183:     function getServiceKey() 
- *  191:     function getServiceTitle() 
+ *  175:     function getServiceInfo()
+ *  183:     function getServiceKey()
+ *  191:     function getServiceTitle()
  *
  *              SECTION: Error handling
- *  212:     function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured') 
- *  227:     function errorPull() 
- *  239:     function getLastError() 
- *  254:     function getLastErrorMsg() 
- *  269:     function getErrorMsgArray() 
- *  287:     function getLastErrorArray() 
- *  296:     function resetErrors() 
+ *  212:     function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured')
+ *  227:     function errorPull()
+ *  239:     function getLastError()
+ *  254:     function getLastErrorMsg()
+ *  269:     function getErrorMsgArray()
+ *  287:     function getLastErrorArray()
+ *  296:     function resetErrors()
  *
  *              SECTION: General service functions
- *  316:     function checkExec($progList) 
- *  338:     function deactivateService() 
- *  344:     function available()	
+ *  316:     function checkExec($progList)
+ *  338:     function deactivateService()
+ *  344:     function available()
  *
  *              SECTION: IO tools
- *  382:     function checkInputFile ($absFile)	
- *  403:     function readFile ($absFile, $length=0)	
- *  426:     function writeFile ($content, $absFile='')	
+ *  382:     function checkInputFile ($absFile)
+ *  403:     function readFile ($absFile, $length=0)
+ *  426:     function writeFile ($content, $absFile='')
  *
  *              SECTION: IO input
- *  467:     function setInput ($content, $type='') 
- *  481:     function setInputFile ($absFile, $type='') 
- *  494:     function getInput () 
- *  509:     function getInputFile ($absFile='') 
+ *  467:     function setInput ($content, $type='')
+ *  481:     function setInputFile ($absFile, $type='')
+ *  494:     function getInput ()
+ *  509:     function getInputFile ($absFile='')
  *
  *              SECTION: IO output
- *  534:     function setOutputFile ($absFile) 
- *  544:     function getOutput () 
- *  558:     function getOutputFile ($absFile='') 
+ *  534:     function setOutputFile ($absFile)
+ *  544:     function getOutput ()
+ *  558:     function getOutputFile ($absFile='')
  *
  *              SECTION: Service implementation
- *  582:     function init()	
- *  601:     function reset()	
- *  612:     function process($content='', $type='', $conf=array())	
+ *  582:     function init()
+ *  601:     function reset()
+ *  612:     function process($content='', $type='', $conf=array())
  *
  * TOTAL FUNCTIONS: 26
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 
 
 
@@ -159,7 +159,7 @@ class t3lib_svbase {
 	  */
 	 var $outputFile = '';
 
-	 
+
 
 
 	/***************************************

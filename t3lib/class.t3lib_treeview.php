@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains base class for creating a browsable array/page/folder tree in HTML
  *
  * $Id$
@@ -38,57 +38,57 @@
  *
  *
  *
- *  115: class t3lib_treeView 
- *  267:     function init($clause='', $orderByFields='')	
- *  294:     function setTreeName($treeName='') 
- *  308:     function addField($field,$noCheck=0)	
- *  322:     function reset()	
+ *  115: class t3lib_treeView
+ *  267:     function init($clause='', $orderByFields='')
+ *  294:     function setTreeName($treeName='')
+ *  308:     function addField($field,$noCheck=0)
+ *  322:     function reset()
  *
  *              SECTION: output
- *  346:     function getBrowsableTree()	
- *  405:     function printTree($treeArr='')	
+ *  346:     function getBrowsableTree()
+ *  405:     function printTree($treeArr='')
  *
  *              SECTION: rendering parts
- *  458:     function PMicon($row,$a,$c,$nextCount,$exp)	
- *  480:     function PM_ATagWrap($icon,$cmd,$bMark='')	
- *  502:     function wrapTitle($title,$row,$bank=0)	
- *  515:     function wrapIcon($icon,$row)	
- *  526:     function addTagAttributes($icon,$attr)	
- *  538:     function wrapStop($str,$row)	
+ *  458:     function PMicon($row,$a,$c,$nextCount,$exp)
+ *  480:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  502:     function wrapTitle($title,$row,$bank=0)
+ *  515:     function wrapIcon($icon,$row)
+ *  526:     function addTagAttributes($icon,$attr)
+ *  538:     function wrapStop($str,$row)
  *
  *              SECTION: tree handling
- *  566:     function expandNext($id)	
- *  576:     function initializePositionSaving()	
- *  603:     function savePosition()	
+ *  566:     function expandNext($id)
+ *  576:     function initializePositionSaving()
+ *  603:     function savePosition()
  *
  *              SECTION: Functions that might be overwritten by extended classes
- *  632:     function getRootIcon($rec) 
- *  645:     function getIcon($row) 
- *  664:     function getTitleStr($row,$titleLen=30)	
- *  676:     function getTitleAttrib($row) 
- *  686:     function getId($row) 
- *  696:     function getJumpToParm($row) 
+ *  632:     function getRootIcon($rec)
+ *  645:     function getIcon($row)
+ *  664:     function getTitleStr($row,$titleLen=30)
+ *  676:     function getTitleAttrib($row)
+ *  686:     function getId($row)
+ *  696:     function getJumpToParm($row)
  *
  *              SECTION: tree data buidling
- *  729:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='')	
+ *  729:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='')
  *
  *              SECTION: Data handling
- *  826:     function getCount($uid)	
- *  853:     function getRootRecord($uid) 
- *  866:     function getRecord($uid) 
- *  883:     function getDataInit($parentId) 
- *  913:     function getDataCount(&$res) 
+ *  826:     function getCount($uid)
+ *  853:     function getRootRecord($uid)
+ *  866:     function getRecord($uid)
+ *  883:     function getDataInit($parentId)
+ *  913:     function getDataCount(&$res)
  *  930:     function getDataNext(&$res)
  *  958:     function getDataFree(&$res)
- *  978:     function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)	
- * 1011:     function setDataFromTreeArray(&$treeArr, &$treeLookupArr)	
+ *  978:     function setDataFromArray(&$dataArr,$traverse=FALSE,$pid=0)
+ * 1011:     function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
- 
+
+
 
 
 
@@ -224,7 +224,7 @@ class t3lib_treeView {
 	 * Sets the associative array key which identifies a new sublevel if arrays are used for trees.
 	 * This value has formerly been "subLevel" and "--sublevel--"
 	 */
-	var $subLevelID = '_SUB_LEVEL';	
+	var $subLevelID = '_SUB_LEVEL';
 
 
 
@@ -250,7 +250,7 @@ class t3lib_treeView {
 	var $bank=0;					// Points to the current mountpoint key
 	var $recs = array();			// Accumulates the displayed records.
 
-	
+
 
 
 
@@ -311,9 +311,9 @@ class t3lib_treeView {
 			$this->fieldArray[]=$field;
 		}
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Resets the tree, recs, ids, and ids_hierarchy internal variables. Use it if you need it.
 	 *
@@ -324,8 +324,8 @@ class t3lib_treeView {
 		$this->recs = array();
 		$this->ids = array();
 		$this->ids_hierarchy = array();
-	
-	# These lines should be removed; The first one does not do anything since $This is not $this; The second makes tree generation based on an array impossible...	
+
+	# These lines should be removed; The first one does not do anything since $This is not $this; The second makes tree generation based on an array impossible...
 #		$This->data = false;
 #		$this->dataLookup = false;
 	}
@@ -354,13 +354,13 @@ class t3lib_treeView {
 
 			// Traverse mounts:
 		foreach($this->MOUNTS as $idx => $uid)	{
-				
+
 				// Set first:
 			$this->bank=$idx;
 			$isOpen = $this->stored[$idx][$uid] || $this->expandFirst;
 
 				// Save ids while resetting everything else.
-			$curIds = $this->ids;	
+			$curIds = $this->ids;
 			$this->reset();
 			$this->ids = $curIds;
 
@@ -395,7 +395,7 @@ class t3lib_treeView {
 		}
 		return $this->printTree($treeArr);
 	}
-	
+
 	/**
 	 * Compiles the HTML code for displaying the structure found inside the ->tree array
 	 *
@@ -411,8 +411,8 @@ class t3lib_treeView {
 			// not a problem if you don't need it
 			// In XHTML there is no "name" attribute of <td> elements - but Mozilla will not be able to highlight rows if the name attribute is NOT there.
 		$out .= '
-		
-			<!-- 
+
+			<!--
 			  TYPO3 tree structure.
 			-->
 			<table cellpadding="0" cellspacing="0" border="0" id="typo3-tree">';
@@ -515,7 +515,7 @@ class t3lib_treeView {
  	function wrapIcon($icon,$row)	{
 		return $icon;
 	}
-	
+
 	/**
 	 * Adds attributes to image tag.
 	 *
@@ -524,7 +524,7 @@ class t3lib_treeView {
 	 * @return	string		Image tag, modified with $attr attributes added.
 	 */
 	function addTagAttributes($icon,$attr)	{
-		return ereg_replace(' ?\/?>$','',$icon).' '.$attr.' />'; 
+		return ereg_replace(' ?\/?>$','',$icon).' '.$attr.' />';
 	}
 
 	/**
@@ -606,7 +606,7 @@ class t3lib_treeView {
 	}
 
 
-	
+
 
 
 
@@ -618,9 +618,9 @@ class t3lib_treeView {
 
 
 	/******************************
-	 * 
+	 *
 	 * Functions that might be overwritten by extended classes
-	 * 
+	 *
 	 ********************************/
 
 	/**
@@ -676,7 +676,7 @@ class t3lib_treeView {
 	function getTitleAttrib($row) {
 		return htmlspecialchars($row['title']);
 	}
-	
+
 	/**
 	 * Returns the id from the record (typ. uid)
 	 *
@@ -730,7 +730,7 @@ class t3lib_treeView {
 
 			// Buffer for id hierarchy is reset:
 		$this->buffer_idH=array();
-		
+
 
 			// Init vars
 		$depth=intval($depth);
@@ -829,8 +829,8 @@ class t3lib_treeView {
 			return $this->getDataCount($res);
 		} else {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'count(*)', 
-						$this->table, 
+						'count(*)',
+						$this->table,
 						$this->parentField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($uid, $this->table).'"'.
 							t3lib_BEfunc::deleteClause($this->table).
 							$this->clause,	// whereClauseMightContainGroupOrderBy
@@ -840,7 +840,7 @@ class t3lib_treeView {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 			return $row[0];
 		}
-	}	
+	}
 
 
 
@@ -890,8 +890,8 @@ class t3lib_treeView {
 			return $parentId;
 		} else {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						implode($this->fieldArray,','), 
-						$this->table, 
+						implode($this->fieldArray,','),
+						$this->table,
 						$this->parentField.'="'.$GLOBALS['TYPO3_DB']->quoteStr($parentId, $this->table).'"'.
 							t3lib_BEfunc::deleteClause($this->table).
 							$this->clause,	// whereClauseMightContainGroupOrderBy
@@ -939,7 +939,7 @@ class t3lib_treeView {
 					$row=FALSE;
 				} else {
 					unset($row['subLevel']);
-				}	
+				}
 				*/
 			}
 			return $row;
@@ -1043,7 +1043,7 @@ class t3lib_treeView {
 					),
 					[6] => array(
 						'title'=>'title...',
-						'id' => 'id...', 
+						'id' => 'id...',
 						'icon' => 'icon ref, relative to typo3/ folder...'
 					),
 				)
@@ -1053,7 +1053,7 @@ class t3lib_treeView {
 }
 
 
-			
+
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_treeview.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_treeview.php']);

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 2001-2004 Christian Jul Jensen (christian@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Class for generating front end for building queries
  *
  * $Id$
@@ -37,42 +37,42 @@
  *
  *
  *
- *   95: class t3lib_queryGenerator	
- *  176:     function makeFieldList()	
- *  203:     function init($name,$table,$fieldList="")	
- *  292:     function setAndCleanUpExternalLists($name,$list,$force="")	
- *  308:     function procesData($qC="")	
- *  416:     function cleanUpQueryConfig($queryConfig)	
- *  473:     function getFormElements($subLevel=0,$queryConfig="",$parent="")	
- *  560:     function printCodeArray($codeArr,$l=0)	
- *  583:     function formatQ($str)	
- *  596:     function mkOperatorSelect($name,$op,$draw,$submit)	
- *  618:     function mkTypeSelect($name,$fieldName,$prepend="FIELD_")	
- *  637:     function verifyType($fieldName)	
- *  654:     function verifyComparison($comparison,$neg)	
- *  673:     function mkFieldToInputSelect($name,$fieldName)	
- *  694:     function mkTableSelect($name,$cur)	
- *  716:     function mkCompSelect($name,$comparison,$neg)	
- *  734:     function getSubscript($arr) 
- *  749:     function initUserDef()	
- *  758:     function userDef()	
- *  767:     function userDefCleanUp($queryConfig)	
- *  778:     function getQuery ($queryConfig,$pad="") 
- *  808:     function getQuerySingle($conf,$first)	
- *  829:     function cleanInputVal($conf,$suffix="")	
- *  848:     function getUserDefQuery ($qcArr) 
- *  856:     function updateIcon()	
- *  865:     function getLabelCol()	
- *  877:     function makeSelectorTable($modSettings,$enableList="table,fields,query,group,order,limit")	
- *  981:     function getSelectQuery($qString="")	
- * 1001:     function JSbottom($formname="forms[0]")	
- * 1007:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)	
- * 1025:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)	
+ *   95: class t3lib_queryGenerator
+ *  176:     function makeFieldList()
+ *  203:     function init($name,$table,$fieldList="")
+ *  292:     function setAndCleanUpExternalLists($name,$list,$force="")
+ *  308:     function procesData($qC="")
+ *  416:     function cleanUpQueryConfig($queryConfig)
+ *  473:     function getFormElements($subLevel=0,$queryConfig="",$parent="")
+ *  560:     function printCodeArray($codeArr,$l=0)
+ *  583:     function formatQ($str)
+ *  596:     function mkOperatorSelect($name,$op,$draw,$submit)
+ *  618:     function mkTypeSelect($name,$fieldName,$prepend="FIELD_")
+ *  637:     function verifyType($fieldName)
+ *  654:     function verifyComparison($comparison,$neg)
+ *  673:     function mkFieldToInputSelect($name,$fieldName)
+ *  694:     function mkTableSelect($name,$cur)
+ *  716:     function mkCompSelect($name,$comparison,$neg)
+ *  734:     function getSubscript($arr)
+ *  749:     function initUserDef()
+ *  758:     function userDef()
+ *  767:     function userDefCleanUp($queryConfig)
+ *  778:     function getQuery ($queryConfig,$pad="")
+ *  808:     function getQuerySingle($conf,$first)
+ *  829:     function cleanInputVal($conf,$suffix="")
+ *  848:     function getUserDefQuery ($qcArr)
+ *  856:     function updateIcon()
+ *  865:     function getLabelCol()
+ *  877:     function makeSelectorTable($modSettings,$enableList="table,fields,query,group,order,limit")
+ *  981:     function getSelectQuery($qString="")
+ * 1001:     function JSbottom($formname="forms[0]")
+ * 1007:     function typo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue)
+ * 1025:     function typo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off)
  *
  * TOTAL FUNCTIONS: 30
  * (This index is automatically created/updated by the extension "extdeveval")
  *
- */ 
+ */
 
 
 
@@ -97,7 +97,7 @@ class t3lib_queryGenerator	{
 		"OR" => "or",
 		"AND" => "and",
 		"comparison" => array(
-				 // Type = text	offset = 0	
+				 // Type = text	offset = 0
 			"0_" => "contains",
 			"1_" => "does not contain",
 			"2_" => "starts with",
@@ -121,9 +121,9 @@ class t3lib_queryGenerator	{
 			"43_" => "binary OR does not equal"
 		)
 	);
-	
+
 	var $compSQL = array(
-			// Type = text	offset = 0	
+			// Type = text	offset = 0
 		"0" => "#FIELD# LIKE '%#VALUE#%'",
 		"1" => "#FIELD# NOT LIKE '%#VALUE#%'",
 		"2" => "#FIELD# LIKE '#VALUE#%'",
@@ -146,14 +146,14 @@ class t3lib_queryGenerator	{
 		"42" => "(#FIELD# | #VALUE#)=#VALUE#",
 		"43" => "(#FIELD# | #VALUE#)!=#VALUE#"
 	);
-	
+
 	var $comp_offsets = array(
 		"text" => 0,
 		"number" => 1,
 		"date" => 1
 	);
 	var $noWrap=" nowrap";
-	
+
 	var $name;			// Form data name prefix
 	var $table;			// table for the query
 	var $fieldList;		// field list
@@ -235,14 +235,14 @@ class t3lib_queryGenerator	{
 							$this->fields[$fN]["type"]="text";
 						break;
 					}
-				
+
 				} else {
 					$this->fields[$fN]["label"]="[FIELD: ".$fN."]";
 					$this->fields[$fN]["type"]="number";
 				}
 			}
 		}
-		
+
 		/*	// EXAMPLE:
 		$this->queryConfig = array(
 			array(
@@ -255,7 +255,7 @@ class t3lib_queryGenerator	{
 				"negate" => 1,
 				"inputValue" => "foo foo"
 			),
-			array( 
+			array(
 				"type" => "newlevel",
 				"nl" => array(
 					array(
@@ -307,7 +307,7 @@ class t3lib_queryGenerator	{
 	 */
 	function procesData($qC="")	{
 		$this->queryConfig = $qC;
-	
+
 		$POST = t3lib_div::_POST();
 /*	 	// adjust queryConfig to match requests from user
 		if($GLOBALS["HTTP_POST_VARS"]["queryConfig"]) {
@@ -486,8 +486,8 @@ class t3lib_queryGenerator	{
 				$fType = $this->fields[$fName]["type"];
 				if($conf["comparison"] >> 5 != $this->comp_offsets[$fType]) $conf["comparison"] = $this->comp_offsets[$fType] << 5;
 
-				//nasty nasty... 
-				//make sure queryConfig contains _actual_ comparevalue. 
+				//nasty nasty...
+				//make sure queryConfig contains _actual_ comparevalue.
 				//mkCompSelect don't care, but getQuery does.
 				$queryConfig[$key]["comparison"] += (isset($conf["negate"])-($conf["comparison"]%2));
 
@@ -520,7 +520,7 @@ class t3lib_queryGenerator	{
 					} elseif ($fType=="date") {
 						$lineHTML.='<input type="text" name="'.$this->name.$subscript.'[inputValue]_hr'.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(10).' onChange="typo3FormFieldGet(\''.$this->name.$subscript.'[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="'.htmlspecialchars($conf["inputValue"]).'" name="'.$this->name.$subscript.'[inputValue]'.'">';
 						$this->extJSCODE.='typo3FormFieldSet("'.$this->name.$subscript.'[inputValue]", "datetime", "", 0,0);';
-					} else {					
+					} else {
 						$lineHTML.='<input type="text" value="'.htmlspecialchars($conf["inputValue"]).'" name="'.$this->name.$subscript.'[inputValue]'.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(10).'>';	// onChange="submit();"
 					}
 				break;
@@ -595,7 +595,7 @@ class t3lib_queryGenerator	{
 	 */
 	function mkOperatorSelect($name,$op,$draw,$submit)	{
 		if ($draw)	{
-			$out='<select name="'.$name.'[operator]"'.($submit?' onChange="submit();"':'').'>';	// 
+			$out='<select name="'.$name.'[operator]"'.($submit?' onChange="submit();"':'').'>';	//
 			$out.='<option value="AND"'.(!$op||$op=="AND" ? ' selected':'').'>'.$this->lang["AND"].'</option>';
 			$out.='<option value="OR"'.($op=="OR" ? ' selected':'').'>'.$this->lang["OR"].'</option>';
 			$out.='</select>';
@@ -621,7 +621,7 @@ class t3lib_queryGenerator	{
 		reset($this->fields);
 		while(list($key,)=each($this->fields)) {
 			if ($GLOBALS["BE_USER"]->check("non_exclude_fields",$this->table.":".$key))	{
-				$out.='<option value="'.$prepend.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$this->fields[$key]["label"].'</option>';	
+				$out.='<option value="'.$prepend.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$this->fields[$key]["label"].'</option>';
 			}
 		}
 		$out.='</select>';
@@ -677,7 +677,7 @@ class t3lib_queryGenerator	{
 		reset($this->fields);
 		while(list($key,)=each($this->fields)) {
 			if ($GLOBALS["BE_USER"]->check("non_exclude_fields",$this->table.":".$key))	{
-				$out.='<option value="'.$prepend.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$this->fields[$key]["label"].'</option>';	
+				$out.='<option value="'.$prepend.$key.'"'.($key==$fieldName ? ' selected':'').'>'.$this->fields[$key]["label"].'</option>';
 			}
 		}
 		$out.='</select>';
@@ -698,7 +698,7 @@ class t3lib_queryGenerator	{
 		reset($TCA);
 		while(list($tN)=each($TCA)) {
 			if ($GLOBALS["BE_USER"]->check("tables_select",$tN))	{
-				$out.='<option value="'.$tN.'"'.($tN==$cur ? ' selected':'').'>'.$GLOBALS["LANG"]->sl($TCA[$tN]["ctrl"]["title"]).'</option>';	
+				$out.='<option value="'.$tN.'"'.($tN==$cur ? ' selected':'').'>'.$GLOBALS["LANG"]->sl($TCA[$tN]["ctrl"]["title"]).'</option>';
 			}
 		}
 		$out.='</select>';
@@ -747,7 +747,7 @@ class t3lib_queryGenerator	{
 	 * @return	[type]		...
 	 */
 	function initUserDef()	{
-	
+
 	}
 
 	/**
@@ -783,13 +783,13 @@ class t3lib_queryGenerator	{
 		$first=1;
 		while(list($key,$conf) = each($queryConfig)) {
 			switch($conf["type"]) {
-				case "newlevel": 
+				case "newlevel":
 					$qs.=chr(10).$pad.trim($conf["operator"])." (".$this->getQuery($queryConfig[$key]["nl"],$pad."   ").chr(10).$pad.")";
 				break;
 				case "userdef":
 					$qs.=chr(10).$pad.getUserDefQuery($conf,$first);
 				break;
-				default:			
+				default:
 					$qs.=chr(10).$pad.$this->getQuerySingle($conf,$first);
 				break;
 			}
@@ -807,7 +807,7 @@ class t3lib_queryGenerator	{
 	 */
 	function getQuerySingle($conf,$first)	{
 		$prefix = $this->enablePrefix ? $this->table."." : "";
-		if (!$first)	{$qs.= trim(($conf["operator"]?$conf["operator"]:"AND"))." ";}		// Is it OK to insert the AND operator if none is set? 
+		if (!$first)	{$qs.= trim(($conf["operator"]?$conf["operator"]:"AND"))." ";}		// Is it OK to insert the AND operator if none is set?
 		$qsTmp = str_replace("#FIELD#",$prefix.trim(substr($conf["type"],6)),$this->compSQL[$conf["comparison"]]);
 		$inputVal = $this->cleanInputVal($conf);
 		$qsTmp = str_replace("#VALUE#", $GLOBALS['TYPO3_DB']->quoteStr($inputVal, $this->table),$qsTmp);
@@ -878,7 +878,7 @@ class t3lib_queryGenerator	{
 		$enableArr=explode(",",$enableList);
 			// Make output
 		$TDparams = ' class="bgColor5" nowrap';
-		
+
 		if (in_array("table",$enableArr))	{
 			$out='
 			<tr>
@@ -887,7 +887,7 @@ class t3lib_queryGenerator	{
 			</tr>';
 		}
 		if ($this->table)	{
-	
+
 				// Init fields:
 			$this->setAndCleanUpExternalLists("queryFields",$modSettings["queryFields"],"uid,".$this->getLabelCol());
 			$this->setAndCleanUpExternalLists("queryGroup",$modSettings["queryGroup"]);
@@ -898,7 +898,7 @@ class t3lib_queryGenerator	{
 			if (!$this->extFieldLists["queryLimit"])	$this->extFieldLists["queryLimit"]=100;
 			$parts = t3lib_div::intExplode(",",$this->extFieldLists["queryLimit"]);
 			$this->extFieldLists["queryLimit"] = implode(",",array_slice($parts,0,2));
-			
+
 				// Insert Descending parts
 			if ($this->extFieldLists["queryOrder"])	{
 				$descParts = explode(",",$modSettings["queryOrderDesc"].",".$modSettings["queryOrder2Desc"]);
@@ -909,18 +909,18 @@ class t3lib_queryGenerator	{
 					$reList[]=$vv.($descParts[$kk]?" DESC":"");
 				}
 				$this->extFieldLists["queryOrder_SQL"] = implode(",",$reList);
-			}		
-	
+			}
+
 				// Query Generator:
 			$this->procesData($modSettings["queryConfig"] ? unserialize($modSettings["queryConfig"]) : "");
 	//		debug($this->queryConfig);
 			$this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
 	//		debug($this->queryConfig);
 			$this->enableQueryParts = $modSettings["search_query_smallparts"];
-	
+
 			$codeArr=$this->getFormElements();
 			$queryCode=$this->printCodeArray($codeArr);
-		
+
 			if (in_array("fields",$enableArr))	{
 				$out.='
 				<tr>
@@ -957,7 +957,7 @@ class t3lib_queryGenerator	{
 					<td'.$TDparams.'><strong>Order By:</strong></td>
 					<td'.$TDparams.'>'.$orderBy.'</td>
 				</tr>';
-			}	
+			}
 			if (in_array("limit",$enableArr))	{
 				$limit = '<input type="Text" value="'.htmlspecialchars($this->extFieldLists["queryLimit"]).'" name="SET[queryLimit]"'.$GLOBALS["TBE_TEMPLATE"]->formWidth(10).'>'.$this->updateIcon();
 				$out.='<tr>
@@ -982,8 +982,8 @@ class t3lib_queryGenerator	{
 		if (!$qString)	$qString=$this->getQuery($this->queryConfig);
 
 		$query = $GLOBALS['TYPO3_DB']->SELECTquery(
-						$this->extFieldLists["queryFields"], 
-						$this->table, 
+						$this->extFieldLists["queryFields"],
+						$this->table,
 						$qString.t3lib_BEfunc::deleteClause($this->table),
 						trim($this->extFieldLists["queryGroup"]),
 						$this->extFieldLists["queryOrder"] ? trim($this->extFieldLists["queryOrder_SQL"]) : '',
@@ -1033,7 +1033,7 @@ class t3lib_queryGenerator	{
 				}
 			</script>
 			<script language="javascript" type="text/javascript">'.$this->extJSCODE.'</script>';
-			return $out;	
+			return $out;
 		}
 	}
 }

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,12 +24,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Shows information about a database or file item
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
- * XHTML Compliant 
+ * XHTML Compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
@@ -38,10 +38,10 @@
  *
  *
  *
- *   76: class SC_show_rechis 
- *   87:     function init()	
- *  105:     function main()	
- *  126:     function printContent()	
+ *   76: class SC_show_rechis
+ *   87:     function init()
+ *  105:     function main()
+ *  126:     function printContent()
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -77,8 +77,8 @@ class SC_show_rechis {
 
 		// Internal:
 	var $content;
-	var $doc;	
-	
+	var $doc;
+
 	/**
 	 * Initialize the module output
 	 *
@@ -90,7 +90,7 @@ class SC_show_rechis {
 			// Create internal template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->docType = 'xhtml_trans';
-		
+
 			// Start the page header:
 		$this->content.=$this->doc->startPage($LANG->getLL('title'));
 		$this->content.=$this->doc->header($LANG->getLL('title'));
@@ -107,10 +107,10 @@ class SC_show_rechis {
 
 			// Start history object
 		$historyObj = t3lib_div::makeInstance('recordHistory');
-		
+
 			// Get content:
-		$this->content.= $historyObj->main();		
-		
+		$this->content.= $historyObj->main();
+
 			// Return link:
 		if ($historyObj->returnUrl)	{
 			$link = '<a href="'.htmlspecialchars($historyObj->returnUrl).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg('','gfx/goback.gif','width="14" height="14"').' alt="" />'.$LANG->getLL('returnLink',1).'</a>';

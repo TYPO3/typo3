@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,9 +24,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Wizard for inserting TSconfig in form fields. (page,user or TS)
- * 
+ *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
@@ -38,32 +38,32 @@
  *
  *
  *
- *   94: class ext_TSparser extends t3lib_tsparser_ext 
- *  102:     function makeHtmlspecialchars($P)	
+ *   94: class ext_TSparser extends t3lib_tsparser_ext
+ *  102:     function makeHtmlspecialchars($P)
  *
  *
- *  123: class SC_wizard_tsconfig 
- *  145:     function init()	
- *  252:     function main()	
- *  279:     function printContent()	
- *  290:     function browseTSprop($mode,$show)	
+ *  123: class SC_wizard_tsconfig
+ *  145:     function init()
+ *  252:     function main()
+ *  279:     function printContent()
+ *  290:     function browseTSprop($mode,$show)
  *
  *              SECTION: Module functions
- *  376:     function getObjTree()	
- *  406:     function setObj(&$objTree,$strArr,$params)	
- *  426:     function revertFromSpecialChars($str)	
- *  439:     function doLink($params)	
- *  452:     function removePointerObjects($objArray)	
- *  471:     function linkToObj($str,$uid,$objString='')	
- *  484:     function printTable($table,$objString,$objTree)	
- *  565:     function linkProperty($str,$propertyVal,$prefix,$datatype)	
+ *  376:     function getObjTree()
+ *  406:     function setObj(&$objTree,$strArr,$params)
+ *  426:     function revertFromSpecialChars($str)
+ *  439:     function doLink($params)
+ *  452:     function removePointerObjects($objArray)
+ *  471:     function linkToObj($str,$uid,$objString='')
+ *  484:     function printTable($table,$objString,$objTree)
+ *  565:     function linkProperty($str,$propertyVal,$prefix,$datatype)
  *
  * TOTAL FUNCTIONS: 13
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 $BACK_PATH='';
 require ('init.php');
@@ -75,7 +75,7 @@ require_once (PATH_t3lib.'class.t3lib_tsparser_ext.php');
 
 
 
-	
+
 
 
 
@@ -164,7 +164,7 @@ class SC_wizard_tsconfig {
 			$update.= '
 			window.opener.'.$v;
 		}
-		
+
 			// Init the document table object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->docType = 'xhtml_trans';
@@ -178,7 +178,7 @@ class SC_wizard_tsconfig {
 			A:active {text-decoration: bold; color: '.$this->doc->hoverColor.';}
 			A:hover {color: '.$this->doc->bgColor2.'}
 		';
-		
+
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
 			function checkReference()	{	//
 				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] )	{
@@ -238,9 +238,9 @@ class SC_wizard_tsconfig {
 				document.location = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
 			}
 		');
-		
-			
-			// Start the page:		
+
+
+			// Start the page:
 		$this->content.=$this->doc->startPage($LANG->getLL('tsprop'));
 	}
 
@@ -254,7 +254,7 @@ class SC_wizard_tsconfig {
 
 			// Adding module content:
 		$this->content.=$this->doc->section($LANG->getLL('tsprop'),$this->browseTSprop($this->mode,$this->show),0,1);
-		
+
 			// Adding link to TSref:
 		if ($this->mode=='tsref')	{
 			$this->content.=$this->doc->section($LANG->getLL('tsprop_TSref'),'
@@ -279,7 +279,7 @@ class SC_wizard_tsconfig {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Create the content of the module:
 	 *
@@ -289,10 +289,10 @@ class SC_wizard_tsconfig {
 	 */
 	function browseTSprop($mode,$show)	{
 		global $LANG;
-		
+
 			// Get object tree:
 		$objTree = $this->getObjTree();
-		
+
 			// Show single element, if show is set.
 		$out='';
 		if ($show)	{
@@ -301,7 +301,7 @@ class SC_wizard_tsconfig {
 			$rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$table = unserialize($rec['appdata']);
 			$obj_string = strtr($this->objString,'()','[]');	// Title:
-			
+
 				// Title and description:
 			$out.='<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>''))).'" class="typo3-goBack">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.
@@ -309,11 +309,11 @@ class SC_wizard_tsconfig {
 					'</a><br />';
 			if ($rec['title'])	$out.= '<strong>'.htmlspecialchars($rec['title']).': </strong>';
 			if ($rec['description'])	$out.= nl2br(htmlspecialchars(trim($rec['description']))).'<br />';
-			
+
 				// Printing the content:
 			$out.= '<br />'.$this->printTable($table, $obj_string, $objTree[$mode.'.']);
 			$out.='<hr />';
-	
+
 				// Printing the "mixer-field":
 			if (!$this->onlyProperty)	{
 				$links=array();
@@ -325,9 +325,9 @@ class SC_wizard_tsconfig {
 				$out.='<br /><strong>'.implode('&nbsp; | &nbsp;',$links).'</strong>';
 				$out.='<hr />';
 			}
-		} 
-	
-	
+		}
+
+
 			// SECTION: Showing property tree:
 		$tmpl = t3lib_div::makeInstance('ext_TSparser');
 		$tmpl->tt_track = 0;	// Do not log time-performance information
@@ -337,11 +337,11 @@ class SC_wizard_tsconfig {
 		$tmpl->ext_expandAllNotes=1;
 		$tmpl->ext_noPMicons=1;
 		$tmpl->ext_noSpecialCharsOnLabels=1;
-	
+
 		if (is_array($objTree[$mode.'.']))	{
 			$out.='
 
-		
+
 			<!--
 				TSconfig, object tree:
 			-->
@@ -351,7 +351,7 @@ class SC_wizard_tsconfig {
 					</tr>
 				</table>';
 		}
-		
+
 		return $out;
 	}
 
@@ -376,7 +376,7 @@ class SC_wizard_tsconfig {
 	function getObjTree()	{
 		$hash = md5('WIZARD_TSCONFIG-objTree');
 		$objTree=array();
-	
+
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,obj_string,title', 'static_tsconfig_help', '');
 		while($rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$rec['obj_string'] = $this->revertFromSpecialChars($rec['obj_string']);
@@ -415,7 +415,7 @@ class SC_wizard_tsconfig {
 			$objTree[$key]['_LINK']=$this->doLink($params);
 		}
 	}
-	
+
 	/**
 	 * Converts &gt; and &lt; to > and <
 	 *
@@ -427,7 +427,7 @@ class SC_wizard_tsconfig {
 		$str = str_replace('&gt;','>',$str);
 		$str = str_replace('&lt;','<',$str);
 		return $str;
-	}	
+	}
 
 	/**
 	 * Creates a link based on input params array:
@@ -483,7 +483,7 @@ class SC_wizard_tsconfig {
 	 */
 	function printTable($table,$objString,$objTree)	{
 		if (is_array($table['rows']))	{
-		
+
 				// Initialize:
 			$lines=array();
 
@@ -513,24 +513,24 @@ class SC_wizard_tsconfig {
 					$lP2[$k] = $this->linkProperty($lStr,$lStr,$objString,$row['datatype']);
 				}
 				$linkedProperties=implode('<hr />',$lP2);
-				
+
 					// Data type:
 				$dataType = $row['datatype'];
-					
+
 					// Generally "->[something]"
 				$reg=array();
 				ereg('->[[:alnum:]_]*',$dataType,$reg);
 				if ($reg[0] && is_array($objTree[$reg[0]]))	{
 					$dataType = str_replace($reg[0],'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree[$reg[0]][0]['uid'],'objString'=>$objString.'.'.$lP[0]))).'">'.htmlspecialchars($reg[0]).'</a>',$dataType);
 				}
-				
+
 					// stdWrap
 				if (!strstr($dataType,'->stdWrap') && strstr(strip_tags($dataType),'stdWrap'))	{
 						// Potential problem can be that "stdWrap" is substituted inside another A-tag. So maybe we should even check if there is already a <A>-tag present and if so, not make a substitution?
 					$dataType = str_replace('stdWrap','<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree['->stdWrap'][0]['uid'],'objString'=>$objString.'.'.$lP[0]))).'">stdWrap</a>',$dataType);
 				}
-	
-			
+
+
 				$lines[]='
 					<tr class="bgColor4">
 						<td valign="top" class="bgColor4-20"><strong>'.$linkedProperties.'</strong></td>
@@ -543,7 +543,7 @@ class SC_wizard_tsconfig {
 			return '
 
 
-		
+
 			<!--
 				TSconfig, attribute selector:
 			-->
@@ -564,14 +564,14 @@ class SC_wizard_tsconfig {
 	 */
 	function linkProperty($str,$propertyVal,$prefix,$datatype)	{
 		$out='';
-		
+
 			// Setting preset value:
 		if (strstr($datatype,'boolean'))	{
 			$propertyVal.='=1';	// add preset "=1" to boolean values.
 		} else {
 			$propertyVal.='=';	// add preset "="
 		}
-	
+
 			// Adding mixer features; The plus icon:
 		if(!$this->onlyProperty)	{
 			$aOnClick = 'document.editform.mixer.value=unescape(\'  '.rawurlencode($propertyVal).'\')+\'\n\'+document.editform.mixer.value; return false;';
@@ -580,11 +580,11 @@ class SC_wizard_tsconfig {
 					'</a>';
 			$propertyVal = $prefix.'.'.$propertyVal;
 		}
-		
+
 			// Wrap string:
 		$aOnClick = 'setValue(unescape(\''.rawurlencode($propertyVal).'\')); return false;';
 		$out.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$str.'</a>';
-		
+
 			// Return link:
 		return $out;
 	}

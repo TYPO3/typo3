@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,14 +24,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
- * Wizard to help make tables (eg. for tt_content elements) of type "table". 
+/**
+ * Wizard to help make tables (eg. for tt_content elements) of type "table".
  * Each line is a table row, each cell divided by a |
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  * XHTML compliant
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
@@ -39,25 +39,25 @@
  *
  *
  *
- *   84: class SC_wizard_table 
- *  112:     function init()	
- *  150:     function main()	
- *  166:     function printContent()	
- *  175:     function tableWizard()	
+ *   84: class SC_wizard_table
+ *  112:     function init()
+ *  150:     function main()
+ *  166:     function printContent()
+ *  175:     function tableWizard()
  *
  *              SECTION: Helper functions
- *  214:     function getConfigCode($row)	
- *  280:     function getTableHTML($cfgArr,$row)	
- *  429:     function changeFunc()	
- *  545:     function cfgArray2CfgString($cfgArr)	
- *  576:     function cfgString2CfgArray($cfgStr,$cols)	
+ *  214:     function getConfigCode($row)
+ *  280:     function getTableHTML($cfgArr,$row)
+ *  429:     function changeFunc()
+ *  545:     function cfgArray2CfgString($cfgArr)
+ *  576:     function cfgString2CfgArray($cfgStr,$cols)
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
+
 
 $BACK_PATH='';
 require ('init.php');
@@ -131,11 +131,11 @@ class SC_wizard_table {
 				document.location = URL;
 			}
 		');
-				
+
 			// Setting form tag:
 		list($rUri) = explode('#',t3lib_div::getIndpEnv('REQUEST_URI'));
 		$this->doc->form ='<form action="'.htmlspecialchars($rUri).'" method="post" name="wizardForm">';
-		
+
 			// Start page:
 		$this->content.=$this->doc->startPage('Table');
 
@@ -169,14 +169,14 @@ class SC_wizard_table {
 	function printContent()	{
 		echo $this->content;
 	}
-	
+
 	/**
 	 * Draws the table wizard content
 	 *
 	 * @return	string		HTML content for the form.
 	 */
 	function tableWizard()	{
-		
+
 			// First, check the references by selecting the record:
 		$row=t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 		if (!is_array($row))	{
@@ -187,9 +187,9 @@ class SC_wizard_table {
 			// This will get the content of the form configuration code field to us - possibly cleaned up, saved to database etc. if the form has been submitted in the meantime.
 		$tableCfgArray = $this->getConfigCode($row);
 
-			// Generation of the Table Wizards HTML code:		
+			// Generation of the Table Wizards HTML code:
 		$content = $this->getTableHTML($tableCfgArray,$row);
-		
+
 			// Return content:
 		return $content;
 	}
@@ -217,13 +217,13 @@ class SC_wizard_table {
 	function getConfigCode($row)	{
 		global $HTTP_POST_VARS;
 
-			// If some data has been submitted, then construct 
+			// If some data has been submitted, then construct
 		if (isset($this->TABLECFG['c']))	{
-			
+
 				// Process incoming:
 			$this->changeFunc();
-			
-			
+
+
 				// Convert to string (either line based or XML):
 			if ($this->xmlStorage)	{
 					// Convert the input array to XML:
@@ -238,22 +238,22 @@ class SC_wizard_table {
 					// Create cfgArr from the string based configuration - that way it is cleaned up and any incompatibilities will be removed!
 				$cfgArr = $this->cfgString2CfgArray($bodyText,$row[$this->colsFieldName]);
 			}
-						
+
 				// If a save button has been pressed, then save the new field content:
 			if ($HTTP_POST_VARS['savedok_x'] || $HTTP_POST_VARS['saveandclosedok_x'])	{
-			
+
 					// Make TCEmain object:
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				$tce->stripslashes_values=0;
-				
+
 					// Put content into the data array:
 				$data=array();
 				$data[$this->P['table']][$this->P['uid']][$this->P['field']]=$bodyText;
-	
+
 					// Perform the update:
 				$tce->start($data,array());
 				$tce->process_datamap();
-				
+
 					// If the save/close button was pressed, then redirect the screen:
 				if ($HTTP_POST_VARS['saveandclosedok_x'])	{
 					header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
@@ -268,7 +268,7 @@ class SC_wizard_table {
 			}
 			$cfgArr = is_array($cfgArr) ? $cfgArr : array();
 		}
-		
+
 		return $cfgArr;
 	}
 
@@ -291,7 +291,7 @@ class SC_wizard_table {
 					// Initialize:
 				$cells=array();
 				$a=0;
-	
+
 					// Traverse the columns:
 				foreach($cellArr as $cellContent)	{
 					if ($this->inputStyle)	{
@@ -300,16 +300,16 @@ class SC_wizard_table {
 						$cellContent=eregi_replace('<br[ ]?[\/]?>',chr(10),$cellContent);
 						$cells[]='<textarea '.$this->doc->formWidth(20).' rows="5" name="TABLE[c]['.(($k+1)*2).']['.(($a+1)*2).']">'.t3lib_div::formatForTextarea($cellContent).'</textarea>';
 					}
-					
+
 						// Increment counter:
 					$a++;
 				}
-		
+
 					// CTRL panel for a table row (move up/down/around):
 				$onClick="document.wizardForm.action+='#ANC_".(($k+1)*2-2)."';";
 				$onClick=' onclick="'.htmlspecialchars($onClick).'"';
 				$ctrl='';
-				
+
 				$brTag=$this->inputStyle?'':'<br />';
 				if ($k!=0)	{
 					$ctrl.='<input type="image" name="TABLE[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$LANG->getLL('table_up',1).'" />'.$brTag;
@@ -317,26 +317,26 @@ class SC_wizard_table {
 					$ctrl.='<input type="image" name="TABLE[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$LANG->getLL('table_bottom',1).'" />'.$brTag;
 				}
 				$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$LANG->getLL('table_removeRow',1).'" />'.$brTag;
-		
+
 				if (($k+1)!=count($tLines))	{
 					$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$LANG->getLL('table_down',1).'" />'.$brTag;
 				} else {
 					$ctrl.='<input type="image" name="TABLE[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_down.gif','').$onClick.' title="'.$LANG->getLL('table_top',1).'" />'.$brTag;
 				}
 				$ctrl.='<input type="image" name="TABLE[row_add]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').$onClick.' title="'.$LANG->getLL('table_addRow',1).'" />'.$brTag;
-		
+
 				$tRows[]='
 					<tr class="bgColor4">
 						<td class="bgColor5"><a name="ANC_'.(($k+1)*2).'"></a><span class="c-wizButtonsV">'.$ctrl.'</span></td>
 						<td>'.implode('</td>
 						<td>',$cells).'</td>
 					</tr>';
-					
+
 					// Increment counter:
 				$k++;
 			}
 		}
-	
+
 			// CTRL panel for a table column (move left/right/around/delete)
 		$cells=array();
 		$cells[]='';
@@ -344,11 +344,11 @@ class SC_wizard_table {
 		reset($cfgArr);
 		$firstRow=current($cfgArr);
 		if (is_array($firstRow))	{
-				
+
 				// Init:
 			$a=0;
 			$cols=count($firstRow);
-				
+
 				// Traverse first row:
 			foreach($firstRow as $temp)	{
 				$ctrl='';
@@ -365,7 +365,7 @@ class SC_wizard_table {
 				}
 				$ctrl.='<input type="image" name="TABLE[col_add]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').' title="'.$LANG->getLL('table_addColumn',1).'" />';
 				$cells[]='<span class="c-wizButtonsH">'.$ctrl.'</span>';
-				
+
 					// Incr. counter:
 				$a++;
 			}
@@ -375,21 +375,21 @@ class SC_wizard_table {
 					<td align="center">',$cells).'</td>
 				</tr>';
 		}
-	
+
 			// Implode all table rows into a string, wrapped in table tags.
 		$content = '
 
-		
+
 			<!--
 				Table wizard
 			-->
 			<table border="0" cellpadding="0" cellspacing="1" id="typo3-tablewizard">
 				'.implode('',$tRows).'
 			</table>';
-		
+
 			// Add saving buttons in the bottom:
 		$content.= '
-		
+
 			<!--
 				Save buttons:
 			-->
@@ -402,7 +402,7 @@ class SC_wizard_table {
 		$content.= '<input type="image" class="c-inputButton" name="_refresh"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/refresh_n.gif','').' title="'.$LANG->getLL('forms_refresh',1).'" />
 			</div>
 			';
-	
+
 			// Input type checkbox:
 		$content.= '
 
@@ -415,10 +415,10 @@ class SC_wizard_table {
 				'<input type="checkbox" name="TABLE[textFields]" value="1"'.($this->inputStyle?' checked="checked"':'').' /> '.
 				$LANG->getLL('table_smallFields').'
 			</div>
-			
+
 			<br /><br />
 			';
-		
+
 			// Return content:
 		return $content;
 	}
@@ -430,44 +430,44 @@ class SC_wizard_table {
 	 * @access private
 	 */
 	function changeFunc()	{
-		if ($this->TABLECFG['col_remove'])	{	
+		if ($this->TABLECFG['col_remove'])	{
 			$kk = key($this->TABLECFG['col_remove']);
 			$cmd='col_remove';
-		} elseif ($this->TABLECFG['col_add'])	{	
+		} elseif ($this->TABLECFG['col_add'])	{
 			$kk = key($this->TABLECFG['col_add']);
 			$cmd='col_add';
-		} elseif ($this->TABLECFG['col_start'])	{	
+		} elseif ($this->TABLECFG['col_start'])	{
 			$kk = key($this->TABLECFG['col_start']);
 			$cmd='col_start';
-		} elseif ($this->TABLECFG['col_end'])	{	
+		} elseif ($this->TABLECFG['col_end'])	{
 			$kk = key($this->TABLECFG['col_end']);
 			$cmd='col_end';
-		} elseif ($this->TABLECFG['col_left'])	{	
+		} elseif ($this->TABLECFG['col_left'])	{
 			$kk = key($this->TABLECFG['col_left']);
 			$cmd='col_left';
-		} elseif ($this->TABLECFG['col_right'])	{	
+		} elseif ($this->TABLECFG['col_right'])	{
 			$kk = key($this->TABLECFG['col_right']);
 			$cmd='col_right';
-		} elseif ($this->TABLECFG['row_remove'])	{	
+		} elseif ($this->TABLECFG['row_remove'])	{
 			$kk = key($this->TABLECFG['row_remove']);
 			$cmd='row_remove';
-		} elseif ($this->TABLECFG['row_add'])	{	
+		} elseif ($this->TABLECFG['row_add'])	{
 			$kk = key($this->TABLECFG['row_add']);
 			$cmd='row_add';
-		} elseif ($this->TABLECFG['row_top'])	{	
+		} elseif ($this->TABLECFG['row_top'])	{
 			$kk = key($this->TABLECFG['row_top']);
 			$cmd='row_top';
 		} elseif ($this->TABLECFG['row_bottom'])	{
 			$kk = key($this->TABLECFG['row_bottom']);
 			$cmd='row_bottom';
-		} elseif ($this->TABLECFG['row_up'])	{	
+		} elseif ($this->TABLECFG['row_up'])	{
 			$kk = key($this->TABLECFG['row_up']);
 			$cmd='row_up';
-		} elseif ($this->TABLECFG['row_down'])	{	
+		} elseif ($this->TABLECFG['row_down'])	{
 			$kk = key($this->TABLECFG['row_down']);
 			$cmd='row_down';
 		}
-	
+
 		if ($cmd && t3lib_div::testInt($kk)) {
 			if (substr($cmd,0,4)=='row_')	{
 				switch($cmd)	{
@@ -546,7 +546,7 @@ class SC_wizard_table {
 	 * @see cfgString2CfgArray()
 	 */
 	function cfgArray2CfgString($cfgArr)	{
-	
+
 			// Initialize:
 		$inLines=array();
 
@@ -560,14 +560,14 @@ class SC_wizard_table {
 			}
 			$inLines[]=implode('|',$thisLine);
 		}
-		
+
 			// Finally, implode the lines into a string:
 		$bodyText = implode(chr(10),$inLines);
-		
+
 			// Return the configuration code:
 		return $bodyText;
 	}
-	
+
 	/**
 	 * Converts the input configuration code string into an array
 	 *
@@ -580,26 +580,26 @@ class SC_wizard_table {
 
 			// Explode lines in the configuration code - each line is a table row.
 		$tLines=explode(chr(10),$cfgStr);
-	
+
 			// Setting number of columns
 		if (!$cols && trim($tLines[0]))	{	// auto...
 			$cols = count(explode('|',$tLines[0]));
 		}
 		$cols=$cols?$cols:4;
-	
+
 			// Traverse the number of table elements:
 		$cfgArr=array();
 		foreach($tLines as $k => $v)	{
-		
+
 				// Initialize:
 			$vParts = explode('|',$v);
 
-				// Traverse columns:			
+				// Traverse columns:
 			for ($a=0;$a<$cols;$a++)	{
 				$cfgArr[$k][$a]=$vParts[$a];
 			}
 		}
-		
+
 			// Return configuration array:
 		return $cfgArr;
 	}

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Contains class with layout/output function for TYPO3 Backend Scripts
  *
  * $Id$
@@ -36,72 +36,72 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- *  133: function fw($str)	
+ *  133: function fw($str)
  *
  *
- *  157: class template 
- *  212:     function template()	
+ *  157: class template
+ *  212:     function template()
  *
  *              SECTION: EVALUATION FUNCTIONS
  *  284:     function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='')
  *  301:     function viewPageIcon($id,$backPath,$addParams='hspace="3"')
- *  326:     function issueCommand($params,$rUrl='')	
- *  341:     function isCMlayers()	
- *  351:     function thisBlur()	
- *  361:     function helpStyle()	
+ *  326:     function issueCommand($params,$rUrl='')
+ *  341:     function isCMlayers()
+ *  351:     function thisBlur()
+ *  361:     function helpStyle()
  *  378:     function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))
  *  404:     function getFileheader($title,$path,$iconfile)
- *  419:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")	
- *  452:     function makeShortcutUrl($gvList,$setList)	
- *  473:     function formWidth($size=48,$textarea=0,$styleOverride='') 
- *  498:     function formWidthText($size=48,$styleOverride='',$wrap='') 
- *  515:     function redirectUrls($thisLocation='')	
- *  539:     function formatTime($tstamp,$type)	
- *  552:     function parseTime()	
+ *  419:     function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")
+ *  452:     function makeShortcutUrl($gvList,$setList)
+ *  473:     function formWidth($size=48,$textarea=0,$styleOverride='')
+ *  498:     function formWidthText($size=48,$styleOverride='',$wrap='')
+ *  515:     function redirectUrls($thisLocation='')
+ *  539:     function formatTime($tstamp,$type)
+ *  552:     function parseTime()
  *
  *              SECTION: PAGE BUILDING FUNCTIONS.
- *  585:     function startPage($title)	
- *  660:     function endPage()	
- *  689:     function header($text)	
- *  710:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)	
- *  734:     function divider($dist)	
- *  750:     function spacer($dist)	
- *  769:     function sectionHeader($label,$sH=FALSE,$addAttrib='')	
- *  786:     function sectionBegin()	
- *  807:     function sectionEnd()	
- *  827:     function middle()	
- *  836:     function endPageJS()	
- *  853:     function docBodyTagBegin()	
- *  863:     function docStyle()	
- *  904:     function insertStylesAndJS($content)	
- *  924:     function initCharset()	
- *  936:     function generator()	
+ *  585:     function startPage($title)
+ *  660:     function endPage()
+ *  689:     function header($text)
+ *  710:     function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)
+ *  734:     function divider($dist)
+ *  750:     function spacer($dist)
+ *  769:     function sectionHeader($label,$sH=FALSE,$addAttrib='')
+ *  786:     function sectionBegin()
+ *  807:     function sectionEnd()
+ *  827:     function middle()
+ *  836:     function endPageJS()
+ *  853:     function docBodyTagBegin()
+ *  863:     function docStyle()
+ *  904:     function insertStylesAndJS($content)
+ *  924:     function initCharset()
+ *  936:     function generator()
  *
  *              SECTION: OTHER ELEMENTS
- *  968:     function icons($type)	
- *  997:     function t3Button($onClick,$label)	
- * 1008:     function dfw($string)	
- * 1018:     function rfw($string)	
- * 1028:     function wrapInCData($string)	
- * 1045:     function wrapScriptTags($string, $linebreak=TRUE)	
- * 1082:     function table($arr)	
- * 1122:     function menuTable($arr1,$arr2=array(), $arr3=array())	
- * 1155:     function funcMenu($content,$menu)	
- * 1173:     function clearCacheMenu($id,$addSaveOptions=0)	
- * 1209:     function getContextMenuCode()	
+ *  968:     function icons($type)
+ *  997:     function t3Button($onClick,$label)
+ * 1008:     function dfw($string)
+ * 1018:     function rfw($string)
+ * 1028:     function wrapInCData($string)
+ * 1045:     function wrapScriptTags($string, $linebreak=TRUE)
+ * 1082:     function table($arr)
+ * 1122:     function menuTable($arr1,$arr2=array(), $arr3=array())
+ * 1155:     function funcMenu($content,$menu)
+ * 1173:     function clearCacheMenu($id,$addSaveOptions=0)
+ * 1209:     function getContextMenuCode()
  * 1385:     function getTabMenu($id,$elementName,$currentValue,$menuItems,$script='',$addparams='')
  *
  *
- * 1497: class bigDoc extends template 
+ * 1497: class bigDoc extends template
  *
  *
- * 1506: class noDoc extends template 
+ * 1506: class noDoc extends template
  *
  *
- * 1515: class smallDoc extends template 
+ * 1515: class smallDoc extends template
  *
  *
- * 1524: class mediumDoc extends template 
+ * 1524: class mediumDoc extends template
  *
  * TOTAL FUNCTIONS: 45
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -172,7 +172,7 @@ class template {
 	var $inDocStylesArray = array();		// Like $inDocStyles but for use as array with associative keys to prevent double inclusion of css code
 	var $form_rowsToStylewidth = 9.58;	// Multiplication factor for formWidth() input size (default is 48* this value).
 	var $form_largeComp = 1.33;		// Compensation for large documents (used in class.t3lib_tceforms.php)
-	var $endJS = 1;					// If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object. 
+	var $endJS = 1;					// If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
 
 		// TYPO3 Colorscheme.
 		// If you want to change this, please do so through a skin using the global var $TBE_STYLES
@@ -189,12 +189,12 @@ class template {
 	var $backGroundImage = '';		// Background image of page (relative to PATH_typo3)
 	var $inDocStyles_TBEstyle = '';	// Inline css styling set from TBE_STYLES array
 
-		// DEV:	
+		// DEV:
 	var $parseTimeFlag = 0;			// Will output the parsetime of the scripts in milliseconds (for admin-users). Set this to false when releasing TYPO3. Only for dev.
-	
+
 		// INTERNAL
 	var $charset = 'iso-8859-1';	// Default charset. see function initCharset()
-	
+
 	var $sectionFlag = 0;			// Internal: Indicates if a <div>-output section is open
 	var $divClass = '';				// (Default) Class for wrapping <DIV>-tag of page. Is set in class extensions.
 
@@ -217,7 +217,7 @@ class template {
 		if (TYPO3_mainDir!='typo3/' && substr($this->scriptID,0,strlen(TYPO3_mainDir)) == TYPO3_mainDir)	{
 			$this->scriptID = 'typo3/'.substr($this->scriptID,strlen(TYPO3_mainDir));	// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
 		}
-		
+
 		$this->bodyTagId = ereg_replace('[^[:alnum:]-]','-',$this->scriptID);
 
 			// Individual configuration per script? If so, make a recursive merge of the arrays:
@@ -247,18 +247,18 @@ class template {
 		if ($TBE_STYLES['background'])	$this->backGroundImage = $TBE_STYLES['background'];
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -420,20 +420,20 @@ class template {
 		$backPath=$this->backPath;
 		$storeUrl=$this->makeShortcutUrl($gvList,$setList);
 		$pathInfo = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
-		
+
 		if (!strcmp($motherModName,'1'))	{
 			$mMN="&motherModName='+top.currentModuleLoaded+'";
 		} elseif ($motherModName)	{
 			$mMN='&motherModName='.rawurlencode($motherModName);
 		} else $mMN="";
-		
+
 		$onClick = 'if (top.shortcutFrame && confirm('.
 					$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut')).
 					')){top.shortcutFrame.document.location=\''.$backPath.'alt_shortcut.php?modName='.rawurlencode($modName).
 					'&URL='.rawurlencode($pathInfo['path']."?".$storeUrl).
 					$mMN.
 					'\';}return false;';
-			
+
 		$sIcon = '<a href="#" onclick="'.htmlspecialchars($onClick).'">
 				<img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut',1).'" alt="" /></a>';
 		return $sIcon;
@@ -520,7 +520,7 @@ class template {
 			'cmd' => '',
 			'popViewId'=>''
 		));
-		
+
 		$out ="
 	var T3_RETURN_URL = '".str_replace('%20','',rawurlencode(t3lib_div::_GP('returnUrl')))."';
 	var T3_THIS_LOCATION = '".str_replace('%20','',rawurlencode($thisLocation))."';
@@ -538,8 +538,8 @@ class template {
 	 */
 	function formatTime($tstamp,$type)	{
 		switch($type)	{
-			case 1: return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp); break;	
-			case 10: return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp); break;		
+			case 1: return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp); break;
+			case 10: return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp); break;
 		}
 	}
 
@@ -559,8 +559,8 @@ class template {
 
 
 
-	
-	
+
+
 
 
 
@@ -586,24 +586,24 @@ class template {
 			// Get META tag containing the currently selected charset for backend output. The function sets $this->charSet.
 		$charSet = $this->initCharset();
 		$generator = $this->generator();
-		
+
 			// For debugging: If this outputs "QuirksMode"/"BackCompat" (IE) the browser runs in quirks-mode. Otherwise the value is "CSS1Compat"
 #		$this->JScodeArray[]='alert(document.compatMode);';
-		
+
 			// Send HTTP header for selected charset. Added by Robert Lemke 23.10.2003
 		header ('Content-Type:text/html;charset='.$this->charset);
 
 		switch($this->docType)	{
 			case 'xhtml_strict':
-				$headerStart= '<!DOCTYPE html 
-	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+				$headerStart= '<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <?xml version="1.0" encoding="'.$this->charset.'"?>
 <?xml-stylesheet href="#internalStyle" type="text/css"?>
 ';
 			break;
 			case 'xhtml_trans':
-				$headerStart= '<!DOCTYPE html 
+				$headerStart= '<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?xml version="1.0" encoding="'.$this->charset.'"?>
@@ -611,7 +611,7 @@ class template {
 ';
 			break;
 			case 'xhtml_frames':
-				$headerStart= '<!DOCTYPE html 
+				$headerStart= '<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 <?xml version="1.0" encoding="'.$this->charset.'"?>
@@ -621,7 +621,7 @@ class template {
 				$headerStart='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
 			break;
 		}
-		
+
 			// Construct page header.
 		$str = $headerStart.'
 <html>
@@ -641,13 +641,13 @@ class template {
 
 		if ($this->docType=='xhtml_frames')	{
 			return $str;
-		} else 
+		} else
 $str.=$this->docBodyTagBegin().
 ($this->divClass?'
 
 <!-- Wrapping DIV-section for whole page BEGIN -->
 <div class="'.$this->divClass.'">
-':'').trim($this->form);	
+':'').trim($this->form);
 		return $str;
 	}
 
@@ -694,7 +694,7 @@ $str.=$this->docBodyTagBegin().
 ';
 		return $this->sectionEnd().$str;
 	}
-	
+
 	/**
 	 * Begins an output section and sets header and content
 	 *
@@ -709,7 +709,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)	{
 		$str='';
-		
+
 			// Setting header
 		if ($label)	{
 			if (!$allowHTMLinHeader)	$label = htmlspecialchars($label);
@@ -720,7 +720,7 @@ $str.=$this->docBodyTagBegin().
 
 	<!-- Section content -->
 '.$text;
-		
+
 		return $this->sectionBegin().$str;
 	}
 
@@ -789,14 +789,14 @@ $str.=$this->docBodyTagBegin().
 			$str='
 
 	<!-- ***********************
-	      Begin output section. 
+	      Begin output section.
 	     *********************** -->
 	<div>
 ';
 			return $str;
 		} else return '';
 	}
-	
+
 	/**
 	 * Ends and output section
 	 * Returns the </div>-end tag AND clears the ->sectionFlag (but does so only IF the sectionFlag is set - that is a section is 'open')
@@ -810,12 +810,12 @@ $str.=$this->docBodyTagBegin().
 			return '
 	</div>
 	<!-- *********************
-	      End output section. 
+	      End output section.
 	     ********************* -->
 ';
 		} else return '';
 	}
-	
+
 	/**
 	 * Originally it printed a kind of divider.
 	 * Depreciated. Just remove function calls to it or call the divider() function instead.
@@ -861,16 +861,16 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		HTML style section/link tags
 	 */
 	function docStyle()	{
-	
+
 			// Request background image:
 		if ($this->backGroundImage)	{
 			$this->inDocStylesArray[]=' BODY { background-image: url('.$this->backPath.$this->backGroundImage.'); }';
 		}
 
-			// Add inDoc styles variables as well:		
+			// Add inDoc styles variables as well:
 		$this->inDocStylesArray[] = $this->inDocStyles;
 		$this->inDocStylesArray[] = $this->inDocStyles_TBEstyle;
-		
+
 			// Implode it all:
 		$inDocStyles = implode('
 					',$this->inDocStylesArray);
@@ -984,7 +984,7 @@ $str.=$this->docBodyTagBegin().
 		}
 		if ($icon)	{
 			return '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' class="absmiddle" alt="" />';
-		} 
+		}
 	}
 
 	/**
@@ -1032,7 +1032,7 @@ $str.=$this->docBodyTagBegin().
 
 		return $string;
 	}
-	
+
 	/**
 	 * Wraps the input string in script tags.
 	 * Automatic re-identing of the JS code is done by using the first line as ident reference.
@@ -1062,7 +1062,7 @@ $str.=$this->docBodyTagBegin().
 		return trim($string);
 	}
 
-		// These vars defines the layout for the table produced by the table() function. 
+		// These vars defines the layout for the table produced by the table() function.
 		// You can override these values from outside if you like.
 	var $tableLayout = Array (
 		'defRow' => Array (
@@ -1108,7 +1108,7 @@ $str.=$this->docBodyTagBegin().
 			$code=$tableWrap[0].$code.$tableWrap[1];
 		}
 		return $code;
-	}	
+	}
 
 	/**
 	 * Constructs a table with content from the $arr1, $arr2 and $arr3.
@@ -1121,7 +1121,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function menuTable($arr1,$arr2=array(), $arr3=array())	{
 		$rows = max(array(count($arr1),count($arr2),count($arr3)));
-		
+
 		$menu='
 		<table border="0" cellpadding="0" cellspacing="0" id="typo3-tablemenu">';
 		for($a=0;$a<$rows;$a++)	{
@@ -1200,7 +1200,7 @@ $str.=$this->docBodyTagBegin().
 			return $af_content;
 		}
 	}
-	
+
 	/**
 	 * Returns an array with parts (JavaScript, init-functions, <div>-layers) for use on pages which displays the clickmenu layers (context sensitive menus)
 	 *
@@ -1223,7 +1223,7 @@ $str.=$this->docBodyTagBegin().
 				var GLV_yRel=0;
 				var layerObj=new Array();
 				var layerObjCss=new Array();
-				
+
 					//browsercheck...
 				function GL_checkBrowser(){	//
 					this.dom= (document.getElementById);
@@ -1238,14 +1238,14 @@ $str.=$this->docBodyTagBegin().
 					this.bw=  (this.ie4 || this.ie5 || this.ns4 || this.ns6 || this.op || this.konq);
 					return this;
 				}
-				bw= new GL_checkBrowser();	
-				
+				bw= new GL_checkBrowser();
+
 					// GL_getObj(obj)
 				function GL_getObj(obj){	//
 					nest="";
-					this.el= (bw.ie4||bw.op7)?document.all[obj]:bw.ns4?eval(nest+"document."+obj):document.getElementById(obj);	
+					this.el= (bw.ie4||bw.op7)?document.all[obj]:bw.ns4?eval(nest+"document."+obj):document.getElementById(obj);
 				   	this.css= bw.ns4?this.el:this.el.style;
-					this.ref= bw.ns4?this.el.document:document;		
+					this.ref= bw.ns4?this.el.document:document;
 					this.x= (bw.ns4||bw.op)?this.css.left:this.el.offsetLeft;
 					this.y= (bw.ns4||bw.op)?this.css.top:this.el.offsetTop;
 					this.height= (bw.ie4||bw.ie5||bw.ns6||this.konq||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op?this.css.pixelHeight:0;
@@ -1262,7 +1262,7 @@ $str.=$this->docBodyTagBegin().
 //						GLV_x= (bw.ns4||bw.ns5)?event.pageX:(bw.ie4||bw.op)?event.clientX:(event.clientX-2)+document.body.scrollLeft;
 //						GLV_y= (bw.ns4||bw.ns5)?event.pageY:(bw.ie4||bw.op)?event.clientY:(event.clientY-2)+document.body.scrollTop;
 							// 17/12 2003: When documents run in XHTML standard compliance mode, the old scrollLeft/Top properties of document.body is gone - and for Opera/MSIE we have to use document.documentElement:
-						
+
 						GLV_xRel = event.clientX-2;
 						GLV_yRel = event.clientY-2;
 						GLV_x = GLV_xRel + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
@@ -1287,22 +1287,22 @@ $str.=$this->docBodyTagBegin().
 				function setLayerObj(html,level)	{	//
 					var tempLayerObj = GL_getObj("contentMenu"+level);
 					var tempLayerObjCss = GL_getObjCss("contentMenu"+level);
-	
+
 					if (tempLayerObj && (level==0 || GLV_isVisible[level-1]))	{
 						tempLayerObj.el.innerHTML = html;
 						tempLayerObj.width= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetWidth:bw.ns4?this.ref.width:bw.op?this.css.pixelWidth:0;
 						tempLayerObj.height= (bw.ie4||bw.ie5||bw.ns6||bw.konq||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op?this.css.pixelHeight:0;
-						
+
 							// Adjusting the Y-height of the layer to fit it into the window frame if it goes under the window frame in the bottom:
 						tempLayerObj.winHeight = document.documentElement.clientHeight && !bw.op7 ? document.documentElement.clientHeight : document.body.clientHeight;
-						if (tempLayerObj.winHeight-tempLayerObj.height < GLV_yRel)	{ 
+						if (tempLayerObj.winHeight-tempLayerObj.height < GLV_yRel)	{
 							if (GLV_yRel < tempLayerObj.height) {
 								GLV_y+= (tempLayerObj.winHeight-tempLayerObj.height-GLV_yRel); 		// Setting it so bottom is just above window height.
 							} else {
 								GLV_y-= tempLayerObj.height-8; 		// Showing the menu upwards
 							}
 						}
-						
+
 						GLV_curLayerX[level] = GLV_x;
 						GLV_curLayerY[level] = GLV_y;
 						tempLayerObjCss.left = GLV_x+"px";
@@ -1326,13 +1326,13 @@ $str.=$this->docBodyTagBegin().
 					GL_getObjCss("contentMenu"+level).visibility = "hidden";
 					GL_getObj("contentMenu"+level).el.innerHTML = "";
 					GLV_isVisible[level]=0;
-					
+
 					if (bw.ie5 && level==0)	showHideSelectorBoxes("visible");
 				}
 					// debugObj(obj,name)
 				function debugObj(obj,name)	{	//
 					var acc;
-					for (i in obj) {if (obj[i])	{acc+=i+":  "+obj[i]+"\n";}}			  
+					for (i in obj) {if (obj[i])	{acc+=i+":  "+obj[i]+"\n";}}
 					alert("Object: "+name+"\n\n"+acc);
 				}
 					// initLayer()
@@ -1350,10 +1350,10 @@ $str.=$this->docBodyTagBegin().
 								document.forms[i].elements[j].style.visibility=action;
 							}
 						}
-					}					
+					}
 				}
 			/*]]>*/
-			</script>		
+			</script>
 			';
 			return array(
 				$content,

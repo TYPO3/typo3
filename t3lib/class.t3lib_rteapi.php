@@ -34,15 +34,15 @@
  *
  *
  *
- *   64: class t3lib_rteapi 
+ *   64: class t3lib_rteapi
  *
  *              SECTION: Main API functions;
- *   93:     function isAvailable()	
- *  118:     function drawRTE(&$pObj,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue)	
- *  151:     function transformContent($dirRTE,$value,$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$pid)	
+ *   93:     function isAvailable()
+ *  118:     function drawRTE(&$pObj,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue)
+ *  151:     function transformContent($dirRTE,$value,$table,$field,$row,$specConf,$thisConfig,$RTErelPath,$pid)
  *
  *              SECTION: Helper functions
- *  196:     function triggerField($fieldName)	
+ *  197:     function triggerField($fieldName)
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")

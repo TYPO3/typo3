@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Include file extending t3lib_recordList
  * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
  *
@@ -39,24 +39,24 @@
  *
  *
  *
- *   84: class recordList extends t3lib_recordList 
- *  140:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	
- *  186:     function generateList()	
- *  233:     function getSearchBox($formFields=1)	
- *  276:     function showSysNotesForPage()	
+ *   84: class recordList extends t3lib_recordList
+ *  140:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)
+ *  186:     function generateList()
+ *  233:     function getSearchBox($formFields=1)
+ *  276:     function showSysNotesForPage()
  *
  *              SECTION: Various helper functions
- *  353:     function setDispFields()	
- *  378:     function thumbCode($row,$table,$field)	
- *  391:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')	
- *  433:     function setTotalItems($queryParts)	
- *  449:     function makeSearchString($table)	
- *  488:     function linkWrapTable($table,$code)	
- *  505:     function linkWrapItems($table,$uid,$code,$row)	
- *  532:     function listURL($altId='',$table=-1,$exclList='')	
- *  551:     function requestUri()	
- *  562:     function makeFieldList($table,$dontCheckUser=0)	
- *  601:     function getTreeObject($id,$depth,$perms_clause)	
+ *  353:     function setDispFields()
+ *  378:     function thumbCode($row,$table,$field)
+ *  391:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')
+ *  433:     function setTotalItems($queryParts)
+ *  449:     function makeSearchString($table)
+ *  488:     function linkWrapTable($table,$code)
+ *  505:     function linkWrapItems($table,$uid,$code,$row)
+ *  532:     function listURL($altId='',$table=-1,$exclList='')
+ *  551:     function requestUri()
+ *  562:     function makeFieldList($table,$dontCheckUser=0)
+ *  601:     function getTreeObject($id,$depth,$perms_clause)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,11 +64,11 @@
  */
 
 
- 
- 
- 
- 
- 
+
+
+
+
+
 
 
 
@@ -85,21 +85,21 @@ class recordList extends t3lib_recordList {
 
 		// External, static:
 	var $tableList='';						// Specify a list of tables which are the only ones allowed to be displayed.
-	var $returnUrl='';						// Return URL 
+	var $returnUrl='';						// Return URL
 	var $thumbs = 0;						// Boolean. Thumbnails on records containing files (pictures)
 	var $itemsLimitPerTable = 20;			// default Max items shown per table in "multi-table mode", may be overridden by tables.php
 	var $itemsLimitSingleTable = 100;		// default Max items shown per table in "single-table mode", may be overridden by tables.php
 	var $widthGif = '<img src="clear.gif" width="1" height="4" hspace="160" alt="" />';
 	var $script = 'db_list.php';			// Current script name
 	var $allFields=0;						// Indicates if all available fields for a user should be selected or not.
-	
+
 		// Internal, static: GPvar:
 	var $csvOutput=FALSE;			// If set, csvList is outputted.
 	var $sortField;					// Field, to sort list by
 	var $sortRev;					// Field, indicating to sort in reverse order.
 	var $displayFields;				// Array, containing which fields to display in extended mode
 	var $duplicateField;			// String, can contain the field name from a table which must have duplicate values marked.
-	
+
 		// Internal, static:
 	var $id;						// Page id
 	var $table='';					// Tablename if single-table mode
@@ -113,7 +113,7 @@ class recordList extends t3lib_recordList {
 
 		// Internal, dynamic:
 	var $JScode = '';				// JavaScript code accumulation
-	var $HTMLcode = '';				// HTML output 
+	var $HTMLcode = '';				// HTML output
 	var $iLimit=0;					// "LIMIT " in SQL...
 	var $eCounter=0;				// Counting the elements no matter what...
 	var $totalItems='';				// Set to the total number of items for a table when selecting.
@@ -121,7 +121,7 @@ class recordList extends t3lib_recordList {
 	var $setFields=array();			// Fields to display for the current table
 	var $currentTable = array();	// Used for tracking next/prev uids
 	var $duplicateStack=array();	// Used for tracking duplicate values of fields
-	
+
 
 
 
@@ -139,32 +139,32 @@ class recordList extends t3lib_recordList {
 	 */
 	function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	{
 		global $TCA;
-		
-			// Setting internal variables:			
+
+			// Setting internal variables:
 		$this->id=intval($id);					// sets the parent id
 		if ($TCA[$table])	$this->table=$table;		// Setting single table mode, if table exists:
 		$this->firstElementNumber=$pointer;
 		$this->searchString=trim($search);
 		$this->searchLevels=trim($levels);
 		$this->showLimit=t3lib_div::intInRange($showLimit,0,10000);
-		
+
 			// Setting GPvars:
 		$this->csvOutput = t3lib_div::_GP('csv') ? TRUE : FALSE;
 		$this->sortField = t3lib_div::_GP('sortField');
 		$this->sortRev = t3lib_div::_GP('sortRev');
 		$this->displayFields = t3lib_div::_GP('displayFields');
 		$this->duplicateField = t3lib_div::_GP('duplicateField');
-		
+
 			// If thumbnails are disabled, set the "notfound" icon as default:
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
 			$this->thumbScript='gfx/notfound_thumb.gif';
 		}
 
 			// Init dynamic vars:
-		$this->counter=0;	
+		$this->counter=0;
 		$this->JScode='';
 		$this->HTMLcode='';
-		
+
 			// Set select levels:
 		$sL=intval($this->searchLevels);
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -189,10 +189,10 @@ class recordList extends t3lib_recordList {
 			// Traverse the TCA table array:
 		reset($TCA);
 		while (list($tableName)=each($TCA))	{
-			
+
 				// Checking if the table should be rendered:
 			if ((!$this->table || $tableName==$this->table) && (!$this->tableList || t3lib_div::inList($this->tableList,$tableName)) && $GLOBALS['BE_USER']->check('tables_select',$tableName))	{		// Checks that we see only permitted/requested tables:
-		
+
 					// Load full table definitions:
 				t3lib_div::loadTCA($tableName);
 
@@ -217,7 +217,7 @@ class recordList extends t3lib_recordList {
 				} else {
 					$fields = array();
 				}
-				
+
 					// Finally, render the list:
 				$this->HTMLcode.=$this->getTable($tableName, $this->id,implode(',',$fields));
 			}
@@ -231,7 +231,7 @@ class recordList extends t3lib_recordList {
 	 * @return	string		HTML for the search box
 	 */
 	function getSearchBox($formFields=1)	{
-		
+
 			// Setting form-elements, if applicable:
 		$formElements=array('','');
 		if ($formFields)	{
@@ -245,11 +245,11 @@ class recordList extends t3lib_recordList {
 			$opt[] = '<option value="'.$kv.'"'.($kv==intval($this->searchLevels)?' selected="selected"':'').'>'.htmlspecialchars($label).'</option>';
 		}
 		$lMenu = '<select name="search_levels">'.implode('',$opt).'</select>';
-		
+
 			// Table with the search box:
 		$content.= '
 			'.$formElements[0].'
-			
+
 				<!--
 					Search box:
 				-->
@@ -262,7 +262,7 @@ class recordList extends t3lib_recordList {
 					<tr>
 						<td colspan="3">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showRecords',1).':<input type="text" name="showLimit" value="'.htmlspecialchars($this->showLimit?$this->showLimit:'').'"'.$GLOBALS['SOBE']->doc->formWidth(4).' /></td>
 					</tr>
-				</table>			
+				</table>
 			'.$formElements[1];
 		return $content;
 	}
@@ -275,7 +275,7 @@ class recordList extends t3lib_recordList {
 	 */
 	function showSysNotesForPage()	{
 		global $TCA;
-		
+
 		$out='';
 
 			// Checking if extension is loaded:
@@ -283,27 +283,27 @@ class recordList extends t3lib_recordList {
 
 			// Create query for selecting the notes:
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','sys_note','pid IN ('.$this->id.') AND (!personal OR cruser="'.intval($GLOBALS['BE_USER']->user['uid']).'")'.t3lib_BEfunc::deleteClause('sys_note'));
-		
+
 			// Executing query:
 		$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
-		
+
 			// If some notes were found, render them:
 		if ($dbCount)	{
 			$cat = array();
-			
+
 				// Load full table description:
 			t3lib_div::loadTCA('sys_note');
-			
+
 				// Traverse note-types and get labels:
 			if ($TCA['sys_note'] && $TCA['sys_note']['columns']['category'] && is_array($TCA['sys_note']['columns']['category']['config']['items']))	{
 				foreach($TCA['sys_note']['columns']['category']['config']['items'] as $el)	{
 					$cat[$el[1]]=$GLOBALS['LANG']->sL($el[0]);
 				}
 			}
-			
+
 				// For each note found, make rendering:
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
-			
+
 					// Create content:
 				$iconImg = t3lib_iconWorks::getIconImage('sys_note',$row,$this->backPath,'');
 				$subject = htmlspecialchars($row['subject']);
@@ -311,11 +311,11 @@ class recordList extends t3lib_recordList {
 				$fields['Author:'] = htmlspecialchars($row['author'].($row['email'] && $row['author'] ? ', ':'').$row['email']);
 				$fields['Category:'] = htmlspecialchars($cat[$row['category']]);
 				$fields['Note:'] = nl2br(htmlspecialchars($row['message']));
-				
+
 					// Compile content:
 				$out.='
 
-			
+
 				<!--
 					Sys-notes for the db_list.php:
 				-->
@@ -362,7 +362,7 @@ class recordList extends t3lib_recordList {
 			$dispFields[$tKey]=$this->displayFields[$tKey];
 			$GLOBALS['BE_USER']->pushModuleData('db_list.php/displayFields',$dispFields);
 		}
-			
+
 			// Setting result:
 		$this->setFields=$dispFields;
 	}
@@ -399,13 +399,13 @@ class recordList extends t3lib_recordList {
 				if ($this->sortRev)	$orderBy.=' DESC';
 			}
 		}
-		
+
 			// Set LIMIT:
 		$limit = $this->iLimit ? ($this->firstElementNumber ? $this->firstElementNumber.',' : '').($this->iLimit+1) : '';
-		
+
 			// Filtering on displayable pages (permissions):
 		$pC = ($table=='pages' && $this->perms_clause)?' AND '.$this->perms_clause:'';
-		
+
 			// Adding search constraints:
 		$search = $this->makeSearchString($table);
 
@@ -432,14 +432,14 @@ class recordList extends t3lib_recordList {
 	 */
 	function setTotalItems($queryParts)	{
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'count(*)', 
-					$queryParts['FROM'], 
+					'count(*)',
+					$queryParts['FROM'],
 					$queryParts['WHERE']
 				);
 		list($rCount) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result);
 		$this->totalItems = $rCount;
 	}
-	
+
 	/**
 	 * Creates part of query for searching after a word ($this->searchString) fields in input table
 	 *
@@ -448,10 +448,10 @@ class recordList extends t3lib_recordList {
 	 */
 	function makeSearchString($table)	{
 		global $TCA;
-		
+
 			// Make query, only if table is valid and a search string is actually defined:
 		if ($TCA[$table] && $this->searchString)	{
-		
+
 				// Loading full table description - we need to traverse fields:
 			t3lib_div::loadTCA($table);
 
@@ -465,12 +465,12 @@ class recordList extends t3lib_recordList {
 					$sfields[]=$fieldName;
 				}
 			}
-			
+
 				// If search-fields were defined (and there always are) we create the query:
 			if (count($sfields))	{
 				$like=' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table).'%"';		// Free-text searching...
 				$queryPart = ' AND ('.implode($like.' OR ',$sfields).$like.')';
-				
+
 					// Return query:
 				return $queryPart;
 			}
@@ -510,7 +510,7 @@ class recordList extends t3lib_recordList {
 		} else {
 			$code=htmlspecialchars(t3lib_div::fixed_lgd($code,$this->fixedL));
 		}
-		
+
 			// Output the label now:
 		if ($table=='pages')	{
 			return '<a href="'.htmlspecialchars($this->listURL($uid,'')).'">'.$code.'</a>';
@@ -561,22 +561,22 @@ class recordList extends t3lib_recordList {
 	 */
 	function makeFieldList($table,$dontCheckUser=0)	{
 		global $TCA,$BE_USER;
-		
+
 			// Init fieldlist array:
 		$fieldListArr = array();
 
-			// Check table:		
+			// Check table:
 		if (is_array($TCA[$table]))	{
 			t3lib_div::loadTCA($table);
 
 				// Traverse configured columns and add them to field array, if available for user.
 			foreach($TCA[$table]['columns'] as $fN => $fieldValue)	{
-				if ($dontCheckUser || 
+				if ($dontCheckUser ||
 					((!$fieldValue['exclude'] || $BE_USER->check('non_exclude_fields',$table.':'.$fN)) && $fieldValue['config']['type']!='passthrough'))	{
 					$fieldListArr[]=$fN;
 				}
 			}
-			
+
 				// Add special fields:
 			if ($dontCheckUser || $BE_USER->isAdmin())	{
 				$fieldListArr[]='uid';

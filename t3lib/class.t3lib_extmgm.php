@@ -1,7 +1,7 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
@@ -37,69 +37,69 @@
  *
  *
  *
- *  113: class t3lib_extMgm 
+ *  113: class t3lib_extMgm
  *
  *              SECTION: PATHS and other evaluation
- *  129:     function isLoaded($key,$exitOnError=0)	
- *  144:     function extPath($key,$script='')	
- *  158:     function extRelPath($key)	
- *  172:     function siteRelPath($key)	
- *  183:     function getCN($key)	
+ *  129:     function isLoaded($key,$exitOnError=0)
+ *  144:     function extPath($key,$script='')
+ *  158:     function extRelPath($key)
+ *  172:     function siteRelPath($key)
+ *  183:     function getCN($key)
  *
  *              SECTION: Adding BACKEND features
- *  215:     function addTCAcolumns($table,$columnArray,$addTofeInterface=0)	
- *  238:     function addToAllTCAtypes($table,$str,$specificTypesList='',$beforeList='')	
- *  289:     function allowTableOnStandardPages($table)	
- *  305:     function addModule($main,$sub='',$position='',$path='')	
- *  366:     function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function')	
- *  383:     function addPageTSConfig($content)	
- *  396:     function addUserTSConfig($content)	
- *  410:     function addLLrefForTCAdescr($tca_descr_key,$file_ref)	
+ *  215:     function addTCAcolumns($table,$columnArray,$addTofeInterface=0)
+ *  238:     function addToAllTCAtypes($table,$str,$specificTypesList='',$beforeList='')
+ *  289:     function allowTableOnStandardPages($table)
+ *  305:     function addModule($main,$sub='',$position='',$path='')
+ *  366:     function insertModuleFunction($modname,$className,$classPath,$title,$MM_key='function')
+ *  383:     function addPageTSConfig($content)
+ *  396:     function addUserTSConfig($content)
+ *  410:     function addLLrefForTCAdescr($tca_descr_key,$file_ref)
  *
  *              SECTION: Adding SERVICES features
- *  452:     function addService($extKey, $serviceType, $serviceKey, $info)	
- *  517:     function findService($serviceType, $serviceSubType='', $excludeServiceKeys='') 
- *  584:     function deactivateService($serviceType, $serviceKey) 
+ *  452:     function addService($extKey, $serviceType, $serviceKey, $info)
+ *  517:     function findService($serviceType, $serviceSubType='', $excludeServiceKeys='')
+ *  584:     function deactivateService($serviceType, $serviceKey)
  *
  *              SECTION: Adding FRONTEND features
- *  623:     function addPlugin($itemArray,$type='list_type')	
- *  647:     function addPiFlexFormValue($piKeyToMatch,$value)	
- *  666:     function addToInsertRecords($table,$content_table='tt_content',$content_field='records')	
- *  696:     function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)	
- *  770:     function addStaticFile($extKey,$path,$title)	
- *  788:     function addTypoScriptSetup($content)	
- *  801:     function addTypoScriptConstants($content)	
- *  817:     function addTypoScript($key,$type,$content,$afterStaticUid=0)	
+ *  623:     function addPlugin($itemArray,$type='list_type')
+ *  647:     function addPiFlexFormValue($piKeyToMatch,$value)
+ *  666:     function addToInsertRecords($table,$content_table='tt_content',$content_field='records')
+ *  696:     function addPItoST43($key,$classFile='',$prefix='',$type='list_type',$cached=0)
+ *  770:     function addStaticFile($extKey,$path,$title)
+ *  788:     function addTypoScriptSetup($content)
+ *  801:     function addTypoScriptConstants($content)
+ *  817:     function addTypoScript($key,$type,$content,$afterStaticUid=0)
  *
  *              SECTION: INTERNAL EXTENSION MANAGEMENT:
- *  879:     function typo3_loadExtensions()	
- *  958:     function _makeIncludeHeader($key,$file)	
- *  978:     function isCacheFilesAvailable($cacheFilePrefix)	
- *  990:     function isLocalconfWritable()	
- * 1002:     function cannotCacheFilesWritable($cacheFilePrefix)	
- * 1025:     function currentCacheFiles()	
- * 1047:     function writeCacheFiles($extensions,$cacheFilePrefix)	
+ *  879:     function typo3_loadExtensions()
+ *  958:     function _makeIncludeHeader($key,$file)
+ *  978:     function isCacheFilesAvailable($cacheFilePrefix)
+ *  990:     function isLocalconfWritable()
+ * 1002:     function cannotCacheFilesWritable($cacheFilePrefix)
+ * 1025:     function currentCacheFiles()
+ * 1047:     function writeCacheFiles($extensions,$cacheFilePrefix)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Extension Management functions
  *
@@ -118,7 +118,7 @@ class t3lib_extMgm {
 	 *	 PATHS and other evaluation
 	 *
 	 ***************************************/
-	
+
 	/**
 	 * Returns true if the extension with extension key $key is loaded.
 	 *
@@ -184,22 +184,22 @@ class t3lib_extMgm {
 		return substr($key,0,5)=='user_' ? 'user_'.str_replace('_','',substr($key,5)) : 'tx_'.str_replace('_','',$key);
 	}
 
-	
-	
 
 
 
-	
-	
-	
-	
+
+
+
+
+
+
 	/**************************************
 	 *
-	 *	 Adding BACKEND features 
+	 *	 Adding BACKEND features
 	 *	 (related to core features)
 	 *
 	 ***************************************/
-	
+
 	/**
 	 * Adding fields to an existing table definition in $TCA
 	 * Adds an array with $TCA column-configuration to the $TCA-entry for that table.
@@ -214,7 +214,7 @@ class t3lib_extMgm {
 	 */
 	function addTCAcolumns($table,$columnArray,$addTofeInterface=0)	{
 		global $TCA;
-		t3lib_div::loadTCA($table);	
+		t3lib_div::loadTCA($table);
 		if (is_array($columnArray) && is_array($TCA[$table]) && is_array($TCA[$table]['columns']))	{
 			$TCA[$table]['columns'] = array_merge($TCA[$table]['columns'],$columnArray);	// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
 			if ($addTofeInterface)	$TCA[$table]['feInterface']['fe_admin_fieldList'].=','.implode(',',array_keys($columnArray));
@@ -241,7 +241,7 @@ class t3lib_extMgm {
 		$beforeFields=t3lib_div::trimExplode(',',$beforeList,1);
 		$before=count($beforeFields);
 
-		t3lib_div::loadTCA($table);	
+		t3lib_div::loadTCA($table);
 		if (trim($str) && is_array($TCA[$table]) && is_array($TCA[$table]['types']))	{
 			foreach($TCA[$table]['types'] as $k => $v)	{
 				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
@@ -288,7 +288,7 @@ class t3lib_extMgm {
 	 */
 	function allowTableOnStandardPages($table)	{
 		global $PAGES_TYPES;
-		
+
 		$PAGES_TYPES['default']['allowedTables'].=','.$table;
 	}
 
@@ -304,10 +304,10 @@ class t3lib_extMgm {
 	 */
 	function addModule($main,$sub='',$position='',$path='')	{
 		global $TBE_MODULES;
-		
+
 		if (isset($TBE_MODULES[$main]) && $sub)	{	// If there is already a main module by this name:
 
-				// Adding the submodule to the correct position:	
+				// Adding the submodule to the correct position:
 			list($place,$modRef)=t3lib_div::trimExplode(':',$position,1);
 			$mods = t3lib_div::trimExplode(',',$TBE_MODULES[$main],1);
 			if (!in_array($sub,$mods))	{
@@ -343,7 +343,7 @@ class t3lib_extMgm {
 			$TBE_MODULES[$main]=$sub;
 		}
 
-			// Adding path:			
+			// Adding path:
 		if ($path)	{
 			$TBE_MODULES['_PATHS'][$main.($sub?'_'.$sub:'')]=$path;
 		}
@@ -420,9 +420,9 @@ class t3lib_extMgm {
 		}
 	}
 
-	
-	
-	
+
+
+
 
 
 
@@ -591,23 +591,23 @@ class t3lib_extMgm {
 
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 
 	/**************************************
 	 *
-	 *	 Adding FRONTEND features 
+	 *	 Adding FRONTEND features
 	 *	 (related specifically to "cms" extension)
 	 *
 	 ***************************************/
-	
+
 	/**
 	 * Adds an entry to the list of plugins in content elements of type "Insert plugin"
 	 *
@@ -697,22 +697,22 @@ class t3lib_extMgm {
 		global $TYPO3_LOADED_EXT;
 		$classFile = $classFile ? $classFile : 'pi/class.tx_'.str_replace('_','',$key).$prefix.'.php';
 		$cN = t3lib_extMgm::getCN($key);
-		
+
 			// General plugin:
 		if ($cached)	{
 			$pluginContent = trim('
 includeLibs.'.$cN.$prefix.' = '.$TYPO3_LOADED_EXT[$key]['siteRelPath'].$classFile.'
 plugin.'.$cN.$prefix.' = USER
-plugin.'.$cN.$prefix.' { 
+plugin.'.$cN.$prefix.' {
   userFunc = '.$cN.$prefix.'->main
-}');	
+}');
 		} else {
 			$pluginContent = trim('
 plugin.'.$cN.$prefix.' = USER_INT
-plugin.'.$cN.$prefix.' { 
+plugin.'.$cN.$prefix.' {
   includeLibs = '.$TYPO3_LOADED_EXT[$key]['siteRelPath'].$classFile.'
   userFunc = '.$cN.$prefix.'->main
-}');	
+}');
 		}
 		t3lib_extMgm::addTypoScript($key,'setup','
 # Setting '.$key.' plugin TypoScript
@@ -732,7 +732,7 @@ plugin.'.$cN.$prefix.' {
 			case 'CType':
 				$addLine = trim('
 tt_content.'.$key.$prefix.' = COA
-tt_content.'.$key.$prefix.' { 
+tt_content.'.$key.$prefix.' {
 	10 = < lib.stdheader
 	20 = < plugin.'.$cN.$prefix.'
 }
@@ -816,7 +816,7 @@ tt_content.'.$key.$prefix.' {
 	 */
 	function addTypoScript($key,$type,$content,$afterStaticUid=0)	{
 		global $TYPO3_CONF_VARS;
-		
+
 		if ($type=='setup' || $type=='editorcfg' || $type=='constants')		{
 			$content = '
 
@@ -844,7 +844,7 @@ tt_content.'.$key.$prefix.' {
 
 
 
-	
+
 
 
 
@@ -859,7 +859,7 @@ tt_content.'.$key.$prefix.' {
 	 *	 INTERNAL EXTENSION MANAGEMENT:
 	 *
 	 ***************************************/
-	
+
 	/**
 	 * Loading extensions configured in $TYPO3_CONF_VARS['EXT']['extList']
 	 *
@@ -884,8 +884,8 @@ tt_content.'.$key.$prefix.' {
 
 			// Empty array as a start.
 		$extensions = array();
-		
-			// 
+
+			//
 		if ($rawExtList)	{
 				// The cached File prefix.
 			$cacheFilePrefix = 'temp_CACHED';
@@ -908,7 +908,7 @@ tt_content.'.$key.$prefix.' {
 					} elseif (@is_dir(PATH_site.TYPO3_mainDir.'sysext/'.$temp_extKey))	{
 						$extensions[$temp_extKey]=array('type'=>'S','siteRelPath'=>TYPO3_mainDir.'sysext/'.$temp_extKey.'/','typo3RelPath'=>'sysext/'.$temp_extKey.'/');
 					}
-					
+
 					$files = t3lib_div::trimExplode(',','
 						ext_localconf.php,
 						ext_tables.php,
@@ -927,8 +927,8 @@ tt_content.'.$key.$prefix.' {
 					}
 				}
 				unset($extensions['_CACHEFILE']);
-				
-				
+
+
 				// write cache?
 				if ($TYPO3_CONF_VARS['EXT']['extCache'])	{
 					$wrError = t3lib_extMgm::cannotCacheFilesWritable($cacheFilePrefix);
@@ -976,8 +976,8 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * @internal
 	 */
 	function isCacheFilesAvailable($cacheFilePrefix)	{
-		return 
-			@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php') && 
+		return
+			@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php') &&
 			@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php');
 	}
 
@@ -1004,11 +1004,11 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 		if (!@is_writeable(PATH_typo3conf))	{
 			$error[]=PATH_typo3conf;
 		}
-		if (@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php') && 
+		if (@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php') &&
 			!@is_writeable(PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php'))	{
 				$error[]=PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php';
 		}
-		if (@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php') && 
+		if (@is_file(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php') &&
 			!@is_writeable(PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php'))	{
 				$error[]=PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php';
 		}
@@ -1024,7 +1024,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 	 */
 	function currentCacheFiles()	{
 		global $TYPO3_LOADED_EXT;
-		
+
 		if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 			if (t3lib_extMgm::isCacheFilesAvailable($TYPO3_LOADED_EXT['_CACHEFILE']))	{
 				return array(
@@ -1034,7 +1034,7 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 			}
 		}
 	}
-	
+
 	/**
 	 * Compiles/Creates the two cache-files in typo3conf/ based on $cacheFilePrefix
 	 * Returns a array with the key "_CACHEFILE" set to the $cacheFilePrefix value

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Include file extending t3lib_recordList
  *
  * $Id$
@@ -37,22 +37,22 @@
  *
  *
  *
- *   74: class fileList extends t3lib_recordList 
- *  111:     function start($path,$pointer,$sort,$sortRev,$clipBoard=0)	
- *  132:     function generateList()	
- *  145:     function writeTop($path)	
- *  204:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')	
- *  218:     function getTable($files,$dirs,$rowlist)	
- *  306:     function formatDirList($items)	
- *  369:     function linkWrapDir($code,$path)	
- *  381:     function linkWrapFile($code,$path)	
- *  395:     function listURL()	
- *  405:     function dirData($theFile)	
- *  430:     function formatFileList($items)	
- *  504:     function isImage($ext)	
- *  516:     function linkWrapSort($code,$path,$col)	
- *  534:     function readDirectory($path,$type,$extList='')	
- *  588:     function makeClip($theData)	
+ *   74: class fileList extends t3lib_recordList
+ *  111:     function start($path,$pointer,$sort,$sortRev,$clipBoard=0)
+ *  132:     function generateList()
+ *  145:     function writeTop($path)
+ *  204:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')
+ *  218:     function getTable($files,$dirs,$rowlist)
+ *  306:     function formatDirList($items)
+ *  369:     function linkWrapDir($code,$path)
+ *  381:     function linkWrapFile($code,$path)
+ *  395:     function listURL()
+ *  405:     function dirData($theFile)
+ *  430:     function formatFileList($items)
+ *  504:     function isImage($ext)
+ *  516:     function linkWrapSort($code,$path,$col)
+ *  534:     function readDirectory($path,$type,$extList='')
+ *  588:     function makeClip($theData)
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -72,7 +72,7 @@
  * @subpackage core
  */
 class fileList extends t3lib_recordList {
-	var $iLimit = 40;					// default Max items shown 
+	var $iLimit = 40;					// default Max items shown
 	var $thumbs = 0;					// Boolean. Thumbnails on records containing files (pictures)
 	var $widthGif = '<img src="clear.gif" width="1" height="1" hspace="165" alt="" />';
 	var $fixedL = 30;					// Max length of strings
@@ -83,9 +83,9 @@ class fileList extends t3lib_recordList {
 	var $sortRev = 1;					// Reverse sorting flag
 	var $firstElementNumber=0;
 	var $clipBoard = 0;
-	
+
 		// internal
-	var $JScode = '';	
+	var $JScode = '';
 	var $HTMLcode = '';
 	var $totalbytes=0;
 	var $dirs = Array();
@@ -145,7 +145,7 @@ class fileList extends t3lib_recordList {
 	function writeTop($path)	{
 			// Makes the code for the foldericon in the top
 		$path = $GLOBALS['SOBE']->basicFF->is_directory($path);	// Cleaning name...
-		
+
 		if ($path)	{
 			$out='';
 			$this->counter++;
@@ -153,34 +153,34 @@ class fileList extends t3lib_recordList {
 			$root = $GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($theFile['path']);
 			$titleCol='path';
 			$this->fieldArray = Array($titleCol,'up');
-	
+
 			list($title,$icon,$path) =  $this->dirData($theFile);
-	
+
 				// Start compiling the HTML
 			$theData = Array();
 			$theData[$titleCol] = $this->widthGif;
-	
+
 			$title = $GLOBALS['SOBE']->basicFF->blindPath($path);
 			$theData['up']='<a href="'.htmlspecialchars($this->listURL()).'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/refresh_n.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload',1).'" alt="" />'.
 					'</a>';
-				
+
 			if ($root)	{
-					// The icon with link	
+					// The icon with link
 				$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
 				if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$path);
 
 				$theData[$titleCol].='<br />'.t3lib_div::fixed_lgd_pre($title,$this->fixedL+20);	// No HTML specialchars here - HTML like <b> </b> is allowed
 				$theData['up'].=$this->linkWrapDir('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/folder_up.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel',1).'" alt="" />',$theFile['path']);
-			} else {	
+			} else {
 					// root:0
 				$theIcon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_ftp.gif','width="18" height="16"').' alt="" />';
 				$theData[$titleCol].='<br />'.htmlspecialchars(t3lib_div::fixed_lgd_pre($title,$this->fixedL+20));
 			}
-	
+
 				// Adding top element
 			$out.=$this->addelement(1,'',$theData,'',$this->leftMargin,$theIcon);
-	
+
 			$this->HTMLcode.='
 
 		<!--
@@ -219,14 +219,14 @@ class fileList extends t3lib_recordList {
 			// Adds the code of files/dirs
 		$out='';
 		$titleCol = 'file';
-		
+
 			// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
 		$rowlist = t3lib_div::rmFromList($titleCol,$rowlist);
 		$rowlist = t3lib_div::uniqueList($rowlist);
 		$rowlist = $rowlist ? $titleCol.','.$rowlist : $titleCol;
 		if ($this->clipBoard)	$rowlist.=',_CLIPBOARD_';
 		$this->fieldArray = explode(',',$rowlist);
-		
+
 			// half line is drawn
 		$theData = Array();
 		$theData[$titleCol] = $this->widthGif;
@@ -249,7 +249,7 @@ class fileList extends t3lib_recordList {
 
 			// Files are added
 		$iOut.= $this->formatFileList($files,$titleCol);
-		
+
 			// Header line is drawn
 		$theData = Array();
 		reset($this->fieldArray);
@@ -279,12 +279,12 @@ class fileList extends t3lib_recordList {
 		}
 		$out.=$this->addelement(1,'',$theData,' class="c-headLine"','');
 		$out.=$iOut;
-		
+
 			// half line is drawn
 		$theData = Array();
 		$theData[$titleCol] = $this->counter.' Files, '.$GLOBALS['SOBE']->basicFF->formatSize($this->totalbytes).'bytes';
 		$out.=$this->addelement(1,'',$theData);
-		
+
 			// finish
 		return '
 
@@ -316,13 +316,13 @@ class fileList extends t3lib_recordList {
 						// Initialization
 					$theFile = $items['files'][$key];
 					$this->counter++;
-	
+
 					list($title,$icon,$path) =  $this->dirData($theFile);
-	
-						// The icon with link	
+
+						// The icon with link
 					$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
 					if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$path);
-	
+
 						// 	Preparing and getting the data-array
 					$theData = Array();
 					reset($this->fieldArray);
@@ -334,7 +334,7 @@ class fileList extends t3lib_recordList {
 							case 'rw':
 								$theData[$field]= (($theFile['readable'])?'':'<span class="typo3-red"><b>R</b></span>').(($theFile['writeable'])?'':'<span class="typo3-red"><b>W</b></span>');
 							break;
-							case 'fileext':	
+							case 'fileext':
 	//							$theData[$field]=strtoupper($theFile['fileext']);
 							break;
 							case 'tstamp':
@@ -383,7 +383,7 @@ class fileList extends t3lib_recordList {
 			$href = substr($path,strlen(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')));
 			$aOnClick = "return top.openUrlInWindow('".$href."','WebFile');";
 			$code = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$code.'</a>';
-		} 
+		}
 		return $code;
 	}
 
@@ -440,15 +440,15 @@ class fileList extends t3lib_recordList {
 						// Initialization
 					$theFile = $items['files'][$key];
 					$this->counter++;
-	
+
 					$this->totalbytes+=$theFile['size'];
 					$ext = $items['files'][$key][fileext];
 					$icon = t3lib_BEfunc::getFileIcon($ext);
 
-						// The icon with link	
+						// The icon with link
 					$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$icon,'width="18" height="16"').' title="'.htmlspecialchars($theFile['file']).'" alt="" />';
 					if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$theFile['path'].$theFile['file']);
-	
+
 						// 	Preparing and getting the data-array
 					$theData = Array();
 					reset($this->fieldArray);
@@ -471,14 +471,14 @@ class fileList extends t3lib_recordList {
 							break;
 							case 'file':
 								$theData[$field] = $this->linkWrapFile(t3lib_div::fixed_lgd($theFile[$field],$this->fixedL),$theFile['path'].$theFile['file']);
-							break;							
+							break;
 							default:
 								$theData[$field]=t3lib_div::fixed_lgd($theFile[$field],$this->fixedL);
 							break;
 						}
 					}
 					$out.=$this->addelement(1,$theIcon,$theData);
-					
+
 						// Thumbsnails?
 					if ($this->thumbs && $this->isImage($theFile['fileext']))	{
 						$thumbData=Array();
