@@ -1,0 +1,299 @@
+<?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+/**
+ * Contains a class with functions for page related overview of translations.
+ *
+ * $Id$
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   66: class tx_cms_webinfo_page extends t3lib_extobjbase
+ *   73:     function modMenu()
+ *  100:     function main()
+ *
+ *
+ *  191: class tx_cms_webinfo_hits extends tx_cms_webinfo_page
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
+require_once(PATH_t3lib.'class.t3lib_pagetree.php');
+require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
+
+
+
+
+/**
+ * Class for displaying translation status of pages in the tree.
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_cms
+ */
+class tx_cms_webinfo_lang extends t3lib_extobjbase {
+
+	/**
+	 * Returns the menu array
+	 *
+	 * @return	array
+	 */
+	function modMenu()	{
+		global $LANG;
+
+		return array (
+			'depth' => array(
+				0 => $LANG->getLL('depth_0'),
+				1 => $LANG->getLL('depth_1'),
+				2 => $LANG->getLL('depth_2'),
+				3 => $LANG->getLL('depth_3')
+			)
+		);
+	}
+
+	/**
+	 * MAIN function for page information display (including hit statistics)
+	 *
+	 * @return	string		Output HTML f	or the module.
+	 */
+	function main()	{
+		global $BACK_PATH,$LANG,$SOBE;
+
+		if ($this->pObj->id)	{
+			$theOutput = '';
+
+				// Depth selector:
+			$h_func = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[depth]',$this->pObj->MOD_SETTINGS['depth'],$this->pObj->MOD_MENU['depth'],'index.php');
+			$theOutput.= $h_func;
+
+				// Showing the tree:
+				// Initialize starting point of page tree:
+			$treeStartingPoint = intval($this->pObj->id);
+			$treeStartingRecord = t3lib_BEfunc::getRecord('pages', $treeStartingPoint);
+			$depth = $this->pObj->MOD_SETTINGS['depth'];
+
+				// Initialize tree object:
+			$tree = t3lib_div::makeInstance('t3lib_pageTree');
+			$tree->init('AND '.$GLOBALS['BE_USER']->getPagePermsClause(1));
+			$tree->addField('l18n_cfg');
+
+				// Creating top icon; the current page
+			$HTML = t3lib_iconWorks::getIconImage('pages', $treeStartingRecord, $GLOBALS['BACK_PATH'],'align="top"');
+			$tree->tree[] = array(
+				'row' => $treeStartingRecord,
+				'HTML'=>$HTML
+			);
+
+				// Create the tree from starting point:
+			$tree->getTree($treeStartingPoint, $depth, '');
+			#debug($tree->tree);
+
+				// Add CSS needed:
+			$css_content = '
+				TABLE#langTable TR TD {
+					padding-left : 2px;
+					padding-right : 2px;
+					white-space: nowrap;
+				}
+				TD.c-blocked { background-color: red; }
+				TD.c-ok { background-color: #669966; }
+				TD.c-fallback {  }
+				TD.c-leftLine {border-left: 2px solid black; }
+				.bgColor5 { font-weight: bold; }
+			';
+			$marker = '/*###POSTCSSMARKER###*/';
+			$this->pObj->content = str_replace($marker,$css_content.chr(10).$marker,$this->pObj->content);
+
+
+				// Render information table:
+			$theOutput = $this->renderL10nTable($tree);
+		}
+
+		return $theOutput;
+	}
+
+	function renderL10nTable(&$tree)	{
+
+			// System languages retrieved:
+		$languages = $this->getSystemLanguages();
+
+			// Title length:
+		$titleLen = $GLOBALS['BE_USER']->uc['titleLen'];
+
+			// Put together the TREE:
+		$output = '';
+		$newOL_js = array();
+		foreach($tree->tree as $data)	{
+			$tCells = array();
+
+				// Page icons / titles etc.
+			$tCells[] = '<td>'.$data['HTML'].htmlspecialchars(t3lib_div::fixed_lgd_cs($data['row']['title'],$titleLen)).'</td>';
+
+				// DEFAULT language:
+				// "View page" link is created:
+			$viewPageLink= '<a href="#" onclick="'.
+					htmlspecialchars(t3lib_BEfunc::viewOnClick($data['row']['uid'],$GLOBALS['BACK_PATH'],'','','','&L=###LANG_UID###')).'">'.
+					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom.gif','width="12" height="12"').' title="View page" border="0" alt="" />'.
+					'</a>';
+			$status = $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-ok';
+
+				// Create links:
+			$info = '';
+			$editUid = $data['row']['uid'];
+			$params = '&edit[pages]['.$editUid.']=edit';
+			$info.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
+					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit default language page header" border="0" alt="" />'.
+					'</a>';
+			$info.= '<a href="#" onclick="'.htmlspecialchars('top.loadEditId('.intval($data['row']['uid']).',"&SET[language]=0"); return false;').'">'.
+					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit_page.gif','width="12" height="12"').' title="Edit page" border="0" alt="" />'.
+					'</a>';
+			$info.=str_replace('###LANG_UID###','0',$viewPageLink);
+
+				// Put into cell:
+			$tCells[] = '<td class="'.$status.' c-leftLine">'.$info.'</td>';
+
+			foreach($languages as $langRow)	{
+				$row = $this->getLangStatus($data['row']['uid'], $langRow['uid']);
+				$info = '';
+
+				if (is_array($row))	{
+					$status = $row['hidden'] ? 'c-fallback' : 'c-ok';
+					$icon = t3lib_iconWorks::getIconImage(
+						'pages_language_overlay',
+						$row,
+						$GLOBALS['BACK_PATH'],
+						'align="top" class="c-recIcon"'
+					);
+
+					$info = $icon.htmlspecialchars($row['title']).
+								($row['_COUNT']>1 ? '<div>BAD THING, there are TWO or more records for this language!!!</div>':'');
+					$tCells[] = '<td class="'.$status.' c-leftLine">'.$info.'</td>';
+
+						// Edit whole record:
+					$info = '';
+					$editUid = $row['uid'];
+					$params = '&edit[pages_language_overlay]['.$editUid.']=edit';
+					$info.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
+							'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit language overlay record" border="0" alt="" />'.
+							'</a>';
+
+					$info.= '<a href="#" onclick="'.htmlspecialchars('top.loadEditId('.intval($data['row']['uid']).',"&SET[language]='.$langRow['uid'].'"); return false;').'">'.
+							'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit_page.gif','width="12" height="12"').' title="Edit page" border="0" alt="" />'.
+							'</a>';
+					$info.= str_replace('###LANG_UID###',$langRow['uid'],$viewPageLink);
+
+					$tCells[] = '<td class="'.$status.'">'.$info.'</td>';
+					$tCells[] = '<td class="'.$status.'">&nbsp;</td>';
+				} else {
+					$status = $data['row']['l18n_cfg']&2 || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback';
+					$tCells[] = '<td class="'.$status.' c-leftLine">&nbsp;</td>';
+					$tCells[] = '<td class="'.$status.'">&nbsp;</td>';
+
+					$info = '';
+					$info.= '<input type="checkbox" name="newOL['.$langRow['uid'].']['.$data['row']['uid'].']" value="1" />';
+					$newOL_js[$langRow['uid']].= '
+						+(document.webinfoForm[\'newOL['.$langRow['uid'].']['.$data['row']['uid'].']\'].checked ? \'&edit[pages_language_overlay]['.$data['row']['uid'].']=new\' : \'\')
+					';
+					$tCells[] = '<td class="'.$status.'">'.$info.'</td>';
+				}
+			}
+
+			$output.= '
+				<tr class="bgColor4">
+					'.implode('
+					',$tCells).'
+				</tr>';
+		}
+
+			// Put together HEADER:
+		$tCells = array();
+		$tCells[] = '<td>Page:</td>';
+		$tCells[] = '<td class="c-leftLine">Default:</td>';
+		foreach($languages as $langRow)	{
+			$params = "'".$newOL_js[$langRow['uid']]."+'&columnsOnly=title,hidden,sys_language_uid&defVals[pages_language_overlay][sys_language_uid]=".$langRow['uid'];
+			$tCells[] = '<td class="c-leftLine">'.htmlspecialchars($langRow['title']).'</td>';
+			$tCells[] = '<td><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit default language page header" border="0" alt="" /></td>';
+			$tCells[] = '<td><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">
+				<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_el.gif','width="11" height="12"').' title="Create new translation headers" border="0" alt="" />
+				</a></td>';
+		}
+
+		$output = '
+			<tr class="bgColor5">
+				'.implode('
+				',$tCells).'
+			</tr>'.$output;
+
+		$output = '<table border="0" cellspacing="0" cellpadding="0" id="langTable">'.$output.'</table>';
+
+		return $output;
+	}
+
+	function getSystemLanguages()	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			'sys_language',
+			'1'.t3lib_BEfunc::deleteClause('sys_language')
+		);
+
+		$outputArray = array();
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$outputArray[] = $row;
+		}
+
+		return $outputArray;
+	}
+
+	function getLangStatus($pageId, $langId)	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			'pages_language_overlay',
+			'pid='.intval($pageId).
+				' AND sys_language_uid='.intval($langId).
+				t3lib_BEfunc::deleteClause('pages_language_overlay')
+		);
+
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		if (is_array($row))	{
+			$row['_COUNT'] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		}
+
+		return $row;
+	}
+}
+
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cms/web_info/class.tx_cms_webinfo_lang.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cms/web_info/class.tx_cms_webinfo_lang.php']);
+}
+?>
