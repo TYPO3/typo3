@@ -840,8 +840,6 @@ class tslib_cObj {
 			$splitArr['imgObjNum']=$conf['imgObjNum'];
 			$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr,$imgCount);
 
-			$altP = $this->getAltParam($conf);
-
 				// EqualHeight
 			$equalHeight = intval($this->stdWrap($conf['equalH'],$conf['equalH.']));
 			if ($equalHeight)	{	// Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
