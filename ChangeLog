@@ -1,3 +1,6 @@
+2004-09-00  Jan-Erik Revsbech    <jer@moccompany.com>
+	* Fixed bug #292 concerning Return path in class.t3lib_mailer.php. The fix has a seperate solution for windows and Unix. The unix fix does however not work with safe_mode enabled. Do not know how to overcome this. Perhaps an environment variable for sendmail can be specified? The fix for windows works OK with safe_mode on since, it does not rely on passing parameter directly to the mailer tranport agent (Sendmail or postfix), but instead sets the php variable sendmail_from, which has no effect on Unix systemt.
+
 2004-09-02  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Fixed a few basic PHP5 problems (aiming at PHP5 support in 3.7.0)
