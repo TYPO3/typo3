@@ -1323,7 +1323,7 @@ trim($this->form);
 		$content='';
 
 		if (is_array($menuItems))	{
-			if (!$script) {basename(PATH_thisScript);}
+			if (!$script) {$script=basename(PATH_thisScript);}
 			$options='';
 
 			$count = count($menuItems);
