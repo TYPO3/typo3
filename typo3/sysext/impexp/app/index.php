@@ -192,12 +192,13 @@ class localPageTree extends t3lib_browseTree {
 	 * Tree rendering
 	 *
 	 * @param	integer		PID value
+	 * @param	string		Additional where clause
 	 * @return	array		Array of tree elements
 	 */
-	function ext_tree($pid)	{
+	function ext_tree($pid, $clause='')	{
 
 			// Initialize:
-		$this->init(' AND '.$this->permsC());
+		$this->init(' AND '.$this->permsC().$clause);
 
 			// Get stored tree structure:
 		$this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages']);
@@ -221,23 +222,23 @@ class localPageTree extends t3lib_browseTree {
 
 			// Set PM icon:
 		$cmd = $this->bank.'_'.($isOpen?'0_':'1_').$pid;
-		$icon = '<img src="'.$this->backPath.'t3lib/gfx/ol/'.($isOpen?'minus':'plus').'only.gif" width="18" height="16" align="top" border="0" alt="" />';
+		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'t3lib/gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' align="top" alt="" />';
 		$firstHtml = $this->PM_ATagWrap($icon,$cmd);
 
 		if ($pid>0)	{
 			$rootRec = t3lib_befunc::getRecord('pages',$pid);
-			$firstHtml.= $this->wrapIcon('<img src="'.$this->backPath.t3lib_iconWorks::getIcon('pages',$rootRec).'" width="18" height="16" align="top" alt="" />',$rootRec);
+			$firstHtml.= $this->wrapIcon(t3lib_iconWorks::getIconImage('pages',$rootRec,$this->backPath,'align="top"'),$rootRec);
 		} else {
 			$rootRec = array(
 				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
 				'uid' => 0
 			);
-			$firstHtml.= $this->wrapIcon('<img src="'.$this->backPath.'gfx/i/_icon_website.gif" width="18" height="16" align="top" alt="" />',$rootRec);
+			$firstHtml.= $this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' align="top" alt="" />',$rootRec);
 		}
 		$this->tree[] = array('HTML'=>$firstHtml, 'row'=>$rootRec);
 		if ($isOpen)	{
 				// Set depth:
-			$depthD = '<img src="'.$this->backPath.'t3lib/gfx/ol/blank.gif" width="18" height="16" align="top" alt="" />';
+			$depthD = '<img'.t3lib_iconWorks::skinImg($this->backPath,'t3lib/gfx/ol/blank.gif','width="18" height="16"').' align="top" alt="" />';
 			if ($this->addSelfId)	$this->ids[] = $pid;
 			$this->getTree($pid,999,$depthD);
 
@@ -331,6 +332,14 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			break;
 			case 'import':
 
+					// Finally: If upload went well, set the new file as the import file:
+				if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1])	{
+					$fI = pathinfo($this->fileProcessor->internalUploadMap[1]);
+					if (t3lib_div::inList('t3d,xml',strtolower($fI['extension'])))	{	// Only allowed extensions....
+						$inData['file'] = $this->fileProcessor->internalUploadMap[1];
+					}
+				}
+
 					// Call import interface:
 				$this->importData($inData);
 			break;
@@ -408,7 +417,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$this->export->extensionDependencies = (array)$inData['extension_dep'];
 		$this->export->showStaticRelations = $inData['showStaticRelations'];
 
-		$this->export->includeHTMLfileResources = $inData['includeHTMLfileResources'];
+		$this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
 #debug($inData);
 			// Static tables:
 		if (is_array($inData['external_static']['tables']))	{
@@ -467,7 +476,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		if (isset($inData['pagetree']['id']))	{
 			if ($inData['pagetree']['levels']==-1)	{	// Based on click-expandable tree
 				$pagetree = t3lib_div::makeInstance('localPageTree');
-				$tree = $pagetree->ext_tree($inData['pagetree']['id']);
+
+				$tree = $pagetree->ext_tree($inData['pagetree']['id'],$this->filterPageIds($this->export->excludeMap));
 				$this->treeHTML = $pagetree->printTree($tree);
 
 				$idH = $pagetree->buffer_idH;
@@ -488,9 +498,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				if (is_array($sPage))	{
 					$pid = $inData['pagetree']['id'];
 					$tree = t3lib_div::makeInstance('t3lib_pageTree');
-					$tree->init('AND '.$this->perms_clause);
+					$tree->init('AND '.$this->perms_clause.$this->filterPageIds($this->export->excludeMap));
 
-					$HTML = '<img src="'.$GLOBALS['BACK_PATH'].t3lib_iconWorks::getIcon('pages',$sPage).'" width="18" height="16" align="top" alt="" />';
+					$HTML = t3lib_iconWorks::getIconImage('pages',$sPage,$GLOBALS['BACK_PATH'],'align="top"');
 					$tree->tree[] = Array('row'=>$sPage,'HTML'=>$HTML);
 					$tree->buffer_idH = array();
 					if ($inData['pagetree']['levels']>0)	{
@@ -503,10 +513,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						$idH[$pid]['subrow'] = $tree->buffer_idH;
 					}
 
-
 					$pagetree = t3lib_div::makeInstance('localPageTree');
 					$this->treeHTML = $pagetree->printTree($tree->tree);
-
 #debug($idH);
 				}
 			}
@@ -555,7 +563,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			if ($inData['download_export'])	{
 				$mimeType = 'application/octet-stream';
 				Header('Content-Type: '.$mimeType);
+				Header('Content-Length: '.strlen($out));
 				Header('Content-Disposition: attachment; filename='.basename($dlFile));
+
 				echo $out;
 				exit;
 			}
@@ -874,8 +884,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			</tr>';
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>Include HTML file resources:</strong></td>
-					<td><input type="checkbox" name="tx_impexp[includeHTMLfileResources]" value="1"'.($inData['includeHTMLfileResources'] ? ' checked="checked"' : '').' /></td>
+					<td><strong>Exclude HTML/CSS file resources:</strong></td>
+					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" value="1"'.($inData['excludeHTMLfileResources'] ? ' checked="checked"' : '').' /></td>
 				</tr>';
 
 
@@ -944,9 +954,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						'.$this->renderSelectBox('preset[select]','',$opt).'
 						<br/>
 						<input type="submit" value="Load" name="preset[load]" />
-						<input type="submit" value="Save" name="preset[save]" />
-						<input type="submit" value="Delete" name="preset[delete]" />
-						<input type="submit" value="Merge" name="preset[merge]" />
+						<input type="submit" value="Save" name="preset[save]" onclick="return confirm(\''.htmlspecialchars('Are you sure?').'\');" />
+						<input type="submit" value="Delete" name="preset[delete]" onclick="return confirm(\''.htmlspecialchars('Are you sure?').'\');" />
+						<input type="submit" value="Merge" name="preset[merge]" onclick="return confirm(\''.htmlspecialchars('Are you sure?').'\');" />
 						<br/>
 						Title of new preset:
 						<input type="text" name="tx_impexp[preset][title]" value="'.htmlspecialchars($inData['preset']['title']).'"'.$this->doc->formWidth(30).' /><br/>
@@ -1066,7 +1076,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$import->import_mode = $inData['import_mode'];
 			$import->enableLogging = $inData['enableLogging'];
 			$import->global_ignore_pid = $inData['global_ignore_pid'];
-			$import->showDiff = $inData['showDiff'];
+			$import->showDiff = !$inData['notShowDiff'];
 			$import->allowPHPScripts = $inData['allowPHPScripts'];
 			$import->softrefInputValues = $inData['softrefInputValues'];
 
@@ -1129,8 +1139,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$row[] = '<tr class="bgColor4">
 				<td><strong>Options:</strong></td>
 				<td>
-					<input type="checkbox" name="tx_impexp[showDiff]" value="1"'.($inData['showDiff'] ? ' checked="checked"' : '').' />
-					Show differences in records<br/>
+					<input type="checkbox" name="tx_impexp[notShowDiff]" value="1"'.($inData['notShowDiff'] ? ' checked="checked"' : '').' />
+					Do not show differences in records<br/>
 					<em>(Green values are from the import file, red values from the current database record and black values are similar in both versions.)</em>
 					<br/><br/>
 
@@ -1188,6 +1198,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						</td>
 					</tr>';
 
+				if (t3lib_div::_POST('file'))	{
+					$row[] = '<tr class="bgColor4">
+							<td>Upload status:</td>
+							<td>'.($this->fileProcessor->internalUploadMap[1] ? 'Success: '.substr($this->fileProcessor->internalUploadMap[1],strlen(PATH_site)) : '<span class="typo3-red">Failure: No file uploaded - was it too big? Check system log.</span>').'</td>
+						</tr>';
+				}
+
 				$menuItems[] = array(
 					'label' => 'Upload',
 					'content' => '
@@ -1204,7 +1221,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$overviewContent = '';
 			$inFile = t3lib_div::getFileAbsFileName($inData['file']);
 			if ($inFile && @is_file($inFile))	{
-				$row = array();
+				$trow = array();
 				if ($import->loadFile($inFile,1))	{
 
 					if ($inData['import_file'])	{
@@ -1217,7 +1234,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				}
 
 					// Meta data output:
-				$row[] = '<tr class="bgColor5">
+				$trow[] = '<tr class="bgColor5">
 						<td colspan="2"><strong>Meta data:</strong></td>
 					</tr>';
 
@@ -1226,24 +1243,24 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					$opt[$file] = substr($file,strlen(PATH_site));
 				}
 
-				$row[] = '<tr class="bgColor4">
+				$trow[] = '<tr class="bgColor4">
 					<td><strong>Title:</strong></td>
-					<td>'.nl2br(htmlspecialchars($import->dat['header']['meta']['title'])).'</td>
+					<td width="95%">'.nl2br(htmlspecialchars($import->dat['header']['meta']['title'])).'</td>
 					</tr>';
 
-				$row[] = '<tr class="bgColor4">
+				$trow[] = '<tr class="bgColor4">
 					<td><strong>Description:</strong></td>
-					<td>'.nl2br(htmlspecialchars($import->dat['header']['meta']['description'])).'</td>
+					<td width="95%">'.nl2br(htmlspecialchars($import->dat['header']['meta']['description'])).'</td>
 					</tr>';
 
-				$row[] = '<tr class="bgColor4">
+				$trow[] = '<tr class="bgColor4">
 					<td><strong>Notes:</strong></td>
-					<td>'.nl2br(htmlspecialchars($import->dat['header']['meta']['notes'])).'</td>
+					<td width="95%">'.nl2br(htmlspecialchars($import->dat['header']['meta']['notes'])).'</td>
 					</tr>';
 
-				$row[] = '<tr class="bgColor4">
+				$trow[] = '<tr class="bgColor4">
 					<td><strong>Packager:</strong></td>
-					<td>'.nl2br(htmlspecialchars($import->dat['header']['meta']['packager_name'].' ('.$import->dat['header']['meta']['packager_username'].')')).'<br/>
+					<td width="95%">'.nl2br(htmlspecialchars($import->dat['header']['meta']['packager_name'].' ('.$import->dat['header']['meta']['packager_username'].')')).'<br/>
 						Email: '.$import->dat['header']['meta']['packager_email'].'</td>
 					</tr>';
 
@@ -1262,7 +1279,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 								// Create icon tag:
 							$iconTag = '<img src="'.$this->doc->backPath.'../'.substr($fileName,strlen(PATH_site)).'" '.$import->dat['header']['thumbnail']['imgInfo'][3].' vspace="5" style="border: solid black 1px;" alt="" />';
 
-							$row[] = '<tr class="bgColor4">
+							$trow[] = '<tr class="bgColor4">
 								<td><strong>Icon:</strong></td>
 								<td>'.$iconTag.'</td>
 								</tr>';
@@ -1277,12 +1294,19 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					'content' => '
 						<table border="0" cellpadding="1" cellspacing="1">
 							'.implode('
-							',$row).'
+							',$trow).'
 						</table>
 					'
 				);
 			}
 
+				// Print errors that might be:
+			$errors = $import->printErrorLog();
+			$menuItems[] = array(
+				'label' => 'Messages',
+				'content' => $errors,
+				'stateIcon' => $errors ? 2 : 0
+			);
 
 				// Output tabs:
 			$content = $this->doc->getDynTabMenu($menuItems,'tx_impexp_import',-1);
@@ -1292,10 +1316,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				// Print overview:
 			if ($overviewContent) {
 				$this->content.= $this->doc->section($inData['import_file'] ? 'Structure has been imported:' : 'Structure to be imported:', $overviewContent, 0, 1);
-			}
-			$errors = $import->printErrorLog();
-			if ($errors)	{
-				$this->content.= $this->doc->section('Messages:', $errors, 0, 1);
 			}
 		}
 	}
@@ -1583,12 +1603,40 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$opt = array();
 		$opt[] = '<option value=""></option>';
 		foreach($extTrav as $v)	{
-			if (is_array($value))	{
-				$sel = in_array($v,$value)?' selected="selected"':'';
+			if ($v!=='_CACHEFILE')	{
+				if (is_array($value))	{
+					$sel = in_array($v,$value)?' selected="selected"':'';
+				}
+				$opt[] = '<option value="'.htmlspecialchars($v).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 			}
-			$opt[] = '<option value="'.htmlspecialchars($v).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 		}
 		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_div::intInRange(count($opt),5,10).'">'.implode('',$opt).'</select>';
+	}
+
+	/**
+	 * Filter page IDs by traversing exclude array, finding all excluded pages (if any) and making an AND NOT IN statement for the select clause.
+	 *
+	 * @param	array	Exclude array from import/export object.
+	 * @return	string	AND where clause part to filter out page uids.
+	 */
+	function filterPageIds($exclude)	{
+
+			// Get keys:
+		$exclude = array_keys($exclude);
+
+			// Traverse
+		$pageIds = array();
+		foreach($exclude as $element)	{
+			list($table,$uid) = explode(':', $element);
+			if ($table==='pages')	{
+				$pageIds[] = intval($uid);
+			}
+		}
+
+			// Add to clause:
+		if (count($pageIds))	{
+			return ' AND uid NOT IN ('.implode(',', $pageIds).')';
+		}
 	}
 }
 

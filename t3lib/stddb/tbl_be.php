@@ -265,7 +265,6 @@ $TCA['be_users'] = Array (
 				'default' => '0',
 				'range' => Array (
 					'upper' => mktime(0,0,0,12,31,2020),
-					'lower' => mktime(0,0,0,date('m')-1,date('d'),date('Y'))
 				)
 			)
 		),

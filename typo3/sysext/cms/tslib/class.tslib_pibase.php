@@ -1203,7 +1203,7 @@ class tslib_pibase {
 	 * @return	string		The content.
 	 */
 	function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	{
-		$sheetArray = $T3FlexForm_array['data'][$sheet][$lang];
+		$sheetArray = (array)$T3FlexForm_array['data'][$sheet][$lang];
 		if (is_array($sheetArray))	{
 			return $this->pi_getFFvalueFromSheetArray($sheetArray,explode('/',$fieldName),$value);
 		}

@@ -206,6 +206,7 @@ class tx_impexp {
 
 	var $mode = '';							// Whether "import" or "export" mode of object. Set through init() function
 	var $update = FALSE;					// Updates all records that has same UID instead of creating new!
+	var $doesImport = FALSE;				// Is set by importData() when an import has been done.
 
 		// Configuration, import
 	var $display_import_pid_record = '';		// If set to a page-record, then the preview display of the content will expect this page-record to be the target for the import and accordingly display validation information. This triggers the visual view of the import/export memory to validate if import is possible
@@ -228,7 +229,8 @@ class tx_impexp {
 	var $softrefCfg = array();		// Soft Reference Token ID modes.
 	var $extensionDependencies = array();		// Listing extension dependencies.
 	var $dontCompress = 0;			// Set  by user: If set, compression in t3d files is disabled
-	var $includeHTMLfileResources = 0;	// Boolean, if set, HTML file resources are included.
+	var $includeExtFileResources = 0;	// Boolean, if set, HTML file resources are included.
+	var $extFileResourceExtensions = 'html,htm,css';	// Files with external media (HTML/css style references inside)
 
 		// Internal, dynamic:
 	var $import_mapId = array();		// After records are written this array is filled with [table][original_uid] = [new_uid]
@@ -820,42 +822,48 @@ class tx_impexp {
 						}
 					}
 
-						// HTML with media?
+						// Files with external media?
+						// This is only done with files grabbed by a softreference parser since it is deemed improbable that hard-referenced files should undergo this treatment.
 					$html_fI = pathinfo(basename($fI['ID_absFile']));
-					if ($this->includeHTMLfileResources && t3lib_div::inList('html,htm',strtolower($html_fI['extension'])))	{
+					if ($this->includeExtFileResources && t3lib_div::inList($this->extFileResourceExtensions,strtolower($html_fI['extension'])))	{
 						$uniquePrefix = '###'.md5(time()).'###';
-						$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
-						$prefixedMedias = explode($uniquePrefix,$htmlParser->prefixResourcePath($uniquePrefix,$fileRec['content'],array(),$uniquePrefix));
+
+						if (strtolower($html_fI['extension'])==='css')	{
+							$prefixedMedias = explode($uniquePrefix, eregi_replace('(url[[:space:]]*\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\))', '\1'.$uniquePrefix.'\2'.$uniquePrefix.'\3', $fileRec['content']));
+						} else {	// html, htm:
+							$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
+							$prefixedMedias = explode($uniquePrefix, $htmlParser->prefixResourcePath($uniquePrefix,$fileRec['content'],array(),$uniquePrefix));
+						}
 
 						$htmlResourceCaptured = FALSE;
 						foreach($prefixedMedias as $k => $v)	{
 							if ($k%2)	{
-								$HTMLres_absPath = t3lib_div::resolveBackPath(dirname($fI['ID_absFile']).'/'.$v);
-								$HTMLres_absPath = t3lib_div::getFileAbsFileName($HTMLres_absPath);
-								if ($HTMLres_absPath && t3lib_div::isFirstPartOfStr($HTMLres_absPath,PATH_site.$this->fileadminFolderName.'/') && @is_file($HTMLres_absPath))	{
+								$EXTres_absPath = t3lib_div::resolveBackPath(dirname($fI['ID_absFile']).'/'.$v);
+								$EXTres_absPath = t3lib_div::getFileAbsFileName($EXTres_absPath);
+								if ($EXTres_absPath && t3lib_div::isFirstPartOfStr($EXTres_absPath,PATH_site.$this->fileadminFolderName.'/') && @is_file($EXTres_absPath))	{
 
 									$htmlResourceCaptured = TRUE;
-									$HTMLres_ID = md5($HTMLres_absPath);
-									$this->dat['header']['files'][$fI['ID']]['HTML_RES_ID'][] = $HTMLres_ID;
-									$prefixedMedias[$k] = '{HTML_RES_ID:'.$HTMLres_ID.'}';
+									$EXTres_ID = md5($EXTres_absPath);
+									$this->dat['header']['files'][$fI['ID']]['EXT_RES_ID'][] = $EXTres_ID;
+									$prefixedMedias[$k] = '{EXT_RES_ID:'.$EXTres_ID.'}';
 
 										// Add file to memory if it is not set already:
-									if (!isset($this->dat['header']['files'][$HTMLres_ID]))		{
+									if (!isset($this->dat['header']['files'][$EXTres_ID]))		{
 										$fileRec = array();
-										$fileRec['filesize'] = filesize($HTMLres_absPath);
-										$fileRec['filename'] = basename($HTMLres_absPath);
-										$fileRec['filemtime'] = filemtime($HTMLres_absPath);
-										$fileRec['record_ref'] = '_HTML_PARENT_:'.$fI['ID'];
+										$fileRec['filesize'] = filesize($EXTres_absPath);
+										$fileRec['filename'] = basename($EXTres_absPath);
+										$fileRec['filemtime'] = filemtime($EXTres_absPath);
+										$fileRec['record_ref'] = '_EXT_PARENT_:'.$fI['ID'];
 
 										$fileRec['parentRelFileName'] = $v;		// Media relative to the HTML file.
 
 											// Setting this data in the header
-										$this->dat['header']['files'][$HTMLres_ID] = $fileRec;
+										$this->dat['header']['files'][$EXTres_ID] = $fileRec;
 
 											// ... and finally add the heavy stuff:
-										$fileRec['content'] = t3lib_div::getUrl($HTMLres_absPath);
+										$fileRec['content'] = t3lib_div::getUrl($EXTres_absPath);
 										$fileRec['content_md5'] = md5($fileRec['content']);
-										$this->dat['files'][$HTMLres_ID] = $fileRec;
+										$this->dat['files'][$EXTres_ID] = $fileRec;
 									}
 								}
 							}
@@ -867,7 +875,7 @@ class tx_impexp {
 					}
 				}
 
-			} else  $this->error($fI['ID_absFile'].' was larger than the maxFileSize ('.t3lib_div::formatSize($this->maxFileSize).')! Skipping.');
+			} else  $this->error($fI['ID_absFile'].' was larger ('.t3lib_div::formatSize(filesize($fI['ID_absFile'])).') than the maxFileSize ('.t3lib_div::formatSize($this->maxFileSize).')! Skipping.');
 		} else $this->error($fI['ID_absFile'].' was not a file! Skipping.');
 	}
 
@@ -1370,6 +1378,9 @@ class tx_impexp {
 	 * @return	void		...
 	 */
 	function importData($pid)	{
+
+			// Set this flag to indicate that an import is being/has been done.
+		$this->doesImport = 1;
 
 			// Initialize:
 			// These vars MUST last for the whole section not being cleared. They are used by the method setRelations() which are called at the end of the import session.
@@ -2178,8 +2189,8 @@ class tx_impexp {
 						if ($this->dat['header']['files'][$fileHeaderInfo['RTE_ORIG_ID']])	{
 
 								// Write the copy and original RTE file to the respective filenames:
-							$this->writeFileVerify($copyDestName, $cfg['file_ID']);
-							$this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID']);
+							$this->writeFileVerify($copyDestName, $cfg['file_ID'], TRUE);
+							$this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID'], TRUE);
 
 								// Return the relative path of the copy file name:
 							return substr($copyDestName, strlen(PATH_site));
@@ -2227,7 +2238,7 @@ class tx_impexp {
 			$fileHeaderInfo = $this->dat['header']['files'][$fileID];
 			$updMode = $this->update && $this->import_mapId[$table][$uid]===$uid && $this->import_mode[$table.':'.$uid]!=='as_new';
 				// Create new name for file:
-			if ($updMode)	{	// Must has same ID in map array (just for security, is not really needed) and NOT be set "as_new".
+			if ($updMode)	{	// Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
 				$newName = PATH_site.$dirPrefix.$fileName;
 			} else {
 					// Create unique filename:
@@ -2239,16 +2250,16 @@ class tx_impexp {
 				// Write main file:
 			if ($this->writeFileVerify($newName, $fileID))	{
 
-					// If the resource was an HTML file with resources attached, we will write those as well!
-				if (is_array($fileHeaderInfo['HTML_RES_ID']))	{
-#debug($fileHeaderInfo['HTML_RES_ID']);
+					// If the resource was an HTML/CSS file with resources attached, we will write those as well!
+				if (is_array($fileHeaderInfo['EXT_RES_ID']))	{
+#debug($fileHeaderInfo['EXT_RES_ID']);
 					$tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
 					$tokenSubstituted = FALSE;
 
 					$fileProcObj = &$this->getFileProcObj();
 
 					if ($updMode)	{
-						foreach($fileHeaderInfo['HTML_RES_ID'] as $res_fileID)	{
+						foreach($fileHeaderInfo['EXT_RES_ID'] as $res_fileID)	{
 							if ($this->dat['files'][$res_fileID]['filename'])	{
 
 									// Resolve original filename:
@@ -2262,7 +2273,7 @@ class tx_impexp {
 									} else $this->error('ERROR: Could not create file in directory "'.$destDir.'"');
 								} else $this->error('ERROR: Could not resolve path for "'.$relResourceFileName.'"');
 
-								$tokenizedContent = str_replace('{HTML_RES_ID:'.$res_fileID.'}', $relResourceFileName, $tokenizedContent);
+								$tokenizedContent = str_replace('{EXT_RES_ID:'.$res_fileID.'}', $relResourceFileName, $tokenizedContent);
 								$tokenSubstituted = TRUE;
 							}
 						}
@@ -2270,13 +2281,13 @@ class tx_impexp {
 							// Create the resouces directory name (filename without extension, suffixed "_FILES")
 						$resourceDir = dirname($newName).'/'.ereg_replace('\.[^.]*$','',basename($newName)).'_FILES';
 						if (t3lib_div::mkdir($resourceDir))	{
-							foreach($fileHeaderInfo['HTML_RES_ID'] as $res_fileID)	{
+							foreach($fileHeaderInfo['EXT_RES_ID'] as $res_fileID)	{
 								if ($this->dat['files'][$res_fileID]['filename'])	{
 									$absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
 									$relResourceFileName = substr($absResourceFileName, strlen(dirname($resourceDir))+1);
 									$this->writeFileVerify($absResourceFileName, $res_fileID);
 
-									$tokenizedContent = str_replace('{HTML_RES_ID:'.$res_fileID.'}', $relResourceFileName, $tokenizedContent);
+									$tokenizedContent = str_replace('{EXT_RES_ID:'.$res_fileID.'}', $relResourceFileName, $tokenizedContent);
 									$tokenSubstituted = TRUE;
 								}
 							}
@@ -2299,13 +2310,14 @@ class tx_impexp {
 	 *
 	 * @param	string		Absolute filename inside PATH_site to write to
 	 * @param	string		File ID from import memory
+	 * @param	boolean		Bypasses the checking against filemounts - only for RTE files!
 	 * @return	boolean		Returns true if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
 	 */
-	function writeFileVerify($fileName, $fileID)	{
+	function writeFileVerify($fileName, $fileID, $bypassMountCheck=FALSE)	{
 		$fileProcObj = &$this->getFileProcObj();
 
 		if ($fileProcObj->actionPerms['newFile'])	{
-			if ($fileProcObj->checkPathAgainstMounts($fileName))	{	// Just for security, check again. Should actually not be necessary.
+			if ($fileProcObj->checkPathAgainstMounts($fileName) || $bypassMountCheck)	{	// Just for security, check again. Should actually not be necessary.
 				$fI = t3lib_div::split_fileref($fileName);
 				if ($fileProcObj->checkIfAllowed($fI['fileext'], $fI['path'], $fI['file']) || ($this->allowPHPScripts && $GLOBALS['BE_USER']->isAdmin())) {
 					if (t3lib_div::getFileAbsFileName($fileName))	{
@@ -2629,16 +2641,16 @@ class tx_impexp {
 					<td>Message:</td>
 					'.($this->update ? '<td>Update Mode:</td>' : '').'
 					'.($this->update ? '<td>Current Path:</td>' : '').'
-					'.($this->showDiff ? '<td>Diff:</td>' : '').'
+					'.($this->showDiff ? '<td>Result:</td>' : '').'
 				</tr>';
 
 				foreach($lines as $r)	{
 					$rows[] = '
-					<tr bgcolor="'.$r['bgColor'].'">
+					<tr class="'.$r['class'].'">
 						<td>'.$this->renderControls($r).'</td>
 						<td nowrap="nowrap">'.$r['preCode'].$r['title'].'</td>
 						<td nowrap="nowrap">'.t3lib_div::formatSize($r['size']).'</td>
-						<td nowrap="nowrap">'.($r['msg']?'<span class="typo3-red">'.$r['msg'].'</span>':'').'</td>
+						<td nowrap="nowrap">'.($r['msg'] && !$this->doesImport ? '<span class="typo3-red">'.htmlspecialchars($r['msg']).'</span>' : '').'</td>
 						'.($this->update ? '<td nowrap="nowrap">'.$r['updateMode'].'</td>' : '').'
 						'.($this->update ? '<td nowrap="nowrap">'.$r['updatePath'].'</td>' : '').'
 						'.($this->showDiff ? '<td>'.$r['showDiffContent'].'</td>' : '').'
@@ -2670,15 +2682,15 @@ class tx_impexp {
 						<td>Message:</td>
 						'.($this->update ? '<td>Update Mode:</td>' : '').'
 						'.($this->update ? '<td>Current Path:</td>' : '').'
-						'.($this->showDiff ? '<td>Diff:</td>' : '').'
+						'.($this->showDiff ? '<td>Result:</td>' : '').'
 					</tr>';
 
 					foreach($lines as $r)	{
-						$rows[] = '<tr bgcolor="'.$r['bgColor'].'">
+						$rows[] = '<tr class="'.$r['class'].'">
 							<td>'.$this->renderControls($r).'</td>
 							<td nowrap="nowrap">'.$r['preCode'].$r['title'].'</td>
 							<td nowrap="nowrap">'.t3lib_div::formatSize($r['size']).'</td>
-							<td nowrap="nowrap">'.($r['msg']?'<span class="typo3-red">'.$r['msg'].'</span>':'').'</td>
+							<td nowrap="nowrap">'.($r['msg'] && !$this->doesImport ? '<span class="typo3-red">'.htmlspecialchars($r['msg']).'</span>' : '').'</td>
 							'.($this->update ? '<td nowrap="nowrap">'.$r['updateMode'].'</td>' : '').'
 							'.($this->update ? '<td nowrap="nowrap">'.$r['updatePath'].'</td>' : '').'
 							'.($this->showDiff ? '<td>'.$r['showDiffContent'].'</td>' : '').'
@@ -2859,8 +2871,16 @@ class tx_impexp {
 
 			$pInfo['preCode'] = $preCode.t3lib_iconworks::getIconImage($table,$this->dat['records'][$table.':'.$uid]['data'],$GLOBALS['BACK_PATH'],'align="top" title="'.htmlspecialchars($table.':'.$uid).'"');
 			$pInfo['title'] = htmlspecialchars($record['title']);
+
+				// View page:
+			if ($table==='pages')	{
+				$viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? $this->import_mapId['pages'][$uid] : 0);
+				if ($viewID)	{
+					$pInfo['title'] = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($viewID, $GLOBALS['BACK_PATH'])).'return false;">'.$pInfo['title'].'</a>';
+				}
+			}
 		}
-		$pInfo['bgColor'] = $table=='pages' ? t3lib_div::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor4,-10,-10,-10) : t3lib_div::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor4,20,20,20);
+		$pInfo['class'] = $table=='pages' ? 'bgColor4-20' : 'bgColor4';
 		$pInfo['type'] = 'record';
 		$pInfo['size'] = $record['size'];
 		$lines[] = $pInfo;
@@ -2881,7 +2901,7 @@ class tx_impexp {
 			$preCode_B = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 			foreach($record['softrefs'] as $info)	{
 				$pInfo = array();
-				$pInfo['preCode'] = $preCode_A.'<img src="'.$GLOBALS['BACK_PATH'].'t3lib/gfx/rel_softref.png" width="13" height="12" align="top" alt="" />';
+				$pInfo['preCode'] = $preCode_A.'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'t3lib/gfx/rel_softref.png','width="13" height="12"').' align="top" alt="" />';
 				$pInfo['title'] = '<em>'.$info['field'].', "'.$info['spKey'].'" </em>: <span title="'.htmlspecialchars($info['matchString']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['matchString'],60)).'</span>';
 				if ($info['subst']['type'])	{
 					if (strlen($info['subst']['title']))	{
@@ -2897,11 +2917,11 @@ class tx_impexp {
 				}
 				$pInfo['ref'] = 'SOFTREF';
 				$pInfo['size'] = '';
-				$pInfo['bgColor'] = t3lib_div::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor4,0,-20,-40);
+				$pInfo['class'] = 'bgColor3';
 				$pInfo['type'] = 'softref';
 				$pInfo['_softRefInfo'] = $info;
 				$pInfo['type'] = 'softref';
-				if ($info['error'])	{
+				if ($info['error'] && !t3lib_div::inList('editable,exclude',$this->softrefCfg[$info['subst']['tokenID']]['mode']))	{
 					$pInfo['msg'].= $info['error'];
 				}
 				$lines[] = $pInfo;
@@ -2909,13 +2929,13 @@ class tx_impexp {
 					// Add relations:
 				if ($info['subst']['type'] == 'db')	{
 					list($tempTable, $tempUid) = explode(':', $info['subst']['recordRef']);
-					$this->addRelations(array(array('table' => $tempTable, 'id' => $tempUid, 'tokenID' => $info['subst']['tokenID'])),$lines,$preCode_B,array(), t3lib_div::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor4,0,-30,-50));
+					$this->addRelations(array(array('table' => $tempTable, 'id' => $tempUid, 'tokenID' => $info['subst']['tokenID'])),$lines,$preCode_B,array(), '');
 				}
 
 					// Add files:
 				if ($info['subst']['type'] == 'file')	{
 #debug($info);
-					$this->addFiles(array($info['file_ID']),$lines,$preCode_B, t3lib_div::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor4,0,-30,-50),$info['subst']['tokenID']);
+					$this->addFiles(array($info['file_ID']),$lines,$preCode_B, '', $info['subst']['tokenID']);
 				}
 			}
 		}
@@ -2928,12 +2948,12 @@ class tx_impexp {
 	 * @param	array		Output lines array (is passed by reference and modified)
 	 * @param	string		Pre-HTML code
 	 * @param	array		Recursivity check stack
-	 * @param	string		Alternative HTML color to use.
+	 * @param	string		Alternative HTML color class to use.
 	 * @return	void
 	 * @access private
 	 * @see singleRecordLines()
 	 */
-	function addRelations($rels,&$lines,$preCode,$recurCheck=array(),$htmlColor='')	{
+	function addRelations($rels,&$lines,$preCode,$recurCheck=array(),$htmlColorClass='')	{
 
 		foreach($rels as $dat)	{
 			$table = $dat['table'];
@@ -2951,13 +2971,20 @@ class tx_impexp {
 							$Iprepend = '_static';
 							$staticFixed = TRUE;
 						} else {
+							$doesRE = $this->doesRecordExist($table,$uid);
+							$lostPath = $this->getRecordPath($table==='pages' ? $doesRE['uid'] : $doesRE['pid']);
+
 							$pInfo['title'] = htmlspecialchars($pInfo['ref']);
-							$pInfo['msg'] = 'LOST RELATION'.(!$this->doesRecordExist($table,$uid) ? ' (Record not found!)' : '');
+							$pInfo['title'] = '<span title="'.htmlspecialchars($lostPath).'">'.$pInfo['title'].'</span>';
+
+							$pInfo['msg'] = 'LOST RELATION'.(!$doesRE ? ' (Record not found!)' : ' (Path: '.$lostPath.')');
 							$Iprepend = '_lost';
 	#						debug('MISSING relation: '.$table.':'.$uid,1);
 						}
 					} else {
 						$pInfo['title'] = htmlspecialchars($record['title']);
+						$pInfo['title'] = '<span title="'.htmlspecialchars($this->getRecordPath($table==='pages' ? $record['uid'] : $record['pid'])).'">'.$pInfo['title'].'</span>';
+
 					#	$pInfo['size'] = $record['size'];
 					}
 				} else {	// Negative values in relation fields. This is typically sys_language fields, fe_users fields etc. They are static values. They CAN theoretically be negative pointers to uids in other tables but this is so rarely used that it is not supported
@@ -2965,14 +2992,14 @@ class tx_impexp {
 					$staticFixed = TRUE;
 				}
 
-				$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'t3lib/gfx/rel_db'.$Iprepend.'.gif" width="13" height="12" align="top" title="'.$pInfo['ref'].'" alt="" />';
-				$pInfo['bgColor'] = $htmlColor ? $htmlColor : t3lib_div::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor4,10,10,10);
+				$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'t3lib/gfx/rel_db'.$Iprepend.'.gif','width="13" height="12"').' align="top" title="'.htmlspecialchars($pInfo['ref']).'" alt="" />';
+				$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
 				$pInfo['type'] = 'rel';
 
 				if (!$staticFixed || $this->showStaticRelations)	{
 					$lines[] = $pInfo;
 					if (is_array($record) && is_array($record['rels']))	{
-						$this->addRelations($record['rels'], $lines, $preCode.'&nbsp;&nbsp;', array_merge($recurCheck,array($pInfo['ref'])), $htmlColor);
+						$this->addRelations($record['rels'], $lines, $preCode.'&nbsp;&nbsp;', array_merge($recurCheck,array($pInfo['ref'])), $htmlColorClass);
 					}
 				}
 			} else $this->error($pInfo['ref'].' was recursive...');
@@ -2985,13 +3012,13 @@ class tx_impexp {
 	 * @param	array		Array of file IDs
 	 * @param	array		Output lines array (is passed by reference and modified)
 	 * @param	string		Pre-HTML code
-	 * @param	string		Alternative HTML color to use.
+	 * @param	string		Alternative HTML color class to use.
 	 * @param	string		Token ID if this is a softreference (in which case it only makes sense with a single element in the $rels array!)
 	 * @return	void
 	 * @access private
 	 * @see singleRecordLines()
 	 */
-	function addFiles($rels,&$lines,$preCode,$htmlColor='',$tokenID='')	{
+	function addFiles($rels,&$lines,$preCode,$htmlColorClass='',$tokenID='')	{
 
 		foreach($rels as $ID)	{
 
@@ -3006,23 +3033,28 @@ class tx_impexp {
 					return;
 				}
 			}
-			$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'t3lib/gfx/rel_file.gif" width="13" height="12" align="top" alt="" />';
+			$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'t3lib/gfx/rel_file.gif','width="13" height="12"').' align="top" alt="" />';
 			$pInfo['title'] = htmlspecialchars($fI['filename']);
 			$pInfo['ref'] = 'FILE';
 			$pInfo['size'] = $fI['filesize'];
-			$pInfo['bgColor'] = $htmlColor ? $htmlColor : t3lib_div::modifyHTMLColorAll($GLOBALS['TBE_TEMPLATE']->bgColor4,10);
+			$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
 			$pInfo['type'] = 'file';
 
 				// If import mode and there is a non-RTE softreference, check the destination directory:
 			if ($this->mode==='import' && $tokenID && !$fI['RTE_ORIG_ID'])	{
-				$testDirPrefix = dirname($fI['relFileName']).'/';
-				$testDirPrefix2 = $this->verifyFolderAccess($testDirPrefix);
+				if (isset($fI['parentRelFileName']))	{
+					$pInfo['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
+				} else {
+					$testDirPrefix = dirname($fI['relFileName']).'/';
+					$testDirPrefix2 = $this->verifyFolderAccess($testDirPrefix);
 
-				if (!$testDirPrefix2)	{
-					$pInfo['msg'] = 'ERROR: There are no available filemounts to write file in! ';
-				} elseif (strcmp($testDirPrefix,$testDirPrefix2))	{
-					$pInfo['msg'] = 'File will be attempted written to "'.$testDirPrefix2.'". ';
+					if (!$testDirPrefix2)	{
+						$pInfo['msg'] = 'ERROR: There are no available filemounts to write file in! ';
+					} elseif (strcmp($testDirPrefix,$testDirPrefix2))	{
+						$pInfo['msg'] = 'File will be attempted written to "'.$testDirPrefix2.'". ';
+					}
 				}
+
 
 					// Check if file exists:
 				if (@file_exists(PATH_site.$fI['relFileName']))	{
@@ -3060,35 +3092,35 @@ class tx_impexp {
 
 				$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID],strlen(PATH_site));
 
-				$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'t3lib/gfx/rel_file.gif" width="13" height="12" align="top" alt="" />';
+				$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'t3lib/gfx/rel_file.gif','width="13" height="12"').' align="top" alt="" />';
 				$pInfo['title'] = htmlspecialchars($fI['filename']).' <em>(Original)</em>';
 				$pInfo['ref'] = 'FILE';
 				$pInfo['size'] = $fI['filesize'];
-				$pInfo['bgColor'] = $htmlColor ? $htmlColor : t3lib_div::modifyHTMLColorAll($GLOBALS['TBE_TEMPLATE']->bgColor4,10);
+				$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
 				$pInfo['type'] = 'file';
 				$lines[] = $pInfo;
 				unset($this->remainHeader['files'][$ID]);
 			}
 
-				// HTML resources:
-			if (is_array($fI['HTML_RES_ID']))	{
-				foreach($fI['HTML_RES_ID'] as $ID)	{
+				// External resources:
+			if (is_array($fI['EXT_RES_ID']))	{
+				foreach($fI['EXT_RES_ID'] as $ID)	{
 					$pInfo = array();
 					$fI = $this->dat['header']['files'][$ID];
 					if (!is_array($fI))	{
-						$pInfo['msg'] = 'MISSING HTML resource FILE: '.$ID;
-						$this->error('MISSING HTML resource FILE: '.$ID,1);
+						$pInfo['msg'] = 'MISSING External Resource FILE: '.$ID;
+						$this->error('MISSING External Resource FILE: '.$ID,1);
 					} else {
 						$pInfo['updatePath'] = $fI['parentRelFileName'];
 					}
 
 					$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID],strlen(PATH_site));
 
-					$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="'.$GLOBALS['BACK_PATH'].'t3lib/gfx/rel_file.gif" width="13" height="12" align="top" alt="" />';
+					$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'t3lib/gfx/rel_file.gif','width="13" height="12"').' align="top" alt="" />';
 					$pInfo['title'] = htmlspecialchars($fI['filename']).' <em>(Resource)</em>';
 					$pInfo['ref'] = 'FILE';
 					$pInfo['size'] = $fI['filesize'];
-					$pInfo['bgColor'] = $htmlColor ? $htmlColor : t3lib_div::modifyHTMLColorAll($GLOBALS['TBE_TEMPLATE']->bgColor4,10);
+					$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
 					$pInfo['type'] = 'file';
 					$lines[] = $pInfo;
 					unset($this->remainHeader['files'][$ID]);
@@ -3398,7 +3430,7 @@ class tx_impexp {
 				$output = 'Match';
 			}
 
-			return $output.' ['.$table.':'.$databaseRecord['uid'].']';
+			return '<b class="nobr">['.htmlspecialchars($table.':'.$databaseRecord['uid'].' => '.$importRecord['uid']).']:</b> '.$output;
 		}
 
 
