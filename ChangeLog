@@ -1,3 +1,7 @@
+2004-04-30  Robert Lemke  <rl@robertlemke.de>
+
+	* Changed warning message for typo3/ext in the install tool for the directories. Now directories have the following requirements, where the values mean. See Changelog of t3lib_install.php for more details.
+
 2004-04-29  Robert Lemke  <rl@robertlemke.de>
 
 	* Resolved bug #0000031:
