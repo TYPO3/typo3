@@ -258,7 +258,7 @@ class t3lib_extMgm {
 			foreach($TCA[$table]['types'] as $k => $v)	{
 				if (!$specificTypesList || t3lib_div::inList($specificTypesList,$k))	{
 
-
+					
 
 					if ($insert) {
 						$append=true;
@@ -268,7 +268,7 @@ class t3lib_extMgm {
 							$parts = explode(';',$fieldInfo);
 							$theField = trim($parts[0]);
 							$palette = trim($parts[0]).';;'.trim($parts[2]);
-
+							
 								// insert before: find exact field name or palette with number
 							if (in_array($theField, $positionArr) OR in_array($palette, $positionArr) OR
 								in_array('before:'.$theField, $positionArr) OR in_array('before:'.$palette, $positionArr))	{
@@ -538,11 +538,11 @@ class t3lib_extMgm {
 	 *
 	 * @param	string		Service type
 	 * @param	string		Service sub type
-	 * @param	string		Service key that should be excluded in the search for a service
+	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
 	 * @return	mixed		Service info array if a service was found, FLASE otherwise
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
-	function findService($serviceType, $serviceSubType='', $excludeServiceKeys='') {
+	function findService($serviceType, $serviceSubType='', $excludeServiceKeys=array()) {
 		global $T3_SERVICES;
 
 		$serviceKey = FALSE;
@@ -550,10 +550,14 @@ class t3lib_extMgm {
 		$priority = 0;
 		$quality = 0;
 
+		if (!is_array($excludeServiceKeys) ) {
+			$excludeServiceKeys = t3lib_div::trimExplode(',', $excludeServiceKeys, 1);
+		}
+		
 		if (is_array($T3_SERVICES[$serviceType]))	{
 			foreach($T3_SERVICES[$serviceType] as $key => $info)	{
 
-				if (t3lib_div::inList($excludeServiceKeys,$key)) {
+				if (in_array($key, $excludeServiceKeys)) {
 					continue;
 				}
 
