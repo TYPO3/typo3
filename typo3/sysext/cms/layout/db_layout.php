@@ -68,16 +68,16 @@
 
 
 unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
-include ('locallang.php');
-require_once (PATH_t3lib.'class.t3lib_pagetree.php');
-require_once (PATH_t3lib.'class.t3lib_page.php');
-require_once (PATH_t3lib.'class.t3lib_recordlist.php');
-require_once (PATH_typo3.'class.db_list.inc');
-require_once ('class.tx_cms_layout.php');
-require_once (PATH_t3lib.'class.t3lib_positionmap.php');
+require('conf.php');
+require($BACK_PATH.'init.php');
+require($BACK_PATH.'template.php');
+$LANG->includeLLFile('EXT:cms/layout/locallang.php');
+require_once(PATH_t3lib.'class.t3lib_pagetree.php');
+require_once(PATH_t3lib.'class.t3lib_page.php');
+require_once(PATH_t3lib.'class.t3lib_recordlist.php');
+require_once(PATH_typo3.'class.db_list.inc');
+require_once('class.tx_cms_layout.php');
+require_once(PATH_t3lib.'class.t3lib_positionmap.php');
 $BE_USER->modAccess($MCONF,1);
 
 // Will open up records locked by current user. It's assumed that the locking should end if this script is hit.

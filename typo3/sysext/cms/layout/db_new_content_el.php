@@ -60,9 +60,9 @@
 
 
 unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
+require('conf.php');
+require($BACK_PATH.'init.php');
+require($BACK_PATH.'template.php');
 
 	// Unset MCONF/MLANG since all we wanted was back path etc. for this particular script.
 unset($MCONF);
@@ -71,15 +71,15 @@ unset($MLANG);
 	// Merging locallang files/arrays:
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 $LOCAL_LANG_orig = $LOCAL_LANG;
-include ('locallang_db_new_content_el.php');
+$LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.php');
 $LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig,$LOCAL_LANG);
 
 	// Exits if 'cms' extension is not loaded:
 t3lib_extMgm::isLoaded('cms',1);
 
 	// Include needed libraries:
-require_once (PATH_t3lib.'class.t3lib_page.php');
-require_once (PATH_t3lib.'class.t3lib_positionmap.php');
+require_once(PATH_t3lib.'class.t3lib_page.php');
+require_once(PATH_t3lib.'class.t3lib_positionmap.php');
 
 
 

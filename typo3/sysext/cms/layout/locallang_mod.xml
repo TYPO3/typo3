@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Standard Module labels for Web&gt;Page</description>
+        <type>module</type>
+        <fileId>EXT:cms/layout/locallang_mod.php</fileId>
+        <labelContext type="array">
+            <languageKey index="mlang_labels_tablabel"></languageKey>
+            <languageKey index="mlang_labels_tabdescr"></languageKey>
+            <languageKey index="mlang_tabs_tab"></languageKey>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="mlang_labels_tablabel">Page content</label>
+            <label index="mlang_labels_tabdescr">This module allows you to create and edit webpages. It provides a Quick-Editor for instant access to the primary page content. In addition you can manage different languages and columns of content per page. Finally you may access special page content like guestbook, board and shopping items. The module also presents pagehit statistics for the individual pages.</label>
+            <label index="mlang_tabs_tab">Page</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="mlang_labels_tablabel">Sideindhold</label>
+            <label index="mlang_labels_tabdescr">Dette modul giver dig mulighed for at oprette og redigere websider. Kvik-redigerings-funktionen giver dig øjeblikkelig adgang til det primære indhold på siderne. Herudover kan du styre forskellige sprog og kolonner per side. Endeligt kan du tilgå specialiseret sideindhold så som gæstebog-, forum- og produktelementer. Modulet fremviser også en sidevisningsstatestik for de enkelte sider.</label>
+            <label index="mlang_tabs_tab">Side</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="mlang_labels_tablabel">Seiten-Info und Inhalt</label>
+            <label index="mlang_labels_tabdescr">Mit diesem Modul können Sie neue Webseiten anlegen und bearbeiten. Es bietet einen Quickeditor für schnellen Zugriff auf den Hauptseiteninhalt. Zusätzlich können Sie verschiedene Sprachen und Inhaltsspalten Ihre Seite verwalten. Zusätzlich können Sie speziellen Seiteninhalt wie Gästebücher-, Forums- und Shop-Einträge verwalten. Das Modul zeigt Ihnen auch Seitenzugriffstatistiken für die einzelnen Seiten an.</label>
+            <label index="mlang_tabs_tab">Seite</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="mlang_labels_tablabel">Side-info og innhold</label>
+            <label index="mlang_labels_tabdescr">Hurtigredigeringsfunksjonen gir deg rask tilgang til det primære innholdet på sidene. Du kan også velge forskjellige språk og kolonner per side. Utover dette har du tilgang til spesielt sideinnhold som gjestebok-, forum- og produktelementer. Modulen viser også sidevisningsstatistikk for de enkelte sidene.</label>
+            <label index="mlang_tabs_tab">Side</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="mlang_labels_tablabel">Contenuto della pagina</label>
+            <label index="mlang_labels_tabdescr">Questo modulo permette di creare e modificare le pagine. Fornisce un Quick-Editor per modificare velocemente il contenuto. Potete gestire i paragrafi in multilingua, su differenti colonne, e potete accedere a pagine di tipo speciale, come guestbook, forum di discussione, shopping. Attraverso questo modulo potete, infine, vedere alcune statistiche sulla pagina.</label>
+            <label index="mlang_tabs_tab">Pagina</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="mlang_labels_tablabel">Contenu page</label>
+            <label index="mlang_labels_tabdescr">Ce modules vous permet de créer et d'editer les pages web. Il vous apporte un Editeur rapide pour un accès immédiat au contenu primaire de la page. En plus, vous pouvez gérer plusieurs langues et colone pour le contenu de la page. Finalement, vous pouvez accéder au contenu spécial des pages comme les livres d'or, les forums de discitions et le magasin en ligne. Ce module présente aussi les statistiques pour chaque page.</label>
+            <label index="mlang_tabs_tab">Page</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="mlang_labels_tablabel">Contenido de la página</label>
+            <label index="mlang_labels_tabdescr">Este módulo le permite crear y editar páginas web. Posee un Editor Rápido que facilita acceso instantáneo al contenido primario de la página. También puede administrar los diferentes lenguajes y columnas de contenido por página. Finalmente puede acceder a contenido especial como la lista de visitantes, el tablero de mensajes y los artículos de la tienda. El módulo también muestra una estadística de consulta de cada página individualmente.</label>
+            <label index="mlang_tabs_tab">Página</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="mlang_labels_tablabel">Pagina-inhoud</label>
+            <label index="mlang_labels_tabdescr">Via deze module kan je webpagina's aanmaken en bewerken. Je vindt hier een Quick-Editor die je directe toegang geeft tot de primaire pagina-inhoud. Bovendien kan je de diverse talen en kolommen inhoud per pagina manipuleren. Tenslotte heb je toegang tot speciale pagina-inhoud zoals gastenboek, forum en winkelartikelen. Deze module introduceert ook statistieken van de pagina-treffers voor individuele pagina's.</label>
+            <label index="mlang_tabs_tab">Pagina</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="mlang_labels_tablabel">Obsah stránky</label>
+            <label index="mlang_labels_tabdescr">Tento modul umožňuje vytvářet a editovat webové stránky. Je vybaven režimem rychlých úprav pro okamžitý přístup k základnímu obsahu stránky. Dále můžete spravovat různé jazyky a sloupce obsahu na stránce. Navíc máte přístupný i speciální obsah stránek, jako je návštěvní kniha, diskusní fórum nebo položky zboží v obchodu. Modul také ukazuje statistiku přístupů pro jednotlivé stránky.</label>
+            <label index="mlang_tabs_tab">Stránka</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="mlang_labels_tablabel">Zawartość strony</label>
+            <label index="mlang_labels_tabdescr">Ten moduł pozwala tworzyć i edytować strony. Do dyspozycji masz Szybki-Edytor do błyskawicznej edycji treści zawartej na stronie. Możesz również zarządzać treścią w kolumnach oraz różnymi wersjami językowymi dla strony. Masz dostęp również do specjalnej zawartości typu wpisy w forum dyskusyjnym, księdze gości czy asortyment sklepu. Moduł wyświetla też statystyki odsłon dla poszczególnych stron.</label>
+            <label index="mlang_tabs_tab">Układ</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="mlang_labels_tablabel">Vsebina strani</label>
+            <label index="mlang_labels_tabdescr">Ta modul vam omogoča ustvarjanje in urejanje spletnih strani. Vsebuje hitri urejevalnik za takojšnji dostop do primarne vsebine strani. Omogoča tudi upravljanje različnih jezikovnih verzij strani. Lahko uporabite tudi posebno vsebino, naprimer knjigo gostov, oglasno desko, ali online trgovino. Tudi v tem modulu si lahko ogledate statistiko obiska strani.</label>
+            <label index="mlang_tabs_tab">Stran</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="mlang_labels_tablabel">Sivun sisältö</label>
+            <label index="mlang_labels_tabdescr">Tällä modulilla luot, muotoilet ja ylläpidät www-sivujasi. QuichEdit teksturilla käsittelet sivujen sisältöä. Lisäksi voit hallita useita erikieliä ja sarakkeita sivuillasi. Lisäksi pääset spesiaali sisältöihin kuten esimerkiksi vieraskijaan, keskustelusivuille ja kauppasivuille. Moduli näyttää myös sivuittain käyttötilastot.</label>
+            <label index="mlang_tabs_tab">Sivu</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="mlang_labels_tablabel">Sayfa içeriği</label>
+            <label index="mlang_labels_tabdescr">Bu modül websayfaları yaratmanıza ve düzenlemenize izin verir. Hızlı Düzenleyici birincil sayfa içeriğine acil erişim imkanı sağlar. Buna ek olarak değişik dilleri ve her sayfa içeriğinin sütünlarını yönetebilirsiniz. Son olarak özel sayfa içeriğine erişebilirsiniz ziyaretçi defteri, ilan tahtası ve alışveriş nesneleri gibi. Birde modül küşüsel sayfalar için sayfa erişim istatistikleri sunuyor.</label>
+            <label index="mlang_tabs_tab">Sayfa</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="mlang_labels_tablabel">Sidans innehåll</label>
+            <label index="mlang_labels_tabdescr">Med denna modul kan man skapa och ändra web-sidor. Här finns en snabbeditering med vilken man snabbt kommer åt det viktigaste sidinnehållet. Dessutom kan man välja språk och kolumner med innehåll för alla sidor. Slutligen kan man redigera olika slag av sidinnehåll, t.ex. gästbok, diskussionsforum och produkter. Modulen presenterar också hur många träffar varje individuell sida fått.</label>
+            <label index="mlang_tabs_tab">Sida</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="mlang_labels_tablabel">Conteúdo da página</label>
+            <label index="mlang_labels_tabdescr">Este módulo permite-lhe criar e editar páginas da internet. Providência um Editor-Rápido para acesso instantâneo ao conteúdo da página primária. Em adição pode gerir diferentes idiomas e colunas de conteúdo por página. Finalmente pode aceder a páginas de conteúdos especiais tais como livros de visitas, forum e items de loja. O módulo também apresenta estatísticas de visualização para páginas individuais.</label>
+            <label index="mlang_tabs_tab">Página</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="mlang_labels_tablabel">Содержимое страницы</label>
+            <label index="mlang_labels_tabdescr">Этот модуль позволяет создавать и изменять веб-страницы. С помощью этого редактора вы можете легко получить доступ к основным записям страницы. Кроме того вы можете работать над различным языковым содержимым или же над содержимым в различных полях страницы. Также здесь возможен доступ к специальным записям, например из гостевой книги, форума или же магазина. Данный модуль также показывает статистику хитов на отдельных страницах.</label>
+            <label index="mlang_tabs_tab">Страница</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="mlang_labels_tablabel">Conţinut de pagină</label>
+            <label index="mlang_labels_tabdescr">Acest modul vă permite să creaţi şi să modificaţi pagini de web. Vi se oferă un editor pentru acces imediat la conţinutul unei pagini. În completare, puteţi administra limbaje diferite şi coloane de conţinut în fiecare pagină. Mai puteţi crea pagini cu conţinut special, cum ar fi cartea de oaspeţi, forum sau pagina de cumpărături. Acest modul prezintă şi statistici de accesare pentru fiecare pagină în parte.</label>
+            <label index="mlang_tabs_tab">Pagină</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="mlang_labels_tablabel">页面内容</label>
+            <label index="mlang_labels_tabdescr">此模块允许您创建并编辑网页.它提供一个快速-编辑器来立即访问主要页面的内容. 另外您可以管理不同的语言和每个页面的列.最后您可以访问特别的页面内容如客户簿,板和购物项目等.此模块也为个人网页寻找页面提供统计.</label>
+            <label index="mlang_tabs_tab">页面</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="mlang_labels_tablabel">Obsah stránky</label>
+            <label index="mlang_labels_tabdescr">Tento modul umožňuje vytvárať a pozmieňať webové stránky. Poskytuje Quick-Editor na rýchly prístup k základnému obsahu stránky. Navia môžete spravovať rôzne jazykové verzie a stĺpce na stránke. Nakoniec, môžete mať prístup k špeciálnemu obsahu stránky ako je kniha návštev, nástenka, tovar obchodu atď. Modul okrem iného ukazuje štatistiky prístupov pre jednotlivé stránky.</label>
+            <label index="mlang_tabs_tab">Stránka</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+            <label index="mlang_labels_tablabel">Siða innihald</label>
+            <label index="mlang_labels_tabdescr">Þessi viðbætur leyfir þér að breyta vefsiður á fljót og einfaldan hátt.</label>
+            <label index="mlang_tabs_tab">Siða</label>
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="mlang_labels_tablabel">Sadržaj stranice</label>
+            <label index="mlang_labels_tabdescr">Ovaj modul omugaćava kreiranje i uređivanje web stranica. Ovdje se nalazi Quick-Editor za trenutni pristup osnovnom sadržaju stranice. Uz to ovdje se može upravljati raznim jezicima ili kolonama sadržaja po stranici. Na kraju, odavdje se može pristupiti posebnim sadržajima stranice poput guestbooka, foruma ili shopping cart-a. Modul isto tako prikazuje statistiku posjeta stranicama za pojedinu stranicu.</label>
+            <label index="mlang_tabs_tab">Stranica</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="mlang_labels_tablabel">Oldaltartalom</label>
+            <label index="mlang_labels_tabdescr">Ez a modul segít létrehozni és szerkeszteni a weboldalakat.</label>
+            <label index="mlang_tabs_tab">Oldal</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+            <label index="mlang_labels_tablabel">Quppernerup imai</label>
+            <label index="mlang_tabs_tab">Qupperneq</label>
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="mlang_labels_tablabel">網頁內容</label>
+            <label index="mlang_labels_tabdescr">這個模組容許你建立和修改網頁。它提供一個快速的編輯器可以即係存取基本的網頁內容。此外，你可以處理每一個網頁不同的語言和內容。最後，你可以存取特別的網頁內容，例如：訪客留言板﹑討論區和購物項目等。這個模組同時列出每個網頁網頁的溜覽次數。</label>
+            <label index="mlang_tabs_tab">網頁</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="mlang_labels_tablabel">Съдържание на страницата</label>
+            <label index="mlang_labels_tabdescr">Този модул ти позволява да създаваш и редактираш уеб страници.</label>
+            <label index="mlang_tabs_tab">Страница</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="mlang_labels_tablabel">Conteúdo da página</label>
+            <label index="mlang_labels_tabdescr">Este módulo permite criar e editar páginas da internet. Ele oferece um Editor-Rápido para acesso instantâneo ao conteúdo primário da página. Além disso, você pode administrar diferentes idiomas e colunas de conteúdo por página. Finalmente, você pode acessar conteúdos especiais de páginas como livros de visitas, fórum e ítens de loja. O módulo também apresenta estatísticas de visualização para páginas individuais.</label>
+            <label index="mlang_tabs_tab">Página</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="mlang_labels_tablabel">Lehekülje sisu</label>
+            <label index="mlang_labels_tabdescr">See moodul võimaldab teil luua ja muuta veebilehti, andes teie käsutusse Kiir-Redaktori lehekülje sisu muutmiseks. Lisaks saata hallata erinevaid keelemooduleid ja sisuveerge igal leheküljel. Samuti võimaldab see moodul ligipääsu sellistele spetsiaalsetele lehekülje elementidele nagu külalisteraamat, tahvel ja pood. Moodul kuvab ka individuaalsete lehekülgede külastusstatistikat.</label>
+            <label index="mlang_tabs_tab">Lehekülg</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+            <label index="mlang_labels_tablabel">معلومات و محتوى الصفحة</label>
+            <label index="mlang_labels_tabdescr">باسخدام هذه الموديول يمكنك إنشاء و إعداد صفحات الويب. يمكنك عن طريقه الوصول السريع للمحتوى الأساسي للصفحة. بالإضافة إلى أنك تستطيع إدارة مسألة لغة الصفحة و محتوياتهاو لو كانت خاصة  سواء كانت عبارة عن سجل الزوار أو مركز البيع أو ملتقى الأسئلة. هنا يمكنك أيضا الإطلاع على الحالة الإستاتيكية للصفحة و كم عدد الزوار الذين زاروا الصفحة.</label>
+            <label index="mlang_tabs_tab">الصفحة</label>
+        </languageKey>
+        <languageKey index="he" type="array">
+            <label index="mlang_labels_tablabel">תוכן דף</label>
+            <label index="mlang_labels_tabdescr">מודול זה מאפשר לך לערוך וליצור דפי אינטרנט. הוא מעניק עורך מהיר לגישה מיידית לתוכן העיקרי של דף. בנוסף הנך יכול לנהל שפות שונות ועמודות של תוכן בכל דף. לבסוף הנך יכול לגשת לתוכן מיוחד כגון: ספר מבקרים, לוח ופריטי חנות. המודול מאפשר גם ספירת ביקורים לדפים נפרדים.</label>
+            <label index="mlang_tabs_tab">דפים</label>
+        </languageKey>
+        <languageKey index="ua" type="array">
+            <label index="mlang_labels_tablabel">Вміст сторінки</label>
+            <label index="mlang_tabs_tab">Сторінка</label>
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="mlang_labels_tablabel">Lapu saturs</label>
+            <label index="mlang_labels_tabdescr">Šis modulis ļauj jums veidot un labot web lapas. It provides a Quick-Editor for instant access to the primary page content. In addition you can manage different languages and columns of content per page. Finally you may access special page content like guestbook, board and shopping items. The module also presents pagehit statistics for the individual pages.</label>
+            <label index="mlang_tabs_tab">Lapas</label>
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="he" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="ua" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="mlang_labels_tablabel" type="integer">73079758</label>
+            <label index="mlang_labels_tabdescr" type="integer">229943848</label>
+            <label index="mlang_tabs_tab" type="integer">26464201</label>
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>

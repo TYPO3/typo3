@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>CSH for Web&gt;Page module</description>
+        <type>CSH</type>
+        <fileId>EXT:cms/locallang_csh_weblayout.php</fileId>
+        <labelContext type="array">
+            <languageKey index=".alttitle"></languageKey>
+            <languageKey index=".description"></languageKey>
+            <languageKey index="quickEdit.alttitle"></languageKey>
+            <languageKey index="quickEdit.description"></languageKey>
+            <languageKey index="quickEdit.details"></languageKey>
+            <languageKey index="quickEdit_selElement.alttitle"></languageKey>
+            <languageKey index="quickEdit_selElement.description"></languageKey>
+            <languageKey index="columns_1.alttitle"></languageKey>
+            <languageKey index="columns_1.description"></languageKey>
+            <languageKey index="columns_2.alttitle"></languageKey>
+            <languageKey index="columns_2.description"></languageKey>
+            <languageKey index="columns_3.alttitle"></languageKey>
+            <languageKey index="columns_3.description"></languageKey>
+            <languageKey index="language_list.description"></languageKey>
+            <languageKey index="columns_single.description"></languageKey>
+            <languageKey index="columns_multi.description"></languageKey>
+            <languageKey index="button_panel.description"></languageKey>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index=".alttitle">Page Module</label>
+            <label index=".description">[FILL IN] page_module</label>
+            <label index="quickEdit.alttitle">Quick Edit</label>
+            <label index="quickEdit.description">The Quick Editor gives you direct access to the form fields of the page content.</label>
+            <label index="quickEdit.details">The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</label>
+            <label index="quickEdit_selElement.alttitle">Content Elements</label>
+            <label index="quickEdit_selElement.description">This is an overview of the content elements on this page. Select another element to edit or click an &quot;New&quot; icon to create a new content element.</label>
+            <label index="columns_1.alttitle">Listing by Column</label>
+            <label index="columns_1.description">In the &quot;Columns&quot; view you can control the content of the web page as it is positioned in columns.</label>
+            <label index="columns_2.alttitle">Listing by Language</label>
+            <label index="columns_2.description">In the &quot;Languages&quot; view you can control the content of the web page as it is divided into languages and columns.</label>
+            <label index="columns_3.alttitle">Page Information</label>
+            <label index="columns_3.description">In the &quot;Page Information&quot; view you can see various statistics about a page</label>
+            <label index="language_list.description">[FILL IN] language_list</label>
+            <label index="columns_single.description">[FILL IN] columns_single</label>
+            <label index="columns_multi.description">[FILL IN] columns_multi</label>
+            <label index="button_panel.description">[FILL IN] button_panel</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="quickEdit.description">KvikRedigering giver dig direkte adgang til formfelterne for sidens indhold.</label>
+            <label index="quickEdit.details">KvikRedigering er designet til at skære ned på antallet af klik som er indvolveret i at redigere en sides indhold. Du klikke ganske enkelt sidens titel i sidetræet og du vil straks se det første indholdselement fra den normale tekstkolonne læst ind i liste-vinduet. I værktøjslinien i toppen kan du vælge andre indholdselementer på siden i combo-boksen.</label>
+            <label index="quickEdit_selElement.description">Dette er en oversigt over indholdselementerne på denne side. Vælg et andet element eller klik på et &quot;Ny&quot; ikon for at oprette et nyt indholdselement.</label>
+            <label index="columns_1.description">Via &quot;Kolonne&quot; visning kan du kontrollere sidens indhold i henhold til dets position i kolonner.</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="quickEdit.description">Hurtigredigering gir deg direkte adgang til formfeltene for sidens innhold.</label>
+            <label index="quickEdit.details">Hurtigredigering er designet for å skjære ned på antall museklikk som trengs for å redigere en sides innhold. Du klikker ganske enkelt på sidens tittel i sidetreet og du vil straks se det første innholdselementet fra den normale tekstkolonnen innlest i liste-vinduet. I verktøylinjen øverst kan du velge andre innholdselementer på siden.</label>
+            <label index="quickEdit_selElement.description">Dette er en oversikt over innholdselementene på denne siden. Velg et annet element eller klikk på et &quot;Ny&quot; ikon for å opprette et nytt innholdselement.</label>
+            <label index="columns_1.description">Via &quot;Kolonne&quot; visningen kan du kontrollere innholdet på siden i henhold til hvordan det er plassert i kolonner.</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="quickEdit.description">Attraverso il Quick Editor puoi accesso diretto al contenuto della pagina.</label>
+            <label index="quickEdit.details">Il Quick Editor è stato concepito per poter accedere con pochi click al contenuto della pagina. Cliccando il titolo della pagina nell'albero delle pagine viene aperto il primo blocco di contenuto della pagina. Attraverso la toolbar puoi accedere agli altri blocchi di contenuto presenti nella pagina.</label>
+            <label index="quickEdit_selElement.description">Visione d'insieme del contenuto della pagina. Seleziona un altro blocco da modificare o clicca sull'icona &quot;Nuovo&quot;per crearne uno di nuovo.</label>
+            <label index="columns_1.description">Attraverso la vista a colonne puoi visualizzare il contenuto della pagina secondo la sua reale disposizione su più colonne.</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="quickEdit.description">L'éditeur rapide vous donne un accès rapide aux champs de formulaire du contenu de la page.</label>
+            <label index="quickEdit.details">L'éditeur rapide a pour but de réduire le nombre de clic nécessaire pour éditer le contenu d'une page. Simplement en cliquant sur le titre d'une page, vous aurez le premier élément de la colonne normal chargé. Dans la barre d'outil en haut, vous pouvez séléctionner les autres éléments dans le menu déroulant.</label>
+            <label index="quickEdit_selElement.description">C'est un aperçu des éléments dans cette page. Séléctionnez un autre élément pour l'éditer ou cliquez sur l'icône &quot;Nouveau&quot; pour créer un nouvel élément.</label>
+            <label index="columns_1.description">Avec la vue &quot;Colonnes&quot;, vous pouvez contrôler la position de vos éléments dans la page.</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="quickEdit.description">El Editor Rápido te ofrece acceso directo a los campos del formulario del contenido de la página.</label>
+            <label index="quickEdit.details">El Editor Rápido está diseñado para reducir el número de clicks que conlleva editar el contenido de la página. Simplemente haciendo click en el título de la página en el árbol de páginas tendrás el primer elemento de contenido de la columna ?normal? cargado en el marco de lista. En la barra de herramientas situada en la parte superior puedes seleccionar los elementos de contenido restantes de la página con el selector.</label>
+            <label index="quickEdit_selElement.description">Este es un resumen de los elementos de contenido en esta página. Selecciona otro elemento para editar o haz click en el icono ?Nuevo? para crear un elemento de contenido nuevo.</label>
+            <label index="columns_1.description">Desde la vista ?Columnas? puedes controlar el contenido de la web tal y como está colocado en columnas.</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="quickEdit.description">SnelBewerken geeft directe toegang tot de formulier velden van de pagina-inhoud.</label>
+            <label index="quickEdit.details">SnelBewerken is bedoeld om met zo weinig mogelijk kliks bij de pagina-inhoud te komen. Door op de paginatitel in de paginaboom te klikken wordt het eerste inhoudselement in de kolom 'NORMAAL' geladen in het lijstframe. In de knoppenbalk bovenin kunnen middels een selectieveld de andere inhoudselementen worden gekozen.</label>
+            <label index="quickEdit_selElement.description">Dit is een overzicht van de inhoudselementen op deze pagina. Selecteer een ander element om te bewerken of klik een &quot;Nieuw&quot; pictogram om een nieuw inhoudselement aan te maken.</label>
+            <label index="columns_1.description">Middels het &quot;Kolommen&quot; aanzicht kan de positie van de inhoud worden gemanipuleerd in de aanwezige kolommen.</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="quickEdit.description">Režim rychlých úprav vám dává přímý přístup k polím formuláře obsahu stránky.</label>
+            <label index="quickEdit.details">Režim rychlých úprav je navržen, aby omezil počet kliknutí potřebných pro úpravu obsahu stránky. Kliknutím na název stránky ve stromu dostanete jednoduše první prvek obsahu v normálním sloupci do editačního rámce. V selektoru lišty s nástroji nahoře můžete vybrat další prvky obsahu na stránce.</label>
+            <label index="quickEdit_selElement.description">Toto je přehled prvků obsahu na této stránce. Pro úpravy si vyberte další prvek nebo klikněte na ikonu &quot;Nový&quot; pro vytvoření nového prvku obsahu.</label>
+            <label index="columns_1.description">Pohledem &quot;Sloupce&quot; můžete ovládat obsah webové stránky tak, jak je rozložena ve sloupcích.</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="quickEdit.description">Szybki Edytor umożliwia bezpośrednią edycję pól formatki dla elementów treści.</label>
+            <label index="quickEdit_selElement.description">To jest ogólny widok elementów treści na tej stronie. Wybierz element do edycji lub kliknij ikonę &quot;Nowy&quot; aby dodać nową zawartość.</label>
+            <label index="columns_1.description">W widoku &quot;kolumnowym&quot; możesz kontrolować zawartość strony przyporządkowaną do poszczególnych kolumn.</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="quickEdit.description">Quick Editor antaaSinulle suoraan pääsyn lomakkeen tietoihin sisältö sivulla.</label>
+            <label index="quickEdit.details">Quick Editor on suunniteltu vähentämään näppäin valintoja päästäksesi muotoilemaan sivun sisältöä. Näpsäyttämällä sivun otsikko sivujen puurakenteessa saat ladatuksi ensimmäisen sisältöelementin normaalina sarakkeena. Ylävalikosta voit valita muita sisältöelementtejä.</label>
+            <label index="quickEdit_selElement.description">Tämä on yleiskatsaus sisältöelementteihin tällä sivulla. Valitse toinen elementti muotoiltavaksi tai näpsäytä &quot;new&quot;/&quot;Uusi&quot; ikonia luodaksesi uuden sisältö elementin.</label>
+            <label index="columns_1.description">Sarake näkymässä voit hallita websivun sisältöä kuten se on muotoiltu sarakkeisiin.</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="quickEdit.description">Hızlı Düzenleyici size sayfa içeriğine doğrudan erişimi sağlar.</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="quickEdit.description">Med Snabbediteraren kan du direkt ändra formulärfälten i sidinnehållet.</label>
+            <label index="quickEdit.details">Snabbediteraren är gjord för att minska antalet klickningar man behöver göra för att ändra innehållet på en sida. Genom att helt enkelt klicka på sidans titel i sidträdet laddas det första innehållselementet i normalkolumnen i ditt fönster. I verktygslådan högst upp kan du välja de andra elementen på sidan.</label>
+            <label index="quickEdit_selElement.description">Detta är en översikt av innehållselementen på denna sida. Välj ett annat element, som du vill redigera eller klicka på ikonen &quot;Ny&quot; för att skapa ett nytt element.</label>
+            <label index="columns_1.description">Med &quot;Visa kolumn&quot; kan du kontrollera sidans innehåll och hur det är placerat i kolumner.</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="quickEdit.description">Быстрый Редактор дает Вам прямой доступ к содержание страницы.</label>
+            <label index="quickEdit.details">Быстрый Редактор разработан, чтобы сократить число щелчков, необходимых для редактировать содержание страницы. Просто щелкая на название страницы в дереве Вы получаете открытую первую запись содержимого. В верхней панели инструментов Вы можете выбрать другие записи из списка.</label>
+            <label index="quickEdit_selElement.description">Это - краткий обзор записей на этой странице. Выберите другой элемент для редактирования или щелкните на кнопку &quot;Нов.&quot;, чтобы создать новую запись.</label>
+            <label index="columns_1.description">В режиме &quot;Колонки&quot; Вы можете управлять содержанием веб-страницы, размещенным в колонках.</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="quickEdit.description">Editorul Rapid vă permite accesul direct la câmpurile formularului de conţinut al paginii.</label>
+            <label index="quickEdit.details">Editorul Rapid este proiectat să reducă numărul de clickuri necesare pentru editarea conţinutului unei pagini. Dând un click pe titlul paginii în arborele paginilor se va încărca primul element de conţinut din coloana principală. Din bara de instrumente se sus puteţi selecta alte elemente de conţinut de pe pagină utilizând căsuţa de selecţie.</label>
+            <label index="quickEdit_selElement.description">Acesta este un rezumat al elementelor de conţinut de pe această pagină. Selectaţi un element pentru a-l edita sau daţi un click pe iconiţa &quot;Nou&quot; pentru a crea un nou element de conţinut.</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="quickEdit.description">快速编辑让您直接访问页面内容域的表格.</label>
+            <label index="quickEdit.details">快速编辑器是设计来删减与获得编辑页面内容有关的点击次数的. 在页面树结构中简单的点击页面标题您就在普通的列中得到安装在列表结构中优先的内容元素. 在工具榄中您可以在页面选择器工具盒里选择其它内容元素.</label>
+            <label index="quickEdit_selElement.description">这是此页面内容元素的一个总览.选择另外一个元素来编辑或点击一个&quot;新的&quot;图标来创建一个新的内容元素 .</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="quickEdit.description">Quick Editor umožňuje priamo upravovať polia obsahu stránky.</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="quickEdit.description">Brzi &quot;Quick&quot; editor daje direktan pristup poljima sadržaja na stranicama.</label>
+            <label index="quickEdit.details">Brzi &quot;Quick&quot; editor je napravljen da smanji broj klikova potrebnih za editiranje sadržaja stranice. Jednostavnim klikom na naslov stranice u stablu dobijate prvi sadržajni element u &quot;normal&quot; koloni učitan u &quot;list&quot; okvir. Na alatnoj traci pri vrhu možete odabrati druge elemente na stranici.</label>
+            <label index="quickEdit_selElement.description">Ovo je pregled elementa koji čine sadržaj stranice. Odaberite novi element za uređivanje ili kliknite ikonu &quot;Novo&quot; za kreiranje novog elementa.</label>
+            <label index="columns_1.description">Pogledom &quot;Kolone&quot; možete upravljati sadržajem web stranice kao da je posložen u kolonama.</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="quickEdit.description">A GyorsSzerkesztő közvetlen elérést tesz lehetővé az űrlapmezőkhöz.</label>
+            <label index="quickEdit.details">A GyorsSzerkesztő egy tartalmi elem szerkesztése közben végzett kattintások számának lecsökkentése érdekében született. Egyszerűen az oldalfejlécre kattintva az első tartalmi elem töltődik be.</label>
+            <label index="quickEdit_selElement.description">Ez egy áttekintés az oldal tartalmi elemei között. Válassz ki egy elemet a szerkesztéshez vagy kattints az &quot;Új&quot; ikonra egy új elem létrehozásához.</label>
+            <label index="columns_1.description">Az &quot;Oszlopok&quot; nézettel egy listában kezelhetőek az oldal tartalmi elemei.</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="quickEdit.description">快速編輯器使你可以直接存取網頁內容中的表格內容</label>
+            <label index="quickEdit.details">快速編輯器設計以減少修改網頁內容時需要的點擊的次數。單單點擊網頁樹圖中的網頁名稱你就會得到正常欄中第一個內容元件顯示在視窗中。在工具列中的頂部你可以用選項盒子選擇其他網頁上的內容元件。</label>
+            <label index="quickEdit_selElement.description">這是這網頁上的內容元件概覽。選擇另一個元件來修改或點擊「建立」圖示來建立一個新的內容元件。</label>
+            <label index="columns_1.description">透過「欄」預覽你可以控制網頁的內容，如在欄中放置的一樣。</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="quickEdit.description">Бързия редактор (Quick Editor) ви дава директен достъп до полетата на формата върху съдържанието на страницата.</label>
+            <label index="quickEdit.details">Бързия редактор (Quick Editor) е създаден за да намали броя на кликванията, необходими за редактирането на съдържанието на страницата. Просто при кликване на заглавието на страницата в дървото, Вие ще получите първия елемент в нормална колона, зареден в листовия фрейм. В инструментите отгоре можете да изберете друг елемент за страницата.</label>
+            <label index="quickEdit_selElement.description">Това е преглед на елементите на тази страница. Изберете друг елемент за редакция или кликнете на иконата &quot;Нов&quot;, за да създадете нов елемент.</label>
+            <label index="columns_1.description">В прегледа &quot;Колони&quot; можете да контролирате съдържанието на страницата, като че е в колони.</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="quickEdit.description">O Editor Rápido lhe dá acesso direto aos campos de formulário do conteúdo da página.</label>
+            <label index="quickEdit.details">O Editor Rápido foi desenhado para diminuir a quantidade de cliques envolvidos na edição do conteúdo da página. Ao clicar no título da página na árvore de páginas, o primeiro elemento de conteúdo da coluna normal é carregado no quadro de listagem. Na barra de ferramentas no topo você pode selecionar os outros elementos de conteúdo da página através de uma caixa de seleção.</label>
+            <label index="quickEdit_selElement.description">Esta é uma visão geral dos elementos de conteúdo desta página. Selecione um outro elemento para editar ou clique num ícone &quot;Novo&quot; para criar um novo elemento de conteúdo.</label>
+            <label index="columns_1.description">Através da visualização em &quot;Colunas&quot;, você pode controlar o conteúdo da página segundo seu posicionamento em colunas.</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="quickEdit.description">Quick Editor annab otsese ligipääsu lehel olevatele vormielementidele.</label>
+            <label index="quickEdit.details">Quick Editor on loodud lehe redigeerimisek vajamineva aja kokkuhoiuks. Klikkide lihtsalt lehekülje pealkirjale sisupuul, laetakse esimene sisuelement esimesse veergu. Tööriistaribalt saate rippmenüüst valida võimaluse redigeerida teisi sisuelemente.</label>
+            <label index="quickEdit_selElement.description">See on kõigi sellel lehel paiknevate sisuelementide ülevaade. Valige mõni element, mida soovite redigeerida, või klikkige &quot;Uus&quot; ikoonil, loomaks uut sisuelementi.</label>
+            <label index="columns_1.description">Vaatega &quot;Veerud&quot;, saate kontrollida lehekülgede sisu kui see on paigutatud veergudesse.</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+            <label index="quickEdit.description">هذا المعدل السريع يعطيك الدخول المباشر على محتويات خانات الإستمارة</label>
+            <label index="quickEdit.details">هذا المعدل السريع مصمم خصيصا لتعجيل الدخول على مكونات الصفحة التي تريد تعديلها. ببساطة إضغط بالماوس على عنوان الصفحة في قائمة الصفحات و سوف تدخل مباشرة على عمود المحتويات المسمى بالنورمال و يمكنك إختيار محتويات أخرى بواسطة صندوق الإختيار</label>
+            <label index="quickEdit_selElement.description">هذا هو الشكل العام لعناصر المحتويات على هذه الصفحة. يمكنك إختيار عنصر آخر لتعديله أو تضغط على رمز &quot;جديد&quot; لإنشاء عنصر محتوى جديد</label>
+            <label index="columns_1.description">مشاهدة الأعمدة تستطيع مراجعة محتويات الصفحة</label>
+        </languageKey>
+        <languageKey index="he" type="array">
+            <label index="quickEdit.description">העורך המהיר נותן לך גישה ישירה לשדות של פריט תוכן.</label>
+            <label index="quickEdit.details">העורך המהיר מיועד להפחית מספר לחיצות כדי לערוך תוכן דף.על ידי לחיצה על שם הדף בעץ הדפים, הנך מקבל פריט תוכן ראשון בעמודה הרגילה טעון במסגרת רשימה. על סרגל כלים למעלה אתה יכול לבחור פריט תוכן אחר שנמצא בדף ולערוך אותו.</label>
+            <label index="quickEdit_selElement.description">זוהי סקירה כללית של פריטי תוכן על דף זה. נא לבחור פריט תוכן אחר כדי לערוך או לחץ על &quot;חדש&quot; כדי ליצור פריט תוכן חדש.</label>
+            <label index="columns_1.description">באמצעות תצוגת &quot;עמודות&quot; הנך יכול לשלוט על תוכן של הדף כמו שזה ממוקם בעמודות.</label>
+        </languageKey>
+        <languageKey index="ua" type="array">
+            <label index="quickEdit.description">Quick Editor дає вам безпосередній доступ до вмісту сторінки</label>
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="quickEdit.description">Ātrais Redaktors dod jums tiešu pieeju lapas satura formas laukiem.</label>
+            <label index="quickEdit.details">Ātrais Redaktors ir radīts, lai jūs ātrāk varētu tikt pie lapas satura labošanas. Vienkārši klikšķinot uz lapas virsraksta lapu kokā, jūs iegūstat pirmo satura elementu no centrālās kolonnas atvērtu redaktorā. Izvēlnē, kas atrodas rīku joslā augšā, jūs varat izvēlēties citus satura elementus.</label>
+            <label index="quickEdit_selElement.description">Tas ir satura elementu pārskats šajā lapā. Jūs varat izvēlēties citu elementu labošanai, vai uzklikšķināt uz ikonas &quot;Jauns&quot;, lai izveidotu jaunu satura elementu.</label>
+            <label index="columns_1.description">Ar skatu &quot;Kolonnas&quot; jūs varat kontrolēt lapas saturu, kā tas ir izvietots kolonnās.</label>
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index=".alttitle" type="integer">120305848</label>
+            <label index=".description" type="integer">229644271</label>
+            <label index="quickEdit.alttitle" type="integer">121600477</label>
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.alttitle" type="integer">57410074</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.alttitle" type="integer">183363228</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+            <label index="columns_2.alttitle" type="integer">8205541</label>
+            <label index="columns_2.description" type="integer">120555273</label>
+            <label index="columns_3.alttitle" type="integer">263392300</label>
+            <label index="columns_3.description" type="integer">169863364</label>
+            <label index="language_list.description" type="integer">136852400</label>
+            <label index="columns_single.description" type="integer">95411271</label>
+            <label index="columns_multi.description" type="integer">185970208</label>
+            <label index="button_panel.description" type="integer">222865483</label>
+        </languageKey>
+        <languageKey index="dk" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="es" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="nl" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="cz" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="pl" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="tr" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+        </languageKey>
+        <languageKey index="se" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="ro" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+        </languageKey>
+        <languageKey index="ch" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+        </languageKey>
+        <languageKey index="sk" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="hu" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="br" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="et" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="ar" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="he" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="ua" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+        </languageKey>
+        <languageKey index="lv" type="array">
+            <label index="quickEdit.description" type="integer">106439756</label>
+            <label index="quickEdit.details" type="integer">195162147</label>
+            <label index="quickEdit_selElement.description" type="integer">221423495</label>
+            <label index="columns_1.description" type="integer">179278107</label>
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="dk" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="no" type="array">
+        </languageKey>
+        <languageKey index="it" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+        <languageKey index="es" type="array">
+        </languageKey>
+        <languageKey index="nl" type="array">
+        </languageKey>
+        <languageKey index="cz" type="array">
+        </languageKey>
+        <languageKey index="pl" type="array">
+        </languageKey>
+        <languageKey index="si" type="array">
+        </languageKey>
+        <languageKey index="fi" type="array">
+        </languageKey>
+        <languageKey index="tr" type="array">
+        </languageKey>
+        <languageKey index="se" type="array">
+        </languageKey>
+        <languageKey index="pt" type="array">
+        </languageKey>
+        <languageKey index="ru" type="array">
+        </languageKey>
+        <languageKey index="ro" type="array">
+        </languageKey>
+        <languageKey index="ch" type="array">
+        </languageKey>
+        <languageKey index="sk" type="array">
+        </languageKey>
+        <languageKey index="lt" type="array">
+        </languageKey>
+        <languageKey index="is" type="array">
+        </languageKey>
+        <languageKey index="hr" type="array">
+        </languageKey>
+        <languageKey index="hu" type="array">
+        </languageKey>
+        <languageKey index="gl" type="array">
+        </languageKey>
+        <languageKey index="th" type="array">
+        </languageKey>
+        <languageKey index="gr" type="array">
+        </languageKey>
+        <languageKey index="hk" type="array">
+        </languageKey>
+        <languageKey index="eu" type="array">
+        </languageKey>
+        <languageKey index="bg" type="array">
+        </languageKey>
+        <languageKey index="br" type="array">
+        </languageKey>
+        <languageKey index="et" type="array">
+        </languageKey>
+        <languageKey index="ar" type="array">
+        </languageKey>
+        <languageKey index="he" type="array">
+        </languageKey>
+        <languageKey index="ua" type="array">
+        </languageKey>
+        <languageKey index="lv" type="array">
+        </languageKey>
+        <languageKey index="jp" type="array">
+        </languageKey>
+        <languageKey index="vn" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>
