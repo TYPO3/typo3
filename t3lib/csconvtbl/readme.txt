@@ -89,13 +89,31 @@ iso-8859-9.tbl
 ISO Character Set 8859-9 (Turkish)
 http://www.microsoft.com/globaldev/reference/iso/28599.htm
 
+iso-8859-10.tbl
+ISO Character Set 8859-10
+http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-10.TXT
+
 iso-8859-11.tbl
+ISO Character Set 8859-11 (Thai)
 http://czyborra.com/charsets/iso8859.html
 http://aspell.net/charsets/iso8859.html
+http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-11.TXT
+
+iso-8859-13.tbl
+ISO Character Set 8859-13 (Lithuanian)
+http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-13.TXT
+
+iso-8859-14.tbl
+ISO Character Set 8859-14 (Celtic)
+http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-10.TXT
 
 iso-8859-15.tbl
 ISO Character Set 8859-15 (Latin 9)
 http://www.microsoft.com/globaldev/reference/iso/28605.htm
+
+iso-8859-16.tbl
+ISO Character Set 8859-16 (Romanian)
+http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-16.TXT
 
 windows-1250.tbl
 Microsoft Windows Codepage : 1250 (Central Europe)
@@ -155,4 +173,6 @@ http://www.microsoft.com/globaldev/reference/dbcs/932.htm
 (Multibyte)
 
 koi8-r.tbl
+Cyrillic (Russian)
 http://www.unicode.org/Public/MAPPINGS/VENDORS/MISC/KOI8-R.TXT
+
