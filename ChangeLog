@@ -1,3 +1,7 @@
+2004-11-18  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Implemented #0000508: Minor performance improvement in an if clause in t3lib_stdgraphic, thanks to Volker Graubaum.
+
 2004-11-17  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Converted locallang*.php to locallang*.xml in new system extensions.

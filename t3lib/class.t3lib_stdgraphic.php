@@ -2067,7 +2067,7 @@ class t3lib_stdGraphic	{
 					// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
-				if (!$this->file_exists_typo3temp_file($output,$imagefile) || $this->dontCheckForExistingTempFile)	{
+				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output,$imagefile))	{
 					$this->imageMagickExec($imagefile.$frame,$output,$command);
 				}
 				if (@file_exists($output))	{
