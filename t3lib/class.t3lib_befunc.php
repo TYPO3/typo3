@@ -1897,9 +1897,17 @@ class t3lib_BEfunc	{
 									TRUE
 								);
 				// Add title?
+			$onClick = 'vHWin=window.open(\''.$BACK_PATH.'view_help.php?tfID='.($table.'.'.$field).'\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 			$text =
-					($fDat['alttitle'] ? '<h4>'.$fDat['alttitle'].'</h4>' : '').
+					($fDat['alttitle'] ? '<h4><a href="#" onclick="'.htmlspecialchars($onClick).'">'.$fDat['alttitle'].'</a></h4>' : '').
 					$fDat['description'];
+
+				// More information to get?
+			if ($fDat['image_descr'] || $fDat['seeAlso'] || $fDat['details'] || $fDat['syntax'])	{ // || $fDat['image'];
+				$text.=' <a href="#" onclick="'.htmlspecialchars($onClick).'">'.
+						'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/rel_db.gif','width="13" height="12"').' class="absmiddle typo3-csh-more" alt="" />'.
+						'</a>';
+			}
 
 				// Additional styles?
 			$params = $styleAttrib ? ' style="'.$styleAttrib.'"' : '';

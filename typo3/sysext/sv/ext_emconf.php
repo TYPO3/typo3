@@ -2,15 +2,15 @@
 
 ########################################################################
 # Extension Manager/Repository config file for ext: 'cms'
-# 
+#
 # Auto generated 12-02-2003 21:25
-# 
+#
 # Manual updates:
 # Only the data in the array - anything else is removed by next write
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = Array (
-	'title' => 'Typo3 System Services',
+	'title' => 'TYPO3 System Services',
 	'description' => 'The core/default sevices. This includes the default authentication services for now.',
 	'category' => 'services',
 	'shy' => 1,

@@ -336,6 +336,9 @@ class SC_db_new_content_el {
 				$this->content.=$this->doc->section('',$code,0,1);
 			}
 
+				// Add CSH:
+			$this->content.= $this->doc->section('',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH'],'<br/>'),0,1);
+
 				// Add a very high clear-gif, 700 px (so that the link to the anchor "sel2" shows this part in top for sure...)
 			$this->content.=$this->doc->section('','<img src="clear.gif" width="1" height="700" alt="" />',0,1);
 

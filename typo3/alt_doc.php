@@ -375,7 +375,7 @@ class SC_alt_doc {
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
 			// Create an instance of the document template object
-		$this->doc = t3lib_div::makeInstance('bigDoc');
+		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->bodyTagMargins['x']=5;
 		$this->doc->bodyTagMargins['y']=5;
 		$this->doc->backPath = $BACK_PATH;
@@ -481,7 +481,7 @@ class SC_alt_doc {
 				$this->content.= $this->functionMenus();
 
 					// Add CSH:
-				$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms', $GLOBALS['BACK_PATH'],'<br/>|');
+				$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms', $GLOBALS['BACK_PATH'],'<br/>|',FALSE,'margin-top: 20px;');
 
 				$this->content.= $this->shortCutLink();
 
@@ -802,7 +802,7 @@ class SC_alt_doc {
 				$docSel='<select name="_docSelector" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
 
 					// Add CSH:
-				$docSel.=t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_docSelector', $GLOBALS['BACK_PATH'],'');
+				$docSel.=t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_docSelector', $GLOBALS['BACK_PATH'],'', TRUE);
 			}
 		} else $docSel='';
 		return $docSel;
@@ -822,7 +822,7 @@ class SC_alt_doc {
 			$cMenu = $this->doc->clearCacheMenu(intval($this->viewId),!$this->modTSconfig['properties']['disableDocSelector']);
 
 				// Add CSH:
-			$cMenu.=t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_cacheSelector', $GLOBALS['BACK_PATH'],'');
+			$cMenu.=t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'TCEforms_cacheSelector', $GLOBALS['BACK_PATH'],'', TRUE);
 		} else $cMenu ='';
 		return $cMenu;
 	}

@@ -63,7 +63,7 @@
 			<label index="LGL.usergroups">__Brugergrupper:__</label>
 			<label index="LGL.type">Type:</label>
 			<label index="LGL.description">Beskrivelse:</label>
-			<label index="LGL.prependAtCopy"> (kopi %s)</label>
+			<label index="LGL.prependAtCopy">(kopi %s)</label>
 			<label index="LGL.layout">Layout:</label>
 			<label index="LGL.default_value">Standard</label>
 			<label index="LGL.normal">Normal</label>
@@ -1558,7 +1558,7 @@
 			<label index="LGL.usergroups" type="integer">157574305</label>
 			<label index="LGL.type" type="integer">241539922</label>
 			<label index="LGL.description" type="integer">218120871</label>
-			<label index="LGL.prependAtCopy" type="integer">150009848</label>
+			<label index="LGL.prependAtCopy" type="integer">255966033</label>
 			<label index="LGL.layout" type="integer">229574886</label>
 			<label index="LGL.default_value" type="integer">128029197</label>
 			<label index="LGL.normal" type="integer">157332556</label>
@@ -2997,80 +2997,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

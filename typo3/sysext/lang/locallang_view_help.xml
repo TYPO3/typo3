@@ -21,6 +21,7 @@
 			<label index="TOC_core">TYPO3 Core Features</label>
 			<label index="TOC_modules">Backend Modules</label>
 			<label index="TOC_tables">Database Tables</label>
+			<label index="TOC_extensions">Extensions</label>
 			<label index="TOC_other">Other</label>
 			<label index="close">Close</label>
 			<label index="title">TYPO3 Inline Help</label>
@@ -51,6 +52,7 @@
 			<label index="description">TYPO3 lokal brugermanual er dynamisk sammensat fra de tilgængelige hjælpe-kilder i denne TYPO3 installation (Kontekst Sensitiv Hjælp). Her kan du finde en generel beskrivelse af TYPO3s kerne-moduler, beskrivelse af installationsspecifikke backend moduler og database tabeller som er tilgængelige for dig med dine brugerrettigheder.</label>
 			<label index="full_manual">Fuld manual (én side)</label>
 			<label index="full_manual_chapters">Manual kapitler</label>
+			<label index="TOC_extensions">Extensions</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="details">Details</label>
@@ -366,6 +368,7 @@
 			<label index="description" type="integer">54171837</label>
 			<label index="full_manual" type="integer">68472336</label>
 			<label index="full_manual_chapters" type="integer">161891675</label>
+			<label index="TOC_extensions" type="integer">98760179</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="details" type="integer">65812061</label>
@@ -637,80 +640,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

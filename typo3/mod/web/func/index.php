@@ -139,7 +139,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 
 
 				// Function Module CSH:
-			$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'func_module', $GLOBALS['BACK_PATH'],'<br/>|');
+			$this->content.= t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH'],'<br/><br/>|', FALSE, 'margin-top: 30px;');
 
 				// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{

@@ -30,10 +30,33 @@
  * This module lets users viev and change their individual settings
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
+ * Revised for TYPO3 3.7 6/2004 by Kasper Skårhøj
  * XHTML compatible.
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   86: class SC_mod_user_setup_index
+ *
+ *              SECTION: Saving data
+ *  114:     function storeIncomingData()
+ *
+ *              SECTION: Rendering module
+ *  215:     function init()
+ *  247:     function main()
+ *  392:     function printContent()
+ *
+ *              SECTION: Helper functions
+ *  421:     function getRealScriptUserObj()
+ *  431:     function simulateUser()
+ *  477:     function setLabel($str,$key='')
+ *
+ * TOTAL FUNCTIONS: 7
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 unset($MCONF);
 require('conf.php');
@@ -41,57 +64,90 @@ require($BACK_PATH.'init.php');
 require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 
 
-// ***************************
-// Script Class
-// ***************************
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Script class for the Setup module
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_setup
+ */
 class SC_mod_user_setup_index {
-	var $MCONF=array();
-	var $MOD_MENU=array();
-	var $MOD_SETTINGS=array();
+
+		// Internal variables:
+	var $MCONF = array();
+	var $MOD_MENU = array();
+	var $MOD_SETTINGS = array();
 	var $doc;
 
 	var $content;
 	var $overrideConf;
 	var $OLD_BE_USER;
 
+
+
+
+
+	/******************************
+	 *
+	 * Saving data
+	 *
+	 ******************************/
+
 	/**
 	 * If settings are submitted to _POST[DATA], store them
 	 * NOTICE: This method is called before the template.php is included. See buttom of document
+	 *
+	 * @return	void
 	 */
 	function storeIncomingData()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER;
 
-		// *******************************************************************************
-		// First check if something is submittet in the data-array from post vars
-		// *******************************************************************************
+
+			// First check if something is submittet in the data-array from POST vars
 		$d = t3lib_div::_POST('data');
 		if (is_array($d))	{
 
 				// UC hashed before applying changes
-			$save_before=md5(serialize($BE_USER->uc));
+			$save_before = md5(serialize($BE_USER->uc));
 
+				// PUT SETTINGS into the ->uc array:
 
-				// PUT SETTINGS into the ->uc array
 				// Language
-			$BE_USER->uc['lang']=$d['lang'];
+			$BE_USER->uc['lang'] = $d['lang'];
+
 				// Startup
-			$BE_USER->uc['condensedMode']=$d['condensedMode'];
-			$BE_USER->uc['noMenuMode']=$d['noMenuMode'];
-			if (t3lib_extMgm::isLoaded('taskcenter'))	$BE_USER->uc['startInTaskCenter']=$d['startInTaskCenter'];
-			$BE_USER->uc['thumbnailsByDefault']=$d['thumbnailsByDefault'];
-			$BE_USER->uc['helpText']=$d['helpText'];
-			$BE_USER->uc['titleLen']=intval($d['titleLen']);
+			$BE_USER->uc['condensedMode'] = $d['condensedMode'];
+			$BE_USER->uc['noMenuMode'] = $d['noMenuMode'];
+			if (t3lib_extMgm::isLoaded('taskcenter'))	$BE_USER->uc['startInTaskCenter'] = $d['startInTaskCenter'];
+			$BE_USER->uc['thumbnailsByDefault'] = $d['thumbnailsByDefault'];
+			$BE_USER->uc['helpText'] = $d['helpText'];
+			$BE_USER->uc['titleLen'] = intval($d['titleLen']);
+
 				// Advanced functions:
-			$BE_USER->uc['copyLevels']=t3lib_div::intInRange($d['copyLevels'],0,100);
-			$BE_USER->uc['recursiveDelete']=$d['recursiveDelete'];
+			$BE_USER->uc['copyLevels'] = t3lib_div::intInRange($d['copyLevels'],0,100);
+			$BE_USER->uc['recursiveDelete'] = $d['recursiveDelete'];
+
 				// Edit
-			$BE_USER->uc['edit_wideDocument']=$d['edit_wideDocument'];
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'])	{$BE_USER->uc['edit_RTE']=$d['edit_RTE'];}
-			$BE_USER->uc['edit_docModuleUpload']=$d['edit_docModuleUpload'];
-			$BE_USER->uc['edit_showFieldHelp']=$d['edit_showFieldHelp'];
-			$BE_USER->uc['disableCMlayers']=$d['disableCMlayers'];
+			$BE_USER->uc['edit_wideDocument'] = $d['edit_wideDocument'];
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'])	{ $BE_USER->uc['edit_RTE'] = $d['edit_RTE']; }
+			$BE_USER->uc['edit_docModuleUpload'] = $d['edit_docModuleUpload'];
+			$BE_USER->uc['edit_showFieldHelp'] = $d['edit_showFieldHelp'];
+			$BE_USER->uc['disableCMlayers'] = $d['disableCMlayers'];
+
 				// Personal:
-			$BE_USER->uc['emailMeAtLogin']=$d['emailMeAtLogin'];
+			$BE_USER->uc['emailMeAtLogin'] = $d['emailMeAtLogin'];
 
 
 			if ($d['setValuesToDefault'])	{	// If every value should be default
@@ -99,44 +155,65 @@ class SC_mod_user_setup_index {
 			}
 			$BE_USER->overrideUC();	// Inserts the overriding values.
 
-			$save_after=md5(serialize($BE_USER->uc));
+			$save_after = md5(serialize($BE_USER->uc));
 			if ($save_before!=$save_after)	{	// If something in the uc-array of the user has changed, we save the array...
 				$BE_USER->writeUC($BE_USER->uc);
 				$BE_USER->writelog(254,1,0,1,'Personal settings changed',Array());
 			}
 
+
 				// Personal data for the users be_user-record (email, name, password...)
 				// If email and name is changed, set it in the users record:
-			$be_user_data=t3lib_div::_GP('ext_beuser');
-			$this->PASSWORD_UPDATED=strlen($be_user_data['password1'].$be_user_data['password2'])>0 ? -1 : 0;
+			$be_user_data = t3lib_div::_GP('ext_beuser');
+			$this->PASSWORD_UPDATED = strlen($be_user_data['password1'].$be_user_data['password2'])>0 ? -1 : 0;
 			if ($be_user_data['email']!=$BE_USER->user['email']
 					|| $be_user_data['realName']!=$BE_USER->user['realName']
 					|| (strlen($be_user_data['password1'])==32
 							&& !strcmp($be_user_data['password1'],$be_user_data['password2']))
 					)	{
-				$storeRec=array();
+				$storeRec = array();
 				$BE_USER->user['realName'] = $storeRec['be_users'][$BE_USER->user['uid']]['realName'] = substr($be_user_data['realName'],0,80);
 				$BE_USER->user['email'] = $storeRec['be_users'][$BE_USER->user['uid']]['email'] = substr($be_user_data['email'],0,80);
 				if (strlen($be_user_data['password1'])==32 && !strcmp($be_user_data['password1'],$be_user_data['password2']))	{
 					$BE_USER->user['password'] = $storeRec['be_users'][$BE_USER->user['uid']]['password'] = $be_user_data['password1'];
-					$this->PASSWORD_UPDATED=1;
+					$this->PASSWORD_UPDATED = 1;
 				}
+
 					// Make instance of TCE for storing the changes.
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				$tce->stripslashes_values=0;
 				$tce->start($storeRec,Array(),$BE_USER);
-				$tce->admin=1;
+				$tce->admin = 1;
 				$tce->process_datamap();
 				unset($tce);
 			}
 		}
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Rendering module
+	 *
+	 ******************************/
+
 	/**
 	 * Initializes the module for display of the settings form.
+	 *
+	 * @return	void
 	 */
 	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$BACK_PATH;
 		$this->MCONF = $GLOBALS['MCONF'];
 
 			// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
@@ -149,10 +226,9 @@ class SC_mod_user_setup_index {
 			// Create instance of object for output of data
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->docType = "xhtml_trans";
-#		$this->doc->docType = "xhtml_strict";
+		$this->doc->docType = 'xhtml_trans';
 
-		$this->doc->form='<form action="index.php" method="post" enctype="application/x-www-form-urlencoded">';
+		$this->doc->form = '<form action="index.php" method="post" enctype="application/x-www-form-urlencoded">';
 		$this->doc->tableLayout = Array (
 			'defRow' => Array (
 				'0' => Array('<td align="left" width="300">','</td>'),
@@ -165,13 +241,19 @@ class SC_mod_user_setup_index {
 
 	/**
 	 * Generate the main settings formular:
+	 *
+	 * @return	void
 	 */
 	function main()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH;
 
-		$this->doc->JScode.='<script language="javascript" type="text/javascript" src="'.$BACK_PATH.'md5.js"></script>';
-		$this->content.=$this->doc->startPage($LANG->getLL('UserSettings'));
-		$this->content.=$this->doc->header($LANG->getLL('UserSettings').' - ['.$BE_USER->user['username'].']');
+			// Start page:
+		$this->doc->JScode.= '<script language="javascript" type="text/javascript" src="'.$BACK_PATH.'md5.js"></script>';
+		$this->content.= $this->doc->startPage($LANG->getLL('UserSettings'));
+		$this->content.= $this->doc->header($LANG->getLL('UserSettings').' - ['.$BE_USER->user['username'].']');
+
+			// CSH general:
+		$this->content.= t3lib_BEfunc::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'],'|');
 
 			// If password is updated, output whether it failed or was OK.
 		if ($this->PASSWORD_UPDATED)	{
@@ -185,14 +267,15 @@ class SC_mod_user_setup_index {
 
 			// Simulate selector box:
 		if ($this->simulateSelector)	{
-			$this->content.=$this->doc->section($LANG->getLL('simulate').':',$this->simulateSelector,1,0,($this->simUser?2:0));
+			$this->content.=$this->doc->section($LANG->getLL('simulate').':',$this->simulateSelector.t3lib_BEfunc::cshItem('_MOD_user_setup', 'simuser', $GLOBALS['BACK_PATH'],'|'),1,0,($this->simUser?2:0));
 		}
 
+
 			// Languages:
-		$opt=array();
+		$opt = array();
 		$opt['000000000']='
 					<option value="">'.$LANG->getLL('lang_default',1).'</option>';
-		$theLanguages=t3lib_div::trimExplode('|',TYPO3_languages);
+		$theLanguages = t3lib_div::trimExplode('|',TYPO3_languages);
 
 			// Character set conversion object:
 		$csConvObj = t3lib_div::makeInstance('t3lib_cs');
@@ -212,7 +295,8 @@ class SC_mod_user_setup_index {
 		$code='
 				<select name="data[lang]">'.
 					implode('',$opt).'
-				</select>';
+				</select>'.
+				t3lib_BEfunc::cshItem('_MOD_user_setup', 'language', $GLOBALS['BACK_PATH'],'|');
 		$this->content.=$this->doc->section($LANG->getLL('language').':',$code,0,1);
 
 
@@ -295,7 +379,8 @@ class SC_mod_user_setup_index {
 		$this->content.=$this->doc->spacer(20);
 		$this->content.=$this->doc->section('','
 			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
-			 &nbsp; <b>'.$LANG->getLL('setToStandard').': </b><input type="checkbox" name="data[setValuesToDefault]" />
+			 &nbsp; <b>'.$LANG->getLL('setToStandard').': </b><input type="checkbox" name="data[setValuesToDefault]" />'.
+			 t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $GLOBALS['BACK_PATH'],'|').'
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />');
 
 
@@ -305,8 +390,38 @@ class SC_mod_user_setup_index {
 	}
 
 	/**
+	 * Prints the content / ends page
+	 *
+	 * @return	void
+	 */
+	function printContent()	{
+		$this->content.= $this->doc->endPage();
+		echo $this->content;
+		exit;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	/******************************
+	 *
+	 * Helper functions
+	 *
+	 ******************************/
+
+	/**
 	 * Returns the backend user object, either the global OR the $this->OLD_BE_USER which is set during simulate-user operation.
-	 * Anyways: The REAL user is returned - the one logged in.
+	 * Anyway: The REAL user is returned - the one logged in.
+	 *
+	 * @return	object		The REAL user is returned - the one logged in.
 	 */
 	function getRealScriptUserObj()	{
 		return is_object($this->OLD_BE_USER) ? $this->OLD_BE_USER : $GLOBALS['BE_USER'];
@@ -315,27 +430,29 @@ class SC_mod_user_setup_index {
 	/**
 	 * Will make the simulate-user selector if the logged in user is administrator.
 	 * It will also set the GLOBAL(!) BE_USER to the simulated user selected if any (and set $this->OLD_BE_USER to logged in user)
+	 *
+	 * @return	void
 	 */
 	function simulateUser()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER,$LANG,$BACK_PATH;
 
 		// *******************************************************************************
 		// If admin, allow simulation of another user
 		// *******************************************************************************
 		$this->simUser = 0;
-		$this->simulateSelector='';
+		$this->simulateSelector = '';
 		unset($this->OLD_BE_USER);
 		if ($BE_USER->isAdmin())	{
 			$this->simUser = t3lib_div::_GP('simUser');
 
 				// Make user-selector:
 			$users = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,realName');
-			$opt=array();
+			$opt = array();
 			reset($users);
-			$opt[]='<option></option>';
+			$opt[] = '<option></option>';
 			while(list(,$rr)=each($users))	{
 				if ($rr['uid']!=$BE_USER->user['uid'])	{
-					$opt[]='<option value="'.$rr['uid'].'"'.($this->simUser==$rr['uid']?' selected="selected"':'').'>'.htmlspecialchars($rr['username'].' ('.$rr['realName'].')').'</option>';
+					$opt[] = '<option value="'.$rr['uid'].'"'.($this->simUser==$rr['uid']?' selected="selected"':'').'>'.htmlspecialchars($rr['username'].' ('.$rr['realName'].')').'</option>';
 				}
 			}
 			$this->simulateSelector = '<select name="simulateUser" onchange="document.location=\'index.php?simUser=\'+this.options[this.selectedIndex].value;">'.implode('',$opt).'</select>';
@@ -355,24 +472,23 @@ class SC_mod_user_setup_index {
 	}
 
 	/**
-	 * Prints the content / ends page
-	 */
-	function printContent()	{
-		global $SOBE;
-
-		$this->content.=$this->doc->endPage();
-		echo $this->content;		exit;
-		echo debug(array($this->content));
-	}
-
-	/**
 	 * Returns the label $str from getLL() and grays out the value if the $str/$key is found in $this->overrideConf array
+	 * Adds CSH as well if applicable.
+	 *
+	 * @param	string		Locallang key
+	 * @param	string		Alternative override-config key
+	 * @return	string		HTML output.
 	 */
 	function setLabel($str,$key='')	{
 		$out = $GLOBALS['LANG']->getLL($str);
 		if (isset($this->overrideConf[($key?$key:$str)]))	{
 			$out = '<span style="color:#999999">'.$out.'</span>';
 		}
+
+			// CSH:
+		$out.= t3lib_BEfunc::cshItem('_MOD_user_setup', 'option_'.$str, $GLOBALS['BACK_PATH'],'|',FALSE,'margin-bottom:0px;');
+
+			// Return value:
 		return $out;
 	}
 }

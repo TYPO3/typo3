@@ -224,6 +224,14 @@ class SC_view_help {
 			}
 		}
 
+			// Extensions
+		foreach($CSHkeys as $cshKey => $value)	{
+			if (t3lib_div::isFirstPartOfStr($cshKey, 'xEXT_') && !isset($TCA[$cshKey]))	{
+				$LANG->loadSingleTableDescription($cshKey);
+				$this->render_TOC_el($cshKey, 'extensions', $outputSections, $tocArray, $CSHkeys);
+			}
+		}
+
 			// Other:
 		foreach($CSHkeys as $cshKey => $value)	{
 			if (!t3lib_div::isFirstPartOfStr($cshKey, '_MOD_') && !isset($TCA[$cshKey]))	{
@@ -316,7 +324,7 @@ class SC_view_help {
 		global $LANG;
 
 			// The Various manual sections:
-		$keys = explode(',', 'core,modules,tables,other');
+		$keys = explode(',', 'core,modules,tables,extensions,other');
 
 			// Create TOC bullet list:
 		$output = '';
@@ -465,6 +473,12 @@ class SC_view_help {
 					// URL reference:
 				if (substr($iPUrl[1],0,4)=='http')	{
 					$lines[] = '<a href="'.htmlspecialchars($iPUrl[1]).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
+				} elseif (substr($iPUrl[1],0,5)=='FILE:')	{
+					$fileName = t3lib_div::getFileAbsFileName(substr($iPUrl[1],5),1,1);
+					if ($fileName && @is_file($fileName))	{
+						$fileName = '../'.substr($fileName,strlen(PATH_site));
+						$lines[] = '<a href="'.htmlspecialchars($fileName).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
+					}
 				} else {
 					// "table" reference
 					t3lib_div::loadTCA($iP[0]);
@@ -505,7 +519,7 @@ class SC_view_help {
 					$imgInfo = @getimagesize($absImagePath);
 					if (is_array($imgInfo))	{
 						$imgFile = '../'.$imgFile;
-						$code.= '<br /><img src="'.$imgFile.'" '.$imgInfo[3].' alt="" /><br />
+						$code.= '<br /><img src="'.$imgFile.'" '.$imgInfo[3].' class="c-inlineimg" alt="" /><br />
 						';
 						$code.= '<p><em>'.$GLOBALS['LANG']->hscAndCharConv($descr,0).'</em></p>
 						';
@@ -594,7 +608,10 @@ class SC_view_help {
 	 * @return	array		Table and field labels in a numeric array
 	 */
 	function getTableFieldNames($table,$field)	{
-		global $TCA, $TCA_DESCR;
+		global $TCA, $TCA_DESCR, $LANG;
+
+			$LANG->loadSingleTableDescription($table);
+
 			$tableName = is_array($TCA_DESCR[$table]['columns']['']) && $TCA_DESCR[$table]['columns']['']['alttitle'] ?
 							$TCA_DESCR[$table]['columns']['']['alttitle'] :
 							(isset($TCA[$table]) ? $TCA[$table]['ctrl']['title'] : ereg_replace('^_MOD_','',$table));

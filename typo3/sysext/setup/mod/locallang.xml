@@ -62,11 +62,11 @@
 			<label index="emailMeAtLogin">Notify me by email, when somebody logs in &lt;br /&gt;from my account</label>
 			<label index="helpText">Show help text when applicable</label>
 			<label index="maxTitleLen">Max. Title Length</label>
-			<label index="edit_showFieldHelp">Field help mode</label>
+			<label index="edit_showFieldHelp">Context Sensitive Help mode</label>
 			<label index="edit_showFieldHelp_icon">Display help icon only</label>
 			<label index="edit_showFieldHelp_message">Display full text message</label>
 			<label index="edit_wideDocument">Wide document background</label>
-			<label index="edit_RTE">Enable Rich Text Editor (MSIE only)</label>
+			<label index="edit_RTE">Enable Rich Text Editor (if available)</label>
 			<label index="edit_docModuleUpload">File upload directly in Doc-module</label>
 			<label index="edit_functions">Edit</label>
 			<label index="disableCMlayers">Disable Popup Context Menus</label>
@@ -138,11 +138,11 @@
 			<label index="emailMeAtLogin">Send mig en email, hvis nogen logger in &lt;br /&gt;med mit brugernavn</label>
 			<label index="helpText">Vis hjælpetekst hvis muligt</label>
 			<label index="maxTitleLen">Max. titellængde</label>
-			<label index="edit_showFieldHelp">Felt-hjælp tilstand</label>
+			<label index="edit_showFieldHelp">Kontekst Sensitiv Hjælp tilstand</label>
 			<label index="edit_showFieldHelp_icon">Vis kun hjælpe-ikon</label>
 			<label index="edit_showFieldHelp_message">Vis fuld tekst</label>
 			<label index="edit_wideDocument">Bred dokument baggrund</label>
-			<label index="edit_RTE">Aktivér 'Rich Text Editor' (kun MSIE)</label>
+			<label index="edit_RTE">Aktivér 'Rich Text Editor' (hvis tilrådighed)</label>
 			<label index="edit_docModuleUpload">Upload af filer direkte i Dok-modul</label>
 			<label index="edit_functions">Rediger</label>
 			<label index="disableCMlayers">Slå popup klikmenuer fra</label>
@@ -1651,11 +1651,11 @@
 			<label index="emailMeAtLogin" type="integer">242513283</label>
 			<label index="helpText" type="integer">40561585</label>
 			<label index="maxTitleLen" type="integer">197742795</label>
-			<label index="edit_showFieldHelp" type="integer">208596502</label>
+			<label index="edit_showFieldHelp" type="integer">156260410</label>
 			<label index="edit_showFieldHelp_icon" type="integer">174937206</label>
 			<label index="edit_showFieldHelp_message" type="integer">92057802</label>
 			<label index="edit_wideDocument" type="integer">47472072</label>
-			<label index="edit_RTE" type="integer">175965839</label>
+			<label index="edit_RTE" type="integer">16864569</label>
 			<label index="edit_docModuleUpload" type="integer">172878204</label>
 			<label index="edit_functions" type="integer">131916066</label>
 			<label index="disableCMlayers" type="integer">256285755</label>

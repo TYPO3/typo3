@@ -10,23 +10,102 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index=".alttitle">Page Module</label>
-			<label index=".description">[FILL IN] page_module</label>
+			<label index=".alttitle">Web&gt;Page Module</label>
+			<label index=".description">The page module is the primary module for all basic CMS operations you need to perform when you maintain the content on a website.</label>
 			<label index="quickEdit.alttitle">Quick Edit</label>
 			<label index="quickEdit.description">The Quick Editor gives you direct access to the form fields of the page content.</label>
 			<label index="quickEdit.details">The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</label>
 			<label index="quickEdit_selElement.alttitle">Content Elements</label>
-			<label index="quickEdit_selElement.description">This is an overview of the content elements on this page. Select another element to edit or click an &quot;New&quot; icon to create a new content element.</label>
+			<label index="quickEdit_selElement.description">This is an overview of the content elements on this page. Select another element to edit or click a &quot;New&quot; icon to create a new content element.</label>
 			<label index="columns_1.alttitle">Listing by Column</label>
 			<label index="columns_1.description">In the &quot;Columns&quot; view you can control the content of the web page as it is positioned in columns.</label>
 			<label index="columns_2.alttitle">Listing by Language</label>
 			<label index="columns_2.description">In the &quot;Languages&quot; view you can control the content of the web page as it is divided into languages and columns.</label>
 			<label index="columns_3.alttitle">Page Information</label>
-			<label index="columns_3.description">In the &quot;Page Information&quot; view you can see various statistics about a page</label>
-			<label index="language_list.description">[FILL IN] language_list</label>
-			<label index="columns_single.description">[FILL IN] columns_single</label>
-			<label index="columns_multi.description">[FILL IN] columns_multi</label>
-			<label index="button_panel.description">[FILL IN] button_panel</label>
+			<label index="columns_3.description">In the &quot;Page Information&quot; view you can see various statistics about a page.</label>
+			<label index="language_list.description">This view will display the available translations of the page content side-by-side allow users to create a new translation of a page.</label>
+			<label index="columns_single.description">The single column view will show the page content elements that defines the content on this page of your website. Click an edit icon or element text to edit an element.</label>
+			<label index="columns_multi.description">The multiple column view will show the content of your website arranged in multiple columns. This is the case because your website supports more than one content zone and the content elements from each zone is arranged in a column above.</label>
+			<label index="button_panel.description">These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page header (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</label>
+			<label index="_.image">EXT:cms/cshimages/pagemodule_13.png,
+EXT:cms/cshimages/pagemodule_14.png,
+EXT:cms/cshimages/pagemodule_15.png</label>
+			<label index="_quickEdit.image">EXT:cms/cshimages/pagemodule_5.png</label>
+			<label index="_quickEdit_selElement.image">EXT:cms/cshimages/pagemodule_4.png</label>
+			<label index="_columns_2.image"></label>
+			<label index="_columns_3.image">EXT:cms/cshimages/pagemodule_9.png</label>
+			<label index="_columns_single.image">EXT:cms/cshimages/pagemodule_1.png</label>
+			<label index="_columns_multi.image">EXT:cms/cshimages/pagemodule_12.png</label>
+			<label index="_button_panel.image">EXT:cms/cshimages/pagemodule_2.png</label>
+			<label index=".details">The Web&gt;Page module is activated from the backend menu. After selecting the module you will see the page tree and to edit content on a page you simply click the title of that page and in the right frame you will see the content of the page displayed by the Page module.
+
+The page module has various modes of display of content.
+
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as you general preferences if you like this mode more than the columns view.
+
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the &quot;one-tree-fits-all&quot; concept for localization you will need this mode to control the translations of the content elements on a page.
+
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
+
+
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page header (5). See image below.
+
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path &quot;mod.web_layout.tt_content.colPos_list&quot;.
+For instance &quot;mod.web_layout.tt_content.colPos_list = 0,3&quot; will set the display of the &quot;Normal&quot; and &quot;Border&quot; columns only.
+There are many other options for customization of the Page module in the object path &quot;mod.web_layout&quot; and Adminstrators should refer to the &quot;TSconfig&quot; reference linked to below.</label>
+			<label index="_.seeAlso">Configuring the Page module [Technical] | http://typo3.org/documentation/document-library/doc_core_tsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</label>
+			<label index=".image_descr">Click the Page module, then the title of a page in the page tree.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page header form (5). See the links for more details.</label>
+			<label index="_quickEdit.seeAlso">_MOD_web_layout:quickEdit_selElement</label>
+			<label index="quickEdit.image_descr">The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</label>
+			<label index="_quickEdit_selElement.seeAlso">_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</label>
+			<label index="quickEdit_selElement.image_descr">Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The &quot;Move Content Element Wizard&quot; and the &quot;Create new Content Element Wizard&quot;. See the links below.</label>
+			<label index="columns_3.details">The page information reveals information such as the date of creation and last modification of the page and its content.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</label>
+			<label index="button_panel.alttitle">The &quot;Big Buttons&quot;</label>
+			<label index="_button_panel.seeAlso">xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</label>
+			<label index="language_list.alttitle">Language view</label>
+			<label index="_language_list.image">EXT:cms/cshimages/pagemodule_6.png,
+EXT:cms/cshimages/pagemodule_7.png,
+EXT:cms/cshimages/pagemodule_11.png,
+EXT:cms/cshimages/pagemodule_10.png,</label>
+			<label index="columns_single.alttitle">Page content elements in a single column</label>
+			<label index="columns_single.details">You can also hide, delete and move elements by using the control panel.
+Clicking the &quot;New content element&quot; icon you will be able to create new content elements inbetween the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</label>
+			<label index="_columns_single.seeAlso">_MOD_web_layout:columns_multi</label>
+			<label index="columns_single.image_descr">Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</label>
+			<label index="columns_multi.alttitle">Page content elements in a multiple columns</label>
+			<label index="_columns_multi.seeAlso">_MOD_web_layout:columns_single</label>
+			<label index="columns_multi.image_descr">When your website supports multiple content element zones in the template you will be able to use another column than the &quot;Normal&quot; column. Here the &quot;Left&quot; column is enabled. TYPO3 offers four columns by default, &quot;Normal&quot;, &quot;Right&quot;, &quot;Left&quot; and &quot;Border&quot;. Their significance depends on individual implementations in the frontend templates.</label>
+			<label index="_columns_2.seeAlso">Article about localization | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/</label>
+			<label index="_language_list.seeAlso">sys_language</label>
+			<label index="language_list.image_descr">In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
+This example shows how page content for three languages are shown side-by-side in the Page module.
+In the top of the Page module you can also select between the available translations...
+... and if you select any of the additional languages (here &quot;Danish&quot; and &quot;German&quot;) you will see the default language displayed side-by-side with the selected language</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="quickEdit.description">KvikRedigering giver dig direkte adgang til formfelterne for sidens indhold.</label>
@@ -190,78 +269,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index=".alttitle" type="integer">120305848</label>
-			<label index=".description" type="integer">229644271</label>
-			<label index="quickEdit.alttitle" type="integer">121600477</label>
-			<label index="quickEdit.description" type="integer">106439756</label>
-			<label index="quickEdit.details" type="integer">195162147</label>
-			<label index="quickEdit_selElement.alttitle" type="integer">57410074</label>
-			<label index="quickEdit_selElement.description" type="integer">221423495</label>
-			<label index="columns_1.alttitle" type="integer">183363228</label>
-			<label index="columns_1.description" type="integer">179278107</label>
-			<label index="columns_2.alttitle" type="integer">8205541</label>
-			<label index="columns_2.description" type="integer">120555273</label>
-			<label index="columns_3.alttitle" type="integer">263392300</label>
-			<label index="columns_3.description" type="integer">169863364</label>
-			<label index="language_list.description" type="integer">136852400</label>
-			<label index="columns_single.description" type="integer">95411271</label>
-			<label index="columns_multi.description" type="integer">185970208</label>
-			<label index="button_panel.description" type="integer">222865483</label>
-			<label index=".details" type="integer">222419149</label>
-			<label index=".syntax" type="integer">222419149</label>
-			<label index="_.seeAlso" type="integer">222419149</label>
-			<label index="_.image" type="integer">222419149</label>
-			<label index=".image_descr" type="integer">222419149</label>
-			<label index="quickEdit.syntax" type="integer">222419149</label>
-			<label index="_quickEdit.seeAlso" type="integer">222419149</label>
-			<label index="_quickEdit.image" type="integer">222419149</label>
-			<label index="quickEdit.image_descr" type="integer">222419149</label>
-			<label index="quickEdit_selElement.details" type="integer">222419149</label>
-			<label index="quickEdit_selElement.syntax" type="integer">222419149</label>
-			<label index="_quickEdit_selElement.seeAlso" type="integer">222419149</label>
-			<label index="_quickEdit_selElement.image" type="integer">222419149</label>
-			<label index="quickEdit_selElement.image_descr" type="integer">222419149</label>
-			<label index="columns_1.details" type="integer">222419149</label>
-			<label index="columns_1.syntax" type="integer">222419149</label>
-			<label index="_columns_1.seeAlso" type="integer">222419149</label>
-			<label index="_columns_1.image" type="integer">222419149</label>
-			<label index="columns_1.image_descr" type="integer">222419149</label>
-			<label index="columns_2.details" type="integer">222419149</label>
-			<label index="columns_2.syntax" type="integer">222419149</label>
-			<label index="_columns_2.seeAlso" type="integer">222419149</label>
-			<label index="_columns_2.image" type="integer">222419149</label>
-			<label index="columns_2.image_descr" type="integer">222419149</label>
-			<label index="columns_3.details" type="integer">222419149</label>
-			<label index="columns_3.syntax" type="integer">222419149</label>
-			<label index="_columns_3.seeAlso" type="integer">222419149</label>
-			<label index="_columns_3.image" type="integer">222419149</label>
-			<label index="columns_3.image_descr" type="integer">222419149</label>
-			<label index="language_list.alttitle" type="integer">222419149</label>
-			<label index="language_list.details" type="integer">222419149</label>
-			<label index="language_list.syntax" type="integer">222419149</label>
-			<label index="_language_list.seeAlso" type="integer">222419149</label>
-			<label index="_language_list.image" type="integer">222419149</label>
-			<label index="language_list.image_descr" type="integer">222419149</label>
-			<label index="columns_single.alttitle" type="integer">222419149</label>
-			<label index="columns_single.details" type="integer">222419149</label>
-			<label index="columns_single.syntax" type="integer">222419149</label>
-			<label index="_columns_single.seeAlso" type="integer">222419149</label>
-			<label index="_columns_single.image" type="integer">222419149</label>
-			<label index="columns_single.image_descr" type="integer">222419149</label>
-			<label index="columns_multi.alttitle" type="integer">222419149</label>
-			<label index="columns_multi.details" type="integer">222419149</label>
-			<label index="columns_multi.syntax" type="integer">222419149</label>
-			<label index="_columns_multi.seeAlso" type="integer">222419149</label>
-			<label index="_columns_multi.image" type="integer">222419149</label>
-			<label index="columns_multi.image_descr" type="integer">222419149</label>
-			<label index="button_panel.alttitle" type="integer">222419149</label>
-			<label index="button_panel.details" type="integer">222419149</label>
-			<label index="button_panel.syntax" type="integer">222419149</label>
-			<label index="_button_panel.seeAlso" type="integer">222419149</label>
-			<label index="_button_panel.image" type="integer">222419149</label>
-			<label index="button_panel.image_descr" type="integer">222419149</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="quickEdit.description" type="integer">106439756</label>
 			<label index="quickEdit.details" type="integer">195162147</label>
@@ -423,80 +430,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

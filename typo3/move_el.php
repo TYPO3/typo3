@@ -394,7 +394,7 @@ class SC_move_el {
 					$code.= $posMap->positionTree($this->page_id,$pageinfo,$this->perms_clause,$this->R_URI);
 
 						// CSH for move-content-elements:
-					$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_ce', $GLOBALS['BACK_PATH'],'<br/>|');
+					$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'],'<br/>|');
 				}
 			}
 

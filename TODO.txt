@@ -481,10 +481,15 @@ typo3/sysext/___________________________________________:
 		install/	[ingmar]
 OK		cms/
 OK		lang/
-		setup/				(1/400)
+OK		setup/
+XQCR:	func_wizards/
+XQRC:	wizard_crpages/
+XQRC:	wizard_sortpages/
+XQCR:	extra_page_cm_options/
+OK		aboutmodules/
+OK		install/							+ class.t3lib_install.php / class.t3lib_superadmin.php
 
 typo3/ext/_____________________________________:
-OK		aboutmodules/
 		belog/		(2 / 500)
 		beuser/		(1 / 1300)
 		cms_plaintext_import/	(1/200)
@@ -493,16 +498,13 @@ OK		context_help/
 		css_styled_content/		(1/200)		[H]
 		direct_mail/		(3/2500)		[Jan-Erik] + class.t3lib_htmlmail.php
 OK		direct_mail_subscription/
-XQCR:	extra_page_cm_options/
 		extrep_wizard/		(2/4500)		[H]
 		feuser_admin/						[testsite...] - XHTML
 		freesite/			(2/1600)
-XQCR:	func_wizards/
 		imagelist/			(1/250)
 		impexp/				(2/2000)		[H]
 		indexed_search/		(4/3500)		[H] [testsite...]
 		info_pagetsconfig/	(1/200)
-OK		install/							+ class.t3lib_install.php / class.t3lib_superadmin.php
 		lowlevel/			(2/800)			[H]
 XQ-R:	metatags/
 		phpmyadmin/			(1/130)
@@ -546,8 +548,6 @@ OK		tt_address/
 		tt_products/			(5/2000)	[testsite...], [? Peter Kuehn]
 		tt_rating/				(3/550)		[testsite...], [Rene F]
 		viewpage/				(2/200)
-XQRC:	wizard_crpages/
-XQRC:	wizard_sortpages/
 
 32,5 K Codes lines....
 

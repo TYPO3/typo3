@@ -59,6 +59,7 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
 
 
+
 /**
  * Script Class for rendering of the main frameset for the TYPO3 backend.
  *
@@ -491,9 +492,6 @@ class SC_alt_main {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_main.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_main.php']);
 }
-
-
-
 
 
 

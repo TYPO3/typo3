@@ -48,7 +48,7 @@ Tables allowed for modification is automatically also allowed for selection and 
 &lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</label>
 			<label index="_tables_modify.seeAlso">be_groups:tables_select,
 be_groups:inc_access_lists,
-xMOD_csh_corebe:new_regular</label>
+xMOD_csh_corebe:new_ce</label>
 			<label index="tables_select.description">Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</label>
 			<label index="tables_select.details">This determines which tables - in addition to those selected in the &quot;Tables (modify)&quot; box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
 This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</label>
