@@ -1748,6 +1748,9 @@ class tslib_cObj {
 					break;
 					case 'hidden':
 						$value = trim($parts[2]);
+						if(strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
+						  break;
+						}
 						if (strlen($value) && t3lib_div::inList('recipient_copy,recipient',$confData['fieldname']))	{
 							$value = $GLOBALS['TSFE']->codeString($value);
 						}
@@ -1890,7 +1893,7 @@ class tslib_cObj {
 
 			// Recipient:
 		$theEmail = $this->stdWrap($conf['recipient'], $conf['recipient.']);
-		if ($theEmail)	{
+		if ($theEmail && !$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'])	{
 			$theEmail = $GLOBALS['TSFE']->codeString($theEmail);
 			$hiddenfields.='<input type="hidden" name="recipient" value="'.htmlspecialchars($theEmail).'" />';
 		}
@@ -1912,6 +1915,9 @@ class tslib_cObj {
 				if (substr($hF_key,-1)!='.')	{
 					$hF_value = $this->cObjGetSingle($hF_conf,$conf['hiddenFields.'][$hF_key.'.'],'hiddenfields');
 					if (strlen($hF_value) && t3lib_div::inList('recipient_copy,recipient',$hF_key))	{
+					  if($GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
+					    continue;
+					  }
 						$hF_value = $GLOBALS['TSFE']->codeString($hF_value);
 					}
 					$hiddenfields.='<input type="hidden" name="'.$hF_key.'" value="'.htmlspecialchars($hF_value).'" />';
