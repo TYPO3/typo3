@@ -765,13 +765,15 @@ class t3lib_stdGraphic	{
 	 */
 	function addToMap($cords,$conf)	{
 		$JS = $conf['noBlur'] ? '' : ' onfocus="blurLink(this);"';
+
 		$this->map.='<area'.
 				' shape="poly"'.
 				' coords="'.implode($cords,',').'"'.
 				' href="'.htmlspecialchars($conf['url']).'"'.
-				($conf['target'] ? ' target="'.$conf['target'].'"' : '').
+				($conf['target'] ? ' target="'.htmlspecialchars($conf['target']).'"' : '').
 				$JS.
-				' alt="" />';
+				(strlen($conf['titleText']) ? ' title="'.htmlspecialchars($conf['titleText']).'"' : '').
+				' alt="'.htmlspecialchars($conf['altText']).'" />';
 	}
 
 	/**

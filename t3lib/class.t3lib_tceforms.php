@@ -3235,7 +3235,7 @@ class t3lib_TCEforms	{
 		if (count($this->additionalCode_pre))	{
 			$out.= implode('
 
-				// NEXT:
+				<!-- NEXT: -->
 			',$this->additionalCode_pre);
 		}
 

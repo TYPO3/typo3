@@ -1313,8 +1313,8 @@ class tslib_tmenu extends tslib_menu {
 	 */
 	function writeMenu()	{
 		if (is_array($this->result) && count($this->result))	{
-			$this->WMcObj =t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
-			$this->WMresult='';
+			$this->WMcObj = t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
+			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime().'tmenu'),0,4);
 			$this->WMmenuItems = count($this->result);
 			$this->extProc_init();
@@ -1323,7 +1323,7 @@ class tslib_tmenu extends tslib_menu {
 				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
 				$GLOBALS['TSFE']->register['count_MENUOBJ']++;
 
-				$this->I=array();
+				$this->I = array();
 				$this->WMcObj->start($this->menuArr[$key],'pages');		// Initialize the cObj with the page record of the menu item
 				$this->I['key'] = $key;
 				$this->I['INPfix']= $this->imgNameNotRandom?'':'_'.$this->INPfixMD5.'_'.$key;
@@ -1336,10 +1336,17 @@ class tslib_tmenu extends tslib_menu {
 
 					// Make link tag
 				$this->I['val']['ATagParams'] = $this->I['val']['ATagParams'] ? ' '.$this->I['val']['ATagParams'] : '';
-				$this->I['linkHREF'] =  $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
+				$this->I['linkHREF'] = $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
 
+					// Title attribute of links:
+				$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']);
+				if (strlen($titleAttrValue))	{
+					$this->I['linkHREF']['title'] = $titleAttrValue;
+				}
+
+					// Setting "blurlink()" function:
 				if (!$this->mconf['noBlur'])	{
-					$this->I['linkHREF']['onFocus']='blurLink(this);';
+					$this->I['linkHREF']['onFocus'] = 'blurLink(this);';
 				}
 
 					// Make link:
@@ -1426,6 +1433,11 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['theItem'] = $this->tmpl->wrap($this->I['theItem'],$allWrap);
 
 				if ($this->I['val']['subst_elementUid'])	$this->I['theItem'] = str_replace('{elementUid}',$this->I['uid'],$this->I['theItem']);
+
+					// allStdWrap:
+				if (is_array($this->I['val']['allStdWrap.']))	{
+					$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'],$this->I['val']['allStdWrap.']);
+				}
 
 					// Calling extra processing function
 				$this->extProc_afterLinking($key);
@@ -1796,22 +1808,28 @@ class tslib_gmenu extends tslib_menu {
 			// generation
 			if (@file_exists($gifFileName))	{		// File exists
 				$info = @getimagesize($gifFileName);
-				$this->result[$resKey][$key]['output_w']=intval($info[0]);
-				$this->result[$resKey][$key]['output_h']=intval($info[1]);
-				$this->result[$resKey][$key]['output_file']=$gifFileName;
+				$this->result[$resKey][$key]['output_w'] = intval($info[0]);
+				$this->result[$resKey][$key]['output_h'] = intval($info[1]);
+				$this->result[$resKey][$key]['output_file'] = $gifFileName;
 			} elseif ($isGD) {		// file is generated
 				$gifCreator->make();
-				$this->result[$resKey][$key]['output_w']=$gifCreator->w;
-				$this->result[$resKey][$key]['output_h']=$gifCreator->h;
+				$this->result[$resKey][$key]['output_w'] = $gifCreator->w;
+				$this->result[$resKey][$key]['output_h'] = $gifCreator->h;
 				$this->result[$resKey][$key]['output_file'] = $gifFileName;
 				$gifCreator->output($this->result[$resKey][$key]['output_file']);
 				$gifCreator->destroy();
 			}
 			$this->result[$resKey][$key]['output_file'] = t3lib_div::png_to_gif_by_imagemagick($this->result[$resKey][$key]['output_file']);
-			$this->result[$resKey][$key]['wrap']=$conf[$key]['wrap'];
-			$this->result[$resKey][$key]['noLink']=$conf[$key]['noLink'];
-			$this->result[$resKey][$key]['altTarget']=$conf[$key]['altTarget'];
-			$this->result[$resKey][$key]['imgParams']=$conf[$key]['imgParams'];
+			$this->result[$resKey][$key]['noLink'] = $conf[$key]['noLink'];
+			$this->result[$resKey][$key]['altTarget'] = $conf[$key]['altTarget'];
+			$this->result[$resKey][$key]['imgParams'] = $conf[$key]['imgParams'];
+			$this->result[$resKey][$key]['ATagTitle'] = $conf[$key]['ATagTitle'];
+			$this->result[$resKey][$key]['ATagTitle.'] = $conf[$key]['ATagTitle.'];
+			$this->result[$resKey][$key]['wrap'] = $conf[$key]['wrap'];
+			$this->result[$resKey][$key]['allWrap'] = $conf[$key]['allWrap'];
+			$this->result[$resKey][$key]['allWrap.'] = $conf[$key]['allWrap.'];
+			$this->result[$resKey][$key]['subst_elementUid'] = $conf[$key]['subst_elementUid'];
+			$this->result[$resKey][$key]['allStdWrap.'] = $conf[$key]['allStdWrap.'];
 
 			$Hcounter+=$this->result[$resKey][$key]['output_h'];		// counter is increased
 			$Wcounter+=$this->result[$resKey][$key]['output_w'];		// counter is increased
@@ -1909,31 +1927,38 @@ class tslib_gmenu extends tslib_menu {
 	 */
 	function writeMenu()	{
 		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO']))	{
-			$this->WMresult='';
+			$this->WMcObj = t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
+			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime().$this->GMENU_fixKey),0,4);
 			$this->WMmenuItems = count($this->result['NO']);
 			$this->extProc_init();
 			for ($key=0;$key<$this->WMmenuItems;$key++)	{
 				if ($this->result['NO'][$key]['output_file'])	{
-					$this->I =array();
+					$this->WMcObj->start($this->menuArr[$key],'pages');		// Initialize the cObj with the page record of the menu item
+
+					$this->I = array();
 					$this->I['key'] = $key;
-					$this->I['INPfix']= $this->imgNameNotRandom?'':'_'.$this->INPfixMD5.'_'.$key;
+					$this->I['INPfix'] = $this->imgNameNotRandom?'':'_'.$this->INPfixMD5.'_'.$key;
 					$this->I['val'] = $this->result['NO'][$key];
 					$this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'],$this->menuArr[$key]['nav_title']);
 					$this->I['uid'] = $this->menuArr[$key]['uid'];
 					$this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'];
 					$this->I['pid'] = $this->menuArr[$key]['pid'];
 					$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
-					if (!$this->I['uid'] && !$this->menuArr[$key]['_OVERRIDE_HREF']) {$this->I['spacer']=1;}
+					if (!$this->I['uid'] && !$this->menuArr[$key]['_OVERRIDE_HREF']) { $this->I['spacer'] = 1; }
 					$this->I['noLink'] = ($this->I['spacer'] || $this->I['val']['noLink'] || !count($this->menuArr[$key]));		// !count($this->menuArr[$key]) means that this item is a dummyItem
-					$this->I['name']='';
+					$this->I['name'] = '';
 
 						// Get link.
 					$this->I['linkHREF'] = $this->link($key,$this->I['val']['altTarget'],$this->mconf['forceTypeValue']);
-
-						// Set noBlur
+						// Title attribute of links:
+					$titleAttrValue = $this->WMcObj->stdWrap($this->I['val']['ATagTitle'],$this->I['val']['ATagTitle.']);
+					if (strlen($titleAttrValue))	{
+						$this->I['linkHREF']['title'] = $titleAttrValue;
+					}
+						// Setting "blurlink()" function:
 					if (!$this->mconf['noBlur'])	{
-						$this->I['linkHREF']['onFocus']='blurLink(this);';
+						$this->I['linkHREF']['onFocus'] = 'blurLink(this);';
 					}
 
 						// Set rollover
@@ -1987,8 +2012,20 @@ class tslib_gmenu extends tslib_menu {
 					$this->I['theItem']= implode('',$this->I['parts']);
 					$this->I['theItem']= $this->extProc_beforeAllWrap($this->I['theItem'],$key);
 
-						// 'allWrap' (for GMENU's this is just the 'wrap' property)
+						// wrap:
 					$this->I['theItem']= $this->tmpl->wrap($this->I['theItem'],$this->I['val']['wrap']);
+
+						// allWrap:
+					$allWrap = $this->WMcObj->stdWrap($this->I['val']['allWrap'],$this->I['val']['allWrap.']);
+					$this->I['theItem'] = $this->tmpl->wrap($this->I['theItem'],$allWrap);
+
+					if ($this->I['val']['subst_elementUid'])	$this->I['theItem'] = str_replace('{elementUid}',$this->I['uid'],$this->I['theItem']);
+
+						// allStdWrap:
+					if (is_array($this->I['val']['allStdWrap.']))	{
+						$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'],$this->I['val']['allStdWrap.']);
+					}
+
 					$GLOBALS['TSFE']->imagesOnPage[]=$this->I['val']['output_file'];
 
 					$this->extProc_afterLinking($key);
@@ -2156,17 +2193,16 @@ class tslib_imgmenu extends tslib_menu {
 						$waArr[$key]['free']=$gifObjCount;
 
 						$sKeyArray=t3lib_TStemplate::sortedKeyList($val);
-						reset($sKeyArray);
-						while(list(,$theKey)=each($sKeyArray))	{
-							$theValue=$val[$theKey];
 
+						foreach($sKeyArray as $theKey)	{
+							$theValue = $val[$theKey];
 
-							if (intval($theKey) && $theValArr=$val[$theKey.'.'])	{
+							if (intval($theKey) && $theValArr = $val[$theKey.'.'])	{
 								$cObjData = $this->menuArr[$key] ? $this->menuArr[$key] : Array();
 
 								$gifObjCount++;
 								if ($theValue=='TEXT') {
-									$waArr[$key]['textNum']=$gifObjCount;
+									$waArr[$key]['textNum'] = $gifObjCount;
 
 									$gifCreator->data = $cObjData;
 									$theValArr = $gifCreator->checkTextObj($theValArr);
@@ -2181,7 +2217,7 @@ class tslib_imgmenu extends tslib_menu {
 										if ($this->menuArr[$key]['_OVERRIDE_TARGET'])	$LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
 									}
 
-										// Setting target/url:
+										// Setting target/url for Image Map:
 									if ($theValArr['imgMap.']['url']=='')	{
 										$theValArr['imgMap.']['url'] = $LD['totalURL'];
 									}
@@ -2190,6 +2226,18 @@ class tslib_imgmenu extends tslib_menu {
 									}
 									if ($theValArr['imgMap.']['noBlur']=='')	{
 										$theValArr['imgMap.']['noBlur'] = $this->mconf['noBlur'];
+									}
+									if (is_array($theValArr['imgMap.']['altText.']))	{
+										$cObj =t3lib_div::makeInstance('tslib_cObj');
+										$cObj->start($cObjData,'pages');
+										$theValArr['imgMap.']['altText'] = $cObj->stdWrap($theValArr['imgMap.']['altText'], $theValArr['imgMap.']['altText.']);
+										unset($theValArr['imgMap.']['altText.']);
+									}
+									if (is_array($theValArr['imgMap.']['titleText.']))	{
+										$cObj =t3lib_div::makeInstance('tslib_cObj');
+										$cObj->start($cObjData,'pages');
+										$theValArr['imgMap.']['titleText'] = $cObj->stdWrap($theValArr['imgMap.']['titleText'], $theValArr['imgMap.']['titleText.']);
+										unset($theValArr['imgMap.']['titleText.']);
 									}
 								}
 									// This code goes one level in if the object is an image. If 'file' and/or 'mask' appears to be GIFBUILDER-objects, they are both searched for TEXT objects, and if a textobj is found, it's checked with the currently loaded record!!
