@@ -939,14 +939,11 @@ class t3lib_cs {
 			}
 		} elseif ($charset == 'utf-8')	{
 			return $this->utf8_conv_case($string,$case);
-		}
-/*
 		} elseif ($charset == 'shift_jis')	{
 			return $this->euc_conv_case($string,$case,'shift_jis');
 		} elseif ($this->eucBasedSets[$charset])	{
 			return $this->euc_conv_case($string,$case,$charset);
 		}
-*/
 
 		// treat everything else as single-byte encoding
 		if (!$this->initCaseFolding($charset))	return $string;	// do nothing
@@ -1161,7 +1158,7 @@ class t3lib_cs {
 	 * @param	string		conversion: 'toLower' or 'toUpper'
 	 * @return	string		the converted string
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 * @see strtolower()
+	 * @see strtolower(), strtoupper(), mb_convert_case()
 	 */
 	function utf8_conv_case($str,$case)	{
 		if (!$this->initCaseFoldingUTF8())	return $str;	// do nothing
@@ -1333,6 +1330,49 @@ class t3lib_cs {
 		if (!$str{$i})	return false; // offset beyond string length
 
 		return $i;
+	}
+
+	/**
+	 * Translates all characters of a string in the EUC charset family into their respective case values.
+	 *
+	 * @param	string		EUC multibyte character string
+	 * @param	string		conversion: 'toLower' or 'toUpper'
+	 * @param	string		the charset
+	 * @return	string		the converted string
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 * @see strtolower(), strtoupper(), mb_convert_case()
+	 */
+	function euc_conv_case($str,$case,$charset)	{
+		if (!$this->initCaseFolding($charset))	return $str;	// do nothing
+
+		$sjis = ($charset == 'shift_jis');
+		$out = '';
+		$caseConv =& $this->caseFolding[$charset][$case];
+		for($i=0; $mbc=$str{$i}; $i++)	{
+			$c = ord($str{$i});
+
+			if ($sjis)	{
+				if (($c >= 0x80 && $c < 0xA0) || ($c >= 0xE0))	{	// a double-byte char
+					$mbc = substr($str,$i,2);
+					$i++;
+				}
+			}
+			else	{
+				if ($c >= 0x80)	{	// a double-byte char
+					$mbc = substr($str,$i,2);
+					$i++;
+				}
+			}
+
+			$cc = $caseConv[$mbc];
+			if ($cc)	{
+				$out .= $cc;
+			} else {
+				$out .= $mbc;
+			}
+		}
+
+		return $out;
 	}
 
 }
