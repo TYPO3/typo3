@@ -1651,11 +1651,19 @@ $str.=$this->docBodyTagBegin().
 					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
 						if (doToogle && document.getElementById(idBase+"-"+index+"-DIV").style.display == "block")	{
 							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
-							document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+							if(DTM_origClass=="") {
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+							} else {
+								DTM_origClass = "tab";
+							}
 							top.DTM_currentTabs[idBase] = -1;
 						} else {
 							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
-							document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+							if(DTM_origClass=="") {
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+							} else {
+								DTM_origClass = "tabact";
+							}
 							top.DTM_currentTabs[idBase] = index;
 						}
 					}

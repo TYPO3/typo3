@@ -197,12 +197,12 @@ TABLE.typo3-dyntabmenu TD A { color:grey; text-decoration:none; display: block; 
 TABLE.typo3-dyntabmenu TD.tabact A, TABLE.typo3-dyntabmenu TD.tab_over A { color:#000;}
 
 DIV.typo3-dyntabmenu-divs-foldout DIV.c-tablayer {margin-left: 20px;}
-DIV.typo3-dyntabmenu-divs-foldout DIV.tab { background: #c4d4cd;  background-image: url(gfx/ol/plusbullet.gif); background-repeat: no-repeat; border: solid black 1px; border-radius: 3px; -moz-border-radius: 3px;}
-DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over {background: #f6eab7; background-image: url(gfx/ol/arrowbullet.gif); background-repeat: no-repeat; border: solid black 1px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab { background: #c4d4cd;  background-image: url(gfx/ol/plusbullet.gif); background-repeat: no-repeat; border: solid black 1px; margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over {background: #f6eab7; background-image: url(gfx/ol/arrowbullet.gif); background-repeat: no-repeat; border: solid black 1px; margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px;}
 DIV.typo3-dyntabmenu-divs-foldout DIV.tabact {  background: #e7dba8; background-image: url(gfx/ol/minusbullet.gif); background-repeat: no-repeat; border: solid black 1px;  margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px;}
 DIV.typo3-dyntabmenu-divs-foldout DIV.tabact_over { background: #f6eab7; background-image: url(gfx/ol/arrowbullet.gif); background-repeat: no-repeat; border: solid black 1px;  margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px;}
-DIV.typo3-dyntabmenu-divs-foldout DIV.disabled { color:#999999; border: solid black 1px; background: #cccccc;  padding: 2px 2px 2px 18px; border-radius: 3px; -moz-border-radius: 3px;}
-DIV.typo3-dyntabmenu-divs-foldout DIV.disabled_over { color:#999999; border: solid black 1px; background: #f6eab7;  padding: 2px 2px 2px 18px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.disabled { color:#999999; border: solid black 1px; background: #cccccc;  padding: 2px 2px 2px 18px; margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px;}
+DIV.typo3-dyntabmenu-divs-foldout DIV.disabled_over { color:#999999; border: solid black 1px; background: #f6eab7;  padding: 2px 2px 2px 18px; margin-top: 5px; border-radius: 3px; -moz-border-radius: 3px;}
 DIV.typo3-dyntabmenu-divs-foldout DIV.tab A, DIV.typo3-dyntabmenu-divs-foldout DIV.tabact A, DIV.typo3-dyntabmenu-divs-foldout DIV.tab_over A,DIV.typo3-dyntabmenu-divs-foldout DIV.tabact_over A { text-decoration:none; display: block; padding: 2px 2px 2px 18px;border-radius: 3px; -moz-border-radius: 3px;}
 
 
