@@ -320,24 +320,25 @@ function linkTo_UnCryptMailto(s)	{	//
 		$GLOBALS['TSFE']->content='';
 
 			// Setting document type:
-		$docTypeParts=array();
+		$docTypeParts = array();
+		$XMLprologue = $GLOBALS['TSFE']->config['config']['xmlprologue'] != 'none';
 		if ($GLOBALS['TSFE']->config['config']['doctype'])	{
 			switch((string)$GLOBALS['TSFE']->config['config']['doctype'])	{
 				case 'xhtml_trans':
-		 			$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
-					$docTypeParts[]='<!DOCTYPE html 
+		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 				break;
 				case 'xhtml_strict':
-		 			$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
-					$docTypeParts[]='<!DOCTYPE html 
+		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 				break;
 				case 'xhtml_frames':
-		 			$docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
-					$docTypeParts[]='<!DOCTYPE html 
+		 			if ($XMLprologue) $docTypeParts[]='<?xml version="1.0" encoding="'.$theCharset.'"?>';
+					$docTypeParts[]='<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
@@ -348,15 +349,15 @@ function linkTo_UnCryptMailto(s)	{	//
 				break;
 			}
 		} else {
-			$docTypeParts[]='<!DOCTYPE html 
+			$docTypeParts[]='<!DOCTYPE html
 	PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
 		}
-		
+
 			// Swap XML and doctype order around (for MSIE / Opera standards compliance)
 		if ($GLOBALS['TSFE']->config['config']['doctypeSwitch'])	{
 			$docTypeParts = array_reverse($docTypeParts);
 		}
-		
+
 			// Adding doctype parts:
 		$GLOBALS['TSFE']->content.= count($docTypeParts) ? implode(chr(10),$docTypeParts).chr(10) : '';
 
