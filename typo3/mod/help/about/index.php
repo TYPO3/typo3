@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
+*
 *  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,13 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Module: About
  * This document shows some standard-information for TYPO3 CMS: About-text, version number and so on.
  *
  * $Id$
  * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
- * XHTML compliant 
+ * XHTML compliant
  *
  * @todo	This module could use a major overhaul in general.
  * @author	Kasper Skaarhoj <kasper@typo3.com>
@@ -40,15 +40,15 @@
  *
  *
  *
- *   73: class SC_mod_help_about_index 
- *   91:     function main()	
- *  141:     function printContent()	
+ *   73: class SC_mod_help_about_index
+ *   91:     function main()
+ *  141:     function printContent()
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
- 
+
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
@@ -92,45 +92,28 @@ class SC_mod_help_about_index {
 		global $TBE_TEMPLATE,$TYPO_VERSION,$LANG,$BACK_PATH;
 
 		$this->MCONF = $GLOBALS['MCONF'];
-		
+
 		// **************************
 		// Main
 		// **************************
-		$TBE_TEMPLATE->bgColor='#cccccc';
-		$this->content.=$TBE_TEMPLATE->startPage('About');
-		
-		$text='
-		<div align="center"><b>'.$LANG->getLL('welcome').'</b></div><br />
-		<br />
-		';
-		$minorText =sprintf($LANG->getLL('minor'), 'TYPO3 Ver. '.$TYPO_VERSION.', Copyright &#169; 1998-2004', 'Kasper Sk&#229;rh&#248;j');
+		$TBE_TEMPLATE->bgColor = '#cccccc';
+		$TBE_TEMPLATE->backPath = $GLOBALS['BACK_PATH'];
+		$this->content.= $TBE_TEMPLATE->startPage('About');
+
+		$minorText = sprintf($LANG->getLL('minor'), 'TYPO3 Ver. '.$TYPO_VERSION.', Copyright &#169; 1998-2004', 'Kasper Sk&#229;rh&#248;j');
+
 		$content='
-		<div align="center">
-			<table border="0" cellspacing="0" cellpadding="0" width="333" bgcolor="#cccccc">
-				<tr>
-					<td><img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="333" height="43" vspace="10" alt="" />
-					</td>
-				</tr>
-				<tr>
-					<td bgcolor="black">
-						<table width="100%" border="0" cellspacing="1" cellpadding="10">
-							<tr>
-								<td bgcolor="'.$TBE_TEMPLATE->bgColor.'"><font face="verdana,arial,helvetica" size="2">
-								TYPO3 Information
-								<br /></font>
-								
-		'.$text.$minorText.'
-								
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</div>
+			<div id="typo3-mod-help-about-index-php-outer">
+				<img src="'.$BACK_PATH.'gfx/typo3logo.gif" width="333" height="43" vspace="10" alt="TYPO3 logo" />
+				<div id="typo3-mod-help-about-index-php-inner">
+					<h2>TYPO3 Information</h2>
+					<h3>'.$LANG->getLL('welcome',1).'</h3>
+					<p>'.$minorText.'</p>
+				</div>
+			</div>
 		';
-		$this->content.=$content;
-		$this->content.=$TBE_TEMPLATE->endPage();
+		$this->content.= $content;
+		$this->content.= $TBE_TEMPLATE->endPage();
 	}
 
 	/**
