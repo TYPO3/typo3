@@ -649,14 +649,12 @@ class t3lib_cs {
 					} else $outStr.=chr($this->noCharByteVal);	// No char exists
 					$a++;
 				} elseif ($ord>127)	{	// If char has value over 127 it's a multibyte char in UTF-8
-					if ($charset == 'shift_jis' && ($ord <160 || $ord>223))	{	// Shift-JIS is like EUC, but chars between 160 and 223 are single byte
-						$a++;
-						$ord2 = ord(substr($str,$a,1));
-						$ord = $ord*256+$ord2;
-					} elseif (isset($this->eucBasedSets[$charset]))	{	// EUC uses two-bytes above 127; we get both and advance pointer and make $ord a 16bit int.
-						$a++;
-						$ord2 = ord(substr($str,$a,1));
-						$ord = $ord*256+$ord2;
+					if (isset($this->eucBasedSets[$charset]))	{	// EUC uses two-bytes above 127; we get both and advance pointer and make $ord a 16bit int.
+						if ($charset != 'shift_jis' || ($ord < 0xA0 || $ord > 0xDF))	{	// Shift-JIS: chars between 160 and 223 are single byte
+							$a++;
+							$ord2=ord(substr($str,$a,1));
+							$ord = $ord*256+$ord2;
+						}
 					}
 
 					if (isset($this->parsedCharsets[$charset]['local'][$ord]))	{	// If the local char-number was found in parsed conv. table then we use that, otherwise 127 (no char?)
@@ -1500,9 +1498,9 @@ class t3lib_cs {
 	function conv_case($charset,$string,$case)	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring' && float(phpversion()) >= 4.3)	{
 			if ($case == 'toLower')	{
-				return mb_strtolower($str,'utf-8');
+				return mb_strtolower($string,'utf-8');
 			} else {
-				return mb_strtoupper($str,'utf-8');
+				return mb_strtoupper($string,'utf-8');
 			}
 		} elseif ($charset == 'utf-8')	{
 			return $this->utf8_char_mapping($string,'case',$case);
