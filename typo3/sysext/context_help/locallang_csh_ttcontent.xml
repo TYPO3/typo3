@@ -10,7 +10,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index=".description">All visible content on webpages in TYPO3 is typically made up or represented with &quot;Pagecontent&quot; records.</label>
+			<label index=".description">All visible content on webpages in TYPO3 is typically made by &quot;Pagecontent&quot; records. They are typically referred to as &quot;Content Elements&quot;. Often Content Elements are managed by the &quot;Page&quot; module which is designed to handle Content Elements in multiple columns and languages.</label>
 			<label index=".details">&quot;Pagecontent&quot; records is ordered and can thus be rearranged. Also notice that the &quot;Language&quot; and &quot;Column&quot; selector of the &quot;Pagecontent&quot; records determines where and in which situation they appear. If you do not change the value of the &quot;Language&quot; and &quot;Column&quot; selectors you are most sure that the element will appear by default.</label>
 			<label index="CType.description">Select the kind of page content this element represents. New options will appear when you save the record.</label>
 			<label index="CType.details">The 'Type' of content you select determines which options you have in the editform, so make sure to save the record before you make changes.
@@ -26,10 +26,6 @@ The Text type allows you to insert regular page content.
 
 &lt;strong&gt;Text w/image&lt;/strong&gt;
 This is the same as the Text type (regular page content) but with the option of attaching images.
-
-&lt;strong&gt;Rich Text&lt;/strong&gt;
-This type makes sense only if you're using the Rich Text Editor which allows you to format text with a toolbar as you know from eg. the Word textprocessor. Although you have the same options with the Text and Text w/image types, the Rich Text type offers you a few more features in the toolbar, for instance a table editor.
-&lt;strong&gt;Notice&lt;/strong&gt; that the content made with the Rich Text editor is &lt;em&gt;not&lt;/em&gt; preprocessed by any means and thus this is basically a WYSIWYG HTML editor.
 
 &lt;strong&gt;Image&lt;/strong&gt;
 The same as Text w/image but without the text field - so only images.
@@ -65,7 +61,7 @@ Offers a selection of various link menus and a sitemap you can insert on a page.
 &lt;strong&gt;Insert records&lt;/strong&gt;
 This is a placeholder for other records. In other words, by this element you can attach other content elements from elsewhere and thus insert them this page.
 
-&lt;strong&gt;Insert module&lt;/strong&gt;
+&lt;strong&gt;Insert plugin&lt;/strong&gt;
 This will allow you to insert a forum, guestbook, list of addresses, shopping basket etc. The various features are available &lt;em&gt;only&lt;/em&gt; if they are configured correctly in the template of your website. So before you use it, make sure this is the case.
 
 &lt;strong&gt;Script&lt;/strong&gt;
@@ -74,7 +70,8 @@ This is reserved for custom purposes where the template developer can allow you 
 &lt;strong&gt;HTML&lt;/strong&gt;
 This is plain HTML content. Everything put here will be displayed directly on the page without any preprocessing.</label>
 			<label index="_CType.seeAlso">tt_content:colPos,
-tt_content:sys_language_uid</label>
+tt_content:sys_language_uid, 
+About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/</label>
 			<label index="hidden.description">Check this box if you wish to hide the content element from being displayed.</label>
 			<label index="_hidden.seeAlso">tt_content:starttime,
 tt_content:endtime,
@@ -97,11 +94,16 @@ If you select &quot;Hide at login&quot; the effect is kind of reversed in that t
 			<label index="_fe_group.seeAlso">tt_content:hidden,
 tt_content:starttime,
 tt_content:endtime,
-pages:fe_group</label>
+pages:fe_group, 
+fe_users, 
+fe_groups</label>
 			<label index="sys_language_uid.description">Select the system language of this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</label>
 			<label index="sys_language_uid.details">This allows you to assign a specific language to the content element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
 The available system languages are created by the administrator.</label>
-			<label index="_sys_language_uid.seeAlso">tt_content:colPos</label>
+			<label index="_sys_language_uid.seeAlso">tt_content:colPos, 
+sys_language, 
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/, 
+_MOD_web_layout:language_list</label>
 			<label index="layout.description">Select a layout.</label>
 			<label index="layout.details">This option is not used in the default templates but may be used by any custom rendering.
 
@@ -111,18 +113,17 @@ There are a number of default implementations depending on the content element t
 &quot;Normal&quot; will provide a list of filelinks with no thumbnail.
 &quot;Layout 1&quot; adds a file icon to the left of the link
 &quot;Layout 2&quot; adds a thumbnail if the file is an image file and if not an icon. A black border is wrapped around.
-&quot;Layout 3&quot; is like Layout 2, but without the black border.
-
-&lt;b&gt;&quot;Insert list&quot; / Board&lt;/b&gt;
-There are two built-in board types in TYPO3, the one is a List board and the other a Tree board. The List board is inserted by the &quot;Normal&quot; layout type while the &quot;Tree&quot; board is inserted by the &quot;Layout 1&quot;. &lt;i&gt;Be aware of this fact! Nothing will show up if you select the wrong type!&lt;/i&gt;</label>
+&quot;Layout 3&quot; is like Layout 2, but without the black border.</label>
 			<label index="colPos.description">Select the column position this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</label>
 			<label index="colPos.details">Most websites use only one column of content. However some templates lets you put content in multiple columns and this option allows you to select another column for the element.
 
 &lt;strong&gt;Notice&lt;/strong&gt; that selecting another column than &quot;Normal&quot; will make the content element disappear unless that column is also displayed in the website template. If your content element is 'strangely' not visible please make sure the Column and Language selectors are set correctly.</label>
-			<label index="_colPos.seeAlso">tt_content:sys_language_uid</label>
+			<label index="_colPos.seeAlso">tt_content:sys_language_uid, 
+_MOD_web_layout:columns_multi, 
+_MOD_web_layout:columns_single</label>
 			<label index="date.description">Enter a date to be displayed above the header.</label>
-			<label index="date.syntax">For syntax, see Pages / Start below.</label>
-			<label index="_date.seeAlso">pages:starttime</label>
+			<label index="date.syntax"></label>
+			<label index="_date.seeAlso"></label>
 			<label index="header.description">Enter a headline for the content element.</label>
 			<label index="header.details">Almost all content elements (except the HTML type for instance) will display this header above the content. If you don't want a header displayed, select the header Layout to &quot;Hidden&quot;. Alternatively you can choose not to enter any content in this field.
 
@@ -130,7 +131,7 @@ Some content element types do not display the header by default. In those cases 
 			<label index="_header.seeAlso">tt_content:header_position,
 tt_content:header_link,
 tt_content:header_layout,
-tt_content:date</label>
+tt_content:date,</label>
 			<label index="header_position.description">Places the header to the left, centered or to the right.</label>
 			<label index="_header_position.seeAlso">tt_content:header</label>
 			<label index="header_link.description">Creates a link from the header. Insert a page id, email address or URL.</label>
@@ -153,21 +154,23 @@ tt_content:bodytext</label>
 			<label index="bodytext.details">Here you enter the body text of the content element. Usually you can use some HTML formatting tags, if you're using Internet Explorer you can even format the content visually.
 The field is reused in most other types and so switching between the content element types will bring the value of this field with it.
 
-When you're using this field with the &quot;Text&quot; and &quot;Text w/image&quot; types, the content is used as ordinary body text. Each linebreak signifies a new paragraph, you can use the special TYPO3 tags, &amp;lt;LINK&amp;gt;, &amp;lt;TYPOLIST&amp;gt;, &amp;lt;TYPOHEAD&amp;gt; and &amp;lt;TYPOCODE&amp;gt;. The &amp;lt;TABLE&amp;gt; element is one of the only HTML-elements you cannot use though.
+When you're using this field with the &quot;Text&quot; and &quot;Text w/image&quot; types, the content is used as ordinary body text. Each linebreak normally signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations as well. This will depend on the implementation.
 
+&lt;b&gt;Bulletlists:&lt;/b&gt;
 If the type is &quot;Bulletlist&quot; each line in this field is a bulletlist entry.
 
-If the type is &quot;Table&quot; each line represents a table row. Within each line you divide the columns by inserting a vertical bar, |. So making a table row with 3 columns could look like &quot;This is column 1 | Column 2 here | Third column!&quot;
+&lt;b&gt;Tables:&lt;/b&gt;
+If the type is &quot;Table&quot; each line represents a table row. Within each line you divide the columns by inserting a vertical bar, |. So making a table row with 3 columns could look like &quot;This is column 1 | Column 2 here | Third column!&quot;. Use the table wizard for creating tables - that is much easier than &quot;coding&quot; them.
 
-Types like &quot;Script&quot;, &quot;Mailform&quot; and &quot;Multimedia&quot; uses this field for parameters you can pass to the element. And the &quot;HTML&quot; type accepts any input as raw HTML which is simply displayed on the website without any preprocessing.
+&lt;b&gt;Parameters:&lt;/b&gt;
+Types like &quot;Script&quot;, &quot;Form&quot; and &quot;Multimedia&quot; use this field for parameters you can pass to the element. And the &quot;HTML&quot; type accepts any input as raw HTML which is simply displayed on the website without any preprocessing.
 
 &lt;strong&gt;Rich Text Editor:&lt;/strong&gt;
-With the types &quot;Text&quot;, &quot;Text w/image&quot; and &quot;Rich Text&quot; the Rich Text editor is used when Internet Explorer is used for editing (provided that the editor is generally enabled in the system). Be aware that the content is &quot;cleansed&quot; before it goes into the database when you're using the &quot;Text&quot; and &quot;Text w/image&quot; types. The &quot;Rich Text&quot; type pretty much passes it through without any interaction.
+With the types &quot;Text&quot; and &quot;Text w/image&quot; the Rich Text editor is used for editing if your browser supports it and the editor is generally enabled in the system. Be aware that the content is &quot;cleansed&quot; before it goes into the database when you're using the &quot;Text&quot; and &quot;Text w/image&quot; types.
 
 &lt;b&gt;Making a mail form:&lt;/b&gt;
 When you have selected the content element type &quot;Form&quot; you should enter lines of parameters into this field. This is a brief example:
 
-&lt;nobr&gt;
 Your name: | *name=input,40 | [Enter name!]
 Your email: | *email=input,40
 Your address: | address=textarea,40,10
@@ -176,22 +179,20 @@ Your haircolor: |hair=radio|Blue=blue, Red=red
 |formtype_mail = submit | Send form
 |subject=hidden| Enter a subject here!
 |html_enabled=hidden | 1
-&lt;/nobr&gt;
 
 The first two lines makes input-fields for name and email, both are marked &quot;required&quot; by the * and the name field has a default value of &quot;[Enter name!]&quot;.
 The third line is a text box and the fourth makes radiobuttons to select haircolor.
 Then there are three important lines in the end. The first makes a submit button with the label &quot;Send form&quot;, the second line is the subject of the email the receiver gets and the third line makes the form result render in an HTML-table.
+It is much easier to use the Form Wizard for creating forms.
+
 &lt;b&gt;Notice:&lt;/b&gt; Before any form will ever work, you must enter a recipient email address. The &quot;Recipient-email:&quot; field is used for that (this is in fact the Subheader field used!).</label>
 			<label index="_bodytext.seeAlso">tt_content:CType,
-tt_content:rte_enabled,
-tt_content:text_align,
-tt_content:text_face,
-tt_content:text_size,
-tt_content:text_color,
-tt_content:text_properties
-tt_content:subheader</label>
+tt_content:subheader, 
+xMOD_csh_corebe:wizard_forms_wiz, 
+xMOD_csh_corebe:wizard_table_wiz</label>
 			<label index="text_align.description">Places the body text to the left, centered or to the right.</label>
-			<label index="text_align.details">See Pagecontent / Fontface for comments.</label>
+			<label index="text_align.details">See Pagecontent / Fontface for comments. 
+&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</label>
 			<label index="_text_align.seeAlso">tt_content:text_face,
 tt_content:bodytext</label>
 			<label index="text_face.description">Select a font fact family for the body text.</label>
@@ -199,28 +200,31 @@ tt_content:bodytext</label>
 			<label index="_text_face.seeAlso">tt_content:text_face,
 tt_content:bodytext</label>
 			<label index="text_size.description">Select a font size for the body text.</label>
-			<label index="text_size.details">See Pagecontent / Fontface for comments.</label>
+			<label index="text_size.details">See Pagecontent / Fontface for comments.
+&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</label>
 			<label index="_text_size.seeAlso">tt_content:text_face,
 tt_content:bodytext</label>
 			<label index="text_color.description">Select a color for the body text.</label>
-			<label index="text_color.details">See Pagecontent / Fontface for comments.</label>
+			<label index="text_color.details">See Pagecontent / Fontface for comments.
+&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</label>
 			<label index="_text_color.seeAlso">tt_content:text_face,
 tt_content:bodytext</label>
 			<label index="text_properties.description">Select additional font properties.</label>
 			<label index="text_properties.details">These options will select font properties for all the body text. However you may wish to mark only a part of the bodytext as bold or underline in which case you should use the formatting options in the Rich Text Editor. Alternatively you can use the HTML tags here:
 
-&amp;lt;B&amp;gt;&lt;strong&gt;This is bold&lt;/strong&gt;&amp;lt;B&amp;gt;
-&amp;lt;I&amp;gt;&lt;strong&gt;This is italics&lt;/strong&gt;&amp;lt;I&amp;gt;
-&amp;lt;U&amp;gt;&lt;strong&gt;This is underlined&lt;/strong&gt;&amp;lt;U&amp;gt;
+&amp;lt;b&amp;gt;&lt;strong&gt;This is bold&lt;/strong&gt;&amp;lt;b&amp;gt;
+&amp;lt;i&amp;gt;&lt;em&gt;This is italics&lt;/em&gt;&amp;lt;i&amp;gt;
+&amp;lt;u&amp;gt;&lt;u&gt;This is underlined&lt;/u&gt;&amp;lt;u&amp;gt;
 
-See Pagecontent / Fontface for comments.</label>
+See Pagecontent / Fontface for comments.
+&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</label>
 			<label index="_text_properties.seeAlso">tt_content:text_face,
 tt_content:bodytext</label>
 			<label index="image.description">Insert one or more images.</label>
-			<label index="image.details">You can attach images to the content element almost as many as you like here.
+			<label index="image.details">You can attach images to the content element and almost as many as you like.
 Depending on the configuration of TYPO3 you can even attach them in any format you like. Especially you do not need to worry about size and compression because these factors are normally handled by TYPO3 internally.
 
-When you use the &quot;Text w/image&quot; type, it's important to select a proper position of the imageblock. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to Pagecontent&gt;Position below.
+When you use the &quot;Text w/image&quot; type, it's important to select a proper position of the imageblock. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to &quot;Pagecontent / Position&quot; below.
 You can also display images in multiple columns and enable an option which enables a link so you can click the image and see a bigger version. Just to name a few options.
 Most likely you don't have all options available. This depends on your permissions in the system.</label>
 			<label index="_image.seeAlso">tt_content:imagewidth,
@@ -235,10 +239,10 @@ tt_content:imagecaption,
 tt_content:image_effects,
 tt_content:image_frames,
 tt_content:image_compression,
-User manual | http://www.typo3.com/Images.1072.0.html,
+Using images (&quot;Getting Started&quot;) | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
 Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</label>
 			<label index="imagewidth.description">Enter the width in pixels of the image.</label>
-			<label index="imagewidth.details">The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfect into those dimensions. However this does give you an opportunity to specify a specific width.</label>
+			<label index="imagewidth.details">The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfectly into those dimensions. However this does give you an opportunity to specify a specific width.</label>
 			<label index="_imagewidth.seeAlso">tt_content:imageheight,
 tt_content:image</label>
 			<label index="imageheight.description">Enter the height of the image in pixels.</label>
@@ -247,13 +251,13 @@ tt_content:image</label>
 			<label index="imageorient.description">Select the position of the imageblock relative to the body text.</label>
 			<label index="imageorient.details">The position above and below the body text is pretty straight forward.
 The options &quot;In text&quot; means that the image block is displayed with text aside it. When you select this option the template will probably force the images into smaller dimensions because they cannot take up the same space when text is supposed to float around them.
-When you select &quot;In text&quot; you can choose the options either above or below the divider &quot;No wrap&quot;. If you select the &quot;In text&quot; option above, the bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when the bodytext reaches the end of the image block. So in other words the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select &quot;In text&quot; below the &quot;No wrap&quot; divider, the body text will not float under the image block, but simply continue in it's column.
+When you select &quot;In text&quot; you can choose the options either above or below the divider &quot;No wrap&quot;. If you select the &quot;In text&quot; option above, the bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when the bodytext reaches the end of the image block. So in other words the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select &quot;In text&quot; below the &quot;No wrap&quot; divider, the body text will not float under the image block, but simply continue in its column.
 Apart from the visual difference there is a technical aspect as well. Because if you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: You experience that the subsequent content elements on the page is somehow layered on top of the image block - and this certainly looks like a bug. However it's easily solved by changing the &quot;In text&quot; position to the equal value but below the &quot;No wrap&quot; divider.</label>
 			<label index="imageborder.description">Check this, if you wish a colored border around the images.</label>
 			<label index="_imageborder.seeAlso">tt_content:imagecols,
 tt_content:image</label>
 			<label index="image_noRows.description">Disables strict tablerows in the image block.</label>
-			<label index="image_noRows.details">This options is kinda hard to explain, but image you have 2 or more columns &lt;em&gt;and&lt;/em&gt; rows of images. If one image in the upper row is a bit taller than the second this will generate an empty extra space beneath the second image. This is due to the normal procedure in which the images are placed in a table cell each.
+			<label index="image_noRows.details">This options is kind of hard to explain, but imagine you have 2 or more columns &lt;em&gt;and&lt;/em&gt; rows of images. If one image in the upper row is a bit taller than the second this will generate an empty extra space beneath the second image. This is due to the normal procedure in which the images are placed in a table cell each.
 If you set this option, the table will place all images in a column in a single table cell which make the distance between them vertically identical throughout. This may provide a better look if the alternative looks stupid.</label>
 			<label index="_image_noRows.seeAlso">tt_content:imagecols,
 tt_content:image</label>
@@ -284,7 +288,7 @@ tt_content:image</label>
 			<label index="_imagecols.seeAlso">tt_content:image_noRows,
 tt_content:image</label>
 			<label index="imagecaption.description">Enter a caption for the image block</label>
-			<label index="imagecaption.details">By default the caption is positioned below the whole image block. However your website template may be configured to allow indidual image captions. In that case each line in this field will be the image caption of the corresponding image in the list.
+			<label index="imagecaption.details">By default the caption is positioned below the whole image block. However your website template may be configured to allow individual image captions. In that case each line in this field will be the image caption of the corresponding image in the list.
 
 The caption text field is also used by the content element type &quot;Filelinks&quot; where each line represents a description of a file in the list.</label>
 			<label index="_imagecaption.seeAlso">tt_content:imagecaption_position,
@@ -339,71 +343,17 @@ This displays the 10 most recently updated pages.
 &lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and this list seems not to be updated instantly, just clear the cache of the page and the problem is solved.
 
 &lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
-Displays other related pages based on the keywords set for this pages matched up with the keywords on other pages.
+Displays other related pages based on the keywords set for this page matched up with the keywords on other pages.
 
 
-Notice: With many of the above menu types, the default starting point is the current page. However you can specify another startingpoint (or more than one in fact!) by adding pages to the the &quot;Startingpoint&quot; list. See link below.</label>
+&lt;b&gt;Notice:&lt;/b&gt; With many of the above menu types, the default starting point is the current page. However you can specify another startingpoint (or more than one in fact!) by adding pages to the the &quot;Startingpoint&quot; list. See link below.</label>
 			<label index="_menu_type.seeAlso">tt_content:pages,
 tt_content:sectionIndex</label>
-			<label index="list_type.description">Select a module to insert (Availability depends on the template).</label>
-			<label index="list_type.details">It's very important that you recognize the need to also install the particular module in the TypoScript template of the website. This is done by the administrator. But when a module is first introduced in the template and configured correctly, then the &quot;Insert module&quot; content element type is used to insert the modules function on the right page on your website. This is a very flexible way to do it, because you determine all by yourself where you want your guestbook, forum, list of shopping items and so on.
-But first make sure which modules are available to you!
-
-This is a description of the options:
-
-&lt;strong&gt;&lt;u&gt;LISTS:&lt;/u&gt;&lt;/strong&gt;
-(Generally this subdivision of options is about listing records on the page).
-
-&lt;strong&gt;Guestbook:&lt;/strong&gt;
-Lists the guestbook records on the page. Notice that you'll have to insert a special code in the CODE field in order to activate the guestbook. But there will be an explanation displayed when you insert the module without any code.
-
-&lt;strong&gt;Board:&lt;/strong&gt;
-Lists the discussion board records or list of forums on the page. This depends on the CODE field content. There will be an explanation displayed when you insert the module without any code.
-
-&lt;strong&gt;Products:&lt;/strong&gt;
-Lists products (or shop items) on the page. Alternatively it inserts the shopping basket or a search form. This all depends on the content of the CODE field. There will be an explanation displayed when you insert the module without any code.
-
-&lt;strong&gt;News:&lt;/strong&gt;
-Lists news items teasers, extensive list or whole items. This depends on the CODE field content. There will be an explanation displayed when you insert the module without any code.
-
-&lt;strong&gt;Addresses:&lt;/strong&gt;
-Lists the address records found on the page.
-
-&lt;strong&gt;To-Do:&lt;/strong&gt;
-No default rendering. Must be custom made.
-
-&lt;strong&gt;Calendar:&lt;/strong&gt;
-No default rendering. Must be custom made.
-
-&lt;strong&gt;Links:&lt;/strong&gt;
-No default rendering. Must be custom made.
-
-
-&lt;strong&gt;MODULES:&lt;/strong&gt;
-
-&lt;strong&gt;Rating:&lt;/strong&gt;
-Inserts a rating element on the page.
-
-&lt;strong&gt;Indexed search:&lt;/strong&gt;
-Inserts a search dialog and result page for the Indexed Searching Engine.
-
-&lt;strong&gt;Tip-a-friend:&lt;/strong&gt;
-Inserts a link (or form display) to the &quot;Tip-a-friend&quot; feature. There will be an explanation displayed when you insert the module without any code.
-
-&lt;strong&gt;ADMINISTRATION:&lt;/strong&gt;
-
-&lt;strong&gt;Frontend User administration:&lt;/strong&gt;
-Inserts an editing form for creating and maintenance of frontend users of a website.
-
-&lt;strong&gt;DirectMail subscription:&lt;/strong&gt;
-Inserts an editing form for subscription and maintenance of subscription for Direct Mail recipients. This is not limited to the Direct Mail feature but can just as well be used to enable an online addresslist where every entry maintains his own record through this.
-Basically it just allows access to the Address table in TYPO3.
-
-
-The &quot;Startingpoint&quot; is used with some of the above options to designate from which page records are selected. If you do not enter a starting point, the current page is usually used.</label>
-			<label index="_list_type.seeAlso">tt_content:select_key</label>
+			<label index="list_type.description">Select a plugin to insert.</label>
+			<label index="list_type.details">The list of plugins you can insert on a page. The available plugins depends on which extensions are installed.</label>
+			<label index="_list_type.seeAlso">_MOD_tools_em</label>
 			<label index="select_key.description">Enter a code string.</label>
-			<label index="select_key.details">Whether or not the content of this field is used and how it's intepreted depends on the context.</label>
+			<label index="select_key.details">Whether or not the content of this field is used and how it's intepreted depends on the context. It is considered obsolete today.</label>
 			<label index="_select_key.seeAlso">tt_content:list_type</label>
 			<label index="table_bgColor.description">Select table background color.</label>
 			<label index="table_border.description">Select table border thickness.</label>
@@ -433,7 +383,22 @@ tt_content:spaceBefore</label>
 			<label index="linkToTop.description">If checked, a little &quot;To top&quot; link will be inserted after the content element.</label>
 			<label index="rte_enabled.description">If checked, the Rich Text Editor will be disabled for the &quot;Text&quot; and &quot;Text w/Image&quot; types (&lt;em&gt;in this element only&lt;/em&gt;).</label>
 			<label index="_rte_enabled.seeAlso">tt_content:bodytext</label>
-			<label index="pi_flexform.description">[FILL IN] tt_content-&gt;pi_flexform</label>
+			<label index="pi_flexform.description">FlexForm Configuration of Plugins</label>
+			<label index="_.seeAlso">Page Content principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/, 
+_MOD_web_layout</label>
+			<label index="_.image">EXT:context_help/cshimages/ttcontent_1.png, 
+EXT:context_help/cshimages/ttcontent_2.png, 
+EXT:context_help/cshimages/ttcontent_3.png</label>
+			<label index="_CType.image">EXT:context_help/cshimages/ttcontent_4.png</label>
+			<label index="_image.image">EXT:context_help/cshimages/ttcontent_5.png</label>
+			<label index=".image_descr">The Page module is used to manage Content Elements effectively as they appear arranged in columns and languages.
+A Content Element has a large editing form with many options. The &quot;Type&quot; determines which options are visible.
+In the frontend - on the webpage - a Content Element like the above could look like this.</label>
+			<label index="_header.image">EXT:context_help/cshimages/ttcontent_6.png</label>
+			<label index="image.image_descr">This shows all the options related to inserting images in Content Elements. You might not be able to use all of them.</label>
+			<label index="_list_type.image">EXT:context_help/cshimages/ttcontent_7.png</label>
+			<label index="pi_flexform.details">Some plugins may require configuration of their options. They may use this field for FlexForm based configuration settings (stored as XML).</label>
+			<label index="_pi_flexform.seeAlso">tt_content:list_type</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>

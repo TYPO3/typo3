@@ -40,23 +40,23 @@ This will show statistics only for pages that has a Template Record (with Root-f
 Will show the total number of page hits/sessions within main sections of a website. A &quot;main section&quot; is all subpages to a page on the first level of a website (defined by a Template Record with the Root flag set).</label>
 			<label index="_func_hits.image">EXT:cms/cshimages/pagetree_overview_2.png</label>
 			<label index="_stat.image">EXT:cms/cshimages/pagetree_overview_3.png</label>
-			<label index="_func_0.image">EXT:cms/cshimages/pagetree_overview_4.png, 
-EXT:cms/cshimages/pagetree_overview_8.png, 
+			<label index="_func_0.image">EXT:cms/cshimages/pagetree_overview_4.png,
+EXT:cms/cshimages/pagetree_overview_8.png,
 EXT:cms/cshimages/pagetree_overview_9.png</label>
 			<label index="_func_1.image">EXT:cms/cshimages/pagetree_overview_6.png</label>
-			<label index="_func_2.image">EXT:cms/cshimages/pagetree_overview_5.png, 
+			<label index="_func_2.image">EXT:cms/cshimages/pagetree_overview_5.png,
 EXT:cms/cshimages/pagetree_overview_7.png</label>
 			<label index="func_0.details">The Basic Settings view resembles the Cache and Age view quite a lot. They are different only by the selection of fields they show.
 
 &lt;b&gt;Batch editing page fields&lt;/b&gt;
-You will find multiple edit-icons around the interface. All edit icons in head lines will bring you to an editing dialog where you can change exactly that field for all listed tables! Very useful for batch-editing of say all &quot;Start&quot; times. 
+You will find multiple edit-icons around the interface. All edit icons in head lines will bring you to an editing dialog where you can change exactly that field for all listed tables! Very useful for batch-editing of say all &quot;Start&quot; times.
 If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a whole page record.</label>
-			<label index="_func_0.seeAlso">xMOD_csh_corebe:list_module, 
-_MOD_web_info:func_2, 
+			<label index="_func_0.seeAlso">xMOD_csh_corebe:list_module,
+_MOD_web_info:func_2,
 _MOD_web_info:pagetree_overview</label>
-			<label index="_pagetree_overview.seeAlso">_MOD_web_info:func_0, 
-_MOD_web_info:func_1, 
-_MOD_web_info:func_2, 
+			<label index="_pagetree_overview.seeAlso">_MOD_web_info:func_0,
+_MOD_web_info:func_1,
+_MOD_web_info:func_2,
 _MOD_web_info:stat</label>
 			<label index="func_0.image_descr">The Basic Settings view. Notice how this offers a very convenient overview of page aliases, start times and access restriction settings in the tree branch.
 If you click an edit-icon in the header you will be able to edit that field (here the &quot;Access&quot; field) for all listed pages.
@@ -65,17 +65,16 @@ This is how batch-editing looks like; Only one field per record!</label>
 
 &lt;b&gt;Tree stop?&lt;/b&gt;
 Notice the red &quot;+&quot; next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.</label>
-			<label index="_func_1.seeAlso">_MOD_web_info:pagetree_overview, 
+			<label index="_func_1.seeAlso">_MOD_web_info:pagetree_overview,
 pages:php_tree_stop</label>
 			<label index="func_1.image_descr">Notice how you can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</label>
-			<label index="_func_2.seeAlso">_MOD_web_info:func_0, 
-_MOD_web_info:pagetree_overview, 
+			<label index="_func_2.seeAlso">_MOD_web_info:func_0,
+_MOD_web_info:pagetree_overview,
 pages:TSconfig</label>
 			<label index="func_2.image_descr">The &quot;Cache and Age&quot; view.
 Here you see the &quot;TSconfig&quot; column. The overview exposes that these two pages include some Page TSconfig code!</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
-			<label index=".alttitle"></label>
 		</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>

@@ -13,28 +13,50 @@
 			<label index=".description">TypoScript template record.</label>
 			<label index=".details">The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
 Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
-It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;TS module to do all the working with templates. It's a specialized tool to help you with this.</label>
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</label>
 			<label index="_.seeAlso">static_template
-TSref | http://www.typo3.com/doclink.php?doc=TSref.pdf
-TypoScript by Example | http://www.typo3.com/doclink.php?doc=TypoScript_by_example.pdf</label>
-			<label index="hidden.description">[FILL IN] sys_template-&gt;hidden</label>
-			<label index="starttime.description">[FILL IN] sys_template-&gt;starttime</label>
-			<label index="endtime.description">[FILL IN] sys_template-&gt;endtime</label>
-			<label index="title.description">[FILL IN] sys_template-&gt;title</label>
-			<label index="sitetitle.description">[FILL IN] sys_template-&gt;sitetitle</label>
-			<label index="constants.description">[FILL IN] sys_template-&gt;constants</label>
-			<label index="config.description">[FILL IN] sys_template-&gt;config</label>
-			<label index="resources.description">[FILL IN] sys_template-&gt;resources</label>
-			<label index="clear.description">[FILL IN] sys_template-&gt;clear</label>
-			<label index="root.description">[FILL IN] sys_template-&gt;root</label>
-			<label index="includeStaticAfterBasedOn.description">[FILL IN] sys_template-&gt;includeStaticAfterBasedOn</label>
-			<label index="include_static.description">[FILL IN] sys_template-&gt;include_static</label>
-			<label index="include_static_file.description">[FILL IN] sys_template-&gt;include_static_file</label>
-			<label index="basedOn.description">[FILL IN] sys_template-&gt;basedOn</label>
-			<label index="static_file_mode.description">[FILL IN] sys_template-&gt;static_file_mode</label>
-			<label index="nextLevel.description">[FILL IN] sys_template-&gt;nextLevel</label>
-			<label index="description.description">[FILL IN] sys_template-&gt;description</label>
-			<label index="editorcfg.description">[FILL IN] sys_template-&gt;editorcfg</label>
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/</label>
+			<label index="hidden.description">Hide the template record. This will deactivate the template record.</label>
+			<label index="starttime.description">Start time. Use this to enable a template on a certain date.</label>
+			<label index="endtime.description">End time. Use this to disable a template on a certain date.</label>
+			<label index="title.description">The title of the template record is only an internal label and does not have any effect on the output in the frontend.</label>
+			<label index="sitetitle.description">Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</label>
+			<label index="constants.description">TypoScript Constants.</label>
+			<label index="config.description">TypoScript Setup code</label>
+			<label index="resources.description">Resource files for the template. For example a logo, a TTF-font etc.</label>
+			<label index="clear.description">Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</label>
+			<label index="root.description">Defines that the template represents a root of a website.</label>
+			<label index="includeStaticAfterBasedOn.description">If set, static templates will be included after &quot;based-on&quot; templates. It basically swaps the order of inclusion of these external TypoScript sources.</label>
+			<label index="include_static.description">Static Template records to include.</label>
+			<label index="include_static_file.description">Static Template files to include.</label>
+			<label index="basedOn.description">Other Template Records that are included like &quot;static templates&quot;.</label>
+			<label index="static_file_mode.description">Define the mode of inclusion of static template files.</label>
+			<label index="nextLevel.description">Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</label>
+			<label index="description.description">Enter a description of the template if you like.</label>
+			<label index="editorcfg.description">Editor Configuration for the stylesheet editor extension.</label>
+			<label index="_.image">EXT:context_help/cshimages/systemplate.png, 
+EXT:context_help/cshimages/systemplate1.png</label>
+			<label index=".image_descr">A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</label>
+			<label index="hidden.details">If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</label>
+			<label index="_constants.seeAlso">static_template:constants</label>
+			<label index="config.details">Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</label>
+			<label index="_config.seeAlso">static_template:config,
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+Getting Started | http://typo3.org/documentation/document-library/doc_tut_quickstart/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</label>
+			<label index="resources.details">Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</label>
+			<label index="clear.details">In the Web &gt; Template / Template Analyser module you can see how far back in the template tree that constants and setup code is inherited.</label>
+			<label index="_clear.seeAlso">sys_template:root</label>
+			<label index="_clear.image">EXT:context_help/cshimages/systemplate2.png</label>
+			<label index="_root.seeAlso">sys_template:clear</label>
+			<label index="includeStaticAfterBasedOn.details">The Web &gt; Template / Template Analyser module allows you to view the order of inclusion of all TypoScript sources your template uses.</label>
+			<label index="_include_static.seeAlso">static_template</label>
+			<label index="include_static_file.details">Static template files are registered by extensions contrary to Static Template records which come from the static database table, &quot;static_template&quot;.</label>
+			<label index="_include_static_file.seeAlso">sys_template:include_static</label>
+			<label index="static_file_mode.details">If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyser to view the order.</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
@@ -126,141 +148,6 @@ On erittäin tärkeää lukea kuinka kaikki tämä tehdään allaolevista dokume
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index=".description" type="integer">48577171</label>
-			<label index=".details" type="integer">152826282</label>
-			<label index="_.seeAlso" type="integer">81860007</label>
-			<label index="hidden.description" type="integer">116073189</label>
-			<label index="starttime.description" type="integer">171576303</label>
-			<label index="endtime.description" type="integer">173657956</label>
-			<label index="title.description" type="integer">24298111</label>
-			<label index="sitetitle.description" type="integer">126706320</label>
-			<label index="constants.description" type="integer">26364809</label>
-			<label index="config.description" type="integer">179792512</label>
-			<label index="resources.description" type="integer">196719723</label>
-			<label index="clear.description" type="integer">159821423</label>
-			<label index="root.description" type="integer">138394606</label>
-			<label index="includeStaticAfterBasedOn.description" type="integer">238528216</label>
-			<label index="include_static.description" type="integer">28359222</label>
-			<label index="include_static_file.description" type="integer">92683133</label>
-			<label index="basedOn.description" type="integer">72729649</label>
-			<label index="static_file_mode.description" type="integer">72493257</label>
-			<label index="nextLevel.description" type="integer">252323834</label>
-			<label index="description.description" type="integer">11759472</label>
-			<label index="editorcfg.description" type="integer">170528127</label>
-			<label index=".alttitle" type="integer">222419149</label>
-			<label index=".syntax" type="integer">222419149</label>
-			<label index="_.image" type="integer">222419149</label>
-			<label index=".image_descr" type="integer">222419149</label>
-			<label index="hidden.alttitle" type="integer">222419149</label>
-			<label index="hidden.details" type="integer">222419149</label>
-			<label index="hidden.syntax" type="integer">222419149</label>
-			<label index="_hidden.seeAlso" type="integer">222419149</label>
-			<label index="_hidden.image" type="integer">222419149</label>
-			<label index="hidden.image_descr" type="integer">222419149</label>
-			<label index="starttime.alttitle" type="integer">222419149</label>
-			<label index="starttime.details" type="integer">222419149</label>
-			<label index="starttime.syntax" type="integer">222419149</label>
-			<label index="_starttime.seeAlso" type="integer">222419149</label>
-			<label index="_starttime.image" type="integer">222419149</label>
-			<label index="starttime.image_descr" type="integer">222419149</label>
-			<label index="endtime.alttitle" type="integer">222419149</label>
-			<label index="endtime.details" type="integer">222419149</label>
-			<label index="endtime.syntax" type="integer">222419149</label>
-			<label index="_endtime.seeAlso" type="integer">222419149</label>
-			<label index="_endtime.image" type="integer">222419149</label>
-			<label index="endtime.image_descr" type="integer">222419149</label>
-			<label index="title.alttitle" type="integer">222419149</label>
-			<label index="title.details" type="integer">222419149</label>
-			<label index="title.syntax" type="integer">222419149</label>
-			<label index="_title.seeAlso" type="integer">222419149</label>
-			<label index="_title.image" type="integer">222419149</label>
-			<label index="title.image_descr" type="integer">222419149</label>
-			<label index="sitetitle.alttitle" type="integer">222419149</label>
-			<label index="sitetitle.details" type="integer">222419149</label>
-			<label index="sitetitle.syntax" type="integer">222419149</label>
-			<label index="_sitetitle.seeAlso" type="integer">222419149</label>
-			<label index="_sitetitle.image" type="integer">222419149</label>
-			<label index="sitetitle.image_descr" type="integer">222419149</label>
-			<label index="constants.alttitle" type="integer">222419149</label>
-			<label index="constants.details" type="integer">222419149</label>
-			<label index="constants.syntax" type="integer">222419149</label>
-			<label index="_constants.seeAlso" type="integer">222419149</label>
-			<label index="_constants.image" type="integer">222419149</label>
-			<label index="constants.image_descr" type="integer">222419149</label>
-			<label index="config.alttitle" type="integer">222419149</label>
-			<label index="config.details" type="integer">222419149</label>
-			<label index="config.syntax" type="integer">222419149</label>
-			<label index="_config.seeAlso" type="integer">222419149</label>
-			<label index="_config.image" type="integer">222419149</label>
-			<label index="config.image_descr" type="integer">222419149</label>
-			<label index="resources.alttitle" type="integer">222419149</label>
-			<label index="resources.details" type="integer">222419149</label>
-			<label index="resources.syntax" type="integer">222419149</label>
-			<label index="_resources.seeAlso" type="integer">222419149</label>
-			<label index="_resources.image" type="integer">222419149</label>
-			<label index="resources.image_descr" type="integer">222419149</label>
-			<label index="clear.alttitle" type="integer">222419149</label>
-			<label index="clear.details" type="integer">222419149</label>
-			<label index="clear.syntax" type="integer">222419149</label>
-			<label index="_clear.seeAlso" type="integer">222419149</label>
-			<label index="_clear.image" type="integer">222419149</label>
-			<label index="clear.image_descr" type="integer">222419149</label>
-			<label index="root.alttitle" type="integer">222419149</label>
-			<label index="root.details" type="integer">222419149</label>
-			<label index="root.syntax" type="integer">222419149</label>
-			<label index="_root.seeAlso" type="integer">222419149</label>
-			<label index="_root.image" type="integer">222419149</label>
-			<label index="root.image_descr" type="integer">222419149</label>
-			<label index="includeStaticAfterBasedOn.alttitle" type="integer">222419149</label>
-			<label index="includeStaticAfterBasedOn.details" type="integer">222419149</label>
-			<label index="includeStaticAfterBasedOn.syntax" type="integer">222419149</label>
-			<label index="_includeStaticAfterBasedOn.seeAlso" type="integer">222419149</label>
-			<label index="_includeStaticAfterBasedOn.image" type="integer">222419149</label>
-			<label index="includeStaticAfterBasedOn.image_descr" type="integer">222419149</label>
-			<label index="include_static.alttitle" type="integer">222419149</label>
-			<label index="include_static.details" type="integer">222419149</label>
-			<label index="include_static.syntax" type="integer">222419149</label>
-			<label index="_include_static.seeAlso" type="integer">222419149</label>
-			<label index="_include_static.image" type="integer">222419149</label>
-			<label index="include_static.image_descr" type="integer">222419149</label>
-			<label index="include_static_file.alttitle" type="integer">222419149</label>
-			<label index="include_static_file.details" type="integer">222419149</label>
-			<label index="include_static_file.syntax" type="integer">222419149</label>
-			<label index="_include_static_file.seeAlso" type="integer">222419149</label>
-			<label index="_include_static_file.image" type="integer">222419149</label>
-			<label index="include_static_file.image_descr" type="integer">222419149</label>
-			<label index="basedOn.alttitle" type="integer">222419149</label>
-			<label index="basedOn.details" type="integer">222419149</label>
-			<label index="basedOn.syntax" type="integer">222419149</label>
-			<label index="_basedOn.seeAlso" type="integer">222419149</label>
-			<label index="_basedOn.image" type="integer">222419149</label>
-			<label index="basedOn.image_descr" type="integer">222419149</label>
-			<label index="static_file_mode.alttitle" type="integer">222419149</label>
-			<label index="static_file_mode.details" type="integer">222419149</label>
-			<label index="static_file_mode.syntax" type="integer">222419149</label>
-			<label index="_static_file_mode.seeAlso" type="integer">222419149</label>
-			<label index="_static_file_mode.image" type="integer">222419149</label>
-			<label index="static_file_mode.image_descr" type="integer">222419149</label>
-			<label index="nextLevel.alttitle" type="integer">222419149</label>
-			<label index="nextLevel.details" type="integer">222419149</label>
-			<label index="nextLevel.syntax" type="integer">222419149</label>
-			<label index="_nextLevel.seeAlso" type="integer">222419149</label>
-			<label index="_nextLevel.image" type="integer">222419149</label>
-			<label index="nextLevel.image_descr" type="integer">222419149</label>
-			<label index="description.alttitle" type="integer">222419149</label>
-			<label index="description.details" type="integer">222419149</label>
-			<label index="description.syntax" type="integer">222419149</label>
-			<label index="_description.seeAlso" type="integer">222419149</label>
-			<label index="_description.image" type="integer">222419149</label>
-			<label index="description.image_descr" type="integer">222419149</label>
-			<label index="editorcfg.alttitle" type="integer">222419149</label>
-			<label index="editorcfg.details" type="integer">222419149</label>
-			<label index="editorcfg.syntax" type="integer">222419149</label>
-			<label index="_editorcfg.seeAlso" type="integer">222419149</label>
-			<label index="_editorcfg.image" type="integer">222419149</label>
-			<label index="editorcfg.image_descr" type="integer">222419149</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -342,80 +229,4 @@ On erittäin tärkeää lukea kuinka kaikki tämä tehdään allaolevista dokume
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

@@ -144,7 +144,7 @@ Depends on template implementation whether this applies.</label>
 			<label index="_extendToSubpages.image">EXT:context_help/cshimages/pages_2.png</label>
 			<label index="extendToSubpages.image_descr">This page icon has access restricted to a certain group and &quot;Include subpages&quot; set as well. This is reflected in the way the icon changed look.</label>
 			<label index="_url.seeAlso">pages:urltype</label>
-			<label index="_shortcut.seeAlso">pages:doktype, 
+			<label index="_shortcut.seeAlso">pages:doktype,
 pages:shortcut_mode</label>
 			<label index="shortcut.image_descr">Select a page to shortcut to by the Element Browser.</label>
 			<label index="_nav_hide.seeAlso">pages:nav_title</label>
@@ -152,15 +152,7 @@ pages:shortcut_mode</label>
 			<label index="_mount_pid.seeAlso">pages:mount_pid_ol</label>
 			<label index="_mount_pid_ol.seeAlso">pages:mount_pid</label>
 		</languageKey>
-		<languageKey index="dk" type="array">
-			<label index="doktype.description">Vælg side type.
-Typerne 'Standard' og 'Advanceret' er almindelig websider, kun antallet af indstilling er forskelligt.
-'Ikke i menu' er også en almindelig side, men vil ikke blive vist i menuen.
-'sysFolder' er en særlig side type som ikke kan vises so</label>
-			<label index="hidden.description">Hvis valgt, så vil siden være skjult for alle brugere. Du kan kun se sidens indhold hvis du er logget in i TYPO3's backend.</label>
-			<label index="starttime.description">'Start'-tiden er den dato, hvor siden vil blive synlig online. Brug dette til at 'publisere' siden på en bestemt dato.
-Hvis 'Start'-tiden ikke er sat, så bliver siden vist øjeblikkeligt (medmindre siden på anden vis er skjult).</label>
-		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/context_help/locallang_csh_pages.xml</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>
 		<languageKey index="no" type="array">

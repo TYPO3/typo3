@@ -10,18 +10,24 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index=".description">Static templates is a centrally distributed TypoScript library. You should never changes these values.</label>
+			<label index=".description">Static templates are a centrally distributed TypoScript library. You should never changes these values.</label>
 			<label index=".details">The Static templates are meant to be included by your TypoScript Template records depending on your needs. Refer to the 'TSref' document (see below) for details on this process.
 Notice that by each release of TYPO3 you should reinstall the Static Templates table by the install tool. See the 'Install/Upgrade' document for details (see below).</label>
 			<label index="_.seeAlso">sys_template
-TSref | http://www.typo3.com/doclink.php?doc=TSref.pdf
-Install/Upgrade | http://www.typo3.com/doclink.php?doc=installing_upgrading.pdf</label>
-			<label index="title.description">[FILL IN] static_template-&gt;title</label>
-			<label index="constants.description">[FILL IN] static_template-&gt;constants</label>
-			<label index="config.description">[FILL IN] static_template-&gt;config</label>
-			<label index="include_static.description">[FILL IN] static_template-&gt;include_static</label>
-			<label index="description.description">[FILL IN] static_template-&gt;description</label>
-			<label index="editorcfg.description">[FILL IN] static_template-&gt;editorcfg</label>
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+Install/Upgrade | http://typo3.org/documentation/document-library/doc_inst_upgr/, 
+sys_template:include_static</label>
+			<label index="title.description">Template Title. Will be visible in the list of static templates in Template Records</label>
+			<label index="constants.description">TypoScript Constants field</label>
+			<label index="config.description">TypoScript Setup code field</label>
+			<label index="include_static.description">Inclusion of other static templates</label>
+			<label index="description.description">Description of the static template record.</label>
+			<label index="editorcfg.description">Editor Configuration - used to configure Stylesheet editor.</label>
+			<label index="_.image">EXT:context_help/cshimages/static.png</label>
+			<label index=".image_descr">The static templates are located in the page tree root where only the Admin users can access them. However they are read-only by default so you can only look at their content, not change it.</label>
+			<label index="_constants.seeAlso">sys_template:constants</label>
+			<label index="_config.seeAlso">sys_template:config</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
@@ -111,57 +117,6 @@ Napoma: prilikom svake nove inačice TYPO3 potrebno je reinstalirati statičke p
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index=".description" type="integer">63778985</label>
-			<label index=".details" type="integer">185102512</label>
-			<label index="_.seeAlso" type="integer">185263681</label>
-			<label index="title.description" type="integer">212245500</label>
-			<label index="constants.description" type="integer">216798377</label>
-			<label index="config.description" type="integer">67125504</label>
-			<label index="include_static.description" type="integer">156267664</label>
-			<label index="description.description" type="integer">131626074</label>
-			<label index="editorcfg.description" type="integer">229717673</label>
-			<label index=".alttitle" type="integer">222419149</label>
-			<label index=".syntax" type="integer">222419149</label>
-			<label index="_.image" type="integer">222419149</label>
-			<label index=".image_descr" type="integer">222419149</label>
-			<label index="title.alttitle" type="integer">222419149</label>
-			<label index="title.details" type="integer">222419149</label>
-			<label index="title.syntax" type="integer">222419149</label>
-			<label index="_title.seeAlso" type="integer">222419149</label>
-			<label index="_title.image" type="integer">222419149</label>
-			<label index="title.image_descr" type="integer">222419149</label>
-			<label index="constants.alttitle" type="integer">222419149</label>
-			<label index="constants.details" type="integer">222419149</label>
-			<label index="constants.syntax" type="integer">222419149</label>
-			<label index="_constants.seeAlso" type="integer">222419149</label>
-			<label index="_constants.image" type="integer">222419149</label>
-			<label index="constants.image_descr" type="integer">222419149</label>
-			<label index="config.alttitle" type="integer">222419149</label>
-			<label index="config.details" type="integer">222419149</label>
-			<label index="config.syntax" type="integer">222419149</label>
-			<label index="_config.seeAlso" type="integer">222419149</label>
-			<label index="_config.image" type="integer">222419149</label>
-			<label index="config.image_descr" type="integer">222419149</label>
-			<label index="include_static.alttitle" type="integer">222419149</label>
-			<label index="include_static.details" type="integer">222419149</label>
-			<label index="include_static.syntax" type="integer">222419149</label>
-			<label index="_include_static.seeAlso" type="integer">222419149</label>
-			<label index="_include_static.image" type="integer">222419149</label>
-			<label index="include_static.image_descr" type="integer">222419149</label>
-			<label index="description.alttitle" type="integer">222419149</label>
-			<label index="description.details" type="integer">222419149</label>
-			<label index="description.syntax" type="integer">222419149</label>
-			<label index="_description.seeAlso" type="integer">222419149</label>
-			<label index="_description.image" type="integer">222419149</label>
-			<label index="description.image_descr" type="integer">222419149</label>
-			<label index="editorcfg.alttitle" type="integer">222419149</label>
-			<label index="editorcfg.details" type="integer">222419149</label>
-			<label index="editorcfg.syntax" type="integer">222419149</label>
-			<label index="_editorcfg.seeAlso" type="integer">222419149</label>
-			<label index="_editorcfg.image" type="integer">222419149</label>
-			<label index="editorcfg.image_descr" type="integer">222419149</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -245,80 +200,4 @@ Napoma: prilikom svake nove inačice TYPO3 potrebno je reinstalirati statičke p
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>
