@@ -1,8 +1,8 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 2002-2003 René Fritz (r.fritz@colorcube.de)
+*
+*  (c) 2002-2004 René Fritz (r.fritz@colorcube.de)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,12 +24,33 @@
 /**
  * t3lib_exec find executables (programs) on unix and windows without knowing where they are
  *
+ * $Id$
+ *
  * @author	René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage t3lib
+ */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   81: class t3lib_exec
+ *   91:     function checkCommand($cmd, $handler='')
+ *  162:     function getCommand($cmd, $handler='', $handlerOpt='')
+ *  191:     function addPaths($paths)
+ *  201:     function _getPaths()
+ *  269:     function _init()
+ *  285:     function _initPaths($paths='')
+ *  340:     function _getOS()
+ *  351:     function _fixPath($path)
+ *
+ * TOTAL FUNCTIONS: 8
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
-#require_once(t3lib_extMgm::extPath('cc_debug').'class.tx_ccdebug.php');
+
+
+
 
 /**
  * returns exec command for a program
@@ -54,18 +75,18 @@
  * '/usr/bin/,/usr/local/bin/' on Unix
  *
  * @author	René Fritz <r.fritz@colorcube.de>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_exec {
-
-
 
 	/**
 	 * checks if a command is valid or not
 	 * updates global vars
 	 *
-	 * @param 	string 	the command that should be executed. eg: "convert"
-	 * @param 	string 	executer for the command. eg: "perl"
-	 * @return 	boolean -1 if cmd is not found, or -2 if the handler is not found
+	 * @param	string		the command that should be executed. eg: "convert"
+	 * @param	string		executer for the command. eg: "perl"
+	 * @return	boolean		false if cmd is not found, or -1 if the handler is not found
 	 */
 	function checkCommand($cmd, $handler='')	{
 
@@ -76,7 +97,7 @@ class t3lib_exec {
 #debug($GLOBALS['t3lib_exec'], 't3lib_exec', __LINE__, __FILE__);
 
 		if ($handler && !t3lib_exec::checkCommand($handler)) {
-			return -2;
+			return -1;
 		}
 			// already checked and valid
 		if ($GLOBALS['t3lib_exec']['apps'][$cmd]['valid']) {
@@ -86,9 +107,9 @@ class t3lib_exec {
 		if (isset($GLOBALS['t3lib_exec']['apps'][$cmd]['valid'])) {
 			return false;
 		}
-		
+
 		reset($GLOBALS['t3lib_exec']['paths']);
-		while(list($path,$validPath)=each($GLOBALS['t3lib_exec']['paths'])) {
+		foreach($GLOBALS['t3lib_exec']['paths'] as $path => $validPath) {
 				// ignore invalid (false) paths
 			if ($validPath) {
 				if ($osType=='WIN') {
@@ -115,9 +136,9 @@ class t3lib_exec {
 			}
 		}
 
-			// try to get the executable with the command 'which'. It do the same like already done, but that on other paths??
+			// try to get the executable with the command 'which'. It do the same like already done, but maybe on other paths??
 		if ($osType=='UNIX') {
-			$cmd = exec ('which '.$val['cmd']);
+			$cmd = @exec ('which '.$val['cmd']);
 
 			if (@is_executable($cmd)) {
 				$GLOBALS['t3lib_exec']['apps'][$cmd]['app'] = $cmd;
@@ -127,18 +148,16 @@ class t3lib_exec {
 			}
 		}
 
-		return -1;
+		return false;
 	}
-	
 
 	/**
 	 * returns a command string for exec(), system()
 	 *
-	 *
-	 * @param 	string 	the command that should be executed. eg: "convert"
-	 * @param 	string 	handler (executor) for the command. eg: "perl"
-	 * @param 	string 	options for the handler, like '-w' for "perl"
-	 * @return 	mixed returns command string, or -1 if cmd is not found, or -2 if the handler is not found
+	 * @param	string		the command that should be executed. eg: "convert"
+	 * @param	string		handler (executor) for the command. eg: "perl"
+	 * @param	string		options for the handler, like '-w' for "perl"
+	 * @return	mixed		returns command string, or false if cmd is not found, or -1 if the handler is not found
 	 */
 	function getCommand($cmd, $handler='', $handlerOpt='')	{
 
@@ -149,40 +168,34 @@ class t3lib_exec {
 			$handler = t3lib_exec::getCommand($handler);
 
 			if (!$handler) {
-				return -2;
+				return -1;
 			}
 			$handler .= ' '.$handlerOpt.' ';
 		}
 
 			// command
 		if (!t3lib_exec::checkCommand($cmd)) {
-			return -1;
+			return false;
 		}
 		$cmd = $GLOBALS['t3lib_exec']['apps'][$cmd]['path'].$GLOBALS['t3lib_exec']['apps'][$cmd]['app'].' ';
 
 		return $handler.$cmd;
 	}
 
-
-
-
 	/**
 	 * Extend the preset paths. This way an extension can install an axecutable and provide the path to t3lib_exec.
 	 *
-	 * @param 	string 	comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
+	 * @param	string		comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
+	 * @return	[type]		...
 	 */
 	function addPaths($paths)	{
 		t3lib_exec::_initPaths($paths);
 	}
 
-
-
-
-
-
-
 	/**
 	 * set the search paths from different sources
+	 *
+	 * @return	[type]		...
 	 * @internal
 	 */
 	function _getPaths()	{
@@ -210,7 +223,7 @@ class t3lib_exec {
 		}
 
 
-		
+
 
 # ???? t3lib_div::getIndpEnv('REQUEST_URI');
 
@@ -247,9 +260,10 @@ class t3lib_exec {
 		return $pathsArr;
 	}
 
-
 	/**
 	 * init
+	 *
+	 * @return	[type]		...
 	 * @internal
 	 */
 	function _init()	{
@@ -261,12 +275,12 @@ class t3lib_exec {
 		}
 	}
 
-
 	/**
 	 * init and extend the preset paths with own
 	 *
+	 * @param	string		comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
+	 * @return	[type]		...
 	 * @internal
-	 * @param 	string 	comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
 	 */
 	function _initPaths($paths='')	{
 		$doCeck=false;
@@ -317,36 +331,29 @@ class t3lib_exec {
 		}
 	}
 
-
 	/**
 	 * returns on which OS we're runing
 	 *
-	 * @return 	string 	the OS type: "UNIX" or "WIN"
+	 * @return	string		the OS type: "UNIX" or "WIN"
 	 * @internal
 	 */
 	function _getOS()	{
-		return stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?"WIN":"UNIX";
+		return stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'UNIX';
 	}
 
 	/**
 	 * set a path to the right format
+	 *
+	 * @param	string		path
+	 * @return	string		path
 	 * @internal
-	 * @param 	string 	path
-	 * @return 	string 	path
 	 */
 	function _fixPath($path)	{
 		return str_replace ('//',"/",$path.'/');
 	}
-
 }
 
-
-// Include extension?
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_exec.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_exec.php']);
 }
-
-
 ?>
-
-

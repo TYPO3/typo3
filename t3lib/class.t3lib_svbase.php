@@ -1,19 +1,19 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the Typo3 project. The Typo3 project is 
+*  This script is part of the Typo3 project. The Typo3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
 *
@@ -27,10 +27,66 @@
 /**
  * Parent class for "Services" classes
  *
+ * $Id$
  * TODO: temp files are not removed
  *
  * @author	René Fritz <r.fritz@colorcube.de>
  */
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *  121: class t3lib_svbase
+ *
+ *              SECTION: Get service meta information
+ *  175:     function getServiceInfo()
+ *  183:     function getServiceKey()
+ *  191:     function getServiceTitle()
+ *
+ *              SECTION: Error handling
+ *  212:     function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured')
+ *  227:     function errorPull()
+ *  239:     function getLastError()
+ *  254:     function getLastErrorMsg()
+ *  269:     function getErrorMsgArray()
+ *  287:     function getLastErrorArray()
+ *  296:     function resetErrors()
+ *
+ *              SECTION: General service functions
+ *  316:     function checkExec($progList)
+ *  338:     function deactivateService()
+ *  344:     function available()
+ *
+ *              SECTION: IO tools
+ *  382:     function checkInputFile ($absFile)
+ *  403:     function readFile ($absFile, $length=0)
+ *  426:     function writeFile ($content, $absFile='')
+ *
+ *              SECTION: IO input
+ *  467:     function setInput ($content, $type='')
+ *  481:     function setInputFile ($absFile, $type='')
+ *  494:     function getInput ()
+ *  509:     function getInputFile ($absFile='')
+ *
+ *              SECTION: IO output
+ *  534:     function setOutputFile ($absFile)
+ *  544:     function getOutput ()
+ *  558:     function getOutputFile ($absFile='')
+ *
+ *              SECTION: Service implementation
+ *  582:     function init()
+ *  601:     function reset()
+ *  612:     function process($content='', $type='', $conf=array())
+ *
+ * TOTAL FUNCTIONS: 26
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
+
+
+
 
 define ('T3_ERR_SV_GENERAL', -1); // General error - something went wrong
 define ('T3_ERR_SV_NOT_AVAIL', -2); // During execution it showed that the service is not available and should be ignored. The service itself should call $this->setNonAvailable()
@@ -45,11 +101,23 @@ define ('T3_ERR_SV_FILE_WRITE', -22); // File not writeable
 define ('T3_ERR_SV_PROG_NOT_FOUND', -40); // passed subtype is not possible with this service
 define ('T3_ERR_SV_PROG_FAILED', -41); // passed subtype is not possible with this service
 
-// define ('T3_ERR_SV_serviceType_myerr, 100); // All errors with prefix T3SV_ERR_serviceType_ and beginning with number 100 are service type dependent error
+// define ('T3_ERR_SV_serviceType_myerr, -100); // All errors with prefix T3SV_ERR_[serviceType]_ and lower than -99 are service type dependent error
 
 
 require_once(PATH_t3lib.'class.t3lib_exec.php');
 
+
+
+
+
+
+/**
+ * Parent class for "Services" classes
+ *
+ * @author	René Fritz <r.fritz@colorcube.de>
+ * @package TYPO3
+ * @subpackage t3lib
+ */
 class t3lib_svbase {
 
 	/**
@@ -91,7 +159,7 @@ class t3lib_svbase {
 	  */
 	 var $outputFile = '';
 
-	 
+
 
 
 	/***************************************
@@ -102,7 +170,7 @@ class t3lib_svbase {
 
 
 	/**
-	 * @return 	array 	service description array
+	 * @return	array		service description array
 	 */
 	function getServiceInfo() {
 		return $this->info;
@@ -110,7 +178,7 @@ class t3lib_svbase {
 
 
 	/**
-	 * @return 	string 	service key
+	 * @return	string		service key
 	 */
 	function getServiceKey() {
 		return $this->info['serviceKey'];
@@ -118,7 +186,7 @@ class t3lib_svbase {
 
 
 	/**
-	 * @return 	string 	service title
+	 * @return	string		service title
 	 */
 	function getServiceTitle() {
 		return $this->info['title'];
@@ -137,9 +205,9 @@ class t3lib_svbase {
 	/**
 	 * Puts an error on the error stack. Calling without parameter adds a general error.
 	 *
-	 * @param	string 	error message
-	 * @param	string 	error number (see T3_ERR_SV_* constants)
-	 * @return 	void
+	 * @param	string		error message
+	 * @param	string		error number (see T3_ERR_SV_* constants)
+	 * @return	void
 	 */
 	function errorPush($errNum=T3_ERR_SV_GENERAL, $errMsg='Unspecified error occured') {
 		array_push($this->error, array('nr'=>$errNum, 'msg'=>$errMsg));
@@ -154,7 +222,7 @@ class t3lib_svbase {
 	/**
 	 * Removes the last error from the error stack.
 	 *
-	 * @return 	void
+	 * @return	void
 	 */
 	function errorPull() {
 		array_pop($this->error);
@@ -166,7 +234,7 @@ class t3lib_svbase {
 	/**
 	 * Returns the last error number from the error stack.
 	 *
-	 * @return 	string 	error number
+	 * @return	string		error number
 	 */
 	function getLastError() {
 		if(count($this->error)) {
@@ -181,7 +249,7 @@ class t3lib_svbase {
 	/**
 	 * Returns the last message from the error stack.
 	 *
-	 * @return 	string 	error message
+	 * @return	string		error message
 	 */
 	function getLastErrorMsg() {
 		if(count($this->error)) {
@@ -196,7 +264,7 @@ class t3lib_svbase {
 	/**
 	 * Returns all error messages as array.
 	 *
-	 * @return 	array 	error messages
+	 * @return	array		error messages
 	 */
 	function getErrorMsgArray() {
 		$errArr = array();
@@ -214,7 +282,7 @@ class t3lib_svbase {
 	/**
 	 * Returns the last array from the error stack.
 	 *
-	 * @return 	array 	error nr and message
+	 * @return	array		error nr and message
 	 */
 	function getLastErrorArray() {
 		return end($this->error);
@@ -223,7 +291,7 @@ class t3lib_svbase {
 	/**
 	 * Reset the error stack.
 	 *
-	 * @return 	void
+	 * @return	void
 	 */
 	function resetErrors() {
 		$this->error=array();
@@ -242,8 +310,8 @@ class t3lib_svbase {
 	/**
 	 * check the availability of external programs
 	 *
-	 * @param	string 	comma list of programs 'perl,python,pdftotext'
-	 * @return	boolean 	return FALSE if one program was not found
+	 * @param	string		comma list of programs 'perl,python,pdftotext'
+	 * @return	boolean		return FALSE if one program was not found
 	 */
 	function checkExec($progList) {
 		$ret = TRUE;
@@ -274,7 +342,7 @@ class t3lib_svbase {
 
 /**
 function available()	{
-	global $AB,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$HTTP_GET_VARS,$HTTP_POST_VARS,$CLIENT,$TYPO3_CONF_VARS;
+	global $AB,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 	// check if the service is available at runtime
 	// the sense of this method is that the service might need some more information to check the availablity
@@ -308,8 +376,8 @@ function available()	{
 	/**
 	 * Check if a file exists and is readable.
 	 *
-	 * @param	string 	File name with absolute path.
-	 * @return 	string 	File name or FALSE.
+	 * @param	string		File name with absolute path.
+	 * @return	string		File name or FALSE.
 	 */
 	function checkInputFile ($absFile)	{
 		if(@is_file($absFile)) {
@@ -328,9 +396,9 @@ function available()	{
 	/**
 	 * Read content from a file a file.
 	 *
-	 * @param	string 	File name to read from.
-	 * @param	integer 	Maximum length to read. If empty the whole file will be read.
-	 * @return 	string 	$content or FALSE
+	 * @param	string		File name to read from.
+	 * @param	integer		Maximum length to read. If empty the whole file will be read.
+	 * @return	string		$content or FALSE
 	 */
 	function readFile ($absFile, $length=0)	{
 		$out = FALSE;
@@ -351,15 +419,15 @@ function available()	{
 	/**
 	 * Write content to a file.
 	 *
-	 * @param	string 	Content to write to the file
-	 * @param	string 	File name to write into. If empty a temp file will be created.
-	 * @return 	string 	File name or FALSE
+	 * @param	string		Content to write to the file
+	 * @param	string		File name to write into. If empty a temp file will be created.
+	 * @return	string		File name or FALSE
 	 */
-	function writeFile (&$content, $absFile='')	{
+	function writeFile ($content, $absFile='')	{
 		$ret = TRUE;
 
 		if (!$absFile) {
-			$absFile = tempnam ('', $this->prefixId);
+			$absFile = t3lib_div::tempnam($this->prefixId);
 			if(!$absFile) {
 				$this->errorPush(T3_ERR_SV_FILE_WRITE, 'Can not create temp file.');
 				$ret = FALSE;
@@ -393,6 +461,8 @@ function available()	{
 	 * Set the input content for service processing.
 	 *
 	 * @param	mixed
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
 	 */
 	function setInput ($content, $type='') {
 		$this->inputContent = $content;
@@ -404,7 +474,9 @@ function available()	{
 	/**
 	 * Set the input file name for service processing.
 	 *
-	 * @param	string 	file name
+	 * @param	string		file name
+	 * @param	[type]		$type: ...
+	 * @return	[type]		...
 	 */
 	function setInputFile ($absFile, $type='') {
 		$this->inputContent = '';
@@ -417,7 +489,7 @@ function available()	{
 	 * Get the input content.
 	 * Will be read from input file if needed.
 	 *
-	 * @return 	mixed
+	 * @return	mixed
 	 */
 	function getInput () {
 		if ($this->inputContent=='') {
@@ -431,8 +503,8 @@ function available()	{
 	 * Get the input file name.
 	 * If the content was set by setContent a file will be created.
 	 *
-	 * @param	string 	File name. If empty a temp file will be created.
-	 * @return 	string 	File name or FALSE if no input or file error.
+	 * @param	string		File name. If empty a temp file will be created.
+	 * @return	string		File name or FALSE if no input or file error.
 	 */
 	function getInputFile ($absFile='') {
 		if($this->inputFile) {
@@ -456,7 +528,8 @@ function available()	{
 	/**
 	 * Set the output file name.
 	 *
-	 * @param	string 	file name
+	 * @param	string		file name
+	 * @return	[type]		...
 	 */
 	function setOutputFile ($absFile) {
 		$this->outputFile = $absFile;
@@ -466,7 +539,7 @@ function available()	{
 	/**
 	 * Get the output content.
 	 *
-	 * @return 	mixed
+	 * @return	mixed
 	 */
 	function getOutput () {
 		if ($this->outputFile) {
@@ -479,7 +552,8 @@ function available()	{
 	/**
 	 * Get the output file name.
 	 *
-	 * @return 	mixed
+	 * @param	[type]		$absFile: ...
+	 * @return	mixed
 	 */
 	function getOutputFile ($absFile='') {
 		if (!$this->outputFile) {
@@ -503,7 +577,7 @@ function available()	{
 	 * The class have to do a strict check if the service is available.
 	 * example: check if the perl interpreter is available which is needed to run an extern perl script.
 	 *
-	 * @return 	boolean 	TRUE if the service is available
+	 * @return	boolean		TRUE if the service is available
 	 */
 	function init()	{
 		$this->reset();
@@ -522,7 +596,7 @@ function available()	{
 	 * Resets the service.
 	 * Will be called by init(). Should be used before every use if a service instance is used multiple times.
 	 *
-	 * @return 	void
+	 * @return	void
 	 */
 	function reset()	{
 		$this->resetErrors();
@@ -549,4 +623,3 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["t3lib/class
 */
 
 ?>
-

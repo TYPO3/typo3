@@ -1,4 +1,5 @@
 <?php
+# TYPO3 CVS ID: $Id$
 
 $LOCAL_LANG = Array (
 	'default' => Array (
@@ -18,7 +19,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Bruker',
 	),
 	'it' => Array (
-		'mlang_labels_tablabel' => 'Lavori personali , vista e setup',
+		'mlang_labels_tablabel' => 'Elenco dei task, overview e setup',
 		'mlang_tabs_tab' => 'Utente',
 	),
 	'fr' => Array (
@@ -30,11 +31,11 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Usuario',
 	),
 	'nl' => Array (
-		'mlang_labels_tablabel' => 'Je persoonlijke taken, overzicht en setup',
+		'mlang_labels_tablabel' => 'Persoonlijke taken, overzicht en setup',
 		'mlang_tabs_tab' => 'Gebruiker',
 	),
 	'cz' => Array (
-		'mlang_labels_tablabel' => 'Vaše osbní úkoly, pøehled a nastavení',
+		'mlang_labels_tablabel' => 'Vaše osobní úkoly, pøehled a nastavení',
 		'mlang_tabs_tab' => 'Uživatel',
 	),
 	'pl' => Array (
@@ -46,7 +47,7 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Uporabnik',
 	),
 	'fi' => Array (
-		'mlang_labels_tablabel' => 'Sinun henkilökohtaiset toimet, yleis- ja perustiedot.',
+		'mlang_labels_tablabel' => 'Henkilökohtaiset tehtävät, yleistiedot ja asetukset.',
 		'mlang_tabs_tab' => 'Käyttäjä',
 	),
 	'tr' => Array (
@@ -66,6 +67,8 @@ $LOCAL_LANG = Array (
 		'mlang_tabs_tab' => 'Ïîëüçîâàòåëü',
 	),
 	'ro' => Array (
+		'mlang_labels_tablabel' => 'Sarcini personale, organizare (setare)',
+		'mlang_tabs_tab' => 'Utilizator',
 	),
 	'ch' => Array (
 		'mlang_labels_tablabel' => 'ÄúµÄ¸öÈË×÷Òµ¡¢×ÜÀÀÓëÉèÖÃ',
@@ -78,6 +81,63 @@ $LOCAL_LANG = Array (
 	'lt' => Array (
 		'mlang_labels_tablabel' => 'Jûsø asmeninës uþduotys, nustatymai',
 		'mlang_tabs_tab' => 'Vartotojas',
+	),
+	'is' => Array (
+		'mlang_labels_tablabel' => 'Ãžinar personulega verkefni, yfirlit og uppsetning',
+		'mlang_tabs_tab' => 'Notenda',
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Vaši osobni zadaci, pregled i postavke',
+		'mlang_tabs_tab' => 'Korisnik',
+	),
+	'hu' => Array (
+		'mlang_labels_tablabel' => 'Személyes feladataid, áttekintés és beállítás.',
+		'mlang_tabs_tab' => 'Felhasználó',
+	),
+	'gl' => Array (
+		'mlang_tabs_tab' => 'Atuisoq',
+	),
+	'th' => Array (
+		'mlang_labels_tablabel' => '§Ò¹ÊèÇ¹µÑÇ¢Í§¤Ø³ ¡ÅèÒÇ¹ÓáÅÐµÔ´µÑé§',
+		'mlang_tabs_tab' => '¼Ùéãªé',
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+		'mlang_labels_tablabel' => '§A­Ó¤Hªº¤u§@¡B·§Äý©M³]©w',
+		'mlang_tabs_tab' => '¨Ï¥ÎªÌ',
+	),
+	'eu' => Array (
+		'mlang_labels_tablabel' => 'Zure betebehar pertsonalak, gainbegirada eta ezarpena',
+		'mlang_tabs_tab' => 'Erabiltzailea',
+	),
+	'bg' => Array (
+		'mlang_labels_tablabel' => 'Âàøèòå ëè÷íè çàäà÷è, ïðåãëåä è íàñòðîéêè',
+		'mlang_tabs_tab' => 'Ïîòðåáèòåë',
+	),
+	'br' => Array (
+		'mlang_labels_tablabel' => 'Suas tarefas pessoais, resumo e configuração',
+		'mlang_tabs_tab' => 'Usuário',
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Teie personaalsed ülesanded, ülevaated ja seaded',
+		'mlang_tabs_tab' => 'Kasutaja',
+	),
+	'ar' => Array (
+		'mlang_labels_tablabel' => 'ÑÄêÉ è ÅæÔÇÁ ÌÏèä ÃÙåÇäã ÇäÔÎÕê',
+		'mlang_tabs_tab' => 'ÇäåÓÊÎÏå',
+	),
+	'he' => Array (
+		'mlang_labels_tablabel' => '×ž×©×™×ž×•×ª ×”××™×©×™×™× ×©×œ×š, ×¨××™×” ×›×œ×œ×™×ª ×•×”×’×“×¨×•×ª ×ª×¦×•×¨×”',
+		'mlang_tabs_tab' => '×ž×©×ª×ž×©',
+	),
+	'ua' => Array (
+	),
+	'lv' => Array (
+	),
+	'jp' => Array (
+	),
+	'vn' => Array (
 	),
 );
 ?>

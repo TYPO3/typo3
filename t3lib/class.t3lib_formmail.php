@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -27,16 +27,19 @@
 /**
  * Contains a class for formmail
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   66: class t3lib_formmail extends t3lib_htmlmail 
- *   92:     function start($V,$base64=1)	
- *  166:     function addAttachment($file, $filename)	
+ *   69: class t3lib_formmail extends t3lib_htmlmail
+ *   95:     function start($V,$base64=1)
+ *  166:     function addAttachment($file, $filename)
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -56,9 +59,9 @@
 
 
 /**
- * Formmail class
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * Formmail class, used by the TYPO3 "cms" extension (default frontend) to send email forms.
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see tslib_fe::sendFormmail(), t3lib/formmail.php
@@ -71,10 +74,10 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * Start function
 	 * This class is able to generate a mail in formmail-style from the data in $V
 	 * Fields:
-	 * 
+	 *
 	 * [recipient]:		email-adress of the one to receive the mail. If array, then all values are expected to be recipients
 	 * [attachment]:		....
-	 * 
+	 *
 	 * [subject]:			The subject of the mail
 	 * [from_email]:		Sender email. If not set, [email] is used
 	 * [from_name]:		Sender name. If not set, [name] is used
@@ -84,21 +87,18 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * [priority]:			Priority, 1-5, default 3
 	 * [html_enabled]:		If mail is sent as html
 	 * [quoted_printable]:	if set, quoted-printable will be used instead of base 64
-	 * 
-	 * @param	array		Contains values for the field names listed above
+	 *
+	 * @param	array		Contains values for the field names listed above (with slashes removed if from POSt input)
 	 * @param	boolean		Whether to base64 encode the mail content
-	 * @return	void		
+	 * @return	void
 	 */
 	function start($V,$base64=1)	{
 		if ($base64 && !$V['quoted_printable'])	{$this->useBase64();}
-		if (is_array($V))	{
-			t3lib_div::stripSlashesOnArray($V);
-		}
-		
+
 		if (isset($V['recipient']))	{
 				// Sets the message id
 			$this->messageid = '<'.md5(microtime()).'@domain.tld>';
-		
+
 			$this->subject = ($V['subject']) ? $V['subject'] : 'Formmail on '.t3lib_div::getIndpEnv('HTTP_HOST');
 			$this->from_email = ($V['from_email']) ? $V['from_email'] : (($V['email'])?$V['email']:'');
 			$this->from_name = ($V['from_name']) ? $V['from_name'] : (($V['name'])?$V['name']:'');
@@ -109,10 +109,10 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 				// Auto responder.
 			$this->auto_respond_msg = (trim($V['auto_respond_msg']) && $this->from_email) ? trim($V['auto_respond_msg']) : '';
-			
+
 			$Plain_content = '';
 			$HTML_content = '<table border="0" cellpadding="2" cellspacing="2">';
-			
+
 				// Runs through $V and generates the mail
 			if (is_array($V))	{
 				reset($V);
@@ -135,17 +135,17 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 			for ($a=0;$a<10;$a++)	{
 				$varname = 'attachment'.(($a)?$a:'');
-				$theFile = $GLOBALS['HTTP_POST_FILES'][$varname]['tmp_name'];
+				$theFile = t3lib_div::upload_to_tempfile($GLOBALS['HTTP_POST_FILES'][$varname]['tmp_name']);
 				$theName = $GLOBALS['HTTP_POST_FILES'][$varname]['name'];
-				
+
 				if ($theFile && @file_exists($theFile))	{
 					if (filesize($theFile) < 250000)	{
 						$this->addAttachment($theFile, $theName);
 					}
-//					unlink($theFile);
 				}
+				t3lib_div::unlink_tempfile($theFile);
 			}
-			
+
 			$this->setHeaders();
 			$this->setContent();
 			$this->setRecipient($V['recipient']);
@@ -157,7 +157,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 	/**
 	 * Adds an attachment to the mail
-	 * 
+	 *
 	 * @param	string		The absolute path to the file to add as attachment
 	 * @param	string		The files original filename (not necessarily the same as the current since this could be uploaded files...)
 	 * @return	boolean		True if the file existed and was added.
@@ -171,7 +171,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 		if ($fileInfo['fileext'] == 'jpg' || $fileInfo['fileext'] == 'jpeg')	{$content_type = 'image/jpeg';}
 		if ($fileInfo['fileext'] == 'html' || $fileInfo['fileext'] == 'htm')	{$content_type = 'text/html';}
 		if (!$content_type) {$content_type = 'application/octet-stream';}
-		
+
 		if ($content)	{
 			$theArr['content_type']= $content_type;
 			$theArr['content']= $content;

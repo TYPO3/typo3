@@ -1,0 +1,56 @@
+<?php
+/**
+ * Core language labels (ar - arabic)
+ * TYPO3 CVS ID: $Id$
+ */
+
+$LOCAL_LANG = Array (
+	'ar' => Array (
+		'labels.openInNewWindow' => 'ÅáÊÍ áê ÔÈÇã ÌÏêÏ',
+		'labels.goBack' => 'ÅÑÌÙ',
+		'labels.makeShortcut' => 'ÅæÔÆ ÅÎÊÕÇÑ äçÐç ÇäÕáÍÉ',
+		'labels.lockedRecord' => 'ÇäåÓÊÎÏå \'%s\' ÈÏÃ  áê ÊÙÏêä çÐÇ ÇäåÓÌä \'%s\'',
+		'labels.lockedRecord_content' => 'ÇäåÓÊÎÏå \'%s\' ÈÏÃ áê ÊÙÏêä ÇäåÍÊèêÇÊ Ùäé çÐç ÇäÕáÍÉ åæÐ %s',
+		'labels.showRecords' => 'ÔÇçÏ ÇäÓÌäÇÊ',
+		'labels.path' => 'ÇäåÓÇÑ',
+		'labels.upOneLevel' => 'åæ Ãèä åÓÊèé  èÇÍÏ',
+		'labels.enterSearchString' => 'ÅÈÍË Ùæ ÇäÍÑá :',
+		'labels.enterSearchLevels' => 'çÐç ÇäÕáÍÉ | ÇäåÓÊèé 1 |ÇäåÓÊèé 2| ÇäåÓÊèé 3 | ÇäåÓÊèé 4',
+		'labels.noEditPermission' => 'ÙÐÑÇ ÃæÊ ÐêÑ åÕÑÍ äã ÈÅÌÑÇÁ çÐç ÇäÊÚêêÑÇÊ',
+		'rm.closeDoc' => 'ÅÚäâ ÇäåÓÊæÏ',
+		'rm.closeAllDocs' => 'ÅÚäâ ãä ÇäåÓÊæÏÇÊ ÇäÃÎÑé',
+		'rm.clearCache_clearCache' => 'ÅåÓÍ ÇäÐÇãÑÉ ÇäåÄâÊÉ',
+		'rm.clearCache_thisPage' => 'çÐç ÇäÕáÍÉ',
+		'rm.clearCache_pages' => 'ÅåÓÍ ÇäÐÇãÑÉ ÇäåÄâÊÉ ääÕáÍÉ',
+		'rm.clearCache_all' => 'ÅåÓÍ ãä ÇäÐÇãÑÉ ÇäåÄâÊÉ',
+		'rm.clearCache_allTypo3Conf' => 'ÅåÓÍ åÍÊèé  ÇäåÎÒæ ÇäåÄâÊ ääåäáÇÊ áê ÊêÈè 3',
+		'rm.adminFunctions' => 'èØÇÆá ääåÓÄä',
+		'rm.edit' => 'ÙÏä',
+		'rm.delete' => 'ÅÍÐá',
+		'buttons.logout' => 'ÃÎÑÌ',
+		'buttons.clear' => 'ÅåÓÍ',
+		'buttons.clipboard' => 'äèÍÉ ÇääÒâ',
+		'cm.copy' => 'ÅæÓÎ',
+		'cm.cut' => 'Åâ×Ù',
+		'cm.view' => 'ÅÙÑÖ',
+		'cm.edit' => 'ÊÙÏêä',
+		'cm.new' => 'ÌÏêÏ',
+		'cm.pasteinto' => 'ÃÏÎä áê',
+		'cm.pasteafter' => 'ÃÏÎä ÈÙÏ',
+		'cm.select' => 'ÅÎÊÇÑ',
+		'cm.deselect' => 'ÅÑáÙ ÇäÅÎÊêÇÑ',
+		'cm.selectto' => 'ÅÎÊÇÑ',
+		'cm.deselectto' => 'ÅÑáÙ ÇäÅÎÊêÇÑ',
+		'cm.delete' => 'ÅåÓÍ',
+		'cm.hide' => 'ÅÎáààÇÁ',
+		'cm.unhide' => 'ÅØçààÇÑ',
+		'cm.upload' => 'ÅÑÓÇä åäáÇÊ',
+		'cm.rename' => 'ÚêÑ ÇäÅÓå',
+		'cm.open' => 'ÅáÊÍ',
+		'cm.save' => 'ÍáØ',
+		'cm.unzip' => 'áã Çäåäá ÇäåÖÚè×',
+		'cm.info' => 'åÙäèåÉ',
+		'cm.createnew' => 'ÅæÔÇÁ ÌÏêÏ',
+	),
+);
+?>
