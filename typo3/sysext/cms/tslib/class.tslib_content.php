@@ -4490,7 +4490,16 @@ class tslib_cObj {
 			if ((string)$key!='')	{
 				switch(strtolower(trim($parts[0])))	{
 					case 'gpvar':
-						$retVal = t3lib_div::_GP($key);
+						list($firstKey, $rest) = explode('|', $key, 2);
+						if (strlen(trim($firstKey)))	{
+							$retVal = t3lib_div::_GP(trim($firstKey));
+								// Look for deeper levels:
+							if (strlen(trim($rest)))	{
+								$retVal = is_array($retVal) ? $this->getGlobal($rest, $retVal) : '';
+							}
+								// Check that output is not an array:
+							if (is_array($retVal))	$retVal = '';
+						}
 					break;
 					case 'tsfe':
 						$retVal = $GLOBALS['TSFE']->$key;
@@ -4612,14 +4621,15 @@ class tslib_cObj {
 	 * Example: $var = "HTTP_SERVER_VARS | something" will return the value $GLOBALS['HTTP_SERVER_VARS']['something'] value
 	 *
 	 * @param	string		Key, see description of functon
+	 * @param	array		If you want another array that $GLOBALS used, then just put it in here!
 	 * @return	mixed		Value from $GLOBALS
 	 * @access private
 	 * @see getData()
 	 */
-	function getGlobal($var) {
-		$vars = explode('|',$var);
+	function getGlobal($var, $source=NULL) {
+		$vars = explode('|', $var);
 		$c = count($vars);
-		$theVar = $GLOBALS[trim($vars[0])];
+		$theVar = isset($source) ? $source[trim($vars[0])] : $GLOBALS[trim($vars[0])];
 		for ($a=1;$a<$c;$a++) {
 			if (!isset($theVar))	{break;}
 			$theVar = $theVar[trim($vars[$a])];
