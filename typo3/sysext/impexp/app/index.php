@@ -34,43 +34,44 @@
  *
  *
  *
- *  136: class localPageTree extends t3lib_browseTree
- *  143:     function localPageTree()
- *  154:     function wrapTitle($title,$v)
- *  167:     function PM_ATagWrap($icon,$cmd,$bMark='')
- *  178:     function wrapIcon($icon,$row)
- *  187:     function permsC()
- *  197:     function ext_tree($pid)
+ *  137: class localPageTree extends t3lib_browseTree
+ *  144:     function localPageTree()
+ *  155:     function wrapTitle($title,$v)
+ *  168:     function PM_ATagWrap($icon,$cmd,$bMark='')
+ *  179:     function wrapIcon($icon,$row)
+ *  188:     function permsC()
+ *  199:     function ext_tree($pid, $clause='')
  *
  *
- *  278: class SC_mod_tools_log_index extends t3lib_SCbase
- *  287:     function main()
- *  339:     function printContent()
+ *  280: class SC_mod_tools_log_index extends t3lib_SCbase
+ *  289:     function main()
+ *  359:     function printContent()
  *
  *              SECTION: EXPORT FUNCTIONS
- *  367:     function exportData($inData)
- *  641:     function addRecordsForPid($k, $tables, $maxNumber)
- *  667:     function exec_listQueryPid($table,$pid,$limit)
- *  695:     function makeConfigurationForm($inData, &$row)
- *  859:     function makeAdvancedOptionsForm($inData, &$row)
- *  906:     function makeSaveForm($inData, &$row)
+ *  387:     function exportData($inData)
+ *  661:     function addRecordsForPid($k, $tables, $maxNumber)
+ *  687:     function exec_listQueryPid($table,$pid,$limit)
+ *  716:     function makeConfigurationForm($inData, &$row)
+ *  884:     function makeAdvancedOptionsForm($inData, &$row)
+ *  932:     function makeSaveForm($inData, &$row)
  *
  *              SECTION: IMPORT FUNCTIONS
- * 1036:     function importData($inData)
+ * 1063:     function importData($inData)
  *
  *              SECTION: Preset functions
- * 1314:     function processPresets(&$inData)
- * 1411:     function getPreset($uid)
+ * 1355:     function processPresets(&$inData)
+ * 1452:     function getPreset($uid)
  *
  *              SECTION: Helper functions
- * 1437:     function userTempFolder()
- * 1453:     function userSaveFolder()
- * 1477:     function checkUploadOfThumbnail(&$inData)
- * 1512:     function renderSelectBox($prefix,$value,$optValues)
- * 1535:     function tableSelector($prefix,$value,$excludeList='')
- * 1570:     function extensionSelector($prefix,$value)
+ * 1478:     function userTempFolder()
+ * 1494:     function userSaveFolder()
+ * 1517:     function checkUpload()
+ * 1547:     function renderSelectBox($prefix,$value,$optValues)
+ * 1570:     function tableSelector($prefix,$value,$excludeList='')
+ * 1606:     function extensionSelector($prefix,$value)
+ * 1631:     function filterPageIds($exclude)
  *
- * TOTAL FUNCTIONS: 23
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -1624,8 +1625,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Filter page IDs by traversing exclude array, finding all excluded pages (if any) and making an AND NOT IN statement for the select clause.
 	 *
-	 * @param	array	Exclude array from import/export object.
-	 * @return	string	AND where clause part to filter out page uids.
+	 * @param	array		Exclude array from import/export object.
+	 * @return	string		AND where clause part to filter out page uids.
 	 */
 	function filterPageIds($exclude)	{
 

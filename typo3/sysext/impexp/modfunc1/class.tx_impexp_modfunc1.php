@@ -35,12 +35,12 @@
  *
  *
  *   63: class tx_impexp_modfunc1 extends mod_user_task
- *   72:     function overview_main(&$pObj)
- *  102:     function main()
+ *   72:     function overview_main()
+ *  106:     function main()
  *
  *              SECTION: Helper functions
- *  182:     function getPresets()
- *  199:     function userTempFolder()
+ *  186:     function getPresets()
+ *  203:     function userTempFolder()
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
