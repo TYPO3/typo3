@@ -1,3 +1,7 @@
+2003-12-23  Robert Lemke  <rl@robertlemke.de>
+
+	* Added another TSconfig option for replacing the create new content wizard (-> templavoila). Only added a few lines.
+
 20/12: Change the backend icon processing: Not, by default icons are NOT processed with overlay of hidden, start/endtime icons; The icons are found preprocessed with the source icon. This can be disabled so the old behaviour will apply, see TYPO3_CONF_VARS[GFX] - however group-numbers on icons have been permanently disabled.
 
 Fixed all:

@@ -595,7 +595,12 @@ class localRecordList extends recordList {
 							// If new records can be created on this page, add links:
 						if ($this->calcPerms&($table=='pages'?8:16) && $this->showNewRecLink($table))	{
 							if ($table=="tt_content" && $this->newWizards)	{
-								$theData[$fCol]='<a href="#" onclick="'.htmlspecialchars('return jumpExt(\'sysext/cms/layout/db_new_content_el.php?id='.$this->id.'\');').'">'.
+									//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
+								$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
+								$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
+								$newContentWizScriptPath = t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : (TYPO3_mainDir.'sysext/cms/layout/db_new_content_el.php');
+
+								$theData[$fCol]='<a href="#" onclick="'.htmlspecialchars('return jumpExt(\''.$newContentWizScriptPath.'?id='.$this->id.'\');').'">'.
 												'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$LANG->getLL('new',1).'" alt="" />'.
 												'</a>';
 							} elseif ($table=='pages' && $this->newWizards)	{

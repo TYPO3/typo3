@@ -535,11 +535,16 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @return	string		A string containing images wrapped in <a>-tags linking them to proper functions.
 	 */
 	function ext_makeToolBar()	{
+			//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
+		$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
+		$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
+		$newContentWizScriptPath = t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : (TYPO3_mainDir.'sysext/cms/layout/db_new_content_el.php');
+
 		$toolBar='';		
 		$id = $GLOBALS['TSFE']->id;
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'show_rechis.php?element='.rawurlencode('pages:'.$id).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'#latest">'.
 					'<img src="t3lib/gfx/history2.gif" width="13" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_recordHistory').'" alt="" /></a>';
-		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'sysext/cms/layout/db_new_content_el.php?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
+		$toolBar.='<a href="'.htmlspecialchars($newContentWizScriptPath.'?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 					'<img src="t3lib/gfx/new_record.gif" width="16" height="12" hspace="1" border="0" align="top" title="'.$this->extGetLL('edit_newContentElement').'" alt="" /></a>';
 		$toolBar.='<a href="'.htmlspecialchars(TYPO3_mainDir.'move_el.php?table=pages&uid='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 					'<img src="t3lib/gfx/move_page.gif" width="11" height="12" hspace="2" border="0" align="top" title="'.$this->extGetLL('edit_move_page').'" alt="" /></a>';

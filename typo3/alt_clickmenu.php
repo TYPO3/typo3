@@ -525,7 +525,7 @@ class clickMenu {
 	}
 
 	/**
-	 * Adding CM element for Create new wizard (either db_new.php or sysext/cms/layout/db_new_content_el.php)
+	 * Adding CM element for Create new wizard (either db_new.php or sysext/cms/layout/db_new_content_el.php or custom wizard)
 	 * 
 	 * @param	string		Table name
 	 * @param	integer		UID for the current record.
@@ -534,7 +534,12 @@ class clickMenu {
 	 * @internal
 	 */
 	function DB_newWizard($table,$uid,$rec)	{
-		$url = ($table=='pages' || !t3lib_extMgm::isLoaded('cms')) ? 'db_new.php?id='.$uid.'&pagesOnly=1' : 'sysext/cms/layout/db_new_content_el.php?id='.$rec['pid'].'&sys_language_uid='.intval($rec['sys_language_uid']);
+			//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
+		$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
+		$tmpTSc = $tmpTSc ['properties']['newContentWiz.']['overrideWithExtension'];
+		$newContentWizScriptPath = t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : (TYPO3_mainDir.'sysext/cms/layout/db_new_content_el.php');
+
+		$url = ($table=='pages' || !t3lib_extMgm::isLoaded('cms')) ? 'db_new.php?id='.$uid.'&pagesOnly=1' : $newContentWizScriptPath.'?id='.$rec['pid'].'&sys_language_uid='.intval($rec['sys_language_uid']);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_newWizard')),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/new_'.($table=='pages'?'page':'record').'.gif','width="'.($table=='pages'?'13':'16').'" height="12"').' alt="" />'),
