@@ -2430,7 +2430,7 @@ if (version == "n3") {
 	 */
 	function makeSimulFileName($inTitle,$page,$type,$addParams='',$no_cache='')	{
 		$titleChars = intval($this->config['config']['simulateStaticDocuments_addTitle']);
-		$out='';
+		$out = '';
 		if ($titleChars)	{
 			$out = t3lib_div::convUmlauts($inTitle);
 			$out= ereg_replace('[^[:alnum:]_-]','_',trim(substr($out,0,$titleChars)));
@@ -2438,7 +2438,7 @@ if (version == "n3") {
 			$out= ereg_replace('^_*','',$out);
 			if ($out)	$out.='.';
 		}
-		$enc='';
+		$enc = '';
 		if (strcmp($addParams,'') && !$no_cache)	{
 			switch ((string)$this->config['config']['simulateStaticDocuments_pEnc'])	{
 				case 'md5':
@@ -2476,17 +2476,18 @@ if (version == "n3") {
 	 * @see makeSimulFileName(), t3lib_tstemplate::linkData()
 	 */
 	function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	{
-		$remainLinkVars='';
+		$remainLinkVars = '';
 		if (strcmp($linkVars,''))	{
 			$p = explode('&',$linkVars);
 			sort($p);	// This sorts the parameters - and may not be needed and further it will generate new MD5 hashes in many cases. Maybe not so smart. Hmm?
-			$rem=array();
+			$rem = array();
 			foreach($p as $k => $v)	{
-				if ((string)$v)	{
+				if (strlen($v))	{
 					list($pName) = explode('=',$v,2);
+					$pName = rawurldecode($pName);
 					if (!$this->pEncAllowedParamNames[$pName])	{
 						unset($p[$k]);
-						$rem[]=$v;
+						$rem[] = $v;
 					}
 				} else unset($p[$k]);
 			}
@@ -2883,6 +2884,24 @@ if (version == "n3") {
 		);
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+	/**************************
+	 *
+	 * Localization
+	 *
+	 **************************/
+
 	/**
 	 * Split Label function for front-end applications.
 	 *
@@ -2911,31 +2930,6 @@ if (version == "n3") {
 				$this->LL_labels_cache[$this->lang][$input] = $this->csConv($this->getLLL($parts[1],$this->LL_files_cache[$parts[0]]));
 			}
 			return $this->LL_labels_cache[$this->lang][$input];
-		}
-	}
-
-	/**
-	 * Converts the charset of the input string if applicable.
-	 * The "from" charset is determined by the TYPO3 system charset for the current language key ($this->lang)
-	 * The "to" charset is determined by the currently used charset for the page which is "iso-8859-1" by default or set by $GLOBALS['TSFE']->config['config']['metaCharset']
-	 * Only if there is a difference between the two charsets will a conversion be made
-	 * The conversion is done real-time - no caching for performance at this point!
-	 *
-	 * @param	string		String to convert charset for
-	 * @param	string		Optional "from" charset.
-	 * @return	string		Output string, converted if needed.
-	 * @see initLLvars(), t3lib_cs
-	 */
-	function csConv($str,$from='')	{
-		if (!$this->lang)	$this->initLLvars();
-
-		if ($from)	{
-			$output = $this->csConvObj->conv($str,$this->csConvObj->parse_charset($from),$this->siteCharset,1);
-			return $output ? $output : $str;
-		} elseif (is_array($this->convCharsetToFrom))	{
-			return $this->csConvObj->conv($str,$this->convCharsetToFrom['from'],$this->convCharsetToFrom['to'],1);
-		} else {
-			return $str;
 		}
 	}
 
@@ -2990,6 +2984,31 @@ if (version == "n3") {
 				'from' => $this->labelsCharset,
 				'to' => $this->siteCharset
 			);
+		}
+	}
+
+	/**
+	 * Converts the charset of the input string if applicable.
+	 * The "from" charset is determined by the TYPO3 system charset for the current language key ($this->lang)
+	 * The "to" charset is determined by the currently used charset for the page which is "iso-8859-1" by default or set by $GLOBALS['TSFE']->config['config']['metaCharset']
+	 * Only if there is a difference between the two charsets will a conversion be made
+	 * The conversion is done real-time - no caching for performance at this point!
+	 *
+	 * @param	string		String to convert charset for
+	 * @param	string		Optional "from" charset.
+	 * @return	string		Output string, converted if needed.
+	 * @see initLLvars(), t3lib_cs
+	 */
+	function csConv($str,$from='')	{
+		if (!$this->lang)	$this->initLLvars();
+
+		if ($from)	{
+			$output = $this->csConvObj->conv($str,$this->csConvObj->parse_charset($from),$this->siteCharset,1);
+			return $output ? $output : $str;
+		} elseif (is_array($this->convCharsetToFrom))	{
+			return $this->csConvObj->conv($str,$this->convCharsetToFrom['from'],$this->convCharsetToFrom['to'],1);
+		} else {
+			return $str;
 		}
 	}
 }

@@ -35,4 +35,11 @@ SourceForge.net, project "TYPO3 Extension Development Platform".
 Thats all. This procedure is only needed when you check out the source for the first time ever.
 
 
+IMPORTANT POST-CHECKLIST:
+Follow this list IMMEDIATELY after updating sources from CVS (both core and extensions):
+- Update database: In the Install Tool, click "COMPARE" for "Update required tables" in "Database Analysis" section. You might dump the static tables as well, but less likely to be important
+- "Clear temp_CACHED"
+- "Clear All Cache"
+- Using PHP-accelerator or other PHP cache? If you fatal PHP-errors, always remove the cached files (eg. "/tmp/phpa_*"), restart Apache and try again.
+
 - kasper
