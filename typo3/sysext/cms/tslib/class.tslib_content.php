@@ -2322,7 +2322,7 @@ class tslib_cObj {
 			$info[3] = t3lib_div::png_to_gif_by_imagemagick($info[3]);
 			$GLOBALS['TSFE']->imagesOnPage[]=$info[3];		// This array is used to collect the image-refs on the page...
 			$alttext = strip_tags($this->stdWrap($conf['alttext'],$conf['alttext.']));
-			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$info[3]).'" width="'.$info[0].'" height="'.$info[1].'"  border="0"'.($conf['params']?' '.$conf['params']:'').($alttext?' alt="'.htmlspecialchars($alttext).'"':' alt=""').' />';
+			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$info[3]).'" width="'.$info[0].'" height="'.$info[1].'"  border="'.intval($conf['border']).'"'.($conf['params']?' '.$conf['params']:'').($alttext?' alt="'.htmlspecialchars($alttext).'"':' alt=""').' />';
 			if ($conf['linkWrap'])	{
 				$theValue = $this->linkWrap($theValue,$conf['linkWrap']);
 			} elseif ($conf['imageLinkWrap']) {
@@ -4448,10 +4448,29 @@ class tslib_cObj {
 		$this->lastTypoLinkTarget = '';
 		if ($link_param)	{
 			$link_paramA = t3lib_div::trimExplode(' ',$link_param,1);
-			$link_param = trim($link_paramA[0]);
-			$forceTarget = trim($link_paramA[1]);
+			$link_param = trim($link_paramA[0]);	// Link parameter value
+			$linkClass = trim($link_paramA[2]);		// Link class
+			$forceTarget = trim($link_paramA[1]);	// Target value
 			if ($forceTarget=='-')	$forceTarget='';	// The '-' character means 'no target'. Necessary in order to specify a class as third parameter without setting the target!
-			$linkClass = trim($link_paramA[2]);
+				// Check, if the target is coded as a JS open window link:
+			$JSwindowParts=array();
+			$JSwindowParams='';
+			$onClick = '';
+			if ($forceTarget && ereg('^([0-9]+)x([0-9]+)(:(.*)|.*)$',$forceTarget,$JSwindowParts))	{
+					// Take all pre-configured and inserted parameters and compile parameter list, including width+height:
+				$JSwindow_tempParamsArr = t3lib_div::trimExplode(',',strtolower($conf['JSwindow_params'].','.$JSwindowParts[4]),1);
+				$JSwindow_paramsArr=array();
+				foreach($JSwindow_tempParamsArr as $JSv)	{
+					list($JSp,$JSv) = explode('=',$JSv);
+					$JSwindow_paramsArr[$JSp]=$JSp.'='.$JSv;
+				}
+					// Add width/height:
+				$JSwindow_paramsArr['width']='width='.$JSwindowParts[1];
+				$JSwindow_paramsArr['height']='height='.$JSwindowParts[2];
+					// Imploding into string:
+				$JSwindowParams = implode(',',$JSwindow_paramsArr);
+				$forceTarget = '';	// Resetting the target since we will use onClick.
+			}
 			
 				// Internal target:
 			$target = isset($conf['target']) ? $conf['target'] : $GLOBALS['TSFE']->intTarget;
@@ -4619,7 +4638,13 @@ class tslib_cObj {
 				}		
 			}
 			
-			$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+			if ($JSwindowParams)	{
+				$onClick="vHWin=window.open('".$finalTagParts['url']."','FEopenLink','".$JSwindowParams."');vHWin.focus();return false;";
+				$res = '<a href="#" onclick="'.htmlspecialchars($onClick).'"'.($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+			} else {
+				$res = '<a href="'.htmlspecialchars($finalTagParts['url']).'"'.$finalTagParts['targetParams'].($linkClass?' class="'.$linkClass.'"':'').$finalTagParts['aTagParams'].'>';
+			}
+			
 				// Call user function:
 			if ($conf['userFunc'])	{
 				$finalTagParts['TAG']=$res;
