@@ -160,7 +160,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					$this->extFw('<strong>'.$this->extGetLL('adminOptions').'</strong>')).$this->extFw(': '.$this->user['username']).
 					'</td><td bgcolor="#9BA1A8"><img src="clear.gif" width="10" height="1" alt="" /></td><td bgcolor="#9BA1A8"><input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="'.$this->uc['TSFE_adminConfig']['display_top'].'" />'.($this->extNeedUpdate?'<input type="submit" value="'.$this->extGetLL('update').'" />':'').'</td></tr>';
 
-		$out='<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="post"><table border="0" cellpadding="0" cellspacing="0" bgcolor="#F6F2E6">'.$header.$out.'</table></form>';
+		$out='<form name="TSFE_ADMIN_PANEL_FORM" action="'.htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')).'#TSFE_ADMIN" method="post" style="margin: 0 0 0 0;"><table border="0" cellpadding="0" cellspacing="0" bgcolor="#F6F2E6">'.$header.$out.'</table></form>';
 		$out='<a name="TSFE_ADMIN"></a><table border="0" cellpadding="1" cellspacing="0" bgcolor="black"><tr><td>'.$out.'</td></tr></table>';
 		if ($this->uc['TSFE_adminConfig']['display_top'])	{
 			$out.='<script type="text/javascript" src="t3lib/jsfunc.evalfield.js"></script>';

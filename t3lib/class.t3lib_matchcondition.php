@@ -88,6 +88,7 @@ class t3lib_matchCondition {
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=292&cHash=c6c7d43d2f
 	 */
 	function match($string)	{
+
 		if ($this->matchAll)	return true;
 		if (count($this->matchAlternative))	{
 			return in_array($string,$this->matchAlternative);

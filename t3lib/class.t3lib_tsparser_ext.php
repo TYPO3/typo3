@@ -1236,7 +1236,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 										}
 											// Upload?
 										$p_field.='<BR>';
-										$p_field.='<input type="file" name="upload_'.$fN.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth().' onChange="uFormUrl('.$aname.')">';
+										$p_field.='<input type="file" name="upload_'.$fN.'"'.$GLOBALS["TBE_TEMPLATE"]->formWidth().' onChange="uFormUrl('.$aname.')" size="50" />';
 									}
 								break;
 								case 'small':

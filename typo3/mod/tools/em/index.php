@@ -688,7 +688,7 @@ class SC_mod_tools_em_index {
 		if ($this->importAtAll())	{
 			$content= '</form><form action="index.php" enctype="'.$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["form_enctype"].'" method="post">
 			Upload extension file (.t3x):<br />
-				<input type="file" size="40" name="upload_ext_file"><br />
+				<input type="file" size="60" name="upload_ext_file"><br />
 				... in location:<br />
 				<select name="CMD[loc]">';
 				if ($this->importAsType("L"))	$content.='<option value="L">Local (../typo3conf/ext/)</option>';

@@ -196,8 +196,9 @@ class SC_file_upload {
 			<div id="c-upload">
 		';
 		for ($a=0;$a<$this->number;$a++)	{
+				// Adding 'size="50" ' for the sake of Mozilla!
 			$code.='
-				<input type="file" name="upload_'.$a.'"'.$this->doc->formWidth(35).' onclick="changed=1;" />
+				<input type="file" name="upload_'.$a.'"'.$this->doc->formWidth(35).' size="50" onclick="changed=1;" />
 				<input type="hidden" name="file[upload]['.$a.'][target]" value="'.htmlspecialchars($this->target).'" />
 				<input type="hidden" name="file[upload]['.$a.'][data]" value="'.$a.'" /><br />
 			';
