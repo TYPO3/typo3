@@ -3,6 +3,7 @@ post-CVS checkout instructions:
 If you check out the module "TYPO3core" from SourceForce CVS you will have to make a few symlinks in the
 checked out source before it will work for you. Follow these guidelines:
 
+
 - Go to the module directory (default is "TYPO3core")
 - Create symlink for tslib:	
 	ln -s typo3/sysext/cms/tslib
@@ -17,6 +18,12 @@ checked out source before it will work for you. Follow these guidelines:
 - Create two symlinks to fonts:
 	ln -s vera.ttf verdana.ttf
 	ln -s nimbus.ttf arial.ttf
+	
+OR
+
+- Go to the module directory (default is "TYPO3core")
+- Run the create-symlinks.sh shell script.
+
 
 As the last operation you have to copy the global extensions into their position in the typo3/ folder!
 The global extensions are not found there in the TYPO3core module because they are technically not a part
