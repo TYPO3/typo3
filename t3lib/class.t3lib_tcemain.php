@@ -557,7 +557,9 @@ class t3lib_TCEmain	{
 							if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
 								foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $_classRef) {
 									$_procObj = &t3lib_div::getUserObj ($_classRef);
-									$_procObj->processDatamap_preProcessFieldArray ($status, $table, $id, &$fieldArray, &$this);
+									if (method_exists ($_procObj, 'processDatamap_preProcessFieldArray')) {
+										$_procObj->processDatamap_preProcessFieldArray ($status, $table, $id, &$fieldArray, &$this);
+									}
 								}
 							}
 
