@@ -55,7 +55,7 @@
  *  629:     function TS_links_rte($value)
  *  704:     function TS_preserve_db($value)	
  *  728:     function TS_preserve_rte($value)	
- *  749:     function TS_transform_db($value,$css=FALSE)	
+ *  749:     function TS_transform_db($value,$css=FALSE)
  *  860:     function TS_transform_rte($value,$css=0)	
  *  931:     function TS_strip_db($value)	
  *
@@ -229,7 +229,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * @see t3lib_TCEmain::fillInFieldArray(), t3lib_transferData::renderRecord_typesProc()
 	 */
 	function RTE_transform($value,$specConf,$direction='rte',$thisConfig=array())	{
-	
+
 			// Init:
 		$this->procOptions=$thisConfig['proc.'];
 		$this->preserveTags = strtoupper(implode(',',t3lib_div::trimExplode(',',$this->procOptions['preserveTags'])));
@@ -585,7 +585,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * @see TS_links_rte()
 	 */
 	function TS_links_db($value)	{
-	
+
 			// Split content into <a> tag blocks and process:
 		$blockSplit = $this->splitIntoBlock('A',$value);
 		foreach($blockSplit as $k => $v)	{
@@ -695,7 +695,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				$bTag = '<a href="'.htmlspecialchars($href).'"'.
 							($tagCode[2]&&$tagCode[2]!='-' ? ' target="'.htmlspecialchars($tagCode[2]).'"' : '').
 							($tagCode[3] ? ' class="'.htmlspecialchars($tagCode[3]).'"' : '').
-							($error ? ' rteerror="'.htmlspecialchars($error).'" style="background-color: red; border:2px yellow solid; color: black;"' : '').	// Should be OK to add the style; the transformation back to databsae will remove it...
+							($error ? ' rteerror="'.htmlspecialchars($error).'" style="background-color: yellow; border:2px red solid; color: black;"' : '').	// Should be OK to add the style; the transformation back to databsae will remove it...
 							'>';
 				$eTag = '</a>';
 				$blockSplit[$k] = $bTag.$this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
@@ -1466,13 +1466,18 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		reset($blockSplit);
 		while(list($k,$v)=each($blockSplit))	{
 			if ($k%2)	{	// block:
-				$attribArray=$this->get_tag_attributes_classic($this->getFirstTag($v),1);
+				$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v),1);
+
 					// Checking if there is a scheme, and if not, prepend the current url.
-				$uP = parse_url(strtolower($attribArray['href']));
-				if (!$uP['scheme'])	{
-					$attribArray['href']=$this->siteUrl().substr($attribArray['href'],strlen($this->relBackPath));
+				if (strlen($attribArray['href']))	{	// ONLY do this if href has content - the <a> tag COULD be an anchor and if so, it should be preserved...
+					$uP = parse_url(strtolower($attribArray['href']));
+					if (!$uP['scheme'])	{
+						$attribArray['href'] = $this->siteUrl().substr($attribArray['href'],strlen($this->relBackPath));
+					}
+				} else {
+					$attribArray['rtekeep'] = 1;
 				}
-				if (!$dontSetRTEKEEP)	$attribArray['rtekeep']=1;
+				if (!$dontSetRTEKEEP)	$attribArray['rtekeep'] = 1;
 
 				$bTag='<a '.t3lib_div::implodeParams($attribArray,1).'>';
 				$eTag='</a>';
