@@ -2286,7 +2286,16 @@ class t3lib_TCEforms	{
 								$params['field'] = $field;
 								$params['md5ID'] = $md5ID;
 								$params['returnUrl'] = $this->thisReturnUrl();
-								$url = $this->backPath.$wConf['script'].(strstr($wConf['script'],'?') ? '' : '?');
+
+								if (!strcmp(substr($wConf['script'],0,4), 'EXT:')) {
+									$wScript = t3lib_div::getFileAbsFileName($wConf['script']);
+									if ($wScript)	{
+										$wScript = '../'.substr($wScript,strlen(PATH_site));
+									} else break;
+								} else {
+									$wScript = $wConf['script'];
+								}
+								$url = $this->backPath.$wScript.(strstr($wConf['script'],'?') ? '' : '?');
 
 								if ((string)$wConf['type']=='colorbox' && !$wConf['script'])	{
 									break;
