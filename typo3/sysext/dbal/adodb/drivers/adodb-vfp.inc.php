@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -37,6 +37,12 @@ class ADODB_vfp extends ADODB_odbc {
 		$this->ADODB_odbc();
 	}
 	
+	function Time()
+	{
+		return time();
+	}
+	
+	
 	function BeginTrans() { return false;}
 	
 	// quote string to be sent back to database
@@ -50,9 +56,10 @@ class ADODB_vfp extends ADODB_odbc {
 	// TOP requires ORDER BY for VFP
 	function &SelectLimit($sql,$nrows=-1,$offset=-1, $inputarr=false,$secs2cache=0)
 	{
-		if (!preg_match('/ORDER[ \t\r\n]+BY/is',$sql)) $sql .= ' ORDER BY 1';
+		$this->hasTop = preg_match('/ORDER[ \t\r\n]+BY/is',$sql) ? 'top' : false;
 		return ADOConnection::SelectLimit($sql,$nrows,$offset,$inputarr,$secs2cache);
 	}
+	
 
 
 };

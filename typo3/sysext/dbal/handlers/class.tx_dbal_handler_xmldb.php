@@ -93,7 +93,7 @@ class tx_dbal_handler_xmldb extends t3lib_sqlengine {
 		$this->config = $config['config'];
 		
 		$dbStorage = t3lib_div::getFileAbsFileName($this->config['DBstorageDir']);
-		if ($dbStorage && @is_dir($dbStorage) && ereg('/$',$dbStorage))	{
+		if ($dbStorage && @is_dir($dbStorage) && ($dbStorage{strlen($dbStorage)-1} == '/')) { //ereg('/$',$dbStorage))	{
 			$this->DBdir = $dbStorage;
 			
 				// Read structure file:

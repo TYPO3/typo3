@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -15,7 +15,7 @@ if (!defined('_ADODB_ODBC_LAYER')) {
 }
  if (!defined('_ADODB_ACCESS')) {
  	define('_ADODB_ACCESS',1);
-	
+
 class  ADODB_access extends ADODB_odbc {	
 	var $databaseType = 'access';
 	var $hasTop = 'top';		// support mssql SELECT TOP 10 * FROM TABLE
@@ -32,6 +32,11 @@ class  ADODB_access extends ADODB_odbc {
 	
 		$ADODB_EXTENSION = false;
 		$this->ADODB_odbc();
+	}
+	
+	function Time()
+	{
+		return time();
 	}
 	
 	function BeginTrans() { return false;}

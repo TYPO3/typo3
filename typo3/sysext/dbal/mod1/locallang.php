@@ -9,6 +9,8 @@ $LOCAL_LANG = Array (
 	"default" => Array (
 		"title" => 'DBAL Analysis Module',	
 		"Debug_log" => "Debug log",	
+		"Cached_info" => "Cached info",	
+		"Configuration" => "Configuration",	
 	),
 	"dk" => Array (
 	),

@@ -1,6 +1,6 @@
 <?php
 /*
-V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -68,55 +68,56 @@ class ADODB_mysql extends ADOConnection {
 		return $ret;
 	}
 	
+	
 	function &MetaIndexes ($table, $primary = FALSE, $owner=false)
 	{
-	        // save old fetch mode
-	        global $ADODB_FETCH_MODE;
-	        
-	        $save = $ADODB_FETCH_MODE;
-	        $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-	        if ($this->fetchMode !== FALSE) {
-	               $savem = $this->SetFetchMode(FALSE);
-	        }
-	        
-	        // get index details
-	        $rs = $this->Execute(sprintf('SHOW INDEXES FROM %s',$table));
-	        
-	        // restore fetchmode
-	        if (isset($savem)) {
-	                $this->SetFetchMode($savem);
-	        }
-	        $ADODB_FETCH_MODE = $save;
-	        
-	        if (!is_object($rs)) {
-	                return FALSE;
-	        }
-	        
-	        $indexes = array ();
-	        
-	        // parse index data into array
-	        while ($row = $rs->FetchRow()) {
-	                if ($primary == FALSE AND $row[2] == 'PRIMARY') {
-	                        continue;
-	                }
-	                
-	                if (!isset($indexes[$row[2]])) {
-	                        $indexes[$row[2]] = array(
-	                                'unique' => ($row[1] == 0),
-	                                'columns' => array()
-	                        );
-	                }
-	                
-	                $indexes[$row[2]]['columns'][$row[3] - 1] = $row[4];
-	        }
-	        
-	        // sort columns by order in the index
-	        foreach ( array_keys ($indexes) as $index )
-	        {
-	                ksort ($indexes[$index]['columns']);
-	        }
-	        
-	        return $indexes;
+        // save old fetch mode
+        global $ADODB_FETCH_MODE;
+        
+        $save = $ADODB_FETCH_MODE;
+        $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+        if ($this->fetchMode !== FALSE) {
+               $savem = $this->SetFetchMode(FALSE);
+        }
+        
+        // get index details
+        $rs = $this->Execute(sprintf('SHOW INDEX FROM %s',$table));
+        
+        // restore fetchmode
+        if (isset($savem)) {
+                $this->SetFetchMode($savem);
+        }
+        $ADODB_FETCH_MODE = $save;
+        
+        if (!is_object($rs)) {
+                return FALSE;
+        }
+        
+        $indexes = array ();
+        
+        // parse index data into array
+        while ($row = $rs->FetchRow()) {
+                if ($primary == FALSE AND $row[2] == 'PRIMARY') {
+                        continue;
+                }
+                
+                if (!isset($indexes[$row[2]])) {
+                        $indexes[$row[2]] = array(
+                                'unique' => ($row[1] == 0),
+                                'columns' => array()
+                        );
+                }
+                
+                $indexes[$row[2]]['columns'][$row[3] - 1] = $row[4];
+        }
+        
+        // sort columns by order in the index
+        foreach ( array_keys ($indexes) as $index )
+        {
+                ksort ($indexes[$index]['columns']);
+        }
+        
+        return $indexes;
 	}
 
 	

@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -276,17 +276,18 @@ select  a.size_for_estimate as cache_mb_estimate,
 		'- BETTER - '
 	else ' ' end as currsize, 
    a.estd_physical_read_factor-b.estd_physical_read_factor as best_when_0
-   from (select size_for_estimate,size_factor,estd_physical_read_factor,rownum  r from v\$conn_cache_advice) a , 
-   (select size_for_estimate,size_factor,estd_physical_read_factor,rownum r from v\$conn_cache_advice) b where a.r = b.r-1");
+   from (select size_for_estimate,size_factor,estd_physical_read_factor,rownum  r from v\$db_cache_advice) a , 
+   (select size_for_estimate,size_factor,estd_physical_read_factor,rownum r from v\$db_cache_advice) b where a.r = b.r-1");
 		if (!$rs) return false;
 		
 		/*
-		The v$conn_cache_advice utility show the marginal changes in physical data block reads for different sizes of db_cache_size
+		The v$db_cache_advice utility show the marginal changes in physical data block reads for different sizes of db_cache_size
 		*/
 		$s = "<h3>Data Cache Estimate</h3>";
 		if ($rs->EOF) {
 			$s .= "<p>Cache that is 50% of current size is still too big</p>";
 		} else {
+			$s .= "Ideal size of Data Cache is when \"best_when_0\" changes from a positive number and becomes zero.";
 			$s .= rs2html($rs,false,false,false,false);
 		}
 		return $s;

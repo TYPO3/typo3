@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -159,7 +159,7 @@ class ADODB_odbc extends ADOConnection {
 		
 		if (!function_exists('odbc_connect')) return false;
 		
-		if ($this->debug && $argDatabasename) {
+		if ($this->debug && $argDatabasename && $this->databaseType != 'vfp') {
 			ADOConnection::outp("For odbc Connect(), $argDatabasename is not used. Place dsn in 1st parameter.");
 		}
 		$php_errormsg = '';
@@ -358,7 +358,9 @@ class ADODB_odbc extends ADOConnection {
 	global $ADODB_FETCH_MODE;
 	
 		$table = strtoupper($table);
-
+		$schema = false;
+		$this->_findschema($table,$schema);
+		
 		$savem = $ADODB_FETCH_MODE;
 		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
 	
@@ -400,7 +402,6 @@ class ADODB_odbc extends ADOConnection {
 		
 		if (!$rs) return false;
 		
-		//print_r($rs);
 		$rs->_has_stupid_odbc_fetch_api_change = $this->_has_stupid_odbc_fetch_api_change;
 		$rs->_fetch();
 		$retarr = array();
@@ -421,8 +422,8 @@ class ADODB_odbc extends ADOConnection {
 		11 REMARKS
 		*/
 		while (!$rs->EOF) {
-			//print_r($rs->fields);
-			if (strtoupper($rs->fields[2]) == $table) {
+			//adodb_pr($rs->fields);
+			if (strtoupper($rs->fields[2]) == $table && (!$schema || strtoupper($rs->fields[1]) == $schema)) {
 				$fld = new ADOFieldObject();
 				$fld->name = $rs->fields[3];
 				$fld->type = $this->ODBCTypes($rs->fields[4]);
@@ -455,7 +456,7 @@ class ADODB_odbc extends ADOConnection {
 		if (! $this->_bindInputArray) return $sql; // no binding
 		$stmt = odbc_prepare($this->_connectionID,$sql);
 		if (!$stmt) {
-		//	print "Prepare Error for ($sql) ".$this->ErrorMsg()."<br>";
+			// we don't know whether odbc driver is parsing prepared stmts, so just return sql
 			return $sql;
 		}
 		return array($sql,$stmt,false);
@@ -525,8 +526,6 @@ class ADODB_odbc extends ADOConnection {
 			} else
 				$this->_errorMsg = $php_errormsg;
 		}
-		
-		
 		return $stmtid;
 	}
 

@@ -174,6 +174,9 @@ c. Implement daylight savings, which looks awfully complicated, see
 
 
 CHANGELOG
+- 20 Mar 2004 0.12
+Fixed month calculation error in adodb_date. 2102-June-01 appeared as 2102-May-32.
+
 - 26 Oct 2003 0.11
 Because of daylight savings problems (some systems apply daylight savings to 
 January!!!), changed adodb_get_gmt_diff() to ignore daylight savings.
@@ -234,7 +237,7 @@ First implementation.
 /*
 	Version Number
 */
-define('ADODB_DATE_VERSION',0.11);
+define('ADODB_DATE_VERSION',0.12);
 
 /*
 	We check for Windows as only +ve ints are accepted as dates on Windows.
@@ -275,6 +278,13 @@ function adodb_date_test()
 	
 	// This flag disables calling of PHP native functions, so we can properly test the code
 	if (!defined('ADODB_TEST_DATES')) define('ADODB_TEST_DATES',1);
+	
+	$t = adodb_mktime(0,0,0,6,1,2102);
+	if (!(adodb_date('Y-m-d',$t) == '2102-06-01')) print 'Error in '.adodb_date('Y-m-d',$t).'<br>';
+	
+	$t = adodb_mktime(0,0,0,2,1,2102);
+	if (!(adodb_date('Y-m-d',$t) == '2102-02-01')) print 'Error in '.adodb_date('Y-m-d',$t).'<br>';
+	
 	
 	print "<p>Testing gregorian <=> julian conversion<p>";
 	$t = adodb_mktime(0,0,0,10,11,1492);
@@ -598,7 +608,7 @@ function _adodb_getdate($origd=false,$fast=false,$is_gmt=false)
 		for ($a = 1 ; $a <= 12; $a++) {
 			$lastd = $d;
 			$d -= $mtab[$a] * $_day_power;
-			if ($d <= 0) {
+			if ($d < 0) {
 				$month = $a;
 				$ndays = $mtab[$a];
 				break;

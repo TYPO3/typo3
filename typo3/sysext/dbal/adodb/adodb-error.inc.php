@@ -1,6 +1,6 @@
 <?php
 /** 
- * @version V4.10 12 Jan 2003 (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+ * @version V4.22 15 Apr 2004 (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
  * Released under both BSD license and Lesser GPL library license. 
  * Whenever there is any discrepancy between the two licenses, 
  * the BSD license will take precedence. 
@@ -190,6 +190,7 @@ static $MAP = array(
 function adodb_error_oci8()
 {
 static $MAP = array(
+			 1 => DB_ERROR_ALREADY_EXISTS,
             900 => DB_ERROR_SYNTAX,
             904 => DB_ERROR_NOSUCHFIELD,
             923 => DB_ERROR_SYNTAX,

@@ -16,3 +16,18 @@ CREATE TABLE tx_dbal_debuglog (
 	PRIMARY KEY (uid),
 	KEY tstamp (tstamp)
 );
+
+#
+# Table structure for table 'tx_dbal_debuglog_where'
+#
+CREATE TABLE tx_dbal_debuglog_where (
+	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+	beuser_id int(11) unsigned DEFAULT '0' NOT NULL,
+	script tinytext NOT NULL,
+	tablename tinytext NOT NULL,
+	whereclause text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY tstamp (tstamp)
+);

@@ -1,7 +1,7 @@
 <?php
 
 /*
-  V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+  V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -14,9 +14,12 @@
 		foreach($rs as $k => $v) {
 			echo $k; print_r($v); echo "<br>";
 		}
+		
+		
+	Iterator code based on http://cvs.php.net/cvs.php/php-src/ext/spl/examples/cachingiterator.inc?login=2
  */
  
-class ADODB_Iterator implements Iterator {
+ class ADODB_Iterator implements Iterator {
 
     private $rs;
 
@@ -28,22 +31,38 @@ class ADODB_Iterator implements Iterator {
 	{
         $this->rs->MoveFirst();
     }
-    function hasMore() 
+
+	function valid() 
 	{
         return !$this->rs->EOF;
     }
+	
     function key() 
 	{
         return $this->rs->_currentRow;
     }
+	
     function current() 
 	{
         return $this->rs->fields;
     }
+	
     function next() 
 	{
         $this->rs->MoveNext();
     }
+	
+	function __call($func, $params)
+	{
+		return call_user_func_array(array($this->rs, $func), $params);
+	}
+	
+	function __toString()
+	{
+		return 'ADODB Iterator';
+	}
+
+
 }
 
 

@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -226,7 +226,10 @@ class perf_mysql extends adodb_perf{
 	{
 	global $HTTP_SESSION_VARS;
 	
-		$stat = $this->conn->GetOne('show innodb status');
+		$rs = $this->conn->Execute('show innodb status');
+		if (!$rs || $rs->EOF) return 0;
+		$stat = $rs->fields[0];
+		$rs->Close();
 		$at = strpos($stat,'Buffer pool hit rate');
 		$stat = substr($stat,$at,200);
 		if (preg_match('!Buffer pool hit rate\s*([0-9]*) / ([0-9]*)!',$stat,$arr)) {

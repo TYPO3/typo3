@@ -61,6 +61,8 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		$this->MOD_MENU = Array (
 			'function' => Array (
 				0 => $GLOBALS['LANG']->getLL('Debug_log'),
+				'info' => $GLOBALS['LANG']->getLL('Cached_info'),
+				'config' => $GLOBALS['LANG']->getLL('Configuration'),
 			)
 		);
 		parent::menuConfig();
@@ -74,11 +76,22 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	function main()	{
 		global $BACK_PATH,$BE_USER;
 
+			// Clean up settings:
+		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
+
 			// Draw the header.
 		$this->doc = t3lib_div::makeInstance('noDoc');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="" method="post">';
 		$this->doc->docType = 'xhtml_trans';
+
+			// JavaScript
+		$this->doc->JScode = $this->doc->wrapScriptTags('
+				script_ended = 0;
+				function jumpToUrl(URL)	{	//
+					document.location = URL;
+				}
+			');
 
 			// DBAL page title:
 		$this->content.=$this->doc->startPage($GLOBALS['LANG']->getLL('title'));
@@ -87,8 +100,18 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		$this->content.=$this->doc->section('',$this->doc->funcMenu('',t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
 
 			// Debug log:
-		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
-		
+		switch($this->MOD_SETTINGS['function']) {
+		    case 'info':
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
+			break;
+		    case 'config':
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Configuration'), $this->printConfig());
+			break;
+		    case 0:
+			$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
+			break;
+		}
+
 			// ShortCut
 		if ($BE_USER->mayMakeShortcut())	{
 			$this->content.=$this->doc->spacer(20).$this->doc->section('',$this->doc->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
@@ -110,6 +133,59 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		echo $this->content;
 	}
 
+	function printConfig()	{
+	    ob_start();
+	    var_dump($GLOBALS['TYPO3_DB']->conf);
+	    $out = '<pre>'.ob_get_contents().'</pre>';
+	    ob_end_clean();
+
+	    return $out;
+	}
+
+	function printCachedInfo()	{
+	    // Get cmd:
+	    if((string)t3lib_div::_GP('cmd') == 'clear') {
+		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
+		$GLOBALS['TYPO3_DB']->cacheFieldInfo();
+	    }
+
+	    $out = '<table border="1"><caption>auto_increment</caption><tbody><tr><th>Table</th><th>Field</th></tr>';
+	    foreach($GLOBALS['TYPO3_DB']->cache_autoIncFields as $table => $field) {
+		$out .= '<tr>';
+		$out .= '<td>'.$table.'</td>';
+		$out .= '<td>'.$field.'</td>';
+		$out .= '</tr>';
+	    }
+	    $out .= '</tbody></table>';
+	    $out .= $this->doc->spacer(5);
+	    $out .= '<table border="1"><caption>Primary keys</caption><tbody><tr><th>Table</th><th>Field(s)</th></tr>';
+	    foreach($GLOBALS['TYPO3_DB']->cache_primaryKeys as $table => $field) {
+		$out .= '<tr>';
+		$out .= '<td>'.$table.'</td>';
+		$out .= '<td>'.$field.'</td>';
+		$out .= '</tr>';
+	    }
+	    $out .= '</tbody></table>';
+	    $out .= $this->doc->spacer(5);
+	    $out .= '<table border="1"><caption>Field types</caption><tbody><tr><th colspan="3">Table</th></tr><tr><th>Field</th><th>Type</th><th>Metatype</th><th>NOT NULL</th></th></tr>';
+	    foreach($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fields) {
+		$out .= '<th colspan="3">'.$table.'</th>';
+		foreach($fields as $field => $data) {
+		    $out .= '<tr>';
+		    $out .= '<td>'.$field.'</td>';
+		    $out .= '<td>'.$data['type'].'</td>';
+		    $out .= '<td>'.$data['metaType'].'</td>';
+		    $out .= '<td>'.$data['notnull'].'</td>';
+		    $out .= '</tr>';
+		}
+	    }
+	    $out .= '</tbody></table>';
+
+	    $menu = '<a href="index.php?cmd=clear">CLEAR DATA</a><hr />';		
+
+	    return $menu.$out;
+	}
+
 	/**
 	 * Printing the debug-log from the DBAL extension
 	 * To enabled debugging, you will have to enabled it in the configuration!
@@ -126,12 +202,13 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		switch($cmd)	{
 			case 'flush':
 				$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_dbal_debuglog','');
+				$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_dbal_debuglog_where','');
 				$outStr = 'Log FLUSHED!';
 			break;
 			case 'joins':
 			
 					// Query:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script','tx_dbal_debuglog','table_join!=""', 'table_join,script');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('table_join,exec_time,query,script','tx_dbal_debuglog','table_join!=\'\'', 'table_join,script,exec_time,query');
 
 					// Init vars in which to pick up the query result:
 				$tableIndex = array();
@@ -234,6 +311,30 @@ class tx_dbal_module1 extends t3lib_SCbase {
 					<table border="1">'.implode('',$tRows).'
 					</table>';
 			break;
+			case 'where':
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script,tablename,whereclause','tx_dbal_debuglog_where','','','tstamp DESC');
+				$tRows = array();
+				$tRows[] = '
+					<tr>
+						<td>Time:</td>
+						<td>Script:</td>
+						<td>Table:</td>
+						<td>WHERE:</td>
+					</tr>';
+				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+					$tRows[] = '
+						<tr>
+							<td>'.t3lib_BEfunc::datetime($row['tstamp']).'</td>
+							<td>'.htmlspecialchars($row['script']).'</td>
+							<td>'.htmlspecialchars($row['tablename']).'</td>
+							<td>'.str_replace('\'\'', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', htmlspecialchars($row['whereclause'])).'</td>
+						</tr>';
+				}
+
+				$outStr = '
+					<table border="1">'.implode('',$tRows).'
+					</table>';
+			break;
 			default:
 			
 					// Look for request to view specific script exec:
@@ -261,7 +362,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 							</tr>';
 					}
 				} else {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script, SUM(exec_time) as calc_sum, count(*), MAX(errorFlag) as error','tx_dbal_debuglog','','tstamp','tstamp DESC');
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp,script, SUM(exec_time) as calc_sum, count(*) AS qrycount, MAX(errorFlag) as error','tx_dbal_debuglog','','tstamp,script','tstamp DESC');
 					$tRows = array();
 					$tRows[] = '
 						<tr>
@@ -275,7 +376,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 						$tRows[] = '
 							<tr>
 								<td>'.t3lib_BEfunc::datetime($row['tstamp']).'</td>
-								<td>'.htmlspecialchars($row['count(*)']).'</td>
+								<td>'.htmlspecialchars($row['qrycount']).'</td>
 								<td>'.htmlspecialchars($row['error'] ? 'ERR' : '').'</td>
 								<td>'.htmlspecialchars($row['calc_sum']).'</td>
 								<td><a href="index.php?specTime='.intval($row['tstamp']).'">'.htmlspecialchars($row['script']).'</a></td>
@@ -295,6 +396,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 					<a href="index.php?cmd=errors">ERRORS</a> - 
 					<a href="index.php?cmd=parsing">PARSING</a> - 
 					<a href="index.php">LOG</a> - 
+					<a href="index.php?cmd=where">WHERE</a> - 
 
 					<a href="'.htmlspecialchars(t3lib_div::linkThisScript()).'" target="blablabla">[New window]</a>
 					<hr />

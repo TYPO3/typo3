@@ -1,7 +1,7 @@
 <?php
 
 /**
-  V4.10 12 Jan 2003  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
+  V4.22 15 Apr 2004  (c) 2000-2004 John Lim (jlim@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -40,7 +40,7 @@ class ADODB2_oci8 extends ADODB_DataDict {
 			return 'X2';
 			
 		case 'NCLOB':
-		case 'CLOB';
+		case 'CLOB':
 			return 'XL';
 		
 		case 'LONG RAW':
@@ -214,7 +214,7 @@ end;
 		$sql = array();
 		
 		if ( isset($idxoptions['REPLACE']) || isset($idxoptions['DROP']) ) {
-			$sql[] = sprintf ($this->dropIndex, $idxname);
+			$sql[] = sprintf ($this->dropIndex, $idxname, $tabname);
 			if ( isset($idxoptions['DROP']) )
 				return $sql;
 		}
@@ -230,10 +230,10 @@ end;
 		} else {
 			$unique = '';
 		}
-		
+						      
 		if ( is_array($flds) )
-			$flds = implode(', ',$flds);
-		$s = 'CREATE' . $unique . ' INDEX ' . $idxname . ' ON ' . $tabname . ' (' . $flds . ')';
+			$flds = implode($this->quote.', '.$this->quote,$flds);
+		$s = 'CREATE' . $unique . ' INDEX ' .$this->quote. $idxname .$this->quote. ' ON ' . $this->quote.$tabname . $this->quote.' (' .$this->quote. $flds .$this->quote. ')';
 		
 		if ( isset($idxoptions[$this->upperName]) )
 			$s .= $idxoptions[$this->upperName];
