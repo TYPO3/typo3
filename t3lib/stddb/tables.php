@@ -427,6 +427,7 @@ $FILEICONS = Array (
 	'xml' => 'xml.gif',
 	'rtf' => 'rtf.gif',
 	't3x' => 't3x.gif',
+	't3d' => 't3d.gif',
 	'cdr' => 'cdr.gif',
 	'dtd' => 'dtd.gif',
 	'sgml' => 'sgml.gif',
