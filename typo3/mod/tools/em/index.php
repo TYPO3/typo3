@@ -910,7 +910,11 @@ EXTENSION KEYS:
 			$loc = !strcmp($loc,"G")?"G":"L";
 		} elseif ($uploadFlag)	{
 			if ($GLOBALS["HTTP_POST_FILES"]["upload_ext_file"]["tmp_name"])	{
-				$fileContent = t3lib_div::getUrl($GLOBALS["HTTP_POST_FILES"]["upload_ext_file"]["tmp_name"]);
+
+				$uploadedTempFile = t3lib_div::upload_to_tempfile($GLOBALS["HTTP_POST_FILES"]["upload_ext_file"]["tmp_name"]);
+				$fileContent = t3lib_div::getUrl($uploadedTempFile);
+				t3lib_div::upload_unlink_tempfile($uploadedTempFile);
+
 				$fetchData=array($this->decodeExchangeData($fileContent),"");
 
 				if (is_array($fetchData))	{
@@ -1966,11 +1970,11 @@ EXTENSION KEYS:
 				reset($allDirs);
 				$root="";
 				while(list(,$dirParts)=each($allDirs))	{
-					$root.=$dirParts;
+					$root.=$dirParts.'/';
 					if (!is_dir($extDirPath.$root))	{
-						@mkdir($extDirPath.$root, 0777);
+						@mkdir(ereg_replace('\/$','',$extDirPath.$root), 0777);
 						if (!@is_dir($extDirPath.$root))	{
-							return "Error: The directory '".$extDirPath.$root."/' could not be created...";
+							return "Error: The directory '".$extDirPath.$root."' could not be created...";
 						}
 					}
 				}
@@ -2094,17 +2098,17 @@ EXTENSION KEYS:
 			break;
 		}
 		if ($path && @is_dir($path))	{
-			$extDirPath = $path.$importedData["extKey"].$suffix;
+			$extDirPath = $path.$importedData["extKey"].$suffix.'/';
 			if (@is_dir($extDirPath))	{
 				// Install dir was found
-				$res = $this->removeExtDirectory($extDirPath.'/');
-				if ($res) return "ERROR: Could not remove extension directory '".$extDirPath."/'";
+				$res = $this->removeExtDirectory($extDirPath);
+				if ($res) return "ERROR: Could not remove extension directory '".$extDirPath."'";
 			}
 #die("stop here...");
 			// we go create...
-			@mkdir($extDirPath, 0777);
-			if (!is_dir($extDirPath))	return "ERROR: Could not create extension directory '".$extDirPath."/'";
-			return array($extDirPath.'/');
+			@mkdir(ereg_replace('\/$','',$extDirPath), 0777);
+			if (!is_dir($extDirPath))	return "ERROR: Could not create extension directory '".$extDirPath."'";
+			return array($extDirPath);
 		} else return "ERROR: The extension install path '".$path."' was not a directory.";
 	}
 
@@ -2837,11 +2841,11 @@ EXTENSION KEYS:
 						$dirs_in_path=explode("/",ereg_replace("/$","",$crDir));
 						while(list(,$dirP)=each($dirs_in_path))	{
 							if (strcmp($dirP,""))	{
-								$crDirStart.=$dirP;
+								$crDirStart.=$dirP.'/';
 								if (!@is_dir(PATH_site.$crDirStart))	{
-									mkdir(PATH_site.$crDirStart, 0777);
+									mkdir(ereg_replace('\/$','',PATH_site.$crDirStart), 0777);
 #debug(array(PATH_site.$crDirStart));
-									$finalDir=PATH_site.$crDirStart.'/';
+									$finalDir=PATH_site.$crDirStart;
 								}
 							} else die("ERROR: The path '".PATH_site.$crDir."' could not be created.");
 						}
