@@ -168,7 +168,12 @@ BODY#typo3-alt-topmenu-dummy-php {	background-image: url(gfx/alt_topmenu_back_du
 BODY#typo3-alt-topmenu-dummy-php-iconmenu { background-image: url(gfx/alt_topmenu_back_full.gif); margin-top: 8px; margin-left: 6px; }
 TABLE#typo3-topMenu TR TD {white-space: nowrap; vertical-align: top; }
 TABLE#typo3-topMenu TR TD.c-logout, TABLE#typo3-topMenu TR TD.c-admin {padding-left: 20px;}
-TABLE#typo3-topMenu TR TD.c-menu IMG {margin: 0px 1px 0px 1px;}
+TABLE#typo3-topMenu TR TD.c-menu IMG {margin: 2px 1px 0px 1px; }
+
+TABLE#typo3-topMenu TR TD.c-menu A.c-subitem { padding: 3px 0px 0px 0px; }
+TABLE#typo3-topMenu TR TD.c-menu A.c-subitem-HL {background-color: #D9D5C9; padding: 3px 3px 0px 3px; border: 1px solid black; }
+TABLE#typo3-topMenu TR TD.c-menu A.c-mainitem { padding: 3px 0px 0px 0px; }
+TABLE#typo3-topMenu TR TD.c-menu A.c-mainitem-HL {background-color: #D9D5C9; padding: 3px 3px 0px 3px; border: 1px solid black; }
 
 /* Tab menu (template.php) */
 TABLE#typo3-tabmenu { margin-top:5px; }
@@ -192,12 +197,18 @@ TABLE#typo3-about-modules TR.c-mainitem TD IMG { vertical-align: middle;  paddin
 BODY#typo3-alt-menu-php { margin: 2px 0px 0px 2px; }
 BODY#typo3-alt-menu-php A { text-decoration: none; }
 TABLE#typo3-vmenu TR.c-mainitem TD { background-color: #D9D9D8; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle;}
-TABLE#typo3-vmenu TR.c-endrow TD {height: 5px;}
-TABLE#typo3-vmenu TR.c-first TD {height: 2px;}
+TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label A { text-decoration : underline; }
 TABLE#typo3-vmenu TR.c-mainitem TD IMG { vertical-align: middle; margin-right: 2px;}
 TABLE#typo3-vmenu TR.c-mainitem TD SPAN.c-label { position: relative; top: 1px;}
+TABLE#typo3-vmenu TR.c-mainitem-HL TD { background-color: #AAAAAA; padding: 1px 1px 1px 1px; border: #9BA1A8 1px solid; vertical-align: middle;}
+TABLE#typo3-vmenu TR.c-mainitem-HL TD SPAN.c-label A { text-decoration : underline; }
+TABLE#typo3-vmenu TR.c-mainitem-HL TD IMG { vertical-align: middle; margin-right: 2px;}
+TABLE#typo3-vmenu TR.c-mainitem-HL TD SPAN.c-label { position: relative; top: 1px;}
+TABLE#typo3-vmenu TR.c-endrow TD {height: 5px;}
+TABLE#typo3-vmenu TR.c-first TD {height: 2px;}
 TABLE#typo3-vmenu TD.c-subitem-label A { display: block; width: 100%; }
-TABLE#typo3-vmenu TD.c-subitem-label A:hover { background: #FFFBF7; }
+TABLE#typo3-vmenu TR.c-subitem-row { }
+TABLE#typo3-vmenu TR.c-subitem-row-HL { background-color: #D9D5C9; }
 
 DIV#typo3-alt-menu-php-logininfo { text-align: center; width: 90px; margin-top:15px; margin-bottom: 15px;}
 DIV#typo3-alt-menu-php-logininfo P { margin-top:5px; }

@@ -281,15 +281,46 @@ class SC_alt_main {
 	busy.loginRefreshed();
 	busy_checkLoginTimeout_timer();
 
+
+	/**
+	 * Highlight module:
+	 */
+	var currentlyHighLightedId = "";
+	var currentlyHighLighted_restoreValue = "";
+	function highlightModuleMenuItem(trId, mainModule)	{
+			// Get document object:
+		if (top.menu && top.menu.document)	{
+			var docObj = top.menu.document;
+			var HLclass = mainModule ? "c-mainitem-HL" : "c-subitem-row-HL";
+		} else if (top.topmenuFrame && top.topmenuFrame.document)	{
+			var docObj = top.topmenuFrame.document;
+			var HLclass = mainModule ? "c-mainitem-HL" : "c-subitem-HL";
+		}
+
+		if (docObj)	{
+				// Reset old:
+			if (currentlyHighLightedId && docObj.getElementById(currentlyHighLightedId))	{
+				docObj.getElementById(currentlyHighLightedId).attributes.getNamedItem("class").nodeValue = currentlyHighLighted_restoreValue;
+			}
+				// Set new:
+			currentlyHighLightedId = trId;
+			if (currentlyHighLightedId && docObj.getElementById(currentlyHighLightedId))	{
+				var classAttribObject = docObj.getElementById(currentlyHighLightedId).attributes.getNamedItem("class");
+				currentlyHighLighted_restoreValue = classAttribObject.nodeValue;
+				classAttribObject.nodeValue = HLclass;
+			}
+		}
+	}
+
 	/**
 	 * Function used to switch switch module.
 	 */
 	var currentModuleLoaded = "";
 	function goToModule(modName,cMR_flag)	{	//
 		var cMR = 0;
-		if (cMR_flag)	cMR=1;
+		if (cMR_flag)	cMR = 1;
 
-		currentModuleLoaded=modName;
+		currentModuleLoaded = modName;
 
 		switch(modName)	{'.$goToModule_switch.'
 		}

@@ -147,6 +147,7 @@ class alt_menu_functions {
 			}
 
 			$moduleKey = $moduleName.'_tab';
+			$moduleCSSId = 'ID_'.t3lib_div::md5int($moduleName);
 
 				// Creating image icon
 			$image = @getimagesize($this->mIconFile($LANG->moduleLabels['tabs_images'][$moduleKey],$backPath));
@@ -162,22 +163,24 @@ class alt_menu_functions {
 
 				// Creating the various links:
 			$label = $LANG->moduleLabels['tabs'][$moduleKey];
-			$JScmd='this.selectedIndex=0;';
 			if ($link && $prefix)	$link=$prefix.rawurlencode($link);
 			if ($link && !$dontLink)	{
-				$JScmd='top.content.location=top.getModuleUrl(top.TS.PATH_typo3+\''.$this->wrapLinkWithAB($link).'\');';
-				$label='<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;">'.$label.'</a>';	//  && !$link_sub
-				$mIcons[]='<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;">'.$descr3_imageCode.'</a>';
-				$mJScmds[]="case '".$moduleName."': \n ".$JScmd." \n break;";
+				$label = '<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;">'.$label.'</a>';	//  && !$link_sub
+
+				$mIcons[] = '<a href="#" onclick="top.goToModule(\''.$moduleName.'\');'.$onBlur.'return false;" class="c-mainitem" id="'.$moduleCSSId.'">'.$descr3_imageCode.'</a>';
+
+				$JScmd = '
+						top.content.location=top.getModuleUrl(top.TS.PATH_typo3+\''.$this->wrapLinkWithAB($link).'\');
+						top.highlightModuleMenuItem("'.$moduleCSSId.'",1);';
+				$mJScmds[] = "case '".$moduleName."': \n ".$JScmd." \n break;";
 			}
 
-#			$selectItems[] = '<option value="'.htmlspecialchars($JScmd).'">'.htmlspecialchars($LANG->moduleLabels['tabs'][$moduleKey]).'</option>';
 			$selectItems[] = '<option value="top.goToModule(\''.$moduleName.'\');">'.htmlspecialchars($LANG->moduleLabels['tabs'][$moduleKey]).'</option>';
 			$label='&nbsp;<b>'.$label.'</b>&nbsp;';
 
 				// Creating a main item for the vertical menu (descr=0)
 			$menuCode.='
-						<tr class="c-mainitem">
+						<tr class="c-mainitem" id="'.$moduleCSSId.'">
 							<td colspan="3">'.$imageCode.'<span class="c-label">'.$label.'</span></td>
 						</tr>';
 
@@ -209,6 +212,7 @@ class alt_menu_functions {
 
 					$link = $subInfo['script'];
 					$subKey = $moduleName.'_'.$subName.'_tab';
+					$moduleCSSId = 'ID_'.t3lib_div::md5int($moduleName.'_'.$subName);
 
 						// Creating image icon
 					$image = @getimagesize($this->mIconFile($LANG->moduleLabels['tabs_images'][$subKey],$backPath));
@@ -241,7 +245,8 @@ class alt_menu_functions {
 							// Command for the selector box:
 						$JScmd = "
 								top.content.location=top.getModuleUrl(top.TS.PATH_typo3+'".$this->wrapLinkWithAB($link)."'".$addJS.');
-								top.fsMod.currentMainLoaded="'.$moduleName.'";';
+								top.fsMod.currentMainLoaded="'.$moduleName.'";
+								';
 
 							// If there is a frameset script in place:
 						if (!$BE_USER->uc['condensedMode'] && $moduleInfo['navFrameScript'])	{
@@ -269,17 +274,23 @@ class alt_menu_functions {
 										"'.$this->wrapLinkWithAB($link).'"'.$addJS.'
 									);
 									top.fsMod.currentMainLoaded="'.$moduleName.'";
-								}';
+								}
+								';
 						}
 						$selectItems[] = '<option value="top.goToModule(\''.$moduleName.'_'.$subName.'\');">'.htmlspecialchars('- '.$label).'</option>';
 						$onClickString = htmlspecialchars('top.goToModule(\''.$moduleName.'_'.$subName.'\');'.$onBlur.'return false;');
-						$flabel='<a href="#" onclick="'.$onClickString.'"'.$label_descr.'>'.htmlspecialchars($label).'</a>';
-						$mIcons[]='<a href="#" onclick="'.$onClickString.'"'.$label_descr.'>'.$descr3_imageCode.'</a>';
-						$mJScmds[]="case '".$moduleName.'_'.$subName."': \n ".$JScmd." \n break;";
+
+						$flabel = '<a href="#" onclick="'.$onClickString.'"'.$label_descr.'>'.htmlspecialchars($label).'</a>';
+
+						$mIcons[] = '<a href="#" onclick="'.$onClickString.'"'.$label_descr.' class="c-subitem" id="'.$moduleCSSId.'">'.$descr3_imageCode.'</a>';
+
+						$JScmd.= '
+								top.highlightModuleMenuItem("'.$moduleCSSId.'");';
+						$mJScmds[] = "case '".$moduleName.'_'.$subName."': \n ".$JScmd." \n break;";
 					}
 
 					$subCode.='
-							<tr class="c-subitem-row">
+							<tr class="c-subitem-row" id="'.$moduleCSSId.'">
 								<td></td>
 								<td align="center">'.(!$BE_USER->uc['hideSubmoduleIcons']?$imageCode:'').'</td>
 								<td class="c-subitem-label">'.$flabel.'</td>
