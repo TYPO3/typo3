@@ -231,7 +231,9 @@ class t3lib_div {
 	 */
 	function _GP($var)	{
 		$value = isset($GLOBALS['HTTP_POST_VARS'][$var]) ? $GLOBALS['HTTP_POST_VARS'][$var] : $GLOBALS['HTTP_GET_VARS'][$var];
-		if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
+		if (isset($value))	{
+			if (is_array($value))	{ t3lib_div::stripSlashesOnArray($value); } else { $value = stripslashes($value); }
+		}
 		return $value;
 	}
 
