@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2002 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -25,29 +25,29 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * generate a folder tree
+ * Generate a folder tree
  *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
+ * $Id$
+ * Revised for TYPO3 3.6 November/2003 by Kasper Skaarhoj
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @coauthor	René Fritz <r.fritz@colorcube.de>
- * Maintained by René Fritz
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   74: class t3lib_folderTree extends t3lib_treeView  
- *   79:     function t3lib_folderTree()	
- *  100:     function wrapTitle($title,&$row)	
- *  111:     function wrapIcon($icon,&$row)	
- *  130:     function getId(&$v) 
- *  140:     function getJumpToParm(&$v) 
- *  150:     function getTitleStr(&$row)	
- *  159:     function getBrowsableTree()	
- *  241:     function getFolderTree($files_path, $depth=999, $depthData='')	
- *  310:     function getCount($files_path)	
+ *   81: class t3lib_folderTree extends t3lib_treeView
+ *   88:     function t3lib_folderTree()
+ *  106:     function wrapIcon($icon,$row)
+ *  126:     function getId($v)
+ *  136:     function getJumpToParm($v)
+ *  148:     function getTitleStr($row,$titleLen=30)
+ *  158:     function getBrowsableTree()
+ *  221:     function getFolderTree($files_path, $depth=999, $depthData='')
+ *  301:     function getCount($files_path)
+ *  317:     function initializePositionSaving()
  *
  * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -70,132 +70,102 @@ require_once (PATH_t3lib.'class.t3lib_treeview.php');
 
 
 /**
- * Extension class for the t3lib_browsetree class, specially made for browsing folders in the File module
- * 
+ * Extension class for the t3lib_treeView class, specially made for browsing folders in the File module
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @package TYPO3
+ * @subpackage t3lib
  * @see class t3lib_treeView
  */
 class t3lib_folderTree extends t3lib_treeView  {
 
 	/**
-	 * @return	[type]		...
+	 * Constructor function of the class
+	 *
+	 * @return	void
 	 */
 	function t3lib_folderTree()	{
-		$this->BE_USER = $GLOBALS['BE_USER'];
-		$this->titleAttrib = t3lib_BEfunc::titleAttrib();
-		$this->backPath = $GLOBALS['BACK_PATH'];
+		parent::init();
 
 		$this->MOUNTS = $GLOBALS['FILEMOUNTS'];
+
 		$this->treeName='folder';
 		$this->titleAttrib=''; //don't apply any title
 		$this->domIdPrefix = 'folder';
-		// unsused $this->iconName = 'folder';
-	}
-
-
-	/**
-	 * Wrapping $title in a-tags.
-	 * $row is the array with path and other info.
-	 * 
-	 * @param	[type]		$title: ...
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
-	 */
-	function wrapTitle($title,&$row)	{
-		$aOnClick = 'return jumpTo('.$this->getJumpToParm($row).',this,'.$this->getId($row).');';
-		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
 	}
 
 	/**
 	 * Wrapping the folder icon
-	 * 
-	 * @param	[type]		$icon: ...
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
+	 *
+	 * @param	string		The image tag for the icon
+	 * @param	array		The row for the current element
+	 * @return	string		The processed icon input value.
+	 * @access private
 	 */
-	function wrapIcon($icon,&$row)	{
-			// Add border attribute...
-		$theFolderIcon = substr($icon,0,-1).' border="0" />';
+	function wrapIcon($icon,$row)	{
+			// Add title attribute to input icon tag
+		$theFolderIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.$this->getTitleAttrib($row).'"' : ''));
 
 			// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode)	{
 			$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon,$row['path'],'',0);
 		} elseif (!strcmp($this->ext_IconMode,'titlelink'))	{
-			$aOnClick = 'return jumpTo('.$this->getJumpToParm($row).'\',this,'.$this->getId($row).');';
+			$aOnClick = 'return jumpTo('.$this->getJumpToParm($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$this->bank.'\');';
 			$theFolderIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$theFolderIcon.'</a>';
 		}
 		return $theFolderIcon;
 	}
 
 	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$$v: ...
-	 * @return	[type]		...
+	 * Returns the id from the record - for folders, this is an md5 hash.
+	 *
+	 * @param	array		Record array
+	 * @return	integer		The "uid" field value.
 	 */
-	function getId(&$v) {
+	function getId($v) {
 		return t3lib_div::md5Int($v['path']);
 	}
 
 	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$$v: ...
-	 * @return	[type]		...
+	 * Returns jump-url parameter value.
+	 *
+	 * @param	array		The record array.
+	 * @return	string		The jump-url parameter.
 	 */
-	function getJumpToParm(&$v) {
+	function getJumpToParm($v) {
 		return "'".rawurlencode($v['path'])."'";
 	}
 
 	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$$row: ...
-	 * @return	[type]		...
+	 * Returns the title for the input record. If blank, a "no title" labele (localized) will be returned.
+	 * '_title' is used for setting an alternative title for folders.
+	 *
+	 * @param	array		The input row array (where the key "_title" is used for the title)
+	 * @param	integer		Title length (30)
+	 * @return	string		The title.
 	 */
-	function getTitleStr(&$row)	{
-		return $row['_title'] ? $row['_title'] : parent::getTitleStr($row);
+	function getTitleStr($row,$titleLen=30)	{
+		return $row['_title'] ? $row['_title'] : parent::getTitleStr($row,$titleLen);
 	}
 
 	/**
-	 * [Describe function...]
-	 * 
-	 * @return	[type]		...
+	 * Will create and return the HTML code for a browsable tree of folders.
+	 * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
+	 *
+	 * @return	string		HTML code for the browsable tree
 	 */
 	function getBrowsableTree()	{
-		$this->init($addClause);
 
-			// Get stored tree structure:
-		$this->stored=unserialize($this->BE_USER->uc[$this->treeName]);
-		
-			// Mapping md5-hash to shorter number:
-		$hashMap=array();
-		reset($this->MOUNTS);
-		while (list($key,$val) = each($this->MOUNTS))	{
-			$nkey = hexdec(substr($key,0,4));
-			$hashMap[$nkey]=$key;
-			$this->MOUNTS[$key]['nkey']=$nkey;
-		}
+			// Get stored tree structure AND updating it if needed according to incoming PM GET var.
+		$this->initializePositionSaving();
 
-			// PM action:
-		$PM = explode('_',t3lib_div::GPvar('PM'));
-		if (count($PM)==4 && $PM[3]==$this->treeName)	{
-			if (isset($this->MOUNTS[$hashMap[$PM[0]]]))	{
-				if ($PM[1])	{	// set
-					$this->stored[$PM[0]][$PM[2]]=1;
-					$this->savePosition($this->treeName);
-				} else {	// clear
-					unset($this->stored[$PM[0]][$PM[2]]);
-					$this->savePosition($this->treeName);
-				}
-			}
-		}
-
-
-			// traverse mounts:
+			// Init done:
 		$titleLen=intval($this->BE_USER->uc['titleLen']);
 		$treeArr=array();
-		reset($this->MOUNTS);
-		while (list($key,$val) = each($this->MOUNTS))	{
+
+			// Traverse mounts:
+		foreach($this->MOUNTS as $key => $val)	{
 			$md5_uid = md5($val['path']);
 			$specUID=hexdec(substr($md5_uid,0,6));
 			$this->specUIDmap[$specUID]=$val['path'];
@@ -207,7 +177,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 
 				// Set PM icon:
 			$cmd=$this->bank.'_'.($isOpen?'0_':'1_').$specUID.'_'.$this->treeName;
-			$icon='<img src="'.$this->backPath.'t3lib/gfx/ol/'.($isOpen?'minus':'plus').'only.gif" width="18" height="16" align="top" border="0" alt="" \></a>';
+			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' alt="" />';
 			$firstHtml= $this->PM_ATagWrap($icon,$cmd);
 
 			switch($val['type'])	{
@@ -215,20 +185,24 @@ class t3lib_folderTree extends t3lib_treeView  {
 				case 'group':	$icon = 'gfx/i/_icon_ftp_group.gif'; break;
 				default:		$icon = 'gfx/i/_icon_ftp.gif'; break;
 			}
-			
-			$firstHtml.=$this->wrapIcon('<img src="'.$this->backPath.$icon.'" width="18" height="16" align="top" alt="" \>',$val);
+
+				// Preparing rootRec for the mount
+			$firstHtml.=$this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' alt="" />',$val);
 				$row=array();
 				$row['path']=$val['path'];
 				$row['uid']=$specUID;
 				$row['title']=$val['name'];
-//				debug($val);
-			$this->tree[]=array('HTML'=>$firstHtml,'row'=>$row);
 
+				// Add the root of the mount to ->tree
+			$this->tree[]=array('HTML'=>$firstHtml,'row'=>$row,'bank'=>$this->bank);
+
+				// If the mount is expanded, go down:
 			if ($isOpen)	{
 					// Set depth:
-				$depthD='<img src="'.$this->backPath.'t3lib/gfx/ol/blank.gif" width="18" height="16" align="top" alt="" \>';
+				$depthD='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/blank.gif','width="18" height="16"').' alt="" />';
 				$this->getFolderTree($val['path'],999,$depthD);
 			}
+
 				// Add tree:
 			$treeArr=array_merge($treeArr,$this->tree);
 		}
@@ -236,17 +210,19 @@ class t3lib_folderTree extends t3lib_treeView  {
 	}
 
 	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$files_path: ...
-	 * @param	[type]		$depth: ...
-	 * @param	[type]		$depthData: ...
-	 * @return	[type]		...
+	 * Fetches the data for the tree
+	 *
+	 * @param	string		Abs file path
+	 * @param	integer		Max depth (recursivity limit)
+	 * @param	string		HTML-code prefix for recursive calls.
+	 * @return	integer		The count of items on the level
+	 * @see getBrowsableTree()
 	 */
 	function getFolderTree($files_path, $depth=999, $depthData='')	{
+
 			// This generates the directory tree
 		$dirs = t3lib_div::get_dirs($files_path);
-//		debug($dirs);
+
 		$c=0;
 		if (is_array($dirs))	{
 			$depth=intval($depth);
@@ -255,7 +231,7 @@ class t3lib_folderTree extends t3lib_treeView  {
 			$c=count($dirs);
 			sort($dirs);
 
-			while (list($key,$val)= each($dirs))	{
+			foreach($dirs as $key => $val)	{
 				$a++;
 				$this->tree[]=array();		// Reserve space.
 				end($this->tree);
@@ -276,13 +252,17 @@ class t3lib_folderTree extends t3lib_treeView  {
 				$row['title']=$title;
 
 				if ($depth>1 && $this->expandNext($specUID))	{
-					$nextCount=$this->getFolderTree($path, $depth-1, $this->makeHTML?$depthData.'<img src="'.$this->backPath.'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" \>':'');
-					$exp=1;
+					$nextCount=$this->getFolderTree(
+						$path,
+						$depth-1,
+						$this->makeHTML ? $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$LN.'.gif','width="18" height="16"').' alt="" />' : ''
+					);
+					$exp=1;		// Set "did expand" flag
 				} else {
 					$nextCount=$this->getCount($path);
-					$exp=0;
+					$exp=0;		// Clear "did expand" flag
 				}
-	
+
 					// Set HTML-icons, if any:
 				if ($this->makeHTML)	{
 					$HTML=$depthData.$this->PMicon($row,$a,$c,$nextCount,$exp);
@@ -298,19 +278,25 @@ class t3lib_folderTree extends t3lib_treeView  {
 						$row['title']='RECYCLER';
 						$row['_title']='<b>RECYCLER</b>';
 					}
-					$HTML.=$this->wrapIcon('<img src="'.$this->backPath.$icon.'" width="18" height="16" align="top" alt="" \>',$row);
+					$HTML.=$this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' alt="" />',$row);
 				}
-				$this->tree[$treeKey] = Array('row'=>$row, 'HTML'=>$HTML);
+
+					// Finally, add the row/HTML content to the ->tree array in the reserved key.
+				$this->tree[$treeKey] = Array(
+					'row'=>$row,
+					'HTML'=>$HTML,
+					'bank'=>$this->bank
+				);
 			}
 		}
 		return $c;
 	}
 
 	/**
-	 * [Describe function...]
-	 * 
-	 * @param	[type]		$files_path: ...
-	 * @return	[type]		...
+	 * Counts the number of directories in a file path.
+	 *
+	 * @param	string		File path.
+	 * @return	integer
 	 */
 	function getCount($files_path)	{
 			// This generates the directory tree
@@ -322,9 +308,41 @@ class t3lib_folderTree extends t3lib_treeView  {
 		return $c;
 	}
 
+	/**
+	 * Get stored tree structure AND updating it if needed according to incoming PM GET var.
+	 *
+	 * @return	void
+	 * @access private
+	 */
+	function initializePositionSaving()	{
+			// Get stored tree structure:
+		$this->stored=unserialize($this->BE_USER->uc['browseTrees'][$this->treeName]);
 
+			// Mapping md5-hash to shorter number:
+		$hashMap=array();
+		foreach($this->MOUNTS as $key => $val)	{
+			$nkey = hexdec(substr($key,0,4));
+			$hashMap[$nkey]=$key;
+			$this->MOUNTS[$key]['nkey']=$nkey;
+		}
+
+			// PM action:
+			// (If an plus/minus icon has been clicked, the PM GET var is sent and we must update the stored positions in the tree):
+		$PM = explode('_',t3lib_div::_GP('PM'));	// 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
+		if (count($PM)==4 && $PM[3]==$this->treeName)	{
+			if (isset($this->MOUNTS[$hashMap[$PM[0]]]))	{
+				if ($PM[1])	{	// set
+					$this->stored[$PM[0]][$PM[2]]=1;
+					$this->savePosition($this->treeName);
+				} else {	// clear
+					unset($this->stored[$PM[0]][$PM[2]]);
+					$this->savePosition($this->treeName);
+				}
+			}
+		}
+	}
 }
- 
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_foldertree.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_foldertree.php']);
 }

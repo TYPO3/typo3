@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 1999-2003 Kasper Skårhøj (kasper@typo3.com)
+*
+*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,37 +24,34 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/** 
+/**
  * Generating gif/png-files from TypoScript
+ * Used by the menu-objects and imgResource in TypoScript.
  *
- * Used by the menu-objects and imgResource in TypoScript. 
+ * $Id$
+ * Revised for TYPO3 3.6 June/2003 by Kasper Skaarhoj
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- *
- * @author	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tslib
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *  103: class tslib_gifBuilder extends t3lib_stdGraphic 
- *  127:     function start($conf,$data)	
- *  275:     function gifBuild()	
- *  298:     function make()	
+ *  102: class tslib_gifBuilder extends t3lib_stdGraphic
+ *  126:     function start($conf,$data)
+ *  274:     function gifBuild()
+ *  297:     function make()
  *
  *              SECTION: Various helper functions
- *  444:     function checkTextObj ($conf)	
- *  476:     function setWorkArea($workArea)	
- *  494:     function calcOffset($string)	
- *  543:     function getResource($file,$fileArray)	
- *  558:     function checkFile($file)	
- *  569:     function fileName($pre)	
- *  579:     function extension() 
+ *  448:     function checkTextObj($conf)
+ *  484:     function calcOffset($string)
+ *  533:     function getResource($file,$fileArray)
+ *  548:     function checkFile($file)
+ *  559:     function fileName($pre)
+ *  569:     function extension()
  *
- * TOTAL FUNCTIONS: 10
+ * TOTAL FUNCTIONS: 9
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -85,9 +82,9 @@
  * The concept is known from TypoScript as "GIFBUILDER" where you can define a "numerical array" (TypoScript term as well) of "GIFBUILDER OBJECTS" (like "TEXT", "IMAGE", etc.) and they will be rendered onto an image one by one.
  * The name "GIFBUILDER" comes from the time where GIF was the only file format supported. PNG is just as well to create today (configured with TYPO3_CONF_VARS[GFX])
  * Not all instances of this class is truely building gif/png files by layers; You may also see the class instantiated for the purpose of using the scaling functions in the parent class, t3lib_stdGraphic.
- * 
+ *
  * Here is an example of how to use this class (from tslib_content.php, function getImgResource):
- * 
+ *
  * $gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
  * $gifCreator->init();
  * $theImage='';
@@ -96,8 +93,10 @@
  * $theImage = $gifCreator->gifBuild();
  * }
  * return $gifCreator->getImageDimensions($theImage);
- * 
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ *
+ * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @package TYPO3
+ * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=377&cHash=e00ac666f3
  */
 class tslib_gifBuilder extends t3lib_stdGraphic {
@@ -112,20 +111,20 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	var $data = Array();		// This is the array from which data->field: [key] is fetched. So this is the current record!
 	var $objBB = Array();
 	var $myClassName = 'gifbuilder';
-	
+
 	/**
 	 * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
 	 * Modifies the ->setup, ->objBB internal arrays
 	 * Should be called after the ->init() function which initializes the parent class functions/variables in general.
 	 * The class tslib_gmenu also uses gifbuilder and here there is an interesting use since the function findLargestDims() from that class calls the init() and start() functions to find the total dimensions before starting the rendering of the images.
-	 * 
+	 *
 	 * @param	array		TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
 	 * @param	array		The current data record from tslib_cObj. Stored internally in the variable ->data
-	 * @return	void		
+	 * @return	void
 	 * @see tslib_cObj::getImgResource(), tslib_gmenu::makeGifs(), tslib_gmenu::findLargestDims()
 	 */
 	function start($conf,$data)	{
-	
+
 		if (is_array($conf))	{
 			$this->setup = $conf;
 			$this->data = $data;
@@ -140,7 +139,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				$this->setup['backColor'] = trim($cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.']));
 			}
 			if (!$this->setup['backColor'])	{$this->setup['backColor']='white';}
-			
+
 				// Transparent GIFs
 				// not working with reduceColors
 				// there's an option for IM: -transparent colors
@@ -154,11 +153,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			if (!$this->setup['XY'])	{$this->setup['XY']='120,50';}
 
 
-				// Checking TEXT and IMAGE objects for files. If any errors the objects are cleared. 
+				// Checking TEXT and IMAGE objects for files. If any errors the objects are cleared.
 				// The Bounding Box for the objects is stored in an array
 			foreach($sKeyArray as $theKey) {
 				$theValue=$this->setup[$theKey];
-			
+
 				if (intval($theKey) && $conf=$this->setup[$theKey.'.'])	{
 						// Swipes through TEXT and IMAGE-objects
 					switch($theValue)	{
@@ -251,7 +250,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$XY = t3lib_div::intExplode(',',$this->setup['XY']);
 			$maxWidth = intval($this->setup['maxWidth']);
 			$maxHeight = intval($this->setup['maxHeight']);
-			
+
 			$XY[0] = t3lib_div::intInRange($XY[0],1, $maxWidth?$maxWidth:2000);
 			$XY[1] = t3lib_div::intInRange($XY[1],1, $maxHeight?$maxHeight:2000);
 			$this->XY = $XY;
@@ -268,7 +267,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Initiates the image file generation if ->setup is true and if the file did not exist already.
 	 * Gets filename from fileName() and if file exists in typo3temp/ dir it will - of course - not be rendered again.
 	 * Otherwise rendering means calling ->make(), then ->output(), then ->destroy()
-	 * 
+	 *
 	 * @return	string		The filename for the created GIF/PNG file. The filename will be prefixed "GB_"
 	 * @see make(), fileName()
 	 */
@@ -289,8 +288,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Basically sets the dimensions, the background color, the traverses the array of GIFBUILDER objects and finally setting the transparent color if defined.
 	 * Creates a GDlib resource in $this->im and works on that
 	 * Called by gifBuild()
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 * @see gifBuild()
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=378&cHash=3c2ae4a1ab
@@ -305,7 +304,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		$this->h = $XY[1];
 
 			// backColor is set
-		$cols=$this->convertColor($this->setup['backColor']);		
+		$cols=$this->convertColor($this->setup['backColor']);
 		ImageColorAllocate($this->im, $cols[0],$cols[1],$cols[2]);
 
 			// Traverse the GIFBUILDER objects an render each one:
@@ -325,7 +324,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							}
 						break;
 
-							// Text 
+							// Text
 						case 'TEXT':
 							if (!$conf['hide'])	{
 								if (is_array($conf['shadow.']))	{
@@ -385,8 +384,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						break;
 					}
 				}
-			}			
-		}	
+			}
+		}
 			// Auto transparent background is set
 		if ($this->setup['transparentBackground'])	{
 			imagecolortransparent($this->im, imagecolorat($this->im, 0, 0));
@@ -401,7 +400,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				} else {
 					$colIndex = ImageColorExact ($this->im, $cols[0],$cols[1],$cols[2]);
 				}
-				if ($colIndex > -1) {	
+				if ($colIndex > -1) {
 					ImageColorTransparent($this->im, $colIndex);
 				} else {
 					ImageColorTransparent($this->im, ImageColorAllocate($this->im, $cols[0],$cols[1],$cols[2]));
@@ -411,37 +410,37 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/*********************************************
 	 *
 	 * Various helper functions
 	 *
 	 ********************************************/
-	
-	
+
+
 	/**
 	 * Initializing/Cleaning of TypoScript properties for TEXT GIFBUILDER objects
-	 * 
+	 *
 	 * 'cleans' TEXT-object; Checks fontfile and other vital setup
 	 * Finds the title if its a 'variable' (instantiates a cObj and loads it with the ->data record)
 	 * Performs caseshift if any.
-	 * 
+	 *
 	 * @param	array		GIFBUILDER object TypoScript properties
 	 * @return	array		Modified $conf array IF the "text" property is not blank
 	 * @access private
@@ -473,11 +472,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Calculation of offset using "splitCalc" and insertion of dimensions from other GIFBUILDER objects.
-	 * 
+	 *
 	 * Example:
 	 * Input: 2+2, 2*3, 123, [10.w]
 	 * Output: 4,6,123,45  (provided that the width of object in position 10 was 45 pixels wide)
-	 * 
+	 *
 	 * @param	string		The string to resolve/calculate the result of. The string is divided by a comma first and each resulting part is calculated into an integer.
 	 * @return	string		The resolved string with each part (separated by comma) returned separated by comma
 	 * @access private
@@ -522,7 +521,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Returns an "imgResource" creating an instance of the tslib_cObj class and calling tslib_cObj::getImgResource
-	 * 
+	 *
 	 * @param	string		Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource"
 	 * @param	array		TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
 	 * @return	array		Returns an array with file information if an image was returned. Otherwise false.
@@ -540,7 +539,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Returns the reference to a "resource" in TypoScript.
-	 * 
+	 *
 	 * @param	string		The resource value.
 	 * @return	string		Returns the relative filepath
 	 * @access private
@@ -552,7 +551,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Calculates the GIFBUILDER output filename/path based on a serialized, hashed value of this->setup
-	 * 
+	 *
 	 * @param	string		Filename prefix, eg. "GB_"
 	 * @return	string		The relative filepath
 	 * @access private
@@ -563,7 +562,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Returns the file extension used in the filename
-	 * 
+	 *
 	 * @return	string		Extension; "jpg" or "gif"/"png"
 	 * @access private
 	 */
