@@ -1,4 +1,10 @@
 2004-12-20  Kasper Skårhøj,,,  <kasper@typo3.com>
+	* Added possibility to enable cache-control headers on frontend output; This allows a site to be cached by client browsers and proxies. See TSref for configuration ("config.sendCacheHeaders")
+	* Added that a cache-control header sent from client can regenerate an otherwise cached page. In reality this means that a shift-reload click in the browser will always circumvent TYPO3s page-cache, regenerate the page and store a new version in cache if applicable. If anyone has objections agains this default feature (eg. fear of DoS attacks), please bring up a discussion on dev-list.
+	* Added "Content-Length" header on frontend output (can be disabled)
+	* Fixed bug that gave inconsistent SYS_LASTCHANGED values whether a page was gotten from cache or generated.
+
+2004-12-20  Kasper Skårhøj,,,  <kasper@typo3.com>
 	* Added check for explicitAllow/Deny in the content element wizard (during a trainride from Allerød in S-Tog line A to Nørreport - thats all it took).
 
 2004-12-17  Kasper Skårhøj,,,  <kasper@typo3.com>

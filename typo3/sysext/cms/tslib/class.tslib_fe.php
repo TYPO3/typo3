@@ -231,6 +231,8 @@
 	var $tmpl='';						// The TypoScript template object. Used to parse the TypoScript template
 	var $cacheTimeOutDefault='';		// Is set to the time-to-live time of cached pages. If false, default is 60*60*24, which is 24 hours.
 	var $cacheContentFlag='';			// Set internally if cached content is fetched from the database
+	var $cacheExpires=0;				// Set to the expire time of cached content
+	var $isClientCachable=FALSE;		// Set if cache headers allowing caching are sent.
 	var $all='';						// $all used by template fetching system. This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
 	var $sPre='';						// toplevel - objArrayName, eg 'page'
 	var $pSetup='';						// TypoScript configuration of the page-object pointed to by sPre. $this->tmpl->setup[$this->sPre.'.']
@@ -793,8 +795,12 @@
 		if ($this->page['no_cache'])	{
 			$this->set_no_cache();
 		}
+
 			// Init SYS_LASTCHANGED
 		$this->register['SYS_LASTCHANGED'] = intval($this->page['tstamp']);
+		if ($this->register['SYS_LASTCHANGED'] < intval($this->page['SYS_LASTCHANGED']))	{
+			$this->register['SYS_LASTCHANGED'] = intval($this->page['SYS_LASTCHANGED']);
+		}
 	}
 
 	/**
@@ -1303,8 +1309,10 @@
 
 		$this->content='';	// clearing the content-variable, which will hold the pagecontent
 		unset($this->config);	// Unsetting the lowlevel config
-		$this->cacheContentFlag=0;
-		if ($this->all && !$this->no_cache)	{
+		$this->cacheContentFlag = 0;
+
+			// Look for page in cache only if caching is not disabled and if a shift-reload is not sent to the server.
+		if ($this->all && !$this->no_cache && !$this->headerNoCache())	{
 			$this->newHash = $this->getHash();
 
 			$GLOBALS['TT']->push('Cache Query','');
@@ -1324,7 +1332,8 @@
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
 					$this->content = $row['HTML'];	// Getting the content
-					$this->cacheContentFlag=1;	// Setting flag, so we know, that some cached content is gotten.
+					$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content is gotten.
+					$this->cacheExpires = $row['expires'];
 
 					if ($this->TYPO3_CONF_VARS['FE']['debug'] || $this->config['config']['debug'])	{
 						$this->content.=chr(10).'<!-- Cached page generated '.Date('d/m Y H:i', $row['tstamp']).'. Expires '.Date('d/m Y H:i', $row['expires']).' -->';
@@ -1333,6 +1342,17 @@
 			$GLOBALS['TT']->pull();
 
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		}
+	}
+
+	/**
+	 *	Detecting if shift-reload has been clicked
+	 *
+	 * @return	boolean		If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
+	 */
+	function headerNoCache()	{
+		if (strtolower($_SERVER['HTTP_CACHE_CONTROL'])==='no-cache' || strtolower($_SERVER['HTTP_PRAGMA'])==='no-cache')	{
+			return TRUE;
 		}
 	}
 
@@ -1444,7 +1464,7 @@
 		$this->initLLvars();
 
 			// No cache
-		if ($this->config['config']['no_cache'])	{$this->set_no_cache();}		// Set $this->no_cache true if the config.no_cache value is set!
+		if ($this->config['config']['no_cache'])	{ $this->set_no_cache(); }		// Set $this->no_cache true if the config.no_cache value is set!
 
 			// Check PATH_INFO url
 		if ($this->absRefPrefix_force && strcmp($this->config['config']['simulateStaticDocuments'],'PATH_INFO'))	{
@@ -1960,9 +1980,10 @@
 	 * @return	void
 	 */
 	function tempPageCacheContent()	{
-		$this->tempContent=0;
+		$this->tempContent = 0;
+
 		if (!$this->no_cache)	{
-			$seconds=30;
+			$seconds = 30;
 			$stdMsg = '
 			<html>
 				<head>
@@ -1980,8 +2001,8 @@
 			</html>';
 			$temp_content = $this->config['config']['message_page_is_being_generated'] ? $this->config['config']['message_page_is_being_generated'] : $stdMsg;
 
-			$this->setPageCacheContent($temp_content,'',$GLOBALS['EXEC_TIME']+$seconds);
-			$this->tempContent=1;		// This flag shows that temporary content is put in the cache
+			$this->setPageCacheContent($temp_content, '', $GLOBALS['EXEC_TIME']+$seconds);
+			$this->tempContent = 1;		// This flag shows that temporary content is put in the cache
 		}
 	}
 
@@ -1995,12 +2016,12 @@
 		$timeOutTime = $GLOBALS['EXEC_TIME']+$cache_timeout;
 		if ($this->config['config']['cache_clearAtMidnight'])	{
 			$midnightTime = mktime (0,0,0,date('m',$timeOutTime),date('d',$timeOutTime),date('Y',$timeOutTime));
-			if ($midnightTime > time())	{		// If the midnight time of the expire-day is greater than the current time, we may set the timeOutTime to the new midnighttime.
+			if ($midnightTime > $GLOBALS['EXEC_TIME'])	{		// If the midnight time of the expire-day is greater than the current time, we may set the timeOutTime to the new midnighttime.
 				$timeOutTime = $midnightTime;
 			}
 		}
 		$this->config['hash_base'] = $this->hash_base;
-		$this->setPageCacheContent($this->content,$this->config,$timeOutTime);
+		$this->setPageCacheContent($this->content, $this->config, $timeOutTime);
 
 			// Hook for cache post processing (eg. writing static files!)
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache']))	{
@@ -2028,8 +2049,11 @@
 			'HTML' => $c,
 			'cache_data' => serialize($d),
 			'expires' => $t,
-			'tstamp' => time()
+			'tstamp' => $GLOBALS['EXEC_TIME']
 		);
+
+		$this->cacheExpires = $t;
+
 		if ($this->page_cache_reg1)	{
 			$insertFields['reg1'] = intval($this->page_cache_reg1);
 		}
@@ -2387,28 +2411,16 @@ if (version == "n3") {
 	 * @return	void
 	 */
 	function processOutput()	{
-			// Substitutes username mark with the username
-		if ($this->fe_user->user['uid'])	{
-
-				// User name:
-			$token = trim($this->config['config']['USERNAME_substToken']);
-			$this->content = str_replace($token ? $token : '<!--###USERNAME###-->',$this->fe_user->user['username'],$this->content);
-
-				// User uid (if configured):
-			$token = trim($this->config['config']['USERUID_substToken']);
-			if ($token)	{
-				$this->content = str_replace($token, $this->fe_user->user['uid'], $this->content);
-			}
-		}
-			// Substitutes get_URL_ID in case of GET-fallback
-		if ($this->getMethodUrlIdToken)	{
-			$this->content = str_replace($this->getMethodUrlIdToken, $this->fe_user->get_URL_ID, $this->content);
-		}
 
 			// Set header for charset-encoding unless disabled
 		if (!$this->config['config']['disableCharsetHeader'])	{
 			$headLine = 'Content-Type:text/html;charset='.trim($this->metaCharset);
-			header ($headLine);
+			header($headLine);
+		}
+
+			// Set cache related headers to client (used to enable proxy / client caching!)
+		if ($this->config['config']['sendCacheHeaders'])	{
+			$this->sendCacheHeaders();
 		}
 
 			// Set headers, if any
@@ -2418,6 +2430,11 @@ if (version == "n3") {
 				$headLine = trim($headLine);
 				header($headLine);
 			}
+		}
+
+			// Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
+		if (!$this->isClientCachable)	{
+			$this->contentStrReplace();
 		}
 
 				// Tidy up the code, if flag...
@@ -2452,6 +2469,81 @@ if (version == "n3") {
 			$this->content = str_replace('target="_top"','target="_self"',$this->content);
 			$this->content = str_replace('target=_top','target="_self"',$this->content);
 		}*/
+
+			// If no external scripts should be included we can safely send a content-length header:
+		if (!$this->isEXTincScript() && !$this->config['config']['disableContentLengthHeader'])	{
+			header('Content-Length: '.strlen($this->content));
+		}
+	}
+
+	/**
+	 * Send cache headers good for client/reverse proxy caching
+	 *
+	 * @return	void
+	 * @co-author	Ole Tange, Forbrugernes Hus, Denmark
+	 */
+	function sendCacheHeaders()	{
+
+			// no_cache cannot be set: If it is, the page might contain dynamic content and should never be cached.
+			// There can be no USER_INT objects on the page ("isINTincScript()") because they implicitly indicate dynamic content
+			// There can be no logged in user because user sessions are based on a cookie and thereby does not offer client caching a chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache headers in page sections where user logins change the page content.
+			// Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
+		if (!$this->no_cache
+				&& !$this->isINTincScript() && !$this->isEXTincScript()
+				&& !is_array($this->fe_user->user)
+				&& !$this->beUserLogin)	{
+
+				// Build headers:
+			$headers = array(
+				'Last-Modified: '.gmdate('D, d M Y H:i:s T', $this->register['SYS_LASTCHANGED']),
+				'Expires: '.gmdate('D, d M Y H:i:s T', $this->cacheExpires),
+				'ETag: '.md5($this->content),
+				'Cache-Control: max-age='.($this->cacheExpires - $GLOBALS['EXEC_TIME']),		// no-cache
+				'Pragma: public',
+			);
+
+			$this->isClientCachable = TRUE;
+		} else {
+				// Build headers:
+			$headers = array(
+				#'Last-Modified: '.gmdate('D, d M Y H:i:s T', $this->register['SYS_LASTCHANGED']),
+				#'ETag: '.md5($this->content),
+				'Cache-Control: no-cache',
+				'Pragma: no-cache',
+			);
+
+			$this->isClientCachable = FALSE;
+		}
+
+			// Send headers:
+		foreach($headers as $hL)	{
+			header($hL);
+		}
+	}
+
+	/**
+	 * Substitute various tokens in content. This should happen only if the content is not cached by proxies or client browsers.
+	 *
+	 * @return	void
+	 */
+	function contentStrReplace()	{
+			// Substitutes username mark with the username
+		if ($this->fe_user->user['uid'])	{
+
+				// User name:
+			$token = trim($this->config['config']['USERNAME_substToken']);
+			$this->content = str_replace($token ? $token : '<!--###USERNAME###-->',$this->fe_user->user['username'],$this->content);
+
+				// User uid (if configured):
+			$token = trim($this->config['config']['USERUID_substToken']);
+			if ($token)	{
+				$this->content = str_replace($token, $this->fe_user->user['uid'], $this->content);
+			}
+		}
+			// Substitutes get_URL_ID in case of GET-fallback
+		if ($this->getMethodUrlIdToken)	{
+			$this->content = str_replace($this->getMethodUrlIdToken, $this->fe_user->get_URL_ID, $this->content);
+		}
 	}
 
 	/**
