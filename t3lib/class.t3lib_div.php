@@ -98,7 +98,7 @@
  * 1198:     function trimExplode($delim, $string, $onlyNonEmptyValues=0)	
  * 1223:     function uniqueArray($valueArray)	
  * 1246:     function removeArrayEntryByValue($array,$cmpValue)	
- * 1275:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)	
+ * 1275:     function implodeArrayForUrl($name,$theArray,$str='',$skipBlank=0,$rawurlencodeParamName=0)
  * 1302:     function compileSelectedGetVarsFromArray($varList,$getArray,$GPvarAlt=1)	
  * 1326:     function addSlashesOnArray(&$theArray)	
  * 1351:     function stripSlashesOnArray(&$theArray)	
@@ -137,7 +137,7 @@
  *
  *              SECTION: SYSTEM INFORMATION
  * 2322:     function getThisUrl()	
- * 2339:     function linkThisScript($getParams=array())	
+ * 2339:     function linkThisScript($getParams=array())
  * 2363:     function linkThisUrl($url,$getParams=array())	
  * 2385:     function getIndpEnv($getEnvName)	
  * 2569:     function milliseconds()	
@@ -2386,11 +2386,15 @@ class t3lib_div {
 		$parts = parse_url($url);
 		if ($parts['query'])	{
 			parse_str($parts['query'],$getP);
-		} else $getP=array();
+		} else {
+			$getP = array();
+		}
 
-		$getP=t3lib_div::array_merge_recursive_overrule($getP,$getParams);
+		$getP = t3lib_div::array_merge_recursive_overrule($getP,$getParams);
 		$uP = explode('?',$url);
-		$outurl = $uP[0].'?'.t3lib_div::implodeArrayForUrl('',$getP);
+
+		$params = t3lib_div::implodeArrayForUrl('',$getP);
+		$outurl = $uP[0].($params ? '?'.substr($params, 1) : '');
 
 		return $outurl;
 	}
