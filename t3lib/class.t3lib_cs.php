@@ -1396,7 +1396,7 @@ class t3lib_cs {
 	 * Translates all characters of a string into their respective case values.
 	 * Unlike strtolower() and strtoupper() this method is locale independent.
 	 * Note that the string length may change!
-	 * eg. lower case German "ß" (sharp S) becomes uper case "SS"
+	 * eg. lower case German "ï¿½ (sharp S) becomes uper case "SS"
 	 * Unit-tested by Kasper
 	 * Real case folding is language dependent, this method ignores this fact.
 	 *
@@ -1421,14 +1421,14 @@ class t3lib_cs {
 			return $this->euc_char_mapping($string,$charset,'case',$case);
 		} else {
 				// treat everything else as single-byte encoding
-			return $this->sb_char_mapping($string,'case',$case);
+			return $this->sb_char_mapping($string,$charset,'case',$case);
 		}
 
 		return $string;
 	}
 
 	/**
-	 * Converts special chars (like ÆØÅæøå, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
+	 * Converts special chars (like ï¿½ï¿½ï¿½ umlauts etc) to ascii equivalents (usually double-bytes, like ï¿½=> ae etc.)
 	 *
 	 * @param	string		Character set of string
 	 * @param	string		Input string to convert
