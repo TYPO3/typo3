@@ -1359,7 +1359,7 @@ trim($this->form);
 
 				$content .= "\n\t".'<td width="'.$widthRight.'%">&nbsp;</td>';
 				$content .= "\n\t".'</tr></table>';
-				$content .= '<div class="hr" style="display:block;margin:0px;padding:0px;"></div';
+				$content .= '<div class="hr" style="display:block;margin:0px;padding:0px;"></div>';
 			}
 
 				// include CSS
@@ -1408,10 +1408,7 @@ trim($this->form);
 				}';
 		}
 		return $content;
-
 	}
-
-
 }
 
 
