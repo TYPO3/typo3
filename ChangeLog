@@ -1,3 +1,9 @@
+2005-03-07  Karsten Dambekalns  <karsten@typo3.org>
+
+	* Fixed the potential security issue with mailforms, allowing
+	  spam abuse (TYPO3-20050307-1). This affected tslib/class.tslib_content.php,
+	  tslib/class.tslib_fe.php and t3lib/config_default.php
+
 2005-02-20  Michael Stucki  <michael@typo3.org>
 
 	* Fixed a typo in the User TSconfig reference in ext_tables_static+adt.sql
