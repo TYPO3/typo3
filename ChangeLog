@@ -1,3 +1,7 @@
+2005-01-21  Jan-Erik Revsbech	<jer@moccompany.com>
+	
+	* Added a check to class t3lib_htmlmail to check if postfix version 1.XX is used. If this is the case the -f parameter is not used for call to mail(). This should fix the problem with mails not being sent when using Postfix as MTA..
+
 2005-01-21  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added a new feature to force all UIDs in the "impexp" extension.
