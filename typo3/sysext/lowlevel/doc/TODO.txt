@@ -1,0 +1,1 @@
+- BUG: in admin-class: selectNonEmptyRecordsWithFkeys fejler med count-værdi for MM-felter?

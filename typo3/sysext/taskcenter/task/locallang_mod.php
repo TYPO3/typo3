@@ -1,0 +1,133 @@
+<?php
+
+$LOCAL_LANG = Array (
+	'default' => Array (
+		'mlang_labels_tablabel' => 'Task Center with overviews, messages, ToDo lists',
+		'mlang_labels_tabdescr' => 'The task center provides access to your internal To-Do list, messages, Quick-note, actions etc. It also provides shortcuts to your available frontend modules and most recently edited pages. The Task Center is where you keep track of your daily tasks and workflows.',
+		'mlang_tabs_tab' => 'Task center',
+	),
+	'dk' => Array (
+		'mlang_labels_tablabel' => 'Arbejdsstyring med overblik, beskeder, opgavelister',
+		'mlang_labels_tabdescr' => 'Opgaver-modulet giver dig adgang til din interne opgaveliste, beskeder, Kvik-note, handlinger osv. Det giver dig også genveje til dine tilgængelige website moduler og senest ændrede sider. Opgaver-modulet er dér, hvor du holder styr på dine daglige opgaver og arbejdsgange.',
+		'mlang_tabs_tab' => 'Opgaver',
+	),
+	'de' => Array (
+		'mlang_labels_tablabel' => 'Aufgaben mit Übersichten, Nachrichten, To-Do-Listen',
+		'mlang_labels_tabdescr' => 'Das Aufgaben-Center bietet Ihnen Zugriff auf Ihre interne To-Do-Liste, Nachrichten, Notizen, Befehle, usw. Es bietet Ihnen ebenso Verweise auf die verfügbaren Frontend-Module und die am häufigsten bearbeiteten Seiten. Im Aufgaben Center können Sie Ihre täglichen Aufgaben und Workflows verfolgen können.',
+		'mlang_tabs_tab' => 'Aufgaben',
+	),
+	'no' => Array (
+		'mlang_labels_tablabel' => 'Arbeidsstyring med oversikt, beskjeder, oppgavelister',
+		'mlang_labels_tabdescr' => 'Oppgaver-modulen gir deg tilgang til din interne oppgaveliste, beskjeder, Hurtig-notater, handlinger osv. Den gir deg også snarveier til dine tilgjengelige webområde moduler og sist endrede sider. Det er i Oppgaver-modulen at du holder styr på dine daglige oppgaver og arbeidsgangen.',
+		'mlang_tabs_tab' => 'Oppgaver',
+	),
+	'it' => Array (
+		'mlang_labels_tablabel' => 'Task Center con visione d\'insieme, messaggi, lista dei to-do',
+		'mlang_labels_tabdescr' => 'Task Center dà l\'accesso alla lista dei to-do, ai messaggi, alle note, alle \'azioni\', etc. Vi dà inoltre accesso ai moduli frontend e alle pagine modificate recentemente. Task Center è il modulo in cui tenete traccia delle attività quotidiane e dei workflows.',
+		'mlang_tabs_tab' => 'Task center',
+	),
+	'fr' => Array (
+		'mlang_labels_tablabel' => 'Centre de Tâches avec résumé, messages et listes \'A faire\'',
+		'mlang_labels_tabdescr' => 'Le Centre de Tâches vous donne accès au notes internes, aux tâches \'A faire\', aux actions, ... Il vous donne aussi accès à vos modules \'Frontend\' et les pages éditées récemment. Le Centre de Tâches est l\'endroit ou vous voyez votre travail quotidien et le workflow',
+		'mlang_tabs_tab' => 'Centre de Tâches',
+	),
+	'es' => Array (
+		'mlang_labels_tablabel' => 'Centro de Tareas con resúmenes, mensajes, pendientes.',
+		'mlang_labels_tabdescr' => 'El centro de tareas le da acceso a su lista de pendientes interna, mensajes, notas, aciones, etc. También tiene accesos directos a los módules sus módulos disponibles de frontend y las páginas que editó mas recientemente. El Centro de Tareas es donde ud. mantiene nota de sus tareas diarias y flujo de trabajo.',
+		'mlang_tabs_tab' => 'Centro de Tareas',
+	),
+	'nl' => Array (
+		'mlang_labels_tablabel' => 'Taak Centrum met overzichten, berichten, TeDoen lijsten',
+		'mlang_labels_tabdescr' => 'Het Taak Centrum geeft toegang tot je interne TeDoen lijst, berichten, NotitieBlok, Akties enz. Het bevat ook snelkoppelingen naar de voor jou beschikbare modules en onlangs aangepaste pagina\'s. In het Taak Centrum volg je je dagelijkse taken en werkschema\'s.',
+		'mlang_tabs_tab' => 'Taakcentrum',
+	),
+	'cz' => Array (
+		'mlang_labels_tablabel' => 'Task Center s pøehledy, vzkazy a seznamem úkolù',
+		'mlang_labels_tabdescr' => 'Task Center poskytuje pøistup k vašemu vnitønímu seznamu úkolù, vzkazùm, rychlé poznámce, akcím atd. Také poskytuje zkratky k vašim dostupným frontendovým modulùm a naposled editovaným stránkám. V Task Center mùžete udržovat pøehled o vašich denních úkolech a workflow.',
+		'mlang_tabs_tab' => 'Task Center',
+	),
+	'pl' => Array (
+		'mlang_labels_tablabel' => 'Zadania i wiadomo¶ci dla ciebie',
+		'mlang_labels_tabdescr' => 'Modu³ Twoje zadania umo¿liwia dostêp do twoich zadañ, wiadomo¶ci, notesu, akcji, itp. Zawiera równie¿ skróty do dostêpnych dla ciebie modu³ów i ostatnio edytowanych przez ciebie stron. Tutaj przechowywane s± informacje o twojej aktywno¶ci na serwerze TYPO3.',
+		'mlang_tabs_tab' => 'Twoje zadania',
+	),
+	'si' => Array (
+		'mlang_labels_tablabel' => 'Vaša beležka v TYPO3',
+		'mlang_labels_tabdescr' => 'Modul \'naloge\' vam omogoèa uporabo beležke vaših opravkov v TYPO3, pa tudi pošiljanje sporoèil, urejanje zaznamkov, itd. Ponuja tudi dostop do vaših \'frontend\' modulov in bližnjice do nedavno urejanih strani.',
+		'mlang_tabs_tab' => 'Naloge',
+	),
+	'fi' => Array (
+		'mlang_labels_tablabel' => 'Task Center ',
+		'mlang_labels_tabdescr' => 'Task Center mahdollistaa pääsyn sisäisiin To-Do listaan, viesteihin, pikamuistio, toimintoihin jne. Sillä on mahdollisuus tehdä oikoteitä saatavilla oleviin frontend-moduleihin ja viimeksi muotoilluille sivuille. Task Center on paikka jossa seuraat päivittäisiä toimintojasi ja työkulkua.',
+		'mlang_tabs_tab' => 'Task Center',
+	),
+	'tr' => Array (
+		'mlang_labels_tablabel' => 'Görev merkezi ile genel görüntü, mesajlar, Yapýlacaklar listesi',
+		'mlang_labels_tabdescr' => 'Görev merkezi sizin iç kýsma ait yapýlacak listenize, mesajlara, hýzlý notunuza, aksiyonlarýnýza vs eriþim imkaný saðlar. Birde sizin mevcut önplan modülleri ve en son düzenlenen sayfalarýnýza kýsayol imkaný saðlar. Görev Merkezi sizin günlük görevlerinizi ve iþ akýþlarýnýzý takip etmenizi saðlayan yerdir.',
+		'mlang_tabs_tab' => 'Görev merkezi',
+	),
+	'se' => Array (
+		'mlang_labels_tablabel' => 'Uppgifter med översikter, meddelande, Att göra-listor',
+		'mlang_labels_tabdescr' => 'I Uppgifter kommer du till den interna Att göra-listan, meddelanden, snabbanteckningar, aktiviteter mm. Där finns också genvägar till de frontend-moduler som du kan använda och till de sidor, som du senast jobbat med. I Uppgifter håller du ordning på ditt dagliga arbete och arbetsgången.',
+		'mlang_tabs_tab' => 'Uppgifter',
+	),
+	'pt' => Array (
+		'mlang_labels_tablabel' => 'Centro de Tarefas com listas de históricos, mensagens e a-fazer',
+		'mlang_labels_tabdescr' => 'O centro de tarefas providencia acesso à sua lista de A-Afazer, mensagens, Notas-rápidas, acções, etc. Também providencia atalhos para os módulos-cliente disponíveis e as páginas editadas mais recentemente. O Centro de Tarefas é onde mantém o control das suas tarefas e trabalhos diários.',
+		'mlang_tabs_tab' => 'Centro de Tarefas',
+	),
+	'ru' => Array (
+		'mlang_labels_tablabel' => 'Öåíòð çàäàíèé ñ îáçîðîì, ñîîáùåíèÿìè è èíñòðóêöèÿìè',
+		'mlang_labels_tabdescr' => 'Öåíòð çàäàíèé ïðåäîñòàâëÿåò äîñòóï ê âàøèì ëè÷íûì ïëàíàì, çàìåòêàì, äåéñòâèÿì è ò.ä. Òàêæå âû íàéäåòå çäåñü ññûëêè ê äîñòóïíûì âàì ìîäóëÿì è ñïèñîê ñòðàíèö, íàä êîòîðûìè âû ðàáîòàëè ïîñëåäíåå âðåìÿ. Öåíòð çàäàíèé - ýòî ìåñòî ïîâñåäíåâíîé ðàáîòû.',
+		'mlang_tabs_tab' => 'Öåíòð çàäàíèé',
+	),
+	'ro' => Array (
+		'mlang_labels_tablabel' => 'Centru de sarcini cu liste de actiuni si mesaje.',
+		'mlang_labels_tabdescr' => 'Centrul de sarcini va ofera posibilitatea sa vedeti ce aveti de facut, mesaje, notite, etc. Deasemeni ofera shortcut-uri spre modulele frontend disponibile si spre cele mai recent editate pagini. Centrul de sarcini este locul in care iti tii evidenta indatoririlor zilnice.',
+		'mlang_tabs_tab' => 'Centrul de sarcini',
+	),
+	'ch' => Array (
+	),
+	'sk' => Array (
+		'mlang_labels_tablabel' => 'Task Center s preh¾admi, odkazmi a zoznamom úloh',
+		'mlang_labels_tabdescr' => 'Task Center poskytuje prístup k vašemu internému zoznamu úloh, odkazov, rýchlym poznámkam, udalostiam atï. Taktiež poskytuje skratky k vašim dostupným frontendovým modulom a ku stránkam , ktoré ste editovali  posledné. V Task Center môžete udržiava  preh¾ad o vašich denných úlohach a workflow.',
+		'mlang_tabs_tab' => 'Task center',
+	),
+	'lt' => Array (
+	),
+	'is' => Array (
+	),
+	'hr' => Array (
+		'mlang_labels_tablabel' => 'Task Centar sa pregledima, porukama, to-do listama.',
+		'mlang_labels_tabdescr' => 'Task centar omoguæava pristup vašim internim to-do listama, porukama, quick-notes zapisima, postupcima i sl. Isto tako sadrži kratice do dodtupnih frontend modula i nedavno izmjenjivanih stranica. Task centar je mjesto gdje vodite raèuna o vašim dnevnim zadacima i radnim procesima.',
+		'mlang_tabs_tab' => 'Task centar',
+	),
+	'hu' => Array (
+	),
+	'gl' => Array (
+	),
+	'th' => Array (
+	),
+	'gr' => Array (
+	),
+	'hk' => Array (
+	),
+	'eu' => Array (
+	),
+	'bg' => Array (
+	),
+	'br' => Array (
+	),
+	'et' => Array (
+		'mlang_labels_tablabel' => 'Ülesanded, teated, tegemata tööd',
+		'mlang_labels_tabdescr' => 'Ülesannete moodul pakub ligipääsu isiklike teadete, ülesannete, märkmete ja tegemata tööde loetelule. Samuti näitab see otsevaliku linke moodulitele ja viimati muudetud lehekülgedele. Ülesanded on moodul, kus saab hallata oma igapäevaseid tööülesandeid ja märkmeid.',
+		'mlang_tabs_tab' => 'Ülesanded',
+	),
+	'ar' => Array (
+	),
+	'he' => Array (
+	),
+	'ua' => Array (
+	),
+);
+?>

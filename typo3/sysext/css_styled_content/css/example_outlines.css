@@ -1,0 +1,296 @@
+/* TYPO3 CVS id: $id$ */
+/* Experimental stylesheet which highlights/outlines all elements */
+
+
+
+/***************************/
+/* General element styles: */
+/***************************/
+H1, H2, H3, H4, H5, P, TD, UL, OL, BLOCKQUOTE { font-family: arial, helvetica; border: 1px dotted #999999;}
+PRE { border: 1px dotted #999999; font-family: monospace; }
+H1, H2, H3, H4, H5 { background-color: #ddddcc; }
+P, UL, OL, BLOCKQUOTE { background-color: #ffcc66; }
+LI { border: 1px dotted #333333; }
+A { color: navy; text-decoration: none; }
+A:hover { text-decoration: underline; }
+FORM { margin: 0px 0px 0px 0px;}
+P, PRE { margin: 0px 0px 0px 0px; }
+
+				
+
+/********************************/
+/* Frames, spacing, link-to-top */
+/********************************/
+IMG.spacer-gif { border: 1px solid navy; }
+P.csc-linkToTop { text-align: right; }
+P.csc-linkToTop A { font-weight: bold; }
+
+DIV.csc-frame { border: 2px dotted olive; }
+DIV.csc-frame-invisible {}
+DIV.csc-frame-rulerBefore { border-top: 1px solid black; }
+DIV.csc-frame-rulerAfter { border-bottom: 1px solid black; }
+DIV.csc-frame-indent { padding-left: 100px; }
+DIV.csc-frame-indent3366 { padding-left: 33%; }
+DIV.csc-frame-indent6633 { padding-right: 33%; }
+DIV.csc-frame-frame1 { background-color: red; }
+DIV.csc-frame-frame2 { background-color: green; }
+				
+/******************/
+/* Headers, plain */
+/******************/
+H1 { font-size: 20px; }
+H2 { font-size: 18px; }
+H3 { font-size: 16px; }
+H1, H2, H3, H4, H5, H6 { margin-top: 20px; margin-bottom: 2px; }
+H1.csc-firstHeader, H2.csc-firstHeader, H3.csc-firstHeader, H4.csc-firstHeader, H5.csc-firstHeader, H6.csc-firstHeader { margin-top: 0px; }
+
+/* Headers, with link */
+H1 A, H2 A { color: #660000; }
+H1 A:hover { color: red; }
+
+/* Header date */
+P.csc-header-date { font-size: 10px; color: navy; }
+
+/* Subheader, general */
+P.csc-subheader { font-size: 12px; font-style: italic; background-color: #ccffee; }
+
+/* Subheader, specific */
+P.csc-subheader-0 { color: red; }
+P.csc-subheader-1 { color: green; }
+P.csc-subheader-2 { color: blue; }
+P.csc-subheader-3 { color: olive; font-style: normal; }
+
+
+
+/*******************/
+/* RTE / Bodytext: */
+/*******************/
+P.bodytext { font-size: 11px; background-color: #ccccff; }
+P.bodytext I { background-color: olive; }
+P.bodytext U { background-color: maroon; }
+P.bodytext B { background-color: teal; }
+P.bodytext B I { background-color: red; }
+P.bodytext B I U { background-color: green; }
+P.bodytext A { font-weight: bold; }
+
+/* RTE / Bulletlists */
+UL { font-size: 11px; margin-top: 0px;  }
+UL UL LI { font-size: 10px; }
+UL LI A { color: green; }
+
+OL { font-size: 11px; margin-top: 0px; }
+OL LI A { color: green; }
+
+LI { margin-top: 0px; margin-bottom: 0px; padding-top: 2px; }
+
+/* RTE / BlockQuote styling */
+BLOCKQUOTE { background-color: #5588ee; }
+BLOCKQUOTE P.bodytext { margin-left: 20px; }
+BLOCKQUOTE BLOCKQUOTE { background-color: #6699ff; }
+BLOCKQUOTE BLOCKQUOTE P.bodytext { margin-left: 20px; }
+
+/* RTE / Table styling */
+TABLE.contenttable { border: 1px #666666 solid; margin: 10px 10px 10px 10px; width: 70%; }
+TABLE.contenttable TR TD { padding: 5px 5px 5px 5px; }
+TABLE.contenttable TR TD P.bodytext { font-size: 10px; color: #666666; font-style: italic; }
+TABLE.contenttable TR { background-color: #eeff99; }
+
+
+
+/**********/
+/* Images */
+/**********/
+
+/* Images / Captions */
+P.csc-caption { font-size: 11px; }
+P.csc-caption A { color: maroon; }
+
+/* Images / Tables / Floating text */
+TABLE.imgtext-table { border: 2px black solid; }
+
+/* Images / Tables / Wrapped text */
+/* When "Text w/Image" elements are wrapping the text into a table the top-margin of Hx elements should be transferred to the wrapping table instead. This is done here: */
+TABLE.imgtext-nowrap { border: 2px red solid; margin-top: 20px; }
+TABLE.imgtext-nowrap H1, TABLE.imgtext-nowrap H2, TABLE.imgtext-nowrap H3, TABLE.imgtext-nowrap H4, TABLE.imgtext-nowrap H5 { margin-top: 0px; }
+
+
+
+/***************/
+/* Bulletlists */
+/***************/
+
+/* Bulletlists, general */
+UL.csc-bulletlist { color: navy; background-color: transparent; }
+UL.csc-bulletlist LI { background-color: #ffaaff; }
+
+/* Bulletlists, specifically */
+UL.csc-bulletlist-0 { color: green; }
+UL.csc-bulletlist-1 { color: blue; list-style-type : decimal; }
+UL.csc-bulletlist-2 { color: red; list-style-position : inside; }
+UL.csc-bulletlist-3 { color: olive; list-style-image: url(img/red_arrow_bullet.gif); }
+
+
+
+/*********************/
+/* Tables, generally */
+/*********************/
+TABLE.contenttable P { font-size: 11px; }
+TABLE.contenttable TR TD { vertical-align: top; }
+TABLE.contenttable TR.tr-last TD P { background-color: #336699; }
+TABLE.contenttable TR TD.td-last P { background-color: #aa6699; }
+
+/* Tables, specifically */
+TABLE.contenttable-0 P { color: green; }
+
+TABLE.contenttable-1 P { color: blue; }
+TABLE.contenttable-1 TR.tr-0 TD { background-color: #ff9900;}
+TABLE.contenttable-1 TR.tr-0 TD P { font-weight: bold; }
+ 
+TABLE.contenttable-2 P { color: red; }
+TABLE.contenttable-2 TR TD.td-0 { background-color: #ff9900;}
+TABLE.contenttable-2 TR TD.td-0 P { font-weight: bold; }
+
+TABLE.contenttable-3 P { color: olive; }
+TABLE.contenttable-3 TR TD.td-0, TABLE.contenttable-3 TR.tr-0 TD { background-color: #ff9900;}
+TABLE.contenttable-3 TR TD.td-0 P, TABLE.contenttable-3 TR.tr-0 TD P { font-weight: bold; }
+
+
+
+/************************/
+/* Filelinks, generally */
+/************************/
+TABLE.csc-uploads { border: 2px solid black; width: 70%; }
+TABLE.csc-uploads TR TD P { background-color : transparent; font-size: 12px; }
+TABLE.csc-uploads TR TD { vertical-align : top; }
+TABLE.csc-uploads TR.tr-even { background-color: #ffccee; }
+TABLE.csc-uploads TR.tr-odd { background-color: #ccccee; }
+TABLE.csc-uploads TR TD.csc-uploads-icon { padding-left: 6px; padding-right: 6px; width: 1%; text-align: center; vertical-align: middle; }
+TABLE.csc-uploads TR TD.csc-uploads-fileName { width: 80%; padding-left: 5px; }
+TABLE.csc-uploads TR TD.csc-uploads-fileName P A { font-weight: bold; }
+TABLE.csc-uploads TR TD.csc-uploads-fileName P.csc-uploads-description { font-style: italic; }
+TABLE.csc-uploads TR TD.csc-uploads-fileSize { white-space: nowrap; padding-left: 6px; padding-right: 6px; }
+
+/* Filelinks, specifically */
+TABLE.csc-uploads-1 { border-color: red; }
+
+TABLE.csc-uploads-2 { border-color: green; }
+
+TABLE.csc-uploads-3 { border-color: blue; }
+TABLE.csc-uploads-3 TR.tr-even { background-color: #99ff99; }
+TABLE.csc-uploads-3 TR.tr-odd { background-color: #99ff66; }
+TABLE.csc-uploads-3 TR TD { vertical-align: middle; }
+TABLE.csc-uploads-3 TR.tr-even TD.csc-uploads-icon IMG { border: 3px solid black; }
+TABLE.csc-uploads-3 TR.tr-odd TD.csc-uploads-icon IMG { border: 3px solid red; }
+				
+
+
+/*****************/
+/* Various Forms */
+/*****************/
+
+/* Email, Login and Search forms generally: */
+FORM TABLE TR TD { padding-left: 5px; padding-right: 20px; }
+FORM TABLE TR TD.csc-form-labelcell { background-color: #eeccaa; }
+FORM TABLE TR TD.csc-form-fieldcell { background-color: #aa66ff; }
+FORM TABLE TR TD.csc-form-fieldcell INPUT, FORM TABLE TR TD.csc-form-fieldcell SELECT, FORM TABLE TR TD.csc-form-fieldcell TEXTAREA { background-color: #eeeeee; border: 1px solid #666666; font-style: italic; font-size: 11px; }
+FORM TABLE TR TD.csc-form-labelcell P, FORM TABLE TR TD.csc-form-commentcell P { font-size: 11px;}
+FORM TABLE TR TD.csc-form-labelcell P.csc-form-label-req { font-weight: bold; color: navy; }
+FORM TABLE TR TD.csc-form-labelcell P.csc-form-label { color: #666666; }
+FORM TABLE { margin-top: 10px; border: 5px navy dashed; }
+
+/* Email form, specifically */
+FORM TABLE.csc-mailform { border-color: #ff6600; }
+FORM TABLE.csc-mailform TR TD.csc-form-labelcell  { background-color: #ccccff; }
+
+/* Search form, specifically */
+FORM TABLE.csc-searchform { border-color: red; }
+FORM TABLE.csc-searchform TR TD.csc-form-labelcell  { background-color: #ffffcc; }
+
+/* Login form, specifically */
+FORM TABLE.csc-loginform { border-color: green; }
+FORM TABLE.csc-loginform TR TD.csc-form-labelcell  { background-color: #ccffcc; }
+
+
+
+
+/*****************/
+/* Search result */
+/*****************/
+
+/* Search Result, result information box: */
+TABLE.csc-searchResultInfo { margin-left: 5px; margin-top: 10px; border: 1px black solid; width: 100%;}
+TABLE.csc-searchResultInfo TR { background-color: #33eeff; }
+TABLE.csc-searchResultInfo TR TD P { font-size: 11px; padding: 0px 5px 0px 5px;}
+TABLE.csc-searchResultInfo TR TD.csc-searchResultRange P { color: green; font-weight: bold; }
+TABLE.csc-searchResultInfo TR TD.csc-searchResultPrevNext P { color: red; }
+TABLE.csc-searchResultInfo TR TD.csc-searchResultPrevNext { text-align: right; }
+
+/* Search Result, header + abstract: */
+H3.csc-searchResultHeader A { color: maroon; }
+H3.csc-searchResultHeader { background-color: #aaaacc; padding-left: 5px; }
+P.csc-searchResult { font-size: 11px; font-style: italic; background-color: #eeeeee; margin-left: 20px;}
+
+
+
+/*****************************/
+/* Menu / Sitemap, generally */
+/*****************************/
+DIV.csc-menu { background-color: #99cc99; padding: 5px 5px 5px 5px; margin: 5px 5px 5px 5px; border: 3px solid black;}
+DIV.csc-menu P { margin-left: 30px; padding-left: 5px; font-size: 11px; }
+DIV.csc-menu P.csc-section { font-weight: normal; margin-left: 40px; font-style: italic; }
+DIV.csc-menu P A { color: green; }
+
+/* Menu / Sitemap, "Menu of these pages" */
+DIV.csc-menu-def  P A { color: red; } 
+
+/* Menu / Sitemap, "Menu of subpages to these pages" */
+DIV.csc-menu-1 { border-color: navy; }
+
+/* Menu / Sitemap, "Sitemap" */
+DIV.csc-menu-2 { border-color: red; }
+DIV.csc-menu-2 P.csc-sitemap { border: 2 dashed red; }
+DIV.csc-menu-2 P.csc-sitemap-level1 { margin-left: 50px; }
+DIV.csc-menu-2 P.csc-sitemap-level2 { margin-left: 100px; }
+DIV.csc-menu-2 P.csc-sitemap-level3 { margin-left: 150px; }
+DIV.csc-menu-2 P.csc-sitemap-level4 { margin-left: 200px; }
+DIV.csc-menu-2 P.csc-sitemap-level1 A { color: maroon; }
+DIV.csc-menu-2 P.csc-sitemap-level2 A { color: navy; }
+DIV.csc-menu-2 P.csc-sitemap-level3 A { color: green; }
+DIV.csc-menu-2 P.csc-sitemap-level4 A { color: purple; }
+
+/* Menu / Sitemap, "Section index (pagecontent w/Index checked)" */
+DIV.csc-menu-3 { border-color: purple; }
+DIV.csc-menu-3 P.csc-section A { color: teal; }
+
+/* Menu / Sitemap, "Menu of subpages to these pages (with abstract)" */
+DIV.csc-menu-4 { border-color: yellow; }
+DIV.csc-menu-4 P.csc-abstract { margin-left: 40px; font-style: italic; }
+
+/* Menu / Sitemap, "Recently updated pages" */
+DIV.csc-menu-5 { border-color: teal; }
+
+/* Menu / Sitemap, "Related pages (based on keywords)" */
+DIV.csc-menu-6 { border-color: olive; }
+
+/* Menu / Sitemap, "Menu of subpages to these pages + sections" */
+DIV.csc-menu-7 { border-color: maroon; }
+DIV.csc-menu-7 P { font-weight: bold; }
+DIV.csc-menu-7 P.csc-section A { color: navy; }
+
+
+
+/****************************************/
+/* Frontend editing / TYPO3 Admin Panel */
+/****************************************/
+IMG.frontEndEditIcons { vertical-align: middle; margin: 0px 2px 0px 2px; } 
+
+TABLE.typo3-adminPanel { border: 2px solid yellow; background-color: #ff6699; }
+TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #22aabb; }
+TABLE.typo3-adminPanel TR.typo3-adminPanel-itemHRow TD { background-color: #ff99ee; }
+TABLE.typo3-adminPanel TABLE, TABLE.typo3-adminPanel TD { border: 1px; }
+TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 12px; color: black; }
+TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 12px; color: maroon; }
+TABLE.typo3-editPanel TD { border: 0px; }
+TABLE.typo3-editPanel TD FONT { font-family: verdana; font-size: 12px; color: navy; }
+TABLE.typo3-editPanel TD.typo3-editPanel-controls { background-color: #ff99aa; }
+TABLE.typo3-editPanel TD.typo3-editPanel-label { background-color: #22aabb; }

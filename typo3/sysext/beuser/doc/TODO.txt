@@ -1,0 +1,3 @@
+- Ability to create users / groups incl. filemounts in users/groups dirs.
+- Show x number of users in the list + ability to browse/search for a user.
+- Link to Web>List, id=0

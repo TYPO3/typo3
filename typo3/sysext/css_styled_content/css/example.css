@@ -1,0 +1,308 @@
+/* TYPO3 CVS id: $id$ */
+/* Template stylesheet which can be used for new sites */
+/* Make a copy of this stylesheet to some other location, modify it and use it from there! */
+/*
+
+Colorscheme is:
+
+Background Color 1: #EDEBF1;	(Background 1)
+Background Color 1-dimmed: #D8D7DC;	(Background 1 - dimmed)
+Background Color 2: #F5FFAA;	(Background 2)
+Background Color 3: #D1D2E4;	(Background 2)
+
+Text, main:	#000000
+Text Color 1: #186900;	(red)
+Text Color 2: #10007B;	(green)
+Text Color 3: #8A0020;	(blue)
+
+Links		#000066
+Link hover: #660000;
+
+Borders/Lines	#333333
+*/
+
+
+/***************************/
+/* General element styles: */
+/***************************/
+H1, H2, H3, H4, H5, P, TD, UL, OL, BLOCKQUOTE, INPUT, TEXTAREA, SELECT { font-family: arial, helvetica; color: #000000; }
+PRE { font-family: monospace; }
+A { color: #000066; text-decoration: underline; }
+A:hover { color: #660000; }
+FORM { margin: 0px 0px 0px 0px;}
+P, PRE { margin: 0px 0px 0px 0px; }
+P, TD, UL, OL { font-size: 11px; }
+INPUT, TEXTAREA, SELECT { padding-left: 5px; font-size: 11px; }
+
+
+/********************************/
+/* Frames, spacing, link-to-top */
+/********************************/
+P.csc-linkToTop { text-align: right; }
+P.csc-linkToTop A { font-weight: bold; }
+
+DIV.csc-frame { border: 0px; }
+DIV.csc-frame-invisible {}
+DIV.csc-frame-rulerBefore { border-top: 1px solid #333333; }
+DIV.csc-frame-rulerAfter { border-bottom: 1px solid #333333; }
+DIV.csc-frame-indent { padding-left: 100px; }
+DIV.csc-frame-indent3366 { padding-left: 33%; }
+DIV.csc-frame-indent6633 { padding-right: 33%; }
+DIV.csc-frame-frame1 { background-color: #EDEBF1; padding: 2px 4px 2px 4px; border: 1px solid #333333; }
+DIV.csc-frame-frame2 { background-color: #F5FFAA; padding: 2px 4px 2px 4px; border: 1px solid #333333; }
+
+DIV.csc-frame-frame1 H1, DIV.csc-frame-frame1 H2, DIV.csc-frame-frame1 H3, DIV.csc-frame-frame1 H4, DIV.csc-frame-frame1 H5 { margin-top: 2px; }
+DIV.csc-frame-frame2 H1, DIV.csc-frame-frame2 H2, DIV.csc-frame-frame2 H3, DIV.csc-frame-frame2 H4, DIV.csc-frame-frame2 H5 { margin-top: 2px; }
+				
+/******************/
+/* Headers, plain */
+/******************/
+H1 { font-size: 20px; }
+H2 { font-size: 18px; color: #186900; }
+H3 { font-size: 16px; color: #10007B; }
+H4 { font-size: 14px; color: #8A0020; }
+H1, H2, H3, H4, H5, H6 { margin: 0px 0px 0px 0px; margin-top: 10px; margin-bottom: 2px; }
+H1.csc-firstHeader, H2.csc-firstHeader, H3.csc-firstHeader, H4.csc-firstHeader, H5.csc-firstHeader, H6.csc-firstHeader { margin-top: 0px; }
+
+/* Headers, with link */
+H1 A, H2 A, H3 A, H4 A, H5 A { color: #000000; text-decoration: none; }
+H2 A { color: #186900; }
+H3 A { color: #10007B; }
+H4 A { color: #8A0020; }
+H1 A:hover, H2 A:hover, H3 A:hover, H4 A:hover, H5 A:hover { text-decoration: underline; }
+
+/* Header date */
+P.csc-header-date { font-size: 10px; color: #186900; }
+
+/* Subheader, general */
+P.csc-subheader { font-style: italic; background-color: #EDEBF1; }
+
+/* Subheader, specific */
+P.csc-subheader-0 { font-style: normal; }
+P.csc-subheader-1 { color: #186900; }
+P.csc-subheader-2 { color: #10007B; }
+P.csc-subheader-3 { color: #8A0020; }
+
+
+
+/*******************/
+/* RTE / Bodytext: */
+/*******************/
+P.bodytext { font-size: 11px; color: #000000; }
+P.bodytext A { font-weight: bold; }
+
+/* RTE / Bulletlists */
+UL { margin-top: 0px;  }
+UL UL LI { font-size: 10px; }
+OL { margin-top: 0px; }
+LI { margin-top: 0px; margin-bottom: 0px; padding-top: 2px; }
+
+/* RTE / Table styling */
+TABLE.contenttable { border: 1px #333333 solid; margin: 10px 0px 10px 0px; width: 100%; }
+TABLE.contenttable TR TD { padding: 0px 3px 0px 3px; }
+TABLE.contenttable TR TD P.bodytext { font-size: 10px; }
+TABLE.contenttable TR { background-color: #EDEBF1; }
+
+
+
+/**********/
+/* Images */
+/**********/
+
+/* Images / Captions */
+P.csc-caption { font-size: 10px; font-style: italic; }
+
+/* Images / Tables / Floating text */
+TABLE.imgtext-table { border: 0px; }
+
+/* Images / Tables / Wrapped text */
+/* When "Text w/Image" elements are wrapping the text into a table the top-margin of Hx elements should be transferred to the wrapping table instead. This is done here: */
+TABLE.imgtext-nowrap { border: 0px; }
+TABLE.imgtext-nowrap H1, TABLE.imgtext-nowrap H2, TABLE.imgtext-nowrap H3, TABLE.imgtext-nowrap H4, TABLE.imgtext-nowrap H5 { margin-top: 0px; }
+
+
+
+/***************/
+/* Bulletlists */
+/***************/
+
+/* Bulletlists, general */
+UL.csc-bulletlist LI { font-size: 11px; }
+
+/* Bulletlists, specifically */
+UL.csc-bulletlist-0 { color: #000000; }
+UL.csc-bulletlist-1 { color: #186900; list-style-type : decimal; }
+UL.csc-bulletlist-2 { color: #10007B; list-style-position : inside; }
+UL.csc-bulletlist-3 { color: #8A0020; list-style-image: url(img/red_arrow_bullet.gif); }
+
+
+
+/*********************/
+/* Tables, generally */
+/*********************/
+TABLE.contenttable P { font-size: 11px; }
+TABLE.contenttable TR TD { vertical-align: top; }
+
+/* Tables, specifically */
+TABLE.contenttable-0 P { color: #000000; }
+
+TABLE.contenttable-1 P { color: #186900; }
+TABLE.contenttable-1 TR.tr-0 TD P { font-weight: bold; }
+TABLE.contenttable-1 TR.tr-0 TD { background-color: #D1D2E4;}
+ 
+TABLE.contenttable-2 P { color: #10007B; }
+TABLE.contenttable-2 TR TD.td-0 { background-color: #F5FFAA;}
+TABLE.contenttable-2 TR TD.td-0 P { font-weight: bold; }
+
+TABLE.contenttable-3 P { color: #8A0020; }
+TABLE.contenttable-3 TR TD.td-0, TABLE.contenttable-3 TR.tr-0 TD { background-color: #D1D2E4;}
+TABLE.contenttable-3 TR TD.td-0 P, TABLE.contenttable-3 TR.tr-0 TD P { font-weight: bold; }
+
+
+
+/************************/
+/* Filelinks, generally */
+/************************/
+TABLE.csc-uploads { border: 0px; }
+TABLE.csc-uploads TR TD P { background-color : transparent; font-size: 12px; }
+TABLE.csc-uploads TR TD { vertical-align : top; }
+TABLE.csc-uploads TR.tr-even { background-color: #EDEBF1; }
+TABLE.csc-uploads TR.tr-odd { background-color: #D8D7DC; }
+TABLE.csc-uploads TR TD.csc-uploads-icon { padding-left: 6px; padding-right: 6px; width: 1%; text-align: center; vertical-align: middle; }
+TABLE.csc-uploads TR TD.csc-uploads-fileName { width: 80%; padding-left: 5px; }
+TABLE.csc-uploads TR TD.csc-uploads-fileName P A { font-weight: bold; }
+TABLE.csc-uploads TR TD.csc-uploads-fileName P.csc-uploads-description { font-style: italic; }
+TABLE.csc-uploads TR TD.csc-uploads-fileSize { white-space: nowrap; padding-left: 6px; padding-right: 6px; }
+
+/* Filelinks, specifically */
+TABLE.csc-uploads-1 { border-color: #186900; }
+
+TABLE.csc-uploads-2 { border-color: #10007B; }
+
+TABLE.csc-uploads-3 { border-color: #8A0020; }
+TABLE.csc-uploads-3 TR TD { vertical-align: middle; }
+TABLE.csc-uploads-3 TR.tr-even TD.csc-uploads-icon IMG { border: 2px solid #333333; }
+TABLE.csc-uploads-3 TR.tr-odd TD.csc-uploads-icon IMG { border: 2px solid #333333; }
+				
+
+
+/*****************/
+/* Various Forms */
+/*****************/
+
+/* Email, Login and Search forms generally: */
+FORM TABLE TR TD { padding-left: 5px; padding-right: 20px; }
+FORM TABLE TR TD.csc-form-labelcell, FORM TABLE TR TD.csc-form-commentcell { background-color: #D8D7DC; }
+FORM TABLE TR TD.csc-form-fieldcell { background-color: #EDEBF1; }
+FORM TABLE TR TD.csc-form-fieldcell INPUT, FORM TABLE TR TD.csc-form-fieldcell SELECT, FORM TABLE TR TD.csc-form-fieldcell TEXTAREA { border: 1px solid #333333; }
+FORM TABLE TR TD.csc-form-labelcell P.csc-form-label-req { font-weight: bold; }
+
+/* Email form, specifically */
+FORM TABLE.csc-mailform TR TD.csc-form-labelcell  { }
+
+/* Search form, specifically */
+FORM TABLE.csc-searchform { width: 100%; }
+FORM TABLE.csc-searchform TR TD { padding: 5px 5px 5px 5px; }
+FORM TABLE.csc-searchform TR TD.csc-form-labelcell, FORM TABLE.csc-searchform TR TD.csc-form-commentcell { font-weight: bold; }
+FORM TABLE.csc-searchform TR TD.csc-form-fieldcell INPUT, FORM TABLE.csc-searchform TR TD.csc-form-fieldcell SELECT { width: 100%; }
+
+/* Login form, specifically */
+FORM TABLE.csc-loginform { width: 70%; }
+
+
+/*****************/
+/* Search result */
+/*****************/
+
+/* Search Result, result information box: */
+TABLE.csc-searchResultInfo { margin-left: 0px; margin-top: 10px; width: 100%;}
+TABLE.csc-searchResultInfo TR { background-color: #EDEBF1; }
+TABLE.csc-searchResultInfo TR TD P { padding: 0px 5px 0px 5px;}
+TABLE.csc-searchResultInfo TR TD.csc-searchResultRange P { font-weight: bold; }
+TABLE.csc-searchResultInfo TR TD.csc-searchResultPrevNext { text-align: right; }
+
+/* Search Result, header + abstract: */
+H3.csc-searchResultHeader A { color: #186900; }
+H3.csc-searchResultHeader { background-color: #EDEBF1; font-size: 14px; padding-left: 5px; }
+P.csc-searchResult { font-style: italic; margin-left: 20px;}
+
+/* Search word markup */
+SPAN.csc-sword { font-weight: bold; color: red; }
+
+
+/*****************************/
+/* Menu / Sitemap, generally */
+/*****************************/
+DIV.csc-menu { margin-left: 10px; }
+DIV.csc-menu P { font-size: 11px; font-weight: bold; margin: 1px 0px 0px 0px; padding: 2px 2px 2px 10px; background-color: #EDEBF1; }
+DIV.csc-menu P A { color: #000000; text-decoration: none; }
+DIV.csc-menu P A:hover { color: #660000; text-decoration: underline; }
+DIV.csc-menu P.csc-section { font-weight: normal; margin-left: 20px; font-style: italic; }
+
+/* Menu / Sitemap, "Menu of these pages" */
+DIV.csc-menu-def P {  }
+
+/* Menu / Sitemap, "Menu of subpages to these pages" */
+DIV.csc-menu-1 { }
+
+/* Menu / Sitemap, "Sitemap" */
+DIV.csc-menu-2 { }
+DIV.csc-menu-2 P.csc-sitemap { }
+DIV.csc-menu-2 P.csc-sitemap-level1 { margin-left: 20px; }
+DIV.csc-menu-2 P.csc-sitemap-level2 { margin-left: 40px; }
+DIV.csc-menu-2 P.csc-sitemap-level3 { margin-left: 60px; }
+DIV.csc-menu-2 P.csc-sitemap-level4 { margin-left: 80px; }
+DIV.csc-menu-2 P.csc-sitemap-level1 A { color: #000000; }
+DIV.csc-menu-2 P.csc-sitemap-level2 A { color: #186900; }
+DIV.csc-menu-2 P.csc-sitemap-level3 A { color: #10007B; }
+DIV.csc-menu-2 P.csc-sitemap-level4 A { color: #8A0020; }
+
+/* Menu / Sitemap, "Section index (pagecontent w/Index checked)" */
+DIV.csc-menu-3 { }
+DIV.csc-menu-3 P.csc-section { margin-left: 0px; }
+DIV.csc-menu-3 P.csc-section A { color: #186900; }
+
+/* Menu / Sitemap, "Menu of subpages to these pages (with abstract)" */
+DIV.csc-menu-4 { }
+DIV.csc-menu-4 P { margin-top: 2px; }
+DIV.csc-menu-4 P.csc-abstract { font-weight: normal; font-style: italic; margin-top: 0px; padding: 0px 2px 2px 20px; }
+
+/* Menu / Sitemap, "Recently updated pages" */
+DIV.csc-menu-5 { }
+
+/* Menu / Sitemap, "Related pages (based on keywords)" */
+DIV.csc-menu-6 { }
+
+/* Menu / Sitemap, "Menu of subpages to these pages + sections" */
+DIV.csc-menu-7 { }
+DIV.csc-menu-7 P { font-weight: bold; }
+DIV.csc-menu-7 P.csc-section A { color: #186900; }
+
+
+
+/****************************************/
+/* Frontend editing / TYPO3 Admin Panel */
+/****************************************/
+IMG.frontEndEditIcons { vertical-align: middle; margin: 0px 2px 0px 2px; } 
+
+/* Default styles for the Admin Panel */
+TABLE.typo3-adminPanel { border: 1px solid black; background-color: #F6F2E6; }
+TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #9BA1A8; }
+TABLE.typo3-adminPanel TR.typo3-adminPanel-itemHRow TD { background-color: #ABBBB4; }
+TABLE.typo3-adminPanel TABLE, TABLE.typo3-adminPanel TD { border: 0px; }
+TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 10px; color: black; }
+TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }			
+TABLE.typo3-editPanel { border: 1px solid black; background-color: #F6F2E6; }
+TABLE.typo3-editPanel TD { border: 0px; }
+
+
+/*************/
+/* Debugging */
+/*************/
+/*
+H1, H2, H3, H4, H5, P, UL, OL, LI, BLOCKQUOTE, PRE { border: 1px dotted #999999;}
+TD TABLE { border: 1px dotted #000099;}
+DIV { border: 1px dotted #990000;}
+IMG.spacer-gif { border: 1px solid black; }
+*/
+

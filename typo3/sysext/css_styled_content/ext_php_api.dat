@@ -1,0 +1,139 @@
+a:2:{s:4:"meta";a:3:{s:5:"title";s:18:"CSS Styled Content";s:5:"descr";s:0:"";s:7:"options";a:2:{s:10:"usageCount";s:1:"1";s:19:"includeCodeAbstract";s:1:"1";}}s:5:"files";a:1:{s:14:"MD5_9e7b520d8b";a:5:{s:8:"filename";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:8:"filesize";i:9027;s:6:"header";a:5:{s:4:"text";s:98:"
+
+Plugin class - instantiated from TypoScript. 
+Rendering content elements from tt_content table.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:31:"@subpackage tx_cssstyledcontent";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:20:"tx_cssstyledcontent ";}}}s:3:"DAT";a:9:{i:1;a:8:{s:6:"header";s:52:"class tx_cssstyledcontent_pi1 extends tslib_pibase {";s:5:"class";i:1;s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:4:"cDat";a:5:{s:4:"text";s:98:"
+
+Plugin class - instantiated from TypoScript. 
+Rendering content elements from tt_content table.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:42:"@author	Kasper Skaarhoj <kasper@typo3.com>";i:1;s:14:"@package TYPO3";i:2;s:31:"@subpackage tx_cssstyledcontent";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:34:"Kasper Skaarhoj <kasper@typo3.com>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:20:"tx_cssstyledcontent ";}}}s:7:"content";a:2:{i:0;s:303:"
+		// Default plugin variables:
+	var $prefixId = 'tx_cssstyledcontent_pi1';		// Same as class name
+	var $scriptRelPath = 'pi1/class.tx_cssstyledcontent_pi1.php';	// Path to this script relative to the extension dir.
+	var $extKey = 'css_styled_content';	// The extension key.
+	var $conf = array();
+	
+
+
+
+	";i:1;i:-1;}s:12:"content_size";i:303;s:13:"content_lines";i:10;s:6:"atLine";i:65;}i:3;a:7:{s:6:"header";s:31:"function main($content,$conf)	{";s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:4:"cDat";a:3:{s:4:"text";s:40:"
+
+Main function, called from TypoScript
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:32:"Content input. Not used, ignore.";}i:1;a:2:{i:0;s:5:"array";i:1;s:24:"TypoScript configuration";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:12:"HTML output.";}}s:7:"content";a:2:{i:0;s:507:"		$content='';
+	
+			// Setting TypoScript configuration:
+		$this->conf = $conf;
+		
+			// Depending on the CType of the content, branch out:
+		$CTypeValue = (string)$this->cObj->data['CType'];	// This value is the Content Element Type - determines WHAT kind of element to render...
+		switch($CTypeValue)	{
+			case 'header':
+				$content = $this->getHeader().$this->render_subh
+[...]
+
+
+
+	/***********************************
+	 *
+	 * Rendering of Content Elements:
+	 *
+	 ***********************************/
+
+	";i:1;i:1;}s:12:"content_size";i:1369;s:13:"content_lines";i:59;s:6:"atLine";i:83;}i:5;a:8:{s:6:"header";s:22:"function getHeader()	{";s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:11:"sectionText";a:1:{i:0;s:30:"Rendering of Content Elements:";}s:4:"cDat";a:4:{s:4:"text";s:91:"
+
+Rendering the "Header" type content element (and for all other content elements as well)
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML output";}s:6:"access";s:7:"private";}s:7:"content";a:2:{i:0;s:507:"		$conf = $GLOBALS['TSFE']->tmpl->setup['lib.']['stdheader.'];
+		$out='';
+		if (!strcmp(trim($this->cObj->data['header']),''))	return '';	// Return, if the 'header' fields is empty.
+		
+		if ($this->cObj->data['header_layout']==100)	return '';	// Hidden header...
+		if ($this->cObj->data['date'])	{	// Wrap date:
+			$out='<p class="csc-header-date">'.date($conf['5.']['date'],
+[...]
+ns($out,'tt_content : header, header_layout, [header_link|date]','Edit header');
+#debug(array($out));
+
+		return $out;		
+	}
+
+	";i:1;i:1;}s:12:"content_size";i:1017;s:13:"content_lines";i:27;s:6:"atLine";i:149;}i:7;a:7:{s:6:"header";s:25:"function render_image()	{";s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:4:"cDat";a:4:{s:4:"text";s:59:"
+
+Rendering the "Image" type content element (and textpic)
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML output";}s:6:"access";s:7:"private";}s:7:"content";a:2:{i:0;s:113:"		$content = $this->cObj->cObjGetSingle('IMGTEXT',$this->conf['image.'],'CType: image');
+		return $content;
+	}
+
+	";i:1;i:0;}s:12:"content_size";i:113;s:13:"content_lines";i:4;s:6:"atLine";i:183;}i:9;a:7:{s:6:"header";s:27:"function render_textpic()	{";s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:4:"cDat";a:4:{s:4:"text";s:46:"
+
+Rendering the "Header" type content element
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML output";}s:6:"access";s:7:"private";}s:7:"content";a:2:{i:0;s:458:"		$header = $this->getHeader();
+		$bodytext = $this->render_text();
+		$content = '';
+
+		$conf=$this->conf['image.'];
+		if ($this->cObj->data['imageorient']<25)	{
+			$conf['text.']['10']='TEXT';
+			$conf['text.']['10.']['value']=$bodytext;
+			$content.=$header;
+		} else {
+			$conf['text.']['10']='TEXT';
+			$conf['text.']['10.']['value']=$header.$bodytext;
+		}
+		$content.= $this->cObj->cObjGetSingle('IMGTEXT',$conf,'CType: image');
+		return $content;
+	}
+
+	";i:1;i:0;}s:12:"content_size";i:458;s:13:"content_lines";i:17;s:6:"atLine";i:194;}i:11;a:7:{s:6:"header";s:24:"function render_text()	{";s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:4:"cDat";a:4:{s:4:"text";s:44:"
+
+Rendering the "Text" type content element
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML output";}s:6:"access";s:7:"private";}s:7:"content";a:2:{i:0;s:384:"		$content = trim($this->cObj->data['bodytext']);	// Get bodytext field content
+		if (!strcmp($content,''))	return '';
+		
+		#$out = $this->cObj->parseFunc($content, $this->conf['text.']['20.']['parseFunc.']);
+		$out = $this->cObj->stdWrap($content, $this->conf['text.']['20.']);
+		$out = $this->editIcons($out,'tt_content:bodytext, rte_enabled','Edit bodytext');
+
+		return $out;
+	}
+
+	";i:1;i:0;}s:12:"content_size";i:384;s:13:"content_lines";i:10;s:6:"atLine";i:218;}i:13;a:7:{s:6:"header";s:27:"function render_bullets()	{";s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:4:"cDat";a:4:{s:4:"text";s:50:"
+
+Rendering the "Bulletlist" type content element
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML output";}s:6:"access";s:7:"private";}s:7:"content";a:2:{i:0;s:431:"		$content = trim($this->cObj->data['bodytext']);	// Get bodytext field content
+		if (!strcmp($content,''))	return '';
+		
+		$lines = t3lib_div::trimExplode(chr(10),$content);	// Split into single lines
+		while(list($k)=each($lines))	{
+			$lines[$k]='<li>'.$lines[$k].'</li>';
+		}
+		$out = '<ul>'.
+			implode(chr(10),$lines).
+			'</ul>';
+
+		$out = $this->editIcons($out,'tt_content:bodytext','Edit bulletlist');
+		return $out;
+	}
+
+	";i:1;i:0;}s:12:"content_size";i:431;s:13:"content_lines";i:15;s:6:"atLine";i:235;}i:15;a:4:{s:6:"header";s:25:"function render_table()	{";s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:4:"cDat";a:4:{s:4:"text";s:45:"
+
+Rendering the "Table" type content element
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:11:"HTML output";}s:6:"access";s:7:"private";}s:6:"atLine";i:257;}i:17;a:8:{s:6:"header";s:45:"function editIcons($content,$fields,$title)	{";s:11:"parentClass";s:23:"tx_cssstyledcontent_pi1";s:11:"sectionText";a:1:{i:0;s:15:"Other functions";}s:4:"cDat";a:3:{s:4:"text";s:29:"
+
+Creation of the edit icons
+";s:5:"param";a:3:{i:0;a:2:{i:0;s:6:"string";i:1;s:14:"Content string";}i:1;a:2:{i:0;s:6:"string";i:1;s:14:"Fields to edit";}i:2;a:2:{i:0;s:6:"string";i:1;s:13:"Title of icon";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:33:"Content string with added icon(s)";}}s:7:"content";a:2:{i:0;s:460:"		if ($GLOBALS['TSFE']->beUserLogin){
+			$conf=array(
+				'beforeLastTag'=>1,
+				'iconTitle' => $title
+			);
+			$content=$this->cObj->editIcons($content,$fields,$conf);
+		}	
+		return $content;
+	}
+}
+
+
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/css_styled_content/pi1/class.tx_cssstyledcontent_pi1.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/css_styled_content/pi1/class.tx_cssstyledcontent_pi1.php']);
+}
+?>";i:1;i:0;}s:12:"content_size";i:460;s:13:"content_lines";i:16;s:6:"atLine";i:311;}}s:10:"usageCount";a:9:{s:12:"H_4f94edff83";a:2:{s:24:"_searchtime_milliseconds";d:1;s:15:"_functionHeader";s:52:"class tx_cssstyledcontent_pi1 extends tslib_pibase {";}s:12:"H_e8476b0991";a:2:{s:24:"_searchtime_milliseconds";d:1;s:15:"_functionHeader";s:31:"function main($content,$conf)	{";}s:12:"H_7622e8ed6e";a:4:{s:3:"ALL";a:2:{s:11:"objectUsage";i:7;s:5:"TOTAL";i:7;}s:14:"MD5_9e7b520d8b";a:3:{s:8:"fileName";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:11:"objectUsage";i:7;s:5:"TOTAL";i:7;}s:24:"_searchtime_milliseconds";d:1;s:15:"_functionHeader";s:22:"function getHeader()	{";}s:12:"H_25bed698ef";a:4:{s:3:"ALL";a:2:{s:11:"objectUsage";i:1;s:5:"TOTAL";i:1;}s:14:"MD5_9e7b520d8b";a:3:{s:8:"fileName";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:11:"objectUsage";i:1;s:5:"TOTAL";i:1;}s:24:"_searchtime_milliseconds";d:1;s:15:"_functionHeader";s:25:"function render_image()	{";}s:12:"H_1769c0889f";a:4:{s:3:"ALL";a:2:{s:11:"objectUsage";i:1;s:5:"TOTAL";i:1;}s:14:"MD5_9e7b520d8b";a:3:{s:8:"fileName";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:11:"objectUsage";i:1;s:5:"TOTAL";i:1;}s:24:"_searchtime_milliseconds";d:9;s:15:"_functionHeader";s:27:"function render_textpic()	{";}s:12:"H_84197d4d25";a:4:{s:3:"ALL";a:2:{s:11:"objectUsage";i:2;s:5:"TOTAL";i:2;}s:14:"MD5_9e7b520d8b";a:3:{s:8:"fileName";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:11:"objectUsage";i:2;s:5:"TOTAL";i:2;}s:24:"_searchtime_milliseconds";d:1;s:15:"_functionHeader";s:24:"function render_text()	{";}s:12:"H_af60b38097";a:4:{s:3:"ALL";a:2:{s:11:"objectUsage";i:1;s:5:"TOTAL";i:1;}s:14:"MD5_9e7b520d8b";a:3:{s:8:"fileName";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:11:"objectUsage";i:1;s:5:"TOTAL";i:1;}s:24:"_searchtime_milliseconds";d:0;s:15:"_functionHeader";s:27:"function render_bullets()	{";}s:12:"H_6aa8e51d35";a:4:{s:3:"ALL";a:2:{s:11:"objectUsage";i:1;s:5:"TOTAL";i:1;}s:14:"MD5_9e7b520d8b";a:3:{s:8:"fileName";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:11:"objectUsage";i:1;s:5:"TOTAL";i:1;}s:24:"_searchtime_milliseconds";d:7;s:15:"_functionHeader";s:25:"function render_table()	{";}s:12:"H_5600e83a5b";a:4:{s:3:"ALL";a:2:{s:11:"objectUsage";i:5;s:5:"TOTAL";i:5;}s:14:"MD5_9e7b520d8b";a:3:{s:8:"fileName";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:11:"objectUsage";i:5;s:5:"TOTAL";i:5;}s:24:"_searchtime_milliseconds";d:2;s:15:"_functionHeader";s:45:"function editIcons($content,$fields,$title)	{";}}}}}

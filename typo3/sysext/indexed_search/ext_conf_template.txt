@@ -1,0 +1,9 @@
+  # cat=basic; type=string; label=Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. You must install these applications in this path. Otherwise leave the field empty.
+pdftools = /usr/local/bin/
+
+  # cat=basic; type=string; label=Path to WORD parsers: The indexer uses the application 'catdoc' for extracting content from WORD files. You must install this application in this path. Otherwise leave the field empty.
+catdoc = /usr/local/bin/
+
+  # cat=basic; type=int; label=PDF parsing mode: Zero=whole file is indexed in one. Positive value: Indicates number of pages at a time, eg. "5" would means 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.
+pdf_mode = -20
+

@@ -1,0 +1,180 @@
+plugin.tx_indexedsearch.CSS_editor = Plugin: Indexed search
+plugin.tx_indexedsearch.CSS_editor.selector = .tx-indexedsearch
+plugin.tx_indexedsearch.CSS_editor.exampleWrap = <HR><strong>Plugin: "tx_indexedsearch"</strong><HR><DIV class="tx-indexedsearch"> | </DIV>
+plugin.tx_indexedsearch.CSS_editor.ch {
+	P = Text
+	P.selector = P
+	P.attribs = BODYTEXT
+	P.example = <P>General text wrapped in &lt;P&gt;:<BR>This is text <A href="#">with a link</A> in it. In principio creavit Deus caelum et terram terra autem erat inanis et vacua et tenebrae super faciem abyssi et spiritus...</P>
+	P.exampleStop = 1
+	P.ch.links = < CSS_editor.ch.A
+	
+	searchbox = Search box
+	searchbox.selector = .tx-indexedsearch-searchbox
+	searchbox.attribs = margin+
+	searchbox.example = <div class="tx-indexedsearch-searchbox"><table border=0 cellpadding=0 cellspacing=0><form action="#" method="POST" name="tx_indexedsearch"><tr><td nowrap><p>Search for:&nbsp;&nbsp;</p></td><td><input type="text" name="tx_indexedsearch[sword]" value="" class="tx-indexedsearch-searchbox-sword">&nbsp;&nbsp;<input type="submit" name="tx_indexedsearch[submit_button]" value="Search" class="tx-indexedsearch-searchbox-button"></td></tr><tr><td nowrap><p>Match:&nbsp;&nbsp;</p></td><td><p><select name="tx_indexedsearch[defOp]"><option value="0">All words (AND)</option><option value="1">Any words (OR)</option></select>&nbsp; &nbsp; <input type="hidden" name="tx_indexedsearch[extResume]" value="0"><input type="checkbox" value="1" name="tx_indexedsearch[extResume]" CHECKED>Extended resume</p></td></tr></form></table></div>
+	searchbox.exampleStop = 1
+	searchbox.ch {
+		TABLE = Table
+		TABLE.selector = TABLE
+		TABLE.attribs = TABLE
+		TD = Table cells
+		TD.selector = TD
+		TD.attribs = TD
+		INPUT = Form fields
+		INPUT.selector = INPUT
+		INPUT.attribs = TEXT,background-color,width
+		INPUT.ch {
+			sword = Search word field
+			sword.selector = +.tx-indexedsearch-searchbox-sword
+			sword.attribs = TEXT,background-color,width
+
+			button = Submit button
+			button.selector = +.tx-indexedsearch-searchbox-button
+			button.attribs = TEXT,background-color,width
+		}
+		SELECT = Form selector boxes
+		SELECT.selector = SELECT
+		SELECT.attribs = TEXT,background-color,width
+	}
+
+	rules = Rules box
+	rules.selector = .tx-indexedsearch-rules
+	rules.attribs = margin+
+	rules.example = <DIV class="tx-indexedsearch-rules"><h2>Rules:</h2><p>Only words with 2 or more characters are accepted<BR>Max 200 chars total<BR>Space is used to split words...</p></DIV>
+	rules.exampleStop = 1
+	rules.ch {
+		H2 = Header
+		H2.selector = H2
+		H2.attribs = HEADER
+		P = Text
+		P.selector = P
+		P.attribs = TEXT
+	}
+	whatis = "What is searched for" text
+	whatis.selector = .tx-indexedsearch-whatis
+	whatis.attribs = margin+
+	whatis.example = <DIV class="tx-indexedsearch-whatis"><p>Searching for '<span class="tx-indexedsearch-sw">my</span>' and '<span class="tx-indexedsearch-sw">searchword</span>' in the section 'My section'</p></DIV>
+	whatis.exampleStop = 1
+	whatis.ch {
+		P = Text
+		P.selector = P
+		P.attribs = TEXT
+		P.ch.sw = Search word markup
+		P.ch.sw.selector = .tx-indexedsearch-sw
+		P.ch.sw.attribs = TEXT
+	}
+
+	browsebox = Browsing box
+	browsebox.selector = .tx-indexedsearch-browsebox
+	browsebox.attribs = margin+
+	browsebox.example = <DIV class="tx-indexedsearch-browsebox"><P>Displaying results <span class="tx-indexedsearch-browsebox-strong">1 to 3</span> out of <span class="tx-indexedsearch-browsebox-strong">4</span></P><div class="tx-indexedsearch-sectionlinks"><ul><li><a href="#">Products (1 pages)</a></li><li><a href="#">Main pages (2 pages)</a></li><li><a href="#">Other pages (5 pages)</a></li></ul></div><table><tr><td class="tx-indexedsearch-browsebox-SCell"><p><A HREF="#">Page 1 (S)</a></p></td><td><p><A HREF="#">Page 2</a></p></td><td><p><A HREF="#">Next ></a></p></td></tr></table></DIV>
+	browsebox.exampleStop = 1
+	browsebox.ch.P < .P
+	browsebox.ch.P.ch.strong = Emphasized numbers
+	browsebox.ch.P.ch.strong {
+	  selector = SPAN.tx-indexedsearch-browsebox-strong
+	  attribs = TEXT
+	}
+	browsebox.ch.sectionlinks = Section links (UL)
+	browsebox.ch.sectionlinks.selector = .tx-indexedsearch-sectionlinks UL
+	browsebox.ch.sectionlinks.attribs = TEXT,BULLETS
+	browsebox.ch.TABLE = Table
+	browsebox.ch.TABLE.selector = TABLE
+	browsebox.ch.TABLE.attribs = TABLE
+	browsebox.ch.TD = Table cells
+	browsebox.ch.TD.selector = TD
+	browsebox.ch.TD.attribs = TD
+	browsebox.ch.TD.ch {
+	  TD = Selected table cells
+	  TD.selector = + .tx-indexedsearch-browsebox-SCell
+	  TD.attribs = TD
+	}
+	browsebox.ch.TD.ch.P < .P
+	browsebox.ch.TD.ch.TD.ch.P < .P
+
+	res = Search result display
+	res.selector = .tx-indexedsearch-res
+	res.attribs = margin+
+	res.example = <div class="tx-indexedsearch-res"><div class="tx-indexedsearch-secHead"><a name="f5d96e774bb33a53c172155606e82a1d"></a><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td width="95%"><h2><a href="#">Section header:</a></h2></td><td align="right" nowrap><p>2 pages</p></td></tr></table></div><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr class="tx-indexedsearch-title"><td width="16"><img src="../../indexed_search/pi/res/pages.gif" hspace="3" width="18" height="16" title=""></td><td width="95%" nowrap><p><a HREF="#">1: Page title of a result page</a></p></td><td nowrap><p class="tx-indexedsearch-percent">96%</p></td></tr><tr><td></td><td colspan="2" class="tx-indexedsearch-descr"><p>About the search result finding the word <span class="tx-indexedsearch-redMarkup">my</span> and another word, <span class="tx-indexedsearch-redMarkup">searchword</span> in the text...<br><img src="clear.gif" width="1" height="5"></p></td></tr><tr><td></td><td class="tx-indexedsearch-info" nowrap><p>Size: 22 K - Created: 26-08-02 - Modified: 13-09-02 22:15<br>Path:<a HREF="#">/Section</a></p></td><td class="tx-indexedsearch-info"><p>&nbsp;</p></td></tr></table><br></div>
+	res.exampleStop = 1
+	res.ch.P < .P
+	res.ch {
+	  TABLE = Table
+	  TABLE.selector = TABLE
+	  TABLE.attribs = TABLE
+	  TD = Table cells (TD)
+	  TD.selector = TD
+	  TD.attribs = TD
+
+	  title = Title row (TR)
+	  title.selector = .tx-indexedsearch-title
+	  title.attribs = TR
+	  title.ch {
+	    P = TEXT
+		P.selector = P
+		P.attribs = TEXT
+		P.example = <P>General text wrapped in &lt;P&gt;:<BR>This is text <A href="#">with a link</A> in it. In principio creavit Deus caelum et terram terra autem erat inanis et vacua et tenebrae super faciem abyssi et spiritus...</P>
+		P.exampleStop = 1
+		P.ch.links = < CSS_editor.ch.A
+		P.ch.percent = Score text (percent)
+		P.ch.percent.selector = +.tx-indexedsearch-percent
+		P.ch.percent.attribs = TEXT
+	  }
+
+	  descr = Resume text cell (TD)
+	  descr.selector = .tx-indexedsearch-descr
+	  descr.attribs = TD
+	  descr.ch {
+	    P = TEXT
+		P.selector = P
+		P.attribs = TEXT
+		P.example = <P>General text wrapped in &lt;P&gt;:<BR>This is text <A href="#">with a link</A> in it. In principio creavit Deus caelum et terram terra autem erat inanis et vacua et tenebrae super faciem abyssi et spiritus...</P>
+		P.exampleStop = 1
+
+		P.ch.redMarkup = Red markup of search words
+		P.ch.redMarkup.selector = .tx-indexedsearch-redMarkup
+		P.ch.redMarkup.attribs = TEXT
+	  }
+
+	  info = Info cell (TD)
+	  info.selector = .tx-indexedsearch-info
+	  info.attribs = TD
+	  info.ch {
+	    P = TEXT
+		P.selector = P
+		P.attribs = TEXT
+		P.example = <P>General text wrapped in &lt;P&gt;:<BR>This is text <A href="#">with a link</A> in it. In principio creavit Deus caelum et terram terra autem erat inanis et vacua et tenebrae super faciem abyssi et spiritus...</P>
+		P.exampleStop = 1
+		P.ch.links = < CSS_editor.ch.A
+	  }
+	  
+	  sechead = Section headers
+	  sechead.selector = .tx-indexedsearch-secHead
+	  sechead.attribs = margin+
+  	  sechead.example = <DIV class="tx-indexedsearch-secHead"></DIV>
+	   	sechead.ch {
+			H2 = Section header
+			H2.selector = H2
+			H2.attribs = HEADER
+			H2.ch.links = < CSS_editor.ch.A
+			P = Page count
+			P.selector = P
+			P.attribs = TEXT
+		  TABLE = Table
+		  TABLE.selector = TABLE
+		  TABLE.attribs = TABLE
+		  TD = Table cells (TD)
+		  TD.selector = TD
+		  TD.attribs = TD
+		}
+	}
+	P.ch.noresults = "No results" text
+	P.ch.noresults {
+	  selector = +.tx-indexedsearch-noresults
+	  attribs = TEXT
+	}
+}
+
+
+

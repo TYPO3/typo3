@@ -1,0 +1,90 @@
+<?php
+
+$LOCAL_LANG = Array (
+	'default' => Array (
+		'mlang_labels_tablabel' => 'View page',
+		'mlang_labels_tabdescr' => 'Shows the look of the current page and lets you edit the content directly.',
+		'mlang_tabs_tab' => 'View',
+	),
+	'dk' => Array (
+		'mlang_labels_tablabel' => 'Vis siden',
+		'mlang_labels_tabdescr' => 'Viser udseendet af den nuværende side og lader dig redigere indholdet direkte.',
+		'mlang_tabs_tab' => 'Vis',
+	),
+	'de' => Array (
+		'mlang_labels_tablabel' => 'Seite anzeigen',
+		'mlang_labels_tabdescr' => 'Zeigt die aktuelle Seite an und lässt Sie den Inhalt direkt bearbeiten.',
+		'mlang_tabs_tab' => 'Anzeigen',
+	),
+	'no' => Array (
+		'mlang_labels_tablabel' => 'Vis siden',
+		'mlang_labels_tabdescr' => 'Viser utseende til den nåværende siden og lar deg redigere innholdet direkte',
+		'mlang_tabs_tab' => 'Vis',
+	),
+	'it' => Array (
+		'mlang_labels_tablabel' => 'Mostra pagina',
+		'mlang_labels_tabdescr' => 'Mostra l\'aspetto della pagina corrente e consente di modificarne il contenuto',
+		'mlang_tabs_tab' => 'Mostra',
+	),
+	'fr' => Array (
+		'mlang_labels_tablabel' => 'Voir la page',
+		'mlang_labels_tabdescr' => 'Montre l\'aspect actuel de la page et vous permet une édition directe.',
+		'mlang_tabs_tab' => 'Voir',
+	),
+	'es' => Array (
+		'mlang_labels_tablabel' => 'Ver página',
+		'mlang_labels_tabdescr' => 'Muestra como se vé la página actual y le permite editar el contenido directamente.',
+		'mlang_tabs_tab' => 'Ver',
+	),
+	'nl' => Array (
+		'mlang_labels_tablabel' => 'Bekijk pagina',
+		'mlang_labels_tabdescr' => 'Laat zien hoe de huidige pagina er uit ziet en geeft je de mogelijkheid de inhoud direct te bewerken.',
+		'mlang_tabs_tab' => 'Beeld',
+	),
+	'cz' => Array (
+		'mlang_labels_tablabel' => 'Vidìt stranu',
+		'mlang_labels_tabdescr' => 'Ukáže vzhled strany a umožní pøímo editovat obsah',
+		'mlang_tabs_tab' => 'Ukázat',
+	),
+	'pl' => Array (
+		'mlang_labels_tablabel' => 'Zobacz stronê',
+		'mlang_labels_tabdescr' => 'Pokazuje, jak wygl±da strona i pozwala edytowaæ zawarto¶æ.',
+		'mlang_tabs_tab' => 'Zobacz',
+	),
+	'si' => Array (
+	),
+	'fi' => Array (
+		'mlang_labels_tablabel' => 'Näytä sivu',
+		'mlang_labels_tabdescr' => 'Näyttää valitun sivun ulkoasun ja voit suoraan muokata sisältöä.',
+		'mlang_tabs_tab' => 'Näytä',
+	),
+	'tr' => Array (
+		'mlang_labels_tablabel' => 'Sayfanýn görünümü',
+		'mlang_labels_tabdescr' => 'Güncel sayfanýn görünümünü göster ve içeriðin doðrudan düzeltilmesine izin ver.',
+		'mlang_tabs_tab' => 'Görünüm',
+	),
+	'se' => Array (
+		'mlang_labels_tablabel' => 'Visa sida',
+		'mlang_labels_tabdescr' => 'Visar hur den aktuella sidan kommer att se ut och ger dig en möjlighet att direkt ändra sidan.',
+		'mlang_tabs_tab' => 'Visa',
+	),
+	'pt' => Array (
+		'mlang_labels_tablabel' => 'Visualizar página',
+		'mlang_labels_tabdescr' => 'Mostra o aspecto da página corrente e permite editar o conteúdo directamente.',
+		'mlang_tabs_tab' => 'Vêr',
+	),
+	'ru' => Array (
+		'mlang_labels_tablabel' => 'Ïðîñìîòð ñòðàíèöû',
+		'mlang_labels_tabdescr' => 'Ïîêàçûâàåò âèä äàííîé âåá-ñòðàíèöû è ïîçâîëÿåò èçìåíÿòü ñîäåðæèìîå.',
+		'mlang_tabs_tab' => 'Ïðîñìîòð',
+	),
+	'ro' => Array (
+	),
+	'ch' => Array (
+	),
+	'sk' => Array (
+	),
+	'lt' => Array (
+	),
+);
+?>

@@ -1,0 +1,35 @@
+- http://typo3.com/index.php?id=1262 fænomen, når at billedet sættes ind i tabellen! Hvorfor? Hvorfor er der ikke <p class="bodytext"> på sitet heller?
+- BUG: tomme linier over afsnit skaber ikke afstand!
+- splitted links - leads to unwished click-enlarge if not all links are shown. Right?
+- Test with 
+  - testsite
+  - plaintext, XML, pda templates...
+
+
+- '<a href="#"...>' with "baseURL = 1" - compatible?
+*******************************	
+Remaining issues
+*******************************	
+- RTE issues / processing
+	- Adding default classes for text/image/tables etc...
+	- Intertweened with RTE api issues.
+	- B/I -> strong/em?
+
+
+*******************************	
+XHTML incompatibilities:
+*******************************
+- Multimedia elements not XHTML (Problem in TypoScript cObject "MULTIMEDIA" - advises are requested!)
+- wrap="virtual" in textarea - How can this be solved so wrapping/no-wrapping is observed in all browsers and still XHTML compatible? Advises are requested.
+- Nested UL elements not allowed! - What is the solution then?
+
+
+
+********************
+Mumbletext:
+********************
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut vitae lorem in velit rhoncus varius. Aliquam eget libero sed elit facilisis aliquam. Fusce eros sem, lobortis in, bibendum sit amet, imperdiet vulputate, elit. Nullam accumsan eleifend magna. 
+Pellentesque nulla ipsum, mollis condimentum, scelerisque quis, posuere sed, ante. Quisque faucibus. Integer facilisis. Aliquam est. Mauris scelerisque, augue a vestibulum accumsan, pede massa adipiscing nunc, at imperdiet pede est in dui. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi congue volutpat lacus. Donec justo. Pellentesque sagittis. Suspendisse potenti. Proin molestie. Phasellus turpis nisl, convallis in, fringilla eget, laoreet eget, quam. Proin euismod eros nec libero. 
+Nunc fermentum felis sit amet diam. 
+Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; 
+

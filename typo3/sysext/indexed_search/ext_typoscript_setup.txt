@@ -1,0 +1,70 @@
+plugin.tx_indexedsearch {
+  show {
+    rules=1
+	parsetimes=0
+	L2sections=0
+	L1sections=1
+	LxALLtypes=0
+    clearSearchBox = 0
+    clearSearchBox.enableSubSearchCheckBox=0
+  }
+
+   # Blinding of option-selectors / values in these (advanced search) (see $optValues array in source code for options + extResume checkbox)
+  blind {
+    type=0
+	defOp=0
+	sections=0
+	media=0
+	order=0
+	group=0
+	lang=0
+	desc=0
+	results=0
+	
+#	defOp.1=1
+#	extResume=1
+  }
+  rules_stdWrap {
+  }
+  sectionlinks_stdWrap {
+  }
+  path_stdWrap {
+  }
+  search {
+    rootPidList = 
+    page_links = 10
+  }
+
+  result_link_target =
+
+  
+  tableParams {
+    secHead = border=0 cellpadding=0 cellspacing=0 width="100%"
+    searchBox =  border=0 cellpadding=0 cellspacing=0
+	searchRes =  border=0 cellpadding=0 cellspacing=0 width="100%"
+  }
+  
+   # Setting default values for piVars (please see the source code for the form-field names which you can preset values for here)
+  _DEFAULT_PI_VARS.extResume=1
+  _CSS_DEFAULT_STYLE (
+	.tx-indexedsearch .tx-indexedsearch-searchbox INPUT.tx-indexedsearch-searchbox-button { width:100px; }
+	.tx-indexedsearch .tx-indexedsearch-searchbox INPUT.tx-indexedsearch-searchbox-sword { width:150px; }
+	.tx-indexedsearch .tx-indexedsearch-whatis P .tx-indexedsearch-sw { font-weight:bold; font-style:italic; }
+	.tx-indexedsearch .tx-indexedsearch-whatis { margin-top:10px; margin-bottom:5px; }
+	.tx-indexedsearch P.tx-indexedsearch-noresults { text-align:center; font-weight:bold; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-title { background:#eeeeee; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-title P { font-weight:bold; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-title P.tx-indexedsearch-percent { font-weight:normal; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr P { font-style:italic; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr P .tx-indexedsearch-redMarkup { color:red; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-info { background:#eeeeff; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead { margin-top:20px; margin-bottom:5px; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead H2 { margin-top:0px; margin-bottom:0px; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TABLE { background:#cccccc; }
+	.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TD { vertical-align:absmiddle; }
+  )
+  _LOCAL_LANG {
+  }
+}
+
+
