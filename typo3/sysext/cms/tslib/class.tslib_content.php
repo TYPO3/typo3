@@ -6057,7 +6057,7 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Executes a SELECT query for joining three tables according the the MM-relation standards used for tables configured in $TCA. That means MM-joins where the join table has the fields "uid_local" and "uid_foreign"
+	 * Executes a SELECT query for joining three tables according to the MM-relation standards used for tables configured in $TCA. That means MM-joins where the join table has the fields "uid_local" and "uid_foreign"
 	 *
 	 * @param	string		List of fields to select
 	 * @param	string		The local table
@@ -6083,7 +6083,7 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Executes a SELECT query for joining two tables according the the MM-relation standards used for tables configured in $TCA. That means MM-joins where the join table has the fields "uid_local" and "uid_foreign"
+	 * Executes a SELECT query for joining two tables according to the MM-relation standards used for tables configured in $TCA. That means MM-joins where the join table has the fields "uid_local" and "uid_foreign"
 	 * The two tables joined is the join table ($mm_table) and the foreign table ($foreign_table) - so the "local table" is not included but instead you can supply a list of UID integers from the local table to match in the join-table.
 	 *
 	 * @param	string		List of fields to select

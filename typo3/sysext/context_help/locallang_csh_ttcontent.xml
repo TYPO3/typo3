@@ -358,7 +358,7 @@ This displays the 10 most recently updated pages.
 Displays other related pages based on the keywords set for this page matched up with the keywords on other pages.
 
 
-&lt;b&gt;Notice:&lt;/b&gt; With many of the above menu types, the default starting point is the current page. However you can specify another startingpoint (or more than one in fact!) by adding pages to the the &quot;Startingpoint&quot; list. See link below.</label>
+&lt;b&gt;Notice:&lt;/b&gt; With many of the above menu types, the default starting point is the current page. However you can specify another startingpoint (or more than one in fact!) by adding pages to the &quot;Startingpoint&quot; list. See link below.</label>
 			<label index="_menu_type.seeAlso">tt_content:pages,
 tt_content:sectionIndex</label>
 			<label index="list_type.description">Select a plugin to insert.</label>

@@ -378,7 +378,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	/**
 	 * Deleting files and folders (action=4)
 	 *
-	 * @param	array		$cmds['data'] is the the file/folder to delete
+	 * @param	array		$cmds['data'] is the file/folder to delete
 	 * @return	boolean		Returns true upon success
 	 */
 	function func_delete($cmds)	{
@@ -445,7 +445,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	/**
 	 * Copying files and folders (action=2)
 	 *
-	 * @param	array		$cmds['data'] is the the file/folder to copy. $cmds['target'] is the path where to copy to. $cmds['altName'] (boolean): If set, another filename is found in case the target already exists
+	 * @param	array		$cmds['data'] is the file/folder to copy. $cmds['target'] is the path where to copy to. $cmds['altName'] (boolean): If set, another filename is found in case the target already exists
 	 * @return	string		Returns the new filename upon success
 	 */
 	function func_copy($cmds)	{
@@ -535,7 +535,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	/**
 	 * Moving files and folders (action=3)
 	 *
-	 * @param	array		$cmds['data'] is the the file/folder to move. $cmds['target'] is the path where to move to. $cmds['altName'] (boolean): If set, another filename is found in case the target already exists
+	 * @param	array		$cmds['data'] is the file/folder to move. $cmds['target'] is the path where to move to. $cmds['altName'] (boolean): If set, another filename is found in case the target already exists
 	 * @return	string		Returns the new filename upon success
 	 */
 	function func_move($cmds)	{

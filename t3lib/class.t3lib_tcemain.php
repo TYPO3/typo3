@@ -245,7 +245,7 @@ class t3lib_TCEmain	{
 		// *********
 	var $fileFunc;		// May contain an object
 	var $last_log_id;
-	var $BE_USER;		// The user-object the the script uses. If not set from outside, this is set to the current global $BE_USER.
+	var $BE_USER;		// The user-object the script uses. If not set from outside, this is set to the current global $BE_USER.
 	var $userid;		// will be set to uid of be_user executing this script
 	var $username;		// will be set to username of be_user executing this script
 	var $admin;			// will be set if user is admin
@@ -1274,7 +1274,7 @@ class t3lib_TCEmain	{
 				return $res;
 			};
 			if ($status=='update')	{
-					// This checks if 1) we should check for disallowed tables and 2) the there are records from disallowed tables on the current page
+					// This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
 				$onlyAllowedTables = isset($PAGES_TYPES[$value]['onlyAllowedTables']) ? $PAGES_TYPES[$value]['onlyAllowedTables'] : $PAGES_TYPES['default']['onlyAllowedTables'];
 				if ($onlyAllowedTables)	{
 					$theWrongTables = $this->doesPageHaveUnallowedTables($id,$value);
@@ -3279,7 +3279,7 @@ class t3lib_TCEmain	{
 	 * @param	integer		Page uid
 	 * @param	integer		Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param	array		Table on pages to copy along with the page.
-	 * @param	boolean		Set if this the the root page being copied.
+	 * @param	boolean		$first is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
 	 * @return	void
 	 */
 	function copySpecificPage($uid,$destPid,$copyTablesArray,$first=0)	{

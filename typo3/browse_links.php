@@ -474,7 +474,7 @@ class localFolderTree extends t3lib_folderTree {
 	 * Returns true if the input "record" contains a folder which can be linked.
 	 *
 	 * @param	array		Array with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return	boolean		True is returned if the path is found in the web-part of the the server and is NOT a recycler or temp folder
+	 * @return	boolean		True is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder
 	 */
 	function ext_isLinkable($v)	{
 		$webpath=t3lib_BEfunc::getPathType_web_nonweb($v['path']);	// Checking, if the input path is a web-path.

@@ -189,7 +189,7 @@ class t3lib_loadDBGroup	{
 			// Select all MM relations:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $tableName, 'uid_local='.intval($uid), '', 'sorting');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$theTable = $row['tablenames'] ? $row['tablenames'] : $this->firstTable;		// If tablesnames columns exists and contain a name, then this value is the table, else it's the the firstTable...
+			$theTable = $row['tablenames'] ? $row['tablenames'] : $this->firstTable;		// If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
 			if (($row['uid_foreign'] || $theTable=='pages') && $theTable && isset($this->tableArray[$theTable]))	{
 				$this->itemArray[$key]['id'] = $row['uid_foreign'];
 				$this->itemArray[$key]['table'] = $theTable;

@@ -1944,7 +1944,7 @@ class tx_impexp {
 	 * @param	string		Field value (from FlexForm XML)
 	 * @param	string		Not used
 	 * @param	string		Not used
-	 * @param	string		Path of where the the data structure the element is found
+	 * @param	string		Path of where the data structure of the element is found
 	 * @return	array		Array where the "value" key carries the value.
 	 * @see setFlexFormRelations()
 	 */
@@ -2077,7 +2077,7 @@ class tx_impexp {
 	 * @param	string		Field value (from FlexForm XML)
 	 * @param	string		Not used
 	 * @param	string		Not used
-	 * @param	string		Path of where the the data structure the element is found
+	 * @param	string		Path of where the data structure where the element is found
 	 * @return	array		Array where the "value" key carries the value.
 	 * @see setFlexFormRelations()
 	 */

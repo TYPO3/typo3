@@ -466,7 +466,7 @@ class t3lib_div {
 	 *
 	 * @param	string		$string 	string to truncate
 	 * @param	integer		$chars 	must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
-	 * @param	string		String to append to the the output if it is truncated, default is '...'
+	 * @param	string		String to append to the output if it is truncated, default is '...'
 	 * @return	string		new string
 	 * @see fixed_lgd_pre()
 	 */
