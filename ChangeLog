@@ -1,5 +1,9 @@
 2004-05-11  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Merged branch changes from "TYPO3_3-6-0"; Mainly bugfixes by ingmar.
+
+2004-05-11  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Rolled back browser detection in matchcondition class.
 
 2004-05-07  Kasper Skårhøj,,,  <kasper@typo3.com>
