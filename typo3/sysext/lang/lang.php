@@ -448,17 +448,16 @@ class language {
 	function readLLXMLfile($fileRef,$langKey)	{
 
 		if (@is_file($fileRef))	{
+
 				// Set charset:
 			$origCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$langKey] ? $this->csConvObj->charSetArray[$langKey] : 'iso-8859-1');
 
 				// Cache file name:
 			$hashSource = substr($fileRef,strlen(PATH_site)).'|'.date('d-m-Y H:i:s',filemtime($fileRef));
-			$cacheFileName = 'cache_llxml_'.t3lib_div::md5int($hashSource).'.'.$langKey.'.'.$origCharset.'.ser';
-			$cacheFileName_dirPrefix = PATH_site.'typo3temp/llxml/';
+			$cacheFileName = PATH_site.'typo3temp/llxml/cache_llxml_'.t3lib_div::md5int($hashSource).'.'.$langKey.'.'.$origCharset.'.ser';
 
-#$pt = t3lib_div::milliseconds();
 				// Check if cache file exists...
-			if (!@is_file($cacheFileName_dirPrefix.$cacheFileName))	{	// ... if it doesn't, create content and write it:
+			if (!@is_file($cacheFileName))	{	// ... if it doesn't, create content and write it:
 
 					// Read XML, parse it and set default LOCAL_LANG array content:
 				$xmlString = t3lib_div::getUrl($fileRef);
@@ -479,14 +478,10 @@ class language {
 				}
 
 				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>$LOCAL_LANG);
-				t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent), 'llxml');
-#debug('Saving cache...', basename($fileRef).' - '.$cacheFileName_dirPrefix.$cacheFileName);
-#debug(t3lib_div::milliseconds()-$pt);
+				t3lib_div::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
 			} else {
-				$serContent = unserialize(t3lib_div::getUrl($cacheFileName_dirPrefix.$cacheFileName));
+				$serContent = unserialize(t3lib_div::getUrl($cacheFileName));
 				$LOCAL_LANG = $serContent['LOCAL_LANG'];
-#debug('Getting cache...', basename($fileRef).' - '.$cacheFileName_dirPrefix.$cacheFileName);
-#debug(t3lib_div::milliseconds()-$pt);
 			}
 			return $LOCAL_LANG;
 		}

@@ -2014,8 +2014,8 @@ class t3lib_div {
 				// Setting file system mode & group ownership of file:
 			if (@is_file($file) && TYPO3_OS!='WIN')	{
 				@chmod($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));		// "@" is there because file is not necessarily OWNED by the user
-				if($GLOBALS['TYPO3_CONF_VARS']['BE']['groupCreateMask'])	{	// skip this if groupCreateMask is empty
-					@chgrp($file, $GLOBALS['TYPO3_CONF_VARS']['BE']['groupCreateMask']);		// "@" is there because file is not necessarily OWNED by the user
+				if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
+					@chgrp($file, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);		// "@" is there because file is not necessarily OWNED by the user
 				}
 			}
 
@@ -2027,40 +2027,48 @@ class t3lib_div {
 	 * Writes $content to a filename in the typo3temp/ folder (and possibly a subfolder...)
 	 * Accepts an additional subdirectory in the file path!
 	 *
-	 * @param	string		FileNAME to write to inside "typo3temp/". No directory prefixed, just filename with extension.
+	 * @param	string		Absolute filepath to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/"
 	 * @param	string		Content string to write
 	 * @return	string		Returns false on success, otherwise an error string telling about the problem.
 	 */
 	function writeFileToTypo3tempDir($filepath,$content)	{
-		$filepath = pathinfo($filepath);
-debug($filepath);
-exit;
-		if ($filepath && strlen($filepath)<60 && t3lib_div::validPathStr($filepath) && !strstr('/',$filepath))	{
+
+			// Parse filepath into directory and basename:
+		$fI = pathinfo($filepath);
+		$fI['dirname'].= '/';
+
+			// Check parts:
+		if (t3lib_div::validPathStr($filepath) && $fI['basename'] && strlen($fI['basename'])<60)	{
 			if (defined('PATH_site'))	{
 				$dirName = PATH_site.'typo3temp/';	// Setting main temporary directory name (standard)
 				if (@is_dir($dirName))	{
-						// Checking if the "subdir" string is set and if so, create directory if not present:
-					if ($subdir)	{
-						$dirName.= $subdir.'/';
-						if (!@is_dir($dirName))	{
-							t3lib_div::mkdir($dirName);
+					if (t3lib_div::isFirstPartOfStr($fI['dirname'],$dirName))	{
+
+							// Checking if the "subdir" is found:
+						$subdir = substr($fI['dirname'],strlen($dirName));
+						if ($subdir)	{
+							if (ereg('^[[:alnum:]]+\/$',$subdir))	{
+								$dirName.= $subdir;
+								if (!@is_dir($dirName))	{
+									t3lib_div::mkdir($dirName);
+								}
+							} else return 'Subdir, "'.$subdir.'", was NOT on the form "[a-z]/"';
 						}
-					}
-						// Checking dir-name again (sub-dir might have been created):
-					if (@is_dir($dirName))	{
-						$tempFile = t3lib_div::getFileAbsFileName($dirName.$filename);
-						if ($tempFile)	{
-							t3lib_div::writeFile($tempFile,$content);
-							if (!@is_file($tempFile))	return 'File not written to disk! Write permission error in filesystem?';
-						} else return 'For some reason, the temporary file was not valid!';
-					} else return '"'.$dirName.'" is not a directory!';
+							// Checking dir-name again (sub-dir might have been created):
+						if (@is_dir($dirName))	{
+							if ($filepath == $dirName.$fI['basename'])	{
+								t3lib_div::writeFile($filepath, $content);
+								if (!@is_file($filepath))	return 'File not written to disk! Write permission error in filesystem?';
+							} else return 'Calculated filelocation didn\'t match input $filepath!';
+						} else return '"'.$dirName.'" is not a directory!';
+					} else return '"'.$fI['dirname'].'" was not within directory PATH_site + "typo3temp/"';
 				} else return 'PATH_site + "typo3temp/" was not a directory!';
 			} else return 'PATH_site constant was NOT defined!';
-		} else return 'Input filename "'.$filename.'" was invalid!';
+		} else return 'Input filepath "'.$filepath.'" was generally invalid!';
 	}
 
 	/**
-	 * Wrapper function for mkdir, setting folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['BE']['groupCreateMask']
+	 * Wrapper function for mkdir, setting folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']
 	 * Usage: 6
 	 *
 	 * @param	string		Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
@@ -2071,8 +2079,8 @@ exit;
 		if (mkdir($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']))){
 			chmod($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])); //added this line, because the mode at 'mkdir' has a strange behaviour sometimes
 
-			if($GLOBALS['TYPO3_CONF_VARS']['BE']['groupCreateMask'])	{	// skip this if groupCreateMask is empty
-				chgrp($theNewFolder, $GLOBALS['TYPO3_CONF_VARS']['BE']['groupCreateMask']);
+			if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
+				chgrp($theNewFolder, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
 			}
 			return TRUE;
 		}
@@ -2872,8 +2880,8 @@ exit;
 			// Setting file system mode & group ownership of file:
 		if (@is_file($destination) && TYPO3_OS!='WIN')	{
 			chmod($destination, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
-			if($GLOBALS['TYPO3_CONF_VARS']['BE']['groupCreateMask'])	{	// skip this if groupCreateMask is empty
-				chgrp($destination, $GLOBALS['TYPO3_CONF_VARS']['BE']['groupCreateMask']);
+			if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
+				chgrp($destination, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
 			}
 		}
 
