@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Help &gt; Manual labels (CSH viewer)</description>
+		<description>Standard Help &gt; Manual labels (CSH viewer)</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_mod_help_cshmanual.php</fileId>
+		<fileId>EXT:lang/locallang_mod_help_cshmanual.xml</fileId>
 		<labelContext type="array">
 			<languageKey index="mlang_labels_tablabel">Module title (for alt-text in module menu)</languageKey>
 		</labelContext>

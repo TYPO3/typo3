@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>History / Undo labels</description>
+		<description>Labels for History / Undo screens.</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_show_rechis.php</fileId>
+		<fileId>EXT:lang/locallang_show_rechis.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

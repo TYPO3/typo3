@@ -3,8 +3,10 @@
 	<meta type="array">
 		<description>CSH for Content Elements table.</description>
 		<type>CSH</type>
-		<fileId>EXT:context_help/locallang_csh_ttcontent.php</fileId>
+		<fileId>EXT:context_help/locallang_csh_ttcontent.xml</fileId>
 		<csh_table>tt_content</csh_table>
+		<keep_original_text>1</keep_original_text>
+		<ext_filename_template>EXT:csh_###LANGKEY###/context_help/###LANGKEY###.locallang_csh_ttcontent.xml</ext_filename_template>
 		<labelContext type="array">
 		</labelContext>
 	</meta>
@@ -12,6 +14,14 @@
 		<languageKey index="default" type="array">
 			<label index=".description">All visible content on webpages in TYPO3 is typically made by &quot;Pagecontent&quot; records. They are typically referred to as &quot;Content Elements&quot;. Often Content Elements are managed by the &quot;Page&quot; module which is designed to handle Content Elements in multiple columns and languages.</label>
 			<label index=".details">&quot;Pagecontent&quot; records is ordered and can thus be rearranged. Also notice that the &quot;Language&quot; and &quot;Column&quot; selector of the &quot;Pagecontent&quot; records determines where and in which situation they appear. If you do not change the value of the &quot;Language&quot; and &quot;Column&quot; selectors you are most sure that the element will appear by default.</label>
+			<label index="_.seeAlso">Page Content principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/,
+_MOD_web_layout</label>
+			<label index="_.image">EXT:context_help/cshimages/ttcontent_1.png,
+EXT:context_help/cshimages/ttcontent_2.png,
+EXT:context_help/cshimages/ttcontent_3.png</label>
+			<label index=".image_descr">The Page module is used to manage Content Elements effectively as they appear arranged in columns and languages.
+A Content Element has a large editing form with many options. The &quot;Type&quot; determines which options are visible.
+In the frontend - on the webpage - a Content Element like the above could look like this.</label>
 			<label index="CType.description">Select the kind of page content this element represents. New options will appear when you save the record.</label>
 			<label index="CType.details">The 'Type' of content you select determines which options you have in the editform, so make sure to save the record before you make changes.
 
@@ -70,8 +80,9 @@ This is reserved for custom purposes where the template developer can allow you 
 &lt;strong&gt;HTML&lt;/strong&gt;
 This is plain HTML content. Everything put here will be displayed directly on the page without any preprocessing.</label>
 			<label index="_CType.seeAlso">tt_content:colPos,
-tt_content:sys_language_uid, 
+tt_content:sys_language_uid,
 About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/</label>
+			<label index="_CType.image">EXT:context_help/cshimages/ttcontent_4.png</label>
 			<label index="hidden.description">Check this box if you wish to hide the content element from being displayed.</label>
 			<label index="_hidden.seeAlso">tt_content:starttime,
 tt_content:endtime,
@@ -94,15 +105,15 @@ If you select &quot;Hide at login&quot; the effect is kind of reversed in that t
 			<label index="_fe_group.seeAlso">tt_content:hidden,
 tt_content:starttime,
 tt_content:endtime,
-pages:fe_group, 
-fe_users, 
+pages:fe_group,
+fe_users,
 fe_groups</label>
 			<label index="sys_language_uid.description">Select the system language of this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</label>
 			<label index="sys_language_uid.details">This allows you to assign a specific language to the content element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
 The available system languages are created by the administrator.</label>
-			<label index="_sys_language_uid.seeAlso">tt_content:colPos, 
-sys_language, 
-Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/, 
+			<label index="_sys_language_uid.seeAlso">tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
 _MOD_web_layout:language_list</label>
 			<label index="layout.description">Select a layout.</label>
 			<label index="layout.details">This option is not used in the default templates but may be used by any custom rendering.
@@ -118,12 +129,10 @@ There are a number of default implementations depending on the content element t
 			<label index="colPos.details">Most websites use only one column of content. However some templates lets you put content in multiple columns and this option allows you to select another column for the element.
 
 &lt;strong&gt;Notice&lt;/strong&gt; that selecting another column than &quot;Normal&quot; will make the content element disappear unless that column is also displayed in the website template. If your content element is 'strangely' not visible please make sure the Column and Language selectors are set correctly.</label>
-			<label index="_colPos.seeAlso">tt_content:sys_language_uid, 
-_MOD_web_layout:columns_multi, 
+			<label index="_colPos.seeAlso">tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
 _MOD_web_layout:columns_single</label>
 			<label index="date.description">Enter a date to be displayed above the header.</label>
-			<label index="date.syntax"></label>
-			<label index="_date.seeAlso"></label>
 			<label index="header.description">Enter a headline for the content element.</label>
 			<label index="header.details">Almost all content elements (except the HTML type for instance) will display this header above the content. If you don't want a header displayed, select the header Layout to &quot;Hidden&quot;. Alternatively you can choose not to enter any content in this field.
 
@@ -132,6 +141,7 @@ Some content element types do not display the header by default. In those cases 
 tt_content:header_link,
 tt_content:header_layout,
 tt_content:date,</label>
+			<label index="_header.image">EXT:context_help/cshimages/ttcontent_6.png</label>
 			<label index="header_position.description">Places the header to the left, centered or to the right.</label>
 			<label index="_header_position.seeAlso">tt_content:header</label>
 			<label index="header_link.description">Creates a link from the header. Insert a page id, email address or URL.</label>
@@ -187,11 +197,11 @@ It is much easier to use the Form Wizard for creating forms.
 
 &lt;b&gt;Notice:&lt;/b&gt; Before any form will ever work, you must enter a recipient email address. The &quot;Recipient-email:&quot; field is used for that (this is in fact the Subheader field used!).</label>
 			<label index="_bodytext.seeAlso">tt_content:CType,
-tt_content:subheader, 
-xMOD_csh_corebe:wizard_forms_wiz, 
+tt_content:subheader,
+xMOD_csh_corebe:wizard_forms_wiz,
 xMOD_csh_corebe:wizard_table_wiz</label>
 			<label index="text_align.description">Places the body text to the left, centered or to the right.</label>
-			<label index="text_align.details">See Pagecontent / Fontface for comments. 
+			<label index="text_align.details">See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</label>
 			<label index="_text_align.seeAlso">tt_content:text_face,
 tt_content:bodytext</label>
@@ -241,6 +251,8 @@ tt_content:image_frames,
 tt_content:image_compression,
 Using images (&quot;Getting Started&quot;) | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
 Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</label>
+			<label index="_image.image">EXT:context_help/cshimages/ttcontent_5.png</label>
+			<label index="image.image_descr">This shows all the options related to inserting images in Content Elements. You might not be able to use all of them.</label>
 			<label index="imagewidth.description">Enter the width in pixels of the image.</label>
 			<label index="imagewidth.details">The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfectly into those dimensions. However this does give you an opportunity to specify a specific width.</label>
 			<label index="_imagewidth.seeAlso">tt_content:imageheight,
@@ -352,6 +364,7 @@ tt_content:sectionIndex</label>
 			<label index="list_type.description">Select a plugin to insert.</label>
 			<label index="list_type.details">The list of plugins you can insert on a page. The available plugins depends on which extensions are installed.</label>
 			<label index="_list_type.seeAlso">_MOD_tools_em</label>
+			<label index="_list_type.image">EXT:context_help/cshimages/ttcontent_7.png</label>
 			<label index="select_key.description">Enter a code string.</label>
 			<label index="select_key.details">Whether or not the content of this field is used and how it's intepreted depends on the context. It is considered obsolete today.</label>
 			<label index="_select_key.seeAlso">tt_content:list_type</label>
@@ -384,979 +397,11 @@ tt_content:spaceBefore</label>
 			<label index="rte_enabled.description">If checked, the Rich Text Editor will be disabled for the &quot;Text&quot; and &quot;Text w/Image&quot; types (&lt;em&gt;in this element only&lt;/em&gt;).</label>
 			<label index="_rte_enabled.seeAlso">tt_content:bodytext</label>
 			<label index="pi_flexform.description">FlexForm Configuration of Plugins</label>
-			<label index="_.seeAlso">Page Content principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/, 
-_MOD_web_layout</label>
-			<label index="_.image">EXT:context_help/cshimages/ttcontent_1.png, 
-EXT:context_help/cshimages/ttcontent_2.png, 
-EXT:context_help/cshimages/ttcontent_3.png</label>
-			<label index="_CType.image">EXT:context_help/cshimages/ttcontent_4.png</label>
-			<label index="_image.image">EXT:context_help/cshimages/ttcontent_5.png</label>
-			<label index=".image_descr">The Page module is used to manage Content Elements effectively as they appear arranged in columns and languages.
-A Content Element has a large editing form with many options. The &quot;Type&quot; determines which options are visible.
-In the frontend - on the webpage - a Content Element like the above could look like this.</label>
-			<label index="_header.image">EXT:context_help/cshimages/ttcontent_6.png</label>
-			<label index="image.image_descr">This shows all the options related to inserting images in Content Elements. You might not be able to use all of them.</label>
-			<label index="_list_type.image">EXT:context_help/cshimages/ttcontent_7.png</label>
 			<label index="pi_flexform.details">Some plugins may require configuration of their options. They may use this field for FlexForm based configuration settings (stored as XML).</label>
 			<label index="_pi_flexform.seeAlso">tt_content:list_type</label>
 		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-			<label index=".description">Alle zichtbare inhoud op webpagina's in TYPO3 wordt in de regel opgemaakt of weergegeven met &quot;Pagina-inhoud&quot; records</label>
-			<label index=".details">&quot;Pagina-inhoud&quot; records staan in een bepalde volgorde en kunnen desgewenst op een bepaalde wijze gerangschikt worden. Merk ook op dat de keuze voor &quot;Taal&quot; en &quot;Kolom&quot; van het &quot;Pagina-inhoud&quot; record bepaald waar en in welke situatie ze zichtbaar zijn. Wanneer de waarde van de &quot;Taal&quot; en &quot;Kolom&quot; selectie niet wijzigt, bent u er van verzekert dat de elementen standaard worden weergegeven.</label>
-			<label index="CType.description">Selecteer het soort pagina-inhoud dat dit element representeert. Nieuwe opties verschijnen wanneer het record wordt opgeslagen.</label>
-			<label index="CType.details">Het gekozen 'Type' inhoudselement bepaalt welke opties beschikbaar zijn in het editformulier, sla het record dus op voordat wijzigingen worden aangebracht.
-
-Dit is een beschrijving van de verschillende typen:
-
-&lt;strong&gt;Kop&lt;/strong&gt;
-Dit type maakt het mogelijk een standaard kop toe te voegen, en niet meer dan dat.
-Vrijwel alle andere typen die hieronder beschreven zijn bevatten ook deze kop, met exact dezelfde opties. Het kop-type biedt dus de mogelijkheid &lt;em&gt;alleen&lt;/em&gt; een kop toe te voegen.
-
-&lt;strong&gt;Tekst&lt;/strong&gt;
-Het Text type laat standaard tekst inhoud toevoegen.
-
-&lt;strong&gt;Tekst met afbeeldingen&lt;/strong&gt;
-Dit is het zelfde als het Tekst-type, maar met de mogelijkheid afbeeldingen toe te voegen.
-
-&lt;strong&gt;Rich Text&lt;/strong&gt;
-Dit type heeft alleen zin wanneer de Rich Text Editor gebruikt wordt. Dit stelt u in staat om tekst op te maken met behulp van een werkbalk, zoals in bijvoorbeeld de Word-tekstverwerker. U heeft u dezelfde mogelijkheden als met het Tekst- en Tekst met afbeeldingen type! De Rich Text Editor biedt echter een aantal extra mogelijkheden in de werkbalk, bijvoorbeeld een tabel-editor.
-&lt;strong&gt;Merk op&lt;/strong&gt; dat de inhoud die met de Rich Text Editor is gemaakt &lt;em&gt;niet&lt;/em&gt; voorbewerkt is, het is daarom in principe een WYSIWYG HTML editor.
-
-&lt;strong&gt;Afbeelding&lt;/strong&gt;
-Hetzelfde als Tekst met afbeelding maar zonder tekst-veld, dus alleen afbeeldingen.
-
-&lt;strong&gt;Bulletlijst&lt;/strong&gt;
-Een lijst met opsommingstekens. Elke regel in het tekstvak verschijnt als regel in de lijst.
-
-&lt;strong&gt;Tabel&lt;/strong&gt;
-Stelt u in staat &lt;em&gt;eenvoudige&lt;/em&gt; tabellen te maken. Elke regel geeft een tabelrij aan en vertikale streepje '|' scheiden de kolommen.
-
-&lt;strong&gt;Bestandskoppelingen&lt;/strong&gt;
-Te downloaden bestanden ter beschikking stellen. U kan de iconen aan de lijst toevoegen samen met de bestandsgrootte.
-
-&lt;strong&gt;Mutimedia&lt;/strong&gt;
-Invoegen van multimedia elementen zoals geluid, java applets en flash animaties.
-
-&lt;strong&gt;Formulier&lt;/strong&gt;
-Aanmaken van emailformulieren. Er is een speciale syntaxis voor het maken vam deze formulieren.
-
-&lt;strong&gt;Zoek&lt;/strong&gt;
-Dit voegt een zoekveld toe en laat ook het resultaat zien wanneer er een zoekopdracht op de pagina is uitgevoerd.
-
-&lt;strong&gt;Aanmelden&lt;/strong&gt;
-Toont een loginveld voor website gebruikers. U dient tenminste één website gebruiker en gebruikersgroep aan te maken, om hier gebruik van te kunnen maken.
-
-&lt;strong&gt;Tekstveld&lt;/strong&gt;
-Dit is voornamelijk voor speciaal gedefiniëerde ontwerpen die gewoonlijk tekst en afbeeldingen bevatten. De onderliggende typen stellen u in staat tekst met afbeeldingen op verschillende manieren weer te geven.
-Gebruik alleen op aanwijzing van de admin!
-
-&lt;strong&gt;Menu/Sitemap&lt;/strong&gt;
-Geeft een keuze aan verschillende menu's en een sitemap die in een pagina opgenomen kunnen worden.
-
-&lt;strong&gt;Records toevoegen&lt;/strong&gt;
-Dit is een 'houder' voor andere records. In andere woorden, met dit element kunnen andere elementen vanaf een andere plaats gekoppled worden en op deze manier op de pagina worden weergeven.
-
-&lt;strong&gt;Module toevoegen&lt;/strong&gt;
-De mogelijkheid om een forum, gastenboek, adreslijst, winkelmandje, etc. toe te voegen. De verschillende mogelijkheden zijn &lt;em&gt;alleen&lt;/em&gt; beschikbaar waneer ze correct zijn geconfigureerd in het sjabloon van de site. Verzeker uzelf voor gebruik ervan dat dit het geval is.
-
-&lt;stron&gt;Script&lt;strong&gt;
-Dit is voorbehouden aan specifieke toepassingen, waar de ontwerper van het sjabloon de mogelijkheid wil bieden gespecialiseerde inhoud via dit type toe te voegen met een speciale code als identificatie.
-
-&lt;strong&gt;HTML&lt;/strong&gt;
-Dit is &quot;gewone&quot; HTML code. Alles wat hier wordt ingevoegd wordt direct op de site geplaatst zonder verdere bewerking.</label>
-			<label index="hidden.description">Vink dit vak aan om dit inhoudselement te verbergen.</label>
-			<label index="starttime.description">Voer de datum in vanaf wanneer het inhoudselement zichtbaar dient te zijn.</label>
-			<label index="endtime.description">Voer de datum in vanaf wanneer het inhoudselement niet zichtbaar meer is.</label>
-			<label index="fe_group.description">Selecteer een websitegebruikersgroep die rechten hebben om dit inhoudselement te zien.</label>
-			<label index="fe_group.details">De opties in dit vak zijn afhankelijk van welke websitegebruikersgroepen zijn aangemaakt en beschikbaar zijn. Wanneer u hier een gebruikersgroep selecteert is het inhouds element niet langer zichtbaar voor gebruikers die zich niet hebben aangemeld. Alleen website bezoekers die zich hebben aangemeld, en lid zijn van de betreffende gebruikersgroep, zullen het inhoudselement kunnen zien.
-Wanneer u kiest voor 'Verbergen na aanmelden' is het effect precies omgekeerd in die zin dat het element &lt;em&gt;verdwijnt&lt;/em&gt; wanneer &lt;em&gt;enige&lt;/em&gt; bezoeker is aangemeld. Dit is handig wanneer informatie als &quot;Hoe je aan te melden op de site&quot; e.d. weergeven dient te worden, die echter overbodig is zodra een gebruiker zich heeft aangemeld.</label>
-			<label index="sys_language_uid.description">Kies de systeemtaal voor dit element. &lt;strong&gt;Merk op&lt;/strong&gt; dit bepaald of het element zichtbaar zal zijn.</label>
-			<label index="sys_language_uid.details">Hier kan een specifieke taal toegewezen worden aan het inhoudselement. Als u iets anders kiest dan de standaard waarde, zal het element &lt;em&gt;niet&lt;/em&gt; zichtbaar zijn, tenzij de gekozen taal ook in het TypoScriptsjabloon is geconfigureerd.
-De beschikbare systeemtalen worden aangemaakt door de Systeembeheerder.</label>
-			<label index="layout.description">Kies een lay-out</label>
-			<label index="layout.details">Deze optie wordt niet gebruikt in de standaardsjablonen, maar kan voor individuele opmaak worden gebruikt.
-
-Er zijn een aantal standaardimplementaties, afhankelijk van het TYPO3element:
-
-&lt;strong&gt;&quot;Bestandskoppelingen&quot;:&lt;/strong&gt;
-&quot;Normaal&quot; geeft een lijst met bestandskoppelingen zonder icoontje.
-&quot;Layout 1&quot; voegt een icoon toe, links van de verwijzing.
-&quot;Layout 2&quot; voegt een voorbeeld toe, als het een bestand betreft en anders een icoon. Daaromheen wordt een rode rand geplaatst.
-&quot;Layout 3&quot; is identiek aan Layout 2, maar voegt een zwarte rand toe.
-
-&lt;strong&gt;Voer lijst in / Board&lt;/strong&gt;
-Er zijn twee ingebouwde board-types in TYPO3. Eén is een lijst-board, de ander een boom-board. De lijst-board wordt teogevoegd met het &quot;Normale&quot; lay-out type, terwijl het boom-board wordt ingevoerd met type &quot;Layout 1&quot;. &lt;em&gt;Let er op dat er niets wordt weergegeven als u het verkeerde type kiest!&lt;/em&gt;</label>
-			<label index="colPos.description">Kies de kolompositie van dit element. &lt;strong&gt;Merk op&lt;/em&gt; dit bepaalt of het element zichtbaar is.</label>
-			<label index="colPos.details">De meeste websites gebruiken slecht een kolom om inhoud weer te geven. Sommige sjablonen stellen u echter in staat inhoud over meerdere kolommen te verdelen. Deze optie laat u een kolom kiezen voor je inhouds element.
-
-&lt;strong&gt;Merk op&lt;/strong&gt; Wanneer u een andere kolom kiest dan &quot;Normaal&quot;, zal het element verdwijnen tenzij de gekozen kolom ook in het sjabloon wordt weergegeven. Wanneer uw inhoudselement niet zichtbaar is, controleer dan of de &quot;Taal&quot; en &quot;Kolom&quot; keuze correct is.</label>
-			<label index="date.description">Voer een datum in die boven de Kop wordt weergegeven.</label>
-			<label index="date.syntax">Voor syntaxis, zie Pagina / Start onder.</label>
-			<label index="header.description">Voer een kop in voor het inhoudselement</label>
-			<label index="header.details">Vrijwel alle inhoudselementen (behalve bijvoorbeeld het type HTML) geven deze kop weer boven de inhoud. Wanneer u niet wilt dat de kop wordt weergegeven kies dan voor de Kop lay-out &quot;Verborgen&quot;. Er kan ook niets ingevoerd worden.
-
-Sommige inhoudselementen geven standaard de kop niet weer. In die gevallen wordt het kop-veld meestal &quot;Naam&quot; genoemd. Eén van de deze elementen is het HTML-type inhouds element.</label>
-			<label index="header_position.description">Plaatst de kop links, gecentreerd of rechts</label>
-			<label index="header_link.description">Maakt van de kop een verwijzing. Voer een pagina-id, een emailadres of een URL in.</label>
-			<label index="header_link.syntax">Wanneer u een nummer invoert, bijv. &quot;51&quot;, wordt verwezen naar een pagina met id=51 &lt;em&gt;binnen&lt;/em&gt; TYPO3.
-Wanneer u een emailadres invoert, bijv. &quot;naam@mijn-domein.test&quot;, wordt verwezen naar dat emailadres.
-Wanneer u een URL of een domein invoert, bijv. &quot;www.typo3.com&quot; of &quot;http://www.mijn-domein.org&quot;, wordt verwezen naar die website.</label>
-			<label index="header_layout.description">Kies een visueel ontwerp voor de kop.</label>
-			<label index="header_layout.details">Wanneer u &quot;standaard&quot; kiest wordt het standaardontwerp (dit is een van de lay-outs 1-5) gebruikt.
-Het is ook mogelijk te kiezen uit Lay-outs 1 tot en met 5 die in het sjabloon zijn opgenomen met een individueel ontwerp.
-Wanneer u kiest voor &quot;Verborgen&quot; wordt de kop niet weergegeven. Dit is handig als er een kop nodig is (voor de identificatie aan de achterzijde) maar die niet zichtbaar wilt laten zijn op de website. Handig is om dan bijvoorbeeld rechte haken om de kop plaatsen. Dit geeft direct een indicatie dat de kop verborgen is. (Bijv: [voorbeeld afbeeldingen])</label>
-			<label index="subheader.description">Voer een subkop in. Deze wordt weergegeven onder de gewone kop. Wanneer het inhouds element van het typo &quot;Formulier&quot; is, staat hier het ontvangst emailadres.</label>
-			<label index="subheader.details">Een subkop wordt alleen met het &quot;Kop&quot; inhoudselement weergegeven.
-
-&lt;b&gt;Merk op:&lt;/em&gt; Wanneer u het type &quot;Formulier&quot; gebruikt, wordt dit veld ontvanger emailadres genoemd, en bevat het emailadres van de ontvanger van het formulier. Het is daarom van belang gebruikers toegang te geven tot dit veld.</label>
-			<label index="bodytext.description">Voer de inhoud in.</label>
-			<label index="bodytext.details">Hier voegt u de tekst toe van een inhoudselement. U kan enkele HTML tags gebruiken om de tekst op te maken. Als u de Internet Explorer gebruikt kunt u de tekst zelfs visueel opmaken.
-Dit veld wordt hergebruikt in vrijwel alle andere typen.
-
-Wanneer u dit veld gebruikt bij de &quot;Tekst&quot; en &quot;Tekst met afbeeldingen&quot; typen, wordt de inhoud gebruikt als gewone tekst. Elke 'linebreak' betekent een nieuwe paragraaf. U kan de speciale TYPO3 tags gebruiken, &amp;lt;LINK&amp;gt;, &amp;lt;TYPOLIST&amp;gt;, &amp;lt;TYPOHEAD&amp;gt; en &amp;lt;TYPOCODE&amp;gt;. Het &amp;lt;TABLE&amp;gt; element is één van de weinige HTML tags die u niet kunt gebruiken.
-
-Wanneer het type &quot;Bulletlijst&quot; is, stelt elke regel een nieuw opsommingsteken voor.
-
-Bij het type &quot;tabel&quot; representeert elke regel een rij. Binnen een rij scheidt u de kolommen met behulp van een vertikaal streepje '|'. Een tabelrij met drie kolommen ziet er dan als volgt uit: &quot;Dit is kolom1 | Kolom 2 hier | Derde Kolom!&quot;
-
-Types zoals &quot;Script&quot;, &quot;Formulier&quot; en &quot;Multimedia&quot; gebruiken dit veld voor parameters die je met het element kunt meegeven.
-Het &quot;HTML&quot; element accepteert de invoer als schone HTML code die eenvoudig weg wordt weergegeven zonder verdere bewerking.
-
-&lt;strong&gt;Rich Text Editor&lt;/strong&gt;
-Bij de types &quot;Tekst&quot;, &quot;Tekst met afbeeldinge&quot; en &quot;Rich Text&quot; wordt de Rich Text Editor gebruikt wanneer Internet Explorer wordt gebruikt voor de bewerkingen (daarvoor moet de editor wel in het systeem beschikbaar zijn gesteld). Let op dat de inhoud wordt &quot;geschoond&quot; voor dat het in de database wordt opgenomen als je de &quot;Tekst&quot; en &quot;Tekst met afbeeldingen&quot; typen gebruikt. Het &quot;Rich Text&quot; type voert de inhoud door zonder verdere bewerking.
-
-&lt;b&gt;Een formulier maken:&lt;/b&gt;
-Wanneer het elementtype &quot;Formulier&quot; wordt gekozen dan moeten de regels met parameters ingevoerd worden in dit veld.
-Dit is een kort voorbeeld:
-
-&lt;nobr&gt;
-Je naam: | *naam=input,40 | [Voer naam in]
-Je email: | *email=input,40
-Je adres: | *adres=textarea,40,10
-Je kleur haar: | haar=radio|Blauw=blue, Rood=red
-
-|formtype_mail = submit | Verzend formulier
-|subject=hidden| Voer hier een onderwerp in!
-|html_enabled=hidden | 1
-&lt;/nobr&gt;
-
-De eerste twee regels maken invoervelden voor naam en email, beide zijn aangemerkt als 'verplicht' door middel van de '*' en het naamveld heeft een standaard waarde van '[Voer naam in!]'.
-De derde regel is een tekstvak en de vierde maakt radioknoppen om de haarkleur te kiezen.
-Dan volgen drie belangrijke regels aan het einde. De eerste maakt een verzendknop met het label &quot;Verzend formulier&quot;, de tweede regel is het onderwerp van de email die de ontvanger krijgt en de derde regel maakt dat de resultaten worden weergegeven als HTML-tabel.
-&lt;b&gt;Merk op:&lt;/b&gt; Voordat een formulier zal werken moet er een ontvangstadres worden ingevoerd. Het &quot;Ontvanger-email&quot; veld wordt hiervoor gebruikt (dit is eigenlijk het subkop veld!).</label>
-			<label index="text_align.description">Plaatst de inhoud links, gecentreerd of rechts.</label>
-			<label index="text_align.details">Zie Pagina inhoud / Lettertype voor informatie.</label>
-			<label index="text_face.description">Selecteer een lettertype voor de platte tekst.</label>
-			<label index="text_face.details">&lt;strong&gt;Let op&lt;/strong&gt; dat deze opties alleen bedoeld zijn voor speciale ontwerpen. Het algemene (standaard) ontwerp moet in het sjabloon zijn vastgelegd. Verder moet u deze opties niet gebruiken wanneer het sjabloon gebruik maakt van stylesheets en gebaseerd zijn op het gebruik van styles (CSS).</label>
-			<label index="text_size.description">Kies een grootte voor het lettertype.</label>
-			<label index="text_size.details">Zie Pagina inhoud / Lettertype voor informatie.</label>
-			<label index="text_color.description">Kies een kleur voor de tekst van de inhoud.</label>
-			<label index="text_color.details">Zie Pagina inhoud / Lettertype voor informatie.</label>
-			<label index="text_properties.description">Kies extra lettertype opties.</label>
-			<label index="text_properties.details">Deze opties selecteren de lettertype-eigenschappen voor de tekst. U wilt misschien slechts een deel van de tekst opmaken, gebruik dan de opmaak mogelijkheden van de Rich Text Editor.
-U kan ook gebruik maken van HTML tags:
-
-&amp;lt;B&amp;gt;&lt;strong&gt;Dit is Vet&lt;/strong&gt;&amp;lt;B&amp;gt;
-&amp;lt;I&amp;gt;&lt;strong&gt;Dit is Cursief&lt;/strong&gt;&amp;lt;I&amp;gt;
-&amp;lt;U&amp;gt;&lt;strong&gt;Dit is onderstreept&lt;/strong&gt;&amp;lt;U&amp;gt;
-
-Zie Paginainhoud / Lettertype voor details.</label>
-			<label index="image.description">Voeg een of meer afbeeldingen in.</label>
-			<label index="image.details">U kan zoveel afbeeldingen toevoegen aan het inhoudselement als gewenst.
-Afhankelijk van de configuratie van TYPO3, kunt u ze zelfs in elk gewenst formaat toevoegen. U hoeft zich geen zorgen te maken over afmetingen en compressie, omdat dit door TYPO3 intern wordt afgehandeld.
-
-Wanneer u het &quot;Tekst met afbeeldingen&quot; type kiest, is het van belang een goede positie te kiezen voor het afbeeldingenblok. Gebruik hiervoor de positie-keuze die hieronder wordt weergegeven (of wanneer u de afbeeldingenlijst aanklikt in de &quot;Classic backend&quot;). Zie de verwijzing naar Paginainhoud/Positie hieronder.
-U kunt afbeeldingen ook in meerdere kolommen weergeven, en een verwijzing maken zodat u een afbeelding kunt aanklikken om een vergroting te zien. Om maar een paar opties te noemen.
-
-&lt;em&gt;Waarschijnlijk zijn niet alle mogelijkheden beschikbaar. Dit is afhankelijk van je rechten op het systeem.&lt;/em&gt;</label>
-			<label index="imagewidth.description">Voer de breedte in van de afbeelding, in pixels.</label>
-			<label index="imagewidth.details">Het sjabloon bevat meestal een maximale breedte voor een afbeelding. Wanneer een afbeelding goed indeze ruimte past, hoeft de breedte niet te worden aangegeven. Deze optie stelt je in de gelegenheid de breedte te specificeren.</label>
-			<label index="imageheight.description">Voer de hoogte in van de afbeelding, in pixels.</label>
-			<label index="imageorient.description">Kies de positie van het blok met afbeeldingen, ten opzichte van de tekst.</label>
-			<label index="imageorient.details">De posities boven en onder de tekst spreken voor zich.
-De opties &quot;In tekst&quot; betekenen dat het afbeeldingenblok wordt weergegeven met de tekst ernaast. Wanneer u deze mogelijkheid kiest zal het sjabloon de afbeeldingen waarschijnlijk verkleinen, omdat ze niet dezelfde afmetingen kunnen hebben als de tekst er omheen moet komen te staan.
-Wanneer u kiest voor &quot;In tekst&quot; kunt u de opties boven of onder de afscheiding &quot;No wrap&quot; kiezen. Wanneer u kiest voor de optie &quot;In tekst&quot;, &quot;boven&quot; dan wordt de tekst &lt;em&gt;onder&lt;/em&gt; het afbeeldingenblok weergegeven als de tekst het einde van het blok bereikt. In andere woorden de tekst &lt;em&gt;vloeit rond&lt;/em&gt; het afbeeldingenblok. Wanneer je kiest voor &quot;In tekst&quot;, &quot;onder&quot;, dan vloeit de tekst niet onder het afbeeldingenblok maar wordt eenvoudigweg in de kolom voortgezet.
-Naast het visuele verschil zijn er ook technische aspecten. Want, als ervoor kiest de tekst om het afbeeldingenblok te laten vloeien, krijg u misschien een vreemd effect wanneer er onvoldoende tekst is: Opvolgende inhoudselementen worden over het afbeeldingenblok heen afgebeeld - dit ziet er zeker uit als een bug. Het is echter eenvoudig op te lossen door de &quot;In tekst&quot; positie te wijzigen in &quot;onder&quot;</label>
-			<label index="imageborder.description">Vink deze optie aan wanneer u een gekleurde rand om de afbeelding wilt.</label>
-			<label index="image_noRows.description">Schakelt stricte 'tablerows' uit in het afbeeldingenblok.</label>
-			<label index="image_noRows.details">Deze optie is moeilijk uit te leggen, maar stelt u zich voor dat u twee of meer kolommen &lt;em&gt;en&lt;/em&gt; en rijen met afbeeldingen heeft. Wanneer een afbeelding in de bovenste rij iets groter is dan de tweede, dan genereert dit extra lege ruimte onder de tweede afbeelding. Dit is het gevolg van de algemene procedure, waarbij elke afbeeldingen in een cel binnen een tabel wordt geplaatst.
-Wanneer u deze optie kiest, plaatst de tabel de afbeeldingen elk in enkele cel, waardoor de verticale afstand in de hele tabel identiek wordt. Dit levert een betere lay-out, wanneer de standaard opmaak er niet goed uitziet.</label>
-			<label index="image_link.description">Voer een verwijzing in voor de afbeeldingen.</label>
-			<label index="image_link.details">Standaard delen alle afbeeldingen dezelfde verwijzing. U kunt de beheerder echter vragen het sjabloon zo aan te passen, dat elke afbeelding zijn eigen verwijzing heeft. In dat geval scheidt u de verwijzingen eenvoudigweg door een komma.
-
-Zie Pagina inhoud&gt;Verwijzing onder voor details over de syntaxis.</label>
-			<label index="image_zoom.description">Kies deze optie en de afbeelding opent een nieuw venster met de originele versie.</label>
-			<label index="image_zoom.details">Deze optie overruled de waarde in het verwijzing-veld.</label>
-			<label index="image_effects.description">Kies een speciaal afbeeldingbewerkingseffect.</label>
-			<label index="image_frames.description">Selecteer een speciaal afbeeldingsomranding effect.</label>
-			<label index="image_compression.description">Kies compressie/kwaliteits opties.</label>
-			<label index="imagecols.description">Kies het aantal kolommen in het afbeeldingenblok.</label>
-			<label index="imagecaption.description">Kies een beschrijving voor het afbeeldingenblok.</label>
-			<label index="imagecaption.details">Standaard wordt de beschrijving onder het totale afbeeldingenblok geplaatst. Echter het sjabloon van de website kan zijn ingericht voor individuele beschrijvingen per afbeelding. In dat geval is elke regel in dit veld een beschrijving van de overeenkomende afbeelding.
-
-Het beschrijvings tekst veld wordt ook gebruikt bij het type &quot;Bestandskoppelingen&quot; waar elke regel een beschrijving van het bestand in de lijst bevat.</label>
-			<label index="imagecaption_position.description">Plaatst de afbeeldingsbeschrijving links, gecentreerd of rechts.</label>
-			<label index="cols.description">Kies een vast aantal kolommen.</label>
-			<label index="pages.description">Voeg pagina('s) in.</label>
-			<label index="pages.details">Met dit veld kunt u een relatie leggen met één of meerdere pagina's in TYPO3. Dit veld wordt door veel van de typen gebruikt. Wanneer u geen pagina specificeert, wordt in de meeste gevallen de huidige pagina gebruikt.
-
-Wanneer u het type &quot;Zoek&quot; gebruikt, dan wordt hier de pagina ingevoerd waarop de zoekopdracht moet worden uitgevoerd. U dient er zeker van zijn dat die pagina een vergelijkbaar &quot;Zoek&quot; element bevat om de zoekresultaten te kunnen weergeven. Anders werkt het niet.
-
-Het &quot;Aanmelden&quot; type gebruikt dit veld ook om de aanmelding naar een bepaalde pagina te verwijzen. Die pagina hoeft echter geen logininhoudselement te bevatten om de aanmelding te kunnen verwerken - u kunt een aanmelding naar elke willekeurige TYPO3 pagina laten verwijzen en de aanmelding zal worden verwerkt!
-Wanneer u een tweede pagina in deze lijst aangeeft, dan wordt de id doorgegeven aan het aanmeldsysteem als de pagina in TYPO3 waar de database met gebruikers zich bevindt. U dient dit alleen te gebruiken als het sjabloon niet is geconfigureerd om deze waarde door te geven.
-Om de aanmeldprocedure te laten werken, moet u er zeker van zijn dat 1) u tenminste één website gebruiker en één gebruikersgroep hebt aangemaakt en de juiste gebruikersnaam en het juiste wachtwoord gebruikt, 2) U in het TypoScript sjabloon hebt aangegeven op welke pagina (gewoonlijk een SysFolder) de gebruikers gevonden kunnen worden - of dit hebt gespecificeerd door middel van de tweede pagina in deze lijst, 3) cookies zijn aangezet.
-
-Het &quot;Menu/Sitemap&quot; element gebruikt dit veld ook. In dit geval bepalen de pagina('s) vanaf welk punt het menu wordt gemaakt of kan zelfs de actuele pagina's bevatten die in het menu moeten verschijnen. Dit hangt allemaal af van het onderliggende type vban &quot;Menu/Sitemap&quot; dat is geselecteerd.
-
-Tenslotte gebruikt het &quot;Formulier&quot; element dit veld als de pagina waaraan het formulier wordt verzonden. U kunt dit dus gebruiken om te verwijzen naar de &quot;Hartelijk dank voor uw reactie&quot; pagina van je formulier.</label>
-			<label index="recursive.description">Kies hoeveel subniveau's extra moeten worden geselecteerd voor elke pagina in de lijst.</label>
-			<label index="recursive.details">Of deze mogelijkheid zin heeft of niet, hangt volkomen af van het sjabloon en het gekozen type inhoudselement, maar wanneer deze optie is ingeschakeld wordt voor elke pagina die in het vak &quot;Startpunt&quot; staat &lt;em&gt;ook&lt;/em&gt; het aantal onderliggende pagina's geselecteerd dat hier wordt aangegeven!
-&lt;strong&gt;Waarschuwing:&lt;/strong&gt; Wanneer er veel onderliggende pagina's zijn, pas dan op met deze optie. Het kan dan een ongelooflijk aantal pagina's selecteren!</label>
-			<label index="menu_type.description">Kies welk type menu u wilt maken.</label>
-			<label index="menu_type.details">Dit is een korte beschrijving van elk type:
-
-&lt;strong&gt;Menu van deze pagina's&lt;/strong&gt;
-Dit resulteert in een lijst met verwijzingen naar de bladzijden die zijn toegevoegd vanaf het Startpunt.
-
-&lt;strong&gt;Menu van onderliggende pagina's van deze pagina's&lt;/strong&gt;
-Dit resulteert in een lijst met verwijzingen naar de onderliggende pagina's van de pagina's in het Startpunt. Wanneer je geen Startpunt definiëert, worden onderliggende pagina's van de huidige pagina geselecteerd.
-
-&lt;strong&gt;Menu van onderliggende pagina's van deze pagina's (met samenvatting)&lt;/strong&gt;
-Als voorgaande, maar deze lijst bevat tevens de inhoud van de Samenvattingsvelden avn de pagina's.
-
-&lt;strong&gt;Menu van onderliggende pagina's van deze pagina's + secties&lt;/strong&gt;
-Als voorgaande, maar deze lijst bevat tevens submenu verwijzingen naar alle inhouds elementen op de pagina's waar het &quot;Index&quot; vakje is aangevinkt.
-
-&lt;strong&gt;Sitemap&lt;/strong&gt;
-Genereert een klassieke boomweergave van de site. Wellicht is je TypoScript template geconfigureerd om de sitemap op een andere manier weer te geven, in elk geval levert dit een sitemap op. Let op dat de sitemap vanaf de huidige pagina begint, tenzij u een andere Startpunt-pagina aangeeft in de onderstaande lijst.
-
-&lt;strong&gt;Sectie index (pagina inhoud met Index aangevinkt&lt;/strong&gt;
-Dit maakt een menu met de inhouds elementen op deze pagina (of de pagina aangegeven in het Startpunt).
-Een geweldige manier om een index te maken boven aan de bladzijde.
-Let op dat alle elementen waar &quot;Index&quot; is aangevinkt worden geselecteerd. Als u dus wilt dat bepaalde elementen niet in de lijst verschijnen, zorg er dan voor dat &quot;Index&quot; voor deze elementen niet is aangevinkt.
-
-&lt;strong&gt;Recent bijgewerkte pagina's&lt;/strong&gt;
-Dit geeft de 10 meest recent bijgewerkte pagina's weer.
-&lt;strong&gt;Merk op:&lt;/strong&gt; Wanneer u een pagina bijwerkt en deze lijst niet wordt aangepast, wis dan de cache van de pagina en het probleem is opgelost.
-
-&lt;strong&gt;Gerelateerde pagina's (gebaseerd op trefwoorden)&lt;/strong&gt;
-Geeft gerelateerde pagina's weer gebaseerd op de trefwoorden voor deze pagina die overeenkomen met trefwoorden van andere pagina's.
-
-&lt;strong&gt;&lt;em&gt;Merk op:&lt;/em&gt;&lt;/strong&gt; Bij veel van de genoemde menutypen is het standaardStartpunt de huidige pagina. U kunt echter een ander Startpunt (of meerdere!) definiëren door pagina's toe te voegen aan de Startpunt-lijst. Zie ook verwijzing hieronder.</label>
-			<label index="list_type.description">Kies een module die u wilt invoegen (Beschikbaarheid is afhankelijk van het sjabloon)</label>
-			<label index="list_type.details">Het is erg belangrijk dat u de noodzakelijkheid onderkent om specifieke modules ook in het TypoScript sjabloon van de website te installeren. Dit wordt door de beheerder gedaan. Wanneer een module voor het eerst in een sjabloon is opgenomen en juist is geconfigureerd, dan wordt het &quot;Voeg module in&quot; inhouds element gebruikt om de functionaliteit van de module op de juiste plaats in de website toe te voegen. Dit is een erg flexibele manier om dit te doen, omdat u helemaal zelf bepaalt waar het gastenboek, forum, winkel enz verschijnt.
-
-Dit is een beschrijving van de opties:
-
-&lt;strong&gt;&lt;u&gt;LIJSTEN:&lt;/u&gt;&lt;/strong&gt;
-(In het algemeen is deze onderverdeling van opties gericht op het opsommen van records op de pagina).
-
-&lt;strong&gt;Gastenboek&lt;/strong&gt;
-Geeft de gastenboek records weer op de pagina. Let op dat u een speciale code in het CODE-veld moet invoeren om het gastenboek te activeren. Er wordt een uitleg weergegeven wanneer de module invoegt zonder code.
-
-&lt;strong&gt;Board&lt;/strong&gt;
-Geeft de discussie-board records weer op de pagina. Dit is afhankelijk van de inhoud van het CODE-veld. Er wordt een uitleg weergegeven wanneer de module invoegt zonder code.
-
-&lt;strong&gt;Producten&lt;/strong&gt;
-Somt de producten (of winkel-items) op. Mogelijk wordt ook een winkelmandje of een zoekvenster weergegeven afhankelijk van de inhoud van het CODE-veld. Er wordt een uitleg weergegeven wanneer de module invoegt zonder code.
-
-&lt;strong&gt;Nieuws&lt;/strong&gt;
-Geeft nieuwsonderwerpen, teasers, uitgebreide lijsten of complete onderwerpen weer. Dit is afhankelijk van de inhoud van het CODE-veld. Er wordt een uitleg weergegeven wanneer de module invoegt zonder code.
-
-&lt;strong&gt;Adres&lt;/strong&gt;
-Geeft de adres records weer die op de pagina worden gevonden.
-
-&lt;strong&gt;To-Do&lt;/strong&gt;
-Geen standaardweergaven. Moet worden gespecificeerd.
-
-&lt;strong&gt;Kalender&lt;/strong&gt;
-Geen standaardweergaven. Moet worden gespecificeerd.
-
-&lt;strong&gt;Verwijzingen&lt;/strong&gt;
-Geen standaardweergaven. Moet worden gespecificeerd.
-
-&lt;strong&gt;MODULES&lt;/strong&gt;
-
-&lt;strong&gt;Waardering&lt;/strong&gt;
-Voegt een waarderingselement in op de pagina.
-
-&lt;strong&gt;Geïndexeerde zoekopdracht&lt;/strong&gt;
-Voegt een zoekveld en een resultatenpagina in voor de geïndexeerde zoekmachine.
-
-&lt;strong&gt;Tip-een-vriend&lt;/strong&gt;
-Voegt een verwijzing (of formulier weergave) naar de &quot;Tip-een-vriend&quot; optie toe. Er wordt een uitleg weergegeven wanneer u de module invoegt zonder een code.
-
-&lt;strong&gt;BEHEER&lt;/strong&gt;
-
-&lt;strong&gt;Frontend gebruikersbeheer&lt;/strong&gt;
-Voegt een bewerkingsveld in voor het toevoegen en bewerken van frontend gebruikers van de website.
-
-&lt;strong&gt;DirectMail abonnement&lt;/strong&gt;
-Voegt een bewerkingsveld in voor het abonneren en onderhouden van abonnementen voor DirectMail ontvangers. Dit is niet beperkt tot de DirectMail mogelijkheden, maar kan ook gebruikt worden om een online adreslijst te maken waarbij iedereen die vermeld is zijn eigen gegevens kan beheren.
-In principe geeft deze optie toegang tot de adrestabel in TYPO3.
-
-Het &quot;Startpunt&quot; wordt gebruikt in sommige van de bovenvermelde opties om aan te geven vanaf welke pagina records worden geselecteerd.
-Wanneer u niets invoert wordt gewoonlijk de huidige pagina gebruikt.</label>
-			<label index="select_key.description">Voer een code string in.</label>
-			<label index="select_key.details">Of de inhoud van dit veld wordt gebruikt en op welke manier, is afhankelijk van de context.</label>
-			<label index="table_bgColor.description">Kies een achtergrondkleur voor de tabel.</label>
-			<label index="table_border.description">Kies een randdikte voor de tabel.</label>
-			<label index="table_cellspacing.description">Kies een celspatiëring voor de tabel.</label>
-			<label index="table_cellspacing.details">Celspatiëring is de afstand tussen cellen in rijen en kolommen. De afstand wordt gelijkelijk verdeeld in alle richtingen (top, bottom, left en right).</label>
-			<label index="table_cellpadding.description">Kies de 'cellpadding' voor de tabel.</label>
-			<label index="table_cellpadding.details">Cell padding is de interne marge van een cel. De afstand wordt gelijkelijk verdeeld in alle richtingen (top, bottom, left en right).</label>
-			<label index="media.description">Voeg bestanden aan de lijst toe</label>
-			<label index="multimedia.description">Voeg het multimedia element in, bijv. een flash-animatie.</label>
-			<label index="filelink_size.description">Vink aan, wanneer de bestandsgrootte moet worden weergegeven.</label>
-			<label index="records.description">Voeg verwijzingen naar records toe.</label>
-			<label index="spaceBefore.description">Voer de hoeveelheid witte ruimte (in pixels) in die &lt;em&gt;voor&lt;/em&gt; dit element worden ingevoegd.</label>
-			<label index="spaceAfter.description">Voer de hoeveelheid witte ruimte (in pixels) in die &lt;em&gt;na&lt;/em&gt; dit element worden ingevoegd.</label>
-			<label index="section_frame.description">Kies een randoptie voor dit element.</label>
-			<label index="splash_layout.description">Kies het ontwerp voor het tekstvak.</label>
-			<label index="splash_layout.details">&lt;strong&gt;Merk op:&lt;/strong&gt; Het textbox type heeft een aantal standaardweergaven, maar ze zijn primair gedefiniëerd voor maatwerk toepassingen. Daarom is de beschikbaarheid van mogelijkheden afhankelijk van het huidige website sjabloon.</label>
-			<label index="sectionIndex.description">Wanneer gekozen, komt het inhoudselement voor in de sectie indices.</label>
-			<label index="sectionIndex.details">Zie details voor het Menu-type (klik hieronder)</label>
-			<label index="linkToTop.description">Wanneer gekozen, verschijnt een kleine 'naar boven&quot; verwijzing na het inhoudselement</label>
-			<label index="rte_enabled.description">Wanneer gekozen, wordt de Richt Text Editor uitgeschakeld voor de typen &quot;Tekst&quot; en &quot;Tekst met afbeelding&quot; (&lt;em&gt;alleen binnen dit element&lt;/em&gt;).</label>
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-			<label index=".description">Kaikki näkyvä sisältö TYPO3n web sivuilla tyypillisesti koostuu tai esitetään &quot;Sivusisältö&quot; (Pagecontent) tietueilla.</label>
-			<label index=".details">&quot;sivunsisältö&quot; (&quot;Pagecontent&quot;) tietueet ovat järjestyksessä (indeksoituina) ja siksi ne voidaan järjestellä uudestaan. Huomaa myös että &quot;Kieli&quot; (&quot;Language&quot;) ja &quot;Sarake&quot; (&quot;Column&quot;) valinnat &quot;Sivunsisältö&quot; tietuissa merkitsevät kuinka ja miten sijoitteuina ne näytetään. Jos et muuta &quot;Kieli&quot; tai &quot;Sarake&quot; tiietojen arvoja voit olla varma että sisältö elementti tulee näkyviin oletusarvoisesti.</label>
-			<label index="CType.description">Valitse minkälaista sivun sisältöä elemntti esittää. Uusia vaihtoehtoja tulee esiin tallentaessasi tietueen.</label>
-			<label index="CType.details">Sisällön tyyppi, jonka olet valinnut, määrittelee minkälaisia vaihtoehtoja ssinullaon käytettävissä muokkauslomakkeella, joten ole varma että tallensit tietueen ennenkuin teet muutoksia.
-
-Tässä on kuvaus erilaisista tyypeistä:
-
-&lt;strong&gt;Otsikko (Header)&lt;/strong&gt;
-Tällä tyypillä lisäät sisällöksi vain otsikon, ei muuta.
-Lähes kaikki muut allaesitettävät tyypit sisältävät Otsikko tyypin samoin vaihtoehdoin. Joten Otsikko tyyppi antaa mahdollisuuden lisätä vain pelkän otsikon ei muuta.
-
-&lt;strong&gt;Teksti (Text)&lt;/strong&gt;
-Teksti tyypillä lisäät tavallisen sivun sisällön.
-
-&lt;strong&gt;Teksti kuvalla (Text w/image)&lt;/strong&gt;
-Tämä on sama kuin edellinenkin mutta sisältää vaihtoehdon lisätä kuva elementtejä.
-
-&lt;strong&gt;Rich Text&lt;/strong&gt;
-Tällä tyypillä on merkitystä vain jos käytät Rich Text Editor aliohjelmistoa muokataksesi tekstiä käyttäen työkalupalkkia samankaltaisesti kuin käytät Word tekstinkäsittelyä. Vaikka sinulla on käytössä samat vaihtoehdot kuin Teksti ja Teksti kuvallatyypeissä tarjoaa Rich Text tyyppi muutamia lisämahdollisuuksia, kuten esimerkiksi taulukon muokkauksen.
-&lt;strong&gt;Huomaa:&lt;/strong&gt; että sisältöä joka on tehty Rich Text editoria käyttäen &lt;em&gt;ei&lt;/em&gt; ole esikäsitelty mitenkään. Aliohjelma onkin käsitettävä WYSIWYG HTML editoriksi.
-
-&lt;strong&gt;Kuva&lt;/strong&gt;
-On sama kuin Teksti kuvalla (Text w/image) mutta ilman tekstiä - siis ainoastaan kuvia.
-
-&lt;strong&gt;Luetelma lista (Bullet list)&lt;/strong&gt;
-Tällä voidaan luoda Luetelma lista (bullet list). Each line in the text-field will appear as a single line in the bulletlist.
-
-&lt;strong&gt;Taulu (Table)&lt;/strong&gt;
-Tällä voidaan luoda &lt;em&gt;yksinkertaisia&lt;/em&gt; tauluja. Jokainen rivi muodostaa taulunrivin ja pystyviivat '|' erottavat sarakkeet.
-
-&lt;strong&gt;Tiedostolinkki (Filelinks)&lt;/strong&gt;
-Tällä voit tehdä listan imuroitavista tiedostooista. Listaan voidaan liittää pienoiskuvakkeet ja tiedostokoot.
-
-&lt;strong&gt;Multimedia (Multimedia)&lt;/strong&gt;
-Voit lisätä multimedia elementtejä kuten ääni, video, java appleteja ja flash animatioita.
-
-&lt;strong&gt;Lomake (Form)&lt;/strong&gt;
-Voit luoda sähköpostilomakkeen. Lomakkeen tietokenttien luomiseksi on käytettävissä erillinen syntaksi.
-
-&lt;strong&gt;Haku (Search)&lt;/strong&gt;
-Tämä lisää hakulaatikon. Se näyttää myös hakutulokset jos kysely suoritetaan sivulle.
-
-&lt;strong&gt;Sisäänkirjoitus (Login)&lt;/strong&gt;
-Näyttää sisäänkirjoitus laatikon (Login box) sivuston käyttäjille. Sinun on luotava vähintään yksi websivuston käyttäjä sekä käyttäjäryhmä jotta tällä toiminnolla olisi mitään merkitystä.
-
-&lt;strong&gt;Teksti laatikko (Textbox)&lt;/strong&gt;
-Tämä on tarkoitettu normaalisti kustomointi tarkoituksiin ja tavallisesti sisältää jotain tekstiä ja kuvan.Toisin sanoen toiminto ei yleiseti ole määritelty.
-Kuitenkin oletuksena olevat alatyypit antavat Sinullemahdollisuuden valita erilaisista tavaoista näyttää tekstiä kuvan kanssa.
-Käytä tätä vain jos Sinua kehoitetaan tekemään niin.
-
-&lt;strong&gt;Valikko/Sivustorakenne (Menu/Sitemap)&lt;/strong&gt;
-Tätä voit käyttää tehdessäsi sivulle erilaisia valikkohakemistoja tai sivustonrakenne karttoja.
-
-&lt;strong&gt;Lisää tietueita (Insert records)&lt;/strong&gt;
-Tämä on paikka muille tietueille. Toisin sanoen, tällä elementillä voit liittää muita sisältöelementtejä muualta ja lisätä ne tällt sivulle.
-
-&lt;strong&gt;Lisää aliohjelma (Insert module)&lt;/strong&gt;
-Tällä lisäät aliohjelman (modulin) esimerkiksi keskustelufoorumin, vieraskirjan, osoitelista, kauppasovelluksen jne.. Useat ominaisuudet ovat käytettävissä &lt;em&gt;vain&lt;/em&gt; jos ne on konfiguroitu oikein sivustosi mallinteessa. Joten ennen modulin lisäystä, varmista että käyttö on mahdollista.
-
-&lt;strong&gt;Skripti (Script)&lt;/strong&gt;
-Tämä on varattu kustomointi tarkoituksiin missä mallinteen kehittäjä voi kutsua erityisen sivun sisältö elementin identifiointikoodia käyttäen, jotta saat sisällön näkyviin.
-
-&lt;strong&gt;HTML&lt;/strong&gt;
-Tämä on tavallinen HTML-koodillinen sisältö. Sisältö näytetään sivulla aivan kuten se on tähän kirjoitettu mitään käsittelyä sivulle ei tehdä.</label>
-			<label index="hidden.description">Merkkaa tämäboxi jos haluat piilottaa sisällö elementtiä näkymästä.</label>
-			<label index="starttime.description">Anna päiväys josta alkaen sisältö elementti on näkyvillä.</label>
-			<label index="endtime.description">Anna päiväys josta alkaen sisältö elementti poistuu näkyvistä.</label>
-			<label index="fe_group.description">Anna websivuston käyttäjäryhmä jolla ainoastaan on oikeudet nähdä sisältöelementti.</label>
-			<label index="fe_group.details">Vaihtoehdot tässä boksissa riippuvat mitä websivuston käyttäjäryhmiä on luotu ja mitkä niistä ovat Sinun käytettävissä. Kun valitset tässä käyttäjäryhmän ei sisältö ole enää näkyvissä niille käyttäjäryhmille jotka eivät kuulu tähän ryhmään eivätkä ole sisäänkirjoittautuneita.
-Jos valitset &quot;Piilota loginissa&quot; (&quot;Hide at login&quot;) on vaikutus päivästainen eli elementti &lt;em&gt;katoaa&lt;/em&gt; niiltäkäyttäjiltä jotka ovat sisäänkirjoittautuneet.
-Tällä tavalla voit esimerkiksi piilottaa jo rekisteröityneiltä käyttäjiltä &quot;Kuinak rekisteröidut&quot; informaation.</label>
-			<label index="sys_language_uid.description">Valitse tämänelementin järjestelmäkieli,&lt;strong&gt;Huomaa&lt;/strong&gt; tämä vaikuttaa myös on sisältö näkyvissävai ei.</label>
-			<label index="sys_language_uid.details">Tämä antaa Sinullemahdollisuuden asettaa tietty kieli sisältö elementille. Jos valitset minkä muun kuin &quot;oletus&quot; arvon, &lt;em&gt;ei&lt;/em&gt; elementti tule näkyville jos kieltä ei ole asetettu myös TyåoScript mallinteeseen.
-Käytettävät järjestelmän kielet määrittelee administraattori.</label>
-			<label index="layout.description">Valitse layout.</label>
-			<label index="layout.details">Tätä vaihtoehtoa ei ole käytetty oletus (vakio) mallinteissa mutta sitä voidaan käyttää missä tahansa muussa, kustomoidussa sisällön tulostamisessa.
-
-On olemassa joukko oletusratkaisuja jotka riippuvat sisältöelementin tyypistä:
-
-&lt;b&gt;&quot;Tiedostolinki&quot; (&quot;Filelinks&quot;)&lt;/b&gt;
-&quot;Normal&quot; lista tiedostolinkeista ilman pienoiskuvia.
-&quot;Layout 1&quot; lisää tiedostoikonin linkin vasemmalle puolelle.
-&quot;Layout 2&quot; lisää pienoiskuvan jos tiedosto on kuva muttei ikoni. Pienoiskuvassa on musta reunus.
-&quot;Layout 3&quot; on kuin &quot;Layout 2&quot; mutta ilman pienoiskuvan mustaa reunusta.
-
-&lt;b&gt;Lisää lista (&quot;Insert list&quot;) / Board&lt;/b&gt;
-TYPO3ssaon kaksi sisäänrakennettua keskustelutaulua, Lista taulu ja Puurakenne taulu. Lista taulu lisätään &quot;Normal&quot; layoutilla kun taas Puurakenne taulu lisätään käyttäen &quot;Layout 1&quot; tyyppiä. &lt;i&gt;Ole varovainen tämän kanssa! Jos valitset väärän tyypin ei näkyville tule mitään&lt;/i&gt;.</label>
-			<label index="colPos.description">Aseta tälle elementille sarakkeen asema. &lt;strong&gt;Huomaa &lt;/strong&gt;tämä vaikuttaa myös on elementti näkyvissä.</label>
-			<label index="colPos.details">Useimmat websivustot käyttävät vain yhtä saraketta. Jotkut mallineet sallivat Sinun laittavan sisältöeöementtejä useille sarakkeille ja tällä vaihtoehdolla valitset toisen (kuin oletus) sarakkeen elementille.
-
-&lt;strong&gt;Huomaa&lt;/strong&gt; valitsemalla muun kuin &quot;Normaali&quot; (&quot;Normal&quot;) sarakkeen häviää sisältöelementti näkyvistä jos tätä saraketta ei ole määritelty websivuston mallinteessa. Jos sisältö elementti 'kummallisti' ei tulekkaan näkyviin tarkista &quot;Sarake&quot; (&quot;Column&quot;) ka &quot;Kieli&quot; (&quot;Language&quot;) vaihtoehtojen sisältö.</label>
-			<label index="date.description">Anna päiväys joka näytetään otsikon yläpuolella.</label>
-			<label index="date.syntax">Syntaksi, katso Sivut / Näytä (Page / Start) alapuolella.</label>
-			<label index="header.description">Anna otsikko sisältöelementille.</label>
-			<label index="header.details">Lähes kaikki sisältöelementti tyypit (paitsi HTML tyyppi) näyttävät tämän otsikon sisällön yläpuolella. Jos et halua otsikon näkyvän valitse otsikon layoutiksi &quot;Piilotettu&quot; (&quot;Hidden&quot;), Vaihtoehtoisesti  voit jättää tämän sisällön pois.
-
-Jotkin sisältöelementit eivät näytä otsokkoa oletuksena. Näissä tapauksissa otsikko kentän nimi on silloin tyypillisesti &quot;Nimi&quot; (&quot;Name&quot;). Eräs näistä sisältöelementeistä on HTML tyyppi.</label>
-			<label index="header_position.description">Asettaa otsikon tasauksen vasemmalle, keskelle tai oikealle.</label>
-			<label index="header_link.description">Luo linkin otsikosta. Lisää sivun id, email osoite tai URL.</label>
-			<label index="header_link.syntax">Jos lisäät id-numeron, esim. &quot;51&quot;, linkik osoittaa TYPO3n &lt;em&gt;sisällä&lt;/em&gt; sivulle käyttäen id=51 osoitteessa.
-Jos lisäät sähköpostiosoitteen, esim. &quot;name@my-domain.test&quot;, linkki osoittaa tähän sähköpostiosoitteeseen.
-Jos lisäät URL tai domain tiedon, esim. &quot;www.typo3.com&quot; tai &quot;http://www.my-domain.org&quot;, linkki osoittaa tuohon websivustoon.</label>
-			<label index="header_layout.description">Valitse otsikon ulkonäön esitystapa.</label>
-			<label index="header_layout.details">Jos valitsit oletusarvon &quot;Default&quot; käytetään vakioesitystä (joka on jokin Layout 1-5stä).
-Voit vaihtoehtoisesti valita jonkin Layout 1-5:stä jotka on konfiguroitu kukin yksilöllisesti websivuston mallinteeseen.
-Jos valitset piilotetun &quot;Hidden&quot; otsikko ei yksinkertaisesti tule näkyviin. Tämä on käyttökelpoinen ratkaisu jos haluat otsikon näkyvän taustatoiminnoissa mutte halua sitä näkyviin varsinaisella websivustolla.</label>
-			<label index="subheader.description">Anna alaotsikko. Tämä näytetään tavallisen otsikon alapuolella.Jos sisältöelementti on Lomake (FORM) tietosisältö on vastaanottajan email osoite.</label>
-			<label index="subheader.details">Alaotsikko näytetään vain Otsikko (Header) sisältö elementin yhteydessä.
-
-&lt;b&gt;Huomaa:&lt;/b&gt; Jos sisältöelementti on Lomake (Form) tietosisältö on vastaanottajan email osoite ja tietokentän nimi on Vastaanottajan-email (Recipient-email). Siksi on tärkeää että käyttäjillä on pääsyoikeus tähän tietokenttään.</label>
-			<label index="bodytext.description">Anna leipäteksti.</label>
-			<label index="bodytext.details">Tällä annat sisältö elementin rungon leipätekstin. Voit käyttää muotoiluun muutamia HTML tageja, mutta jos käytät Internet Exploreria voit muotoilla tekstiä myös visuaalisesti.
-Useimmat tyypit käyttävät tätä tietokenttää ja vaihtamalla tyyppiä sen sisältö useimmiten siirtyy mukana tyyppiä vaihdettaessa.
-
-Kun käytät tätä tietokenttää Tekstinä (Text) tai Teksti kuvalla (Text w/Image) tyyppeinä, on kentän sisältö normaalia tekstiä. Jokainen rivinvaihto saa aikaan uuden kappaleen. Voit myös käytät erityisiä TYPO3 tageja,  &amp;lt;LINK&amp;gt;, &amp;lt;TYPOLIST&amp;gt;,  &amp;lt;LINK&amp;gt;, &amp;lt;TYPOLIST&amp;gt;, &amp;lt;TYPOHEAD&amp;gt; ja &amp;lt;TYPOCODE&amp;gt; . Kuitenkin &amp;lt;TABLE&amp;gt;  on elementti eräs harvoista HTML-elementeistä jota et voi käyttää.
-
-Jos tyyli on Luetelmalista (Bulletlist) on jokainen rivi oma luetelma (vrt. ranskalainen viiva)
-
-Jos tyyppi on Taulu (Table) on jokainen rivi oma taulukon rivi. Jokaisella rivillä erotteletsarakeet pystyviivalla, |.
-Joten teet 3 sarakkeisen talukko rivin esim. &quot;Sarake 1 | Sarake 2 | Sarake 3&quot;.
-
-Tyypit kuten Skripti (&quot;Script&quot;), &quot;Sähköpostilomake&quot; (&quot;Mailform&quot;) ja &quot;Multimedia&quot; käyttävät tätä tietokentää parametreille jotka välittät elementille. Ja &quot;HTML&quot; tyyppi hyväksyy mitä tahansa &quot;raakaa&quot; HTML koodi ja se yksinkertaisesti näytetään sivulla ilman mitään prosessointia.
-
-&lt;strong&gt;Rich Text Editor:&lt;/strong&gt;
-Tyyppejä &quot;Text&quot;, &quot;Text w/image&quot; ja &quot;Rich Text&quot;  voidaan muokata Rich Text tekstieditorilla Internet Explorer ohjelmaa käytettäessäis (edellyttää että editorin käyttö on sallittu järjestelmässsä). Huomaa että tyyppien &quot;Text&quot; ja &quot;Text w/Image&quot; sisältö &quot;siivotaan&quot; ennenkuin ne tallennetaan tietokantaan, mutta &quot;Rich Text&quot; editori jättää ne suuremmalti kajoamatta.
-
-&lt;b&gt;Tehdään sähköpostilomake:&lt;/b&gt;
-Kun valitse sisältöelementti tyypin &quot;Sähköpostilomake (&quot;Form&quot;)on sinun annettava joukko parametreja tähän tietokenttään. Tässä lyhyt esimerkki:
-
-&lt;nobr&gt;
-Nimesi: | *name=input,40 | [Anna nimesi]
-Email: | *email=input,40
-Osoitteesi: | address=textarea,40,10
-Tukan värisi: |hair=radio|Blue=blue, Red=red
-
-|formtype_mail = submit | Lähetä email
-|subject=hidden| Anna otsikko tähän!
-|html_enabled=hidden | 1
-&lt;/nobr&gt;
-
-Kaksi ensimmäistä riviä ovat input-kenttiä nimelle ja email osoitteelle, molemmat on merkitty &quot;pakollisiksi&quot; *-merkillä ja nimi kenttään on annettu oletuksena tieto &quot;[Anna nimesi!]&quot;.
-Kolmasrivi on tekstilaatikko ja neljännellä on valintanappi tukan värin valintaan.
-Lopussa on kolme tärkeää riviä. Ensimmäinen näistä on tallennusnappi jossa teksti 'Lähetä email', seuraava on emailin otsikko jonka vastaanottaja saa ja kolmas määrittelee onko lähetettävä viesti HTML muodossa (taulukkona) vai ei.
-&lt;b&gt;Huomaa:&lt;/b&gt; Ennenkuin lomake voi toimia, on vastaanottajan email osoite määriteltävä, tähän (Recipient-email) käytetään alaotsikkoa (Subheader) tietokenttää !!!</label>
-			<label index="text_align.description">Asettaa leipätekstin tasauksen vasemmalle, keskelle tai oikealle.</label>
-			<label index="text_align.details">Katso Sivunsisältö / Merkistö (Pagecontent / Fontface) lisäohjeita.</label>
-			<label index="text_face.description">Valitse käytettävä kirjainperhe leipätekstille.</label>
-			<label index="text_face.details">&lt;strong&gt;Huomaa &lt;/strong&gt; tämän vaihtoehdon olevan tarpeellinen vain eritysessä ulkonäön suunnittelussa. Yleensä (oletuksena) sivuston ulkonäkä tulee suunnitella websivuston mallinteella. Erityisestikään Sinun ei tule käyttää näitä vaihtoehtoja jos mallinteesi käyttää tyylilehti (styklesheet) ja perustuu yleisesti tyylien käytölle.</label>
-			<label index="text_size.description">Valitse kirjaisinkoko leipätekstille.</label>
-			<label index="text_size.details">Katso Sivunsisältö / Merkistö (Pagecontent / Fontface) lisäohjeita.</label>
-			<label index="text_color.description">Valitse leipätekstin väri.</label>
-			<label index="text_color.details">Katso Sivunsisältö / Merkistö (Pagecontent / Fontface) lisäohjeita.</label>
-			<label index="text_properties.description">Valitse muut merkkien ominaisuudet.</label>
-			<label index="text_properties.details">Näillä vaihtoehdoilla voidaan valita kaikkiin merkkeihin liittyvät ominaisuudet. Jos kuitenkin haluat muotoilla vain osaa tekstistä kuten vahventaa tai alleviivata, voit käyttää Rich Text editoria tai vaihtoehtoisesti käyttää HTML tageja kuten esimerkiksi:
-
-&amp;lt;B&amp;gt;&lt;strong&gt;Tämä on vahvennettu&lt;/strong&gt;&amp;lt;B&amp;gt;
-&amp;lt;I&amp;gt;&lt;strong&gt;Tämä on kursiivia&lt;/strong&gt;&amp;lt;I&amp;gt;
-&amp;lt;U&amp;gt;&lt;strong&gt;Tämä on alleviivattua&lt;/strong&gt;&amp;lt;U&amp;gt;
-
-Katso Sivunsisältö / Merkistö (Pagecontent / Fontface) lisäohjeita.</label>
-			<label index="image.description">Lisää yksi tai useampi kuva.</label>
-			<label index="image.details">Voit lisätä sisältöelementttiin (lähes) niin monta kuin haluat.
-TYPO3n konfiguraatiosta riippuen voit listä niitä lähes missä formaatissa tahansa. Sinu ei tarvitse myöskään huolehtia kuvan koosta ja pakkaustavasta koska normaalisti tämän hoitaa TYPO3 sisäisesti.
-
-Kun käytät Teksti kuvalla (&quot;Text w/Image&quot;) tyyppiä, on tärkeää että valitset kuvablokin oikean paikan. Tätät varten käytä Paikan valintaa (Position selector) joka on näkyvissä alla (tai jos käytät taustatoimintoja Classic muodossa kuvalistaa). Katso Sivunsisältö / Asettelu (Pagecontent / Position) lisäohjeita.
-Voit näyttää kuvat myös useilla sarakkeilla ja mahdollistaa ominaisuuden jos kuva näkyy suurempana sitä klikattaessa. Tässä vain muutama ominaisuus.
-Mahdollisesti sinulla ei ole ominaisuusvaihtoehtoja lainkaan ja tämä johtuu järjestelmän asetuksista.</label>
-			<label index="imagewidth.description">Anna kuvan leveys pixeleinä.</label>
-			<label index="imagewidth.details">Mallinne on normaalisti konfiguroitu kuvan maksimi mittoihin. ja niin ollenei Sinun tarvitse määritellä kuvan leveyttä jos kuva sopii mukavasti noihin mittoihin. Tämä antaa kuitenkin mahdollisuuden antaa kuvalle erityiset mitat.</label>
-			<label index="imageheight.description">Anna kuvan korkeus pixeleinä.</label>
-			<label index="imageorient.description">Anna kuvaelementin asema suhteessa leipätekstiin.</label>
-			<label index="imageorient.details">Aseman määrittelyt leipätekstin yllä ja alapuolella ovat varsin suoraviivaisia.
-Vaihtoehto Tekstissä (In text) tarkoittaa että kuva näytetään rinnan tekstin kanssa. Valitessasi tämän vaihtoehdon sivuston mallinne luultavasti pakottaa kuvan pienempään tilaan jotta se ei veisi tekstiltä kaikkea tilaa ja teksti virtaisi kuvan kanssa jouheasti.
-Kun valitset Tekstissä (In text) vaihtoehtoina on jakajan &quot;No wrap&quot; ylä tai alapuolella. Jos valitset Tekstissä yläpuolella, leipäteksti virtaa kuvan &lt;em&gt;alle&lt;/em&gt; kun teksti on kuvan korkeutta pidemmälle. Toisin sanoen teksti kiertää kuvan. Jos taas valitset alas, ei teksti virtaa kuvan alla vaan jatkaa saraketta suoraan alas.
-Erona ei ole ainoastaan visuaalinen efekti vaan myös tekninen seuraamus. Jos teksti ei ole riittävän pitkä kiertääkseen kuvaa, myös allaolevat tietosisältö elementit muodostavat ikäänkuin kerroksia kuvablokkiin nähden - tämä näyttää ulospäin selvästi virheelliseltä. Tämä ongelma on kuitenkin ratkaistavissa muuttamalla Tekstissä asemaa vastaamaan muuten &quot;No wrap&quot; arvoa.</label>
-			<label index="imageborder.description">Merkkaa tämä jos haluat  kuvalle värilliset reunukset.</label>
-			<label index="image_noRows.description">Poistaa määritellyt taulurivit kuvablokilta.</label>
-			<label index="image_noRows.details">Tämä vaihtoehto on vaikea selittää; kuitenkin jos Sinulla on 3 tai useampia sarakkeita &lt;em&gt;ja&lt;/em&gt; useita rivejä kuvia. Jos kuva on suurempi kuin toinen rivillä aiheuttaa se tyhjä merkin toisen kuvan alle. Tämä johtuu että kuvat on sijoitettu taulukkoon solu kerrallaan.
-Jos asetat tämän arvon, taulu asettaa kaikki sarakkeen kuvat yhteen taulukon soluun joka tekee etäisyyden niiden välillä vertikaalisesti samaksi. Tämä voi näyttää paremmalta kuin vaihtoehtoinen tapa.</label>
-			<label index="image_link.description">Anna linkki kuville.</label>
-			<label index="image_link.details">Oletuksena kaikki kuvat sisältävät saman linkki tiedon. TypoScript mallinne voidaan kuitenkin ohjelmoida antamaan eri linkin kullekin kuvalle. tässä tapauksessa erottelu kuvat pilkulla.
-
-Katso Sivusisältö&gt;linkki (&quot;Pagecontent&gt;Link&quot;) alhaalla, lisätietoja syntaksista.</label>
-			<label index="image_zoom.description">Merkkaa tämä vaihtoehto ja kuva linkitetään uudellesivulle suurempana.</label>
-			<label index="image_zoom.details">Tämä vaihtoehto korvaa tiedon linkki-tietokentässä.</label>
-			<label index="image_effects.description">Valitse erityiset kuvan käsittelyn efetit.</label>
-			<label index="image_frames.description">Valitse erityiset kuvan reunusten ominaisuudet.</label>
-			<label index="image_compression.description">Valitse kuvan pakkaamisen/laadun ominaisuudet,</label>
-			<label index="imagecols.description">Valitse sarakkeiden lukumäärä kuva blokille.</label>
-			<label index="imagecaption.description">Anna kuvateksti kuvablokille.</label>
-			<label index="imagecaption.details">Oletuksena kuvateksti sijoitetaankoko kuvablokin alle. Websivuston mallinne voidaan kuitenkin konfiguroida näyttämään kuvatekstin jokaisen kuvan alla.
-Tässä tapauksessakukin rivi tässä kentässä kohdistuu vastaavaan kuvaan.
-
-Kuvateksti kenttääs voidaan käyttää myös Tiedostolinkki (&quot;Filelinks&quot;) sisältöelementin kanssa jolloin sen sisältää kuvauksen tiedostosta.</label>
-			<label index="imagecaption_position.description">Asettaa kuvatekstin tasauksen vasemmalle, keskelle tai oikealle.</label>
-			<label index="cols.description">Valitse taulun sarakkeiden kiinteä määrä.</label>
-			<label index="pages.description">Lisää sivu(ja)</label>
-			<label index="pages.details">Tällä tietokentällä voi luoda relaation sivulle tai useammalle (TYPO3ssa). Useat sisältöelementti tyypit käyttävät tätätietoa. Jos et määrittele tässä sivua, käytetään tätä nyt käytössä olevaa sivua.
-
-Kayttäen Etsi (Search) tyyppiä, sivu jonka lisäät sen on sivu jolle hakutulokset tuodaan. Sinun täytyy varmistaa että tuolla sivulla on myös on myös sisältötyyppi Etsi (Search) (tai muuten sopiva) jotta tulokset voidaa tulostaa. Muuten homma ei toimi.
-
-Myös Sisäänkirjoitus (Login) tyypissä käytetään tätä tietoa ohjaamaan toiminta halutulle sivulle. Tässä ei vastaanottavan sivun kuitenkaan tarvitse olla samaa tyyppi vaan voit ohjata sisäänkirjoittautumisen jälkeisen sivun miksi tahansa. Jos laitat tähän kenttään jonkun osoitteen, viedään sen id sisäänkirjoitusrutiiniin ja sille sivulle tallennettuja käyttäjätietoja vastaan suoritetaan sisäänkirjoituksen oikeellisuuden tarkistus. Sinun tulisi käyttää tätä mahdollisuutta vain jos websivuston mallinteeseen ei ole tallennettu tätä käyttäjien tietovaraston osoitetta.
-Jotta sisäänkirjoitus (Login) toimisi oikein on Sinun 1) luotava ainakin yksi websivuston käyttäjä ja kaäyttäjäryhmä sekä oikeanmuotoiset käyttäjätunnuksen ja salasanan, 2) Sinun on konfiguroitava TypoScript mallinne mille sivulle (tavallisesti SysFolder) jonne käyttäjä- ja käyttäjäryhmätiedot tallennetaan tai vaihtoehtoisesti määrittelet tämän toisen sivun tälle sivulle, ja 3) cookies tule olla valittuna selaimessa.
-
-Valikko/Sivustokartta (Menu/Sitemap)elementti käyttää myös tätä tietokenttää.Tässä tapauksessa sivu(t) päättelevät mistä pisteestä alaken välikko tulostetaan tai jopa esittavät sivuja itseään jonne valikko viittaa. Kaikki tämä riippuu Valikko/Sivukartta alatyypistä jonka valitset.
-
-Viimeisenä Lomake (Form) tyyppi, joka päättelee tämän kentän käytöstä minne lomake lähetetään. Voit ehkä haluta tehdä kiitos sivun emailin lähettäjälle.</label>
-			<label index="recursive.description">Tässä ovat käyttäjät käyttäjänimineen ja salasanoineen joilla on oikeudet päästä muuten rajoitetuille alueille websivustollasi.</label>
-			<label index="recursive.details">Onko tällä ominaisuuden merkitystä vai ei riippuu kokonaan mallinteen ohjelmoinista ja/tai sisältöelementistä. Periaatteessa, jos tämä ominaisuus on valittavissa, tarkoittaa se että jokainen sivu joka on listattu Lähetä sivulle/Aloituskohta (Send to page/Startingpoint) laatikon alasivuilla - tässä määriteltyyn syvyyteen asti - valitaan &lt;em&gt;myös&lt;/em&gt;.
-
-&lt;strong&gt;Varoitus:&lt;/strong&gt; Jos mukana on useita alasivuja, varo tätä ominaisuutta. Mukaan voi valikoitua erittäin suuri joukko sivuja.</label>
-			<label index="menu_type.description">Valitse minkälaisen valikon haluat luoda.</label>
-			<label index="menu_type.details">Tässä on lyhyt kuvaus kaikista tyypeistä:
-
-&lt;strong&gt;Näiden sivujen valikko (Menu of these pages)&lt;/strong&gt;
-Tämä luo listan linkeistä määrittämäsi Aloituskohtaan (Startingpoint) lisäämillesi sivuille.
-
-&lt;strong&gt;Näiden sivujen alasivujen valikko (Menu of subpages to these pages)&lt;/strong&gt;
-Tämä luo listan määrittämäsi Aloistuskohdan (StartinGpoint) sivujen alasivuista. Jos et määrittele Aloituskohtaa, valitaan alasivut tästä sivusta alkaen.
-
-&lt;strong&gt;Näiden sivujen alasivujen valikko abstraktein (Menu of subpages to these pages (with abstract))&lt;/strong&gt;
-Kuten edellinen mutta sisältää sivujen Abstrakti tiedot.
-
-&lt;strong&gt;Näiden sivujen alasivujen valikko+ sektiot (Menu of subpages to these pages + sections)&lt;/strong&gt;
-Kuten edellinen, mutta sisältää linkit kaikkiin alasivujen sisältöelementteihin sivuilla jos niiden &quot;Index&quot; tieto on merkattu.
-
-&lt;strong&gt;Sivustokartta (Sitemap)&lt;/strong&gt;
-Luo klassisen sivustokartan. Tulostumalli riippuu mallinteesta ja voi siksi vaihdella hieman. Huomaa: sivustokartta alkaa tästä sivusta jos et ole määrittänyt Aloituskohtaa (Startingpoint).
-
-&lt;strong&gt;Sektio indeksi (Section index (pagecontent w/Index checked))&lt;/strong&gt;
-Tämä luo sivun sisältöelementeistä, joiden &quot;Index&quot; tietoon merkattu, indeksin (Aloituskohdalla voi vaikuttaa mistäsivusta kts.edelliset).  Tällä tavalla voit tehdä sivun alkuun oman hakemiston sivun tiedoista.
-Huomaa että indeksiin tulevat kaikki sisältöelementit joissa &quot;Index&quot; tieto on merkattu. Jos et halua jotain listalle poista siitä elementistä &quot;Index&quot; tiedon merkkaus.
-
-&lt;strong&gt;Viimeksi päivitetyt sivut (Recently updated pages)&lt;/strong&gt;
-Näyttää 10 viimeksi päivitettyä sivua.
-&lt;strong&gt;Huomaa:&lt;/strong&gt; Jos päivität sivua eikä tämä lista päivity vastaavasti, tyhjennä sivun välimuisti ja ongelma on ratkaistu.
-
-&lt;strong&gt;Asiayhteys sivut (Related pages (based on keywords))&lt;/strong&gt;
-Näyttää sivut, joihin tällä sivulla on asiayhteys. Asiayhteys luodaan avainsanoilla.
-
-
-Huomaa: Useimmille yllä oleville valikoille on yhteistä että aloitussivu on nykyinen sivu jonka kanssatyöskentelet.Siksi onkin tärkeää että määrittele Aloitussivun (Startingpoint) oikein. Huomaa erityisesti että Aloituskohtia voi olla useitakin. Katso linkkiä alla.</label>
-			<label index="list_type.description">Valitse aliohjelma (moduli) lisättäväksi (Saatavuus riipuu käytettävästä mallinteesta).</label>
-			<label index="list_type.details">On tärkeää että ymmärrät tarpeen installoida erityiset aliohjelmat (modulit) websivustosi TypoScript mallinteeseen. Tämän tekee järjestelmän hallinnoija. Kunhan moduli on ensin tuotu mallinteeseen ja konfiguroitu oikein, niin &quot;lisää moduli (&quot;insert module&quot;) sisältö elementtiä voidaan käyttää aliohjelman sijoittamiseksi oikeaan sivuun.Tämä on joustava tapa toimia, sillä silloin viot itse päättää minne sivurakenteessasi haluat sijoittaa esim. vieraskirjan, tuotelista tms.
-Mutta varmista ensin mitkä aliohjelmat ovat käytössäsi!
-
-Tässä kuvaus vaihtoehdoista:
-&lt;strong&gt;&lt;u&gt;LISTS:&lt;/u&gt;&lt;/strong&gt;
-Tässä osassa on yleensä tietojen erilaiset listaus mahdollisuudet sivuilla.
-
-&lt;strong&gt;Vieraskirja (Guestbook):&lt;/strong&gt;
-Listaa vieraskirjan tiedot sivulla. Huomaa että Sinun on lisättävä erityinen koodi CODE tietokenttään saadaksesi viearskirjan aktivoitua. Mutta saat selityksen, online sivulla, mitä pitää tehdä kun jätät koodi kentän tyhjäksi.
-
-&lt;strong&gt;Keskustelu (Board):&lt;/strong&gt;
-Listaa keskustelutaulun tietueet tai forumit sivulla. Tämä riippuu CODE tietokentän arvosta. Selitys näkyy kuten edellä.
-
-&lt;strong&gt;Tuotteet (Products):&lt;/strong&gt;
-Listaa tuotteet (tai kaupan olevat) sivulla. Voit lisätä myösostoskorin ja hakulomakkeen. Kaikki tämä riippu CODE tietokentästä . Selitys näkyy kuten edellä.
-
-&lt;strong&gt;Uutiset (News):&lt;/strong&gt;
-Listaa lyhyen uutislistan, laajan lista, tai koko uutisartikkelin. Tämä riippuu myös CODE tietokentän arvosta. Selitys näkyy kuten edellä.
-
-&lt;strong&gt;Osoitteet (Addresses):&lt;/strong&gt;
-Listaa sivulta löytyvät osoitetiedot.
-
-&lt;strong&gt;To-Do:&lt;/strong&gt;
-Ei oletusarvoista tulostetta. Kustomoitava.
-
-&lt;strong&gt;Calendar:&lt;/strong&gt;
-Ei oletusarvoista tulostetta. Kustomoitava.
-
-&lt;strong&gt;Links:&lt;/strong&gt;
-Ei oletusarvoista tulostetta. Kustomoitava.
-
-&lt;strong&gt;Aliohjelmat (MODULES):&lt;/strong&gt;
-
-&lt;strong&gt;Arvostelu (Rating):&lt;/strong&gt;
-Lisää arvostelun keräämis elementin sivulle.
-
-&lt;strong&gt;Indeksoitu haku (Indexed search):&lt;/strong&gt;
-Lisää sivulle haku dialogin ja tulostaa sivun Indexed Searching Engine aliohjelmaa (sisäinen).
-
-&lt;strong&gt;Vihjaa-ystävää (Tip-a-friend):&lt;/strong&gt;
-Lisää linkin (tai näyttää lomakkeen) Vihjaa-ystävälle (&quot;Tip-a-friend&quot;) ominaisuutta varten. Saat selityksen toiminnasta kuten ylläkin jos jätät CODE kentän tyhjäksi.
-
-&lt;strong&gt;HALLINTA (ADMINISTRATION):&lt;/strong&gt;
-
-&lt;strong&gt;Edustatoimintojen käyttäjän hallinta (Frontend User administration):&lt;/strong&gt;
-Lisää muokkaus lomakkee sivuston edustatoimintojen käyttäjätietojen luomiseksi ja ylläpitämiseksi.
-
-&lt;strong&gt;SuoraMail tilaus (DirectMail subscription):&lt;/strong&gt;
-Lisää muokkauslomakkeen tilausken luomiseksi ja muokkaamiseksi Suorapostituksen tilaajille. Tätä ei ole rajoitettu ainoastaan Suorapostitus ominaisuuteen mutta voidaan käyttää kaikkeen online osoitelistojen hallintaan.
-Periaatteessase vain mahdollistaa Osoite (Address) taulun hallinnan TYPO3ssa.
-
-&quot;Aloituskohtaa&quot; (&quot;Startingpoint&quot;) on käytetty joissakin yllä olevissa optiona valita mistä sivusta tiedot luetaan. Jos et määrittele tätäkohtaa alkaa lukeminen tästä nykyisestä sivusta.</label>
-			<label index="select_key.description">Anna koodilauseke.</label>
-			<label index="select_key.details">Käytetäänkö tämän tietokentän sisältöä vai ei tai kuinka se tulkitaan, riippuu asiayhteydestä.</label>
-			<label index="table_bgColor.description">Valitse taulun taustaväri.</label>
-			<label index="table_border.description">Valitse taulun rajan paksuus.</label>
-			<label index="table_cellspacing.description">Valitse taulukko elementin välistys.</label>
-			<label index="table_cellspacing.details">Solun välistys on etäisyys taulun solujen välillä riveillä ja sarakkeilla. Etäisyys annetaan yhtäläisesti kaikkiin suuntiin,ylös, alas, vasemmalle ja oikealle.</label>
-			<label index="table_cellpadding.description">Valitse taulun solun täyttö.</label>
-			<label index="table_cellpadding.details">Solun täyttö on taulun solun sisäinen marginaali. Etäisyys annetaan yhtäläisesti kaikkiin suuntiin,ylös, alas, vasemmalle ja oikealle.</label>
-			<label index="media.description">Lisää tiedostot tähän listaan.</label>
-			<label index="multimedia.description">Lisää multimedia elementit, esim. flash elokuva, tähän.</label>
-			<label index="filelink_size.description">Merkkaa tämä jos haluat tiedostokoot näkyville.</label>
-			<label index="records.description">Lisää tietueiden riippuvuudet.</label>
-			<label index="spaceBefore.description">Anna tyhjän tilan määrä (pixeleinä) lisättäväksi &lt;em&gt;ennen&lt;/em&gt; tätä sisältö elementiä.</label>
-			<label index="spaceAfter.description">Anna tyhjän tilan määrä (pixeleinä) lisättäväksi &lt;em&gt;jälkeen&lt;/em&gt; tämän sisältö elementin.</label>
-			<label index="section_frame.description">Valitse framing vaihtoehto sisältö elementille.</label>
-			<label index="splash_layout.description">Valitse Text boxin esitystapa.</label>
-			<label index="splash_layout.details">&lt;strong&gt;Huomautus:&lt;/strong&gt; Text boin renderöinnissä on vain muutamia vaihtoehtoja mutta se on pääasiallisesti tarkoitetu ustomoitavaksi.
-Siksi ominaisuuksien saatavuus ja käytettävyys in riippuvainen web sivustosi mallinteesta.</label>
-			<label index="sectionIndex.description">Jos asetettu, sisältö elementi jaetaan osiin.</label>
-			<label index="sectionIndex.details">Katso yksityiskohtaiset tiedot Valikko tyypin valintaa (Menu  type) (klikkaa alta)</label>
-			<label index="linkToTop.description">Jos merkattu, pieni linkki &quot;Sivun alkuun&quot; (&quot;To Top&quot;) lisätään sisältöelementinj jälkeen.</label>
-			<label index="rte_enabled.description">Jos merkattu, Rich Text Editor ei ole käytössä &quot;Text&quot; ja &quot;Text w/Image&quot; tyypeille. (&lt;em&gt;ainoastaan tässä elementissä&lt;/em&gt;).</label>
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/context_help/dk.locallang_csh_ttcontent.xml</languageKey>
+		<languageKey index="nl">EXT:csh_nl/context_help/nl.locallang_csh_ttcontent.xml</languageKey>
+		<languageKey index="fi">EXT:csh_fi/context_help/fi.locallang_csh_ttcontent.xml</languageKey>
 	</data>
-	<orig_hash type="array">
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-			<label index=".description" type="integer">42902806</label>
-			<label index=".details" type="integer">87408744</label>
-			<label index="CType.description" type="integer">234975124</label>
-			<label index="CType.details" type="integer">1575755</label>
-			<label index="hidden.description" type="integer">25976972</label>
-			<label index="starttime.description" type="integer">77152936</label>
-			<label index="endtime.description" type="integer">186022731</label>
-			<label index="fe_group.description" type="integer">228326626</label>
-			<label index="fe_group.details" type="integer">12127248</label>
-			<label index="sys_language_uid.description" type="integer">83193306</label>
-			<label index="sys_language_uid.details" type="integer">236252156</label>
-			<label index="layout.description" type="integer">253429215</label>
-			<label index="layout.details" type="integer">163559590</label>
-			<label index="colPos.description" type="integer">247799393</label>
-			<label index="colPos.details" type="integer">36180560</label>
-			<label index="date.description" type="integer">172838477</label>
-			<label index="date.syntax" type="integer">213396760</label>
-			<label index="header.description" type="integer">258566451</label>
-			<label index="header.details" type="integer">241858941</label>
-			<label index="header_position.description" type="integer">129245045</label>
-			<label index="header_link.description" type="integer">192941932</label>
-			<label index="header_link.syntax" type="integer">118219288</label>
-			<label index="header_layout.description" type="integer">177798699</label>
-			<label index="header_layout.details" type="integer">137949324</label>
-			<label index="subheader.description" type="integer">258436767</label>
-			<label index="subheader.details" type="integer">89143048</label>
-			<label index="bodytext.description" type="integer">16432077</label>
-			<label index="bodytext.details" type="integer">186178362</label>
-			<label index="text_align.description" type="integer">238240695</label>
-			<label index="text_align.details" type="integer">131245766</label>
-			<label index="text_face.description" type="integer">117416805</label>
-			<label index="text_face.details" type="integer">166251742</label>
-			<label index="text_size.description" type="integer">229916089</label>
-			<label index="text_size.details" type="integer">131245766</label>
-			<label index="text_color.description" type="integer">35741196</label>
-			<label index="text_color.details" type="integer">131245766</label>
-			<label index="text_properties.description" type="integer">87881120</label>
-			<label index="text_properties.details" type="integer">169331549</label>
-			<label index="image.description" type="integer">161474510</label>
-			<label index="image.details" type="integer">152068093</label>
-			<label index="imagewidth.description" type="integer">158161907</label>
-			<label index="imagewidth.details" type="integer">182558086</label>
-			<label index="imageheight.description" type="integer">114105674</label>
-			<label index="imageorient.description" type="integer">200966363</label>
-			<label index="imageorient.details" type="integer">37238690</label>
-			<label index="imageborder.description" type="integer">50620620</label>
-			<label index="image_noRows.description" type="integer">21457470</label>
-			<label index="image_noRows.details" type="integer">249649221</label>
-			<label index="image_link.description" type="integer">69959566</label>
-			<label index="image_link.details" type="integer">227271905</label>
-			<label index="image_zoom.description" type="integer">161499693</label>
-			<label index="image_zoom.details" type="integer">6620959</label>
-			<label index="image_effects.description" type="integer">177685340</label>
-			<label index="image_frames.description" type="integer">89442767</label>
-			<label index="image_compression.description" type="integer">8480021</label>
-			<label index="imagecols.description" type="integer">152804653</label>
-			<label index="imagecaption.description" type="integer">16743842</label>
-			<label index="imagecaption.details" type="integer">58933748</label>
-			<label index="imagecaption_position.description" type="integer">196983678</label>
-			<label index="cols.description" type="integer">11984393</label>
-			<label index="pages.description" type="integer">89280108</label>
-			<label index="pages.details" type="integer">198454985</label>
-			<label index="recursive.description" type="integer">165135760</label>
-			<label index="recursive.details" type="integer">63876863</label>
-			<label index="menu_type.description" type="integer">78467976</label>
-			<label index="menu_type.details" type="integer">264704783</label>
-			<label index="list_type.description" type="integer">126782009</label>
-			<label index="list_type.details" type="integer">175234092</label>
-			<label index="select_key.description" type="integer">29889847</label>
-			<label index="select_key.details" type="integer">145804749</label>
-			<label index="table_bgColor.description" type="integer">62940699</label>
-			<label index="table_border.description" type="integer">186608350</label>
-			<label index="table_cellspacing.description" type="integer">194710286</label>
-			<label index="table_cellspacing.details" type="integer">181817887</label>
-			<label index="table_cellpadding.description" type="integer">101686341</label>
-			<label index="table_cellpadding.details" type="integer">197299652</label>
-			<label index="media.description" type="integer">29319306</label>
-			<label index="multimedia.description" type="integer">128801529</label>
-			<label index="filelink_size.description" type="integer">167875412</label>
-			<label index="records.description" type="integer">10597434</label>
-			<label index="spaceBefore.description" type="integer">263512294</label>
-			<label index="spaceAfter.description" type="integer">130971741</label>
-			<label index="section_frame.description" type="integer">240647342</label>
-			<label index="splash_layout.description" type="integer">240182781</label>
-			<label index="splash_layout.details" type="integer">51935552</label>
-			<label index="sectionIndex.description" type="integer">263148287</label>
-			<label index="sectionIndex.details" type="integer">258232061</label>
-			<label index="linkToTop.description" type="integer">218183690</label>
-			<label index="rte_enabled.description" type="integer">266861622</label>
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-			<label index=".description" type="integer">42902806</label>
-			<label index=".details" type="integer">87408744</label>
-			<label index="CType.description" type="integer">234975124</label>
-			<label index="CType.details" type="integer">1575755</label>
-			<label index="hidden.description" type="integer">25976972</label>
-			<label index="starttime.description" type="integer">77152936</label>
-			<label index="endtime.description" type="integer">186022731</label>
-			<label index="fe_group.description" type="integer">228326626</label>
-			<label index="fe_group.details" type="integer">12127248</label>
-			<label index="sys_language_uid.description" type="integer">83193306</label>
-			<label index="sys_language_uid.details" type="integer">236252156</label>
-			<label index="layout.description" type="integer">253429215</label>
-			<label index="layout.details" type="integer">163559590</label>
-			<label index="colPos.description" type="integer">247799393</label>
-			<label index="colPos.details" type="integer">36180560</label>
-			<label index="date.description" type="integer">172838477</label>
-			<label index="date.syntax" type="integer">213396760</label>
-			<label index="header.description" type="integer">258566451</label>
-			<label index="header.details" type="integer">241858941</label>
-			<label index="header_position.description" type="integer">129245045</label>
-			<label index="header_link.description" type="integer">192941932</label>
-			<label index="header_link.syntax" type="integer">118219288</label>
-			<label index="header_layout.description" type="integer">177798699</label>
-			<label index="header_layout.details" type="integer">137949324</label>
-			<label index="subheader.description" type="integer">258436767</label>
-			<label index="subheader.details" type="integer">89143048</label>
-			<label index="bodytext.description" type="integer">16432077</label>
-			<label index="bodytext.details" type="integer">186178362</label>
-			<label index="text_align.description" type="integer">238240695</label>
-			<label index="text_align.details" type="integer">131245766</label>
-			<label index="text_face.description" type="integer">117416805</label>
-			<label index="text_face.details" type="integer">166251742</label>
-			<label index="text_size.description" type="integer">229916089</label>
-			<label index="text_size.details" type="integer">131245766</label>
-			<label index="text_color.description" type="integer">35741196</label>
-			<label index="text_color.details" type="integer">131245766</label>
-			<label index="text_properties.description" type="integer">87881120</label>
-			<label index="text_properties.details" type="integer">169331549</label>
-			<label index="image.description" type="integer">161474510</label>
-			<label index="image.details" type="integer">152068093</label>
-			<label index="imagewidth.description" type="integer">158161907</label>
-			<label index="imagewidth.details" type="integer">182558086</label>
-			<label index="imageheight.description" type="integer">114105674</label>
-			<label index="imageorient.description" type="integer">200966363</label>
-			<label index="imageorient.details" type="integer">37238690</label>
-			<label index="imageborder.description" type="integer">50620620</label>
-			<label index="image_noRows.description" type="integer">21457470</label>
-			<label index="image_noRows.details" type="integer">249649221</label>
-			<label index="image_link.description" type="integer">69959566</label>
-			<label index="image_link.details" type="integer">227271905</label>
-			<label index="image_zoom.description" type="integer">161499693</label>
-			<label index="image_zoom.details" type="integer">6620959</label>
-			<label index="image_effects.description" type="integer">177685340</label>
-			<label index="image_frames.description" type="integer">89442767</label>
-			<label index="image_compression.description" type="integer">8480021</label>
-			<label index="imagecols.description" type="integer">152804653</label>
-			<label index="imagecaption.description" type="integer">16743842</label>
-			<label index="imagecaption.details" type="integer">58933748</label>
-			<label index="imagecaption_position.description" type="integer">196983678</label>
-			<label index="cols.description" type="integer">11984393</label>
-			<label index="pages.description" type="integer">89280108</label>
-			<label index="pages.details" type="integer">198454985</label>
-			<label index="recursive.description" type="integer">165135760</label>
-			<label index="recursive.details" type="integer">63876863</label>
-			<label index="menu_type.description" type="integer">78467976</label>
-			<label index="menu_type.details" type="integer">264704783</label>
-			<label index="list_type.description" type="integer">126782009</label>
-			<label index="list_type.details" type="integer">175234092</label>
-			<label index="select_key.description" type="integer">29889847</label>
-			<label index="select_key.details" type="integer">145804749</label>
-			<label index="table_bgColor.description" type="integer">62940699</label>
-			<label index="table_border.description" type="integer">186608350</label>
-			<label index="table_cellspacing.description" type="integer">194710286</label>
-			<label index="table_cellspacing.details" type="integer">181817887</label>
-			<label index="table_cellpadding.description" type="integer">101686341</label>
-			<label index="table_cellpadding.details" type="integer">197299652</label>
-			<label index="media.description" type="integer">29319306</label>
-			<label index="multimedia.description" type="integer">128801529</label>
-			<label index="filelink_size.description" type="integer">167875412</label>
-			<label index="records.description" type="integer">10597434</label>
-			<label index="spaceBefore.description" type="integer">263512294</label>
-			<label index="spaceAfter.description" type="integer">130971741</label>
-			<label index="section_frame.description" type="integer">240647342</label>
-			<label index="splash_layout.description" type="integer">240182781</label>
-			<label index="splash_layout.details" type="integer">51935552</label>
-			<label index="sectionIndex.description" type="integer">263148287</label>
-			<label index="sectionIndex.details" type="integer">258232061</label>
-			<label index="linkToTop.description" type="integer">218183690</label>
-			<label index="rte_enabled.description" type="integer">266861622</label>
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_hash>
 </T3locallang>

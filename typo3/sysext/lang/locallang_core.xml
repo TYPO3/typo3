@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>General Core Labels</description>
+		<description>General TYPO3 Core Labels (clickmenus, list module, info boxes, tool-tips, file handling, editing, etc.)</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_core.php</fileId>
+		<fileId>EXT:lang/locallang_core.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>
@@ -396,7 +396,7 @@ Vil du forny det nu?</label>
 			<label index="mess.redraw">Durch das Neuzeichnen der Seite gehen die aktuellen Daten verloren. Wollen Sie den Vorgang fortführen?</label>
 			<label index="mess.delete">Soll &quot;%s&quot; wirklich gelöscht werden?</label>
 			<label index="mess.deleteClip">Sollen alle markierten Elemente (%s) vom Klemmbrett entfernt werden?</label>
-			<label index="mess.refresh_login">Ihr Login ist abgelaufen. 
+			<label index="mess.refresh_login">Ihr Login ist abgelaufen.
 Wollen Sie sich neu einloggen?</label>
 			<label index="mess.noSelItemForEdit">Sie müssen mindestens ein Element auswählen, bevor Sie mit der Bearbeitung geginnen.</label>
 			<label index="mess.onChangeAlert">Diese Änderung beeinflusst die zur Verfügung stehenden Eingabefelder.
@@ -608,7 +608,7 @@ Vil du fornye den nå?</label>
 			<label index="labels.enterSearchString">Cerca Stringa:</label>
 			<label index="labels.enterSearchLevels">Questa pagina |1 livello giu'|2 livelli giu'|3 livelli giu'|4 livelli giu'</label>
 			<label index="labels.noEditPermission">Non hai i permessi per eseguire l'operazione</label>
-			<label index="labels.fieldsMissing">Ci sono campi che non sono correttamente compilati. 
+			<label index="labels.fieldsMissing">Ci sono campi che non sono correttamente compilati.
 I campi errati sono marcati con un punto esclamativo giallo</label>
 			<label index="labels.fieldsChanged">Nel form sono presenti dei dati non salvati!
 Vuoi continuare SENZA salvare?</label>
@@ -832,7 +832,7 @@ Souhaitez-vous continuer sans sauver?</label>
 			<label index="mess.redraw">La mise à jour de l'affichage de la page annule les données en cours de saisie. Souhaitez-vous poursuivre?</label>
 			<label index="mess.delete">Etes-vous sûr de vouloir supprimer &quot;%s&quot; ?</label>
 			<label index="mess.deleteClip">Etes-vous sûr de vouloir supprimer TOUS les éléments sélectionnés (%s) dans le presse-papiers?</label>
-			<label index="mess.refresh_login">Connexion désactivée. 
+			<label index="mess.refresh_login">Connexion désactivée.
 Souhaitez-vous vous reconnecter?</label>
 			<label index="mess.noSelItemForEdit">Veuillez séléctionner au moins un élément avant de pouvoir le/les éditer.</label>
 			<label index="mess.onChangeAlert">Ce changement va affecté les champs disponibles dans le formulaire.
@@ -1261,7 +1261,7 @@ Chcete pokračovat BEZ jejich uložení?</label>
 			<label index="mess.redraw">Překreslení stránky zruší současná data. Chcete pokračovat?</label>
 			<label index="mess.delete">Opravdu chcete smazat &quot;%s&quot;?</label>
 			<label index="mess.deleteClip">Opravdu chcete smazat VŠECHNY prvky (%s) ve schránce?</label>
-			<label index="mess.refresh_login">Vaše přihlášení pravděpodobně vypršelo. 
+			<label index="mess.refresh_login">Vaše přihlášení pravděpodobně vypršelo.
 Chcete jej obnovit?</label>
 			<label index="mess.noSelItemForEdit">Před úpravami vyberte prosím jednu nebo více položek v seznamu.</label>
 			<label index="mess.onChangeAlert">Tato změna způsobí, že některé z polí ve formuláři nebudou dostupné.
@@ -1402,7 +1402,7 @@ Chcete nyní změnu uložit, abyste obnovili zobrazení?</label>
 			<label index="mess.redraw">Po odświeżeniu strony zostaną utracone bieżące zmiany. Czy kontynuować?</label>
 			<label index="mess.delete">Czy jesteś pewien, że chcesz usunąć &quot;%s&quot;?</label>
 			<label index="mess.deleteClip">Jesteś pewien, że chcesz usunąć WSZYSTKIE wybrane elementy (%s) w Schowku?</label>
-			<label index="mess.refresh_login">Twój login prawdopodobnie stracił ważność. 
+			<label index="mess.refresh_login">Twój login prawdopodobnie stracił ważność.
 Czy chcesz odświeżyć?</label>
 			<label index="mess.noSelItemForEdit">Wybierz jeden lub więcej pozycji z listy zanim rozpoczniesz edycję.</label>
 			<label index="mess.onChangeAlert">Ta zmiana wpłynie na liczbę pól widocznych na formularzu.
@@ -1522,7 +1522,7 @@ Czy chcesz zapisać zmiany aby odświeżyć widok?</label>
 			<label index="mess.redraw">Osvežitev strani bo zavrgla vse trenutne podatke. Želite nadaljevati?</label>
 			<label index="mess.delete">Ste prepričani, da želite izbrisati &quot;%s&quot;?</label>
 			<label index="mess.deleteClip">Ste prepričani, da želite izbrisati VSE izbrane predmete (%s) v odložišču?</label>
-			<label index="mess.refresh_login">Vaša prijave je potekla. 
+			<label index="mess.refresh_login">Vaša prijave je potekla.
 Jo želite obnoviti?</label>
 			<label index="mess.move_into">Premakni &quot;%s&quot; v &quot;%s&quot;?</label>
 			<label index="mess.move_after">Premakni &quot;%s&quot; za &quot;%s&quot;?</label>
@@ -2235,10 +2235,10 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="mess.redraw">При обновлении страницы будут утеряны последние изменения. Уверены, что хотите продолжать?</label>
 			<label index="mess.delete">Вы уверены, что хотите удалить '%s'?</label>
 			<label index="mess.deleteClip">Вы уверены, что хотите удалить ВСЕ выбранные записи '%s' из Буфера обмена?</label>
-			<label index="mess.refresh_login">Время действия вашей регистрации в системе истекло. 
+			<label index="mess.refresh_login">Время действия вашей регистрации в системе истекло.
 Хотите перерегистрироваться?</label>
 			<label index="mess.noSelItemForEdit">Выберите одну или несколько записей для редактирования.</label>
-			<label index="mess.onChangeAlert">Изменен состав полей формы. 
+			<label index="mess.onChangeAlert">Изменен состав полей формы.
 Хотите сохранить данные, чтобы обновить форму?</label>
 			<label index="mess.move_into">Переместить '%s' в '%s'?</label>
 			<label index="mess.move_after">Переместить '%s' на позицию после '%s'?</label>
@@ -2655,7 +2655,7 @@ Doriţi să salvaţi pentru a putea reîmprospăta ecranul?</label>
 			<label index="mess.redraw">Prekreslenie stránky zruší súčasné údaje. Chceš pokračovať?</label>
 			<label index="mess.delete">Naozaj chceš vymazať &quot;%s&quot;?</label>
 			<label index="mess.deleteClip">Naozaj chceš vymazat VŠETKY prvky (%s) v schránke?</label>
-			<label index="mess.refresh_login">Tvoje prihlásenie pravdepodobne skončilo. 
+			<label index="mess.refresh_login">Tvoje prihlásenie pravdepodobne skončilo.
 Chceš ho obnoviť?</label>
 			<label index="mess.noSelItemForEdit">Prosím vyber aspoň jednu položku zo zoznamu , ktorú chceš editovať.</label>
 			<label index="mess.onChangeAlert">Táto zmena ovplyvní dostupné polia vo formulári. Chceš uložiť formulár a  aktualizovať zobrazenie ?</label>
@@ -2808,7 +2808,7 @@ Polja su označena žutim uskličnikom.</label>
 			<label index="mess.refresh_login">Vaša je projava vjerovatno istekla.
 Želite li je osvježiti?</label>
 			<label index="mess.noSelItemForEdit">Molim odaberite jedau ili više stavki sa popisa prije uređivanja.</label>
-			<label index="mess.onChangeAlert">Ova će promjena utjecati da dostupnost polja u formularu. 
+			<label index="mess.onChangeAlert">Ova će promjena utjecati da dostupnost polja u formularu.
 Želiti li snimiti sada kako bi osvježili prikaz?</label>
 			<label index="mess.move_into">Premjesti &quot;%s&quot; u &quot;%s&quot;?</label>
 			<label index="mess.move_after">Premjesti &quot;%s&quot; nakon &quot;%s&quot;?</label>
@@ -3283,7 +3283,7 @@ El akarod menteni és ezzel frissíteni a megjelenő űrlapot?</label>
 			<label index="mess.redraw">Прерисуването на страницата ще изтрие данните. Желаете ли да продължите?</label>
 			<label index="mess.delete">Сигурни ли сте че искате да изтриете &quot;%s&quot;?</label>
 			<label index="mess.deleteClip">Сигурни ли сте че искате да изтриете ВСИЧКИ селектирани елементи (%s) в clipboard-а?</label>
-			<label index="mess.refresh_login">Вероятно Вашата сесия е изтекла. 
+			<label index="mess.refresh_login">Вероятно Вашата сесия е изтекла.
 Бихте ли искали сега да я подновите?</label>
 			<label index="mess.noSelItemForEdit">Моля, изберете един или повече елементи от листа преди да можете да ги редактирате.</label>
 			<label index="mess.onChangeAlert">Тази промяна ще обхване кой полета да са във формата.

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Labels for the content element wizard</description>
+		<description>Labels for the New Content Element wizard</description>
 		<type>module</type>
-		<fileId>EXT:cms/layout/locallang_db_new_content_el.php</fileId>
+		<fileId>EXT:cms/layout/locallang_db_new_content_el.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

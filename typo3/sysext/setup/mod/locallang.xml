@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Labels for the backend module.</description>
+		<description>Labels for the User &gt; Setup backend module.</description>
 		<type>module</type>
-		<fileId>EXT:setup/mod/locallang.php</fileId>
+		<fileId>EXT:setup/mod/locallang.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>TSFE labels (?)</description>
+		<description>TSFE labels for the Admin Panel!</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_tsfe.php</fileId>
+		<fileId>EXT:lang/locallang_tsfe.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>
@@ -792,7 +792,7 @@ Devam etmek istiyor musunuz?</label>
 			<label index="p_newRecordAfter">Novo registro após</label>
 			<label index="p_delete">Apagar</label>
 			<label index="p_deleteConfirm">Você está certo de que deseja apagar este registro?</label>
-			<label index="p_hideConfirm">Esconder um registro irá fazê-lo invisível na página e você terá de entrar no Gestor ou habilitar a pré-visualização so site público antes que possa editá-lo novamente. 
+			<label index="p_hideConfirm">Esconder um registro irá fazê-lo invisível na página e você terá de entrar no Gestor ou habilitar a pré-visualização so site público antes que possa editá-lo novamente.
 Continuar?</label>
 		</languageKey>
 		<languageKey index="ru" type="array">
@@ -1098,8 +1098,8 @@ Pokračovať?</label>
 			<label index="p_newSubpage">Ný undirsiða</label>
 			<label index="p_delete">Eyða</label>
 			<label index="p_deleteConfirm">Ertu viss um að þú viljir eyða þessu skjali?</label>
-			<label index="p_hideConfirm">Falið skjal mun verða sýnilegt á heimasíðunni og þú verður að 
-fara inn í bakenda eða heimila framenda forskoðun áður en þú 
+			<label index="p_hideConfirm">Falið skjal mun verða sýnilegt á heimasíðunni og þú verður að
+fara inn í bakenda eða heimila framenda forskoðun áður en þú
 getur lagfært það aftur.
 Halda áfram?</label>
 		</languageKey>
@@ -1206,7 +1206,7 @@ Nastaviti?</label>
 			<label index="p_newRecordAfter">Új rekord emögé</label>
 			<label index="p_delete">Törlés</label>
 			<label index="p_deleteConfirm">Biztosan törölni akarod ezt a rekordot?</label>
-			<label index="p_hideConfirm">Egy rekord elrejtése láthatatlanná teszi azt az adott oldalon, és csak ismételt szerkesztés előtt be kell lépni vagy a backend, vagy a frontend felületbe. 
+			<label index="p_hideConfirm">Egy rekord elrejtése láthatatlanná teszi azt az adott oldalon, és csak ismételt szerkesztés előtt be kell lépni vagy a backend, vagy a frontend felületbe.
 Folytatod?</label>
 		</languageKey>
 		<languageKey index="gl" type="array">
@@ -1261,7 +1261,7 @@ Folytatod?</label>
 			<label index="p_newRecordAfter">ระเบียนใหม่หลังจาก</label>
 			<label index="p_delete">ลบ</label>
 			<label index="p_deleteConfirm">คุณมั่นใจที่จะลบระเบียนนี้?</label>
-			<label index="p_hideConfirm">ซ่อนระเบียนทำให้มันมองไม่เห็นบนหน้าเว็ป และคุณต้องเข้ามาที่ส่วนหลัง หรืออนุญาต Preview ที่ส่วนหน้า ก่อนที่จะแก้ไขได้อีก 
+			<label index="p_hideConfirm">ซ่อนระเบียนทำให้มันมองไม่เห็นบนหน้าเว็ป และคุณต้องเข้ามาที่ส่วนหลัง หรืออนุญาต Preview ที่ส่วนหน้า ก่อนที่จะแก้ไขได้อีก
 ทำต่อไป?</label>
 		</languageKey>
 		<languageKey index="gr" type="array">
@@ -1416,9 +1416,9 @@ Folytatod?</label>
 			<label index="p_newRecordAfter">Нов запис след</label>
 			<label index="p_delete">Изтриване</label>
 			<label index="p_deleteConfirm">Сигурни ли сте че искате да изтриете този запис?</label>
-			<label index="p_hideConfirm">Скриването на запис ще го направи невидим на 
-уеб страницата и ще трябва да влезнете в backend-а или да 
-позволите frontend preview преди да можете да го 
+			<label index="p_hideConfirm">Скриването на запис ще го направи невидим на
+уеб страницата и ще трябва да влезнете в backend-а или да
+позволите frontend preview преди да можете да го
 редактирате отново.
 Продължавам?</label>
 		</languageKey>
@@ -1472,7 +1472,7 @@ Folytatod?</label>
 			<label index="p_newRecordAfter">Novo registro após</label>
 			<label index="p_delete">Apagar</label>
 			<label index="p_deleteConfirm">Você tem certeza de que deseja apagar este registro?</label>
-			<label index="p_hideConfirm">Esconder um registro irá torná-lo invisível na página e você terá de entrar no Administrador ou habilitar a pré-visualização so site público antes de poder editá-lo novamente. 
+			<label index="p_hideConfirm">Esconder um registro irá torná-lo invisível na página e você terá de entrar no Administrador ou habilitar a pré-visualização so site público antes de poder editá-lo novamente.
 Continuar?</label>
 		</languageKey>
 		<languageKey index="et" type="array">
@@ -1525,7 +1525,7 @@ Continuar?</label>
 			<label index="p_newRecordAfter">Uus kirje peale</label>
 			<label index="p_delete">Kustuta</label>
 			<label index="p_deleteConfirm">Olete kindel, et soovite selle kirje kustutada?</label>
-			<label index="p_hideConfirm">Kirje peitmine muudab kirje kodulehel nähtamatuks ning kirje redigeerimiseks tuleb teil siseneda tagumisse admin moodulisse või lülitada sisse eelvaade. 
+			<label index="p_hideConfirm">Kirje peitmine muudab kirje kodulehel nähtamatuks ning kirje redigeerimiseks tuleb teil siseneda tagumisse admin moodulisse või lülitada sisse eelvaade.
 Soovite jätkata?</label>
 		</languageKey>
 		<languageKey index="ar" type="array">

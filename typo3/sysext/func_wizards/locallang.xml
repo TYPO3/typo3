@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
     <meta type="array">
-        <description>Module labels for Function module.</description>
+        <description>Function module labels (framework)</description>
         <type>module</type>
         <csh_table></csh_table>
-        <fileId>EXT:func_wizards/locallang.php</fileId>
+        <fileId>EXT:func_wizards/locallang.xml</fileId>
         <labelContext type="array">
             <languageKey index="wiz_lWizards"></languageKey>
             <languageKey index="mod_wizards"></languageKey>

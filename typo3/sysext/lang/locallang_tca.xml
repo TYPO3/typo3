@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Core Database table labels</description>
+		<description>Core Database Table labels (for all core fields in the "pages" table plus the table names of backend users, groups and file mounts).</description>
 		<type>database</type>
-		<fileId>EXT:lang/locallang_tca.php</fileId>
+		<fileId>EXT:lang/locallang_tca.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

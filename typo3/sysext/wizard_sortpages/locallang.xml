@@ -4,7 +4,7 @@
         <description>Module labels for Sort Page Wizard</description>
         <type>module</type>
         <csh_table></csh_table>
-        <fileId>EXT:wizard_sortpages/locallang.php</fileId>
+        <fileId>EXT:wizard_sortpages/locallang.xml</fileId>
         <labelContext type="array">
             <languageKey index="wiz_sort"></languageKey>
             <languageKey index="wiz_W"></languageKey>

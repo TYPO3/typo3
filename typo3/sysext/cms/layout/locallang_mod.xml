@@ -3,7 +3,7 @@
 	<meta type="array">
 		<description>Standard Module labels for Web&gt;Page</description>
 		<type>module</type>
-		<fileId>EXT:cms/layout/locallang_mod.php</fileId>
+		<fileId>EXT:cms/layout/locallang_mod.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

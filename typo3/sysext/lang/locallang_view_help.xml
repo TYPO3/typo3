@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>CSH interface labels (?)</description>
+		<description>Labels for the CSH pop-up viewer</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_view_help.php</fileId>
+		<fileId>EXT:lang/locallang_view_help.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

@@ -5,15 +5,18 @@
 		<type>CSH</type>
 		<fileId>EXT:func_wizards/locallang_csh.xml</fileId>
 		<csh_table>_MOD_web_func</csh_table>
+		<keep_original_text>1</keep_original_text>
+		<ext_filename_template>EXT:csh_###LANGKEY###/func_wizards/###LANGKEY###.locallang_csh.xml</ext_filename_template>
 		<labelContext type="array">
 		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_funcwizards.description">This submodule provides a framework where wizards for manipulation of the page tree (or whatever) can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</label>
 			<label index="tx_funcwizards.alttitle">Page Wizards</label>
-			<label index="_tx_funcwizards.seeAlso">_MOD_web_func:tx_wizardcrpages, 
+			<label index="tx_funcwizards.description">This submodule provides a framework where wizards for manipulation of the page tree (or whatever) can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</label>
+			<label index="_tx_funcwizards.seeAlso">_MOD_web_func:tx_wizardcrpages,
 _MOD_web_func:tx_wizardsortpages</label>
 		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/func_wizards/dk.locallang_csh.xml</languageKey>
 	</data>
 </T3locallang>

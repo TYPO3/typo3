@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Labels for tt_content table.</description>
+		<description>Labels for tt_content table (Content Elements).</description>
 		<type>database</type>
-		<fileId>EXT:cms/locallang_ttc.php</fileId>
+		<fileId>EXT:cms/locallang_ttc.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

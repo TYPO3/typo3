@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Module labels for the Web&gt;Page module</description>
+		<description>Labels for the Web&gt;Page module</description>
 		<type>module</type>
-		<fileId>EXT:cms/layout/locallang.php</fileId>
+		<fileId>EXT:cms/layout/locallang.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

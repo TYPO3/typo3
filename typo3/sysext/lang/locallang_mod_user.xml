@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>User module labels</description>
+		<description>Standard User module labels</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_mod_user.php</fileId>
+		<fileId>EXT:lang/locallang_mod_user.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

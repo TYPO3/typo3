@@ -5,14 +5,16 @@
 		<type>CSH</type>
 		<fileId>EXT:wizard_crpages/locallang_csh.xml</fileId>
 		<csh_table>_MOD_web_func</csh_table>
+		<keep_original_text>1</keep_original_text>
+		<ext_filename_template>EXT:csh_###LANGKEY###/wizard_crpages/###LANGKEY###.locallang_csh.xml</ext_filename_template>
 		<labelContext type="array">
 		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="tx_wizardcrpages.alttitle">Create Pages wizard</label>
 			<label index="tx_wizardcrpages.description">Enables you to create a batch of new, empty pages for quickly building up a new page tree. Very useful under development circumstances.
 Just enter the titles for the pages you need. Only filled in fields will be created as pages.</label>
-			<label index="tx_wizardcrpages.alttitle">Create Pages wizard</label>
 			<label index="tx_wizardcrpages.details">The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is &quot;/Intro/Startpage/&quot;.
 
 &lt;b&gt;&quot;Place new pages after the existing subpages&quot;&lt;/b&gt;
@@ -25,10 +27,11 @@ Select this if the new pages should be hidden by default. This option may be for
 &lt;b&gt;Lorem Ipsum...&lt;/b&gt;
 The Create new page wizard supports the Lorem Ipsum extension providing dummy content for the fields.</label>
 			<label index="_tx_wizardcrpages.seeAlso">xEXT_loremipsum</label>
-			<label index="_tx_wizardcrpages.image">EXT:wizard_crpages/cshimages/wizards_1.png, 
+			<label index="_tx_wizardcrpages.image">EXT:wizard_crpages/cshimages/wizards_1.png,
 EXT:wizard_crpages/cshimages/wizards_2.png</label>
 			<label index="tx_wizardcrpages.image_descr">You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
 After pressing the &quot;Create pages&quot; button the page tree to the left will update instantly, showing you the position of the new pages!</label>
 		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/wizard_crpages/dk.locallang_csh.xml</languageKey>
 	</data>
 </T3locallang>

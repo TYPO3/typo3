@@ -3,7 +3,7 @@
 	<meta type="array">
 		<description>Standard module title, description etc.</description>
 		<type>module</type>
-		<fileId>EXT:install/mod/locallang_mod.php</fileId>
+		<fileId>EXT:install/mod/locallang_mod.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

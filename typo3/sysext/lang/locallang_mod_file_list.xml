@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Filelist module labels</description>
+		<description>File>Filelist module labels for both clickmenus and list-view.</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_mod_file_list.php</fileId>
+		<fileId>EXT:lang/locallang_mod_file_list.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

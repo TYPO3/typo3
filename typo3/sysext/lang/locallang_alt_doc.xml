@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Labels for Record Editing screen</description>
+		<description>Labels for Record Editing screen (typical TCEforms surroundings).</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_alt_doc.php</fileId>
+		<fileId>EXT:lang/locallang_alt_doc.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

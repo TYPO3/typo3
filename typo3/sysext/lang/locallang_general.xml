@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>General Core Labels 2</description>
+		<description>General Database Field labels: Labels for database fields which are used in many tables and can share labels from this central list.</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_general.php</fileId>
+		<fileId>EXT:lang/locallang_general.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

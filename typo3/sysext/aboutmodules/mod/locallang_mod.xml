@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
     <meta type="array">
-        <description>Module labels for About Modules.</description>
+        <description>Standard Module labels for About Modules.</description>
         <type>module</type>
         <csh_table></csh_table>
-        <fileId>EXT:aboutmodules/mod/locallang_mod.php</fileId>
+        <fileId>EXT:aboutmodules/mod/locallang_mod.xml</fileId>
         <labelContext type="array">
             <languageKey index="mlang_labels_tablabel"></languageKey>
             <languageKey index="mlang_labels_tabdescr"></languageKey>

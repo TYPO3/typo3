@@ -3,7 +3,7 @@
 	<meta type="array">
 		<description>TYPO3 Element Browser labels.</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_browse_links.php</fileId>
+		<fileId>EXT:lang/locallang_browse_links.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

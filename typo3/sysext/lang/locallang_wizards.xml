@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Labels for various backend wizards (TCEforms)</description>
+		<description>Labels for various backend wizards (TCEforms; forms-, table-, colorpicker wizards for example.)</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_wizards.php</fileId>
+		<fileId>EXT:lang/locallang_wizards.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

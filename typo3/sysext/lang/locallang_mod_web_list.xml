@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Web&gt;List Module labels</description>
+		<description>Web&gt;List Module labels (standard module labels plus a load of labels for the List module itself).</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_mod_web_list.php</fileId>
+		<fileId>EXT:lang/locallang_mod_web_list.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

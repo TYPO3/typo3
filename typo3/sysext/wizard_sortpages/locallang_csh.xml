@@ -5,13 +5,15 @@
 		<type>CSH</type>
 		<fileId>EXT:wizard_sortpages/locallang_csh.xml</fileId>
 		<csh_table>_MOD_web_func</csh_table>
+		<keep_original_text>1</keep_original_text>
+		<ext_filename_template>EXT:csh_###LANGKEY###/wizard_sortpages/###LANGKEY###.locallang_csh.xml</ext_filename_template>
 		<labelContext type="array">
 		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_wizardsortpages.description">Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</label>
 			<label index="tx_wizardsortpages.alttitle">Sort Pages wizard</label>
+			<label index="tx_wizardsortpages.description">Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</label>
 			<label index="tx_wizardsortpages.details">Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. and this behaviour cannot really be changed on a system level. But this wizard gives you a quick way to change the manual order of sub-pages.
 
 Simply click one of the links in the bottom of the wizard screen:
@@ -32,5 +34,6 @@ Will sort pages by their creation date.
 Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</label>
 			<label index="_tx_wizardsortpages.image">EXT:wizard_sortpages/cshimages/wizards_1.png</label>
 		</languageKey>
+		<languageKey index="dk">EXT:csh_dk/wizard_sortpages/dk.locallang_csh.xml</languageKey>
 	</data>
 </T3locallang>

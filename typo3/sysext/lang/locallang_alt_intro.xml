@@ -3,7 +3,7 @@
 	<meta type="array">
 		<description>Labels for &quot;About Modules&quot; screen.</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_alt_intro.php</fileId>
+		<fileId>EXT:lang/locallang_alt_intro.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

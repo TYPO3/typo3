@@ -4,7 +4,7 @@
         <description>Module labels for Create page wizard</description>
         <type>module</type>
         <csh_table></csh_table>
-        <fileId>EXT:wizard_crpages/locallang.php</fileId>
+        <fileId>EXT:wizard_crpages/locallang.xml</fileId>
         <labelContext type="array">
             <languageKey index="wiz_crMany"></languageKey>
             <languageKey index="wiz_W"></languageKey>

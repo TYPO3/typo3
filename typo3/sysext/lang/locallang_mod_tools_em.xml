@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Extension Manager labels</description>
+		<description>Standard Extension Manager Module Labels</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_mod_tools_em.php</fileId>
+		<fileId>EXT:lang/locallang_mod_tools_em.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

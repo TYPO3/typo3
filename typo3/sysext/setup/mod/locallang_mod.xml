@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Module title, description etc.</description>
+		<description>Standard Module title, description etc.</description>
 		<type>module</type>
-		<fileId>EXT:setup/mod/locallang_mod.php</fileId>
+		<fileId>EXT:setup/mod/locallang_mod.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

@@ -1,3 +1,7 @@
+2004-06-19  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Moved CSH locallang-XML labels into extensions prefixed "csh_". 
+
 2004-06-18  Michael Stucki  <mundaun@gmx.ch>
 
 	* Fixed bug #0000032: ImageMagick will convert only the first page of a multi-page PDF file

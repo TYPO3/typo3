@@ -3,7 +3,7 @@
 	<meta type="array">
 		<description>Labels for Web&gt;Info module</description>
 		<type>module</type>
-		<fileId>EXT:cms/web_info/locallang.php</fileId>
+		<fileId>EXT:cms/web_info/locallang.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

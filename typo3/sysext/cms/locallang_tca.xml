@@ -3,7 +3,7 @@
 	<meta type="array">
 		<description>Labels for all cms-tables except tt_content.</description>
 		<type>database</type>
-		<fileId>EXT:cms/locallang_tca.php</fileId>
+		<fileId>EXT:cms/locallang_tca.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>
@@ -2080,75 +2080,6 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
-			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
-			<label index="pages.doktype.I.0" type="integer">162944094</label>
-			<label index="pages.doktype.I.2" type="integer">123085069</label>
-			<label index="pages.doktype.I.3" type="integer">172261511</label>
-			<label index="pages.doktype.I.4" type="integer">213052016</label>
-			<label index="pages.doktype.I.5" type="integer">167908391</label>
-			<label index="pages.doktype.I.7" type="integer">111909417</label>
-			<label index="pages.hidden" type="integer">65518437</label>
-			<label index="pages.layout.I.1" type="integer">186159068</label>
-			<label index="pages.layout.I.2" type="integer">144093188</label>
-			<label index="pages.layout.I.3" type="integer">85298801</label>
-			<label index="pages.extendToSubpages" type="integer">113222983</label>
-			<label index="pages.nav_title" type="integer">213163145</label>
-			<label index="pages.nav_hide" type="integer">163349812</label>
-			<label index="pages.subtitle" type="integer">252742192</label>
-			<label index="pages.target" type="integer">253363033</label>
-			<label index="pages.alias" type="integer">169830525</label>
-			<label index="pages.url" type="integer">62115936</label>
-			<label index="pages.lastUpdated" type="integer">68543275</label>
-			<label index="pages.newUntil" type="integer">15740872</label>
-			<label index="pages.cache_timeout" type="integer">250768080</label>
-			<label index="pages.cache_timeout.I.1" type="integer">17751255</label>
-			<label index="pages.cache_timeout.I.2" type="integer">226471786</label>
-			<label index="pages.cache_timeout.I.3" type="integer">25025547</label>
-			<label index="pages.cache_timeout.I.4" type="integer">63694871</label>
-			<label index="pages.cache_timeout.I.5" type="integer">120240592</label>
-			<label index="pages.cache_timeout.I.6" type="integer">182216352</label>
-			<label index="pages.cache_timeout.I.7" type="integer">238766109</label>
-			<label index="pages.cache_timeout.I.8" type="integer">3514198</label>
-			<label index="pages.cache_timeout.I.9" type="integer">213446991</label>
-			<label index="pages.cache_timeout.I.10" type="integer">23285350</label>
-			<label index="pages.no_cache" type="integer">221004140</label>
-			<label index="pages.no_search" type="integer">8650986</label>
-			<label index="pages.shortcut_mode" type="integer">49005128</label>
-			<label index="pages.shortcut_mode.I.1" type="integer">115282268</label>
-			<label index="pages.shortcut_mode.I.2" type="integer">93918891</label>
-			<label index="pages.content_from_pid" type="integer">151843742</label>
-			<label index="pages.mount_pid" type="integer">258972787</label>
-			<label index="pages.mount_pid_ol" type="integer">72364821</label>
-			<label index="pages.abstract" type="integer">268186811</label>
-			<label index="pages.media" type="integer">147226768</label>
-			<label index="pages.is_siteroot" type="integer">250187229</label>
-			<label index="pages.module" type="integer">136180287</label>
-			<label index="pages.module.I.1" type="integer">167257368</label>
-			<label index="pages.module.I.2" type="integer">100887818</label>
-			<label index="pages.module.I.3" type="integer">231848472</label>
-			<label index="pages.module.I.4" type="integer">164445273</label>
-			<label index="pages.module.I.5" type="integer">141759446</label>
-			<label index="pages.module.I.6" type="integer">19589821</label>
-			<label index="tt_content" type="integer">102203127</label>
-			<label index="fe_users" type="integer">178974165</label>
-			<label index="fe_users.username" type="integer">212632006</label>
-			<label index="fe_users.password" type="integer">187963993</label>
-			<label index="fe_users.usergroup" type="integer">142097351</label>
-			<label index="fe_users.lockToDomain" type="integer">230344003</label>
-			<label index="fe_groups" type="integer">102868901</label>
-			<label index="fe_groups.title" type="integer">76352857</label>
-			<label index="fe_groups.lockToDomain" type="integer">230344003</label>
-			<label index="sys_domain" type="integer">246309786</label>
-			<label index="sys_domain.domainName" type="integer">198572531</label>
-			<label index="sys_domain.redirectTo" type="integer">31400985</label>
-			<label index="sys_domain.prepend_params" type="integer">103981266</label>
-			<label index="pages_language_overlay" type="integer">56559649</label>
-			<label index="sys_language" type="integer">144875845</label>
-			<label index="sys_template" type="integer">41469073</label>
-			<label index="static_template" type="integer">141130377</label>
-			<label index="sys_language.isocode" type="integer">49440593</label>
-		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="mod_tx_cms_webinfo_page" type="integer">46867233</label>
 			<label index="pages.doktype.I.0" type="integer">162944094</label>
@@ -4151,80 +4082,4 @@
 		<languageKey index="vn" type="array">
 		</languageKey>
 	</orig_hash>
-	<orig_text type="array">
-		<languageKey index="default" type="array">
-		</languageKey>
-		<languageKey index="dk" type="array">
-		</languageKey>
-		<languageKey index="de" type="array">
-		</languageKey>
-		<languageKey index="no" type="array">
-		</languageKey>
-		<languageKey index="it" type="array">
-		</languageKey>
-		<languageKey index="fr" type="array">
-		</languageKey>
-		<languageKey index="es" type="array">
-		</languageKey>
-		<languageKey index="nl" type="array">
-		</languageKey>
-		<languageKey index="cz" type="array">
-		</languageKey>
-		<languageKey index="pl" type="array">
-		</languageKey>
-		<languageKey index="si" type="array">
-		</languageKey>
-		<languageKey index="fi" type="array">
-		</languageKey>
-		<languageKey index="tr" type="array">
-		</languageKey>
-		<languageKey index="se" type="array">
-		</languageKey>
-		<languageKey index="pt" type="array">
-		</languageKey>
-		<languageKey index="ru" type="array">
-		</languageKey>
-		<languageKey index="ro" type="array">
-		</languageKey>
-		<languageKey index="ch" type="array">
-		</languageKey>
-		<languageKey index="sk" type="array">
-		</languageKey>
-		<languageKey index="lt" type="array">
-		</languageKey>
-		<languageKey index="is" type="array">
-		</languageKey>
-		<languageKey index="hr" type="array">
-		</languageKey>
-		<languageKey index="hu" type="array">
-		</languageKey>
-		<languageKey index="gl" type="array">
-		</languageKey>
-		<languageKey index="th" type="array">
-		</languageKey>
-		<languageKey index="gr" type="array">
-		</languageKey>
-		<languageKey index="hk" type="array">
-		</languageKey>
-		<languageKey index="eu" type="array">
-		</languageKey>
-		<languageKey index="bg" type="array">
-		</languageKey>
-		<languageKey index="br" type="array">
-		</languageKey>
-		<languageKey index="et" type="array">
-		</languageKey>
-		<languageKey index="ar" type="array">
-		</languageKey>
-		<languageKey index="he" type="array">
-		</languageKey>
-		<languageKey index="ua" type="array">
-		</languageKey>
-		<languageKey index="lv" type="array">
-		</languageKey>
-		<languageKey index="jp" type="array">
-		</languageKey>
-		<languageKey index="vn" type="array">
-		</languageKey>
-	</orig_text>
 </T3locallang>

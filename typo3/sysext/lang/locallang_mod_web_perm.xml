@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Web&gt;Access Module labels</description>
+		<description>Web&gt;Access Module labels (standard module labels plus for the Access module screens).</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_mod_web_perm.php</fileId>
+		<fileId>EXT:lang/locallang_mod_web_perm.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

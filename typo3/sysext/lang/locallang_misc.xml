@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Miscellaneous labels, core</description>
+		<description>General Core Labels 2 (shortcut frame, special clickmenu items, various newer labels).</description>
 		<type>module</type>
-		<fileId>EXT:lang/locallang_misc.php</fileId>
+		<fileId>EXT:lang/locallang_misc.xml</fileId>
 		<labelContext type="array">
 		</labelContext>
 	</meta>

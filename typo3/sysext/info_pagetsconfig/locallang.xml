@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
     <meta type="array">
-        <description></description>
+        <description>Module labels for the TSconfig viewer in the Info module.</description>
         <type>module</type>
         <csh_table></csh_table>
-        <fileId>EXT:info_pagetsconfig/locallang.php</fileId>
+        <fileId>EXT:info_pagetsconfig/locallang.xml</fileId>
         <labelContext type="array">
             <languageKey index="tsconf_title"></languageKey>
             <languageKey index="tsconf_parts_0"></languageKey>
