@@ -74,7 +74,7 @@
 /**
  * Class extending tslib_tmenu for the creation of text based DHTML menus
  * NOTICE: The contents of this class is copied EXACTLY AS IS from gmenu_layers class! See noties in class (for BEGIN/END) and also 'diff.xmenu_layers.txt'
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -111,8 +111,8 @@ class tslib_tmenu_layers extends tslib_tmenu {
 
 	/**
 	 * Creating unique menu id string plus other initialization of internal variables (all prefixed "WM")
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function extProc_init()	{
 		$this->WMid = trim($this->mconf['layer_menu_id'])?trim($this->mconf['layer_menu_id']).'x':substr(md5(microtime()),0,6);	// NO '_' (underscore) in the ID!!! NN4 breaks!
@@ -128,9 +128,9 @@ class tslib_tmenu_layers extends tslib_tmenu {
 
 	/**
 	 * Processing of mouse-over features depending on whether "freezeMouseover" property is set.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found! Here it is used with the ->WMid to make unique names
-	 * @return	void		
+	 * @return	void
 	 */
 	function extProc_RO($key)	{
 		if ($this->mconf['freezeMouseover'])	{
@@ -144,9 +144,9 @@ class tslib_tmenu_layers extends tslib_tmenu {
 	/**
 	 * Processing before the links are created.
 	 * This means primarily creating some javaScript code for the management.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 */
 	function extProc_beforeLinking($key)	{
 		if ($this->I['uid'])	{
@@ -195,9 +195,9 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 
 	/**
 	 * Processing after linking, basically setting the <div>-layers for the menu items. Also some more JavaScript code is made.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 */
 	function extProc_afterLinking($key)	{
 		if ($this->I['uid'])	{
@@ -229,7 +229,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 
 	/**
 	 * Wrapping the item in a <div> section if 'relativeToTriggerItem' was set
-	 * 
+	 *
 	 * @param	string		The current content of the menu item, $this->I['theItem'], passed along.
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	string		The modified version of $item, going back into $this->I['theItem']
@@ -243,7 +243,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 
 	/**
 	 * Returns true if different from ''  OR if intval()!=0
-	 * 
+	 *
 	 * @param	string		Value to evaluate
 	 * @return	boolean		true if $in is different from ''  OR if intval()!=0
 	 */
@@ -253,7 +253,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 
 	/**
 	 * Putting things together, in particular the JavaScript code needed for the DHTML menu.
-	 * 
+	 *
 	 * @return	mixed		Returns the value of a call to the parent function, parent::extProc_finish();
 	 */
 	function extProc_finish ()	{
@@ -426,7 +426,7 @@ GLV_timeout_count++;
 
 	/**
 	 * Creates a JavaScript line which corrects the position of the layer based on the constraints in TypoScript property 'bordersWithin'
-	 * 
+	 *
 	 * @param	string		Direction to test.
 	 * @param	integer		The boundary limit in the direction set by $kind. If set then a value is returned, otherwise blank.
 	 * @return	string		JavaScript string for correction of the layer position (if $integer is true)

@@ -41,8 +41,8 @@
  *   67: class SC_alt_main 
  *   86:     function init()	
  *  108:     function generateJScode()	
- *  288:     function main()	
- *  362:     function printContent()	
+ *  305:     function main()	
+ *  379:     function printContent()	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -59,7 +59,7 @@ require_once ('class.alt_menu_functions.inc');
 
 /**
  * Script Class for rendering of the main frameset for the TYPO3 backend.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -80,8 +80,8 @@ class SC_alt_main {
 	
 	/**
 	 * Initialization of the script class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $TBE_MODULES,$TBE_STYLES;
@@ -102,8 +102,8 @@ class SC_alt_main {
 	
 	/**
 	 * Generates the JavaScript code for the frameset.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function generateJScode()	{
 		global $BE_USER,$LANG;
@@ -299,8 +299,8 @@ class SC_alt_main {
 	
 	/**
 	 * Creates the header and frameset of the backend interface
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$TYPO3_CONF_VARS,$TYPO_VERSION;
@@ -373,8 +373,8 @@ class SC_alt_main {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

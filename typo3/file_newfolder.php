@@ -68,7 +68,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 /**
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -96,8 +96,8 @@ class SC_file_newfolder {
 
 	/**
 	 * Constructor function for class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
@@ -155,8 +155,8 @@ class SC_file_newfolder {
 
 	/**
 	 * Main function, rendering the main module content
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG;
@@ -242,8 +242,8 @@ class SC_file_newfolder {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 

@@ -42,20 +42,20 @@
  *  106:     function recordHistory()	
  *  124:     function main()	
  *  155:     function displaySysHistoryEntry($sh_uid)	
- *  216:     function revertToPreviousValues($element,$field)	
- *  278:     function saveState($element,$sumUp)	
- *  328:     function displayHistory($element)	
+ *  215:     function revertToPreviousValues($element,$field)	
+ *  281:     function saveState($element,$sumUp)	
+ *  335:     function displayHistory($element)	
  *
  *              SECTION: Various helper functions
- *  520:     function nextHisUid($element,$hisUid)	
- *  558:     function compareChangesWithCurrent($element,$changeRec)	
- *  603:     function readFieldTypes($table,$id)	
- *  630:     function cmp($changeStatus,$oldRecord)	
- *  653:     function removeFilefields($table,$dataArray)	
- *  676:     function renderEntry($entry,$table)	
- *  734:     function listHeader()	
- *  778:     function linkPage($str,$inparams=array(),$anchor='')	
- *  806:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)	
+ *  533:     function nextHisUid($element,$hisUid)	
+ *  579:     function compareChangesWithCurrent($element,$changeRec)	
+ *  624:     function readFieldTypes($table,$id)	
+ *  653:     function cmp($changeStatus,$oldRecord)	
+ *  676:     function removeFilefields($table,$dataArray)	
+ *  699:     function renderEntry($entry,$table)	
+ *  757:     function listHeader()	
+ *  801:     function linkPage($str,$inparams=array(),$anchor='')	
+ *  829:     function getChangesSinceRecord($element,$hisUid=0,$hisUid_Stop=0)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,7 +75,7 @@
 
 /**
  * Class for the record history display script (show_rechis.php)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -100,8 +100,8 @@ class recordHistory {
 
 	/**
 	 * Constructor for the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function recordHistory()	{
 		
@@ -116,10 +116,10 @@ class recordHistory {
 	}
 
 	/**
-	 * Main function for the listing of history. 
+	 * Main function for the listing of history.
 	 * It detects incoming variables like element reference, history element uid etc. and renders the correct screen.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 
@@ -148,7 +148,7 @@ class recordHistory {
 	
 	/**
 	 * Displays a specific entry from the sys_history table
-	 * 
+	 *
 	 * @param	integer		UID of sys_history table entry
 	 * @return	string		HTML content
 	 */
@@ -156,9 +156,8 @@ class recordHistory {
 		global $SOBE, $LANG, $TCA;
 
 			// Select the entry from the table:
- 		$query='SELECT * FROM sys_history WHERE uid='.intval($sh_uid);
-		$res = mysql(TYPO3_db,$query);
-		$newRow = mysql_fetch_assoc($res);
+ 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'uid='.intval($sh_uid));
+		$newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 			// If an entry was found:		
 		if (is_array($newRow))	{
@@ -208,7 +207,7 @@ class recordHistory {
 
 	/**
 	 * Return to previous values for element
-	 * 
+	 *
 	 * @param	string		Element reference, syntax "[table]:[uid]"
 	 * @param	string		Tells which field to restore. A single field (eg named "myField") is defined as "field:myField" while ALL fields is indicated by the string "ALL_FIELDS"
 	 * @return	void		The function writes through tceMain and ends with a header-location, if instructed to.
@@ -219,12 +218,16 @@ class recordHistory {
 		$elParts = explode(':',$element);
 		$redirect = intval($this->doReturn);
 		if ($sumUp==-1)	{	// Undo/Redo
-			$query='SELECT uid FROM sys_history WHERE 
-				sys_history.tablename="'.addslashes($elParts[0]).'" 
-				AND sys_history.recuid='.intval($elParts[1]).' 
-				ORDER BY uid DESC LIMIT 1';
-			$res = mysql(TYPO3_db,$query);
-			if ($row = mysql_fetch_assoc($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'uid', 
+						'sys_history', 
+						'sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'" 
+							AND sys_history.recuid='.intval($elParts[1]),
+						'',
+						'uid DESC',
+						'1'
+					);
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$sumUp=$row['uid'];
 			}
 			$redirect = 1;
@@ -270,10 +273,10 @@ class recordHistory {
 
 	/**
 	 * Will save state uid $sumUp of element
-	 * 
+	 *
 	 * @param	string		Element reference, syntax "[table]:[uid]"
 	 * @param	integer		sys_history uid from which to get previous values
-	 * @return	void		
+	 * @return	void
 	 */
 	function saveState($element,$sumUp)	{
 		$elParts = explode(':',$element);
@@ -283,12 +286,16 @@ class recordHistory {
 
 			// Select most recent sys_history record for the element:
 		$lastestData = array();
-		$query='SELECT history_data FROM sys_history WHERE 
-			sys_history.tablename="'.addslashes($elParts[0]).'" 
-			AND sys_history.recuid='.intval($elParts[1]).' 
-			ORDER BY uid DESC LIMIT 1';
-		$res = mysql(TYPO3_db,$query);
-		if ($row = mysql_fetch_assoc($res))	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'history_data', 
+					'sys_history', 
+					'sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'" 
+						AND sys_history.recuid='.intval($elParts[1]),
+					'',
+					'uid DESC',
+					'1'
+				);
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$lastestData = unserialize($row['history_data']);
 		}
 
@@ -296,6 +303,7 @@ class recordHistory {
 		$historyRecords=array();
 		$historyRecords['oldRecord'] = $changeRec['changes'];
 		$historyRecords['newRecord'] = array();
+
 		reset($historyRecords['oldRecord']);
 		while(list($kk)=each($historyRecords['oldRecord']))	{
 			$historyRecords['newRecord'][$kk]=$lastestData['newRecord'][$kk];
@@ -305,23 +313,22 @@ class recordHistory {
 		$updateID = $GLOBALS['BE_USER']->writelog(3,1,0,1,'Saved state','');
 		
 			// Create query for inserting into sys_history table:
-		$fields_values=array();
-		$fields_values['history_data']=serialize($historyRecords);
-		$fields_values['fieldlist']=implode(',',array_keys($historyRecords['oldRecord']));
-		$fields_values['tstamp']=time();
-		$fields_values['tablename']=$elParts[0];
-		$fields_values['recuid']=$elParts[1];
-		$fields_values['sys_log_uid']=$updateID;
-		$fields_values['snapshot']=1;
-		$query = t3lib_BEfunc::DBcompileInsert('sys_history',$fields_values);
-		
+		$fields_values = array(
+			'history_data' => serialize($historyRecords),
+			'fieldlist' => implode(',',array_keys($historyRecords['oldRecord'])),
+			'tstamp' => time(),
+			'tablename' => $elParts[0],
+			'recuid' => $elParts[1],
+			'sys_log_uid' => $updateID,
+			'snapshot' => 1
+		);
 			// Save state by executing this query:
-		$res = mysql(TYPO3_db,$query);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
 	}
 
 	/**
 	 * Displays the history states of an element
-	 * 
+	 *
 	 * @param	string		Element reference, syntax "[table]:[uid]"
 	 * @return	string		HTML for list, wrapped in a table.
 	 */
@@ -335,26 +342,32 @@ class recordHistory {
 			// If table is found in $TCA:
 		if ($TCA[$table])	{
 		
-				// Creating main query for selecting history states of the element.
-			$mainQBody = 'FROM sys_history,sys_log WHERE 
-				sys_history.sys_log_uid=sys_log.uid
-				AND sys_history.tablename="'.addslashes($table).'" 
-				AND sys_history.recuid='.intval($elParts[1]);
-				
 				// Counting number of states:
-			$query='SELECT count(*) '.$mainQBody; 
-			$res = mysql(TYPO3_db,$query);
-			list($Rcount)=mysql_fetch_row($res);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'count(*)', 
+						'sys_history,sys_log', 
+						'sys_history.sys_log_uid=sys_log.uid
+							AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'" 
+							AND sys_history.recuid='.intval($elParts[1])
+					);
+			list($Rcount) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
 				// Selecting the $this->maxSteps most recent states:
-			$query='SELECT sys_history.*,sys_log.userid '.$mainQBody.' 
-				ORDER BY uid LIMIT '.t3lib_div::intInRange($Rcount-$this->maxSteps,0).','.$this->maxSteps;
-			$res = mysql(TYPO3_db,$query);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'sys_history.*,sys_log.userid', 
+						'sys_history,sys_log', 
+						'sys_history.sys_log_uid=sys_log.uid
+							AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($table, 'sys_history').'" 
+							AND sys_history.recuid='.intval($elParts[1]),
+						'',
+						'uid',
+						t3lib_div::intInRange($Rcount-$this->maxSteps,0).','.$this->maxSteps
+					);
 
 				// Traversing the result, building up changesArray / changeLog:
 			$changesArray=array();
 			$changeLog=array();
-			while ($newRow = mysql_fetch_assoc($res))	{
+			while ($newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$hisDat = unserialize($newRow['history_data']);
 				if (is_array($hisDat['newRecord']) && is_array($hisDat['oldRecord']))	{
 						// If intermedia changes:
@@ -511,7 +524,7 @@ class recordHistory {
 
 	/**
 	 * Based on the uid of a sys_history record (a state) this method will find the uids of the previous and next state (if any)
-	 * 
+	 *
 	 * @param	string		Element reference, syntax "[table]:[uid]"
 	 * @param	integer		Current state uid
 	 * @return	array		Array with previous and next uid as key 0 / 1
@@ -521,25 +534,33 @@ class recordHistory {
 		$elParts = explode(':',$element);
 
 			// Prev:
-		$query='SELECT uid FROM sys_history WHERE 
-			tablename="'.addslashes($elParts[0]).'" 
-			AND recuid='.intval($elParts[1]).' 
-			AND uid<'.intval($hisUid).'
-			ORDER BY uid DESC LIMIT 1';
-		$res = mysql(TYPO3_db,$query);
-		if ($row = mysql_fetch_assoc($res))	{
-			$prevUid=$row['uid'];
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid', 
+					'sys_history', 
+					'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'" 
+						AND recuid='.intval($elParts[1]).' 
+						AND uid<'.intval($hisUid),
+					'',
+					'uid DESC',
+					'1'
+				);
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$prevUid = $row['uid'];
 		}
 
 			// Next:
-		$query='SELECT uid FROM sys_history WHERE 
-			tablename="'.addslashes($elParts[0]).'"
-			AND recuid='.intval($elParts[1]).' 
-			AND uid>'.intval($hisUid).'
-			ORDER BY uid LIMIT 1';
-		$res = mysql(TYPO3_db,$query);
-		if ($row = mysql_fetch_assoc($res))	{
-			$nextUid=$row['uid'];
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid', 
+					'sys_history', 
+					'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'"
+						AND recuid='.intval($elParts[1]).' 
+						AND uid>'.intval($hisUid),
+					'',
+					'uid',
+					'1'
+				);
+		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$nextUid = $row['uid'];
 		}
 
 			// Return next and previous ids:
@@ -548,7 +569,7 @@ class recordHistory {
 
 	/**
 	 * This compares a certain sys_history state (given by the $changeRec array) with the current values of the element refered to by $element.
-	 * 
+	 *
 	 * @param	string		Element reference, syntax "[table]:[uid]"
 	 * @param	array		Array with the state information from a certain state. This kind of array is produced by getChangesSinceRecord()
 	 * @return	array		Array with the changes registered in.
@@ -593,8 +614,8 @@ class recordHistory {
 	}
 
 	/**
-	 * Returns the record of $table/$id along with the mysql field types for each field
-	 * 
+	 * Returns the record of $table/$id along with the sql field types for each field
+	 *
 	 * @param	string		The table name
 	 * @param	integer		The uid of the record
 	 * @return	array		An array with two num keys; in 0 is the current record, in 1 is the field types for each field.
@@ -603,25 +624,27 @@ class recordHistory {
 	function readFieldTypes($table,$id)	{
 			
 			// Select record:
-		$query = 'SELECT * FROM '.$table.' WHERE uid='.intval($id);
-		$res = mysql(TYPO3_db,$query);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($id));
 
 			// Fetch the types of the fields.
-		if (mysql_num_rows($res))	{
-			$currentRecord = mysql_fetch_assoc($res);
+		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+			$currentRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$c=0;
 			$cRecTypes=array();
 			foreach($currentRecord as $col => $val)	{
-				$cRecTypes[$col]=mysql_field_type($res,$c);
+				$cRecTypes[$col] = $GLOBALS['TYPO3_DB']->sql_field_type($res,$c);
 				$c++;
 			}
 		}
+		
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 		return array($currentRecord,$cRecTypes);
 	}
 
 	/**
 	 * Compares the old record with the changed fields.
-	 * 
+	 *
 	 * @param	array		Record with field/value pairs (what has changed)
 	 * @param	array		Record with field/value pairs
 	 * @return	array		Comparison result.
@@ -644,7 +667,7 @@ class recordHistory {
 
 	/**
 	 * Will traverse the field names in $dataArray and look in $TCA if the fields are of types which cannot be handled by the sys_history (that is currently group types with internal_type set to "file")
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	array		The data array
 	 * @return	array		The modified data array
@@ -667,7 +690,7 @@ class recordHistory {
 
 	/**
 	 * Renders HTML table-rows with the comparison information of an sys_history entry record
-	 * 
+	 *
 	 * @param	array		sys_history entry record.
 	 * @param	string		The table name
 	 * @return	array		HTML table rows in an array
@@ -704,9 +727,9 @@ class recordHistory {
 						$lines[]='
 							<tr class="bgColor4">
 								<td><em>'.$LANG->sl(t3lib_BEfunc::getItemLabel($table,$fN)).'</em></td>
-								<td>'.t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN]).'</td>
+								<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN])).'</td>
 								<td>'.$this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/history.gif','width="13" height="12"').' title="'.$LANG->getLL('revertField',1).'" alt="" />', array('revert'=>'field:'.$fN)).'</td>
-								<td>'.t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN]).'</td>
+								<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN])).'</td>
 								<td>'.nl2br($diffres).'</td>
 							</tr>';
 					break;
@@ -714,8 +737,8 @@ class recordHistory {
 						$lines[]='
 							<tr class="bgColor4">
 								<td><em>'.$LANG->sl(t3lib_BEfunc::getItemLabel($table,$fN)).'</em></td>
-								<td>'.t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN]).'</td>
-								<td>'.t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN]).'</td>
+								<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['oldRecord'][$fN])).'</td>
+								<td>'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($table,$fN,$entry['newRecord'][$fN])).'</td>
 								<td>'.nl2br($diffres).'</td>
 							</tr>';
 					break;
@@ -727,7 +750,7 @@ class recordHistory {
 
 	/**
 	 * Creates a header row based on the value of $this->listType
-	 * 
+	 *
 	 * @return	string		HTML table header row
 	 * @access private
 	 */
@@ -768,7 +791,7 @@ class recordHistory {
 
 	/**
 	 * Creates a link to the same page.
-	 * 
+	 *
 	 * @param	string		String to wrap in <a> tags (must be htmlspecialchars()'ed prior to calling function)
 	 * @param	array		Array of key/value pairs to override the default values with.
 	 * @param	string		Possible anchor value.
@@ -796,7 +819,7 @@ class recordHistory {
 	
 	/**
 	 * This creates an array with the sum of differences between two points in the sys_history
-	 * 
+	 *
 	 * @param	string		Element reference, syntax "[table]:[uid]"
 	 * @param	integer		sys_history uid from which to start the selection process
 	 * @param	integer		optional sys_history uid at which to stop the selection (thus applying an upper limit)
@@ -813,22 +836,24 @@ class recordHistory {
 		
 			// If there is a table by the requested name:
 		if ($TCA[$elParts[0]])	{
+			$times = array();
 				
 				// Create query for selecting sys_history records in time interval:
 			$addWhere = ' AND sys_history.uid>='.$hisUid;
 			if ($hisUid_Stop)	$addWhere.= ' AND sys_history.uid<='.$hisUid_Stop;
-			$query='SELECT sys_history.*,sys_log.userid FROM sys_history,sys_log WHERE 
-				sys_history.sys_log_uid=sys_log.uid
-				AND sys_history.tablename="'.addslashes($elParts[0]).'" 
-				AND sys_history.recuid='.intval($elParts[1]).$addWhere.' 
-				ORDER BY uid DESC';
-
 				// Make query:
-			$res = mysql(TYPO3_db,$query);
-			$times=array();
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'sys_history.*,sys_log.userid', 
+							'sys_history,sys_log', 
+							'sys_history.sys_log_uid=sys_log.uid
+								AND sys_history.tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($elParts[0], 'sys_history').'" 
+								AND sys_history.recuid='.intval($elParts[1]).$addWhere,
+							'',
+							'uid DESC'
+						);
 			
 				// Travese results:
-			while ($newRow = mysql_fetch_assoc($res))	{
+			while ($newRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$hisDat = unserialize($newRow['history_data']);
 				if (is_array($hisDat['newRecord']) && is_array($hisDat['oldRecord']))	{
 					$sumChangesArray['changes']=array_merge($sumChangesArray['changes'],$hisDat['oldRecord']);

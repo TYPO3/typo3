@@ -41,13 +41,13 @@
  *
  *   85: class TSpagegen 
  *   92:     function pagegenInit()	
- *  215:     function getIncFiles()	
- *  248:     function JSeventFunctions()	
- *  282:     function renderContent()	
- *  309:     function renderContentWithHeader($pageContent)	
+ *  216:     function getIncFiles()	
+ *  249:     function JSeventFunctions()	
+ *  283:     function renderContent()	
+ *  310:     function renderContentWithHeader($pageContent)	
  *
  *
- *  638: class FE_loadDBGroup extends t3lib_loadDBGroup	
+ *  672: class FE_loadDBGroup extends t3lib_loadDBGroup	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -74,10 +74,10 @@
 
 /**
  * Class for starting TypoScript page generation
- * 
+ *
  * The class is not instantiated as an objects but called directly with the "::" operator.
  * eg: TSpagegen::pagegenInit()
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -86,8 +86,8 @@ class TSpagegen {
 
 	/**
 	 * Setting some vars in TSFE, primarily based on TypoScript config settings.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function pagegenInit()	{
 		if ($GLOBALS['TSFE']->page['content_from_pid']>0)	{
@@ -210,7 +210,7 @@ function linkTo_UnCryptMailto(s)	{	//
 
 	/**
 	 * Returns an array with files to include. These files are the ones set up in TypoScript config.
-	 * 
+	 *
 	 * @return	array		Files to include. Paths are relative to PATH_site.
 	 */
 	function getIncFiles()	{
@@ -243,7 +243,7 @@ function linkTo_UnCryptMailto(s)	{	//
 	
 	/**
 	 * Processing JavaScript handlers
-	 * 
+	 *
 	 * @return	array		Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
 	 */
 	function JSeventFunctions()	{
@@ -277,8 +277,8 @@ function linkTo_UnCryptMailto(s)	{	//
 
 	/**
 	 * Rendering the page content
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function renderContent()	{
 		// PAGE CONTENT
@@ -303,9 +303,9 @@ function linkTo_UnCryptMailto(s)	{	//
 	
 	/**
 	 * Rendering normal HTML-page with header by wrapping the generated content ($pageContent) in body-tags and setting the header accordingly.
-	 * 
+	 *
 	 * @param	string		The page content which TypoScript objects has generated
-	 * @return	void		
+	 * @return	void
 	 */
 	function renderContentWithHeader($pageContent)	{
 		$customContent = $GLOBALS['TSFE']->config['config']['headerComment'];
@@ -663,7 +663,7 @@ require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 
 /**
  * Class for fetching record relations for the frontend.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib

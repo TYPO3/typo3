@@ -74,12 +74,26 @@ class SC_wizard_colorpicker {
 					close();
 				}
 			}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$color: ...
+	 * @return	[type]		...
+	 */
 			function changeBGcolor(color) {
 			    if (window.opener.document.layers)
 			        window.opener.document.layers["'.$this->P["md5ID"].'"].bgColor = color;
 			    else if (window.opener.document.all)
 			        window.opener.document.all["'.$this->P["md5ID"].'"].style.background = color;
-			}	
+			}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$input: ...
+	 * @return	[type]		...
+	 */
 			function setValue(input)	{
 				var field = checkReference();
 				if (field)	{
@@ -88,6 +102,12 @@ class SC_wizard_colorpicker {
 					changeBGcolor(input);
 				}
 			}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 			function getValue()	{
 				var field = checkReference();
 				return field.value;
@@ -98,6 +118,12 @@ class SC_wizard_colorpicker {
 		
 		$this->content.=$this->doc->startPage("Color Picker");
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function main()	{
 		global $SOBE;
 
@@ -113,6 +139,12 @@ class SC_wizard_colorpicker {
 		';
 		$this->content.=$this->doc->endPage();
 	}
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function printContent()	{
 		echo $this->content;
 	}

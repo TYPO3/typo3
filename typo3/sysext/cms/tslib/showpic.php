@@ -38,10 +38,10 @@
  *
  *
  *
- *   94: class SC_tslib_showpic 
- *  115:     function init()	
- *  163:     function main()	
- *  211:     function printContent()	
+ *   97: class SC_tslib_showpic 
+ *  118:     function init()	
+ *  166:     function main()	
+ *  214:     function printContent()	
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -77,6 +77,9 @@ require(PATH_t3lib.'class.t3lib_extmgm.php');
 require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 
+require(PATH_t3lib.'class.t3lib_db.php');
+$TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
+
 require(PATH_t3lib.'class.t3lib_stdgraphic.php');
 
 
@@ -86,7 +89,7 @@ require(PATH_t3lib.'class.t3lib_stdgraphic.php');
 /**
  * Script Class, generating the page output.
  * Instantiated in the bottom of this script.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -109,8 +112,8 @@ class SC_tslib_showpic {
 
 	/**
 	 * Init function, setting the input vars in the global space.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 			// Loading internal vars with the GET/POST parameters from outside:		
@@ -157,8 +160,8 @@ class SC_tslib_showpic {
 	/**
 	 * Main function which creates the image if needed and outputs the HTML code for the page displaying the image.
 	 * Accumulates the content in $this->content
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 
@@ -172,7 +175,7 @@ class SC_tslib_showpic {
 		}
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['enable_typo3temp_db_tracking'])	{
 				// Need to connect to database, because this may be used.
-			mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
+			$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
 		}
 		
 		if (strstr($this->width.$this->height, 'm')) {$max='m';} else {$max='';}
@@ -205,8 +208,8 @@ class SC_tslib_showpic {
 
 	/**
 	 * Outputs the content from $this->content
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

@@ -45,13 +45,13 @@
  *  291:     function cBodytext($str,$start=0,$max=0)	
  *  303:     function nl2br($str)	
  *  314:     function getContentResult($table) 
- *  330:     function bold($str)	
- *  340:     function paragraph($str)	
- *  350:     function line($str)	
- *  361:     function navLink($str,$pointer)	
- *  371:     function menuCurrentLevel($indent)	
- *  406:     function link($str,$id,$deck='')	
- *  422:     function cleanMenuArray($menu)	
+ *  329:     function bold($str)	
+ *  339:     function paragraph($str)	
+ *  349:     function line($str)	
+ *  360:     function navLink($str,$pointer)	
+ *  370:     function menuCurrentLevel($indent)	
+ *  405:     function link($str,$id,$deck='')	
+ *  421:     function cleanMenuArray($menu)	
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -86,7 +86,7 @@ require_once (PATH_t3lib.'class.t3lib_xml.php');
  * Class that creates the current page and content element records as an WML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"
  * The static template "plugin.alt.wap" is used to trigger this WML creation as well. That template contains this set of TypoScript lines which triggers the WML creation and disables all regular HTML headers
- * 
+ *
  * ## Set up page/type:
  * alt_wap >
  * alt_wap = PAGE
@@ -94,10 +94,10 @@ require_once (PATH_t3lib.'class.t3lib_xml.php');
  *   typeNum=97
  *   config.disableAllHeaderCode = 1
  *   config.additionalHeaders = Content-type: text/vnd.wap.wml
- * 
+ *
  *   ## Includes the newsLib:
  *   includeLibs.alt_wap = media/scripts/wapversionLib.inc
- * 
+ *
  *   ## Inserting the USER cObject for WAP/XML rendering
  *   10 = USER
  *   10 {
@@ -109,19 +109,19 @@ require_once (PATH_t3lib.'class.t3lib_xml.php');
  *     navLabels.up = Up
  *   }
  * }
- *  
+ *
  * NOTICE:
- *  
+ *
  * In the static template "plugin.alt.wap" there is a part in the end looking like this:
- * 
+ *
  * ## If the browser is a WAP-device,
  * [device=wap]
  * alt_wap.typeNum=0
  * [global]
- * 
+ *
  * This means that IF the device coming to the URL is a WAP device they will get wap content even if they don't specify "&type=97" since the typeNum is changed to zero here!
  * In fact they CANNOT get any wap-content at "&type=97" anymore! This has been a source of error and confusion for many people
- * 
+ *
  * @package TYPO3
  * @subpackage tslib
  * @author	Kasper Skaarhoj <kasper@typo3.com>
@@ -133,7 +133,7 @@ class user_wapversion {
 
 	/**
 	 * Main function, called from TypoScript
-	 * 
+	 *
 	 * @param	string		Empty, ignore.
 	 * @param	array		TypoScript properties for this content object/function call
 	 * @return	string		WML content
@@ -194,12 +194,12 @@ class user_wapversion {
 
 	/**
 	 * Getting abstract of the first content elements header and bodytext for the menu
-	 * 
+	 *
 	 * @return	string		WML string
 	 */
 	function contentAbstract()	{
 		$res = $this->getContentResult('tt_content');
-		$row = mysql_fetch_assoc($res);
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$out = $this->bold(t3lib_div::fixed_lgd(htmlspecialchars($row['header']),20)).'<br/>';
 		$out.= t3lib_div::fixed_lgd(htmlspecialchars($row['bodytext']),50);
 		$out = '<p>'.$out.' <a href="'.htmlspecialchars('?id='.$GLOBALS['TSFE']->id.',1.'.$GLOBALS['TSFE']->type).'">[more]</a></p>';
@@ -209,7 +209,7 @@ class user_wapversion {
 	/**
 	 * Returns all page content, but in an array where the content is divided into chunks or a max length (for WAP clients with limited memory capabilities)
 	 * Content is then displayed using the pointer value found in $GLOBALS['TSFE']->idParts[1], see main_wapversion()
-	 * 
+	 *
 	 * @param	integer		Max length of each content chunk
 	 * @return	array		Array with the page content divided into chucks WML code (default length equals $chunkLgd; 850)
 	 * @see main_wapversion()
@@ -219,7 +219,7 @@ class user_wapversion {
 		$overlap=5;
 		$idx=0;
 		$out=array();
-		while($row = mysql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				// Header:
 			$get = '<br/>'.$this->cHeader($row['header']).'<br/>';
 			if (strlen($out[$idx].$get)>$chunkLgd)	{
@@ -269,7 +269,7 @@ class user_wapversion {
 
 	/**
 	 * Formats the header for a content element
-	 * 
+	 *
 	 * @param	string		Header value to format
 	 * @return	string		Returns the formatted version, stripped from tags and htmlspecialchar()'ed
 	 * @see contentAll()
@@ -281,7 +281,7 @@ class user_wapversion {
 
 	/**
 	 * Formats the bodytext for a content element
-	 * 
+	 *
 	 * @param	string		The bodytext content
 	 * @param	integer		Position where to start in the bodytext stream. If larger than zero a prefix, "...", is prepended.
 	 * @param	integer		Max length
@@ -296,7 +296,7 @@ class user_wapversion {
 
 	/**
 	 * Local version of ml2br(). Replaces linebreaks with <br/> tags.
-	 * 
+	 *
 	 * @param	string		The input string to process
 	 * @return	string		The processed value returned.
 	 */
@@ -307,23 +307,22 @@ class user_wapversion {
 	/**
 	 * Selects all records from $table having the current page id as PID (records belonging to that page)
 	 * Used to select content elements from "tt_content"
-	 * 
+	 *
 	 * @param	string		A tablename found in $TCA
 	 * @return	pointer		A database resource pointer
 	 */
 	function getContentResult($table) {
 		global $TCA;
 		if ($TCA[$table])	{
-			$orderBy = ($TCA[$table]['ctrl']['sortby']) ? 'ORDER BY '.$TCA[$table]['ctrl']['sortby'] : $TCA[$table]['ctrl']['default_sortby'];
-			$query = 'SELECT * FROM '.$table.' WHERE pid='.$GLOBALS['TSFE']->id.$this->cObj->enableFields($table).' '.$orderBy;
-			$res = mysql(TYPO3_db,$query);
+			$orderBy = $TCA[$table]['ctrl']['sortby'] ? 'ORDER BY '.$TCA[$table]['ctrl']['sortby'] : $TCA[$table]['ctrl']['default_sortby'];
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid='.intval($GLOBALS['TSFE']->id).$this->cObj->enableFields($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy));
 			return $res;
 		}
 	}
 
 	/**
 	 * Simulates bold type - basically setting it in uppercase
-	 * 
+	 *
 	 * @param	string		The string for format in "bold" (uppercase)
 	 * @return	string		Processed output.
 	 */
@@ -333,7 +332,7 @@ class user_wapversion {
 
 	/**
 	 * Wraps a string in <p>...</p> tags
-	 * 
+	 *
 	 * @param	string		The input string
 	 * @return	string		The wrapped string
 	 */
@@ -343,7 +342,7 @@ class user_wapversion {
 
 	/**
 	 * Adds a linebreak character to the end of $str
-	 * 
+	 *
 	 * @param	string		The string/line
 	 * @return	string		The input string with '<br/>' prepended
 	 */
@@ -353,7 +352,7 @@ class user_wapversion {
 
 	/**
 	 * Creates a navigation link to the next part of the page content!
-	 * 
+	 *
 	 * @param	string		The link text
 	 * @param	integer		The pointer value
 	 * @return	string		The input string, linked with the pointer value to the current page.
@@ -364,7 +363,7 @@ class user_wapversion {
 
 	/**
 	 * Creates a menu for the current pagelevel. Navigation is both a path-menu (rootline) and a menu of current page subpages.
-	 * 
+	 *
 	 * @param	string		Indentation prefix string per menu item.
 	 * @return	string		A paragraph with the menu items inside.
 	 */
@@ -396,7 +395,7 @@ class user_wapversion {
 	/**
 	 * Creates a link around the input string to another page/deck
 	 * Used to create menus
-	 * 
+	 *
 	 * @param	string		The string to be wrapped in <a> tags
 	 * @param	integer		The page id to link to
 	 * @param	string		The deck name, if any
@@ -415,7 +414,7 @@ class user_wapversion {
 
 	/**
 	 * Cleaning up the menu array returned from sys_page->getMenu(). Removing page types with doktype "5" (not in menu)
-	 * 
+	 *
 	 * @param	array		Menu item array
 	 * @return	array		New menu item array with doktype-5 elements removed.
 	 */

@@ -51,7 +51,7 @@
  *  449:     function makeInterfaceSelectorBox()	
  *  503:     function makeCopyrightNotice()	
  *  536:     function makeLoginBoxImage()	
- *  574:     function makeLoginNews()	
+ *  575:     function makeLoginNews()	
  *
  * TOTAL FUNCTIONS: 11
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -79,7 +79,7 @@ require ('template.php');
 
 /**
  * Script Class for rendering the login form
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -114,8 +114,8 @@ class SC_index {
 
 	/**
 	 * Initialize the login box. Will also react on a &L=OUT flag and exit.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$TYPO3_CONF_VARS;
@@ -145,8 +145,8 @@ class SC_index {
 
 	/**
 	 * Main function - creating the login/logout form
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TBE_TEMPLATE, $TYPO3_CONF_VARS, $BE_USER;
@@ -231,8 +231,8 @@ class SC_index {
 		
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 
@@ -255,7 +255,7 @@ class SC_index {
 	/**
 	 * Creates the login form
 	 * This is drawn when NO login exists.
-	 * 
+	 *
 	 * @return	string		HTML output
 	 */
 	function makeLoginForm()	{
@@ -298,7 +298,7 @@ class SC_index {
 	/**
 	 * Creates the logout form
 	 * This is drawn if a user login already exists.
-	 * 
+	 *
 	 * @return	string		HTML output
 	 */
 	function makeLogoutForm()	{
@@ -339,7 +339,7 @@ class SC_index {
 
 	/**
 	 * Wrapping the login form table in another set of tables etc:
-	 * 
+	 *
 	 * @param	string		HTML content for the login form
 	 * @return	string		The HTML for the page.
 	 */
@@ -400,8 +400,8 @@ class SC_index {
 	
 	/**
 	 * Checking, if we should perform some sort of redirection OR closing of windows.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function checkRedirect()	{
 		global $BE_USER,$TBE_TEMPLATE;
@@ -443,8 +443,8 @@ class SC_index {
 
 	/**
 	 * Making interface selector:
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function makeInterfaceSelectorBox()	{
 		global $TYPO3_CONF_VARS;
@@ -492,12 +492,12 @@ class SC_index {
 	
 	/**
 	 * COPYRIGHT notice
-	 * 
+	 *
 	 * Warning:
-	 * DO NOT prevent this notice from being shown in ANY WAY. 
+	 * DO NOT prevent this notice from being shown in ANY WAY.
 	 * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
 	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
-	 * 
+	 *
 	 * @return	string		Text/Image (HTML) for copyright notice.
 	 */
 	function makeCopyrightNotice()	{
@@ -530,7 +530,7 @@ class SC_index {
 
 	/**
 	 * Returns the login box image, whether the default or an image from the rotation folder.
-	 * 
+	 *
 	 * @return	string		HTML image tag.
 	 */
 	function makeLoginBoxImage()	{
@@ -558,7 +558,8 @@ class SC_index {
 				}
 			}
 		} else {	// If no rotation folder configured, print default image:
-			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/loginbox_image.jpg','width="200" height="133"').' id="loginbox-image" alt="" />';
+			$imagecopy = 'Photo: &copy; 2004 Kasper Sk&#229;rh&#248;j';	// Directly outputted in image attributes...
+			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/loginbox_image_360rc2.jpg','width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
 		
 			// Return image tag:
@@ -567,7 +568,7 @@ class SC_index {
 	
 	/**
 	 * Make login news - renders the HTML content for a list of news shown under the login form. News data is added through $TYPO3_CONF_VARS
-	 * 
+	 *
 	 * @return	string		HTML content
 	 * @credits			Idea by Jan-Hendrik Heuing
 	 */

@@ -65,7 +65,7 @@ require_once ('class.alt_menu_functions.inc');
 
 /**
  * Script Class for rendering the selector box menu
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -75,8 +75,8 @@ class SC_alt_menu_sel {
 	
 	/**
 	 * Main function, making the selector box menu
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TBE_MODULES,$TBE_TEMPLATE;
@@ -101,8 +101,8 @@ class SC_alt_menu_sel {
 	
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

@@ -88,7 +88,7 @@ require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 
 /**
  * Local extension of the page tree class
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -97,7 +97,7 @@ class localPageTree extends t3lib_pageTree {
 
 	/**
 	 * Inserting uid-information in title-text for an icon
-	 * 
+	 *
 	 * @param	string		Icon image
 	 * @param	array		Item row
 	 * @return	string		Wrapping icon image.
@@ -119,7 +119,7 @@ class localPageTree extends t3lib_pageTree {
 
 /**
  * Extension of position map for pages
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -129,7 +129,7 @@ class ext_posMap_pages extends t3lib_positionMap {
 	
 	/**
 	 * Creates the onclick event for the insert-icons.
-	 * 
+	 *
 	 * @param	integer		The pid.
 	 * @param	integer		New page id.
 	 * @return	string		Onclick attribute content
@@ -140,7 +140,7 @@ class ext_posMap_pages extends t3lib_positionMap {
 
 	/**
 	 * Wrapping page title.
-	 * 
+	 *
 	 * @param	string		Page title.
 	 * @param	array		Page record (?)
 	 * @return	string		Wrapped title.
@@ -152,7 +152,7 @@ class ext_posMap_pages extends t3lib_positionMap {
 
 	/**
 	 * Wrap $t_code in bold IF the $dat uid matches $id
-	 * 
+	 *
 	 * @param	string		Title string
 	 * @param	array		Infomation array with record array inside.
 	 * @param	integer		The current id.
@@ -176,7 +176,7 @@ class ext_posMap_pages extends t3lib_positionMap {
 
 /**
  * Extension of position map for content elements
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -186,7 +186,7 @@ class ext_posMap_tt_content extends t3lib_positionMap {
 	
 	/**
 	 * Wrapping page title.
-	 * 
+	 *
 	 * @param	string		Page title.
 	 * @param	array		Page record (?)
 	 * @return	string		Wrapped title.
@@ -198,7 +198,7 @@ class ext_posMap_tt_content extends t3lib_positionMap {
 
 	/**
 	 * Wrapping the title of the record.
-	 * 
+	 *
 	 * @param	string		The title value.
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.
@@ -219,7 +219,7 @@ class ext_posMap_tt_content extends t3lib_positionMap {
 
 /**
  * Script Class for rendering the move-element wizard display
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -244,8 +244,8 @@ class SC_move_el {
 
 	/**
 	 * Constructor, initializing internal variables.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH;
@@ -278,8 +278,8 @@ class SC_move_el {
 
 	/**
 	 * Creating the module output.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG,$BACK_PATH,$BE_USER;
@@ -404,8 +404,8 @@ class SC_move_el {
 
 	/**
 	 * Print out the accumulated content:
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		global $SOBE;

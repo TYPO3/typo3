@@ -44,16 +44,16 @@
  *   82: class SC_alt_shortcut 
  *  118:     function preinit()	
  *  143:     function preprocess()	
- *  202:     function init()	
- *  237:     function main()	
- *  336:     function editLoadedFunc()	
- *  397:     function editPageIdFunc()	
- *  440:     function printContent()	
+ *  200:     function init()	
+ *  248:     function main()	
+ *  346:     function editLoadedFunc()	
+ *  407:     function editPageIdFunc()	
+ *  450:     function printContent()	
  *
  *              SECTION: OTHER FUNCTIONS:
- *  468:     function mIconFilename($Ifilename,$backPath)	
- *  481:     function getIcon($modName)	
- *  505:     function itemLabel($inlabel,$modName,$M_modName='')	
+ *  478:     function mIconFilename($Ifilename,$backPath)	
+ *  491:     function getIcon($modName)	
+ *  515:     function itemLabel($inlabel,$modName,$M_modName='')	
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -74,7 +74,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 /**
  * Script Class for the shortcut frame, bottom frame of the backend frameset
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -112,8 +112,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Pre-initialization - setting input variables for storing shortcuts etc.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function preinit()	{
 		global $TBE_MODULES;
@@ -137,22 +137,21 @@ class SC_alt_shortcut {
 
 	/**
 	 * Adding shortcuts, editing shortcuts etc.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function preprocess()	{
 		global $BE_USER,$HTTP_POST_VARS;
 
 			// Adding a shortcut being set from another frame
 		if ($this->modName && $this->URL)	{
-			$fields_values=array();
-			$fields_values['userid']=$BE_USER->user['uid'];
-			$fields_values['module_name']=$this->modName.'|'.$this->M_modName;
-			$fields_values['url']=$this->URL;
-			$fields_values['sorting']=time();
-			$query = t3lib_BEfunc::DBcompileInsert('sys_be_shortcuts',$fields_values);
-			$res = mysql(TYPO3_db,$query);
-			echo mysql_error();
+			$fields_values = array(
+				'userid' => $BE_USER->user['uid'],
+				'module_name' => $this->modName.'|'.$this->M_modName,
+				'url' => $this->URL,
+				'sorting' => time()
+			);
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_be_shortcuts', $fields_values);
 		}
 
 			// Selection-clause for users - so users can deleted only their own shortcuts (except admins)
@@ -161,8 +160,7 @@ class SC_alt_shortcut {
 			// Deleting shortcuts:
 		if (strcmp($this->deleteCategory,''))	{
 			if (t3lib_div::testInt($this->deleteCategory))	{
-				$q = 'DELETE FROM sys_be_shortcuts WHERE sc_group='.intval($this->deleteCategory).$addUSERWhere;
-				$res=mysql(TYPO3_db,$q);
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_be_shortcuts', 'sc_group='.intval($this->deleteCategory).$addUSERWhere);
 			}
 		}
 		
@@ -170,15 +168,15 @@ class SC_alt_shortcut {
 		if (is_array($HTTP_POST_VARS))	{
 				// Saving:
 			if (isset($HTTP_POST_VARS['_savedok_x']) || isset($HTTP_POST_VARS['_saveclosedok_x']))	{
-				$fields_values=array();
-				$fields_values['description']=$this->editName;
-				$fields_values['sc_group']=intval($this->editGroup);
+				$fields_values = array(
+					'description' => $this->editName,
+					'sc_group' => intval($this->editGroup)
+				);
 				if ($fields_values['sc_group']<0 && !$BE_USER->isAdmin())	{
 					$fields_values['sc_group']=0;
 				}
 		
-				$q = t3lib_BEfunc::DBcompileUpdate('sys_be_shortcuts','uid='.intval($this->whichItem).$addUSERWhere,$fields_values);
-				$res=mysql(TYPO3_db,$q);
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_be_shortcuts', 'uid='.intval($this->whichItem).$addUSERWhere, $fields_values);
 			}
 				// If save without close, keep the session going...
 			if (isset($HTTP_POST_VARS['_savedok_x']))	{
@@ -186,8 +184,8 @@ class SC_alt_shortcut {
 			}
 				// Deleting a single shortcut ?
 			if (isset($HTTP_POST_VARS['_deletedok_x']))	{
-				$q = 'DELETE FROM sys_be_shortcuts WHERE uid='.intval($this->whichItem).$addUSERWhere;
-				$res=mysql(TYPO3_db,$q);
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_be_shortcuts', 'uid='.intval($this->whichItem).$addUSERWhere);
+
 				if (!$this->editSC)	$this->editSC=-1;	// Just to have the checkbox set...
 			}
 		}
@@ -196,8 +194,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Initialize (page output)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BACK_PATH;
@@ -244,8 +242,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Main function, creating content in the frame
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG;
@@ -263,8 +261,7 @@ class SC_alt_shortcut {
 		}
 		
 			// Fetching shortcuts to display for this user:
-		$query = 'SELECT * FROM sys_be_shortcuts WHERE ((userid='.$BE_USER->user['uid'].' AND sc_group>=0) OR sc_group IN ('.implode(',',$globalGroups).')) ORDER BY sc_group,sorting';
-		$res = mysql(TYPO3_db,$query);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_be_shortcuts', '((userid='.$BE_USER->user['uid'].' AND sc_group>=0) OR sc_group IN ('.implode(',',$globalGroups).'))', '', 'sc_group,sorting');
 
 			// Init vars:
 		$this->lines=array();
@@ -273,7 +270,7 @@ class SC_alt_shortcut {
 		$formerGr='';
 		
 			// Traverse shortcuts
-		while($row=mysql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			if ($this->editSC && $row['uid']==$this->editSC)	{
 				$this->editSC_rec=$row;
 			}
@@ -343,8 +340,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Creates lines for the editing form.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function editLoadedFunc()	{
 		global $BE_USER,$LANG;
@@ -404,8 +401,8 @@ class SC_alt_shortcut {
 	/**
 	 * If "editPage" value is sent to script and it points to an accessible page, the internal var $this->theEditRec is set to the page record which should be loaded.
 	 * Returns void
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function editPageIdFunc()	{
 		global $BE_USER,$LANG;
@@ -447,8 +444,8 @@ class SC_alt_shortcut {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
@@ -473,10 +470,10 @@ class SC_alt_shortcut {
 
 	/**
 	 * Returns relative filename for icon.
-	 * 
+	 *
 	 * @param	string		Absolute filename of the icon
 	 * @param	string		Backpath string to prepend the icon after made relative
-	 * @return	void		
+	 * @return	void
 	 */
 	function mIconFilename($Ifilename,$backPath)	{
 		if (t3lib_div::isAbsPath($Ifilename))	{
@@ -487,7 +484,7 @@ class SC_alt_shortcut {
 
 	/**
 	 * Returns icon for shortcut display
-	 * 
+	 *
 	 * @param	string		Backend module name
 	 * @return	string		Icon file name
 	 */
@@ -509,7 +506,7 @@ class SC_alt_shortcut {
 
 	/**
 	 * Returns title-label for icon
-	 * 
+	 *
 	 * @param	string		In-label
 	 * @param	string		Backend module name (key)
 	 * @param	string		Backend module label (user defined?)

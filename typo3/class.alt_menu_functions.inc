@@ -40,14 +40,16 @@
  *
  *
  *
- *   70: class alt_menu_functions 
- *   91:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)	
- *  368:     function mIconFile($Ifilename,$backPath)	
- *  383:     function mIconFilename($Ifilename,$backPath)	
- *  395:     function topButtons()	
- *  408:     function wrapLinkWithAB($link)	
+ *   72: class alt_menu_functions 
+ *   93:     function topMenu($theModules,$dontLink=0,$backPath='',$descr=0)	
+ *  386:     function mIconFile($Ifilename,$backPath)	
+ *  401:     function mIconFilename($Ifilename,$backPath)	
+ *  413:     function topButtons()	
+ *  425:     function adminButtons()	
+ *  444:     function adminFunctions($backPath)	
+ *  477:     function wrapLinkWithAB($link)	
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -62,7 +64,7 @@
 
 /**
  * Class with menu functions
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -74,14 +76,14 @@ class alt_menu_functions {
 
 	/**
 	 * Creates the menu of modules.
-	 * 
+	 *
 	 * $descr determines the type of menu made:
 	 * 		0 = Ordinary vertical menu
 	 * 		1 = Descriptions for 'About modules' display
 	 * 		2 = selector-box menu
 	 * 		3 = topmenu - horizontal line of icons!
 	 * 		4 = part of JavaScript switch contruct for alt_main.php frameset.
-	 * 
+	 *
 	 * @param	array		$theModules is the output from load_modules class ($this->loadModules->modules)
 	 * @param	boolean		$dontLink == true will prevent the output from being linked with A-tags (used in the 'beuser' extension)
 	 * @param	string		$backPath must be the 'backPath' to PATH_typo3 from where the the menu is displayed.
@@ -373,9 +375,9 @@ class alt_menu_functions {
 	}
 
 	/**
-	 * Returns $Ifilename readable for script in PATH_typo3. 
+	 * Returns $Ifilename readable for script in PATH_typo3.
 	 * That means absolute names are just returned while relative names are prepended with $backPath (pointing back to typo3/ dir)
-	 * 
+	 *
 	 * @param	string		Icon filename
 	 * @param	string		Back path
 	 * @return	string		Result
@@ -390,7 +392,7 @@ class alt_menu_functions {
 
 	/**
 	 * Returns relative filename to the $Ifilename (for use in img-tags)
-	 * 
+	 *
 	 * @param	string		Icon filename
 	 * @param	string		Back path
 	 * @return	string		Result
@@ -405,8 +407,8 @@ class alt_menu_functions {
 
 	/**
 	 * Returns logout button.
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function topButtons()	{
 		global $LANG;
@@ -417,8 +419,8 @@ class alt_menu_functions {
 
 	/**
 	 * Returns logout button.
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function adminButtons()	{
 		global $LANG;
@@ -435,9 +437,9 @@ class alt_menu_functions {
 
 	/**
 	 * Returns array with parts from which the admin functions can be constructed.
-	 * 
+	 *
 	 * @param	string		Backpath.
-	 * @return	array	
+	 * @return	array
 	 */
 	function adminFunctions($backPath)	{
 		global $LANG,$BE_USER,$TYPO3_CONF_VARS;
@@ -468,9 +470,9 @@ class alt_menu_functions {
 
 	/**
 	 * Appends a '?' if there is none in the string already
-	 * 
+	 *
 	 * @param	string		Link URL
-	 * @return	string		
+	 * @return	string
 	 */
 	function wrapLinkWithAB($link)	{
 		if (!strstr($link,'?'))	{

@@ -71,7 +71,7 @@
  
 /**
  * Class extension tslib_gmenu for the creation of DHTML foldout menus
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -90,8 +90,8 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 
 	/**
 	 * Initializing, setting internal variables (prefixed WM)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function extProc_init()	{
 		$this->WMarrowNO='';
@@ -110,9 +110,9 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	/**
 	 * Processing before the links are created.
 	 * Basically this is setting an onclick handler for clicking the menu item.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 */
 	function extProc_beforeLinking($key)	{
 		$this->I['addATagParams']='';
@@ -127,9 +127,9 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 
 	/**
 	 * Processing after linking, basically setting the <div>-layers for the menu items and possibly wrapping in table, adding bullet images.
-	 * 
+	 *
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void		
+	 * @return	void
 	 */
 	function extProc_afterLinking($key)	{
 		$this->WMtableWrap = $this->mconf['dontWrapInTable'] ? '' : '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>|</td></tr></table>';
@@ -154,7 +154,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 
 	/**
 	 * Putting things together, in particular the JavaScript code needed for the DHTML menu.
-	 * 
+	 *
 	 * @return	string		Empty string! (Since $GLOBALS['TSFE']->divSection is set with the <div>-sections used in the menu)
 	 */
 	function extProc_finish()	{

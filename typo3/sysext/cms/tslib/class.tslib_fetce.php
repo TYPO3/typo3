@@ -38,17 +38,16 @@
  *
  *
  *
- *   84: class tslib_feTCE	
- *  101:     function start($data,$FEData)	
- *  188:     function checkDoublePostExist($table,$doublePostField,$key)	
- *  203:     function calcDoublePostKey($array)	
- *  215:     function includeScripts()	
- *  234:     function getNEWinsert($table, $dataArr)	
- *  262:     function getInsert($table,$fp,$vp)	
- *  275:     function clear_cacheCmd($cacheCmd)	
- *  291:     function getConf($table)	
+ *   83: class tslib_feTCE	
+ *  100:     function start($data,$FEData)	
+ *  187:     function checkDoublePostExist($table,$doublePostField,$key)	
+ *  200:     function calcDoublePostKey($array)	
+ *  212:     function includeScripts()	
+ *  232:     function execNEWinsert($table, $dataArr)	
+ *  258:     function clear_cacheCmd($cacheCmd)	
+ *  274:     function getConf($table)	
  *
- * TOTAL FUNCTIONS: 8
+ * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -74,7 +73,7 @@
 /**
  * Form-data processing class.
  * Used by the FE_DATA object found in TSref. Quite old fashioned and used only by a few extensions, like good old 'tt_guest' and 'tt_board'
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -92,10 +91,10 @@ class tslib_feTCE	{
 	 * Starting the processing of user input.
 	 * Traverses the input data and fills in the array, $this->extScripts with references to files which are then included by includeScripts() (called AFTER start() in tslib_fe)
 	 * These scripts will then put the content into the database.
-	 * 
+	 *
 	 * @param	array		Input data coming from typ. $_POST['data'] vars
 	 * @param	array		TypoScript configuration for the FEDATA object, $this->config['FEData.']
-	 * @return	void		
+	 * @return	void
 	 * @see tslib_fe::fe_tce(), includeScripts()
 	 */
 	function start($data,$FEData)	{
@@ -178,7 +177,7 @@ class tslib_feTCE	{
 	/**
 	 * Checking if a "double-post" exists already.
 	 * "Double-posting" is if someone refreshes a page with a form for the message board or guestbook and thus submits the element twice. Checking for double-posting prevents the second submission from being stored. This is done by saving the first record with a MD5 hash of the content - if this hash exists already, the record cannot be saved.
-	 * 
+	 *
 	 * @param	string		The database table to check
 	 * @param	string		The fieldname from the database table to search
 	 * @param	string		The value to search for.
@@ -186,16 +185,14 @@ class tslib_feTCE	{
 	 * @access private
 	 */
 	function checkDoublePostExist($table,$doublePostField,$key)	{
-		$query = 'SELECT count(*) FROM '.$table.' WHERE '.$doublePostField.'='.intval($key);
-		$res = mysql(TYPO3_db,$query);
-		echo mysql_error();
-		$row = mysql_fetch_row($res);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $doublePostField.'='.intval($key));
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
 	}
 
 	/**
 	 * Creates the double-post hash value from the input array
-	 * 
+	 *
 	 * @param	array		The array with key/values to hash
 	 * @return	integer		And unsigned 32bit integer hash
 	 * @access private
@@ -208,8 +205,8 @@ class tslib_feTCE	{
 
 	/**
 	 * Includes the submit scripts found in ->extScripts (filled in by the start() function)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see tslib_fe::fe_tce(), includeScripts()
 	 */
 	function includeScripts()	{
@@ -226,57 +223,43 @@ class tslib_feTCE	{
 	 * Method available to the submit scripts for creating insert queries.
 	 * Automatically adds tstamp, crdate, cruser_id field/value pairs.
 	 * Will allow only field names which are either found in $TCA[...][columns] OR in the $this->extraList
-	 * 
+	 * Executes an insert query!
+	 *
 	 * @param	string		The table name for which to create the insert statement
 	 * @param	array		Array with key/value pairs being field/values (already escaped)
-	 * @return	string		Returns the query made
+	 * @return	void
 	 */
-	function getNEWinsert($table, $dataArr)	{
-		$fp=array();
-		$vp=array();
+	function execNEWinsert($table, $dataArr)	{
 		$extraList=$this->extraList;
 		if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['tstamp']; $dataArr[$field]=time(); $extraList.=','.$field;}
 		if ($GLOBALS['TCA'][$table]['ctrl']['crdate'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['crdate']; $dataArr[$field]=time(); $extraList.=','.$field;}
 		if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'])	{$field=$GLOBALS['TCA'][$table]['ctrl']['cruser_id']; $dataArr[$field]=0; $extraList.=','.$field;}
 		
 		unset($dataArr['uid']);	// uid can never be set
-		reset($dataArr);
-		while(list($f,$v)=each($dataArr))	{
+		$insertFields = array();
+		
+		foreach($dataArr as $f => $v)	{
 			if (t3lib_div::inList($extraList,$f) || isset($GLOBALS['TCA'][$table]['columns'][$f]))	{
-				$fp[]=$f;
-				$vp[]=addslashes($v);
+				$insertFields[$f] = $v;
 			}
 		}
-		return $this->getInsert($table,$fp,$vp);
-	}
-
-	/**
-	 * Creates an insert query.
-	 * 
-	 * @param	string		Table name in which to insert the record
-	 * @param	array		Array with field names as values
-	 * @param	array		Array with field values as values - in the same order and number as $fp. MUST BE passed through addslashes() before!!
-	 * @return	string		The INSERT query.
-	 * @access private
-	 */
-	function getInsert($table,$fp,$vp)	{
-		$query = 'INSERT INTO '.$table.' ('.implode($fp,',').') VALUES ("'.implode($vp,'","').'")';
-		return $query;
+		
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $insertFields);
 	}
 
 	/**
 	 * Clear cache for page id.
 	 * If the page id is the current page, then set_no_cache() is called (so page caching is disabled)
-	 * 
+	 *
 	 * @param	integer		The page id for which to clear the cache
-	 * @return	void		
+	 * @return	void
 	 * @see tslib_fe::set_no_cache()
 	 */
 	function clear_cacheCmd($cacheCmd)	{
 		$cacheCmd = intval($cacheCmd);
 		if ($cacheCmd)	{
-			$res = mysql(TYPO3_db,'DELETE FROM cache_pages WHERE page_id='.$cacheCmd);
-			if ($cacheCmd==intval($GLOBALS['TSFE']->id))	{	// Setting no_cache true if the cleared-cache page is the current page!
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id='.intval($cacheCmd));
+			if ($cacheCmd == intval($GLOBALS['TSFE']->id))	{	// Setting no_cache true if the cleared-cache page is the current page!
 				$GLOBALS['TSFE']->set_no_cache();
 			}
 		}
@@ -284,7 +267,7 @@ class tslib_feTCE	{
 
 	/**
 	 * Return TypoScript configuration for a table name
-	 * 
+	 *
 	 * @param	string		The table name for which to return TypoScript configuration (From TS: FEData.[table])
 	 * @return	array		TypoScript properties from FEData.[table] - if exists.
 	 */

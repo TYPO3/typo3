@@ -49,20 +49,20 @@
  
 /**
  * Demonstrates how to make typolink tags (<link ...>) open in a pop-up window
- * 
+ *
  * Example can be found in the testsite package at the page-path "/Intro/TypoScript examples/Small Tricks/Making Pop-up links/"
  * This TypoScript configuration will also demonstrate it:
- *  
+ *
  * tt_content.text.20.parseFunc.tags.link.typolink.userFunc = user_typoLinkPopUp
  * includeLibs.popup = media/scripts/example_typolinkpop.php
  * config.setJS_openPic = 1
- * 
+ *
  * page = PAGE
  * page.typeNum = 0
  * page.10 < styles.content.get
- * 
+ *
  * (Plus the "content (default)" static template included as well)
- * 
+ *
  * @param	array		In this case: An array with data you can use for processing; keys "url" and "aTagParams" contains something at least
  * @param	array		TypoScript array with custom properties for this function call.
  * @return	string		Return the new <a> tag

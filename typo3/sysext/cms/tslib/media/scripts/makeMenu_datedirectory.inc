@@ -58,10 +58,9 @@ if ($day==date('w')) {
 	} 
 } 
 
-$date=date('Y-m-d',$son); 
-$res=mysql(TYPO3_db,'SELECT uid FROM pages WHERE title LIKE "'.$name.$date.'"');  // get the uid of the page
-echo mysql_error();
-$row=mysql_fetch_assoc($res); 
+$date = date('Y-m-d', $son); 
+$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'title LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($name.$date, 'pages').'"');  // get the uid of the page
+$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res); 
 
 $value=$row['uid']; 
 
@@ -70,9 +69,8 @@ if ($value=='') {
 } 
 $items=t3lib_div::intExplode(',',$value); 
 while(list(,$id)=each($items))        { 
-	$query = $GLOBALS['TSFE']->cObj->getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
-	$res = mysql(TYPO3_db, $query); 
-	while ($row = mysql_fetch_assoc($res))        { 
+	$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
+	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))        { 
 		$menuItemsArray[]=$row; 
 	} 
 } 

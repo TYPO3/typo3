@@ -39,17 +39,17 @@
  *
  *
  *   94: class ext_TSparser extends t3lib_tsparser_ext 
- *  100:     function makeHtmlspecialchars($P)	
+ *  102:     function makeHtmlspecialchars($P)	
  *
  *
- *  121: class SC_wizard_tsconfig 
- *  143:     function init()	
- *  250:     function main()	
- *  277:     function printContent()	
- *  288:     function browseTSprop($mode,$show)	
+ *  123: class SC_wizard_tsconfig 
+ *  145:     function init()	
+ *  252:     function main()	
+ *  279:     function printContent()	
+ *  290:     function browseTSprop($mode,$show)	
  *
  *              SECTION: Module functions
- *  375:     function getObjTree()	
+ *  376:     function getObjTree()	
  *  406:     function setObj(&$objTree,$strArr,$params)	
  *  426:     function revertFromSpecialChars($str)	
  *  439:     function doLink($params)	
@@ -86,7 +86,7 @@ require_once (PATH_t3lib.'class.t3lib_tsparser_ext.php');
 
 /**
  * TypoScript parser extension class.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -94,6 +94,8 @@ require_once (PATH_t3lib.'class.t3lib_tsparser_ext.php');
 class ext_TSparser extends t3lib_tsparser_ext {
 
 	/**
+	 * Pass through of incoming value for link.
+	 *
 	 * @param	array		P array
 	 * @return	string		The "_LINK" key value, straight away.
 	 */
@@ -113,7 +115,7 @@ class ext_TSparser extends t3lib_tsparser_ext {
 
 /**
  * Script Class for rendering the TSconfig/TypoScript property browser.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -137,8 +139,8 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Initialization of the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $LANG,$BACK_PATH;
@@ -244,8 +246,8 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Main function, rendering the content of the TypoScript property browser, including links to online resources
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG;
@@ -271,8 +273,8 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -280,7 +282,7 @@ class SC_wizard_tsconfig {
 	
 	/**
 	 * Create the content of the module:
-	 * 
+	 *
 	 * @param	string		Object string
 	 * @param	integer		Pointing to an entry in static_tsconfig_help to show.
 	 * @return	string		HTML
@@ -295,9 +297,8 @@ class SC_wizard_tsconfig {
 		$out='';
 		if ($show)	{
 				// Get the entry data:
-			$query='SELECT * FROM static_tsconfig_help WHERE uid='.intval($show);
-			$res = mysql(TYPO3_db,$query);
-			$rec=mysql_fetch_assoc($res);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'static_tsconfig_help', 'uid='.intval($show));
+			$rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$table = unserialize($rec['appdata']);
 			$obj_string = strtr($this->objString,'()','[]');	// Title:
 			
@@ -368,17 +369,16 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Create object tree from static_tsconfig_help table
-	 * 
+	 *
 	 * @return	array		Object tree.
 	 * @access private
 	 */
 	function getObjTree()	{
 		$hash = md5('WIZARD_TSCONFIG-objTree');
-	
-		$query='SELECT uid,obj_string,title FROM static_tsconfig_help';
-		$res = mysql(TYPO3_db,$query);
 		$objTree=array();
-		while($rec=mysql_fetch_assoc($res))	{
+	
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,obj_string,title', 'static_tsconfig_help', '');
+		while($rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$rec['obj_string'] = $this->revertFromSpecialChars($rec['obj_string']);
 			$p = explode(';',$rec['obj_string']);
 			while(list(,$v)=each($p))	{
@@ -395,11 +395,11 @@ class SC_wizard_tsconfig {
 	/**
 	 * Sets the information from a static_tsconfig_help record in the object array.
 	 * Makes recursive calls.
-	 * 
+	 *
 	 * @param	array		Object tree array, passed by value!
 	 * @param	array		Array of elements from object path (?)
 	 * @param	array		Array with record and something else (?)
-	 * @return	void		
+	 * @return	void
 	 * @access private
 	 * @see getObjTree()
 	 */
@@ -418,7 +418,7 @@ class SC_wizard_tsconfig {
 	
 	/**
 	 * Converts &gt; and &lt; to > and <
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @return	string		Output string
 	 * @access private
@@ -431,7 +431,7 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Creates a link based on input params array:
-	 * 
+	 *
 	 * @param	array		Parameters
 	 * @return	string		The link.
 	 * @access private
@@ -444,7 +444,7 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Remove pointer strings from an array
-	 * 
+	 *
 	 * @param	array		Input array
 	 * @return	array		Modified input array
 	 * @access private
@@ -462,7 +462,7 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Linking string to object by UID
-	 * 
+	 *
 	 * @param	string		String to link
 	 * @param	integer		UID of a static_tsconfig_help record.
 	 * @param	string		Title string for that record!
@@ -475,7 +475,7 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Creates a table of properties:
-	 * 
+	 *
 	 * @param	array		Array with properties for the current object path
 	 * @param	string		Object path
 	 * @param	array		Object tree
@@ -555,7 +555,7 @@ class SC_wizard_tsconfig {
 
 	/**
 	 * Creates a link on a property.
-	 * 
+	 *
 	 * @param	string		String to link
 	 * @param	string		Property value.
 	 * @param	string		Object path prefix to value

@@ -58,7 +58,7 @@ require ('template.php');
 
 /**
  * Script Class for rendering of the logo frame content in upper left corner of the TYPO3 backend frameset
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -68,8 +68,8 @@ class SC_alt_toplogo {
 	
 	/**
 	 * Create content with the logo
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TBE_TEMPLATE,$TBE_STYLES;
@@ -99,8 +99,8 @@ class SC_alt_toplogo {
 	
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

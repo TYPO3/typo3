@@ -42,7 +42,7 @@
  *   72: class SC_alt_doc_nodoc 
  *   84:     function init()	
  *  108:     function main()	
- *  164:     function printContent()	
+ *  168:     function printContent()	
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -64,7 +64,7 @@ if (t3lib_extMgm::isLoaded('taskcenter') && t3lib_extMgm::isLoaded('taskcenter_r
 
 /**
  * Script Class for the "No-doc" display; This shows most recently edited records.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -78,8 +78,8 @@ class SC_alt_doc_nodoc {
 	
 	/**
 	 * Constructor, initialize.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BACK_PATH;
@@ -102,8 +102,8 @@ class SC_alt_doc_nodoc {
 
 	/**
 	 * Rendering the content.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH;
@@ -162,8 +162,8 @@ class SC_alt_doc_nodoc {
 
 	/**
 	 * Printing the content.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content.$this->doc->endPage();

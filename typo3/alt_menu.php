@@ -38,13 +38,12 @@
  *
  *
  *
- *   79: class SC_alt_menu 
- *   90:     function init()	
- *  106:     function main()	
- *  191:     function removeCacheFiles()	
- *  210:     function printContent()	
+ *   78: class SC_alt_menu 
+ *   89:     function init()	
+ *  105:     function main()	
+ *  177:     function printContent()	
  *
- * TOTAL FUNCTIONS: 4
+ * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -71,7 +70,7 @@ require_once ('class.alt_menu_functions.inc');
 
 /**
  * Script Class for rendering the vertical menu in the left side of the backend frameset
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -84,8 +83,8 @@ class SC_alt_menu {
 	/**
 	 * Initialize
 	 * Loads the backend modules available for the logged in user.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $TBE_MODULES;
@@ -100,8 +99,8 @@ class SC_alt_menu {
 
 	/**
 	 * Main content generated
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$TYPO3_CONF_VARS,$TBE_TEMPLATE,$TYPO_VERSION;
@@ -172,8 +171,8 @@ class SC_alt_menu {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

@@ -40,7 +40,7 @@
  *   78: class SC_file_upload 
  *  103:     function init()	
  *  161:     function main()	
- *  229:     function printContent()	
+ *  230:     function printContent()	
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -70,7 +70,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 /**
  * Script Class for display up to 10 upload fields
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -97,8 +97,8 @@ class SC_file_upload {
 		
 	/**
 	 * Constructor for initializing the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
@@ -155,8 +155,8 @@ class SC_file_upload {
 
 	/**
 	 * Main function, rendering the upload file form fields
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG;
@@ -224,8 +224,8 @@ class SC_file_upload {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 

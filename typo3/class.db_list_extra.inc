@@ -46,23 +46,23 @@
  *  539:     function renderListHeader($table,$currentIdList)	
  *
  *              SECTION: Rendering of various elements
- *  673:     function makeControl($table,$row)	
- *  847:     function makeClip($table,$row)	
- *  916:     function fieldSelectBox($table,$formFields=1)	
+ *  678:     function makeControl($table,$row)	
+ *  852:     function makeClip($table,$row)	
+ *  921:     function fieldSelectBox($table,$formFields=1)	
  *
  *              SECTION: Helper functions
- *  995:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')	
- * 1006:     function clipNumPane()	
- * 1020:     function addSortLink($code,$field,$table)	
- * 1045:     function recPath($pid)	
- * 1058:     function showNewRecLink($table)	
- * 1068:     function makeReturnUrl()	
+ * 1000:     function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')	
+ * 1011:     function clipNumPane()	
+ * 1025:     function addSortLink($code,$field,$table)	
+ * 1050:     function recPath($pid)	
+ * 1063:     function showNewRecLink($table)	
+ * 1073:     function makeReturnUrl()	
  *
  *              SECTION: CSV related functions
- * 1092:     function initCSV()	
- * 1114:     function addToCSV($row)	
- * 1136:     function setCsvRow($csvRow)	
- * 1147:     function outputCSV($prefix)	
+ * 1097:     function initCSV()	
+ * 1119:     function addToCSV($row)	
+ * 1141:     function setCsvRow($csvRow)	
+ * 1152:     function outputCSV($prefix)	
  *
  * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -81,7 +81,7 @@
 
 /**
  * Class for rendering of Web>List module
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -113,7 +113,7 @@ class localRecordList extends recordList {
 
 	/**
 	 * Writes the top of the full listing
-	 * 
+	 *
 	 * @param	array		Current page record
 	 * @param	string		Path string (the page root line visually...)
 	 * @return	void		(Adds content to internal variable, $this->HTMLcode)
@@ -286,7 +286,7 @@ class localRecordList extends recordList {
 
 	/**
 	 * Creates the listing of records from a single table
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Page id
 	 * @param	string		List of fields to show in the listing. Pseudo fields will be added including the record header.
@@ -352,18 +352,17 @@ class localRecordList extends recordList {
 		$selFieldList = implode(',',$selectFields);		// implode it into a list of fields for the SQL-statement.
 
 			// Create the SQL query for selecting the elements in the listing:
-		$query = $this->makeQuery($table, $id,'',$selFieldList);	// (API function from class.db_list.inc)
-		$this->setTotalItems();		// Finding the total amount of records on the page (API function from class.db_list.inc)
+		$queryParts = $this->makeQueryArray($table, $id,'',$selFieldList);	// (API function from class.db_list.inc)
+		$this->setTotalItems($queryParts);		// Finding the total amount of records on the page (API function from class.db_list.inc)
 
 			// Init:
-		$dbCount=0;	
-		$out='';
+		$dbCount = 0;	
+		$out = '';
 
 			// If the count query returned any number of records, we perform the real query, selecting records.		
 		if ($this->totalItems)	{
-			$result = mysql(TYPO3_db,$query);
-			if (mysql_error()) {echo mysql_error(); debug($query);}
-			$dbCount = mysql_num_rows($result);
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		}
 			
 			// If any records was selected, render the list:
@@ -395,7 +394,7 @@ class localRecordList extends recordList {
 
 			$prevUid=0;
 			$prevPrevUid=0;
-			while($row = mysql_fetch_assoc($result))	{
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
 				$currentIdList[] = $row['uid'];
 				if ($doSort)	{
 					if ($prevUid)	{
@@ -407,7 +406,7 @@ class localRecordList extends recordList {
 					$prevUid=$row['uid'];
 				}
 			}
-			mysql_data_seek($result,0);
+			$GLOBALS['TYPO3_DB']->sql_data_seek($result,0);
 	
 				// CSV initiated
 			if ($this->csvOutput) $this->initCSV();
@@ -419,7 +418,7 @@ class localRecordList extends recordList {
 			
 			$iOut='';
 			$cc=0;
-			while ($row = mysql_fetch_assoc($result))	{
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
 
 					// Forward/Backwards navigation links:
 				list($flag,$code) = $this->fwd_rwd_nav($table);
@@ -434,6 +433,7 @@ class localRecordList extends recordList {
 					// Counter of total rows incremented:
 				$this->eCounter++;	
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($result);
 	
 				// The header row for the table is now created:
 			$out.=$this->renderListHeader($table,$currentIdList);
@@ -463,7 +463,7 @@ class localRecordList extends recordList {
 
 	/**
 	 * Rendering a single row for the list
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	array		Current record
 	 * @param	integer		Counter, counting for each time an element is rendered (used for alternating colors)
@@ -508,7 +508,7 @@ class localRecordList extends recordList {
 			} elseif ($fCol=='_CLIPBOARD_') {
 				$theData[$fCol]=$this->makeClip($table,$row);
 			} else {
-				$theData[$fCol]=t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100);
+				$theData[$fCol]=htmlspecialchars(t3lib_BEfunc::getProcessedValueExtra($table,$fCol,$row[$fCol],100));
 			}
 		}
 
@@ -529,7 +529,7 @@ class localRecordList extends recordList {
 
 	/**
 	 * Rendering the header row for a table
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	array		Array of the currectly displayed uids of the table
 	 * @return	string		Header table row
@@ -670,7 +670,7 @@ class localRecordList extends recordList {
 
 	/**
 	 * Creates the control panel for a single record in the listing.
-	 * 
+	 *
 	 * @param	string		The table
 	 * @param	array		The record for which to make the control panel.
 	 * @return	string		HTML table with the control panel (unless disabled)
@@ -844,7 +844,7 @@ class localRecordList extends recordList {
 
 	/**
 	 * Creates the clipboard panel for a single record in the listing.
-	 * 
+	 *
 	 * @param	string		The table
 	 * @param	array		The record for which to make the clipboard panel.
 	 * @return	string		HTML table with the clipboard panel (unless disabled)
@@ -913,7 +913,7 @@ class localRecordList extends recordList {
 
 	/**
 	 * Create the selector box for selecting fields to display from a table:
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	boolean		If true, form-fields will be wrapped around the table.
 	 * @return	string		HTML table with the selector box (name: displayFields['.$table.'][])
@@ -990,7 +990,7 @@ class localRecordList extends recordList {
 	/**
 	 * Creates a link around $string. The link contains an onclick action which submits the script with some clipboard action.
 	 * Currently, this is used for setting elements / delete elements.
-	 * 
+	 *
 	 * @param	string		The HTML content to link (image/text)
 	 * @param	string		Table name
 	 * @param	string		Clipboard command (eg. "setCB" or "delete")
@@ -1005,18 +1005,18 @@ class localRecordList extends recordList {
 
 	/**
 	 * Returns true if a numeric clipboard pad is selected/active
-	 * 
-	 * @return	boolean		
+	 *
+	 * @return	boolean
 	 */
 	function clipNumPane()	{
 		return in_Array('_CLIPBOARD_',$this->fieldArray) && $this->clipObj->current!='normal';
 	}
 
 	/**
-	 * Creates a sort-by link on the input string ($code). 
+	 * Creates a sort-by link on the input string ($code).
 	 * It will automatically detect if sorting should be ascending or descending depending on $this->sortRev.
 	 * Also some fields will not be possible to sort (including if single-table-view is disabled).
-	 * 
+	 *
 	 * @param	string		The string to link (text)
 	 * @param	string		The fieldname represented by the title ($code)
 	 * @param	string		Table name
@@ -1043,7 +1043,7 @@ class localRecordList extends recordList {
 	/**
 	 * Returns the path for a certain pid
 	 * The result is cached internally for the session, thus you can call this function as much as you like without performance problems.
-	 * 
+	 *
 	 * @param	integer		The page id for which to get the path
 	 * @return	string		The path.
 	 */
@@ -1056,9 +1056,9 @@ class localRecordList extends recordList {
 
 	/**
 	 * Returns true if a link for creating new records should be displayed for $table
-	 * 
+	 *
 	 * @param	string		Table name
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function showNewRecLink($table)	{
 		return !count($this->allowedNewTables) || in_array($table,$this->allowedNewTables);
@@ -1067,8 +1067,8 @@ class localRecordList extends recordList {
 	/**
 	 * Creates the "&returnUrl" parameter for links - this is used when the script links to other scripts and passes its own URL with the link so other scripts can return to the listing again.
 	 * Uses REQUEST_URI as value.
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function makeReturnUrl()	{
 		return '&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
@@ -1091,8 +1091,8 @@ class localRecordList extends recordList {
 	 
 	/**
 	 * Initializes internal csvLines array with the header of field names
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function initCSV()	{
 
@@ -1112,9 +1112,9 @@ class localRecordList extends recordList {
 
 	/**
 	 * Adds the content of input array $row to the CSV list:
-	 * 
+	 *
 	 * @param	array		Record array, from which the values of fields found in $this->fieldArray will be listed in the CSV output.
-	 * @return	void		
+	 * @return	void
 	 */
 	function addToCSV($row)	{
 
@@ -1134,9 +1134,9 @@ class localRecordList extends recordList {
 
 	/**
 	 * Adds input row of values to the internal csvLines array as a CSV formatted line
-	 * 
+	 *
 	 * @param	array		Array with values to be listed.
-	 * @return	void		
+	 * @return	void
 	 */
 	function setCsvRow($csvRow)	{
 		$this->csvLines[] = t3lib_div::csvValues($csvRow);
@@ -1145,7 +1145,7 @@ class localRecordList extends recordList {
 	/**
 	 * Compiles the internal csvLines array to a csv-string and outputs it to the browser.
 	 * This function exits!
-	 * 
+	 *
 	 * @param	string		Filename prefix:
 	 * @return	void		EXITS php execusion!
 	 */

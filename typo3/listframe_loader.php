@@ -60,7 +60,7 @@ require ('template.php');
 
 /**
  * Script Class for redirecting shortcut actions to the correct script
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -69,8 +69,8 @@ class SC_listframe_loader {
 
 	/**
 	 * Main content generated
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TBE_TEMPLATE;

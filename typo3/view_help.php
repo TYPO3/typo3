@@ -70,7 +70,7 @@ include ('sysext/lang/locallang_view_help.php');
 
 /**
  * Script Class for rendering the Context Sensitive Help documents, either the single display in the small pop-up window or the full-table view in the larger window.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -91,8 +91,8 @@ class SC_view_help {
 	
 	/**
 	 * Initialize the class for various input etc.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $LANG;
@@ -113,8 +113,8 @@ class SC_view_help {
 	
 	/**
 	 * Main function, rendering the display
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$TCA_DESCR,$TCA,$TBE_TEMPLATE;
@@ -167,8 +167,8 @@ class SC_view_help {
 	
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -176,7 +176,7 @@ class SC_view_help {
 	
 	/**
 	 * Make seeAlso links from $value
-	 * 
+	 *
 	 * @param	string		See-also input codes
 	 * @param	string		If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
 	 * @return	string		See-also links HTML
@@ -214,7 +214,7 @@ class SC_view_help {
 	
 	/**
 	 * Will return an image tag with description in italics.
-	 * 
+	 *
 	 * @param	string		Image file reference
 	 * @param	string		Description string
 	 * @return	string		Image HTML codes
@@ -236,7 +236,7 @@ class SC_view_help {
 
 	/**
 	 * Returns header HTML content
-	 * 
+	 *
 	 * @param	string		Header text
 	 * @param	string		Header type (1, 0)
 	 * @return	string		The HTML for the header.
@@ -258,7 +258,7 @@ class SC_view_help {
 	
 	/**
 	 * Returns prepared content
-	 * 
+	 *
 	 * @param	string		Content to format.
 	 * @return	string		Formatted content.
 	 */
@@ -271,7 +271,7 @@ class SC_view_help {
 	/**
 	 * Prints a single $table/$field information piece
 	 * If $anchors is set, then seeAlso references to the same table will be page-anchors, not links.
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	string		Field name
 	 * @param	boolean		If anchors is to be shown.
@@ -308,7 +308,7 @@ class SC_view_help {
 	/**
 	 * Returns labels for $table and $field.
 	 * If $table is "_MOD_" prefixed, the part after "_MOD_" is returned (non-tables, fx. modules)
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	string		Field name
 	 * @return	array		Table and field labels in a numeric array

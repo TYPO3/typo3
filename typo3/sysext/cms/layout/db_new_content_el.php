@@ -92,7 +92,7 @@ require_once (PATH_t3lib.'class.t3lib_positionmap.php');
 
 /**
  * Local position map class
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -102,7 +102,7 @@ class ext_posMap extends t3lib_positionMap {
 	
 	/**
 	 * Wrapping the title of the record - here we just return it.
-	 * 
+	 *
 	 * @param	string		The title value.
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.
@@ -113,13 +113,13 @@ class ext_posMap extends t3lib_positionMap {
 
 	/**
 	 * Create on-click event value.
-	 * 
+	 *
 	 * @param	array		The record.
 	 * @param	string		Column position value.
 	 * @param	integer		Move uid
 	 * @param	integer		PID value.
 	 * @param	integer		System language
-	 * @return	string		
+	 * @return	string
 	 */
 	function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) {
 		$table='tt_content';
@@ -144,7 +144,7 @@ class ext_posMap extends t3lib_positionMap {
 
 /**
  * Script Class for the New Content element wizard
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -169,8 +169,8 @@ class SC_db_new_content_el {
 	
 	/**
 	 * Constructor, initializing internal variables.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH,$TBE_MODULES_EXT;
@@ -205,8 +205,8 @@ class SC_db_new_content_el {
 
 	/**
 	 * Creating the module output.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG,$BACK_PATH;
@@ -349,8 +349,8 @@ class SC_db_new_content_el {
 
 	/**
 	 * Print out the accumulated content:
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		global $SOBE;
@@ -378,7 +378,7 @@ class SC_db_new_content_el {
 
 	/**
 	 * Returns the content of wizardArray() function...
-	 * 
+	 *
 	 * @return	array		Returns the content of wizardArray() function...
 	 */
 	function getWizardItems()	{
@@ -388,8 +388,8 @@ class SC_db_new_content_el {
 	/**
 	 * Returns the array of elements in the wizard display.
 	 * For the plugin section there is support for adding elements there from a global variable.
-	 * 
-	 * @return	array		
+	 *
+	 * @return	array
 	 */
 	function wizardArray()	{
 		global $LANG,$TBE_MODULES_EXT;

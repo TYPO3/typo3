@@ -39,8 +39,8 @@
  *
  *
  *   63: class SC_alt_mod_frameset 
- *   82:     function main()	
- *  119:     function printContent()	
+ *   88:     function main()	
+ *  147:     function printContent()	
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -55,7 +55,7 @@ require ('template.php');
 
 /**
  * Script Class for rendering the frameset which keeps the navigation and list frames together for socalled "Frameset modules"
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -82,8 +82,8 @@ class SC_alt_mod_frameset {
 
 	/**
 	 * Creates the header and frameset for the module/submodules
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$TBE_TEMPLATE,$TBE_STYLES;
@@ -141,8 +141,8 @@ class SC_alt_mod_frameset {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

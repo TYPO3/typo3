@@ -82,9 +82,9 @@
  * The concept is known from TypoScript as "GIFBUILDER" where you can define a "numerical array" (TypoScript term as well) of "GIFBUILDER OBJECTS" (like "TEXT", "IMAGE", etc.) and they will be rendered onto an image one by one.
  * The name "GIFBUILDER" comes from the time where GIF was the only file format supported. PNG is just as well to create today (configured with TYPO3_CONF_VARS[GFX])
  * Not all instances of this class is truely building gif/png files by layers; You may also see the class instantiated for the purpose of using the scaling functions in the parent class, t3lib_stdGraphic.
- * 
+ *
  * Here is an example of how to use this class (from tslib_content.php, function getImgResource):
- * 
+ *
  * $gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
  * $gifCreator->init();
  * $theImage='';
@@ -93,7 +93,7 @@
  * $theImage = $gifCreator->gifBuild();
  * }
  * return $gifCreator->getImageDimensions($theImage);
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -117,10 +117,10 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Modifies the ->setup, ->objBB internal arrays
 	 * Should be called after the ->init() function which initializes the parent class functions/variables in general.
 	 * The class tslib_gmenu also uses gifbuilder and here there is an interesting use since the function findLargestDims() from that class calls the init() and start() functions to find the total dimensions before starting the rendering of the images.
-	 * 
+	 *
 	 * @param	array		TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
 	 * @param	array		The current data record from tslib_cObj. Stored internally in the variable ->data
-	 * @return	void		
+	 * @return	void
 	 * @see tslib_cObj::getImgResource(), tslib_gmenu::makeGifs(), tslib_gmenu::findLargestDims()
 	 */
 	function start($conf,$data)	{
@@ -267,7 +267,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Initiates the image file generation if ->setup is true and if the file did not exist already.
 	 * Gets filename from fileName() and if file exists in typo3temp/ dir it will - of course - not be rendered again.
 	 * Otherwise rendering means calling ->make(), then ->output(), then ->destroy()
-	 * 
+	 *
 	 * @return	string		The filename for the created GIF/PNG file. The filename will be prefixed "GB_"
 	 * @see make(), fileName()
 	 */
@@ -288,8 +288,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Basically sets the dimensions, the background color, the traverses the array of GIFBUILDER objects and finally setting the transparent color if defined.
 	 * Creates a GDlib resource in $this->im and works on that
 	 * Called by gifBuild()
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 * @see gifBuild()
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=378&cHash=3c2ae4a1ab
@@ -436,11 +436,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	
 	/**
 	 * Initializing/Cleaning of TypoScript properties for TEXT GIFBUILDER objects
-	 * 
+	 *
 	 * 'cleans' TEXT-object; Checks fontfile and other vital setup
 	 * Finds the title if its a 'variable' (instantiates a cObj and loads it with the ->data record)
 	 * Performs caseshift if any.
-	 * 
+	 *
 	 * @param	array		GIFBUILDER object TypoScript properties
 	 * @return	array		Modified $conf array IF the "text" property is not blank
 	 * @access private
@@ -472,11 +472,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Calculation of offset using "splitCalc" and insertion of dimensions from other GIFBUILDER objects.
-	 * 
+	 *
 	 * Example:
 	 * Input: 2+2, 2*3, 123, [10.w]
 	 * Output: 4,6,123,45  (provided that the width of object in position 10 was 45 pixels wide)
-	 * 
+	 *
 	 * @param	string		The string to resolve/calculate the result of. The string is divided by a comma first and each resulting part is calculated into an integer.
 	 * @return	string		The resolved string with each part (separated by comma) returned separated by comma
 	 * @access private
@@ -521,7 +521,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Returns an "imgResource" creating an instance of the tslib_cObj class and calling tslib_cObj::getImgResource
-	 * 
+	 *
 	 * @param	string		Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource"
 	 * @param	array		TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
 	 * @return	array		Returns an array with file information if an image was returned. Otherwise false.
@@ -539,7 +539,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Returns the reference to a "resource" in TypoScript.
-	 * 
+	 *
 	 * @param	string		The resource value.
 	 * @return	string		Returns the relative filepath
 	 * @access private
@@ -551,7 +551,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Calculates the GIFBUILDER output filename/path based on a serialized, hashed value of this->setup
-	 * 
+	 *
 	 * @param	string		Filename prefix, eg. "GB_"
 	 * @return	string		The relative filepath
 	 * @access private
@@ -562,7 +562,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 	/**
 	 * Returns the file extension used in the filename
-	 * 
+	 *
 	 * @return	string		Extension; "jpg" or "gif"/"png"
 	 * @access private
 	 */

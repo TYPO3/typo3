@@ -60,7 +60,7 @@ require ('template.php');
 
 /**
  * Script Class, creating the content for the dummy script - which is just blank output.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -70,8 +70,8 @@ class SC_dummy {
 	
 	/**
 	 * Create content for the dummy script - outputting a blank page.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TBE_TEMPLATE;
@@ -86,8 +86,8 @@ class SC_dummy {
 	
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

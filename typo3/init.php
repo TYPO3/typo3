@@ -132,13 +132,16 @@ if (!$temp_path || substr($temp_path,-strlen(TYPO3_mainDir))!=TYPO3_mainDir)	{	/
 require(PATH_t3lib.'class.t3lib_div.php');		// The standard-library is included
 require(PATH_t3lib.'class.t3lib_extmgm.php');	// Extension API Management library included
 
-
 // ****************************************************
 // Include configuration (localconf + ext_localconf)
 // ****************************************************
 require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
-$CLIENT=t3lib_div::clientInfo();					// $CLIENT includes information about the browser/user-agent
+
+require(PATH_t3lib.'class.t3lib_db.php');		// The database library
+$TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
+
+$CLIENT = t3lib_div::clientInfo();					// $CLIENT includes information about the browser/user-agent
 $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in milliseconds. This could be used to output script parsetime in the end of the script
 
 
@@ -219,11 +222,11 @@ if (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript)	{
 // *************************
 // Connect to the database
 // *************************
-if (@mysql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+if ($GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 	if (!TYPO3_db)	{
 		t3lib_BEfunc::typo3PrintError ('No database selected','Database Error');
 		exit;
-	} elseif (!mysql_select_db(TYPO3_db))	{
+	} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db))	{
 		t3lib_BEfunc::typo3PrintError ('Cannot connect to the current database, "'.TYPO3_db.'"','Database Error');
 		exit;
 	}

@@ -72,7 +72,7 @@ t3lib_BEfunc::lockRecords();
 
 /**
  * Script Class for rendering the full screen RTE display
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -92,8 +92,8 @@ class SC_wizard_rte {
 
 	/**
 	 * Initialization of the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BACK_PATH;
@@ -116,8 +116,8 @@ class SC_wizard_rte {
 
 	/**
 	 * Main function, rendering the document with the iframe with the RTE in.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG;
@@ -170,11 +170,10 @@ class SC_wizard_rte {
 			$R_URI=t3lib_div::linkThisScript(array('popView'=>''));
 		
 				// Getting settings for the undo button:
-			$undoButton=0;
-			$undoQuery='SELECT tstamp FROM sys_history WHERE tablename="'.addslashes($this->P['table']).'" AND recuid="'.addslashes($this->P['uid']).'" ORDER BY tstamp DESC LIMIT 1';
-			$undoRes = mysql(TYPO3_db,$undoQuery);
-			if ($undoButtonR = mysql_fetch_assoc($undoRes))	{
-				$undoButton=1;
+			$undoButton = 0;
+			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($this->P['table'], 'sys_history').'" AND recuid="'.$GLOBALS['TYPO3_DB']->quoteStr($this->P['uid'], 'sys_history').'"', '', 'tstamp DESC', '1');
+			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
+				$undoButton = 1;
 			}
 		
 				// ShortCut
@@ -268,8 +267,8 @@ class SC_wizard_rte {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

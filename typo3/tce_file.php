@@ -68,7 +68,7 @@ require_once (PATH_t3lib.'class.t3lib_extfilefunc.php');
 
 /**
  * Script Class, handling the calling of methods in the file admin classes.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -90,8 +90,8 @@ class SC_tce_file {
 	
 	/**
 	 * Registering Incoming data
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 	
@@ -110,8 +110,8 @@ class SC_tce_file {
 
 	/**
 	 * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function initClipboard()	{
 		if (is_array($this->CB))	{
@@ -131,8 +131,8 @@ class SC_tce_file {
 	/**
 	 * Performing the file admin action:
 	 * Initializes the objects, setting permissions, sending data to object.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $FILEMOUNTS,$TYPO3_CONF_VARS,$BE_USER;
@@ -144,7 +144,7 @@ class SC_tce_file {
 		$fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 		
 			// Checking referer / executing:
-		$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 		if ($httpHost!=$refInfo['host'] && $this->vC!=$BE_USER->veriCode() && !$TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 			$fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!',array($refInfo['host'],$httpHost));

@@ -68,7 +68,7 @@ require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 
 /**
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in TCEforms somewhere
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -84,8 +84,8 @@ class SC_wizard_edit {
 
 	/**
 	 * Initialization of the script
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		$this->P = t3lib_div::_GP('P');
@@ -95,8 +95,8 @@ class SC_wizard_edit {
 	/**
 	 * Main function
 	 * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will just close.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TCA;
@@ -143,8 +143,8 @@ class SC_wizard_edit {
 
 	/**
 	 * Printing a little JavaScript to close the open window.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function closeWindow()	{
 		echo '<script language="javascript" type="text/javascript">close();</script>';

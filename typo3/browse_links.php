@@ -81,32 +81,32 @@
  *
  *  635: class SC_browse_links 
  *  728:     function init()	
- *  977:     function main()	
- * 1019:     function printContent()	
+ *  983:     function main()	
+ * 1025:     function printContent()	
  *
  *              SECTION: Main functions
- * 1050:     function main_rte($wiz=0)	
- * 1283:     function main_db()	
- * 1327:     function main_file()	
+ * 1056:     function main_rte($wiz=0)	
+ * 1322:     function main_db()	
+ * 1366:     function main_file()	
  *
  *              SECTION: Record listing
- * 1421:     function expandPage()	
- * 1483:     function TBE_expandPage($tables)	
+ * 1474:     function expandPage()	
+ * 1536:     function TBE_expandPage($tables)	
  *
  *              SECTION: File listing
- * 1575:     function expandFolder($expandFolder=0,$extensionList='')	
- * 1636:     function TBE_expandFolder($expandFolder=0,$extensionList='')	
- * 1755:     function TBE_dragNDrop($expandFolder=0,$extensionList='')	
+ * 1628:     function expandFolder($expandFolder=0,$extensionList='')	
+ * 1697:     function TBE_expandFolder($expandFolder=0,$extensionList='',$noThumbs=0)	
+ * 1815:     function TBE_dragNDrop($expandFolder=0,$extensionList='')	
  *
  *              SECTION: Miscellaneous functions
- * 1880:     function isWebFolder($folder)	
- * 1891:     function checkFolder($folder)	
- * 1904:     function barheader($str)	
- * 1921:     function getMsgBox($in_msg,$icon='icon_note')	
- * 1943:     function printCurrentUrl($str)	
- * 1963:     function parseCurUrl($href,$siteUrl)	
- * 2025:     function uploadForm($path)	
- * 2071:     function createFolder($path)	
+ * 1942:     function isWebFolder($folder)	
+ * 1953:     function checkFolder($folder)	
+ * 1966:     function barheader($str)	
+ * 1983:     function getMsgBox($in_msg,$icon='icon_note')	
+ * 2005:     function printCurrentUrl($str)	
+ * 2025:     function parseCurUrl($href,$siteUrl)	
+ * 2087:     function uploadForm($path)	
+ * 2140:     function createFolder($path)	
  *
  * TOTAL FUNCTIONS: 37
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -148,7 +148,7 @@ require_once ('class.db_list_extra.inc');
 
 /**
  * Local version of the record list.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -158,7 +158,7 @@ class TBE_browser_recordList extends localRecordList {
 
 	/**
 	 * Creates the URL for links
-	 * 
+	 *
 	 * @param	mixed		If not blank string, this is used instead of $this->id as the id value.
 	 * @param	string		If this is "-1" then $this->table is used, otherwise the value of the input variable.
 	 * @param	string		Commalist of fields NOT to pass as parameters (currently "sortField" and "sortRev")
@@ -180,8 +180,8 @@ class TBE_browser_recordList extends localRecordList {
 
 	/**
 	 * Returns additional, local GET parameters to include in the links of the record list.
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function ext_addP()	{
 		$str = '&act='.$GLOBALS['SOBE']->act.
@@ -193,12 +193,12 @@ class TBE_browser_recordList extends localRecordList {
 
 	/**
 	 * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for "pages"-records a link to the level of that record...)
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		UID (not used here)
 	 * @param	string		Title string
 	 * @param	array		Records array (from table name)
-	 * @return	string		
+	 * @return	string
 	 */
 	function linkWrapItems($table,$uid,$code,$row)	{
 		global $TCA;
@@ -228,7 +228,7 @@ class TBE_browser_recordList extends localRecordList {
 
 	/**
 	 * Returns the title (based on $code) of a table ($table) without a link
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	string		Table label
 	 * @return	string		The linked table label
@@ -245,7 +245,7 @@ class TBE_browser_recordList extends localRecordList {
 
 /**
  * Class which generates the page tree
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -254,8 +254,8 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Constructor. Just calling init()
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function localPageTree() {
 		$this->init();
@@ -265,7 +265,7 @@ class localPageTree extends t3lib_browseTree {
 	
 	/**
 	 * Wrapping the title in a link, if applicable.
-	 * 
+	 *
 	 * @param	string		Title, (must be ready for output, that means it must be htmlspecialchars()'ed).
 	 * @param	array		The record
 	 * @param	boolean		(Ignore)
@@ -282,7 +282,7 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Create the page navigation tree in HTML
-	 * 
+	 *
 	 * @param	array		Tree array
 	 * @return	string		HTML output.
 	 */
@@ -331,10 +331,10 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Returns true if a doktype can be linked.
-	 * 
+	 *
 	 * @param	integer		Doktype value to test
 	 * @param	integer		uid to test.
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function ext_isLinkable($doktype,$uid)	{
 		if ($uid && $doktype<199)	{
@@ -344,7 +344,7 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Wrap the plus/minus icon in a link
-	 * 
+	 *
 	 * @param	string		HTML string to wrap, probably an image tag.
 	 * @param	string		Command for 'PM' get var
 	 * @param	boolean		If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
@@ -362,7 +362,7 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Wrapping the image tag, $icon, for the row, $row
-	 * 
+	 *
 	 * @param	string		The image tag for the icon
 	 * @param	array		The row for the current element
 	 * @return	string		The processed icon input value.
@@ -381,7 +381,7 @@ class localPageTree extends t3lib_browseTree {
 
 /**
  * Page tree for the RTE - totally the same, no changes needed. (Just for the sake of beauty - or confusion... :-)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -398,7 +398,7 @@ class rtePageTree extends localPageTree {
 
 /**
  * For TBE record browser
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -407,10 +407,10 @@ class TBE_PageTree extends localPageTree {
 
 	/**
 	 * Returns true if a doktype can be linked (which is always the case here).
-	 * 
+	 *
 	 * @param	integer		Doktype value to test
 	 * @param	integer		uid to test.
-	 * @return	boolean		
+	 * @return	boolean
 	 */
 	function ext_isLinkable($doktype,$uid)	{
 		return true;
@@ -418,7 +418,7 @@ class TBE_PageTree extends localPageTree {
 
 	/**
 	 * Wrapping the title in a link, if applicable.
-	 * 
+	 *
 	 * @param	string		Title, ready for output.
 	 * @param	array		The record
 	 * @param	boolean		If set, pages clicked will return immediately, otherwise reload page.
@@ -445,7 +445,7 @@ class TBE_PageTree extends localPageTree {
 /**
  * Base extension class which generates the folder tree.
  * Used directly by the RTE.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -455,7 +455,7 @@ class localFolderTree extends t3lib_folderTree {
 
 	/**
 	 * Wrapping the title in a link, if applicable.
-	 * 
+	 *
 	 * @param	string		Title, ready for output.
 	 * @param	array		The "record"
 	 * @return	string		Wrapping title string.
@@ -471,7 +471,7 @@ class localFolderTree extends t3lib_folderTree {
 
 	/**
 	 * Returns true if the input "record" contains a folder which can be linked.
-	 * 
+	 *
 	 * @param	array		Array with information about the folder element. Contains keys like title, uid, path, _title
 	 * @return	boolean		True is returned if the path is found in the web-part of the the server and is NOT a recycler or temp folder
 	 */
@@ -485,7 +485,7 @@ class localFolderTree extends t3lib_folderTree {
 
 	/**
 	 * Wrap the plus/minus icon in a link
-	 * 
+	 *
 	 * @param	string		HTML string to wrap, probably an image tag.
 	 * @param	string		Command for 'PM' get var
 	 * @param	boolean		If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
@@ -503,7 +503,7 @@ class localFolderTree extends t3lib_folderTree {
 
 	/**
 	 * Create the folder navigation tree in HTML
-	 * 
+	 *
 	 * @param	mixed		Input tree array. If not array, then $this->tree is used.
 	 * @return	string		HTML output of the tree.
 	 */
@@ -568,7 +568,7 @@ class localFolderTree extends t3lib_folderTree {
 
 /**
  * Folder tree for the RTE - totally the same, no changes needed. (Just for the sake of beauty - or confusion... :-)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -584,7 +584,7 @@ class rteFolderTree extends localFolderTree {
 
 /**
  * For TBE File Browser
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -594,7 +594,7 @@ class TBE_FolderTree extends localFolderTree {
 
 	/**
 	 * Returns true if the input "record" contains a folder which can be linked.
-	 * 
+	 *
 	 * @param	array		Array with information about the folder element. Contains keys like title, uid, path, _title
 	 * @return	boolean		True is returned if the path is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
 	 */
@@ -606,7 +606,7 @@ class TBE_FolderTree extends localFolderTree {
 
 	/**
 	 * Wrapping the title in a link, if applicable.
-	 * 
+	 *
 	 * @param	string		Title, ready for output.
 	 * @param	array		The 'record'
 	 * @return	string		Wrapping title string.
@@ -627,7 +627,7 @@ class TBE_FolderTree extends localFolderTree {
 
 /**
  * Script class for the Element Browser window.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -722,8 +722,8 @@ class SC_browse_links {
 	/**
 	 * Constructor:
 	 * Initializes a lot of variables, setting JavaScript functions in header etc.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH;
@@ -977,8 +977,8 @@ class SC_browse_links {
 
 	/**
 	 * Main function, detecting the current mode of the element browser and branching out to internal methods.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER;
@@ -1019,8 +1019,8 @@ class SC_browse_links {
 
 	/**
 	 * Print module content
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -1049,7 +1049,7 @@ class SC_browse_links {
 	 * Rich Text Editor (RTE) link selector (MAIN function)
 	 * Generates the link selector for the Rich Text Editor.
 	 * Can also be used to select links for the TCEforms (see $wiz)
-	 * 
+	 *
 	 * @param	boolean		If set, the "remove link" is not shown in the menu: Used for the "Select link" wizard which is used by the TCEforms
 	 * @return	string		Modified content variable.
 	 */
@@ -1316,7 +1316,7 @@ class SC_browse_links {
 	
 	/**
 	 * TYPO3 Element Browser: Showing a page tree and allows you to browse for records
-	 * 
+	 *
 	 * @return	string		HTML content for the module
 	 */
 	function main_db()	{
@@ -1360,7 +1360,7 @@ class SC_browse_links {
 	
 	/**
 	 * TYPO3 Element Browser: Showing a folder tree, allowing you to browse for files.
-	 * 
+	 *
 	 * @return	string		HTML content for the module
 	 */
 	function main_file()	{
@@ -1468,13 +1468,13 @@ class SC_browse_links {
 	 ******************************************************************/
 	/**
 	 * For RTE: This displays all content elements on a page and lets you create a link to the element.
-	 * 
+	 *
 	 * @return	string		HTML output. Returns content only if the ->expandPage value is set (pointing to a page uid to show tt_content records from ...)
 	 */
 	function expandPage()	{
 		global $BE_USER;
 
-		$out='';
+		$out = '';
 		$expPageId = $this->expandPage;		// Set page id (if any) to expand
 		
 			// If there is an anchor value (content element reference) in the element reference, then force an ID to expand:
@@ -1486,28 +1486,28 @@ class SC_browse_links {
 		if ($expPageId && t3lib_div::testInt($expPageId) && $BE_USER->isInWebMount($expPageId))	{
 
 				// Set header:
-			$out.=$this->barheader($GLOBALS['LANG']->getLL('contentElements').':');
+			$out.= $this->barheader($GLOBALS['LANG']->getLL('contentElements').':');
 		
 				// Create header for listing, showing the page title/icon:
-			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);	
+			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);	
 			$mainPageRec = t3lib_BEfunc::getRecord('pages',$expPageId);
-			$picon=t3lib_iconWorks::getIconImage('pages',$mainPageRec,'','');
-			$picon.=htmlspecialchars(t3lib_div::fixed_lgd($mainPageRec['title'],$titleLen));
-			$out.=$picon.'<br />';
+			$picon = t3lib_iconWorks::getIconImage('pages',$mainPageRec,'','');
+			$picon.= htmlspecialchars(t3lib_div::fixed_lgd($mainPageRec['title'],$titleLen));
+			$out.= $picon.'<br />';
 			
 				// Look up tt_content elements from the expanded page:
-			$query='SELECT uid,header,hidden,starttime,endtime,fe_group,CType,colpos 
-					FROM tt_content 
-					WHERE pid='.intval($expPageId).
-					t3lib_BEfunc::deleteClause('tt_content').
-					' ORDER BY colpos,sorting';
-			$res = mysql(TYPO3_db,$query);
-			echo mysql_error();
-			$cc=mysql_num_rows($res);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'uid,header,hidden,starttime,endtime,fe_group,CType,colpos', 
+							'tt_content', 
+							'pid='.intval($expPageId).t3lib_BEfunc::deleteClause('tt_content'),
+							'',
+							'colpos,sorting'
+						);
+			$cc = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 
 				// Traverse list of records:
 			$c=0;
-			while($row=mysql_fetch_assoc($res))	{
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$c++;
 				$icon=t3lib_iconWorks::getIconImage('tt_content',$row,'','');
 				if ($this->curUrlInfo['act']=='page' && $this->curUrlInfo['cElement']==$row['uid'])	{
@@ -1529,7 +1529,7 @@ class SC_browse_links {
 
 	/**
 	 * For TYPO3 Element Browser: This lists all content elements from the given list of tables
-	 * 
+	 *
 	 * @param	string		Commalist of tables. Set to "*" if you want all tables.
 	 * @return	string		HTML output.
 	 */
@@ -1620,7 +1620,7 @@ class SC_browse_links {
 	 ******************************************************************/
 	/**
 	 * For RTE: This displays all files from folder. No thumbnails shown
-	 * 
+	 *
 	 * @param	string		The folder path to expand
 	 * @param	string		List of fileextensions to show
 	 * @return	string		HTML output
@@ -1688,7 +1688,7 @@ class SC_browse_links {
 
 	/**
 	 * For TYPO3 Element Browser: Expand folder of files.
-	 * 
+	 *
 	 * @param	string		The folder path to expand
 	 * @param	string		List of fileextensions to show
 	 * @param	boolean		Whether to show thumbnails or not. It set, no thumbnails are shown.
@@ -1807,7 +1807,7 @@ class SC_browse_links {
 	/**
 	 * For RTE: This displays all IMAGES (gif,png,jpg) (from extensionList) from folder. Thumbnails are shown for images.
 	 * This listing is of images located in the web-accessible paths ONLY - the listing is for drag-n-drop use in the RTE
-	 * 
+	 *
 	 * @param	string		The folder path to expand
 	 * @param	string		List of fileextensions to show
 	 * @return	string		HTML output
@@ -1935,7 +1935,7 @@ class SC_browse_links {
 
 	/**
 	 * Verifies that a path is a web-folder:
-	 * 
+	 *
 	 * @param	string		Absolute filepath
 	 * @return	boolean		If the input path is found in PATH_site then it returns true.
 	 */
@@ -1946,7 +1946,7 @@ class SC_browse_links {
 
 	/**
 	 * Checks, if a path is within the mountpoints of the backend user
-	 * 
+	 *
 	 * @param	string		Absolute filepath
 	 * @return	boolean		If the input path is found in the backend users filemounts, then return true.
 	 */
@@ -1959,7 +1959,7 @@ class SC_browse_links {
 	
 	/**
 	 * Prints a 'header' where string is in a tablecell
-	 * 
+	 *
 	 * @param	string		The string to print in the header. The value is htmlspecialchars()'ed before output.
 	 * @return	string		The header HTML (wrapped in a table)
 	 */
@@ -1975,7 +1975,7 @@ class SC_browse_links {
 	 
 	/**
 	 * Displays a message box with the input message
-	 * 
+	 *
 	 * @param	string		Input message to show (will be htmlspecialchars()'ed inside of this function)
 	 * @param	string		Icon filename body from gfx/ (default is "icon_note") - meant to allow change to warning type icons...
 	 * @return	string		HTML for the message (wrapped in a table).
@@ -1998,7 +1998,7 @@ class SC_browse_links {
 
 	/**
 	 * For RTE/link: This prints the 'currentUrl'
-	 * 
+	 *
 	 * @param	string		URL value.  The value is htmlspecialchars()'ed before output.
 	 * @return	string		HTML content, wrapped in a table.
 	 */
@@ -2017,7 +2017,7 @@ class SC_browse_links {
 	
 	/**
 	 * For RTE/link: Parses the incoming URL and determines if it's a page, file, external or mail address.
-	 * 
+	 *
 	 * @param	string		HREF value tp analyse
 	 * @param	string		The URL of the current website (frontend)
 	 * @return	array		Array with URL information stored in assoc. keys: value, act (page, file, spec, mail), pageid, cElement, info
@@ -2080,7 +2080,7 @@ class SC_browse_links {
 	/**
 	 * For TBE: Makes an upload form for uploading files to the filemount the user is browsing.
 	 * The files are uploaded to the tce_file.php script in the core which will handle the upload.
-	 * 
+	 *
 	 * @param	string		Absolute filepath on server to which to upload.
 	 * @return	string		HTML for an upload form.
 	 */
@@ -2133,7 +2133,7 @@ class SC_browse_links {
 	/**
 	 * For TBE: Makes a form for creating new folders in the filemount the user is browsing.
 	 * The folder creation request is sent to the tce_file.php script in the core which will handle the creation.
-	 * 
+	 *
 	 * @param	string		Absolute filepath on server in which to create the new folder.
 	 * @return	string		HTML for the create folder form.
 	 */

@@ -70,7 +70,7 @@ require_once (PATH_t3lib.'class.t3lib_xml.php');
  * Class that creates the current page and content element records as an XML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"
  * The static template "plugin.alt.xml" is used to trigger this XML creation as well. That template contains this set of TypoScript lines which triggers the XML creation and disables all regular HTML headers
- * 
+ *
  * ## Set up page/type number:
  * alt_xml >
  * alt_xml = PAGE
@@ -78,17 +78,17 @@ require_once (PATH_t3lib.'class.t3lib_xml.php');
  *   typeNum=96
  *   config.disableAllHeaderCode = 1
  *   config.additionalHeaders = Content-type: text/xml
- * 
+ *
  *   ## Includes the newsLib:
  *   includeLibs.alt_xml = media/scripts/xmlversionLib.inc
- * 
+ *
  *   ## Inserting the USER cObject for XML rendering
  *   10 = USER
  *   10 {
  *     userFunc = user_xmlversion->main_xmlversion
  *   }
  * }
- * 
+ *
  * @package TYPO3
  * @subpackage tslib
  * @author	Kasper Skaarhoj <kasper@typo3.com>
@@ -99,7 +99,7 @@ class user_xmlversion {
 
 	/**
 	 * Main function, called from TypoScript
-	 * 
+	 *
 	 * @param	string		Empty, ignore.
 	 * @param	array		TypoScript properties for this content object/function call
 	 * @return	string		XML content
@@ -130,16 +130,15 @@ class user_xmlversion {
 
 	/**
 	 * Selects all records from $table having the current page id as PID (records belonging to that page)
-	 * 
+	 *
 	 * @param	string		A tablename found in $TCA
 	 * @return	pointer		A database resource pointer
 	 */
 	function getContentResult($table) {
 		global $TCA;
 		if ($TCA[$table])	{
-			$orderBy = ($TCA[$table]['ctrl']['sortby']) ? 'ORDER BY '.$TCA[$table]['ctrl']['sortby'] : $TCA[$table]['ctrl']['default_sortby'];
-			$query = 'SELECT * FROM '.$table.' WHERE pid='.$GLOBALS['TSFE']->id.$this->cObj->enableFields($table).' '.$orderBy;
-			$res = mysql(TYPO3_db,$query);
+			$orderBy = $TCA[$table]['ctrl']['sortby'] ? 'ORDER BY '.$TCA[$table]['ctrl']['sortby'] : $TCA[$table]['ctrl']['default_sortby'];
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid='.intval($GLOBALS['TSFE']->id).$this->cObj->enableFields($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy));
 			return $res;
 		}
 	}

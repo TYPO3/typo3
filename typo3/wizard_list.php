@@ -66,7 +66,7 @@ include ('sysext/lang/locallang_wizards.php');
 
 /**
  * Script Class for redirecting the user to the Web > List module if a wizard-link has been clicked in TCEforms
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -87,8 +87,8 @@ class SC_wizard_list {
 
 	/**
 	 * Initialization of the class, setting GPvars.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		$this->P = t3lib_div::_GP('P');
@@ -99,8 +99,8 @@ class SC_wizard_list {
 	/**
 	 * Main function
 	 * Will issue a location-header, redirecting either BACK or to a new alt_doc.php instance...
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 

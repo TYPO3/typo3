@@ -47,14 +47,14 @@
  *
  *
  *  128: class SC_db_new 
- *  158:     function init()	
- *  218:     function main()	
- *  275:     function pagesOnly()	
- *  290:     function regularNew()	
- *  428:     function printContent()	
- *  442:     function linkWrap($code,$table,$pid,$addContentTable=0)	
- *  462:     function isTableAllowedForThisPage($pid_row, $checkTable)	
- *  492:     function showNewRecLink($table,$allowedNewTables='')	
+ *  157:     function init()	
+ *  217:     function main()	
+ *  274:     function pagesOnly()	
+ *  289:     function regularNew()	
+ *  432:     function printContent()	
+ *  446:     function linkWrap($code,$table,$pid,$addContentTable=0)	
+ *  466:     function isTableAllowedForThisPage($pid_row, $checkTable)	
+ *  496:     function showNewRecLink($table,$allowedNewTables='')	
  *
  * TOTAL FUNCTIONS: 10
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -82,7 +82,7 @@ require_once (PATH_t3lib.'class.t3lib_pagetree.php');
 
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -91,7 +91,7 @@ class localPageTree extends t3lib_pageTree {
 
 	/**
 	 * Inserting uid-information in title-text for an icon
-	 * 
+	 *
 	 * @param	string		Icon image
 	 * @param	array		Item row
 	 * @return	string		Wrapping icon image.
@@ -103,7 +103,7 @@ class localPageTree extends t3lib_pageTree {
 	/**
 	 * Determines whether to expand a branch or not.
 	 * Here the branch is expanded if the current id matches the global id for the listing/new
-	 * 
+	 *
 	 * @param	integer		The ID (page id) of the element
 	 * @return	boolean		Returns true if the IDs matches
 	 */
@@ -120,7 +120,7 @@ class localPageTree extends t3lib_pageTree {
 
 /**
  * Script class for 'db_new'
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -151,8 +151,8 @@ class SC_db_new {
 	
 	/**
 	 * Constructor function for the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH;
@@ -211,8 +211,8 @@ class SC_db_new {
 
 	/**
 	 * Main processing, creating the list of new record tables to select from
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG;
@@ -268,8 +268,8 @@ class SC_db_new {
 
 	/**
 	 * Creates the position map for pages wizard
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function pagesOnly()	{
 		global $LANG;
@@ -283,8 +283,8 @@ class SC_db_new {
 
 	/**
 	 * Create a regular new element (pages and records)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function regularNew()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA;
@@ -426,8 +426,8 @@ class SC_db_new {
 
 	/**
 	 * Ending page output and echo'ing content to browser.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();
@@ -436,7 +436,7 @@ class SC_db_new {
 
 	/**
 	 * Links the string $code to a create-new form for a record in $table created on page $pid
-	 * 
+	 *
 	 * @param	string		Link string
 	 * @param	string		Table name (in which to create new record)
 	 * @param	integer		PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
@@ -458,7 +458,7 @@ class SC_db_new {
 
 	/**
 	 * Returns true if the tablename $checkTable is allowed to be created on the page with record $pid_row
-	 * 
+	 *
 	 * @param	array		Record for parent page.
 	 * @param	string		Table name to check
 	 * @return	boolean		Returns true if the tablename $checkTable is allowed to be created on the page with record $pid_row
@@ -488,7 +488,7 @@ class SC_db_new {
 
 	/**
 	 * Returns true if the $table tablename is found in $allowedNewTables (or if $allowedNewTables is empty)
-	 * 
+	 *
 	 * @param	string		Table name to test if in allowedTables
 	 * @param	array		Array of new tables that are allowed.
 	 * @return	boolean		Returns true if the $table tablename is found in $allowedNewTables (or if $allowedNewTables is empty)

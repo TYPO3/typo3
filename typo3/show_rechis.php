@@ -67,7 +67,7 @@ require ('class.show_rechis.inc');
 
 /**
  * Script Class for showing the history module of TYPO3s backend
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -81,8 +81,8 @@ class SC_show_rechis {
 	
 	/**
 	 * Initialize the module output
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $LANG;
@@ -99,8 +99,8 @@ class SC_show_rechis {
 
 	/**
 	 * Generate module output
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG;
@@ -120,8 +120,8 @@ class SC_show_rechis {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		$this->content.=$this->doc->spacer(8);

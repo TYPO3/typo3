@@ -38,61 +38,62 @@
  *
  *
  *
- *  131: class tslib_pibase 
+ *  132: class tslib_pibase 
  *
  *              SECTION: Init functions
- *  210:     function tslib_pibase()	
- *  224:     function pi_setPiVarDefaults()	
+ *  211:     function tslib_pibase()	
+ *  225:     function pi_setPiVarDefaults()	
  *
  *              SECTION: Link functions
- *  263:     function pi_getPageLink($id,$target='',$urlParameters=array())	
- *  279:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())	
- *  293:     function pi_linkTP($str,$urlParameters=array(),$cache=0)	
- *  315:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0)	
- *  338:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0)	
- *  355:     function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE)	
- *  383:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')	
+ *  264:     function pi_getPageLink($id,$target='',$urlParameters=array())	
+ *  280:     function pi_linkToPage($str,$id,$target='',$urlParameters=array())	
+ *  295:     function pi_linkTP($str,$urlParameters=array(),$cache=0,$altPageId=0)	
+ *  318:     function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)	
+ *  342:     function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0)	
+ *  360:     function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE,$altPageId=0)	
+ *  388:     function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')	
  *
  *              SECTION: Functions for listing, browsing, searching etc.
- *  423:     function pi_list_browseresults($showResultCount=1,$tableParams='')	
- *  492:     function pi_list_searchBox($tableParams='')	
- *  520:     function pi_list_modeSelector($items=array(),$tableParams='')	
- *  558:     function pi_list_makelist($res,$tableParams='')	
- *  593:     function pi_list_row($c)	
- *  605:     function pi_list_header()	
+ *  428:     function pi_list_browseresults($showResultCount=1,$tableParams='')	
+ *  497:     function pi_list_searchBox($tableParams='')	
+ *  525:     function pi_list_modeSelector($items=array(),$tableParams='')	
+ *  563:     function pi_list_makelist($res,$tableParams='')	
+ *  598:     function pi_list_row($c)	
+ *  610:     function pi_list_header()	
  *
  *              SECTION: Stylesheet, CSS
- *  636:     function pi_getClassName($class)	
- *  648:     function pi_classParam($class)	
- *  662:     function pi_setClassStyle($class,$data,$selector='')	
- *  673:     function pi_wrapInBaseClass($str)	
+ *  641:     function pi_getClassName($class)	
+ *  653:     function pi_classParam($class)	
+ *  667:     function pi_setClassStyle($class,$data,$selector='')	
+ *  678:     function pi_wrapInBaseClass($str)	
  *
  *              SECTION: Frontend editing: Edit panel, edit icons
- *  722:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())	
- *  763:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='')	
+ *  727:     function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array())	
+ *  769:     function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array())	
  *
  *              SECTION: Localization, locallang functions
- *  810:     function pi_getLL($key,$alt='',$hsc=FALSE)	
- *  831:     function pi_loadLL()	
+ *  816:     function pi_getLL($key,$alt='',$hsc=FALSE)	
+ *  837:     function pi_loadLL()	
  *
  *              SECTION: Database, queries
- *  893:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	
- *  954:     function pi_getRecord($table,$uid,$checkPage=0)	
- *  965:     function pi_getPidList($pid_list,$recursive=0)	
- *  986:     function pi_prependFieldsWithTable($table,$fieldList)	
- * 1003:     function pi_getCategoryTableContents($table,$pid,$addWhere='')	
+ *  902:     function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)	
+ *  994:     function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	
+ * 1009:     function pi_getRecord($table,$uid,$checkPage=0)	
+ * 1020:     function pi_getPidList($pid_list,$recursive=0)	
+ * 1041:     function pi_prependFieldsWithTable($table,$fieldList)	
+ * 1061:     function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')	
  *
  *              SECTION: Various
- * 1039:     function pi_isOnlyFields($fList,$lowerThan=-1)	
- * 1059:     function pi_autoCache($inArray)	
- * 1090:     function pi_RTEcssText($str)	
+ * 1105:     function pi_isOnlyFields($fList,$lowerThan=-1)	
+ * 1125:     function pi_autoCache($inArray)	
+ * 1156:     function pi_RTEcssText($str)	
  *
  *              SECTION: FlexForms related functions
- * 1111:     function pi_initPIflexForm()	
- * 1129:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	
- * 1146:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	
+ * 1177:     function pi_initPIflexForm()	
+ * 1195:     function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	
+ * 1212:     function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	
  *
- * TOTAL FUNCTIONS: 34
+ * TOTAL FUNCTIONS: 35
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -123,7 +124,7 @@
  * Most modern frontend plugins are extension classes of this one.
  * This class contains functions which assists these plugins in creating lists, searching, displaying menus, page-browsing (next/previous/1/2/3) and handling links.
  * Functions are all prefixed "pi_" which is reserved for this class. Those functions can of course be overridden in the extension classes (that is the point...)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -204,8 +205,8 @@ class tslib_pibase {
 	 * Class Constructor (true constructor)
 	 * Initializes $this->piVars if $this->prefixId is set to any value
 	 * Will also set $this->LLkey based on the config.language setting.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function tslib_pibase()	{
 		if ($this->prefixId)	{
@@ -218,8 +219,8 @@ class tslib_pibase {
 
 	/**
 	 * If internal TypoScript property "_DEFAULT_PI_VARS." is set then it will merge the current $this->piVars array onto these default values.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function pi_setPiVarDefaults()	{
 		if (is_array($this->conf['_DEFAULT_PI_VARS.']))	{
@@ -251,9 +252,9 @@ class tslib_pibase {
 	 * Get URL to some page.
 	 * Returns the URL to page $id with $target and an array of additional url-parameters, $urlParameters
 	 * Simple example: $this->pi_getPageLink(123) to get the URL for page-id 123.
-	 * 
+	 *
 	 * The function basically calls $this->cObj->getTypoLink_URL()
-	 * 
+	 *
 	 * @param	integer		Page id
 	 * @param	string		Target value to use. Affects the &type-value of the URL, defaults to current.
 	 * @param	array		Additional URL parameters to set (key/value pairs)
@@ -268,7 +269,7 @@ class tslib_pibase {
 	 * Link a string to some page.
 	 * Like pi_getPageLink() but takes a string as first parameter which will in turn be wrapped with the URL including target attribute
 	 * Simple example: $this->pi_getPageLink('My link', 123) to get something like <a href="index.php?id=123&type=1">My link</a> (or <a href="123.1.html">My link</a> if simulateStaticDocuments is set)
-	 * 
+	 *
 	 * @param	string		The content string to wrap in <a> tags
 	 * @param	integer		Page id
 	 * @param	string		Target value to use. Affects the &type-value of the URL, defaults to current.
@@ -283,7 +284,7 @@ class tslib_pibase {
 	/**
 	 * Link string to the current page.
 	 * Returns the $str wrapped in <a>-tags with a link to the CURRENT page, but with $urlParameters set as extra parameters for the page.
-	 * 
+	 *
 	 * @param	string		The content string to wrap in <a> tags
 	 * @param	array		Array with URL parameters as key/value pairs. They will be "imploded" and added to the list of parameters defined in the plugins TypoScript property "parent.addParams" plus $this->pi_moreParams.
 	 * @param	boolean		If $cache is set (0/1), the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
@@ -305,7 +306,7 @@ class tslib_pibase {
 	 * Link a string to the current page while keeping currently set values in piVars.
 	 * Like pi_linkTP, but $urlParameters is by default set to $this->piVars with $overrulePIvars overlaid.
 	 * This means any current entries from this->piVars are passed on (except the key "DATA" which will be unset before!) and entries in $overrulePIvars will OVERRULE the current in the link.
-	 * 
+	 *
 	 * @param	string		The content string to wrap in <a> tags
 	 * @param	array		Array of values to override in the current piVars. Contrary to pi_linkTP the keys in this array must correspond to the real piVars array and therefore NOT be prefixed with the $this->prefixId string. Further, if a value is a blank string it means the piVar key will not be a part of the link (unset)
 	 * @param	boolean		If $cache is set, the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
@@ -330,7 +331,7 @@ class tslib_pibase {
 	/**
 	 * Get URL to the current page while keeping currently set values in piVars.
 	 * Same as pi_linkTP_keepPIvars but returns only the URL from the link.
-	 * 
+	 *
 	 * @param	array		See pi_linkTP_keepPIvars
 	 * @param	boolean		See pi_linkTP_keepPIvars
 	 * @param	boolean		See pi_linkTP_keepPIvars
@@ -346,7 +347,7 @@ class tslib_pibase {
 	/**
 	 * Wraps the $str in a link to a single display of the record (using piVars[showUid])
 	 * Uses pi_linkTP for the linking
-	 * 
+	 *
 	 * @param	string		The content string to wrap in <a> tags
 	 * @param	integer		UID of the record for which to display details (basically this will become the value of [showUid]
 	 * @param	boolean		See pi_linkTP_keepPIvars
@@ -378,7 +379,7 @@ class tslib_pibase {
 
 	/**
 	 * Will change the href value from <a> in the input string and turn it into an onclick event that will open a new window with the URL
-	 * 
+	 *
 	 * @param	string		The string to process. This should be a string already wrapped/including a <a> tag which will be modified to contain an onclick handler. Only the attributes "href" and "onclick" will be left.
 	 * @param	string		Window name for the pop-up window
 	 * @param	string		Window parameters, see the default list for inspiration
@@ -419,7 +420,7 @@ class tslib_pibase {
 	 * Returns a results browser. This means a bar of page numbers plus a "previous" and "next" link. For each entry in the bar the piVars "pointer" will be pointing to the "result page" to show.
 	 * Using $this->piVars['pointer'] as pointer to the page to display
 	 * Using $this->internal['res_count'], $this->internal['results_at_a_time'] and $this->internal['maxPages'] for count number, how many results to show and the max number of pages to include in the browse bar.
-	 * 
+	 *
 	 * @param	boolean		If set (default) the text "Displaying results..." will be show, otherwise not.
 	 * @param	string		Attributes for the table tag which is wrapped around the table cells containing the browse links
 	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
@@ -489,7 +490,7 @@ class tslib_pibase {
 	/**
 	 * Returns a Search box, sending search words to piVars "sword" and setting the "no_cache" parameter as well in the form.
 	 * Submits the search request to the current REQUEST_URI
-	 * 
+	 *
 	 * @param	string		Attributes for the table tag which is wrapped around the table cells containing the search box
 	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
 	 */
@@ -516,7 +517,7 @@ class tslib_pibase {
 
 	/**
 	 * Returns a mode selector; a little menu in a table normally put in the top of the page/list.
-	 * 
+	 *
 	 * @param	array		Key/Value pairs for the menu; keys are the piVars[mode] values and the "values" are the labels for them.
 	 * @param	string		Attributes for the table tag which is wrapped around the table cells containing the menu
 	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
@@ -548,13 +549,13 @@ class tslib_pibase {
 	}
 
 	/**
-	 * Returns the list of items based on the input MySQL result pointer
+	 * Returns the list of items based on the input SQL result pointer
 	 * For each result row the internal var, $this->internal['currentRow'], is set with the row returned.
 	 * $this->pi_list_header() makes the header row for the list
 	 * $this->pi_list_row() is used for rendering each row
 	 * Notice that these two functions are typically ALWAYS defined in the extension class of the plugin since they are directly concerned with the specific layout for that plugins purpose.
-	 * 
-	 * @param	pointer		Result pointer to a MySQL result which can be traversed.
+	 *
+	 * @param	pointer		Result pointer to a SQL result which can be traversed.
 	 * @param	string		Attributes for the table tag which is wrapped around the table rows containing the list
 	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
 	 * @see pi_list_row(), pi_list_header()
@@ -563,12 +564,12 @@ class tslib_pibase {
 			// Make list table header:
 		$tRows=array();
 		$this->internal['currentRow']='';
-		$tRows[]=$this->pi_list_header();
+		$tRows[] = $this->pi_list_header();
 
 			// Make list table rows
 		$c=0;
-		while($this->internal['currentRow'] = mysql_fetch_assoc($res))	{
-			$tRows[]=$this->pi_list_row($c);
+		while($this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$tRows[] = $this->pi_list_row($c);
 			$c++;
 		}
 
@@ -590,7 +591,7 @@ class tslib_pibase {
 	 * Returns a list row. Get data from $this->internal['currentRow'];
 	 * (Dummy)
 	 * Notice: This function should ALWAYS be defined in the extension class of the plugin since it is directly concerned with the specific layout of the listing for your plugins purpose.
-	 * 
+	 *
 	 * @param	integer		Row counting. Starts at 0 (zero). Used for alternating class values in the output rows.
 	 * @return	string		HTML output, a table row with a class attribute set (alternative based on odd/even rows)
 	 */
@@ -603,7 +604,7 @@ class tslib_pibase {
 	 * Returns a list header row.
 	 * (Dummy)
 	 * Notice: This function should ALWAYS be defined in the extension class of the plugin since it is directly concerned with the specific layout of the listing for your plugins purpose.
-	 * 
+	 *
 	 * @return	string		HTML output, a table row with a class attribute set
 	 */
 	function pi_list_header()	{
@@ -633,7 +634,7 @@ class tslib_pibase {
 
 	/**
 	 * Returns a class-name prefixed with $this->prefixId and with all underscores substituted to dashes (-)
-	 * 
+	 *
 	 * @param	string		The class name (or the END of it since it will be prefixed by $this->prefixId.'-')
 	 * @return	string		The combined class name (with the correct prefix)
 	 */
@@ -644,7 +645,7 @@ class tslib_pibase {
 	/**
 	 * Returns the class-attribute with the correctly prefixed classname
 	 * Using pi_getClassName()
-	 * 
+	 *
 	 * @param	string		The class name (suffix)
 	 * @return	string		A "class" attribute with value and a single space char before it.
 	 * @see pi_getClassName()
@@ -655,11 +656,11 @@ class tslib_pibase {
 
 	/**
 	 * Sets CSS style-data for the $class-suffix (prefixed by pi_getClassName())
-	 * 
+	 *
 	 * @param	string		$class: Class suffix, see pi_getClassName
 	 * @param	string		$data: CSS data
 	 * @param	string		If $selector is set to any CSS selector, eg 'P' or 'H1' or 'TABLE' then the style $data will regard those HTML-elements only
-	 * @return	void		
+	 * @return	void
 	 * @depreciated		I think this function should not be used (and probably isn't used anywhere). It was a part of a concept which was left behind quite quickly.
 	 * @private
 	 */
@@ -670,7 +671,7 @@ class tslib_pibase {
 	/**
 	 * Wraps the input string in a <div> tag with the class attribute set to the prefixId.
 	 * All content returned from your plugins should be returned through this function so all content from your plugin is encapsulated in a <div>-tag nicely identifying the content of your plugin.
-	 * 
+	 *
 	 * @param	string		HTML content to wrap in the div-tags with the "main class" of the plugin
 	 * @return	string		HTML content wrapped, ready to return to the parent object.
 	 */
@@ -715,7 +716,7 @@ class tslib_pibase {
 
 	/**
 	 * Returns the Backend User edit panel for the $row from $tablename
-	 * 
+	 *
 	 * @param	array		Record array.
 	 * @param	string		Table name
 	 * @param	string		A label to show with the panel.
@@ -755,7 +756,7 @@ class tslib_pibase {
 	/**
 	 * Adds edit-icons to the input content.
 	 * tslib_cObj::editIcons used for rendering
-	 * 
+	 *
 	 * @param	string		HTML content to add icons to. The icons will be put right after the last content part in the string (that means before the ending series of HTML tags)
 	 * @param	string		The list of fields to edit when the icon is clicked.
 	 * @param	string		Title for the edit icon.
@@ -806,7 +807,7 @@ class tslib_pibase {
 	/**
 	 * Returns the localized label of the LOCAL_LANG key, $key
 	 * Notice that for debugging purposes prefixes for the output values can be set with the internal vars ->LLtestPrefixAlt and ->LLtestPrefix
-	 * 
+	 *
 	 * @param	string		The key from the LOCAL_LANG array for which to return the value.
 	 * @param	string		Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
 	 * @param	boolean		If true, the output label is passed through htmlspecialchars()
@@ -830,8 +831,8 @@ class tslib_pibase {
 	/**
 	 * Loads local-language values by looking for a "locallang.php" file in the plugin class directory ($this->scriptRelPath) and if found includes it.
 	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function pi_loadLL()	{
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath)	{
@@ -885,17 +886,21 @@ class tslib_pibase {
 	 * Makes a standard query for listing of records based on standard input vars from the 'browser' ($this->internal['results_at_a_time'] and $this->piVars['pointer']) and 'searchbox' ($this->piVars['sword'] and $this->internal['searchFieldList'])
 	 * Set $count to 1 if you wish to get a count(*) query for selecting the number of results.
 	 * Notice that the query will use $this->conf['pidList'] and $this->conf['recursive'] to generate a PID list within which to search for records.
-	 * 
-	 * @param	string		The table name to make the query for.
-	 * @param	boolean		If set, you will get a "count(*)" query back instead of field selecting
-	 * @param	string		Additional WHERE clauses (should be starting with " AND ....")
-	 * @param	mixed		If an array, then it must contain the keys "table", "mmtable" and (optionally) "catUidList" defining a table to make a MM-relation to in the query (based on fields uid_local and uid_foreign). If not array, the query will be a plain query looking up data in only one table.
-	 * @param	string		If set, this is added as a " GROUP BY ...." part of the query.
-	 * @param	string		If set, this is added as a " ORDER BY ...." part of the query. The default is that an ORDER BY clause is made based on $this->internal['orderBy'] and $this->internal['descFlag'] where the orderBy field must be found in $this->internal['orderByList']
-	 * @param	string		If set, this is taken as the first part of the query instead of what is created internally. Basically this should be a query starting with "FROM [table] WHERE ... AND ...". The $addWhere clauses and all the other stuff is still added. Only the tables and PID selecting clauses are bypassed
-	 * @return	string		The query build.
+	 *
+	 * @param	string		See pi_exec_query()
+	 * @param	boolean		See pi_exec_query()
+	 * @param	string		See pi_exec_query()
+	 * @param	mixed		See pi_exec_query()
+	 * @param	string		See pi_exec_query()
+	 * @param	string		See pi_exec_query()
+	 * @param	string		See pi_exec_query()
+	 * @param	boolean		If set, the function will return the query not as a string but array with the various parts.
+	 * @return	mixed		The query build.
+	 * @access private
+	 * @depreciated		Use pi_exec_query() instead!
 	 */
-	function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	{
+	function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)	{
+
 			// Begin Query:
 		if (!$query)	{
 				// Fetches the list of PIDs to select from. 
@@ -913,44 +918,89 @@ class tslib_pibase {
 						$this->cObj->enableFields($table).chr(10);	// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT selected, if they should not! Almost ALWAYS add this to your queries!
 			}
 		}
-						
+
+			// Split the "FROM ... WHERE" string so we get the WHERE part and TABLE names separated...:
+		list($TABLENAMES,$WHERE) = spliti('WHERE', trim($query), 2);
+		$TABLENAMES = trim(substr(trim($TABLENAMES),5));
+		$WHERE = trim($WHERE);
+
 			// Add '$addWhere'
-		if ($addWhere)	{$query.=' '.$addWhere.chr(10);}
+		if ($addWhere)	{$WHERE.=' '.$addWhere.chr(10);}
 
 			// Search word:				
 		if ($this->piVars['sword'] && $this->internal['searchFieldList'])	{
-			$query.=$this->cObj->searchWhere($this->piVars['sword'],$this->internal['searchFieldList'],$table).chr(10);
+			$WHERE.=$this->cObj->searchWhere($this->piVars['sword'],$this->internal['searchFieldList'],$table).chr(10);
 		}
 
 		if ($count) {
-			$query = 'SELECT count(*) '.chr(10).$query;
+			$queryParts = array(
+				'SELECT' => 'count(*)',
+				'FROM' => $TABLENAMES,
+				'WHERE' => $WHERE,
+				'GROUPBY' => '',
+				'ORDERBY' => '',
+				'LIMIT' => ''
+			);
 		} else {
-			if ($groupBy)	$query.=' '.$groupBy;
 				// Order by data:
-			if ($orderBy)	{
-				$query.=' '.$orderBy;
-			} else {
+			if (!$orderBy)	{
 				if (t3lib_div::inList($this->internal['orderByList'],$this->internal['orderBy']))	{
-					$query.= ' ORDER BY '.$table.'.'.$this->internal['orderBy'].($this->internal['descFlag']?' DESC':'').chr(10);
+					$orderBy = 'ORDER BY '.$table.'.'.$this->internal['orderBy'].($this->internal['descFlag']?' DESC':'');
 				}
 			}
 			
 				// Limit data:
-			$pointer=$this->piVars['pointer'];
-			$pointer=intval($pointer);
+			$pointer = $this->piVars['pointer'];
+			$pointer = intval($pointer);
 			$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'],1,1000);
-			$query.= ' LIMIT '.($pointer*$results_at_a_time).','.$results_at_a_time.chr(10);
+			$LIMIT = ($pointer*$results_at_a_time).','.$results_at_a_time;
 
-				// Add 'SELECT'			
-			$query = 'SELECT '.$this->pi_prependFieldsWithTable($table,$this->pi_listFields).' '.chr(10).$query;
+				// Add 'SELECT'
+			$queryParts = array(
+				'SELECT' => $this->pi_prependFieldsWithTable($table,$this->pi_listFields), 
+				'FROM' => $TABLENAMES, 
+				'WHERE' => $WHERE,
+				'GROUPBY' => $GLOBALS['TYPO3_DB']->stripGroupBy($groupBy),
+				'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
+				'LIMIT' => $LIMIT
+			);
 		}
-		return $query;
+
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery (
+					$queryParts['SELECT'], 
+					$queryParts['FROM'], 
+					$queryParts['WHERE'], 
+					$queryParts['GROUPBY'], 
+					$queryParts['ORDERBY'], 
+					$queryParts['LIMIT']
+				);
+		return $returnQueryArray ? $queryParts : $query;
 	}
 
 	/**
+	 * Executes a standard SELECT query for listing of records based on standard input vars from the 'browser' ($this->internal['results_at_a_time'] and $this->piVars['pointer']) and 'searchbox' ($this->piVars['sword'] and $this->internal['searchFieldList'])
+	 * Set $count to 1 if you wish to get a count(*) query for selecting the number of results.
+	 * Notice that the query will use $this->conf['pidList'] and $this->conf['recursive'] to generate a PID list within which to search for records.
+	 *
+	 * @param	string		The table name to make the query for.
+	 * @param	boolean		If set, you will get a "count(*)" query back instead of field selecting
+	 * @param	string		Additional WHERE clauses (should be starting with " AND ....")
+	 * @param	mixed		If an array, then it must contain the keys "table", "mmtable" and (optionally) "catUidList" defining a table to make a MM-relation to in the query (based on fields uid_local and uid_foreign). If not array, the query will be a plain query looking up data in only one table.
+	 * @param	string		If set, this is added as a " GROUP BY ...." part of the query.
+	 * @param	string		If set, this is added as a " ORDER BY ...." part of the query. The default is that an ORDER BY clause is made based on $this->internal['orderBy'] and $this->internal['descFlag'] where the orderBy field must be found in $this->internal['orderByList']
+	 * @param	string		If set, this is taken as the first part of the query instead of what is created internally. Basically this should be a query starting with "FROM [table] WHERE ... AND ...". The $addWhere clauses and all the other stuff is still added. Only the tables and PID selecting clauses are bypassed. May be depreciated in the future!
+	 * @return	pointer		SQL result pointer
+	 */
+	function pi_exec_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='')	{
+		$queryParts = $this->pi_list_query($table,$count,$addWhere,$mm_cat,$groupBy,$orderBy,$query, TRUE);
+
+		return $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+	}
+	
+	/**
 	 * Returns the row $uid from $table
 	 * (Simply calling $GLOBALS['TSFE']->sys_page->checkRecord())
-	 * 
+	 *
 	 * @param	string		The table name
 	 * @param	integer		The uid of the record from the table
 	 * @param	boolean		If $checkPage is set, it's required that the page on which the record resides is accessible
@@ -962,7 +1012,7 @@ class tslib_pibase {
 	
 	/**
 	 * Returns a commalist of page ids for a query (eg. 'WHERE pid IN (...)')
-	 * 
+	 *
 	 * @param	string		$pid_list is a comma list of page ids (if empty current page is used)
 	 * @param	integer		$recursive is an integer >=0 telling how deep to dig for pids under each entry in $pid_list
 	 * @return	string		List of PID values (comma separated)
@@ -983,7 +1033,7 @@ class tslib_pibase {
 	
 	/**
 	 * Having a comma list of fields ($fieldList) this is prepended with the $table.'.' name
-	 * 
+	 *
 	 * @param	string		Table name to prepend
 	 * @param	string		List of fields where each element will be prepended with the table name given.
 	 * @return	string		List of fields processed.
@@ -999,20 +1049,31 @@ class tslib_pibase {
 
 	/**
 	 * Will select all records from the "category table", $table, and return them in an array.
-	 * 
+	 *
 	 * @param	string		The name of the category table to select from.
 	 * @param	integer		The page from where to select the category records.
-	 * @param	string		Additional where clauses (basically the end of the query - could include a ORDER BY clause)
+	 * @param	string		Optional additional WHERE clauses put in the end of the query. DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
+	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
+	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return	array		The array with the category records in.
 	 */
-	function pi_getCategoryTableContents($table,$pid,$addWhere='')	{
-		$query = 'SELECT * FROM '.$table.' WHERE pid='.intval($pid).$this->cObj->enableFields($table).' '.$addWhere;
-
+	function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='')	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*', 
+					$table, 
+					'pid='.intval($pid).
+						$this->cObj->enableFields($table).' '.
+						$whereClause,	// whereClauseMightContainGroupOrderBy
+					$groupBy,
+					$orderBy,
+					$limit
+				);
 		$outArr = array();
-		$res = mysql(TYPO3_db,$query);
-		while($row=mysql_fetch_assoc($res))	{
-			$outArr[$row['uid']]=$row;
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$outArr[$row['uid']] = $row;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $outArr;
 	}
 
@@ -1036,7 +1097,7 @@ class tslib_pibase {
 	/**
 	 * Returns true if the piVars array has ONLY those fields entered that is set in the $fList (commalist) AND if none of those fields value is greater than $lowerThan field if they are integers.
 	 * Notice that this function will only work as long as values are integers.
-	 * 
+	 *
 	 * @param	string		List of fields (keys from piVars) to evaluate on
 	 * @param	integer		Limit for the values.
 	 * @return	boolean		Returns true (1) if conditions are met.
@@ -1056,7 +1117,7 @@ class tslib_pibase {
 	 * Returns true if the array $inArray contains only values allowed to be cached based on the configuration in $this->pi_autoCacheFields
 	 * Used by ->pi_linkTP_keepPIvars
 	 * This is an advanced form of evaluation of whether a URL should be cached or not.
-	 * 
+	 *
 	 * @param	array		An array with piVars values to evaluate
 	 * @return	boolean		Returns true (1) if conditions are met.
 	 * @see pi_linkTP_keepPIvars()
@@ -1087,7 +1148,7 @@ class tslib_pibase {
 	 * Will process the input string with the parseFunc function from tslib_cObj based on configuration set in "lib.parseFunc_RTE" in the current TypoScript template.
 	 * This is useful for rendering of content in RTE fields where the transformation mode is set to "ts_css" or so.
 	 * Notice that this requires the use of "css_styled_content" to work right.
-	 * 
+	 *
 	 * @param	string		The input text string to process
 	 * @return	string		The processed string
 	 * @see tslib_cObj::parseFunc()
@@ -1110,8 +1171,8 @@ class tslib_pibase {
 
 	/**
 	 * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function pi_initPIflexForm()	{
 			// Converting flexform data into array:
@@ -1123,7 +1184,7 @@ class tslib_pibase {
 	
 	/**
 	 * Return value from somewhere inside a FlexForm structure
-	 * 
+	 *
 	 * @param	array		FlexForm data
 	 * @param	string		Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
 	 * @param	string		Sheet pointer, eg. "sDEF"
@@ -1140,7 +1201,7 @@ class tslib_pibase {
 
 	/**
 	 * Returns part of $sheetArray pointed to by the keys in $fieldNameArray
-	 * 
+	 *
 	 * @param	array		Multidimensiona array, typically FlexForm contents
 	 * @param	array		Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array an return element number X (whether this is right behavior is not settled yet...)
 	 * @param	string		Value for outermost key, typ. "vDEF" depending on language.

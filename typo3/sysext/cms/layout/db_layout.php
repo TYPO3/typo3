@@ -50,16 +50,16 @@
  *  182: class SC_db_layout 
  *  231:     function init()	
  *  286:     function menuConfig()	
- *  365:     function clearCache()	
- *  379:     function main()	
- *  477:     function renderQuickEdit()	
- *  838:     function renderListContent()	
- * 1098:     function printContent()	
+ *  362:     function clearCache()	
+ *  377:     function main()	
+ *  475:     function renderQuickEdit()	
+ *  839:     function renderListContent()	
+ * 1104:     function printContent()	
  *
  *              SECTION: Other functions
- * 1125:     function getNumberOfHiddenElements()	
- * 1139:     function local_linkThisScript($params)	
- * 1151:     function languageQuery($id)	
+ * 1131:     function getNumberOfHiddenElements()	
+ * 1144:     function local_linkThisScript($params)	
+ * 1156:     function exec_languageQuery($id)	
  *
  * TOTAL FUNCTIONS: 14
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -98,7 +98,7 @@ t3lib_extMgm::isLoaded('cms',1);
 
 /**
  * Local extension of position map class
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -109,7 +109,7 @@ class ext_posMap extends t3lib_positionMap {
 	
 	/**
 	 * Wrapping the title of the record.
-	 * 
+	 *
 	 * @param	string		The title value.
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.
@@ -121,10 +121,10 @@ class ext_posMap extends t3lib_positionMap {
 
 	/**
 	 * Wrapping the column header
-	 * 
+	 *
 	 * @param	string		Header value
 	 * @param	string		Column info.
-	 * @return	string		
+	 * @return	string
 	 * @see printRecordMap()
 	 */
 	function wrapColumnHeader($str,$vv)	{
@@ -134,12 +134,12 @@ class ext_posMap extends t3lib_positionMap {
 
 	/**
 	 * Create on-click event value.
-	 * 
+	 *
 	 * @param	array		The record.
 	 * @param	string		Column position value.
 	 * @param	integer		Move uid
 	 * @param	integer		PID value.
-	 * @return	string		
+	 * @return	string
 	 */
 	function onClickInsertRecord($row,$vv,$moveUid,$pid) {
 		$table='tt_content';
@@ -153,7 +153,7 @@ class ext_posMap extends t3lib_positionMap {
 
 	/**
 	 * Wrapping the record header  (from getRecordHeader())
-	 * 
+	 *
 	 * @param	string		HTML content
 	 * @param	array		Record array.
 	 * @return	string		HTML content
@@ -174,7 +174,7 @@ class ext_posMap extends t3lib_positionMap {
 
 /**
  * Script Class for Web > Layout module
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -225,8 +225,8 @@ class SC_db_layout {
 
 	/**
 	 * Initializing the module
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$LANG;
@@ -280,8 +280,8 @@ class SC_db_layout {
 
 	/**
 	 * Initialize menu array
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function menuConfig()	{
 		global $BE_USER,$LANG,$TYPO3_CONF_VARS;
@@ -329,17 +329,14 @@ class SC_db_layout {
 		);
 		
 			 // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
-		$query = $this->languageQuery($this->id);
-		$res = mysql(TYPO3_db,$query);
-		echo mysql_error();
-		while($lrow=mysql_fetch_assoc($res))	{
+		$res = $this->exec_languageQuery($this->id);
+		while($lrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$this->MOD_MENU['language'][$lrow['uid']]=($lrow['hidden']?'('.$lrow['title'].')':$lrow['title']);
 		}
 		
 			// Find if there are ANY languages at all (and if not, remove the language option from function menu).
-		$query = 'SELECT uid FROM sys_language'.($BE_USER->isAdmin()?'':' WHERE hidden=0');
-		$res = mysql(TYPO3_db,$query);
-		if (!mysql_num_rows($res))	{
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_language', ($BE_USER->isAdmin()?'':'hidden=0'));
+		if (!$GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 			unset($this->MOD_MENU['function']['2']);
 		}
 		
@@ -359,8 +356,8 @@ class SC_db_layout {
 
 	/**
 	 * Clears page cache for the current id, $this->id
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function clearCache()	{
 		if ($this->clear_cache)	{
@@ -374,8 +371,8 @@ class SC_db_layout {
 	/**
 	 * Main function.
 	 * Creates some general objects and calls other functions for the main rendering of module content.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH;
@@ -472,8 +469,8 @@ class SC_db_layout {
 	
 	/**
 	 * Rendering the quick-edit view.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function renderQuickEdit()	{
 		global $LANG,$BE_USER,$BACK_PATH;
@@ -486,16 +483,18 @@ class SC_db_layout {
 		
 			// If a command to edit all records in a column is issue, then select all those elements, and redirect to alt_doc.php:
 		if (substr($edit_record,0,9)=='_EDIT_COL')	{
-			$query = 'SELECT * FROM tt_content WHERE pid='.intval($this->id).
-				' AND colPos='.intval(substr($edit_record,10)).
-				' AND sys_language_uid='.intval($this->current_sys_language).
-				($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
-				t3lib_Befunc::deleteClause('tt_content').
-				' ORDER BY sorting';
-			$res = mysql(TYPO3_db,$query);
-			$idListA=array();
-			while($cRow=mysql_fetch_assoc($res))	{
-				$idListA[]=$cRow['uid'];
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'*', 
+						'tt_content', 
+						'pid='.intval($this->id).' AND colPos='.intval(substr($edit_record,10)).' AND sys_language_uid='.intval($this->current_sys_language).
+								($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
+								t3lib_BEfunc::deleteClause('tt_content'),
+						'',
+						'sorting'
+					);
+			$idListA = array();
+			while($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$idListA[] = $cRow['uid'];
 			}
 
 			$jumpUrl = $BACK_PATH.'alt_doc.php?edit[tt_content]['.implode(',',$idListA).']=edit&returnUrl='.rawurlencode($this->local_linkThisScript(array('edit_record'=>'')));
@@ -505,9 +504,8 @@ class SC_db_layout {
 		
 			// If the former record edited was the creation of a NEW record, this will look up the created records uid:
 		if ($this->new_unique_uid)	{
-			$query = 'SELECT * FROM sys_log WHERE userid="'.$BE_USER->user['uid'].'" AND NEWid="'.$this->new_unique_uid.'"';
-			$res = mysql(TYPO3_db,$query);
-			$sys_log_row = mysql_fetch_assoc($res);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid='.intval($BE_USER->user['uid']).' AND NEWid="'.$GLOBALS['TYPO3_DB']->quoteStr($this->new_unique_uid, 'sys_log').'"');
+			$sys_log_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			if (is_array($sys_log_row))	{
 				$edit_record=$sys_log_row['tablename'].':'.$sys_log_row['recuid'];
 			}
@@ -532,16 +530,19 @@ class SC_db_layout {
 		}
 
 			// Selecting all content elements from this language:	
-		$query = 'SELECT * FROM tt_content WHERE pid='.intval($this->id).
-			' AND sys_language_uid='.intval($this->current_sys_language).
-			($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
-			t3lib_Befunc::deleteClause('tt_content').
-			' ORDER BY colPos,sorting';
-		$res = mysql(TYPO3_db,$query);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*', 
+					'tt_content', 
+					'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).
+							($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
+							t3lib_Befunc::deleteClause('tt_content'),
+					'',
+					'colPos,sorting'
+				);
 		$colPos='';
 		$first=1;
 		$prev=$this->id;	// Page is the pid if no record to put this after.
-		while($cRow=mysql_fetch_assoc($res))	{
+		while($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			if ($first)	{
 				if (!$edit_record)	{
 					$edit_record='tt_content:'.$cRow['uid'];
@@ -583,9 +584,8 @@ class SC_db_layout {
 	
 			// If undo-button should be rendered (depends on available items in sys_history)
 		$undoButton=0;
-		$undoQuery='SELECT tstamp FROM sys_history WHERE tablename="'.$eRParts[0].'" AND recuid="'.$eRParts[1].'" ORDER BY tstamp DESC LIMIT 1';
-		$undoRes = mysql(TYPO3_db,$undoQuery);
-		if ($undoButtonR = mysql_fetch_assoc($undoRes))	{
+		$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($eRParts[0], 'sys_history').'" AND recuid="'.$GLOBALS['TYPO3_DB']->quoteStr($eRParts[1], 'sys_history').'"', '', 'tstamp DESC', '1');
+		if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
 			$undoButton=1;
 		}
 	
@@ -833,8 +833,8 @@ class SC_db_layout {
 	
 	/**
 	 * Rendering all other listings than QuickEdit
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function renderListContent()	{
 		global $LANG,$BACK_PATH,$TCA;
@@ -1098,8 +1098,8 @@ class SC_db_layout {
 
 	/**
 	 * Print accumulated content of module
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -1125,20 +1125,19 @@ class SC_db_layout {
 
 	/**
 	 * Returns the number of hidden elements (including those hidden by start/end times) on the current page (for the current sys_language)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function getNumberOfHiddenElements()	{
-		$q_hidden = 'SELECT count(*) FROM tt_content WHERE pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).t3lib_BEfunc::BEenableFields('tt_content',1).t3lib_BEfunc::deleteClause('tt_content');
-		$q_res = mysql(TYPO3_db,$q_hidden);
-		list($q_count) = mysql_fetch_row($q_res);
+		$q_res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'tt_content', 'pid='.intval($this->id).' AND sys_language_uid='.intval($this->current_sys_language).t3lib_BEfunc::BEenableFields('tt_content',1).t3lib_BEfunc::deleteClause('tt_content'));
+		list($q_count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($q_res);
 		return $q_count;
 	}
 
 	/**
 	 * Returns URL to the current script.
 	 * In particular the "popView" and "new_unique_uid" Get vars are unset.
-	 * 
+	 *
 	 * @param	array		Parameters array, merged with global GET vars.
 	 * @return	string		URL
 	 */
@@ -1150,25 +1149,29 @@ class SC_db_layout {
 
 	/**
 	 * Returns a SQL query for selecting sys_language records.
-	 * 
+	 *
 	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return	string		Return query string.
 	 */
-	function languageQuery($id)	{
-		$exQ = $GLOBALS['BE_USER']->isAdmin() ? '' : 'AND sys_language.hidden=0';
+	function exec_languageQuery($id)	{
+		$exQ = $GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0';
 		if ($id)	{
-			$query = 'SELECT sys_language.* FROM pages_language_overlay,sys_language 
-						WHERE pages_language_overlay.sys_language_uid=sys_language.uid 
-						AND pages_language_overlay.pid='.intval($id).'
-						'.$exQ.'
-						GROUP BY pages_language_overlay.sys_language_uid
-						ORDER BY sys_language.title';
+			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'sys_language.*', 
+							'pages_language_overlay,sys_language', 
+							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).$exQ,
+							'pages_language_overlay.sys_language_uid', 
+							'sys_language.title'
+						);
 		} else {
-			$query = 'SELECT sys_language.* FROM sys_language 
-						WHERE sys_language.hidden=0
-						ORDER BY sys_language.title';
+			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'sys_language.*', 
+							'sys_language', 
+							'sys_language.hidden=0', 
+							'', 
+							'sys_language.title'
+						);
 		}
-		return $query;
 	}
 }
 

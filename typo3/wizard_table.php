@@ -76,7 +76,7 @@ include ('sysext/lang/locallang_wizards.php');
 
 /**
  * Script Class for rendering the Table Wizard
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -106,8 +106,8 @@ class SC_wizard_table {
 
 	/**
 	 * Initialization of the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BACK_PATH,$HTTP_POST_VARS;
@@ -144,8 +144,8 @@ class SC_wizard_table {
 
 	/**
 	 * Main function, rendering the table wizard
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG;
@@ -160,8 +160,8 @@ class SC_wizard_table {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -169,7 +169,7 @@ class SC_wizard_table {
 	
 	/**
 	 * Draws the table wizard content
-	 * 
+	 *
 	 * @return	string		HTML content for the form.
 	 */
 	function tableWizard()	{
@@ -206,7 +206,7 @@ class SC_wizard_table {
 	/**
 	 * Will get and return the configuration code string
 	 * Will also save (and possibly redirect/exit) the content if a save button has been pressed
-	 * 
+	 *
 	 * @param	array		Current parent record row
 	 * @return	array		Table config code in an array
 	 * @access private
@@ -271,7 +271,7 @@ class SC_wizard_table {
 
 	/**
 	 * Creates the HTML for the Table Wizard:
-	 * 
+	 *
 	 * @param	array		Table config array
 	 * @param	array		Current parent record array
 	 * @return	string		HTML for the table wizard
@@ -422,8 +422,8 @@ class SC_wizard_table {
 
 	/**
 	 * Detects if a control button (up/down/around/delete) has been pressed for an item and accordingly it will manipulate the internal TABLECFG array
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 */
 	function changeFunc()	{
@@ -537,7 +537,7 @@ class SC_wizard_table {
 
 	/**
 	 * Converts the input array to a configuration code string
-	 * 
+	 *
 	 * @param	array		Array of table configuration (follows the input structure from the table wizard POST form)
 	 * @return	string		The array converted into a string with line-based configuration.
 	 * @see cfgString2CfgArray()
@@ -567,7 +567,7 @@ class SC_wizard_table {
 	
 	/**
 	 * Converts the input configuration code string into an array
-	 * 
+	 *
 	 * @param	string		Configuration code
 	 * @param	integer		Default number of columns
 	 * @return	array		Configuration array

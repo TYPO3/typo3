@@ -67,7 +67,7 @@ include ('sysext/lang/locallang_alt_intro.php');
 
 /**
  * Script Class for the introduction screen, alias "About > Modules" which shows the description of each available module for the user.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -78,8 +78,8 @@ class SC_alt_intro {
 	
 	/**
 	 * Initialization of script class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $TBE_MODULES;
@@ -91,8 +91,8 @@ class SC_alt_intro {
 
 	/**
 	 * Main content - displaying the module descriptions
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$TYPO3_CONF_VARS;
@@ -160,8 +160,8 @@ class SC_alt_intro {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

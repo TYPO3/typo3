@@ -71,7 +71,7 @@ require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 
 /**
  * Extension of transfer data class
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -85,7 +85,7 @@ class transferData extends t3lib_transferData	{
 
 	/**
 	 * Register item function.
-	 * 
+	 *
 	 * @param	[type]		$table: ...
 	 * @param	[type]		$id: ...
 	 * @param	[type]		$field: ...
@@ -121,11 +121,11 @@ class transferData extends t3lib_transferData	{
 
 /**
  * Script Class
- * 
+ *
  * GPvars:
  * $table	:		Record table (or filename)
  * $uid	:		Record uid  (or '' when filename)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -214,7 +214,7 @@ class SC_show_item {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function main()	{
@@ -237,7 +237,7 @@ class SC_show_item {
 						if (!$TCA[$this->table]["columns"][$name]["exclude"] || $GLOBALS["BE_USER"]->check("non_exclude_fields",$this->table.":".$name))	{		
 							$i++;
 							$codeArr[$i][]=$LANG->sL(t3lib_BEfunc::getItemLabel($this->table,$name));
-							$codeArr[$i][]=t3lib_BEfunc::getProcessedValue($this->table,$name,$this->row[$name]);
+							$codeArr[$i][]=htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table,$name,$this->row[$name]));
 						}
 					}
 				}
@@ -342,7 +342,7 @@ class SC_show_item {
 
 	/**
 	 * [Describe function...]
-	 * 
+	 *
 	 * @return	[type]		...
 	 */
 	function printContent()	{

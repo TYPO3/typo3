@@ -47,10 +47,10 @@
 /**
  * This function basically adds the parent page to the sublevel but only if the sublevel is empty!
  * It is also used to demonstrate the menu state items
- * 
+ *
  * Example can be found in the testsite package at the page-path "/Intro/TypoScript examples/Menu object examples/Fake menu items/" and "/Intro/TypoScript examples/Menu object examples/Menu state test/"
  * This TypoScript configuration will also demonstrate it ("fake menu items"):
- *  
+ *
  * includeLibs.fakemenuitems = media/scripts/example_itemArrayProcFunc.php
  * page = PAGE
  * page.typeNum = 0
@@ -67,7 +67,7 @@
  *   allWrap = | <br />
  *   linkWrap = <b> - |</b>
  * }
- * 
+ *
  * @param	array		The $menuArr array which simply is a num-array of page records which goes into the menu.
  * @param	array		TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
  * @return	array		The modified $menuArr array
@@ -96,7 +96,7 @@ function user_itemArrayProcFuncTest($menuArr,$conf)	{
 
 /**
  * Used in the menu item state example of the "testsite" package at page-path "/Intro/TypoScript examples/Menu object examples/Menu state test/"
- * 
+ *
  * @param	array		The menu item array, $this->I (in the parent object)
  * @param	array		TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
  * @return	array		The processed $I array returned (and stored in $this->I of the parent object again)

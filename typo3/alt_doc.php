@@ -44,26 +44,26 @@
  *  164:     function preInit()	
  *  216:     function doProcessData()	
  *  228:     function processData()	
- *  347:     function init()	
- *  427:     function main()	
- *  484:     function printContent()	
+ *  345:     function init()	
+ *  424:     function main()	
+ *  481:     function printContent()	
  *
  *              SECTION: Sub-content functions, rendering specific parts of the module content.
- *  519:     function makeEditForm()	
- *  681:     function makeButtonPanel()	
- *  761:     function makeDocSel()	
- *  800:     function makeCmenu()	
- *  818:     function compileForm($panel,$docSel,$cMenu,$editForm)	
- *  877:     function functionMenus()	
- *  908:     function shortCutLink()	
- *  939:     function tceformMessages()	
+ *  516:     function makeEditForm()	
+ *  680:     function makeButtonPanel()	
+ *  759:     function makeDocSel()	
+ *  798:     function makeCmenu()	
+ *  816:     function compileForm($panel,$docSel,$cMenu,$editForm)	
+ *  875:     function functionMenus()	
+ *  906:     function shortCutLink()	
+ *  937:     function tceformMessages()	
  *
  *              SECTION: Other functions
- *  977:     function editRegularContentFromId()	
- * 1001:     function compileStoreDat()	
- * 1016:     function getNewIconMode($table,$key='saveDocNew')	
- * 1029:     function closeDocument($code=0)	
- * 1061:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')	
+ *  975:     function editRegularContentFromId()	
+ * 1002:     function compileStoreDat()	
+ * 1015:     function getNewIconMode($table,$key='saveDocNew')	
+ * 1028:     function closeDocument($code=0)	
+ * 1060:     function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')	
  *
  * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -85,7 +85,7 @@ t3lib_BEfunc::lockRecords();
 /**
  * Script Class: Drawing the editing form for editing records in TYPO3.
  * Notice: It does NOT use tce_db.php to submit data to, rather it handles submissions itself
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -158,8 +158,8 @@ class SC_alt_doc {
 
 	/**
 	 * First initialization.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function preInit()	{
 		global $BE_USER;
@@ -196,12 +196,12 @@ class SC_alt_doc {
 			// Get session data for the module:
 		$this->docDat = $BE_USER->getModuleData('alt_doc.php','ses');
 		$this->docHandler = $this->docDat[0];
-		
+
 			// If a request for closing the document has been sent, act accordingly:
 		if ($this->closeDoc>0)	{
 			$this->closeDocument($this->closeDoc);
 		}
-		
+
 			// If NO vars are sent to the script, try to read first document:
 		if (is_array($this->R_URL_getvars) && count($this->R_URL_getvars)<2 && !is_array($this->editconf))	{	// Added !is_array($this->editconf) because editConf must not be set either. Anyways I can't figure out when this situation here will apply...
 			$this->setDocument($this->docDat[1]);
@@ -210,7 +210,7 @@ class SC_alt_doc {
 
 	/**
 	 * Detects, if a save command has been triggered.
-	 * 
+	 *
 	 * @return	boolean		True, then save the document (data submitted)
 	 */
 	function doProcessData()	{
@@ -222,8 +222,8 @@ class SC_alt_doc {
 
 	/**
 	 * Do processing of data, submitting it to TCEmain.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function processData()	{
 		global $BE_USER,$HTTP_POST_VARS,$TYPO3_CONF_VARS;
@@ -339,8 +339,8 @@ class SC_alt_doc {
 
 	/**
 	 * Initialize the normal module operation
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$HTTP_POST_VARS;
@@ -418,8 +418,8 @@ class SC_alt_doc {
 
 	/**
 	 * Main module operation
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG;
@@ -457,7 +457,7 @@ class SC_alt_doc {
 				} else $this->modTSconfig=array();
 		
 				$panel = $this->makeButtonPanel();
-				$docSel = $this->makeDocSel();		
+				$docSel = $this->makeDocSel();
 				$cMenu = $this->makeCmenu();
 		
 				$formContent = $this->compileForm($panel,$docSel,$cMenu,$editForm);
@@ -475,8 +475,8 @@ class SC_alt_doc {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 
@@ -510,7 +510,7 @@ class SC_alt_doc {
 	 
 	/**
 	 * Creates the editing form with TCEforms, based on the input from GPvars.
-	 * 
+	 *
 	 * @return	string		HTML form elements wrapped in tables
 	 */
 	function makeEditForm()	{
@@ -613,7 +613,9 @@ class SC_alt_doc {
 								
 										// Setting visual path / title of form:
 									$this->generalPathOfForm = $this->tceforms->getRecordPath($table,$rec);
-									if (!$this->storeTitle)	$this->storeTitle=$this->recTitle?$this->recTitle:t3lib_BEfunc::getRecordTitle($table,$rec,1);
+									if (!$this->storeTitle)	{
+										$this->storeTitle = $this->recTitle ? htmlspecialchars($this->recTitle) : t3lib_BEfunc::getRecordTitle($table,$rec,1);
+									}
 
 										// Setting variables in TCEforms object:
 									$this->tceforms->hiddenFieldList = '';
@@ -672,7 +674,7 @@ class SC_alt_doc {
 
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
-	 * 
+	 *
 	 * @return	string		HTML code, comprised of images linked to various actions.
 	 */
 	function makeButtonPanel()	{
@@ -719,11 +721,10 @@ class SC_alt_doc {
 				}
 			
 					// Undo:
-				$undoButton=0;
-				$undoQuery='SELECT tstamp FROM sys_history WHERE tablename="'.addslashes($this->firstEl['table']).'" AND recuid="'.intval($this->firstEl['uid']).'" ORDER BY tstamp DESC LIMIT 1';
-				$undoRes = mysql(TYPO3_db,$undoQuery);
-				if ($undoButtonR = mysql_fetch_assoc($undoRes))	{
-					$undoButton=1;
+				$undoButton = 0;
+				$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename="'.$GLOBALS['TYPO3_DB']->quoteStr($this->firstEl['table'], 'sys_history').'" AND recuid="'.intval($this->firstEl['uid']).'"', '', 'tstamp DESC', '1');
+				if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
+					$undoButton = 1;
 				}
 				if ($undoButton) {
 					$aOnClick = 'document.location=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
@@ -752,33 +753,33 @@ class SC_alt_doc {
 	/**
 	 * Create the selector box form element which allows to select between open documents.
 	 * Can be disabled through Page TSconfig.
-	 * 
+	 *
 	 * @return	string		HTML <select> element  (if applicable)
 	 */
 	function makeDocSel()	{
 		global $BE_USER,$LANG;
 
-			// Render the selector ONLY if it has not been disabled:		
+			// Render the selector ONLY if it has not been disabled:
 		if (!$this->modTSconfig['properties']['disableDocSelector'])	{
-		
+
 				// Checking if the currently open document is stored in the list of "open documents" - if not, then add it:
 			if ((strcmp($this->docDat[1],$this->storeUrlMd5)||!isset($this->docHandler[$this->storeUrlMd5])) && !$this->dontStoreDocumentRef)	{
 				$this->docHandler[$this->storeUrlMd5]=array($this->storeTitle,$this->storeArray,$this->storeUrl);
 				$BE_USER->pushModuleData('alt_doc.php',array($this->docHandler,$this->storeUrlMd5));
 			}
-			
+
 				// Now, create the document selector box:
 			$docSel='';
 			if (is_array($this->docHandler))	{
-				$opt=array();
-				$opt[]='<option>[ '.$LANG->getLL('openDocs',1).': ]</option>';
-				
+				$opt = array();
+				$opt[] = '<option>[ '.$LANG->getLL('openDocs',1).': ]</option>';
+
 					// Traverse the list of open documents:
 				foreach($this->docHandler as $md5k => $setupArr)	{
 					$theValue = 'alt_doc.php?'.$setupArr[2].'&returnUrl='.rawurlencode($this->retUrl);
-					$opt[]='<option value="'.htmlspecialchars($theValue).'"'.(!strcmp($md5k,$this->storeUrlMd5)?' selected="selected"':'').'>'.htmlspecialchars($setupArr[0]).'</option>';
+					$opt[]='<option value="'.htmlspecialchars($theValue).'"'.(!strcmp($md5k,$this->storeUrlMd5)?' selected="selected"':'').'>'.htmlspecialchars(strip_tags(t3lib_div::htmlspecialchars_decode($setupArr[0]))).'</option>';
 				}
-				
+
 					// Compile the selector box finally:
 				$onChange = 'if(this.options[this.selectedIndex].value && !TBE_EDITOR_isFormChanged()){document.location=(this.options[this.selectedIndex].value);}';
 				$docSel='<select name="_docSelector" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
@@ -790,7 +791,7 @@ class SC_alt_doc {
 	/**
 	 * Create the selector box form element which allows to select a clear-cache operation.
 	 * Can be disabled through Page TSconfig.
-	 * 
+	 *
 	 * @return	string		HTML <select> element (if applicable)
 	 * @see template::clearCacheMenu()
 	 */
@@ -805,7 +806,7 @@ class SC_alt_doc {
 
 	/**
 	 * Put together the various elements (buttons, selectors, form) into a table
-	 * 
+	 *
 	 * @param	string		The button panel HTML
 	 * @param	string		Document selector HTML
 	 * @param	string		Clear-cache menu HTML
@@ -868,7 +869,7 @@ class SC_alt_doc {
 
 	/**
 	 * Create the checkbox buttons in the bottom of the pages.
-	 * 
+	 *
 	 * @return	string		HTML for function menus.
 	 */
 	function functionMenus()	{
@@ -899,8 +900,8 @@ class SC_alt_doc {
 
 	/**
 	 * Create shortcut and open-in-window link in the bottom of the page
-	 * 
-	 * @return	string		
+	 *
+	 * @return	string
 	 */
 	function shortCutLink()	{
 		global $BE_USER,$LANG;
@@ -930,8 +931,8 @@ class SC_alt_doc {
 
 	/**
 	 * Reads comment messages from TCEforms and prints them in a HTML comment in the buttom of the page.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function tceformMessages()	{
 		if (count($this->tceforms->commentMessages))	{
@@ -968,19 +969,23 @@ class SC_alt_doc {
 	 
 	/**
 	 * Function, which populates the internal editconf array with editing commands for all tt_content elements from the normal column in normal language from the page pointed to by $this->editRegularContentFromId
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function editRegularContentFromId()	{
 		if (t3lib_extMgm::isLoaded('cms'))	{
-			$query='SELECT uid FROM tt_content WHERE pid='.intval($this->editRegularContentFromId).
-				t3lib_BEfunc::deleteClause('tt_content').
-				' AND colPos=0 AND sys_language_uid=0'.
-				' ORDER BY sorting';
-			$res = mysql(TYPO3_db,$query);
-			if (mysql_num_rows($res))	{
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+						'uid', 
+						'tt_content', 
+						'pid='.intval($this->editRegularContentFromId).
+							t3lib_BEfunc::deleteClause('tt_content').
+							' AND colPos=0 AND sys_language_uid=0',
+						'', 
+						'sorting'
+					);
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 				$ecUids=array();
-				while($ecRec=mysql_fetch_assoc($res))	{
+				while($ecRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$ecUids[]=$ecRec['uid'];
 				}
 				$this->editconf['tt_content'][implode(',',$ecUids)]='edit';
@@ -990,8 +995,8 @@ class SC_alt_doc {
 
 	/**
 	 * Populates the variables $this->storeArray, $this->storeUrl, $this->storeUrlMd5
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see makeDocSel()
 	 */
 	function compileStoreDat()	{
@@ -1002,7 +1007,7 @@ class SC_alt_doc {
 
 	/**
 	 * Function used to look for configuration of buttons in the form: Fx. disabling buttons or showing them at various positions.
-	 * 
+	 *
 	 * @param	string		The table for which the configuration may be specific
 	 * @param	string		The option for look for. Default is checking if the saveDocNew button should be displayed.
 	 * @return	string		Return value fetched from USER TSconfig
@@ -1016,9 +1021,9 @@ class SC_alt_doc {
 
 	/**
 	 * Handling the closing of a document
-	 * 
+	 *
 	 * @param	integer		Close code: 0/1 will redirect to $this->retUrl, 3 will clear the docHandler (thus closing all documents) and otehr values will call setDocument with ->retUrl
-	 * @return	void		
+	 * @return	void
 	 */
 	function closeDocument($code=0)	{
 		global $BE_USER;
@@ -1047,10 +1052,10 @@ class SC_alt_doc {
 	/**
 	 * Redirects to the document pointed to by $currentDocFromHandlerMD5 OR $retUrl (depending on some internal calculations).
 	 * Most likely you will get a header-location redirect from this function.
-	 * 
+	 *
 	 * @param	string		Pointer to the document in the docHandler array
 	 * @param	string		Alternative/Default retUrl
-	 * @return	void		
+	 * @return	void
 	 */
 	function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')	{
 		if (!t3lib_extMgm::isLoaded('cms') && !strcmp($retUrl,'alt_doc_nodoc.php'))	return;
@@ -1100,10 +1105,9 @@ $SOBE->preInit();
 if ($SOBE->doProcessData())	{		// Checks, if a save button has been clicked (or the doSave variable is sent)
 	require_once (PATH_t3lib.'class.t3lib_tcemain.php');
 	$SOBE->processData();
-} else {
-	require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
-	$BACK_PATH='';
 }
+
+require_once (PATH_t3lib.'class.t3lib_loaddbgroup.php');
 require_once (PATH_t3lib.'class.t3lib_transferdata.php');
 
 

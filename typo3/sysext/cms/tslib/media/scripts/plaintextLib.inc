@@ -90,13 +90,13 @@
  
 /**
  * Alternative rendering of content elements for Plain Text emails. That means text-only output. No HTML at all. Used by the Direct Mail extension.
- * Normally the plain text output should appear with type=99. 
+ * Normally the plain text output should appear with type=99.
  * To use this library you can include the static template "plugin.alt.plaintext"
- * 
+ *
  * ## Insert DMailer Boundaries for all elements.
  * config.insertDmailerBoundaries = 1
  * includeLibs.plaintextLib = media/scripts/plaintextLib.inc
- * 
+ *
  * ## Set up page/type number:
  * alt_plaintext >
  * alt_plaintext = PAGE
@@ -112,9 +112,9 @@
  *   marks.DATE.data = date:U
  *   marks.DATE.strftime = %e. %B %Y
  * }
- * 
+ *
  * (And then also "lib.alt_plaintext.renderObj" is configured extensively - basically with the TypoScript options passed to this class. See the static template "plugin.alt.plaintext")
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -129,7 +129,7 @@ class user_plaintext {
 	 * Main function, called from TypoScript
 	 * A content object that renders "tt_content" records. See the comment to this class for TypoScript example of how to trigger it.
 	 * This detects the CType of the current content element and renders it accordingly. Only wellknown types are rendered.
-	 * 
+	 *
 	 * @param	string		Empty, ignore.
 	 * @param	array		TypoScript properties for this content object/function call
 	 * @return	string		Plain text content
@@ -203,7 +203,7 @@ class user_plaintext {
 
 	/**
 	 * Creates a menu/sitemap
-	 * 
+	 *
 	 * @return	string		Content
 	 */
 	function getMenuSitemap()	{
@@ -214,7 +214,7 @@ class user_plaintext {
 
 	/**
 	 * Creates a shortcut ("Insert Records")
-	 * 
+	 *
 	 * @return	string		Content
 	 */
 	function getShortcut()	{
@@ -224,7 +224,7 @@ class user_plaintext {
 
 	/**
 	 * Creates an HTML element (stripping tags of course)
-	 * 
+	 *
 	 * @param	string		HTML content to process. If not passed along, the bodytext field is used.
 	 * @return	string		Content
 	 */
@@ -234,7 +234,7 @@ class user_plaintext {
 
 	/**
 	 * Creates a header (used for most elements)
-	 * 
+	 *
 	 * @return	string		Content
 	 * @see renderHeader()
 	 */
@@ -245,7 +245,7 @@ class user_plaintext {
 
 	/**
 	 * Get images found in the "image" field of "tt_content"
-	 * 
+	 *
 	 * @return	string		Content
 	 */
 	function getImages()	{
@@ -255,7 +255,7 @@ class user_plaintext {
 
 	/**
 	 * Parsing the bodytext field content, removing typical entities and <br /> tags.
-	 * 
+	 *
 	 * @param	string		Field content from "bodytext"
 	 * @return	string		Processed content
 	 */
@@ -276,7 +276,7 @@ class user_plaintext {
 
 	/**
 	 * Creates a list of links to uploaded files.
-	 * 
+	 *
 	 * @param	string		List of uploaded filenames from "uploads/media/" (or $upload_path)
 	 * @param	string		Alternative path value
 	 * @return	string		Content
@@ -294,7 +294,7 @@ class user_plaintext {
 
 	/**
 	 * Renders a content element header, observing the layout type giving different header formattings
-	 * 
+	 *
 	 * @param	string		The header string
 	 * @param	integer		The layout type of the header (in the content element)
 	 * @return	string		Content
@@ -343,7 +343,7 @@ class user_plaintext {
 
 	/**
 	 * Function used to repeat a char pattern in head lines (like if you want "********" above/below a header)
-	 * 
+	 *
 	 * @param	array		Array of existing lines to which the new char-pattern should be added
 	 * @param	string		The character pattern to repeat. Default is "-"
 	 * @param	integer		The length of the line. $preLineChar will be repeated to fill in this length.
@@ -361,7 +361,7 @@ class user_plaintext {
 
 	/**
 	 * Function used to wrap the bodytext field content (or image caption) into lines of a max length of
-	 * 
+	 *
 	 * @param	string		The content to break
 	 * @return	string		Processed value.
 	 * @see main_plaintext(), breakLines()
@@ -378,7 +378,7 @@ class user_plaintext {
 
 	/**
 	 * Breaks content lines into a bullet list
-	 * 
+	 *
 	 * @param	string		Content string to make into a bullet list
 	 * @return	string		Processed value
 	 */
@@ -409,7 +409,7 @@ class user_plaintext {
 
 	/**
 	 * Formatting a table in plain text (based on the paradigm of lines being content rows and cells separated by "|")
-	 * 
+	 *
 	 * @param	string		Content string
 	 * @return	string		Processed value
 	 */
@@ -459,7 +459,7 @@ class user_plaintext {
 
 	/**
 	 * Subfunction for breakTable(): Adds a divider line between table rows.
-	 * 
+	 *
 	 * @param	array		Some information about sizes
 	 * @param	string		Empty string.
 	 * @param	string		Character to use for the divider line, typically "-"
@@ -479,7 +479,7 @@ class user_plaintext {
 
 	/**
 	 * Traverses the table lines/cells and creates arrays with statistics for line numbers and lengths
-	 * 
+	 *
 	 * @param	array		Array with [table rows] [table cells] [lines in cell]
 	 * @return	array		Statistics (max lines/lengths)
 	 * @access private
@@ -504,7 +504,7 @@ class user_plaintext {
 
 	/**
 	 * Render block of images - which means creating lines with links to the images.
-	 * 
+	 *
 	 * @param	string		List of image filenames (from "image" field in tt_content records)
 	 * @param	string		Link value from the "image_link" field in tt_content records
 	 * @param	string		Caption text
@@ -547,7 +547,7 @@ class user_plaintext {
 
 	/**
 	 * Returns a typolink URL based on input.
-	 * 
+	 *
 	 * @param	string		Parameter to typolink
 	 * @return	string		The URL returned from $this->cObj->getTypoLink_URL(); - possibly it prefixed with the URL of the site if not present already
 	 */
@@ -561,7 +561,7 @@ class user_plaintext {
 	
 	/**
 	 * Breaking lines into fixed length lines, using t3lib_div::breakLinesForEmail()
-	 * 
+	 *
 	 * @param	string		The string to break
 	 * @param	string		Line break character
 	 * @param	integer		Length of lines, default is $this->charWidth
@@ -575,7 +575,7 @@ class user_plaintext {
 	/**
 	 * Explodes a string with "|" and if the second part is found it will return this, otherwise the first part.
 	 * Used for many TypoScript properties used in this class since they need preceeding whitespace to be preserved.
-	 * 
+	 *
 	 * @param	string		Input string
 	 * @return	string		Output string
 	 * @access private
@@ -587,7 +587,7 @@ class user_plaintext {
 
 	/**
 	 * Calls a user function for processing of data
-	 * 
+	 *
 	 * @param	string		TypoScript property name, pointing to the definition of the user function to call (from the TypoScript array internally in this class). This array is passed to the user function. Notice that "parentObj" property is a reference to this class ($this)
 	 * @param	mixed		Variable to process
 	 * @return	mixed		The processed $passVar as returned by the function call
@@ -602,9 +602,9 @@ class user_plaintext {
 	}
 
 	/**
-	 * Function used by TypoScript "parseFunc" to process links in the bodytext. 
+	 * Function used by TypoScript "parseFunc" to process links in the bodytext.
 	 * Extracts the link and shows it in plain text in a parathesis next to the link text. If link was relative the site URL was prepended.
-	 * 
+	 *
 	 * @param	string		Empty, ignore.
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
@@ -624,7 +624,7 @@ class user_plaintext {
 
 	/**
 	 * User function (called from TypoScript) for generating a bullet list (used in parsefunc)
-	 * 
+	 *
 	 * @param	string		Empty, ignore.
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
@@ -639,7 +639,7 @@ class user_plaintext {
 
 	/**
 	 * User function (called from TypoScript) for generating a typo header tag (used in parsefunc)
-	 * 
+	 *
 	 * @param	string		Empty, ignore.
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
@@ -658,7 +658,7 @@ class user_plaintext {
 
 	/**
 	 * User function (called from TypoScript) for generating a code listing (used in parsefunc)
-	 * 
+	 *
 	 * @param	string		Empty, ignore.
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.

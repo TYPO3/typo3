@@ -41,7 +41,7 @@
  *  103:     function init()	
  *  130:     function menuConfig()	
  *  151:     function main()	
- *  274:     function printContent()	
+ *  288:     function printContent()	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -69,7 +69,7 @@ $BE_USER->modAccess($MCONF,1);
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -97,8 +97,8 @@ class SC_file_list {
 	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $TYPO3_CONF_VARS,$FILEMOUNTS;
@@ -124,8 +124,8 @@ class SC_file_list {
 
 	/**
 	 * Setting the menu/session variables
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function menuConfig()	{
 			// MENU-ITEMS:
@@ -145,8 +145,8 @@ class SC_file_list {
 
 	/**
 	 * Main function, creating the listing
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TYPO3_CONF_VARS,$FILEMOUNTS;
@@ -282,8 +282,8 @@ class SC_file_list {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 

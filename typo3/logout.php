@@ -52,9 +52,9 @@ require ('init.php');
 
 
 /**
- * Script Class for logging a user out. 
+ * Script Class for logging a user out.
  * Does not display any content, just calls the logout-function for the current user and then makes a redirect.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -63,8 +63,8 @@ class SC_logout {
 
 	/**
 	 * Performs the logout processing
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function logout()	{
 		global $BE_USER;

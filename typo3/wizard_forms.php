@@ -167,7 +167,7 @@ include ('sysext/lang/locallang_wizards.php');
 
 /**
  * Script Class for rendering the Form Wizard
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -196,8 +196,8 @@ class SC_wizard_forms {
 
 	/**
 	 * Initialization the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BACK_PATH,$HTTP_POST_VARS;
@@ -232,8 +232,8 @@ class SC_wizard_forms {
 
 	/**
 	 * Main function for rendering the form wizard HTML
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG;
@@ -248,8 +248,8 @@ class SC_wizard_forms {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;
@@ -257,7 +257,7 @@ class SC_wizard_forms {
 	
 	/**
 	 * Draws the form wizard content
-	 * 
+	 *
 	 * @return	string		HTML content for the form.
 	 */
 	function formsWizard()	{
@@ -298,7 +298,7 @@ class SC_wizard_forms {
 	/**
 	 * Will get and return the configuration code string
 	 * Will also save (and possibly redirect/exit) the content if a save button has been pressed
-	 * 
+	 *
 	 * @param	array		Current parent record row (passed by value!)
 	 * @return	array		Configuration Array
 	 * @access private
@@ -369,7 +369,7 @@ class SC_wizard_forms {
 	
 	/**
 	 * Creates the HTML for the Form Wizard:
-	 * 
+	 *
 	 * @param	string		Form config array
 	 * @param	array		Current parent record array
 	 * @return	string		HTML for the form wizard
@@ -624,8 +624,8 @@ class SC_wizard_forms {
 	 
 	/**
 	 * Detects if a control button (up/down/around/delete) has been pressed for an item and accordingly it will manipulate the internal FORMCFG array
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 */
 	function changeFunc()	{
@@ -682,7 +682,7 @@ class SC_wizard_forms {
 
 	/**
 	 * Converts the input array to a configuration code string
-	 * 
+	 *
 	 * @param	array		Array of form configuration (follows the input structure from the form wizard POST form)
 	 * @return	string		The array converted into a string with line-based configuration.
 	 * @see cfgString2CfgArray()
@@ -757,7 +757,7 @@ class SC_wizard_forms {
 	
 	/**
 	 * Converts the input configuration code string into an array
-	 * 
+	 *
 	 * @param	string		Configuration code
 	 * @return	array		Configuration array
 	 * @see cfgArray2CfgString()
@@ -846,7 +846,7 @@ class SC_wizard_forms {
 	
 	/**
 	 * Removes any "trailing elements" in the array which consists of whitespace (little like trim() does for strings, so this does for arrays)
-	 * 
+	 *
 	 * @param	array		Single dim array
 	 * @return	array		Processed array
 	 * @access private
@@ -864,7 +864,7 @@ class SC_wizard_forms {
 
 	/**
 	 * Wraps items in $fArr in table cells/rows, displaying them vertically.
-	 * 
+	 *
 	 * @param	array		Array of label/HTML pairs.
 	 * @return	string		HTML table
 	 * @access private

@@ -48,8 +48,8 @@
  *  125:     function init()	
  *  160:     function menuConfig()	
  *  180:     function clearCache()	
- *  193:     function main()	
- *  402:     function printContent()	
+ *  194:     function main()	
+ *  412:     function printContent()	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -81,7 +81,7 @@ t3lib_BEfunc::lockRecords();
 
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -119,8 +119,8 @@ class SC_db_list {
 
 	/**
 	 * Initializing the module
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER;
@@ -154,8 +154,8 @@ class SC_db_list {
 
 	/**
 	 * Initialize function menu array
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function menuConfig()	{
 
@@ -174,8 +174,8 @@ class SC_db_list {
 
 	/**
 	 * Clears page cache for the current id, $this->id
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function clearCache()	{
 		if ($this->clear_cache)	{
@@ -188,8 +188,8 @@ class SC_db_list {
 
 	/**
 	 * Main function, starting the rendering of the list.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$CLIENT;
@@ -406,8 +406,8 @@ class SC_db_list {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

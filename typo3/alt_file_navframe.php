@@ -40,8 +40,8 @@
  *
  *   68: class SC_alt_file_navframe 
  *   85:     function init()	
- *  170:     function main()	
- *  198:     function printContent()	
+ *  168:     function main()	
+ *  196:     function printContent()	
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -60,7 +60,7 @@ require_once (PATH_t3lib.'class.t3lib_foldertree.php');
 
 /**
  * Main script class for rendering of the folder tree
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -79,8 +79,8 @@ class SC_alt_file_navframe {
 	
 	/**
 	 * Initialiation of the script class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH,$CLIENT;
@@ -162,8 +162,8 @@ class SC_alt_file_navframe {
 	
 	/**
 	 * Main function, rendering the folder tree
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG,$CLIENT;
@@ -190,8 +190,8 @@ class SC_alt_file_navframe {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();

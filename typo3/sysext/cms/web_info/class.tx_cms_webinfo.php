@@ -58,7 +58,7 @@ require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 
 /**
  * Class for displaying page information (records, page record properties)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_cms
@@ -67,8 +67,8 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 
 	/**
 	 * Returns the menu array
-	 * 
-	 * @return	array		
+	 *
+	 * @return	array
 	 */
 	function modMenu()	{
 		global $LANG;
@@ -94,7 +94,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 
 	/**
 	 * MAIN function for page information display (including hit statistics)
-	 * 
+	 *
 	 * @return	string		Output HTML for the module.
 	 */
 	function main()	{
@@ -180,10 +180,10 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 /**
  * Extension class for hits display, basically using tx_cms_webinfo_page (internally this is detected).
  * This construction is due to the old "pre-extensions" structure
- * 
+ *
  * IMPORTANT: This class is used by the extension "sys_stat" and will be added to the Info module only when "sys_stat" is installed.
  * The display of statistics goes on in "tx_cms_webinfo_page" though
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tx_cms

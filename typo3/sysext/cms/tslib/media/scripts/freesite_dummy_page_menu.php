@@ -43,37 +43,31 @@ if (!is_object($this)) {
 
 	// Template
 $pid = intval($conf['pid_templateArchive']);
-$content='';
+$content = '';
 
 $specialComment='';
 if ($pid)	{
 		// Select templates in root
 		// Does NOT take TSFE->showHiddenRecords into account!
-	$query='SELECT * FROM sys_template WHERE pid='.$pid.' AND NOT deleted AND NOT hidden AND NOT starttime AND NOT endtime ORDER BY sorting';
-	$res = mysql(TYPO3_db,$query);
-	echo mysql_error();
-	while($row=mysql_fetch_assoc($res))	{
-		if (!$firstUID) $firstUID=$row['uid'];
-		$key=$row['uid'];
-		$val=$row['title'];
-		$content.='<a target="testTemplate" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.'index.php?id='.$GLOBALS['TSFE']->id.'&based_on_uid='.$key).'">'.$val.'</a><br />';
-		$specialComment.='[globalVar= based_on_uid='.$key.']'.chr(10);
+	$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid='.intval($pid).' AND NOT deleted AND NOT hidden AND NOT starttime AND NOT endtime', '', 'sorting');
+	while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		if (!$firstUID) $firstUID = $row['uid'];
+		$key = $row['uid'];
+		$val = $row['title'];
+		$content.= '<a target="testTemplate" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.'index.php?id='.$GLOBALS['TSFE']->id.'&based_on_uid='.$key).'">'.$val.'</a><br />';
+		$specialComment.= '[globalVar= based_on_uid='.$key.']'.chr(10);
 	}
 		// Select subcategories of template folder.
-	$query='SELECT * FROM pages WHERE pid='.$pid.' AND NOT deleted AND NOT hidden AND NOT starttime AND NOT endtime AND NOT fe_group ORDER BY sorting';
-	$page_res = mysql(TYPO3_db,$query);
-	echo mysql_error();
-	while($page_row=mysql_fetch_assoc($page_res))	{
+	$page_res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid='.intval($pid).' AND NOT deleted AND NOT hidden AND NOT starttime AND NOT endtime AND NOT fe_group', '', 'sorting');
+	while($page_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($page_res))	{
 			// Subcategory templates
-		$query='SELECT * FROM sys_template WHERE pid='.$page_row['uid'].' AND NOT deleted AND NOT hidden AND NOT starttime AND NOT endtime ORDER BY sorting';
-		$res = mysql(TYPO3_db,$query);
-		echo mysql_error();
-		while($row=mysql_fetch_assoc($res))	{
-			if (!$firstUID) $firstUID=$row['uid'];
-			$key=$row['uid'];
-			$val=$page_row['title'].' / '.$row['title'];
-			$content.='<a target="testTemplate" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.'index.php?id='.$GLOBALS['TSFE']->id.'&based_on_uid='.$key).'">'.$val.'</a><br />';
-			$specialComment.='[globalVar= based_on_uid='.$key.']'.chr(10);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid='.intval($page_row['uid']).' AND NOT deleted AND NOT hidden AND NOT starttime AND NOT endtime', '', 'sorting');
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			if (!$firstUID) $firstUID = $row['uid'];
+			$key = $row['uid'];
+			$val = $page_row['title'].' / '.$row['title'];
+			$content.= '<a target="testTemplate" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.'index.php?id='.$GLOBALS['TSFE']->id.'&based_on_uid='.$key).'">'.$val.'</a><br />';
+			$specialComment.= '[globalVar= based_on_uid='.$key.']'.chr(10);
 		}
 	}
 }		

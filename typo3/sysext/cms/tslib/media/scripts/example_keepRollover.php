@@ -43,7 +43,7 @@
 
 /**
  * Example can be found in the testsite package at the page-path "/Intro/TypoScript examples/Menu object examples/Loading multiple.../"
- * 
+ *
  * @param	array		The menu item array, $this->I (in the parent object)
  * @param	array		TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
  * @return	array		The processed $I array returned (and stored in $this->I of the parent object again)

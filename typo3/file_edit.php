@@ -66,7 +66,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 /**
  * Script Class for rendering the file editing screen
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -86,8 +86,8 @@ class SC_file_edit {
 	
 	/**
 	 * Initialize script class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BACK_PATH,$TYPO3_CONF_VARS;
@@ -135,8 +135,8 @@ class SC_file_edit {
 
 	/**
 	 * Main function, redering the actual content of the editing page
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER, $LANG, $TYPO3_CONF_VARS;
@@ -195,8 +195,8 @@ class SC_file_edit {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

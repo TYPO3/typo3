@@ -45,8 +45,8 @@
  *
  *  131: class SC_alt_db_navframe 
  *  147:     function init()	
- *  237:     function main()	
- *  265:     function printContent()	
+ *  235:     function main()	
+ *  263:     function printContent()	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -63,7 +63,7 @@ require_once (PATH_t3lib.'class.t3lib_browsetree.php');
 
 /**
  * Extension class for the t3lib_browsetree class, specially made for browsing pages in the Web module
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -73,8 +73,8 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Calls init functions
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function localPageTree() {
 		$this->init();
@@ -82,7 +82,7 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Wrapping icon in browse tree
-	 * 
+	 *
 	 * @param	string		Icon IMG code
 	 * @param	array		Data row for element.
 	 * @return	string		Page icon
@@ -123,7 +123,7 @@ class localPageTree extends t3lib_browseTree {
 
 /**
  * Main script class for the page tree navigation frame
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -141,8 +141,8 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Initialiation of the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER,$BACK_PATH;
@@ -229,8 +229,8 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Main function, rendering the browsable page tree
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG,$CLIENT;
@@ -257,8 +257,8 @@ class SC_alt_db_navframe {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		$this->content.= $this->doc->endPage();

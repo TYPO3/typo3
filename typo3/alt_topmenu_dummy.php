@@ -44,8 +44,8 @@
  *
  *   74: class SC_alt_topmenu_dummy 
  *   82:     function main()	
- *  126:     function dummyContent()	
- *  142:     function printContent()	
+ *  127:     function dummyContent()	
+ *  143:     function printContent()	
  *
  * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -66,7 +66,7 @@ require_once ('class.alt_menu_functions.inc');
 /**
  * Script Class for rendering the topframe dummy view.
  * In the case where TYPO3 backend is configured to show the menu in the top frame this class will render the horizontal line of module icons in the top frame.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -76,8 +76,8 @@ class SC_alt_topmenu_dummy {
 	
 	/**
 	 * Main function - making the menu happen.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TBE_MODULES,$TBE_TEMPLATE;
@@ -121,8 +121,8 @@ class SC_alt_topmenu_dummy {
 	
 	/**
 	 * Creates the dummy content of the top frame if no menu - which is a blank page.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function dummyContent()	{
 		global $TBE_TEMPLATE;
@@ -137,8 +137,8 @@ class SC_alt_topmenu_dummy {
 	
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

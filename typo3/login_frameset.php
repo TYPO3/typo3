@@ -63,7 +63,7 @@ require ('template.php');
 
 /**
  * Script Class, putting the frameset together.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -76,8 +76,8 @@ class SC_login_frameset {
 	/**
 	 * Main function.
 	 * Creates the header code in XHTML, then the frameset for the two frames.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $TYPO3_CONF_VARS;
@@ -102,8 +102,8 @@ class SC_login_frameset {
 
 	/**
 	 * Outputs the page content.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content;

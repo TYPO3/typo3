@@ -67,7 +67,7 @@ include ('sysext/lang/locallang_wizards.php');
 
 /**
  * Script Class for adding new items to a group/select field. Performs proper redirection as needed.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -98,8 +98,8 @@ class SC_wizard_add {
 
 	/**
 	 * Initialization of the class.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 
@@ -151,8 +151,8 @@ class SC_wizard_add {
 	/**
 	 * Main function
 	 * Will issue a location-header, redirecting either BACK or to a new alt_doc.php instance...
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 

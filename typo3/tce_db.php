@@ -41,9 +41,9 @@
  *
  *   80: class SC_tce_db 
  *  107:     function init()	
- *  160:     function initClipboard()	
- *  180:     function main()	
- *  216:     function finish()	
+ *  161:     function initClipboard()	
+ *  181:     function main()	
+ *  217:     function finish()	
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -72,7 +72,7 @@ require_once (PATH_t3lib.'class.t3lib_tcemain.php');
  * Used by many smaller forms/links in TYPO3, including the QuickEdit module.
  * Is not used by alt_doc.php though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
  * For all other cases than alt_doc.php it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to alt_doc.php, that will give you easy form-rendering as well.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -101,8 +101,8 @@ class SC_tce_db {
 
 	/**
 	 * Initialization of the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $BE_USER;
@@ -155,8 +155,8 @@ class SC_tce_db {
 
 	/**
 	 * Clipboard pasting and deleting.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function initClipboard()	{
 		if (is_array($this->CB))	{
@@ -175,8 +175,8 @@ class SC_tce_db {
 
 	/**
 	 * Executing the posted actions ...
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $BE_USER,$TYPO3_CONF_VARS;
@@ -211,8 +211,8 @@ class SC_tce_db {
 	/**
 	 * Redirecting the user after the processing has been done.
 	 * Might also display error messages directly, if any.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function finish()	{
 			// Prints errors, if...

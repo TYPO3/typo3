@@ -40,14 +40,14 @@
  *
  *   77: class tslib_feUserAuth extends t3lib_userAuth 
  *  141:     function fetchGroupData()	
- *  187:     function getUserTSconf()	
+ *  189:     function getUserTSconf()	
  *
  *              SECTION: Session data management functions
- *  232:     function fetchSessionData()	
- *  258:     function storeSessionData()	
- *  283:     function getKey($type,$key) 
- *  308:     function setKey($type,$key,$data)	
- *  333:     function record_registration($recs)	
+ *  234:     function fetchSessionData()	
+ *  256:     function storeSessionData()	
+ *  282:     function getKey($type,$key) 
+ *  307:     function setKey($type,$key,$data)	
+ *  332:     function record_registration($recs)	
  *
  * TOTAL FUNCTIONS: 7
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -69,7 +69,7 @@
  
 /**
  * Extension class for Front End User Authentication.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage tslib
@@ -77,11 +77,11 @@
 class tslib_feUserAuth extends t3lib_userAuth {
 	var $session_table = 'fe_sessions'; 		// Table to use for session data.
 	var $name = 'fe_typo_user';                 // Session/Cookie name
-	var $get_name = 'ftu';		                 // Session/GET-var name
+	var $get_name = 'ftu';		                	 // Session/GET-var name
 
 	var $user_table = 'fe_users'; 					// Table in database with userdata
-	var $username_column = 'username'; 			// Column for login-name
-	var $userident_column = 'password'; 		// Column for password
+	var $username_column = 'username'; 				// Column for login-name
+	var $userident_column = 'password'; 			// Column for password
 	var $userid_column = 'uid'; 					// Column for user-id
 	var $lastLogin_column = 'lastlogin';
 
@@ -91,11 +91,11 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		'starttime' => 'starttime',
 		'endtime' => 'endtime'
 	);
-	var $formfield_uname = 'user'; 			// formfield with login-name
-	var $formfield_uident = 'pass'; 		// formfield with password
+	var $formfield_uname = 'user'; 				// formfield with login-name
+	var $formfield_uident = 'pass'; 			// formfield with password
 	var $formfield_chalvalue = 'challenge';		// formfield with a unique value which is used to encrypt the password and username
-	var $formfield_status = 'logintype'; 	// formfield with status: *'login', 'logout'
-	var $security_level = '';				// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+	var $formfield_status = 'logintype'; 		// formfield with status: *'login', 'logout'
+	var $security_level = '';					// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 
 	var $auth_include = '';						// this is the name of the include-file containing the login form. If not set, login CAN be anonymous. If set login IS needed.
 	
@@ -103,9 +103,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	
 	var $lifetime = 0;                  		// 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
 	var $sendNoCacheHeaders = 0;
-	var $getFallBack = 1;					// If this is set, authentication is also accepted by the HTTP_GET_VARS. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
+	var $getFallBack = 1;						// If this is set, authentication is also accepted by the _GET. Notice that the identification is NOT 128bit MD5 hash but reduced. This is done in order to minimize the size for mobile-devices, such as WAP-phones
 	var $hash_length = 10;
-	var $getMethodEnabled = 1;				// Login may be supplied by url.
+	var $getMethodEnabled = 1;					// Login may be supplied by url.
 
 	var $usergroup_column = 'usergroup';
 	var $usergroup_table = 'fe_groups';
@@ -135,13 +135,13 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Will select all fe_groups records that the current fe_user is member of - and which groups are also allowed in the current domain.
 	 * It also accumulates the TSconfig for the fe_user/fe_groups in ->TSdataArray
-	 * 
+	 *
 	 * @return	integer		Returns the number of usergroups for the frontend users (if the internal user record exists and the usergroup field contains a value)
 	 */
 	function fetchGroupData()	{
-		$this->TSdataArray=array();
+		$this->TSdataArray = array();
 		$this->userTS = array();
-		$this->userTSUpdated=0;	
+		$this->userTSUpdated = 0;	
 
 			// Setting default configuration:
 		$this->TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
@@ -151,15 +151,17 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			$list = implode($groups,',');
 			$lockToDomain_SQL = ' AND (lockToDomain="" OR lockToDomain="'.t3lib_div::getIndpEnv('HTTP_HOST').'")';
 			if (!$this->showHiddenRecords)	$hiddenP = 'AND NOT hidden ';
-			$query='SELECT * FROM '.$this->usergroup_table.' WHERE NOT deleted '.$hiddenP.'AND uid IN ('.$list.')'.$lockToDomain_SQL;
-			$res = mysql(TYPO3_db,$query);
-			while ($row=mysql_fetch_assoc($res))	{
-				$this->groupData['title'][$row['uid']]=$row['title'];
-				$this->groupData['uid'][$row['uid']]=$row['uid'];
-				$this->groupData['pid'][$row['uid']]=$row['pid'];
-				$this->groupData['TSconfig'][$row['uid']]=$row['TSconfig'];
+			
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, 'NOT deleted '.$hiddenP.'AND uid IN ('.$list.')'.$lockToDomain_SQL);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$this->groupData['title'][$row['uid']] = $row['title'];
+				$this->groupData['uid'][$row['uid']] = $row['uid'];
+				$this->groupData['pid'][$row['uid']] = $row['pid'];
+				$this->groupData['TSconfig'][$row['uid']] = $row['TSconfig'];
 			}
-			if (mysql_num_rows($res))	{
+			
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				// TSconfig:
 				reset($groups);
 				while(list(,$TSuid)=each($groups))	{
@@ -181,7 +183,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Returns the parsed TSconfig for the fe_user
 	 * First time this function is called it will parse the TSconfig and store it in $this->userTS. Subsequent requests will not re-parse the TSconfig but simply return what is already in $this->userTS
-	 * 
+	 *
 	 * @return	array		TSconfig array for the fe_user
 	 */
 	function getUserTSconf()	{
@@ -224,26 +226,22 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * Fetches the session data for the user (from the fe_session_data table) based on the ->id of the current user-session.
 	 * The session data is restored to $this->sesData
 	 * 1/100 calls will also do a garbage collection.
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @access private
 	 * @see storeSessionData()
 	 */
 	function fetchSessionData()	{
 		// Gets SesData if any
 		if ($this->id)	{
-			$query='SELECT * FROM fe_session_data WHERE hash = "'.$this->id.'"';
-			$dbres=mysql(TYPO3_db,$query);
-			echo mysql_error();
-			if ($sesDataRow = mysql_fetch_assoc($dbres))	{
+			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, 'fe_session_data').'"');
+			if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
 				$this->sesData = unserialize($sesDataRow['content']);
 			}
 		}
 			// delete old data:
 		if ((rand()%100) <= 1) {		// a possibility of 1 % for garbage collection.
-			$query='DELETE FROM fe_session_data WHERE tstamp < "'.(time()-3600*24).'"';		// all data older than 24 hours are deleted.
-			$dbres=mysql(TYPO3_db,$query);
-			echo mysql_error();
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'tstamp < '.intval(time()-3600*24));		// all data older than 24 hours are deleted.
 		}
 	}
 
@@ -251,30 +249,31 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * Will write UC and session data.
 	 * If the flag $this->userData_change has been set, the function ->writeUC is called (which will save persistent user session data)
 	 * If the flag $this->sesData_change has been set, the fe_session_data table is updated with the content of $this->sesData (deleting any old record, inserting new)
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 * @see fetchSessionData(), getKey(), setKey()
 	 */
 	function storeSessionData()	{
-		// Saves UC and SesData if changed.
+			// Saves UC and SesData if changed.
 		if ($this->userData_change)	{
 			$this->writeUC('');
 		}
 		if ($this->sesData_change)	{
 			if ($this->id)	{
-				$query='DELETE FROM fe_session_data WHERE hash = "'.$this->id.'"';
-				$dbres=mysql(TYPO3_db,$query);
-				echo mysql_error();
-				$query='INSERT INTO fe_session_data (hash, content, tstamp) VALUES ("'.$this->id.'", "'.addslashes(serialize($this->sesData)).'", "'.time().'")';
-				$dbres=mysql(TYPO3_db,$query);
-				echo mysql_error();
+				$insertFields = array (
+					'hash' => $this->id, 
+					'content' => serialize($this->sesData), 
+					'tstamp' => time()
+				);
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_session_data', 'hash="'.$GLOBALS['TYPO3_DB']->quoteStr($this->id, 'fe_session_data').'"');
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_session_data', $insertFields);
 			}
 		}
 	}
 
 	/**
 	 * Returns session data for the fe_user; Either persistent data following the fe_users uid/profile (requires login) or current-session based (not available when browse is closed, but does not require login)
-	 * 
+	 *
 	 * @param	string		Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
 	 * @param	string		Key from the data array to return; The session data (in either case) is an array ($this->uc / $this->sesData) and this value determines which key to return the value for.
 	 * @return	mixed		Returns whatever value there was in the array for the key, $key
@@ -298,11 +297,11 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * When a value is set the flags $this->userData_change or $this->sesData_change will be set so that the final call to ->storeSessionData() will know if a change has occurred and needs to be saved to the database.
 	 * Notice: The key "recs" is already used by the function record_registration() which stores table/uid=value pairs in that key. This is used for the shopping basket among other things.
 	 * Notice: Simply calling this function will not save the data to the database! The actual saving is done in storeSessionData() which is called as some of the last things in index_ts.php. So if you exit before this point, nothing gets saved of course! And the solution is to call $GLOBALS['TSFE']->storeSessionData(); before you exit.
-	 * 
+	 *
 	 * @param	string		Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
 	 * @param	string		Key from the data array to store incoming data in; The session data (in either case) is an array ($this->uc / $this->sesData) and this value determines in which key the $data value will be stored.
 	 * @param	mixed		The data value to store in $key
-	 * @return	void		
+	 * @return	void
 	 * @see setKey(), storeSessionData(), record_registration()
 	 */
 	function setKey($type,$key,$data)	{
@@ -326,9 +325,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * Registration of records/"shopping basket" in session data
 	 * This will take the input array, $recs, and merge into the current "recs" array found in the session data.
 	 * If a change in the recs storage happens (which it probably does) the function setKey() is called in order to store the array again.
-	 * 
+	 *
 	 * @param	array		The data array to merge into/override the current recs values. The $recs array is constructed as [table]][uid] = scalar-value (eg. string/integer).
-	 * @return	void		
+	 * @return	void
 	 */
 	function record_registration($recs)	{
 		if ($recs['clear_all'])	{

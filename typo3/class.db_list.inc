@@ -40,23 +40,23 @@
  *
  *
  *   84: class recordList extends t3lib_recordList 
- *  141:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	
- *  187:     function generateList()	
- *  234:     function getSearchBox($formFields=1)	
- *  277:     function showSysNotesForPage()	
+ *  140:     function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	
+ *  186:     function generateList()	
+ *  233:     function getSearchBox($formFields=1)	
+ *  276:     function showSysNotesForPage()	
  *
  *              SECTION: Various helper functions
- *  357:     function setDispFields()	
- *  382:     function thumbCode($row,$table,$field)	
- *  395:     function makeQuery($table, $id, $addWhere="",$fieldList='*')	
- *  434:     function setTotalItems()	
- *  453:     function makeSearchString($table)	
- *  492:     function linkWrapTable($table,$code)	
- *  509:     function linkWrapItems($table,$uid,$code,$row)	
- *  536:     function listURL($altId='',$table=-1,$exclList='')	
- *  555:     function requestUri()	
- *  566:     function makeFieldList($table,$dontCheckUser=0)	
- *  605:     function getTreeObject($id,$depth,$perms_clause)	
+ *  353:     function setDispFields()	
+ *  378:     function thumbCode($row,$table,$field)	
+ *  391:     function makeQueryArray($table, $id, $addWhere="",$fieldList='*')	
+ *  433:     function setTotalItems($queryParts)	
+ *  449:     function makeSearchString($table)	
+ *  488:     function linkWrapTable($table,$code)	
+ *  505:     function linkWrapItems($table,$uid,$code,$row)	
+ *  532:     function listURL($altId='',$table=-1,$exclList='')	
+ *  551:     function requestUri()	
+ *  562:     function makeFieldList($table,$dontCheckUser=0)	
+ *  601:     function getTreeObject($id,$depth,$perms_clause)	
  *
  * TOTAL FUNCTIONS: 15
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -75,7 +75,7 @@
 
 /**
  * Child class for rendering of Web > List (not the final class. see class.db_list_extra)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -120,7 +120,6 @@ class recordList extends t3lib_recordList {
 	var $recPath_cache=array();		// Cache for record path
 	var $setFields=array();			// Fields to display for the current table
 	var $currentTable = array();	// Used for tracking next/prev uids
-	var $temp_countQ='';			// Stores temporary count(*) query
 	var $duplicateStack=array();	// Used for tracking duplicate values of fields
 	
 
@@ -129,14 +128,14 @@ class recordList extends t3lib_recordList {
 
 	/**
 	 * Initializes the list generation
-	 * 
+	 *
 	 * @param	integer		Page id for which the list is rendered. Must be >= 0
 	 * @param	string		Tablename - if extended mode where only one table is listed at a time.
 	 * @param	integer		Browsing pointer.
 	 * @param	string		Search word, if any
 	 * @param	integer		Number of levels to search down the page tree
 	 * @param	integer		Limit of records to be listed.
-	 * @return	void		
+	 * @return	void
 	 */
 	function start($id,$table,$pointer,$search="",$levels="",$showLimit=0)	{
 		global $TCA;
@@ -181,8 +180,8 @@ class recordList extends t3lib_recordList {
 	 * Traverses the table(s) to be listed and renders the output code for each:
 	 * The HTML is accumulated in $this->HTMLcode
 	 * Finishes off with a stopper-gif
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function generateList()	{
 		global $TCA;
@@ -227,7 +226,7 @@ class recordList extends t3lib_recordList {
 
 	/**
 	 * Creates the search box
-	 * 
+	 *
 	 * @param	boolean		If true, the search box is wrapped in its own form-tags
 	 * @return	string		HTML for the search box
 	 */
@@ -271,7 +270,7 @@ class recordList extends t3lib_recordList {
 	/**
 	 * Creates the display of sys_notes for the page.
 	 * Relies on the "sys_note" extension to be loaded.
-	 * 
+	 *
 	 * @return	string		HTML for the sys-notes (if any)
 	 */
 	function showSysNotesForPage()	{
@@ -283,13 +282,10 @@ class recordList extends t3lib_recordList {
 		if (!t3lib_extMgm::isLoaded('sys_note'))	return '';
 
 			// Create query for selecting the notes:
-		$delClause = t3lib_BEfunc::deleteClause('sys_note');
-		$query = 'SELECT * FROM sys_note where pid in ('.$this->id.') AND (!personal OR cruser="'.$GLOBALS['BE_USER']->user['uid'].'")'.$delClause;
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','sys_note','pid IN ('.$this->id.') AND (!personal OR cruser="'.intval($GLOBALS['BE_USER']->user['uid']).'")'.t3lib_BEfunc::deleteClause('sys_note'));
 		
 			// Executing query:
-		$result = mysql(TYPO3_db,$query);
-		if (mysql_error()) {echo mysql_error(); debug($query);}
-		$dbCount = mysql_num_rows($result);
+		$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		
 			// If some notes were found, render them:
 		if ($dbCount)	{
@@ -306,7 +302,7 @@ class recordList extends t3lib_recordList {
 			}
 			
 				// For each note found, make rendering:
-			while($row=mysql_fetch_assoc($result))	{
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
 			
 					// Create content:
 				$iconImg = t3lib_iconWorks::getIconImage('sys_note',$row,$this->backPath,'');
@@ -351,8 +347,8 @@ class recordList extends t3lib_recordList {
 	/**
 	 * Setting the field names to display in extended list.
 	 * Sets the internal variable $this->setFields
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function setDispFields()	{
 
@@ -373,7 +369,7 @@ class recordList extends t3lib_recordList {
 
 	/**
 	 * Create thumbnail code for record/field
-	 * 
+	 *
 	 * @param	array		Record array
 	 * @param	string		Table (record is from)
 	 * @param	string		Field name for which thumbsnail are to be rendered.
@@ -384,15 +380,15 @@ class recordList extends t3lib_recordList {
 	}
 
 	/**
-	 * Returns the SQL-query to select the records from a table $table with pid = $id
-	 * 
+	 * Returns the SQL-query array to select the records from a table $table with pid = $id
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Page id (NOT USED! $this->pidSelect is used instead)
 	 * @param	string		Additional part for where clause
 	 * @param	string		Field list to select, * for all (for "SELECT [fieldlist] FROM ...")
-	 * @return	string		Returns query.
+	 * @return	array		Returns query array
 	 */
-	function makeQuery($table, $id, $addWhere="",$fieldList='*')	{
+	function makeQueryArray($table, $id, $addWhere="",$fieldList='*')	{
 		global $TCA;
 
 			// Set ORDER BY:
@@ -405,7 +401,7 @@ class recordList extends t3lib_recordList {
 		}
 		
 			// Set LIMIT:
-		$limit = ($this->iLimit) ? 'LIMIT '.($this->firstElementNumber ? ($this->firstElementNumber).',' : '' ).($this->iLimit+1) : '';
+		$limit = $this->iLimit ? ($this->firstElementNumber ? $this->firstElementNumber.',' : '').($this->iLimit+1) : '';
 		
 			// Filtering on displayable pages (permissions):
 		$pC = ($table=='pages' && $this->perms_clause)?' AND '.$this->perms_clause:'';
@@ -413,40 +409,40 @@ class recordList extends t3lib_recordList {
 			// Adding search constraints:
 		$search = $this->makeSearchString($table);
 
-			// Compiling query:
-		$query = sprintf('SELECT '.$fieldList.' FROM %s WHERE '.$this->pidSelect.' %s %s %s %s %s %s',
-				$table, $pC, t3lib_BEfunc::deleteClause($table), $addWhere, $search, $orderBy, $limit);
-				
-			// Make same query, but for counting records:
-		$this->temp_countQ = sprintf('SELECT count(*) FROM %s WHERE '.$this->pidSelect.' %s %s %s %s',
-				$table, $pC, t3lib_BEfunc::deleteClause($table), $addWhere, $search);
+			// Compiling query array:
+		$queryParts = array(
+			'SELECT' => $fieldList,
+			'FROM' => $table,
+			'WHERE' => $this->pidSelect.' '.$pC.t3lib_BEfunc::deleteClause($table).' '.$addWhere.' '.$search,
+			'GROUPBY' => '',
+			'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
+			'LIMIT' => $limit
+		);
 
 			// Return query:
-		return $query;
+		return $queryParts;
 	}
 
 	/**
-	 * Based on $this->temp_countQ (query for selecting count(*) from a table) it will select the number of records and set the value in $this->totalItems
-	 * 
-	 * @return	void		
-	 * @see makeQuery()
+	 * Based on input query array (query for selecting count(*) from a table) it will select the number of records and set the value in $this->totalItems
+	 *
+	 * @param	array		Query array
+	 * @return	void
+	 * @see makeQueryArray()
 	 */
-	function setTotalItems()	{
-		$result = mysql(TYPO3_db,$this->temp_countQ);
-		if (mysql_error())	{
-			echo '<hr />
-			<strong>MySQL error:</strong> '.mysql_error().'<br />
-			<strong>Query:</strong> '.$this->temp_countQ.'<br />
-			<hr />
-			';
-		}
-		list($rCount) = mysql_fetch_row($result);
+	function setTotalItems($queryParts)	{
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'count(*)', 
+					$queryParts['FROM'], 
+					$queryParts['WHERE']
+				);
+		list($rCount) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result);
 		$this->totalItems = $rCount;
 	}
-
+	
 	/**
 	 * Creates part of query for searching after a word ($this->searchString) fields in input table
-	 * 
+	 *
 	 * @param	string		Table, in which the fields are being searched.
 	 * @return	string		Returns part of WHERE-clause for searching, if applicable.
 	 */
@@ -472,7 +468,7 @@ class recordList extends t3lib_recordList {
 			
 				// If search-fields were defined (and there always are) we create the query:
 			if (count($sfields))	{
-				$like=' LIKE "%'.addslashes($this->searchString).'%"';		// Free-text searching...
+				$like=' LIKE "%'.$GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table).'%"';		// Free-text searching...
 				$queryPart = ' AND ('.implode($like.' OR ',$sfields).$like.')';
 				
 					// Return query:
@@ -484,7 +480,7 @@ class recordList extends t3lib_recordList {
 	/**
 	 * Returns the title (based on $code) of a table ($table) with the proper link around. For headers over tables.
 	 * The link will cause the display of all extended mode or not for the table.
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	string		Table label
 	 * @return	string		The linked table label
@@ -499,7 +495,7 @@ class recordList extends t3lib_recordList {
 
 	/**
 	 * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for 'pages'-records a link to the level of that record...)
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	integer		Item uid
 	 * @param	string		Item title (not htmlspecialchars()'ed yet)
@@ -527,7 +523,7 @@ class recordList extends t3lib_recordList {
 	 * Creates the URL to this script, including all relevant GPvars
 	 * Fixed GPvars are id, table, imagemode, returlUrl, search_field, search_levels and showLimit
 	 * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
-	 * 
+	 *
 	 * @param	string		Alternative id value. Enter blank string for the current id ($this->id)
 	 * @param	string		Tablename to display. Enter "-1" for the current table.
 	 * @param	string		Commalist of fields NOT to include ("sortField" or "sortRev")
@@ -549,7 +545,7 @@ class recordList extends t3lib_recordList {
 
 	/**
 	 * Returns "requestUri" - which is basically listURL
-	 * 
+	 *
 	 * @return	string		Content of ->listURL()
 	 */
 	function requestUri()	{
@@ -558,7 +554,7 @@ class recordList extends t3lib_recordList {
 
 	/**
 	 * Makes the list of fields to select for a table
-	 * 
+	 *
 	 * @param	string		Table name
 	 * @param	boolean		If set, users access to the field (non-exclude-fields) is NOT checked.
 	 * @return	array		Array, where values are fieldnames to include in query
@@ -596,7 +592,7 @@ class recordList extends t3lib_recordList {
 
 	/**
 	 * Creates an instance of t3lib_pageTree which will select a page tree to $depth and return the object. In that object we will find the ids of the tree.
-	 * 
+	 *
 	 * @param	integer		Page id.
 	 * @param	integer		Depth to go down.
 	 * @param	string		Select clause

@@ -48,8 +48,8 @@
  *
  *  223: class SC_alt_palette 
  *  247:     function init()	
- *  299:     function main()	
- *  339:     function printContent()	
+ *  301:     function main()	
+ *  341:     function printContent()	
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -73,7 +73,7 @@ include ('sysext/lang/locallang_alt_doc.php');
 /**
  * Class for rendering the form fields.
  * Extending the TCEforms class
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -84,7 +84,7 @@ class formRender extends t3lib_TCEforms {
 	 * Creates the HTML content for the palette
 	 * (Horizontally, for display in the top frame)
 	 * (Used if GET var "backRef" IS set)
-	 * 
+	 *
 	 * @param	array		Array of information from which the fields are built.
 	 * @return	string		HTML output
 	 */
@@ -146,7 +146,7 @@ class formRender extends t3lib_TCEforms {
 /**
  * Child class for alternative rendering of form fields (when the secondary fields are shown in a little window rather than the top bar).
  * (Used if GET var "backRef" is not set, presuming a window is opened instead.)
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -156,7 +156,7 @@ class formRender_vert extends t3lib_TCEforms {
 	/**
 	 * Creates the HTML content for the palette.
 	 * (Vertically, for display in a browser window, not top frame)
-	 * 
+	 *
 	 * @param	array		Array of information from which the fields are built.
 	 * @return	string		HTML output
 	 */
@@ -215,7 +215,7 @@ class formRender_vert extends t3lib_TCEforms {
 /**
  * Script Class for rendering the palette form for TCEforms in some other frame (in top frame, horizontally)
  * It can also be called in a pop-up window in which case a vertically oriented set of form fields are rendered instead.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -241,8 +241,8 @@ class SC_alt_palette {
 
 	/**
 	 * Constructor for the class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 
@@ -295,8 +295,8 @@ class SC_alt_palette {
 
 	/**
 	 * Main function, rendering the palette form
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 
@@ -335,8 +335,8 @@ class SC_alt_palette {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 		echo $this->content.$this->doc->endPage();

@@ -67,7 +67,7 @@ require_once (PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 /**
  * Script Class for the rename-file form.
- * 
+ *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
  * @subpackage core
@@ -90,8 +90,8 @@ class SC_file_rename {
 	
 	/**
 	 * Constructor function for class
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function init()	{
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
@@ -142,8 +142,8 @@ class SC_file_rename {
 
 	/**
 	 * Main function, rendering the content of the rename form
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function main()	{
 		global $LANG;
@@ -183,8 +183,8 @@ class SC_file_rename {
 
 	/**
 	 * Outputting the accumulated content to screen
-	 * 
-	 * @return	void		
+	 *
+	 * @return	void
 	 */
 	function printContent()	{
 
