@@ -520,8 +520,7 @@ class localRecordList extends recordList {
 
 			// Preparing and getting the data-array
 		$theData = Array();
-		reset($this->fieldArray);
-		while(list(,$fCol)=each($this->fieldArray))	{
+		foreach($this->fieldArray as $fCol)	{
 			if ($fCol==$titleCol)	{
 				$theData[$fCol] = $this->linkWrapItems($table,$row['uid'],$recTitle,$row);
 			} elseif ($fCol=='pid') {

@@ -213,6 +213,7 @@ class SC_db_list {
 		$dblist->showClipboard = 1;
 		$dblist->disableSingleTableView = $this->modTSconfig['properties']['disableSingleTableView'];
 		$dblist->listOnlyInSingleTableMode = $this->modTSconfig['properties']['listOnlyInSingleTableView'];
+		$dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
 		$dblist->alternateBgColors=$this->modTSconfig['properties']['alternateBgColors']?1:0;
 		$dblist->allowedNewTables = t3lib_div::trimExplode(',',$this->modTSconfig['properties']['allowedNewTables'],1);
 		$dblist->newWizards=$this->modTSconfig['properties']['newWizards']?1:0;

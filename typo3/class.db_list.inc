@@ -111,6 +111,7 @@ class recordList extends t3lib_recordList {
 	var $pidSelect='';				// List of ids from which to select/search etc. (when search-levels are set high). See start()
 	var $perms_clause='';			// Page select permissions
 	var $calcPerms=0;				// Some permissions...
+	var $clickTitleMode = '';		// Mode for what happens when a user clicks the title of a record.
 
 		// Internal, dynamic:
 	var $JScode = '';				// JavaScript code accumulation
@@ -504,20 +505,57 @@ class recordList extends t3lib_recordList {
 	 * @return	string		The item title. Ready for HTML output (is htmlspecialchars()'ed)
 	 */
 	function linkWrapItems($table,$uid,$code,$row)	{
+		global $TCA, $LANG;
 
 			// If the title is blank, make a "no title" label:
 		if (!strcmp($code,'')) {
-			$code='<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i> - '.htmlspecialchars(t3lib_BEfunc::getRecordTitle($table,$row));
+			$code = '<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i> - '.htmlspecialchars(t3lib_BEfunc::getRecordTitle($table,$row));
 		} else {
-			$code=htmlspecialchars(t3lib_div::fixed_lgd($code,$this->fixedL));
+			$code = htmlspecialchars(t3lib_div::fixed_lgd($code,$this->fixedL));
 		}
 
-			// Output the label now:
-		if ($table=='pages')	{
-			return '<a href="'.htmlspecialchars($this->listURL($uid,'')).'">'.$code.'</a>';
-		} else {
-			return $code;
+		switch((string)$this->clickTitleMode)	{
+			case 'edit':
+					// If the listed table is 'pages' we have to request the permission settings for each page:
+				if ($table=='pages')	{
+					$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$row['uid']));
+					$permsEdit = $localCalcPerms&2;
+				} else {
+					$permsEdit = $this->calcPerms&16;
+				}
+
+					// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
+				if ($permsEdit)	{
+					$params='&edit['.$table.']['.$row['uid'].']=edit';
+					$code = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,'',-1)).'" title="'.$LANG->getLL('edit',1).'">'.
+							$code.
+							'</a>';
+				}
+			break;
+			case 'show':
+					// "Show" link (only pages and tt_content elements)
+				if ($table=='pages' || $table=='tt_content')	{
+					$params = '&edit['.$table.']['.$row['uid'].']=edit';
+					$code = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($table=='tt_content'?$this->id.'#'.$row['uid']:$row['uid'])).'" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'">'.
+							$code.
+							'</a>';
+				}
+			break;
+			case 'info':
+				// "Info": (All records)
+				$code = '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$row['uid'].'\'); return false;').'" title="'.$LANG->getLL('showInfo',1).'">'.
+					$code.
+					'</a>';
+			break;
+			default:
+					// Output the label now:
+				if ($table=='pages')	{
+					$code = '<a href="'.htmlspecialchars($this->listURL($uid,'')).'">'.$code.'</a>';
+				}
+			break;
 		}
+
+		return $code;
 	}
 
 	/**
