@@ -676,51 +676,54 @@ class t3lib_treeView {
 
 			// Traverse the records:
 		while ($row = $this->getDataNext($res))	{
-			$a++;
-
-			$newID =$row['uid'];
-			$this->tree[]=array();		// Reserve space.
-			end($this->tree);
-			$treeKey = key($this->tree);	// Get the key for this space
-			$LN = ($a==$c)?'blank':'line';
-
-				// If records should be accumulated, do so
-			if ($this->setRecs)	{
-				$this->recs[$row['uid']] = $row;
+				# IF $row is NOT an array then this will go into some eternal loop which consumes huge amounts of memory - not good.
+				# PROBABLY this could happend anyways if the input array contains the same id many times. However this is not cleared yet - investigate this!
+			if (is_array($row))	{
+				$a++;
+	
+				$newID =$row['uid'];
+				$this->tree[]=array();		// Reserve space.
+				end($this->tree);
+				$treeKey = key($this->tree);	// Get the key for this space
+				$LN = ($a==$c)?'blank':'line';
+	
+					// If records should be accumulated, do so
+				if ($this->setRecs)	{
+					$this->recs[$row['uid']] = $row;
+				}
+	
+					// accumulate the id of the page in the internal arrays
+				$this->ids[]=$idH[$row['uid']]['uid']=$row['uid'];
+				$this->ids_hierarchy[$depth][]=$row['uid'];
+	
+					// Make a recursive call to the next level
+				if ($depth>1 && $this->expandNext($newID) && !$row['php_tree_stop'])	{
+					$nextCount=$this->getTree(
+						$newID,
+						$depth-1,
+						$this->makeHTML?$depthData.'<img src="'.$this->backPath.'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />':'',
+						$blankLineCode.','.$LN
+						);
+					if (count($this->buffer_idH))	$idH[$row['uid']]['subrow']=$this->buffer_idH;
+					$exp=1;	// Set "did expanded" flag
+				} else {
+					$nextCount=$this->getCount($newID);
+					$exp=0;	// Clear "did expanded" flag
+				}
+					// Set HTML-icons, if any:
+				if ($this->makeHTML)	{
+					$HTML = $depthData.$this->PMicon($row,$a,$c,$nextCount,$exp);
+					$HTML.=$this->wrapStop($this->wrapIcon($this->getIcon($row),$row),$row);
+				}
+	
+					// Finally, add the row/HTML content to the ->tree array in the reserved key.
+				$this->tree[$treeKey] = Array(
+					'row'=>$row,
+					'HTML'=>$HTML,
+					'invertedDepth'=>$depth,
+					'blankLineCode'=>$blankLineCode
+				);
 			}
-
-				// accumulate the id of the page in the internal arrays
-			$this->ids[]=$idH[$row['uid']]['uid']=$row['uid'];
-			$this->ids_hierarchy[$depth][]=$row['uid'];
-
-				// Make a recursive call to the next level
-			if ($depth>1 && $this->expandNext($newID) && !$row['php_tree_stop'])	{
-				$nextCount=$this->getTree(
-					$newID,
-					$depth-1,
-					$this->makeHTML?$depthData.'<img src="'.$this->backPath.'t3lib/gfx/ol/'.$LN.'.gif" width="18" height="16" align="top" alt="" />':'',
-					$blankLineCode.','.$LN
-					);
-				if (count($this->buffer_idH))	$idH[$row['uid']]['subrow']=$this->buffer_idH;
-				$exp=1;	// Set "did expanded" flag
-			} else {
-				$nextCount=$this->getCount($newID);
-				$exp=0;	// Clear "did expanded" flag
-			}
-				// Set HTML-icons, if any:
-			if ($this->makeHTML)	{
-				$HTML = $depthData.$this->PMicon($row,$a,$c,$nextCount,$exp);
-				$HTML.=$this->wrapStop($this->wrapIcon($this->getIcon($row),$row),$row);
-			}
-
-				// Finally, add the row/HTML content to the ->tree array in the reserved key.
-			$this->tree[$treeKey] = Array(
-				'row'=>$row,
-				'HTML'=>$HTML,
-				'invertedDepth'=>$depth,
-				'blankLineCode'=>$blankLineCode
-			);
-
 		}
 
 		$this->getDataFree($res);
