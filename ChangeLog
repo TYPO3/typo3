@@ -1,3 +1,7 @@
+2004-08-04  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added TYPo3_CONF_VARS[FE][lockHashKeyWords] so it is optional to lock FE user sessions to HTTP_USER_AGENT
+
 2004-08-03  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added and Changed features around page languages. More to come including a document guiding people about charsets and localization.
