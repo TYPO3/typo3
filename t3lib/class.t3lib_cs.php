@@ -34,24 +34,28 @@
  *
  *
  *
- *  104: class t3lib_cs 
- *  233:     function parse_charset($charset)	
- *  250:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
- *  284:     function utf8_encode($str,$charset)	
- *  325:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
- *  373:     function utf8_to_entities($str)	
- *  406:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
- *  437:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
- *  478:     function initCharset($charset)	
- *  549:     function UnumberToChar($cbyte)	
- *  593:     function utf8CharToUnumber($str,$hex=0)	
- *  622:     function utf8_strtrunc($str,$len)	
- *  662:     function utf_strlen($str)	
- *  675:     function utf_substr($str,$start,$len=0)	
- *  689:     function utf_strpos($haystack,$needle,$offset=0)	
- *  702:     function utf_strrpos($haystack,$needle,$offset=0)	
+ *  108: class t3lib_cs 
+ *  237:     function parse_charset($charset)	
+ *  254:     function conv($str,$fromCS,$toCS,$useEntityForNoChar=0)	
+ *  288:     function utf8_encode($str,$charset)	
+ *  329:     function utf8_decode($str,$charset,$useEntityForNoChar=0)	
+ *  377:     function utf8_to_entities($str)	
+ *  410:     function entities_to_utf8($str,$alsoStdHtmlEnt=0)	
+ *  441:     function utf8_to_numberarray($str,$convEntities=0,$retChar=0)	
+ *  482:     function initCharset($charset)	
+ *  553:     function UnumberToChar($cbyte)	
+ *  597:     function utf8CharToUnumber($str,$hex=0)	
  *
- * TOTAL FUNCTIONS: 15
+ *              SECTION: UTF-8 String operation functions
+ *  648:     function utf8_strtrunc($str,$len)	
+ *  680:     function utf8_substr($str,$start,$len=null)	
+ *  719:     function utf8_strlen($str)	
+ *  745:     function utf8_strpos($haystack,$needle,$offset=0)	
+ *  768:     function utf8_strrpos($haystack,$needle)	
+ *  787:     function utf8_char2byte_pos($str,$pos)	
+ *  812:     function utf8_byte2char_pos($str,$pos)	
+ *
+ * TOTAL FUNCTIONS: 17
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -609,6 +613,23 @@ class t3lib_cs {
 		return $hex ? 'x'.dechex($int) : $int;
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/********************************************
 	 *
 	 * UTF-8 String operation functions
@@ -617,7 +638,7 @@ class t3lib_cs {
 
 	/**
 	 * Truncates a string in UTF-8 short at a given byte length.
-	 * 
+	 *
 	 * @param	string		UTF-8 multibyte character string
 	 * @param	integer		the byte length
 	 * @return	string		the shortened string
@@ -632,7 +653,7 @@ class t3lib_cs {
 		}
 
 		$i = $len-1;
-		if (ord($str{$i}) & 0x80) { // part of a mulitbyte sequence
+		if (ord($str{$i}) & 0x80) { // part of a multibyte sequence
 			for (; $i>0 && !(ord($str{$i}) & 0x40); $i--)	;	// find the first byte
 			if ($i <= 0)	return ''; // sanity check
 			for ($bc=0, $mbs=ord($str{$i}); $mbs & 0x80; $mbs = $mbs << 1)	$bc++;	// calculate number of bytes
@@ -645,15 +666,16 @@ class t3lib_cs {
 	/**
 	 * Returns a part of a UTF-8 string.
 	 *
+	 *
+	 * Negative values for @arg $start and @arg $len are currently not supported.
+	 *
 	 * @param	string		$str	UTF-8 string
 	 * @param	int		$start	start position (character position)
 	 * @param	int		$len	length (in characters)
-	 * @return	string			the substring
+	 * @return	string		the substring
 	 * @see substr()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 *
 	 * @bug
-	 * Negative values for @arg $start and @arg $len are currently not supported.
 	 */
 	function utf8_substr($str,$start,$len=null)	{
 		if ($len===0)	return '';
@@ -716,7 +738,7 @@ class t3lib_cs {
 	 * @param	string		UTF-8 string to search in
 	 * @param	string		UTF-8 string to search for
 	 * @param	int		positition to start the search
-	 * @return	int	the character position
+	 * @return	int		the character position
 	 * @see strpos()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
@@ -739,7 +761,7 @@ class t3lib_cs {
 	 *
 	 * @param	string		UTF-8 string to search in
 	 * @param	char		UTF-8 character to search for
-	 * @return	int	the character position
+	 * @return	int		the character position
 	 * @see strrpos()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
