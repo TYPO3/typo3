@@ -349,12 +349,13 @@ class tx_indexedsearch_lexer {
 
 			// Looking for CJK (Chinese / Japanese / Korean)
 			// Ranges are not certain - deducted from the translation tables in t3lib/csconvtbl/
+			// Verified with http://www.unicode.org/charts/ (16/2) - may still not be complete.
 		if (
-				($cp >= 0x4E02 && $cp <= 0x9FA5) ||		// CJK UNIFIED IDEOGRAPH
-				($cp >= 0xAC02 && $cp <= 0xD79D) ||		// HANGUL SYLLABLE
-				($cp >= 0x3131 && $cp <= 0x318E) ||		// HANGUL LETTER
-				($cp >= 0x3041 && $cp <= 0x3093) ||		// HIRAGANA letters
-				($cp >= 0x30A1 && $cp <= 0x30F6)		// KATAKANA letters
+				($cp >= 0x4E00 && $cp <= 0x9FAF) ||		// CJK Unified Ideographs
+				($cp >= 0xAC00 && $cp <= 0xD7AF) ||		// Hangul Syllables
+				($cp >= 0x3130 && $cp <= 0x318F) ||		// Hangul Compatibility Jamo
+				($cp >= 0x3040 && $cp <= 0x309F) ||		// HIRAGANA letters
+				($cp >= 0x30A0 && $cp <= 0x30FF)		// KATAKANA letters
 			)	{
 			return array('cjk');
 		}

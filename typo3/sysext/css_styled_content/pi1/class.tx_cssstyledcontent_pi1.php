@@ -90,33 +90,39 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 */
 	function render_bullets($content,$conf)	{
 
-			// Get bodytext field content, returning blank if empty:
-		$content = trim($this->cObj->data['bodytext']);
-		if (!strcmp($content,''))	return '';
+			// Look for hook before running default code for function
+		if ($hookObj = &$this->hookRequest('render_bullets'))	{
+			return $hookObj->render_bullets($content,$conf);
+		} else {
 
-			// Split into single lines:
-		$lines = t3lib_div::trimExplode(chr(10),$content);
-		while(list($k)=each($lines))	{
-			$lines[$k]='
-				<li>'.$this->cObj->stdWrap($lines[$k],$conf['innerStdWrap.']).'</li>';
+				// Get bodytext field content, returning blank if empty:
+			$content = trim($this->cObj->data['bodytext']);
+			if (!strcmp($content,''))	return '';
+
+				// Split into single lines:
+			$lines = t3lib_div::trimExplode(chr(10),$content);
+			while(list($k)=each($lines))	{
+				$lines[$k]='
+					<li>'.$this->cObj->stdWrap($lines[$k],$conf['innerStdWrap.']).'</li>';
+			}
+
+				// Set header type:
+			$type = intval($this->cObj->data['layout']);
+
+				// Compile list:
+			$out = '
+				<ul class="csc-bulletlist csc-bulletlist-'.$type.'">'.
+					implode('',$lines).'
+				</ul>';
+
+				// Calling stdWrap:
+			if ($conf['stdWrap.']) {
+				$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
+			}
+
+				// Return value
+			return $out;
 		}
-
-			// Set header type:
-		$type = intval($this->cObj->data['layout']);
-
-			// Compile list:
-		$out = '
-			<ul class="csc-bulletlist csc-bulletlist-'.$type.'">'.
-				implode('',$lines).'
-			</ul>';
-
-			// Calling stdWrap:
-		if ($conf['stdWrap.']) {
-			$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
-		}
-
-			// Return value
-		return $out;
 	}
 
 	/**
@@ -129,55 +135,61 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 */
 	function render_table($content,$conf)	{
 
-			// Get bodytext field content
-		$content = trim($this->cObj->data['bodytext']);
-		if (!strcmp($content,''))	return '';
+			// Look for hook before running default code for function
+		if ($hookObj = &$this->hookRequest('render_table'))	{
+			return $hookObj->render_table($content,$conf);
+		} else {
 
-			// Split into single lines (will become table-rows):
-		$rows = t3lib_div::trimExplode(chr(10),$content);
+				// Get bodytext field content
+			$content = trim($this->cObj->data['bodytext']);
+			if (!strcmp($content,''))	return '';
 
-			// Find number of columns to render:
-		$cols = t3lib_div::intInRange($this->cObj->data['cols']?$this->cObj->data['cols']:count(explode('|',current($rows))),0,100);
+				// Split into single lines (will become table-rows):
+			$rows = t3lib_div::trimExplode(chr(10),$content);
 
-			// Traverse rows (rendering the table here)
-		$rCount = count($rows);
-		foreach($rows as $k => $v)	{
-			$cells = explode('|',$v);
-			$newCells=array();
-			for($a=0;$a<$cols;$a++)	{
-				if (!strcmp(trim($cells[$a]),''))	$cells[$a]='&nbsp;';
-				$cellAttribs =  ($a>0 && ($cols-1)==$a) ? ' class="td-last"' : ' class="td-'.$a.'"';
-				$newCells[$a] = '
-					<td'.$cellAttribs.'><p>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</p></td>';
+				// Find number of columns to render:
+			$cols = t3lib_div::intInRange($this->cObj->data['cols']?$this->cObj->data['cols']:count(explode('|',current($rows))),0,100);
+
+				// Traverse rows (rendering the table here)
+			$rCount = count($rows);
+			foreach($rows as $k => $v)	{
+				$cells = explode('|',$v);
+				$newCells=array();
+				for($a=0;$a<$cols;$a++)	{
+					if (!strcmp(trim($cells[$a]),''))	$cells[$a]='&nbsp;';
+					$cellAttribs =  ($a>0 && ($cols-1)==$a) ? ' class="td-last"' : ' class="td-'.$a.'"';
+					$newCells[$a] = '
+						<td'.$cellAttribs.'><p>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</p></td>';
+				}
+
+				$oddEven = $k%2 ? 'tr-odd' : 'tr-even';
+				$rowAttribs =  ($k>0 && ($rCount-1)==$k) ? ' class="'.$oddEven.' tr-last"' : ' class="'.$oddEven.' tr-'.$k.'"';
+				$rows[$k]='
+					<tr'.$rowAttribs.'>'.implode('',$newCells).'
+					</tr>';
 			}
 
-			$oddEven = $k%2 ? 'tr-odd' : 'tr-even';
-			$rowAttribs =  ($k>0 && ($rCount-1)==$k) ? ' class="'.$oddEven.' tr-last"' : ' class="'.$oddEven.' tr-'.$k.'"';
-			$rows[$k]='
-				<tr'.$rowAttribs.'>'.implode('',$newCells).'
-				</tr>';
+				// Set header type:
+			$type = intval($this->cObj->data['layout']);
+
+				// Table tag params.
+			$tableTagParams = $this->getTableAttributes($conf,$type);
+			$tableTagParams['class'] = 'contenttable contenttable-'.$type;
+
+				// Compile table output:
+			$out = '
+				<table '.t3lib_div::implodeAttributes($tableTagParams).'>'.	// Omitted xhtmlSafe argument TRUE - none of the values will be needed to be converted anyways, no need to spend processing time on that.
+					implode('',$rows).'
+				</table>';
+
+				// Calling stdWrap:
+			if ($conf['stdWrap.']) {
+				$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
+			}
+
+				// Return value
+			return $out;
 		}
-
-			// Set header type:
-		$type = intval($this->cObj->data['layout']);
-
-			// Table tag params.
-		$tableTagParams = $this->getTableAttributes($conf,$type);
-		$tableTagParams['class'] = 'contenttable contenttable-'.$type;
-
-			// Compile table output:
-		$out = '
-			<table '.t3lib_div::implodeAttributes($tableTagParams).'>'.	// Omitted xhtmlSafe argument TRUE - none of the values will be needed to be converted anyways, no need to spend processing time on that.
-				implode('',$rows).'
-			</table>';
-
-			// Calling stdWrap:
-		if ($conf['stdWrap.']) {
-			$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
-		}
-
-			// Return value
-		return $out;
 	}
 
 	/**
@@ -190,99 +202,105 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 */
 	function render_uploads($content,$conf)	{
 
-		$out = '';
+			// Look for hook before running default code for function
+		if ($hookObj = &$this->hookRequest('render_uploads'))	{
+			return $hookObj->render_uploads($content,$conf);
+		} else {
 
-			// Set layout type:
-		$type = intval($this->cObj->data['layout']);
+			$out = '';
 
-			// Get the list of files (using stdWrap function since that is easiest)
-		$lConf=array();
-		$lConf['override.']['filelist.']['field'] = 'select_key';
-		$fileList = $this->cObj->stdWrap($this->cObj->data['media'],$lConf);
+				// Set layout type:
+			$type = intval($this->cObj->data['layout']);
 
-			// Explode into an array:
-		$fileArray = t3lib_div::trimExplode(',',$fileList,1);
+				// Get the list of files (using stdWrap function since that is easiest)
+			$lConf=array();
+			$lConf['override.']['filelist.']['field'] = 'select_key';
+			$fileList = $this->cObj->stdWrap($this->cObj->data['media'],$lConf);
 
-			// If there were files to list...:
-		if (count($fileArray))	{
+				// Explode into an array:
+			$fileArray = t3lib_div::trimExplode(',',$fileList,1);
 
-				// Get the path from which the images came:
-			$selectKeyValues = explode('|',$this->cObj->data['select_key']);
-			$path = trim($selectKeyValues[0]) ? trim($selectKeyValues[0]) : 'uploads/media/';
+				// If there were files to list...:
+			if (count($fileArray))	{
 
-				// Get the descriptions for the files (if any):
-			$descriptions = t3lib_div::trimExplode(chr(10),$this->cObj->data['imagecaption']);
+					// Get the path from which the images came:
+				$selectKeyValues = explode('|',$this->cObj->data['select_key']);
+				$path = trim($selectKeyValues[0]) ? trim($selectKeyValues[0]) : 'uploads/media/';
 
-				// Adding hardcoded TS to linkProc configuration:
-			$conf['linkProc.']['path.']['current'] = 1;
-			$conf['linkProc.']['icon'] = 1;	// Always render icon - is inserted by PHP if needed.
-			$conf['linkProc.']['icon.']['wrap'] = ' | //**//';	// Temporary, internal split-token!
-			$conf['linkProc.']['icon_link'] = 1;	// ALways link the icon
-			$conf['linkProc.']['icon_image_ext_list'] = ($type==2 || $type==3) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] : '';	// If the layout is type 2 or 3 we will render an image based icon if possible.
+					// Get the descriptions for the files (if any):
+				$descriptions = t3lib_div::trimExplode(chr(10),$this->cObj->data['imagecaption']);
 
-				// Traverse the files found:
-			$filesData = array();
-			foreach($fileArray as $key => $fileName)	{
-				$absPath = t3lib_div::getFileAbsFileName($path.$fileName);
-				if (@is_file($absPath))	{
-					$fI = pathinfo($fileName);
-					$filesData[$key] = array();
+					// Adding hardcoded TS to linkProc configuration:
+				$conf['linkProc.']['path.']['current'] = 1;
+				$conf['linkProc.']['icon'] = 1;	// Always render icon - is inserted by PHP if needed.
+				$conf['linkProc.']['icon.']['wrap'] = ' | //**//';	// Temporary, internal split-token!
+				$conf['linkProc.']['icon_link'] = 1;	// ALways link the icon
+				$conf['linkProc.']['icon_image_ext_list'] = ($type==2 || $type==3) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] : '';	// If the layout is type 2 or 3 we will render an image based icon if possible.
 
-					$filesData[$key]['filename'] = $fileName;
-					$filesData[$key]['path'] = $path;
-					$filesData[$key]['filesize'] = filesize($absPath);
-					$filesData[$key]['fileextension'] = strtolower($fI['extension']);
-					$filesData[$key]['description'] = trim($descriptions[$key]);
+					// Traverse the files found:
+				$filesData = array();
+				foreach($fileArray as $key => $fileName)	{
+					$absPath = t3lib_div::getFileAbsFileName($path.$fileName);
+					if (@is_file($absPath))	{
+						$fI = pathinfo($fileName);
+						$filesData[$key] = array();
 
-					$this->cObj->setCurrentVal($path);
-					$GLOBALS['TSFE']->register['ICON_REL_PATH'] = $path.$fileName;
-					$filesData[$key]['linkedFilenameParts'] = explode('//**//',$this->cObj->filelink($fileName, $conf['linkProc.']));
+						$filesData[$key]['filename'] = $fileName;
+						$filesData[$key]['path'] = $path;
+						$filesData[$key]['filesize'] = filesize($absPath);
+						$filesData[$key]['fileextension'] = strtolower($fI['extension']);
+						$filesData[$key]['description'] = trim($descriptions[$key]);
+
+						$this->cObj->setCurrentVal($path);
+						$GLOBALS['TSFE']->register['ICON_REL_PATH'] = $path.$fileName;
+						$filesData[$key]['linkedFilenameParts'] = explode('//**//',$this->cObj->filelink($fileName, $conf['linkProc.']));
+					}
 				}
+
+					// Now, lets render the list!
+				$tRows = array();
+				foreach($filesData as $key => $fileD)	{
+
+						// Setting class of table row for odd/even rows:
+					$oddEven = $key%2 ? 'tr-odd' : 'tr-even';
+
+						// Render row, based on the "layout" setting
+					$tRows[]='
+					<tr class="'.$oddEven.'">'.($type>0 ? '
+						<td class="csc-uploads-icon">
+							'.$fileD['linkedFilenameParts'][0].'
+						</td>' : '').'
+						<td class="csc-uploads-fileName">
+							<p>'.$fileD['linkedFilenameParts'][1].'</p>'.
+							($fileD['description'] ? '
+							<p class="csc-uploads-description">'.htmlspecialchars($fileD['description']).'</p>' : '').'
+						</td>'.($this->cObj->data['filelink_size'] ? '
+						<td class="csc-uploads-fileSize">
+							<p>'.t3lib_div::formatSize($fileD['filesize']).'</p>
+						</td>' : '').'
+					</tr>';
+				}
+
+					// Table tag params.
+				$tableTagParams = $this->getTableAttributes($conf,$type);
+				$tableTagParams['class'] = 'csc-uploads csc-uploads-'.$type;
+
+
+					// Compile it all into table tags:
+				$out = '
+				<table '.t3lib_div::implodeAttributes($tableTagParams).'>
+					'.implode('',$tRows).'
+				</table>';
 			}
 
-				// Now, lets render the list!
-			$tRows = array();
-			foreach($filesData as $key => $fileD)	{
-
-					// Setting class of table row for odd/even rows:
-				$oddEven = $key%2 ? 'tr-odd' : 'tr-even';
-
-					// Render row, based on the "layout" setting
-				$tRows[]='
-				<tr class="'.$oddEven.'">'.($type>0 ? '
-					<td class="csc-uploads-icon">
-						'.$fileD['linkedFilenameParts'][0].'
-					</td>' : '').'
-					<td class="csc-uploads-fileName">
-						<p>'.$fileD['linkedFilenameParts'][1].'</p>'.
-						($fileD['description'] ? '
-						<p class="csc-uploads-description">'.htmlspecialchars($fileD['description']).'</p>' : '').'
-					</td>'.($this->cObj->data['filelink_size'] ? '
-					<td class="csc-uploads-fileSize">
-						<p>'.t3lib_div::formatSize($fileD['filesize']).'</p>
-					</td>' : '').'
-				</tr>';
+				// Calling stdWrap:
+			if ($conf['stdWrap.']) {
+				$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
 			}
 
-				// Table tag params.
-			$tableTagParams = $this->getTableAttributes($conf,$type);
-			$tableTagParams['class'] = 'csc-uploads csc-uploads-'.$type;
-
-
-				// Compile it all into table tags:
-			$out = '
-			<table '.t3lib_div::implodeAttributes($tableTagParams).'>
-				'.implode('',$tRows).'
-			</table>';
+				// Return value
+			return $out;
 		}
-
-			// Calling stdWrap:
-		if ($conf['stdWrap.']) {
-			$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
-		}
-
-			// Return value
-		return $out;
 	}
 
 
@@ -331,6 +349,25 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// Return result:
 		return $tableTagParams;
+	}
+
+	/**
+	 * Returns an object reference to the hook object if any
+	 *
+	 * @param	string		Name of the function you want to call / hook key
+	 * @return	object		Hook object, if any. Otherwise null.
+	 */
+	function &hookRequest($functionName)	{
+		global $TYPO3_CONF_VARS;
+
+			// Hook: menuConfig_preProcessModMenu
+		if ($TYPO3_CONF_VARS['EXTCONF']['css_styled_content']['pi1_hooks'][$functionName]) {
+			$hookObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['css_styled_content']['pi1_hooks'][$functionName]);
+			if (method_exists ($hookObj, $functionName)) {
+				$hookObj->pObj = &$this;
+				return $hookObj;
+			}
+		}
 	}
 }
 

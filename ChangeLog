@@ -1,3 +1,7 @@
+2005-02-17  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Added 3 hooks for each hardcoded function in css_styled_content so extensions can be written which provides alternative renderings without XCLASSING.
+
 2005-02-15  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* The indexed-search lexer has been updated so it supports "printjoins" (characters like ' or - which are allowed inside of words) and there is also support for Chinese/Japanese/Korean (CJK) indexing/searching.
