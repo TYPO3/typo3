@@ -170,7 +170,12 @@ class t3lib_matchCondition {
 					while(list(,$test)=each($values))	{
 						$test = trim($test);
 						if ($test)	{
-							if (t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test)	{return true;}
+							if (ereg('^\*.+\*$',$test))	{
+								$allLanguages = split('[,;]',t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+								if (in_array(substr($test,1,-1), $allLanguages))	{return true;}
+							} else {
+								if (t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE') == $test)	{return true;}
+							}
 						}
 					}
 				break;

@@ -1,5 +1,9 @@
 2004-08-29  Kasper Skårhøj,,,  <kasper@typo3.com>
 
+	* Added a wildcard like option for values in the "language" condition in frontend (matchcondition class). Can now match any language found in the HTTP_ACCEPT_LANGUAGE value.
+
+2004-08-29  Kasper Skårhøj,,,  <kasper@typo3.com>
+
 	* Added "lockIP" setting for backend users - this will solve the problem that some has reported about backend users not being able to login with 3.7.0...
 	* Added new HMENU special type, "language", which can generate a language selector using the "&L" variable directly.
 	* Added option for HMENU (protectLvar) so menu items linking to pages that are not translated will have their "&L" var set to zero, thus reverting to the default language.
