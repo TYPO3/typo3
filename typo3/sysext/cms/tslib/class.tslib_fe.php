@@ -2470,8 +2470,8 @@ if (version == "n3") {
 			$this->content = str_replace('target=_top','target="_self"',$this->content);
 		}*/
 
-			// If no external scripts should be included we can safely send a content-length header:
-		if (!$this->isEXTincScript() && !$this->config['config']['disableContentLengthHeader'])	{
+			// Send content-lenght header. Notice that all HTML content outside the length of the content-length header will be cut off! Therefore content of unknown length from included PHP-scripts and if admin users are logged in (admin panel might show...) we disable it!
+		if ($this->config['config']['enableContentLengthHeader'] && !$this->isEXTincScript() && !$this->beUserLogin)	{
 			header('Content-Length: '.strlen($this->content));
 		}
 	}
