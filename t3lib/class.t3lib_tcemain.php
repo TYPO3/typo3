@@ -1289,6 +1289,7 @@ class t3lib_TCEmain	{
 		switch ($tcaFieldConf['type']) {
 			case 'text':
 			case 'passthrough':
+			case 'user':
 				$res['value'] = $value;
 			break;
 			case 'input':
@@ -1308,6 +1309,9 @@ class t3lib_TCEmain	{
 				if ($field)	{	// FlexForms are only allowed for real fields.
 					$res = $this->checkValue_flex($res,$value,$tcaFieldConf,$PP,$uploadedFiles,$field);
 				}
+			break;
+			default:
+				#debug(array($tcaFieldConf,$res,$value),'NON existing field type:');
 			break;
 		}
 
