@@ -140,6 +140,7 @@ class t3lib_cs {
 	var $eucBasedSets=array(
 		'gb2312'=>1,	// Chinese, simplified.
 		'big5'=>1,	// Chinese, traditional.
+		'shift_jis'=>1,	// Japanes - WARNING: Shift-JIS includes half-width katakana single-bytes characters above 0x80!
 	);
 
 		// see	http://developer.apple.com/documentation/macos8/TextIntlSvcs/TextEncodingConversionManager/TEC1.5/TEC.b0.html
@@ -197,6 +198,7 @@ class t3lib_cs {
 		'winbaltrim' => 'windows-1257',
 		'koi-8ru' => 'koi-8r',
 		'koi8r' => 'koi-8r',
+		'cp878' => 'koi-8r',
 		'mac' => 'macRoman',
 		'macintosh' => 'macRoman',
 		'euc-cn' => 'gb2312',
@@ -834,8 +836,6 @@ class t3lib_cs {
 			return mb_strcut($string,0,$len,$charset);
 		} elseif ($charset == 'utf-8')	{
 			return $this->utf8_strtrunc($string);
-		} elseif ($charset == 'shift_jis')	{
-			return $this->euc_strtrunc($string,'shift_jis');
 		} elseif ($this->eucBasedSets[$charset])	{
 			return $this->euc_strtrunc($string,$charset);
 		} elseif ($this->twoByteSets[$charset])	{
@@ -858,7 +858,6 @@ class t3lib_cs {
 	 * @return	string		the substring
 	 * @see substr(), mb_substr()
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
-	 * @bug
 	 */
 	function substr($charset,$string,$start,$len=null)	{
 		if ($len===0)	return '';
@@ -876,8 +875,6 @@ class t3lib_cs {
 			else	return mb_substr($string,$start,$len,'utf-8');
 		} elseif ($charset == 'utf-8')	{
 			return $this->utf8_substr($string,$start,$len);
-		} elseif ($charset == 'shift_jis')	{
-			return $this->euc_substr($string,$start,'shift_jis',$len);
 		} elseif ($this->eucBasedSets[$charset])	{
 			return $this->euc_substr($string,$start,$charset,$len);
 		} elseif ($this->twoByteSets[$charset])	{
@@ -888,6 +885,50 @@ class t3lib_cs {
 
 		// treat everything else as single-byte encoding
 		return substr($string,$start,$len);
+	}
+
+	/**
+	 * Truncates a string and pre-/appends a string.
+	 *
+	 * @param	string		the character set
+	 * @param	string		character string
+	 * @param	int		length (in characters)
+	 * @param	string		crop signifier
+	 * @return	string		the shortened string
+	 * @see substr(), mb_strimwidth()
+	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
+	 */	
+	function crop($charset,$string,$len,$crop='')	{
+		if ($len == 0)	return $crop;
+
+		if ($charset == 'utf-8')	{
+			$i = $this->utf8_char2byte_pos($string,$len);
+		} elseif ($this->eucBasedSets[$charset])	{
+			$i = $this->euc_char2byte_pos($string,$len,$charset);           
+		} else {
+			if ($len > 0)	{
+				$i = $len;
+			} else {
+				$i = strlen($string)+$len;
+				if ($i<=0)	$i = false;
+			}
+		}
+
+		if ($i === false)	{	// $len outside actual string length
+			return $string;
+		} else	{
+			if ($len > 0)	{
+				if ($string{$i+1})	{
+					return substr($string,0,$i).$crop;
+				}
+			} else {
+				if ($string{$i-1})	{
+					return $crop.substr($string,$i);
+				}
+			}
+		}
+
+		return $string;
 	}
 
 	/**
@@ -904,8 +945,6 @@ class t3lib_cs {
 			return mb_strlen($string,$charset);
 		} elseif ($charset == 'utf-8')	{
 			return $this->utf8_strlen($string);
-		} elseif ($charset == 'shift_jis')	{
-			return $this->euc_strlen($string,'shift_jis');
 		} elseif ($this->eucBasedSets[$charset])	{
 			return $this->euc_strlen($string,$charset);
 		} elseif ($this->twoByteSets[$charset])	{
@@ -938,8 +977,6 @@ class t3lib_cs {
 			}
 		} elseif ($charset == 'utf-8')	{
 			return $this->utf8_conv_case($string,$case);
-		} elseif ($charset == 'shift_jis')	{
-			return $this->euc_conv_case($string,$case,'shift_jis');
 		} elseif ($this->eucBasedSets[$charset])	{
 			return $this->euc_conv_case($string,$case,$charset);
 		}
